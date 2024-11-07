@@ -3,6 +3,8 @@ import { WaitNodeContent } from '@/features/blocks/logic/wait/components/WaitNod
 import { ScriptNodeContent } from '@/features/blocks/logic/script/components/ScriptNodeContent'
 import { ButtonsBlockNode } from '@/features/blocks/inputs/buttons/components/ButtonsBlockNode'
 import { JumpNodeBody } from '@/features/blocks/logic/jump/components/JumpNodeBody'
+import { AssignChatNodeContent } from '@/features/blocks/logic/assignChat/components/AssignChatNodeContent'
+import { CloseChatNodeBody } from '@/features/blocks/logic/closeChat/components/CloseChatNodeBody'
 import { AudioBubbleNode } from '@/features/blocks/bubbles/audio/components/AudioBubbleNode'
 import { EmbedBubbleContent } from '@/features/blocks/bubbles/embed/components/EmbedBubbleContent'
 import { ImageBubbleContent } from '@/features/blocks/bubbles/image/components/ImageBubbleContent'
@@ -38,6 +40,7 @@ import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/consta
 import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integrations/constants'
 import { ForgedBlockNodeContent } from '@/features/forge/components/ForgedBlockNodeContent'
 import { OpenAINodeBody } from '@/features/blocks/integrations/openai/components/OpenAINodeBody'
+import { GlobalJumpNodeBody } from '../../../../blocks/logic/globalJump/components/GlobalJumpNodeBody'
 
 type Props = {
   block: BlockV6
@@ -110,8 +113,17 @@ export const BlockNodeContent = ({
     case LogicBlockType.WAIT: {
       return <WaitNodeContent options={block.options} />
     }
+    case LogicBlockType.GLOBAL_JUMP: {
+      return <GlobalJumpNodeBody options={block.options} />
+    }
     case LogicBlockType.JUMP: {
       return <JumpNodeBody options={block.options} />
+    }
+    case LogicBlockType.ASSIGN_CHAT: {
+      return <AssignChatNodeContent options={block.options} />
+    }
+    case LogicBlockType.CLOSE_CHAT: {
+      return <CloseChatNodeBody />
     }
     case LogicBlockType.AB_TEST: {
       return <AbTestNodeBody block={block} groupId={groupId} />

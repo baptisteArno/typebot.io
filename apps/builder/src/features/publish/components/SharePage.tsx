@@ -9,14 +9,12 @@ import {
   HStack,
   IconButton,
   Stack,
-  Wrap,
   Text,
 } from '@chakra-ui/react'
 import { Plan } from '@typebot.io/prisma'
-import { isDefined, isNotDefined } from '@typebot.io/lib'
+import { isNotDefined } from '@typebot.io/lib'
 import { isPublicDomainAvailableQuery } from '../queries/isPublicDomainAvailableQuery'
 import { EditableUrl } from './EditableUrl'
-import { integrationsList } from './embeds/EmbedButton'
 import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import { LockTag } from '@/features/billing/components/LockTag'
 import { UpgradeButton } from '@/features/billing/components/UpgradeButton'
@@ -32,7 +30,7 @@ import { TypebotNotFoundPage } from '@/features/editor/components/TypebotNotFoun
 export const SharePage = () => {
   const { t } = useTranslate()
   const { workspace } = useWorkspace()
-  const { typebot, updateTypebot, publishedTypebot, is404 } = useTypebot()
+  const { typebot, updateTypebot, is404 } = useTypebot()
   const { showToast } = useToast()
 
   const handlePublicIdChange = async (publicId: string) => {
@@ -42,7 +40,6 @@ export const SharePage = () => {
   const publicId = typebot
     ? typebot?.publicId ?? parseDefaultPublicId(typebot.name, typebot.id)
     : ''
-  const isPublished = isDefined(publishedTypebot)
 
   const handlePathnameChange = (pathname: string) => {
     if (!typebot?.customDomain) return
@@ -148,21 +145,6 @@ export const SharePage = () => {
                 )}
               </>
             ) : null}
-          </Stack>
-
-          <Stack spacing={4}>
-            <Heading fontSize="2xl" as="h1">
-              Embed your typebot
-            </Heading>
-            <Wrap spacing={7}>
-              {integrationsList.map((IntegrationButton, idx) => (
-                <IntegrationButton
-                  key={idx}
-                  publicId={publicId}
-                  isPublished={isPublished}
-                />
-              ))}
-            </Wrap>
           </Stack>
         </Stack>
       </Flex>

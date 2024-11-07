@@ -6,8 +6,10 @@ import {
   executableHttpRequestSchema,
   pixelOptionsSchema,
   redirectOptionsSchema,
+  assignChatOptionsSchema,
 } from '../blocks'
 import { nativeMessageSchema } from '../blocks/integrations/openai'
+import { groupSchema } from './shared'
 
 extendZodWithOpenApi(z)
 
@@ -39,6 +41,7 @@ export type ScriptToExecute = z.infer<typeof scriptToExecuteSchema>
 const clientSideActionBaseSchema = z.object({
   lastBubbleBlockId: z.string().optional(),
   expectsDedicatedReply: z.boolean().optional(),
+  group: groupSchema.optional(),
 })
 
 export const clientSideActionSchema = z.discriminatedUnion('type', [
@@ -93,6 +96,25 @@ export const clientSideActionSchema = z.discriminatedUnion('type', [
     .openapi({
       ref: 'csaWait',
       title: 'Wait',
+    }),
+  z
+    .object({
+      type: z.literal('assign'),
+      assign: assignChatOptionsSchema,
+    })
+    .merge(clientSideActionBaseSchema)
+    .openapi({
+      ref: 'csaAssign',
+      title: 'Assign',
+    }),
+  z
+    .object({
+      type: z.literal('close'),
+    })
+    .merge(clientSideActionBaseSchema)
+    .openapi({
+      ref: 'csaClose',
+      title: 'Close Chat',
     }),
   z
     .object({

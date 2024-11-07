@@ -147,10 +147,28 @@ export const BlockLabel = ({ type, ...props }: Props): JSX.Element => {
           {t('editor.sidebarBlock.wait.label')}
         </Text>
       )
+    case LogicBlockType.GLOBAL_JUMP:
+      return (
+        <Text fontSize="sm" {...props}>
+          {t('editor.sidebarBlock.globalJump.label')}
+        </Text>
+      )
     case LogicBlockType.JUMP:
       return (
         <Text fontSize="sm" {...props}>
           {t('editor.sidebarBlock.jump.label')}
+        </Text>
+      )
+    case LogicBlockType.ASSIGN_CHAT:
+      return (
+        <Text fontSize="sm" {...props}>
+          {t('editor.sidebarBlock.assignChat.label')}
+        </Text>
+      )
+    case LogicBlockType.CLOSE_CHAT:
+      return (
+        <Text fontSize="sm" {...props}>
+          {t('editor.sidebarBlock.closeChat.label')}
         </Text>
       )
     case LogicBlockType.AB_TEST:

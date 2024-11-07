@@ -14,6 +14,7 @@ import { useRef, useState } from 'react'
 import { WaitSettings } from '@/features/blocks/logic/wait/components/WaitSettings'
 import { ScriptSettings } from '@/features/blocks/logic/script/components/ScriptSettings'
 import { JumpSettings } from '@/features/blocks/logic/jump/components/JumpSettings'
+import { AssignChatSettings } from '@/features/blocks/logic/assignChat/components/AssignChatSettings'
 import { MakeComSettings } from '@/features/blocks/integrations/makeCom/components/MakeComSettings'
 import { PabblyConnectSettings } from '@/features/blocks/integrations/pabbly/components/PabblyConnectSettings'
 import { ButtonsBlockSettings } from '@/features/blocks/inputs/buttons/components/ButtonsBlockSettings'
@@ -47,6 +48,7 @@ import { OpenAISettings } from '@/features/blocks/integrations/openai/components
 import { useForgedBlock } from '@/features/forge/hooks/useForgedBlock'
 import { VideoOnboardingPopover } from '@/features/onboarding/components/VideoOnboardingPopover'
 import { hasOnboardingVideo } from '@/features/onboarding/helpers/hasOnboardingVideo'
+import { GlobalJumpSettings } from '../../../../blocks/logic/globalJump/components/GlobalJumpSettings'
 
 type Props = {
   block: BlockWithOptions
@@ -258,6 +260,17 @@ export const BlockSettings = ({
         <WaitSettings options={block.options} onOptionsChange={updateOptions} />
       )
     }
+    case LogicBlockType.GLOBAL_JUMP: {
+      return groupId ? (
+        <GlobalJumpSettings
+          groupId={groupId}
+          options={block.options}
+          onOptionsChange={updateOptions}
+        />
+      ) : (
+        <></>
+      )
+    }
     case LogicBlockType.JUMP: {
       return groupId ? (
         <JumpSettings
@@ -269,6 +282,16 @@ export const BlockSettings = ({
         <></>
       )
     }
+    case LogicBlockType.ASSIGN_CHAT: {
+      return (
+        <AssignChatSettings
+          options={block.options}
+          onOptionsChange={updateOptions}
+        />
+      )
+    }
+    case LogicBlockType.CLOSE_CHAT:
+      return null
     case LogicBlockType.AB_TEST: {
       return (
         <AbTestSettings

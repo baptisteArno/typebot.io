@@ -1,14 +1,15 @@
 import { z } from '../../../zod'
-import { chatwootBlockSchema } from './chatwoot'
-import { googleAnalyticsBlockSchema } from './googleAnalytics'
+
 import { googleSheetsBlockSchemas } from './googleSheets'
 import { openAIBlockSchema } from './openai'
-import { pixelBlockSchema } from './pixel/schema'
 import { sendEmailBlockSchema } from './sendEmail'
 import { zapierBlockSchemas } from './zapier'
 import { httpBlockSchemas } from './webhook'
+import { chatwootBlockSchema } from './chatwoot'
+import { googleAnalyticsBlockSchema } from './googleAnalytics'
 import { makeComBlockSchemas } from './makeCom'
 import { pabblyConnectBlockSchemas } from './pabblyConnect'
+import { pixelBlockSchema } from './pixel'
 
 export const integrationBlockSchemas = {
   v5: [

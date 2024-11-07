@@ -36,8 +36,7 @@ export const MetadataForm = ({
     onMetadataChange({ ...metadata, title })
   const handleDescriptionChange = (description: string) =>
     onMetadataChange({ ...metadata, description })
-  const handleFavIconSubmit = (favIconUrl: string) =>
-    onMetadataChange({ ...metadata, favIconUrl })
+
   const handleImageSubmit = (imageUrl: string) =>
     onMetadataChange({ ...metadata, imageUrl })
   const handleGoogleTagManagerIdChange = (googleTagManagerId: string) =>
@@ -45,47 +44,12 @@ export const MetadataForm = ({
   const handleHeadCodeChange = (customHeadCode: string) =>
     onMetadataChange({ ...metadata, customHeadCode })
 
-  const favIconUrl =
-    metadata?.favIconUrl ??
-    defaultSettings.metadata.favIconUrl(env.NEXT_PUBLIC_VIEWER_URL[0])
-
   const imageUrl =
     metadata?.imageUrl ??
     defaultSettings.metadata.imageUrl(env.NEXT_PUBLIC_VIEWER_URL[0])
 
   return (
     <Stack spacing="6">
-      <Stack>
-        <FormLabel mb="0" htmlFor="icon">
-          Icon:
-        </FormLabel>
-        <Popover isLazy placement="top">
-          <PopoverTrigger>
-            <Image
-              src={favIconUrl}
-              w="20px"
-              alt="Fav icon"
-              cursor="pointer"
-              _hover={{ filter: 'brightness(.9)' }}
-              transition="filter 200ms"
-              rounded="md"
-            />
-          </PopoverTrigger>
-          <PopoverContent p="4" w="400px">
-            <ImageUploadContent
-              uploadFileProps={{
-                workspaceId,
-                typebotId,
-                fileName: 'favIcon',
-              }}
-              defaultUrl={favIconUrl}
-              onSubmit={handleFavIconSubmit}
-              excludedTabs={['giphy', 'unsplash', 'emoji']}
-              imageSize="thumb"
-            />
-          </PopoverContent>
-        </Popover>
-      </Stack>
       <Stack>
         <FormLabel mb="0" htmlFor="image">
           Image:

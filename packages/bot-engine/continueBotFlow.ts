@@ -46,6 +46,7 @@ import { env } from '@typebot.io/env'
 import { isURL } from '@typebot.io/lib/validators/isURL'
 import { isForgedBlockType } from '@typebot.io/schemas/features/blocks/forged/helpers'
 import { resetSessionState } from './resetSessionState'
+import { getGlobalJumpGroup } from './getGlobalJumpGroup'
 
 type Params = {
   version: 1 | 2
@@ -75,8 +76,15 @@ export const continueBotFlow = async (
       textBubbleContentFormat,
     })
 
+  let nextBlockId: string = newSessionState.currentBlockId
+  if (reply && reply.type === 'text') {
+    let result = getGlobalJumpGroup(newSessionState, reply?.text)
+
+    if (result?.blockId) nextBlockId = result.blockId
+  }
+
   const { block, group, blockIndex } = getBlockById(
-    newSessionState.currentBlockId,
+    nextBlockId,
     state.typebotsQueue[0].typebot.groups
   )
 
@@ -195,6 +203,29 @@ export const continueBotFlow = async (
         ? { ...reply, type: 'text', text: formattedReply }
         : undefined
     )
+  }
+
+  if (block.type === LogicBlockType.GLOBAL_JUMP) {
+    const chatReply = await executeGroup(
+      {
+        ...group,
+        blocks: [block],
+      } as Group,
+      {
+        version,
+        state: newSessionState,
+        visitedEdges,
+        setVariableHistory,
+        firstBubbleWasStreamed,
+        startTime,
+        textBubbleContentFormat,
+      }
+    )
+    return {
+      ...chatReply,
+      lastMessageNewFormat:
+        formattedReply !== reply?.text ? formattedReply : undefined,
+    }
   }
 
   const groupHasMoreBlocks = blockIndex < group.blocks.length - 1

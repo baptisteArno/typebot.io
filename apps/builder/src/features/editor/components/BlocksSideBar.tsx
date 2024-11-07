@@ -24,10 +24,16 @@ import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integr
 import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
 import { BlockV6 } from '@typebot.io/schemas'
 import { useDebouncedCallback } from 'use-debounce'
-import { forgedBlockIds } from '@typebot.io/forge-repository/constants'
 
 // Integration blocks migrated to forged blocks
-const legacyIntegrationBlocks = [IntegrationBlockType.OPEN_AI]
+const legacyIntegrationBlocks = [
+  IntegrationBlockType.OPEN_AI,
+  IntegrationBlockType.GOOGLE_ANALYTICS,
+  IntegrationBlockType.MAKE_COM,
+  IntegrationBlockType.PABBLY_CONNECT,
+  IntegrationBlockType.CHATWOOT,
+  IntegrationBlockType.PIXEL,
+]
 
 export const BlocksSideBar = () => {
   const { t } = useTranslate()
@@ -171,7 +177,6 @@ export const BlocksSideBar = () => {
           </Text>
           <SimpleGrid columns={2} spacing="3">
             {Object.values(IntegrationBlockType)
-              .concat(forgedBlockIds as any)
               .filter((type) => !legacyIntegrationBlocks.includes(type))
               .map((type) => (
                 <BlockCard

@@ -2,19 +2,33 @@ version: '3.3'
 
 volumes:
   db-data:
+  caddy_certs:
 
 services:
   typebot-db:
     image: postgres:14-alpine
     restart: always
+    container_name: typebot-db
+    ports:
+      - '5432:5432'
     volumes:
       - db-data:/var/lib/postgresql/data
     environment:
       - POSTGRES_DB=typebot
       - POSTGRES_PASSWORD=typebot
+      - POSTGRES_USER=typebot
+    networks:
+      - typebot-network
+    profiles:
+      - db
+      - app
+      - typebot
 
   typebot-builder:
-    image: baptistearno/typebot-builder:latest
+    image: twerlo/typebot-builder:dev
+    container_name: typebot-builder
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
     restart: always
     depends_on:
       - typebot-db
@@ -23,10 +37,72 @@ services:
     extra_hosts:
       - 'host.docker.internal:host-gateway'
     env_file: .env
+    networks:
+      - typebot-network
+      - caddy-proxy
+    profiles:
+      - app
+      - typebot
 
   typebot-viewer:
-    image: baptistearno/typebot-viewer:latest
+    image: twerlo/typebot-viewer:dev
+    container_name: typebot-viewer
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
     restart: always
     ports:
       - '8081:3000'
     env_file: .env
+    networks:
+      - typebot-network
+      - caddy-proxy
+    profiles:
+      - app
+      - typebot
+
+  caddy:
+    image: caddy/caddy
+    container_name: caddy
+    env_file: .env
+    depends_on:
+      - typebot-builder
+      - typebot-viewer
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      - DOMAIN_NAME_BUILDER=${BUILDER_DOMAIN}
+      - DOMAIN_NAME_VIEWER=${VIEWER_DOMAIN}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_certs:/root/.caddy
+    networks:
+      - caddy-proxy
+    profiles:
+      - caddy
+      - app
+
+  watchtower:
+    image: containrrr/watchtower
+    command:
+      - "--cleanup"
+    labels:
+      - "com.centurylinklabs.watchtower.enable=false"
+    env_file:
+      - .env
+    environment:
+      - REPO_USER=${DOCKER_USERNAME}
+      - REPO_PASS=${DOCKER_PASSWORD}
+      - WATCHTOWER_POLL_INTERVAL=60
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    container_name: "watchtower"
+    profiles:
+      - app
+
+networks:
+  caddy-proxy:
+    driver: bridge
+  typebot-network:
+    driver: bridge

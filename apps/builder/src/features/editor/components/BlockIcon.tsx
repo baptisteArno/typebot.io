@@ -3,6 +3,8 @@ import React from 'react'
 import { WaitIcon } from '@/features/blocks/logic/wait/components/WaitIcon'
 import { ScriptIcon } from '@/features/blocks/logic/script/components/ScriptIcon'
 import { JumpIcon } from '@/features/blocks/logic/jump/components/JumpIcon'
+import { CloseChatIcon } from '@/features/blocks/logic/closeChat/components/CloseChatIcon'
+import { AssignChatIcon } from '@/features/blocks/logic/assignChat/components/AssignChatIcon'
 import { AudioBubbleIcon } from '@/features/blocks/bubbles/audio/components/AudioBubbleIcon'
 import { EmbedBubbleIcon } from '@/features/blocks/bubbles/embed/components/EmbedBubbleIcon'
 import { ImageBubbleIcon } from '@/features/blocks/bubbles/image/components/ImageBubbleIcon'
@@ -40,6 +42,7 @@ import { OpenAILogo } from '@/features/blocks/integrations/openai/components/Ope
 import { ForgedBlockIcon } from '@/features/forge/ForgedBlockIcon'
 import { SendEmailIcon } from '@/features/blocks/integrations/sendEmail/components/SendEmailIcon'
 import { FlagIcon, ThunderIcon } from '@/components/icons'
+import { GlobalJumpIcon } from '../../blocks/logic/globalJump/components/GlobalJumpIcon'
 
 type BlockIconProps = { type: Block['type'] } & IconProps
 
@@ -94,10 +97,16 @@ export const BlockIcon = ({ type, ...props }: BlockIconProps): JSX.Element => {
       return <WaitIcon color={purple} {...props} />
     case LogicBlockType.JUMP:
       return <JumpIcon color={purple} {...props} />
+    case LogicBlockType.CLOSE_CHAT:
+      return <CloseChatIcon color={purple} {...props} />
+    case LogicBlockType.ASSIGN_CHAT:
+      return <AssignChatIcon color={purple} {...props} />
     case LogicBlockType.TYPEBOT_LINK:
       return <TypebotLinkIcon color={purple} {...props} />
     case LogicBlockType.AB_TEST:
       return <AbTestIcon color={purple} {...props} />
+    case LogicBlockType.GLOBAL_JUMP:
+      return <GlobalJumpIcon color={purple} {...props} />
     case IntegrationBlockType.GOOGLE_SHEETS:
       return <GoogleSheetsLogo {...props} />
     case IntegrationBlockType.GOOGLE_ANALYTICS:

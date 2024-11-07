@@ -703,3 +703,17 @@ export const WalletIcon = (props: IconProps) => (
     <path d="M3 11h3c.8 0 1.6.3 2.1.9l1.1.9c1.6 1.6 4.1 1.6 5.7 0l1.1-.9c.5-.5 1.3-.9 2.1-.9H21" />
   </Icon>
 )
+
+export const CloseChat = (props: IconProps) => (
+  <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
+    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+  </Icon>
+)
+
+export const AssignChat = (props: IconProps) => (
+  <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
+    <polyline points="15 14 20 9 15 4"></polyline>
+    <path d="M4 20v-7a4 4 0 0 1 4-4h12"></path>
+  </Icon>
+)

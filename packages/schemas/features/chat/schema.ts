@@ -22,7 +22,7 @@ import {
   embedBubbleContentSchema,
 } from '../blocks/bubbles'
 import { sessionStateSchema } from './sessionState'
-import { dynamicThemeSchema } from './shared'
+import { dynamicThemeSchema, groupSchema } from './shared'
 import { preprocessTypebot } from '../typebot/helpers/preprocessTypebot'
 import { typebotV5Schema, typebotV6Schema } from '../typebot/typebot'
 import { BubbleBlockType } from '../blocks/bubbles/constants'
@@ -148,7 +148,10 @@ const customEmbedSchema = z
 export type CustomEmbedBubble = z.infer<typeof customEmbedSchema>
 
 export const chatMessageSchema = z
-  .object({ id: z.string() })
+  .object({
+    id: z.string(),
+    group: groupSchema.optional(),
+  })
   .and(
     z.discriminatedUnion('type', [
       textMessageSchema,
@@ -347,6 +350,7 @@ const chatResponseBaseSchema = z.object({
       z.object({
         prefilledValue: z.string().optional(),
         runtimeOptions: runtimeOptionsSchema.optional(),
+        group: groupSchema.optional(),
       })
     )
     .optional(),
