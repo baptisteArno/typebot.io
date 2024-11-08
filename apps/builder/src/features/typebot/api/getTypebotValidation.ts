@@ -22,6 +22,13 @@ const responseSchema = z.object({
   invalidGroups: z.array(z.string()),
 })
 
+const isGroupArray = (groups: unknown): groups is Group[] =>
+  Array.isArray(groups)
+const hasBlocks = (group: Group): boolean =>
+  'blocks' in group && Array.isArray(group.blocks)
+const isConditionBlock = (block: Block): boolean =>
+  block.type.toLowerCase() === 'condition'
+
 export const getTypebotValidation = publicProcedure
   .meta({
     openapi: {
@@ -51,11 +58,11 @@ export const getTypebotValidation = publicProcedure
     const outgoingEdgeIds: (string | null)[] = []
     const invalidGroups: string[] = []
 
-    if (Array.isArray(typebot.groups)) {
-      ;(typebot.groups as Group[]).forEach((group) => {
-        if ('blocks' in group && Array.isArray(group.blocks)) {
+    if (isGroupArray(typebot.groups)) {
+      typebot.groups.forEach((group) => {
+        if (hasBlocks(group)) {
           const groupOutgoingEdgeIds = group.blocks
-            .filter((block) => block.type.toLowerCase() === 'condition')
+            .filter(isConditionBlock)
             .map((block) => block.outgoingEdgeId ?? null)
 
           outgoingEdgeIds.push(...groupOutgoingEdgeIds)
