@@ -1,9 +1,15 @@
 import assert from "assert";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
+import type { GenerateGroupTitle } from "@/features/editor/providers/typebotActions/edges";
+import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { colors } from "@/lib/theme";
+import { trpc } from "@/lib/trpc";
 import { useEventListener } from "@chakra-ui/react";
 import type { Coordinates } from "@dnd-kit/utilities";
+import type { BlockIndices } from "@typebot.io/blocks-core/schemas/schema";
 import { omit } from "@typebot.io/lib/utils";
+import type { TypebotV6 } from "@typebot.io/typebot/schemas/typebot";
+import type { Draft } from "immer";
 import React, { useMemo, useState } from "react";
 import { eventWidth, groupWidth } from "../../constants";
 import { computeConnectingEdgePath } from "../../helpers/computeConnectingEdgePath";
@@ -32,6 +38,7 @@ export const DrawingEdge = ({ connectingIds }: Props) => {
   const { eventsCoordinates } = useEventsCoordinates();
   const { createEdge } = useTypebot();
   const [mousePosition, setMousePosition] = useState<Coordinates | null>(null);
+  const { workspace } = useWorkspace();
 
   const sourceElementCoordinates = connectingIds
     ? "eventId" in connectingIds.source
@@ -115,13 +122,45 @@ export const DrawingEdge = ({ connectingIds }: Props) => {
 
   const createNewEdge = (connectingIds: ConnectingIds) => {
     assert(connectingIds.target);
-    createEdge({
-      from:
-        "groupId" in connectingIds.source
-          ? omit(connectingIds.source, "groupId")
-          : connectingIds.source,
-      to: connectingIds.target,
-    });
+    createEdge(
+      {
+        from:
+          "groupId" in connectingIds.source
+            ? omit(connectingIds.source, "groupId")
+            : connectingIds.source,
+        to: connectingIds.target,
+      },
+      generateGroupTitle,
+    );
+  };
+
+  const generateGroupTitleMutation =
+    trpc.aiFeatures.generateGroupTitle.useMutation();
+
+  const generateGroupTitle: GenerateGroupTitle = async (
+    typebot: Draft<TypebotV6>,
+    groupIndex: BlockIndices["groupIndex"],
+  ) => {
+    const groupContent = JSON.parse(JSON.stringify(typebot.groups[groupIndex]));
+
+    if (
+      !workspace?.aiFeatureCredentialId ||
+      !workspace?.aiFeaturePrompt ||
+      !workspace?.inEditorAiFeaturesEnabled
+    )
+      return;
+
+    try {
+      const result = await generateGroupTitleMutation.mutateAsync({
+        workspaceId: typebot.workspaceId,
+        groupIndex,
+        groupContent,
+      });
+
+      return result;
+    } catch (error) {
+      console.error("Failed to generate title:", error);
+    }
   };
 
   if (mousePosition && mousePosition.x === 0 && mousePosition.y === 0)

@@ -13,14 +13,30 @@ import type { Typebot, TypebotV6 } from "@typebot.io/typebot/schemas/typebot";
 import { type Draft, produce } from "immer";
 import type { SetTypebot } from "../TypebotProvider";
 
+export type GenerateGroupTitle = (
+  typebot: Draft<TypebotV6>,
+  groupIndex: BlockIndices["groupIndex"],
+) => Promise<
+  | {
+      title: string;
+    }
+  | undefined
+>;
+
 export type EdgesActions = {
-  createEdge: (edge: Omit<Edge, "id">) => void;
+  createEdge: (
+    edge: Omit<Edge, "id">,
+    generateGroupTitle: GenerateGroupTitle,
+  ) => void;
   updateEdge: (edgeIndex: number, updates: Partial<Omit<Edge, "id">>) => void;
   deleteEdge: (edgeId: string) => void;
 };
 
 export const edgesAction = (setTypebot: SetTypebot): EdgesActions => ({
-  createEdge: (edge: Omit<Edge, "id">) =>
+  createEdge: (
+    edge: Omit<Edge, "id">,
+    generateGroupTitle: GenerateGroupTitle,
+  ) =>
     setTypebot((typebot) =>
       produce(typebot, (typebot) => {
         const newEdge = {
@@ -62,9 +78,27 @@ export const edgesAction = (setTypebot: SetTypebot): EdgesActions => ({
                 blockIndex,
               });
 
-          // Check if auto-generate group title is enabled in the workspace settings
           typebot.groups[groupIndex].generatingTitle = true;
-          updateGroupTitle(typebot, groupIndex, setTypebot);
+          generateGroupTitle(typebot, groupIndex)
+            .then((result) => {
+              if (!result || !result.title) return;
+              setTypebot((typebot) =>
+                produce(typebot, (typebot) => {
+                  typebot.groups[groupIndex].title =
+                    `#${groupIndex + 1} ${result.title}`;
+                }),
+              );
+            })
+            .catch((error) => {
+              console.error(error);
+            })
+            .finally(() => {
+              setTypebot((typebot) =>
+                produce(typebot, (typebot) => {
+                  typebot.groups[groupIndex].generatingTitle = false;
+                }),
+              );
+            });
 
           const block = typebot.groups[groupIndex].blocks[blockIndex];
           if (isDefined(itemIndex) && isDefined(block.outgoingEdgeId)) {
@@ -126,24 +160,6 @@ const addEdgeIdToItem = (
   ((typebot.groups[groupIndex].blocks[blockIndex] as BlockWithItems).items[
     itemIndex
   ].outgoingEdgeId = edgeId);
-
-const updateGroupTitle = (
-  typebot: Draft<Typebot>,
-  groupIndex: BlockIndices["groupIndex"],
-  setTypebot: SetTypebot,
-) => {
-  // Async API call to generate group title using AI
-  // const groupContent = JSON.parse(JSON.stringify(typebot.groups[groupIndex]));
-
-  setTimeout(() => {
-    setTypebot((typebot) =>
-      produce(typebot, (typebot) => {
-        typebot.groups[groupIndex].title = `#${groupIndex + 1} Group`;
-        typebot.groups[groupIndex].generatingTitle = false;
-      }),
-    );
-  }, 5000);
-};
 
 export const deleteEdgeDraft = ({
   typebot,

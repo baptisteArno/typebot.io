@@ -241,14 +241,14 @@ export const GroupNode = ({ group, groupIndex }: Props) => {
                 display="inline"
                 marginLeft="auto"
                 sx={{
-                  animation: "pulse 1s ease-in-out infinite",
+                  animation: "pulse 0.5s ease-in-out infinite",
                   "@keyframes pulse": {
                     "0%": { opacity: 0.6 },
                     "50%": { opacity: 1 },
                     "100%": { opacity: 0.6 },
                   },
-                  WebkitAnimation: "pulse 1s ease-in-out infinite",
-                  MozAnimation: "pulse 1s ease-in-out infinite",
+                  WebkitAnimation: "pulse 0.5s ease-in-out infinite",
+                  MozAnimation: "pulse 0.5s ease-in-out infinite",
                 }}
               >
                 <SparklesIcon height={3} width={4} />
