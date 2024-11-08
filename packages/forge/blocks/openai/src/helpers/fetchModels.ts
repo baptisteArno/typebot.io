@@ -32,7 +32,12 @@ export const fetchGPTModels = async ({
 
   return (
     models.data
-      .filter((model) => model.id.includes("gpt"))
+      .filter(
+        (model) =>
+          model.id.includes("gpt") &&
+          !model.id.includes("-audio-") &&
+          !model.id.includes("-realtime-"),
+      )
       .sort((a, b) => b.created - a.created)
       .map((model) => model.id) ?? []
   );

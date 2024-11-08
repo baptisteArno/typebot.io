@@ -1,4 +1,6 @@
 export const anthropicModels = [
+  "claude-3-5-haiku-latest",
+  "claude-3-5-sonnet-latest",
   "claude-3-5-sonnet-20240620",
   "claude-3-opus-20240229",
   "claude-3-sonnet-20240229",
@@ -9,12 +11,15 @@ export const anthropicModels = [
 ] as const;
 
 export const anthropicLegacyModels = [
+  "claude-3-5-sonnet-20240620",
   "claude-2.1",
   "claude-2.0",
   "claude-instant-1.2",
 ];
 
 export const anthropicModelLabels = {
+  "claude-3-5-haiku-latest": "Claude 3.5 Haiku",
+  "claude-3-5-sonnet-latest": "Claude 3.5 Sonnet",
   "claude-3-5-sonnet-20240620": "Claude 3.5 Sonnet",
   "claude-3-opus-20240229": "Claude 3.0 Opus",
   "claude-3-sonnet-20240229": "Claude 3.0 Sonnet",

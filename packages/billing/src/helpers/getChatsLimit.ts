@@ -8,12 +8,13 @@ export const getChatsLimit = ({
 }: Pick<Workspace, "plan"> & {
   customChatsLimit?: Workspace["customChatsLimit"];
 }) => {
+  if (customChatsLimit) return customChatsLimit;
   if (
     plan === Plan.UNLIMITED ||
     plan === Plan.LIFETIME ||
-    plan === Plan.OFFERED
+    plan === Plan.OFFERED ||
+    plan === Plan.CUSTOM
   )
     return "inf";
-  if (plan === Plan.CUSTOM) return customChatsLimit ?? "inf";
   return chatsLimits[plan];
 };
