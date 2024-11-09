@@ -84,8 +84,7 @@ export const edgesAction = (setTypebot: SetTypebot): EdgesActions => ({
               if (!result || !result.title) return;
               setTypebot((typebot) =>
                 produce(typebot, (typebot) => {
-                  typebot.groups[groupIndex].title =
-                    `#${groupIndex + 1} ${result.title}`;
+                  typebot.groups[groupIndex].title = result.title;
                 }),
               );
             })
