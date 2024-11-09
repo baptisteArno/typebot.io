@@ -121,7 +121,12 @@ export const InEditorAIFeatures = () => {
         name: existingCredential.name,
       });
     }
-  }, [existingCredential]);
+  }, [
+    existingCredential,
+    workspace?.id,
+    workspace?.aiFeatureCredentialId,
+    loadingExistingCredential,
+  ]);
 
   useEffect(() => {
     if (
@@ -272,26 +277,24 @@ const AICredentialsModal = ({
   if (!aiProvider) return null;
 
   const { blockDef } = useForgedBlock(aiProvider);
+  if (!blockDef) return null;
 
-  return (
-    <>
-      {aiProvider === "openai" && (
-        <OpenAICredentialsModal
-          isOpen={isOpen}
-          onClose={onClose}
-          onNewCredentials={(credentialsId) =>
-            onNewCredentials(credentialsId, aiProvider)
-          }
-        />
-      )}
-      <CreateForgedCredentialsModal
-        blockDef={blockDef!}
-        isOpen={isOpen}
-        onClose={onClose}
-        onNewCredentials={(credentialsId) =>
-          onNewCredentials(credentialsId, aiProvider)
-        }
-      />
-    </>
+  const handleNewCredentials = (credentialsId: string) => {
+    onNewCredentials(credentialsId, aiProvider);
+  };
+
+  return aiProvider === "openai" ? (
+    <OpenAICredentialsModal
+      isOpen={isOpen}
+      onClose={onClose}
+      onNewCredentials={handleNewCredentials}
+    />
+  ) : (
+    <CreateForgedCredentialsModal
+      blockDef={blockDef}
+      isOpen={isOpen}
+      onClose={onClose}
+      onNewCredentials={handleNewCredentials}
+    />
   );
 };
