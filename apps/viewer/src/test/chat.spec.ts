@@ -325,7 +325,7 @@ test("API chat execution should work on published bot", async ({ request }) => {
     ).json();
     expect(messages[0].content.markdown).toStrictEqual("Hi there! 👋");
     expect(messages[1].content.markdown).toStrictEqual(
-      "Welcome. What&#39;s your name?",
+      "Welcome. What's your name?",
     );
   });
 });
