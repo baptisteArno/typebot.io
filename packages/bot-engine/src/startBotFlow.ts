@@ -4,6 +4,7 @@ import type { SetVariableHistoryItem } from "@typebot.io/variables/schemas";
 import { executeGroup } from "./executeGroup";
 import { getFirstEdgeId } from "./getFirstEdgeId";
 import { getNextGroup } from "./getNextGroup";
+import { resetGlobals } from "./globals";
 import type { ContinueChatResponse, StartFrom } from "./schemas/api";
 import type { SessionState } from "./schemas/chatSession";
 
@@ -28,6 +29,7 @@ export const startBotFlow = async ({
     setVariableHistory: SetVariableHistoryItem[];
   }
 > => {
+  resetGlobals();
   let newSessionState = state;
   const visitedEdges: Prisma.VisitedEdge[] = [];
   const setVariableHistory: SetVariableHistoryItem[] = [];

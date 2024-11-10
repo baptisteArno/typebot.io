@@ -23,6 +23,7 @@ import { parseVariables } from "@typebot.io/variables/parseVariables";
 import type { Variable } from "@typebot.io/variables/schemas";
 import { createTransport } from "nodemailer";
 import type Mail from "nodemailer/lib/mailer/index";
+import { globals } from "../../../globals";
 import { getTypebotWorkspaceId } from "../../../queries/getTypebotWorkspaceId";
 import type { ChatLog } from "../../../schemas/api";
 import type {
@@ -35,8 +36,6 @@ import { defaultFrom, defaultTransportOptions } from "./constants";
 export const sendEmailSuccessDescription = "Email successfully sent";
 export const sendEmailErrorDescription = "Email not sent";
 
-let prevHash: string | undefined;
-let emailSendingCount = 0;
 const maxEmailSending = 5;
 
 export const executeSendEmailBlock = async (
@@ -84,7 +83,7 @@ export const executeSendEmailBlock = async (
     return { outgoingEdgeId: block.outgoingEdgeId, logs };
   }
 
-  if (emailSendingCount >= maxEmailSending)
+  if (globals.emailSendingCount >= maxEmailSending)
     throw new TRPCError({
       code: "FORBIDDEN",
       message: "Attempt to send more than 5 emails",
@@ -117,7 +116,7 @@ export const executeSendEmailBlock = async (
     });
   }
 
-  emailSendingCount += 1;
+  globals.emailSendingCount += 1;
 
   return { outgoingEdgeId: block.outgoingEdgeId, logs };
 };
@@ -205,12 +204,12 @@ const sendEmail = async ({
   };
 
   const hash = JSON.stringify(email);
-  if (prevHash && prevHash === hash)
+  if (globals.prevHash && globals.prevHash === hash)
     throw new TRPCError({
       code: "FORBIDDEN",
       message: "Attempt to send the same email twice",
     });
-  prevHash = hash;
+  globals.prevHash = hash;
 
   try {
     await transporter.sendMail(email);

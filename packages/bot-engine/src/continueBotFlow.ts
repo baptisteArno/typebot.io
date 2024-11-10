@@ -41,6 +41,7 @@ import { saveDataInResponseVariableMapping } from "./blocks/integrations/httpReq
 import { resumeChatCompletion } from "./blocks/integrations/legacy/openai/resumeChatCompletion";
 import { executeGroup, parseInput } from "./executeGroup";
 import { getNextGroup } from "./getNextGroup";
+import { resetGlobals } from "./globals";
 import { saveAnswer } from "./queries/saveAnswer";
 import { resetSessionState } from "./resetSessionState";
 import type { ContinueChatResponse, Message } from "./schemas/api";
@@ -65,6 +66,7 @@ export const continueBotFlow = async (
     setVariableHistory: SetVariableHistoryItem[];
   }
 > => {
+  resetGlobals();
   if (!state.currentBlockId)
     return startBotFlow({
       state: resetSessionState(state),
