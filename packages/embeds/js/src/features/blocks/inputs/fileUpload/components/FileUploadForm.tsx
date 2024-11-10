@@ -100,11 +100,13 @@ export const FileUploadForm = (props: Props) => {
     const urls = await uploadFiles({
       apiHost:
         props.context.apiHost ?? guessApiHost({ ignoreChatApiUrl: true }),
-      files: files.map((file) => ({
+      files: files.map((file, index) => ({
         file: file,
         input: {
           sessionId: props.context.sessionId,
-          fileName: file.name,
+          fileName: files.some((f) => f.name === file.name)
+            ? file.name + `-${index}`
+            : file.name,
         },
       })),
       onUploadProgress: setUploadProgressPercent,
