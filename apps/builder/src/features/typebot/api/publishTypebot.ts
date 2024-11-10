@@ -12,6 +12,7 @@ import { trackEvents } from "@typebot.io/telemetry/trackEvents";
 import { themeSchema } from "@typebot.io/theme/schemas";
 import { edgeSchema } from "@typebot.io/typebot/schemas/edge";
 import { startEventSchema } from "@typebot.io/typebot/schemas/events/start/schema";
+import { typebotV6Schema } from "@typebot.io/typebot/schemas/typebot";
 import { variableSchema } from "@typebot.io/variables/schemas";
 import { z } from "@typebot.io/zod";
 import { isWriteTypebotForbidden } from "../helpers/isWriteTypebotForbidden";
@@ -98,7 +99,7 @@ export const publishTypebot = authenticatedProcedure
 
     const riskLevel = typebotWasVerified
       ? 0
-      : computeRiskLevel(existingTypebot, {
+      : await computeRiskLevel(typebotV6Schema.parse(existingTypebot), {
           debug: env.NODE_ENV === "development",
         });
 

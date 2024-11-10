@@ -4,15 +4,13 @@ import {
   sessionOnlySetVariableOptions,
 } from "@typebot.io/blocks-logic/setVariable/constants";
 import type { SetVariableBlock } from "@typebot.io/blocks-logic/setVariable/schema";
-import { stringifyError } from "@typebot.io/lib/stringifyError";
 import { byId, isEmpty, isNotDefined } from "@typebot.io/lib/utils";
 import prisma from "@typebot.io/prisma";
 import type { Answer } from "@typebot.io/results/schemas/answers";
-import { executeFunction } from "@typebot.io/variables/executeFunction";
+import { evaluateSetVariableExpression } from "@typebot.io/variables/evaluateSetVariableExpression";
 import { parseVariables } from "@typebot.io/variables/parseVariables";
 import type {
   SetVariableHistoryItem,
-  Variable,
   VariableWithUnknowValue,
   VariableWithValue,
 } from "@typebot.io/variables/schemas";
@@ -114,45 +112,6 @@ export const executeSetVariable = async (
         : undefined,
   };
 };
-
-const evaluateSetVariableExpression =
-  (variables: Variable[]) =>
-  async (
-    expression:
-      | {
-          type: "code";
-          code: string;
-        }
-      | { type: "value"; value: VariableWithValue["value"] },
-  ): Promise<{ value: unknown; error?: string }> => {
-    if (expression.type === "value") return { value: expression.value };
-    const isSingleVariable =
-      expression.code.startsWith("{{") &&
-      expression.code.endsWith("}}") &&
-      expression.code.split("{{").length === 2;
-    if (isSingleVariable)
-      return { value: parseVariables(variables)(expression.code) };
-    // To avoid octal number evaluation
-    if (
-      !isNaN(expression.code as unknown as number) &&
-      /0[^.].+/.test(expression.code)
-    )
-      return { value: expression.code };
-    const { output, error } = await executeFunction({
-      body: injectReturnKeywordIfNeeded(expression.code),
-      variables,
-    });
-    if (error) {
-      return {
-        value: parseVariables(variables)(expression.code),
-        error: stringifyError(error),
-      };
-    }
-    return { value: output };
-  };
-
-const injectReturnKeywordIfNeeded = (code: string) =>
-  code.includes("return ") ? code : `return ${code}`;
 
 const getExpressionToEvaluate =
   (state: SessionState) =>

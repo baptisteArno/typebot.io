@@ -5643,6 +5643,7 @@
     "@typebot.io/tsconfig" "packages/tsconfig"
   dependencies:
     "@typebot.io/env" "packages/env"
+    "@typebot.io/typebot" "packages/typebot"
 
 "@typebot.io/react@packages/embeds/react":
   version "workspace:packages/embeds/react"
