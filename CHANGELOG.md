@@ -1,5 +1,27 @@
 # Changelog
 
+<a name="3.1.1"></a>
+## 3.1.1 (2024-11-10)
+
+### Changed
+
+- 🚸 (openai) Refine model filtering to exclude audio and realtime models [[d092d13](https://github.com/baptisteArno/typebot.io/commit/d092d1310f9d3d8cc8c379485885305f76764f98)]
+- ⚡ (anthropic) Add Claude 3.5 Haiku model [[d4c94ba](https://github.com/baptisteArno/typebot.io/commit/d4c94bafc18b02b5f2d8634a0c907afc96ff5499)]
+- ⏪ (billing) Revert tax ID pre-checkout form [[e2fc218](https://github.com/baptisteArno/typebot.io/commit/e2fc218f5aef446f57ac69010fc10e4d6d948f88)]
+
+### Fixed
+
+- 🚑 Introduce global state management for email sending limits [[933a417](https://github.com/baptisteArno/typebot.io/commit/933a4173995d361cfec12eabe8fdb1d6c774dd1a)]
+- 🐛 Update generateVariable extraction to use nullish instead of optional to not throw on null values [[345bfac](https://github.com/baptisteArno/typebot.io/commit/345bfac51993071257f7905d31eff55ca612396d)]
+
+### Miscellaneous
+
+- 📝 Remove NEXTAUTH_URL_INTERNAL parameter from self-hosting configuration documentation [[b32ecb1](https://github.com/baptisteArno/typebot.io/commit/b32ecb1dd01b9e6c14a59557ad36227c9980ab6c)]
+- 🛂 (radar) Re-inforce scam keywords detection by parsing set variable blocks value [[a9b7441](https://github.com/baptisteArno/typebot.io/commit/a9b7441cadc18921fc2a2850a6dbcca0133a6398)]
+- 🛂 Enable SEO for custom domains [[6b41dcc](https://github.com/baptisteArno/typebot.io/commit/6b41dcc6ff792ac7bc0c7b8781aaf026dadab3f0)]
+- 🛂 Update chat and seat limit functions to prioritize custom limits [[954151e](https://github.com/baptisteArno/typebot.io/commit/954151e422fff25e5f251e4ab1efc25e87a48675)]
+
+
 <a name="3.1.0"></a>
 ## 3.1.0 (2024-10-29)
 

@@ -8272,6 +8272,8 @@
                   "model": {
                     "type": "string",
                     "enum": [
+                      "claude-3-5-haiku-latest",
+                      "claude-3-5-sonnet-latest",
                       "claude-3-5-sonnet-20240620",
                       "claude-3-opus-20240229",
                       "claude-3-sonnet-20240229",
@@ -8549,6 +8551,8 @@
                   "model": {
                     "type": "string",
                     "enum": [
+                      "claude-3-5-haiku-latest",
+                      "claude-3-5-sonnet-latest",
                       "claude-3-5-sonnet-20240620",
                       "claude-3-opus-20240229",
                       "claude-3-sonnet-20240229",
