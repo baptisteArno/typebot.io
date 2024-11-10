@@ -61,7 +61,12 @@ export const TypebotPageV3 = ({
               : "#fff",
       }}
     >
-      <SEO url={url} typebotName={name} metadata={metadata} />
+      <SEO
+        url={url}
+        typebotName={name}
+        metadata={metadata}
+        isMatchingViewerUrl={isMatchingViewerUrl}
+      />
       <Standard
         typebot={publicId}
         onInit={clearQueryParamsIfNecessary}
