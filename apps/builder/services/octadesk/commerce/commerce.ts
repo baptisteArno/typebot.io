@@ -17,22 +17,28 @@ export const CommerceService: CommerceServicesType = {
       throw new Error('Error in get Catalogs: ' + ex)
     }
   },
-  getProductsInCatalog: async (id: string): Promise<Array<ProductType>> => {
+  getProductsInCatalog: async (
+    id: string,
+    page: number
+  ): Promise<{ products: Array<ProductType>; total: number }> => {
     try {
       const authStorage = Storage.getItem('auth') as any
       const accessToken = authStorage.access_token
 
-      const { data }: any = await getCommerceClient().then(client =>
+      const { data }: any = await getCommerceClient().then((client) =>
         client.get(`/store/products`, {
           params: {
-            page: '1',
+            page,
             limit: '200',
             shouldIncludeVariants: true,
           },
-          ...loadParameterHeader()
+          ...loadParameterHeader(),
         })
       )
-      return data.results as Array<ProductType>;
+      return {
+        products: data.results as Array<ProductType>,
+        total: data.total as number,
+      }
     } catch (ex) {
       throw new Error('Error in get product: ' + ex)
     }
