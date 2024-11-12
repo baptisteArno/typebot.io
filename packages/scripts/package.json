@@ -25,7 +25,7 @@
     "getCoupon": "tsx src/getCoupon.ts",
     "redeemCoupon": "tsx src/redeemCoupon.ts",
     "exportResults": "tsx src/exportResults.ts",
-    "updateUserEmail": "tsx src/updateUserEmail.ts",
+    "updateUserEmail": "SKIP_ENV_CHECK=true tsx src/updateUserEmail.ts",
     "inspectChatSession": "tsx src/inspectChatSession.ts",
     "deleteChatSession": "tsx src/deleteChatSession.ts",
     "checkDependencies": "tsx src/checkDependencies.ts",
