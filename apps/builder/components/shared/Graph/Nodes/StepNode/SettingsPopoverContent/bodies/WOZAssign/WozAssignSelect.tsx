@@ -10,7 +10,8 @@ type Props = {
 }
 
 export const WozAssignSelect = ({ onSelect, selectedProfile }: Props) => {
-  const { wozProfiles } = useTypebot();
+  const { wozProfiles } = useTypebot()
+
   const [defaultSelected, setDefaultSelected] = useState<OptionType>()
 
   const handleOnChange = (selected: any): void => {
@@ -21,29 +22,39 @@ export const WozAssignSelect = ({ onSelect, selectedProfile }: Props) => {
     if (wozProfiles) {
       const defaultSelectedBot = wozProfiles.filter(
         (item) => (selectedProfile && item.id === selectedProfile) || item.isWoz
-      )[0];
+      )[0]
 
       if (defaultSelectedBot) {
+        const label = !defaultSelectedBot.active
+          ? `${defaultSelectedBot.label} (inativo)`
+          : defaultSelectedBot.label
+
         setDefaultSelected({
-          label: defaultSelectedBot.name,
+          label,
           value: {
-            botToCall: defaultSelectedBot.id
+            botToCall: defaultSelectedBot.id,
           },
-          key: ''
+          key: '',
         })
       }
     }
     return () => {
       setDefaultSelected(undefined)
-    };
+    }
   }, [wozProfiles, selectedProfile])
+
+  const parsedWozProfiles = wozProfiles.map((profile) => ({
+    ...profile,
+    disabled: !profile.active ? true : false,
+    label: !profile.active ? `${profile.label} (inativo)` : profile.label,
+  }))
 
   return (
     <OctaSelect
       placeholder="Selecione um perfil para atender"
       defaultSelected={defaultSelected}
       findable
-      options={wozProfiles}
+      options={parsedWozProfiles}
       onChange={handleOnChange}
     />
   )

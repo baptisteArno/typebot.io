@@ -60,12 +60,12 @@ export const OptionItem = styled.li`
   &[data-isTitle] {
     font-weight: bold;
   }
-  &[data-disabled] {
-    &:hover {
-      background-color: transparent;
-    }
+  &.disabled {
+    color: #e0e1e6;
+    pointer-events: none;
+    background-color: #f4f4f5;
   }
-  &.actived {
+  &.actived:not(.disabled) {
     background-color: rgb(19, 102, 201);
     color: white;
   }

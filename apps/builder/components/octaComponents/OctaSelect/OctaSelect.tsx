@@ -49,11 +49,10 @@ const Option = ({
       key={optionKey}
       data-value={value}
       data-istitle={isTitle}
-      data-disabled={!!isTitle || disabled}
       onClick={hasActionToClick}
       className={`${children === selected?.label ? 'actived' : ''} ${
         isTitle ? 'isTitle' : ''
-      }`}
+      } ${!!isTitle || disabled ? 'disabled' : ''}`}
     >
       <>
         {children}
