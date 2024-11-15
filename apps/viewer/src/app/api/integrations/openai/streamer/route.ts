@@ -152,8 +152,7 @@ export async function POST(req: Request) {
       },
       parse: (text: string, params?: ParseVariablesOptions) =>
         parseVariables(state.typebotsQueue[0].typebot.variables, params)(text),
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      set: async (_1: string, _2: unknown) => {},
+      set: async (_) => {},
     };
     const { stream } = await action.run.stream.run({
       credentials: decryptedCredentials,

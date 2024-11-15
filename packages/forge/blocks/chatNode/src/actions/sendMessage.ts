@@ -58,10 +58,12 @@ export const sendMessage = createAction({
 
           const item = mapping.item ?? "Message";
           if (item === "Message")
-            variables.set(mapping.variableId, res.message);
+            variables.set([{ id: mapping.variableId, value: res.message }]);
 
           if (item === "Thread ID")
-            variables.set(mapping.variableId, res.chat_session_id);
+            variables.set([
+              { id: mapping.variableId, value: res.chat_session_id },
+            ]);
         });
       } catch (error) {
         if (error instanceof HTTPError)

@@ -35,7 +35,7 @@ export const generateQrCode = createAction({
         mimeType: "image/png",
       });
 
-      variables.set(options.saveUrlInVariableId, url);
+      variables.set([{ id: options.saveUrlInVariableId, value: url }]);
     },
   },
 });

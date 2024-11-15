@@ -45,7 +45,9 @@ export const createTranscription = createAction({
         model: "whisper-1",
       });
 
-      variables.set(options.transcriptionVariableId, result.text);
+      variables.set([
+        { id: options.transcriptionVariableId, value: result.text },
+      ]);
     },
   },
 });

@@ -27,7 +27,8 @@ export const parseTools = ({
           args,
           body: tool.code!,
         });
-        newVariables?.forEach((v) => variables.set(v.id, v.value));
+        if (newVariables && newVariables.length > 0)
+          variables.set(newVariables);
         return safeStringify(output) ?? "";
       },
     } satisfies CoreTool;

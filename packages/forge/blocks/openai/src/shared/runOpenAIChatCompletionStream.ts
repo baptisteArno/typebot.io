@@ -104,8 +104,9 @@ export const runOpenAIChatCompletionStream = async ({
           )?.variableId;
 
           if (totalTokenVariableId)
-            await variables.set(totalTokenVariableId, totalTokens);
-
+            await variables.set([
+              { id: totalTokenVariableId, value: totalTokens },
+            ]);
           controller.close();
         },
       }),

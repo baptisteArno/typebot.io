@@ -4,7 +4,7 @@ import { forgedBlocks } from "@typebot.io/forge-repository/definitions";
 import type { ForgedBlock } from "@typebot.io/forge-repository/schemas";
 import type { LogsStore, VariableStore } from "@typebot.io/forge/types";
 import { decrypt } from "@typebot.io/lib/api/encryption/decrypt";
-import { byId } from "@typebot.io/lib/utils";
+import { byId, isDefined } from "@typebot.io/lib/utils";
 import { deepParseVariables } from "@typebot.io/variables/deepParseVariables";
 import {
   type ParseVariablesOptions,
@@ -79,13 +79,23 @@ export const executeForgedBlock = async (
       );
       return variable?.value;
     },
-    set: (id: string, value: unknown) => {
-      const variable = newSessionState.typebotsQueue[0].typebot.variables.find(
-        (variable) => variable.id === id,
-      );
-      if (!variable) return;
+    set: (variables) => {
+      const newVariables = variables
+        .map((variable) => {
+          const existingVariable =
+            newSessionState.typebotsQueue[0].typebot.variables.find(
+              (v) => variable.id === v.id,
+            );
+          if (!existingVariable) return;
+          return {
+            ...existingVariable,
+            value: variable.value,
+          };
+        })
+        .filter(isDefined);
+      if (!newVariables) return;
       const { newSetVariableHistory, updatedState } = updateVariablesInSession({
-        newVariables: [{ ...variable, value }],
+        newVariables,
         state: newSessionState,
         currentBlockId: block.id,
       });
