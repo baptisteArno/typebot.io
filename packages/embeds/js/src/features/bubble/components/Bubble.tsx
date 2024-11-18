@@ -28,6 +28,7 @@ export type BubbleProps = BotProps &
     onOpen?: () => void;
     onClose?: () => void;
     onPreviewMessageClick?: () => void;
+    onPreviewMessageDismissed?: () => void;
   };
 
 export const Bubble = (props: BubbleProps) => {
@@ -36,6 +37,7 @@ export const Bubble = (props: BubbleProps) => {
     "onClose",
     "previewMessage",
     "onPreviewMessageClick",
+    "onPreviewMessageDismissed",
     "theme",
     "autoShowDelay",
   ]);
@@ -141,6 +143,7 @@ export const Bubble = (props: BubbleProps) => {
   };
 
   const hideMessage = () => {
+    bubbleProps.onPreviewMessageDismissed?.();
     setIsPreviewMessageDisplayed(false);
   };
 

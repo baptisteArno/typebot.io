@@ -38,5 +38,6 @@ export const defaultBubbleProps: BubbleProps = {
   theme: undefined,
   previewMessage: undefined,
   onPreviewMessageClick: undefined,
+  onPreviewMessageDismissed: undefined,
   autoShowDelay: undefined,
 };
