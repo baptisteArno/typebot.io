@@ -12,10 +12,13 @@ export const formatPrice = (
   },
 ) => {
   const isEuropean = guessIfUserIsEuropean();
-  const formatter = new Intl.NumberFormat(isEuropean ? "fr-FR" : "en-US", {
-    style: "currency",
-    currency: currency?.toUpperCase() ?? (isEuropean ? "EUR" : "USD"),
-    maximumFractionDigits: maxFractionDigits,
-  });
+  const formatter = new Intl.NumberFormat(
+    isEuropean && currency !== "usd" ? "fr-FR" : "en-US",
+    {
+      style: "currency",
+      currency: currency?.toUpperCase() ?? (isEuropean ? "EUR" : "USD"),
+      maximumFractionDigits: maxFractionDigits,
+    },
+  );
   return formatter.format(price);
 };

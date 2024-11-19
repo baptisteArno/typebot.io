@@ -82,6 +82,15 @@ export const ChangePlanForm = ({
     }
   };
 
+  const updateCurrency = (currency: "eur" | "usd") => {
+    if (preCheckoutPlan) {
+      setPreCheckoutPlan({
+        ...preCheckoutPlan,
+        currency,
+      });
+    }
+  };
+
   if (
     data?.subscription?.cancelDate ||
     data?.subscription?.status === "past_due"
@@ -120,6 +129,7 @@ export const ChangePlanForm = ({
             existingEmail={user?.email ?? undefined}
             existingCompany={user?.company ?? undefined}
             onClose={() => setPreCheckoutPlan(undefined)}
+            onCurrencyChange={updateCurrency}
           />
         </ParentModalProvider>
       )}
@@ -131,7 +141,9 @@ export const ChangePlanForm = ({
                 currentPlan={workspace.plan}
                 onPayClick={() => handlePayClick(Plan.STARTER)}
                 isLoading={isUpdatingSubscription}
-                currency={data.subscription?.currency}
+                currency={
+                  preCheckoutPlan?.currency ?? data.subscription?.currency
+                }
               />
             )}
 
@@ -140,7 +152,9 @@ export const ChangePlanForm = ({
                 currentPlan={workspace.plan}
                 onPayClick={() => handlePayClick(Plan.PRO)}
                 isLoading={isUpdatingSubscription}
-                currency={data.subscription?.currency}
+                currency={
+                  preCheckoutPlan?.currency ?? data.subscription?.currency
+                }
               />
             )}
           </HStack>

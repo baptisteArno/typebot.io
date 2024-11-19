@@ -1,3 +1,4 @@
+import { DropdownList } from "@/components/DropdownList";
 import { TextInput } from "@/components/inputs";
 import { Select } from "@/components/inputs/Select";
 import { useParentModal } from "@/features/graph/providers/ParentModalProvider";
@@ -31,6 +32,7 @@ export type PreCheckoutModalProps = {
     | undefined;
   existingCompany?: string;
   existingEmail?: string;
+  onCurrencyChange: (currency: "eur" | "usd") => void;
   onClose: () => void;
 };
 
@@ -46,6 +48,7 @@ export const PreCheckoutModal = ({
   selectedSubscription,
   existingCompany,
   existingEmail,
+  onCurrencyChange,
   onClose,
 }: PreCheckoutModalProps) => {
   const { t } = useTranslate();
@@ -124,6 +127,10 @@ export const PreCheckoutModal = ({
     });
   };
 
+  const updateCurrency = (currency: "EUR" | "USD") => {
+    onCurrencyChange(currency.toLowerCase() as "eur" | "usd");
+  };
+
   return (
     <Modal isOpen={isDefined(selectedSubscription)} onClose={onClose}>
       <ModalOverlay />
@@ -164,6 +171,16 @@ export const PreCheckoutModal = ({
                   flexShrink={0}
                 />
               </HStack>
+            </FormControl>
+            <FormControl as={HStack} justify="space-between">
+              <FormLabel>Currency:</FormLabel>
+              {selectedSubscription && (
+                <DropdownList
+                  items={["USD", "EUR"]}
+                  currentItem={selectedSubscription.currency.toUpperCase()}
+                  onItemSelect={updateCurrency}
+                />
+              )}
             </FormControl>
 
             <Button

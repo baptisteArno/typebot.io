@@ -56,6 +56,15 @@ export const DashboardPage = () => {
     }
   }, [createCustomCheckoutSession, router.query, user, workspace]);
 
+  const updateCurrency = (currency: "eur" | "usd") => {
+    if (preCheckoutPlan) {
+      setPreCheckoutPlan({
+        ...preCheckoutPlan,
+        currency,
+      });
+    }
+  };
+
   return (
     <Stack minH="100vh">
       <Seo title={workspace?.name ?? t("dashboard.title")} />
@@ -67,6 +76,7 @@ export const DashboardPage = () => {
             existingEmail={user?.email ?? undefined}
             existingCompany={workspace?.name ?? undefined}
             onClose={() => setPreCheckoutPlan(undefined)}
+            onCurrencyChange={updateCurrency}
           />
         </ParentModalProvider>
       )}
