@@ -19,7 +19,6 @@ export const updateSubscription = authenticatedProcedure
       returnUrl: z.string(),
       workspaceId: z.string(),
       plan: z.enum([Plan.STARTER, Plan.PRO]),
-      currency: z.enum(["usd", "eur"]),
     }),
   )
   .output(

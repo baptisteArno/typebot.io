@@ -11,7 +11,6 @@ import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { trpc } from "@/lib/trpc";
 import { Spinner, Stack, Text, VStack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
-import { guessIfUserIsEuropean } from "@typebot.io/billing/helpers/guessIfUserIsEuropean";
 import type { Plan } from "@typebot.io/prisma/enum";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -51,19 +50,9 @@ export const DashboardPage = () => {
       setPreCheckoutPlan({
         plan: subscribePlan as "PRO" | "STARTER",
         workspaceId: workspace.id,
-        currency: guessIfUserIsEuropean() ? "eur" : "usd",
       });
     }
   }, [createCustomCheckoutSession, router.query, user, workspace]);
-
-  const updateCurrency = (currency: "eur" | "usd") => {
-    if (preCheckoutPlan) {
-      setPreCheckoutPlan({
-        ...preCheckoutPlan,
-        currency,
-      });
-    }
-  };
 
   return (
     <Stack minH="100vh">
@@ -76,7 +65,6 @@ export const DashboardPage = () => {
             existingEmail={user?.email ?? undefined}
             existingCompany={workspace?.name ?? undefined}
             onClose={() => setPreCheckoutPlan(undefined)}
-            onCurrencyChange={updateCurrency}
           />
         </ParentModalProvider>
       )}

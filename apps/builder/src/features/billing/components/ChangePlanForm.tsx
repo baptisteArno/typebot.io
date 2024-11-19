@@ -68,9 +68,6 @@ export const ChangePlanForm = ({
     const newSubscription = {
       plan,
       workspaceId: workspace.id,
-      currency:
-        data?.subscription?.currency ??
-        (guessIfUserIsEuropean() ? "eur" : "usd"),
     } as const;
     if (workspace.stripeId) {
       updateSubscription({
@@ -79,15 +76,6 @@ export const ChangePlanForm = ({
       });
     } else {
       setPreCheckoutPlan(newSubscription);
-    }
-  };
-
-  const updateCurrency = (currency: "eur" | "usd") => {
-    if (preCheckoutPlan) {
-      setPreCheckoutPlan({
-        ...preCheckoutPlan,
-        currency,
-      });
     }
   };
 
@@ -129,7 +117,6 @@ export const ChangePlanForm = ({
             existingEmail={user?.email ?? undefined}
             existingCompany={user?.company ?? undefined}
             onClose={() => setPreCheckoutPlan(undefined)}
-            onCurrencyChange={updateCurrency}
           />
         </ParentModalProvider>
       )}
@@ -141,9 +128,7 @@ export const ChangePlanForm = ({
                 currentPlan={workspace.plan}
                 onPayClick={() => handlePayClick(Plan.STARTER)}
                 isLoading={isUpdatingSubscription}
-                currency={
-                  preCheckoutPlan?.currency ?? data.subscription?.currency
-                }
+                currency={data.subscription?.currency}
               />
             )}
 
@@ -152,9 +137,7 @@ export const ChangePlanForm = ({
                 currentPlan={workspace.plan}
                 onPayClick={() => handlePayClick(Plan.PRO)}
                 isLoading={isUpdatingSubscription}
-                currency={
-                  preCheckoutPlan?.currency ?? data.subscription?.currency
-                }
+                currency={data.subscription?.currency}
               />
             )}
           </HStack>

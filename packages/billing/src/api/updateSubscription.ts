@@ -13,7 +13,6 @@ type Props = {
   user: Pick<User, "email" | "id">;
   plan: "STARTER" | "PRO";
   returnUrl: string;
-  currency: "usd" | "eur";
 };
 
 export const updateSubscription = async ({
@@ -21,7 +20,6 @@ export const updateSubscription = async ({
   user,
   plan,
   returnUrl,
-  currency,
 }: Props) => {
   if (!env.STRIPE_SECRET_KEY)
     throw new TRPCError({
@@ -125,7 +123,6 @@ export const updateSubscription = async ({
       customerId: workspace.stripeId,
       userId: user.id,
       workspaceId,
-      currency,
       plan,
       returnUrl,
     });

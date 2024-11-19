@@ -14,7 +14,6 @@ type Props = {
   email: string;
   company: string;
   plan: "STARTER" | "PRO";
-  currency: "usd" | "eur";
   vat?: {
     type: string;
     value: string;
@@ -28,7 +27,6 @@ export const createCheckoutSession = async ({
   email,
   company,
   plan,
-  currency,
   vat,
 }: Props) => {
   if (!env.STRIPE_SECRET_KEY)
@@ -92,7 +90,6 @@ export const createCheckoutSession = async ({
     customerId: customer.id,
     userId: user.id,
     workspaceId,
-    currency,
     plan,
     returnUrl,
   });

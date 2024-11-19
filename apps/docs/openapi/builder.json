@@ -9309,13 +9309,6 @@
                   "workspaceId": {
                     "type": "string"
                   },
-                  "currency": {
-                    "type": "string",
-                    "enum": [
-                      "usd",
-                      "eur"
-                    ]
-                  },
                   "plan": {
                     "type": "string",
                     "enum": [
@@ -9346,7 +9339,6 @@
                   "email",
                   "company",
                   "workspaceId",
-                  "currency",
                   "plan",
                   "returnUrl"
                 ]
@@ -9447,20 +9439,12 @@
                       "STARTER",
                       "PRO"
                     ]
-                  },
-                  "currency": {
-                    "type": "string",
-                    "enum": [
-                      "usd",
-                      "eur"
-                    ]
                   }
                 },
                 "required": [
                   "returnUrl",
                   "workspaceId",
-                  "plan",
-                  "currency"
+                  "plan"
                 ]
               }
             }
