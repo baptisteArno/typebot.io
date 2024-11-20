@@ -26,7 +26,12 @@ export const ButtonsBlockSettings = ({ options, onOptionsChange }: Props) => {
   const updateIsSearchable = (isSearchable: boolean) =>
     onOptionsChange({ ...options, isSearchable })
   const updateIsInteractive = (isInteractive: boolean) =>
-    onOptionsChange({ ...options, isInteractive })
+    onOptionsChange({
+      ...options,
+      isInteractive,
+      interactiveButtonType:
+        options?.interactiveButtonType || interactiveButtonType.REPLY,
+    })
   const updateInteractiveButtonType = (
     interactiveButtonType: interactiveButtonType
   ) => onOptionsChange({ ...options, interactiveButtonType })
