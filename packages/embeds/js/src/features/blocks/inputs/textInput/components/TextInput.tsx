@@ -70,6 +70,7 @@ export const TextInput = (props: Props) => {
           files: selectedFiles().map((file) => ({
             file: file,
             input: {
+              blockId: props.block.id,
               sessionId: props.context.sessionId,
               fileName: file.name,
             },
@@ -217,6 +218,7 @@ export const TextInput = (props: Props) => {
             {
               file: audioFile,
               input: {
+                blockId: props.block.id,
                 sessionId: props.context.sessionId,
                 fileName: audioFile.name,
               },

@@ -6,6 +6,7 @@ type UploadFileProps = {
     file: File;
     input: {
       sessionId: string;
+      blockId: string;
       fileName: string;
     };
   }[];
@@ -39,6 +40,7 @@ export const uploadFiles = async ({
         fileName: input.fileName,
         sessionId: input.sessionId,
         fileType: file.type,
+        blockId: input.blockId,
       },
     });
 

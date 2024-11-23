@@ -70,6 +70,7 @@ export const FileUploadForm = (props: Props) => {
           file,
           input: {
             sessionId: props.context.sessionId,
+            blockId: props.block.id,
             fileName: file.name,
           },
         },
@@ -104,6 +105,7 @@ export const FileUploadForm = (props: Props) => {
         file: file,
         input: {
           sessionId: props.context.sessionId,
+          blockId: props.block.id,
           fileName: files.some((f) => f.name === file.name)
             ? file.name + `-${index}`
             : file.name,
