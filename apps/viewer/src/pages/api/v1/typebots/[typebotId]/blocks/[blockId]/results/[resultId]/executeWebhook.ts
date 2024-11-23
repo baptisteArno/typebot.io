@@ -103,7 +103,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         workspaceId: typebot.workspace.id,
         sessionId: chatSession.id,
         credentialsId: typebot.whatsAppCredentialsId,
-        origin: "webhook",
+        callFrom: "webhook",
       });
       return res.status(200).send("OK");
     }

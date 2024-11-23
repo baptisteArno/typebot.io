@@ -31,7 +31,7 @@ type Props = {
   phoneNumberId?: string;
   workspaceId?: string;
   contact?: NonNullable<SessionState["whatsApp"]>["contact"];
-  origin?: "webhook";
+  callFrom?: "webhook";
 };
 
 const isMessageTooOld = (receivedMessage: WhatsAppIncomingMessage) => {
@@ -46,6 +46,7 @@ export const resumeWhatsAppFlow = async ({
   credentialsId,
   phoneNumberId,
   contact,
+  callFrom,
 }: Props) => {
   if (isMessageTooOld(receivedMessage))
     throw new WhatsAppError("Message is too old", {
@@ -81,7 +82,7 @@ export const resumeWhatsAppFlow = async ({
     session?.updatedAt.getTime() + session.state.expiryTimeout < Date.now();
 
   if (aggregationResponse.status === "treat as unique message") {
-    if (session?.isReplying && origin !== "webhook") {
+    if (session?.isReplying && callFrom !== "webhook") {
       if (!isSessionExpired) throw new WhatsAppError("Is in reply state");
     } else {
       await setIsReplyingInChatSession({

@@ -70,7 +70,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         },
       },
       sessionId: chatSession.id,
-      origin: "webhook",
+      callFrom: "webhook",
     });
     return res.status(200).send("OK");
   }
