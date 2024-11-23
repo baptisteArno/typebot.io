@@ -1,4 +1,5 @@
 import { createAction, option } from "@typebot.io/forge";
+import { stringifyError } from "@typebot.io/lib/stringifyError";
 import { isDefined, isEmpty, isNotEmpty } from "@typebot.io/lib/utils";
 import { formatStreamPart } from "ai";
 import ky, { HTTPError } from "ky";
@@ -103,12 +104,19 @@ export const createChatMessage = createAction({
                 conversation_id: existingDifyConversationId,
                 user,
                 files: [],
+                timeout: false,
               }),
             },
           );
           const reader = response.body?.getReader();
 
-          if (!reader) return {};
+          if (!reader)
+            return {
+              httpError: {
+                status: 500,
+                message: "Could not get reader from Dify response",
+              },
+            };
 
           return {
             stream: new ReadableStream({
@@ -172,7 +180,12 @@ export const createChatMessage = createAction({
             };
           }
           console.error(err);
-          return {};
+          return {
+            httpError: {
+              status: 500,
+              message: stringifyError(err),
+            },
+          };
         }
       },
     },
@@ -215,6 +228,7 @@ export const createChatMessage = createAction({
               conversation_id: existingDifyConversationId,
               user,
               files: [],
+              timeout: false,
             }),
           },
         );
@@ -297,6 +311,11 @@ export const createChatMessage = createAction({
           });
         }
         console.error(err);
+        return logs.add({
+          status: "error",
+          description: "An unknown error occurred",
+          details: stringifyError(err),
+        });
       }
     },
   },

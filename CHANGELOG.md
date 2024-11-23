@@ -1,5 +1,33 @@
 # Changelog
 
+<a name="3.1.2"></a>
+## 3.1.2 (2024-11-23)
+
+### Added
+
+- 🔊 (difyAi) Improve error handling in createChatMessage action [[a37cdb3](https://github.com/baptisteArno/typebot.io/commit/a37cdb30fe0a7c73e28c869837301f6d4e3791ef)]
+
+### Changed
+
+- ⚡ Remove currency parameter from billing API [[6088a56](https://github.com/baptisteArno/typebot.io/commit/6088a56d3160003d1271780a30c8f622d4d986cb)]
+- 🚸 Add currency selection in precheckout form [[05cc23e](https://github.com/baptisteArno/typebot.io/commit/05cc23efb1cf0a9549a5c73dad2529e48bd7a264)]
+- ⚡ Change setVariable to accept a list of variables [[28ebb37](https://github.com/baptisteArno/typebot.io/commit/28ebb374f69291d4706fd003d6a8825298194c47)]
+
+### Fixed
+
+- 🚑 (whatsapp) Rename &#x27;origin&#x27; parameter to &#x27;callFrom&#x27; in webhook handlers and related functions [[4089831](https://github.com/baptisteArno/typebot.io/commit/4089831df038632b4a7e2774ac49b857c47003b7)]
+- 🐛 Update UploadButton to use unique IDs for file input elements [[4a4e198](https://github.com/baptisteArno/typebot.io/commit/4a4e1982a713074c9c519fbb113400af09441a95)]
+- 🐛 Add onPreviewMessageDismissed prop to Bubble component [[8016085](https://github.com/baptisteArno/typebot.io/commit/8016085a5a875493452c022110932d796ae270fe)]
+- 🐛 (fileUpload) De-duplicate file names in multi upload [[5546d11](https://github.com/baptisteArno/typebot.io/commit/5546d112b35cf094b8817ba68de56e4aa208e6a3)]
+- 🐛 Fix markdown escaping for markdown API response format [[0029f67](https://github.com/baptisteArno/typebot.io/commit/0029f67c20743164ca58c6203b5210cb332d68e5)]
+
+### Miscellaneous
+
+- 📝 Add &quot;livechat vs chatbot&quot; blog post ([#1882](https://github.com/baptisteArno/typebot.io/issues/1882)) [[13551a3](https://github.com/baptisteArno/typebot.io/commit/13551a3385a90878342ce91f3de3d3011451f0d8)]
+- 📝 Add CHAT_API_TIMEOUT parameter to configuration documentation [[ca1fb59](https://github.com/baptisteArno/typebot.io/commit/ca1fb59e2cfa841d08059bd3644dd35494c8bbe9)]
+- 📝 Update set variable documentation to include Pop/Shift operations [[badad22](https://github.com/baptisteArno/typebot.io/commit/badad223f105b01bf4225db3dc12188a88074816)]
+
+
 <a name="3.1.1"></a>
 ## 3.1.1 (2024-11-10)
 

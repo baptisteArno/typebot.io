@@ -144,7 +144,7 @@
   "blocks.inputs.file.settings.skip.label": "Skip button label:",
   "blocks.inputs.fileUpload.blockCard.tooltip": "Upload Files",
   "blocks.inputs.number.settings.step.label": "Step:",
-  "blocks.inputs.payment.collect.label": "Coletar",
+  "blocks.inputs.payment.collect.label": "Collect",
   "blocks.inputs.payment.placeholder.label": "Configure...",
   "blocks.inputs.payment.settings.account.label": "Account:",
   "blocks.inputs.payment.settings.accountText.label": "{provider} account",
