@@ -3,7 +3,7 @@ export const phoneCountries = [
     name: "International",
     flag: "🌐",
     code: "INT",
-    dial_code: null,
+    dial_code: "",
   },
   {
     name: "Afghanistan",
