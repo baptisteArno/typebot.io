@@ -86,12 +86,12 @@ export const PhoneInput = (props: PhoneInputProps) => {
     );
     if (!selectedCountry) return;
 
-    const currentPhoneCountry = phoneCountries.find(
+    const currentCountry = phoneCountries.find(
       (country) => country.code === selectedCountryCode(),
     );
     if (
       inputValue() === "" ||
-      (currentPhoneCountry && inputValue() === currentPhoneCountry?.dial_code)
+      (currentCountry && inputValue() === currentCountry.dial_code)
     )
       setInputValue(selectedCountry.dial_code);
 
