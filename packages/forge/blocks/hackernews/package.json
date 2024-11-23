@@ -1,5 +1,0 @@
-{
-  "name": "@typebot.io/hackernews-block",
-  "dependencies": { "@typebot.io/forge": "workspace:*" },
-  "devDependencies": { "@typebot.io/tsconfig": "workspace:*" }
-}

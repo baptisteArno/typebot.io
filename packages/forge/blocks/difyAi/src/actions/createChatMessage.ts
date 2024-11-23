@@ -104,6 +104,7 @@ export const createChatMessage = createAction({
                 conversation_id: existingDifyConversationId,
                 user,
                 files: [],
+                timeout: false,
               }),
             },
           );
@@ -227,6 +228,7 @@ export const createChatMessage = createAction({
               conversation_id: existingDifyConversationId,
               user,
               files: [],
+              timeout: false,
             }),
           },
         );
