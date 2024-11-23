@@ -9,7 +9,7 @@ import { generatePresignedPostPolicy } from "@typebot.io/lib/s3/generatePresigne
 import prisma from "@typebot.io/prisma";
 import { z } from "@typebot.io/zod";
 
-export const generateUploadUrl = publicProcedure
+export const generateUploadUrlV1 = publicProcedure
   .meta({
     openapi: {
       method: "POST",
