@@ -1,17 +1,17 @@
 import {
+  Button,
+  Flex,
+  HStack,
+  Input,
+  InputProps,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
   useDisclosure,
   useOutsideClick,
-  Flex,
-  Popover,
-  PopoverTrigger,
-  Input,
-  PopoverContent,
-  Button,
-  InputProps,
-  HStack,
 } from '@chakra-ui/react'
 import { Variable } from 'models'
-import { useState, useRef, useEffect, ChangeEvent } from 'react'
+import { ChangeEvent, useEffect, useRef, useState } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
 import { isEmpty } from 'utils'
 import { VariablesButton } from './buttons/VariablesButton'
@@ -37,7 +37,7 @@ export const SearchableDropdown = ({
   const [inputValue, setInputValue] = useState(selectedItem ?? '')
   const debounced = useDebouncedCallback(
     // eslint-disable-next-line @typescript-eslint/no-empty-function
-    onValueChange ? onValueChange : () => {},
+    onValueChange ? onValueChange : () => { },
     isEmpty(process.env.NEXT_PUBLIC_E2E_TEST) ? debounceTimeout : 0
   )
   const [filteredItems, setFilteredItems] = useState([
@@ -45,7 +45,7 @@ export const SearchableDropdown = ({
       .filter((item) =>
         item.toLowerCase().includes((selectedItem ?? '').toLowerCase())
       )
-      .slice(0, 50),
+    // .slice(0, 50),
   ])
   const dropdownRef = useRef(null)
   const inputRef = useRef<HTMLInputElement>(null)
