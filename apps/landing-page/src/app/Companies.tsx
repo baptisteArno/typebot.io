@@ -1,5 +1,4 @@
 import { Marquee } from "@/components/Marquee";
-import { Box, Flex, Heading, Stack } from "@chakra-ui/react";
 import {
   Awwwsome,
   IbanFirst,
@@ -13,11 +12,11 @@ import {
 } from "./Brands";
 
 export const Companies = () => (
-  <Stack gap={6} w="full">
-    <Heading textAlign="center" fontSize="4xl" fontWeight="medium">
+  <div className="flex w-full flex-col gap-6">
+    <h2 className="text-center text-4xl font-medium">
       Trusted by 650+ companies worldwide
-    </Heading>
-    <Flex pos="relative" w="full">
+    </h2>
+    <div className="relative flex w-full">
       <Marquee>
         <IbanFirst width="100px" height="60px" />
         <MakerLead width="100px" height="60px" />
@@ -29,26 +28,8 @@ export const Companies = () => (
         <Obole width="80px" height="60px" />
         <Awwwsome width="100px" height="60px" />
       </Marquee>
-      <Box
-        pos="absolute"
-        pointerEvents="none"
-        insetY={0}
-        right={0}
-        w="50px"
-        bgGradient="to-r"
-        gradientFrom="rgb(241 241 241 / 0.2)"
-        gradientTo="gray.100"
-      />
-      <Box
-        pos="absolute"
-        pointerEvents="none"
-        insetY={0}
-        left={0}
-        w="50px"
-        bgGradient="to-l"
-        gradientFrom="rgb(241 241 241 / 0.2)"
-        gradientTo="gray.100"
-      />
-    </Flex>
-  </Stack>
+      <div className="pointer-events-none absolute inset-y-0 right-0 w-[50px] bg-gradient-to-r from-gray-1/20 to-gray-1 " />
+      <div className="pointer-events-none absolute inset-y-0 left-0 w-[50px] bg-gradient-to-l from-gray-1/20 to-gray-1" />
+    </div>
+  </div>
 );

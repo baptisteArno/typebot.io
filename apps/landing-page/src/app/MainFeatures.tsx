@@ -1,23 +1,12 @@
 "use client";
-import {
-  AspectRatio,
-  Box,
-  Card,
-  type CardRootProps,
-  HStack,
-  Heading,
-  Link,
-  Span,
-  Stack,
-  Text,
-} from "@chakra-ui/react";
+import { Card, CardContent, CardHeader } from "@/components/card";
 import { ArrowUpRightIcon } from "@typebot.io/ui/icons/ArrowUpRightIcon";
-import { AnimatePresence, type PanInfo, motion } from "framer-motion";
+import clsx from "clsx";
+import { AnimatePresence, motion } from "motion/react";
 import NextLink from "next/link";
 import { useEffect, useRef, useState } from "react";
 import type { FeatureCardData } from "./types";
 
-const swipeDistance = 50;
 const carouselItemClassName = "carousel-item";
 
 const features = [
@@ -103,80 +92,71 @@ export const MainFeatures = () => {
   }, []);
 
   return (
-    <Stack w="full" pb="20">
-      <Box
+    <div className="w-full pb-20 gap-2 flex flex-col">
+      <div
         ref={carouselRef}
-        display="flex"
-        gap="2"
-        alignItems="flex-end"
-        overflow="auto"
-        scrollSnapType="x mandatory"
-        scrollPadding="0 1rem"
-        scrollSnapStop="always"
-        className="hide-scrollbar"
-        px="4"
+        className="flex gap-2 items-end overflow-x-auto snap-x scroll-px-4 snap-always no-scrollbar px-4 snap-mandatory"
       >
         {features.map((feature) => (
           <FeatureCard
-            className={carouselItemClassName}
             key={feature.title.main}
+            className={clsx(carouselItemClassName, "min-w-full snap-start")}
             feature={feature}
-            minW="full"
-            scrollSnapAlign="start"
           />
         ))}
-      </Box>
-      <AspectRatio maxW="100%" ratio={1} mx="4">
-        <Box bgColor="gray.950" rounded="2xl" p="2">
-          <AnimatePresence mode="popLayout">
-            <motion.video
-              key={currentFeature.video.src}
-              src={currentFeature.video.src}
-              autoPlay
-              muted
-              loop
-              playsInline
-              style={{ borderRadius: "0.5rem" }}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-            />
-          </AnimatePresence>
-        </Box>
-      </AspectRatio>
-    </Stack>
+      </div>
+      <div className="bg-gray-12 rounded-2xl p-2 mx-4 max-w-full aspect-square">
+        <AnimatePresence mode="popLayout">
+          <motion.video
+            key={currentFeature.video.src}
+            src={currentFeature.video.src}
+            className="rounded-lg"
+            autoPlay
+            muted
+            loop
+            playsInline
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          />
+        </AnimatePresence>
+      </div>
+    </div>
   );
 };
 
 const FeatureCard = ({
   feature,
-  ...props
+  className,
 }: {
   feature: FeatureCardData;
-} & CardRootProps) => {
+  className?: string;
+}) => {
   return (
-    <Card.Root {...props} borderRadius="2xl">
-      <Card.Header>
-        <Heading>
-          <Span fontWeight="bold">{feature.title.main}</Span>:{" "}
+    <Card className={className}>
+      <CardHeader>
+        <h2 className="text-2xl">
+          <span className="font-bold">{feature.title.main}</span>:{" "}
           {feature.title.sub}
-        </Heading>
-      </Card.Header>
-      <Card.Body>
-        <Stack gap={4}>
-          <Text>{feature.description}</Text>
+        </h2>
+      </CardHeader>
+      <CardContent>
+        <div className="flex flex-col gap-4">
+          <p>{feature.description}</p>
           {feature.link && (
-            <Link asChild fontWeight="medium" textDecor="underline">
-              <NextLink href={feature.link.src} target="_blank">
-                <HStack gap={1}>
-                  <Text>{feature.link.text}</Text>
-                  <ArrowUpRightIcon fontSize="lg" mt="0.5" />
-                </HStack>
-              </NextLink>
-            </Link>
+            <NextLink
+              href={feature.link.src}
+              target="_blank"
+              className="font-medium underline"
+            >
+              <div className="flex items-center gap-1">
+                <span>{feature.link.text}</span>
+                <ArrowUpRightIcon className="mt-0.5 text-lg w-6" />
+              </div>
+            </NextLink>
           )}
-        </Stack>
-      </Card.Body>
-    </Card.Root>
+        </div>
+      </CardContent>
+    </Card>
   );
 };

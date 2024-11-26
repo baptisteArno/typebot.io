@@ -1,9 +1,9 @@
-import { Icon, type IconProps } from "@chakra-ui/icon";
+import type { SVGProps } from "react";
 import { defaultIconProps } from "./constants";
 
-export const ArrowUpRightIcon = (props: IconProps) => (
-  <Icon {...defaultIconProps} {...props}>
+export const ArrowUpRightIcon = (props: SVGProps<SVGSVGElement>) => (
+  <svg {...defaultIconProps} {...props}>
     <path d="M7 7h10v10" />
     <path d="M7 17 17 7" />
-  </Icon>
+  </svg>
 );

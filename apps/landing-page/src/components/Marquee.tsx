@@ -1,36 +1,20 @@
-import { HStack } from "@chakra-ui/react";
-
 interface MarqueeProps {
-  reverse?: boolean;
-  pauseOnHover?: boolean;
   children?: React.ReactNode;
 }
 
-export function Marquee({
-  reverse,
-  pauseOnHover = false,
-  children,
-  ...props
-}: MarqueeProps) {
+export function Marquee({ children }: MarqueeProps) {
   return (
-    <HStack {...props} overflow="hidden" p={2}>
+    <div className="flex items-center overflow-hidden">
       {Array(4)
         .fill(0)
         .map((_, i) => (
-          <HStack
-            gap={12}
+          <div
             key={i}
-            flexShrink={0}
-            className="marquee"
-            mr={10}
-            css={{
-              "--duration": "30s",
-              "--gap": "2rem",
-            }}
+            className="flex flex-shrink-0 flex-row items-center gap-8 mr-8 animate-marquee"
           >
             {children}
-          </HStack>
+          </div>
         ))}
-    </HStack>
+    </div>
   );
 }

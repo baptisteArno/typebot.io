@@ -20,13 +20,13 @@ export default {
         body: ["var(--font-untitled-sans)"],
       },
       animation: {
-        marquee: "marquee var(--duration) linear infinite",
+        marquee: "marquee 20s linear infinite",
         ["slide-fade-in"]: "slide-fade-in 250ms ease-out",
       },
       keyframes: {
         marquee: {
           "0%": { transform: "translateX(0)" },
-          "100%": { transform: "translateX(calc(-100% - var(--gap)))" },
+          "100%": { transform: "translateX(calc(-100% - 2rem))" },
         },
         ["slide-fade-in"]: {
           "0%": { opacity: "0", transform: "translateY(10px)" },

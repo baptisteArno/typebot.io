@@ -43,13 +43,13 @@ export const Header = () => {
       });
     }, options);
 
-    document.querySelectorAll(".chakra-theme").forEach((element) => {
+    document.querySelectorAll(".section").forEach((element) => {
       if (element.id === "header") return;
       observer.observe(element);
     });
 
     return () => {
-      document.querySelectorAll(".chakra-theme").forEach((element) => {
+      document.querySelectorAll(".section").forEach((element) => {
         if (element.id === "header") return;
         observer.unobserve(element);
       });
