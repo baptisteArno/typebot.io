@@ -6,7 +6,8 @@
   "exports": {
     "./*": "./src/*.ts",
     "./components/*": "./src/components/*.tsx",
-    "./icons/*": "./src/icons/*.tsx"
+    "./icons/*": "./src/icons/*.tsx",
+    "./colors/css": "./src/colors.css"
   },
   "scripts": {
     "add-snippet": "chakra snippet add --outdir src/components"

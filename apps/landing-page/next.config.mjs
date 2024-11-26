@@ -2,12 +2,6 @@ import createMDX from "@next/mdx";
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
-  experimental: {
-    optimizePackageImports: ["@chakra-ui/react"],
-  },
   transpilePackages: ["@typebot.io/lib"],
   pageExtensions: ["mdx", "ts", "tsx"],
   async redirects() {

@@ -1,6 +1,6 @@
 "use client";
 
-import { HStack, Heading, Progress, VStack } from "@chakra-ui/react";
+import { Progress } from "@/components/progress";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import builderDndSrc from "public/images/builder-dnd.png";
@@ -73,8 +73,8 @@ export const UseCases = () => {
   };
 
   return (
-    <VStack gap={8} px="3">
-      <HStack gap="8">
+    <div className="flex flex-col items-center gap-8 px-3">
+      <div className="flex items-end gap-8">
         {useCases.map((useCase, index) => (
           <UsecaseTitle
             progressValue={getProgressValue(index)}
@@ -84,7 +84,7 @@ export const UseCases = () => {
             {useCase.label}
           </UsecaseTitle>
         ))}
-      </HStack>
+      </div>
       <motion.div
         key={currentUseCase.index}
         transition={{
@@ -105,10 +105,10 @@ export const UseCases = () => {
           src={useCases[currentUseCase.index].imageSrc}
           alt="Builder screenshot"
           placeholder="blur"
-          style={{ borderRadius: "10px" }}
+          className="rounded-md"
         />
       </motion.div>
-    </VStack>
+    </div>
   );
 };
 
@@ -121,26 +121,13 @@ const UsecaseTitle = ({
   progressValue?: number;
   onClick?: () => void;
 }) => (
-  <VStack onClick={onClick}>
-    <Heading
-      as="p"
-      textStyle="md"
-      fontWeight="medium"
-      transition="opacity 0.2s ease-out"
-      opacity={progressValue ? 1 : 0.5}
+  <div className="flex flex-col items-center gap-2" onClick={onClick}>
+    <p
+      className="text-base font-medium transition-opacity duration-200 ease-out text-center"
+      style={{ opacity: progressValue ? 1 : 0.5 }}
     >
       {children}
-    </Heading>
-    <Progress.Root
-      width="3rem"
-      size="xs"
-      value={progressValue ?? 0}
-      rounded="lg"
-      colorPalette="orange"
-    >
-      <Progress.Track height="5px" bgColor="rgba(13 13 13 / 10%)" shadow="none">
-        <Progress.Range bgColor="orange.500" />
-      </Progress.Track>
-    </Progress.Root>
-  </VStack>
+    </p>
+    <Progress value={progressValue ?? 0} className="w-12" />
+  </div>
 );

@@ -1,32 +1,26 @@
-import { Stack, Text, VStack } from "@chakra-ui/react";
-import { CtaButton } from "@typebot.io/ui/components/button";
+import { Button } from "@/components/button";
 import { HeroHeading } from "./HeroHeading";
 
 export const Hero = () => (
-  <Stack as="main" justifyContent="center" px="4" pt="36" pb="20" gap={0}>
-    <VStack px="2" gap={10}>
+  <main className="flex justify-center px-4 pt-36 pb-20">
+    <div className="flex flex-col items-center px-2 gap-10">
       <HeroHeading />
-      <Text
-        textAlign="center"
-        color="gray.400"
-        fontWeight={400}
-        opacity={0}
-        animation="slide-fade-in 200ms ease-out"
-        animationDelay="1.7s"
-        animationFillMode="forwards"
+      <p
+        className="text-center text-gray-400 font-normal opacity-0 animate-slide-fade-in text-gray-11"
+        style={{ animationDelay: "1.4s", animationFillMode: "forwards" }}
       >
         With Typebot, chatbot becomes a resource where the possibilities to chat
         are wide and conversion high. Scroll to see why!
-      </Text>
+      </p>
 
-      <CtaButton
-        opacity={0}
-        animation="slide-fade-in 200ms ease-out"
-        animationDelay="1.8s"
-        animationFillMode="forwards"
+      <Button
+        className="opacity-0 animate-slide-fade-in"
+        style={{ animationDelay: "1.5s", animationFillMode: "forwards" }}
+        variant="cta"
+        size="lg"
       >
         Start building
-      </CtaButton>
-    </VStack>
-  </Stack>
+      </Button>
+    </div>
+  </main>
 );

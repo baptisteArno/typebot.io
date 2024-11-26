@@ -19,7 +19,7 @@
     "@ark-ui/solid": "4.2.1",
     "@fix-webm-duration/fix": "1.0.1",
     "@stripe/stripe-js": "1.54.1",
-    "clsx": "2.0.0",
+    "clsx": "2.1.1",
     "dompurify": "3.0.6",
     "ky": "1.2.4",
     "marked": "9.0.3",
@@ -38,10 +38,10 @@
     "@typebot.io/tsconfig": "workspace:*",
     "@typebot.io/zendesk-block": "workspace:*",
     "@types/dompurify": "3.0.3",
-    "autoprefixer": "10.4.14",
+    "autoprefixer": "10.4.20",
     "esbuild-plugin-solid": "^0.6.0",
-    "postcss": "8.4.26",
-    "tailwindcss": "3.3.3",
+    "postcss": "8.4.49",
+    "tailwindcss": "3.4.15",
     "tsup": "8.3.0"
   },
   "publishConfig": {

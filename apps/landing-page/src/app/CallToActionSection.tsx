@@ -1,36 +1,28 @@
-import { Button, Span, Stack, Text } from "@chakra-ui/react";
-import { CtaButton } from "@typebot.io/ui/components/button";
+import { Button } from "@/components/button";
 
 export const CallToActionSection = () => (
-  <Stack gap={6}>
-    <Text textAlign="center" color="gray.800">
+  <div className="flex flex-col gap-6">
+    <p className="text-center text-gray-11">
       Picture{" "}
-      <Span fontWeight="medium">
+      <span className="font-medium">
         a bot that goes beyond answering questions
-      </Span>
+      </span>
       : it builds relationships, shares content, sparks conversations, and
       reflects your business's personality and values. With over 3 billion
       people on messaging apps,{" "}
-      <Span fontWeight="medium">
+      <span className="font-medium">
         it's time to connect with your customers where they are
-      </Span>
+      </span>
       .
-    </Text>
+    </p>
 
-    <Stack w="full" gap={4}>
-      <CtaButton>Try it out</CtaButton>
-      <Button
-        color="white"
-        size="lg"
-        borderWidth={1}
-        borderColor="gray.950"
-        bgGradient="linear(to-b, #282828 0%, gray.950 57%)"
-        _hover={{}}
-        _active={{}}
-        shadow="sm"
-      >
+    <div className="w-full flex flex-col gap-4">
+      <Button variant="cta" size="lg">
+        Try it out
+      </Button>
+      <Button variant="ctaSecondary" size="lg">
         Book a demo
       </Button>
-    </Stack>
-  </Stack>
+    </div>
+  </div>
 );

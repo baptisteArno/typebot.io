@@ -1,7 +1,7 @@
 "use client";
 
 import { Bubble } from "@typebot.io/nextjs";
-import { colors } from "@typebot.io/ui/theme";
+import { colors } from "@typebot.io/ui/colors";
 import { useEffect, useState } from "react";
 
 export const TypebotBubble = () => {
@@ -19,7 +19,7 @@ export const TypebotBubble = () => {
   return (
     <Bubble
       typebot="typebot-support"
-      theme={{ button: { backgroundColor: colors.gray[900].value } }}
+      theme={{ button: { backgroundColor: colors.gray.dark[3] } }}
     />
   );
 };
