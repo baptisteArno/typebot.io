@@ -31,9 +31,9 @@ type Props = {
 const defaultDisplayedTabs: Tabs[] = [
   'link',
   'upload',
-  'giphy',
-  'emoji',
-  'unsplash',
+  // 'giphy',
+  // 'emoji',
+  // 'unsplash',
   'icon',
 ]
 
