@@ -174,6 +174,18 @@ export const visitedAnalyticsEventSchema = typebotEvent.merge(
   }),
 );
 
+export const limitFirstEmailSentEventSchema = workspaceEvent.merge(
+  z.object({
+    name: z.literal("Limit warning email sent"),
+  }),
+);
+
+export const limitSecondEmailSentEventSchema = workspaceEvent.merge(
+  z.object({
+    name: z.literal("Limit reached email sent"),
+  }),
+);
+
 export const clientSideEvents = [removedBrandingEventSchema] as const;
 
 export const eventSchema = z.discriminatedUnion("name", [
@@ -195,6 +207,8 @@ export const eventSchema = z.discriminatedUnion("name", [
   createdFolderEventSchema,
   publishedFileUploadBlockEventSchema,
   visitedAnalyticsEventSchema,
+  limitFirstEmailSentEventSchema,
+  limitSecondEmailSentEventSchema,
   ...clientSideEvents,
 ]);
 

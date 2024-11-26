@@ -1,6 +1,7 @@
 import { createId } from "@paralleldrive/cuid2";
 import { getChatsLimit } from "@typebot.io/billing/helpers/getChatsLimit";
 import { sendAlmostReachedChatsLimitEmail } from "@typebot.io/emails/emails/AlmostReachedChatsLimitEmail";
+import { sendReachedChatsLimitEmail } from "@typebot.io/emails/emails/ReachedChatsLimitEmail";
 import { isDefined, isEmpty } from "@typebot.io/lib/utils";
 import prisma from "@typebot.io/prisma";
 import { Plan, WorkspaceRole } from "@typebot.io/prisma/enum";
@@ -9,6 +10,7 @@ import { trackEvents } from "@typebot.io/telemetry/trackEvents";
 import type { Workspace } from "@typebot.io/workspaces/schemas";
 import Stripe from "stripe";
 import { promptAndSetEnvironment } from "./utils";
+import type { MemberInWorkspace } from ".prisma/client";
 
 const LIMIT_EMAIL_TRIGGER_PERCENT = 0.75;
 
@@ -75,6 +77,7 @@ export const checkAndReportChatsUsage = async () => {
     apiVersion: "2024-09-30.acacia",
   });
 
+  const limitWarningEmailEvents: TelemetryEvent[] = [];
   const quarantineEvents: TelemetryEvent[] = [];
   const autoUpgradeEvents: TelemetryEvent[] = [];
 
@@ -87,34 +90,14 @@ export const checkAndReportChatsUsage = async () => {
       subscription,
     });
     if (chatsLimit === "inf") continue;
-    if (
-      chatsLimit > 0 &&
-      totalChatsUsed >= chatsLimit * LIMIT_EMAIL_TRIGGER_PERCENT &&
-      totalChatsUsed < chatsLimit &&
-      !workspace.chatsLimitFirstEmailSentAt
-    ) {
-      const to = workspace.members
-        .filter((member) => member.role === WorkspaceRole.ADMIN)
-        .map((member) => member.user.email)
-        .filter(isDefined);
-      console.log(
-        `Send almost reached chats limit email to ${to.join(", ")}...`,
-      );
-      try {
-        await sendAlmostReachedChatsLimitEmail({
-          to,
-          usagePercent: Math.round((totalChatsUsed / chatsLimit) * 100),
-          chatsLimit,
-          workspaceName: workspace.name,
-        });
-        await prisma.workspace.updateMany({
-          where: { id: workspace.id },
-          data: { chatsLimitFirstEmailSentAt: new Date() },
-        });
-      } catch (err) {
-        console.error(err);
-      }
-    }
+
+    limitWarningEmailEvents.push(
+      ...(await sendLimitWarningEmails({
+        chatsLimit,
+        totalChatsUsed,
+        workspace,
+      })),
+    );
 
     const isUsageBasedSubscription = isDefined(
       subscription?.items.data.find(
@@ -219,10 +202,14 @@ export const checkAndReportChatsUsage = async () => {
   );
 
   console.log(
-    `Send ${newResultsCollectedEvents.length} new results events and ${quarantineEvents.length} auto quarantine events...`,
+    `Send ${limitWarningEmailEvents.length}, ${newResultsCollectedEvents.length} new results events and ${quarantineEvents.length} auto quarantine events...`,
   );
 
-  await trackEvents(quarantineEvents.concat(newResultsCollectedEvents));
+  await trackEvents(
+    limitWarningEmailEvents.concat(
+      quarantineEvents.concat(newResultsCollectedEvents),
+    ),
+  );
 };
 
 const getSubscription = async (
@@ -371,5 +358,90 @@ const autoUpgradeToPro = async (
 
   return newSubscription;
 };
+
+async function sendLimitWarningEmails({
+  chatsLimit,
+  totalChatsUsed,
+  workspace,
+}: {
+  chatsLimit: number;
+  totalChatsUsed: number;
+  workspace: Pick<
+    Workspace,
+    "id" | "name" | "chatsLimitFirstEmailSentAt" | "chatsLimitSecondEmailSentAt"
+  > & {
+    members: (Pick<MemberInWorkspace, "role"> & {
+      user: { id: string; email: string | null };
+    })[];
+  };
+}): Promise<TelemetryEvent[]> {
+  if (
+    chatsLimit <= 0 ||
+    totalChatsUsed < chatsLimit * LIMIT_EMAIL_TRIGGER_PERCENT
+  )
+    return [];
+
+  const emailEvents: TelemetryEvent[] = [];
+  const adminMembers = workspace.members.filter(
+    (member) => member.role === WorkspaceRole.ADMIN,
+  );
+  const to = adminMembers.map((member) => member.user.email).filter(isDefined);
+  if (!workspace.chatsLimitFirstEmailSentAt) {
+    console.log(`Send almost reached chats limit email to ${to.join(", ")}...`);
+    try {
+      await sendAlmostReachedChatsLimitEmail({
+        to,
+        usagePercent: Math.round((totalChatsUsed / chatsLimit) * 100),
+        chatsLimit,
+        workspaceName: workspace.name,
+      });
+      emailEvents.push(
+        ...adminMembers.map(
+          (m) =>
+            ({
+              name: "Limit warning email sent",
+              userId: m.user.id,
+              workspaceId: workspace.id,
+            }) satisfies TelemetryEvent,
+        ),
+      );
+      await prisma.workspace.updateMany({
+        where: { id: workspace.id },
+        data: { chatsLimitFirstEmailSentAt: new Date() },
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  if (totalChatsUsed >= chatsLimit && !workspace.chatsLimitSecondEmailSentAt) {
+    console.log(`Send reached chats limit email to ${to.join(", ")}...`);
+    try {
+      await sendReachedChatsLimitEmail({
+        to,
+        chatsLimit,
+        url: `${process.env.NEXTAUTH_URL}/typebots?workspaceId=${workspace.id}`,
+      });
+      emailEvents.push(
+        ...adminMembers.map(
+          (m) =>
+            ({
+              name: "Limit reached email sent",
+              userId: m.user.id,
+              workspaceId: workspace.id,
+            }) satisfies TelemetryEvent,
+        ),
+      );
+      await prisma.workspace.updateMany({
+        where: { id: workspace.id },
+        data: { chatsLimitSecondEmailSentAt: new Date() },
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  return emailEvents;
+}
 
 checkAndReportChatsUsage().then();

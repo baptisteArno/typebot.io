@@ -65,6 +65,6 @@ export const sendReachedChatsLimitEmail = ({
   ComponentProps<typeof ReachedChatsLimitEmail>) =>
   sendEmail({
     to,
-    subject: "You've reached your chats limit",
+    subject: "[Action Required] Chats limit reached",
     html: render(<ReachedChatsLimitEmail {...props} />).html,
   });
