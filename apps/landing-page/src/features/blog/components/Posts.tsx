@@ -1,4 +1,5 @@
 "use client";
+
 import { Heading, Stack, Text } from "@chakra-ui/react";
 import { isDefined } from "@typebot.io/lib/utils";
 import Link from "next/link";
