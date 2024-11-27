@@ -3,6 +3,7 @@ import { Companies } from "./Companies";
 import { ForEveryDepartment } from "./ForEveryDepartment";
 import { Header } from "./Header";
 import { Hero } from "./Hero";
+import { MadeForDevelopers } from "./MadeForDevelopers";
 import { MainFeatures } from "./MainFeatures";
 import { TypebotBubble } from "./TypebotBubble";
 import { UseCases } from "./UseCases";
@@ -22,7 +23,7 @@ export default function Home() {
         <Hero />
       </div>
       <div
-        className="section flex flex-col bg-gray-2 min-h-screen rounded-t-3xl bg-[url('/images/magicBackgroundDesktop.svg')] pt-20 gap-20 opacity-0 animate-slide-fade-in bg-no-repeat bg-[length:100%]"
+        className="section flex flex-col min-h-screen rounded-t-3xl bg-[url('/images/magicBackgroundDesktop.svg')] pt-20 gap-20 opacity-0 animate-slide-fade-in bg-no-repeat bg-[length:100%]"
         style={{
           animationDelay: "2s",
           animationFillMode: "forwards",
@@ -37,6 +38,9 @@ export default function Home() {
       </div>
       <div className="dark section">
         <ForEveryDepartment />
+      </div>
+      <div className="section">
+        <MadeForDevelopers />
       </div>
     </div>
     // <Stack

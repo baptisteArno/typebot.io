@@ -16,8 +16,6 @@ export const Header = () => {
   const headerRef = useRef<HTMLDivElement>(null);
   const [appearance, setAppearance] = useState<"light" | "dark">("dark");
 
-  console.log(appearance);
-
   useEffect(() => {
     const options = {
       root: null,
@@ -65,7 +63,9 @@ export const Header = () => {
       ref={headerRef}
       className={clsx(
         "flex px-4 py-2 items-start backdrop-blur-md rounded-lg border-2 fixed top-4 ml-4 w-[calc(100%-2rem)] z-10 will-change-transform duration-300 transition-colors",
-        appearance === "light" ? "bg-white/50" : "dark bg-gray-1/60",
+        appearance === "light"
+          ? "bg-white/50"
+          : "dark bg-gray-1/60 text-gray-12",
         isOpened && "h-[40vh]",
       )}
       layout
@@ -82,6 +82,7 @@ export const Header = () => {
             aria-label={isOpened ? "Close menu" : "Open menu"}
             variant="ghost"
             onClick={toggleHeaderExpansion}
+            className="transition-none"
           >
             {isOpened ? <CloseIcon /> : <MenuIcon />}
           </Button>

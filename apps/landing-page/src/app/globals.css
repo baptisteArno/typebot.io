@@ -27,8 +27,12 @@
     @apply font-sans antialiased text-gray-12 bg-[#0D0D0D];
   }
 
-  .dark {
-    @apply bg-gray-1 text-gray-12;
+  .section {
+    @apply bg-gray-2 text-gray-12;
+  }
+
+  .section.dark {
+    @apply bg-gray-1;
   }
 
   h1,

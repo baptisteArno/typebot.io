@@ -100,7 +100,7 @@ export const ForEveryDepartment = () => {
   return (
     <>
       <div className="w-full py-16 px-4 gap-12 flex flex-col items-center">
-        <div>
+        <div className="flex flex-col gap-4">
           <h2 className="text-4xl text-center">
             Designed for every department
           </h2>

@@ -121,8 +121,8 @@ export const colors = {
   },
   gray: {
     light: {
-      1: "#fcfcfc",
-      2: "#f9f9f9",
+      1: "#ffffff",
+      2: "#f1f1f1",
       3: "#f0f0f0",
       4: "#e8e8e8",
       5: "#e0e0e0",
