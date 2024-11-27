@@ -1,20 +1,11 @@
 "use client";
 
-import {
-  Box,
-  Card,
-  Heading,
-  IconButton,
-  Span,
-  Stack,
-  Text,
-  Theme,
-  VStack,
-} from "@chakra-ui/react";
+import { Button } from "@/components/button";
+import { MotionCard } from "@/components/motion-wrappers";
 import { isDefined } from "@typebot.io/lib/utils";
 import { CloseIcon } from "@typebot.io/ui/icons/CloseIcon";
 import { PlusIcon } from "@typebot.io/ui/icons/PlusIcon";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import Image from "next/image";
 import marketingSrc from "public/images/marketing.png";
 import productSrc from "public/images/product.png";
@@ -44,7 +35,6 @@ const departments = [
     image: {
       src: marketingSrc,
       alt: "marketing illustration",
-      gradientPlacement: "right",
     },
   },
   {
@@ -67,7 +57,6 @@ const departments = [
     image: {
       src: productSrc,
       alt: "Product illustration",
-      gradientPlacement: "left",
     },
   },
   {
@@ -90,7 +79,6 @@ const departments = [
     image: {
       src: salesSrc,
       alt: "sales illustration",
-      gradientPlacement: "left",
     },
   },
 ] as const satisfies DepartmentCardData[];
@@ -110,164 +98,145 @@ export const ForEveryDepartment = () => {
   });
 
   return (
-    <Theme appearance="dark">
-      <VStack w="full" py="16" px="4" gap="12">
-        <Stack>
-          <Heading textAlign="center" textStyle="4xl">
+    <>
+      <div className="w-full py-16 px-4 gap-12 flex flex-col items-center">
+        <div>
+          <h2 className="text-4xl text-center">
             Designed for every department
-          </Heading>
-          <Text color="gray.400" fontWeight={400} textAlign="center">
+          </h2>
+          <p className="text-gray-11 text-center font-normal">
             Automate conversations throughout the entire customer journey.
-          </Text>
-        </Stack>
+          </p>
+        </div>
         {departments.map((department, index) => (
-          <Card.Root
-            asChild
+          <DepartmentCard
             key={department.title}
-            color="white"
-            bgColor="#1A1A1A"
-            borderColor="gray.800"
-            onClick={() => {
-              if (openedDepartment) return;
-              setOpenedDepartmentIndex(index);
-            }}
-            rounded="2xl"
-          >
-            <motion.div layoutId={`dep-${index}`}>
-              <Card.Body p="2">
-                <Stack gap={4}>
-                  <motion.figure layoutId={`dep-${index}-img`}>
-                    <Image
-                      src={department.image.src}
-                      alt={department.image.alt}
-                    />
-                  </motion.figure>
-                  <Stack px="2" pb="4" gap="3">
-                    <Heading textStyle="3xl" fontWeight="medium" asChild>
-                      <motion.h2 layoutId={`dep-${index}-heading`}>
-                        {department.title}
-                      </motion.h2>
-                    </Heading>
-                    <Text asChild pr="10">
-                      <motion.p layoutId={`dep-${index}-desc`}>
-                        {department.sub}
-                      </motion.p>
-                    </Text>
-                  </Stack>
-                </Stack>
-                <IconButton
-                  rounded="full"
-                  variant="outline"
-                  pos="absolute"
-                  bottom="1rem"
-                  right="1rem"
-                  minW="24px"
-                  boxSize="24px"
-                >
-                  <PlusIcon />
-                </IconButton>
-              </Card.Body>
-            </motion.div>
-          </Card.Root>
+            department={department}
+            index={index}
+            setOpenedDepartmentIndex={setOpenedDepartmentIndex}
+            openedDepartmentIndex={openedDepartmentIndex}
+            openedDepartment={openedDepartment}
+          />
         ))}
-      </VStack>
+      </div>
       {openedDepartment && (
-        <Box
-          pos="fixed"
-          boxSize="full"
-          inset="0"
-          bgColor="blackAlpha.800"
-          zIndex="1"
-        >
-          <Box pos="absolute" top="5%">
-            <Card.Root
-              ref={dialogContentRef}
-              color="white"
-              bgColor="#1A1A1A"
-              borderColor="gray.800"
-              borderWidth={1}
-              mx="4"
-              rounded="2xl"
-            >
-              <motion.div layoutId={`dep-${openedDepartmentIndex}`}>
-                {openedDepartment && (
-                  <Card.Body p="2">
-                    <Stack gap={4}>
-                      <motion.figure
-                        layoutId={`dep-${openedDepartmentIndex}-img`}
-                      >
-                        <IconButton
-                          pos="absolute"
-                          top="1rem"
-                          right={
-                            openedDepartment.image.gradientPlacement === "right"
-                              ? "1rem"
-                              : undefined
-                          }
-                          left={
-                            openedDepartment.image.gradientPlacement === "left"
-                              ? "1rem"
-                              : undefined
-                          }
-                          color="white"
-                          bgColor="gray.950"
-                          opacity={0}
-                          animation="slide-fade-in 200ms ease-out"
-                          animationDelay="0.5s"
-                          animationFillMode="forwards"
-                          onClick={() => setOpenedDepartmentIndex(undefined)}
-                        >
-                          <CloseIcon />
-                        </IconButton>
-                        <Image
-                          src={openedDepartment.image.src}
-                          alt={openedDepartment.image.alt}
-                        />
-                      </motion.figure>
-                      <Stack gap="8" pb="4" px="2">
-                        <Stack gap="3">
-                          <Heading textStyle="3xl" fontWeight="medium" asChild>
-                            <motion.h2
-                              layoutId={`dep-${openedDepartmentIndex}-heading`}
-                            >
-                              {openedDepartment.title}
-                            </motion.h2>
-                          </Heading>
-                          <Text textStyle="md" asChild>
-                            <motion.p
-                              layoutId={`dep-${openedDepartmentIndex}-desc`}
-                            >
-                              {openedDepartment.sub}
-                            </motion.p>
-                          </Text>
-                        </Stack>
-                        <Stack
-                          as="ul"
-                          gap="4"
-                          pl="4"
-                          listStyleType="circle"
-                          listStylePosition="inside"
-                        >
-                          {openedDepartment.bulletPoints.map(
-                            (bulletPoint, index) => (
-                              <Span as="li" textStyle="md" key={index}>
-                                <Span fontWeight="medium">
-                                  {bulletPoint.main}:
-                                </Span>{" "}
-                                {bulletPoint.sub}
-                              </Span>
-                            ),
-                          )}
-                        </Stack>
-                      </Stack>
-                    </Stack>
-                  </Card.Body>
-                )}
-              </motion.div>
-            </Card.Root>
-          </Box>
-        </Box>
+        <div className="fixed size-full inset-0 bg-gray-1/80 z-10">
+          <div className="absolute top-4">
+            <OpenedDepartmentCard
+              department={openedDepartment}
+              index={openedDepartmentIndex as number}
+              dialogContentRef={dialogContentRef}
+              onClose={() => setOpenedDepartmentIndex(undefined)}
+            />
+          </div>
+        </div>
       )}
-    </Theme>
+    </>
   );
 };
+
+const DepartmentCard = ({
+  department,
+  index,
+  setOpenedDepartmentIndex,
+  openedDepartmentIndex,
+  openedDepartment,
+}: {
+  department: DepartmentCardData;
+  index: number;
+  setOpenedDepartmentIndex: (index: number) => void;
+  openedDepartmentIndex: number | undefined;
+  openedDepartment: DepartmentCardData | undefined;
+}) => (
+  <MotionCard
+    layoutId={`dep-${index}`}
+    className="p-2 relative"
+    onClick={() => {
+      if (openedDepartment) return;
+      setOpenedDepartmentIndex(index);
+    }}
+  >
+    <motion.figure layoutId={`dep-${index}-img`}>
+      <Image src={department.image.src} alt={department.image.alt} />
+    </motion.figure>
+    <div className="flex flex-col px-2 pb-4 gap-3">
+      <motion.h2
+        layoutId={`dep-${index}-heading`}
+        className="text-3xl font-medium"
+      >
+        {department.title}
+      </motion.h2>
+      <motion.p layoutId={`dep-${index}-desc`} className="pr-10">
+        {department.sub}
+      </motion.p>
+    </div>
+    {openedDepartmentIndex !== index && (
+      <Button
+        variant="outline"
+        size="icon"
+        className="rounded-full p-0 w-6 h-6 absolute bottom-4 right-4 opacity-0 animate-slide-fade-in"
+        style={{
+          animationDelay: ".5s",
+          animationFillMode: "forwards",
+        }}
+      >
+        <PlusIcon />
+      </Button>
+    )}
+  </MotionCard>
+);
+
+const OpenedDepartmentCard = ({
+  department,
+  index,
+  dialogContentRef,
+  onClose,
+}: {
+  department: DepartmentCardData;
+  index: number;
+  dialogContentRef: React.RefObject<HTMLDivElement>;
+  onClose: () => void;
+}) => (
+  <MotionCard
+    ref={dialogContentRef}
+    className="mx-4 p-2"
+    layoutId={`dep-${index}`}
+  >
+    <div className="gap-4 flex flex-col">
+      <Button
+        size="icon"
+        variant="secondary"
+        className="absolute top-4 right-8 opacity-0 animate-slide-fade-in"
+        style={{
+          animationDelay: ".5s",
+          animationFillMode: "forwards",
+        }}
+        onClick={onClose}
+      >
+        <CloseIcon />
+      </Button>
+      <motion.figure layoutId={`dep-${index}-img`}>
+        <Image src={department.image.src} alt={department.image.alt} />
+      </motion.figure>
+      <div className="flex flex-col gap-8 pb-4 px-2">
+        <div className="flex flex-col gap-3">
+          <motion.h2
+            className="text-3xl font-medium"
+            layoutId={`dep-${index}-heading`}
+          >
+            {department.title}
+          </motion.h2>
+          <motion.p layoutId={`dep-${index}-desc`}>{department.sub}</motion.p>
+        </div>
+        <ul className="flex flex-col gap-4 pl-4 list-inside list-disc">
+          {department.bulletPoints.map((bulletPoint, index) => (
+            <li className="text-md" key={index}>
+              <span className="font-medium">{bulletPoint.main}:</span>{" "}
+              {bulletPoint.sub}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </MotionCard>
+);

@@ -1,5 +1,6 @@
 import { CallToActionSection } from "./CallToActionSection";
 import { Companies } from "./Companies";
+import { ForEveryDepartment } from "./ForEveryDepartment";
 import { Header } from "./Header";
 import { Hero } from "./Hero";
 import { MainFeatures } from "./MainFeatures";
@@ -21,7 +22,7 @@ export default function Home() {
         <Hero />
       </div>
       <div
-        className="section flex flex-col bg-gray-1 min-h-screen rounded-t-3xl bg-[url('/images/magicBackgroundDesktop.svg')] pt-20 gap-20 opacity-0 animate-slide-fade-in bg-no-repeat bg-[length:100%]"
+        className="section flex flex-col bg-gray-2 min-h-screen rounded-t-3xl bg-[url('/images/magicBackgroundDesktop.svg')] pt-20 gap-20 opacity-0 animate-slide-fade-in bg-no-repeat bg-[length:100%]"
         style={{
           animationDelay: "2s",
           animationFillMode: "forwards",
@@ -33,6 +34,9 @@ export default function Home() {
         </div>
         <Companies />
         <MainFeatures />
+      </div>
+      <div className="dark section">
+        <ForEveryDepartment />
       </div>
     </div>
     // <Stack

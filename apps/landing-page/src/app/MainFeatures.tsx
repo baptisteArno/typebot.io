@@ -1,5 +1,6 @@
 "use client";
-import { Card, CardContent, CardHeader } from "@/components/card";
+
+import { Card } from "@/components/card";
 import { ArrowUpRightIcon } from "@typebot.io/ui/icons/ArrowUpRightIcon";
 import clsx from "clsx";
 import { AnimatePresence, motion } from "motion/react";
@@ -134,29 +135,25 @@ const FeatureCard = ({
 }) => {
   return (
     <Card className={className}>
-      <CardHeader>
-        <h2 className="text-2xl">
-          <span className="font-bold">{feature.title.main}</span>:{" "}
-          {feature.title.sub}
-        </h2>
-      </CardHeader>
-      <CardContent>
-        <div className="flex flex-col gap-4">
-          <p>{feature.description}</p>
-          {feature.link && (
-            <NextLink
-              href={feature.link.src}
-              target="_blank"
-              className="font-medium underline"
-            >
-              <div className="flex items-center gap-1">
-                <span>{feature.link.text}</span>
-                <ArrowUpRightIcon className="mt-0.5 text-lg w-6" />
-              </div>
-            </NextLink>
-          )}
-        </div>
-      </CardContent>
+      <h2 className="text-2xl">
+        <span className="font-bold">{feature.title.main}</span>:{" "}
+        {feature.title.sub}
+      </h2>
+      <div className="flex flex-col gap-4">
+        <p>{feature.description}</p>
+        {feature.link && (
+          <NextLink
+            href={feature.link.src}
+            target="_blank"
+            className="font-medium underline"
+          >
+            <div className="flex items-center gap-1">
+              <span>{feature.link.text}</span>
+              <ArrowUpRightIcon className="mt-0.5 text-lg w-6" />
+            </div>
+          </NextLink>
+        )}
+      </div>
     </Card>
   );
 };

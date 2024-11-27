@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 
 export const HeroHeading = () => {
   return (
-    <h1 className="text-center uppercase text-4xl">
+    <h1 className="text-center uppercase font-bold  text-4xl text-white">
       <motion.span {...blurInProps()}>Hack the bot game:</motion.span>
       <br />
       <motion.span {...blurInProps({ delay: 0.1 })}>Build faster, </motion.span>
