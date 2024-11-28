@@ -27,7 +27,7 @@ const data = [
 
 export const MadeForDevelopers = () => {
   return (
-    <div className="flex flex-col items-center gap-12 px-4 py-20">
+    <div className="flex flex-col items-center gap-12">
       <div className="flex flex-col gap-4 items-center">
         <h2 className="text-4xl text-center">
           Built for everyone, made for developers

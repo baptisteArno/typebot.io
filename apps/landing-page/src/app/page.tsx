@@ -3,6 +3,7 @@ import { Companies } from "./Companies";
 import { ForEveryDepartment } from "./ForEveryDepartment";
 import { Header } from "./Header";
 import { Hero } from "./Hero";
+import { JoinTheCommunity } from "./JoinTheCommunity";
 import { MadeForDevelopers } from "./MadeForDevelopers";
 import { MainFeatures } from "./MainFeatures";
 import { TypebotBubble } from "./TypebotBubble";
@@ -36,11 +37,12 @@ export default function Home() {
         <Companies />
         <MainFeatures />
       </div>
-      <div className="dark section">
+      <div className="dark section px-4 py-16">
         <ForEveryDepartment />
       </div>
-      <div className="section">
+      <div className="section px-4 py-20 flex flex-col gap-20">
         <MadeForDevelopers />
+        <JoinTheCommunity />
       </div>
     </div>
     // <Stack

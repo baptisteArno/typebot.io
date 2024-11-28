@@ -31,7 +31,7 @@
     @apply bg-gray-2 text-gray-12;
   }
 
-  .section.dark {
+  .dark {
     @apply bg-gray-1;
   }
 

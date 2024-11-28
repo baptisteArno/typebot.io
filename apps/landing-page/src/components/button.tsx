@@ -1,5 +1,8 @@
 import { cn } from "@/lib/utils";
-import { Button as AriakitButton } from "@ariakit/react";
+import {
+  Button as AriakitButton,
+  type ButtonProps as AriakitButtonProps,
+} from "@ariakit/react";
 import { type VariantProps, cva } from "class-variance-authority";
 import * as React from "react";
 
@@ -33,7 +36,7 @@ const buttonVariants = cva(
 );
 
 export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+  extends AriakitButtonProps,
     VariantProps<typeof buttonVariants> {}
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(function Button(
