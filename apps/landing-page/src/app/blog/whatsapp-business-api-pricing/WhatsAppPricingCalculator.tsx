@@ -1,17 +1,8 @@
 "use client";
 
-import {
-  Box,
-  Flex,
-  NumberDecrementStepper,
-  NumberIncrementStepper,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
-  Select,
-  Text,
-  VStack,
-} from "@chakra-ui/react";
+import { FormField, FormInput, FormSelect } from "@/components/form";
+import { SelectItem } from "@/components/select";
+import { Form, SelectProvider, useFormStore } from "@ariakit/react";
 import { isNotDefined } from "@typebot.io/lib/utils";
 import type React from "react";
 import { type ChangeEvent, useState } from "react";
@@ -25,6 +16,13 @@ const messageTypes = [
 ] as const;
 
 export const WhatsAppPricingCalculator = () => {
+  const form = useFormStore({
+    defaultValues: { country: "", messageType: "", totalMessage: "" },
+  });
+
+  form.useSubmit(async (state) => {
+    alert(JSON.stringify(state.values));
+  });
   const [selectedCountry, setSelectedCountry] =
     useState<(typeof pricingData)["markets"][number]["market"]>();
   const [selectedMessageType, setSelectedMessageType] =
@@ -68,72 +66,47 @@ export const WhatsAppPricingCalculator = () => {
   };
 
   return (
-    <Box bg="gray.800" p={6} borderRadius="lg" shadow="xl">
-      <VStack spacing={6} align="stretch">
-        <Box>
-          <Text mb={2} fontWeight="medium">
-            Select Country:
-          </Text>
-          <Select
-            value={selectedCountry}
-            onChange={updateCountry}
-            placeholder="Select a country"
-          >
-            {pricingData.markets.map((market) => (
-              <option key={market.market} value={market.market}>
-                {market.market}
-              </option>
-            ))}
-          </Select>
-        </Box>
-        <Box>
-          <Text mb={2} fontWeight="medium">
-            Select Message Type:
-          </Text>
-          <Select
-            value={selectedMessageType}
-            onChange={updateMessageType}
-            placeholder="Select a type"
-          >
-            {messageTypes.map((type) => (
-              <option key={type} value={type}>
-                {type}
-              </option>
-            ))}
-          </Select>
-        </Box>
-        <Box>
-          <Text mb={2} fontWeight="medium">
-            Number of Messages (optional):
-          </Text>
-          <NumberInput
-            value={messageCount}
-            onChange={updateMessageCount}
-            min={1}
-            step={100}
-            clampValueOnBlur={true}
-          >
-            <NumberInputField />
-            <NumberInputStepper>
-              <NumberIncrementStepper />
-              <NumberDecrementStepper />
-            </NumberInputStepper>
-          </NumberInput>
-        </Box>
-        {price && (
-          <Flex justify="space-between" align="center" mt={4}>
-            <Text fontWeight="bold">Estimated Price:</Text>
-            <Text fontSize="xl" fontWeight="bold" color="blue.300">
-              {new Intl.NumberFormat("en-US", {
-                style: "currency",
-                currency: "USD",
-                minimumFractionDigits: 4,
-                maximumFractionDigits: 4,
-              }).format(price)}
-            </Text>
-          </Flex>
-        )}
-      </VStack>
-    </Box>
+    <Form className="bg-gray-2 p-6 rounded-lg flex flex-col gap-4">
+      <SelectProvider></SelectProvider>
+      <FormField name={form.names.country} label="Country">
+        <FormSelect name={form.names.country} required>
+          <SelectItem value="">Select a country</SelectItem>
+          {pricingData.markets.map((market) => (
+            <SelectItem key={market.market} value={market.market} />
+          ))}
+        </FormSelect>
+      </FormField>
+      <FormField name={form.names.messageType} label="Message type">
+        <FormSelect name={form.names.messageType} required>
+          <SelectItem value="">Select a type</SelectItem>
+          {messageTypes.map((type) => (
+            <SelectItem key={type} value={type} />
+          ))}
+        </FormSelect>
+      </FormField>
+      <FormField name={form.names.totalMessage} label="Number of Messages">
+        <FormInput
+          name={form.names.totalMessage}
+          type="number"
+          min={1}
+          step={100}
+          required
+          placeholder="1000"
+        />
+      </FormField>
+      {price && (
+        <div className="flex justify-between items-center">
+          <p className="font-bold">Estimated Price:</p>
+          <p className="text-xl font-bold text-blue-8">
+            {new Intl.NumberFormat("en-US", {
+              style: "currency",
+              currency: "USD",
+              minimumFractionDigits: 4,
+              maximumFractionDigits: 4,
+            }).format(price)}
+          </p>
+        </div>
+      )}
+    </Form>
   );
 };

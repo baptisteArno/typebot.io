@@ -1,7 +1,5 @@
-import { Heading, Stack, Text } from "@chakra-ui/react";
 import type { PropsWithChildren } from "react";
 import type { BlogPostModel } from "../types";
-import "@/assets/prose.css";
 
 export type PostViewProps = PropsWithChildren<{
   post: BlogPostModel;
@@ -9,38 +7,21 @@ export type PostViewProps = PropsWithChildren<{
 
 export default function Post(props: PostViewProps) {
   return (
-    <Stack gap={10} my="20" w="full">
-      <Stack
-        mx="auto"
-        gap={0}
-        as="article"
-        px={3}
-        w="full"
-        className="prose prose-quoteless prose-neutral prose-invert max-w-none"
-      >
-        <Stack
-          as="header"
-          mx="auto"
-          w="full"
-          maxW={["full", "46rem"]}
-          px={[3, 3, 0]}
-        >
-          <Heading as="h1" mb="0">
-            {props.post.title}
-          </Heading>
-          <Text asChild color="gray.500">
-            <time dateTime={props.post.postedAt?.toISOString()}>
-              {props.post.postedAt?.toLocaleDateString("en-US", {
-                day: "numeric",
-                month: "long",
-                year: "numeric",
-                timeZone: "UTC",
-              })}
-            </time>
-          </Text>
-        </Stack>
+    <div className="gap-10 my-20 w-full">
+      <article className="prose prose-quoteless prose-neutral prose-invert max-w-none mx-auto gap-0 px-3 w-full">
+        <header className="mx-auto w-full max-w-full sm:max-w-[46rem] px-3 md:px-0">
+          <h1 className="mb-0">{props.post.title}</h1>
+          <time dateTime={props.post.postedAt?.toISOString()}>
+            {props.post.postedAt?.toLocaleDateString("en-US", {
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+              timeZone: "UTC",
+            })}
+          </time>
+        </header>
         {props.children}
-      </Stack>
-    </Stack>
+      </article>
+    </div>
   );
 }

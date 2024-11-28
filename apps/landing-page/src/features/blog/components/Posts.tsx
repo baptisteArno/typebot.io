@@ -1,6 +1,3 @@
-"use client";
-
-import { Heading, Stack, Text } from "@chakra-ui/react";
 import { isDefined } from "@typebot.io/lib/utils";
 import Link from "next/link";
 import type { BlogPost } from "../types";
@@ -10,16 +7,9 @@ type Props = {
 };
 
 export const Posts = ({ posts }: Props) => (
-  <Stack
-    gap={10}
-    mx="auto"
-    maxW="3xl"
-    my="20"
-    fontSize="17px"
-    textAlign="justify"
-  >
-    <Heading>Latest blog posts:</Heading>
-    <Stack>
+  <div className="flex flex-col gap-10 my-20 w-full mx-auto text-justify">
+    <h2>Latest blog posts:</h2>
+    <div className="flex flex-col">
       {posts
         .filter((post) => isDefined(post.postedAt))
         .sort((a, b) => {
@@ -30,22 +20,12 @@ export const Posts = ({ posts }: Props) => (
         })
         .map((post) => (
           <Link key={post.slug} href={`/blog/${post.slug}`}>
-            <Stack
-              w="full"
-              rounded="md"
-              borderColor="gray.600"
-              borderWidth={1}
-              p="4"
-            >
-              <Heading as="h2" fontSize="2xl">
-                {post.title}
-              </Heading>
-              <Text color="gray.500">
-                {new Date(post.postedAt!).toDateString()}
-              </Text>
-            </Stack>
+            <div className="flex flex-col gap-4 p-4 border border-gray-8 rounded-md">
+              <h2>{post.title}</h2>
+              <p>{new Date(post.postedAt!).toDateString()}</p>
+            </div>
           </Link>
         ))}
-    </Stack>
-  </Stack>
+    </div>
+  </div>
 );

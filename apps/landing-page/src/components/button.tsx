@@ -1,11 +1,10 @@
+import { cn } from "@/lib/utils";
+import { Button as AriakitButton } from "@ariakit/react";
 import { type VariantProps, cva } from "class-variance-authority";
 import * as React from "react";
 
-import { cn } from "@/lib/utils";
-import clsx from "clsx";
-
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg font-medium transition-colors data-[focus-visible]:ring-1 data-[focus-visible]:ring-orange-8 data-[aria-disabled=true]:pointer-events-none data-[aria-disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
@@ -37,31 +36,27 @@ export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {}
 
-const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, ...props }, ref) => {
-    if (variant === "cta" || variant === "ctaSecondary") {
-      return (
-        <div className={clsx("overflow-hidden rounded-lg relative")}>
-          <button
-            className={cn(
-              buttonVariants({ variant, size, className }),
-              "w-full",
-            )}
-            ref={ref}
-            {...props}
-          />
-        </div>
-      );
-    }
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(function Button(
+  { className, variant, size, ...props },
+  ref,
+) {
+  const buttonElement = (
+    <AriakitButton
+      className={cn(
+        buttonVariants({ variant, size, className }),
+        variant?.includes("cta") && "w-full",
+      )}
+      ref={ref}
+      {...props}
+    />
+  );
+
+  if (variant === "cta" || variant === "ctaSecondary")
     return (
-      <button
-        className={cn(buttonVariants({ variant, size, className }))}
-        ref={ref}
-        {...props}
-      />
+      <div className="overflow-hidden rounded-lg relative">{buttonElement}</div>
     );
-  },
-);
-Button.displayName = "Button";
+
+  return buttonElement;
+});
 
 export { Button, buttonVariants };

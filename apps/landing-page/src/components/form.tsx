@@ -1,176 +1,78 @@
-"use client";
-
-import * as React from "react";
-import {
-  Controller,
-  type ControllerProps,
-  type FieldPath,
-  type FieldValues,
-  FormProvider,
-  useFormContext,
-} from "react-hook-form";
-
 import { cn } from "@/lib/utils";
+import * as Ariakit from "@ariakit/react";
+import * as React from "react";
+import { buttonVariants } from "./button";
+import { Select, type SelectProps } from "./select";
 
-const Form = FormProvider;
+export interface FormFieldProps extends React.ComponentPropsWithoutRef<"div"> {
+  name: Ariakit.FormControlProps["name"];
+  label: React.ReactNode;
+}
 
-type FormFieldContextValue<
-  TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> = {
-  name: TName;
-};
-
-const FormFieldContext = React.createContext<FormFieldContextValue>(
-  {} as FormFieldContextValue,
+export const FormField = React.forwardRef<HTMLDivElement, FormFieldProps>(
+  function FormField({ name, label, children, ...props }, ref) {
+    return (
+      <div ref={ref} {...props} className={cn(props.className)}>
+        <Ariakit.FormLabel name={name}>{label}</Ariakit.FormLabel>
+        {children}
+        <Ariakit.FormError name={name} />
+      </div>
+    );
+  },
 );
 
-const FormField = <
-  TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
->({
-  ...props
-}: ControllerProps<TFieldValues, TName>) => {
-  return (
-    <FormFieldContext.Provider value={{ name: props.name }}>
-      <Controller {...props} />
-    </FormFieldContext.Provider>
-  );
-};
+export interface FormInputProps extends Ariakit.FormInputProps {}
 
-const useFormField = () => {
-  const fieldContext = React.useContext(FormFieldContext);
-  const itemContext = React.useContext(FormItemContext);
-  const { getFieldState, formState } = useFormContext();
-
-  const fieldState = getFieldState(fieldContext.name, formState);
-
-  if (!fieldContext) {
-    throw new Error("useFormField should be used within <FormField>");
-  }
-
-  const { id } = itemContext;
-
-  return {
-    id,
-    name: fieldContext.name,
-    formItemId: `${id}-form-item`,
-    formDescriptionId: `${id}-form-item-description`,
-    formMessageId: `${id}-form-item-message`,
-    ...fieldState,
-  };
-};
-
-type FormItemContextValue = {
-  id: string;
-};
-
-const FormItemContext = React.createContext<FormItemContextValue>(
-  {} as FormItemContextValue,
+export const FormInput = React.forwardRef<HTMLInputElement, FormInputProps>(
+  function FormInput(props, ref) {
+    return (
+      <Ariakit.FormInput ref={ref} {...props} className={cn(props.className)} />
+    );
+  },
 );
 
-const FormItem = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => {
-  const id = React.useId();
+export interface FormSubmitProps extends Ariakit.FormSubmitProps {}
 
-  return (
-    <FormItemContext.Provider value={{ id }}>
-      <div ref={ref} className={cn("space-y-2", className)} {...props} />
-    </FormItemContext.Provider>
-  );
-});
-FormItem.displayName = "FormItem";
+export const FormSubmit = React.forwardRef<HTMLButtonElement, FormSubmitProps>(
+  function FormSubmit(props, ref) {
+    return (
+      <Ariakit.FormSubmit
+        ref={ref}
+        {...props}
+        className={cn(buttonVariants(), props.className)}
+      />
+    );
+  },
+);
 
-const FormLabel = React.forwardRef<
-  React.ElementRef<typeof LabelPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root>
->(({ className, ...props }, ref) => {
-  const { error, formItemId } = useFormField();
+export interface FormSelectProps
+  extends Ariakit.FormControlProps<"button">,
+    Omit<SelectProps, keyof Ariakit.FormControlProps<"button">> {}
 
-  return (
-    <Label
-      ref={ref}
-      className={cn(error && "text-destructive", className)}
-      htmlFor={formItemId}
-      {...props}
-    />
-  );
-});
-FormLabel.displayName = "FormLabel";
+export const FormSelect = React.forwardRef<HTMLButtonElement, FormSelectProps>(
+  function FormSelect({ name, ...props }, ref) {
+    const form = Ariakit.useFormContext();
+    if (!form) throw new Error("FormSelect must be used within a Form");
 
-const FormControl = React.forwardRef<
-  React.ElementRef<typeof Slot>,
-  React.ComponentPropsWithoutRef<typeof Slot>
->(({ ...props }, ref) => {
-  const { error, formItemId, formDescriptionId, formMessageId } =
-    useFormField();
+    const value = form.useValue(name);
 
-  return (
-    <Slot
-      ref={ref}
-      id={formItemId}
-      aria-describedby={
-        !error
-          ? `${formDescriptionId}`
-          : `${formDescriptionId} ${formMessageId}`
-      }
-      aria-invalid={!!error}
-      {...props}
-    />
-  );
-});
-FormControl.displayName = "FormControl";
-
-const FormDescription = React.forwardRef<
-  HTMLParagraphElement,
-  React.HTMLAttributes<HTMLParagraphElement>
->(({ className, ...props }, ref) => {
-  const { formDescriptionId } = useFormField();
-
-  return (
-    <p
-      ref={ref}
-      id={formDescriptionId}
-      className={cn("text-[0.8rem] text-muted-foreground", className)}
-      {...props}
-    />
-  );
-});
-FormDescription.displayName = "FormDescription";
-
-const FormMessage = React.forwardRef<
-  HTMLParagraphElement,
-  React.HTMLAttributes<HTMLParagraphElement>
->(({ className, children, ...props }, ref) => {
-  const { error, formMessageId } = useFormField();
-  const body = error ? String(error?.message) : children;
-
-  if (!body) {
-    return null;
-  }
-
-  return (
-    <p
-      ref={ref}
-      id={formMessageId}
-      className={cn("text-[0.8rem] font-medium text-destructive", className)}
-      {...props}
-    >
-      {body}
-    </p>
-  );
-});
-FormMessage.displayName = "FormMessage";
-
-export {
-  useFormField,
-  Form,
-  FormItem,
-  FormLabel,
-  FormControl,
-  FormDescription,
-  FormMessage,
-  FormField,
-};
+    return (
+      <Ariakit.Role.button
+        {...props}
+        render={
+          <Ariakit.FormControl
+            name={name}
+            render={
+              <Select
+                ref={ref}
+                value={value}
+                setValue={(value) => form.setValue(name, value)}
+                render={props.render}
+              />
+            }
+          />
+        }
+      />
+    );
+  },
+);

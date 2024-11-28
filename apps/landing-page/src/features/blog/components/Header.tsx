@@ -1,5 +1,3 @@
-import { Heading, Stack, Text } from "@chakra-ui/react";
-
 export const formatDate = (date: string) => {
   const currentDate = new Date().getTime();
   const dateWithTimezone = date.includes("T") ? date : `${date}T00:00:00`;
@@ -33,8 +31,8 @@ export const formatDate = (date: string) => {
 
 type Props = { children: string; date: string };
 export const Header = ({ children, date }: Props) => (
-  <Stack mx="auto" w="full" maxW={["full", "46rem"]} px={[3, 3, 0]}>
-    <Heading>{children}</Heading>
-    <Text>{formatDate(date)}</Text>
-  </Stack>
+  <div className="mx-auto w-full max-w-full sm:max-w-[46rem] px-3">
+    <h2>{children}</h2>
+    <p>{formatDate(date)}</p>
+  </div>
 );
