@@ -15,7 +15,10 @@ import { remarkDefaultElementRules } from './remark-slate/remarkDefaultElementRu
 import { remarkDefaultTextRules } from './remark-slate/remarkDefaultTextRules'
 import { deserialize } from './deserializer/deserialize'
 
-export const convertMarkdownToRichText = <V extends Value>(data: string) => {
+export const convertMarkdownToRichText = <V extends Value>(
+  data: string,
+  variableKey?: string
+) => {
   const plugins = [createDeserializeMdPlugin()]
   const editor = createPlateEditor({ plugins }) as unknown as any
   const { elementRules, textRules, indentList } = getPluginOptions<
@@ -32,6 +35,16 @@ export const convertMarkdownToRichText = <V extends Value>(data: string) => {
       indentList,
     } as unknown as RemarkPluginOptions<V>)
     .processSync(data)
+
+  if (variableKey && Array.isArray(tree.result)) {
+    tree.result.forEach((res: any) => {
+      if (Array.isArray(res.children)) {
+        res.children = res.children.map((child: any) =>
+          child.text === tree.value ? { ...child, variableKey } : child
+        )
+      }
+    })
+  }
 
   return tree.result
 }
