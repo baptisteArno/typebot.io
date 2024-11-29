@@ -71,9 +71,9 @@ export const BoardMenuButton = (props: StackProps) => {
           bgColor={useColorModeValue('white', undefined)}
         />
         <MenuList>
-          <MenuItem icon={<BookIcon />} onClick={redirectToDocumentation}>
+          {/* <MenuItem icon={<BookIcon />} onClick={redirectToDocumentation}>
             {t('editor.graph.menu.documentationItem.label')}
-          </MenuItem>
+          </MenuItem> */}
           <MenuItem icon={<SettingsIcon />} onClick={onOpen}>
             {t('editor.graph.menu.editorSettingsItem.label')}
           </MenuItem>
