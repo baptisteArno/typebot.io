@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/button";
+import { IconButton } from "@/components/icon-button";
 import { MotionCard } from "@/components/motion-wrappers";
 import { isDefined } from "@typebot.io/lib/utils";
 import { CloseIcon } from "@typebot.io/ui/icons/CloseIcon";
@@ -171,9 +172,9 @@ const DepartmentCard = ({
       </motion.p>
     </div>
     {openedDepartmentIndex !== index && (
-      <Button
+      <IconButton
+        aria-label="Expand department"
         variant="outline"
-        size="icon"
         className="rounded-full p-0 w-6 h-6 absolute bottom-4 right-4 opacity-0 animate-slide-fade-in"
         style={{
           animationDelay: ".5s",
@@ -181,7 +182,7 @@ const DepartmentCard = ({
         }}
       >
         <PlusIcon />
-      </Button>
+      </IconButton>
     )}
   </MotionCard>
 );
@@ -203,8 +204,8 @@ const OpenedDepartmentCard = ({
     layoutId={`dep-${index}`}
   >
     <div className="gap-4 flex flex-col">
-      <Button
-        size="icon"
+      <IconButton
+        aria-label="Close department"
         variant="secondary"
         className="absolute top-4 right-8 opacity-0 animate-slide-fade-in"
         style={{
@@ -214,7 +215,7 @@ const OpenedDepartmentCard = ({
         onClick={onClose}
       >
         <CloseIcon />
-      </Button>
+      </IconButton>
       <motion.figure layoutId={`dep-${index}-img`}>
         <Image src={department.image.src} alt={department.image.alt} />
       </motion.figure>

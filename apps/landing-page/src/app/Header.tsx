@@ -1,7 +1,7 @@
 "use client";
 
 import { TypebotLogo } from "@/assets/logos/TypebotLogo";
-import { Button } from "@/components/button";
+import { IconButton } from "@/components/icon-button";
 import { CloseIcon } from "@typebot.io/ui/icons/CloseIcon";
 import { MenuIcon } from "@typebot.io/ui/icons/MenuIcon";
 import clsx from "clsx";
@@ -76,16 +76,15 @@ export const Header = () => {
           <TypebotLogo />
         </motion.div>
         <motion.div layout>
-          <Button
+          <IconButton
             ref={btnRef}
-            size="icon"
             aria-label={isOpened ? "Close menu" : "Open menu"}
             variant="ghost"
             onClick={toggleHeaderExpansion}
             className="transition-none"
           >
             {isOpened ? <CloseIcon /> : <MenuIcon />}
-          </Button>
+          </IconButton>
         </motion.div>
       </div>
     </motion.header>

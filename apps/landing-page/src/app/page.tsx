@@ -6,6 +6,7 @@ import { Hero } from "./Hero";
 import { JoinTheCommunity } from "./JoinTheCommunity";
 import { MadeForDevelopers } from "./MadeForDevelopers";
 import { MainFeatures } from "./MainFeatures";
+import { ProductPrinciples } from "./ProductPrinciples";
 import { TypebotBubble } from "./TypebotBubble";
 import { UseCases } from "./UseCases";
 
@@ -43,6 +44,7 @@ export default function Home() {
       <div className="section px-4 py-20 flex flex-col gap-20">
         <MadeForDevelopers />
         <JoinTheCommunity />
+        <ProductPrinciples />
       </div>
     </div>
     // <Stack

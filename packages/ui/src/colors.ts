@@ -126,7 +126,7 @@ export const colors = {
       3: "#f0f0f0",
       4: "#e8e8e8",
       5: "#e0e0e0",
-      6: "#d9d9d9",
+      6: "#dfdfdf",
       7: "#cecece",
       8: "#bbbbbb",
       9: "#8d8d8d",
