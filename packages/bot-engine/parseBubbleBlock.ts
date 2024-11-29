@@ -147,7 +147,8 @@ export const parseVariablesInRichText = (
         const variableElements = convertMarkdownToRichText(
           isStandaloneElement
             ? variableInText.value
-            : variableInText.value.replace(/[\n]+/g, ' ')
+            : variableInText.value.replace(/[\n]+/g, ' '),
+          variableInText?.textToReplace?.replace(/{{|}}/g, '')
         )
 
         const variableElementsWithStyling = applyElementStyleToDescendants(
