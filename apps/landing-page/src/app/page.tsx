@@ -1,3 +1,4 @@
+import { AllFeatures } from "./AllFeatures";
 import { CallToActionSection } from "./CallToActionSection";
 import { Companies } from "./Companies";
 import { ForEveryDepartment } from "./ForEveryDepartment";
@@ -45,6 +46,9 @@ export default function Home() {
         <MadeForDevelopers />
         <JoinTheCommunity />
         <ProductPrinciples />
+      </div>
+      <div className="section dark px-4 py-20">
+        <AllFeatures />
       </div>
     </div>
     // <Stack

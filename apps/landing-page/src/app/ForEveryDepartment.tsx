@@ -1,6 +1,5 @@
 "use client";
 
-import { Button } from "@/components/button";
 import { IconButton } from "@/components/icon-button";
 import { MotionCard } from "@/components/motion-wrappers";
 import { isDefined } from "@typebot.io/lib/utils";
