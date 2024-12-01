@@ -5718,7 +5718,6 @@
     ky "1.2.4"
     papaparse "5.4.1"
     prompts "2.4.2"
-    react "18.2.0"
     stripe "17.1.0"
 
 "@typebot.io/segment-block@packages/forge/blocks/segment":
