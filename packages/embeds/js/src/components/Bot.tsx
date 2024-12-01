@@ -41,6 +41,7 @@ import { ProgressBar } from "./ProgressBar";
 import { CloseIcon } from "./icons/CloseIcon";
 
 export type BotProps = {
+  id?: string;
   typebot: string | any;
   isPreview?: boolean;
   resultId?: string;

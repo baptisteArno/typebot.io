@@ -98,7 +98,7 @@ export const Bubble = (props: BubbleProps) => {
 
   const processIncomingEvent = (event: MessageEvent<CommandData>) => {
     const { data } = event;
-    if (!data.isFromTypebot) return;
+    if (!data.isFromTypebot || (data.id && botProps.id !== data.id)) return;
     if (data.command === "open") openBot();
     if (data.command === "close") closeBot();
     if (data.command === "toggle") toggleBot();
