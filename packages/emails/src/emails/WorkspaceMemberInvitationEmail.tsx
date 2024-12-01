@@ -9,6 +9,7 @@ import { render } from "@faire/mjml-react/utils/render";
 import { env } from "@typebot.io/env";
 import type { SendMailOptions } from "nodemailer";
 import type { ComponentProps } from "react";
+import * as React from "react";
 import { Button } from "../components/Button";
 import { Head } from "../components/Head";
 import { HeroImage } from "../components/HeroImage";
