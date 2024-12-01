@@ -2,6 +2,7 @@ import { AllFeatures } from "./AllFeatures";
 import { CallToActionSection } from "./CallToActionSection";
 import { Companies } from "./Companies";
 import { ForEveryDepartment } from "./ForEveryDepartment";
+import { GetStarted } from "./GetStarted";
 import { Header } from "./Header";
 import { Hero } from "./Hero";
 import { JoinTheCommunity } from "./JoinTheCommunity";
@@ -49,6 +50,9 @@ export default function Home() {
       </div>
       <div className="section dark px-4 py-20">
         <AllFeatures />
+      </div>
+      <div className="section px-4 py-20">
+        <GetStarted />
       </div>
     </div>
     // <Stack
