@@ -50,7 +50,8 @@
     "@typebot.io/workspaces": "workspace:*",
     "@typebot.io/typebot": "workspace:*",
     "@typebot.io/zod": "workspace:*",
-    "@typebot.io/emails": "workspace:*"
+    "@typebot.io/emails": "workspace:*",
+    "react": "18.2.0"
   },
   "devDependencies": {
     "@typebot.io/schemas": "workspace:*",
