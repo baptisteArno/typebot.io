@@ -26,7 +26,8 @@ export const VideoOnboardingFloatingWindow = ({ type }: Props) => {
   const bgColor = useColorModeValue('white', 'gray.900')
   const closeButtonColorScheme = useColorModeValue('blackAlpha', 'gray')
 
-  if (!onboardingVideos[type]) return null
+  // if (!onboardingVideos[type]) return null
+  return null
 
   return (
     <SlideFade

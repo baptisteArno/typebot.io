@@ -32,7 +32,8 @@ const Root = ({ type, blockDef, children }: Props) => {
     blockDef,
   })
 
-  if (!youtubeId) return children({ onToggle })
+  // if (!youtubeId) return children({ onToggle })
+  return children({ onToggle })
 
   return (
     <Popover isOpen={isOpen} placement="right" isLazy>
@@ -41,7 +42,7 @@ const Root = ({ type, blockDef, children }: Props) => {
       <PopoverContent aspectRatio="1.5" width="640px">
         <PopoverArrow />
         <PopoverBody h="full" p="5">
-          <YoutubeIframe id={youtubeId} />
+          <YoutubeIframe id={youtubeId || ''} />
           <IconButton
             icon={<CloseIcon />}
             aria-label={'Close'}
