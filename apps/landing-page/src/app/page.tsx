@@ -1,6 +1,7 @@
 import { AllFeatures } from "./AllFeatures";
 import { CallToActionSection } from "./CallToActionSection";
 import { Companies } from "./Companies";
+import { Cta } from "./Cta";
 import { ForEveryDepartment } from "./ForEveryDepartment";
 import { GetStarted } from "./GetStarted";
 import { Header } from "./Header";
@@ -9,6 +10,7 @@ import { JoinTheCommunity } from "./JoinTheCommunity";
 import { MadeForDevelopers } from "./MadeForDevelopers";
 import { MainFeatures } from "./MainFeatures";
 import { ProductPrinciples } from "./ProductPrinciples";
+import { Section } from "./Section";
 import { TypebotBubble } from "./TypebotBubble";
 import { UseCases } from "./UseCases";
 
@@ -23,11 +25,11 @@ export default function Home() {
     <div className="flex flex-col overflow-hidden">
       <TypebotBubble />
       <Header />
-      <div className="dark section">
+      <Section className="dark py-0">
         <Hero />
-      </div>
-      <div
-        className="section flex flex-col min-h-screen rounded-t-3xl bg-[url('/images/magicBackgroundDesktop.svg')] pt-20 gap-20 opacity-0 animate-slide-fade-in bg-no-repeat bg-[length:100%]"
+      </Section>
+      <Section
+        className="min-h-screen rounded-t-3xl bg-[url('/images/magicBackgroundDesktop.svg')] opacity-0 animate-slide-fade-in bg-no-repeat bg-[length:100%]"
         style={{
           animationDelay: "2s",
           animationFillMode: "forwards",
@@ -39,21 +41,22 @@ export default function Home() {
         </div>
         <Companies />
         <MainFeatures />
-      </div>
-      <div className="dark section px-4 py-16">
+      </Section>
+      <Section className="dark">
         <ForEveryDepartment />
-      </div>
-      <div className="section px-4 py-20 flex flex-col gap-20">
+      </Section>
+      <Section>
         <MadeForDevelopers />
         <JoinTheCommunity />
         <ProductPrinciples />
-      </div>
-      <div className="section dark px-4 py-20">
+      </Section>
+      <Section className="dark">
         <AllFeatures />
-      </div>
-      <div className="section px-4 py-20">
+      </Section>
+      <Section>
         <GetStarted />
-      </div>
+        <Cta />
+      </Section>
     </div>
     // <Stack
     //   bgColor="gray.950"

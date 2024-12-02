@@ -41,13 +41,13 @@ export const Header = () => {
       });
     }, options);
 
-    document.querySelectorAll(".section").forEach((element) => {
+    [...document.getElementsByTagName("section")].forEach((element) => {
       if (element.id === "header") return;
       observer.observe(element);
     });
 
     return () => {
-      document.querySelectorAll(".section").forEach((element) => {
+      [...document.getElementsByTagName("section")].forEach((element) => {
         if (element.id === "header") return;
         observer.unobserve(element);
       });
