@@ -58,7 +58,7 @@ const Principle = ({ title, content }: { title: string; content: string }) => {
       className="p-4 rounded-xl bg-gray-1 border border-gray-6"
       onToggle={(e) => setIsOpen((e.target as HTMLDetailsElement).open)}
     >
-      <summary className="font-heading font-medium text-2xl flex items-center justify-between">
+      <summary className="font-heading font-medium text-2xl flex justify-between">
         {title}
         <span
           className={cn(

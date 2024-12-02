@@ -1,10 +1,9 @@
 "use client";
 
 import { Card } from "@/components/card";
-import { ArrowUpRightIcon } from "@typebot.io/ui/icons/ArrowUpRightIcon";
+import { TextLink } from "@/components/text-link";
 import clsx from "clsx";
 import { AnimatePresence, motion } from "motion/react";
-import NextLink from "next/link";
 import { useEffect, useRef, useState } from "react";
 import type { FeatureCardData } from "./types";
 
@@ -142,16 +141,9 @@ const FeatureCard = ({
       <div className="flex flex-col gap-4">
         <p>{feature.description}</p>
         {feature.link && (
-          <NextLink
-            href={feature.link.src}
-            target="_blank"
-            className="font-medium underline"
-          >
-            <div className="flex items-center gap-1">
-              <span>{feature.link.text}</span>
-              <ArrowUpRightIcon className="mt-0.5 text-lg w-6" />
-            </div>
-          </NextLink>
+          <TextLink href={feature.link.src} target="_blank">
+            {feature.link.text}
+          </TextLink>
         )}
       </div>
     </Card>

@@ -2,6 +2,7 @@ import { AllFeatures } from "./AllFeatures";
 import { CallToActionSection } from "./CallToActionSection";
 import { Companies } from "./Companies";
 import { Cta } from "./Cta";
+import { Faq } from "./Faq";
 import { ForEveryDepartment } from "./ForEveryDepartment";
 import { GetStarted } from "./GetStarted";
 import { Header } from "./Header";
@@ -58,6 +59,7 @@ export default function Home() {
         <GetStarted />
         <Cta />
         <Testimonials />
+        <Faq />
       </Section>
     </div>
     // <Stack
