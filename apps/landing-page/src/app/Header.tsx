@@ -1,6 +1,6 @@
 "use client";
 
-import { TypebotLogo } from "@/assets/logos/TypebotLogo";
+import { TypebotLogoFull } from "@/assets/logos/TypebotLogo";
 import { IconButton } from "@/components/icon-button";
 import { CloseIcon } from "@typebot.io/ui/icons/CloseIcon";
 import { MenuIcon } from "@typebot.io/ui/icons/MenuIcon";
@@ -73,7 +73,7 @@ export const Header = () => {
     >
       <div className="flex items-center justify-between flex-1">
         <motion.div layout>
-          <TypebotLogo />
+          <TypebotLogoFull />
         </motion.div>
         <motion.div layout>
           <IconButton

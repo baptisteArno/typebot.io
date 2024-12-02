@@ -1,10 +1,10 @@
-import { TypebotLogo } from "@/assets/logos/TypebotLogo";
+import { TypebotLogoFull } from "@/assets/logos/TypebotLogo";
 import { Button } from "@/components/button";
 
 export const Cta = () => {
   return (
     <div className="dark rounded-2xl flex flex-col gap-12 py-12 px-4 items-center">
-      <TypebotLogo className="w-28" />
+      <TypebotLogoFull className="w-28" />
       <h2 className="text-center text-4xl px-6">
         Ready to dive into the latest tools and hack your business growth?
       </h2>

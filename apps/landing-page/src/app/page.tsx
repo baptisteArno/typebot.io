@@ -11,6 +11,7 @@ import { MadeForDevelopers } from "./MadeForDevelopers";
 import { MainFeatures } from "./MainFeatures";
 import { ProductPrinciples } from "./ProductPrinciples";
 import { Section } from "./Section";
+import { Testimonials } from "./Testimonials";
 import { TypebotBubble } from "./TypebotBubble";
 import { UseCases } from "./UseCases";
 
@@ -56,6 +57,7 @@ export default function Home() {
       <Section>
         <GetStarted />
         <Cta />
+        <Testimonials />
       </Section>
     </div>
     // <Stack
