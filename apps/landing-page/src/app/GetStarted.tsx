@@ -33,16 +33,18 @@ const instructions = [
 
 export const GetStarted = () => {
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-12">
       <h2 className="text-4xl text-center">Get started with Typebot</h2>
-      {instructions.map((instruction) => (
-        <InstructionCard
-          key={instruction.title}
-          image={instruction.image}
-          title={instruction.title}
-          description={instruction.description}
-        />
-      ))}
+      <div className="flex flex-col gap-2">
+        {instructions.map((instruction) => (
+          <InstructionCard
+            key={instruction.title}
+            image={instruction.image}
+            title={instruction.title}
+            description={instruction.description}
+          />
+        ))}
+      </div>
     </div>
   );
 };

@@ -92,7 +92,7 @@ export const MainFeatures = () => {
   }, []);
 
   return (
-    <div className="w-full pb-20 gap-2 flex flex-col">
+    <div className="w-full gap-2 flex flex-col">
       <div
         ref={carouselRef}
         className="flex gap-2 items-end overflow-x-auto snap-x scroll-px-4 snap-always no-scrollbar px-4 snap-mandatory"

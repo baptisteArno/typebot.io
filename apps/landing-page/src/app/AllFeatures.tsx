@@ -52,9 +52,10 @@ export const AllFeatures = () => {
         All the features you need to hack chat experience building with Typebot
       </h2>
       <div className="flex gap-2 overflow-x-auto snap-x scroll-px-4 snap-always no-scrollbar px-4 snap-mandatory">
-        {data.map((feature) => (
+        {data.map((feature, index) => (
           <FeatureCard
             key={feature.title}
+            index={index}
             className="min-w-full snap-start "
             feature={feature}
           />
@@ -68,16 +69,23 @@ export const AllFeatures = () => {
 };
 
 const FeatureCard = ({
+  index,
   feature,
   className,
 }: {
+  index: number;
   feature: (typeof data)[number];
   className?: string;
 }) => {
   return (
     <Card className={cn(className, "flex flex-col items-center gap-6")}>
-      <div className="size-16 flex items-center justify-center rounded-2xl bg-orange-11">
-        <feature.Icon className="size-6" />
+      <div
+        className={`size-16 flex items-center justify-center rounded-2xl bg-cover`}
+        style={{
+          backgroundImage: `url('/images/sections/all-features/${index}.png')`,
+        }}
+      >
+        <feature.Icon className="size-6 text-gray-1" />
       </div>
       <div className="flex flex-col gap-2 text-center">
         <h2 className="text-2xl">{feature.title}</h2>

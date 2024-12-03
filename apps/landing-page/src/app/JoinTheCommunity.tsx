@@ -19,7 +19,7 @@ const data = [
 
 export const JoinTheCommunity = () => (
   <div className="flex flex-col bg-gray-1 rounded-2xl gap-4">
-    <div className="flex flex-col gap-12 dark rounded-2xl p-6">
+    <div className="flex flex-col gap-12 dark rounded-2xl p-6 pt-12">
       <div className="flex flex-col gap-4">
         <h2 className="text-4xl text-center text-gray-12">
           Together, we&apos;re hacking the future of conversational AI apps
