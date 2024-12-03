@@ -14,7 +14,7 @@ const buttonVariants = cva(
         default:
           "bg-orange-9 hover:bg-orange-10 active:bg-orange-11 text-gray-1",
         secondary: "bg-gray-3 hover:bg-gray-4 active:bg-gray-5",
-        outline: "bg-transparent border border-gray-9 text-gray-11",
+        outline: "bg-transparent border border-gray-8 text-gray-12",
         ghost: "hover:bg-gray-4 active:bg-gray-5",
         link: "text-primary underline-offset-4 hover:underline",
         cta: "text-white bg-gradient-to-b border border-[#C4461D] from-[#FF8963] to-[#FF5A25] to-[57%] shadow-[inset_0_3px_2px_0_rgba(255,255,255,0.25)] active:from-[#E44A19] active:to-[#EF744C] active:from-[43%] active:to-[100%] active:shadow-[inset_0_-2px_2px_0_rgba(255,255,255,0.17)] before:bg-transparent hover:before:bg-white/50 before:w-1/4 before:absolute before:-left-[40%] hover:before:left-[120%] before:transition-[left] before:duration-0 hover:before:duration-700 before:blur-md before:-rotate-45 before:aspect-[1/2]",

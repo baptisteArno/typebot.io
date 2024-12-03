@@ -1,14 +1,41 @@
 "use client";
 
 import { TypebotLogoFull } from "@/assets/logos/TypebotLogo";
+import { Button, buttonVariants } from "@/components/button";
 import { IconButton } from "@/components/icon-button";
+import { cn } from "@/lib/utils";
 import { CloseIcon } from "@typebot.io/ui/icons/CloseIcon";
 import { MenuIcon } from "@typebot.io/ui/icons/MenuIcon";
 import clsx from "clsx";
-import { motion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import { discordUrl, docsUrl, githubRepoUrl, signinUrl } from "./constants";
 
 let isFirstCall = true;
+
+const links = [
+  {
+    label: "Documentation",
+    href: docsUrl,
+  },
+  {
+    label: "Pricing",
+    href: "/pricing",
+  },
+  {
+    label: "Github",
+    href: githubRepoUrl,
+  },
+  {
+    label: "Blog",
+    href: "/blog",
+  },
+  {
+    label: "Community",
+    href: discordUrl,
+  },
+];
 
 export const Header = () => {
   const btnRef = useRef<HTMLButtonElement>(null);
@@ -62,31 +89,56 @@ export const Header = () => {
     <motion.header
       ref={headerRef}
       className={clsx(
-        "flex px-4 py-2 items-start backdrop-blur-md rounded-lg border-2 fixed top-4 ml-4 w-[calc(100%-2rem)] z-10 will-change-transform duration-300 transition-colors",
+        "flex flex-col gap-8 justify-start backdrop-blur-md rounded-lg border-2 fixed top-4 ml-4 w-[calc(100%-2rem)] z-10 will-change-transform duration-300 transition-colors",
         appearance === "light"
           ? "bg-white/50"
           : "dark bg-gray-1/60 text-gray-12",
-        isOpened && "h-[40vh]",
       )}
-      layout
       transition={{ duration: 0.4, type: "spring", bounce: 0.15 }}
+      animate={{ height: isOpened ? "calc(100vh - 7rem)" : "auto" }}
     >
-      <div className="flex items-center justify-between flex-1">
-        <motion.div layout>
-          <TypebotLogoFull />
-        </motion.div>
-        <motion.div layout>
-          <IconButton
-            ref={btnRef}
-            aria-label={isOpened ? "Close menu" : "Open menu"}
-            variant="ghost"
-            onClick={toggleHeaderExpansion}
-            className="transition-none"
-          >
-            {isOpened ? <CloseIcon /> : <MenuIcon />}
-          </IconButton>
-        </motion.div>
+      <div className="flex items-center justify-between px-4 py-2">
+        <TypebotLogoFull />
+        <IconButton
+          ref={btnRef}
+          aria-label={isOpened ? "Close menu" : "Open menu"}
+          variant="ghost"
+          onClick={toggleHeaderExpansion}
+          className="transition-none"
+        >
+          {isOpened ? <CloseIcon /> : <MenuIcon />}
+        </IconButton>
       </div>
+      <AnimatePresence mode="popLayout">
+        {isOpened && (
+          <motion.div
+            className="flex flex-col gap-8 px-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+          >
+            <Link
+              href={signinUrl}
+              className={buttonVariants({ size: "lg", variant: "outline" })}
+            >
+              Sign in
+            </Link>
+            <hr className="border-gray-7" />
+            <div className="grid grid-cols-2 gap-2">
+              {links.map((link) => (
+                <Link
+                  key={link.label}
+                  className={cn(
+                    buttonVariants({ variant: "outline", size: "lg" }),
+                  )}
+                  href={link.href}
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.header>
   );
 };

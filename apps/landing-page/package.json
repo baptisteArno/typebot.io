@@ -6,7 +6,7 @@
     "build": "dotenv -e ./.env -e ../../.env -- next build"
   },
   "dependencies": {
-    "@ariakit/react": "^0.4.14",
+    "@ariakit/react": "0.4.15",
     "@mdx-js/loader": "3.1.0",
     "@mdx-js/react": "3.1.0",
     "@next/mdx": "14.2.16",
@@ -20,7 +20,7 @@
     "class-variance-authority": "0.7.1",
     "clsx": "2.1.1",
     "fast-glob": "3.3.2",
-    "motion": "11.12.0",
+    "motion": "11.13.0",
     "next": "14.2.16",
     "react": "18.3.1",
     "react-dom": "18.3.1",

@@ -80,7 +80,7 @@ export const Footer = () => {
             <h3 className="text-2xl">{item.title}</h3>
             <ul className="flex flex-col gap-1">
               {item.links.map((link) => (
-                <li>
+                <li key={link.label}>
                   <TextLink
                     href={link.href}
                     target={link.href.startsWith("/") ? undefined : "_blank"}
