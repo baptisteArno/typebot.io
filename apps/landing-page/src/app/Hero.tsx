@@ -7,7 +7,7 @@ export const Hero = () => (
       <HeroHeading />
       <p
         className="text-center text-gray-400 font-normal opacity-0 animate-slide-fade-in text-gray-11"
-        style={{ animationDelay: "1.4s", animationFillMode: "forwards" }}
+        style={{ animationDelay: "1.7s", animationFillMode: "forwards" }}
       >
         With Typebot, chatbot becomes a resource where the possibilities to chat
         are wide and conversion high. Scroll to see why!
@@ -15,7 +15,7 @@ export const Hero = () => (
 
       <Button
         className="opacity-0 animate-slide-fade-in"
-        style={{ animationDelay: "1.5s", animationFillMode: "forwards" }}
+        style={{ animationDelay: "1.9s", animationFillMode: "forwards" }}
         variant="cta"
         size="lg"
       >

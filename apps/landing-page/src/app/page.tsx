@@ -36,7 +36,7 @@ export default function Home() {
       <Section
         className="min-h-screen rounded-t-3xl bg-[url('/images/magic-background.svg')] md:bg-[url('/images/magic-background-desktop.svg')] opacity-0 animate-slide-fade-in bg-no-repeat bg-[length:100%]"
         style={{
-          animationDelay: "2s",
+          animationDelay: "2.2s",
           animationFillMode: "forwards",
         }}
       >
