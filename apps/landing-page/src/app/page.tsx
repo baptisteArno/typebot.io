@@ -1,8 +1,11 @@
+import Image from "next/image";
+import gradientSeparatorSrc from "../../public/images/gradient-separator.png";
 import { AllFeatures } from "./AllFeatures";
 import { CallToActionSection } from "./CallToActionSection";
 import { Companies } from "./Companies";
 import { Cta } from "./Cta";
 import { Faq } from "./Faq";
+import { Footer } from "./Footer";
 import { ForEveryDepartment } from "./ForEveryDepartment";
 import { GetStarted } from "./GetStarted";
 import { Header } from "./Header";
@@ -61,6 +64,8 @@ export default function Home() {
         <Testimonials />
         <Faq />
       </Section>
+      <Image src={gradientSeparatorSrc} alt="separator" className="w-full" />
+      <Footer />
     </div>
     // <Stack
     //   bgColor="gray.950"
