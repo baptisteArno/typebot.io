@@ -2,7 +2,7 @@ import { Button } from "@/components/button";
 
 export const CallToActionSection = () => (
   <div className="flex flex-col gap-6">
-    <p className="text-center text-gray-11">
+    <p className="text-gray-11 text-balance">
       Picture{" "}
       <span className="font-medium">
         a bot that goes beyond answering questions

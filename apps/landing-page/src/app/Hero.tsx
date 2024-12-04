@@ -6,11 +6,11 @@ export const Hero = () => (
     <div className="flex flex-col items-center px-2 gap-10">
       <HeroHeading />
       <p
-        className="text-center text-gray-400 font-normal opacity-0 animate-slide-fade-in text-gray-11"
+        className="text-center text-gray-400 font-normal opacity-0 animate-slide-fade-in text-gray-11 text-balance"
         style={{ animationDelay: "1.7s", animationFillMode: "forwards" }}
       >
         With Typebot, chatbot becomes a resource where the possibilities to chat
-        are wide and conversion high. Scroll to see why!
+        are wide and conversion is high. Scroll to see why!
       </p>
 
       <Button

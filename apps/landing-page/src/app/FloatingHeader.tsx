@@ -1,7 +1,7 @@
 "use client";
 
 import { TypebotLogoFull } from "@/assets/logos/TypebotLogo";
-import { Button, buttonVariants } from "@/components/button";
+import { buttonVariants } from "@/components/button";
 import { IconButton } from "@/components/icon-button";
 import { cn } from "@/lib/utils";
 import { CloseIcon } from "@typebot.io/ui/icons/CloseIcon";
@@ -10,6 +10,7 @@ import clsx from "clsx";
 import { AnimatePresence, motion } from "motion/react";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import React from "react";
 import { discordUrl, docsUrl, githubRepoUrl, signinUrl } from "./constants";
 
 let isFirstCall = true;
@@ -37,8 +38,7 @@ const links = [
   },
 ];
 
-export const Header = () => {
-  const btnRef = useRef<HTMLButtonElement>(null);
+export const FloatingHeader = () => {
   const [isOpened, setIsOpened] = useState(false);
   const headerRef = useRef<HTMLDivElement>(null);
   const [appearance, setAppearance] = useState<"light" | "dark">("dark");
@@ -86,13 +86,38 @@ export const Header = () => {
   };
 
   return (
+    <>
+      <Mobile
+        ref={headerRef}
+        appearance={appearance}
+        className="flex md:hidden"
+        isOpened={isOpened}
+        toggleHeaderExpansion={toggleHeaderExpansion}
+      />
+    </>
+  );
+};
+
+type Props = {
+  appearance: "light" | "dark";
+  className: string | undefined;
+  isOpened: boolean;
+  toggleHeaderExpansion: () => void;
+};
+
+const Mobile = React.forwardRef<HTMLElement, Props>(function Mobile(
+  { appearance, className, isOpened, toggleHeaderExpansion },
+  ref,
+) {
+  return (
     <motion.header
-      ref={headerRef}
+      ref={ref}
       className={clsx(
         "flex flex-col gap-8 justify-start backdrop-blur-md rounded-lg border-2 fixed top-4 ml-4 w-[calc(100%-2rem)] z-10 will-change-transform duration-300 transition-colors",
         appearance === "light"
           ? "bg-white/50"
           : "dark bg-gray-1/60 text-gray-12",
+        className,
       )}
       transition={{ duration: 0.4, type: "spring", bounce: 0.15 }}
       animate={{ height: isOpened ? "calc(100vh - 7rem)" : "auto" }}
@@ -100,7 +125,6 @@ export const Header = () => {
       <div className="flex items-center justify-between px-4 py-2">
         <TypebotLogoFull />
         <IconButton
-          ref={btnRef}
           aria-label={isOpened ? "Close menu" : "Open menu"}
           variant="ghost"
           onClick={toggleHeaderExpansion}
@@ -141,4 +165,11 @@ export const Header = () => {
       </AnimatePresence>
     </motion.header>
   );
-};
+});
+
+const Desktop = React.forwardRef<HTMLElement, Props>(function MobileHeader(
+  { appearance, className, isOpened, toggleHeaderExpansion },
+  ref,
+) {
+  return <header ref={ref} className={clsx("", className)}></header>;
+});

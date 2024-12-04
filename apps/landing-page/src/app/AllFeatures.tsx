@@ -48,22 +48,24 @@ const data = [
 export const AllFeatures = () => {
   return (
     <div className="flex flex-col gap-8">
-      <h2 className="text-4xl text-center">
-        All the features you need to hack chat experience building with Typebot
+      <h2 className="text-4xl px-4">
+        All the features you need to hack bots building
       </h2>
       <div className="flex gap-2 overflow-x-auto snap-x scroll-px-4 snap-always no-scrollbar px-4 snap-mandatory">
         {data.map((feature, index) => (
           <FeatureCard
             key={feature.title}
             index={index}
-            className="min-w-full snap-start "
+            className="min-w-[calc(100%-.75rem)] snap-start "
             feature={feature}
           />
         ))}
       </div>
-      <Button variant="cta" size="lg">
-        Get started for free
-      </Button>
+      <div className="px-4">
+        <Button variant="cta" size="lg">
+          Get started for free
+        </Button>
+      </div>
     </div>
   );
 };

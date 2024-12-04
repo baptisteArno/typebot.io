@@ -100,7 +100,10 @@ export const MainFeatures = () => {
         {features.map((feature) => (
           <FeatureCard
             key={feature.title.main}
-            className={clsx(carouselItemClassName, "min-w-full snap-start")}
+            className={clsx(
+              carouselItemClassName,
+              "min-w-[calc(100%-.75rem)] snap-start",
+            )}
             feature={feature}
           />
         ))}

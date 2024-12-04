@@ -73,7 +73,7 @@ export const UseCases = () => {
   };
 
   return (
-    <div className="flex flex-col items-center gap-8 px-3">
+    <div className="flex flex-col items-center gap-8">
       <div className="flex items-end gap-8">
         {useCases.map((useCase, index) => (
           <UsecaseTitle

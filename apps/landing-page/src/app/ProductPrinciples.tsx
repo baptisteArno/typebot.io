@@ -38,9 +38,7 @@ const data = [
 export const ProductPrinciples = () => {
   return (
     <div className="flex flex-col gap-8">
-      <h2 className="text-4xl text-center">
-        At Typebot, we strive to create great things
-      </h2>
+      <h2 className="text-4xl">At Typebot, we strive to create great things</h2>
       <div className="flex flex-col gap-2">
         {data.map(({ title, content }) => (
           <Principle key={title} title={title} content={content} />
@@ -58,7 +56,7 @@ const Principle = ({ title, content }: { title: string; content: string }) => {
       className="p-4 rounded-xl bg-gray-1 border border-gray-6"
       onToggle={(e) => setIsOpen((e.target as HTMLDetailsElement).open)}
     >
-      <summary className="font-heading font-medium text-2xl flex justify-between">
+      <summary className="font-heading font-medium text-2xl flex justify-between list-none">
         {title}
         <span
           className={cn(

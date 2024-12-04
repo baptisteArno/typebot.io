@@ -27,12 +27,10 @@ const data = [
 
 export const MadeForDevelopers = () => {
   return (
-    <div className="flex flex-col items-center gap-12">
-      <div className="flex flex-col gap-4 items-center">
-        <h2 className="text-4xl text-center">
-          Built for everyone, made for developers
-        </h2>
-        <div className="flex items-center gap-3">
+    <div className="flex flex-col gap-8">
+      <div className="flex flex-col gap-4">
+        <h2 className="text-4xl">Built for everyone, made for developers</h2>
+        <div className="flex gap-3 items-center">
           <GithubIcon className="size-4" />
           <Link
             target="_blank"
@@ -47,7 +45,7 @@ export const MadeForDevelopers = () => {
         {data.map(({ Icon, text }, index) => (
           <div key={index} className="flex items-start gap-3">
             <Icon className="size-4 mt-1" />
-            <p className="max-w-44">{text}</p>
+            <p>{text}</p>
           </div>
         ))}
       </div>

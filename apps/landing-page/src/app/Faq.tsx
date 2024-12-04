@@ -107,7 +107,7 @@ const data = [
 export const Faq = () => {
   return (
     <div className="flex flex-col gap-8">
-      <h2 className="text-4xl text-center">FAQ</h2>
+      <h2 className="text-4xl">FAQ</h2>
       <div className="flex flex-col gap-2">
         {data.map(({ title, content }) => (
           <Question key={title} title={title}>
@@ -130,7 +130,7 @@ const Question = ({
       className="p-4 rounded-xl bg-gray-1 border border-gray-6"
       onToggle={(e) => setIsOpen((e.target as HTMLDetailsElement).open)}
     >
-      <summary className="font-heading font-medium text-2xl flex justify-between">
+      <summary className="font-heading font-medium text-2xl flex justify-between list-none">
         {title}
         <span
           className={cn(

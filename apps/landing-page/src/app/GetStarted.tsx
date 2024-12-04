@@ -33,8 +33,8 @@ const instructions = [
 
 export const GetStarted = () => {
   return (
-    <div className="flex flex-col gap-12">
-      <h2 className="text-4xl text-center">Get started with Typebot</h2>
+    <div className="flex flex-col gap-8">
+      <h2 className="text-4xl">Get started with Typebot</h2>
       <div className="flex flex-col gap-2">
         {instructions.map((instruction) => (
           <InstructionCard

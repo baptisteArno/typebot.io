@@ -187,10 +187,10 @@ const testimonials = [
 
 export const Testimonials = () => {
   return (
-    <div className="flex flex-col gap-10 items-center">
-      <div className="flex flex-col gap-4 items-center text-center">
+    <div className="flex flex-col gap-8 items-center">
+      <div className="flex flex-col gap-4">
         <h2 className="text-4xl">Oh my Bot!</h2>
-        <p className="text-gray-11 px-6">
+        <p className="text-gray-11">
           The team likes it, customers enjoy it, and the brand stands out.
         </p>
       </div>

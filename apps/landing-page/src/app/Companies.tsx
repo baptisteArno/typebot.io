@@ -13,7 +13,7 @@ import {
 
 export const Companies = () => (
   <div className="flex w-full flex-col gap-6">
-    <h2 className="text-center text-4xl font-medium">
+    <h2 className=" px-4 text-4xl font-medium">
       Trusted by 650+ companies worldwide
     </h2>
     <div className="relative flex w-full">
