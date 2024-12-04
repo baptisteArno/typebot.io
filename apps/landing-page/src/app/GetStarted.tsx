@@ -34,7 +34,7 @@ const instructions = [
 export const GetStarted = () => {
   return (
     <div className="flex flex-col gap-8">
-      <h2 className="text-4xl">Get started with Typebot</h2>
+      <h2>Get started with Typebot</h2>
       <div className="flex flex-col gap-2">
         {instructions.map((instruction) => (
           <InstructionCard
@@ -58,7 +58,7 @@ const InstructionCard = ({
     <Card className="flex flex-col items-center gap-6 p-1.5 pb-6">
       <img src={image.src} alt={image.alt} className="rounded-xl" />
       <div className="flex flex-col gap-2 px-3">
-        <h2 className="font-body uppercase font-bold">{title}</h2>
+        <h3 className="font-body uppercase font-bold">{title}</h3>
         <p>{description}</p>
       </div>
     </Card>

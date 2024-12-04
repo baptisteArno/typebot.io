@@ -48,9 +48,7 @@ const data = [
 export const AllFeatures = () => {
   return (
     <div className="flex flex-col gap-8">
-      <h2 className="text-4xl px-4">
-        All the features you need to hack bots building
-      </h2>
+      <h2 className="px-4">All the features you need to hack bots building</h2>
       <div className="flex gap-2 overflow-x-auto snap-x scroll-px-4 snap-always no-scrollbar px-4 snap-mandatory">
         {data.map((feature, index) => (
           <FeatureCard

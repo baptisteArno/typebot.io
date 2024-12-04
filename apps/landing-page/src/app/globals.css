@@ -35,6 +35,18 @@
     @apply bg-gray-1 text-gray-12;
   }
 
+  h1 {
+    @apply text-4xl md:text-6xl;
+  }
+
+  h2 {
+    @apply text-4xl;
+  }
+
+  h3 {
+    @apply text-2xl;
+  }
+
   h1,
   h2,
   h3,

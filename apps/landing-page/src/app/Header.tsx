@@ -45,7 +45,7 @@ const links = [
   },
 ];
 
-export const FloatingHeader = () => {
+export const Header = () => {
   const [isOpened, setIsOpened] = useState(false);
   const headerRef = useRef<HTMLDivElement>(null);
   const [appearance, setAppearance] = useState<"light" | "dark">("dark");
@@ -94,22 +94,23 @@ export const FloatingHeader = () => {
     setIsOpened((prev) => !prev);
   };
 
-  if (windowWidth < breakpoints.md)
-    return (
-      <div className="fixed top-4 z-10 flex justify-center w-full">
-        <Mobile
-          ref={headerRef}
-          appearance={appearance}
-          isOpened={isOpened}
-          toggleHeaderExpansion={toggleHeaderExpansion}
-        />
-      </div>
-    );
-
   return (
-    <div className="fixed bottom-4 z-10 flex justify-center w-full">
-      <Desktop ref={headerRef} appearance={appearance} />
-    </div>
+    <header className="flex justify-center">
+      <Mobile
+        ref={headerRef}
+        appearance={appearance}
+        isOpened={isOpened}
+        toggleHeaderExpansion={toggleHeaderExpansion}
+        className="md:hidden"
+        aria-label="Mobile header navigation"
+      />
+      <Desktop
+        ref={headerRef}
+        appearance={appearance}
+        className="hidden md:flex"
+        aria-label="Mobile header navigation"
+      />
+    </header>
   );
 };
 
@@ -117,20 +118,22 @@ type Props = {
   appearance: "light" | "dark";
   isOpened: boolean;
   toggleHeaderExpansion: () => void;
+  className: string;
 };
 
 const Mobile = React.forwardRef<HTMLElement, Props>(function Mobile(
-  { appearance, isOpened, toggleHeaderExpansion },
+  { appearance, isOpened, toggleHeaderExpansion, className },
   ref,
 ) {
   return (
-    <motion.header
+    <motion.nav
       ref={ref}
       className={clsx(
         "flex flex-col gap-8 justify-start backdrop-blur-md rounded-lg border-2 w-[calc(100%-2rem)] will-change-transform duration-300 transition-colors",
         appearance === "light"
           ? "bg-white/50"
           : "dark bg-gray-1/60 text-gray-12",
+        className,
       )}
       transition={{ duration: 0.4, type: "spring", bounce: 0.15 }}
       animate={{ height: isOpened ? "calc(100vh - 7rem)" : "auto" }}
@@ -177,7 +180,7 @@ const Mobile = React.forwardRef<HTMLElement, Props>(function Mobile(
           </motion.nav>
         )}
       </AnimatePresence>
-    </motion.header>
+    </motion.nav>
   );
 });
 
@@ -204,36 +207,36 @@ const desktopLinks = [
   },
 ];
 
-const Desktop = React.forwardRef<HTMLElement, Pick<Props, "appearance">>(
-  function MobileHeader({ appearance }, ref) {
-    return (
-      <header
-        ref={ref}
-        className={clsx(
-          "flex items-center rounded-2xl border border-gray-6 px-2 py-2 bg-gradient-to-b transition-colors",
-          appearance === "dark"
-            ? "dark from-[#393939] to-[#121212]"
-            : "from-gray-1 to-[#DEDEDE]",
-        )}
-      >
-        <nav className="flex gap-2 items-center">
-          {desktopLinks.map((link) => (
-            <Link
-              className={cn(
-                buttonVariants({ variant: "ghost", size: "sm" }),
-                "font-normal",
-              )}
-              href={link.href}
-              target={link.href.startsWith("/") ? undefined : "_blank"}
-            >
-              {link.label}
-            </Link>
-          ))}
-          <Button variant="cta" size="sm">
-            Get started free
-          </Button>
-        </nav>
-      </header>
-    );
-  },
-);
+const Desktop = React.forwardRef<
+  HTMLElement,
+  Pick<Props, "appearance" | "className">
+>(function MobileHeader({ appearance, className }, ref) {
+  return (
+    <nav
+      ref={ref}
+      className={clsx(
+        "flex rounded-2xl border border-gray-6 px-2 py-2 bg-gradient-to-b transition-colors gap-2 items-center",
+        appearance === "dark"
+          ? "dark from-[#393939] to-[#121212]"
+          : "from-gray-1 to-[#DEDEDE]",
+        className,
+      )}
+    >
+      {desktopLinks.map((link) => (
+        <Link
+          className={cn(
+            buttonVariants({ variant: "ghost", size: "sm" }),
+            "font-normal",
+          )}
+          href={link.href}
+          target={link.href.startsWith("/") ? undefined : "_blank"}
+        >
+          {link.label}
+        </Link>
+      ))}
+      <Button variant="cta" size="sm">
+        Get started free
+      </Button>
+    </nav>
+  );
+});

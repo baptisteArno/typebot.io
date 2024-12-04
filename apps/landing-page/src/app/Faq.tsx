@@ -107,7 +107,7 @@ const data = [
 export const Faq = () => {
   return (
     <div className="flex flex-col gap-8">
-      <h2 className="text-4xl">FAQ</h2>
+      <h2>FAQ</h2>
       <div className="flex flex-col gap-2">
         {data.map(({ title, content }) => (
           <Question key={title} title={title}>

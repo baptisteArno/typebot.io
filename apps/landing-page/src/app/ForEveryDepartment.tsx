@@ -101,7 +101,7 @@ export const ForEveryDepartment = () => {
     <>
       <div className="w-full gap-12 flex flex-col items-center">
         <div className="flex flex-col gap-4">
-          <h2 className="text-4xl">Designed for every department</h2>
+          <h2>Designed for every department</h2>
           <p className="text-gray-11 font-normal">
             Automate conversations throughout the entire customer journey.
           </p>

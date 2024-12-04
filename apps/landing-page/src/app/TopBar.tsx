@@ -8,7 +8,7 @@ type Props = {
   className?: string;
 };
 
-export const DesktopHeaderTop = ({ className }: Props) => (
+export const TopBar = ({ className }: Props) => (
   <div
     className={cn(
       "dark bg-transparent flex justify-center items-center flex-1 h-16 max-w-6xl relative",

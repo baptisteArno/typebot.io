@@ -4,12 +4,11 @@ import { AllFeatures } from "./AllFeatures";
 import { CallToActionSection } from "./CallToActionSection";
 import { Companies } from "./Companies";
 import { Cta } from "./Cta";
-import { DesktopHeaderTop } from "./DesktopHeaderTop";
 import { Faq } from "./Faq";
-import { FloatingHeader } from "./FloatingHeader";
 import { Footer } from "./Footer";
 import { ForEveryDepartment } from "./ForEveryDepartment";
 import { GetStarted } from "./GetStarted";
+import { Header } from "./Header";
 import { Hero } from "./Hero";
 import { JoinTheCommunity } from "./JoinTheCommunity";
 import { MadeForDevelopers } from "./MadeForDevelopers";
@@ -17,6 +16,7 @@ import { MainFeatures } from "./MainFeatures";
 import { ProductPrinciples } from "./ProductPrinciples";
 import { Section } from "./Section";
 import { Testimonials } from "./Testimonials";
+import { TopBar } from "./TopBar";
 import { TypebotBubble } from "./TypebotBubble";
 import { UseCases } from "./UseCases";
 
@@ -30,9 +30,11 @@ export default function Home() {
   return (
     <div className="flex flex-col items-stretch overflow-hidden">
       <TypebotBubble />
-      <FloatingHeader />
+      <div className="fixed top-4 md:bottom-12 md:top-auto z-10 w-full">
+        <Header />
+      </div>
       <div className="flex w-full justify-center absolute top-4">
-        <DesktopHeaderTop className="hidden md:flex" />
+        <TopBar className="hidden md:flex" />
       </div>
       <Section className="dark py-0">
         <Hero />

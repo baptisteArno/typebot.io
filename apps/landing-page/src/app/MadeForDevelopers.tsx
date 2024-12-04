@@ -29,7 +29,7 @@ export const MadeForDevelopers = () => {
   return (
     <div className="flex flex-col gap-8">
       <div className="flex flex-col gap-4">
-        <h2 className="text-4xl">Built for everyone, made for developers</h2>
+        <h2>Built for everyone, made for developers</h2>
         <div className="flex gap-3 items-center">
           <GithubIcon className="size-4" />
           <Link
