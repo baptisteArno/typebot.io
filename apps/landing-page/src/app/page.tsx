@@ -31,7 +31,9 @@ export default function Home() {
     <div className="flex flex-col items-stretch overflow-hidden">
       <TypebotBubble />
       <FloatingHeader />
-      <DesktopHeaderTop className="hidden md:flex" />
+      <div className="flex w-full justify-center absolute top-4">
+        <DesktopHeaderTop className="hidden md:flex" />
+      </div>
       <Section className="dark py-0">
         <Hero />
       </Section>

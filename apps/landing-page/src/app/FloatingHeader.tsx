@@ -1,7 +1,7 @@
 "use client";
 
 import { TypebotLogoFull } from "@/assets/logos/TypebotLogo";
-import { buttonVariants } from "@/components/button";
+import { Button, buttonVariants } from "@/components/button";
 import { IconButton } from "@/components/icon-button";
 import { cn } from "@/lib/utils";
 import { CloseIcon } from "@typebot.io/ui/icons/CloseIcon";
@@ -11,7 +11,14 @@ import { AnimatePresence, motion } from "motion/react";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import React from "react";
-import { discordUrl, docsUrl, githubRepoUrl, signinUrl } from "./constants";
+import { useWindowSize } from "react-use";
+import {
+  breakpoints,
+  discordUrl,
+  docsUrl,
+  githubRepoUrl,
+  signinUrl,
+} from "./constants";
 
 let isFirstCall = true;
 
@@ -25,7 +32,7 @@ const links = [
     href: "/pricing",
   },
   {
-    label: "Github",
+    label: "GitHub",
     href: githubRepoUrl,
   },
   {
@@ -42,11 +49,13 @@ export const FloatingHeader = () => {
   const [isOpened, setIsOpened] = useState(false);
   const headerRef = useRef<HTMLDivElement>(null);
   const [appearance, setAppearance] = useState<"light" | "dark">("dark");
+  const { width: windowWidth, height: windowHeight } = useWindowSize();
 
   useEffect(() => {
+    const isMobile = windowWidth < breakpoints.md;
     const options = {
       root: null,
-      rootMargin: `0px 0px -${window.innerHeight - 100}px 0px`,
+      rootMargin: `0px 0px ${isMobile ? -windowHeight - 100 : 0}px 0px`,
       threshold: 0,
     };
 
@@ -79,45 +88,49 @@ export const FloatingHeader = () => {
         observer.unobserve(element);
       });
     };
-  }, []);
+  }, [windowWidth, windowHeight]);
 
   const toggleHeaderExpansion = () => {
     setIsOpened((prev) => !prev);
   };
 
+  if (windowWidth < breakpoints.md)
+    return (
+      <div className="fixed top-4 z-10 flex justify-center w-full">
+        <Mobile
+          ref={headerRef}
+          appearance={appearance}
+          isOpened={isOpened}
+          toggleHeaderExpansion={toggleHeaderExpansion}
+        />
+      </div>
+    );
+
   return (
-    <>
-      <Mobile
-        ref={headerRef}
-        appearance={appearance}
-        className="flex md:hidden"
-        isOpened={isOpened}
-        toggleHeaderExpansion={toggleHeaderExpansion}
-      />
-    </>
+    <div className="fixed bottom-4 z-10 flex justify-center w-full">
+      <Desktop ref={headerRef} appearance={appearance} />
+    </div>
   );
 };
 
 type Props = {
   appearance: "light" | "dark";
-  className: string | undefined;
   isOpened: boolean;
   toggleHeaderExpansion: () => void;
 };
 
 const Mobile = React.forwardRef<HTMLElement, Props>(function Mobile(
-  { appearance, className, isOpened, toggleHeaderExpansion },
+  { appearance, isOpened, toggleHeaderExpansion },
   ref,
 ) {
   return (
     <motion.header
       ref={ref}
       className={clsx(
-        "flex flex-col gap-8 justify-start backdrop-blur-md rounded-lg border-2 fixed top-4 ml-4 w-[calc(100%-2rem)] z-10 will-change-transform duration-300 transition-colors",
+        "flex flex-col gap-8 justify-start backdrop-blur-md rounded-lg border-2 w-[calc(100%-2rem)] will-change-transform duration-300 transition-colors",
         appearance === "light"
           ? "bg-white/50"
           : "dark bg-gray-1/60 text-gray-12",
-        className,
       )}
       transition={{ duration: 0.4, type: "spring", bounce: 0.15 }}
       animate={{ height: isOpened ? "calc(100vh - 7rem)" : "auto" }}
@@ -135,10 +148,11 @@ const Mobile = React.forwardRef<HTMLElement, Props>(function Mobile(
       </div>
       <AnimatePresence mode="popLayout">
         {isOpened && (
-          <motion.div
+          <motion.nav
             className="flex flex-col gap-8 px-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
           >
             <Link
               href={signinUrl}
@@ -160,16 +174,66 @@ const Mobile = React.forwardRef<HTMLElement, Props>(function Mobile(
                 </Link>
               ))}
             </div>
-          </motion.div>
+          </motion.nav>
         )}
       </AnimatePresence>
     </motion.header>
   );
 });
 
-const Desktop = React.forwardRef<HTMLElement, Props>(function MobileHeader(
-  { appearance, className, isOpened, toggleHeaderExpansion },
-  ref,
-) {
-  return <header ref={ref} className={clsx("", className)}></header>;
-});
+const desktopLinks = [
+  {
+    label: "Blog",
+    href: "/blog",
+  },
+  {
+    label: "Community",
+    href: discordUrl,
+  },
+  {
+    label: "Pricing",
+    href: "/pricing",
+  },
+  {
+    label: "Documentation",
+    href: docsUrl,
+  },
+  {
+    label: "GitHub",
+    href: githubRepoUrl,
+  },
+];
+
+const Desktop = React.forwardRef<HTMLElement, Pick<Props, "appearance">>(
+  function MobileHeader({ appearance }, ref) {
+    return (
+      <header
+        ref={ref}
+        className={clsx(
+          "flex items-center rounded-2xl border border-gray-6 px-2 py-2 bg-gradient-to-b transition-colors",
+          appearance === "dark"
+            ? "dark from-[#393939] to-[#121212]"
+            : "from-gray-1 to-[#DEDEDE]",
+        )}
+      >
+        <nav className="flex gap-2 items-center">
+          {desktopLinks.map((link) => (
+            <Link
+              className={cn(
+                buttonVariants({ variant: "ghost", size: "sm" }),
+                "font-normal",
+              )}
+              href={link.href}
+              target={link.href.startsWith("/") ? undefined : "_blank"}
+            >
+              {link.label}
+            </Link>
+          ))}
+          <Button variant="cta" size="sm">
+            Get started free
+          </Button>
+        </nav>
+      </header>
+    );
+  },
+);

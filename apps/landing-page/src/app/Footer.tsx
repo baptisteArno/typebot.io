@@ -34,7 +34,7 @@ const data = [
         href: "/blog",
       },
       {
-        label: "Github",
+        label: "GitHub",
         href: githubRepoUrl,
       },
       {

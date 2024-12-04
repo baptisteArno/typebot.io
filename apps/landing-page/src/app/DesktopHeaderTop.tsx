@@ -11,7 +11,7 @@ type Props = {
 export const DesktopHeaderTop = ({ className }: Props) => (
   <div
     className={cn(
-      "dark flex justify-center items-center fixed top-4 w-full z-10 h-16 max-w-6xl",
+      "dark bg-transparent flex justify-center items-center flex-1 h-16 max-w-6xl relative",
       className,
     )}
   >

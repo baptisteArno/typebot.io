@@ -37,7 +37,7 @@ export const MadeForDevelopers = () => {
             href={githubRepoUrl}
             className="font-medium underline"
           >
-            See Github repository
+            See GitHub repository
           </Link>
         </div>
       </div>
