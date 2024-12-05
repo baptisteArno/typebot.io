@@ -224,6 +224,7 @@ const Desktop = React.forwardRef<
     >
       {desktopLinks.map((link) => (
         <Link
+          key={link.label}
           className={cn(
             buttonVariants({ variant: "ghost", size: "sm" }),
             "font-normal",

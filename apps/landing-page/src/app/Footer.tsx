@@ -76,7 +76,7 @@ export const Footer = () => {
       <TypebotLogoFull />
       <div className="flex flex-col gap-8">
         {data.map((item) => (
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-3" key={item.title}>
             <h3 className="text-2xl">{item.title}</h3>
             <ul className="flex flex-col gap-1">
               {item.links.map((link) => (
