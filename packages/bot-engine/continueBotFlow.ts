@@ -182,7 +182,7 @@ export const continueBotFlow = async (
   if (isInputBlock(block)) {
     const parsedReplyResult = await parseReply(newSessionState)(reply, block)
 
-    if (parsedReplyResult.status === 'fail')
+    if (parsedReplyResult.status === 'fail' && !block.outgoingEdgeId)
       return {
         ...(await parseRetryMessage(newSessionState)(
           block,
