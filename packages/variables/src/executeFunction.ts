@@ -1,11 +1,12 @@
 import { stringifyError } from "@typebot.io/lib/stringifyError";
 import { isDefined } from "@typebot.io/lib/utils";
-import ivm from "isolated-vm";
+import { Isolate, Reference } from "isolated-vm";
 import { parseTransferrableValue } from "./codeRunners";
 import { extractVariablesFromText } from "./extractVariablesFromText";
 import { parseGuessedValueType } from "./parseGuessedValueType";
 import { parseVariables } from "./parseVariables";
 import type { Variable } from "./schemas";
+import { variablesGlobals } from "./store";
 
 const defaultTimeout = 10 * 1000;
 
@@ -35,30 +36,34 @@ export const executeFunction = async ({
       : [],
   );
 
-  const updatedVariables: Record<string, any> = {};
+  const variableUpdates = new Map<string, unknown>();
 
   const setVariable = (key: string, value: any) => {
-    updatedVariables[key] = value;
+    variableUpdates.set(key, value);
   };
 
-  const isolate = new ivm.Isolate();
+  const isolate = variablesGlobals.isolate ?? new Isolate();
+  if (!variablesGlobals.isolate) {
+    variablesGlobals.isolate = isolate;
+  }
   const context = isolate.createContextSync();
   const jail = context.global;
   jail.setSync("global", jail.derefInto());
   context.evalClosure(
     "globalThis.setVariable = (...args) => $0.apply(undefined, args, { arguments: { copy: true }, promise: true, result: { copy: true, promise: true } })",
-    [new ivm.Reference(setVariable)],
+    [new Reference(setVariable)],
   );
   context.evalClosure(
     "globalThis.fetch = (...args) => $0.apply(undefined, args, { arguments: { copy: true }, promise: true, result: { copy: true, promise: true } })",
     [
-      new ivm.Reference(async (...args: any[]) => {
+      new Reference(async (...args: any[]) => {
         // @ts-ignore
         const response = await fetch(...args);
         return response.text();
       }),
     ],
   );
+
   args.forEach(({ id, value }) => {
     jail.setSync(id, parseTransferrableValue(value));
   });
@@ -76,7 +81,7 @@ export const executeFunction = async ({
     const output: unknown = await run(parsedBody);
     return {
       output,
-      newVariables: Object.entries(updatedVariables)
+      newVariables: Array.from(variableUpdates.entries())
         .map(([name, value]) => {
           const existingVariable = variables.find((v) => v.name === name);
           if (!existingVariable) return;

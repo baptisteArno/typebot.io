@@ -29,6 +29,7 @@ import type {
   SetVariableHistoryItem,
   Variable,
 } from "@typebot.io/variables/schemas";
+import { resetVariablesGlobals } from "@typebot.io/variables/store";
 import { parseButtonsReply } from "./blocks/inputs/buttons/parseButtonsReply";
 import { parseDateReply } from "./blocks/inputs/date/parseDateReply";
 import { formatEmail } from "./blocks/inputs/email/formatEmail";
@@ -67,6 +68,7 @@ export const continueBotFlow = async (
   }
 > => {
   resetGlobals();
+  resetVariablesGlobals();
   if (!state.currentBlockId)
     return startBotFlow({
       state: resetSessionState(state),

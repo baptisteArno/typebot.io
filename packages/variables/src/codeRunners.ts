@@ -1,9 +1,12 @@
-import ivm from "isolated-vm";
+import ivm, { type Isolate } from "isolated-vm";
 import { parseGuessedValueType } from "./parseGuessedValueType";
 import type { Variable } from "./schemas";
+import { variablesGlobals } from "./store";
 
-export const createCodeRunner = ({ variables }: { variables: Variable[] }) => {
-  const isolate = new ivm.Isolate();
+export const createInlineSyncCodeRunner = ({
+  variables,
+}: { variables: Variable[] }) => {
+  const isolate = variablesGlobals.isolate ?? new ivm.Isolate();
   const context = isolate.createContextSync();
   const jail = context.global;
   jail.setSync("global", jail.derefInto());
@@ -27,7 +30,7 @@ export const createHttpReqResponseMappingRunner = (response: unknown) => {
     Array.isArray(response)
   )
     return;
-  const isolate = new ivm.Isolate();
+  const isolate = variablesGlobals.isolate ?? new ivm.Isolate();
   const context = isolate.createContextSync();
   const jail = context.global;
   jail.setSync("global", jail.derefInto());
