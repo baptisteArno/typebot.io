@@ -8,6 +8,7 @@ export const getHelpDocUrl = (
   blockType: BlockWithOptions['type'],
   blockDef?: ForgedBlockDefinition
 ): string | undefined => {
+  return undefined
   switch (blockType) {
     case LogicBlockType.TYPEBOT_LINK:
       return 'https://docs.typebot.io/editor/blocks/logic/typebot-link'
