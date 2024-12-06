@@ -368,7 +368,11 @@ async function sendLimitWarningEmails({
   totalChatsUsed: number;
   workspace: Pick<
     Workspace,
-    "id" | "name" | "chatsLimitFirstEmailSentAt" | "chatsLimitSecondEmailSentAt"
+    | "id"
+    | "name"
+    | "chatsLimitFirstEmailSentAt"
+    | "chatsLimitSecondEmailSentAt"
+    | "plan"
   > & {
     members: (Pick<MemberInWorkspace, "role"> & {
       user: { id: string; email: string | null };
@@ -414,7 +418,11 @@ async function sendLimitWarningEmails({
     }
   }
 
-  if (totalChatsUsed >= chatsLimit && !workspace.chatsLimitSecondEmailSentAt) {
+  if (
+    totalChatsUsed >= chatsLimit &&
+    !workspace.chatsLimitSecondEmailSentAt &&
+    workspace.plan === Plan.FREE
+  ) {
     console.log(`Send reached chats limit email to ${to.join(", ")}...`);
     try {
       await sendReachedChatsLimitEmail({
