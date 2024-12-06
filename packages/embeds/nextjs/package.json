@@ -1,6 +1,6 @@
 {
   "name": "@typebot.io/nextjs",
-  "version": "0.3.33",
+  "version": "0.3.34",
   "license": "FSL-1.1-ALv2",
   "description": "Convenient library to display typebots on your Next.js website",
   "type": "module",

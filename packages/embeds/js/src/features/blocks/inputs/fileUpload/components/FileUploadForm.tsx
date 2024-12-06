@@ -96,19 +96,18 @@ export const FileUploadForm = (props: Props) => {
       description: "An error occured while uploading the file",
     });
   };
+
   const startFilesUpload = async (files: File[]) => {
     setIsUploading(true);
     const urls = await uploadFiles({
       apiHost:
         props.context.apiHost ?? guessApiHost({ ignoreChatApiUrl: true }),
-      files: files.map((file, index) => ({
-        file: file,
+      files: files.map((file) => ({
+        file,
         input: {
           sessionId: props.context.sessionId,
           blockId: props.block.id,
-          fileName: files.some((f) => f.name === file.name)
-            ? file.name + `-${index}`
-            : file.name,
+          fileName: file.name,
         },
       })),
       onUploadProgress: setUploadProgressPercent,
