@@ -1,12 +1,12 @@
 import { stringifyError } from "@typebot.io/lib/stringifyError";
 import { isDefined } from "@typebot.io/lib/utils";
-import { Isolate, Reference } from "isolated-vm";
+import { Reference } from "isolated-vm";
 import { parseTransferrableValue } from "./codeRunners";
 import { extractVariablesFromText } from "./extractVariablesFromText";
+import { getOrCreateIsolate } from "./getOrCreateIsolate";
 import { parseGuessedValueType } from "./parseGuessedValueType";
 import { parseVariables } from "./parseVariables";
 import type { Variable } from "./schemas";
-import { variablesGlobals } from "./store";
 
 const defaultTimeout = 10 * 1000;
 
@@ -42,10 +42,7 @@ export const executeFunction = async ({
     variableUpdates.set(key, value);
   };
 
-  const isolate = variablesGlobals.isolate ?? new Isolate();
-  if (!variablesGlobals.isolate) {
-    variablesGlobals.isolate = isolate;
-  }
+  const isolate = getOrCreateIsolate();
   const context = isolate.createContextSync();
   const jail = context.global;
   jail.setSync("global", jail.derefInto());
