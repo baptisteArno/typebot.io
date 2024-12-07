@@ -2,9 +2,12 @@
 
 import { Card } from "@/components/card";
 import { TextLink } from "@/components/text-link";
+import { cn } from "@/lib/utils";
 import clsx from "clsx";
 import { AnimatePresence, motion } from "motion/react";
-import { useEffect, useRef, useState } from "react";
+import { type SVGProps, useEffect, useRef, useState } from "react";
+import { useWindowSize } from "react-use";
+import { breakpoints } from "./constants";
 import type { FeatureCardData } from "./types";
 
 const carouselItemClassName = "carousel-item";
@@ -56,6 +59,8 @@ const features = [
 export const MainFeatures = () => {
   const [currentFeatureIndex, setCurrentFeatureIndex] = useState(0);
   const carouselRef = useRef<HTMLDivElement>(null);
+  const { width } = useWindowSize();
+  const isMobile = width < breakpoints.md;
 
   const currentFeature = features[currentFeatureIndex];
 
@@ -66,6 +71,7 @@ export const MainFeatures = () => {
     const items = container.getElementsByClassName(carouselItemClassName);
 
     const handleScroll = () => {
+      if (!isMobile) return;
       let currentIndex = 0;
       let minDistance = Number.POSITIVE_INFINITY;
 
@@ -89,30 +95,41 @@ export const MainFeatures = () => {
     return () => {
       container.removeEventListener("scroll", handleScroll);
     };
-  }, []);
+  }, [isMobile]);
+
+  const expandCardIfDesktop = (index: number) => {
+    console.log(index);
+    if (isMobile) return;
+    setCurrentFeatureIndex(index);
+  };
 
   return (
-    <div className="w-full gap-2 flex flex-col">
+    <div className="w-full gap-2 flex flex-col md:flex-row md:items-start max-w-7xl md:gap-0">
       <div
         ref={carouselRef}
-        className="flex gap-2 items-end overflow-x-auto snap-x scroll-px-4 snap-always no-scrollbar px-4 snap-mandatory"
+        className="flex md:flex-col gap-2 items-end overflow-x-auto md:overflow-hidden snap-x scroll-px-4 snap-always no-scrollbar px-4 snap-mandatory md:max-w-xl md:px-0"
       >
-        {features.map((feature) => (
+        {features.map((feature, index) => (
           <FeatureCard
             key={feature.title.main}
             className={clsx(
               carouselItemClassName,
-              "min-w-[calc(100%-.75rem)] snap-start",
+              "min-w-[calc(100%-.75rem)] snap-start cursor-pointer",
             )}
             feature={feature}
+            isExpanded={isMobile || feature.title === currentFeature.title}
+            onClick={() => expandCardIfDesktop(index)}
           />
         ))}
       </div>
-      <div className="bg-gray-12 rounded-2xl p-2 mx-4 max-w-full aspect-square">
+      <Connector className="hidden md:block" />
+      <div className="bg-gray-12 rounded-2xl p-2 mx-4 md:mx-0 max-w-full aspect-square">
         <AnimatePresence mode="popLayout">
           <motion.video
             key={currentFeature.video.src}
             src={currentFeature.video.src}
+            width="476px"
+            height="476px"
             className="rounded-lg"
             autoPlay
             muted
@@ -129,26 +146,160 @@ export const MainFeatures = () => {
 };
 
 const FeatureCard = ({
+  isExpanded,
   feature,
   className,
+  onClick,
 }: {
+  isExpanded?: boolean;
   feature: FeatureCardData;
   className?: string;
+  onClick: () => void;
 }) => {
   return (
-    <Card className={className}>
+    <Card className={className} onClick={onClick}>
       <h2 className="text-2xl">
         <span className="font-bold">{feature.title.main}</span>:{" "}
         {feature.title.sub}
       </h2>
-      <div className="flex flex-col gap-4">
+      <motion.div
+        className={clsx(
+          "flex flex-col gap-4",
+          isExpanded ? "pointer-events-auto" : "pointer-events-none",
+        )}
+        animate={{
+          height: isExpanded ? "auto" : 0,
+          opacity: isExpanded ? 1 : 0,
+        }}
+        transition={{ duration: 0.4, type: "spring", bounce: 0.15 }}
+      >
         <p>{feature.description}</p>
         {feature.link && (
           <TextLink href={feature.link.src} target="_blank">
             {feature.link.text}
           </TextLink>
         )}
-      </div>
+      </motion.div>
     </Card>
   );
 };
+
+const Connector = ({ className }: SVGProps<SVGSVGElement>) => (
+  <svg
+    width="119"
+    height="266"
+    viewBox="0 0 119 266"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    className={cn("-ml-2", className)}
+  >
+    <path
+      d="M118.53 260.53C118.823 260.237 118.823 259.763 118.53 259.47L113.757 254.697C113.464 254.404 112.99 254.404 112.697 254.697C112.404 254.99 112.404 255.464 112.697 255.757L116.939 260L112.697 264.243C112.404 264.536 112.404 265.01 112.697 265.303C112.99 265.596 113.464 265.596 113.757 265.303L118.53 260.53ZM9.5 14.75H40V13.25H9.5V14.75ZM44.25 19V255H45.75V19H44.25ZM50 260.75H118V259.25H50V260.75ZM44.25 255C44.25 258.176 46.8244 260.75 50 260.75V259.25C47.6528 259.25 45.75 257.347 45.75 255H44.25ZM40 14.75C42.3472 14.75 44.25 16.6528 44.25 19H45.75C45.75 15.8244 43.1756 13.25 40 13.25V14.75Z"
+      fill="#FF5924"
+    />
+    <g filter="url(#filter0_dd_589_8052)">
+      <circle cx="16" cy="14" r="8" fill="#ECECEC" />
+      <circle cx="16" cy="14" r="7.5" stroke="white" />
+    </g>
+    <g filter="url(#filter1_d_589_8052)">
+      <circle
+        cx="16.0026"
+        cy="14.0002"
+        r="3.66667"
+        stroke="#FF5924"
+        strokeWidth="2"
+        shapeRendering="crispEdges"
+      />
+    </g>
+    <defs>
+      <filter
+        id="filter0_dd_589_8052"
+        x="0"
+        y="0"
+        width="32"
+        height="32"
+        filterUnits="userSpaceOnUse"
+        colorInterpolationFilters="sRGB"
+      >
+        <feFlood floodOpacity="0" result="BackgroundImageFix" />
+        <feColorMatrix
+          in="SourceAlpha"
+          type="matrix"
+          values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+          result="hardAlpha"
+        />
+        <feOffset dy="1" />
+        <feGaussianBlur stdDeviation="1" />
+        <feComposite in2="hardAlpha" operator="out" />
+        <feColorMatrix
+          type="matrix"
+          values="0 0 0 0 0.0901961 0 0 0 0 0.0901961 0 0 0 0 0.0901961 0 0 0 0.08 0"
+        />
+        <feBlend
+          mode="normal"
+          in2="BackgroundImageFix"
+          result="effect1_dropShadow_589_8052"
+        />
+        <feColorMatrix
+          in="SourceAlpha"
+          type="matrix"
+          values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+          result="hardAlpha"
+        />
+        <feOffset dy="2" />
+        <feGaussianBlur stdDeviation="4" />
+        <feComposite in2="hardAlpha" operator="out" />
+        <feColorMatrix
+          type="matrix"
+          values="0 0 0 0 0.0901961 0 0 0 0 0.0901961 0 0 0 0 0.0901961 0 0 0 0.12 0"
+        />
+        <feBlend
+          mode="normal"
+          in2="effect1_dropShadow_589_8052"
+          result="effect2_dropShadow_589_8052"
+        />
+        <feBlend
+          mode="normal"
+          in="SourceGraphic"
+          in2="effect2_dropShadow_589_8052"
+          result="shape"
+        />
+      </filter>
+      <filter
+        id="filter1_d_589_8052"
+        x="10.3359"
+        y="9.3335"
+        width="11.333"
+        height="11.3335"
+        filterUnits="userSpaceOnUse"
+        colorInterpolationFilters="sRGB"
+      >
+        <feFlood floodOpacity="0" result="BackgroundImageFix" />
+        <feColorMatrix
+          in="SourceAlpha"
+          type="matrix"
+          values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+          result="hardAlpha"
+        />
+        <feOffset dy="1" />
+        <feGaussianBlur stdDeviation="0.5" />
+        <feComposite in2="hardAlpha" operator="out" />
+        <feColorMatrix
+          type="matrix"
+          values="0 0 0 0 0.0901961 0 0 0 0 0.0901961 0 0 0 0 0.0901961 0 0 0 0.12 0"
+        />
+        <feBlend
+          mode="normal"
+          in2="BackgroundImageFix"
+          result="effect1_dropShadow_589_8052"
+        />
+        <feBlend
+          mode="normal"
+          in="SourceGraphic"
+          in2="effect1_dropShadow_589_8052"
+          result="shape"
+        />
+      </filter>
+    </defs>
+  </svg>
+);

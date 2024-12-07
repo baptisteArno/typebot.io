@@ -58,7 +58,7 @@ const InstructionCard = ({
     <Card className="flex flex-col items-center gap-6 p-1.5 pb-6">
       <img src={image.src} alt={image.alt} className="rounded-xl" />
       <div className="flex flex-col gap-2 px-3">
-        <h3 className="font-body uppercase font-bold">{title}</h3>
+        <h3 className="uppercase font-bold text-lg">{title}</h3>
         <p>{description}</p>
       </div>
     </Card>

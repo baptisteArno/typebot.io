@@ -11,7 +11,7 @@ export const Section = ({
 }) => {
   return (
     <section
-      className={cn("flex flex-col px-4 py-20 gap-20", className)}
+      className={cn("flex flex-col px-4 py-20 gap-20 items-center", className)}
       style={style}
     >
       {children}

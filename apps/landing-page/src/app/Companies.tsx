@@ -12,9 +12,21 @@ import {
 } from "./Brands";
 
 export const Companies = () => (
-  <div className="flex w-full flex-col gap-6">
-    <h2 className=" px-4 font-medium">Trusted by 650+ companies worldwide</h2>
-    <div className="relative flex w-full">
+  <div className="flex w-full flex-col gap-6 md:gap-12 items-center">
+    <h2 className=" px-4 font-medium max-w-6xl">
+      Trusted by 650+ companies worldwide
+    </h2>
+    <div className="hidden md:flex items-center gap-16 px-4">
+      <MakerLead className="w-32 flex-shrink-0" />
+      <Webisharp className="w-32 flex-shrink-0" />
+      <Shadow className="w-28 flex-shrink-0" />
+      <IbanFirst className="w-28 flex-shrink-0" />
+      <Lemlist className="w-28 flex-shrink-0" />
+      <SocialHackrs className="w-32 flex-shrink-0" />
+      <PinpointInteractive className="w-32 flex-shrink-0" />
+      <Awwwsome className="w-32 flex-shrink-0" />
+    </div>
+    <div className="relative flex w-full md:hidden">
       <Marquee>
         <IbanFirst width="100px" height="60px" />
         <MakerLead width="100px" height="60px" />

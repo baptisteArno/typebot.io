@@ -1,7 +1,6 @@
 import Image from "next/image";
 import gradientSeparatorSrc from "../../public/images/gradient-separator.png";
 import { AllFeatures } from "./AllFeatures";
-import { CallToActionSection } from "./CallToActionSection";
 import { Companies } from "./Companies";
 import { Cta } from "./Cta";
 import { Faq } from "./Faq";
@@ -46,10 +45,7 @@ export default function Home() {
           animationFillMode: "forwards",
         }}
       >
-        <div className="flex flex-col gap-10 px-4">
-          <UseCases />
-          <CallToActionSection />
-        </div>
+        <UseCases />
         <Companies />
         <MainFeatures />
       </Section>

@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@/components/button";
 import { Progress } from "@/components/progress";
 import { motion } from "framer-motion";
 import Image from "next/image";
@@ -73,41 +74,44 @@ export const UseCases = () => {
   };
 
   return (
-    <div className="flex flex-col items-center gap-8">
-      <div className="flex items-end gap-8">
-        {useCases.map((useCase, index) => (
-          <UsecaseTitle
-            progressValue={getProgressValue(index)}
-            onClick={() => selectUseCase(index)}
-            key={useCase.value}
-          >
-            {useCase.label}
-          </UsecaseTitle>
-        ))}
+    <div className="flex flex-col gap-10 px-4 md:pt-10">
+      <div className="flex flex-col items-center gap-8 md:12">
+        <div className="flex items-end gap-4 md:gap-12">
+          {useCases.map((useCase, index) => (
+            <UsecaseTitle
+              progressValue={getProgressValue(index)}
+              onClick={() => selectUseCase(index)}
+              key={useCase.value}
+            >
+              {useCase.label}
+            </UsecaseTitle>
+          ))}
+        </div>
+        <motion.div
+          key={currentUseCase.index}
+          transition={{
+            type: "spring",
+            bounce: 0,
+            duration: 0.5,
+          }}
+          initial={{
+            opacity: 0,
+            x: previousIndex < currentUseCase.index ? 30 : -30,
+          }}
+          animate={{
+            opacity: 1,
+            x: 0,
+          }}
+        >
+          <Image
+            src={useCases[currentUseCase.index].imageSrc}
+            alt="Builder screenshot"
+            placeholder="blur"
+            className="rounded-md max-w-6xl w-full"
+          />
+        </motion.div>
       </div>
-      <motion.div
-        key={currentUseCase.index}
-        transition={{
-          type: "spring",
-          bounce: 0,
-          duration: 0.5,
-        }}
-        initial={{
-          opacity: 0,
-          x: previousIndex < currentUseCase.index ? 30 : -30,
-        }}
-        animate={{
-          opacity: 1,
-          x: 0,
-        }}
-      >
-        <Image
-          src={useCases[currentUseCase.index].imageSrc}
-          alt="Builder screenshot"
-          placeholder="blur"
-          className="rounded-md"
-        />
-      </motion.div>
+      <Cta />
     </div>
   );
 };
@@ -121,13 +125,42 @@ const UsecaseTitle = ({
   progressValue?: number;
   onClick?: () => void;
 }) => (
-  <div className="flex flex-col items-center gap-2" onClick={onClick}>
-    <p
-      className="text-base font-medium transition-opacity duration-200 ease-out text-center"
+  <button
+    className="flex flex-col items-center gap-2 flex-shrink-0"
+    onClick={onClick}
+  >
+    <h3
+      className="text-lg md:text-2xl font-medium transition-opacity duration-200 ease-out text-center"
       style={{ opacity: progressValue ? 1 : 0.5 }}
     >
       {children}
-    </p>
+    </h3>
     <Progress value={progressValue ?? 0} className="w-12" />
+  </button>
+);
+
+export const Cta = () => (
+  <div className="flex flex-col gap-6 items-center">
+    <p className="text-gray-11 text-balance max-w-4xl md:text-center">
+      Picture{" "}
+      <span className="font-medium">
+        a bot that goes beyond answering questions
+      </span>
+      : it builds relationships, shares content, sparks conversations, and
+      reflects your business's personality and values. With over 3 billion
+      people on messaging apps,{" "}
+      <span className="font-medium">
+        it's time to connect with your customers where they are
+      </span>
+      .
+    </p>
+    <div className="w-full md:w-auto flex flex-col md:flex-row gap-4">
+      <Button variant="cta" size="lg">
+        Try it out for free
+      </Button>
+      <Button variant="ctaSecondary" size="lg">
+        Book a demo
+      </Button>
+    </div>
   </div>
 );
