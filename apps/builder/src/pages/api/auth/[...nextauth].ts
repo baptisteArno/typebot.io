@@ -186,8 +186,14 @@ export const getAuthOptions = ({
     signIn({ user }) {
       Sentry.setUser({ id: user.id });
     },
-    signOut() {
+    async signOut({ session }) {
       Sentry.setUser(null);
+      await trackEvents([
+        {
+          name: "User logged out",
+          userId: (session as unknown as { userId: string }).userId,
+        },
+      ]);
     },
   },
   callbacks: {

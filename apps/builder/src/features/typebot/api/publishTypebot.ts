@@ -8,6 +8,7 @@ import prisma from "@typebot.io/prisma";
 import { Plan } from "@typebot.io/prisma/enum";
 import { computeRiskLevel } from "@typebot.io/radar";
 import { settingsSchema } from "@typebot.io/settings/schemas";
+import type { TelemetryEvent } from "@typebot.io/telemetry/schemas";
 import { trackEvents } from "@typebot.io/telemetry/trackEvents";
 import { themeSchema } from "@typebot.io/theme/schemas";
 import { edgeSchema } from "@typebot.io/typebot/schemas/edge";
@@ -135,7 +136,7 @@ export const publishTypebot = authenticatedProcedure
       }
     }
 
-    const publishEvents = await parseTypebotPublishEvents({
+    const publishEvents: TelemetryEvent[] = await parseTypebotPublishEvents({
       existingTypebot,
       userId: user.id,
       hasFileUploadBlocks,
@@ -162,7 +163,7 @@ export const publishTypebot = authenticatedProcedure
           theme: themeSchema.parse(existingTypebot.theme),
         },
       });
-    else
+    else {
       await prisma.publicTypebot.createMany({
         data: {
           version: existingTypebot.version,
@@ -181,10 +182,7 @@ export const publishTypebot = authenticatedProcedure
           theme: themeSchema.parse(existingTypebot.theme),
         },
       });
-
-    await trackEvents([
-      ...publishEvents,
-      {
+      publishEvents.push({
         name: "Typebot published",
         workspaceId: existingTypebot.workspaceId,
         typebotId: existingTypebot.id,
@@ -193,8 +191,10 @@ export const publishTypebot = authenticatedProcedure
           name: existingTypebot.name,
           isFirstPublish: existingTypebot.publishedTypebot ? undefined : true,
         },
-      },
-    ]);
+      });
+    }
+
+    await trackEvents(publishEvents);
 
     return { message: "success" };
   });
