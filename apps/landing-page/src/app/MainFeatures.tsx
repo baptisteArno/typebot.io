@@ -172,6 +172,7 @@ const FeatureCard = ({
           opacity: isExpanded ? 1 : 0,
         }}
         transition={{ duration: 0.4, type: "spring", bounce: 0.15 }}
+        suppressHydrationWarning
       >
         <p>{feature.description}</p>
         {feature.link && (

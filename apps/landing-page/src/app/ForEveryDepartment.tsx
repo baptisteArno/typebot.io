@@ -2,6 +2,7 @@
 
 import { IconButton } from "@/components/icon-button";
 import { MotionCard } from "@/components/motion-wrappers";
+import { cn } from "@/lib/utils";
 import { isDefined } from "@typebot.io/lib/utils";
 import { CloseIcon } from "@typebot.io/ui/icons/CloseIcon";
 import { PlusIcon } from "@typebot.io/ui/icons/PlusIcon";
@@ -11,7 +12,6 @@ import marketingSrc from "public/images/marketing.png";
 import productSrc from "public/images/product.png";
 import salesSrc from "public/images/sales.png";
 import { useRef, useState } from "react";
-import { useClickAway } from "react-use";
 import type { DepartmentCardData } from "./types";
 
 const departments = [
@@ -91,42 +91,41 @@ export const ForEveryDepartment = () => {
     ? departments[openedDepartmentIndex]
     : undefined;
 
-  useClickAway(dialogContentRef, () => {
-    setTimeout(() => {
-      setOpenedDepartmentIndex(undefined);
-    }, 100);
-  });
-
   return (
     <>
-      <div className="w-full gap-12 flex flex-col items-center">
+      <div className="w-full gap-12 flex flex-col max-w-7xl">
         <div className="flex flex-col gap-4">
           <h2>Designed for every department</h2>
           <p className="text-gray-11 font-normal">
             Automate conversations throughout the entire customer journey.
           </p>
         </div>
-        {departments.map((department, index) => (
-          <DepartmentCard
-            key={department.title}
-            department={department}
-            index={index}
-            setOpenedDepartmentIndex={setOpenedDepartmentIndex}
-            openedDepartmentIndex={openedDepartmentIndex}
-            openedDepartment={openedDepartment}
-          />
-        ))}
+        <div className="flex flex-col gap-4 md:gap-6 md:flex-row">
+          {departments.map((department, index) => (
+            <DepartmentCard
+              key={department.title}
+              department={department}
+              index={index}
+              setOpenedDepartmentIndex={setOpenedDepartmentIndex}
+              openedDepartmentIndex={openedDepartmentIndex}
+              openedDepartment={openedDepartment}
+            />
+          ))}
+        </div>
       </div>
       {openedDepartment && (
-        <div className="fixed size-full inset-0 bg-gray-1/80 z-10">
-          <div className="absolute top-4">
-            <OpenedDepartmentCard
-              department={openedDepartment}
-              index={openedDepartmentIndex as number}
-              dialogContentRef={dialogContentRef}
-              onClose={() => setOpenedDepartmentIndex(undefined)}
-            />
-          </div>
+        <div className="fixed size-full inset-0 z-10 flex justify-center items-center">
+          <div
+            className="bg-gray-1/80 absolute inset-0"
+            onClick={() => setOpenedDepartmentIndex(undefined)}
+          />
+          <OpenedDepartmentCard
+            className="absolute"
+            department={openedDepartment}
+            index={openedDepartmentIndex as number}
+            dialogContentRef={dialogContentRef}
+            onClose={() => setOpenedDepartmentIndex(undefined)}
+          />
         </div>
       )}
     </>
@@ -145,10 +144,11 @@ const DepartmentCard = ({
   setOpenedDepartmentIndex: (index: number) => void;
   openedDepartmentIndex: number | undefined;
   openedDepartment: DepartmentCardData | undefined;
+  className?: string;
 }) => (
   <MotionCard
     layoutId={`dep-${index}`}
-    className="p-2 relative"
+    className="p-2 relative cursor-pointer"
     onClick={() => {
       if (openedDepartment) return;
       setOpenedDepartmentIndex(index);
@@ -188,16 +188,18 @@ const OpenedDepartmentCard = ({
   department,
   index,
   dialogContentRef,
+  className,
   onClose,
 }: {
   department: DepartmentCardData;
   index: number;
   dialogContentRef: React.RefObject<HTMLDivElement>;
+  className?: string;
   onClose: () => void;
 }) => (
   <MotionCard
     ref={dialogContentRef}
-    className="mx-4 p-2"
+    className={cn("mx-4 p-2 max-w-xl", className)}
     layoutId={`dep-${index}`}
   >
     <div className="gap-4 flex flex-col">
