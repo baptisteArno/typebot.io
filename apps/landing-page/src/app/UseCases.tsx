@@ -107,7 +107,7 @@ export const UseCases = () => {
             src={useCases[currentUseCase.index].imageSrc}
             alt="Builder screenshot"
             placeholder="blur"
-            className="rounded-md max-w-6xl w-full"
+            className="rounded-md max-w-full md:max-w-6xl"
           />
         </motion.div>
       </div>
