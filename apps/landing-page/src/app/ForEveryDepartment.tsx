@@ -116,7 +116,7 @@ export const ForEveryDepartment = () => {
       {openedDepartment && (
         <div className="fixed size-full inset-0 z-10 flex justify-center items-center">
           <div
-            className="bg-gray-1/80 absolute inset-0"
+            className="bg-gray-1/80 absolute inset-0 animate-slide-fade-in"
             onClick={() => setOpenedDepartmentIndex(undefined)}
           />
           <OpenedDepartmentCard
@@ -161,10 +161,15 @@ const DepartmentCard = ({
       <motion.h2
         layoutId={`dep-${index}-heading`}
         className="text-3xl font-medium"
+        layout="position"
       >
         {department.title}
       </motion.h2>
-      <motion.p layoutId={`dep-${index}-desc`} className="pr-10">
+      <motion.p
+        layoutId={`dep-${index}-desc`}
+        className="pr-10"
+        layout="position"
+      >
         {department.sub}
       </motion.p>
     </div>
@@ -223,10 +228,13 @@ const OpenedDepartmentCard = ({
           <motion.h2
             className="text-3xl font-medium"
             layoutId={`dep-${index}-heading`}
+            layout="position"
           >
             {department.title}
           </motion.h2>
-          <motion.p layoutId={`dep-${index}-desc`}>{department.sub}</motion.p>
+          <motion.p layoutId={`dep-${index}-desc`} layout="position">
+            {department.sub}
+          </motion.p>
         </div>
         <ul className="flex flex-col gap-4 pl-4 list-inside list-disc">
           {department.bulletPoints.map((bulletPoint, index) => (
