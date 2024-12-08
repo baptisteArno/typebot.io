@@ -5,6 +5,8 @@ import { cn } from "@/lib/utils";
 import { ChevronDownIcon } from "@typebot.io/ui/icons/ChevronDownIcon";
 import { ChevronUpIcon } from "@typebot.io/ui/icons/ChevronUpIcon";
 import { motion } from "motion/react";
+import Image from "next/image";
+import threeDButton from "public/images/3d-button.png";
 import { useState } from "react";
 
 const data = [
@@ -36,47 +38,92 @@ const data = [
 ];
 
 export const ProductPrinciples = () => {
+  const [openedIndex, setOpenedIndex] = useState<number | null>(0);
+
+  const toggleIndex = (index: number) => {
+    if (openedIndex === index) return;
+    setOpenedIndex(index);
+  };
+
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-8 max-w-7xl w-full">
       <h2>At Typebot, we strive to create great things</h2>
-      <div className="flex flex-col gap-2">
-        {data.map(({ title, content }) => (
-          <Principle key={title} title={title} content={content} />
-        ))}
+      <div className="flex md:bg-gray-1 rounded-2xl gap-4 p-2 items-start">
+        <div className="flex flex-col gap-2 md:gap-0 md:pl-4 w-full">
+          {data.map(({ title, content }, index) => (
+            <Principle
+              key={index}
+              title={title}
+              content={content}
+              isOpened={index === openedIndex}
+              isLastItem={index === data.length - 1}
+              onClick={() => toggleIndex(index)}
+            />
+          ))}
+        </div>
+        <Image
+          src={threeDButton}
+          alt="An illustration of a button in 3 dimension with the typebot logo on it"
+          className="max-w-lg md:block hidden"
+        />
       </div>
     </div>
   );
 };
 
-const Principle = ({ title, content }: { title: string; content: string }) => {
-  const [isOpen, setIsOpen] = useState(false);
-
+const Principle = ({
+  title,
+  content,
+  isOpened,
+  isLastItem,
+  onClick,
+}: {
+  title: string;
+  content: string;
+  isOpened: boolean;
+  isLastItem: boolean;
+  onClick: () => void;
+}) => {
   return (
     <details
-      className="p-4 rounded-xl bg-gray-1 border border-gray-6"
-      onToggle={(e) => setIsOpen((e.target as HTMLDetailsElement).open)}
+      className="rounded-xl md:rounded-none md:px-0 bg-gray-1 border md:border-0 border-gray-6 cursor-pointer"
+      open={isOpened}
     >
-      <summary className="font-heading font-medium text-2xl flex justify-between list-none">
-        {title}
-        <span
-          className={cn(
-            iconButtonVariants({ variant: "secondary" }),
-            "flex-shrink-0 [&_svg]:size-6",
-          )}
-        >
-          {isOpen ? <ChevronUpIcon className="size-8" /> : <ChevronDownIcon />}
-        </span>
+      <summary
+        className="px-4 py-4 md:py-2 font-heading font-medium text-2xl flex flex-col gap-3 list-none"
+        onClick={(e) => {
+          e.preventDefault();
+          onClick();
+        }}
+      >
+        <div className="flex justify-between">
+          {title}
+          <span
+            className={cn(
+              iconButtonVariants({ variant: "secondary" }),
+              "flex-shrink-0 [&_svg]:size-6",
+            )}
+          >
+            {isOpened ? (
+              <ChevronUpIcon className="size-8" />
+            ) : (
+              <ChevronDownIcon />
+            )}
+          </span>
+        </div>
+
+        {isLastItem ? null : <hr className="border-gray-3 hidden md:block" />}
       </summary>
       <motion.div
         initial={{ height: 0, opacity: 0 }}
         animate={{
-          height: isOpen ? "auto" : 0,
-          opacity: isOpen ? 1 : 0,
+          height: isOpened ? "auto" : 0,
+          opacity: isOpened ? 1 : 0,
         }}
         transition={{ duration: 0.4, type: "spring", bounce: 0.15 }}
       >
-        <hr className="my-4" />
-        <p>{content}</p>
+        <hr className="mb-4 md:hidden mx-4 border-gray-3" />
+        <p className="pb-4 mx-4">{content}</p>
       </motion.div>
     </details>
   );
