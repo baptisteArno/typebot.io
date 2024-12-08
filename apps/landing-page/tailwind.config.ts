@@ -22,6 +22,7 @@ export default {
       animation: {
         marquee: "marquee 20s linear infinite",
         ["slide-fade-in"]: "slide-fade-in 250ms ease-out",
+        float: "float 4s ease-in-out infinite",
       },
       keyframes: {
         marquee: {
@@ -31,6 +32,10 @@ export default {
         ["slide-fade-in"]: {
           "0%": { opacity: "0", transform: "translateY(10px)" },
           "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+        float: {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-4px)" },
         },
       },
     },
