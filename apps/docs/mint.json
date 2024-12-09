@@ -229,6 +229,7 @@
       "pages": [
         "self-hosting/deploy/docker",
         "self-hosting/deploy/vercel",
+        "self-hosting/deploy/alibaba-cloud",
         "self-hosting/deploy/manual"
       ]
     },
