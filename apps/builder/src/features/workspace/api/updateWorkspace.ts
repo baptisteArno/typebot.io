@@ -24,6 +24,9 @@ export const updateWorkspace = authenticatedProcedure
         .describe(
           "[Where to find my workspace ID?](../how-to#how-to-find-my-workspaceid)",
         ),
+      inEditorAiFeaturesEnabled: z.boolean().optional(),
+      aiFeaturePrompt: z.string().optional(),
+      aiFeatureCredentialId: z.string().optional(),
     }),
   )
   .output(
