@@ -77,13 +77,21 @@ export const getPublishedTypebot = authenticatedProcedure
       if (
         !existingTypebot?.id ||
         (await isReadTypebotForbidden(existingTypebot, user))
-      )
-        throw new TRPCError({ code: 'NOT_FOUND', message: 'Typebot not found' })
+      ) {
+        console.log(
+          `Typebot not found or access forbidden for ID: ${typebotId}`
+        )
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: `Typebot not found or access forbidden for ID: ${typebotId}`,
+        })
+      }
 
-      if (!existingTypebot.publishedTypebot)
+      if (!existingTypebot.publishedTypebot) {
         return {
           publishedTypebot: null,
         }
+      }
 
       try {
         const parsedTypebot = migrateToLatestVersion
@@ -99,9 +107,10 @@ export const getPublishedTypebot = authenticatedProcedure
             : undefined,
         }
       } catch (err) {
+        console.error('Error parsing published typebot:', err)
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
-          message: 'Failed to parse published typebot',
+          message: `Failed to parse published typebot: ${typebotId}`,
           cause: err,
         })
       }
@@ -204,7 +213,6 @@ export const getPublishedTypebotCached = authenticatedProcedure
             message: 'Typebot not found',
           })
         }
-
         if (!existingTypebot.publishedTypebot) {
           return {
             publishedTypebot: null,

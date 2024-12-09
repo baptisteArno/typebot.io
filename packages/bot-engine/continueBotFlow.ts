@@ -75,11 +75,12 @@ export const continueBotFlow = async (
     state.typebotsQueue[0].typebot.groups
   )
 
-  if (!block)
+  if (!block) {
     throw new TRPCError({
       code: 'INTERNAL_SERVER_ERROR',
-      message: 'Group / block not found',
+      message: `Group / block not found. currentBlockId: ${newSessionState.currentBlockId}, TypebotId ${newSessionState.typebotsQueue.typebot.id}`,
     })
+  }
 
   let variableToUpdate
 

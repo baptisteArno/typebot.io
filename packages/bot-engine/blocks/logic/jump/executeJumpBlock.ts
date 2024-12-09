@@ -15,11 +15,14 @@ export const executeJumpBlock = (
     groupToJumpTo?.blocks.find((block) => block.id === blockId) ??
     groupToJumpTo?.blocks[0]
 
-  if (!blockToJumpTo)
+  if (!blockToJumpTo) {
     throw new TRPCError({
       code: 'INTERNAL_SERVER_ERROR',
-      message: 'Block to jump to is not found',
+      message: `Block to jump to is not found. groupId: ${
+        groupId ?? 'undefined'
+      }, blockId: ${blockId ?? 'undefined'}`,
     })
+  }
 
   const portalEdge = createPortalEdge({
     to: { groupId, blockId: blockToJumpTo?.id },

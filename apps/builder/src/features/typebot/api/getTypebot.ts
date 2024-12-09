@@ -64,8 +64,14 @@ export const getTypebot = publicProcedure
       if (
         !existingTypebot?.id ||
         (await isReadTypebotForbidden(existingTypebot, user))
-      )
-        throw new TRPCError({ code: 'NOT_FOUND', message: 'Typebot not found' })
+      ) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: `Typebot with ID: ${typebotId} not found or access forbidden. User: ${
+            user?.id ?? 'unknown'
+          }`,
+        })
+      }
 
       try {
         const parsedTypebot = migrateToLatestVersion
@@ -79,7 +85,7 @@ export const getTypebot = publicProcedure
       } catch (err) {
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
-          message: 'Failed to parse typebot',
+          message: `Failed to parse typebot with ID: ${typebotId}`,
           cause: err,
         })
       }

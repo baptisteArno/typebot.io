@@ -36,19 +36,25 @@ export const listProjects = authenticatedProcedure
       },
     })
 
-    if (!workspace || isReadWorkspaceFobidden(workspace, user))
+    if (!workspace || isReadWorkspaceFobidden(workspace, user)) {
+      const message = `No workspace found or read forbidden. workspaceId: ${workspaceId}, credentialsId: ${credentialsId}`
+      console.error(message)
       throw new TRPCError({
         code: 'NOT_FOUND',
-        message: 'No workspace found',
+        message,
       })
+    }
 
     const credentials = workspace.credentials.at(0)
 
-    if (!credentials)
+    if (!credentials) {
+      const message = `No credentials found for workspaceId: ${workspaceId}, credentialsId: ${credentialsId}`
+      console.error(message)
       throw new TRPCError({
         code: 'NOT_FOUND',
-        message: 'No credentials found',
+        message,
       })
+    }
 
     const data = (await decrypt(
       credentials.data,
@@ -78,9 +84,11 @@ export const listProjects = authenticatedProcedure
         })),
       }
     } catch (e) {
+      const message = 'Could not list projects'
+      console.error(`${message}. Cause: ${e}`)
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
-        message: 'Could not list projects',
+        message,
         cause: e,
       })
     }
