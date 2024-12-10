@@ -1,6 +1,4 @@
 import prisma from "@typebot.io/prisma";
-import type { Answer } from "@typebot.io/results/schemas/answers";
-import type { Result } from "@typebot.io/results/schemas/results";
 
 type Props = {
   id: string;
@@ -31,7 +29,5 @@ export const findResult = async ({ id }: Props) => {
   return {
     ...result,
     answers: (answersV2 ?? []).concat(answers ?? []),
-  } as Pick<Result, "id" | "variables" | "hasStarted"> & {
-    answers: Pick<Answer, "content" | "blockId">[];
   };
 };

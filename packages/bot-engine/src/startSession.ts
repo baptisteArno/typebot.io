@@ -23,15 +23,15 @@ import {
   parseVariables,
 } from "@typebot.io/variables/parseVariables";
 import { prefillVariables } from "@typebot.io/variables/prefillVariables";
-import type {
-  SetVariableHistoryItem,
-  Variable,
-  VariableWithValue,
+import {
+  type SetVariableHistoryItem,
+  type Variable,
+  type VariableWithValue,
+  variableWithValueSchema,
 } from "@typebot.io/variables/schemas";
+import { z } from "@typebot.io/zod";
 import { NodeType, parse } from "node-html-parser";
 import { continueBotFlow } from "./continueBotFlow";
-import { getFirstEdgeId } from "./getFirstEdgeId";
-import { getNextGroup } from "./getNextGroup";
 import { parseVariablesInRichText } from "./parseBubbleBlock";
 import { parseDynamicTheme } from "./parseDynamicTheme";
 import { findPublicTypebot } from "./queries/findPublicTypebot";
@@ -370,9 +370,14 @@ const getResult = async ({
     (prefilledVariable) => isDefined(prefilledVariable.value),
   );
 
+  const existingVariables = z
+    .array(variableWithValueSchema)
+    .or(z.undefined())
+    .parse(existingResult?.variables);
+
   const updatedResult = {
     variables: prefilledVariableWithValue.concat(
-      existingResult?.variables.filter(
+      existingVariables?.filter(
         (resultVariable) =>
           isDefined(resultVariable.value) &&
           !prefilledVariableWithValue.some(
