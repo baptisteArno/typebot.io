@@ -23,6 +23,7 @@ export default {
         marquee: "marquee 20s linear infinite",
         ["slide-fade-in"]: "slide-fade-in 250ms ease-out",
         float: "float 4s ease-in-out infinite",
+        ["slight-random-rotate"]: "linear slight-random-rotate forwards",
       },
       keyframes: {
         marquee: {
@@ -36,6 +37,10 @@ export default {
         float: {
           "0%, 100%": { transform: "translateY(0)" },
           "50%": { transform: "translateY(-4px)" },
+        },
+        ["slight-random-rotate"]: {
+          "0%": { transform: "rotate(0deg)" },
+          "100%": { transform: "rotate(var(--rotate-angle))" },
         },
       },
     },

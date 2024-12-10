@@ -27,7 +27,7 @@ export const metadata = {
 
 export default function Home() {
   return (
-    <div className="flex flex-col items-stretch overflow-hidden">
+    <div className="flex flex-col items-stretch">
       <TypebotBubble />
       <div className="fixed top-4 md:bottom-12 md:top-auto z-10 w-full">
         <Header />
@@ -57,7 +57,7 @@ export default function Home() {
         <JoinTheCommunity />
         <ProductPrinciples />
       </Section>
-      <Section className="dark px-0">
+      <Section className="dark md:py-0 px-0 md:px-0 gap-0">
         <AllFeatures />
       </Section>
       <Section>

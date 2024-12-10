@@ -55,6 +55,13 @@
   h6 {
     @apply font-heading font-medium;
   }
+
+  /* To debug overflow */
+  /* * {
+    outline: 1px solid #f00 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  } */
 }
 
 @layer utilities {
@@ -65,5 +72,33 @@
   .no-scrollbar {
     -ms-overflow-style: none;
     scrollbar-width: none;
+  }
+
+  .h-all-features-sticky-container {
+    height: calc(
+      (var(--total-cards) + 1) *
+      (
+        100vh -
+        var(--padding-top) -
+        var(--header-height) -
+        var(--gap-header-and-card)
+      ) -
+      var(--header-height)
+    );
+  }
+
+  @keyframes fill-carousel-dot {
+    to {
+      background-color: rgb(var(--gray-10));
+    }
+  }
+
+  @keyframes fade-out {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
   }
 }
