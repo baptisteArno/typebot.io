@@ -31,13 +31,12 @@ import {
 } from "@typebot.io/variables/schemas";
 import { z } from "@typebot.io/zod";
 import { NodeType, parse } from "node-html-parser";
-import { continueBotFlow } from "./continueBotFlow";
+import { autoContinueChatIfStartingWithInput } from "./autoContinueChatIfStartingWithInput";
 import { parseVariablesInRichText } from "./parseBubbleBlock";
 import { parseDynamicTheme } from "./parseDynamicTheme";
 import { findPublicTypebot } from "./queries/findPublicTypebot";
 import { findResult } from "./queries/findResult";
 import { findTypebot } from "./queries/findTypebot";
-import { upsertResult } from "./queries/upsertResult";
 import {
   type StartChatInput,
   type StartChatResponse,
@@ -173,7 +172,7 @@ export const startSession = async ({
     };
   }
 
-  let chatReply = await startBotFlow({
+  const chatReply = await startBotFlow({
     version,
     state: initialState,
     startFrom:
@@ -181,28 +180,6 @@ export const startSession = async ({
     startTime: Date.now(),
     textBubbleContentFormat: startParams.textBubbleContentFormat,
   });
-
-  // Has start message and has no messages to display first
-  if (
-    startParams.message &&
-    chatReply.messages.length === 0 &&
-    (chatReply.clientSideActions?.filter((c) => c.expectsDedicatedReply)
-      .length ?? 0) === 0
-  ) {
-    const resultId = chatReply.newSessionState.typebotsQueue[0].resultId;
-    if (resultId)
-      await upsertResult({
-        hasStarted: true,
-        isCompleted: false,
-        resultId,
-        typebot: chatReply.newSessionState.typebotsQueue[0].typebot,
-      });
-    chatReply = await continueBotFlow(startParams.message, {
-      version,
-      state: chatReply.newSessionState,
-      textBubbleContentFormat: startParams.textBubbleContentFormat,
-    });
-  }
 
   const {
     messages,
@@ -212,7 +189,12 @@ export const startSession = async ({
     logs,
     visitedEdges,
     setVariableHistory,
-  } = chatReply;
+  } = await autoContinueChatIfStartingWithInput({
+    version,
+    message: startParams.message,
+    chatReply,
+    textBubbleContentFormat: startParams.textBubbleContentFormat,
+  });
 
   const clientSideActions = startFlowClientActions ?? [];
 
