@@ -6,8 +6,8 @@ import { createId } from "@paralleldrive/cuid2";
 import type { BlockV6 } from "@typebot.io/blocks-core/schemas/schema";
 import { GraphNavigation } from "@typebot.io/prisma/enum";
 import type {
+  EdgeWithTotalUsers,
   TotalAnswers,
-  TotalVisitedEdges,
 } from "@typebot.io/schemas/features/analytics";
 import type { PublicTypebotV6 } from "@typebot.io/typebot/schemas/publicTypebot";
 import type { TypebotV6 } from "@typebot.io/typebot/schemas/typebot";
@@ -36,12 +36,12 @@ const zoomButtonsScaleBlock = 0.2;
 export const Graph = ({
   typebot,
   totalAnswers,
-  totalVisitedEdges,
+  edgesWithTotalUsers,
   onUnlockProPlanClick,
   ...props
 }: {
   typebot: TypebotV6 | PublicTypebotV6;
-  totalVisitedEdges?: TotalVisitedEdges[];
+  edgesWithTotalUsers?: EdgeWithTotalUsers[];
   totalAnswers?: TotalAnswers[];
   onUnlockProPlanClick?: () => void;
 } & FlexProps) => {
@@ -392,7 +392,7 @@ export const Graph = ({
           groups={typebot.groups}
           events={typebot.events}
           totalAnswers={totalAnswers}
-          totalVisitedEdges={totalVisitedEdges}
+          edgesWithTotalUsers={edgesWithTotalUsers}
           onUnlockProPlanClick={onUnlockProPlanClick}
         />
       </Flex>

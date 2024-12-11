@@ -12,12 +12,13 @@ import {
 } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { blockHasItems, isInputBlock } from "@typebot.io/blocks-core/helpers";
+import type { InputBlock } from "@typebot.io/blocks-inputs/schema";
 import type { GroupV6 } from "@typebot.io/groups/schemas";
 import { isDefined } from "@typebot.io/lib/utils";
 import type { Stats } from "@typebot.io/results/schemas/answers";
 import type {
+  EdgeWithTotalUsers,
   TotalAnswers,
-  TotalVisitedEdges,
 } from "@typebot.io/schemas/features/analytics";
 import type { Edge } from "@typebot.io/typebot/schemas/edge";
 import React, { useMemo } from "react";
@@ -49,7 +50,7 @@ export const AnalyticsGraphContainer = ({
     { enabled: isDefined(publishedTypebot) },
   );
 
-  const totalVisitedEdges = useMemo(() => {
+  const edgesWithTotalUsers = useMemo(() => {
     if (
       !publishedTypebot?.edges ||
       !publishedTypebot.groups ||
@@ -65,9 +66,8 @@ export const AnalyticsGraphContainer = ({
       edges: publishedTypebot.edges,
       groups: publishedTypebot.groups,
       currentTotalUsers: stats.totalViews,
-      totalVisitedEdges: data.offDefaultPathVisitedEdges
-        ? [...data.offDefaultPathVisitedEdges]
-        : [],
+      offDefaultPathVisitedEdges: data.offDefaultPathVisitedEdges,
+      edgesWithTotalUsers: [],
       totalAnswers: data.totalAnswers,
       edgeVisitHistory: [],
     });
@@ -102,7 +102,7 @@ export const AnalyticsGraphContainer = ({
               typebot={publishedTypebot}
               onUnlockProPlanClick={onOpen}
               totalAnswers={data?.totalAnswers}
-              totalVisitedEdges={totalVisitedEdges}
+              edgesWithTotalUsers={edgesWithTotalUsers}
             />
           </EventsCoordinatesProvider>
         </GraphProvider>
@@ -137,7 +137,8 @@ const populateEdgesWithVisitData = ({
   edges,
   groups,
   currentTotalUsers,
-  totalVisitedEdges,
+  edgesWithTotalUsers,
+  offDefaultPathVisitedEdges,
   totalAnswers,
   edgeVisitHistory,
 }: {
@@ -145,20 +146,29 @@ const populateEdgesWithVisitData = ({
   edges: Edge[];
   groups: GroupV6[];
   currentTotalUsers: number;
-  totalVisitedEdges: TotalVisitedEdges[];
+  edgesWithTotalUsers: EdgeWithTotalUsers[];
+  offDefaultPathVisitedEdges: EdgeWithTotalUsers[];
   totalAnswers: TotalAnswers[];
   edgeVisitHistory: string[];
-}): TotalVisitedEdges[] => {
-  if (edgeVisitHistory.find((e) => e === edgeId)) return totalVisitedEdges;
-  totalVisitedEdges.push({
-    edgeId,
-    total: currentTotalUsers,
-  });
-  edgeVisitHistory.push(edgeId);
+}): EdgeWithTotalUsers[] => {
+  if (edgeVisitHistory.find((e) => e === edgeId)) {
+    edgesWithTotalUsers = edgesWithTotalUsers.map((etw) =>
+      etw.edgeId === edgeId
+        ? { ...etw, total: etw.total + currentTotalUsers }
+        : etw,
+    );
+  } else {
+    edgesWithTotalUsers.push({
+      edgeId,
+      total: currentTotalUsers,
+    });
+    edgeVisitHistory.push(edgeId);
+  }
+
   const edge = edges.find((edge) => edge.id === edgeId);
-  if (!edge) return totalVisitedEdges;
+  if (!edge) return edgesWithTotalUsers;
   const group = groups.find((group) => edge?.to.groupId === group.id);
-  if (!group) return totalVisitedEdges;
+  if (!group) return edgesWithTotalUsers;
   for (const block of edge.to.blockId
     ? group.blocks.slice(
         group.blocks.findIndex((b) => b.id === edge.to.blockId),
@@ -167,15 +177,21 @@ const populateEdgesWithVisitData = ({
     if (blockHasItems(block)) {
       for (const item of block.items) {
         if (item.outgoingEdgeId) {
-          totalVisitedEdges = populateEdgesWithVisitData({
+          if (
+            edgeVisitHistory.some((history) => history === item.outgoingEdgeId)
+          )
+            continue;
+          const totalUsersOnEdge = offDefaultPathVisitedEdges.find(
+            (tve) => tve.edgeId === item.outgoingEdgeId,
+          )?.total;
+          if (!totalUsersOnEdge || totalUsersOnEdge === 0) continue;
+          edgesWithTotalUsers = populateEdgesWithVisitData({
             edgeId: item.outgoingEdgeId,
             edges,
             groups,
-            currentTotalUsers:
-              totalVisitedEdges.find(
-                (tve) => tve.edgeId === item.outgoingEdgeId,
-              )?.total ?? 0,
-            totalVisitedEdges,
+            offDefaultPathVisitedEdges,
+            currentTotalUsers: totalUsersOnEdge,
+            edgesWithTotalUsers,
             totalAnswers,
             edgeVisitHistory,
           });
@@ -183,20 +199,44 @@ const populateEdgesWithVisitData = ({
       }
     }
     if (block.outgoingEdgeId) {
+      if (
+        isInputBlock(block) &&
+        edgeVisitHistory.some((history) => history === block.outgoingEdgeId)
+      )
+        continue;
       const totalUsers = isInputBlock(block)
-        ? totalAnswers.find((a) => a.blockId === block.id)?.total
+        ? (totalAnswers.find((a) => a.blockId === block.id)?.total ?? 0) -
+          computeAnswersFromItemsEdge({ block, offDefaultPathVisitedEdges })
         : currentTotalUsers;
-      totalVisitedEdges = populateEdgesWithVisitData({
+      if (totalUsers === 0) continue;
+      edgesWithTotalUsers = populateEdgesWithVisitData({
         edgeId: block.outgoingEdgeId,
         edges,
         groups,
-        currentTotalUsers: totalUsers ?? 0,
-        totalVisitedEdges,
+        offDefaultPathVisitedEdges,
+        currentTotalUsers: totalUsers,
+        edgesWithTotalUsers,
         totalAnswers,
         edgeVisitHistory,
       });
     }
   }
 
-  return totalVisitedEdges;
+  return edgesWithTotalUsers;
+};
+
+const computeAnswersFromItemsEdge = ({
+  block,
+  offDefaultPathVisitedEdges,
+}: {
+  block: InputBlock;
+  offDefaultPathVisitedEdges: EdgeWithTotalUsers[];
+}): number => {
+  if (!blockHasItems(block)) return 0;
+  return block.items.reduce((acc, item) => {
+    const totalUsersOnEdge = offDefaultPathVisitedEdges.find(
+      (tve) => tve.edgeId === item.outgoingEdgeId,
+    )?.total;
+    return acc + (totalUsersOnEdge ?? 0);
+  }, 0);
 };

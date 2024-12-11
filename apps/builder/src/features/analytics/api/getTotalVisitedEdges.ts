@@ -2,7 +2,7 @@ import { canReadTypebots } from "@/helpers/databaseRules";
 import { authenticatedProcedure } from "@/helpers/server/trpc";
 import { TRPCError } from "@trpc/server";
 import prisma from "@typebot.io/prisma";
-import { totalVisitedEdgesSchema } from "@typebot.io/schemas/features/analytics";
+import { edgeWithTotalUsersSchema } from "@typebot.io/schemas/features/analytics";
 import { z } from "@typebot.io/zod";
 import { defaultTimeFilter, timeFilterValues } from "../constants";
 import {
@@ -29,7 +29,7 @@ export const getTotalVisitedEdges = authenticatedProcedure
   )
   .output(
     z.object({
-      totalVisitedEdges: z.array(totalVisitedEdgesSchema),
+      totalVisitedEdges: z.array(edgeWithTotalUsersSchema),
     }),
   )
   .query(
