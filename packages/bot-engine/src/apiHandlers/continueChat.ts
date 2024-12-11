@@ -69,12 +69,14 @@ export const continueChat = async ({
     lastMessageNewFormat,
     visitedEdges,
     setVariableHistory,
-  } = await autoContinueChatIfStartingWithInput({
-    message,
-    chatReply,
-    textBubbleContentFormat,
-    version: 2,
-  });
+  } = !session.state.currentBlockId
+    ? await autoContinueChatIfStartingWithInput({
+        message,
+        chatReply,
+        textBubbleContentFormat,
+        version: 2,
+      })
+    : chatReply;
 
   if (newSessionState)
     await saveStateToDatabase({
