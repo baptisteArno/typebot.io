@@ -35,6 +35,7 @@ export const BlockCardLayout = ({
           rounded="lg"
           flex="1"
           cursor={"grab"}
+          minH={isMouseDown ? "42px" : undefined}
           opacity={isMouseDown ? "0.4" : "1"}
           onMouseDown={handleMouseDown}
           bgColor={useColorModeValue("gray.50", "gray.850")}
