@@ -31,7 +31,6 @@ import {
 } from "@typebot.io/variables/schemas";
 import { z } from "@typebot.io/zod";
 import { NodeType, parse } from "node-html-parser";
-import { autoContinueChatIfStartingWithInput } from "./autoContinueChatIfStartingWithInput";
 import { parseVariablesInRichText } from "./parseBubbleBlock";
 import { parseDynamicTheme } from "./parseDynamicTheme";
 import { findPublicTypebot } from "./queries/findPublicTypebot";
@@ -172,15 +171,6 @@ export const startSession = async ({
     };
   }
 
-  const chatReply = await startBotFlow({
-    version,
-    state: initialState,
-    startFrom:
-      startParams.type === "preview" ? startParams.startFrom : undefined,
-    startTime: Date.now(),
-    textBubbleContentFormat: startParams.textBubbleContentFormat,
-  });
-
   const {
     messages,
     input,
@@ -189,10 +179,13 @@ export const startSession = async ({
     logs,
     visitedEdges,
     setVariableHistory,
-  } = await autoContinueChatIfStartingWithInput({
+  } = await startBotFlow({
     version,
     message: startParams.message,
-    chatReply,
+    state: initialState,
+    startFrom:
+      startParams.type === "preview" ? startParams.startFrom : undefined,
+    startTime: Date.now(),
     textBubbleContentFormat: startParams.textBubbleContentFormat,
   });
 

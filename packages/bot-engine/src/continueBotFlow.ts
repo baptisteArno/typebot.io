@@ -71,6 +71,7 @@ export const continueBotFlow = async (
   resetVariablesGlobals();
   if (!state.currentBlockId)
     return startBotFlow({
+      message: reply,
       state: resetSessionState(state),
       version,
       textBubbleContentFormat,

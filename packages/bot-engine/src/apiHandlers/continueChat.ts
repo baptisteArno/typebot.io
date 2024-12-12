@@ -1,7 +1,6 @@
 import { TRPCError } from "@trpc/server";
 import { BubbleBlockType } from "@typebot.io/blocks-bubbles/constants";
 import { isDefined, isNotDefined } from "@typebot.io/lib/utils";
-import { autoContinueChatIfStartingWithInput } from "../autoContinueChatIfStartingWithInput";
 import { computeCurrentProgress } from "../computeCurrentProgress";
 import { continueBotFlow } from "../continueBotFlow";
 import { filterPotentiallySensitiveLogs } from "../logs/filterPotentiallySensitiveLogs";
@@ -53,13 +52,6 @@ export const continueChat = async ({
     else corsOrigin = session.state.allowedOrigins[0];
   }
 
-  const chatReply = await continueBotFlow(message, {
-    version: 2,
-    state: session.state,
-    startTime: Date.now(),
-    textBubbleContentFormat,
-  });
-
   const {
     messages,
     input,
@@ -69,14 +61,12 @@ export const continueChat = async ({
     lastMessageNewFormat,
     visitedEdges,
     setVariableHistory,
-  } = !session.state.currentBlockId
-    ? await autoContinueChatIfStartingWithInput({
-        message,
-        chatReply,
-        textBubbleContentFormat,
-        version: 2,
-      })
-    : chatReply;
+  } = await continueBotFlow(message, {
+    version: 2,
+    state: session.state,
+    startTime: Date.now(),
+    textBubbleContentFormat,
+  });
 
   if (newSessionState)
     await saveStateToDatabase({
