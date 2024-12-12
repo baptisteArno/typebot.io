@@ -36,8 +36,8 @@ import { ChatChunk } from "./ChatChunk";
 import { LoadingChunk } from "./LoadingChunk";
 import { PopupBlockedToast } from "./PopupBlockedToast";
 
-const autoScrollBottomToleranceScreenPercent = 0.6;
-const bottomSpacerHeight = 128;
+const AUTO_SCROLL_CLIENT_HEIGHT_PERCENT_TOLERANCE = 0.6;
+const AUTO_SCROLL_DELAY = 50;
 
 const parseDynamicTheme = (
   initialTheme: Theme,
@@ -230,24 +230,22 @@ export const ConversationContainer = (props: Props) => {
   const autoScrollToBottom = (lastElement?: HTMLDivElement, offset = 0) => {
     if (!chatContainer) return;
 
-    const bottomTolerance =
-      chatContainer.clientHeight * autoScrollBottomToleranceScreenPercent -
-      bottomSpacerHeight;
+    const isBottomOfLastElementTooFarBelow =
+      chatContainer.scrollTop + chatContainer.clientHeight <
+      chatContainer.scrollHeight -
+        chatContainer.clientHeight *
+          AUTO_SCROLL_CLIENT_HEIGHT_PERCENT_TOLERANCE;
 
-    const isBottomOfLastElementInView =
-      chatContainer.scrollTop + chatContainer.clientHeight >=
-      chatContainer.scrollHeight - bottomTolerance;
+    if (isBottomOfLastElementTooFarBelow) return;
 
-    if (isBottomOfLastElementInView) {
-      setTimeout(() => {
-        chatContainer?.scrollTo(
-          0,
-          lastElement
-            ? lastElement.offsetTop - offset
-            : chatContainer.scrollHeight,
-        );
-      }, 50);
-    }
+    setTimeout(() => {
+      chatContainer?.scrollTo({
+        top: lastElement
+          ? lastElement.offsetTop - offset
+          : chatContainer.scrollHeight,
+        behavior: "smooth",
+      });
+    }, AUTO_SCROLL_DELAY);
   };
 
   const handleAllBubblesDisplayed = async () => {
@@ -316,7 +314,7 @@ export const ConversationContainer = (props: Props) => {
   return (
     <div
       ref={chatContainer}
-      class="flex flex-col overflow-y-auto w-full px-3 pt-10 relative scrollable-container typebot-chat-view scroll-smooth gap-2"
+      class="flex flex-col overflow-y-auto w-full relative scrollable-container typebot-chat-view scroll-smooth gap-2"
     >
       <For each={chatChunks()}>
         {(chatChunk, index) => (
@@ -362,11 +360,9 @@ export const ConversationContainer = (props: Props) => {
   );
 };
 
+// Needed because we need to simulate a bottom padding relative to the chat view height
 const BottomSpacer = () => (
-  <div
-    class="w-full flex-shrink-0 typebot-bottom-spacer"
-    style={{ height: bottomSpacerHeight + "px" }}
-  />
+  <div class="w-full flex-shrink-0 typebot-bottom-spacer h-[20%]" />
 );
 
 const convertSubmitContentToMessage = (

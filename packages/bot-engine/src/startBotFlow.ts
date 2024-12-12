@@ -98,7 +98,6 @@ const autoContinueChatIfStartingWithInput = async ({
   chatReply,
   textBubbleContentFormat,
 }: Props & { chatReply: ChatReply }): Promise<ChatReply> => {
-  console.log("HEY", message, chatReply);
   if (
     !message ||
     chatReply.messages.length > 0 ||

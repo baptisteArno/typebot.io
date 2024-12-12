@@ -294,7 +294,7 @@ const BotContent = (props: BotContentProps) => {
   let botContainerElement: HTMLDivElement | undefined;
 
   const resizeObserver = new ResizeObserver((entries) => {
-    return setIsMobile((entries[0]?.target.clientWidth ?? 0) < 400);
+    return setIsMobile((entries[0]?.target.clientWidth ?? 0) < 432);
   });
 
   onMount(() => {
