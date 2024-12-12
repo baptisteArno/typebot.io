@@ -2,6 +2,7 @@ import { ConfirmModal } from "@/components/ConfirmModal";
 import { CopyButton } from "@/components/CopyButton";
 import { EditableEmojiOrImageIcon } from "@/components/EditableEmojiOrImageIcon";
 import { TextInput } from "@/components/inputs";
+import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
 import {
   Button,
   Flex,
@@ -18,6 +19,7 @@ import {
 import { useTranslate } from "@tolgee/react";
 import React from "react";
 import { useWorkspace } from "../WorkspaceProvider";
+import { InEditorAIFeatures } from "./InEditorAIFeatures";
 
 export const WorkspaceSettingsForm = ({ onClose }: { onClose: () => void }) => {
   const { t } = useTranslate();
@@ -27,6 +29,13 @@ export const WorkspaceSettingsForm = ({ onClose }: { onClose: () => void }) => {
   const handleNameChange = (name: string) => {
     if (!workspace?.id) return;
     updateWorkspace({ name });
+  };
+
+  const updateInEditorAiFeaturesEnabled = (
+    inEditorAiFeaturesEnabled: boolean,
+  ) => {
+    if (!workspace?.id) return;
+    updateWorkspace({ inEditorAiFeaturesEnabled });
   };
 
   const handleChangeIcon = (icon: string) => updateWorkspace({ icon });
@@ -79,6 +88,19 @@ export const WorkspaceSettingsForm = ({ onClose }: { onClose: () => void }) => {
               Used when interacting with the Typebot API.
             </FormHelperText>
           </FormControl>
+
+          <Stack spacing="4" mb={4}>
+            <SwitchWithLabel
+              label={"In-Editor AI Features"}
+              initialValue={workspace.inEditorAiFeaturesEnabled}
+              onCheckChange={updateInEditorAiFeaturesEnabled}
+              moreInfoContent="To enable AI features within this workspace"
+              justifyContent="start"
+              defaultChecked={!!workspace.inEditorAiFeaturesEnabled}
+            />
+
+            <InEditorAIFeatures />
+          </Stack>
         </>
       )}
       {workspace && workspaces && workspaces.length > 1 && (
