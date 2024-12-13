@@ -25,6 +25,7 @@ export const getCredentials = authenticatedProcedure
     z.object({
       name: z.string(),
       data: z.any(),
+      type: z.string(),
     }),
   )
   .query(async ({ input: { workspaceId, credentialsId }, ctx: { user } }) => {
@@ -51,6 +52,7 @@ export const getCredentials = authenticatedProcedure
         data: true,
         iv: true,
         name: true,
+        type: true,
       },
     });
 
@@ -64,6 +66,7 @@ export const getCredentials = authenticatedProcedure
 
     return {
       name: credentials.name,
+      type: credentials.type,
       data: credentialsData,
     };
   });
