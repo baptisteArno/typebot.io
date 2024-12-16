@@ -21,6 +21,7 @@ import type {
   Message,
   StartChatResponse,
 } from "@typebot.io/bot-engine/schemas/api";
+import type { ClientSideAction } from "@typebot.io/bot-engine/schemas/clientSideAction";
 import { isNotDefined } from "@typebot.io/lib/utils";
 import type { Theme } from "@typebot.io/theme/schemas";
 import { HTTPError } from "ky";
@@ -76,12 +77,11 @@ type Props = {
 
 export const ConversationContainer = (props: Props) => {
   let chatContainer: HTMLDivElement | undefined;
-  const [chatChunks, setChatChunks, isRecovered, setIsRecovered] = persist(
+  const [chatChunks, setChatChunks] = persist(
     createSignal<ChatChunkType[]>([
       {
         input: props.initialChatReply.input,
         messages: props.initialChatReply.messages,
-        clientSideActions: props.initialChatReply.clientSideActions,
       },
     ]),
     {
@@ -94,6 +94,19 @@ export const ConversationContainer = (props: Props) => {
       },
     },
   );
+  const [clientSideActions, setClientSideActions] = persist(
+    createSignal<ClientSideAction[]>(
+      props.initialChatReply.clientSideActions ?? [],
+    ),
+    {
+      key: `typebot-${props.context.typebot.id}-clientSideActions`,
+      storage: props.context.storage,
+    },
+  );
+  const [isEnded, setIsEnded] = persist(createSignal(false), {
+    key: `typebot-${props.context.typebot.id}-isEnded`,
+    storage: props.context.storage,
+  });
   const [dynamicTheme, setDynamicTheme] = createSignal<
     ContinueChatResponse["dynamicTheme"]
   >(props.initialChatReply.dynamicTheme);
@@ -104,14 +117,29 @@ export const ConversationContainer = (props: Props) => {
 
   onMount(() => {
     (async () => {
-      const initialChunk = chatChunks()[0]!;
-      if (!initialChunk.clientSideActions) return;
-      const actionsBeforeFirstBubble = initialChunk.clientSideActions.filter(
-        (action) => isNotDefined(action.lastBubbleBlockId),
-      );
-      await processClientSideActions(actionsBeforeFirstBubble);
+      const isRecoveredFromStorage = chatChunks().length > 1;
+      if (isRecoveredFromStorage) {
+        cleanupRecoveredChat();
+      } else {
+        const actionsBeforeFirstBubble = clientSideActions()?.filter((action) =>
+          isNotDefined(action.lastBubbleBlockId),
+        );
+        await processClientSideActions(actionsBeforeFirstBubble);
+      }
     })();
   });
+
+  const cleanupRecoveredChat = () => {
+    if ([...chatChunks()].pop()?.streamingMessageId)
+      setChatChunks((chunks) => chunks.slice(0, -1));
+    const actionsBeforeFirstBubble = getNextClientSideActionsBatch({
+      clientSideActions: clientSideActions(),
+      lastBubbleBlockId: undefined,
+    });
+    setClientSideActions((actions) =>
+      actions.slice(actionsBeforeFirstBubble.length),
+    );
+  };
 
   const streamMessage = ({ id, message }: { id: string; message: string }) => {
     setIsSending(false);
@@ -146,7 +174,6 @@ export const ConversationContainer = (props: Props) => {
   };
 
   const sendMessage = async (answer?: InputSubmitContent) => {
-    setIsRecovered(false);
     setHasError(false);
     const currentInputBlock = [...chatChunks()].pop()?.input;
     if (currentInputBlock?.id && props.onAnswer && answer)
@@ -205,9 +232,11 @@ export const ConversationContainer = (props: Props) => {
       props.onNewInputBlock(data.input);
     }
     if (data.clientSideActions) {
-      const actionsBeforeFirstBubble = data.clientSideActions.filter((action) =>
-        isNotDefined(action.lastBubbleBlockId),
-      );
+      setClientSideActions(data.clientSideActions);
+      const actionsBeforeFirstBubble = getNextClientSideActionsBatch({
+        clientSideActions: data.clientSideActions,
+        lastBubbleBlockId: undefined,
+      });
       await processClientSideActions(actionsBeforeFirstBubble);
       if (
         data.clientSideActions.length === 1 &&
@@ -222,7 +251,6 @@ export const ConversationContainer = (props: Props) => {
       {
         input: data.input,
         messages: data.messages,
-        clientSideActions: data.clientSideActions,
       },
     ]);
   };
@@ -252,25 +280,20 @@ export const ConversationContainer = (props: Props) => {
     const lastChunk = [...chatChunks()].pop();
     if (!lastChunk) return;
     if (isNotDefined(lastChunk.input)) {
+      setIsEnded(true);
       props.onEnd?.();
     }
   };
 
   const handleNewBubbleDisplayed = async (blockId: string) => {
-    const lastChunk = [...chatChunks()].pop();
-    if (!lastChunk) return;
-    if (lastChunk.clientSideActions) {
-      const actionsToExecute = lastChunk.clientSideActions.filter(
-        (action) => action.lastBubbleBlockId === blockId,
-      );
-      await processClientSideActions(actionsToExecute);
-    }
+    const actionsToExecute = getNextClientSideActionsBatch({
+      clientSideActions: clientSideActions(),
+      lastBubbleBlockId: blockId,
+    });
+    await processClientSideActions(actionsToExecute);
   };
 
-  const processClientSideActions = async (
-    actions: NonNullable<ContinueChatResponse["clientSideActions"]>,
-  ) => {
-    if (isRecovered()) return;
+  const processClientSideActions = async (actions: ClientSideAction[]) => {
     for (const action of actions) {
       if (
         "streamOpenAiChatCompletion" in action ||
@@ -287,6 +310,7 @@ export const ConversationContainer = (props: Props) => {
         },
         onMessageStream: streamMessage,
       });
+      setClientSideActions((actions) => actions.slice(1));
       if (response && "logs" in response) saveLogs(response.logs);
       if (response && "replyToSend" in response) {
         setIsSending(false);
@@ -334,6 +358,9 @@ export const ConversationContainer = (props: Props) => {
             }
             hasError={hasError() && index() === chatChunks().length - 1}
             isTransitionDisabled={index() !== chatChunks().length - 1}
+            isOngoingLastChunk={
+              !isEnded() && index() === chatChunks().length - 1
+            }
             onNewBubbleDisplayed={handleNewBubbleDisplayed}
             onAllBubblesDisplayed={handleAllBubblesDisplayed}
             onSubmit={sendMessage}
@@ -376,4 +403,22 @@ const convertSubmitContentToMessage = (
       attachedFileUrls: answer.attachments?.map((attachment) => attachment.url),
     };
   if (answer.type === "recording") return { type: "audio", url: answer.url };
+};
+
+const getNextClientSideActionsBatch = ({
+  clientSideActions,
+  lastBubbleBlockId,
+}: {
+  clientSideActions: ClientSideAction[];
+  lastBubbleBlockId: string | undefined;
+}) => {
+  const actionsBatch: ClientSideAction[] = [];
+  let currentLastBubbleBlockId = lastBubbleBlockId;
+  for (const action of clientSideActions) {
+    if (currentLastBubbleBlockId !== action.lastBubbleBlockId) break;
+    currentLastBubbleBlockId = action.lastBubbleBlockId;
+    if (lastBubbleBlockId === action.lastBubbleBlockId)
+      actionsBatch.push(action);
+  }
+  return actionsBatch;
 };
