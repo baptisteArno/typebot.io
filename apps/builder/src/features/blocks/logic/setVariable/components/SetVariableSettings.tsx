@@ -22,8 +22,14 @@ import {
   valueTypes,
 } from "@typebot.io/blocks-logic/setVariable/constants";
 import type { SetVariableBlock } from "@typebot.io/blocks-logic/setVariable/schema";
+import allTimeZones from "@typebot.io/lib/allTimeZones";
 import { isDefined } from "@typebot.io/lib/utils";
 import type { Variable } from "@typebot.io/variables/schemas";
+
+const timeZoneLabels = allTimeZones.map((zone) => ({
+  label: zone.places,
+  value: zone.timeZone,
+}));
 
 type Props = {
   options: SetVariableBlock["options"];
@@ -301,12 +307,11 @@ const SetVariableValue = ({
     case "Yesterday":
     case "Tomorrow": {
       return (
-        <TextInput
-          direction="row"
-          label="Timezone"
-          onChange={(timeZone) => onOptionsChange({ ...options, timeZone })}
-          defaultValue={options.timeZone}
-          placeholder="Europe/Paris"
+        <Select
+          items={timeZoneLabels}
+          onSelect={(timeZone) => onOptionsChange({ ...options, timeZone })}
+          placeholder="Select Timezone"
+          selectedItem={options?.timeZone}
         />
       );
     }
