@@ -47,10 +47,10 @@ export const ItemNodesList = ({
     typebot.groups.at(groupIndex)?.blocks?.at(blockIndex + 1) === undefined
 
   const someChoiceItemsAreNotConnected =
-    block.type === InputBlockType.CHOICE ||
+    // block.type === InputBlockType.CHOICE ||
     block.type === InputBlockType.PICTURE_CHOICE
-  // ? block.items.some((item) => item.outgoingEdgeId === undefined)
-  // : true
+      ? block.items.some((item) => item.outgoingEdgeId === undefined)
+      : true
 
   const [position, setPosition] = useState({
     x: 0,
