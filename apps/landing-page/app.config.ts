@@ -27,6 +27,7 @@ export default defineConfig({
     },
   },
   server: {
+    preset: "vercel",
     routeRules: {
       ...legacyRedirects,
       "/healthz": { proxy: { to: "/api/healthz" } },
