@@ -1,8 +1,8 @@
 import { cn } from "@/lib/utils";
 import * as Ariakit from "@ariakit/react";
 import * as React from "react";
-import { buttonVariants } from "./button";
-import { Select, type SelectProps } from "./select";
+import { buttonVariants } from "./Button";
+import { Select, type SelectProps } from "./Select";
 
 export interface FormFieldProps extends React.ComponentPropsWithoutRef<"div"> {
   name: Ariakit.FormControlProps["name"];

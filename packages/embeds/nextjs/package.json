@@ -17,15 +17,15 @@
     "build": "tsup"
   },
   "dependencies": {
-    "@typebot.io/js": "workspace:*"
+    "@typebot.io/js": "workspace:*",
+    "react": "18.3.1",
+    "next": "14.2.16"
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*",
-    "@types/react": "18.3.12",
+    "@types/react": "18.3.1",
     "tsup": "8.3.0",
-    "react": "18.3.1",
-    "@typebot.io/react": "workspace:*",
-    "next": "14.2.16"
+    "@typebot.io/react": "workspace:*"
   },
   "peerDependencies": {
     "react": "^16.0.0 || ^17.0.0 || ^18.0.0",

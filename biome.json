@@ -5,12 +5,19 @@
       "emojiList.json",
       "iconNames.ts",
       ".last-run.json",
-      "openapi/*.json"
+      "openapi/*.json",
+      "routeTree.gen.ts"
     ],
     "enabled": true
   },
   "linter": {
-    "ignore": ["node_modules", ".next", "dist", "openapi/*.json"],
+    "ignore": [
+      "node_modules",
+      ".next",
+      "dist",
+      "openapi/*.json",
+      "routeTree.gen.ts"
+    ],
     "enabled": true,
     "rules": {
       "recommended": true,
@@ -78,7 +85,8 @@
       "emojiList.json",
       "iconNames.ts",
       ".last-run.json",
-      "openapi/*.json"
+      "openapi/*.json",
+      "routeTree.gen.ts"
     ],
     "indentStyle": "space"
   },

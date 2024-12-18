@@ -1,10 +1,9 @@
 import twTypography from "@tailwindcss/typography";
 import type { Config } from "tailwindcss";
-import twAnimate from "tailwindcss-animate";
 
 export default {
   darkMode: ["class"],
-  content: ["src/app/**/*.{ts,tsx}", "src/components/**/*.{ts,tsx}"],
+  content: ["src/**/*.{ts,tsx}"],
   theme: {
     colors: {
       gray: getColorScale("gray"),
@@ -16,14 +15,16 @@ export default {
     },
     extend: {
       fontFamily: {
-        heading: ["var(--font-uxum-grotesque)"],
-        body: ["var(--font-untitled-sans)"],
+        heading: ["Uxum Grotesque", "sans-serif"],
+        body: ["Untitled Sans", "sans-serif"],
       },
       animation: {
         marquee: "marquee 20s linear infinite",
-        ["slide-fade-in"]: "slide-fade-in 250ms ease-out",
+        "slide-fade-in": "slide-fade-in 250ms ease-out",
         float: "float 4s ease-in-out infinite",
-        ["slight-random-rotate"]: "linear slight-random-rotate forwards",
+        "slight-random-rotate": "linear slight-random-rotate forwards",
+        "fade-in": "fade-in 250ms ease-out",
+        "fade-out": "fade-out 250ms ease-out",
       },
       keyframes: {
         marquee: {
@@ -38,14 +39,22 @@ export default {
           "0%, 100%": { transform: "translateY(0)" },
           "50%": { transform: "translateY(-4px)" },
         },
-        ["slight-random-rotate"]: {
+        "slight-random-rotate": {
           "0%": { transform: "rotate(0deg)" },
           "100%": { transform: "rotate(var(--rotate-angle))" },
+        },
+        "fade-in": {
+          "0%": { opacity: "0" },
+          "100%": { opacity: "1" },
+        },
+        "fade-out": {
+          "0%": { opacity: "1" },
+          "100%": { opacity: "0" },
         },
       },
     },
   },
-  plugins: [twAnimate, twTypography],
+  plugins: [twTypography],
 } satisfies Config;
 
 function getColorScale(name: string) {

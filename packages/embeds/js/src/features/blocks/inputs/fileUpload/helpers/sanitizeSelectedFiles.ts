@@ -1,4 +1,4 @@
-import { getRuntimeEnv } from "@typebot.io/env/runtime";
+import { getRuntimeVariable } from "@typebot.io/env/getRuntimeVariable";
 
 type Props = {
   newFile: File;
@@ -15,7 +15,8 @@ export const sanitizeNewFile = ({
   onError,
 }: Props): File | undefined => {
   const sizeLimit =
-    params.sizeLimit ?? getRuntimeEnv("NEXT_PUBLIC_BOT_FILE_UPLOAD_MAX_SIZE");
+    params.sizeLimit ??
+    getRuntimeVariable("NEXT_PUBLIC_BOT_FILE_UPLOAD_MAX_SIZE");
 
   if (sizeLimit && newFile.size > Number(sizeLimit) * 1024 * 1024) {
     onError({

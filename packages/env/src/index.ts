@@ -1,6 +1,6 @@
 import { createEnv } from "@t3-oss/env-nextjs";
 import { z } from "zod";
-import { getRuntimeEnv } from "./runtime";
+import { getRuntimeVariable } from "./getRuntimeVariable";
 
 const guessNextAuthUrlForVercelPreview = (val: unknown) => {
   if (
@@ -129,20 +129,22 @@ const baseEnv = {
       .default("The bot you're looking for doesn't exist"),
   },
   runtimeEnv: {
-    NEXT_PUBLIC_E2E_TEST: getRuntimeEnv("NEXT_PUBLIC_E2E_TEST"),
-    NEXT_PUBLIC_VIEWER_URL: getRuntimeEnv("NEXT_PUBLIC_VIEWER_URL"),
-    NEXT_PUBLIC_ONBOARDING_TYPEBOT_ID: getRuntimeEnv(
+    NEXT_PUBLIC_E2E_TEST: getRuntimeVariable("NEXT_PUBLIC_E2E_TEST"),
+    NEXT_PUBLIC_VIEWER_URL: getRuntimeVariable("NEXT_PUBLIC_VIEWER_URL"),
+    NEXT_PUBLIC_ONBOARDING_TYPEBOT_ID: getRuntimeVariable(
       "NEXT_PUBLIC_ONBOARDING_TYPEBOT_ID",
     ),
-    NEXT_PUBLIC_BOT_FILE_UPLOAD_MAX_SIZE: getRuntimeEnv(
+    NEXT_PUBLIC_BOT_FILE_UPLOAD_MAX_SIZE: getRuntimeVariable(
       "NEXT_PUBLIC_BOT_FILE_UPLOAD_MAX_SIZE",
     ),
-    NEXT_PUBLIC_CHAT_API_URL: getRuntimeEnv("NEXT_PUBLIC_CHAT_API_URL"),
-    NEXT_PUBLIC_USE_EXPERIMENTAL_CHAT_API_ON: getRuntimeEnv(
+    NEXT_PUBLIC_CHAT_API_URL: getRuntimeVariable("NEXT_PUBLIC_CHAT_API_URL"),
+    NEXT_PUBLIC_USE_EXPERIMENTAL_CHAT_API_ON: getRuntimeVariable(
       "NEXT_PUBLIC_USE_EXPERIMENTAL_CHAT_API_ON",
     ),
-    NEXT_PUBLIC_VIEWER_404_TITLE: getRuntimeEnv("NEXT_PUBLIC_VIEWER_404_TITLE"),
-    NEXT_PUBLIC_VIEWER_404_SUBTITLE: getRuntimeEnv(
+    NEXT_PUBLIC_VIEWER_404_TITLE: getRuntimeVariable(
+      "NEXT_PUBLIC_VIEWER_404_TITLE",
+    ),
+    NEXT_PUBLIC_VIEWER_404_SUBTITLE: getRuntimeVariable(
       "NEXT_PUBLIC_VIEWER_404_SUBTITLE",
     ),
   },
@@ -174,7 +176,7 @@ const smtpEnv = {
     NEXT_PUBLIC_SMTP_FROM: z.string().min(1).optional(),
   },
   runtimeEnv: {
-    NEXT_PUBLIC_SMTP_FROM: getRuntimeEnv("NEXT_PUBLIC_SMTP_FROM"),
+    NEXT_PUBLIC_SMTP_FROM: getRuntimeVariable("NEXT_PUBLIC_SMTP_FROM"),
   },
 };
 
@@ -233,7 +235,7 @@ const googleSheetsEnv = {
     NEXT_PUBLIC_GOOGLE_SHEETS_API_KEY: z.string().min(1).optional(),
   },
   runtimeEnv: {
-    NEXT_PUBLIC_GOOGLE_SHEETS_API_KEY: getRuntimeEnv(
+    NEXT_PUBLIC_GOOGLE_SHEETS_API_KEY: getRuntimeVariable(
       "NEXT_PUBLIC_GOOGLE_SHEETS_API_KEY",
     ),
   },
@@ -244,7 +246,7 @@ const googleFontsEnv = {
     NEXT_PUBLIC_GOOGLE_FONTS_API_KEY: z.string().min(1).optional(),
   },
   runtimeEnv: {
-    NEXT_PUBLIC_GOOGLE_FONTS_API_KEY: getRuntimeEnv(
+    NEXT_PUBLIC_GOOGLE_FONTS_API_KEY: getRuntimeVariable(
       "NEXT_PUBLIC_GOOGLE_FONTS_API_KEY",
     ),
   },
@@ -263,7 +265,7 @@ const stripeEnv = {
     NEXT_PUBLIC_STRIPE_PUBLIC_KEY: z.string().min(1).optional(),
   },
   runtimeEnv: {
-    NEXT_PUBLIC_STRIPE_PUBLIC_KEY: getRuntimeEnv(
+    NEXT_PUBLIC_STRIPE_PUBLIC_KEY: getRuntimeVariable(
       "NEXT_PUBLIC_STRIPE_PUBLIC_KEY",
     ),
   },
@@ -287,7 +289,7 @@ const giphyEnv = {
     NEXT_PUBLIC_GIPHY_API_KEY: z.string().min(1).optional(),
   },
   runtimeEnv: {
-    NEXT_PUBLIC_GIPHY_API_KEY: getRuntimeEnv("NEXT_PUBLIC_GIPHY_API_KEY"),
+    NEXT_PUBLIC_GIPHY_API_KEY: getRuntimeVariable("NEXT_PUBLIC_GIPHY_API_KEY"),
   },
 };
 
@@ -305,13 +307,13 @@ const vercelEnv = {
     NEXT_PUBLIC_VERCEL_ENV: z.string().min(1).optional(),
   },
   runtimeEnv: {
-    NEXT_PUBLIC_VERCEL_VIEWER_PROJECT_NAME: getRuntimeEnv(
+    NEXT_PUBLIC_VERCEL_VIEWER_PROJECT_NAME: getRuntimeVariable(
       "NEXT_PUBLIC_VERCEL_VIEWER_PROJECT_NAME",
     ),
-    NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA: getRuntimeEnv(
+    NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA: getRuntimeVariable(
       "NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA",
     ),
-    NEXT_PUBLIC_VERCEL_ENV: getRuntimeEnv("NEXT_PUBLIC_VERCEL_ENV"),
+    NEXT_PUBLIC_VERCEL_ENV: getRuntimeVariable("NEXT_PUBLIC_VERCEL_ENV"),
   },
 };
 
@@ -327,10 +329,10 @@ const unsplashEnv = {
     NEXT_PUBLIC_UNSPLASH_ACCESS_KEY: z.string().min(1).optional(),
   },
   runtimeEnv: {
-    NEXT_PUBLIC_UNSPLASH_APP_NAME: getRuntimeEnv(
+    NEXT_PUBLIC_UNSPLASH_APP_NAME: getRuntimeVariable(
       "NEXT_PUBLIC_UNSPLASH_APP_NAME",
     ),
-    NEXT_PUBLIC_UNSPLASH_ACCESS_KEY: getRuntimeEnv(
+    NEXT_PUBLIC_UNSPLASH_ACCESS_KEY: getRuntimeVariable(
       "NEXT_PUBLIC_UNSPLASH_ACCESS_KEY",
     ),
   },
@@ -341,7 +343,9 @@ const pexelsEnv = {
     NEXT_PUBLIC_PEXELS_API_KEY: z.string().min(1).optional(),
   },
   runtimeEnv: {
-    NEXT_PUBLIC_PEXELS_API_KEY: getRuntimeEnv("NEXT_PUBLIC_PEXELS_API_KEY"),
+    NEXT_PUBLIC_PEXELS_API_KEY: getRuntimeVariable(
+      "NEXT_PUBLIC_PEXELS_API_KEY",
+    ),
   },
 };
 
@@ -396,8 +400,8 @@ const posthogEnv = {
       .default("https://app.posthog.com"),
   },
   runtimeEnv: {
-    NEXT_PUBLIC_POSTHOG_KEY: getRuntimeEnv("NEXT_PUBLIC_POSTHOG_KEY"),
-    NEXT_PUBLIC_POSTHOG_HOST: getRuntimeEnv("NEXT_PUBLIC_POSTHOG_HOST"),
+    NEXT_PUBLIC_POSTHOG_KEY: getRuntimeVariable("NEXT_PUBLIC_POSTHOG_KEY"),
+    NEXT_PUBLIC_POSTHOG_HOST: getRuntimeVariable("NEXT_PUBLIC_POSTHOG_HOST"),
   },
 };
 
@@ -411,9 +415,11 @@ const tolgeeEnv = {
       .default('https://tolgee.server.baptistearno.com"'),
   },
   runtimeEnv: {
-    NEXT_PUBLIC_TOLGEE_API_KEY: getRuntimeEnv("NEXT_PUBLIC_TOLGEE_API_KEY"),
+    NEXT_PUBLIC_TOLGEE_API_KEY: getRuntimeVariable(
+      "NEXT_PUBLIC_TOLGEE_API_KEY",
+    ),
     NEXT_PUBLIC_TOLGEE_API_URL:
-      getRuntimeEnv("NEXT_PUBLIC_TOLGEE_API_URL") ??
+      getRuntimeVariable("NEXT_PUBLIC_TOLGEE_API_URL") ??
       "https://tolgee.server.baptistearno.com",
   },
 };
@@ -432,7 +438,7 @@ const partykitEnv = {
     NEXT_PUBLIC_PARTYKIT_HOST: z.string().min(1).optional(),
   },
   runtimeEnv: {
-    NEXT_PUBLIC_PARTYKIT_HOST: getRuntimeEnv("NEXT_PUBLIC_PARTYKIT_HOST"),
+    NEXT_PUBLIC_PARTYKIT_HOST: getRuntimeVariable("NEXT_PUBLIC_PARTYKIT_HOST"),
   },
 };
 

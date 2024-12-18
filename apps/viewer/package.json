@@ -62,8 +62,8 @@
     "@types/node": "20.4.2",
     "@types/nodemailer": "6.4.14",
     "@types/papaparse": "5.3.7",
-    "@types/react": "18.3.12",
+    "@types/react": "18.3.1",
     "dotenv": "16.4.5",
-    "dotenv-cli": "7.4.1"
+    "dotenv-cli": "7.4.4"
   }
 }

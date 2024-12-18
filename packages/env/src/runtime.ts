@@ -1,1 +1,1 @@
-export { env as getRuntimeEnv, PublicEnvScript } from "next-runtime-env";
+export { PublicEnvScript } from "next-runtime-env";

@@ -1,23 +1,28 @@
-import { Progress as ProgressPrimitive } from "@ark-ui/react/progress";
+import { cn } from "@/lib/utils";
 import * as React from "react";
 
-import { cn } from "@/lib/utils";
-
 const Progress = React.forwardRef<
-  React.ElementRef<typeof ProgressPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof ProgressPrimitive.Root>
->(({ className, value, ...props }, ref) => (
-  <ProgressPrimitive.Root ref={ref} value={value} {...props}>
-    <ProgressPrimitive.Track
-      className={cn(
-        "relative h-1 w-full overflow-hidden rounded-full bg-gray-11/10",
-        className,
-      )}
-    >
-      <ProgressPrimitive.Range className="h-full w-full flex-1 bg-primary transition-all bg-orange-9" />
-    </ProgressPrimitive.Track>
-  </ProgressPrimitive.Root>
+  React.ElementRef<"div">,
+  { value: number; className?: string }
+>(({ value, className }, ref) => (
+  <div
+    role="progressbar"
+    className={cn(
+      "relative h-1 w-full overflow-hidden rounded-full bg-gray-11/10",
+      className,
+    )}
+    ref={ref}
+    aria-valuemin={0}
+    aria-valuemax={100}
+    aria-valuenow={value}
+    aria-valuetext={`${value}%`}
+  >
+    <div
+      className="h-full w-full flex-1 bg-primary transition-all bg-orange-9"
+      style={{ transform: `translateX(-${100 - value}%)` }}
+    />
+  </div>
 ));
-Progress.displayName = ProgressPrimitive.Root.displayName;
+Progress.displayName = "Progress";
 
 export { Progress };

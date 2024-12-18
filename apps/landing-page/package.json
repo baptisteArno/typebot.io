@@ -1,46 +1,45 @@
 {
   "name": "landing-page",
+  "version": "0.0.1",
+  "type": "module",
+  "private": true,
   "scripts": {
-    "dev": "dotenv -e ./.env -e ../../.env -- next dev -p 3003",
-    "start": "dotenv -e ./.env -e ../../.env -- next start",
-    "build": "dotenv -e ./.env -e ../../.env -- next build"
+    "dev": "dotenv -e ./.env -e ../../.env -- vinxi dev --port 3003",
+    "build": "dotenv -e ./.env -e ../../.env -- vinxi build --preset vercel",
+    "start": "dotenv -e ./.env -e ../../.env -- vinxi start"
   },
   "dependencies": {
+    "@tanstack/react-router": "1.91.2",
+    "@tanstack/start": "1.91.2",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "vinxi": "0.5.1",
     "@ariakit/react": "0.4.15",
-    "@mdx-js/loader": "3.1.0",
-    "@mdx-js/react": "3.1.0",
-    "@next/mdx": "14.2.16",
     "@typebot.io/billing": "workspace:*",
     "@typebot.io/env": "workspace:*",
     "@typebot.io/lib": "workspace:*",
-    "@typebot.io/nextjs": "workspace:*",
+    "@typebot.io/react": "workspace:*",
     "@typebot.io/prisma": "workspace:*",
     "@typebot.io/typebot": "workspace:*",
-    "@types/mdx": "2.0.13",
     "class-variance-authority": "0.7.1",
     "clsx": "2.1.1",
-    "fast-glob": "3.3.2",
-    "motion": "11.13.0",
-    "next": "14.2.16",
-    "react": "18.3.1",
-    "react-dom": "18.3.1",
-    "react-use": "17.5.1",
+    "motion": "12.0.0-alpha.2",
     "sugar-high": "0.7.5",
-    "tailwind-merge": "2.5.5",
-    "zustand": "4.5.0"
+    "tailwind-merge": "2.5.5"
   },
   "devDependencies": {
     "@tailwindcss/typography": "0.5.15",
+    "@tanstack/router-devtools": "1.91.2",
     "@typebot.io/env": "workspace:*",
     "@typebot.io/tsconfig": "workspace:*",
-    "@types/node": "20.4.2",
-    "@types/react": "18.3.12",
+    "@types/react": "18.3.1",
+    "@types/react-dom": "18.3.1",
+    "@vitejs/plugin-react": "4.3.4",
     "autoprefixer": "10.4.20",
     "cross-env": "7.0.3",
-    "dotenv-cli": "7.4.1",
+    "dotenv-cli": "7.4.4",
     "postcss": "8.4.49",
-    "tailwindcss": "3.4.15",
-    "tailwindcss-animate": "1.0.7",
-    "tailwindcss-radix-colors": "1.4.1"
+    "tailwindcss": "3.4.16",
+    "vite-tsconfig-paths": "5.1.4"
   }
 }

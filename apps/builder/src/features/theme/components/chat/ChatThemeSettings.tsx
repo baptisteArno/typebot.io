@@ -12,7 +12,6 @@ import {
   defaultInputsBackgroundColor,
   defaultInputsColor,
   defaultInputsPlaceholderColor,
-  defaultInputsShadow,
   defaultOpacity,
   defaultRoundness,
 } from "@typebot.io/theme/constants";
@@ -172,7 +171,6 @@ export const ChatThemeSettings = ({
             backgroundColor: defaultInputsBackgroundColor,
             color: defaultInputsColor,
             placeholderColor: defaultInputsPlaceholderColor,
-            shadow: defaultInputsShadow,
             opacity: defaultOpacity,
             blur: defaultBlur,
             border: {
