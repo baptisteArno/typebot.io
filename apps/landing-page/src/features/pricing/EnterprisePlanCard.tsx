@@ -6,8 +6,8 @@ import {
 } from "./components/pricing-card";
 
 export const EnterprisePlanCard = () => (
-  <PricingCardRoot className="pt-10">
-    <div className="flex flex-col gap-10 items-center px-12">
+  <PricingCardRoot className="pt-10 max-w-4xl">
+    <div className="flex flex-col md:flex-row gap-10 items-center px-12">
       <div className="flex flex-col gap-3">
         <h2>Enterprise</h2>
         <p>
@@ -15,7 +15,7 @@ export const EnterprisePlanCard = () => (
           customer support at scale
         </p>
       </div>
-      <ul className="flex flex-col gap-3">
+      <ul className="flex flex-col gap-3 flex-shrink-0">
         <PerkListItem>
           Yearly contract with dedicated support representative
         </PerkListItem>

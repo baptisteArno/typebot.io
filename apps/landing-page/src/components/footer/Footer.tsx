@@ -73,9 +73,9 @@ const data = [
 
 export const Footer = () => {
   return (
-    <div className="flex flex-col pb-12">
-      <img src={gradientSeparatorSrc} alt="separator" className="w-full" />
-      <div className="dark flex flex-col items-center">
+    <div className="dark flex flex-col pb-12">
+      <img src={gradientSeparatorSrc} alt="separator" className="w-full h-2" />
+      <div className=" flex flex-col items-center">
         <div className="flex flex-col w-full max-w-7xl px-6 md:px-0">
           <div className="flex flex-col md:flex-row gap-12 py-12 items-start">
             <TypebotLogoFull className="mt-1" />
@@ -103,7 +103,9 @@ export const Footer = () => {
               ))}
             </div>
           </div>
-          <p className="text-gray-11">All rights reserved 2024 - Typebot</p>
+          <p className="text-gray-11 text-sm">
+            All rights reserved 2024 - Typebot
+          </p>
         </div>
       </div>
     </div>

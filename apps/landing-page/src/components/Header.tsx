@@ -193,7 +193,7 @@ const Mobile = React.forwardRef<HTMLElement, Props>(function Mobile(
 const desktopLinks = [
   {
     label: "Blog",
-    href: "/blog",
+    to: "/blog",
   },
   {
     label: "Community",
@@ -201,7 +201,7 @@ const desktopLinks = [
   },
   {
     label: "Pricing",
-    href: "/pricing",
+    to: "/pricing",
   },
   {
     label: "Documentation",
@@ -236,7 +236,11 @@ const Desktop = React.forwardRef<
             "font-normal",
           )}
           href={link.href}
-          target={link.href.startsWith("/") ? undefined : "_blank"}
+          to={link.to}
+          target={link.to ? undefined : "_blank"}
+          activeProps={{
+            className: "font-bold",
+          }}
         >
           {link.label}
         </Link>

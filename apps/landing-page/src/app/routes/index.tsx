@@ -28,7 +28,7 @@ function Home() {
       <div className="fixed top-4 md:bottom-12 md:top-auto z-10 w-full">
         <Header initialAppearance="dark" />
       </div>
-      <div className="flex w-full justify-center absolute top-4">
+      <div className="dark flex w-full justify-center absolute top-4">
         <TopBar className="hidden md:flex" />
       </div>
       <Section className="dark py-0">

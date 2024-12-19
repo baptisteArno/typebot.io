@@ -14,7 +14,7 @@ export const PricingCardRoot = ({
 }: { children: ReactNode; className?: string }) => (
   <div
     className={cn(
-      "rounded-2xl border bg-gray-1 dark:bg-gray-2 text-gray-12 flex flex-col relative items-center w-full pt-20 gap-10",
+      "rounded-2xl border bg-gray-1 dark:bg-gray-2 text-gray-12 flex flex-col relative items-center justify-between w-full pt-20 gap-10",
       className,
     )}
   >

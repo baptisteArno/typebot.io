@@ -25,7 +25,7 @@
   }
 
   body {
-    @apply font-body antialiased text-gray-12 bg-[#0D0D0D];
+    @apply font-body antialiased text-gray-12 bg-gray-2;
   }
 
   section {
