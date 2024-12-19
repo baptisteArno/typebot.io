@@ -14,6 +14,9 @@ export default {
       white: "rgb(255, 255, 255)",
     },
     extend: {
+      fontSize: {
+        "4xl": ["2.5rem", "2.75rem"],
+      },
       fontFamily: {
         heading: ["Uxum Grotesque", "sans-serif"],
         body: ["Untitled Sans", "sans-serif"],

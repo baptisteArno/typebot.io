@@ -4,7 +4,8 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]
-    }
+    },
+    "module": "ESNext"
   },
   "include": ["src/**/*.ts", "src/**/*.tsx", "app.config.ts"]
 }

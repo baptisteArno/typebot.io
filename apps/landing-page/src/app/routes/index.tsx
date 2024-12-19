@@ -1,3 +1,4 @@
+import { Header } from "@/components/Header";
 import { Section } from "@/components/Section";
 import { Cta } from "@/components/cta/Cta";
 import { Footer } from "@/components/footer/Footer";
@@ -8,7 +9,6 @@ import { JoinTheCommunity } from "@/features/homepage/components/JoinTheCommunit
 import { MadeForDevelopers } from "@/features/homepage/components/MadeForDevelopers";
 import { ForEveryDepartment } from "@/features/homepage/departments/ForEveryDepartment";
 import { GetStarted } from "@/features/homepage/get-started/GetStarted";
-import { Header } from "@/features/homepage/hero/Header";
 import { Hero } from "@/features/homepage/hero/Hero";
 import { TopBar } from "@/features/homepage/hero/TopBar";
 import { MainFeatures } from "@/features/homepage/main-features/MainFeatures";
@@ -26,7 +26,7 @@ function Home() {
     <div className="flex flex-col items-stretch">
       {/* <TypebotBubble /> */}
       <div className="fixed top-4 md:bottom-12 md:top-auto z-10 w-full">
-        <Header />
+        <Header initialAppearance="dark" />
       </div>
       <div className="flex w-full justify-center absolute top-4">
         <TopBar className="hidden md:flex" />

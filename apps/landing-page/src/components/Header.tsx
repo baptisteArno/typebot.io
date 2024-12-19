@@ -8,6 +8,7 @@ import {
   githubRepoUrl,
   signinUrl,
 } from "@/constants";
+import { useWindowSize } from "@/features/homepage/hooks/useWindowSize";
 import { cn } from "@/lib/utils";
 import { Link } from "@tanstack/react-router";
 import { CloseIcon } from "@typebot.io/ui/icons/CloseIcon";
@@ -16,7 +17,6 @@ import clsx from "clsx";
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import React from "react";
-import { useWindowSize } from "../hooks/useWindowSize";
 
 let isFirstCall = true;
 
@@ -43,10 +43,16 @@ const links = [
   },
 ];
 
-export const Header = () => {
+export const Header = ({
+  initialAppearance = "light",
+}: {
+  initialAppearance?: "light" | "dark";
+}) => {
   const [isOpened, setIsOpened] = useState(false);
   const headerRef = useRef<HTMLDivElement>(null);
-  const [appearance, setAppearance] = useState<"light" | "dark">("dark");
+  const [appearance, setAppearance] = useState<"light" | "dark">(
+    initialAppearance,
+  );
   const { width: windowWidth, height: windowHeight } = useWindowSize();
 
   useEffect(() => {

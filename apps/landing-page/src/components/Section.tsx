@@ -12,7 +12,7 @@ export const Section = ({
   return (
     <section
       className={cn(
-        "flex flex-col px-4 py-20 md:py-32 gap-22 md:gap-44 items-center",
+        "flex flex-col px-4 py-20 md:py-32 gap-24 md:gap-44 items-center",
         className,
       )}
       style={style}

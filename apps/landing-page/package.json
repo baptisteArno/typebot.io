@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "dev": "dotenv -e ./.env -e ../../.env -- vinxi dev --port 3003",
-    "build": "dotenv -e ./.env -e ../../.env -- vinxi build --preset vercel",
+    "build": "dotenv -e ./.env -e ../../.env -- vinxi build",
     "start": "dotenv -e ./.env -e ../../.env -- vinxi start"
   },
   "dependencies": {
