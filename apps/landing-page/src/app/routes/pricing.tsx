@@ -2,6 +2,7 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/footer/Footer";
 import { TopBar } from "@/features/homepage/hero/TopBar";
 import { EnterprisePlanCard } from "@/features/pricing/EnterprisePlanCard";
+import { Faq } from "@/features/pricing/Faq";
 import { PlanComparisonTables } from "@/features/pricing/PlanComparisonsTables";
 import { PricingHeading } from "@/features/pricing/PricingHeading";
 import { TiersDialog } from "@/features/pricing/TiersDialog";
@@ -34,7 +35,7 @@ function RouteComponent() {
       <div className="fixed top-4 md:bottom-12 md:top-auto z-10 w-full">
         <Header />
       </div>
-      <div className="flex flex-col items-center w-full px-4 pt-28 md:pt-20 pb-32">
+      <div className="flex flex-col items-center w-full px-4 pt-28 md:pt-20 pb-32 gap-24">
         <div className="flex flex-col max-w-7xl w-full gap-12 md:gap-20">
           <PricingHeading />
           <div className="flex flex-col gap-8 items-center w-full">
@@ -54,8 +55,14 @@ function RouteComponent() {
           <div className="flex flex-col gap-8">
             <h2>Compare plans & features</h2>
             <PlanComparisonTables onChatsTiersClick={openTiersDialog} />
+            <div className="flex flex-col gap-4 md:flex-row w-full justify-around">
+              <FreePlanCard />
+              <StarterPlanCard />
+              <ProPlanCard />
+            </div>
           </div>
         </div>
+        <Faq />
       </div>
       <Footer />
       <TiersDialog open={open} onClose={closeTiersDialog} />

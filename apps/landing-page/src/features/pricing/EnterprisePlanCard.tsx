@@ -1,4 +1,5 @@
-import { Button } from "@/components/Button";
+import { ButtonLink } from "@/components/link";
+import { enterpriseLeadTypebotUrl } from "@/constants";
 import {
   PerkListItem,
   PricingCardFooter,
@@ -27,9 +28,13 @@ export const EnterprisePlanCard = () => (
       </ul>
     </div>
     <PricingCardFooter>
-      <Button variant="ctaSecondary" size="lg">
+      <ButtonLink
+        variant="ctaSecondary"
+        size="lg"
+        href={enterpriseLeadTypebotUrl}
+      >
         Get a quote
-      </Button>
+      </ButtonLink>
     </PricingCardFooter>
   </PricingCardRoot>
 );

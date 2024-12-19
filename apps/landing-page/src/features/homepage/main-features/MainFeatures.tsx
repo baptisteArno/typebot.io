@@ -1,5 +1,5 @@
 import { Card } from "@/components/Card";
-import { TextLink } from "@/components/TextLink";
+import { TextLink } from "@/components/link";
 import { cn } from "@/lib/utils";
 import clsx from "clsx";
 import { AnimatePresence, motion } from "motion/react";

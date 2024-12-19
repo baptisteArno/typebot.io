@@ -17,6 +17,7 @@ import clsx from "clsx";
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import React from "react";
+import { ButtonLink } from "./link";
 
 let isFirstCall = true;
 
@@ -229,12 +230,11 @@ const Desktop = React.forwardRef<
       )}
     >
       {desktopLinks.map((link) => (
-        <Link
+        <ButtonLink
           key={link.label}
-          className={cn(
-            buttonVariants({ variant: "ghost", size: "sm" }),
-            "font-normal",
-          )}
+          variant="ghost"
+          size="sm"
+          className="font-normal"
           href={link.href}
           to={link.to}
           target={link.to ? undefined : "_blank"}
@@ -243,7 +243,7 @@ const Desktop = React.forwardRef<
           }}
         >
           {link.label}
-        </Link>
+        </ButtonLink>
       ))}
       <Button variant="cta" size="sm">
         Get started free

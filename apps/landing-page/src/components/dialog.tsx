@@ -9,12 +9,12 @@ export const ScrollableDialog = ({
     open={open}
     onClose={onClose}
     backdrop={false}
-    className="flex m-auto flex-col gap-4 rounded-xl bg-gray-1 p-4 opacity-0 transition-all scale-95 data-[enter]:opacity-100 data-[enter]:scale-100 h-fit max-h-none inset-auto"
+    className="flex m-auto flex-col gap-4 rounded-xl bg-gray-1 p-4 opacity-0 transition-all scale-95 data-[enter]:opacity-100 data-[enter]:scale-100 h-fit max-h-none inset-auto max-w-xl border shadow-lg"
     render={(props) => (
       <div
         hidden={!open}
         data-enter={open}
-        className="fixed top-0 z-50 h-full w-full bg-black/10 backdrop-blur-0 overflow-auto opacity-0 transition-all duration-150 data-[enter]:opacity-100 data-[enter]:backdrop-blur-sm p-4"
+        className="fixed top-0 z-50 h-full w-full bg-black/10 backdrop-blur-0 overflow-auto opacity-0 transition-all duration-150 data-[enter]:opacity-100 data-[enter]:backdrop-blur-sm px-4 p-12"
       >
         <div {...props} />
       </div>

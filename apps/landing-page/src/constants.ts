@@ -11,3 +11,6 @@ export const discordUrl = "https://typebot.io/discord";
 export const docsUrl = "https://docs.typebot.io";
 export const howToGetHelpUrl = `${docsUrl}/guides/how-to-get-help`;
 export const privacyPolicyUrl = `${docsUrl}/privacy-policies#privacy-and-security-policies`;
+export const stripeClimateUrl = "https://climate.stripe.com/5VCRAq";
+export const enterpriseLeadTypebotUrl =
+  "https://typebot.io/enterprise-lead-form";

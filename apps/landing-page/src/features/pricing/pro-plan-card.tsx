@@ -1,11 +1,14 @@
 import { Button } from "@/components/Button";
 import { MoreInfoTooltip } from "@/components/MoreInfoTooltip";
+import { ButtonLink } from "@/components/link";
+import { registerUrl } from "@/constants";
 import {
   chatsLimits,
   prices,
   seatsLimits,
 } from "@typebot.io/billing/constants";
 import { formatPrice } from "@typebot.io/billing/helpers/formatPrice";
+import { Plan } from "@typebot.io/prisma/enum";
 import {
   PerkListItem,
   PlanNamePill,
@@ -27,9 +30,13 @@ export const ProPlanCard = ({ children }: { children?: React.ReactNode }) => (
       {children}
     </div>
     <PricingCardFooter>
-      <Button variant="ctaSecondary" size="lg">
+      <ButtonLink
+        variant="ctaSecondary"
+        size="lg"
+        href={`${registerUrl}?subscribePlan=${Plan.PRO}`}
+      >
         Subscribe now
-      </Button>
+      </ButtonLink>
     </PricingCardFooter>
   </PricingCardRoot>
 );

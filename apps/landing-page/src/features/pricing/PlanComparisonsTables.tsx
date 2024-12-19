@@ -16,9 +16,6 @@ import { parseNumberWithCommas } from "@typebot.io/lib/utils";
 import { CheckIcon } from "@typebot.io/ui/icons/CheckIcon";
 import { InfinityIcon } from "@typebot.io/ui/icons/InfinityIcon";
 import { chatsTooltip } from "./constants";
-import { FreePlanCard } from "./free-plan-card";
-import { ProPlanCard } from "./pro-plan-card";
-import { StarterPlanCard } from "./starter-plan-card";
 
 type Props = {
   onChatsTiersClick: () => void;
@@ -30,10 +27,10 @@ export const PlanComparisonTables = ({ onChatsTiersClick }: Props) => (
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-[400px] pl-6">Usage</TableHead>
-            <TableHead className="">FREE</TableHead>
-            <TableHead className="text-orange-9">STARTER</TableHead>
-            <TableHead className="text-purple-9">PRO</TableHead>
+            <TableHead className="w-[400px] min-w-[150px] pl-6">
+              Usage
+            </TableHead>
+            <PlanTableHeads className="min-w-[150px]" />
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -85,10 +82,8 @@ export const PlanComparisonTables = ({ onChatsTiersClick }: Props) => (
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-[400px]">Features</TableHead>
-            <TableHead>Free</TableHead>
-            <TableHead color="orange.200">Starter</TableHead>
-            <TableHead color="blue.200">Pro</TableHead>
+            <TableHead className="w-[400px] min-w-[200px]">Features</TableHead>
+            <PlanTableHeads className="md:min-w-[150px]" />
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -208,10 +203,8 @@ export const PlanComparisonTables = ({ onChatsTiersClick }: Props) => (
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-[400px]">Support</TableHead>
-            <TableHead>Free</TableHead>
-            <TableHead color="orange.200">Starter</TableHead>
-            <TableHead color="blue.200">Pro</TableHead>
+            <TableHead className="w-[400px] min-w-[200px]">Support</TableHead>
+            <PlanTableHeads className="md:min-w-[150px]" />
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -242,12 +235,6 @@ export const PlanComparisonTables = ({ onChatsTiersClick }: Props) => (
         </TableBody>
       </Table>
     </TableRoot>
-
-    <div className="flex flex-col gap-4 md:flex-row w-full justify-around">
-      <FreePlanCard />
-      <StarterPlanCard />
-      <ProPlanCard />
-    </div>
   </div>
 );
 
@@ -276,4 +263,12 @@ const TableCellWithTooltip = ({
     <p>{children}</p>
     <MoreInfoTooltip>{tooltip}</MoreInfoTooltip>
   </TableCell>
+);
+
+const PlanTableHeads = ({ className }: { className?: string }) => (
+  <>
+    <TableHead className={className}>FREE</TableHead>
+    <TableHead className={cn("text-orange-9", className)}>STARTER</TableHead>
+    <TableHead className={cn("text-purple-9", className)}>PRO</TableHead>
+  </>
 );
