@@ -32,10 +32,17 @@ import type {
   ContinueChatResponse,
   RuntimeOptions,
 } from "@typebot.io/bot-engine/schemas/api";
-import { isNotDefined } from "@typebot.io/lib/utils";
+import { isDefined, isNotDefined } from "@typebot.io/lib/utils";
 import { defaultGuestAvatarIsEnabled } from "@typebot.io/theme/constants";
 import type { Theme } from "@typebot.io/theme/schemas";
-import { Match, Show, Switch, createEffect, createSignal } from "solid-js";
+import {
+  Match,
+  Show,
+  Switch,
+  createEffect,
+  createSignal,
+  onMount,
+} from "solid-js";
 import { GuestBubble } from "./bubbles/GuestBubble";
 
 type Props = {
@@ -47,6 +54,7 @@ type Props = {
   context: BotContext;
   isInputPrefillEnabled: boolean;
   hasError: boolean;
+  isOngoingLastChunk: boolean;
   onTransitionEnd: () => void;
   onSubmit: (content: InputSubmitContent) => void;
   onSkip: () => void;
@@ -56,6 +64,13 @@ export const InputChatBlock = (props: Props) => {
   const [answer, setAnswer] = persist(createSignal<InputSubmitContent>(), {
     key: `typebot-${props.context.typebot.id}-input-${props.chunkIndex}`,
     storage: props.context.storage,
+  });
+
+  onMount(() => {
+    // Re-submit last answer when recovered from storage to avoid being stuck
+    if (props.isOngoingLastChunk && isDefined(answer())) {
+      props.onSubmit(answer()!);
+    }
   });
 
   const handleSubmit = async (content: InputSubmitContent) => {

@@ -37,7 +37,8 @@ test.describe("Payment input block", () => {
     await page.click('button >> text="Connect"');
     await expect(page.locator('text="Secret test key:"')).toBeHidden();
     await expect(page.locator('text="My Stripe Account"')).toBeVisible();
-    await page.fill('[placeholder="30.00"] >> nth=-1', "30.00");
+    await page.waitForTimeout(1000);
+    await page.getByLabel("Price amount:").fill("30");
     await page.selectOption("select", "EUR");
     await page.click("text=Additional information");
     await page.fill('[placeholder="John Smith"]', "Baptiste");

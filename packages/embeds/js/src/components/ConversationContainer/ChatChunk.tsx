@@ -27,6 +27,7 @@ type Props = Pick<ContinueChatResponse, "messages" | "input"> & {
   hideAvatar: boolean;
   streamingMessageId: ChatChunkType["streamingMessageId"];
   isTransitionDisabled?: boolean;
+  isOngoingLastChunk: boolean;
   onNewBubbleDisplayed: (blockId: string) => Promise<void>;
   onScrollToBottom: (ref?: HTMLDivElement, offset?: number) => void;
   onSubmit: (answer?: InputSubmitContent) => void;
@@ -144,6 +145,7 @@ export const ChatChunk = (props: Props) => {
             props.settings.general?.isInputPrefillEnabled ??
             defaultSettings.general.isInputPrefillEnabled
           }
+          isOngoingLastChunk={props.isOngoingLastChunk}
           hasError={props.hasError}
           onTransitionEnd={() => props.onScrollToBottom(lastBubble())}
           onSubmit={props.onSubmit}
