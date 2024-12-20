@@ -1,4 +1,4 @@
-import { TextInput, Textarea } from "@/components/inputs";
+import { Textarea } from "@/components/inputs";
 import { CodeEditor } from "@/components/inputs/CodeEditor";
 import { RadioButtons } from "@/components/inputs/RadioButtons";
 import { Select } from "@/components/inputs/Select";
@@ -22,14 +22,9 @@ import {
   valueTypes,
 } from "@typebot.io/blocks-logic/setVariable/constants";
 import type { SetVariableBlock } from "@typebot.io/blocks-logic/setVariable/schema";
-import allTimeZones from "@typebot.io/lib/allTimeZones";
+import { timeZones } from "@typebot.io/lib/timeZones";
 import { isDefined } from "@typebot.io/lib/utils";
 import type { Variable } from "@typebot.io/variables/schemas";
-
-const timeZoneLabels = allTimeZones.map((zone) => ({
-  label: zone.places,
-  value: zone.timeZone,
-}));
 
 type Props = {
   options: SetVariableBlock["options"];
@@ -308,9 +303,9 @@ const SetVariableValue = ({
     case "Tomorrow": {
       return (
         <Select
-          items={timeZoneLabels}
+          items={timeZones}
           onSelect={(timeZone) => onOptionsChange({ ...options, timeZone })}
-          placeholder="Select Timezone"
+          placeholder="Select time zone"
           selectedItem={options?.timeZone}
         />
       );
