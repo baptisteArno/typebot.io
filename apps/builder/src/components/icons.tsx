@@ -703,3 +703,9 @@ export const WalletIcon = (props: IconProps) => (
     <path d="M3 11h3c.8 0 1.6.3 2.1.9l1.1.9c1.6 1.6 4.1 1.6 5.7 0l1.1-.9c.5-.5 1.3-.9 2.1-.9H21" />
   </Icon>
 );
+
+export const SparklesIcon = (props: IconProps) => (
+  <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
+    <path d="M10,21.236,6.755,14.745.264,11.5,6.755,8.255,10,1.764l3.245,6.491L19.736,11.5l-6.491,3.245ZM18,21l1.5,3L21,21l3-1.5L21,18l-1.5-3L18,18l-3,1.5ZM19.333,4.667,20.5,7l1.167-2.333L24,3.5,21.667,2.333,20.5,0,19.333,2.333,17,3.5Z" />
+  </Icon>
+);
