@@ -2,6 +2,8 @@ export const timeZones = [
   { label: "(GMT-11:00) Midway Island, Samoa", value: "Pacific/Midway" },
   { label: "(GMT-10:00) Hawaii", value: "Pacific/Honolulu" },
   { label: "(GMT-09:00) Alaska", value: "America/Juneau" },
+  { label: "(GMT-08:00) Pacific Time", value: "America/Los_Angeles" },
+  { label: "(GMT-08:00) Tijuana", value: "America/Tijuana" },
   { label: "(GMT-07:00) Mountain Time", value: "America/Boise" },
   { label: "(GMT-07:00) Dawson, Yukon", value: "America/Dawson" },
   {
@@ -22,14 +24,12 @@ export const timeZones = [
   { label: "(GMT-04:00) Santiago", value: "America/Santiago" },
   { label: "(GMT-03:30) Newfoundland and Labrador", value: "America/St_Johns" },
   { label: "(GMT-03:00) Brasilia", value: "America/Sao_Paulo" },
-  { label: "(GMT-08:00) Tijuana", value: "America/Tijuana" },
   { label: "(GMT-03:00) Montevideo", value: "America/Montevideo" },
   {
     label: "(GMT-03:00) Buenos Aires, Georgetown",
     value: "America/Argentina/Buenos_Aires",
   },
   { label: "(GMT-03:00) Greenland", value: "America/Godthab" },
-  { label: "(GMT-08:00) Pacific Time", value: "America/Los_Angeles" },
   { label: "(GMT-01:00) Azores", value: "Atlantic/Azores" },
   { label: "(GMT-01:00) Cape Verde Islands", value: "Atlantic/Cape_Verde" },
   { label: "(GMT+00:00) UTC", value: "GMT" },
