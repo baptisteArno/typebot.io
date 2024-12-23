@@ -28,7 +28,6 @@ export const SearchInput = (props: Props) => {
         ref={props.ref}
         class="focus:outline-none bg-transparent px-4 py-4 flex-1 w-full text-input"
         type="text"
-        style={{ "font-size": "16px" }}
         value={value()}
         onInput={(e) => changeValue(e.currentTarget.value)}
         {...others}
