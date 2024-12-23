@@ -251,6 +251,7 @@ const convertWhatsAppMessageToTypebotMessage = async ({
         break;
       }
       case "webhook": {
+        if (!message.webhook.data) return;
         text = message.webhook.data;
       }
     }

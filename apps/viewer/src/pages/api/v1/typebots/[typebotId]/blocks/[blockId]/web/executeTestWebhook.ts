@@ -63,10 +63,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         },
         {
           method: "POST",
-          body:
-            typeof req.body === "string"
-              ? req.body
-              : JSON.stringify(req.body, null, 2),
+          body: parseBody(req),
         },
       );
     } catch (error) {
@@ -80,3 +77,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 export default handler;
+
+function parseBody(req: NextApiRequest): string | undefined {
+  if (!req.body) return;
+  return typeof req.body === "string"
+    ? req.body
+    : JSON.stringify(req.body, null, 2);
+}
