@@ -1,4 +1,4 @@
-import { TextInput, Textarea } from "@/components/inputs";
+import { Textarea } from "@/components/inputs";
 import { CodeEditor } from "@/components/inputs/CodeEditor";
 import { RadioButtons } from "@/components/inputs/RadioButtons";
 import { Select } from "@/components/inputs/Select";
@@ -22,6 +22,7 @@ import {
   valueTypes,
 } from "@typebot.io/blocks-logic/setVariable/constants";
 import type { SetVariableBlock } from "@typebot.io/blocks-logic/setVariable/schema";
+import { timeZones } from "@typebot.io/lib/timeZones";
 import { isDefined } from "@typebot.io/lib/utils";
 import type { Variable } from "@typebot.io/variables/schemas";
 
@@ -301,12 +302,11 @@ const SetVariableValue = ({
     case "Yesterday":
     case "Tomorrow": {
       return (
-        <TextInput
-          direction="row"
-          label="Timezone"
-          onChange={(timeZone) => onOptionsChange({ ...options, timeZone })}
-          defaultValue={options.timeZone}
-          placeholder="Europe/Paris"
+        <Select
+          items={timeZones}
+          onSelect={(timeZone) => onOptionsChange({ ...options, timeZone })}
+          placeholder="Select time zone"
+          selectedItem={options?.timeZone}
         />
       );
     }
