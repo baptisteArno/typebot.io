@@ -29,7 +29,13 @@ const workspaceContext = createContext<{
   currentRole?: WorkspaceRole;
   switchWorkspace: (workspaceId: string) => void;
   createWorkspace: (name?: string) => Promise<void>;
-  updateWorkspace: (updates: { icon?: string; name?: string }) => void;
+  updateWorkspace: (updates: {
+    icon?: string;
+    name?: string;
+    inEditorAiFeaturesEnabled?: boolean;
+    aiFeaturePrompt?: string;
+    aiFeatureCredentialId?: string;
+  }) => void;
   deleteCurrentWorkspace: () => Promise<void>;
   //@ts-ignore
 }>({});
@@ -80,6 +86,7 @@ export const WorkspaceProvider = ({
   );
 
   const workspace = workspaceData?.workspace;
+
   const members = membersData?.members;
 
   const { showToast } = useToast();
@@ -172,7 +179,13 @@ export const WorkspaceProvider = ({
     setWorkspaceId(workspace.id);
   };
 
-  const updateWorkspace = (updates: { icon?: string; name?: string }) => {
+  const updateWorkspace = (updates: {
+    icon?: string;
+    name?: string;
+    inEditorAiFeaturesEnabled?: boolean;
+    aiFeaturePrompt?: string;
+    aiFeatureCredentialId?: string;
+  }) => {
     if (!workspaceId) return;
     updateWorkspaceMutation.mutate({
       workspaceId,
