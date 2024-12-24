@@ -34,7 +34,9 @@ export const convertMarkdownToRichText = <V extends Value>(
       textRules,
       indentList,
     } as unknown as RemarkPluginOptions<V>)
-    .processSync(data)
+    // Unset variables get ignored. To better save variables across sessions,
+    // set them to a custom value "UNSET_VARIABLE" that can processed in AVC-Typebot Service.
+    .processSync(data || 'UNSET_VARIABLE')
 
   if (variableKey && Array.isArray(tree.result)) {
     tree.result.forEach((res: any) => {
