@@ -66,7 +66,7 @@ export const WebhookSettings = ({
     onMessage(e) {
       try {
         const parsedData = JSON.parse(e.data);
-        if (Object.keys(parsedData.data).length > 0) {
+        if (Object.keys(parsedData).length > 0) {
           setReceivedData(JSON.stringify(parsedData, null, 2));
           setResponseKeys(getDeepKeys(parsedData));
         }
