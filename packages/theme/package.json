@@ -15,7 +15,7 @@
     "@typebot.io/lib": "workspace:*",
     "@typebot.io/prisma": "workspace:*",
     "@typebot.io/zod": "workspace:*",
-    "next": "14.2.16"
+    "next": "14.2.13"
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*"

@@ -90,7 +90,7 @@ export const ResultsPage = () => {
           <HStack maxW="1600px" w="full" px="4">
             <Button
               as={Link}
-              colorScheme={!isAnalytics ? "blue" : "gray"}
+              colorScheme={!isAnalytics ? "orange" : "gray"}
               variant={!isAnalytics ? "outline" : "ghost"}
               size="sm"
               href={`/typebots/${typebot?.id}/results`}
@@ -104,7 +104,7 @@ export const ResultsPage = () => {
             </Button>
             <Button
               as={Link}
-              colorScheme={isAnalytics ? "blue" : "gray"}
+              colorScheme={isAnalytics ? "orange" : "gray"}
               variant={isAnalytics ? "outline" : "ghost"}
               href={`/typebots/${typebot?.id}/results/analytics`}
               size="sm"

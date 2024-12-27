@@ -5,7 +5,13 @@ import { ParentModalProvider } from "@/features/graph/providers/ParentModalProvi
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { WorkspaceDropdown } from "@/features/workspace/components/WorkspaceDropdown";
 import { WorkspaceSettingsModal } from "@/features/workspace/components/WorkspaceSettingsModal";
-import { Button, Flex, HStack, useDisclosure } from "@chakra-ui/react";
+import {
+  Button,
+  Flex,
+  HStack,
+  useColorModeValue,
+  useDisclosure,
+} from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { isNotDefined } from "@typebot.io/lib/utils";
 import Link from "next/link";
@@ -28,7 +34,12 @@ export const DashboardHeader = () => {
     createWorkspace(user?.name ?? undefined);
 
   return (
-    <Flex w="full" borderBottomWidth="1px" justify="center">
+    <Flex
+      w="full"
+      borderBottomWidth="1px"
+      justify="center"
+      bg={useColorModeValue("white", "gray.900")}
+    >
       <Flex
         justify="space-between"
         alignItems="center"

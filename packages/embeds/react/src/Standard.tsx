@@ -31,5 +31,3 @@ export const Standard = ({ style, className, ...assignableProps }: Props) => {
 
   return <typebot-standard ref={ref} style={style} class={className} />;
 };
-
-export default Standard;

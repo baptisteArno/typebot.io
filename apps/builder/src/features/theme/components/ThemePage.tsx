@@ -23,14 +23,14 @@ export const ThemePage = () => {
           height="calc(100% - 2rem)"
           w="full"
           borderWidth={1}
-          rounded="md"
+          rounded="xl"
           mr={4}
         >
           {typebot && (
             <Standard
               typebot={typebot}
               style={{
-                borderRadius: "0.375rem",
+                borderRadius: "0.75rem",
                 width: "100%",
                 height: "100%",
               }}

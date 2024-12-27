@@ -37,12 +37,7 @@ export const UnlockPlanAlertInfo = ({
         <AlertIcon />
         <Text>{props.children}</Text>
       </HStack>
-      <Button
-        colorScheme={props.status === "warning" ? "orange" : "blue"}
-        onClick={onOpen}
-        flexShrink={0}
-        ml="2"
-      >
+      <Button onClick={onOpen} flexShrink={0} ml="2">
         {buttonLabel ?? t("billing.upgradeAlert.buttonDefaultLabel")}
       </Button>
       <ChangePlanModal

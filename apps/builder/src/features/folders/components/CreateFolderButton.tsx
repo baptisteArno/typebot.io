@@ -21,9 +21,10 @@ export const CreateFolderButton = ({ isLoading, onClick }: Props) => {
   };
   return (
     <Button
-      leftIcon={<FolderPlusIcon />}
+      leftIcon={<FolderPlusIcon color="blue.500" />}
       onClick={handleClick}
       isLoading={isLoading}
+      colorScheme="white"
     >
       <HStack>
         <Text>{t("folders.createFolderButton.label")}</Text>

@@ -14,6 +14,7 @@ import {
   HStack,
   Heading,
   Stack,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import type { Settings } from "@typebot.io/settings/schemas";
 import React from "react";
@@ -51,26 +52,25 @@ export const SettingsSideMenu = () => {
     <Stack
       flex="1"
       maxW="400px"
-      height="full"
-      borderRightWidth={1}
-      pt={10}
-      spacing={10}
+      h={`calc(100% - 2rem)`}
+      borderWidth={1}
+      ml={4}
       overflowY="auto"
       pb="20"
+      position="relative"
+      rounded="xl"
+      bg={useColorModeValue("white", "gray.900")}
     >
-      <Heading fontSize="xl" textAlign="center">
-        Settings
-      </Heading>
-      <Accordion allowMultiple defaultIndex={[0]}>
-        <AccordionItem>
-          <AccordionButton py={6}>
+      <Accordion allowMultiple borderBottomWidth={0} defaultIndex={[0]}>
+        <AccordionItem borderTopWidth={0}>
+          <AccordionButton py={4}>
             <HStack flex="1" pl={2}>
               <MoreVerticalIcon transform={"rotate(90deg)"} />
-              <Heading fontSize="lg">General</Heading>
+              <Heading fontSize="md">General</Heading>
             </HStack>
             <AccordionIcon />
           </AccordionButton>
-          <AccordionPanel pb={4} px="6">
+          <AccordionPanel>
             {typebot && (
               <GeneralSettingsForm
                 generalSettings={typebot.settings.general}
@@ -80,14 +80,14 @@ export const SettingsSideMenu = () => {
           </AccordionPanel>
         </AccordionItem>
         <AccordionItem>
-          <AccordionButton py={6}>
+          <AccordionButton py={4}>
             <HStack flex="1" pl={2}>
               <ChatIcon />
-              <Heading fontSize="lg">Typing</Heading>
+              <Heading fontSize="md">Typing</Heading>
             </HStack>
             <AccordionIcon />
           </AccordionButton>
-          <AccordionPanel pb={4} px="6">
+          <AccordionPanel>
             {typebot && (
               <TypingEmulationForm
                 typingEmulation={typebot.settings.typingEmulation}
@@ -97,14 +97,14 @@ export const SettingsSideMenu = () => {
           </AccordionPanel>
         </AccordionItem>
         <AccordionItem>
-          <AccordionButton py={6}>
+          <AccordionButton py={4}>
             <HStack flex="1" pl={2}>
               <LockedIcon />
-              <Heading fontSize="lg">Security</Heading>
+              <Heading fontSize="md">Security</Heading>
             </HStack>
             <AccordionIcon />
           </AccordionButton>
-          <AccordionPanel pb={4} px="6">
+          <AccordionPanel>
             {typebot && (
               <SecurityForm
                 security={typebot.settings.security}
@@ -114,14 +114,14 @@ export const SettingsSideMenu = () => {
           </AccordionPanel>
         </AccordionItem>
         <AccordionItem>
-          <AccordionButton py={6}>
+          <AccordionButton py={4}>
             <HStack flex="1" pl={2}>
               <CodeIcon />
-              <Heading fontSize="lg">Metadata</Heading>
+              <Heading fontSize="md">Metadata</Heading>
             </HStack>
             <AccordionIcon />
           </AccordionButton>
-          <AccordionPanel pb={4} px="6">
+          <AccordionPanel>
             {typebot && (
               <MetadataForm
                 workspaceId={typebot.workspaceId}

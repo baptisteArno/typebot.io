@@ -48,5 +48,3 @@ export const Bubble = (props: Props) => {
 
   return null;
 };
-
-export default Bubble;

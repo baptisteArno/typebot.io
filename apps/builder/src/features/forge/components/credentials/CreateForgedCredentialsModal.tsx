@@ -15,14 +15,12 @@ import {
 } from "@chakra-ui/react";
 import type { Credentials } from "@typebot.io/credentials/schemas";
 import type { ForgedBlockDefinition } from "@typebot.io/forge-repository/definitions";
-import type React from "react";
 import { useState } from "react";
 import { ZodObjectLayout } from "../zodLayouts/ZodObjectLayout";
 
 type Props = {
   blockDef: ForgedBlockDefinition;
   isOpen: boolean;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   defaultData?: any;
   onClose: () => void;
   onNewCredentials: (id: string) => void;

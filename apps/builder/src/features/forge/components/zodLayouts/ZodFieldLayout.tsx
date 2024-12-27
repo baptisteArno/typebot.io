@@ -55,7 +55,6 @@ const mdComponents = {
   ),
 } satisfies Components;
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
 export const ZodFieldLayout = ({
   data,
   schema,
@@ -300,6 +299,8 @@ export const ZodFieldLayout = ({
         />
       );
     }
+    default:
+      return null;
   }
 };
 

@@ -80,6 +80,9 @@ export const EmbedButton = ({
       style={{ width: "225px", height: "270px" }}
       onClick={onOpen}
       whiteSpace={"normal"}
+      bg={useColorModeValue("white", "gray.900")}
+      borderWidth={1}
+      rounded="lg"
     >
       <VStack>
         {logo}

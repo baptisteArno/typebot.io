@@ -71,7 +71,7 @@
     "jsonwebtoken": "9.0.1",
     "ky": "1.2.4",
     "micro-cors": "0.1.1",
-    "next": "14.2.16",
+    "next": "14.2.13",
     "next-auth": "4.24.8",
     "nextjs-cors": "2.1.2",
     "nodemailer": "6.9.15",
@@ -83,8 +83,8 @@
     "pexels": "^1.4.0",
     "prettier": "2.8.8",
     "qs": "6.11.2",
-    "react": "18.3.1",
-    "react-dom": "18.3.1",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
     "react-icons": "^5.3.0",
     "react-markdown": "^9.0.1",
     "shared-zustand": "2.0.0",
@@ -122,10 +122,11 @@
     "@types/papaparse": "5.3.7",
     "@types/prettier": "2.7.3",
     "@types/qs": "6.9.7",
-    "@types/react": "18.3.1",
+    "@types/react": "18.2.0",
     "@types/tinycolor2": "1.4.3",
     "dotenv": "16.4.5",
     "dotenv-cli": "7.4.4",
-    "superjson": "1.12.4"
+    "superjson": "1.12.4",
+    "next-runtime-env": "1.6.2"
   }
 }

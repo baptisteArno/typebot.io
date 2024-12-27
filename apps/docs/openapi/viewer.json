@@ -2494,7 +2494,7 @@
     },
     "/v2/generate-upload-url": {
       "post": {
-        "operationId": "generateUploadUrl",
+        "operationId": "generateUploadUrlV2",
         "summary": "Generate upload URL",
         "description": "Used to upload anything from the client to S3 bucket",
         "requestBody": {
@@ -2516,6 +2516,91 @@
                 },
                 "required": [
                   "sessionId",
+                  "fileName"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "presignedUrl": {
+                      "type": "string"
+                    },
+                    "formData": {
+                      "type": "object",
+                      "additionalProperties": {}
+                    },
+                    "fileUrl": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "presignedUrl",
+                    "formData",
+                    "fileUrl"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error.BAD_REQUEST"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error.INTERNAL_SERVER_ERROR"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v3/generate-upload-url": {
+      "post": {
+        "operationId": "generateUploadUrl",
+        "summary": "Generate upload URL",
+        "description": "Used to upload anything from the client to S3 bucket",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "sessionId": {
+                    "type": "string"
+                  },
+                  "blockId": {
+                    "type": "string"
+                  },
+                  "fileName": {
+                    "type": "string"
+                  },
+                  "fileType": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "sessionId",
+                  "blockId",
                   "fileName"
                 ]
               }

@@ -2,6 +2,10 @@ import { createEnv } from "@t3-oss/env-nextjs";
 import { z } from "zod";
 import { getRuntimeVariable } from "./getRuntimeVariable";
 
+declare const window: {
+  __ENV?: any;
+};
+
 const guessNextAuthUrlForVercelPreview = (val: unknown) => {
   if (
     (val && typeof val === "string" && val.length > 0) ||

@@ -6,7 +6,7 @@ import { FileLinks } from "../components/FileLinks";
 export const parseCellContent = (
   content: VariableWithValue["value"],
   blockType?: InputBlockType,
-): { element?: React.JSX.Element; plainText: string } => {
+): { element?: JSX.Element; plainText: string } => {
   if (!content) return { element: undefined, plainText: "" };
   if (Array.isArray(content))
     return {

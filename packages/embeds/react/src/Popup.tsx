@@ -55,5 +55,3 @@ export const Popup = (props: Props) => {
 
   return <div ref={containerRef} />;
 };
-
-export default Popup;

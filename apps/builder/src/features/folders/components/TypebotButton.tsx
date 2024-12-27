@@ -22,6 +22,7 @@ import {
   Text,
   VStack,
   WrapItem,
+  useColorModeValue,
   useDisclosure,
 } from "@chakra-ui/react";
 import { T, useTranslate } from "@tolgee/react";
@@ -148,6 +149,7 @@ const TypebotButton = ({
       whiteSpace="normal"
       opacity={draggedTypebot ? 0.3 : 1}
       cursor="pointer"
+      bgColor={useColorModeValue("white", "gray.900")}
     >
       {typebot.publishedTypebotId && (
         <Tag

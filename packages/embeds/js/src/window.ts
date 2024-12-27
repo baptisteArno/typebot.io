@@ -10,14 +10,14 @@ import { unmount } from "./features/commands/utils/unmount";
 import type { PopupProps } from "./features/popup/components/Popup";
 import type { BotProps } from "./index";
 
-// export const initStandard = (props: BotProps & { id?: string }) => {
-//   const standardElement = props.id
-//     ? document.getElementById(props.id)
-//     : document.querySelector("typebot-standard");
-//   if (!standardElement)
-//     throw new Error("<typebot-standard> element not found.");
-//   Object.assign(standardElement, props);
-// };
+export const initStandard = (props: BotProps & { id?: string }) => {
+  const standardElement = props.id
+    ? document.getElementById(props.id)
+    : document.querySelector("typebot-standard");
+  if (!standardElement)
+    throw new Error("<typebot-standard> element not found.");
+  Object.assign(standardElement, props);
+};
 
 export const initPopup = (props: PopupProps) => {
   const popupElement = document.createElement("typebot-popup");

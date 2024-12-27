@@ -225,6 +225,18 @@ const Button = defineStyleConfig({
   variants: {
     solid: ({ colorMode, colorScheme }) => {
       if (colorScheme === "gray") return {};
+      if (colorScheme === "white")
+        return {
+          bg: colorMode === "dark" ? "gray.900" : "white",
+          color: colorMode === "dark" ? "gray.50" : "gray.950",
+          borderWidth: 1,
+          _hover: {
+            bg: colorMode === "dark" ? "gray.800" : "gray.50",
+          },
+          _active: {
+            bg: colorMode === "dark" ? "gray.700" : "gray.100",
+          },
+        };
       return {
         bg: `${colorScheme}.500`,
         color: "white",

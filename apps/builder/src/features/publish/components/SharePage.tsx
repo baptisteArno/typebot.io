@@ -19,6 +19,7 @@ import {
   Stack,
   Text,
   Wrap,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { env } from "@typebot.io/env";
@@ -94,67 +95,76 @@ export const SharePage = () => {
       <Seo title={typebot?.name ? `${typebot.name} | Share` : "Share"} />
       <TypebotHeader />
       <Flex h="full" w="full" justifyContent="center" align="flex-start">
-        <Stack maxW="1000px" w="full" pt="10" spacing={10}>
+        <Stack maxW="970px" w="full" pt="10" spacing={10}>
           <Stack spacing={4} align="flex-start">
             <Heading fontSize="2xl" as="h1">
-              Your typebot link
+              Your typebot links
             </Heading>
-            {typebot && (
-              <EditableUrl
-                hostname={env.NEXT_PUBLIC_VIEWER_URL[0]}
-                pathname={publicId}
-                isValid={checkIfPublicIdIsValid}
-                onPathnameChange={handlePublicIdChange}
-              />
-            )}
-            {typebot?.customDomain && (
-              <HStack>
+            <Stack
+              bg={useColorModeValue("white", "gray.900")}
+              spacing={4}
+              p={4}
+              rounded="lg"
+              align="flex-start"
+              borderWidth={1}
+            >
+              {typebot && (
                 <EditableUrl
-                  hostname={"https://" + typebot.customDomain.split("/")[0]}
-                  pathname={typebot.customDomain.split("/")[1]}
-                  isValid={checkIfPathnameIsValid}
-                  onPathnameChange={handlePathnameChange}
+                  hostname={env.NEXT_PUBLIC_VIEWER_URL[0]}
+                  pathname={publicId}
+                  isValid={checkIfPublicIdIsValid}
+                  onPathnameChange={handlePublicIdChange}
                 />
-                <IconButton
-                  icon={<TrashIcon />}
-                  aria-label="Remove custom URL"
-                  size="xs"
-                  onClick={() => handleCustomDomainChange(null)}
-                />
-                {workspace?.id && (
-                  <DomainStatusIcon
-                    domain={typebot.customDomain.split("/")[0]}
-                    workspaceId={workspace.id}
+              )}
+              {typebot?.customDomain && (
+                <HStack>
+                  <EditableUrl
+                    hostname={"https://" + typebot.customDomain.split("/")[0]}
+                    pathname={typebot.customDomain.split("/")[1]}
+                    isValid={checkIfPathnameIsValid}
+                    onPathnameChange={handlePathnameChange}
                   />
-                )}
-              </HStack>
-            )}
-            {isNotDefined(typebot?.customDomain) &&
-            env.NEXT_PUBLIC_VERCEL_VIEWER_PROJECT_NAME ? (
-              <>
-                {hasProPerks(workspace) ? (
-                  <CustomDomainsDropdown
-                    onCustomDomainSelect={handleCustomDomainChange}
+                  <IconButton
+                    icon={<TrashIcon />}
+                    aria-label="Remove custom URL"
+                    size="xs"
+                    onClick={() => handleCustomDomainChange(null)}
                   />
-                ) : (
-                  <UpgradeButton
-                    colorScheme="gray"
-                    limitReachedType={t("billing.limitMessage.customDomain")}
-                    excludedPlans={[Plan.STARTER]}
-                  >
-                    <Text mr="2">Add my domain</Text>{" "}
-                    <LockTag plan={Plan.PRO} />
-                  </UpgradeButton>
-                )}
-              </>
-            ) : null}
+                  {workspace?.id && (
+                    <DomainStatusIcon
+                      domain={typebot.customDomain.split("/")[0]}
+                      workspaceId={workspace.id}
+                    />
+                  )}
+                </HStack>
+              )}
+              {isNotDefined(typebot?.customDomain) &&
+              env.NEXT_PUBLIC_VERCEL_VIEWER_PROJECT_NAME ? (
+                <>
+                  {hasProPerks(workspace) ? (
+                    <CustomDomainsDropdown
+                      onCustomDomainSelect={handleCustomDomainChange}
+                    />
+                  ) : (
+                    <UpgradeButton
+                      colorScheme="gray"
+                      limitReachedType={t("billing.limitMessage.customDomain")}
+                      excludedPlans={[Plan.STARTER]}
+                    >
+                      <Text mr="2">Add my domain</Text>{" "}
+                      <LockTag plan={Plan.PRO} />
+                    </UpgradeButton>
+                  )}
+                </>
+              ) : null}
+            </Stack>
           </Stack>
 
           <Stack spacing={4}>
             <Heading fontSize="2xl" as="h1">
               Embed your typebot
             </Heading>
-            <Wrap spacing={7}>
+            <Wrap spacing={4}>
               {integrationsList.map((IntegrationButton, idx) => (
                 <IntegrationButton
                   key={idx}

@@ -76,7 +76,7 @@ export const ThemeSideMenu = () => {
       overflowY="auto"
       pb="20"
       position="relative"
-      rounded="md"
+      rounded="xl"
       bg={useColorModeValue("white", "gray.900")}
     >
       <Accordion allowToggle borderBottomWidth={0} defaultIndex={0}>

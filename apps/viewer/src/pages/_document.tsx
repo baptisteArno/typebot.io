@@ -1,11 +1,9 @@
-/* eslint-disable @next/next/no-sync-scripts */
-import { PublicEnvScript } from "@typebot.io/env/runtime";
 import { Head, Html, Main, NextScript } from "next/document";
 
 const Document = () => (
   <Html translate="no">
     <Head>
-      <PublicEnvScript />
+      <script src="/__ENV.js" />
     </Head>
     <body>
       <Main />

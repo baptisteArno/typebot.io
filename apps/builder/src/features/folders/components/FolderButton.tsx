@@ -90,6 +90,7 @@ const FolderButton = ({
       pos="relative"
       cursor="pointer"
       variant="outline"
+      bg={useColorModeValue("white", "gray.900")}
       colorScheme={isTypebotOver || draggedTypebot ? "orange" : "gray"}
       borderWidth={isTypebotOver ? "2px" : "1px"}
       transition={"border-width 0.1s ease"}
