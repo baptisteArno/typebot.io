@@ -14,7 +14,7 @@ export const ScrollableDialog = ({
       <div
         hidden={!open}
         data-enter={open}
-        className="fixed top-0 z-50 h-full w-full bg-black/10 backdrop-blur-0 overflow-auto opacity-0 transition-all duration-150 data-[enter]:opacity-100 data-[enter]:backdrop-blur-sm px-4 p-12"
+        className="fixed inset-0 z-50 h-full w-full bg-black/10 backdrop-blur-0 overflow-auto opacity-0 transition-all duration-150 data-[enter]:opacity-100 data-[enter]:backdrop-blur-sm px-4 p-12"
       >
         <div {...props} />
       </div>

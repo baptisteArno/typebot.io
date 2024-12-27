@@ -15,13 +15,13 @@ import { formatPrice } from "@typebot.io/billing/helpers/formatPrice";
 import { CloseIcon } from "@typebot.io/ui/icons/CloseIcon";
 
 export const TiersDialog = ({
-  open,
+  isOpened,
   onClose,
 }: {
-  open: boolean;
+  isOpened: boolean;
   onClose: () => void;
 }) => (
-  <ScrollableDialog open={open} onClose={onClose}>
+  <ScrollableDialog open={isOpened} onClose={onClose}>
     <div className="flex justify-between items-center">
       <DialogHeading className="text-2xl">Chats pricing table</DialogHeading>
       <DialogDismiss className={iconButtonVariants({ variant: "secondary" })}>

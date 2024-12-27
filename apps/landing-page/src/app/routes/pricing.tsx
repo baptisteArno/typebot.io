@@ -15,18 +15,32 @@ import {
   StarterPlanCard,
   StarterPlanPerksList,
 } from "@/features/pricing/starter-plan-card";
-import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { z } from "@typebot.io/zod";
 
 export const Route = createFileRoute("/pricing")({
   component: RouteComponent,
+  validateSearch: z.object({
+    isTiersModalOpened: z.boolean().optional(),
+  }),
 });
 
 function RouteComponent() {
-  const [open, setOpen] = useState(false);
+  const { isTiersModalOpened } = Route.useSearch();
+  const navigate = useNavigate({ from: Route.fullPath });
 
-  const openTiersDialog = () => setOpen(true);
-  const closeTiersDialog = () => setOpen(false);
+  const openTiersDialog = () => {
+    navigate({
+      search: { isTiersModalOpened: true },
+      resetScroll: false,
+    });
+  };
+  const closeTiersDialog = () => {
+    navigate({
+      search: { isTiersModalOpened: undefined },
+    });
+  };
+
   return (
     <div className="flex flex-col items-stretch">
       <div className="flex w-full justify-center">
@@ -65,7 +79,10 @@ function RouteComponent() {
         <Faq />
       </div>
       <Footer />
-      <TiersDialog open={open} onClose={closeTiersDialog} />
+      <TiersDialog
+        isOpened={isTiersModalOpened === true}
+        onClose={closeTiersDialog}
+      />
     </div>
   );
 }
