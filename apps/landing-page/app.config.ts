@@ -39,7 +39,7 @@ export default defineConfig({
         $fonts: resolve("./src/assets/fonts"),
         $magicBackgrounds: resolve("./src/assets/magicBackgrounds"),
         ".prisma/client/index-browser":
-          "./node_modules/.prisma/client/index-browser.js",
+          "../../node_modules/.prisma/client/index-browser.js",
       },
     },
     plugins: [
