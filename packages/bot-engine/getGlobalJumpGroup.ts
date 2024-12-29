@@ -12,7 +12,7 @@ export const getGlobalJumpGroup = (
     for (const block of group.blocks) {
       if (
         block.type === LogicBlockType.GLOBAL_JUMP &&
-        block.options?.text?.toLowerCase().includes(message.toLowerCase())
+        block.options?.text === message
       ) {
         return {
           groupId: block.options.groupId,
