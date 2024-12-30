@@ -146,7 +146,7 @@ export const incomingMessageSchema = z.discriminatedUnion("type", [
     from: z.string(),
     type: z.literal("webhook"),
     webhook: z.object({
-      data: z.string(),
+      data: z.string().optional(),
     }),
     timestamp: z.string(),
   }),
