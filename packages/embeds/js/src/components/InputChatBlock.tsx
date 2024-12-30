@@ -168,10 +168,6 @@ const Input = (props: {
           ?.success ?? defaultPaymentInputOptions.labels.success,
     });
 
-  const handleUniqueItems= (items: ChoiceInputBlock["items"]) => {
-    return Array.from(new Map(items.map((item) => [item.content, item])).values());
-  }
-
   return (
     <Switch>
       <Match when={props.block.type === InputBlockType.TEXT}>
@@ -226,14 +222,14 @@ const Input = (props: {
             <Match when={!block.options?.isMultipleChoice}>
               <Buttons
                 chunkIndex={props.chunkIndex}
-                defaultItems={handleUniqueItems(block.items)}
+                defaultItems={block.items}
                 options={block.options}
                 onSubmit={onSubmit}
               />
             </Match>
             <Match when={block.options?.isMultipleChoice}>
               <MultipleChoicesForm
-                defaultItems={handleUniqueItems(block.items)}
+                defaultItems={block.items}
                 options={block.options}
                 onSubmit={onSubmit}
               />
