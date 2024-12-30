@@ -32,6 +32,11 @@ export const OfficeHoursIntervalTimer = (
         return { key: control++, label, value: label + ':00' }
       }),
     ]
+
+    if (i === 23) {
+      const lastMinuteOfDay = getNumberWithTwoDigits(i) + ':' + getNumberWithTwoDigits(59)
+      hoursByQuarter.push({ key: control++, label: lastMinuteOfDay, value: lastMinuteOfDay + ':00' })
+    }
   }
 
   useEffect(() => {
