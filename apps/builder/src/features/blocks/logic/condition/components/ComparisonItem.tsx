@@ -71,6 +71,8 @@ const parseValuePlaceholder = (
       return "Type a value...";
     case ComparisonOperators.LESS:
     case ComparisonOperators.GREATER:
+    case ComparisonOperators.LESS_OR_EQUAL:
+    case ComparisonOperators.GREATER_OR_EQUAL:
       return "Type a number...";
     case ComparisonOperators.IS_SET:
     case ComparisonOperators.IS_EMPTY:
