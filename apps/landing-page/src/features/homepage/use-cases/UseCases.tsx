@@ -1,5 +1,6 @@
 import { Button } from "@/components/Button";
 import { Progress } from "@/components/Progress";
+import { cn } from "@/lib/utils";
 import { motion } from "motion/react";
 import { useEffect, useState } from "react";
 import marketingSrc from "./assets/marketing.png";
@@ -30,7 +31,7 @@ const useCases = [
   },
 ] as const;
 
-export const UseCases = () => {
+export const UseCases = ({ className }: { className?: string }) => {
   const [isAutoProgressEnabled, setIsAutoProgressEnabled] = useState(true);
   const [previousIndex, setPreviousIndex] = useState(0);
   const [currentUseCase, setCurrentUseCase] = useState<{
@@ -77,7 +78,7 @@ export const UseCases = () => {
   };
 
   return (
-    <div className="flex flex-col gap-10 px-4 md:pt-10">
+    <div className={cn("flex flex-col gap-10 px-4 md:pt-10", className)}>
       <div className="flex flex-col items-center gap-8 md:12">
         <div className="flex items-end gap-4 md:gap-12">
           {useCases.map((useCase, index) => (

@@ -112,7 +112,7 @@ export const ForEveryDepartment = () => {
       {openedDepartment && (
         <div className="fixed size-full inset-0 z-10 flex justify-center items-center">
           <div
-            className="bg-gray-1/80 absolute inset-0 animate-slide-fade-in"
+            className="bg-gray-1/80 absolute inset-0 motion-preset-fade"
             onClick={() => setOpenedDepartmentIndex(undefined)}
           />
           <OpenedDepartmentCard
@@ -172,11 +172,7 @@ const DepartmentCard = ({
       <IconButton
         aria-label="Expand department"
         variant="outline"
-        className="rounded-full p-0 w-6 h-6 absolute bottom-4 right-4 opacity-0 animate-slide-fade-in"
-        style={{
-          animationDelay: ".5s",
-          animationFillMode: "forwards",
-        }}
+        className="rounded-full p-0 w-6 h-6 absolute bottom-4 right-4 motion-preset-slide-up-sm motion-delay-500"
       >
         <PlusIcon />
       </IconButton>
@@ -203,11 +199,7 @@ const OpenedDepartmentCard = ({
       <IconButton
         aria-label="Close department"
         variant="secondary"
-        className="absolute top-4 right-8 opacity-0 animate-slide-fade-in"
-        style={{
-          animationDelay: ".5s",
-          animationFillMode: "forwards",
-        }}
+        className="absolute top-4 right-8 motion-preset-slide-up-sm motion-delay-500"
         onClick={onClose}
       >
         <CloseIcon />

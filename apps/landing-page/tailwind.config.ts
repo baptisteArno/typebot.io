@@ -1,4 +1,3 @@
-import twTypography from "@tailwindcss/typography";
 import type { Config } from "tailwindcss";
 
 export default {
@@ -12,6 +11,7 @@ export default {
       purple: getColorScale("purple"),
       red: getColorScale("red"),
       white: "rgb(255, 255, 255)",
+      transparent: "transparent",
     },
     extend: {
       fontSize: {
@@ -23,9 +23,9 @@ export default {
       },
       animation: {
         marquee: "marquee 20s linear infinite",
-        "slide-fade-in": "slide-fade-in 250ms ease-out",
-        float: "float 4s ease-in-out infinite",
         "slight-random-rotate": "linear slight-random-rotate forwards",
+        "scale-in": "linear scale-in forwards",
+        // Needed for scroll based fade-in animation
         "fade-in": "fade-in 250ms ease-out",
         "fade-out": "fade-out 250ms ease-out",
       },
@@ -34,17 +34,28 @@ export default {
           "0%": { transform: "translateX(0)" },
           "100%": { transform: "translateX(calc(-100% - 2rem))" },
         },
-        ["slide-fade-in"]: {
-          "0%": { opacity: "0", transform: "translateY(10px)" },
-          "100%": { opacity: "1", transform: "translateY(0)" },
-        },
-        float: {
-          "0%, 100%": { transform: "translateY(0)" },
-          "50%": { transform: "translateY(-4px)" },
-        },
         "slight-random-rotate": {
           "0%": { transform: "rotate(0deg)" },
           "100%": { transform: "rotate(var(--rotate-angle))" },
+        },
+        "scale-in": {
+          "0%": {
+            transform: "scaleX(0) scaleY(0)",
+          },
+          "10%": {
+            opacity: "1",
+          },
+          "70%": {
+            transform: "scaleX(0.7) scaleY(0.5)",
+          },
+          "95%": {
+            borderRadius: "1.5rem",
+          },
+          "100%": {
+            transform: "scaleX(1) scaleY(1)",
+            opacity: "1",
+            borderRadius: "0",
+          },
         },
         "fade-in": {
           "0%": { opacity: "0" },
@@ -57,7 +68,7 @@ export default {
       },
     },
   },
-  plugins: [twTypography],
+  plugins: [require("@tailwindcss/typography"), require("tailwindcss-motion")],
 } satisfies Config;
 
 function getColorScale(name: string) {

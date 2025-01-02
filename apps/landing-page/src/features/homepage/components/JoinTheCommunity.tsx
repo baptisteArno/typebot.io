@@ -35,32 +35,32 @@ const avatars = [
   {
     src: laszloSrc,
     alt: "Community member 2 avatar",
-    position: "top-32 left-4 delay-500",
+    position: "top-32 left-4 motion-delay-500",
   },
   {
     src: joshuaSrc,
     alt: "Community member 3 avatar",
-    position: "bottom-8 left-24 delay-300",
+    position: "bottom-8 left-24 motion-delay-300",
   },
   {
     src: lucasSrc,
     alt: "Community member 4 avatar",
-    position: "-bottom-7 -left-7 delay-700",
+    position: "-bottom-7 -left-7 motion-delay-700",
   },
   {
     src: kurniaSrc,
     alt: "Community member 5 avatar",
-    position: "top-1 right-36 delay-1000",
+    position: "top-1 right-36 motion-delay-1000",
   },
   {
     src: nicolaiSrc,
     alt: "Community member 6 avatar",
-    position: "top-28 right-4 delay-500",
+    position: "top-28 right-4 motion-delay-500",
   },
   {
     src: barrettaSrc,
     alt: "Community member 7 avatar",
-    position: "bottom-12 right-32 delay-300",
+    position: "bottom-12 right-32 motion-delay-300",
   },
   {
     src: annaFilouSrc,
@@ -115,7 +115,7 @@ const FloatingAvatars = ({ className }: { className?: string }) => (
         src={src}
         alt={alt}
         className={clsx(
-          `rounded-full w-16 h-16 border-4 absolute animate-float`,
+          `rounded-full w-16 h-16 border-4 absolute motion-preset-oscillate-sm motion-duration-[4000ms]`,
           position,
         )}
       />

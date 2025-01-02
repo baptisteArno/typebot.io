@@ -10,7 +10,6 @@ import { MadeForDevelopers } from "@/features/homepage/components/MadeForDevelop
 import { ForEveryDepartment } from "@/features/homepage/departments/ForEveryDepartment";
 import { GetStarted } from "@/features/homepage/get-started/GetStarted";
 import { Hero } from "@/features/homepage/hero/Hero";
-import { TopBar } from "@/features/homepage/hero/TopBar";
 import { MainFeatures } from "@/features/homepage/main-features/MainFeatures";
 import { ProductPrinciples } from "@/features/homepage/product-principles/ProductPrinciples";
 import { Testimonials } from "@/features/homepage/testimonials/Testimonials";
@@ -28,41 +27,36 @@ function Home() {
       <div className="fixed top-4 md:bottom-12 md:top-auto z-10 w-full">
         <Header initialAppearance="dark" />
       </div>
-      <div className="dark flex w-full justify-center absolute top-4">
-        <TopBar className="hidden md:flex" />
-      </div>
-      <Section className="dark py-0">
+      <Section className="dark py-0 md:py-0 md:px-0 gap-0">
         <Hero />
       </Section>
-      <Section
-        className="min-h-screen px-0 rounded-t-3xl bg-[url('$magicBackgrounds/magic-background.svg')] md:bg-[url('$magicBackgrounds/magic-background-desktop.svg')] opacity-0 animate-slide-fade-in bg-no-repeat bg-[length:100%]"
-        style={{
-          animationDelay: "2.2s",
-          animationFillMode: "forwards",
-        }}
-      >
-        <UseCases />
-        <Companies />
-        <MainFeatures />
-      </Section>
-      <Section className="dark">
-        <ForEveryDepartment />
-      </Section>
-      <Section>
-        <MadeForDevelopers />
-        <JoinTheCommunity />
-        <ProductPrinciples />
-      </Section>
-      <Section className="dark md:py-0 px-0 md:px-0 gap-0">
-        <AllFeatures />
-      </Section>
-      <Section>
-        <GetStarted />
-        <Testimonials />
-        <Cta />
-        <Faq />
-      </Section>
-      <Footer />
+      <div className="-mt-32 md:-mt-[100vh]">
+        <Section className="magic-section px-0 rounded-t-3xl bg-[url('$magicBackgrounds/magic-background.png')] md:bg-[url('$magicBackgrounds/magic-background-desktop.png')] bg-no-repeat bg-[length:100%] z-10 motion-opacity-in-0 motion-translate-y-in-[20px] motion-delay-[2500ms] md:pt-32 md:opacity-0">
+          <div className="md:h-[200vh]">
+            <UseCases className="md:sticky top-0" />
+          </div>
+          <Companies />
+          <MainFeatures />
+        </Section>
+        <Section className="dark">
+          <ForEveryDepartment />
+        </Section>
+        <Section>
+          <MadeForDevelopers />
+          <JoinTheCommunity />
+          <ProductPrinciples />
+        </Section>
+        <Section className="dark md:py-0 px-0 md:px-0 gap-0">
+          <AllFeatures />
+        </Section>
+        <Section>
+          <GetStarted />
+          <Testimonials />
+          <Cta />
+          <Faq />
+        </Section>
+        <Footer />
+      </div>
     </div>
   );
 }

@@ -75,6 +75,10 @@
     scrollbar-width: none;
   }
 
+  .hero-text-blur-in {
+    @apply motion-preset-blur-up-md motion-duration-1000;
+  }
+
   .h-all-features-sticky-container {
     height: calc(
       (var(--total-cards) + 1) *
@@ -100,6 +104,15 @@
     }
     to {
       opacity: 0;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .magic-section {
+      animation: fade-in;
+      animation-timeline: view();
+      animation-range: contain 0% contain 5%;
+      animation-fill-mode: forwards;
     }
   }
 }

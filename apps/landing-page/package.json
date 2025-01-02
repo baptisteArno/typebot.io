@@ -40,6 +40,7 @@
     "dotenv-cli": "7.4.4",
     "postcss": "8.4.49",
     "tailwindcss": "3.4.16",
+    "tailwindcss-motion": "1.0.0",
     "vite-tsconfig-paths": "5.1.4"
   }
 }

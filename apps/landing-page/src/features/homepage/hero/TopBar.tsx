@@ -14,7 +14,7 @@ export const TopBar = ({ className }: Props) => {
   return (
     <div
       className={cn(
-        "bg-transparent flex items-center flex-1 h-16 max-w-7xl relative",
+        "bg-transparent flex items-center justify-between flex-1 h-16 max-w-7xl relative",
         className,
       )}
     >
@@ -24,10 +24,7 @@ export const TopBar = ({ className }: Props) => {
       {pathname === "/" && (
         <Link
           href={signinUrl}
-          className={cn(
-            buttonVariants({ variant: "outline" }),
-            "absolute right-4",
-          )}
+          className={cn(buttonVariants({ variant: "outline" }))}
         >
           Go to dashboard
         </Link>
