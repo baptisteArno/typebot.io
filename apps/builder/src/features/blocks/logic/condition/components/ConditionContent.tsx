@@ -92,5 +92,9 @@ const parseComparisonOperatorSymbol = (
       return "matches";
     case ComparisonOperators.NOT_MATCH_REGEX:
       return "not matches";
+    case ComparisonOperators.GREATER_OR_EQUAL:
+      return ">=";
+    case ComparisonOperators.LESS_OR_EQUAL:
+      return "<=";
   }
 };
