@@ -33,12 +33,14 @@ export const trackEvents = async (events: TelemetryEvent[]) => {
       event.name === "Subscription updated"
     )
       client.groupIdentify({
+        distinctId: event.userId,
         groupType: "workspace",
         groupKey: event.workspaceId,
         properties: event.data,
       });
     if (event.name === "Typebot created" || event.name === "Typebot published")
       client.groupIdentify({
+        distinctId: event.userId,
         groupType: "typebot",
         groupKey: event.typebotId,
         properties: { name: event.data.name },
