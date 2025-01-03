@@ -65,6 +65,7 @@ if (env.NEXT_PUBLIC_SMTP_FROM && !env.SMTP_AUTH_DISABLED)
         host: env.SMTP_HOST,
         port: env.SMTP_PORT,
         secure: env.SMTP_SECURE,
+        ignoreTLS: env.SMTP_IGNORE_TLS,
         auth:
           env.SMTP_USERNAME || env.SMTP_PASSWORD
             ? {
