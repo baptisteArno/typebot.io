@@ -16,7 +16,7 @@ type Props = {
 export const MultipleChoicesForm = (props: Props) => {
   let inputRef: HTMLInputElement | undefined;
   const [filteredItems, setFilteredItems] = createSignal(
-    props.options?.isSearchable ? [] : props.defaultItems,
+    props.options?.isSearchable && !props.options?.showAllOptionsByDefault ? [] : props.defaultItems,
   );
   const [selectedItemIds, setSelectedItemIds] = createSignal<string[]>([]);
 
@@ -52,8 +52,8 @@ export const MultipleChoicesForm = (props: Props) => {
     });
 
   const filterItems = (inputValue: string) => {
-    if (inputValue === "" || inputValue.includes(" ")) {
-      setFilteredItems([]);
+    if (inputValue === "" || inputValue.trim().length === 0) {
+      setFilteredItems(!props.options?.showAllOptionsByDefault ? [] : props.defaultItems);
       return;
     }
 
@@ -75,7 +75,7 @@ export const MultipleChoicesForm = (props: Props) => {
               props.options?.searchInputPlaceholder ??
               defaultChoiceInputOptions.searchInputPlaceholder
             }
-            onClear={() => setFilteredItems([])}
+            onClear={() => setFilteredItems(!props.options?.showAllOptionsByDefault ? []:props.defaultItems)}
           />
         </div>
       </Show>
