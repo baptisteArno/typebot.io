@@ -18,14 +18,6 @@ const legacyRedirects = {
 } as const;
 
 export default defineConfig({
-  tsr: {
-    appDirectory: "./src/app",
-  },
-  routers: {
-    public: {
-      dir: "./src/public",
-    },
-  },
   server: {
     preset: "vercel",
     routeRules: {
@@ -36,8 +28,8 @@ export default defineConfig({
   vite: {
     resolve: {
       alias: {
-        $fonts: resolve("./src/assets/fonts"),
-        $magicBackgrounds: resolve("./src/assets/magicBackgrounds"),
+        $fonts: resolve("./app/assets/fonts"),
+        $magicBackgrounds: resolve("./app/assets/magicBackgrounds"),
         // https://github.com/prisma/prisma/issues/12504
         ".prisma/client/index-browser":
           "../../node_modules/.prisma/client/index-browser.js",

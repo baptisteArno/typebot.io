@@ -3,9 +3,9 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["app/*"]
     },
     "module": "ESNext"
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx", "app.config.ts"]
+  "include": ["app/**/*.ts", "app/**/*.tsx", "app.config.ts"]
 }
