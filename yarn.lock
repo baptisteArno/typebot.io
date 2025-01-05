@@ -14083,7 +14083,7 @@ ky@1.2.4:
     dotenv-cli "7.4.4"
     postcss "8.4.49"
     tailwindcss "3.4.16"
-    tailwindcss-motion ""
+    tailwindcss-motion "1.0.0"
     vite-tsconfig-paths "5.1.4"
   dependencies:
     "@ariakit/react" "0.4.15"
@@ -19482,7 +19482,7 @@ tailwindcss@3.4.16, "tailwindcss@>=3.0.0 || insiders", "tailwindcss@>=3.0.0 || i
     postcss-load-config "^4.0.2"
     postcss-selector-parser "^6.1.2"
 
-tailwindcss-motion@^1.0.0:
+tailwindcss-motion@1.0.0:
   version "1.0.0"
   resolved "https://registry.npmjs.org/tailwindcss-motion/-/tailwindcss-motion-1.0.0.tgz"
   integrity sha512-Bc8XJxiSGjup0NHsph4OBGXXFfmbInFUhvVVluKPScQD1R2kDQTZIODqumsI/lONryeTpDdKzwuuw1a99Z38bQ==

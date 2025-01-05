@@ -1,6 +1,4 @@
-import { Header } from "@/components/Header";
-import { Footer } from "@/components/footer/Footer";
-import { TopBar } from "@/features/homepage/hero/TopBar";
+import { CommonPageLayout } from "@/components/CommonPageLayout";
 import { EnterprisePlanCard } from "@/features/pricing/EnterprisePlanCard";
 import { Faq } from "@/features/pricing/Faq";
 import { PlanComparisonTables } from "@/features/pricing/PlanComparisonsTables";
@@ -42,13 +40,7 @@ function RouteComponent() {
   };
 
   return (
-    <div className="flex flex-col items-stretch">
-      <div className="flex w-full justify-center">
-        <TopBar className="hidden md:flex" />
-      </div>
-      <div className="fixed top-4 md:bottom-12 md:top-auto z-10 w-full">
-        <Header />
-      </div>
+    <CommonPageLayout>
       <div className="flex flex-col items-center w-full px-4 pt-28 md:pt-20 pb-32 gap-24">
         <div className="flex flex-col max-w-7xl w-full gap-12 md:gap-20">
           <PricingHeading />
@@ -78,11 +70,10 @@ function RouteComponent() {
         </div>
         <Faq />
       </div>
-      <Footer />
       <TiersDialog
         isOpened={isTiersModalOpened === true}
         onClose={closeTiersDialog}
       />
-    </div>
+    </CommonPageLayout>
   );
 }
