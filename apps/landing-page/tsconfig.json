@@ -3,7 +3,8 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["app/*"]
+      "@/*": ["app/*"],
+      "content-collections": ["./.content-collections/generated"]
     },
     "module": "ESNext"
   },

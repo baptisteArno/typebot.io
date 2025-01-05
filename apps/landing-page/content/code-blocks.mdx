@@ -1,0 +1,50 @@
+---
+title: Code Blocks
+description: Advanced code blocks with highlighting, file names and more.
+publishedAt: "2024-12-25"
+---
+The code blocks on the documentation site and the blog are powered by [rehype-pretty-code](https://github.com/atomiks/rehype-pretty-code). The syntax highlighting is done using [shiki](https://github.com/shikijs/shiki).
+
+It has the following features:
+
+1. Beautiful code blocks with syntax highlighting.
+2. Support for VS Code themes.
+3. Works with hundreds of languages.
+4. Line and word highlighting.
+5. Support for line numbers.
+6. Show code block titles using meta strings.
+
+<Callout>
+
+Thanks to Shiki, highlighting is done at build time. No JavaScript is sent to the client for runtime highlighting.
+
+</Callout>
+
+## Example
+
+```ts {2,8-10} showLineNumbers title="./app.config.ts" 
+import { defineConfig } from '@tanstack/start/config'
+import viteTsConfigPaths from 'vite-tsconfig-paths'
+
+export default defineConfig({
+  vite: {
+    plugins: [
+      // this is the plugin that enables path aliases
+      viteTsConfigPaths({
+        projects: ['./tsconfig.json'],
+      }),
+    ],
+  },
+})
+````
+## Word highlight
+```js /multiply/
+const multiply = (a, b) => a * b
+```
+
+## Diff
+```js
+const add = (a, b) => a + b // [!code --]
+const sub = (a, b) => a - b // [!code ++]
+console.log("hello")
+```

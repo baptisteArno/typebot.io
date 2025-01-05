@@ -41,7 +41,7 @@ function RouteComponent() {
 
   return (
     <CommonPageLayout>
-      <div className="flex flex-col items-center w-full px-4 pt-28 md:pt-20 pb-32 gap-24">
+      <div className="flex flex-col items-center w-full px-4 gap-24">
         <div className="flex flex-col max-w-7xl w-full gap-12 md:gap-20">
           <PricingHeading />
           <div className="flex flex-col gap-8 items-center w-full">

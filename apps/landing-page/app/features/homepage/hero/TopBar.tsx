@@ -14,7 +14,7 @@ export const TopBar = ({ className }: Props) => {
   return (
     <div
       className={cn(
-        "bg-transparent flex items-center justify-between flex-1 h-16 max-w-7xl relative",
+        "bg-transparent flex items-center justify-between flex-1 h-16 max-w-7xl relative px-4",
         className,
       )}
     >
