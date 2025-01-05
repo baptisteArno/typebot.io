@@ -76,6 +76,7 @@ export const executeFunction = async ({
 
   try {
     const output: unknown = await run(parsedBody);
+    context.release();
     return {
       output,
       newVariables: Array.from(variableUpdates.entries())
@@ -91,6 +92,7 @@ export const executeFunction = async ({
         .filter(isDefined),
     };
   } catch (e) {
+    context.release();
     console.log("Error while executing script");
     console.error(e);
 
