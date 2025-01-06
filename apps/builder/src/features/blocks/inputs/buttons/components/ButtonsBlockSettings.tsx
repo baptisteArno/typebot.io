@@ -29,8 +29,9 @@ export const ButtonsBlockSettings = ({ options, onOptionsChange }: Props) => {
     onOptionsChange({ ...options, variableId: variable?.id });
   const updateDynamicDataVariable = (variable?: Variable) =>
     onOptionsChange({ ...options, dynamicVariableId: variable?.id });
-  const updateShowAllOptionsByDefault = (showAllOptionsByDefault: boolean) =>
-    onOptionsChange({ ...options, showAllOptionsByDefault });
+  const updateAreInitialSearchButtonsVisible = (
+    areInitialSearchButtonsVisible: boolean,
+  ) => onOptionsChange({ ...options, areInitialSearchButtonsVisible });
 
   return (
     <Stack spacing={4}>
@@ -58,9 +59,12 @@ export const ButtonsBlockSettings = ({ options, onOptionsChange }: Props) => {
         onCheckChange={updateIsSearchable}
       >
         <SwitchWithLabel
-          label={t("blocks.inputs.settings.showAllOptionsByDefault.label")}
-          initialValue={options?.showAllOptionsByDefault ?? defaultChoiceInputOptions.showAllOptionsByDefault}
-          onCheckChange={updateShowAllOptionsByDefault}
+          label="Default display buttons?"
+          initialValue={
+            options?.areInitialSearchButtonsVisible ??
+            defaultChoiceInputOptions.areInitialSearchButtonsVisible
+          }
+          onCheckChange={updateAreInitialSearchButtonsVisible}
         />
         <TextInput
           label={t("blocks.inputs.settings.input.placeholder.label")}

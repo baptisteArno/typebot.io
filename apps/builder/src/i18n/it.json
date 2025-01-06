@@ -209,7 +209,6 @@
   "blocks.inputs.settings.retryMessage.label": "Messaggio di riprova:",
   "blocks.inputs.settings.saveAnswer.label": "Salvare la risposta in una variabile:",
   "blocks.inputs.settings.submitButton.label": "Etichetta del pulsante di invio:",
-  "blocks.inputs.settings.showAllOptionsByDefault.label": "Mostra tutte le opzioni?",
   "blocks.inputs.text.settings.longText.label": "Testo lungo?",
   "blocks.integrations.googleAnalytics.blockCard.tooltip": "Google Analytics",
   "blocks.integrations.googleSheets.blockCard.tooltip": "Google Sheets",

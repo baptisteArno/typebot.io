@@ -209,7 +209,6 @@
   "blocks.inputs.settings.retryMessage.label": "Επανάληψη μηνύματος:",
   "blocks.inputs.settings.saveAnswer.label": "Αποθηκεύστε την απάντηση σε μια μεταβλητή:",
   "blocks.inputs.settings.submitButton.label": "Ετικέτα κουμπιού υποβολής:",
-  "blocks.inputs.settings.showAllOptionsByDefault.label": "Εμφάνιση όλων των επιλογών;",
   "blocks.inputs.text.settings.longText.label": "Μεγάλο κείμενο;",
   "blocks.integrations.googleAnalytics.blockCard.tooltip": "Google Analytics",
   "blocks.integrations.googleSheets.blockCard.tooltip": "Φύλλα Google",
