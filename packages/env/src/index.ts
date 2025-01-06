@@ -175,6 +175,7 @@ const smtpEnv = {
     SMTP_PORT: z.coerce.number().optional().default(25),
     SMTP_AUTH_DISABLED: boolean.optional().default("false"),
     SMTP_SECURE: boolean.optional().default("false"),
+    SMTP_IGNORE_TLS: boolean.optional(),
   },
   client: {
     NEXT_PUBLIC_SMTP_FROM: z.string().min(1).optional(),
