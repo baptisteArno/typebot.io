@@ -118,7 +118,8 @@ const executeComparison =
             return parseDateOrNumber(inputValue) >= parseDateOrNumber(value);
           return Number(inputValue) >= value.length;
         }
-        if (typeof value === "string") return inputValue.length >= Number(value);
+        if (typeof value === "string")
+          return inputValue.length >= Number(value);
         return inputValue.length >= value.length;
       }
       case ComparisonOperators.LESS_OR_EQUAL: {
@@ -128,7 +129,8 @@ const executeComparison =
             return parseDateOrNumber(inputValue) <= parseDateOrNumber(value);
           return Number(inputValue) <= value.length;
         }
-        if (typeof value === "string") return inputValue.length <= Number(value);
+        if (typeof value === "string")
+          return inputValue.length <= Number(value);
         return inputValue.length <= value.length;
       }
       case ComparisonOperators.IS_SET: {
