@@ -53,7 +53,10 @@ export const TextInput = (props: Props) => {
   const handleInput = (inputValue: string) => setInputValue(inputValue);
 
   const checkIfInputIsValid = () =>
-    inputRef?.value !== "" && inputRef?.reportValidity();
+    inputRef?.value !== "" &&
+    inputRef?.reportValidity() &&
+    inputRef.value.length >=
+      Number.parseInt(props.block.options?.textMinLength! as string);
 
   const submit = async () => {
     if (recordingStatus() === "started" && mediaRecorder) {
