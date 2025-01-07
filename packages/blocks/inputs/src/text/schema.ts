@@ -2,6 +2,7 @@ import {
   blockBaseSchema,
   optionBaseSchema,
 } from "@typebot.io/blocks-base/schemas";
+import { variableStringSchema } from "@typebot.io/variables/schemas";
 import { z } from "@typebot.io/zod";
 import { InputBlockType } from "../constants";
 import { fileVisibilityOptions } from "../file/constants";
@@ -34,6 +35,8 @@ export const textInputOptionsSchema = textInputOptionsBaseSchema
           visibility: z.enum(fileVisibilityOptions).optional(),
         })
         .optional(),
+      textMinLength: z.number().or(variableStringSchema).optional(),
+      textMaxLength: z.number().or(variableStringSchema).optional(),
     }),
   );
 

@@ -1,6 +1,6 @@
 import { DropdownList } from "@/components/DropdownList";
 import { SwitchWithRelatedSettings } from "@/components/SwitchWithRelatedSettings";
-import { TextInput } from "@/components/inputs";
+import { NumberInput, TextInput } from "@/components/inputs";
 import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
 import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
 import { FormLabel, Stack } from "@chakra-ui/react";
@@ -72,6 +72,22 @@ export const TextInputSettings = ({ options, onOptionsChange }: Props) => {
       ...options,
       audioClip: { ...options?.audioClip, visibility },
     });
+  const updateTextMinLength = (
+    textMinLength?: NonNullable<TextInputBlock["options"]>["textMinLength"],
+  ) => {
+    onOptionsChange({
+      ...options,
+      textMinLength,
+    });
+  };
+  const updateTextMaxLength = (
+    textMaxLength?: NonNullable<TextInputBlock["options"]>["textMaxLength"],
+  ) => {
+    onOptionsChange({
+      ...options,
+      textMaxLength,
+    });
+  };
 
   return (
     <Stack spacing={4}>
@@ -79,6 +95,20 @@ export const TextInputSettings = ({ options, onOptionsChange }: Props) => {
         label={t("blocks.inputs.text.settings.longText.label")}
         initialValue={options?.isLong ?? defaultTextInputOptions.isLong}
         onCheckChange={updateIsLong}
+      />
+      <NumberInput
+        label="Min length:"
+        defaultValue={
+          options?.textMinLength ?? defaultTextInputOptions.textMinLength
+        }
+        onValueChange={updateTextMinLength}
+      />
+      <NumberInput
+        label="Max length:"
+        defaultValue={
+          options?.textMaxLength ?? defaultTextInputOptions.textMaxLength
+        }
+        onValueChange={updateTextMaxLength}
       />
       <TextInput
         label={t("blocks.inputs.settings.placeholder.label")}

@@ -12,4 +12,6 @@ export const defaultTextInputOptions = {
     isEnabled: false,
     visibility: "Auto",
   },
+  textMinLength: 0,
+  textMaxLength: 10,
 } as const satisfies TextInputBlock["options"];

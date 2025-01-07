@@ -312,6 +312,8 @@ export const TextInput = (props: Props) => {
                   props.block.options?.labels?.placeholder ??
                   defaultTextInputOptions.labels.placeholder
                 }
+                minLength={props.block.options?.textMinLength}
+                maxLength={props.block.options?.textMaxLength}
               />
             ) : (
               <ShortTextInput
@@ -322,6 +324,8 @@ export const TextInput = (props: Props) => {
                   props.block.options?.labels?.placeholder ??
                   defaultTextInputOptions.labels.placeholder
                 }
+                minLength={props.block.options?.textMinLength}
+                maxLength={props.block.options?.textMaxLength}
               />
             )}
             <Show
