@@ -1,6 +1,6 @@
-import { IconProps, Icon, Image } from '@chakra-ui/react'
-import * as MaterialDesign from 'react-icons/md'
+import { Icon, IconProps, Image } from '@chakra-ui/react'
 import { IconContext } from 'react-icons'
+import * as MaterialDesign from 'react-icons/md'
 
 const featherIconsBaseProps: IconProps = {
   fill: 'none',
@@ -694,6 +694,12 @@ export const WebhookIcon = (props: any) => (
     </div>
   </IconContext.Provider>
 )
+export const ExternalEventIcon = (props: any) => (
+  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M6.4 10.8H11.104C11.32 10.552 11.64 10.4 12 10.4C12.664 10.4 13.2 10.936 13.2 11.6C13.2 12.264 12.664 12.8 12 12.8C11.648 12.8 11.328 12.648 11.104 12.4H7.92C7.552 14.224 5.936 15.6 4 15.6C1.792 15.6 0 13.808 0 11.6C0 9.66399 1.376 8.04799 3.2 7.67999V9.33599C2.272 9.66399 1.6 10.56 1.6 11.6C1.6 12.92 2.68 14 4 14C5.32 14 6.4 12.92 6.4 11.6V10.8ZM8.4 1.99999C9.72 1.99999 10.8 3.07999 10.8 4.39999H12.4C12.4 2.19199 10.608 0.399994 8.4 0.399994C6.192 0.399994 4.4 2.19199 4.4 4.39999C4.4 5.54399 4.88 6.56799 5.64 7.29599L3.76 10.416C3.216 10.528 2.8 11.016 2.8 11.6C2.8 12.264 3.336 12.8 4 12.8C4.664 12.8 5.2 12.264 5.2 11.6C5.2 11.472 5.184 11.352 5.144 11.24L7.848 6.73599C6.792 6.48799 6 5.53599 6 4.39999C6 3.07999 7.08 1.99999 8.4 1.99999ZM12 9.19999C11.488 9.19999 11.016 9.35999 10.624 9.63199L8.184 5.57599C7.624 5.47999 7.2 4.99199 7.2 4.39999C7.2 3.73599 7.736 3.19999 8.4 3.19999C9.064 3.19999 9.6 3.73599 9.6 4.39999C9.6 4.51999 9.584 4.63199 9.552 4.74399L11.304 7.66399C11.528 7.62399 11.76 7.59999 12 7.59999C14.208 7.59999 16 9.39199 16 11.6C16 13.808 14.208 15.6 12 15.6C10.52 15.6 9.224 14.792 8.536 13.6H10.672C11.056 13.856 11.512 14 12 14C13.32 14 14.4 12.92 14.4 11.6C14.4 10.28 13.32 9.19999 12 9.19999Z" fill="black" />
+  </svg>
+
+)
 
 export const WarningIcon = (props: any) => (
   <IconContext.Provider
@@ -709,6 +715,6 @@ export const ErrorIcon = (props: any) => (
   <IconContext.Provider
     value={{ ...props, color: props.color, className: 'global-class-name' }}
   >
-    <MaterialDesign.MdError/>
+    <MaterialDesign.MdError />
   </IconContext.Provider>
 )

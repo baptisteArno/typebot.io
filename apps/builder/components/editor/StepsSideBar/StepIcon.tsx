@@ -1,44 +1,43 @@
 import { IconProps } from '@chakra-ui/react'
 import {
+  AskNameIcon,
+  AssignToIcon,
   CalendarIcon,
+  CallBotIcon,
   CheckSquareIcon,
   CodeIcon,
+  CommerceIcon,
+  ContactCardIcon,
+  ConversationTagIcon,
   CreditCardIcon,
   EditIcon,
   EmailIcon,
+  ExternalEventIcon,
   ExternalLinkIcon,
   FilmIcon,
   FilterIcon,
   FlagIcon,
   LayoutIcon,
-  PhoneIcon,
-  SendEmailIcon,
-  WavingHandIcon,
-  AssignToIcon,
-  TextIcon,
-  WebhookIcon,
   ListIcon,
-  ContactCardIcon,
-  AskNameIcon,
+  PhoneIcon,
   PreReserveIcon,
   QuestionIcon,
-  CallBotIcon,
-  CommerceIcon,
+  TextIcon,
   WandIcon,
-  ConversationTagIcon,
+  WavingHandIcon,
+  WebhookIcon
 } from 'assets/icons'
 import {
   BubbleStepType,
   InputStepType,
-  OctaStepType,
-  OctaBubbleStepType,
   IntegrationStepType,
   LogicStepType,
-  StepType,
+  OctaBubbleStepType,
+  OctaStepType,
   OctaWabaStepType,
+  StepType,
   WOZStepType,
 } from 'models'
-import React from 'react'
 
 type StepIconProps = { type: StepType } & IconProps
 
@@ -84,7 +83,8 @@ export const StepIcon = ({ type, ...props }: StepIconProps) => {
       return <CodeIcon color="purple.500" {...props} />
     case IntegrationStepType.WEBHOOK:
       return <WebhookIcon {...props} />
-      return <SendEmailIcon {...props} />
+    case IntegrationStepType.ExternalEvent:
+      return <ExternalEventIcon {...props} />
     case OctaBubbleStepType.END_CONVERSATION:
       return <WavingHandIcon color="#373A86" {...props} />
     case OctaStepType.ASSIGN_TO_TEAM:
