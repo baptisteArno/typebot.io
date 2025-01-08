@@ -127,3 +127,18 @@ export const defaultWebhookOptions: Omit<WebhookOptions, 'webhookId'> = {
   isAdvancedConfig: false,
   isCustomBody: false,
 }
+
+export const defaultExternalEventOptions: Omit<ExternalEventOptions, 'externalEventId'> = {
+  url: "",
+  body: "",
+  headers: [],
+  method: HttpMethodsWebhook.GET,
+  parameters: [],
+  path: '',
+  returnMap: "",
+  typebotId: "",
+  responseVariableMapping: [],
+  variablesForTest: [],
+  isAdvancedConfig: false,
+  isCustomBody: false,
+}

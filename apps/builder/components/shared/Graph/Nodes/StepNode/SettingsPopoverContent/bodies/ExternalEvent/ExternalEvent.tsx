@@ -1,11 +1,14 @@
-import { Box, Button, Flex, Icon, Input, InputGroup, InputRightElement, Stack, Text, useToast } from "@chakra-ui/react";
+import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Button, Flex, Icon, Input, InputGroup, InputRightElement, Stack, Text, useToast } from "@chakra-ui/react";
 import axios from "axios";
 import { CodeEditor } from "components/shared/CodeEditor";
+import { TableList, TableListItemProps } from "components/shared/TableList";
 import { useTypebot } from "contexts/TypebotContext";
-import { ExternalEventOptions, ExternalEventStep } from "models";
-import React, { useCallback, useEffect, useState } from "react";
+import { ExternalEventOptions, ExternalEventStep, ResponseVariableMapping } from "models";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { MdCheckCircle, MdContentCopy, MdInfo } from "react-icons/md";
 import { mountUrl } from "services/externalEvent";
+import { getDeepKeys } from "services/integrations";
+import { DataVariableInputs } from "../WebhookSettings/ResponseMappingInputs";
 
 type IProps = {
   step: ExternalEventStep,
@@ -19,6 +22,8 @@ export const ExternalEvent = React.memo(function ExternalEvent({
   const [request, setRequest] = useState<"receive" | "define">();
   const [successTest, setSuccessTest] = useState<boolean>();
   const [requestResponse, setRequestResponse] = useState<string>();
+  const [responseKeys, setResponseKeys] = useState<string[]>([])
+  const [invalidData, setInvalidData] = useState<boolean>();
   const [url, setUrl] = useState<string>("")
   const { typebot } = useTypebot()
 
@@ -34,6 +39,18 @@ export const ExternalEvent = React.memo(function ExternalEvent({
     status: 'success',
   })
 
+  const handleResponseMappingChange = (
+    responseVariableMapping: ResponseVariableMapping[]
+  ) => {
+    onOptionsChange({ ...step.options, responseVariableMapping })
+  }
+
+  const ResponseMappingInputs = useMemo(
+    () => (props: TableListItemProps<ResponseVariableMapping>) =>
+      <DataVariableInputs {...props} dataItems={responseKeys} />,
+    [responseKeys]
+  )
+
   const handleCopy = () => {
     navigator.clipboard.writeText(url).then(() => {
       successToast({ title: 'Copiado com sucesso!' })
@@ -41,15 +58,25 @@ export const ExternalEvent = React.memo(function ExternalEvent({
   };
 
   const getUrl = useCallback(async () => {
+    if (!typebot?.id) return;
+
     const url = await mountUrl({ blockId: step.blockId, botId: typebot.id });
-    setUrl(url)
+    setUrl("https://viacep.com.br/ws/12600030/json/")
   }, [])
 
   const makeRequest = (async () => {
     try {
       const { data } = await axios.get(`${url}`);
-      setRequestResponse(JSON.stringify(data, undefined, 2));
+      const json = JSON.stringify(data, undefined, 2);
+
+      if (!validationJson(json)) return;
+      setRequestResponse(json);
+
+      step.options.body = JSON.stringify(json);
+
       setRequest("receive");
+      setResponseKeys(getDeepKeys(data))
+
       setSuccessTest(true);
       successToast({ title: 'Sucesso ao fazer requisição' })
     } catch (err: any) {
@@ -58,9 +85,30 @@ export const ExternalEvent = React.memo(function ExternalEvent({
     }
   })
 
+  function validationJson(value: string) {
+    try {
+      const json = JSON.parse(value);
+
+      setInvalidData(false);
+      setResponseKeys(getDeepKeys(json))
+
+      step.options.body = JSON.stringify(json);
+
+      return true;
+    } catch (err: any) {
+      setInvalidData(true);
+      return false;
+    }
+  }
+
   useEffect(() => {
     getUrl();
   }, []);
+
+  useEffect(() => {
+    if (!step.options) step.options = {} as ExternalEventOptions;
+    step.options.responseVariableMapping = [];
+  }, [request])
 
   return (
     <>
@@ -181,12 +229,37 @@ export const ExternalEvent = React.memo(function ExternalEvent({
             lang="json"
             isReadOnly={(request == "define") ? false : true}
             withVariableButton={false}
-            debounceTimeout={0}
+            debounceTimeout={1000}
+            onChange={(newValue) => validationJson(newValue)}
           />
 
-          <div>
-            Adicionar Variaveis
-          </div>
+          {invalidData === true &&
+            <Text color="#cd3838" fontFamily="Poppins" fontSize="14px" fontWeight="bold" fontStyle="normal" lineHeight="24px">
+              Digite um JSON válido!
+            </Text>
+          }
+
+          {invalidData === false &&
+            <Stack marginTop="10px">
+              <Accordion allowToggle allowMultiple>
+                <AccordionItem>
+                  <AccordionButton justifyContent="space-between">
+                    Salvar variáveis
+                    <AccordionIcon />
+                  </AccordionButton>
+                  <AccordionPanel pb={4} as={Stack} spacing="6">
+                    <TableList<ResponseVariableMapping>
+                      initialItems={step.options?.responseVariableMapping as any || []}
+                      onItemsChange={handleResponseMappingChange}
+                      Item={ResponseMappingInputs}
+                      addLabel="Adicionar variável"
+                      debounceTimeout={0}
+                    />
+                  </AccordionPanel>
+                </AccordionItem>
+              </Accordion>
+            </Stack>
+          }
         </>
       }
     </>
