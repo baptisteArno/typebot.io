@@ -7,9 +7,9 @@ export enum ItemType {
   CONDITION,
   OFFICE_HOURS,
   WEBHOOK,
-  ExternalEvent,
   WHATSAPP_OPTIONS_LIST,
-  WHATSAPP_BUTTONS_LIST
+  WHATSAPP_BUTTONS_LIST,
+  EXTERNAL_EVENT
 }
 
 export type ItemBase = {

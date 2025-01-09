@@ -75,7 +75,7 @@ export const StepTypeLabel = ({ type }: Props) => {
     //   )
     case IntegrationStepType.WEBHOOK:
       return <Text>Conecte a outro sistema</Text>
-    case IntegrationStepType.ExternalEvent:
+    case IntegrationStepType.EXTERNAL_EVENT:
       return <Text>Aguardar Evento Externo</Text>
     // case IntegrationStepType.ZAPIER:
     //   return <Text>Zapier</Text>

@@ -1,14 +1,14 @@
 import { ItemBase, ItemType, StepBase } from '.';
 import { Variable } from '../variable';
 
-export type IntegrationStep = WebhookStep
+export type IntegrationStep = WebhookStep | ExternalEventStep
 
 export type IntegrationStepOptions =
-  | WebhookOptions
+  | WebhookOptions | ExternalEventOptions
 
 export enum IntegrationStepType {
   WEBHOOK = 'Webhook',
-  ExternalEvent = "ExternalEvent"
+  EXTERNAL_EVENT = "ExternalEvent"
 }
 
 export enum HttpMethodsWebhook {
@@ -27,7 +27,7 @@ export type WebhookStep = StepBase & {
 }
 
 export declare type ExternalEventStep = StepBase & {
-  type: IntegrationStepType.ExternalEvent;
+  type: IntegrationStepType.EXTERNAL_EVENT;
   options: ExternalEventOptions;
   items: Array<ExternalEventItem>;
 };
@@ -38,7 +38,7 @@ export type WebhookItem = ItemBase & {
 };
 
 export type ExternalEventItem = ItemBase & {
-  type: ItemType.ExternalEvent,
+  type: ItemType.EXTERNAL_EVENT,
   content: ExternalEventContent
 };
 
@@ -100,6 +100,7 @@ export type ExternalEventOptions = {
   headers: QueryParameters[];
   parameters: QueryParameters[];
   path: string;
+  timeout: string;
   returnMap: any;
   typebotId: string;
   url: string;
@@ -137,6 +138,7 @@ export const defaultExternalEventOptions: Omit<ExternalEventOptions, 'externalEv
   path: '',
   returnMap: "",
   typebotId: "",
+  timeout: "5",
   responseVariableMapping: [],
   variablesForTest: [],
   isAdvancedConfig: false,

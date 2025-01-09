@@ -83,7 +83,7 @@ export const StepIcon = ({ type, ...props }: StepIconProps) => {
       return <CodeIcon color="purple.500" {...props} />
     case IntegrationStepType.WEBHOOK:
       return <WebhookIcon {...props} />
-    case IntegrationStepType.ExternalEvent:
+    case IntegrationStepType.EXTERNAL_EVENT:
       return <ExternalEventIcon {...props} />
     case OctaBubbleStepType.END_CONVERSATION:
       return <WavingHandIcon color="#373A86" {...props} />
