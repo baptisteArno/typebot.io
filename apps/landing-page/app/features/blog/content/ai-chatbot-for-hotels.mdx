@@ -1,18 +1,9 @@
-import Post from "@/features/blog/components/Post";
-import { generateMetadata } from "@/features/blog/helpers";
+---
+title: "AI Chatbot for Hotels: Transform Your Guest Experience"
+description: "Discover how AI chatbots for hotels revolutionize guest experiences with 24/7 support, automated bookings, and personalized service."
+postedAt: "2024-12-06"
+---
 
-export const post = {
-	title: "AI Chatbot for Hotels: Transform Your Guest Experience",
-	description:
-	"Discover how AI chatbots for hotels revolutionize guest experiences with 24/7 support, automated bookings, and personalized service.",
-	postedAt: new Date("2024-12-06"),
-};
-
-export const metadata = generateMetadata(post);
-
-export default (props) => <Post post={post} {...props} />;
-	
-	
 Checking into a hotel at midnight after a long journey can be stressful, especially when facing self-service kiosks and unanswered front desk calls. Many travelers experience this, but there's a solution transforming the hospitality industry: **AI chatbots for hotels**.
 
 This article explores how AI chatbots can revolutionize your hotel's guest services. From **automated bookings** to **personalized local recommendations**, AI ensures every guest feels catered to, anytime.
@@ -21,12 +12,12 @@ This article explores how AI chatbots can revolutionize your hotel's guest servi
 
 ### What is an AI Chatbot for Hotels?
 
-An [AI chatbot](https://typebot.io) for hotels is an intelligent virtual assistant designed to handle a wide range of guest services through conversational interfaces. These chatbots use artificial intelligence and natural language processing (NLP) to understand and respond to guest inquiries in real-time.
+An [AI chatbot](../..) for hotels is an intelligent virtual assistant designed to handle a wide range of guest services through conversational interfaces. These chatbots use artificial intelligence and natural language processing (NLP) to understand and respond to guest inquiries in real-time.
 
 They integrate into various communication channels such as **hotel websites, mobile apps, and social media platforms**.
 
 <Image
-  src="/images/blog/ai-chatbot-for-hotels/ai-hotel-chatbot-example.avif"
+  src="/blog-assets/ai-chatbot-for-hotels/ai-hotel-chatbot-example.avif"
   alt="Ai Hotel Chatbot Example"
   width={1268}
   height={1102}
@@ -40,7 +31,7 @@ By simulating human-like conversations, **AI chatbots enhance the overall guest 
 
 The hospitality industry faces challenges like high guest expectations, the need for round-the-clock service, and the demand for personalized experiences. Traditional guest service methods often fall short, leading to dissatisfaction and inefficiencies.
 
-[**AI chatbots offer a compelling solution**](https://typebot.io/blog/benefits-ai-chatbot) **by providing instant, accurate responses that are always available**. They streamline operations, reduce the burden on hotel staff, and ensure guests receive timely, personalized service. Furthermore, AI chatbots handle **multiple languages**, making them invaluable for international clientele.
+[**AI chatbots offer a compelling solution**](./benefits-ai-chatbot.mdx) **by providing instant, accurate responses that are always available**. They streamline operations, reduce the burden on hotel staff, and ensure guests receive timely, personalized service. Furthermore, AI chatbots handle **multiple languages**, making them invaluable for international clientele.
 
 Incorporating AI chatbots into hotel operations enhances guest satisfaction, optimizes resource allocation, and boosts operational efficiency. This leads to better reviews, repeat bookings, and a stronger reputation in the competitive hospitality market.
 
@@ -65,7 +56,7 @@ Guests can request room service, inquire about amenities, or get information abo
 The power of conversational AI lies in its ability **to support multiple languages**, ensuring international guests feel understood and welcomed. AI hotel chatbots offer translation services, breaking down language barriers and facilitating smoother interactions.
 
 <Image
-  src="/images/blog/ai-chatbot-for-hotels/ai-hotel-chatbot-multi-language-example.avif"
+  src="/blog-assets/ai-chatbot-for-hotels/ai-hotel-chatbot-multi-language-example.avif"
   alt="Ai Hotel Chatbot Multi Language Example"
   width={1268}
   height={1102}
@@ -85,18 +76,18 @@ In this section, we'll walk through the process of creating a "Local Attractions
 
 3. Add a "Text" block and enter a welcoming message:
 
-   ```
+   ```txt
    Welcome to our Hotel AI Concierge! I'm here to help you discover local attractions and make the most of your stay.
    ```
 
 4. Add another "Text" block to introduce the local attractions feature:
 
-   ```
+   ```txt
    Would you like recommendations for local attractions?
    ```
 
 <Image
-  src="/images/blog/ai-chatbot-for-hotels/ai-hotel-chatbot-welcome-message.avif"
+  src="/blog-assets/ai-chatbot-for-hotels/ai-hotel-chatbot-welcome-message.avif"
   alt="Ai Hotel Chatbot Welcome Message"
   width={1038}
   height={732}
@@ -114,7 +105,7 @@ In this section, we'll walk through the process of creating a "Local Attractions
 3. Set the variable ID to `interestType`.
 
 <Image
-  src="/images/blog/ai-chatbot-for-hotels/typebot-button-configuration.avif"
+  src="/blog-assets/ai-chatbot-for-hotels/typebot-button-configuration.avif"
   alt="Typebot Button Configuration"
   width={1010}
   height={1316}
@@ -132,20 +123,20 @@ In this section, we'll walk through the process of creating a "Local Attractions
 
    - Set the system role prompt:
 
-     ```
+     ```txt
      You are an AI concierge for a luxury hotel. Provide brief, engaging recommendations for {{interestType}} near the hotel. Include 2-3 options with a short description for each.
      ```
 
    - Set the user message:
 
-     ```
+     ```txt
      Please recommend {{interestType}} options near our hotel.
      ```
 
 4. Set the variable ID to `ai_recommendation` to store the AI-generated response.
 
 <Image
-  src="/images/blog/ai-chatbot-for-hotels/openai-configuration-chatbot.avif"
+  src="/blog-assets/ai-chatbot-for-hotels/openai-configuration-chatbot.avif"
   alt="Openai Configuration Chatbot"
   width={1616}
   height={2066}
@@ -153,21 +144,21 @@ In this section, we'll walk through the process of creating a "Local Attractions
 
 #### Configure the recommendation system
 
-<Callout status="warning" title="Warning">
+<Warning>
   Before proceeding, make sure to customize the AI responses by adding your own
   local restaurants, attractions, and points of interest in the system prompt.
   This will ensure the chatbot provides accurate, location-specific
   recommendations for your hotel guests. To get more details check out [our
   guide on how to train your chatbot on your own
-  data](https://typebot.io/blog/train-chatbot-on-your-own-data).
-</Callout>
+  data](./train-chatbot-on-your-own-data.mdx).
+</Warning>
 
 Configure the OpenAI block:
 
 1. Select "Create Chat Completion" option
 2. Set the system role prompt:
 
-```
+```txt
 Add your local establishments here, for example:
 - Restaurant A: Fine dining, Italian cuisine
 - Restaurant B: Casual bistro, local specialties
@@ -183,14 +174,14 @@ Add your local establishments here, for example:
 
 2. Use the following text to display the AI-generated recommendations:
 
-   ```
+   ```txt
    Great! Here are some {{interestType}} recommendations for you:
 
    {{ai_recommendation}}
    ```
 
 <Image
-  src="/images/blog/ai-chatbot-for-hotels/chatbot-recommendations.avif"
+  src="/blog-assets/ai-chatbot-for-hotels/chatbot-recommendations.avif"
   alt="Chatbot Recommendations"
   width={556}
   height={338}
@@ -207,7 +198,7 @@ Add your local establishments here, for example:
 3. Set the variable ID to `followUpAction`.
 
 <Image
-  src="/images/blog/ai-chatbot-for-hotels/hotel-chatbot-followup-actions.avif"
+  src="/blog-assets/ai-chatbot-for-hotels/hotel-chatbot-followup-actions.avif"
   alt="Hotel Chatbot Followup Actions"
   width={556}
   height={338}
@@ -221,7 +212,7 @@ Add your local establishments here, for example:
 
 3. In the "True" path, add a "Text" block with the message:
 
-   ```
+   ```txt
    I've opened Google Maps with directions to your selected destination. You can also ask our front desk for a printed map! 🗺️
    ```
 
@@ -235,7 +226,7 @@ Add your local establishments here, for example:
 
 3. In the "True" path, add a "Text" block:
 
-   ```
+   ```txt
    I'll help you make a reservation. What time would you prefer?
    ```
 
@@ -243,14 +234,14 @@ Add your local establishments here, for example:
 
 5. Add another "Text" block to confirm:
 
-   ```
+   ```txt
    Thank you! I've noted your preferred time of {{preferred_time}}. Our staff will confirm your reservation shortly.
    ```
 
 6. You can then, for example, send an email to your staff
 
 <Image
-  src="/images/blog/ai-chatbot-for-hotels/chatbot-actions.avif"
+  src="/blog-assets/ai-chatbot-for-hotels/chatbot-actions.avif"
   alt="Chatbot Actions"
   width={2256}
   height={1166}
@@ -271,7 +262,7 @@ Add your local establishments here, for example:
 3. When satisfied, use the "Share" tab to deploy your chatbot:
    - Embed it on your hotel's website
    - Generate a shareable link for use in email communications or social media
-   - [Create a WhatsApp chatbot](https://typebot.io/blog/create-whatsapp-chatbot)
+   - [Create a WhatsApp chatbot](./create-whatsapp-chatbot.mdx)
 
 By following these steps, you'll create an engaging and interactive AI-powered concierge chatbot using Typebot. This chatbot will enhance your guests' experiences by providing personalized recommendations, assisting with reservations, and offering helpful information about local attractions.
 
@@ -286,7 +277,7 @@ Remember to regularly update your chatbot's information and refine its responses
 **Typebot** stands out as a versatile solution for hotels creating custom chatbot experiences. Unlike specialized hospitality platforms, Typebot's open-source architecture and visual builder let hotels design unique conversational flows to match their specific needs. The drag-and-drop interface **eliminates the need for coding** while offering powerful customization options for every aspect of guest interaction.
 
 <Image
-  src="/images/blog/ai-chatbot-for-hotels/hijiffy-website.avif"
+  src="/blog-assets/ai-chatbot-for-hotels/hijiffy-website.avif"
   alt="Hijiffy Website"
   width={2550}
   height={1242}
@@ -295,7 +286,7 @@ Remember to regularly update your chatbot's information and refine its responses
 **HiJiffy** offers a specialized hospitality-focused solution with its proprietary Aplysia OS. It supports over 130 languages and automates 85% of guest inquiries. The platform's integration with GPT-4 enables sophisticated voice interactions and complex query handling, making it ideal for larger hotel operations **requiring extensive automation**.
 
 <Image
-  src="/images/blog/ai-chatbot-for-hotels/quicktext-website.avif"
+  src="/blog-assets/ai-chatbot-for-hotels/quicktext-website.avif"
   alt="Quicktext Website"
   width={2572}
   height={1194}
@@ -309,31 +300,14 @@ Each platform offers distinct integration approaches. Typebot provides unmatched
 
 **Here's a detailed comparison of integration capabilities across platforms:**
 
-<Table
-  headers={["Feature", "Typebot", "HiJiffy", "Quicktext"]}
-  rows={[
-    ["Custom Flows", "Unlimited", "Pre-built templates", "Pre-built templates"],
-    [
-      "API Integration",
-      "Yes, unlimited",
-      "Limited to partners",
-      "75+ booking engines",
-    ],
-    ["PMS Integration", "Custom setup", "Built-in", "50+ systems"],
-    [
-      "Theming Options",
-      "Fully customizable",
-      "Limited branding",
-      "Brand matching",
-    ],
-    [
-      "Language Support",
-      "Custom implementation",
-      "130+ languages",
-      "27 languages",
-    ],
-  ]}
-/>
+| Feature            | Typebot            | HiJiffy               | Quicktext               |
+| ------------------ | ------------------ | --------------------- | ----------------------- |
+| Custom Flows       | Unlimited          | Pre-built templates   | Pre-built templates     |
+| API Integration    | Yes, unlimited     | Limited to partners   | 75+ booking engines     |
+| PMS Integration    | Custom setup       | Built-in              | 50+ systems             |
+| Theming Options    | Fully customizable | Limited branding      | Brand matching          |
+| Language Support   | Custom implementation | 130+ languages      | 27 languages            |
+
 The **scalability** of these platforms varies. Typebot’s modular approach allows
 hotels to start small and expand functionality as needed. HiJiffy and Quicktext provide
 comprehensive, but more structured solutions. Hotels must consider their specific
@@ -359,7 +333,7 @@ Staff allocation becomes more strategic. Routine queries are handled automatical
 
 ### Revenue Growth
 
-[AI chatbots are powerful tools for revenue generation](https://typebot.io/blog/lead-generation-chatbot) through intelligent upselling and cross-selling. By analyzing guest data and interaction patterns, these systems identify optimal moments to suggest room upgrades, spa services, or dining reservations. Timely and relevant suggestions **lead to higher conversion rates** compared to traditional marketing methods.
+[AI chatbots are powerful tools for revenue generation](./lead-generation-chatbot.mdx) through intelligent upselling and cross-selling. By analyzing guest data and interaction patterns, these systems identify optimal moments to suggest room upgrades, spa services, or dining reservations. Timely and relevant suggestions **lead to higher conversion rates** compared to traditional marketing methods.
 
 Direct booking rates typically increase with AI chatbots, as they guide potential guests through the reservation process while addressing concerns in real-time. Immediate information and assistance reduce booking abandonment rates and decrease dependency on third-party booking platforms, resulting in **better profit margins** for hotels.
 
@@ -390,4 +364,4 @@ ROI calculation considers both cost savings from reduced staff workload and reve
 
 **Hotel chatbots are becoming increasingly sophisticated and essential** for exceptional guest experiences. Whether through versatile platforms like Typebot or specialized hospitality solutions, AI assistants are transforming how hotels interact with guests, streamline operations, and drive revenue growth.
 
-<Cta />
+<Cta highlight="default" />

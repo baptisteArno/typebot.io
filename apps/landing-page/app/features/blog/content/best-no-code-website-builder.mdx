@@ -1,17 +1,9 @@
-import Post from "@/features/blog/components/Post";
-import { generateMetadata } from "@/features/blog/helpers";
-	
-export const post = {
-  title: "Best No Code Website Builder: Top Picks for 2024",
-  description:
-    "Discover the best no-code website builders of 2024. Compare features, pricing, and real examples to create your perfect website without coding skills today.",
-  postedAt: new Date("2024-11-28"),
-};
-
-export const metadata = generateMetadata(post);
-	
-export default (props) => <Post post={post} {...props} />;
-	
+---
+title: "Best No Code Website Builder: Top Picks for 2024"
+description:
+  "Discover the best no-code website builders of 2024. Compare features, pricing, and real examples to create your perfect website without coding skills today."
+postedAt: "2024-11-28"
+---
 	
 Building a stunning, feature-rich website without writing a single line of code is now possible. No-code website builders are changing how businesses and individuals create their online presence.
 
@@ -52,7 +44,7 @@ Understanding the differences between no-code and low-code platforms is crucial.
 ### Wix
 
 <Image
-  src="/images/blog/best-no-code-website-builder/wix-nocode-editor.avif"
+  src="/blog-assets/best-no-code-website-builder/wix-nocode-editor.avif"
   alt="Wix Nocode Editor"
   width={1100}
   height={620}
@@ -81,7 +73,7 @@ Wix is ideal for small businesses, portfolios, online stores, blogs, restaurants
 ### Notion Sites
 
 <Image
-  src="/images/blog/best-no-code-website-builder/notion-sites-editor.avif"
+  src="/blog-assets/best-no-code-website-builder/notion-sites-editor.avif"
   alt="Notion Sites Editor"
   width={3840}
   height={2396}
@@ -111,7 +103,7 @@ Notion Sites work well for simple websites, portfolios, blogs, documentation hub
 ### WordPress + Elementor
 
 <Image
-  src="/images/blog/best-no-code-website-builder/elementor-editor.avif"
+  src="/blog-assets/best-no-code-website-builder/elementor-editor.avif"
   alt="Elementor Editor"
   width={1023}
   height={597}
@@ -129,12 +121,12 @@ A powerful combination that brings drag-and-drop website building to the world's
 - Dynamic content support
 - Responsive design controls
 
-<Callout status="success" title="Success">
+<Success>
   Looking to add a chatbot to your WordPress site? Check out our in-depth guide
   on [the best WordPress chatbot
-  solutions](https://typebot.io/blog/best-chatbot-for-wordpress) to find the
+  solutions](./best-chatbot-for-wordpress.mdx) to find the
   perfect conversational AI tool for your needs.
-</Callout>
+</Success>
 
 #### Pros and Cons
 
@@ -151,15 +143,15 @@ A powerful combination that brings drag-and-drop website building to the world's
 
 Perfect for small business websites, e-commerce stores, portfolios, landing pages, and content-driven sites. Particularly valuable when you need a balance of flexibility and ease of use.
 
-<Callout status="info" title="Info">
+<Info>
   While WordPress + Elementor requires more setup than pure no-code solutions,
   it offers unmatched flexibility and scalability for growing businesses.
-</Callout>
+</Info>
 
 ### Squarespace
 
 <Image
-  src="/images/blog/best-no-code-website-builder/squarespace-nocode-editor.avif"
+  src="/blog-assets/best-no-code-website-builder/squarespace-nocode-editor.avif"
   alt="Squarespace Nocode Editor"
   width={584}
   height={620}
@@ -188,7 +180,7 @@ Squarespace suits small businesses, creatives showcasing portfolios, bloggers, s
 ### Carrd
 
 <Image
-  src="/images/blog/best-no-code-website-builder/carrd-editor.avif"
+  src="/blog-assets/best-no-code-website-builder/carrd-editor.avif"
   alt="Carrd Editor"
   width={1440}
   height={900}
@@ -219,7 +211,7 @@ Carrd excels for simple websites, portfolios, landing pages, mobile-ready design
 ### Unbounce
 
 <Image
-  src="/images/blog/best-no-code-website-builder/unbounce-website-builder.avif"
+  src="/blog-assets/best-no-code-website-builder/unbounce-website-builder.avif"
   alt="Unbounce Website Builder"
   width={1439}
   height={744}
@@ -248,7 +240,7 @@ Unbounce is perfect for PPC campaigns, email marketing, time-sensitive launches,
 ### Dorik
 
 <Image
-  src="/images/blog/best-no-code-website-builder/dorik-nocode-editor.avif"
+  src="/blog-assets/best-no-code-website-builder/dorik-nocode-editor.avif"
   alt="Dorik Nocode Editor"
   width={2400}
   height={1326}
@@ -349,47 +341,15 @@ To make an informed decision, compare the features, pricing, and user experience
 
 ### Feature Comparison Table
 
-<Table
-  headers={[
-    "Builder",
-    "Visual Interface",
-    "Templates & Design Options",
-    "Integrations",
-    "Pricing (Monthly)",
-  ]}
-  rows={[
-    ["Wix", "Drag-and-drop", "500+ templates", "250+ apps", "$17 - $159"],
-    [
-      "Notion Sites",
-      "Notion-based",
-      "10,000+ community templates",
-      "Limited",
-      "$10 - $25 (Notion pricing)",
-    ],
-    [
-      "Squarespace",
-      "Drag-and-drop",
-      "100+ templates",
-      "30+ extensions",
-      "$25 - $72",
-    ],
-    ["Carrd", "Drag-and-drop", "75+ templates", "Limited", "$9 - $49 per year"],
-    [
-      "Unbounce",
-      "Drag-and-drop",
-      "100+ templates",
-      "60+ integrations",
-      "$99 - $249",
-    ],
-    [
-      "Dorik",
-      "Drag-and-drop",
-      "80+ templates",
-      "Limited",
-      "$18 - $599 (lifetime)",
-    ],
-  ]}
-/>
+| Builder       | Visual Interface | Templates & Design Options | Integrations | Pricing (Monthly) |
+|---------------|------------------|----------------------------|--------------|-------------------|
+| Wix           | Drag-and-drop    | 500+ templates              | 250+ apps    | $17 - $159        |
+| Notion Sites  | Notion-based     | 10,000+ community templates | Limited      | $10 - $25 (Notion pricing) |
+| Squarespace   | Drag-and-drop    | 100+ templates              | 30+ extensions | $25 - $72       |
+| Carrd         | Drag-and-drop    | 75+ templates               | Limited      | $9 - $49 per year |
+| Unbounce      | Drag-and-drop    | 100+ templates              | 60+ integrations | $99 - $249    |
+| Dorik         | Drag-and-drop    | 80+ templates               | Limited      | $18 - $599 (lifetime) |
+
 ### Pricing Analysis
 
 No-code website builders offer various pricing models to cater to different budgets and needs:
@@ -465,4 +425,4 @@ To optimize your no-code website for search engines:
 
 By following these best practices and leveraging the SEO tools provided by your chosen no-code website builder, you can **improve your website's visibility and search engine rankings**.
 
-<Cta />
+<Cta highlight="default" />
