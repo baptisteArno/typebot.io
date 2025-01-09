@@ -41,11 +41,6 @@ export default defineConfig({
           "../../node_modules/.prisma/client/index-browser.js",
       },
     },
-    plugins: [
-      viteTsConfigPaths({
-        projects: ["./tsconfig.json"],
-      }),
-      contentCollections(),
-    ],
+    plugins: [viteTsConfigPaths(), contentCollections()],
   },
 });
