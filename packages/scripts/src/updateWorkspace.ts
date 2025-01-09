@@ -2,7 +2,7 @@ import * as p from "@clack/prompts";
 import prisma from "@typebot.io/prisma";
 import { promptAndSetEnvironment } from "./utils";
 
-const updateTypebot = async () => {
+const updateWorkspace = async () => {
   await promptAndSetEnvironment("production");
 
   const workspaceId = (await p.text({
@@ -21,4 +21,4 @@ const updateTypebot = async () => {
   console.log(workspace);
 };
 
-updateTypebot();
+updateWorkspace();

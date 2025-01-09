@@ -14,7 +14,6 @@ export const ShortTextInput = (props: ShortTextInputProps) => {
       ref={props.ref}
       class="focus:outline-none bg-transparent px-4 py-4 flex-1 w-full text-input"
       type="text"
-      style={{ "font-size": "16px" }}
       onInput={(e) => local.onInput(e.currentTarget.value)}
       {...others}
     />

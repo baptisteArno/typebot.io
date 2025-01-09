@@ -1,6 +1,5 @@
 import { LockedIcon, UnlockedIcon } from "@/components/icons";
 import { useBlockDnd } from "@/features/graph/providers/GraphDndProvider";
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   Fade,
   Flex,

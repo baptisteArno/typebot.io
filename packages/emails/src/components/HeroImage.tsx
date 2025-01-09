@@ -1,5 +1,6 @@
 import type { IMjmlImageProps } from "@faire/mjml-react";
 import { MjmlImage } from "@faire/mjml-react";
+import * as React from "react";
 import { borderBase } from "../theme";
 
 export const HeroImage = (props: IMjmlImageProps) => (

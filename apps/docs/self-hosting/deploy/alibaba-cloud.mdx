@@ -1,0 +1,46 @@
+---
+title: Alibaba Cloud
+description: How to deploy Typebot on Alibaba Cloud
+---
+
+<Note>
+  The easiest way to get started with Typebot is with [the official managed
+  service in the Cloud](https://app.typebot.io). You'll have high availability,
+  backups, security, and maintenance all managed for you by me, Baptiste,
+  Typebot's founder. The cloud version can save a substantial amount of
+  developer time and resources. For most sites this ends up being the best value
+  option and the revenue goes to funding the maintenance and further development
+  of Typebot. So you'll be supporting fair source software and getting a great
+  service!
+</Note>
+
+<Note>
+Additionally, Alibaba Cloud offers a streamlined setup process using Docker Compose for quickly launching the entire Typebot application.
+ It automatically creates OAuth credentials for Alibaba Cloud and configures a public IP for your application.
+  Throughout the deployment process, you'll only need to provide a few simple parameters to start using Typebot seamlessly.
+ Furthermore, if you already have a GitHub OAuth Client created, the deployment process also supports enabling GitHub OAuth login directly.
+</Note>
+## Requirements
+
+You need an Alibaba Cloud account, which you can register for on [Alibaba Cloud](https://alibabacloud.com/).
+
+
+## Getting Started
+
+<Note>
+
+- Builder is the application where you'll create your flows.
+- Viewer is the bot interface your users will interact with.
+
+</Note>
+
+### One-click to deploy the builder and viewer
+[![][deploy-button-image]][deploy-link]
+
+1. Select parameters for the type of ECS to deploy
+2. Choose to create a new dedicated network or directly use an existing dedicated network based on your needs.
+3. Alibaba Cloud automatically creates an OAuth client for Alibaba Cloud services. If you choose to use GitHub OAuth login (optional), you can enter your GitHub Client ID and Secret.
+4. Then click 'Create Now' and wait for the service instance to be deployed. You can now use the build page exposed by the service instance to create and interact with your chatbot.
+
+[deploy-button-image]: https://service-info-public.oss-cn-hangzhou.aliyuncs.com/computenest-en.svg
+[deploy-link]: https://computenest.console.aliyun.com/service/instance/create/default?type=user&ServiceName=Typebot%E7%A4%BE%E5%8C%BA%E7%89%88

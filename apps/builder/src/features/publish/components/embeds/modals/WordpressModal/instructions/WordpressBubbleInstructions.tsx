@@ -20,8 +20,7 @@ import {
   parseInitBubbleCode,
 } from "../../../snippetParsers";
 import { parseDefaultBubbleTheme } from "../../Javascript/instructions/JavascriptBubbleInstructions";
-
-const typebotCloudLibraryVersion = "0.2";
+import { typebotCloudLibraryVersion } from "./constants";
 
 type Props = {
   publicId: string;

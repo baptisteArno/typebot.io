@@ -6,6 +6,7 @@ import {
   MjmlRaw,
   MjmlStyle,
 } from "@faire/mjml-react";
+import * as React from "react";
 import type { ReactElement } from "react";
 import { black, grayDark } from "../theme";
 

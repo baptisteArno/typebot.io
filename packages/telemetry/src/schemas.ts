@@ -43,6 +43,12 @@ const userLoggedInEventSchema = userEvent.merge(
   }),
 );
 
+const userLoggedOutEventSchema = userEvent.merge(
+  z.object({
+    name: z.literal("User logged out"),
+  }),
+);
+
 const userUpdatedEventSchema = userEvent.merge(
   z.object({
     name: z.literal("User updated"),
@@ -192,6 +198,7 @@ export const eventSchema = z.discriminatedUnion("name", [
   workspaceCreatedEventSchema,
   userCreatedEventSchema,
   userLoggedInEventSchema,
+  userLoggedOutEventSchema,
   typebotCreatedEventSchema,
   publishedTypebotEventSchema,
   subscriptionUpdatedEventSchema,

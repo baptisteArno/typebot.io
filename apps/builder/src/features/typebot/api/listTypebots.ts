@@ -1,14 +1,10 @@
 import { getUserRoleInWorkspace } from "@/features/workspace/helpers/getUserRoleInWorkspace";
 import { authenticatedProcedure } from "@/helpers/server/trpc";
 import { TRPCError } from "@trpc/server";
-import { omit } from "@typebot.io/lib/utils";
 import prisma from "@typebot.io/prisma";
 import { WorkspaceRole } from "@typebot.io/prisma/enum";
-import type { PublicTypebot } from "@typebot.io/typebot/schemas/publicTypebot";
-import {
-  type Typebot,
-  typebotV5Schema,
-} from "@typebot.io/typebot/schemas/typebot";
+import { getTypebotAccessRight } from "@typebot.io/typebot/helpers/getTypebotAccessRight";
+import { typebotV5Schema } from "@typebot.io/typebot/schemas/typebot";
 import { z } from "@typebot.io/zod";
 
 export const listTypebots = authenticatedProcedure
@@ -40,22 +36,34 @@ export const listTypebots = authenticatedProcedure
             icon: true,
             id: true,
           })
-          .merge(z.object({ publishedTypebotId: z.string().optional() })),
+          .merge(
+            z.object({
+              publishedTypebotId: z.string().optional(),
+              accessRight: z.enum(["read", "write", "guest"]),
+            }),
+          ),
       ),
     }),
   )
   .query(async ({ input: { workspaceId, folderId }, ctx: { user } }) => {
     const workspace = await prisma.workspace.findUnique({
       where: { id: workspaceId },
-      select: { members: true },
+      select: {
+        members: {
+          select: {
+            userId: true,
+            role: true,
+          },
+        },
+      },
     });
     const userRole = getUserRoleInWorkspace(user.id, workspace?.members);
-    if (userRole === undefined)
+    if (!workspace || userRole === undefined)
       throw new TRPCError({
         code: "NOT_FOUND",
         message: "Workspace not found",
       });
-    const typebots = (await prisma.typebot.findMany({
+    const typebots = await prisma.typebot.findMany({
       where: {
         isArchived: { not: true },
         folderId:
@@ -76,18 +84,23 @@ export const listTypebots = authenticatedProcedure
         publishedTypebot: { select: { id: true } },
         id: true,
         icon: true,
+        collaborators: { select: { userId: true, type: true } },
       },
-    })) as (Pick<Typebot, "name" | "id" | "icon"> & {
-      publishedTypebot: Pick<PublicTypebot, "id">;
-    })[];
+    });
 
     if (!typebots)
       throw new TRPCError({ code: "NOT_FOUND", message: "No typebots found" });
 
     return {
       typebots: typebots.map((typebot) => ({
+        id: typebot.id,
+        name: typebot.name,
+        icon: typebot.icon,
         publishedTypebotId: typebot.publishedTypebot?.id,
-        ...omit(typebot, "publishedTypebot"),
+        accessRight: getTypebotAccessRight(user, {
+          ...typebot,
+          workspace: { members: workspace.members },
+        }),
       })),
     };
   });

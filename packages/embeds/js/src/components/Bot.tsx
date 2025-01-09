@@ -41,6 +41,7 @@ import { ProgressBar } from "./ProgressBar";
 import { CloseIcon } from "./icons/CloseIcon";
 
 export type BotProps = {
+  id?: string;
   typebot: string | any;
   isPreview?: boolean;
   resultId?: string;
@@ -293,7 +294,7 @@ const BotContent = (props: BotContentProps) => {
   let botContainerElement: HTMLDivElement | undefined;
 
   const resizeObserver = new ResizeObserver((entries) => {
-    return setIsMobile((entries[0]?.target.clientWidth ?? 0) < 400);
+    return setIsMobile((entries[0]?.target.clientWidth ?? 0) < 432);
   });
 
   onMount(() => {

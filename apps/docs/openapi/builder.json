@@ -3202,12 +3202,21 @@
                           },
                           "publishedTypebotId": {
                             "type": "string"
+                          },
+                          "accessRight": {
+                            "type": "string",
+                            "enum": [
+                              "read",
+                              "write",
+                              "guest"
+                            ]
                           }
                         },
                         "required": [
                           "name",
                           "icon",
-                          "id"
+                          "id",
+                          "accessRight"
                         ]
                       }
                     }

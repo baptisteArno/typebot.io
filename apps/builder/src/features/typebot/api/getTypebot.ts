@@ -1,9 +1,7 @@
 import { publicProcedure } from "@/helpers/server/trpc";
-import * as Sentry from "@sentry/nextjs";
 import { TRPCError } from "@trpc/server";
-import { env } from "@typebot.io/env";
 import prisma from "@typebot.io/prisma";
-import type { CollaborationType } from "@typebot.io/prisma/enum";
+import { getTypebotAccessRight } from "@typebot.io/typebot/helpers/getTypebotAccessRight";
 import { isReadTypebotForbidden } from "@typebot.io/typebot/helpers/isReadTypebotForbidden";
 import { migrateTypebot } from "@typebot.io/typebot/migrations/migrateTypebot";
 import { typebotSchema } from "@typebot.io/typebot/schemas/typebot";
@@ -78,7 +76,7 @@ export const getTypebot = publicProcedure
 
         return {
           typebot: parsedTypebot,
-          currentUserMode: getCurrentUserMode(user, existingTypebot),
+          currentUserMode: getTypebotAccessRight(user, existingTypebot),
         };
       } catch (err) {
         throw new TRPCError({
@@ -89,25 +87,3 @@ export const getTypebot = publicProcedure
       }
     },
   );
-
-const getCurrentUserMode = (
-  user: { email: string | null; id: string } | undefined,
-  typebot: { collaborators: { userId: string; type: CollaborationType }[] } & {
-    workspace: { members: { userId: string }[] };
-  },
-) => {
-  const collaborator = typebot.collaborators.find((c) => c.userId === user?.id);
-  const isMemberOfWorkspace = typebot.workspace.members.some(
-    (m) => m.userId === user?.id,
-  );
-  if (
-    collaborator?.type === "WRITE" ||
-    collaborator?.type === "FULL_ACCESS" ||
-    isMemberOfWorkspace
-  )
-    return "write";
-
-  if (collaborator) return "read";
-  if (user?.email && env.ADMIN_EMAIL?.includes(user.email)) return "read";
-  return "guest";
-};

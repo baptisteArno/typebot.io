@@ -129,6 +129,7 @@ pre {
 }
 
 .typebot-chat-view {
+  @apply pt-5 px-3;
   max-width: var(--typebot-chat-container-max-width);
   background-color: rgba(
     var(--typebot-chat-container-bg-rgb),
@@ -142,13 +143,13 @@ pre {
     var(--typebot-chat-container-border-rgb),
     var(--typebot-chat-container-border-opacity)
   );
-  padding-left: 20px;
-  padding-right: 20px;
   box-shadow: var(--typebot-chat-container-box-shadow);
 }
 
-@container (min-width: 480px) {
+/* TODO: Use @tailwindcss/container-queries*/
+@container (min-width: 432px) {
   .typebot-chat-view {
+    @apply pt-10 px-5;
     min-height: var(--typebot-chat-container-max-height);
     max-height: var(--typebot-chat-container-max-height);
     border-radius: var(--typebot-chat-container-border-radius);

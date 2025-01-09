@@ -1,6 +1,6 @@
 import { safeStringify } from "@typebot.io/lib/safeStringify";
 import { isDefined, isNotDefined, isNotEmpty } from "@typebot.io/lib/utils";
-import { createCodeRunner } from "./codeRunners";
+import { createInlineSyncCodeRunner } from "./codeRunners";
 import type { Variable, VariableWithValue } from "./schemas";
 
 export type ParseVariablesOptions = {
@@ -74,7 +74,7 @@ const evaluateInlineCode = (
 ) => {
   try {
     const body = parseVariables(variables, { fieldToParse: "id" })(code);
-    return createCodeRunner({ variables })(
+    return createInlineSyncCodeRunner({ variables })(
       body.includes("return ") ? body : `return ${body}`,
     );
   } catch (err) {

@@ -1,15 +1,24 @@
 import { TRPCError } from "@trpc/server";
 import type { Prisma } from "@typebot.io/prisma/types";
 import type { SetVariableHistoryItem } from "@typebot.io/variables/schemas";
+import { continueBotFlow } from "./continueBotFlow";
 import { executeGroup } from "./executeGroup";
 import { getFirstEdgeId } from "./getFirstEdgeId";
 import { getNextGroup } from "./getNextGroup";
 import { resetGlobals } from "./globals";
-import type { ContinueChatResponse, StartFrom } from "./schemas/api";
+import { upsertResult } from "./queries/upsertResult";
+import type { ContinueChatResponse, Message, StartFrom } from "./schemas/api";
 import type { SessionState } from "./schemas/chatSession";
+
+type ChatReply = ContinueChatResponse & {
+  newSessionState: SessionState;
+  visitedEdges: Prisma.VisitedEdge[];
+  setVariableHistory: SetVariableHistoryItem[];
+};
 
 type Props = {
   version: 1 | 2;
+  message: Message | undefined;
   state: SessionState;
   startFrom?: StartFrom;
   startTime?: number;
@@ -18,17 +27,12 @@ type Props = {
 
 export const startBotFlow = async ({
   version,
+  message,
   state,
   startFrom,
   startTime,
   textBubbleContentFormat,
-}: Props): Promise<
-  ContinueChatResponse & {
-    newSessionState: SessionState;
-    visitedEdges: Prisma.VisitedEdge[];
-    setVariableHistory: SetVariableHistoryItem[];
-  }
-> => {
+}: Props): Promise<ChatReply> => {
   resetGlobals();
   let newSessionState = state;
   const visitedEdges: Prisma.VisitedEdge[] = [];
@@ -70,12 +74,50 @@ export const startBotFlow = async ({
   newSessionState = nextGroup.newSessionState;
   if (!nextGroup.group)
     return { messages: [], newSessionState, visitedEdges, setVariableHistory };
-  return executeGroup(nextGroup.group, {
+  const chatReply = await executeGroup(nextGroup.group, {
     version,
     state: newSessionState,
     visitedEdges,
     setVariableHistory,
     startTime,
     textBubbleContentFormat,
+  });
+
+  return autoContinueChatIfStartingWithInput({
+    message,
+    state: newSessionState,
+    chatReply,
+    textBubbleContentFormat,
+    version,
+  });
+};
+
+const autoContinueChatIfStartingWithInput = async ({
+  version,
+  message,
+  chatReply,
+  textBubbleContentFormat,
+}: Props & { chatReply: ChatReply }): Promise<ChatReply> => {
+  if (
+    !message ||
+    chatReply.messages.length > 0 ||
+    (chatReply.clientSideActions?.filter((c) => c.expectsDedicatedReply)
+      .length ?? 0) > 0
+  )
+    return chatReply;
+
+  const resultId = chatReply.newSessionState.typebotsQueue[0].resultId;
+  if (resultId)
+    await upsertResult({
+      hasStarted: true,
+      isCompleted: false,
+      resultId,
+      typebot: chatReply.newSessionState.typebotsQueue[0].typebot,
+    });
+  return continueBotFlow(message, {
+    version,
+    state: chatReply.newSessionState,
+    textBubbleContentFormat: textBubbleContentFormat,
+    startTime: Date.now(),
   });
 };

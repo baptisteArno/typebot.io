@@ -137,4 +137,47 @@ export const galleryTemplates: Pick<ThemeTemplate, "id" | "name" | "theme">[] =
         },
       },
     },
+    {
+      id: "pi",
+      name: "Pi",
+      theme: {
+        general: {
+          font: {
+            type: "Custom",
+            family: "StratfordEF-Regular",
+            css: '@font-face {\n    font-family: "StratfordEF-Regular";\n    src: url("https://db.onlinewebfonts.com/t/c85eb6186357a8930b49b2ecfa59757a.eot");\n    src: url("https://db.onlinewebfonts.com/t/c85eb6186357a8930b49b2ecfa59757a.eot?#iefix")format("embedded-opentype"),\n    url("https://db.onlinewebfonts.com/t/c85eb6186357a8930b49b2ecfa59757a.woff2")format("woff2"),\n    url("https://db.onlinewebfonts.com/t/c85eb6186357a8930b49b2ecfa59757a.woff")format("woff"),\n    url("https://db.onlinewebfonts.com/t/c85eb6186357a8930b49b2ecfa59757a.ttf")format("truetype"),\n    url("https://db.onlinewebfonts.com/t/c85eb6186357a8930b49b2ecfa59757a.svg#StratfordEF-Regular")format("svg");\n}',
+          },
+          background: { content: "#FAF3EA" },
+        },
+        chat: {
+          hostAvatar: { isEnabled: false },
+          hostBubbles: {
+            backgroundColor: "transparent",
+            color: "#0E3C26",
+          },
+          guestBubbles: {
+            backgroundColor: "#F5EADB",
+            color: "#0E3C26",
+          },
+          buttons: {
+            backgroundColor: "#058247",
+            color: "#FCFAF7",
+            border: { roundeness: "large" },
+          },
+          inputs: {
+            backgroundColor: "#ffffff",
+            color: "#0E3C26",
+            shadow: "none",
+            border: {
+              roundeness: "custom",
+              customRoundeness: 30,
+              opacity: 1,
+            },
+            placeholderColor: "#C1B49F",
+          },
+        },
+        customCss:
+          ".typebot-guest-bubble,\n.typebot-host-bubble,\n.typebot-input-container {\n  font-size: 1.375rem;\n}\n\n.typebot-input-container:has(input) {\n  border-radius: 5rem;\n  position: absolute;\n  bottom: 3rem;\n  width: calc(100% - 40px);\n  justify-content: flex-start;\n  background-color: #fff;\n  border: 1px solid #E2D5BF;\n}\n\n.typebot-input-form {\n  max-width: unset\n}\n\n.typebot-input-form > button {\n  border-radius: 5rem;\n  transform: scale(.7);\n}\n\n.bubble-typing,\n.slate-html-container,\n.typebot-host-bubble > figure{\n  padding: 0;\n  margin: 0\n}\n\n.slate-html-container {\n  margin-bottom: .5rem\n}",
+      },
+    },
   ];
