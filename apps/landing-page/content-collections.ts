@@ -9,54 +9,25 @@ import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypePrettyCode from "rehype-pretty-code";
 import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
+import type { Pluggable } from "unified";
+import { visit } from "unist-util-visit";
 
 const posts = defineCollection({
   name: "posts",
-  directory: "content",
+  directory: "app/features/blog/content",
   include: "**/*.mdx",
   schema: (z) => ({
     title: z.string(),
     description: z.string(),
-    publishedAt: z.string().date(),
+    postedAt: z.string().date(),
   }),
   transform: async (document, context) => {
     const mdx = await compileMDX(context, document, {
-      remarkPlugins: [remarkGfm],
+      remarkPlugins: [remarkGfm, remarkRemoveMdxExtension],
       rehypePlugins: [
         rehypeSlug,
-        [
-          rehypePrettyCode,
-          {
-            theme: "material-theme-palenight",
-            transformers: [
-              transformerMetaHighlight(),
-              transformerMetaWordHighlight(),
-              transformerNotationDiff(),
-            ],
-            onVisitLine(node: any) {
-              // Prevent lines from collapsing in `display: grid` mode, and allow empty
-              // lines to be copy/pasted
-              if (node.children.length === 0) {
-                node.children = [{ type: "text", value: " " }];
-              }
-            },
-            onVisitHighlightedLine(node: any) {
-              node.properties.className.push("line--highlighted");
-            },
-            onVisitHighlightedWord(node: any) {
-              node.properties.className = ["word--highlighted"];
-            },
-          },
-        ],
-        [
-          rehypeAutolinkHeadings,
-          {
-            properties: {
-              className: ["subheading-anchor"],
-              ariaLabel: "Link to section",
-            },
-          },
-        ],
+        [rehypePrettyCode, rehypePrettyCodeSettings],
+        [rehypeAutolinkHeadings, rehypeAutolinkHeadingsSettings],
       ],
     });
     return {
@@ -68,3 +39,47 @@ const posts = defineCollection({
 export default defineConfig({
   collections: [posts],
 });
+
+const rehypePrettyCodeSettings = {
+  theme: "material-theme-palenight",
+  transformers: [
+    transformerMetaHighlight(),
+    transformerMetaWordHighlight(),
+    transformerNotationDiff(),
+  ],
+  onVisitLine(node: any) {
+    // Prevent lines from collapsing in `display: grid` mode, and allow empty
+    // lines to be copy/pasted
+    if (node.children.length === 0) {
+      node.children = [{ type: "text", value: " " }];
+    }
+  },
+  onVisitHighlightedLine(node: any) {
+    node.properties.className.push("line--highlighted");
+  },
+  onVisitHighlightedWord(node: any) {
+    node.properties.className = ["word--highlighted"];
+  },
+};
+
+const rehypeAutolinkHeadingsSettings = {
+  properties: {
+    className: ["subheading-anchor"],
+    ariaLabel: "Link to section",
+  },
+};
+
+const remarkRemoveMdxExtension: Pluggable = () => {
+  return (tree) => {
+    visit(tree, "link", (node) => {
+      const url = node.url as string;
+      if (
+        typeof url === "string" &&
+        url.startsWith("./") &&
+        url.endsWith(".mdx")
+      ) {
+        node.url = url.replace(/\.mdx$/, "");
+      }
+    });
+  };
+};

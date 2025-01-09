@@ -18,6 +18,7 @@ import { Route as OssFriendsImport } from './routes/oss-friends'
 import { Route as AboutImport } from './routes/about'
 import { Route as IndexImport } from './routes/index'
 import { Route as BlogIndexImport } from './routes/blog/index'
+import { Route as BlogSlugImport } from './routes/blog/$slug'
 
 // Create/Update Routes
 
@@ -60,6 +61,12 @@ const IndexRoute = IndexImport.update({
 const BlogIndexRoute = BlogIndexImport.update({
   id: '/blog/',
   path: '/blog/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const BlogSlugRoute = BlogSlugImport.update({
+  id: '/blog/$slug',
+  path: '/blog/$slug',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -109,6 +116,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TermsOfServiceImport
       parentRoute: typeof rootRoute
     }
+    '/blog/$slug': {
+      id: '/blog/$slug'
+      path: '/blog/$slug'
+      fullPath: '/blog/$slug'
+      preLoaderRoute: typeof BlogSlugImport
+      parentRoute: typeof rootRoute
+    }
     '/blog/': {
       id: '/blog/'
       path: '/blog'
@@ -128,6 +142,7 @@ export interface FileRoutesByFullPath {
   '/pricing': typeof PricingRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/terms-of-service': typeof TermsOfServiceRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/blog': typeof BlogIndexRoute
 }
 
@@ -138,6 +153,7 @@ export interface FileRoutesByTo {
   '/pricing': typeof PricingRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/terms-of-service': typeof TermsOfServiceRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/blog': typeof BlogIndexRoute
 }
 
@@ -149,6 +165,7 @@ export interface FileRoutesById {
   '/pricing': typeof PricingRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/terms-of-service': typeof TermsOfServiceRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/blog/': typeof BlogIndexRoute
 }
 
@@ -161,6 +178,7 @@ export interface FileRouteTypes {
     | '/pricing'
     | '/privacy-policy'
     | '/terms-of-service'
+    | '/blog/$slug'
     | '/blog'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -170,6 +188,7 @@ export interface FileRouteTypes {
     | '/pricing'
     | '/privacy-policy'
     | '/terms-of-service'
+    | '/blog/$slug'
     | '/blog'
   id:
     | '__root__'
@@ -179,6 +198,7 @@ export interface FileRouteTypes {
     | '/pricing'
     | '/privacy-policy'
     | '/terms-of-service'
+    | '/blog/$slug'
     | '/blog/'
   fileRoutesById: FileRoutesById
 }
@@ -190,6 +210,7 @@ export interface RootRouteChildren {
   PricingRoute: typeof PricingRoute
   PrivacyPolicyRoute: typeof PrivacyPolicyRoute
   TermsOfServiceRoute: typeof TermsOfServiceRoute
+  BlogSlugRoute: typeof BlogSlugRoute
   BlogIndexRoute: typeof BlogIndexRoute
 }
 
@@ -200,6 +221,7 @@ const rootRouteChildren: RootRouteChildren = {
   PricingRoute: PricingRoute,
   PrivacyPolicyRoute: PrivacyPolicyRoute,
   TermsOfServiceRoute: TermsOfServiceRoute,
+  BlogSlugRoute: BlogSlugRoute,
   BlogIndexRoute: BlogIndexRoute,
 }
 
@@ -219,6 +241,7 @@ export const routeTree = rootRoute
         "/pricing",
         "/privacy-policy",
         "/terms-of-service",
+        "/blog/$slug",
         "/blog/"
       ]
     },
@@ -239,6 +262,9 @@ export const routeTree = rootRoute
     },
     "/terms-of-service": {
       "filePath": "terms-of-service.tsx"
+    },
+    "/blog/$slug": {
+      "filePath": "blog/$slug.tsx"
     },
     "/blog/": {
       "filePath": "blog/index.tsx"

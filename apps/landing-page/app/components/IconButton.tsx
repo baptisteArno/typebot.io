@@ -1,8 +1,4 @@
 import { cn } from "@/lib/utils";
-import {
-  Button as AriakitButton,
-  type ButtonProps as AriakitButtonProps,
-} from "@ariakit/react";
 import { type VariantProps, cva } from "class-variance-authority";
 import * as React from "react";
 
@@ -30,7 +26,7 @@ const iconButtonVariants = cva(
 );
 
 export interface IconButtonProps
-  extends AriakitButtonProps,
+  extends React.HTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof iconButtonVariants> {
   ["aria-label"]: string;
 }
@@ -38,7 +34,7 @@ export interface IconButtonProps
 const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
   function Button({ className, variant, size, ...props }, ref) {
     return (
-      <AriakitButton
+      <button
         className={cn(iconButtonVariants({ variant, size, className }))}
         ref={ref}
         {...props}

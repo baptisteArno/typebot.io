@@ -110,7 +110,7 @@ export const ForEveryDepartment = () => {
         </div>
       </div>
       {openedDepartment && (
-        <div className="fixed size-full inset-0 z-10 flex justify-center items-center">
+        <div className="fixed size-full inset-0 flex justify-center items-center">
           <div
             className="bg-gray-1/80 absolute inset-0 motion-preset-fade"
             onClick={() => setOpenedDepartmentIndex(undefined)}

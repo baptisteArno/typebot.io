@@ -1,6 +1,6 @@
 import { Marquee } from "./Marquee";
 import {
-  Awwwsome,
+  Cora,
   IbanFirst,
   Lemlist,
   MakerLead,
@@ -20,11 +20,11 @@ export const Companies = () => (
       <MakerLead className="w-32 flex-shrink-0" />
       <Webisharp className="w-32 flex-shrink-0" />
       <Shadow className="w-28 flex-shrink-0" />
+      <Cora className="w-24 flex-shrink-0" />
       <IbanFirst className="w-28 flex-shrink-0" />
       <Lemlist className="w-28 flex-shrink-0" />
       <SocialHackrs className="w-32 flex-shrink-0" />
       <PinpointInteractive className="w-32 flex-shrink-0" />
-      <Awwwsome className="w-32 flex-shrink-0" />
     </div>
     <div className="relative flex w-full md:hidden">
       <Marquee>
@@ -36,7 +36,7 @@ export const Companies = () => (
         <Lemlist width="100px" height="60px" />
         <PinpointInteractive width="100px" height="60px" />
         <Obole width="80px" height="60px" />
-        <Awwwsome width="100px" height="60px" />
+        <Cora width="60px" height="60px" />
       </Marquee>
       <div className="pointer-events-none absolute inset-y-0 right-0 w-[50px] bg-gradient-to-r from-gray-2/20 to-gray-2 " />
       <div className="pointer-events-none absolute inset-y-0 left-0 w-[50px] bg-gradient-to-l from-gray-2/20 to-gray-2" />

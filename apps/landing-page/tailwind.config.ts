@@ -2,7 +2,10 @@ import type { Config } from "tailwindcss";
 
 export default {
   darkMode: ["class"],
-  content: ["app/**/*.{ts,tsx}"],
+  content: ["app/**/*.{ts,tsx,mdx}"],
+  future: {
+    hoverOnlyWhenSupported: true,
+  },
   theme: {
     colors: {
       gray: getColorScale("gray"),
@@ -12,6 +15,7 @@ export default {
       red: getColorScale("red"),
       white: "rgb(255, 255, 255)",
       transparent: "transparent",
+      inherit: "inherit",
     },
     extend: {
       fontSize: {

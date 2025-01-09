@@ -71,7 +71,7 @@ function RouteComponent() {
         <Faq />
       </div>
       <TiersDialog
-        isOpened={isTiersModalOpened === true}
+        open={isTiersModalOpened === true}
         onClose={closeTiersDialog}
       />
     </CommonPageLayout>

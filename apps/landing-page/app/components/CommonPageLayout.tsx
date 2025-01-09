@@ -1,5 +1,6 @@
 import { TopBar } from "@/features/homepage/hero/TopBar";
 import { cn } from "@/lib/utils";
+import { Portal } from "@ark-ui/react/portal";
 import { Header } from "./Header";
 import { Footer } from "./footer/Footer";
 
@@ -12,9 +13,12 @@ export const CommonPageLayout = ({
       <div className="flex w-full justify-center">
         <TopBar className="hidden md:flex" />
       </div>
-      <div className="fixed top-4 md:bottom-12 md:top-auto z-10 w-full">
-        <Header />
-      </div>
+      <Portal>
+        <div className="fixed top-4 md:bottom-12 md:top-auto w-full motion-preset-slide-up">
+          <Header />
+        </div>
+      </Portal>
+
       <div
         className={cn(
           "flex flex-col max-w-7xl mx-auto gap-12 pt-32 md:pt-20 w-full pb-20 md:pb-32 px-4",

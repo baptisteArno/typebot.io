@@ -5,11 +5,12 @@
   "private": true,
   "scripts": {
     "dev": "dotenv -e ./.env -e ../../.env -- vinxi dev --port 3003",
-    "build": "dotenv -e ./.env -e ../../.env -- vinxi build",
-    "start": "dotenv -e ./.env -e ../../.env -- vinxi start"
+    "build": "bun check-broken-links && dotenv -e ./.env -e ../../.env -- vinxi build",
+    "start": "dotenv -e ./.env -e ../../.env -- vinxi start",
+    "check-broken-links": "mdx-local-link-checker app/features/blog/content public"
   },
   "dependencies": {
-    "@ariakit/react": "0.4.15",
+    "@ark-ui/react": "4.7.0",
     "@tanstack/react-router": "1.91.2",
     "@tanstack/start": "1.91.2",
     "@typebot.io/billing": "workspace:*",
@@ -23,7 +24,6 @@
     "motion": "12.0.0-alpha.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "sugar-high": "0.7.5",
     "tailwind-merge": "2.5.5",
     "vinxi": "0.5.1"
   },
@@ -32,10 +32,6 @@
     "@content-collections/mdx": "0.2.0",
     "@content-collections/vite": "0.2.3",
     "@shikijs/transformers": "1.26.1",
-    "rehype-autolink-headings": "7.1.0",
-    "rehype-pretty-code": "0.14.0",
-    "rehype-slug": "6.0.0",
-    "remark-gfm": "4.0.0",
     "@tailwindcss/typography": "0.5.15",
     "@tanstack/router-devtools": "1.91.2",
     "@typebot.io/env": "workspace:*",
@@ -46,9 +42,15 @@
     "autoprefixer": "10.4.20",
     "cross-env": "7.0.3",
     "dotenv-cli": "7.4.4",
+    "mdx-local-link-checker": "^2.1.1",
     "postcss": "8.4.49",
+    "rehype-autolink-headings": "7.1.0",
+    "rehype-pretty-code": "0.14.0",
+    "rehype-slug": "6.0.0",
+    "remark-gfm": "4.0.0",
     "tailwindcss": "3.4.16",
     "tailwindcss-motion": "1.0.0",
+    "unified": "11.0.5",
     "vite-tsconfig-paths": "5.1.4"
   }
 }

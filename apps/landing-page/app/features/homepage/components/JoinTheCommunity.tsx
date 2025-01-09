@@ -1,4 +1,5 @@
 import { Button } from "@/components/Button";
+import { ButtonLink } from "@/components/link";
 import { Link } from "@tanstack/react-router";
 import clsx from "clsx";
 import { discordUrl } from "../../../constants";
@@ -74,7 +75,7 @@ export const JoinTheCommunity = () => (
     <div className="relative flex dark rounded-2xl md:rounded-b-none p-6 pt-12 md:pb-12 justify-center overflow-hidden">
       <FloatingAvatars className="hidden md:block" />
       <div className="flex flex-col gap-12 md:items-center max-w-4xl">
-        <div className="flex flex-col gap-6 text-balance md:text-center z-10">
+        <div className="flex flex-col gap-6 text-balance md:text-center">
           <h2 className="text-gray-12">
             Together, we&apos;re hacking the future of
             <br className="hidden md:block" />
@@ -87,13 +88,9 @@ export const JoinTheCommunity = () => (
             of a network that's shaping the future of conversational apps.
           </p>
         </div>
-        <Button
-          variant="cta"
-          size="lg"
-          render={<Link href={discordUrl} target="_blank" />}
-        >
+        <ButtonLink variant="cta" size="lg" href={discordUrl} target="_blank">
           Join the community
-        </Button>
+        </ButtonLink>
       </div>
     </div>
     <div className="flex flex-col md:flex-row justify-evenly gap-6 p-6 md:p-8">

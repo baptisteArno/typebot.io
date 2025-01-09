@@ -26,19 +26,18 @@ function RouteComponent() {
           you hack the bot game and grow your business.
         </p>
       </div>
-      <ul>
+      <ol className="flex flex-col gap-6">
         {allPosts
           .sort(
             (a, b) =>
-              new Date(b.publishedAt).getTime() -
-              new Date(a.publishedAt).getTime(),
+              new Date(b.postedAt).getTime() - new Date(a.postedAt).getTime(),
           )
           .map((post) => (
             <li key={post._meta.path}>
               <Link to={`/blog/${post._meta.path}`}>
                 <Card>
                   <time className="text-gray-10">
-                    {formatDate(post.publishedAt)}
+                    {formatDate(post.postedAt)}
                   </time>
                   <h3>{post.title}</h3>
                   <p>{post.description}</p>
@@ -47,7 +46,7 @@ function RouteComponent() {
               </Link>
             </li>
           ))}
-      </ul>
+      </ol>
     </CommonPageLayout>
   );
 }

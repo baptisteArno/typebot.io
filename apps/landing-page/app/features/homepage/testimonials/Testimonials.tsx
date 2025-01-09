@@ -195,7 +195,7 @@ export const Testimonials = () => {
       </div>
       <div className="flex flex-col rounded-2xl overflow-y-auto max-h-[50vh] md:max-h-[70vh] bg-gray-1 border relative w-full">
         <div
-          className="pointer-events-none top-0 h-10 w-full bg-gradient-to-t from-gray-2/10 to-gray-2/90 sticky flex-shrink-0 z-10 animate-fade-in"
+          className="pointer-events-none top-0 h-10 w-full bg-gradient-to-t from-gray-2/10 to-gray-2/90 sticky flex-shrink-0 animate-fade-in"
           style={{
             animationTimeline: "scroll()",
             animationRange: "0% 10%",

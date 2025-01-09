@@ -1,72 +1,62 @@
 import { cn } from "@/lib/utils";
-import * as Ariakit from "@ariakit/react";
-import clsx from "clsx";
-import * as React from "react";
+import {
+  Select as ArkSelect,
+  type ListCollection,
+  Portal,
+  type SelectRootProps,
+} from "@ark-ui/react";
+import { ChevronDownIcon } from "@typebot.io/ui/icons/ChevronDownIcon";
+import { buttonVariants } from "./Button";
 
-export interface SelectProps extends Ariakit.SelectProps {
-  value?: string;
-  setValue?: (value: string) => void;
-  defaultValue?: string;
-  onBlur?: React.FocusEventHandler<HTMLElement>;
-}
+type Props<T> = {
+  collection: ListCollection<T>;
+  children: React.ReactNode;
+  label?: string;
+  placeholder?: string;
+} & Pick<SelectRootProps<T>, "onValueChange">;
 
-export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
-  function Select(
-    { children, value, setValue, defaultValue, className, ...props },
-    ref,
-  ) {
-    const select = Ariakit.useSelectStore({ value, setValue, defaultValue });
-    const portalRef = React.useRef<HTMLDivElement>(null);
-    const selectValue = Ariakit.useStoreState(select, "value");
+export const Select = <T,>({
+  collection,
+  children,
+  label,
+  placeholder = "Select an item",
+  onValueChange,
+}: Props<T>) => {
+  return (
+    <ArkSelect.Root collection={collection} onValueChange={onValueChange}>
+      <div className="flex gap-3 items-center">
+        {label ? <ArkSelect.Label>{label}</ArkSelect.Label> : null}
+        <ArkSelect.Control>
+          <ArkSelect.Trigger
+            className={cn(buttonVariants({ variant: "secondary" }))}
+          >
+            <ArkSelect.ValueText placeholder={placeholder} />
+            <ArkSelect.Indicator>
+              <ChevronDownIcon />
+            </ArkSelect.Indicator>
+          </ArkSelect.Trigger>
+        </ArkSelect.Control>
+      </div>
+      <Portal>
+        <ArkSelect.Positioner>
+          <ArkSelect.Content className="bg-gray-1 p-2 rounded-xl shadow-lg border max-h-[300px] overflow-auto data-[state=open]:motion-opacity-in-0 data-[state=open]:motion-translate-y-in-[-10px] motion-duration-150">
+            {children}
+          </ArkSelect.Content>
+        </ArkSelect.Positioner>
+      </Portal>
+      <ArkSelect.HiddenSelect />
+    </ArkSelect.Root>
+  );
+};
 
-    // Only call onBlur if the focus is leaving the whole widget.
-    const onBlur = (event: React.FocusEvent<HTMLElement>) => {
-      const portal = portalRef.current;
-      const { selectElement, popoverElement } = select.getState();
-      if (portal?.contains(event.relatedTarget)) return;
-      if (selectElement?.contains(event.relatedTarget)) return;
-      if (popoverElement?.contains(event.relatedTarget)) return;
-      props.onBlur?.(event);
-    };
-
-    return (
-      <>
-        <Ariakit.Select
-          ref={ref}
-          {...props}
-          store={select}
-          onBlur={onBlur}
-          className={cn(className)}
-        >
-          {selectValue || "Select an item"}
-          <Ariakit.SelectArrow />
-        </Ariakit.Select>
-        <Ariakit.SelectPopover
-          store={select}
-          modal
-          sameWidth
-          gutter={4}
-          onBlur={onBlur}
-          portalRef={portalRef}
-          className="popover"
-        >
-          {children}
-        </Ariakit.SelectPopover>
-      </>
-    );
-  },
-);
-
-export interface SelectItemProps extends Ariakit.SelectItemProps {}
-
-export const SelectItem = React.forwardRef<HTMLDivElement, SelectItemProps>(
-  function SelectItem(props, ref) {
-    return (
-      <Ariakit.SelectItem
-        ref={ref}
-        {...props}
-        className={clsx("select-item", props.className)}
-      />
-    );
-  },
+export const SelectItem = <T,>({
+  item,
+  children,
+}: { item: T; children: React.ReactNode }) => (
+  <ArkSelect.Item
+    item={item}
+    className="data-[highlighted]:bg-gray-2 p-2 rounded-lg cursor-default"
+  >
+    <ArkSelect.ItemText>{children}</ArkSelect.ItemText>
+  </ArkSelect.Item>
 );

@@ -14,6 +14,7 @@ import { MainFeatures } from "@/features/homepage/main-features/MainFeatures";
 import { ProductPrinciples } from "@/features/homepage/product-principles/ProductPrinciples";
 import { Testimonials } from "@/features/homepage/testimonials/Testimonials";
 import { UseCases } from "@/features/homepage/use-cases/UseCases";
+import { Portal } from "@ark-ui/react/portal";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/")({
@@ -24,14 +25,16 @@ function Home() {
   return (
     <div className="flex flex-col items-stretch">
       {/* <TypebotBubble /> */}
-      <div className="fixed top-4 md:bottom-12 md:top-auto z-10 w-full">
-        <Header initialAppearance="dark" />
-      </div>
+      <Portal>
+        <div className="fixed top-4 md:bottom-12 md:top-auto w-full">
+          <Header initialAppearance="dark" />
+        </div>
+      </Portal>
       <Section className="dark py-0 md:py-0 md:px-0 gap-0">
         <Hero />
       </Section>
       <div className="-mt-32 md:-mt-[100vh]">
-        <Section className="magic-section px-0 rounded-t-3xl bg-[url('$magicBackgrounds/magic-background.png')] md:bg-[url('$magicBackgrounds/magic-background-desktop.png')] bg-no-repeat bg-[length:100%] z-10 motion-opacity-in-0 motion-translate-y-in-[20px] motion-delay-[2500ms] md:pt-32 md:opacity-0">
+        <Section className="magic-section px-0 rounded-t-3xl bg-[url('$magicBackgrounds/magic-background.png')] md:bg-[url('$magicBackgrounds/magic-background-desktop.png')] bg-no-repeat bg-[length:100%] motion-opacity-in-0 motion-translate-y-in-[20px] motion-delay-[2500ms] md:pt-32 md:opacity-0">
           <div className="md:h-[200vh]">
             <UseCases className="md:sticky top-0" />
           </div>

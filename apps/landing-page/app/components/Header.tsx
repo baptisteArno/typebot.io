@@ -239,7 +239,7 @@ const Desktop = React.forwardRef<
           to={link.to}
           target={link.to ? undefined : "_blank"}
           activeProps={{
-            className: "font-bold",
+            className: "font-medium",
           }}
         >
           {link.label}

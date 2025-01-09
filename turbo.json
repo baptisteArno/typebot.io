@@ -39,6 +39,9 @@
     "db:push": {
       "cache": false
     },
+    "check-broken-links": {
+      "cache": false
+    },
     "db:cleanDatabase": {
       "env": ["NEXTAUTH_URL"],
       "dependsOn": ["@typebot.io/prisma#db:generate"],

@@ -13,7 +13,7 @@
   ],
   "scripts": {
     "prepare": "husky",
-    "pre-commit": "bun format-and-lint && bun lint-repo",
+    "pre-commit": "bun format-and-lint && bun lint-repo && turbo check-broken-links",
     "format-and-lint": "biome check .",
     "format-and-lint:fix": "biome check . --write",
     "lint-repo": "sherif -r unordered-dependencies -r packages-without-package-json",
