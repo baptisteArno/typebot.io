@@ -1,60 +1,60 @@
 import {
   Flex,
   HStack,
-  Stack,
   Popover,
   PopoverTrigger,
-  useDisclosure,
-  Text,
   Spacer,
+  Stack,
+  Text,
+  useDisclosure,
 } from '@chakra-ui/react'
-import React, { createContext, useEffect, useRef, useState } from 'react'
-import {
-  BubbleStep,
-  DraggableStep,
-  Step,
-  TextBubbleContent,
-  TextBubbleStep,
-  AssignToTeamStep,
-  CallOtherBotStep,
-  OfficeHourStep,
-  OctaStepType,
-  WebhookStep,
-  IntegrationStepType,
-  WhatsAppOptionsListStep,
-  WhatsAppButtonsListStep,
-  OctaWabaStepType,
-  WOZAssignStep,
-  WOZStepType,
-} from 'models'
-import { useGraph } from 'contexts/GraphContext'
+import { ErrorIcon, WarningIcon } from 'assets/icons'
 import { StepIcon } from 'components/editor/StepsSideBar/StepIcon'
-import { isTextBubbleStep, isOctaBubbleStep } from 'utils'
-import { StepNodeContent } from '../StepNodeContent/StepNodeContent/StepNodeContent'
-import { useTypebot } from 'contexts/TypebotContext'
-import { ContextMenu } from 'components/shared/ContextMenu'
-import { StepNodeContextMenu } from '../StepNodeContextMenu'
-import { SourceEndpoint } from '../../../Endpoints/SourceEndpoint'
-import { hasDefaultConnector } from 'services/typebots'
-import { useRouter } from 'next/router'
-import { SettingsModal } from '../SettingsPopoverContent/SettingsModal'
-import { StepSettings } from '../SettingsPopoverContent/SettingsPopoverContent'
-import { TextBubbleEditor } from '../TextBubbleEditor'
-import { TargetEndpoint } from '../../../Endpoints'
-import { NodePosition, useDragDistance } from 'contexts/GraphDndContext'
-import { setMultipleRefs } from 'services/utils'
-import { BlockStack } from './StepNode.style'
 import { StepTypeLabel } from 'components/editor/StepsSideBar/StepTypeLabel'
 import { OctaDivider } from 'components/octaComponents/OctaDivider/OctaDivider'
-import { WarningIcon, ErrorIcon } from 'assets/icons'
 import OctaTooltip from 'components/octaComponents/OctaTooltip/OctaTooltip'
+import { ContextMenu } from 'components/shared/ContextMenu'
+import { useGraph } from 'contexts/GraphContext'
+import { NodePosition, useDragDistance } from 'contexts/GraphDndContext'
+import { useTypebot } from 'contexts/TypebotContext'
+import { ActionsTypeEmptyFields } from 'hooks/EmptyFields/useEmptyFields'
+import { colors } from 'libs/theme'
+import {
+  AssignToTeamStep,
+  BubbleStep,
+  CallOtherBotStep,
+  DraggableStep,
+  ExternalEventStep,
+  IntegrationStepType,
+  OctaStepType,
+  OctaWabaStepType,
+  OfficeHourStep,
+  Step,
+  TextBubbleContent,
+  WOZAssignStep,
+  WOZStepType,
+  WebhookStep,
+  WhatsAppButtonsListStep,
+  WhatsAppOptionsListStep
+} from 'models'
+import { useRouter } from 'next/router'
+import React, { createContext, useEffect, useRef, useState } from 'react'
+import { hasDefaultConnector } from 'services/typebots'
+import { setMultipleRefs } from 'services/utils'
+import { isOctaBubbleStep, isTextBubbleStep } from 'utils'
+import { TargetEndpoint } from '../../../Endpoints'
+import { SourceEndpoint } from '../../../Endpoints/SourceEndpoint'
 import {
   VALIDATION_MESSAGE_TYPE,
   ValidationMessage,
   getValidationMessages,
 } from '../../helpers/helpers'
-import { ActionsTypeEmptyFields } from 'hooks/EmptyFields/useEmptyFields'
-import { colors } from 'libs/theme'
+import { SettingsModal } from '../SettingsPopoverContent/SettingsModal'
+import { StepSettings } from '../SettingsPopoverContent/SettingsPopoverContent'
+import { StepNodeContent } from '../StepNodeContent/StepNodeContent/StepNodeContent'
+import { StepNodeContextMenu } from '../StepNodeContextMenu'
+import { TextBubbleEditor } from '../TextBubbleEditor'
+import { BlockStack } from './StepNode.style'
 
 type StepNodeContextProps = {
   setIsPopoverOpened?: (isPopoverOpened: boolean) => void
@@ -98,7 +98,7 @@ export const StepNode = ({
   )
   const [isEditing, setIsEditing] = useState<boolean>(
     (isTextBubbleStep(step) || isOctaBubbleStep(step)) &&
-      step.content.plainText === ''
+    step.content.plainText === ''
   )
   const stepRef = useRef<HTMLDivElement | null>(null)
 
@@ -149,7 +149,7 @@ export const StepNode = ({
   useEffect(() => {
     setIsConnecting(
       connectingIds?.target?.blockId === step.blockId &&
-        connectingIds?.target?.stepId === step.id
+      connectingIds?.target?.stepId === step.id
     )
   }, [connectingIds, step.blockId, step.id])
 
@@ -203,6 +203,7 @@ export const StepNode = ({
       hasDefaultConnector(step) &&
       !isOfficeHoursStep(step) &&
       !isWebhookStep(step) &&
+      !isExternalEventStep(step) &&
       !isCallOtherBotStep(step) &&
       !isWhatsAppOptionsListStep(step) &&
       !isWhatsAppButtonsListStep(step) &&
@@ -423,6 +424,9 @@ const isOfficeHoursStep = (step: Step): step is OfficeHourStep => {
 
 const isWebhookStep = (step: Step): step is WebhookStep => {
   return step.type === IntegrationStepType.WEBHOOK
+}
+const isExternalEventStep = (step: Step): step is ExternalEventStep => {
+  return step.type === IntegrationStepType.EXTERNAL_EVENT
 }
 
 const isWhatsAppOptionsListStep = (

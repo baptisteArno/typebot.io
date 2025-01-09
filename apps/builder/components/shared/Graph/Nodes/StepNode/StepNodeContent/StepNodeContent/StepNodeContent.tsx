@@ -140,9 +140,9 @@ export const StepNodeContent = ({ step, indices }: Props) => {
     case IntegrationStepType.WEBHOOK: {
       return <ItemNodesList step={step} indices={indices} isReadOnly />
     }
-    // case IntegrationStepType.ExternalEvent: {
-    // return <ItemNodesList step={step} indices={indices} isReadOnly />
-    // }
+    case IntegrationStepType.EXTERNAL_EVENT: {
+      return <ItemNodesList step={step} indices={indices} isReadOnly />
+    }
     // case IntegrationStepType.ZAPIER: {
     //   return (
     //     <ProviderWebhookContent step={step} configuredLabel="Trigger zap" />

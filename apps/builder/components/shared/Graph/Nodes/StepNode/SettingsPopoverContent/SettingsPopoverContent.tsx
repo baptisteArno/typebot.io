@@ -73,7 +73,7 @@ export const SettingsPopoverContent = ({ onExpandClick, ...props }: Props) => {
       case IntegrationStepType.WEBHOOK:
         width = 500
         break
-      case IntegrationStepType.ExternalEvent:
+      case IntegrationStepType.EXTERNAL_EVENT:
         width = 500
         break
       case LogicStepType.CONDITION:
@@ -302,7 +302,7 @@ export const StepSettings = ({
         <WebhookSettings step={step} onOptionsChange={handleOptionsChange} />
       )
     }
-    case IntegrationStepType.ExternalEvent: {
+    case IntegrationStepType.EXTERNAL_EVENT: {
       return (
         <ExternalEvent step={step} onOptionsChange={handleOptionsChange} />
       )

@@ -332,6 +332,7 @@ const parseDefaultItems = (
     | InputStepType.CHOICE
     | OctaStepType.OFFICE_HOURS
     | IntegrationStepType.WEBHOOK
+    | IntegrationStepType.EXTERNAL_EVENT
     | OctaWabaStepType.WHATSAPP_OPTIONS_LIST
     | OctaWabaStepType.WHATSAPP_BUTTONS_LIST
     | WOZStepType.ASSIGN
@@ -451,6 +452,53 @@ const parseDefaultItems = (
           },
         },
       ]
+    case IntegrationStepType.EXTERNAL_EVENT:
+      return [
+        {
+          id: cuid(),
+          stepId,
+          type: ItemType.EXTERNAL_EVENT,
+          content: {
+            matchType: '$eq',
+            referenceProperty: null,
+            referenceValue: null,
+            source: 'CURRENT_SESSION',
+            subType: null,
+            values: ['@HTTP_STATUS_CODE_SUCCESS'],
+          },
+        },
+        {
+          id: cuid(),
+          stepId,
+          type: ItemType.EXTERNAL_EVENT,
+          content: {
+            matchType: '$eq',
+            referenceProperty: null,
+            referenceValue: null,
+            source: 'CURRENT_SESSION',
+            subType: null,
+            values: ['@HTTP_STATUS_NO_RESPONSE'],
+          },
+        },
+        {
+          id: cuid(),
+          stepId,
+          type: ItemType.EXTERNAL_EVENT,
+          content: {
+            matchType: '$eq',
+            referenceProperty: null,
+            referenceValue: null,
+            source: 'CURRENT_SESSION',
+            subType: null,
+            values: [
+              '@HTTP_STATUS_CODE_CLIENT_ERROR',
+              '@HTTP_STATUS_CODE_SERVER_ERROR',
+              '@HTTP_STATUS_CODE_REDIRECT',
+              '@HTTP_STATUS_CODE_INFORMATION',
+            ],
+          },
+        },
+      ]
   }
 }
 
@@ -541,7 +589,7 @@ const parseDefaultStepOptions = (
     // case IntegrationStepType.MAKE_COM:
     case IntegrationStepType.WEBHOOK:
       return defaultWebhookOptions
-    case IntegrationStepType.ExternalEvent:
+    case IntegrationStepType.EXTERNAL_EVENT:
       return defaultExternalEventOptions
     // case IntegrationStepType.EMAIL:
     //   return defaultSendEmailOptions
