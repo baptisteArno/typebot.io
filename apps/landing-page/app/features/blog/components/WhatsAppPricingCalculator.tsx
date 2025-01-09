@@ -1,6 +1,6 @@
 import { Card } from "@/components/Card";
 import { NumberInput } from "@/components/NumberInput";
-import { Select, SelectItem } from "@/components/select";
+import { Select, SelectItem } from "@/components/Select";
 import { createListCollection } from "@ark-ui/react";
 import { isNotDefined } from "@typebot.io/lib/utils";
 import { useMemo, useState } from "react";
