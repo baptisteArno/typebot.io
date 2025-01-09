@@ -21,11 +21,6 @@ const legacyRedirects = {
 export default defineConfig({
   server: {
     preset: "vercel",
-    prerender: {
-      routes: ["/"],
-      crawlLinks: true,
-      failOnError: true,
-    },
     routeRules: {
       ...legacyRedirects,
       "/healthz": { proxy: { to: "/api/healthz" } },
