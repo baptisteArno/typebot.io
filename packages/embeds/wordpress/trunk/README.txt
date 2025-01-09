@@ -1,11 +1,12 @@
-=== Typebot | Create advanced chat experiences without coding ===
-Contributors: baptisteArno
-Tags: typebot, forms, surveys, quizzes, form builder, survey builder, quiz builder, custom forms, mobile forms, payment forms, order forms, feedback forms, enquiry forms, stripe, dropbox, google sheets, mailchimp, salesforce, hubspot, activecampaign, infusionsoft, asana, hipchat, slack, trello, zendesk
+=== Typebot ===
+Contributors: baptistearnaud
+Tags: chatbot, ai chat, customer support, chatbot builder
 Requires at least: 5.0
-Tested up to: 6.6
+Tested up to: 6.7.1
 License: GPL 2.0
 License URI: http://www.gnu.org/licenses/gpl-2.0.txt
-Stable Tag: 4.0.0
+Stable Tag: 4.0.2
+Short Description: Create advanced chat experiences without coding
 
 == Description ==
 Collect 4x more responses with conversational apps using Typebot.
@@ -24,6 +25,12 @@ This plugin relies on Typebot which is a tool that allows you to create conversa
 3. Activate your Typebot with the "Typebot" admin button located in the sidebar
 
 == Changelog ==
+= 4.0.2 =
+* Update plugin metadata
+
+= 4.0.1 =
+* Fix default embed lib selection
+
 = 4.0.0 =
 * Use embed lib v0.3 by default
 * Improve shortcode attributes validation
