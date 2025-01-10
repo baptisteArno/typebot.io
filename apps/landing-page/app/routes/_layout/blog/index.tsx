@@ -1,11 +1,11 @@
 import { Card } from "@/components/Card";
-import { CommonPageLayout } from "@/components/CommonPageLayout";
+import { ContentPageWrapper } from "@/components/ContentPageWrapper";
 import { formatDate } from "@/features/blog/helpers";
 import { seo } from "@/lib/seo";
 import { Link, createFileRoute } from "@tanstack/react-router";
 import { allPosts } from "content-collections";
 
-export const Route = createFileRoute("/blog/")({
+export const Route = createFileRoute("/_layout/blog/")({
   head: () => ({
     meta: [
       ...seo({
@@ -18,7 +18,7 @@ export const Route = createFileRoute("/blog/")({
 
 function RouteComponent() {
   return (
-    <CommonPageLayout className="max-w-3xl">
+    <ContentPageWrapper className="max-w-3xl">
       <div className="flex flex-col gap-6">
         <h1>Insights and resources on all things chatbot</h1>
         <p className="text-xl">
@@ -47,6 +47,6 @@ function RouteComponent() {
             </li>
           ))}
       </ol>
-    </CommonPageLayout>
+    </ContentPageWrapper>
   );
 }

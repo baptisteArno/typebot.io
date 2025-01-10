@@ -1,4 +1,4 @@
-import { CommonPageLayout } from "@/components/CommonPageLayout";
+import { ContentPageWrapper } from "@/components/ContentPageWrapper";
 import { WhyTypebotCta } from "@/components/cta/WhyTypebotCta";
 import { BuildingsGradientIcon } from "@/features/about/BuildingsGradientIcon";
 import { HeartGradientIcon } from "@/features/about/HeartGradientIcon";
@@ -12,7 +12,7 @@ export const Route = createFileRoute("/about")({
 
 function RouteComponent() {
   return (
-    <CommonPageLayout>
+    <ContentPageWrapper>
       <div className="max-w-3xl mx-auto gap-16 flex flex-col">
         <h1>Nice conversations makes good relations</h1>
         <div className="flex flex-col gap-10 font-heading text-3xl md:text-justify">
@@ -66,6 +66,6 @@ function RouteComponent() {
         </div>
       </div>
       <WhyTypebotCta />
-    </CommonPageLayout>
+    </ContentPageWrapper>
   );
 }

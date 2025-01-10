@@ -14,7 +14,6 @@ import { MainFeatures } from "@/features/homepage/main-features/MainFeatures";
 import { ProductPrinciples } from "@/features/homepage/product-principles/ProductPrinciples";
 import { Testimonials } from "@/features/homepage/testimonials/Testimonials";
 import { UseCases } from "@/features/homepage/use-cases/UseCases";
-import { Portal } from "@ark-ui/react/portal";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/")({
@@ -24,12 +23,6 @@ export const Route = createFileRoute("/")({
 function Home() {
   return (
     <div className="flex flex-col items-stretch">
-      {/* <TypebotBubble /> */}
-      <Portal>
-        <div className="fixed top-4 md:bottom-12 md:top-auto w-full">
-          <Header initialAppearance="dark" />
-        </div>
-      </Portal>
       <Section className="dark py-0 md:py-0 md:px-0 gap-0">
         <Hero />
       </Section>
@@ -58,7 +51,6 @@ function Home() {
           <Cta />
           <Faq />
         </Section>
-        <Footer />
       </div>
     </div>
   );

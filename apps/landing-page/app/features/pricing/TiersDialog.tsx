@@ -26,7 +26,7 @@ export const TiersDialog = ({
       <Dialog.Positioner className="flex justify-center fixed inset-0 w-full py-12">
         <Dialog.Content className="bg-gray-1 p-6 rounded-xl data-[state=open]:motion-translate-y-in-[15px] data-[state=closed]:motion-translate-y-out-[15px] motion-duration-150 w-full max-w-xl overflow-auto">
           <Dialog.Title className="text-2xl">Chats pricing table</Dialog.Title>
-          <Dialog.CloseTrigger>
+          <Dialog.CloseTrigger asChild>
             <IconButton
               aria-label="Close"
               variant="secondary"

@@ -1,12 +1,12 @@
 import codeSnippetsCssUrl from "@/assets/code-snippet.css?url";
-import { CommonPageLayout } from "@/components/CommonPageLayout";
+import { ContentPageWrapper } from "@/components/ContentPageWrapper";
 import { Mdx } from "@/features/blog/components/mdx";
 import { formatDate } from "@/features/blog/helpers";
 import { seo } from "@/lib/seo";
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import { allPosts } from "content-collections";
 
-export const Route = createFileRoute("/blog/$slug")({
+export const Route = createFileRoute("/_layout/blog/$slug")({
   beforeLoad: () => ({
     allPosts,
   }),
@@ -38,7 +38,7 @@ export const Route = createFileRoute("/blog/$slug")({
 function RouteComponent() {
   const { post } = Route.useLoaderData();
   return (
-    <CommonPageLayout className="max-w-2xl">
+    <ContentPageWrapper className="max-w-2xl">
       <article className="prose prose-strong:font-medium prose-img:rounded-xl prose-img:max-h-[60vh] prose-img:w-auto prose-video:rounded-xl prose-figure:my-0 prose-a:text-[currentColor]">
         <div>
           {post.postedAt && (
@@ -55,6 +55,6 @@ function RouteComponent() {
         </div>
         <Mdx code={post.mdx} />
       </article>
-    </CommonPageLayout>
+    </ContentPageWrapper>
   );
 }

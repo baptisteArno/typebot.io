@@ -1,12 +1,15 @@
 import css from "@/assets/globals.css?url";
 import { NotFound } from "@/components/NotFound";
+import { Footer } from "@/components/footer/Footer";
 import { TanStackRouterDevtools } from "@/lib/router-dev-tool";
+import { Portal } from "@ark-ui/react";
 import {
   Outlet,
   ScrollRestoration,
   createRootRoute,
 } from "@tanstack/react-router";
 import { Meta, Scripts } from "@tanstack/start";
+import { Header } from "app/components/Header";
 import { Suspense } from "react";
 
 export const Route = createRootRoute({
@@ -47,7 +50,15 @@ window.$RefreshSig$ = () => (type) => type`,
         )}
       </head>
       <body>
-        <Outlet />
+        <div className="flex flex-col items-stretch">
+          <Portal>
+            <div className="fixed top-4 md:bottom-12 md:top-auto w-full z-10">
+              <Header initialAppearance="dark" />
+            </div>
+          </Portal>
+          <Outlet />
+          <Footer />
+        </div>
         <Suspense>
           <TanStackRouterDevtools />
         </Suspense>

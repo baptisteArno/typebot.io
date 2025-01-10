@@ -1,4 +1,4 @@
-import { CommonPageLayout } from "@/components/CommonPageLayout";
+import { ContentPageWrapper } from "@/components/ContentPageWrapper";
 import { EnterprisePlanCard } from "@/features/pricing/EnterprisePlanCard";
 import { Faq } from "@/features/pricing/Faq";
 import { PlanComparisonTables } from "@/features/pricing/PlanComparisonsTables";
@@ -16,7 +16,7 @@ import {
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { z } from "@typebot.io/zod";
 
-export const Route = createFileRoute("/pricing")({
+export const Route = createFileRoute("/_layout/pricing")({
   component: RouteComponent,
   validateSearch: z.object({
     isTiersModalOpened: z.boolean().optional(),
@@ -40,7 +40,7 @@ function RouteComponent() {
   };
 
   return (
-    <CommonPageLayout>
+    <ContentPageWrapper>
       <div className="flex flex-col items-center w-full px-4 gap-24">
         <div className="flex flex-col max-w-7xl w-full gap-12 md:gap-20">
           <PricingHeading />
@@ -74,6 +74,6 @@ function RouteComponent() {
         open={isTiersModalOpened === true}
         onClose={closeTiersDialog}
       />
-    </CommonPageLayout>
+    </ContentPageWrapper>
   );
 }
