@@ -1,4 +1,3 @@
-import { Card } from "@/components/Card";
 import { Typebot } from "@/components/Typebot";
 import { Cta } from "@/components/cta/Cta";
 import { TextLink } from "@/components/link";

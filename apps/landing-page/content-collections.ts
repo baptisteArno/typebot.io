@@ -14,7 +14,7 @@ import { visit } from "unist-util-visit";
 
 const posts = defineCollection({
   name: "posts",
-  directory: "app/features/blog/content",
+  directory: "content",
   include: "**/*.mdx",
   schema: (z) => ({
     title: z.string(),

@@ -11,7 +11,7 @@ export const Route = createFileRoute("/_layout/blog/$slug")({
     allPosts,
   }),
   loader: async ({ params, context: { allPosts } }) => {
-    const post = allPosts.find((post) => post._meta.path === params.slug);
+    const post = allPosts.find((post) => post._meta.path.endsWith(params.slug));
 
     if (!post) {
       throw redirect({

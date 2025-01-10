@@ -34,7 +34,7 @@ function RouteComponent() {
           )
           .map((post) => (
             <li key={post._meta.path}>
-              <Link to={`/blog/${post._meta.path}`}>
+              <Link to={"/" + post._meta.path}>
                 <Card>
                   <time className="text-gray-10">
                     {formatDate(post.postedAt)}
