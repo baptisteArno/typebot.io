@@ -11,23 +11,17 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as TermsOfServiceImport } from './routes/terms-of-service'
 import { Route as PrivacyPolicyImport } from './routes/privacy-policy'
 import { Route as OssFriendsImport } from './routes/oss-friends'
 import { Route as AboutImport } from './routes/about'
 import { Route as LayoutImport } from './routes/_layout'
 import { Route as IndexImport } from './routes/index'
+import { Route as LayoutTermsOfServiceImport } from './routes/_layout/terms-of-service'
 import { Route as LayoutPricingImport } from './routes/_layout/pricing'
 import { Route as LayoutBlogIndexImport } from './routes/_layout/blog/index'
 import { Route as LayoutBlogSlugImport } from './routes/_layout/blog/$slug'
 
 // Create/Update Routes
-
-const TermsOfServiceRoute = TermsOfServiceImport.update({
-  id: '/terms-of-service',
-  path: '/terms-of-service',
-  getParentRoute: () => rootRoute,
-} as any)
 
 const PrivacyPolicyRoute = PrivacyPolicyImport.update({
   id: '/privacy-policy',
@@ -56,6 +50,12 @@ const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRoute,
+} as any)
+
+const LayoutTermsOfServiceRoute = LayoutTermsOfServiceImport.update({
+  id: '/terms-of-service',
+  path: '/terms-of-service',
+  getParentRoute: () => LayoutRoute,
 } as any)
 
 const LayoutPricingRoute = LayoutPricingImport.update({
@@ -115,18 +115,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrivacyPolicyImport
       parentRoute: typeof rootRoute
     }
-    '/terms-of-service': {
-      id: '/terms-of-service'
-      path: '/terms-of-service'
-      fullPath: '/terms-of-service'
-      preLoaderRoute: typeof TermsOfServiceImport
-      parentRoute: typeof rootRoute
-    }
     '/_layout/pricing': {
       id: '/_layout/pricing'
       path: '/pricing'
       fullPath: '/pricing'
       preLoaderRoute: typeof LayoutPricingImport
+      parentRoute: typeof LayoutImport
+    }
+    '/_layout/terms-of-service': {
+      id: '/_layout/terms-of-service'
+      path: '/terms-of-service'
+      fullPath: '/terms-of-service'
+      preLoaderRoute: typeof LayoutTermsOfServiceImport
       parentRoute: typeof LayoutImport
     }
     '/_layout/blog/$slug': {
@@ -150,12 +150,14 @@ declare module '@tanstack/react-router' {
 
 interface LayoutRouteChildren {
   LayoutPricingRoute: typeof LayoutPricingRoute
+  LayoutTermsOfServiceRoute: typeof LayoutTermsOfServiceRoute
   LayoutBlogSlugRoute: typeof LayoutBlogSlugRoute
   LayoutBlogIndexRoute: typeof LayoutBlogIndexRoute
 }
 
 const LayoutRouteChildren: LayoutRouteChildren = {
   LayoutPricingRoute: LayoutPricingRoute,
+  LayoutTermsOfServiceRoute: LayoutTermsOfServiceRoute,
   LayoutBlogSlugRoute: LayoutBlogSlugRoute,
   LayoutBlogIndexRoute: LayoutBlogIndexRoute,
 }
@@ -169,8 +171,8 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/oss-friends': typeof OssFriendsRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
-  '/terms-of-service': typeof TermsOfServiceRoute
   '/pricing': typeof LayoutPricingRoute
+  '/terms-of-service': typeof LayoutTermsOfServiceRoute
   '/blog/$slug': typeof LayoutBlogSlugRoute
   '/blog': typeof LayoutBlogIndexRoute
 }
@@ -181,8 +183,8 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/oss-friends': typeof OssFriendsRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
-  '/terms-of-service': typeof TermsOfServiceRoute
   '/pricing': typeof LayoutPricingRoute
+  '/terms-of-service': typeof LayoutTermsOfServiceRoute
   '/blog/$slug': typeof LayoutBlogSlugRoute
   '/blog': typeof LayoutBlogIndexRoute
 }
@@ -194,8 +196,8 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/oss-friends': typeof OssFriendsRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
-  '/terms-of-service': typeof TermsOfServiceRoute
   '/_layout/pricing': typeof LayoutPricingRoute
+  '/_layout/terms-of-service': typeof LayoutTermsOfServiceRoute
   '/_layout/blog/$slug': typeof LayoutBlogSlugRoute
   '/_layout/blog/': typeof LayoutBlogIndexRoute
 }
@@ -208,8 +210,8 @@ export interface FileRouteTypes {
     | '/about'
     | '/oss-friends'
     | '/privacy-policy'
-    | '/terms-of-service'
     | '/pricing'
+    | '/terms-of-service'
     | '/blog/$slug'
     | '/blog'
   fileRoutesByTo: FileRoutesByTo
@@ -219,8 +221,8 @@ export interface FileRouteTypes {
     | '/about'
     | '/oss-friends'
     | '/privacy-policy'
-    | '/terms-of-service'
     | '/pricing'
+    | '/terms-of-service'
     | '/blog/$slug'
     | '/blog'
   id:
@@ -230,8 +232,8 @@ export interface FileRouteTypes {
     | '/about'
     | '/oss-friends'
     | '/privacy-policy'
-    | '/terms-of-service'
     | '/_layout/pricing'
+    | '/_layout/terms-of-service'
     | '/_layout/blog/$slug'
     | '/_layout/blog/'
   fileRoutesById: FileRoutesById
@@ -243,7 +245,6 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   OssFriendsRoute: typeof OssFriendsRoute
   PrivacyPolicyRoute: typeof PrivacyPolicyRoute
-  TermsOfServiceRoute: typeof TermsOfServiceRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
@@ -252,7 +253,6 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   OssFriendsRoute: OssFriendsRoute,
   PrivacyPolicyRoute: PrivacyPolicyRoute,
-  TermsOfServiceRoute: TermsOfServiceRoute,
 }
 
 export const routeTree = rootRoute
@@ -269,8 +269,7 @@ export const routeTree = rootRoute
         "/_layout",
         "/about",
         "/oss-friends",
-        "/privacy-policy",
-        "/terms-of-service"
+        "/privacy-policy"
       ]
     },
     "/": {
@@ -280,6 +279,7 @@ export const routeTree = rootRoute
       "filePath": "_layout.tsx",
       "children": [
         "/_layout/pricing",
+        "/_layout/terms-of-service",
         "/_layout/blog/$slug",
         "/_layout/blog/"
       ]
@@ -293,11 +293,12 @@ export const routeTree = rootRoute
     "/privacy-policy": {
       "filePath": "privacy-policy.tsx"
     },
-    "/terms-of-service": {
-      "filePath": "terms-of-service.tsx"
-    },
     "/_layout/pricing": {
       "filePath": "_layout/pricing.tsx",
+      "parent": "/_layout"
+    },
+    "/_layout/terms-of-service": {
+      "filePath": "_layout/terms-of-service.tsx",
       "parent": "/_layout"
     },
     "/_layout/blog/$slug": {
