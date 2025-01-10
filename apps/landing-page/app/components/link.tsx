@@ -39,16 +39,15 @@ interface CustomTextLinkProps
 export const TextLinkComponent = forwardRef<
   HTMLAnchorElement,
   CustomTextLinkProps
->(({ children, className, size, href, target }, ref) => {
+>(({ children, className, size, ...props }, ref) => {
   return (
     <a
       ref={ref}
+      {...props}
       className={cn(textLinkVariants({ size }), className)}
-      href={href}
-      target={target}
     >
       {children}
-      {target === "_blank" && (
+      {props.target === "_blank" && (
         <ArrowUpRightIcon className={textLinkIconVariants({ size })} />
       )}
     </a>
@@ -81,7 +80,7 @@ interface CustomButtonLinkProps
 export const ButtonLinkComponent = forwardRef<
   HTMLAnchorElement,
   CustomButtonLinkProps
->(({ href, variant, className, size, children }, ref) => {
+>(({ variant, className, size, children, ...props }, ref) => {
   const anchorElement = (
     <a
       className={cn(
@@ -89,7 +88,7 @@ export const ButtonLinkComponent = forwardRef<
         variant?.includes("cta") && "w-full",
       )}
       ref={ref}
-      href={href}
+      {...props}
     >
       {children}
     </a>

@@ -2,7 +2,7 @@ import css from "@/assets/globals.css?url";
 import { NotFound } from "@/components/NotFound";
 import { Footer } from "@/components/footer/Footer";
 import { TanStackRouterDevtools } from "@/lib/router-dev-tool";
-import { Portal } from "@ark-ui/react";
+import { Portal } from "@ark-ui/react/portal";
 import {
   Outlet,
   ScrollRestoration,
@@ -37,17 +37,6 @@ function RootComponent() {
     <html lang="en">
       <head>
         <Meta />
-        {import.meta.env.DEV && (
-          <script
-            type="module"
-            dangerouslySetInnerHTML={{
-              __html: `import RefreshRuntime from "/_build/@react-refresh";
-RefreshRuntime.injectIntoGlobalHook(window)
-window.$RefreshReg$ = () => {}
-window.$RefreshSig$ = () => (type) => type`,
-            }}
-          />
-        )}
       </head>
       <body>
         <div className="flex flex-col items-stretch">
