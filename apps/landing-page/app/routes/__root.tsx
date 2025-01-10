@@ -53,7 +53,7 @@ window.$RefreshSig$ = () => (type) => type`,
         <div className="flex flex-col items-stretch">
           <Portal>
             <div className="fixed top-4 md:bottom-12 md:top-auto w-full z-10">
-              <Header initialAppearance="dark" />
+              <Header />
             </div>
           </Portal>
           <Outlet />

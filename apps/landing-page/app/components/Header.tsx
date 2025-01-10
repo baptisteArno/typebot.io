@@ -19,8 +19,6 @@ import { useEffect, useRef, useState } from "react";
 import React from "react";
 import { ButtonLink } from "./link";
 
-let isFirstCall = true;
-
 const links = [
   {
     label: "Documentation",
@@ -44,38 +42,30 @@ const links = [
   },
 ];
 
-export const Header = ({
-  initialAppearance = "light",
-}: {
-  initialAppearance?: "light" | "dark";
-}) => {
+export const Header = () => {
   const [isOpened, setIsOpened] = useState(false);
   const headerRef = useRef<HTMLDivElement>(null);
-  const [appearance, setAppearance] = useState<"light" | "dark">(
-    initialAppearance,
-  );
+  const [appearance, setAppearance] = useState<"light" | "dark">("dark");
   const { width: windowWidth, height: windowHeight } = useWindowSize();
 
   useEffect(() => {
     if (!windowWidth || !windowHeight) return;
     const isMobile = windowWidth < breakpoints.md;
     const options = {
-      root: null,
-      rootMargin: `0px 0px ${isMobile ? -windowHeight - 100 : 0}px 0px`,
+      rootMargin: `0px 0px ${isMobile ? -windowHeight - 100 : -100}px 0px`,
       threshold: 0,
     };
 
     const observer = new IntersectionObserver((entries) => {
-      if (isFirstCall) {
-        isFirstCall = false;
-        return;
-      }
       entries.forEach((entry) => {
-        if (entry.isIntersecting)
+        if (entry.isIntersecting) {
+          if (entry.boundingClientRect.bottom < 50) return;
           entry.target.classList.contains("dark")
             ? setAppearance("dark")
             : setAppearance("light");
-        else {
+        } else {
+          if (entry.boundingClientRect.bottom < 0 || window.scrollY === 0)
+            return;
           entry.target.classList.contains("dark")
             ? setAppearance("light")
             : setAppearance("dark");
@@ -83,18 +73,21 @@ export const Header = ({
       });
     }, options);
 
-    [...document.getElementsByTagName("section")].forEach((element) => {
-      if (element.id === "header") return;
+    const elementsToObserve = [
+      ...document.getElementsByTagName("section"),
+      ...document.getElementsByTagName("footer"),
+    ];
+
+    elementsToObserve.forEach((element) => {
       observer.observe(element);
     });
 
     return () => {
-      [...document.getElementsByTagName("section")].forEach((element) => {
-        if (element.id === "header") return;
+      elementsToObserve.forEach((element) => {
         observer.unobserve(element);
       });
     };
-  }, [windowWidth, windowHeight]);
+  }, [windowWidth, windowHeight, setAppearance]);
 
   const toggleHeaderExpansion = () => {
     setIsOpened((prev) => !prev);

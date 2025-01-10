@@ -52,7 +52,14 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(function Button(
 
   if (variant === "cta" || variant === "ctaSecondary")
     return (
-      <div className="overflow-hidden rounded-lg relative">{buttonElement}</div>
+      <div
+        className={cn(
+          "overflow-hidden rounded-lg relative",
+          (size === "sm" || size === "xs") && "rounded-md",
+        )}
+      >
+        {buttonElement}
+      </div>
     );
 
   return buttonElement;
