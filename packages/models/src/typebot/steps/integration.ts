@@ -1,4 +1,4 @@
-import { ItemBase, ItemType, StepBase } from '.';
+import { ItemBase, ItemType, StepBase, TextBubbleContent } from '.';
 import { Variable } from '../variable';
 
 export type IntegrationStep = WebhookStep | ExternalEventStep
@@ -8,7 +8,7 @@ export type IntegrationStepOptions =
 
 export enum IntegrationStepType {
   WEBHOOK = 'Webhook',
-  EXTERNAL_EVENT = "ExternalEvent"
+  EXTERNAL_EVENT = "external-event"
 }
 
 export enum HttpMethodsWebhook {
@@ -92,6 +92,8 @@ export type WebhookOptions = {
 }
 
 export type ExternalEventOptions = {
+  useFallback: boolean;
+  fallbackMessages?: Array<TextBubbleContent>
   variablesForTest: VariableForTest[]
   responseVariableMapping: ResponseVariableMapping[]
   isAdvancedConfig?: boolean
@@ -137,6 +139,7 @@ export const defaultExternalEventOptions: Omit<ExternalEventOptions, 'externalEv
   parameters: [],
   path: '',
   returnMap: "",
+  useFallback: true,
   typebotId: "",
   timeout: "5",
   responseVariableMapping: [],
