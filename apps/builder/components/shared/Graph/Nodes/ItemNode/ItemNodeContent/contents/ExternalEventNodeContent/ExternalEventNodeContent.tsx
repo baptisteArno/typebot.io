@@ -11,9 +11,9 @@ export const ExternalEventNodeContent = ({ item }: Props) => {
       <ul style={{ listStyle: "none" }}>
         {item.content.values.map((value, idx) =>
           <li key={idx}>
-            {value.includes('HTTP_STATUS_CODE_SUCCESS') && "Em caso de sucesso"}
-            {value.includes('HTTP_STATUS_CODE_CLIENT_ERROR') && "Em caso de falha"}
-            {value.includes('HTTP_STATUS_NO_RESPONSE') && "Sem resposta"}
+            {value.includes('EXTERNAL_EVENT_RECEIVED') && "Em caso de sucesso"}
+            {value.includes('EXTERNAL_EVENT_ERROR') && "Em caso de falha"}
+            {value.includes('EXTERNAL_EVENT_TIMEOUT') && "Sem resposta"}
           </li>
         )}
       </ul>

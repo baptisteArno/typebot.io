@@ -1,4 +1,4 @@
-import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Button, Flex, Icon, Input, InputGroup, InputRightElement, Stack, Text, useToast } from "@chakra-ui/react";
+import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Button, Flex, Icon, Input, InputGroup, InputRightElement, Select, Stack, Text, useToast } from "@chakra-ui/react";
 import axios from "axios";
 import { CodeEditor } from "components/shared/CodeEditor";
 import { TableList, TableListItemProps } from "components/shared/TableList";
@@ -24,6 +24,7 @@ export const ExternalEvent = React.memo(function ExternalEvent({
   const [requestResponse, setRequestResponse] = useState<string>();
   const [responseKeys, setResponseKeys] = useState<string[]>([])
   const [invalidData, setInvalidData] = useState<boolean>();
+  const [timeout, setTimeout] = useState<string>("5")
   const [url, setUrl] = useState<string>("")
   const { typebot } = useTypebot()
 
@@ -61,7 +62,7 @@ export const ExternalEvent = React.memo(function ExternalEvent({
     if (!typebot?.id) return;
 
     const url = await mountUrl({ blockId: step.blockId, botId: typebot.id });
-    setUrl("https://viacep.com.br/ws/12600030/json/")
+    setUrl(url)
   }, [])
 
   const makeRequest = (async () => {
@@ -99,6 +100,12 @@ export const ExternalEvent = React.memo(function ExternalEvent({
       setInvalidData(true);
       return false;
     }
+  }
+
+  const onSelect = (e: any) => {
+    const value = e.target.value;
+    setTimeout(value);
+    step.options.timeout = value;
   }
 
   useEffect(() => {
@@ -260,6 +267,37 @@ export const ExternalEvent = React.memo(function ExternalEvent({
               </Accordion>
             </Stack>
           }
+
+          <Stack marginTop="10px">
+            <Accordion allowToggle allowMultiple>
+              <AccordionItem>
+                <AccordionButton justifyContent="space-between">
+                  Tempo de espera da requisição
+                  <AccordionIcon />
+                </AccordionButton>
+                <AccordionPanel pb={4} as={Stack} spacing="6">
+                  <Flex justifyContent="start" alignItems="center" gap="6px">
+                    <Select
+                      width="80px"
+                      value={timeout}
+                      onChange={onSelect}
+                    >
+                      {Array.from({ length: 26 }, (_, index) => {
+                        const i = index + 5;
+                        return (
+                          <option key={i} value={i}>
+                            {i}
+                          </option>
+                        );
+                      })}
+                    </Select>
+                    <Text fontFamily="Poppins" fontSize="16px" fontWeight="normal" fontStyle="normal" lineHeight="24px">Minutos</Text>
+                  </Flex>
+                  <Text fontFamily="Poppins" fontSize="14px" fontWeight="normal" fontStyle="normal" lineHeight="24px">Minutos que aguardará para ter um retorno</Text>
+                </AccordionPanel>
+              </AccordionItem>
+            </Accordion>
+          </Stack>
         </>
       }
     </>

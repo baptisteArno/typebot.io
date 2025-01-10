@@ -2,7 +2,7 @@ import Storage from '@octadesk-tech/storage';
 import Axios from 'axios';
 export const getNucleusAuthClient = () =>
   Axios.create({
-    baseURL: process.env.NEXT_PUBLIC_NUCLEUS_AUTH_API_URL || 'ENV_NUCLEUS_AUTH_API_URL'
+    baseURL: 'https://us-east1-001.qa.qaoctadesk.com/'
   })
 
 const getNucleusUrl = async () => {

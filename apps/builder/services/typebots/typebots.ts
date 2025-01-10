@@ -464,7 +464,7 @@ const parseDefaultItems = (
             referenceValue: null,
             source: 'CURRENT_SESSION',
             subType: null,
-            values: ['@HTTP_STATUS_CODE_SUCCESS'],
+            values: ['@EXTERNAL_EVENT_RECEIVED'],
           },
         },
         {
@@ -477,7 +477,7 @@ const parseDefaultItems = (
             referenceValue: null,
             source: 'CURRENT_SESSION',
             subType: null,
-            values: ['@HTTP_STATUS_NO_RESPONSE'],
+            values: ['@EXTERNAL_EVENT_TIMEOUT'],
           },
         },
         {
@@ -490,12 +490,7 @@ const parseDefaultItems = (
             referenceValue: null,
             source: 'CURRENT_SESSION',
             subType: null,
-            values: [
-              '@HTTP_STATUS_CODE_CLIENT_ERROR',
-              '@HTTP_STATUS_CODE_SERVER_ERROR',
-              '@HTTP_STATUS_CODE_REDIRECT',
-              '@HTTP_STATUS_CODE_INFORMATION',
-            ],
+            values: ['@EXTERNAL_EVENT_ERROR'],
           },
         },
       ]
