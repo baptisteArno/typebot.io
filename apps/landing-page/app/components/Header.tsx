@@ -10,7 +10,7 @@ import {
 } from "@/constants";
 import { useWindowSize } from "@/features/homepage/hooks/useWindowSize";
 import { cn } from "@/lib/utils";
-import { Link } from "@tanstack/react-router";
+import { Link, useRouter } from "@tanstack/react-router";
 import { CloseIcon } from "@typebot.io/ui/icons/CloseIcon";
 import { MenuIcon } from "@typebot.io/ui/icons/MenuIcon";
 import clsx from "clsx";
@@ -47,6 +47,7 @@ export const Header = () => {
   const headerRef = useRef<HTMLDivElement>(null);
   const [appearance, setAppearance] = useState<"light" | "dark">("dark");
   const { width: windowWidth, height: windowHeight } = useWindowSize();
+  const router = useRouter();
 
   useEffect(() => {
     if (!windowWidth || !windowHeight) return;
@@ -56,38 +57,48 @@ export const Header = () => {
       threshold: 0,
     };
 
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          if (entry.boundingClientRect.bottom < 50) return;
-          entry.target.classList.contains("dark")
-            ? setAppearance("dark")
-            : setAppearance("light");
-        } else {
-          if (entry.boundingClientRect.bottom < 0 || window.scrollY === 0)
-            return;
-          entry.target.classList.contains("dark")
-            ? setAppearance("light")
-            : setAppearance("dark");
-        }
+    const initializeObserver = () => {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            if (entry.boundingClientRect.bottom < 50) return;
+            entry.target.classList.contains("dark")
+              ? setAppearance("dark")
+              : setAppearance("light");
+          } else {
+            if (entry.boundingClientRect.bottom < 0 || window.scrollY === 0)
+              return;
+            entry.target.classList.contains("dark")
+              ? setAppearance("light")
+              : setAppearance("dark");
+          }
+        });
+      }, options);
+
+      const elementsToObserve = [
+        ...document.getElementsByTagName("section"),
+        ...document.getElementsByTagName("footer"),
+      ];
+
+      elementsToObserve.forEach((element) => {
+        observer.observe(element);
       });
-    }, options);
 
-    const elementsToObserve = [
-      ...document.getElementsByTagName("section"),
-      ...document.getElementsByTagName("footer"),
-    ];
+      return observer;
+    };
 
-    elementsToObserve.forEach((element) => {
-      observer.observe(element);
+    let observer = initializeObserver();
+
+    const routerSubscription = router.subscribe("onResolved", () => {
+      observer.disconnect();
+      observer = initializeObserver();
     });
 
     return () => {
-      elementsToObserve.forEach((element) => {
-        observer.unobserve(element);
-      });
+      observer.disconnect();
+      routerSubscription();
     };
-  }, [windowWidth, windowHeight, setAppearance]);
+  }, [windowWidth, windowHeight, setAppearance, router]);
 
   const toggleHeaderExpansion = () => {
     setIsOpened((prev) => !prev);
