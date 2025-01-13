@@ -1,13 +1,15 @@
-import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Button, Flex, Icon, Input, InputGroup, InputRightElement, Select, Stack, Text, useToast } from "@chakra-ui/react";
+import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Button, Flex, FormLabel, Icon, Input, InputGroup, InputRightElement, Select, Stack, Text, useToast } from "@chakra-ui/react";
 import axios from "axios";
 import { CodeEditor } from "components/shared/CodeEditor";
 import { TableList, TableListItemProps } from "components/shared/TableList";
 import { useTypebot } from "contexts/TypebotContext";
-import { ExternalEventOptions, ExternalEventStep, ResponseVariableMapping } from "models";
+import { ExternalEventOptions, ExternalEventStep, ResponseVariableMapping, TextBubbleContent } from "models";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { MdCheckCircle, MdContentCopy, MdInfo } from "react-icons/md";
 import { mountUrl } from "services/externalEvent";
 import { getDeepKeys } from "services/integrations";
+import { TextBubbleEditor } from "../../../TextBubbleEditor";
+import { AssignToResponsibleSelect } from "../AssignToTeam/AssignToResponsibleSelect";
 import { DataVariableInputs } from "../WebhookSettings/ResponseMappingInputs";
 
 type IProps = {
@@ -19,16 +21,17 @@ export const ExternalEvent = React.memo(function ExternalEvent({
   step,
   onOptionsChange
 }: IProps) {
-  const [request, setRequest] = useState<"receive" | "define">();
-  const [successTest, setSuccessTest] = useState<boolean>();
   const [requestResponse, setRequestResponse] = useState<string>();
+  const [request, setRequest] = useState<"receive" | "define">();
   const [responseKeys, setResponseKeys] = useState<string[]>([])
+  const [successTest, setSuccessTest] = useState<boolean>();
   const [invalidData, setInvalidData] = useState<boolean>();
   const [timeout, setTimeout] = useState<string>("5")
   const [url, setUrl] = useState<string>("")
   const { typebot } = useTypebot()
 
   const color = "#1366C9";
+  const MAX_LENGHT_TEXT = 500;
 
   const errorToast = useToast({
     position: 'top-right',
@@ -86,7 +89,7 @@ export const ExternalEvent = React.memo(function ExternalEvent({
     }
   })
 
-  function validationJson(value: string) {
+  const validationJson = (value: string) => {
     try {
       const json = JSON.parse(value);
 
@@ -108,14 +111,57 @@ export const ExternalEvent = React.memo(function ExternalEvent({
     step.options.timeout = value;
   }
 
-  useEffect(() => {
-    getUrl();
-  }, []);
+  const fallbackMessageComponent = (
+    message: TextBubbleContent,
+    index: number
+  ) => {
+    return (
+      <Box>
+        <FormLabel mb="0" htmlFor="placeholder">
+          Mensagem para resposta inválida - Tentativa {index + 1}
+        </FormLabel>
+        <TextBubbleEditor
+          required={{
+            errorMsg: `O campo "Mensagem para resposta inválida - Tentativa ${index + 1
+              }" é obrigatório`,
+          }}
+          onClose={(content) => handleFallbackMessage(content, index)}
+          initialValue={message ? message.richText : []}
+          onKeyUp={(content) => handleFallbackMessage(content, index)}
+          maxLength={MAX_LENGHT_TEXT}
+        />
+      </Box>
+    )
+  }
+
+  const handleFallbackMessage = (content: TextBubbleContent, index: number) => {
+    if (!step.options) return
+    if (!step.options?.fallbackMessages) step.options.fallbackMessages = []
+
+    if (step.options.fallbackMessages.length > index)
+      step.options.fallbackMessages[index] = content
+    else step.options.fallbackMessages.push(content)
+
+    onOptionsChange({
+      ...step.options,
+    })
+  }
+
+  const onAssign = (v: any) => {
+    onOptionsChange({
+      ...step.options,
+      ...v,
+    })
+  }
 
   useEffect(() => {
     if (!step.options) step.options = {} as ExternalEventOptions;
     step.options.responseVariableMapping = [];
   }, [request])
+
+  useEffect(() => {
+    getUrl();
+  }, [])
 
   return (
     <>
@@ -298,6 +344,43 @@ export const ExternalEvent = React.memo(function ExternalEvent({
               </AccordionItem>
             </Accordion>
           </Stack>
+
+          {step.options?.useFallback &&
+            (step.options?.fallbackMessages?.length ? (
+              <Stack marginTop="10px">
+                <Accordion allowToggle allowMultiple>
+                  <AccordionItem>
+                    <AccordionButton justifyContent="space-between">
+                      Se o cliente não responder com nenhuma das opções:
+                      <AccordionIcon />
+                    </AccordionButton>
+                    <AccordionPanel pb={4} as={Stack} spacing="6">
+                      <Flex direction={'column'} gap={4}>
+                        {step.options?.fallbackMessages.map((message, index) =>
+                          fallbackMessageComponent(message, index)
+                        )}
+                        <Box>
+                          <FormLabel mb="0" htmlFor="placeholder">
+                            Se o cliente errar 3 vezes seguidas, atribuir conversa para:
+                          </FormLabel>
+                          <AssignToResponsibleSelect
+                            hasResponsibleContact={false}
+                            options={step.options}
+                            onSelect={onAssign}
+                          />
+                        </Box>
+                      </Flex>
+                    </AccordionPanel>
+                  </AccordionItem>
+                </Accordion>
+              </Stack>
+            ) : (
+              <TextBubbleEditor
+                onClose={(content) => handleFallbackMessage(content, 0)}
+                initialValue={[]}
+                onKeyUp={(content) => handleFallbackMessage(content, 0)}
+              />
+            ))}
         </>
       }
     </>
