@@ -15,7 +15,6 @@ import { Route as OssFriendsImport } from './routes/oss-friends'
 import { Route as LayoutImport } from './routes/_layout'
 import { Route as IndexImport } from './routes/index'
 import { Route as LayoutPricingImport } from './routes/_layout/pricing'
-import { Route as LayoutContactImport } from './routes/_layout/contact'
 import { Route as LayoutAboutImport } from './routes/_layout/about'
 import { Route as LayoutSlugImport } from './routes/_layout/$slug'
 import { Route as LayoutBlogIndexImport } from './routes/_layout/blog/index'
@@ -43,12 +42,6 @@ const IndexRoute = IndexImport.update({
 const LayoutPricingRoute = LayoutPricingImport.update({
   id: '/pricing',
   path: '/pricing',
-  getParentRoute: () => LayoutRoute,
-} as any)
-
-const LayoutContactRoute = LayoutContactImport.update({
-  id: '/contact',
-  path: '/contact',
   getParentRoute: () => LayoutRoute,
 } as any)
 
@@ -115,13 +108,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutAboutImport
       parentRoute: typeof LayoutImport
     }
-    '/_layout/contact': {
-      id: '/_layout/contact'
-      path: '/contact'
-      fullPath: '/contact'
-      preLoaderRoute: typeof LayoutContactImport
-      parentRoute: typeof LayoutImport
-    }
     '/_layout/pricing': {
       id: '/_layout/pricing'
       path: '/pricing'
@@ -151,7 +137,6 @@ declare module '@tanstack/react-router' {
 interface LayoutRouteChildren {
   LayoutSlugRoute: typeof LayoutSlugRoute
   LayoutAboutRoute: typeof LayoutAboutRoute
-  LayoutContactRoute: typeof LayoutContactRoute
   LayoutPricingRoute: typeof LayoutPricingRoute
   LayoutBlogSlugRoute: typeof LayoutBlogSlugRoute
   LayoutBlogIndexRoute: typeof LayoutBlogIndexRoute
@@ -160,7 +145,6 @@ interface LayoutRouteChildren {
 const LayoutRouteChildren: LayoutRouteChildren = {
   LayoutSlugRoute: LayoutSlugRoute,
   LayoutAboutRoute: LayoutAboutRoute,
-  LayoutContactRoute: LayoutContactRoute,
   LayoutPricingRoute: LayoutPricingRoute,
   LayoutBlogSlugRoute: LayoutBlogSlugRoute,
   LayoutBlogIndexRoute: LayoutBlogIndexRoute,
@@ -175,7 +159,6 @@ export interface FileRoutesByFullPath {
   '/oss-friends': typeof OssFriendsRoute
   '/$slug': typeof LayoutSlugRoute
   '/about': typeof LayoutAboutRoute
-  '/contact': typeof LayoutContactRoute
   '/pricing': typeof LayoutPricingRoute
   '/blog/$slug': typeof LayoutBlogSlugRoute
   '/blog': typeof LayoutBlogIndexRoute
@@ -187,7 +170,6 @@ export interface FileRoutesByTo {
   '/oss-friends': typeof OssFriendsRoute
   '/$slug': typeof LayoutSlugRoute
   '/about': typeof LayoutAboutRoute
-  '/contact': typeof LayoutContactRoute
   '/pricing': typeof LayoutPricingRoute
   '/blog/$slug': typeof LayoutBlogSlugRoute
   '/blog': typeof LayoutBlogIndexRoute
@@ -200,7 +182,6 @@ export interface FileRoutesById {
   '/oss-friends': typeof OssFriendsRoute
   '/_layout/$slug': typeof LayoutSlugRoute
   '/_layout/about': typeof LayoutAboutRoute
-  '/_layout/contact': typeof LayoutContactRoute
   '/_layout/pricing': typeof LayoutPricingRoute
   '/_layout/blog/$slug': typeof LayoutBlogSlugRoute
   '/_layout/blog/': typeof LayoutBlogIndexRoute
@@ -214,7 +195,6 @@ export interface FileRouteTypes {
     | '/oss-friends'
     | '/$slug'
     | '/about'
-    | '/contact'
     | '/pricing'
     | '/blog/$slug'
     | '/blog'
@@ -225,7 +205,6 @@ export interface FileRouteTypes {
     | '/oss-friends'
     | '/$slug'
     | '/about'
-    | '/contact'
     | '/pricing'
     | '/blog/$slug'
     | '/blog'
@@ -236,7 +215,6 @@ export interface FileRouteTypes {
     | '/oss-friends'
     | '/_layout/$slug'
     | '/_layout/about'
-    | '/_layout/contact'
     | '/_layout/pricing'
     | '/_layout/blog/$slug'
     | '/_layout/blog/'
@@ -278,7 +256,6 @@ export const routeTree = rootRoute
       "children": [
         "/_layout/$slug",
         "/_layout/about",
-        "/_layout/contact",
         "/_layout/pricing",
         "/_layout/blog/$slug",
         "/_layout/blog/"
@@ -293,10 +270,6 @@ export const routeTree = rootRoute
     },
     "/_layout/about": {
       "filePath": "_layout/about.tsx",
-      "parent": "/_layout"
-    },
-    "/_layout/contact": {
-      "filePath": "_layout/contact.tsx",
       "parent": "/_layout"
     },
     "/_layout/pricing": {
