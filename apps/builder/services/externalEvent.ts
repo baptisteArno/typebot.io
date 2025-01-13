@@ -21,7 +21,7 @@ const getNucleusUrl = async () => {
 
 export const mountUrl = async ({ blockId, botId }: IMountUrl) => {
   const baseUrl = await getNucleusUrl();
-  return `${baseUrl}/${botId}/${blockId}/id-conversa`
+  return `${baseUrl}/chat/external-webhook/${botId}/${blockId}/id-conversa`
 }
 
 type IMountUrl = {
