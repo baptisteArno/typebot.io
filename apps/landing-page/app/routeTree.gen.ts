@@ -11,22 +11,16 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as OssFriendsImport } from './routes/oss-friends'
 import { Route as LayoutImport } from './routes/_layout'
 import { Route as IndexImport } from './routes/index'
 import { Route as LayoutPricingImport } from './routes/_layout/pricing'
+import { Route as LayoutOssFriendsImport } from './routes/_layout/oss-friends'
 import { Route as LayoutAboutImport } from './routes/_layout/about'
 import { Route as LayoutSlugImport } from './routes/_layout/$slug'
 import { Route as LayoutBlogIndexImport } from './routes/_layout/blog/index'
 import { Route as LayoutBlogSlugImport } from './routes/_layout/blog/$slug'
 
 // Create/Update Routes
-
-const OssFriendsRoute = OssFriendsImport.update({
-  id: '/oss-friends',
-  path: '/oss-friends',
-  getParentRoute: () => rootRoute,
-} as any)
 
 const LayoutRoute = LayoutImport.update({
   id: '/_layout',
@@ -42,6 +36,12 @@ const IndexRoute = IndexImport.update({
 const LayoutPricingRoute = LayoutPricingImport.update({
   id: '/pricing',
   path: '/pricing',
+  getParentRoute: () => LayoutRoute,
+} as any)
+
+const LayoutOssFriendsRoute = LayoutOssFriendsImport.update({
+  id: '/oss-friends',
+  path: '/oss-friends',
   getParentRoute: () => LayoutRoute,
 } as any)
 
@@ -87,13 +87,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutImport
       parentRoute: typeof rootRoute
     }
-    '/oss-friends': {
-      id: '/oss-friends'
-      path: '/oss-friends'
-      fullPath: '/oss-friends'
-      preLoaderRoute: typeof OssFriendsImport
-      parentRoute: typeof rootRoute
-    }
     '/_layout/$slug': {
       id: '/_layout/$slug'
       path: '/$slug'
@@ -106,6 +99,13 @@ declare module '@tanstack/react-router' {
       path: '/about'
       fullPath: '/about'
       preLoaderRoute: typeof LayoutAboutImport
+      parentRoute: typeof LayoutImport
+    }
+    '/_layout/oss-friends': {
+      id: '/_layout/oss-friends'
+      path: '/oss-friends'
+      fullPath: '/oss-friends'
+      preLoaderRoute: typeof LayoutOssFriendsImport
       parentRoute: typeof LayoutImport
     }
     '/_layout/pricing': {
@@ -137,6 +137,7 @@ declare module '@tanstack/react-router' {
 interface LayoutRouteChildren {
   LayoutSlugRoute: typeof LayoutSlugRoute
   LayoutAboutRoute: typeof LayoutAboutRoute
+  LayoutOssFriendsRoute: typeof LayoutOssFriendsRoute
   LayoutPricingRoute: typeof LayoutPricingRoute
   LayoutBlogSlugRoute: typeof LayoutBlogSlugRoute
   LayoutBlogIndexRoute: typeof LayoutBlogIndexRoute
@@ -145,6 +146,7 @@ interface LayoutRouteChildren {
 const LayoutRouteChildren: LayoutRouteChildren = {
   LayoutSlugRoute: LayoutSlugRoute,
   LayoutAboutRoute: LayoutAboutRoute,
+  LayoutOssFriendsRoute: LayoutOssFriendsRoute,
   LayoutPricingRoute: LayoutPricingRoute,
   LayoutBlogSlugRoute: LayoutBlogSlugRoute,
   LayoutBlogIndexRoute: LayoutBlogIndexRoute,
@@ -156,9 +158,9 @@ const LayoutRouteWithChildren =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '': typeof LayoutRouteWithChildren
-  '/oss-friends': typeof OssFriendsRoute
   '/$slug': typeof LayoutSlugRoute
   '/about': typeof LayoutAboutRoute
+  '/oss-friends': typeof LayoutOssFriendsRoute
   '/pricing': typeof LayoutPricingRoute
   '/blog/$slug': typeof LayoutBlogSlugRoute
   '/blog': typeof LayoutBlogIndexRoute
@@ -167,9 +169,9 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '': typeof LayoutRouteWithChildren
-  '/oss-friends': typeof OssFriendsRoute
   '/$slug': typeof LayoutSlugRoute
   '/about': typeof LayoutAboutRoute
+  '/oss-friends': typeof LayoutOssFriendsRoute
   '/pricing': typeof LayoutPricingRoute
   '/blog/$slug': typeof LayoutBlogSlugRoute
   '/blog': typeof LayoutBlogIndexRoute
@@ -179,9 +181,9 @@ export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/_layout': typeof LayoutRouteWithChildren
-  '/oss-friends': typeof OssFriendsRoute
   '/_layout/$slug': typeof LayoutSlugRoute
   '/_layout/about': typeof LayoutAboutRoute
+  '/_layout/oss-friends': typeof LayoutOssFriendsRoute
   '/_layout/pricing': typeof LayoutPricingRoute
   '/_layout/blog/$slug': typeof LayoutBlogSlugRoute
   '/_layout/blog/': typeof LayoutBlogIndexRoute
@@ -192,9 +194,9 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | ''
-    | '/oss-friends'
     | '/$slug'
     | '/about'
+    | '/oss-friends'
     | '/pricing'
     | '/blog/$slug'
     | '/blog'
@@ -202,9 +204,9 @@ export interface FileRouteTypes {
   to:
     | '/'
     | ''
-    | '/oss-friends'
     | '/$slug'
     | '/about'
+    | '/oss-friends'
     | '/pricing'
     | '/blog/$slug'
     | '/blog'
@@ -212,9 +214,9 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/_layout'
-    | '/oss-friends'
     | '/_layout/$slug'
     | '/_layout/about'
+    | '/_layout/oss-friends'
     | '/_layout/pricing'
     | '/_layout/blog/$slug'
     | '/_layout/blog/'
@@ -224,13 +226,11 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   LayoutRoute: typeof LayoutRouteWithChildren
-  OssFriendsRoute: typeof OssFriendsRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   LayoutRoute: LayoutRouteWithChildren,
-  OssFriendsRoute: OssFriendsRoute,
 }
 
 export const routeTree = rootRoute
@@ -244,8 +244,7 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/_layout",
-        "/oss-friends"
+        "/_layout"
       ]
     },
     "/": {
@@ -256,13 +255,11 @@ export const routeTree = rootRoute
       "children": [
         "/_layout/$slug",
         "/_layout/about",
+        "/_layout/oss-friends",
         "/_layout/pricing",
         "/_layout/blog/$slug",
         "/_layout/blog/"
       ]
-    },
-    "/oss-friends": {
-      "filePath": "oss-friends.tsx"
     },
     "/_layout/$slug": {
       "filePath": "_layout/$slug.tsx",
@@ -270,6 +267,10 @@ export const routeTree = rootRoute
     },
     "/_layout/about": {
       "filePath": "_layout/about.tsx",
+      "parent": "/_layout"
+    },
+    "/_layout/oss-friends": {
+      "filePath": "_layout/oss-friends.tsx",
       "parent": "/_layout"
     },
     "/_layout/pricing": {
