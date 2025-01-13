@@ -15265,7 +15265,7 @@ ky@1.2.4:
     autoprefixer "10.4.20"
     cross-env "7.0.3"
     dotenv-cli "7.4.4"
-    mdx-local-link-checker "^2.1.1"
+    mdx-local-link-checker "2.1.1"
     postcss "8.4.49"
     rehype-autolink-headings "7.1.0"
     rehype-pretty-code "0.14.0"
@@ -16099,7 +16099,7 @@ mdx-bundler@^10.0.3:
     uuid "^9.0.1"
     vfile "^6.0.1"
 
-mdx-local-link-checker@^2.1.1:
+mdx-local-link-checker@2.1.1:
   version "2.1.1"
   resolved "https://registry.npmjs.org/mdx-local-link-checker/-/mdx-local-link-checker-2.1.1.tgz"
   integrity sha512-nbFWyayzRe+tT+ZfBt3w5EA18G4conL+2SgCGTHDAjHyPEwmF59VbK+1JmdY19bs7s8ZgGFD/FFAEIHuw5nLbg==

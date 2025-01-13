@@ -32,7 +32,7 @@ configureRuntimeEnv();
 const landingPagePaths = [
   "/",
   "/pricing",
-  "/privacy-policies",
+  "/privacy-policy",
   "/terms-of-service",
   "/about",
   "/oss-friends",
@@ -43,7 +43,7 @@ const landingPagePaths = [
 const landingPageReferers = [
   "/",
   "/pricing",
-  "/privacy-policies",
+  "/privacy-policy",
   "/terms-of-service",
   "/about",
   "/oss-friends",

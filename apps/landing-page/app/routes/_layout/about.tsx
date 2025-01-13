@@ -6,7 +6,7 @@ import { MessageSquareGradientIcon } from "@/features/about/MessageSquareGradien
 import { ZapGradientIcon } from "@/features/about/ZapGradientIcon";
 import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/about")({
+export const Route = createFileRoute("/_layout/about")({
   component: RouteComponent,
 });
 

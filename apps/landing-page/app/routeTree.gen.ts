@@ -11,33 +11,21 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as PrivacyPolicyImport } from './routes/privacy-policy'
 import { Route as OssFriendsImport } from './routes/oss-friends'
-import { Route as AboutImport } from './routes/about'
 import { Route as LayoutImport } from './routes/_layout'
 import { Route as IndexImport } from './routes/index'
-import { Route as LayoutTermsOfServiceImport } from './routes/_layout/terms-of-service'
 import { Route as LayoutPricingImport } from './routes/_layout/pricing'
+import { Route as LayoutContactImport } from './routes/_layout/contact'
+import { Route as LayoutAboutImport } from './routes/_layout/about'
+import { Route as LayoutSlugImport } from './routes/_layout/$slug'
 import { Route as LayoutBlogIndexImport } from './routes/_layout/blog/index'
 import { Route as LayoutBlogSlugImport } from './routes/_layout/blog/$slug'
 
 // Create/Update Routes
 
-const PrivacyPolicyRoute = PrivacyPolicyImport.update({
-  id: '/privacy-policy',
-  path: '/privacy-policy',
-  getParentRoute: () => rootRoute,
-} as any)
-
 const OssFriendsRoute = OssFriendsImport.update({
   id: '/oss-friends',
   path: '/oss-friends',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const AboutRoute = AboutImport.update({
-  id: '/about',
-  path: '/about',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -52,15 +40,27 @@ const IndexRoute = IndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const LayoutTermsOfServiceRoute = LayoutTermsOfServiceImport.update({
-  id: '/terms-of-service',
-  path: '/terms-of-service',
-  getParentRoute: () => LayoutRoute,
-} as any)
-
 const LayoutPricingRoute = LayoutPricingImport.update({
   id: '/pricing',
   path: '/pricing',
+  getParentRoute: () => LayoutRoute,
+} as any)
+
+const LayoutContactRoute = LayoutContactImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => LayoutRoute,
+} as any)
+
+const LayoutAboutRoute = LayoutAboutImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => LayoutRoute,
+} as any)
+
+const LayoutSlugRoute = LayoutSlugImport.update({
+  id: '/$slug',
+  path: '/$slug',
   getParentRoute: () => LayoutRoute,
 } as any)
 
@@ -94,13 +94,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutImport
       parentRoute: typeof rootRoute
     }
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutImport
-      parentRoute: typeof rootRoute
-    }
     '/oss-friends': {
       id: '/oss-friends'
       path: '/oss-friends'
@@ -108,25 +101,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OssFriendsImport
       parentRoute: typeof rootRoute
     }
-    '/privacy-policy': {
-      id: '/privacy-policy'
-      path: '/privacy-policy'
-      fullPath: '/privacy-policy'
-      preLoaderRoute: typeof PrivacyPolicyImport
-      parentRoute: typeof rootRoute
+    '/_layout/$slug': {
+      id: '/_layout/$slug'
+      path: '/$slug'
+      fullPath: '/$slug'
+      preLoaderRoute: typeof LayoutSlugImport
+      parentRoute: typeof LayoutImport
+    }
+    '/_layout/about': {
+      id: '/_layout/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof LayoutAboutImport
+      parentRoute: typeof LayoutImport
+    }
+    '/_layout/contact': {
+      id: '/_layout/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof LayoutContactImport
+      parentRoute: typeof LayoutImport
     }
     '/_layout/pricing': {
       id: '/_layout/pricing'
       path: '/pricing'
       fullPath: '/pricing'
       preLoaderRoute: typeof LayoutPricingImport
-      parentRoute: typeof LayoutImport
-    }
-    '/_layout/terms-of-service': {
-      id: '/_layout/terms-of-service'
-      path: '/terms-of-service'
-      fullPath: '/terms-of-service'
-      preLoaderRoute: typeof LayoutTermsOfServiceImport
       parentRoute: typeof LayoutImport
     }
     '/_layout/blog/$slug': {
@@ -149,15 +149,19 @@ declare module '@tanstack/react-router' {
 // Create and export the route tree
 
 interface LayoutRouteChildren {
+  LayoutSlugRoute: typeof LayoutSlugRoute
+  LayoutAboutRoute: typeof LayoutAboutRoute
+  LayoutContactRoute: typeof LayoutContactRoute
   LayoutPricingRoute: typeof LayoutPricingRoute
-  LayoutTermsOfServiceRoute: typeof LayoutTermsOfServiceRoute
   LayoutBlogSlugRoute: typeof LayoutBlogSlugRoute
   LayoutBlogIndexRoute: typeof LayoutBlogIndexRoute
 }
 
 const LayoutRouteChildren: LayoutRouteChildren = {
+  LayoutSlugRoute: LayoutSlugRoute,
+  LayoutAboutRoute: LayoutAboutRoute,
+  LayoutContactRoute: LayoutContactRoute,
   LayoutPricingRoute: LayoutPricingRoute,
-  LayoutTermsOfServiceRoute: LayoutTermsOfServiceRoute,
   LayoutBlogSlugRoute: LayoutBlogSlugRoute,
   LayoutBlogIndexRoute: LayoutBlogIndexRoute,
 }
@@ -168,11 +172,11 @@ const LayoutRouteWithChildren =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '': typeof LayoutRouteWithChildren
-  '/about': typeof AboutRoute
   '/oss-friends': typeof OssFriendsRoute
-  '/privacy-policy': typeof PrivacyPolicyRoute
+  '/$slug': typeof LayoutSlugRoute
+  '/about': typeof LayoutAboutRoute
+  '/contact': typeof LayoutContactRoute
   '/pricing': typeof LayoutPricingRoute
-  '/terms-of-service': typeof LayoutTermsOfServiceRoute
   '/blog/$slug': typeof LayoutBlogSlugRoute
   '/blog': typeof LayoutBlogIndexRoute
 }
@@ -180,11 +184,11 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '': typeof LayoutRouteWithChildren
-  '/about': typeof AboutRoute
   '/oss-friends': typeof OssFriendsRoute
-  '/privacy-policy': typeof PrivacyPolicyRoute
+  '/$slug': typeof LayoutSlugRoute
+  '/about': typeof LayoutAboutRoute
+  '/contact': typeof LayoutContactRoute
   '/pricing': typeof LayoutPricingRoute
-  '/terms-of-service': typeof LayoutTermsOfServiceRoute
   '/blog/$slug': typeof LayoutBlogSlugRoute
   '/blog': typeof LayoutBlogIndexRoute
 }
@@ -193,11 +197,11 @@ export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/_layout': typeof LayoutRouteWithChildren
-  '/about': typeof AboutRoute
   '/oss-friends': typeof OssFriendsRoute
-  '/privacy-policy': typeof PrivacyPolicyRoute
+  '/_layout/$slug': typeof LayoutSlugRoute
+  '/_layout/about': typeof LayoutAboutRoute
+  '/_layout/contact': typeof LayoutContactRoute
   '/_layout/pricing': typeof LayoutPricingRoute
-  '/_layout/terms-of-service': typeof LayoutTermsOfServiceRoute
   '/_layout/blog/$slug': typeof LayoutBlogSlugRoute
   '/_layout/blog/': typeof LayoutBlogIndexRoute
 }
@@ -207,33 +211,33 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | ''
-    | '/about'
     | '/oss-friends'
-    | '/privacy-policy'
+    | '/$slug'
+    | '/about'
+    | '/contact'
     | '/pricing'
-    | '/terms-of-service'
     | '/blog/$slug'
     | '/blog'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | ''
-    | '/about'
     | '/oss-friends'
-    | '/privacy-policy'
+    | '/$slug'
+    | '/about'
+    | '/contact'
     | '/pricing'
-    | '/terms-of-service'
     | '/blog/$slug'
     | '/blog'
   id:
     | '__root__'
     | '/'
     | '/_layout'
-    | '/about'
     | '/oss-friends'
-    | '/privacy-policy'
+    | '/_layout/$slug'
+    | '/_layout/about'
+    | '/_layout/contact'
     | '/_layout/pricing'
-    | '/_layout/terms-of-service'
     | '/_layout/blog/$slug'
     | '/_layout/blog/'
   fileRoutesById: FileRoutesById
@@ -242,17 +246,13 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   LayoutRoute: typeof LayoutRouteWithChildren
-  AboutRoute: typeof AboutRoute
   OssFriendsRoute: typeof OssFriendsRoute
-  PrivacyPolicyRoute: typeof PrivacyPolicyRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   LayoutRoute: LayoutRouteWithChildren,
-  AboutRoute: AboutRoute,
   OssFriendsRoute: OssFriendsRoute,
-  PrivacyPolicyRoute: PrivacyPolicyRoute,
 }
 
 export const routeTree = rootRoute
@@ -267,9 +267,7 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/_layout",
-        "/about",
-        "/oss-friends",
-        "/privacy-policy"
+        "/oss-friends"
       ]
     },
     "/": {
@@ -278,27 +276,31 @@ export const routeTree = rootRoute
     "/_layout": {
       "filePath": "_layout.tsx",
       "children": [
+        "/_layout/$slug",
+        "/_layout/about",
+        "/_layout/contact",
         "/_layout/pricing",
-        "/_layout/terms-of-service",
         "/_layout/blog/$slug",
         "/_layout/blog/"
       ]
     },
-    "/about": {
-      "filePath": "about.tsx"
-    },
     "/oss-friends": {
       "filePath": "oss-friends.tsx"
     },
-    "/privacy-policy": {
-      "filePath": "privacy-policy.tsx"
+    "/_layout/$slug": {
+      "filePath": "_layout/$slug.tsx",
+      "parent": "/_layout"
+    },
+    "/_layout/about": {
+      "filePath": "_layout/about.tsx",
+      "parent": "/_layout"
+    },
+    "/_layout/contact": {
+      "filePath": "_layout/contact.tsx",
+      "parent": "/_layout"
     },
     "/_layout/pricing": {
       "filePath": "_layout/pricing.tsx",
-      "parent": "/_layout"
-    },
-    "/_layout/terms-of-service": {
-      "filePath": "_layout/terms-of-service.tsx",
       "parent": "/_layout"
     },
     "/_layout/blog/$slug": {

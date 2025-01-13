@@ -214,7 +214,7 @@
     },
     {
       "group": "Misc",
-      "pages": ["faq", "privacy-policies", "report-abuse", "breaking-changes"]
+      "pages": ["faq", "report-abuse", "breaking-changes"]
     },
     {
       "group": "Get started",

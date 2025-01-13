@@ -18,8 +18,8 @@ const posts = defineCollection({
   include: "**/*.mdx",
   schema: (z) => ({
     title: z.string(),
-    description: z.string(),
-    postedAt: z.string().date(),
+    description: z.string().optional(),
+    postedAt: z.string().date().optional(),
   }),
   transform: async (document, context) => {
     const mdx = await compileMDX(context, document, {

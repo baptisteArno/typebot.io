@@ -7,7 +7,7 @@
     "dev": "dotenv -e ./.env -e ../../.env -- vinxi dev --port 3003",
     "build": "bun check-broken-links && dotenv -e ./.env -e ../../.env -- vinxi build",
     "start": "dotenv -e ./.env -e ../../.env -- vinxi start",
-    "check-broken-links": "mdx-local-link-checker content public"
+    "check-broken-links": "mdx-local-link-checker content public '*/(index.mdx|blog|about|pricing?isTiersModalOpened=true)'"
   },
   "dependencies": {
     "@ark-ui/react": "4.7.0",
@@ -42,7 +42,7 @@
     "autoprefixer": "10.4.20",
     "cross-env": "7.0.3",
     "dotenv-cli": "7.4.4",
-    "mdx-local-link-checker": "^2.1.1",
+    "mdx-local-link-checker": "2.1.1",
     "postcss": "8.4.49",
     "rehype-autolink-headings": "7.1.0",
     "rehype-pretty-code": "0.14.0",

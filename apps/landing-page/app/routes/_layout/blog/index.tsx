@@ -3,6 +3,7 @@ import { ContentPageWrapper } from "@/components/ContentPageWrapper";
 import { formatDate } from "@/features/blog/helpers";
 import { seo } from "@/lib/seo";
 import { Link, createFileRoute } from "@tanstack/react-router";
+import { isDefined } from "@typebot.io/lib/utils";
 import { allPosts } from "content-collections";
 
 export const Route = createFileRoute("/_layout/blog/")({
@@ -28,16 +29,17 @@ function RouteComponent() {
       </div>
       <ol className="flex flex-col gap-6">
         {allPosts
+          .filter((post) => isDefined(post.postedAt))
           .sort(
             (a, b) =>
-              new Date(b.postedAt).getTime() - new Date(a.postedAt).getTime(),
+              new Date(b.postedAt!).getTime() - new Date(a.postedAt!).getTime(),
           )
           .map((post) => (
             <li key={post._meta.path}>
               <Link to={"/" + post._meta.path}>
                 <Card>
                   <time className="text-gray-10">
-                    {formatDate(post.postedAt)}
+                    {formatDate(post.postedAt!)}
                   </time>
                   <h3>{post.title}</h3>
                   <p>{post.description}</p>
