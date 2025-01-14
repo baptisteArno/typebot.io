@@ -13,7 +13,7 @@ export function Marquee({ children }: MarqueeProps) {
           <div
             key={i}
             className={cn(
-              "flex flex-shrink-0 justify-center flex-row items-center gap-8 md:gap-16 mr-8 animate-marquee md:animate-none",
+              "flex flex-shrink-0 justify-center flex-row items-center gap-8 md:gap-16 mr-8 md:mr-0 animate-marquee md:animate-none",
               i === 1 && "hidden",
             )}
           >
