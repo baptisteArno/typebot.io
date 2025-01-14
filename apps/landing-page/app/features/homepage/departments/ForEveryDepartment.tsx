@@ -150,7 +150,12 @@ const DepartmentCard = ({
     }}
   >
     <motion.figure layoutId={`dep-${index}-img`}>
-      <img src={department.image.src} alt={department.image.alt} />
+      <img
+        src={department.image.src}
+        alt={department.image.alt}
+        width="1035px"
+        height="495px"
+      />
     </motion.figure>
     <div className="flex flex-col px-2 pb-4 gap-3">
       <motion.h2
@@ -205,7 +210,12 @@ const OpenedDepartmentCard = ({
         <CloseIcon />
       </IconButton>
       <motion.figure layoutId={`dep-${index}-img`}>
-        <img src={department.image.src} alt={department.image.alt} />
+        <img
+          src={department.image.src}
+          alt={department.image.alt}
+          width="1035px"
+          height="495px"
+        />
       </motion.figure>
       <div className="flex flex-col gap-8 pb-4 px-2">
         <div className="flex flex-col gap-3">
