@@ -20,7 +20,7 @@ export const Route = createFileRoute("/")({
 
 function Home() {
   return (
-    <div className="flex flex-col items-stretch overflow-x-hidden">
+    <div className="flex flex-col items-stretch">
       <Section className="dark py-0 md:py-0 md:px-0 gap-0">
         <Hero />
       </Section>

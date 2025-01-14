@@ -104,7 +104,10 @@ export const UseCases = ({ className }: { className?: string }) => {
 
   return (
     <div
-      className={cn("flex flex-col gap-16 md:gap-20 px-4 md:pt-10", className)}
+      className={cn(
+        "flex flex-col gap-16 md:gap-20 px-4 md:pt-10 overflow-x-hidden",
+        className,
+      )}
       ref={containerRef}
     >
       <div className="flex flex-col items-center gap-8 md:12">
