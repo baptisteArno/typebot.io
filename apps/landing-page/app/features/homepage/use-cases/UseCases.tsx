@@ -105,7 +105,7 @@ export const UseCases = ({ className }: { className?: string }) => {
   return (
     <div
       className={cn(
-        "flex flex-col gap-16 md:gap-20 px-4 md:pt-10 overflow-x-hidden",
+        "flex flex-col gap-16 md:gap-20 px-4 md:pt-10 overflow-hidden",
         className,
       )}
       ref={containerRef}
@@ -122,7 +122,7 @@ export const UseCases = ({ className }: { className?: string }) => {
             </UsecaseTitle>
           ))}
         </div>
-        <div className="relative">
+        <div className="relative ">
           {useCases.map((useCase, index) => (
             <div
               key={index}
