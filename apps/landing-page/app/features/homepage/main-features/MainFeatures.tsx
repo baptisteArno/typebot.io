@@ -176,7 +176,7 @@ const FeatureCard = ({
       >
         <p>{feature.description}</p>
         {feature.link && (
-          <TextLink to={feature.link.src} target="_blank">
+          <TextLink href={feature.link.src} target="_blank">
             {feature.link.text}
           </TextLink>
         )}

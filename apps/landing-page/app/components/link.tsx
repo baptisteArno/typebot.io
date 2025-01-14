@@ -1,9 +1,15 @@
 import { cn } from "@/lib/utils";
-import { type LinkComponent, createLink } from "@tanstack/react-router";
+import {
+  type LinkComponent,
+  type LinkComponentProps,
+  createLink,
+} from "@tanstack/react-router";
 import { ArrowUpRightIcon } from "@typebot.io/ui/icons/ArrowUpRightIcon";
 import { type VariantProps, cva } from "class-variance-authority";
 import { type HTMLProps, forwardRef } from "react";
 import { buttonVariants } from "./Button";
+
+type Optional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
 
 const textLinkVariants = cva("inline-flex gap-1 font-medium underline", {
   variants: {
@@ -55,7 +61,9 @@ export const TextLinkComponent = forwardRef<
 });
 const CreatedTextLinkComponent = createLink(TextLinkComponent);
 
-export const TextLink: LinkComponent<typeof TextLinkComponent> = (props) => {
+export const TextLink = (
+  props: Optional<LinkComponentProps<typeof TextLinkComponent>, "to">,
+) => {
   if (props.href && typeof props.children !== "function")
     return (
       <TextLinkComponent
@@ -103,8 +111,8 @@ export const ButtonLinkComponent = forwardRef<
 });
 const CreatedButtonLinkComponent = createLink(ButtonLinkComponent);
 
-export const ButtonLink: LinkComponent<typeof ButtonLinkComponent> = (
-  props,
+export const ButtonLink = (
+  props: Optional<LinkComponentProps<typeof ButtonLinkComponent>, "to">,
 ) => {
   if (props.href && typeof props.children !== "function")
     return (

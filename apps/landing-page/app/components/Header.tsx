@@ -10,7 +10,7 @@ import {
 } from "@/constants";
 import { useWindowSize } from "@/features/homepage/hooks/useWindowSize";
 import { cn } from "@/lib/utils";
-import { Link, useRouter } from "@tanstack/react-router";
+import { useRouter } from "@tanstack/react-router";
 import { CloseIcon } from "@typebot.io/ui/icons/CloseIcon";
 import { MenuIcon } from "@typebot.io/ui/icons/MenuIcon";
 import clsx from "clsx";
@@ -40,7 +40,7 @@ const links = [
     label: "Community",
     href: discordUrl,
   },
-];
+] as const;
 
 export const Header = () => {
   const [isOpened, setIsOpened] = useState(false);
@@ -167,25 +167,25 @@ const Mobile = React.forwardRef<HTMLElement, Props>(function Mobile(
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
-            <Link
+            <ButtonLink
               href={signinUrl}
               className={buttonVariants({ size: "lg", variant: "outline" })}
             >
               Sign in
-            </Link>
+            </ButtonLink>
             <hr className="border-gray-7" />
             <div className="grid grid-cols-2 gap-2">
               {links.map((link) => (
-                <Link
+                <ButtonLink
                   key={link.label}
                   className={cn(
                     buttonVariants({ variant: "outline", size: "lg" }),
                   )}
-                  href={link.href}
-                  to={link.to}
+                  href={"href" in link ? link.href : undefined}
+                  to={"to" in link ? link.to : undefined}
                 >
                   {link.label}
-                </Link>
+                </ButtonLink>
               ))}
             </div>
           </motion.nav>
@@ -216,7 +216,7 @@ const desktopLinks = [
     label: "GitHub",
     href: githubRepoUrl,
   },
-];
+] as const;
 
 const Desktop = React.forwardRef<
   HTMLElement,
@@ -239,9 +239,8 @@ const Desktop = React.forwardRef<
           variant="ghost"
           size="sm"
           className="font-normal"
-          href={link.href}
-          to={link.to}
-          target={link.to ? undefined : "_blank"}
+          href={"href" in link ? link.href : undefined}
+          to={"to" in link ? link.to : undefined}
           activeProps={{
             className: "font-medium",
           }}

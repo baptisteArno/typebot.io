@@ -19,7 +19,7 @@ const data = [
       },
       {
         label: "Pricing",
-        href: "/pricing",
+        to: "/pricing",
       },
     ],
   },
@@ -32,7 +32,7 @@ const data = [
       },
       {
         label: "Blog",
-        href: "/blog",
+        to: "/blog",
       },
       {
         label: "GitHub",
@@ -48,7 +48,7 @@ const data = [
       },
       {
         label: "OSS Friends",
-        href: "/oss-friends",
+        to: "/oss-friends",
       },
     ],
   },
@@ -57,19 +57,25 @@ const data = [
     links: [
       {
         label: "About",
-        href: "/about",
+        to: "/about",
       },
       {
         label: "Terms of Service",
-        href: "/terms-of-service",
+        to: "/$slug",
+        params: {
+          slug: "terms-of-service",
+        },
       },
       {
         label: "Privacy Policy",
-        href: "/privacy-policy",
+        to: "/$slug",
+        params: {
+          slug: "privacy-policy",
+        },
       },
     ],
   },
-];
+] as const;
 
 export const Footer = () => {
   return (
@@ -86,10 +92,10 @@ export const Footer = () => {
                   {item.links.map((link) => (
                     <li key={link.label}>
                       <TextLink
-                        href={link.href}
-                        target={
-                          link.href.startsWith("/") ? undefined : "_blank"
-                        }
+                        href={"href" in link ? link.href : undefined}
+                        to={"to" in link ? link.to : undefined}
+                        params={"params" in link ? link.params : undefined}
+                        target={"href" in link ? "_blank" : undefined}
                         className="text-gray-11 font-normal"
                         size="sm"
                       >

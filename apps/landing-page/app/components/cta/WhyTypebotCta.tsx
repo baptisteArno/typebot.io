@@ -1,3 +1,4 @@
+import { registerUrl } from "@/constants";
 import { ButtonLink } from "../link";
 import imgSrc from "./assets/3d-group.png";
 
@@ -13,7 +14,7 @@ export const WhyTypebotCta = () => (
         of scenarios. Typebot is a small company that truly empowers the user,
         the project is fair source and never vendor-locks you in.
       </p>
-      <ButtonLink variant="cta" size="lg">
+      <ButtonLink variant="cta" size="lg" href={registerUrl}>
         Start for free
       </ButtonLink>
     </div>
