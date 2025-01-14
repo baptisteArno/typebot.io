@@ -102,8 +102,6 @@ export const UseCases = ({ className }: { className?: string }) => {
     return;
   };
 
-  console.log(currentUseCase.index, previousIndex);
-
   return (
     <div
       className={cn("flex flex-col gap-16 md:gap-20 px-4 md:pt-10", className)}

@@ -99,7 +99,6 @@ export const MainFeatures = () => {
   }, [isMobile]);
 
   const expandCardIfDesktop = (index: number) => {
-    console.log(index);
     if (isMobile) return;
     setCurrentFeatureIndex(index);
   };
