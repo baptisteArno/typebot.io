@@ -16,27 +16,17 @@ export const Companies = () => (
     <h2 className=" px-4 font-medium max-w-6xl">
       Trusted by 650+ companies worldwide
     </h2>
-    <div className="hidden md:flex items-center gap-16 px-4">
-      <MakerLead className="w-32 flex-shrink-0" />
-      <Webisharp className="w-32 flex-shrink-0" />
-      <Shadow className="w-28 flex-shrink-0" />
-      <Cora className="w-24 flex-shrink-0" />
-      <IbanFirst className="w-28 flex-shrink-0" />
-      <Lemlist className="w-28 flex-shrink-0" />
-      <SocialHackrs className="w-32 flex-shrink-0" />
-      <PinpointInteractive className="w-32 flex-shrink-0" />
-    </div>
-    <div className="relative flex w-full md:hidden">
+    <div className="relative flex w-full justify-center">
       <Marquee>
-        <IbanFirst width="100px" height="60px" />
         <MakerLead width="100px" height="60px" />
         <Webisharp width="100px" height="60px" />
         <Shadow width="100px" height="60px" />
+        <Cora width="80px" height="60px" />
+        <IbanFirst width="100px" height="60px" />
         <SocialHackrs width="100px" height="60px" />
         <Lemlist width="100px" height="60px" />
         <PinpointInteractive width="100px" height="60px" />
         <Obole width="80px" height="60px" />
-        <Cora width="60px" height="60px" />
       </Marquee>
       <div className="pointer-events-none absolute inset-y-0 right-0 w-[50px] bg-gradient-to-r from-gray-2/20 to-gray-2 " />
       <div className="pointer-events-none absolute inset-y-0 left-0 w-[50px] bg-gradient-to-l from-gray-2/20 to-gray-2" />
