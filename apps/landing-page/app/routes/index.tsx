@@ -1,7 +1,5 @@
-import { Header } from "@/components/Header";
 import { Section } from "@/components/Section";
 import { Cta } from "@/components/cta/Cta";
-import { Footer } from "@/components/footer/Footer";
 import { AllFeatures } from "@/features/homepage/all-features/AllFeatures";
 import { Companies } from "@/features/homepage/companies/components/Companies";
 import { Faq } from "@/features/homepage/components/Faq";
@@ -22,7 +20,7 @@ export const Route = createFileRoute("/")({
 
 function Home() {
   return (
-    <div className="flex flex-col items-stretch">
+    <div className="flex flex-col items-stretch overflow-x-hidden">
       <Section className="dark py-0 md:py-0 md:px-0 gap-0">
         <Hero />
       </Section>

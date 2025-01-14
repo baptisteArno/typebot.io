@@ -144,7 +144,7 @@ export const UseCases = ({ className }: { className?: string }) => {
                 <img
                   src={useCase.images.bot.src}
                   alt={useCase.images.bot.alt}
-                  className="max-w-full md:max-w-64  p-[2px] md:p-2"
+                  className="max-w-20 md:max-w-64 p-[2px] md:p-2"
                   width="1179px"
                   height="2556px"
                 />
