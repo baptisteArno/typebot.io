@@ -6,12 +6,59 @@ import { AnimatePresence, motion } from "motion/react";
 import { type SVGProps, useEffect, useRef, useState } from "react";
 import { breakpoints } from "../../../constants";
 import { useWindowSize } from "../hooks/useWindowSize";
-import type { FeatureCardData } from "../types";
 import deployVideoSrc from "./assets/deploy.mp4";
 import dragDropVideoSrc from "./assets/drag-drop.mp4";
 import realTimeResultVideoSrc from "./assets/real-time-result.mp4";
 
 const carouselItemClassName = "carousel-item";
+
+const TopConnector = ({ className }: SVGProps<SVGSVGElement>) => (
+  <svg
+    width="110"
+    height="220"
+    viewBox="0 0 110 220"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    className={cn("-ml-2", className)}
+  >
+    <path
+      d="M109.53 214.53C109.823 214.237 109.823 213.763 109.53 213.47L104.757 208.697C104.464 208.404 103.99 208.404 103.697 208.697C103.404 208.99 103.404 209.464 103.697 209.757L107.939 214L103.697 218.243C103.404 218.536 103.404 219.01 103.697 219.303C103.99 219.596 104.464 219.596 104.757 219.303L109.53 214.53ZM0.5 1.75H31V0.25H0.5V1.75ZM35.25 6V209H36.75V6H35.25ZM41 214.75H109V213.25H41V214.75ZM35.25 209C35.25 212.176 37.8244 214.75 41 214.75V213.25C38.6528 213.25 36.75 211.347 36.75 209H35.25ZM31 1.75C33.3472 1.75 35.25 3.65279 35.25 6H36.75C36.75 2.82436 34.1756 0.25 31 0.25V1.75Z"
+      fill="#FF5924"
+    />
+  </svg>
+);
+
+const MiddleConnector = ({ className }: SVGProps<SVGSVGElement>) => (
+  <svg
+    width="109"
+    height="34"
+    viewBox="0 0 109 34"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    className={cn("-ml-2", className)}
+  >
+    <path
+      d="M108.53 28.5303C108.823 28.2374 108.823 27.7626 108.53 27.4697L103.757 22.6967C103.464 22.4038 102.99 22.4038 102.697 22.6967C102.404 22.9896 102.404 23.4645 102.697 23.7574L106.939 28L102.697 32.2426C102.404 32.5355 102.404 33.0104 102.697 33.3033C102.99 33.5962 103.464 33.5962 103.757 33.3033L108.53 28.5303ZM0 1.75H30V0.25H0V1.75ZM34.25 6V23H35.75V6H34.25ZM40 28.75H108V27.25H40V28.75ZM34.25 23C34.25 26.1756 36.8244 28.75 40 28.75V27.25C37.6528 27.25 35.75 25.3472 35.75 23H34.25ZM30 1.75C32.3472 1.75 34.25 3.65279 34.25 6H35.75C35.75 2.82436 33.1756 0.25 30 0.25V1.75Z"
+      fill="#FF5924"
+    />
+  </svg>
+);
+
+const BottomConnector = ({ className }: SVGProps<SVGSVGElement>) => (
+  <svg
+    width="109"
+    height="165"
+    viewBox="0 0 109 165"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    className={cn("-ml-2", className)}
+  >
+    <path
+      d="M108.53 6.53033C108.823 6.23744 108.823 5.76256 108.53 5.46967L103.757 0.696699C103.464 0.403806 102.99 0.403806 102.697 0.696699C102.404 0.989593 102.404 1.46447 102.697 1.75736L106.939 6L102.697 10.2426C102.404 10.5355 102.404 11.0104 102.697 11.3033C102.99 11.5962 103.464 11.5962 103.757 11.3033L108.53 6.53033ZM0 164.75H30V163.25H0V164.75ZM35.75 159V11H34.25V159H35.75ZM40 6.75H108V5.25H40V6.75ZM35.75 11C35.75 8.65279 37.6528 6.75 40 6.75V5.25C36.8244 5.25 34.25 7.82437 34.25 11H35.75ZM30 164.75C33.1756 164.75 35.75 162.176 35.75 159H34.25C34.25 161.347 32.3472 163.25 30 163.25V164.75Z"
+      fill="#FF5924"
+    />
+  </svg>
+);
 
 const features = [
   {
@@ -28,6 +75,7 @@ const features = [
     video: {
       src: dragDropVideoSrc,
     },
+    Connector: TopConnector,
   },
   {
     title: {
@@ -43,6 +91,7 @@ const features = [
     video: {
       src: deployVideoSrc,
     },
+    Connector: MiddleConnector,
   },
   {
     title: {
@@ -54,8 +103,10 @@ const features = [
     video: {
       src: realTimeResultVideoSrc,
     },
+    link: undefined,
+    Connector: BottomConnector,
   },
-] as const satisfies FeatureCardData[];
+] as const;
 
 export const MainFeatures = () => {
   const [currentFeatureIndex, setCurrentFeatureIndex] = useState(0);
@@ -104,25 +155,44 @@ export const MainFeatures = () => {
   };
 
   return (
-    <div className="w-full gap-2 flex flex-col md:flex-row md:items-start max-w-7xl md:gap-0">
+    <div className="w-full gap-2 flex flex-col md:flex-row md:items-start justify-center max-w-7xl md:gap-[110px]">
       <div
         ref={carouselRef}
-        className="flex md:flex-col gap-2 items-end overflow-x-auto md:overflow-hidden snap-x scroll-px-4 snap-always no-scrollbar px-4 snap-mandatory md:max-w-xl md:px-0"
+        className="flex md:flex-col gap-2 items-end overflow-x-auto md:overflow-visible snap-x scroll-px-4 snap-always no-scrollbar px-4 snap-mandatory md:max-w-xl md:px-0"
       >
         {features.map((feature, index) => (
-          <FeatureCard
+          <div
             key={feature.title.main}
-            className={clsx(
-              carouselItemClassName,
-              "min-w-[calc(100%-.75rem)] snap-start cursor-pointer",
-            )}
-            feature={feature}
-            isExpanded={isMobile || feature.title === currentFeature.title}
-            onClick={() => expandCardIfDesktop(index)}
-          />
+            className="min-w-[calc(100%-.75rem)] md:min-w-0 flex relative items-center snap-start cursor-pointer"
+          >
+            <FeatureCard
+              className={clsx(carouselItemClassName)}
+              feature={feature}
+              isExpanded={isMobile || feature.title === currentFeature.title}
+              onClick={() => expandCardIfDesktop(index)}
+            />
+            <div
+              className={cn(
+                "flex absolute -right-[110px]",
+                feature.title === currentFeature.title
+                  ? "motion-opacity-in-0 motion-delay-100"
+                  : "opacity-0",
+                index === features.length - 1 && "items-end",
+              )}
+            >
+              <div
+                className={cn(
+                  "size-4 bg-gray-4 border-white border rounded-full items-center justify-center flex",
+                  index === features.length - 1 ? "-mb-[7px]" : "-mt-[6px]",
+                )}
+              >
+                <div className="size-2 border-2 border-orange-9 rounded-full " />
+              </div>
+              <feature.Connector className="hidden md:flex -z-10" />
+            </div>
+          </div>
         ))}
       </div>
-      <Connector className="hidden md:block" />
       <div className="bg-gray-12 rounded-2xl p-2 mx-4 md:mx-0 max-w-full aspect-square">
         <AnimatePresence mode="popLayout">
           <motion.video
@@ -152,7 +222,7 @@ const FeatureCard = ({
   onClick,
 }: {
   isExpanded?: boolean;
-  feature: FeatureCardData;
+  feature: (typeof features)[number];
   className?: string;
   onClick: () => void;
 }) => {
@@ -184,123 +254,3 @@ const FeatureCard = ({
     </Card>
   );
 };
-
-const Connector = ({ className }: SVGProps<SVGSVGElement>) => (
-  <svg
-    width="119"
-    height="266"
-    viewBox="0 0 119 266"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    className={cn("-ml-2", className)}
-  >
-    <path
-      d="M118.53 260.53C118.823 260.237 118.823 259.763 118.53 259.47L113.757 254.697C113.464 254.404 112.99 254.404 112.697 254.697C112.404 254.99 112.404 255.464 112.697 255.757L116.939 260L112.697 264.243C112.404 264.536 112.404 265.01 112.697 265.303C112.99 265.596 113.464 265.596 113.757 265.303L118.53 260.53ZM9.5 14.75H40V13.25H9.5V14.75ZM44.25 19V255H45.75V19H44.25ZM50 260.75H118V259.25H50V260.75ZM44.25 255C44.25 258.176 46.8244 260.75 50 260.75V259.25C47.6528 259.25 45.75 257.347 45.75 255H44.25ZM40 14.75C42.3472 14.75 44.25 16.6528 44.25 19H45.75C45.75 15.8244 43.1756 13.25 40 13.25V14.75Z"
-      fill="#FF5924"
-    />
-    <g filter="url(#filter0_dd_589_8052)">
-      <circle cx="16" cy="14" r="8" fill="#ECECEC" />
-      <circle cx="16" cy="14" r="7.5" stroke="white" />
-    </g>
-    <g filter="url(#filter1_d_589_8052)">
-      <circle
-        cx="16.0026"
-        cy="14.0002"
-        r="3.66667"
-        stroke="#FF5924"
-        strokeWidth="2"
-        shapeRendering="crispEdges"
-      />
-    </g>
-    <defs>
-      <filter
-        id="filter0_dd_589_8052"
-        x="0"
-        y="0"
-        width="32"
-        height="32"
-        filterUnits="userSpaceOnUse"
-        colorInterpolationFilters="sRGB"
-      >
-        <feFlood floodOpacity="0" result="BackgroundImageFix" />
-        <feColorMatrix
-          in="SourceAlpha"
-          type="matrix"
-          values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-          result="hardAlpha"
-        />
-        <feOffset dy="1" />
-        <feGaussianBlur stdDeviation="1" />
-        <feComposite in2="hardAlpha" operator="out" />
-        <feColorMatrix
-          type="matrix"
-          values="0 0 0 0 0.0901961 0 0 0 0 0.0901961 0 0 0 0 0.0901961 0 0 0 0.08 0"
-        />
-        <feBlend
-          mode="normal"
-          in2="BackgroundImageFix"
-          result="effect1_dropShadow_589_8052"
-        />
-        <feColorMatrix
-          in="SourceAlpha"
-          type="matrix"
-          values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-          result="hardAlpha"
-        />
-        <feOffset dy="2" />
-        <feGaussianBlur stdDeviation="4" />
-        <feComposite in2="hardAlpha" operator="out" />
-        <feColorMatrix
-          type="matrix"
-          values="0 0 0 0 0.0901961 0 0 0 0 0.0901961 0 0 0 0 0.0901961 0 0 0 0.12 0"
-        />
-        <feBlend
-          mode="normal"
-          in2="effect1_dropShadow_589_8052"
-          result="effect2_dropShadow_589_8052"
-        />
-        <feBlend
-          mode="normal"
-          in="SourceGraphic"
-          in2="effect2_dropShadow_589_8052"
-          result="shape"
-        />
-      </filter>
-      <filter
-        id="filter1_d_589_8052"
-        x="10.3359"
-        y="9.3335"
-        width="11.333"
-        height="11.3335"
-        filterUnits="userSpaceOnUse"
-        colorInterpolationFilters="sRGB"
-      >
-        <feFlood floodOpacity="0" result="BackgroundImageFix" />
-        <feColorMatrix
-          in="SourceAlpha"
-          type="matrix"
-          values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-          result="hardAlpha"
-        />
-        <feOffset dy="1" />
-        <feGaussianBlur stdDeviation="0.5" />
-        <feComposite in2="hardAlpha" operator="out" />
-        <feColorMatrix
-          type="matrix"
-          values="0 0 0 0 0.0901961 0 0 0 0 0.0901961 0 0 0 0 0.0901961 0 0 0 0.12 0"
-        />
-        <feBlend
-          mode="normal"
-          in2="BackgroundImageFix"
-          result="effect1_dropShadow_589_8052"
-        />
-        <feBlend
-          mode="normal"
-          in="SourceGraphic"
-          in2="effect1_dropShadow_589_8052"
-          result="shape"
-        />
-      </filter>
-    </defs>
-  </svg>
-);
