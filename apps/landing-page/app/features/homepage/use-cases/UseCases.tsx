@@ -1,35 +1,58 @@
 import { Button } from "@/components/Button";
 import { Progress } from "@/components/Progress";
 import { cn } from "@/lib/utils";
-import { motion } from "motion/react";
-import { useEffect, useState } from "react";
-import marketingSrc from "./assets/marketing.png";
-import productSrc from "./assets/product.png";
-import salesSrc from "./assets/sales.png";
+import { useInView } from "motion/react";
+import { useEffect, useRef, useState } from "react";
+import marketingBotSrc from "./assets/marketing-bot.png";
+import marketingBuilderSrc from "./assets/marketing-builder.png";
+import salesBotSrc from "./assets/sales-bot.png";
+import salesBuilderSrc from "./assets/sales-builder.png";
+import supportAndProductBotSrc from "./assets/support-bot.png";
+import supportAndProductBuilderSrc from "./assets/support-builder.png";
 
 const useCases = [
   {
     label: "Marketing",
-    image: {
-      src: marketingSrc,
-      alt: "Marketing illustration",
+    images: {
+      builder: {
+        src: marketingBuilderSrc,
+        alt: "An example of a marketing bot being built in Typebot",
+      },
+      bot: {
+        src: marketingBotSrc,
+        alt: "A WhatsApp screenshot of a marketing bot",
+      },
     },
   },
   {
     label: "Support & Product",
-    image: {
-      src: productSrc,
-      alt: "Product illustration",
+    images: {
+      builder: {
+        src: supportAndProductBuilderSrc,
+        alt: "An example of a support bot being built in Typebot",
+      },
+      bot: {
+        src: supportAndProductBotSrc,
+        alt: "A web widget screenshot of a support bot",
+      },
     },
   },
   {
     label: "Sales",
-    image: {
-      src: salesSrc,
-      alt: "Sales illustration",
+    images: {
+      builder: {
+        src: salesBuilderSrc,
+        alt: "An example of a sales bot being built in Typebot",
+      },
+      bot: {
+        src: salesBotSrc,
+        alt: "A WhatsApp screenshot of a automated sales bot",
+      },
     },
   },
 ] as const;
+
+let interval: NodeJS.Timer;
 
 export const UseCases = ({ className }: { className?: string }) => {
   const [isAutoProgressEnabled, setIsAutoProgressEnabled] = useState(true);
@@ -41,9 +64,11 @@ export const UseCases = ({ className }: { className?: string }) => {
     index: 0,
     value: 0,
   });
-  let interval: NodeJS.Timer;
+  const containerRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(containerRef);
 
   useEffect(() => {
+    if (interval || !isInView) return;
     interval = setInterval(() => {
       setPreviousIndex(currentUseCase.index);
       setCurrentUseCase((prev) => {
@@ -59,7 +84,7 @@ export const UseCases = ({ className }: { className?: string }) => {
     }, 100);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [isInView]);
 
   const selectUseCase = (index: number) => {
     setPreviousIndex(currentUseCase.index);
@@ -77,8 +102,13 @@ export const UseCases = ({ className }: { className?: string }) => {
     return;
   };
 
+  console.log(currentUseCase.index, previousIndex);
+
   return (
-    <div className={cn("flex flex-col gap-10 px-4 md:pt-10", className)}>
+    <div
+      className={cn("flex flex-col gap-16 md:gap-20 px-4 md:pt-10", className)}
+      ref={containerRef}
+    >
       <div className="flex flex-col items-center gap-8 md:12">
         <div className="flex items-end gap-4 md:gap-12">
           {useCases.map((useCase, index) => (
@@ -91,28 +121,39 @@ export const UseCases = ({ className }: { className?: string }) => {
             </UsecaseTitle>
           ))}
         </div>
-        <motion.div
-          key={currentUseCase.index}
-          transition={{
-            type: "spring",
-            bounce: 0,
-            duration: 0.5,
-          }}
-          initial={{
-            opacity: 0,
-            x: previousIndex < currentUseCase.index ? 30 : -30,
-          }}
-          animate={{
-            opacity: 1,
-            x: 0,
-          }}
-        >
-          <img
-            src={useCases[currentUseCase.index].image.src}
-            alt={useCases[currentUseCase.index].image.alt}
-            className="rounded-md max-w-full md:max-w-6xl"
-          />
-        </motion.div>
+        <div className="relative">
+          {useCases.map((useCase, index) => (
+            <div
+              key={index}
+              className={cn(
+                currentUseCase.index === index
+                  ? previousIndex > index
+                    ? "relative motion-opacity-in-0 -motion-translate-x-in-[20px]"
+                    : "relative motion-opacity-in-0 motion-translate-x-in-[20px]"
+                  : "absolute pointer-events-none opacity-0",
+              )}
+            >
+              <figure className="border-2 border-gray-8 rounded-lg md:rounded-2xl overflow-hidden outline-4 md:outline-8 outline-gray-12 -outline-offset-[5px] md:-outline-offset-[10px] outline md:mr-24">
+                <img
+                  src={useCase.images.builder.src}
+                  alt={useCase.images.builder.alt}
+                  className="max-w-full md:max-w-5xl"
+                  width="3456px"
+                  height="2158px"
+                />
+              </figure>
+              <figure className="border-[0.5px] md:border-2 border-gray-8 rounded-xl md:rounded-[2rem] overflow-hidden outline-2 md:outline-8 outline-gray-12 -outline-offset-[2.5px] md:-outline-offset-[10px] outline absolute right-0 -bottom-4 md:-bottom-10">
+                <img
+                  src={useCase.images.bot.src}
+                  alt={useCase.images.bot.alt}
+                  className="max-w-full md:max-w-64  p-[2px] md:p-2"
+                  width="1179px"
+                  height="2556px"
+                />
+              </figure>
+            </div>
+          ))}
+        </div>
       </div>
       <Cta />
     </div>
