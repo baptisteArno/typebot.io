@@ -88,7 +88,7 @@ const nextConfig = {
       beforeFiles: (process.env.LANDING_PAGE_URL
         ? landingPageReferers
             .map((path) => ({
-              source: "/_next/static/:static*",
+              source: "/_build/assets/:asset*",
               has: [
                 {
                   type: "header",
@@ -96,11 +96,11 @@ const nextConfig = {
                   value: `${currentOrigin}${path}${optionalQueryParams}`,
                 },
               ],
-              destination: `${process.env.LANDING_PAGE_URL}/_next/static/:static*`,
+              destination: `${process.env.LANDING_PAGE_URL}/_build/assets/:asset*`,
             }))
             .concat(
               landingPageReferers.map((path) => ({
-                source: "/typebots/:typebot*",
+                source: "/blog-assets/:asset*",
                 has: [
                   {
                     type: "header",
@@ -108,12 +108,12 @@ const nextConfig = {
                     value: `${currentOrigin}${path}${optionalQueryParams}`,
                   },
                 ],
-                destination: `${process.env.LANDING_PAGE_URL}/typebots/:typebot*`,
+                destination: `${process.env.LANDING_PAGE_URL}/blog-assets/:asset*`,
               })),
             )
             .concat(
               landingPageReferers.map((path) => ({
-                source: "/styles/:style*",
+                source: "/fonts/:font*",
                 has: [
                   {
                     type: "header",
@@ -121,7 +121,7 @@ const nextConfig = {
                     value: `${currentOrigin}${path}${optionalQueryParams}`,
                   },
                 ],
-                destination: `${process.env.LANDING_PAGE_URL}/styles/:style*`,
+                destination: `${process.env.LANDING_PAGE_URL}/fonts/:font*`,
               })),
             )
             .concat(
@@ -134,19 +134,6 @@ const nextConfig = {
                   },
                 ],
                 destination: `${process.env.LANDING_PAGE_URL}${path}`,
-              })),
-            )
-            .concat(
-              landingPageReferers.map((path) => ({
-                source: "/images/:image*",
-                has: [
-                  {
-                    type: "header",
-                    key: "referer",
-                    value: `${currentOrigin}${path}${optionalQueryParams}`,
-                  },
-                ],
-                destination: `${process.env.LANDING_PAGE_URL}/images/:image*`,
               })),
             )
         : []

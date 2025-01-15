@@ -29,7 +29,6 @@ export default defineConfig({
   vite: {
     resolve: {
       alias: {
-        $fonts: resolve("./app/assets/fonts"),
         $magicBackgrounds: resolve("./app/assets/magicBackgrounds"),
         // https://github.com/prisma/prisma/issues/12504
         ".prisma/client/index-browser":
