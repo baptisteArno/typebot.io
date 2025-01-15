@@ -15,8 +15,8 @@ export const MessageSquareGradientIcon = (props: SVGProps<SVGSVGElement>) => (
         gradientUnits="userSpaceOnUse"
         gradientTransform="translate(18.9499 2.42947) rotate(113.659) scale(19.8108 23.1029)"
       >
-        <stop stop-color="#FF4D19" />
-        <stop offset="1" stop-color="#9D84FE" />
+        <stop stopColor="#FF4D19" />
+        <stop offset="1" stopColor="#9D84FE" />
       </radialGradient>
     </defs>
   </svg>

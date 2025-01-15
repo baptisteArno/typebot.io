@@ -7,8 +7,10 @@ import {
   Outlet,
   ScrollRestoration,
   createRootRoute,
+  useNavigate,
 } from "@tanstack/react-router";
 import { Meta, Scripts } from "@tanstack/start";
+import { z } from "@typebot.io/zod";
 import { Header } from "app/components/Header";
 import { Suspense } from "react";
 
@@ -30,9 +32,27 @@ export const Route = createRootRoute({
   }),
   component: RootComponent,
   notFoundComponent: () => <NotFound />,
+  validateSearch: z.object({
+    isHeaderOpened: z.boolean().optional(),
+  }),
 });
 
 function RootComponent() {
+  const { isHeaderOpened } = Route.useSearch();
+  const navigate = useNavigate({ from: Route.fullPath });
+
+  const openHeader = () => {
+    navigate({
+      search: { isHeaderOpened: true },
+      resetScroll: false,
+    });
+  };
+  const closeHeader = () => {
+    navigate({
+      search: { isHeaderOpened: undefined },
+    });
+  };
+
   return (
     <html lang="en">
       <head>
@@ -53,7 +73,11 @@ window.$RefreshSig$ = () => (type) => type`,
         <div className="flex flex-col items-stretch">
           <Portal>
             <div className="fixed top-4 md:bottom-12 md:top-auto w-full z-10">
-              <Header />
+              <Header
+                onOpen={openHeader}
+                onClose={closeHeader}
+                isOpened={isHeaderOpened}
+              />
             </div>
           </Portal>
           <Outlet />

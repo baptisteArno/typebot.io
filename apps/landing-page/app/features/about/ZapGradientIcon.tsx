@@ -15,8 +15,8 @@ export const ZapGradientIcon = (props: SVGProps<SVGSVGElement>) => (
         gradientUnits="userSpaceOnUse"
         gradientTransform="translate(15.3052 2.92208) rotate(107.42) scale(21.0743 19.0986)"
       >
-        <stop stop-color="#FF4D19" />
-        <stop offset="1" stop-color="#9D84FE" />
+        <stop stopColor="#FF4D19" />
+        <stop offset="1" stopColor="#9D84FE" />
       </radialGradient>
     </defs>
   </svg>

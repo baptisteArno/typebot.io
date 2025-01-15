@@ -15,8 +15,8 @@ export const HeartGradientIcon = (props: SVGProps<SVGSVGElement>) => (
         y2="8.44515"
         gradientUnits="userSpaceOnUse"
       >
-        <stop stop-color="#FF491F" />
-        <stop offset="1" stop-color="#C13EAA" />
+        <stop stopColor="#FF491F" />
+        <stop offset="1" stopColor="#C13EAA" />
       </linearGradient>
     </defs>
   </svg>

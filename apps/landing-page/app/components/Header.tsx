@@ -10,40 +10,49 @@ import {
 } from "@/constants";
 import { useWindowSize } from "@/features/homepage/hooks/useWindowSize";
 import { cn } from "@/lib/utils";
-import { useRouter } from "@tanstack/react-router";
+import { Link, useRouter } from "@tanstack/react-router";
 import { CloseIcon } from "@typebot.io/ui/icons/CloseIcon";
 import { MenuIcon } from "@typebot.io/ui/icons/MenuIcon";
 import clsx from "clsx";
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import React from "react";
-import { ButtonLink } from "./link";
+import { ButtonLink, TextLink } from "./link";
 
 const links = [
   {
-    label: "Documentation",
-    href: docsUrl,
-  },
-  {
     label: "Pricing",
     to: "/pricing",
-  },
-  {
-    label: "GitHub",
-    href: githubRepoUrl,
   },
   {
     label: "Blog",
     to: "/blog",
   },
   {
+    label: "Documentation",
+    href: docsUrl,
+  },
+  {
+    label: "GitHub",
+    href: githubRepoUrl,
+  },
+  {
     label: "Community",
     href: discordUrl,
   },
+  {
+    label: "About",
+    to: "/about",
+  },
 ] as const;
 
-export const Header = () => {
-  const [isOpened, setIsOpened] = useState(false);
+type HeaderProps = {
+  isOpened?: boolean;
+  onOpen: () => void;
+  onClose: () => void;
+};
+
+export const Header = ({ isOpened = false, onOpen, onClose }: HeaderProps) => {
   const headerRef = useRef<HTMLDivElement>(null);
   const [appearance, setAppearance] = useState<"light" | "dark">("dark");
   const { width: windowWidth, height: windowHeight } = useWindowSize();
@@ -101,7 +110,11 @@ export const Header = () => {
   }, [windowWidth, windowHeight, setAppearance, router]);
 
   const toggleHeaderExpansion = () => {
-    setIsOpened((prev) => !prev);
+    if (isOpened) {
+      onClose();
+    } else {
+      onOpen();
+    }
   };
 
   return (
@@ -138,18 +151,22 @@ const Mobile = React.forwardRef<HTMLElement, Props>(function Mobile(
   return (
     <motion.nav
       ref={ref}
-      className={clsx(
+      className={cn(
         "flex flex-col gap-8 justify-start backdrop-blur-md rounded-lg border-2 w-[calc(100%-2rem)] will-change-transform duration-300 transition-colors",
         appearance === "light"
           ? "bg-white/50"
-          : "dark bg-gray-1/60 text-gray-12",
+          : isOpened
+            ? "dark bg-gray-1/90 text-gray-12"
+            : "dark bg-gray-1/60 text-gray-12",
         className,
       )}
       transition={{ duration: 0.4, type: "spring", bounce: 0.15 }}
-      animate={{ height: isOpened ? "calc(100vh - 7rem)" : "auto" }}
+      animate={{ height: isOpened ? "calc(100vh - 2rem)" : "auto" }}
     >
       <div className="flex items-center justify-between px-4 py-2">
-        <TypebotLogoFull />
+        <Link to="/">
+          <TypebotLogoFull />
+        </Link>
         <IconButton
           aria-label={isOpened ? "Close menu" : "Open menu"}
           variant="ghost"
@@ -162,32 +179,31 @@ const Mobile = React.forwardRef<HTMLElement, Props>(function Mobile(
       <AnimatePresence mode="popLayout">
         {isOpened && (
           <motion.nav
-            className="flex flex-col gap-8 px-4"
+            className="flex flex-col justify-between h-full gap-8 px-4 pb-2"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
+            <div className="flex flex-col gap-6">
+              {links.map((link) => (
+                <TextLink
+                  key={link.label}
+                  className="no-underline text-xl font-normal"
+                  href={"href" in link ? link.href : undefined}
+                  target={"href" in link ? "_blank" : undefined}
+                  to={"to" in link ? link.to : undefined}
+                >
+                  {link.label}
+                </TextLink>
+              ))}
+            </div>
             <ButtonLink
+              variant="cta"
               href={signinUrl}
               className={buttonVariants({ size: "lg", variant: "outline" })}
             >
               Sign in
             </ButtonLink>
-            <hr className="border-gray-7" />
-            <div className="grid grid-cols-2 gap-2">
-              {links.map((link) => (
-                <ButtonLink
-                  key={link.label}
-                  className={cn(
-                    buttonVariants({ variant: "outline", size: "lg" }),
-                  )}
-                  href={"href" in link ? link.href : undefined}
-                  to={"to" in link ? link.to : undefined}
-                >
-                  {link.label}
-                </ButtonLink>
-              ))}
-            </div>
           </motion.nav>
         )}
       </AnimatePresence>
@@ -221,7 +237,7 @@ const desktopLinks = [
 const Desktop = React.forwardRef<
   HTMLElement,
   Pick<Props, "appearance" | "className">
->(function MobileHeader({ appearance, className }, ref) {
+>(function Desktop({ appearance, className }, ref) {
   return (
     <nav
       ref={ref}
