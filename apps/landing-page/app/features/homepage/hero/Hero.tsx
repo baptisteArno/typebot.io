@@ -45,7 +45,7 @@ export const Hero = () => (
       </Button>
     </div>
     <div
-      className="h-screen w-full sticky inset-0 px-0 rounded-3xl animate-scale-in opacity-0 hidden md:block bg-[url('$magicBackgrounds/magic-background-desktop.png')] bg-no-repeat bg-[length:100%]"
+      className="h-screen w-full sticky inset-0 px-0 rounded-3xl animate-scale-in opacity-0 hidden md:motion-reduce:hidden md:supports-scrollanimation:block bg-[url('$magicBackgrounds/magic-background-desktop.png')] bg-no-repeat bg-[length:100%]"
       style={{
         animationTimeline: "--hero",
         animationRange: "contain 0% exit-crossing 50%",

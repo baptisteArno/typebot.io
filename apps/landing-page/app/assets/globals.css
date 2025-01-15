@@ -135,4 +135,12 @@
     mix-blend-mode: plus-lighter;
     filter: blur(295px);
   }
+
+  details > summary {
+    list-style: none;
+  }
+
+  details > summary::-webkit-details-marker {
+    display: none;
+  }
 }

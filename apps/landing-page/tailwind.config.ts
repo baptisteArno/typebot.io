@@ -7,6 +7,9 @@ export default {
     hoverOnlyWhenSupported: true,
   },
   theme: {
+    supports: {
+      scrollanimation: "animation-timeline: scroll()",
+    },
     colors: {
       gray: getColorScale("gray"),
       blue: getColorScale("blue"),
