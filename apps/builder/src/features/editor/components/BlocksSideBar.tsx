@@ -49,7 +49,11 @@ export const BlocksSideBar = () => {
     x: 0,
     y: 0,
   });
-  const [isLocked, setIsLocked] = useState(true);
+  const [isLocked, setIsLocked] = useState(
+    localStorage.getItem("leftSidebarLocked")
+      ? localStorage.getItem("leftSidebarLocked") === "true"
+      : false,
+  );
   const [isExtended, setIsExtended] = useState(true);
   const [searchInput, setSearchInput] = useState("");
 
@@ -86,7 +90,10 @@ export const BlocksSideBar = () => {
   };
   useEventListener("mouseup", handleMouseUp);
 
-  const handleLockClick = () => setIsLocked(!isLocked);
+  const handleLockClick = () => {
+    localStorage.setItem("leftSidebarLocked", String(!isLocked));
+    setIsLocked(!isLocked);
+  };
 
   const handleDockBarEnter = () => {
     closeSideBar.flush();
