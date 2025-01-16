@@ -1,4 +1,11 @@
-import { Stack, Tag, Text, Wrap, useColorModeValue } from "@chakra-ui/react";
+import {
+  Box,
+  Stack,
+  Tag,
+  Text,
+  Wrap,
+  useColorModeValue,
+} from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { defaultConditionItemContent } from "@typebot.io/blocks-logic/condition/constants";
 import { ComparisonOperators } from "@typebot.io/conditions/constants";
@@ -21,7 +28,7 @@ export const ConditionContent = ({
   const { t } = useTranslate();
   const comparisonValueBg = useColorModeValue("gray.200", "gray.700");
   return (
-    <Stack>
+    <Stack maxW={"100%"} direction="row" spacing={1}>
       {condition?.comparisons?.map((comparison, idx) => {
         const variable = variables.find(byId(comparison.variableId));
         return (
@@ -38,9 +45,19 @@ export const ConditionContent = ({
               </Text>
             )}
             {variable?.name && (
-              <Tag bgColor="orange.400" color="white" size="sm">
+              <Box
+                maxW={"100%"}
+                fontSize={"small"}
+                bgColor="orange.400"
+                color="white"
+                borderRadius="0.375rem"
+                px={1.5}
+                py={0.5}
+                fontWeight={"medium"}
+                boxShadow={"md"}
+              >
                 {variable.name}
-              </Tag>
+              </Box>
             )}
             {comparison.comparisonOperator && (
               <Text fontSize={size}>

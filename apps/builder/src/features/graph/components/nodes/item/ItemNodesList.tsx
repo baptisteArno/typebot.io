@@ -145,7 +145,7 @@ export const ItemNodesList = ({
   const groupId = typebot?.groups.at(groupIndex)?.id;
 
   return (
-    <Stack flex={1} spacing={1} maxW="full" onClick={stopPropagating}>
+    <Stack flex={1} spacing={1} maxWidth={"90%"} onClick={stopPropagating}>
       <PlaceholderNode
         isVisible={showPlaceholders}
         isExpanded={expandedPlaceholderIndex === 0}
