@@ -54,7 +54,6 @@ export const ConditionContent = ({
                 px={1.5}
                 py={0.5}
                 fontWeight={"medium"}
-                boxShadow={"md"}
               >
                 {variable.name}
               </Box>
