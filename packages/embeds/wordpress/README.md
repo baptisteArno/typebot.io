@@ -6,6 +6,9 @@ Welcome to the Typebot WordPress Plugin GitHub repository. This is the code sour
 
 The project is still a mess. I'd like to make it fully automatic (with GitHub workflows). It would be great to have a repo similar to [this one](https://github.com/plausible/wordpress)
 
-## Getting Started
+## Init SVN
 
-// TO-DO
+```sh
+cd packages/embeds/wordpress
+svn co https://plugins.svn.wordpress.org/typebot .
+```
