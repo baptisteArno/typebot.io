@@ -1,6 +1,7 @@
 import { MoreInfoTooltip } from "@/components/MoreInfoTooltip";
 import { SwitchWithRelatedSettings } from "@/components/SwitchWithRelatedSettings";
 import { TextInput } from "@/components/inputs";
+import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
 import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
 import { FormControl, FormLabel, Stack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
@@ -28,6 +29,9 @@ export const ButtonsBlockSettings = ({ options, onOptionsChange }: Props) => {
     onOptionsChange({ ...options, variableId: variable?.id });
   const updateDynamicDataVariable = (variable?: Variable) =>
     onOptionsChange({ ...options, dynamicVariableId: variable?.id });
+  const updateAreInitialSearchButtonsVisible = (
+    areInitialSearchButtonsVisible: boolean,
+  ) => onOptionsChange({ ...options, areInitialSearchButtonsVisible });
 
   return (
     <Stack spacing={4}>
@@ -54,6 +58,14 @@ export const ButtonsBlockSettings = ({ options, onOptionsChange }: Props) => {
         }
         onCheckChange={updateIsSearchable}
       >
+        <SwitchWithLabel
+          label="Default display buttons?"
+          initialValue={
+            options?.areInitialSearchButtonsVisible ??
+            defaultChoiceInputOptions.areInitialSearchButtonsVisible
+          }
+          onCheckChange={updateAreInitialSearchButtonsVisible}
+        />
         <TextInput
           label={t("blocks.inputs.settings.input.placeholder.label")}
           defaultValue={
