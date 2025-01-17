@@ -34,6 +34,7 @@
     "react-hook-form": "^7.51.2",
     "react-icons": "^4.4.0",
     "react-select": "^5.7.7",
+    "socket.io-client": "^4.8.1",
     "zod": "^3.22.4"
   }
 }

@@ -1,8 +1,8 @@
 import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Button, Flex, FormLabel, Icon, Input, InputGroup, InputRightElement, Select, Stack, Text, useToast } from "@chakra-ui/react";
-import axios from "axios";
 import { CodeEditor } from "components/shared/CodeEditor";
 import { TableList, TableListItemProps } from "components/shared/TableList";
 import { useTypebot } from "contexts/TypebotContext";
+import { useSocket } from "hooks/useSocket";
 import { ExternalEventOptions, ExternalEventStep, ResponseVariableMapping, TextBubbleContent } from "models";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { MdCheckCircle, MdContentCopy, MdInfo } from "react-icons/md";
@@ -29,6 +29,7 @@ export const ExternalEvent = React.memo(function ExternalEvent({
   const [timeout, setTimeout] = useState<string>("5")
   const [url, setUrl] = useState<string>("")
   const { typebot } = useTypebot()
+  const { data } = useSocket(`bot-${typebot?.id}-component-${step.blockId}`)
 
   const color = "#1366C9";
   const MAX_LENGHT_TEXT = 500;
@@ -68,26 +69,27 @@ export const ExternalEvent = React.memo(function ExternalEvent({
     setUrl(url)
   }, [])
 
-  const makeRequest = (async () => {
-    try {
-      const { data } = await axios.get(`${url}`);
-      const json = JSON.stringify(data, undefined, 2);
 
-      if (!validationJson(json)) return;
-      setRequestResponse(json);
+  // const makeRequest = (async () => {
+  //   try {
+  //     // const { data } = await axios.get(`${url}`);
+  //     // const json = JSON.stringify(data, undefined, 2);
 
-      step.options.body = JSON.stringify(json);
+  //     // if (!validationJson(json)) return;
+  //     // setRequestResponse(json);
 
-      setRequest("receive");
-      setResponseKeys(getDeepKeys(data))
+  //     step.options.body = JSON.stringify(json);
 
-      setSuccessTest(true);
-      successToast({ title: 'Sucesso ao fazer requisição' })
-    } catch (err: any) {
-      errorToast({ title: 'Erro ao fazer requisição' })
-      setSuccessTest(false);
-    }
-  })
+  //     setRequest("receive");
+  //     setResponseKeys(getDeepKeys(data))
+
+  //     setSuccessTest(true);
+  //     successToast({ title: 'Sucesso ao fazer requisição' })
+  //   } catch (err: any) {
+  //     errorToast({ title: 'Erro ao fazer requisição' })
+  //     setSuccessTest(false);
+  //   }
+  // })
 
   const validationJson = (value: string) => {
     try {
@@ -160,6 +162,16 @@ export const ExternalEvent = React.memo(function ExternalEvent({
   }, [request])
 
   useEffect(() => {
+    if (!data) return;
+    console.log(data);
+    // step.options.body = JSON.stringify(data.json);
+    // setRequest("receive");
+    // setResponseKeys(getDeepKeys(data))
+    // setSuccessTest(true);
+    // successToast({ title: 'Sucesso ao fazer requisição' })
+  }, [data])
+
+  useEffect(() => {
     getUrl();
   }, [])
 
@@ -218,7 +230,7 @@ export const ExternalEvent = React.memo(function ExternalEvent({
           <Button
             bg={color}
             color="white"
-            onClick={makeRequest}
+            // onClick={makeRequest}
             w="100%"
           >
             Receber Requisição
