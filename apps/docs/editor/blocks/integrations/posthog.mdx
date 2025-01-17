@@ -1,0 +1,71 @@
+---
+title: Posthog
+---
+
+With the Posthog block, you can send events to Posthog and trigger your Posthog workflows. It uses the Posthog Node.js library to send server side events to Posthog, so that it works on non web browser devices.
+
+## How to find my `Project API Key` and `API Host`?
+
+To find your `Project API Key`, you need to go to your Posthog Settings page and click on the `General` link. Then scroll down to the Web Snippet and copy the api key and host info from the snippet;
+
+<Frame>
+  <img
+    src="/images/blocks/integrations/posthog/posthog-keys.png"
+    alt="Posthog Keys"
+  />
+</Frame>
+
+## Identify User
+
+This action allows you to identify a user in Posthog. It requires the `User ID` and can optionally take a set of `Properties` that will be added to the user profile.
+
+<Frame>
+  <img
+    src="/images/blocks/integrations/posthog/identify.png"
+    alt="Identify User"
+  />
+</Frame>
+
+## Identify Group
+
+This action allows you to identify a group in Posthog. It requires the `Group Type` and `Group Key`, and can optionally take `User ID` and a set of `Properties` that will be added to the group profile.
+
+<Frame>
+  <img
+    src="/images/blocks/integrations/posthog/group-identify.png"
+    alt="Identify Group"
+  />
+</Frame>
+
+## Capture
+
+This action allows you to capture an event in Posthog. It requires the `Event Name` and `User ID`, and can optionally take a set of `Properties`, as well as Group information.
+
+<Frame>
+  <img
+    src="/images/blocks/integrations/posthog/capture.png"
+    alt="Capture Event"
+  />
+</Frame>
+
+## PageView
+
+This action allows you to send a page view event to Posthog. It requires the User ID and can optionally take a set of `Properties`, such as such as $current_url, which will indicate the url for the page view.
+
+<Frame>
+  <img
+    src="/images/blocks/integrations/posthog/pageview.png"
+    alt="PageView"
+  />
+</Frame>
+
+## Get Flag
+
+This action allows you to get a flag from Posthog. It requires the `Flag Name` and `User ID`. You can choose between `Boolean` and `Multivariate` flags. If the flag is enabled for the user, the action will retrieve the flag payload and store it in the `Flag Payload` variable that you configure.
+
+<Frame>
+  <img
+    src="/images/blocks/integrations/posthog/flags.png"
+    alt="Get Flag"
+  />
+</Frame>
