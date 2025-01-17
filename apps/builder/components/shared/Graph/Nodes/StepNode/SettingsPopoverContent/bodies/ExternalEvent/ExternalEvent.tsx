@@ -29,7 +29,7 @@ export const ExternalEvent = React.memo(function ExternalEvent({
   const [timeout, setTimeout] = useState<string>("5")
   const [url, setUrl] = useState<string>("")
   const { typebot } = useTypebot()
-  const { data } = useSocket(`bot-${typebot?.id}-component-${step.blockId}`)
+  const { data } = useSocket(`${typebot?.id}`, `${step.blockId}`)
 
   const color = "#1366C9";
   const MAX_LENGHT_TEXT = 500;
