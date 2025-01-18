@@ -1,8 +1,8 @@
 import { createAction, option } from "@typebot.io/forge";
 import { isDefined, isEmpty } from "@typebot.io/lib/utils";
 import { auth } from "../auth";
-import { createClient } from "../createClient";
-import { createProperties } from "../createProperties";
+import { createClient } from "../helpers/createClient";
+import { createProperties } from "../helpers/createProperties";
 
 export const getFlag = createAction({
   auth,

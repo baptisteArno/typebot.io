@@ -1,7 +1,7 @@
 /** @jsxImportSource react */
 
 export const PosthogLogo = (props: React.SVGProps<SVGSVGElement>) => (
-  <svg width="25px" height="15px" viewBox="0 0 25 15" version="1.1">
+  <svg viewBox="0 0 25 15" {...props}>
     <g id="surface1">
       <path
         style={{

@@ -39,7 +39,7 @@ This action allows you to identify a group in Posthog. It requires the `Group Ty
 
 ## Capture
 
-This action allows you to capture an event in Posthog. It requires the `Event Name` and `User ID`, and can optionally take a set of `Properties`, as well as Group information.
+This action allows you to capture a custom event, a page view event, a screen view event or a survey sent event in Posthog. If you select `Custom`, it requires the `Event Name` to be set. It can optionally take a `User ID` set of `Properties`, as well as Group information.
 
 <Frame>
   <img
@@ -48,16 +48,6 @@ This action allows you to capture an event in Posthog. It requires the `Event Na
   />
 </Frame>
 
-## PageView
-
-This action allows you to send a page view event to Posthog. It requires the User ID and can optionally take a set of `Properties`, such as such as $current_url, which will indicate the url for the page view.
-
-<Frame>
-  <img
-    src="/images/blocks/integrations/posthog/pageview.png"
-    alt="PageView"
-  />
-</Frame>
 
 ## Get Flag
 

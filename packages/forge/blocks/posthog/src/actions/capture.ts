@@ -1,7 +1,7 @@
 import { createAction, option } from "@typebot.io/forge";
 import { auth } from "../auth";
-import { createClient } from "../createClient";
-import { createProperties } from "../createProperties";
+import { createClient } from "../helpers/createClient";
+import { createProperties } from "../helpers/createProperties";
 
 interface EventPayload {
   distinctId: string;
@@ -14,9 +14,16 @@ export const capture = createAction({
   auth,
   name: "Capture",
   options: option.object({
-    eventName: option.string.layout({
+    type: option
+      .enum(["custom", "page view", "screen view", "survey sent"])
+      .layout({
+        label: "Event Type",
+        defaultValue: "custom",
+      }),
+    name: option.string.layout({
       label: "Event Name",
-      isRequired: true,
+      placeholder: "Required for custom events...",
+      isRequired: false,
     }),
     userId: option.string.layout({
       label: "User ID",
@@ -59,7 +66,8 @@ export const capture = createAction({
     server: async ({
       credentials: { apiKey, host },
       options: {
-        eventName,
+        type,
+        name,
         userId,
         anonymous,
         groupKey,
@@ -67,9 +75,29 @@ export const capture = createAction({
         properties,
       },
     }) => {
+      switch (type) {
+        case "page view":
+          name = "$pageview";
+          break;
+        case "screen view":
+          name = "$screen";
+          break;
+        case "survey sent":
+          name = "survey sent";
+          break;
+      }
+
+      console.log("name", name);
+      console.log("type", type);
+      console.log("userId", userId);
+      console.log("apiKey", apiKey);
+      console.log("host", host);
+
       if (
-        !eventName ||
-        eventName.length === 0 ||
+        name === undefined ||
+        name.length === 0 ||
+        type === undefined ||
+        type.length === 0 ||
         !userId ||
         userId.length === 0 ||
         apiKey === undefined ||
@@ -81,7 +109,7 @@ export const capture = createAction({
 
       let eventPayload: EventPayload = {
         distinctId: userId,
-        event: eventName,
+        event: name,
         properties: {},
       };
 
@@ -107,6 +135,9 @@ export const capture = createAction({
           $process_person_profile: false,
         };
       }
+
+      console.log(JSON.stringify(eventPayload, null, 2));
+
       posthog.capture(eventPayload);
 
       await posthog.shutdown();

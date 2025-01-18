@@ -1,7 +1,7 @@
 import { createAction, option } from "@typebot.io/forge";
 import { auth } from "../auth";
-import { createClient } from "../createClient";
-import { createProperties } from "../createProperties";
+import { createClient } from "../helpers/createClient";
+import { createProperties } from "../helpers/createProperties";
 
 interface GroupPayload {
   groupType: string;
