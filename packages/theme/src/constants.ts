@@ -1,3 +1,5 @@
+import { colors } from "@typebot.io/ui/colors";
+
 export enum BackgroundType {
   COLOR = "Color",
   IMAGE = "Image",
@@ -12,14 +14,6 @@ export const progressBarPositions = ["fixed", "absolute"] as const;
 export const shadows = ["none", "sm", "md", "lg", "xl", "2xl"] as const;
 export const borderRoundness = ["none", "medium", "large", "custom"] as const;
 
-export const defaultLightTextColor = "#303235";
-export const defaultDarkTextColor = "#FFFFFF";
-
-const orange500 = "#ff5924";
-const gray50 = "#f8f8f8";
-const gray100 = "#f1f1f1";
-const gray200 = "#DFDFDF";
-
 /*---- General ----*/
 
 // Font
@@ -28,12 +22,21 @@ export const defaultFontFamily = "Open Sans";
 
 // Background
 export const defaultBackgroundType = BackgroundType.COLOR;
-export const defaultBackgroundColor = "#ffffff";
+export const defaultBackgroundColor = {
+  "6": "#FFFFFF",
+  "6.1": colors.gray.light["2"],
+} as const;
 
 // Progress bar
 export const defaultProgressBarIsEnabled = false;
-export const defaultProgressBarColor = orange500;
-export const defaultProgressBarBackgroundColor = gray100;
+export const defaultProgressBarColor = {
+  "6": "#e0edff",
+  "6.1": colors.orange.light["9"],
+} as const;
+export const defaultProgressBarBackgroundColor = {
+  "6": colors.gray.light["3"],
+  "6.1": colors.gray.light["9"],
+} as const;
 export const defaultProgressBarThickness = 4;
 export const defaultProgressBarPosition = "absolute";
 export const defaultProgressBarPlacement = "Top";
@@ -51,24 +54,57 @@ export const defaultContainerBackgroundColor = "transparent";
 export const defaultContainerColor = "#27272A";
 
 // Host bubbles
-export const defaultHostBubblesBackgroundColor = gray50;
-export const defaultHostBubblesColor = defaultLightTextColor;
+export const defaultHostBubblesBackgroundColor = {
+  "6": "#F7F8FF",
+  "6.1": colors.gray.light["1"],
+} as const;
+export const defaultHostBubblesColor = colors.gray.light["12"];
+export const defaultHostBubbleBorderThickness = {
+  "6": 0,
+  "6.1": 1,
+} as const;
+export const defaultHostBubbleBorderColor = colors.gray.light["6"];
 
 // Guest bubbles
-export const defaultGuestBubblesBackgroundColor = orange500;
-export const defaultGuestBubblesColor = defaultDarkTextColor;
+export const defaultGuestBubblesBackgroundColor = {
+  "6": "#FF8E21",
+  "6.1": colors.orange.light["9"],
+} as const;
+export const defaultGuestBubblesColor = colors.gray.light["1"];
+export const defaultGuestBubbleBorderThickness = {
+  "6": 0,
+  "6.1": 1,
+} as const;
+export const defaultGuestBubbleBorderColor = colors.orange.light["6"];
 
 // Buttons
-export const defaultButtonsBackgroundColor = orange500;
-export const defaultButtonsColor = defaultDarkTextColor;
-export const defaultButtonsBorderThickness = 1;
+export const defaultButtonsBackgroundColor = {
+  "6": "#0042DA",
+  "6.1": colors.orange.light["9"],
+} as const;
+export const defaultButtonsColor = colors.gray.light["1"];
+export const defaultButtonsBorderThickness = {
+  "6": 0,
+  "6.1": 1,
+} as const;
+export const defaultButtonsBorderColor = colors.orange.light["8"];
 
 // Inputs
 export const defaultInputsBackgroundColor = "#FFFFFF";
-export const defaultInputsColor = defaultLightTextColor;
+export const defaultInputsColor = colors.gray.light["12"];
 export const defaultInputsPlaceholderColor = "#9095A0";
-export const defaultInputsBorderThickness = 1;
-export const defaultInputsBorderColor = gray200;
+export const defaultInputsBorderThickness = {
+  "6": 0,
+  "6.1": 1,
+} as const;
+export const defaultInputsBorderColor = {
+  "6": undefined,
+  "6.1": colors.gray.light["7"],
+} as const;
+export const defaultInputsShadow = {
+  "6": "md",
+  "6.1": undefined,
+} as const;
 
 // Host avatar
 export const defaultHostAvatarIsEnabled = true;

@@ -3,7 +3,7 @@ import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { useEventListener } from "@chakra-ui/react";
 import type { Coordinates } from "@dnd-kit/utilities";
 import { omit } from "@typebot.io/lib/utils";
-import { colors } from "@typebot.io/theme/chakraTheme";
+import { colors } from "@typebot.io/ui/chakraTheme";
 import React, { useMemo, useState } from "react";
 import { eventWidth, groupWidth } from "../../constants";
 import { computeConnectingEdgePath } from "../../helpers/computeConnectingEdgePath";

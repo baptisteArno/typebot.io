@@ -132,7 +132,6 @@ const CheckoutForm = ({
     const { error, paymentIntent } = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        // TO-DO: Handle redirection correctly.
         return_url: viewerHost,
         payment_method_data: {
           billing_details: {

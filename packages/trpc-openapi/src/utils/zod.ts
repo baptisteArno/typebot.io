@@ -39,7 +39,6 @@ export const unwrapZodType = (
   type: z.ZodTypeAny,
   unwrapPreprocess: boolean,
 ): z.ZodTypeAny => {
-  // TODO: Allow parsing array query params
   // if (instanceofZodTypeKind(type, z.ZodFirstPartyTypeKind.ZodArray)) {
   //   return unwrapZodType(type.element, unwrapPreprocess);
   // }

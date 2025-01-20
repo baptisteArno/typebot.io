@@ -1,5 +1,6 @@
 import { hexToRgb, isLight } from "@typebot.io/lib/hexToRgb";
 import { isDefined, isEmpty } from "@typebot.io/lib/utils";
+import type { TypebotV6Version } from "@typebot.io/schemas/versions";
 import {
   BackgroundType,
   botCssVariableNames,
@@ -7,15 +8,19 @@ import {
   defaultBackgroundType,
   defaultBlur,
   defaultButtonsBackgroundColor,
+  defaultButtonsBorderColor,
   defaultButtonsBorderThickness,
   defaultButtonsColor,
   defaultContainerBackgroundColor,
   defaultContainerMaxHeight,
   defaultContainerMaxWidth,
-  defaultDarkTextColor,
   defaultFontFamily,
+  defaultGuestBubbleBorderColor,
+  defaultGuestBubbleBorderThickness,
   defaultGuestBubblesBackgroundColor,
   defaultGuestBubblesColor,
+  defaultHostBubbleBorderColor,
+  defaultHostBubbleBorderThickness,
   defaultHostBubblesBackgroundColor,
   defaultHostBubblesColor,
   defaultInputsBackgroundColor,
@@ -23,7 +28,7 @@ import {
   defaultInputsBorderThickness,
   defaultInputsColor,
   defaultInputsPlaceholderColor,
-  defaultLightTextColor,
+  defaultInputsShadow,
   defaultOpacity,
   defaultProgressBarBackgroundColor,
   defaultProgressBarColor,
@@ -32,7 +37,7 @@ import {
   defaultProgressBarThickness,
   defaultRoundness,
 } from "@typebot.io/theme/constants";
-import { isChatContainerLight } from "@typebot.io/theme/isChatContainerLight";
+import { isChatContainerLight } from "@typebot.io/theme/helpers/isChatContainerLight";
 import type {
   Background,
   ChatTheme,
@@ -42,39 +47,75 @@ import type {
   InputTheme,
   Theme,
 } from "@typebot.io/theme/schemas";
+import { colors } from "@typebot.io/ui/colors";
 
-export const setCssVariablesValue = (
-  theme: Theme | undefined,
-  container: HTMLDivElement,
-  isPreview?: boolean,
-) => {
+type CommonProps = {
+  documentStyle: CSSStyleDeclaration;
+  isPreview?: boolean;
+  typebotVersion: TypebotV6Version;
+};
+
+export const setCssVariablesValue = ({
+  theme,
+  container,
+  isPreview,
+  typebotVersion,
+}: {
+  theme: Theme | undefined;
+  container: HTMLDivElement;
+} & Omit<CommonProps, "documentStyle">) => {
   if (!theme) return;
   const documentStyle = container?.style;
   if (!documentStyle) return;
-  setGeneralTheme(theme.general, documentStyle, isPreview);
-  setChatTheme(theme.chat, theme.general?.background, documentStyle);
+  setGeneralTheme({
+    generalTheme: theme.general,
+    documentStyle,
+    isPreview,
+    typebotVersion,
+  });
+  setChatTheme({
+    chatTheme: theme.chat,
+    generalBackground: theme.general?.background,
+    documentStyle,
+    typebotVersion,
+  });
 };
 
-const setGeneralTheme = (
-  generalTheme: GeneralTheme | undefined,
-  documentStyle: CSSStyleDeclaration,
-  isPreview?: boolean,
-) => {
-  setGeneralBackground(generalTheme?.background, documentStyle);
+const setGeneralTheme = ({
+  generalTheme,
+  documentStyle,
+  isPreview,
+  typebotVersion,
+}: {
+  generalTheme: GeneralTheme | undefined;
+} & CommonProps) => {
+  setGeneralBackground({
+    background: generalTheme?.background,
+    documentStyle,
+    typebotVersion,
+  });
   documentStyle.setProperty(
     botCssVariableNames.general.fontFamily,
     (typeof generalTheme?.font === "string"
       ? generalTheme.font
       : generalTheme?.font?.family) ?? defaultFontFamily,
   );
-  setProgressBar(generalTheme?.progressBar, documentStyle, isPreview);
+  setProgressBar({
+    progressBar: generalTheme?.progressBar,
+    documentStyle,
+    isPreview,
+    typebotVersion,
+  });
 };
 
-const setProgressBar = (
-  progressBar: GeneralTheme["progressBar"],
-  documentStyle: CSSStyleDeclaration,
-  isPreview?: boolean,
-) => {
+const setProgressBar = ({
+  progressBar,
+  documentStyle,
+  isPreview,
+  typebotVersion,
+}: {
+  progressBar: GeneralTheme["progressBar"];
+} & CommonProps) => {
   const position = progressBar?.position ?? defaultProgressBarPosition;
 
   documentStyle.setProperty(
@@ -83,12 +124,13 @@ const setProgressBar = (
   );
   documentStyle.setProperty(
     botCssVariableNames.general.progressBar.color,
-    progressBar?.color ?? defaultProgressBarColor,
+    progressBar?.color ?? defaultProgressBarColor[typebotVersion],
   );
   documentStyle.setProperty(
     botCssVariableNames.general.progressBar.colorRgb,
     hexToRgb(
-      progressBar?.backgroundColor ?? defaultProgressBarBackgroundColor,
+      progressBar?.backgroundColor ??
+        defaultProgressBarBackgroundColor[typebotVersion],
     ).join(", "),
   );
   documentStyle.setProperty(
@@ -109,30 +151,59 @@ const setProgressBar = (
   );
 };
 
-const setChatTheme = (
-  chatTheme: ChatTheme | undefined,
-  generalBackground: GeneralTheme["background"],
-  documentStyle: CSSStyleDeclaration,
-) => {
-  setChatContainer(
-    chatTheme?.container,
+const setChatTheme = ({
+  chatTheme,
+  generalBackground,
+  documentStyle,
+  typebotVersion,
+}: {
+  chatTheme: ChatTheme | undefined;
+  generalBackground: GeneralTheme["background"];
+} & CommonProps) => {
+  setChatContainer({
+    container: chatTheme?.container,
     generalBackground,
     documentStyle,
-    chatTheme?.roundness,
-  );
-  setHostBubbles(chatTheme?.hostBubbles, documentStyle, chatTheme?.roundness);
-  setGuestBubbles(chatTheme?.guestBubbles, documentStyle, chatTheme?.roundness);
-  setButtons(chatTheme?.buttons, documentStyle, chatTheme?.roundness);
-  setInputs(chatTheme?.inputs, documentStyle, chatTheme?.roundness);
+    legacyRoundness: chatTheme?.roundness,
+    typebotVersion,
+  });
+  setHostBubbles({
+    hostBubbles: chatTheme?.hostBubbles,
+    documentStyle,
+    legacyRoundness: chatTheme?.roundness,
+    typebotVersion,
+  });
+  setGuestBubbles({
+    guestBubbles: chatTheme?.guestBubbles,
+    documentStyle,
+    legacyRoundness: chatTheme?.roundness,
+    typebotVersion,
+  });
+  setButtons({
+    buttons: chatTheme?.buttons,
+    documentStyle,
+    legacyRoundness: chatTheme?.roundness,
+    typebotVersion,
+  });
+  setInputs({
+    inputs: chatTheme?.inputs,
+    documentStyle,
+    legacyRoundness: chatTheme?.roundness,
+    typebotVersion,
+  });
   setCheckbox(chatTheme?.container, generalBackground, documentStyle);
 };
 
-const setChatContainer = (
-  container: ChatTheme["container"],
-  generalBackground: GeneralTheme["background"],
-  documentStyle: CSSStyleDeclaration,
-  legacyRoundness?: ChatTheme["roundness"],
-) => {
+const setChatContainer = ({
+  container,
+  generalBackground,
+  documentStyle,
+  legacyRoundness,
+}: {
+  container: ChatTheme["container"];
+  generalBackground: GeneralTheme["background"];
+  legacyRoundness?: ChatTheme["roundness"];
+} & CommonProps) => {
   const chatContainerBgColor =
     container?.backgroundColor ?? defaultContainerBackgroundColor;
   const isBgDisabled =
@@ -150,8 +221,8 @@ const setChatContainer = (
           chatContainer: container,
           generalBackground,
         })
-          ? defaultLightTextColor
-          : defaultDarkTextColor),
+          ? colors.gray.light[12]
+          : colors.gray.dark[12]),
     ).join(", "),
   );
 
@@ -210,15 +281,20 @@ const setChatContainer = (
   );
 };
 
-const setHostBubbles = (
-  hostBubbles: ContainerTheme | undefined,
-  documentStyle: CSSStyleDeclaration,
-  legacyRoundness?: ChatTheme["roundness"],
-) => {
+const setHostBubbles = ({
+  hostBubbles,
+  documentStyle,
+  legacyRoundness,
+  typebotVersion,
+}: {
+  hostBubbles: ContainerTheme | undefined;
+  legacyRoundness?: ChatTheme["roundness"];
+} & CommonProps) => {
   documentStyle.setProperty(
     botCssVariableNames.chat.hostBubbles.bgColor,
     hexToRgb(
-      hostBubbles?.backgroundColor ?? defaultHostBubblesBackgroundColor,
+      hostBubbles?.backgroundColor ??
+        defaultHostBubblesBackgroundColor[typebotVersion],
     ).join(", "),
   );
   documentStyle.setProperty(
@@ -233,16 +309,21 @@ const setHostBubbles = (
     botCssVariableNames.chat.hostBubbles.borderRadius,
   );
 
-  documentStyle.setProperty(
-    botCssVariableNames.chat.hostBubbles.borderWidth,
-    isDefined(hostBubbles?.border?.thickness)
-      ? `${hostBubbles?.border?.thickness}px`
-      : "0",
-  );
+  const borderThickness =
+    hostBubbles?.border?.thickness ??
+    defaultHostBubbleBorderThickness[typebotVersion];
+  if (isDefined(borderThickness)) {
+    documentStyle.setProperty(
+      botCssVariableNames.chat.hostBubbles.borderWidth,
+      borderThickness + "px",
+    );
+  }
 
   documentStyle.setProperty(
     botCssVariableNames.chat.hostBubbles.borderColor,
-    hexToRgb(hostBubbles?.border?.color ?? "").join(", "),
+    hexToRgb(hostBubbles?.border?.color ?? defaultHostBubbleBorderColor).join(
+      ", ",
+    ),
   );
 
   documentStyle.setProperty(
@@ -273,15 +354,20 @@ const setHostBubbles = (
   );
 };
 
-const setGuestBubbles = (
-  guestBubbles: ContainerTheme | undefined,
-  documentStyle: CSSStyleDeclaration,
-  legacyRoundness?: ChatTheme["roundness"],
-) => {
+const setGuestBubbles = ({
+  guestBubbles,
+  documentStyle,
+  legacyRoundness,
+  typebotVersion,
+}: {
+  guestBubbles: ContainerTheme | undefined;
+  legacyRoundness?: ChatTheme["roundness"];
+} & CommonProps) => {
   documentStyle.setProperty(
     botCssVariableNames.chat.guestBubbles.bgColor,
     hexToRgb(
-      guestBubbles?.backgroundColor ?? defaultGuestBubblesBackgroundColor,
+      guestBubbles?.backgroundColor ??
+        defaultGuestBubblesBackgroundColor[typebotVersion],
     ).join(", "),
   );
 
@@ -298,16 +384,21 @@ const setGuestBubbles = (
     botCssVariableNames.chat.guestBubbles.borderRadius,
   );
 
-  documentStyle.setProperty(
-    botCssVariableNames.chat.guestBubbles.borderWidth,
-    isDefined(guestBubbles?.border?.thickness)
-      ? `${guestBubbles?.border?.thickness}px`
-      : "0",
-  );
+  const borderThickness =
+    guestBubbles?.border?.thickness ??
+    defaultGuestBubbleBorderThickness[typebotVersion];
+  if (isDefined(borderThickness)) {
+    documentStyle.setProperty(
+      botCssVariableNames.chat.guestBubbles.borderWidth,
+      borderThickness + "px",
+    );
+  }
 
   documentStyle.setProperty(
     botCssVariableNames.chat.guestBubbles.borderColor,
-    hexToRgb(guestBubbles?.border?.color ?? "").join(", "),
+    hexToRgb(guestBubbles?.border?.color ?? defaultGuestBubbleBorderColor).join(
+      ", ",
+    ),
   );
 
   documentStyle.setProperty(
@@ -338,12 +429,17 @@ const setGuestBubbles = (
   );
 };
 
-const setButtons = (
-  buttons: ContainerTheme | undefined,
-  documentStyle: CSSStyleDeclaration,
-  legacyRoundness?: ChatTheme["roundness"],
-) => {
-  const bgColor = buttons?.backgroundColor ?? defaultButtonsBackgroundColor;
+const setButtons = ({
+  buttons,
+  documentStyle,
+  legacyRoundness,
+  typebotVersion,
+}: {
+  buttons: ContainerTheme | undefined;
+  legacyRoundness?: ChatTheme["roundness"];
+} & CommonProps) => {
+  const bgColor =
+    buttons?.backgroundColor ?? defaultButtonsBackgroundColor[typebotVersion];
 
   documentStyle.setProperty(
     botCssVariableNames.chat.buttons.bgRgb,
@@ -372,7 +468,7 @@ const setButtons = (
     botCssVariableNames.chat.buttons.borderWidth,
     isDefined(buttons?.border?.thickness)
       ? `${buttons?.border?.thickness}px`
-      : `${defaultButtonsBorderThickness}px`,
+      : `${defaultButtonsBorderThickness[typebotVersion]}px`,
   );
 
   documentStyle.setProperty(
@@ -380,7 +476,7 @@ const setButtons = (
     hexToRgb(
       buttons?.border?.color ??
         buttons?.backgroundColor ??
-        defaultButtonsBackgroundColor,
+        defaultButtonsBorderColor,
     ).join(", "),
   );
 
@@ -412,11 +508,15 @@ const setButtons = (
   );
 };
 
-const setInputs = (
-  inputs: InputTheme | undefined,
-  documentStyle: CSSStyleDeclaration,
-  legacyRoundness?: ChatTheme["roundness"],
-) => {
+const setInputs = ({
+  inputs,
+  documentStyle,
+  legacyRoundness,
+  typebotVersion,
+}: {
+  inputs: InputTheme | undefined;
+  legacyRoundness?: ChatTheme["roundness"];
+} & CommonProps) => {
   documentStyle.setProperty(
     botCssVariableNames.chat.inputs.bgColor,
     hexToRgb(inputs?.backgroundColor ?? defaultInputsBackgroundColor).join(
@@ -444,13 +544,17 @@ const setInputs = (
 
   documentStyle.setProperty(
     botCssVariableNames.chat.inputs.borderWidth,
-    `${inputs?.border?.thickness ?? defaultInputsBorderThickness}px`,
+    `${inputs?.border?.thickness ?? defaultInputsBorderThickness[typebotVersion]}px`,
   );
 
-  documentStyle.setProperty(
-    botCssVariableNames.chat.inputs.borderColor,
-    hexToRgb(inputs?.border?.color ?? defaultInputsBorderColor).join(", "),
-  );
+  const borderHexColor =
+    inputs?.border?.color ?? defaultInputsBorderColor[typebotVersion];
+  if (isDefined(borderHexColor)) {
+    documentStyle.setProperty(
+      botCssVariableNames.chat.inputs.borderColor,
+      hexToRgb(borderHexColor).join(", "),
+    );
+  }
 
   documentStyle.setProperty(
     botCssVariableNames.chat.inputs.borderOpacity,
@@ -474,7 +578,7 @@ const setInputs = (
   );
 
   setShadow(
-    inputs?.shadow,
+    inputs?.shadow ?? defaultInputsShadow[typebotVersion],
     documentStyle,
     botCssVariableNames.chat.inputs.boxShadow,
   );
@@ -531,10 +635,13 @@ const setCheckbox = (
   }
 };
 
-const setGeneralBackground = (
-  background: Background | undefined,
-  documentStyle: CSSStyleDeclaration,
-) => {
+const setGeneralBackground = ({
+  background,
+  documentStyle,
+  typebotVersion,
+}: {
+  background: Background | undefined;
+} & CommonProps) => {
   documentStyle.setProperty(botCssVariableNames.general.bgImage, null);
   documentStyle.setProperty(botCssVariableNames.general.bgColor, null);
   documentStyle.setProperty(
@@ -543,18 +650,24 @@ const setGeneralBackground = (
       : botCssVariableNames.general.bgColor,
     parseBackgroundValue({
       type: background?.type ?? defaultBackgroundType,
-      content: background?.content ?? defaultBackgroundColor,
+      content: background?.content ?? defaultBackgroundColor[typebotVersion],
     }),
   );
 };
 
-const parseBackgroundValue = ({ type, content }: Background = {}) => {
+const parseBackgroundValue = ({
+  type,
+  content,
+}: {
+  type: BackgroundType;
+  content: NonNullable<Background["content"]>;
+}) => {
   switch (type) {
     case BackgroundType.NONE:
       return "transparent";
     case undefined:
     case BackgroundType.COLOR:
-      return content ?? defaultBackgroundColor;
+      return content;
     case BackgroundType.IMAGE:
       return `url(${content})`;
   }

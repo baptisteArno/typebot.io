@@ -18,9 +18,7 @@ export const LoadingChunk = (props: Props) => (
             defaultHostAvatarIsEnabled
           }
         >
-          <AvatarSideContainer
-            hostAvatarSrc={props.theme.chat?.hostAvatar?.url}
-          />
+          <AvatarSideContainer theme={props.theme} />
         </Show>
         <LoadingBubble />
       </div>

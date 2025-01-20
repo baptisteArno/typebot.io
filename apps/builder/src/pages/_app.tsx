@@ -12,7 +12,7 @@ import { ChakraProvider, createStandaloneToast } from "@chakra-ui/react";
 import { TolgeeProvider, useTolgeeSSR } from "@tolgee/react";
 import { toTitleCase } from "@typebot.io/lib/utils";
 import { Plan } from "@typebot.io/prisma/enum";
-import { customTheme } from "@typebot.io/theme/chakraTheme";
+import { customTheme } from "@typebot.io/ui/chakraTheme";
 import { SessionProvider } from "next-auth/react";
 import type { AppProps } from "next/app";
 import { useRouter } from "next/router";

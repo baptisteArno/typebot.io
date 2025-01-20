@@ -2,15 +2,14 @@ import { isLight } from "@typebot.io/lib/hexToRgb";
 import { isEmpty, isNotEmpty } from "@typebot.io/lib/utils";
 import {
   BackgroundType,
-  defaultBackgroundColor,
   defaultBackgroundType,
   defaultContainerBackgroundColor,
   defaultOpacity,
-} from "./constants";
-import type { ContainerTheme, GeneralTheme } from "./schemas";
+} from "../constants";
+import type { ChatTheme, GeneralTheme } from "../schemas";
 
 type Props = {
-  chatContainer: ContainerTheme | undefined;
+  chatContainer: ChatTheme["container"];
   generalBackground: GeneralTheme["background"];
 };
 
@@ -37,5 +36,5 @@ export const isChatContainerLight = ({
     return isLight(backgroundColor);
   }
 
-  return isLight(chatContainer?.backgroundColor ?? defaultBackgroundColor);
+  return isLight(chatContainerBgColor);
 };

@@ -1,5 +1,5 @@
 import { ColorModeScript } from "@chakra-ui/react";
-import { customTheme } from "@typebot.io/theme/chakraTheme";
+import { customTheme } from "@typebot.io/ui/chakraTheme";
 import { Head, Html, Main, NextScript } from "next/document";
 
 const Document = () => (

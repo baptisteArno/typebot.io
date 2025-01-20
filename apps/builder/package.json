@@ -45,6 +45,7 @@
     "@typebot.io/trpc-openapi": "workspace:*",
     "@typebot.io/typebot": "workspace:*",
     "@typebot.io/whatsapp": "workspace:*",
+    "@typebot.io/ui": "workspace:*",
     "@udecode/plate-basic-marks": "30.5.3",
     "@udecode/plate-common": "30.4.5",
     "@udecode/plate-core": "30.4.5",

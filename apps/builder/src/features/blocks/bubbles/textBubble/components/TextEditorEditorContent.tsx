@@ -11,7 +11,7 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
-import { colors } from "@typebot.io/theme/chakraTheme";
+import { colors } from "@typebot.io/ui/chakraTheme";
 import type { Variable } from "@typebot.io/variables/schemas";
 import { focusEditor, insertText, selectEditor } from "@udecode/plate-common";
 import { PlateContent, useEditorRef } from "@udecode/plate-core";

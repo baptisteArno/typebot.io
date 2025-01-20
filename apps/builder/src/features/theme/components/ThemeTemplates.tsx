@@ -1,6 +1,7 @@
 import { Button, HStack, Stack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import type { ThemeTemplate } from "@typebot.io/theme/schemas";
+import type { TypebotV6 } from "@typebot.io/typebot/schemas/typebot";
 import { useState } from "react";
 import { MyTemplates } from "./MyTemplates";
 import { TemplatesGallery } from "./TemplatesGallery";
@@ -10,6 +11,7 @@ type Tab = "my-templates" | "gallery";
 type Props = {
   workspaceId: string;
   selectedTemplateId: string | undefined;
+  typebotVersion: TypebotV6["version"];
   currentTheme: ThemeTemplate["theme"];
   onTemplateSelect: (
     template: Partial<Pick<ThemeTemplate, "id" | "theme">>,
@@ -18,13 +20,14 @@ type Props = {
 
 export const ThemeTemplates = ({
   workspaceId,
+  typebotVersion,
   selectedTemplateId,
   currentTheme,
   onTemplateSelect,
 }: Props) => {
   const { t } = useTranslate();
 
-  const [selectedTab, setSelectedTab] = useState<Tab>("gallery");
+  const [selectedTab, setSelectedTab] = useState<Tab>("my-templates");
 
   return (
     <Stack spacing={4}>
@@ -50,6 +53,7 @@ export const ThemeTemplates = ({
         tab={selectedTab}
         currentTheme={currentTheme}
         workspaceId={workspaceId}
+        typebotVersion={typebotVersion}
         selectedTemplateId={selectedTemplateId}
         onTemplateSelect={onTemplateSelect}
       />
@@ -61,6 +65,7 @@ const ThemeTemplatesBody = ({
   tab,
   workspaceId,
   selectedTemplateId,
+  typebotVersion,
   currentTheme,
   onTemplateSelect,
 }: {
@@ -72,6 +77,7 @@ const ThemeTemplatesBody = ({
         <MyTemplates
           onTemplateSelect={onTemplateSelect}
           currentTheme={currentTheme}
+          typebotVersion={typebotVersion}
           selectedTemplateId={selectedTemplateId}
           workspaceId={workspaceId}
         />
@@ -81,6 +87,7 @@ const ThemeTemplatesBody = ({
         <TemplatesGallery
           onTemplateSelect={onTemplateSelect}
           currentTheme={currentTheme}
+          typebotVersion={typebotVersion}
           selectedTemplateId={selectedTemplateId}
           workspaceId={workspaceId}
         />

@@ -1,5 +1,4 @@
 import { ChatIcon, CodeIcon, DropletIcon, TableIcon } from "@/components/icons";
-import { headerHeight } from "@/features/editor/constants";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import {
   Accordion,
@@ -10,7 +9,6 @@ import {
   HStack,
   Heading,
   Stack,
-  Text,
   useColorModeValue,
 } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
@@ -79,7 +77,7 @@ export const ThemeSideMenu = () => {
       rounded="xl"
       bg={useColorModeValue("white", "gray.900")}
     >
-      <Accordion allowToggle borderBottomWidth={0} defaultIndex={0}>
+      <Accordion allowToggle borderBottomWidth={0}>
         {currentUserMode === "write" && (
           <AccordionItem borderTopWidth={0}>
             <AccordionButton py={4}>
@@ -93,6 +91,7 @@ export const ThemeSideMenu = () => {
               {typebot && (
                 <ThemeTemplates
                   selectedTemplateId={templateId}
+                  typebotVersion={typebot.version}
                   currentTheme={typebot.theme}
                   workspaceId={typebot.workspaceId}
                   onTemplateSelect={selectTemplate}
@@ -137,7 +136,7 @@ export const ThemeSideMenu = () => {
               <ChatThemeSettings
                 key={templateId}
                 workspaceId={typebot.workspaceId}
-                typebotId={typebot.id}
+                typebot={typebot}
                 chatTheme={typebot.theme.chat}
                 generalBackground={typebot.theme.general?.background}
                 onChatThemeChange={updateChatTheme}

@@ -23,8 +23,8 @@ import type {
   ResultHeaderCell,
   TableData,
 } from "@typebot.io/results/schemas/results";
-import { colors } from "@typebot.io/theme/chakraTheme";
 import type { ResultsTablePreferences } from "@typebot.io/typebot/schemas/typebot";
+import { colors } from "@typebot.io/ui/chakraTheme";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { HeaderIcon } from "../HeaderIcon";
 import { HeaderRow } from "./HeaderRow";

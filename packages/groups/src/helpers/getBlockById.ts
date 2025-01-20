@@ -1,5 +1,5 @@
 import type { Block } from "@typebot.io/blocks-core/schemas/schema";
-import type { Group } from "./schemas";
+import type { Group } from "../schemas";
 
 export const getBlockById = (
   blockId: string,

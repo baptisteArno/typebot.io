@@ -13,7 +13,8 @@
     "@typebot.io/settings": "workspace:*",
     "@typebot.io/theme": "workspace:*",
     "@typebot.io/variables": "workspace:*",
-    "@typebot.io/zod": "workspace:*"
+    "@typebot.io/zod": "workspace:*",
+    "@typebot.io/schemas": "workspace:*"
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*"

@@ -1,5 +1,6 @@
 import { groupV5Schema, groupV6Schema } from "@typebot.io/groups/schemas";
 import type { Prisma } from "@typebot.io/prisma/types";
+import { typebotV6Versions } from "@typebot.io/schemas/versions";
 import { settingsSchema } from "@typebot.io/settings/schemas";
 import { themeSchema } from "@typebot.io/theme/schemas";
 import { variableSchema } from "@typebot.io/variables/schemas";
@@ -69,7 +70,7 @@ export type TypebotV5 = z.infer<typeof typebotV5Schema>;
 
 export const typebotV6Schema = typebotV5Schema
   .extend({
-    version: z.literal("6"),
+    version: z.enum(typebotV6Versions),
     groups: z.array(groupV6Schema),
     events: z.tuple([startEventSchema]),
   })

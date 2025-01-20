@@ -1,5 +1,5 @@
 import { Icon, type IconProps, useColorModeValue } from "@chakra-ui/react";
-import { colors } from "@typebot.io/theme/chakraTheme";
+import { colors } from "@typebot.io/ui/chakraTheme";
 
 export const OtherLogo = (props: IconProps) => {
   const stroke = useColorModeValue("black", colors.gray[200]);

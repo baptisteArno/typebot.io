@@ -1,7 +1,7 @@
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { Portal, useColorMode, useDisclosure } from "@chakra-ui/react";
-import { colors } from "@typebot.io/theme/chakraTheme";
 import type { Edge as EdgeProps } from "@typebot.io/typebot/schemas/edge";
+import { colors } from "@typebot.io/ui/chakraTheme";
 import type React from "react";
 import { useMemo, useState } from "react";
 import { useShallow } from "zustand/react/shallow";

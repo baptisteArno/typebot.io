@@ -8,7 +8,7 @@ import {
 } from "@chakra-ui/react";
 import { convertStrToList } from "@typebot.io/lib/convertStrToList";
 import { isEmpty } from "@typebot.io/lib/utils";
-import { colors } from "@typebot.io/theme/chakraTheme";
+import { colors } from "@typebot.io/ui/chakraTheme";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRef, useState } from "react";
 import { CloseIcon } from "./icons";

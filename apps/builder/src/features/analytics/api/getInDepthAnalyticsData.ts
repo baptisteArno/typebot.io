@@ -2,7 +2,7 @@ import { canReadTypebots } from "@/helpers/databaseRules";
 import { authenticatedProcedure } from "@/helpers/server/trpc";
 import { TRPCError } from "@trpc/server";
 import { isInputBlock } from "@typebot.io/blocks-core/helpers";
-import { parseGroups } from "@typebot.io/groups/schemas";
+import { parseGroups } from "@typebot.io/groups/helpers/parseGroups";
 import prisma from "@typebot.io/prisma";
 import { totalAnswersSchema } from "@typebot.io/schemas/features/analytics";
 import { z } from "@typebot.io/zod";

@@ -4,9 +4,9 @@ import type {
   EdgeWithTotalUsers,
   TotalAnswers,
 } from "@typebot.io/schemas/features/analytics";
-import { colors } from "@typebot.io/theme/chakraTheme";
 import type { BlockSource } from "@typebot.io/typebot/schemas/edge";
 import type { Edge as EdgeProps } from "@typebot.io/typebot/schemas/edge";
+import { colors } from "@typebot.io/ui/chakraTheme";
 import React from "react";
 import { useGraph } from "../../providers/GraphProvider";
 import { DrawingEdge } from "./DrawingEdge";

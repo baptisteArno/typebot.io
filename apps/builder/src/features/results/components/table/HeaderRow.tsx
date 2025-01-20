@@ -6,7 +6,7 @@ import {
 } from "@chakra-ui/react";
 import { type HeaderGroup, flexRender } from "@tanstack/react-table";
 import type { TableData } from "@typebot.io/results/schemas/results";
-import { colors } from "@typebot.io/theme/chakraTheme";
+import { colors } from "@typebot.io/ui/chakraTheme";
 import React from "react";
 
 type Props = {

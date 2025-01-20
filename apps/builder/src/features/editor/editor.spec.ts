@@ -7,6 +7,7 @@ import {
   importTypebotInDatabase,
 } from "@typebot.io/playwright/databaseActions";
 import { parseDefaultGroupWithBlock } from "@typebot.io/playwright/databaseHelpers";
+import { latestTypebotVersion } from "@typebot.io/schemas/versions";
 
 test.describe.configure({ mode: "parallel" });
 
@@ -130,7 +131,7 @@ test("Published typebot menu should work", async ({ page }) => {
       ...parseDefaultGroupWithBlock({
         type: InputBlockType.TEXT,
       }),
-      version: "6",
+      version: latestTypebotVersion,
     },
   ]);
   await page.goto(`/typebots/${typebotId}/edit`);

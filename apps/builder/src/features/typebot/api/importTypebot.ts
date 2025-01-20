@@ -134,7 +134,7 @@ export const importTypebot = authenticatedProcedure
 
     const newTypebot = await prisma.typebot.create({
       data: {
-        version: "6",
+        version: migratedTypebot.version,
         workspaceId,
         name: migratedTypebot.name,
         icon: migratedTypebot.icon,

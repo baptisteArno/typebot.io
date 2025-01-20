@@ -1,5 +1,5 @@
 import { isNotDefined, isSvgSrc } from "@typebot.io/lib/utils";
-import { defaultButtonsBackgroundColor } from "@typebot.io/theme/constants";
+import { colors } from "@typebot.io/ui/colors";
 import { clsx } from "clsx";
 import { Match, Switch } from "solid-js";
 import type { BubbleTheme, ButtonTheme } from "../types";
@@ -25,8 +25,7 @@ export const BubbleButton = (props: Props) => (
       props.placement === "left" ? " left-5" : " right-5",
     )}
     style={{
-      "background-color":
-        props.backgroundColor ?? defaultButtonsBackgroundColor,
+      "background-color": props.backgroundColor ?? colors.gray.dark["2"],
       "z-index": 42424242,
       width: props.buttonSize,
       height: props.buttonSize,

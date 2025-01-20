@@ -10,7 +10,7 @@ import type {
   SessionState,
 } from "@typebot.io/bot-engine/schemas/chatSession";
 import { env } from "@typebot.io/env";
-import { getBlockById } from "@typebot.io/groups/helpers";
+import { getBlockById } from "@typebot.io/groups/helpers/getBlockById";
 import { decrypt } from "@typebot.io/lib/api/encryption/decrypt";
 import redis from "@typebot.io/lib/redis";
 import { uploadFileToBucket } from "@typebot.io/lib/s3/uploadFileToBucket";

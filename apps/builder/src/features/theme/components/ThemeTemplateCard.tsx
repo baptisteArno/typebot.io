@@ -15,7 +15,6 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
-import { colors } from "@typebot.io/theme/chakraTheme";
 import {
   BackgroundType,
   defaultBackgroundColor,
@@ -26,6 +25,8 @@ import {
   defaultHostBubblesBackgroundColor,
 } from "@typebot.io/theme/constants";
 import type { Theme, ThemeTemplate } from "@typebot.io/theme/schemas";
+import type { TypebotV6 } from "@typebot.io/typebot/schemas/typebot";
+import { colors } from "@typebot.io/ui/chakraTheme";
 import { useState } from "react";
 import { DefaultAvatar } from "./DefaultAvatar";
 
@@ -33,11 +34,13 @@ export const ThemeTemplateCard = ({
   workspaceId,
   themeTemplate,
   isSelected,
+  typebotVersion,
   onClick,
   onRenameClick,
   onDeleteSuccess,
 }: {
   workspaceId: string;
+  typebotVersion: TypebotV6["version"];
   themeTemplate: Pick<ThemeTemplate, "name" | "theme" | "id">;
   isSelected: boolean;
   onRenameClick?: () => void;
@@ -82,7 +85,7 @@ export const ThemeTemplateCard = ({
 
   const hostBubbleBgColor =
     themeTemplate.theme.chat?.hostBubbles?.backgroundColor ??
-    defaultHostBubblesBackgroundColor;
+    defaultHostBubblesBackgroundColor[typebotVersion];
 
   const guestAvatar = {
     isEnabled:
@@ -93,11 +96,11 @@ export const ThemeTemplateCard = ({
 
   const guestBubbleBgColor =
     themeTemplate.theme.chat?.guestBubbles?.backgroundColor ??
-    defaultGuestBubblesBackgroundColor;
+    defaultGuestBubblesBackgroundColor[typebotVersion];
 
   const buttonBgColor =
     themeTemplate.theme.chat?.buttons?.backgroundColor ??
-    defaultButtonsBackgroundColor;
+    defaultButtonsBackgroundColor[typebotVersion];
 
   return (
     <Stack

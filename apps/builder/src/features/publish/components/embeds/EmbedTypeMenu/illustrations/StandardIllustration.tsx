@@ -1,5 +1,5 @@
 import { useColorModeValue } from "@chakra-ui/react";
-import { colors } from "@typebot.io/theme/chakraTheme";
+import { colors } from "@typebot.io/ui/chakraTheme";
 import { motion } from "framer-motion";
 import { animationVariants } from "./animationVariants";
 

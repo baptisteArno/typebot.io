@@ -5,7 +5,7 @@
   "private": true,
   "exports": {
     "./*": "./src/*.ts",
-    "./icons/*": "./src/icons/*.tsx"
+    "./helpers/*": "./src/helpers/*.ts"
   },
   "dependencies": {
     "@chakra-ui/anatomy": "2.2.2",

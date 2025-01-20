@@ -272,6 +272,7 @@ export const TextInput = (props: Props) => {
         <VoiceRecorder
           recordingStatus={recordingStatus()}
           buttonsTheme={props.context.typebot.theme.chat?.buttons}
+          context={props.context}
           onRecordingConfirmed={handleRecordingConfirmed}
           onAbortRecording={handleRecordingAbort}
         />
