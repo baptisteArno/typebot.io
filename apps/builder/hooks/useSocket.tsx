@@ -1,21 +1,26 @@
-import { url as URLResolver } from '@octadesk-tech/services';
+import { subDomain, url as URLResolver } from '@octadesk-tech/services';
+import Storage from '@octadesk-tech/storage';
+import pako from 'pako';
 import { useEffect, useState } from "react";
 import Socket from 'socket.io-client';
 
 interface IUseSocket {
   data: any;
+  exceededTimeout: boolean;
+  socketModalTimeout: (time: number) => () => void;
 }
 
-export const useSocket = (botId: string, componentId: string): IUseSocket => {
+export const useSocket = (room: string, query?: any): IUseSocket => {
   const [data, setData] = useState<any>(null);
   const [socketUrl, setSocketUrl] = useState<any>(null);
+  const [exceededTimeout, setExceededTimeout] = useState(false);
 
   const getSocketURL = async () => {
     if (socketUrl) return;
 
     const baseURL = new URL(await URLResolver.getAPIURL('websocket'));
 
-    const hostname = baseURL.hostname;
+    const hostname = baseURL.host;
     const path = baseURL.pathname === '/' ? '' : baseURL.pathname;
 
     setSocketUrl({
@@ -30,7 +35,10 @@ export const useSocket = (botId: string, componentId: string): IUseSocket => {
       return;
     }
 
-    const socket = Socket(`${socketUrl.url}/qas322399-0bd`, {
+    const authStorage = Storage.getItem('userToken') as any
+    const currentSubDomain = subDomain.getSubDomain()
+
+    const socket = Socket(`${socketUrl.url}/${currentSubDomain}`, {
       path: `${socketUrl.path}`,
       reconnection: false,
       transports: ['websocket'],
@@ -39,12 +47,9 @@ export const useSocket = (botId: string, componentId: string): IUseSocket => {
       reconnectionDelayMax: 5000,
       randomizationFactor: 0.5,
       auth: {
-        token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJkb21haW4iOiJxYXMzMTkxMDAtYTMyIiwiaXNzdWVkYXRlIjoiMjAyNS0wMS0xNlQxOTowMTozNC4xNjNaIiwiaXNzIjoid2lkZ2V0LnFhb2N0YWRlc2suc2VydmljZXMiLCJuYmYiOjE3MzcwNTQwOTQsImV4cCI6MTczNzE5ODA5NCwicm9sZSI6IjEiLCJlbWFpbCI6IndpZGdldEBvY3RhZGVzay5jb20iLCJuYW1lIjoid2lkZ2V0IiwidHlwZSI6IjQiLCJpZCI6IjAwMDAwMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDAwMCIsInJvbGVUeXBlIjoiMSIsInBlcm1pc3Npb25UeXBlIjoiMSIsInBlcm1pc3Npb25WaWV3IjoiMSIsInJvb21LZXkiOiIxNWZhMWUyMy1iZjYxLTQ2NjctODg1NC04NDJmNGRhM2ViNDciLCJpYXQiOjE3MzcwNTQwOTR9.A2dj9J_5Dwqwuqhdt-RZqKsR7jeCUh7-YKzYYV5A5CA"
+        token: authStorage
       },
-      query: {
-        botId: `${botId}`,
-        componentId: `${componentId}`
-      }
+      query
     });
 
     socket.on("connect", () => {
@@ -67,16 +72,27 @@ export const useSocket = (botId: string, componentId: string): IUseSocket => {
       console.log(`Desconectado: ${message}`);
     });
 
-    socket.on(`bot-${botId}-component-${componentId}`, (data) => {
-      setData(data);
+    socket.on(room, (data) => {
+      const decompressedMessage = JSON.parse(pako.inflate(data, { to: 'string' }))
+      setData(decompressedMessage);
     });
 
     return () => {
       console.log("Desconectando do socket...");
-      socket.off(`bot-${botId}-component-${componentId}`);
+      socket.off(room);
       socket.disconnect();
     };
   }, [socketUrl]);
 
-  return { data };
+  function socketModalTimeout(time: number) {
+    const timeoutId = setTimeout(() => {
+      const closeButton = document.querySelector(".chakra-modal__close-btn");
+      if (closeButton) closeButton.click();
+      setExceededTimeout(true);
+    }, time);
+
+    return () => clearTimeout(timeoutId);
+  }
+
+  return { data, socketModalTimeout, exceededTimeout };
 };

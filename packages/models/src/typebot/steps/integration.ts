@@ -131,22 +131,33 @@ export const defaultWebhookOptions: Omit<WebhookOptions, 'webhookId'> = {
   isCustomBody: false,
 }
 
-const generateFallback = (msg: string) => {
-  const obj = {
-    html: `<div style="margin-left: 8px;">${msg}</div>`,
-    richText: [
-      {
-        children: [
-          {
-            text: msg,
-          },
-        ],
-        type: 'p',
-      },
-    ],
-    plainText: msg,
+const generateFallback = () => {
+  const messages = [
+    "Não consegui processar sua mensagem. Por favor, acesse o link que enviamos para continuar.",
+    "Parece que ainda não acessou o link correto. Por favor, clique no link enviado para prosseguir.",
+    "Ainda estamos aguardando sua ação no link enviado. Por favor, clique nele para avançar.",
+  ]
+
+  let obj: Array<any> = [];
+
+  for (let message of messages) {
+    obj.push({
+      html: `<div style="margin-left: 8px;">${message}</div>`,
+      richText: [
+        {
+          children: [
+            {
+              text: message,
+            },
+          ],
+          type: 'p',
+        },
+      ],
+      plainText: message,
+    });
   }
-  return [obj, obj, obj]
+
+  return obj;
 }
 
 export const defaultExternalEventOptions: Omit<ExternalEventOptions, 'externalEventId'> = {
@@ -164,7 +175,5 @@ export const defaultExternalEventOptions: Omit<ExternalEventOptions, 'externalEv
   variablesForTest: [],
   isAdvancedConfig: false,
   isCustomBody: false,
-  fallbackMessages: generateFallback(
-    'Não entendi essa resposta. Por favor, siga a orientação fornecida. '
-  ),
+  fallbackMessages: generateFallback(),
 }

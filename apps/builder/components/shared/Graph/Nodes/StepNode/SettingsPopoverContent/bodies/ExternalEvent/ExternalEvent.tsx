@@ -1,4 +1,4 @@
-import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Button, Flex, FormLabel, Icon, Input, InputGroup, InputRightElement, Select, Stack, Text, useToast } from "@chakra-ui/react";
+import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Button, Flex, Icon, Input, InputGroup, InputRightElement, Select, Stack, Text, useToast } from "@chakra-ui/react";
 import { CodeEditor } from "components/shared/CodeEditor";
 import { TableList, TableListItemProps } from "components/shared/TableList";
 import { useTypebot } from "contexts/TypebotContext";
@@ -9,7 +9,6 @@ import { MdCheckCircle, MdContentCopy, MdInfo } from "react-icons/md";
 import { mountUrl } from "services/externalEvent";
 import { getDeepKeys } from "services/integrations";
 import { TextBubbleEditor } from "../../../TextBubbleEditor";
-import { AssignToResponsibleSelect } from "../AssignToTeam/AssignToResponsibleSelect";
 import { DataVariableInputs } from "../WebhookSettings/ResponseMappingInputs";
 
 type IProps = {
@@ -26,13 +25,25 @@ export const ExternalEvent = React.memo(function ExternalEvent({
   const [responseKeys, setResponseKeys] = useState<string[]>([])
   const [successTest, setSuccessTest] = useState<boolean>();
   const [invalidData, setInvalidData] = useState<boolean>();
+  const [loading, setLoading] = useState<boolean>();
   const [timeout, setTimeout] = useState<string>("5")
   const [url, setUrl] = useState<string>("")
   const { typebot } = useTypebot()
-  const { data } = useSocket(`${typebot?.id}`, `${step.blockId}`)
+  const { data, socketModalTimeout, exceededTimeout } = useSocket(
+    `bot-${typebot?.id}-component-${step.id}`,
+    {
+      botId: typebot?.id,
+      componentId: step.id
+    }
+  )
 
   const color = "#1366C9";
   const MAX_LENGHT_TEXT = 500;
+  const orders = [
+    'primeira',
+    'segunda',
+    'terceira',
+  ]
 
   const errorToast = useToast({
     position: 'top-right',
@@ -65,31 +76,11 @@ export const ExternalEvent = React.memo(function ExternalEvent({
   const getUrl = useCallback(async () => {
     if (!typebot?.id) return;
 
-    const url = await mountUrl({ blockId: step.blockId, botId: typebot.id });
+    const url = await mountUrl({ blockId: step.id, botId: typebot.id });
+    step.options.url = url;
+
     setUrl(url)
   }, [])
-
-
-  // const makeRequest = (async () => {
-  //   try {
-  //     // const { data } = await axios.get(`${url}`);
-  //     // const json = JSON.stringify(data, undefined, 2);
-
-  //     // if (!validationJson(json)) return;
-  //     // setRequestResponse(json);
-
-  //     step.options.body = JSON.stringify(json);
-
-  //     setRequest("receive");
-  //     setResponseKeys(getDeepKeys(data))
-
-  //     setSuccessTest(true);
-  //     successToast({ title: 'Sucesso ao fazer requisição' })
-  //   } catch (err: any) {
-  //     errorToast({ title: 'Erro ao fazer requisição' })
-  //     setSuccessTest(false);
-  //   }
-  // })
 
   const validationJson = (value: string) => {
     try {
@@ -119,9 +110,15 @@ export const ExternalEvent = React.memo(function ExternalEvent({
   ) => {
     return (
       <Box>
-        <FormLabel mb="0" htmlFor="placeholder">
-          Mensagem para resposta inválida - Tentativa {index + 1}
-        </FormLabel>
+        <Text
+          color="black"
+          fontFamily="Poppins"
+          fontSize="14px"
+          fontStyle="bolder"
+          lineHeight="24px"
+        >
+          Após a {orders[index]} mensagem do cliente, diga
+        </Text>
         <TextBubbleEditor
           required={{
             errorMsg: `O campo "Mensagem para resposta inválida - Tentativa ${index + 1
@@ -149,11 +146,9 @@ export const ExternalEvent = React.memo(function ExternalEvent({
     })
   }
 
-  const onAssign = (v: any) => {
-    onOptionsChange({
-      ...step.options,
-      ...v,
-    })
+  function waitRequest() {
+    setLoading(true);
+    socketModalTimeout(30 * 1000);
   }
 
   useEffect(() => {
@@ -163,16 +158,30 @@ export const ExternalEvent = React.memo(function ExternalEvent({
 
   useEffect(() => {
     if (!data) return;
-    console.log(data);
-    // step.options.body = JSON.stringify(data.json);
-    // setRequest("receive");
-    // setResponseKeys(getDeepKeys(data))
-    // setSuccessTest(true);
-    // successToast({ title: 'Sucesso ao fazer requisição' })
+
+    validationJson(data)
+
+    const json = JSON.parse(data);
+    setRequest("receive");
+
+    step.options.body = json;
+    setRequestResponse(JSON.stringify(json, undefined, 2));
+    setResponseKeys(getDeepKeys(json))
+
+    setSuccessTest(true);
+    successToast({ title: 'Sucesso ao fazer requisição' })
   }, [data])
 
   useEffect(() => {
+    if (!exceededTimeout) return;
+
+    errorToast({ title: 'O tempo de resposta foi excedido. Por favor, tente novamente.' });
+  }, [exceededTimeout])
+
+  useEffect(() => {
     getUrl();
+
+    validationJson(step?.options?.body);
   }, [])
 
   return (
@@ -228,22 +237,37 @@ export const ExternalEvent = React.memo(function ExternalEvent({
           </Flex>
 
           <Button
-            bg={color}
-            color="white"
-            // onClick={makeRequest}
+            bg={loading ? "#E3E4E8" : color}
+            color={loading ? "#1366c9" : "white"}
+            onClick={waitRequest}
+            disabled={loading}
             w="100%"
+            display="inline-flex"
+            alignItems="center"
+            justifyContent="center"
+            gap="8px"
+            _disabled={{
+              opacity: 1,
+              cursor: 'not-allowed'
+            }}
           >
-            Receber Requisição
+            {loading && <div className="loader"></div>}
+            {loading ? "Aguardando retorno da requisição" : "Receber Requisição"}
           </Button>
 
           <Button
             variant="outline"
-            borderColor={color}
-            color={color}
+            borderColor={loading ? "#C4C7CF" : color}
+            color={loading ? "#C4C7CF" : color}
             onClick={() => setRequest("define")}
+            disabled={loading}
             w="100%"
+            _disabled={{
+              opacity: 1,
+              cursor: 'not-allowed'
+            }}
           >
-            Definir Requisição
+            Definir requisição
           </Button>
         </Stack>
       }
@@ -289,7 +313,7 @@ export const ExternalEvent = React.memo(function ExternalEvent({
           }
 
           <CodeEditor
-            value={requestResponse ?? ''}
+            value={requestResponse ?? step?.options?.body}
             defaultValue={'{}'}
             lang="json"
             isReadOnly={(request == "define") ? false : true}
@@ -363,7 +387,9 @@ export const ExternalEvent = React.memo(function ExternalEvent({
                 <Accordion allowToggle allowMultiple>
                   <AccordionItem>
                     <AccordionButton justifyContent="space-between">
-                      Se o cliente não responder com nenhuma das opções:
+                      <Text fontFamily="Poppins" fontSize="12px" fontWeight="bolder" fontStyle="normal" lineHeight="24px">
+                        Se o cliente enviar uma mensagem enquanto aguardamos o evento externo
+                      </Text>
                       <AccordionIcon />
                     </AccordionButton>
                     <AccordionPanel pb={4} as={Stack} spacing="6">
@@ -371,17 +397,18 @@ export const ExternalEvent = React.memo(function ExternalEvent({
                         {step.options?.fallbackMessages.map((message, index) =>
                           fallbackMessageComponent(message, index)
                         )}
-                        <Box>
-                          <FormLabel mb="0" htmlFor="placeholder">
-                            Se o cliente errar 3 vezes seguidas, atribuir conversa para:
-                          </FormLabel>
-                          <AssignToResponsibleSelect
-                            hasResponsibleContact={false}
-                            options={step.options}
-                            onSelect={onAssign}
-                          />
-                        </Box>
                       </Flex>
+                      <Box>
+                        <Flex justifyContent="center" alignItems="center" gap="16px" bg="#ecf4fd" borderWidth="1px" borderColor="#5699ea" borderRadius="md" padding="16px">
+                          <Icon fontSize="2xl" color="#2F4C74">
+                            <MdInfo />
+                          </Icon>
+
+                          <Text color="#2F4C74" fontFamily="Poppins" fontSize="14px" fontStyle="normal" lineHeight="24px">
+                            Se houver mais de 3 tentativas erradas, o cliente será automaticamente direcionado para a jornada de “em caso de falha”.
+                          </Text>
+                        </Flex>
+                      </Box>
                     </AccordionPanel>
                   </AccordionItem>
                 </Accordion>

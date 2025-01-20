@@ -232,7 +232,7 @@ export const ItemNodesList = ({
       )}
       {step.type === IntegrationStepType.EXTERNAL_EVENT && (
         <Container>
-          <Text noOfLines={0}>{'Editar...'}</Text>
+          <Text whiteSpace="nowrap" overflow="hidden" textOverflow="ellipsis">{step?.options?.url || "Clique para editar..."}</Text>
         </Container>
       )}
       {step &&
