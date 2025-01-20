@@ -1,5 +1,5 @@
 import { resolve } from "path";
-import contentCollections from "@content-collections/vite";
+import contentCollections from "@content-collections/vinxi";
 import { defineConfig } from "@tanstack/start/config";
 import viteTsConfigPaths from "vite-tsconfig-paths";
 

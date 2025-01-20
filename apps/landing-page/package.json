@@ -30,7 +30,7 @@
   "devDependencies": {
     "@content-collections/core": "0.8.0",
     "@content-collections/mdx": "0.2.0",
-    "@content-collections/vite": "0.2.3",
+    "@content-collections/vinxi": "0.1.0",
     "@shikijs/transformers": "1.26.2",
     "@tailwindcss/typography": "0.5.16",
     "@tanstack/router-devtools": "1.95.5",
