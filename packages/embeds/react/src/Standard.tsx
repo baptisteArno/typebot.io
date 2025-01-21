@@ -5,7 +5,6 @@ import "@typebot.io/js/web";
 
 type Props = BotProps & {
   style?: React.CSSProperties;
-  className?: string;
 };
 
 declare global {
@@ -14,14 +13,14 @@ declare global {
       "typebot-standard": React.DetailedHTMLProps<
         React.HTMLAttributes<HTMLElement>,
         HTMLElement
-      > & { class?: string };
+      >;
     }
   }
 }
 
 type StandardElement = HTMLElement & Props;
 
-export const Standard = ({ style, className, ...assignableProps }: Props) => {
+export const Standard = ({ style, ...assignableProps }: Props) => {
   const ref = useRef<StandardElement | null>(null);
 
   useEffect(() => {
@@ -31,5 +30,5 @@ export const Standard = ({ style, className, ...assignableProps }: Props) => {
     Object.assign(ref.current, rest, { typebot });
   }, [assignableProps]);
 
-  return <typebot-standard ref={ref} style={style} class={className} />;
+  return <typebot-standard ref={ref} style={style} />;
 };
