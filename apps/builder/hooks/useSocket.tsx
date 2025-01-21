@@ -11,7 +11,7 @@ interface IUseSocket {
   clearSocketModalTimeout: () => void;
 }
 
-export const useSocket = (room: string, data?: any): IUseSocket => {
+export const useSocket = (room: string, params?: any): IUseSocket => {
   const [data, setData] = useState<any>(null);
   const [socketUrl, setSocketUrl] = useState<any>(null);
   const [exceededTimeout, setExceededTimeout] = useState(false);
@@ -56,7 +56,7 @@ export const useSocket = (room: string, data?: any): IUseSocket => {
 
     socket.on("connect", () => {
       console.log("Conectado!");
-      socket.emit('joinBotComponent', data)
+      socket.emit('joinBotComponent', params)
     });
 
     socket.on("error", (message) => {
