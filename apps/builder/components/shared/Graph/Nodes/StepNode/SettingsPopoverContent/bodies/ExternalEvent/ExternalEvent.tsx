@@ -152,11 +152,6 @@ export const ExternalEvent = React.memo(function ExternalEvent({
   }
 
   useEffect(() => {
-    if (!step.options) step.options = {} as ExternalEventOptions;
-    step.options.responseVariableMapping = [];
-  }, [request])
-
-  useEffect(() => {
     if (!data) return;
 
     validationJson(data)
@@ -338,7 +333,7 @@ export const ExternalEvent = React.memo(function ExternalEvent({
                   </AccordionButton>
                   <AccordionPanel pb={4} as={Stack} spacing="6">
                     <TableList<ResponseVariableMapping>
-                      initialItems={step.options?.responseVariableMapping as any || []}
+                      initialItems={step.options.responseVariableMapping as any}
                       onItemsChange={handleResponseMappingChange}
                       Item={ResponseMappingInputs}
                       addLabel="Adicionar variável"
