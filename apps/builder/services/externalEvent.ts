@@ -23,7 +23,7 @@ const getNucleusUrl = async () => {
 export const mountUrl = async ({ blockId, botId }: IMountUrl) => {
   const baseUrl = await getNucleusUrl();
   const currentSubDomain = subDomain.getSubDomain()
-  return `${baseUrl}/public/external-webhook/${currentSubDomain}/${botId}/${blockId}/id-conversa`
+  return `${baseUrl}/chat/external-webhook/${currentSubDomain}/${botId}/${blockId}/id-conversa`
 }
 
 type IMountUrl = {
