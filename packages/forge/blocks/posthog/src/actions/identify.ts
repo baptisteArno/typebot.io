@@ -45,11 +45,11 @@ export const identify = createAction({
       const posthog = createClient(apiKey, host);
 
       if (properties === undefined || properties.length === 0) {
-        posthog.identify({
+        await posthog.identify({
           distinctId: userId,
         });
       } else {
-        posthog.identify({
+        await posthog.identify({
           distinctId: userId,
           properties: createProperties(properties),
         });

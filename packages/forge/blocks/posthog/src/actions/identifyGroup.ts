@@ -79,7 +79,7 @@ export const identifyGroup = createAction({
         };
       }
 
-      posthog.groupIdentify(groupPayload);
+      await posthog.groupIdentify(groupPayload);
 
       await posthog.shutdown();
     },

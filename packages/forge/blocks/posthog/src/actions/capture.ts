@@ -87,12 +87,6 @@ export const capture = createAction({
           break;
       }
 
-      console.log("name", name);
-      console.log("type", type);
-      console.log("userId", userId);
-      console.log("apiKey", apiKey);
-      console.log("host", host);
-
       if (
         name === undefined ||
         name.length === 0 ||
@@ -136,9 +130,7 @@ export const capture = createAction({
         };
       }
 
-      console.log(JSON.stringify(eventPayload, null, 2));
-
-      posthog.capture(eventPayload);
+      await posthog.capture(eventPayload);
 
       await posthog.shutdown();
     },
