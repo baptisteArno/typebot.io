@@ -29,7 +29,7 @@ export const ExternalEvent = React.memo(function ExternalEvent({
   const [timeout, setTimeout] = useState<string>("5")
   const [url, setUrl] = useState<string>("")
   const { typebot } = useTypebot()
-  const { data, socketModalTimeout, exceededTimeout } = useSocket(
+  const { data, socketModalTimeout, exceededTimeout, clearSocketModalTimeout } = useSocket(
     `bot-${typebot?.id}-component-${step.id}`,
     {
       botId: typebot?.id,
@@ -84,12 +84,12 @@ export const ExternalEvent = React.memo(function ExternalEvent({
 
   const validationJson = (value: string) => {
     try {
-      const json = JSON.parse(value);
+      const json = (typeof value === "object") ? value : JSON.parse(value);
 
       setInvalidData(false);
       setResponseKeys(getDeepKeys(json))
 
-      step.options.body = JSON.stringify(json);
+      step.options.body = JSON.stringify(json, undefined, 2);
 
       return true;
     } catch (err: any) {
@@ -154,17 +154,14 @@ export const ExternalEvent = React.memo(function ExternalEvent({
   useEffect(() => {
     if (!data) return;
 
-    validationJson(data)
-
-    const json = JSON.parse(data);
+    const json = (typeof data === "object") ? data : JSON.parse(data);
     setRequest("receive");
-
-    step.options.body = json;
-    setRequestResponse(JSON.stringify(json, undefined, 2));
-    setResponseKeys(getDeepKeys(json))
-
+    setInvalidData(false);
     setSuccessTest(true);
-    successToast({ title: 'Sucesso ao fazer requisição' })
+
+    step.options.body = JSON.stringify(json, undefined, 2);
+
+    clearSocketModalTimeout()
   }, [data])
 
   useEffect(() => {

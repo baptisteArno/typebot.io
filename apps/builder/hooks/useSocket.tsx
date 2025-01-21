@@ -1,19 +1,22 @@
 import { subDomain, url as URLResolver } from '@octadesk-tech/services';
 import Storage from '@octadesk-tech/storage';
 import pako from 'pako';
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Socket from 'socket.io-client';
 
 interface IUseSocket {
   data: any;
+  socketModalTimeout: (time: number) => void;
   exceededTimeout: boolean;
-  socketModalTimeout: (time: number) => () => void;
+  clearSocketModalTimeout: () => void;
 }
 
 export const useSocket = (room: string, query?: any): IUseSocket => {
   const [data, setData] = useState<any>(null);
   const [socketUrl, setSocketUrl] = useState<any>(null);
   const [exceededTimeout, setExceededTimeout] = useState(false);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
 
   const getSocketURL = async () => {
     if (socketUrl) return;
@@ -85,14 +88,19 @@ export const useSocket = (room: string, query?: any): IUseSocket => {
   }, [socketUrl]);
 
   function socketModalTimeout(time: number) {
-    const timeoutId = setTimeout(() => {
+    timeoutRef.current = setTimeout(() => {
       const closeButton = document.querySelector(".chakra-modal__close-btn");
       if (closeButton) closeButton.click();
       setExceededTimeout(true);
     }, time);
-
-    return () => clearTimeout(timeoutId);
   }
 
-  return { data, socketModalTimeout, exceededTimeout };
+  function clearSocketModalTimeout() {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
+  }
+
+  return { data, socketModalTimeout, exceededTimeout, clearSocketModalTimeout };
 };

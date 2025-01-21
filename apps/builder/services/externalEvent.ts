@@ -1,3 +1,4 @@
+import { subDomain } from '@octadesk-tech/services';
 import Storage from '@octadesk-tech/storage';
 import Axios from 'axios';
 export const getNucleusAuthClient = () =>
@@ -21,7 +22,8 @@ const getNucleusUrl = async () => {
 
 export const mountUrl = async ({ blockId, botId }: IMountUrl) => {
   const baseUrl = await getNucleusUrl();
-  return `${baseUrl}/chat/external-webhook/${botId}/${blockId}/id-conversa`
+  const currentSubDomain = subDomain.getSubDomain()
+  return `${baseUrl}/public/external-webhook/${currentSubDomain}/${botId}/${blockId}/id-conversa`
 }
 
 type IMountUrl = {
