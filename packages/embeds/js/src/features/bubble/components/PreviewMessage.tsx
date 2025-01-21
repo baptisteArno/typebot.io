@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import { Show, createSignal } from "solid-js";
 import type {
   BubbleTheme,
@@ -49,16 +50,14 @@ export const PreviewMessage = (props: PreviewMessageProps) => {
     <div
       part="preview-message"
       onClick={() => props.onClick()}
-      class={
-        "fixed max-w-[256px] rounded-md duration-200 flex items-center gap-4 shadow-md animate-fade-in cursor-pointer hover:shadow-lg p-4" +
-        (props.placement === "left" ? " left-5" : " right-5")
-      }
+      class={clsx(
+        "absolute bottom-[calc(100%+12px)] w-64 rounded-md duration-200 flex items-center gap-4 shadow-md animate-fade-in cursor-pointer hover:shadow-lg p-4",
+        props.placement === "left" ? "left-0" : "right-0",
+      )}
       style={{
         "background-color":
           props.previewMessageTheme?.backgroundColor ?? defaultBackgroundColor,
         color: props.previewMessageTheme?.textColor ?? defaultTextColor,
-        "z-index": 42424242,
-        bottom: `calc(${props.buttonSize} + 32px)`,
       }}
       onMouseEnter={() => setIsPreviewMessageHovered(true)}
       onMouseLeave={() => setIsPreviewMessageHovered(false)}

@@ -8,20 +8,23 @@ import {
   setBotOpenedStateInStorage,
 } from "@/utils/storage";
 import { EnvironmentProvider } from "@ark-ui/solid";
-import { isDefined } from "@typebot.io/lib/utils";
+import { isDefined, isNotDefined } from "@typebot.io/lib/utils";
 import { zendeskWebWidgetOpenedMessage } from "@typebot.io/zendesk-block/constants";
+import clsx from "clsx";
 import {
   Show,
   createEffect,
   createSignal,
   onCleanup,
-  onMount,
   splitProps,
 } from "solid-js";
 import styles from "../../../assets/index.css";
 import type { BubbleParams } from "../types";
 import { BubbleButton } from "./BubbleButton";
 import { PreviewMessage, type PreviewMessageProps } from "./PreviewMessage";
+
+const defaultBottom = "20px";
+const buttonBotGap = "12px";
 
 export type BubbleProps = BotProps &
   BubbleParams & {
@@ -41,6 +44,7 @@ export const Bubble = (props: BubbleProps) => {
     "theme",
     "autoShowDelay",
   ]);
+  const [isInitialized, setIsInitialized] = createSignal(false);
   const [isMounted, setIsMounted] = createSignal(true);
   const [prefilledVariables, setPrefilledVariables] = createSignal(
     botProps.prefilledVariables,
@@ -65,7 +69,7 @@ export const Bubble = (props: BubbleProps) => {
 
   let progressBarContainerRef;
 
-  onMount(() => {
+  const initializeBubble = () => {
     window.addEventListener("message", processIncomingEvent);
     const autoShowDelay = bubbleProps.autoShowDelay;
     const previewMessageAutoShowDelay =
@@ -79,21 +83,23 @@ export const Bubble = (props: BubbleProps) => {
     }
     if (isDefined(previewMessageAutoShowDelay)) {
       setTimeout(() => {
-        showMessage();
+        showMessage({
+          avatarUrl: bubbleProps.previewMessage?.avatarUrl,
+          message: bubbleProps.previewMessage?.message ?? "",
+        });
       }, previewMessageAutoShowDelay);
     }
-  });
+  };
 
   onCleanup(() => {
+    setIsInitialized(false);
     window.removeEventListener("message", processIncomingEvent);
   });
 
   createEffect(() => {
-    if (!props.prefilledVariables) return;
-    setPrefilledVariables((existingPrefilledVariables) => ({
-      ...existingPrefilledVariables,
-      ...props.prefilledVariables,
-    }));
+    if (isInitialized() || isNotDefined(botProps.typebot)) return;
+    initializeBubble();
+    setIsInitialized(true);
   });
 
   const processIncomingEvent = (event: MessageEvent<CommandData>) => {
@@ -167,7 +173,7 @@ export const Bubble = (props: BubbleProps) => {
       message === chatwootWebWidgetOpenedMessage
     )
       unmount();
-    props.onScriptExecutionSuccess?.(message);
+    botProps.onScriptExecutionSuccess?.(message);
   };
 
   return (
@@ -176,60 +182,71 @@ export const Bubble = (props: BubbleProps) => {
         value={document.querySelector("typebot-bubble")?.shadowRoot as Node}
       >
         <style>{styles}</style>
-        <Show when={isPreviewMessageDisplayed()}>
-          <PreviewMessage
-            {...previewMessage()}
-            placement={bubbleProps.theme?.placement}
-            previewMessageTheme={bubbleProps.theme?.previewMessage}
-            buttonSize={buttonSize()}
-            onClick={handlePreviewMessageClick}
-            onCloseClick={hideMessage}
-          />
-        </Show>
-        <BubbleButton
-          {...bubbleProps.theme?.button}
-          placement={bubbleProps.theme?.placement}
-          toggleBot={toggleBot}
-          isBotOpened={isBotOpened()}
-          buttonSize={buttonSize()}
-        />
         <div ref={progressBarContainerRef} />
         <div
-          part="bot"
-          style={{
-            height: `calc(100% - ${buttonSize()} - 32px)`,
-            "max-height": props.theme?.chatWindow?.maxHeight ?? "704px",
-            "max-width": props.theme?.chatWindow?.maxWidth ?? "400px",
-            transition:
-              "transform 200ms cubic-bezier(0, 1.2, 1, 1), opacity 150ms ease-out",
-            "transform-origin":
-              props.theme?.placement === "left"
-                ? "bottom left"
-                : "bottom right",
-            transform: isBotOpened() ? "scale3d(1, 1, 1)" : "scale3d(0, 0, 1)",
-            "box-shadow": "rgb(0 0 0 / 16%) 0px 5px 40px",
-            "background-color": bubbleProps.theme?.chatWindow?.backgroundColor,
-            "z-index": 42424242,
-            bottom: `calc(${buttonSize()} + 32px)`,
-          }}
-          class={
-            "fixed rounded-lg w-full" +
-            (isBotOpened() ? " opacity-1" : " opacity-0 pointer-events-none") +
-            (props.theme?.placement === "left"
-              ? " left-5"
-              : " sm:right-5 right-0")
-          }
+          class={clsx(
+            bubbleProps.theme?.position !== "static"
+              ? bubbleProps.theme?.placement === "left"
+                ? "z-[424242] fixed bottom-5 left-5"
+                : "z-[424242] fixed bottom-5 right-5"
+              : "relative",
+          )}
         >
-          <Show when={isBotStarted()}>
-            <Bot
-              {...botProps}
-              onScriptExecutionSuccess={handleScriptExecutionSuccessMessage}
-              onChatStatePersisted={handleOnChatStatePersisted}
-              prefilledVariables={prefilledVariables()}
-              class="rounded-lg"
-              progressBarRef={progressBarContainerRef}
+          <Show when={isPreviewMessageDisplayed()}>
+            <PreviewMessage
+              {...previewMessage()}
+              placement={bubbleProps.theme?.placement}
+              previewMessageTheme={bubbleProps.theme?.previewMessage}
+              buttonSize={buttonSize()}
+              onClick={handlePreviewMessageClick}
+              onCloseClick={hideMessage}
             />
           </Show>
+          <BubbleButton
+            {...bubbleProps.theme?.button}
+            placement={bubbleProps.theme?.placement}
+            toggleBot={toggleBot}
+            isBotOpened={isBotOpened()}
+            buttonSize={buttonSize()}
+          />
+          <div
+            part="bot"
+            style={{
+              "max-height": `calc(100vh - ${defaultBottom} - ${buttonSize()} - ${buttonBotGap})`,
+              height: bubbleProps.theme?.chatWindow?.maxHeight ?? "704px",
+              "max-width": bubbleProps.theme?.chatWindow?.maxWidth ?? "400px",
+              transition:
+                "transform 200ms cubic-bezier(0, 1.2, 1, 1), opacity 150ms ease-out",
+              "transform-origin":
+                bubbleProps.theme?.placement === "left"
+                  ? "bottom left"
+                  : "bottom right",
+              transform: isBotOpened()
+                ? "scale3d(1, 1, 1)"
+                : "scale3d(0, 0, 1)",
+              "box-shadow": "rgb(0 0 0 / 16%) 0px 5px 40px",
+              "background-color":
+                bubbleProps.theme?.chatWindow?.backgroundColor,
+            }}
+            class={clsx(
+              "absolute rounded-lg w-screen bottom-[calc(100%+12px)]",
+              isBotOpened() ? "opacity-1" : "opacity-0 pointer-events-none",
+              bubbleProps.theme?.placement === "left"
+                ? "sm:left-0 -left-5"
+                : "sm:right-0 -right-5",
+            )}
+          >
+            <Show when={isBotStarted()}>
+              <Bot
+                {...botProps}
+                onScriptExecutionSuccess={handleScriptExecutionSuccessMessage}
+                onChatStatePersisted={handleOnChatStatePersisted}
+                prefilledVariables={prefilledVariables()}
+                class="rounded-lg"
+                progressBarRef={progressBarContainerRef}
+              />
+            </Show>
+          </div>
         </div>
       </EnvironmentProvider>
     </Show>

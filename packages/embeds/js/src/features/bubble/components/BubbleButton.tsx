@@ -21,12 +21,10 @@ export const BubbleButton = (props: Props) => (
     part="button"
     onClick={() => props.toggleBot()}
     class={clsx(
-      `fixed bottom-5 shadow-md rounded-2xl hover:scale-110 active:scale-95 transition-transform duration-200 flex justify-center items-center animate-fade-in`,
-      props.placement === "left" ? " left-5" : " right-5",
+      "relative shadow-md rounded-2xl hover:scale-110 active:scale-95 transition-transform duration-200 flex justify-center items-center animate-fade-in",
     )}
     style={{
       "background-color": props.backgroundColor ?? colors.gray.dark["2"],
-      "z-index": 42424242,
       width: props.buttonSize,
       height: props.buttonSize,
     }}
@@ -43,10 +41,8 @@ const OpenIcon = (props: Props) => (
       <svg
         part="button-icon"
         viewBox="0 0 16 16"
-        width="18"
-        height="18"
         class={clsx(
-          "fill-transparent absolute duration-200 transition text-white",
+          "fill-transparent absolute duration-200 transition text-white size-6",
           props.isBotOpened ? "scale-0 opacity-0" : "scale-100 opacity-100",
         )}
       >
