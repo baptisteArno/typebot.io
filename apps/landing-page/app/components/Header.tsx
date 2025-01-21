@@ -10,13 +10,14 @@ import {
 } from "@/constants";
 import { useWindowSize } from "@/features/homepage/hooks/useWindowSize";
 import { cn } from "@/lib/utils";
-import { Link, useRouter } from "@tanstack/react-router";
+import { Link, useLocation, useRouter } from "@tanstack/react-router";
 import { CloseIcon } from "@typebot.io/ui/icons/CloseIcon";
 import { MenuIcon } from "@typebot.io/ui/icons/MenuIcon";
 import clsx from "clsx";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, motion, useScroll } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import React from "react";
+import { TypebotBubble } from "./TypebotBubble";
 import { ButtonLink, TextLink } from "./link";
 
 const links = [
@@ -238,35 +239,86 @@ const Desktop = React.forwardRef<
   HTMLElement,
   Pick<Props, "appearance" | "className">
 >(function Desktop({ appearance, className }, ref) {
+  const { pathname } = useLocation();
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isChatBubbleMounted, setIsChatBubbleMounted] = useState(true);
+  const [isIntersecting, setIsIntersecting] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY < 50) setIsIntersecting(false);
+      setIsScrolled(window.scrollY > 50);
+      setIsChatBubbleMounted(window.scrollY < 300);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    if (isIntersecting) return;
+    const separator = document.getElementById("magic-animation-separator");
+    if (!separator) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsIntersecting(entry.isIntersecting);
+      },
+      { threshold: 0.1 },
+    );
+
+    observer.observe(separator);
+    return () => observer.disconnect();
+  }, [isIntersecting]);
+
   return (
-    <nav
-      ref={ref}
+    <div
       className={clsx(
-        "flex rounded-2xl border border-gray-6 px-2 py-2 bg-gradient-to-b transition-colors gap-2 items-center",
-        appearance === "dark"
-          ? "dark from-[#393939] to-[#121212]"
-          : "from-gray-1 to-[#DEDEDE]",
-        className,
+        "flex gap-2 items-center transition-opacity",
+        pathname === "/" && isScrolled && !isIntersecting
+          ? "opacity-0 pointer-events-none"
+          : "opacity-100",
       )}
     >
-      {desktopLinks.map((link) => (
-        <ButtonLink
-          key={link.label}
-          variant="ghost"
-          size="sm"
-          className="font-normal"
-          href={"href" in link ? link.href : undefined}
-          to={"to" in link ? link.to : undefined}
-          activeProps={{
-            className: "font-medium",
-          }}
+      <nav
+        ref={ref}
+        className={clsx(
+          "flex rounded-2xl border border-gray-6 px-2 py-2 bg-gradient-to-b transition-colors gap-2 items-center",
+          appearance === "dark"
+            ? "dark from-[#393939] to-[#121212]"
+            : "from-gray-1 to-[#DEDEDE]",
+          className,
+        )}
+      >
+        {desktopLinks.map((link) => (
+          <ButtonLink
+            key={link.label}
+            variant="ghost"
+            size="sm"
+            className="font-normal"
+            href={"href" in link ? link.href : undefined}
+            to={"to" in link ? link.to : undefined}
+            activeProps={{
+              className: "font-medium",
+            }}
+          >
+            {link.label}
+          </ButtonLink>
+        ))}
+        <Button variant="cta" size="sm">
+          Get started free
+        </Button>
+      </nav>
+      {isChatBubbleMounted && pathname === "/" && (
+        <div
+          className={clsx(
+            "flex transition-opacity",
+            isScrolled ? "opacity-0 pointer-events-none" : "opacity-100",
+          )}
         >
-          {link.label}
-        </ButtonLink>
-      ))}
-      <Button variant="cta" size="sm">
-        Get started free
-      </Button>
-    </nav>
+          <TypebotBubble />
+        </div>
+      )}
+    </div>
   );
 });

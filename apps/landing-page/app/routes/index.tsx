@@ -29,6 +29,7 @@ function Home() {
           <div className="md:h-[200vh]">
             <UseCases className="md:sticky top-0" />
           </div>
+          <div id="magic-animation-separator" className="invisible -mt-32" />
           <Companies />
           <MainFeatures />
         </Section>

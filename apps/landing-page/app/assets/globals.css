@@ -143,4 +143,9 @@
   details > summary::-webkit-details-marker {
     display: none;
   }
+
+  typebot-bubble::part(button) {
+    background-image: linear-gradient(to bottom, #393939, #121212);
+    border: 1px solid rgb(58 58 58);
+  }
 }

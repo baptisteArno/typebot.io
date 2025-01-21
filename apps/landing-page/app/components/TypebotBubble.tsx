@@ -1,23 +1,19 @@
-import { Bubble } from "@typebot.io/react";
-import { colors } from "@typebot.io/ui/colors";
-import { useEffect, useState } from "react";
+import { Suspense, lazy } from "react";
 
-export const TypebotBubble = () => {
-  const [mountBubble, setMountBubble] = useState(false);
+export const Bubble = lazy(() =>
+  import("@typebot.io/react").then((m) => ({ default: m.Bubble })),
+);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setMountBubble(true);
-    }, 2200);
-
-    return () => clearTimeout(timer);
-  }, []);
-
-  if (!mountBubble) return null;
-  return (
+export const TypebotBubble = () => (
+  <Suspense fallback={<div className="size-12" />}>
     <Bubble
       typebot="typebot-support"
-      theme={{ button: { backgroundColor: colors.gray.dark[3] } }}
+      theme={{
+        position: "static",
+        chatWindow: {
+          maxHeight: "400px",
+        },
+      }}
     />
-  );
-};
+  </Suspense>
+);
