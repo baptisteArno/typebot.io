@@ -57,6 +57,7 @@ export const useSocket = (room: string, query?: any): IUseSocket => {
 
     socket.on("connect", () => {
       console.log("Conectado!");
+      socket.emit('joinBotComponent')
     });
 
     socket.on("error", (message) => {
@@ -82,6 +83,7 @@ export const useSocket = (room: string, query?: any): IUseSocket => {
 
     return () => {
       console.log("Desconectando do socket...");
+      socket.emit('leaveBotComponent')
       socket.off(room);
       socket.disconnect();
     };
