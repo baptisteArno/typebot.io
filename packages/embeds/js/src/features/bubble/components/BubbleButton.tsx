@@ -1,3 +1,4 @@
+import { isLight } from "@typebot.io/lib/hexToRgb";
 import { isNotDefined, isSvgSrc } from "@typebot.io/lib/utils";
 import { colors } from "@typebot.io/ui/colors";
 import { clsx } from "clsx";
@@ -25,6 +26,11 @@ export const BubbleButton = (props: Props) => (
     )}
     style={{
       "background-color": props.backgroundColor ?? colors.gray.dark["2"],
+      color: props.backgroundColor
+        ? isLight(props.backgroundColor)
+          ? colors.gray.light["12"]
+          : colors.gray.dark["12"]
+        : colors.gray.dark["12"],
       width: props.buttonSize,
       height: props.buttonSize,
     }}
@@ -42,7 +48,7 @@ const OpenIcon = (props: Props) => (
         part="button-icon"
         viewBox="0 0 16 16"
         class={clsx(
-          "fill-transparent absolute duration-200 transition text-white size-6",
+          "fill-transparent absolute duration-200 transition size-6",
           props.isBotOpened ? "scale-0 opacity-0" : "scale-100 opacity-100",
         )}
       >

@@ -28,6 +28,9 @@ const buttonBotGap = "12px";
 
 export type BubbleProps = BotProps &
   BubbleParams & {
+    inlineStyle?: {
+      [key: string]: string;
+    };
     onOpen?: () => void;
     onClose?: () => void;
     onPreviewMessageClick?: () => void;
@@ -43,6 +46,7 @@ export const Bubble = (props: BubbleProps) => {
     "onPreviewMessageDismissed",
     "theme",
     "autoShowDelay",
+    "inlineStyle",
   ]);
   const [isInitialized, setIsInitialized] = createSignal(false);
   const [isMounted, setIsMounted] = createSignal(true);
@@ -191,6 +195,7 @@ export const Bubble = (props: BubbleProps) => {
                 : "z-[424242] fixed bottom-5 right-5"
               : "relative",
           )}
+          style={bubbleProps.inlineStyle}
         >
           <Show when={isPreviewMessageDisplayed()}>
             <PreviewMessage

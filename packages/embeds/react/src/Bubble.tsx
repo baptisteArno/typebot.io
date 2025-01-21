@@ -3,7 +3,11 @@ import type React from "react";
 import { useEffect, useRef } from "react";
 import "@typebot.io/js/web";
 
-type Props = BubbleProps;
+type Props = BubbleProps & {
+  inlineStyle?: {
+    [key: string]: string;
+  };
+};
 
 declare global {
   namespace JSX {
