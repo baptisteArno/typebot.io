@@ -11,7 +11,7 @@ interface IUseSocket {
   clearSocketModalTimeout: () => void;
 }
 
-export const useSocket = (room: string, query?: any): IUseSocket => {
+export const useSocket = (room: string, data?: any): IUseSocket => {
   const [data, setData] = useState<any>(null);
   const [socketUrl, setSocketUrl] = useState<any>(null);
   const [exceededTimeout, setExceededTimeout] = useState(false);
@@ -51,13 +51,12 @@ export const useSocket = (room: string, query?: any): IUseSocket => {
       randomizationFactor: 0.5,
       auth: {
         token: authStorage
-      },
-      query
+      }
     });
 
     socket.on("connect", () => {
       console.log("Conectado!");
-      socket.emit('joinBotComponent')
+      socket.emit('joinBotComponent', data)
     });
 
     socket.on("error", (message) => {
