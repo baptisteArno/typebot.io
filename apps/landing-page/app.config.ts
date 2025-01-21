@@ -1,6 +1,7 @@
 import { resolve } from "path";
 import contentCollections from "@content-collections/vinxi";
 import { defineConfig } from "@tanstack/start/config";
+// import { visualizer } from "rollup-plugin-visualizer";
 import viteTsConfigPaths from "vite-tsconfig-paths";
 
 const legacyRedirects = {
@@ -30,11 +31,19 @@ export default defineConfig({
     resolve: {
       alias: {
         $magicBackgrounds: resolve("./app/assets/magicBackgrounds"),
+        "/fonts": resolve("./public/fonts"),
         // https://github.com/prisma/prisma/issues/12504
         ".prisma/client/index-browser":
           "../../node_modules/.prisma/client/index-browser.js",
       },
     },
-    plugins: [viteTsConfigPaths(), contentCollections()],
+    plugins: [
+      viteTsConfigPaths(),
+      contentCollections(),
+      // visualizer({
+      //   open: true,
+      //   gzipSize: true,
+      // }),
+    ],
   },
 });

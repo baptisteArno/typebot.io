@@ -6,10 +6,7 @@ import { createFileRoute, redirect } from "@tanstack/react-router";
 import { allPosts } from "content-collections";
 
 export const Route = createFileRoute("/_layout/$slug")({
-  beforeLoad: () => ({
-    allPosts,
-  }),
-  loader: async ({ params, context: { allPosts } }) => {
+  loader: async ({ params }) => {
     const post = allPosts.find((post) => post._meta.path.endsWith(params.slug));
 
     if (!post) {

@@ -14,7 +14,7 @@ import { Link, useLocation, useRouter } from "@tanstack/react-router";
 import { CloseIcon } from "@typebot.io/ui/icons/CloseIcon";
 import { MenuIcon } from "@typebot.io/ui/icons/MenuIcon";
 import clsx from "clsx";
-import { AnimatePresence, motion, useScroll } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import React from "react";
 import { TypebotBubble } from "./TypebotBubble";
