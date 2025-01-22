@@ -31,7 +31,6 @@ export default defineConfig({
     resolve: {
       alias: {
         $magicBackgrounds: resolve("./app/assets/magicBackgrounds"),
-        "/fonts": resolve("./public/fonts"),
         // https://github.com/prisma/prisma/issues/12504
         ".prisma/client/index-browser":
           "../../node_modules/.prisma/client/index-browser.js",

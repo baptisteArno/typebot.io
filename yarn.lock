@@ -15219,7 +15219,7 @@ ky@1.2.4:
     rehype-pretty-code "0.14.0"
     rehype-slug "6.0.0"
     remark-gfm "4.0.0"
-    rollup-plugin-visualizer "^5.14.0"
+    rollup-plugin-visualizer "5.14.0"
     tailwindcss "3.4.17"
     tailwindcss-motion "1.0.1"
     unified "11.0.5"
@@ -19841,7 +19841,7 @@ rollup@^4.19.0, rollup@^4.23.0, rollup@^4.24.3:
     "@rollup/rollup-linux-loongarch64-gnu" "4.30.1"
     "@rollup/rollup-linux-powerpc64le-gnu" "4.30.1"
 
-rollup-plugin-visualizer@^5.12.0, rollup-plugin-visualizer@^5.14.0:
+rollup-plugin-visualizer@5.14.0, rollup-plugin-visualizer@^5.12.0:
   version "5.14.0"
   resolved "https://registry.npmjs.org/rollup-plugin-visualizer/-/rollup-plugin-visualizer-5.14.0.tgz"
   integrity sha512-VlDXneTDaKsHIw8yzJAFWtrzguoJ/LnQ+lMpoVfYJ3jJF4Ihe5oYLAqLklIK/35lgUY+1yEzCkHyZ1j4A5w5fA==
