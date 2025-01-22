@@ -21,8 +21,13 @@ export const useSocket = (room: string, params?: any): IUseSocket => {
   const getSocketURL = async () => {
     if (socketUrl) return;
 
-    const baseURL = new URL(await URLResolver.getAPIURL('websocket'));
+    const apiURL = await URLResolver.getAPIURL('websocket');
 
+    if (!apiURL) {
+      throw new Error('API URL is undefined. Please check the configuration.');
+    }
+
+    const baseURL = new URL(apiURL);
     const hostname = baseURL.host;
     const path = baseURL.pathname === '/' ? '' : baseURL.pathname;
 
