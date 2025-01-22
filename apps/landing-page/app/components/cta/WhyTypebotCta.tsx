@@ -3,7 +3,7 @@ import { ButtonLink } from "../link";
 import imgSrc from "./assets/3d-group.png";
 
 export const WhyTypebotCta = () => (
-  <div className="why-cta overflow-hidden relative dark flex justify-between items-center p-4 rounded-3xl w-full">
+  <div className="why-cta overflow-hidden relative isolate dark flex justify-between items-center p-4 rounded-3xl w-full">
     <div className="flex flex-col gap-6 flex-1 p-4 md:py-0 md:pl-16 md:pr-20 items-start">
       <h2>Why Typebot?</h2>
       <p>

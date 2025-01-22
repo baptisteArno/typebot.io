@@ -24,7 +24,7 @@
   background-color: rgb(56 189 248 / var(--tw-bg-opacity));
 }
 [data-rehype-pretty-code-figure] .highlighted span {
-  @apply relative;
+  @apply relative isolate;
 }
 [data-rehype-pretty-code-figure] [data-highlighted-chars] {
   @apply rounded-md bg-opacity-10 p-1;

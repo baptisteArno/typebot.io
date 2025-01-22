@@ -16,7 +16,7 @@ export const Companies = () => (
     <h2 className=" px-4 font-medium max-w-6xl">
       Trusted by 650+ companies worldwide
     </h2>
-    <div className="relative flex w-full justify-center">
+    <div className="relative isolate flex w-full justify-center">
       <Marquee>
         <MakerLead width="100px" height="60px" />
         <Webisharp width="100px" height="60px" />

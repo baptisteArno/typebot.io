@@ -122,15 +122,15 @@ export const UseCases = ({ className }: { className?: string }) => {
             </UsecaseTitle>
           ))}
         </div>
-        <div className="relative ">
+        <div className="relative isolate">
           {useCases.map((useCase, index) => (
             <div
               key={index}
               className={cn(
                 currentUseCase.index === index
                   ? previousIndex > index
-                    ? "relative motion-opacity-in-0 -motion-translate-x-in-[20px]"
-                    : "relative motion-opacity-in-0 motion-translate-x-in-[20px]"
+                    ? "motion-opacity-in-0 -motion-translate-x-in-[20px]"
+                    : "motion-opacity-in-0 motion-translate-x-in-[20px]"
                   : "absolute pointer-events-none opacity-0",
               )}
             >

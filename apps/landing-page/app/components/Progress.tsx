@@ -8,7 +8,7 @@ const Progress = React.forwardRef<
   <div
     role="progressbar"
     className={cn(
-      "relative h-1 w-full overflow-hidden rounded-full bg-gray-11/10",
+      "h-1 w-full overflow-hidden rounded-full bg-gray-11/10",
       className,
     )}
     ref={ref}

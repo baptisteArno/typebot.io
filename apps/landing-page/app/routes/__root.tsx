@@ -2,7 +2,6 @@ import css from "@/assets/globals.css?url";
 import { NotFound } from "@/components/NotFound";
 import { Footer } from "@/components/footer/Footer";
 import { TanStackRouterDevtools } from "@/lib/router-dev-tool";
-import { Portal } from "@ark-ui/react/portal";
 import {
   Outlet,
   ScrollRestoration,
@@ -71,15 +70,13 @@ window.$RefreshSig$ = () => (type) => type`,
       </head>
       <body>
         <div className="flex flex-col items-stretch">
-          <Portal>
-            <div className="fixed top-4 md:bottom-12 md:top-auto w-full z-10">
-              <Header
-                onOpen={openHeader}
-                onClose={closeHeader}
-                isOpened={isHeaderOpened}
-              />
-            </div>
-          </Portal>
+          <div className="fixed z-10 top-4 md:bottom-12 md:top-auto w-full">
+            <Header
+              onOpen={openHeader}
+              onClose={closeHeader}
+              isOpened={isHeaderOpened}
+            />
+          </div>
           <Outlet />
           <Footer />
         </div>

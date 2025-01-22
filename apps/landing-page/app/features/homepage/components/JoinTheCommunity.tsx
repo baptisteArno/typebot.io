@@ -72,7 +72,7 @@ const avatars = [
 
 export const JoinTheCommunity = () => (
   <div className="flex flex-col bg-gray-1 rounded-2xl w-full max-w-7xl">
-    <div className="relative flex dark rounded-2xl md:rounded-b-none p-6 pt-12 md:pb-12 justify-center overflow-hidden">
+    <div className="relative isolate flex dark rounded-2xl md:rounded-b-none p-6 pt-12 md:pb-12 justify-center overflow-hidden">
       <FloatingAvatars className="hidden md:block" />
       <div className="flex flex-col gap-12 md:items-center max-w-4xl">
         <div className="flex flex-col gap-6 text-balance md:text-center">

@@ -163,7 +163,7 @@ export const MainFeatures = () => {
         {features.map((feature, index) => (
           <div
             key={feature.title.main}
-            className="min-w-[calc(100%-.75rem)] md:min-w-0 flex relative items-center snap-start cursor-pointer"
+            className="min-w-[calc(100%-.75rem)] md:min-w-0 flex relative isolate items-center snap-start cursor-pointer"
           >
             <FeatureCard
               className={clsx(carouselItemClassName)}

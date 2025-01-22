@@ -6,11 +6,7 @@ const TableRoot = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
-  <div
-    ref={ref}
-    className={cn("relative w-full overflow-auto", className)}
-    {...props}
-  />
+  <div ref={ref} className={cn("w-full overflow-auto", className)} {...props} />
 ));
 TableRoot.displayName = "TableRoot";
 

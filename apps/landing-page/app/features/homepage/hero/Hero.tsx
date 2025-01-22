@@ -5,7 +5,7 @@ const heroTextHeight = 276;
 
 export const Hero = () => (
   <main
-    className="relative flex flex-col items-center md:h-[250vh] min-h-screen w-full"
+    className="relative isolate flex flex-col items-center md:h-[250vh] min-h-screen w-full"
     style={
       {
         viewTimelineName: "--hero",

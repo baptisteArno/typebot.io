@@ -143,7 +143,7 @@ const DepartmentCard = ({
 }) => (
   <MotionCard
     layoutId={`dep-${index}`}
-    className="p-2 relative cursor-pointer"
+    className="p-2 cursor-pointer"
     onClick={() => {
       if (openedDepartment) return;
       setOpenedDepartmentIndex(index);
@@ -204,7 +204,7 @@ const OpenedDepartmentCard = ({
       <IconButton
         aria-label="Close department"
         variant="secondary"
-        className="absolute top-4 right-8 motion-preset-slide-up-sm motion-delay-500"
+        className="absolute top-4 right-4 motion-preset-slide-up-sm motion-delay-500"
         onClick={onClose}
       >
         <CloseIcon />

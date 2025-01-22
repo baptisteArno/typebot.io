@@ -121,7 +121,7 @@ const components = {
   ),
   Youtube: ({ id }: { id: string }) => (
     <div className="w-full">
-      <div className="relative pb-[64.63195691202873%] h-0 w-full">
+      <div className="relative isolate pb-[64.63195691202873%] h-0 w-full">
         <iframe
           title="Youtube video"
           src={`https://www.youtube.com/embed/${id}`}

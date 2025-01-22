@@ -54,7 +54,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(function Button(
     return (
       <div
         className={cn(
-          "overflow-hidden rounded-lg relative",
+          "overflow-hidden rounded-lg relative isolate",
           (size === "sm" || size === "xs") && "rounded-md",
         )}
       >
