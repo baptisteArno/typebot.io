@@ -7,7 +7,7 @@ export const Bubble = lazy(() =>
 export const TypebotBubble = () => (
   <Suspense fallback={<div className="size-12" />}>
     <Bubble
-      typebot="typebot-support"
+      typebot="typebot-demo"
       theme={{
         position: "static",
         chatWindow: {
