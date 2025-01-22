@@ -234,7 +234,7 @@ const FeatureCard = ({
       </h2>
       <motion.div
         className={clsx(
-          "flex flex-col gap-4",
+          "flex flex-col gap-4 overflow-hidden",
           isExpanded ? "pointer-events-auto" : "pointer-events-none",
         )}
         animate={{
