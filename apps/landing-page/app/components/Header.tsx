@@ -278,6 +278,7 @@ const Desktop = React.forwardRef<
         pathname === "/" && isScrolled && !isIntersecting
           ? "opacity-0 pointer-events-none"
           : "opacity-100",
+        className,
       )}
     >
       <nav
@@ -287,7 +288,6 @@ const Desktop = React.forwardRef<
           appearance === "dark"
             ? "dark from-[#393939] to-[#121212]"
             : "from-gray-1 to-[#DEDEDE]",
-          className,
         )}
       >
         {desktopLinks.map((link) => (
