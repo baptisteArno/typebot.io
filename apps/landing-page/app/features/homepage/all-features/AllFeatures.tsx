@@ -72,12 +72,12 @@ const cardSize = {
 };
 const paddingTop = 128;
 const headerHeight = 172;
-const gapHeaderAndCard = 64;
+const gapHeaderAndCard = 86;
 
 export const AllFeatures = () => {
   return (
     <div
-      className={`flex flex-col gap-8 w-full max-w-7xl md:pt-[--padding-top] md:pb-[calc(100vh-var(--padding-top)-var(--header-height)-var(--card-height))]`}
+      className="flex flex-col gap-8 w-full max-w-7xl md:pt-[--padding-top] md:pb-[calc(100vh-var(--padding-top)-var(--header-height))]"
       style={
         {
           "--total-cards": cards.length,
@@ -103,7 +103,7 @@ export const AllFeatures = () => {
           style={{
             viewTimelineName: "--cards-container",
           }}
-          className="w-full md:w-auto px-4 md:px-0 overflow-x-auto snap-x scroll-px-4 snap-always no-scrollbar snap-mandatory md:overflow-x-visible flex md:flex-col pt-8 md:pt-[calc(100vh-var(--padding-top)-var(--header-height))] md:gap-[calc(100vh-var(--padding-top)-var(--header-height)-var(--card-height))] gap-2"
+          className="w-full md:w-auto px-4 md:px-0 overflow-x-auto snap-x scroll-px-4 snap-always no-scrollbar snap-mandatory md:overflow-x-visible flex md:flex-col pt-8 md:pt-[calc(100vh-var(--padding-top)-var(--header-height))] md:gap-[calc(100vh-var(--padding-top)-var(--header-height)-var(--gap-header-and-card)-var(--card-height))] gap-2"
         >
           <Dots />
 

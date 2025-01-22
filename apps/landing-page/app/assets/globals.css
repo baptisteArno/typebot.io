@@ -81,14 +81,15 @@
 
   .h-all-features-sticky-container {
     height: calc(
-      (var(--total-cards) + 1) *
+      (100vh - var(--padding-top)) +
+      (var(--total-cards) - 1) *
       (
         100vh -
         var(--padding-top) -
         var(--header-height) -
         var(--gap-header-and-card)
       ) -
-      var(--header-height)
+      var(--gap-header-and-card)
     );
   }
 
