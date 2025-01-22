@@ -15,7 +15,14 @@ import { Suspense } from "react";
 
 export const Route = createRootRoute({
   head: () => ({
-    links: [{ rel: "stylesheet", href: css }],
+    links: [
+      { rel: "stylesheet", href: css },
+      {
+        rel: "icon",
+        type: "image/png",
+        href: "/favicon.png",
+      },
+    ],
     meta: [
       {
         charSet: "utf-8",
