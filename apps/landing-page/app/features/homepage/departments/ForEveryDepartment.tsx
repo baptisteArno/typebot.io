@@ -1,9 +1,10 @@
 import { IconButton } from "@/components/IconButton";
 import { MotionCard } from "@/components/motion-wrappers";
 import { cn } from "@/lib/utils";
-import { isDefined } from "@typebot.io/lib/utils";
+import { isDefined, isNotDefined } from "@typebot.io/lib/utils";
 import { CloseIcon } from "@typebot.io/ui/icons/CloseIcon";
 import { PlusIcon } from "@typebot.io/ui/icons/PlusIcon";
+import clsx from "clsx";
 import { motion } from "motion/react";
 import { useState } from "react";
 import marketingSrc from "./assets/marketing.png";
@@ -82,6 +83,9 @@ const departments = [
 
 export const ForEveryDepartment = () => {
   const [openedDepartmentIndex, setOpenedDepartmentIndex] = useState<number>();
+  const [lastOpenedDepartmentIndex, setLastOpenedDepartmentIndex] = useState<
+    number | undefined
+  >();
 
   const openedDepartment = isDefined(openedDepartmentIndex)
     ? departments[openedDepartmentIndex]
@@ -102,9 +106,11 @@ export const ForEveryDepartment = () => {
               key={department.title}
               department={department}
               index={index}
-              setOpenedDepartmentIndex={setOpenedDepartmentIndex}
+              onClick={() => {
+                setOpenedDepartmentIndex(index);
+              }}
               openedDepartmentIndex={openedDepartmentIndex}
-              openedDepartment={openedDepartment}
+              lastOpenedDepartmentIndex={lastOpenedDepartmentIndex}
             />
           ))}
         </div>
@@ -113,13 +119,19 @@ export const ForEveryDepartment = () => {
         <div className="fixed size-full inset-0 flex justify-center items-center">
           <div
             className="bg-gray-1/80 absolute inset-0 motion-preset-fade"
-            onClick={() => setOpenedDepartmentIndex(undefined)}
+            onClick={() => {
+              setLastOpenedDepartmentIndex(openedDepartmentIndex);
+              setOpenedDepartmentIndex(undefined);
+            }}
           />
           <OpenedDepartmentCard
             className="absolute"
             department={openedDepartment}
             index={openedDepartmentIndex as number}
-            onClose={() => setOpenedDepartmentIndex(undefined)}
+            onClose={() => {
+              setLastOpenedDepartmentIndex(openedDepartmentIndex);
+              setOpenedDepartmentIndex(undefined);
+            }}
           />
         </div>
       )}
@@ -130,23 +142,28 @@ export const ForEveryDepartment = () => {
 const DepartmentCard = ({
   department,
   index,
-  setOpenedDepartmentIndex,
+  onClick,
   openedDepartmentIndex,
-  openedDepartment,
+  lastOpenedDepartmentIndex,
 }: {
   department: DepartmentCardData;
+  lastOpenedDepartmentIndex: number | undefined;
   index: number;
-  setOpenedDepartmentIndex: (index: number) => void;
+  onClick: () => void;
   openedDepartmentIndex: number | undefined;
-  openedDepartment: DepartmentCardData | undefined;
   className?: string;
 }) => (
   <MotionCard
     layoutId={`dep-${index}`}
-    className="p-2 cursor-pointer"
+    className={clsx(
+      "p-2 relative isolate cursor-pointer",
+      lastOpenedDepartmentIndex === index &&
+        isNotDefined(openedDepartmentIndex) &&
+        "z-10",
+    )}
     onClick={() => {
-      if (openedDepartment) return;
-      setOpenedDepartmentIndex(index);
+      if (isDefined(openedDepartmentIndex)) return;
+      onClick();
     }}
   >
     <motion.figure layoutId={`dep-${index}-img`}>
