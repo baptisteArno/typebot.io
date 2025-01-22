@@ -176,7 +176,7 @@ const Dots = () => (
   <div
     className="fixed hidden md:flex flex-col gap-4 ml-12 opacity-0 left-0 pointer-events-none top-[calc(var(--padding-top)+var(--header-height)+var(--gap-header-and-card))]"
     style={{
-      animation: "slide-fade-in ease-out forwards, fade-out ease-out forwards",
+      animation: "fade-in ease-out forwards, fade-out ease-out forwards",
       animationTimeline: "--cards-container",
       animationRange: `exit-crossing 0% exit-crossing 10%, exit-crossing 80% exit-crossing 90%`,
     }}
