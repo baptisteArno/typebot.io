@@ -138,7 +138,7 @@ export const UseCases = ({ className }: { className?: string }) => {
                 <img
                   src={useCase.images.builder.src}
                   alt={useCase.images.builder.alt}
-                  className="max-w-full md:max-w-5xl"
+                  className="w-auto md:max-h-[60vh]"
                   width="3456px"
                   height="2158px"
                 />
