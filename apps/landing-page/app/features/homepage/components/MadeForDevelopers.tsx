@@ -14,11 +14,11 @@ const data = [
   },
   {
     Icon: CodeIcon,
-    text: "Easy-to-use APIs",
+    text: "Easy-to-use APIs for quick implementation",
   },
   {
     Icon: SparklesIcon,
-    text: "Multiple generative AI providers (OpenAI, Anthropic, Mistral…)",
+    text: "Multiple generative AI providers",
   },
   {
     Icon: ZapIcon,
