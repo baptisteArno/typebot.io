@@ -162,7 +162,7 @@ const Mobile = React.forwardRef<HTMLElement, Props>(function Mobile(
         className,
       )}
       transition={{ duration: 0.4, type: "spring", bounce: 0.15 }}
-      animate={{ height: isOpened ? "calc(100vh - 2rem)" : "auto" }}
+      animate={{ height: isOpened ? "calc(100dvh - 2rem)" : "auto" }}
     >
       <div className="flex items-center justify-between px-4 py-2">
         <Link to="/">
