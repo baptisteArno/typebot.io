@@ -5,7 +5,7 @@ import { Head, Html, Main, NextScript } from "next/document";
 const Document = () => (
   <Html translate="no">
     <Head>
-      <link rel="icon" type="image/png" href="/favicon.png" />
+      <link rel="icon" type="images/svg+xml" href="/favicon.svg" />
       <meta name="google" content="notranslate" />
       <script src="/__ENV.js" />
     </Head>
