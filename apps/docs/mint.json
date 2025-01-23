@@ -23,13 +23,13 @@
     "headings": {
       "family": "Uxum Grotesk",
       "weight": 500,
-      "url": "https://landing-page-v2-git-feat-new-brand-typebot-io.vercel.app/_build/assets/uxumGrotesqueMedium-CupDouNt.woff2",
+      "url": "https://typebot.io/fonts/uxumGrotesque/uxumGrotesqueMedium.woff2",
       "format": "woff2"
     },
     "body": {
       "family": "Untitled Sans",
       "weight": 400,
-      "url": "https://landing-page-v2-git-feat-new-brand-typebot-io.vercel.app/_build/assets/untitledSansRegular-1G3ICCGW.woff2",
+      "url": "https://typebot.io/fonts/untitledSans/untitledSansRegular.woff2",
       "format": "woff2"
     }
   },
