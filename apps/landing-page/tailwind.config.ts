@@ -30,11 +30,13 @@ export default {
       },
       animation: {
         marquee: "marquee 20s linear infinite",
+        // Scroll animations
         "slight-random-rotate": "linear slight-random-rotate forwards",
-        "scale-in": "linear scale-in forwards",
-        // Needed for scroll based fade-in animation
-        "fade-in": "fade-in 250ms ease-out",
-        "fade-out": "fade-out 250ms ease-out",
+        "fill-carousel-dot": "linear fill-carousel-dot forwards",
+        "fade-in": "linear fade-in forwards",
+        "fade-out": "linear fade-out forwards",
+        "magic-zoom": "linear magic-zoom forwards",
+        "magic-zoom-blur": "linear magic-zoom-blur forwards",
       },
       keyframes: {
         marquee: {
@@ -45,7 +47,17 @@ export default {
           "0%": { transform: "rotate(0deg)" },
           "100%": { transform: "rotate(var(--rotate-angle))" },
         },
-        "scale-in": {
+        "magic-zoom-blur": {
+          "0%": { filter: "blur(64px)" },
+          "95%": { filter: "blur(64px)" },
+          "100%": { filter: "blur(0px)" },
+        },
+        "fill-carousel-dot": {
+          to: {
+            "background-color": "rgb(var(--gray-10))",
+          },
+        },
+        "magic-zoom": {
           "0%": {
             transform: "scaleX(0) scaleY(0)",
           },

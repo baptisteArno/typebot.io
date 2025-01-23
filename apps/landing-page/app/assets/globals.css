@@ -99,21 +99,17 @@
     }
   }
 
-  @keyframes fade-out {
-    from {
-      opacity: 1;
-    }
-    to {
-      opacity: 0;
-    }
-  }
-
   @media (min-width: 768px) {
-    .magic-section {
-      animation: fade-in;
+    .md-scroll-magic-container-fade-in {
+      animation: linear fade-in forwards;
       animation-timeline: view();
-      animation-range: contain 0% contain 5%;
-      animation-fill-mode: forwards;
+      animation-range: contain 0% contain 0%;
+    }
+
+    .md-scroll-use-cases-fade-in {
+      animation: linear fade-in forwards;
+      animation-timeline: view();
+      animation-range: cover 20% contain 0%;
     }
   }
 

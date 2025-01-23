@@ -5,7 +5,7 @@ const heroTextHeight = 276;
 
 export const Hero = () => (
   <main
-    className="relative isolate flex flex-col items-center md:h-[250vh] min-h-screen w-full"
+    className="relative isolate flex flex-col items-center md:h-[300vh] min-h-screen w-full"
     style={
       {
         viewTimelineName: "--hero",
@@ -45,14 +45,19 @@ export const Hero = () => (
       </Button>
     </div>
     <div
-      className="h-screen w-full sticky inset-0 px-0 rounded-3xl animate-scale-in opacity-0 hidden md:motion-reduce:hidden md:supports-scrollanimation:block bg-[url('$magicBackgrounds/magic-background-desktop.png')] bg-no-repeat bg-[length:100%]"
+      className="h-screen w-full sticky inset-0 px-0 rounded-3xl animate-magic-zoom opacity-0 hidden md:motion-reduce:hidden md:supports-scrollanimation:block bg-[url('$magicBackgrounds/magic-background-desktop.png')] bg-no-repeat bg-[length:100%]"
       style={{
         animationTimeline: "--hero",
         animationRange: "contain 0% exit-crossing 50%",
-        animationFillMode: "forwards",
       }}
     >
-      <div className="bg-[url('$magicBackgrounds/magic-background-desktop.png')] bg-no-repeat bg-[length:100%] size-full blur-3xl absolute top-0"></div>
+      <div
+        className="bg-[url('$magicBackgrounds/magic-background.png')] bg-no-repeat bg-[length:100%] size-full absolute top-0 animate-magic-zoom-blur"
+        style={{
+          animationTimeline: "--hero",
+          animationRange: "contain 0% exit-crossing 50%",
+        }}
+      />
     </div>
   </main>
 );
