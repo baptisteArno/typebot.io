@@ -61,7 +61,7 @@ const cards = [
     Icon: DatabaseIcon,
     title: "Integration platforms",
     description:
-      "HTTP requests, OpenAI, Google Sheets, Google Analytics, Meta Pixel, Zapier, Make.com, Chatwoot, and more to come",
+      "HTTP requests, OpenAI, Google Sheets, Google Analytics, Meta Pixel, and a lot more",
     rotateCoeff: -4,
   },
 ] as const;
@@ -153,7 +153,10 @@ const FeatureCard = ({
 }) => {
   return (
     <Card
-      className={cn("flex flex-col items-center gap-6", className)}
+      className={cn(
+        "flex flex-col items-center gap-6 h-64 md:h-auto",
+        className,
+      )}
       style={style}
     >
       <div
