@@ -145,4 +145,8 @@
     background-image: linear-gradient(to bottom, #393939, #121212);
     border: 1px solid rgb(58 58 58);
   }
+
+  typebot-bubble::part(bot) {
+    border: 1px solid rgb(58 58 58);
+  }
 }
