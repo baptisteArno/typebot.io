@@ -13,7 +13,7 @@ export const Route = createFileRoute("/_layout/about")({
       title: "About | Typebot",
       description:
         "Typebot empowers businesses to craft personalized, interactive experiences that foster deeper connections with users.",
-      image: "/images/default-og.png",
+      imagePath: "/images/default-og.png",
       path: "/about",
     }),
   }),

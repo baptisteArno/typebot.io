@@ -22,7 +22,7 @@ export const Route = createFileRoute("/_layout/pricing")({
     meta: createMetaTags({
       title: "Pricing | Typebot",
       description: "Typebot pricing plans and features.",
-      image: "/images/default-og.png",
+      imagePath: "/images/default-og.png",
       path: "/pricing",
     }),
   }),

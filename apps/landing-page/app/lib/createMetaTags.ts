@@ -3,12 +3,12 @@ import { currentBaseUrl } from "@/constants";
 export const createMetaTags = ({
   title,
   description,
-  image,
+  imagePath,
   path,
 }: {
   title: string;
   description: string | undefined;
-  image: string;
+  imagePath: string;
   path: string;
 }) => [
   { title },
@@ -20,6 +20,6 @@ export const createMetaTags = ({
     : []),
   { property: "og:type", content: "website" },
   { property: "og:title", content: title },
-  { property: "og:image", content: image },
+  { property: "og:image", content: `${currentBaseUrl}${imagePath}` },
   { property: "og:url", content: `${currentBaseUrl}${path}` },
 ];
