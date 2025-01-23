@@ -6,5 +6,9 @@ declare module "solid-js" {
       click: MouseEvent;
       pointerdown: PointerEvent;
     }
+
+    interface SvgSVGAttributes<T> extends SVGAttributes<T> {
+      part?: string;
+    }
   }
 }

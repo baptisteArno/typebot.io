@@ -1,6 +1,6 @@
 import { getAuthenticatedUser } from "@/features/auth/helpers/getAuthenticatedUser";
 import { env } from "@typebot.io/env";
-import { parseGroups } from "@typebot.io/groups/schemas";
+import { parseGroups } from "@typebot.io/groups/helpers/parseGroups";
 import { encrypt } from "@typebot.io/lib/api/encryption/encrypt";
 import { badRequest, notAuthenticated } from "@typebot.io/lib/api/utils";
 import prisma from "@typebot.io/prisma";

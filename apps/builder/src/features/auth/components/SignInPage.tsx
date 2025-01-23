@@ -50,9 +50,7 @@ export const SignInPage = ({ type }: Props) => {
             keyName="auth.register.aggreeToTerms"
             params={{
               terms: <TextLink href={"https://typebot.io/terms-of-service"} />,
-              privacy: (
-                <TextLink href={"https://typebot.io/privacy-policies"} />
-              ),
+              privacy: <TextLink href={"https://typebot.io/privacy-policy"} />,
             }}
           />
         </Text>

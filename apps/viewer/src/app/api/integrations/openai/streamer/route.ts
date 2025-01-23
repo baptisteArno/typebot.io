@@ -7,7 +7,7 @@ import type { SessionState } from "@typebot.io/bot-engine/schemas/chatSession";
 import { env } from "@typebot.io/env";
 import { forgedBlocks } from "@typebot.io/forge-repository/definitions";
 import type { AsyncVariableStore } from "@typebot.io/forge/types";
-import { getBlockById } from "@typebot.io/groups/helpers";
+import { getBlockById } from "@typebot.io/groups/helpers/getBlockById";
 import { decryptV2 } from "@typebot.io/lib/api/encryption/decryptV2";
 import {
   type ParseVariablesOptions,

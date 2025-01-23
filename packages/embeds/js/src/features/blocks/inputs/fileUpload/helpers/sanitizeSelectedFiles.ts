@@ -18,7 +18,7 @@ export const sanitizeNewFile = ({
     params.sizeLimit ??
     getRuntimeVariable("NEXT_PUBLIC_BOT_FILE_UPLOAD_MAX_SIZE");
 
-  if (sizeLimit && newFile.size > sizeLimit * 1024 * 1024) {
+  if (sizeLimit && newFile.size > Number(sizeLimit) * 1024 * 1024) {
     onError({
       title: "File too large",
       description: `${newFile.name} is larger than ${sizeLimit}MB`,

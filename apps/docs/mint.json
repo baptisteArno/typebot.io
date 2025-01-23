@@ -11,15 +11,26 @@
   },
   "favicon": "/favicon.png",
   "colors": {
-    "primary": "#0042DA",
-    "light": "#5885FE",
-    "dark": "#0042DA",
+    "primary": "#FF5925",
+    "light": "#FF5925",
+    "dark": "#FF5925",
     "background": {
-      "dark": "#18181B"
+      "light": "#F1F1F1",
+      "dark": "#1A1A1A"
+    }
+  },
+  "font": {
+    "headings": {
+      "family": "Uxum Grotesk",
+      "weight": 500,
+      "url": "https://landing-page-v2-git-feat-new-brand-typebot-io.vercel.app/_build/assets/uxumGrotesqueMedium-CupDouNt.woff2",
+      "format": "woff2"
     },
-    "anchors": {
-      "from": "#FF7F57",
-      "to": "#9563FF"
+    "body": {
+      "family": "Untitled Sans",
+      "weight": 400,
+      "url": "https://landing-page-v2-git-feat-new-brand-typebot-io.vercel.app/_build/assets/untitledSansRegular-1G3ICCGW.woff2",
+      "format": "woff2"
     }
   },
   "topbarLinks": [
@@ -214,7 +225,7 @@
     },
     {
       "group": "Misc",
-      "pages": ["faq", "privacy-policies", "report-abuse", "breaking-changes"]
+      "pages": ["faq", "report-abuse", "breaking-changes"]
     },
     {
       "group": "Get started",
@@ -342,7 +353,6 @@
   "footerSocials": {
     "website": "https://typebot.io",
     "discord": "https://typebot.io/discord",
-    "twitter": "https://twitter.com/Typebot_io",
     "github": "https://github.com/baptisteArno/typebot.io"
   },
   "redirects": [

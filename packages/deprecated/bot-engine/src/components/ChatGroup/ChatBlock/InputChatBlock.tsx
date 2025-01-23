@@ -14,7 +14,7 @@ import type { InputSubmitContent } from "@/types";
 import { isInputValid } from "@/utils/inputs";
 import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
 import type { InputBlock } from "@typebot.io/blocks-inputs/schema";
-import { getBlockById } from "@typebot.io/groups/helpers";
+import { getBlockById } from "@typebot.io/groups/helpers/getBlockById";
 import { byId } from "@typebot.io/lib/utils";
 import { defaultSettings } from "@typebot.io/settings/constants";
 import React, { useState } from "react";

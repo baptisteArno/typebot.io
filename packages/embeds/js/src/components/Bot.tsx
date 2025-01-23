@@ -22,6 +22,7 @@ import type {
   StartFrom,
 } from "@typebot.io/bot-engine/schemas/api";
 import { isDefined, isNotDefined, isNotEmpty } from "@typebot.io/lib/utils";
+import { isTypebotVersionAtLeastV6 } from "@typebot.io/schemas/helpers/isTypebotVersionAtLeastV6";
 import { defaultSettings } from "@typebot.io/settings/constants";
 import {
   defaultFontFamily,
@@ -312,11 +313,16 @@ const BotContent = (props: BotContentProps) => {
       },
     );
     if (!botContainerElement) return;
-    setCssVariablesValue(
-      props.initialChatReply.typebot.theme,
-      botContainerElement,
-      props.context.isPreview,
-    );
+    setCssVariablesValue({
+      theme: props.initialChatReply.typebot.theme,
+      container: botContainerElement,
+      isPreview: props.context.isPreview,
+      typebotVersion: isTypebotVersionAtLeastV6(
+        props.initialChatReply.typebot.version,
+      )
+        ? props.initialChatReply.typebot.version
+        : "6",
+    });
   });
 
   onCleanup(() => {

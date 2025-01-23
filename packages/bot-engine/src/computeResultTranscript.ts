@@ -13,6 +13,7 @@ import type { Edge } from "@typebot.io/typebot/schemas/edge";
 import { parseVariables } from "@typebot.io/variables/parseVariables";
 import type { Variable } from "@typebot.io/variables/schemas";
 import type { SetVariableHistoryItem } from "@typebot.io/variables/schemas";
+import { isTypebotInSessionAtLeastV6 } from "./helpers/isTypebotInSessionAtLeastV6";
 import {
   type BubbleBlockWithDefinedContent,
   parseBubbleBlock,
@@ -78,7 +79,8 @@ export const computeResultTranscript = ({
 };
 
 const getFirstEdgeId = (typebot: TypebotInSession) => {
-  if (typebot.version === "6") return typebot.events?.[0].outgoingEdgeId;
+  if (isTypebotInSessionAtLeastV6(typebot))
+    return typebot.events?.[0].outgoingEdgeId;
   return typebot.groups.at(0)?.blocks.at(0)?.outgoingEdgeId;
 };
 

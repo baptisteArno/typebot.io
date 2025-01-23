@@ -1,7 +1,7 @@
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
-import { colors } from "@/lib/theme";
 import { Portal, useColorMode, useDisclosure } from "@chakra-ui/react";
 import type { Edge as EdgeProps } from "@typebot.io/typebot/schemas/edge";
+import { colors } from "@typebot.io/ui/chakraTheme";
 import type React from "react";
 import { useMemo, useState } from "react";
 import { useShallow } from "zustand/react/shallow";
@@ -133,13 +133,13 @@ export const Edge = ({ edge, fromGroupId }: Props) => {
         d={path}
         stroke={
           isPreviewing
-            ? colors.blue[400]
+            ? "var(--chakra-colors-orange-400)"
             : isDark
               ? colors.gray[700]
               : colors.gray[400]
         }
         strokeWidth="2px"
-        markerEnd={isPreviewing ? "url(#blue-arrow)" : "url(#arrow)"}
+        markerEnd={isPreviewing ? "url(#orange-arrow)" : "url(#arrow)"}
         fill="none"
         pointerEvents="none"
       />

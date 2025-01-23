@@ -1,5 +1,7 @@
 import { CloseIcon } from "@/components/icons/CloseIcon";
+import type { BotContext } from "@/types";
 import { hexToRgb } from "@typebot.io/lib/hexToRgb";
+import { isTypebotVersionAtLeastV6 } from "@typebot.io/schemas/helpers/isTypebotVersionAtLeastV6";
 import { defaultButtonsBackgroundColor } from "@typebot.io/theme/constants";
 import type { Theme } from "@typebot.io/theme/schemas";
 import clsx from "clsx";
@@ -16,6 +18,7 @@ const maxDetectedVolumePercent = 90;
 type Props = {
   recordingStatus: "asking" | "started" | "stopped";
   buttonsTheme: NonNullable<Theme["chat"]>["buttons"];
+  context: BotContext;
   onAbortRecording: () => void;
   onRecordingConfirmed: (stream: MediaStream) => void;
 };
@@ -35,7 +38,12 @@ export const VoiceRecorder = (props: Props) => {
   let offset = 0;
 
   const fillRgb = hexToRgb(
-    props.buttonsTheme?.backgroundColor ?? defaultButtonsBackgroundColor,
+    props.buttonsTheme?.backgroundColor ??
+      defaultButtonsBackgroundColor[
+        isTypebotVersionAtLeastV6(props.context.typebot.version)
+          ? props.context.typebot.version
+          : "6"
+      ],
   ).join(", ");
 
   const draw = () => {

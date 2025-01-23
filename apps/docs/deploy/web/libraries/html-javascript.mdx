@@ -74,7 +74,8 @@ This code is creating a container with a 100% width (will match parent width) an
        closeButtonBackgroundColor?: string;
        closeButtonIconColor?: string;
      };
-     placement?: "left" | "right";
+     position?: "fixed" | "static"; // Defaults to "fixed"
+     placement?: "left" | "right"; // Defaults to "right"
    };
    previewMessage?: {
      avatarUrl?: string;

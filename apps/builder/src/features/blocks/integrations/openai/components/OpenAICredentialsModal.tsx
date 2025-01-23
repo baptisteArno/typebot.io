@@ -121,7 +121,7 @@ export const OpenAICredentialsModal = ({
               type="submit"
               isLoading={isCreating}
               isDisabled={apiKey === "" || name === ""}
-              colorScheme="blue"
+              colorScheme="orange"
             >
               Create
             </Button>

@@ -1,4 +1,3 @@
-import { colors } from "@/lib/theme";
 import {
   HStack,
   IconButton,
@@ -9,6 +8,7 @@ import {
 } from "@chakra-ui/react";
 import { convertStrToList } from "@typebot.io/lib/convertStrToList";
 import { isEmpty } from "@typebot.io/lib/utils";
+import { colors } from "@typebot.io/ui/chakraTheme";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRef, useState } from "react";
 import { CloseIcon } from "./icons";
@@ -91,10 +91,10 @@ export const TagsInput = ({ items, placeholder, onChange }: Props) => {
     <Wrap
       spacing={1}
       borderWidth={1}
-      boxShadow={isFocused ? `0 0 0 1px ${colors["blue"][500]}` : undefined}
+      boxShadow={isFocused ? `0 0 0 1px ${colors["orange"][500]}` : undefined}
       p="2"
       rounded="md"
-      borderColor={isFocused ? "blue.500" : "gray.200"}
+      borderColor={isFocused ? "orange.500" : "gray.200"}
       transitionProperty="box-shadow, border-color"
       transitionDuration="150ms"
       transitionTimingFunction="ease-in-out"
@@ -156,8 +156,8 @@ const Tag = ({
     pl="1"
     rounded="sm"
     maxW="100%"
-    borderColor={isFocused ? "blue.500" : undefined}
-    boxShadow={isFocused ? `0 0 0 1px ${colors["blue"][500]}` : undefined}
+    borderColor={isFocused ? "orange.500" : undefined}
+    boxShadow={isFocused ? `0 0 0 1px ${colors["orange"][500]}` : undefined}
   >
     <Text fontSize="sm" noOfLines={1}>
       {content}

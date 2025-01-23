@@ -1,10 +1,12 @@
+import { isPublicTypebotAtLeastV6 } from "../helpers/isPublicTypebotAtLeastV6";
+import { isTypebotAtLeastV6 } from "../helpers/isTypebotAtLeastV6";
 import type { PublicTypebot, PublicTypebotV6 } from "../schemas/publicTypebot";
 import type { Typebot, TypebotV6 } from "../schemas/typebot";
 import { migrateTypebotFromV3ToV4 } from "./migrateTypebotFromV3ToV4";
 import { migrateTypebotFromV5ToV6 } from "./migrateTypebotFromV5ToV6";
 
 export const migrateTypebot = async (typebot: Typebot): Promise<TypebotV6> => {
-  if (typebot.version === "6") return typebot;
+  if (isTypebotAtLeastV6(typebot)) return typebot;
   let migratedTypebot: any = typebot;
   if (migratedTypebot.version === "3")
     migratedTypebot = await migrateTypebotFromV3ToV4(typebot);
@@ -14,12 +16,12 @@ export const migrateTypebot = async (typebot: Typebot): Promise<TypebotV6> => {
 };
 
 export const migratePublicTypebot = async (
-  typebot: PublicTypebot,
+  publicTypebot: PublicTypebot,
 ): Promise<PublicTypebotV6> => {
-  if (typebot.version === "6") return typebot;
-  let migratedTypebot: any = typebot;
+  if (isPublicTypebotAtLeastV6(publicTypebot)) return publicTypebot;
+  let migratedTypebot: any = publicTypebot;
   if (migratedTypebot.version === "3")
-    migratedTypebot = await migrateTypebotFromV3ToV4(typebot);
+    migratedTypebot = await migrateTypebotFromV3ToV4(publicTypebot);
   if (migratedTypebot.version === "4" || migratedTypebot.version === "5")
     migratedTypebot = migrateTypebotFromV5ToV6(migratedTypebot);
   return migratedTypebot;

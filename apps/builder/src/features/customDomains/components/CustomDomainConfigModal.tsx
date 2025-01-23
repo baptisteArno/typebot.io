@@ -58,7 +58,7 @@ export const CustomDomainConfigModal = ({
         <ModalHeader>
           <HStack>
             <XCircleIcon stroke="red.500" />
-            <Text fontSize="lg" fontWeight="semibold">
+            <Text fontSize="lg" fontWeight="medium">
               {status}
             </Text>
           </HStack>

@@ -80,6 +80,9 @@ export const EmbedButton = ({
       style={{ width: "225px", height: "270px" }}
       onClick={onOpen}
       whiteSpace={"normal"}
+      bg={useColorModeValue("white", "gray.900")}
+      borderWidth={1}
+      rounded="lg"
     >
       <VStack>
         {logo}
@@ -226,7 +229,7 @@ export const integrationsList = [
         <ScriptIcon
           height={100}
           width="70px"
-          color={useColorModeValue("gray.800", "gray.300")}
+          color={useColorModeValue("gray.900", "gray.300")}
         />
       }
       label="Script"

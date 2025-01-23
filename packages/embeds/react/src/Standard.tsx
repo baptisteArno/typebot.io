@@ -26,10 +26,10 @@ export const Standard = ({ style, className, ...assignableProps }: Props) => {
 
   useEffect(() => {
     if (!ref.current) return;
-    Object.assign(ref.current, assignableProps);
+    const { typebot, ...rest } = assignableProps;
+    // We assign typebot last to ensure initializeBot is triggered with all the initial values
+    Object.assign(ref.current, rest, { typebot });
   }, [assignableProps]);
 
   return <typebot-standard ref={ref} style={style} class={className} />;
 };
-
-export default Standard;

@@ -1,8 +1,8 @@
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { Code, Stack, Text } from "@chakra-ui/react";
 import type { BubbleProps } from "@typebot.io/js";
-import { defaultButtonsBackgroundColor } from "@typebot.io/theme/constants";
 import type { Typebot } from "@typebot.io/typebot/schemas/typebot";
+import { colors } from "@typebot.io/ui/colors";
 import { useState } from "react";
 import { BubbleSettings } from "../../../settings/BubbleSettings/BubbleSettings";
 import { JavascriptBubbleSnippet } from "../JavascriptBubbleSnippet";
@@ -10,8 +10,7 @@ import { JavascriptBubbleSnippet } from "../JavascriptBubbleSnippet";
 export const parseDefaultBubbleTheme = (typebot?: Typebot) => ({
   button: {
     backgroundColor:
-      typebot?.theme.chat?.buttons?.backgroundColor ??
-      defaultButtonsBackgroundColor,
+      typebot?.theme.chat?.buttons?.backgroundColor ?? colors.gray.dark["2"],
   },
 });
 

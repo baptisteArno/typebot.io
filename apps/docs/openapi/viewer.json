@@ -59,7 +59,8 @@
                                     "3": "#/components/schemas/typebotV5",
                                     "4": "#/components/schemas/typebotV5",
                                     "5": "#/components/schemas/typebotV5",
-                                    "6": "#/components/schemas/typebotV6"
+                                    "6": "#/components/schemas/typebotV6",
+                                    "6.1": "#/components/schemas/typebotV6"
                                   }
                                 }
                               },
@@ -573,7 +574,8 @@
                                     "3": "#/components/schemas/typebotV5",
                                     "4": "#/components/schemas/typebotV5",
                                     "5": "#/components/schemas/typebotV5",
-                                    "6": "#/components/schemas/typebotV6"
+                                    "6": "#/components/schemas/typebotV6",
+                                    "6.1": "#/components/schemas/typebotV6"
                                   }
                                 }
                               },
@@ -1139,6 +1141,25 @@
                         "id": {
                           "type": "string"
                         },
+                        "version": {
+                          "anyOf": [
+                            {
+                              "type": "string",
+                              "enum": [
+                                "3",
+                                "4",
+                                "5"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "6",
+                                "6.1"
+                              ]
+                            }
+                          ]
+                        },
                         "theme": {
                           "$ref": "#/components/schemas/theme"
                         },
@@ -1151,6 +1172,7 @@
                       },
                       "required": [
                         "id",
+                        "version",
                         "theme",
                         "settings"
                       ]
@@ -1875,7 +1897,8 @@
                         "3": "#/components/schemas/typebotV5",
                         "4": "#/components/schemas/typebotV5",
                         "5": "#/components/schemas/typebotV5",
-                        "6": "#/components/schemas/typebotV6"
+                        "6": "#/components/schemas/typebotV6",
+                        "6.1": "#/components/schemas/typebotV6"
                       }
                     },
                     "description": "If set, it will override the typebot that is used to start the chat."
@@ -1964,6 +1987,25 @@
                         "id": {
                           "type": "string"
                         },
+                        "version": {
+                          "anyOf": [
+                            {
+                              "type": "string",
+                              "enum": [
+                                "3",
+                                "4",
+                                "5"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "6",
+                                "6.1"
+                              ]
+                            }
+                          ]
+                        },
                         "theme": {
                           "$ref": "#/components/schemas/theme"
                         },
@@ -1976,6 +2018,7 @@
                       },
                       "required": [
                         "id",
+                        "version",
                         "theme",
                         "settings"
                       ]
@@ -3252,10 +3295,7 @@
                                                 "data": {
                                                   "type": "string"
                                                 }
-                                              },
-                                              "required": [
-                                                "data"
-                                              ]
+                                              }
                                             },
                                             "timestamp": {
                                               "type": "string"
@@ -3487,7 +3527,8 @@
           "version": {
             "type": "string",
             "enum": [
-              "6"
+              "6",
+              "6.1"
             ]
           },
           "id": {
@@ -5116,7 +5157,9 @@
                                   "Contains",
                                   "Does not contain",
                                   "Greater than",
+                                  "Greater or equal to",
                                   "Less than",
+                                  "Less or equal to",
                                   "Is set",
                                   "Is empty",
                                   "Starts with",
@@ -5317,7 +5360,9 @@
                                   "Contains",
                                   "Does not contain",
                                   "Greater than",
+                                  "Greater or equal to",
                                   "Less than",
+                                  "Less or equal to",
                                   "Is set",
                                   "Is empty",
                                   "Starts with",
@@ -5823,7 +5868,9 @@
                               "Contains",
                               "Does not contain",
                               "Greater than",
+                              "Greater or equal to",
                               "Less than",
+                              "Less or equal to",
                               "Is set",
                               "Is empty",
                               "Starts with",
@@ -6371,7 +6418,9 @@
                                 "Contains",
                                 "Does not contain",
                                 "Greater than",
+                                "Greater or equal to",
                                 "Less than",
+                                "Less or equal to",
                                 "Is set",
                                 "Is empty",
                                 "Starts with",
@@ -6535,7 +6584,9 @@
                                 "Contains",
                                 "Does not contain",
                                 "Greater than",
+                                "Greater or equal to",
                                 "Less than",
+                                "Less or equal to",
                                 "Is set",
                                 "Is empty",
                                 "Starts with",
@@ -10324,7 +10375,9 @@
                             "Contains",
                             "Does not contain",
                             "Greater than",
+                            "Greater or equal to",
                             "Less than",
+                            "Less or equal to",
                             "Is set",
                             "Is empty",
                             "Starts with",
@@ -11055,7 +11108,9 @@
                                                   "Contains",
                                                   "Does not contain",
                                                   "Greater than",
+                                                  "Greater or equal to",
                                                   "Less than",
+                                                  "Less or equal to",
                                                   "Is set",
                                                   "Is empty",
                                                   "Starts with",
@@ -11567,7 +11622,9 @@
                                                     "Contains",
                                                     "Does not contain",
                                                     "Greater than",
+                                                    "Greater or equal to",
                                                     "Less than",
+                                                    "Less or equal to",
                                                     "Is set",
                                                     "Is empty",
                                                     "Starts with",
@@ -11748,7 +11805,9 @@
                                                     "Contains",
                                                     "Does not contain",
                                                     "Greater than",
+                                                    "Greater or equal to",
                                                     "Less than",
+                                                    "Less or equal to",
                                                     "Is set",
                                                     "Is empty",
                                                     "Starts with",
@@ -12621,7 +12680,9 @@
                                   "Contains",
                                   "Does not contain",
                                   "Greater than",
+                                  "Greater or equal to",
                                   "Less than",
+                                  "Less or equal to",
                                   "Is set",
                                   "Is empty",
                                   "Starts with",
@@ -12828,7 +12889,9 @@
                                   "Contains",
                                   "Does not contain",
                                   "Greater than",
+                                  "Greater or equal to",
                                   "Less than",
+                                  "Less or equal to",
                                   "Is set",
                                   "Is empty",
                                   "Starts with",

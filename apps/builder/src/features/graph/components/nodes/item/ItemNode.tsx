@@ -39,9 +39,9 @@ export const ItemNode = ({
   onMouseDown,
   connectionDisabled,
 }: Props) => {
-  const previewingBorderColor = useColorModeValue("blue.400", "blue.300");
+  const previewingBorderColor = useColorModeValue("orange.400", "orange.300");
   const borderColor = useColorModeValue("gray.200", "gray.700");
-  const bg = useColorModeValue("white", "gray.850");
+  const bg = useColorModeValue("white", "gray.900");
   const { typebot } = useTypebot();
   const { previewingEdge } = useGraph();
   const { pathname } = useRouter();
@@ -99,8 +99,6 @@ export const ItemNode = ({
             align="center"
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
-            shadow="sm"
-            _hover={{ shadow: "md" }}
             transition="box-shadow 200ms, border-color 200ms"
             rounded="md"
             bg={bg}

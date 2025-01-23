@@ -18,7 +18,7 @@ import {
 import type { Block } from "@typebot.io/blocks-core/schemas/schema";
 import type { InputBlock } from "@typebot.io/blocks-inputs/schema";
 import { LogicBlockType } from "@typebot.io/blocks-logic/constants";
-import { getBlockById } from "@typebot.io/groups/helpers";
+import { getBlockById } from "@typebot.io/groups/helpers/getBlockById";
 import { byId, isDefined } from "@typebot.io/lib/utils";
 import type { PublicTypebot } from "@typebot.io/typebot/schemas/publicTypebot";
 import { useEffect, useRef, useState } from "react";

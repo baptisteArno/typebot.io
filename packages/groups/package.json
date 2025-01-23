@@ -8,7 +8,8 @@
   },
   "dependencies": {
     "@typebot.io/blocks-core": "workspace:*",
-    "@typebot.io/zod": "workspace:*"
+    "@typebot.io/zod": "workspace:*",
+    "@typebot.io/schemas": "workspace:*"
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*"

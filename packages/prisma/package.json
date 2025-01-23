@@ -19,7 +19,7 @@
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*",
-    "dotenv-cli": "7.4.1",
+    "dotenv-cli": "7.4.4",
     "tsx": "4.19.1"
   }
 }

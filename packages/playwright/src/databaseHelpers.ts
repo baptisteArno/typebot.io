@@ -2,6 +2,7 @@ import type { BlockV5, BlockV6 } from "@typebot.io/blocks-core/schemas/schema";
 import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
 import { createId } from "@typebot.io/lib/createId";
 import { isDefined } from "@typebot.io/lib/utils";
+import { latestTypebotVersion } from "@typebot.io/schemas/versions";
 import { EventType } from "@typebot.io/typebot/schemas/events/constants";
 import type { PublicTypebot } from "@typebot.io/typebot/schemas/publicTypebot";
 import type { Typebot, TypebotV6 } from "@typebot.io/typebot/schemas/typebot";
@@ -11,7 +12,7 @@ export const parseTestTypebot = (
   partialTypebot: Partial<TypebotV6>,
 ): Typebot => ({
   id: createId(),
-  version: "6",
+  version: latestTypebotVersion,
   workspaceId: proWorkspaceId,
   folderId: null,
   name: "My typebot",

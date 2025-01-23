@@ -1,8 +1,7 @@
 import { edgeSchema } from "./schemas/edge";
 
 export const preprocessTypebot = (typebot: any) => {
-  if (!typebot || typebot.version === "5" || typebot.version === "6")
-    return typebot;
+  if (!typebot || Number(typebot.version) >= 5) return typebot;
   return {
     ...typebot,
     version:

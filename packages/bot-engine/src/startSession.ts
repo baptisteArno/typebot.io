@@ -31,6 +31,7 @@ import {
 } from "@typebot.io/variables/schemas";
 import { z } from "@typebot.io/zod";
 import { NodeType, parse } from "node-html-parser";
+import { isTypebotInSessionAtLeastV6 } from "./helpers/isTypebotInSessionAtLeastV6";
 import { parseVariablesInRichText } from "./parseBubbleBlock";
 import { parseDynamicTheme } from "./parseDynamicTheme";
 import { findPublicTypebot } from "./queries/findPublicTypebot";
@@ -41,9 +42,14 @@ import {
   type StartChatResponse,
   type StartPreviewChatInput,
   type StartTypebot,
+  type StartTypebotV6,
   startTypebotSchema,
 } from "./schemas/api";
-import type { SessionState, TypebotInSession } from "./schemas/chatSession";
+import type {
+  SessionState,
+  TypebotInSession,
+  TypebotInSessionV5,
+} from "./schemas/chatSession";
 import { startBotFlow } from "./startBotFlow";
 
 type StartParams =
@@ -157,6 +163,7 @@ export const startSession = async ({
       newSessionState: initialState,
       typebot: {
         id: typebot.id,
+        version: typebot.version,
         settings: deepParseVariables(
           initialState.typebotsQueue[0]?.typebot.variables,
         )(typebot.settings),
@@ -230,6 +237,7 @@ export const startSession = async ({
         clientSideActions.length > 0 ? clientSideActions : undefined,
       typebot: {
         id: typebot.id,
+        version: typebot.version,
         settings: deepParseVariables(
           newSessionState.typebotsQueue[0].typebot.variables,
         )(typebot.settings),
@@ -249,6 +257,7 @@ export const startSession = async ({
     resultId: result?.id,
     typebot: {
       id: typebot.id,
+      version: typebot.version,
       settings: deepParseVariables(
         newSessionState.typebotsQueue[0].typebot.variables,
       )(typebot.settings),
@@ -457,24 +466,28 @@ const removeLiteBadgeCss = (code: string) => {
 const convertStartTypebotToTypebotInSession = (
   typebot: StartTypebot,
   startVariables: Variable[],
-): TypebotInSession =>
-  typebot.version === "6"
-    ? {
-        version: typebot.version,
-        id: typebot.id,
-        groups: typebot.groups,
-        edges: typebot.edges,
-        variables: startVariables,
-        events: typebot.events,
-      }
-    : {
-        version: typebot.version,
-        id: typebot.id,
-        groups: typebot.groups,
-        edges: typebot.edges,
-        variables: startVariables,
-        events: typebot.events,
-      };
+): TypebotInSession => {
+  const isAtLeastV6 = (typebot: StartTypebot): typebot is StartTypebotV6 =>
+    Number(typebot.version) >= 6;
+  if (isAtLeastV6(typebot)) {
+    return {
+      version: typebot.version,
+      id: typebot.id,
+      groups: typebot.groups,
+      edges: typebot.edges,
+      variables: startVariables,
+      events: typebot.events,
+    };
+  }
+  return {
+    version: typebot.version,
+    id: typebot.id,
+    groups: typebot.groups,
+    edges: typebot.edges,
+    variables: startVariables,
+    events: typebot.events,
+  } as TypebotInSessionV5; // I am not sure why, this needs to be casted, the discrimination does not work here
+};
 
 const extractVariableIdsUsedForTranscript = (
   typebot: TypebotInSession,
@@ -482,7 +495,7 @@ const extractVariableIdsUsedForTranscript = (
   const variableIds: Set<string> = new Set();
   const parseVarParams = {
     variables: typebot.variables,
-    takeLatestIfList: typebot.version !== "6",
+    takeLatestIfList: !isTypebotInSessionAtLeastV6(typebot),
   };
   typebot.groups.forEach((group) => {
     group.blocks.forEach((block) => {

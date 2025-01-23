@@ -89,6 +89,7 @@ export const startChatPreview = async ({
     sessionId: session.id,
     typebot: {
       id: typebot.id,
+      version: typebot.version,
       theme: typebot.theme,
       settings: typebot.settings,
     },

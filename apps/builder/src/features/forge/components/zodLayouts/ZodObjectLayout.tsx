@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   Accordion,
   AccordionButton,
@@ -12,7 +11,6 @@ import type { ForgedBlockDefinition } from "@typebot.io/forge-repository/definit
 import type { ForgedBlock } from "@typebot.io/forge-repository/schemas";
 import { evaluateIsHidden } from "@typebot.io/forge/helpers/evaluateIsHidden";
 import type { ZodLayoutMetadata } from "@typebot.io/zod";
-import React from "react";
 import type { ReactNode } from "react";
 import type { ZodTypeAny, z } from "zod";
 import { getZodInnerSchema } from "../../helpers/getZodInnerSchema";
@@ -34,13 +32,13 @@ export const ZodObjectLayout = ({
   blockDef?: ForgedBlockDefinition;
   blockOptions?: ForgedBlock["options"];
   onDataChange: (value: any) => void;
-}): ReactNode[] => {
+}): JSX.Element | null => {
   const innerSchema = getZodInnerSchema(schema);
   const shape =
     "shape" in innerSchema ? innerSchema.shape : innerSchema._def.shape();
   const layout = innerSchema._def.layout;
-  if (evaluateIsHidden(layout?.isHidden, blockOptions)) return [];
-  return Object.keys(shape).reduce<{
+  if (evaluateIsHidden(layout?.isHidden, blockOptions)) return null;
+  const nodes = Object.keys(shape).reduce<{
     nodes: ReactNode[];
     accordionsCreated: string[];
   }>(
@@ -117,6 +115,8 @@ export const ZodObjectLayout = ({
     },
     { nodes: [], accordionsCreated: [] },
   ).nodes;
+
+  return <>{nodes}</>;
 };
 
 const getObjectKeysWithSameAccordionAttr = (accordion: string, shape: any) =>
