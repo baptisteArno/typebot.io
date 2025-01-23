@@ -64,7 +64,7 @@ export const StarterPlanPerksList = () => (
     </PerkListItem>
     <PerkListItem>Native integration</PerkListItem>
     <PerkListItem>Branding removed</PerkListItem>
-    <PerkListItem>Collectfiles from users</PerkListItem>
+    <PerkListItem>Collect files from users</PerkListItem>
     <PerkListItem>Create folders</PerkListItem>
     <PerkListItem>Direct priority support</PerkListItem>
   </ul>
