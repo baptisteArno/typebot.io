@@ -11,7 +11,7 @@ import { buttonVariants } from "./Button";
 
 type Optional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
 
-const textLinkVariants = cva("inline-flex gap-1 font-medium underline", {
+const textLinkVariants = cva("inline-flex gap-1 font-medium hover:underline", {
   variants: {
     size: {
       default: "",
