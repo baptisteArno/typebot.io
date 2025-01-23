@@ -193,7 +193,7 @@ export const MainFeatures = () => {
           </div>
         ))}
       </div>
-      <div className="bg-gray-12 rounded-2xl p-2 mx-4 md:mx-0 max-w-full aspect-square">
+      <div className="bg-gray-12 rounded-2xl p-2 mx-4 md:mx-0">
         <AnimatePresence mode="popLayout">
           <motion.video
             key={currentFeature.video.src}
