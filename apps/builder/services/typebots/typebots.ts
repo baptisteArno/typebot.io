@@ -135,6 +135,21 @@ export const createTypebot = async ({
   })
 }
 
+const generateExternalEventValue = (stepId: string, event: string): Item => ({
+  id: cuid(),
+  stepId,
+  type: ItemType.EXTERNAL_EVENT,
+  content: {
+    matchType: '$eq',
+    referenceProperty: null,
+    referenceValue: null,
+    source: 'CURRENT_SESSION',
+    subType: null,
+    values: [event],
+  },
+});
+
+
 export const importTypebot = async (typebot: Typebot, userPlan: Plan) => {
   const { typebot: newTypebot, webhookIdsMapping } = duplicateTypebot(
     typebot,
@@ -454,45 +469,9 @@ const parseDefaultItems = (
       ]
     case IntegrationStepType.EXTERNAL_EVENT:
       return [
-        {
-          id: cuid(),
-          stepId,
-          type: ItemType.EXTERNAL_EVENT,
-          content: {
-            matchType: '$eq',
-            referenceProperty: null,
-            referenceValue: null,
-            source: 'CURRENT_SESSION',
-            subType: null,
-            values: ['@EXTERNAL_EVENT_RECEIVED'],
-          },
-        },
-        {
-          id: cuid(),
-          stepId,
-          type: ItemType.EXTERNAL_EVENT,
-          content: {
-            matchType: '$eq',
-            referenceProperty: null,
-            referenceValue: null,
-            source: 'CURRENT_SESSION',
-            subType: null,
-            values: ['@EXTERNAL_EVENT_TIMEOUT'],
-          },
-        },
-        {
-          id: cuid(),
-          stepId,
-          type: ItemType.EXTERNAL_EVENT,
-          content: {
-            matchType: '$eq',
-            referenceProperty: null,
-            referenceValue: null,
-            source: 'CURRENT_SESSION',
-            subType: null,
-            values: ['@EXTERNAL_EVENT_ERROR'],
-          },
-        },
+        generateExternalEventValue(stepId, '@EXTERNAL_EVENT_RECEIVED'),
+        generateExternalEventValue(stepId, '@EXTERNAL_EVENT_TIMEOUT'),
+        generateExternalEventValue(stepId, '@EXTERNAL_EVENT_ERROR')
       ]
   }
 }

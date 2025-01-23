@@ -29,14 +29,28 @@ export const ExternalEvent = React.memo(function ExternalEvent({
   const [timeout, setTimeout] = useState<string>("5")
   const [url, setUrl] = useState<string>("")
   const { typebot } = useTypebot()
-  const { data, socketModalTimeout, exceededTimeout, clearSocketModalTimeout } = useSocket(
-    `bot-${typebot?.id}-component-${step.id}`,
-    {
-      botId: typebot?.id,
-      componentId: step.id
-    }
-  )
+  const {
+    connectInSocket,
+    disconnectSocket,
+    data,
+    socketError,
+    exceededTimeout,
+    clearSocketTimeout
+  } = useSocket()
 
+  const disconnectSocketParams = {
+    room: `bot-${typebot?.id}-component-${step.id}`,
+    emit: {
+      eventLeave: "leaveBotComponent"
+    },
+    paramsForEmit: {
+      eventLeft: {
+        botId: typebot?.id,
+        componentId: step.id
+      }
+    }
+  };
+  const room = `bot-${typebot?.id}-component-${step.id}`;
   const color = "#1366C9";
   const MAX_LENGHT_TEXT = 500;
   const orders = [
@@ -146,9 +160,25 @@ export const ExternalEvent = React.memo(function ExternalEvent({
     })
   }
 
-  function waitRequest() {
+  async function waitRequest() {
     setLoading(true);
-    socketModalTimeout(30 * 1000);
+
+    await connectInSocket({
+      room,
+      emit: {
+        eventJoin: "joinBotComponent"
+      },
+      paramsForEmit: {
+        eventJoin: {
+          botId: typebot?.id,
+          componentId: step.id
+        }
+      },
+      timeout: {
+        execute: true,
+        time: 30 * 1000
+      }
+    })
   }
 
   useEffect(() => {
@@ -159,14 +189,29 @@ export const ExternalEvent = React.memo(function ExternalEvent({
     setInvalidData(false);
     setSuccessTest(true);
 
+    setResponseKeys(getDeepKeys(json))
+
     step.options.body = JSON.stringify(json, undefined, 2);
 
-    clearSocketModalTimeout()
+    disconnectSocket(disconnectSocketParams);
+    clearSocketTimeout()
   }, [data])
+
+  useEffect(() => {
+    if (!socketError) return;
+
+    setLoading(false);
+    disconnectSocket(disconnectSocketParams);
+    clearSocketTimeout()
+    errorToast({ title: 'Houve um erro ao conectar o socket, tente novamente!' });
+  }, [socketError])
 
   useEffect(() => {
     if (!exceededTimeout) return;
 
+    setLoading(false);
+    disconnectSocket(disconnectSocketParams);
+    clearSocketTimeout()
     errorToast({ title: 'O tempo de resposta foi excedido. Por favor, tente novamente.' });
   }, [exceededTimeout])
 
@@ -174,6 +219,11 @@ export const ExternalEvent = React.memo(function ExternalEvent({
     getUrl();
 
     validationJson(step?.options?.body);
+
+    return () => {
+      disconnectSocket(disconnectSocketParams),
+        clearSocketTimeout()
+    }
   }, [])
 
   return (
