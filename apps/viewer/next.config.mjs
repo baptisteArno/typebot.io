@@ -33,6 +33,7 @@ const landingPagePaths = [
   "/",
   "/pricing",
   "/privacy-policy",
+  "/privacy-policies",
   "/terms-of-service",
   "/about",
   "/oss-friends",
@@ -44,6 +45,7 @@ const landingPageReferers = [
   "/",
   "/pricing",
   "/privacy-policy",
+  "/privacy-policies",
   "/terms-of-service",
   "/about",
   "/oss-friends",
@@ -135,6 +137,45 @@ const nextConfig = {
                   },
                 ],
                 destination: `${process.env.LANDING_PAGE_URL}/images/:image*`,
+              })),
+            )
+            .concat(
+              landingPageReferers.map((path) => ({
+                source: "/_next/static/:static*",
+                has: [
+                  {
+                    type: "header",
+                    key: "referer",
+                    value: `${currentOrigin}${path}${optionalQueryParams}`,
+                  },
+                ],
+                destination: `${process.env.LANDING_PAGE_URL}/_next/static/:static*`,
+              })),
+            )
+            .concat(
+              landingPageReferers.map((path) => ({
+                source: "/typebots/:typebot*",
+                has: [
+                  {
+                    type: "header",
+                    key: "referer",
+                    value: `${currentOrigin}${path}${optionalQueryParams}`,
+                  },
+                ],
+                destination: `${process.env.LANDING_PAGE_URL}/typebots/:typebot*`,
+              })),
+            )
+            .concat(
+              landingPageReferers.map((path) => ({
+                source: "/styles/:style*",
+                has: [
+                  {
+                    type: "header",
+                    key: "referer",
+                    value: `${currentOrigin}${path}${optionalQueryParams}`,
+                  },
+                ],
+                destination: `${process.env.LANDING_PAGE_URL}/styles/:style*`,
               })),
             )
             .concat(
