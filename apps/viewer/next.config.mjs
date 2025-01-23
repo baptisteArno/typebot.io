@@ -33,7 +33,6 @@ const landingPagePaths = [
   "/",
   "/pricing",
   "/privacy-policy",
-  "/privacy-policies",
   "/terms-of-service",
   "/about",
   "/oss-friends",
@@ -41,20 +40,7 @@ const landingPagePaths = [
   "/blog/:slug*",
 ];
 
-const landingPageReferers = [
-  "/",
-  "/pricing",
-  "/privacy-policy",
-  "/privacy-policies",
-  "/terms-of-service",
-  "/about",
-  "/oss-friends",
-  "/blog",
-].concat(["/blog/(.+)"]);
-
 const currentHost = "typebot.io";
-const currentOrigin = `https://${currentHost}`;
-const optionalQueryParams = `(\\/?\\?.*)?`;
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -105,49 +91,18 @@ const nextConfig = {
               source: "/images/:image*",
               destination: `${process.env.LANDING_PAGE_URL}/images/:image*`,
             },
-            {
-              source: "/typebots/:typebot*",
-              destination: `${process.env.LANDING_PAGE_URL}/typebots/:typebot*`,
-            },
-          ]
-            .concat(
-              landingPageReferers.map((path) => ({
-                source: "/_next/static/:static*",
-                has: [
-                  {
-                    type: "header",
-                    key: "referer",
-                    value: `${currentOrigin}${path}${optionalQueryParams}`,
-                  },
-                ],
-                destination: `${process.env.LANDING_PAGE_URL}/_next/static/:static*`,
-              })),
-            )
-            .concat(
-              landingPageReferers.map((path) => ({
-                source: "/styles/:style*",
-                has: [
-                  {
-                    type: "header",
-                    key: "referer",
-                    value: `${currentOrigin}${path}${optionalQueryParams}`,
-                  },
-                ],
-                destination: `${process.env.LANDING_PAGE_URL}/styles/:style*`,
-              })),
-            )
-            .concat(
-              landingPagePaths.map((path) => ({
-                source: path,
-                has: [
-                  {
-                    type: "host",
-                    value: currentHost,
-                  },
-                ],
-                destination: `${process.env.LANDING_PAGE_URL}${path}`,
-              })),
-            )
+          ].concat(
+            landingPagePaths.map((path) => ({
+              source: path,
+              has: [
+                {
+                  type: "host",
+                  value: currentHost,
+                },
+              ],
+              destination: `${process.env.LANDING_PAGE_URL}${path}`,
+            })),
+          )
         : []
       )
         .concat([
