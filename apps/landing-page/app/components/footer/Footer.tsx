@@ -109,7 +109,7 @@ export const Footer = () => {
           </div>
         </div>
         <p className="text-gray-11 text-sm">
-          All rights reserved 2024 - Typebot
+          All rights reserved 2025 - Typebot
         </p>
       </div>
     </footer>
