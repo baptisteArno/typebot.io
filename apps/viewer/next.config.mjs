@@ -88,57 +88,28 @@ const nextConfig = {
   async rewrites() {
     return {
       beforeFiles: (process.env.LANDING_PAGE_URL
-        ? landingPageReferers
-            .map((path) => ({
+        ? [
+            {
               source: "/_build/assets/:asset*",
-              has: [
-                {
-                  type: "header",
-                  key: "referer",
-                  value: `${currentOrigin}${path}${optionalQueryParams}`,
-                },
-              ],
               destination: `${process.env.LANDING_PAGE_URL}/_build/assets/:asset*`,
-            }))
-            .concat(
-              landingPageReferers.map((path) => ({
-                source: "/blog-assets/:asset*",
-                has: [
-                  {
-                    type: "header",
-                    key: "referer",
-                    value: `${currentOrigin}${path}${optionalQueryParams}`,
-                  },
-                ],
-                destination: `${process.env.LANDING_PAGE_URL}/blog-assets/:asset*`,
-              })),
-            )
-            .concat(
-              landingPageReferers.map((path) => ({
-                source: "/fonts/:font*",
-                has: [
-                  {
-                    type: "header",
-                    key: "referer",
-                    value: `${currentOrigin}${path}${optionalQueryParams}`,
-                  },
-                ],
-                destination: `${process.env.LANDING_PAGE_URL}/fonts/:font*`,
-              })),
-            )
-            .concat(
-              landingPageReferers.map((path) => ({
-                source: "/images/:image*",
-                has: [
-                  {
-                    type: "header",
-                    key: "referer",
-                    value: `${currentOrigin}${path}${optionalQueryParams}`,
-                  },
-                ],
-                destination: `${process.env.LANDING_PAGE_URL}/images/:image*`,
-              })),
-            )
+            },
+            {
+              source: "/blog-assets/:asset*",
+              destination: `${process.env.LANDING_PAGE_URL}/blog-assets/:asset*`,
+            },
+            {
+              source: "/fonts/:font*",
+              destination: `${process.env.LANDING_PAGE_URL}/fonts/:font*`,
+            },
+            {
+              source: "/images/:image*",
+              destination: `${process.env.LANDING_PAGE_URL}/images/:image*`,
+            },
+            {
+              source: "/typebots/:typebot*",
+              destination: `${process.env.LANDING_PAGE_URL}/typebots/:typebot*`,
+            },
+          ]
             .concat(
               landingPageReferers.map((path) => ({
                 source: "/_next/static/:static*",
@@ -150,19 +121,6 @@ const nextConfig = {
                   },
                 ],
                 destination: `${process.env.LANDING_PAGE_URL}/_next/static/:static*`,
-              })),
-            )
-            .concat(
-              landingPageReferers.map((path) => ({
-                source: "/typebots/:typebot*",
-                has: [
-                  {
-                    type: "header",
-                    key: "referer",
-                    value: `${currentOrigin}${path}${optionalQueryParams}`,
-                  },
-                ],
-                destination: `${process.env.LANDING_PAGE_URL}/typebots/:typebot*`,
               })),
             )
             .concat(
