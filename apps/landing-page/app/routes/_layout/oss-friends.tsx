@@ -2,7 +2,24 @@ import { Card } from "@/components/Card";
 import { ContentPageWrapper } from "@/components/ContentPageWrapper";
 import { createMetaTags } from "@/lib/createMetaTags";
 import { Link, createFileRoute } from "@tanstack/react-router";
+import { createServerFn } from "@tanstack/start";
 import { ArrowUpRightIcon } from "@typebot.io/ui/icons/ArrowUpRightIcon";
+import { z } from "@typebot.io/zod";
+
+export const getAndParseOssFriends = createServerFn().handler(async () => {
+  const res = await fetch("https://formbricks.com/api/oss-friends");
+  const data = await res.json();
+  return z
+    .array(
+      z.object({
+        href: z.string(),
+        name: z.string(),
+        description: z.string(),
+      }),
+    )
+    .parse(data.data)
+    .filter((friend) => friend.name !== "Typebot");
+});
 
 export const Route = createFileRoute("/_layout/oss-friends")({
   head: () => ({
@@ -15,24 +32,11 @@ export const Route = createFileRoute("/_layout/oss-friends")({
     }),
   }),
   component: RouteComponent,
-  loader: async () => {
-    const res = await fetch("https://formbricks.com/api/oss-friends");
-    const data = await res.json();
-
-    return {
-      ossFriends: (
-        data.data as {
-          href: string;
-          name: string;
-          description: string;
-        }[]
-      ).filter((friend) => friend.name !== "Typebot"),
-    };
-  },
+  loader: () => getAndParseOssFriends(),
 });
 
 function RouteComponent() {
-  const { ossFriends } = Route.useLoaderData();
+  const ossFriends = Route.useLoaderData();
   return (
     <ContentPageWrapper>
       <div className="flex flex-col gap-4">
