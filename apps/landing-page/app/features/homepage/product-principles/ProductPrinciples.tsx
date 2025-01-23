@@ -44,7 +44,7 @@ export const ProductPrinciples = () => {
 
   return (
     <div className="flex flex-col gap-8 max-w-7xl w-full">
-      <h2>At Typebot, we strive to create great things</h2>
+      <h2>We strive to create great things</h2>
       <div className="flex md:bg-gray-1 rounded-2xl gap-4 p-2 items-start">
         <div className="flex flex-col gap-2 md:gap-0 md:pl-4 w-full">
           {data.map(({ title, content }, index) => (
