@@ -13,10 +13,18 @@ import {
   StarterPlanCard,
   StarterPlanPerksList,
 } from "@/features/pricing/starter-plan-card";
+import { createMetaTags } from "@/lib/createMetaTags";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { z } from "@typebot.io/zod";
 
 export const Route = createFileRoute("/_layout/pricing")({
+  head: () => ({
+    meta: createMetaTags({
+      title: "Pricing | Typebot",
+      description: "Typebot pricing plans and features.",
+      image: "/default-og.png",
+    }),
+  }),
   component: RouteComponent,
   validateSearch: z.object({
     isTiersModalOpened: z.boolean().optional(),

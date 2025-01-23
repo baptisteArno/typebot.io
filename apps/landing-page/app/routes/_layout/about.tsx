@@ -4,9 +4,18 @@ import { BuildingsGradientIcon } from "@/features/about/BuildingsGradientIcon";
 import { HeartGradientIcon } from "@/features/about/HeartGradientIcon";
 import { MessageSquareGradientIcon } from "@/features/about/MessageSquareGradientIcon";
 import { ZapGradientIcon } from "@/features/about/ZapGradientIcon";
+import { createMetaTags } from "@/lib/createMetaTags";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_layout/about")({
+  head: () => ({
+    meta: createMetaTags({
+      title: "About | Typebot",
+      description:
+        "Typebot empowers businesses to craft personalized, interactive experiences that foster deeper connections with users.",
+      image: "/default-og.png",
+    }),
+  }),
   component: RouteComponent,
 });
 

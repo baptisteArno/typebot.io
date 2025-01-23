@@ -2,7 +2,7 @@ import codeSnippetsCssUrl from "@/assets/code-snippet.css?url";
 import { ContentPageWrapper } from "@/components/ContentPageWrapper";
 import { Mdx } from "@/features/blog/components/mdx";
 import { formatDate } from "@/features/blog/helpers";
-import { seo } from "@/lib/seo";
+import { createMetaTags } from "@/lib/createMetaTags";
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import { allPosts } from "content-collections";
 
@@ -22,9 +22,10 @@ export const Route = createFileRoute("/_layout/blog/$slug")({
     links: [{ rel: "stylesheet", href: codeSnippetsCssUrl }],
     meta: loaderData
       ? [
-          ...seo({
+          ...createMetaTags({
             title: `${loaderData?.post.title} | Typebot`,
             description: loaderData?.post.description,
+            image: "/default-og.png",
           }),
         ]
       : [],

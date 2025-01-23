@@ -1,9 +1,18 @@
 import { Card } from "@/components/Card";
 import { ContentPageWrapper } from "@/components/ContentPageWrapper";
+import { createMetaTags } from "@/lib/createMetaTags";
 import { Link, createFileRoute } from "@tanstack/react-router";
 import { ArrowUpRightIcon } from "@typebot.io/ui/icons/ArrowUpRightIcon";
 
 export const Route = createFileRoute("/_layout/oss-friends")({
+  head: () => ({
+    meta: createMetaTags({
+      title: "OSS Friends | Typebot",
+      description:
+        "We love open-source and we are proud to support these amazing projects.",
+      image: "/default-og.png",
+    }),
+  }),
   component: RouteComponent,
   loader: async () => {
     const res = await fetch("https://formbricks.com/api/oss-friends");

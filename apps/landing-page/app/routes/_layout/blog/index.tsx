@@ -1,18 +1,19 @@
 import { Card } from "@/components/Card";
 import { ContentPageWrapper } from "@/components/ContentPageWrapper";
 import { formatDate } from "@/features/blog/helpers";
-import { seo } from "@/lib/seo";
+import { createMetaTags } from "@/lib/createMetaTags";
 import { Link, createFileRoute } from "@tanstack/react-router";
 import { isDefined } from "@typebot.io/lib/utils";
 import { allPosts } from "content-collections";
 
 export const Route = createFileRoute("/_layout/blog/")({
   head: () => ({
-    meta: [
-      ...seo({
-        title: "Typebot Blog",
-      }),
-    ],
+    meta: createMetaTags({
+      title: "Typebot Blog",
+      description:
+        "Learn more about Typebot, chatbots, conversational AI and more to help you hack the bot game and grow your business.",
+      image: "/default-og.png",
+    }),
   }),
   component: RouteComponent,
 });

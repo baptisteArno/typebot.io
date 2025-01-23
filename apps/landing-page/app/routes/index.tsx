@@ -12,9 +12,18 @@ import { MainFeatures } from "@/features/homepage/main-features/MainFeatures";
 import { ProductPrinciples } from "@/features/homepage/product-principles/ProductPrinciples";
 import { Testimonials } from "@/features/homepage/testimonials/Testimonials";
 import { UseCases } from "@/features/homepage/use-cases/UseCases";
+import { createMetaTags } from "@/lib/createMetaTags";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: createMetaTags({
+      title: "Typebot",
+      description:
+        "Typebot is a no-code platform that enables you to effortlessly create and integrate advanced chatbots into websites and chat platforms like WhatsApp.",
+      image: "/default-og.png",
+    }),
+  }),
   component: Home,
 });
 
