@@ -1,5 +1,5 @@
+import { TextLink } from "@/components/link";
 import { cn } from "@/lib/utils";
-import { Link } from "@tanstack/react-router";
 import { CodeIcon } from "@typebot.io/ui/icons/CodeIcon";
 import { GithubIcon } from "@typebot.io/ui/icons/GithubIcon";
 import { RulerIcon } from "@typebot.io/ui/icons/RulerIcon";
@@ -33,13 +33,9 @@ export const MadeForDevelopers = () => {
         <h2>Built for everyone, made for developers</h2>
         <div className="flex gap-3 items-center">
           <GithubIcon className="size-4" />
-          <Link
-            target="_blank"
-            href={githubRepoUrl}
-            className="font-medium underline"
-          >
+          <TextLink target="_blank" href={githubRepoUrl} hideExternalIcon>
             See GitHub repository
-          </Link>
+          </TextLink>
         </div>
       </div>
       <div className="flex flex-col md:flex-row gap-6">

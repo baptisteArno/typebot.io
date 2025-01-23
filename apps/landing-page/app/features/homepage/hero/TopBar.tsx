@@ -1,5 +1,5 @@
-import { buttonVariants } from "@/components/Button";
 import { TypebotLogoFull } from "@/components/TypebotLogo";
+import { ButtonLink } from "@/components/link";
 import { signinUrl } from "@/constants";
 import { cn } from "@/lib/utils";
 import { Link, useLocation } from "@tanstack/react-router";
@@ -22,12 +22,9 @@ export const TopBar = ({ className }: Props) => {
         <TypebotLogoFull />
       </Link>
       {pathname === "/" && (
-        <Link
-          href={signinUrl}
-          className={cn(buttonVariants({ variant: "outline" }))}
-        >
+        <ButtonLink href={signinUrl} variant="outline">
           Go to dashboard
-        </Link>
+        </ButtonLink>
       )}
     </div>
   );

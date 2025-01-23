@@ -40,12 +40,14 @@ interface CustomTextLinkProps
       HTMLProps<HTMLAnchorElement>,
       "href" | "target" | "className" | "children"
     >,
-    VariantProps<typeof textLinkVariants> {}
+    VariantProps<typeof textLinkVariants> {
+  hideExternalIcon?: boolean;
+}
 
 export const TextLinkComponent = forwardRef<
   HTMLAnchorElement,
   CustomTextLinkProps
->(({ children, className, size, ...props }, ref) => {
+>(({ children, className, size, hideExternalIcon, ...props }, ref) => {
   return (
     <a
       ref={ref}
@@ -53,7 +55,7 @@ export const TextLinkComponent = forwardRef<
       className={cn(textLinkVariants({ size }), className)}
     >
       {children}
-      {props.target === "_blank" && (
+      {props.target === "_blank" && !hideExternalIcon && (
         <ArrowUpRightIcon className={textLinkIconVariants({ size })} />
       )}
     </a>
@@ -71,6 +73,7 @@ export const TextLink = (
         href={props.href}
         target={props.target}
         size={props.size}
+        hideExternalIcon={props.hideExternalIcon}
       >
         {props.children}
       </TextLinkComponent>
