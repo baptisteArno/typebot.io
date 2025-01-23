@@ -36,8 +36,8 @@ function Home() {
       </Section>
       <div className="-mt-32 md:-mt-[120vh]">
         <Section className="relative isolate px-0 rounded-t-3xl motion-opacity-in-0 motion-translate-y-in-[20px] motion-delay-[2500ms] md:animate-none md:pt-32 bg-transparent">
-          <div className="md-scroll-magic-container-fade-in absolute inset-0 size-full rounded-t-3xl -z-10 bg-[url('$magicBackgrounds/magic-background.png')] bg-no-repeat bg-[length:100%] md:opacity-0" />
-          <div className="md:h-[200vh] md-scroll-use-cases-fade-in md:opacity-0">
+          <div className="motion-safe:md-scroll-magic-container-fade-in absolute inset-0 size-full rounded-t-3xl -z-10 bg-[url('$magicBackgrounds/magic-background.png')] bg-no-repeat bg-[length:100%] md:motion-safe:opacity-0" />
+          <div className="md:h-[200vh] motion-safe:md-scroll-use-cases-fade-in md:motion-safe:opacity-0">
             <UseCases className="md:sticky top-0" />
           </div>
           <div id="magic-animation-separator" className="invisible -mt-32" />
