@@ -14,6 +14,7 @@ export const choiceInputOptionsSchema = optionBaseSchema.merge(
     dynamicVariableId: z.string().optional(),
     isSearchable: z.boolean().optional(),
     searchInputPlaceholder: z.string().optional(),
+    areInitialSearchButtonsVisible: z.boolean().optional(),
   }),
 );
 
