@@ -12,7 +12,7 @@ export const Route = createFileRoute("/_layout/blog/")({
       title: "Typebot Blog",
       description:
         "Learn more about Typebot, chatbots, conversational AI and more to help you hack the bot game and grow your business.",
-      image: "/default-og.png",
+      image: "/images/default-og.png",
     }),
   }),
   component: RouteComponent,

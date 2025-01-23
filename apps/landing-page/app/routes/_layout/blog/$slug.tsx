@@ -25,7 +25,7 @@ export const Route = createFileRoute("/_layout/blog/$slug")({
           ...createMetaTags({
             title: `${loaderData?.post.title} | Typebot`,
             description: loaderData?.post.description,
-            image: "/default-og.png",
+            image: "/images/default-og.png",
           }),
         ]
       : [],

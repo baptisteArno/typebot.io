@@ -10,7 +10,7 @@ export const Route = createFileRoute("/_layout/oss-friends")({
       title: "OSS Friends | Typebot",
       description:
         "We love open-source and we are proud to support these amazing projects.",
-      image: "/default-og.png",
+      image: "/images/default-og.png",
     }),
   }),
   component: RouteComponent,

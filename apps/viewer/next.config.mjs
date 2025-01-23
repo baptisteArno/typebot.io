@@ -125,6 +125,19 @@ const nextConfig = {
               })),
             )
             .concat(
+              landingPageReferers.map((path) => ({
+                source: "/images/:image*",
+                has: [
+                  {
+                    type: "header",
+                    key: "referer",
+                    value: `${currentOrigin}${path}${optionalQueryParams}`,
+                  },
+                ],
+                destination: `${process.env.LANDING_PAGE_URL}/images/:image*`,
+              })),
+            )
+            .concat(
               landingPagePaths.map((path) => ({
                 source: path,
                 has: [
