@@ -1,4 +1,6 @@
 import { Button } from "@/components/Button";
+import { ButtonLink } from "@/components/link";
+import { registerUrl } from "@/constants";
 import { TopBar } from "./TopBar";
 
 const heroTextHeight = 276;
@@ -36,13 +38,14 @@ export const Hero = () => (
         WhatsApp.
       </p>
 
-      <Button
+      <ButtonLink
         className="hero-text-blur-in motion-delay-2000 md:hidden"
         variant="cta"
         size="lg"
+        href={registerUrl}
       >
         Start building
-      </Button>
+      </ButtonLink>
     </div>
     <div
       className="h-screen w-full sticky inset-0 px-0 rounded-3xl animate-magic-zoom opacity-0 hidden md:motion-reduce:hidden md:supports-scrollanimation:block bg-[url('$magicBackgrounds/magic-background-desktop.png')] bg-no-repeat bg-[length:100%]"

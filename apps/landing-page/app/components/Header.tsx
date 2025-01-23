@@ -6,6 +6,7 @@ import {
   discordUrl,
   docsUrl,
   githubRepoUrl,
+  registerUrl,
   signinUrl,
 } from "@/constants";
 import { useWindowSize } from "@/features/homepage/hooks/useWindowSize";
@@ -305,9 +306,9 @@ const Desktop = React.forwardRef<
             {link.label}
           </ButtonLink>
         ))}
-        <Button variant="cta" size="sm">
+        <ButtonLink variant="cta" size="sm" href={registerUrl}>
           Get started free
-        </Button>
+        </ButtonLink>
       </nav>
       {isChatBubbleMounted && pathname === "/" && (
         <div

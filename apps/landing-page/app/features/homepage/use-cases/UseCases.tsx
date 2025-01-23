@@ -1,5 +1,7 @@
 import { Button } from "@/components/Button";
 import { Progress } from "@/components/Progress";
+import { ButtonLink } from "@/components/link";
+import { enterpriseLeadTypebotUrl, registerUrl } from "@/constants";
 import { cn } from "@/lib/utils";
 import { useInView } from "motion/react";
 import { useEffect, useRef, useState } from "react";
@@ -200,12 +202,16 @@ export const Cta = () => (
       .
     </p>
     <div className="w-full md:w-auto flex flex-col md:flex-row gap-4">
-      <Button variant="cta" size="lg">
+      <ButtonLink variant="cta" size="lg" href={registerUrl}>
         Try it out for free
-      </Button>
-      <Button variant="ctaSecondary" size="lg">
+      </ButtonLink>
+      <ButtonLink
+        variant="ctaSecondary"
+        size="lg"
+        href={enterpriseLeadTypebotUrl}
+      >
         Book a demo
-      </Button>
+      </ButtonLink>
     </div>
   </div>
 );
