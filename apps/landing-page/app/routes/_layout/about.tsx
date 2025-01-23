@@ -14,6 +14,7 @@ export const Route = createFileRoute("/_layout/about")({
       description:
         "Typebot empowers businesses to craft personalized, interactive experiences that foster deeper connections with users.",
       image: "/images/default-og.png",
+      path: "/about",
     }),
   }),
   component: RouteComponent,

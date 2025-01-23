@@ -2,6 +2,7 @@ export const breakpoints = {
   md: 768,
 };
 
+export const currentBaseUrl = "https://typebot.io";
 export const signinUrl = "https://app.typebot.io/signin";
 export const registerUrl = "https://app.typebot.io/register";
 export const githubRepoUrl = "https://github.com/baptisteArno/typebot.io";

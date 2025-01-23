@@ -22,6 +22,7 @@ export const Route = createFileRoute("/")({
       description:
         "Typebot is a no-code platform that enables you to effortlessly create and integrate advanced chatbots into websites and chat platforms like WhatsApp.",
       image: "/images/default-og.png",
+      path: "",
     }),
   }),
   component: Home,

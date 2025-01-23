@@ -11,6 +11,7 @@ export const Route = createFileRoute("/_layout/oss-friends")({
       description:
         "We love open-source and we are proud to support these amazing projects.",
       image: "/images/default-og.png",
+      path: "/oss-friends",
     }),
   }),
   component: RouteComponent,
