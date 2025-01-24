@@ -13,7 +13,7 @@
   ],
   "scripts": {
     "prepare": "husky",
-    "pre-commit": "bun format-and-lint && bun lint-repo",
+    "pre-commit": "bun format-and-lint && bun lint-repo && turbo check-broken-links",
     "format-and-lint": "biome check .",
     "format-and-lint:fix": "biome check . --write",
     "lint-repo": "sherif -r unordered-dependencies -r packages-without-package-json",
@@ -34,13 +34,13 @@
     "@biomejs/biome": "1.9.2",
     "@tolgee/cli": "2.1.7",
     "husky": "9.1.6",
-    "sherif": "1.0.0",
+    "sherif": "1.0.1",
     "turbo": "2.1.2",
     "typescript": "5.6.2"
   },
-  "packageManager": "bun@1.1.30",
+  "packageManager": "bun@1.1.42",
   "engines": {
-    "node": "20.17.0"
+    "node": "^22"
   },
   "trustedDependencies": [
     "@biomejs/biome",

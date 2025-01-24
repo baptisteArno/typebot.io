@@ -51,8 +51,8 @@ const NonMemoizedDraggableEventNode = ({
   eventIndex,
   onEventDrag,
 }: Props & { onEventDrag: (newCoord: Coordinates) => void }) => {
-  const elementBgColor = useColorModeValue("white", "gray.900");
-  const previewingBorderColor = useColorModeValue("blue.400", "blue.300");
+  const elementBgColor = useColorModeValue("white", "gray.950");
+  const previewingBorderColor = useColorModeValue("orange.400", "orange.300");
   const { previewingEdge, isReadOnly, graphPosition } = useGraph();
   const { updateEvent } = useTypebot();
   const { setRightPanel, setStartPreviewAtEvent } = useEditor();
@@ -156,11 +156,11 @@ const NonMemoizedDraggableEventNode = ({
           rounded="xl"
           bg={elementBgColor}
           borderWidth="1px"
-          fontWeight="semibold"
+          fontWeight="medium"
           borderColor={
             isContextMenuOpened || isPreviewing || isFocused
               ? previewingBorderColor
-              : elementBgColor
+              : undefined
           }
           transition="border 300ms, box-shadow 200ms"
           pos="absolute"
@@ -171,8 +171,7 @@ const NonMemoizedDraggableEventNode = ({
             touchAction: "none",
           }}
           cursor={isMouseDown ? "grabbing" : "pointer"}
-          shadow="md"
-          _hover={{ shadow: "lg" }}
+          _hover={{ shadow: "md" }}
           zIndex={isFocused ? 10 : 1}
           pointerEvents={isDraggingGraph ? "none" : "auto"}
         >

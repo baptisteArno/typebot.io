@@ -93,12 +93,15 @@ export const BackgroundContent = ({
       </Flex>
     );
   }
-  if ((background?.type ?? defaultBackgroundType) === BackgroundType.COLOR) {
+  if (
+    typebot &&
+    (background?.type ?? defaultBackgroundType) === BackgroundType.COLOR
+  ) {
     return (
       <Flex justify="space-between" align="center">
         <Text>{t("theme.sideMenu.global.background.color")}</Text>
         <ColorPicker
-          value={background?.content ?? defaultBackgroundColor}
+          value={background?.content ?? defaultBackgroundColor[typebot.version]}
           onColorChange={handleContentChange}
         />
       </Flex>

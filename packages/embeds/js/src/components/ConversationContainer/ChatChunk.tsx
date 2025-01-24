@@ -90,9 +90,9 @@ export const ChatChunk = (props: Props) => {
             }
           >
             <AvatarSideContainer
-              hostAvatarSrc={props.theme.chat?.hostAvatar?.url}
               hideAvatar={props.hideAvatar}
               isTransitionDisabled={props.isTransitionDisabled}
+              theme={props.theme}
             />
           </Show>
 
@@ -135,11 +135,7 @@ export const ChatChunk = (props: Props) => {
           ref={inputRef}
           block={props.input}
           chunkIndex={props.index}
-          hasHostAvatar={
-            props.theme.chat?.hostAvatar?.isEnabled ??
-            defaultHostAvatarIsEnabled
-          }
-          guestAvatar={props.theme.chat?.guestAvatar}
+          theme={props.theme}
           context={props.context}
           isInputPrefillEnabled={
             props.settings.general?.isInputPrefillEnabled ??
@@ -162,8 +158,8 @@ export const ChatChunk = (props: Props) => {
               }
             >
               <AvatarSideContainer
-                hostAvatarSrc={props.theme.chat?.hostAvatar?.url}
                 hideAvatar={props.hideAvatar}
+                theme={props.theme}
               />
             </Show>
 

@@ -94,6 +94,7 @@ export const startChat = async ({
     sessionId: session.id,
     typebot: {
       id: typebot.id,
+      version: typebot.version,
       theme: typebot.theme,
       settings: typebot.settings,
       publishedAt: typebot.publishedAt,

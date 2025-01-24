@@ -147,7 +147,11 @@ export const TextInput = (props: Props) => {
           params: {
             sizeLimit: getRuntimeVariable(
               "NEXT_PUBLIC_BOT_FILE_UPLOAD_MAX_SIZE",
-            ),
+            )
+              ? Number(
+                  getRuntimeVariable("NEXT_PUBLIC_BOT_FILE_UPLOAD_MAX_SIZE"),
+                )
+              : undefined,
           },
           onError: ({ description, title }) => {
             toaster.create({
@@ -268,6 +272,7 @@ export const TextInput = (props: Props) => {
         <VoiceRecorder
           recordingStatus={recordingStatus()}
           buttonsTheme={props.context.typebot.theme.chat?.buttons}
+          context={props.context}
           onRecordingConfirmed={handleRecordingConfirmed}
           onAbortRecording={handleRecordingAbort}
         />

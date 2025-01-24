@@ -1,21 +1,37 @@
 import { isMobile } from "@/utils/isMobileSignal";
 import { isNotEmpty } from "@typebot.io/lib/utils";
+import { colors } from "@typebot.io/ui/colors";
 import { Show, createEffect, createSignal } from "solid-js";
 import { DefaultAvatar } from "./DefaultAvatar";
 
-export const Avatar = (props: { initialAvatarSrc?: string }) => {
-  const [avatarSrc, setAvatarSrc] = createSignal(props.initialAvatarSrc);
+export const Avatar = (props: {
+  src: string | undefined;
+  isChatContainerLight: boolean;
+}) => {
+  const [avatarSrc, setAvatarSrc] = createSignal(props.src);
 
   createEffect(() => {
     if (
       (avatarSrc()?.startsWith("{{") || !avatarSrc()) &&
-      props.initialAvatarSrc?.startsWith("http")
+      props.src?.startsWith("http")
     )
-      setAvatarSrc(props.initialAvatarSrc);
+      setAvatarSrc(props.src);
   });
 
   return (
-    <Show when={isNotEmpty(avatarSrc())} keyed fallback={<DefaultAvatar />}>
+    <Show
+      when={isNotEmpty(avatarSrc())}
+      keyed
+      fallback={
+        <DefaultAvatar
+          backgroundColor={
+            props.isChatContainerLight
+              ? colors.gray.dark[2]
+              : colors.gray.dark[1]
+          }
+        />
+      }
+    >
       <figure
         class={
           "flex justify-center items-center rounded-full text-white relative animate-fade-in flex-shrink-0 " +

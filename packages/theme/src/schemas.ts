@@ -60,7 +60,7 @@ export const chatThemeSchema = z.object({
 
 const backgroundSchema = z.object({
   type: z.nativeEnum(BackgroundType).optional(),
-  content: z.string().optional().optional(),
+  content: z.string().optional(),
 });
 
 const googleFontSchema = z.object({

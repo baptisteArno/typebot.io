@@ -36,7 +36,7 @@ export const ResultsPage = () => {
   );
   const bgColor = useColorModeValue(
     router.pathname.endsWith("analytics") ? "#f4f5f8" : "white",
-    router.pathname.endsWith("analytics") ? "gray.850" : "gray.900",
+    router.pathname.endsWith("analytics") ? "gray.900" : "gray.950",
   );
   const [timeFilter, setTimeFilter] =
     useState<(typeof timeFilterValues)[number]>(defaultTimeFilter);
@@ -90,21 +90,21 @@ export const ResultsPage = () => {
           <HStack maxW="1600px" w="full" px="4">
             <Button
               as={Link}
-              colorScheme={!isAnalytics ? "blue" : "gray"}
+              colorScheme={!isAnalytics ? "orange" : "gray"}
               variant={!isAnalytics ? "outline" : "ghost"}
               size="sm"
               href={`/typebots/${typebot?.id}/results`}
             >
               <Text>Submissions</Text>
               {(stats?.totalStarts ?? 0) > 0 && (
-                <Tag size="sm" colorScheme="blue" ml="1">
+                <Tag size="sm" colorScheme="orange" ml="1">
                   {stats?.totalStarts}
                 </Tag>
               )}
             </Button>
             <Button
               as={Link}
-              colorScheme={isAnalytics ? "blue" : "gray"}
+              colorScheme={isAnalytics ? "orange" : "gray"}
               variant={isAnalytics ? "outline" : "ghost"}
               href={`/typebots/${typebot?.id}/results/analytics`}
               size="sm"

@@ -9,6 +9,7 @@ export type BubbleTheme = {
   button?: ButtonTheme;
   previewMessage?: PreviewMessageTheme;
   placement?: "left" | "right";
+  position?: "fixed" | "static";
 };
 
 export type ChatWindowTheme = {

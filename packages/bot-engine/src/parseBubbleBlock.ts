@@ -6,6 +6,7 @@ import { isDefined, isEmpty, isNotEmpty } from "@typebot.io/lib/utils";
 import { convertMarkdownToRichText } from "@typebot.io/rich-text/convertMarkdownToRichText";
 import { convertRichTextToMarkdown } from "@typebot.io/rich-text/convertRichTextToMarkdown";
 import type { TDescendant, TElement } from "@typebot.io/rich-text/types";
+import { isTypebotVersionAtLeastV6 } from "@typebot.io/schemas/helpers/isTypebotVersionAtLeastV6";
 import type { Typebot } from "@typebot.io/typebot/schemas/typebot";
 import { deepParseVariables } from "@typebot.io/variables/deepParseVariables";
 import { isSingleVariable } from "@typebot.io/variables/isSingleVariable";
@@ -46,7 +47,7 @@ export const parseBubbleBlock = (
 
       const richText = parseVariablesInRichText(block.content?.richText ?? [], {
         variables,
-        takeLatestIfList: typebotVersion !== "6",
+        takeLatestIfList: !isTypebotVersionAtLeastV6(typebotVersion),
       }).parsedElements;
       return {
         ...block,

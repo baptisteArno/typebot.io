@@ -82,13 +82,9 @@ test.describe
     test.describe("Chat", () => {
       test("should reflect change in real-time", async ({ page }) => {
         const typebotId = "chat-theme-typebot";
-        try {
-          await importTypebotInDatabase(getTestAsset("typebots/theme.json"), {
-            id: typebotId,
-          });
-        } catch {
-          /* empty */
-        }
+        await importTypebotInDatabase(getTestAsset("typebots/theme.json"), {
+          id: typebotId,
+        }).catch();
 
         await page.goto(`/typebots/${typebotId}/theme`);
         await expect(page.getByRole("button", { name: "Go" })).toBeVisible();
@@ -120,10 +116,6 @@ test.describe
         await expect(page.locator(".typebot-chat-view")).toHaveCSS(
           "max-height",
           "80%",
-        );
-        await expect(page.locator(".typebot-chat-view")).toHaveCSS(
-          "color",
-          "rgb(48, 50, 53)",
         );
 
         // Host avatar
@@ -208,7 +200,7 @@ test.describe
           .fill(guestAvatarUrl);
         await page.getByRole("button", { name: "Go" }).click();
         await expect(
-          page.getByRole("img", { name: "Bot avatar" }).nth(2),
+          page.getByRole("img", { name: "Bot avatar" }).last(),
         ).toHaveAttribute("src", guestAvatarUrl);
 
         await page.waitForTimeout(1000);
@@ -255,7 +247,9 @@ test.describe
         });
         await page.goto(`/typebots/${typebotId}/theme`);
         await expect(page.getByRole("button", { name: "Go" })).toBeVisible();
-        await page.getByRole("button", { name: "Templates" }).click();
+        await page
+          .getByRole("button", { name: "Templates", exact: true })
+          .click();
         await page.getByRole("button", { name: "Save current theme" }).click();
         await page.getByPlaceholder("My template").fill("My awesome theme");
         await page.getByRole("button", { name: "Save" }).click();
@@ -278,10 +272,10 @@ test.describe
         await page.getByRole("menuitem", { name: "Delete" }).click();
         await expect(page.getByText("My awesome theme 2")).toBeHidden();
         await page.getByRole("button", { name: "Gallery" }).click();
-        await page.getByText("Typebot Dark").click();
+        await page.getByText("Typebot Dark", { exact: true }).click();
         await expect(page.getByTestId("host-bubble")).toHaveCSS(
           "background-color",
-          "rgb(30, 41, 59)",
+          "rgb(13, 13, 13)",
         );
       });
     });

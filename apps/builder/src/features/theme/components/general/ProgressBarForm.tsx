@@ -14,13 +14,16 @@ import {
   progressBarPositions,
 } from "@typebot.io/theme/constants";
 import type { ProgressBar } from "@typebot.io/theme/schemas";
+import type { TypebotV6 } from "@typebot.io/typebot/schemas/typebot";
 
 type Props = {
+  typebotVersion: TypebotV6["version"];
   progressBar: ProgressBar | undefined;
   onProgressBarChange: (progressBar: ProgressBar) => void;
 };
 
 export const ProgressBarForm = ({
+  typebotVersion,
   progressBar,
   onProgressBarChange,
 }: Props) => {
@@ -63,7 +66,8 @@ export const ProgressBarForm = ({
         </FormLabel>
         <ColorPicker
           defaultValue={
-            progressBar?.backgroundColor ?? defaultProgressBarBackgroundColor
+            progressBar?.backgroundColor ??
+            defaultProgressBarBackgroundColor[typebotVersion]
           }
           onColorChange={updateBackgroundColor}
         />
@@ -73,7 +77,9 @@ export const ProgressBarForm = ({
           Color:
         </FormLabel>
         <ColorPicker
-          defaultValue={progressBar?.color ?? defaultProgressBarColor}
+          defaultValue={
+            progressBar?.color ?? defaultProgressBarColor[typebotVersion]
+          }
           onColorChange={updateColor}
         />
       </HStack>

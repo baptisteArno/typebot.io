@@ -1,5 +1,4 @@
-import { colors } from "@/lib/theme";
-import { useColorMode, useColorModeValue } from "@chakra-ui/react";
+import { useColorMode, useColorModeValue, useToken } from "@chakra-ui/react";
 import { Toaster as SonnerToaster } from "sonner";
 
 export const Toaster = () => {
@@ -7,12 +6,12 @@ export const Toaster = () => {
   const theme = useColorModeValue(
     {
       bg: undefined,
-      actionBg: colors.blue[500],
+      actionBg: "var(--chakra-colors-orange-500)",
       actionColor: undefined,
     },
     {
-      bg: colors.gray[900],
-      actionBg: colors.blue[400],
+      bg: "var(--chakra-colors-gray-900)",
+      actionBg: "var(--chakra-colors-orange-400)",
       actionColor: "white",
     },
   );

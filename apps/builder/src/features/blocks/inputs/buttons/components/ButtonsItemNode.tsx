@@ -45,7 +45,7 @@ export const ButtonsItemNode = ({ item, indices, isMouseOver }: Props) => {
   );
   const editableRef = useRef<HTMLDivElement | null>(null);
   const ref = useRef<HTMLDivElement | null>(null);
-  const arrowColor = useColorModeValue("white", "gray.800");
+  const arrowColor = useColorModeValue("white", "gray.900");
 
   const handleMouseDown = (e: React.MouseEvent) => e.stopPropagation();
 
@@ -145,7 +145,7 @@ export const ButtonsItemNode = ({ item, indices, isMouseOver }: Props) => {
             }}
             unmountOnExit
           >
-            <Flex bgColor={useColorModeValue("white", "gray.800")} rounded="md">
+            <Flex bgColor={useColorModeValue("white", "gray.900")} rounded="md">
               <IconButton
                 aria-label={t("blocks.inputs.button.openSettings.ariaLabel")}
                 icon={<SettingsIcon />}
@@ -184,7 +184,7 @@ export const ButtonsItemNode = ({ item, indices, isMouseOver }: Props) => {
             py="6"
             overflowY="auto"
             maxH="400px"
-            shadow="lg"
+            shadow="md"
             ref={ref}
           >
             <ButtonsItemSettings

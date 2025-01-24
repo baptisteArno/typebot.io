@@ -132,7 +132,7 @@ export const CredentialsSettingsForm = () => {
           >
             <HStack spacing="3">
               <CredentialsIcon type={type} boxSize="24px" />
-              <CredentialsLabel type={type} fontWeight="semibold" />
+              <CredentialsLabel type={type} fontWeight="medium" />
             </HStack>
             <Stack>
               {credentials[type].map((cred) => (
@@ -291,7 +291,7 @@ const CredentialsItem = ({
                 <PopoverArrow />
                 <PopoverBody>
                   <Stack spacing="2">
-                    <Text fontSize="sm" fontWeight="semibold">
+                    <Text fontSize="sm" fontWeight="medium">
                       Are you sure?
                     </Text>
                     <Text fontSize="sm">

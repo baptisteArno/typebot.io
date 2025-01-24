@@ -6,7 +6,7 @@
     "build": "ladle build"
   },
   "dependencies": {
-    "@ladle/react": "4.1.2",
+    "@ladle/react": "5.0.1",
     "@typebot.io/bot-engine": "workspace:*",
     "@typebot.io/conditions": "workspace:*",
     "@typebot.io/react": "workspace:*",
@@ -19,6 +19,6 @@
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*",
-    "@types/react": "18.2.15"
+    "@types/react": "18.2.0"
   }
 }

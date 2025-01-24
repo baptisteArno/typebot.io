@@ -5,15 +5,21 @@ import {
   defaultGuestBubblesColor,
 } from "@typebot.io/theme/constants";
 import type { ContainerTheme } from "@typebot.io/theme/schemas";
+import type { TypebotV6 } from "@typebot.io/typebot/schemas/typebot";
 import React from "react";
 import { ColorPicker } from "../../../../components/ColorPicker";
 
 type Props = {
+  typebotVersion: TypebotV6["version"];
   guestBubbles: ContainerTheme | undefined;
   onGuestBubblesChange: (hostBubbles: ContainerTheme | undefined) => void;
 };
 
-export const GuestBubbles = ({ guestBubbles, onGuestBubblesChange }: Props) => {
+export const GuestBubbles = ({
+  typebotVersion,
+  guestBubbles,
+  onGuestBubblesChange,
+}: Props) => {
   const { t } = useTranslate();
 
   const updateBackground = (backgroundColor: string) =>
@@ -28,7 +34,8 @@ export const GuestBubbles = ({ guestBubbles, onGuestBubblesChange }: Props) => {
         <Text>{t("theme.sideMenu.chat.theme.background")}</Text>
         <ColorPicker
           value={
-            guestBubbles?.backgroundColor ?? defaultGuestBubblesBackgroundColor
+            guestBubbles?.backgroundColor ??
+            defaultGuestBubblesBackgroundColor[typebotVersion]
           }
           onColorChange={updateBackground}
         />

@@ -45,22 +45,22 @@ import React from "react";
 type BlockIconProps = { type: Block["type"] } & IconProps;
 
 export const BlockIcon = ({ type, ...props }: BlockIconProps): JSX.Element => {
-  const blue = useColorModeValue("blue.500", "blue.300");
-  const orange = useColorModeValue("orange.500", "orange.300");
-  const purple = useColorModeValue("purple.500", "purple.300");
+  const orange = useColorModeValue("orange.500", "orange.400");
+  const gray = useColorModeValue("gray.900", "gray.200");
+  const purple = useColorModeValue("purple.500", "purple.400");
   const openAIColor = useColorModeValue("black", "white");
 
   switch (type) {
     case BubbleBlockType.TEXT:
-      return <TextBubbleIcon color={blue} {...props} />;
+      return <TextBubbleIcon color={gray} {...props} />;
     case BubbleBlockType.IMAGE:
-      return <ImageBubbleIcon color={blue} {...props} />;
+      return <ImageBubbleIcon color={gray} {...props} />;
     case BubbleBlockType.VIDEO:
-      return <VideoBubbleIcon color={blue} {...props} />;
+      return <VideoBubbleIcon color={gray} {...props} />;
     case BubbleBlockType.EMBED:
-      return <EmbedBubbleIcon color={blue} {...props} />;
+      return <EmbedBubbleIcon color={gray} {...props} />;
     case BubbleBlockType.AUDIO:
-      return <AudioBubbleIcon color={blue} {...props} />;
+      return <AudioBubbleIcon color={gray} {...props} />;
     case InputBlockType.TEXT:
       return <TextInputIcon color={orange} {...props} />;
     case InputBlockType.NUMBER:

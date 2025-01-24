@@ -38,7 +38,7 @@ export const ConditionContent = ({
               </Text>
             )}
             {variable?.name && (
-              <Tag bgColor="orange.400" color="white" size="sm">
+              <Tag bgColor="purple.400" color="white" size="sm">
                 {variable.name}
               </Tag>
             )}

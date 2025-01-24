@@ -16,12 +16,12 @@ export const BlockNodeOverlay = ({
       p="3"
       borderWidth="1px"
       rounded="lg"
-      borderColor={useColorModeValue("gray.200", "gray.800")}
-      bgColor={useColorModeValue("gray.50", "gray.850")}
+      borderColor={useColorModeValue("gray.200", "gray.900")}
+      bgColor={useColorModeValue("gray.50", "gray.900")}
       cursor={"grab"}
       w="264px"
       pointerEvents="none"
-      shadow="lg"
+      shadow="md"
       {...props}
     >
       <BlockIcon type={block.type} />

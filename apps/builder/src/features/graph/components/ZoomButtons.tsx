@@ -14,11 +14,11 @@ export const ZoomButtons = ({
     pos="fixed"
     top={`calc(${headerHeight}px + 70px)`}
     right="40px"
-    bgColor={useColorModeValue("white", "gray.900")}
+    bgColor={useColorModeValue("white", "gray.950")}
     rounded="md"
     zIndex={1}
     spacing="0"
-    shadow="lg"
+    shadow="md"
   >
     <IconButton
       icon={<PlusIcon />}

@@ -3,9 +3,11 @@ import { defaultTypebotLinkOptions } from "@typebot.io/blocks-logic/typebotLink/
 import type { TypebotLinkBlock } from "@typebot.io/blocks-logic/typebotLink/schema";
 import { byId, isNotDefined } from "@typebot.io/lib/utils";
 import prisma from "@typebot.io/prisma";
+import { isTypebotVersionAtLeastV6 } from "@typebot.io/schemas/helpers/isTypebotVersionAtLeastV6";
 import type { Edge } from "@typebot.io/typebot/schemas/edge";
 import type { Variable } from "@typebot.io/variables/schemas";
 import { addEdgeToTypebot, createPortalEdge } from "../../../addEdgeToTypebot";
+import { isTypebotInSessionAtLeastV6 } from "../../../helpers/isTypebotInSessionAtLeastV6";
 import { createResultIfNotExist } from "../../../queries/createResultIfNotExist";
 import type { ChatLog } from "../../../schemas/api";
 import {
@@ -131,10 +133,11 @@ const addLinkedTypebotToState = async (
       }
     : currentTypebotInQueue;
 
-  const shouldMergeResults =
-    currentTypebotInQueue.typebot.version === "6"
-      ? (block.options?.mergeResults ?? defaultTypebotLinkOptions.mergeResults)
-      : block.options?.mergeResults !== false;
+  const shouldMergeResults = isTypebotVersionAtLeastV6(
+    currentTypebotInQueue.typebot.version,
+  )
+    ? (block.options?.mergeResults ?? defaultTypebotLinkOptions.mergeResults)
+    : block.options?.mergeResults !== false;
 
   if (
     currentTypebotInQueue.resultId &&
@@ -264,7 +267,7 @@ const getNextGroupId = (
   typebot: TypebotInSession,
 ) => {
   if (groupId) return groupId;
-  if (typebot.version === "6") {
+  if (isTypebotInSessionAtLeastV6(typebot)) {
     const startEdge = typebot.edges.find(
       byId(typebot.events[0].outgoingEdgeId),
     );

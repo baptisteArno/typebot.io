@@ -1,6 +1,6 @@
 import { blockHasItems, isInputBlock } from "@typebot.io/blocks-core/helpers";
 import type { Block } from "@typebot.io/blocks-core/schemas/schema";
-import { getBlockById } from "@typebot.io/groups/helpers";
+import { getBlockById } from "@typebot.io/groups/helpers/getBlockById";
 import { byId, isDefined } from "@typebot.io/lib/utils";
 import type { SessionState } from "./schemas/chatSession";
 

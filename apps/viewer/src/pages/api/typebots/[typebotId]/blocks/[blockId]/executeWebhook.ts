@@ -10,7 +10,7 @@ import { parseSampleResult } from "@typebot.io/bot-engine/blocks/integrations/ht
 import { fetchLinkedChildTypebots } from "@typebot.io/bot-engine/blocks/logic/typebotLink/fetchLinkedChildTypebots";
 import { fetchLinkedParentTypebots } from "@typebot.io/bot-engine/blocks/logic/typebotLink/fetchLinkedParentTypebots";
 import { saveLog } from "@typebot.io/bot-engine/logs/saveLog";
-import { getBlockById } from "@typebot.io/groups/helpers";
+import { getBlockById } from "@typebot.io/groups/helpers/getBlockById";
 import {
   initMiddleware,
   methodNotAllowed,

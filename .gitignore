@@ -49,3 +49,9 @@ snapshots
 .env.docker
 
 .partykit
+
+.vinxi
+.output
+.vercel
+
+.content-collections

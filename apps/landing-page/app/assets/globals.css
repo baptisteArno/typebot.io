@@ -1,0 +1,152 @@
+@import "@typebot.io/ui/colors/css";
+@import "font.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --sh-class: #5395e5;
+    --sh-identifier: white;
+    --sh-sign: #8996a3;
+    --sh-property: #5395e5;
+    --sh-entity: #249a97;
+    --sh-jsxliterals: #6266d1;
+    --sh-string: #00a99a;
+    --sh-keyword: #f47067;
+    --sh-comment: #a19595;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-gray-6;
+  }
+
+  body {
+    @apply font-body antialiased text-gray-12 bg-gray-2;
+  }
+
+  section {
+    @apply bg-gray-2 text-gray-12;
+  }
+
+  .dark {
+    @apply bg-gray-1 text-gray-12;
+  }
+
+  h1 {
+    @apply text-4xl md:text-6xl;
+  }
+
+  h2 {
+    @apply text-4xl;
+  }
+
+  h3 {
+    @apply text-2xl;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-heading font-medium;
+  }
+
+  /* To debug overflow */
+  /* * {
+    outline: 1px solid #f00 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  } */
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .hero-text-blur-in {
+    @apply motion-preset-blur-up-md motion-duration-1000;
+  }
+
+  .h-all-features-sticky-container {
+    height: calc(
+      (100vh - var(--padding-top)) +
+      (var(--total-cards) - 1) *
+      (
+        100vh -
+        var(--padding-top) -
+        var(--header-height) -
+        var(--gap-header-and-card)
+      ) -
+      var(--gap-header-and-card)
+    );
+  }
+
+  @keyframes fill-carousel-dot {
+    to {
+      background-color: rgb(var(--gray-10));
+    }
+  }
+
+  @media (min-width: 768px) {
+    .md-scroll-magic-container-fade-in {
+      animation: linear fade-in forwards;
+      animation-timeline: view();
+      animation-range: contain 0% contain 0%;
+    }
+
+    .md-scroll-use-cases-fade-in {
+      animation: linear fade-in forwards;
+      animation-timeline: view();
+      animation-range: cover 20% contain 0%;
+    }
+  }
+
+  .why-cta::before {
+    content: "";
+    position: absolute;
+    top: 90%;
+    left: 0;
+    width: 100%;
+    height: 200%;
+    background: conic-gradient(
+      from 179.91deg at 50% 50%,
+      #ff5924 -72.48deg,
+      #ffd79a 44.64deg,
+      #8f00ff 145.15deg,
+      #ff5924 287.52deg,
+      #ffd79a 404.64deg
+    );
+    opacity: 0.4;
+    mix-blend-mode: plus-lighter;
+    filter: blur(295px);
+  }
+
+  details > summary {
+    list-style: none;
+  }
+
+  details > summary::-webkit-details-marker {
+    display: none;
+  }
+
+  typebot-bubble::part(button) {
+    background-image: linear-gradient(to bottom, #393939, #121212);
+    border: 1px solid rgb(58 58 58);
+  }
+
+  typebot-bubble::part(bot) {
+    border: 1px solid rgb(58 58 58);
+  }
+}
