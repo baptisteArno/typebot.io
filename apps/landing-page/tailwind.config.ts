@@ -29,7 +29,7 @@ export default {
         body: ["Untitled Sans", "sans-serif"],
       },
       animation: {
-        marquee: "marquee 20s linear infinite",
+        marquee: "marquee 15s linear infinite",
         // Scroll animations
         "slight-random-rotate": "linear slight-random-rotate forwards",
         "fill-carousel-dot": "linear fill-carousel-dot forwards",
@@ -41,7 +41,7 @@ export default {
       keyframes: {
         marquee: {
           "0%": { transform: "translateX(0)" },
-          "100%": { transform: "translateX(calc(-100% - 2rem))" },
+          "100%": { transform: "translateX(calc(-100% - var(--marquee-gap)))" },
         },
         "slight-random-rotate": {
           "0%": { transform: "rotate(0deg)" },
