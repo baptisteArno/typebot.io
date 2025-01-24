@@ -45,6 +45,7 @@ function RouteComponent() {
   const closeTiersDialog = () => {
     navigate({
       search: { isTiersModalOpened: undefined },
+      resetScroll: false,
     });
   };
 

@@ -56,6 +56,7 @@ function RootComponent() {
   const closeHeader = () => {
     navigate({
       search: { isHeaderOpened: undefined },
+      resetScroll: false,
     });
   };
 
