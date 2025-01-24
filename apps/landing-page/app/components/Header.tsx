@@ -246,12 +246,12 @@ const Desktop = React.forwardRef<
   }, []);
 
   useEffect(() => {
-    if (isIntersecting) return;
     const separator = document.getElementById("magic-animation-separator");
     if (!separator) return;
 
     const observer = new IntersectionObserver(
       ([entry]) => {
+        if (entry.boundingClientRect.bottom < 0) return;
         setIsIntersecting(entry.isIntersecting);
       },
       { threshold: 0.1 },
@@ -259,7 +259,7 @@ const Desktop = React.forwardRef<
 
     observer.observe(separator);
     return () => observer.disconnect();
-  }, [isIntersecting]);
+  }, []);
 
   return (
     <div
