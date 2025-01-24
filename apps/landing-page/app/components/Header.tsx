@@ -1,4 +1,4 @@
-import { Button, buttonVariants } from "@/components/Button";
+import { buttonVariants } from "@/components/Button";
 import { IconButton } from "@/components/IconButton";
 import { TypebotLogoFull } from "@/components/TypebotLogo";
 import {
@@ -64,26 +64,15 @@ export const Header = ({ isOpened = false, onOpen, onClose }: HeaderProps) => {
     if (!windowWidth || !windowHeight) return;
     const isMobile = windowWidth < breakpoints.md;
     const options = {
-      rootMargin: `0px 0px ${isMobile ? -windowHeight - 100 : -100}px 0px`,
+      rootMargin: `0px 0px ${isMobile ? -(windowHeight - 50) : -70}px 0px`,
       threshold: 0,
     };
 
     const initializeObserver = () => {
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            if (entry.boundingClientRect.bottom < 50) return;
-            entry.target.classList.contains("dark")
-              ? setAppearance("dark")
-              : setAppearance("light");
-          } else {
-            if (entry.boundingClientRect.bottom < 0 || window.scrollY === 0)
-              return;
-            entry.target.classList.contains("dark")
-              ? setAppearance("light")
-              : setAppearance("dark");
-          }
-        });
+      const observer = new IntersectionObserver(([entry]) => {
+        entry.target.classList.contains("dark")
+          ? setAppearance(entry.isIntersecting ? "dark" : "light")
+          : setAppearance(entry.isIntersecting ? "light" : "dark");
       }, options);
 
       const elementsToObserve = [
