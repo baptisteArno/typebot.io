@@ -1,3 +1,4 @@
+import { env } from "@typebot.io/env";
 import { stringifyError } from "@typebot.io/lib/stringifyError";
 import { isDefined } from "@typebot.io/lib/utils";
 import { Reference } from "isolated-vm";
@@ -93,8 +94,10 @@ export const executeFunction = async ({
     };
   } catch (e) {
     context.release();
-    console.log("Error while executing script");
-    console.error(e);
+    if (env.NODE_ENV === "development") {
+      console.log("Error while executing the function");
+      console.error(e);
+    }
 
     const error = stringifyError(e);
 
