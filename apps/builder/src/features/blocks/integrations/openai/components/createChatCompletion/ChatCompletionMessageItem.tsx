@@ -82,6 +82,7 @@ const ChatCompletionMessageItemContent = ({
   item: NonNullable<ChatCompletionOpenAIOptions["messages"]>[number];
 }) => {
   switch (item.role) {
+    case undefined:
     case "assistant":
     case "user":
     case "system":

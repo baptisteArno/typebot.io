@@ -95,7 +95,7 @@ export const SmtpUpdateModalContent = ({ credentialsId, onUpdate }: Props) => {
         <ModalFooter>
           <Button
             type="submit"
-            colorScheme="blue"
+            colorScheme="orange"
             isDisabled={
               isNotDefined(smtpConfig?.from.email) ||
               isNotDefined(smtpConfig?.host) ||

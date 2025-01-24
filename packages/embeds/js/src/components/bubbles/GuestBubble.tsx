@@ -6,6 +6,12 @@ import type {
 } from "@/types";
 import { isMobile } from "@/utils/isMobileSignal";
 import { isNotEmpty } from "@typebot.io/lib/utils";
+import {
+  defaultGuestAvatarIsEnabled,
+  defaultHostAvatarIsEnabled,
+} from "@typebot.io/theme/constants";
+import { isChatContainerLight } from "@typebot.io/theme/helpers/isChatContainerLight";
+import type { Theme } from "@typebot.io/theme/schemas";
 import clsx from "clsx";
 import { For, Match, Show, Switch, createSignal } from "solid-js";
 import { Modal } from "../Modal";
@@ -13,9 +19,7 @@ import { Avatar } from "../avatars/Avatar";
 
 type Props = {
   answer?: InputSubmitContent;
-  showAvatar: boolean;
-  avatarSrc?: string;
-  hasHostAvatar: boolean;
+  theme: Theme;
 };
 
 export const GuestBubble = (props: Props) => {
@@ -23,11 +27,13 @@ export const GuestBubble = (props: Props) => {
     <div
       class="flex justify-end items-end animate-fade-in gap-2 guest-container"
       style={{
-        "margin-left": props.hasHostAvatar
-          ? isMobile()
-            ? "28px"
-            : "50px"
-          : undefined,
+        "margin-left":
+          (props.theme.chat?.hostAvatar?.isEnabled ??
+          defaultHostAvatarIsEnabled)
+            ? isMobile()
+              ? "28px"
+              : "50px"
+            : undefined,
       }}
     >
       <Switch>
@@ -41,8 +47,19 @@ export const GuestBubble = (props: Props) => {
         </Match>
       </Switch>
 
-      <Show when={props.showAvatar}>
-        <Avatar initialAvatarSrc={props.avatarSrc} />
+      <Show
+        when={
+          props.theme.chat?.guestAvatar?.isEnabled ??
+          defaultGuestAvatarIsEnabled
+        }
+      >
+        <Avatar
+          src={props.theme.chat?.guestAvatar?.url}
+          isChatContainerLight={isChatContainerLight({
+            chatContainer: props.theme.chat?.container,
+            generalBackground: props.theme.general?.background,
+          })}
+        />
       </Show>
     </div>
   );

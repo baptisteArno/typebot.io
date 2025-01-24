@@ -6,7 +6,7 @@ import type { FileInputBlock } from "@typebot.io/blocks-inputs/file/schema";
 import { LogicBlockType } from "@typebot.io/blocks-logic/constants";
 import type { TypebotLinkBlock } from "@typebot.io/blocks-logic/typebotLink/schema";
 import { env } from "@typebot.io/env";
-import { parseGroups } from "@typebot.io/groups/schemas";
+import { parseGroups } from "@typebot.io/groups/helpers/parseGroups";
 import { generatePresignedUrl } from "@typebot.io/lib/s3/deprecated/generatePresignedUrl";
 import { byId, isDefined } from "@typebot.io/lib/utils";
 import prisma from "@typebot.io/prisma";

@@ -1,11 +1,13 @@
 import { isMobile } from "@/utils/isMobileSignal";
+import { isChatContainerLight } from "@typebot.io/theme/helpers/isChatContainerLight";
+import type { Theme } from "@typebot.io/theme/schemas";
 import { createSignal, onCleanup, onMount } from "solid-js";
 import { Avatar } from "../avatars/Avatar";
 
 type Props = {
-  hostAvatarSrc?: string;
   hideAvatar?: boolean;
   isTransitionDisabled?: boolean;
+  theme: Theme;
 };
 
 export const AvatarSideContainer = (props: Props) => {
@@ -49,7 +51,13 @@ export const AvatarSideContainer = (props: Props) => {
             : "top 350ms ease-out, opacity 250ms ease-out",
         }}
       >
-        <Avatar initialAvatarSrc={props.hostAvatarSrc} />
+        <Avatar
+          src={props.theme.chat?.hostAvatar?.url}
+          isChatContainerLight={isChatContainerLight({
+            chatContainer: props.theme.chat?.container,
+            generalBackground: props.theme.general?.background,
+          })}
+        />
       </div>
     </div>
   );

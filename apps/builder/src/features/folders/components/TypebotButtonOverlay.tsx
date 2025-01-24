@@ -28,7 +28,7 @@ export const TypebotCardOverlay = ({ typebot, ...props }: Props) => {
       borderWidth={1}
       rounded="md"
       bgColor={useColorModeValue("white", "gray.700")}
-      shadow="lg"
+      shadow="md"
       opacity={0.7}
       {...props}
     >

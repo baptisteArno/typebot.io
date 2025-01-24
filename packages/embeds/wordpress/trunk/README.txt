@@ -19,7 +19,7 @@ Collect 4x more responses with conversational apps using Typebot.
 
 This plugin relies on Typebot which is a tool that allows you to create conversational forms and directly integrate them on your Wordpress site.
 💁‍♂️ More information about Typebot: https://www.typebot.io/
-👨🏼‍💻 How Typebot handles collected data: https://www.typebot.io/privacy-policies
+👨🏼‍💻 How Typebot handles collected data: https://www.typebot.io/privacy-policy
 
 == Installation ==
 1. Add the plugin folder to the /wp-content/plugins/ directory

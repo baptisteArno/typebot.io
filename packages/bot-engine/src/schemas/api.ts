@@ -17,7 +17,6 @@ import { pictureChoiceBlockSchemas } from "@typebot.io/blocks-inputs/pictureChoi
 import { ratingInputBlockSchema } from "@typebot.io/blocks-inputs/rating/schema";
 import { textInputSchema } from "@typebot.io/blocks-inputs/text/schema";
 import { urlInputSchema } from "@typebot.io/blocks-inputs/url/schema";
-import type { Prisma } from "@typebot.io/prisma/types";
 import { logSchema } from "@typebot.io/results/schemas/results";
 import { settingsSchema } from "@typebot.io/settings/schemas";
 import { themeSchema } from "@typebot.io/theme/schemas";
@@ -201,7 +200,7 @@ const startTypebotV6Schema = typebotV6Schema.pick(startTypebotPick).openapi({
   title: "Typebot V6",
   ref: "typebotV6",
 });
-type StartTypebotV6 = z.infer<typeof startTypebotV6Schema>;
+export type StartTypebotV6 = z.infer<typeof startTypebotV6Schema>;
 
 export const startTypebotSchema = z.preprocess(
   preprocessTypebot,
@@ -402,6 +401,10 @@ export const startChatResponseSchema = z
     resultId: z.string().optional(),
     typebot: z.object({
       id: z.string(),
+      version: z.union([
+        typebotV5Schema.shape.version,
+        typebotV6Schema.shape.version,
+      ]),
       theme: themeSchema,
       settings: settingsSchema,
       publishedAt: z.coerce.date().optional(),

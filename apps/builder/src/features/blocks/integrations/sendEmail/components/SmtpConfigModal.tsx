@@ -118,7 +118,7 @@ export const SmtpCreateModalContent = ({
         <ModalFooter>
           <Button
             type="submit"
-            colorScheme="blue"
+            colorScheme="orange"
             isDisabled={
               isNotDefined(smtpConfig.from.email) ||
               isNotDefined(smtpConfig.host) ||

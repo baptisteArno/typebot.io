@@ -3,7 +3,7 @@ import { canReadTypebots } from "@/helpers/databaseRules";
 import { authenticatedProcedure } from "@/helpers/server/trpc";
 import { TRPCError } from "@trpc/server";
 import { parseSampleResult } from "@typebot.io/bot-engine/blocks/integrations/httpRequest/parseSampleResult";
-import { getBlockById } from "@typebot.io/groups/helpers";
+import { getBlockById } from "@typebot.io/groups/helpers/getBlockById";
 import prisma from "@typebot.io/prisma";
 import type { Typebot } from "@typebot.io/typebot/schemas/typebot";
 import { z } from "@typebot.io/zod";

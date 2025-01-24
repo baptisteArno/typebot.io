@@ -41,9 +41,9 @@ export const getPublishedTypebot = authenticatedProcedure
     z.object({
       publishedTypebot: publicTypebotSchema.nullable(),
       version: z
-        .enum([
-          ...publicTypebotSchemaV5.shape.version._def.values,
-          publicTypebotSchemaV6.shape.version._def.value,
+        .union([
+          publicTypebotSchemaV5.shape.version,
+          publicTypebotSchemaV6.shape.version,
         ])
         .optional()
         .describe(

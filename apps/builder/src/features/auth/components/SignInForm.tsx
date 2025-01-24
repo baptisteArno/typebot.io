@@ -187,7 +187,7 @@ export const SignInForm = ({
             <HStack>
               <AlertIcon />
               <Stack spacing={1}>
-                <Text fontWeight="semibold">{t("auth.magicLink.title")}</Text>
+                <Text fontWeight="medium">{t("auth.magicLink.title")}</Text>
                 <Text fontSize="sm">{t("auth.magicLink.description")}</Text>
               </Stack>
             </HStack>

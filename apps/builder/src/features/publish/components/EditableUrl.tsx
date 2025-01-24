@@ -52,7 +52,7 @@ export const EditableUrl = ({
             rounded="md"
             cursor="text"
             display="flex"
-            fontWeight="semibold"
+            fontWeight="medium"
           />
         </Tooltip>
         <EditableInput px={2} />

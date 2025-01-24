@@ -5,16 +5,18 @@ import { promptAndSetEnvironment } from "./utils";
 const updateWorkspace = async () => {
   await promptAndSetEnvironment("production");
 
-  const workspaceId = (await p.text({
+  const workspaceId = await p.text({
     message: "Workspace ID?",
-  })) as string;
+  });
+
+  if (!workspaceId || p.isCancel(workspaceId)) process.exit();
 
   const workspace = await prisma.workspace.update({
     where: {
       id: workspaceId,
     },
     data: {
-      plan: "PRO",
+      isVerified: true,
     },
   });
 

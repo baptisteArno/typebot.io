@@ -20,42 +20,27 @@ export const TextInputNodeContent = ({ options }: Props) => {
     typebot &&
     options?.audioClip?.isEnabled &&
     options?.audioClip.saveVariableId;
-  if (options?.variableId)
-    return (
-      <Stack w="calc(100% - 25px)">
-        <WithVariableContent
-          variableId={options?.variableId}
-          h={options.isLong ? "100px" : "auto"}
-        />
-        {attachmentVariableId && (
-          <SetVariableLabel
-            variables={typebot.variables}
-            variableId={attachmentVariableId}
-          />
-        )}
-        {audioClipVariableId && (
-          <SetVariableLabel
-            variables={typebot.variables}
-            variableId={audioClipVariableId}
-          />
-        )}
-      </Stack>
-    );
   return (
     <Stack>
       <Text color={"gray.500"} h={options?.isLong ? "100px" : "auto"}>
         {options?.labels?.placeholder ??
           defaultTextInputOptions.labels.placeholder}
       </Text>
+      {options?.variableId && (
+        <SetVariableLabel
+          variables={typebot?.variables}
+          variableId={options.variableId}
+        />
+      )}
       {attachmentVariableId && (
         <SetVariableLabel
-          variables={typebot.variables}
+          variables={typebot?.variables}
           variableId={attachmentVariableId}
         />
       )}
       {audioClipVariableId && (
         <SetVariableLabel
-          variables={typebot.variables}
+          variables={typebot?.variables}
           variableId={audioClipVariableId}
         />
       )}

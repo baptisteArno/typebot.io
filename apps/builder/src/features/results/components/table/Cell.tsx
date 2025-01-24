@@ -48,7 +48,7 @@ const Cell = ({
         <Fade unmountOnExit in={isExpandButtonVisible && cellIndex === 1}>
           <Button
             leftIcon={<ExpandIcon />}
-            shadow="lg"
+            shadow="md"
             size="xs"
             onClick={onExpandButtonClick}
           >

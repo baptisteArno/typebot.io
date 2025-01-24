@@ -236,7 +236,7 @@ export const VariableSearchInput = ({
               overflowY="auto"
               role="menu"
               w="inherit"
-              shadow="lg"
+              shadow="md"
               onMouseDown={(e) => e.stopPropagation()}
               onPointerDown={(e) => e.stopPropagation()}
               minW="250px"

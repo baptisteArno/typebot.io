@@ -1,6 +1,5 @@
 import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
 import { isDefined } from "@typebot.io/lib/utils";
-import type { Prisma } from "@typebot.io/prisma/types";
 import type { VariableWithValue } from "@typebot.io/variables/schemas";
 import type { Answer } from "./schemas/answers";
 import type {
@@ -12,7 +11,7 @@ import type {
 type CellParser = (
   content: VariableWithValue["value"],
   blockType?: InputBlockType,
-) => { element?: React.JSX.Element; plainText: string };
+) => { element?: JSX.Element; plainText: string };
 
 const defaultCellParser: CellParser = (content, blockType) => {
   if (!content) return { plainText: "" };

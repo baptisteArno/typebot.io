@@ -19,7 +19,7 @@
     "@udecode/plate-paragraph": "30.5.3",
     "escape-html": "1.0.3",
     "remark-parse": "11.0.0",
-    "unified": "11.0.4"
+    "unified": "11.0.5"
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*",

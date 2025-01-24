@@ -67,9 +67,9 @@ export const BlockNode = ({
   indices: { blockIndex: number; groupIndex: number };
   onMouseDown?: (blockNodePosition: NodePosition, block: BlockV6) => void;
 }) => {
-  const bg = useColorModeValue("gray.50", "gray.850");
-  const previewingBorderColor = useColorModeValue("blue.400", "blue.300");
-  const borderColor = useColorModeValue("gray.200", "gray.800");
+  const bg = useColorModeValue("gray.50", "gray.900");
+  const previewingBorderColor = useColorModeValue("orange.400", "orange.300");
+  const borderColor = useColorModeValue("gray.200", "gray.900");
   const { pathname, query } = useRouter();
   const {
     setConnectingIds,

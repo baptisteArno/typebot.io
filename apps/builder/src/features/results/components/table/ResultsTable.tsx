@@ -2,7 +2,6 @@ import { AlignLeftTextIcon } from "@/components/icons";
 import { TimeFilterDropdown } from "@/features/analytics/components/TimeFilterDropdown";
 import type { timeFilterValues } from "@/features/analytics/constants";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
-import { colors } from "@/lib/theme";
 import {
   Box,
   Button,
@@ -25,6 +24,7 @@ import type {
   TableData,
 } from "@typebot.io/results/schemas/results";
 import type { ResultsTablePreferences } from "@typebot.io/typebot/schemas/typebot";
+import { colors } from "@typebot.io/ui/chakraTheme";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { HeaderIcon } from "../HeaderIcon";
 import { HeaderRow } from "./HeaderRow";
@@ -244,18 +244,12 @@ export const ResultsTable = ({
       <Box
         ref={tableWrapper}
         overflow="auto"
-        rounded="md"
         data-testid="results-table"
-        backgroundImage={`linear-gradient(to right, ${background}, ${background}), linear-gradient(to right, ${background}, ${background}),linear-gradient(to right, rgba(0, 0, 0, 0.1), rgba(255, 255, 255, 0)),linear-gradient(to left, rgba(0, 0, 0, 0.1), rgba(255, 255, 255, 0));`}
-        backgroundPosition="left center, right center, left center, right center"
-        backgroundRepeat="no-repeat"
-        backgroundSize="30px 100%, 30px 100%, 15px 100%, 15px 100%"
-        backgroundAttachment="local, local, scroll, scroll"
         onScroll={(e) =>
           setIsTableScrolled((e.target as HTMLElement).scrollTop > 0)
         }
       >
-        <chakra.table rounded="md">
+        <chakra.table background={background}>
           <thead>
             {instance.getHeaderGroups().map((headerGroup) => (
               <HeaderRow

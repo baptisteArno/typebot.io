@@ -89,9 +89,9 @@ export const VariablesDrawer = ({ onClose }: Props) => {
       right="0"
       top={`0`}
       h={`100%`}
-      bgColor={useColorModeValue("white", "gray.900")}
+      bgColor={useColorModeValue("white", "gray.950")}
       borderLeftWidth={"1px"}
-      shadow="lg"
+      shadow="md"
       borderLeftRadius={"lg"}
       onMouseOver={() => setIsResizeHandleVisible(true)}
       onMouseLeave={() => setIsResizeHandleVisible(false)}

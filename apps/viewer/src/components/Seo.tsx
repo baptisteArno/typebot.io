@@ -32,7 +32,7 @@ export const SEO = ({
       {isMatchingViewerUrl ? <meta name="robots" content="noindex" /> : null}
       <link
         rel="icon"
-        type="image/png"
+        type={favIconUrl ? "image/png" : "images/svg+xml"}
         href={
           favIconUrl ??
           defaultSettings.metadata.favIconUrl(env.NEXT_PUBLIC_VIEWER_URL[0])

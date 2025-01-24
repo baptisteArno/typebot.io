@@ -29,7 +29,7 @@ export const PopupMenuButton = (props: Props) => {
     >
       <PopupIllustration />
       <Stack>
-        <Text fontSize="lg" fontWeight="semibold">
+        <Text fontSize="lg" fontWeight="medium">
           Popup
         </Text>
         <Text textColor="gray.500">

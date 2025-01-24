@@ -1,7 +1,6 @@
 import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
 import { useOutsideClick } from "@/hooks/useOutsideClick";
 import { editorStyle } from "@/lib/plate";
-import { colors } from "@/lib/theme";
 import {
   Flex,
   Popover,
@@ -12,6 +11,7 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
+import { colors } from "@typebot.io/ui/chakraTheme";
 import type { Variable } from "@typebot.io/variables/schemas";
 import { focusEditor, insertText, selectEditor } from "@udecode/plate-common";
 import { PlateContent, useEditorRef } from "@udecode/plate-core";
@@ -78,7 +78,7 @@ export const TextEditorEditorContent = ({ closeEditor }: Props) => {
       flex="1"
       ref={textEditorRef}
       borderWidth="2px"
-      borderColor="blue.400"
+      borderColor={useColorModeValue("orange.400", "orange.300")}
       rounded="md"
       pos="relative"
       spacing={0}
@@ -91,7 +91,7 @@ export const TextEditorEditorContent = ({ closeEditor }: Props) => {
         },
         '[class^="PlateFloatingLink___Styled"]': {
           "--tw-bg-opacity": useColorModeValue("1", ".1") + "!important",
-          backgroundColor: useColorModeValue("white", "gray.800"),
+          backgroundColor: useColorModeValue("white", "gray.900"),
           borderRadius: "md",
           transitionProperty: "background-color",
           transitionDuration: "normal",
@@ -110,7 +110,7 @@ export const TextEditorEditorContent = ({ closeEditor }: Props) => {
       <PlateContent
         ref={plateContentRef}
         onKeyDown={handleKeyDown}
-        style={editorStyle(useColorModeValue("white", colors.gray[850]))}
+        style={editorStyle(useColorModeValue("white", colors.gray[900]))}
         autoFocus
         onClick={() => {
           setIsVariableDropdownOpen(false);

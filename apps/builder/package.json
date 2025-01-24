@@ -10,7 +10,6 @@
     "test:ui": "dotenv -e ./.env -e ../../.env -- playwright test --ui"
   },
   "dependencies": {
-    "partysocket": "1.0.2",
     "@braintree/sanitize-url": "7.0.1",
     "@chakra-ui/anatomy": "2.2.2",
     "@chakra-ui/react": "2.8.2",
@@ -46,6 +45,7 @@
     "@typebot.io/trpc-openapi": "workspace:*",
     "@typebot.io/typebot": "workspace:*",
     "@typebot.io/whatsapp": "workspace:*",
+    "@typebot.io/ui": "workspace:*",
     "@udecode/plate-basic-marks": "30.5.3",
     "@udecode/plate-common": "30.4.5",
     "@udecode/plate-core": "30.4.5",
@@ -80,6 +80,7 @@
     "nuqs": "^1.19.3",
     "openai": "4.52.7",
     "papaparse": "5.4.1",
+    "partysocket": "1.0.2",
     "pexels": "^1.4.0",
     "prettier": "2.8.8",
     "qs": "6.11.2",
@@ -121,11 +122,11 @@
     "@types/papaparse": "5.3.7",
     "@types/prettier": "2.7.3",
     "@types/qs": "6.9.7",
-    "@types/react": "18.2.15",
+    "@types/react": "18.2.0",
     "@types/tinycolor2": "1.4.3",
     "dotenv": "16.4.5",
-    "dotenv-cli": "7.4.1",
-    "next-runtime-env": "1.6.2",
-    "superjson": "1.12.4"
+    "dotenv-cli": "7.4.4",
+    "superjson": "1.12.4",
+    "next-runtime-env": "1.6.2"
   }
 }

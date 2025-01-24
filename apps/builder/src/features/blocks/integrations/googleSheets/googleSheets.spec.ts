@@ -64,7 +64,10 @@ test.describe
       await page.click("text=Select a column");
       await page.getByRole("menuitem", { name: "Email" }).click();
       await page.getByRole("button", { name: "Select an operator" }).click();
-      await page.getByRole("menuitem", { name: "Equal to" }).click();
+      await page
+        .getByRole("menuitem", { name: "Equal to", exact: true })
+        .last()
+        .click();
       await page.click('[aria-label="Insert a variable"]');
       await page.getByRole("menuitem", { name: "Email" }).last().click();
 
@@ -109,7 +112,9 @@ test.describe
       await page.click("text=Select a column");
       await page.getByRole("menuitem", { name: "Email" }).click();
       await page.getByRole("button", { name: "Select an operator" }).click();
-      await page.getByRole("menuitem", { name: "Equal to" }).click();
+      await page
+        .getByRole("menuitem", { name: "Equal to", exact: true })
+        .click();
       await page.click('[aria-label="Insert a variable"]');
       await page.getByRole("menuitem", { name: "Email" }).last().click();
 
@@ -121,7 +126,9 @@ test.describe
       await page.click("text=Select a column");
       await page.getByRole("menuitem", { name: "Email" }).click();
       await page.getByRole("button", { name: "Select an operator" }).click();
-      await page.getByRole("menuitem", { name: "Equal to" }).click();
+      await page
+        .getByRole("menuitem", { name: "Equal to", exact: true })
+        .click();
       await page
         .getByPlaceholder("Type a value...")
         .nth(-1)
