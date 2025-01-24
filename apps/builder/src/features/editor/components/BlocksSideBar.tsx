@@ -25,7 +25,7 @@ import { isDefined } from "@typebot.io/lib/utils";
 import type React from "react";
 import { useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
-import { headerHeight } from "../constants";
+import { LOCAL_STORAGE_KEY, headerHeight } from "../constants";
 import { BlockCard } from "./BlockCard";
 import { BlockCardOverlay } from "./BlockCardOverlay";
 import {
@@ -49,7 +49,11 @@ export const BlocksSideBar = () => {
     x: 0,
     y: 0,
   });
-  const [isLocked, setIsLocked] = useState(true);
+  const [isLocked, setIsLocked] = useState(
+    localStorage.getItem(LOCAL_STORAGE_KEY.LEFT_SIDEBAR_LOCKED)
+      ? localStorage.getItem(LOCAL_STORAGE_KEY.LEFT_SIDEBAR_LOCKED) === "true"
+      : false,
+  );
   const [isExtended, setIsExtended] = useState(true);
   const [searchInput, setSearchInput] = useState("");
 
@@ -86,7 +90,17 @@ export const BlocksSideBar = () => {
   };
   useEventListener("mouseup", handleMouseUp);
 
-  const handleLockClick = () => setIsLocked(!isLocked);
+  const handleLockClick = () => {
+    try {
+      localStorage.setItem(
+        LOCAL_STORAGE_KEY.LEFT_SIDEBAR_LOCKED,
+        String(!isLocked),
+      );
+    } catch (error) {
+      console.error(error);
+    }
+    setIsLocked(!isLocked);
+  };
 
   const handleDockBarEnter = () => {
     closeSideBar.flush();
