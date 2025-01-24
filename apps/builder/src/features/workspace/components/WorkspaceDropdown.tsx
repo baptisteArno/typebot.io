@@ -43,7 +43,7 @@ export const WorkspaceDropdown = ({
         <HStack>
           {currentWorkspace && (
             <>
-              <Text noOfLines={1} maxW="200px">
+              <Text isTruncated maxW="200px">
                 {currentWorkspace.name}
               </Text>
               <PlanTag plan={currentWorkspace.plan} />
