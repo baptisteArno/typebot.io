@@ -51,7 +51,7 @@ function RouteComponent() {
 
   return (
     <ContentPageWrapper>
-      <div className="flex flex-col items-center w-full px-4 gap-24">
+      <div className="flex flex-col items-center w-full gap-24">
         <div className="flex flex-col max-w-7xl w-full gap-12 md:gap-20">
           <PricingHeading />
           <div className="flex flex-col gap-8 items-center w-full">
