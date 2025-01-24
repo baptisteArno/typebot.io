@@ -20,7 +20,11 @@ import type {
   EdgeWithTotalUsers,
   TotalAnswers,
 } from "@typebot.io/schemas/features/analytics";
-import type { Edge } from "@typebot.io/typebot/schemas/edge";
+import type {
+  BlockSource,
+  Edge,
+  Target,
+} from "@typebot.io/typebot/schemas/edge";
 import React, { useMemo } from "react";
 import type { timeFilterValues } from "../constants";
 import { StatsCards } from "./StatsCards";
@@ -70,6 +74,8 @@ export const AnalyticsGraphContainer = ({
       edgesWithTotalUsers: [],
       totalAnswers: data.totalAnswers,
       edgeVisitHistory: [],
+      depth: 0,
+      debug: true,
     });
   }, [
     data?.offDefaultPathVisitedEdges,
@@ -141,6 +147,8 @@ const populateEdgesWithVisitData = ({
   offDefaultPathVisitedEdges,
   totalAnswers,
   edgeVisitHistory,
+  depth,
+  debug = false,
 }: {
   edgeId: string;
   edges: Edge[];
@@ -150,14 +158,32 @@ const populateEdgesWithVisitData = ({
   offDefaultPathVisitedEdges: EdgeWithTotalUsers[];
   totalAnswers: TotalAnswers[];
   edgeVisitHistory: string[];
+  depth: number;
+  debug?: boolean;
 }): EdgeWithTotalUsers[] => {
   if (edgeVisitHistory.find((e) => e === edgeId)) {
+    if (debug)
+      console.log(
+        parseEdgeDebugLabel(edgeId, edges, groups),
+        "already visited, adding",
+        currentTotalUsers,
+        { depth },
+      );
     edgesWithTotalUsers = edgesWithTotalUsers.map((etw) =>
       etw.edgeId === edgeId
         ? { ...etw, total: etw.total + currentTotalUsers }
         : etw,
     );
   } else {
+    if (debug)
+      console.log(
+        parseEdgeDebugLabel(edgeId, edges, groups),
+        "never visited, pushing",
+        currentTotalUsers,
+        {
+          depth,
+        },
+      );
     edgesWithTotalUsers.push({
       edgeId,
       total: currentTotalUsers,
@@ -194,13 +220,15 @@ const populateEdgesWithVisitData = ({
             edgesWithTotalUsers,
             totalAnswers,
             edgeVisitHistory,
+            depth: depth + 1,
+            debug,
           });
         }
       }
     }
     if (block.outgoingEdgeId) {
       if (
-        isInputBlock(block) &&
+        group.blocks.some((b) => isInputBlock(b)) &&
         edgeVisitHistory.some((history) => history === block.outgoingEdgeId)
       )
         continue;
@@ -218,6 +246,8 @@ const populateEdgesWithVisitData = ({
         edgesWithTotalUsers,
         totalAnswers,
         edgeVisitHistory,
+        depth: depth + 1,
+        debug,
       });
     }
   }
@@ -239,4 +269,38 @@ const computeAnswersFromItemsEdge = ({
     )?.total;
     return acc + (totalUsersOnEdge ?? 0);
   }, 0);
+};
+
+const parseEdgeDebugLabel = (
+  edgeId: string,
+  edges: Edge[],
+  groups: GroupV6[],
+): string => {
+  const edge = edges.find((edge) => edge.id === edgeId);
+  if (!edge) throw new Error("Edge not found while debugging edge");
+
+  let label = "[";
+
+  // From
+  if ("eventId" in edge.from) label += "Start";
+  const fromBlock = groups
+    .flatMap((g) => g.blocks)
+    .find((block) => block.id === (edge.from as BlockSource).blockId);
+  if (fromBlock) label += fromBlock?.type;
+
+  // To
+  const toGroup = groups.find(
+    (group) => group.id === (edge.to as Target).groupId,
+  );
+  if (!toGroup) throw new Error("Group not found while debugging edge");
+  label += " -> " + toGroup?.title;
+  if (edge.to.blockId) {
+    const toBlock = toGroup.blocks.find(
+      (block) => block.id === (edge.to as Target).blockId,
+    );
+    if (toBlock) label += " > " + toBlock?.type;
+  }
+
+  label += "]";
+  return label;
 };
