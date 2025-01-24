@@ -243,9 +243,10 @@ export const ExternalEvent = React.memo(function ExternalEvent({
             </Text>
 
             <InputGroup flex="1">
-              <Input value={url} bg="#f4f4f5" />
+              <Input value={url} bg="#f4f4f5" data-testId="url-input" />
               <InputRightElement>
                 <Box
+                  data-testId="copy-button"
                   as="button"
                   onClick={handleCopy}
                   cursor="pointer"
@@ -288,6 +289,7 @@ export const ExternalEvent = React.memo(function ExternalEvent({
             alignItems="center"
             justifyContent="center"
             gap="8px"
+            data-testId="receive-button"
             _disabled={{
               opacity: 1,
               cursor: 'not-allowed'
@@ -304,6 +306,7 @@ export const ExternalEvent = React.memo(function ExternalEvent({
             onClick={() => setRequest("define")}
             disabled={loading}
             w="100%"
+            data-testId="define-button"
             _disabled={{
               opacity: 1,
               cursor: 'not-allowed'
@@ -405,6 +408,7 @@ export const ExternalEvent = React.memo(function ExternalEvent({
                       width="80px"
                       value={timeout}
                       onChange={onSelect}
+                      data-testId="select-timeout"
                     >
                       {Array.from({ length: 26 }, (_, index) => {
                         const i = index + 5;
