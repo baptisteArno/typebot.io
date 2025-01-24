@@ -45,7 +45,9 @@ const rehypePrettyCodeSettings = {
   transformers: [
     transformerMetaHighlight(),
     transformerMetaWordHighlight(),
-    transformerNotationDiff(),
+    transformerNotationDiff({
+      matchAlgorithm: "v3",
+    }),
   ],
   onVisitLine(node: any) {
     // Prevent lines from collapsing in `display: grid` mode, and allow empty
