@@ -125,7 +125,7 @@
     "@types/react": "18.2.0",
     "@types/tinycolor2": "1.4.3",
     "dotenv": "16.4.5",
-    "dotenv-cli": "7.4.4",
+    "dotenv-cli": "8.0.0",
     "superjson": "1.12.4",
     "next-runtime-env": "1.6.2"
   }
