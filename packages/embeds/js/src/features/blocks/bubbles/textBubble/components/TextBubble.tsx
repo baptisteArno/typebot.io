@@ -1,7 +1,7 @@
 import { TypingBubble } from "@/components/TypingBubble";
 import { isMobile } from "@/utils/isMobileSignal";
 import type { TextBubbleBlock } from "@typebot.io/blocks-bubbles/text/schema";
-import { computeTypingDuration } from "@typebot.io/bot-engine/computeTypingDuration";
+import { computeTypingDuration } from "@typebot.io/settings/computeTypingDuration";
 import type { Settings } from "@typebot.io/settings/schemas";
 import clsx from "clsx";
 import { For, createSignal, onCleanup, onMount } from "solid-js";
