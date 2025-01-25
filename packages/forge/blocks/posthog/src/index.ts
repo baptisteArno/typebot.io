@@ -9,7 +9,7 @@ import { PosthogLogo } from "./logo";
 export const posthogBlock = createBlock({
   id: "posthog",
   name: "Posthog",
-  tags: ["analytics"],
+  tags: ["analytics", "feature flags", "cdp"],
   LightLogo: PosthogLogo,
   auth,
   actions: [identify, identifyGroup, capture, getFlag],

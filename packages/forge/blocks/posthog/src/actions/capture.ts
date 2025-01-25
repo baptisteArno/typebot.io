@@ -14,16 +14,12 @@ export const capture = createAction({
   auth,
   name: "Capture",
   options: option.object({
-    type: option
-      .enum(["custom", "page view", "screen view", "survey sent"])
-      .layout({
-        label: "Event Type",
-        defaultValue: "custom",
-      }),
     name: option.string.layout({
       label: "Event Name",
-      placeholder: "Required for custom events...",
-      isRequired: false,
+      placeholder: "Enter event name...",
+      helperText:
+        "You can use a custom event name or a PostHog event name, such as: $pageview, $screen, survey sent, etc.",
+      isRequired: true,
     }),
     userId: option.string.layout({
       label: "User ID",
@@ -65,33 +61,11 @@ export const capture = createAction({
   run: {
     server: async ({
       credentials: { apiKey, host },
-      options: {
-        type,
-        name,
-        userId,
-        anonymous,
-        groupKey,
-        groupType,
-        properties,
-      },
+      options: { name, userId, anonymous, groupKey, groupType, properties },
     }) => {
-      switch (type) {
-        case "page view":
-          name = "$pageview";
-          break;
-        case "screen view":
-          name = "$screen";
-          break;
-        case "survey sent":
-          name = "survey sent";
-          break;
-      }
-
       if (
         name === undefined ||
         name.length === 0 ||
-        type === undefined ||
-        type.length === 0 ||
         !userId ||
         userId.length === 0 ||
         apiKey === undefined ||
