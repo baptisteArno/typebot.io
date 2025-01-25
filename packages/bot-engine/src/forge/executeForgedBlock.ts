@@ -1,5 +1,9 @@
 import { BubbleBlockType } from "@typebot.io/blocks-bubbles/constants";
 import type { Block } from "@typebot.io/blocks-core/schemas/schema";
+import type {
+  SessionState,
+  TypebotInSession,
+} from "@typebot.io/chat-session/schemas";
 import { decrypt } from "@typebot.io/credentials/decrypt";
 import { forgedBlocks } from "@typebot.io/forge-repository/definitions";
 import type { ForgedBlock } from "@typebot.io/forge-repository/schemas";
@@ -13,7 +17,6 @@ import {
 import type { SetVariableHistoryItem } from "@typebot.io/variables/schemas";
 import { getCredentials } from "../queries/getCredentials";
 import type { ContinueChatResponse } from "../schemas/api";
-import type { SessionState, TypebotInSession } from "../schemas/chatSession";
 import type { ExecuteIntegrationResponse } from "../types";
 import { updateVariablesInSession } from "../updateVariablesInSession";
 

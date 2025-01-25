@@ -1,6 +1,6 @@
 import { GoogleSheetsAction } from "@typebot.io/blocks-integrations/googleSheets/constants";
 import type { GoogleSheetsBlock } from "@typebot.io/blocks-integrations/googleSheets/schema";
-import type { SessionState } from "../../../schemas/chatSession";
+import type { SessionState } from "@typebot.io/chat-session/schemas";
 import type { ExecuteIntegrationResponse } from "../../../types";
 import { getRow } from "./getRow";
 import { insertRow } from "./insertRow";

@@ -1,9 +1,9 @@
+import type { SessionState } from "@typebot.io/chat-session/schemas";
 import type { Group } from "@typebot.io/groups/schemas";
 import { byId, isDefined, isNotDefined } from "@typebot.io/lib/utils";
 import type { Prisma } from "@typebot.io/prisma/types";
 import type { VariableWithValue } from "@typebot.io/variables/schemas";
 import { upsertResult } from "./queries/upsertResult";
-import type { SessionState } from "./schemas/chatSession";
 
 export type NextGroup = {
   group?: Group;

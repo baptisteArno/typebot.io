@@ -1,6 +1,11 @@
 import { createId } from "@paralleldrive/cuid2";
 import { defaultTypebotLinkOptions } from "@typebot.io/blocks-logic/typebotLink/constants";
 import type { TypebotLinkBlock } from "@typebot.io/blocks-logic/typebotLink/schema";
+import {
+  type SessionState,
+  type TypebotInSession,
+  typebotInSessionStateSchema,
+} from "@typebot.io/chat-session/schemas";
 import { byId, isNotDefined } from "@typebot.io/lib/utils";
 import prisma from "@typebot.io/prisma";
 import { isTypebotVersionAtLeastV6 } from "@typebot.io/schemas/helpers/isTypebotVersionAtLeastV6";
@@ -10,11 +15,6 @@ import { addEdgeToTypebot, createPortalEdge } from "../../../addEdgeToTypebot";
 import { isTypebotInSessionAtLeastV6 } from "../../../helpers/isTypebotInSessionAtLeastV6";
 import { createResultIfNotExist } from "../../../queries/createResultIfNotExist";
 import type { ChatLog } from "../../../schemas/api";
-import {
-  type SessionState,
-  type TypebotInSession,
-  typebotInSessionStateSchema,
-} from "../../../schemas/chatSession";
 import type { ExecuteLogicResponse } from "../../../types";
 
 export const executeTypebotLink = async (

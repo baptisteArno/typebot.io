@@ -17,18 +17,18 @@ import { pictureChoiceBlockSchemas } from "@typebot.io/blocks-inputs/pictureChoi
 import { ratingInputBlockSchema } from "@typebot.io/blocks-inputs/rating/schema";
 import { textInputSchema } from "@typebot.io/blocks-inputs/text/schema";
 import { urlInputSchema } from "@typebot.io/blocks-inputs/url/schema";
+import { sessionStateSchema } from "@typebot.io/chat-session/schemas";
 import { logSchema } from "@typebot.io/results/schemas/results";
 import { settingsSchema } from "@typebot.io/settings/schemas";
 import { themeSchema } from "@typebot.io/theme/schemas";
+import { dynamicThemeSchema } from "@typebot.io/theme/schemas";
 import { preprocessTypebot } from "@typebot.io/typebot/preprocessTypebot";
 import {
   typebotV5Schema,
   typebotV6Schema,
 } from "@typebot.io/typebot/schemas/typebot";
 import { z } from "@typebot.io/zod";
-import { sessionStateSchema } from "./chatSession";
 import { clientSideActionSchema } from "./clientSideAction";
-import { dynamicThemeSchema } from "./dynamicTheme";
 
 export const messageSchema = z.preprocess(
   (val) => (typeof val === "string" ? { type: "text", text: val } : val),

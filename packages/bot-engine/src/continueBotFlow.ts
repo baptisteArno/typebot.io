@@ -14,6 +14,7 @@ import { defaultPictureChoiceOptions } from "@typebot.io/blocks-inputs/pictureCh
 import type { InputBlock } from "@typebot.io/blocks-inputs/schema";
 import { IntegrationBlockType } from "@typebot.io/blocks-integrations/constants";
 import { LogicBlockType } from "@typebot.io/blocks-logic/constants";
+import type { SessionState } from "@typebot.io/chat-session/schemas";
 import { env } from "@typebot.io/env";
 import { forgedBlocks } from "@typebot.io/forge-repository/definitions";
 import type { ForgedBlock } from "@typebot.io/forge-repository/schemas";
@@ -46,7 +47,6 @@ import { resetGlobals } from "./globals";
 import { saveAnswer } from "./queries/saveAnswer";
 import { resetSessionState } from "./resetSessionState";
 import type { ContinueChatResponse, Message } from "./schemas/api";
-import type { SessionState } from "./schemas/chatSession";
 import { startBotFlow } from "./startBotFlow";
 import type { ParsedReply } from "./types";
 import { updateVariablesInSession } from "./updateVariablesInSession";

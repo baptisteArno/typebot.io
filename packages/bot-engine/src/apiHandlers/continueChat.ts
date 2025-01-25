@@ -1,11 +1,11 @@
 import { TRPCError } from "@trpc/server";
 import { BubbleBlockType } from "@typebot.io/blocks-bubbles/constants";
+import { getSession } from "@typebot.io/chat-session/queries/getSession";
 import { isDefined, isNotDefined } from "@typebot.io/lib/utils";
 import { computeCurrentProgress } from "../computeCurrentProgress";
 import { continueBotFlow } from "../continueBotFlow";
 import { filterPotentiallySensitiveLogs } from "../logs/filterPotentiallySensitiveLogs";
 import { parseDynamicTheme } from "../parseDynamicTheme";
-import { getSession } from "../queries/getSession";
 import { saveStateToDatabase } from "../saveStateToDatabase";
 import type { Message } from "../schemas/api";
 

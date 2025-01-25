@@ -1,6 +1,6 @@
 import type { PictureChoiceBlock } from "@typebot.io/blocks-inputs/pictureChoice/schema";
+import type { SessionState } from "@typebot.io/chat-session/schemas";
 import { isNotEmpty } from "@typebot.io/lib/utils";
-import type { SessionState } from "../../../schemas/chatSession";
 import type { ParsedReply } from "../../../types";
 import { injectVariableValuesInPictureChoiceBlock } from "./injectVariableValuesInPictureChoiceBlock";
 

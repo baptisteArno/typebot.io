@@ -1,7 +1,7 @@
 import { BubbleBlockType } from "@typebot.io/blocks-bubbles/constants";
+import { restartSession } from "@typebot.io/chat-session/queries/restartSession";
 import { computeCurrentProgress } from "../computeCurrentProgress";
 import { filterPotentiallySensitiveLogs } from "../logs/filterPotentiallySensitiveLogs";
-import { restartSession } from "../queries/restartSession";
 import { saveStateToDatabase } from "../saveStateToDatabase";
 import type { Message } from "../schemas/api";
 import { startSession } from "../startSession";

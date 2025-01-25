@@ -1,11 +1,11 @@
 import { defaultChatwootOptions } from "@typebot.io/blocks-integrations/chatwoot/constants";
 import type { ChatwootBlock } from "@typebot.io/blocks-integrations/chatwoot/schema";
+import type { SessionState } from "@typebot.io/chat-session/schemas";
 import { env } from "@typebot.io/env";
 import { isDefined } from "@typebot.io/lib/utils";
 import { extractVariablesFromText } from "@typebot.io/variables/extractVariablesFromText";
 import { parseGuessedValueType } from "@typebot.io/variables/parseGuessedValueType";
 import { parseVariables } from "@typebot.io/variables/parseVariables";
-import type { SessionState } from "../../../schemas/chatSession";
 import type { ExecuteIntegrationResponse } from "../../../types";
 
 const parseSetUserCode = (

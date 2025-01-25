@@ -3,6 +3,10 @@ import type {
   SendEmailBlock,
   SmtpCredentials,
 } from "@typebot.io/blocks-integrations/sendEmail/schema";
+import type {
+  SessionState,
+  TypebotInSession,
+} from "@typebot.io/chat-session/schemas";
 import { decrypt } from "@typebot.io/credentials/decrypt";
 import { render } from "@typebot.io/emails";
 import { DefaultBotNotificationEmail } from "@typebot.io/emails/emails/DefaultBotNotificationEmail";
@@ -26,10 +30,6 @@ import type Mail from "nodemailer/lib/mailer/index";
 import { globals } from "../../../globals";
 import { getTypebotWorkspaceId } from "../../../queries/getTypebotWorkspaceId";
 import type { ChatLog } from "../../../schemas/api";
-import type {
-  SessionState,
-  TypebotInSession,
-} from "../../../schemas/chatSession";
 import type { ExecuteIntegrationResponse } from "../../../types";
 import { defaultFrom, defaultTransportOptions } from "./constants";
 

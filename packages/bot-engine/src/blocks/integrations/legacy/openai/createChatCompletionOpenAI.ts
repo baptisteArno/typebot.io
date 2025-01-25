@@ -8,15 +8,15 @@ import type {
   ChatCompletionOpenAIOptions,
   OpenAICredentials,
 } from "@typebot.io/blocks-integrations/openai/schema";
+import type {
+  SessionState,
+  TypebotInSession,
+} from "@typebot.io/chat-session/schemas";
 import { decrypt } from "@typebot.io/credentials/decrypt";
 import { byId, isEmpty } from "@typebot.io/lib/utils";
 import prisma from "@typebot.io/prisma";
 import type { Prisma } from "@typebot.io/prisma/types";
 import { parseVariableNumber } from "@typebot.io/variables/parseVariableNumber";
-import type {
-  SessionState,
-  TypebotInSession,
-} from "../../../../schemas/chatSession";
 import type { ExecuteIntegrationResponse } from "../../../../types";
 import { updateVariablesInSession } from "../../../../updateVariablesInSession";
 import { executeChatCompletionOpenAIRequest } from "./executeChatCompletionOpenAIRequest";

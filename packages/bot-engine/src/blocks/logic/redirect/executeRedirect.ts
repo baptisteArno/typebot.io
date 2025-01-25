@@ -1,7 +1,7 @@
 import type { RedirectBlock } from "@typebot.io/blocks-logic/redirect/schema";
+import type { SessionState } from "@typebot.io/chat-session/schemas";
 import { sanitizeUrl } from "@typebot.io/lib/utils";
 import { parseVariables } from "@typebot.io/variables/parseVariables";
-import type { SessionState } from "../../../schemas/chatSession";
 import type { ExecuteLogicResponse } from "../../../types";
 
 export const executeRedirect = (

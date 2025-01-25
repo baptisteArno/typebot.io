@@ -1,6 +1,6 @@
 import { createId } from "@paralleldrive/cuid2";
+import type { SessionState } from "@typebot.io/chat-session/schemas";
 import type { Edge } from "@typebot.io/typebot/schemas/edge";
-import type { SessionState } from "./schemas/chatSession";
 
 export const addEdgeToTypebot = (
   state: SessionState,

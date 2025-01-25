@@ -1,7 +1,7 @@
 import type { GoogleSheetsUpdateRowOptions } from "@typebot.io/blocks-integrations/googleSheets/schema";
+import type { SessionState } from "@typebot.io/chat-session/schemas";
 import { deepParseVariables } from "@typebot.io/variables/deepParseVariables";
 import type { ChatLog } from "../../../schemas/api";
-import type { SessionState } from "../../../schemas/chatSession";
 import type { ExecuteIntegrationResponse } from "../../../types";
 import { getAuthenticatedGoogleDoc } from "./helpers/getAuthenticatedGoogleDoc";
 import { matchFilter } from "./helpers/matchFilter";

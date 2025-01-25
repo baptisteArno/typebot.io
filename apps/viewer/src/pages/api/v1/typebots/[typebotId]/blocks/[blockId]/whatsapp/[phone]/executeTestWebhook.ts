@@ -1,6 +1,6 @@
 import { authenticateUser } from "@/helpers/authenticateUser";
 import { LogicBlockType } from "@typebot.io/blocks-logic/constants";
-import { getSession } from "@typebot.io/bot-engine/queries/getSession";
+import { getSession } from "@typebot.io/chat-session/queries/getSession";
 import { env } from "@typebot.io/env";
 import { parseGroups } from "@typebot.io/groups/helpers/parseGroups";
 import { badRequest, forbidden, notFound } from "@typebot.io/lib/api/utils";

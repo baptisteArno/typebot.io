@@ -1,6 +1,6 @@
 import { TRPCError } from "@trpc/server";
+import type { TypebotInSession } from "@typebot.io/chat-session/schemas";
 import { isTypebotInSessionAtLeastV6 } from "./helpers/isTypebotInSessionAtLeastV6";
-import type { TypebotInSession } from "./schemas/chatSession";
 
 export const getFirstEdgeId = ({
   typebot,

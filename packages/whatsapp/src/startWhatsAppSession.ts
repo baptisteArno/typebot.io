@@ -2,8 +2,8 @@ import type {
   ContinueChatResponse,
   Message,
 } from "@typebot.io/bot-engine/schemas/api";
-import type { SessionState } from "@typebot.io/bot-engine/schemas/chatSession";
 import { startSession } from "@typebot.io/bot-engine/startSession";
+import type { SessionState } from "@typebot.io/chat-session/schemas";
 import {
   ComparisonOperators,
   LogicalOperator,

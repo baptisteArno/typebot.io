@@ -1,5 +1,5 @@
 import prisma from "@typebot.io/prisma";
-import type { SessionState } from "../schemas/chatSession";
+import type { SessionState } from "../schemas";
 
 type Props = {
   id?: string;

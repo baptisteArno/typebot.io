@@ -1,7 +1,7 @@
 import { TRPCError } from "@trpc/server";
 import type { JumpBlock } from "@typebot.io/blocks-logic/jump/schema";
+import type { SessionState } from "@typebot.io/chat-session/schemas";
 import { addEdgeToTypebot, createPortalEdge } from "../../../addEdgeToTypebot";
-import type { SessionState } from "../../../schemas/chatSession";
 import type { ExecuteLogicResponse } from "../../../types";
 
 export const executeJumpBlock = (

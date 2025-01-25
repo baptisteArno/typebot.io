@@ -1,8 +1,8 @@
 import { BubbleBlockType } from "@typebot.io/blocks-bubbles/constants";
 import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
 import type { ContinueChatResponse } from "@typebot.io/bot-engine/schemas/api";
-import type { SessionState } from "@typebot.io/bot-engine/schemas/chatSession";
 import type { ClientSideAction } from "@typebot.io/bot-engine/schemas/clientSideAction";
+import type { SessionState } from "@typebot.io/chat-session/schemas";
 import { isNotDefined } from "@typebot.io/lib/utils";
 import { computeTypingDuration } from "@typebot.io/settings/computeTypingDuration";
 import { defaultSettings } from "@typebot.io/settings/constants";

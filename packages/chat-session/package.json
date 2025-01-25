@@ -1,0 +1,17 @@
+{
+  "name": "@typebot.io/chat-session",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./*": "./src/*.ts"
+  },
+  "dependencies": {
+    "@typebot.io/zod": "workspace:*",
+    "@typebot.io/theme": "workspace:*",
+    "@typebot.io/prisma": "workspace:*"
+  },
+  "devDependencies": {
+    "@typebot.io/tsconfig": "workspace:*"
+  }
+}

@@ -4,13 +4,13 @@ import type {
   CreateSpeechOpenAIOptions,
   OpenAICredentials,
 } from "@typebot.io/blocks-integrations/openai/schema";
+import type { SessionState } from "@typebot.io/chat-session/schemas";
 import { decrypt } from "@typebot.io/credentials/decrypt";
 import { uploadFileToBucket } from "@typebot.io/lib/s3/uploadFileToBucket";
 import { isNotEmpty } from "@typebot.io/lib/utils";
 import prisma from "@typebot.io/prisma";
 import { parseVariables } from "@typebot.io/variables/parseVariables";
 import OpenAI, { type ClientOptions } from "openai";
-import type { SessionState } from "../../../../../schemas/chatSession";
 import type { ExecuteIntegrationResponse } from "../../../../../types";
 import { updateVariablesInSession } from "../../../../../updateVariablesInSession";
 

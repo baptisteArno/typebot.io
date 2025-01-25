@@ -32,6 +32,9 @@
       "path": "../../packages/bot-engine"
     },
     {
+      "path": "../../packages/chat-session"
+    },
+    {
       "path": "../../packages/credentials"
     },
     {

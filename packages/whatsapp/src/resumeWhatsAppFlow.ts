@@ -1,14 +1,11 @@
 import type { Block } from "@typebot.io/blocks-core/schemas/schema";
 import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
 import { continueBotFlow } from "@typebot.io/bot-engine/continueBotFlow";
-import { getSession } from "@typebot.io/bot-engine/queries/getSession";
-import { setIsReplyingInChatSession } from "@typebot.io/bot-engine/queries/setIsReplyingInChatSession";
 import { saveStateToDatabase } from "@typebot.io/bot-engine/saveStateToDatabase";
-import type { Message } from "@typebot.io/bot-engine/schemas/api";
-import type {
-  ChatSession,
-  SessionState,
-} from "@typebot.io/bot-engine/schemas/chatSession";
+import type { ChatSession, Message } from "@typebot.io/bot-engine/schemas/api";
+import { getSession } from "@typebot.io/chat-session/queries/getSession";
+import { setIsReplyingInChatSession } from "@typebot.io/chat-session/queries/setIsReplyingInChatSession";
+import type { SessionState } from "@typebot.io/chat-session/schemas";
 import { decrypt } from "@typebot.io/credentials/decrypt";
 import { env } from "@typebot.io/env";
 import { getBlockById } from "@typebot.io/groups/helpers/getBlockById";

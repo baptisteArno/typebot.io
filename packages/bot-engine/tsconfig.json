@@ -1,7 +1,9 @@
 {
   "extends": "@typebot.io/tsconfig/base.json",
   "include": ["src/**/*.ts", "src/**/*.tsx"],
-  "compilerOptions": { "outDir": "node_modules/.cache/tsconfig" },
+  "compilerOptions": {
+    "outDir": "node_modules/.cache/tsconfig"
+  },
   "references": [
     {
       "path": "../blocks/bubbles"
@@ -17,6 +19,9 @@
     },
     {
       "path": "../blocks/logic"
+    },
+    {
+      "path": "../chat-session"
     },
     {
       "path": "../conditions"

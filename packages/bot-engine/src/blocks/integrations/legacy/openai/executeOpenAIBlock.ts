@@ -1,5 +1,5 @@
 import type { OpenAIBlock } from "@typebot.io/blocks-integrations/openai/schema";
-import type { SessionState } from "../../../../schemas/chatSession";
+import type { SessionState } from "@typebot.io/chat-session/schemas";
 import type { ExecuteIntegrationResponse } from "../../../../types";
 import { createSpeechOpenAI } from "./audio/createSpeechOpenAI";
 import { createChatCompletionOpenAI } from "./createChatCompletionOpenAI";

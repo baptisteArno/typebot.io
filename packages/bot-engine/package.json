@@ -26,6 +26,7 @@
     "@typebot.io/blocks-logic": "workspace:*",
     "@typebot.io/blocks-bubbles": "workspace:*",
     "@typebot.io/settings": "workspace:*",
+    "@typebot.io/chat-session": "workspace:*",
     "@typebot.io/theme": "workspace:*",
     "@typebot.io/zod": "workspace:*",
     "@typebot.io/groups": "workspace:*",

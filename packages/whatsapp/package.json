@@ -24,6 +24,7 @@
     "@typebot.io/blocks-bubbles": "workspace:*",
     "@typebot.io/blocks-inputs": "workspace:*",
     "@typebot.io/prisma": "workspace:*",
+    "@typebot.io/chat-session": "workspace:*",
     "ky": "1.2.4"
   },
   "devDependencies": {

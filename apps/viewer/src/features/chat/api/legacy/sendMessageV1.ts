@@ -3,14 +3,14 @@ import { TRPCError } from "@trpc/server";
 import { BubbleBlockType } from "@typebot.io/blocks-bubbles/constants";
 import { continueBotFlow } from "@typebot.io/bot-engine/continueBotFlow";
 import { parseDynamicTheme } from "@typebot.io/bot-engine/parseDynamicTheme";
-import { getSession } from "@typebot.io/bot-engine/queries/getSession";
-import { restartSession } from "@typebot.io/bot-engine/queries/restartSession";
 import { saveStateToDatabase } from "@typebot.io/bot-engine/saveStateToDatabase";
 import {
   chatReplySchema,
   sendMessageInputSchema,
 } from "@typebot.io/bot-engine/schemas/legacy/schema";
 import { startSession } from "@typebot.io/bot-engine/startSession";
+import { getSession } from "@typebot.io/chat-session/queries/getSession";
+import { restartSession } from "@typebot.io/chat-session/queries/restartSession";
 import { isDefined } from "@typebot.io/lib/utils";
 
 export const sendMessageV1 = publicProcedure

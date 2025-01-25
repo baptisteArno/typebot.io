@@ -7,6 +7,11 @@ import { IntegrationBlockType } from "@typebot.io/blocks-integrations/constants"
 import type { GoogleAnalyticsBlock } from "@typebot.io/blocks-integrations/googleAnalytics/schema";
 import type { PixelBlock } from "@typebot.io/blocks-integrations/pixel/schema";
 import { LogicBlockType } from "@typebot.io/blocks-logic/constants";
+import type {
+  SessionState,
+  TypebotInSession,
+  TypebotInSessionV5,
+} from "@typebot.io/chat-session/schemas";
 import { env } from "@typebot.io/env";
 import { isDefined, isNotEmpty, omit } from "@typebot.io/lib/utils";
 import type { Prisma } from "@typebot.io/prisma/types";
@@ -45,11 +50,6 @@ import {
   type StartTypebotV6,
   startTypebotSchema,
 } from "./schemas/api";
-import type {
-  SessionState,
-  TypebotInSession,
-  TypebotInSessionV5,
-} from "./schemas/chatSession";
 import { startBotFlow } from "./startBotFlow";
 
 type StartParams =

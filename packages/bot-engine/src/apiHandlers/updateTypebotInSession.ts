@@ -1,10 +1,10 @@
 import { TRPCError } from "@trpc/server";
+import { getSession } from "@typebot.io/chat-session/queries/getSession";
+import type { SessionState } from "@typebot.io/chat-session/schemas";
 import prisma from "@typebot.io/prisma";
 import type { PublicTypebot } from "@typebot.io/typebot/schemas/publicTypebot";
 import type { Typebot } from "@typebot.io/typebot/schemas/typebot";
 import type { Variable } from "@typebot.io/variables/schemas";
-import { getSession } from "../queries/getSession";
-import type { SessionState } from "../schemas/chatSession";
 
 type Props = {
   user?: { id: string };
