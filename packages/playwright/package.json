@@ -15,7 +15,8 @@
     "@typebot.io/prisma": "workspace:*",
     "@typebot.io/schemas": "workspace:*",
     "@typebot.io/typebot": "workspace:*",
-    "@typebot.io/workspaces": "workspace:*"
+    "@typebot.io/workspaces": "workspace:*",
+    "@typebot.io/credentials": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "20.4.2",

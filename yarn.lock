@@ -6189,6 +6189,7 @@
     "@typebot.io/blocks-logic" "packages/blocks/logic"
     "@typebot.io/chat-session" "packages/chat-session"
     "@typebot.io/conditions" "packages/conditions"
+    "@typebot.io/credentials" "packages/credentials"
     "@typebot.io/emails" "packages/emails"
     "@typebot.io/env" "packages/env"
     "@typebot.io/groups" "packages/groups"
@@ -6258,12 +6259,9 @@
   devDependencies:
     "@typebot.io/tsconfig" "packages/tsconfig"
   dependencies:
-    "@typebot.io/blocks-inputs" "packages/blocks/inputs"
-    "@typebot.io/blocks-integrations" "packages/blocks/integrations"
     "@typebot.io/env" "packages/env"
     "@typebot.io/forge-repository" "packages/forge/repository"
     "@typebot.io/lib" "packages/lib"
-    "@typebot.io/whatsapp" "packages/whatsapp"
     "@typebot.io/zod" "packages/zod"
     google-auth-library "9.15.1"
 
@@ -6513,6 +6511,7 @@
     "@playwright/test" "1.45.2"
     "@typebot.io/blocks-core" "packages/blocks/core"
     "@typebot.io/blocks-inputs" "packages/blocks/inputs"
+    "@typebot.io/credentials" "packages/credentials"
     "@typebot.io/env" "packages/env"
     "@typebot.io/lib" "packages/lib"
     "@typebot.io/prisma" "packages/prisma"
@@ -6775,6 +6774,7 @@
     "@typebot.io/bot-engine" "packages/bot-engine"
     "@typebot.io/chat-session" "packages/chat-session"
     "@typebot.io/conditions" "packages/conditions"
+    "@typebot.io/credentials" "packages/credentials"
     "@typebot.io/env" "packages/env"
     "@typebot.io/groups" "packages/groups"
     "@typebot.io/lib" "packages/lib"

@@ -1,11 +1,9 @@
 import { render } from "@faire/mjml-react/utils/render";
-import type {
-  SendEmailBlock,
-  SmtpCredentials,
-} from "@typebot.io/blocks-integrations/sendEmail/schema";
+import type { SendEmailBlock } from "@typebot.io/blocks-integrations/sendEmail/schema";
 import { saveErrorLog } from "@typebot.io/bot-engine/logs/saveErrorLog";
 import { saveSuccessLog } from "@typebot.io/bot-engine/logs/saveSuccessLog";
 import { decrypt } from "@typebot.io/credentials/decrypt";
+import type { SmtpCredentials } from "@typebot.io/credentials/schemas";
 import { DefaultBotNotificationEmail } from "@typebot.io/emails/emails/DefaultBotNotificationEmail";
 import { env } from "@typebot.io/env";
 import { initMiddleware, methodNotAllowed } from "@typebot.io/lib/api/utils";
@@ -15,7 +13,6 @@ import { parseAnswers } from "@typebot.io/results/parseAnswers";
 import type { ResultValues } from "@typebot.io/results/schemas/results";
 import type { PublicTypebot } from "@typebot.io/typebot/schemas/publicTypebot";
 import Cors from "cors";
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { NextApiRequest, NextApiResponse } from "next";
 import { createTransport, getTestMessageUrl } from "nodemailer";
 import type Mail from "nodemailer/lib/mailer";

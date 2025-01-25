@@ -1,6 +1,6 @@
 import { createId } from "@paralleldrive/cuid2";
 import test, { expect } from "@playwright/test";
-import type { SmtpCredentials } from "@typebot.io/blocks-integrations/sendEmail/schema";
+import type { SmtpCredentials } from "@typebot.io/credentials/schemas";
 import { env } from "@typebot.io/env";
 import { importTypebotInDatabase } from "@typebot.io/playwright/databaseActions";
 import { createSmtpCredentials } from "./utils/databaseActions";

@@ -1,13 +1,15 @@
 import { isWriteWorkspaceForbidden } from "@/features/workspace/helpers/isWriteWorkspaceForbidden";
 import { authenticatedProcedure } from "@/helpers/server/trpc";
 import { TRPCError } from "@trpc/server";
-import { stripeCredentialsSchema } from "@typebot.io/blocks-inputs/payment/schema";
-import { googleSheetsCredentialsSchema } from "@typebot.io/blocks-integrations/googleSheets/schema";
-import { smtpCredentialsSchema } from "@typebot.io/blocks-integrations/sendEmail/schema";
 import { encrypt } from "@typebot.io/credentials/encrypt";
+import {
+  googleSheetsCredentialsSchema,
+  smtpCredentialsSchema,
+  stripeCredentialsSchema,
+  whatsAppCredentialsSchema,
+} from "@typebot.io/credentials/schemas";
 import { forgedCredentialsSchemas } from "@typebot.io/forge-repository/credentials";
 import prisma from "@typebot.io/prisma";
-import { whatsAppCredentialsSchema } from "@typebot.io/whatsapp/schemas";
 import { z } from "@typebot.io/zod";
 
 const inputShape = {

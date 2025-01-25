@@ -1,5 +1,5 @@
-import type { StripeCredentials } from "@typebot.io/blocks-inputs/payment/schema";
 import { encrypt } from "@typebot.io/credentials/encrypt";
+import type { StripeCredentials } from "@typebot.io/credentials/schemas";
 import { env } from "@typebot.io/env";
 import prisma from "@typebot.io/prisma";
 import { GraphNavigation, Plan, WorkspaceRole } from "@typebot.io/prisma/enum";

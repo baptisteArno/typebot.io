@@ -3,13 +3,14 @@ import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
 import type { ContinueChatResponse } from "@typebot.io/bot-engine/schemas/api";
 import type { ClientSideAction } from "@typebot.io/bot-engine/schemas/clientSideAction";
 import type { SessionState } from "@typebot.io/chat-session/schemas";
+import type { WhatsAppCredentials } from "@typebot.io/credentials/schemas";
 import { isNotDefined } from "@typebot.io/lib/utils";
 import { computeTypingDuration } from "@typebot.io/settings/computeTypingDuration";
 import { defaultSettings } from "@typebot.io/settings/constants";
 import type { Settings } from "@typebot.io/settings/schemas";
 import { convertInputToWhatsAppMessages } from "./convertInputToWhatsAppMessage";
 import { convertMessageToWhatsAppMessage } from "./convertMessageToWhatsAppMessage";
-import type { WhatsAppCredentials, WhatsAppSendingMessage } from "./schemas";
+import type { WhatsAppSendingMessage } from "./schemas";
 import { sendWhatsAppMessage } from "./sendWhatsAppMessage";
 
 // Media can take some time to be delivered. This make sure we don't send a message before the media is delivered.

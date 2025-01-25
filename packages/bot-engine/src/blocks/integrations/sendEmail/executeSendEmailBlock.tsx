@@ -1,13 +1,11 @@
 import { TRPCError } from "@trpc/server";
-import type {
-  SendEmailBlock,
-  SmtpCredentials,
-} from "@typebot.io/blocks-integrations/sendEmail/schema";
+import type { SendEmailBlock } from "@typebot.io/blocks-integrations/sendEmail/schema";
 import type {
   SessionState,
   TypebotInSession,
 } from "@typebot.io/chat-session/schemas";
 import { decrypt } from "@typebot.io/credentials/decrypt";
+import type { SmtpCredentials } from "@typebot.io/credentials/schemas";
 import { render } from "@typebot.io/emails";
 import { DefaultBotNotificationEmail } from "@typebot.io/emails/emails/DefaultBotNotificationEmail";
 import { env } from "@typebot.io/env";

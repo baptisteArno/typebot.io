@@ -30,6 +30,7 @@
     "@typebot.io/theme": "workspace:*",
     "@typebot.io/zod": "workspace:*",
     "@typebot.io/groups": "workspace:*",
+    "@typebot.io/credentials": "workspace:*",
     "chrono-node": "2.7.6",
     "date-fns": "2.30.0",
     "date-fns-tz": "2.0.0",

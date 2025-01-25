@@ -3,10 +3,10 @@ import { defaultPaymentInputOptions } from "@typebot.io/blocks-inputs/payment/co
 import type {
   PaymentInputBlock,
   PaymentInputRuntimeOptions,
-  StripeCredentials,
 } from "@typebot.io/blocks-inputs/payment/schema";
 import type { SessionState } from "@typebot.io/chat-session/schemas";
 import { decrypt } from "@typebot.io/credentials/decrypt";
+import type { StripeCredentials } from "@typebot.io/credentials/schemas";
 import prisma from "@typebot.io/prisma";
 import { parseVariables } from "@typebot.io/variables/parseVariables";
 import Stripe from "stripe";

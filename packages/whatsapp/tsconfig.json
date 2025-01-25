@@ -27,6 +27,9 @@
       "path": "../conditions"
     },
     {
+      "path": "../credentials"
+    },
+    {
       "path": "../env"
     },
     {
