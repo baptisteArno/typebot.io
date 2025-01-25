@@ -3,10 +3,10 @@ import type {
   SendEmailBlock,
   SmtpCredentials,
 } from "@typebot.io/blocks-integrations/sendEmail/schema";
+import { decrypt } from "@typebot.io/credentials/decrypt";
 import { render } from "@typebot.io/emails";
 import { DefaultBotNotificationEmail } from "@typebot.io/emails/emails/DefaultBotNotificationEmail";
 import { env } from "@typebot.io/env";
-import { decrypt } from "@typebot.io/lib/api/encryption/decrypt";
 import { getFileTempUrl } from "@typebot.io/lib/s3/getFileTempUrl";
 import {
   byId,

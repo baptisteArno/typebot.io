@@ -1,9 +1,9 @@
 import { isReadWorkspaceFobidden } from "@/features/workspace/helpers/isReadWorkspaceFobidden";
 import { authenticatedProcedure } from "@/helpers/server/trpc";
 import { TRPCError } from "@trpc/server";
+import { decrypt } from "@typebot.io/credentials/decrypt";
 import { forgedBlockIds } from "@typebot.io/forge-repository/constants";
 import { forgedBlocks } from "@typebot.io/forge-repository/definitions";
-import { decrypt } from "@typebot.io/lib/api/encryption/decrypt";
 import prisma from "@typebot.io/prisma";
 import { z } from "@typebot.io/zod";
 import { getFetchers } from "../helpers/getFetchers";

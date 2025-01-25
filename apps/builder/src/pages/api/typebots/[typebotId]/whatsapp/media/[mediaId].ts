@@ -1,6 +1,6 @@
 import { getAuthenticatedUser } from "@/features/auth/helpers/getAuthenticatedUser";
 import { isReadWorkspaceFobidden } from "@/features/workspace/helpers/isReadWorkspaceFobidden";
-import { decrypt } from "@typebot.io/lib/api/encryption/decrypt";
+import { decrypt } from "@typebot.io/credentials/decrypt";
 import {
   methodNotAllowed,
   notAuthenticated,

@@ -1,10 +1,10 @@
 import { isForgedBlockType } from "@typebot.io/blocks-core/helpers";
 import { IntegrationBlockType } from "@typebot.io/blocks-integrations/constants";
 import type { ChatCompletionOpenAIOptions } from "@typebot.io/blocks-integrations/openai/schema";
+import { decryptV2 } from "@typebot.io/credentials/decryptV2";
 import { forgedBlocks } from "@typebot.io/forge-repository/definitions";
 import type { AsyncVariableStore } from "@typebot.io/forge/types";
 import { getBlockById } from "@typebot.io/groups/helpers/getBlockById";
-import { decryptV2 } from "@typebot.io/lib/api/encryption/decryptV2";
 import { isDefined } from "@typebot.io/lib/utils";
 import { deepParseVariables } from "@typebot.io/variables/deepParseVariables";
 import {

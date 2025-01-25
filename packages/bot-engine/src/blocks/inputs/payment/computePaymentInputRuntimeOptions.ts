@@ -5,7 +5,7 @@ import type {
   PaymentInputRuntimeOptions,
   StripeCredentials,
 } from "@typebot.io/blocks-inputs/payment/schema";
-import { decrypt } from "@typebot.io/lib/api/encryption/decrypt";
+import { decrypt } from "@typebot.io/credentials/decrypt";
 import prisma from "@typebot.io/prisma";
 import { parseVariables } from "@typebot.io/variables/parseVariables";
 import Stripe from "stripe";

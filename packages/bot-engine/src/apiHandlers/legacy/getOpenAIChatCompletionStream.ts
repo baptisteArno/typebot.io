@@ -3,7 +3,7 @@ import type {
   ChatCompletionOpenAIOptions,
   OpenAICredentials,
 } from "@typebot.io/blocks-integrations/openai/schema";
-import { decryptV2 } from "@typebot.io/lib/api/encryption/decryptV2";
+import { decryptV2 } from "@typebot.io/credentials/decryptV2";
 import { isNotEmpty } from "@typebot.io/lib/utils";
 import { parseVariableNumber } from "@typebot.io/variables/parseVariableNumber";
 import { OpenAIStream } from "ai";

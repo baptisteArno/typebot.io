@@ -1,49 +1,39 @@
-import type { GoogleSheetsCredentials } from "@typebot.io/blocks-integrations/googleSheets/schema";
 import { env } from "@typebot.io/env";
-import { decrypt } from "@typebot.io/lib/api/encryption/decrypt";
-import { encrypt } from "@typebot.io/lib/api/encryption/encrypt";
 import { isDefined } from "@typebot.io/lib/utils";
 import prisma from "@typebot.io/prisma";
 import type { Prisma } from "@typebot.io/prisma/types";
 import { type Credentials, OAuth2Client } from "google-auth-library";
+import { decrypt } from "./decrypt";
+import { encrypt } from "./encrypt";
 
 export const getAuthenticatedGoogleClient = async (
-  userId: string,
   credentialsId: string,
-): Promise<
-  { client: OAuth2Client; credentials: Prisma.Credentials } | undefined
-> => {
+): Promise<OAuth2Client | undefined> => {
+  const credentials = (await prisma.credentials.findFirst({
+    where: { id: credentialsId },
+  })) as Prisma.Credentials | undefined;
+  if (!credentials) return;
+  const data = await decrypt(credentials.data, credentials.iv);
+
   const oauth2Client = new OAuth2Client(
     env.GOOGLE_SHEETS_CLIENT_ID,
     env.GOOGLE_SHEETS_CLIENT_SECRET,
     `${env.NEXTAUTH_URL}/api/credentials/google-sheets/callback`,
   );
-  const credentials = (await prisma.credentials.findFirst({
-    where: { id: credentialsId, workspace: { members: { some: { userId } } } },
-  })) as Prisma.Credentials | undefined;
-  if (!credentials) return;
-  const data = (await decrypt(
-    credentials.data,
-    credentials.iv,
-  )) as GoogleSheetsCredentials["data"];
-
   oauth2Client.setCredentials(data);
-  oauth2Client.on("tokens", updateTokens(credentials.id, data));
-  return { client: oauth2Client, credentials };
+  oauth2Client.on("tokens", updateTokens(credentialsId, data));
+  return oauth2Client;
 };
 
 const updateTokens =
-  (
-    credentialsId: string,
-    existingCredentials: GoogleSheetsCredentials["data"],
-  ) =>
+  (credentialsId: string, existingCredentials: any) =>
   async (credentials: Credentials) => {
     if (
       isDefined(existingCredentials.id_token) &&
       credentials.id_token !== existingCredentials.id_token
     )
       return;
-    const newCredentials: GoogleSheetsCredentials["data"] = {
+    const newCredentials = {
       ...existingCredentials,
       expiry_date: credentials.expiry_date,
       access_token: credentials.access_token,

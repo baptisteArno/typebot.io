@@ -1,9 +1,9 @@
 import { BubbleBlockType } from "@typebot.io/blocks-bubbles/constants";
 import type { Block } from "@typebot.io/blocks-core/schemas/schema";
+import { decrypt } from "@typebot.io/credentials/decrypt";
 import { forgedBlocks } from "@typebot.io/forge-repository/definitions";
 import type { ForgedBlock } from "@typebot.io/forge-repository/schemas";
 import type { LogsStore, VariableStore } from "@typebot.io/forge/types";
-import { decrypt } from "@typebot.io/lib/api/encryption/decrypt";
 import { byId, isDefined } from "@typebot.io/lib/utils";
 import { deepParseVariables } from "@typebot.io/variables/deepParseVariables";
 import {

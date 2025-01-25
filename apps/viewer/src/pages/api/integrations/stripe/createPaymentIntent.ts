@@ -3,7 +3,7 @@ import type {
   PaymentInputBlock,
   StripeCredentials,
 } from "@typebot.io/blocks-inputs/payment/schema";
-import { decrypt } from "@typebot.io/lib/api/encryption/decrypt";
+import { decrypt } from "@typebot.io/credentials/decrypt";
 import {
   badRequest,
   forbidden,

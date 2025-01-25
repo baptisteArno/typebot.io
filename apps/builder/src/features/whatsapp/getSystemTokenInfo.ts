@@ -1,7 +1,7 @@
 import { authenticatedProcedure } from "@/helpers/server/trpc";
 import { TRPCError } from "@trpc/server";
+import { decrypt } from "@typebot.io/credentials/decrypt";
 import { env } from "@typebot.io/env";
-import { decrypt } from "@typebot.io/lib/api/encryption/decrypt";
 import prisma from "@typebot.io/prisma";
 import type { WhatsAppCredentials } from "@typebot.io/whatsapp/schemas";
 import { z } from "@typebot.io/zod";

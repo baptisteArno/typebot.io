@@ -4,11 +4,11 @@ import { IntegrationBlockType } from "@typebot.io/blocks-integrations/constants"
 import type { ChatCompletionOpenAIOptions } from "@typebot.io/blocks-integrations/openai/schema";
 import { getChatCompletionStream } from "@typebot.io/bot-engine/blocks/integrations/legacy/openai/getChatCompletionStream";
 import type { SessionState } from "@typebot.io/bot-engine/schemas/chatSession";
+import { decryptV2 } from "@typebot.io/credentials/decryptV2";
 import { env } from "@typebot.io/env";
 import { forgedBlocks } from "@typebot.io/forge-repository/definitions";
 import type { AsyncVariableStore } from "@typebot.io/forge/types";
 import { getBlockById } from "@typebot.io/groups/helpers/getBlockById";
-import { decryptV2 } from "@typebot.io/lib/api/encryption/decryptV2";
 import {
   type ParseVariablesOptions,
   parseVariables,
