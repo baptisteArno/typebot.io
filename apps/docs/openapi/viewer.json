@@ -5207,6 +5207,9 @@
               },
               "searchInputPlaceholder": {
                 "type": "string"
+              },
+              "areInitialSearchButtonsVisible": {
+                "type": "boolean"
               }
             }
           }
@@ -12730,6 +12733,9 @@
               },
               "searchInputPlaceholder": {
                 "type": "string"
+              },
+              "areInitialSearchButtonsVisible": {
+                "type": "boolean"
               }
             }
           }

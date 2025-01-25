@@ -428,6 +428,13 @@ const parseColateralVariableChangeIfAny = ({
     (v) => v.id === options.saveItemInVariableId,
   );
   if (!variable || !listVariableValue) return [];
+  if (!Array.isArray(listVariableValue))
+    return [
+      {
+        ...variable,
+        value: [],
+      },
+    ];
   return [
     {
       ...variable,

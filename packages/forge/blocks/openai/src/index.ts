@@ -23,5 +23,5 @@ export const openAIBlock = createBlock({
     createSpeech,
     createTranscription,
   ],
-  docsUrl: "https://docs.typebot.io/forge/blocks/openai",
+  docsUrl: "https://docs.typebot.io/editor/blocks/integrations/openai",
 });

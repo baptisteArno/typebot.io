@@ -1,5 +1,6 @@
 import { EmojiOrImageIcon } from "@/components/EmojiOrImageIcon";
 import {
+  CheckIcon,
   ChevronLeftIcon,
   HardDriveIcon,
   LogOutIcon,
@@ -43,7 +44,7 @@ export const WorkspaceDropdown = ({
         <HStack>
           {currentWorkspace && (
             <>
-              <Text noOfLines={1} maxW="200px">
+              <Text isTruncated maxW="300px">
                 {currentWorkspace.name}
               </Text>
               <PlanTag plan={currentWorkspace.plan} />
@@ -53,24 +54,28 @@ export const WorkspaceDropdown = ({
         </HStack>
       </MenuButton>
       <MenuList>
-        {workspaces
-          ?.filter((workspace) => workspace.id !== currentWorkspace?.id)
-          .map((workspace) => (
-            <MenuItem
-              key={workspace.id}
-              onClick={() => onWorkspaceSelected(workspace.id)}
-            >
+        {workspaces.map((workspace) => (
+          <MenuItem
+            key={workspace.id}
+            onClick={() => onWorkspaceSelected(workspace.id)}
+          >
+            <HStack justify="space-between" w="full">
               <HStack>
                 <EmojiOrImageIcon
                   icon={workspace.icon}
                   boxSize="16px"
                   defaultIcon={HardDriveIcon}
                 />
-                <Text>{workspace.name}</Text>
+                <Text isTruncated maxW="250px">
+                  {workspace.name}
+                </Text>
                 <PlanTag plan={workspace.plan} />
               </HStack>
-            </MenuItem>
-          ))}
+
+              {workspace.id === currentWorkspace?.id && <CheckIcon />}
+            </HStack>
+          </MenuItem>
+        ))}
         <MenuItem onClick={onCreateNewWorkspaceClick} icon={<PlusIcon />}>
           {t("workspace.dropdown.newButton.label")}
         </MenuItem>
