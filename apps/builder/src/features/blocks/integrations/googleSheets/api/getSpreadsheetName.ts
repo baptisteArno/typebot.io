@@ -51,7 +51,10 @@ export const getSpreadsheetName = authenticatedProcedure
           message: "Credentials not found",
         });
 
-      const client = await getAuthenticatedGoogleClient(credentials.id);
+      const client = await getAuthenticatedGoogleClient(
+        credentials.id,
+        workspaceId,
+      );
 
       if (!client)
         throw new TRPCError({

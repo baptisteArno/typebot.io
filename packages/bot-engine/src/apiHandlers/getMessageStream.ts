@@ -5,6 +5,7 @@ import { getSession } from "@typebot.io/chat-session/queries/getSession";
 import { updateSession } from "@typebot.io/chat-session/queries/updateSession";
 import type { SessionState } from "@typebot.io/chat-session/schemas";
 import { decryptV2 } from "@typebot.io/credentials/decryptV2";
+import { getCredentials } from "@typebot.io/credentials/getCredentials";
 import { forgedBlocks } from "@typebot.io/forge-repository/definitions";
 import type { AsyncVariableStore } from "@typebot.io/forge/types";
 import { getBlockById } from "@typebot.io/groups/helpers/getBlockById";
@@ -15,7 +16,6 @@ import {
   parseVariables,
 } from "@typebot.io/variables/parseVariables";
 import { OpenAI } from "openai";
-import { getCredentials } from "../queries/getCredentials";
 import { saveSetVariableHistoryItems } from "../queries/saveSetVariableHistoryItems";
 import { updateVariablesInSession } from "../updateVariablesInSession";
 import { getOpenAIChatCompletionStream } from "./legacy/getOpenAIChatCompletionStream";
@@ -105,7 +105,10 @@ export const getMessageStream = async ({
   try {
     if (!block.options.credentialsId)
       return { status: 404, message: "Could not find credentials" };
-    const credentials = await getCredentials(block.options.credentialsId);
+    const credentials = await getCredentials(
+      block.options.credentialsId,
+      session.state.workspaceId,
+    );
     if (!credentials)
       return { status: 404, message: "Could not find credentials" };
     const decryptedCredentials = await decryptV2(

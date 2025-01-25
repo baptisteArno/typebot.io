@@ -5,6 +5,7 @@ import type {
   TypebotInSession,
 } from "@typebot.io/chat-session/schemas";
 import { decrypt } from "@typebot.io/credentials/decrypt";
+import { getCredentials } from "@typebot.io/credentials/getCredentials";
 import type { SmtpCredentials } from "@typebot.io/credentials/schemas";
 import { render } from "@typebot.io/emails";
 import { DefaultBotNotificationEmail } from "@typebot.io/emails/emails/DefaultBotNotificationEmail";
@@ -17,7 +18,6 @@ import {
   isNotDefined,
   omit,
 } from "@typebot.io/lib/utils";
-import prisma from "@typebot.io/prisma";
 import { parseAnswers } from "@typebot.io/results/parseAnswers";
 import type { AnswerInSessionState } from "@typebot.io/results/schemas/answers";
 import { findUniqueVariable } from "@typebot.io/variables/findUniqueVariableValue";
@@ -104,6 +104,7 @@ export const executeSendEmailBlock = async (
       fileUrls: getFileUrls(variables)(options.attachmentsVariableId),
       isCustomBody: options.isCustomBody,
       isBodyCode: options.isBodyCode,
+      workspaceId: state.workspaceId,
     });
     if (sendEmailLogs) logs.push(...sendEmailLogs);
   } catch (err) {
@@ -132,6 +133,7 @@ const sendEmail = async ({
   isBodyCode,
   isCustomBody,
   fileUrls,
+  workspaceId,
 }: {
   credentialsId: string;
   recipients: string[];
@@ -145,12 +147,13 @@ const sendEmail = async ({
   typebot: Pick<TypebotInSession, "id" | "variables">;
   answers: AnswerInSessionState[];
   fileUrls?: string | string[];
+  workspaceId?: string;
 }): Promise<ChatLog[] | undefined> => {
   const logs: ChatLog[] = [];
   const { name: replyToName } = parseEmailRecipient(replyTo);
 
   const { host, port, isTlsEnabled, username, password, from } =
-    (await getEmailInfo(credentialsId)) ?? {};
+    (await getEmailInfo(credentialsId, workspaceId)) ?? {};
   if (!from) return;
 
   const transportConfig = {
@@ -242,6 +245,8 @@ const sendEmail = async ({
 
 const getEmailInfo = async (
   credentialsId: string,
+  // TO-DO: Remove workspaceId optionnality when deployed
+  workspaceId?: string,
 ): Promise<SmtpCredentials["data"] | undefined> => {
   if (credentialsId === "default")
     return {
@@ -252,9 +257,7 @@ const getEmailInfo = async (
       isTlsEnabled: undefined,
       from: defaultFrom,
     };
-  const credentials = await prisma.credentials.findUnique({
-    where: { id: credentialsId },
-  });
+  const credentials = await getCredentials(credentialsId, workspaceId);
   if (!credentials) return;
   return (await decrypt(
     credentials.data,

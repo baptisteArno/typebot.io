@@ -1,17 +1,17 @@
 import { env } from "@typebot.io/env";
 import { isDefined } from "@typebot.io/lib/utils";
 import prisma from "@typebot.io/prisma";
-import type { Prisma } from "@typebot.io/prisma/types";
 import { type Credentials, OAuth2Client } from "google-auth-library";
 import { decrypt } from "./decrypt";
 import { encrypt } from "./encrypt";
+import { getCredentials } from "./getCredentials";
 
 export const getAuthenticatedGoogleClient = async (
   credentialsId: string,
+  // TO-DO: Remove workspaceId optionality after deployed to production
+  workspaceId?: string,
 ): Promise<OAuth2Client | undefined> => {
-  const credentials = (await prisma.credentials.findFirst({
-    where: { id: credentialsId },
-  })) as Prisma.Credentials | undefined;
+  const credentials = await getCredentials(credentialsId, workspaceId);
   if (!credentials) return;
   const data = await decrypt(credentials.data, credentials.iv);
 

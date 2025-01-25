@@ -20,6 +20,7 @@ export const insertRow = async (
   const doc = await getAuthenticatedGoogleDoc({
     credentialsId: options.credentialsId,
     spreadsheetId: options.spreadsheetId,
+    workspaceId: state.workspaceId,
   });
 
   const parsedValues = parseNewRowObject(variables)(options.cellsToInsert);

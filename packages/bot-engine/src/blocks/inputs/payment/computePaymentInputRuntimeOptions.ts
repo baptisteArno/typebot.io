@@ -6,8 +6,8 @@ import type {
 } from "@typebot.io/blocks-inputs/payment/schema";
 import type { SessionState } from "@typebot.io/chat-session/schemas";
 import { decrypt } from "@typebot.io/credentials/decrypt";
+import { getCredentials } from "@typebot.io/credentials/getCredentials";
 import type { StripeCredentials } from "@typebot.io/credentials/schemas";
-import prisma from "@typebot.io/prisma";
 import { parseVariables } from "@typebot.io/variables/parseVariables";
 import Stripe from "stripe";
 
@@ -30,7 +30,10 @@ const createStripePaymentIntent =
         code: "BAD_REQUEST",
         message: "Missing credentialsId",
       });
-    const stripeKeys = await getStripeInfo(options.credentialsId);
+    const stripeKeys = await getStripeInfo(
+      options.credentialsId,
+      state.workspaceId,
+    );
     if (!stripeKeys)
       throw new TRPCError({
         code: "NOT_FOUND",
@@ -97,10 +100,10 @@ const createStripePaymentIntent =
 
 const getStripeInfo = async (
   credentialsId: string,
+  // TO-DO: Remove workspaceId optionnality when deployed
+  workspaceId?: string,
 ): Promise<StripeCredentials["data"] | undefined> => {
-  const credentials = await prisma.credentials.findUnique({
-    where: { id: credentialsId },
-  });
+  const credentials = await getCredentials(credentialsId, workspaceId);
   if (!credentials) return;
   return (await decrypt(
     credentials.data,

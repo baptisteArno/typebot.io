@@ -5,6 +5,7 @@ import type {
   TypebotInSession,
 } from "@typebot.io/chat-session/schemas";
 import { decrypt } from "@typebot.io/credentials/decrypt";
+import { getCredentials } from "@typebot.io/credentials/getCredentials";
 import { forgedBlocks } from "@typebot.io/forge-repository/definitions";
 import type { ForgedBlock } from "@typebot.io/forge-repository/schemas";
 import type { LogsStore, VariableStore } from "@typebot.io/forge/types";
@@ -15,7 +16,6 @@ import {
   parseVariables,
 } from "@typebot.io/variables/parseVariables";
 import type { SetVariableHistoryItem } from "@typebot.io/variables/schemas";
-import { getCredentials } from "../queries/getCredentials";
 import type { ContinueChatResponse } from "../schemas/api";
 import type { ExecuteIntegrationResponse } from "../types";
 import { updateVariablesInSession } from "../updateVariablesInSession";
@@ -40,7 +40,10 @@ export const executeForgedBlock = async (
         logs: [noCredentialsError],
       };
     }
-    credentials = await getCredentials(block.options.credentialsId);
+    credentials = await getCredentials(
+      block.options.credentialsId,
+      state.workspaceId,
+    );
     if (!credentials) {
       console.error("Could not find credentials in database");
       return {

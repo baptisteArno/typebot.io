@@ -189,6 +189,7 @@ const startTypebotPick = {
   settings: true,
   theme: true,
   updatedAt: true,
+  workspaceId: true,
 } as const;
 const startTypebotV5Schema = typebotV5Schema.pick(startTypebotPick).openapi({
   title: "Typebot V5",

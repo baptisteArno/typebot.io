@@ -109,6 +109,7 @@ export const startSession = async ({
 
   const initialState: SessionState = {
     version: "3",
+    workspaceId: typebot.workspaceId,
     typebotsQueue: [
       {
         resultId: result?.id,

@@ -115,6 +115,8 @@ const sessionStateSchemaV3 = sessionStateSchemaV2
     allowedOrigins: z.array(z.string()).optional(),
     setVariableIdsForHistory: z.array(z.string()).optional(),
     currentSetVariableHistoryIndex: z.number().optional(),
+    // TODO: Remove workspaceId optionality after deployed to production
+    workspaceId: z.string().optional(),
     previewMetadata: z
       .object({
         answers: z.array(answerSchema).optional(),

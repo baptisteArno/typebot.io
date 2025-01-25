@@ -32,6 +32,7 @@ export const updateRow = async (
   const doc = await getAuthenticatedGoogleDoc({
     credentialsId: options.credentialsId,
     spreadsheetId: options.spreadsheetId,
+    workspaceId: state.workspaceId,
   });
 
   await doc.loadInfo();
