@@ -15,10 +15,12 @@
 
     "module": "preserve",
     "moduleResolution": "bundler",
-    "noEmit": true,
 
     "lib": ["esnext"],
 
-    "jsx": "preserve"
+    "jsx": "preserve",
+
+    "composite": true,
+    "incremental": true
   }
 }

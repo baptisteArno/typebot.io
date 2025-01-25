@@ -1,4 +1,19 @@
 {
   "extends": "@typebot.io/tsconfig/base.json",
-  "include": ["src/**/*.ts"]
+  "include": ["src/**/*.ts"],
+  "compilerOptions": { "outDir": "node_modules/.cache/tsconfig" },
+  "references": [
+    {
+      "path": "../../rich-text"
+    },
+    {
+      "path": "../../variables"
+    },
+    {
+      "path": "../../zod"
+    },
+    {
+      "path": "../base"
+    }
+  ]
 }

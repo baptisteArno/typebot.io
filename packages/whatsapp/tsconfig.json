@@ -1,4 +1,52 @@
 {
   "extends": "@typebot.io/tsconfig/base.json",
-  "include": ["src/**/*.ts"]
+  "include": ["src/**/*.ts"],
+  "compilerOptions": { "outDir": "node_modules/.cache/tsconfig" },
+  "references": [
+    {
+      "path": "../blocks/base"
+    },
+    {
+      "path": "../blocks/bubbles"
+    },
+    {
+      "path": "../blocks/core"
+    },
+    {
+      "path": "../blocks/inputs"
+    },
+    {
+      "path": "../bot-engine"
+    },
+    {
+      "path": "../conditions"
+    },
+    {
+      "path": "../env"
+    },
+    {
+      "path": "../groups"
+    },
+    {
+      "path": "../lib"
+    },
+    {
+      "path": "../prisma"
+    },
+    {
+      "path": "../rich-text"
+    },
+    {
+      "path": "../settings"
+    },
+    {
+      "path": "../typebot"
+    },
+    {
+      "path": "../variables"
+    },
+    {
+      "path": "../zod"
+    }
+  ]
 }
