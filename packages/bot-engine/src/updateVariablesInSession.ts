@@ -1,10 +1,10 @@
+import type { SessionState } from "@typebot.io/chat-session/schemas";
 import { safeStringify } from "@typebot.io/lib/safeStringify";
 import type {
   SetVariableHistoryItem,
   Variable,
   VariableWithUnknowValue,
 } from "@typebot.io/variables/schemas";
-import type { SessionState } from "./schemas/chatSession";
 
 type Props = {
   state: SessionState;

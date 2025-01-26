@@ -1,7 +1,7 @@
 import type {
   TypebotInSession,
   TypebotInSessionV6,
-} from "../schemas/chatSession";
+} from "@typebot.io/chat-session/schemas";
 
 export const isTypebotInSessionAtLeastV6 = (
   typebot: TypebotInSession,

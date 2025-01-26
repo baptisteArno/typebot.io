@@ -1,6 +1,6 @@
 import { TRPCError } from "@trpc/server";
+import { getSession } from "@typebot.io/chat-session/queries/getSession";
 import { formatLogDetails } from "../logs/helpers/formatLogDetails";
-import { getSession } from "../queries/getSession";
 import { saveLogs } from "../queries/saveLogs";
 import type { ChatLog } from "../schemas/api";
 

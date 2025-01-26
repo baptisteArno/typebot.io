@@ -3,7 +3,7 @@ import { TRPCError } from "@trpc/server";
 import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
 import type { FileInputBlock } from "@typebot.io/blocks-inputs/file/schema";
 import type { TextInputBlock } from "@typebot.io/blocks-inputs/text/schema";
-import { getSession } from "@typebot.io/bot-engine/queries/getSession";
+import { getSession } from "@typebot.io/chat-session/queries/getSession";
 import { env } from "@typebot.io/env";
 import { getBlockById } from "@typebot.io/groups/helpers/getBlockById";
 import { parseGroups } from "@typebot.io/groups/helpers/parseGroups";

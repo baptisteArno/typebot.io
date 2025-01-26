@@ -1,7 +1,4 @@
-import {
-  blockBaseSchema,
-  credentialsBaseSchema,
-} from "@typebot.io/blocks-base/schemas";
+import { blockBaseSchema } from "@typebot.io/blocks-base/schemas";
 import { z } from "@typebot.io/zod";
 import { IntegrationBlockType } from "../constants";
 
@@ -30,22 +27,4 @@ export const sendEmailBlockSchema = blockBaseSchema
     ref: "sendEmailBlock",
   });
 
-export const smtpCredentialsSchema = z
-  .object({
-    type: z.literal("smtp"),
-    data: z.object({
-      host: z.string().optional(),
-      username: z.string().optional(),
-      password: z.string().optional(),
-      isTlsEnabled: z.boolean().optional(),
-      port: z.number(),
-      from: z.object({
-        email: z.string().optional(),
-        name: z.string().optional(),
-      }),
-    }),
-  })
-  .merge(credentialsBaseSchema);
-
 export type SendEmailBlock = z.infer<typeof sendEmailBlockSchema>;
-export type SmtpCredentials = z.infer<typeof smtpCredentialsSchema>;

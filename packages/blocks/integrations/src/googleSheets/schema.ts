@@ -1,7 +1,4 @@
-import {
-  blockBaseSchema,
-  credentialsBaseSchema,
-} from "@typebot.io/blocks-base/schemas";
+import { blockBaseSchema } from "@typebot.io/blocks-base/schemas";
 import {
   ComparisonOperators,
   LogicalOperator,
@@ -143,20 +140,6 @@ export const googleSheetsBlockSchema = z.union([
   googleSheetsBlockSchemas.v6,
 ]);
 
-export const googleSheetsCredentialsSchema = z
-  .object({
-    type: z.literal("google sheets"),
-    data: z.object({
-      refresh_token: z.string().nullish(),
-      expiry_date: z.number().nullish(),
-      access_token: z.string().nullish(),
-      token_type: z.string().nullish(),
-      id_token: z.string().nullish(),
-      scope: z.string().optional(),
-    }),
-  })
-  .merge(credentialsBaseSchema);
-
 export type GoogleSheetsBlock = z.infer<typeof googleSheetsBlockSchema>;
 export type GoogleSheetsBlockV5 = z.infer<typeof googleSheetsBlockSchemas.v5>;
 export type GoogleSheetsBlockV6 = z.infer<typeof googleSheetsBlockSchemas.v6>;
@@ -181,6 +164,3 @@ export type GoogleSheetsUpdateRowOptionsV6 = z.infer<
 export type Cell = z.infer<typeof cellSchema>;
 export type ExtractingCell = z.infer<typeof extractingCellSchema>;
 export type RowsFilterComparison = z.infer<typeof rowsFilterComparisonSchema>;
-export type GoogleSheetsCredentials = z.infer<
-  typeof googleSheetsCredentialsSchema
->;

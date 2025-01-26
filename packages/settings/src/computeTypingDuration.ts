@@ -1,5 +1,5 @@
-import { defaultSettings } from "@typebot.io/settings/constants";
-import type { Settings } from "@typebot.io/settings/schemas";
+import { defaultSettings } from "./constants";
+import type { Settings } from "./schemas";
 
 type Props = {
   bubbleContent: string;

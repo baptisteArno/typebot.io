@@ -33,6 +33,9 @@
       "path": "../../packages/conditions"
     },
     {
+      "path": "../../packages/credentials"
+    },
+    {
       "path": "../../packages/deprecated/bot-engine"
     },
     {

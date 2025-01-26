@@ -2,6 +2,7 @@ import {
   inputBlockV5Schema,
   inputBlockV6Schema,
 } from "@typebot.io/blocks-inputs/schema";
+import { dynamicThemeSchema } from "@typebot.io/theme/schemas";
 import {
   typebotV5Schema,
   typebotV6Schema,
@@ -14,7 +15,6 @@ import {
   startTypebotSchema,
 } from "../api";
 import { clientSideActionSchema } from "../clientSideAction";
-import { dynamicThemeSchema } from "../dynamicTheme";
 
 export const startElementIdSchema = z.union([
   z.object({

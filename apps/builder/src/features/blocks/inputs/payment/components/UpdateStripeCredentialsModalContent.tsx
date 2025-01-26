@@ -18,7 +18,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
-import type { StripeCredentials } from "@typebot.io/blocks-inputs/payment/schema";
+import type { StripeCredentials } from "@typebot.io/credentials/schemas";
 import { isNotEmpty } from "@typebot.io/lib/utils";
 import { useEffect, useState } from "react";
 

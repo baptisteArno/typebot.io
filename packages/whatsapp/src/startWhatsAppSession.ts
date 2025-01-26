@@ -2,12 +2,13 @@ import type {
   ContinueChatResponse,
   Message,
 } from "@typebot.io/bot-engine/schemas/api";
-import type { SessionState } from "@typebot.io/bot-engine/schemas/chatSession";
 import { startSession } from "@typebot.io/bot-engine/startSession";
+import type { SessionState } from "@typebot.io/chat-session/schemas";
 import {
   ComparisonOperators,
   LogicalOperator,
 } from "@typebot.io/conditions/constants";
+import type { WhatsAppCredentials } from "@typebot.io/credentials/schemas";
 import { isNotDefined } from "@typebot.io/lib/utils";
 import prisma from "@typebot.io/prisma";
 import type { Prisma } from "@typebot.io/prisma/types";
@@ -17,7 +18,6 @@ import type { PublicTypebot } from "@typebot.io/typebot/schemas/publicTypebot";
 import type { Typebot } from "@typebot.io/typebot/schemas/typebot";
 import type { SetVariableHistoryItem } from "@typebot.io/variables/schemas";
 import { WhatsAppError } from "./WhatsAppError";
-import type { WhatsAppCredentials } from "./schemas";
 
 type Props = {
   incomingMessage?: Message;

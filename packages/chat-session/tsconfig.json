@@ -6,13 +6,10 @@
   },
   "references": [
     {
-      "path": "../env"
+      "path": "../prisma"
     },
     {
-      "path": "../forge/repository"
-    },
-    {
-      "path": "../lib"
+      "path": "../theme"
     },
     {
       "path": "../zod"

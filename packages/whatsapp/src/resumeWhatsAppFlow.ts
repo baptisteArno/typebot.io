@@ -1,24 +1,22 @@
 import type { Block } from "@typebot.io/blocks-core/schemas/schema";
 import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
 import { continueBotFlow } from "@typebot.io/bot-engine/continueBotFlow";
-import { getSession } from "@typebot.io/bot-engine/queries/getSession";
-import { setIsReplyingInChatSession } from "@typebot.io/bot-engine/queries/setIsReplyingInChatSession";
 import { saveStateToDatabase } from "@typebot.io/bot-engine/saveStateToDatabase";
-import type { Message } from "@typebot.io/bot-engine/schemas/api";
-import type {
-  ChatSession,
-  SessionState,
-} from "@typebot.io/bot-engine/schemas/chatSession";
+import type { ChatSession, Message } from "@typebot.io/bot-engine/schemas/api";
+import { getSession } from "@typebot.io/chat-session/queries/getSession";
+import { setIsReplyingInChatSession } from "@typebot.io/chat-session/queries/setIsReplyingInChatSession";
+import type { SessionState } from "@typebot.io/chat-session/schemas";
+import { decrypt } from "@typebot.io/credentials/decrypt";
+import { getCredentials } from "@typebot.io/credentials/getCredentials";
+import type { WhatsAppCredentials } from "@typebot.io/credentials/schemas";
 import { env } from "@typebot.io/env";
 import { getBlockById } from "@typebot.io/groups/helpers/getBlockById";
-import { decrypt } from "@typebot.io/lib/api/encryption/decrypt";
 import redis from "@typebot.io/lib/redis";
 import { uploadFileToBucket } from "@typebot.io/lib/s3/uploadFileToBucket";
 import { isDefined } from "@typebot.io/lib/utils";
-import prisma from "@typebot.io/prisma";
 import { WhatsAppError } from "./WhatsAppError";
 import { downloadMedia } from "./downloadMedia";
-import type { WhatsAppCredentials, WhatsAppIncomingMessage } from "./schemas";
+import type { WhatsAppIncomingMessage } from "./schemas";
 import { sendChatReplyToWhatsApp } from "./sendChatReplyToWhatsApp";
 import { startWhatsAppSession } from "./startWhatsAppSession";
 
@@ -55,7 +53,11 @@ export const resumeWhatsAppFlow = async ({
 
   const isPreview = workspaceId === undefined || credentialsId === undefined;
 
-  const credentials = await getCredentials({ credentialsId, isPreview });
+  const credentials = await getWhatsAppCredentials({
+    credentialsId,
+    workspaceId,
+    isPreview,
+  });
   if (!credentials) throw new WhatsAppError("Could not find credentials");
 
   if (phoneNumberId && credentials.phoneNumberId !== phoneNumberId)
@@ -264,11 +266,14 @@ const convertWhatsAppMessageToTypebotMessage = async ({
   };
 };
 
-const getCredentials = async ({
+const getWhatsAppCredentials = async ({
   credentialsId,
+  workspaceId,
   isPreview,
 }: {
   credentialsId?: string;
+  // TO-DO: Remove workspaceId optionnality when deployed
+  workspaceId?: string;
   isPreview: boolean;
 }): Promise<WhatsAppCredentials["data"] | undefined> => {
   if (isPreview) {
@@ -285,15 +290,7 @@ const getCredentials = async ({
 
   if (!credentialsId) return;
 
-  const credentials = await prisma.credentials.findUnique({
-    where: {
-      id: credentialsId,
-    },
-    select: {
-      data: true,
-      iv: true,
-    },
-  });
+  const credentials = await getCredentials(credentialsId, workspaceId);
   if (!credentials) return;
   const data = (await decrypt(
     credentials.data,

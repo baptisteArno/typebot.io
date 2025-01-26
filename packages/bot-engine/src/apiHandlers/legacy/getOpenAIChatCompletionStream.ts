@@ -3,13 +3,13 @@ import type {
   ChatCompletionOpenAIOptions,
   OpenAICredentials,
 } from "@typebot.io/blocks-integrations/openai/schema";
-import { decryptV2 } from "@typebot.io/lib/api/encryption/decryptV2";
+import type { SessionState } from "@typebot.io/chat-session/schemas";
+import { decryptV2 } from "@typebot.io/credentials/decryptV2";
+import { getCredentials } from "@typebot.io/credentials/getCredentials";
 import { isNotEmpty } from "@typebot.io/lib/utils";
 import { parseVariableNumber } from "@typebot.io/variables/parseVariableNumber";
 import { OpenAIStream } from "ai";
 import { type ClientOptions, OpenAI } from "openai";
-import { getCredentials } from "../../queries/getCredentials";
-import type { SessionState } from "../../schemas/chatSession";
 
 export const getOpenAIChatCompletionStream = async (
   state: SessionState,
@@ -17,7 +17,10 @@ export const getOpenAIChatCompletionStream = async (
   messages: OpenAI.Chat.ChatCompletionMessageParam[],
 ) => {
   if (!options.credentialsId) return;
-  const credentials = await getCredentials(options.credentialsId);
+  const credentials = await getCredentials(
+    options.credentialsId,
+    state.workspaceId,
+  );
   if (!credentials) {
     console.error("Could not find credentials in database");
     return;

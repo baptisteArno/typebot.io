@@ -4,6 +4,7 @@ import {
   sessionOnlySetVariableOptions,
 } from "@typebot.io/blocks-logic/setVariable/constants";
 import type { SetVariableBlock } from "@typebot.io/blocks-logic/setVariable/schema";
+import type { SessionState } from "@typebot.io/chat-session/schemas";
 import { byId, isEmpty, isNotDefined } from "@typebot.io/lib/utils";
 import prisma from "@typebot.io/prisma";
 import type { Answer } from "@typebot.io/results/schemas/answers";
@@ -19,7 +20,6 @@ import {
   computeResultTranscript,
   parseTranscriptMessageText,
 } from "../../../computeResultTranscript";
-import type { SessionState } from "../../../schemas/chatSession";
 import type { ExecuteLogicResponse } from "../../../types";
 import { updateVariablesInSession } from "../../../updateVariablesInSession";
 import { parseScriptToExecuteClientSideAction } from "../script/executeScript";

@@ -19,5 +19,6 @@ export const findTypebot = ({ id, userId }: Props) =>
       variables: true,
       isArchived: true,
       updatedAt: true,
+      workspaceId: true,
     },
   });

@@ -1,5 +1,5 @@
 import prisma from "@typebot.io/prisma";
-import { sessionStateSchema } from "../schemas/chatSession";
+import { sessionStateSchema } from "../schemas";
 import { deleteSession } from "./deleteSession";
 
 export const getSession = async (sessionId: string) => {

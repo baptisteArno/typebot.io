@@ -1,4 +1,3 @@
-import { getAuthenticatedGoogleClient } from "@/lib/google-sheets";
 import { GoogleSheetsAction } from "@typebot.io/blocks-integrations/googleSheets/constants";
 import type {
   GoogleSheetsGetOptions,
@@ -9,6 +8,7 @@ import { saveErrorLog } from "@typebot.io/bot-engine/logs/saveErrorLog";
 import { saveSuccessLog } from "@typebot.io/bot-engine/logs/saveSuccessLog";
 import { LogicalOperator } from "@typebot.io/conditions/constants";
 import { ComparisonOperators } from "@typebot.io/conditions/constants";
+import { getAuthenticatedGoogleClient } from "@typebot.io/credentials/getAuthenticatedGoogleClient";
 import {
   badRequest,
   initMiddleware,
@@ -123,10 +123,10 @@ const insertRow = async (req: NextApiRequest, res: NextApiResponse) => {
       values: { [key: string]: string };
     };
   if (!hasValue(credentialsId)) return badRequest(res);
-  const auth = await getAuthenticatedGoogleClient(credentialsId);
-  if (!auth)
+  const client = await getAuthenticatedGoogleClient(credentialsId);
+  if (!client)
     return res.status(404).send("Couldn't find credentials in database");
-  const doc = new GoogleSpreadsheet(spreadsheetId, auth);
+  const doc = new GoogleSpreadsheet(spreadsheetId, client);
   try {
     await doc.loadInfo();
     const sheet = doc.sheetsById[Number(sheetId)];
@@ -155,10 +155,10 @@ const updateRow = async (req: NextApiRequest, res: NextApiResponse) => {
   const { resultId, credentialsId, values } = body;
 
   if (!hasValue(credentialsId) || !referenceCell) return badRequest(res);
-  const auth = await getAuthenticatedGoogleClient(credentialsId);
-  if (!auth)
+  const client = await getAuthenticatedGoogleClient(credentialsId);
+  if (!client)
     return res.status(404).send("Couldn't find credentials in database");
-  const doc = new GoogleSpreadsheet(spreadsheetId, auth);
+  const doc = new GoogleSpreadsheet(spreadsheetId, client);
   try {
     await doc.loadInfo();
     const sheet = doc.sheetsById[Number(sheetId)];

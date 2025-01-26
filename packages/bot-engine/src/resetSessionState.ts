@@ -1,4 +1,4 @@
-import type { SessionState } from "./schemas/chatSession";
+import type { SessionState } from "@typebot.io/chat-session/schemas";
 
 export const resetSessionState = (state: SessionState): SessionState => ({
   ...state,

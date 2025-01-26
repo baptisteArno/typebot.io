@@ -1,4 +1,3 @@
-import { credentialsBaseSchema } from "@typebot.io/blocks-base/schemas";
 import { ComparisonOperators } from "@typebot.io/conditions/constants";
 import { z } from "@typebot.io/zod";
 
@@ -194,16 +193,6 @@ export type WhatsAppWebhookRequestBody = z.infer<
   typeof whatsAppWebhookRequestBodySchema
 >;
 
-export const whatsAppCredentialsSchema = z
-  .object({
-    type: z.literal("whatsApp"),
-    data: z.object({
-      systemUserAccessToken: z.string(),
-      phoneNumberId: z.string(),
-    }),
-  })
-  .merge(credentialsBaseSchema);
-
 const whatsAppComparisonSchema = z.object({
   id: z.string(),
   comparisonOperator: z.nativeEnum(ComparisonOperators).optional(),
@@ -213,4 +202,3 @@ export type WhatsAppComparison = z.infer<typeof whatsAppComparisonSchema>;
 
 export type WhatsAppIncomingMessage = z.infer<typeof incomingMessageSchema>;
 export type WhatsAppSendingMessage = z.infer<typeof sendingMessageSchema>;
-export type WhatsAppCredentials = z.infer<typeof whatsAppCredentialsSchema>;

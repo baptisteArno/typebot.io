@@ -1,7 +1,7 @@
 import { NumberInput, TextInput } from "@/components/inputs";
 import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
 import { Stack } from "@chakra-ui/react";
-import type { SmtpCredentials } from "@typebot.io/blocks-integrations/sendEmail/schema";
+import type { SmtpCredentials } from "@typebot.io/credentials/schemas";
 import { isDefined } from "@udecode/plate-common";
 import React from "react";
 
