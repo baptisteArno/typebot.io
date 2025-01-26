@@ -22,6 +22,7 @@ export const convertInputToWhatsAppMessages = (
       : undefined;
   switch (input.type) {
     case InputBlockType.DATE:
+    case InputBlockType.TIME:
     case InputBlockType.EMAIL:
     case InputBlockType.FILE:
     case InputBlockType.NUMBER:

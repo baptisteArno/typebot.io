@@ -10,6 +10,7 @@ import { MultiplePictureChoice } from "@/features/blocks/inputs/pictureChoice/Mu
 import { SinglePictureChoice } from "@/features/blocks/inputs/pictureChoice/SinglePictureChoice";
 import { RatingForm } from "@/features/blocks/inputs/rating/components/RatingForm";
 import { TextInput } from "@/features/blocks/inputs/textInput/components/TextInput";
+import { TimeForm } from "@/features/blocks/inputs/time/components/TimeForm";
 import { UrlInput } from "@/features/blocks/inputs/url/components/UrlInput";
 import type { BotContext, InputSubmitContent } from "@/types";
 import { formattedMessages } from "@/utils/formattedMessagesSignal";
@@ -27,6 +28,7 @@ import type { PhoneNumberInputBlock } from "@typebot.io/blocks-inputs/phone/sche
 import type { PictureChoiceBlock } from "@typebot.io/blocks-inputs/pictureChoice/schema";
 import type { RatingInputBlock } from "@typebot.io/blocks-inputs/rating/schema";
 import type { TextInputBlock } from "@typebot.io/blocks-inputs/text/schema";
+import type { TimeInputBlock } from "@typebot.io/blocks-inputs/time/schema";
 import type { UrlInputBlock } from "@typebot.io/blocks-inputs/url/schema";
 import type {
   ContinueChatResponse,
@@ -209,6 +211,13 @@ const Input = (props: {
       <Match when={props.block.type === InputBlockType.DATE}>
         <DateForm
           options={props.block.options as DateInputBlock["options"]}
+          defaultValue={getPrefilledValue()}
+          onSubmit={onSubmit}
+        />
+      </Match>
+      <Match when={props.block.type === InputBlockType.TIME}>
+        <TimeForm
+          block={props.block as TimeInputBlock["options"]}
           defaultValue={getPrefilledValue()}
           onSubmit={onSubmit}
         />

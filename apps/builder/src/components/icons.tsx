@@ -10,6 +10,13 @@ export const featherIconsBaseProps: IconProps = {
 
 // 99% of these icons are from Feather icons (https://feathericons.com/)
 
+export const ClockIcon = (props: IconProps) => (
+  <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
+    <circle cx="12" cy="12" r="10"></circle>
+    <polyline points="12 6 12 12 16 14"></polyline>
+  </Icon>
+);
+
 export const SettingsIcon = (props: IconProps) => (
   <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
     <circle cx="12" cy="12" r="3"></circle>

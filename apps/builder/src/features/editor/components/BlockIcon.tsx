@@ -14,6 +14,7 @@ import { PhoneInputIcon } from "@/features/blocks/inputs/phone/components/PhoneI
 import { PictureChoiceIcon } from "@/features/blocks/inputs/pictureChoice/components/PictureChoiceIcon";
 import { RatingInputIcon } from "@/features/blocks/inputs/rating/components/RatingInputIcon";
 import { TextInputIcon } from "@/features/blocks/inputs/textInput/components/TextInputIcon";
+import { TimeInputIcon } from "@/features/blocks/inputs/time/components/TimeInputIcon";
 import { UrlInputIcon } from "@/features/blocks/inputs/url/components/UrlInputIcon";
 import { ChatwootLogo } from "@/features/blocks/integrations/chatwoot/components/ChatwootLogo";
 import { GoogleAnalyticsLogo } from "@/features/blocks/integrations/googleAnalytics/components/GoogleAnalyticsLogo";
@@ -69,6 +70,8 @@ export const BlockIcon = ({ type, ...props }: BlockIconProps): JSX.Element => {
       return <EmailInputIcon color={orange} {...props} />;
     case InputBlockType.URL:
       return <UrlInputIcon color={orange} {...props} />;
+    case InputBlockType.TIME:
+      return <TimeInputIcon color={orange} {...props} />;
     case InputBlockType.DATE:
       return <DateInputIcon color={orange} {...props} />;
     case InputBlockType.PHONE:

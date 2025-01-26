@@ -8,6 +8,7 @@ import { PhoneInputSettings } from "@/features/blocks/inputs/phone/components/Ph
 import { PictureChoiceSettings } from "@/features/blocks/inputs/pictureChoice/components/PictureChoiceSettings";
 import { RatingInputSettings } from "@/features/blocks/inputs/rating/components/RatingInputSettings";
 import { TextInputSettings } from "@/features/blocks/inputs/textInput/components/TextInputSettings";
+import { TimeInputSettings } from "@/features/blocks/inputs/time/components/TimeInputSettings";
 import { UrlInputSettings } from "@/features/blocks/inputs/url/components/UrlInputSettings";
 import { ChatwootSettings } from "@/features/blocks/integrations/chatwoot/components/ChatwootSettings";
 import { GoogleAnalyticsSettings } from "@/features/blocks/integrations/googleAnalytics/components/GoogleAnalyticsSettings";
@@ -173,6 +174,14 @@ export const BlockSettings = ({
     case InputBlockType.DATE: {
       return (
         <DateInputSettings
+          options={block.options}
+          onOptionsChange={updateOptions}
+        />
+      );
+    }
+    case InputBlockType.TIME: {
+      return (
+        <TimeInputSettings
           options={block.options}
           onOptionsChange={updateOptions}
         />
