@@ -23,7 +23,12 @@ export const parseTime = (
 
   let hoursInt = Number(hours);
 
-  if (hoursInt >= 13) {
+  if (hoursInt === 0) {
+    hoursInt = 12;
+    ampm = "AM";
+  } else if (hoursInt === 12) {
+    ampm = "PM";
+  } else if (hoursInt > 12) {
     hoursInt = hoursInt - 12;
     ampm = "PM";
   }
