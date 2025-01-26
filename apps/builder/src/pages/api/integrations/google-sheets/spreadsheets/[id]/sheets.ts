@@ -7,7 +7,6 @@ import {
   notAuthenticated,
 } from "@typebot.io/lib/api/utils";
 import { isDefined } from "@typebot.io/lib/utils";
-import type { OAuth2Client } from "google-auth-library";
 import { GoogleSpreadsheet } from "google-spreadsheet";
 import type { NextApiRequest, NextApiResponse } from "next";
 
@@ -20,7 +19,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const credentialsId = req.query.credentialsId as string | undefined;
     if (!credentialsId) return badRequest(res);
     const spreadsheetId = req.query.id as string;
-    const client = await getAuthenticatedGoogleClient(user.id);
+    const client = await getAuthenticatedGoogleClient(credentialsId);
     if (!client)
       return res
         .status(404)
