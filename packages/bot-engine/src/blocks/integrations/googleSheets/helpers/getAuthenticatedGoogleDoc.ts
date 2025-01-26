@@ -9,7 +9,7 @@ export const getAuthenticatedGoogleDoc = async ({
 }: {
   credentialsId?: string;
   spreadsheetId?: string;
-  // TO-DO: Remove workspaceId optionality after deployed to production
+  // TO-DO: Remove workspaceId optionality once v3.4 is out
   workspaceId?: string;
 }) => {
   if (!credentialsId || !spreadsheetId)
