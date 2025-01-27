@@ -9,14 +9,11 @@ import type { TelemetryEvent } from "@typebot.io/telemetry/schemas";
 import { trackEvents } from "@typebot.io/telemetry/trackEvents";
 import type { Workspace } from "@typebot.io/workspaces/schemas";
 import Stripe from "stripe";
-import { promptAndSetEnvironment } from "./utils";
 import type { MemberInWorkspace } from ".prisma/client";
 
 const LIMIT_EMAIL_TRIGGER_PERCENT = 0.75;
 
 export const checkAndReportChatsUsage = async () => {
-  await promptAndSetEnvironment("production");
-
   console.log("Get collected results from the last hour...");
 
   const zeroedMinutesHour = new Date();

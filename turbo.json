@@ -1,8 +1,9 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "globalDependencies": [".env"],
-  "globalEnv": ["DATABASE_URL", "SKIP_ENV_CHECK"],
+  "globalEnv": ["DATABASE_URL", "SKIP_ENV_CHECK", "DATABASE_URL_REPLICA"],
   "globalPassThroughEnv": ["ENCRYPTION_SECRET"],
+  "envMode": "loose",
   "tasks": {
     "dev": {
       "dependsOn": ["^db:generate", "^db:push", "@typebot.io/react#build"],
@@ -44,17 +45,12 @@
       "cache": false
     },
     "db:cleanDatabase": {
-      "env": ["NEXTAUTH_URL", "DATABASE_URL_READ_REPLICA"],
+      "env": ["NEXTAUTH_URL"],
       "dependsOn": ["@typebot.io/prisma#db:generate"],
       "cache": false
     },
     "checkAndReportChatsUsage": {
-      "env": [
-        "STRIPE_*",
-        "NEXTAUTH_URL",
-        "SMTP_*",
-        "DATABASE_URL_READ_REPLICA"
-      ],
+      "env": ["STRIPE_*", "NEXTAUTH_URL", "SMTP_*"],
       "dependsOn": ["@typebot.io/prisma#db:generate"],
       "cache": false
     },
