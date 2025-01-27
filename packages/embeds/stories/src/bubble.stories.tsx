@@ -44,8 +44,8 @@ export const Default = () => {
           }}
           theme={{
             button: {
-              backgroundColor: "#FF7537",
-              iconColor: "white",
+              customIconSrc:
+                "https://avatars.githubusercontent.com/u/16015833?v=4",
             },
           }}
           // isPreview
