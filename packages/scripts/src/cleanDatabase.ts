@@ -1,11 +1,8 @@
-import prisma from "@typebot.io/prisma";
+import prisma from "@typebot.io/prisma/withReadReplica";
 import { archiveResults } from "@typebot.io/results/archiveResults";
 import type { Typebot } from "@typebot.io/typebot/schemas/typebot";
-import { promptAndSetEnvironment } from "./utils";
 
 export const cleanDatabase = async () => {
-  await promptAndSetEnvironment("production");
-
   console.log("Starting database cleanup...");
   await deleteOldChatSessions();
   await deleteExpiredAppSessions();
@@ -214,6 +211,7 @@ const deleteResultsFromArchivedTypebotsIfAny = async (
     `Found ${archivedTypebotsWithResults.length} archived typebots with non-archived results.`,
   );
   for (const archivedTypebot of archivedTypebotsWithResults) {
+    // @ts-ignore
     await archiveResults(prisma)({
       typebot: archivedTypebot,
       resultsFilter: {

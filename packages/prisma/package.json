@@ -14,8 +14,9 @@
     "db:migrate": "bun migrate:deploy"
   },
   "dependencies": {
-    "prisma": "5.12.1",
-    "@prisma/client": "5.12.1"
+    "@prisma/client": "6.2.1",
+    "@prisma/extension-read-replicas": "0.4.0",
+    "prisma": "6.2.1"
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*",
