@@ -67,6 +67,7 @@ export const checkAndReportChatsUsage = async () => {
       chatsLimitFirstEmailSentAt: true,
       chatsLimitSecondEmailSentAt: true,
       stripeId: true,
+      chatsHardLimit: true,
     },
   });
 
@@ -144,7 +145,11 @@ export const checkAndReportChatsUsage = async () => {
       }
     }
 
-    if (totalChatsUsed > chatsLimit * 1.5 && workspace.plan === Plan.FREE) {
+    if (
+      (totalChatsUsed > chatsLimit * 1.5 && workspace.plan === Plan.FREE) ||
+      (isDefined(workspace.chatsHardLimit) &&
+        totalChatsUsed >= workspace.chatsHardLimit)
+    ) {
       console.log(`Automatically quarantine workspace ${workspace.id}...`);
       await prisma.workspace.updateMany({
         where: { id: workspace.id },
@@ -161,7 +166,7 @@ export const checkAndReportChatsUsage = async () => {
                 workspaceId: workspace.id,
                 data: {
                   totalChatsUsed,
-                  chatsLimit,
+                  chatsLimit: workspace.chatsHardLimit ?? chatsLimit,
                 },
               }) satisfies TelemetryEvent,
           ),
@@ -373,16 +378,15 @@ async function sendLimitWarningEmails({
     | "chatsLimitFirstEmailSentAt"
     | "chatsLimitSecondEmailSentAt"
     | "plan"
+    | "chatsHardLimit"
   > & {
     members: (Pick<MemberInWorkspace, "role"> & {
       user: { id: string; email: string | null };
     })[];
   };
 }): Promise<TelemetryEvent[]> {
-  if (
-    chatsLimit <= 0 ||
-    totalChatsUsed < chatsLimit * LIMIT_EMAIL_TRIGGER_PERCENT
-  )
+  const limit = workspace.chatsHardLimit ?? chatsLimit;
+  if (limit <= 0 || totalChatsUsed < limit * LIMIT_EMAIL_TRIGGER_PERCENT)
     return [];
 
   const emailEvents: TelemetryEvent[] = [];
@@ -395,8 +399,8 @@ async function sendLimitWarningEmails({
     try {
       await sendAlmostReachedChatsLimitEmail({
         to,
-        usagePercent: Math.round((totalChatsUsed / chatsLimit) * 100),
-        chatsLimit,
+        usagePercent: Math.round((totalChatsUsed / limit) * 100),
+        chatsLimit: limit,
         workspaceName: workspace.name,
       });
       emailEvents.push(
@@ -419,15 +423,15 @@ async function sendLimitWarningEmails({
   }
 
   if (
-    totalChatsUsed >= chatsLimit &&
+    totalChatsUsed >= limit &&
     !workspace.chatsLimitSecondEmailSentAt &&
-    workspace.plan === Plan.FREE
+    (workspace.plan === Plan.FREE || isDefined(workspace.chatsHardLimit))
   ) {
     console.log(`Send reached chats limit email to ${to.join(", ")}...`);
     try {
       await sendReachedChatsLimitEmail({
         to,
-        chatsLimit,
+        chatsLimit: limit,
         url: `${process.env.NEXTAUTH_URL}/typebots?workspaceId=${workspace.id}`,
       });
       emailEvents.push(
