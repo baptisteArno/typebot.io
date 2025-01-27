@@ -7920,6 +7920,9 @@
                         "title": "Typebot V5"
                       }
                     ]
+                  },
+                  "fromTemplate": {
+                    "type": "string"
                   }
                 },
                 "required": [
