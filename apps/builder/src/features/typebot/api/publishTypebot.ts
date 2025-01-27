@@ -189,7 +189,6 @@ export const publishTypebot = authenticatedProcedure
         typebotId: existingTypebot.id,
         userId: user.id,
         data: {
-          name: existingTypebot.name,
           isFirstPublish: existingTypebot.publishedTypebot ? undefined : true,
         },
       });

@@ -46,6 +46,7 @@ export const workspaceSchema = z.object({
   isSuspended: z.boolean(),
   isPastDue: z.boolean(),
   isVerified: z.boolean().nullable(),
+  chatsHardLimit: z.number().nullable(),
 }) satisfies z.ZodType<Prisma.Workspace>;
 
 export type Workspace = z.infer<typeof workspaceSchema>;

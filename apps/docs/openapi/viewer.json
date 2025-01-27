@@ -3655,6 +3655,9 @@
           },
           "updatedAt": {
             "type": "string"
+          },
+          "workspaceId": {
+            "type": "string"
           }
         },
         "required": [
@@ -3666,7 +3669,8 @@
           "variables",
           "settings",
           "theme",
-          "updatedAt"
+          "updatedAt",
+          "workspaceId"
         ],
         "title": "Typebot V6"
       },
@@ -12601,6 +12605,9 @@
           },
           "updatedAt": {
             "type": "string"
+          },
+          "workspaceId": {
+            "type": "string"
           }
         },
         "required": [
@@ -12612,7 +12619,8 @@
           "variables",
           "settings",
           "theme",
-          "updatedAt"
+          "updatedAt",
+          "workspaceId"
         ],
         "title": "Typebot V5"
       },

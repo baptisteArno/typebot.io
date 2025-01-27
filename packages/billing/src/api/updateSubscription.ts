@@ -33,6 +33,7 @@ export const updateSubscription = async ({
     select: {
       isPastDue: true,
       stripeId: true,
+      plan: true,
       members: {
         select: {
           userId: true,
@@ -144,6 +145,7 @@ export const updateSubscription = async ({
       workspaceId,
       userId: user.id,
       data: {
+        prevPlan: workspace.plan,
         plan,
       },
     },

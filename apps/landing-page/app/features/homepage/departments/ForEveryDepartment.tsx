@@ -100,7 +100,7 @@ export const ForEveryDepartment = () => {
             Automate conversations throughout the entire customer journey.
           </p>
         </div>
-        <div className="flex flex-col gap-4 md:gap-6 md:flex-row">
+        <div className="flex isolate flex-col gap-4 md:gap-6 md:flex-row">
           {departments.map((department, index) => (
             <DepartmentCard
               key={department.title}

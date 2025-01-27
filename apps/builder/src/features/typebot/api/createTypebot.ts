@@ -145,9 +145,6 @@ export const createTypebot = authenticatedProcedure
         workspaceId: parsedNewTypebot.workspaceId,
         typebotId: parsedNewTypebot.id,
         userId: user.id,
-        data: {
-          name: newTypebot.name,
-        },
       },
     ]);
 
