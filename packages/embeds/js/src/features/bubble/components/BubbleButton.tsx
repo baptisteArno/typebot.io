@@ -66,7 +66,7 @@ const OpenIcon = (props: Props) => (
           "duration-200 transition",
           props.isBotOpened ? "scale-0 opacity-0" : "scale-100 opacity-100",
           isSvgSrc(props.customIconSrc) ? "w-[60%]" : "w-full h-full",
-          isSvgSrc(props.customIconSrc) ? "" : "object-cover rounded-full",
+          isSvgSrc(props.customIconSrc) ? "" : "object-cover rounded-2xl",
         )}
         alt="Bubble button icon"
       />
@@ -124,7 +124,7 @@ const CloseIcon = (props: Props) => (
             ? "scale-100 rotate-0 opacity-100"
             : "scale-0 -rotate-180 opacity-0",
           isSvgSrc(props.customCloseIconSrc) ? "w-[60%]" : "w-full h-full",
-          isSvgSrc(props.customCloseIconSrc) ? "" : "object-cover rounded-full",
+          isSvgSrc(props.customCloseIconSrc) ? "" : "object-cover rounded-2xl",
         )}
         alt="Bubble button close icon"
       />
