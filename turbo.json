@@ -44,12 +44,17 @@
       "cache": false
     },
     "db:cleanDatabase": {
-      "env": ["NEXTAUTH_URL"],
+      "env": ["NEXTAUTH_URL", "DATABASE_URL_READ_REPLICA"],
       "dependsOn": ["@typebot.io/prisma#db:generate"],
       "cache": false
     },
     "checkAndReportChatsUsage": {
-      "env": ["STRIPE_*", "NEXTAUTH_URL", "SMTP_*"],
+      "env": [
+        "STRIPE_*",
+        "NEXTAUTH_URL",
+        "SMTP_*",
+        "DATABASE_URL_READ_REPLICA"
+      ],
       "dependsOn": ["@typebot.io/prisma#db:generate"],
       "cache": false
     },
