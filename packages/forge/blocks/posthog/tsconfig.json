@@ -1,0 +1,10 @@
+{
+  "extends": "@typebot.io/tsconfig/react.json",
+  "include": ["src/**/*.ts", "src/**/*.tsx"],
+  "compilerOptions": {},
+  "references": [
+    {
+      "path": "../../core"
+    }
+  ]
+}
