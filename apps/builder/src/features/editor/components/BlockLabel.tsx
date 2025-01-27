@@ -58,6 +58,7 @@ export const getInputBlockLabel = (
   [InputBlockType.TEXT]: t("editor.sidebarBlock.text.label"),
   [InputBlockType.URL]: t("editor.sidebarBlock.website.label"),
   [InputBlockType.DATE]: t("editor.sidebarBlock.date.label"),
+  [InputBlockType.TIME]: t("editor.sidebarBlock.time.label"),
   [InputBlockType.PHONE]: t("editor.sidebarBlock.phone.label"),
   [InputBlockType.CHOICE]: t("editor.sidebarBlock.button.label"),
   [InputBlockType.PICTURE_CHOICE]: t("editor.sidebarBlock.picChoice.label"),

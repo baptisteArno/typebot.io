@@ -13,6 +13,7 @@ import { PhoneNodeContent } from "@/features/blocks/inputs/phone/components/Phon
 import { PictureChoiceNode } from "@/features/blocks/inputs/pictureChoice/components/PictureChoiceNode";
 import { RatingInputContent } from "@/features/blocks/inputs/rating/components/RatingInputContent";
 import { TextInputNodeContent } from "@/features/blocks/inputs/textInput/components/TextInputNodeContent";
+import { TimeNodeContent } from "@/features/blocks/inputs/time/components/TimeNodeContent";
 import { UrlNodeContent } from "@/features/blocks/inputs/url/components/UrlNodeContent";
 import { ChatwootNodeBody } from "@/features/blocks/integrations/chatwoot/components/ChatwootNodeBody";
 import { GoogleAnalyticsNodeBody } from "@/features/blocks/integrations/googleAnalytics/components/GoogleAnalyticsNodeBody";
@@ -92,6 +93,9 @@ export const BlockNodeContent = ({
     }
     case InputBlockType.DATE: {
       return <DateNodeContent variableId={block.options?.variableId} />;
+    }
+    case InputBlockType.TIME: {
+      return <TimeNodeContent variableId={block.options?.variableId} />;
     }
     case InputBlockType.PAYMENT: {
       return <PaymentInputContent block={block} />;

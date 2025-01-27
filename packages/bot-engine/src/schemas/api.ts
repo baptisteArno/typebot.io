@@ -16,6 +16,7 @@ import { phoneNumberInputBlockSchema } from "@typebot.io/blocks-inputs/phone/sch
 import { pictureChoiceBlockSchemas } from "@typebot.io/blocks-inputs/pictureChoice/schema";
 import { ratingInputBlockSchema } from "@typebot.io/blocks-inputs/rating/schema";
 import { textInputSchema } from "@typebot.io/blocks-inputs/text/schema";
+import { timeInputSchema } from "@typebot.io/blocks-inputs/time/schema";
 import { urlInputSchema } from "@typebot.io/blocks-inputs/url/schema";
 import { sessionStateSchema } from "@typebot.io/chat-session/schemas";
 import { logSchema } from "@typebot.io/results/schemas/results";
@@ -355,6 +356,7 @@ const chatResponseBaseSchema = z.object({
         urlInputSchema,
         phoneNumberInputBlockSchema,
         dateInputSchema,
+        timeInputSchema,
         paymentInputSchema,
         ratingInputBlockSchema,
         fileInputBlockSchemas.v6,

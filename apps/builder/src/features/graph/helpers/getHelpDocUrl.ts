@@ -29,6 +29,8 @@ export const getHelpDocUrl = (
       return "https://docs.typebot.io/editor/blocks/inputs/website";
     case InputBlockType.DATE:
       return "https://docs.typebot.io/editor/blocks/inputs/date";
+    case InputBlockType.TIME:
+      return "https://docs.typebot.io/editor/blocks/inputs/time";
     case InputBlockType.PHONE:
       return "https://docs.typebot.io/editor/blocks/inputs/phone-number";
     case InputBlockType.CHOICE:

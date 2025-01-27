@@ -99,6 +99,7 @@
                 "editor/blocks/inputs/email",
                 "editor/blocks/inputs/website",
                 "editor/blocks/inputs/date",
+                "editor/blocks/inputs/time",
                 "editor/blocks/inputs/phone-number",
                 "editor/blocks/inputs/buttons",
                 "editor/blocks/inputs/picture-choice",
