@@ -9,11 +9,6 @@ export const trackEvents = async (events: TelemetryEvent[]) => {
   });
 
   events.forEach(async (event) => {
-    if (event.name === "User created") {
-      client.identify({
-        distinctId: event.userId,
-      });
-    }
     if (
       event.name === "Workspace created" ||
       event.name === "Subscription updated"
