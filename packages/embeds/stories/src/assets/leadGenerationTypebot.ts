@@ -13,6 +13,7 @@ export const leadGenerationTypebot: StartTypebot = {
   id: "clckrl4q5000t3b6sabwokaar",
   events: null,
   updatedAt: new Date(),
+  workspaceId: "",
   groups: [
     {
       id: "clckrl4q5000g3b6skizhd262",

@@ -73,6 +73,7 @@ export const webhookHandler = async (
                 workspaceId,
                 userId: m.userId,
                 data: {
+                  prevPlan: workspace.plan,
                   plan,
                 },
               })),
@@ -106,6 +107,7 @@ export const webhookHandler = async (
                 workspaceId,
                 userId,
                 data: {
+                  prevPlan: Plan.FREE,
                   plan: Plan.CUSTOM,
                 },
               },
@@ -264,6 +266,7 @@ export const webhookHandler = async (
               workspaceId: workspace.id,
               userId: m.userId,
               data: {
+                prevPlan: workspace.plan,
                 plan: Plan.FREE,
               },
             })),

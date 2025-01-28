@@ -85,9 +85,6 @@ export const createCustomDomain = authenticatedProcedure
         name: "Custom domain added",
         userId: user.id,
         workspaceId,
-        data: {
-          domain: name,
-        },
       },
     ]);
 

@@ -112,7 +112,7 @@ test("plan changes should work", async ({ page }) => {
   test.setTimeout(80000);
   // Upgrade to STARTER
   await page.goto("/typebots");
-  await page.click("text=Pro workspace");
+  await page.getByRole("button", { name: "Pro workspace Pro" }).click();
   await page.click("text=Plan Change Workspace");
   await page.click("text=Settings & Members");
   await page.click("text=Billing & Usage");
@@ -194,7 +194,7 @@ test("should display invoices", async ({ page }) => {
 
 test("custom plans should work", async ({ page }) => {
   await page.goto("/typebots");
-  await page.click("text=Pro workspace");
+  await page.getByRole("button", { name: "Pro workspace Pro" }).click();
   await page.click("text=Enterprise Workspace");
   await page.click("text=Settings & Members");
   await page.click("text=Billing & Usage");

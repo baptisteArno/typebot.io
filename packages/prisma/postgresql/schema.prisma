@@ -98,6 +98,8 @@ model Workspace {
   isPastDue                     Boolean               @default(false)
   isVerified                    Boolean?
   themeTemplates                ThemeTemplate[]
+  chatsHardLimit                Int?
+  settings                      Json?
 }
 
 model MemberInWorkspace {

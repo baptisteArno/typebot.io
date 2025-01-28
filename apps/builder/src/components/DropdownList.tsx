@@ -14,7 +14,7 @@ import {
   Stack,
   chakra,
 } from "@chakra-ui/react";
-import type { ReactNode } from "react";
+import type { ReactElement, ReactNode } from "react";
 import React from "react";
 import { MoreInfoTooltip } from "./MoreInfoTooltip";
 
@@ -22,11 +22,11 @@ type Item =
   | string
   | number
   | {
-      label: string;
+      label: ReactNode;
       value: string;
+      icon?: ReactElement;
     };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Props<T extends Item> = {
   currentItem: string | number | undefined;
   onItemSelect: (
@@ -42,7 +42,6 @@ type Props<T extends Item> = {
   moreInfoTooltip?: string;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const DropdownList = <T extends Item>({
   currentItem,
   onItemSelect,
@@ -92,7 +91,16 @@ export const DropdownList = <T extends Item>({
           w="full"
           {...props}
         >
-          <chakra.span noOfLines={1} display="block">
+          <chakra.span noOfLines={1} display="flex" gap={2}>
+            {currentItem
+              ? (getItemIcon(
+                  items?.find((item) =>
+                    typeof item === "string" || typeof item === "number"
+                      ? currentItem === item
+                      : currentItem === item.value,
+                  ),
+                ) ?? null)
+              : null}
             {currentItem
               ? getItemLabel(
                   items?.find((item) =>
@@ -115,6 +123,7 @@ export const DropdownList = <T extends Item>({
                   whiteSpace="nowrap"
                   textOverflow="ellipsis"
                   onClick={handleMenuItemClick(item)}
+                  icon={getItemIcon(item)}
                 >
                   {typeof item === "object" ? item.label : item}
                 </MenuItem>
@@ -137,4 +146,10 @@ const getItemLabel = (item?: Item) => {
 const getItemValue = (item: Item) => {
   if (typeof item === "object") return item.value;
   return item;
+};
+
+const getItemIcon = (item?: Item) => {
+  if (!item) return undefined;
+  if (typeof item === "object") return item.icon;
+  return undefined;
 };

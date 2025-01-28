@@ -5,6 +5,17 @@ import { workspaceSchema } from "@typebot.io/workspaces/schemas";
 import { z } from "@typebot.io/zod";
 import { isReadWorkspaceFobidden } from "../helpers/isReadWorkspaceFobidden";
 
+const inAppWorkspaceSchema = workspaceSchema.omit({
+  chatsLimitFirstEmailSentAt: true,
+  chatsLimitSecondEmailSentAt: true,
+  storageLimitFirstEmailSentAt: true,
+  storageLimitSecondEmailSentAt: true,
+  customStorageLimit: true,
+  additionalChatsIndex: true,
+  additionalStorageIndex: true,
+  isQuarantined: true,
+});
+
 export const getWorkspace = authenticatedProcedure
   .meta({
     openapi: {
@@ -26,16 +37,7 @@ export const getWorkspace = authenticatedProcedure
   )
   .output(
     z.object({
-      workspace: workspaceSchema.omit({
-        chatsLimitFirstEmailSentAt: true,
-        chatsLimitSecondEmailSentAt: true,
-        storageLimitFirstEmailSentAt: true,
-        storageLimitSecondEmailSentAt: true,
-        customStorageLimit: true,
-        additionalChatsIndex: true,
-        additionalStorageIndex: true,
-        isQuarantined: true,
-      }),
+      workspace: inAppWorkspaceSchema,
     }),
   )
   .query(async ({ input: { workspaceId }, ctx: { user } }) => {
@@ -51,6 +53,6 @@ export const getWorkspace = authenticatedProcedure
       });
 
     return {
-      workspace,
+      workspace: inAppWorkspaceSchema.parse(workspace),
     };
   });

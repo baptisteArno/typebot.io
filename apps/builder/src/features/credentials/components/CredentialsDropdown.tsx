@@ -21,7 +21,7 @@ import { useToast } from "../../../hooks/useToast";
 type Props = Omit<ButtonProps, "type"> & {
   type: Credentials["type"];
   workspaceId: string;
-  currentCredentialsId?: string;
+  currentCredentialsId: string | undefined;
   onCredentialsSelect: (credentialId?: string) => void;
   onCreateNewClick: () => void;
   defaultCredentialLabel?: string;

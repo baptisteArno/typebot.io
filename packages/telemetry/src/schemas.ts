@@ -20,20 +20,12 @@ const typebotEvent = workspaceEvent.merge(
 const workspaceCreatedEventSchema = workspaceEvent.merge(
   z.object({
     name: z.literal("Workspace created"),
-    data: z.object({
-      name: z.string().optional(),
-      plan: z.nativeEnum(Plan),
-    }),
   }),
 );
 
 const userCreatedEventSchema = userEvent.merge(
   z.object({
     name: z.literal("User created"),
-    data: z.object({
-      email: z.string(),
-      name: z.string().optional(),
-    }),
   }),
 );
 
@@ -52,22 +44,17 @@ const userLoggedOutEventSchema = userEvent.merge(
 const userUpdatedEventSchema = userEvent.merge(
   z.object({
     name: z.literal("User updated"),
-    data: z.object({
-      name: z.string().optional(),
-      onboardingCategories: z.array(z.string()).optional(),
-      referral: z.string().optional(),
-      company: z.string().optional(),
-    }),
   }),
 );
 
 const typebotCreatedEventSchema = typebotEvent.merge(
   z.object({
     name: z.literal("Typebot created"),
-    data: z.object({
-      name: z.string(),
-      template: z.string().optional(),
-    }),
+    data: z
+      .object({
+        template: z.string().optional(),
+      })
+      .optional(),
   }),
 );
 
@@ -75,7 +62,6 @@ const publishedTypebotEventSchema = typebotEvent.merge(
   z.object({
     name: z.literal("Typebot published"),
     data: z.object({
-      name: z.string(),
       isFirstPublish: z.literal(true).optional(),
     }),
   }),
@@ -84,9 +70,6 @@ const publishedTypebotEventSchema = typebotEvent.merge(
 const customDomainAddedEventSchema = workspaceEvent.merge(
   z.object({
     name: z.literal("Custom domain added"),
-    data: z.object({
-      domain: z.string(),
-    }),
   }),
 );
 
@@ -100,6 +83,7 @@ const subscriptionUpdatedEventSchema = workspaceEvent.merge(
   z.object({
     name: z.literal("Subscription updated"),
     data: z.object({
+      prevPlan: z.nativeEnum(Plan),
       plan: z.nativeEnum(Plan),
     }),
   }),
@@ -192,9 +176,7 @@ export const limitSecondEmailSentEventSchema = workspaceEvent.merge(
   }),
 );
 
-export const clientSideEvents = [removedBrandingEventSchema] as const;
-
-export const eventSchema = z.discriminatedUnion("name", [
+const builderEvents = [
   workspaceCreatedEventSchema,
   userCreatedEventSchema,
   userLoggedInEventSchema,
@@ -216,7 +198,19 @@ export const eventSchema = z.discriminatedUnion("name", [
   visitedAnalyticsEventSchema,
   limitFirstEmailSentEventSchema,
   limitSecondEmailSentEventSchema,
-  ...clientSideEvents,
+  removedBrandingEventSchema,
+] as const;
+
+const pageViewEventSchema = z.object({
+  name: z.literal("$pageview"),
+  visitorId: z.string(),
+});
+
+const landingPageEvents = [pageViewEventSchema] as const;
+
+export const eventSchema = z.discriminatedUnion("name", [
+  ...builderEvents,
+  ...landingPageEvents,
 ]);
 
 export const clientSideCreateEventSchema = removedBrandingEventSchema.omit({
