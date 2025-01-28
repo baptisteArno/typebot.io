@@ -71,7 +71,7 @@ test.describe
         const favIconImg = page.locator("img >> nth=0");
         await expect(favIconImg).toHaveAttribute(
           "src",
-          "http://localhost:3001/favicon.png",
+          "http://localhost:3001/favicon.svg",
         );
         await favIconImg.click();
         await expect(page.locator("text=Giphy")).toBeHidden();
