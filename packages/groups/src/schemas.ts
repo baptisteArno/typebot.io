@@ -19,7 +19,6 @@ export const groupV6Schema = z
   .object({
     id: z.string(),
     title: z.string(),
-    generatingTitle: z.boolean().optional(),
     graphCoordinates: z.object({
       x: z.number(),
       y: z.number(),

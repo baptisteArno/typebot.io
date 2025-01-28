@@ -1,16 +1,13 @@
 import assert from "assert";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
-import type { GenerateGroupTitle } from "@/features/editor/providers/typebotActions/edges";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { trpc } from "@/lib/trpc";
+import { trpcVanilla } from "@/lib/trpc";
 import { useEventListener } from "@chakra-ui/react";
 import type { Coordinates } from "@dnd-kit/utilities";
-import type { BlockIndices } from "@typebot.io/blocks-core/schemas/schema";
 import { omit } from "@typebot.io/lib/utils";
-import type { TypebotV6 } from "@typebot.io/typebot/schemas/typebot";
 import { colors } from "@typebot.io/ui/chakraTheme";
-import type { Draft } from "immer";
 import React, { useMemo, useState } from "react";
+import { toast } from "sonner";
 import { eventWidth, groupWidth } from "../../constants";
 import { computeConnectingEdgePath } from "../../helpers/computeConnectingEdgePath";
 import { computeEdgePathToMouse } from "../../helpers/computeEdgePathToMouth";
@@ -36,9 +33,9 @@ export const DrawingEdge = ({ connectingIds }: Props) => {
     () => true,
   );
   const { eventsCoordinates } = useEventsCoordinates();
-  const { createEdge } = useTypebot();
-  const [mousePosition, setMousePosition] = useState<Coordinates | null>(null);
   const { workspace } = useWorkspace();
+  const { createEdge, typebot, updateGroup } = useTypebot();
+  const [mousePosition, setMousePosition] = useState<Coordinates | null>(null);
 
   const sourceElementCoordinates = connectingIds
     ? "eventId" in connectingIds.source
@@ -120,46 +117,42 @@ export const DrawingEdge = ({ connectingIds }: Props) => {
     setConnectingIds(null);
   });
 
-  const createNewEdge = (connectingIds: ConnectingIds) => {
+  const createNewEdge = async (connectingIds: ConnectingIds) => {
     assert(connectingIds.target);
-    createEdge(
-      {
-        from:
-          "groupId" in connectingIds.source
-            ? omit(connectingIds.source, "groupId")
-            : connectingIds.source,
-        to: connectingIds.target,
-      },
-      generateGroupTitle,
-    );
-  };
-
-  const generateGroupTitleMutation =
-    trpc.aiFeatures.generateGroupTitle.useMutation();
-
-  const generateGroupTitle: GenerateGroupTitle = async (
-    typebot: Draft<TypebotV6>,
-    groupIndex: BlockIndices["groupIndex"],
-  ) => {
-    const groupContent = JSON.parse(JSON.stringify(typebot.groups[groupIndex]));
-
+    createEdge({
+      from:
+        "groupId" in connectingIds.source
+          ? omit(connectingIds.source, "groupId")
+          : connectingIds.source,
+      to: connectingIds.target,
+    });
+    const groupTitlesAutoGeneration =
+      workspace?.settings?.groupTitlesAutoGeneration;
     if (
-      !workspace?.aiFeatureCredentialId ||
-      !workspace?.aiFeaturePrompt ||
-      !workspace?.inEditorAiFeaturesEnabled
-    )
-      return;
+      typebot &&
+      groupTitlesAutoGeneration?.isEnabled &&
+      groupTitlesAutoGeneration.credentialsId &&
+      groupTitlesAutoGeneration.provider &&
+      "groupId" in connectingIds.source
+    ) {
+      const groupIndex = typebot?.groups.findIndex(
+        (g) => g.id === (connectingIds.source as { groupId: string }).groupId,
+      );
+      const group = typebot.groups[groupIndex];
+      if (!group || !group?.title.startsWith("Group #")) return;
+      try {
+        const result = await trpcVanilla.generateGroupTitle.mutate({
+          credentialsId: workspace?.settings?.groupTitlesAutoGeneration
+            ?.credentialsId as string,
+          typebotId: typebot.id,
+          groupContent: JSON.stringify(group),
+        });
 
-    try {
-      const result = await generateGroupTitleMutation.mutateAsync({
-        workspaceId: typebot.workspaceId,
-        groupIndex,
-        groupContent,
-      });
-
-      return result;
-    } catch (error) {
-      console.error("Failed to generate title:", error);
+        updateGroup(groupIndex, { title: result.title });
+      } catch (error) {
+        toast.error("Failed to auto generate group title");
+        console.error("Failed to generate group title:", error);
+      }
     }
   };
 

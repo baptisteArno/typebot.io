@@ -1,5 +1,4 @@
 import { ContextMenu } from "@/components/ContextMenu";
-import { SparklesIcon } from "@/components/icons";
 import {
   RightPanel,
   useEditor,
@@ -33,9 +32,10 @@ type Props = {
 };
 
 export const GroupNode = ({ group, groupIndex }: Props) => {
-  const bg = useColorModeValue("white", "gray.950");
-  const previewingBorderColor = useColorModeValue("orange.400", "orange.300");
-  const editableHoverBg = useColorModeValue("gray.200", "gray.700");
+  const bg = useColorModeValue("white", "gray.900");
+  const previewingBorderColor = useColorModeValue("blue.400", "blue.300");
+  const borderColor = useColorModeValue("white", "gray.800");
+  const editableHoverBg = useColorModeValue("gray.100", "gray.700");
   const {
     connectingIds,
     setConnectingIds,
@@ -51,9 +51,6 @@ export const GroupNode = ({ group, groupIndex }: Props) => {
   const [isMouseDown, setIsMouseDown] = useState(false);
   const [isConnecting, setIsConnecting] = useState(false);
   const [groupTitle, setGroupTitle] = useState(group.title);
-  const [generatingGroupTitle, setGeneratingGroupTitle] = useState(
-    group.generatingTitle || false,
-  );
 
   const isPreviewing =
     previewingBlock?.groupId === group.id ||
@@ -90,14 +87,6 @@ export const GroupNode = ({ group, groupIndex }: Props) => {
         isNotDefined(connectingIds.target?.blockId),
     );
   }, [connectingIds, group.id]);
-
-  useEffect(() => {
-    setGroupTitle(group.title);
-  }, [group.title]);
-
-  useEffect(() => {
-    setGeneratingGroupTitle(group.generatingTitle || false);
-  }, [group.generatingTitle]);
 
   const handleTitleSubmit = (title: string) =>
     updateGroup(groupIndex, { title });
@@ -182,7 +171,7 @@ export const GroupNode = ({ group, groupIndex }: Props) => {
           borderColor={
             isConnecting || isContextMenuOpened || isPreviewing || isFocused
               ? previewingBorderColor
-              : undefined
+              : borderColor
           }
           w={groupWidth}
           transition="border 300ms, box-shadow 200ms"
@@ -196,7 +185,8 @@ export const GroupNode = ({ group, groupIndex }: Props) => {
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
           cursor={isMouseDown ? "grabbing" : "pointer"}
-          _hover={{ shadow: "md" }}
+          shadow="md"
+          _hover={{ shadow: "lg" }}
           zIndex={isFocused ? 10 : 1}
           spacing={isEmpty(group.title) ? "0" : "2"}
           pointerEvents={isDraggingGraph ? "none" : "auto"}
@@ -205,9 +195,7 @@ export const GroupNode = ({ group, groupIndex }: Props) => {
             value={groupTitle}
             onChange={setGroupTitle}
             onSubmit={handleTitleSubmit}
-            display="flex"
-            justifyContent="space-between"
-            fontWeight="medium"
+            fontWeight="semibold"
             pr="8"
           >
             <EditablePreview
@@ -215,7 +203,6 @@ export const GroupNode = ({ group, groupIndex }: Props) => {
                 bg: editableHoverBg,
               }}
               px="1"
-              mr="8"
               userSelect={"none"}
               style={
                 isEmpty(groupTitle)
@@ -228,31 +215,7 @@ export const GroupNode = ({ group, groupIndex }: Props) => {
                   : undefined
               }
             />
-            <EditableInput
-              minW="0"
-              px="1"
-              className="prevent-group-drag"
-              flexGrow={1}
-              mr="8"
-            />
-            {!!generatingGroupTitle && (
-              <Stack
-                display="inline"
-                marginLeft="auto"
-                sx={{
-                  animation: "pulse 0.5s ease-in-out infinite",
-                  "@keyframes pulse": {
-                    "0%": { opacity: 0.6 },
-                    "50%": { opacity: 1 },
-                    "100%": { opacity: 0.6 },
-                  },
-                  WebkitAnimation: "pulse 0.5s ease-in-out infinite",
-                  MozAnimation: "pulse 0.5s ease-in-out infinite",
-                }}
-              >
-                <SparklesIcon height={3} width={4} />
-              </Stack>
-            )}
+            <EditableInput minW="0" px="1" className="prevent-group-drag" />
           </Editable>
           {typebot && (
             <BlockNodesList

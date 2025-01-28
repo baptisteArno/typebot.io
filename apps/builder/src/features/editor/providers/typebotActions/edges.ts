@@ -13,30 +13,14 @@ import type { Typebot, TypebotV6 } from "@typebot.io/typebot/schemas/typebot";
 import { type Draft, produce } from "immer";
 import type { SetTypebot } from "../TypebotProvider";
 
-export type GenerateGroupTitle = (
-  typebot: Draft<TypebotV6>,
-  groupIndex: BlockIndices["groupIndex"],
-) => Promise<
-  | {
-      title: string;
-    }
-  | undefined
->;
-
 export type EdgesActions = {
-  createEdge: (
-    edge: Omit<Edge, "id">,
-    generateGroupTitle: GenerateGroupTitle,
-  ) => void;
+  createEdge: (edge: Omit<Edge, "id">) => void;
   updateEdge: (edgeIndex: number, updates: Partial<Omit<Edge, "id">>) => void;
   deleteEdge: (edgeId: string) => void;
 };
 
 export const edgesAction = (setTypebot: SetTypebot): EdgesActions => ({
-  createEdge: (
-    edge: Omit<Edge, "id">,
-    generateGroupTitle: GenerateGroupTitle,
-  ) =>
+  createEdge: (edge: Omit<Edge, "id">) =>
     setTypebot((typebot) =>
       produce(typebot, (typebot) => {
         const newEdge = {
@@ -77,27 +61,6 @@ export const edgesAction = (setTypebot: SetTypebot): EdgesActions => ({
                 groupIndex,
                 blockIndex,
               });
-
-          typebot.groups[groupIndex].generatingTitle = true;
-          generateGroupTitle(typebot, groupIndex)
-            .then((result) => {
-              if (!result || !result.title) return;
-              setTypebot((typebot) =>
-                produce(typebot, (typebot) => {
-                  typebot.groups[groupIndex].title = result.title;
-                }),
-              );
-            })
-            .catch((error) => {
-              console.error(error);
-            })
-            .finally(() => {
-              setTypebot((typebot) =>
-                produce(typebot, (typebot) => {
-                  typebot.groups[groupIndex].generatingTitle = false;
-                }),
-              );
-            });
 
           const block = typebot.groups[groupIndex].blocks[blockIndex];
           if (isDefined(itemIndex) && isDefined(block.outgoingEdgeId)) {

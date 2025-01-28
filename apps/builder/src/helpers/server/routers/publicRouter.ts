@@ -5,7 +5,6 @@ import { getLinkedTypebots } from "@/features/blocks/logic/typebotLink/api/getLi
 import { collaboratorsRouter } from "@/features/collaboration/api/router";
 import { credentialsRouter } from "@/features/credentials/api/router";
 import { customDomainsRouter } from "@/features/customDomains/api/router";
-import { aiFeaturesRouter } from "@/features/editor/api/router";
 import { folderRouter } from "@/features/folders/api/router";
 import { resultsRouter } from "@/features/results/api/router";
 import { themeRouter } from "@/features/theme/api/router";
@@ -28,7 +27,6 @@ export const publicRouter = router({
   customDomains: customDomainsRouter,
   whatsApp: publicWhatsAppRouter,
   folders: folderRouter,
-  aiFeatures: aiFeaturesRouter,
 });
 
 export type PublicRouter = typeof publicRouter;

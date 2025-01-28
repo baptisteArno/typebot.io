@@ -3683,6 +3683,9 @@
           "title": {
             "type": "string"
           },
+          "generatingTitle": {
+            "type": "boolean"
+          },
           "graphCoordinates": {
             "type": "object",
             "properties": {

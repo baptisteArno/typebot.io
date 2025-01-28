@@ -1,118 +1,151 @@
+import { isWriteTypebotForbidden } from "@/features/typebot/helpers/isWriteTypebotForbidden";
 import { authenticatedProcedure } from "@/helpers/server/trpc";
 import { createAnthropic } from "@ai-sdk/anthropic";
+import { createMistral } from "@ai-sdk/mistral";
 import { createOpenAI } from "@ai-sdk/openai";
 import { TRPCError } from "@trpc/server";
-import { decrypt } from "@typebot.io/lib/api/encryption/decrypt";
+import { decrypt } from "@typebot.io/credentials/decrypt";
+import { getCredentials } from "@typebot.io/credentials/getCredentials";
 import prisma from "@typebot.io/prisma";
+import {
+  type aiProviders,
+  workspaceSchema,
+} from "@typebot.io/workspaces/schemas";
 import { z } from "@typebot.io/zod";
-import { generateText } from "ai";
+import { generateObject } from "ai";
 
 export const generateGroupTitle = authenticatedProcedure
   .input(
     z.object({
-      workspaceId: z.string(),
-      groupIndex: z.number(),
-      groupContent: z.any(),
+      credentialsId: z.string(),
+      typebotId: z.string(),
+      groupContent: z.string(),
     }),
   )
   .output(z.object({ title: z.string() }))
-  .mutation(async ({ input }) => {
-    // Double check if AI features are enabled in the workspace
-    const workspace = await prisma.workspace.findFirst({
-      where: { id: input.workspaceId },
-      select: {
-        aiFeatureCredentialId: true,
-        aiFeaturePrompt: true,
-        inEditorAiFeaturesEnabled: true,
-      },
-    });
-
-    if (
-      !workspace?.aiFeatureCredentialId ||
-      !workspace?.aiFeaturePrompt ||
-      !workspace?.inEditorAiFeaturesEnabled
-    ) {
-      throw new TRPCError({
-        code: "PRECONDITION_FAILED",
-        message: "AI features not enabled!",
-      });
-    }
-
-    const credentials = await prisma.credentials.findFirst({
-      where: {
-        id: workspace.aiFeatureCredentialId,
-      },
-      select: {
-        data: true,
-        iv: true,
-        name: true,
-        type: true,
-      },
-    });
-
-    if (!credentials)
-      throw new TRPCError({
-        code: "NOT_FOUND",
-        message: "Credentials not found",
+  .mutation(
+    async ({
+      input: { credentialsId, typebotId, groupContent },
+      ctx: { user },
+    }) => {
+      const typebot = await prisma.typebot.findUnique({
+        where: { id: typebotId },
+        select: {
+          name: true,
+          version: true,
+          groups: true,
+          workspace: {
+            select: {
+              id: true,
+              isPastDue: true,
+              isSuspended: true,
+              settings: true,
+              members: {
+                select: {
+                  userId: true,
+                  role: true,
+                },
+              },
+            },
+          },
+          collaborators: {
+            select: {
+              userId: true,
+              type: true,
+            },
+          },
+        },
       });
 
-    const credentialsData = await decrypt(credentials.data, credentials.iv);
-    const apiKey = (credentialsData as any).apiKey;
+      if (!typebot || (await isWriteTypebotForbidden(typebot, user)))
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Typebot not found",
+        });
 
-    const aiProvider = credentials.type;
-    const savedPrompt = workspace.aiFeaturePrompt;
-    const groupContent = JSON.stringify(input.groupContent.blocks);
+      const groupTitlesAutoGeneration = workspaceSchema.shape.settings.parse(
+        typebot.workspace.settings,
+      )?.groupTitlesAutoGeneration;
 
-    const generateTitle = async () => {
-      const prompt = `${savedPrompt}\n\nGroup Content: ${groupContent}\n\nGenerate a concise and relevant title for this group:`;
-
-      let model;
-      // Need to improve further to allow users to select the model along with the provider
-      switch (aiProvider) {
-        case "openai":
-          model = createOpenAI({
-            apiKey,
-            compatibility: "strict",
-          })("gpt-4o-mini");
-          break;
-        case "open-router":
-          model = createOpenAI({
-            apiKey,
-            compatibility: "strict",
-            baseURL: "https://openrouter.ai/api/v1",
-          })("gpt-4o-mini");
-          break;
-        case "anthropic":
-          model = createAnthropic({
-            apiKey,
-          })("claude-3-5-sonnet-20241022");
-          break;
-        default:
-          throw new TRPCError({
-            code: "BAD_REQUEST",
-            message: "Invalid AI provider",
-          });
+      if (
+        !groupTitlesAutoGeneration?.isEnabled ||
+        !groupTitlesAutoGeneration?.provider ||
+        !groupTitlesAutoGeneration?.credentialsId
+      ) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Group title auto-generation is not enabled",
+        });
       }
 
-      const { text } = await generateText({
-        model,
-        prompt,
+      const credentials = await getCredentials(
+        credentialsId,
+        typebot.workspace.id,
+      );
+
+      if (!credentials)
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Credentials not found",
+        });
+
+      const credentialsData = await decrypt(credentials.data, credentials.iv);
+      const apiKey = (credentialsData as { apiKey: string }).apiKey;
+
+      const {
+        object: { title },
+      } = await generateObject({
+        model: parseSmallModel({
+          apiKey,
+          provider: groupTitlesAutoGeneration.provider,
+        }),
+        schema: z.object({
+          title: z.string(),
+        }),
+        prompt: `You will be given a group of blocks in <group>. This group is part of a chatbot scenario titled "${typebot.name}". Generate a short and concise title for that group. For example: "Introduction", "Menu", "Goodbye", "Collect name".
+        <group>
+        ${groupContent}
+        </group>
+        `,
       });
 
-      if (text.trim().startsWith(`"`) && text.trim().endsWith(`"`)) {
-        return text.trim().slice(1, -1);
-      }
-      return text.trim();
-    };
+      return {
+        title,
+      };
+    },
+  );
 
-    try {
-      const generatedTitle = await generateTitle();
-      return { title: generatedTitle };
-    } catch (error) {
-      console.error("Error generating group title:", error);
-      throw new TRPCError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "Failed to generate group title",
-      });
+const parseSmallModel = ({
+  provider,
+  apiKey,
+}: {
+  provider: (typeof aiProviders)[number];
+  apiKey: string;
+}) => {
+  switch (provider) {
+    case "mistral": {
+      return createMistral({
+        apiKey,
+      })("mistral-small-latest");
     }
-  });
+    case "anthropic": {
+      return createAnthropic({
+        apiKey,
+      })("claude-3-haiku-20240307");
+    }
+    case "openai": {
+      return createOpenAI({
+        apiKey,
+        compatibility: "strict",
+      })("gpt-4o-mini");
+    }
+    case "groq":
+    case "open-router":
+    case "together-ai": {
+      return createOpenAI({
+        apiKey,
+        compatibility: "compatible",
+      })("gpt-4o-mini");
+    }
+  }
+};

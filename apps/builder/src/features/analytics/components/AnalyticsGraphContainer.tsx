@@ -75,7 +75,7 @@ export const AnalyticsGraphContainer = ({
       totalAnswers: data.totalAnswers,
       edgeVisitHistory: [],
       depth: 0,
-      debug: true,
+      // debug: true,
     });
   }, [
     data?.offDefaultPathVisitedEdges,
