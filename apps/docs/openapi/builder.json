@@ -2291,6 +2291,34 @@
                           "type": "string",
                           "nullable": true
                         },
+                        "settings": {
+                          "type": "object",
+                          "nullable": true,
+                          "properties": {
+                            "groupTitlesAutoGeneration": {
+                              "type": "object",
+                              "properties": {
+                                "isEnabled": {
+                                  "type": "boolean"
+                                },
+                                "provider": {
+                                  "type": "string",
+                                  "enum": [
+                                    "openai",
+                                    "mistral",
+                                    "anthropic",
+                                    "open-router",
+                                    "groq",
+                                    "together-ai"
+                                  ]
+                                },
+                                "credentialsId": {
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          }
+                        },
                         "isSuspended": {
                           "type": "boolean"
                         },
@@ -2299,6 +2327,10 @@
                         },
                         "isVerified": {
                           "type": "boolean",
+                          "nullable": true
+                        },
+                        "chatsHardLimit": {
+                          "type": "number",
                           "nullable": true
                         }
                       },
@@ -2310,9 +2342,11 @@
                         "icon",
                         "plan",
                         "stripeId",
+                        "settings",
                         "isSuspended",
                         "isPastDue",
-                        "isVerified"
+                        "isVerified",
+                        "chatsHardLimit"
                       ]
                     }
                   },
@@ -2433,6 +2467,34 @@
                           "type": "string",
                           "nullable": true
                         },
+                        "settings": {
+                          "type": "object",
+                          "nullable": true,
+                          "properties": {
+                            "groupTitlesAutoGeneration": {
+                              "type": "object",
+                              "properties": {
+                                "isEnabled": {
+                                  "type": "boolean"
+                                },
+                                "provider": {
+                                  "type": "string",
+                                  "enum": [
+                                    "openai",
+                                    "mistral",
+                                    "anthropic",
+                                    "open-router",
+                                    "groq",
+                                    "together-ai"
+                                  ]
+                                },
+                                "credentialsId": {
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          }
+                        },
                         "customChatsLimit": {
                           "type": "number",
                           "nullable": true
@@ -2450,6 +2512,10 @@
                         "isVerified": {
                           "type": "boolean",
                           "nullable": true
+                        },
+                        "chatsHardLimit": {
+                          "type": "number",
+                          "nullable": true
                         }
                       },
                       "required": [
@@ -2460,11 +2526,13 @@
                         "icon",
                         "plan",
                         "stripeId",
+                        "settings",
                         "customChatsLimit",
                         "customSeatsLimit",
                         "isSuspended",
                         "isPastDue",
-                        "isVerified"
+                        "isVerified",
+                        "chatsHardLimit"
                       ]
                     }
                   },
@@ -2562,6 +2630,34 @@
                   },
                   "icon": {
                     "type": "string"
+                  },
+                  "settings": {
+                    "type": "object",
+                    "nullable": true,
+                    "properties": {
+                      "groupTitlesAutoGeneration": {
+                        "type": "object",
+                        "properties": {
+                          "isEnabled": {
+                            "type": "boolean"
+                          },
+                          "provider": {
+                            "type": "string",
+                            "enum": [
+                              "openai",
+                              "mistral",
+                              "anthropic",
+                              "open-router",
+                              "groq",
+                              "together-ai"
+                            ]
+                          },
+                          "credentialsId": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
                   }
                 }
               }
@@ -9561,6 +9657,34 @@
                           "type": "string",
                           "nullable": true
                         },
+                        "settings": {
+                          "type": "object",
+                          "nullable": true,
+                          "properties": {
+                            "groupTitlesAutoGeneration": {
+                              "type": "object",
+                              "properties": {
+                                "isEnabled": {
+                                  "type": "boolean"
+                                },
+                                "provider": {
+                                  "type": "string",
+                                  "enum": [
+                                    "openai",
+                                    "mistral",
+                                    "anthropic",
+                                    "open-router",
+                                    "groq",
+                                    "together-ai"
+                                  ]
+                                },
+                                "credentialsId": {
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          }
+                        },
                         "customChatsLimit": {
                           "type": "number",
                           "nullable": true
@@ -9585,6 +9709,10 @@
                         "isVerified": {
                           "type": "boolean",
                           "nullable": true
+                        },
+                        "chatsHardLimit": {
+                          "type": "number",
+                          "nullable": true
                         }
                       },
                       "required": [
@@ -9601,13 +9729,15 @@
                         "chatsLimitSecondEmailSentAt",
                         "storageLimitFirstEmailSentAt",
                         "storageLimitSecondEmailSentAt",
+                        "settings",
                         "customChatsLimit",
                         "customStorageLimit",
                         "customSeatsLimit",
                         "isQuarantined",
                         "isSuspended",
                         "isPastDue",
-                        "isVerified"
+                        "isVerified",
+                        "chatsHardLimit"
                       ]
                     },
                     "checkoutUrl": {
@@ -10902,10 +11032,14 @@
                     "name": {
                       "type": "string"
                     },
-                    "data": {}
+                    "data": {},
+                    "type": {
+                      "type": "string"
+                    }
                   },
                   "required": [
-                    "name"
+                    "name",
+                    "type"
                   ]
                 }
               }
@@ -16008,6 +16142,9 @@
           },
           "title": {
             "type": "string"
+          },
+          "generatingTitle": {
+            "type": "boolean"
           },
           "graphCoordinates": {
             "type": "object",
