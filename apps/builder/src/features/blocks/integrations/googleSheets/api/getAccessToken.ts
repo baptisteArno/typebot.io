@@ -1,9 +1,9 @@
 import { isReadWorkspaceFobidden } from "@/features/workspace/helpers/isReadWorkspaceFobidden";
 import { authenticatedProcedure } from "@/helpers/server/trpc";
 import { TRPCError } from "@trpc/server";
-import type { GoogleSheetsCredentials } from "@typebot.io/blocks-integrations/googleSheets/schema";
+import { decrypt } from "@typebot.io/credentials/decrypt";
+import type { GoogleSheetsCredentials } from "@typebot.io/credentials/schemas";
 import { env } from "@typebot.io/env";
-import { decrypt } from "@typebot.io/lib/api/encryption/decrypt";
 import prisma from "@typebot.io/prisma";
 import { z } from "@typebot.io/zod";
 import { OAuth2Client } from "google-auth-library";

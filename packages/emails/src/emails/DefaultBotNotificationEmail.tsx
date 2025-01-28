@@ -5,6 +5,7 @@ import {
   MjmlSection,
   MjmlSpacer,
 } from "@faire/mjml-react";
+import * as React from "react";
 import { Button } from "../components/Button";
 import { Head } from "../components/Head";
 import { Text } from "../components/Text";

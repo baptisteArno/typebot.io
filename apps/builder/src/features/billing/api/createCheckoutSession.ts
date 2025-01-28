@@ -18,7 +18,6 @@ export const createCheckoutSession = authenticatedProcedure
       email: z.string(),
       company: z.string(),
       workspaceId: z.string(),
-      currency: z.enum(["usd", "eur"]),
       plan: z.enum([Plan.STARTER, Plan.PRO]),
       returnUrl: z.string(),
       vat: z

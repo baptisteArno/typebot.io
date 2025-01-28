@@ -22,6 +22,7 @@ import type {
   StartFrom,
 } from "@typebot.io/bot-engine/schemas/api";
 import { isDefined, isNotDefined, isNotEmpty } from "@typebot.io/lib/utils";
+import { isTypebotVersionAtLeastV6 } from "@typebot.io/schemas/helpers/isTypebotVersionAtLeastV6";
 import { defaultSettings } from "@typebot.io/settings/constants";
 import {
   defaultFontFamily,
@@ -41,6 +42,7 @@ import { ProgressBar } from "./ProgressBar";
 import { CloseIcon } from "./icons/CloseIcon";
 
 export type BotProps = {
+  id?: string;
   typebot: string | any;
   isPreview?: boolean;
   resultId?: string;
@@ -293,7 +295,7 @@ const BotContent = (props: BotContentProps) => {
   let botContainerElement: HTMLDivElement | undefined;
 
   const resizeObserver = new ResizeObserver((entries) => {
-    return setIsMobile((entries[0]?.target.clientWidth ?? 0) < 400);
+    return setIsMobile((entries[0]?.target.clientWidth ?? 0) < 432);
   });
 
   onMount(() => {
@@ -311,11 +313,16 @@ const BotContent = (props: BotContentProps) => {
       },
     );
     if (!botContainerElement) return;
-    setCssVariablesValue(
-      props.initialChatReply.typebot.theme,
-      botContainerElement,
-      props.context.isPreview,
-    );
+    setCssVariablesValue({
+      theme: props.initialChatReply.typebot.theme,
+      container: botContainerElement,
+      isPreview: props.context.isPreview,
+      typebotVersion: isTypebotVersionAtLeastV6(
+        props.initialChatReply.typebot.version,
+      )
+        ? props.initialChatReply.typebot.version
+        : "6",
+    });
   });
 
   onCleanup(() => {

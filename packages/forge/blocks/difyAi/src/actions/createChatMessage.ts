@@ -1,4 +1,5 @@
 import { createAction, option } from "@typebot.io/forge";
+import { stringifyError } from "@typebot.io/lib/stringifyError";
 import { isDefined, isEmpty, isNotEmpty } from "@typebot.io/lib/utils";
 import { formatStreamPart } from "ai";
 import ky, { HTTPError } from "ky";
@@ -103,12 +104,19 @@ export const createChatMessage = createAction({
                 conversation_id: existingDifyConversationId,
                 user,
                 files: [],
+                timeout: false,
               }),
             },
           );
           const reader = response.body?.getReader();
 
-          if (!reader) return {};
+          if (!reader)
+            return {
+              httpError: {
+                status: 500,
+                message: "Could not get reader from Dify response",
+              },
+            };
 
           return {
             stream: new ReadableStream({
@@ -131,10 +139,9 @@ export const createChatMessage = createAction({
                         isNotEmpty(conversationId) &&
                         isEmpty(existingDifyConversationId?.toString())
                       )
-                        await variables.set(
-                          conversationVariableId,
-                          conversationId,
-                        );
+                        await variables.set([
+                          { id: conversationVariableId, value: conversationId },
+                        ]);
 
                       if ((responseMapping?.length ?? 0) === 0) return;
                       for (const mapping of responseMapping ?? []) {
@@ -145,13 +152,14 @@ export const createChatMessage = createAction({
                           isNotEmpty(conversationId) &&
                           isEmpty(existingDifyConversationId?.toString())
                         )
-                          await variables.set(
-                            mapping.variableId,
-                            conversationId,
-                          );
+                          await variables.set([
+                            { id: mapping.variableId, value: conversationId },
+                          ]);
 
                         if (mapping.item === "Total Tokens")
-                          await variables.set(mapping.variableId, totalTokens);
+                          await variables.set([
+                            { id: mapping.variableId, value: totalTokens },
+                          ]);
                       }
                     },
                   });
@@ -172,7 +180,12 @@ export const createChatMessage = createAction({
             };
           }
           console.error(err);
-          return {};
+          return {
+            httpError: {
+              status: 500,
+              message: stringifyError(err),
+            },
+          };
         }
       },
     },
@@ -215,6 +228,7 @@ export const createChatMessage = createAction({
               conversation_id: existingDifyConversationId,
               user,
               files: [],
+              timeout: false,
             }),
           },
         );
@@ -262,24 +276,31 @@ export const createChatMessage = createAction({
           isNotEmpty(conversationId) &&
           isEmpty(existingDifyConversationId?.toString())
         )
-          variables.set(conversationVariableId, conversationId);
+          variables.set([
+            { id: conversationVariableId, value: conversationId },
+          ]);
 
         responseMapping?.forEach((mapping) => {
           if (!mapping.variableId) return;
 
           const item = mapping.item ?? "Answer";
           if (item === "Answer")
-            variables.set(mapping.variableId, convertNonMarkdownLinks(answer));
+            variables.set([
+              {
+                id: mapping.variableId,
+                value: convertNonMarkdownLinks(answer),
+              },
+            ]);
 
           if (
             item === "Conversation ID" &&
             isNotEmpty(conversationId) &&
             isEmpty(existingDifyConversationId?.toString())
           )
-            variables.set(mapping.variableId, conversationId);
+            variables.set([{ id: mapping.variableId, value: conversationId }]);
 
           if (item === "Total Tokens")
-            variables.set(mapping.variableId, totalTokens);
+            variables.set([{ id: mapping.variableId, value: totalTokens }]);
         });
       } catch (err) {
         if (err instanceof HTTPError) {
@@ -290,6 +311,11 @@ export const createChatMessage = createAction({
           });
         }
         console.error(err);
+        return logs.add({
+          status: "error",
+          description: "An unknown error occurred",
+          details: stringifyError(err),
+        });
       }
     },
   },

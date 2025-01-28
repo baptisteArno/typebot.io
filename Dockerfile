@@ -1,5 +1,5 @@
 # ================= INSTALL BUN ===================
-ARG BUN_VERSION=1.1.29
+ARG BUN_VERSION=1.1.42
 ARG YARN_PKG_MANAGER="this.packageManager=\"yarn@1.22.22\""
 ARG BUN_PKG_MANAGER="this.packageManager=\"bun@${BUN_VERSION}\""
 FROM debian:bullseye-slim AS build-bun
@@ -58,7 +58,7 @@ RUN apt-get update -qq \
 
 # ================= ADD BUN IN NODE 20 IMAGE ===================
 
-FROM node:20-bullseye-slim AS bun
+FROM node:22-bullseye-slim AS bun
 ARG BUN_RUNTIME_TRANSPILER_CACHE_PATH=0
 ENV BUN_RUNTIME_TRANSPILER_CACHE_PATH=${BUN_RUNTIME_TRANSPILER_CACHE_PATH}
 ARG BUN_INSTALL_BIN=/usr/local/bin

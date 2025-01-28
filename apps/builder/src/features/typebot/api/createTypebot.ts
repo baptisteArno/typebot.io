@@ -4,6 +4,7 @@ import { createId } from "@paralleldrive/cuid2";
 import { TRPCError } from "@trpc/server";
 import prisma from "@typebot.io/prisma";
 import { Plan, WorkspaceRole } from "@typebot.io/prisma/enum";
+import { latestTypebotVersion } from "@typebot.io/schemas/versions";
 import { trackEvents } from "@typebot.io/telemetry/trackEvents";
 import { EventType } from "@typebot.io/typebot/schemas/events/constants";
 import {
@@ -104,7 +105,7 @@ export const createTypebot = authenticatedProcedure
     ) as TypebotV6["groups"];
     const newTypebot = await prisma.typebot.create({
       data: {
-        version: "6",
+        version: latestTypebotVersion,
         workspaceId,
         name: typebot.name ?? "My typebot",
         icon: typebot.icon,
@@ -144,9 +145,6 @@ export const createTypebot = authenticatedProcedure
         workspaceId: parsedNewTypebot.workspaceId,
         typebotId: parsedNewTypebot.id,
         userId: user.id,
-        data: {
-          name: newTypebot.name,
-        },
       },
     ]);
 

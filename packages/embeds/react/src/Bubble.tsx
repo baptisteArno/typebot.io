@@ -1,9 +1,13 @@
 import type { BubbleProps } from "@typebot.io/js";
 import type React from "react";
-import { useCallback, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import "@typebot.io/js/web";
 
-type Props = BubbleProps;
+type Props = BubbleProps & {
+  inlineStyle?: {
+    [key: string]: string;
+  };
+};
 
 declare global {
   namespace JSX {
@@ -19,34 +23,28 @@ declare global {
 type BubbleElement = HTMLElement & Props;
 
 export const Bubble = (props: Props) => {
-  const bubbleElement = useRef<BubbleElement | null>(null);
-
-  const attachBubbleToDom = useCallback((props: Props) => {
-    const newBubbleElement = document.createElement(
-      "typebot-bubble",
-    ) as BubbleElement;
-    bubbleElement.current = newBubbleElement;
-    injectPropsToElement(bubbleElement.current, props);
-    document.body.prepend(bubbleElement.current);
-  }, []);
+  const ref = useRef<BubbleElement | null>(null);
 
   useEffect(() => {
-    if (!bubbleElement.current) attachBubbleToDom(props);
-    injectPropsToElement(bubbleElement.current as BubbleElement, props);
-  }, [attachBubbleToDom, props]);
+    if (props.theme?.position === "static" && !ref.current) return;
+    if (!ref.current) {
+      ref.current = document.createElement("typebot-bubble") as BubbleElement;
+      document.body.prepend(ref.current);
+    }
+    const { typebot, ...rest } = props;
+    // We assign typebot last to ensure initializeBubble is triggered with all the initial values
+    Object.assign(ref.current, rest, { typebot });
+  }, [props]);
 
   useEffect(() => {
     return () => {
-      bubbleElement.current?.remove();
-      bubbleElement.current = null;
+      if (props.theme?.position === "static") return;
+      ref.current?.remove();
+      ref.current = null;
     };
-  }, []);
+  }, [props.theme?.position]);
 
-  const injectPropsToElement = (element: BubbleElement, props: Props) => {
-    Object.assign(element, props);
-  };
-
+  if (props.theme?.position === "static")
+    return <typebot-bubble ref={ref} style={{ display: "inline-flex" }} />;
   return null;
 };
-
-export default Bubble;

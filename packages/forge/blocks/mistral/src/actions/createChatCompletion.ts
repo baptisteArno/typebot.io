@@ -139,7 +139,7 @@ export const createChatCompletion = createAction({
       options.responseMapping?.forEach((mapping) => {
         if (!mapping.variableId) return;
         if (!mapping.item || mapping.item === "Message content")
-          variables.set(mapping.variableId, text);
+          variables.set([{ id: mapping.variableId, value: text }]);
       });
     },
     stream: {

@@ -1,5 +1,6 @@
 import {
   VideoBubbleContentType,
+  defaultVideoBubbleContent,
   gumletRegex,
   horizontalVideoSuggestionSize,
   oneDriveRegex,
@@ -73,7 +74,7 @@ export const parseVideoUrl = (
   }
   if (gumletRegex.test(url)) {
     const match = url.match(gumletRegex);
-    const id = match?.at(1);
+    const id = match?.at(2);
     const parsedUrl = match?.at(0) ?? url;
     if (!id) return { type: VideoBubbleContentType.URL, url: parsedUrl };
     return {
@@ -92,4 +93,21 @@ export const parseVideoUrl = (
     };
   }
   return { type: VideoBubbleContentType.URL, url };
+};
+
+export const parseQueryParams = (content: VideoBubbleBlock["content"]) => {
+  if (
+    !(content?.isAutoplayEnabled ?? defaultVideoBubbleContent.isAutoplayEnabled)
+  )
+    return "";
+  if (
+    content?.type === VideoBubbleContentType.YOUTUBE ||
+    content?.type === VideoBubbleContentType.VIMEO
+  ) {
+    return "autoplay=1";
+  }
+  if (content?.type === VideoBubbleContentType.GUMLET) {
+    return "autoplay=true";
+  }
+  return "";
 };

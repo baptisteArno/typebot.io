@@ -52,17 +52,17 @@ export const ProPlanPricingCard = ({
         flex="1"
         flexShrink={0}
         borderWidth="1px"
-        borderColor={useColorModeValue("blue.500", "blue.300")}
+        borderColor={useColorModeValue("purple.500", "purple.300")}
         rounded="lg"
       >
         <Flex justifyContent="center">
           <Tag
             pos="absolute"
             top="-10px"
-            colorScheme="blue"
-            bg={useColorModeValue("blue.500", "blue.400")}
+            colorScheme="orange"
+            bg={useColorModeValue("purple.500", "purple.400")}
             variant="solid"
-            fontWeight="semibold"
+            fontWeight="medium"
             style={{ marginTop: 0 }}
           >
             {t("billing.pricingCard.pro.mostPopularLabel")}
@@ -76,7 +76,7 @@ export const ProPlanPricingCard = ({
                 params={{
                   strong: (
                     <chakra.span
-                      color={useColorModeValue("blue.400", "blue.300")}
+                      color={useColorModeValue("purple.400", "purple.300")}
                     >
                       Pro
                     </chakra.span>
@@ -145,7 +145,7 @@ export const ProPlanPricingCard = ({
             </Stack>
 
             <Button
-              colorScheme="blue"
+              colorScheme="orange"
               variant="outline"
               onClick={onPayClick}
               isLoading={isLoading}

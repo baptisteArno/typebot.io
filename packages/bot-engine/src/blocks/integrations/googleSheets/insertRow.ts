@@ -1,6 +1,6 @@
 import type { GoogleSheetsInsertRowOptions } from "@typebot.io/blocks-integrations/googleSheets/schema";
+import type { SessionState } from "@typebot.io/chat-session/schemas";
 import type { ChatLog } from "../../../schemas/api";
-import type { SessionState } from "../../../schemas/chatSession";
 import type { ExecuteIntegrationResponse } from "../../../types";
 import { getAuthenticatedGoogleDoc } from "./helpers/getAuthenticatedGoogleDoc";
 import { parseNewRowObject } from "./helpers/parseNewRowObject";
@@ -20,6 +20,7 @@ export const insertRow = async (
   const doc = await getAuthenticatedGoogleDoc({
     credentialsId: options.credentialsId,
     spreadsheetId: options.spreadsheetId,
+    workspaceId: state.workspaceId,
   });
 
   const parsedValues = parseNewRowObject(variables)(options.cellsToInsert);

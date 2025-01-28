@@ -60,9 +60,9 @@ export const runOpenAIChatCompletion = async ({
     options.responseMapping?.forEach((mapping) => {
       if (!mapping.variableId) return;
       if (!mapping.item || mapping.item === "Message content")
-        variables.set(mapping.variableId, text);
+        variables.set([{ id: mapping.variableId, value: text }]);
       if (mapping.item === "Total tokens")
-        variables.set(mapping.variableId, usage.totalTokens);
+        variables.set([{ id: mapping.variableId, value: usage.totalTokens }]);
     });
   } catch (err) {
     if (err instanceof APICallError) {

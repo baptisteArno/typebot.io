@@ -1,11 +1,11 @@
 import type { IntegrationBlockType } from "@typebot.io/blocks-integrations/constants";
 import { LogicBlockType } from "@typebot.io/blocks-logic/constants";
+import type { SessionState } from "@typebot.io/chat-session/schemas";
 import { byId } from "@typebot.io/lib/utils";
 import { createHttpReqResponseMappingRunner } from "@typebot.io/variables/codeRunners";
 import { parseVariables } from "@typebot.io/variables/parseVariables";
 import type { VariableWithUnknowValue } from "@typebot.io/variables/schemas";
 import type { ChatLog } from "../../../schemas/api";
-import type { SessionState } from "../../../schemas/chatSession";
 import type { ExecuteIntegrationResponse } from "../../../types";
 import { updateVariablesInSession } from "../../../updateVariablesInSession";
 

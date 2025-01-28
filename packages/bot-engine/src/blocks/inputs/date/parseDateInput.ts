@@ -1,9 +1,9 @@
 import type { DateInputBlock } from "@typebot.io/blocks-inputs/date/schema";
+import type { SessionState } from "@typebot.io/chat-session/schemas";
 import { deepParseVariables } from "@typebot.io/variables/deepParseVariables";
 import { parseVariables } from "@typebot.io/variables/parseVariables";
 import type { Variable } from "@typebot.io/variables/schemas";
 import { getPrefilledInputValue } from "../../../getPrefilledValue";
-import type { SessionState } from "../../../schemas/chatSession";
 
 export const parseDateInput =
   (state: SessionState) => (block: DateInputBlock) => {

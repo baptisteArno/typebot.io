@@ -134,7 +134,7 @@ export const PictureChoiceItemNode = ({
             py="6"
             overflowY="auto"
             maxH="400px"
-            shadow="lg"
+            shadow="md"
             ref={ref}
           >
             {typebot && blockId && (

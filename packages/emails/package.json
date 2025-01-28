@@ -21,7 +21,7 @@
   "devDependencies": {
     "@types/node": "20.4.2",
     "@types/nodemailer": "6.4.14",
-    "@types/react": "18.2.15",
+    "@types/react": "18.2.0",
     "http-server": "14.1.1",
     "tsx": "4.19.1",
     "@typebot.io/tsconfig": "workspace:*"

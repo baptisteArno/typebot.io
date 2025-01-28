@@ -1,3 +1,4 @@
+import { DropdownList } from "@/components/DropdownList";
 import { TextInput } from "@/components/inputs";
 import { Select } from "@/components/inputs/Select";
 import { useParentModal } from "@/features/graph/providers/ParentModalProvider";
@@ -26,7 +27,6 @@ export type PreCheckoutModalProps = {
     | {
         plan: "STARTER" | "PRO";
         workspaceId: string;
-        currency: "eur" | "usd";
       }
     | undefined;
   existingCompany?: string;

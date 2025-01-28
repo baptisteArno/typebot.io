@@ -14,6 +14,10 @@ import type {
 import type { MakeComBlock } from "@typebot.io/blocks-integrations/makeCom/schema";
 import type { PabblyConnectBlock } from "@typebot.io/blocks-integrations/pabblyConnect/schema";
 import type { ZapierBlock } from "@typebot.io/blocks-integrations/zapier/schema";
+import type {
+  SessionState,
+  TypebotInSession,
+} from "@typebot.io/chat-session/schemas";
 import { env } from "@typebot.io/env";
 import { JSONParse } from "@typebot.io/lib/JSONParse";
 import { isDefined, isEmpty, isNotDefined, omit } from "@typebot.io/lib/utils";
@@ -25,10 +29,6 @@ import type { Variable } from "@typebot.io/variables/schemas";
 import ky, { HTTPError, TimeoutError, type Options } from "ky";
 import { stringify } from "qs";
 import type { ChatLog } from "../../../schemas/api";
-import type {
-  SessionState,
-  TypebotInSession,
-} from "../../../schemas/chatSession";
 import type { ExecuteIntegrationResponse } from "../../../types";
 import { saveDataInResponseVariableMapping } from "./saveDataInResponseVariableMapping";
 

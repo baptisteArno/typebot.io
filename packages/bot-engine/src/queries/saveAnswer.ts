@@ -1,6 +1,6 @@
+import type { SessionState } from "@typebot.io/chat-session/schemas";
 import prisma from "@typebot.io/prisma";
 import type { Prisma } from "@typebot.io/prisma/types";
-import type { SessionState } from "../schemas/chatSession";
 
 type Props = {
   answer: Omit<Prisma.Prisma.AnswerV2CreateManyInput, "resultId">;

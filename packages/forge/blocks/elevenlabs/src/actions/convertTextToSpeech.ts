@@ -105,7 +105,7 @@ export const convertTextToSpeech = createAction({
           mimeType: "audio/mpeg",
         });
 
-        variables.set(options.saveUrlInVariableId, url);
+        variables.set([{ id: options.saveUrlInVariableId, value: url }]);
       } catch (err) {
         if (err instanceof HTTPError) {
           return logs.add({

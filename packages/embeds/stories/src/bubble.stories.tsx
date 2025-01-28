@@ -31,27 +31,26 @@ export const Default = () => {
             Set predefined name
           </button>
         </div>
+        <Bubble
+          typebot={"lead-generation-u83b9qo"}
+          apiHost="http://localhost:3001"
+          prefilledVariables={{
+            Name: ["John"],
+          }}
+          previewMessage={{
+            avatarUrl: "https://avatars.githubusercontent.com/u/16015833?v=4",
+            message: "Hello, I am a preview message",
+            autoShowDelay: 3000,
+          }}
+          theme={{
+            button: {
+              customIconSrc:
+                "https://avatars.githubusercontent.com/u/16015833?v=4",
+            },
+          }}
+          // isPreview
+        />
       </div>
-
-      <Bubble
-        typebot={"my-typebot-2b532x1"}
-        apiHost="http://localhost:3001"
-        prefilledVariables={{
-          Name: ["John"],
-        }}
-        previewMessage={{
-          avatarUrl: "https://avatars.githubusercontent.com/u/16015833?v=4",
-          message: "Hello, I am a preview message",
-          autoShowDelay: 3000,
-        }}
-        theme={{
-          button: {
-            backgroundColor: "#FF7537",
-            iconColor: "white",
-          },
-        }}
-        // isPreview
-      />
     </div>
   );
 };

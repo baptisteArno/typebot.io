@@ -1,11 +1,12 @@
 import { TRPCError } from "@trpc/server";
-import type { TypebotInSession } from "./schemas/chatSession";
+import type { TypebotInSession } from "@typebot.io/chat-session/schemas";
+import { isTypebotInSessionAtLeastV6 } from "./helpers/isTypebotInSessionAtLeastV6";
 
 export const getFirstEdgeId = ({
   typebot,
   startEventId,
 }: {
-  typebot: Pick<TypebotInSession, "events" | "groups" | "version">;
+  typebot: TypebotInSession;
   startEventId: string | undefined;
 }) => {
   if (startEventId) {
@@ -17,6 +18,7 @@ export const getFirstEdgeId = ({
       });
     return event.outgoingEdgeId;
   }
-  if (typebot.version === "6") return typebot.events?.[0].outgoingEdgeId;
+  if (isTypebotInSessionAtLeastV6(typebot))
+    return typebot.events?.[0].outgoingEdgeId;
   return typebot.groups.at(0)?.blocks.at(0)?.outgoingEdgeId;
 };

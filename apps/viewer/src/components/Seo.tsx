@@ -10,12 +10,14 @@ import React from "react";
 type SEOProps = {
   url: string;
   typebotName: string;
+  isMatchingViewerUrl?: boolean;
   metadata?: Settings["metadata"];
 };
 
 export const SEO = ({
   url,
   typebotName,
+  isMatchingViewerUrl,
   metadata: {
     title,
     description,
@@ -27,10 +29,10 @@ export const SEO = ({
   <>
     <Head key="seo">
       <title>{title ?? typebotName}</title>
-      <meta name="robots" content="noindex" />
+      {isMatchingViewerUrl ? <meta name="robots" content="noindex" /> : null}
       <link
         rel="icon"
-        type="image/png"
+        type={favIconUrl ? "image/png" : "images/svg+xml"}
         href={
           favIconUrl ??
           defaultSettings.metadata.favIconUrl(env.NEXT_PUBLIC_VIEWER_URL[0])

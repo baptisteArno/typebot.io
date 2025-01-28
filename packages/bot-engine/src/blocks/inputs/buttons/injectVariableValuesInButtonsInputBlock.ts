@@ -1,9 +1,9 @@
 import type { ChoiceInputBlock } from "@typebot.io/blocks-inputs/choice/schema";
-import { isDefined } from "@typebot.io/lib/utils";
+import type { SessionState } from "@typebot.io/chat-session/schemas";
+import { isDefined, isNotEmpty } from "@typebot.io/lib/utils";
 import { deepParseVariables } from "@typebot.io/variables/deepParseVariables";
 import type { VariableWithValue } from "@typebot.io/variables/schemas";
 import { transformVariablesToList } from "@typebot.io/variables/transformVariablesToList";
-import type { SessionState } from "../../../schemas/chatSession";
 import { filterChoiceItems } from "./filterChoiceItems";
 
 export const injectVariableValuesInButtonsInputBlock =
@@ -17,10 +17,11 @@ export const injectVariableValuesInButtonsInputBlock =
           isDefined(variable.value),
       ) as VariableWithValue | undefined;
       if (!variable) return block;
-      const value = getVariableValue(state)(variable);
+      const value = getVariableValue(state)(variable).filter(isNotEmpty);
+      const uniqueValues = [...new Set(value)];
       return {
         ...deepParseVariables(variables)(block),
-        items: value.filter(isDefined).map((item, idx) => ({
+        items: uniqueValues.filter(isDefined).map((item, idx) => ({
           id: "choice" + idx.toString(),
           blockId: block.id,
           content: item,

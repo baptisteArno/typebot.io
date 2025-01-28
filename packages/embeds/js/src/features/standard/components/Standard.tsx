@@ -1,7 +1,7 @@
 import { Bot, type BotProps } from "@/components/Bot";
 import type { CommandData } from "@/features/commands/types";
 import { EnvironmentProvider } from "@ark-ui/solid";
-import { Show, createSignal, onCleanup, onMount } from "solid-js";
+import { Show, createEffect, createSignal, onCleanup, onMount } from "solid-js";
 import styles from "../../../assets/index.css";
 
 const hostElementCss = `
@@ -18,6 +18,9 @@ export const Standard = (
   { element }: { element: HTMLElement },
 ) => {
   const [isBotDisplayed, setIsBotDisplayed] = createSignal(false);
+  const [prefilledVariables, setPrefilledVariables] = createSignal(
+    props.prefilledVariables,
+  );
 
   const launchBot = () => {
     setIsBotDisplayed(true);
@@ -33,9 +36,22 @@ export const Standard = (
     botLauncherObserver.observe(element);
   });
 
+  createEffect(() => {
+    if (!props.prefilledVariables) return;
+    setPrefilledVariables((existingPrefilledVariables) => ({
+      ...existingPrefilledVariables,
+      ...props.prefilledVariables,
+    }));
+  });
+
   const processIncomingEvent = (event: MessageEvent<CommandData>) => {
     const { data } = event;
-    if (!data.isFromTypebot) return;
+    if (!data.isFromTypebot || (data.id && props.id !== data.id)) return;
+    if (data.command === "setPrefilledVariables")
+      setPrefilledVariables((existingPrefilledVariables) => ({
+        ...existingPrefilledVariables,
+        ...data.variables,
+      }));
   };
 
   onCleanup(() => {
@@ -51,7 +67,7 @@ export const Standard = (
         {hostElementCss}
       </style>
       <Show when={isBotDisplayed()}>
-        <Bot {...props} />
+        <Bot {...props} prefilledVariables={prefilledVariables()} />
       </Show>
     </EnvironmentProvider>
   );

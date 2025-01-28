@@ -3,19 +3,12 @@ import { getTotalAnswersAtBlock } from "@/features/analytics/helpers/getTotalAns
 import { hasProPerks } from "@/features/billing/helpers/hasProPerks";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import {
-  Tag,
-  Text,
-  Tooltip,
-  VStack,
-  theme,
-  useColorModeValue,
-} from "@chakra-ui/react";
+import { Tag, Text, Tooltip, VStack, theme } from "@chakra-ui/react";
 import { blockHasItems } from "@typebot.io/blocks-core/helpers";
 import { byId, isNotDefined } from "@typebot.io/lib/utils";
 import type {
+  EdgeWithTotalUsers,
   TotalAnswers,
-  TotalVisitedEdges,
 } from "@typebot.io/schemas/features/analytics";
 import React, { useMemo } from "react";
 import { useShallow } from "zustand/react/shallow";
@@ -38,21 +31,17 @@ export const dropOffStubLength = 30;
 
 type Props = {
   blockId: string;
-  totalVisitedEdges: TotalVisitedEdges[];
+  edgesWithTotalUsers: EdgeWithTotalUsers[];
   totalAnswers: TotalAnswers[];
   onUnlockProPlanClick?: () => void;
 };
 
 export const DropOffEdge = ({
-  totalVisitedEdges,
+  edgesWithTotalUsers,
   totalAnswers,
   blockId,
   onUnlockProPlanClick,
 }: Props) => {
-  const dropOffColor = useColorModeValue(
-    theme.colors.red[500],
-    theme.colors.red[400],
-  );
   const { workspace } = useWorkspace();
   const { publishedTypebot } = useTypebot();
   const currentBlockId = useMemo(
@@ -80,7 +69,7 @@ export const DropOffEdge = ({
     if (!publishedTypebot || !currentBlockId) return {};
     const totalUsersAtBlock = computeTotalUsersAtBlock(currentBlockId, {
       publishedTypebot,
-      totalVisitedEdges,
+      edgesWithTotalUsers,
       totalAnswers,
     });
     const totalBlockReplies = getTotalAnswersAtBlock(currentBlockId, {
@@ -94,7 +83,7 @@ export const DropOffEdge = ({
       totalDroppedUser,
       dropOffRate: Math.round((totalDroppedUser / totalUsersAtBlock) * 100),
     };
-  }, [currentBlockId, publishedTypebot, totalAnswers, totalVisitedEdges]);
+  }, [currentBlockId, publishedTypebot, totalAnswers, edgesWithTotalUsers]);
 
   const sourceTop = useMemo(() => {
     const blockTop = currentBlockId
@@ -142,7 +131,7 @@ export const DropOffEdge = ({
           },
           isLastBlock,
         )}
-        stroke={dropOffColor}
+        stroke={theme.colors.red[500]}
         strokeWidth={
           dropOffSegmentMinWidth * (1 - (dropOffRate ?? 0) / 100) +
           dropOffSegmentMaxWidth * ((dropOffRate ?? 0) / 100)
@@ -171,7 +160,7 @@ export const DropOffEdge = ({
           placement="top"
         >
           <VStack
-            bgColor={dropOffColor}
+            bgColor={theme.colors.red[500]}
             color="white"
             rounded="md"
             p="2"

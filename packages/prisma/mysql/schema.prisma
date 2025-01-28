@@ -104,6 +104,7 @@ model Workspace {
   isPastDue                     Boolean               @default(false)
   isVerified                    Boolean?
   themeTemplates                ThemeTemplate[]
+  chatsHardLimit                Int?
 }
 
 model MemberInWorkspace {

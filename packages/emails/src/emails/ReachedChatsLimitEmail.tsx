@@ -10,6 +10,7 @@ import { env } from "@typebot.io/env";
 import { parseNumberWithCommas } from "@typebot.io/lib/utils";
 import type { SendMailOptions } from "nodemailer";
 import type { ComponentProps } from "react";
+import * as React from "react";
 import { Button } from "../components/Button";
 import { Head } from "../components/Head";
 import { HeroImage } from "../components/HeroImage";
@@ -65,6 +66,6 @@ export const sendReachedChatsLimitEmail = ({
   ComponentProps<typeof ReachedChatsLimitEmail>) =>
   sendEmail({
     to,
-    subject: "You've reached your chats limit",
+    subject: "[Action Required] Chats limit reached",
     html: render(<ReachedChatsLimitEmail {...props} />).html,
   });

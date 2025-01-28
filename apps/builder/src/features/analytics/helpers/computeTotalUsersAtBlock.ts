@@ -1,8 +1,8 @@
 import { isInputBlock } from "@typebot.io/blocks-core/helpers";
 import { isNotDefined } from "@typebot.io/lib/utils";
 import type {
+  EdgeWithTotalUsers,
   TotalAnswers,
-  TotalVisitedEdges,
 } from "@typebot.io/schemas/features/analytics";
 import type { PublicTypebotV6 } from "@typebot.io/typebot/schemas/publicTypebot";
 
@@ -10,11 +10,11 @@ export const computeTotalUsersAtBlock = (
   currentBlockId: string,
   {
     publishedTypebot,
-    totalVisitedEdges,
+    edgesWithTotalUsers,
     totalAnswers,
   }: {
     publishedTypebot: PublicTypebotV6;
-    totalVisitedEdges: TotalVisitedEdges[];
+    edgesWithTotalUsers: EdgeWithTotalUsers[];
     totalAnswers: TotalAnswers[];
   },
 ): number => {
@@ -37,7 +37,7 @@ export const computeTotalUsersAtBlock = (
     totalUsers += incomingEdges.reduce(
       (acc, incomingEdge) =>
         acc +
-        (totalVisitedEdges.find(
+        (edgesWithTotalUsers.find(
           (totalEdge) => totalEdge.edgeId === incomingEdge.id,
         )?.total ?? 0),
       0,
@@ -51,7 +51,7 @@ export const computeTotalUsersAtBlock = (
   totalUsers += edgesConnectedToGroup.reduce(
     (acc, connectedEdge) =>
       acc +
-      (totalVisitedEdges.find(
+      (edgesWithTotalUsers.find(
         (totalEdge) => totalEdge.edgeId === connectedEdge.id,
       )?.total ?? 0),
     0,

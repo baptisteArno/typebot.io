@@ -60,7 +60,7 @@ export const chatThemeSchema = z.object({
 
 const backgroundSchema = z.object({
   type: z.nativeEnum(BackgroundType).optional(),
-  content: z.string().optional().optional(),
+  content: z.string().optional(),
 });
 
 const googleFontSchema = z.object({
@@ -117,6 +117,11 @@ export const themeTemplateSchema = z.object({
   createdAt: z.date(),
   updatedAt: z.date(),
 }) satisfies z.ZodType<Omit<Prisma.ThemeTemplate, "theme">>;
+
+export const dynamicThemeSchema = z.object({
+  hostAvatarUrl: z.string().optional(),
+  guestAvatarUrl: z.string().optional(),
+});
 
 export type Theme = z.infer<typeof themeSchema>;
 export type ChatTheme = z.infer<typeof chatThemeSchema>;

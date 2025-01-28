@@ -1,0 +1,21 @@
+{
+  "name": "@typebot.io/ui",
+  "version": "0.0.1",
+  "type": "module",
+  "private": true,
+  "exports": {
+    "./*": "./src/*.ts",
+    "./components/*": "./src/components/*.tsx",
+    "./icons/*": "./src/icons/*.tsx",
+    "./colors/css": "./src/colors.css"
+  },
+  "devDependencies": {
+    "@typebot.io/tsconfig": "workspace:*"
+  },
+  "dependencies": {
+    "@chakra-ui/react": "2.8.2",
+    "next": "14.2.13",
+    "@typebot.io/theme": "workspace:*",
+    "@typebot.io/lib": "workspace:*"
+  }
+}

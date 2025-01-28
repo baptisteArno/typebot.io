@@ -8,15 +8,15 @@ import type {
   ChatCompletionOpenAIOptions,
   OpenAICredentials,
 } from "@typebot.io/blocks-integrations/openai/schema";
-import { decrypt } from "@typebot.io/lib/api/encryption/decrypt";
-import { byId, isEmpty } from "@typebot.io/lib/utils";
-import prisma from "@typebot.io/prisma";
-import type { Prisma } from "@typebot.io/prisma/types";
-import { parseVariableNumber } from "@typebot.io/variables/parseVariableNumber";
 import type {
   SessionState,
   TypebotInSession,
-} from "../../../../schemas/chatSession";
+} from "@typebot.io/chat-session/schemas";
+import { decrypt } from "@typebot.io/credentials/decrypt";
+import { getCredentials } from "@typebot.io/credentials/getCredentials";
+import { byId, isEmpty } from "@typebot.io/lib/utils";
+import type { Prisma } from "@typebot.io/prisma/types";
+import { parseVariableNumber } from "@typebot.io/variables/parseVariableNumber";
 import type { ExecuteIntegrationResponse } from "../../../../types";
 import { updateVariablesInSession } from "../../../../updateVariablesInSession";
 import { executeChatCompletionOpenAIRequest } from "./executeChatCompletionOpenAIRequest";
@@ -47,11 +47,10 @@ export const createChatCompletionOpenAI = async (
       logs: [noCredentialsError],
     };
   }
-  const credentials = await prisma.credentials.findUnique({
-    where: {
-      id: options.credentialsId,
-    },
-  });
+  const credentials = await getCredentials(
+    options.credentialsId,
+    state.workspaceId,
+  );
   if (!credentials) {
     console.error("Could not find credentials in database");
     return { outgoingEdgeId, logs: [noCredentialsError] };

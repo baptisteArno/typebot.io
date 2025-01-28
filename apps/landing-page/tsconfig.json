@@ -1,12 +1,37 @@
 {
-  "extends": "@typebot.io/tsconfig/nextjs.json",
+  "extends": "@typebot.io/tsconfig/react.json",
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["./app/*"],
+      "content-collections": ["./.content-collections/generated"]
     },
-    "strictNullChecks": true
+    "module": "ESNext"
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
+  "include": [
+    "app/**/*.ts",
+    "app/**/*.tsx",
+    "app.config.ts",
+    "content-collection.ts"
+  ],
+  "references": [
+    {
+      "path": "../../packages/billing"
+    },
+    {
+      "path": "../../packages/embeds/react"
+    },
+    {
+      "path": "../../packages/env"
+    },
+    {
+      "path": "../../packages/lib"
+    },
+    {
+      "path": "../../packages/prisma"
+    },
+    {
+      "path": "../../packages/typebot"
+    }
+  ]
 }

@@ -1,8 +1,8 @@
 import { authenticateUser } from "@/helpers/authenticateUser";
 import { LogicBlockType } from "@typebot.io/blocks-logic/constants";
-import { getSession } from "@typebot.io/bot-engine/queries/getSession";
+import { getSession } from "@typebot.io/chat-session/queries/getSession";
 import { env } from "@typebot.io/env";
-import { parseGroups } from "@typebot.io/groups/schemas";
+import { parseGroups } from "@typebot.io/groups/helpers/parseGroups";
 import {
   forbidden,
   internalServerError,
@@ -11,6 +11,7 @@ import {
 } from "@typebot.io/lib/api/utils";
 import { byId } from "@typebot.io/lib/utils";
 import prisma from "@typebot.io/prisma";
+import { isTypebotVersionAtLeastV6 } from "@typebot.io/schemas/helpers/isTypebotVersionAtLeastV6";
 import { isReadTypebotForbidden } from "@typebot.io/typebot/helpers/isReadTypebotForbidden";
 import { resumeWhatsAppFlow } from "@typebot.io/whatsapp/resumeWhatsAppFlow";
 import type { NextApiRequest, NextApiResponse } from "next";
@@ -53,7 +54,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (!typebot || (await isReadTypebotForbidden(typebot, user)))
       return notFound(res, "Typebot not found");
     if (!typebot) return notFound(res);
-    if (typebot.version !== "6") return internalServerError(res);
+    if (!isTypebotVersionAtLeastV6(typebot.version))
+      return internalServerError(res);
     const block = parseGroups(typebot.groups, {
       typebotVersion: typebot.version,
     })
@@ -94,16 +96,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           timestamp: new Date().toISOString(),
           type: "webhook",
           webhook: {
-            data:
-              typeof req.body === "string"
-                ? JSON.stringify({ data: JSON.parse(req.body) })
-                : JSON.stringify({ data: req.body }, null, 2),
+            data: parseBodyForWhatsApp(req),
           },
         },
         workspaceId: typebot.workspace.id,
         sessionId: chatSession.id,
         credentialsId: typebot.whatsAppCredentialsId,
-        origin: "webhook",
+        callFrom: "webhook",
       });
       return res.status(200).send("OK");
     }
@@ -113,10 +112,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         { host: env.NEXT_PUBLIC_PARTYKIT_HOST, room: `${resultId}/webhooks` },
         {
           method: "POST",
-          body:
-            typeof req.body === "string"
-              ? req.body
-              : JSON.stringify(req.body, null, 2),
+          body: parseBody(req),
         },
       );
     } catch (error) {
@@ -128,5 +124,19 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
   return methodNotAllowed(res);
 };
+
+function parseBodyForWhatsApp(req: NextApiRequest): string | undefined {
+  if (!req.body) return;
+  return typeof req.body === "string"
+    ? JSON.stringify({ data: JSON.parse(req.body) })
+    : JSON.stringify({ data: req.body }, null, 2);
+}
+
+function parseBody(req: NextApiRequest): string | undefined {
+  if (!req.body) return;
+  return typeof req.body === "string"
+    ? req.body
+    : JSON.stringify(req.body, null, 2);
+}
 
 export default handler;

@@ -4,6 +4,7 @@ import { env } from "@typebot.io/env";
 import { parseNumberWithCommas } from "@typebot.io/lib/utils";
 import type { SendMailOptions } from "nodemailer";
 import type { ComponentProps } from "react";
+import * as React from "react";
 import { Head } from "../components/Head";
 import { HeroImage } from "../components/HeroImage";
 import { Text } from "../components/Text";

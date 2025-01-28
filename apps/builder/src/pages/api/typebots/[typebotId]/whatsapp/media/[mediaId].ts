@@ -1,6 +1,7 @@
 import { getAuthenticatedUser } from "@/features/auth/helpers/getAuthenticatedUser";
 import { isReadWorkspaceFobidden } from "@/features/workspace/helpers/isReadWorkspaceFobidden";
-import { decrypt } from "@typebot.io/lib/api/encryption/decrypt";
+import { decrypt } from "@typebot.io/credentials/decrypt";
+import type { WhatsAppCredentials } from "@typebot.io/credentials/schemas";
 import {
   methodNotAllowed,
   notAuthenticated,
@@ -8,7 +9,6 @@ import {
 } from "@typebot.io/lib/api/utils";
 import prisma from "@typebot.io/prisma";
 import { downloadMedia } from "@typebot.io/whatsapp/downloadMedia";
-import type { WhatsAppCredentials } from "@typebot.io/whatsapp/schemas";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {

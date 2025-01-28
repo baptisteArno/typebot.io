@@ -4,6 +4,7 @@ import { version } from "./package.json";
 
 export default defineConfig((options) => [
   {
+    tsconfig: "tsconfig.build.json",
     entry: ["src/index.ts"],
     minify: !options.watch,
     format: "esm",
@@ -11,6 +12,7 @@ export default defineConfig((options) => [
     dts: true,
   },
   {
+    tsconfig: "tsconfig.build.json",
     entry: ["src/web.ts"],
     minify: !options.watch,
     format: "esm",

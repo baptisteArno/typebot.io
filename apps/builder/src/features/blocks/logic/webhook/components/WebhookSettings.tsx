@@ -66,8 +66,10 @@ export const WebhookSettings = ({
     onMessage(e) {
       try {
         const parsedData = JSON.parse(e.data);
-        setReceivedData(JSON.stringify(parsedData, null, 2));
-        setResponseKeys(getDeepKeys(parsedData));
+        if (Object.keys(parsedData).length > 0) {
+          setReceivedData(JSON.stringify(parsedData, null, 2));
+          setResponseKeys(getDeepKeys(parsedData));
+        }
         setWebsocketStatus("closed");
         ws.close();
       } catch (err) {

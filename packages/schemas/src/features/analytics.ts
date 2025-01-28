@@ -7,8 +7,8 @@ export const totalAnswersSchema = z.object({
 });
 export type TotalAnswers = z.infer<typeof totalAnswersSchema>;
 
-export const totalVisitedEdgesSchema = z.object({
+export const edgeWithTotalUsersSchema = z.object({
   edgeId: z.string(),
   total: z.number(),
 });
-export type TotalVisitedEdges = z.infer<typeof totalVisitedEdgesSchema>;
+export type EdgeWithTotalUsers = z.infer<typeof edgeWithTotalUsersSchema>;

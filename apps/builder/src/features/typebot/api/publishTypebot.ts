@@ -3,15 +3,18 @@ import { authenticatedProcedure } from "@/helpers/server/trpc";
 import { TRPCError } from "@trpc/server";
 import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
 import { env } from "@typebot.io/env";
-import { parseGroups } from "@typebot.io/groups/schemas";
+import { parseGroups } from "@typebot.io/groups/helpers/parseGroups";
 import prisma from "@typebot.io/prisma";
 import { Plan } from "@typebot.io/prisma/enum";
 import { computeRiskLevel } from "@typebot.io/radar";
+import { isTypebotVersionAtLeastV6 } from "@typebot.io/schemas/helpers/isTypebotVersionAtLeastV6";
 import { settingsSchema } from "@typebot.io/settings/schemas";
+import type { TelemetryEvent } from "@typebot.io/telemetry/schemas";
 import { trackEvents } from "@typebot.io/telemetry/trackEvents";
 import { themeSchema } from "@typebot.io/theme/schemas";
 import { edgeSchema } from "@typebot.io/typebot/schemas/edge";
 import { startEventSchema } from "@typebot.io/typebot/schemas/events/start/schema";
+import { typebotV6Schema } from "@typebot.io/typebot/schemas/typebot";
 import { variableSchema } from "@typebot.io/variables/schemas";
 import { z } from "@typebot.io/zod";
 import { isWriteTypebotForbidden } from "../helpers/isWriteTypebotForbidden";
@@ -98,7 +101,7 @@ export const publishTypebot = authenticatedProcedure
 
     const riskLevel = typebotWasVerified
       ? 0
-      : computeRiskLevel(existingTypebot, {
+      : await computeRiskLevel(typebotV6Schema.parse(existingTypebot), {
           debug: env.NODE_ENV === "development",
         });
 
@@ -134,7 +137,7 @@ export const publishTypebot = authenticatedProcedure
       }
     }
 
-    const publishEvents = await parseTypebotPublishEvents({
+    const publishEvents: TelemetryEvent[] = await parseTypebotPublishEvents({
       existingTypebot,
       userId: user.id,
       hasFileUploadBlocks,
@@ -152,7 +155,7 @@ export const publishTypebot = authenticatedProcedure
             typebotVersion: existingTypebot.version,
           }),
           events:
-            (existingTypebot.version === "6"
+            (isTypebotVersionAtLeastV6(existingTypebot.version)
               ? z.tuple([startEventSchema])
               : z.null()
             ).parse(existingTypebot.events) ?? undefined,
@@ -161,7 +164,7 @@ export const publishTypebot = authenticatedProcedure
           theme: themeSchema.parse(existingTypebot.theme),
         },
       });
-    else
+    else {
       await prisma.publicTypebot.createMany({
         data: {
           version: existingTypebot.version,
@@ -171,7 +174,7 @@ export const publishTypebot = authenticatedProcedure
             typebotVersion: existingTypebot.version,
           }),
           events:
-            (existingTypebot.version === "6"
+            (isTypebotVersionAtLeastV6(existingTypebot.version)
               ? z.tuple([startEventSchema])
               : z.null()
             ).parse(existingTypebot.events) ?? undefined,
@@ -180,20 +183,18 @@ export const publishTypebot = authenticatedProcedure
           theme: themeSchema.parse(existingTypebot.theme),
         },
       });
-
-    await trackEvents([
-      ...publishEvents,
-      {
+      publishEvents.push({
         name: "Typebot published",
         workspaceId: existingTypebot.workspaceId,
         typebotId: existingTypebot.id,
         userId: user.id,
         data: {
-          name: existingTypebot.name,
           isFirstPublish: existingTypebot.publishedTypebot ? undefined : true,
         },
-      },
-    ]);
+      });
+    }
+
+    await trackEvents(publishEvents);
 
     return { message: "success" };
   });

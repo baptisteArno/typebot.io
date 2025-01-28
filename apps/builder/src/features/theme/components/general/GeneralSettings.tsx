@@ -128,10 +128,13 @@ export const GeneralSettings = ({
             <AccordionIcon />
           </AccordionButton>
           <AccordionPanel>
-            <ProgressBarForm
-              progressBar={generalTheme?.progressBar}
-              onProgressBarChange={updateProgressBar}
-            />
+            {typebot && (
+              <ProgressBarForm
+                progressBar={generalTheme?.progressBar}
+                onProgressBarChange={updateProgressBar}
+                typebotVersion={typebot.version}
+              />
+            )}
           </AccordionPanel>
         </AccordionItem>
         <AccordionItem>

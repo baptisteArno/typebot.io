@@ -3,10 +3,10 @@ import { TRPCError } from "@trpc/server";
 import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
 import type { FileInputBlock } from "@typebot.io/blocks-inputs/file/schema";
 import type { TextInputBlock } from "@typebot.io/blocks-inputs/text/schema";
-import { getSession } from "@typebot.io/bot-engine/queries/getSession";
+import { getSession } from "@typebot.io/chat-session/queries/getSession";
 import { env } from "@typebot.io/env";
-import { getBlockById } from "@typebot.io/groups/helpers";
-import { parseGroups } from "@typebot.io/groups/schemas";
+import { getBlockById } from "@typebot.io/groups/helpers/getBlockById";
+import { parseGroups } from "@typebot.io/groups/helpers/parseGroups";
 import { generatePresignedPostPolicy } from "@typebot.io/lib/s3/generatePresignedPostPolicy";
 import prisma from "@typebot.io/prisma";
 import type { Prisma } from "@typebot.io/prisma/types";
@@ -16,7 +16,7 @@ export const generateUploadUrl = publicProcedure
   .meta({
     openapi: {
       method: "POST",
-      path: "/v2/generate-upload-url",
+      path: "/v3/generate-upload-url",
       summary: "Generate upload URL",
       description: "Used to upload anything from the client to S3 bucket",
     },
@@ -24,6 +24,7 @@ export const generateUploadUrl = publicProcedure
   .input(
     z.object({
       sessionId: z.string(),
+      blockId: z.string(),
       fileName: z.string(),
       fileType: z.string().optional(),
     }),
@@ -35,7 +36,7 @@ export const generateUploadUrl = publicProcedure
       fileUrl: z.string(),
     }),
   )
-  .mutation(async ({ input: { fileName, sessionId, fileType } }) => {
+  .mutation(async ({ input: { fileName, sessionId, fileType, blockId } }) => {
     if (!env.S3_ENDPOINT || !env.S3_ACCESS_KEY || !env.S3_SECRET_KEY)
       throw new TRPCError({
         code: "INTERNAL_SERVER_ERROR",
@@ -100,8 +101,8 @@ export const generateUploadUrl = publicProcedure
       "workspaceId" in typebot && typebot.workspaceId && resultId
         ? `${visibility === "Private" ? "private" : "public"}/workspaces/${
             typebot.workspaceId
-          }/typebots/${typebotId}/results/${resultId}/${fileName}`
-        : `public/tmp/${typebotId}/${fileName}`;
+          }/typebots/${typebotId}/results/${resultId}/blocks/${blockId}/${fileName}`
+        : `public/tmp/typebots/${typebotId}/blocks/${blockId}/${fileName}`;
 
     const presignedPostPolicy = await generatePresignedPostPolicy({
       fileType,
@@ -114,7 +115,7 @@ export const generateUploadUrl = publicProcedure
       formData: presignedPostPolicy.formData,
       fileUrl:
         visibility === "Private" && !isPreview
-          ? `${env.NEXTAUTH_URL}/api/typebots/${typebotId}/results/${resultId}/${fileName}`
+          ? `${env.NEXTAUTH_URL}/api/typebots/${typebotId}/results/${resultId}/blocks/${blockId}/${fileName}`
           : env.S3_PUBLIC_CUSTOM_DOMAIN
             ? `${env.S3_PUBLIC_CUSTOM_DOMAIN}/${filePath}`
             : `${presignedPostPolicy.postURL}/${presignedPostPolicy.formData.key}`,

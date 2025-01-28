@@ -33,10 +33,9 @@ type Props = {
 };
 
 export const GroupNode = ({ group, groupIndex }: Props) => {
-  const bg = useColorModeValue("white", "gray.900");
-  const previewingBorderColor = useColorModeValue("blue.400", "blue.300");
-  const borderColor = useColorModeValue("white", "gray.800");
-  const editableHoverBg = useColorModeValue("gray.100", "gray.700");
+  const bg = useColorModeValue("white", "gray.950");
+  const previewingBorderColor = useColorModeValue("orange.400", "orange.300");
+  const editableHoverBg = useColorModeValue("gray.200", "gray.700");
   const {
     connectingIds,
     setConnectingIds,
@@ -183,7 +182,7 @@ export const GroupNode = ({ group, groupIndex }: Props) => {
           borderColor={
             isConnecting || isContextMenuOpened || isPreviewing || isFocused
               ? previewingBorderColor
-              : borderColor
+              : undefined
           }
           w={groupWidth}
           transition="border 300ms, box-shadow 200ms"
@@ -197,8 +196,7 @@ export const GroupNode = ({ group, groupIndex }: Props) => {
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
           cursor={isMouseDown ? "grabbing" : "pointer"}
-          shadow="md"
-          _hover={{ shadow: "lg" }}
+          _hover={{ shadow: "md" }}
           zIndex={isFocused ? 10 : 1}
           spacing={isEmpty(group.title) ? "0" : "2"}
           pointerEvents={isDraggingGraph ? "none" : "auto"}
@@ -207,9 +205,10 @@ export const GroupNode = ({ group, groupIndex }: Props) => {
             value={groupTitle}
             onChange={setGroupTitle}
             onSubmit={handleTitleSubmit}
-            fontWeight="semibold"
             display="flex"
             justifyContent="space-between"
+            fontWeight="medium"
+            pr="8"
           >
             <EditablePreview
               _hover={{

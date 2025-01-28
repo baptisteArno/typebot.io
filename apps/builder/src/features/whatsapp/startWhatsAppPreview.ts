@@ -1,10 +1,10 @@
 import { authenticatedProcedure } from "@/helpers/server/trpc";
 import { TRPCError } from "@trpc/server";
-import { restartSession } from "@typebot.io/bot-engine/queries/restartSession";
 import { saveStateToDatabase } from "@typebot.io/bot-engine/saveStateToDatabase";
 import { startFromSchema } from "@typebot.io/bot-engine/schemas/api";
-import type { SessionState } from "@typebot.io/bot-engine/schemas/chatSession";
 import { startSession } from "@typebot.io/bot-engine/startSession";
+import { restartSession } from "@typebot.io/chat-session/queries/restartSession";
+import type { SessionState } from "@typebot.io/chat-session/schemas";
 import { env } from "@typebot.io/env";
 import prisma from "@typebot.io/prisma";
 import { isReadTypebotForbidden } from "@typebot.io/typebot/helpers/isReadTypebotForbidden";

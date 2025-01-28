@@ -1,9 +1,10 @@
-import type { CommandData } from "../types";
+import type { CommandArgs, CommandData } from "../types";
 
-export const unmount = () => {
+export const unmount = ({ id }: CommandArgs = {}) => {
   const message: CommandData = {
     isFromTypebot: true,
     command: "unmount",
+    id,
   };
   window.postMessage(message);
 };

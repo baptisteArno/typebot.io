@@ -16,7 +16,6 @@ export const Textarea = (props: TextareaProps) => {
       rows={6}
       data-testid="textarea"
       required
-      style={{ "font-size": "16px" }}
       autofocus={!isMobile()}
       onInput={(e) => local.onInput(e.currentTarget.value)}
       {...others}

@@ -4,7 +4,6 @@ import type Stripe from "stripe";
 type Props = {
   customerId: string;
   workspaceId: string;
-  currency: "usd" | "eur";
   plan: "STARTER" | "PRO";
   returnUrl: string;
   userId: string;
@@ -12,7 +11,7 @@ type Props = {
 
 export const createCheckoutSessionUrl =
   (stripe: Stripe) =>
-  async ({ customerId, workspaceId, currency, plan, returnUrl }: Props) => {
+  async ({ customerId, workspaceId, plan, returnUrl }: Props) => {
     const session = await stripe.checkout.sessions.create({
       success_url: `${returnUrl}?stripe=${plan}&success=true`,
       cancel_url: `${returnUrl}?stripe=cancel`,
@@ -27,7 +26,6 @@ export const createCheckoutSessionUrl =
         workspaceId,
         plan,
       },
-      currency,
       billing_address_collection: "required",
       automatic_tax: { enabled: true },
       line_items: [

@@ -1,11 +1,11 @@
 import { defaultScriptOptions } from "@typebot.io/blocks-logic/script/constants";
 import type { ScriptBlock } from "@typebot.io/blocks-logic/script/schema";
+import type { SessionState } from "@typebot.io/chat-session/schemas";
 import { executeFunction } from "@typebot.io/variables/executeFunction";
 import { extractVariablesFromText } from "@typebot.io/variables/extractVariablesFromText";
 import { parseGuessedValueType } from "@typebot.io/variables/parseGuessedValueType";
 import { parseVariables } from "@typebot.io/variables/parseVariables";
 import type { Variable } from "@typebot.io/variables/schemas";
-import type { SessionState } from "../../../schemas/chatSession";
 import type { ExecuteLogicResponse } from "../../../types";
 import { updateVariablesInSession } from "../../../updateVariablesInSession";
 

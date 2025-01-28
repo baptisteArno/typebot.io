@@ -31,16 +31,17 @@ export const BlockCardLayout = ({
       <Flex pos="relative">
         <HStack
           borderWidth="1px"
-          borderColor={useColorModeValue("gray.200", "gray.800")}
+          borderColor={useColorModeValue("gray.200", "gray.900")}
           rounded="lg"
           flex="1"
           cursor={"grab"}
+          minH={isMouseDown ? "42px" : undefined}
           opacity={isMouseDown ? "0.4" : "1"}
           onMouseDown={handleMouseDown}
-          bgColor={useColorModeValue("gray.50", "gray.850")}
+          bgColor={useColorModeValue("gray.50", "gray.900")}
           px="4"
           py="2"
-          _hover={useColorModeValue({ shadow: "md" }, { bgColor: "gray.800" })}
+          _hover={useColorModeValue({ shadow: "md" }, { bgColor: "gray.900" })}
           transition="box-shadow 200ms, background-color 200ms"
         >
           {!isMouseDown ? children : null}

@@ -12,7 +12,7 @@ import {
   ModalHeader,
   ModalOverlay,
 } from "@chakra-ui/react";
-import type { SmtpCredentials } from "@typebot.io/blocks-integrations/sendEmail/schema";
+import type { SmtpCredentials } from "@typebot.io/credentials/schemas";
 import { isNotDefined } from "@typebot.io/lib/utils";
 import type React from "react";
 import { useState } from "react";
@@ -118,7 +118,7 @@ export const SmtpCreateModalContent = ({
         <ModalFooter>
           <Button
             type="submit"
-            colorScheme="blue"
+            colorScheme="orange"
             isDisabled={
               isNotDefined(smtpConfig.from.email) ||
               isNotDefined(smtpConfig.host) ||

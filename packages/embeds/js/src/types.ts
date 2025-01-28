@@ -24,10 +24,7 @@ export type ClientSideActionContext = {
   resultId?: string;
 };
 
-export type ChatChunk = Pick<
-  ContinueChatResponse,
-  "messages" | "input" | "clientSideActions"
-> & {
+export type ChatChunk = Pick<ContinueChatResponse, "messages" | "input"> & {
   streamingMessageId?: string;
 };
 

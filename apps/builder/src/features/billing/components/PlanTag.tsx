@@ -3,7 +3,7 @@ import { Plan } from "@typebot.io/prisma/enum";
 
 export const planColorSchemes: Record<Plan, ThemeTypings["colorSchemes"]> = {
   [Plan.LIFETIME]: "purple",
-  [Plan.PRO]: "blue",
+  [Plan.PRO]: "purple",
   [Plan.OFFERED]: "orange",
   [Plan.STARTER]: "orange",
   [Plan.FREE]: "gray",

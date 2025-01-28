@@ -17,19 +17,18 @@ import { pictureChoiceBlockSchemas } from "@typebot.io/blocks-inputs/pictureChoi
 import { ratingInputBlockSchema } from "@typebot.io/blocks-inputs/rating/schema";
 import { textInputSchema } from "@typebot.io/blocks-inputs/text/schema";
 import { urlInputSchema } from "@typebot.io/blocks-inputs/url/schema";
-import type { Prisma } from "@typebot.io/prisma/types";
+import { sessionStateSchema } from "@typebot.io/chat-session/schemas";
 import { logSchema } from "@typebot.io/results/schemas/results";
 import { settingsSchema } from "@typebot.io/settings/schemas";
 import { themeSchema } from "@typebot.io/theme/schemas";
+import { dynamicThemeSchema } from "@typebot.io/theme/schemas";
 import { preprocessTypebot } from "@typebot.io/typebot/preprocessTypebot";
 import {
   typebotV5Schema,
   typebotV6Schema,
 } from "@typebot.io/typebot/schemas/typebot";
 import { z } from "@typebot.io/zod";
-import { sessionStateSchema } from "./chatSession";
 import { clientSideActionSchema } from "./clientSideAction";
-import { dynamicThemeSchema } from "./dynamicTheme";
 
 export const messageSchema = z.preprocess(
   (val) => (typeof val === "string" ? { type: "text", text: val } : val),
@@ -190,6 +189,7 @@ const startTypebotPick = {
   settings: true,
   theme: true,
   updatedAt: true,
+  workspaceId: true,
 } as const;
 const startTypebotV5Schema = typebotV5Schema.pick(startTypebotPick).openapi({
   title: "Typebot V5",
@@ -201,7 +201,7 @@ const startTypebotV6Schema = typebotV6Schema.pick(startTypebotPick).openapi({
   title: "Typebot V6",
   ref: "typebotV6",
 });
-type StartTypebotV6 = z.infer<typeof startTypebotV6Schema>;
+export type StartTypebotV6 = z.infer<typeof startTypebotV6Schema>;
 
 export const startTypebotSchema = z.preprocess(
   preprocessTypebot,
@@ -402,6 +402,10 @@ export const startChatResponseSchema = z
     resultId: z.string().optional(),
     typebot: z.object({
       id: z.string(),
+      version: z.union([
+        typebotV5Schema.shape.version,
+        typebotV6Schema.shape.version,
+      ]),
       theme: themeSchema,
       settings: settingsSchema,
       publishedAt: z.coerce.date().optional(),

@@ -51,7 +51,7 @@ export const runGenerateVariables = async ({
     if (value === null) return;
     const existingVariable = variables.find((v) => v.name === key);
     if (!existingVariable) return;
-    variablesStore.set(existingVariable.id, value);
+    variablesStore.set([{ id: existingVariable.id, value }]);
   });
 };
 

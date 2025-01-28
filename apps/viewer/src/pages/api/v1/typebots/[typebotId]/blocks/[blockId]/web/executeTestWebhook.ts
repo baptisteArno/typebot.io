@@ -1,7 +1,7 @@
 import { authenticateUser } from "@/helpers/authenticateUser";
 import { LogicBlockType } from "@typebot.io/blocks-logic/constants";
 import { env } from "@typebot.io/env";
-import { parseGroups } from "@typebot.io/groups/schemas";
+import { parseGroups } from "@typebot.io/groups/helpers/parseGroups";
 import {
   badRequest,
   forbidden,
@@ -10,6 +10,7 @@ import {
 } from "@typebot.io/lib/api/utils";
 import { byId } from "@typebot.io/lib/utils";
 import prisma from "@typebot.io/prisma";
+import { isTypebotVersionAtLeastV6 } from "@typebot.io/schemas/helpers/isTypebotVersionAtLeastV6";
 import { isReadTypebotForbidden } from "@typebot.io/typebot/helpers/isReadTypebotForbidden";
 import type { NextApiRequest, NextApiResponse } from "next";
 import PartySocket from "partysocket";
@@ -46,7 +47,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     });
     if (!typebot || (await isReadTypebotForbidden(typebot, user)))
       return notFound(res, "Typebot not found");
-    if (typebot.version !== "6") return badRequest(res);
+    if (!isTypebotVersionAtLeastV6(typebot.version)) return badRequest(res);
     const block = parseGroups(typebot.groups, {
       typebotVersion: typebot.version,
     })
@@ -63,10 +64,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         },
         {
           method: "POST",
-          body:
-            typeof req.body === "string"
-              ? req.body
-              : JSON.stringify(req.body, null, 2),
+          body: parseBody(req),
         },
       );
     } catch (error) {
@@ -80,3 +78,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 export default handler;
+
+function parseBody(req: NextApiRequest): string | undefined {
+  if (!req.body) return;
+  return typeof req.body === "string"
+    ? req.body
+    : JSON.stringify(req.body, null, 2);
+}

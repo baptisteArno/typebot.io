@@ -1,11 +1,8 @@
 <br />
 <p align="center">
-  <a href="https://typebot.io/#gh-light-mode-only" target="_blank">
-    <img src="./.github/images/logo-light.png" alt="Typebot illustration" width="350px">
-  </a>
-  <a href="https://typebot.io/#gh-dark-mode-only" target="_blank">
-    <img src="./.github/images/logo-dark.png" alt="Typebot illustration" width="350px">
-  </a>
+<a href="https://typebot.io" target="_blank">
+  <img src="./.github/images/banner.png" alt="Typebot banner">
+</a>
 </p>
 <br />
 
@@ -22,9 +19,7 @@ Typebot is an Fair Source chatbot builder. It allows you to create advanced chat
 </a>
 <a href="https://github.com/baptistearno/typebot.io/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-AGPLv3-purple" alt="License">
 <a href="https://status.typebot.io"><img height="20px" src="https://betteruptime.com/status-badges/v1/monitor/a9kf.svg" alt="Uptime"></a>
-<a href="https://github.com/baptisteArno/typebot.io/issues/new"><img src="https://img.shields.io/badge/Report a bug-Github-%231F80C0" alt="Report a bug"></a>
-<a href="https://github.com/baptisteArno/typebot.io/discussions/new?category=q-a"><img src="https://img.shields.io/badge/Ask a question-Github-%231F80C0" alt="Ask a question"></a>
-<a href="https://console.algora.io/org/typebot/bounties?status=open"><img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fconsole.algora.io%2Fapi%2Fshields%2Ftypebot%2Fbounties%3Fstatus%3Dopen" alt="Ask a question"></a>
+<a href="https://github.com/baptisteArno/typebot.io/issues/new?template=bug_report.md"><img src="https://img.shields.io/badge/Report a bug-Github-%231F80C0" alt="Report a bug"></a>
 <a href="https://typebot.io/discord"><img src="https://img.shields.io/badge/Join community-Discord-%23404EED" alt="Ask a question"></a>
 
 </p>

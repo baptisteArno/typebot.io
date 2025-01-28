@@ -38,7 +38,12 @@ export const ConditionContent = ({
               </Text>
             )}
             {variable?.name && (
-              <Tag bgColor="orange.400" color="white" size="sm">
+              <Tag
+                bgColor="purple.400"
+                color="white"
+                size="sm"
+                wordBreak="break-all"
+              >
                 {variable.name}
               </Tag>
             )}
@@ -92,5 +97,9 @@ const parseComparisonOperatorSymbol = (
       return "matches";
     case ComparisonOperators.NOT_MATCH_REGEX:
       return "not matches";
+    case ComparisonOperators.GREATER_OR_EQUAL:
+      return ">=";
+    case ComparisonOperators.LESS_OR_EQUAL:
+      return "<=";
   }
 };

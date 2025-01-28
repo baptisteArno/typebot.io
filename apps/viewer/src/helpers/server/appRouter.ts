@@ -5,7 +5,8 @@ import { saveClientLogs } from "@/features/chat/api/saveClientLogs";
 import { startChat } from "@/features/chat/api/startChat";
 import { startChatPreview } from "@/features/chat/api/startChatPreview";
 import { updateTypebotInSession } from "@/features/chat/api/updateTypebotInSession";
-import { generateUploadUrl as generateUploadUrlV1 } from "@/features/fileUpload/api/deprecated/generateUploadUrl";
+import { generateUploadUrlV1 } from "@/features/fileUpload/api/deprecated/generateUploadUrlV1";
+import { generateUploadUrlV2 } from "@/features/fileUpload/api/deprecated/generateUploadUrlV2";
 import { getUploadUrl } from "@/features/fileUpload/api/deprecated/getUploadUrl";
 import { generateUploadUrl } from "@/features/fileUpload/api/generateUploadUrl";
 import { whatsAppRouter } from "@/features/whatsapp/api/router";
@@ -19,6 +20,7 @@ export const appRouter = router({
   startChatPreview: startChatPreview,
   getUploadUrl,
   generateUploadUrlV1,
+  generateUploadUrlV2,
   generateUploadUrl,
   updateTypebotInSession,
   whatsAppRouter,

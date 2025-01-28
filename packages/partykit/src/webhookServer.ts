@@ -13,9 +13,8 @@ export default class Server implements Party.Server {
       try {
         payload = await request.json<unknown>();
       } catch (err) {
-        return new Response("Invalid payload, please send JSON body", {
-          status: 400,
-        });
+        this.room.broadcast(JSON.stringify({ data: payload }));
+        return new Response("Non json payload, empty data sent");
       }
       if (
         payload === null ||

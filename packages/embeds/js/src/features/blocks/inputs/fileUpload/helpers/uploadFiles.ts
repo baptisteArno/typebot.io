@@ -6,6 +6,7 @@ type UploadFileProps = {
     file: File;
     input: {
       sessionId: string;
+      blockId: string;
       fileName: string;
     };
   }[];
@@ -34,11 +35,12 @@ export const uploadFiles = async ({
       fileUrl: string;
     }>({
       method: "POST",
-      url: `${apiHost}/api/v2/generate-upload-url`,
+      url: `${apiHost}/api/v3/generate-upload-url`,
       body: {
         fileName: input.fileName,
         sessionId: input.sessionId,
         fileType: file.type,
+        blockId: input.blockId,
       },
     });
 

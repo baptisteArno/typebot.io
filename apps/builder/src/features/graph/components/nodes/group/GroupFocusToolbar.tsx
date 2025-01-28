@@ -28,7 +28,7 @@ export const GroupFocusToolbar = ({ groupId, onPlayClick }: Props) => {
       rounded="md"
       spacing={0}
       borderWidth="1px"
-      bgColor={useColorModeValue("white", "gray.800")}
+      bgColor={useColorModeValue("white", "gray.900")}
       shadow="md"
     >
       <IconButton

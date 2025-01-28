@@ -205,6 +205,7 @@ export const FolderContent = ({ folder }: Props) => {
                   draggedTypebot={draggedTypebot}
                   onTypebotUpdated={refetchTypebots}
                   onDrag={handleTypebotDrag(typebot)}
+                  isReadOnly={typebot.accessRight !== "write"}
                 />
               ))}
           </Wrap>

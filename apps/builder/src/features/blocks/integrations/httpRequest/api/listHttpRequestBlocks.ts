@@ -4,7 +4,7 @@ import { TRPCError } from "@trpc/server";
 import { isHttpRequestBlock } from "@typebot.io/blocks-core/helpers";
 import type { Block } from "@typebot.io/blocks-core/schemas/schema";
 import { IntegrationBlockType } from "@typebot.io/blocks-integrations/constants";
-import { parseGroups } from "@typebot.io/groups/schemas";
+import { parseGroups } from "@typebot.io/groups/helpers/parseGroups";
 import { byId } from "@typebot.io/lib/utils";
 import prisma from "@typebot.io/prisma";
 import { z } from "@typebot.io/zod";

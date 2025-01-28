@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { render } from "@faire/mjml-react/utils/render";
+import * as React from "react";
 import { AlmostReachedChatsLimitEmail } from "./emails/AlmostReachedChatsLimitEmail";
 import { DefaultBotNotificationEmail } from "./emails/DefaultBotNotificationEmail";
 import { GuestInvitationEmail } from "./emails/GuestInvitationEmail";

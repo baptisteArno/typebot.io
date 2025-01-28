@@ -273,7 +273,9 @@
                                                                       "Contains",
                                                                       "Does not contain",
                                                                       "Greater than",
+                                                                      "Greater or equal to",
                                                                       "Less than",
+                                                                      "Less or equal to",
                                                                       "Is set",
                                                                       "Is empty",
                                                                       "Starts with",
@@ -785,7 +787,9 @@
                                                                         "Contains",
                                                                         "Does not contain",
                                                                         "Greater than",
+                                                                        "Greater or equal to",
                                                                         "Less than",
+                                                                        "Less or equal to",
                                                                         "Is set",
                                                                         "Is empty",
                                                                         "Starts with",
@@ -966,7 +970,9 @@
                                                                         "Contains",
                                                                         "Does not contain",
                                                                         "Greater than",
+                                                                        "Greater or equal to",
                                                                         "Less than",
+                                                                        "Less or equal to",
                                                                         "Is set",
                                                                         "Is empty",
                                                                         "Starts with",
@@ -1704,7 +1710,8 @@
                               "version": {
                                 "type": "string",
                                 "enum": [
-                                  "6"
+                                  "6",
+                                  "6.1"
                                 ]
                               },
                               "groups": {
@@ -3202,12 +3209,21 @@
                           },
                           "publishedTypebotId": {
                             "type": "string"
+                          },
+                          "accessRight": {
+                            "type": "string",
+                            "enum": [
+                              "read",
+                              "write",
+                              "guest"
+                            ]
                           }
                         },
                         "required": [
                           "name",
                           "icon",
-                          "id"
+                          "id",
+                          "accessRight"
                         ]
                       }
                     }
@@ -3311,7 +3327,8 @@
                           "version": {
                             "type": "string",
                             "enum": [
-                              "6"
+                              "6",
+                              "6.1"
                             ]
                           },
                           "name": {
@@ -3739,7 +3756,9 @@
                                                                   "Contains",
                                                                   "Does not contain",
                                                                   "Greater than",
+                                                                  "Greater or equal to",
                                                                   "Less than",
+                                                                  "Less or equal to",
                                                                   "Is set",
                                                                   "Is empty",
                                                                   "Starts with",
@@ -4251,7 +4270,9 @@
                                                                     "Contains",
                                                                     "Does not contain",
                                                                     "Greater than",
+                                                                    "Greater or equal to",
                                                                     "Less than",
+                                                                    "Less or equal to",
                                                                     "Is set",
                                                                     "Is empty",
                                                                     "Starts with",
@@ -4432,7 +4453,9 @@
                                                                     "Contains",
                                                                     "Does not contain",
                                                                     "Greater than",
+                                                                    "Greater or equal to",
                                                                     "Less than",
+                                                                    "Less or equal to",
                                                                     "Is set",
                                                                     "Is empty",
                                                                     "Starts with",
@@ -5416,7 +5439,8 @@
                           "3": "#/components/schemas/typebotV5",
                           "4": "#/components/schemas/typebotV5",
                           "5": "#/components/schemas/typebotV5",
-                          "6": "#/components/schemas/typebotV6"
+                          "6": "#/components/schemas/typebotV6",
+                          "6.1": "#/components/schemas/typebotV6"
                         }
                       }
                     },
@@ -5645,17 +5669,28 @@
                           "3": "#/components/schemas/publicTypebotV5",
                           "4": "#/components/schemas/publicTypebotV5",
                           "5": "#/components/schemas/publicTypebotV5",
-                          "6": "#/components/schemas/publicTypebotV6"
+                          "6": "#/components/schemas/publicTypebotV6",
+                          "6.1": "#/components/schemas/publicTypebotV6"
                         }
                       }
                     },
                     "version": {
-                      "type": "string",
-                      "enum": [
-                        "3",
-                        "4",
-                        "5",
-                        "6"
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "enum": [
+                            "3",
+                            "4",
+                            "5"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "6",
+                            "6.1"
+                          ]
+                        }
                       ],
                       "description": "Provides the version the published bot was migrated from if `migrateToLatestVersion` is set to `true`."
                     }
@@ -5929,7 +5964,8 @@
                           "version": {
                             "type": "string",
                             "enum": [
-                              "6"
+                              "6",
+                              "6.1"
                             ]
                           },
                           "name": {
@@ -6342,7 +6378,9 @@
                                                                   "Contains",
                                                                   "Does not contain",
                                                                   "Greater than",
+                                                                  "Greater or equal to",
                                                                   "Less than",
+                                                                  "Less or equal to",
                                                                   "Is set",
                                                                   "Is empty",
                                                                   "Starts with",
@@ -6854,7 +6892,9 @@
                                                                     "Contains",
                                                                     "Does not contain",
                                                                     "Greater than",
+                                                                    "Greater or equal to",
                                                                     "Less than",
+                                                                    "Less or equal to",
                                                                     "Is set",
                                                                     "Is empty",
                                                                     "Starts with",
@@ -7035,7 +7075,9 @@
                                                                     "Contains",
                                                                     "Does not contain",
                                                                     "Greater than",
+                                                                    "Greater or equal to",
                                                                     "Less than",
+                                                                    "Less or equal to",
                                                                     "Is set",
                                                                     "Is empty",
                                                                     "Starts with",
@@ -7878,6 +7920,9 @@
                         "title": "Typebot V5"
                       }
                     ]
+                  },
+                  "fromTemplate": {
+                    "type": "string"
                   }
                 },
                 "required": [
@@ -9309,13 +9354,6 @@
                   "workspaceId": {
                     "type": "string"
                   },
-                  "currency": {
-                    "type": "string",
-                    "enum": [
-                      "usd",
-                      "eur"
-                    ]
-                  },
                   "plan": {
                     "type": "string",
                     "enum": [
@@ -9346,7 +9384,6 @@
                   "email",
                   "company",
                   "workspaceId",
-                  "currency",
                   "plan",
                   "returnUrl"
                 ]
@@ -9447,20 +9484,12 @@
                       "STARTER",
                       "PRO"
                     ]
-                  },
-                  "currency": {
-                    "type": "string",
-                    "enum": [
-                      "usd",
-                      "eur"
-                    ]
                   }
                 },
                 "required": [
                   "returnUrl",
                   "workspaceId",
-                  "plan",
-                  "currency"
+                  "plan"
                 ]
               }
             }
@@ -13352,10 +13381,7 @@
                                                 "data": {
                                                   "type": "string"
                                                 }
-                                              },
-                                              "required": [
-                                                "data"
-                                              ]
+                                              }
                                             },
                                             "timestamp": {
                                               "type": "string"
@@ -14983,7 +15009,9 @@
                                   "Contains",
                                   "Does not contain",
                                   "Greater than",
+                                  "Greater or equal to",
                                   "Less than",
+                                  "Less or equal to",
                                   "Is set",
                                   "Is empty",
                                   "Starts with",
@@ -15031,6 +15059,9 @@
               },
               "searchInputPlaceholder": {
                 "type": "string"
+              },
+              "areInitialSearchButtonsVisible": {
+                "type": "boolean"
               }
             }
           }
@@ -15190,7 +15221,9 @@
                                   "Contains",
                                   "Does not contain",
                                   "Greater than",
+                                  "Greater or equal to",
                                   "Less than",
+                                  "Less or equal to",
                                   "Is set",
                                   "Is empty",
                                   "Starts with",
@@ -16700,7 +16733,9 @@
                                   "Contains",
                                   "Does not contain",
                                   "Greater than",
+                                  "Greater or equal to",
                                   "Less than",
+                                  "Less or equal to",
                                   "Is set",
                                   "Is empty",
                                   "Starts with",
@@ -16748,6 +16783,9 @@
               },
               "searchInputPlaceholder": {
                 "type": "string"
+              },
+              "areInitialSearchButtonsVisible": {
+                "type": "boolean"
               }
             }
           }
@@ -16901,7 +16939,9 @@
                                   "Contains",
                                   "Does not contain",
                                   "Greater than",
+                                  "Greater or equal to",
                                   "Less than",
+                                  "Less or equal to",
                                   "Is set",
                                   "Is empty",
                                   "Starts with",
@@ -17029,7 +17069,9 @@
                               "Contains",
                               "Does not contain",
                               "Greater than",
+                              "Greater or equal to",
                               "Less than",
+                              "Less or equal to",
                               "Is set",
                               "Is empty",
                               "Starts with",
@@ -17251,7 +17293,9 @@
                                 "Contains",
                                 "Does not contain",
                                 "Greater than",
+                                "Greater or equal to",
                                 "Less than",
+                                "Less or equal to",
                                 "Is set",
                                 "Is empty",
                                 "Starts with",
@@ -17415,7 +17459,9 @@
                                 "Contains",
                                 "Does not contain",
                                 "Greater than",
+                                "Greater or equal to",
                                 "Less than",
+                                "Less or equal to",
                                 "Is set",
                                 "Is empty",
                                 "Starts with",
@@ -19237,6 +19283,8 @@
                   "model": {
                     "type": "string",
                     "enum": [
+                      "claude-3-5-haiku-latest",
+                      "claude-3-5-sonnet-latest",
                       "claude-3-5-sonnet-20240620",
                       "claude-3-opus-20240229",
                       "claude-3-sonnet-20240229",
@@ -19514,6 +19562,8 @@
                   "model": {
                     "type": "string",
                     "enum": [
+                      "claude-3-5-haiku-latest",
+                      "claude-3-5-sonnet-latest",
                       "claude-3-5-sonnet-20240620",
                       "claude-3-opus-20240229",
                       "claude-3-sonnet-20240229",
@@ -21858,7 +21908,9 @@
                             "Contains",
                             "Does not contain",
                             "Greater than",
+                            "Greater or equal to",
                             "Less than",
+                            "Less or equal to",
                             "Is set",
                             "Is empty",
                             "Starts with",
@@ -21918,7 +21970,8 @@
           "version": {
             "type": "string",
             "enum": [
-              "6"
+              "6",
+              "6.1"
             ]
           },
           "id": {
@@ -22380,7 +22433,9 @@
                                                   "Contains",
                                                   "Does not contain",
                                                   "Greater than",
+                                                  "Greater or equal to",
                                                   "Less than",
+                                                  "Less or equal to",
                                                   "Is set",
                                                   "Is empty",
                                                   "Starts with",
@@ -22892,7 +22947,9 @@
                                                     "Contains",
                                                     "Does not contain",
                                                     "Greater than",
+                                                    "Greater or equal to",
                                                     "Less than",
+                                                    "Less or equal to",
                                                     "Is set",
                                                     "Is empty",
                                                     "Starts with",
@@ -23073,7 +23130,9 @@
                                                     "Contains",
                                                     "Does not contain",
                                                     "Greater than",
+                                                    "Greater or equal to",
                                                     "Less than",
+                                                    "Less or equal to",
                                                     "Is set",
                                                     "Is empty",
                                                     "Starts with",
@@ -23967,7 +24026,8 @@
           "version": {
             "type": "string",
             "enum": [
-              "6"
+              "6",
+              "6.1"
             ]
           },
           "createdAt": {
@@ -24352,7 +24412,9 @@
                                                   "Contains",
                                                   "Does not contain",
                                                   "Greater than",
+                                                  "Greater or equal to",
                                                   "Less than",
+                                                  "Less or equal to",
                                                   "Is set",
                                                   "Is empty",
                                                   "Starts with",
@@ -24864,7 +24926,9 @@
                                                     "Contains",
                                                     "Does not contain",
                                                     "Greater than",
+                                                    "Greater or equal to",
                                                     "Less than",
+                                                    "Less or equal to",
                                                     "Is set",
                                                     "Is empty",
                                                     "Starts with",
@@ -25045,7 +25109,9 @@
                                                     "Contains",
                                                     "Does not contain",
                                                     "Greater than",
+                                                    "Greater or equal to",
                                                     "Less than",
+                                                    "Less or equal to",
                                                     "Is set",
                                                     "Is empty",
                                                     "Starts with",

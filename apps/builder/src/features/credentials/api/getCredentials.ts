@@ -1,7 +1,7 @@
 import { isWriteWorkspaceForbidden } from "@/features/workspace/helpers/isWriteWorkspaceForbidden";
 import { authenticatedProcedure } from "@/helpers/server/trpc";
 import { TRPCError } from "@trpc/server";
-import { decrypt } from "@typebot.io/lib/api/encryption/decrypt";
+import { decrypt } from "@typebot.io/credentials/decrypt";
 import prisma from "@typebot.io/prisma";
 import { z } from "@typebot.io/zod";
 

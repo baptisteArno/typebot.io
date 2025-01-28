@@ -78,7 +78,7 @@ export const ColumnSettings = ({
 
   return (
     <Stack>
-      <Text fontWeight="semibold" fontSize="sm">
+      <Text fontWeight="medium" fontSize="sm">
         Shown in table:
       </Text>
       <DndContext

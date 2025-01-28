@@ -1,5 +1,5 @@
 import type { ChoiceInputBlock } from "@typebot.io/blocks-inputs/choice/schema";
-import type { SessionState } from "../../../schemas/chatSession";
+import type { SessionState } from "@typebot.io/chat-session/schemas";
 import type { ParsedReply } from "../../../types";
 import { injectVariableValuesInButtonsInputBlock } from "./injectVariableValuesInButtonsInputBlock";
 

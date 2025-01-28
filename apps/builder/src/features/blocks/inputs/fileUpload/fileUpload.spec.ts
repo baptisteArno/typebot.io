@@ -5,6 +5,7 @@ import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
 import { createTypebots } from "@typebot.io/playwright/databaseActions";
 import { parseDefaultGroupWithBlock } from "@typebot.io/playwright/databaseHelpers";
 import { freeWorkspaceId } from "@typebot.io/playwright/databaseSetup";
+import { latestTypebotVersion } from "@typebot.io/schemas/versions";
 
 test.describe.configure({ mode: "parallel" });
 
@@ -64,7 +65,7 @@ test.describe("Free workspace", () => {
         ...parseDefaultGroupWithBlock({
           type: InputBlockType.FILE,
         }),
-        version: "6",
+        version: latestTypebotVersion,
         workspaceId: freeWorkspaceId,
       },
     ]);

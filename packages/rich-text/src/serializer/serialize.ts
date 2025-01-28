@@ -187,12 +187,7 @@ export default function serialize(
     }
   }
 
-  if (chunk.parentType === nodeTypes["inline-variable"]) {
-    if (opts.flavour === "whatsapp") {
-      return children;
-    }
-    return escapeHtml(children);
-  }
+  if (chunk.parentType === nodeTypes["inline-variable"]) return children;
 
   switch (type) {
     case nodeTypes.heading[1]:
@@ -250,10 +245,7 @@ export default function serialize(
       return `---\n`;
 
     default: {
-      if (opts.flavour === "whatsapp") {
-        return children;
-      }
-      return escapeHtml(children);
+      return children;
     }
   }
 }

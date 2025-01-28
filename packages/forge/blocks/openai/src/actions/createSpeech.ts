@@ -102,7 +102,7 @@ export const createSpeech = createAction({
         mimeType: "audio/mpeg",
       });
 
-      variables.set(options.saveUrlInVariableId, url);
+      variables.set([{ id: options.saveUrlInVariableId, value: url }]);
     },
   },
 });

@@ -202,10 +202,12 @@ export const askAssistant = createAction({
       responseMapping?.forEach((mapping) => {
         if (!mapping.variableId) return;
         if (!mapping.item || mapping.item === "Message") {
-          variables.set(
-            mapping.variableId,
-            writingMessage.replace(/【.+】/g, ""),
-          );
+          variables.set([
+            {
+              id: mapping.variableId,
+              value: writingMessage.replace(/【.+】/g, ""),
+            },
+          ]);
         }
       });
     },
@@ -278,9 +280,11 @@ const createAssistantStream = async ({
       (mapping) => mapping.item === "Thread ID",
     );
     if (threadIdResponseMapping?.variableId)
-      await variables.set(threadIdResponseMapping.variableId, currentThreadId);
+      await variables.set([
+        { id: threadIdResponseMapping.variableId, value: currentThreadId },
+      ]);
     else if (threadVariableId)
-      await variables.set(threadVariableId, currentThreadId);
+      await variables.set([{ id: threadVariableId, value: currentThreadId }]);
   }
 
   if (!currentThreadId) {
@@ -334,9 +338,8 @@ const createAssistantStream = async ({
                   args: parameters,
                 });
 
-                for (const variable of newVariables ?? []) {
-                  await variables.set(variable.id, variable.value);
-                }
+                if (newVariables && newVariables.length > 0)
+                  await variables.set(newVariables);
 
                 return {
                   tool_call_id: toolCall.id,

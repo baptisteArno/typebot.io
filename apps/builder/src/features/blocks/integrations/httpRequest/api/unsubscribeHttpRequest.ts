@@ -4,9 +4,10 @@ import { TRPCError } from "@trpc/server";
 import { isHttpRequestBlock } from "@typebot.io/blocks-core/helpers";
 import type { Block } from "@typebot.io/blocks-core/schemas/schema";
 import type { HttpRequestBlock } from "@typebot.io/blocks-integrations/httpRequest/schema";
-import { parseGroups } from "@typebot.io/groups/schemas";
+import { parseGroups } from "@typebot.io/groups/helpers/parseGroups";
 import { byId } from "@typebot.io/lib/utils";
 import prisma from "@typebot.io/prisma";
+import { isTypebotVersionAtLeastV6 } from "@typebot.io/schemas/helpers/isTypebotVersionAtLeastV6";
 import { z } from "@typebot.io/zod";
 
 export const unsubscribeHttpRequest = authenticatedProcedure
@@ -57,7 +58,10 @@ export const unsubscribeHttpRequest = authenticatedProcedure
         message: "HTTP request block not found",
       });
 
-    if (httpRequestBlock.options?.webhook || typebot.version === "6") {
+    if (
+      httpRequestBlock.options?.webhook ||
+      isTypebotVersionAtLeastV6(typebot.version)
+    ) {
       const updatedGroups = groups.map((group) =>
         group.blocks.some((b) => b.id === httpRequestBlock.id)
           ? {

@@ -111,6 +111,28 @@ const executeComparison =
         if (typeof value === "string") return inputValue.length < Number(value);
         return inputValue.length < value.length;
       }
+      case ComparisonOperators.GREATER_OR_EQUAL: {
+        if (isNotDefined(inputValue) || isNotDefined(value)) return false;
+        if (typeof inputValue === "string") {
+          if (typeof value === "string")
+            return parseDateOrNumber(inputValue) >= parseDateOrNumber(value);
+          return Number(inputValue) >= value.length;
+        }
+        if (typeof value === "string")
+          return inputValue.length >= Number(value);
+        return inputValue.length >= value.length;
+      }
+      case ComparisonOperators.LESS_OR_EQUAL: {
+        if (isNotDefined(inputValue) || isNotDefined(value)) return false;
+        if (typeof inputValue === "string") {
+          if (typeof value === "string")
+            return parseDateOrNumber(inputValue) <= parseDateOrNumber(value);
+          return Number(inputValue) <= value.length;
+        }
+        if (typeof value === "string")
+          return inputValue.length <= Number(value);
+        return inputValue.length <= value.length;
+      }
       case ComparisonOperators.IS_SET: {
         return isDefined(inputValue) && inputValue.length > 0;
       }

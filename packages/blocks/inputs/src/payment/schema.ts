@@ -1,6 +1,5 @@
 import {
   blockBaseSchema,
-  credentialsBaseSchema,
   optionBaseSchema,
 } from "@typebot.io/blocks-base/schemas";
 import { z } from "@typebot.io/zod";
@@ -66,27 +65,11 @@ export const paymentInputSchema = blockBaseSchema
     ref: "paymentInput",
   });
 
-export const stripeCredentialsSchema = z
-  .object({
-    type: z.literal("stripe"),
-    data: z.object({
-      live: z.object({
-        secretKey: z.string(),
-        publicKey: z.string(),
-      }),
-      test: z.object({
-        secretKey: z.string().optional(),
-        publicKey: z.string().optional(),
-      }),
-    }),
-  })
-  .merge(credentialsBaseSchema);
-
 export type PaymentInputBlock = z.infer<typeof paymentInputSchema>;
 export type PaymentInputRuntimeOptions = z.infer<
   typeof paymentInputRuntimeOptionsSchema
 >;
-export type StripeCredentials = z.infer<typeof stripeCredentialsSchema>;
+
 export type PaymentAddress = NonNullable<
   NonNullable<PaymentInputBlock["options"]>["additionalInformation"]
 >["address"];

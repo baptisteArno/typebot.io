@@ -81,12 +81,21 @@ export const PhoneInput = (props: PhoneInputProps) => {
   const selectNewCountryCode = (
     event: Event & { currentTarget: { value: string } },
   ) => {
-    const code = event.currentTarget.value;
-    setSelectedCountryCode(code);
-    const dial_code = phoneCountries.find(
-      (country) => country.code === code,
-    )?.dial_code;
-    if (inputValue() === "" && dial_code) setInputValue(dial_code);
+    const selectedCountry = phoneCountries.find(
+      (country) => country.code === event.currentTarget.value,
+    );
+    if (!selectedCountry) return;
+
+    const currentCountry = phoneCountries.find(
+      (country) => country.code === selectedCountryCode(),
+    );
+    if (
+      inputValue() === "" ||
+      (currentCountry && inputValue() === currentCountry.dial_code)
+    )
+      setInputValue(selectedCountry.dial_code);
+
+    setSelectedCountryCode(selectedCountry.code);
     inputRef?.focus();
   };
 

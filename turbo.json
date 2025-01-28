@@ -1,8 +1,9 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "globalDependencies": [".env"],
-  "globalEnv": ["DATABASE_URL", "SKIP_ENV_CHECK"],
+  "globalEnv": ["DATABASE_URL", "SKIP_ENV_CHECK", "DATABASE_URL_REPLICA"],
   "globalPassThroughEnv": ["ENCRYPTION_SECRET"],
+  "envMode": "loose",
   "tasks": {
     "dev": {
       "dependsOn": ["^db:generate", "^db:push", "@typebot.io/react#build"],
@@ -16,7 +17,8 @@
         "!.next/cache/**",
         "dist/**",
         "build/**",
-        "public/__ENV.js"
+        "public/__ENV.js",
+        ".vercel"
       ],
       "inputs": ["$TURBO_DEFAULT$", ".env"],
       "outputLogs": "new-only"
@@ -37,6 +39,9 @@
       "cache": false
     },
     "db:push": {
+      "cache": false
+    },
+    "check-broken-links": {
       "cache": false
     },
     "db:cleanDatabase": {

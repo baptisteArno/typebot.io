@@ -1,7 +1,6 @@
 import { resolve } from "path";
 import { defineConfig, devices } from "@playwright/test";
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 require("dotenv").config({ path: resolve(__dirname, "../../.env") });
 
 export default defineConfig({
@@ -10,7 +9,7 @@ export default defineConfig({
     timeout: process.env.CI ? 10 * 1000 : 5 * 1000,
   },
   forbidOnly: !!process.env.CI,
-  workers: process.env.CI ? 1 : 4,
+  workers: process.env.CI ? 1 : 6,
   retries: process.env.CI ? 2 : 1,
   reporter: [
     [process.env.CI ? "github" : "list"],

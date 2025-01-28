@@ -23,7 +23,7 @@ export const VideoOnboardingFloatingWindow = ({ type }: Props) => {
     defaultOpenDelay: 1000,
     blockDef: undefined,
   });
-  const bgColor = useColorModeValue("white", "gray.900");
+  const bgColor = useColorModeValue("white", "gray.950");
   const closeButtonColorScheme = useColorModeValue("blackAlpha", "gray");
 
   if (!onboardingVideos[type]) return null;

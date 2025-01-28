@@ -14,10 +14,11 @@ import { defaultPictureChoiceOptions } from "@typebot.io/blocks-inputs/pictureCh
 import type { InputBlock } from "@typebot.io/blocks-inputs/schema";
 import { IntegrationBlockType } from "@typebot.io/blocks-integrations/constants";
 import { LogicBlockType } from "@typebot.io/blocks-logic/constants";
+import type { SessionState } from "@typebot.io/chat-session/schemas";
 import { env } from "@typebot.io/env";
 import { forgedBlocks } from "@typebot.io/forge-repository/definitions";
 import type { ForgedBlock } from "@typebot.io/forge-repository/schemas";
-import { getBlockById } from "@typebot.io/groups/helpers";
+import { getBlockById } from "@typebot.io/groups/helpers/getBlockById";
 import type { Group } from "@typebot.io/groups/schemas";
 import { isURL } from "@typebot.io/lib/isURL";
 import { stringifyError } from "@typebot.io/lib/stringifyError";
@@ -29,6 +30,7 @@ import type {
   SetVariableHistoryItem,
   Variable,
 } from "@typebot.io/variables/schemas";
+import { resetVariablesGlobals } from "@typebot.io/variables/store";
 import { parseButtonsReply } from "./blocks/inputs/buttons/parseButtonsReply";
 import { parseDateReply } from "./blocks/inputs/date/parseDateReply";
 import { formatEmail } from "./blocks/inputs/email/formatEmail";
@@ -41,13 +43,19 @@ import { saveDataInResponseVariableMapping } from "./blocks/integrations/httpReq
 import { resumeChatCompletion } from "./blocks/integrations/legacy/openai/resumeChatCompletion";
 import { executeGroup, parseInput } from "./executeGroup";
 import { getNextGroup } from "./getNextGroup";
+import { resetGlobals } from "./globals";
 import { saveAnswer } from "./queries/saveAnswer";
 import { resetSessionState } from "./resetSessionState";
 import type { ContinueChatResponse, Message } from "./schemas/api";
-import type { SessionState } from "./schemas/chatSession";
 import { startBotFlow } from "./startBotFlow";
 import type { ParsedReply } from "./types";
 import { updateVariablesInSession } from "./updateVariablesInSession";
+
+export type ContinueBotFlowResponse = ContinueChatResponse & {
+  newSessionState: SessionState;
+  visitedEdges: Prisma.VisitedEdge[];
+  setVariableHistory: SetVariableHistoryItem[];
+};
 
 type Params = {
   version: 1 | 2;
@@ -58,15 +66,12 @@ type Params = {
 export const continueBotFlow = async (
   reply: Message | undefined,
   { state, version, startTime, textBubbleContentFormat }: Params,
-): Promise<
-  ContinueChatResponse & {
-    newSessionState: SessionState;
-    visitedEdges: Prisma.VisitedEdge[];
-    setVariableHistory: SetVariableHistoryItem[];
-  }
-> => {
+): Promise<ContinueBotFlowResponse> => {
+  resetGlobals();
+  resetVariablesGlobals();
   if (!state.currentBlockId)
     return startBotFlow({
+      message: reply,
       state: resetSessionState(state),
       version,
       textBubbleContentFormat,

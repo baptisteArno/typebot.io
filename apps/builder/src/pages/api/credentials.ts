@@ -1,6 +1,6 @@
 import { getAuthenticatedUser } from "@/features/auth/helpers/getAuthenticatedUser";
+import { encrypt } from "@typebot.io/credentials/encrypt";
 import type { Credentials } from "@typebot.io/credentials/schemas";
-import { encrypt } from "@typebot.io/lib/api/encryption/encrypt";
 import {
   badRequest,
   forbidden,

@@ -3,7 +3,7 @@ import type { SVGProps } from "react";
 
 export type VariableStore = {
   get: (variableId: string) => string | (string | null)[] | null | undefined;
-  set: (variableId: string, value: unknown) => void;
+  set: (variables: { id: string; value: unknown }[]) => void;
   parse: (value: string) => string;
   list: () => {
     id: string;
@@ -13,7 +13,7 @@ export type VariableStore = {
 };
 
 export type AsyncVariableStore = Omit<VariableStore, "set"> & {
-  set: (variableId: string, value: unknown) => Promise<void>;
+  set: (variables: { id: string; value: unknown }[]) => Promise<void>;
 };
 
 export type LogsStore = {

@@ -236,7 +236,7 @@ export const VariableSearchInput = ({
               overflowY="auto"
               role="menu"
               w="inherit"
-              shadow="lg"
+              shadow="md"
               onMouseDown={(e) => e.stopPropagation()}
               onPointerDown={(e) => e.stopPropagation()}
               minW="250px"
@@ -278,7 +278,9 @@ export const VariableSearchInput = ({
                     <Button
                       as="li"
                       cursor="pointer"
-                      ref={(el) => (itemsRef.current[idx] = el)}
+                      ref={(el: HTMLButtonElement) =>
+                        (itemsRef.current[idx] = el)
+                      }
                       role="menuitem"
                       minH="40px"
                       key={idx}

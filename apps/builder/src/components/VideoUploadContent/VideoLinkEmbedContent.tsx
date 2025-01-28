@@ -81,30 +81,35 @@ export const VideoLinkEmbedContent = ({
         </Stack>
       )}
       {content?.url && content?.type === "url" && (
-        <Stack>
-          <SwitchWithLabel
-            label={"Display controls"}
-            initialValue={
-              content?.areControlsDisplayed ??
-              defaultVideoBubbleContent.areControlsDisplayed
-            }
-            onCheckChange={updateControlsDisplay}
-          />
-          <SwitchWithLabel
-            label={t("editor.blocks.bubbles.audio.settings.autoplay.label")}
-            initialValue={
-              content?.isAutoplayEnabled ??
-              defaultVideoBubbleContent.isAutoplayEnabled
-            }
-            isChecked={
-              content?.isAutoplayEnabled ??
-              defaultVideoBubbleContent.isAutoplayEnabled
-            }
-            isDisabled={content?.areControlsDisplayed === false}
-            onCheckChange={() => updateAutoPlay(!content.isAutoplayEnabled)}
-          />
-        </Stack>
+        <SwitchWithLabel
+          label={"Display controls"}
+          initialValue={
+            content?.areControlsDisplayed ??
+            defaultVideoBubbleContent.areControlsDisplayed
+          }
+          onCheckChange={updateControlsDisplay}
+        />
       )}
+      <SwitchWithLabel
+        label={t("editor.blocks.bubbles.audio.settings.autoplay.label")}
+        initialValue={
+          content?.isAutoplayEnabled ??
+          defaultVideoBubbleContent.isAutoplayEnabled
+        }
+        isChecked={
+          content?.isAutoplayEnabled ??
+          defaultVideoBubbleContent.isAutoplayEnabled
+        }
+        isDisabled={content?.areControlsDisplayed === false}
+        onCheckChange={() =>
+          updateAutoPlay(
+            !(
+              content?.isAutoplayEnabled ??
+              defaultVideoBubbleContent.isAutoplayEnabled
+            ),
+          )
+        }
+      />
     </>
   );
 };

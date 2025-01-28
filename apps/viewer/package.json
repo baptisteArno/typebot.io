@@ -22,10 +22,12 @@
     "@typebot.io/blocks-core": "workspace:*",
     "@typebot.io/settings": "workspace:*",
     "@typebot.io/whatsapp": "workspace:*",
+    "@typebot.io/schemas": "workspace:*",
+    "@typebot.io/credentials": "workspace:*",
     "ai": "3.3.15",
     "bot-engine": "workspace:*",
     "cors": "2.8.5",
-    "google-spreadsheet": "4.1.1",
+    "google-spreadsheet": "4.1.4",
     "next": "14.2.13",
     "nextjs-cors": "2.1.2",
     "nodemailer": "6.9.15",
@@ -50,7 +52,6 @@
     "@typebot.io/blocks-inputs": "workspace:*",
     "@typebot.io/blocks-logic": "workspace:*",
     "@typebot.io/blocks-bubbles": "workspace:*",
-    "google-auth-library": "8.9.0",
     "papaparse": "5.4.1",
     "superjson": "1.12.4"
   },
@@ -62,9 +63,9 @@
     "@types/node": "20.4.2",
     "@types/nodemailer": "6.4.14",
     "@types/papaparse": "5.3.7",
-    "@types/react": "18.2.15",
+    "@types/react": "18.2.0",
     "dotenv": "16.4.5",
-    "dotenv-cli": "7.4.1",
+    "dotenv-cli": "8.0.0",
     "next-runtime-env": "1.6.2"
   }
 }

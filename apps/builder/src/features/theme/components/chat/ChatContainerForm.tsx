@@ -6,13 +6,12 @@ import {
   defaultContainerBackgroundColor,
   defaultContainerMaxHeight,
   defaultContainerMaxWidth,
-  defaultDarkTextColor,
-  defaultLightTextColor,
   defaultOpacity,
   defaultRoundness,
 } from "@typebot.io/theme/constants";
-import { isChatContainerLight } from "@typebot.io/theme/isChatContainerLight";
+import { isChatContainerLight } from "@typebot.io/theme/helpers/isChatContainerLight";
 import type { ChatTheme, GeneralTheme } from "@typebot.io/theme/schemas";
+import { colors } from "@typebot.io/ui/colors";
 import React from "react";
 import { ContainerThemeForm } from "./ContainerThemeForm";
 
@@ -118,8 +117,8 @@ export const ChatContainerForm = ({
             chatContainer: container,
             generalBackground,
           })
-            ? defaultLightTextColor
-            : defaultDarkTextColor,
+            ? colors.gray.light["12"]
+            : colors.gray.dark["12"],
         }}
         onThemeChange={onContainerChange}
       />

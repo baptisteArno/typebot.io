@@ -9,6 +9,7 @@ import { WorkspaceRole } from "@typebot.io/prisma/enum";
 import type { Prisma } from "@typebot.io/prisma/types";
 import type { TelemetryEvent } from "@typebot.io/telemetry/schemas";
 import { trackEvents } from "@typebot.io/telemetry/trackEvents";
+import ky from "ky";
 import type { Account, Awaitable, User } from "next-auth";
 
 // Forked from https://github.com/nextauthjs/adapters/blob/main/packages/prisma/src/index.ts
@@ -149,17 +150,23 @@ export function customAdapter(p: Prisma.PrismaClient): Adapter {
           name: "Workspace created",
           workspaceId: newWorkspaceId,
           userId: createdUser.id,
-          data: newWorkspaceData,
         });
       }
       events.push({
         name: "User created",
         userId: createdUser.id,
-        data: {
-          email: data.email,
-          name: data.name ? (data.name as string).split(" ")[0] : undefined,
-        },
       });
+      if (env.USER_CREATED_WEBHOOK_URL) {
+        try {
+          await ky.post(env.USER_CREATED_WEBHOOK_URL, {
+            json: {
+              email: createdUser.email,
+            },
+          });
+        } catch (e) {
+          console.error("Failed to call user created webhook", e);
+        }
+      }
       await trackEvents(events);
       if (invitations.length > 0)
         await convertInvitationsToCollaborations(p, user, invitations);

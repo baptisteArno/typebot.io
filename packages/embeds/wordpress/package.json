@@ -1,13 +1,13 @@
 {
   "name": "@typebot.io/wordpress",
-  "version": "4.0.0",
+  "version": "4.1.0",
   "main": "index.js",
   "repository": "https://github.com/baptisteArno/typebot.io",
   "author": "baptisteArno",
   "license": "FSL-1.1-ALv2",
   "scripts": {
     "deploy": "bun copy && bun commit",
-    "copy": "svn copy ./trunk ./tags/4.0.0",
-    "commit": "svn ci -m 'Use embed v0.3 by default'"
+    "copy": "svn copy ./trunk ./tags/4.1.0",
+    "commit": "svn ci -m 'Attempt to fix importmap concurrency issue'"
   }
 }

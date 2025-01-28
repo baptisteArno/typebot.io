@@ -1,6 +1,6 @@
 import { defaultAbTestOptions } from "@typebot.io/blocks-logic/abTest/constants";
 import type { AbTestBlock } from "@typebot.io/blocks-logic/abTest/schema";
-import type { SessionState } from "../../../schemas/chatSession";
+import type { SessionState } from "@typebot.io/chat-session/schemas";
 import type { ExecuteLogicResponse } from "../../../types";
 
 export const executeAbTest = (

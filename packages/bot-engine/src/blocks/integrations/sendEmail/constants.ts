@@ -4,6 +4,7 @@ export const defaultTransportOptions = {
   host: env.SMTP_HOST,
   port: env.SMTP_PORT,
   secure: env.SMTP_SECURE,
+  ignoreTLS: env.SMTP_IGNORE_TLS,
   auth: {
     user: env.SMTP_USERNAME,
     pass: env.SMTP_PASSWORD,

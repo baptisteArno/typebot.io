@@ -26,6 +26,7 @@ This code is creating a container with a 100% width (will match parent width) an
 
  ```ts
  type BotProps = {
+   id?: string;
    typebot: string | any;
    isPreview?: boolean;
    resultId?: string;
@@ -73,7 +74,8 @@ This code is creating a container with a 100% width (will match parent width) an
        closeButtonBackgroundColor?: string;
        closeButtonIconColor?: string;
      };
-     placement?: "left" | "right";
+     position?: "fixed" | "static"; // Defaults to "fixed"
+     placement?: "left" | "right"; // Defaults to "right"
    };
    previewMessage?: {
      avatarUrl?: string;
@@ -153,6 +155,7 @@ This code will automatically trigger the popup window after 3 seconds.
 
  ```ts
  type PopupProps = {
+   id?: string;
    typebot: string | any;
    isPreview?: boolean;
    resultId?: string;
@@ -268,6 +271,7 @@ This code will show the bubble and let a preview message appear after 5 seconds.
 
  ```ts
  type BubbleProps = {
+   id?: string;
    typebot: string | any;
    isPreview?: boolean;
    resultId?: string;
@@ -339,6 +343,7 @@ This code will show the bubble and let a preview message appear after 5 seconds.
    onOpen?: () => void;
    onClose?: () => void;
    onPreviewMessageClick?: () => void;
+   onPreviewMessageDismissed?: () => void;
  };
  ```
 
@@ -373,7 +378,7 @@ typebot-bubble::part(preview-message) {
 
 Here are the commands you can use to trigger your embedded typebot:
 
-- `Typebot.open()`: Open popup or bubble
+- `Typebot.open()`: Open popup or bubble 
 - `Typebot.close()`: Close popup or bubble
 - `Typebot.toggle()`: Toggle the bubble or popup open/close state,
 - `Typebot.showPreviewMessage()`: Show preview message from the bubble,
@@ -397,6 +402,8 @@ You can bind these commands on a button element, for example:
 ```html
 <button onclick="Typebot.open()">Contact us</button>
 ```
+
+<Note>For each command you can pass an optional `id` prop to target a specific typebot. I.e. `Typebot.open({ id: 'my-bubble' })`</Note>
 
 ## Callbacks
 

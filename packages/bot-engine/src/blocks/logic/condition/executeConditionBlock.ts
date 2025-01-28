@@ -1,6 +1,6 @@
 import type { ConditionBlock } from "@typebot.io/blocks-logic/condition/schema";
+import type { SessionState } from "@typebot.io/chat-session/schemas";
 import { executeCondition } from "@typebot.io/conditions/executeCondition";
-import type { SessionState } from "../../../schemas/chatSession";
 import type { ExecuteLogicResponse } from "../../../types";
 
 export const executeConditionBlock = (

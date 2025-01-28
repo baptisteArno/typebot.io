@@ -2,13 +2,13 @@ import assert from "assert";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import type { GenerateGroupTitle } from "@/features/editor/providers/typebotActions/edges";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { colors } from "@/lib/theme";
 import { trpc } from "@/lib/trpc";
 import { useEventListener } from "@chakra-ui/react";
 import type { Coordinates } from "@dnd-kit/utilities";
 import type { BlockIndices } from "@typebot.io/blocks-core/schemas/schema";
 import { omit } from "@typebot.io/lib/utils";
 import type { TypebotV6 } from "@typebot.io/typebot/schemas/typebot";
+import { colors } from "@typebot.io/ui/chakraTheme";
 import type { Draft } from "immer";
 import React, { useMemo, useState } from "react";
 import { eventWidth, groupWidth } from "../../constants";
@@ -168,9 +168,9 @@ export const DrawingEdge = ({ connectingIds }: Props) => {
   return (
     <path
       d={path}
-      stroke={colors.blue[400]}
+      stroke={colors.orange[400]}
       strokeWidth="2px"
-      markerEnd="url(#blue-arrow)"
+      markerEnd="url(#orange-arrow)"
       fill="none"
     />
   );

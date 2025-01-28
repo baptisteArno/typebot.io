@@ -5,6 +5,7 @@ import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
 import { defaultPictureChoiceOptions } from "@typebot.io/blocks-inputs/pictureChoice/constants";
 import type { InputBlock } from "@typebot.io/blocks-inputs/schema";
 import { LogicBlockType } from "@typebot.io/blocks-logic/constants";
+import type { TypebotInSession } from "@typebot.io/chat-session/schemas";
 import { executeCondition } from "@typebot.io/conditions/executeCondition";
 import type { Group } from "@typebot.io/groups/schemas";
 import { createId } from "@typebot.io/lib/createId";
@@ -13,12 +14,12 @@ import type { Edge } from "@typebot.io/typebot/schemas/edge";
 import { parseVariables } from "@typebot.io/variables/parseVariables";
 import type { Variable } from "@typebot.io/variables/schemas";
 import type { SetVariableHistoryItem } from "@typebot.io/variables/schemas";
+import { isTypebotInSessionAtLeastV6 } from "./helpers/isTypebotInSessionAtLeastV6";
 import {
   type BubbleBlockWithDefinedContent,
   parseBubbleBlock,
 } from "./parseBubbleBlock";
 import type { ContinueChatResponse } from "./schemas/api";
-import type { TypebotInSession } from "./schemas/chatSession";
 
 type TranscriptMessage = {
   role: "bot" | "user";
@@ -78,7 +79,8 @@ export const computeResultTranscript = ({
 };
 
 const getFirstEdgeId = (typebot: TypebotInSession) => {
-  if (typebot.version === "6") return typebot.events?.[0].outgoingEdgeId;
+  if (isTypebotInSessionAtLeastV6(typebot))
+    return typebot.events?.[0].outgoingEdgeId;
   return typebot.groups.at(0)?.blocks.at(0)?.outgoingEdgeId;
 };
 

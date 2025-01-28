@@ -118,10 +118,12 @@ export const searchRecords = createAction({
             (item) => item![mapping.fieldName as string],
           );
 
-          variables.set(
-            mapping.variableId,
-            items.length === 1 ? items[0] : items,
-          );
+          variables.set([
+            {
+              id: mapping.variableId,
+              value: items.length === 1 ? items[0] : items,
+            },
+          ]);
         });
       } catch (error) {
         if (error instanceof HTTPError)

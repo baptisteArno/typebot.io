@@ -17,8 +17,8 @@ export const BlockCardOverlay = ({
       pointerEvents="none"
       px="4"
       py="2"
-      borderColor={useColorModeValue("gray.200", "gray.800")}
-      bgColor={useColorModeValue("gray.50", "gray.850")}
+      borderColor={useColorModeValue("gray.200", "gray.900")}
+      bgColor={useColorModeValue("gray.50", "gray.900")}
       shadow="xl"
       zIndex={2}
       {...props}

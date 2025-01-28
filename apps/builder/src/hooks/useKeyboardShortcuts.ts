@@ -1,7 +1,7 @@
 import { isNotEmpty } from "@typebot.io/lib/utils";
 import { useEventListener } from "./useEventListener";
 
-const typebotWindowTagName = "TYPEBOT-STANDARD";
+const typebotWindowTagName = "TYPEBOT-BUBBLE";
 
 type Props = {
   undo?: () => void;
@@ -45,7 +45,6 @@ export const useKeyboardShortcuts = ({
 
   useEventListener("keydown", (event: KeyboardEvent) => {
     if (!event.metaKey && !event.ctrlKey && event.key !== "Backspace") return;
-    // get text selection
     const textSelection = window.getSelection()?.toString();
     if (isNotEmpty(textSelection)) return;
     const target = event.target as HTMLElement | null;

@@ -1,6 +1,6 @@
+import type { SessionState } from "@typebot.io/chat-session/schemas";
 import type { SetVariableHistoryItem } from "@typebot.io/variables/schemas";
 import type { ContinueChatResponse, CustomEmbedBubble } from "./schemas/api";
-import type { SessionState } from "./schemas/chatSession";
 
 export type ExecuteLogicResponse = {
   outgoingEdgeId: string | undefined;

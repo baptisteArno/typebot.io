@@ -59,7 +59,8 @@
                                     "3": "#/components/schemas/typebotV5",
                                     "4": "#/components/schemas/typebotV5",
                                     "5": "#/components/schemas/typebotV5",
-                                    "6": "#/components/schemas/typebotV6"
+                                    "6": "#/components/schemas/typebotV6",
+                                    "6.1": "#/components/schemas/typebotV6"
                                   }
                                 }
                               },
@@ -573,7 +574,8 @@
                                     "3": "#/components/schemas/typebotV5",
                                     "4": "#/components/schemas/typebotV5",
                                     "5": "#/components/schemas/typebotV5",
-                                    "6": "#/components/schemas/typebotV6"
+                                    "6": "#/components/schemas/typebotV6",
+                                    "6.1": "#/components/schemas/typebotV6"
                                   }
                                 }
                               },
@@ -1139,6 +1141,25 @@
                         "id": {
                           "type": "string"
                         },
+                        "version": {
+                          "anyOf": [
+                            {
+                              "type": "string",
+                              "enum": [
+                                "3",
+                                "4",
+                                "5"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "6",
+                                "6.1"
+                              ]
+                            }
+                          ]
+                        },
                         "theme": {
                           "$ref": "#/components/schemas/theme"
                         },
@@ -1151,6 +1172,7 @@
                       },
                       "required": [
                         "id",
+                        "version",
                         "theme",
                         "settings"
                       ]
@@ -1875,7 +1897,8 @@
                         "3": "#/components/schemas/typebotV5",
                         "4": "#/components/schemas/typebotV5",
                         "5": "#/components/schemas/typebotV5",
-                        "6": "#/components/schemas/typebotV6"
+                        "6": "#/components/schemas/typebotV6",
+                        "6.1": "#/components/schemas/typebotV6"
                       }
                     },
                     "description": "If set, it will override the typebot that is used to start the chat."
@@ -1964,6 +1987,25 @@
                         "id": {
                           "type": "string"
                         },
+                        "version": {
+                          "anyOf": [
+                            {
+                              "type": "string",
+                              "enum": [
+                                "3",
+                                "4",
+                                "5"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "6",
+                                "6.1"
+                              ]
+                            }
+                          ]
+                        },
                         "theme": {
                           "$ref": "#/components/schemas/theme"
                         },
@@ -1976,6 +2018,7 @@
                       },
                       "required": [
                         "id",
+                        "version",
                         "theme",
                         "settings"
                       ]
@@ -2494,7 +2537,7 @@
     },
     "/v2/generate-upload-url": {
       "post": {
-        "operationId": "generateUploadUrl",
+        "operationId": "generateUploadUrlV2",
         "summary": "Generate upload URL",
         "description": "Used to upload anything from the client to S3 bucket",
         "requestBody": {
@@ -2516,6 +2559,91 @@
                 },
                 "required": [
                   "sessionId",
+                  "fileName"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "presignedUrl": {
+                      "type": "string"
+                    },
+                    "formData": {
+                      "type": "object",
+                      "additionalProperties": {}
+                    },
+                    "fileUrl": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "presignedUrl",
+                    "formData",
+                    "fileUrl"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error.BAD_REQUEST"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error.INTERNAL_SERVER_ERROR"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v3/generate-upload-url": {
+      "post": {
+        "operationId": "generateUploadUrl",
+        "summary": "Generate upload URL",
+        "description": "Used to upload anything from the client to S3 bucket",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "sessionId": {
+                    "type": "string"
+                  },
+                  "blockId": {
+                    "type": "string"
+                  },
+                  "fileName": {
+                    "type": "string"
+                  },
+                  "fileType": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "sessionId",
+                  "blockId",
                   "fileName"
                 ]
               }
@@ -3167,10 +3295,7 @@
                                                 "data": {
                                                   "type": "string"
                                                 }
-                                              },
-                                              "required": [
-                                                "data"
-                                              ]
+                                              }
                                             },
                                             "timestamp": {
                                               "type": "string"
@@ -3402,7 +3527,8 @@
           "version": {
             "type": "string",
             "enum": [
-              "6"
+              "6",
+              "6.1"
             ]
           },
           "id": {
@@ -3529,6 +3655,9 @@
           },
           "updatedAt": {
             "type": "string"
+          },
+          "workspaceId": {
+            "type": "string"
           }
         },
         "required": [
@@ -3540,7 +3669,8 @@
           "variables",
           "settings",
           "theme",
-          "updatedAt"
+          "updatedAt",
+          "workspaceId"
         ],
         "title": "Typebot V6"
       },
@@ -5031,7 +5161,9 @@
                                   "Contains",
                                   "Does not contain",
                                   "Greater than",
+                                  "Greater or equal to",
                                   "Less than",
+                                  "Less or equal to",
                                   "Is set",
                                   "Is empty",
                                   "Starts with",
@@ -5079,6 +5211,9 @@
               },
               "searchInputPlaceholder": {
                 "type": "string"
+              },
+              "areInitialSearchButtonsVisible": {
+                "type": "boolean"
               }
             }
           }
@@ -5232,7 +5367,9 @@
                                   "Contains",
                                   "Does not contain",
                                   "Greater than",
+                                  "Greater or equal to",
                                   "Less than",
+                                  "Less or equal to",
                                   "Is set",
                                   "Is empty",
                                   "Starts with",
@@ -5738,7 +5875,9 @@
                               "Contains",
                               "Does not contain",
                               "Greater than",
+                              "Greater or equal to",
                               "Less than",
+                              "Less or equal to",
                               "Is set",
                               "Is empty",
                               "Starts with",
@@ -6286,7 +6425,9 @@
                                 "Contains",
                                 "Does not contain",
                                 "Greater than",
+                                "Greater or equal to",
                                 "Less than",
+                                "Less or equal to",
                                 "Is set",
                                 "Is empty",
                                 "Starts with",
@@ -6450,7 +6591,9 @@
                                 "Contains",
                                 "Does not contain",
                                 "Greater than",
+                                "Greater or equal to",
                                 "Less than",
+                                "Less or equal to",
                                 "Is set",
                                 "Is empty",
                                 "Starts with",
@@ -8272,6 +8415,8 @@
                   "model": {
                     "type": "string",
                     "enum": [
+                      "claude-3-5-haiku-latest",
+                      "claude-3-5-sonnet-latest",
                       "claude-3-5-sonnet-20240620",
                       "claude-3-opus-20240229",
                       "claude-3-sonnet-20240229",
@@ -8549,6 +8694,8 @@
                   "model": {
                     "type": "string",
                     "enum": [
+                      "claude-3-5-haiku-latest",
+                      "claude-3-5-sonnet-latest",
                       "claude-3-5-sonnet-20240620",
                       "claude-3-opus-20240229",
                       "claude-3-sonnet-20240229",
@@ -10235,7 +10382,9 @@
                             "Contains",
                             "Does not contain",
                             "Greater than",
+                            "Greater or equal to",
                             "Less than",
+                            "Less or equal to",
                             "Is set",
                             "Is empty",
                             "Starts with",
@@ -10966,7 +11115,9 @@
                                                   "Contains",
                                                   "Does not contain",
                                                   "Greater than",
+                                                  "Greater or equal to",
                                                   "Less than",
+                                                  "Less or equal to",
                                                   "Is set",
                                                   "Is empty",
                                                   "Starts with",
@@ -11478,7 +11629,9 @@
                                                     "Contains",
                                                     "Does not contain",
                                                     "Greater than",
+                                                    "Greater or equal to",
                                                     "Less than",
+                                                    "Less or equal to",
                                                     "Is set",
                                                     "Is empty",
                                                     "Starts with",
@@ -11659,7 +11812,9 @@
                                                     "Contains",
                                                     "Does not contain",
                                                     "Greater than",
+                                                    "Greater or equal to",
                                                     "Less than",
+                                                    "Less or equal to",
                                                     "Is set",
                                                     "Is empty",
                                                     "Starts with",
@@ -12450,6 +12605,9 @@
           },
           "updatedAt": {
             "type": "string"
+          },
+          "workspaceId": {
+            "type": "string"
           }
         },
         "required": [
@@ -12461,7 +12619,8 @@
           "variables",
           "settings",
           "theme",
-          "updatedAt"
+          "updatedAt",
+          "workspaceId"
         ],
         "title": "Typebot V5"
       },
@@ -12532,7 +12691,9 @@
                                   "Contains",
                                   "Does not contain",
                                   "Greater than",
+                                  "Greater or equal to",
                                   "Less than",
+                                  "Less or equal to",
                                   "Is set",
                                   "Is empty",
                                   "Starts with",
@@ -12580,6 +12741,9 @@
               },
               "searchInputPlaceholder": {
                 "type": "string"
+              },
+              "areInitialSearchButtonsVisible": {
+                "type": "boolean"
               }
             }
           }
@@ -12739,7 +12903,9 @@
                                   "Contains",
                                   "Does not contain",
                                   "Greater than",
+                                  "Greater or equal to",
                                   "Less than",
+                                  "Less or equal to",
                                   "Is set",
                                   "Is empty",
                                   "Starts with",

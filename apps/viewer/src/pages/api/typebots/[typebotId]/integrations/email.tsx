@@ -1,13 +1,11 @@
 import { render } from "@faire/mjml-react/utils/render";
-import type {
-  SendEmailBlock,
-  SmtpCredentials,
-} from "@typebot.io/blocks-integrations/sendEmail/schema";
+import type { SendEmailBlock } from "@typebot.io/blocks-integrations/sendEmail/schema";
 import { saveErrorLog } from "@typebot.io/bot-engine/logs/saveErrorLog";
 import { saveSuccessLog } from "@typebot.io/bot-engine/logs/saveSuccessLog";
+import { decrypt } from "@typebot.io/credentials/decrypt";
+import type { SmtpCredentials } from "@typebot.io/credentials/schemas";
 import { DefaultBotNotificationEmail } from "@typebot.io/emails/emails/DefaultBotNotificationEmail";
 import { env } from "@typebot.io/env";
-import { decrypt } from "@typebot.io/lib/api/encryption/decrypt";
 import { initMiddleware, methodNotAllowed } from "@typebot.io/lib/api/utils";
 import { isDefined, isEmpty, isNotDefined, omit } from "@typebot.io/lib/utils";
 import prisma from "@typebot.io/prisma";
@@ -15,7 +13,6 @@ import { parseAnswers } from "@typebot.io/results/parseAnswers";
 import type { ResultValues } from "@typebot.io/results/schemas/results";
 import type { PublicTypebot } from "@typebot.io/typebot/schemas/publicTypebot";
 import Cors from "cors";
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { NextApiRequest, NextApiResponse } from "next";
 import { createTransport, getTestMessageUrl } from "nodemailer";
 import type Mail from "nodemailer/lib/mailer";
@@ -26,6 +23,7 @@ const defaultTransportOptions = {
   host: env.SMTP_HOST,
   port: env.SMTP_PORT,
   secure: env.SMTP_SECURE,
+  ignoreTLS: env.SMTP_IGNORE_TLS,
   auth: {
     user: env.SMTP_USERNAME,
     pass: env.SMTP_PASSWORD,

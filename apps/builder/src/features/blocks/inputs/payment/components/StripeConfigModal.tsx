@@ -21,7 +21,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
-import type { StripeCredentials } from "@typebot.io/blocks-inputs/payment/schema";
+import type { StripeCredentials } from "@typebot.io/credentials/schemas";
 import { isNotEmpty } from "@typebot.io/lib/utils";
 import type React from "react";
 import { useState } from "react";
@@ -226,7 +226,7 @@ export const StripeCreateModalContent = ({
         <ModalFooter>
           <Button
             type="submit"
-            colorScheme="blue"
+            colorScheme="orange"
             isDisabled={
               stripeConfig.live.publicKey === "" ||
               stripeConfig.name === "" ||

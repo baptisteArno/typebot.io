@@ -4,7 +4,7 @@ import { useToast } from "@/hooks/useToast";
 import { trpc } from "@/lib/trpc";
 import { Button, type ButtonProps, chakra } from "@chakra-ui/react";
 import type { ChangeEvent } from "react";
-import { useState } from "react";
+import { useId, useState } from "react";
 
 type UploadButtonProps = {
   fileType: "image" | "audio";
@@ -18,6 +18,7 @@ export const UploadButton = ({
   onFileUploaded,
   ...props
 }: UploadButtonProps) => {
+  const id = useId();
   const [isUploading, setIsUploading] = useState(false);
   const { showToast } = useToast();
   const [file, setFile] = useState<File>();
@@ -68,7 +69,7 @@ export const UploadButton = ({
       <chakra.input
         data-testid="file-upload-input"
         type="file"
-        id="file-input"
+        id={`file-input-${id}`}
         display="none"
         onChange={handleInputChange}
         accept={fileType === "image" ? "image/*" : "audio/*"}
@@ -76,7 +77,7 @@ export const UploadButton = ({
       <Button
         as="label"
         size="sm"
-        htmlFor="file-input"
+        htmlFor={`file-input-${id}`}
         cursor="pointer"
         isLoading={isUploading}
         {...props}

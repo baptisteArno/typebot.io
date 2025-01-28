@@ -1,5 +1,4 @@
 import { EditIcon, MoreHorizontalIcon, TrashIcon } from "@/components/icons";
-import { colors } from "@/lib/theme";
 import { trpc } from "@/lib/trpc";
 import {
   Box,
@@ -26,6 +25,8 @@ import {
   defaultHostBubblesBackgroundColor,
 } from "@typebot.io/theme/constants";
 import type { Theme, ThemeTemplate } from "@typebot.io/theme/schemas";
+import type { TypebotV6 } from "@typebot.io/typebot/schemas/typebot";
+import { colors } from "@typebot.io/ui/chakraTheme";
 import { useState } from "react";
 import { DefaultAvatar } from "./DefaultAvatar";
 
@@ -33,11 +34,13 @@ export const ThemeTemplateCard = ({
   workspaceId,
   themeTemplate,
   isSelected,
+  typebotVersion,
   onClick,
   onRenameClick,
   onDeleteSuccess,
 }: {
   workspaceId: string;
+  typebotVersion: TypebotV6["version"];
   themeTemplate: Pick<ThemeTemplate, "name" | "theme" | "id">;
   isSelected: boolean;
   onRenameClick?: () => void;
@@ -82,7 +85,7 @@ export const ThemeTemplateCard = ({
 
   const hostBubbleBgColor =
     themeTemplate.theme.chat?.hostBubbles?.backgroundColor ??
-    defaultHostBubblesBackgroundColor;
+    defaultHostBubblesBackgroundColor[typebotVersion];
 
   const guestAvatar = {
     isEnabled:
@@ -93,11 +96,11 @@ export const ThemeTemplateCard = ({
 
   const guestBubbleBgColor =
     themeTemplate.theme.chat?.guestBubbles?.backgroundColor ??
-    defaultGuestBubblesBackgroundColor;
+    defaultGuestBubblesBackgroundColor[typebotVersion];
 
   const buttonBgColor =
     themeTemplate.theme.chat?.buttons?.backgroundColor ??
-    defaultButtonsBackgroundColor;
+    defaultButtonsBackgroundColor[typebotVersion];
 
   return (
     <Stack
@@ -110,8 +113,8 @@ export const ThemeTemplateCard = ({
       rounded="md"
       boxShadow={
         isSelected
-          ? `${colors["blue"]["400"]} 0 0 0 4px`
-          : `rgba(0, 0, 0, 0.08) 0px 2px 4px`
+          ? `${colors["orange"]["400"]} 0 0 0 2px`
+          : `rgba(0, 0, 0, 0.08) 0px 2px 2px`
       }
       style={{
         willChange: "box-shadow",
@@ -122,7 +125,7 @@ export const ThemeTemplateCard = ({
         borderTopRadius="md"
         backgroundSize="cover"
         {...parseBackground(themeTemplate.theme.general?.background)}
-        borderColor={isSelected ? "blue.400" : undefined}
+        borderColor={isSelected ? "orange.400" : undefined}
       >
         <HStack mt="4" ml="4" spacing={0.5} alignItems="flex-end">
           <AvatarPreview avatar={hostAvatar} />

@@ -3,7 +3,7 @@ import { authenticatedProcedure } from "@/helpers/server/trpc";
 import { TRPCError } from "@trpc/server";
 import { defaultOpenAIOptions } from "@typebot.io/blocks-integrations/openai/constants";
 import type { OpenAICredentials } from "@typebot.io/blocks-integrations/openai/schema";
-import { decrypt } from "@typebot.io/lib/api/encryption/decrypt";
+import { decrypt } from "@typebot.io/credentials/decrypt";
 import { isNotEmpty } from "@typebot.io/lib/utils";
 import prisma from "@typebot.io/prisma";
 import { z } from "@typebot.io/zod";
