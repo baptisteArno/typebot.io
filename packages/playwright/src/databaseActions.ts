@@ -123,6 +123,7 @@ export const createWorkspaces = async (workspaces: Partial<Workspace>[]) => {
       name: "Free workspace",
       plan: Plan.FREE,
       ...workspace,
+      settings: workspace.settings ?? DbNull,
     })),
   });
   await prisma.memberInWorkspace.createMany({

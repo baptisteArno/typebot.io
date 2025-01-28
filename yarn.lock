@@ -6808,6 +6808,7 @@
     "@typebot.io/tsconfig" "packages/tsconfig"
   dependencies:
     "@typebot.io/env" "packages/env"
+    "@typebot.io/forge-repository" "packages/forge/repository"
     "@typebot.io/prisma" "packages/prisma"
     "@typebot.io/zod" "packages/zod"
 
@@ -10294,6 +10295,9 @@ buffer-from@^1.0.0:
     next-runtime-env "1.6.2"
     superjson "1.12.4"
   dependencies:
+    "@ai-sdk/anthropic" "0.0.30"
+    "@ai-sdk/mistral" "0.0.22"
+    "@ai-sdk/openai" "0.0.36"
     "@braintree/sanitize-url" "7.0.1"
     "@chakra-ui/anatomy" "2.2.2"
     "@chakra-ui/react" "2.8.2"

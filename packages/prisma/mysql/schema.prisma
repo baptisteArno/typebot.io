@@ -105,6 +105,7 @@ model Workspace {
   isVerified                    Boolean?
   themeTemplates                ThemeTemplate[]
   chatsHardLimit                Int?
+  settings                      Json?
 }
 
 model MemberInWorkspace {

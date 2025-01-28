@@ -1,3 +1,4 @@
+import type { ForgedBlockDefinition } from "@typebot.io/forge-repository/definitions";
 import { Plan, WorkspaceRole } from "@typebot.io/prisma/enum";
 import type { Prisma } from "@typebot.io/prisma/types";
 import { z } from "@typebot.io/zod";
@@ -25,6 +26,28 @@ export const workspaceInvitationSchema = z.object({
   Omit<Prisma.WorkspaceInvitation, "workspaceId" | "userId" | "id">
 >;
 
+export const aiProviders = [
+  "openai",
+  "mistral",
+  "anthropic",
+  "open-router",
+  "groq",
+  "together-ai",
+] as const satisfies ForgedBlockDefinition["id"][];
+
+export const groupTitlesAutoGenerationSchema = z.object({
+  isEnabled: z.boolean().optional(),
+  provider: z.enum(aiProviders).optional(),
+  credentialsId: z.string().optional(),
+});
+export type GroupTitlesAutoGeneration = z.infer<
+  typeof groupTitlesAutoGenerationSchema
+>;
+
+const workspaceSettingsSchema = z.object({
+  groupTitlesAutoGeneration: groupTitlesAutoGenerationSchema.optional(),
+});
+
 export const workspaceSchema = z.object({
   id: z.string(),
   createdAt: z.date(),
@@ -39,6 +62,7 @@ export const workspaceSchema = z.object({
   chatsLimitSecondEmailSentAt: z.date().nullable(),
   storageLimitFirstEmailSentAt: z.date().nullable(),
   storageLimitSecondEmailSentAt: z.date().nullable(),
+  settings: workspaceSettingsSchema.nullable(),
   customChatsLimit: z.number().nullable(),
   customStorageLimit: z.number().nullable(),
   customSeatsLimit: z.number().nullable(),

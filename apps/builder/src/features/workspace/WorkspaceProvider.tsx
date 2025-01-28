@@ -23,13 +23,19 @@ export type WorkspaceInApp = Omit<
   | "isQuarantined"
 >;
 
+type WorkspaceUpdateProps = {
+  icon?: string;
+  name?: string;
+  settings?: WorkspaceInApp["settings"];
+};
+
 const workspaceContext = createContext<{
   workspaces: Pick<Workspace, "id" | "name" | "icon" | "plan">[];
   workspace?: WorkspaceInApp;
   currentRole?: WorkspaceRole;
   switchWorkspace: (workspaceId: string) => void;
   createWorkspace: (name?: string) => Promise<void>;
-  updateWorkspace: (updates: { icon?: string; name?: string }) => void;
+  updateWorkspace: (updates: WorkspaceUpdateProps) => void;
   deleteCurrentWorkspace: () => Promise<void>;
   //@ts-ignore
 }>({});
@@ -172,7 +178,7 @@ export const WorkspaceProvider = ({
     setWorkspaceId(workspace.id);
   };
 
-  const updateWorkspace = (updates: { icon?: string; name?: string }) => {
+  const updateWorkspace = (updates: WorkspaceUpdateProps) => {
     if (!workspaceId) return;
     updateWorkspaceMutation.mutate({
       workspaceId,
