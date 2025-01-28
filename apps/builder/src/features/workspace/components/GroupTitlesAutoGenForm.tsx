@@ -24,8 +24,6 @@ export const GroupTitlesAutoGenForm = ({
     typeof provider | undefined
   >();
 
-  const credsModalDisclosure = useDisclosure();
-
   const updateProvider = (provider: string) => {
     onChange({
       provider: provider as GroupTitlesAutoGeneration["provider"],
