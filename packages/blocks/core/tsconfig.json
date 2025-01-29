@@ -1,37 +1,4 @@
 {
   "extends": "@typebot.io/tsconfig/base.json",
-  "include": ["src/**/*.ts"],
-  "compilerOptions": { "outDir": "node_modules/.cache/tsconfig" },
-  "references": [
-    {
-      "path": "../../conditions"
-    },
-    {
-      "path": "../../forge/repository"
-    },
-    {
-      "path": "../../lib"
-    },
-    {
-      "path": "../../prisma"
-    },
-    {
-      "path": "../../zod"
-    },
-    {
-      "path": "../base"
-    },
-    {
-      "path": "../bubbles"
-    },
-    {
-      "path": "../inputs"
-    },
-    {
-      "path": "../integrations"
-    },
-    {
-      "path": "../logic"
-    }
-  ]
+  "include": ["src/**/*.ts"]
 }

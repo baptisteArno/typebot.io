@@ -4,8 +4,7 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]
-    },
-    "noEmit": true
+    }
   },
   "include": [
     "next-env.d.ts",
@@ -14,88 +13,5 @@
     "**/*.tsx",
     ".next/types/**/*.ts"
   ],
-  "exclude": ["node_modules"],
-  "references": [
-    {
-      "path": "../../packages/billing"
-    },
-    {
-      "path": "../../packages/blocks/core"
-    },
-    {
-      "path": "../../packages/blocks/inputs"
-    },
-    {
-      "path": "../../packages/blocks/logic"
-    },
-    {
-      "path": "../../packages/bot-engine"
-    },
-    {
-      "path": "../../packages/chat-session"
-    },
-    {
-      "path": "../../packages/credentials"
-    },
-    {
-      "path": "../../packages/deprecated/bot-engine"
-    },
-    {
-      "path": "../../packages/emails"
-    },
-    {
-      "path": "../../packages/embeds/nextjs"
-    },
-    {
-      "path": "../../packages/env"
-    },
-    {
-      "path": "../../packages/forge/core"
-    },
-    {
-      "path": "../../packages/forge/repository"
-    },
-    {
-      "path": "../../packages/lib"
-    },
-    {
-      "path": "../../packages/playwright"
-    },
-    {
-      "path": "../../packages/prisma"
-    },
-    {
-      "path": "../../packages/radar"
-    },
-    {
-      "path": "../../packages/results"
-    },
-    {
-      "path": "../../packages/schemas"
-    },
-    {
-      "path": "../../packages/telemetry"
-    },
-    {
-      "path": "../../packages/theme"
-    },
-    {
-      "path": "../../packages/transactional"
-    },
-    {
-      "path": "../../packages/trpc-openapi"
-    },
-    {
-      "path": "../../packages/typebot"
-    },
-    {
-      "path": "../../packages/ui"
-    },
-    {
-      "path": "../../packages/variables"
-    },
-    {
-      "path": "../../packages/whatsapp"
-    }
-  ]
+  "exclude": ["node_modules"]
 }

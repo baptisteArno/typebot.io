@@ -3,10 +3,5 @@
   "include": ["**/*.ts", "**/*.tsx"],
   "compilerOptions": {
     "jsx": "react-jsx"
-  },
-  "references": [
-    {
-      "path": "../env"
-    }
-  ]
+  }
 }

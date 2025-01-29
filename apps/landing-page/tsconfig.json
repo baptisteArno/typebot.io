@@ -13,25 +13,5 @@
     "app/**/*.tsx",
     "app.config.ts",
     "content-collection.ts"
-  ],
-  "references": [
-    {
-      "path": "../../packages/billing"
-    },
-    {
-      "path": "../../packages/embeds/react"
-    },
-    {
-      "path": "../../packages/env"
-    },
-    {
-      "path": "../../packages/lib"
-    },
-    {
-      "path": "../../packages/prisma"
-    },
-    {
-      "path": "../../packages/typebot"
-    }
   ]
 }

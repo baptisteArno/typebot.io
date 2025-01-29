@@ -1,31 +1,4 @@
 {
   "extends": "@typebot.io/tsconfig/base.json",
-  "include": ["src/**/*.ts"],
-  "compilerOptions": { "outDir": "node_modules/.cache/tsconfig" },
-  "references": [
-    {
-      "path": "../env"
-    },
-    {
-      "path": "../lib"
-    },
-    {
-      "path": "../prisma"
-    },
-    {
-      "path": "../schemas"
-    },
-    {
-      "path": "../settings"
-    },
-    {
-      "path": "../telemetry"
-    },
-    {
-      "path": "../workspaces"
-    },
-    {
-      "path": "../zod"
-    }
-  ]
+  "include": ["src/**/*.ts"]
 }
