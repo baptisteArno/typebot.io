@@ -16,7 +16,7 @@ export const auth = {
       label: "Host",
       withVariableButton: false,
       isDebounceDisabled: true,
-      defaultValue: "https://us.posthog.com",
+      defaultValue: "https://us.i.posthog.com",
     }),
   }),
 } satisfies AuthDefinition;
