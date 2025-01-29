@@ -1,9 +1,9 @@
 export const parseGroups = (groups?: { type?: string; key?: string }[]) => {
   if (!groups) return;
-  const parsedGroups: Record<string, any> = {};
+  const parsedGroups: Record<string, string> = {};
 
   groups.forEach(({ type, key }) => {
-    if (!key || !type) return;
+    if (!key?.trim() || !type?.trim()) return;
     parsedGroups[type] = key;
   });
 
