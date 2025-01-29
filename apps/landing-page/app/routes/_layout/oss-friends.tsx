@@ -32,7 +32,7 @@ export const Route = createFileRoute("/_layout/oss-friends")({
     }),
   }),
   component: RouteComponent,
-  loader: () => getAndParseOssFriends(),
+  loader: async () => await getAndParseOssFriends(),
 });
 
 function RouteComponent() {
