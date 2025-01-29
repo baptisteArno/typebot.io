@@ -13,6 +13,7 @@ interface EventPayload {
 export const capture = createAction({
   auth,
   name: "Capture",
+  parseBlockNodeLabel: (options) => `Capture ${options.event}`,
   options: option.object({
     name: option.string.layout({
       label: "Event Name",
