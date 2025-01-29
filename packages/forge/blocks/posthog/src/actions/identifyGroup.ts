@@ -1,7 +1,7 @@
 import { createAction, option } from "@typebot.io/forge";
 import { auth } from "../auth";
 import { createClient } from "../helpers/createClient";
-import { createProperties } from "../helpers/createProperties";
+import { parseProperties } from "../helpers/parseProperties";
 
 interface GroupPayload {
   groupType: string;
@@ -75,13 +75,13 @@ export const identifyGroup = createAction({
       if (properties) {
         groupPayload = {
           ...groupPayload,
-          properties: createProperties(properties),
+          properties: parseProperties(properties),
         };
       }
 
-      await posthog.groupIdentify(groupPayload);
+      posthog.groupIdentify(groupPayload);
 
-      await posthog.shutdown();
+      await posthog.shutdownAsync();
     },
   },
 });

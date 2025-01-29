@@ -11,7 +11,7 @@
     "@typebot.io/prisma": "workspace:*",
     "@typebot.io/zod": "workspace:*",
     "ky": "1.2.4",
-    "posthog-node": "4.3.2"
+    "posthog-node": "3.1.1"
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*"

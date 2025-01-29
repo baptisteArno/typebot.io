@@ -1,7 +1,7 @@
 import { createAction, option } from "@typebot.io/forge";
 import { auth } from "../auth";
 import { createClient } from "../helpers/createClient";
-import { createProperties } from "../helpers/createProperties";
+import { parseProperties } from "../helpers/parseProperties";
 
 export const identify = createAction({
   auth,
@@ -45,16 +45,16 @@ export const identify = createAction({
       const posthog = createClient(apiKey, host);
 
       if (properties === undefined || properties.length === 0) {
-        await posthog.identify({
+        posthog.identify({
           distinctId: userId,
         });
       } else {
-        await posthog.identify({
+        posthog.identify({
           distinctId: userId,
-          properties: createProperties(properties),
+          properties: parseProperties(properties),
         });
       }
-      await posthog.shutdown();
+      await posthog.shutdownAsync();
     },
   },
 });

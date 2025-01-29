@@ -4,6 +4,9 @@
   "compilerOptions": {},
   "references": [
     {
+      "path": "../../../lib"
+    },
+    {
       "path": "../../core"
     }
   ]

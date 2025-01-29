@@ -1,8 +1,8 @@
 import { createAction, option } from "@typebot.io/forge";
-import { isDefined, isEmpty } from "@typebot.io/lib/utils";
+import { isDefined } from "@typebot.io/lib/utils";
 import { auth } from "../auth";
 import { createClient } from "../helpers/createClient";
-import { createProperties } from "../helpers/createProperties";
+import { parseProperties } from "../helpers/parseProperties";
 
 export const getFlag = createAction({
   auth,
@@ -80,7 +80,7 @@ export const getFlag = createAction({
         let enabledVariant = null;
 
         if (properties) {
-          const personProperties = createProperties(properties);
+          const personProperties = parseProperties(properties);
           enabledVariant = await posthog.getFeatureFlag(
             flagKey,
             userId,
@@ -108,7 +108,7 @@ export const getFlag = createAction({
         });
       }
 
-      await posthog.shutdown();
+      await posthog.shutdownAsync();
     },
   },
 });

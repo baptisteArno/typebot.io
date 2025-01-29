@@ -1,35 +1,28 @@
 import { createAction, option } from "@typebot.io/forge";
+import { createId } from "@typebot.io/lib/createId";
 import { auth } from "../auth";
 import { createClient } from "../helpers/createClient";
-import { createProperties } from "../helpers/createProperties";
-
-interface EventPayload {
-  distinctId: string;
-  event: string;
-  properties: {};
-  groups?: {};
-}
+import { parseGroups } from "../helpers/parseGroups";
+import { parseProperties } from "../helpers/parseProperties";
 
 export const capture = createAction({
   auth,
   name: "Capture",
   parseBlockNodeLabel: (options) => `Capture ${options.event}`,
   options: option.object({
-    name: option.string.layout({
-      label: "Event Name",
-      placeholder: "Enter event name...",
-      helperText:
-        "You can use a custom event name or a PostHog event name, such as: $pageview, $screen, survey sent, etc.",
-      isRequired: true,
-    }),
-    userId: option.string.layout({
-      label: "User ID",
-      isRequired: false,
-    }),
-    anonymous: option.boolean.layout({
-      label: "Anonymous User",
+    isAnonymous: option.boolean.layout({
+      label: "Anonymous",
       isRequired: false,
       defaultValue: false,
+    }),
+    distinctId: option.string.layout({
+      label: "Distinct ID",
+      isRequired: false,
+      isHidden: (props) => props.isAnonymous,
+    }),
+    event: option.string.layout({
+      label: "Event",
+      isRequired: true,
     }),
     properties: option
       .array(
@@ -45,69 +38,55 @@ export const capture = createAction({
         }),
       )
       .layout({
-        itemLabel: "property",
-        accordion: "Event properties",
+        itemLabel: "a property",
+        accordion: "Properties",
       }),
-    groupKey: option.string.layout({
-      label: "Group Key",
-      isRequired: false,
-      accordion: "Group settings",
-    }),
-    groupType: option.string.layout({
-      label: "Group Type",
-      isRequired: false,
-      accordion: "Group settings",
-    }),
+    groups: option
+      .array(
+        option.object({
+          type: option.string.layout({
+            label: "Type",
+            isRequired: true,
+          }),
+          key: option.string.layout({
+            label: "Key",
+            isRequired: true,
+          }),
+        }),
+      )
+      .layout({
+        itemLabel: "a group",
+        accordion: "Associated groups",
+      }),
   }),
   run: {
     server: async ({
       credentials: { apiKey, host },
-      options: { name, userId, anonymous, groupKey, groupType, properties },
+      options: { event, distinctId, isAnonymous, groups, properties },
+      logs,
     }) => {
       if (
-        name === undefined ||
-        name.length === 0 ||
-        !userId ||
-        userId.length === 0 ||
+        event === undefined ||
+        event.length === 0 ||
+        !distinctId ||
+        distinctId.length === 0 ||
         apiKey === undefined ||
         host === undefined
-      )
+      ) {
+        logs.add("PostHog Capture: Missing required fields");
         return;
+      }
 
       const posthog = createClient(apiKey, host);
 
-      let eventPayload: EventPayload = {
-        distinctId: userId,
-        event: name,
-        properties: {},
-      };
+      posthog.capture({
+        distinctId: isAnonymous ? createId() : distinctId,
+        event,
+        properties: parseProperties(properties, isAnonymous),
+        groups: parseGroups(groups),
+      });
 
-      if (properties !== undefined && properties.length > 0) {
-        eventPayload.properties = createProperties(properties);
-      }
-
-      if (
-        groupType !== undefined &&
-        groupType.length > 0 &&
-        groupKey !== undefined &&
-        groupKey.length > 0
-      ) {
-        eventPayload = {
-          ...eventPayload,
-          groups: { [`${groupType}`]: groupKey },
-        };
-      }
-
-      if (anonymous) {
-        eventPayload.properties = {
-          ...eventPayload.properties,
-          $process_person_profile: false,
-        };
-      }
-
-      await posthog.capture(eventPayload);
-
-      await posthog.shutdown();
+      await posthog.shutdownAsync();
     },
   },
 });
