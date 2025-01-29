@@ -1,4 +1,4 @@
-import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
+import { TextInput } from "@/components/inputs/TextInput";
 import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
 import { FormLabel, Stack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
@@ -15,24 +15,22 @@ type Props = {
 export const TimeInputSettings = ({ options, onOptionsChange }: Props) => {
   const { t } = useTranslate();
 
-  const updateTwentyFourHourTime = (twentyFourHourTime: boolean) =>
-    onOptionsChange({ ...options, twentyFourHourTime });
-
   const handleVariableChange = (variable?: Variable) => {
     onOptionsChange({ ...options, variableId: variable?.id });
   };
 
+  const updateButtonLabel = (button: string) =>
+    onOptionsChange({ ...options, labels: { button } });
+
   return (
     <Stack spacing={4}>
-      <SwitchWithLabel
-        label={t("blocks.inputs.time.settings.24hourTime.label")}
-        initialValue={
-          options?.twentyFourHourTime ??
-          defaultTimeInputOptions.twentyFourHourTime
+      <TextInput
+        label={t("blocks.inputs.settings.button.label")}
+        defaultValue={
+          options?.labels?.button ?? defaultTimeInputOptions.labels.button
         }
-        onCheckChange={updateTwentyFourHourTime}
+        onChange={updateButtonLabel}
       />
-
       <Stack>
         <FormLabel mb="0" htmlFor="variable">
           {t("blocks.inputs.settings.saveAnswer.label")}

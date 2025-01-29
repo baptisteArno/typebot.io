@@ -126,7 +126,7 @@ const getSampleValue = (block: InputBlock, userEmail?: string): string => {
     case InputBlockType.DATE:
       return new Date().toUTCString();
     case InputBlockType.TIME:
-      return "12:00PM";
+      return "12:00 PM";
     case InputBlockType.EMAIL:
       return userEmail ?? "test@email.com";
     case InputBlockType.NUMBER:
