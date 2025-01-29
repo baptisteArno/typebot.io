@@ -26,7 +26,9 @@ export const ExternalEvent = React.memo(function ExternalEvent({
   const [successTest, setSuccessTest] = useState<boolean>();
   const [invalidData, setInvalidData] = useState<boolean>();
   const [loading, setLoading] = useState<boolean>();
-  const [timeout, setTimeout] = useState<string>("5")
+  const [timeout, setTimeoutValue] = useState<string>(
+    () => step?.options?.timeout ?? "5"
+  );
   const [url, setUrl] = useState<string>("")
   const { typebot } = useTypebot()
   const {
@@ -114,7 +116,7 @@ export const ExternalEvent = React.memo(function ExternalEvent({
 
   const onSelect = (e: any) => {
     const value = e.target.value;
-    setTimeout(value);
+    setTimeoutValue(value);
     step.options.timeout = value;
   }
 
