@@ -150,6 +150,9 @@
       "path": "packages/forge/blocks/openRouter"
     },
     {
+      "path": "packages/forge/blocks/posthog"
+    },
+    {
       "path": "packages/forge/blocks/qrcode"
     },
     {

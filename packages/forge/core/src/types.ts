@@ -47,6 +47,9 @@ export type ActionDefinition<
   Options extends z.ZodObject<z.ZodRawShape> = z.ZodObject<{}>,
 > = {
   name: string;
+  parseBlockNodeLabel?: (
+    options: z.infer<BaseOptions> & z.infer<Options>,
+  ) => string;
   fetchers?: FetcherDefinition<A, z.infer<BaseOptions> & z.infer<Options>>[];
   options?: Options;
   turnableInto?: TurnableIntoParam<z.infer<Options>>[];
