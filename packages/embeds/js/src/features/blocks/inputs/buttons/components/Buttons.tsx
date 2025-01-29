@@ -15,11 +15,11 @@ type Props = {
 
 export const Buttons = (props: Props) => {
   let inputRef: HTMLInputElement | undefined;
+  const areButtonsVisible =
+    props.options?.areInitialSearchButtonsVisible ??
+    defaultChoiceInputOptions.areInitialSearchButtonsVisible;
   const [filteredItems, setFilteredItems] = createSignal(
-    props.options?.isSearchable &&
-      !props.options?.areInitialSearchButtonsVisible
-      ? []
-      : props.defaultItems,
+    props.options?.isSearchable && !areButtonsVisible ? [] : props.defaultItems,
   );
 
   onMount(() => {
@@ -34,11 +34,7 @@ export const Buttons = (props: Props) => {
 
   const filterItems = (inputValue: string) => {
     if (inputValue === "" || inputValue.trim().length === 0) {
-      setFilteredItems(
-        !props.options?.areInitialSearchButtonsVisible
-          ? []
-          : props.defaultItems,
-      );
+      setFilteredItems(!areButtonsVisible ? [] : props.defaultItems);
       return;
     }
 
@@ -61,11 +57,7 @@ export const Buttons = (props: Props) => {
               defaultChoiceInputOptions.searchInputPlaceholder
             }
             onClear={() =>
-              setFilteredItems(
-                !props.options?.areInitialSearchButtonsVisible
-                  ? []
-                  : props.defaultItems,
-              )
+              setFilteredItems(!areButtonsVisible ? [] : props.defaultItems)
             }
           />
         </div>
