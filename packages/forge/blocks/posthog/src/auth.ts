@@ -1,5 +1,6 @@
 import { option } from "@typebot.io/forge";
 import type { AuthDefinition } from "@typebot.io/forge/types";
+import { defaultHost } from "./constants";
 
 export const auth = {
   type: "encryptedCredentials",
@@ -16,7 +17,7 @@ export const auth = {
       label: "Host",
       withVariableButton: false,
       isDebounceDisabled: true,
-      defaultValue: "https://us.i.posthog.com",
+      defaultValue: defaultHost,
     }),
   }),
 } satisfies AuthDefinition;

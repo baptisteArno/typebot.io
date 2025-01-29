@@ -3,28 +3,21 @@ import { auth } from "../auth";
 import { createClient } from "../helpers/createClient";
 import { parseProperties } from "../helpers/parseProperties";
 
-interface GroupPayload {
-  groupType: string;
-  groupKey: string;
-  distinctId?: string;
-  properties?: {};
-}
-
 export const identifyGroup = createAction({
   auth,
   name: "Identify Group",
   options: option.object({
-    groupKey: option.string.layout({
-      label: "Group Key",
-      isRequired: true,
+    distinctId: option.string.layout({
+      label: "Distinct ID",
+      isRequired: false,
     }),
     groupType: option.string.layout({
-      label: "Group Type",
+      label: "Type",
       isRequired: true,
     }),
-    userId: option.string.layout({
-      label: "User ID",
-      isRequired: false,
+    groupKey: option.string.layout({
+      label: "Key",
+      isRequired: true,
     }),
     properties: option
       .array(
@@ -46,40 +39,24 @@ export const identifyGroup = createAction({
   run: {
     server: async ({
       credentials: { apiKey, host },
-      options: { userId, groupKey, groupType, properties },
+      options: { distinctId, groupKey, groupType, properties },
+      logs,
     }) => {
-      if (
-        !groupKey ||
-        groupKey.length === 0 ||
-        !groupType ||
-        groupType.length === 0 ||
-        apiKey === undefined ||
-        host === undefined
-      )
-        return;
+      if (!apiKey) return;
 
       const posthog = createClient(apiKey, host);
 
-      let groupPayload: GroupPayload = {
-        groupType: groupType,
-        groupKey: groupKey,
-      };
+      if (!distinctId) return logs.add("Distinct ID is required");
 
-      if (userId) {
-        groupPayload = {
-          ...groupPayload,
-          distinctId: userId,
-        };
-      }
+      if (!groupKey || !groupType)
+        return logs.add("Group type and key are required");
 
-      if (properties) {
-        groupPayload = {
-          ...groupPayload,
-          properties: parseProperties(properties),
-        };
-      }
-
-      posthog.groupIdentify(groupPayload);
+      posthog.groupIdentify({
+        distinctId,
+        groupType,
+        groupKey,
+        properties: parseProperties({ properties }),
+      });
 
       await posthog.shutdownAsync();
     },

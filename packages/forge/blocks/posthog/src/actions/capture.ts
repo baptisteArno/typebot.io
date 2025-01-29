@@ -41,6 +41,23 @@ export const capture = createAction({
         itemLabel: "a property",
         accordion: "Properties",
       }),
+    personProperties: option
+      .array(
+        option.object({
+          key: option.string.layout({
+            label: "Key",
+            isRequired: true,
+          }),
+          value: option.string.layout({
+            label: "Value",
+            isRequired: true,
+          }),
+        }),
+      )
+      .layout({
+        itemLabel: "a property",
+        accordion: "Person properties",
+      }),
     groups: option
       .array(
         option.object({
@@ -62,7 +79,14 @@ export const capture = createAction({
   run: {
     server: async ({
       credentials: { apiKey, host },
-      options: { event, distinctId, isAnonymous, groups, properties },
+      options: {
+        event,
+        distinctId,
+        isAnonymous,
+        groups,
+        properties,
+        personProperties,
+      },
       logs,
     }) => {
       if (
@@ -82,7 +106,11 @@ export const capture = createAction({
       posthog.capture({
         distinctId: isAnonymous ? createId() : distinctId,
         event,
-        properties: parseProperties(properties, isAnonymous),
+        properties: parseProperties({
+          properties,
+          personProperties,
+          isAnonymous,
+        }),
         groups: parseGroups(groups),
       });
 
