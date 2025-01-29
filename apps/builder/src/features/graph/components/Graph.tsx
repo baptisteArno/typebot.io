@@ -4,6 +4,7 @@ import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { Fade, Flex, type FlexProps, useEventListener } from "@chakra-ui/react";
 import { createId } from "@paralleldrive/cuid2";
 import type { BlockV6 } from "@typebot.io/blocks-core/schemas/schema";
+import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
 import { GraphNavigation } from "@typebot.io/prisma/enum";
 import type {
   EdgeWithTotalUsers,
@@ -161,7 +162,13 @@ export const Graph = ({
     });
     setDraggedBlock(undefined);
     setDraggedBlockType(undefined);
-    if (newBlockId) setOpenedBlockId(newBlockId);
+    if (
+      newBlockId &&
+      draggedBlockType !== InputBlockType.CHOICE &&
+      draggedBlockType !== InputBlockType.PICTURE_CHOICE
+    ) {
+      setOpenedBlockId(newBlockId);
+    }
   };
 
   const handleCaptureMouseDown = (e: MouseEvent) => {
