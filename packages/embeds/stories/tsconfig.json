@@ -1,28 +1,4 @@
 {
   "extends": "@typebot.io/tsconfig/react.json",
-  "include": ["src/**/*.ts", "src/**/*.tsx"],
-  "compilerOptions": { "outDir": "node_modules/.cache/tsconfig" },
-  "references": [
-    {
-      "path": "../../blocks/bubbles"
-    },
-    {
-      "path": "../../blocks/inputs"
-    },
-    {
-      "path": "../../blocks/logic"
-    },
-    {
-      "path": "../../bot-engine"
-    },
-    {
-      "path": "../../conditions"
-    },
-    {
-      "path": "../../theme"
-    },
-    {
-      "path": "../react"
-    }
-  ]
+  "include": ["src/**/*.ts", "src/**/*.tsx"]
 }

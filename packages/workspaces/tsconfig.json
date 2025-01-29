@@ -1,21 +1,4 @@
 {
   "extends": "@typebot.io/tsconfig/base.json",
-  "include": ["src/**/*.ts"],
-  "compilerOptions": {
-    "outDir": "node_modules/.cache/tsconfig"
-  },
-  "references": [
-    {
-      "path": "../env"
-    },
-    {
-      "path": "../forge/repository"
-    },
-    {
-      "path": "../prisma"
-    },
-    {
-      "path": "../zod"
-    }
-  ]
+  "include": ["src/**/*.ts"]
 }

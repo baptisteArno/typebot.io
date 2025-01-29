@@ -11,43 +11,5 @@
     "outDir": "dist",
     "declaration": true,
     "declarationMap": true
-  },
-  "references": [
-    {
-      "path": "../../blocks/bubbles"
-    },
-    {
-      "path": "../../blocks/inputs"
-    },
-    {
-      "path": "../../blocks/logic"
-    },
-    {
-      "path": "../../bot-engine"
-    },
-    {
-      "path": "../../env"
-    },
-    {
-      "path": "../../forge/blocks/zendesk"
-    },
-    {
-      "path": "../../lib"
-    },
-    {
-      "path": "../../rich-text"
-    },
-    {
-      "path": "../../schemas"
-    },
-    {
-      "path": "../../settings"
-    },
-    {
-      "path": "../../theme"
-    },
-    {
-      "path": "../../ui"
-    }
-  ]
+  }
 }

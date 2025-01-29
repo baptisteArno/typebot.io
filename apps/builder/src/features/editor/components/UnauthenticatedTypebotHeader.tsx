@@ -153,7 +153,7 @@ export const GuestTypebotHeader = () => {
             <Button
               as={Link}
               href={`/register`}
-              leftIcon={<TypebotLogo width="20px" />}
+              leftIcon={<TypebotLogo />}
               variant="outline"
               size="sm"
             >

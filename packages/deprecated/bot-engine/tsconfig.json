@@ -6,58 +6,5 @@
     "paths": {
       "@/*": ["src/*"]
     }
-  },
-  "references": [
-    {
-      "path": "../../blocks/bubbles"
-    },
-    {
-      "path": "../../blocks/core"
-    },
-    {
-      "path": "../../blocks/inputs"
-    },
-    {
-      "path": "../../blocks/integrations"
-    },
-    {
-      "path": "../../blocks/logic"
-    },
-    {
-      "path": "../../conditions"
-    },
-    {
-      "path": "../../env"
-    },
-    {
-      "path": "../../forge/core"
-    },
-    {
-      "path": "../../groups"
-    },
-    {
-      "path": "../../lib"
-    },
-    {
-      "path": "../../prisma"
-    },
-    {
-      "path": "../../results"
-    },
-    {
-      "path": "../../settings"
-    },
-    {
-      "path": "../../theme"
-    },
-    {
-      "path": "../../typebot"
-    },
-    {
-      "path": "../../variables"
-    },
-    {
-      "path": "../typebot-js"
-    }
-  ]
+  }
 }

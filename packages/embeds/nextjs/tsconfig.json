@@ -5,13 +5,5 @@
     "declaration": true,
     "declarationMap": true,
     "outDir": "dist"
-  },
-  "references": [
-    {
-      "path": "../js"
-    },
-    {
-      "path": "../react"
-    }
-  ]
+  }
 }

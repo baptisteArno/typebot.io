@@ -183,7 +183,7 @@ export const MainFeatures = () => {
               <div
                 className={cn(
                   "size-4 bg-gray-4 border-white border rounded-full items-center justify-center flex",
-                  index === features.length - 1 ? "-mb-[7px]" : "-mt-[6px]",
+                  index === features.length - 1 ? "-mb-[7px]" : "-mt-[7px]",
                 )}
               >
                 <div className="size-2 border-2 border-orange-9 rounded-full " />
@@ -193,22 +193,24 @@ export const MainFeatures = () => {
           </div>
         ))}
       </div>
-      <AnimatePresence mode="popLayout">
-        <motion.video
-          key={currentFeature.video.src}
-          src={currentFeature.video.src}
-          width="476px"
-          height="476px"
-          className="rounded-2xl border-8 border-gray-12"
-          autoPlay
-          muted
-          loop
-          playsInline
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-        />
-      </AnimatePresence>
+      <div className="px-4 md:px-0">
+        <AnimatePresence mode="popLayout">
+          <motion.video
+            key={currentFeature.video.src}
+            src={currentFeature.video.src}
+            width="476px"
+            height="476px"
+            className="rounded-2xl border-8 border-gray-12"
+            autoPlay
+            muted
+            loop
+            playsInline
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          />
+        </AnimatePresence>
+      </div>
     </div>
   );
 };
