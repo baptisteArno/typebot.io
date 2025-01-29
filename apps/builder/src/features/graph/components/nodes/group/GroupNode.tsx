@@ -87,6 +87,10 @@ export const GroupNode = ({ group, groupIndex }: Props) => {
     );
   }, [connectingIds, group.id]);
 
+  useEffect(() => {
+    if (group.title !== groupTitle) setGroupTitle(group.title);
+  }, [group.title]);
+
   const handleTitleSubmit = (title: string) =>
     updateGroup(groupIndex, { title });
 

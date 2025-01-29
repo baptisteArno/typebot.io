@@ -145,7 +145,9 @@ export const DrawingEdge = ({ connectingIds }: Props) => {
           credentialsId: workspace?.settings?.groupTitlesAutoGeneration
             ?.credentialsId as string,
           typebotId: typebot.id,
-          groupContent: JSON.stringify(group),
+          groupContent: JSON.stringify({
+            blocks: group.blocks.map(({ id, outgoingEdgeId, ...rest }) => rest),
+          }),
         });
 
         updateGroup(groupIndex, { title: result.title });
