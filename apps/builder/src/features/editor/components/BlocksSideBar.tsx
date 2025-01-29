@@ -25,7 +25,7 @@ import { isDefined } from "@typebot.io/lib/utils";
 import type React from "react";
 import { useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
-import { LOCAL_STORAGE_KEY, headerHeight } from "../constants";
+import { headerHeight, leftSidebarLockedStorageKey } from "../constants";
 import { BlockCard } from "./BlockCard";
 import { BlockCardOverlay } from "./BlockCardOverlay";
 import {
@@ -50,9 +50,7 @@ export const BlocksSideBar = () => {
     y: 0,
   });
   const [isLocked, setIsLocked] = useState(
-    localStorage.getItem(LOCAL_STORAGE_KEY.LEFT_SIDEBAR_LOCKED)
-      ? localStorage.getItem(LOCAL_STORAGE_KEY.LEFT_SIDEBAR_LOCKED) === "true"
-      : false,
+    localStorage.getItem(leftSidebarLockedStorageKey) === "true",
   );
   const [isExtended, setIsExtended] = useState(true);
   const [searchInput, setSearchInput] = useState("");
@@ -92,10 +90,7 @@ export const BlocksSideBar = () => {
 
   const handleLockClick = () => {
     try {
-      localStorage.setItem(
-        LOCAL_STORAGE_KEY.LEFT_SIDEBAR_LOCKED,
-        String(!isLocked),
-      );
+      localStorage.setItem(leftSidebarLockedStorageKey, String(!isLocked));
     } catch (error) {
       console.error(error);
     }
