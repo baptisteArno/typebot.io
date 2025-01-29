@@ -1,7 +1,7 @@
 import { publicProcedure } from "@/helpers/server/trpc";
 import * as Sentry from "@sentry/nextjs";
 import { TRPCError } from "@trpc/server";
-import { deleteSession } from "@typebot.io/bot-engine/queries/deleteSession";
+import { deleteSession } from "@typebot.io/chat-session/queries/deleteSession";
 import { env } from "@typebot.io/env";
 import { WhatsAppError } from "@typebot.io/whatsapp/WhatsAppError";
 import { incomingWebhookErrorCodes } from "@typebot.io/whatsapp/constants";

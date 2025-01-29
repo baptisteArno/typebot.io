@@ -5,6 +5,7 @@ import { Plan } from "@typebot.io/prisma/enum";
 import type { User } from "@typebot.io/schemas/features/user/schema";
 import { trackEvents } from "@typebot.io/telemetry/trackEvents";
 import { isAdminWriteWorkspaceForbidden } from "@typebot.io/workspaces/isAdminWriteWorkspaceForbidden";
+import { workspaceSchema } from "@typebot.io/workspaces/schemas";
 import Stripe from "stripe";
 import { createCheckoutSessionUrl } from "../helpers/createCheckoutSessionUrl";
 
@@ -33,6 +34,7 @@ export const updateSubscription = async ({
     select: {
       isPastDue: true,
       stripeId: true,
+      plan: true,
       members: {
         select: {
           userId: true,
@@ -144,10 +146,11 @@ export const updateSubscription = async ({
       workspaceId,
       userId: user.id,
       data: {
+        prevPlan: workspace.plan,
         plan,
       },
     },
   ]);
 
-  return { workspace: updatedWorkspace };
+  return { workspace: workspaceSchema.parse(updatedWorkspace) };
 };

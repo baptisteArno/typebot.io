@@ -1,7 +1,4 @@
-import {
-  blockBaseSchema,
-  credentialsBaseSchema,
-} from "@typebot.io/blocks-base/schemas";
+import { blockBaseSchema } from "@typebot.io/blocks-base/schemas";
 import { variableStringSchema } from "@typebot.io/variables/schemas";
 import { z } from "@typebot.io/zod";
 import { IntegrationBlockType } from "../constants";
@@ -129,6 +126,7 @@ export const openAIBlockSchema = blockBaseSchema.merge(
 );
 export type OpenAIBlock = z.infer<typeof openAIBlockSchema>;
 
+//legacy
 export const openAICredentialsSchema = z
   .object({
     type: z.literal("openai"),
@@ -136,5 +134,13 @@ export const openAICredentialsSchema = z
       apiKey: z.string(),
     }),
   })
-  .merge(credentialsBaseSchema);
+  .merge(
+    z.object({
+      id: z.string(),
+      createdAt: z.date(),
+      workspaceId: z.string(),
+      name: z.string(),
+      iv: z.string(),
+    }),
+  );
 export type OpenAICredentials = z.infer<typeof openAICredentialsSchema>;

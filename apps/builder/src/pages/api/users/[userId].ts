@@ -29,12 +29,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         {
           name: "User updated",
           userId: user.id,
-          data: {
-            name: data.name ?? undefined,
-            onboardingCategories: data.onboardingCategories ?? undefined,
-            referral: data.referral ?? undefined,
-            company: data.company ?? undefined,
-          },
         },
       ]);
     return res.send({ typebots });

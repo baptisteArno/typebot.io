@@ -193,24 +193,22 @@ export const MainFeatures = () => {
           </div>
         ))}
       </div>
-      <div className="bg-gray-12 rounded-2xl p-2 ml-4 md:mx-0 size-[calc(100%-2rem)] md:size-auto">
-        <AnimatePresence mode="popLayout">
-          <motion.video
-            key={currentFeature.video.src}
-            src={currentFeature.video.src}
-            width="476px"
-            height="476px"
-            className="rounded-lg"
-            autoPlay
-            muted
-            loop
-            playsInline
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-          />
-        </AnimatePresence>
-      </div>
+      <AnimatePresence mode="popLayout">
+        <motion.video
+          key={currentFeature.video.src}
+          src={currentFeature.video.src}
+          width="476px"
+          height="476px"
+          className="rounded-2xl border-8 border-gray-12"
+          autoPlay
+          muted
+          loop
+          playsInline
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+        />
+      </AnimatePresence>
     </div>
   );
 };

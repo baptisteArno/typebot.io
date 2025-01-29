@@ -1,5 +1,5 @@
-import type { SmtpCredentials } from "@typebot.io/blocks-integrations/sendEmail/schema";
-import { encrypt } from "@typebot.io/lib/api/encryption/encrypt";
+import { encrypt } from "@typebot.io/credentials/encrypt";
+import type { SmtpCredentials } from "@typebot.io/credentials/schemas";
 import { proWorkspaceId } from "@typebot.io/playwright/databaseSetup";
 import prisma from "@typebot.io/prisma";
 

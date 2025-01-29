@@ -84,6 +84,10 @@ const nextConfig = {
               destination: `${process.env.LANDING_PAGE_URL}/blog-assets/:asset*`,
             },
             {
+              source: "/_server/:server*",
+              destination: `${process.env.LANDING_PAGE_URL}/_server/:server*`,
+            },
+            {
               source: "/fonts/:font*",
               destination: `${process.env.LANDING_PAGE_URL}/fonts/:font*`,
             },

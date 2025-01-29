@@ -1,9 +1,9 @@
+import { createSession } from "@typebot.io/chat-session/queries/createSession";
+import { deleteSession } from "@typebot.io/chat-session/queries/deleteSession";
+import { updateSession } from "@typebot.io/chat-session/queries/updateSession";
 import prisma from "@typebot.io/prisma";
 import type { Prisma } from "@typebot.io/prisma/types";
 import type { SetVariableHistoryItem } from "@typebot.io/variables/schemas";
-import { createSession } from "./queries/createSession";
-import { deleteSession } from "./queries/deleteSession";
-import { updateSession } from "./queries/updateSession";
 import { upsertResult } from "./queries/upsertResult";
 import type { ChatSession, ContinueChatResponse } from "./schemas/api";
 

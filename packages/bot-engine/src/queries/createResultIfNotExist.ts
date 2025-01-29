@@ -1,5 +1,5 @@
+import type { TypebotInSession } from "@typebot.io/chat-session/schemas";
 import prisma from "@typebot.io/prisma";
-import type { TypebotInSession } from "../schemas/chatSession";
 
 type Props = {
   resultId: string;

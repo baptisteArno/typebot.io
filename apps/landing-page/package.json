@@ -41,7 +41,7 @@
     "@vitejs/plugin-react": "4.3.4",
     "autoprefixer": "10.4.20",
     "cross-env": "7.0.3",
-    "dotenv-cli": "7.4.4",
+    "dotenv-cli": "8.0.0",
     "mdx-local-link-checker": "2.1.1",
     "postcss": "8.5.1",
     "rehype-autolink-headings": "7.1.0",

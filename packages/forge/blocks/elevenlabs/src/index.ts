@@ -11,5 +11,5 @@ export const elevenlabsBlock = createBlock({
   DarkLogo: ElevenlabsLogoDark,
   auth,
   actions: [convertTextToSpeech],
-  docsUrl: "https://docs.typebot.io/forge/blocks/elevenlabs",
+  docsUrl: "https://docs.typebot.io/editor/blocks/integrations/elevenlabs",
 });

@@ -1,9 +1,9 @@
 import type { GoogleSheetsGetOptions } from "@typebot.io/blocks-integrations/googleSheets/schema";
+import type { SessionState } from "@typebot.io/chat-session/schemas";
 import { byId, isDefined, isNotEmpty } from "@typebot.io/lib/utils";
 import { deepParseVariables } from "@typebot.io/variables/deepParseVariables";
 import type { VariableWithValue } from "@typebot.io/variables/schemas";
 import type { ChatLog } from "../../../schemas/api";
-import type { SessionState } from "../../../schemas/chatSession";
 import type { ExecuteIntegrationResponse } from "../../../types";
 import { updateVariablesInSession } from "../../../updateVariablesInSession";
 import { getAuthenticatedGoogleDoc } from "./helpers/getAuthenticatedGoogleDoc";
@@ -30,6 +30,7 @@ export const getRow = async (
   const doc = await getAuthenticatedGoogleDoc({
     credentialsId: options.credentialsId,
     spreadsheetId: options.spreadsheetId,
+    workspaceId: state.workspaceId,
   });
 
   try {

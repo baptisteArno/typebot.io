@@ -1,4 +1,3 @@
-import type { Prisma } from "@typebot.io/prisma/types";
 import { z } from "@typebot.io/zod";
 
 export const blockBaseSchema = z.object({
@@ -10,14 +9,6 @@ export type BlockBase = z.infer<typeof blockBaseSchema>;
 export const optionBaseSchema = z.object({
   variableId: z.string().optional(),
 });
-
-export const credentialsBaseSchema = z.object({
-  id: z.string(),
-  createdAt: z.date(),
-  workspaceId: z.string(),
-  name: z.string(),
-  iv: z.string(),
-}) satisfies z.ZodType<Omit<Prisma.Credentials, "data" | "type">>;
 
 const itemBaseV5Schema = z.object({
   id: z.string(),

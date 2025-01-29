@@ -1,10 +1,13 @@
 import assert from "assert";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
+import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
+import { trpcVanilla } from "@/lib/trpc";
 import { useEventListener } from "@chakra-ui/react";
 import type { Coordinates } from "@dnd-kit/utilities";
 import { omit } from "@typebot.io/lib/utils";
 import { colors } from "@typebot.io/ui/chakraTheme";
 import React, { useMemo, useState } from "react";
+import { toast } from "sonner";
 import { eventWidth, groupWidth } from "../../constants";
 import { computeConnectingEdgePath } from "../../helpers/computeConnectingEdgePath";
 import { computeEdgePathToMouse } from "../../helpers/computeEdgePathToMouth";
@@ -30,7 +33,8 @@ export const DrawingEdge = ({ connectingIds }: Props) => {
     () => true,
   );
   const { eventsCoordinates } = useEventsCoordinates();
-  const { createEdge } = useTypebot();
+  const { workspace } = useWorkspace();
+  const { createEdge, typebot, updateGroup } = useTypebot();
   const [mousePosition, setMousePosition] = useState<Coordinates | null>(null);
 
   const sourceElementCoordinates = connectingIds
@@ -113,7 +117,7 @@ export const DrawingEdge = ({ connectingIds }: Props) => {
     setConnectingIds(null);
   });
 
-  const createNewEdge = (connectingIds: ConnectingIds) => {
+  const createNewEdge = async (connectingIds: ConnectingIds) => {
     assert(connectingIds.target);
     createEdge({
       from:
@@ -122,6 +126,34 @@ export const DrawingEdge = ({ connectingIds }: Props) => {
           : connectingIds.source,
       to: connectingIds.target,
     });
+    const groupTitlesAutoGeneration =
+      workspace?.settings?.groupTitlesAutoGeneration;
+    if (
+      typebot &&
+      groupTitlesAutoGeneration?.isEnabled &&
+      groupTitlesAutoGeneration.credentialsId &&
+      groupTitlesAutoGeneration.provider &&
+      "groupId" in connectingIds.source
+    ) {
+      const groupIndex = typebot?.groups.findIndex(
+        (g) => g.id === (connectingIds.source as { groupId: string }).groupId,
+      );
+      const group = typebot.groups[groupIndex];
+      if (!group || !group?.title.startsWith("Group #")) return;
+      try {
+        const result = await trpcVanilla.generateGroupTitle.mutate({
+          credentialsId: workspace?.settings?.groupTitlesAutoGeneration
+            ?.credentialsId as string,
+          typebotId: typebot.id,
+          groupContent: JSON.stringify(group),
+        });
+
+        updateGroup(groupIndex, { title: result.title });
+      } catch (error) {
+        toast.error("Failed to auto generate group title");
+        console.error("Failed to generate group title:", error);
+      }
+    }
   };
 
   if (mousePosition && mousePosition.x === 0 && mousePosition.y === 0)

@@ -1,6 +1,6 @@
 import { BubbleBlockType } from "@typebot.io/blocks-bubbles/constants";
+import { restartSession } from "@typebot.io/chat-session/queries/restartSession";
 import { computeCurrentProgress } from "../computeCurrentProgress";
-import { restartSession } from "../queries/restartSession";
 import { saveStateToDatabase } from "../saveStateToDatabase";
 import type { Message, StartFrom, StartTypebot } from "../schemas/api";
 import { startSession } from "../startSession";

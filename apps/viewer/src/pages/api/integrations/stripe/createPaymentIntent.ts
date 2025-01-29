@@ -1,9 +1,7 @@
 import { defaultPaymentInputOptions } from "@typebot.io/blocks-inputs/payment/constants";
-import type {
-  PaymentInputBlock,
-  StripeCredentials,
-} from "@typebot.io/blocks-inputs/payment/schema";
-import { decrypt } from "@typebot.io/lib/api/encryption/decrypt";
+import type { PaymentInputBlock } from "@typebot.io/blocks-inputs/payment/schema";
+import { decrypt } from "@typebot.io/credentials/decrypt";
+import type { StripeCredentials } from "@typebot.io/credentials/schemas";
 import {
   badRequest,
   forbidden,

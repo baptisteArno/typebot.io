@@ -5,6 +5,7 @@ import {
   answerSchema,
 } from "@typebot.io/results/schemas/answers";
 import { settingsSchema } from "@typebot.io/settings/schemas";
+import { dynamicThemeSchema } from "@typebot.io/theme/schemas";
 import { preprocessTypebot } from "@typebot.io/typebot/preprocessTypebot";
 import {
   publicTypebotSchemaV5,
@@ -15,7 +16,6 @@ import {
   variableWithValueSchema,
 } from "@typebot.io/variables/schemas";
 import { z } from "@typebot.io/zod";
-import { dynamicThemeSchema } from "./dynamicTheme";
 
 const typebotInSessionStatePick = {
   version: true,
@@ -115,6 +115,8 @@ const sessionStateSchemaV3 = sessionStateSchemaV2
     allowedOrigins: z.array(z.string()).optional(),
     setVariableIdsForHistory: z.array(z.string()).optional(),
     currentSetVariableHistoryIndex: z.number().optional(),
+    // TODO: Remove workspaceId optionality once v3.4 is out
+    workspaceId: z.string().optional(),
     previewMetadata: z
       .object({
         answers: z.array(answerSchema).optional(),

@@ -1,8 +1,8 @@
 import type { ChatCompletionOpenAIOptions } from "@typebot.io/blocks-integrations/openai/schema";
+import type { SessionState } from "@typebot.io/chat-session/schemas";
 import { byId, isDefined } from "@typebot.io/lib/utils";
 import type { VariableWithUnknowValue } from "@typebot.io/variables/schemas";
 import type { ContinueChatResponse } from "../../../../schemas/api";
-import type { SessionState } from "../../../../schemas/chatSession";
 import { updateVariablesInSession } from "../../../../updateVariablesInSession";
 
 export const resumeChatCompletion =

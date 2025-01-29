@@ -1,9 +1,9 @@
 import type { ChoiceInputBlock } from "@typebot.io/blocks-inputs/choice/schema";
+import type { SessionState } from "@typebot.io/chat-session/schemas";
 import { isDefined, isNotEmpty } from "@typebot.io/lib/utils";
 import { deepParseVariables } from "@typebot.io/variables/deepParseVariables";
 import type { VariableWithValue } from "@typebot.io/variables/schemas";
 import { transformVariablesToList } from "@typebot.io/variables/transformVariablesToList";
-import type { SessionState } from "../../../schemas/chatSession";
 import { filterChoiceItems } from "./filterChoiceItems";
 
 export const injectVariableValuesInButtonsInputBlock =

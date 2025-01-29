@@ -10,6 +10,6 @@
   "devDependencies": {
     "mintlify": "4.0.228",
     "tsx": "4.19.1",
-    "dotenv-cli": "7.4.4"
+    "dotenv-cli": "8.0.0"
   }
 }

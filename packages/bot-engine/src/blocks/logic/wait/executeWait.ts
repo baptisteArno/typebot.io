@@ -1,7 +1,7 @@
 import type { WaitBlock } from "@typebot.io/blocks-logic/wait/schema";
+import type { SessionState } from "@typebot.io/chat-session/schemas";
 import { isNotDefined } from "@typebot.io/lib/utils";
 import { parseVariables } from "@typebot.io/variables/parseVariables";
-import type { SessionState } from "../../../schemas/chatSession";
 import type { ExecuteLogicResponse } from "../../../types";
 
 export const executeWait = (

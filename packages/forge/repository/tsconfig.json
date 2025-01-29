@@ -1,4 +1,52 @@
 {
   "extends": "@typebot.io/tsconfig/base.json",
-  "include": ["src/**/*.ts"]
+  "include": ["src/**/*.ts"],
+  "compilerOptions": { "outDir": "node_modules/.cache/tsconfig" },
+  "references": [
+    {
+      "path": "../../zod"
+    },
+    {
+      "path": "../blocks/anthropic"
+    },
+    {
+      "path": "../blocks/calCom"
+    },
+    {
+      "path": "../blocks/chatNode"
+    },
+    {
+      "path": "../blocks/difyAi"
+    },
+    {
+      "path": "../blocks/elevenlabs"
+    },
+    {
+      "path": "../blocks/groq"
+    },
+    {
+      "path": "../blocks/mistral"
+    },
+    {
+      "path": "../blocks/nocodb"
+    },
+    {
+      "path": "../blocks/openRouter"
+    },
+    {
+      "path": "../blocks/openai"
+    },
+    {
+      "path": "../blocks/qrcode"
+    },
+    {
+      "path": "../blocks/segment"
+    },
+    {
+      "path": "../blocks/togetherAi"
+    },
+    {
+      "path": "../blocks/zendesk"
+    }
+  ]
 }

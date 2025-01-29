@@ -57,7 +57,12 @@ export const ImageBubble = (props: Props) => {
         props.content?.url?.endsWith(".svg") ? "w-full" : undefined,
       )}
       style={{
-        "max-height": "512px",
+        width: props.content?.url?.startsWith("data:image/svg")
+          ? "100%"
+          : undefined,
+        "max-height": props.content?.url?.startsWith("data:image/svg")
+          ? "120px"
+          : "512px",
         height: isTyping() ? "32px" : "auto",
       }}
       elementtiming={"Bubble image"}

@@ -1,5 +1,6 @@
 import { IntegrationBlockType } from "@typebot.io/blocks-integrations/constants";
 import type { IntegrationBlock } from "@typebot.io/blocks-integrations/schema";
+import type { SessionState } from "@typebot.io/chat-session/schemas";
 import { env } from "@typebot.io/env";
 import { isNotDefined } from "@typebot.io/lib/utils";
 import { executeChatwootBlock } from "./blocks/integrations/chatwoot/executeChatwootBlock";
@@ -10,7 +11,6 @@ import { executeOpenAIBlock } from "./blocks/integrations/legacy/openai/executeO
 import { executePixelBlock } from "./blocks/integrations/pixel/executePixelBlock";
 import { executeSendEmailBlock } from "./blocks/integrations/sendEmail/executeSendEmailBlock";
 import { executeForgedBlock } from "./forge/executeForgedBlock";
-import type { SessionState } from "./schemas/chatSession";
 import type { ExecuteIntegrationResponse } from "./types";
 
 export const executeIntegration =

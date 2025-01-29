@@ -5,11 +5,17 @@ import {
   defaultButtonsBackgroundColor,
   defaultButtonsBorderThickness,
   defaultButtonsColor,
+  defaultGuestBubbleBorderColor,
+  defaultGuestBubbleBorderThickness,
   defaultGuestBubblesBackgroundColor,
   defaultGuestBubblesColor,
+  defaultHostBubbleBorderColor,
+  defaultHostBubbleBorderThickness,
   defaultHostBubblesBackgroundColor,
   defaultHostBubblesColor,
   defaultInputsBackgroundColor,
+  defaultInputsBorderColor,
+  defaultInputsBorderThickness,
   defaultInputsColor,
   defaultInputsPlaceholderColor,
   defaultOpacity,
@@ -117,6 +123,8 @@ export const ChatThemeSettings = ({
             opacity: defaultOpacity,
             blur: defaultBlur,
             border: {
+              thickness: defaultHostBubbleBorderThickness[typebot.version],
+              color: defaultHostBubbleBorderColor,
               roundeness: defaultRoundness,
             },
           }}
@@ -136,6 +144,8 @@ export const ChatThemeSettings = ({
             opacity: defaultOpacity,
             blur: defaultBlur,
             border: {
+              thickness: defaultGuestBubbleBorderThickness[typebot.version],
+              color: defaultGuestBubbleBorderColor,
               roundeness: defaultRoundness,
             },
           }}
@@ -176,6 +186,8 @@ export const ChatThemeSettings = ({
             opacity: defaultOpacity,
             blur: defaultBlur,
             border: {
+              thickness: defaultInputsBorderThickness[typebot.version],
+              color: defaultInputsBorderColor[typebot.version],
               roundeness: defaultRoundness,
             },
           }}

@@ -82,7 +82,7 @@ test.describe
         await page.click("text=Test");
         await expect(page.locator("iframe").nth(1)).toHaveAttribute(
           "src",
-          "https://www.youtube.com/embed/dQw4w9WgXcQ",
+          "https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1",
         );
       });
 
@@ -106,7 +106,7 @@ test.describe
         await page.click("text=Test");
         await expect(page.locator("iframe").nth(1)).toHaveAttribute(
           "src",
-          "https://player.vimeo.com/video/649301125",
+          "https://player.vimeo.com/video/649301125?autoplay=1",
         );
       });
     });

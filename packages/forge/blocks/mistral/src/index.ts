@@ -11,5 +11,5 @@ export const mistralBlock = createBlock({
   LightLogo: MistralLogo,
   auth,
   actions: [createChatCompletion, generateVariables],
-  docsUrl: "https://docs.typebot.io/forge/blocks/mistral",
+  docsUrl: "https://docs.typebot.io/editor/blocks/integrations/mistral",
 });

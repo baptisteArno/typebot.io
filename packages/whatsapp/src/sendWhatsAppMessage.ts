@@ -1,7 +1,8 @@
+import type { WhatsAppCredentials } from "@typebot.io/credentials/schemas";
 import { env } from "@typebot.io/env";
 import ky, { HTTPError } from "ky";
 import { WhatsAppError } from "./WhatsAppError";
-import type { WhatsAppCredentials, WhatsAppSendingMessage } from "./schemas";
+import type { WhatsAppSendingMessage } from "./schemas";
 
 type Props = {
   to: string;

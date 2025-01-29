@@ -1,4 +1,5 @@
 import { TRPCError } from "@trpc/server";
+import type { SessionState } from "@typebot.io/chat-session/schemas";
 import type { Prisma } from "@typebot.io/prisma/types";
 import type { SetVariableHistoryItem } from "@typebot.io/variables/schemas";
 import { continueBotFlow } from "./continueBotFlow";
@@ -8,7 +9,6 @@ import { getNextGroup } from "./getNextGroup";
 import { resetGlobals } from "./globals";
 import { upsertResult } from "./queries/upsertResult";
 import type { ContinueChatResponse, Message, StartFrom } from "./schemas/api";
-import type { SessionState } from "./schemas/chatSession";
 
 type ChatReply = ContinueChatResponse & {
   newSessionState: SessionState;

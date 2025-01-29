@@ -6,6 +6,7 @@ import {
   embedBaseUrls,
   embeddableVideoTypes,
 } from "@typebot.io/blocks-bubbles/video/constants";
+import { parseQueryParams } from "@typebot.io/blocks-bubbles/video/helpers";
 import type {
   EmbeddableVideoBubbleContentType,
   VideoBubbleBlock,
@@ -137,7 +138,8 @@ export const VideoBubble = (props: Props) => {
                       props.content?.type as EmbeddableVideoBubbleContentType
                     ]
                   }/${props.content?.id ?? ""}${
-                    props.content?.queryParamsStr ?? ""
+                    props.content?.queryParamsStr ??
+                    `?${parseQueryParams(props.content)}`
                   }`}
                   class={"w-full h-full"}
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

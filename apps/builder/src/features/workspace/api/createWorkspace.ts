@@ -70,10 +70,6 @@ export const createWorkspace = authenticatedProcedure
         name: "Workspace created",
         workspaceId: newWorkspace.id,
         userId: user.id,
-        data: {
-          name,
-          plan,
-        },
       },
     ]);
 

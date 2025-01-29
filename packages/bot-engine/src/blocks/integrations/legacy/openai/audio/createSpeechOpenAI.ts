@@ -4,13 +4,13 @@ import type {
   CreateSpeechOpenAIOptions,
   OpenAICredentials,
 } from "@typebot.io/blocks-integrations/openai/schema";
-import { decrypt } from "@typebot.io/lib/api/encryption/decrypt";
+import type { SessionState } from "@typebot.io/chat-session/schemas";
+import { decrypt } from "@typebot.io/credentials/decrypt";
+import { getCredentials } from "@typebot.io/credentials/getCredentials";
 import { uploadFileToBucket } from "@typebot.io/lib/s3/uploadFileToBucket";
 import { isNotEmpty } from "@typebot.io/lib/utils";
-import prisma from "@typebot.io/prisma";
 import { parseVariables } from "@typebot.io/variables/parseVariables";
 import OpenAI, { type ClientOptions } from "openai";
-import type { SessionState } from "../../../../../schemas/chatSession";
 import type { ExecuteIntegrationResponse } from "../../../../../types";
 import { updateVariablesInSession } from "../../../../../updateVariablesInSession";
 
@@ -49,11 +49,10 @@ export const createSpeechOpenAI = async (
       logs: [noCredentialsError],
     };
   }
-  const credentials = await prisma.credentials.findUnique({
-    where: {
-      id: options.credentialsId,
-    },
-  });
+  const credentials = await getCredentials(
+    options.credentialsId,
+    state.workspaceId,
+  );
   if (!credentials) {
     console.error("Could not find credentials in database");
     return { outgoingEdgeId, logs: [noCredentialsError] };

@@ -1,6 +1,6 @@
 import type { GoogleAnalyticsBlock } from "@typebot.io/blocks-integrations/googleAnalytics/schema";
+import type { SessionState } from "@typebot.io/chat-session/schemas";
 import { deepParseVariables } from "@typebot.io/variables/deepParseVariables";
-import type { SessionState } from "../../../../schemas/chatSession";
 import type { ExecuteIntegrationResponse } from "../../../../types";
 
 export const executeGoogleAnalyticsBlock = (

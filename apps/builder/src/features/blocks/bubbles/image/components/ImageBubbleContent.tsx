@@ -27,6 +27,9 @@ export const ImageBubbleContent = ({ block }: Props) => {
         pointerEvents="none"
         src={block.content?.url}
         alt="Group image"
+        maxH={
+          block.content?.url.startsWith("data:image/svg") ? "80px" : undefined
+        }
         rounded="md"
         objectFit="cover"
       />
