@@ -10754,6 +10754,40 @@
                               "workspaceId",
                               "name"
                             ]
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "data": {
+                                "type": "object",
+                                "properties": {
+                                  "apiKey": {
+                                    "type": "string"
+                                  },
+                                  "host": {
+                                    "type": "string"
+                                  }
+                                }
+                              },
+                              "type": {
+                                "type": "string",
+                                "enum": [
+                                  "posthog"
+                                ]
+                              },
+                              "workspaceId": {
+                                "type": "string"
+                              },
+                              "name": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "data",
+                              "type",
+                              "workspaceId",
+                              "name"
+                            ]
                           }
                         ]
                       },
@@ -10877,7 +10911,8 @@
                 "nocodb",
                 "segment",
                 "groq",
-                "zendesk"
+                "zendesk",
+                "posthog"
               ]
             }
           }
@@ -10916,7 +10951,8 @@
                               "nocodb",
                               "segment",
                               "groq",
-                              "zendesk"
+                              "zendesk",
+                              "posthog"
                             ]
                           },
                           "name": {
@@ -11032,14 +11068,10 @@
                     "name": {
                       "type": "string"
                     },
-                    "data": {},
-                    "type": {
-                      "type": "string"
-                    }
+                    "data": {}
                   },
                   "required": [
-                    "name",
-                    "type"
+                    "name"
                   ]
                 }
               }
@@ -11706,6 +11738,40 @@
                             "type": "string",
                             "enum": [
                               "zendesk"
+                            ]
+                          },
+                          "workspaceId": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "data",
+                          "type",
+                          "workspaceId"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "data": {
+                            "type": "object",
+                            "properties": {
+                              "apiKey": {
+                                "type": "string"
+                              },
+                              "host": {
+                                "type": "string"
+                              }
+                            }
+                          },
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "posthog"
                             ]
                           },
                           "workspaceId": {
@@ -16143,9 +16209,6 @@
           "title": {
             "type": "string"
           },
-          "generatingTitle": {
-            "type": "boolean"
-          },
           "graphCoordinates": {
             "type": "object",
             "properties": {
@@ -16772,6 +16835,9 @@
                     },
                     {
                       "$ref": "#/components/schemas/zendeskBlock"
+                    },
+                    {
+                      "$ref": "#/components/schemas/posthogBlock"
                     }
                   ],
                   "discriminator": {
@@ -16790,7 +16856,8 @@
                       "nocodb": "#/components/schemas/nocodbBlock",
                       "segment": "#/components/schemas/segmentBlock",
                       "groq": "#/components/schemas/groqBlock",
-                      "zendesk": "#/components/schemas/zendeskBlock"
+                      "zendesk": "#/components/schemas/zendeskBlock",
+                      "posthog": "#/components/schemas/posthogBlock"
                     }
                   }
                 }
@@ -21233,6 +21300,148 @@
           "type"
         ],
         "title": "Zendesk"
+      },
+      "posthogBlock": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "outgoingEdgeId": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "posthog"
+            ]
+          },
+          "options": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "credentialsId": {
+                    "type": "string"
+                  }
+                }
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "credentialsId": {
+                    "type": "string"
+                  },
+                  "action": {
+                    "type": "string",
+                    "enum": [
+                      "Capture"
+                    ]
+                  },
+                  "isAnonymous": {
+                    "type": "boolean"
+                  },
+                  "distinctId": {
+                    "type": "string"
+                  },
+                  "event": {
+                    "type": "string"
+                  },
+                  "properties": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "key": {
+                          "type": "string"
+                        },
+                        "value": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "personProperties": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "key": {
+                          "type": "string"
+                        },
+                        "value": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "groups": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string"
+                        },
+                        "key": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                },
+                "required": [
+                  "action"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "credentialsId": {
+                    "type": "string"
+                  },
+                  "action": {
+                    "type": "string",
+                    "enum": [
+                      "Identify Group"
+                    ]
+                  },
+                  "distinctId": {
+                    "type": "string"
+                  },
+                  "groupType": {
+                    "type": "string"
+                  },
+                  "groupKey": {
+                    "type": "string"
+                  },
+                  "properties": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "key": {
+                          "type": "string"
+                        },
+                        "value": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                },
+                "required": [
+                  "action"
+                ]
+              }
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "type"
+        ],
+        "title": "Posthog"
       },
       "error.BAD_REQUEST": {
         "type": "object",

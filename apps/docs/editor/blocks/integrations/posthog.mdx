@@ -1,0 +1,17 @@
+---
+title: PostHog
+---
+
+With the PostHog block, you can send events to PostHog and trigger your PostHog workflows. It uses the PostHog Node.js library to send server side events to PostHog, so that it works on non web browser devices.
+
+## How to find my `Project API Key` and `API Host`?
+
+To find your `Project API Key`, you need to go to your PostHog Settings page, in the General tab, you will find the Project API key.
+
+## Identify Group
+
+This action allows you to identify a group in PostHog. It requires the group `Type` and `Key`, and can optionally take `Distinct ID` and a set of `Properties` that will be added to the group profile.
+
+## Capture
+
+This action allows you to capture a custom event, or native PostHog events, such as a page view, a screen view, etc. It requires the `Event` name to be set. It can optionally take a `Distinct ID` set of `Properties` and `Person properties` to set properties to the associated person alongside the captured event, as well as associated groups information.

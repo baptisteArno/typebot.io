@@ -23,6 +23,6 @@
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*",
-    "@types/escape-html": "^1.0.4"
+    "@types/escape-html": "1.0.4"
   }
 }
