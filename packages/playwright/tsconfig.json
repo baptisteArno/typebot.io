@@ -1,36 +1,4 @@
 {
   "extends": "@typebot.io/tsconfig/base.json",
-  "include": ["src/**/*.ts"],
-  "compilerOptions": {
-    "outDir": "node_modules/.cache/tsconfig"
-  },
-  "references": [
-    {
-      "path": "../blocks/core"
-    },
-    {
-      "path": "../blocks/inputs"
-    },
-    {
-      "path": "../credentials"
-    },
-    {
-      "path": "../env"
-    },
-    {
-      "path": "../lib"
-    },
-    {
-      "path": "../prisma"
-    },
-    {
-      "path": "../schemas"
-    },
-    {
-      "path": "../typebot"
-    },
-    {
-      "path": "../workspaces"
-    }
-  ]
+  "include": ["src/**/*.ts"]
 }

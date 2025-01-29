@@ -1,19 +1,4 @@
 {
   "extends": "@typebot.io/tsconfig/react.json",
-  "include": ["src/**/*.ts", "src/**/*.tsx"],
-  "compilerOptions": { "outDir": "node_modules/.cache/tsconfig" },
-  "references": [
-    {
-      "path": "../../../ai"
-    },
-    {
-      "path": "../../../lib"
-    },
-    {
-      "path": "../../core"
-    },
-    {
-      "path": "../openai"
-    }
-  ]
+  "include": ["src/**/*.ts", "src/**/*.tsx"]
 }

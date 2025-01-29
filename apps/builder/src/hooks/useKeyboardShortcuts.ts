@@ -1,7 +1,8 @@
 import { isNotEmpty } from "@typebot.io/lib/utils";
 import { useEventListener } from "./useEventListener";
 
-const typebotWindowTagName = "TYPEBOT-BUBBLE";
+const typebotBotPreviewTagName = "TYPEBOT-STANDARD";
+const typebotSupportBotTagName = "TYPEBOT-BUBBLE";
 
 type Props = {
   undo?: () => void;
@@ -52,7 +53,13 @@ export const useKeyboardShortcuts = ({
       target?.role === "textbox" ||
       target instanceof HTMLTextAreaElement ||
       target instanceof HTMLInputElement;
-    if (isTyping || target?.tagName === typebotWindowTagName) return;
+    console.log(target?.tagName);
+    if (
+      isTyping ||
+      target?.tagName === typebotBotPreviewTagName ||
+      target?.tagName === typebotSupportBotTagName
+    )
+      return;
     if (undo && isUndoShortcut(event)) {
       event.preventDefault();
       undo();

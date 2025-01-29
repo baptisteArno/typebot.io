@@ -10,6 +10,7 @@
   line-height: 20px !important;
   font-weight: 600 !important;
   border-width: 1px !important;
+  border-color: #cecece !important;
   /* Make sure the badge is always displayed */
   opacity: 1 !important;
   visibility: visible !important;
@@ -20,8 +21,9 @@
   bottom: 20px !important;
   transition: background-color 0.2s ease-in-out !important;
   text-decoration: none !important;
+  transform: none !important;
 }
 
 #lite-badge:hover {
-  background-color: #f7f8ff !important;
+  background-color: #fefcfb !important;
 }
