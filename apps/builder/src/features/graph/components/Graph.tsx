@@ -30,7 +30,7 @@ import { SelectBox } from "./SelectBox";
 import { ZoomButtons } from "./ZoomButtons";
 
 const maxScale = 2;
-const minScale = 0.3;
+const minScale = 0.2;
 const zoomButtonsScaleBlock = 0.2;
 
 export const Graph = ({
