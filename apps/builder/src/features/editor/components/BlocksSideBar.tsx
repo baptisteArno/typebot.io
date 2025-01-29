@@ -52,7 +52,9 @@ export const BlocksSideBar = () => {
   const [isLocked, setIsLocked] = useState(
     localStorage.getItem(leftSidebarLockedStorageKey) === "true",
   );
-  const [isExtended, setIsExtended] = useState(true);
+  const [isExtended, setIsExtended] = useState(
+    localStorage.getItem(leftSidebarLockedStorageKey) === "true",
+  );
   const [searchInput, setSearchInput] = useState("");
 
   const closeSideBar = useDebouncedCallback(() => setIsExtended(false), 200);
