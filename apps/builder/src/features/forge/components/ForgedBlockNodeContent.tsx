@@ -52,7 +52,11 @@ export const ForgedBlockNodeContent = ({ block, indices }: Props) => {
   return (
     <Stack>
       <Text color={isConfigured ? "currentcolor" : "gray.500"} noOfLines={1}>
-        {isConfigured ? block.options.action : "Configure..."}
+        {isConfigured
+          ? actionDef?.parseBlockNodeLabel
+            ? actionDef.parseBlockNodeLabel(block.options)
+            : block.options.action
+          : "Configure..."}
       </Text>
       {typebot &&
         isConfigured &&
