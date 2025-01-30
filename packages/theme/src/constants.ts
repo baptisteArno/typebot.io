@@ -88,6 +88,7 @@ export const defaultButtonsBorderThickness = {
   "6.1": 1,
 } as const;
 export const defaultButtonsBorderColor = colors.orange.light["8"];
+export const defaultButtonsLayout = "wrap";
 
 // Inputs
 export const defaultInputsBackgroundColor = "#FFFFFF";
@@ -111,6 +112,9 @@ export const defaultHostAvatarIsEnabled = true;
 
 // Guest avatar
 export const defaultGuestAvatarIsEnabled = false;
+
+// Buttons input
+export const defaultButtonsInputLayout = "wrap";
 
 export const botCssVariableNames = {
   general: {
@@ -184,6 +188,7 @@ export const botCssVariableNames = {
       opacity: "--typebot-button-opacity",
       blur: "--typebot-button-blur",
       boxShadow: "--typebot-button-box-shadow",
+      flexDirection: "--typebot-buttons-input-flex-direction",
     },
     checkbox: {
       bgRgb: "--typebot-checkbox-bg-rgb",

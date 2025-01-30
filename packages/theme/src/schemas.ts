@@ -56,6 +56,11 @@ export const chatThemeSchema = z.object({
     .enum(["none", "medium", "large"])
     .optional()
     .describe("Deprecated, use `container.border.roundeness` instead"),
+  buttonsInput: z
+    .object({
+      layout: z.enum(["wrap", "vertical"]).optional(),
+    })
+    .optional(),
 });
 
 const backgroundSchema = z.object({

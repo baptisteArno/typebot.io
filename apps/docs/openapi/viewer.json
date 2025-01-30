@@ -11228,6 +11228,18 @@
                   "large"
                 ],
                 "description": "Deprecated, use `container.border.roundeness` instead"
+              },
+              "buttonsInput": {
+                "type": "object",
+                "properties": {
+                  "layout": {
+                    "type": "string",
+                    "enum": [
+                      "wrap",
+                      "vertical"
+                    ]
+                  }
+                }
               }
             }
           },

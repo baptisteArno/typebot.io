@@ -46,7 +46,7 @@ export const Buttons = (props: Props) => {
   };
 
   return (
-    <div class="flex flex-col gap-2 w-full">
+    <div class="flex flex-col items-end gap-2 w-full typebot-buttons-input">
       <Show when={props.options?.isSearchable}>
         <div class="flex items-end typebot-input w-full">
           <SearchInput
@@ -65,11 +65,12 @@ export const Buttons = (props: Props) => {
 
       <div
         class={
-          "flex flex-wrap justify-end gap-2" +
+          "flex justify-end gap-2" +
           (props.options?.isSearchable
             ? " overflow-y-scroll max-h-80 rounded-md"
             : "")
         }
+        data-slot="list"
       >
         <For each={filteredItems()}>
           {(item, index) => (

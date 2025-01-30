@@ -1,10 +1,12 @@
-import { Heading, Stack } from "@chakra-ui/react";
+import { DropdownList } from "@/components/DropdownList";
+import { FormLabel, HStack, Heading, Stack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import {
   defaultBlur,
   defaultButtonsBackgroundColor,
   defaultButtonsBorderThickness,
   defaultButtonsColor,
+  defaultButtonsInputLayout,
   defaultGuestBubbleBorderColor,
   defaultGuestBubbleBorderThickness,
   defaultGuestBubblesBackgroundColor,
@@ -79,6 +81,9 @@ export const ChatThemeSettings = ({
 
   const updateGuestAvatar = (guestAvatar: AvatarProps) =>
     onChatThemeChange({ ...chatTheme, guestAvatar });
+
+  const updateButtonsInputLayout = (layout: "wrap" | "vertical") =>
+    onChatThemeChange({ ...chatTheme, buttonsInput: { layout } });
 
   return (
     <Stack spacing={6}>
@@ -192,6 +197,24 @@ export const ChatThemeSettings = ({
             },
           }}
         />
+      </Stack>
+      <Stack borderWidth={1} rounded="md" p="4" spacing={4}>
+        <Heading fontSize="lg">Buttons input</Heading>
+        <HStack justify="space-between">
+          <FormLabel mb="0" mr="0">
+            Layout:
+          </FormLabel>
+          <HStack>
+            <DropdownList
+              currentItem={
+                chatTheme?.buttonsInput?.layout ?? defaultButtonsInputLayout
+              }
+              onItemSelect={updateButtonsInputLayout}
+              items={["wrap", "vertical"]}
+              size="sm"
+            />
+          </HStack>
+        </HStack>
       </Stack>
     </Stack>
   );

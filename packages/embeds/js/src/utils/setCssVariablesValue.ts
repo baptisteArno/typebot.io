@@ -11,6 +11,7 @@ import {
   defaultButtonsBorderColor,
   defaultButtonsBorderThickness,
   defaultButtonsColor,
+  defaultButtonsInputLayout,
   defaultContainerBackgroundColor,
   defaultContainerMaxHeight,
   defaultContainerMaxWidth,
@@ -192,6 +193,11 @@ const setChatTheme = ({
     typebotVersion,
   });
   setCheckbox(chatTheme?.container, generalBackground, documentStyle);
+  setButtonsInput({
+    buttonsInput: chatTheme?.buttonsInput,
+    documentStyle,
+    typebotVersion,
+  });
 };
 
 const setChatContainer = ({
@@ -505,6 +511,20 @@ const setButtons = ({
     buttons?.shadow,
     documentStyle,
     botCssVariableNames.chat.buttons.boxShadow,
+  );
+};
+
+const setButtonsInput = ({
+  buttonsInput,
+  documentStyle,
+}: {
+  buttonsInput: ChatTheme["buttonsInput"];
+} & CommonProps) => {
+  documentStyle.setProperty(
+    botCssVariableNames.chat.buttons.flexDirection,
+    (buttonsInput?.layout ?? defaultButtonsInputLayout) === "vertical"
+      ? "column"
+      : "unset",
   );
 };
 

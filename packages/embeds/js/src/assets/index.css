@@ -623,3 +623,12 @@ select option {
 [data-scope="progress"][data-part="circle-track"] {
   stroke: rgba(0, 0, 0, 0.5);
 }
+
+.typebot-buttons-input > [data-slot="list"] {
+  flex-direction: var(--typebot-buttons-input-flex-direction);
+  flex-wrap: wrap;
+}
+
+.typebot-buttons-input > .typebot-input {
+  max-width: 350px;
+}
