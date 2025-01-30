@@ -16,7 +16,10 @@ import { uploadFileToBucket } from "@typebot.io/lib/s3/uploadFileToBucket";
 import { isDefined } from "@typebot.io/lib/utils";
 import { WhatsAppError } from "./WhatsAppError";
 import { downloadMedia } from "./downloadMedia";
-import type { WhatsAppIncomingMessage } from "./schemas";
+import type {
+  WhatsAppIncomingMessage,
+  WhatsAppMessageReferral,
+} from "./schemas";
 import { sendChatReplyToWhatsApp } from "./sendChatReplyToWhatsApp";
 import { startWhatsAppSession } from "./startWhatsAppSession";
 
@@ -29,6 +32,7 @@ type Props = {
   phoneNumberId?: string;
   workspaceId?: string;
   contact?: NonNullable<SessionState["whatsApp"]>["contact"];
+  referral?: WhatsAppMessageReferral;
   callFrom?: "webhook";
 };
 
@@ -369,6 +373,7 @@ const resumeFlowAndSendWhatsAppMessages = async (props: {
   sessionId: string;
   reply: Message | undefined;
   contact?: NonNullable<SessionState["whatsApp"]>["contact"];
+  referral?: WhatsAppMessageReferral;
   credentials: WhatsAppCredentials["data"];
   isSessionExpired: boolean | null;
   credentialsId?: string;
@@ -422,12 +427,14 @@ const resumeFlow = ({
   isSessionExpired,
   reply,
   contact,
+  referral,
   credentials,
   credentialsId,
   workspaceId,
 }: {
   reply: Message | undefined;
   contact?: NonNullable<SessionState["whatsApp"]>["contact"];
+  referral?: WhatsAppMessageReferral;
   session: Pick<ChatSession, "state"> | null;
   credentials: WhatsAppCredentials["data"];
   isSessionExpired: boolean | null;
@@ -438,7 +445,18 @@ const resumeFlow = ({
     return continueBotFlow(reply, {
       version: 2,
       state: contact
-        ? { ...session.state, whatsApp: { contact } }
+        ? {
+            ...session.state,
+            whatsApp: {
+              contact,
+              referral: referral
+                ? {
+                    sourceId: referral.source_id,
+                    ctwaClickId: referral.ctwa_clid,
+                  }
+                : undefined,
+            },
+          }
         : session.state,
       textBubbleContentFormat: "richText",
     });
@@ -451,5 +469,6 @@ const resumeFlow = ({
     workspaceId,
     credentials: { ...credentials, id: credentialsId as string },
     contact,
+    referral,
   });
 };

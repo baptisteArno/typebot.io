@@ -30,8 +30,13 @@ export const receiveMessage = publicProcedure
     }),
   )
   .mutation(async ({ input: { entry, credentialsId, workspaceId } }) => {
-    const { receivedMessage, contactName, contactPhoneNumber, phoneNumberId } =
-      extractMessageDetails(entry);
+    const {
+      receivedMessage,
+      contactName,
+      contactPhoneNumber,
+      phoneNumberId,
+      referral,
+    } = extractMessageDetails(entry);
     if (!receivedMessage) return { message: "No message found" };
     if (!phoneNumberId) return { message: "No phone number found" };
 
@@ -46,6 +51,7 @@ export const receiveMessage = publicProcedure
           name: contactName,
           phoneNumber: contactPhoneNumber,
         },
+        referral,
       });
     } catch (err) {
       if (err instanceof WhatsAppError) {
@@ -72,5 +78,12 @@ const extractMessageDetails = (entry: WhatsAppWebhookRequestBody["entry"]) => {
     entry.at(0)?.changes.at(0)?.value?.messages?.at(0)?.from ?? "";
   const phoneNumberId = entry.at(0)?.changes.at(0)?.value
     .metadata.phone_number_id;
-  return { receivedMessage, contactName, contactPhoneNumber, phoneNumberId };
+  const referral = entry.at(0)?.changes.at(0)?.value.messages?.at(0)?.referral;
+  return {
+    receivedMessage,
+    contactName,
+    contactPhoneNumber,
+    phoneNumberId,
+    referral,
+  };
 };

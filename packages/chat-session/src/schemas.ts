@@ -87,6 +87,12 @@ const sessionStateSchemaV2 = z.object({
   isStreamEnabled: z.boolean().optional(),
   whatsApp: z
     .object({
+      referral: z
+        .object({
+          sourceId: z.string().optional(),
+          ctwaClickId: z.string().optional(),
+        })
+        .optional(),
       contact: z.object({
         name: z.string(),
         phoneNumber: z.string(),
