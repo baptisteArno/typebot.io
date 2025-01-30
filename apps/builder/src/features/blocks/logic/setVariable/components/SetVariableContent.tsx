@@ -94,6 +94,8 @@ const Expression = ({
     }
     case "Contact name":
     case "Phone number":
+    case "Referral Click ID":
+    case "Referral Source ID":
       return (
         <Text as="span">
           {variableName} ={" "}

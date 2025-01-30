@@ -244,6 +244,9 @@
                                   "$ref": "#/components/schemas/dateInput"
                                 },
                                 {
+                                  "$ref": "#/components/schemas/time"
+                                },
+                                {
                                   "$ref": "#/components/schemas/paymentInput"
                                 },
                                 {
@@ -268,6 +271,7 @@
                                   "url input": "#/components/schemas/url",
                                   "phone number input": "#/components/schemas/phoneNumberInput",
                                   "date input": "#/components/schemas/dateInput",
+                                  "time input": "#/components/schemas/time",
                                   "payment input": "#/components/schemas/paymentInput",
                                   "rating input": "#/components/schemas/rating",
                                   "choice input": "#/components/schemas/buttonsInputV5",
@@ -297,6 +301,9 @@
                                   "$ref": "#/components/schemas/dateInput"
                                 },
                                 {
+                                  "$ref": "#/components/schemas/time"
+                                },
+                                {
                                   "$ref": "#/components/schemas/paymentInput"
                                 },
                                 {
@@ -321,6 +328,7 @@
                                   "url input": "#/components/schemas/url",
                                   "phone number input": "#/components/schemas/phoneNumberInput",
                                   "date input": "#/components/schemas/dateInput",
+                                  "time input": "#/components/schemas/time",
                                   "payment input": "#/components/schemas/paymentInput",
                                   "rating input": "#/components/schemas/rating",
                                   "choice input": "#/components/schemas/buttonsInput",
@@ -759,6 +767,9 @@
                                   "$ref": "#/components/schemas/dateInput"
                                 },
                                 {
+                                  "$ref": "#/components/schemas/time"
+                                },
+                                {
                                   "$ref": "#/components/schemas/paymentInput"
                                 },
                                 {
@@ -783,6 +794,7 @@
                                   "url input": "#/components/schemas/url",
                                   "phone number input": "#/components/schemas/phoneNumberInput",
                                   "date input": "#/components/schemas/dateInput",
+                                  "time input": "#/components/schemas/time",
                                   "payment input": "#/components/schemas/paymentInput",
                                   "rating input": "#/components/schemas/rating",
                                   "choice input": "#/components/schemas/buttonsInputV5",
@@ -812,6 +824,9 @@
                                   "$ref": "#/components/schemas/dateInput"
                                 },
                                 {
+                                  "$ref": "#/components/schemas/time"
+                                },
+                                {
                                   "$ref": "#/components/schemas/paymentInput"
                                 },
                                 {
@@ -836,6 +851,7 @@
                                   "url input": "#/components/schemas/url",
                                   "phone number input": "#/components/schemas/phoneNumberInput",
                                   "date input": "#/components/schemas/dateInput",
+                                  "time input": "#/components/schemas/time",
                                   "payment input": "#/components/schemas/paymentInput",
                                   "rating input": "#/components/schemas/rating",
                                   "choice input": "#/components/schemas/buttonsInput",
@@ -1260,6 +1276,9 @@
                                   "$ref": "#/components/schemas/dateInput"
                                 },
                                 {
+                                  "$ref": "#/components/schemas/time"
+                                },
+                                {
                                   "$ref": "#/components/schemas/paymentInput"
                                 },
                                 {
@@ -1282,6 +1301,7 @@
                                   "url input": "#/components/schemas/url",
                                   "phone number input": "#/components/schemas/phoneNumberInput",
                                   "date input": "#/components/schemas/dateInput",
+                                  "time input": "#/components/schemas/time",
                                   "payment input": "#/components/schemas/paymentInput",
                                   "rating input": "#/components/schemas/rating",
                                   "file input": "#/components/schemas/fileInput",
@@ -1619,6 +1639,9 @@
                                   "$ref": "#/components/schemas/dateInput"
                                 },
                                 {
+                                  "$ref": "#/components/schemas/time"
+                                },
+                                {
                                   "$ref": "#/components/schemas/paymentInput"
                                 },
                                 {
@@ -1641,6 +1664,7 @@
                                   "url input": "#/components/schemas/url",
                                   "phone number input": "#/components/schemas/phoneNumberInput",
                                   "date input": "#/components/schemas/dateInput",
+                                  "time input": "#/components/schemas/time",
                                   "payment input": "#/components/schemas/paymentInput",
                                   "rating input": "#/components/schemas/rating",
                                   "file input": "#/components/schemas/fileInput",
@@ -2106,6 +2130,9 @@
                                   "$ref": "#/components/schemas/dateInput"
                                 },
                                 {
+                                  "$ref": "#/components/schemas/time"
+                                },
+                                {
                                   "$ref": "#/components/schemas/paymentInput"
                                 },
                                 {
@@ -2128,6 +2155,7 @@
                                   "url input": "#/components/schemas/url",
                                   "phone number input": "#/components/schemas/phoneNumberInput",
                                   "date input": "#/components/schemas/dateInput",
+                                  "time input": "#/components/schemas/time",
                                   "payment input": "#/components/schemas/paymentInput",
                                   "rating input": "#/components/schemas/rating",
                                   "file input": "#/components/schemas/fileInput",
@@ -2982,6 +3010,20 @@
                                             "from": {
                                               "type": "string"
                                             },
+                                            "timestamp": {
+                                              "type": "string"
+                                            },
+                                            "referral": {
+                                              "type": "object",
+                                              "properties": {
+                                                "ctwa_clid": {
+                                                  "type": "string"
+                                                },
+                                                "source_id": {
+                                                  "type": "string"
+                                                }
+                                              }
+                                            },
                                             "type": {
                                               "type": "string",
                                               "enum": [
@@ -2998,16 +3040,13 @@
                                               "required": [
                                                 "body"
                                               ]
-                                            },
-                                            "timestamp": {
-                                              "type": "string"
                                             }
                                           },
                                           "required": [
                                             "from",
+                                            "timestamp",
                                             "type",
-                                            "text",
-                                            "timestamp"
+                                            "text"
                                           ]
                                         },
                                         {
@@ -3015,6 +3054,20 @@
                                           "properties": {
                                             "from": {
                                               "type": "string"
+                                            },
+                                            "timestamp": {
+                                              "type": "string"
+                                            },
+                                            "referral": {
+                                              "type": "object",
+                                              "properties": {
+                                                "ctwa_clid": {
+                                                  "type": "string"
+                                                },
+                                                "source_id": {
+                                                  "type": "string"
+                                                }
+                                              }
                                             },
                                             "type": {
                                               "type": "string",
@@ -3036,16 +3089,13 @@
                                                 "text",
                                                 "payload"
                                               ]
-                                            },
-                                            "timestamp": {
-                                              "type": "string"
                                             }
                                           },
                                           "required": [
                                             "from",
+                                            "timestamp",
                                             "type",
-                                            "button",
-                                            "timestamp"
+                                            "button"
                                           ]
                                         },
                                         {
@@ -3053,6 +3103,20 @@
                                           "properties": {
                                             "from": {
                                               "type": "string"
+                                            },
+                                            "timestamp": {
+                                              "type": "string"
+                                            },
+                                            "referral": {
+                                              "type": "object",
+                                              "properties": {
+                                                "ctwa_clid": {
+                                                  "type": "string"
+                                                },
+                                                "source_id": {
+                                                  "type": "string"
+                                                }
+                                              }
                                             },
                                             "type": {
                                               "type": "string",
@@ -3082,16 +3146,13 @@
                                               "required": [
                                                 "button_reply"
                                               ]
-                                            },
-                                            "timestamp": {
-                                              "type": "string"
                                             }
                                           },
                                           "required": [
                                             "from",
+                                            "timestamp",
                                             "type",
-                                            "interactive",
-                                            "timestamp"
+                                            "interactive"
                                           ]
                                         },
                                         {
@@ -3099,6 +3160,20 @@
                                           "properties": {
                                             "from": {
                                               "type": "string"
+                                            },
+                                            "timestamp": {
+                                              "type": "string"
+                                            },
+                                            "referral": {
+                                              "type": "object",
+                                              "properties": {
+                                                "ctwa_clid": {
+                                                  "type": "string"
+                                                },
+                                                "source_id": {
+                                                  "type": "string"
+                                                }
+                                              }
                                             },
                                             "type": {
                                               "type": "string",
@@ -3119,16 +3194,13 @@
                                               "required": [
                                                 "id"
                                               ]
-                                            },
-                                            "timestamp": {
-                                              "type": "string"
                                             }
                                           },
                                           "required": [
                                             "from",
+                                            "timestamp",
                                             "type",
-                                            "image",
-                                            "timestamp"
+                                            "image"
                                           ]
                                         },
                                         {
@@ -3136,6 +3208,20 @@
                                           "properties": {
                                             "from": {
                                               "type": "string"
+                                            },
+                                            "timestamp": {
+                                              "type": "string"
+                                            },
+                                            "referral": {
+                                              "type": "object",
+                                              "properties": {
+                                                "ctwa_clid": {
+                                                  "type": "string"
+                                                },
+                                                "source_id": {
+                                                  "type": "string"
+                                                }
+                                              }
                                             },
                                             "type": {
                                               "type": "string",
@@ -3156,16 +3242,13 @@
                                               "required": [
                                                 "id"
                                               ]
-                                            },
-                                            "timestamp": {
-                                              "type": "string"
                                             }
                                           },
                                           "required": [
                                             "from",
+                                            "timestamp",
                                             "type",
-                                            "video",
-                                            "timestamp"
+                                            "video"
                                           ]
                                         },
                                         {
@@ -3173,6 +3256,20 @@
                                           "properties": {
                                             "from": {
                                               "type": "string"
+                                            },
+                                            "timestamp": {
+                                              "type": "string"
+                                            },
+                                            "referral": {
+                                              "type": "object",
+                                              "properties": {
+                                                "ctwa_clid": {
+                                                  "type": "string"
+                                                },
+                                                "source_id": {
+                                                  "type": "string"
+                                                }
+                                              }
                                             },
                                             "type": {
                                               "type": "string",
@@ -3190,16 +3287,13 @@
                                               "required": [
                                                 "id"
                                               ]
-                                            },
-                                            "timestamp": {
-                                              "type": "string"
                                             }
                                           },
                                           "required": [
                                             "from",
+                                            "timestamp",
                                             "type",
-                                            "audio",
-                                            "timestamp"
+                                            "audio"
                                           ]
                                         },
                                         {
@@ -3207,6 +3301,20 @@
                                           "properties": {
                                             "from": {
                                               "type": "string"
+                                            },
+                                            "timestamp": {
+                                              "type": "string"
+                                            },
+                                            "referral": {
+                                              "type": "object",
+                                              "properties": {
+                                                "ctwa_clid": {
+                                                  "type": "string"
+                                                },
+                                                "source_id": {
+                                                  "type": "string"
+                                                }
+                                              }
                                             },
                                             "type": {
                                               "type": "string",
@@ -3227,16 +3335,13 @@
                                               "required": [
                                                 "id"
                                               ]
-                                            },
-                                            "timestamp": {
-                                              "type": "string"
                                             }
                                           },
                                           "required": [
                                             "from",
+                                            "timestamp",
                                             "type",
-                                            "document",
-                                            "timestamp"
+                                            "document"
                                           ]
                                         },
                                         {
@@ -3244,6 +3349,20 @@
                                           "properties": {
                                             "from": {
                                               "type": "string"
+                                            },
+                                            "timestamp": {
+                                              "type": "string"
+                                            },
+                                            "referral": {
+                                              "type": "object",
+                                              "properties": {
+                                                "ctwa_clid": {
+                                                  "type": "string"
+                                                },
+                                                "source_id": {
+                                                  "type": "string"
+                                                }
+                                              }
                                             },
                                             "type": {
                                               "type": "string",
@@ -3265,16 +3384,13 @@
                                                 "latitude",
                                                 "longitude"
                                               ]
-                                            },
-                                            "timestamp": {
-                                              "type": "string"
                                             }
                                           },
                                           "required": [
                                             "from",
+                                            "timestamp",
                                             "type",
-                                            "location",
-                                            "timestamp"
+                                            "location"
                                           ]
                                         },
                                         {
@@ -3282,6 +3398,20 @@
                                           "properties": {
                                             "from": {
                                               "type": "string"
+                                            },
+                                            "timestamp": {
+                                              "type": "string"
+                                            },
+                                            "referral": {
+                                              "type": "object",
+                                              "properties": {
+                                                "ctwa_clid": {
+                                                  "type": "string"
+                                                },
+                                                "source_id": {
+                                                  "type": "string"
+                                                }
+                                              }
                                             },
                                             "type": {
                                               "type": "string",
@@ -3296,16 +3426,13 @@
                                                   "type": "string"
                                                 }
                                               }
-                                            },
-                                            "timestamp": {
-                                              "type": "string"
                                             }
                                           },
                                           "required": [
                                             "from",
+                                            "timestamp",
                                             "type",
-                                            "webhook",
-                                            "timestamp"
+                                            "webhook"
                                           ]
                                         }
                                       ]
@@ -3777,6 +3904,9 @@
                       "$ref": "#/components/schemas/dateInput"
                     },
                     {
+                      "$ref": "#/components/schemas/time"
+                    },
+                    {
                       "$ref": "#/components/schemas/paymentInput"
                     },
                     {
@@ -3801,6 +3931,7 @@
                       "url input": "#/components/schemas/url",
                       "phone number input": "#/components/schemas/phoneNumberInput",
                       "date input": "#/components/schemas/dateInput",
+                      "time input": "#/components/schemas/time",
                       "payment input": "#/components/schemas/paymentInput",
                       "rating input": "#/components/schemas/rating",
                       "choice input": "#/components/schemas/buttonsInput",
@@ -4900,7 +5031,8 @@
                 "type": "boolean"
               },
               "format": {
-                "type": "string"
+                "type": "string",
+                "description": "Format of the string is based on Unicode Technical Standard #35"
               },
               "min": {
                 "type": "string"
@@ -4916,6 +5048,48 @@
           "type"
         ],
         "title": "Date"
+      },
+      "time": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "outgoingEdgeId": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "time input"
+            ]
+          },
+          "options": {
+            "type": "object",
+            "properties": {
+              "variableId": {
+                "type": "string"
+              },
+              "labels": {
+                "type": "object",
+                "properties": {
+                  "button": {
+                    "type": "string"
+                  }
+                }
+              },
+              "format": {
+                "type": "string",
+                "description": "Format of the string is based on Unicode Technical Standard #35"
+              }
+            }
+          }
+        },
+        "required": [
+          "id",
+          "type"
+        ],
+        "title": "Time"
       },
       "paymentInput": {
         "type": "object",
@@ -5598,7 +5772,9 @@
                       "Random ID",
                       "Phone number",
                       "Contact name",
-                      "Transcript"
+                      "Transcript",
+                      "Referral Click ID",
+                      "Referral Source ID"
                     ]
                   }
                 },
@@ -11151,6 +11327,9 @@
                             "$ref": "#/components/schemas/dateInput"
                           },
                           {
+                            "$ref": "#/components/schemas/time"
+                          },
+                          {
                             "$ref": "#/components/schemas/paymentInput"
                           },
                           {
@@ -11175,6 +11354,7 @@
                             "url input": "#/components/schemas/url",
                             "phone number input": "#/components/schemas/phoneNumberInput",
                             "date input": "#/components/schemas/dateInput",
+                            "time input": "#/components/schemas/time",
                             "payment input": "#/components/schemas/paymentInput",
                             "rating input": "#/components/schemas/rating",
                             "choice input": "#/components/schemas/buttonsInputV5",
