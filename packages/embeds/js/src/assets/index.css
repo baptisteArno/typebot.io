@@ -361,7 +361,7 @@ pre {
   border-radius: var(--typebot-button-border-radius);
 }
 
-.typebot-date-input {
+.typebot-datetime-input {
   color-scheme: light;
   color: var(--typebot-input-color);
   background-color: var(--typebot-input-bg-color);

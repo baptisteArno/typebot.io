@@ -16,7 +16,12 @@ export const dateInputOptionsSchema = optionBaseSchema.merge(
       .optional(),
     hasTime: z.boolean().optional(),
     isRange: z.boolean().optional(),
-    format: z.string().optional(),
+    format: z
+      .string()
+      .optional()
+      .describe(
+        "Format of the string is based on Unicode Technical Standard #35",
+      ),
     min: z.string().optional(),
     max: z.string().optional(),
   }),

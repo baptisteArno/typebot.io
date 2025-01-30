@@ -39,6 +39,7 @@ import { validateNumber } from "./blocks/inputs/number/validateNumber";
 import { formatPhoneNumber } from "./blocks/inputs/phone/formatPhoneNumber";
 import { parsePictureChoicesReply } from "./blocks/inputs/pictureChoice/parsePictureChoicesReply";
 import { validateRatingReply } from "./blocks/inputs/rating/validateRatingReply";
+import { parseTime } from "./blocks/inputs/time/parseTime";
 import { saveDataInResponseVariableMapping } from "./blocks/integrations/httpRequest/saveDataInResponseVariableMapping";
 import { resumeChatCompletion } from "./blocks/integrations/legacy/openai/resumeChatCompletion";
 import { executeGroup, parseInput } from "./executeGroup";
@@ -679,6 +680,10 @@ const parseReply =
       case InputBlockType.DATE: {
         if (!reply || reply.type !== "text") return { status: "fail" };
         return parseDateReply(reply.text, block);
+      }
+      case InputBlockType.TIME: {
+        if (!reply || reply.type !== "text") return { status: "fail" };
+        return parseTime(reply.text, block.options);
       }
       case InputBlockType.FILE: {
         if (!reply)

@@ -9,6 +9,7 @@ import { phoneNumberInputBlockSchema } from "./phone/schema";
 import { pictureChoiceBlockSchemas } from "./pictureChoice/schema";
 import { ratingInputBlockSchema } from "./rating/schema";
 import { textInputSchema } from "./text/schema";
+import { timeInputSchema } from "./time/schema";
 import { urlInputSchema } from "./url/schema";
 
 const inputBlockSchemas = [
@@ -18,6 +19,7 @@ const inputBlockSchemas = [
   urlInputSchema,
   phoneNumberInputBlockSchema,
   dateInputSchema,
+  timeInputSchema,
   paymentInputSchema,
   ratingInputBlockSchema,
 ] as const;
