@@ -5,4 +5,5 @@ export const defaultTimeInputOptions = {
   labels: {
     button: defaultButtonLabel,
   },
+  format: "HH:mm",
 } as const satisfies TimeInputBlock["options"];

@@ -683,7 +683,7 @@ const parseReply =
       }
       case InputBlockType.TIME: {
         if (!reply || reply.type !== "text") return { status: "fail" };
-        return parseTime(reply.text);
+        return parseTime(reply.text, block.options);
       }
       case InputBlockType.FILE: {
         if (!reply)

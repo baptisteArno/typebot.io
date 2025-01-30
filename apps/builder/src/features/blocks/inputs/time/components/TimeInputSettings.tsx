@@ -22,8 +22,21 @@ export const TimeInputSettings = ({ options, onOptionsChange }: Props) => {
   const updateButtonLabel = (button: string) =>
     onOptionsChange({ ...options, labels: { button } });
 
+  const updateFormat = (format: string) => {
+    onOptionsChange({ ...options, format });
+  };
+
   return (
     <Stack spacing={4}>
+      <TextInput
+        label={t("blocks.inputs.date.settings.format.label")}
+        defaultValue={options?.format ?? defaultTimeInputOptions.format}
+        moreInfoTooltip={`
+					Unicode Technical Standard #35 (i.e. for 24h format: HH:mm, for AM/PM format: hh:mm a)
+				`}
+        placeholder={defaultTimeInputOptions.format}
+        onChange={updateFormat}
+      />
       <TextInput
         label={t("blocks.inputs.settings.button.label")}
         defaultValue={

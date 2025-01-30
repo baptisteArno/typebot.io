@@ -1,17 +1,22 @@
+import { defaultTimeInputOptions } from "@typebot.io/blocks-inputs/time/constants";
+import type { TimeInputOptions } from "@typebot.io/blocks-inputs/time/schema";
 import { parseDate } from "chrono-node";
+import { format } from "date-fns";
 import type { ParsedReply } from "../../../types";
 
-export const parseTime = (reply: string): ParsedReply => {
+export const parseTime = (
+  reply: string,
+  options?: TimeInputOptions,
+): ParsedReply => {
   const parsedDate = parseDate(reply);
 
   if (!parsedDate) return { status: "fail" };
 
   return {
     status: "success",
-    reply: `${parseWithZeroPrefix(parsedDate.getHours())}:${parseWithZeroPrefix(parsedDate.getMinutes())}`,
+    reply: format(
+      parsedDate,
+      options?.format ?? defaultTimeInputOptions.format,
+    ),
   };
-};
-
-const parseWithZeroPrefix = (value: number) => {
-  return value < 10 ? `0${value}` : value;
 };

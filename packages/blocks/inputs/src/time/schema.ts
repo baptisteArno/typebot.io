@@ -11,6 +11,12 @@ export const timeInputOptionsSchema = optionBaseSchema.extend({
       button: z.string().optional(),
     })
     .optional(),
+  format: z
+    .string()
+    .optional()
+    .describe(
+      "Format of the string is based on Unicode Technical Standard #35",
+    ),
 });
 
 export const timeInputSchema = blockBaseSchema
