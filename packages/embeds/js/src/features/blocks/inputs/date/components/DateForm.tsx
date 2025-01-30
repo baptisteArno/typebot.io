@@ -52,7 +52,7 @@ export const DateForm = (props: Props) => {
               </p>
             )}
             <input
-              class="focus:outline-none flex-1 w-full text-input typebot-date-input"
+              class="focus:outline-none flex-1 w-full text-input typebot-datetime-input"
               style={{
                 "min-height": "32px",
                 "min-width": "100px",
@@ -80,7 +80,7 @@ export const DateForm = (props: Props) => {
                 </p>
               )}
               <input
-                class="focus:outline-none flex-1 w-full text-input ml-2 typebot-date-input"
+                class="focus:outline-none flex-1 w-full text-input ml-2 typebot-datetime-input"
                 style={{
                   "min-height": "32px",
                   "min-width": "100px",

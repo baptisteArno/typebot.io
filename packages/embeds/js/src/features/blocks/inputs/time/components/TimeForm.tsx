@@ -52,7 +52,7 @@ export const TimeForm = (props: Props) => {
     >
       <div class={"flex typebot-input w-full"}>
         <input
-          class="focus:outline-none bg-transparent px-4 py-4 flex-1 w-full text-input typebot-time-input "
+          class="focus:outline-none bg-transparent px-4 py-4 flex-1 w-full text-input typebot-datetime-input "
           style={{
             "font-size": "16px",
           }}
