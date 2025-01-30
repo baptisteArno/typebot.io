@@ -5,6 +5,17 @@ import {
 import { z } from "@typebot.io/zod";
 import { rememberUserStorages } from "./constants";
 
+export const systemMessagesSchema = z.object({
+  invalidMessage: z.string().optional(),
+  botClosed: z.string().optional(),
+  popupBlockedDescription: z.string().optional(),
+  popupBlockedButtonLabel: z.string().optional(),
+  fileUploadError: z.string().optional(),
+  fileUploadSizeError: z.string().optional(),
+  whatsAppPictureChoiceSelectLabel: z.string().optional(),
+});
+export type SystemMessages = z.infer<typeof systemMessagesSchema>;
+
 const generalSettings = z.object({
   isBrandingEnabled: z.boolean().optional(),
   isTypingEmulationEnabled: z.boolean().optional(),
@@ -17,6 +28,7 @@ const generalSettings = z.object({
       storage: z.enum(rememberUserStorages).optional(),
     })
     .optional(),
+  systemMessages: systemMessagesSchema.optional(),
 });
 
 const typingEmulation = z.object({

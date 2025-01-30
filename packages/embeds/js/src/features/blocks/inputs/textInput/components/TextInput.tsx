@@ -153,10 +153,10 @@ export const TextInput = (props: Props) => {
                 )
               : undefined,
           },
-          onError: ({ description, title }) => {
+          context: props.context,
+          onError: ({ description }) => {
             toaster.create({
               description,
-              title,
             });
           },
         }),

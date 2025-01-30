@@ -23,7 +23,10 @@ import type {
 } from "@typebot.io/bot-engine/schemas/api";
 import { isDefined, isNotDefined, isNotEmpty } from "@typebot.io/lib/utils";
 import { isTypebotVersionAtLeastV6 } from "@typebot.io/schemas/helpers/isTypebotVersionAtLeastV6";
-import { defaultSettings } from "@typebot.io/settings/constants";
+import {
+  defaultSettings,
+  defaultSystemMessages,
+} from "@typebot.io/settings/constants";
 import {
   defaultFontFamily,
   defaultFontType,
@@ -109,7 +112,7 @@ export const Bot = (props: BotProps & { class?: string }) => {
         );
       }
       if (error.response.status === 400 || error.response.status === 403)
-        return setError(new Error("This bot is now closed."));
+        return setError(new Error((await error.response.json()).message));
       if (error.response.status === 404)
         return setError(new Error("The bot you're looking for doesn't exist."));
       return setError(
@@ -382,6 +385,20 @@ const BotContent = (props: BotContentProps) => {
             <Toast.CloseTrigger class="absolute right-2 top-2">
               <CloseIcon class="w-4 h-4" />
             </Toast.CloseTrigger>
+            <Show when={toast().meta?.link as string}>
+              {(link) => (
+                <a
+                  href={link()}
+                  target="_blank"
+                  class="py-1 mt-2 px-4 justify-center text-sm font-semibold text-white focus:outline-none flex items-center disabled:opacity-50 disabled:cursor-not-allowed disabled:brightness-100 filter hover:brightness-90 active:brightness-75 typebot-button no-underline"
+                  rel="noreferrer"
+                >
+                  {props.initialChatReply.typebot.settings.general
+                    ?.systemMessages?.popupBlockedButtonLabel ??
+                    defaultSystemMessages.popupBlockedButtonLabel}
+                </a>
+              )}
+            </Show>
           </Toast.Root>
         )}
       </Toaster>

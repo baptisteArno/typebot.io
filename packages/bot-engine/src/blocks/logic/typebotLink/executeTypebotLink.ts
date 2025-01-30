@@ -9,6 +9,7 @@ import {
 import { byId, isNotDefined } from "@typebot.io/lib/utils";
 import prisma from "@typebot.io/prisma";
 import { isTypebotVersionAtLeastV6 } from "@typebot.io/schemas/helpers/isTypebotVersionAtLeastV6";
+import { settingsSchema } from "@typebot.io/settings/schemas";
 import type { Edge } from "@typebot.io/typebot/schemas/edge";
 import type { Variable } from "@typebot.io/variables/schemas";
 import { addEdgeToTypebot, createPortalEdge } from "../../../addEdgeToTypebot";
@@ -240,9 +241,15 @@ const fetchTypebot = async (state: SessionState, typebotId: string) => {
         groups: true,
         variables: true,
         events: true,
+        settings: true,
       },
     });
-    return typebotInSessionStateSchema.parse(typebot);
+    if (!typebot) return null;
+    return typebotInSessionStateSchema.parse({
+      ...typebot,
+      systemMessages: settingsSchema.parse(typebot.settings).general
+        ?.systemMessages,
+    });
   }
   const typebot = await prisma.publicTypebot.findUnique({
     where: { typebotId },
@@ -253,12 +260,15 @@ const fetchTypebot = async (state: SessionState, typebotId: string) => {
       groups: true,
       variables: true,
       events: true,
+      settings: true,
     },
   });
   if (!typebot) return null;
   return typebotInSessionStateSchema.parse({
     ...typebot,
     id: typebotId,
+    systemMessages: settingsSchema.parse(typebot.settings).general
+      ?.systemMessages,
   });
 };
 

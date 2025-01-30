@@ -7,6 +7,7 @@ import { toaster } from "@/utils/toaster";
 import { defaultFileInputOptions } from "@typebot.io/blocks-inputs/file/constants";
 import type { FileInputBlock } from "@typebot.io/blocks-inputs/file/schema";
 import { isDefined } from "@typebot.io/lib/utils";
+import { defaultSystemMessages } from "@typebot.io/settings/constants";
 import { For, Match, Show, Switch, createSignal } from "solid-js";
 import { sanitizeNewFile } from "../helpers/sanitizeSelectedFiles";
 import { uploadFiles } from "../helpers/uploadFiles";
@@ -25,6 +26,10 @@ export const FileUploadForm = (props: Props) => {
   const [uploadProgressPercent, setUploadProgressPercent] = createSignal(0);
   const [isDraggingOver, setIsDraggingOver] = createSignal(false);
 
+  const fileUploadErrorMessage =
+    props.context.typebot.settings.general?.systemMessages?.fileUploadError ??
+    defaultSystemMessages.fileUploadError;
+
   const onNewFiles = (files: FileList) => {
     const newFiles = Array.from(files)
       .map((file) =>
@@ -37,9 +42,9 @@ export const FileUploadForm = (props: Props) => {
                 ? props.block.options.sizeLimit
                 : undefined,
           },
-          onError: ({ description, title }) =>
+          context: props.context,
+          onError: ({ description }) =>
             toaster.create({
-              title,
               description,
             }),
         }),
@@ -93,7 +98,7 @@ export const FileUploadForm = (props: Props) => {
         ],
       });
     toaster.create({
-      description: "An error occured while uploading the file",
+      description: fileUploadErrorMessage,
     });
   };
 
@@ -116,7 +121,7 @@ export const FileUploadForm = (props: Props) => {
     setUploadProgressPercent(0);
     if (urls.length !== files.length)
       return toaster.create({
-        description: "An error occured while uploading the files",
+        description: fileUploadErrorMessage,
       });
     props.onSubmit({
       type: "text",

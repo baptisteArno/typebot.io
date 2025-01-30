@@ -3,6 +3,11 @@ import { MoreInfoTooltip } from "@/components/MoreInfoTooltip";
 import { SwitchWithRelatedSettings } from "@/components/SwitchWithRelatedSettings";
 import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
 import {
+  Accordion,
+  AccordionButton,
+  AccordionIcon,
+  AccordionItem,
+  AccordionPanel,
   FormControl,
   FormLabel,
   HStack,
@@ -16,8 +21,9 @@ import {
   defaultSettings,
   rememberUserStorages,
 } from "@typebot.io/settings/constants";
-import type { Settings } from "@typebot.io/settings/schemas";
+import type { Settings, SystemMessages } from "@typebot.io/settings/schemas";
 import React from "react";
+import { SystemMessagesForm } from "./SystemMessagesForm";
 
 type Props = {
   generalSettings: Settings["general"] | undefined;
@@ -62,6 +68,13 @@ export const GeneralSettingsForm = ({
         storage,
       },
     });
+
+  const updateSystemMessages = (systemMessages: SystemMessages) => {
+    onGeneralSettingsChange({
+      ...generalSettings,
+      systemMessages,
+    });
+  };
 
   return (
     <Stack spacing={6}>
@@ -124,6 +137,20 @@ export const GeneralSettingsForm = ({
           ></DropdownList>
         </FormControl>
       </SwitchWithRelatedSettings>
+      <Accordion allowToggle>
+        <AccordionItem>
+          <AccordionButton justifyContent="space-between">
+            System messages
+            <AccordionIcon />
+          </AccordionButton>
+          <AccordionPanel>
+            <SystemMessagesForm
+              systemMessages={generalSettings?.systemMessages}
+              onSystemMessagesChange={updateSystemMessages}
+            />
+          </AccordionPanel>
+        </AccordionItem>
+      </Accordion>
     </Stack>
   );
 };

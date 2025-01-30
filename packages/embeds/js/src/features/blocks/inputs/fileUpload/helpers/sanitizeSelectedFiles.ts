@@ -1,4 +1,6 @@
+import type { BotContext } from "@/types";
 import { getRuntimeVariable } from "@typebot.io/env/getRuntimeVariable";
+import { defaultSystemMessages } from "@typebot.io/settings/constants";
 
 type Props = {
   newFile: File;
@@ -6,12 +8,14 @@ type Props = {
   params: {
     sizeLimit?: number;
   };
-  onError: (message: { title?: string; description: string }) => void;
+  context: BotContext;
+  onError: (message: { description: string }) => void;
 };
 export const sanitizeNewFile = ({
   newFile,
   existingFiles,
   params,
+  context,
   onError,
 }: Props): File | undefined => {
   const sizeLimit =
@@ -20,8 +24,12 @@ export const sanitizeNewFile = ({
 
   if (sizeLimit && newFile.size > Number(sizeLimit) * 1024 * 1024) {
     onError({
-      title: "File too large",
-      description: `${newFile.name} is larger than ${sizeLimit}MB`,
+      description: (
+        context.typebot.settings.general?.systemMessages?.fileUploadSizeError ??
+        defaultSystemMessages.fileUploadSizeError
+      )
+        .replace("[[file]]", newFile.name)
+        .replace("[[limit]]", sizeLimit),
     });
     return;
   }

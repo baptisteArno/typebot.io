@@ -4,7 +4,10 @@ import {
   answerInSessionStateSchemaV2,
   answerSchema,
 } from "@typebot.io/results/schemas/answers";
-import { settingsSchema } from "@typebot.io/settings/schemas";
+import {
+  settingsSchema,
+  systemMessagesSchema,
+} from "@typebot.io/settings/schemas";
 import { dynamicThemeSchema } from "@typebot.io/theme/schemas";
 import { preprocessTypebot } from "@typebot.io/typebot/preprocessTypebot";
 import {
@@ -25,15 +28,23 @@ const typebotInSessionStatePick = {
   edges: true,
   variables: true,
 } as const;
+const typebotInSessionExtension = {
+  systemMessages: systemMessagesSchema
+    .pick({
+      invalidMessage: true,
+      whatsAppPictureChoiceSelectLabel: true,
+    })
+    .optional(),
+};
 
-const typebotV5InSessionStateSchema = publicTypebotSchemaV5.pick(
-  typebotInSessionStatePick,
-);
+const typebotV5InSessionStateSchema = publicTypebotSchemaV5
+  .pick(typebotInSessionStatePick)
+  .extend(typebotInSessionExtension);
 export type TypebotInSessionV5 = z.infer<typeof typebotV5InSessionStateSchema>;
 
-const typebotV6InSessionStateSchema = publicTypebotSchemaV6.pick(
-  typebotInSessionStatePick,
-);
+const typebotV6InSessionStateSchema = publicTypebotSchemaV6
+  .pick(typebotInSessionStatePick)
+  .extend(typebotInSessionExtension);
 export type TypebotInSessionV6 = z.infer<typeof typebotV6InSessionStateSchema>;
 
 export const typebotInSessionStateSchema = z.preprocess(

@@ -14,6 +14,7 @@ import {
 import { getAnswerContent } from "@/utils/getAnswerContent";
 import { persist } from "@/utils/persist";
 import { setStreamingMessage } from "@/utils/streamingMessageSignal";
+import { toaster } from "@/utils/toaster";
 import type { InputBlock } from "@typebot.io/blocks-inputs/schema";
 import type {
   ChatLog,
@@ -23,6 +24,7 @@ import type {
 } from "@typebot.io/bot-engine/schemas/api";
 import type { ClientSideAction } from "@typebot.io/bot-engine/schemas/clientSideAction";
 import { isNotDefined } from "@typebot.io/lib/utils";
+import { defaultSystemMessages } from "@typebot.io/settings/constants";
 import type { Theme } from "@typebot.io/theme/schemas";
 import { HTTPError } from "ky";
 import {
@@ -112,7 +114,6 @@ export const ConversationContainer = (props: Props) => {
   >(props.initialChatReply.dynamicTheme);
   const [theme, setTheme] = createSignal(props.initialChatReply.typebot.theme);
   const [isSending, setIsSending] = createSignal(false);
-  const [blockedPopupUrl, setBlockedPopupUrl] = createSignal<string>();
   const [hasError, setHasError] = createSignal(false);
 
   onMount(() => {
@@ -321,8 +322,17 @@ export const ConversationContainer = (props: Props) => {
         );
         return;
       }
-      if (response && "blockedPopupUrl" in response)
-        setBlockedPopupUrl(response.blockedPopupUrl);
+      if (response && "blockedPopupUrl" in response) {
+        toaster.create({
+          description:
+            props.context.typebot.settings.general?.systemMessages
+              ?.popupBlockedDescription ??
+            defaultSystemMessages.popupBlockedDescription,
+          meta: {
+            link: response.blockedPopupUrl,
+          },
+        });
+      }
       if (response && "scriptCallbackMessage" in response)
         props.onScriptExecutionSuccess?.(response.scriptCallbackMessage);
     }
@@ -371,16 +381,6 @@ export const ConversationContainer = (props: Props) => {
       </For>
       <Show when={isSending()}>
         <LoadingChunk theme={theme()} />
-      </Show>
-      <Show when={blockedPopupUrl()} keyed>
-        {(blockedPopupUrl) => (
-          <div class="flex justify-end">
-            <PopupBlockedToast
-              url={blockedPopupUrl}
-              onLinkClick={() => setBlockedPopupUrl(undefined)}
-            />
-          </div>
-        )}
       </Show>
       <BottomSpacer />
     </div>

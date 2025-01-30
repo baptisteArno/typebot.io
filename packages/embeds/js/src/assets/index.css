@@ -575,7 +575,12 @@ select option {
     var(--typebot-input-opacity)
   );
   box-shadow: var(--typebot-input-box-shadow);
-  max-width: 60vw;
+  border-width: var(--typebot-input-border-width);
+  border-color: rgba(
+    var(--typebot-input-border-rgb),
+    var(--typebot-input-border-opacity)
+  );
+  max-width: 350px;
   @apply flex flex-col pl-4 py-4 pr-8 gap-1;
 }
 

@@ -15,7 +15,11 @@ import type {
 import { env } from "@typebot.io/env";
 import { isDefined, isNotEmpty, omit } from "@typebot.io/lib/utils";
 import type { Prisma } from "@typebot.io/prisma/types";
-import { defaultSettings } from "@typebot.io/settings/constants";
+import {
+  defaultSettings,
+  defaultSystemMessages,
+} from "@typebot.io/settings/constants";
+import { settingsSchema } from "@typebot.io/settings/schemas";
 import {
   defaultGuestAvatarIsEnabled,
   defaultHostAvatarIsEnabled,
@@ -321,13 +325,18 @@ const getTypebot = async (startParams: StartParams): Promise<StartTypebot> => {
     (typebotQuery.typebot.workspace.isQuarantined ||
       typebotQuery.typebot.workspace.isSuspended);
 
-  if (
-    ("isClosed" in parsedTypebot && parsedTypebot.isClosed) ||
-    isQuarantinedOrSuspended
-  )
+  if (isQuarantinedOrSuspended)
     throw new TRPCError({
       code: "BAD_REQUEST",
-      message: "Typebot is closed",
+      message: defaultSystemMessages.botClosed,
+    });
+
+  if ("isClosed" in parsedTypebot && parsedTypebot.isClosed)
+    throw new TRPCError({
+      code: "BAD_REQUEST",
+      message:
+        settingsSchema.parse(parsedTypebot.settings).general?.systemMessages
+          ?.botClosed ?? defaultSystemMessages.botClosed,
     });
 
   return startTypebotSchema.parse(parsedTypebot);
@@ -478,6 +487,7 @@ const convertStartTypebotToTypebotInSession = (
       edges: typebot.edges,
       variables: startVariables,
       events: typebot.events,
+      systemMessages: typebot.settings.general?.systemMessages,
     };
   }
   return {
@@ -487,6 +497,7 @@ const convertStartTypebotToTypebotInSession = (
     edges: typebot.edges,
     variables: startVariables,
     events: typebot.events,
+    systemMessages: typebot.settings.general?.systemMessages,
   } as TypebotInSessionV5; // I am not sure why, this needs to be casted, the discrimination does not work here
 };
 

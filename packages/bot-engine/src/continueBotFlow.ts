@@ -14,7 +14,10 @@ import { defaultPictureChoiceOptions } from "@typebot.io/blocks-inputs/pictureCh
 import type { InputBlock } from "@typebot.io/blocks-inputs/schema";
 import { IntegrationBlockType } from "@typebot.io/blocks-integrations/constants";
 import { LogicBlockType } from "@typebot.io/blocks-logic/constants";
-import type { SessionState } from "@typebot.io/chat-session/schemas";
+import type {
+  SessionState,
+  TypebotInSession,
+} from "@typebot.io/chat-session/schemas";
 import { env } from "@typebot.io/env";
 import { forgedBlocks } from "@typebot.io/forge-repository/definitions";
 import type { ForgedBlock } from "@typebot.io/forge-repository/schemas";
@@ -25,6 +28,7 @@ import { stringifyError } from "@typebot.io/lib/stringifyError";
 import { byId, isDefined } from "@typebot.io/lib/utils";
 import type { Prisma } from "@typebot.io/prisma/types";
 import type { AnswerInSessionState } from "@typebot.io/results/schemas/answers";
+import { defaultSystemMessages } from "@typebot.io/settings/constants";
 import { parseVariables } from "@typebot.io/variables/parseVariables";
 import type {
   SetVariableHistoryItem,
@@ -478,7 +482,10 @@ const parseRetryMessage =
         ? parseVariables(state.typebotsQueue[0].typebot.variables)(
             block.options.retryMessageContent,
           )
-        : parseDefaultRetryMessage(block);
+        : parseDefaultRetryMessage({
+            block,
+            currentTypebot: state.typebotsQueue[0].typebot,
+          });
     return {
       messages: [
         {
@@ -500,14 +507,24 @@ const parseRetryMessage =
     };
   };
 
-const parseDefaultRetryMessage = (block: InputBlock): string => {
+const parseDefaultRetryMessage = ({
+  block,
+  currentTypebot,
+}: {
+  block: InputBlock;
+  currentTypebot: TypebotInSession;
+}): string => {
   switch (block.type) {
     case InputBlockType.EMAIL:
       return defaultEmailInputOptions.retryMessageContent;
     case InputBlockType.PAYMENT:
       return defaultPaymentInputOptions.retryMessageContent;
     default:
-      return "Invalid message. Please, try again.";
+      return currentTypebot.systemMessages?.invalidMessage
+        ? parseVariables(currentTypebot.variables)(
+            currentTypebot.systemMessages.invalidMessage,
+          )
+        : defaultSystemMessages.invalidMessage;
   }
 };
 

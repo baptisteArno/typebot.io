@@ -107,6 +107,7 @@ export const sendChatReplyToWhatsApp = async ({
     const inputWhatsAppMessages = convertInputToWhatsAppMessages(
       input,
       messages.at(-1),
+      state.typebotsQueue[0].typebot.systemMessages,
     );
     for (const message of inputWhatsAppMessages) {
       const lastSentMessageIsMedia = ["audio", "video", "image"].includes(

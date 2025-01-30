@@ -1,3 +1,5 @@
+import type { Settings } from "./schemas";
+
 export const defaultSettings = {
   general: {
     isInputPrefillEnabled: false,
@@ -24,6 +26,16 @@ export const defaultSettings = {
     imageUrl: (viewerBaseUrl: string) => viewerBaseUrl + "/site-preview.png",
   },
 } as const;
+
+export const defaultSystemMessages = {
+  invalidMessage: "Invalid message. Please, try again.",
+  botClosed: "This bot is now closed",
+  popupBlockedDescription: "Popup blocked",
+  popupBlockedButtonLabel: "Continue in new tab",
+  fileUploadError: "An error occured while uploading the files",
+  fileUploadSizeError: "{{file}} is larger than {{limit}}MB",
+  whatsAppPictureChoiceSelectLabel: "Select",
+} as const satisfies NonNullable<Settings["general"]>["systemMessages"];
 
 export const defaultSessionExpiryTimeout = 4;
 
