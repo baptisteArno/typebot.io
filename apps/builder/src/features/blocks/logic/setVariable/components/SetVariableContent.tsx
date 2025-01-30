@@ -1,5 +1,6 @@
+import { SetVariableLabel } from "@/components/SetVariableLabel";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
-import { Tag, Text } from "@chakra-ui/react";
+import { Stack, Tag, Text } from "@chakra-ui/react";
 import type { SetVariableBlock } from "@typebot.io/blocks-logic/setVariable/schema";
 import { byId } from "@typebot.io/lib/utils";
 import type { Variable } from "@typebot.io/variables/schemas";
@@ -34,9 +35,17 @@ const Expression = ({
     case "Custom":
     case undefined:
       return (
-        <Text as="span">
-          {variableName} = {options?.expressionToEvaluate}
-        </Text>
+        <Stack>
+          <Text as="span">
+            {variableName} = {options?.expressionToEvaluate}
+          </Text>
+          {options?.saveErrorInVariableId && (
+            <SetVariableLabel
+              variables={variables}
+              variableId={options?.saveErrorInVariableId}
+            />
+          )}
+        </Stack>
       );
     case "Map item with same index": {
       const baseItemVariable = variables.find(

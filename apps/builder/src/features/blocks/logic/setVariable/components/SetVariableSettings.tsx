@@ -199,6 +199,14 @@ const SetVariableValue = ({
     });
   };
 
+  const updateSaveErrorInVariableId = (variable?: Pick<Variable, "id">) => {
+    if (options?.type && options.type !== "Custom") return;
+    onOptionsChange({
+      ...options,
+      saveErrorInVariableId: variable?.id,
+    });
+  };
+
   switch (options?.type) {
     case "Custom":
     case undefined:
@@ -225,11 +233,18 @@ const SetVariableValue = ({
               onSelect={updateIsCode}
             />
             {options?.isCode ? (
-              <CodeEditor
-                defaultValue={options?.expressionToEvaluate ?? ""}
-                onChange={updateExpression}
-                lang="javascript"
-              />
+              <>
+                <CodeEditor
+                  defaultValue={options?.expressionToEvaluate ?? ""}
+                  onChange={updateExpression}
+                  lang="javascript"
+                />
+                <VariableSearchInput
+                  label="Save error"
+                  initialVariableId={options.saveErrorInVariableId}
+                  onSelectVariable={updateSaveErrorInVariableId}
+                />
+              </>
             ) : (
               <Textarea
                 defaultValue={options?.expressionToEvaluate ?? ""}

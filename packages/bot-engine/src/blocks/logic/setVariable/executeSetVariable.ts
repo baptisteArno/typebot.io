@@ -80,10 +80,24 @@ export const executeSetVariable = async (
     ...existingVariable,
     value,
   };
+  const saveInErrorVariable =
+    (block.options.type === "Custom" || !block.options.type) &&
+    block.options.isCode &&
+    block.options.saveErrorInVariableId
+      ? variables.find(byId(block.options.saveErrorInVariableId))
+      : undefined;
   const { newSetVariableHistory, updatedState } = updateVariablesInSession({
     state,
     newVariables: [
       ...parseColateralVariableChangeIfAny({ state, options: block.options }),
+      ...(saveInErrorVariable
+        ? [
+            {
+              ...saveInErrorVariable,
+              value: error,
+            },
+          ]
+        : []),
       {
         ...newVariable,
         isSessionVariable: sessionOnlySetVariableOptions.includes(

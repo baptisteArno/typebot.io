@@ -26,12 +26,14 @@ const initialSetVariableOptionsSchema = baseOptions.extend({
   type: z.undefined(),
   expressionToEvaluate: z.string().optional(),
   isCode: z.boolean().optional(),
+  saveErrorInVariableId: z.string().optional(),
 });
 
 const customSetVariableOptionsSchema = baseOptions.extend({
   type: z.literal("Custom"),
   expressionToEvaluate: z.string().optional(),
   isCode: z.boolean().optional(),
+  saveErrorInVariableId: z.string().optional(),
 });
 
 const mapListItemsOptionsSchema = baseOptions.extend({
