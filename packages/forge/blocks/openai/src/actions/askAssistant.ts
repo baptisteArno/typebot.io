@@ -57,6 +57,11 @@ export const askAssistant = createAction({
           }),
         )
         .layout({ accordion: "Functions", itemLabel: "function" }),
+      additionalInstructions: option.string.layout({
+        label: "Additional Instructions",
+        inputType: "textarea",
+        accordion: "Advanced settings",
+      }),
       responseMapping: option
         .saveResponseArray(["Message", "Thread ID"] as const, {
           item: { hiddenItems: ["Thread ID"] },
@@ -158,6 +163,7 @@ export const askAssistant = createAction({
           variables,
           functions: options.functions,
           responseMapping: options.responseMapping,
+          additionalInstructions: options.additionalInstructions,
         }),
       }),
     },
@@ -172,6 +178,7 @@ export const askAssistant = createAction({
         threadId,
         threadVariableId,
         functions,
+        additionalInstructions,
       },
       variables,
       logs,
@@ -187,6 +194,7 @@ export const askAssistant = createAction({
         variables,
         threadId,
         functions,
+        additionalInstructions,
       });
 
       if (!stream) return;
@@ -226,6 +234,7 @@ const createAssistantStream = async ({
   threadId,
   functions,
   responseMapping,
+  additionalInstructions,
 }: {
   apiKey?: string;
   assistantId?: string;
@@ -235,6 +244,7 @@ const createAssistantStream = async ({
   threadVariableId?: string;
   threadId?: string;
   functions?: { name?: string; code?: string }[];
+  additionalInstructions?: string;
   responseMapping?: {
     item?: "Thread ID" | "Message" | undefined;
     variableId?: string | undefined;
@@ -310,6 +320,7 @@ const createAssistantStream = async ({
       if (!currentThreadId) return;
       const runStream = openai.beta.threads.runs.stream(currentThreadId, {
         assistant_id: assistantId,
+        additional_instructions: additionalInstructions,
       });
 
       let runResult = await forwardStream(runStream);
