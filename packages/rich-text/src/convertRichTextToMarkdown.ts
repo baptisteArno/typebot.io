@@ -1,6 +1,21 @@
-import type { TElement } from "@udecode/plate-common";
+import type { TElement, TText } from "@udecode/plate-common";
 import { defaultNodeTypes } from "./serializer/ast-types";
 import serialize from "./serializer/serialize";
+
+const serializeNode = (
+  acc: string[],
+  node: TElement | TText,
+  options?: { flavour?: "common" | "whatsapp" },
+) => {
+  const serializedElement = serialize(node, {
+    nodeTypes: defaultNodeTypes,
+    flavour: options?.flavour,
+  });
+  if (!serializedElement || serializedElement === "<br>\n\n") {
+    return [...acc, "\n"];
+  }
+  return [...acc, serializedElement];
+};
 
 export const convertRichTextToMarkdown = (
   richText: TElement[],
@@ -12,23 +27,11 @@ export const convertRichTextToMarkdown = (
         return [
           ...acc,
           ...node.children.reduce<string[]>((acc, node) => {
-            const serializedElement = serialize(node, {
-              nodeTypes: defaultNodeTypes,
-              flavour: options?.flavour,
-            }) as string;
-            if (!serializedElement || serializedElement === "<br>\n\n")
-              return [...acc, "\n"];
-            return [...acc, serializedElement];
+            return serializeNode(acc, node, options);
           }, []),
         ];
       }
-      const serializedElement = serialize(node, {
-        nodeTypes: defaultNodeTypes,
-        flavour: options?.flavour,
-      });
-      if (!serializedElement || serializedElement === "<br>\n\n")
-        return [...acc, "\n"];
-      return [...acc, serializedElement];
+      return serializeNode(acc, node, options);
     }, [])
     .join("");
 
