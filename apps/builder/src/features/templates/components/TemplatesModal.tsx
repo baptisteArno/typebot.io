@@ -1,3 +1,4 @@
+import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { useToast } from "@/hooks/useToast";
 import {
   Button,
@@ -43,18 +44,24 @@ export const TemplatesModal = ({
   );
   const [isFirstTemplateLoaded, setIsFirstTemplateLoaded] = useState(false);
   const { showToast } = useToast();
+  const { workspace } = useWorkspace();
 
   const fetchTemplate = useCallback(
     async (template: TemplateProps) => {
+      if (!workspace?.id) return;
       setSelectedTemplate(template);
       const { data, error } = await sendRequest(
         `/templates/${template.fileName}`,
       );
       if (error)
         return showToast({ title: error.name, description: error.message });
-      setTypebot({ ...(data as Typebot), name: template.name });
+      setTypebot({
+        ...(data as Typebot),
+        name: template.name,
+        workspaceId: workspace.id,
+      });
     },
-    [showToast],
+    [showToast, workspace?.id],
   );
 
   useEffect(() => {
