@@ -240,6 +240,13 @@ export const getAuthOptions = ({
         const userGroups = await getUserGroups(account);
         return checkHasGroups(userGroups, requiredGroups);
       }
+      if (!isNewUser)
+        await trackEvents([
+          {
+            name: "User logged in",
+            userId: user.id,
+          },
+        ]);
       return true;
     },
   },
@@ -284,12 +291,6 @@ const updateLastActivityDate = async (user: Prisma.User) => {
       where: { id: user.id },
       data: { lastActivityAt: new Date() },
     });
-    await trackEvents([
-      {
-        name: "User logged in",
-        userId: user.id,
-      },
-    ]);
   }
 };
 
