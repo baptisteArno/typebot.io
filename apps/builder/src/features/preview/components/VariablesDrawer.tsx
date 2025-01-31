@@ -34,6 +34,7 @@ import { isNotEmpty } from "@typebot.io/lib/utils";
 import type { Variable } from "@typebot.io/variables/schemas";
 import { useDrag } from "@use-gesture/react";
 import { type FormEvent, useState } from "react";
+import { toast } from "sonner";
 import { headerHeight } from "../../editor/constants";
 import { useTypebot } from "../../editor/providers/TypebotProvider";
 import { ResizeHandle } from "./ResizeHandle";
@@ -52,7 +53,6 @@ export const VariablesDrawer = ({ onClose }: Props) => {
       ? v.name.toLowerCase().includes(searchValue.toLowerCase())
       : true,
   );
-  const [isVariableCreated, setIsVariableCreated] = useState(false);
 
   const useResizeHandleDrag = useDrag(
     (state) => {
@@ -65,8 +65,7 @@ export const VariablesDrawer = ({ onClose }: Props) => {
 
   const handleCreateSubmit = (e: FormEvent) => {
     e.preventDefault();
-    setIsVariableCreated(true);
-    setTimeout(() => setIsVariableCreated(false), 500);
+    toast.success("Variable created");
     setSearchValue("");
     createVariable({
       id: createId(),
@@ -120,20 +119,19 @@ export const VariablesDrawer = ({ onClose }: Props) => {
           />
           <SlideFade
             in={
-              isVariableCreated ||
-              (filteredVariables &&
-                !filteredVariables.some((v) => v.name === searchValue))
+              filteredVariables &&
+              searchValue.length > 0 &&
+              !filteredVariables.some((v) => v.name === searchValue)
             }
             unmountOnExit
             offsetY={0}
             offsetX={10}
           >
             <IconButton
-              isDisabled={isVariableCreated}
-              icon={isVariableCreated ? <CheckIcon /> : <PlusIcon />}
+              icon={<PlusIcon />}
               aria-label="Create"
               type="submit"
-              colorScheme={isVariableCreated ? "green" : "blue"}
+              colorScheme="orange"
               flexShrink={0}
             />
           </SlideFade>
