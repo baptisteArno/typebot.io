@@ -18,7 +18,6 @@ export const excludedModelsFromImageUrlSupport = ["gpt-4-turbo-preview"];
 export const defaultOpenAIOptions = {
   model: "gpt-4o-mini",
   voiceModel: "tts-1",
-  temperature: 1,
 } as const;
 
 export const maxToolCalls = 10;

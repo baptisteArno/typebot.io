@@ -1,6 +1,6 @@
 import type { ClientSideActionContext } from "@/types";
 import { guessApiHost } from "@/utils/guessApiHost";
-import { readDataStream } from "@ai-sdk/ui-utils";
+import { processDataStream } from "@ai-sdk/ui-utils";
 import { isNotEmpty } from "@typebot.io/lib/utils";
 import { createUniqueId } from "solid-js";
 
@@ -64,18 +64,18 @@ export const streamChat =
 
       let message = "";
 
-      const reader = res.body.getReader();
-
       const id = createUniqueId();
 
-      for await (const { type, value } of readDataStream(reader, {
-        isAborted: () => abortController === null,
-      })) {
-        if (type === "text") {
-          message += value;
+      await processDataStream({
+        stream: res.body,
+        onTextPart: async (text) => {
+          message += text;
           if (onMessageStream) onMessageStream({ id, message });
-        }
-      }
+        },
+        onErrorPart: (error) => {
+          console.error("Received error part from streaming", error);
+        },
+      });
 
       abortController = null;
 

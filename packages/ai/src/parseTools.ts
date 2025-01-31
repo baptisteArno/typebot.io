@@ -4,7 +4,7 @@ import { isNotEmpty } from "@typebot.io/lib/utils";
 import { executeFunction } from "@typebot.io/variables/executeFunction";
 import type { Variable } from "@typebot.io/variables/schemas";
 import { z } from "@typebot.io/zod";
-import type { CoreTool } from "ai";
+import type { Tool } from "ai";
 import type { Tools } from "./schemas";
 
 export const parseTools = ({
@@ -14,9 +14,9 @@ export const parseTools = ({
   tools: Tools;
   variables: VariableStore;
   onNewVariabes?: (newVariables: Variable[]) => void;
-}): Record<string, CoreTool> => {
+}): Record<string, Tool> => {
   if (!tools?.length) return {};
-  return tools.reduce<Record<string, CoreTool>>((acc, tool) => {
+  return tools.reduce<Record<string, Tool>>((acc, tool) => {
     if (!tool.code || !tool.name) return acc;
     acc[tool.name] = {
       description: tool.description,
@@ -31,15 +31,15 @@ export const parseTools = ({
           variables.set(newVariables);
         return safeStringify(output) ?? "";
       },
-    } satisfies CoreTool;
+    } satisfies Tool;
     return acc;
   }, {});
 };
 
 const parseParameters = (
   parameters: NonNullable<Tools>[number]["parameters"],
-): z.ZodTypeAny | undefined => {
-  if (!parameters || parameters?.length === 0) return;
+): z.ZodTypeAny => {
+  if (!parameters || parameters?.length === 0) return z.object({});
 
   const shape: z.ZodRawShape = {};
   parameters.forEach((param) => {

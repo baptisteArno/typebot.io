@@ -8338,6 +8338,14 @@
                       ]
                     }
                   },
+                  "temperature": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {}
+                    ]
+                  },
                   "responseMapping": {
                     "type": "array",
                     "items": {
@@ -8346,7 +8354,8 @@
                         "item": {
                           "type": "string",
                           "enum": [
-                            "Message content"
+                            "Message content",
+                            "Total tokens"
                           ]
                         },
                         "variableId": {
@@ -8854,7 +8863,7 @@
                         "item": {
                           "type": "string",
                           "enum": [
-                            "Message Content"
+                            "Message content"
                           ]
                         },
                         "variableId": {

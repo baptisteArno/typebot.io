@@ -1,5 +1,4 @@
 import { getMessageStream } from "@typebot.io/bot-engine/apiHandlers/getMessageStream";
-import { StreamingTextResponse } from "ai";
 import { NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
@@ -34,7 +33,7 @@ export async function POST(
   });
   if (!stream)
     return NextResponse.json({ message }, { status, headers: responseHeaders });
-  return new StreamingTextResponse(stream, {
+  return new Response(stream, {
     headers: responseHeaders,
   });
 }

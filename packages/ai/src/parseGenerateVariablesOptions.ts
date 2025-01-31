@@ -1,6 +1,6 @@
 import { option } from "@typebot.io/forge";
 import type { z } from "@typebot.io/zod";
-import type { baseOptions } from "../baseOptions";
+import type { baseOptions } from "./legacy/chatCompletionBaseOptions";
 
 const extractInfoBaseShape = {
   variableId: option.string.layout({
@@ -19,7 +19,7 @@ const extractInfoBaseShape = {
   }),
 };
 
-export const toolParametersSchema = option
+export const variablesToExtractSchema = option
   .array(
     option.discriminatedUnion("type", [
       option
@@ -53,13 +53,11 @@ export const toolParametersSchema = option
   });
 
 type Props = {
-  defaultModel?: string;
   modelFetch: string | readonly [string, ...string[]];
   modelHelperText?: string;
 };
 
 export const parseGenerateVariablesOptions = ({
-  defaultModel,
   modelFetch,
   modelHelperText,
 }: Props) =>
@@ -85,7 +83,7 @@ export const parseGenerateVariablesOptions = ({
       moreInfoTooltip:
         'Meant to guide the model on what to generate. i.e. "Generate a role-playing game character", "Extract the company name from this text", etc.',
     }),
-    variablesToExtract: toolParametersSchema,
+    variablesToExtract: variablesToExtractSchema,
   });
 
 export type GenerateVariablesOptions = z.infer<

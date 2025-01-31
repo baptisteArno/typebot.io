@@ -11,7 +11,6 @@
     "@planetscale/database": "1.8.0",
     "@trpc/server": "10.40.0",
     "@typebot.io/emails": "workspace:*",
-    "ai": "3.3.15",
     "@typebot.io/env": "workspace:*",
     "@typebot.io/lib": "workspace:*",
     "@typebot.io/conditions": "workspace:*",
@@ -39,9 +38,10 @@
     "libphonenumber-js": "1.10.37",
     "node-html-parser": "6.1.5",
     "nodemailer": "6.9.15",
-    "openai": "4.52.7",
+    "openai": "4.81.0",
     "qs": "6.11.2",
-    "stripe": "17.1.0"
+    "stripe": "17.1.0",
+    "@typebot.io/legacy": "workspace:*"
   },
   "devDependencies": {
     "@typebot.io/forge": "workspace:*",

@@ -9,8 +9,9 @@
   },
   "devDependencies": {
     "@typebot.io/forge": "workspace:*",
-    "@typebot.io/openai-block": "workspace:*",
+    "@typebot.io/ai": "workspace:*",
     "@typebot.io/tsconfig": "workspace:*",
-    "ky": "1.2.4"
+    "ky": "1.2.4",
+    "@openrouter/ai-sdk-provider": "0.1.0"
   }
 }

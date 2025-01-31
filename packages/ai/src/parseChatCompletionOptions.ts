@@ -1,7 +1,7 @@
-import { toolsSchema } from "@typebot.io/ai/schemas";
 import { option } from "@typebot.io/forge";
 import type { z } from "@typebot.io/zod";
-import type { baseOptions } from "../baseOptions";
+import type { baseOptions } from "./legacy/chatCompletionBaseOptions";
+import { toolsSchema } from "./schemas";
 
 const nativeMessageContentSchema = {
   content: option.string.layout({
@@ -42,13 +42,11 @@ const dialogueMessageItemSchema = option.object({
 });
 
 type Props = {
-  defaultTemperature: number;
   modelFetchId?: string;
   modelHelperText?: string;
 };
 
 export const parseChatCompletionOptions = ({
-  defaultTemperature,
   modelFetchId,
   modelHelperText,
 }: Props) =>
@@ -74,7 +72,7 @@ export const parseChatCompletionOptions = ({
       accordion: "Advanced settings",
       label: "Temperature",
       direction: "row",
-      defaultValue: defaultTemperature,
+      defaultValue: 1,
     }),
     responseMapping: option
       .saveResponseArray(["Message content", "Total tokens"] as const)

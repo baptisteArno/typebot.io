@@ -1,11 +1,11 @@
+import { createTogetherAI } from "@ai-sdk/togetherai";
+import { getChatCompletionSetVarIds } from "@typebot.io/ai/getChatCompletionSetVarIds";
+import { getChatCompletionStreamVarId } from "@typebot.io/ai/getChatCompletionStreamVarId";
+import { parseChatCompletionOptions } from "@typebot.io/ai/parseChatCompletionOptions";
+import { runChatCompletion } from "@typebot.io/ai/runChatCompletion";
+import { runChatCompletionStream } from "@typebot.io/ai/runChatCompletionStream";
 import { createAction } from "@typebot.io/forge";
-import { getChatCompletionSetVarIds } from "@typebot.io/openai-block/shared/getChatCompletionSetVarIds";
-import { getChatCompletionStreamVarId } from "@typebot.io/openai-block/shared/getChatCompletionStreamVarId";
-import { parseChatCompletionOptions } from "@typebot.io/openai-block/shared/parseChatCompletionOptions";
-import { runOpenAIChatCompletion } from "@typebot.io/openai-block/shared/runOpenAIChatCompletion";
-import { runOpenAIChatCompletionStream } from "@typebot.io/openai-block/shared/runOpenAIChatCompletionStream";
 import { auth } from "../auth";
-import { defaultTogetherOptions } from "../constants";
 
 export const createChatCompletion = createAction({
   name: "Create chat completion",
@@ -13,7 +13,6 @@ export const createChatCompletion = createAction({
   options: parseChatCompletionOptions({
     modelHelperText:
       "You can find the list of all the models available [here](https://docs.together.ai/docs/inference-models#chat-models). Copy the model string for API.",
-    defaultTemperature: defaultTogetherOptions.temperature,
   }),
   turnableInto: [
     {
@@ -28,31 +27,60 @@ export const createChatCompletion = createAction({
       transform: (options) => ({
         ...options,
         action: "Create Chat Message",
-        responseMapping: options.responseMapping?.map((res: any) =>
-          res.item === "Message content"
-            ? { ...res, item: "Message Content" }
-            : res,
-        ),
       }),
     },
     { blockId: "groq" },
   ],
   getSetVariableIds: getChatCompletionSetVarIds,
   run: {
-    server: (params) =>
-      runOpenAIChatCompletion({
-        ...params,
-        config: { baseUrl: defaultTogetherOptions.baseUrl },
-      }),
+    server: ({ credentials: { apiKey }, options, variables, logs }) => {
+      if (!apiKey) return logs.add("No API key provided");
+      const modelName = options.model?.trim();
+      if (!modelName) return logs.add("No model provided");
+      if (!options.messages) return logs.add("No messages provided");
+
+      return runChatCompletion({
+        model: createTogetherAI({
+          apiKey,
+        })(modelName),
+        variables,
+        messages: options.messages,
+        tools: options.tools,
+        isVisionEnabled: false,
+        temperature: options.temperature
+          ? Number(options.temperature)
+          : undefined,
+        responseMapping: options.responseMapping,
+        logs,
+      });
+    },
     stream: {
       getStreamVariableId: getChatCompletionStreamVarId,
-      run: async (params) =>
-        runOpenAIChatCompletionStream({
-          ...params,
-          config: {
-            baseUrl: defaultTogetherOptions.baseUrl,
-          },
-        }),
+      run: async ({ credentials: { apiKey }, options, variables }) => {
+        if (!apiKey)
+          return { httpError: { status: 400, message: "No API key provided" } };
+        const modelName = options.model?.trim();
+        if (!modelName)
+          return { httpError: { status: 400, message: "No model provided" } };
+        if (!options.messages)
+          return {
+            httpError: { status: 400, message: "No messages provided" },
+          };
+
+        return runChatCompletionStream({
+          model: createTogetherAI({
+            apiKey,
+          })(modelName),
+          variables,
+          messages: options.messages,
+          tools: options.tools,
+          isVisionEnabled: false,
+          temperature: options.temperature
+            ? Number(options.temperature)
+            : undefined,
+          responseMapping: options.responseMapping,
+        });
+      },
     },
   },
 });

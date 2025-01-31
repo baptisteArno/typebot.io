@@ -1,5 +1,5 @@
 import { getMessageStream } from "@typebot.io/bot-engine/apiHandlers/getMessageStream";
-import { StreamingTextResponse } from "ai";
+import { StreamingTextResponse } from "@typebot.io/legacy/ai";
 import { NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";

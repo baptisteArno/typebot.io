@@ -9,11 +9,11 @@ import { env } from "@typebot.io/env";
 import { forgedBlocks } from "@typebot.io/forge-repository/definitions";
 import type { AsyncVariableStore } from "@typebot.io/forge/types";
 import { getBlockById } from "@typebot.io/groups/helpers/getBlockById";
+import { StreamingTextResponse } from "@typebot.io/legacy/ai";
 import {
   type ParseVariablesOptions,
   parseVariables,
 } from "@typebot.io/variables/parseVariables";
-import { StreamingTextResponse } from "ai";
 import { NextResponse } from "next/dist/server/web/spec-extension/response";
 import OpenAI from "openai";
 

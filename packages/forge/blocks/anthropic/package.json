@@ -8,12 +8,9 @@
     "./schemas": "./src/schemas.ts"
   },
   "dependencies": {
-    "@ai-sdk/anthropic": "0.0.30",
     "@typebot.io/ai": "workspace:*",
     "@typebot.io/forge": "workspace:*",
-    "@typebot.io/lib": "workspace:*",
-    "@typebot.io/openai-block": "workspace:*",
-    "ai": "3.3.15"
+    "@typebot.io/lib": "workspace:*"
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*"

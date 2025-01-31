@@ -3,9 +3,9 @@ import type OpenAI from "openai";
 
 export const splitUserTextMessageIntoOpenAIBlocks = async (
   input: string,
-): Promise<string | OpenAI.Chat.ChatCompletionContentPart[]> => {
+): Promise<string | OpenAI.Beta.Threads.MessageContentPartParam[]> => {
   const splittedInput = input.split("\n\n");
-  let parts: OpenAI.Chat.ChatCompletionContentPart[] = [];
+  let parts: OpenAI.Beta.Threads.MessageContentPartParam[] = [];
   for (const part of splittedInput) {
     if (part.startsWith("http") || part.startsWith('["http')) {
       const urls = part.startsWith("[") ? JSON.parse(part) : [part];

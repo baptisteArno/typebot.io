@@ -1,8 +1,8 @@
 import { createMistral } from "@ai-sdk/mistral";
+import { parseGenerateVariablesOptions } from "@typebot.io/ai/parseGenerateVariablesOptions";
+import { runGenerateVariables } from "@typebot.io/ai/runGenerateVariables";
 import { createAction } from "@typebot.io/forge";
 import { isDefined } from "@typebot.io/lib/utils";
-import { parseGenerateVariablesOptions } from "@typebot.io/openai-block/shared/parseGenerateVariablesOptions";
-import { runGenerateVariables } from "@typebot.io/openai-block/shared/runGenerateVariables";
 import { auth } from "../auth";
 import { fetchModels } from "../helpers/fetchModels";
 

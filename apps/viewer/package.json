@@ -24,14 +24,14 @@
     "@typebot.io/whatsapp": "workspace:*",
     "@typebot.io/schemas": "workspace:*",
     "@typebot.io/credentials": "workspace:*",
-    "ai": "3.3.15",
+    "ai": "4.1.15",
     "bot-engine": "workspace:*",
     "cors": "2.8.5",
     "google-spreadsheet": "4.1.4",
     "next": "14.2.13",
     "nextjs-cors": "2.1.2",
     "nodemailer": "6.9.15",
-    "openai": "4.52.7",
+    "openai": "4.81.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "stripe": "17.1.0",
@@ -53,7 +53,8 @@
     "@typebot.io/blocks-logic": "workspace:*",
     "@typebot.io/blocks-bubbles": "workspace:*",
     "papaparse": "5.4.1",
-    "superjson": "1.12.4"
+    "superjson": "1.12.4",
+    "@typebot.io/legacy": "workspace:*"
   },
   "devDependencies": {
     "@playwright/test": "1.45.2",

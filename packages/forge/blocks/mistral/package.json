@@ -14,10 +14,8 @@
     "@typebot.io/zod": "workspace:*"
   },
   "dependencies": {
-    "@ai-sdk/mistral": "0.0.22",
+    "@ai-sdk/mistral": "1.1.6",
     "@typebot.io/ai": "workspace:*",
-    "@typebot.io/openai-block": "workspace:*",
-    "ai": "3.3.15",
     "ky": "1.2.4"
   }
 }

@@ -1,7 +1,7 @@
+import { formatDataStreamPart } from "@ai-sdk/ui-utils";
 import { createAction, option } from "@typebot.io/forge";
 import { stringifyError } from "@typebot.io/lib/stringifyError";
 import { isDefined, isEmpty, isNotEmpty } from "@typebot.io/lib/utils";
-import { formatStreamPart } from "ai";
 import ky, { HTTPError } from "ky";
 import { auth } from "../auth";
 import { defaultBaseUrl } from "../constants";
@@ -129,7 +129,7 @@ export const createChatMessage = createAction({
                     onMessage: (message) => {
                       controller.enqueue(
                         new TextEncoder().encode(
-                          formatStreamPart("text", message),
+                          formatDataStreamPart("text", message),
                         ),
                       );
                     },

@@ -5,7 +5,7 @@ import { z } from "@typebot.io/zod";
 import { type LanguageModel, generateObject } from "ai";
 import type {
   GenerateVariablesOptions,
-  toolParametersSchema,
+  variablesToExtractSchema,
 } from "./parseGenerateVariablesOptions";
 
 type Props = {
@@ -59,7 +59,7 @@ const convertVariablesToExtractToSchema = ({
   variablesToExtract,
   variables,
 }: {
-  variablesToExtract: z.infer<typeof toolParametersSchema> | undefined;
+  variablesToExtract: z.infer<typeof variablesToExtractSchema> | undefined;
   variables: Variable[];
 }): z.ZodTypeAny | undefined => {
   if (!variablesToExtract || variablesToExtract?.length === 0) return;

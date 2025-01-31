@@ -9,10 +9,11 @@
     "./shared/*": "./src/shared/*.ts"
   },
   "dependencies": {
-    "@ai-sdk/openai": "0.0.36",
+    "@ai-sdk/openai": "1.1.5",
     "@typebot.io/ai": "workspace:*",
-    "ai": "3.3.15",
-    "openai": "4.52.7",
+    "@ai-sdk/ui-utils": "1.1.8",
+    "ai": "4.1.15",
+    "openai": "4.81.0",
     "@typebot.io/forge": "workspace:*",
     "@typebot.io/zod": "workspace:*",
     "@typebot.io/lib": "workspace:*",

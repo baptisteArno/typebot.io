@@ -58,7 +58,6 @@ export const useKeyboardShortcuts = ({
       target?.role === "textbox" ||
       target instanceof HTMLTextAreaElement ||
       target instanceof HTMLInputElement;
-    console.log(target?.tagName);
     if (
       isTyping ||
       target?.tagName === typebotBotPreviewTagName ||

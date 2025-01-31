@@ -9,7 +9,8 @@
   },
   "devDependencies": {
     "@typebot.io/forge": "workspace:*",
-    "@typebot.io/openai-block": "workspace:*",
-    "@typebot.io/tsconfig": "workspace:*"
+    "@typebot.io/ai": "workspace:*",
+    "@typebot.io/tsconfig": "workspace:*",
+    "@ai-sdk/togetherai": "0.1.8"
   }
 }

@@ -1,0 +1,21 @@
+{
+  "name": "@typebot.io/legacy",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./*": "./src/*.ts"
+  },
+  "dependencies": {
+    "@typebot.io/lib": "workspace:*",
+    "ai": "3.3.15",
+    "openai": "4.81.0",
+    "@typebot.io/blocks-integrations": "workspace:*",
+    "@typebot.io/chat-session": "workspace:*",
+    "@typebot.io/credentials": "workspace:*",
+    "@typebot.io/variables": "workspace:*"
+  },
+  "devDependencies": {
+    "@typebot.io/tsconfig": "workspace:*"
+  }
+}

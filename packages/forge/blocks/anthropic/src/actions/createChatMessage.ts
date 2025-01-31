@@ -1,20 +1,19 @@
 import { createAnthropic } from "@ai-sdk/anthropic";
-import { parseChatCompletionMessages } from "@typebot.io/ai/parseChatCompletionMessages";
-import { parseTools } from "@typebot.io/ai/parseTools";
+import { getChatCompletionStreamVarId } from "@typebot.io/ai/getChatCompletionStreamVarId";
+import { runChatCompletion } from "@typebot.io/ai/runChatCompletion";
+import { runChatCompletionStream } from "@typebot.io/ai/runChatCompletionStream";
 import { toolsSchema } from "@typebot.io/ai/schemas";
 import { createAction, option } from "@typebot.io/forge";
 import { isDefined } from "@typebot.io/lib/utils";
-import { generateText } from "ai";
+import { z } from "@typebot.io/zod";
 import { auth } from "../auth";
 import {
   anthropicLegacyModels,
   anthropicModelLabels,
   anthropicModels,
   defaultAnthropicOptions,
-  maxToolRoundtrips,
 } from "../constants";
 import { isModelCompatibleWithVision } from "../helpers/isModelCompatibleWithVision";
-import { runChatCompletionStream } from "../helpers/runChatCompletionStream";
 
 const nativeMessageContentSchema = {
   content: option.string.layout({
@@ -85,11 +84,19 @@ export const options = option.object({
     direction: "row",
     defaultValue: defaultAnthropicOptions.maxTokens,
   }),
-  responseMapping: option
-    .saveResponseArray(["Message Content"] as const)
-    .layout({
+  responseMapping: z.preprocess(
+    (val) =>
+      Array.isArray(val)
+        ? val.map((res) =>
+            res.item === "Message Content"
+              ? { ...res, item: "Message content" }
+              : res,
+          )
+        : undefined,
+    option.saveResponseArray(["Message content"] as const).layout({
       accordion: "Save Response",
     }),
+  ),
 });
 
 const transformToChatCompletionOptions = (
@@ -99,9 +106,6 @@ const transformToChatCompletionOptions = (
   ...options,
   model: resetModel ? undefined : options.model,
   action: "Create chat completion",
-  responseMapping: options.responseMapping?.map((res: any) =>
-    res.item === "Message Content" ? { ...res, item: "Message content" } : res,
-  ),
 });
 
 export const createChatMessage = createAction({
@@ -123,39 +127,54 @@ export const createChatMessage = createAction({
   getSetVariableIds: ({ responseMapping }) =>
     responseMapping?.map((res) => res.variableId).filter(isDefined) ?? [],
   run: {
-    server: async ({ credentials: { apiKey }, options, variables }) => {
-      const modelName = options.model ?? defaultAnthropicOptions.model;
-      const model = createAnthropic({
-        apiKey,
-      })(modelName);
+    server: ({ credentials: { apiKey }, options, variables, logs }) => {
+      if (!apiKey) return logs.add("No API key provided");
+      const modelName = options.model?.trim();
+      if (!modelName) return logs.add("No model provided");
+      if (!options.messages) return logs.add("No messages provided");
 
-      const { text } = await generateText({
-        model,
+      return runChatCompletion({
+        model: createAnthropic({
+          apiKey,
+        })(modelName),
+        variables,
+        messages: options.messages,
+        tools: options.tools,
+        isVisionEnabled: isModelCompatibleWithVision(modelName),
         temperature: options.temperature
           ? Number(options.temperature)
           : undefined,
-        messages: await parseChatCompletionMessages({
-          messages: options.messages,
-          isVisionEnabled: isModelCompatibleWithVision(modelName),
-          shouldDownloadImages: true,
-          variables,
-        }),
-        tools: parseTools({ tools: options.tools, variables }),
-        maxToolRoundtrips: maxToolRoundtrips,
-      });
-
-      options.responseMapping?.forEach((mapping) => {
-        if (!mapping.variableId) return;
-        if (!mapping.item || mapping.item === "Message Content")
-          variables.set([{ id: mapping.variableId, value: text }]);
+        responseMapping: options.responseMapping,
+        logs,
       });
     },
     stream: {
-      getStreamVariableId: (options) =>
-        options.responseMapping?.find(
-          (res) => res.item === "Message Content" || !res.item,
-        )?.variableId,
-      run: async (params) => runChatCompletionStream(params),
+      getStreamVariableId: getChatCompletionStreamVarId,
+      run: async ({ credentials: { apiKey }, options, variables }) => {
+        if (!apiKey)
+          return { httpError: { status: 400, message: "No API key provided" } };
+        const modelName = options.model?.trim();
+        if (!modelName)
+          return { httpError: { status: 400, message: "No model provided" } };
+        if (!options.messages)
+          return {
+            httpError: { status: 400, message: "No messages provided" },
+          };
+
+        return runChatCompletionStream({
+          model: createAnthropic({
+            apiKey,
+          })(modelName),
+          variables,
+          messages: options.messages,
+          isVisionEnabled: isModelCompatibleWithVision(modelName),
+          tools: options.tools,
+          temperature: options.temperature
+            ? Number(options.temperature)
+            : undefined,
+          responseMapping: options.responseMapping,
+        });
+      },
     },
   },
 });

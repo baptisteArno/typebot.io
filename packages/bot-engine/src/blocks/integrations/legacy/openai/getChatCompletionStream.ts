@@ -6,9 +6,9 @@ import type {
 } from "@typebot.io/blocks-integrations/openai/schema";
 import type { SessionState } from "@typebot.io/chat-session/schemas";
 import { decryptV2 } from "@typebot.io/credentials/decryptV2";
+import { OpenAIStream } from "@typebot.io/legacy/ai";
 import { isNotEmpty } from "@typebot.io/lib/utils";
 import { parseVariableNumber } from "@typebot.io/variables/parseVariableNumber";
-import { OpenAIStream } from "ai";
 import { type ClientOptions, OpenAI } from "openai";
 
 export const getChatCompletionStream =

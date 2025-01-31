@@ -79,7 +79,7 @@
     "nodemailer": "6.9.15",
     "nprogress": "0.2.0",
     "nuqs": "^1.19.3",
-    "openai": "4.52.7",
+    "openai": "4.81.0",
     "papaparse": "5.4.1",
     "partysocket": "1.0.2",
     "pexels": "^1.4.0",
@@ -98,9 +98,9 @@
     "use-debounce": "9.0.4",
     "zod-validation-error": "3.0.3",
     "zustand": "4.5.0",
-    "@ai-sdk/mistral": "0.0.22",
-    "@ai-sdk/openai": "0.0.36",
-    "@ai-sdk/anthropic": "0.0.30"
+    "@ai-sdk/mistral": "1.1.6",
+    "@ai-sdk/openai": "1.1.5",
+    "@ai-sdk/anthropic": "1.1.6"
   },
   "devDependencies": {
     "@chakra-ui/styled-system": "2.9.2",
