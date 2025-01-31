@@ -1,4 +1,4 @@
-import { UserIcon } from "@/components/icons";
+import { BracesIcon } from "@/components/icons";
 import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
 import { useParentModal } from "@/features/graph/providers/ParentModalProvider";
 import { useOutsideClick } from "@/hooks/useOutsideClick";
@@ -40,7 +40,7 @@ export const VariablesButton = ({ onSelectVariable, ...props }: Props) => {
           <Tooltip label={t("variables.button.tooltip")}>
             <IconButton
               aria-label={t("variables.button.tooltip")}
-              icon={<UserIcon />}
+              icon={<BracesIcon />}
               pos="relative"
               onClick={onOpen}
               {...props}

@@ -1,8 +1,8 @@
 import assert from "assert";
 import {
   BookIcon,
-  BracesIcon,
   DownloadIcon,
+  FileCurlyIcon,
   MoreVerticalIcon,
   SettingsIcon,
 } from "@/components/icons";
@@ -54,7 +54,7 @@ export const BoardMenuButton = (props: StackProps) => {
   return (
     <HStack rounded="md" spacing="4" {...props}>
       <IconButton
-        icon={<BracesIcon />}
+        icon={<FileCurlyIcon />}
         aria-label="Open variables drawer"
         size="sm"
         shadow="md"
