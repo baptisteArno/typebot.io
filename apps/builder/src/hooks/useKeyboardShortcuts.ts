@@ -12,6 +12,7 @@ type Props = {
   cut?: () => void;
   duplicate?: () => void;
   backspace?: () => void;
+  selectAll?: () => void;
 };
 
 export const useKeyboardShortcuts = ({
@@ -22,6 +23,7 @@ export const useKeyboardShortcuts = ({
   cut,
   duplicate,
   backspace,
+  selectAll,
 }: Props) => {
   const isUndoShortcut = (event: KeyboardEvent) =>
     (event.metaKey || event.ctrlKey) && event.key === "z" && !event.shiftKey;
@@ -40,6 +42,9 @@ export const useKeyboardShortcuts = ({
 
   const isDuplicateShortcut = (event: KeyboardEvent) =>
     (event.metaKey || event.ctrlKey) && event.key === "d";
+
+  const isSelectAllShortcut = (event: KeyboardEvent) =>
+    (event.metaKey || event.ctrlKey) && event.key === "a";
 
   const isBackspaceShortcut = (event: KeyboardEvent) =>
     event.key === "Backspace";
@@ -93,6 +98,11 @@ export const useKeyboardShortcuts = ({
     if (backspace && isBackspaceShortcut(event)) {
       event.preventDefault();
       backspace();
+      return;
+    }
+    if (selectAll && isSelectAllShortcut(event)) {
+      event.preventDefault();
+      selectAll();
       return;
     }
   });

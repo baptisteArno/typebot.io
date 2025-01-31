@@ -127,6 +127,9 @@ export const GroupSelectionMenu = ({
     },
     backspace: handleDelete,
     paste: handlePaste,
+    selectAll: () => {
+      setFocusedGroups(typebot?.groups.map((g) => g.id) ?? []);
+    },
   });
 
   return (
