@@ -1,4 +1,5 @@
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
+import { useKeyboardShortcuts } from "@/hooks/useKeyboardShortcuts";
 import { Portal, useColorMode, useDisclosure } from "@chakra-ui/react";
 import type { Edge as EdgeProps } from "@typebot.io/typebot/schemas/edge";
 import { colors } from "@typebot.io/ui/chakraTheme";
@@ -112,6 +113,13 @@ export const Edge = ({ edge, fromGroupId }: Props) => {
   };
 
   const handleDeleteEdge = () => deleteEdge(edge.id);
+
+  useKeyboardShortcuts({
+    backspace: () => {
+      if (isReadOnly || !isPreviewing) return;
+      deleteEdge(edge.id);
+    },
+  });
 
   return (
     <>
