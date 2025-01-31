@@ -5723,6 +5723,9 @@
                   },
                   "isCode": {
                     "type": "boolean"
+                  },
+                  "saveErrorInVariableId": {
+                    "type": "string"
                   }
                 }
               },
@@ -5802,6 +5805,9 @@
                   },
                   "isCode": {
                     "type": "boolean"
+                  },
+                  "saveErrorInVariableId": {
+                    "type": "string"
                   }
                 },
                 "required": [
