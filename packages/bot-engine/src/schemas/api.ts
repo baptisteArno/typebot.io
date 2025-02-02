@@ -8,6 +8,7 @@ import { dateInputSchema } from "@typebot.io/blocks-inputs/date/schema";
 import { emailInputSchema } from "@typebot.io/blocks-inputs/email/schema";
 import { fileInputBlockSchemas } from "@typebot.io/blocks-inputs/file/schema";
 import { numberInputSchema } from "@typebot.io/blocks-inputs/number/schema";
+import { otpInputSchema } from "@typebot.io/blocks-inputs/otp/schema";
 import {
   paymentInputRuntimeOptionsSchema,
   paymentInputSchema,
@@ -350,6 +351,7 @@ const chatResponseBaseSchema = z.object({
     .union([
       z.discriminatedUnion("type", [
         textInputSchema,
+        otpInputSchema,
         buttonsInputSchemas.v6,
         emailInputSchema,
         numberInputSchema,

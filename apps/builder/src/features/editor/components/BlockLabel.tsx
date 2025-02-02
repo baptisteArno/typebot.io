@@ -56,6 +56,7 @@ export const getInputBlockLabel = (
   [InputBlockType.NUMBER]: t("editor.sidebarBlock.number.label"),
   [InputBlockType.EMAIL]: t("editor.sidebarBlock.email.label"),
   [InputBlockType.TEXT]: t("editor.sidebarBlock.text.label"),
+  [InputBlockType.OTP]: t("editor.sidebarBlock.otp.label"),
   [InputBlockType.URL]: t("editor.sidebarBlock.website.label"),
   [InputBlockType.DATE]: t("editor.sidebarBlock.date.label"),
   [InputBlockType.TIME]: t("editor.sidebarBlock.time.label"),

@@ -734,6 +734,10 @@ const parseReply =
         if (!reply || reply.type !== "text") return { status: "fail" };
         return parsePictureChoicesReply(state)(reply.text, block);
       }
+      case InputBlockType.OTP: {
+        if (!reply || reply.type !== "text") return { status: "fail" };
+        return { status: "success", reply: reply.text };
+      }
       case InputBlockType.TEXT: {
         if (!reply) return { status: "fail" };
         return {

@@ -4,6 +4,7 @@ import { dateInputSchema } from "./date/schema";
 import { emailInputSchema } from "./email/schema";
 import { fileInputBlockSchemas } from "./file/schema";
 import { numberInputSchema } from "./number/schema";
+import { otpInputSchema } from "./otp/schema";
 import { paymentInputSchema } from "./payment/schema";
 import { phoneNumberInputBlockSchema } from "./phone/schema";
 import { pictureChoiceBlockSchemas } from "./pictureChoice/schema";
@@ -22,6 +23,7 @@ const inputBlockSchemas = [
   timeInputSchema,
   paymentInputSchema,
   ratingInputBlockSchema,
+  otpInputSchema,
 ] as const;
 
 export const inputBlockV5Schema = z.discriminatedUnion("type", [

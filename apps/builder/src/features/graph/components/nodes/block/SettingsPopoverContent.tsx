@@ -3,6 +3,7 @@ import { DateInputSettings } from "@/features/blocks/inputs/date/components/Date
 import { EmailInputSettings } from "@/features/blocks/inputs/emailInput/components/EmailInputSettings";
 import { FileInputSettings } from "@/features/blocks/inputs/fileUpload/components/FileInputSettings";
 import { NumberInputSettings } from "@/features/blocks/inputs/number/components/NumberInputSettings";
+import { OtpInputSettings } from "@/features/blocks/inputs/otp/components/OtpInputSettings";
 import { PaymentSettings } from "@/features/blocks/inputs/payment/components/PaymentSettings";
 import { PhoneInputSettings } from "@/features/blocks/inputs/phone/components/PhoneInputSettings";
 import { PictureChoiceSettings } from "@/features/blocks/inputs/pictureChoice/components/PictureChoiceSettings";
@@ -146,6 +147,9 @@ export const BlockSettings = ({
           onOptionsChange={updateOptions}
         />
       );
+    }
+    case InputBlockType.OTP: {
+      return <OtpInputSettings block={block} onOptionsChange={updateOptions} />;
     }
     case InputBlockType.NUMBER: {
       return (

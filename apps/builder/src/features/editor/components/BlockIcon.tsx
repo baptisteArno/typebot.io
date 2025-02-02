@@ -9,6 +9,7 @@ import { DateInputIcon } from "@/features/blocks/inputs/date/components/DateInpu
 import { EmailInputIcon } from "@/features/blocks/inputs/emailInput/components/EmailInputIcon";
 import { FileInputIcon } from "@/features/blocks/inputs/fileUpload/components/FileInputIcon";
 import { NumberInputIcon } from "@/features/blocks/inputs/number/components/NumberInputIcon";
+import { OtpInputIcon } from "@/features/blocks/inputs/otp/components/OtpInputIcon";
 import { PaymentInputIcon } from "@/features/blocks/inputs/payment/components/PaymentInputIcon";
 import { PhoneInputIcon } from "@/features/blocks/inputs/phone/components/PhoneInputIcon";
 import { PictureChoiceIcon } from "@/features/blocks/inputs/pictureChoice/components/PictureChoiceIcon";
@@ -64,6 +65,8 @@ export const BlockIcon = ({ type, ...props }: BlockIconProps): JSX.Element => {
       return <AudioBubbleIcon color={gray} {...props} />;
     case InputBlockType.TEXT:
       return <TextInputIcon color={orange} {...props} />;
+    case InputBlockType.OTP:
+      return <OtpInputIcon color={orange} {...props} />;
     case InputBlockType.NUMBER:
       return <NumberInputIcon color={orange} {...props} />;
     case InputBlockType.EMAIL:
