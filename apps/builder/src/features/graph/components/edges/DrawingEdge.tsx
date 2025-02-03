@@ -128,11 +128,13 @@ export const DrawingEdge = ({ connectingIds }: Props) => {
     });
     const groupTitlesAutoGeneration =
       workspace?.settings?.groupTitlesAutoGeneration;
+    console.log("HEEYYYY");
     if (
       typebot &&
       groupTitlesAutoGeneration?.isEnabled &&
       groupTitlesAutoGeneration.credentialsId &&
       groupTitlesAutoGeneration.provider &&
+      groupTitlesAutoGeneration.model &&
       "groupId" in connectingIds.source
     ) {
       const groupIndex = typebot?.groups.findIndex(
@@ -148,6 +150,8 @@ export const DrawingEdge = ({ connectingIds }: Props) => {
           groupContent: JSON.stringify({
             blocks: group.blocks.map(({ id, outgoingEdgeId, ...rest }) => rest),
           }),
+          model: groupTitlesAutoGeneration.model,
+          prompt: groupTitlesAutoGeneration.prompt,
         });
 
         updateGroup(groupIndex, { title: result.title });

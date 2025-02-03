@@ -1,4 +1,3 @@
-import type { ForgedBlockDefinition } from "@typebot.io/forge-repository/definitions";
 import { Plan, WorkspaceRole } from "@typebot.io/prisma/enum";
 import type { Prisma } from "@typebot.io/prisma/types";
 import { z } from "@typebot.io/zod";
@@ -26,19 +25,12 @@ export const workspaceInvitationSchema = z.object({
   Omit<Prisma.WorkspaceInvitation, "workspaceId" | "userId" | "id">
 >;
 
-export const aiProviders = [
-  "openai",
-  "mistral",
-  "anthropic",
-  "open-router",
-  "groq",
-  "together-ai",
-] as const satisfies ForgedBlockDefinition["id"][];
-
 export const groupTitlesAutoGenerationSchema = z.object({
   isEnabled: z.boolean().optional(),
-  provider: z.enum(aiProviders).optional(),
+  provider: z.string().optional(),
   credentialsId: z.string().optional(),
+  model: z.string().optional(),
+  prompt: z.string().optional(),
 });
 export type GroupTitlesAutoGeneration = z.infer<
   typeof groupTitlesAutoGenerationSchema

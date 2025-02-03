@@ -14,10 +14,10 @@ type Props = {
 };
 export const ForgedBlockSettings = ({ block, onOptionsChange }: Props) => {
   const [keySuffix, setKeySuffix] = useState<number>(0);
-  const { blockDef, blockSchema, actionDef } = useForgedBlock(
-    block.type,
-    block.options?.action,
-  );
+  const { blockDef, blockSchema, actionDef } = useForgedBlock({
+    blockType: block.type,
+    action: block.options?.action,
+  });
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const updateCredentialsId = (credentialsId?: string) => {

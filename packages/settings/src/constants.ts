@@ -33,7 +33,7 @@ export const defaultSystemMessages = {
   popupBlockedDescription: "Popup blocked",
   popupBlockedButtonLabel: "Continue in new tab",
   fileUploadError: "An error occured while uploading the files",
-  fileUploadSizeError: "{{file}} is larger than {{limit}}MB",
+  fileUploadSizeError: "[[file]] is larger than [[limit]]MB",
   whatsAppPictureChoiceSelectLabel: "Select",
 } as const satisfies NonNullable<Settings["general"]>["systemMessages"];
 

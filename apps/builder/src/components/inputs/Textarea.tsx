@@ -102,6 +102,7 @@ export const Textarea = ({
       onBlur={updateCarretPosition}
       onChange={(e) => changeValue(e.target.value)}
       placeholder={placeholder}
+      focusBorderColor="orange.300"
       minH={minH ?? "150px"}
     />
   );

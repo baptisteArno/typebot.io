@@ -26,10 +26,10 @@ type Props = {
 };
 
 export const ForgedBlockTurnIntoMenu = ({ block, onTurnIntoClick }: Props) => {
-  const { actionDef } = useForgedBlock(
-    block.type,
-    "options" in block ? block.options?.action : undefined,
-  );
+  const { actionDef } = useForgedBlock({
+    blockType: block.type,
+    action: "options" in block ? block.options?.action : undefined,
+  });
   const { onClose, onOpen, isOpen } = useDisclosure();
   const debounceSubMenuClose = useDebouncedCallback(onClose, 200);
 
@@ -81,7 +81,7 @@ const TurnIntoMenuItem = ({
   blockType: ForgedBlock["type"];
   onClick: (blockSchema: ZodObject<any>) => void;
 }) => {
-  const { blockDef, blockSchema } = useForgedBlock(blockType);
+  const { blockDef, blockSchema } = useForgedBlock({ blockType });
 
   if (!blockDef || !blockSchema) return null;
   return (

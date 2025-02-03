@@ -29,6 +29,13 @@ export const generateVariables = createAction({
       }),
     },
   ],
+  aiGenerate: {
+    fetcherId: "fetchModels",
+    getModel: ({ credentials, model }) =>
+      createMistral({
+        apiKey: credentials.apiKey,
+      })(model),
+  },
   getSetVariableIds: (options) =>
     options.variablesToExtract?.map((v) => v.variableId).filter(isDefined) ??
     [],

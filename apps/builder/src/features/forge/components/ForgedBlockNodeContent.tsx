@@ -13,10 +13,10 @@ type Props = {
   indices: BlockIndices;
 };
 export const ForgedBlockNodeContent = ({ block, indices }: Props) => {
-  const { blockDef, actionDef } = useForgedBlock(
-    block.type,
-    block.options?.action,
-  );
+  const { blockDef, actionDef } = useForgedBlock({
+    blockType: block.type,
+    action: block.options?.action,
+  });
   const { typebot } = useTypebot();
 
   const isStreamingNextBlock = useMemo(() => {

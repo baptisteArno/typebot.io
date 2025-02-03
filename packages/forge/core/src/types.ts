@@ -54,6 +54,16 @@ export type ActionDefinition<
   options?: Options;
   turnableInto?: TurnableIntoParam<z.infer<Options>>[];
   getSetVariableIds?: (options: z.infer<Options>) => string[];
+  /**
+   * Used for AI generation in the builder if enabled by the user.
+   */
+  aiGenerate?: {
+    fetcherId: string;
+    getModel: (params: {
+      credentials: CredentialsFromAuthDef<A>;
+      model: string;
+    }) => any;
+  };
   run?: {
     server?: (params: {
       credentials: CredentialsFromAuthDef<A>;

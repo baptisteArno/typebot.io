@@ -18,6 +18,13 @@ export const generateVariables = createAction({
       blockId: "mistral",
     },
   ],
+  aiGenerate: {
+    fetcherId: "anthropicModels",
+    getModel: ({ credentials, model }) =>
+      createAnthropic({
+        apiKey: credentials.apiKey,
+      })(model),
+  },
   getSetVariableIds: (options) =>
     options.variablesToExtract?.map((v) => v.variableId).filter(isDefined) ??
     [],

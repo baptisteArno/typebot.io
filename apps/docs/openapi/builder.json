@@ -2306,17 +2306,15 @@
                                   "type": "boolean"
                                 },
                                 "provider": {
-                                  "type": "string",
-                                  "enum": [
-                                    "openai",
-                                    "mistral",
-                                    "anthropic",
-                                    "open-router",
-                                    "groq",
-                                    "together-ai"
-                                  ]
+                                  "type": "string"
                                 },
                                 "credentialsId": {
+                                  "type": "string"
+                                },
+                                "model": {
+                                  "type": "string"
+                                },
+                                "prompt": {
                                   "type": "string"
                                 }
                               }
@@ -2482,17 +2480,15 @@
                                   "type": "boolean"
                                 },
                                 "provider": {
-                                  "type": "string",
-                                  "enum": [
-                                    "openai",
-                                    "mistral",
-                                    "anthropic",
-                                    "open-router",
-                                    "groq",
-                                    "together-ai"
-                                  ]
+                                  "type": "string"
                                 },
                                 "credentialsId": {
+                                  "type": "string"
+                                },
+                                "model": {
+                                  "type": "string"
+                                },
+                                "prompt": {
                                   "type": "string"
                                 }
                               }
@@ -2646,17 +2642,15 @@
                             "type": "boolean"
                           },
                           "provider": {
-                            "type": "string",
-                            "enum": [
-                              "openai",
-                              "mistral",
-                              "anthropic",
-                              "open-router",
-                              "groq",
-                              "together-ai"
-                            ]
+                            "type": "string"
                           },
                           "credentialsId": {
+                            "type": "string"
+                          },
+                          "model": {
+                            "type": "string"
+                          },
+                          "prompt": {
                             "type": "string"
                           }
                         }
@@ -9680,17 +9674,15 @@
                                   "type": "boolean"
                                 },
                                 "provider": {
-                                  "type": "string",
-                                  "enum": [
-                                    "openai",
-                                    "mistral",
-                                    "anthropic",
-                                    "open-router",
-                                    "groq",
-                                    "together-ai"
-                                  ]
+                                  "type": "string"
                                 },
                                 "credentialsId": {
+                                  "type": "string"
+                                },
+                                "model": {
+                                  "type": "string"
+                                },
+                                "prompt": {
                                   "type": "string"
                                 }
                               }

@@ -24,6 +24,14 @@ export const generateVariables = createAction({
         }),
     },
   ],
+  aiGenerate: {
+    fetcherId: "fetchModels",
+    getModel: ({ credentials, model }) =>
+      createOpenAI({
+        apiKey: credentials.apiKey,
+        compatibility: "strict",
+      })(model),
+  },
   turnableInto: [
     {
       blockId: "mistral",
