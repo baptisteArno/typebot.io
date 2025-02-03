@@ -21,7 +21,12 @@ export const SetVariableLabel = ({
       <Text fontSize="sm" color={textColor}>
         {t("variables.set")}
       </Text>
-      <Tag size="sm" variant="outline" colorScheme="purple">
+      <Tag
+        size="sm"
+        variant="outline"
+        colorScheme="purple"
+        wordBreak="break-all"
+      >
         {variableName}
       </Tag>
     </HStack>
