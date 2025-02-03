@@ -1,4 +1,4 @@
-import { useUser } from "@/features/account/hooks/useUser";
+import { useUser } from "@/features/user/hooks/useUser";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { useToast } from "@/hooks/useToast";
 import { trpc } from "@/lib/trpc";

@@ -1,8 +1,8 @@
 import { NewVersionPopup } from "@/components/NewVersionPopup";
 import { SupportBubble } from "@/components/SupportBubble";
 import { Toaster } from "@/components/Toaster";
-import { UserProvider } from "@/features/account/UserProvider";
 import { TypebotProvider } from "@/features/editor/providers/TypebotProvider";
+import { UserProvider } from "@/features/user/UserProvider";
 import { WorkspaceProvider } from "@/features/workspace/WorkspaceProvider";
 import { isCloudProdInstance } from "@/helpers/isCloudProdInstance";
 import { useRouterProgressBar } from "@/lib/routerProgressBar";

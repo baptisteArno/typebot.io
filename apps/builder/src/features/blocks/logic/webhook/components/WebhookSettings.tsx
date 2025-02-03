@@ -2,10 +2,10 @@ import { CopyButton } from "@/components/CopyButton";
 import { TableList, type TableListItemProps } from "@/components/TableList";
 import { TextLink } from "@/components/TextLink";
 import { CodeEditor } from "@/components/inputs/CodeEditor";
-import { useUser } from "@/features/account/hooks/useUser";
 import { DataVariableInputs } from "@/features/blocks/integrations/httpRequest/components/ResponseMappingInputs";
 import { getDeepKeys } from "@/features/blocks/integrations/httpRequest/helpers/getDeepKeys";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
+import { useUser } from "@/features/user/hooks/useUser";
 import {
   Accordion,
   AccordionButton,

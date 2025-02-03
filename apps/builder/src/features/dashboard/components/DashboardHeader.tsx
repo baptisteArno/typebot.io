@@ -1,7 +1,7 @@
 import { EmojiOrImageIcon } from "@/components/EmojiOrImageIcon";
 import { HardDriveIcon, SettingsIcon } from "@/components/icons";
-import { useUser } from "@/features/account/hooks/useUser";
 import { ParentModalProvider } from "@/features/graph/providers/ParentModalProvider";
+import { useUser } from "@/features/user/hooks/useUser";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { WorkspaceDropdown } from "@/features/workspace/components/WorkspaceDropdown";
 import { WorkspaceSettingsModal } from "@/features/workspace/components/WorkspaceSettingsModal";

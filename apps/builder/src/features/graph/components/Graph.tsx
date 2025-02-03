@@ -1,6 +1,6 @@
-import { useUser } from "@/features/account/hooks/useUser";
 import { headerHeight } from "@/features/editor/constants";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
+import { useUser } from "@/features/user/hooks/useUser";
 import { Fade, Flex, type FlexProps, useEventListener } from "@chakra-ui/react";
 import { createId } from "@paralleldrive/cuid2";
 import type { BlockV6 } from "@typebot.io/blocks-core/schemas/schema";

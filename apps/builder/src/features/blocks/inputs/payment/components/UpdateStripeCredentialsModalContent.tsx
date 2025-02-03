@@ -1,7 +1,7 @@
 import { MoreInfoTooltip } from "@/components/MoreInfoTooltip";
 import { TextLink } from "@/components/TextLink";
 import { TextInput } from "@/components/inputs";
-import { useUser } from "@/features/account/hooks/useUser";
+import { useUser } from "@/features/user/hooks/useUser";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { trpc } from "@/lib/trpc";
 import {

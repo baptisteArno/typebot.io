@@ -1,7 +1,7 @@
 import { EmojiOrImageIcon } from "@/components/EmojiOrImageIcon";
 import { TypebotLogo } from "@/components/TypebotLogo";
 import { CopyIcon, PlayIcon } from "@/components/icons";
-import { useUser } from "@/features/account/hooks/useUser";
+import { useUser } from "@/features/user/hooks/useUser";
 import {
   Button,
   Divider,

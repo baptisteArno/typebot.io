@@ -1,4 +1,4 @@
-import { UserPreferencesForm } from "@/features/account/components/UserPreferencesForm";
+import { UserPreferencesForm } from "@/features/user/components/UserPreferencesForm";
 import {
   Modal,
   ModalBody,

@@ -1,6 +1,6 @@
-import { useUser } from "@/features/account/hooks/useUser";
 import { planToReadable } from "@/features/billing/helpers/planToReadable";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
+import { useUser } from "@/features/user/hooks/useUser";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import type { BubbleProps } from "@typebot.io/js";
 import { Bubble } from "@typebot.io/nextjs";

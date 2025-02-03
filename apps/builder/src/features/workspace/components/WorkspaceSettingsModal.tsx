@@ -6,11 +6,11 @@ import {
   UsersIcon,
   WalletIcon,
 } from "@/components/icons";
-import { MyAccountForm } from "@/features/account/components/MyAccountForm";
-import { UserPreferencesForm } from "@/features/account/components/UserPreferencesForm";
 import { BillingSettingsLayout } from "@/features/billing/components/BillingSettingsLayout";
 import { CredentialsSettingsForm } from "@/features/credentials/components/CredentialsSettingsForm";
 import { useParentModal } from "@/features/graph/providers/ParentModalProvider";
+import { MyAccountForm } from "@/features/user/components/MyAccountForm";
+import { UserPreferencesForm } from "@/features/user/components/UserPreferencesForm";
 import {
   Avatar,
   Button,

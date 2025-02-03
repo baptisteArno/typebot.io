@@ -1,8 +1,8 @@
 import { ThunderIcon } from "@/components/icons";
-import { useUser } from "@/features/account/hooks/useUser";
 import { useEditor } from "@/features/editor/providers/EditorProvider";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { useGraph } from "@/features/graph/providers/GraphProvider";
+import { useUser } from "@/features/user/hooks/useUser";
 import { useToast } from "@/hooks/useToast";
 import type { ContinueChatResponse } from "@typebot.io/bot-engine/schemas/api";
 import { Standard } from "@typebot.io/nextjs";

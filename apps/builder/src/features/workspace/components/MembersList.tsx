@@ -1,5 +1,5 @@
 import { UnlockPlanAlertInfo } from "@/components/UnlockPlanAlertInfo";
-import { useUser } from "@/features/account/hooks/useUser";
+import { useUser } from "@/features/user/hooks/useUser";
 import {
   HStack,
   Heading,

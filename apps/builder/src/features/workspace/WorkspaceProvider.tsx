@@ -6,8 +6,8 @@ import type { Workspace } from "@typebot.io/workspaces/schemas";
 import { useRouter } from "next/router";
 import type { ReactNode } from "react";
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
-import { useUser } from "../account/hooks/useUser";
 import { useTypebot } from "../editor/providers/TypebotProvider";
+import { useUser } from "../user/hooks/useUser";
 import { parseNewName } from "./helpers/parseNewName";
 import { setWorkspaceIdInLocalStorage } from "./helpers/setWorkspaceIdInLocalStorage";
 

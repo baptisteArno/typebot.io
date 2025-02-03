@@ -1,5 +1,4 @@
 import { Seo } from "@/components/Seo";
-import { useUser } from "@/features/account/hooks/useUser";
 import {
   PreCheckoutModal,
   type PreCheckoutModalProps,
@@ -7,6 +6,7 @@ import {
 import { TypebotDndProvider } from "@/features/folders/TypebotDndProvider";
 import { FolderContent } from "@/features/folders/components/FolderContent";
 import { ParentModalProvider } from "@/features/graph/providers/ParentModalProvider";
+import { useUser } from "@/features/user/hooks/useUser";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { trpc } from "@/lib/trpc";
 import { Spinner, Stack, Text, VStack } from "@chakra-ui/react";
