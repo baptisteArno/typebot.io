@@ -32,10 +32,11 @@ The mdx file should always start with the following frontmatter:
 title: 'My awesome blog post'
 description: 'A short summary of the blog post.'
 postedAt: '2023-11-19'
+author: '<AUTHOR_ID>'
 ---
 ```
 
-By default the og image is generated from the title of the blog post. If you want to use a custom og image, you can specify a `image` field in the frontmatter.
+If you are a new author, you need to add your information to the `apps/landing-page/app/features/blog/data` folder.
 
 All images need to be placed under the `public/blog-assets/<POST_FILENAME>` folder where `<POST_FILENAME>` is the name of the mdx file you are creating/editing. The image file name should be in lowercase and separated by `-`.
 
