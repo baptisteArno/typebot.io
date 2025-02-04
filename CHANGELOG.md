@@ -1,5 +1,17 @@
 # Changelog
 
+<a name="3.4.1"></a>
+## 3.4.1 (2025-02-04)
+
+### Changed
+
+- ⏪ Revert invalid docker deploy workflow and fix the artifacts download merging [[3080695](https://github.com/baptisteArno/typebot.io/commit/3080695c09c1d19e0da185f9c31fecde955e61d4)]
+
+### Fixed
+
+- 🐛 (anthropic) Fix ignored system message [[322bd07](https://github.com/baptisteArno/typebot.io/commit/322bd07f9e7362276e85aa855716b07a81cdeacd)]
+
+
 <a name="3.4.0"></a>
 ## 3.4.0 (2025-02-04)
 
