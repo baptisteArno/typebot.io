@@ -138,7 +138,15 @@ export const createChatMessage = createAction({
           apiKey,
         })(modelName),
         variables,
-        messages: options.messages,
+        messages: options.systemMessage
+          ? [
+              {
+                role: "system",
+                content: options.systemMessage,
+              },
+              ...options.messages,
+            ]
+          : options.messages,
         tools: options.tools,
         isVisionEnabled: isModelCompatibleWithVision(modelName),
         temperature: options.temperature
