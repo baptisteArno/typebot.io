@@ -13,6 +13,7 @@ type Group = {
   title: string
   blocks: Block[]
 }
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 type Edge = {
   id: string
   to: {
