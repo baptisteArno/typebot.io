@@ -6,6 +6,7 @@ import {
   MoreVerticalIcon,
   SettingsIcon,
 } from "@/components/icons";
+import { ParentModalProvider } from "@/features/graph/providers/ParentModalProvider";
 import { parseDefaultPublicId } from "@/features/publish/helpers/parseDefaultPublicId";
 import {
   HStack,
@@ -83,7 +84,9 @@ export const BoardMenuButton = (props: StackProps) => {
             </MenuItem>
           ) : null}
         </MenuList>
-        <EditorSettingsModal isOpen={isOpen} onClose={onClose} />
+        <ParentModalProvider>
+          <EditorSettingsModal isOpen={isOpen} onClose={onClose} />
+        </ParentModalProvider>
       </Menu>
     </HStack>
   );

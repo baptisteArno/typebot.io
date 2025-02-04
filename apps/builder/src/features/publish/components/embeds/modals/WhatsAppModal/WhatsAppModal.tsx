@@ -202,7 +202,7 @@ export const WhatsAppModal = ({ isOpen, onClose }: ModalProps): JSX.Element => {
                     />
                     <CredentialsDropdown
                       type="whatsApp"
-                      workspaceId={workspace.id}
+                      scope={{ type: "workspace", workspaceId: workspace.id }}
                       currentCredentialsId={
                         typebot?.whatsAppCredentialsId ?? undefined
                       }

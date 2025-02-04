@@ -121,7 +121,7 @@ export const PaymentSettings = ({ options, onOptionsChange }: Props) => {
         {workspace && (
           <CredentialsDropdown
             type="stripe"
-            workspaceId={workspace.id}
+            scope={{ type: "workspace", workspaceId: workspace.id }}
             currentCredentialsId={options?.credentialsId}
             onCredentialsSelect={updateCredentials}
             onCreateNewClick={onOpen}

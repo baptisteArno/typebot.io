@@ -1,5 +1,6 @@
 import assert from "assert";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
+import { useUser } from "@/features/user/hooks/useUser";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { trpcVanilla } from "@/lib/trpc";
 import { useEventListener } from "@chakra-ui/react";
@@ -33,7 +34,7 @@ export const DrawingEdge = ({ connectingIds }: Props) => {
     () => true,
   );
   const { eventsCoordinates } = useEventsCoordinates();
-  const { workspace } = useWorkspace();
+  const { user } = useUser();
   const { createEdge, typebot, updateGroup } = useTypebot();
   const [mousePosition, setMousePosition] = useState<Coordinates | null>(null);
 
@@ -126,9 +127,7 @@ export const DrawingEdge = ({ connectingIds }: Props) => {
           : connectingIds.source,
       to: connectingIds.target,
     });
-    const groupTitlesAutoGeneration =
-      workspace?.settings?.groupTitlesAutoGeneration;
-    console.log("HEEYYYY");
+    const groupTitlesAutoGeneration = user?.groupTitlesAutoGeneration;
     if (
       typebot &&
       groupTitlesAutoGeneration?.isEnabled &&
@@ -144,8 +143,7 @@ export const DrawingEdge = ({ connectingIds }: Props) => {
       if (!group || !group?.title.startsWith("Group #")) return;
       try {
         const result = await trpcVanilla.generateGroupTitle.mutate({
-          credentialsId: workspace?.settings?.groupTitlesAutoGeneration
-            ?.credentialsId as string,
+          credentialsId: groupTitlesAutoGeneration.credentialsId,
           typebotId: typebot.id,
           groupContent: JSON.stringify({
             blocks: group.blocks.map(({ id, outgoingEdgeId, ...rest }) => rest),

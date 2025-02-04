@@ -7,6 +7,7 @@ import { forgedBlocks } from "@typebot.io/forge-repository/definitions";
 
 export const CredentialsUpdateModal = ({
   editingCredentials,
+  scope,
   onSubmit,
   onClose,
 }: {
@@ -14,6 +15,7 @@ export const CredentialsUpdateModal = ({
     id: string;
     type: Credentials["type"];
   };
+  scope: "workspace" | "user";
   onClose: () => void;
   onSubmit: () => void;
 }) => {
@@ -24,6 +26,7 @@ export const CredentialsUpdateModal = ({
         <CredentialsUpdateModalContent
           editingCredentials={editingCredentials}
           onSubmit={onSubmit}
+          scope={scope}
         />
       )}
     </Modal>
@@ -32,12 +35,14 @@ export const CredentialsUpdateModal = ({
 
 const CredentialsUpdateModalContent = ({
   editingCredentials,
+  scope,
   onSubmit,
 }: {
   editingCredentials: {
     id: string;
     type: Credentials["type"];
   };
+  scope: "workspace" | "user";
   onSubmit: () => void;
 }) => {
   switch (editingCredentials.type) {
@@ -65,6 +70,7 @@ const CredentialsUpdateModalContent = ({
           credentialsId={editingCredentials.id}
           blockDef={forgedBlocks[editingCredentials.type]}
           onUpdate={onSubmit}
+          scope={scope}
         />
       );
   }

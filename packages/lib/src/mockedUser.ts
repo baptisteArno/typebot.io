@@ -17,4 +17,5 @@ export const mockedUser: Prisma.User = {
     ["graphGestureNotification"]: true,
   },
   referral: null,
+  groupTitlesAutoGeneration: null,
 };

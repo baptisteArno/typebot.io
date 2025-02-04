@@ -102,6 +102,16 @@ export const WorkspaceSettingsModal = ({
               >
                 {t("workspace.settings.modal.menu.preferences.label")}
               </Button>
+              <Button
+                variant={selectedTab === "credentials" ? "solid" : "ghost"}
+                onClick={() => setSelectedTab("credentials")}
+                leftIcon={<WalletIcon />}
+                size="sm"
+                justifyContent="flex-start"
+                pl="4"
+              >
+                Credentials
+              </Button>
             </Stack>
             <Stack>
               <Text pl="4" color="gray.500">
@@ -127,18 +137,7 @@ export const WorkspaceSettingsModal = ({
                   {t("workspace.settings.modal.menu.settings.label")}
                 </Button>
               )}
-              {canEditWorkspace && (
-                <Button
-                  variant={selectedTab === "credentials" ? "solid" : "ghost"}
-                  onClick={() => setSelectedTab("credentials")}
-                  leftIcon={<WalletIcon />}
-                  size="sm"
-                  justifyContent="flex-start"
-                  pl="4"
-                >
-                  Credentials
-                </Button>
-              )}
+
               {currentRole !== WorkspaceRole.GUEST && (
                 <Button
                   variant={selectedTab === "members" ? "solid" : "ghost"}

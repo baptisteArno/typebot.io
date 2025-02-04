@@ -20,6 +20,7 @@ import { ZodObjectLayout } from "../zodLayouts/ZodObjectLayout";
 type Props = {
   credentialsId: string;
   blockDef: ForgedBlockDefinition;
+  scope: "workspace" | "user";
   onUpdate: () => void;
 };
 
@@ -27,6 +28,7 @@ export const UpdateForgedCredentialsModalContent = ({
   credentialsId,
   blockDef,
   onUpdate,
+  scope,
 }: Props) => {
   const { workspace } = useWorkspace();
   const { showToast } = useToast();
@@ -37,10 +39,16 @@ export const UpdateForgedCredentialsModalContent = ({
 
   const { data: existingCredentials, refetch: refetchCredentials } =
     trpc.credentials.getCredentials.useQuery(
-      {
-        workspaceId: workspace?.id as string,
-        credentialsId,
-      },
+      scope === "workspace"
+        ? {
+            scope: "workspace",
+            workspaceId: workspace?.id as string,
+            credentialsId,
+          }
+        : {
+            scope: "user",
+            credentialsId,
+          },
       {
         enabled: !!workspace?.id,
       },
@@ -70,15 +78,28 @@ export const UpdateForgedCredentialsModalContent = ({
   const updateCredentials = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!workspace || !blockDef.auth) return;
-    mutate({
-      credentialsId,
-      credentials: {
-        type: blockDef.id,
-        workspaceId: workspace.id,
-        name,
-        data,
-      } as Credentials,
-    });
+    mutate(
+      scope === "workspace"
+        ? {
+            credentialsId,
+            credentials: {
+              type: blockDef.id,
+              name,
+              data,
+            } as Credentials,
+            scope: "workspace",
+            workspaceId: workspace.id,
+          }
+        : {
+            scope: "user",
+            credentialsId,
+            credentials: {
+              type: blockDef.id,
+              name,
+              data,
+            } as Credentials,
+          },
+    );
   };
 
   if (!blockDef.auth) return null;

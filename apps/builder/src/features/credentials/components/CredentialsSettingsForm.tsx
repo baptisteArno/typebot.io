@@ -1,3 +1,4 @@
+import { DropdownList } from "@/components/DropdownList";
 import { EditIcon, PlusIcon, TrashIcon } from "@/components/icons";
 import { StripeLogo } from "@/components/logos/StripeLogo";
 import { WhatsAppLogo } from "@/components/logos/WhatsAppLogo";
@@ -45,6 +46,9 @@ type CredentialsInfo = Pick<Credentials, "id" | "type" | "name">;
 
 export const CredentialsSettingsForm = () => {
   const [creatingType, setCreatingType] = useState<Credentials["type"]>();
+  const [selectedScope, setSelectedScope] = useState<"workspace" | "user">(
+    "workspace",
+  );
   const [editingCredentials, setEditingCredentials] = useState<{
     id: string;
     type: Credentials["type"];
@@ -53,11 +57,16 @@ export const CredentialsSettingsForm = () => {
   const { workspace } = useWorkspace();
   const { data, isLoading, refetch } =
     trpc.credentials.listCredentials.useQuery(
+      selectedScope === "workspace"
+        ? {
+            scope: "workspace",
+            workspaceId: workspace!.id,
+          }
+        : {
+            scope: "user",
+          },
       {
-        workspaceId: workspace!.id,
-      },
-      {
-        enabled: !!workspace?.id,
+        enabled: selectedScope === "user" || !!workspace?.id,
       },
     );
 
@@ -85,6 +94,7 @@ export const CredentialsSettingsForm = () => {
   return (
     <Stack spacing="6" w="full">
       <CredentialsCreateModal
+        scope={selectedScope}
         creatingType={creatingType}
         onSubmit={() => {
           refetch();
@@ -93,6 +103,7 @@ export const CredentialsSettingsForm = () => {
         onClose={() => setCreatingType(undefined)}
       />
       <CredentialsUpdateModal
+        scope={selectedScope}
         editingCredentials={editingCredentials}
         onSubmit={() => {
           refetch();
@@ -101,7 +112,20 @@ export const CredentialsSettingsForm = () => {
         onClose={() => setEditingCredentials(undefined)}
       />
       <HStack justifyContent="space-between">
-        <Heading fontSize="2xl">Credentials</Heading>
+        <HStack>
+          <Heading fontSize="2xl">Credentials</Heading>
+          <DropdownList
+            size="sm"
+            items={[
+              { label: "User", value: "user" },
+              { label: "Workspace", value: "workspace" },
+            ]}
+            currentItem={selectedScope}
+            onItemSelect={(value) =>
+              setSelectedScope(value as "user" | "workspace")
+            }
+          />
+        </HStack>
         <Menu isLazy>
           <MenuButton as={Button} size="sm" leftIcon={<PlusIcon />}>
             Create new
@@ -153,10 +177,15 @@ export const CredentialsSettingsForm = () => {
                             })
                     }
                     onDeleteClick={() =>
-                      deleteCredentials({
-                        workspaceId: workspace!.id,
-                        credentialsId: cred.id,
-                      })
+                      deleteCredentials(
+                        selectedScope === "workspace"
+                          ? {
+                              scope: "workspace",
+                              workspaceId: workspace!.id,
+                              credentialsId: cred.id,
+                            }
+                          : { scope: "user", credentialsId: cred.id },
+                      )
                     }
                   />
                   <Divider />
@@ -327,7 +356,6 @@ const CredentialsItem = ({
 const groupCredentialsByType = (
   credentials: CredentialsInfo[],
 ): Record<CredentialsInfo["type"], CredentialsInfo[]> => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const groupedCredentials: any = {};
   credentials.forEach((cred) => {
     if (!groupedCredentials[cred.type]) {

@@ -4,6 +4,17 @@ import { z } from "@typebot.io/zod";
 
 const displayedInAppNotificationsSchema = z.record(z.boolean());
 
+export const groupTitlesAutoGenerationSchema = z.object({
+  isEnabled: z.boolean().optional(),
+  provider: z.string().optional(),
+  credentialsId: z.string().optional(),
+  model: z.string().optional(),
+  prompt: z.string().optional(),
+});
+export type GroupTitlesAutoGeneration = z.infer<
+  typeof groupTitlesAutoGenerationSchema
+>;
+
 export const userSchema = z.object({
   id: z.string(),
   createdAt: z.date(),
@@ -19,6 +30,7 @@ export const userSchema = z.object({
   graphNavigation: z.nativeEnum(GraphNavigation),
   preferredAppAppearance: z.string().nullable(),
   displayedInAppNotifications: displayedInAppNotificationsSchema.nullable(),
+  groupTitlesAutoGeneration: groupTitlesAutoGenerationSchema.nullable(),
 }) satisfies z.ZodType<Prisma.User>;
 
 export type User = z.infer<typeof userSchema>;

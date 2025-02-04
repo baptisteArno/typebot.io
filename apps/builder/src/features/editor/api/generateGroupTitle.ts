@@ -5,8 +5,8 @@ import { decrypt } from "@typebot.io/credentials/decrypt";
 import { getCredentials } from "@typebot.io/credentials/getCredentials";
 import { forgedBlocks } from "@typebot.io/forge-repository/definitions";
 import prisma from "@typebot.io/prisma";
+import { groupTitlesAutoGenerationSchema } from "@typebot.io/schemas/features/user/schema";
 import { defaultGroupTitleGenPrompt } from "@typebot.io/workspaces/constants";
-import { workspaceSchema } from "@typebot.io/workspaces/schemas";
 import { z } from "@typebot.io/zod";
 import { generateObject } from "ai";
 
@@ -37,7 +37,6 @@ export const generateGroupTitle = authenticatedProcedure
               id: true,
               isPastDue: true,
               isSuspended: true,
-              settings: true,
               members: {
                 select: {
                   userId: true,
@@ -61,14 +60,13 @@ export const generateGroupTitle = authenticatedProcedure
           message: "Typebot not found",
         });
 
-      const groupTitlesAutoGeneration = workspaceSchema.shape.settings.parse(
-        typebot.workspace.settings,
-      )?.groupTitlesAutoGeneration;
-
+      const groupTitlesAutoGeneration = groupTitlesAutoGenerationSchema.parse(
+        user.groupTitlesAutoGeneration,
+      );
       if (
-        !groupTitlesAutoGeneration?.isEnabled ||
-        !groupTitlesAutoGeneration?.provider ||
-        !groupTitlesAutoGeneration?.credentialsId
+        !groupTitlesAutoGeneration.isEnabled ||
+        !groupTitlesAutoGeneration.provider ||
+        !groupTitlesAutoGeneration.credentialsId
       ) {
         throw new TRPCError({
           code: "BAD_REQUEST",
@@ -76,10 +74,16 @@ export const generateGroupTitle = authenticatedProcedure
         });
       }
 
-      const credentials = await getCredentials(
-        credentialsId,
-        typebot.workspace.id,
-      );
+      const credentials = await prisma.userCredentials.findUnique({
+        where: {
+          id: credentialsId,
+          userId: user.id,
+        },
+        select: {
+          data: true,
+          iv: true,
+        },
+      });
 
       if (!credentials)
         throw new TRPCError({

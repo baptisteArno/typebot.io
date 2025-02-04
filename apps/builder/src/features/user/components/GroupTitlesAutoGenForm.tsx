@@ -11,20 +11,20 @@ import { HStack, Stack } from "@chakra-ui/react";
 import type { BlockV6 } from "@typebot.io/blocks-core/schemas/schema";
 import type { Credentials } from "@typebot.io/credentials/schemas";
 import { forgedBlocks } from "@typebot.io/forge-repository/definitions";
+import type { GroupTitlesAutoGeneration } from "@typebot.io/schemas/features/user/schema";
 import { defaultGroupTitleGenPrompt } from "@typebot.io/workspaces/constants";
-import type { GroupTitlesAutoGeneration } from "@typebot.io/workspaces/schemas";
 import { useState } from "react";
-import { useWorkspace } from "../WorkspaceProvider";
 
 type Props = {
+  userId: string;
   values: GroupTitlesAutoGeneration;
   onChange: (value: GroupTitlesAutoGeneration) => void;
 };
 export const GroupTitlesAutoGenForm = ({
+  userId,
   values: { credentialsId, provider, prompt, model },
   onChange,
 }: Props) => {
-  const { workspace } = useWorkspace();
   const { blockDef, actionDef } = useForgedBlock({
     blockType: provider as BlockV6["type"],
     feature: "aiGenerate",
@@ -62,10 +62,10 @@ export const GroupTitlesAutoGenForm = ({
             onItemSelect={updateProvider}
           />
         </HStack>
-        {provider && workspace && (
+        {provider && (
           <CredentialsDropdown
+            scope={{ type: "user", userId }}
             type={provider as Credentials["type"]}
-            workspaceId={workspace.id}
             currentCredentialsId={credentialsId}
             onCredentialsSelect={updateCredentialsId}
             onCreateNewClick={() => {
@@ -108,6 +108,7 @@ export const GroupTitlesAutoGenForm = ({
       />
       <CredentialsCreateModal
         creatingType={credsCreatingType as Credentials["type"]}
+        scope="user"
         onClose={() => {
           setCredsCreatingType(undefined);
         }}

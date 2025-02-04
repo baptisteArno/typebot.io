@@ -26,7 +26,6 @@ export type WorkspaceInApp = Omit<
 type WorkspaceUpdateProps = {
   icon?: string;
   name?: string;
-  settings?: WorkspaceInApp["settings"];
 };
 
 const workspaceContext = createContext<{

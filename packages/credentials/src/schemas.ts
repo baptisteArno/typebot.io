@@ -1,14 +1,12 @@
 import { forgedCredentialsSchemas } from "@typebot.io/forge-repository/credentials";
-import type { Prisma } from "@typebot.io/prisma/types";
 import { z } from "@typebot.io/zod";
 
-const credentialsBaseSchema = z.object({
+export const credentialsBaseSchema = z.object({
   id: z.string(),
   createdAt: z.date(),
-  workspaceId: z.string(),
   name: z.string(),
   iv: z.string(),
-}) satisfies z.ZodType<Omit<Prisma.Credentials, "data" | "type">>;
+});
 
 export const whatsAppCredentialsSchema = z
   .object({
@@ -71,7 +69,6 @@ export const smtpCredentialsSchema = z
     }),
   })
   .merge(credentialsBaseSchema);
-
 export type SmtpCredentials = z.infer<typeof smtpCredentialsSchema>;
 
 const credentialsSchema = z.discriminatedUnion("type", [
@@ -81,7 +78,6 @@ const credentialsSchema = z.discriminatedUnion("type", [
   whatsAppCredentialsSchema,
   ...Object.values(forgedCredentialsSchemas),
 ]);
-
 export type Credentials = z.infer<typeof credentialsSchema>;
 
 export const credentialsTypes = [

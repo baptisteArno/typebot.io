@@ -65,12 +65,14 @@ export const ForgedBlockSettings = ({ block, onOptionsChange }: Props) => {
       {blockDef.auth && (
         <>
           <CreateForgedCredentialsModal
+            scope="workspace"
             blockDef={blockDef}
             isOpen={isOpen}
             onClose={onClose}
             onNewCredentials={updateCredentialsId}
           />
           <ForgedCredentialsDropdown
+            scope="workspace"
             key={block.options?.credentialsId ?? "none"}
             blockDef={blockDef}
             currentCredentialsId={block.options?.credentialsId}

@@ -106,7 +106,6 @@ export const parseBlockCredentials = <
     id: z.string(),
     type: z.literal(blockId),
     createdAt: z.date(),
-    workspaceId: z.string(),
     name: z.string(),
     iv: z.string(),
     data: authSchema,

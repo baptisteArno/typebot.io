@@ -42,6 +42,7 @@ export const UpdateStripeCredentialsModalContent = ({
   const { data: existingCredentials } =
     trpc.credentials.getCredentials.useQuery(
       {
+        scope: "workspace",
         credentialsId,
         workspaceId: workspace!.id,
       },
@@ -107,6 +108,8 @@ export const UpdateStripeCredentialsModalContent = ({
     if (!user?.email || !workspace?.id || !stripeConfig) return;
     mutate({
       credentialsId,
+      scope: "workspace",
+      workspaceId: workspace.id,
       credentials: {
         data: {
           live: stripeConfig.live,
@@ -121,7 +124,6 @@ export const UpdateStripeCredentialsModalContent = ({
         },
         name: stripeConfig.name,
         type: "stripe",
-        workspaceId: workspace.id,
       },
     });
   };

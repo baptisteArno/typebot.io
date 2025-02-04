@@ -5,45 +5,51 @@ import prisma from "@typebot.io/prisma";
 import { z } from "@typebot.io/zod";
 
 export const deleteCredentials = authenticatedProcedure
-  .meta({
-    openapi: {
-      method: "DELETE",
-      path: "/v1/credentials/:credentialsId",
-      protect: true,
-      summary: "Delete credentials",
-      tags: ["Credentials"],
-    },
-  })
   .input(
-    z.object({
-      credentialsId: z.string(),
-      workspaceId: z.string(),
-    }),
+    z.discriminatedUnion("scope", [
+      z.object({
+        scope: z.literal("workspace"),
+        credentialsId: z.string(),
+        workspaceId: z.string(),
+      }),
+      z.object({
+        scope: z.literal("user"),
+        credentialsId: z.string(),
+      }),
+    ]),
   )
   .output(
     z.object({
       credentialsId: z.string(),
     }),
   )
-  .mutation(
-    async ({ input: { credentialsId, workspaceId }, ctx: { user } }) => {
-      const workspace = await prisma.workspace.findFirst({
+  .mutation(async ({ input, ctx: { user } }) => {
+    if (input.scope === "user") {
+      await prisma.userCredentials.delete({
         where: {
-          id: workspaceId,
+          id: input.credentialsId,
+          userId: user.id,
         },
-        select: { id: true, members: { select: { userId: true, role: true } } },
       });
-      if (!workspace || isWriteWorkspaceForbidden(workspace, user))
-        throw new TRPCError({
-          code: "NOT_FOUND",
-          message: "Workspace not found",
-        });
+      return { credentialsId: input.credentialsId };
+    }
 
-      await prisma.credentials.delete({
-        where: {
-          id: credentialsId,
-        },
+    const workspace = await prisma.workspace.findFirst({
+      where: {
+        id: input.workspaceId,
+      },
+      select: { id: true, members: { select: { userId: true, role: true } } },
+    });
+    if (!workspace || isWriteWorkspaceForbidden(workspace, user))
+      throw new TRPCError({
+        code: "NOT_FOUND",
+        message: "Workspace not found",
       });
-      return { credentialsId };
-    },
-  );
+
+    await prisma.credentials.delete({
+      where: {
+        id: input.credentialsId,
+      },
+    });
+    return { credentialsId: input.credentialsId };
+  });

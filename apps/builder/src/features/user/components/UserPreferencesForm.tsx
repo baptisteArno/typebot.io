@@ -1,4 +1,5 @@
 import { MoreInfoTooltip } from "@/components/MoreInfoTooltip";
+import { SwitchWithRelatedSettings } from "@/components/SwitchWithRelatedSettings";
 import { ChevronDownIcon } from "@/components/icons";
 import {
   Button,
@@ -12,11 +13,13 @@ import {
 } from "@chakra-ui/react";
 import { useTolgee, useTranslate } from "@tolgee/react";
 import { GraphNavigation } from "@typebot.io/prisma/enum";
+import type { GroupTitlesAutoGeneration } from "@typebot.io/schemas/features/user/schema";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import { useUser } from "../hooks/useUser";
 import { AppearanceRadioGroup } from "./AppearanceRadioGroup";
 import { GraphNavigationRadioGroup } from "./GraphNavigationRadioGroup";
+import { GroupTitlesAutoGenForm } from "./GroupTitlesAutoGenForm";
 
 const localeHumanReadable = {
   en: "English",
@@ -61,6 +64,18 @@ export const UserPreferencesForm = () => {
   };
 
   const currentLanguage = getLanguage();
+
+  const updateGroupTitlesGenParams = (
+    params: Partial<GroupTitlesAutoGeneration>,
+  ) => {
+    if (!user?.id) return;
+    updateUser({
+      groupTitlesAutoGeneration: {
+        ...user.groupTitlesAutoGeneration,
+        ...params,
+      },
+    });
+  };
 
   return (
     <Stack spacing={12}>
@@ -120,6 +135,22 @@ export const UserPreferencesForm = () => {
           onChange={changeAppearance}
         />
       </Stack>
+
+      <SwitchWithRelatedSettings
+        label="Generate groups title with AI"
+        initialValue={user?.groupTitlesAutoGeneration?.isEnabled}
+        onCheckChange={(isEnabled) => {
+          updateGroupTitlesGenParams({ isEnabled });
+        }}
+      >
+        {user?.groupTitlesAutoGeneration && (
+          <GroupTitlesAutoGenForm
+            userId={user.id}
+            values={user.groupTitlesAutoGeneration}
+            onChange={updateGroupTitlesGenParams}
+          />
+        )}
+      </SwitchWithRelatedSettings>
     </Stack>
   );
 };

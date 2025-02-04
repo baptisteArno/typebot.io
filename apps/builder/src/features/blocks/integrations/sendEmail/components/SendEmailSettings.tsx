@@ -123,7 +123,7 @@ export const SendEmailSettings = ({ options, onOptionsChange }: Props) => {
         {workspace && (
           <CredentialsDropdown
             type="smtp"
-            workspaceId={workspace.id}
+            scope={{ type: "workspace", workspaceId: workspace.id }}
             currentCredentialsId={getCredentialsIdOrDefault({
               workspace,
               credentialsId: options?.credentialsId,

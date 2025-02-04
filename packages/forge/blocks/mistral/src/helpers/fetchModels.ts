@@ -14,7 +14,19 @@ export const fetchModels = async ({
         Authorization: `Bearer ${credentials.apiKey}`,
       },
     })
-    .json<{ data: { id: string }[] }>();
+    .json<{
+      data: {
+        id: string;
+        created: number;
+        deprecation?: string;
+        capabilities: {
+          completion_chat: boolean;
+        };
+      }[];
+    }>();
 
-  return data.map((model) => model.id);
+  return data
+    .filter((model) => model.capabilities.completion_chat && !model.deprecation)
+    .sort((a, b) => b.created - a.created)
+    .map((model) => model.id);
 };

@@ -1,6 +1,5 @@
 import { useToast } from "@/hooks/useToast";
 import { useColorMode } from "@chakra-ui/react";
-import { setUser as setSentryUser } from "@sentry/nextjs";
 import { env } from "@typebot.io/env";
 import { isDefined, isNotDefined } from "@typebot.io/lib/utils";
 import type { User } from "@typebot.io/schemas/features/user/schema";
@@ -57,12 +56,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     setCurrentWorkspaceId(
       localStorage.getItem("currentWorkspaceId") ?? undefined,
     );
-    const parsedUser = session.user as User;
-    setUser(parsedUser);
-
-    if (parsedUser?.id) {
-      setSentryUser({ id: parsedUser.id });
-    }
+    setUser(session.user as User);
   }, [session, user]);
 
   useEffect(() => {

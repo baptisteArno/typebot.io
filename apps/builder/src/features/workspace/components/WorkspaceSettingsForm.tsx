@@ -1,7 +1,6 @@
 import { ConfirmModal } from "@/components/ConfirmModal";
 import { CopyButton } from "@/components/CopyButton";
 import { EditableEmojiOrImageIcon } from "@/components/EditableEmojiOrImageIcon";
-import { SwitchWithRelatedSettings } from "@/components/SwitchWithRelatedSettings";
 import { TextInput } from "@/components/inputs";
 import {
   Button,
@@ -17,10 +16,8 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
-import type { GroupTitlesAutoGeneration } from "@typebot.io/workspaces/schemas";
 import React from "react";
 import { useWorkspace } from "../WorkspaceProvider";
-import { GroupTitlesAutoGenForm } from "./GroupTitlesAutoGenForm";
 
 export const WorkspaceSettingsForm = ({ onClose }: { onClose: () => void }) => {
   const { t } = useTranslate();
@@ -30,20 +27,6 @@ export const WorkspaceSettingsForm = ({ onClose }: { onClose: () => void }) => {
   const handleNameChange = (name: string) => {
     if (!workspace?.id) return;
     updateWorkspace({ name });
-  };
-
-  const updateGroupTitlesGenParams = (
-    params: Partial<GroupTitlesAutoGeneration>,
-  ) => {
-    if (!workspace?.id) return;
-    updateWorkspace({
-      settings: {
-        groupTitlesAutoGeneration: {
-          ...workspace.settings?.groupTitlesAutoGeneration,
-          ...params,
-        },
-      },
-    });
   };
 
   const handleChangeIcon = (icon: string) => updateWorkspace({ icon });
@@ -96,25 +79,6 @@ export const WorkspaceSettingsForm = ({ onClose }: { onClose: () => void }) => {
               Used when interacting with the Typebot API.
             </FormHelperText>
           </FormControl>
-
-          <Stack spacing="4" mb={4}>
-            <SwitchWithRelatedSettings
-              label="Generate groups title with AI"
-              initialValue={
-                workspace.settings?.groupTitlesAutoGeneration?.isEnabled
-              }
-              onCheckChange={(isEnabled) => {
-                updateGroupTitlesGenParams({ isEnabled });
-              }}
-            >
-              {workspace.settings?.groupTitlesAutoGeneration && (
-                <GroupTitlesAutoGenForm
-                  values={workspace.settings.groupTitlesAutoGeneration}
-                  onChange={updateGroupTitlesGenParams}
-                />
-              )}
-            </SwitchWithRelatedSettings>
-          </Stack>
         </>
       )}
       {workspace && workspaces && workspaces.length > 1 && (

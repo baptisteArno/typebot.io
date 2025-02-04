@@ -16,6 +16,7 @@ import {
   ModalOverlay,
   Stack,
 } from "@chakra-ui/react";
+import type { Credentials } from "@typebot.io/credentials/schemas";
 import type React from "react";
 import { useState } from "react";
 
@@ -64,14 +65,15 @@ export const OpenAICredentialsModal = ({
     e.preventDefault();
     if (!workspace) return;
     mutate({
+      scope: "workspace",
+      workspaceId: workspace.id,
       credentials: {
         type: "openai",
-        workspaceId: workspace.id,
         name,
         data: {
           apiKey,
         },
-      },
+      } as Credentials,
     });
   };
 

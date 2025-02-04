@@ -24,6 +24,7 @@ type Props = Omit<ButtonProps, "type"> & {
   currentCredentialsId: string | undefined;
   onAddClick: () => void;
   onCredentialsSelect: (credentialId?: string) => void;
+  scope: "workspace" | "user";
 };
 
 export const ForgedCredentialsDropdown = ({
@@ -31,6 +32,7 @@ export const ForgedCredentialsDropdown = ({
   blockDef,
   onCredentialsSelect,
   onAddClick,
+  scope,
   ...props
 }: Props) => {
   const router = useRouter();
@@ -38,10 +40,16 @@ export const ForgedCredentialsDropdown = ({
   const { workspace, currentRole } = useWorkspace();
   const { data, refetch, isLoading } =
     trpc.credentials.listCredentials.useQuery(
-      {
-        workspaceId: workspace?.id as string,
-        type: blockDef.id as Credentials["type"],
-      },
+      scope === "workspace"
+        ? {
+            scope: "workspace",
+            workspaceId: workspace?.id as string,
+            type: blockDef.id as Credentials["type"],
+          }
+        : {
+            scope: "user",
+            type: blockDef.id as Credentials["type"],
+          },
       { enabled: !!workspace?.id },
     );
   const [isDeleting, setIsDeleting] = useState<string>();
@@ -99,7 +107,18 @@ export const ForgedCredentialsDropdown = ({
     (credentialsId: string) => async (e: React.MouseEvent) => {
       if (!workspace) return;
       e.stopPropagation();
-      mutate({ workspaceId: workspace.id, credentialsId });
+      mutate(
+        scope === "workspace"
+          ? {
+              scope: "workspace",
+              workspaceId: workspace.id,
+              credentialsId,
+            }
+          : {
+              scope: "user",
+              credentialsId,
+            },
+      );
     };
 
   if (!data || data?.credentials.length === 0) {

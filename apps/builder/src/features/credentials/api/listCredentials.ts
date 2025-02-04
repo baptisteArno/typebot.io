@@ -17,37 +17,55 @@ const outputCredentialsSchema = z.array(
 );
 
 export const listCredentials = authenticatedProcedure
-  .meta({
-    openapi: {
-      method: "GET",
-      path: "/v1/credentials",
-      protect: true,
-      summary: "List workspace credentials",
-      tags: ["Credentials"],
-    },
-  })
   .input(
-    z.object({
-      workspaceId: z.string(),
-      type: credentialsTypeSchema.optional(),
-    }),
+    z.discriminatedUnion("scope", [
+      z.object({
+        scope: z.literal("workspace"),
+        workspaceId: z.string(),
+        type: credentialsTypeSchema.optional(),
+      }),
+      z.object({
+        scope: z.literal("user"),
+        type: credentialsTypeSchema.optional(),
+      }),
+    ]),
   )
   .output(
     z.object({
       credentials: outputCredentialsSchema,
     }),
   )
-  .query(async ({ input: { workspaceId, type }, ctx: { user } }) => {
+  .query(async ({ input, ctx: { user } }) => {
+    if (input.scope === "user") {
+      const credentials = await prisma.userCredentials.findMany({
+        where: {
+          userId: user.id,
+          type: input.type,
+        },
+        select: {
+          id: true,
+          type: true,
+          name: true,
+        },
+      });
+      return {
+        credentials: outputCredentialsSchema.parse(
+          isDefined(input.type)
+            ? credentials
+            : credentials.sort((a, b) => a.type.localeCompare(b.type)),
+        ),
+      };
+    }
     const workspace = await prisma.workspace.findFirst({
       where: {
-        id: workspaceId,
+        id: input.workspaceId,
       },
       select: {
         id: true,
         members: true,
         credentials: {
           where: {
-            type,
+            type: input.type,
           },
           select: {
             id: true,
@@ -65,7 +83,7 @@ export const listCredentials = authenticatedProcedure
 
     return {
       credentials: outputCredentialsSchema.parse(
-        isDefined(type)
+        isDefined(input.type)
           ? workspace.credentials
           : workspace.credentials
               .filter((c) => !deletedCredentialsTypes.includes(c.type))

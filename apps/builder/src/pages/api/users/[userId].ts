@@ -1,7 +1,6 @@
 import { getAuthenticatedUser } from "@/features/auth/helpers/getAuthenticatedUser";
 import { methodNotAllowed, notAuthenticated } from "@typebot.io/lib/api/utils";
 import prisma from "@typebot.io/prisma";
-import { DbNull } from "@typebot.io/prisma/enum";
 
 import type { User } from "@typebot.io/schemas/features/user/schema";
 import { trackEvents } from "@typebot.io/telemetry/trackEvents";
@@ -20,8 +19,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       where: { id },
       data: {
         ...data,
-        onboardingCategories: data.onboardingCategories ?? [],
-        displayedInAppNotifications: data.displayedInAppNotifications ?? DbNull,
+        onboardingCategories: data.onboardingCategories,
+        displayedInAppNotifications:
+          data.displayedInAppNotifications ?? undefined,
+        groupTitlesAutoGeneration: data.groupTitlesAutoGeneration ?? undefined,
       },
     });
     if (data.onboardingCategories || data.referral || data.company || data.name)

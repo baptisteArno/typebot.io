@@ -77,7 +77,7 @@ export const OpenAISettings = ({
         <>
           <CredentialsDropdown
             type="openai"
-            workspaceId={workspace.id}
+            scope={{ type: "workspace", workspaceId: workspace.id }}
             currentCredentialsId={options?.credentialsId}
             onCredentialsSelect={updateCredentialsId}
             onCreateNewClick={onOpen}

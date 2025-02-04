@@ -132,10 +132,11 @@ export const WhatsAppCreateModalContent = ({
   const createMetaCredentials = async () => {
     if (!workspace) return;
     mutate({
+      scope: "workspace",
+      workspaceId: workspace.id,
       credentials: {
         id: credentialsId,
         type: "whatsApp",
-        workspaceId: workspace.id,
         name: phoneNumberName,
         data: {
           systemUserAccessToken,

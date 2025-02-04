@@ -52,11 +52,17 @@ test.describe
       await page.getByPlaceholder("Select a variable").nth(1).click();
       await page.getByText("var1").click();
       await expect(page.getByText("Setvar1")).toBeVisible();
-      await page
-        .getByTestId("block block2")
-        .click({ position: { x: 0, y: 0 } });
 
-      await page.locator("span").filter({ hasText: "Item 1" }).hover();
+      await page
+        .locator("span")
+        .filter({ hasText: "Item 3" })
+        .hover({
+          position: {
+            x: 0,
+            y: -10,
+          },
+          force: true,
+        });
       await page.waitForTimeout(1000);
       await page.click('[aria-label="Add item"]');
       await page
@@ -91,7 +97,9 @@ test("Variable buttons should work", async ({ page }) => {
   await page.click("text=Test");
   await page.getByRole("button", { name: "Variable item" }).click();
   await expect(page.getByTestId("guest-bubble")).toHaveText("Variable item");
-  await expect(page.locator("text=Ok great!")).toBeVisible();
+  await expect(
+    page.locator("typebot-standard").getByText("Ok great!"),
+  ).toBeVisible();
   await page.click('text="Item 1"');
   await page.getByRole("textbox").last().fill("{{Item 2}}");
   await page.getByTestId("block block1").click({ position: { x: 0, y: 0 } });

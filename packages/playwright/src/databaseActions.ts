@@ -140,8 +140,10 @@ export const updateUser = (data: Partial<User>) =>
   prisma.user.update({
     data: {
       ...data,
-      onboardingCategories: data.onboardingCategories ?? [],
-      displayedInAppNotifications: data.displayedInAppNotifications ?? DbNull,
+      onboardingCategories: data.onboardingCategories,
+      displayedInAppNotifications:
+        data.displayedInAppNotifications ?? undefined,
+      groupTitlesAutoGeneration: data.groupTitlesAutoGeneration ?? undefined,
     },
     where: {
       id: userId,

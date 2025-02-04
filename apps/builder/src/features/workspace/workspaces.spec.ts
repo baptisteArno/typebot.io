@@ -42,7 +42,7 @@ test("can switch between workspaces and access typebot", async ({ page }) => {
   await expect(page.locator('text="Pro typebot"')).toBeVisible({
     timeout: 20000,
   });
-  await page.click("text=Pro workspace");
+  await page.getByRole("button", { name: "Pro workspace Pro" }).click();
   await page.click('text="Starter workspace"');
   await expect(page.locator('text="Pro typebot"')).toBeHidden();
   await page.click('text="Starter typebot"');
@@ -51,8 +51,7 @@ test("can switch between workspaces and access typebot", async ({ page }) => {
 
 test("can create and delete a new workspace", async ({ page }) => {
   await page.goto("/typebots");
-  await page.click("text=Pro workspace");
-  await expect(page.locator('text="Pro workspace" >> nth=1')).toBeHidden();
+  await page.getByRole("button", { name: "Pro workspace Pro" }).click();
   await page.click("text=New workspace");
   await expect(page.locator('text="Pro typebot"')).toBeHidden();
   await page.click("text=John Doe's workspace");
@@ -66,6 +65,7 @@ test("can create and delete a new workspace", async ({ page }) => {
     ),
   ).toBeVisible();
   await page.click('text="Delete"');
+  await page.waitForTimeout(2000);
   await expect(page.locator('text="John Doe\'s workspace"')).toBeHidden();
 });
 
@@ -155,7 +155,7 @@ test("can manage members", async ({ page }) => {
 
 test("can't add new members when limit is reached", async ({ page }) => {
   await page.goto("/typebots");
-  await page.click('text="My awesome workspace"');
+  await page.getByRole("button", { name: "My awesome workspace Pro" }).click();
   await page.click('text="Free workspace"');
   await page.click("text=Settings & Members");
   await page.click('text="Members"');

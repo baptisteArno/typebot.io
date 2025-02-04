@@ -119,6 +119,7 @@ export const StripeCreateModalContent = ({
     e.preventDefault();
     if (!user?.email || !workspace?.id) return;
     mutate({
+      scope: "workspace",
       credentials: {
         data: {
           live: stripeConfig.live,
@@ -133,8 +134,8 @@ export const StripeCreateModalContent = ({
         },
         name: stripeConfig.name,
         type: "stripe",
-        workspaceId: workspace.id,
       },
+      workspaceId: workspace.id,
     });
   };
 

@@ -32,6 +32,7 @@ export const SmtpUpdateModalContent = ({ credentialsId, onUpdate }: Props) => {
   const { data: existingCredentials } =
     trpc.credentials.getCredentials.useQuery(
       {
+        scope: "workspace",
         workspaceId: workspace!.id,
         credentialsId: credentialsId,
       },
@@ -79,8 +80,9 @@ export const SmtpUpdateModalContent = ({ credentialsId, onUpdate }: Props) => {
         data: smtpConfig,
         name: smtpConfig.from.email as string,
         type: "smtp",
-        workspaceId: workspace.id,
       },
+      scope: "workspace",
+      workspaceId: workspace.id,
     });
   };
   return (

@@ -9,10 +9,12 @@ import { forgedBlocks } from "@typebot.io/forge-repository/definitions";
 
 export const CredentialsCreateModal = ({
   creatingType,
+  scope,
   onSubmit,
   onClose,
 }: {
   creatingType?: Credentials["type"];
+  scope: "workspace" | "user";
   onClose: () => void;
   onSubmit: () => void;
 }) => {
@@ -26,6 +28,7 @@ export const CredentialsCreateModal = ({
       {creatingType && (
         <CredentialsCreateModalContent
           type={creatingType}
+          scope={scope}
           onSubmit={onSubmit}
           onClose={onClose}
         />
@@ -36,10 +39,12 @@ export const CredentialsCreateModal = ({
 
 const CredentialsCreateModalContent = ({
   type,
+  scope,
   onSubmit,
   onClose,
 }: {
   type: Credentials["type"];
+  scope: "workspace" | "user";
   onClose: () => void;
   onSubmit: () => void;
 }) => {
@@ -67,6 +72,7 @@ const CredentialsCreateModalContent = ({
         <CreateForgedCredentialsModalContent
           blockDef={forgedBlocks[type]}
           onNewCredentials={onSubmit}
+          scope={scope}
         />
       );
   }

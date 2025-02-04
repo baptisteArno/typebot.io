@@ -22,6 +22,7 @@ type Props = {
   blockDef: ForgedBlockDefinition;
   isOpen: boolean;
   defaultData?: any;
+  scope: "workspace" | "user";
   onClose: () => void;
   onNewCredentials: (id: string) => void;
 };
@@ -30,6 +31,7 @@ export const CreateForgedCredentialsModal = ({
   blockDef,
   isOpen,
   defaultData,
+  scope,
   onClose,
   onNewCredentials,
 }: Props) => {
@@ -40,6 +42,7 @@ export const CreateForgedCredentialsModal = ({
       <CreateForgedCredentialsModalContent
         defaultData={defaultData}
         blockDef={blockDef}
+        scope={scope}
         onNewCredentials={(id) => {
           onClose();
           onNewCredentials(id);
@@ -52,7 +55,8 @@ export const CreateForgedCredentialsModal = ({
 export const CreateForgedCredentialsModalContent = ({
   blockDef,
   onNewCredentials,
-}: Pick<Props, "blockDef" | "onNewCredentials" | "defaultData">) => {
+  scope,
+}: Pick<Props, "blockDef" | "onNewCredentials" | "defaultData" | "scope">) => {
   const { workspace } = useWorkspace();
   const { showToast } = useToast();
   const [name, setName] = useState("");
@@ -84,14 +88,26 @@ export const CreateForgedCredentialsModalContent = ({
   const createOpenAICredentials = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!workspace || !blockDef.auth) return;
-    mutate({
-      credentials: {
-        type: blockDef.id,
-        workspaceId: workspace.id,
-        name,
-        data,
-      } as Credentials,
-    });
+    mutate(
+      scope === "workspace"
+        ? {
+            credentials: {
+              type: blockDef.id,
+              name,
+              data,
+            } as Credentials,
+            scope: "workspace",
+            workspaceId: workspace.id,
+          }
+        : {
+            credentials: {
+              type: blockDef.id,
+              name,
+              data,
+            } as Credentials,
+            scope: "user",
+          },
+    );
   };
 
   if (!blockDef.auth) return null;

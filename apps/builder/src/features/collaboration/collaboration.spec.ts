@@ -107,7 +107,7 @@ test.describe("Guest with read access", () => {
     await createFolder(guestWorkspaceId, "Guest folder");
     await injectFakeResults({ typebotId, count: 10 });
     await page.goto(`/typebots`);
-    await page.click("text=Pro workspace");
+    await page.getByRole("button", { name: "Pro workspace Pro" }).click();
     await page.click("text=Guest workspace #2");
     await expect(page.locator("text=Guest typebot")).toBeVisible();
     await expect(page.locator("text=Another typebot")).toBeHidden();
@@ -163,7 +163,7 @@ test.describe("Guest with write access", () => {
     });
     await createFolder(guestWorkspaceId, "Guest folder");
     await page.goto(`/typebots`);
-    await page.click("text=Pro workspace");
+    await page.getByRole("button", { name: "Pro workspace Pro" }).click();
     await page.click("text=Guest workspace #3");
     await expect(page.locator("text=Guest typebot")).toBeVisible();
     await expect(page.locator("text=Another typebot")).toBeHidden();
