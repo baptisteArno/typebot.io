@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out the repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Extract existing image metadata
         id: image-meta
@@ -51,7 +51,7 @@ jobs:
           touch "/tmp/digests/${{ matrix.app }}/${digest#sha256:}"
 
       - name: Upload digest
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: digests-${{ matrix.app }}
           path: /tmp/digests/${{matrix.app}}/*
@@ -67,7 +67,7 @@ jobs:
     runs-on: buildjet-8vcpu-ubuntu-2204-arm
     steps:
       - name: Check out the repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Extract existing image metadata
         id: image-meta
@@ -104,7 +104,7 @@ jobs:
           touch "/tmp/digests/${{ matrix.app }}/${digest#sha256:}"
 
       - name: Upload digest
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: digests-${{ matrix.app }}
           path: /tmp/digests/${{matrix.app}}/*
@@ -122,7 +122,7 @@ jobs:
         app: ["builder", "viewer"]
     steps:
       - name: Download AMD digests
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: digests-${{ matrix.app }}
           path: /tmp/digests/${{ matrix.app }}
@@ -160,7 +160,7 @@ jobs:
     if: startsWith(github.ref, 'refs/tags/v')
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Extract body from changelog
         run: |
           NEW_VERSION=$(echo '${{ github.ref }}' | sed 's/refs\/tags\/v//')
