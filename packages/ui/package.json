@@ -14,8 +14,9 @@
   },
   "dependencies": {
     "@chakra-ui/react": "2.8.2",
+    "@chakra-ui/theme-tools": "2.2.6",
+    "@chakra-ui/anatomy": "2.3.4",
     "next": "14.2.13",
-    "@typebot.io/theme": "workspace:*",
-    "@typebot.io/lib": "workspace:*"
+    "react": "18.2.0"
   }
 }

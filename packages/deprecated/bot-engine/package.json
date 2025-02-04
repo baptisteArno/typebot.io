@@ -24,7 +24,6 @@
     "@typebot.io/blocks-logic": "workspace:*",
     "@typebot.io/conditions": "workspace:*",
     "@typebot.io/env": "workspace:*",
-    "@typebot.io/forge": "workspace:*",
     "@typebot.io/groups": "workspace:*",
     "@typebot.io/lib": "workspace:*",
     "@typebot.io/prisma": "workspace:*",
@@ -51,7 +50,6 @@
     "@types/react-transition-group": "4.4.5",
     "autoprefixer": "10.4.20",
     "postcss": "8.5.1",
-    "prettier": "2.8.8",
     "tailwindcss": "3.4.17",
     "tsup": "8.3.0"
   },

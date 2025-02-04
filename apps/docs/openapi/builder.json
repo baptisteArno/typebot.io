@@ -2299,20 +2299,25 @@
                           "type": "object",
                           "nullable": true,
                           "properties": {
-                            "isEnabled": {
-                              "type": "boolean"
-                            },
-                            "provider": {
-                              "type": "string"
-                            },
-                            "credentialsId": {
-                              "type": "string"
-                            },
-                            "model": {
-                              "type": "string"
-                            },
-                            "prompt": {
-                              "type": "string"
+                            "groupTitlesAutoGeneration": {
+                              "type": "object",
+                              "properties": {
+                                "isEnabled": {
+                                  "type": "boolean"
+                                },
+                                "provider": {
+                                  "type": "string"
+                                },
+                                "credentialsId": {
+                                  "type": "string"
+                                },
+                                "model": {
+                                  "type": "string"
+                                },
+                                "prompt": {
+                                  "type": "string"
+                                }
+                              }
                             }
                           }
                         },
@@ -2468,20 +2473,25 @@
                           "type": "object",
                           "nullable": true,
                           "properties": {
-                            "isEnabled": {
-                              "type": "boolean"
-                            },
-                            "provider": {
-                              "type": "string"
-                            },
-                            "credentialsId": {
-                              "type": "string"
-                            },
-                            "model": {
-                              "type": "string"
-                            },
-                            "prompt": {
-                              "type": "string"
+                            "groupTitlesAutoGeneration": {
+                              "type": "object",
+                              "properties": {
+                                "isEnabled": {
+                                  "type": "boolean"
+                                },
+                                "provider": {
+                                  "type": "string"
+                                },
+                                "credentialsId": {
+                                  "type": "string"
+                                },
+                                "model": {
+                                  "type": "string"
+                                },
+                                "prompt": {
+                                  "type": "string"
+                                }
+                              }
                             }
                           }
                         },
@@ -9631,20 +9641,25 @@
                           "type": "object",
                           "nullable": true,
                           "properties": {
-                            "isEnabled": {
-                              "type": "boolean"
-                            },
-                            "provider": {
-                              "type": "string"
-                            },
-                            "credentialsId": {
-                              "type": "string"
-                            },
-                            "model": {
-                              "type": "string"
-                            },
-                            "prompt": {
-                              "type": "string"
+                            "groupTitlesAutoGeneration": {
+                              "type": "object",
+                              "properties": {
+                                "isEnabled": {
+                                  "type": "boolean"
+                                },
+                                "provider": {
+                                  "type": "string"
+                                },
+                                "credentialsId": {
+                                  "type": "string"
+                                },
+                                "model": {
+                                  "type": "string"
+                                },
+                                "prompt": {
+                                  "type": "string"
+                                }
+                              }
                             }
                           }
                         },

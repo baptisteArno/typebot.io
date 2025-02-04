@@ -1,10 +1,10 @@
 import { Card } from "@/components/Card";
 import { ContentPageWrapper } from "@/components/ContentPageWrapper";
+import { allPosts } from "@/content-collections";
 import { formatDate } from "@/features/blog/helpers";
 import { createMetaTags } from "@/lib/createMetaTags";
 import { Link, createFileRoute } from "@tanstack/react-router";
 import { isDefined } from "@typebot.io/lib/utils";
-import { allPosts } from "content-collections";
 
 export const Route = createFileRoute("/_layout/blog/")({
   head: () => ({

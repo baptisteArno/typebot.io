@@ -4,12 +4,12 @@ import { sendAlmostReachedChatsLimitEmail } from "@typebot.io/emails/emails/Almo
 import { sendReachedChatsLimitEmail } from "@typebot.io/emails/emails/ReachedChatsLimitEmail";
 import { isDefined, isEmpty } from "@typebot.io/lib/utils";
 import { Plan, WorkspaceRole } from "@typebot.io/prisma/enum";
+import type { Prisma } from "@typebot.io/prisma/types";
 import prisma from "@typebot.io/prisma/withReadReplica";
 import type { TelemetryEvent } from "@typebot.io/telemetry/schemas";
 import { trackEvents } from "@typebot.io/telemetry/trackEvents";
 import type { Workspace } from "@typebot.io/workspaces/schemas";
 import Stripe from "stripe";
-import type { MemberInWorkspace } from ".prisma/client";
 
 const LIMIT_EMAIL_TRIGGER_PERCENT = 0.75;
 
@@ -377,7 +377,7 @@ async function sendLimitWarningEmails({
     | "plan"
     | "chatsHardLimit"
   > & {
-    members: (Pick<MemberInWorkspace, "role"> & {
+    members: (Pick<Prisma.MemberInWorkspace, "role"> & {
       user: { id: string; email: string | null };
     })[];
   };

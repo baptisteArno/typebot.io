@@ -9,7 +9,10 @@
   },
   "dependencies": {
     "@typebot.io/env": "workspace:*",
-    "@typebot.io/typebot": "workspace:*"
+    "@typebot.io/typebot": "workspace:*",
+    "@typebot.io/blocks-logic": "workspace:*",
+    "@typebot.io/lib": "workspace:*",
+    "@typebot.io/variables": "workspace:*"
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*"

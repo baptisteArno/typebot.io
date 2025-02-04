@@ -24,7 +24,7 @@
     "start-docker-compose-prod": "docker compose -f docker-compose.yml up",
     "build": "turbo build --filter=builder... --filter=viewer... --filter=landing-page... --filter=docs...",
     "dev": "turbo dev --filter=builder... --filter=viewer... --filter=@typebot.io/partykit... --concurrency=11",
-    "generate-change-log": "git fetch --all && pnpx gitmoji-changelog",
+    "generate-change-log": "bun check-unused-dependencies && git fetch --all && pnpx gitmoji-changelog",
     "sync-locales": "tolgee sync --continue-on-warning --remove-unused --patterns './apps/builder/src/**/*.ts?(x)' --backup './.tolgee/backup'",
     "pull-locales": "tolgee pull && prettier --write ./apps/builder/src/i18n",
     "create-new-block": "cd packages/forge/cli && bun start",

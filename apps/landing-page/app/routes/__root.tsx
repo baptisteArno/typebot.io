@@ -1,4 +1,5 @@
 import css from "@/assets/globals.css?url";
+import { Header } from "@/components/Header";
 import { NotFound } from "@/components/NotFound";
 import { Footer } from "@/components/footer/Footer";
 import { TanStackRouterDevtools } from "@/lib/router-dev-tool";
@@ -10,7 +11,6 @@ import {
 } from "@tanstack/react-router";
 import { Meta, Scripts } from "@tanstack/start";
 import { z } from "@typebot.io/zod";
-import { Header } from "app/components/Header";
 import { Suspense } from "react";
 
 export const Route = createRootRoute({

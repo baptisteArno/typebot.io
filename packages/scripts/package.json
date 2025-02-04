@@ -53,12 +53,14 @@
     "@typebot.io/emails": "workspace:*"
   },
   "devDependencies": {
-    "@typebot.io/schemas": "workspace:*",
     "@typebot.io/tsconfig": "workspace:*",
     "@types/bun": "^1.1.9",
     "@types/cli-progress": "^3.11.5",
     "@types/papaparse": "5.3.7",
     "@types/prompts": "2.4.4",
-    "tsx": "4.19.1"
+    "tsx": "4.19.1",
+    "@typebot.io/blocks-integrations": "workspace:*",
+    "@typebot.io/groups": "workspace:*",
+    "dotenv": "16.4.5"
   }
 }

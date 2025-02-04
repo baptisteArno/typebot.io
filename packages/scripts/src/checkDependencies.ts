@@ -10,7 +10,13 @@ const findPackages = (dir: string): string[] => {
   const packages: string[] = [];
   const dirs = readdirSync(dir, { withFileTypes: true });
   for (const entry of dirs) {
-    if (entry.isDirectory() && entry.name !== "node_modules") {
+    if (
+      entry.isDirectory() &&
+      entry.name !== "node_modules" &&
+      entry.name !== ".next" &&
+      entry.name !== "dist" &&
+      entry.name !== ".vercel"
+    ) {
       const fullPath = join(dir, entry.name);
       const packageJsonPath = join(fullPath, "package.json");
       if (existsSync(packageJsonPath)) {
@@ -24,10 +30,26 @@ const findPackages = (dir: string): string[] => {
 
 // Main function to run depcheck on all packages
 const main = async () => {
+  console.log("Checking unused and missing dependencies...");
+  let failed = false;
   const packages = findPackages(rootDir);
-  for (const pkg of packages) {
-    console.log(`Checking deps from ${pkg}/package.json`);
-    await $`bunx depcheck ${pkg}`.nothrow();
+  const checks = packages.map(async (pkg) => {
+    const { stdout, exitCode } =
+      await $`bunx depcheck ${pkg} --ignore-patterns=.vinxi,.vercel --ignores=bun,jest-environment-jsdom,@types/jest,autoprefixer,tailwindcss`
+        .nothrow()
+        .quiet();
+
+    if (exitCode === 255) {
+      console.log(`${pkg}/package.json`);
+      console.log(stdout.toString());
+      failed = true;
+    }
+  });
+
+  await Promise.all(checks);
+
+  if (failed) {
+    process.exit(1);
   }
 };
 

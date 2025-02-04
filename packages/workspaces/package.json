@@ -9,8 +9,7 @@
   "dependencies": {
     "@typebot.io/env": "workspace:*",
     "@typebot.io/prisma": "workspace:*",
-    "@typebot.io/zod": "workspace:*",
-    "@typebot.io/forge-repository": "workspace:*"
+    "@typebot.io/zod": "workspace:*"
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*"

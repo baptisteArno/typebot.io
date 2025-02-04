@@ -1,12 +1,12 @@
 import codeSnippetsCssUrl from "@/assets/code-snippet.css?url";
 import { ContentPageWrapper } from "@/components/ContentPageWrapper";
 import { TextLink } from "@/components/link";
+import { allPosts } from "@/content-collections";
 import { Mdx } from "@/features/blog/components/mdx";
 import { authors } from "@/features/blog/data/authors";
 import { formatDate } from "@/features/blog/helpers";
 import { createMetaTags } from "@/lib/createMetaTags";
 import { createFileRoute, redirect } from "@tanstack/react-router";
-import { allPosts } from "content-collections";
 
 export const Route = createFileRoute("/_layout/blog/$slug")({
   loader: async ({ params }) => {

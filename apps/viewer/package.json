@@ -24,7 +24,7 @@
     "@typebot.io/whatsapp": "workspace:*",
     "@typebot.io/schemas": "workspace:*",
     "@typebot.io/credentials": "workspace:*",
-    "ai": "4.1.15",
+    "@typebot.io/chat-session": "workspace:*",
     "bot-engine": "workspace:*",
     "cors": "2.8.5",
     "google-spreadsheet": "4.1.4",

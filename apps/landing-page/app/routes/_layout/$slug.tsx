@@ -1,9 +1,9 @@
 import codeSnippetsCssUrl from "@/assets/code-snippet.css?url";
 import { ContentPageWrapper } from "@/components/ContentPageWrapper";
+import { allPosts } from "@/content-collections";
 import { Mdx } from "@/features/blog/components/mdx";
 import { createMetaTags } from "@/lib/createMetaTags";
 import { createFileRoute, redirect } from "@tanstack/react-router";
-import { allPosts } from "content-collections";
 
 export const Route = createFileRoute("/_layout/$slug")({
   loader: async ({ params }) => {

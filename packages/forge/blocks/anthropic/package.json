@@ -10,7 +10,9 @@
   "dependencies": {
     "@typebot.io/ai": "workspace:*",
     "@typebot.io/forge": "workspace:*",
-    "@typebot.io/lib": "workspace:*"
+    "@typebot.io/lib": "workspace:*",
+    "@ai-sdk/anthropic": "1.1.6",
+    "@typebot.io/zod": "workspace:*"
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*"

@@ -10,8 +10,7 @@
   "devDependencies": {
     "@typebot.io/forge": "workspace:*",
     "@typebot.io/lib": "workspace:*",
-    "@typebot.io/tsconfig": "workspace:*",
-    "@typebot.io/zod": "workspace:*"
+    "@typebot.io/tsconfig": "workspace:*"
   },
   "dependencies": {
     "@ai-sdk/mistral": "1.1.6",

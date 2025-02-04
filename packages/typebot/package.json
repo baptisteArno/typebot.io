@@ -8,13 +8,16 @@
   },
   "dependencies": {
     "@typebot.io/blocks-core": "workspace:*",
-    "@typebot.io/forge": "workspace:*",
     "@typebot.io/groups": "workspace:*",
     "@typebot.io/settings": "workspace:*",
     "@typebot.io/theme": "workspace:*",
     "@typebot.io/variables": "workspace:*",
     "@typebot.io/zod": "workspace:*",
-    "@typebot.io/schemas": "workspace:*"
+    "@typebot.io/schemas": "workspace:*",
+    "@typebot.io/prisma": "workspace:*",
+    "@typebot.io/lib": "workspace:*",
+    "@typebot.io/env": "workspace:*",
+    "@typebot.io/workspaces": "workspace:*"
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*"
