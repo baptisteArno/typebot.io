@@ -46,15 +46,15 @@ jobs:
 
       - name: Export digest
         run: |
-          mkdir -p /tmp/digests/${{ matrix.app }}
+          mkdir -p /tmp/digests/amd/${{ matrix.app }}
           digest="${{ steps.docker_build.outputs.digest }}"
-          touch "/tmp/digests/${{ matrix.app }}/${digest#sha256:}"
+          touch "/tmp/digests/amd/${{ matrix.app }}/${digest#sha256:}"
 
       - name: Upload digest
         uses: actions/upload-artifact@v4
         with:
-          name: digests-${{ matrix.app }}
-          path: /tmp/digests/${{matrix.app}}/*
+          name: digests-amd-${{ matrix.app }}
+          path: /tmp/digests/amd/${{matrix.app}}/*
           if-no-files-found: error
           retention-days: 1
 
@@ -99,15 +99,15 @@ jobs:
 
       - name: Export digest
         run: |
-          mkdir -p /tmp/digests/${{ matrix.app }}
+          mkdir -p /tmp/digests/arm/${{ matrix.app }}
           digest="${{ steps.docker_build.outputs.digest }}"
-          touch "/tmp/digests/${{ matrix.app }}/${digest#sha256:}"
+          touch "/tmp/digests/arm/${{ matrix.app }}/${digest#sha256:}"
 
       - name: Upload digest
         uses: actions/upload-artifact@v4
         with:
-          name: digests-${{ matrix.app }}
-          path: /tmp/digests/${{matrix.app}}/*
+          name: digests-arm-${{ matrix.app }}
+          path: /tmp/digests/arm/${{matrix.app}}/*
           if-no-files-found: error
           retention-days: 1
 
@@ -120,12 +120,13 @@ jobs:
     strategy:
       matrix:
         app: ["builder", "viewer"]
+        arch: ["amd", "arm"]
     steps:
-      - name: Download AMD digests
+      - name: Download digest
         uses: actions/download-artifact@v4
         with:
-          name: digests-${{ matrix.app }}
-          path: /tmp/digests/${{ matrix.app }}
+          name: digests-${{ matrix.arch }}-${{ matrix.app }}
+          path: /tmp/digests/${{ matrix.arch }}/${{ matrix.app }}
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
       - name: Docker meta
@@ -145,7 +146,7 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
       - name: Create manifest list and push
-        working-directory: /tmp/digests/${{ matrix.app }}
+        working-directory: /tmp/digests/${{ matrix.arch }}/${{ matrix.app }}
         run: |
           docker buildx imagetools create $(jq -cr '.tags | map("-t " + .) | join(" ")' <<< "$DOCKER_METADATA_OUTPUT_JSON") \
             $(printf 'baptistearno/typebot-${{ matrix.app }}@sha256:%s ' *)
