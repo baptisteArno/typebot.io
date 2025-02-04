@@ -64,17 +64,6 @@ function RootComponent() {
     <html lang="en">
       <head>
         <Meta />
-        {import.meta.env.DEV && (
-          <script
-            type="module"
-            dangerouslySetInnerHTML={{
-              __html: `import RefreshRuntime from "/_build/@react-refresh";
-RefreshRuntime.injectIntoGlobalHook(window)
-window.$RefreshReg$ = () => {}
-window.$RefreshSig$ = () => (type) => type`,
-            }}
-          />
-        )}
       </head>
       <body>
         <div className="flex flex-col items-stretch">
