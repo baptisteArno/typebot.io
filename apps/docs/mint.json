@@ -205,12 +205,15 @@
       "pages": ["results/overview", "results/analytics"]
     },
     {
+      "group": "User",
+      "pages": ["user/preferences", "user/delete-account"]
+    },
+    {
       "group": "Workspace",
       "pages": [
         "workspace",
         "workspace/add-members-and-guests",
-        "workspace/subscription",
-        "workspace/preferences"
+        "workspace/subscription"
       ]
     },
     {
