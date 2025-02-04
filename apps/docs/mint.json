@@ -206,7 +206,7 @@
     },
     {
       "group": "User",
-      "pages": ["user/preferences", "user/delete-account"]
+      "pages": ["user/preferences", "user/delete-account", "user/credentials"]
     },
     {
       "group": "Workspace",
