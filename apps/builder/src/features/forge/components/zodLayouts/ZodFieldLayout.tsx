@@ -201,6 +201,7 @@ export const ZodFieldLayout = ({
             options={blockOptions}
             blockDef={blockDef}
             label={layout.label}
+            credentialsScope="workspace"
             helperText={
               layout?.helperText ? (
                 <Markdown components={mdComponents}>

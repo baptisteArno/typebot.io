@@ -80,6 +80,7 @@ export const GroupTitlesAutoGenForm = ({
             <ForgeSelectInput
               defaultValue={model}
               blockDef={blockDef}
+              credentialsScope="user"
               fetcherId={actionDef.aiGenerate.fetcherId}
               options={{
                 credentialsId,

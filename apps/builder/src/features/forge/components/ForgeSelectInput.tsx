@@ -30,15 +30,7 @@ type Props = {
   isRequired?: boolean;
   width?: "full";
   withVariableButton?: boolean;
-  credentialsScope?:
-    | {
-        type: "workspace";
-        workspaceId: string;
-      }
-    | {
-        type: "user";
-        userId: string;
-      };
+  credentialsScope: "workspace" | "user";
   onChange: (value: string | undefined) => void;
 };
 export const ForgeSelectInput = ({
@@ -66,7 +58,7 @@ export const ForgeSelectInput = ({
   );
 
   const { data } = trpc.forge.fetchSelectItems.useQuery(
-    credentialsScope?.type === "workspace"
+    credentialsScope === "workspace"
       ? {
           scope: "workspace",
           integrationId: blockDef.id,
@@ -76,18 +68,15 @@ export const ForgeSelectInput = ({
               fetcher?.dependencies ?? [],
             ),
           ),
-          workspaceId: credentialsScope.workspaceId,
+          workspaceId: workspace?.id as string,
           fetcherId,
         }
       : {
           scope: "user",
           integrationId: blockDef.id,
-          options: pick(
-            options,
-            (blockDef.auth ? ["credentialsId"] : []).concat(
-              fetcher?.dependencies ?? [],
-            ),
-          ),
+          options: {
+            credentialsId: options.credentialsId,
+          },
           fetcherId,
         },
     {
