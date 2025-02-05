@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: typebot-viewer
+data:
+  CUSTOM_OAUTH_NAME: Cloud Hub Login
+  CUSTOM_OAUTH_SCOPE: openid profile email
+  CUSTOM_OAUTH_USER_EMAIL_PATH: email
+  CUSTOM_OAUTH_USER_ID_PATH: sub
+  CUSTOM_OAUTH_USER_NAME_PATH: name
+  CUSTOM_OAUTH_WELL_KNOWN_URL: >-
+    https://cognito-idp.us-east-1.amazonaws.com/us-east-1_oze29iTu0/.well-known/openid-configuration
+  DEFAULT_WORKSPACE_PLAN: UNLIMITED
+  NEXTAUTH_URL: https://eddie2.us-east-1.prd.cloudhumans.io
+  NEXT_PUBLIC_SMTP_FROM: "'Cloud Humans' <no-reply@cloudhumans.com>"
+  NEXT_PUBLIC_VIEWER_URL: https://eddieeyes2.us-east-1.prd.cloudhumans.io
+  NODE_ENV: production
+  SMTP_AUTH_DISABLED: 'true'
+  SMTP_HOST: email-smtp.us-east-1.amazonaws.com
+  SMTP_PORT: '465'
+  SMTP_SECURE: 'true'

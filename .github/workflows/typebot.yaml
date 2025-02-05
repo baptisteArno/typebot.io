@@ -70,3 +70,16 @@ jobs:
           aws eks --region us-east-1 update-kubeconfig --name kubernetes-production
           $KUSTOMIZE_CMD build deploy/overlays/prd
           $KUSTOMIZE_CMD build deploy/overlays/prd | $KUBECTL_CMD apply -f -
+
+      - name: Deploy instace2 in production
+        if: ${{ github.ref == 'refs/heads/main' }}
+        env:
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          pushd deploy/base
+          $KUSTOMIZE_CMD edit set image typebot-builder-image="$ECR_REGISTRY/$ECR_BUILDER_REPOSITORY:$IMAGE_TAG"
+          $KUSTOMIZE_CMD edit set image typebot-viewer-image="$ECR_REGISTRY/$ECR_VIEWER_REPOSITORY:$IMAGE_TAG"
+          popd
+          aws eks --region us-east-1 update-kubeconfig --name kubernetes-production
+          $KUSTOMIZE_CMD build deploy/overlays/prd-instance2
+          $KUSTOMIZE_CMD build deploy/overlays/prd-instance2 | $KUBECTL_CMD apply -f -
