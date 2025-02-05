@@ -21,7 +21,7 @@ export const trackEvents = async (events: TelemetryEvent[]) => {
   });
 
   try {
-    await client.shutdownAsync();
+    await client.shutdown();
   } catch (err) {
     console.error("ERROR while tracking events", err);
   }
