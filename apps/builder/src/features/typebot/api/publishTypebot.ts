@@ -10,6 +10,7 @@ import { computeRiskLevel } from "@typebot.io/radar";
 import { isTypebotVersionAtLeastV6 } from "@typebot.io/schemas/helpers/isTypebotVersionAtLeastV6";
 import { settingsSchema } from "@typebot.io/settings/schemas";
 import type { TelemetryEvent } from "@typebot.io/telemetry/schemas";
+import { sendMessage } from "@typebot.io/telemetry/sendMessage";
 import { trackEvents } from "@typebot.io/telemetry/trackEvents";
 import { themeSchema } from "@typebot.io/theme/schemas";
 import { edgeSchema } from "@typebot.io/typebot/schemas/edge";
@@ -106,13 +107,10 @@ export const publishTypebot = authenticatedProcedure
         });
 
     if (riskLevel > 0 && riskLevel !== existingTypebot.riskLevel) {
-      if (env.MESSAGE_WEBHOOK_URL && riskLevel !== 100 && riskLevel > 60)
-        await fetch(env.MESSAGE_WEBHOOK_URL, {
-          method: "POST",
-          body: `⚠️ Suspicious typebot to be reviewed: ${existingTypebot.name} (${env.NEXTAUTH_URL}/typebots/${existingTypebot.id}/edit) (workspace: ${existingTypebot.workspaceId})`,
-        }).catch((err) => {
-          console.error("Failed to send message", err);
-        });
+      if (riskLevel !== 100 && riskLevel > 60)
+        await sendMessage(
+          `⚠️ Suspicious typebot to be reviewed: ${existingTypebot.name} (${env.NEXTAUTH_URL}/typebots/${existingTypebot.id}/edit) (workspace: ${existingTypebot.workspaceId})`,
+        );
 
       await prisma.typebot.updateMany({
         where: {
