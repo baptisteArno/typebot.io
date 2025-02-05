@@ -9,21 +9,6 @@ export const trackEvents = async (events: TelemetryEvent[]) => {
   });
 
   events.forEach(async (event) => {
-    if (
-      event.name === "Workspace created" ||
-      event.name === "Subscription updated"
-    )
-      client.groupIdentify({
-        distinctId: event.userId,
-        groupType: "workspace",
-        groupKey: event.workspaceId,
-      });
-    if (event.name === "Typebot created" || event.name === "Typebot published")
-      client.groupIdentify({
-        distinctId: event.userId,
-        groupType: "typebot",
-        groupKey: event.typebotId,
-      });
     const groups: { workspace?: string; typebot?: string } = {};
     if ("workspaceId" in event) groups["workspace"] = event.workspaceId;
     if ("typebotId" in event) groups["typebot"] = event.typebotId;

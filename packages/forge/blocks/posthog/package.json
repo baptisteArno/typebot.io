@@ -12,7 +12,7 @@
     "@typebot.io/tsconfig": "workspace:*"
   },
   "dependencies": {
-    "posthog-node": "3.1.1",
+    "posthog-node": "4.4.1",
     "@typebot.io/lib": "workspace:*"
   }
 }
