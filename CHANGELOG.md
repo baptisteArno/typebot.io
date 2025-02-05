@@ -1,5 +1,18 @@
 # Changelog
 
+<a name="3.4.2"></a>
+## 3.4.2 (2025-02-05)
+
+### Fixed
+
+- 🚑 Fix forge block select fetch not working [[9918201](https://github.com/baptisteArno/typebot.io/commit/9918201d66151ab768a6fbd37ac491353fe57697)]
+
+### Miscellaneous
+
+- 📝 Add credentials documentation [[c0954da](https://github.com/baptisteArno/typebot.io/commit/c0954dad34925c39951ed87254102a9445cfd809)]
+- 📝 Add delete account documentation [[ab556cd](https://github.com/baptisteArno/typebot.io/commit/ab556cd7af37873975f7a702f4fdc8f323dee8ba)]
+
+
 <a name="3.4.1"></a>
 ## 3.4.1 (2025-02-04)
 
