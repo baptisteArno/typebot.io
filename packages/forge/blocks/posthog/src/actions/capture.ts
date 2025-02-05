@@ -114,7 +114,7 @@ export const capture = createAction({
         groups: parseGroups(groups),
       });
 
-      await posthog.shutdownAsync();
+      await posthog.shutdown();
     },
   },
 });

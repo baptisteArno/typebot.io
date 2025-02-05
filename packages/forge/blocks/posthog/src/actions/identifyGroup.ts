@@ -58,7 +58,7 @@ export const identifyGroup = createAction({
         properties: parseProperties({ properties }),
       });
 
-      await posthog.shutdownAsync();
+      await posthog.shutdown();
     },
   },
 });
