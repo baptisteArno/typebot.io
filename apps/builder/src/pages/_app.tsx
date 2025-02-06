@@ -1,4 +1,3 @@
-import { NewVersionPopup } from "@/components/NewVersionPopup";
 import { SupportBubble } from "@/components/SupportBubble";
 import { Toaster } from "@/components/Toaster";
 import { TypebotProvider } from "@/features/editor/providers/TypebotProvider";
@@ -69,7 +68,6 @@ const App = ({ Component, pageProps }: AppProps) => {
                 {!router.pathname.endsWith("edit") && isCloudProdInstance() && (
                   <SupportBubble />
                 )}
-                <NewVersionPopup />
               </WorkspaceProvider>
             </TypebotProvider>
           </UserProvider>
