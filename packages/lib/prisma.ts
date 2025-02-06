@@ -6,12 +6,12 @@ let prisma: PrismaClient
 
 if (env.NODE_ENV === 'production' && !process.versions.bun) {
   prisma = new PrismaClient({
-    log: ['query', 'info', 'warn', 'error'],
+    log: ['info', 'warn', 'error'],
   })
 } else {
   if (!global.prisma) {
     global.prisma = new PrismaClient({
-      log: ['query', 'info', 'warn', 'error'],
+      log: ['info', 'warn', 'error'],
     })
   }
   prisma = global.prisma
@@ -22,8 +22,6 @@ prisma.$use(async (params, next) => {
   const result = await next(params)
   const after = Date.now()
 
-  console.log(`Query took ${after - before}ms`)
-  console.log(`Params: ${JSON.stringify(params, null, 2)}`)
   return result
 })
 
