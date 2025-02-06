@@ -6,6 +6,7 @@ import {
   OctaStepType,
   OctaWabaStepType,
   Step,
+  IntegrationStepType
 } from 'models'
 import { isBubbleStepType, isInputStep } from 'utils'
 import { z } from 'zod'
@@ -39,6 +40,7 @@ const inpuStepsWithFallbackMessages = [
   OctaWabaStepType.WHATSAPP_OPTIONS_LIST,
   OctaWabaStepType.WHATSAPP_BUTTONS_LIST,
   InputStepType.CHOICE,
+  IntegrationStepType.EXTERNAL_EVENT  
 ]
 
 export const getValidationMessages = (step: Step): Array<ValidationMessage> => {
