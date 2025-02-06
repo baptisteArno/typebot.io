@@ -150,13 +150,13 @@ export const SignInForm = ({
       </Text>
     );
   return (
-    <Stack spacing="4" w="330px">
+    <Stack spacing="6" w="330px">
       {!isMagicCodeSent && (
         <>
           <SocialLoginButtons providers={providers} />
           {providers?.email && (
             <>
-              <DividerWithText mt="6">{t("auth.orEmailLabel")}</DividerWithText>
+              <DividerWithText>{t("auth.orEmailLabel")}</DividerWithText>
               <HStack as="form" onSubmit={handleEmailSubmit}>
                 <Input
                   name="email"
