@@ -27,14 +27,9 @@ export const PhoneInput = (props: PhoneInputProps) => {
 
   const handleInput = (inputValue: string | undefined) => {
     setInputValue(inputValue as string);
-    if (
-      (inputValue === "" || inputValue === "+") &&
-      selectedCountryCode() !== "INT"
-    )
-      setSelectedCountryCode("INT");
-    const matchedCountry =
-      inputValue?.startsWith("+") &&
-      inputValue.length > 2 &&
+
+    if (inputValue?.startsWith("+") && inputValue.length > 2) {
+      const matchedCountry =
       phoneCountries.reduce<(typeof phoneCountries)[number] | null>(
         (matchedCountry, country) => {
           if (
@@ -53,7 +48,8 @@ export const PhoneInput = (props: PhoneInputProps) => {
         },
         null,
       );
-    if (matchedCountry) setSelectedCountryCode(matchedCountry.code);
+      if (matchedCountry) setSelectedCountryCode(matchedCountry.code);
+    }
   };
 
   const checkIfInputIsValid = () =>
