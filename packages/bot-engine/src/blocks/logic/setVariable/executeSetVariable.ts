@@ -245,7 +245,7 @@ const getExpressionToEvaluate =
         if (!Array.isArray(variableValue))
           return {
             type: "value",
-            value: variableValue,
+            value: [],
           };
         return {
           type: "value",
@@ -260,7 +260,7 @@ const getExpressionToEvaluate =
         if (!Array.isArray(variableValue))
           return {
             type: "value",
-            value: variableValue,
+            value: [],
           };
         return {
           type: "value",
@@ -452,20 +452,16 @@ const parseColateralVariableChangeIfAny = ({
     (v) => v.id === options.saveItemInVariableId,
   );
   if (!variable || !listVariableValue) return [];
-  if (!Array.isArray(listVariableValue))
-    return [
-      {
-        ...variable,
-        value: [],
-      },
-    ];
+  const parsedListVariableValue = Array.isArray(listVariableValue)
+    ? listVariableValue
+    : [listVariableValue];
   return [
     {
       ...variable,
       value:
         options.type === "Pop"
-          ? listVariableValue.at(-1)
-          : listVariableValue.at(0),
+          ? parsedListVariableValue.at(-1)
+          : parsedListVariableValue.at(0),
     },
   ];
 };
