@@ -49,23 +49,3 @@ You'll find a lot of resources to help you get started with zazubot in the [docu
 ## Self-hosting
 
 Interested in self-hosting zazubot on your server? Take a look at the [self-hosting installation instructions](https://docs.zazubot.io/self-hosting/get-started).
-
-## How to Contribute
-
-You are awesome, lets build great software together. Head over to the [Contribute docs](https://docs.zazubot.io/contribute/overview) to get started. 💪
-
-## Run the project locally
-
-Follow the [Local installation](https://docs.zazubot.io/contribute/guides/local-installation) section of in the Contributing docs.
-
-### Top contributors
-
-<a href="https://github.com/baptistearno/zazubot.io/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=baptistearno/zazubot.io" />
-</a>
-
-Made with [contrib.rocks](https://contrib.rocks).
-
-## License
-
-zazubot's code is protected under a Functional Source License. You will find more information about the license and how to comply with it [here](https://docs.zazubot.io/self-hosting#license-requirements).
