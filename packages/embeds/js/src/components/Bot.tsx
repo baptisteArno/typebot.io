@@ -5,6 +5,7 @@ import { setBotContainerHeight } from "@/utils/botContainerHeightSignal";
 import { setBotContainer } from "@/utils/botContainerSignal";
 import { injectFont } from "@/utils/injectFont";
 import { setIsMobile } from "@/utils/isMobileSignal";
+import { mergeThemes } from "@/utils/mergeThemes";
 import { persist } from "@/utils/persist";
 import { setCssVariablesValue } from "@/utils/setCssVariablesValue";
 import {
@@ -317,7 +318,10 @@ const BotContent = (props: BotContentProps) => {
     );
     if (!botContainerElement) return;
     setCssVariablesValue({
-      theme: props.initialChatReply.typebot.theme,
+      theme: mergeThemes(
+        props.initialChatReply.typebot.theme,
+        props.initialChatReply.dynamicTheme,
+      ),
       container: botContainerElement,
       isPreview: props.context.isPreview,
       typebotVersion: isTypebotVersionAtLeastV6(

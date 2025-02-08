@@ -6,13 +6,16 @@ import type {
   InputSubmitContent,
   OutgoingLog,
 } from "@/types";
+import { botContainer } from "@/utils/botContainerSignal";
 import { executeClientSideAction } from "@/utils/executeClientSideActions";
 import {
   formattedMessages,
   setFormattedMessages,
 } from "@/utils/formattedMessagesSignal";
 import { getAnswerContent } from "@/utils/getAnswerContent";
+import { mergeThemes } from "@/utils/mergeThemes";
 import { persist } from "@/utils/persist";
+import { setGeneralBackground } from "@/utils/setCssVariablesValue";
 import { setStreamingMessage } from "@/utils/streamingMessageSignal";
 import { toaster } from "@/utils/toaster";
 import type { InputBlock } from "@typebot.io/blocks-inputs/schema";
@@ -24,8 +27,9 @@ import type {
 } from "@typebot.io/bot-engine/schemas/api";
 import type { ClientSideAction } from "@typebot.io/bot-engine/schemas/clientSideAction";
 import { isNotDefined } from "@typebot.io/lib/utils";
+import { latestTypebotVersion } from "@typebot.io/schemas/versions";
 import { defaultSystemMessages } from "@typebot.io/settings/constants";
-import type { Theme } from "@typebot.io/theme/schemas";
+import { BackgroundType } from "@typebot.io/theme/constants";
 import { HTTPError } from "ky";
 import {
   For,
@@ -37,34 +41,9 @@ import {
 } from "solid-js";
 import { ChatChunk } from "./ChatChunk";
 import { LoadingChunk } from "./LoadingChunk";
-import { PopupBlockedToast } from "./PopupBlockedToast";
 
 const AUTO_SCROLL_CLIENT_HEIGHT_PERCENT_TOLERANCE = 0.6;
 const AUTO_SCROLL_DELAY = 50;
-
-const parseDynamicTheme = (
-  initialTheme: Theme,
-  dynamicTheme: ContinueChatResponse["dynamicTheme"],
-): Theme => ({
-  ...initialTheme,
-  chat: {
-    ...initialTheme.chat,
-    hostAvatar:
-      initialTheme.chat?.hostAvatar && dynamicTheme?.hostAvatarUrl
-        ? {
-            ...initialTheme.chat.hostAvatar,
-            url: dynamicTheme.hostAvatarUrl,
-          }
-        : initialTheme.chat?.hostAvatar,
-    guestAvatar:
-      initialTheme.chat?.guestAvatar && dynamicTheme?.guestAvatarUrl
-        ? {
-            ...initialTheme.chat.guestAvatar,
-            url: dynamicTheme?.guestAvatarUrl,
-          }
-        : initialTheme.chat?.guestAvatar,
-  },
-});
 
 type Props = {
   initialChatReply: StartChatResponse;
@@ -158,9 +137,16 @@ export const ConversationContainer = (props: Props) => {
   };
 
   createEffect(() => {
-    setTheme(
-      parseDynamicTheme(props.initialChatReply.typebot.theme, dynamicTheme()),
-    );
+    setTheme(mergeThemes(props.initialChatReply.typebot.theme, dynamicTheme()));
+    if (dynamicTheme()?.backgroundUrl)
+      setGeneralBackground({
+        background: {
+          type: BackgroundType.IMAGE,
+          content: dynamicTheme()?.backgroundUrl,
+        },
+        documentStyle: botContainer()?.style ?? document.documentElement.style,
+        typebotVersion: latestTypebotVersion,
+      });
   });
 
   const saveLogs = async (clientLogs?: ChatLog[]) => {

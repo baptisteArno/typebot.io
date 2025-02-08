@@ -7,11 +7,20 @@ export const parseDynamicTheme = (
 ): ContinueChatResponse["dynamicTheme"] => {
   if (!state?.dynamicTheme) return;
   return {
-    hostAvatarUrl: parseVariables(state?.typebotsQueue[0].typebot.variables)(
-      state.dynamicTheme.hostAvatarUrl,
-    ),
-    guestAvatarUrl: parseVariables(state?.typebotsQueue[0].typebot.variables)(
-      state.dynamicTheme.guestAvatarUrl,
-    ),
+    hostAvatarUrl: state.dynamicTheme.hostAvatarUrl
+      ? parseVariables(state?.typebotsQueue[0].typebot.variables)(
+          state.dynamicTheme.hostAvatarUrl,
+        )
+      : undefined,
+    guestAvatarUrl: state.dynamicTheme.guestAvatarUrl
+      ? parseVariables(state?.typebotsQueue[0].typebot.variables)(
+          state.dynamicTheme.guestAvatarUrl,
+        )
+      : undefined,
+    backgroundUrl: state.dynamicTheme.backgroundUrl
+      ? parseVariables(state?.typebotsQueue[0].typebot.variables)(
+          state.dynamicTheme.backgroundUrl,
+        )
+      : undefined,
   };
 };

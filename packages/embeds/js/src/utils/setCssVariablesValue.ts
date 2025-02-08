@@ -655,7 +655,7 @@ const setCheckbox = (
   }
 };
 
-const setGeneralBackground = ({
+export const setGeneralBackground = ({
   background,
   documentStyle,
   typebotVersion,

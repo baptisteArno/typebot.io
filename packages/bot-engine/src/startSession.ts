@@ -397,13 +397,19 @@ const parseDynamicThemeInState = (theme: Theme) => {
     (theme.chat?.guestAvatar?.isEnabled ?? defaultGuestAvatarIsEnabled)
       ? theme.chat?.guestAvatar?.url
       : undefined;
-  if (!hostAvatarUrl?.startsWith("{{") && !guestAvatarUrl?.startsWith("{{"))
+  const backgroundUrl = theme.general?.background?.content;
+  if (
+    !hostAvatarUrl?.startsWith("{{") &&
+    !guestAvatarUrl?.startsWith("{{") &&
+    !backgroundUrl?.startsWith("{{")
+  )
     return;
   return {
     hostAvatarUrl: hostAvatarUrl?.startsWith("{{") ? hostAvatarUrl : undefined,
     guestAvatarUrl: guestAvatarUrl?.startsWith("{{")
       ? guestAvatarUrl
       : undefined,
+    backgroundUrl: backgroundUrl?.startsWith("{{") ? backgroundUrl : undefined,
   };
 };
 

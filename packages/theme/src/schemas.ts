@@ -126,6 +126,7 @@ export const themeTemplateSchema = z.object({
 export const dynamicThemeSchema = z.object({
   hostAvatarUrl: z.string().optional(),
   guestAvatarUrl: z.string().optional(),
+  backgroundUrl: z.string().optional(),
 });
 
 export type Theme = z.infer<typeof themeSchema>;
