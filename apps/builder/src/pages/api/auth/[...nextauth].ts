@@ -213,7 +213,8 @@ export const getAuthOptions = ({
       if (
         isNewUser &&
         user.email &&
-        (!env.ADMIN_EMAIL || !env.ADMIN_EMAIL.includes(user.email))
+        (!env.ADMIN_EMAIL || !env.ADMIN_EMAIL.includes(user.email)) &&
+        env.REJECT_DISPOSABLE_EMAILS
       ) {
         const data = await ky
           .get(

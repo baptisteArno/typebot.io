@@ -105,6 +105,7 @@ const baseEnv = {
       guessLandingUrlForVercelPreview,
       z.string().url().optional(),
     ),
+    REJECT_DISPOSABLE_EMAILS: boolean.optional().default("true"),
   },
   client: {
     NEXT_PUBLIC_E2E_TEST: boolean.optional(),
