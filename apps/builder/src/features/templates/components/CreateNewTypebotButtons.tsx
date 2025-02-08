@@ -95,61 +95,72 @@ export const CreateNewTypebotButtons = () => {
   };
 
   return (
-    <VStack maxW="600px" w="full" flex="1" pt="20" spacing={10}>
-      <Heading>{t("templates.buttons.heading")}</Heading>
-      <Stack w="full" spacing={6}>
-        <Button
-          variant="outline"
-          w="full"
-          py="8"
-          fontSize="lg"
-          leftIcon={
-            <ToolIcon
-              color={useColorModeValue("blue.500", "blue.300")}
-              boxSize="25px"
-              mr="2"
-            />
-          }
-          onClick={() => handleCreateSubmit()}
-          isLoading={isLoading}
-        >
-          {t("templates.buttons.fromScratchButton.label")}
-        </Button>
-        <Button
-          variant="outline"
-          w="full"
-          py="8"
-          fontSize="lg"
-          leftIcon={
-            <TemplateIcon
-              color={useColorModeValue("orange.500", "orange.300")}
-              boxSize="25px"
-              mr="2"
-            />
-          }
-          onClick={onOpen}
-          isLoading={isLoading}
-        >
-          {t("templates.buttons.fromTemplateButton.label")}
-        </Button>
-        <ImportTypebotFromFileButton
-          variant="outline"
-          w="full"
-          py="8"
-          fontSize="lg"
-          leftIcon={
-            <DownloadIcon
-              color={useColorModeValue("purple.500", "purple.300")}
-              boxSize="25px"
-              mr="2"
-            />
-          }
-          isLoading={isLoading}
-          onNewTypebot={handleCreateSubmit}
-        >
-          {t("templates.buttons.importFileButton.label")}
-        </ImportTypebotFromFileButton>
+    <VStack w="full" pt="20" spacing={10}>
+      <Stack
+        w="full"
+        maxW="650px"
+        p="10"
+        gap={10}
+        rounded="lg"
+        borderWidth={1}
+        bgColor={useColorModeValue("white", "gray.900")}
+      >
+        <Heading>{t("templates.buttons.heading")}</Heading>
+        <Stack w="full" spacing={6}>
+          <Button
+            variant="outline"
+            w="full"
+            py="8"
+            fontSize="lg"
+            leftIcon={
+              <ToolIcon
+                color={useColorModeValue("blue.500", "blue.300")}
+                boxSize="25px"
+                mr="2"
+              />
+            }
+            onClick={() => handleCreateSubmit()}
+            isLoading={isLoading}
+          >
+            {t("templates.buttons.fromScratchButton.label")}
+          </Button>
+          <Button
+            variant="outline"
+            w="full"
+            py="8"
+            fontSize="lg"
+            leftIcon={
+              <TemplateIcon
+                color={useColorModeValue("orange.500", "orange.300")}
+                boxSize="25px"
+                mr="2"
+              />
+            }
+            onClick={onOpen}
+            isLoading={isLoading}
+          >
+            {t("templates.buttons.fromTemplateButton.label")}
+          </Button>
+          <ImportTypebotFromFileButton
+            variant="outline"
+            w="full"
+            py="8"
+            fontSize="lg"
+            leftIcon={
+              <DownloadIcon
+                color={useColorModeValue("purple.500", "purple.300")}
+                boxSize="25px"
+                mr="2"
+              />
+            }
+            isLoading={isLoading}
+            onNewTypebot={handleCreateSubmit}
+          >
+            {t("templates.buttons.importFileButton.label")}
+          </ImportTypebotFromFileButton>
+        </Stack>
       </Stack>
+
       <TemplatesModal
         isOpen={isOpen}
         onClose={onClose}
