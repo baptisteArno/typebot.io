@@ -255,6 +255,18 @@ export const Graph = ({
     },
   );
 
+  // Prevent back/forward navigation in Firefox
+  useEventListener(
+    "wheel",
+    (e) => {
+      e.preventDefault();
+    },
+    graphContainerRef.current,
+    {
+      passive: false,
+    },
+  );
+
   const getCenterOfGraph = (): Coordinates => {
     const graphWidth = graphContainerRef.current?.clientWidth ?? 0;
     const graphHeight = graphContainerRef.current?.clientHeight ?? 0;
@@ -333,7 +345,6 @@ export const Graph = ({
       setIsDraggingGraph(false);
       setIsDragging(false);
     },
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     window as any,
   );
 
