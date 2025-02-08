@@ -1,6 +1,8 @@
 import { getUserRoleInWorkspace } from "@/features/workspace/helpers/getUserRoleInWorkspace";
 import { authenticatedProcedure } from "@/helpers/server/trpc";
+import { createId } from "@paralleldrive/cuid2";
 import { TRPCError } from "@trpc/server";
+import { duplicateTypebotS3Objects } from "@typebot.io/lib/s3/duplicateTypebotS3Objects";
 import prisma from "@typebot.io/prisma";
 import { Plan, WorkspaceRole } from "@typebot.io/prisma/enum";
 import { trackEvents } from "@typebot.io/telemetry/trackEvents";
@@ -44,6 +46,8 @@ const importingTypebotSchema = z.preprocess(
       .extend({
         resultsTablePreferences: resultsTablePreferencesSchema.nullish(),
         selectedThemeTemplateId: z.string().nullish(),
+        workspaceId: z.string().optional(),
+        id: z.string().optional(),
       })
       .openapi({
         title: "Typebot V6",
@@ -53,6 +57,8 @@ const importingTypebotSchema = z.preprocess(
       .extend({
         resultsTablePreferences: resultsTablePreferencesSchema.nullish(),
         selectedThemeTemplateId: z.string().nullish(),
+        workspaceId: z.string().optional(),
+        id: z.string().optional(),
       })
       .openapi({
         title: "Typebot V5",
@@ -129,27 +135,41 @@ export const importTypebot = authenticatedProcedure
           message: "Workspace not found",
         });
 
-      const migratedTypebot = await migrateImportingTypebot(typebot);
+      const newBotId = createId();
+
+      console.log("ORIGINAL ICON", typebot.icon);
+
+      let duplicatingBot = await duplicateTypebotS3Objects({
+        typebot,
+        newTypebotId: newBotId,
+        newWorkspaceId: workspaceId,
+      });
+
+      console.log("DUPLICATED ICON", duplicatingBot.icon);
+
+      duplicatingBot = await migrateImportingTypebot(duplicatingBot);
 
       const groups = (
-        migratedTypebot.groups
-          ? await sanitizeGroups(workspace)(migratedTypebot.groups)
+        duplicatingBot.groups
+          ? await sanitizeGroups(workspace)(duplicatingBot.groups)
           : []
       ) as TypebotV6["groups"];
 
+      console.log("DUPLICATED ICON", duplicatingBot.icon);
       const newTypebot = await prisma.typebot.create({
         data: {
-          version: migratedTypebot.version,
+          id: newBotId,
+          version: duplicatingBot.version,
           workspaceId,
-          name: migratedTypebot.name,
-          icon: migratedTypebot.icon,
-          selectedThemeTemplateId: migratedTypebot.selectedThemeTemplateId,
+          name: duplicatingBot.name,
+          icon: duplicatingBot.icon,
+          selectedThemeTemplateId: duplicatingBot.selectedThemeTemplateId,
           groups,
-          events: migratedTypebot.events ?? undefined,
-          theme: migratedTypebot.theme ? migratedTypebot.theme : {},
-          settings: migratedTypebot.settings
+          events: duplicatingBot.events ?? undefined,
+          theme: duplicatingBot.theme ? duplicatingBot.theme : {},
+          settings: duplicatingBot.settings
             ? sanitizeSettings(
-                migratedTypebot.settings,
+                duplicatingBot.settings,
                 workspace.plan,
                 "create",
               )
@@ -161,18 +181,18 @@ export const importTypebot = authenticatedProcedure
                 }
               : {},
           folderId: await sanitizeFolderId({
-            folderId: migratedTypebot.folderId,
+            folderId: duplicatingBot.folderId,
             workspaceId: workspace.id,
           }),
-          variables: migratedTypebot.variables
+          variables: duplicatingBot.variables
             ? sanitizeVariables({
-                variables: migratedTypebot.variables,
+                variables: duplicatingBot.variables,
                 groups,
               })
             : [],
-          edges: migratedTypebot.edges ?? [],
+          edges: duplicatingBot.edges ?? [],
           resultsTablePreferences:
-            migratedTypebot.resultsTablePreferences ?? undefined,
+            duplicatingBot.resultsTablePreferences ?? undefined,
         } satisfies Partial<TypebotV6>,
       });
 
