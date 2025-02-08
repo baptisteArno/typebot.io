@@ -29,25 +29,23 @@ export const PhoneInput = (props: PhoneInputProps) => {
     setInputValue(inputValue as string);
 
     if (inputValue?.startsWith("+") && inputValue.length > 2) {
-      const matchedCountry =
-      phoneCountries.reduce<(typeof phoneCountries)[number] | null>(
-        (matchedCountry, country) => {
-          if (
-            !country?.dial_code ||
-            (matchedCountry !== null && !matchedCountry.dial_code)
-          ) {
-            return matchedCountry;
-          }
-          if (
-            inputValue?.startsWith(country.dial_code) &&
-            country.dial_code.length > (matchedCountry?.dial_code.length ?? 0)
-          ) {
-            return country;
-          }
+      const matchedCountry = phoneCountries.reduce<
+        (typeof phoneCountries)[number] | null
+      >((matchedCountry, country) => {
+        if (
+          !country?.dial_code ||
+          (matchedCountry !== null && !matchedCountry.dial_code)
+        ) {
           return matchedCountry;
-        },
-        null,
-      );
+        }
+        if (
+          inputValue?.startsWith(country.dial_code) &&
+          country.dial_code.length > (matchedCountry?.dial_code.length ?? 0)
+        ) {
+          return country;
+        }
+        return matchedCountry;
+      }, null);
       if (matchedCountry) setSelectedCountryCode(matchedCountry.code);
     }
   };
