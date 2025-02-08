@@ -35,7 +35,7 @@ const Expression = ({
     case "Custom":
     case undefined:
       return (
-        <Stack>
+        <Stack maxH="60vh">
           <Text as="span">
             {variableName} = {options?.expressionToEvaluate}
           </Text>
