@@ -27,6 +27,7 @@ import {
   WandIcon,
   ConversationTagIcon,
 } from 'assets/icons'
+import { colors } from 'libs/theme'
 import {
   BubbleStepType,
   InputStepType,
@@ -49,7 +50,7 @@ export const StepIcon = ({ type, ...props }: StepIconProps) => {
     case WOZStepType.MESSAGE:
       return <WandIcon color="#AA561C" {...props} />
     case WOZStepType.ASSIGN:
-      return <AssignToIcon color="#AA561C" {...props} />
+      return <WandIcon color={`${colors.purple[400]}`} {...props} />
     case BubbleStepType.MEDIA:
       return <LayoutIcon color="#AA561C" {...props} />
     case BubbleStepType.VIDEO:

@@ -54,7 +54,7 @@ import {
   WOZSuggestionOptions,
   WOZAssignStep,
   defaultConversationTagOptions,
-  ConversationTagOptions
+  ConversationTagOptions,
 } from 'models'
 import { Typebot } from 'models'
 import useSWR from 'swr'
@@ -249,11 +249,11 @@ const duplicateTypebot = (
       })),
       settings:
         typebot.settings.general.isBrandingEnabled === false &&
-          userPlan === Plan.FREE
+        userPlan === Plan.FREE
           ? {
-            ...typebot.settings,
-            general: { ...typebot.settings.general, isBrandingEnabled: true },
-          }
+              ...typebot.settings,
+              general: { ...typebot.settings.general, isBrandingEnabled: true },
+            }
           : typebot.settings,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
@@ -308,9 +308,10 @@ export const parseNewStep = (
 ): DraggableStep => {
   const id = cuid()
 
-  const options = isOctaStepType(type) || isWOZStepType(type)
-    ? parseOctaStepOptions(type)
-    : stepTypeHasOption(type)
+  const options =
+    isOctaStepType(type) || isWOZStepType(type)
+      ? parseOctaStepOptions(type)
+      : stepTypeHasOption(type)
       ? parseDefaultStepOptions(type)
       : undefined
 
@@ -318,9 +319,10 @@ export const parseNewStep = (
     id,
     blockId,
     type,
-    content: isBubbleStepType(type) || isOctaBubbleStepType(type)
-      ? parseDefaultContent(type)
-      : undefined,
+    content:
+      isBubbleStepType(type) || isOctaBubbleStepType(type)
+        ? parseDefaultContent(type)
+        : undefined,
     options,
 
     webhookId: stepTypeHasWebhook(type) ? cuid() : undefined,
@@ -350,15 +352,16 @@ const parseDefaultItems = (
           stepId,
           type: ItemType.BUTTON,
           content: 'Encerrar a conversa',
-          readonly: true
+          readonly: true,
+          canAddItem: false,
         },
         {
           id: cuid(),
           stepId,
           type: ItemType.BUTTON,
           content: 'Falar com um humano',
-          readonly: true
-        }
+          readonly: true,
+        },
       ]
 
     case OctaWabaStepType.WHATSAPP_OPTIONS_LIST:
@@ -477,7 +480,14 @@ const parseDefaultContent = (
   }
 }
 
-const parseOctaStepOptions = (type: OctaStepType | OctaWabaStepType | WOZStepType): OctaStepOptions | OctaWabaStepOptions | WOZSuggestionOptions | ConversationTagOptions | null => {
+const parseOctaStepOptions = (
+  type: OctaStepType | OctaWabaStepType | WOZStepType
+):
+  | OctaStepOptions
+  | OctaWabaStepOptions
+  | WOZSuggestionOptions
+  | ConversationTagOptions
+  | null => {
   switch (type) {
     case OctaStepType.ASSIGN_TO_TEAM:
       return defaultAssignToTeamOptions

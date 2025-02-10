@@ -1,4 +1,4 @@
-import { IconProps, Icon, Image } from '@chakra-ui/react'
+import { IconProps, Icon } from '@chakra-ui/react'
 import * as MaterialDesign from 'react-icons/md'
 import { IconContext } from 'react-icons'
 
@@ -86,16 +86,12 @@ export const TextIcon = (props: any) => (
   </IconContext.Provider>
 )
 
-const getBasePath = () => {
-  return (process.env.BASE_PATH || (window as any).BASE_PATH)
-}
-
 export const WandIcon = (props: any) => (
   <IconContext.Provider
     value={{ color: props.color, className: 'global-class-name' }}
   >
     <div>
-      <Image src={getBasePath() + '/images/auto-fix.svg'} color={props.color} />
+      <MaterialDesign.MdAutoFixHigh />
     </div>
   </IconContext.Provider>
 )
@@ -112,7 +108,11 @@ export const AskNameIcon = (props: any) => (
 
 export const ImageIcon = (props: any) => (
   <IconContext.Provider
-    value={{ color: props.color, className: 'global-class-name', size: props.fontSize }}
+    value={{
+      color: props.color,
+      className: 'global-class-name',
+      size: props.fontSize,
+    }}
   >
     <div>
       <MaterialDesign.MdOutlineImage />
@@ -122,7 +122,11 @@ export const ImageIcon = (props: any) => (
 
 export const CheckCircleOutlineIcon = (props: any) => (
   <IconContext.Provider
-    value={{ color: props.color, className: 'global-class-name', size: props.fontSize }}
+    value={{
+      color: props.color,
+      className: 'global-class-name',
+      size: props.fontSize,
+    }}
   >
     <div>
       <MaterialDesign.MdCheckCircleOutline />
@@ -132,7 +136,11 @@ export const CheckCircleOutlineIcon = (props: any) => (
 
 export const BlockIcon = (props: any) => (
   <IconContext.Provider
-    value={{ color: props.color, className: 'global-class-name', size: props.fontSize }}
+    value={{
+      color: props.color,
+      className: 'global-class-name',
+      size: props.fontSize,
+    }}
   >
     <div>
       <MaterialDesign.MdBlock />
@@ -142,7 +150,11 @@ export const BlockIcon = (props: any) => (
 
 export const UploadFileIcon = (props: any) => (
   <IconContext.Provider
-    value={{ color: props.color, className: 'global-class-name', size: props.fontSize }}
+    value={{
+      color: props.color,
+      className: 'global-class-name',
+      size: props.fontSize,
+    }}
   >
     <div>
       <MaterialDesign.MdUploadFile />
@@ -169,7 +181,11 @@ export const FlagIcon = (props: IconProps) => (
 
 export const BoldIcon = (props: any) => (
   <IconContext.Provider
-    value={{ color: props.color, className: 'global-class-name', size: props.fontSize }}
+    value={{
+      color: props.color,
+      className: 'global-class-name',
+      size: props.fontSize,
+    }}
   >
     <div>
       <MaterialDesign.MdFormatBold />
@@ -179,7 +195,11 @@ export const BoldIcon = (props: any) => (
 
 export const ItalicIcon = (props: any) => (
   <IconContext.Provider
-    value={{ color: props.color, className: 'global-class-name', size: props.fontSize }}
+    value={{
+      color: props.color,
+      className: 'global-class-name',
+      size: props.fontSize,
+    }}
   >
     <div>
       <MaterialDesign.MdFormatItalic />
@@ -189,7 +209,11 @@ export const ItalicIcon = (props: any) => (
 
 export const UnderlineIcon = (props: any) => (
   <IconContext.Provider
-    value={{ color: props.color, className: 'global-class-name', size: props.fontSize }}
+    value={{
+      color: props.color,
+      className: 'global-class-name',
+      size: props.fontSize,
+    }}
   >
     <div>
       <MaterialDesign.MdFormatUnderlined />
@@ -199,7 +223,11 @@ export const UnderlineIcon = (props: any) => (
 
 export const StrikethroughIcon = (props: any) => (
   <IconContext.Provider
-    value={{ color: props.color, className: 'global-class-name', size: props.fontSize }}
+    value={{
+      color: props.color,
+      className: 'global-class-name',
+      size: props.fontSize,
+    }}
   >
     <div>
       <MaterialDesign.MdFormatStrikethrough />
@@ -209,7 +237,11 @@ export const StrikethroughIcon = (props: any) => (
 
 export const LinkIcon = (props: any) => (
   <IconContext.Provider
-    value={{ color: props.color, className: 'global-class-name', size: props.fontSize }}
+    value={{
+      color: props.color,
+      className: 'global-class-name',
+      size: props.fontSize,
+    }}
   >
     <div>
       <MaterialDesign.MdLink />
@@ -219,7 +251,11 @@ export const LinkIcon = (props: any) => (
 
 export const EmojiIcon = (props: any) => (
   <IconContext.Provider
-    value={{ color: props.color, className: 'global-class-name', size: props.fontSize }}
+    value={{
+      color: props.color,
+      className: 'global-class-name',
+      size: props.fontSize,
+    }}
   >
     <div>
       <MaterialDesign.MdInsertEmoticon />
@@ -415,7 +451,11 @@ export const AlarmIcon = (props: any) => (
 
 export const ListIcon = (props: any) => (
   <IconContext.Provider
-    value={{ color: props.color, className: 'global-class-name', size: props.fontSize }}
+    value={{
+      color: props.color,
+      className: 'global-class-name',
+      size: props.fontSize,
+    }}
   >
     <div>
       <MaterialDesign.MdFormatListBulleted />
@@ -646,7 +686,7 @@ export const CreditCardIcon = (props: IconProps) => (
 )
 
 export const InformationIcon = (props: IconProps) => (
-  <Icon viewBox="0 0 16 16"  {...featherIconsBaseProps} {...props}>
+  <Icon viewBox="0 0 16 16" {...featherIconsBaseProps} {...props}>
     <path
       d="M8.00004 1.3335C4.32004 1.3335 1.33337 4.32016 1.33337 8.00016C1.33337 11.6802 4.32004 14.6668 8.00004 14.6668C11.68 14.6668 14.6667 11.6802 14.6667 8.00016C14.6667 4.32016 11.68 1.3335 8.00004 1.3335ZM8.00004 11.3335C7.63337 11.3335 7.33337 11.0335 7.33337 10.6668V8.00016C7.33337 7.6335 7.63337 7.3335 8.00004 7.3335C8.36671 7.3335 8.66671 7.6335 8.66671 8.00016V10.6668C8.66671 11.0335 8.36671 11.3335 8.00004 11.3335ZM8.66671 6.00016H7.33337V4.66683H8.66671V6.00016Z"
       fill="#C4C7CF"
@@ -709,6 +749,6 @@ export const ErrorIcon = (props: any) => (
   <IconContext.Provider
     value={{ ...props, color: props.color, className: 'global-class-name' }}
   >
-    <MaterialDesign.MdError/>
+    <MaterialDesign.MdError />
   </IconContext.Provider>
 )

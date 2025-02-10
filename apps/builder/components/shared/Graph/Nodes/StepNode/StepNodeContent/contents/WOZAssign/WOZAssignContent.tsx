@@ -32,14 +32,10 @@ const WOZAssignContent = ({ step, indices }: Props) => {
       <OctaDivider />
 
       <Text noOfLines={0}>
-        Apresenta-se como IA? {step?.options?.introduceAsIA ? 'Sim' : 'Não'}
-      </Text>
-
-      <OctaDivider />
-
-      <Text noOfLines={0}>
-        Confirma ida para próxima ação?{' '}
-        {step?.options?.confirmContext ? 'Sim' : 'Não'}
+        Tentativas de resposta antes de direcionar:{' '}
+        {step?.options?.limitAnswerNoContent
+          ? step?.options?.limitAnswerNoContent
+          : '3'}
       </Text>
 
       <OctaDivider />
@@ -51,7 +47,7 @@ const WOZAssignContent = ({ step, indices }: Props) => {
       <ItemNodesList step={step} indices={indices} />
 
       <OctaDivider />
-      <Text fontSize={'13px'} align={'center'} color={'blue'}>
+      <Text fontSize={'13px'} align={'center'} color={'purple.400'}>
         <span>Saiba mais...</span>
       </Text>
     </Stack>

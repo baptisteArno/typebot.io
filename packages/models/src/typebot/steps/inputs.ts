@@ -80,6 +80,7 @@ export type ButtonItem = ItemBase & {
   type: ItemType.BUTTON
   content?: string
   readonly?: boolean
+  canAddItem?: boolean
 }
 
 export type PaymentInputStep = StepBase & {

@@ -7,7 +7,6 @@ import {
   Flex,
 } from '@chakra-ui/react'
 import { PlusIcon, TrashIcon } from 'assets/icons'
-import { TextBox } from 'components/shared/Textbox/TextBox'
 import { useTypebot } from 'contexts/TypebotContext'
 import { ButtonItem, ItemIndices, ItemType } from 'models'
 import React, { useEffect, useRef, useState } from 'react'
@@ -26,6 +25,8 @@ export const ButtonNodeContent = ({ item, indices, isMouseOver }: Props) => {
     item.content ?? 'Editar opção de resposta'
   )
   const editableRef = useRef<HTMLDivElement | null>(null)
+
+  const { canAddItem = true } = item
 
   useEffect(() => {
     if (itemValue !== item.content)
@@ -46,7 +47,11 @@ export const ButtonNodeContent = ({ item, indices, isMouseOver }: Props) => {
   }
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    if (e.key === 'Escape' && itemValue === 'Editar opção de resposta' && hasMoreThanOneItem())
+    if (
+      e.key === 'Escape' &&
+      itemValue === 'Editar opção de resposta' &&
+      hasMoreThanOneItem()
+    )
       deleteItem(indices)
     if (e.key === 'Enter' && itemValue !== '' && initialContent === '')
       handlePlusClick()
@@ -63,6 +68,8 @@ export const ButtonNodeContent = ({ item, indices, isMouseOver }: Props) => {
   const handleDeleteClick = () => {
     deleteItem(indices)
   }
+
+  const canAddItemFn = canAddItem && item.content !== 'Encerrar a conversa'
 
   return (
     <Flex justify="center" w="100%" pos="relative">
@@ -97,14 +104,16 @@ export const ButtonNodeContent = ({ item, indices, isMouseOver }: Props) => {
         }}
         unmountOnExit
       >
-        <IconButton
-          aria-label="Add item"
-          icon={<PlusIcon />}
-          size="xs"
-          shadow="md"
-          colorScheme="gray"
-          onClick={handlePlusClick}
-        />
+        {canAddItemFn && (
+          <IconButton
+            aria-label="Add item"
+            icon={<PlusIcon />}
+            size="xs"
+            shadow="md"
+            colorScheme="gray"
+            onClick={handlePlusClick}
+          />
+        )}
         {hasMoreThanOneItem() && !isReadOnly() && (
           <IconButton
             aria-label="Delete item"
@@ -113,7 +122,8 @@ export const ButtonNodeContent = ({ item, indices, isMouseOver }: Props) => {
             shadow="md"
             colorScheme="gray"
             onClick={handleDeleteClick}
-          />)}
+          />
+        )}
       </Fade>
     </Flex>
   )
