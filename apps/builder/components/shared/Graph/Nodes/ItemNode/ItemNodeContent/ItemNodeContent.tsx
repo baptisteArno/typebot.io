@@ -1,11 +1,11 @@
-import { Item, ItemIndices, ItemType, Step, BaseOctaOptions } from 'models'
-import React from 'react'
+import { Item, ItemIndices, ItemType, Step } from 'models'
 import { ButtonNodeContent } from './contents/ButtonNodeContent'
 import { ConditionNodeContent } from './contents/ConditionNodeContent'
+import { ExternalEventNodeContent } from './contents/ExternalEventNodeContent'
 import { OfficeHoursNodeContent } from './contents/OfficeHoursNodeContent'
-import { WebhookNodeContent } from './contents/WebhooksNodeContent/WebhookNodeContent'
-import { WhatsAppOptionsNodeContent } from './contents/WhatsAppOptionsContent'
+import { WebhookNodeContent } from './contents/WebhooksNodeContent'
 import { WhatsAppButtonsNodeContent } from './contents/WhatsAppButtonsContent'
+import { WhatsAppOptionsNodeContent } from './contents/WhatsAppOptionsContent'
 
 type Props = {
   step?: Step
@@ -15,6 +15,7 @@ type Props = {
 }
 
 export const ItemNodeContent = ({ item, indices, isMouseOver, step }: Props) => {
+
   switch (item.type) {
     case ItemType.BUTTON:
       return (
@@ -30,6 +31,8 @@ export const ItemNodeContent = ({ item, indices, isMouseOver, step }: Props) => 
       return <OfficeHoursNodeContent item={item} />
     case ItemType.WEBHOOK:
       return <WebhookNodeContent item={item} />
+    case ItemType.EXTERNAL_EVENT:
+      return <ExternalEventNodeContent item={item} />
     case ItemType.WHATSAPP_OPTIONS_LIST:
       return (
         <WhatsAppOptionsNodeContent

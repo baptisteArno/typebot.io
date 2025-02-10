@@ -3,31 +3,30 @@ import {
   BubbleStepType,
   ChoiceInputStep,
   ConditionStep,
+  ExternalEventStep,
+  ImageBubbleStep,
   InputStep,
   InputStepType,
   IntegrationStep,
   IntegrationStepType,
   LogicStep,
   LogicStepType,
+  MediaBubbleStep,
+  OctaBubbleStep,
+  OctaBubbleStepType,
+  OctaStepType,
+  OctaWabaStepType,
+  OfficeHourStep,
   Step,
-  TextInputStep,
-  TextBubbleStep,
-  WebhookStep,
   StepType,
   StepWithOptionsType,
-  ImageBubbleStep,
+  TextBubbleStep,
   VideoBubbleStep,
-  OctaStepType,
-  OctaBubbleStepType,
-  OctaBubbleStep,
-  OctaStepWithOptionsType,
-  OfficeHourStep,
-  MediaBubbleStep,
-  OctaWabaStepType,
-  WhatsAppOptionsListStep,
+  WebhookStep,
   WhatsAppButtonsListStep,
-  WOZStepType,
-  WOZAssignStep
+  WhatsAppOptionsListStep,
+  WOZAssignStep,
+  WOZStepType
 } from 'models'
 
 export const sendRequest = async <ResponseData>(
@@ -162,12 +161,12 @@ export const stepTypeHasWebhook = (
 
 export const stepTypeHasItems = (
   type: StepType
-): type is LogicStepType.CONDITION | InputStepType.CHOICE | OctaStepType.OFFICE_HOURS | IntegrationStepType.WEBHOOK | OctaWabaStepType.WHATSAPP_OPTIONS_LIST | OctaWabaStepType.WHATSAPP_BUTTONS_LIST | OctaWabaStepType.COMMERCE | WOZStepType.ASSIGN =>
-  [LogicStepType.CONDITION, InputStepType.CHOICE, OctaStepType.OFFICE_HOURS, IntegrationStepType.WEBHOOK, OctaWabaStepType.WHATSAPP_OPTIONS_LIST, OctaWabaStepType.WHATSAPP_BUTTONS_LIST, OctaWabaStepType.COMMERCE, WOZStepType.ASSIGN].includes(type)
+): type is LogicStepType.CONDITION | InputStepType.CHOICE | OctaStepType.OFFICE_HOURS | IntegrationStepType.WEBHOOK | IntegrationStepType.EXTERNAL_EVENT | OctaWabaStepType.WHATSAPP_OPTIONS_LIST | OctaWabaStepType.WHATSAPP_BUTTONS_LIST | OctaWabaStepType.COMMERCE | WOZStepType.ASSIGN =>
+  [LogicStepType.CONDITION, InputStepType.CHOICE, OctaStepType.OFFICE_HOURS, IntegrationStepType.WEBHOOK, IntegrationStepType.EXTERNAL_EVENT, OctaWabaStepType.WHATSAPP_OPTIONS_LIST, OctaWabaStepType.WHATSAPP_BUTTONS_LIST, OctaWabaStepType.COMMERCE, WOZStepType.ASSIGN].includes(type)
 
 export const stepHasItems = (
   step: Step
-): step is ConditionStep | ChoiceInputStep | OfficeHourStep | WebhookStep | WhatsAppOptionsListStep | WhatsAppButtonsListStep | WOZAssignStep =>
+): step is ConditionStep | ChoiceInputStep | OfficeHourStep | WebhookStep | ExternalEventStep | WhatsAppOptionsListStep | WhatsAppButtonsListStep | WOZAssignStep =>
   'items' in step && isDefined(step.items)
 
 export const byId = (id?: string) => (obj: { id: string }) => obj.id === id

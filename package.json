@@ -19,6 +19,7 @@
     "db:migrate": "yarn workspace db migration:deploy"
   },
   "devDependencies": {
+    "@types/pako": "^2.0.3",
     "turbo": "^1.2.9"
   },
   "packageManager": "yarn@1.22.17",
@@ -29,11 +30,13 @@
     "@hookform/resolvers": "^3.3.4",
     "chakra-react-select": "^4.7.3",
     "framer-motion": "^6",
+    "pako": "^2.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.51.2",
     "react-icons": "^4.4.0",
     "react-select": "^5.7.7",
+    "socket.io-client": "^4.8.1",
     "zod": "^3.22.4"
   }
 }

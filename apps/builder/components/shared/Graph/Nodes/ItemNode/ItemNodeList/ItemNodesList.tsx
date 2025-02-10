@@ -1,20 +1,21 @@
 import {
+  Accordion,
+  AccordionButton,
+  AccordionIcon,
+  AccordionItem,
+  AccordionPanel,
   Flex,
   Portal,
   Stack,
   Text,
   useEventListener,
-  Accordion,
-  AccordionItem,
-  AccordionButton,
-  AccordionIcon,
-  AccordionPanel,
 } from '@chakra-ui/react'
+import { CodeEditor } from 'components/shared/CodeEditor'
+import { Coordinates, useGraph } from 'contexts/GraphContext'
 import {
   computeNearestPlaceholderIndex,
   useStepDnd,
 } from 'contexts/GraphDndContext'
-import { Coordinates, useGraph } from 'contexts/GraphContext'
 import { useTypebot } from 'contexts/TypebotContext'
 import {
   ButtonItem,
@@ -28,15 +29,14 @@ import {
   WOZStepType,
 } from 'models'
 import React, { useEffect, useRef, useState } from 'react'
-import { ItemNode } from '../ItemNode'
 import { SourceEndpoint } from '../../../Endpoints'
+import { ItemNode } from '../ItemNode'
 import { ItemNodeOverlay } from '../ItemNodeOverlay'
 import {
   Container,
   HandleSelectCalendar,
   SelectedCalendar,
 } from './ItemNodeList.style'
-import { CodeEditor } from 'components/shared/CodeEditor'
 
 type Props = {
   step: StepWithItems | WOZAssignStep
@@ -169,6 +169,7 @@ export const ItemNodesList = ({
     }
   }
 
+
   return (
     <Stack
       flex={1}
@@ -192,6 +193,7 @@ export const ItemNodesList = ({
           )}
         </Stack>
       )}
+
       {step.type === IntegrationStepType.WEBHOOK && (
         <Container>
           {!webhook?.url && (
@@ -228,6 +230,11 @@ export const ItemNodesList = ({
           )}
         </Container>
       )}
+      {step.type === IntegrationStepType.EXTERNAL_EVENT && (
+        <Container>
+          <Text whiteSpace="nowrap" overflow="hidden" textOverflow="ellipsis">{step?.options?.url || "Clique para editar..."}</Text>
+        </Container>
+      )}
       {step &&
         step.items &&
         step.items.map((item, idx) => {
@@ -257,10 +264,12 @@ export const ItemNodesList = ({
             </Stack>
           )
         })}
+
       {isLastStep &&
         step.type !== OctaStepType.OFFICE_HOURS &&
         step.type !== InputStepType.CHOICE &&
         step.type !== IntegrationStepType.WEBHOOK &&
+        step.type !== IntegrationStepType.EXTERNAL_EVENT &&
         step.type !== OctaWabaStepType.WHATSAPP_OPTIONS_LIST &&
         step.type !== OctaWabaStepType.WHATSAPP_BUTTONS_LIST &&
         step.type !== WOZStepType.ASSIGN && (

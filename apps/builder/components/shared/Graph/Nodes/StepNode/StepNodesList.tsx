@@ -1,12 +1,19 @@
 import {
-  useEventListener,
-  Stack,
-  Flex,
-  Portal,
-  Text,
   Center,
+  Flex,
   HStack,
+  Portal,
+  Stack,
+  Text,
+  useEventListener,
 } from '@chakra-ui/react'
+import { PlusIcon } from 'assets/icons'
+import { Coordinates, useGraph } from 'contexts/GraphContext'
+import {
+  computeNearestPlaceholderIndex,
+  useStepDnd,
+} from 'contexts/GraphDndContext'
+import { useTypebot } from 'contexts/TypebotContext'
 import {
   DraggableStep,
   DraggableStepType,
@@ -19,16 +26,9 @@ import {
   StepType,
   WOZStepType,
 } from 'models'
-import {
-  computeNearestPlaceholderIndex,
-  useStepDnd,
-} from 'contexts/GraphDndContext'
-import { Coordinates, useGraph } from 'contexts/GraphContext'
 import { useEffect, useRef, useState } from 'react'
-import { useTypebot } from 'contexts/TypebotContext'
 import { StepNode } from './StepNode/StepNode'
 import { StepNodeOverlay } from './StepNodeOverlay'
-import { PlusIcon } from 'assets/icons'
 
 type Props = {
   blockId: string
@@ -122,6 +122,7 @@ export const StepNodesList = ({
         s.type === OctaStepType.OFFICE_HOURS ||
         s.type === WOZStepType.ASSIGN ||
         s.type === IntegrationStepType.WEBHOOK ||
+        s.type === IntegrationStepType.EXTERNAL_EVENT ||
         s.type === OctaWabaStepType.WHATSAPP_OPTIONS_LIST ||
         s.type === OctaWabaStepType.WHATSAPP_BUTTONS_LIST
     )
@@ -130,17 +131,17 @@ export const StepNodesList = ({
 
   const handleStepMouseDown =
     (stepIndex: number) =>
-    (
-      { absolute, relative }: { absolute: Coordinates; relative: Coordinates },
-      step: DraggableStep
-    ) => {
-      if (isReadOnly) return
-      placeholderRefs.current.splice(stepIndex + 1, 1)
-      detachStepFromBlock({ blockIndex, stepIndex })
-      setPosition(absolute)
-      setMousePositionInElement(relative)
-      setDraggedStep(step)
-    }
+      (
+        { absolute, relative }: { absolute: Coordinates; relative: Coordinates },
+        step: DraggableStep
+      ) => {
+        if (isReadOnly) return
+        placeholderRefs.current.splice(stepIndex + 1, 1)
+        detachStepFromBlock({ blockIndex, stepIndex })
+        setPosition(absolute)
+        setMousePositionInElement(relative)
+        setDraggedStep(step)
+      }
 
   const handlePushElementRef =
     (idx: number) => (elem: HTMLDivElement | null) => {

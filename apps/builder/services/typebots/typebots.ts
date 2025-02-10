@@ -1,92 +1,90 @@
+import { isDefined } from '@chakra-ui/utils'
+import { subDomain } from '@octadesk-tech/services'
+import cuid from 'cuid'
+import { diff } from 'deep-object-diff'
+import { dequal } from 'dequal'
+import { Plan } from 'model'
 import {
   Block,
-  PublicTypebot,
-  StartStep,
-  BubbleStepType,
-  InputStepType,
-  LogicStepType,
-  Step,
-  OctaWabaStepType,
-  DraggableStepType,
-  DraggableStep,
-  defaultTheme,
-  defaultSettings,
-  StepOptions,
   BubbleStepContent,
-  IntegrationStepType,
-  defaultTextBubbleContent,
-  defaultVideoBubbleContent,
-  defaultGenericInputOptions,
-  defaultEmailInputOptions,
-  defaultCpfInputOptions,
-  defaultDateInputOptions,
-  defaultPhoneInputOptions,
-  defaultChoiceInputOptions,
-  defaultAskNameOptions,
-  defaultWebhookOptions,
-  StepWithOptionsType,
-  Item,
-  ItemType,
-  defaultConditionContent,
-  defaultEmbedBubbleContent,
+  BubbleStepType,
   ChoiceInputStep,
   ConditionStep,
+  ConversationTagOptions,
+  DraggableStep,
+  DraggableStepType,
+  InputStepType,
+  IntegrationStepType,
+  Item,
+  ItemType,
+  LogicStepType,
+  OctaBubbleStepType,
   OctaStepOptions,
-  OctaWabaStepOptions,
   OctaStepType,
+  OctaWabaStepOptions,
+  OctaWabaStepType,
+  OfficeHourStep,
+  PublicTypebot,
+  StartStep,
+  Step,
+  StepOptions,
+  StepWithOptionsType,
+  Typebot,
+  WOZAssignStep,
+  WOZStepType,
+  WOZSuggestionOptions,
+  WhatsAppButtonsListStep,
+  WhatsAppOptionsListStep,
+  defaultAskNameOptions,
   defaultAssignToTeamOptions,
   defaultCallOtherBotOptions,
-  defaultEndConversationBubbleContent,
-  OctaBubbleStepType,
-  defaultWhatsAppOptionsListOptions,
-  defaultWhatsAppOptionsListContent,
-  defaultWhatsAppButtonsListOptions,
-  OfficeHourStep,
-  defaultOfficeHoursOptions,
+  defaultChoiceInputOptions,
   defaultCommerceOptions,
-  defaultMediaBubbleContent,
-  WhatsAppOptionsListStep,
-  WhatsAppButtonsListStep,
-  defaultPreReserveOptions,
-  WOZStepType,
-  defaultWOZSuggestionOptions,
-  defaultWOZAssignOptions,
-  WOZSuggestionOptions,
-  WOZAssignStep,
+  defaultConditionContent,
   defaultConversationTagOptions,
-  ConversationTagOptions,
+  defaultCpfInputOptions,
+  defaultDateInputOptions,
+  defaultEmailInputOptions,
+  defaultEmbedBubbleContent,
+  defaultEndConversationBubbleContent,
+  defaultExternalEventOptions,
+  defaultGenericInputOptions,
+  defaultMediaBubbleContent,
+  defaultOfficeHoursOptions,
+  defaultPhoneInputOptions,
+  defaultPreReserveOptions,
+  defaultSettings,
+  defaultTextBubbleContent,
+  defaultTheme,
+  defaultVideoBubbleContent,
+  defaultWOZAssignOptions,
+  defaultWOZSuggestionOptions,
+  defaultWebhookOptions,
+  defaultWhatsAppButtonsListOptions,
+  defaultWhatsAppOptionsListContent,
+  defaultWhatsAppOptionsListOptions,
 } from 'models'
-import { Typebot } from 'models'
+import { stringify } from 'qs'
+import { duplicateWebhook } from 'services/webhook'
 import useSWR from 'swr'
-import { fetcher, toKebabCase } from '../utils'
+import { sendOctaRequest } from 'util/octaRequest'
 import {
   isBubbleStepType,
+  isChoiceInput,
+  isConditionStep,
+  isNotEmpty,
   isOctaBubbleStepType,
   isOctaStepType,
-  isNotEmpty,
+  isWOZStepType,
   isWebhookStep,
   omit,
+  sendRequest,
   stepHasItems,
   stepTypeHasItems,
   stepTypeHasOption,
-  isWOZStepType,
   stepTypeHasWebhook,
 } from 'utils'
-import { dequal } from 'dequal'
-import { stringify } from 'qs'
-import {
-  isChoiceInput,
-  isConditionStep,
-  sendRequest,
-  isOctaBubbleStep,
-} from 'utils'
-import cuid from 'cuid'
-import { diff } from 'deep-object-diff'
-import { duplicateWebhook } from 'services/webhook'
-import { Plan } from 'model'
-import { isDefined } from '@chakra-ui/utils'
-import { subDomain } from '@octadesk-tech/services'
-import { sendOctaRequest } from 'util/octaRequest'
+import { fetcher, toKebabCase } from '../utils'
 
 export type TypebotInDashboard = Pick<
   Typebot,
@@ -136,6 +134,21 @@ export const createTypebot = async ({
     body: typebot,
   })
 }
+
+const generateExternalEventValue = (stepId: string, event: string): Item => ({
+  id: cuid(),
+  stepId,
+  type: ItemType.EXTERNAL_EVENT,
+  content: {
+    matchType: '$eq',
+    referenceProperty: null,
+    referenceValue: null,
+    source: 'CURRENT_SESSION',
+    subType: null,
+    values: [event],
+  },
+});
+
 
 export const importTypebot = async (typebot: Typebot, userPlan: Plan) => {
   const { typebot: newTypebot, webhookIdsMapping } = duplicateTypebot(
@@ -249,11 +262,11 @@ const duplicateTypebot = (
       })),
       settings:
         typebot.settings.general.isBrandingEnabled === false &&
-        userPlan === Plan.FREE
+          userPlan === Plan.FREE
           ? {
-              ...typebot.settings,
-              general: { ...typebot.settings.general, isBrandingEnabled: true },
-            }
+            ...typebot.settings,
+            general: { ...typebot.settings.general, isBrandingEnabled: true },
+          }
           : typebot.settings,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
@@ -312,8 +325,8 @@ export const parseNewStep = (
     isOctaStepType(type) || isWOZStepType(type)
       ? parseOctaStepOptions(type)
       : stepTypeHasOption(type)
-      ? parseDefaultStepOptions(type)
-      : undefined
+        ? parseDefaultStepOptions(type)
+        : undefined
 
   return {
     id,
@@ -336,6 +349,7 @@ const parseDefaultItems = (
     | InputStepType.CHOICE
     | OctaStepType.OFFICE_HOURS
     | IntegrationStepType.WEBHOOK
+    | IntegrationStepType.EXTERNAL_EVENT
     | OctaWabaStepType.WHATSAPP_OPTIONS_LIST
     | OctaWabaStepType.WHATSAPP_BUTTONS_LIST
     | WOZStepType.ASSIGN
@@ -456,6 +470,12 @@ const parseDefaultItems = (
           },
         },
       ]
+    case IntegrationStepType.EXTERNAL_EVENT:
+      return [
+        generateExternalEventValue(stepId, '@EXTERNAL_EVENT_RECEIVED'),
+        generateExternalEventValue(stepId, '@EXTERNAL_EVENT_TIMEOUT'),
+        generateExternalEventValue(stepId, '@EXTERNAL_EVENT_ERROR')
+      ]
   }
 }
 
@@ -553,6 +573,8 @@ const parseDefaultStepOptions = (
     // case IntegrationStepType.MAKE_COM:
     case IntegrationStepType.WEBHOOK:
       return defaultWebhookOptions
+    case IntegrationStepType.EXTERNAL_EVENT:
+      return defaultExternalEventOptions
     // case IntegrationStepType.EMAIL:
     //   return defaultSendEmailOptions
     default:

@@ -1,37 +1,37 @@
+import { InfoIcon } from '@chakra-ui/icons'
 import {
+  Fade,
+  Flex,
+  HStack,
+  IconButton,
+  Portal,
+  SimpleGrid,
+  Spacer,
   Stack,
   Text,
-  SimpleGrid,
-  useEventListener,
-  Flex,
-  IconButton,
   Tooltip,
-  Fade,
-  Spacer,
-  Portal,
-  HStack,
   useDisclosure,
+  useEventListener,
 } from '@chakra-ui/react'
-import { InfoIcon } from '@chakra-ui/icons'
+import { LockedIcon, UnlockedIcon } from 'assets/icons'
+import { useStepDnd } from 'contexts/GraphDndContext'
+import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
+import { useUser } from 'contexts/UserContext'
+import { useWorkspace } from 'contexts/WorkspaceContext'
 import {
   BubbleStepType,
   DraggableStepType,
   InputStepType,
   IntegrationStepType,
-  StepType,
   LogicStepType,
-  OctaStepType,
   OctaBubbleStepType,
+  OctaStepType,
   OctaWabaStepType,
+  StepType,
   WOZStepType,
 } from 'models'
-import { useStepDnd } from 'contexts/GraphDndContext'
 import React, { useState } from 'react'
 import { StepCard, StepCardOverlay } from './StepCard'
-import { LockedIcon, UnlockedIcon } from 'assets/icons'
-import { useUser } from 'contexts/UserContext'
-import { useWorkspace } from 'contexts/WorkspaceContext'
-import { useTypebot } from 'contexts/TypebotContext/TypebotContext'
 
 export const StepsSideBar = () => {
   const { setDraggedStepType, draggedStepType } = useStepDnd()
@@ -130,6 +130,10 @@ export const StepsSideBar = () => {
   const isValidToCurrentDomain = (type: StepType) => {
     if (LIMITED_DOMAINS.includes(typebot?.domain || 'chat')) {
       return type === IntegrationStepType.WEBHOOK
+    }
+
+    if (type === IntegrationStepType.EXTERNAL_EVENT) {
+      return verifyFeatureToggle('external-event-in-bot')
     }
 
     return true
