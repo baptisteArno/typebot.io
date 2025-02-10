@@ -71,6 +71,9 @@ export const colors = {
     700: '#3E2D34',
     800: '#30272A',
   },
+  purple: {
+    400: '#8B63D1',
+  },
 }
 
 const components = {
@@ -120,6 +123,10 @@ const components = {
       label: () => ({
         color: 'gray.400',
         fontSize: 'sm',
+      }),
+      hint: () => ({
+        color: 'gray.600',
+        fontSize: 'xs',
       }),
     },
   },

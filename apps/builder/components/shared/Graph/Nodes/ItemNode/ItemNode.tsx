@@ -4,13 +4,12 @@ import { Coordinates, useGraph } from 'contexts/GraphContext'
 import { NodePosition, useDragDistance } from 'contexts/GraphDndContext'
 import { useTypebot } from 'contexts/TypebotContext'
 import {
-  BaseOctaOptions,
   ButtonItem,
   ChoiceInputStep,
   Item,
   ItemIndices,
   ItemType,
-  Step
+  Step,
 } from 'models'
 import React, { useRef, useState } from 'react'
 import { setMultipleRefs } from 'services/utils'
@@ -29,7 +28,13 @@ type Props = {
   ) => void
 }
 
-export const ItemNode = ({ item, indices, isReadOnly, onMouseDown, step }: Props) => {
+export const ItemNode = ({
+  item,
+  indices,
+  isReadOnly,
+  onMouseDown,
+  step,
+}: Props) => {
   const { typebot } = useTypebot()
   const { previewingEdge } = useGraph()
   const [isMouseOver, setIsMouseOver] = useState(false)
@@ -55,6 +60,7 @@ export const ItemNode = ({ item, indices, isReadOnly, onMouseDown, step }: Props
 
   return (
     <ContextMenu<HTMLDivElement>
+      readonly={item.readonly}
       renderMenu={() => <ItemNodeContextMenu indices={indices} />}
     >
       {(ref, isOpened) => (

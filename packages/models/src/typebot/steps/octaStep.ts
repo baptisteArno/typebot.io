@@ -273,8 +273,8 @@ export type WOZSuggestionOptions = BaseOctaOptions & {
 
 export type WOZAssignOptions = BaseOctaOptions & {
   virtualAgentId?: string
-  introduceAsIA: boolean
   confirmContext: boolean
+  limitAnswerNoContent: number
 }
 
 export type CallOtherBotOptions = BaseOctaOptions & {
@@ -443,8 +443,8 @@ export const defaultWOZAssignOptions: WOZAssignOptions = {
   name: '',
   subject: '',
   virtualAgentId: undefined,
-  introduceAsIA: true,
   confirmContext: false,
+  limitAnswerNoContent: 3,
 }
 
 export const defaultCallOtherBotOptions: CallOtherBotOptions = {

@@ -26,6 +26,7 @@ export interface ContextMenuProps<T extends HTMLElement> {
   portalProps?: PortalProps
   menuButtonProps?: MenuButtonProps
   isDisabled?: boolean
+  readonly?: boolean
 }
 
 export function ContextMenu<T extends HTMLElement = HTMLElement>(
@@ -36,7 +37,7 @@ export function ContextMenu<T extends HTMLElement = HTMLElement>(
   const [isDeferredOpen, setIsDeferredOpen] = useState(false)
   const [position, setPosition] = useState<[number, number]>([0, 0])
   const targetRef = useRef<T>(null)
-
+  const { readonly = false } = props
   useEffect(() => {
     if (isOpened) {
       setTimeout(() => {
@@ -99,7 +100,7 @@ export function ContextMenu<T extends HTMLElement = HTMLElement>(
               }}
               {...props.menuButtonProps}
             />
-            {props.renderMenu()}
+            {!readonly && props.renderMenu()}
           </Menu>
         </Portal>
       )}

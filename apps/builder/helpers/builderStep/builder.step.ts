@@ -1,24 +1,14 @@
 import { WritableDraft } from 'immer/dist/types/types-external'
 import {
   Block,
-  BubbleStepType,
   DraggableStep,
   DraggableStepType,
-  InputStepType,
-  OctaStepType,
   StepIndices,
   Typebot,
-  OctaWabaStepType,
 } from 'models'
 import { parseNewStep } from 'services/typebots/typebots'
-import { templateTextBot } from './dictionary/input-text.step'
-import { templateDateBot } from './dictionary/input-date.step'
+
 import { BuilderStepType } from './types.builder'
-import { templateOfficeHours } from './dictionary/input-officeHours.step'
-import { templateCommerceStep } from './dictionary/input-commerce.step'
-import { templateUploadBot } from './dictionary/inputs/input-upload.step'
-import { templateVariableBot } from './dictionary/variables/whatsapp-options-variable.step'
-import { templateVariableButtonsBot } from './dictionary/variables/whatsapp-buttons-variable.step'
 
 export const BuildSteps = (stepIndices: StepIndices): BuilderStepType => {
   const builder = (
@@ -43,7 +33,7 @@ export const BuildSteps = (stepIndices: StepIndices): BuilderStepType => {
 
     const steps = builder(type, bot, blockId)
 
-    steps.map((step) => 
+    steps.map((step) =>
       block[stepIndices.blockIndex].steps.splice(
         stepIndices.stepIndex ?? 0,
         0,

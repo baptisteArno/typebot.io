@@ -62,7 +62,7 @@ import {
   defaultWebhookOptions,
   defaultWhatsAppButtonsListOptions,
   defaultWhatsAppOptionsListContent,
-  defaultWhatsAppOptionsListOptions
+  defaultWhatsAppOptionsListOptions,
 } from 'models'
 import { stringify } from 'qs'
 import { duplicateWebhook } from 'services/webhook'
@@ -321,19 +321,21 @@ export const parseNewStep = (
 ): DraggableStep => {
   const id = cuid()
 
-  const options = isOctaStepType(type) || isWOZStepType(type)
-    ? parseOctaStepOptions(type)
-    : stepTypeHasOption(type)
-      ? parseDefaultStepOptions(type)
-      : undefined
+  const options =
+    isOctaStepType(type) || isWOZStepType(type)
+      ? parseOctaStepOptions(type)
+      : stepTypeHasOption(type)
+        ? parseDefaultStepOptions(type)
+        : undefined
 
   return {
     id,
     blockId,
     type,
-    content: isBubbleStepType(type) || isOctaBubbleStepType(type)
-      ? parseDefaultContent(type)
-      : undefined,
+    content:
+      isBubbleStepType(type) || isOctaBubbleStepType(type)
+        ? parseDefaultContent(type)
+        : undefined,
     options,
 
     webhookId: stepTypeHasWebhook(type) ? cuid() : undefined,
@@ -364,15 +366,16 @@ const parseDefaultItems = (
           stepId,
           type: ItemType.BUTTON,
           content: 'Encerrar a conversa',
-          readonly: true
+          readonly: true,
+          canAddItem: false,
         },
         {
           id: cuid(),
           stepId,
           type: ItemType.BUTTON,
           content: 'Falar com um humano',
-          readonly: true
-        }
+          readonly: true,
+        },
       ]
 
     case OctaWabaStepType.WHATSAPP_OPTIONS_LIST:
@@ -497,7 +500,14 @@ const parseDefaultContent = (
   }
 }
 
-const parseOctaStepOptions = (type: OctaStepType | OctaWabaStepType | WOZStepType): OctaStepOptions | OctaWabaStepOptions | WOZSuggestionOptions | ConversationTagOptions | null => {
+const parseOctaStepOptions = (
+  type: OctaStepType | OctaWabaStepType | WOZStepType
+):
+  | OctaStepOptions
+  | OctaWabaStepOptions
+  | WOZSuggestionOptions
+  | ConversationTagOptions
+  | null => {
   switch (type) {
     case OctaStepType.ASSIGN_TO_TEAM:
       return defaultAssignToTeamOptions
