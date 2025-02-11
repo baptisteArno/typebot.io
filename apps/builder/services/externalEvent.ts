@@ -1,16 +1,12 @@
 import { subDomain } from '@octadesk-tech/services';
 import Storage from '@octadesk-tech/storage';
-import Axios from 'axios';
-export const getNucleusAuthClient = () =>
-  Axios.create({
-    baseURL: 'https://us-east1-001.qa.qaoctadesk.com/'
-  })
+import { services } from '@octadesk-tech/services'
 
 const getNucleusUrl = async () => {
   const authStorage = Storage.getItem('auth') as any
-  const http = getNucleusAuthClient();
+  const url = await services.createClient('base')
 
-  const { data } = await http.get('/nucleus-auth/apiKeysManagement/apikeys-baseurl', {
+  const { data } = await url.get('/nucleus-auth/apiKeysManagement/apikeys-baseurl', {
     headers: {
       'Content-Type': 'application/json',
       authorization: `Bearer ${authStorage?.access_token}`,
