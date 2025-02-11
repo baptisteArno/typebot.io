@@ -1,0 +1,15 @@
+{
+  "name": "@typebot.io/perplexity-block",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@typebot.io/ai": "workspace:*",
+    "@typebot.io/forge": "workspace:*",
+    "@typebot.io/lib": "workspace:*",
+    "@typebot.io/zod": "workspace:*"
+  },
+  "devDependencies": {
+    "@typebot.io/tsconfig": "workspace:*"
+  }
+}
