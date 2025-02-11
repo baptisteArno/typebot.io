@@ -3,11 +3,13 @@ import { useUser } from "@/features/user/hooks/useUser";
 import {
   IconButton,
   type IconButtonProps,
+  type PlacementWithLogical,
   Popover,
   PopoverArrow,
   PopoverBody,
   PopoverContent,
   PopoverTrigger,
+  Portal,
 } from "@chakra-ui/react";
 import type { ForgedBlockDefinition } from "@typebot.io/forge-repository/definitions";
 import { onboardingVideos } from "../data";
@@ -16,12 +18,19 @@ import { YoutubeIframe } from "./YoutubeIframe";
 
 type Props = {
   type: keyof typeof onboardingVideos;
-  defaultIsOpen?: boolean;
+  isEnabled?: boolean;
   blockDef?: ForgedBlockDefinition;
+  placement?: PlacementWithLogical;
   children: ({ onToggle }: { onToggle: () => void }) => JSX.Element;
 };
 
-const Root = ({ type, blockDef, children }: Props) => {
+const Root = ({
+  type,
+  blockDef,
+  children,
+  isEnabled,
+  placement = "right",
+}: Props) => {
   const { user, updateUser } = useUser();
   const youtubeId =
     onboardingVideos[type]?.youtubeId ?? blockDef?.onboarding?.youtubeId;
@@ -30,15 +39,16 @@ const Root = ({ type, blockDef, children }: Props) => {
     updateUser,
     user,
     blockDef,
+    isEnabled,
   });
 
   if (!youtubeId) return children({ onToggle });
 
   return (
-    <Popover isOpen={isOpen} placement="right" isLazy>
+    <Popover isOpen={isOpen} placement={placement} isLazy>
       <PopoverTrigger>{children({ onToggle })}</PopoverTrigger>
 
-      <PopoverContent aspectRatio="1.5" width="640px">
+      <PopoverContent aspectRatio="1.5" width="640px" shadow="xl">
         <PopoverArrow />
         <PopoverBody h="full" p="5">
           <YoutubeIframe id={youtubeId} />

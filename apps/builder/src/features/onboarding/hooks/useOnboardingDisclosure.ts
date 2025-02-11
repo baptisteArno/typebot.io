@@ -10,6 +10,7 @@ type Props = {
   user?: Pick<User, "createdAt" | "displayedInAppNotifications">;
   defaultOpenDelay?: number;
   blockDef: ForgedBlockDefinition | undefined;
+  isEnabled?: boolean;
 };
 
 export const useOnboardingDisclosure = ({
@@ -18,6 +19,7 @@ export const useOnboardingDisclosure = ({
   user,
   defaultOpenDelay,
   blockDef,
+  isEnabled = true,
 }: Props) => {
   const [isInitialized, setIsInitialized] = useState(false);
   const { isOpen, onOpen, onClose, onToggle } = useDisclosure({
@@ -33,7 +35,7 @@ export const useOnboardingDisclosure = ({
   });
 
   useEffect(() => {
-    if (isInitialized || !user?.createdAt || !key) return;
+    if (isInitialized || !user?.createdAt || !key || !isEnabled) return;
     setIsInitialized(true);
     if (
       key &&
@@ -59,6 +61,7 @@ export const useOnboardingDisclosure = ({
     onOpen,
     user?.createdAt,
     user?.displayedInAppNotifications,
+    isEnabled,
   ]);
 
   return { isOpen, onClose, onToggle };
