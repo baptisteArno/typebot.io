@@ -1,4 +1,9 @@
-import { InfoIcon, PlayIcon, TrashIcon } from "@/components/icons";
+import {
+  InfoIcon,
+  PlayIcon,
+  SettingsIcon,
+  TrashIcon,
+} from "@/components/icons";
 import {
   HStack,
   IconButton,
@@ -10,12 +15,14 @@ import {
 type Props = {
   eventId: string;
   onPlayClick: () => void;
+  onSettingsClick: () => void;
   onDeleteClick?: () => void;
 };
 
 export const EventFocusToolbar = ({
   eventId,
   onPlayClick,
+  onSettingsClick,
   onDeleteClick,
 }: Props) => {
   const { hasCopied, onCopy } = useClipboard(eventId);
@@ -36,6 +43,13 @@ export const EventFocusToolbar = ({
         variant="ghost"
         onClick={onPlayClick}
         size="sm"
+      />
+      <IconButton
+        icon={<SettingsIcon />}
+        aria-label={"Show event settings"}
+        variant="ghost"
+        size="sm"
+        onClick={onSettingsClick}
       />
       <Tooltip
         label={hasCopied ? "Copied!" : eventId}

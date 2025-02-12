@@ -47,14 +47,14 @@ export const Edges = ({
         <Edge
           key={edge.id}
           edge={edge}
-          fromGroupId={
+          fromElementId={
             "blockId" in edge.from
               ? groups.find((g) =>
                   g.blocks.some(
                     (b) => b.id === (edge.from as BlockSource).blockId,
                   ),
                 )?.id
-              : undefined
+              : edge.from.eventId
           }
         />
       ))}

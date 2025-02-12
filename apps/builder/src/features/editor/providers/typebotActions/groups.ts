@@ -43,7 +43,6 @@ export type GroupsActions = {
     oldToNewIdsMapping: Map<string, string>,
   ) => void;
   updateGroupsCoordinates: (newCoord: CoordinatesMap) => void;
-  duplicateGroup: (groupIndex: number) => void;
   deleteGroup: (groupIndex: number) => void;
   deleteGroups: (groupIds: string[]) => void;
 };
@@ -94,32 +93,6 @@ const groupsActions = (setTypebot: SetTypebot): GroupsActions => ({
       }),
     );
   },
-  duplicateGroup: (groupIndex: number) =>
-    setTypebot((typebot) =>
-      produce(typebot, (typebot) => {
-        const group = typebot.groups[groupIndex];
-        const id = createId();
-
-        const groupTitle = isEmpty(group.title)
-          ? ""
-          : parseUniqueKey(
-              group.title,
-              typebot.groups.map((g) => g.title),
-            );
-
-        const newGroup: GroupV6 = {
-          ...group,
-          title: groupTitle,
-          id,
-          blocks: (group.blocks as BlockV6[]).map(duplicateBlockDraft),
-          graphCoordinates: {
-            x: group.graphCoordinates.x + 200,
-            y: group.graphCoordinates.y + 100,
-          },
-        };
-        typebot.groups.splice(groupIndex + 1, 0, newGroup);
-      }),
-    ),
   deleteGroup: (groupIndex: number) =>
     setTypebot((typebot) =>
       produce(typebot, (typebot) => {
@@ -140,7 +113,6 @@ const groupsActions = (setTypebot: SetTypebot): GroupsActions => ({
     variables: Omit<Variable, "value">[],
     oldToNewIdsMapping: Map<string, string>,
   ) => {
-    const createdGroups: GroupV6[] = [];
     setTypebot((typebot) =>
       produce(typebot, (typebot) => {
         const edgesToCreate: Edge[] = [];
@@ -234,7 +206,6 @@ const groupsActions = (setTypebot: SetTypebot): GroupsActions => ({
             }),
           };
           typebot.groups.push(newGroup);
-          createdGroups.push(newGroup);
         });
 
         edgesToCreate.forEach((edge) => {

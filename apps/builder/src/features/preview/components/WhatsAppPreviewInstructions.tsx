@@ -24,7 +24,7 @@ import {
 
 export const WhatsAppPreviewInstructions = (props: StackProps) => {
   const { typebot, save } = useTypebot();
-  const { startPreviewAtGroup, startPreviewAtEvent } = useEditor();
+  const { startPreviewFrom } = useEditor();
   const [phoneNumber, setPhoneNumber] = useState(
     getPhoneNumberFromLocalStorage() ?? "",
   );
@@ -56,11 +56,12 @@ export const WhatsAppPreviewInstructions = (props: StackProps) => {
     mutate({
       to: phoneNumber,
       typebotId: typebot.id,
-      startFrom: startPreviewAtGroup
-        ? { type: "group", groupId: startPreviewAtGroup }
-        : startPreviewAtEvent
-          ? { type: "event", eventId: startPreviewAtEvent }
-          : undefined,
+      startFrom:
+        startPreviewFrom?.type === "group"
+          ? { type: "group", groupId: startPreviewFrom.id }
+          : startPreviewFrom?.type === "event"
+            ? { type: "event", eventId: startPreviewFrom.id }
+            : undefined,
     });
   };
 
