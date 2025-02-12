@@ -34,7 +34,7 @@ export const PictureChoiceItemNode = ({
   isMouseOver,
 }: Props) => {
   const emptyImageBgColor = useColorModeValue("gray.100", "gray.700");
-  const { openedItemId, setOpenedItemId } = useGraph();
+  const { openedNodeId, setOpenedNodeId } = useGraph();
   const { updateItem, createItem, typebot } = useTypebot();
   const ref = useRef<HTMLDivElement | null>(null);
 
@@ -47,7 +47,7 @@ export const PictureChoiceItemNode = ({
   const handleMouseDown = (e: React.MouseEvent) => e.stopPropagation();
 
   const openPopover = () => {
-    setOpenedItemId(item.id);
+    setOpenedNodeId(item.id);
   };
 
   const handleItemChange = (updates: Partial<PictureChoiceItem>) => {
@@ -67,7 +67,7 @@ export const PictureChoiceItemNode = ({
     <Popover
       placement="right"
       isLazy
-      isOpen={openedItemId === item.id}
+      isOpen={openedNodeId === item.id}
       closeOnBlur={false}
     >
       <PopoverAnchor>

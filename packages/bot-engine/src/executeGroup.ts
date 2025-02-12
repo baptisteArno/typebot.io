@@ -224,7 +224,11 @@ export const executeGroup = async (
     }
   }
 
-  if (!nextEdgeId && newSessionState.typebotsQueue.length === 1)
+  if (
+    !nextEdgeId &&
+    newSessionState.typebotsQueue.length === 1 &&
+    (newSessionState.typebotsQueue[0].queuedEdgeIds ?? []).length === 0
+  )
     return {
       messages,
       newSessionState,

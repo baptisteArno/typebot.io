@@ -14,7 +14,7 @@ import { sendMessage } from "@typebot.io/telemetry/sendMessage";
 import { trackEvents } from "@typebot.io/telemetry/trackEvents";
 import { themeSchema } from "@typebot.io/theme/schemas";
 import { edgeSchema } from "@typebot.io/typebot/schemas/edge";
-import { startEventSchema } from "@typebot.io/typebot/schemas/events/start/schema";
+import { publicTypebotSchemaV6 } from "@typebot.io/typebot/schemas/publicTypebot";
 import { typebotV6Schema } from "@typebot.io/typebot/schemas/typebot";
 import { variableSchema } from "@typebot.io/variables/schemas";
 import { z } from "@typebot.io/zod";
@@ -154,7 +154,7 @@ export const publishTypebot = authenticatedProcedure
           }),
           events:
             (isTypebotVersionAtLeastV6(existingTypebot.version)
-              ? z.tuple([startEventSchema])
+              ? publicTypebotSchemaV6.shape.events
               : z.null()
             ).parse(existingTypebot.events) ?? undefined,
           settings: settingsSchema.parse(existingTypebot.settings),
@@ -173,7 +173,7 @@ export const publishTypebot = authenticatedProcedure
           }),
           events:
             (isTypebotVersionAtLeastV6(existingTypebot.version)
-              ? z.tuple([startEventSchema])
+              ? publicTypebotSchemaV6.shape.events
               : z.null()
             ).parse(existingTypebot.events) ?? undefined,
           settings: settingsSchema.parse(existingTypebot.settings),

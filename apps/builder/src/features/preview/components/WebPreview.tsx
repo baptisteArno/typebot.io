@@ -10,7 +10,7 @@ import { Standard } from "@typebot.io/nextjs";
 export const WebPreview = () => {
   const { user } = useUser();
   const { typebot } = useTypebot();
-  const { startPreviewAtGroup, startPreviewAtEvent } = useEditor();
+  const { startPreviewFrom } = useEditor();
   const { setPreviewingBlock } = useGraph();
 
   const { showToast } = useToast();
@@ -40,14 +40,14 @@ export const WebPreview = () => {
 
   return (
     <Standard
-      key={`web-preview${startPreviewAtGroup ?? ""}`}
+      key={`web-preview${startPreviewFrom?.id ?? ""}`}
       typebot={typebot}
       sessionId={user ? `${typebot.id}-${user.id}` : undefined}
       startFrom={
-        startPreviewAtGroup
-          ? { type: "group", groupId: startPreviewAtGroup }
-          : startPreviewAtEvent
-            ? { type: "event", eventId: startPreviewAtEvent }
+        startPreviewFrom?.type === "group"
+          ? { type: "group", groupId: startPreviewFrom.id }
+          : startPreviewFrom?.type === "event"
+            ? { type: "event", eventId: startPreviewFrom.id }
             : undefined
       }
       onNewInputBlock={(block) =>

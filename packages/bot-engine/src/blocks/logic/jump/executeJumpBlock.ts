@@ -1,13 +1,14 @@
 import { TRPCError } from "@trpc/server";
 import type { JumpBlock } from "@typebot.io/blocks-logic/jump/schema";
 import type { SessionState } from "@typebot.io/chat-session/schemas";
-import { addEdgeToTypebot, createPortalEdge } from "../../../addEdgeToTypebot";
+import { addPortalEdge } from "../../../addPortalEdge";
 import type { ExecuteLogicResponse } from "../../../types";
 
 export const executeJumpBlock = (
   state: SessionState,
-  { groupId, blockId }: JumpBlock["options"] = {},
+  block: JumpBlock,
 ): ExecuteLogicResponse => {
+  const { groupId, blockId } = block.options ?? {};
   if (!groupId) return { outgoingEdgeId: undefined };
   const { typebot } = state.typebotsQueue[0];
   const groupToJumpTo = typebot.groups.find((group) => group.id === groupId);
@@ -21,10 +22,12 @@ export const executeJumpBlock = (
       message: "Block to jump to is not found",
     });
 
-  const portalEdge = createPortalEdge({
+  const newSessionState = addPortalEdge(`virtual-${block.id}`, state, {
     to: { groupId, blockId: blockToJumpTo?.id },
   });
-  const newSessionState = addEdgeToTypebot(state, portalEdge);
 
-  return { outgoingEdgeId: portalEdge.id, newSessionState };
+  return {
+    outgoingEdgeId: `virtual-${block.id}`,
+    newSessionState,
+  };
 };

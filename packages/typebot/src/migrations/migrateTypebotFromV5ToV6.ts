@@ -1,7 +1,7 @@
 import { migrateBlocksFromV1ToV2 } from "@typebot.io/blocks-core/migrations/migrateBlocksFromV1ToV2";
+import { EventType } from "@typebot.io/events/constants";
 import { byId } from "@typebot.io/lib/utils";
 import { latestTypebotVersion } from "@typebot.io/schemas/versions";
-import { EventType } from "../schemas/events/constants";
 import type {
   PublicTypebotV5,
   PublicTypebotV6,

@@ -70,7 +70,6 @@ export function ContextMenu<T extends HTMLElement = HTMLElement>(
   const onCloseHandler = useCallback(() => {
     props.menuProps?.onClose?.();
     setIsOpened(false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.menuProps?.onClose, setIsOpened]);
 
   return (

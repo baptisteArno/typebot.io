@@ -31,39 +31,55 @@ import {
 import { z } from "@typebot.io/zod";
 import { clientSideActionSchema } from "./clientSideAction";
 
+const textMessageSchema = z
+  .object({
+    type: z.literal("text"),
+    text: z.string(),
+    attachedFileUrls: z
+      .array(z.string())
+      .optional()
+      .describe(
+        "Can only be provided if current input block is a text input block that allows attachments",
+      ),
+  })
+  .openapi({
+    title: "Text",
+    ref: "textMessage",
+  });
+
+const audioMessageSchema = z
+  .object({
+    type: z.literal("audio"),
+    url: z.string(),
+  })
+  .describe(
+    "Can only be provided if current input block is a text input block that allows audio clips",
+  )
+  .openapi({
+    title: "Audio",
+    ref: "audioMessage",
+  });
+
+const commandMessageSchema = z
+  .object({
+    type: z.literal("command"),
+    command: z.string(),
+  })
+  .openapi({
+    title: "Command",
+    ref: "commandMessage",
+  });
+
 export const messageSchema = z.preprocess(
   (val) => (typeof val === "string" ? { type: "text", text: val } : val),
   z.discriminatedUnion("type", [
-    z
-      .object({
-        type: z.literal("text"),
-        text: z.string(),
-        attachedFileUrls: z
-          .array(z.string())
-          .optional()
-          .describe(
-            "Can only be provided if current input block is a text input block that allows attachments",
-          ),
-      })
-      .openapi({
-        title: "Text",
-        ref: "textSentMessage",
-      }),
-    z
-      .object({
-        type: z.literal("audio"),
-        url: z.string(),
-      })
-      .openapi({
-        title: "Audio",
-        ref: "audioSentMessage",
-      })
-      .describe(
-        "Can only be provided if current input block is a text input that allows audio clips",
-      ),
+    textMessageSchema,
+    audioMessageSchema,
+    commandMessageSchema,
   ]),
 );
 export type Message = z.infer<typeof messageSchema>;
+export type InputMessage = Exclude<Message, { type: "command" }>;
 
 const chatSessionSchema = z.object({
   id: z.string(),
@@ -79,7 +95,7 @@ const chatSessionSchema = z.object({
 });
 export type ChatSession = z.infer<typeof chatSessionSchema>;
 
-const textMessageSchema = z
+const textBubbleSchema = z
   .object({
     type: z.literal(BubbleBlockType.TEXT),
     content: z.discriminatedUnion("type", [
@@ -95,40 +111,40 @@ const textMessageSchema = z
   })
   .openapi({
     title: "Text",
-    ref: "textMessage",
+    ref: "textBubble",
   });
 
-const imageMessageSchema = z
+const imageBubbleSchema = z
   .object({
     type: z.enum([BubbleBlockType.IMAGE]),
     content: imageBubbleContentSchema,
   })
   .openapi({
     title: "Image",
-    ref: "imageMessage",
+    ref: "imageBubble",
   });
 
-const videoMessageSchema = z
+const videoBubbleSchema = z
   .object({
     type: z.enum([BubbleBlockType.VIDEO]),
     content: videoBubbleContentSchema,
   })
   .openapi({
     title: "Video",
-    ref: "videoMessage",
+    ref: "videoBubble",
   });
 
-const audioMessageSchema = z
+const audioBubbleSchema = z
   .object({
     type: z.enum([BubbleBlockType.AUDIO]),
     content: audioBubbleContentSchema,
   })
   .openapi({
     title: "Audio",
-    ref: "audioMessage",
+    ref: "audioBubble",
   });
 
-const embedMessageSchema = z
+const embedBubbleSchema = z
   .object({
     type: z.enum([BubbleBlockType.EMBED]),
     content: embedBubbleContentSchema
@@ -139,7 +155,7 @@ const embedMessageSchema = z
   })
   .openapi({
     title: "Embed",
-    ref: "embedMessage",
+    ref: "embedBubble",
   });
 
 const displayEmbedBubbleSchema = z.object({
@@ -155,30 +171,30 @@ const displayEmbedBubbleSchema = z.object({
     content: z.string(),
   }),
 });
-const customEmbedSchema = z
+const customBubbleSchema = z
   .object({
     type: z.literal("custom-embed"),
     content: displayEmbedBubbleSchema,
   })
   .openapi({
     title: "Custom embed",
-    ref: "customEmbedMessage",
+    ref: "customEmbedBubble",
   });
-export type CustomEmbedBubble = z.infer<typeof customEmbedSchema>;
+export type CustomEmbedBubble = z.infer<typeof customBubbleSchema>;
 
-export const chatMessageSchema = z
+export const chatBubbleSchema = z
   .object({ id: z.string() })
   .and(
     z.discriminatedUnion("type", [
-      textMessageSchema,
-      imageMessageSchema,
-      videoMessageSchema,
-      audioMessageSchema,
-      embedMessageSchema,
-      customEmbedSchema,
+      textBubbleSchema,
+      imageBubbleSchema,
+      videoBubbleSchema,
+      audioBubbleSchema,
+      embedBubbleSchema,
+      customBubbleSchema,
     ]),
   );
-export type ChatMessage = z.infer<typeof chatMessageSchema>;
+export type ChatBubble = z.infer<typeof chatBubbleSchema>;
 
 const startTypebotPick = {
   version: true,
@@ -345,7 +361,7 @@ const chatResponseBaseSchema = z.object({
     .describe(
       "The sent message is validated and formatted on the backend. For example, if for a date input you replied something like `tomorrow`, the backend will convert it to a date string. This field returns the formatted message.",
     ),
-  messages: z.array(chatMessageSchema),
+  messages: z.array(chatBubbleSchema),
   input: z
     .union([
       z.discriminatedUnion("type", [

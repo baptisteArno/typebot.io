@@ -9,7 +9,7 @@ export const ForgedBlockIcon = ({
   type: ForgedBlock["type"];
 } & IconProps): JSX.Element => {
   const { colorMode } = useColorMode();
-  const { blockDef } = useForgedBlock({ blockType: type });
+  const { blockDef } = useForgedBlock({ nodeType: type });
   if (!blockDef) return <></>;
   if (colorMode === "dark" && blockDef.DarkLogo)
     return (

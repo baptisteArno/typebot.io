@@ -38,7 +38,7 @@ export const ButtonsItemNode = ({ item, indices, isMouseOver }: Props) => {
   const [isMouseOverAddButtonHitbox, setIsMouseOverAddButtonHitbox] =
     useState(false);
   const { deleteItem, updateItem, createItem } = useTypebot();
-  const { openedItemId, setOpenedItemId } = useGraph();
+  const { openedNodeId, setOpenedNodeId } = useGraph();
   const [itemValue, setItemValue] = useState(
     item.content ??
       (indices.itemIndex === 0
@@ -102,7 +102,7 @@ export const ButtonsItemNode = ({ item, indices, isMouseOver }: Props) => {
     <Popover
       placement="right"
       isLazy
-      isOpen={openedItemId === item.id}
+      isOpen={openedNodeId === item.id}
       closeOnBlur={false}
     >
       <PopoverAnchor>
@@ -153,7 +153,7 @@ export const ButtonsItemNode = ({ item, indices, isMouseOver }: Props) => {
                 variant="ghost"
                 size="sm"
                 shadow="md"
-                onClick={() => setOpenedItemId(item.id)}
+                onClick={() => setOpenedNodeId(item.id)}
               />
             </Flex>
           </SlideFade>

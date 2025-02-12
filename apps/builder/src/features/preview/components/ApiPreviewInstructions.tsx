@@ -14,13 +14,18 @@ import {
 
 export const ApiPreviewInstructions = (props: StackProps) => {
   const { typebot } = useTypebot();
-  const { startPreviewAtGroup } = useEditor();
+  const { startPreviewFrom } = useEditor();
 
-  const startParamsBody = startPreviewAtGroup
-    ? `{
-    "startGroupId": "${startPreviewAtGroup}"
+  const startParamsBody =
+    startPreviewFrom?.type === "group"
+      ? `{
+  "startGroupId": "${startPreviewFrom.id}"
 }`
-    : undefined;
+      : startPreviewFrom?.type === "event"
+        ? `{
+  "startEventId": "${startPreviewFrom.id}"
+}`
+        : undefined;
 
   const replyBody = `{
   "message": "This is my reply"
@@ -48,7 +53,7 @@ export const ApiPreviewInstructions = (props: StackProps) => {
                 typebot?.id
               }/preview/startChat`}
             />
-            {startPreviewAtGroup && (
+            {startPreviewFrom && (
               <>
                 <Text>with the following JSON body:</Text>
                 <CodeEditor isReadOnly lang={"json"} value={startParamsBody} />

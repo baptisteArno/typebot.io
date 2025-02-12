@@ -3,6 +3,7 @@ import {
   close,
   hidePreviewMessage,
   open,
+  sendCommand,
   setInputValue,
   setPrefilledVariables,
   showPreviewMessage,
@@ -24,6 +25,7 @@ export const Default = () => {
         </button>
         <button onClick={() => setInputValue("YOOOO!")}>Set input value</button>
         <button onClick={hidePreviewMessage}>Close Preview Message</button>
+        <button onClick={() => sendCommand("wizz")}>Send command</button>
         <div>
           <p>Predefined name:</p>
           <input value={name} onChange={(e) => setName(e.target.value)} />
@@ -32,7 +34,7 @@ export const Default = () => {
           </button>
         </div>
         <Bubble
-          typebot={"lead-generation-u83b9qo"}
+          typebot={"lead-generation-zngnmbm"}
           apiHost="http://localhost:3001"
           prefilledVariables={{
             Name: ["John"],

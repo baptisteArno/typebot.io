@@ -9,7 +9,7 @@ export const ForgedBlockCard = (props: {
   type: ForgedBlock["type"];
   onMouseDown: (e: React.MouseEvent, type: BlockV6["type"]) => void;
 }) => {
-  const { blockDef } = useForgedBlock({ blockType: props.type });
+  const { blockDef } = useForgedBlock({ nodeType: props.type });
 
   return (
     <BlockCardLayout

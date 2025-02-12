@@ -9,8 +9,8 @@ import {
 } from "@typebot.io/typebot/schemas/typebot";
 import { z } from "@typebot.io/zod";
 import {
+  chatBubbleSchema,
   chatLogSchema,
-  chatMessageSchema,
   runtimeOptionsSchema,
   startTypebotSchema,
 } from "../api";
@@ -93,7 +93,7 @@ export const sendMessageInputSchema = z.object({
 });
 
 export const chatReplySchema = z.object({
-  messages: z.array(chatMessageSchema),
+  messages: z.array(chatBubbleSchema),
   input: z
     .union([inputBlockV5Schema, inputBlockV6Schema])
     .and(

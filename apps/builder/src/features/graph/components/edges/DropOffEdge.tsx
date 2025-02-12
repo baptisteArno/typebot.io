@@ -15,7 +15,7 @@ import { useShallow } from "zustand/react/shallow";
 import { groupWidth } from "../../constants";
 import { computeDropOffPath } from "../../helpers/computeDropOffPath";
 import { computeSourceCoordinates } from "../../helpers/computeSourceCoordinates";
-import { useGroupsStore } from "../../hooks/useGroupsStore";
+import { useSelectionStore } from "../../hooks/useSelectionStore";
 import { useEndpoints } from "../../providers/EndpointsProvider";
 
 export const dropOffBoxDimensions = {
@@ -54,10 +54,10 @@ export const DropOffEdge = ({
   const groupId = publishedTypebot?.groups.find((group) =>
     group.blocks.some((block) => block.id === currentBlockId),
   )?.id;
-  const groupCoordinates = useGroupsStore(
+  const groupCoordinates = useSelectionStore(
     useShallow((state) =>
-      groupId && state.groupsCoordinates
-        ? state.groupsCoordinates[groupId]
+      groupId && state.elementsCoordinates
+        ? state.elementsCoordinates[groupId]
         : undefined,
     ),
   );

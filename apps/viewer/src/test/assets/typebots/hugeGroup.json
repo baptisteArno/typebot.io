@@ -1,31 +1,24 @@
 {
-  "id": "cl0jrltqx0037601agzjiy7t4",
-  "createdAt": "2022-03-09T16:17:51.321Z",
-  "updatedAt": "2022-03-09T16:19:07.037Z",
+  "version": "6.1",
+  "id": "u26l1t6941c1zbv7t9i3ds2r",
   "name": "My typebot",
-  "folderId": null,
-  "groups": [
+  "events": [
     {
       "id": "dqork4dJJZk3RgKYavBpRE",
-      "blocks": [
-        {
-          "id": "u7Px8eD9MWXNJEBwxQwJCF",
-          "type": "start",
-          "label": "Start",
-          "groupId": "dqork4dJJZk3RgKYavBpRE",
-          "outgoingEdgeId": "b3XsreaqtWt4CrZZmCKDpa"
-        }
-      ],
-      "title": "Start",
-      "graphCoordinates": { "x": 0, "y": 0 }
-    },
+      "outgoingEdgeId": "b3XsreaqtWt4CrZZmCKDpa",
+      "graphCoordinates": { "x": 0, "y": 0 },
+      "type": "start"
+    }
+  ],
+  "groups": [
     {
       "id": "2Vrpgk5VP9BUo3vKtM5kws",
+      "title": "Group #1",
+      "graphCoordinates": { "x": 386, "y": 108 },
       "blocks": [
         {
           "id": "s6GezsfD612D1naKwvhDFgA",
           "type": "text",
-          "groupId": "2Vrpgk5VP9BUo3vKtM5kws",
           "content": {
             "richText": [
               { "type": "p", "children": [{ "text": "Hi what's your name?" }] }
@@ -35,20 +28,18 @@
         {
           "id": "sq3mPXUrugs5t6FoME3T4t4",
           "type": "text input",
-          "groupId": "2Vrpgk5VP9BUo3vKtM5kws",
           "options": {
-            "isLong": false,
             "labels": {
-              "button": "Send",
-              "placeholder": "Type your answer..."
+              "placeholder": "Type your answer...",
+              "button": "Send"
             },
-            "variableId": "93BD32WVM5JEQ1nmWtr2S5"
+            "variableId": "93BD32WVM5JEQ1nmWtr2S5",
+            "isLong": false
           }
         },
         {
           "id": "s57hbzfpG2sVvXefznVhbVB",
           "type": "text",
-          "groupId": "2Vrpgk5VP9BUo3vKtM5kws",
           "content": {
             "richText": [
               { "type": "p", "children": [{ "text": "How old are you?" }] }
@@ -58,15 +49,13 @@
         {
           "id": "s4fFn3s7nouQk88iJ3oLgx6",
           "type": "number input",
-          "groupId": "2Vrpgk5VP9BUo3vKtM5kws",
           "options": {
-            "labels": { "button": "Send", "placeholder": "Type a number..." }
+            "labels": { "placeholder": "Type a number...", "button": "Send" }
           }
         },
         {
           "id": "scR6MewJwkPNJzABYG8NEA4",
           "type": "text",
-          "groupId": "2Vrpgk5VP9BUo3vKtM5kws",
           "content": {
             "richText": [{ "type": "p", "children": [{ "text": "Cool!" }] }]
           }
@@ -74,7 +63,6 @@
         {
           "id": "s5fo1s8UTyHQ7CfqC6MRxyW",
           "type": "text",
-          "groupId": "2Vrpgk5VP9BUo3vKtM5kws",
           "content": {
             "richText": [
               { "type": "p", "children": [{ "text": "Do you eat pizza?" }] }
@@ -85,61 +73,62 @@
           "id": "sxn8UjQ2MjEMuRjhkh7LWws",
           "type": "choice input",
           "items": [
-            {
-              "id": "wGKXMr4mfySw1HNThND2Xd",
-              "type": 0,
-              "blockId": "sxn8UjQ2MjEMuRjhkh7LWws",
-              "content": "Yes"
-            },
-            {
-              "id": "qzqzVqMeo6TDUdMYckLZmf",
-              "type": 0,
-              "blockId": "sxn8UjQ2MjEMuRjhkh7LWws",
-              "content": "No"
-            }
+            { "id": "wGKXMr4mfySw1HNThND2Xd", "content": "Yes" },
+            { "id": "qzqzVqMeo6TDUdMYckLZmf", "content": "No" }
           ],
-          "groupId": "2Vrpgk5VP9BUo3vKtM5kws",
-          "options": { "buttonLabel": "Send", "isMultipleChoice": false }
+          "options": { "isMultipleChoice": false, "buttonLabel": "Send" }
         }
-      ],
-      "title": "Group #1",
-      "graphCoordinates": { "x": 386, "y": 108 }
+      ]
     }
   ],
-  "variables": [{ "id": "93BD32WVM5JEQ1nmWtr2S5", "name": "Name" }],
   "edges": [
     {
       "id": "b3XsreaqtWt4CrZZmCKDpa",
-      "to": { "groupId": "2Vrpgk5VP9BUo3vKtM5kws" },
-      "from": {
-        "blockId": "u7Px8eD9MWXNJEBwxQwJCF",
-        "groupId": "dqork4dJJZk3RgKYavBpRE"
-      }
+      "from": { "eventId": "dqork4dJJZk3RgKYavBpRE" },
+      "to": { "groupId": "2Vrpgk5VP9BUo3vKtM5kws" }
+    }
+  ],
+  "variables": [
+    {
+      "id": "93BD32WVM5JEQ1nmWtr2S5",
+      "name": "Name",
+      "isSessionVariable": false
     }
   ],
   "theme": {
+    "general": { "font": "Open Sans", "background": { "type": "None" } },
     "chat": {
+      "hostBubbles": { "backgroundColor": "#F7F8FF", "color": "#303235" },
+      "guestBubbles": { "backgroundColor": "#FF8E21", "color": "#FFFFFF" },
+      "buttons": { "backgroundColor": "#0042DA", "color": "#FFFFFF" },
       "inputs": {
-        "color": "#303235",
         "backgroundColor": "#FFFFFF",
+        "color": "#303235",
         "placeholderColor": "#9095A0"
-      },
-      "buttons": { "color": "#FFFFFF", "backgroundColor": "#0042DA" },
-      "hostBubbles": { "color": "#303235", "backgroundColor": "#F7F8FF" },
-      "guestBubbles": { "color": "#FFFFFF", "backgroundColor": "#FF8E21" }
-    },
-    "general": { "font": "Open Sans", "background": { "type": "None" } }
+      }
+    }
   },
+  "selectedThemeTemplateId": null,
   "settings": {
     "general": {
       "isBrandingEnabled": true,
       "isNewResultOnRefreshEnabled": false
     },
+    "typingEmulation": { "enabled": true, "speed": 300, "maxDelay": 1.5 },
     "metadata": {
       "description": "Build beautiful conversational forms and embed them directly in your applications without a line of code. Triple your response rate and collect answers that has more value compared to a traditional form."
-    },
-    "typingEmulation": { "speed": 300, "enabled": true, "maxDelay": 1.5 }
+    }
   },
-  "publicId": "my-typebot-zjiy7t4",
-  "customDomain": null
+  "createdAt": "2025-02-12T18:10:08.273Z",
+  "updatedAt": "2025-02-12T18:10:08.273Z",
+  "icon": null,
+  "folderId": null,
+  "publicId": null,
+  "customDomain": null,
+  "workspaceId": "proWorkspace",
+  "resultsTablePreferences": null,
+  "isArchived": false,
+  "isClosed": false,
+  "whatsAppCredentialsId": null,
+  "riskLevel": null
 }

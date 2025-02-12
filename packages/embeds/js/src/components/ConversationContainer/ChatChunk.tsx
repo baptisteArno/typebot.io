@@ -3,6 +3,7 @@ import type {
   ChatChunk as ChatChunkType,
   InputSubmitContent,
 } from "@/types";
+import { hiddenInput } from "@/utils/hiddenInputSignal";
 import { isMobile } from "@/utils/isMobileSignal";
 import type { ContinueChatResponse } from "@typebot.io/bot-engine/schemas/api";
 import { defaultSettings } from "@typebot.io/settings/constants";
@@ -130,24 +131,26 @@ export const ChatChunk = (props: Props) => {
           </div>
         </div>
       </Show>
-      {props.input && displayedMessageIndex() === props.messages.length && (
-        <InputChatBlock
-          ref={inputRef}
-          block={props.input}
-          chunkIndex={props.index}
-          theme={props.theme}
-          context={props.context}
-          isInputPrefillEnabled={
-            props.settings.general?.isInputPrefillEnabled ??
-            defaultSettings.general.isInputPrefillEnabled
-          }
-          isOngoingLastChunk={props.isOngoingLastChunk}
-          hasError={props.hasError}
-          onTransitionEnd={() => props.onScrollToBottom(lastBubble())}
-          onSubmit={props.onSubmit}
-          onSkip={props.onSkip}
-        />
-      )}
+      {props.input &&
+        displayedMessageIndex() === props.messages.length &&
+        !hiddenInput()[`${props.input.id}-${props.index}`] && (
+          <InputChatBlock
+            ref={inputRef}
+            block={props.input}
+            chunkIndex={props.index}
+            theme={props.theme}
+            context={props.context}
+            isInputPrefillEnabled={
+              props.settings.general?.isInputPrefillEnabled ??
+              defaultSettings.general.isInputPrefillEnabled
+            }
+            isOngoingLastChunk={props.isOngoingLastChunk}
+            hasError={props.hasError}
+            onTransitionEnd={() => props.onScrollToBottom(lastBubble())}
+            onSubmit={props.onSubmit}
+            onSkip={props.onSkip}
+          />
+        )}
       <Show when={props.streamingMessageId} keyed>
         {(streamingMessageId) => (
           <div class={"flex" + (isMobile() ? " gap-1" : " gap-2")}>

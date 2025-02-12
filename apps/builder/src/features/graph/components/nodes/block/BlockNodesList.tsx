@@ -27,7 +27,11 @@ export const BlockNodesList = ({ blocks, groupIndex, groupRef }: Props) => {
     setDraggedBlockType,
   } = useBlockDnd();
   const { typebot, createBlock, detachBlockFromGroup } = useTypebot();
-  const { isReadOnly, graphPosition, setOpenedBlockId } = useGraph();
+  const {
+    isReadOnly,
+    graphPosition,
+    setOpenedNodeId: setOpenedBlockId,
+  } = useGraph();
   const [expandedPlaceholderIndex, setExpandedPlaceholderIndex] = useState<
     number | undefined
   >();

@@ -6,7 +6,7 @@ export const ForgedBlockLabel = ({
   type,
   ...props
 }: { type: ForgedBlock["type"] } & TextProps) => {
-  const { blockDef } = useForgedBlock({ blockType: type });
+  const { blockDef } = useForgedBlock({ nodeType: type });
 
   return (
     <Text fontSize="sm" {...props}>

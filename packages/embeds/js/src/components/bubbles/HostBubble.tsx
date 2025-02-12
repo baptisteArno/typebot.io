@@ -11,13 +11,13 @@ import type { EmbedBubbleBlock } from "@typebot.io/blocks-bubbles/embed/schema";
 import type { ImageBubbleBlock } from "@typebot.io/blocks-bubbles/image/schema";
 import type { TextBubbleBlock } from "@typebot.io/blocks-bubbles/text/schema";
 import type { VideoBubbleBlock } from "@typebot.io/blocks-bubbles/video/schema";
-import type { ChatMessage } from "@typebot.io/bot-engine/schemas/api";
+import type { ChatBubble } from "@typebot.io/bot-engine/schemas/api";
 import type { CustomEmbedBubble as CustomEmbedBubbleProps } from "@typebot.io/bot-engine/schemas/api";
 import type { Settings } from "@typebot.io/settings/schemas";
 import { Match, Switch } from "solid-js";
 
 type Props = {
-  message: ChatMessage;
+  message: ChatBubble;
   typingEmulation: Settings["typingEmulation"];
   isTypingSkipped: boolean;
   onTransitionEnd?: (ref?: HTMLDivElement) => void;

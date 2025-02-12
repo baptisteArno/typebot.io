@@ -10,6 +10,8 @@ import {
   useEventListener,
 } from "@chakra-ui/react";
 import { createId } from "@paralleldrive/cuid2";
+import { EventType } from "@typebot.io/events/constants";
+import type { TDraggableEvent } from "@typebot.io/events/schemas";
 import type { GroupV6 } from "@typebot.io/groups/schemas";
 import type { Edge } from "@typebot.io/typebot/schemas/edge";
 import {
@@ -21,35 +23,36 @@ import { useRef, useState } from "react";
 import { toast } from "sonner";
 import { useShallow } from "zustand/react/shallow";
 import { projectMouse } from "../helpers/projectMouse";
-import { useGroupsStore } from "../hooks/useGroupsStore";
+import { useSelectionStore } from "../hooks/useSelectionStore";
 import type { Coordinates } from "../types";
 
 type Props = {
   graphPosition: Coordinates & { scale: number };
   isReadOnly: boolean;
-  focusedGroups: string[];
-  blurGroups: () => void;
+  focusedElementIds: string[];
+  blurElements: () => void;
 };
 
-export const GroupSelectionMenu = ({
+export const ElementsSelectionMenu = ({
   graphPosition,
   isReadOnly,
-  focusedGroups,
-  blurGroups,
+  focusedElementIds,
+  blurElements,
 }: Props) => {
   const [mousePosition, setMousePosition] = useState<Coordinates>();
-  const { typebot, deleteGroups, pasteGroups } = useTypebot();
+  const { typebot, deleteGroups, pasteGroups, pasteEvents, deleteEvents } =
+    useTypebot();
   const ref = useRef<HTMLDivElement>(null);
 
-  const groupsInClipboard = useGroupsStore(
-    useShallow((state) => state.groupsInClipboard),
+  const groupsInClipboard = useSelectionStore(
+    useShallow((state) => state.elementsInClipboard),
   );
-  const { copyGroups, setFocusedGroups, updateGroupCoordinates } =
-    useGroupsStore(
+  const { copyElements, setFocusedElements, updateElementCoordinates } =
+    useSelectionStore(
       useShallow((state) => ({
-        copyGroups: state.copyGroups,
-        updateGroupCoordinates: state.updateGroupCoordinates,
-        setFocusedGroups: state.setFocusedGroups,
+        copyElements: state.copyElements,
+        updateElementCoordinates: state.updateElementCoordinates,
+        setFocusedElements: state.setFocusedElements,
       })),
     );
 
@@ -64,58 +67,71 @@ export const GroupSelectionMenu = ({
 
   const handleCopy = () => {
     if (!typebot) return;
-    const groups = typebot.groups.filter((g) => focusedGroups.includes(g.id));
+    const groups = typebot.groups.filter((g) =>
+      focusedElementIds.includes(g.id),
+    );
+    const events = typebot.events.filter(
+      (event) =>
+        focusedElementIds.includes(event.id) && event.type !== EventType.START,
+    );
+    if (events.length === 0 && groups.length === 0) return;
     const edges = typebot.edges.filter((edge) =>
       groups.find((g) => g.id === edge.to.groupId),
     );
-    const variables = extractVariablesFromCopiedGroups(
-      groups,
+    const variables = extractVariablesFromCopiedElements(
+      [...groups, ...events] as (GroupV6 | TDraggableEvent)[],
       typebot.variables,
     );
-    copyGroups({
+    const elements = {
       groups,
       edges,
       variables,
-    });
-    return {
-      groups,
-      edges,
-      variables,
+      events: events as TDraggableEvent[],
     };
+    copyElements(elements);
+    return elements;
   };
 
   const handleDelete = () => {
-    deleteGroups(focusedGroups);
-    blurGroups();
+    deleteGroups(focusedElementIds);
+    deleteEvents(focusedElementIds);
+    blurElements();
   };
 
   const handlePaste = (overrideClipBoard?: {
     groups: GroupV6[];
     edges: Edge[];
     variables: Omit<Variable, "value">[];
+    events: TDraggableEvent[];
   }) => {
     if (!groupsInClipboard || isReadOnly || !mousePosition) return;
     const clipboard = overrideClipBoard ?? groupsInClipboard;
-    const { groups, oldToNewIdsMapping } = parseGroupsToPaste(
-      clipboard.groups,
-      projectMouse(mousePosition, graphPosition),
-    );
-    groups.forEach((group) => {
-      updateGroupCoordinates(group.id, group.graphCoordinates);
+    const { groups, events, oldToNewIdsMapping } = parseElementsToPaste({
+      groups: clipboard.groups,
+      events: clipboard.events,
+      mousePosition: projectMouse(mousePosition, graphPosition),
     });
+    groups.forEach((group) => {
+      updateElementCoordinates(group.id, group.graphCoordinates);
+    });
+    events.forEach((event) => {
+      updateElementCoordinates(event.id, event.graphCoordinates);
+    });
+    pasteEvents(events, clipboard.edges, oldToNewIdsMapping);
     pasteGroups(
       groups,
       clipboard.edges,
       clipboard.variables,
       oldToNewIdsMapping,
     );
-    setFocusedGroups(groups.map((g) => g.id));
+    setFocusedElements([...groups, ...events].map((g) => g.id));
   };
 
   useKeyboardShortcuts({
     copy: () => {
-      handleCopy();
-      toast("Groups copied to clipboard");
+      const clipboard = handleCopy();
+      if (!clipboard) return;
+      toast("Elements copied to clipboard");
     },
     cut: () => {
       handleCopy();
@@ -128,7 +144,12 @@ export const GroupSelectionMenu = ({
     backspace: handleDelete,
     paste: handlePaste,
     selectAll: () => {
-      setFocusedGroups(typebot?.groups.map((g) => g.id) ?? []);
+      if (!typebot) return;
+      setFocusedElements(
+        typebot.groups
+          .map((g) => g.id)
+          .concat(typebot.events.map((e) => e.id)) ?? [],
+      );
     },
   });
 
@@ -152,7 +173,7 @@ export const GroupSelectionMenu = ({
         bgColor={useColorModeValue("white", undefined)}
         size="sm"
       >
-        {focusedGroups.length} selected
+        {focusedElementIds.length} selected
       </Button>
       <IconButton
         borderRightWidth="1px"
@@ -180,14 +201,23 @@ export const GroupSelectionMenu = ({
   );
 };
 
-const parseGroupsToPaste = (
-  groups: GroupV6[],
-  mousePosition: Coordinates,
-): { groups: GroupV6[]; oldToNewIdsMapping: Map<string, string> } => {
-  const farLeftGroup = groups.sort(
+const parseElementsToPaste = ({
+  groups,
+  events,
+  mousePosition,
+}: {
+  groups: GroupV6[];
+  events: TDraggableEvent[];
+  mousePosition: Coordinates;
+}): {
+  groups: GroupV6[];
+  events: TDraggableEvent[];
+  oldToNewIdsMapping: Map<string, string>;
+} => {
+  const farLeftElement = [...groups, ...events].sort(
     (a, b) => a.graphCoordinates.x - b.graphCoordinates.x,
   )[0];
-  const farLeftGroupCoord = farLeftGroup.graphCoordinates;
+  const farLeftElementCoord = farLeftElement.graphCoordinates;
 
   const oldToNewIdsMapping = new Map<string, string>();
   const newGroups = groups.map((group) => {
@@ -198,38 +228,62 @@ const parseGroupsToPaste = (
       ...group,
       id: newId,
       graphCoordinates:
-        group.id === farLeftGroup.id
+        group.id === farLeftElement.id
           ? mousePosition
           : {
               x:
                 mousePosition.x +
                 group.graphCoordinates.x -
-                farLeftGroupCoord.x,
+                farLeftElementCoord.x,
               y:
                 mousePosition.y +
                 group.graphCoordinates.y -
-                farLeftGroupCoord.y,
+                farLeftElementCoord.y,
+            },
+    };
+  });
+
+  const newEvents = events.map((event) => {
+    const newId = createId();
+    oldToNewIdsMapping.set(event.id, newId);
+
+    return {
+      ...event,
+      id: newId,
+      graphCoordinates:
+        event.id === farLeftElement.id
+          ? mousePosition
+          : {
+              x:
+                mousePosition.x +
+                event.graphCoordinates.x -
+                farLeftElementCoord.x,
+              y:
+                mousePosition.y +
+                event.graphCoordinates.y -
+                farLeftElementCoord.y,
             },
     };
   });
 
   return {
     groups: newGroups,
+    events: newEvents,
     oldToNewIdsMapping,
   };
 };
 
-export const extractVariablesFromCopiedGroups = (
-  groups: GroupV6[],
+export const extractVariablesFromCopiedElements = (
+  elements: (GroupV6 | TDraggableEvent)[],
   existingVariables: Variable[],
 ): Omit<Variable, "value">[] => {
-  const groupsStr = JSON.stringify(groups);
-  if (!groupsStr) return [];
+  const elementsStr = JSON.stringify(elements);
+  if (!elementsStr) return [];
   const calledVariablesId = extractVariableIdReferencesInObject(
-    groups,
+    elements,
     existingVariables,
   );
-  const variableIdsInOptions = extractVariableIdsFromObject(groups);
+  const variableIdsInOptions = extractVariableIdsFromObject(elements);
 
   return [...variableIdsInOptions, ...calledVariablesId].reduce<
     Omit<Variable, "value">[]

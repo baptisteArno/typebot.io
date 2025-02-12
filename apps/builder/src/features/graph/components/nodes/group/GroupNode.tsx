@@ -5,7 +5,7 @@ import {
 } from "@/features/editor/providers/EditorProvider";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { groupWidth } from "@/features/graph/constants";
-import { useGroupsStore } from "@/features/graph/hooks/useGroupsStore";
+import { useSelectionStore } from "@/features/graph/hooks/useSelectionStore";
 import { useBlockDnd } from "@/features/graph/providers/GraphDndProvider";
 import { useGraph } from "@/features/graph/providers/GraphProvider";
 import { setMultipleRefs } from "@/helpers/setMultipleRefs";
@@ -45,7 +45,7 @@ export const GroupNode = ({ group, groupIndex }: Props) => {
   } = useGraph();
   const { typebot, updateGroup, updateGroupsCoordinates } = useTypebot();
   const { setMouseOverGroup, mouseOverGroup } = useBlockDnd();
-  const { setRightPanel, setStartPreviewAtGroup } = useEditor();
+  const { setRightPanel, setStartPreviewFrom } = useEditor();
 
   const [isMouseDown, setIsMouseDown] = useState(false);
   const [isConnecting, setIsConnecting] = useState(false);
@@ -60,23 +60,23 @@ export const GroupNode = ({ group, groupIndex }: Props) => {
           isNotDefined(previewingEdge.to.blockId))));
 
   const groupRef = useRef<HTMLDivElement | null>(null);
-  const isDraggingGraph = useGroupsStore((state) => state.isDraggingGraph);
-  const focusedGroups = useGroupsStore(
-    useShallow((state) => state.focusedGroups),
+  const isDraggingGraph = useSelectionStore((state) => state.isDraggingGraph);
+  const focusedGroups = useSelectionStore(
+    useShallow((state) => state.focusedElementsId),
   );
-  const groupCoordinates = useGroupsStore(
+  const groupCoordinates = useSelectionStore(
     useShallow((state) =>
-      state.groupsCoordinates
-        ? state.groupsCoordinates[group.id]
+      state.elementsCoordinates
+        ? state.elementsCoordinates[group.id]
         : group.graphCoordinates,
     ),
   );
-  const { moveFocusedGroups, focusGroup, getGroupsCoordinates } =
-    useGroupsStore(
+  const { moveFocusedElements, focusElement, getElementsCoordinates } =
+    useSelectionStore(
       useShallow((state) => ({
-        getGroupsCoordinates: state.getGroupsCoordinates,
-        moveFocusedGroups: state.moveFocusedGroups,
-        focusGroup: state.focusGroup,
+        getElementsCoordinates: state.getElementsCoordinates,
+        moveFocusedElements: state.moveFocusedElements,
+        focusElement: state.focusElement,
       })),
     );
 
@@ -110,7 +110,7 @@ export const GroupNode = ({ group, groupIndex }: Props) => {
   };
 
   const startPreviewAtThisGroup = () => {
-    setStartPreviewAtGroup(group.id);
+    setStartPreviewFrom({ type: "group", id: group.id });
     setRightPanel(RightPanel.PREVIEW);
   };
 
@@ -128,18 +128,18 @@ export const GroupNode = ({ group, groupIndex }: Props) => {
         setIsMouseDown(true);
         if (focusedGroups.find((id) => id === group.id) && !event.shiftKey)
           return;
-        focusGroup(group.id, event.shiftKey);
+        focusElement(group.id, event.shiftKey);
       }
 
-      moveFocusedGroups({
+      moveFocusedElements({
         x: delta[0] / graphPosition.scale,
         y: delta[1] / graphPosition.scale,
       });
 
       if (last) {
-        const newGroupsCoordinates = getGroupsCoordinates();
-        if (!newGroupsCoordinates) return;
-        updateGroupsCoordinates(newGroupsCoordinates);
+        const newElementsCoordinates = getElementsCoordinates();
+        if (!newElementsCoordinates) return;
+        updateGroupsCoordinates(newElementsCoordinates);
         setIsMouseDown(false);
       }
     },
@@ -157,7 +157,7 @@ export const GroupNode = ({ group, groupIndex }: Props) => {
 
   return (
     <ContextMenu<HTMLDivElement>
-      onOpen={() => focusGroup(group.id)}
+      onOpen={() => focusElement(group.id)}
       renderMenu={() => <GroupNodeContextMenu />}
       isDisabled={isReadOnly}
     >
@@ -167,6 +167,8 @@ export const GroupNode = ({ group, groupIndex }: Props) => {
           id={`group-${group.id}`}
           data-testid="group"
           className="group"
+          data-selectable={group.id}
+          userSelect="none"
           p="4"
           rounded="xl"
           bg={bg}
@@ -205,7 +207,6 @@ export const GroupNode = ({ group, groupIndex }: Props) => {
                 bg: editableHoverBg,
               }}
               px="1"
-              userSelect={"none"}
               style={
                 isEmpty(groupTitle)
                   ? {

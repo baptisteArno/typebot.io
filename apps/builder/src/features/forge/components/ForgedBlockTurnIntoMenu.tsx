@@ -20,14 +20,13 @@ type Props = {
   block: BlockV6;
   onTurnIntoClick: (
     params: TurnableIntoParam,
-    /* eslint-disable @typescript-eslint/no-explicit-any */
     blockSchema: ZodObject<any>,
   ) => void;
 };
 
 export const ForgedBlockTurnIntoMenu = ({ block, onTurnIntoClick }: Props) => {
   const { actionDef } = useForgedBlock({
-    blockType: block.type,
+    nodeType: block.type,
     action: "options" in block ? block.options?.action : undefined,
   });
   const { onClose, onOpen, isOpen } = useDisclosure();
@@ -81,7 +80,7 @@ const TurnIntoMenuItem = ({
   blockType: ForgedBlock["type"];
   onClick: (blockSchema: ZodObject<any>) => void;
 }) => {
-  const { blockDef, blockSchema } = useForgedBlock({ blockType });
+  const { blockDef, blockSchema } = useForgedBlock({ nodeType: blockType });
 
   if (!blockDef || !blockSchema) return null;
   return (

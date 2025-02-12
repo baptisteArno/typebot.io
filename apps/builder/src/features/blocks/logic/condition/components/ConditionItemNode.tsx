@@ -32,13 +32,13 @@ type Props = {
 
 export const ConditionItemNode = ({ item, isMouseOver, indices }: Props) => {
   const { typebot, createItem, updateItem } = useTypebot();
-  const { openedItemId, setOpenedItemId } = useGraph();
+  const { openedNodeId, setOpenedNodeId } = useGraph();
   const ref = useRef<HTMLDivElement | null>(null);
 
   const handleMouseDown = (e: React.MouseEvent) => e.stopPropagation();
 
   const openPopover = () => {
-    setOpenedItemId(item.id);
+    setOpenedNodeId(item.id);
   };
 
   const updateCondition = (condition: Condition) => {
@@ -55,7 +55,7 @@ export const ConditionItemNode = ({ item, isMouseOver, indices }: Props) => {
       },
       { ...indices, itemIndex },
     );
-    setOpenedItemId(newItemId);
+    setOpenedNodeId(newItemId);
   };
 
   const handleMouseWheel = (e: WheelEvent) => {
@@ -67,7 +67,7 @@ export const ConditionItemNode = ({ item, isMouseOver, indices }: Props) => {
     <Popover
       placement="left"
       isLazy
-      isOpen={openedItemId === item.id}
+      isOpen={openedNodeId === item.id}
       closeOnBlur={false}
     >
       <PopoverAnchor>

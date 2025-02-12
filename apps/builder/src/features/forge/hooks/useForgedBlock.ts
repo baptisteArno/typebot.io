@@ -1,25 +1,26 @@
 import { isForgedBlockType } from "@typebot.io/blocks-core/helpers";
 import type { BlockV6 } from "@typebot.io/blocks-core/schemas/schema";
+import type { TEventWithOptions } from "@typebot.io/events/schemas";
 import { forgedBlocks } from "@typebot.io/forge-repository/definitions";
 import { forgedBlockSchemas } from "@typebot.io/forge-repository/schemas";
 import { isDefined } from "@typebot.io/lib/utils";
 import { useMemo } from "react";
 
 export const useForgedBlock = ({
-  blockType,
+  nodeType,
   action,
   feature,
 }: {
-  blockType: BlockV6["type"];
+  nodeType: BlockV6["type"] | TEventWithOptions["type"];
   action?: string;
   feature?: string;
 }) =>
   useMemo(() => {
-    if (!isForgedBlockType(blockType)) return {};
-    const blockDef = forgedBlocks[blockType];
+    if (!isForgedBlockType(nodeType)) return {};
+    const blockDef = forgedBlocks[nodeType];
     return {
       blockDef,
-      blockSchema: forgedBlockSchemas[blockType],
+      blockSchema: forgedBlockSchemas[nodeType],
       actionDef: action
         ? blockDef?.actions.find((a) => a.name === action)
         : feature
@@ -28,4 +29,4 @@ export const useForgedBlock = ({
             )
           : undefined,
     };
-  }, [action, blockType, feature]);
+  }, [action, nodeType, feature]);

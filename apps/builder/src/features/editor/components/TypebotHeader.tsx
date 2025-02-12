@@ -254,16 +254,10 @@ const RightElements = ({
   const router = useRouter();
   const { t } = useTranslate();
   const { typebot, currentUserMode, save, isSavingLoading } = useTypebot();
-  const {
-    setRightPanel,
-    rightPanel,
-    setStartPreviewAtGroup,
-    setStartPreviewAtEvent,
-  } = useEditor();
+  const { setRightPanel, rightPanel, setStartPreviewFrom } = useEditor();
 
   const handlePreviewClick = async () => {
-    setStartPreviewAtGroup(undefined);
-    setStartPreviewAtEvent(undefined);
+    setStartPreviewFrom(undefined);
     await save();
     setRightPanel(RightPanel.PREVIEW);
   };

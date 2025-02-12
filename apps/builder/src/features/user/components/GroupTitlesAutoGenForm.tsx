@@ -26,7 +26,7 @@ export const GroupTitlesAutoGenForm = ({
   onChange,
 }: Props) => {
   const { blockDef, actionDef } = useForgedBlock({
-    blockType: provider as BlockV6["type"],
+    nodeType: provider as BlockV6["type"],
     feature: "aiGenerate",
   });
   const [credsCreatingType, setCredsCreatingType] = useState<typeof provider>();

@@ -112,7 +112,7 @@ export const WebhookSettings = ({
         <Tab>Production URL</Tab>
       </TabList>
       <TabPanels>
-        <TabPanel>
+        <TabPanel pb="0">
           <Stack spacing="4">
             {typebot && (
               <FormControl as={Stack}>
@@ -132,7 +132,7 @@ export const WebhookSettings = ({
             )}
             <Button
               onClick={listenForTestEvent}
-              colorScheme="blue"
+              colorScheme="orange"
               isLoading={websocketStatus === "opened"}
             >
               Listen for test event
@@ -179,7 +179,7 @@ export const WebhookSettings = ({
             )}
           </Stack>
         </TabPanel>
-        <TabPanel>
+        <TabPanel pb="0">
           {typebot && (
             <FormControl as={Stack}>
               <InputGroup size="sm">
