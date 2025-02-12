@@ -89,22 +89,11 @@ export const getNextGroup = async ({
             newSessionState.progressMetadata.totalAnswers +
             newSessionState.typebotsQueue[0].answers.length,
         };
-      const nextGroup = await getNextGroup({
-        state: newSessionState,
-        edgeId: nextEdgeResponse.edgeId,
-        isOffDefaultPath,
-      });
-      newSessionState = nextGroup.newSessionState;
-      if (!nextGroup)
-        return {
-          newSessionState,
-        };
-      return {
-        ...nextGroup,
-        newSessionState,
-      };
     }
-    if (nextEdgeResponse.edgeId)
+    if (
+      nextEdgeResponse.edgeId &&
+      !newSessionState.typebotsQueue[0].edgeIdToTriggerWhenDone
+    )
       return getNextGroup({
         state: newSessionState,
         edgeId: nextEdgeResponse.edgeId,

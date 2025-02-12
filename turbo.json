@@ -6,6 +6,7 @@
   "envMode": "loose",
   "tasks": {
     "dev": {
+      "cache": false,
       "dependsOn": ["^db:generate", "^db:push", "@typebot.io/react#build"],
       "persistent": true
     },
