@@ -82,7 +82,12 @@ const sessionStateSchemaV2 = z.object({
   version: z.literal("2"),
   typebotsQueue: z.array(
     z.object({
-      edgeIdToTriggerWhenDone: z.string().optional(),
+      // TODO: Remove this once v3.5 is out
+      edgeIdToTriggerWhenDone: z
+        .string()
+        .optional()
+        .describe("Deprecated, use queuedEdgeIds instead"),
+      queuedEdgeIds: z.array(z.string()).optional(),
       isMergingWithParent: z.boolean().optional(),
       resultId: z.string().optional(),
       answers: z.array(answerInSessionStateSchemaV2),
