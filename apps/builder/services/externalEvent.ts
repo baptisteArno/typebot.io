@@ -4,16 +4,23 @@ import { services } from '@octadesk-tech/services'
 
 const getNucleusUrl = async () => {
   const authStorage = Storage.getItem('auth') as any
-  const url = await services.createClient('base')
 
-  const { data } = await url.get('/nucleus-auth/apiKeysManagement/apikeys-baseurl', {
-    headers: {
-      'Content-Type': 'application/json',
-      authorization: `Bearer ${authStorage?.access_token}`,
-    },
-  })
+  const nucleusUrl = (window as any).NUCLEUS_API_URL
 
-  return data;
+  try {
+    const { data } = await services.nucleus
+      .getClient({ baseURL: nucleusUrl })
+      .get('/apiKeysManagement/apikeys-baseurl', {
+        headers: {
+          'Content-Type': 'application/json',
+          authorization: `Bearer ${authStorage?.access_token}`,
+        },
+      })
+
+    return data;
+  } catch (error) {
+    console.error('Error in url External Event', error)
+  }
 }
 
 export const mountUrl = async ({ blockId, botId }: IMountUrl) => {
