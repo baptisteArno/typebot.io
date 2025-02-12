@@ -135,6 +135,8 @@ const getSampleValue = (block: InputBlock, userEmail?: string): string => {
       return "+33665566773";
     case InputBlockType.TEXT:
       return "answer value";
+    case InputBlockType.OTP:
+      return "123456";
     case InputBlockType.URL:
       return "https://test.com";
     case InputBlockType.FILE:

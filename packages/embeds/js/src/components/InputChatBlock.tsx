@@ -4,6 +4,7 @@ import { DateForm } from "@/features/blocks/inputs/date/components/DateForm";
 import { EmailInput } from "@/features/blocks/inputs/email/components/EmailInput";
 import { FileUploadForm } from "@/features/blocks/inputs/fileUpload/components/FileUploadForm";
 import { NumberInput } from "@/features/blocks/inputs/number/components/NumberInput";
+import { OtpInput } from "@/features/blocks/inputs/otp/components/OtpInput";
 import { PaymentForm } from "@/features/blocks/inputs/payment/components/PaymentForm";
 import { PhoneInput } from "@/features/blocks/inputs/phone/components/PhoneInput";
 import { MultiplePictureChoice } from "@/features/blocks/inputs/pictureChoice/MultiplePictureChoice";
@@ -22,6 +23,7 @@ import type { DateInputBlock } from "@typebot.io/blocks-inputs/date/schema";
 import type { EmailInputBlock } from "@typebot.io/blocks-inputs/email/schema";
 import type { FileInputBlock } from "@typebot.io/blocks-inputs/file/schema";
 import type { NumberInputBlock } from "@typebot.io/blocks-inputs/number/schema";
+import type { OtpInputBlock } from "@typebot.io/blocks-inputs/otp/schema";
 import { defaultPaymentInputOptions } from "@typebot.io/blocks-inputs/payment/constants";
 import type { PaymentInputBlock } from "@typebot.io/blocks-inputs/payment/schema";
 import type { PhoneNumberInputBlock } from "@typebot.io/blocks-inputs/phone/schema";
@@ -172,6 +174,14 @@ const Input = (props: {
       <Match when={props.block.type === InputBlockType.TEXT}>
         <TextInput
           block={props.block as TextInputBlock}
+          defaultValue={getPrefilledValue()}
+          context={props.context}
+          onSubmit={onSubmit}
+        />
+      </Match>
+      <Match when={props.block.type === InputBlockType.OTP}>
+        <OtpInput
+          block={props.block as OtpInputBlock}
           defaultValue={getPrefilledValue()}
           context={props.context}
           onSubmit={onSubmit}

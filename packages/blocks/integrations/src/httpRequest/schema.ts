@@ -57,7 +57,7 @@ export const httpRequestOptionsV5Schema = z.object({
   timeout: z.number().min(1).max(maxTimeout).optional(),
 });
 
-const httpRequestOptionsSchemas = {
+export const httpRequestOptionsSchemas = {
   v5: httpRequestOptionsV5Schema,
   v6: httpRequestOptionsV5Schema.merge(
     z.object({
