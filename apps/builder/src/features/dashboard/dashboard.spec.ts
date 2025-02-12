@@ -72,8 +72,8 @@ test("folders and typebots should be movable", async ({ page }) => {
 test.describe("Free user", () => {
   test("create folder shouldn't be available", async ({ page }) => {
     await page.goto("/typebots");
-    await page.click('text="Pro workspace"');
-    await page.click('text="Free workspace"');
+    await page.getByRole("button", { name: "Pro workspace Pro" }).click();
+    await page.getByRole("menuitem", { name: "Free workspace Free" }).click();
     await expect(
       page.locator('[data-testid="starter-lock-tag"]'),
     ).toBeVisible();

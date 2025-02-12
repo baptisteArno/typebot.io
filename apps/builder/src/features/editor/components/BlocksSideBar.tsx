@@ -60,10 +60,10 @@ export const BlocksSideBar = () => {
     y: 0,
   });
   const [isLocked, setIsLocked] = useState(
-    localStorage.getItem(leftSidebarLockedStorageKey) === "true",
+    localStorage.getItem(leftSidebarLockedStorageKey) !== "false",
   );
   const [isExtended, setIsExtended] = useState(
-    localStorage.getItem(leftSidebarLockedStorageKey) === "true",
+    localStorage.getItem(leftSidebarLockedStorageKey) !== "false",
   );
   const [searchInput, setSearchInput] = useState("");
 
