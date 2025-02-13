@@ -13,7 +13,11 @@ Sentry.init({
   beforeSend: (event, hint) => {
     const exception = hint.originalException;
     if (isTrpcError(exception)) {
-      if (ignoreTrpcMessages.includes(exception.message.toLowerCase()))
+      if (
+        ignoreTrpcMessages.some((message) =>
+          exception.message.toLowerCase().includes(message),
+        )
+      )
         return null;
       if (
         exception.code === "BAD_REQUEST" &&
