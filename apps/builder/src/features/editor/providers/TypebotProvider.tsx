@@ -156,11 +156,13 @@ export const TypebotProvider = ({
 
   const { mutateAsync: updateTypebot, isLoading: isSaving } =
     trpc.typebot.updateTypebot.useMutation({
-      onError: (error) =>
+      onError: (error) => {
+        if (error.data?.code === "CONFLICT") return;
         showToast({
           title: "Error while updating typebot",
           description: error.message,
-        }),
+        });
+      },
       onSuccess: () => {
         if (!typebotId) return;
         refetchTypebot();

@@ -21,6 +21,11 @@ Sentry.init({
         event.contexts?.trpc?.procedure_path === "typebot.importTypebot"
       )
         return null;
+      if (
+        exception.code === "CONFLICT" &&
+        event.contexts?.trpc?.procedure_path === "typebot.updateTypebot"
+      )
+        return null;
     }
     return event;
   },
