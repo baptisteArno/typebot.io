@@ -122,7 +122,7 @@ export const TypebotProvider = ({
           title: "Could not fetch typebot",
           description: error.message,
           details: {
-            content: JSON.stringify(error.data?.zodError?.fieldErrors, null, 2),
+            content: error.data?.zodError ?? "",
             lang: "json",
           },
         });
@@ -146,11 +146,7 @@ export const TypebotProvider = ({
             title: "Could not fetch published typebot",
             description: error.message,
             details: {
-              content: JSON.stringify(
-                error.data?.zodError?.fieldErrors,
-                null,
-                2,
-              ),
+              content: error.data?.zodError ?? "",
               lang: "json",
             },
           });

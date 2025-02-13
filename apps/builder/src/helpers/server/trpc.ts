@@ -3,6 +3,7 @@ import { TRPCError, initTRPC } from "@trpc/server";
 import type { OpenApiMeta } from "@typebot.io/trpc-openapi/types";
 import superjson from "superjson";
 import { ZodError } from "zod";
+import { fromError } from "zod-validation-error";
 import type { Context } from "./context";
 
 const t = initTRPC
@@ -16,7 +17,9 @@ const t = initTRPC
         data: {
           ...shape.data,
           zodError:
-            error.cause instanceof ZodError ? error.cause.flatten() : null,
+            error.cause instanceof ZodError
+              ? fromError(error.cause).message
+              : null,
         },
       };
     },
@@ -35,11 +38,7 @@ const isAuthed = t.middleware(({ next, ctx }) => {
   });
 });
 
-const sentryMiddleware = t.middleware(
-  Sentry.trpcMiddleware({
-    attachRpcInput: true,
-  }),
-);
+const sentryMiddleware = t.middleware(Sentry.trpcMiddleware());
 
 export const middleware = t.middleware;
 

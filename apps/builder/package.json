@@ -92,7 +92,7 @@
     "tinycolor2": "1.6.0",
     "unsplash-js": "7.0.18",
     "use-debounce": "9.0.4",
-    "zod-validation-error": "3.0.3",
+    "zod-validation-error": "3.4.0",
     "zustand": "4.5.0",
     "@typebot.io/workspaces": "workspace:*",
     "@typebot.io/blocks-integrations": "workspace:*",

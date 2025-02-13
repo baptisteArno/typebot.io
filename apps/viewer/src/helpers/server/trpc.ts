@@ -16,11 +16,7 @@ const injectUser = t.middleware(({ next, ctx }) => {
   });
 });
 
-const sentryMiddleware = t.middleware(
-  Sentry.trpcMiddleware({
-    attachRpcInput: true,
-  }),
-);
+const sentryMiddleware = t.middleware(Sentry.trpcMiddleware());
 
 export const middleware = t.middleware;
 

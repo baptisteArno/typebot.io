@@ -1,5 +1,6 @@
 import { getNewUserInvitations } from "@/features/auth/helpers/getNewUserInvitations";
 import { sendVerificationRequest } from "@/features/auth/helpers/sendVerificationRequest";
+import * as Sentry from "@sentry/nextjs";
 import { env } from "@typebot.io/env";
 import { getIp } from "@typebot.io/lib/getIp";
 import { mockedUser } from "@typebot.io/lib/mockedUser";
@@ -183,7 +184,11 @@ export const getAuthOptions = ({
     error: "/signin",
   },
   events: {
+    signIn({ user }) {
+      Sentry.setUser({ id: user.id });
+    },
     async signOut({ session }) {
+      Sentry.setUser(null);
       await trackEvents([
         {
           name: "User logged out",

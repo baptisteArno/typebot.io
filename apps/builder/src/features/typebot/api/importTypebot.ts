@@ -137,15 +137,11 @@ export const importTypebot = authenticatedProcedure
 
       const newBotId = createId();
 
-      console.log("ORIGINAL ICON", typebot.icon);
-
       let duplicatingBot = await duplicateTypebotS3Objects({
         typebot,
         newTypebotId: newBotId,
         newWorkspaceId: workspaceId,
       });
-
-      console.log("DUPLICATED ICON", duplicatingBot.icon);
 
       duplicatingBot = await migrateImportingTypebot(duplicatingBot);
 
@@ -155,7 +151,6 @@ export const importTypebot = authenticatedProcedure
           : []
       ) as TypebotV6["groups"];
 
-      console.log("DUPLICATED ICON", duplicatingBot.icon);
       const newTypebot = await prisma.typebot.create({
         data: {
           id: newBotId,
