@@ -6,7 +6,7 @@ export const getTypebotAccessRight = (
   typebot: { collaborators: { userId: string; type: CollaborationType }[] } & {
     workspace: { members: { userId: string }[] };
   },
-) => {
+): "read" | "write" | "guest" => {
   const collaborator = typebot.collaborators.find((c) => c.userId === user?.id);
   const isMemberOfWorkspace = typebot.workspace.members.some(
     (m) => m.userId === user?.id,

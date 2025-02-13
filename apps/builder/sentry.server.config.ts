@@ -30,6 +30,7 @@ Sentry.init({
         event.contexts?.trpc?.procedure_path === "typebot.updateTypebot"
       )
         return null;
+      if (exception.code === "UNAUTHORIZED") return null;
     }
     return event;
   },

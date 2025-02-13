@@ -3,10 +3,12 @@ import { trpc } from "@/lib/trpc";
 export const useTypebots = ({
   folderId,
   workspaceId,
+  currentUserMode,
   onError,
 }: {
   workspaceId?: string;
   folderId?: string | "root";
+  currentUserMode?: "guest" | "read" | "write";
   onError: (error: Error) => void;
 }) => {
   const { data, isLoading, refetch } = trpc.typebot.listTypebots.useQuery(
@@ -15,7 +17,7 @@ export const useTypebots = ({
       folderId,
     },
     {
-      enabled: !!workspaceId,
+      enabled: !!workspaceId && currentUserMode !== "guest",
       onError: (error) => {
         onError(new Error(error.message));
       },

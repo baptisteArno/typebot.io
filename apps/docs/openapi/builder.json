@@ -2534,10 +2534,19 @@
                         "isVerified",
                         "chatsHardLimit"
                       ]
+                    },
+                    "currentUserMode": {
+                      "type": "string",
+                      "enum": [
+                        "read",
+                        "write",
+                        "guest"
+                      ]
                     }
                   },
                   "required": [
-                    "workspace"
+                    "workspace",
+                    "currentUserMode"
                   ]
                 }
               }
@@ -6202,6 +6211,12 @@
                           "selectedThemeTemplateId": {
                             "type": "string",
                             "nullable": true
+                          },
+                          "workspaceId": {
+                            "type": "string"
+                          },
+                          "id": {
+                            "type": "string"
                           }
                         },
                         "required": [
@@ -7979,6 +7994,12 @@
                           "selectedThemeTemplateId": {
                             "type": "string",
                             "nullable": true
+                          },
+                          "workspaceId": {
+                            "type": "string"
+                          },
+                          "id": {
+                            "type": "string"
                           }
                         },
                         "required": [

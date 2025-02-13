@@ -12,7 +12,7 @@ import { FolderContent } from "./FolderContent";
 export const FolderPage = () => {
   const { t } = useTranslate();
   const router = useRouter();
-  const { workspace } = useWorkspace();
+  const { workspace, currentUserMode } = useWorkspace();
 
   const { showToast } = useToast();
 
@@ -24,7 +24,7 @@ export const FolderPage = () => {
       workspaceId: workspace?.id as string,
     },
     {
-      enabled: !!workspace && !!router.query.id,
+      enabled: !!workspace && !!router.query.id && currentUserMode !== "guest",
       retry: 0,
       onError: (error) => {
         if (error.data?.httpStatus === 404) router.replace("/typebots");

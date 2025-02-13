@@ -31,7 +31,7 @@ export const listWorkspaces = authenticatedProcedure
     if (!workspaces)
       throw new TRPCError({
         code: "NOT_FOUND",
-        message: "No workspaces found",
+        message: "Workspace not found",
       });
 
     return { workspaces };

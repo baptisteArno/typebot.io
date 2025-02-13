@@ -33,7 +33,7 @@ import { CollaboratorItem } from "./CollaboratorButton";
 import { ReadableCollaborationType } from "./ReadableCollaborationType";
 
 export const CollaborationList = () => {
-  const { currentRole, workspace } = useWorkspace();
+  const { currentUserMode, workspace } = useWorkspace();
   const { t } = useTranslate();
   const { typebot } = useTypebot();
   const [invitationType, setInvitationType] = useState<CollaborationType>(
@@ -41,9 +41,6 @@ export const CollaborationList = () => {
   );
   const [invitationEmail, setInvitationEmail] = useState("");
   const [isSendingInvitation, setIsSendingInvitation] = useState(false);
-
-  const hasFullAccess =
-    (currentRole && currentRole !== WorkspaceRole.GUEST) || false;
 
   const { showToast } = useToast();
   const {
@@ -73,7 +70,7 @@ export const CollaborationList = () => {
 
   const handleChangeInvitationCollabType =
     (email: string) => async (type: CollaborationType) => {
-      if (!typebot || !hasFullAccess) return;
+      if (!typebot || currentUserMode === "guest") return;
       const { error } = await updateInvitationQuery(typebot?.id, email, {
         email,
         typebotId: typebot.id,
@@ -88,7 +85,7 @@ export const CollaborationList = () => {
       });
     };
   const handleDeleteInvitation = (email: string) => async () => {
-    if (!typebot || !hasFullAccess) return;
+    if (!typebot || currentUserMode === "guest") return;
     const { error } = await deleteInvitationQuery(typebot?.id, email);
     if (error)
       return showToast({ title: error.name, description: error.message });
@@ -99,7 +96,7 @@ export const CollaborationList = () => {
 
   const handleChangeCollaborationType =
     (userId: string) => async (type: CollaborationType) => {
-      if (!typebot || !hasFullAccess) return;
+      if (!typebot || currentUserMode === "guest") return;
       const { error } = await updateCollaboratorQuery(typebot?.id, userId, {
         userId,
         type,
@@ -114,7 +111,7 @@ export const CollaborationList = () => {
       });
     };
   const handleDeleteCollaboration = (userId: string) => async () => {
-    if (!typebot || !hasFullAccess) return;
+    if (!typebot || currentUserMode === "guest") return;
     const { error } = await deleteCollaboratorQuery(typebot?.id, userId);
     if (error)
       return showToast({ title: error.name, description: error.message });
@@ -125,7 +122,7 @@ export const CollaborationList = () => {
 
   const handleInvitationSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    if (!typebot || !hasFullAccess) return;
+    if (!typebot || currentUserMode === "guest") return;
     setIsSendingInvitation(true);
     const { error } = await sendInvitationQuery(typebot.id, {
       email: invitationEmail,
@@ -153,10 +150,10 @@ export const CollaborationList = () => {
           value={invitationEmail}
           onChange={(e) => setInvitationEmail(e.target.value)}
           rounded="md"
-          isDisabled={!hasFullAccess}
+          isDisabled={currentUserMode === "guest"}
         />
 
-        {hasFullAccess && (
+        {currentUserMode !== "guest" && (
           <CollaborationTypeMenuButton
             type={invitationType}
             onChange={setInvitationType}
@@ -168,7 +165,7 @@ export const CollaborationList = () => {
           isLoading={isSendingInvitation}
           flexShrink={0}
           type="submit"
-          isDisabled={!hasFullAccess}
+          isDisabled={currentUserMode === "guest"}
         >
           {t("share.button.popover.inviteButton.label")}
         </Button>
@@ -191,7 +188,7 @@ export const CollaborationList = () => {
           key={email}
           email={email}
           type={type}
-          isOwner={hasFullAccess}
+          isOwner={currentUserMode !== "guest"}
           onDeleteClick={handleDeleteInvitation(email)}
           onChangeCollaborationType={handleChangeInvitationCollabType(email)}
           isGuest
@@ -204,7 +201,7 @@ export const CollaborationList = () => {
           image={user.image ?? undefined}
           name={user.name ?? undefined}
           type={type}
-          isOwner={hasFullAccess}
+          isOwner={currentUserMode !== "guest"}
           onDeleteClick={handleDeleteCollaboration(userId ?? "")}
           onChangeCollaborationType={handleChangeCollaborationType(userId)}
         />

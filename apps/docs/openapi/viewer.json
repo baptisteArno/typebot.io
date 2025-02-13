@@ -479,6 +479,9 @@
                         },
                         "guestAvatarUrl": {
                           "type": "string"
+                        },
+                        "backgroundUrl": {
+                          "type": "string"
                         }
                       }
                     },
@@ -1002,6 +1005,9 @@
                         },
                         "guestAvatarUrl": {
                           "type": "string"
+                        },
+                        "backgroundUrl": {
+                          "type": "string"
                         }
                       }
                     },
@@ -1454,6 +1460,9 @@
                         },
                         "guestAvatarUrl": {
                           "type": "string"
+                        },
+                        "backgroundUrl": {
+                          "type": "string"
                         }
                       },
                       "description": "If the typebot contains dynamic avatars, dynamicTheme returns the new avatar URLs whenever their variables are updated."
@@ -1816,6 +1825,9 @@
                           "type": "string"
                         },
                         "guestAvatarUrl": {
+                          "type": "string"
+                        },
+                        "backgroundUrl": {
                           "type": "string"
                         }
                       },
@@ -2307,6 +2319,9 @@
                           "type": "string"
                         },
                         "guestAvatarUrl": {
+                          "type": "string"
+                        },
+                        "backgroundUrl": {
                           "type": "string"
                         }
                       },
