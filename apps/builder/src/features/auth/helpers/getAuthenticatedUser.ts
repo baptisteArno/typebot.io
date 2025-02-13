@@ -19,7 +19,6 @@ export const getAuthenticatedUser = async (
         | Prisma.User
         | undefined);
   if (!user || !("id" in user)) return;
-  Sentry.setUser({ id: user.id });
   return user;
 };
 
@@ -30,7 +29,6 @@ const authenticateByToken = async (
   const user = (await prisma.user.findFirst({
     where: { apiTokens: { some: { token: apiToken } } },
   })) as Prisma.User;
-  Sentry.setUser({ id: user.id });
   return user;
 };
 

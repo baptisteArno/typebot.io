@@ -1,3 +1,4 @@
+import * as Sentry from "@sentry/nextjs";
 import { TRPCError, initTRPC } from "@trpc/server";
 import type { OpenApiMeta } from "@typebot.io/trpc-openapi/types";
 import superjson from "superjson";
@@ -34,11 +35,19 @@ const isAuthed = t.middleware(({ next, ctx }) => {
   });
 });
 
+const sentryMiddleware = t.middleware(
+  Sentry.trpcMiddleware({
+    attachRpcInput: true,
+  }),
+);
+
 export const middleware = t.middleware;
 
 export const router = t.router;
 export const mergeRouters = t.mergeRouters;
 
-export const publicProcedure = t.procedure;
+export const publicProcedure = t.procedure.use(sentryMiddleware);
 
-export const authenticatedProcedure = t.procedure.use(isAuthed);
+export const authenticatedProcedure = t.procedure
+  .use(sentryMiddleware)
+  .use(isAuthed);
