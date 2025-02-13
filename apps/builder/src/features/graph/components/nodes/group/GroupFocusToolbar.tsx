@@ -16,7 +16,13 @@ export const GroupFocusToolbar = ({ groupId, onPlayClick }: Props) => {
   const { hasCopied, onCopy } = useClipboard(groupId);
 
   const dispatchCopyEvent = () => {
-    dispatchEvent(new KeyboardEvent("keydown", { key: "c", metaKey: true }));
+    const isMac = navigator.platform.toUpperCase().indexOf("MAC") >= 0;
+    dispatchEvent(
+      new KeyboardEvent("keydown", {
+        key: "c",
+        [isMac ? "metaKey" : "ctrlKey"]: true,
+      }),
+    );
   };
 
   const dispatchDeleteEvent = () => {

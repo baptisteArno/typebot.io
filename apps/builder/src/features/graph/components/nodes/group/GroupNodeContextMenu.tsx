@@ -9,7 +9,13 @@ export const GroupNodeContextMenu = () => {
     dispatchEvent(new KeyboardEvent("keydown", { key: "Backspace" }));
 
   const handleDuplicateClick = () => {
-    dispatchEvent(new KeyboardEvent("keydown", { key: "c", metaKey: true }));
+    const isMac = navigator.platform.toUpperCase().indexOf("MAC") >= 0;
+    dispatchEvent(
+      new KeyboardEvent("keydown", {
+        key: "c",
+        [isMac ? "metaKey" : "ctrlKey"]: true,
+      }),
+    );
   };
 
   return (

@@ -206,16 +206,12 @@ export const EventNode = ({ event, eventIndex }: Props) => {
                 >
                   <EventFocusToolbar
                     eventId={event.id}
+                    type={event.type}
                     onPlayClick={startPreviewAtThisEvent}
                     onSettingsClick={() => {
                       blurElements();
                       setOpenedNodeId(event.id);
                     }}
-                    onDeleteClick={
-                      event.type !== EventType.START
-                        ? () => deleteEvent(eventIndex)
-                        : undefined
-                    }
                   />
                 </SlideFade>
               )}

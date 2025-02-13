@@ -1,4 +1,5 @@
 import {
+  CopyIcon,
   InfoIcon,
   PlayIcon,
   SettingsIcon,
@@ -11,21 +12,38 @@ import {
   useClipboard,
   useColorModeValue,
 } from "@chakra-ui/react";
+import { EventType } from "@typebot.io/events/constants";
 
 type Props = {
   eventId: string;
+  type: EventType;
   onPlayClick: () => void;
   onSettingsClick: () => void;
-  onDeleteClick?: () => void;
 };
 
 export const EventFocusToolbar = ({
   eventId,
+  type,
   onPlayClick,
   onSettingsClick,
-  onDeleteClick,
 }: Props) => {
   const { hasCopied, onCopy } = useClipboard(eventId);
+
+  const dispatchCopyEvent = () => {
+    if (type === EventType.START) return;
+    const isMac = navigator.platform.toUpperCase().indexOf("MAC") >= 0;
+    dispatchEvent(
+      new KeyboardEvent("keydown", {
+        key: "c",
+        [isMac ? "metaKey" : "ctrlKey"]: true,
+      }),
+    );
+  };
+
+  const dispatchDeleteEvent = () => {
+    if (type === EventType.START) return;
+    dispatchEvent(new KeyboardEvent("keydown", { key: "Backspace" }));
+  };
 
   return (
     <HStack
@@ -51,6 +69,21 @@ export const EventFocusToolbar = ({
         size="sm"
         onClick={onSettingsClick}
       />
+      {type !== EventType.START && (
+        <IconButton
+          icon={<CopyIcon />}
+          borderRightWidth="1px"
+          borderRightRadius="none"
+          borderLeftRadius="none"
+          aria-label={"Copy group"}
+          variant="ghost"
+          onClick={(e) => {
+            e.stopPropagation();
+            dispatchCopyEvent();
+          }}
+          size="sm"
+        />
+      )}
       <Tooltip
         label={hasCopied ? "Copied!" : eventId}
         closeOnClick={false}
@@ -67,16 +100,16 @@ export const EventFocusToolbar = ({
           onClick={onCopy}
         />
       </Tooltip>
-      {onDeleteClick ? (
+      {type !== EventType.START && (
         <IconButton
           aria-label="Delete"
           borderLeftRadius="none"
           icon={<TrashIcon />}
-          onClick={onDeleteClick}
+          onClick={dispatchDeleteEvent}
           variant="ghost"
           size="sm"
         />
-      ) : null}
+      )}
     </HStack>
   );
 };
