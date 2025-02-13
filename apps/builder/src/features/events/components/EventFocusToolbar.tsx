@@ -5,6 +5,7 @@ import {
   SettingsIcon,
   TrashIcon,
 } from "@/components/icons";
+import { isMac } from "@/helpers/isMac";
 import {
   HStack,
   IconButton,
@@ -31,11 +32,10 @@ export const EventFocusToolbar = ({
 
   const dispatchCopyEvent = () => {
     if (type === EventType.START) return;
-    const isMac = navigator.platform.toUpperCase().indexOf("MAC") >= 0;
     dispatchEvent(
       new KeyboardEvent("keydown", {
         key: "c",
-        [isMac ? "metaKey" : "ctrlKey"]: true,
+        [isMac() ? "metaKey" : "ctrlKey"]: true,
       }),
     );
   };

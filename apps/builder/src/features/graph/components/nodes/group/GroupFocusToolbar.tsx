@@ -1,4 +1,5 @@
 import { CopyIcon, InfoIcon, PlayIcon, TrashIcon } from "@/components/icons";
+import { isMac } from "@/helpers/isMac";
 import {
   HStack,
   IconButton,
@@ -16,11 +17,10 @@ export const GroupFocusToolbar = ({ groupId, onPlayClick }: Props) => {
   const { hasCopied, onCopy } = useClipboard(groupId);
 
   const dispatchCopyEvent = () => {
-    const isMac = navigator.platform.toUpperCase().indexOf("MAC") >= 0;
     dispatchEvent(
       new KeyboardEvent("keydown", {
         key: "c",
-        [isMac ? "metaKey" : "ctrlKey"]: true,
+        [isMac() ? "metaKey" : "ctrlKey"]: true,
       }),
     );
   };
