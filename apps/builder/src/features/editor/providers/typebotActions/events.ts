@@ -12,7 +12,7 @@ import { deleteConnectedEdgesDraft } from "./edges";
 export type EventsActions = {
   createEvent: (
     event: Pick<TEvent, "graphCoordinates" | "type" | "id">,
-  ) => string;
+  ) => void;
   updateEvent: (
     eventIndex: number,
     updates: Partial<Omit<TEvent, "id">>,
@@ -29,13 +29,11 @@ export type EventsActions = {
 
 const eventsActions = (setTypebot: SetTypebot): EventsActions => ({
   createEvent: (event) => {
-    const id = createId();
     setTypebot((typebot) =>
       produce(typebot, (typebot) => {
         typebot.events.push(event);
       }),
     );
-    return id;
   },
   updateEvent: (eventIndex, updates) =>
     setTypebot((typebot) =>
