@@ -15542,6 +15542,7 @@ ky@1.2.4:
     react "18.2.0"
     react-dom "18.2.0"
     tailwind-merge "2.6.0"
+    vinxi "0.5.3"
 
 lazystream@^1.0.0:
   version "1.0.1"
