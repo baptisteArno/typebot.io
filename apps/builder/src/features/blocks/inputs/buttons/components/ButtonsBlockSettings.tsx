@@ -59,7 +59,7 @@ export const ButtonsBlockSettings = ({ options, onOptionsChange }: Props) => {
         onCheckChange={updateIsSearchable}
       >
         <SwitchWithLabel
-          label="Default display buttons?"
+          label="Default display buttons"
           initialValue={
             options?.areInitialSearchButtonsVisible ??
             defaultChoiceInputOptions.areInitialSearchButtonsVisible
