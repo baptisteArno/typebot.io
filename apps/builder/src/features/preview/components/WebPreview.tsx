@@ -1,4 +1,3 @@
-import { ThunderIcon } from "@/components/icons";
 import { useEditor } from "@/features/editor/providers/EditorProvider";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { useGraph } from "@/features/graph/providers/GraphProvider";
@@ -16,18 +15,10 @@ export const WebPreview = () => {
   const handleNewLogs = (logs: ContinueChatResponse["logs"]) => {
     logs?.forEach((log) => {
       toast({
-        icon: <ThunderIcon />,
+        context: log.context,
         status: log.status as "success" | "error" | "info",
         description: log.description,
-        details: log.details
-          ? {
-              lang: "json",
-              content:
-                typeof log.details === "string"
-                  ? log.details
-                  : JSON.stringify(log.details, null, 2),
-            }
-          : undefined,
+        details: log.details,
       });
       if (log.status === "error") console.error(log);
     });

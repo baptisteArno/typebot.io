@@ -7,6 +7,7 @@ import {
   typebotInSessionStateSchema,
 } from "@typebot.io/chat-session/schemas";
 import { byId, isNotDefined } from "@typebot.io/lib/utils";
+import type { LogInSession } from "@typebot.io/logs/schemas";
 import prisma from "@typebot.io/prisma";
 import { isTypebotVersionAtLeastV6 } from "@typebot.io/schemas/helpers/isTypebotVersionAtLeastV6";
 import { settingsSchema } from "@typebot.io/settings/schemas";
@@ -15,14 +16,13 @@ import type { Variable } from "@typebot.io/variables/schemas";
 import { addPortalEdge } from "../../../addPortalEdge";
 import { isTypebotInSessionAtLeastV6 } from "../../../helpers/isTypebotInSessionAtLeastV6";
 import { createResultIfNotExist } from "../../../queries/createResultIfNotExist";
-import type { ChatLog } from "../../../schemas/api";
 import type { ExecuteLogicResponse } from "../../../types";
 
 export const executeTypebotLink = async (
   state: SessionState,
   block: TypebotLinkBlock,
 ): Promise<ExecuteLogicResponse> => {
-  const logs: ChatLog[] = [];
+  const logs: LogInSession[] = [];
   const typebotId = block.options?.typebotId;
   if (!typebotId) {
     logs.push({

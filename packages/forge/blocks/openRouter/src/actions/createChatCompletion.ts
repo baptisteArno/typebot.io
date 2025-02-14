@@ -5,6 +5,7 @@ import { parseChatCompletionOptions } from "@typebot.io/ai/parseChatCompletionOp
 import { runChatCompletion } from "@typebot.io/ai/runChatCompletion";
 import { runChatCompletionStream } from "@typebot.io/ai/runChatCompletionStream";
 import { createAction } from "@typebot.io/forge";
+import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
 import ky from "ky";
 import { auth } from "../auth";
 import { defaultOpenRouterOptions } from "../constants";
@@ -41,14 +42,22 @@ export const createChatCompletion = createAction({
       id: "fetchModels",
       dependencies: [],
       fetch: async () => {
-        const response = await ky
-          .get(defaultOpenRouterOptions.baseUrl + "/models")
-          .json<ModelsResponse>();
+        try {
+          const response = await ky
+            .get(defaultOpenRouterOptions.baseUrl + "/models")
+            .json<ModelsResponse>();
 
-        return response.data.map((model) => ({
-          value: model.id,
-          label: model.name,
-        }));
+          return {
+            data: response.data.map((model) => ({
+              value: model.id,
+              label: model.name,
+            })),
+          };
+        } catch (err) {
+          return {
+            error: await parseUnknownError({ err, context: "Fetching models" }),
+          };
+        }
       },
     },
   ],

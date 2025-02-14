@@ -80,11 +80,22 @@ export const createChatCompletion = createAction({
     stream: {
       getStreamVariableId: getChatCompletionStreamVarId,
       run: async ({ credentials: { apiKey, baseUrl }, options, variables }) => {
+        const context = "While streaming OpenAI chat completion";
         if (!apiKey)
-          return { httpError: { status: 400, message: "No API key provided" } };
+          return {
+            error: {
+              description: "No API key provided",
+              context,
+            },
+          };
         const modelName = options.model?.trim();
         if (!modelName)
-          return { httpError: { status: 400, message: "No model provided" } };
+          return {
+            error: {
+              description: "No model provided",
+              context,
+            },
+          };
         if (!options.messages)
           return {
             httpError: { status: 400, message: "No messages provided" },

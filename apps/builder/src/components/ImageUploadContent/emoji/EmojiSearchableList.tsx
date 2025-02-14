@@ -111,7 +111,7 @@ export const EmojiSearchableList = ({
         placeholder={t("emojiList.searchInput.placeholder")}
         onChange={handleSearchChange}
       />
-      <Stack ref={scrollContainer} overflowY="scroll" maxH="350px" spacing={4}>
+      <Stack ref={scrollContainer} overflowY="auto" maxH="350px" spacing={4}>
         {recentEmojis.length > 0 && (
           <Stack>
             <Text fontSize="xs" color="gray.400" fontWeight="medium" pl="2">

@@ -1,6 +1,7 @@
 import { toast } from "@/lib/toast";
 import { Button, type ButtonProps, chakra } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
+import { parseUnknownClientError } from "@typebot.io/lib/parseUnknownClientError";
 import type { Typebot } from "@typebot.io/typebot/schemas/typebot";
 import React, { type ChangeEvent } from "react";
 
@@ -28,13 +29,7 @@ export const ImportTypebotFromFileButton = ({
       } as Typebot);
     } catch (err) {
       console.error(err);
-      toast({
-        description: t("templates.importFromFileButon.toastError.description"),
-        details: {
-          content: JSON.stringify(err, null, 2),
-          lang: "json",
-        },
-      });
+      toast(await parseUnknownClientError({ err }));
     }
   };
 

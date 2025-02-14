@@ -12,7 +12,6 @@ import {
   useColorMode,
   useColorModeValue,
 } from "@chakra-ui/react";
-import type { LanguageName } from "@uiw/codemirror-extensions-langs";
 import { toast as sonnerToast } from "sonner";
 import { AlertIcon, CloseIcon, InfoIcon, SmileIcon } from "./icons";
 import { CodeEditor } from "./inputs/CodeEditor";
@@ -23,8 +22,8 @@ export type ToastProps = {
   status?: "info" | "error" | "success";
   description: string;
   details?: {
+    lang: "shell" | "json";
     content: string;
-    lang: LanguageName;
   };
   icon?: React.ReactNode;
 };
@@ -47,7 +46,7 @@ export const Toast = ({
       data-theme={useColorMode().colorMode}
       bgColor={bgColor}
       borderWidth="1px"
-      shadow="sm"
+      shadow="lg"
       fontSize="sm"
       maxW="364px"
       w="full"
@@ -64,7 +63,7 @@ export const Toast = ({
       </HStack>
       {details && (
         <Accordion allowToggle>
-          <AccordionItem>
+          <AccordionItem onPointerDown={(e) => e.stopPropagation()}>
             <AccordionButton
               justifyContent="space-between"
               fontSize="sm"

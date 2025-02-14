@@ -12,10 +12,8 @@ import { executeSetVariable } from "@/features/blocks/logic/setVariable/executeS
 import { executeWait } from "@/features/blocks/logic/wait/utils/executeWait";
 import { listenForWebhook } from "@/features/blocks/logic/webhook/listenForWebhook";
 import type { ClientSideActionContext } from "@/types";
-import type {
-  ChatLog,
-  ContinueChatResponse,
-} from "@typebot.io/bot-engine/schemas/api";
+import type { ContinueChatResponse } from "@typebot.io/bot-engine/schemas/api";
+import type { LogInSession } from "@typebot.io/logs/schemas";
 import { injectStartProps } from "./injectStartProps";
 
 type Props = {
@@ -30,8 +28,8 @@ export const executeClientSideAction = async ({
   onMessageStream,
 }: Props): Promise<
   | { blockedPopupUrl: string }
-  | { replyToSend: string | undefined; logs?: ChatLog[] }
-  | { logs: ChatLog[] }
+  | { replyToSend: string | undefined; logs?: LogInSession[] }
+  | { logs: LogInSession[] }
   | { scriptCallbackMessage: string }
   | void
 > => {

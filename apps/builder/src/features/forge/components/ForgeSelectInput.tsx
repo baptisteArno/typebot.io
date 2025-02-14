@@ -80,9 +80,7 @@ export const ForgeSelectInput = ({
     {
       enabled: !!workspace?.id && !!fetcher,
       onError: (error) => {
-        toast({
-          description: error.message,
-        });
+        if (error.data?.logError) toast(error.data.logError);
       },
     },
   );

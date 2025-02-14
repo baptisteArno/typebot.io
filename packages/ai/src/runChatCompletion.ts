@@ -1,4 +1,5 @@
 import type { LogsStore, VariableStore } from "@typebot.io/forge/types";
+import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
 import { APICallError, type LanguageModel, generateText } from "ai";
 import { maxSteps } from "./constants";
 import { parseChatCompletionMessages } from "./parseChatCompletionMessages";
@@ -58,10 +59,11 @@ export const runChatCompletion = async ({
       });
       return;
     }
-    logs.add({
-      status: "error",
-      description: "An unknown error occured while generating the response",
-      details: err,
-    });
+    logs.add(
+      await parseUnknownError({
+        err,
+        context: "While generating chat completion",
+      }),
+    );
   }
 };

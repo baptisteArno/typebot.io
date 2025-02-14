@@ -120,10 +120,7 @@ export const TypebotProvider = ({
         toast({
           context: "Could not fetch typebot",
           description: error.message,
-          details: {
-            content: error.data?.zodError ?? "",
-            lang: "json",
-          },
+          details: error.data?.zodError,
         });
       },
       onSuccess: () => {
@@ -144,10 +141,7 @@ export const TypebotProvider = ({
           toast({
             context: "Could not fetch published typebot",
             description: error.message,
-            details: {
-              content: error.data?.zodError ?? "",
-              lang: "json",
-            },
+            details: error.data?.zodError,
           });
         },
       },

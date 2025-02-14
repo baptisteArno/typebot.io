@@ -5,6 +5,7 @@ import type {
   LogsStore,
   VariableStore,
 } from "@typebot.io/forge/types";
+import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
 import { safeStringify } from "@typebot.io/lib/safeStringify";
 import { isDefined, isEmpty, isNotEmpty } from "@typebot.io/lib/utils";
 import { executeFunction } from "@typebot.io/variables/executeFunction";
@@ -74,7 +75,10 @@ export const askAssistant = createAction({
     {
       id: "fetchAssistants",
       fetch: async ({ options, credentials }) => {
-        if (!credentials?.apiKey) return [];
+        if (!credentials?.apiKey)
+          return {
+            data: [],
+          };
 
         const config = {
           apiKey: credentials.apiKey,
@@ -91,27 +95,38 @@ export const askAssistant = createAction({
 
         const openai = new OpenAI(config);
 
-        const response = await openai.beta.assistants.list({
-          limit: 100,
-        });
+        try {
+          const response = await openai.beta.assistants.list({
+            limit: 100,
+          });
 
-        return response.data
-          .map((assistant) =>
-            assistant.name
-              ? {
-                  label: assistant.name,
-                  value: assistant.id,
-                }
-              : undefined,
-          )
-          .filter(isDefined);
+          return {
+            data: response.data
+              .map((assistant) =>
+                assistant.name
+                  ? {
+                      label: assistant.name,
+                      value: assistant.id,
+                    }
+                  : undefined,
+              )
+              .filter(isDefined),
+          };
+        } catch (err) {
+          return {
+            error: await parseUnknownError({ err }),
+          };
+        }
       },
       dependencies: ["baseUrl", "apiVersion"],
     },
     {
       id: "fetchAssistantFunctions",
       fetch: async ({ options, credentials }) => {
-        if (!options.assistantId || !credentials?.apiKey) return [];
+        if (!options.assistantId || !credentials?.apiKey)
+          return {
+            data: [],
+          };
 
         const config = {
           apiKey: credentials.apiKey,
@@ -128,18 +143,26 @@ export const askAssistant = createAction({
 
         const openai = new OpenAI(config);
 
-        const response = await openai.beta.assistants.retrieve(
-          options.assistantId,
-        );
+        try {
+          const response = await openai.beta.assistants.retrieve(
+            options.assistantId,
+          );
 
-        return response.tools
-          .filter((tool) => tool.type === "function")
-          .map((tool) =>
-            tool.type === "function" && tool.function.name
-              ? tool.function.name
-              : undefined,
-          )
-          .filter(isDefined);
+          return {
+            data: response.tools
+              .filter((tool) => tool.type === "function")
+              .map((tool) =>
+                tool.type === "function" && tool.function.name
+                  ? tool.function.name
+                  : undefined,
+              )
+              .filter(isDefined),
+          };
+        } catch (err) {
+          return {
+            error: await parseUnknownError({ err }),
+          };
+        }
       },
       dependencies: ["baseUrl", "apiVersion", "assistantId"],
     },

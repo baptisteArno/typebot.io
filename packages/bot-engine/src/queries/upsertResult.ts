@@ -4,7 +4,7 @@ import { JsonNull } from "@typebot.io/prisma/enum";
 import type { Prisma } from "@typebot.io/prisma/types";
 import { filterNonSessionVariablesWithValues } from "@typebot.io/variables/filterVariablesWithValues";
 import type { SetVariableHistoryItem } from "@typebot.io/variables/schemas";
-import { formatLogDetails } from "../logs/helpers/formatLogDetails";
+import { shortenLogDetails } from "../logs/helpers/shortenLogDetails";
 import type { ContinueChatResponse } from "../schemas/api";
 
 type Props = {
@@ -36,7 +36,8 @@ export const upsertResult = ({
           createMany: {
             data: logs.map((log) => ({
               ...log,
-              details: formatLogDetails(log.details),
+              details: shortenLogDetails(log.details),
+              status: log.status ?? "error",
             })),
             skipDuplicates: true,
           },

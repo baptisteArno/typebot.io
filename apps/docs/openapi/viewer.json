@@ -146,10 +146,14 @@
                         "description": {
                           "type": "string"
                         },
-                        "details": {}
+                        "details": {
+                          "type": "string"
+                        },
+                        "context": {
+                          "type": "string"
+                        }
                       },
                       "required": [
-                        "status",
                         "description"
                       ]
                     },
@@ -496,10 +500,14 @@
                           "description": {
                             "type": "string"
                           },
-                          "details": {}
+                          "details": {
+                            "type": "string"
+                          },
+                          "context": {
+                            "type": "string"
+                          }
                         },
                         "required": [
-                          "status",
                           "description"
                         ]
                       }
@@ -672,10 +680,14 @@
                         "description": {
                           "type": "string"
                         },
-                        "details": {}
+                        "details": {
+                          "type": "string"
+                        },
+                        "context": {
+                          "type": "string"
+                        }
                       },
                       "required": [
-                        "status",
                         "description"
                       ]
                     },
@@ -1022,10 +1034,14 @@
                           "description": {
                             "type": "string"
                           },
-                          "details": {}
+                          "details": {
+                            "type": "string"
+                          },
+                          "context": {
+                            "type": "string"
+                          }
                         },
                         "required": [
-                          "status",
                           "description"
                         ]
                       }
@@ -1447,10 +1463,14 @@
                           "description": {
                             "type": "string"
                           },
-                          "details": {}
+                          "details": {
+                            "type": "string"
+                          },
+                          "context": {
+                            "type": "string"
+                          }
                         },
                         "required": [
-                          "status",
                           "description"
                         ]
                       },
@@ -1817,10 +1837,14 @@
                           "description": {
                             "type": "string"
                           },
-                          "details": {}
+                          "details": {
+                            "type": "string"
+                          },
+                          "context": {
+                            "type": "string"
+                          }
                         },
                         "required": [
-                          "status",
                           "description"
                         ]
                       },
@@ -2315,10 +2339,14 @@
                           "description": {
                             "type": "string"
                           },
-                          "details": {}
+                          "details": {
+                            "type": "string"
+                          },
+                          "context": {
+                            "type": "string"
+                          }
                         },
                         "required": [
-                          "status",
                           "description"
                         ]
                       },
@@ -3608,10 +3636,14 @@
                         "description": {
                           "type": "string"
                         },
-                        "details": {}
+                        "details": {
+                          "type": "string"
+                        },
+                        "context": {
+                          "type": "string"
+                        }
                       },
                       "required": [
-                        "status",
                         "description"
                       ]
                     }

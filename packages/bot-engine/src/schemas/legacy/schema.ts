@@ -2,6 +2,7 @@ import {
   inputBlockV5Schema,
   inputBlockV6Schema,
 } from "@typebot.io/blocks-inputs/schema";
+import { logInSessionSchema } from "@typebot.io/logs/schemas";
 import { dynamicThemeSchema } from "@typebot.io/theme/schemas";
 import {
   typebotV5Schema,
@@ -10,7 +11,6 @@ import {
 import { z } from "@typebot.io/zod";
 import {
   chatBubbleSchema,
-  chatLogSchema,
   runtimeOptionsSchema,
   startTypebotSchema,
 } from "../api";
@@ -87,7 +87,7 @@ export const sendMessageInputSchema = z.object({
     ),
   startParams: startParamsSchema.optional(),
   clientLogs: z
-    .array(chatLogSchema)
+    .array(logInSessionSchema)
     .optional()
     .describe("Logs while executing client side actions"),
 });
@@ -120,7 +120,7 @@ export const chatReplySchema = z.object({
     .optional(),
   resultId: z.string().optional(),
   dynamicTheme: dynamicThemeSchema.optional(),
-  logs: z.array(chatLogSchema).optional(),
+  logs: z.array(logInSessionSchema).optional(),
   lastMessageNewFormat: z
     .string()
     .optional()

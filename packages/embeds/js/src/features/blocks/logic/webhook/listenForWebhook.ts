@@ -1,5 +1,5 @@
-import type { ChatLog } from "@typebot.io/bot-engine/schemas/api";
 import { getRuntimeVariable } from "@typebot.io/env/getRuntimeVariable";
+import type { LogInSession } from "@typebot.io/logs/schemas";
 import PartySocket from "partysocket";
 
 type Props = {
@@ -15,27 +15,28 @@ export const listenForWebhook = ({ sessionId, resultId }: Props) => {
     host,
     room: getRoomName({ sessionId, resultId }),
   });
-  return new Promise<{ replyToSend: string | undefined; logs?: ChatLog[] }>(
-    (resolve) => {
-      ws.addEventListener("message", (event) => {
-        ws.close();
-        resolve({ replyToSend: event.data });
-      });
+  return new Promise<{
+    replyToSend: string | undefined;
+    logs?: LogInSession[];
+  }>((resolve) => {
+    ws.addEventListener("message", (event) => {
+      ws.close();
+      resolve({ replyToSend: event.data });
+    });
 
-      ws.addEventListener("error", (error) => {
-        resolve({
-          logs: [
-            {
-              status: "error",
-              description: "Websocket returned an error",
-              details: JSON.stringify(error, null, 2),
-            },
-          ],
-          replyToSend: undefined,
-        });
+    ws.addEventListener("error", (error) => {
+      resolve({
+        logs: [
+          {
+            status: "error",
+            description: "Websocket returned an error",
+            details: JSON.stringify(error, null, 2),
+          },
+        ],
+        replyToSend: undefined,
       });
-    },
-  );
+    });
+  });
 };
 
 const getRoomName = ({ sessionId, resultId }: Props) => {

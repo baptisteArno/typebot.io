@@ -24,7 +24,7 @@ import type { ForgedBlock } from "@typebot.io/forge-repository/schemas";
 import { getBlockById } from "@typebot.io/groups/helpers/getBlockById";
 import type { Group } from "@typebot.io/groups/schemas";
 import { isURL } from "@typebot.io/lib/isURL";
-import { stringifyError } from "@typebot.io/lib/stringifyError";
+import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
 import { byId, isDefined } from "@typebot.io/lib/utils";
 import type { Prisma } from "@typebot.io/prisma/types";
 import type { AnswerInSessionState } from "@typebot.io/results/schemas/answers";
@@ -291,7 +291,7 @@ const processNonInputBlock = async ({
       throw new TRPCError({
         code: "BAD_REQUEST",
         message: "Provided response is not valid JSON",
-        cause: stringifyError(err),
+        cause: (await parseUnknownError({ err })).description,
       });
     }
     const result = saveDataInResponseVariableMapping({

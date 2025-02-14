@@ -1,7 +1,6 @@
 import { env } from "@typebot.io/env";
-import type { Prisma } from "@typebot.io/prisma/types";
+import type { LogInSession } from "@typebot.io/logs/schemas";
 import type { AnswerInput } from "@typebot.io/results/schemas/answers";
-import type { Log } from "@typebot.io/results/schemas/results";
 import { BackgroundType } from "@typebot.io/theme/constants";
 import type { Edge } from "@typebot.io/typebot/schemas/edge";
 import type { PublicTypebot } from "@typebot.io/typebot/schemas/publicTypebot";
@@ -27,7 +26,7 @@ export type TypebotViewerProps = {
   onNewAnswer?: (
     answer: AnswerInput & { uploadedFiles: boolean },
   ) => Promise<void>;
-  onNewLog?: (log: Omit<Log, "id" | "createdAt" | "resultId">) => void;
+  onNewLog?: (log: Omit<LogInSession, "id" | "createdAt" | "resultId">) => void;
   onCompleted?: () => void;
   onVariablesUpdated?: (variables: VariableWithValue[]) => void;
 };
@@ -59,8 +58,9 @@ export const TypebotViewer = ({
   const handleNewAnswer = (answer: AnswerInput & { uploadedFiles: boolean }) =>
     onNewAnswer && onNewAnswer(answer);
 
-  const handleNewLog = (log: Omit<Log, "id" | "createdAt" | "resultId">) =>
-    onNewLog && onNewLog(log);
+  const handleNewLog = (
+    log: Omit<LogInSession, "id" | "createdAt" | "resultId">,
+  ) => onNewLog && onNewLog(log);
 
   const handleCompleted = () => onCompleted && onCompleted();
 

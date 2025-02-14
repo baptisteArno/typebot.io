@@ -41,6 +41,7 @@ import {
 } from "@chakra-ui/react";
 import { createId } from "@paralleldrive/cuid2";
 import { env } from "@typebot.io/env";
+import { parseUnknownClientError } from "@typebot.io/lib/parseUnknownClientError";
 import { isEmpty, isNotEmpty } from "@typebot.io/lib/utils";
 import React, { useState } from "react";
 
@@ -170,13 +171,7 @@ export const WhatsAppCreateModalContent = ({
       }
     } catch (err) {
       setIsVerifying(false);
-      toast({
-        description: "Could not get system info",
-        details:
-          err instanceof Error
-            ? { content: err.message, lang: "json" }
-            : undefined,
-      });
+      toast(await parseUnknownClientError({ err }));
       return false;
     }
     setIsVerifying(false);
@@ -220,13 +215,7 @@ export const WhatsAppCreateModalContent = ({
     } catch (err) {
       console.error(err);
       setIsVerifying(false);
-      toast({
-        description: "Could not get phone number info",
-        details:
-          err instanceof Error
-            ? { content: err.message, lang: "json" }
-            : undefined,
-      });
+      toast(await parseUnknownClientError({ err }));
       return false;
     }
     setIsVerifying(false);

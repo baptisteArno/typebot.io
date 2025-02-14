@@ -5,7 +5,6 @@ import type {
   BotContext,
   ChatChunk as ChatChunkType,
   InputSubmitContent,
-  OutgoingLog,
 } from "@/types";
 import { botContainer } from "@/utils/botContainerSignal";
 import { executeClientSideAction } from "@/utils/executeClientSideActions";
@@ -22,17 +21,17 @@ import { setStreamingMessage } from "@/utils/streamingMessageSignal";
 import { toaster } from "@/utils/toaster";
 import type { InputBlock } from "@typebot.io/blocks-inputs/schema";
 import type {
-  ChatLog,
   ContinueChatResponse,
   Message,
   StartChatResponse,
 } from "@typebot.io/bot-engine/schemas/api";
 import type { ClientSideAction } from "@typebot.io/bot-engine/schemas/clientSideAction";
+import { parseUnknownClientError } from "@typebot.io/lib/parseUnknownClientError";
 import { isNotDefined } from "@typebot.io/lib/utils";
+import type { LogInSession } from "@typebot.io/logs/schemas";
 import { latestTypebotVersion } from "@typebot.io/schemas/versions";
 import { defaultSystemMessages } from "@typebot.io/settings/constants";
 import { BackgroundType } from "@typebot.io/theme/constants";
-import { HTTPError } from "ky";
 import {
   For,
   Show,
@@ -53,7 +52,7 @@ type Props = {
   onNewInputBlock?: (inputBlock: InputBlock) => void;
   onAnswer?: (answer: { message: string; blockId: string }) => void;
   onEnd?: () => void;
-  onNewLogs?: (logs: OutgoingLog[]) => void;
+  onNewLogs?: (logs: LogInSession[]) => void;
   onProgressUpdate?: (progress: number) => void;
   onScriptExecutionSuccess?: (message: string) => void;
 };
@@ -156,7 +155,7 @@ export const ConversationContainer = (props: Props) => {
       });
   });
 
-  const saveLogs = async (clientLogs?: ChatLog[]) => {
+  const saveLogs = async (clientLogs?: LogInSession[]) => {
     if (!clientLogs) return;
     props.onNewLogs?.(clientLogs);
     if (props.context.isPreview) return;
@@ -202,17 +201,10 @@ export const ConversationContainer = (props: Props) => {
     if (error) {
       setHasError(true);
       const errorLogs = [
-        {
-          description: "Failed to send the reply",
-          details:
-            error instanceof HTTPError
-              ? {
-                  status: error.response.status,
-                  body: await error.response.json(),
-                }
-              : error,
-          status: "error",
-        },
+        await parseUnknownClientError({
+          err: error,
+          context: "While sending message",
+        }),
       ];
       await saveClientLogsQuery({
         apiHost: props.context.apiHost,

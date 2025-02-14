@@ -112,10 +112,7 @@ export const SignInForm = ({
           toast({
             status: "info",
             description: t("errorMessage"),
-            details: {
-              content: "Check server logs to see relevent error message.",
-              lang: "json",
-            },
+            details: "Check server logs to see relevent error message.",
           });
       } else {
         setIsMagicCodeSent(true);

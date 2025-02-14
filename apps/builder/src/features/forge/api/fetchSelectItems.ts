@@ -4,6 +4,7 @@ import { TRPCError } from "@trpc/server";
 import { decrypt } from "@typebot.io/credentials/decrypt";
 import { forgedBlockIds } from "@typebot.io/forge-repository/constants";
 import { forgedBlocks } from "@typebot.io/forge-repository/definitions";
+import { LogError } from "@typebot.io/logs/LogError";
 import prisma from "@typebot.io/prisma";
 import { z } from "@typebot.io/zod";
 import { getFetchers } from "../helpers/getFetchers";
@@ -89,10 +90,12 @@ export const fetchSelectItems = authenticatedProcedure
 
     if (!fetcher) return { items: [] };
 
-    return {
-      items: await fetcher.fetch({
-        credentials: credentialsData as any,
-        options: input.options,
-      }),
-    };
+    const { data, error } = await fetcher.fetch({
+      credentials: credentialsData as any,
+      options: input.options,
+    });
+
+    if (error) throw new LogError(error);
+
+    return { items: data };
   });

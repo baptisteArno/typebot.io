@@ -51,6 +51,7 @@ export const GroupTitlesAutoGenForm = ({
           <DropdownList
             direction="row"
             label="Provider:"
+            placeholder="Select"
             items={Object.values(forgedBlocks)
               .filter((block) => block.actions.some((a) => a.aiGenerate))
               .map((block) => ({

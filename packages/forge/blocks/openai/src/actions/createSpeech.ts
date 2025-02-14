@@ -1,5 +1,6 @@
 import { createAction, option } from "@typebot.io/forge";
 import { createId } from "@typebot.io/lib/createId";
+import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
 import { uploadFileToBucket } from "@typebot.io/lib/s3/uploadFileToBucket";
 import { isNotEmpty } from "@typebot.io/lib/utils";
 import OpenAI, { type ClientOptions } from "openai";
@@ -37,7 +38,10 @@ export const createSpeech = createAction({
       id: "fetchSpeechModels",
       dependencies: ["baseUrl", "apiVersion"],
       fetch: async ({ credentials, options }) => {
-        if (!credentials?.apiKey) return [];
+        if (!credentials?.apiKey)
+          return {
+            data: [],
+          };
 
         const baseUrl = options?.baseUrl;
         const config = {
@@ -55,14 +59,23 @@ export const createSpeech = createAction({
 
         const openai = new OpenAI(config);
 
-        const models = await openai.models.list();
-
-        return (
-          models.data
-            .filter((model) => model.id.includes("tts"))
-            .sort((a, b) => b.created - a.created)
-            .map((model) => model.id) ?? []
-        );
+        try {
+          const models = await openai.models.list();
+          return {
+            data:
+              models.data
+                .filter((model) => model.id.includes("tts"))
+                .sort((a, b) => b.created - a.created)
+                .map((model) => model.id) ?? [],
+          };
+        } catch (err) {
+          return {
+            error: await parseUnknownError({
+              err,
+              context: "While fetching OpenAI speech models",
+            }),
+          };
+        }
       },
     },
   ],

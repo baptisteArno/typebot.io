@@ -115,7 +115,6 @@ export const executeChatwootBlock = (
             {
               status: "info",
               description: "Chatwoot block is not supported in preview",
-              details: null,
             },
           ]
         : undefined,

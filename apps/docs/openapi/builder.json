@@ -9372,6 +9372,10 @@
                           "details": {
                             "type": "string",
                             "nullable": true
+                          },
+                          "context": {
+                            "type": "string",
+                            "nullable": true
                           }
                         },
                         "required": [
@@ -9380,7 +9384,8 @@
                           "resultId",
                           "status",
                           "description",
-                          "details"
+                          "details",
+                          "context"
                         ]
                       }
                     }

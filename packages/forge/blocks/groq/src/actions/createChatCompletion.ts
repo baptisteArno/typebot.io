@@ -5,10 +5,10 @@ import { parseChatCompletionOptions } from "@typebot.io/ai/parseChatCompletionOp
 import { runChatCompletion } from "@typebot.io/ai/runChatCompletion";
 import { runChatCompletionStream } from "@typebot.io/ai/runChatCompletionStream";
 import { createAction } from "@typebot.io/forge";
+import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
 import ky from "ky";
 import { auth } from "../auth";
 import { defaultBaseUrl } from "../constants";
-
 export const createChatCompletion = createAction({
   name: "Create chat completion",
   auth,
@@ -19,19 +19,30 @@ export const createChatCompletion = createAction({
     {
       id: "fetchModels",
       fetch: async ({ credentials }) => {
-        if (!credentials?.apiKey) return [];
+        if (!credentials?.apiKey)
+          return {
+            data: [],
+          };
 
-        const response = await ky
-          .get(`${defaultBaseUrl}/models`, {
-            headers: {
-              authorization: `Bearer ${credentials.apiKey}`,
-            },
-          })
-          .json<{ data: { id: string; created: number }[] }>();
+        try {
+          const response = await ky
+            .get(`${defaultBaseUrl}/models`, {
+              headers: {
+                authorization: `Bearer ${credentials.apiKey}`,
+              },
+            })
+            .json<{ data: { id: string; created: number }[] }>();
 
-        return response.data
-          .sort((a, b) => b.created - a.created)
-          .map((model) => model.id);
+          return {
+            data: response.data
+              .sort((a, b) => b.created - a.created)
+              .map((model) => model.id),
+          };
+        } catch (err) {
+          return {
+            error: await parseUnknownError({ err }),
+          };
+        }
       },
       dependencies: [],
     },

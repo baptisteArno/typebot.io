@@ -19,7 +19,7 @@ import { textInputSchema } from "@typebot.io/blocks-inputs/text/schema";
 import { timeInputSchema } from "@typebot.io/blocks-inputs/time/schema";
 import { urlInputSchema } from "@typebot.io/blocks-inputs/url/schema";
 import { sessionStateSchema } from "@typebot.io/chat-session/schemas";
-import { logSchema } from "@typebot.io/results/schemas/results";
+import { logInSessionSchema } from "@typebot.io/logs/schemas";
 import { settingsSchema } from "@typebot.io/settings/schemas";
 import { themeSchema } from "@typebot.io/theme/schemas";
 import { dynamicThemeSchema } from "@typebot.io/theme/schemas";
@@ -226,14 +226,6 @@ export const startTypebotSchema = z.preprocess(
 );
 export type StartTypebot = StartTypebotV6 | StartTypebotV5;
 
-export const chatLogSchema = logSchema
-  .pick({
-    status: true,
-    description: true,
-  })
-  .merge(z.object({ details: z.unknown().optional() }));
-export type ChatLog = z.infer<typeof chatLogSchema>;
-
 export const startChatInputSchema = z.object({
   publicId: z
     .string()
@@ -396,7 +388,7 @@ const chatResponseBaseSchema = z.object({
     .optional()
     .describe("Actions to execute on the client side"),
   logs: z
-    .array(chatLogSchema)
+    .array(logInSessionSchema)
     .optional()
     .describe("Logs that were saved during the last execution"),
   dynamicTheme: dynamicThemeSchema

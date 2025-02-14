@@ -12,12 +12,6 @@ export type BotContext = {
   storage: "local" | "session" | undefined;
 };
 
-export type OutgoingLog = {
-  status: string;
-  description: string;
-  details?: unknown;
-};
-
 export type ClientSideActionContext = {
   apiHost?: string;
   sessionId: string;
