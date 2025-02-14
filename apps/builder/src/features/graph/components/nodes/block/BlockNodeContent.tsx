@@ -8,6 +8,7 @@ import { DateNodeContent } from "@/features/blocks/inputs/date/components/DateNo
 import { EmailInputNodeContent } from "@/features/blocks/inputs/emailInput/components/EmailInputNodeContent";
 import { FileInputContent } from "@/features/blocks/inputs/fileUpload/components/FileInputContent";
 import { NumberNodeContent } from "@/features/blocks/inputs/number/components/NumberNodeContent";
+import { OtpInputNodeContent } from "@/features/blocks/inputs/otp/components/OtpInputNodeContent";
 import { PaymentInputContent } from "@/features/blocks/inputs/payment/components/PaymentInputContent";
 import { PhoneNodeContent } from "@/features/blocks/inputs/phone/components/PhoneNodeContent";
 import { PictureChoiceNode } from "@/features/blocks/inputs/pictureChoice/components/PictureChoiceNode";
@@ -72,6 +73,9 @@ export const BlockNodeContent = ({
     }
     case InputBlockType.TEXT: {
       return <TextInputNodeContent options={block.options} />;
+    }
+    case InputBlockType.OTP: {
+      return <OtpInputNodeContent options={block.options} />;
     }
     case InputBlockType.NUMBER: {
       return <NumberNodeContent options={block.options} />;

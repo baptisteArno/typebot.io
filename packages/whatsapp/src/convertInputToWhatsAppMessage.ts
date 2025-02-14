@@ -33,6 +33,7 @@ export const convertInputToWhatsAppMessages = (
     case InputBlockType.URL:
     case InputBlockType.PAYMENT:
     case InputBlockType.RATING:
+    case InputBlockType.OTP:
     case InputBlockType.TEXT:
       return [];
     case InputBlockType.PICTURE_CHOICE: {
