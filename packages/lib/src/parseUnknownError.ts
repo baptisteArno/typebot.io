@@ -21,7 +21,13 @@ export const parseUnknownError = async ({
         details: undefined,
       };
     if (err instanceof Error) {
-      if ("response" in err) {
+      if (
+        "response" in err &&
+        typeof err.response === "object" &&
+        err.response &&
+        "text" in err.response &&
+        typeof err.response.text === "function"
+      ) {
         return {
           context,
           description: err.message,

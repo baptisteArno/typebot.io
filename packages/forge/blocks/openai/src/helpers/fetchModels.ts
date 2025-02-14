@@ -45,7 +45,7 @@ export const fetchGPTModels = async ({
     };
   } catch (err) {
     return {
-      error: await parseUnknownError({ err }),
+      error: await parseUnknownError({ err, context: "While fetching models" }),
     };
   }
 };
