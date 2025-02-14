@@ -57,6 +57,7 @@ export const PublishButton = ({
     updateTypebot,
     save,
     publishedTypebotVersion,
+    currentUserMode,
   } = useTypebot();
   const timeSinceLastPublish = useTimeSince(
     publishedTypebot?.updatedAt.toString(),
@@ -82,8 +83,9 @@ export const PublishButton = ({
         }
       },
       onSuccess: () => {
+        if (!typebot?.id || currentUserMode === "guest") return;
         refetchPublishedTypebot({
-          typebotId: typebot?.id as string,
+          typebotId: typebot.id,
         });
         if (!publishedTypebot && !pathname.endsWith("share"))
           push(`/typebots/${query.typebotId}/share`);
