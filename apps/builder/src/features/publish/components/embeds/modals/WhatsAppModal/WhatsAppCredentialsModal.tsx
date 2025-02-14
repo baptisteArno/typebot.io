@@ -40,6 +40,7 @@ import {
   useSteps,
 } from "@chakra-ui/react";
 import { createId } from "@paralleldrive/cuid2";
+import { TRPCClientError } from "@trpc/client";
 import { env } from "@typebot.io/env";
 import { parseUnknownClientError } from "@typebot.io/lib/parseUnknownClientError";
 import { isEmpty, isNotEmpty } from "@typebot.io/lib/utils";
@@ -171,6 +172,12 @@ export const WhatsAppCreateModalContent = ({
       }
     } catch (err) {
       setIsVerifying(false);
+      if (err instanceof TRPCClientError) {
+        if (err.data?.logError) {
+          toast(err.data.logError);
+          return false;
+        }
+      }
       toast(await parseUnknownClientError({ err }));
       return false;
     }
@@ -213,8 +220,14 @@ export const WhatsAppCreateModalContent = ({
         return false;
       }
     } catch (err) {
-      console.error(err);
       setIsVerifying(false);
+      if (err instanceof TRPCClientError) {
+        if (err.data?.logError) {
+          toast(err.data.logError);
+          return false;
+        }
+      }
+      console.error(err);
       toast(await parseUnknownClientError({ err }));
       return false;
     }

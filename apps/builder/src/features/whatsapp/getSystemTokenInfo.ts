@@ -3,6 +3,8 @@ import { TRPCError } from "@trpc/server";
 import { decrypt } from "@typebot.io/credentials/decrypt";
 import type { WhatsAppCredentials } from "@typebot.io/credentials/schemas";
 import { env } from "@typebot.io/env";
+import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
+import { LogError } from "@typebot.io/logs/LogError";
 import prisma from "@typebot.io/prisma";
 import { z } from "@typebot.io/zod";
 import ky from "ky";
@@ -26,32 +28,37 @@ export const getSystemTokenInfo = authenticatedProcedure
         code: "NOT_FOUND",
         message: "Credentials not found",
       });
-    const {
-      data: { expires_at, scopes, app_id, application },
-    } = await ky
-      .get(
-        `${env.WHATSAPP_CLOUD_API_URL}/v17.0/debug_token?input_token=${credentials.systemUserAccessToken}`,
-        {
-          headers: {
-            Authorization: `Bearer ${credentials.systemUserAccessToken}`,
-          },
-        },
-      )
-      .json<{
-        data: {
-          app_id: string;
-          application: string;
-          expires_at: number;
-          scopes: string[];
-        };
-      }>();
 
-    return {
-      appId: app_id,
-      appName: application,
-      expiresAt: expires_at,
-      scopes,
-    };
+    try {
+      const {
+        data: { expires_at, scopes, app_id, application },
+      } = await ky
+        .get(
+          `${env.WHATSAPP_CLOUD_API_URL}/v17.0/debug_token?input_token=${credentials.systemUserAccessToken}`,
+          {
+            headers: {
+              Authorization: `Bearer ${credentials.systemUserAccessToken}`,
+            },
+          },
+        )
+        .json<{
+          data: {
+            app_id: string;
+            application: string;
+            expires_at: number;
+            scopes: string[];
+          };
+        }>();
+
+      return {
+        appId: app_id,
+        appName: application,
+        expiresAt: expires_at,
+        scopes,
+      };
+    } catch (err) {
+      throw new LogError(await parseUnknownError({ err }));
+    }
   });
 
 const getCredentials = async (

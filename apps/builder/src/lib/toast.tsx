@@ -22,7 +22,8 @@ const parseStrDetails = (
   details: string,
 ): { lang: "shell" | "json"; content: string } => {
   try {
-    const parsed = JSON.parse(details);
+    let parsed = JSON.parse(details);
+    if (typeof parsed === "string") parsed = JSON.parse(parsed);
     return { lang: "json", content: JSON.stringify(parsed, null, 2) };
   } catch (error) {
     return { lang: "shell", content: details };
