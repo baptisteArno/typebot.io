@@ -7,6 +7,7 @@ import cloneDeep from "lodash.clonedeep";
 import type { ZodError, ZodTypeAny } from "zod";
 
 import { type AnyProcedure, TRPCError } from "@trpc/server";
+import type { ResponseMeta } from "@trpc/server/http";
 import { generateOpenApiDocument } from "../../generator";
 import type {
   OpenApiErrorResponse,
@@ -60,7 +61,7 @@ export const createOpenApiNodeHttpHandler = <
   return async (req: TRequest, res: TResponse, next?: OpenApiNextFunction) => {
     const sendResponse = (
       statusCode: number,
-      headers: Record<string, string>,
+      headers: NonNullable<ResponseMeta["headers"]>,
       body: OpenApiResponse | undefined,
     ) => {
       res.statusCode = statusCode;

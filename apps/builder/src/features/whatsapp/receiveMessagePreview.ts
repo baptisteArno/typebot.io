@@ -34,7 +34,7 @@ export const receiveMessagePreview = publicProcedure
     assertEnv();
 
     try {
-      processErrors(entry);
+      await processErrors(entry);
       const { receivedMessage, contactName, contactPhoneNumber } =
         extractMessageData(entry);
       await resumeWhatsAppFlow({
@@ -100,4 +100,5 @@ const processErrors = async (entry: WhatsAppWebhookRequestBody["entry"]) => {
     }
     throw new Error(`Received unknown error from WA: ${JSON.stringify(error)}`);
   }
+  throw new Error(`WA: ${JSON.stringify(status)}`);
 };

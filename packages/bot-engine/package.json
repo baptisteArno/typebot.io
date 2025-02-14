@@ -9,7 +9,7 @@
   "dependencies": {
     "@paralleldrive/cuid2": "2.2.1",
     "@planetscale/database": "1.8.0",
-    "@trpc/server": "10.40.0",
+    "@trpc/server": "10.45.2",
     "@typebot.io/emails": "workspace:*",
     "@typebot.io/env": "workspace:*",
     "@typebot.io/lib": "workspace:*",
