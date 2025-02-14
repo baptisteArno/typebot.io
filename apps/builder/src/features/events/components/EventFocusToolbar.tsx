@@ -1,4 +1,11 @@
-import { InfoIcon, PlayIcon, TrashIcon } from "@/components/icons";
+import {
+  CopyIcon,
+  InfoIcon,
+  PlayIcon,
+  SettingsIcon,
+  TrashIcon,
+} from "@/components/icons";
+import { isMac } from "@/helpers/isMac";
 import {
   HStack,
   IconButton,
@@ -6,19 +13,37 @@ import {
   useClipboard,
   useColorModeValue,
 } from "@chakra-ui/react";
+import { EventType } from "@typebot.io/events/constants";
 
 type Props = {
   eventId: string;
+  type: EventType;
   onPlayClick: () => void;
-  onDeleteClick?: () => void;
+  onSettingsClick: () => void;
 };
 
 export const EventFocusToolbar = ({
   eventId,
+  type,
   onPlayClick,
-  onDeleteClick,
+  onSettingsClick,
 }: Props) => {
   const { hasCopied, onCopy } = useClipboard(eventId);
+
+  const dispatchCopyEvent = () => {
+    if (type === EventType.START) return;
+    dispatchEvent(
+      new KeyboardEvent("keydown", {
+        key: "c",
+        [isMac() ? "metaKey" : "ctrlKey"]: true,
+      }),
+    );
+  };
+
+  const dispatchDeleteEvent = () => {
+    if (type === EventType.START) return;
+    dispatchEvent(new KeyboardEvent("keydown", { key: "Backspace" }));
+  };
 
   return (
     <HStack
@@ -37,6 +62,28 @@ export const EventFocusToolbar = ({
         onClick={onPlayClick}
         size="sm"
       />
+      <IconButton
+        icon={<SettingsIcon />}
+        aria-label={"Show event settings"}
+        variant="ghost"
+        size="sm"
+        onClick={onSettingsClick}
+      />
+      {type !== EventType.START && (
+        <IconButton
+          icon={<CopyIcon />}
+          borderRightWidth="1px"
+          borderRightRadius="none"
+          borderLeftRadius="none"
+          aria-label={"Copy group"}
+          variant="ghost"
+          onClick={(e) => {
+            e.stopPropagation();
+            dispatchCopyEvent();
+          }}
+          size="sm"
+        />
+      )}
       <Tooltip
         label={hasCopied ? "Copied!" : eventId}
         closeOnClick={false}
@@ -53,16 +100,16 @@ export const EventFocusToolbar = ({
           onClick={onCopy}
         />
       </Tooltip>
-      {onDeleteClick ? (
+      {type !== EventType.START && (
         <IconButton
           aria-label="Delete"
           borderLeftRadius="none"
           icon={<TrashIcon />}
-          onClick={onDeleteClick}
+          onClick={dispatchDeleteEvent}
           variant="ghost"
           size="sm"
         />
-      ) : null}
+      )}
     </HStack>
   );
 };

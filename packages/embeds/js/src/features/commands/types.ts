@@ -13,6 +13,7 @@ export type CommandData = CommandArgs & {
     | ShowMessageCommandData
     | SetPrefilledVariablesCommandData
     | SetInputValueCommandData
+    | SendCommandCommandData
   );
 
 export type ShowMessageCommandData = {
@@ -28,4 +29,9 @@ export type SetPrefilledVariablesCommandData = {
 export type SetInputValueCommandData = {
   command: "setInputValue";
   value: string;
+};
+
+export type SendCommandCommandData = {
+  command: "sendCommand";
+  text: string;
 };

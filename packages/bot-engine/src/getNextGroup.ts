@@ -22,86 +22,85 @@ export const getNextGroup = async ({
 }): Promise<NextGroup> => {
   const nextEdge = state.typebotsQueue[0].typebot.edges.find(byId(edgeId));
   if (!nextEdge) {
-    if (state.typebotsQueue.length > 1) {
-      const nextEdgeId = state.typebotsQueue[0].edgeIdToTriggerWhenDone;
-      const isMergingWithParent = state.typebotsQueue[0].isMergingWithParent;
-      const currentResultId = state.typebotsQueue[0].resultId;
+    const nextEdgeResponse = state.typebotsQueue[0].edgeIdToTriggerWhenDone
+      ? { state, edgeId: state.typebotsQueue[0].edgeIdToTriggerWhenDone }
+      : popQueuedEdge(state);
+    let newSessionState = nextEdgeResponse.state;
+    if (newSessionState.typebotsQueue.length > 1) {
+      const isMergingWithParent =
+        newSessionState.typebotsQueue[0].isMergingWithParent;
+      const currentResultId = newSessionState.typebotsQueue[0].resultId;
       if (!isMergingWithParent && currentResultId)
         await upsertResult({
           resultId: currentResultId,
-          typebot: state.typebotsQueue[0].typebot,
+          typebot: newSessionState.typebotsQueue[0].typebot,
           isCompleted: true,
-          hasStarted: state.typebotsQueue[0].answers.length > 0,
+          hasStarted: newSessionState.typebotsQueue[0].answers.length > 0,
         });
-      let newSessionState = {
-        ...state,
+      newSessionState = {
+        ...newSessionState,
         typebotsQueue: [
           {
-            ...state.typebotsQueue[1],
+            ...newSessionState.typebotsQueue[1],
             typebot: isMergingWithParent
               ? {
-                  ...state.typebotsQueue[1].typebot,
-                  variables: state.typebotsQueue[1].typebot.variables
+                  ...newSessionState.typebotsQueue[1].typebot,
+                  variables: newSessionState.typebotsQueue[1].typebot.variables
                     .map((variable) => ({
                       ...variable,
                       value:
-                        state.typebotsQueue[0].typebot.variables.find(
+                        newSessionState.typebotsQueue[0].typebot.variables.find(
                           (v) => v.name === variable.name,
                         )?.value ?? variable.value,
                     }))
                     .concat(
-                      state.typebotsQueue[0].typebot.variables.filter(
+                      newSessionState.typebotsQueue[0].typebot.variables.filter(
                         (variable) =>
                           isDefined(variable.value) &&
                           isNotDefined(
-                            state.typebotsQueue[1].typebot.variables.find(
+                            newSessionState.typebotsQueue[1].typebot.variables.find(
                               (v) => v.name === variable.name,
                             ),
                           ),
                       ) as VariableWithValue[],
                     ),
                 }
-              : state.typebotsQueue[1].typebot,
+              : newSessionState.typebotsQueue[1].typebot,
             answers: isMergingWithParent
               ? [
-                  ...state.typebotsQueue[1].answers.filter(
+                  ...newSessionState.typebotsQueue[1].answers.filter(
                     (incomingAnswer) =>
-                      !state.typebotsQueue[0].answers.find(
+                      !newSessionState.typebotsQueue[0].answers.find(
                         (currentAnswer) =>
                           currentAnswer.key === incomingAnswer.key,
                       ),
                   ),
-                  ...state.typebotsQueue[0].answers,
+                  ...newSessionState.typebotsQueue[0].answers,
                 ]
-              : state.typebotsQueue[1].answers,
+              : newSessionState.typebotsQueue[1].answers,
           },
-          ...state.typebotsQueue.slice(2),
+          ...newSessionState.typebotsQueue.slice(2),
         ],
       } satisfies SessionState;
-      if (state.progressMetadata)
+      if (newSessionState.progressMetadata)
         newSessionState.progressMetadata = {
-          ...state.progressMetadata,
+          ...newSessionState.progressMetadata,
           totalAnswers:
-            state.progressMetadata.totalAnswers +
-            state.typebotsQueue[0].answers.length,
+            newSessionState.progressMetadata.totalAnswers +
+            newSessionState.typebotsQueue[0].answers.length,
         };
-      const nextGroup = await getNextGroup({
+    }
+    if (
+      nextEdgeResponse.edgeId &&
+      !newSessionState.typebotsQueue[0].edgeIdToTriggerWhenDone
+    )
+      return getNextGroup({
         state: newSessionState,
-        edgeId: nextEdgeId,
+        edgeId: nextEdgeResponse.edgeId,
         isOffDefaultPath,
       });
-      newSessionState = nextGroup.newSessionState;
-      if (!nextGroup)
-        return {
-          newSessionState,
-        };
-      return {
-        ...nextGroup,
-        newSessionState,
-      };
-    }
     return {
-      newSessionState: state,
+      newSessionState,
     };
   }
   const nextGroup = state.typebotsQueue[0].typebot.groups.find(
@@ -144,5 +143,25 @@ export const getNextGroup = async ({
             resultId,
           }
         : undefined,
+  };
+};
+
+const popQueuedEdge = (
+  state: SessionState,
+): { edgeId?: string; state: SessionState } => {
+  const edgeId = state.typebotsQueue[0].queuedEdgeIds?.[0];
+  if (!edgeId) return { state };
+  return {
+    edgeId,
+    state: {
+      ...state,
+      typebotsQueue: [
+        {
+          ...state.typebotsQueue[0],
+          queuedEdgeIds: state.typebotsQueue[0].queuedEdgeIds?.slice(1),
+        },
+        ...state.typebotsQueue.slice(1),
+      ],
+    },
   };
 };

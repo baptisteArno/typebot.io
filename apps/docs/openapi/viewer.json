@@ -186,33 +186,33 @@
                           {
                             "oneOf": [
                               {
-                                "$ref": "#/components/schemas/textMessage"
+                                "$ref": "#/components/schemas/textBubble"
                               },
                               {
-                                "$ref": "#/components/schemas/imageMessage"
+                                "$ref": "#/components/schemas/imageBubble"
                               },
                               {
-                                "$ref": "#/components/schemas/videoMessage"
+                                "$ref": "#/components/schemas/videoBubble"
                               },
                               {
-                                "$ref": "#/components/schemas/audioMessage"
+                                "$ref": "#/components/schemas/audioBubble"
                               },
                               {
-                                "$ref": "#/components/schemas/embedMessage"
+                                "$ref": "#/components/schemas/embedBubble"
                               },
                               {
-                                "$ref": "#/components/schemas/customEmbedMessage"
+                                "$ref": "#/components/schemas/customEmbedBubble"
                               }
                             ],
                             "discriminator": {
                               "propertyName": "type",
                               "mapping": {
-                                "text": "#/components/schemas/textMessage",
-                                "image": "#/components/schemas/imageMessage",
-                                "video": "#/components/schemas/videoMessage",
-                                "audio": "#/components/schemas/audioMessage",
-                                "embed": "#/components/schemas/embedMessage",
-                                "custom-embed": "#/components/schemas/customEmbedMessage"
+                                "text": "#/components/schemas/textBubble",
+                                "image": "#/components/schemas/imageBubble",
+                                "video": "#/components/schemas/videoBubble",
+                                "audio": "#/components/schemas/audioBubble",
+                                "embed": "#/components/schemas/embedBubble",
+                                "custom-embed": "#/components/schemas/customEmbedBubble"
                               }
                             }
                           }
@@ -712,33 +712,33 @@
                           {
                             "oneOf": [
                               {
-                                "$ref": "#/components/schemas/textMessage"
+                                "$ref": "#/components/schemas/textBubble"
                               },
                               {
-                                "$ref": "#/components/schemas/imageMessage"
+                                "$ref": "#/components/schemas/imageBubble"
                               },
                               {
-                                "$ref": "#/components/schemas/videoMessage"
+                                "$ref": "#/components/schemas/videoBubble"
                               },
                               {
-                                "$ref": "#/components/schemas/audioMessage"
+                                "$ref": "#/components/schemas/audioBubble"
                               },
                               {
-                                "$ref": "#/components/schemas/embedMessage"
+                                "$ref": "#/components/schemas/embedBubble"
                               },
                               {
-                                "$ref": "#/components/schemas/customEmbedMessage"
+                                "$ref": "#/components/schemas/customEmbedBubble"
                               }
                             ],
                             "discriminator": {
                               "propertyName": "type",
                               "mapping": {
-                                "text": "#/components/schemas/textMessage",
-                                "image": "#/components/schemas/imageMessage",
-                                "video": "#/components/schemas/videoMessage",
-                                "audio": "#/components/schemas/audioMessage",
-                                "embed": "#/components/schemas/embedMessage",
-                                "custom-embed": "#/components/schemas/customEmbedMessage"
+                                "text": "#/components/schemas/textBubble",
+                                "image": "#/components/schemas/imageBubble",
+                                "video": "#/components/schemas/videoBubble",
+                                "audio": "#/components/schemas/audioBubble",
+                                "embed": "#/components/schemas/embedBubble",
+                                "custom-embed": "#/components/schemas/customEmbedBubble"
                               }
                             }
                           }
@@ -1091,17 +1091,21 @@
                   "message": {
                     "oneOf": [
                       {
-                        "$ref": "#/components/schemas/textSentMessage"
+                        "$ref": "#/components/schemas/textMessage"
                       },
                       {
-                        "$ref": "#/components/schemas/audioSentMessage"
+                        "$ref": "#/components/schemas/audioMessage"
+                      },
+                      {
+                        "$ref": "#/components/schemas/commandMessage"
                       }
                     ],
                     "discriminator": {
                       "propertyName": "type",
                       "mapping": {
-                        "text": "#/components/schemas/textSentMessage",
-                        "audio": "#/components/schemas/audioSentMessage"
+                        "text": "#/components/schemas/textMessage",
+                        "audio": "#/components/schemas/audioMessage",
+                        "command": "#/components/schemas/commandMessage"
                       }
                     },
                     "description": "Only provide it if your flow starts with an input block and you'd like to directly provide an answer to it."
@@ -1221,33 +1225,33 @@
                           {
                             "oneOf": [
                               {
-                                "$ref": "#/components/schemas/textMessage"
+                                "$ref": "#/components/schemas/textBubble"
                               },
                               {
-                                "$ref": "#/components/schemas/imageMessage"
+                                "$ref": "#/components/schemas/imageBubble"
                               },
                               {
-                                "$ref": "#/components/schemas/videoMessage"
+                                "$ref": "#/components/schemas/videoBubble"
                               },
                               {
-                                "$ref": "#/components/schemas/audioMessage"
+                                "$ref": "#/components/schemas/audioBubble"
                               },
                               {
-                                "$ref": "#/components/schemas/embedMessage"
+                                "$ref": "#/components/schemas/embedBubble"
                               },
                               {
-                                "$ref": "#/components/schemas/customEmbedMessage"
+                                "$ref": "#/components/schemas/customEmbedBubble"
                               }
                             ],
                             "discriminator": {
                               "propertyName": "type",
                               "mapping": {
-                                "text": "#/components/schemas/textMessage",
-                                "image": "#/components/schemas/imageMessage",
-                                "video": "#/components/schemas/videoMessage",
-                                "audio": "#/components/schemas/audioMessage",
-                                "embed": "#/components/schemas/embedMessage",
-                                "custom-embed": "#/components/schemas/customEmbedMessage"
+                                "text": "#/components/schemas/textBubble",
+                                "image": "#/components/schemas/imageBubble",
+                                "video": "#/components/schemas/videoBubble",
+                                "audio": "#/components/schemas/audioBubble",
+                                "embed": "#/components/schemas/embedBubble",
+                                "custom-embed": "#/components/schemas/customEmbedBubble"
                               }
                             }
                           }
@@ -1530,17 +1534,21 @@
                   "message": {
                     "oneOf": [
                       {
-                        "$ref": "#/components/schemas/textSentMessage"
+                        "$ref": "#/components/schemas/textMessage"
                       },
                       {
-                        "$ref": "#/components/schemas/audioSentMessage"
+                        "$ref": "#/components/schemas/audioMessage"
+                      },
+                      {
+                        "$ref": "#/components/schemas/commandMessage"
                       }
                     ],
                     "discriminator": {
                       "propertyName": "type",
                       "mapping": {
-                        "text": "#/components/schemas/textSentMessage",
-                        "audio": "#/components/schemas/audioSentMessage"
+                        "text": "#/components/schemas/textMessage",
+                        "audio": "#/components/schemas/audioMessage",
+                        "command": "#/components/schemas/commandMessage"
                       }
                     }
                   },
@@ -1587,33 +1595,33 @@
                           {
                             "oneOf": [
                               {
-                                "$ref": "#/components/schemas/textMessage"
+                                "$ref": "#/components/schemas/textBubble"
                               },
                               {
-                                "$ref": "#/components/schemas/imageMessage"
+                                "$ref": "#/components/schemas/imageBubble"
                               },
                               {
-                                "$ref": "#/components/schemas/videoMessage"
+                                "$ref": "#/components/schemas/videoBubble"
                               },
                               {
-                                "$ref": "#/components/schemas/audioMessage"
+                                "$ref": "#/components/schemas/audioBubble"
                               },
                               {
-                                "$ref": "#/components/schemas/embedMessage"
+                                "$ref": "#/components/schemas/embedBubble"
                               },
                               {
-                                "$ref": "#/components/schemas/customEmbedMessage"
+                                "$ref": "#/components/schemas/customEmbedBubble"
                               }
                             ],
                             "discriminator": {
                               "propertyName": "type",
                               "mapping": {
-                                "text": "#/components/schemas/textMessage",
-                                "image": "#/components/schemas/imageMessage",
-                                "video": "#/components/schemas/videoMessage",
-                                "audio": "#/components/schemas/audioMessage",
-                                "embed": "#/components/schemas/embedMessage",
-                                "custom-embed": "#/components/schemas/customEmbedMessage"
+                                "text": "#/components/schemas/textBubble",
+                                "image": "#/components/schemas/imageBubble",
+                                "video": "#/components/schemas/videoBubble",
+                                "audio": "#/components/schemas/audioBubble",
+                                "embed": "#/components/schemas/embedBubble",
+                                "custom-embed": "#/components/schemas/customEmbedBubble"
                               }
                             }
                           }
@@ -1899,17 +1907,21 @@
                   "message": {
                     "oneOf": [
                       {
-                        "$ref": "#/components/schemas/textSentMessage"
+                        "$ref": "#/components/schemas/textMessage"
                       },
                       {
-                        "$ref": "#/components/schemas/audioSentMessage"
+                        "$ref": "#/components/schemas/audioMessage"
+                      },
+                      {
+                        "$ref": "#/components/schemas/commandMessage"
                       }
                     ],
                     "discriminator": {
                       "propertyName": "type",
                       "mapping": {
-                        "text": "#/components/schemas/textSentMessage",
-                        "audio": "#/components/schemas/audioSentMessage"
+                        "text": "#/components/schemas/textMessage",
+                        "audio": "#/components/schemas/audioMessage",
+                        "command": "#/components/schemas/commandMessage"
                       }
                     }
                   },
@@ -2081,33 +2093,33 @@
                           {
                             "oneOf": [
                               {
-                                "$ref": "#/components/schemas/textMessage"
+                                "$ref": "#/components/schemas/textBubble"
                               },
                               {
-                                "$ref": "#/components/schemas/imageMessage"
+                                "$ref": "#/components/schemas/imageBubble"
                               },
                               {
-                                "$ref": "#/components/schemas/videoMessage"
+                                "$ref": "#/components/schemas/videoBubble"
                               },
                               {
-                                "$ref": "#/components/schemas/audioMessage"
+                                "$ref": "#/components/schemas/audioBubble"
                               },
                               {
-                                "$ref": "#/components/schemas/embedMessage"
+                                "$ref": "#/components/schemas/embedBubble"
                               },
                               {
-                                "$ref": "#/components/schemas/customEmbedMessage"
+                                "$ref": "#/components/schemas/customEmbedBubble"
                               }
                             ],
                             "discriminator": {
                               "propertyName": "type",
                               "mapping": {
-                                "text": "#/components/schemas/textMessage",
-                                "image": "#/components/schemas/imageMessage",
-                                "video": "#/components/schemas/videoMessage",
-                                "audio": "#/components/schemas/audioMessage",
-                                "embed": "#/components/schemas/embedMessage",
-                                "custom-embed": "#/components/schemas/customEmbedMessage"
+                                "text": "#/components/schemas/textBubble",
+                                "image": "#/components/schemas/imageBubble",
+                                "video": "#/components/schemas/videoBubble",
+                                "audio": "#/components/schemas/audioBubble",
+                                "embed": "#/components/schemas/embedBubble",
+                                "custom-embed": "#/components/schemas/customEmbedBubble"
                               }
                             }
                           }
@@ -3684,12 +3696,92 @@
           },
           "events": {
             "type": "array",
-            "maxItems": 1,
-            "minItems": 1,
             "items": {
               "oneOf": [
                 {
-                  "$ref": "#/components/schemas/event"
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "outgoingEdgeId": {
+                      "type": "string"
+                    },
+                    "graphCoordinates": {
+                      "type": "object",
+                      "properties": {
+                        "x": {
+                          "type": "number"
+                        },
+                        "y": {
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "x",
+                        "y"
+                      ]
+                    },
+                    "type": {
+                      "type": "string",
+                      "enum": [
+                        "start"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "graphCoordinates",
+                    "type"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "outgoingEdgeId": {
+                      "type": "string"
+                    },
+                    "graphCoordinates": {
+                      "type": "object",
+                      "properties": {
+                        "x": {
+                          "type": "number"
+                        },
+                        "y": {
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "x",
+                        "y"
+                      ]
+                    },
+                    "type": {
+                      "type": "string",
+                      "enum": [
+                        "command"
+                      ]
+                    },
+                    "options": {
+                      "type": "object",
+                      "properties": {
+                        "command": {
+                          "type": "string"
+                        },
+                        "resumeAfter": {
+                          "type": "boolean"
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "graphCoordinates",
+                    "type"
+                  ]
                 }
               ]
             }
@@ -10584,44 +10676,6 @@
         ],
         "title": "Posthog"
       },
-      "event": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "outgoingEdgeId": {
-            "type": "string"
-          },
-          "graphCoordinates": {
-            "type": "object",
-            "properties": {
-              "x": {
-                "type": "number"
-              },
-              "y": {
-                "type": "number"
-              }
-            },
-            "required": [
-              "x",
-              "y"
-            ]
-          },
-          "type": {
-            "type": "string",
-            "enum": [
-              "start"
-            ]
-          }
-        },
-        "required": [
-          "id",
-          "graphCoordinates",
-          "type"
-        ],
-        "description": "Event"
-      },
       "settings": {
         "type": "object",
         "properties": {
@@ -13375,7 +13429,7 @@
         ],
         "title": "Picture choice v5"
       },
-      "textMessage": {
+      "textBubble": {
         "type": "object",
         "properties": {
           "type": {
@@ -13428,7 +13482,7 @@
         ],
         "title": "Text"
       },
-      "imageMessage": {
+      "imageBubble": {
         "type": "object",
         "properties": {
           "type": {
@@ -13463,7 +13517,7 @@
         ],
         "title": "Image"
       },
-      "videoMessage": {
+      "videoBubble": {
         "type": "object",
         "properties": {
           "type": {
@@ -13523,7 +13577,7 @@
         ],
         "title": "Video"
       },
-      "audioMessage": {
+      "audioBubble": {
         "type": "object",
         "properties": {
           "type": {
@@ -13550,7 +13604,7 @@
         ],
         "title": "Audio"
       },
-      "embedMessage": {
+      "embedBubble": {
         "type": "object",
         "properties": {
           "type": {
@@ -13591,7 +13645,7 @@
         ],
         "title": "Embed"
       },
-      "customEmbedMessage": {
+      "customEmbedBubble": {
         "type": "object",
         "properties": {
           "type": {
@@ -14488,7 +14542,7 @@
           "issues": []
         }
       },
-      "textSentMessage": {
+      "textMessage": {
         "type": "object",
         "properties": {
           "type": {
@@ -14514,7 +14568,7 @@
         ],
         "title": "Text"
       },
-      "audioSentMessage": {
+      "audioMessage": {
         "type": "object",
         "properties": {
           "type": {
@@ -14531,8 +14585,27 @@
           "type",
           "url"
         ],
-        "description": "Can only be provided if current input block is a text input that allows audio clips",
+        "description": "Can only be provided if current input block is a text input block that allows audio clips",
         "title": "Audio"
+      },
+      "commandMessage": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "command"
+            ]
+          },
+          "command": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "command"
+        ],
+        "title": "Command"
       },
       "error.NOT_FOUND": {
         "type": "object",

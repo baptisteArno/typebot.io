@@ -2,11 +2,11 @@ import { getUserModeInWorkspace } from "@/features/workspace/helpers/getUserRole
 import { authenticatedProcedure } from "@/helpers/server/trpc";
 import { createId } from "@paralleldrive/cuid2";
 import { TRPCError } from "@trpc/server";
+import { EventType } from "@typebot.io/events/constants";
 import prisma from "@typebot.io/prisma";
 import { Plan } from "@typebot.io/prisma/enum";
 import { latestTypebotVersion } from "@typebot.io/schemas/versions";
 import { trackEvents } from "@typebot.io/telemetry/trackEvents";
-import { EventType } from "@typebot.io/typebot/schemas/events/constants";
 import {
   type TypebotV6,
   typebotV6Schema,

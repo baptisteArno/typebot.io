@@ -1,4 +1,4 @@
-import { useGroupsStore } from "@/features/graph/hooks/useGroupsStore";
+import { useSelectionStore } from "@/features/graph/hooks/useSelectionStore";
 import { areTypebotsEqual } from "@/features/publish/helpers/areTypebotsEqual";
 import { convertPublicTypebotToTypebot } from "@/features/publish/helpers/convertPublicTypebotToTypebot";
 import { isPublished as isPublishedHelper } from "@/features/publish/helpers/isPublished";
@@ -99,8 +99,8 @@ export const TypebotProvider = ({
 }) => {
   const { showToast } = useToast();
   const [is404, setIs404] = useState(false);
-  const setGroupsCoordinates = useGroupsStore(
-    (state) => state.setGroupsCoordinates,
+  const setElementsCoordinates = useSelectionStore(
+    (state) => state.setElementsCoordinates,
   );
 
   const {
@@ -190,17 +190,23 @@ export const TypebotProvider = ({
   ] = useUndo<TypebotV6>(undefined, {
     isReadOnly,
     onUndo: (t) => {
-      setGroupsCoordinates(t.groups);
+      setElementsCoordinates({
+        groups: t.groups,
+        events: t.events,
+      });
     },
     onRedo: (t) => {
-      setGroupsCoordinates(t.groups);
+      setElementsCoordinates({
+        groups: t.groups,
+        events: t.events,
+      });
     },
   });
 
   useEffect(() => {
     if (!typebot && isDefined(localTypebot)) {
       setLocalTypebot(undefined);
-      setGroupsCoordinates(undefined);
+      setElementsCoordinates(undefined);
     }
     if (isFetchingTypebot || !typebot) return;
     if (
@@ -209,14 +215,17 @@ export const TypebotProvider = ({
         new Date(localTypebot.updatedAt).getTime()
     ) {
       setLocalTypebot({ ...typebot });
-      setGroupsCoordinates(typebot.groups);
+      setElementsCoordinates({
+        groups: typebot.groups,
+        events: typebot.events,
+      });
       flush();
     }
   }, [
     flush,
     isFetchingTypebot,
     localTypebot,
-    setGroupsCoordinates,
+    setElementsCoordinates,
     setLocalTypebot,
     showToast,
     typebot,

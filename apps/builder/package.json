@@ -102,6 +102,7 @@
     "@typebot.io/js": "workspace:*",
     "@typebot.io/conditions": "workspace:*",
     "@typebot.io/blocks-bubbles": "workspace:*",
+    "@typebot.io/events": "workspace:*",
     "zod": "3.23.8",
     "ai": "4.1.15",
     "date-fns": "2.30.0",
