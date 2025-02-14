@@ -318,6 +318,8 @@ export const ConversationContainer = (props: Props) => {
         },
         onMessageStream: streamMessage,
       });
+      if ("streamOpenAiChatCompletion" in action || "stream" in action)
+        setTotalChunksDisplayed((prev) => prev + 1);
       setClientSideActions((actions) => actions.slice(1));
       if (response && "logs" in response) saveLogs(response.logs);
       if (response && "replyToSend" in response) {
