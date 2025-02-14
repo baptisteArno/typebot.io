@@ -90,21 +90,28 @@ export const FileInputSettings = ({ options, onOptionsChange }: Props) => {
         }
         onCheckChange={handleMultipleFilesChange}
       />
+
       <Stack>
-        <FormLabel mb="0">
-          {t("blocks.inputs.settings.placeholder.label")}
+        <FormLabel mb="0" htmlFor="variable">
+          {options?.isMultipleAllowed
+            ? t("blocks.inputs.file.settings.saveMultipleUpload.label")
+            : t("blocks.inputs.file.settings.saveSingleUpload.label")}
         </FormLabel>
-        <CodeEditor
-          lang="html"
-          onChange={handlePlaceholderLabelChange}
-          defaultValue={
-            options?.labels?.placeholder ??
-            defaultFileInputOptions.labels.placeholder
-          }
-          height={"100px"}
-          withVariableButton={false}
+        <VariableSearchInput
+          initialVariableId={options?.variableId}
+          onSelectVariable={handleVariableChange}
         />
       </Stack>
+
+      <DropdownList
+        label="Visibility:"
+        direction="row"
+        moreInfoTooltip='This setting determines who can see the uploaded files. "Public" means that anyone who has the link can see the files. "Private" means that only a member of this workspace can see the files. Check the docs for more information.'
+        currentItem={options?.visibility ?? defaultFileInputOptions.visibility}
+        onItemSelect={updateVisibility}
+        items={fileVisibilityOptions}
+      />
+
       <Accordion allowToggle>
         <AccordionItem>
           <AccordionButton justifyContent="space-between">
@@ -112,6 +119,21 @@ export const FileInputSettings = ({ options, onOptionsChange }: Props) => {
             <AccordionIcon />
           </AccordionButton>
           <AccordionPanel as={Stack} spacing={4}>
+            <Stack>
+              <FormLabel mb="0">
+                {t("blocks.inputs.settings.placeholder.label")}
+              </FormLabel>
+              <CodeEditor
+                lang="html"
+                onChange={handlePlaceholderLabelChange}
+                defaultValue={
+                  options?.labels?.placeholder ??
+                  defaultFileInputOptions.labels.placeholder
+                }
+                height={"100px"}
+                withVariableButton={false}
+              />
+            </Stack>
             <TextInput
               label={t("blocks.inputs.settings.button.label")}
               defaultValue={
@@ -164,25 +186,6 @@ export const FileInputSettings = ({ options, onOptionsChange }: Props) => {
           </AccordionPanel>
         </AccordionItem>
       </Accordion>
-
-      <DropdownList
-        label="Visibility:"
-        moreInfoTooltip='This setting determines who can see the uploaded files. "Public" means that anyone who has the link can see the files. "Private" means that only a members of this workspace can see the files.'
-        currentItem={options?.visibility ?? defaultFileInputOptions.visibility}
-        onItemSelect={updateVisibility}
-        items={fileVisibilityOptions}
-      />
-      <Stack>
-        <FormLabel mb="0" htmlFor="variable">
-          {options?.isMultipleAllowed
-            ? t("blocks.inputs.file.settings.saveMultipleUpload.label")
-            : t("blocks.inputs.file.settings.saveSingleUpload.label")}
-        </FormLabel>
-        <VariableSearchInput
-          initialVariableId={options?.variableId}
-          onSelectVariable={handleVariableChange}
-        />
-      </Stack>
     </Stack>
   );
 };
