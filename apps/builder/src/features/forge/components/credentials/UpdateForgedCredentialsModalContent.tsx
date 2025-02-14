@@ -82,7 +82,7 @@ export const UpdateForgedCredentialsModalContent = ({
             credentialsId,
             credentials: {
               type: blockDef.id,
-              name,
+              name: name ?? "My account",
               data,
             } as Credentials,
             scope: "workspace",
@@ -93,7 +93,7 @@ export const UpdateForgedCredentialsModalContent = ({
             credentialsId,
             credentials: {
               type: blockDef.id,
-              name,
+              name: name ?? "My account",
               data,
             } as Credentials,
           },
@@ -110,7 +110,8 @@ export const UpdateForgedCredentialsModalContent = ({
         <ModalBody as={Stack} spacing="6">
           <TextInput
             isRequired
-            label="Name"
+            label="Label"
+            moreInfoTooltip={`Choose a name to identify this ${blockDef.auth.name}`}
             defaultValue={name}
             onChange={setName}
             placeholder="My account"

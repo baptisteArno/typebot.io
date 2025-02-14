@@ -91,7 +91,7 @@ export const CreateForgedCredentialsModalContent = ({
         ? {
             credentials: {
               type: blockDef.id,
-              name,
+              name: name ?? "My account",
               data,
             } as Credentials,
             scope: "workspace",
@@ -100,7 +100,7 @@ export const CreateForgedCredentialsModalContent = ({
         : {
             credentials: {
               type: blockDef.id,
-              name,
+              name: name ?? "My account",
               data,
             } as Credentials,
             scope: "user",
@@ -116,8 +116,8 @@ export const CreateForgedCredentialsModalContent = ({
       <form onSubmit={createOpenAICredentials}>
         <ModalBody as={Stack} spacing="6">
           <TextInput
-            isRequired
-            label="Name"
+            label="Label"
+            moreInfoTooltip={`Choose a name to identify this ${blockDef.auth.name}`}
             onChange={setName}
             placeholder="My account"
             withVariableButton={false}

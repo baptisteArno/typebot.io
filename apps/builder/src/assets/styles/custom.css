@@ -27,3 +27,7 @@ audio::-webkit-media-controls-panel {
 [data-sonner-toast] > [data-theme="dark"] * {
   border-color: var(--chakra-colors-whiteAlpha-300) !important;
 }
+
+.md-link {
+  text-decoration: underline;
+}
