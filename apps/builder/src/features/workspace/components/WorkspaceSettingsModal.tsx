@@ -55,10 +55,8 @@ export const WorkspaceSettingsModal = ({
 }: Props) => {
   const { t } = useTranslate();
   const { ref } = useParentModal();
-  const { currentRole } = useWorkspace();
+  const { currentUserMode } = useWorkspace();
   const [selectedTab, setSelectedTab] = useState<SettingsTab>(defaultTab);
-
-  const canEditWorkspace = currentRole === WorkspaceRole.ADMIN;
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="4xl">
@@ -117,7 +115,7 @@ export const WorkspaceSettingsModal = ({
               <Text pl="4" color="gray.500">
                 {t("workspace.settings.modal.menu.workspace.label")}
               </Text>
-              {canEditWorkspace && (
+              {currentUserMode === "write" && (
                 <Button
                   variant={
                     selectedTab === "workspace-settings" ? "solid" : "ghost"
@@ -138,7 +136,7 @@ export const WorkspaceSettingsModal = ({
                 </Button>
               )}
 
-              {currentRole !== WorkspaceRole.GUEST && (
+              {currentUserMode !== "guest" && (
                 <Button
                   variant={selectedTab === "members" ? "solid" : "ghost"}
                   onClick={() => setSelectedTab("members")}
@@ -150,7 +148,7 @@ export const WorkspaceSettingsModal = ({
                   {t("workspace.settings.modal.menu.members.label")}
                 </Button>
               )}
-              {canEditWorkspace && (
+              {currentUserMode === "write" && (
                 <Button
                   variant={selectedTab === "billing" ? "solid" : "ghost"}
                   onClick={() => setSelectedTab("billing")}

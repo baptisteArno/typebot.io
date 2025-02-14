@@ -31,7 +31,7 @@ type WorkspaceUpdateProps = {
 const workspaceContext = createContext<{
   workspaces: Pick<Workspace, "id" | "name" | "icon" | "plan">[];
   workspace?: WorkspaceInApp;
-  currentRole?: WorkspaceRole;
+  currentUserMode?: "read" | "write" | "guest";
   switchWorkspace: (workspaceId: string) => void;
   createWorkspace: (name?: string) => Promise<void>;
   updateWorkspace: (updates: WorkspaceUpdateProps) => void;
@@ -79,13 +79,7 @@ export const WorkspaceProvider = ({
     { enabled: !!workspaceId },
   );
 
-  const { data: membersData } = trpc.workspace.listMembersInWorkspace.useQuery(
-    { workspaceId: workspaceId as string },
-    { enabled: !!workspaceId },
-  );
-
   const workspace = workspaceData?.workspace;
-  const members = membersData?.members;
 
   const { showToast } = useToast();
 
@@ -111,11 +105,6 @@ export const WorkspaceProvider = ({
     },
   });
 
-  const currentRole = members?.find(
-    (member) =>
-      member.user.email === user?.email && member.workspaceId === workspaceId,
-  )?.role;
-
   useEffect(() => {
     if (
       pathname === "/signin" ||
@@ -133,15 +122,13 @@ export const WorkspaceProvider = ({
 
     const defaultWorkspaceId = lastWorspaceId
       ? workspaces.find(byId(lastWorspaceId))?.id
-      : members?.find((member) => member.role === WorkspaceRole.ADMIN)
-          ?.workspaceId;
+      : workspaces[0].id;
 
     const newWorkspaceId = defaultWorkspaceId ?? workspaces[0].id;
     setWorkspaceIdInLocalStorage(newWorkspaceId);
     setWorkspaceId(newWorkspaceId);
   }, [
     isRouterReady,
-    members,
     pathname,
     query.workspaceId,
     typebot?.workspaceId,
@@ -195,7 +182,7 @@ export const WorkspaceProvider = ({
       value={{
         workspaces,
         workspace,
-        currentRole,
+        currentUserMode: workspaceData?.currentUserMode,
         switchWorkspace,
         createWorkspace,
         updateWorkspace,

@@ -26,12 +26,10 @@ import { MemberItem } from "./MemberItem";
 export const MembersList = () => {
   const { t } = useTranslate();
   const { user } = useUser();
-  const { workspace, currentRole } = useWorkspace();
+  const { workspace, currentUserMode } = useWorkspace();
   const { members, invitations, isLoading, mutate } = useMembers({
     workspaceId: workspace?.id,
   });
-
-  const canEdit = currentRole === WorkspaceRole.ADMIN;
 
   const handleDeleteMemberClick = (memberId: string) => async () => {
     if (!workspace) return;
@@ -115,7 +113,7 @@ export const MembersList = () => {
           {seatsLimit === -1 ? "" : `(${currentMembersCount}/${seatsLimit})`}
         </Heading>
       )}
-      {workspace?.id && canEdit && (
+      {workspace?.id && currentUserMode === "write" && (
         <AddMemberForm
           workspaceId={workspace.id}
           onNewInvitation={handleNewInvitation}
@@ -134,7 +132,7 @@ export const MembersList = () => {
           isMe={member.userId === user?.id}
           onDeleteClick={handleDeleteMemberClick(member.userId)}
           onSelectNewRole={handleSelectNewRole(member.userId)}
-          canEdit={canEdit}
+          canEdit={currentUserMode === "write"}
         />
       ))}
       {invitations.map((invitation) => (
@@ -145,7 +143,7 @@ export const MembersList = () => {
           onDeleteClick={handleDeleteInvitationClick(invitation.id)}
           onSelectNewRole={handleSelectNewInvitationRole(invitation.id)}
           isGuest
-          canEdit={canEdit}
+          canEdit={currentUserMode === "write"}
         />
       ))}
       {isLoading && (

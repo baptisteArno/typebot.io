@@ -28,7 +28,7 @@ import { TypebotCardOverlay } from "./TypebotButtonOverlay";
 type Props = { folder: Prisma.DashboardFolder | null };
 
 export const FolderContent = ({ folder }: Props) => {
-  const { workspace, currentRole } = useWorkspace();
+  const { workspace, currentUserMode } = useWorkspace();
   const [isCreatingFolder, setIsCreatingFolder] = useState(false);
   const {
     setDraggedTypebot,
@@ -83,6 +83,7 @@ export const FolderContent = ({ folder }: Props) => {
   } = useTypebots({
     workspaceId: workspace?.id,
     folderId: folder === null ? "root" : folder.id,
+    currentUserMode,
     onError: (error) => {
       showToast({
         description: error.message,
@@ -171,7 +172,7 @@ export const FolderContent = ({ folder }: Props) => {
         <Stack>
           <HStack>
             {folder && <BackButton id={folder.parentFolderId} />}
-            {currentRole !== WorkspaceRole.GUEST && (
+            {currentUserMode !== "guest" && (
               <CreateFolderButton
                 onClick={handleCreateFolder}
                 isLoading={isCreatingFolder || isFolderLoading}
@@ -179,7 +180,7 @@ export const FolderContent = ({ folder }: Props) => {
             )}
           </HStack>
           <Wrap spacing={4}>
-            {currentRole !== WorkspaceRole.GUEST && (
+            {currentUserMode !== "guest" && (
               <CreateBotButton
                 folderId={folder?.id}
                 isLoading={isTypebotLoading}

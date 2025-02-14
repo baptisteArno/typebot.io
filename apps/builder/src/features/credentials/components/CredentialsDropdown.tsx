@@ -48,7 +48,7 @@ export const CredentialsDropdown = ({
 }: Props) => {
   const { t } = useTranslate();
   const { showToast } = useToast();
-  const { currentRole } = useWorkspace();
+  const { currentUserMode } = useWorkspace();
   const { data, refetch } = trpc.credentials.listCredentials.useQuery(
     scope.type === "workspace"
       ? {
@@ -114,7 +114,7 @@ export const CredentialsDropdown = ({
         textAlign="left"
         leftIcon={<PlusIcon />}
         onClick={onCreateNewClick}
-        isDisabled={currentRole === "GUEST"}
+        isDisabled={currentUserMode === "guest"}
         {...props}
       >
         {t("add")} {credentialsName}
@@ -175,7 +175,7 @@ export const CredentialsDropdown = ({
               />
             </MenuItem>
           ))}
-          {currentRole === "GUEST" ? null : (
+          {currentUserMode === "guest" ? null : (
             <MenuItem
               maxW="500px"
               overflow="hidden"

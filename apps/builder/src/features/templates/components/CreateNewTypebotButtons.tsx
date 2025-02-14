@@ -15,6 +15,7 @@ import { useTranslate } from "@tolgee/react";
 import type { Typebot } from "@typebot.io/typebot/schemas/typebot";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
+import { toast } from "sonner";
 import { ImportTypebotFromFileButton } from "./ImportTypebotFromFileButton";
 import { TemplatesModal } from "./TemplatesModal";
 
@@ -54,10 +55,7 @@ export const CreateNewTypebotButtons = () => {
       setIsLoading(true);
     },
     onError: (error) => {
-      showToast({
-        title: "Failed to import bot",
-        description: error.message,
-      });
+      toast.error(error.data?.zodError ?? error.message, { duration: 10000 });
     },
     onSuccess: (data) => {
       router.push({

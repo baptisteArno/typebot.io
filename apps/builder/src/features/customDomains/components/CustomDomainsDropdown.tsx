@@ -30,14 +30,14 @@ export const CustomDomainsDropdown = ({
 }: Props) => {
   const [isDeleting, setIsDeleting] = useState("");
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { workspace } = useWorkspace();
+  const { workspace, currentUserMode } = useWorkspace();
   const { showToast } = useToast();
   const { data, refetch } = trpc.customDomains.listCustomDomains.useQuery(
     {
       workspaceId: workspace?.id as string,
     },
     {
-      enabled: !!workspace?.id,
+      enabled: !!workspace?.id && currentUserMode !== "guest",
       onError: (error) => {
         showToast({
           title: "Error while fetching custom domains",

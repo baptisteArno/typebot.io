@@ -2534,10 +2534,19 @@
                         "isVerified",
                         "chatsHardLimit"
                       ]
+                    },
+                    "currentUserMode": {
+                      "type": "string",
+                      "enum": [
+                        "read",
+                        "write",
+                        "guest"
+                      ]
                     }
                   },
                   "required": [
-                    "workspace"
+                    "workspace",
+                    "currentUserMode"
                   ]
                 }
               }

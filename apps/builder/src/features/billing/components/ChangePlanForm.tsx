@@ -6,7 +6,7 @@ import { useToast } from "@/hooks/useToast";
 import { trpc } from "@/lib/trpc";
 import { HStack, Stack, Text } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
-import { Plan, WorkspaceRole } from "@typebot.io/prisma/enum";
+import { Plan } from "@typebot.io/prisma/enum";
 import { useState } from "react";
 import type { PreCheckoutModalProps } from "./PreCheckoutModal";
 import { PreCheckoutModal } from "./PreCheckoutModal";
@@ -16,13 +16,13 @@ import { StripeClimateLogo } from "./StripeClimateLogo";
 
 type Props = {
   workspace: WorkspaceInApp;
-  currentRole?: WorkspaceRole;
+  currentUserMode?: "guest" | "read" | "write";
   excludedPlans?: ("STARTER" | "PRO")[];
 };
 
 export const ChangePlanForm = ({
   workspace,
-  currentRole,
+  currentUserMode,
   excludedPlans,
 }: Props) => {
   const { t } = useTranslate();
@@ -90,7 +90,7 @@ export const ChangePlanForm = ({
 
   if (workspace.plan !== Plan.FREE && !isSubscribed) return null;
 
-  if (currentRole !== WorkspaceRole.ADMIN)
+  if (currentUserMode !== "write")
     return (
       <Text>
         Only workspace admins can change the subscription plan. Contact your

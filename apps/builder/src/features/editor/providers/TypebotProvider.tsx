@@ -122,7 +122,7 @@ export const TypebotProvider = ({
           title: "Could not fetch typebot",
           description: error.message,
           details: {
-            content: JSON.stringify(error.data?.zodError?.fieldErrors, null, 2),
+            content: error.data?.zodError ?? "",
             lang: "json",
           },
         });
@@ -135,10 +135,10 @@ export const TypebotProvider = ({
 
   const { data: publishedTypebotData } =
     trpc.typebot.getPublishedTypebot.useQuery(
-      { typebotId: typebotId as string, migrateToLatestVersion: true },
+      { typebotId: typebotId!, migrateToLatestVersion: true },
       {
         enabled:
-          isDefined(typebotId) &&
+          !!typebotId &&
           (typebotData?.currentUserMode === "read" ||
             typebotData?.currentUserMode === "write"),
         onError: (error) => {
@@ -146,11 +146,7 @@ export const TypebotProvider = ({
             title: "Could not fetch published typebot",
             description: error.message,
             details: {
-              content: JSON.stringify(
-                error.data?.zodError?.fieldErrors,
-                null,
-                2,
-              ),
+              content: error.data?.zodError ?? "",
               lang: "json",
             },
           });
@@ -160,11 +156,13 @@ export const TypebotProvider = ({
 
   const { mutateAsync: updateTypebot, isLoading: isSaving } =
     trpc.typebot.updateTypebot.useMutation({
-      onError: (error) =>
+      onError: (error) => {
+        if (error.data?.code === "CONFLICT") return;
         showToast({
           title: "Error while updating typebot",
           description: error.message,
-        }),
+        });
+      },
       onSuccess: () => {
         if (!typebotId) return;
         refetchTypebot();

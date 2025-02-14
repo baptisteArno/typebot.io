@@ -48,6 +48,7 @@ const nextConfig = {
   experimental: {
     outputFileTracingRoot: join(__dirname, "../../"),
     serverComponentsExternalPackages: ["isolated-vm"],
+    instrumentationHook: true,
   },
   webpack: (config, { isServer }) => {
     if (isServer) return config;
@@ -95,12 +96,9 @@ const nextConfig = {
 
 export default process.env.SENTRY_DSN
   ? withSentryConfig(nextConfig, {
-      release: process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA + "-builder",
       org: process.env.SENTRY_ORG,
       project: process.env.SENTRY_PROJECT,
-      silent: !process.env.CI,
+      authToken: process.env.SENTRY_AUTH_TOKEN,
       widenClientFileUpload: true,
-      hideSourceMaps: true,
-      disableLogger: true,
     })
   : nextConfig;

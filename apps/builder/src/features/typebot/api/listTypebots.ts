@@ -1,4 +1,4 @@
-import { getUserRoleInWorkspace } from "@/features/workspace/helpers/getUserRoleInWorkspace";
+import { getUserModeInWorkspace } from "@/features/workspace/helpers/getUserRoleInWorkspace";
 import { authenticatedProcedure } from "@/helpers/server/trpc";
 import { TRPCError } from "@trpc/server";
 import prisma from "@typebot.io/prisma";
@@ -57,7 +57,7 @@ export const listTypebots = authenticatedProcedure
         },
       },
     });
-    const userRole = getUserRoleInWorkspace(user.id, workspace?.members);
+    const userRole = getUserModeInWorkspace(user.id, workspace?.members);
     if (!workspace || userRole === undefined)
       throw new TRPCError({
         code: "NOT_FOUND",
@@ -67,16 +67,14 @@ export const listTypebots = authenticatedProcedure
       where: {
         isArchived: { not: true },
         folderId:
-          userRole === WorkspaceRole.GUEST
+          userRole === "guest"
             ? undefined
             : folderId === "root"
               ? null
               : folderId,
         workspaceId,
         collaborators:
-          userRole === WorkspaceRole.GUEST
-            ? { some: { userId: user.id } }
-            : undefined,
+          userRole === "guest" ? { some: { userId: user.id } } : undefined,
       },
       orderBy: { createdAt: "desc" },
       select: {
