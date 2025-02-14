@@ -238,6 +238,7 @@ const SetVariableValue = ({
                   defaultValue={options?.expressionToEvaluate ?? ""}
                   onChange={updateExpression}
                   lang="javascript"
+                  withLineNumbers={true}
                 />
                 <VariableSearchInput
                   label="Save error"

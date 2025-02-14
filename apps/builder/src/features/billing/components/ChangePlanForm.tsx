@@ -2,7 +2,7 @@ import { TextLink } from "@/components/TextLink";
 import { ParentModalProvider } from "@/features/graph/providers/ParentModalProvider";
 import { useUser } from "@/features/user/hooks/useUser";
 import type { WorkspaceInApp } from "@/features/workspace/WorkspaceProvider";
-import { useToast } from "@/hooks/useToast";
+import { toast } from "@/lib/toast";
 import { trpc } from "@/lib/trpc";
 import { HStack, Stack, Text } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
@@ -28,7 +28,6 @@ export const ChangePlanForm = ({
   const { t } = useTranslate();
 
   const { user } = useUser();
-  const { showToast } = useToast();
   const [preCheckoutPlan, setPreCheckoutPlan] =
     useState<PreCheckoutModalProps["selectedSubscription"]>();
 
@@ -41,7 +40,7 @@ export const ChangePlanForm = ({
   const { mutate: updateSubscription, isLoading: isUpdatingSubscription } =
     trpc.billing.updateSubscription.useMutation({
       onError: (error) => {
-        showToast({
+        toast({
           description: error.message,
         });
       },
@@ -52,7 +51,7 @@ export const ChangePlanForm = ({
         }
         refetch();
         trpcContext.workspace.getWorkspace.invalidate();
-        showToast({
+        toast({
           status: "success",
           description: t("billing.updateSuccessToast.description", {
             plan: workspace?.plan,

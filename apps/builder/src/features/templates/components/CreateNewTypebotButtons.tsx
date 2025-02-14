@@ -1,7 +1,7 @@
 import { DownloadIcon, TemplateIcon, ToolIcon } from "@/components/icons";
 import { useUser } from "@/features/user/hooks/useUser";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { useToast } from "@/hooks/useToast";
+import { toast } from "@/lib/toast";
 import { trpc } from "@/lib/trpc";
 import {
   Button,
@@ -15,7 +15,6 @@ import { useTranslate } from "@tolgee/react";
 import type { Typebot } from "@typebot.io/typebot/schemas/typebot";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
-import { toast } from "sonner";
 import { ImportTypebotFromFileButton } from "./ImportTypebotFromFileButton";
 import { TemplatesModal } from "./TemplatesModal";
 
@@ -28,15 +27,12 @@ export const CreateNewTypebotButtons = () => {
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const { showToast } = useToast();
-
   const { mutate: createTypebot } = trpc.typebot.createTypebot.useMutation({
     onMutate: () => {
       setIsLoading(true);
     },
     onError: (error) => {
-      showToast({
-        title: "Failed to create bot",
+      toast({
         description: error.message,
       });
     },
@@ -55,7 +51,9 @@ export const CreateNewTypebotButtons = () => {
       setIsLoading(true);
     },
     onError: (error) => {
-      toast.error(error.data?.zodError ?? error.message, { duration: 10000 });
+      toast({
+        description: error.data?.zodError ?? error.message,
+      });
     },
     onSuccess: (data) => {
       router.push({

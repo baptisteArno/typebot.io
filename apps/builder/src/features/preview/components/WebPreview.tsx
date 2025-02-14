@@ -3,7 +3,7 @@ import { useEditor } from "@/features/editor/providers/EditorProvider";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { useGraph } from "@/features/graph/providers/GraphProvider";
 import { useUser } from "@/features/user/hooks/useUser";
-import { useToast } from "@/hooks/useToast";
+import { toast } from "@/lib/toast";
 import type { ContinueChatResponse } from "@typebot.io/bot-engine/schemas/api";
 import { Standard } from "@typebot.io/nextjs";
 
@@ -13,14 +13,11 @@ export const WebPreview = () => {
   const { startPreviewFrom } = useEditor();
   const { setPreviewingBlock } = useGraph();
 
-  const { showToast } = useToast();
-
   const handleNewLogs = (logs: ContinueChatResponse["logs"]) => {
     logs?.forEach((log) => {
-      showToast({
+      toast({
         icon: <ThunderIcon />,
         status: log.status as "success" | "error" | "info",
-        title: log.status === "error" ? "An error occured" : undefined,
         description: log.description,
         details: log.details
           ? {

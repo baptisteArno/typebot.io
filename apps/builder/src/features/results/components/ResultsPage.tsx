@@ -8,7 +8,7 @@ import { TypebotHeader } from "@/features/editor/components/TypebotHeader";
 import { TypebotNotFoundPage } from "@/features/editor/components/TypebotNotFoundPage";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { useToast } from "@/hooks/useToast";
+import { toast } from "@/lib/toast";
 import { trpc } from "@/lib/trpc";
 import {
   Button,
@@ -41,8 +41,6 @@ export const ResultsPage = () => {
   const [timeFilter, setTimeFilter] =
     useState<(typeof timeFilterValues)[number]>(defaultTimeFilter);
 
-  const { showToast } = useToast();
-
   const {
     data: { stats } = {},
     refetch,
@@ -54,7 +52,7 @@ export const ResultsPage = () => {
     },
     {
       enabled: !!publishedTypebot,
-      onError: (err) => showToast({ description: err.message }),
+      onError: (err) => toast({ description: err.message }),
     },
   );
 

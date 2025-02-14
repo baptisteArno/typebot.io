@@ -35,6 +35,7 @@ export const ScriptSettings = ({ options, onOptionsChange }: Props) => {
           defaultValue={options?.content}
           lang="javascript"
           onChange={handleCodeChange}
+          withLineNumbers={true}
         />
         <SwitchWithLabel
           label="Execute on client?"

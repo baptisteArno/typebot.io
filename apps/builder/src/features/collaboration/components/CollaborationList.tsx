@@ -2,7 +2,7 @@ import { EmojiOrImageIcon } from "@/components/EmojiOrImageIcon";
 import { ChevronLeftIcon } from "@/components/icons";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { useToast } from "@/hooks/useToast";
+import { toast } from "@/lib/toast";
 import {
   Button,
   Flex,
@@ -19,7 +19,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
-import { CollaborationType, WorkspaceRole } from "@typebot.io/prisma/enum";
+import { CollaborationType } from "@typebot.io/prisma/enum";
 import type { FormEvent } from "react";
 import React, { useState } from "react";
 import { useCollaborators } from "../hooks/useCollaborators";
@@ -42,7 +42,6 @@ export const CollaborationList = () => {
   const [invitationEmail, setInvitationEmail] = useState("");
   const [isSendingInvitation, setIsSendingInvitation] = useState(false);
 
-  const { showToast } = useToast();
   const {
     collaborators,
     isLoading: isCollaboratorsLoading,
@@ -50,8 +49,7 @@ export const CollaborationList = () => {
   } = useCollaborators({
     typebotId: typebot?.id,
     onError: (e) =>
-      showToast({
-        title: t("share.button.popover.collaboratorsFetch.error.label"),
+      toast({
         description: e.message,
       }),
   });
@@ -62,8 +60,8 @@ export const CollaborationList = () => {
   } = useInvitations({
     typebotId: typebot?.id,
     onError: (e) =>
-      showToast({
-        title: t("share.button.popover.invitationsFetch.error.label"),
+      toast({
+        context: t("share.button.popover.invitationsFetch.error.label"),
         description: e.message,
       }),
   });
@@ -77,7 +75,10 @@ export const CollaborationList = () => {
         type,
       });
       if (error)
-        return showToast({ title: error.name, description: error.message });
+        return toast({
+          context: error.name,
+          description: error.message,
+        });
       mutateInvitations({
         invitations: (invitations ?? []).map((i) =>
           i.email === email ? { ...i, type } : i,
@@ -88,7 +89,10 @@ export const CollaborationList = () => {
     if (!typebot || currentUserMode === "guest") return;
     const { error } = await deleteInvitationQuery(typebot?.id, email);
     if (error)
-      return showToast({ title: error.name, description: error.message });
+      return toast({
+        context: error.name,
+        description: error.message,
+      });
     mutateInvitations({
       invitations: (invitations ?? []).filter((i) => i.email !== email),
     });
@@ -103,7 +107,10 @@ export const CollaborationList = () => {
         typebotId: typebot.id,
       });
       if (error)
-        return showToast({ title: error.name, description: error.message });
+        return toast({
+          context: error.name,
+          description: error.message,
+        });
       mutateCollaborators({
         collaborators: (collaborators ?? []).map((c) =>
           c.userId === userId ? { ...c, type } : c,
@@ -114,7 +121,10 @@ export const CollaborationList = () => {
     if (!typebot || currentUserMode === "guest") return;
     const { error } = await deleteCollaboratorQuery(typebot?.id, userId);
     if (error)
-      return showToast({ title: error.name, description: error.message });
+      return toast({
+        context: error.name,
+        description: error.message,
+      });
     mutateCollaborators({
       collaborators: (collaborators ?? []).filter((c) => c.userId !== userId),
     });
@@ -132,10 +142,13 @@ export const CollaborationList = () => {
     mutateInvitations({ invitations: invitations ?? [] });
     mutateCollaborators({ collaborators: collaborators ?? [] });
     if (error)
-      return showToast({ title: error.name, description: error.message });
-    showToast({
+      return toast({
+        context: error.name,
+        description: error.message,
+      });
+    toast({
       status: "success",
-      title: t("share.button.popover.invitationSent.successToast.label"),
+      description: t("share.button.popover.invitationSent.successToast.label"),
     });
     setInvitationEmail("");
   };

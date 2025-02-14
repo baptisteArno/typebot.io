@@ -1,9 +1,8 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { MoreInfoTooltip } from "@/components/MoreInfoTooltip";
 import { Select } from "@/components/inputs/Select";
 import { VariablesButton } from "@/features/variables/components/VariablesButton";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { useToast } from "@/hooks/useToast";
+import { toast } from "@/lib/toast";
 import { trpc } from "@/lib/trpc";
 import {
   FormControl,
@@ -50,7 +49,6 @@ export const ForgeSelectInput = ({
   onChange,
 }: Props) => {
   const { workspace } = useWorkspace();
-  const { showToast } = useToast();
 
   const fetcher = useMemo(
     () => findFetcher(blockDef, fetcherId),
@@ -82,9 +80,8 @@ export const ForgeSelectInput = ({
     {
       enabled: !!workspace?.id && !!fetcher,
       onError: (error) => {
-        showToast({
+        toast({
           description: error.message,
-          status: "error",
         });
       },
     },

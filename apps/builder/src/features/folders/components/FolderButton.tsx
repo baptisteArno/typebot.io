@@ -1,6 +1,6 @@
 import { ConfirmModal } from "@/components/ConfirmModal";
 import { FolderIcon, MoreVerticalIcon } from "@/components/icons";
-import { useToast } from "@/hooks/useToast";
+import { toast } from "@/lib/toast";
 import { trpc } from "@/lib/trpc";
 import {
   Button,
@@ -25,7 +25,6 @@ import type { Prisma } from "@typebot.io/prisma/types";
 import { useRouter } from "next/router";
 import React, { memo, useMemo } from "react";
 import { useTypebotDnd } from "../TypebotDndProvider";
-
 type Props = {
   folder: Prisma.DashboardFolder;
   index: number;
@@ -48,18 +47,17 @@ const FolderButton = ({
     [draggedTypebot, folder.id, mouseOverFolderId],
   );
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { showToast } = useToast();
 
   const { mutate: deleteFolder } = trpc.folders.deleteFolder.useMutation({
     onError: (error) => {
-      showToast({ description: error.message });
+      toast({ description: error.message });
     },
     onSuccess: onFolderDeleted,
   });
 
   const { mutate: updateFolder } = trpc.folders.updateFolder.useMutation({
     onError: (error) => {
-      showToast({ description: error.message });
+      toast({ description: error.message });
     },
     onSuccess: onFolderRenamed,
   });

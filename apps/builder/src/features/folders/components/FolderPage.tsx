@@ -1,7 +1,7 @@
 import { Seo } from "@/components/Seo";
 import { DashboardHeader } from "@/features/dashboard/components/DashboardHeader";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { useToast } from "@/hooks/useToast";
+import { toast } from "@/lib/toast";
 import { trpc } from "@/lib/trpc";
 import { Flex, Spinner, Stack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
@@ -13,8 +13,6 @@ export const FolderPage = () => {
   const { t } = useTranslate();
   const router = useRouter();
   const { workspace, currentUserMode } = useWorkspace();
-
-  const { showToast } = useToast();
 
   const {
     data: { folder } = {},
@@ -28,8 +26,8 @@ export const FolderPage = () => {
       retry: 0,
       onError: (error) => {
         if (error.data?.httpStatus === 404) router.replace("/typebots");
-        showToast({
-          title: "Folder not found",
+        toast({
+          description: "Folder not found",
         });
       },
     },

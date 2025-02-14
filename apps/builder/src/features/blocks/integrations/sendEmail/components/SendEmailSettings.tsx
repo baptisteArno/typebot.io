@@ -210,6 +210,7 @@ export const SendEmailSettings = ({ options, onOptionsChange }: Props) => {
               defaultValue={options.body ?? ""}
               onChange={handleBodyChange}
               lang="html"
+              withLineNumbers={true}
             />
           ) : (
             <Textarea

@@ -4,7 +4,7 @@ import { convertPublicTypebotToTypebot } from "@/features/publish/helpers/conver
 import { isPublished as isPublishedHelper } from "@/features/publish/helpers/isPublished";
 import { preventUserFromRefreshing } from "@/helpers/preventUserFromRefreshing";
 import { useAutoSave } from "@/hooks/useAutoSave";
-import { useToast } from "@/hooks/useToast";
+import { toast } from "@/lib/toast";
 import { trpc } from "@/lib/trpc";
 import { isDefined, omit } from "@typebot.io/lib/utils";
 import type {
@@ -97,7 +97,6 @@ export const TypebotProvider = ({
   children: ReactNode;
   typebotId?: string;
 }) => {
-  const { showToast } = useToast();
   const [is404, setIs404] = useState(false);
   const setElementsCoordinates = useSelectionStore(
     (state) => state.setElementsCoordinates,
@@ -118,8 +117,8 @@ export const TypebotProvider = ({
           return;
         }
         setIs404(false);
-        showToast({
-          title: "Could not fetch typebot",
+        toast({
+          context: "Could not fetch typebot",
           description: error.message,
           details: {
             content: error.data?.zodError ?? "",
@@ -142,8 +141,8 @@ export const TypebotProvider = ({
           (typebotData?.currentUserMode === "read" ||
             typebotData?.currentUserMode === "write"),
         onError: (error) => {
-          showToast({
-            title: "Could not fetch published typebot",
+          toast({
+            context: "Could not fetch published typebot",
             description: error.message,
             details: {
               content: error.data?.zodError ?? "",
@@ -158,8 +157,8 @@ export const TypebotProvider = ({
     trpc.typebot.updateTypebot.useMutation({
       onError: (error) => {
         if (error.data?.code === "CONFLICT") return;
-        showToast({
-          title: "Error while updating typebot",
+        toast({
+          context: "Error while updating typebot",
           description: error.message,
         });
       },
@@ -227,7 +226,6 @@ export const TypebotProvider = ({
     localTypebot,
     setElementsCoordinates,
     setLocalTypebot,
-    showToast,
     typebot,
   ]);
 

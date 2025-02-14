@@ -1,7 +1,6 @@
-import { useToast } from "@/hooks/useToast";
+import { toast } from "@/lib/toast";
 import { trpc } from "@/lib/trpc";
 import { byId } from "@typebot.io/lib/utils";
-import { WorkspaceRole } from "@typebot.io/prisma/enum";
 import type { Workspace } from "@typebot.io/workspaces/schemas";
 import { useRouter } from "next/router";
 import type { ReactNode } from "react";
@@ -81,24 +80,22 @@ export const WorkspaceProvider = ({
 
   const workspace = workspaceData?.workspace;
 
-  const { showToast } = useToast();
-
   const createWorkspaceMutation = trpc.workspace.createWorkspace.useMutation({
-    onError: (error) => showToast({ description: error.message }),
+    onError: (error) => toast({ description: error.message }),
     onSuccess: async () => {
       trpcContext.workspace.listWorkspaces.invalidate();
     },
   });
 
   const updateWorkspaceMutation = trpc.workspace.updateWorkspace.useMutation({
-    onError: (error) => showToast({ description: error.message }),
+    onError: (error) => toast({ description: error.message }),
     onSuccess: async () => {
       trpcContext.workspace.getWorkspace.invalidate();
     },
   });
 
   const deleteWorkspaceMutation = trpc.workspace.deleteWorkspace.useMutation({
-    onError: (error) => showToast({ description: error.message }),
+    onError: (error) => toast({ description: error.message }),
     onSuccess: async () => {
       trpcContext.workspace.listWorkspaces.invalidate();
       setWorkspaceId(undefined);

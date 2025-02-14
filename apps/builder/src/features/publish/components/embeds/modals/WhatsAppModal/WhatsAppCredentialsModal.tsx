@@ -3,7 +3,7 @@ import { TextLink } from "@/components/TextLink";
 import { ChevronLeftIcon, ExternalLinkIcon } from "@/components/icons";
 import { TextInput } from "@/components/inputs/TextInput";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { useToast } from "@/hooks/useToast";
+import { toast } from "@/lib/toast";
 import { trpc, trpcVanilla } from "@/lib/trpc";
 import {
   Box,
@@ -80,7 +80,6 @@ export const WhatsAppCreateModalContent = ({
   onClose,
 }: Pick<Props, "onNewCredentials" | "onClose">) => {
   const { workspace } = useWorkspace();
-  const { showToast } = useToast();
   const { activeStep, goToNext, goToPrevious, setActiveStep } = useSteps({
     index: 0,
     count: steps.length,
@@ -102,9 +101,8 @@ export const WhatsAppCreateModalContent = ({
     onMutate: () => setIsCreating(true),
     onSettled: () => setIsCreating(false),
     onError: (err) => {
-      showToast({
+      toast({
         description: err.message,
-        status: "error",
       });
     },
     onSuccess: (data) => {
@@ -154,7 +152,7 @@ export const WhatsAppCreateModalContent = ({
           token: systemUserAccessToken,
         });
       if (expiresAt !== 0) {
-        showToast({
+        toast({
           description:
             "Token expiration was not set to *never*. Create the token again with the correct expiration.",
         });
@@ -165,14 +163,14 @@ export const WhatsAppCreateModalContent = ({
           (scope) => !scopes.includes(scope),
         )
       ) {
-        showToast({
+        toast({
           description: "Token does not have all the necessary scopes",
         });
         return false;
       }
     } catch (err) {
       setIsVerifying(false);
-      showToast({
+      toast({
         description: "Could not get system info",
         details:
           err instanceof Error
@@ -203,7 +201,7 @@ export const WhatsAppCreateModalContent = ({
 
         if (message === "taken") {
           setIsVerifying(false);
-          showToast({
+          toast({
             description: "Phone number is already registered on Typebot",
           });
           return false;
@@ -214,7 +212,7 @@ export const WhatsAppCreateModalContent = ({
       } catch (err) {
         console.error(err);
         setIsVerifying(false);
-        showToast({
+        toast({
           description: "Could not verify if phone number is available",
         });
         return false;
@@ -222,7 +220,7 @@ export const WhatsAppCreateModalContent = ({
     } catch (err) {
       console.error(err);
       setIsVerifying(false);
-      showToast({
+      toast({
         description: "Could not get phone number info",
         details:
           err instanceof Error

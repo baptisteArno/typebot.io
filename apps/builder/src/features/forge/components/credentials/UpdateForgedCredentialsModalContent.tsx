@@ -1,6 +1,6 @@
 import { TextInput } from "@/components/inputs/TextInput";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { useToast } from "@/hooks/useToast";
+import { toast } from "@/lib/toast";
 import { trpc } from "@/lib/trpc";
 import {
   Button,
@@ -31,7 +31,6 @@ export const UpdateForgedCredentialsModalContent = ({
   scope,
 }: Props) => {
   const { workspace } = useWorkspace();
-  const { showToast } = useToast();
   const [name, setName] = useState("");
   const [data, setData] = useState<any>();
 
@@ -64,9 +63,8 @@ export const UpdateForgedCredentialsModalContent = ({
     onMutate: () => setIsUpdating(true),
     onSettled: () => setIsUpdating(false),
     onError: (err) => {
-      showToast({
+      toast({
         description: err.message,
-        status: "error",
       });
     },
     onSuccess: () => {

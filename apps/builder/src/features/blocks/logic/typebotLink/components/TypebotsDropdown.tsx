@@ -3,7 +3,7 @@ import { ExternalLinkIcon } from "@/components/icons";
 import { Select } from "@/components/inputs/Select";
 import { useTypebots } from "@/features/dashboard/hooks/useTypebots";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { useToast } from "@/hooks/useToast";
+import { toast } from "@/lib/toast";
 import { HStack, IconButton, Input } from "@chakra-ui/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -22,12 +22,11 @@ export const TypebotsDropdown = ({
   currentWorkspaceId,
 }: Props) => {
   const { query } = useRouter();
-  const { showToast } = useToast();
   const { currentUserMode } = useWorkspace();
   const { typebots, isLoading } = useTypebots({
     workspaceId: currentWorkspaceId,
     currentUserMode,
-    onError: (e) => showToast({ title: e.name, description: e.message }),
+    onError: (e) => toast({ description: e.message }),
   });
 
   if (isLoading) return <Input value="Loading..." isDisabled />;

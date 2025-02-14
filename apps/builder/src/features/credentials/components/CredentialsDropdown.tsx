@@ -1,5 +1,6 @@
 import { ChevronLeftIcon, PlusIcon, TrashIcon } from "@/components/icons";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
+import { toast } from "@/lib/toast";
 import { trpc } from "@/lib/trpc";
 import {
   Button,
@@ -16,7 +17,6 @@ import { useTranslate } from "@tolgee/react";
 import type { Credentials } from "@typebot.io/credentials/schemas";
 import type React from "react";
 import { useCallback, useState } from "react";
-import { useToast } from "../../../hooks/useToast";
 
 type Props = Omit<ButtonProps, "type"> & {
   type: Credentials["type"];
@@ -47,7 +47,6 @@ export const CredentialsDropdown = ({
   ...props
 }: Props) => {
   const { t } = useTranslate();
-  const { showToast } = useToast();
   const { currentUserMode } = useWorkspace();
   const { data, refetch } = trpc.credentials.listCredentials.useQuery(
     scope.type === "workspace"
@@ -67,7 +66,7 @@ export const CredentialsDropdown = ({
       setIsDeleting(credentialsId);
     },
     onError: (error) => {
-      showToast({
+      toast({
         description: error.message,
       });
     },

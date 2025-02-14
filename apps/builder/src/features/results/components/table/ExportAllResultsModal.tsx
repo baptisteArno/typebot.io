@@ -2,7 +2,7 @@ import { AlertInfo } from "@/components/AlertInfo";
 import { DownloadIcon } from "@/components/icons";
 import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
-import { useToast } from "@/hooks/useToast";
+import { toast } from "@/lib/toast";
 import { trpc } from "@/lib/trpc";
 import {
   Button,
@@ -38,7 +38,6 @@ export const ExportAllResultsModal = ({ isOpen, onClose }: Props) => {
   const { typebot, publishedTypebot } = useTypebot();
   const workspaceId = typebot?.workspaceId;
   const typebotId = typebot?.id;
-  const { showToast } = useToast();
   const { resultHeader: existingResultHeader, totalResults } = useResults();
   const trpcContext = trpc.useContext();
   const [isExportLoading, setIsExportLoading] = useState(false);
@@ -74,7 +73,7 @@ export const ExportAllResultsModal = ({ isOpen, onClose }: Props) => {
         setExportProgressValue((allResults.length / totalResults) * 100);
         cursor = nextCursor ?? undefined;
       } catch (error) {
-        showToast({ description: (error as TRPCError).message });
+        toast({ description: (error as TRPCError).message });
         return [];
       }
     } while (cursor);

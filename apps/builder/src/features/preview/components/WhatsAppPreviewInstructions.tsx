@@ -2,7 +2,7 @@ import { BuoyIcon, ExternalLinkIcon } from "@/components/icons";
 import { TextInput } from "@/components/inputs";
 import { useEditor } from "@/features/editor/providers/EditorProvider";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
-import { useToast } from "@/hooks/useToast";
+import { toast } from "@/lib/toast";
 import { trpc } from "@/lib/trpc";
 import {
   Alert,
@@ -32,11 +32,10 @@ export const WhatsAppPreviewInstructions = (props: StackProps) => {
   const [isMessageSent, setIsMessageSent] = useState(false);
   const [hasMessageBeenSent, setHasMessageBeenSent] = useState(false);
 
-  const { showToast } = useToast();
   const { mutate } = trpc.whatsApp.startWhatsAppPreview.useMutation({
     onMutate: () => setIsSendingMessage(true),
     onSettled: () => setIsSendingMessage(false),
-    onError: (error) => showToast({ description: error.message }),
+    onError: (error) => toast({ description: error.message }),
     onSuccess: async (data) => {
       if (
         data?.message === "success" &&

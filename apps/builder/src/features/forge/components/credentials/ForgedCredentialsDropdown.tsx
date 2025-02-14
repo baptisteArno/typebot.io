@@ -1,6 +1,6 @@
 import { ChevronLeftIcon, PlusIcon, TrashIcon } from "@/components/icons";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { useToast } from "@/hooks/useToast";
+import { toast } from "@/lib/toast";
 import { trpc } from "@/lib/trpc";
 import {
   Button,
@@ -36,7 +36,6 @@ export const ForgedCredentialsDropdown = ({
   ...props
 }: Props) => {
   const router = useRouter();
-  const { showToast } = useToast();
   const { workspace, currentUserMode } = useWorkspace();
   const { data, refetch, isLoading } =
     trpc.credentials.listCredentials.useQuery(
@@ -59,7 +58,7 @@ export const ForgedCredentialsDropdown = ({
       setIsDeleting(credentialsId);
     },
     onError: (error) => {
-      showToast({
+      toast({
         description: error.message,
       });
     },

@@ -2,7 +2,6 @@ import { useTypebots } from "@/features/dashboard/hooks/useTypebots";
 import type { TypebotInDashboard } from "@/features/dashboard/types";
 import type { NodePosition } from "@/features/graph/providers/GraphDndProvider";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { useToast } from "@/hooks/useToast";
 import { trpc } from "@/lib/trpc";
 import {
   Flex,
@@ -14,7 +13,6 @@ import {
   Wrap,
   useEventListener,
 } from "@chakra-ui/react";
-import { WorkspaceRole } from "@typebot.io/prisma/enum";
 import type { Prisma } from "@typebot.io/prisma/types";
 import React, { useEffect, useState } from "react";
 import { useTypebotDnd } from "../TypebotDndProvider";
@@ -25,6 +23,7 @@ import FolderButton, { ButtonSkeleton } from "./FolderButton";
 import TypebotButton from "./TypebotButton";
 import { TypebotCardOverlay } from "./TypebotButtonOverlay";
 
+import { toast } from "@/lib/toast";
 type Props = { folder: Prisma.DashboardFolder | null };
 
 export const FolderContent = ({ folder }: Props) => {
@@ -42,8 +41,6 @@ export const FolderContent = ({ folder }: Props) => {
     y: 0,
   });
 
-  const { showToast } = useToast();
-
   const {
     data: { folders } = {},
     isLoading: isFolderLoading,
@@ -60,7 +57,7 @@ export const FolderContent = ({ folder }: Props) => {
 
   const { mutate: createFolder } = trpc.folders.createFolder.useMutation({
     onError: (error) => {
-      showToast({ description: error.message });
+      toast({ description: error.message });
     },
     onSuccess: () => {
       refetchFolders();
@@ -69,7 +66,7 @@ export const FolderContent = ({ folder }: Props) => {
 
   const { mutate: updateTypebot } = trpc.typebot.updateTypebot.useMutation({
     onError: (error) => {
-      showToast({ description: error.message });
+      toast({ description: error.message });
     },
     onSuccess: () => {
       refetchTypebots();
@@ -85,7 +82,7 @@ export const FolderContent = ({ folder }: Props) => {
     folderId: folder === null ? "root" : folder.id,
     currentUserMode,
     onError: (error) => {
-      showToast({
+      toast({
         description: error.message,
       });
     },
