@@ -47,10 +47,9 @@ export const receiveMessagePreview = publicProcedure
       });
     } catch (err) {
       if (err instanceof WhatsAppError) {
-        console.log("Known WhatsApp error:", err.message, err.details);
         Sentry.captureMessage(err.message, err.details);
       } else {
-        console.error("Unknown WhatsApp error:", err);
+        console.error("sending unkown error to Sentry");
         Sentry.captureException(err, {
           data: await parseUnknownError({ err }),
         });
@@ -85,10 +84,7 @@ const processErrors = async (entry: WhatsAppWebhookRequestBody["entry"]) => {
   const status = entry.at(0)?.changes.at(0)?.value.statuses?.at(0);
   if (status?.errors) {
     const error = status.errors.at(0);
-    if (!error)
-      throw new Error(
-        `Received unknown error from WA: ${JSON.stringify(status.errors)}`,
-      );
+    if (!error) throw new Error(`WA empty errors: ${JSON.stringify(status)}`);
     if (
       error?.code ===
       incomingWebhookErrorCodes["Could not send message to unengaged user"]
@@ -98,7 +94,8 @@ const processErrors = async (entry: WhatsAppWebhookRequestBody["entry"]) => {
       );
       throw new WhatsAppError("Could not send message to unengaged user");
     }
-    throw new Error(`Received unknown error from WA: ${JSON.stringify(error)}`);
+    throw new Error(
+      `WA unknown incoming errors: ${JSON.stringify(status.errors)}`,
+    );
   }
-  throw new Error(`WA: ${JSON.stringify(status)}`);
 };
