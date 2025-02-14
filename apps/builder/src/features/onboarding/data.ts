@@ -14,7 +14,7 @@ export const onboardingVideos: Partial<
     | {
         key: string;
         youtubeId: string;
-        deployedAt: Date;
+        deployedAt?: Date;
       }
     | undefined
   >
@@ -27,7 +27,6 @@ export const onboardingVideos: Partial<
   groupTitlesAutoGeneration: {
     key: "groupTitlesAutoGeneration",
     youtubeId: "Lt7UliKv0xQ",
-    deployedAt: new Date("2025-02-11"),
   },
   [IntegrationBlockType.ZAPIER]: {
     key: IntegrationBlockType.ZAPIER,

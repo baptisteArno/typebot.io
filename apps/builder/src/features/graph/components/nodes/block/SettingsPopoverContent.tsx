@@ -86,7 +86,7 @@ export const SettingsPopoverContent = ({ onExpandClick, ...props }: Props) => {
         <PopoverArrow bgColor={arrowColor} />
 
         <VideoOnboardingPopover.Root type={props.node.type} blockDef={blockDef}>
-          {({ onToggle }) => (
+          {({ onOpen }) => (
             <PopoverBody
               py="3"
               overflowY="auto"
@@ -109,7 +109,7 @@ export const SettingsPopoverContent = ({ onExpandClick, ...props }: Props) => {
                   <SlideFade in={isHovering} unmountOnExit>
                     <SettingsHoverBar
                       onExpandClick={onExpandClick}
-                      onVideoOnboardingClick={onToggle}
+                      onVideoOnboardingClick={onOpen}
                       nodeType={props.node.type}
                       blockDef={blockDef}
                       isVideoOnboardingItemDisplayed={hasOnboardingVideo({

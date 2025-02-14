@@ -142,24 +142,21 @@ export const UserPreferencesForm = () => {
         isEnabled={user?.groupTitlesAutoGeneration?.isEnabled ?? false}
         placement="top-end"
       >
-        {({ onToggle }) => (
-          <SwitchWithRelatedSettings
-            label="Generate groups title with AI"
-            initialValue={user?.groupTitlesAutoGeneration?.isEnabled}
-            onCheckChange={(isEnabled) => {
-              updateGroupTitlesGenParams({ isEnabled });
-              if (!isEnabled) onToggle();
-            }}
-          >
-            {user?.groupTitlesAutoGeneration && (
-              <GroupTitlesAutoGenForm
-                userId={user.id}
-                values={user.groupTitlesAutoGeneration}
-                onChange={updateGroupTitlesGenParams}
-              />
-            )}
-          </SwitchWithRelatedSettings>
-        )}
+        <SwitchWithRelatedSettings
+          label="Generate groups title with AI"
+          initialValue={user?.groupTitlesAutoGeneration?.isEnabled}
+          onCheckChange={(isEnabled) => {
+            updateGroupTitlesGenParams({ isEnabled });
+          }}
+        >
+          {user?.groupTitlesAutoGeneration && (
+            <GroupTitlesAutoGenForm
+              userId={user.id}
+              values={user.groupTitlesAutoGeneration}
+              onChange={updateGroupTitlesGenParams}
+            />
+          )}
+        </SwitchWithRelatedSettings>
       </VideoOnboardingPopover.Root>
     </Stack>
   );
