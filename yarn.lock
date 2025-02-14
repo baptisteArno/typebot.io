@@ -6988,6 +6988,7 @@
   devDependencies:
     "@typebot.io/tsconfig" "packages/tsconfig"
   dependencies:
+    "@sentry/nextjs" "9.1.0"
     "@typebot.io/blocks-bubbles" "packages/blocks/bubbles"
     "@typebot.io/blocks-core" "packages/blocks/core"
     "@typebot.io/blocks-inputs" "packages/blocks/inputs"

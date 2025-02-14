@@ -3,6 +3,7 @@ import * as Sentry from "@sentry/nextjs";
 import { TRPCError } from "@trpc/server";
 import { deleteSession } from "@typebot.io/chat-session/queries/deleteSession";
 import { env } from "@typebot.io/env";
+import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
 import { WhatsAppError } from "@typebot.io/whatsapp/WhatsAppError";
 import { incomingWebhookErrorCodes } from "@typebot.io/whatsapp/constants";
 import { resumeWhatsAppFlow } from "@typebot.io/whatsapp/resumeWhatsAppFlow";
@@ -50,11 +51,12 @@ export const receiveMessagePreview = publicProcedure
         Sentry.captureMessage(err.message, err.details);
       } else {
         console.error("Unknown WhatsApp error:", err);
-        Sentry.captureException(err);
+        Sentry.captureException(err, {
+          data: await parseUnknownError({ err }),
+        });
       }
     }
 
-    await Sentry.flush();
     return {
       message: "Message received",
     };
@@ -70,7 +72,7 @@ const assertEnv = () => {
 
 const extractMessageData = (entry: WhatsAppWebhookRequestBody["entry"]) => {
   const receivedMessage = entry.at(0)?.changes.at(0)?.value.messages?.at(0);
-  if (!receivedMessage) throw new WhatsAppError("No message found");
+  if (!receivedMessage) throw new Error("Received message not found");
   const contactName =
     entry.at(0)?.changes.at(0)?.value?.contacts?.at(0)?.profile?.name ?? "";
   const contactPhoneNumber =
@@ -83,7 +85,10 @@ const processErrors = async (entry: WhatsAppWebhookRequestBody["entry"]) => {
   const status = entry.at(0)?.changes.at(0)?.value.statuses?.at(0);
   if (status?.errors) {
     const error = status.errors.at(0);
-    if (!error) return;
+    if (!error)
+      throw new Error(
+        `Received unknown error from WA: ${JSON.stringify(status.errors)}`,
+      );
     if (
       error?.code ===
       incomingWebhookErrorCodes["Could not send message to unengaged user"]
@@ -93,6 +98,6 @@ const processErrors = async (entry: WhatsAppWebhookRequestBody["entry"]) => {
       );
       throw new WhatsAppError("Could not send message to unengaged user");
     }
-    throw new WhatsAppError(`Received unknown error from WA`, error);
+    throw new Error(`Received unknown error from WA: ${JSON.stringify(error)}`);
   }
 };

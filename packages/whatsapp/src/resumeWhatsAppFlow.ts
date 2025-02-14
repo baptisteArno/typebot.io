@@ -1,3 +1,4 @@
+import * as Sentry from "@sentry/nextjs";
 import type { Block } from "@typebot.io/blocks-core/schemas/schema";
 import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
 import { continueBotFlow } from "@typebot.io/bot-engine/continueBotFlow";
@@ -50,6 +51,7 @@ export const resumeWhatsAppFlow = async ({
   contact,
   callFrom,
 }: Props) => {
+  if (workspaceId) Sentry.setUser({ id: workspaceId });
   if (isMessageTooOld(receivedMessage))
     throw new WhatsAppError("Message is too old", {
       timestamp: receivedMessage.timestamp,
