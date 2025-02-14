@@ -166,7 +166,11 @@ export const ExportAllResultsModal = ({ isOpen, onClose }: Props) => {
           {isExportLoading && (
             <Stack>
               <Text>Fetching all results...</Text>
-              <Progress value={exportProgressValue} borderRadius="md" />
+              <Progress
+                value={exportProgressValue}
+                borderRadius="md"
+                colorScheme="orange"
+              />
             </Stack>
           )}
         </ModalBody>
