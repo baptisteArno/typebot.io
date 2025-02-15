@@ -103,19 +103,27 @@ export const createSpeech = createAction({
 
       const model = options.model ?? defaultOpenAIOptions.voiceModel;
 
-      const rawAudio = (await openai.audio.speech.create({
-        input: options.input,
-        voice: options.voice,
-        model,
-      })) as any;
+      try {
+        const rawAudio = (await openai.audio.speech.create({
+          input: options.input,
+          voice: options.voice,
+          model,
+        })) as any;
+        const url = await uploadFileToBucket({
+          file: Buffer.from((await rawAudio.arrayBuffer()) as ArrayBuffer),
+          key: `tmp/openai/audio/${createId() + createId()}.mp3`,
+          mimeType: "audio/mpeg",
+        });
 
-      const url = await uploadFileToBucket({
-        file: Buffer.from((await rawAudio.arrayBuffer()) as ArrayBuffer),
-        key: `tmp/openai/audio/${createId() + createId()}.mp3`,
-        mimeType: "audio/mpeg",
-      });
-
-      variables.set([{ id: options.saveUrlInVariableId, value: url }]);
+        variables.set([{ id: options.saveUrlInVariableId, value: url }]);
+      } catch (err) {
+        logs.add(
+          await parseUnknownError({
+            err,
+            context: "While generating speech",
+          }),
+        );
+      }
     },
   },
 });
