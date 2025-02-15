@@ -3,7 +3,7 @@ import { DownloadIcon } from "@/components/icons";
 import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { toast } from "@/lib/toast";
-import { trpc } from "@/lib/trpc";
+import { trpc, trpcVanilla } from "@/lib/trpc";
 import {
   Button,
   HStack,
@@ -57,6 +57,12 @@ export const ExportAllResultsModal = ({ isOpen, onClose }: Props) => {
 
   const getAllResults = async () => {
     if (!workspaceId || !typebotId) return [];
+    const {
+      stats: { totalStarts },
+    } = await trpcVanilla.analytics.getStats.query({
+      typebotId,
+      timeFilter: "allTime",
+    });
     const allResults = [];
     let cursor: string | undefined;
     setExportProgressValue(0);
@@ -70,7 +76,7 @@ export const ExportAllResultsModal = ({ isOpen, onClose }: Props) => {
             timeFilter: "allTime",
           });
         allResults.push(...results);
-        setExportProgressValue((allResults.length / totalResults) * 100);
+        setExportProgressValue((allResults.length / totalStarts) * 100);
         cursor = nextCursor ?? undefined;
       } catch (error) {
         toast({ description: (error as TRPCError).message });
