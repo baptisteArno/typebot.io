@@ -5,6 +5,8 @@ const ignoreTrpcMessages = [
   "bot is now closed",
   "not found",
   "timeout reached",
+  "Missing startParams",
+  "need to be authenticated to perform this action",
 ];
 
 Sentry.init({
@@ -16,7 +18,7 @@ Sentry.init({
     if (isTrpcError(exception)) {
       if (
         ignoreTrpcMessages.some((message) =>
-          exception.message.toLowerCase().includes(message),
+          exception.message.toLowerCase().includes(message.toLowerCase()),
         )
       )
         return null;

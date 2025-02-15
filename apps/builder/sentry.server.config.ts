@@ -17,7 +17,7 @@ Sentry.init({
     if (isTrpcError(exception)) {
       if (
         ignoreTrpcMessages.some((message) =>
-          exception.message.toLowerCase().includes(message),
+          exception.message.toLowerCase().includes(message.toLowerCase()),
         )
       )
         return null;
