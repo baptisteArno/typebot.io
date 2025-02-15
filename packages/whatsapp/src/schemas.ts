@@ -146,7 +146,7 @@ export const incomingMessageSchema = z.discriminatedUnion("type", [
   sharedIncomingMessageFieldsSchema.extend({
     type: z.literal("reaction"),
     reaction: z.object({
-      emoji: z.string(),
+      emoji: z.string().optional(),
     }),
   }),
 ]);
