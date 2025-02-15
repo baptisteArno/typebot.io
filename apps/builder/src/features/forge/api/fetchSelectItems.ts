@@ -1,10 +1,10 @@
 import { isReadWorkspaceFobidden } from "@/features/workspace/helpers/isReadWorkspaceFobidden";
 import { authenticatedProcedure } from "@/helpers/server/trpc";
+import { ClientToastError } from "@/lib/ClientToastError";
 import { TRPCError } from "@trpc/server";
 import { decrypt } from "@typebot.io/credentials/decrypt";
 import { forgedBlockIds } from "@typebot.io/forge-repository/constants";
 import { forgedBlocks } from "@typebot.io/forge-repository/definitions";
-import { LogError } from "@typebot.io/logs/LogError";
 import prisma from "@typebot.io/prisma";
 import { z } from "@typebot.io/zod";
 import { getFetchers } from "../helpers/getFetchers";
@@ -95,7 +95,7 @@ export const fetchSelectItems = authenticatedProcedure
       options: input.options,
     });
 
-    if (error) throw new LogError(error);
+    if (error) throw new ClientToastError(error);
 
     return { items: data };
   });

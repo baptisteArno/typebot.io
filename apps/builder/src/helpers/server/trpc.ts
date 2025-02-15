@@ -1,12 +1,11 @@
 import * as Sentry from "@sentry/nextjs";
 import { TRPCError, initTRPC } from "@trpc/server";
-import { LogError } from "@typebot.io/logs/LogError";
 import type { OpenApiMeta } from "@typebot.io/trpc-openapi/types";
 import superjson from "superjson";
 import { ZodError } from "zod";
 import { fromError } from "zod-validation-error";
+import { ClientToastError } from "../../lib/ClientToastError";
 import type { Context } from "./context";
-
 const t = initTRPC
   .context<Context>()
   .meta<OpenApiMeta>()
@@ -18,7 +17,9 @@ const t = initTRPC
         data: {
           ...shape.data,
           logError:
-            error.cause instanceof LogError ? error.cause.toToast() : null,
+            error.cause instanceof ClientToastError
+              ? error.cause.toToast()
+              : null,
           zodError:
             error.cause instanceof ZodError
               ? fromError(error.cause).message

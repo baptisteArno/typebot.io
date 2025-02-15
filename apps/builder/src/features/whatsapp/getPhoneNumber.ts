@@ -1,10 +1,9 @@
 import { authenticatedProcedure } from "@/helpers/server/trpc";
+import { ClientToastError } from "@/lib/ClientToastError";
 import { TRPCError } from "@trpc/server";
 import { decrypt } from "@typebot.io/credentials/decrypt";
 import type { WhatsAppCredentials } from "@typebot.io/credentials/schemas";
 import { env } from "@typebot.io/env";
-import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
-import { LogError } from "@typebot.io/logs/LogError";
 import prisma from "@typebot.io/prisma";
 import { z } from "@typebot.io/zod";
 import ky from "ky";
@@ -45,7 +44,7 @@ export const getPhoneNumber = authenticatedProcedure
         name: formattedPhoneNumber,
       };
     } catch (err) {
-      throw new LogError(await parseUnknownError({ err }));
+      throw await ClientToastError.fromUnkownError(err);
     }
   });
 
