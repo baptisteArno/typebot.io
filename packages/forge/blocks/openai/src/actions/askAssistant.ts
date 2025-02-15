@@ -331,68 +331,72 @@ const createAssistantStream = async ({
     return;
   }
 
-  const assistant = await openai.beta.assistants.retrieve(assistantId);
+  try {
+    const assistant = await openai.beta.assistants.retrieve(assistantId);
 
-  await openai.beta.threads.messages.create(currentThreadId, {
-    role: "user",
-    content: isModelCompatibleWithVision(assistant.model)
-      ? await splitUserTextMessageIntoOpenAIBlocks(message)
-      : message,
-  });
-
-  return createAssistantFoundationalStream(async ({ forwardStream }) => {
-    if (!currentThreadId) return;
-    const runStream = openai.beta.threads.runs.stream(currentThreadId, {
-      assistant_id: assistantId,
-      additional_instructions: additionalInstructions,
+    await openai.beta.threads.messages.create(currentThreadId, {
+      role: "user",
+      content: isModelCompatibleWithVision(assistant.model)
+        ? await splitUserTextMessageIntoOpenAIBlocks(message)
+        : message,
     });
 
-    let runResult = await forwardStream(runStream);
+    return createAssistantFoundationalStream(async ({ forwardStream }) => {
+      if (!currentThreadId) return;
+      const runStream = openai.beta.threads.runs.stream(currentThreadId, {
+        assistant_id: assistantId,
+        additional_instructions: additionalInstructions,
+      });
 
-    while (
-      runResult?.status === "requires_action" &&
-      runResult.required_action?.type === "submit_tool_outputs"
-    ) {
-      const tool_outputs = (
-        await Promise.all(
-          runResult.required_action.submit_tool_outputs.tool_calls.map(
-            async (toolCall: any) => {
-              const parameters = JSON.parse(toolCall.function.arguments);
+      let runResult = await forwardStream(runStream);
 
-              const functionToExecute = functions?.find(
-                (f) => f.name === toolCall.function.name,
-              );
-              if (!functionToExecute) return;
+      while (
+        runResult?.status === "requires_action" &&
+        runResult.required_action?.type === "submit_tool_outputs"
+      ) {
+        const tool_outputs = (
+          await Promise.all(
+            runResult.required_action.submit_tool_outputs.tool_calls.map(
+              async (toolCall: any) => {
+                const parameters = JSON.parse(toolCall.function.arguments);
 
-              const name = toolCall.function.name;
-              if (!name || !functionToExecute.code) return;
+                const functionToExecute = functions?.find(
+                  (f) => f.name === toolCall.function.name,
+                );
+                if (!functionToExecute) return;
 
-              const { output, newVariables } = await executeFunction({
-                variables: variables.list(),
-                body: functionToExecute.code,
-                args: parameters,
-              });
+                const name = toolCall.function.name;
+                if (!name || !functionToExecute.code) return;
 
-              if (newVariables && newVariables.length > 0)
-                await variables.set(newVariables);
+                const { output, newVariables } = await executeFunction({
+                  variables: variables.list(),
+                  body: functionToExecute.code,
+                  args: parameters,
+                });
 
-              return {
-                tool_call_id: toolCall.id,
-                output: safeStringify(output) ?? "",
-              };
-            },
+                if (newVariables && newVariables.length > 0)
+                  await variables.set(newVariables);
+
+                return {
+                  tool_call_id: toolCall.id,
+                  output: safeStringify(output) ?? "",
+                };
+              },
+            ),
+          )
+        ).filter(isDefined);
+        runResult = await forwardStream(
+          openai.beta.threads.runs.submitToolOutputsStream(
+            currentThreadId,
+            runResult.id,
+            { tool_outputs },
           ),
-        )
-      ).filter(isDefined);
-      runResult = await forwardStream(
-        openai.beta.threads.runs.submitToolOutputsStream(
-          currentThreadId,
-          runResult.id,
-          { tool_outputs },
-        ),
-      );
-    }
-  });
+        );
+      }
+    });
+  } catch (error) {
+    logs?.add(await parseUnknownError({ err: error }));
+  }
 };
 
 const createAssistantFoundationalStream = (
