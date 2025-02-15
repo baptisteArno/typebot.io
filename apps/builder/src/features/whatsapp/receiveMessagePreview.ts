@@ -94,6 +94,14 @@ const processErrors = async (entry: WhatsAppWebhookRequestBody["entry"]) => {
       );
       throw new WhatsAppError("Could not send message to unengaged user");
     }
+    if (error?.code === incomingWebhookErrorCodes["Message undeliverable"]) {
+      throw new WhatsAppError("Message undeliverable");
+    }
+    if (error?.code === incomingWebhookErrorCodes["Media upload error"]) {
+      throw new WhatsAppError("Media upload error", {
+        reason: error.error_data,
+      });
+    }
     throw new Error(
       `WA unknown incoming errors: ${JSON.stringify(status.errors)}`,
     );
