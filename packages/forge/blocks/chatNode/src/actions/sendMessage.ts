@@ -1,4 +1,5 @@
 import { createAction, option } from "@typebot.io/forge";
+import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
 import { isDefined, isEmpty } from "@typebot.io/lib/utils";
 import ky, { HTTPError } from "ky";
 import { auth } from "../auth";
@@ -67,12 +68,12 @@ export const sendMessage = createAction({
         });
       } catch (error) {
         if (error instanceof HTTPError)
-          return logs.add({
-            status: "error",
-            description: error.message,
-            details: await error.response.text(),
-          });
-        console.error(error);
+          return logs.add(
+            await parseUnknownError({
+              err: error,
+              context: "While sending message to ChatNode",
+            }),
+          );
       }
     },
   },

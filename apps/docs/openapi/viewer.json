@@ -3522,10 +3522,7 @@
                                                 "emoji": {
                                                   "type": "string"
                                                 }
-                                              },
-                                              "required": [
-                                                "emoji"
-                                              ]
+                                              }
                                             }
                                           },
                                           "required": [

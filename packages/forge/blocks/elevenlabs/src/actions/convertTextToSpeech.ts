@@ -130,18 +130,12 @@ export const convertTextToSpeech = createAction({
 
         variables.set([{ id: options.saveUrlInVariableId, value: url }]);
       } catch (err) {
-        if (err instanceof HTTPError) {
-          return logs.add({
-            status: "error",
-            description: err.message,
-            details: await err.response.text(),
-          });
-        }
-        logs.add({
-          status: "error",
-          description: "An error occured while converting the text to speech",
-          details: JSON.stringify(err, null, 2),
-        });
+        return logs.add(
+          await parseUnknownError({
+            err,
+            context: "While converting text to ElevenLabs speech",
+          }),
+        );
       }
     },
   },

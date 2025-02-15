@@ -98,7 +98,10 @@ export const createChatCompletion = createAction({
           };
         if (!options.messages)
           return {
-            httpError: { status: 400, message: "No messages provided" },
+            error: {
+              description: "No messages provided",
+              context,
+            },
           };
 
         return runChatCompletionStream({

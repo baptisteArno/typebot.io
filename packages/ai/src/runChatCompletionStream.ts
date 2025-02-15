@@ -1,5 +1,6 @@
 import type { VariableStore } from "@typebot.io/forge/types";
-import { APICallError, type LanguageModel, streamText } from "ai";
+import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
+import { type LanguageModel, streamText } from "ai";
 import { maxSteps } from "./constants";
 import { parseChatCompletionMessages } from "./parseChatCompletionMessages";
 import type { ChatCompletionOptions } from "./parseChatCompletionOptions";
@@ -55,16 +56,11 @@ export const runChatCompletionStream = async ({
       }),
     };
   } catch (err) {
-    if (err instanceof APICallError) {
-      return {
-        httpError: { status: err.statusCode ?? 500, message: err.message },
-      };
-    }
     return {
-      httpError: {
-        status: 500,
-        message: "An unknown error occured while generating the response",
-      },
+      error: await parseUnknownError({
+        err,
+        context: "While running chat completion stream",
+      }),
     };
   }
 };
