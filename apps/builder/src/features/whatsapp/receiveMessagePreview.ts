@@ -37,6 +37,7 @@ export const receiveMessagePreview = publicProcedure
       await processErrors(entry);
       const { receivedMessage, contactName, contactPhoneNumber } =
         extractMessageData(entry);
+      if (!receivedMessage) return { message: "Message received" };
       await resumeWhatsAppFlow({
         receivedMessage,
         sessionId: `${whatsAppPreviewSessionIdPrefix}${receivedMessage.from}`,
@@ -71,7 +72,6 @@ const assertEnv = () => {
 
 const extractMessageData = (entry: WhatsAppWebhookRequestBody["entry"]) => {
   const receivedMessage = entry.at(0)?.changes.at(0)?.value.messages?.at(0);
-  if (!receivedMessage) throw new Error("Received message not found");
   const contactName =
     entry.at(0)?.changes.at(0)?.value?.contacts?.at(0)?.profile?.name ?? "";
   const contactPhoneNumber =
