@@ -27,6 +27,16 @@ export const getRow = async (
   const { sheetId, cellsToExtract, filter, ...parsedOptions } =
     deepParseVariables(variables, { removeEmptyStrings: true })(options);
   if (!sheetId) return { outgoingEdgeId };
+  if (!options.credentialsId || !options.spreadsheetId)
+    return {
+      outgoingEdgeId,
+      logs: [
+        {
+          status: "error",
+          description: "Missing credentialsId or spreadsheetId",
+        },
+      ],
+    };
 
   const doc = await getAuthenticatedGoogleDoc({
     credentialsId: options.credentialsId,

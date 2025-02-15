@@ -15,6 +15,16 @@ export const insertRow = async (
 ): Promise<ExecuteIntegrationResponse> => {
   const { variables } = state.typebotsQueue[0].typebot;
   if (!options.cellsToInsert || !options.sheetId) return { outgoingEdgeId };
+  if (!options.credentialsId || !options.spreadsheetId)
+    return {
+      outgoingEdgeId,
+      logs: [
+        {
+          status: "error",
+          description: "Missing credentialsId or spreadsheetId",
+        },
+      ],
+    };
 
   const logs: LogInSession[] = [];
 

@@ -19,6 +19,16 @@ export const updateRow = async (
   const { sheetId, filter, ...parsedOptions } = deepParseVariables(variables, {
     removeEmptyStrings: true,
   })(options);
+  if (!options.credentialsId || !options.spreadsheetId)
+    return {
+      outgoingEdgeId,
+      logs: [
+        {
+          status: "error",
+          description: "Missing credentialsId or spreadsheetId",
+        },
+      ],
+    };
 
   const referenceCell =
     "referenceCell" in parsedOptions && parsedOptions.referenceCell
