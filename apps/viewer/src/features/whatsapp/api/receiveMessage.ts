@@ -38,7 +38,8 @@ export const receiveMessage = publicProcedure
       phoneNumberId,
       referral,
     } = extractMessageDetails(entry);
-    if (!receivedMessage) return { message: "No message found" };
+    if (!receivedMessage || receivedMessage.type === "reaction")
+      return { message: "No message content found" };
     if (!phoneNumberId) return { message: "No phone number found" };
 
     try {

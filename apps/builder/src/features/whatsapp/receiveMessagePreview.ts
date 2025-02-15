@@ -37,7 +37,8 @@ export const receiveMessagePreview = publicProcedure
       await processErrors(entry);
       const { receivedMessage, contactName, contactPhoneNumber } =
         extractMessageData(entry);
-      if (!receivedMessage) return { message: "Message received" };
+      if (!receivedMessage || receivedMessage.type === "reaction")
+        return { message: "No message content found" };
       await resumeWhatsAppFlow({
         receivedMessage,
         sessionId: `${whatsAppPreviewSessionIdPrefix}${receivedMessage.from}`,
