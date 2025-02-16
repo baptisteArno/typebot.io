@@ -10,7 +10,7 @@ type Props = {
   model: string;
   variables: VariableStore;
   messages: Message[];
-  tools: Tools | undefined;
+  tools?: Tools;
   isVisionEnabled: boolean | undefined;
   temperature: number | undefined;
   logs: LogsStore;

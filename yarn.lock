@@ -6564,6 +6564,7 @@
     "@typebot.io/nocodb-block" "packages/forge/blocks/nocodb"
     "@typebot.io/open-router-block" "packages/forge/blocks/openRouter"
     "@typebot.io/openai-block" "packages/forge/blocks/openai"
+    "@typebot.io/perplexity-block" "packages/forge/blocks/perplexity"
     "@typebot.io/posthog-block" "packages/forge/blocks/posthog"
     "@typebot.io/qrcode-block" "packages/forge/blocks/qrcode"
     "@typebot.io/segment-block" "packages/forge/blocks/segment"
@@ -6745,7 +6746,7 @@
     "@typebot.io/forge" "packages/forge/core"
     "@typebot.io/lib" "packages/lib"
     "@typebot.io/zod" "packages/zod"
-    axios ""
+    axios "^1.7.9"
 
 "@typebot.io/playwright@packages/playwright":
   version "workspace:packages/playwright"

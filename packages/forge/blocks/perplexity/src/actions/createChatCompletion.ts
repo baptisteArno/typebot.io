@@ -60,7 +60,7 @@ export const options = option.object({
       ]),
     )
     .layout({ accordion: "Messages", itemLabel: "message", isOrdered: true }),
-  tools: toolsSchema,
+  // tools: toolsSchema,
   temperature: option.number.layout({
     accordion: "Advanced Settings",
     label: "Temperature",
@@ -95,7 +95,7 @@ export const createChatCompletion = createAction({
         model: modelName,
         variables,
         messages: options.messages,
-        tools: options.tools,
+        // tools: options.tools,
         isVisionEnabled: false,
         temperature: options.temperature
           ? Number(options.temperature)
