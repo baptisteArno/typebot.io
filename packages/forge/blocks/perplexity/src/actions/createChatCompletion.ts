@@ -1,3 +1,4 @@
+import { runChatCompletion } from "@typebot.io/ai/runChatCompletion";
 import { toolsSchema } from "@typebot.io/ai/schemas";
 import { createAction } from "@typebot.io/forge";
 import { option } from "@typebot.io/forge";
@@ -5,6 +6,7 @@ import { z } from "@typebot.io/zod";
 import { isDefined } from "../../../../../lib/src/utils";
 import { auth } from "../auth";
 import { defaultPerplexityOptions, perplexityModels } from "../constants";
+import { runApiChatCompletion } from "../helpers/runApiChatCompletion";
 
 const nativeMessageContentSchema = {
   content: option.string.layout({
@@ -88,6 +90,20 @@ export const createChatCompletion = createAction({
       const modelName = options.model?.trim();
       if (!modelName) return logs.add("No model provided");
       if (!options.messages) return logs.add("No messages provided");
+
+      return runApiChatCompletion({
+        model: modelName,
+        variables,
+        messages: options.messages,
+        tools: options.tools,
+        isVisionEnabled: false,
+        temperature: options.temperature
+          ? Number(options.temperature)
+          : undefined,
+        logs,
+        responseMapping: options.responseMapping,
+        apiKey,
+      });
     },
   },
 });
