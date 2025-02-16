@@ -1,7 +1,7 @@
 import type { Block } from "@typebot.io/blocks-core/schemas/schema";
 import { IntegrationBlockType } from "@typebot.io/blocks-integrations/constants";
 
-type Feature = "editor" | Block["type"];
+type Feature = "editor" | "groupTitlesAutoGeneration" | Block["type"];
 
 export const onboardingVideos: Partial<
   Record<
@@ -18,6 +18,11 @@ export const onboardingVideos: Partial<
     key: "editor",
     youtubeId: "jp3ggg_42-M",
     deployedAt: new Date("2024-06-04"),
+  },
+  groupTitlesAutoGeneration: {
+    key: "groupTitlesAutoGeneration",
+    youtubeId: "Lt7UliKv0xQ",
+    deployedAt: new Date("2025-02-11"),
   },
   [IntegrationBlockType.ZAPIER]: {
     key: IntegrationBlockType.ZAPIER,
