@@ -1,4 +1,4 @@
-version: '1.0'
+version: "1.0"
 
 stages:
   - prepare
@@ -8,22 +8,22 @@ stages:
 steps:
   prepare:
     stage: prepare
-    title: 'Prepare'
+    title: "Prepare"
     type: freestyle
-    working_directory: '/'
+    working_directory: "/"
     arguments:
-      image: 'bash:latest'
+      image: "bash:latest"
       environment:
         - GIT_TOKEN=${{GIT_NPM_TOKEN}}
       commands:
         - |
           set -x
-          
+
           cf_export SKIP_DEPLOY='"false"'
 
           cf_export GIT_TOKEN=$GIT_TOKEN
           echo "${{CF_BRANCH}}"
-          
+
           if [[ $CF_BRANCH =~ "${{RELEASE_REGEX}}" ]];
           then
             echo 'Release revision'
@@ -33,7 +33,7 @@ steps:
             cf_export REVISION="${{CF_BRANCH}}"
             return 0
           fi
-        
+
           if [[ $CF_BRANCH =~ "${{CANDIDATE_REGEX}}" ]];
           then
             echo 'Candidate revision'
@@ -69,11 +69,11 @@ steps:
           cf_export SKIP_DEPLOY='"true"'
   main_clone:
     stage: prepare
-    title: 'Clone main repository'
+    title: "Clone main repository"
     type: git-clone
     arguments:
-      repo: '${{CF_REPO_OWNER}}/${{CF_REPO_NAME}}'
-      revision: '${{REVISION}}'
+      repo: "${{CF_REPO_OWNER}}/${{CF_REPO_NAME}}"
+      revision: "${{REVISION}}"
     when:
       condition:
         all:
@@ -81,11 +81,11 @@ steps:
 
   build_docker:
     stage: build
-    title: 'Build Docker image'
+    title: "Build Docker image"
     type: build
-    working_directory: '${{main_clone}}'
-    image_name: '${{CF_REPO_NAME}}'
-    tag: '${{TAG}}'
+    working_directory: "${{main_clone}}"
+    image_name: "${{CF_REPO_NAME}}"
+    tag: "${{TAG}}"
     dockerfile: build/Dockerfile
     registry: gcr-octadesk
     build_arguments:
@@ -100,11 +100,35 @@ steps:
 
   push_docker:
     stage: build
-    title: 'Push Docker Image'
+    title: "Push Docker Image"
     type: push
-    candidate: '${{build_docker}}'
-    tag: '${{TAG}}'
+    candidate: "${{build_docker}}"
+    tag: "${{TAG}}"
     registry: gcr-octadesk
+    when:
+      condition:
+        all:
+          releaseIsInBuildConditions: '${{SKIP_DEPLOY}} == "false"'
+
+  push_docker_sa:
+    stage: build
+    title: "Push Docker Image (southamerica-east1)"
+    type: push
+    candidate: "${{build_docker}}"
+    tag: "${{TAG}}"
+    registry: gcr-octadesk-southamerica-east1
+    when:
+      condition:
+        all:
+          releaseIsInBuildConditions: '${{SKIP_DEPLOY}} == "false"'
+
+  push_docker_us:
+    stage: build
+    title: "Push Docker Image (us-east1)"
+    type: push
+    candidate: "${{build_docker}}"
+    tag: "${{TAG}}"
+    registry: gcr-octadesk-us-east1
     when:
       condition:
         all:
@@ -125,9 +149,9 @@ steps:
   clone_iac_repository:
     stage: integrate
     type: git-clone
-    title: 'Clone IAC repository'
+    title: "Clone IAC repository"
     arguments:
-      repo: 'https://${{GIT_TOKEN}}@github.com/Octadesk-Tech/${{GIT_IAC_REPOSITORY}}.git'
+      repo: "https://${{GIT_TOKEN}}@github.com/Octadesk-Tech/${{GIT_IAC_REPOSITORY}}.git"
       revision: ${{MAIN_BRANCH}}
     when:
       condition:
@@ -141,7 +165,7 @@ steps:
 
   update_tag:
     stage: integrate
-    title: 'Update image tag'
+    title: "Update image tag"
     image: mikefarah/yq:3
     commands:
       - |
@@ -177,17 +201,17 @@ steps:
 
   push_updated_tag:
     stage: integrate
-    title: 'Push updated tag'
+    title: "Push updated tag"
     type: freestyle
     image: alpine/git
-    working_directory: '${{CF_VOLUME_PATH}}/${{GIT_IAC_REPOSITORY}}/'
+    working_directory: "${{CF_VOLUME_PATH}}/${{GIT_IAC_REPOSITORY}}/"
     commands:
       - git checkout ${{MAIN_BRANCH}}
       - git branch --set-upstream-to=origin/${{MAIN_BRANCH}} ${{MAIN_BRANCH}}
       - git config user.email "${{GIT_CONFIG_EMAIL}}"
       - git config user.name "${{GIT_CONFIG_USERNAME}}"
       - git pull
-      - 'git add .'
+      - "git add ."
       - git commit -m "Set ${VERSION} image tag ${TAG} for ${{CF_REPO_NAME}} chart"
       - git push
     fail_fast: false
