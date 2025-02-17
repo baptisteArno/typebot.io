@@ -149,6 +149,9 @@ export const incomingMessageSchema = z.discriminatedUnion("type", [
       emoji: z.string().optional(),
     }),
   }),
+  sharedIncomingMessageFieldsSchema.extend({
+    type: z.literal("unsupported"),
+  }),
 ]);
 
 const incomingErrors = z.object({
