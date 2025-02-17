@@ -20,14 +20,14 @@ import {
 } from "@chakra-ui/react";
 import { T, useTranslate } from "@tolgee/react";
 import { byId, isDefined } from "@typebot.io/lib/utils";
-import type { Prisma } from "@typebot.io/prisma/types";
+import type { ClientUser } from "@typebot.io/schemas/features/user/schema";
 import React, { useState } from "react";
 import { useApiTokens } from "../hooks/useApiTokens";
 import { deleteApiTokenQuery } from "../queries/deleteApiTokenQuery";
 import type { ApiTokenFromServer } from "../types";
 import { CreateTokenModal } from "./CreateTokenModal";
 
-type Props = { user: Prisma.User };
+type Props = { user: ClientUser };
 
 export const ApiTokensList = ({ user }: Props) => {
   const { t } = useTranslate();

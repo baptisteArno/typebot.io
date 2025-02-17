@@ -1,6 +1,6 @@
+import { createAuthConfig } from "@/features/auth/helpers/createAuthConfig";
 import type { GetServerSidePropsContext } from "next";
 import { getServerSession } from "next-auth";
-import { getAuthOptions } from "./api/auth/[...nextauth]";
 
 export default function Page() {
   return null;
@@ -12,7 +12,7 @@ export const getServerSideProps = async (
   const session = await getServerSession(
     context.req,
     context.res,
-    getAuthOptions({}),
+    createAuthConfig(),
   );
   if (!session?.user) {
     return {

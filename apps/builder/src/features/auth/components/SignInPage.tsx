@@ -30,7 +30,7 @@ export const SignInPage = ({ type }: Props) => {
         }
       />
       <Stack
-        bgColor={useColorModeValue("white", "gray.800")}
+        bgColor={useColorModeValue("white", "gray.900")}
         p={8}
         rounded="lg"
         spacing={6}
