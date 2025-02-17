@@ -53,3 +53,39 @@ export const parseUnknownError = async ({
     };
   }
 };
+
+export const parseUnknownErrorSync = ({
+  err,
+  context,
+}: Props): {
+  context?: string;
+  description: string;
+  details?: string;
+} => {
+  try {
+    if (typeof err === "string")
+      return {
+        context,
+        description: err,
+        details: undefined,
+      };
+    if (err instanceof Error) {
+      return {
+        context,
+        description: err.message,
+        details:
+          typeof err.cause === "string" ? err.cause : JSON.stringify(err.cause),
+      };
+    }
+    return {
+      context,
+      description: JSON.stringify(err),
+    };
+  } catch (err) {
+    Sentry.captureException(err);
+    return {
+      context,
+      description: "Unknown error (failed to parse)",
+    };
+  }
+};

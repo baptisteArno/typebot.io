@@ -1,5 +1,8 @@
 import type { VariableStore } from "@typebot.io/forge/types";
-import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
+import {
+  parseUnknownError,
+  parseUnknownErrorSync,
+} from "@typebot.io/lib/parseUnknownError";
 import { type LanguageModel, streamText } from "ai";
 import { maxSteps } from "./constants";
 import { parseChatCompletionMessages } from "./parseChatCompletionMessages";
@@ -52,6 +55,11 @@ export const runChatCompletionStream = async ({
 
     return {
       stream: response.toDataStream({
+        getErrorMessage: (err) => {
+          return JSON.stringify(
+            parseUnknownErrorSync({ err, context: "While streaming AI" }),
+          );
+        },
         sendUsage: false,
       }),
     };

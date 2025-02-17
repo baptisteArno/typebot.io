@@ -113,6 +113,7 @@ const textBubbleSchema = z
     title: "Text",
     ref: "textBubble",
   });
+export type TextChatBubble = z.infer<typeof textBubbleSchema>;
 
 const imageBubbleSchema = z
   .object({

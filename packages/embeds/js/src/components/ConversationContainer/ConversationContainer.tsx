@@ -249,7 +249,15 @@ export const ConversationContainer = (props: Props) => {
       ...displayedChunks,
       {
         input: data.input,
-        messages: data.messages,
+        messages: data.messages.filter((message) => {
+          return (
+            message.type !== "text" ||
+            message.content.type !== "richText" ||
+            message.content.richText.length > 1 ||
+            message.content.richText[0].type !== "variable" ||
+            message.content.richText[0].children.length > 0
+          );
+        }),
       },
     ]);
   };
@@ -309,9 +317,19 @@ export const ConversationContainer = (props: Props) => {
           resultId: props.initialChatReply.resultId,
         },
         onMessageStream: streamMessage,
+        onStreamError: (error) => {
+          setHasError(true);
+          props.onNewLogs?.([error]);
+        },
       });
-      if ("streamOpenAiChatCompletion" in action || "stream" in action)
+      if ("streamOpenAiChatCompletion" in action || "stream" in action) {
         setTotalChunksDisplayed((prev) => prev + 1);
+        if (response && "replyToSend" in response && !response.replyToSend) {
+          setIsSending(false);
+          continue;
+        }
+      }
+
       setClientSideActions((actions) => actions.slice(1));
       if (response && "logs" in response) saveLogs(response.logs);
       if (response && "replyToSend" in response) {
