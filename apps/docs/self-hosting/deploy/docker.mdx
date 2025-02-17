@@ -353,6 +353,36 @@ To build your own viewer Docker image
 docker build -t typebot-viewer --build-arg SCOPE=viewer .
 ```
 
+## Troubleshooting
+
+### Avoiding network issues when migrating in Portainer
+
+If you migrate a Typebot stack between Portainer instances, hostname resolution may fail, causing `typebot-viewer` to be unable to connect to `typebot-db`.
+
+Before deploying the stack in Portainer, ensure the network is **explicitly defined as attachable** in `docker-compose.yml`:
+
+```yml
+networks:
+  typebot_network:
+    driver: bridge
+    attachable: true
+
+services:
+  typebot-db:
+    ...
+    networks:
+      - typebot_network
+  typebot-builder:
+    ...
+    networks:
+      - typebot_network
+  typebot-viewer:
+    ...
+    networks:
+      - typebot_network
+```
+When deploying the stack, Portainer will automatically create the network with the correct settings. This prevents hostname resolution issues after migration.
+
 <Note>
   If you're self-hosting Typebot, [sponsoring
   me](https://github.com/sponsors/baptisteArno) is a great way to give back to
