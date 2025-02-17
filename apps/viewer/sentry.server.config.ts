@@ -7,6 +7,15 @@ const ignoreTrpcMessages = [
   "timeout reached",
   "Missing startParams",
   "need to be authenticated to perform this action",
+  "current block does not expect file upload",
+  "couldn't find credentials in database",
+  "start group doesn't exist",
+];
+
+const ignoreMessages = [
+  "could not find credentials",
+  "is in reply state",
+  "point to another phone ID",
 ];
 
 Sentry.init({
@@ -15,6 +24,13 @@ Sentry.init({
   tracesSampleRate: 1,
   beforeSend: (event, hint) => {
     const exception = hint.originalException;
+    if (
+      typeof exception === "string" &&
+      ignoreMessages.some((message) =>
+        exception.toLowerCase().includes(message.toLowerCase()),
+      )
+    )
+      return null;
     if (isTrpcError(exception)) {
       if (
         ignoreTrpcMessages.some((message) =>
