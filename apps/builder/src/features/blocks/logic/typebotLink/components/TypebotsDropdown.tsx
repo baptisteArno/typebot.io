@@ -2,7 +2,6 @@ import { EmojiOrImageIcon } from "@/components/EmojiOrImageIcon";
 import { ExternalLinkIcon } from "@/components/icons";
 import { Select } from "@/components/inputs/Select";
 import { useTypebots } from "@/features/dashboard/hooks/useTypebots";
-import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { toast } from "@/lib/toast";
 import { HStack, IconButton, Input } from "@chakra-ui/react";
 import Link from "next/link";
@@ -22,10 +21,8 @@ export const TypebotsDropdown = ({
   currentWorkspaceId,
 }: Props) => {
   const { query } = useRouter();
-  const { currentUserMode } = useWorkspace();
   const { typebots, isLoading } = useTypebots({
     workspaceId: currentWorkspaceId,
-    currentUserMode,
     onError: (e) => toast({ description: e.message }),
   });
 

@@ -6,6 +6,7 @@ const ignoreTrpcMessages = [
   "typebot not found",
   "workspace not found",
   "workspace with same name already exists",
+  "no typebots found",
 ];
 
 Sentry.init({

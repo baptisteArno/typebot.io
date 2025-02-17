@@ -80,7 +80,6 @@ export const FolderContent = ({ folder }: Props) => {
   } = useTypebots({
     workspaceId: workspace?.id,
     folderId: folder === null ? "root" : folder.id,
-    currentUserMode,
     onError: (error) => {
       toast({
         description: error.message,
