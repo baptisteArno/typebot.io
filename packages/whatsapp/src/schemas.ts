@@ -91,6 +91,27 @@ const sharedIncomingMessageFieldsSchema = z.object({
   referral: incomingMessageReferral.optional(),
 });
 
+const incomingButtonReplySchema = z.object({
+  type: z.literal("button_reply"),
+  button_reply: z.object({
+    id: z.string(),
+    title: z.string(),
+  }),
+});
+
+const incomingListReplySchema = z.object({
+  type: z.literal("list_reply"),
+  list_reply: z.object({
+    id: z.string(),
+    title: z.string(),
+  }),
+});
+
+const incomingInteractiveReplySchema = z.discriminatedUnion("type", [
+  incomingButtonReplySchema,
+  incomingListReplySchema,
+]);
+
 export const incomingMessageSchema = z.discriminatedUnion("type", [
   sharedIncomingMessageFieldsSchema.extend({
     type: z.literal("text"),
@@ -107,12 +128,7 @@ export const incomingMessageSchema = z.discriminatedUnion("type", [
   }),
   sharedIncomingMessageFieldsSchema.extend({
     type: z.literal("interactive"),
-    interactive: z.object({
-      button_reply: z.object({
-        id: z.string(),
-        title: z.string(),
-      }),
-    }),
+    interactive: incomingInteractiveReplySchema,
   }),
   sharedIncomingMessageFieldsSchema.extend({
     type: z.literal("image"),
