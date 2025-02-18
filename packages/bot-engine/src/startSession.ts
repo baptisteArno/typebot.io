@@ -327,7 +327,7 @@ const getTypebot = async (startParams: StartParams): Promise<StartTypebot> => {
 
   if (isQuarantinedOrSuspended)
     throw new TRPCError({
-      code: "BAD_REQUEST",
+      code: "FORBIDDEN",
       message: defaultSystemMessages.botClosed,
     });
 
