@@ -34,8 +34,9 @@ export const Default = () => {
           </button>
         </div>
         <Bubble
-          typebot={"lead-generation-zngnmbm"}
+          typebot="my-typebot-hearhbv"
           apiHost="http://localhost:3001"
+          wsHost="localhost:1999"
           prefilledVariables={{
             Name: ["John"],
           }}

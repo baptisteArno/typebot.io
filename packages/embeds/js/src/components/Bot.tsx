@@ -53,6 +53,7 @@ export type BotProps = {
   resultId?: string;
   prefilledVariables?: Record<string, unknown>;
   apiHost?: string;
+  wsHost?: string;
   font?: Font;
   progressBarRef?: HTMLDivElement;
   startFrom?: StartFrom;
@@ -248,6 +249,7 @@ export const Bot = (props: BotProps & { class?: string }) => {
             }}
             context={{
               apiHost: props.apiHost,
+              wsHost: props.wsHost,
               isPreview:
                 typeof props.typebot !== "string" || (props.isPreview ?? false),
               resultId: initialChatReply.resultId,

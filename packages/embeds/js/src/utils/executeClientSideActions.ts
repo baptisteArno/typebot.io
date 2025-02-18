@@ -101,6 +101,7 @@ export const executeClientSideAction = async ({
     return listenForWebhook({
       sessionId: context.sessionId,
       resultId: context.resultId,
+      context,
     });
   }
 };

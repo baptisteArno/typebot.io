@@ -3,7 +3,7 @@ import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import type { PopupProps } from "@typebot.io/js";
 import parserBabel from "prettier/parser-babel";
 import prettier from "prettier/standalone";
-import { parseReactPopupProps } from "../../snippetParsers";
+import { parseReactPopupProps } from "../../snippetParsers/popup";
 
 export const ReactPopupSnippet = ({
   autoShowDelay,
@@ -16,6 +16,7 @@ export const ReactPopupSnippet = ({
       const App = () => {
         return <Popup ${parseReactPopupProps({
           typebot: typebot?.publicId ?? "",
+          customDomain: typebot?.customDomain,
           autoShowDelay,
         })}/>;
       }`,

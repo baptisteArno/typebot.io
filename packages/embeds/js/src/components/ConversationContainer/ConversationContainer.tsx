@@ -313,6 +313,7 @@ export const ConversationContainer = (props: Props) => {
         clientSideAction: action,
         context: {
           apiHost: props.context.apiHost,
+          wsHost: props.context.wsHost,
           sessionId: props.initialChatReply.sessionId,
           resultId: props.initialChatReply.resultId,
         },
