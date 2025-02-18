@@ -225,39 +225,29 @@ export const executeHttpRequest = async (
 
   try {
     const response = await ky(request.url, omit(request, "url"));
-    const body = response.headers.get("content-type")?.includes("json")
-      ? await response.json()
-      : await response.text();
+    const body = await response.text();
     logs.push({
       status: "success",
       description: webhookSuccessDescription,
       details: JSON.stringify({
         statusCode: response.status,
-        response: typeof body === "string" ? safeJsonParse(body).data : body,
+        response: body,
         request,
       }),
     });
     return {
       response: {
         statusCode: response.status,
-        data: typeof body === "string" ? safeJsonParse(body).data : body,
+        data: safeJsonParse(body).data,
       },
       logs,
       startTimeShouldBeUpdated: true,
     };
   } catch (error) {
     if (error instanceof HTTPError) {
-      const responseBody = error.response.headers
-        .get("content-type")
-        ?.includes("json")
-        ? await error.response.json()
-        : await error.response.text();
       const response = {
         statusCode: error.response.status,
-        data:
-          typeof responseBody === "string"
-            ? safeJsonParse(responseBody).data
-            : responseBody,
+        data: safeJsonParse(await error.response.text()).data,
       };
       logs.push({
         status: "error",
@@ -347,7 +337,6 @@ export const convertKeyValueTableToObject = (
   }, {});
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const safeJsonParse = (json: unknown): { data: any; isJson: boolean } => {
   try {
     return { data: JSONParse(json as string), isJson: true };
