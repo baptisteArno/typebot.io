@@ -184,8 +184,17 @@ const convertWhatsAppMessageToTypebotMessage = async ({
         break;
       }
       case "interactive": {
-        if (text !== "") text += `\n\n${message.interactive.button_reply.id}`;
-        else text = message.interactive.button_reply.id;
+        switch (message.interactive.type) {
+          case "button_reply":
+            if (text !== "")
+              text += `\n\n${message.interactive.button_reply.id}`;
+            else text = message.interactive.button_reply.id;
+            break;
+          case "list_reply":
+            if (text !== "") text += `\n\n${message.interactive.list_reply.id}`;
+            else text = message.interactive.list_reply.id;
+            break;
+        }
         break;
       }
       case "document":
