@@ -89,7 +89,13 @@ export const ConversationContainer = (props: Props) => {
     key: `typebot-${props.context.typebot.id}-isEnded`,
     storage: props.context.storage,
   });
-  const [totalChunksDisplayed, setTotalChunksDisplayed] = createSignal(0);
+  const [totalChunksDisplayed, setTotalChunksDisplayed] = persist(
+    createSignal(0),
+    {
+      key: `typebot-${props.context.typebot.id}-totalChunksDisplayed`,
+      storage: props.context.storage,
+    },
+  );
   const [dynamicTheme, setDynamicTheme] = createSignal<
     ContinueChatResponse["dynamicTheme"]
   >(props.initialChatReply.dynamicTheme);
