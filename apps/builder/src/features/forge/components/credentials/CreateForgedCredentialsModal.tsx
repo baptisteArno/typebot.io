@@ -1,6 +1,6 @@
 import { TextInput } from "@/components/inputs/TextInput";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { useToast } from "@/hooks/useToast";
+import { toast } from "@/lib/toast";
 import { trpc } from "@/lib/trpc";
 import {
   Button,
@@ -58,7 +58,6 @@ export const CreateForgedCredentialsModalContent = ({
   scope,
 }: Pick<Props, "blockDef" | "onNewCredentials" | "defaultData" | "scope">) => {
   const { workspace } = useWorkspace();
-  const { showToast } = useToast();
   const [name, setName] = useState("");
   const [data, setData] = useState({});
 
@@ -74,9 +73,8 @@ export const CreateForgedCredentialsModalContent = ({
     onMutate: () => setIsCreating(true),
     onSettled: () => setIsCreating(false),
     onError: (err) => {
-      showToast({
+      toast({
         description: err.message,
-        status: "error",
       });
     },
     onSuccess: (data) => {
@@ -93,7 +91,7 @@ export const CreateForgedCredentialsModalContent = ({
         ? {
             credentials: {
               type: blockDef.id,
-              name,
+              name: name ?? "My account",
               data,
             } as Credentials,
             scope: "workspace",
@@ -102,7 +100,7 @@ export const CreateForgedCredentialsModalContent = ({
         : {
             credentials: {
               type: blockDef.id,
-              name,
+              name: name ?? "My account",
               data,
             } as Credentials,
             scope: "user",
@@ -118,8 +116,8 @@ export const CreateForgedCredentialsModalContent = ({
       <form onSubmit={createOpenAICredentials}>
         <ModalBody as={Stack} spacing="6">
           <TextInput
-            isRequired
-            label="Name"
+            label="Label"
+            moreInfoTooltip={`Choose a name to identify this ${blockDef.auth.name}`}
             onChange={setName}
             placeholder="My account"
             withVariableButton={false}

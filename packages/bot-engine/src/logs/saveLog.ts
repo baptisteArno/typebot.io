@@ -1,5 +1,5 @@
 import prisma from "@typebot.io/prisma";
-import { formatLogDetails } from "./helpers/formatLogDetails";
+import { shortenLogDetails } from "./helpers/shortenLogDetails";
 
 type Props = {
   status: "error" | "success" | "info";
@@ -15,7 +15,7 @@ export const saveLog = ({ status, resultId, message, details }: Props) => {
       resultId,
       status,
       description: message,
-      details: formatLogDetails(details) as string | null,
+      details: shortenLogDetails(JSON.stringify(details)) as string | null,
     },
   });
 };

@@ -1,4 +1,5 @@
 import { createAction, option } from "@typebot.io/forge";
+import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
 import { isDefined, isNotDefined } from "@typebot.io/lib/utils";
 import ky, { HTTPError } from "ky";
 import { auth } from "../auth";
@@ -8,7 +9,6 @@ import {
   filterOperators,
 } from "../constants";
 import { convertFilterToWhereClause } from "../helpers/convertFilterToWhereClause";
-import { parseErrorResponse } from "../helpers/parseErrorResponse";
 import { parseSearchParams } from "../helpers/parseSearchParams";
 import type { ListTableRecordsResponse } from "../types";
 
@@ -127,12 +127,12 @@ export const searchRecords = createAction({
         });
       } catch (error) {
         if (error instanceof HTTPError)
-          return logs.add({
-            status: "error",
-            description: error.message,
-            details: await parseErrorResponse(error.response),
-          });
-        console.error(error);
+          return logs.add(
+            await parseUnknownError({
+              err: error,
+              context: "While searching NocoDB records",
+            }),
+          );
       }
     },
   },

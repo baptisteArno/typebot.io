@@ -1,6 +1,6 @@
 import { guessApiHost } from "@/utils/guessApiHost";
-import type { ChatLog } from "@typebot.io/bot-engine/schemas/api";
 import { isNotEmpty } from "@typebot.io/lib/utils";
+import type { LogInSession } from "@typebot.io/logs/schemas";
 import ky from "ky";
 
 export const saveClientLogsQuery = async ({
@@ -10,7 +10,7 @@ export const saveClientLogsQuery = async ({
 }: {
   apiHost?: string;
   sessionId: string;
-  clientLogs: ChatLog[];
+  clientLogs: LogInSession[];
 }) => {
   try {
     await ky.post(

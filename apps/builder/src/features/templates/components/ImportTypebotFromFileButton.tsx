@@ -1,6 +1,7 @@
-import { useToast } from "@/hooks/useToast";
+import { toast } from "@/lib/toast";
 import { Button, type ButtonProps, chakra } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
+import { parseUnknownClientError } from "@typebot.io/lib/parseUnknownClientError";
 import type { Typebot } from "@typebot.io/typebot/schemas/typebot";
 import React, { type ChangeEvent } from "react";
 
@@ -13,7 +14,6 @@ export const ImportTypebotFromFileButton = ({
   ...props
 }: Props) => {
   const { t } = useTranslate();
-  const { showToast } = useToast();
 
   const handleInputChange = async (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target?.files) return;
@@ -29,13 +29,7 @@ export const ImportTypebotFromFileButton = ({
       } as Typebot);
     } catch (err) {
       console.error(err);
-      showToast({
-        description: t("templates.importFromFileButon.toastError.description"),
-        details: {
-          content: JSON.stringify(err, null, 2),
-          lang: "json",
-        },
-      });
+      toast(await parseUnknownClientError({ err }));
     }
   };
 

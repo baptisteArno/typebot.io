@@ -48,7 +48,7 @@ export const createCustomDomain = authenticatedProcedure
     if (!workspace || isWriteWorkspaceForbidden(workspace, user))
       throw new TRPCError({
         code: "NOT_FOUND",
-        message: "No workspaces found",
+        message: "Workspace not found",
       });
 
     const existingCustomDomain = await prisma.customDomain.findFirst({

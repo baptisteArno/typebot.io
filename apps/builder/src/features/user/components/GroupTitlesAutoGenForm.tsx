@@ -11,8 +11,8 @@ import { HStack, Stack } from "@chakra-ui/react";
 import type { BlockV6 } from "@typebot.io/blocks-core/schemas/schema";
 import type { Credentials } from "@typebot.io/credentials/schemas";
 import { forgedBlocks } from "@typebot.io/forge-repository/definitions";
+import { defaultGroupTitleGenPrompt } from "@typebot.io/schemas/features/user/constants";
 import type { GroupTitlesAutoGeneration } from "@typebot.io/schemas/features/user/schema";
-import { defaultGroupTitleGenPrompt } from "@typebot.io/workspaces/constants";
 import { useState } from "react";
 
 type Props = {
@@ -26,7 +26,7 @@ export const GroupTitlesAutoGenForm = ({
   onChange,
 }: Props) => {
   const { blockDef, actionDef } = useForgedBlock({
-    blockType: provider as BlockV6["type"],
+    nodeType: provider as BlockV6["type"],
     feature: "aiGenerate",
   });
   const [credsCreatingType, setCredsCreatingType] = useState<typeof provider>();
@@ -51,6 +51,7 @@ export const GroupTitlesAutoGenForm = ({
           <DropdownList
             direction="row"
             label="Provider:"
+            placeholder="Select"
             items={Object.values(forgedBlocks)
               .filter((block) => block.actions.some((a) => a.aiGenerate))
               .map((block) => ({

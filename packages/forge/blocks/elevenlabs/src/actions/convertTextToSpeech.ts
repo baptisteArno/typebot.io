@@ -1,5 +1,6 @@
 import { createAction, option } from "@typebot.io/forge";
 import { createId } from "@typebot.io/lib/createId";
+import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
 import { uploadFileToBucket } from "@typebot.io/lib/s3/uploadFileToBucket";
 import got, { HTTPError } from "ky";
 import { auth } from "../auth";
@@ -37,42 +38,64 @@ export const convertTextToSpeech = createAction({
     {
       id: "fetchVoices",
       fetch: async ({ credentials }) => {
-        if (!credentials?.apiKey) return [];
+        if (!credentials?.apiKey)
+          return {
+            data: [],
+          };
 
-        const response = await got
-          .get(baseUrl + "/v1/voices", {
-            headers: {
-              "xi-api-key": credentials.apiKey,
-            },
-          })
-          .json<VoicesResponse>();
+        try {
+          const response = await got
+            .get(baseUrl + "/v1/voices", {
+              headers: {
+                "xi-api-key": credentials.apiKey,
+              },
+            })
+            .json<VoicesResponse>();
 
-        return response.voices.map((voice) => ({
-          value: voice.voice_id,
-          label: voice.name,
-        }));
+          return {
+            data: response.voices.map((voice) => ({
+              value: voice.voice_id,
+              label: voice.name,
+            })),
+          };
+        } catch (err) {
+          return {
+            error: await parseUnknownError({ err }),
+          };
+        }
       },
       dependencies: [],
     },
     {
       id: "fetchModels",
       fetch: async ({ credentials }) => {
-        if (!credentials?.apiKey) return [];
+        if (!credentials?.apiKey)
+          return {
+            data: [],
+          };
 
-        const response = await got
-          .get(baseUrl + "/v1/models", {
-            headers: {
-              "xi-api-key": credentials.apiKey,
-            },
-          })
-          .json<ModelsResponse>();
+        try {
+          const response = await got
+            .get(baseUrl + "/v1/models", {
+              headers: {
+                "xi-api-key": credentials.apiKey,
+              },
+            })
+            .json<ModelsResponse>();
 
-        return response
-          .filter((model) => model.can_do_text_to_speech)
-          .map((model) => ({
-            value: model.model_id,
-            label: model.name,
-          }));
+          return {
+            data: response
+              .filter((model) => model.can_do_text_to_speech)
+              .map((model) => ({
+                value: model.model_id,
+                label: model.name,
+              })),
+          };
+        } catch (err) {
+          return {
+            error: await parseUnknownError({ err }),
+          };
+        }
       },
       dependencies: [],
     },
@@ -107,18 +130,12 @@ export const convertTextToSpeech = createAction({
 
         variables.set([{ id: options.saveUrlInVariableId, value: url }]);
       } catch (err) {
-        if (err instanceof HTTPError) {
-          return logs.add({
-            status: "error",
-            description: err.message,
-            details: await err.response.text(),
-          });
-        }
-        logs.add({
-          status: "error",
-          description: "An error occured while converting the text to speech",
-          details: JSON.stringify(err, null, 2),
-        });
+        return logs.add(
+          await parseUnknownError({
+            err,
+            context: "While converting text to ElevenLabs speech",
+          }),
+        );
       }
     },
   },

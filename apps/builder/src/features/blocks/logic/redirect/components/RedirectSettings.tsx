@@ -25,7 +25,7 @@ export const RedirectSettings = ({ options, onOptionsChange }: Props) => {
         onChange={handleUrlChange}
       />
       <SwitchWithLabel
-        label="Open in new tab?"
+        label="Open in new tab"
         initialValue={options?.isNewTab ?? defaultRedirectOptions.isNewTab}
         onCheckChange={handleIsNewTabChange}
       />

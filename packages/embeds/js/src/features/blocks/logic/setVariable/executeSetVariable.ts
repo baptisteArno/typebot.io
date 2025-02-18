@@ -1,9 +1,8 @@
-import type { ChatLog } from "@typebot.io/bot-engine/schemas/api";
 import type { ScriptToExecute } from "@typebot.io/bot-engine/schemas/clientSideAction";
+import { parseUnknownClientError } from "@typebot.io/lib/parseUnknownClientError";
 import { safeStringify } from "@typebot.io/lib/safeStringify";
-import { stringifyError } from "@typebot.io/lib/stringifyError";
+import type { LogInSession } from "@typebot.io/logs/schemas";
 
-// eslint-disable-next-line @typescript-eslint/no-empty-function
 const AsyncFunction = Object.getPrototypeOf(async () => {}).constructor;
 
 export const executeSetVariable = async ({
@@ -12,7 +11,7 @@ export const executeSetVariable = async ({
   isCode,
 }: ScriptToExecute): Promise<{
   replyToSend: string | undefined;
-  logs?: ChatLog[];
+  logs?: LogInSession[];
 }> => {
   try {
     // To avoid octal number evaluation
@@ -34,11 +33,10 @@ export const executeSetVariable = async ({
       replyToSend: safeStringify(content) ?? undefined,
       logs: isCode
         ? [
-            {
-              status: "error",
-              description: "Failed to execute Set Variable code",
-              details: stringifyError(err),
-            },
+            await parseUnknownClientError({
+              err,
+              context: "While executing set variable",
+            }),
           ]
         : undefined,
     };

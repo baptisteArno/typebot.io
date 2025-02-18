@@ -5,7 +5,7 @@ import { NumberInput } from "@/components/inputs";
 import { CodeEditor } from "@/components/inputs/CodeEditor";
 import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
-import { useToast } from "@/hooks/useToast";
+import { toast } from "@/lib/toast";
 import {
   Accordion,
   AccordionButton,
@@ -58,7 +58,6 @@ export const HttpRequestAdvancedConfigForm = ({
   const [isTestResponseLoading, setIsTestResponseLoading] = useState(false);
   const [testResponse, setTestResponse] = useState<string>();
   const [responseKeys, setResponseKeys] = useState<string[]>([]);
-  const { showToast } = useToast();
 
   const updateMethod = (method: HttpMethod) =>
     onHttpRequestChange({ ...httpRequest, method });
@@ -101,8 +100,7 @@ export const HttpRequestAdvancedConfigForm = ({
       ),
       { blockId },
     );
-    if (error)
-      return showToast({ title: error.name, description: error.message });
+    if (error) return toast({ description: error.message });
     setTestResponse(JSON.stringify(data, undefined, 2));
     setResponseKeys(getDeepKeys(data));
     setIsTestResponseLoading(false);
@@ -200,6 +198,7 @@ export const HttpRequestAdvancedConfigForm = ({
                   lang="json"
                   onChange={updateBody}
                   debounceTimeout={0}
+                  withLineNumbers={true}
                 />
               )}
             </AccordionPanel>

@@ -1,5 +1,6 @@
 import { isReadWorkspaceFobidden } from "@/features/workspace/helpers/isReadWorkspaceFobidden";
 import { authenticatedProcedure } from "@/helpers/server/trpc";
+import { ClientToastError } from "@/lib/ClientToastError";
 import { TRPCError } from "@trpc/server";
 import { decrypt } from "@typebot.io/credentials/decrypt";
 import { forgedBlockIds } from "@typebot.io/forge-repository/constants";
@@ -89,10 +90,12 @@ export const fetchSelectItems = authenticatedProcedure
 
     if (!fetcher) return { items: [] };
 
-    return {
-      items: await fetcher.fetch({
-        credentials: credentialsData as any,
-        options: input.options,
-      }),
-    };
+    const { data, error } = await fetcher.fetch({
+      credentials: credentialsData as any,
+      options: input.options,
+    });
+
+    if (error) throw new ClientToastError(error);
+
+    return { items: data };
   });

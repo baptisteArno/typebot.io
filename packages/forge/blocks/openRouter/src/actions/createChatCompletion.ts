@@ -5,6 +5,7 @@ import { parseChatCompletionOptions } from "@typebot.io/ai/parseChatCompletionOp
 import { runChatCompletion } from "@typebot.io/ai/runChatCompletion";
 import { runChatCompletionStream } from "@typebot.io/ai/runChatCompletionStream";
 import { createAction } from "@typebot.io/forge";
+import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
 import ky from "ky";
 import { auth } from "../auth";
 import { defaultOpenRouterOptions } from "../constants";
@@ -41,14 +42,22 @@ export const createChatCompletion = createAction({
       id: "fetchModels",
       dependencies: [],
       fetch: async () => {
-        const response = await ky
-          .get(defaultOpenRouterOptions.baseUrl + "/models")
-          .json<ModelsResponse>();
+        try {
+          const response = await ky
+            .get(defaultOpenRouterOptions.baseUrl + "/models")
+            .json<ModelsResponse>();
 
-        return response.data.map((model) => ({
-          value: model.id,
-          label: model.name,
-        }));
+          return {
+            data: response.data.map((model) => ({
+              value: model.id,
+              label: model.name,
+            })),
+          };
+        } catch (err) {
+          return {
+            error: await parseUnknownError({ err, context: "Fetching models" }),
+          };
+        }
       },
     },
   ],
@@ -78,13 +87,23 @@ export const createChatCompletion = createAction({
       getStreamVariableId: getChatCompletionStreamVarId,
       run: async ({ credentials: { apiKey }, options, variables }) => {
         if (!apiKey)
-          return { httpError: { status: 400, message: "No API key provided" } };
+          return {
+            error: {
+              description: "No API key provided",
+            },
+          };
         const modelName = options.model?.trim();
         if (!modelName)
-          return { httpError: { status: 400, message: "No model provided" } };
+          return {
+            error: {
+              description: "No model provided",
+            },
+          };
         if (!options.messages)
           return {
-            httpError: { status: 400, message: "No messages provided" },
+            error: {
+              description: "No messages provided",
+            },
           };
 
         return runChatCompletionStream({

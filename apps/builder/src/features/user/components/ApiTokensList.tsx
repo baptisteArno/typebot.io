@@ -1,6 +1,6 @@
 import { ConfirmModal } from "@/components/ConfirmModal";
 import { TimeSince } from "@/components/TimeSince";
-import { useToast } from "@/hooks/useToast";
+import { toast } from "@/lib/toast";
 import {
   Button,
   Checkbox,
@@ -31,11 +31,13 @@ type Props = { user: Prisma.User };
 
 export const ApiTokensList = ({ user }: Props) => {
   const { t } = useTranslate();
-  const { showToast } = useToast();
   const { apiTokens, isLoading, mutate } = useApiTokens({
     userId: user.id,
     onError: (e) =>
-      showToast({ title: "Failed to fetch tokens", description: e.message }),
+      toast({
+        context: "Failed to fetch tokens",
+        description: e.message,
+      }),
   });
   const {
     isOpen: isCreateOpen,

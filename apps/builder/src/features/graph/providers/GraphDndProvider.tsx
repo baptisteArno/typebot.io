@@ -6,6 +6,7 @@ import type {
 } from "@typebot.io/blocks-core/schemas/schema";
 import type { AbTestBlock } from "@typebot.io/blocks-logic/abTest/schema";
 import type { LogicBlockType } from "@typebot.io/blocks-logic/constants";
+import type { TDraggableEvent } from "@typebot.io/events/schemas";
 import {
   type Dispatch,
   type ReactNode,
@@ -47,7 +48,10 @@ const graphDndContext = createContext<{
   setMouseOverGroup: (node: NodeElement | undefined) => void;
   mouseOverBlock?: NodeElement;
   setMouseOverBlock: (node: NodeElement | undefined) => void;
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  draggedEventType?: TDraggableEvent["type"];
+  setDraggedEventType: Dispatch<
+    SetStateAction<TDraggableEvent["type"] | undefined>
+  >;
   //@ts-ignore
 }>({});
 
@@ -61,6 +65,9 @@ export const GraphDndProvider = ({ children }: { children: ReactNode }) => {
     BlockV6["type"] | undefined
   >();
   const [draggedItem, setDraggedItem] = useState<DraggableItem | undefined>();
+  const [draggedEventType, setDraggedEventType] = useState<
+    TDraggableEvent["type"] | undefined
+  >();
   const [mouseOverGroup, _setMouseOverGroup] = useState<NodeElement>();
   const [mouseOverBlock, _setMouseOverBlock] = useState<NodeElement>();
 
@@ -93,6 +100,8 @@ export const GraphDndProvider = ({ children }: { children: ReactNode }) => {
         setMouseOverGroup,
         mouseOverBlock,
         setMouseOverBlock,
+        draggedEventType,
+        setDraggedEventType,
       }}
     >
       {children}

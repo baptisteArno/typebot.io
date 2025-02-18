@@ -143,6 +143,15 @@ export const incomingMessageSchema = z.discriminatedUnion("type", [
       data: z.string().optional(),
     }),
   }),
+  sharedIncomingMessageFieldsSchema.extend({
+    type: z.literal("reaction"),
+    reaction: z.object({
+      emoji: z.string().optional(),
+    }),
+  }),
+  sharedIncomingMessageFieldsSchema.extend({
+    type: z.literal("unsupported"),
+  }),
 ]);
 
 const incomingErrors = z.object({

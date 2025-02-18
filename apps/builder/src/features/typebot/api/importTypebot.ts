@@ -1,10 +1,10 @@
-import { getUserRoleInWorkspace } from "@/features/workspace/helpers/getUserRoleInWorkspace";
+import { getUserModeInWorkspace } from "@/features/workspace/helpers/getUserRoleInWorkspace";
 import { authenticatedProcedure } from "@/helpers/server/trpc";
 import { createId } from "@paralleldrive/cuid2";
 import { TRPCError } from "@trpc/server";
 import { duplicateTypebotS3Objects } from "@typebot.io/lib/s3/duplicateTypebotS3Objects";
 import prisma from "@typebot.io/prisma";
-import { Plan, WorkspaceRole } from "@typebot.io/prisma/enum";
+import { Plan } from "@typebot.io/prisma/enum";
 import { trackEvents } from "@typebot.io/telemetry/trackEvents";
 import { migrateTypebot } from "@typebot.io/typebot/migrations/migrateTypebot";
 import { preprocessTypebot } from "@typebot.io/typebot/preprocessTypebot";
@@ -124,12 +124,8 @@ export const importTypebot = authenticatedProcedure
         where: { id: workspaceId },
         select: { id: true, members: true, plan: true },
       });
-      const userRole = getUserRoleInWorkspace(user.id, workspace?.members);
-      if (
-        userRole === undefined ||
-        userRole === WorkspaceRole.GUEST ||
-        !workspace
-      )
+      const userRole = getUserModeInWorkspace(user.id, workspace?.members);
+      if (userRole === "guest" || !workspace)
         throw new TRPCError({
           code: "NOT_FOUND",
           message: "Workspace not found",
@@ -137,15 +133,11 @@ export const importTypebot = authenticatedProcedure
 
       const newBotId = createId();
 
-      console.log("ORIGINAL ICON", typebot.icon);
-
       let duplicatingBot = await duplicateTypebotS3Objects({
         typebot,
         newTypebotId: newBotId,
         newWorkspaceId: workspaceId,
       });
-
-      console.log("DUPLICATED ICON", duplicatingBot.icon);
 
       duplicatingBot = await migrateImportingTypebot(duplicatingBot);
 
@@ -155,7 +147,6 @@ export const importTypebot = authenticatedProcedure
           : []
       ) as TypebotV6["groups"];
 
-      console.log("DUPLICATED ICON", duplicatingBot.icon);
       const newTypebot = await prisma.typebot.create({
         data: {
           id: newBotId,

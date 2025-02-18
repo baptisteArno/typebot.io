@@ -1,5 +1,5 @@
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { useToast } from "@/hooks/useToast";
+import { toast } from "@/lib/toast";
 import {
   Button,
   HStack,
@@ -43,7 +43,6 @@ export const TemplatesModal = ({
     templates[0],
   );
   const [isFirstTemplateLoaded, setIsFirstTemplateLoaded] = useState(false);
-  const { showToast } = useToast();
   const { workspace } = useWorkspace();
 
   const fetchTemplate = useCallback(
@@ -54,14 +53,17 @@ export const TemplatesModal = ({
         `/templates/${template.fileName}`,
       );
       if (error)
-        return showToast({ title: error.name, description: error.message });
+        return toast({
+          context: error.name,
+          description: error.message,
+        });
       setTypebot({
         ...(data as Typebot),
         name: template.name,
         workspaceId: workspace.id,
       });
     },
-    [showToast, workspace?.id],
+    [workspace?.id],
   );
 
   useEffect(() => {

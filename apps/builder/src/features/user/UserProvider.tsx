@@ -1,4 +1,4 @@
-import { useToast } from "@/hooks/useToast";
+import { toast } from "@/lib/toast";
 import { useColorMode } from "@chakra-ui/react";
 import { env } from "@typebot.io/env";
 import { isDefined, isNotDefined } from "@typebot.io/lib/utils";
@@ -28,7 +28,6 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
   const { data: session, status } = useSession();
   const [user, setUser] = useState<User | undefined>();
-  const { showToast } = useToast();
   const [currentWorkspaceId, setCurrentWorkspaceId] = useState<string>();
   const { setColorMode } = useColorMode();
 
@@ -91,7 +90,11 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     async (updates: Partial<User>) => {
       if (isNotDefined(user)) return;
       const { error } = await updateUserQuery(user.id, updates);
-      if (error) showToast({ title: error.name, description: error.message });
+      if (error)
+        toast({
+          context: error.name,
+          description: error.message,
+        });
       await refreshUser();
     },
     env.NEXT_PUBLIC_E2E_TEST ? 0 : debounceTimeout,

@@ -7,7 +7,7 @@ export class WhatsAppError extends Error {
   details?: Details;
 
   constructor(message: string, details?: Details) {
-    super();
+    super(message);
     this.message = message;
     this.details = details;
   }

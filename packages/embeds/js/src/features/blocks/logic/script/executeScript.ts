@@ -1,5 +1,5 @@
 import type { ScriptToExecute } from "@typebot.io/bot-engine/schemas/clientSideAction";
-import { stringifyError } from "@typebot.io/lib/stringifyError";
+import { parseUnknownClientError } from "@typebot.io/lib/parseUnknownClientError";
 
 const AsyncFunction = Object.getPrototypeOf(async () => {}).constructor;
 
@@ -18,11 +18,10 @@ export const executeScript = async ({ content, args }: ScriptToExecute) => {
     console.log(err);
     return {
       logs: [
-        {
-          status: "error",
-          description: "Script block failed to execute",
-          details: stringifyError(err),
-        },
+        await parseUnknownClientError({
+          err,
+          context: "While executing script",
+        }),
       ],
     };
   }

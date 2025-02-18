@@ -27,6 +27,7 @@
     "exportResults": "tsx src/exportResults.ts",
     "updateUserEmail": "SKIP_ENV_CHECK=true dotenv -e ./.env.production -- tsx src/updateUserEmail.ts",
     "inspectChatSession": "tsx src/inspectChatSession.ts",
+    "inspectCredentials": "tsx src/inspectCredentials.ts",
     "deleteChatSession": "tsx src/deleteChatSession.ts",
     "checkDependencies": "tsx src/checkDependencies.ts",
     "readCsvAndDoSomething": "SKIP_ENV_CHECK=true dotenv -e ./.env.production -- tsx src/readCsvAndDoSomething.ts"

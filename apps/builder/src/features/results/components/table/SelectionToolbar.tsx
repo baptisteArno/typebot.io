@@ -1,7 +1,7 @@
 import { ConfirmModal } from "@/components/ConfirmModal";
 import { DownloadIcon, TrashIcon } from "@/components/icons";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
-import { useToast } from "@/hooks/useToast";
+import { toast } from "@/lib/toast";
 import { trpc } from "@/lib/trpc";
 import {
   Button,
@@ -29,7 +29,6 @@ export const SelectionToolbar = ({
 }: Props) => {
   const selectLabelColor = useColorModeValue("blue.500", "blue.200");
   const { typebot } = useTypebot();
-  const { showToast } = useToast();
   const { resultHeader, tableData, onDeleteResults } = useResults();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isDeleteLoading, setIsDeleteLoading] = useState(false);
@@ -39,7 +38,7 @@ export const SelectionToolbar = ({
     onMutate: () => {
       setIsDeleteLoading(true);
     },
-    onError: (error) => showToast({ description: error.message }),
+    onError: (error) => toast({ description: error.message }),
     onSuccess: async () => {
       await trpcContext.results.getResults.invalidate();
     },

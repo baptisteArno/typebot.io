@@ -21,6 +21,7 @@ import type {
 import { env } from "@typebot.io/env";
 import { JSONParse } from "@typebot.io/lib/JSONParse";
 import { isDefined, isEmpty, isNotDefined, omit } from "@typebot.io/lib/utils";
+import type { LogInSession } from "@typebot.io/logs/schemas";
 import prisma from "@typebot.io/prisma";
 import { parseAnswers } from "@typebot.io/results/parseAnswers";
 import type { AnswerInSessionState } from "@typebot.io/results/schemas/answers";
@@ -28,7 +29,6 @@ import { parseVariables } from "@typebot.io/variables/parseVariables";
 import type { Variable } from "@typebot.io/variables/schemas";
 import ky, { HTTPError, TimeoutError, type Options } from "ky";
 import { stringify } from "qs";
-import type { ChatLog } from "../../../schemas/api";
 import type { ExecuteIntegrationResponse } from "../../../types";
 import { saveDataInResponseVariableMapping } from "./saveDataInResponseVariableMapping";
 
@@ -55,7 +55,7 @@ export const executeHttpRequestBlock = async (
   block: HttpRequestBlock | ZapierBlock | MakeComBlock | PabblyConnectBlock,
   params: Params = {},
 ): Promise<ExecuteIntegrationResponse> => {
-  const logs: ChatLog[] = [];
+  const logs: LogInSession[] = [];
   const webhook =
     block.options?.webhook ??
     ("webhookId" in block
@@ -183,10 +183,10 @@ export const executeHttpRequest = async (
   params: Params = {},
 ): Promise<{
   response: HttpResponse;
-  logs?: ChatLog[];
+  logs?: LogInSession[];
   startTimeShouldBeUpdated?: boolean;
 }> => {
-  const logs: ChatLog[] = [];
+  const logs: LogInSession[] = [];
 
   const { headers, url, method, basicAuth, isJson } = webhook;
   const contentType = headers ? headers["Content-Type"] : undefined;
@@ -231,11 +231,11 @@ export const executeHttpRequest = async (
     logs.push({
       status: "success",
       description: webhookSuccessDescription,
-      details: {
+      details: JSON.stringify({
         statusCode: response.status,
         response: typeof body === "string" ? safeJsonParse(body).data : body,
         request,
-      },
+      }),
     });
     return {
       response: {
@@ -262,11 +262,11 @@ export const executeHttpRequest = async (
       logs.push({
         status: "error",
         description: webhookErrorDescription,
-        details: {
+        details: JSON.stringify({
           statusCode: error.response.status,
           request,
           response,
-        },
+        }),
       });
       return { response, logs, startTimeShouldBeUpdated: true };
     }
@@ -284,10 +284,10 @@ export const executeHttpRequest = async (
         description: `Webhook request timed out. (${
           (request.timeout ? request.timeout : 0) / 1000
         }s)`,
-        details: {
+        details: JSON.stringify({
           response,
           request,
-        },
+        }),
       });
       return { response, logs, startTimeShouldBeUpdated: true };
     }
@@ -299,10 +299,10 @@ export const executeHttpRequest = async (
     logs.push({
       status: "error",
       description: `Webhook failed to execute.`,
-      details: {
+      details: JSON.stringify({
         response,
         request,
-      },
+      }),
     });
     return { response, logs, startTimeShouldBeUpdated: true };
   }

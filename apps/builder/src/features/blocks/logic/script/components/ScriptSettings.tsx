@@ -35,9 +35,10 @@ export const ScriptSettings = ({ options, onOptionsChange }: Props) => {
           defaultValue={options?.content}
           lang="javascript"
           onChange={handleCodeChange}
+          withLineNumbers={true}
         />
         <SwitchWithLabel
-          label="Execute on client?"
+          label="Execute on client"
           moreInfoContent="Check this if you need access to client variables like `window` or `document`."
           initialValue={
             options?.isExecutedOnClient ??

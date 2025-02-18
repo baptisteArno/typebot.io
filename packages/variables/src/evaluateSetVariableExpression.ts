@@ -1,4 +1,4 @@
-import { stringifyError } from "@typebot.io/lib/stringifyError";
+import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
 import { executeFunction } from "./executeFunction";
 import { parseVariables } from "./parseVariables";
 import type { Variable, VariableWithValue } from "./schemas";
@@ -12,7 +12,10 @@ export const evaluateSetVariableExpression =
           code: string;
         }
       | { type: "value"; value: VariableWithValue["value"] },
-  ): Promise<{ value: unknown; error?: string }> => {
+  ): Promise<{
+    value: unknown;
+    error?: { description: string; details?: string; context?: string };
+  }> => {
     if (expression.type === "value") return { value: expression.value };
     const isSingleVariable =
       expression.code.startsWith("{{") &&
@@ -33,7 +36,10 @@ export const evaluateSetVariableExpression =
     if (error) {
       return {
         value: parseVariables(variables)(expression.code),
-        error: stringifyError(error),
+        error: await parseUnknownError({
+          err: error,
+          context: "While evaluating set variable expression",
+        }),
       };
     }
     return { value: output };

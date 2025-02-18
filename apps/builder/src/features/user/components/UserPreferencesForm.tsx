@@ -1,6 +1,7 @@
 import { MoreInfoTooltip } from "@/components/MoreInfoTooltip";
 import { SwitchWithRelatedSettings } from "@/components/SwitchWithRelatedSettings";
 import { ChevronDownIcon } from "@/components/icons";
+import { VideoOnboardingPopover } from "@/features/onboarding/components/VideoOnboardingPopover";
 import {
   Button,
   HStack,
@@ -136,21 +137,27 @@ export const UserPreferencesForm = () => {
         />
       </Stack>
 
-      <SwitchWithRelatedSettings
-        label="Generate groups title with AI"
-        initialValue={user?.groupTitlesAutoGeneration?.isEnabled}
-        onCheckChange={(isEnabled) => {
-          updateGroupTitlesGenParams({ isEnabled });
-        }}
+      <VideoOnboardingPopover.Root
+        type="groupTitlesAutoGeneration"
+        isEnabled={user?.groupTitlesAutoGeneration?.isEnabled ?? false}
+        placement="top-end"
       >
-        {user?.groupTitlesAutoGeneration && (
-          <GroupTitlesAutoGenForm
-            userId={user.id}
-            values={user.groupTitlesAutoGeneration}
-            onChange={updateGroupTitlesGenParams}
-          />
-        )}
-      </SwitchWithRelatedSettings>
+        <SwitchWithRelatedSettings
+          label="Generate groups title with AI"
+          initialValue={user?.groupTitlesAutoGeneration?.isEnabled}
+          onCheckChange={(isEnabled) => {
+            updateGroupTitlesGenParams({ isEnabled });
+          }}
+        >
+          {user?.groupTitlesAutoGeneration && (
+            <GroupTitlesAutoGenForm
+              userId={user.id}
+              values={user.groupTitlesAutoGeneration}
+              onChange={updateGroupTitlesGenParams}
+            />
+          )}
+        </SwitchWithRelatedSettings>
+      </VideoOnboardingPopover.Root>
     </Stack>
   );
 };

@@ -318,6 +318,7 @@ model Log {
   resultId    String
   status      String
   description String   @db.Text
+  context     String?  @db.Text
   details     String?  @db.Text
   result      Result   @relation(fields: [resultId], references: [id], onDelete: Cascade)
 

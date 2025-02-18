@@ -58,13 +58,19 @@ export const createChatCompletion = createAction({
       getStreamVariableId: getChatCompletionStreamVarId,
       run: async ({ credentials: { apiKey }, options, variables }) => {
         if (!apiKey)
-          return { httpError: { status: 400, message: "No API key provided" } };
+          return {
+            error: {
+              description: "No API key provided",
+            },
+          };
         const modelName = options.model?.trim();
         if (!modelName)
-          return { httpError: { status: 400, message: "No model provided" } };
+          return {
+            error: { description: "No model provided" },
+          };
         if (!options.messages)
           return {
-            httpError: { status: 400, message: "No messages provided" },
+            error: { description: "No messages provided" },
           };
 
         return runChatCompletionStream({

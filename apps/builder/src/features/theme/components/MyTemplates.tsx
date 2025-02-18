@@ -1,4 +1,5 @@
 import { SaveIcon } from "@/components/icons";
+import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { trpc } from "@/lib/trpc";
 import { Button, SimpleGrid, Stack, useDisclosure } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
@@ -26,10 +27,16 @@ export const MyTemplates = ({
   onTemplateSelect,
 }: Props) => {
   const { t } = useTranslate();
+  const { currentUserMode } = useWorkspace();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { data } = trpc.theme.listThemeTemplates.useQuery({
-    workspaceId,
-  });
+  const { data } = trpc.theme.listThemeTemplates.useQuery(
+    {
+      workspaceId,
+    },
+    {
+      enabled: currentUserMode !== "guest",
+    },
+  );
   const selectedTemplate = data?.themeTemplates.find(
     (themeTemplate) => themeTemplate.id === selectedTemplateId,
   );

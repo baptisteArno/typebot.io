@@ -1,6 +1,6 @@
 import { Select } from "@/components/inputs/Select";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { useToast } from "@/hooks/useToast";
+import { toast } from "@/lib/toast";
 import { trpc } from "@/lib/trpc";
 import { defaultOpenAIOptions } from "@typebot.io/blocks-integrations/openai/constants";
 
@@ -22,7 +22,6 @@ export const ModelsDropdown = ({
   type,
 }: Props) => {
   const { workspace } = useWorkspace();
-  const { showToast } = useToast();
 
   const { data } = trpc.openAI.listModels.useQuery(
     {
@@ -35,9 +34,8 @@ export const ModelsDropdown = ({
     {
       enabled: !!workspace,
       onError: (error) => {
-        showToast({
+        toast({
           description: error.message,
-          status: "error",
         });
       },
     },

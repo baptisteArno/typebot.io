@@ -278,6 +278,7 @@ export const ZodFieldLayout = ({
             onChange={onDataChange}
             width={width}
             debounceTimeout={layout?.isDebounceDisabled ? 0 : undefined}
+            withLineNumbers={true}
           />
         );
       return (

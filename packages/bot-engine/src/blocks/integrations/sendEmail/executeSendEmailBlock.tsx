@@ -10,6 +10,7 @@ import type { SmtpCredentials } from "@typebot.io/credentials/schemas";
 import { render } from "@typebot.io/emails";
 import { DefaultBotNotificationEmail } from "@typebot.io/emails/emails/DefaultBotNotificationEmail";
 import { env } from "@typebot.io/env";
+import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
 import { getFileTempUrl } from "@typebot.io/lib/s3/getFileTempUrl";
 import {
   byId,
@@ -18,6 +19,7 @@ import {
   isNotDefined,
   omit,
 } from "@typebot.io/lib/utils";
+import type { LogInSession } from "@typebot.io/logs/schemas";
 import { parseAnswers } from "@typebot.io/results/parseAnswers";
 import type { AnswerInSessionState } from "@typebot.io/results/schemas/answers";
 import { findUniqueVariable } from "@typebot.io/variables/findUniqueVariableValue";
@@ -27,7 +29,6 @@ import { createTransport } from "nodemailer";
 import type Mail from "nodemailer/lib/mailer/index";
 import { globals } from "../../../globals";
 import { getTypebotWorkspaceId } from "../../../queries/getTypebotWorkspaceId";
-import type { ChatLog } from "../../../schemas/api";
 import type { ExecuteIntegrationResponse } from "../../../types";
 import { defaultFrom, defaultTransportOptions } from "./constants";
 
@@ -40,7 +41,7 @@ export const executeSendEmailBlock = async (
   state: SessionState,
   block: SendEmailBlock,
 ): Promise<ExecuteIntegrationResponse> => {
-  const logs: ChatLog[] = [];
+  const logs: LogInSession[] = [];
   const { options } = block;
   if (!state.typebotsQueue[0]) throw new Error("No typebot in queue");
   const {
@@ -108,11 +109,7 @@ export const executeSendEmailBlock = async (
     });
     if (sendEmailLogs) logs.push(...sendEmailLogs);
   } catch (err) {
-    logs.push({
-      status: "error",
-      details: err,
-      description: `Email not sent`,
-    });
+    logs.push(await parseUnknownError({ err, context: "While sending email" }));
   }
 
   globals.emailSendingCount += 1;
@@ -148,8 +145,8 @@ const sendEmail = async ({
   answers: AnswerInSessionState[];
   fileUrls?: string | string[];
   workspaceId?: string;
-}): Promise<ChatLog[] | undefined> => {
-  const logs: ChatLog[] = [];
+}): Promise<LogInSession[] | undefined> => {
+  const logs: LogInSession[] = [];
   const { name: replyToName } = parseEmailRecipient(replyTo);
 
   const { host, port, isTlsEnabled, username, password, from } =
@@ -176,9 +173,8 @@ const sendEmail = async ({
 
   if (!emailBody) {
     logs.push({
-      status: "error",
       description: sendEmailErrorDescription,
-      details: {
+      details: JSON.stringify({
         error: "No email body found",
         transportConfig,
         recipients,
@@ -187,7 +183,7 @@ const sendEmail = async ({
         bcc,
         replyTo,
         emailBody,
-      },
+      }),
     });
     return logs;
   }
@@ -217,26 +213,26 @@ const sendEmail = async ({
     logs.push({
       status: "success",
       description: sendEmailSuccessDescription,
-      details: {
+      details: JSON.stringify({
         transportConfig: {
           ...transportConfig,
           auth: { user: transportConfig.auth.user, pass: "******" },
         },
         email,
-      },
+      }),
     });
   } catch (err) {
     logs.push({
       status: "error",
       description: sendEmailErrorDescription,
-      details: {
+      details: JSON.stringify({
         error: err instanceof Error ? err.toString() : err,
         transportConfig: {
           ...transportConfig,
           auth: { user: transportConfig.auth.user, pass: "******" },
         },
         email,
-      },
+      }),
     });
   }
 

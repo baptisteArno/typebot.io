@@ -3,7 +3,7 @@ import { TextLink } from "@/components/TextLink";
 import { TextInput } from "@/components/inputs";
 import { useUser } from "@/features/user/hooks/useUser";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { useToast } from "@/hooks/useToast";
+import { toast } from "@/lib/toast";
 import { trpc } from "@/lib/trpc";
 import {
   Button,
@@ -56,7 +56,6 @@ export const StripeCreateModalContent = ({
   const { user } = useUser();
   const { workspace } = useWorkspace();
   const [isCreating, setIsCreating] = useState(false);
-  const { showToast } = useToast();
   const [stripeConfig, setStripeConfig] = useState<
     StripeCredentials["data"] & { name: string }
   >({
@@ -73,9 +72,8 @@ export const StripeCreateModalContent = ({
     onMutate: () => setIsCreating(true),
     onSettled: () => setIsCreating(false),
     onError: (err) => {
-      showToast({
+      toast({
         description: err.message,
-        status: "error",
       });
     },
     onSuccess: (data) => {

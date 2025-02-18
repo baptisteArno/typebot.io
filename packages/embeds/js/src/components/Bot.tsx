@@ -1,5 +1,5 @@
 import { startChatQuery } from "@/queries/startChatQuery";
-import type { BotContext, OutgoingLog } from "@/types";
+import type { BotContext } from "@/types";
 import { CorsError } from "@/utils/CorsError";
 import { setBotContainerHeight } from "@/utils/botContainerHeightSignal";
 import { setBotContainer } from "@/utils/botContainerSignal";
@@ -23,6 +23,7 @@ import type {
   StartFrom,
 } from "@typebot.io/bot-engine/schemas/api";
 import { isDefined, isNotDefined, isNotEmpty } from "@typebot.io/lib/utils";
+import type { LogInSession } from "@typebot.io/logs/schemas";
 import { isTypebotVersionAtLeastV6 } from "@typebot.io/schemas/helpers/isTypebotVersionAtLeastV6";
 import {
   defaultSettings,
@@ -60,7 +61,7 @@ export type BotProps = {
   onAnswer?: (answer: { message: string; blockId: string }) => void;
   onInit?: () => void;
   onEnd?: () => void;
-  onNewLogs?: (logs: OutgoingLog[]) => void;
+  onNewLogs?: (logs: LogInSession[]) => void;
   onChatStatePersisted?: (isEnabled: boolean) => void;
   onScriptExecutionSuccess?: (message: string) => void;
 };
@@ -284,7 +285,7 @@ type BotContentProps = {
   onNewInputBlock?: (inputBlock: InputBlock) => void;
   onAnswer?: (answer: { message: string; blockId: string }) => void;
   onEnd?: () => void;
-  onNewLogs?: (logs: OutgoingLog[]) => void;
+  onNewLogs?: (logs: LogInSession[]) => void;
   onScriptExecutionSuccess?: (message: string) => void;
 };
 

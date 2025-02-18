@@ -18,8 +18,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { isDefined } from "@typebot.io/lib/utils";
-import type { Prisma } from "@typebot.io/prisma/types";
-import type { Log } from "@typebot.io/results/schemas/results";
+import type { Log } from "@typebot.io/logs/schemas";
 import { useLogs } from "../hooks/useLogs";
 
 type Props = {

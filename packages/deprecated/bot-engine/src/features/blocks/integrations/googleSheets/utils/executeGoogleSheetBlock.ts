@@ -43,7 +43,6 @@ const insertRowInGoogleSheets = (
     onNewLog({
       status: "warning",
       description: "Cells to insert are undefined",
-      details: null,
     });
     return;
   }

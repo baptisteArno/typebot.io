@@ -1,5 +1,4 @@
-import type { Prisma } from "@typebot.io/prisma/types";
-import type { Log } from "@typebot.io/results/schemas/results";
+import type { LogInSession } from "@typebot.io/logs/schemas";
 
 export const sanitizeUrl = (url: string): string =>
   url.startsWith("http") ||
@@ -22,8 +21,8 @@ export const parseLog = (
   error: Error | undefined,
   successMessage: string,
   errorMessage: string,
-): Omit<Log, "id" | "createdAt" | "resultId"> => ({
+): Omit<LogInSession, "id" | "createdAt" | "resultId"> => ({
   status: error ? "error" : "success",
   description: error ? errorMessage : successMessage,
-  details: (error && JSON.stringify(error, null, 2).substring(0, 1000)) ?? null,
+  details: error && JSON.stringify(error, null, 2).substring(0, 1000),
 });

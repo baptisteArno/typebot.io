@@ -27,12 +27,15 @@ export async function POST(
 ) {
   const body = await req.text();
   const messages = body ? JSON.parse(body).messages : undefined;
-  const { stream, status, message } = await getMessageStream({
+  const { stream, status, message, details, context } = await getMessageStream({
     sessionId: params.sessionId,
     messages,
   });
   if (!stream)
-    return NextResponse.json({ message }, { status, headers: responseHeaders });
+    return NextResponse.json(
+      { message, status, details, context },
+      { headers: responseHeaders },
+    );
   return new Response(stream, {
     headers: responseHeaders,
   });

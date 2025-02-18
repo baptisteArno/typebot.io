@@ -27,9 +27,10 @@ const authenticateByToken = async (
   apiToken: string,
 ): Promise<Prisma.User | undefined> => {
   if (typeof window !== "undefined") return;
-  const user = (await prisma.user.findFirst({
+  const user = await prisma.user.findFirst({
     where: { apiTokens: { some: { token: apiToken } } },
-  })) as Prisma.User;
+  });
+  if (!user) return;
   Sentry.setUser({ id: user.id });
   return user;
 };

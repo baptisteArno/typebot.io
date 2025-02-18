@@ -2534,10 +2534,19 @@
                         "isVerified",
                         "chatsHardLimit"
                       ]
+                    },
+                    "currentUserMode": {
+                      "type": "string",
+                      "enum": [
+                        "read",
+                        "write",
+                        "guest"
+                      ]
                     }
                   },
                   "required": [
-                    "workspace"
+                    "workspace",
+                    "currentUserMode"
                   ]
                 }
               }
@@ -2998,12 +3007,92 @@
                       },
                       "events": {
                         "type": "array",
-                        "maxItems": 1,
-                        "minItems": 1,
                         "items": {
                           "oneOf": [
                             {
-                              "$ref": "#/components/schemas/event"
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "string"
+                                },
+                                "outgoingEdgeId": {
+                                  "type": "string"
+                                },
+                                "graphCoordinates": {
+                                  "type": "object",
+                                  "properties": {
+                                    "x": {
+                                      "type": "number"
+                                    },
+                                    "y": {
+                                      "type": "number"
+                                    }
+                                  },
+                                  "required": [
+                                    "x",
+                                    "y"
+                                  ]
+                                },
+                                "type": {
+                                  "type": "string",
+                                  "enum": [
+                                    "start"
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "id",
+                                "graphCoordinates",
+                                "type"
+                              ]
+                            },
+                            {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "string"
+                                },
+                                "outgoingEdgeId": {
+                                  "type": "string"
+                                },
+                                "graphCoordinates": {
+                                  "type": "object",
+                                  "properties": {
+                                    "x": {
+                                      "type": "number"
+                                    },
+                                    "y": {
+                                      "type": "number"
+                                    }
+                                  },
+                                  "required": [
+                                    "x",
+                                    "y"
+                                  ]
+                                },
+                                "type": {
+                                  "type": "string",
+                                  "enum": [
+                                    "command"
+                                  ]
+                                },
+                                "options": {
+                                  "type": "object",
+                                  "properties": {
+                                    "command": {
+                                      "type": "string"
+                                    },
+                                    "resumeAfter": {
+                                      "type": "boolean"
+                                    }
+                                  }
+                                }
+                              },
+                              "required": [
+                                "id",
+                                "graphCoordinates",
+                                "type"
+                              ]
                             }
                           ]
                         }
@@ -3571,12 +3660,92 @@
                           },
                           "events": {
                             "type": "array",
-                            "maxItems": 1,
-                            "minItems": 1,
                             "items": {
                               "oneOf": [
                                 {
-                                  "$ref": "#/components/schemas/event"
+                                  "type": "object",
+                                  "properties": {
+                                    "id": {
+                                      "type": "string"
+                                    },
+                                    "outgoingEdgeId": {
+                                      "type": "string"
+                                    },
+                                    "graphCoordinates": {
+                                      "type": "object",
+                                      "properties": {
+                                        "x": {
+                                          "type": "number"
+                                        },
+                                        "y": {
+                                          "type": "number"
+                                        }
+                                      },
+                                      "required": [
+                                        "x",
+                                        "y"
+                                      ]
+                                    },
+                                    "type": {
+                                      "type": "string",
+                                      "enum": [
+                                        "start"
+                                      ]
+                                    }
+                                  },
+                                  "required": [
+                                    "id",
+                                    "graphCoordinates",
+                                    "type"
+                                  ]
+                                },
+                                {
+                                  "type": "object",
+                                  "properties": {
+                                    "id": {
+                                      "type": "string"
+                                    },
+                                    "outgoingEdgeId": {
+                                      "type": "string"
+                                    },
+                                    "graphCoordinates": {
+                                      "type": "object",
+                                      "properties": {
+                                        "x": {
+                                          "type": "number"
+                                        },
+                                        "y": {
+                                          "type": "number"
+                                        }
+                                      },
+                                      "required": [
+                                        "x",
+                                        "y"
+                                      ]
+                                    },
+                                    "type": {
+                                      "type": "string",
+                                      "enum": [
+                                        "command"
+                                      ]
+                                    },
+                                    "options": {
+                                      "type": "object",
+                                      "properties": {
+                                        "command": {
+                                          "type": "string"
+                                        },
+                                        "resumeAfter": {
+                                          "type": "boolean"
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "required": [
+                                    "id",
+                                    "graphCoordinates",
+                                    "type"
+                                  ]
                                 }
                               ]
                             }
@@ -6045,12 +6214,92 @@
                           },
                           "events": {
                             "type": "array",
-                            "maxItems": 1,
-                            "minItems": 1,
                             "items": {
                               "oneOf": [
                                 {
-                                  "$ref": "#/components/schemas/event"
+                                  "type": "object",
+                                  "properties": {
+                                    "id": {
+                                      "type": "string"
+                                    },
+                                    "outgoingEdgeId": {
+                                      "type": "string"
+                                    },
+                                    "graphCoordinates": {
+                                      "type": "object",
+                                      "properties": {
+                                        "x": {
+                                          "type": "number"
+                                        },
+                                        "y": {
+                                          "type": "number"
+                                        }
+                                      },
+                                      "required": [
+                                        "x",
+                                        "y"
+                                      ]
+                                    },
+                                    "type": {
+                                      "type": "string",
+                                      "enum": [
+                                        "start"
+                                      ]
+                                    }
+                                  },
+                                  "required": [
+                                    "id",
+                                    "graphCoordinates",
+                                    "type"
+                                  ]
+                                },
+                                {
+                                  "type": "object",
+                                  "properties": {
+                                    "id": {
+                                      "type": "string"
+                                    },
+                                    "outgoingEdgeId": {
+                                      "type": "string"
+                                    },
+                                    "graphCoordinates": {
+                                      "type": "object",
+                                      "properties": {
+                                        "x": {
+                                          "type": "number"
+                                        },
+                                        "y": {
+                                          "type": "number"
+                                        }
+                                      },
+                                      "required": [
+                                        "x",
+                                        "y"
+                                      ]
+                                    },
+                                    "type": {
+                                      "type": "string",
+                                      "enum": [
+                                        "command"
+                                      ]
+                                    },
+                                    "options": {
+                                      "type": "object",
+                                      "properties": {
+                                        "command": {
+                                          "type": "string"
+                                        },
+                                        "resumeAfter": {
+                                          "type": "boolean"
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "required": [
+                                    "id",
+                                    "graphCoordinates",
+                                    "type"
+                                  ]
                                 }
                               ]
                             }
@@ -6202,6 +6451,12 @@
                           "selectedThemeTemplateId": {
                             "type": "string",
                             "nullable": true
+                          },
+                          "workspaceId": {
+                            "type": "string"
+                          },
+                          "id": {
+                            "type": "string"
                           }
                         },
                         "required": [
@@ -7979,6 +8234,12 @@
                           "selectedThemeTemplateId": {
                             "type": "string",
                             "nullable": true
+                          },
+                          "workspaceId": {
+                            "type": "string"
+                          },
+                          "id": {
+                            "type": "string"
                           }
                         },
                         "required": [
@@ -9111,6 +9372,10 @@
                           "details": {
                             "type": "string",
                             "nullable": true
+                          },
+                          "context": {
+                            "type": "string",
+                            "nullable": true
                           }
                         },
                         "required": [
@@ -9119,7 +9384,8 @@
                           "resultId",
                           "status",
                           "description",
-                          "details"
+                          "details",
+                          "context"
                         ]
                       }
                     }
@@ -11840,6 +12106,48 @@
                                             "timestamp",
                                             "type",
                                             "webhook"
+                                          ]
+                                        },
+                                        {
+                                          "type": "object",
+                                          "properties": {
+                                            "from": {
+                                              "type": "string"
+                                            },
+                                            "timestamp": {
+                                              "type": "string"
+                                            },
+                                            "referral": {
+                                              "type": "object",
+                                              "properties": {
+                                                "ctwa_clid": {
+                                                  "type": "string"
+                                                },
+                                                "source_id": {
+                                                  "type": "string"
+                                                }
+                                              }
+                                            },
+                                            "type": {
+                                              "type": "string",
+                                              "enum": [
+                                                "reaction"
+                                              ]
+                                            },
+                                            "reaction": {
+                                              "type": "object",
+                                              "properties": {
+                                                "emoji": {
+                                                  "type": "string"
+                                                }
+                                              }
+                                            }
+                                          },
+                                          "required": [
+                                            "from",
+                                            "timestamp",
+                                            "type",
+                                            "reaction"
                                           ]
                                         }
                                       ]
@@ -19968,44 +20276,6 @@
           "issues": []
         }
       },
-      "event": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "outgoingEdgeId": {
-            "type": "string"
-          },
-          "graphCoordinates": {
-            "type": "object",
-            "properties": {
-              "x": {
-                "type": "number"
-              },
-              "y": {
-                "type": "number"
-              }
-            },
-            "required": [
-              "x",
-              "y"
-            ]
-          },
-          "type": {
-            "type": "string",
-            "enum": [
-              "start"
-            ]
-          }
-        },
-        "required": [
-          "id",
-          "graphCoordinates",
-          "type"
-        ],
-        "description": "Event"
-      },
       "theme": {
         "type": "object",
         "properties": {
@@ -20681,12 +20951,92 @@
           },
           "events": {
             "type": "array",
-            "maxItems": 1,
-            "minItems": 1,
             "items": {
               "oneOf": [
                 {
-                  "$ref": "#/components/schemas/event"
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "outgoingEdgeId": {
+                      "type": "string"
+                    },
+                    "graphCoordinates": {
+                      "type": "object",
+                      "properties": {
+                        "x": {
+                          "type": "number"
+                        },
+                        "y": {
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "x",
+                        "y"
+                      ]
+                    },
+                    "type": {
+                      "type": "string",
+                      "enum": [
+                        "start"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "graphCoordinates",
+                    "type"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "outgoingEdgeId": {
+                      "type": "string"
+                    },
+                    "graphCoordinates": {
+                      "type": "object",
+                      "properties": {
+                        "x": {
+                          "type": "number"
+                        },
+                        "y": {
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "x",
+                        "y"
+                      ]
+                    },
+                    "type": {
+                      "type": "string",
+                      "enum": [
+                        "command"
+                      ]
+                    },
+                    "options": {
+                      "type": "object",
+                      "properties": {
+                        "command": {
+                          "type": "string"
+                        },
+                        "resumeAfter": {
+                          "type": "boolean"
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "graphCoordinates",
+                    "type"
+                  ]
                 }
               ]
             }
@@ -22750,12 +23100,92 @@
           },
           "events": {
             "type": "array",
-            "maxItems": 1,
-            "minItems": 1,
             "items": {
               "oneOf": [
                 {
-                  "$ref": "#/components/schemas/event"
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "outgoingEdgeId": {
+                      "type": "string"
+                    },
+                    "graphCoordinates": {
+                      "type": "object",
+                      "properties": {
+                        "x": {
+                          "type": "number"
+                        },
+                        "y": {
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "x",
+                        "y"
+                      ]
+                    },
+                    "type": {
+                      "type": "string",
+                      "enum": [
+                        "start"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "graphCoordinates",
+                    "type"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "outgoingEdgeId": {
+                      "type": "string"
+                    },
+                    "graphCoordinates": {
+                      "type": "object",
+                      "properties": {
+                        "x": {
+                          "type": "number"
+                        },
+                        "y": {
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "x",
+                        "y"
+                      ]
+                    },
+                    "type": {
+                      "type": "string",
+                      "enum": [
+                        "command"
+                      ]
+                    },
+                    "options": {
+                      "type": "object",
+                      "properties": {
+                        "command": {
+                          "type": "string"
+                        },
+                        "resumeAfter": {
+                          "type": "boolean"
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "graphCoordinates",
+                    "type"
+                  ]
                 }
               ]
             }
