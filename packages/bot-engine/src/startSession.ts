@@ -1,4 +1,5 @@
 import { createId } from "@paralleldrive/cuid2";
+import * as Sentry from "@sentry/nextjs";
 import { TRPCError } from "@trpc/server";
 import { BubbleBlockType } from "@typebot.io/blocks-bubbles/constants";
 import { isInputBlock } from "@typebot.io/blocks-core/helpers";
@@ -84,6 +85,7 @@ export const startSession = async ({
   }
 > => {
   const typebot = await getTypebot(startParams);
+  Sentry.setTag("typebotId", typebot.id);
 
   const prefilledVariables = startParams.prefilledVariables
     ? prefillVariables(typebot.variables, startParams.prefilledVariables)
