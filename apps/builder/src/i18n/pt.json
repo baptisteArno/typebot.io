@@ -129,6 +129,7 @@
   "blocks.inputs.file.settings.allowMultiple.label": "Permitir vários arquivos",
   "blocks.inputs.file.settings.required.label": "Obrigatório",
   "blocks.inputs.fileUpload.blockCard.tooltip": "Carregar Ficheiros",
+  "blocks.inputs.payment.collect.label": "Coletar",
   "blocks.inputs.picture.settings.dynamicItems.label": "Itens dinâmicos",
   "blocks.inputs.rating.settings.customIcon.label": "Ícone personalizado",
   "blocks.inputs.settings.isSearchable.label": "É pesquisável",
