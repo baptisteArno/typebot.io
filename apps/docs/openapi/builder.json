@@ -2334,6 +2334,18 @@
                         "chatsHardLimit": {
                           "type": "number",
                           "nullable": true
+                        },
+                        "lastActivityAt": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "inactiveFirstEmailSentAt": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "inactiveSecondEmailSentAt": {
+                          "type": "string",
+                          "nullable": true
                         }
                       },
                       "required": [
@@ -2348,7 +2360,10 @@
                         "isSuspended",
                         "isPastDue",
                         "isVerified",
-                        "chatsHardLimit"
+                        "chatsHardLimit",
+                        "lastActivityAt",
+                        "inactiveFirstEmailSentAt",
+                        "inactiveSecondEmailSentAt"
                       ]
                     }
                   },
@@ -2516,6 +2531,18 @@
                         "chatsHardLimit": {
                           "type": "number",
                           "nullable": true
+                        },
+                        "lastActivityAt": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "inactiveFirstEmailSentAt": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "inactiveSecondEmailSentAt": {
+                          "type": "string",
+                          "nullable": true
                         }
                       },
                       "required": [
@@ -2532,7 +2559,10 @@
                         "isSuspended",
                         "isPastDue",
                         "isVerified",
-                        "chatsHardLimit"
+                        "chatsHardLimit",
+                        "lastActivityAt",
+                        "inactiveFirstEmailSentAt",
+                        "inactiveSecondEmailSentAt"
                       ]
                     },
                     "currentUserMode": {
@@ -9957,6 +9987,18 @@
                         "chatsHardLimit": {
                           "type": "number",
                           "nullable": true
+                        },
+                        "lastActivityAt": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "inactiveFirstEmailSentAt": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "inactiveSecondEmailSentAt": {
+                          "type": "string",
+                          "nullable": true
                         }
                       },
                       "required": [
@@ -9981,7 +10023,10 @@
                         "isSuspended",
                         "isPastDue",
                         "isVerified",
-                        "chatsHardLimit"
+                        "chatsHardLimit",
+                        "lastActivityAt",
+                        "inactiveFirstEmailSentAt",
+                        "inactiveSecondEmailSentAt"
                       ]
                     },
                     "checkoutUrl": {

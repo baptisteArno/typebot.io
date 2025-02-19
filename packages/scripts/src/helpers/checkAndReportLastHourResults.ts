@@ -13,7 +13,7 @@ import Stripe from "stripe";
 
 const LIMIT_EMAIL_TRIGGER_PERCENT = 0.75;
 
-export const checkAndReportChatsUsage = async () => {
+export const checkAndReportLastHourResults = async () => {
   console.log("Get collected results from the last hour...");
 
   const zeroedMinutesHour = new Date();
@@ -171,47 +171,24 @@ export const checkAndReportChatsUsage = async () => {
     }
   }
 
-  const resultsWithWorkspaces = results
-    .flatMap((result) => {
-      const workspace = workspaces.find((workspace) =>
-        workspace.typebots.some((typebot) => typebot.id === result.typebotId),
-      );
-      if (!workspace) return;
-      return workspace.members
-        .filter((member) => member.role !== WorkspaceRole.GUEST)
-        .map((member, memberIndex) => ({
-          userId: member.user.id,
-          workspace: workspace,
-          typebotId: result.typebotId,
-          totalResultsLastHour: result._count._all,
-          isFirstOfKind: memberIndex === 0 ? (true as const) : undefined,
-        }));
-    })
-    .filter(isDefined);
-
-  const newResultsCollectedEvents = resultsWithWorkspaces.map(
-    (result) =>
-      ({
-        name: "New results collected",
-        userId: result.userId,
-        workspaceId: result.workspace.id,
-        typebotId: result.typebotId,
-        data: {
-          total: result.totalResultsLastHour,
-          isFirstOfKind: result.isFirstOfKind,
-        },
-      }) satisfies TelemetryEvent,
-  );
+  await prisma.workspace.updateMany({
+    where: {
+      id: {
+        in: workspaces.map((w) => w.id),
+      },
+    },
+    data: {
+      lastActivityAt: new Date(),
+      inactiveFirstEmailSentAt: null,
+      inactiveSecondEmailSentAt: null,
+    },
+  });
 
   console.log(
-    `Send ${limitWarningEmailEvents.length}, ${newResultsCollectedEvents.length} new results events and ${quarantineEvents.length} auto quarantine events...`,
+    `Send ${limitWarningEmailEvents.length}, new results events and ${quarantineEvents.length} auto quarantine events...`,
   );
 
-  await trackEvents(
-    limitWarningEmailEvents.concat(
-      quarantineEvents.concat(newResultsCollectedEvents),
-    ),
-  );
+  await trackEvents(limitWarningEmailEvents.concat(quarantineEvents));
 };
 
 const getSubscription = async (
@@ -452,5 +429,3 @@ async function sendLimitWarningEmails({
 
   return emailEvents;
 }
-
-checkAndReportChatsUsage().then();

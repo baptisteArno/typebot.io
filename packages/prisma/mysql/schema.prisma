@@ -109,6 +109,9 @@ model Workspace {
   chatsHardLimit                Int?
   // TODO: remove
   settings                      Json?
+  lastActivityAt                DateTime?
+  inactiveFirstEmailSentAt      DateTime?
+  inactiveSecondEmailSentAt     DateTime?
 }
 
 model MemberInWorkspace {
