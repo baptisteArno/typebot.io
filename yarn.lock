@@ -6379,6 +6379,7 @@
   dependencies:
     "@paralleldrive/cuid2" "2.2.1"
     "@planetscale/database" "1.8.0"
+    "@sentry/nextjs" "9.1.0"
     "@trpc/server" "10.45.2"
     "@typebot.io/blocks-bubbles" "packages/blocks/bubbles"
     "@typebot.io/blocks-core" "packages/blocks/core"
@@ -6390,9 +6391,11 @@
     "@typebot.io/credentials" "packages/credentials"
     "@typebot.io/emails" "packages/emails"
     "@typebot.io/env" "packages/env"
+    "@typebot.io/events" "packages/events"
     "@typebot.io/groups" "packages/groups"
     "@typebot.io/legacy" "packages/deprecated/legacy"
     "@typebot.io/lib" "packages/lib"
+    "@typebot.io/logs" "packages/logs"
     "@typebot.io/prisma" "packages/prisma"
     "@typebot.io/results" "packages/results"
     "@typebot.io/rich-text" "packages/rich-text"
@@ -6438,6 +6441,7 @@
   devDependencies:
     "@typebot.io/tsconfig" "packages/tsconfig"
   dependencies:
+    "@sentry/nextjs" "9.1.0"
     "@typebot.io/blocks-core" "packages/blocks/core"
     "@typebot.io/prisma" "packages/prisma"
     "@typebot.io/results" "packages/results"
@@ -6566,6 +6570,7 @@
     "@ai-sdk/groq" "1.1.7"
     "@typebot.io/ai" "packages/ai"
     "@typebot.io/forge" "packages/forge/core"
+    "@typebot.io/lib" "packages/lib"
     "@typebot.io/tsconfig" "packages/tsconfig"
   dependencies:
     ky "1.2.4"
@@ -6665,8 +6670,6 @@
     "@typebot.io/prisma" "packages/prisma"
     "@typebot.io/tsconfig" "packages/tsconfig"
     "@typebot.io/zod" "packages/zod"
-  dependencies:
-    "@sentry/nextjs" "9.1.0"
 
 "@typebot.io/mistral-block@packages/forge/blocks/mistral":
   version "workspace:packages/forge/blocks/mistral"
@@ -6709,6 +6712,7 @@
     "@openrouter/ai-sdk-provider" "0.1.0"
     "@typebot.io/ai" "packages/ai"
     "@typebot.io/forge" "packages/forge/core"
+    "@typebot.io/lib" "packages/lib"
     "@typebot.io/tsconfig" "packages/tsconfig"
     ky "1.2.4"
 
@@ -6746,6 +6750,7 @@
     "@typebot.io/blocks-inputs" "packages/blocks/inputs"
     "@typebot.io/credentials" "packages/credentials"
     "@typebot.io/env" "packages/env"
+    "@typebot.io/events" "packages/events"
     "@typebot.io/lib" "packages/lib"
     "@typebot.io/prisma" "packages/prisma"
     "@typebot.io/schemas" "packages/schemas"
@@ -10245,6 +10250,7 @@ boolbase@^1.0.0:
     "@typebot.io/env" "packages/env"
     "@typebot.io/groups" "packages/groups"
     "@typebot.io/lib" "packages/lib"
+    "@typebot.io/logs" "packages/logs"
     "@typebot.io/prisma" "packages/prisma"
     "@typebot.io/results" "packages/results"
     "@typebot.io/settings" "packages/settings"
@@ -15469,7 +15475,6 @@ ky@1.2.4:
     react "18.2.0"
     react-dom "18.2.0"
     tailwind-merge "2.6.0"
-    vinxi "0.5.3"
 
 lazystream@^1.0.0:
   version "1.0.1"
@@ -22440,6 +22445,7 @@ vfile-message@^4.0.0:
     "@typebot.io/groups" "packages/groups"
     "@typebot.io/legacy" "packages/deprecated/legacy"
     "@typebot.io/lib" "packages/lib"
+    "@typebot.io/logs" "packages/logs"
     "@typebot.io/nextjs" "packages/embeds/nextjs"
     "@typebot.io/prisma" "packages/prisma"
     "@typebot.io/results" "packages/results"

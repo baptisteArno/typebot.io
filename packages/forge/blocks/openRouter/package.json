@@ -11,6 +11,7 @@
     "@typebot.io/forge": "workspace:*",
     "@typebot.io/ai": "workspace:*",
     "@typebot.io/tsconfig": "workspace:*",
+    "@typebot.io/lib": "workspace:*",
     "ky": "1.2.4",
     "@openrouter/ai-sdk-provider": "0.1.0"
   }

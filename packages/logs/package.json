@@ -6,9 +6,6 @@
   "exports": {
     "./*": "./src/*.ts"
   },
-  "dependencies": {
-    "@sentry/nextjs": "9.1.0"
-  },
   "devDependencies": {
     "@typebot.io/zod": "workspace:*",
     "@typebot.io/prisma": "workspace:*",
