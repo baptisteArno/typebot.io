@@ -131,10 +131,10 @@ export const TypebotProvider = ({
 
   const { data: publishedTypebotData } =
     trpc.typebot.getPublishedTypebot.useQuery(
-      { typebotId: typebotId!, migrateToLatestVersion: true },
+      { typebotId: typebotId as string, migrateToLatestVersion: true },
       {
         enabled:
-          !!typebotId &&
+          isDefined(typebotId) &&
           (typebotData?.currentUserMode === "read" ||
             typebotData?.currentUserMode === "write"),
         onError: (error) => {
