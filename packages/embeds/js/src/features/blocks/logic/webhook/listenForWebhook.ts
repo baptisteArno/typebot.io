@@ -1,18 +1,17 @@
-import { getRuntimeVariable } from "@typebot.io/env/getRuntimeVariable";
+import type { ClientSideActionContext } from "@/types";
+import { getPartyKitHost } from "@/utils/getPartyKitHost";
 import type { LogInSession } from "@typebot.io/logs/schemas";
 import PartySocket from "partysocket";
 
 type Props = {
   resultId?: string;
   sessionId: string;
+  context: ClientSideActionContext;
 };
 
-export const listenForWebhook = ({ sessionId, resultId }: Props) => {
-  const host = getRuntimeVariable("NEXT_PUBLIC_PARTYKIT_HOST");
-  if (!host) return;
-
+export const listenForWebhook = ({ sessionId, resultId, context }: Props) => {
   const ws = new PartySocket({
-    host,
+    host: getPartyKitHost(context.wsHost),
     room: getRoomName({ sessionId, resultId }),
   });
   return new Promise<{
@@ -39,7 +38,10 @@ export const listenForWebhook = ({ sessionId, resultId }: Props) => {
   });
 };
 
-const getRoomName = ({ sessionId, resultId }: Props) => {
+const getRoomName = ({
+  sessionId,
+  resultId,
+}: Pick<Props, "sessionId" | "resultId">) => {
   if (resultId) return `${resultId}/webhooks`;
   const [typebotId, userId] = sessionId.split("-");
   return `${userId}/${typebotId}/webhooks`;

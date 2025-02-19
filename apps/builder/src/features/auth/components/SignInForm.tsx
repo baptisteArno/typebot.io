@@ -98,7 +98,7 @@ export const SignInForm = ({
         redirect: false,
       });
       if (response?.error) {
-        if (response.error.includes("rate-limited"))
+        if (response.error.includes("too-many-requests"))
           toast({
             status: "info",
             description: t("auth.signinErrorToast.tooManyRequests"),
@@ -108,9 +108,12 @@ export const SignInForm = ({
             status: "info",
             description: t("auth.signinErrorToast.title"),
           });
+        else if (response.error.includes("email-not-legit"))
+          toast({
+            description: "Please use a valid email address",
+          });
         else
           toast({
-            status: "info",
             description: t("errorMessage"),
             details: "Check server logs to see relevent error message.",
           });

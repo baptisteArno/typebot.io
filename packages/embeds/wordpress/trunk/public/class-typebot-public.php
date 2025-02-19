@@ -123,6 +123,7 @@ class Typebot_Public
     $width = '100%';
     $height = '500px';
     $api_host = 'https://typebot.co';
+    $ws_host = 'partykit.typebot.io';
     if (array_key_exists('width', $attributes)) {
       $width = $attributes['width'];
       if (strlen($width) > 10 || !preg_match('/^\d+(%|px)$/', $width)) {
@@ -156,6 +157,15 @@ class Typebot_Public
         $api_host = sanitize_text_field($api_host);
       }
     }
+    if (array_key_exists('ws_host', $attributes)) {
+      $ws_host = $attributes['ws_host'];
+      // Limit the length and sanitize
+      if (strlen($ws_host) > 100 || !filter_var($ws_host, FILTER_VALIDATE_URL)) {
+        $ws_host = 'partykit.typebot.io'; // fallback to default host
+      } else {
+        $ws_host = sanitize_text_field($ws_host);
+      }
+    }
     if (!$typebot) {
       return;
     }
@@ -166,7 +176,7 @@ class Typebot_Public
     import Typebot from "' . esc_url($lib_url) . '"
     const urlParams = new URLSearchParams(window.location.search);
     const queryParams = Object.fromEntries(urlParams.entries());
-    Typebot.initStandard({ apiHost: "' . esc_js($api_host) . '", id: "' . esc_js($id) . '", typebot: "' . esc_js($typebot) . '", prefilledVariables: { ...window.typebotWpUser, ...queryParams } });</script>';
+    Typebot.initStandard({ apiHost: "' . esc_js($api_host) . '", wsHost: "' . esc_js($ws_host) . '", id: "' . esc_js($id) . '", typebot: "' . esc_js($typebot) . '", prefilledVariables: { ...window.typebotWpUser, ...queryParams } });</script>';
     return  '<typebot-standard id="' . esc_attr($id) . '" style="width: ' . esc_attr($width) . '; height: ' . esc_attr($height) . ';"></typebot-standard>' . $bot_initializer;
   }
 

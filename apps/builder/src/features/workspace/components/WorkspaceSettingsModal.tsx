@@ -22,7 +22,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
-import type { Prisma } from "@typebot.io/prisma/types";
+import type { ClientUser } from "@typebot.io/schemas/features/user/schema";
 import { useState } from "react";
 import packageJson from "../../../../../../package.json";
 import { type WorkspaceInApp, useWorkspace } from "../WorkspaceProvider";
@@ -31,7 +31,7 @@ import { WorkspaceSettingsForm } from "./WorkspaceSettingsForm";
 
 type Props = {
   isOpen: boolean;
-  user: Prisma.User;
+  user: ClientUser;
   workspace: WorkspaceInApp;
   defaultTab?: SettingsTab;
   onClose: () => void;
