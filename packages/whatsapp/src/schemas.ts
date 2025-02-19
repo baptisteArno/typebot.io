@@ -166,6 +166,12 @@ export const incomingMessageSchema = z.discriminatedUnion("type", [
     }),
   }),
   sharedIncomingMessageFieldsSchema.extend({
+    type: z.literal("sticker"),
+    sticker: z.object({
+      id: z.string(),
+    }),
+  }),
+  sharedIncomingMessageFieldsSchema.extend({
     type: z.literal("unsupported"),
   }),
 ]);
