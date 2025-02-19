@@ -84,7 +84,7 @@ export const getServerSideProps: GetServerSideProps = async (
       ? await getTypebotFromPublicId(context.query.publicId?.toString())
       : await getTypebotFromCustomDomain(customDomain);
 
-    if (publishedTypebot?.isSuspended)
+    if (!publishedTypebot || publishedTypebot?.isSuspended)
       return {
         notFound: true,
       };
