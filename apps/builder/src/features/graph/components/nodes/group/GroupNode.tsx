@@ -1,14 +1,12 @@
 import { ContextMenu } from "@/components/ContextMenu";
-import {
-  RightPanel,
-  useEditor,
-} from "@/features/editor/providers/EditorProvider";
+import { useEditor } from "@/features/editor/providers/EditorProvider";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { groupWidth } from "@/features/graph/constants";
 import { useSelectionStore } from "@/features/graph/hooks/useSelectionStore";
 import { useBlockDnd } from "@/features/graph/providers/GraphDndProvider";
 import { useGraph } from "@/features/graph/providers/GraphProvider";
 import { setMultipleRefs } from "@/helpers/setMultipleRefs";
+import { useRightPanel } from "@/hooks/useRightPanel";
 import {
   Editable,
   EditableInput,
@@ -25,7 +23,6 @@ import { useShallow } from "zustand/react/shallow";
 import { BlockNodesList } from "../block/BlockNodesList";
 import { GroupFocusToolbar } from "./GroupFocusToolbar";
 import { GroupNodeContextMenu } from "./GroupNodeContextMenu";
-
 type Props = {
   group: GroupV6;
   groupIndex: number;
@@ -45,7 +42,8 @@ export const GroupNode = ({ group, groupIndex }: Props) => {
   } = useGraph();
   const { typebot, updateGroup, updateGroupsCoordinates } = useTypebot();
   const { setMouseOverGroup, mouseOverGroup } = useBlockDnd();
-  const { setRightPanel, setStartPreviewFrom } = useEditor();
+  const { setStartPreviewFrom } = useEditor();
+  const [, setRightPanel] = useRightPanel();
 
   const [isMouseDown, setIsMouseDown] = useState(false);
   const [isConnecting, setIsConnecting] = useState(false);
@@ -111,7 +109,7 @@ export const GroupNode = ({ group, groupIndex }: Props) => {
 
   const startPreviewAtThisGroup = () => {
     setStartPreviewFrom({ type: "group", id: group.id });
-    setRightPanel(RightPanel.PREVIEW);
+    setRightPanel("preview");
   };
 
   useDrag(
