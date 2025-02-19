@@ -1,5 +1,5 @@
 import { blockBaseSchema } from "@typebot.io/blocks-base/schemas";
-import { variableStringSchema } from "@typebot.io/variables/schemas";
+import { singleVariableOrNumberSchema } from "@typebot.io/variables/schemas";
 import { z } from "@typebot.io/zod";
 import { IntegrationBlockType } from "../constants";
 import {
@@ -61,7 +61,7 @@ const chatCompletionOptionsSchema = z
       .optional(),
     advancedSettings: z
       .object({
-        temperature: z.number().or(variableStringSchema).optional(),
+        temperature: singleVariableOrNumberSchema.optional(),
       })
       .optional(),
     responseMapping: z

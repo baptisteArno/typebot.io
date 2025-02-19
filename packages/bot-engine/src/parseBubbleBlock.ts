@@ -65,17 +65,7 @@ export const parseBubbleBlock = (
     }
 
     case BubbleBlockType.EMBED: {
-      const message = deepParseVariables(variables)(block);
-      return {
-        ...message,
-        content: {
-          ...message.content,
-          height:
-            typeof message.content?.height === "string"
-              ? Number.parseFloat(message.content.height)
-              : message.content?.height,
-        },
-      };
+      return deepParseVariables(variables)(block);
     }
     case BubbleBlockType.VIDEO: {
       const parsedContent = block.content
@@ -87,10 +77,6 @@ export const parseBubbleBlock = (
         content: {
           ...parsedContent,
           ...(parsedContent?.url ? parseVideoUrl(parsedContent.url) : {}),
-          height:
-            typeof parsedContent?.height === "string"
-              ? Number.parseFloat(parsedContent.height)
-              : defaultVideoBubbleContent.height,
         },
       };
     }
