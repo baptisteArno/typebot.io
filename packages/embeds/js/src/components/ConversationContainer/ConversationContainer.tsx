@@ -6,7 +6,13 @@ import type {
   ChatChunk as ChatChunkType,
   InputSubmitContent,
 } from "@/types";
+import {
+  type AvatarHistory,
+  addAvatarsToHistoryIfChanged,
+  initializeAvatarHistory,
+} from "@/utils/avatarHistory";
 import { botContainer } from "@/utils/botContainerSignal";
+import { getAvatarUrls } from "@/utils/dynamicTheme";
 import { executeClientSideAction } from "@/utils/executeClientSideActions";
 import {
   formattedMessages,
@@ -14,7 +20,6 @@ import {
 } from "@/utils/formattedMessagesSignal";
 import { getAnswerContent } from "@/utils/getAnswerContent";
 import { hiddenInput, setHiddenInput } from "@/utils/hiddenInputSignal";
-import { mergeThemes } from "@/utils/mergeThemes";
 import { persist } from "@/utils/persist";
 import { setGeneralBackground } from "@/utils/setCssVariablesValue";
 import { setStreamingMessage } from "@/utils/streamingMessageSignal";
@@ -96,15 +101,24 @@ export const ConversationContainer = (props: Props) => {
       storage: props.context.storage,
     },
   );
-  const [dynamicTheme, setDynamicTheme] = createSignal<
-    ContinueChatResponse["dynamicTheme"]
-  >(props.initialChatReply.dynamicTheme);
-  const [theme, setTheme] = createSignal(props.initialChatReply.typebot.theme);
   const [isSending, setIsSending] = createSignal(false);
   const [hasError, setHasError] = createSignal(false);
   const [inputAnswered, setInputAnswered] = createSignal<{
     [key: string]: boolean;
   }>({});
+
+  const [avatarsHistory, setAvatarsHistory] = persist(
+    createSignal<AvatarHistory[]>(
+      initializeAvatarHistory({
+        initialTheme: props.initialChatReply.typebot.theme,
+        dynamicTheme: props.initialChatReply.dynamicTheme,
+      }),
+    ),
+    {
+      key: `typebot-${props.context.typebot.id}-avatarsHistory`,
+      storage: props.context.storage,
+    },
+  );
 
   onMount(() => {
     window.addEventListener("message", processIncomingEvent);
@@ -147,19 +161,6 @@ export const ConversationContainer = (props: Props) => {
       ]);
     setStreamingMessage({ id, content: message });
   };
-
-  createEffect(() => {
-    setTheme(mergeThemes(props.initialChatReply.typebot.theme, dynamicTheme()));
-    if (dynamicTheme()?.backgroundUrl)
-      setGeneralBackground({
-        background: {
-          type: BackgroundType.IMAGE,
-          content: dynamicTheme()?.backgroundUrl,
-        },
-        documentStyle: botContainer()?.style ?? document.documentElement.style,
-        typebotVersion: latestTypebotVersion,
-      });
-  });
 
   const saveLogs = async (clientLogs?: LogInSession[]) => {
     if (!clientLogs) return;
@@ -232,7 +233,28 @@ export const ConversationContainer = (props: Props) => {
       ]);
     }
     if (data.logs) props.onNewLogs?.(data.logs);
-    if (data.dynamicTheme) setDynamicTheme(data.dynamicTheme);
+    if (data.dynamicTheme) {
+      setAvatarsHistory((prev) =>
+        addAvatarsToHistoryIfChanged({
+          newAvatars: getAvatarUrls(
+            props.initialChatReply.typebot.theme,
+            data.dynamicTheme,
+          ),
+          avatarHistory: prev,
+          currentChunkIndex: chatChunks().length,
+        }),
+      );
+      if (data.dynamicTheme?.backgroundUrl)
+        setGeneralBackground({
+          background: {
+            type: BackgroundType.IMAGE,
+            content: data.dynamicTheme?.backgroundUrl,
+          },
+          documentStyle:
+            botContainer()?.style ?? document.documentElement.style,
+          typebotVersion: latestTypebotVersion,
+        });
+    }
     if (data.input && props.onNewInputBlock) {
       props.onNewInputBlock(data.input);
     }
@@ -290,7 +312,8 @@ export const ConversationContainer = (props: Props) => {
   };
 
   const handleAllBubblesDisplayed = async () => {
-    setTotalChunksDisplayed((prev) => prev + 1);
+    if (chatChunks().length > totalChunksDisplayed())
+      setTotalChunksDisplayed((prev) => prev + 1);
     const lastChunk = [...chatChunks()].pop();
     if (!lastChunk) return;
     if (isNotDefined(lastChunk.input)) {
@@ -437,7 +460,8 @@ export const ConversationContainer = (props: Props) => {
             index={index()}
             messages={chatChunk.messages}
             input={chatChunk.input}
-            theme={theme()}
+            theme={props.initialChatReply.typebot.theme}
+            avatarsHistory={avatarsHistory()}
             settings={props.initialChatReply.typebot.settings}
             streamingMessageId={chatChunk.streamingMessageId}
             context={props.context}
@@ -475,7 +499,13 @@ export const ConversationContainer = (props: Props) => {
         )}
       </For>
       <Show when={isSending()}>
-        <LoadingChunk theme={theme()} />
+        <LoadingChunk
+          theme={props.initialChatReply.typebot.theme}
+          avatarSrc={
+            avatarsHistory().findLast((avatar) => avatar.role === "host")
+              ?.avatarUrl
+          }
+        />
       </Show>
       <BottomSpacer />
     </div>
