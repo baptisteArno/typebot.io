@@ -78,7 +78,7 @@ const extractMessageDetails = (entry: WhatsAppWebhookRequestBody["entry"]) => {
   const contactPhoneNumber =
     entry.at(0)?.changes.at(0)?.value?.messages?.at(0)?.from ?? "";
   const phoneNumberId = entry.at(0)?.changes.at(0)?.value
-    .metadata.phone_number_id;
+    .metadata?.phone_number_id;
   const referral = entry.at(0)?.changes.at(0)?.value.messages?.at(0)?.referral;
   return {
     receivedMessage,
