@@ -12,7 +12,8 @@ export const getGlobalJumpGroup = (
     for (const block of group.blocks) {
       if (
         block.type === LogicBlockType.GLOBAL_JUMP &&
-        block.options?.text === message
+        block.options &&
+        isMatch(block.options?.text, message)
       ) {
         return {
           groupId: block.options.groupId,
@@ -23,4 +24,10 @@ export const getGlobalJumpGroup = (
   }
 
   return null
+}
+
+const isMatch = (text: string | undefined, message: string): boolean => {
+  if (!text) return false
+  const re = new RegExp(`^${text.replace('*', '.*')}$`)
+  return text.includes('*') ? re.test(message) : text === message
 }
