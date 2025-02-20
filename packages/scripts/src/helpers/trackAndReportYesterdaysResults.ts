@@ -3,15 +3,15 @@ import type { TelemetryEvent } from "@typebot.io/telemetry/schemas";
 
 export const trackAndReportYesterdaysResults = async () => {
   const todayMidnight = new Date();
-  todayMidnight.setHours(0, 0, 0, 0);
+  todayMidnight.setUTCHours(0, 0, 0, 0);
   const yesterdayMidnight = new Date();
-  yesterdayMidnight.setHours(0, 0, 0, 0);
+  yesterdayMidnight.setDate(yesterdayMidnight.getDate() - 1);
+  yesterdayMidnight.setUTCHours(0, 0, 0, 0);
 
   const recentWorkspaces = await prisma.workspace.findMany({
     where: {
       lastActivityAt: {
         gte: yesterdayMidnight,
-        lt: todayMidnight,
       },
     },
     select: {
@@ -37,9 +37,9 @@ export const trackAndReportYesterdaysResults = async () => {
       where: {
         typebotId: { in: workspace.typebots.map((typebot) => typebot.id) },
         hasStarted: true,
-        isArchived: false,
         createdAt: {
           gte: yesterdayMidnight,
+          lt: todayMidnight,
         },
       },
     });
