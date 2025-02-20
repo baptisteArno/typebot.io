@@ -8,6 +8,7 @@ import {
 } from "@/components/icons";
 import { ParentModalProvider } from "@/features/graph/providers/ParentModalProvider";
 import { parseDefaultPublicId } from "@/features/publish/helpers/parseDefaultPublicId";
+import { useRightPanel } from "@/hooks/useRightPanel";
 import {
   HStack,
   IconButton,
@@ -21,7 +22,6 @@ import {
 } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import React, { useState } from "react";
-import { RightPanel, useEditor } from "../providers/EditorProvider";
 import { useTypebot } from "../providers/TypebotProvider";
 import { EditorSettingsModal } from "./EditorSettingsModal";
 
@@ -30,7 +30,7 @@ export const BoardMenuButton = (props: StackProps) => {
   const [isDownloading, setIsDownloading] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { t } = useTranslate();
-  const { setRightPanel } = useEditor();
+  const [, setRightPanel] = useRightPanel();
 
   const downloadFlow = () => {
     assert(typebot);
@@ -60,7 +60,7 @@ export const BoardMenuButton = (props: StackProps) => {
         size="sm"
         shadow="md"
         bgColor={useColorModeValue("white", undefined)}
-        onClick={() => setRightPanel(RightPanel.VARIABLES)}
+        onClick={() => setRightPanel("variables")}
       />
       <Menu>
         <MenuButton

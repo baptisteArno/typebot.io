@@ -30,5 +30,6 @@
     "quickfix.biome": "explicit",
     "source.organizeImports.biome": "explicit"
   },
-  "eslint.enable": false
+  "eslint.enable": false,
+  "npm.packageManager": "bun"
 }

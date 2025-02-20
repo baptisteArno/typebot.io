@@ -200,12 +200,14 @@ const convertWhatsAppMessageToTypebotMessage = async ({
       case "document":
       case "audio":
       case "video":
+      case "sticker":
       case "image": {
         let mediaId: string | undefined;
         if (message.type === "video") mediaId = message.video.id;
         if (message.type === "image") mediaId = message.image.id;
         if (message.type === "audio") mediaId = message.audio.id;
         if (message.type === "document") mediaId = message.document.id;
+        if (message.type === "sticker") mediaId = message.sticker.id;
         if (!mediaId) return;
         const fileVisibility =
           block?.type === InputBlockType.TEXT &&

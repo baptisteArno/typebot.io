@@ -1,3 +1,4 @@
+import { datesAreOnSameDay } from "@/helpers/datesAreOnSameDate";
 import { env } from "@typebot.io/env";
 import { getIp } from "@typebot.io/lib/getIp";
 import { isDefined } from "@typebot.io/lib/utils";
@@ -11,7 +12,6 @@ import { accountHasRequiredOAuthGroups } from "./accountHasRequiredOAuthGroups";
 import { createAuthPrismaAdapter } from "./createAuthPrismaAdapter";
 import { isEmailLegit } from "./emailValidation";
 import { getNewUserInvitations } from "./getNewUserInvitations";
-import { updateLastActivityDateIfNecessary } from "./updateLastActivityDateIfNecessary";
 
 export const createAuthConfig = (props?: { ip?: string }): AuthOptions => ({
   adapter: createAuthPrismaAdapter(prisma),
@@ -27,7 +27,12 @@ export const createAuthConfig = (props?: { ip?: string }): AuthOptions => ({
   },
   events: {
     session: async ({ session }) => {
-      await updateLastActivityDateIfNecessary(session.user);
+      if (!datesAreOnSameDay(session.user.lastActivityAt, new Date())) {
+        await prisma.user.updateMany({
+          where: { id: session.user.id },
+          data: { lastActivityAt: new Date() },
+        });
+      }
     },
     async signIn({ user, isNewUser }) {
       if (isNewUser) return;

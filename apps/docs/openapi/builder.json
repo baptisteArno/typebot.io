@@ -2334,6 +2334,18 @@
                         "chatsHardLimit": {
                           "type": "number",
                           "nullable": true
+                        },
+                        "lastActivityAt": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "inactiveFirstEmailSentAt": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "inactiveSecondEmailSentAt": {
+                          "type": "string",
+                          "nullable": true
                         }
                       },
                       "required": [
@@ -2348,7 +2360,10 @@
                         "isSuspended",
                         "isPastDue",
                         "isVerified",
-                        "chatsHardLimit"
+                        "chatsHardLimit",
+                        "lastActivityAt",
+                        "inactiveFirstEmailSentAt",
+                        "inactiveSecondEmailSentAt"
                       ]
                     }
                   },
@@ -2516,6 +2531,18 @@
                         "chatsHardLimit": {
                           "type": "number",
                           "nullable": true
+                        },
+                        "lastActivityAt": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "inactiveFirstEmailSentAt": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "inactiveSecondEmailSentAt": {
+                          "type": "string",
+                          "nullable": true
                         }
                       },
                       "required": [
@@ -2532,7 +2559,10 @@
                         "isSuspended",
                         "isPastDue",
                         "isVerified",
-                        "chatsHardLimit"
+                        "chatsHardLimit",
+                        "lastActivityAt",
+                        "inactiveFirstEmailSentAt",
+                        "inactiveSecondEmailSentAt"
                       ]
                     },
                     "currentUserMode": {
@@ -9957,6 +9987,18 @@
                         "chatsHardLimit": {
                           "type": "number",
                           "nullable": true
+                        },
+                        "lastActivityAt": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "inactiveFirstEmailSentAt": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "inactiveSecondEmailSentAt": {
+                          "type": "string",
+                          "nullable": true
                         }
                       },
                       "required": [
@@ -9981,7 +10023,10 @@
                         "isSuspended",
                         "isPastDue",
                         "isVerified",
-                        "chatsHardLimit"
+                        "chatsHardLimit",
+                        "lastActivityAt",
+                        "inactiveFirstEmailSentAt",
+                        "inactiveSecondEmailSentAt"
                       ]
                     },
                     "checkoutUrl": {
@@ -12214,6 +12259,51 @@
                                             "type": {
                                               "type": "string",
                                               "enum": [
+                                                "sticker"
+                                              ]
+                                            },
+                                            "sticker": {
+                                              "type": "object",
+                                              "properties": {
+                                                "id": {
+                                                  "type": "string"
+                                                }
+                                              },
+                                              "required": [
+                                                "id"
+                                              ]
+                                            }
+                                          },
+                                          "required": [
+                                            "from",
+                                            "timestamp",
+                                            "type",
+                                            "sticker"
+                                          ]
+                                        },
+                                        {
+                                          "type": "object",
+                                          "properties": {
+                                            "from": {
+                                              "type": "string"
+                                            },
+                                            "timestamp": {
+                                              "type": "string"
+                                            },
+                                            "referral": {
+                                              "type": "object",
+                                              "properties": {
+                                                "ctwa_clid": {
+                                                  "type": "string"
+                                                },
+                                                "source_id": {
+                                                  "type": "string"
+                                                }
+                                              }
+                                            },
+                                            "type": {
+                                              "type": "string",
+                                              "enum": [
                                                 "unsupported"
                                               ]
                                             }
@@ -12222,6 +12312,51 @@
                                             "from",
                                             "timestamp",
                                             "type"
+                                          ]
+                                        },
+                                        {
+                                          "type": "object",
+                                          "properties": {
+                                            "from": {
+                                              "type": "string"
+                                            },
+                                            "timestamp": {
+                                              "type": "string"
+                                            },
+                                            "referral": {
+                                              "type": "object",
+                                              "properties": {
+                                                "ctwa_clid": {
+                                                  "type": "string"
+                                                },
+                                                "source_id": {
+                                                  "type": "string"
+                                                }
+                                              }
+                                            },
+                                            "type": {
+                                              "type": "string",
+                                              "enum": [
+                                                "system"
+                                              ]
+                                            },
+                                            "system": {
+                                              "type": "object",
+                                              "properties": {
+                                                "body": {
+                                                  "type": "string"
+                                                }
+                                              },
+                                              "required": [
+                                                "body"
+                                              ]
+                                            }
+                                          },
+                                          "required": [
+                                            "from",
+                                            "timestamp",
+                                            "type",
+                                            "system"
                                           ]
                                         }
                                       ]
@@ -12271,10 +12406,7 @@
                                       ]
                                     }
                                   }
-                                },
-                                "required": [
-                                  "metadata"
-                                ]
+                                }
                               }
                             },
                             "required": [

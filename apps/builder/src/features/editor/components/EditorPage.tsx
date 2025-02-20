@@ -6,12 +6,9 @@ import { VideoOnboardingFloatingWindow } from "@/features/onboarding/components/
 import { PreviewDrawer } from "@/features/preview/components/PreviewDrawer";
 import { VariablesDrawer } from "@/features/preview/components/VariablesDrawer";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
+import { useRightPanel } from "@/hooks/useRightPanel";
 import { Flex, Spinner, useColorModeValue } from "@chakra-ui/react";
-import {
-  EditorProvider,
-  RightPanel as RightPanelEnum,
-  useEditor,
-} from "../providers/EditorProvider";
+import { EditorProvider } from "../providers/EditorProvider";
 import { useTypebot } from "../providers/TypebotProvider";
 import { BlocksSideBar } from "./BlocksSideBar";
 import { BoardMenuButton } from "./BoardMenuButton";
@@ -77,14 +74,14 @@ export const EditorPage = () => {
 };
 
 const RightPanel = () => {
-  const { rightPanel, setRightPanel } = useEditor();
+  const [rightPanel, setRightPanel] = useRightPanel();
 
   switch (rightPanel) {
-    case RightPanelEnum.PREVIEW:
+    case "preview":
       return <PreviewDrawer />;
-    case RightPanelEnum.VARIABLES:
-      return <VariablesDrawer onClose={() => setRightPanel(undefined)} />;
-    case undefined:
+    case "variables":
+      return <VariablesDrawer onClose={() => setRightPanel(null)} />;
+    case null:
       return null;
   }
 };

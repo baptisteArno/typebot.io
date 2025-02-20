@@ -24,8 +24,7 @@
     "react-dom": "18.2.0",
     "tailwind-merge": "2.6.0",
     "@typebot.io/zod": "workspace:*",
-    "@typebot.io/ui": "workspace:*",
-    "vinxi": "0.5.3"
+    "@typebot.io/ui": "workspace:*"
   },
   "devDependencies": {
     "@content-collections/core": "0.8.0",

@@ -1,5 +1,6 @@
 import type { WaitBlock } from "@typebot.io/blocks-logic/wait/schema";
 import type { SessionState } from "@typebot.io/chat-session/schemas";
+import { safeParseFloat } from "@typebot.io/lib/safeParseFloat";
 import { isNotDefined } from "@typebot.io/lib/utils";
 import { parseVariables } from "@typebot.io/variables/parseVariables";
 import type { ExecuteLogicResponse } from "../../../types";
@@ -32,9 +33,4 @@ export const executeWait = (
           ]
         : undefined,
   };
-};
-
-const safeParseFloat = (value: string) => {
-  const parsedValue = Number.parseFloat(value);
-  return isNaN(parsedValue) ? undefined : parsedValue;
 };

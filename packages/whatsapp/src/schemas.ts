@@ -166,7 +166,19 @@ export const incomingMessageSchema = z.discriminatedUnion("type", [
     }),
   }),
   sharedIncomingMessageFieldsSchema.extend({
+    type: z.literal("sticker"),
+    sticker: z.object({
+      id: z.string(),
+    }),
+  }),
+  sharedIncomingMessageFieldsSchema.extend({
     type: z.literal("unsupported"),
+  }),
+  sharedIncomingMessageFieldsSchema.extend({
+    type: z.literal("system"),
+    system: z.object({
+      body: z.string(),
+    }),
   }),
 ]);
 
@@ -187,9 +199,11 @@ export const whatsAppWebhookRequestBodySchema = z.object({
       changes: z.array(
         z.object({
           value: z.object({
-            metadata: z.object({
-              phone_number_id: z.string(),
-            }),
+            metadata: z
+              .object({
+                phone_number_id: z.string(),
+              })
+              .optional(),
             contacts: z
               .array(
                 z.object({

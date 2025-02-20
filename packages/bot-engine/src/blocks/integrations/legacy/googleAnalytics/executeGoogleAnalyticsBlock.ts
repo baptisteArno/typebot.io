@@ -10,16 +10,15 @@ export const executeGoogleAnalyticsBlock = (
   const { typebot, resultId } = state.typebotsQueue[0];
   if (!resultId || state.whatsApp || !block.options)
     return { outgoingEdgeId: block.outgoingEdgeId };
-  const googleAnalytics = deepParseVariables(typebot.variables, {
-    guessCorrectTypes: true,
-    removeEmptyStrings: true,
-  })(block.options);
   return {
     outgoingEdgeId: block.outgoingEdgeId,
     clientSideActions: [
       {
         type: "googleAnalytics",
-        googleAnalytics,
+        googleAnalytics: deepParseVariables(typebot.variables, {
+          guessCorrectTypes: true,
+          removeEmptyStrings: true,
+        })(block.options),
       },
     ],
   };

@@ -3,9 +3,9 @@ import type { BotContext } from "@/types";
 import { CorsError } from "@/utils/CorsError";
 import { setBotContainerHeight } from "@/utils/botContainerHeightSignal";
 import { setBotContainer } from "@/utils/botContainerSignal";
+import { mergeThemes } from "@/utils/dynamicTheme";
 import { injectFont } from "@/utils/injectFont";
 import { setIsMobile } from "@/utils/isMobileSignal";
-import { mergeThemes } from "@/utils/mergeThemes";
 import { persist } from "@/utils/persist";
 import { setCssVariablesValue } from "@/utils/setCssVariablesValue";
 import {

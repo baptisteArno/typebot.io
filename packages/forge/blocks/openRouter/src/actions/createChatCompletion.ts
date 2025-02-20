@@ -76,9 +76,7 @@ export const createChatCompletion = createAction({
         messages: options.messages,
         tools: options.tools,
         isVisionEnabled: false,
-        temperature: options.temperature
-          ? Number(options.temperature)
-          : undefined,
+        temperature: options.temperature,
         responseMapping: options.responseMapping,
         logs,
       });
@@ -114,9 +112,7 @@ export const createChatCompletion = createAction({
           messages: options.messages,
           tools: options.tools,
           isVisionEnabled: false,
-          temperature: options.temperature
-            ? Number(options.temperature)
-            : undefined,
+          temperature: options.temperature,
           responseMapping: options.responseMapping,
         });
       },

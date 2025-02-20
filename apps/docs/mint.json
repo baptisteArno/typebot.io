@@ -147,6 +147,11 @@
             }
           ]
         },
+        {
+          "group": "Events",
+          "icon": "command",
+          "pages": ["editor/events/command"]
+        },
         "editor/variables",
         "editor/publish",
         "editor/share",

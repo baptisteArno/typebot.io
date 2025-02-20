@@ -13,6 +13,8 @@ import { TextInput } from "@/features/blocks/inputs/textInput/components/TextInp
 import { TimeForm } from "@/features/blocks/inputs/time/components/TimeForm";
 import { UrlInput } from "@/features/blocks/inputs/url/components/UrlInput";
 import type { BotContext, InputSubmitContent } from "@/types";
+import { getAvatarAtIndex } from "@/utils/avatarHistory";
+import type { AvatarHistory } from "@/utils/avatarHistory";
 import { formattedMessages } from "@/utils/formattedMessagesSignal";
 import { isMobile } from "@/utils/isMobileSignal";
 import { persist } from "@/utils/persist";
@@ -56,6 +58,7 @@ type Props = {
   hasError: boolean;
   isOngoingLastChunk: boolean;
   theme: Theme;
+  avatarHistory: AvatarHistory[];
   onTransitionEnd: () => void;
   onSubmit: (content: InputSubmitContent) => void;
   onSkip: () => void;
@@ -99,7 +102,15 @@ export const InputChatBlock = (props: Props) => {
   return (
     <Switch>
       <Match when={answer() && !props.hasError}>
-        <GuestBubble answer={answer()} theme={props.theme} />
+        <GuestBubble
+          answer={answer()}
+          theme={props.theme}
+          avatarSrc={getAvatarAtIndex({
+            avatarHistory: props.avatarHistory,
+            currentIndex: props.chunkIndex,
+            currentRole: "guest",
+          })}
+        />
       </Match>
       <Match when={isNotDefined(answer()) || props.hasError}>
         <div

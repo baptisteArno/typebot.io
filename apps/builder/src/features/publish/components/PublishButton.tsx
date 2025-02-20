@@ -64,10 +64,8 @@ export const PublishButton = ({
   );
 
   const {
-    typebot: {
-      getPublishedTypebot: { refetch: refetchPublishedTypebot },
-    },
-  } = trpc.useContext();
+    typebot: { getPublishedTypebot },
+  } = trpc.useUtils();
 
   const { mutate: publishTypebotMutate, isLoading: isPublishing } =
     trpc.typebot.publishTypebot.useMutation({
@@ -84,9 +82,7 @@ export const PublishButton = ({
       },
       onSuccess: () => {
         if (!typebot?.id || currentUserMode === "guest") return;
-        refetchPublishedTypebot({
-          typebotId: typebot.id,
-        });
+        getPublishedTypebot.invalidate();
         if (!publishedTypebot && !pathname.endsWith("share"))
           push(`/typebots/${query.typebotId}/share`);
       },
@@ -100,7 +96,7 @@ export const PublishButton = ({
           description: error.message,
         }),
       onSuccess: () => {
-        refetchPublishedTypebot();
+        getPublishedTypebot.invalidate();
       },
     });
 
