@@ -57,3 +57,5 @@ snapshots
 .content-collections
 
 apps/builder/src/i18n/*.json
+apps/builder/src/lib/tolgee.tsx
+apps/builder/src/features/user/components/UserPreferencesForm.tsx

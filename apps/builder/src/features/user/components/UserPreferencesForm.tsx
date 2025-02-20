@@ -24,13 +24,7 @@ import { GroupTitlesAutoGenForm } from "./GroupTitlesAutoGenForm";
 
 const localeHumanReadable = {
   en: "English",
-  fr: "Français",
-  de: "Deutsch",
-  pt: "Português",
-  "pt-BR": "Português (BR)",
-  ro: "Română",
-  es: "Español",
-  it: "Italiano",
+  ar: "العربية",
 } as const;
 
 export const UserPreferencesForm = () => {
