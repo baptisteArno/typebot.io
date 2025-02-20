@@ -33,3 +33,7 @@ jobs:
       - uses: oven-sh/setup-bun@v2
       - run: bun install
       - run: bunx turbo run cron:hourly
+        id: run-cron
+        continue-on-error: true
+      - if: steps.run-cron.outcome == 'failure'
+        run: bunx turbo run cron:hourly
