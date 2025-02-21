@@ -8419,6 +8419,46 @@
                 "required": [
                   "action"
                 ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "credentialsId": {
+                    "type": "string"
+                  },
+                  "action": {
+                    "type": "string",
+                    "enum": [
+                      "Query Knowledge Base"
+                    ]
+                  },
+                  "datasetId": {
+                    "type": "string"
+                  },
+                  "query": {
+                    "type": "string"
+                  },
+                  "responseMapping": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "item": {
+                          "type": "string",
+                          "enum": [
+                            "Retrieved chunks"
+                          ]
+                        },
+                        "variableId": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                },
+                "required": [
+                  "action"
+                ]
               }
             ]
           }

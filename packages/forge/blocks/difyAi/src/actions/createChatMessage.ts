@@ -2,7 +2,7 @@ import { formatDataStreamPart } from "@ai-sdk/ui-utils";
 import { createAction, option } from "@typebot.io/forge";
 import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
 import { isDefined, isEmpty, isNotEmpty } from "@typebot.io/lib/utils";
-import ky, { HTTPError } from "ky";
+import ky from "ky";
 import { auth } from "../auth";
 import { defaultBaseUrl } from "../constants";
 import { deprecatedCreateChatMessageOptions } from "../deprecated";
