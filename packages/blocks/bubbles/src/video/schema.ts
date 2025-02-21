@@ -8,7 +8,7 @@ export const videoBubbleContentSchema = z.object({
   url: z.string().optional(),
   id: z.string().optional(),
   type: z.nativeEnum(VideoBubbleContentType).optional(),
-  height: singleVariableOrNumberSchema.optional(),
+  height: singleVariableOrNumberSchema,
   aspectRatio: z.string().optional(),
   maxWidth: z.string().optional(),
   queryParamsStr: z.string().optional(),
