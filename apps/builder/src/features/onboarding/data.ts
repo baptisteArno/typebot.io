@@ -21,21 +21,21 @@ export const onboardingVideos: Partial<
 > = {
   editor: {
     key: "editor",
-    youtubeId: "jp3ggg_42-M",
+    youtubeId: "RewiVE9fwTQ",
     deployedAt: new Date("2024-06-04"),
   },
   groupTitlesAutoGeneration: {
     key: "groupTitlesAutoGeneration",
-    youtubeId: "Lt7UliKv0xQ",
+    youtubeId: "RewiVE9fwTQ",
   },
   [IntegrationBlockType.ZAPIER]: {
     key: IntegrationBlockType.ZAPIER,
-    youtubeId: "2ZskGItI_Zo",
+    youtubeId: "RewiVE9fwTQ",
     deployedAt: new Date("2024-06-04"),
   },
   [IntegrationBlockType.MAKE_COM]: {
     key: IntegrationBlockType.MAKE_COM,
-    youtubeId: "V-y1Orys_kY",
+    youtubeId: "RewiVE9fwTQ",
     deployedAt: new Date("2024-06-04"),
   },
 };
