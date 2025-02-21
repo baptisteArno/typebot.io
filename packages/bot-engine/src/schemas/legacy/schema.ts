@@ -38,7 +38,7 @@ const startParamsSchema = z
     typebot: startTypebotSchema
       .or(z.string())
       .describe(
-        "Either a Typebot ID or a Typebot object. If you provide a Typebot object, it will be executed in preview mode. ([How can I find my typebot ID?](https://docs.typebot.io/api-reference#how-to-find-my-typebotid)).",
+        "Either a Typebot ID or a Typebot object. If you provide a Typebot object, it will be executed in preview mode. ([How can I find My ZazuBot ID?](https://docs.typebot.io/api-reference#how-to-find-my-typebotid)).",
       ),
     isPreview: z
       .boolean()

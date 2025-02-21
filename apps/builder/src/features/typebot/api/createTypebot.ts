@@ -103,7 +103,7 @@ export const createTypebot = authenticatedProcedure
       data: {
         version: latestTypebotVersion,
         workspaceId,
-        name: typebot.name ?? "My typebot",
+        name: typebot.name ?? "My ZazuBot",
         icon: typebot.icon,
         selectedThemeTemplateId: typebot.selectedThemeTemplateId,
         groups,

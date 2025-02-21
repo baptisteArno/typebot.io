@@ -15,7 +15,7 @@ export const parseTestTypebot = (
   version: latestTypebotVersion,
   workspaceId: proWorkspaceId,
   folderId: null,
-  name: "My typebot",
+  name: "My ZazuBot",
   theme: {},
   settings: {},
   publicId: null,

@@ -43,7 +43,7 @@ const nextConfig = {
   output: "standalone",
   i18n: {
     defaultLocale: "en",
-    locales: ["en", "fr", "pt", "pt-BR", "de", "ro", "es", "it", "el"],
+    locales: ["en", "ar"],
   },
   experimental: {
     outputFileTracingRoot: join(__dirname, "../../"),

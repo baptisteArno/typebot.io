@@ -51,7 +51,7 @@ By default, a variable is not saved in the results table. You can change it by e
 
 Here is a quick video that showcases advanced concepts about variables:
 
-<div className="relative" style={{ paddingBottom: '64.5933014354067%' }}>
+<div className="relative" style={{ paddingBottom: "64.5933014354067%" }}>
   <iframe
     src="https://www.youtube.com/embed/o715Tjv1ijI"
     allowFullScreen
@@ -63,7 +63,7 @@ Here is a quick video that showcases advanced concepts about variables:
 
 By default, any declared variables in the bot can be prefilled by passing initial values in the URL.
 
-Let's say my typebot contains these variables:
+Let's say My ZazuBot contains these variables:
 
 - "Email"
 - "First name"
@@ -83,10 +83,10 @@ Prefilling variables using the embed library is even easier. You need to add an 
 Typebot.initBubble({
   typebot: `my-bot`,
   prefilledVariables: {
-    Email: 'test@test.com',
-    'First name': 'John',
+    Email: "test@test.com",
+    "First name": "John",
   },
-})
+});
 ```
 
 (Note that if your variable name contains spaces, it needs to be surrounded by quotes.)
@@ -97,7 +97,7 @@ Your typebot's variables don't have to be displayed to the user. You could creat
 
 You just have to make sure that the variables exist in the variables dropdown:
 
-<Frame style={{ maxWidth: '300px' }}>
+<Frame style={{ maxWidth: "300px" }}>
   <img src="/images/variables/declaring.png" alt="Variables dropdown" />
 </Frame>
 
@@ -118,12 +118,12 @@ Variables content can either be a text (`string`) or a list of texts (`string[]`
 
 ```ts
 // ✅ Good
-'Hello', ['item 1', 'item 2']
+"Hello", ["item 1", "item 2"];
 
 // ❌ Not good
-2, true, { foo: 'bar' }
+2, true, { foo: "bar" };
 // Will automatically converted into
-'2', 'true', '{ foo: "bar" }'
+"2", "true", '{ foo: "bar" }';
 ```
 
 If you provide an object, number or boolean. It will always be converted into either a text
