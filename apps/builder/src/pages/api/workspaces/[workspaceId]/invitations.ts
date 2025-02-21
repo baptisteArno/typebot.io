@@ -59,7 +59,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           to: data.email,
           workspaceName: workspace.name,
           guestEmail: data.email,
-          url: `${env.NEXTAUTH_URL}/typebots?workspaceId=${workspace.id}`,
+          url: `${env.NEXTAUTH_URL}/zazubots?workspaceId=${workspace.id}`,
           hostEmail: user.email ?? "",
         });
       return res.send({
@@ -78,7 +78,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           to: data.email,
           workspaceName: workspace.name,
           guestEmail: data.email,
-          url: `${env.NEXTAUTH_URL}/typebots?workspaceId=${workspace.id}`,
+          url: `${env.NEXTAUTH_URL}/zazubots?workspaceId=${workspace.id}`,
           hostEmail: user.email ?? "",
         });
       return res.send({ invitation });

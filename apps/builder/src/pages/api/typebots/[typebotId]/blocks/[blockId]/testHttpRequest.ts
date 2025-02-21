@@ -7,7 +7,7 @@ import {
   parseWebhookAttributes,
 } from "@typebot.io/bot-engine/blocks/integrations/httpRequest/executeHttpRequestBlock";
 import { parseSampleResult } from "@typebot.io/bot-engine/blocks/integrations/httpRequest/parseSampleResult";
-import { fetchLinkedChildTypebots } from "@typebot.io/bot-engine/blocks/logic/typebotLink/fetchLinkedChildTypebots";
+import { fetchLinkedChildTypebots } from "@typebot.io/bot-engine/blocks/logic/zazubotsLink/fetchLinkedChildTypebots";
 import { saveLog } from "@typebot.io/bot-engine/logs/saveLog";
 import { getBlockById } from "@typebot.io/groups/helpers/getBlockById";
 import { methodNotAllowed } from "@typebot.io/lib/api/utils";
@@ -15,7 +15,7 @@ import { notFound } from "@typebot.io/lib/api/utils";
 import { byId } from "@typebot.io/lib/utils";
 import prisma from "@typebot.io/prisma";
 import type { AnswerInSessionState } from "@typebot.io/results/schemas/answers";
-import type { Typebot } from "@typebot.io/typebot/schemas/typebot";
+import type { Typebot } from "@typebot.io/zazubots/schemas/zazubots";
 import type { Variable } from "@typebot.io/variables/schemas";
 import type { NextApiRequest, NextApiResponse } from "next";
 

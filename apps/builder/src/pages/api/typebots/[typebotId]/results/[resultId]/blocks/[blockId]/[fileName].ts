@@ -7,7 +7,7 @@ import {
 } from "@typebot.io/lib/api/utils";
 import { getFileTempUrl } from "@typebot.io/lib/s3/getFileTempUrl";
 import prisma from "@typebot.io/prisma";
-import { isReadTypebotForbidden } from "@typebot.io/typebot/helpers/isReadTypebotForbidden";
+import { isReadTypebotForbidden } from "@typebot.io/zazubots/helpers/isReadTypebotForbidden";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -54,7 +54,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (!typebot) return notFound(res, "Typebot not found");
 
     const tmpUrl = await getFileTempUrl({
-      key: `private/workspaces/${typebot.workspace.id}/typebots/${typebotId}/results/${resultId}/blocks/${blockId}/${fileName}`,
+      key: `private/workspaces/${typebot.workspace.id}/zazubots/${typebotId}/results/${resultId}/blocks/${blockId}/${fileName}`,
     });
 
     if (!tmpUrl) return notFound(res, "File not found");

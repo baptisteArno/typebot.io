@@ -2,7 +2,7 @@ import { EmojiOrImageIcon } from "@/components/EmojiOrImageIcon";
 import { HardDriveIcon } from "@/components/icons";
 import { RadioButtons } from "@/components/inputs/RadioButtons";
 import { PlanTag } from "@/features/billing/components/PlanTag";
-import { useTypebot } from "@/features/editor/providers/TypebotProvider";
+import { useTypebot } from "@/features/editor/providers/zazubotsProvider";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { trpc } from "@/lib/trpc";
 import {
@@ -22,7 +22,7 @@ const Page = () => {
   const [selectedWorkspaceId, setSelectedWorkspaceId] = useState<string>();
   const { mutate, isLoading } = trpc.typebot.importTypebot.useMutation({
     onSuccess: (data) => {
-      push(`/typebots/${data.typebot.id}/edit`);
+      push(`/zazubots/${data.typebot.id}/edit`);
     },
   });
 
