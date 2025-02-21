@@ -549,9 +549,11 @@
                                                               "temperature": {
                                                                 "anyOf": [
                                                                   {
-                                                                    "type": "number"
+                                                                    "type": "string"
                                                                   },
-                                                                  {}
+                                                                  {
+                                                                    "type": "number"
+                                                                  }
                                                                 ]
                                                               }
                                                             }
@@ -4299,9 +4301,11 @@
                                                           "temperature": {
                                                             "anyOf": [
                                                               {
-                                                                "type": "number"
+                                                                "type": "string"
                                                               },
-                                                              {}
+                                                              {
+                                                                "type": "number"
+                                                              }
                                                             ]
                                                           }
                                                         }
@@ -7011,9 +7015,11 @@
                                                           "temperature": {
                                                             "anyOf": [
                                                               {
-                                                                "type": "number"
+                                                                "type": "string"
                                                               },
-                                                              {}
+                                                              {
+                                                                "type": "number"
+                                                              }
                                                             ]
                                                           }
                                                         }
@@ -13265,9 +13271,11 @@
               "height": {
                 "anyOf": [
                   {
-                    "type": "number"
+                    "type": "string"
                   },
-                  {}
+                  {
+                    "type": "number"
+                  }
                 ]
               },
               "aspectRatio": {
@@ -13318,9 +13326,11 @@
               "height": {
                 "anyOf": [
                   {
-                    "type": "number"
+                    "type": "string"
                   },
-                  {}
+                  {
+                    "type": "number"
+                  }
                 ]
               },
               "waitForEvent": {
@@ -13540,25 +13550,31 @@
               "min": {
                 "anyOf": [
                   {
-                    "type": "number"
+                    "type": "string"
                   },
-                  {}
+                  {
+                    "type": "number"
+                  }
                 ]
               },
               "max": {
                 "anyOf": [
                   {
-                    "type": "number"
+                    "type": "string"
                   },
-                  {}
+                  {
+                    "type": "number"
+                  }
                 ]
               },
               "step": {
                 "anyOf": [
                   {
-                    "type": "number"
+                    "type": "string"
                   },
-                  {}
+                  {
+                    "type": "number"
+                  }
                 ]
               }
             }
@@ -13905,9 +13921,11 @@
               "startsAt": {
                 "anyOf": [
                   {
-                    "type": "number"
+                    "type": "string"
                   },
-                  {}
+                  {
+                    "type": "number"
+                  }
                 ]
               },
               "labels": {
@@ -14780,9 +14798,11 @@
               "value": {
                 "anyOf": [
                   {
-                    "type": "number"
+                    "type": "string"
                   },
-                  {}
+                  {
+                    "type": "number"
+                  }
                 ]
               },
               "sendTo": {
@@ -15343,9 +15363,11 @@
                                     "temperature": {
                                       "anyOf": [
                                         {
-                                          "type": "number"
+                                          "type": "string"
                                         },
-                                        {}
+                                        {
+                                          "type": "number"
+                                        }
                                       ]
                                     }
                                   }
@@ -17140,9 +17162,11 @@
                   "temperature": {
                     "anyOf": [
                       {
-                        "type": "number"
+                        "type": "string"
                       },
-                      {}
+                      {
+                        "type": "number"
+                      }
                     ]
                   },
                   "responseMapping": {
@@ -18044,9 +18068,11 @@
                   "temperature": {
                     "anyOf": [
                       {
-                        "type": "number"
+                        "type": "string"
                       },
-                      {}
+                      {
+                        "type": "number"
+                      }
                     ]
                   },
                   "responseMapping": {
@@ -18545,17 +18571,21 @@
                   "temperature": {
                     "anyOf": [
                       {
-                        "type": "number"
+                        "type": "string"
                       },
-                      {}
+                      {
+                        "type": "number"
+                      }
                     ]
                   },
                   "maxTokens": {
                     "anyOf": [
                       {
-                        "type": "number"
+                        "type": "string"
                       },
-                      {}
+                      {
+                        "type": "number"
+                      }
                     ]
                   },
                   "responseMapping": {
@@ -19004,9 +19034,11 @@
                   "temperature": {
                     "anyOf": [
                       {
-                        "type": "number"
+                        "type": "string"
                       },
-                      {}
+                      {
+                        "type": "number"
+                      }
                     ]
                   },
                   "responseMapping": {
@@ -19313,9 +19345,11 @@
                   "temperature": {
                     "anyOf": [
                       {
-                        "type": "number"
+                        "type": "string"
                       },
-                      {}
+                      {
+                        "type": "number"
+                      }
                     ]
                   },
                   "responseMapping": {
@@ -20030,9 +20064,11 @@
                   "temperature": {
                     "anyOf": [
                       {
-                        "type": "number"
+                        "type": "string"
                       },
-                      {}
+                      {
+                        "type": "number"
+                      }
                     ]
                   },
                   "responseMapping": {
@@ -21964,9 +22000,11 @@
                                           "temperature": {
                                             "anyOf": [
                                               {
-                                                "type": "number"
+                                                "type": "string"
                                               },
-                                              {}
+                                              {
+                                                "type": "number"
+                                              }
                                             ]
                                           }
                                         }
@@ -24027,9 +24065,11 @@
                                           "temperature": {
                                             "anyOf": [
                                               {
-                                                "type": "number"
+                                                "type": "string"
                                               },
-                                              {}
+                                              {
+                                                "type": "number"
+                                              }
                                             ]
                                           }
                                         }

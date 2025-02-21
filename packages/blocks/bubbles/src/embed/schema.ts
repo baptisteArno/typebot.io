@@ -5,7 +5,7 @@ import { BubbleBlockType } from "../constants";
 
 export const embedBubbleContentSchema = z.object({
   url: z.string().optional(),
-  height: singleVariableOrNumberSchema,
+  height: singleVariableOrNumberSchema.optional(),
   waitForEvent: z
     .object({
       isEnabled: z.boolean().optional(),

@@ -39,13 +39,19 @@ export const variableStringSchema = z.custom<`{{${string}}}`>((val) =>
 );
 export type VariableString = z.infer<typeof variableStringSchema>;
 
-export const singleVariableOrNumberSchema = z.preprocess((value) => {
-  if (typeof value === "string") {
-    if (isSingleVariable(value)) return value;
-    return safeParseFloat(value);
-  }
-  return value;
-}, z.number().or(variableStringSchema).optional());
+export const singleVariableOrNumberSchema = z
+  .string()
+  .or(z.number())
+  .transform((value) => {
+    if (typeof value === "string") {
+      if (isSingleVariable(value)) return value;
+      return safeParseFloat(value);
+    }
+    return value;
+  })
+  .openapi({
+    effectType: "input",
+  });
 
 export const setVariableHistoryItemSchema = z.object({
   resultId: z.string(),

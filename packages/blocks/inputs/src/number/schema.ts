@@ -11,9 +11,9 @@ export const numberInputOptionsSchema = optionBaseSchema
   .merge(textInputOptionsBaseSchema)
   .merge(
     z.object({
-      min: singleVariableOrNumberSchema,
-      max: singleVariableOrNumberSchema,
-      step: singleVariableOrNumberSchema,
+      min: singleVariableOrNumberSchema.optional(),
+      max: singleVariableOrNumberSchema.optional(),
+      step: singleVariableOrNumberSchema.optional(),
     }),
   );
 

@@ -4473,9 +4473,11 @@
                                     "temperature": {
                                       "anyOf": [
                                         {
-                                          "type": "number"
+                                          "type": "string"
                                         },
-                                        {}
+                                        {
+                                          "type": "number"
+                                        }
                                       ]
                                     }
                                   }
@@ -4935,9 +4937,11 @@
               "height": {
                 "anyOf": [
                   {
-                    "type": "number"
+                    "type": "string"
                   },
-                  {}
+                  {
+                    "type": "number"
+                  }
                 ]
               },
               "aspectRatio": {
@@ -4988,9 +4992,11 @@
               "height": {
                 "anyOf": [
                   {
-                    "type": "number"
+                    "type": "string"
                   },
-                  {}
+                  {
+                    "type": "number"
+                  }
                 ]
               },
               "waitForEvent": {
@@ -5210,25 +5216,31 @@
               "min": {
                 "anyOf": [
                   {
-                    "type": "number"
+                    "type": "string"
                   },
-                  {}
+                  {
+                    "type": "number"
+                  }
                 ]
               },
               "max": {
                 "anyOf": [
                   {
-                    "type": "number"
+                    "type": "string"
                   },
-                  {}
+                  {
+                    "type": "number"
+                  }
                 ]
               },
               "step": {
                 "anyOf": [
                   {
-                    "type": "number"
+                    "type": "string"
                   },
-                  {}
+                  {
+                    "type": "number"
+                  }
                 ]
               }
             }
@@ -5575,9 +5587,11 @@
               "startsAt": {
                 "anyOf": [
                   {
-                    "type": "number"
+                    "type": "string"
                   },
-                  {}
+                  {
+                    "type": "number"
+                  }
                 ]
               },
               "labels": {
@@ -6663,9 +6677,11 @@
               "value": {
                 "anyOf": [
                   {
-                    "type": "number"
+                    "type": "string"
                   },
-                  {}
+                  {
+                    "type": "number"
+                  }
                 ]
               },
               "sendTo": {
@@ -7779,9 +7795,11 @@
                   "temperature": {
                     "anyOf": [
                       {
-                        "type": "number"
+                        "type": "string"
                       },
-                      {}
+                      {
+                        "type": "number"
+                      }
                     ]
                   },
                   "responseMapping": {
@@ -8683,9 +8701,11 @@
                   "temperature": {
                     "anyOf": [
                       {
-                        "type": "number"
+                        "type": "string"
                       },
-                      {}
+                      {
+                        "type": "number"
+                      }
                     ]
                   },
                   "responseMapping": {
@@ -9184,17 +9204,21 @@
                   "temperature": {
                     "anyOf": [
                       {
-                        "type": "number"
+                        "type": "string"
                       },
-                      {}
+                      {
+                        "type": "number"
+                      }
                     ]
                   },
                   "maxTokens": {
                     "anyOf": [
                       {
-                        "type": "number"
+                        "type": "string"
                       },
-                      {}
+                      {
+                        "type": "number"
+                      }
                     ]
                   },
                   "responseMapping": {
@@ -9643,9 +9667,11 @@
                   "temperature": {
                     "anyOf": [
                       {
-                        "type": "number"
+                        "type": "string"
                       },
-                      {}
+                      {
+                        "type": "number"
+                      }
                     ]
                   },
                   "responseMapping": {
@@ -9952,9 +9978,11 @@
                   "temperature": {
                     "anyOf": [
                       {
-                        "type": "number"
+                        "type": "string"
                       },
-                      {}
+                      {
+                        "type": "number"
+                      }
                     ]
                   },
                   "responseMapping": {
@@ -10669,9 +10697,11 @@
                   "temperature": {
                     "anyOf": [
                       {
-                        "type": "number"
+                        "type": "string"
                       },
-                      {}
+                      {
+                        "type": "number"
+                      }
                     ]
                   },
                   "responseMapping": {
@@ -12073,9 +12103,11 @@
                                           "temperature": {
                                             "anyOf": [
                                               {
-                                                "type": "number"
+                                                "type": "string"
                                               },
-                                              {}
+                                              {
+                                                "type": "number"
+                                              }
                                             ]
                                           }
                                         }
@@ -13783,9 +13815,11 @@
               "height": {
                 "anyOf": [
                   {
-                    "type": "number"
+                    "type": "string"
                   },
-                  {}
+                  {
+                    "type": "number"
+                  }
                 ]
               },
               "aspectRatio": {
@@ -13854,6 +13888,16 @@
               "url": {
                 "type": "string"
               },
+              "height": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "number"
+                  }
+                ]
+              },
               "waitForEvent": {
                 "type": "object",
                 "properties": {
@@ -13867,9 +13911,6 @@
                     "type": "string"
                   }
                 }
-              },
-              "height": {
-                "type": "number"
               }
             }
           }
@@ -14167,9 +14208,11 @@
               "value": {
                 "anyOf": [
                   {
-                    "type": "number"
+                    "type": "string"
                   },
-                  {}
+                  {
+                    "type": "number"
+                  }
                 ]
               },
               "sendTo": {

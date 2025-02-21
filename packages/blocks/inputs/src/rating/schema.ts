@@ -10,7 +10,7 @@ export const ratingInputOptionsSchema = optionBaseSchema.merge(
   z.object({
     buttonType: z.literal("Icons").or(z.literal("Numbers")).optional(),
     length: z.number().optional(),
-    startsAt: singleVariableOrNumberSchema,
+    startsAt: singleVariableOrNumberSchema.optional(),
     labels: z
       .object({
         left: z.string().optional(),
