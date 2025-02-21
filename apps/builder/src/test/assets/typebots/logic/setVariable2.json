@@ -168,7 +168,7 @@
                 "children": [
                   { "text": "First, don't forget to check out the " },
                   {
-                    "url": "https://docs.typebot.io/",
+                    "url": "https://docs.zazubot.com/",
                     "type": "a",
                     "children": [{ "text": "Documentation 🙏" }]
                   }

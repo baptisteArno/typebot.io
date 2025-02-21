@@ -61,7 +61,7 @@ export const LoginCodeEmail = ({ url, code }: Props) => (
 );
 
 LoginCodeEmail.PreviewProps = {
-  url: "https://typebot.io",
+  url: "https://zazubot.com",
   code: "654778",
 } as Props;
 

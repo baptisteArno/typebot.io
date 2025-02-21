@@ -27,7 +27,7 @@ export default function Page() {
         <Text>
           We detected that one of your typebots does not comply with our{" "}
           <TextLink
-            href="https://typebot.io/terms-of-service#scam-typebots"
+            href="https://zazubot.com/terms-of-service#scam-typebots"
             isExternal
           >
             terms of service

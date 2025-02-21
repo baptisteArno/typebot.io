@@ -50,7 +50,7 @@ export const BoardMenuButton = (props: StackProps) => {
   };
 
   const redirectToDocumentation = () =>
-    window.open("https://docs.typebot.io/editor/graph", "_blank");
+    window.open("https://docs.zazubot.com/editor/graph", "_blank");
 
   return (
     <HStack rounded="md" spacing="4" {...props}>

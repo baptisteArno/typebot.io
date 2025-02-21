@@ -31,7 +31,7 @@ export const WebflowPopupInstructions = () => {
       <Text fontSize="sm" colorScheme="gray" pl="5">
         Check out the{" "}
         <TextLink
-          href="https://docs.typebot.io/deploy/web/webflow#popup"
+          href="https://docs.zazubot.com/deploy/web/webflow#popup"
           isExternal
         >
           Webflow embed documentation

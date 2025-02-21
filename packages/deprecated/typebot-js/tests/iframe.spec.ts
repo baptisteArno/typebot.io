@@ -6,14 +6,14 @@ describe("createIframe", () => {
   it("should create a valid iframe element", () => {
     expect.assertions(3);
     const iframeElement = createIframe({
-      url: "https://typebot.io/typebot-id",
+      url: "https://zazubot.com/typebot-id",
     });
     expect(iframeElement.tagName).toBe("IFRAME");
     expect(iframeElement.getAttribute("data-id")).toBe(
-      "https://typebot.io/typebot-id",
+      "https://zazubot.com/typebot-id",
     );
     expect(iframeElement.getAttribute("src")).toBe(
-      "https://typebot.io/typebot-id",
+      "https://zazubot.com/typebot-id",
     );
   });
 
@@ -21,19 +21,19 @@ describe("createIframe", () => {
     expect.assertions(1);
     const iframes = [
       createIframe({
-        url: "https://typebot.io/typebot-id",
+        url: "https://zazubot.com/typebot-id",
         hiddenVariables: { var1: "value1", var2: "value2", var3: undefined },
       }),
     ];
     expect(iframes[0].getAttribute("src")).toBe(
-      "https://typebot.io/typebot-id?var1=value1&var2=value2",
+      "https://zazubot.com/typebot-id?var1=value1&var2=value2",
     );
   });
 
   it("should have a custom background color if defined", () => {
     expect.assertions(1);
     const iframeElement = createIframe({
-      url: "https://typebot.io/typebot-id",
+      url: "https://zazubot.com/typebot-id",
       backgroundColor: "green",
     });
     expect(iframeElement.style.backgroundColor).toBe("green");
@@ -42,11 +42,11 @@ describe("createIframe", () => {
   it("should have a lazy loading behavior if defined", () => {
     expect.assertions(2);
     const iframeElement = createIframe({
-      url: "https://typebot.io/typebot-id",
+      url: "https://zazubot.com/typebot-id",
       loadWhenVisible: true,
     });
     expect(iframeElement.getAttribute("data-src")).toBe(
-      "https://typebot.io/typebot-id",
+      "https://zazubot.com/typebot-id",
     );
     expect(iframeElement.getAttribute("src")).toBeFalsy();
   });
@@ -54,7 +54,7 @@ describe("createIframe", () => {
   it("should redirect on event", async () => {
     expect.assertions(1);
     createIframe({
-      url: "https://typebot.io/typebot-id",
+      url: "https://zazubot.com/typebot-id",
     });
     window.open = jest.fn();
     window.postMessage(
@@ -72,7 +72,7 @@ describe("createIframe", () => {
     expect.assertions(2);
     let n, v;
     createIframe({
-      url: "https://typebot.io/typebot-id",
+      url: "https://zazubot.com/typebot-id",
       onNewVariableValue: ({ name, value }) => {
         v = value;
         n = name;
@@ -94,7 +94,7 @@ describe("createIframe", () => {
     expect.assertions(3);
     let n, v;
     createIframe({
-      url: "https://typebot.io/typebot-id",
+      url: "https://zazubot.com/typebot-id",
       onNewVariableValue: ({ name, value }) => {
         v = value;
         n = name;
@@ -117,7 +117,7 @@ describe("createIframe", () => {
   it("should close chat when receive close command", async () => {
     expect.assertions(2);
     const { open } = Typebot.initBubble({
-      url: "https://typebot.io/typebot-id2",
+      url: "https://zazubot.com/typebot-id2",
     });
     const bubble = document.getElementById("typebot-bubble");
     open();

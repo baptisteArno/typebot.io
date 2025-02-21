@@ -23,13 +23,13 @@
     "headings": {
       "family": "Uxum Grotesk",
       "weight": 500,
-      "url": "https://typebot.io/fonts/uxumGrotesque/uxumGrotesqueMedium.woff2",
+      "url": "https://zazubot.com/fonts/uxumGrotesque/uxumGrotesqueMedium.woff2",
       "format": "woff2"
     },
     "body": {
       "family": "Untitled Sans",
       "weight": 400,
-      "url": "https://typebot.io/fonts/untitledSans/untitledSansRegular.woff2",
+      "url": "https://zazubot.com/fonts/untitledSans/untitledSansRegular.woff2",
       "format": "woff2"
     }
   },
@@ -64,7 +64,7 @@
     {
       "name": "Community",
       "icon": "discord",
-      "url": "https://typebot.io/discord"
+      "url": "https://zazubot.com/discord"
     }
   ],
   "navigation": [
@@ -361,8 +361,8 @@
     }
   ],
   "footerSocials": {
-    "website": "https://typebot.io",
-    "discord": "https://typebot.io/discord",
+    "website": "https://zazubot.com",
+    "discord": "https://zazubot.com/discord",
     "github": "https://github.com/baptisteArno/typebot.io"
   },
   "redirects": [

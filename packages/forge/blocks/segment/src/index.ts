@@ -13,5 +13,5 @@ export const segmentBlock = createBlock({
   LightLogo: SegmentLogo,
   auth,
   actions: [alias, identify, trackPage, trackEvent],
-  docsUrl: "https://docs.typebot.io/editor/blocks/integrations/segment",
+  docsUrl: "https://docs.zazubot.com/editor/blocks/integrations/segment",
 });

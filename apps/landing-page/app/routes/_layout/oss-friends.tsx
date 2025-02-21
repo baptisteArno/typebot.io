@@ -24,7 +24,7 @@ export const getAndParseOssFriends = createServerFn().handler(async () => {
 export const Route = createFileRoute("/_layout/oss-friends")({
   head: () => ({
     meta: createMetaTags({
-      title: "OSS Friends | Typebot",
+      title: "OSS Friends | ZazuBot",
       description:
         "We love open-source and we are proud to support these amazing projects.",
       imagePath: "/images/default-og.png",

@@ -12,7 +12,7 @@ export const nocodbBlock = createBlock({
   LightLogo: NocodbLogo,
   auth,
   actions: [searchRecords, createRecord, updateExistingRecord],
-  docsUrl: "https://docs.typebot.io/editor/blocks/integrations/nocodb",
+  docsUrl: "https://docs.zazubot.com/editor/blocks/integrations/nocodb",
   onboarding: {
     youtubeId: "ViKETDQ8Sfg",
     deployedAt: new Date("2023-06-20"),

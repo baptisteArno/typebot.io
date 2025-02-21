@@ -1,6 +1,6 @@
 <br />
 <p align="center">
-<a href="https://typebot.io" target="_blank">
+<a href="https://zazubot.com" target="_blank">
   <img src="./.github/images/banner.png" alt="Typebot banner">
 </a>
 </p>
@@ -14,20 +14,20 @@ Typebot is an Fair Source chatbot builder. It allows you to create advanced chat
 <a href="https://github.com/baptistearno/typebot.io/stargazers"><img src="https://img.shields.io/github/stars/baptistearno/typebot.io" alt="Github Stars"></a>
 </a>
 <a href="https://github.com/baptistearno/typebot.io/pulse"><img src="https://img.shields.io/github/commit-activity/m/baptistearno/typebot.io" alt="Commits per month"></a>
-<a href="https://docs.typebot.io/self-hosting/guides/docker">
+<a href="https://docs.zazubot.com/self-hosting/guides/docker">
 <img src="https://img.shields.io/docker/pulls/baptistearno/typebot-builder">
 </a>
 <a href="https://github.com/baptistearno/typebot.io/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-AGPLv3-purple" alt="License">
 <a href="https://status.typebot.io"><img height="20px" src="https://betteruptime.com/status-badges/v1/monitor/a9kf.svg" alt="Uptime"></a>
 <a href="https://github.com/baptisteArno/typebot.io/issues/new?template=bug_report.md"><img src="https://img.shields.io/badge/Report a bug-Github-%231F80C0" alt="Report a bug"></a>
-<a href="https://typebot.io/discord"><img src="https://img.shields.io/badge/Join community-Discord-%23404EED" alt="Ask a question"></a>
+<a href="https://zazubot.com/discord"><img src="https://img.shields.io/badge/Join community-Discord-%23404EED" alt="Ask a question"></a>
 
 </p>
 
 <h3 align="center">
   <b><a href="https://app.typebot.io/register">Try Typebot</a></b>
   •
-  <b><a href="https://docs.typebot.io/">Docs</a></b>
+  <b><a href="https://docs.zazubot.com/">Docs</a></b>
 
 ---
 
@@ -67,7 +67,7 @@ Collect your **Results** and get insights:
 Built for **developers**:
 
 - 🔓 No vendor-locking. Features built with flexibility in mind.
-- 💻 Easy-to-use [APIs](https://docs.typebot.io/api-reference).
+- 💻 Easy-to-use [APIs](https://docs.zazubot.com/api-reference).
 
 ## Getting started with Typebot
 
@@ -78,22 +78,22 @@ So you’ll be supporting fair source software and getting a great service! 💙
 
 ## Support & Community
 
-You'll find a lot of resources to help you get started with Typebot in the [documentation](https://docs.typebot.io/).
+You'll find a lot of resources to help you get started with Typebot in the [documentation](https://docs.zazubot.com/).
 
-- Have a question? Join the [Discord server](https://typebot.io/discord) and get instant help.
+- Have a question? Join the [Discord server](https://zazubot.com/discord) and get instant help.
 - Found a bug? [Create an issue](https://github.com/baptisteArno/typebot.io/issues/new)
 
 ## Self-hosting
 
-Interested in self-hosting Typebot on your server? Take a look at the [self-hosting installation instructions](https://docs.typebot.io/self-hosting/get-started).
+Interested in self-hosting Typebot on your server? Take a look at the [self-hosting installation instructions](https://docs.zazubot.com/self-hosting/get-started).
 
 ## How to Contribute
 
-You are awesome, lets build great software together. Head over to the [Contribute docs](https://docs.typebot.io/contribute/overview) to get started. 💪
+You are awesome, lets build great software together. Head over to the [Contribute docs](https://docs.zazubot.com/contribute/overview) to get started. 💪
 
 ## Run the project locally
 
-Follow the [Local installation](https://docs.typebot.io/contribute/guides/local-installation) section of in the Contributing docs.
+Follow the [Local installation](https://docs.zazubot.com/contribute/guides/local-installation) section of in the Contributing docs.
 
 ### Top contributors
 
@@ -105,4 +105,4 @@ Made with [contrib.rocks](https://contrib.rocks).
 
 ## License
 
-Typebot's code is protected under a Functional Source License. You will find more information about the license and how to comply with it [here](https://docs.typebot.io/self-hosting#license-requirements).
+Typebot's code is protected under a Functional Source License. You will find more information about the license and how to comply with it [here](https://docs.zazubot.com/self-hosting#license-requirements).

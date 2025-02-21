@@ -65,10 +65,10 @@ export const SignInPage = ({ type }: Props) => {
               keyName="auth.register.aggreeToTerms"
               params={{
                 terms: (
-                  <TextLink href={"https://typebot.io/terms-of-service"} />
+                  <TextLink href={"https://zazubot.com/terms-of-service"} />
                 ),
                 privacy: (
-                  <TextLink href={"https://typebot.io/privacy-policy"} />
+                  <TextLink href={"https://zazubot.com/privacy-policy"} />
                 ),
               }}
             />

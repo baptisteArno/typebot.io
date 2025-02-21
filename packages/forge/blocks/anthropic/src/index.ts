@@ -11,5 +11,5 @@ export const anthropicBlock = createBlock({
   LightLogo: AnthropicLogo,
   auth,
   actions: [createChatMessage, generateVariables],
-  docsUrl: "https://docs.typebot.io/editor/blocks/integrations/anthropic",
+  docsUrl: "https://docs.zazubot.com/editor/blocks/integrations/anthropic",
 });

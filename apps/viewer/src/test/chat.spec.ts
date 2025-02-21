@@ -252,7 +252,7 @@ test("API chat execution should work on published bot", async ({ request }) => {
   await test.step("Answer URL question", async () => {
     const { messages, input } = await (
       await request.post(`/api/v1/sessions/${chatSessionId}/continueChat`, {
-        data: { message: "https://typebot.io" },
+        data: { message: "https://zazubot.com" },
       })
     ).json();
     expect(messages.length).toBe(0);

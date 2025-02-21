@@ -10,7 +10,7 @@ import { createFileRoute } from "@tanstack/react-router";
 export const Route = createFileRoute("/_layout/about")({
   head: () => ({
     meta: createMetaTags({
-      title: "About | Typebot",
+      title: "About | ZazuBot",
       description:
         "Typebot empowers businesses to craft personalized, interactive experiences that foster deeper connections with users.",
       imagePath: "/images/default-og.png",

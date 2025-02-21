@@ -38,7 +38,7 @@ const startParamsSchema = z
     typebot: startTypebotSchema
       .or(z.string())
       .describe(
-        "Either a Typebot ID or a Typebot object. If you provide a Typebot object, it will be executed in preview mode. ([How can I find My ZazuBot ID?](https://docs.typebot.io/api-reference#how-to-find-my-typebotid)).",
+        "Either a Typebot ID or a Typebot object. If you provide a Typebot object, it will be executed in preview mode. ([How can I find My ZazuBot ID?](https://docs.zazubot.com/api-reference#how-to-find-my-typebotid)).",
       ),
     isPreview: z
       .boolean()
@@ -55,7 +55,7 @@ const startParamsSchema = z
       .record(z.unknown())
       .optional()
       .describe(
-        "[More info about prefilled variables.](https://docs.typebot.io/editor/variables#prefilled-variables)",
+        "[More info about prefilled variables.](https://docs.zazubot.com/editor/variables#prefilled-variables)",
       ),
     isStreamEnabled: z
       .boolean()

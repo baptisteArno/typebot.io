@@ -52,7 +52,7 @@ export const V2dot22Update = ({}: Props) => (
           We started 2024 on fire. What a productive month! Some of it has been
           possible thanks to the new in-house framework to build new blocks:{" "}
           <Link
-            href="https://docs.typebot.io/contribute/guides/create-block"
+            href="https://docs.zazubot.com/contribute/guides/create-block"
             target="_blank"
             style={{ ...link }}
           >

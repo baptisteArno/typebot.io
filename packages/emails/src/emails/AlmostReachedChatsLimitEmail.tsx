@@ -57,7 +57,7 @@ export const AlmostReachedChatsLimitEmail = ({
             </Text>
             <Text>
               Check out the{" "}
-              <a href="https://typebot.io/pricing">pricing page</a> for
+              <a href="https://zazubot.com/pricing">pricing page</a> for
               information about the pay as you go tiers.
             </Text>
             <Text>

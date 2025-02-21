@@ -7,7 +7,7 @@ import cors from "nextjs-cors";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   await cors(req, res, {
-    origin: ["https://docs.typebot.io", "http://localhost:3000"],
+    origin: ["https://docs.zazubot.com", "http://localhost:3000"],
   });
 
   return createOpenApiNextHandler({

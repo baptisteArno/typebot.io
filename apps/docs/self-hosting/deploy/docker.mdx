@@ -194,7 +194,7 @@ services:
     image: minio/minio
     command: server /data
     ports:
-      - '9000:9000'
+      - "9000:9000"
     environment:
       MINIO_ROOT_USER: minio
       MINIO_ROOT_PASSWORD: minio123
@@ -278,7 +278,7 @@ services:
     restart: always
     extra_hosts:
       - 'host.docker.internal:host-gateway'
-    # See https://docs.typebot.io/self-hosting/configuration for more configuration options
+    # See https://docs.zazubot.com/self-hosting/configuration for more configuration options
     env_file:
       - .env
   typebot-viewer:
@@ -294,7 +294,7 @@ services:
       typebot-db:
         condition: service_healthy
     restart: always
-    # See https://docs.typebot.io/self-hosting/configuration for more configuration options
+    # See https://docs.zazubot.com/self-hosting/configuration for more configuration options
     env_file:
       - .env
   mail:
@@ -375,6 +375,7 @@ services:
     networks:
       - typebot_network
 ```
+
 When deploying the stack, Portainer will automatically create the network with the correct settings. This prevents hostname resolution issues after migration.
 
 <Note>

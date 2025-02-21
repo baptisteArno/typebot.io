@@ -8,7 +8,7 @@ it("should have the corresponding custom color", () => {
   expect.assertions(1);
   Typebot.initBubble({
     button: { color: "#222222" },
-    url: "https://typebot.io/typebot-id",
+    url: "https://zazubot.com/typebot-id",
   });
   const buttonElement = document.querySelector(
     "#typebot-bubble > button",
@@ -19,7 +19,7 @@ it("should have the corresponding custom color", () => {
 it("should have the default svg icon", () => {
   expect.assertions(1);
   Typebot.initBubble({
-    url: "https://typebot.io/typebot-id",
+    url: "https://zazubot.com/typebot-id",
   });
   const buttonIconElement = document.querySelector(
     "#typebot-bubble > button > .icon",
@@ -31,7 +31,7 @@ it("should have the corresponding custom icon", () => {
   expect.assertions(1);
   Typebot.initBubble({
     button: { iconUrl: "https://web.com/icon.png" },
-    url: "https://typebot.io/typebot-id",
+    url: "https://zazubot.com/typebot-id",
   });
   const buttonIconElement = document.querySelector(
     "#typebot-bubble > button > .icon",

@@ -87,7 +87,7 @@ export const ApiModal = ({
           <Text fontSize="sm" colorScheme="gray">
             Check out the{" "}
             <TextLink
-              href="https://docs.typebot.io/api-reference/chat/start-chat"
+              href="https://docs.zazubot.com/api-reference/chat/start-chat"
               isExternal
             >
               API reference

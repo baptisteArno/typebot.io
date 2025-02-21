@@ -69,7 +69,7 @@ const features = [
     description:
       "Typebot's chat builder makes it easy to create advanced chat experiences with 45+ building blocks. Add text, images, videos, and use diverse input options such as text fields, buttons, date pickers, and payment inputs. Connect effortlessly with tools like OpenAI, Google Sheets, Zapier and customize every detail, from fonts and colors to shapes and shadows, with advanced theming and reusable templates.",
     link: {
-      src: "https://docs.typebot.io/editor/blocks/integrations/google-sheets",
+      src: "https://docs.zazubot.com/editor/blocks/integrations/google-sheets",
       text: "View all integrations",
     },
     video: {
@@ -85,7 +85,7 @@ const features = [
     description:
       "Typebot is the leading multichannel chat builder, allowing you to build your bot once and deploy it anywhere, via custom domains, embedded containers, popups, chat bubbles, or even on WhatsApp. You can also execute your bot using HTTP requests, making it easy to integrate with other services or use it in different programming languages.",
     link: {
-      src: "https://docs.typebot.io/deploy/web/overview",
+      src: "https://docs.zazubot.com/deploy/web/overview",
       text: "Read docs",
     },
     video: {

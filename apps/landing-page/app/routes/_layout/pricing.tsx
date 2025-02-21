@@ -20,7 +20,7 @@ import { z } from "@typebot.io/zod";
 export const Route = createFileRoute("/_layout/pricing")({
   head: () => ({
     meta: createMetaTags({
-      title: "Pricing | Typebot",
+      title: "Pricing | ZazuBot",
       description: "Typebot pricing plans and features.",
       imagePath: "/images/default-og.png",
       path: "/pricing",

@@ -10,7 +10,7 @@
     }
   ],
   "externalDocs": {
-    "url": "https://docs.typebot.io/api-reference"
+    "url": "https://docs.zazubot.com/api-reference"
   },
   "paths": {
     "/v1/typebots/{typebotId}/linkedTypebots": {

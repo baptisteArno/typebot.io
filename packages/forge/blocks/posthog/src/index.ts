@@ -11,5 +11,5 @@ export const posthogBlock = createBlock({
   LightLogo: PosthogLogo,
   auth,
   actions: [capture, identifyGroup],
-  docsUrl: "https://docs.typebot.io/editor/blocks/integrations/posthog",
+  docsUrl: "https://docs.zazubot.com/editor/blocks/integrations/posthog",
 });

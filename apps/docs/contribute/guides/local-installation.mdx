@@ -1,8 +1,8 @@
 ---
-title: 'Install the project locally'
-sidebarTitle: 'Local installation'
-image: '/images/contribute/writing-robot.png'
-icon: 'laptop'
+title: "Install the project locally"
+sidebarTitle: "Local installation"
+image: "/images/contribute/writing-robot.png"
+icon: "laptop"
 ---
 
 ## Get started
@@ -26,7 +26,7 @@ icon: 'laptop'
 
    Copy `.env.dev.example` to `.env`
 
-   Check out the [Configuration guide](https://docs.typebot.io/self-hosting/configuration) if you want to enable more options
+   Check out the [Configuration guide](https://docs.zazubot.com/self-hosting/configuration) if you want to enable more options
 
 4. If you use the default DATABASE_URL, you need a matching database running. You can do that easily with the provided `docker-compose.dev.yml` file:
 
@@ -44,10 +44,10 @@ icon: 'laptop'
 
    Viewer is available at [`http://localhost:3001`](http://localhost:3001)
 
-   By default, you can easily authenticate in the builder using the "Github Sign In" button. For other options, check out the [Configuration guide](https://docs.typebot.io/self-hosting/configuration)
+   By default, you can easily authenticate in the builder using the "Github Sign In" button. For other options, check out the [Configuration guide](https://docs.zazubot.com/self-hosting/configuration)
 
 6. Optionnally you can also run the other available apps:
 
-    ```sh
-    bunx turbo dev --filter=builder... --filter=viewer... --filter=@typebot.io/prisma... --filter=landing-page... --filter=docs...
-    ```
+   ```sh
+   bunx turbo dev --filter=builder... --filter=viewer... --filter=@typebot.io/prisma... --filter=landing-page... --filter=docs...
+   ```
