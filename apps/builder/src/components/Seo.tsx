@@ -19,7 +19,7 @@ export const Seo = ({
   currentUrl?: string;
   imagePreviewUrl?: string;
 }) => {
-  const formattedTitle = `${title} | Typebot`;
+  const formattedTitle = `${title} | ZazuBot`;
 
   return (
     <Head>
