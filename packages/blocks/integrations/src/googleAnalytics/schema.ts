@@ -8,7 +8,7 @@ export const googleAnalyticsOptionsSchema = z.object({
   category: z.string().optional(),
   action: z.string().optional(),
   label: z.string().optional(),
-  value: singleVariableOrNumberSchema.optional(),
+  value: singleVariableOrNumberSchema,
   sendTo: z.string().optional(),
 });
 

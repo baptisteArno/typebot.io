@@ -61,7 +61,7 @@ const chatCompletionOptionsSchema = z
       .optional(),
     advancedSettings: z
       .object({
-        temperature: singleVariableOrNumberSchema.optional(),
+        temperature: singleVariableOrNumberSchema,
       })
       .optional(),
     responseMapping: z

@@ -42,10 +42,10 @@ export type VariableString = z.infer<typeof variableStringSchema>;
 export const singleVariableOrNumberSchema = z.preprocess((value) => {
   if (typeof value === "string") {
     if (isSingleVariable(value)) return value;
-    return safeParseFloat(value) ?? value;
+    return safeParseFloat(value);
   }
   return value;
-}, z.number().or(variableStringSchema));
+}, z.number().or(variableStringSchema).optional());
 
 export const setVariableHistoryItemSchema = z.object({
   resultId: z.string(),

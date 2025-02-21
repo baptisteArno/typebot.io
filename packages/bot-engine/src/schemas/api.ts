@@ -148,11 +148,7 @@ const audioBubbleSchema = z
 const embedBubbleSchema = z
   .object({
     type: z.enum([BubbleBlockType.EMBED]),
-    content: embedBubbleContentSchema
-      .omit({
-        height: true,
-      })
-      .merge(z.object({ height: z.number().optional() })),
+    content: embedBubbleContentSchema,
   })
   .openapi({
     title: "Embed",

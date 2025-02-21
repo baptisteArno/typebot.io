@@ -119,7 +119,7 @@ export const option = {
   boolean: z.boolean().optional(),
   enum: <T extends string>(values: readonly [T, ...T[]]) =>
     z.enum(values).optional(),
-  number: singleVariableOrNumberSchema.optional(),
+  number: singleVariableOrNumberSchema,
   array: <T extends z.ZodTypeAny>(schema: T) => z.array(schema).optional(),
   discriminatedUnion: <
     T extends string,
