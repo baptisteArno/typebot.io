@@ -1,5 +1,6 @@
 import prisma from "@typebot.io/prisma/withReadReplica";
 import type { TelemetryEvent } from "@typebot.io/telemetry/schemas";
+import { trackEvents } from "@typebot.io/telemetry/trackEvents";
 
 export const trackAndReportYesterdaysResults = async () => {
   const todayMidnight = new Date();
@@ -55,6 +56,8 @@ export const trackAndReportYesterdaysResults = async () => {
       });
     });
   }
+
+  await trackEvents(newResultsCollectedEvents);
 
   return {
     totalWorkspaces: recentWorkspaces.length,
