@@ -1,3 +1,4 @@
+import { Modal } from "@/components/Modal";
 import { TypingBubble } from "@/components/TypingBubble";
 import { isMobile } from "@/utils/isMobileSignal";
 import { defaultImageBubbleContent } from "@typebot.io/blocks-bubbles/image/constants";
@@ -19,6 +20,7 @@ let typingTimeout: NodeJS.Timeout;
 export const ImageBubble = (props: Props) => {
   let ref: HTMLDivElement | undefined;
   let image: HTMLImageElement | undefined;
+  const [isFullScreen, setIsFullScreen] = createSignal(false);
   const [isTyping, setIsTyping] = createSignal(
     props.onTransitionEnd ? true : false,
   );
@@ -43,6 +45,14 @@ export const ImageBubble = (props: Props) => {
   onCleanup(() => {
     if (typingTimeout) clearTimeout(typingTimeout);
   });
+
+  const openModal = () => {
+    setIsFullScreen(true);
+  };
+
+  const closeModal = () => {
+    setIsFullScreen(false);
+  };
 
   const Image = (
     <img
@@ -99,15 +109,27 @@ export const ImageBubble = (props: Props) => {
               {Image}
             </a>
           ) : (
-            <figure
-              class={clsx(
-                "z-10",
-                !isTyping() && "p-4",
-                isTyping() ? (isMobile() ? "h-8" : "h-9") : "",
-              )}
-            >
-              {Image}
-            </figure>
+            <>
+              <figure
+                class={clsx(
+                  "z-10",
+                  !isTyping() && "p-4",
+                  isTyping() ? (isMobile() ? "h-8" : "h-9") : "",
+                )}
+                on:click={openModal}
+              >
+                <button>{Image}</button>
+              </figure>
+              <Modal isOpen={isFullScreen()} onClose={closeModal}>
+                <div>
+                  <img
+                    src={props.content?.url}
+                    alt="demo image"
+                    class="h-screen aspect-auto"
+                  />
+                </div>
+              </Modal>
+            </>
           )}
         </div>
       </div>
