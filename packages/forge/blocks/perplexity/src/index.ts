@@ -6,10 +6,9 @@ import { PerplexityDarkLogo, PerplexityLightLogo } from "./logo";
 export const perplexityBlock = createBlock({
   id: "perplexity",
   name: "Perplexity",
-  tags: ["ai", "chat", "completion", "sonar", "sonar-reasoning"],
+  tags: ["ai", "chat", "completion", "sonar", "reasoning"],
   LightLogo: PerplexityLightLogo,
   DarkLogo: PerplexityDarkLogo,
   auth,
   actions: [createChatCompletion],
-  docsUrl: "https://docs.typebot.io/editor/blocks/integrations/perplexity",
 });

@@ -11,4 +11,4 @@ export const defaultPerplexityOptions = {
   maxTokens: 1024,
 } as const;
 
-export const API_URL = "https://api.perplexity.ai/chat/completions";
+export const defaultBaseUrl = "https://api.perplexity.ai/";

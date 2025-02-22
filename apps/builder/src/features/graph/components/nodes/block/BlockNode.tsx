@@ -287,7 +287,7 @@ export const BlockNode = ({
                 w="full"
                 transition="border-color 0.2s"
               >
-                <BlockIcon type={block.type} />
+                <BlockIcon type={block.type} mt=".25rem" />
                 {typebot?.groups.at(indices.groupIndex)?.id && (
                   <BlockNodeContent
                     block={block}
