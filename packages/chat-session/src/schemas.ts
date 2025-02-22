@@ -166,7 +166,6 @@ export const sessionStateSchema = z
   ])
   .transform((state): SessionState => {
     if (state.version === "3") return state;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let migratedState: any = state;
     if (!state.version) migratedState = migrateFromV1ToV2(state);
     return migrateFromV2ToV3(migratedState);

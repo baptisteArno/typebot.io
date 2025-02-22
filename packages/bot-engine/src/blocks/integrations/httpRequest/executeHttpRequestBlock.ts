@@ -89,8 +89,8 @@ export const executeHttpRequestBlock = async (
       ],
     };
   const {
-    response: webhookResponse,
-    logs: executeWebhookLogs,
+    response: httpRequestResponse,
+    logs: httpRequestLogs,
     startTimeShouldBeUpdated,
   } = await executeHttpRequest(parsedHttpRequest, {
     ...params,
@@ -104,8 +104,8 @@ export const executeHttpRequestBlock = async (
       blockId: block.id,
       responseVariableMapping: block.options?.responseVariableMapping,
       outgoingEdgeId: block.outgoingEdgeId,
-      logs: executeWebhookLogs,
-      response: webhookResponse,
+      logs: httpRequestLogs,
+      response: httpRequestResponse,
     }),
     startTimeShouldBeUpdated,
   };

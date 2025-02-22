@@ -227,7 +227,7 @@ const fetchTypebot = async (state: SessionState, typebotId: string) => {
   const isPreview = !resultId;
   if (isPreview) {
     const typebot = await prisma.typebot.findUnique({
-      where: { id: typebotId },
+      where: { id: typebotId, workspaceId: state.workspaceId },
       select: {
         version: true,
         id: true,
@@ -246,7 +246,10 @@ const fetchTypebot = async (state: SessionState, typebotId: string) => {
     });
   }
   const typebot = await prisma.publicTypebot.findUnique({
-    where: { typebotId },
+    where: {
+      typebotId,
+      typebot: { workspaceId: state.workspaceId },
+    },
     select: {
       version: true,
       id: true,
