@@ -1,7 +1,6 @@
 export const perplexityModels = [
-  // Not available for now
-  // "sonar-reasoning-pro",
-  // "sonar-reasoning",
+  "sonar-reasoning-pro",
+  "sonar-reasoning",
   "sonar-pro",
   "sonar",
 ] as const;
