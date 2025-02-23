@@ -19,6 +19,8 @@ jobs:
       MESSAGE_WEBHOOK_URL: "${{ secrets.MESSAGE_WEBHOOK_URL }}"
       POSTHOG_PROJECT_ID: "${{ secrets.POSTHOG_PROJECT_ID }}"
       POSTHOG_DAILY_DASHBOARD_ID: "${{ secrets.POSTHOG_DAILY_DASHBOARD_ID }}"
+      NEXT_PUBLIC_POSTHOG_KEY: "${{ secrets.NEXT_PUBLIC_POSTHOG_KEY }}"
+      NEXT_PUBLIC_POSTHOG_HOST: "${{ secrets.NEXT_PUBLIC_POSTHOG_HOST }}"
     steps:
       - uses: actions/checkout@v2
       - uses: oven-sh/setup-bun@v2
