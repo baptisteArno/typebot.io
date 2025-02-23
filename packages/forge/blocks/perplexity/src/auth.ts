@@ -1,4 +1,6 @@
 import { createAuth, option } from "@typebot.io/forge";
+import type { AuthDefinition } from "@typebot.io/forge/types";
+import { defaultBaseUrl } from "./constants";
 
 export const auth = createAuth({
   type: "encryptedCredentials",
@@ -14,5 +16,11 @@ export const auth = createAuth({
       withVariableButton: false,
       isDebounceDisabled: true,
     }),
+    baseUrl: option.string.layout({
+      label: "Base URL",
+      defaultValue: defaultBaseUrl,
+      withVariableButton: false,
+      isDebounceDisabled: true,
+    }),
   }),
-});
+}) satisfies AuthDefinition;

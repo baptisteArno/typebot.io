@@ -1,6 +1,7 @@
 export const perplexityModels = [
-  "sonar-reasoning-pro",
-  "sonar-reasoning",
+  // Not available for now
+  // "sonar-reasoning-pro",
+  // "sonar-reasoning",
   "sonar-pro",
   "sonar",
 ] as const;
@@ -11,4 +12,4 @@ export const defaultPerplexityOptions = {
   maxTokens: 1024,
 } as const;
 
-export const defaultBaseUrl = "https://api.perplexity.ai/";
+export const defaultBaseUrl = "https://api.perplexity.ai";
