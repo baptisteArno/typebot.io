@@ -118,7 +118,7 @@ const baseEnv = {
     NEXT_PUBLIC_ONBOARDING_TYPEBOT_ID: z.string().min(1).optional(),
     NEXT_PUBLIC_BOT_FILE_UPLOAD_MAX_SIZE: z.coerce.number().optional(),
     NEXT_PUBLIC_CHAT_API_URL: z.string().url().optional(),
-    // To remove to deploy chat API for all typebots
+    // TODO: To remove to deploy chat API for all typebots
     NEXT_PUBLIC_USE_EXPERIMENTAL_CHAT_API_ON: z
       .string()
       .min(1)
@@ -131,6 +131,8 @@ const baseEnv = {
       .string()
       .optional()
       .default("The bot you're looking for doesn't exist"),
+    NEXT_PUBLIC_TERMS_OF_SERVICE_URL: z.string().url().optional(),
+    NEXT_PUBLIC_PRIVACY_POLICY_URL: z.string().url().optional(),
   },
   runtimeEnv: {
     NEXT_PUBLIC_E2E_TEST: getRuntimeVariable("NEXT_PUBLIC_E2E_TEST"),
@@ -150,6 +152,12 @@ const baseEnv = {
     ),
     NEXT_PUBLIC_VIEWER_404_SUBTITLE: getRuntimeVariable(
       "NEXT_PUBLIC_VIEWER_404_SUBTITLE",
+    ),
+    NEXT_PUBLIC_TERMS_OF_SERVICE_URL: getRuntimeVariable(
+      "NEXT_PUBLIC_TERMS_OF_SERVICE_URL",
+    ),
+    NEXT_PUBLIC_PRIVACY_POLICY_URL: getRuntimeVariable(
+      "NEXT_PUBLIC_PRIVACY_POLICY_URL",
     ),
   },
 };

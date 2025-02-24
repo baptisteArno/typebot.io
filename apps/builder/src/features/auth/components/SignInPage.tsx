@@ -8,6 +8,7 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { T, useTranslate } from "@tolgee/react";
+import { env } from "@typebot.io/env";
 import { useRouter } from "next/router";
 import { SignInForm } from "./SignInForm";
 
@@ -59,17 +60,15 @@ export const SignInPage = ({ type }: Props) => {
         </Stack>
 
         <SignInForm defaultEmail={query.g?.toString()} />
-        {type === "signup" ? (
+        {type === "signup" &&
+        env.NEXT_PUBLIC_TERMS_OF_SERVICE_URL &&
+        env.NEXT_PUBLIC_PRIVACY_POLICY_URL ? (
           <Text fontSize="sm" maxW="330px" textAlign="center">
             <T
               keyName="auth.register.aggreeToTerms"
               params={{
-                terms: (
-                  <TextLink href={"https://typebot.io/terms-of-service"} />
-                ),
-                privacy: (
-                  <TextLink href={"https://typebot.io/privacy-policy"} />
-                ),
+                terms: <TextLink href={env.NEXT_PUBLIC_TERMS_OF_SERVICE_URL} />,
+                privacy: <TextLink href={env.NEXT_PUBLIC_PRIVACY_POLICY_URL} />,
               }}
             />
           </Text>
