@@ -1,0 +1,4 @@
+Typebot 6.2
+- file block migrate html placeholder to markdown?
+- Set variable: stop interpreting Texte value as code
+- AI blocks: Vision should be enabled by the user
