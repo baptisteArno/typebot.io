@@ -7,6 +7,7 @@ import {
   HeadContent,
   Outlet,
   Scripts,
+  ScrollRestoration,
   createRootRoute,
   useNavigate,
 } from "@tanstack/react-router";
@@ -80,6 +81,7 @@ function RootComponent() {
         <Suspense>
           <TanStackRouterDevtools />
         </Suspense>
+        <ScrollRestoration />
         <Scripts />
       </body>
     </html>
