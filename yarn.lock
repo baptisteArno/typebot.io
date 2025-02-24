@@ -22435,6 +22435,7 @@ vfile-message@^4.0.0:
     dotenv-cli "8.0.0"
     next-runtime-env "1.6.2"
   dependencies:
+    "@chakra-ui/react" "2.8.2"
     "@faire/mjml-react" "3.3.0"
     "@paralleldrive/cuid2" "2.2.1"
     "@planetscale/database" "1.8.0"
