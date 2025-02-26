@@ -31,6 +31,7 @@ export const userSchema = z.object({
   preferredAppAppearance: z.string().nullable(),
   displayedInAppNotifications: displayedInAppNotificationsSchema.nullable(),
   groupTitlesAutoGeneration: groupTitlesAutoGenerationSchema.nullable(),
+  preferredLanguage: z.string().nullable(),
 }) satisfies z.ZodType<Prisma.User>;
 
 export type User = z.infer<typeof userSchema>;
