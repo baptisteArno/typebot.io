@@ -1,9 +1,8 @@
 import type { TypebotViewerProps } from "@/components/TypebotViewer";
 import { safeStringify } from "@/features/variables";
 import { sendEventToParent } from "@/utils/chat";
-
 import { isDefined } from "@typebot.io/lib/utils";
-import type { Log } from "@typebot.io/results/schemas/results";
+import type { LogInSession } from "@typebot.io/logs/schemas";
 import type { Edge } from "@typebot.io/typebot/schemas/edge";
 import type { PublicTypebot } from "@typebot.io/typebot/schemas/publicTypebot";
 import type { Typebot } from "@typebot.io/typebot/schemas/typebot";
@@ -45,8 +44,7 @@ const typebotContext = createContext<{
     typebotId: string;
     edgeId: string;
   }) => void;
-  onNewLog: (log: Omit<Log, "id" | "createdAt" | "resultId">) => void;
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  onNewLog: (log: Omit<LogInSession, "id" | "createdAt" | "resultId">) => void;
   //@ts-ignore
 }>({});
 
@@ -63,7 +61,7 @@ export const TypebotProvider = ({
   apiHost: string;
   isLoading: boolean;
   isPreview: boolean;
-  onNewLog: (log: Omit<Log, "id" | "createdAt" | "resultId">) => void;
+  onNewLog: (log: Omit<LogInSession, "id" | "createdAt" | "resultId">) => void;
 }) => {
   const [localTypebot, setLocalTypebot] =
     useState<TypebotViewerProps["typebot"]>(typebot);

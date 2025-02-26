@@ -34,14 +34,19 @@ const main = async () => {
   let failed = false;
   const packages = findPackages(rootDir);
   const checks = packages.map(async (pkg) => {
-    const { stdout, exitCode } =
-      await $`bunx depcheck ${pkg} --ignore-patterns=.vinxi,.vercel --ignores=bun,jest-environment-jsdom,@types/jest,autoprefixer,tailwindcss`
-        .nothrow()
-        .quiet();
+    try {
+      const { stdout, exitCode } =
+        await $`bunx depcheck ${pkg} --ignore-patterns=.vinxi,.vercel --ignores=bun,jest-environment-jsdom,@types/jest,autoprefixer,tailwindcss`
+          .nothrow()
+          .quiet();
 
-    if (exitCode === 255) {
-      console.log(`${pkg}/package.json`);
-      console.log(stdout.toString());
+      if (exitCode === 255) {
+        console.log(`${pkg}/package.json`);
+        console.log(stdout.toString());
+        failed = true;
+      }
+    } catch (error) {
+      console.error(`Error checking ${pkg}:`, error);
       failed = true;
     }
   });

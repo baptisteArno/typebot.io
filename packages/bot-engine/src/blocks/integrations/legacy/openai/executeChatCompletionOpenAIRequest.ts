@@ -101,7 +101,6 @@ export const executeChatCompletionOpenAIRequest = async ({
     logs.push({
       status: "error",
       description: `Internal error`,
-      details: error,
     });
     return { logs };
   }

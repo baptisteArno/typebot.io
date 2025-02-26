@@ -5,6 +5,7 @@ import {
   parseVariables,
 } from "./parseVariables";
 import type { Variable } from "./schemas";
+import type { WithoutVariables } from "./types";
 
 type DeepParseOptions = {
   guessCorrectTypes?: boolean;
@@ -20,49 +21,55 @@ export const deepParseVariables =
     },
     parseVariablesOptions: ParseVariablesOptions = defaultParseVariablesOptions,
   ) =>
-  <T>(object: T): T => {
-    if (!object) return object as T;
-    if (typeof object !== "object") return object as T;
-    return Object.keys(object).reduce<T>((newObj, key) => {
-      const currentValue = (object as Record<string, unknown>)[key];
+  <T>(object: T): WithoutVariables<T> => {
+    if (!object) return object as WithoutVariables<T>;
+    if (typeof object !== "object") return object as WithoutVariables<T>;
+    return Object.keys(object).reduce<WithoutVariables<T>>(
+      (newObj, key) => {
+        const currentValue = (object as Record<string, unknown>)[key];
 
-      if (typeof currentValue === "string") {
-        const parsedVariable = parseVariables(
-          variables,
-          parseVariablesOptions,
-        )(currentValue);
-        if (deepParseOptions.removeEmptyStrings && parsedVariable === "")
-          return newObj;
-        return {
-          ...newObj,
-          [key]: deepParseOptions.guessCorrectTypes
-            ? parseGuessedTypeFromString(parsedVariable)
-            : parsedVariable,
-        };
-      }
-
-      if (currentValue instanceof Object && currentValue.constructor === Object)
-        return {
-          ...newObj,
-          [key]: deepParseVariables(
+        if (typeof currentValue === "string") {
+          const parsedVariable = parseVariables(
             variables,
-            deepParseOptions,
             parseVariablesOptions,
-          )(currentValue as Record<string, unknown>),
-        };
+          )(currentValue);
+          if (deepParseOptions.removeEmptyStrings && parsedVariable === "")
+            return newObj;
+          return {
+            ...newObj,
+            [key]: deepParseOptions.guessCorrectTypes
+              ? parseGuessedTypeFromString(parsedVariable)
+              : parsedVariable,
+          };
+        }
 
-      if (currentValue instanceof Array)
-        return {
-          ...newObj,
-          [key]: currentValue.map(
-            deepParseVariables(
+        if (
+          currentValue instanceof Object &&
+          currentValue.constructor === Object
+        )
+          return {
+            ...newObj,
+            [key]: deepParseVariables(
               variables,
               deepParseOptions,
               parseVariablesOptions,
-            ),
-          ),
-        };
+            )(currentValue as Record<string, unknown>),
+          };
 
-      return { ...newObj, [key]: currentValue };
-    }, {} as T);
+        if (currentValue instanceof Array)
+          return {
+            ...newObj,
+            [key]: currentValue.map(
+              deepParseVariables(
+                variables,
+                deepParseOptions,
+                parseVariablesOptions,
+              ),
+            ),
+          };
+
+        return { ...newObj, [key]: currentValue };
+      },
+      {} as WithoutVariables<T>,
+    );
   };

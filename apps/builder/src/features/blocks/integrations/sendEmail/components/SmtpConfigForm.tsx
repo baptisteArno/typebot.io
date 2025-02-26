@@ -78,7 +78,7 @@ export const SmtpConfigForm = ({ config, onConfigChange }: Props) => {
         isDisabled={!config}
       />
       <SwitchWithLabel
-        label="Secure?"
+        label="Secure"
         initialValue={config?.isTlsEnabled}
         onCheckChange={handleTlsCheck}
         moreInfoContent="If enabled, the connection will use TLS when connecting to server. If disabled then TLS is used if server supports the STARTTLS extension. In most cases enable it if you are connecting to port 465. For port 587 or 25 keep it disabled."

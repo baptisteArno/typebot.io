@@ -26,7 +26,16 @@ export const executeForgedBlock = async (
 ): Promise<ExecuteIntegrationResponse> => {
   const blockDef = forgedBlocks[block.type];
   if (!blockDef) return { outgoingEdgeId: block.outgoingEdgeId };
-  const action = blockDef.actions.find((a) => a.name === block.options.action);
+  const action = blockDef.actions.find((a) => a.name === block.options?.action);
+  if (!block.options || !action)
+    return {
+      outgoingEdgeId: block.outgoingEdgeId,
+      logs: [
+        {
+          description: `${block.type} is not configured`,
+        },
+      ],
+    };
   const noCredentialsError = {
     status: "error",
     description: "Credentials not provided for integration",

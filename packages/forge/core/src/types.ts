@@ -1,3 +1,4 @@
+import type { WithoutVariables } from "@typebot.io/variables/types";
 import type { z } from "@typebot.io/zod";
 import type { SVGProps } from "react";
 
@@ -21,9 +22,10 @@ export type LogsStore = {
     log:
       | string
       | {
-          status: "error" | "success" | "info";
+          status?: "error" | "success" | "info";
           description: string;
-          details?: unknown;
+          details?: string;
+          context?: string;
         },
   ) => void;
 };
@@ -48,7 +50,7 @@ export type ActionDefinition<
 > = {
   name: string;
   parseBlockNodeLabel?: (
-    options: z.infer<BaseOptions> & z.infer<Options>,
+    options: WithoutVariables<z.infer<BaseOptions> & z.infer<Options>>,
   ) => string;
   fetchers?: FetcherDefinition<A, z.infer<BaseOptions> & z.infer<Options>>[];
   options?: Options;
@@ -67,7 +69,7 @@ export type ActionDefinition<
   run?: {
     server?: (params: {
       credentials: CredentialsFromAuthDef<A>;
-      options: z.infer<BaseOptions> & z.infer<Options>;
+      options: WithoutVariables<z.infer<BaseOptions> & z.infer<Options>>;
       variables: VariableStore;
       logs: LogsStore;
     }) => Promise<void> | void;
@@ -75,14 +77,20 @@ export type ActionDefinition<
      * Used to stream a text bubble. Will only be used if the block following the integration block is a text bubble containing the variable returned by `getStreamVariableId`.
      */
     stream?: {
-      getStreamVariableId: (options: z.infer<Options>) => string | undefined;
+      getStreamVariableId: (
+        options: WithoutVariables<z.infer<BaseOptions> & z.infer<Options>>,
+      ) => string | undefined;
       run: (params: {
         credentials: CredentialsFromAuthDef<A>;
-        options: z.infer<BaseOptions> & z.infer<Options>;
+        options: WithoutVariables<z.infer<BaseOptions> & z.infer<Options>>;
         variables: AsyncVariableStore;
       }) => Promise<{
         stream?: ReadableStream<any>;
-        httpError?: { status: number; message: string };
+        error?: {
+          description: string;
+          details?: string;
+          context?: string;
+        };
       }>;
     };
     web?: {
@@ -92,31 +100,31 @@ export type ActionDefinition<
          */
         parseUrl: (params: {
           credentials: CredentialsFromAuthDef<A>;
-          options: z.infer<BaseOptions> & z.infer<Options>;
+          options: WithoutVariables<z.infer<BaseOptions> & z.infer<Options>>;
           variables: VariableStore;
           logs: LogsStore;
         }) => string | undefined;
         waitForEvent?: {
           getSaveVariableId?: (
-            options: z.infer<BaseOptions> & z.infer<Options>,
+            options: WithoutVariables<z.infer<BaseOptions> & z.infer<Options>>,
           ) => string | undefined;
           parseFunction: (params: {
             credentials: CredentialsFromAuthDef<A>;
-            options: z.infer<BaseOptions> & z.infer<Options>;
+            options: WithoutVariables<z.infer<BaseOptions> & z.infer<Options>>;
             variables: VariableStore;
             logs: LogsStore;
           }) => FunctionToExecute;
         };
         parseInitFunction: (params: {
           credentials: CredentialsFromAuthDef<A>;
-          options: z.infer<BaseOptions> & z.infer<Options>;
+          options: WithoutVariables<z.infer<BaseOptions> & z.infer<Options>>;
           variables: VariableStore;
           logs: LogsStore;
         }) => FunctionToExecute;
       };
       parseFunction?: (params: {
         credentials: CredentialsFromAuthDef<A>;
-        options: z.infer<BaseOptions> & z.infer<Options>;
+        options: WithoutVariables<z.infer<BaseOptions> & z.infer<Options>>;
         variables: VariableStore;
         logs: LogsStore;
       }) => FunctionToExecute;
@@ -133,7 +141,23 @@ export type FetcherDefinition<A extends AuthDefinition, T = {}> = {
   fetch: (params: {
     credentials: CredentialsFromAuthDef<A> | undefined;
     options: T;
-  }) => Promise<(string | { label: string; value: string })[]>;
+  }) => Promise<{
+    data?: (string | { label: string; value: string })[];
+    error?: {
+      /**
+       * Context of the error. i.e. "Fetching models", "Creating chat completion"
+       */
+      context?: string;
+      /**
+       * Description of the error. i.e. "No API key provided", "No model provided"
+       */
+      description: string;
+      /**
+       * Details of the error, is often a JSON stringified object.
+       */
+      details?: string;
+    };
+  }>;
 };
 
 export type AuthDefinition = {

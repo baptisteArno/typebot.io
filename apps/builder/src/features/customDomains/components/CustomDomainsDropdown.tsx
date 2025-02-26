@@ -1,6 +1,6 @@
 import { ChevronLeftIcon, PlusIcon, TrashIcon } from "@/components/icons";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { useToast } from "@/hooks/useToast";
+import { toast } from "@/lib/toast";
 import { trpc } from "@/lib/trpc";
 import {
   Button,
@@ -30,17 +30,16 @@ export const CustomDomainsDropdown = ({
 }: Props) => {
   const [isDeleting, setIsDeleting] = useState("");
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { workspace } = useWorkspace();
-  const { showToast } = useToast();
+  const { workspace, currentUserMode } = useWorkspace();
   const { data, refetch } = trpc.customDomains.listCustomDomains.useQuery(
     {
       workspaceId: workspace?.id as string,
     },
     {
-      enabled: !!workspace?.id,
+      enabled: !!workspace?.id && currentUserMode !== "guest",
       onError: (error) => {
-        showToast({
-          title: "Error while fetching custom domains",
+        toast({
+          context: "Error while fetching custom domains",
           description: error.message,
         });
       },
@@ -51,8 +50,8 @@ export const CustomDomainsDropdown = ({
       setIsDeleting(name);
     },
     onError: (error) => {
-      showToast({
-        title: "Error while deleting custom domain",
+      toast({
+        context: "Error while deleting custom domain",
         description: error.message,
       });
     },

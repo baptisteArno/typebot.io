@@ -90,11 +90,11 @@ export const executeSetVariable = async (
     state,
     newVariables: [
       ...parseColateralVariableChangeIfAny({ state, options: block.options }),
-      ...(saveInErrorVariable
+      ...(saveInErrorVariable && error?.description
         ? [
             {
               ...saveInErrorVariable,
-              value: error,
+              value: error?.description,
             },
           ]
         : []),
@@ -114,16 +114,7 @@ export const executeSetVariable = async (
     outgoingEdgeId: block.outgoingEdgeId,
     newSessionState: updatedState,
     newSetVariableHistory,
-    logs:
-      error && isCode
-        ? [
-            {
-              status: "error",
-              description: "Error evaluating Set variable code",
-              details: error,
-            },
-          ]
-        : undefined,
+    logs: error && isCode ? [error] : undefined,
   };
 };
 

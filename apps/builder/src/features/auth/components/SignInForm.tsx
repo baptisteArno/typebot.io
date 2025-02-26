@@ -1,5 +1,5 @@
 import { TextLink } from "@/components/TextLink";
-import { useToast } from "@/hooks/useToast";
+import { toast } from "@/lib/toast";
 import { sanitizeUrl } from "@braintree/sanitize-url";
 import {
   Alert,
@@ -54,7 +54,6 @@ export const SignInForm = ({
   const [emailValue, setEmailValue] = useState(defaultEmail ?? "");
   const [isMagicCodeSent, setIsMagicCodeSent] = useState(false);
 
-  const { showToast } = useToast();
   const [providers, setProviders] =
     useState<
       Record<LiteralUnion<BuiltInProviderType, string>, ClientSafeProvider>
@@ -77,13 +76,13 @@ export const SignInForm = ({
 
   useEffect(() => {
     if (authError === "ip-banned") {
-      showToast({
+      toast({
         status: "info",
         description:
           "Your account has suspicious activity and is being reviewed by our team. Feel free to contact us.",
       });
     }
-  }, [authError, showToast]);
+  }, [authError]);
 
   const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) =>
     setEmailValue(e.target.value);
@@ -99,30 +98,30 @@ export const SignInForm = ({
         redirect: false,
       });
       if (response?.error) {
-        if (response.error.includes("rate-limited"))
-          showToast({
+        if (response.error.includes("too-many-requests"))
+          toast({
             status: "info",
             description: t("auth.signinErrorToast.tooManyRequests"),
           });
         else if (response.error.includes("sign-up-disabled"))
-          showToast({
-            title: t("auth.signinErrorToast.title"),
-            description: t("auth.signinErrorToast.description"),
+          toast({
+            status: "info",
+            description: t("auth.signinErrorToast.title"),
+          });
+        else if (response.error.includes("email-not-legit"))
+          toast({
+            description: "Please use a valid email address",
           });
         else
-          showToast({
-            status: "info",
+          toast({
             description: t("errorMessage"),
-            details: {
-              content: "Check server logs to see relevent error message.",
-              lang: "json",
-            },
+            details: "Check server logs to see relevent error message.",
           });
       } else {
         setIsMagicCodeSent(true);
       }
     } catch (e) {
-      showToast({
+      toast({
         status: "info",
         description: "An error occured while signing in",
       });

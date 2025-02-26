@@ -1,4 +1,5 @@
 import { authenticatedProcedure } from "@/helpers/server/trpc";
+import { ClientToastError } from "@/lib/ClientToastError";
 import { TRPCError } from "@trpc/server";
 import { decrypt } from "@typebot.io/credentials/decrypt";
 import type { WhatsAppCredentials } from "@typebot.io/credentials/schemas";
@@ -22,22 +23,29 @@ export const getPhoneNumber = authenticatedProcedure
         code: "NOT_FOUND",
         message: "Credentials not found",
       });
-    const { display_phone_number } = await ky
-      .get(`${env.WHATSAPP_CLOUD_API_URL}/v17.0/${credentials.phoneNumberId}`, {
-        headers: {
-          Authorization: `Bearer ${credentials.systemUserAccessToken}`,
-        },
-      })
-      .json<{ display_phone_number: string }>();
+    try {
+      const { display_phone_number } = await ky
+        .get(
+          `${env.WHATSAPP_CLOUD_API_URL}/v17.0/${credentials.phoneNumberId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${credentials.systemUserAccessToken}`,
+            },
+          },
+        )
+        .json<{ display_phone_number: string }>();
 
-    const formattedPhoneNumber = `${
-      display_phone_number.startsWith("+") ? "" : "+"
-    }${display_phone_number.replace(/[\s-]/g, "")}`;
+      const formattedPhoneNumber = `${
+        display_phone_number.startsWith("+") ? "" : "+"
+      }${display_phone_number.replace(/[\s-]/g, "")}`;
 
-    return {
-      id: credentials.phoneNumberId,
-      name: formattedPhoneNumber,
-    };
+      return {
+        id: credentials.phoneNumberId,
+        name: formattedPhoneNumber,
+      };
+    } catch (err) {
+      throw await ClientToastError.fromUnkownError(err);
+    }
   });
 
 const getCredentials = async (

@@ -3,7 +3,7 @@ import { TextLink } from "@/components/TextLink";
 import { ChevronLeftIcon, ExternalLinkIcon } from "@/components/icons";
 import { TextInput } from "@/components/inputs/TextInput";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { useToast } from "@/hooks/useToast";
+import { toast } from "@/lib/toast";
 import { trpc, trpcVanilla } from "@/lib/trpc";
 import {
   Box,
@@ -40,7 +40,9 @@ import {
   useSteps,
 } from "@chakra-ui/react";
 import { createId } from "@paralleldrive/cuid2";
+import { TRPCClientError } from "@trpc/client";
 import { env } from "@typebot.io/env";
+import { parseUnknownClientError } from "@typebot.io/lib/parseUnknownClientError";
 import { isEmpty, isNotEmpty } from "@typebot.io/lib/utils";
 import React, { useState } from "react";
 
@@ -80,7 +82,6 @@ export const WhatsAppCreateModalContent = ({
   onClose,
 }: Pick<Props, "onNewCredentials" | "onClose">) => {
   const { workspace } = useWorkspace();
-  const { showToast } = useToast();
   const { activeStep, goToNext, goToPrevious, setActiveStep } = useSteps({
     index: 0,
     count: steps.length,
@@ -102,9 +103,8 @@ export const WhatsAppCreateModalContent = ({
     onMutate: () => setIsCreating(true),
     onSettled: () => setIsCreating(false),
     onError: (err) => {
-      showToast({
+      toast({
         description: err.message,
-        status: "error",
       });
     },
     onSuccess: (data) => {
@@ -154,7 +154,7 @@ export const WhatsAppCreateModalContent = ({
           token: systemUserAccessToken,
         });
       if (expiresAt !== 0) {
-        showToast({
+        toast({
           description:
             "Token expiration was not set to *never*. Create the token again with the correct expiration.",
         });
@@ -165,20 +165,20 @@ export const WhatsAppCreateModalContent = ({
           (scope) => !scopes.includes(scope),
         )
       ) {
-        showToast({
+        toast({
           description: "Token does not have all the necessary scopes",
         });
         return false;
       }
     } catch (err) {
       setIsVerifying(false);
-      showToast({
-        description: "Could not get system info",
-        details:
-          err instanceof Error
-            ? { content: err.message, lang: "json" }
-            : undefined,
-      });
+      if (err instanceof TRPCClientError) {
+        if (err.data?.logError) {
+          toast(err.data.logError);
+          return false;
+        }
+      }
+      toast(await parseUnknownClientError({ err }));
       return false;
     }
     setIsVerifying(false);
@@ -203,7 +203,7 @@ export const WhatsAppCreateModalContent = ({
 
         if (message === "taken") {
           setIsVerifying(false);
-          showToast({
+          toast({
             description: "Phone number is already registered on Typebot",
           });
           return false;
@@ -214,21 +214,21 @@ export const WhatsAppCreateModalContent = ({
       } catch (err) {
         console.error(err);
         setIsVerifying(false);
-        showToast({
+        toast({
           description: "Could not verify if phone number is available",
         });
         return false;
       }
     } catch (err) {
-      console.error(err);
       setIsVerifying(false);
-      showToast({
-        description: "Could not get phone number info",
-        details:
-          err instanceof Error
-            ? { content: err.message, lang: "json" }
-            : undefined,
-      });
+      if (err instanceof TRPCClientError) {
+        if (err.data?.logError) {
+          toast(err.data.logError);
+          return false;
+        }
+      }
+      console.error(err);
+      toast(await parseUnknownClientError({ err }));
       return false;
     }
     setIsVerifying(false);

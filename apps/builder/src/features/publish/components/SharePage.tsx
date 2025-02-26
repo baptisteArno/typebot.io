@@ -10,7 +10,7 @@ import { TypebotNotFoundPage } from "@/features/editor/components/TypebotNotFoun
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { isCloudProdInstance } from "@/helpers/isCloudProdInstance";
-import { useToast } from "@/hooks/useToast";
+import { toast } from "@/lib/toast";
 import {
   Flex,
   HStack,
@@ -34,7 +34,6 @@ export const SharePage = () => {
   const { t } = useTranslate();
   const { workspace } = useWorkspace();
   const { typebot, updateTypebot, publishedTypebot, is404 } = useTypebot();
-  const { showToast } = useToast();
 
   const handlePublicIdChange = async (publicId: string) => {
     updateTypebot({ updates: { publicId }, save: true });
@@ -61,7 +60,7 @@ export const SharePage = () => {
       /^([a-z0-9]+-[a-z0-9]*)*$/.test(pathname) || /^[a-z0-9]*$/.test(pathname);
 
     if (!isCorrectlyFormatted) {
-      showToast({
+      toast({
         description: "Can only contain lowercase letters, numbers and dashes.",
       });
       return false;
@@ -72,7 +71,7 @@ export const SharePage = () => {
   const checkIfPublicIdIsValid = async (publicId: string) => {
     const isLongerThanAllowed = publicId.length >= 4;
     if (!isLongerThanAllowed && isCloudProdInstance()) {
-      showToast({
+      toast({
         description: "Should be longer than 4 characters",
       });
       return false;
@@ -82,7 +81,7 @@ export const SharePage = () => {
 
     const { data } = await isPublicDomainAvailableQuery(publicId);
     if (!data?.isAvailable) {
-      showToast({ description: "ID is already taken" });
+      toast({ description: "ID is already taken" });
       return false;
     }
 

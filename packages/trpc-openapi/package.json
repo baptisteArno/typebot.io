@@ -8,7 +8,7 @@
     "./types": "./src/types.ts"
   },
   "dependencies": {
-    "@trpc/server": "10.40.0",
+    "@trpc/server": "10.45.2",
     "co-body": "6.2.0",
     "lodash.clonedeep": "4.5.0",
     "next": "14.2.13",

@@ -21,6 +21,7 @@ const posts = defineCollection({
     description: z.string().optional(),
     postedAt: z.string().date().optional(),
     author: z.string(),
+    cover: z.string().optional(),
   }),
   transform: async (document, context) => {
     const mdx = await compileMDX(context, document, {

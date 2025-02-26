@@ -15,10 +15,7 @@ import type { BubbleProps } from "@typebot.io/js";
 import { useState } from "react";
 import packageJson from "../../../../../../../../../../packages/embeds/js/package.json";
 import { BubbleSettings } from "../../../settings/BubbleSettings/BubbleSettings";
-import {
-  parseApiHostValue,
-  parseInitBubbleCode,
-} from "../../../snippetParsers";
+import { parseInitBubbleCode } from "../../../snippetParsers/bubble";
 import { parseDefaultBubbleTheme } from "../../Javascript/instructions/JavascriptBubbleInstructions";
 import { typebotCloudLibraryVersion } from "./constants";
 
@@ -36,7 +33,7 @@ export const WordpressBubbleInstructions = ({ publicId }: Props) => {
 
   const initCode = parseInitBubbleCode({
     typebot: publicId,
-    apiHost: parseApiHostValue(typebot?.customDomain),
+    customDomain: typebot?.customDomain,
     theme: {
       ...theme,
       chatWindow: {

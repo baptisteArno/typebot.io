@@ -1,4 +1,4 @@
-import { useToast } from "@/hooks/useToast";
+import { toast } from "@/lib/toast";
 import { trpc } from "@/lib/trpc";
 import { LogicBlockType } from "@typebot.io/blocks-logic/constants";
 import { isDefined } from "@typebot.io/lib/utils";
@@ -28,7 +28,6 @@ const resultsContext = createContext<{
   onDeleteResults: (totalResultsDeleted: number) => void;
   fetchNextPage: () => void;
   refetchResults: () => void;
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   //@ts-ignore
 }>({});
 
@@ -46,12 +45,11 @@ export const ResultsProvider = ({
   onDeleteResults: (totalResultsDeleted: number) => void;
 }) => {
   const { publishedTypebot } = useTypebot();
-  const { showToast } = useToast();
   const { data, fetchNextPage, hasNextPage, refetch } = useResultsQuery({
     timeFilter,
     typebotId,
     onError: (error) => {
-      showToast({ description: error });
+      toast({ description: error });
     },
   });
 

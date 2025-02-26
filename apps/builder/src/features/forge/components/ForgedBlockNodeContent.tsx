@@ -14,7 +14,7 @@ type Props = {
 };
 export const ForgedBlockNodeContent = ({ block, indices }: Props) => {
   const { blockDef, actionDef } = useForgedBlock({
-    blockType: block.type,
+    nodeType: block.type,
     action: block.options?.action,
   });
   const { typebot } = useTypebot();

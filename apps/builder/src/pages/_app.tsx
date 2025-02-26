@@ -1,5 +1,4 @@
 import { SupportBubble } from "@/components/SupportBubble";
-import { Toaster } from "@/components/Toaster";
 import { TypebotProvider } from "@/features/editor/providers/TypebotProvider";
 import { UserProvider } from "@/features/user/UserProvider";
 import { WorkspaceProvider } from "@/features/workspace/WorkspaceProvider";
@@ -20,6 +19,8 @@ import "@/assets/styles/routerProgressBar.css";
 import "@/assets/styles/plate.css";
 import "@/assets/styles/resultsTable.css";
 import "@/assets/styles/custom.css";
+import { NuqsAdapter } from "nuqs/adapters/next/pages";
+import { Toaster } from "sonner";
 
 const { ToastContainer, toast } = createStandaloneToast(customTheme);
 
@@ -57,22 +58,23 @@ const App = ({ Component, pageProps }: AppProps) => {
 
   return (
     <TolgeeProvider tolgee={ssrTolgee}>
-      <ToastContainer />
-      <ChakraProvider theme={customTheme}>
-        <Toaster />
-        <SessionProvider session={pageProps.session}>
-          <UserProvider>
-            <TypebotProvider typebotId={typebotId}>
-              <WorkspaceProvider typebotId={typebotId}>
-                <Component {...pageProps} />
-                {!router.pathname.endsWith("edit") && isCloudProdInstance() && (
-                  <SupportBubble />
-                )}
-              </WorkspaceProvider>
-            </TypebotProvider>
-          </UserProvider>
-        </SessionProvider>
-      </ChakraProvider>
+      <NuqsAdapter>
+        <ToastContainer />
+        <ChakraProvider theme={customTheme}>
+          <Toaster offset={24} position="top-right" />
+          <SessionProvider session={pageProps.session}>
+            <UserProvider>
+              <TypebotProvider typebotId={typebotId}>
+                <WorkspaceProvider typebotId={typebotId}>
+                  <Component {...pageProps} />
+                  {!router.pathname.endsWith("edit") &&
+                    isCloudProdInstance() && <SupportBubble />}
+                </WorkspaceProvider>
+              </TypebotProvider>
+            </UserProvider>
+          </SessionProvider>
+        </ChakraProvider>
+      </NuqsAdapter>
     </TolgeeProvider>
   );
 };

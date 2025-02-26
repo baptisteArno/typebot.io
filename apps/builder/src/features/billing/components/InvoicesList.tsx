@@ -1,5 +1,5 @@
 import { DownloadIcon, FileIcon } from "@/components/icons";
-import { useToast } from "@/hooks/useToast";
+import { toast } from "@/lib/toast";
 import { trpc } from "@/lib/trpc";
 import {
   Checkbox,
@@ -26,14 +26,13 @@ type Props = {
 
 export const InvoicesList = ({ workspaceId }: Props) => {
   const { t } = useTranslate();
-  const { showToast } = useToast();
   const { data, status } = trpc.billing.listInvoices.useQuery(
     {
       workspaceId,
     },
     {
       onError: (error) => {
-        showToast({ description: error.message });
+        toast({ description: error.message });
       },
     },
   );

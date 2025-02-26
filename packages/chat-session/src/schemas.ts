@@ -82,7 +82,12 @@ const sessionStateSchemaV2 = z.object({
   version: z.literal("2"),
   typebotsQueue: z.array(
     z.object({
-      edgeIdToTriggerWhenDone: z.string().optional(),
+      // TODO: Remove this once v3.5 is out
+      edgeIdToTriggerWhenDone: z
+        .string()
+        .optional()
+        .describe("Deprecated, use queuedEdgeIds instead"),
+      queuedEdgeIds: z.array(z.string()).optional(),
       isMergingWithParent: z.boolean().optional(),
       resultId: z.string().optional(),
       answers: z.array(answerInSessionStateSchemaV2),
@@ -161,7 +166,6 @@ export const sessionStateSchema = z
   ])
   .transform((state): SessionState => {
     if (state.version === "3") return state;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let migratedState: any = state;
     if (!state.version) migratedState = migrateFromV1ToV2(state);
     return migrateFromV2ToV3(migratedState);

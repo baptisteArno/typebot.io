@@ -16,7 +16,7 @@ export const groupAnchorsOffset = {
     y: stubLength,
   },
 };
-export const eventWidth = 200;
+export const eventWidth = 230;
 
 export const graphPositionDefaultValue = (
   firstGroupCoordinates: Coordinates,

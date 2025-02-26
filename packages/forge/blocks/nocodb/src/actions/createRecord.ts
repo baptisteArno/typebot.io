@@ -1,8 +1,8 @@
 import { createAction, option } from "@typebot.io/forge";
+import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
 import ky, { HTTPError } from "ky";
 import { auth } from "../auth";
 import { defaultBaseUrl } from "../constants";
-import { parseErrorResponse } from "../helpers/parseErrorResponse";
 import { parseRecordsCreateBody } from "../helpers/parseRecordCreateBody";
 
 export const createRecord = createAction({
@@ -50,11 +50,12 @@ export const createRecord = createAction({
         );
       } catch (error) {
         if (error instanceof HTTPError)
-          return logs.add({
-            status: "error",
-            description: error.message,
-            details: await parseErrorResponse(error.response),
-          });
+          return logs.add(
+            await parseUnknownError({
+              err: error,
+              context: "While creating NoCodb record",
+            }),
+          );
         console.error(error);
       }
     },

@@ -224,7 +224,11 @@ export const executeGroup = async (
     }
   }
 
-  if (!nextEdgeId && newSessionState.typebotsQueue.length === 1)
+  if (
+    !nextEdgeId &&
+    newSessionState.typebotsQueue.length === 1 &&
+    (newSessionState.typebotsQueue[0].queuedEdgeIds ?? []).length === 0
+  )
     return {
       messages,
       newSessionState,
@@ -294,51 +298,23 @@ export const parseInput =
         )(block);
       }
       case InputBlockType.NUMBER: {
-        const parsedBlock = deepParseVariables(
-          state.typebotsQueue[0].typebot.variables,
-        )({
+        return deepParseVariables(state.typebotsQueue[0].typebot.variables)({
           ...block,
           prefilledValue: getPrefilledInputValue(
             state.typebotsQueue[0].typebot.variables,
           )(block),
         });
-        return {
-          ...parsedBlock,
-          options: {
-            ...parsedBlock.options,
-            min: isNotEmpty(parsedBlock.options?.min as string)
-              ? Number(parsedBlock.options?.min)
-              : undefined,
-            max: isNotEmpty(parsedBlock.options?.max as string)
-              ? Number(parsedBlock.options?.max)
-              : undefined,
-            step: isNotEmpty(parsedBlock.options?.step as string)
-              ? Number(parsedBlock.options?.step)
-              : undefined,
-          },
-        };
       }
       case InputBlockType.DATE: {
         return parseDateInput(state)(block);
       }
       case InputBlockType.RATING: {
-        const parsedBlock = deepParseVariables(
-          state.typebotsQueue[0].typebot.variables,
-        )({
+        return deepParseVariables(state.typebotsQueue[0].typebot.variables)({
           ...block,
           prefilledValue: getPrefilledInputValue(
             state.typebotsQueue[0].typebot.variables,
           )(block),
         });
-        return {
-          ...parsedBlock,
-          options: {
-            ...parsedBlock.options,
-            startsAt: isNotEmpty(parsedBlock.options?.startsAt as string)
-              ? Number(parsedBlock.options?.startsAt)
-              : undefined,
-          },
-        };
       }
       default: {
         return deepParseVariables(state.typebotsQueue[0].typebot.variables)({

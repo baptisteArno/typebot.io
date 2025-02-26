@@ -39,10 +39,11 @@ export const useOnboardingDisclosure = ({
     setIsInitialized(true);
     if (
       key &&
-      new Date(user.createdAt) >=
-        (onboardingVideos[key]
-          ? onboardingVideos[key]!.deployedAt
-          : (blockDef?.onboarding?.deployedAt ?? new Date())) &&
+      (!onboardingVideos[key]?.deployedAt ||
+        new Date(user.createdAt) >=
+          (onboardingVideos[key]
+            ? onboardingVideos[key]!.deployedAt
+            : (blockDef?.onboarding?.deployedAt ?? new Date()))) &&
       user.displayedInAppNotifications?.[key] === undefined
     ) {
       if (defaultOpenDelay) {
@@ -64,5 +65,5 @@ export const useOnboardingDisclosure = ({
     isEnabled,
   ]);
 
-  return { isOpen, onClose, onToggle };
+  return { isOpen, onClose, onOpen };
 };

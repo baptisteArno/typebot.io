@@ -1,3 +1,4 @@
+import type { LogInSession } from "@typebot.io/logs/schemas";
 import {
   webhookErrorDescription,
   webhookSuccessDescription,
@@ -7,11 +8,7 @@ import {
   sendEmailSuccessDescription,
 } from "../blocks/integrations/sendEmail/executeSendEmailBlock";
 
-export const filterPotentiallySensitiveLogs = (log: {
-  status: string;
-  description: string;
-  details?: unknown;
-}) =>
+export const filterPotentiallySensitiveLogs = (log: LogInSession) =>
   ![
     webhookErrorDescription,
     webhookSuccessDescription,

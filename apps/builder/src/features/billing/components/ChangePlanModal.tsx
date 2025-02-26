@@ -27,7 +27,7 @@ export const ChangePlanModal = ({
   excludedPlans,
 }: ChangePlanModalProps) => {
   const { t } = useTranslate();
-  const { workspace, currentRole } = useWorkspace();
+  const { workspace, currentUserMode } = useWorkspace();
 
   return (
     <Modal
@@ -47,7 +47,7 @@ export const ChangePlanModal = ({
             <ChangePlanForm
               workspace={workspace}
               excludedPlans={excludedPlans}
-              currentRole={currentRole}
+              currentUserMode={currentUserMode}
             />
           )}
         </ModalBody>

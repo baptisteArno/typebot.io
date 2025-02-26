@@ -9,9 +9,9 @@ import {
   PopoverBody,
   PopoverContent,
   PopoverTrigger,
-  Portal,
 } from "@chakra-ui/react";
 import type { ForgedBlockDefinition } from "@typebot.io/forge-repository/definitions";
+import type { ReactNode } from "react";
 import { onboardingVideos } from "../data";
 import { useOnboardingDisclosure } from "../hooks/useOnboardingDisclosure";
 import { YoutubeIframe } from "./YoutubeIframe";
@@ -21,7 +21,7 @@ type Props = {
   isEnabled?: boolean;
   blockDef?: ForgedBlockDefinition;
   placement?: PlacementWithLogical;
-  children: ({ onToggle }: { onToggle: () => void }) => JSX.Element;
+  children: ((props: { onOpen: () => void }) => JSX.Element) | ReactNode;
 };
 
 const Root = ({
@@ -30,11 +30,11 @@ const Root = ({
   children,
   isEnabled,
   placement = "right",
-}: Props) => {
+}: Props): JSX.Element => {
   const { user, updateUser } = useUser();
   const youtubeId =
     onboardingVideos[type]?.youtubeId ?? blockDef?.onboarding?.youtubeId;
-  const { isOpen, onClose, onToggle } = useOnboardingDisclosure({
+  const { isOpen, onClose, onOpen } = useOnboardingDisclosure({
     key: type,
     updateUser,
     user,
@@ -42,11 +42,16 @@ const Root = ({
     isEnabled,
   });
 
-  if (!youtubeId) return children({ onToggle });
+  if (!youtubeId)
+    return typeof children === "function"
+      ? children({ onOpen })
+      : (children as JSX.Element);
 
   return (
     <Popover isOpen={isOpen} placement={placement} isLazy>
-      <PopoverTrigger>{children({ onToggle })}</PopoverTrigger>
+      <PopoverTrigger>
+        {typeof children === "function" ? children({ onOpen }) : children}
+      </PopoverTrigger>
 
       <PopoverContent aspectRatio="1.5" width="640px" shadow="xl">
         <PopoverArrow />

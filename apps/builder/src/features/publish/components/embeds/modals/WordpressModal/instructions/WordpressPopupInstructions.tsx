@@ -13,7 +13,6 @@ import {
 import { useState } from "react";
 import packageJson from "../../../../../../../../../../packages/embeds/js/package.json";
 import { PopupSettings } from "../../../settings/PopupSettings";
-import { parseApiHostValue } from "../../../snippetParsers";
 import { parseInitPopupCode } from "../../../snippetParsers/popup";
 import { typebotCloudLibraryVersion } from "./constants";
 
@@ -29,7 +28,7 @@ export const WordpressPopupInstructions = ({
 
   const initCode = parseInitPopupCode({
     typebot: publicId,
-    apiHost: parseApiHostValue(customDomain),
+    customDomain,
     autoShowDelay,
   });
 

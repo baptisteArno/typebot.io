@@ -12,29 +12,30 @@ import { executeSetVariable } from "@/features/blocks/logic/setVariable/executeS
 import { executeWait } from "@/features/blocks/logic/wait/utils/executeWait";
 import { listenForWebhook } from "@/features/blocks/logic/webhook/listenForWebhook";
 import type { ClientSideActionContext } from "@/types";
-import type {
-  ChatLog,
-  ContinueChatResponse,
-} from "@typebot.io/bot-engine/schemas/api";
+import type { ContinueChatResponse } from "@typebot.io/bot-engine/schemas/api";
+import type { LogInSession } from "@typebot.io/logs/schemas";
 import { injectStartProps } from "./injectStartProps";
+
+type ClientSideActionResponse =
+  | { blockedPopupUrl: string }
+  | { replyToSend: string | undefined; logs?: LogInSession[] }
+  | { logs: LogInSession[] }
+  | { scriptCallbackMessage: string }
+  | void;
 
 type Props = {
   clientSideAction: NonNullable<ContinueChatResponse["clientSideActions"]>[0];
   context: ClientSideActionContext;
   onMessageStream?: (props: { id: string; message: string }) => void;
+  onStreamError?: (error: LogInSession) => void;
 };
 
 export const executeClientSideAction = async ({
   clientSideAction,
   context,
   onMessageStream,
-}: Props): Promise<
-  | { blockedPopupUrl: string }
-  | { replyToSend: string | undefined; logs?: ChatLog[] }
-  | { logs: ChatLog[] }
-  | { scriptCallbackMessage: string }
-  | void
-> => {
+  onStreamError,
+}: Props): Promise<ClientSideActionResponse> => {
   if ("chatwoot" in clientSideAction) {
     return executeChatwoot(clientSideAction.chatwoot);
   }
@@ -66,6 +67,7 @@ export const executeClientSideAction = async ({
           ? clientSideAction.streamOpenAiChatCompletion?.messages
           : undefined,
       onMessageStream,
+      onError: onStreamError,
     });
     if (error)
       return {
@@ -99,6 +101,7 @@ export const executeClientSideAction = async ({
     return listenForWebhook({
       sessionId: context.sessionId,
       resultId: context.resultId,
+      context,
     });
   }
 };

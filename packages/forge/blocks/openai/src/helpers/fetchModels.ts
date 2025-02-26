@@ -1,3 +1,4 @@
+import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
 import OpenAI, { type ClientOptions } from "openai";
 
 type Props = {
@@ -11,7 +12,7 @@ export const fetchGPTModels = async ({
   baseUrl,
   apiVersion,
 }: Props) => {
-  if (!apiKey) return [];
+  if (!apiKey) return { data: [] };
 
   const config = {
     apiKey: apiKey,
@@ -28,17 +29,23 @@ export const fetchGPTModels = async ({
 
   const openai = new OpenAI(config);
 
-  const models = await openai.models.list();
-
-  return (
-    models.data
-      .filter(
-        (model) =>
-          model.id.includes("gpt") &&
-          !model.id.includes("-audio-") &&
-          !model.id.includes("-realtime-"),
-      )
-      .sort((a, b) => b.created - a.created)
-      .map((model) => model.id) ?? []
-  );
+  try {
+    const models = await openai.models.list();
+    return {
+      data:
+        models.data
+          .filter(
+            (model) =>
+              model.id.includes("gpt") &&
+              !model.id.includes("-audio-") &&
+              !model.id.includes("-realtime-"),
+          )
+          .sort((a, b) => b.created - a.created)
+          .map((model) => model.id) ?? [],
+    };
+  } catch (err) {
+    return {
+      error: await parseUnknownError({ err, context: "While fetching models" }),
+    };
+  }
 };

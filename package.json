@@ -25,14 +25,14 @@
     "build": "turbo build --filter=builder... --filter=viewer... --filter=landing-page... --filter=docs...",
     "dev": "turbo dev --filter=builder... --filter=viewer... --filter=@typebot.io/partykit... --concurrency=11",
     "generate-change-log": "bun check-unused-dependencies && git fetch --all && pnpx gitmoji-changelog",
-    "sync-locales": "tolgee sync --continue-on-warning --remove-unused --patterns './apps/builder/src/**/*.ts?(x)' --backup './.tolgee/backup'",
-    "pull-locales": "tolgee pull && prettier --write ./apps/builder/src/i18n",
+    "sync-locales": "dotenv -e .env -- tolgee sync --continue-on-warning --remove-unused --no-strict-namespace --patterns './apps/builder/src/**/*.ts?(x)' --backup './.tolgee/backup'",
+    "pull-locales": "dotenv -e .env -- tolgee pull && bun format-and-lint:fix",
     "create-new-block": "cd packages/forge/cli && bun start",
     "check-unused-dependencies": "bun packages/scripts/src/checkDependencies.ts"
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
-    "@tolgee/cli": "2.8.0",
+    "@tolgee/cli": "2.8.2",
     "husky": "9.1.7",
     "sherif": "1.1.1",
     "turbo": "2.3.4",

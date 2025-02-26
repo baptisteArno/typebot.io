@@ -146,10 +146,14 @@
                         "description": {
                           "type": "string"
                         },
-                        "details": {}
+                        "details": {
+                          "type": "string"
+                        },
+                        "context": {
+                          "type": "string"
+                        }
                       },
                       "required": [
-                        "status",
                         "description"
                       ]
                     },
@@ -186,33 +190,33 @@
                           {
                             "oneOf": [
                               {
-                                "$ref": "#/components/schemas/textMessage"
+                                "$ref": "#/components/schemas/textBubble"
                               },
                               {
-                                "$ref": "#/components/schemas/imageMessage"
+                                "$ref": "#/components/schemas/imageBubble"
                               },
                               {
-                                "$ref": "#/components/schemas/videoMessage"
+                                "$ref": "#/components/schemas/videoBubble"
                               },
                               {
-                                "$ref": "#/components/schemas/audioMessage"
+                                "$ref": "#/components/schemas/audioBubble"
                               },
                               {
-                                "$ref": "#/components/schemas/embedMessage"
+                                "$ref": "#/components/schemas/embedBubble"
                               },
                               {
-                                "$ref": "#/components/schemas/customEmbedMessage"
+                                "$ref": "#/components/schemas/customEmbedBubble"
                               }
                             ],
                             "discriminator": {
                               "propertyName": "type",
                               "mapping": {
-                                "text": "#/components/schemas/textMessage",
-                                "image": "#/components/schemas/imageMessage",
-                                "video": "#/components/schemas/videoMessage",
-                                "audio": "#/components/schemas/audioMessage",
-                                "embed": "#/components/schemas/embedMessage",
-                                "custom-embed": "#/components/schemas/customEmbedMessage"
+                                "text": "#/components/schemas/textBubble",
+                                "image": "#/components/schemas/imageBubble",
+                                "video": "#/components/schemas/videoBubble",
+                                "audio": "#/components/schemas/audioBubble",
+                                "embed": "#/components/schemas/embedBubble",
+                                "custom-embed": "#/components/schemas/customEmbedBubble"
                               }
                             }
                           }
@@ -479,6 +483,9 @@
                         },
                         "guestAvatarUrl": {
                           "type": "string"
+                        },
+                        "backgroundUrl": {
+                          "type": "string"
                         }
                       }
                     },
@@ -493,10 +500,14 @@
                           "description": {
                             "type": "string"
                           },
-                          "details": {}
+                          "details": {
+                            "type": "string"
+                          },
+                          "context": {
+                            "type": "string"
+                          }
                         },
                         "required": [
-                          "status",
                           "description"
                         ]
                       }
@@ -669,10 +680,14 @@
                         "description": {
                           "type": "string"
                         },
-                        "details": {}
+                        "details": {
+                          "type": "string"
+                        },
+                        "context": {
+                          "type": "string"
+                        }
                       },
                       "required": [
-                        "status",
                         "description"
                       ]
                     },
@@ -709,33 +724,33 @@
                           {
                             "oneOf": [
                               {
-                                "$ref": "#/components/schemas/textMessage"
+                                "$ref": "#/components/schemas/textBubble"
                               },
                               {
-                                "$ref": "#/components/schemas/imageMessage"
+                                "$ref": "#/components/schemas/imageBubble"
                               },
                               {
-                                "$ref": "#/components/schemas/videoMessage"
+                                "$ref": "#/components/schemas/videoBubble"
                               },
                               {
-                                "$ref": "#/components/schemas/audioMessage"
+                                "$ref": "#/components/schemas/audioBubble"
                               },
                               {
-                                "$ref": "#/components/schemas/embedMessage"
+                                "$ref": "#/components/schemas/embedBubble"
                               },
                               {
-                                "$ref": "#/components/schemas/customEmbedMessage"
+                                "$ref": "#/components/schemas/customEmbedBubble"
                               }
                             ],
                             "discriminator": {
                               "propertyName": "type",
                               "mapping": {
-                                "text": "#/components/schemas/textMessage",
-                                "image": "#/components/schemas/imageMessage",
-                                "video": "#/components/schemas/videoMessage",
-                                "audio": "#/components/schemas/audioMessage",
-                                "embed": "#/components/schemas/embedMessage",
-                                "custom-embed": "#/components/schemas/customEmbedMessage"
+                                "text": "#/components/schemas/textBubble",
+                                "image": "#/components/schemas/imageBubble",
+                                "video": "#/components/schemas/videoBubble",
+                                "audio": "#/components/schemas/audioBubble",
+                                "embed": "#/components/schemas/embedBubble",
+                                "custom-embed": "#/components/schemas/customEmbedBubble"
                               }
                             }
                           }
@@ -1002,6 +1017,9 @@
                         },
                         "guestAvatarUrl": {
                           "type": "string"
+                        },
+                        "backgroundUrl": {
+                          "type": "string"
                         }
                       }
                     },
@@ -1016,10 +1034,14 @@
                           "description": {
                             "type": "string"
                           },
-                          "details": {}
+                          "details": {
+                            "type": "string"
+                          },
+                          "context": {
+                            "type": "string"
+                          }
                         },
                         "required": [
-                          "status",
                           "description"
                         ]
                       }
@@ -1085,17 +1107,21 @@
                   "message": {
                     "oneOf": [
                       {
-                        "$ref": "#/components/schemas/textSentMessage"
+                        "$ref": "#/components/schemas/textMessage"
                       },
                       {
-                        "$ref": "#/components/schemas/audioSentMessage"
+                        "$ref": "#/components/schemas/audioMessage"
+                      },
+                      {
+                        "$ref": "#/components/schemas/commandMessage"
                       }
                     ],
                     "discriminator": {
                       "propertyName": "type",
                       "mapping": {
-                        "text": "#/components/schemas/textSentMessage",
-                        "audio": "#/components/schemas/audioSentMessage"
+                        "text": "#/components/schemas/textMessage",
+                        "audio": "#/components/schemas/audioMessage",
+                        "command": "#/components/schemas/commandMessage"
                       }
                     },
                     "description": "Only provide it if your flow starts with an input block and you'd like to directly provide an answer to it."
@@ -1215,33 +1241,33 @@
                           {
                             "oneOf": [
                               {
-                                "$ref": "#/components/schemas/textMessage"
+                                "$ref": "#/components/schemas/textBubble"
                               },
                               {
-                                "$ref": "#/components/schemas/imageMessage"
+                                "$ref": "#/components/schemas/imageBubble"
                               },
                               {
-                                "$ref": "#/components/schemas/videoMessage"
+                                "$ref": "#/components/schemas/videoBubble"
                               },
                               {
-                                "$ref": "#/components/schemas/audioMessage"
+                                "$ref": "#/components/schemas/audioBubble"
                               },
                               {
-                                "$ref": "#/components/schemas/embedMessage"
+                                "$ref": "#/components/schemas/embedBubble"
                               },
                               {
-                                "$ref": "#/components/schemas/customEmbedMessage"
+                                "$ref": "#/components/schemas/customEmbedBubble"
                               }
                             ],
                             "discriminator": {
                               "propertyName": "type",
                               "mapping": {
-                                "text": "#/components/schemas/textMessage",
-                                "image": "#/components/schemas/imageMessage",
-                                "video": "#/components/schemas/videoMessage",
-                                "audio": "#/components/schemas/audioMessage",
-                                "embed": "#/components/schemas/embedMessage",
-                                "custom-embed": "#/components/schemas/customEmbedMessage"
+                                "text": "#/components/schemas/textBubble",
+                                "image": "#/components/schemas/imageBubble",
+                                "video": "#/components/schemas/videoBubble",
+                                "audio": "#/components/schemas/audioBubble",
+                                "embed": "#/components/schemas/embedBubble",
+                                "custom-embed": "#/components/schemas/customEmbedBubble"
                               }
                             }
                           }
@@ -1437,10 +1463,14 @@
                           "description": {
                             "type": "string"
                           },
-                          "details": {}
+                          "details": {
+                            "type": "string"
+                          },
+                          "context": {
+                            "type": "string"
+                          }
                         },
                         "required": [
-                          "status",
                           "description"
                         ]
                       },
@@ -1453,6 +1483,9 @@
                           "type": "string"
                         },
                         "guestAvatarUrl": {
+                          "type": "string"
+                        },
+                        "backgroundUrl": {
                           "type": "string"
                         }
                       },
@@ -1521,17 +1554,21 @@
                   "message": {
                     "oneOf": [
                       {
-                        "$ref": "#/components/schemas/textSentMessage"
+                        "$ref": "#/components/schemas/textMessage"
                       },
                       {
-                        "$ref": "#/components/schemas/audioSentMessage"
+                        "$ref": "#/components/schemas/audioMessage"
+                      },
+                      {
+                        "$ref": "#/components/schemas/commandMessage"
                       }
                     ],
                     "discriminator": {
                       "propertyName": "type",
                       "mapping": {
-                        "text": "#/components/schemas/textSentMessage",
-                        "audio": "#/components/schemas/audioSentMessage"
+                        "text": "#/components/schemas/textMessage",
+                        "audio": "#/components/schemas/audioMessage",
+                        "command": "#/components/schemas/commandMessage"
                       }
                     }
                   },
@@ -1578,33 +1615,33 @@
                           {
                             "oneOf": [
                               {
-                                "$ref": "#/components/schemas/textMessage"
+                                "$ref": "#/components/schemas/textBubble"
                               },
                               {
-                                "$ref": "#/components/schemas/imageMessage"
+                                "$ref": "#/components/schemas/imageBubble"
                               },
                               {
-                                "$ref": "#/components/schemas/videoMessage"
+                                "$ref": "#/components/schemas/videoBubble"
                               },
                               {
-                                "$ref": "#/components/schemas/audioMessage"
+                                "$ref": "#/components/schemas/audioBubble"
                               },
                               {
-                                "$ref": "#/components/schemas/embedMessage"
+                                "$ref": "#/components/schemas/embedBubble"
                               },
                               {
-                                "$ref": "#/components/schemas/customEmbedMessage"
+                                "$ref": "#/components/schemas/customEmbedBubble"
                               }
                             ],
                             "discriminator": {
                               "propertyName": "type",
                               "mapping": {
-                                "text": "#/components/schemas/textMessage",
-                                "image": "#/components/schemas/imageMessage",
-                                "video": "#/components/schemas/videoMessage",
-                                "audio": "#/components/schemas/audioMessage",
-                                "embed": "#/components/schemas/embedMessage",
-                                "custom-embed": "#/components/schemas/customEmbedMessage"
+                                "text": "#/components/schemas/textBubble",
+                                "image": "#/components/schemas/imageBubble",
+                                "video": "#/components/schemas/videoBubble",
+                                "audio": "#/components/schemas/audioBubble",
+                                "embed": "#/components/schemas/embedBubble",
+                                "custom-embed": "#/components/schemas/customEmbedBubble"
                               }
                             }
                           }
@@ -1800,10 +1837,14 @@
                           "description": {
                             "type": "string"
                           },
-                          "details": {}
+                          "details": {
+                            "type": "string"
+                          },
+                          "context": {
+                            "type": "string"
+                          }
                         },
                         "required": [
-                          "status",
                           "description"
                         ]
                       },
@@ -1816,6 +1857,9 @@
                           "type": "string"
                         },
                         "guestAvatarUrl": {
+                          "type": "string"
+                        },
+                        "backgroundUrl": {
                           "type": "string"
                         }
                       },
@@ -1887,17 +1931,21 @@
                   "message": {
                     "oneOf": [
                       {
-                        "$ref": "#/components/schemas/textSentMessage"
+                        "$ref": "#/components/schemas/textMessage"
                       },
                       {
-                        "$ref": "#/components/schemas/audioSentMessage"
+                        "$ref": "#/components/schemas/audioMessage"
+                      },
+                      {
+                        "$ref": "#/components/schemas/commandMessage"
                       }
                     ],
                     "discriminator": {
                       "propertyName": "type",
                       "mapping": {
-                        "text": "#/components/schemas/textSentMessage",
-                        "audio": "#/components/schemas/audioSentMessage"
+                        "text": "#/components/schemas/textMessage",
+                        "audio": "#/components/schemas/audioMessage",
+                        "command": "#/components/schemas/commandMessage"
                       }
                     }
                   },
@@ -2069,33 +2117,33 @@
                           {
                             "oneOf": [
                               {
-                                "$ref": "#/components/schemas/textMessage"
+                                "$ref": "#/components/schemas/textBubble"
                               },
                               {
-                                "$ref": "#/components/schemas/imageMessage"
+                                "$ref": "#/components/schemas/imageBubble"
                               },
                               {
-                                "$ref": "#/components/schemas/videoMessage"
+                                "$ref": "#/components/schemas/videoBubble"
                               },
                               {
-                                "$ref": "#/components/schemas/audioMessage"
+                                "$ref": "#/components/schemas/audioBubble"
                               },
                               {
-                                "$ref": "#/components/schemas/embedMessage"
+                                "$ref": "#/components/schemas/embedBubble"
                               },
                               {
-                                "$ref": "#/components/schemas/customEmbedMessage"
+                                "$ref": "#/components/schemas/customEmbedBubble"
                               }
                             ],
                             "discriminator": {
                               "propertyName": "type",
                               "mapping": {
-                                "text": "#/components/schemas/textMessage",
-                                "image": "#/components/schemas/imageMessage",
-                                "video": "#/components/schemas/videoMessage",
-                                "audio": "#/components/schemas/audioMessage",
-                                "embed": "#/components/schemas/embedMessage",
-                                "custom-embed": "#/components/schemas/customEmbedMessage"
+                                "text": "#/components/schemas/textBubble",
+                                "image": "#/components/schemas/imageBubble",
+                                "video": "#/components/schemas/videoBubble",
+                                "audio": "#/components/schemas/audioBubble",
+                                "embed": "#/components/schemas/embedBubble",
+                                "custom-embed": "#/components/schemas/customEmbedBubble"
                               }
                             }
                           }
@@ -2291,10 +2339,14 @@
                           "description": {
                             "type": "string"
                           },
-                          "details": {}
+                          "details": {
+                            "type": "string"
+                          },
+                          "context": {
+                            "type": "string"
+                          }
                         },
                         "required": [
-                          "status",
                           "description"
                         ]
                       },
@@ -2307,6 +2359,9 @@
                           "type": "string"
                         },
                         "guestAvatarUrl": {
+                          "type": "string"
+                        },
+                        "backgroundUrl": {
                           "type": "string"
                         }
                       },
@@ -3125,26 +3180,67 @@
                                               ]
                                             },
                                             "interactive": {
-                                              "type": "object",
-                                              "properties": {
-                                                "button_reply": {
+                                              "oneOf": [
+                                                {
                                                   "type": "object",
                                                   "properties": {
-                                                    "id": {
-                                                      "type": "string"
+                                                    "type": {
+                                                      "type": "string",
+                                                      "enum": [
+                                                        "button_reply"
+                                                      ]
                                                     },
-                                                    "title": {
-                                                      "type": "string"
+                                                    "button_reply": {
+                                                      "type": "object",
+                                                      "properties": {
+                                                        "id": {
+                                                          "type": "string"
+                                                        },
+                                                        "title": {
+                                                          "type": "string"
+                                                        }
+                                                      },
+                                                      "required": [
+                                                        "id",
+                                                        "title"
+                                                      ]
                                                     }
                                                   },
                                                   "required": [
-                                                    "id",
-                                                    "title"
+                                                    "type",
+                                                    "button_reply"
+                                                  ]
+                                                },
+                                                {
+                                                  "type": "object",
+                                                  "properties": {
+                                                    "type": {
+                                                      "type": "string",
+                                                      "enum": [
+                                                        "list_reply"
+                                                      ]
+                                                    },
+                                                    "list_reply": {
+                                                      "type": "object",
+                                                      "properties": {
+                                                        "id": {
+                                                          "type": "string"
+                                                        },
+                                                        "title": {
+                                                          "type": "string"
+                                                        }
+                                                      },
+                                                      "required": [
+                                                        "id",
+                                                        "title"
+                                                      ]
+                                                    }
+                                                  },
+                                                  "required": [
+                                                    "type",
+                                                    "list_reply"
                                                   ]
                                                 }
-                                              },
-                                              "required": [
-                                                "button_reply"
                                               ]
                                             }
                                           },
@@ -3434,6 +3530,171 @@
                                             "type",
                                             "webhook"
                                           ]
+                                        },
+                                        {
+                                          "type": "object",
+                                          "properties": {
+                                            "from": {
+                                              "type": "string"
+                                            },
+                                            "timestamp": {
+                                              "type": "string"
+                                            },
+                                            "referral": {
+                                              "type": "object",
+                                              "properties": {
+                                                "ctwa_clid": {
+                                                  "type": "string"
+                                                },
+                                                "source_id": {
+                                                  "type": "string"
+                                                }
+                                              }
+                                            },
+                                            "type": {
+                                              "type": "string",
+                                              "enum": [
+                                                "reaction"
+                                              ]
+                                            },
+                                            "reaction": {
+                                              "type": "object",
+                                              "properties": {
+                                                "emoji": {
+                                                  "type": "string"
+                                                }
+                                              }
+                                            }
+                                          },
+                                          "required": [
+                                            "from",
+                                            "timestamp",
+                                            "type",
+                                            "reaction"
+                                          ]
+                                        },
+                                        {
+                                          "type": "object",
+                                          "properties": {
+                                            "from": {
+                                              "type": "string"
+                                            },
+                                            "timestamp": {
+                                              "type": "string"
+                                            },
+                                            "referral": {
+                                              "type": "object",
+                                              "properties": {
+                                                "ctwa_clid": {
+                                                  "type": "string"
+                                                },
+                                                "source_id": {
+                                                  "type": "string"
+                                                }
+                                              }
+                                            },
+                                            "type": {
+                                              "type": "string",
+                                              "enum": [
+                                                "sticker"
+                                              ]
+                                            },
+                                            "sticker": {
+                                              "type": "object",
+                                              "properties": {
+                                                "id": {
+                                                  "type": "string"
+                                                }
+                                              },
+                                              "required": [
+                                                "id"
+                                              ]
+                                            }
+                                          },
+                                          "required": [
+                                            "from",
+                                            "timestamp",
+                                            "type",
+                                            "sticker"
+                                          ]
+                                        },
+                                        {
+                                          "type": "object",
+                                          "properties": {
+                                            "from": {
+                                              "type": "string"
+                                            },
+                                            "timestamp": {
+                                              "type": "string"
+                                            },
+                                            "referral": {
+                                              "type": "object",
+                                              "properties": {
+                                                "ctwa_clid": {
+                                                  "type": "string"
+                                                },
+                                                "source_id": {
+                                                  "type": "string"
+                                                }
+                                              }
+                                            },
+                                            "type": {
+                                              "type": "string",
+                                              "enum": [
+                                                "unsupported"
+                                              ]
+                                            }
+                                          },
+                                          "required": [
+                                            "from",
+                                            "timestamp",
+                                            "type"
+                                          ]
+                                        },
+                                        {
+                                          "type": "object",
+                                          "properties": {
+                                            "from": {
+                                              "type": "string"
+                                            },
+                                            "timestamp": {
+                                              "type": "string"
+                                            },
+                                            "referral": {
+                                              "type": "object",
+                                              "properties": {
+                                                "ctwa_clid": {
+                                                  "type": "string"
+                                                },
+                                                "source_id": {
+                                                  "type": "string"
+                                                }
+                                              }
+                                            },
+                                            "type": {
+                                              "type": "string",
+                                              "enum": [
+                                                "system"
+                                              ]
+                                            },
+                                            "system": {
+                                              "type": "object",
+                                              "properties": {
+                                                "body": {
+                                                  "type": "string"
+                                                }
+                                              },
+                                              "required": [
+                                                "body"
+                                              ]
+                                            }
+                                          },
+                                          "required": [
+                                            "from",
+                                            "timestamp",
+                                            "type",
+                                            "system"
+                                          ]
                                         }
                                       ]
                                     }
@@ -3482,10 +3743,7 @@
                                       ]
                                     }
                                   }
-                                },
-                                "required": [
-                                  "metadata"
-                                ]
+                                }
                               }
                             },
                             "required": [
@@ -3581,10 +3839,14 @@
                         "description": {
                           "type": "string"
                         },
-                        "details": {}
+                        "details": {
+                          "type": "string"
+                        },
+                        "context": {
+                          "type": "string"
+                        }
                       },
                       "required": [
-                        "status",
                         "description"
                       ]
                     }
@@ -3669,12 +3931,92 @@
           },
           "events": {
             "type": "array",
-            "maxItems": 1,
-            "minItems": 1,
             "items": {
               "oneOf": [
                 {
-                  "$ref": "#/components/schemas/event"
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "outgoingEdgeId": {
+                      "type": "string"
+                    },
+                    "graphCoordinates": {
+                      "type": "object",
+                      "properties": {
+                        "x": {
+                          "type": "number"
+                        },
+                        "y": {
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "x",
+                        "y"
+                      ]
+                    },
+                    "type": {
+                      "type": "string",
+                      "enum": [
+                        "start"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "graphCoordinates",
+                    "type"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "outgoingEdgeId": {
+                      "type": "string"
+                    },
+                    "graphCoordinates": {
+                      "type": "object",
+                      "properties": {
+                        "x": {
+                          "type": "number"
+                        },
+                        "y": {
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "x",
+                        "y"
+                      ]
+                    },
+                    "type": {
+                      "type": "string",
+                      "enum": [
+                        "command"
+                      ]
+                    },
+                    "options": {
+                      "type": "object",
+                      "properties": {
+                        "command": {
+                          "type": "string"
+                        },
+                        "resumeAfter": {
+                          "type": "boolean"
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "graphCoordinates",
+                    "type"
+                  ]
                 }
               ]
             }
@@ -4131,9 +4473,11 @@
                                     "temperature": {
                                       "anyOf": [
                                         {
-                                          "type": "number"
+                                          "type": "string"
                                         },
-                                        {}
+                                        {
+                                          "type": "number"
+                                        }
                                       ]
                                     }
                                   }
@@ -4593,9 +4937,11 @@
               "height": {
                 "anyOf": [
                   {
-                    "type": "number"
+                    "type": "string"
                   },
-                  {}
+                  {
+                    "type": "number"
+                  }
                 ]
               },
               "aspectRatio": {
@@ -4646,9 +4992,11 @@
               "height": {
                 "anyOf": [
                   {
-                    "type": "number"
+                    "type": "string"
                   },
-                  {}
+                  {
+                    "type": "number"
+                  }
                 ]
               },
               "waitForEvent": {
@@ -4868,25 +5216,31 @@
               "min": {
                 "anyOf": [
                   {
-                    "type": "number"
+                    "type": "string"
                   },
-                  {}
+                  {
+                    "type": "number"
+                  }
                 ]
               },
               "max": {
                 "anyOf": [
                   {
-                    "type": "number"
+                    "type": "string"
                   },
-                  {}
+                  {
+                    "type": "number"
+                  }
                 ]
               },
               "step": {
                 "anyOf": [
                   {
-                    "type": "number"
+                    "type": "string"
                   },
-                  {}
+                  {
+                    "type": "number"
+                  }
                 ]
               }
             }
@@ -5233,9 +5587,11 @@
               "startsAt": {
                 "anyOf": [
                   {
-                    "type": "number"
+                    "type": "string"
                   },
-                  {}
+                  {
+                    "type": "number"
+                  }
                 ]
               },
               "labels": {
@@ -6321,9 +6677,11 @@
               "value": {
                 "anyOf": [
                   {
-                    "type": "number"
+                    "type": "string"
                   },
-                  {}
+                  {
+                    "type": "number"
+                  }
                 ]
               },
               "sendTo": {
@@ -7437,9 +7795,11 @@
                   "temperature": {
                     "anyOf": [
                       {
-                        "type": "number"
+                        "type": "string"
                       },
-                      {}
+                      {
+                        "type": "number"
+                      }
                     ]
                   },
                   "responseMapping": {
@@ -8059,6 +8419,46 @@
                 "required": [
                   "action"
                 ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "credentialsId": {
+                    "type": "string"
+                  },
+                  "action": {
+                    "type": "string",
+                    "enum": [
+                      "Query Knowledge Base"
+                    ]
+                  },
+                  "datasetId": {
+                    "type": "string"
+                  },
+                  "query": {
+                    "type": "string"
+                  },
+                  "responseMapping": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "item": {
+                          "type": "string",
+                          "enum": [
+                            "Retrieved chunks"
+                          ]
+                        },
+                        "variableId": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                },
+                "required": [
+                  "action"
+                ]
               }
             ]
           }
@@ -8341,9 +8741,11 @@
                   "temperature": {
                     "anyOf": [
                       {
-                        "type": "number"
+                        "type": "string"
                       },
-                      {}
+                      {
+                        "type": "number"
+                      }
                     ]
                   },
                   "responseMapping": {
@@ -8613,6 +9015,7 @@
                   "model": {
                     "type": "string",
                     "enum": [
+                      "claude-3-7-sonnet-latest",
                       "claude-3-5-haiku-latest",
                       "claude-3-5-sonnet-latest",
                       "claude-3-5-sonnet-20240620",
@@ -8842,17 +9245,21 @@
                   "temperature": {
                     "anyOf": [
                       {
-                        "type": "number"
+                        "type": "string"
                       },
-                      {}
+                      {
+                        "type": "number"
+                      }
                     ]
                   },
                   "maxTokens": {
                     "anyOf": [
                       {
-                        "type": "number"
+                        "type": "string"
                       },
-                      {}
+                      {
+                        "type": "number"
+                      }
                     ]
                   },
                   "responseMapping": {
@@ -8892,6 +9299,7 @@
                   "model": {
                     "type": "string",
                     "enum": [
+                      "claude-3-7-sonnet-latest",
                       "claude-3-5-haiku-latest",
                       "claude-3-5-sonnet-latest",
                       "claude-3-5-sonnet-20240620",
@@ -9301,9 +9709,11 @@
                   "temperature": {
                     "anyOf": [
                       {
-                        "type": "number"
+                        "type": "string"
                       },
-                      {}
+                      {
+                        "type": "number"
+                      }
                     ]
                   },
                   "responseMapping": {
@@ -9610,9 +10020,11 @@
                   "temperature": {
                     "anyOf": [
                       {
-                        "type": "number"
+                        "type": "string"
                       },
-                      {}
+                      {
+                        "type": "number"
+                      }
                     ]
                   },
                   "responseMapping": {
@@ -10327,9 +10739,11 @@
                   "temperature": {
                     "anyOf": [
                       {
-                        "type": "number"
+                        "type": "string"
                       },
-                      {}
+                      {
+                        "type": "number"
+                      }
                     ]
                   },
                   "responseMapping": {
@@ -10568,44 +10982,6 @@
           "type"
         ],
         "title": "Posthog"
-      },
-      "event": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "outgoingEdgeId": {
-            "type": "string"
-          },
-          "graphCoordinates": {
-            "type": "object",
-            "properties": {
-              "x": {
-                "type": "number"
-              },
-              "y": {
-                "type": "number"
-              }
-            },
-            "required": [
-              "x",
-              "y"
-            ]
-          },
-          "type": {
-            "type": "string",
-            "enum": [
-              "start"
-            ]
-          }
-        },
-        "required": [
-          "id",
-          "graphCoordinates",
-          "type"
-        ],
-        "description": "Event"
       },
       "settings": {
         "type": "object",
@@ -11769,9 +12145,11 @@
                                           "temperature": {
                                             "anyOf": [
                                               {
-                                                "type": "number"
+                                                "type": "string"
                                               },
-                                              {}
+                                              {
+                                                "type": "number"
+                                              }
                                             ]
                                           }
                                         }
@@ -13360,7 +13738,7 @@
         ],
         "title": "Picture choice v5"
       },
-      "textMessage": {
+      "textBubble": {
         "type": "object",
         "properties": {
           "type": {
@@ -13413,7 +13791,7 @@
         ],
         "title": "Text"
       },
-      "imageMessage": {
+      "imageBubble": {
         "type": "object",
         "properties": {
           "type": {
@@ -13448,7 +13826,7 @@
         ],
         "title": "Image"
       },
-      "videoMessage": {
+      "videoBubble": {
         "type": "object",
         "properties": {
           "type": {
@@ -13479,9 +13857,11 @@
               "height": {
                 "anyOf": [
                   {
-                    "type": "number"
+                    "type": "string"
                   },
-                  {}
+                  {
+                    "type": "number"
+                  }
                 ]
               },
               "aspectRatio": {
@@ -13508,7 +13888,7 @@
         ],
         "title": "Video"
       },
-      "audioMessage": {
+      "audioBubble": {
         "type": "object",
         "properties": {
           "type": {
@@ -13535,7 +13915,7 @@
         ],
         "title": "Audio"
       },
-      "embedMessage": {
+      "embedBubble": {
         "type": "object",
         "properties": {
           "type": {
@@ -13550,6 +13930,16 @@
               "url": {
                 "type": "string"
               },
+              "height": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "number"
+                  }
+                ]
+              },
               "waitForEvent": {
                 "type": "object",
                 "properties": {
@@ -13563,9 +13953,6 @@
                     "type": "string"
                   }
                 }
-              },
-              "height": {
-                "type": "number"
               }
             }
           }
@@ -13576,7 +13963,7 @@
         ],
         "title": "Embed"
       },
-      "customEmbedMessage": {
+      "customEmbedBubble": {
         "type": "object",
         "properties": {
           "type": {
@@ -13863,9 +14250,11 @@
               "value": {
                 "anyOf": [
                   {
-                    "type": "number"
+                    "type": "string"
                   },
-                  {}
+                  {
+                    "type": "number"
+                  }
                 ]
               },
               "sendTo": {
@@ -14473,7 +14862,7 @@
           "issues": []
         }
       },
-      "textSentMessage": {
+      "textMessage": {
         "type": "object",
         "properties": {
           "type": {
@@ -14499,7 +14888,7 @@
         ],
         "title": "Text"
       },
-      "audioSentMessage": {
+      "audioMessage": {
         "type": "object",
         "properties": {
           "type": {
@@ -14516,8 +14905,27 @@
           "type",
           "url"
         ],
-        "description": "Can only be provided if current input block is a text input that allows audio clips",
+        "description": "Can only be provided if current input block is a text input block that allows audio clips",
         "title": "Audio"
+      },
+      "commandMessage": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "command"
+            ]
+          },
+          "command": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "command"
+        ],
+        "title": "Command"
       },
       "error.NOT_FOUND": {
         "type": "object",

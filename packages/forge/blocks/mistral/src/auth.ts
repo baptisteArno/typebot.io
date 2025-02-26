@@ -9,6 +9,7 @@ export const auth = {
       label: "API key",
       isRequired: true,
       inputType: "password",
+      withVariableButton: false,
       helperText:
         "You can generate an API key [here](https://console.mistral.ai/api-keys).",
       isDebounceDisabled: true,

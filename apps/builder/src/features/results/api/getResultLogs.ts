@@ -1,6 +1,6 @@
 import { authenticatedProcedure } from "@/helpers/server/trpc";
+import { logSchema } from "@typebot.io/logs/schemas";
 import prisma from "@typebot.io/prisma";
-import { logSchema } from "@typebot.io/results/schemas/results";
 import { isReadTypebotForbidden } from "@typebot.io/typebot/helpers/isReadTypebotForbidden";
 import { z } from "@typebot.io/zod";
 

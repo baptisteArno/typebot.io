@@ -1,5 +1,5 @@
 import { TextInput } from "@/components/inputs";
-import { useToast } from "@/hooks/useToast";
+import { toast } from "@/lib/toast";
 import { trpc } from "@/lib/trpc";
 import {
   Button,
@@ -33,7 +33,6 @@ export const SaveThemeModal = ({
   theme,
 }: Props) => {
   const { t } = useTranslate();
-  const { showToast } = useToast();
   const [isSaving, setIsSaving] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const {
@@ -49,7 +48,7 @@ export const SaveThemeModal = ({
       onClose(themeTemplate);
     },
     onError: (error) => {
-      showToast({
+      toast({
         description: error.message,
       });
     },

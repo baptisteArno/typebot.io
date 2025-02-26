@@ -2,10 +2,10 @@ import type { IntegrationBlockType } from "@typebot.io/blocks-integrations/const
 import { LogicBlockType } from "@typebot.io/blocks-logic/constants";
 import type { SessionState } from "@typebot.io/chat-session/schemas";
 import { byId } from "@typebot.io/lib/utils";
+import type { LogInSession } from "@typebot.io/logs/schemas";
 import { createHttpReqResponseMappingRunner } from "@typebot.io/variables/codeRunners";
 import { parseVariables } from "@typebot.io/variables/parseVariables";
 import type { VariableWithUnknowValue } from "@typebot.io/variables/schemas";
-import type { ChatLog } from "../../../schemas/api";
 import type { ExecuteIntegrationResponse } from "../../../types";
 import { updateVariablesInSession } from "../../../updateVariablesInSession";
 
@@ -23,7 +23,7 @@ type Props = {
     variableId?: string;
   }[];
   outgoingEdgeId?: string;
-  logs?: ChatLog[];
+  logs?: LogInSession[];
   response: {
     statusCode?: number;
     data?: unknown;
@@ -55,12 +55,12 @@ export const saveDataInResponseVariableMapping = ({
         ? {
             status: "error",
             description: `${blockLabel} returned error`,
-            details: response.data,
+            details: JSON.stringify(response.data),
           }
         : {
             status: "success",
             description: `${blockLabel} executed successfully!`,
-            details: response.data,
+            details: JSON.stringify(response.data),
           },
     );
   }

@@ -33,21 +33,11 @@ export const resultWithAnswersInputSchema = resultSchema.merge(
   }),
 );
 
-export const logSchema = z.object({
-  id: z.string(),
-  createdAt: z.date(),
-  resultId: z.string(),
-  status: z.string(),
-  description: z.string(),
-  details: z.string().nullable(),
-}) satisfies z.ZodType<Prisma.Log>;
-
 export type Result = z.infer<typeof resultSchema>;
 export type ResultWithAnswers = z.infer<typeof resultWithAnswersSchema>;
 export type ResultWithAnswersInput = z.infer<
   typeof resultWithAnswersInputSchema
 >;
-export type Log = z.infer<typeof logSchema>;
 
 export type ResultValuesInput = Pick<
   ResultWithAnswersInput,
