@@ -42,21 +42,27 @@ const dialogueMessageItemSchema = option.object({
 });
 
 type Props = {
-  modelFetchId?: string;
-  modelHelperText?: string;
+  models: { helperText?: string } & (
+    | { type: "fetcher"; id: string }
+    | { type: "static"; models: readonly [string, ...string[]] }
+    | { type: "text" }
+  );
 };
 
-export const parseChatCompletionOptions = ({
-  modelFetchId,
-  modelHelperText,
-}: Props) =>
+export const parseChatCompletionOptions = ({ models }: Props) =>
   option.object({
-    model: option.string.layout({
-      placeholder: modelFetchId ? "Select a model" : undefined,
-      label: modelFetchId ? undefined : "Model",
-      fetcher: modelFetchId,
-      helperText: modelHelperText,
-    }),
+    model:
+      models.type === "static"
+        ? option.enum(models.models as [string, ...string[]]).layout({
+            placeholder: "Select a model",
+            label: "Model",
+          })
+        : option.string.layout({
+            placeholder: "Select a model",
+            label: "Model",
+            fetcher: models.type === "fetcher" ? models.id : undefined,
+            helperText: models.helperText,
+          }),
     messages: option
       .array(
         option.discriminatedUnion("role", [

@@ -11,8 +11,11 @@ export const createChatCompletion = createAction({
   name: "Create chat completion",
   auth,
   options: parseChatCompletionOptions({
-    modelHelperText:
-      "You can find the list of all the models available [here](https://docs.together.ai/docs/inference-models#chat-models). Copy the model string for API.",
+    models: {
+      type: "text",
+      helperText:
+        "You can find the list of all the models available [here](https://docs.together.ai/docs/inference-models#chat-models). Copy the model string for API.",
+    },
   }),
   turnableInto: [
     {
@@ -22,6 +25,7 @@ export const createChatCompletion = createAction({
       blockId: "open-router",
     },
     { blockId: "mistral" },
+    { blockId: "perplexity" },
     {
       blockId: "anthropic",
       transform: (options) => ({

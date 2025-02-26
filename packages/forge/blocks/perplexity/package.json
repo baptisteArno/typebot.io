@@ -9,7 +9,7 @@
     "./shared/*": "./src/shared/*.ts"
   },
   "dependencies": {
-    "@ai-sdk/perplexity": "^1.0.1",
+    "@ai-sdk/perplexity": "1.0.2",
     "@typebot.io/ai": "workspace:*",
     "@typebot.io/forge": "workspace:*",
     "@typebot.io/lib": "workspace:*",

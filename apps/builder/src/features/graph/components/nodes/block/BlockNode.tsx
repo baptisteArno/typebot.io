@@ -281,7 +281,7 @@ export const BlockNode = ({
                 rounded="lg"
                 cursor={"pointer"}
                 bg={bg}
-                align="center"
+                align="flex-start"
                 w="full"
                 transition="border-color 0.2s"
               >

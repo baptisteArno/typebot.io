@@ -1,96 +1,30 @@
-import { createPerplexity, perplexity } from "@ai-sdk/perplexity";
-import { getChatCompletionSetVarIds } from "@typebot.io/ai/getChatCompletionSetVarIds";
+import { createPerplexity } from "@ai-sdk/perplexity";
+import { getChatCompletionStreamVarId } from "@typebot.io/ai/getChatCompletionStreamVarId";
+import { parseChatCompletionOptions } from "@typebot.io/ai/parseChatCompletionOptions";
 import { runChatCompletion } from "@typebot.io/ai/runChatCompletion";
-import { createAction, option } from "@typebot.io/forge";
-import { z } from "@typebot.io/zod";
+import { runChatCompletionStream } from "@typebot.io/ai/runChatCompletionStream";
+import { createAction } from "@typebot.io/forge";
+import { isDefined } from "@typebot.io/lib/utils";
 import { auth } from "../auth";
-import { defaultPerplexityOptions, perplexityModels } from "../constants";
-
-const nativeMessageContentSchema = {
-  content: option.string.layout({
-    inputType: "textarea",
-    placeholder: "Content",
-  }),
-};
-
-const systemMeesageItemSchema = option
-  .object({
-    role: option.literal("system"),
-  })
-  .extend(nativeMessageContentSchema);
-
-const userMessageItemSchema = option
-  .object({
-    role: option.literal("user"),
-  })
-  .extend(nativeMessageContentSchema);
-
-const assistantMessageItemSchema = option
-  .object({
-    role: option.literal("assistant"),
-  })
-  .extend(nativeMessageContentSchema);
-
-const dialogueMessageItemSchema = option.object({
-  role: option.literal("Dialogue"),
-  dialogueVariableId: option.string.layout({
-    inputType: "variableDropdown",
-    placeholder: "Dialogue variable",
-  }),
-  startsBy: option.enum(["user", "assistant"]).layout({
-    label: "starts by",
-    direction: "row",
-    defaultValue: "user",
-  }),
-});
-
-export const options = option.object({
-  model: option.enum(perplexityModels).layout({
-    placeholder: "Select a model",
-    toLabels: (val) => (val ? val : undefined),
-  }),
-  messages: option
-    .array(
-      option.discriminatedUnion("role", [
-        systemMeesageItemSchema,
-        userMessageItemSchema,
-        assistantMessageItemSchema,
-        dialogueMessageItemSchema,
-      ]),
-    )
-    .layout({ accordion: "Messages", itemLabel: "message", isOrdered: true }),
-  temperature: option.number.layout({
-    accordion: "Advanced Settings",
-    label: "Temperature",
-    direction: "row",
-    defaultValue: defaultPerplexityOptions.temperature,
-  }),
-  maxTokens: option.number.layout({
-    accordion: "Advanced Settings",
-    label: "Max Tokens",
-    direction: "row",
-    defaultValue: defaultPerplexityOptions.maxTokens,
-  }),
-  responseMapping: z.preprocess(
-    (val) =>
-      Array.isArray(val)
-        ? val.map((res) =>
-            res.item === "Message Content"
-              ? { ...res, item: "Message content" }
-              : res,
-          )
-        : undefined,
-    option.saveResponseArray(["Message content"] as const).layout({
-      accordion: "Save Response",
-    }),
-  ),
-});
+import { perplexityModels } from "../constants";
 
 export const createChatCompletion = createAction({
   name: "Create chat completion",
   auth,
-  options,
+  options: parseChatCompletionOptions({
+    models: {
+      type: "static",
+      models: perplexityModels,
+    },
+  }),
   turnableInto: [
+    {
+      blockId: "openai",
+      transform: (opts) => ({
+        ...opts,
+        model: undefined,
+      }),
+    },
     {
       blockId: "mistral",
       transform: (opts) => ({
@@ -99,16 +33,28 @@ export const createChatCompletion = createAction({
       }),
     },
     {
-      blockId: "openai",
+      blockId: "groq",
       transform: (opts) => ({
         ...opts,
         model: undefined,
       }),
     },
+    {
+      blockId: "together-ai",
+    },
     { blockId: "open-router" },
-    { blockId: "together-ai" },
+    {
+      blockId: "anthropic",
+      transform: (options) => ({
+        ...options,
+        model: undefined,
+        action: "Create Chat Message",
+      }),
+    },
   ],
-  getSetVariableIds: getChatCompletionSetVarIds,
+  getSetVariableIds: (options) =>
+    options.responseMapping?.map((res) => res.variableId).filter(isDefined) ??
+    [],
   run: {
     server: ({ credentials: { apiKey }, options, variables, logs }) => {
       if (!apiKey) return logs.add("No API key provided");
@@ -122,14 +68,46 @@ export const createChatCompletion = createAction({
         })(modelName),
         variables,
         messages: options.messages,
+        tools: options.tools,
         isVisionEnabled: false,
-        temperature: options.temperature
-          ? Number(options.temperature)
-          : undefined,
+        temperature: options.temperature,
         responseMapping: options.responseMapping,
         logs,
-        tools: undefined,
       });
+    },
+    stream: {
+      getStreamVariableId: getChatCompletionStreamVarId,
+      run: async ({ credentials: { apiKey }, options, variables }) => {
+        if (!apiKey)
+          return {
+            error: {
+              description: "No API key provided",
+            },
+          };
+        const modelName = options.model?.trim();
+        if (!modelName)
+          return {
+            error: { description: "No model provided" },
+          };
+        if (!options.messages)
+          return {
+            error: {
+              description: "No messages provided",
+            },
+          };
+
+        return runChatCompletionStream({
+          model: createPerplexity({
+            apiKey,
+          })(modelName),
+          variables,
+          messages: options.messages,
+          isVisionEnabled: false,
+          tools: options.tools,
+          temperature: options.temperature,
+          responseMapping: options.responseMapping,
+        });
+      },
     },
   },
 });

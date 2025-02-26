@@ -25,6 +25,7 @@ export const createChatCompletion = createAction({
       blockId: "together-ai",
     },
     { blockId: "mistral" },
+    { blockId: "perplexity" },
     {
       blockId: "anthropic",
       transform: (options) => ({
@@ -34,7 +35,10 @@ export const createChatCompletion = createAction({
     },
   ],
   options: parseChatCompletionOptions({
-    modelFetchId: "fetchModels",
+    models: {
+      type: "fetcher",
+      id: "fetchModels",
+    },
   }),
   getSetVariableIds: getChatCompletionSetVarIds,
   fetchers: [
