@@ -143,7 +143,6 @@ export const injectCustomHeadCode = (customHeadCode: string) => {
 export const getAtPath = <T>(obj: T, path: string): unknown => {
   if (isNotDefined(obj)) return undefined;
   const pathParts = path.split(".");
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let current: any = obj;
   for (const part of pathParts) {
     if (current === undefined) {

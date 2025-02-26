@@ -2,7 +2,11 @@ import Router from "next/router";
 import NProgress from "nprogress";
 import { useEffect } from "react";
 
-const progressStarted = () => NProgress.start();
+const progressStarted = (url: string) => {
+  if (Router.asPath.split("?")[0] === url.split("?")[0]) return;
+  NProgress.start();
+};
+
 const progressComplete = () => NProgress.done();
 
 export const useRouterProgressBar = () =>

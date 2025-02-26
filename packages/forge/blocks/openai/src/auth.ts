@@ -10,7 +10,7 @@ export const auth = createAuth({
       placeholder: "sk-...",
       inputType: "password",
       helperText:
-        "You can generate an API key [here](https://platform.openai.com/account/api-keys)",
+        "You can generate an API key [here](https://platform.openai.com/account/api-keys).",
       withVariableButton: false,
       isDebounceDisabled: true,
     }),

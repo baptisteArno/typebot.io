@@ -1,7 +1,9 @@
 import type { ClientSideActionContext } from "@/types";
 import { guessApiHost } from "@/utils/guessApiHost";
 import { processDataStream } from "@ai-sdk/ui-utils";
+import { parseUnknownClientError } from "@typebot.io/lib/parseUnknownClientError";
 import { isNotEmpty } from "@typebot.io/lib/utils";
+import type { LogInSession } from "@typebot.io/logs/schemas";
 import { createUniqueId } from "solid-js";
 
 let abortController: AbortController | null = null;
@@ -13,13 +15,15 @@ export const streamChat =
   async ({
     messages,
     onMessageStream,
+    onError,
   }: {
     messages?: {
       content?: string | undefined;
       role?: "system" | "user" | "assistant" | undefined;
     }[];
     onMessageStream?: (props: { id: string; message: string }) => void;
-  }): Promise<{ message?: string; error?: object }> => {
+    onError?: (error: LogInSession) => void;
+  }): Promise<{ message?: string; error?: LogInSession }> => {
     try {
       abortController = new AbortController();
 
@@ -54,12 +58,20 @@ export const streamChat =
           })({ messages, onMessageStream });
         }
         return {
-          error: (await res.json()) || "Failed to fetch the chat response.",
+          error: {
+            description: "Failed to fetch chat streaming",
+            details: await res.text(),
+            context: "While streaming chat",
+          },
         };
       }
 
       if (!res.body) {
-        throw new Error("The response body is empty.");
+        return {
+          error: {
+            description: "The chat stream response body is empty",
+          },
+        };
       }
 
       let message = "";
@@ -73,7 +85,7 @@ export const streamChat =
           if (onMessageStream) onMessageStream({ id, message });
         },
         onErrorPart: (error) => {
-          console.error("Received error part from streaming", error);
+          onError?.(JSON.parse(error) as LogInSession);
         },
       });
 
@@ -83,14 +95,15 @@ export const streamChat =
     } catch (err) {
       console.error(err);
       // Ignore abort errors as they are expected.
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       if ((err as any).name === "AbortError") {
         abortController = null;
-        return { error: { message: "Request aborted" } };
+        return { error: { description: "Request aborted" } };
       }
-
-      if (err instanceof Error) return { error: { message: err.message } };
-
-      return { error: { message: "Failed to fetch the chat response." } };
+      return {
+        error: await parseUnknownClientError({
+          err,
+          context: "While streaming chat",
+        }),
+      };
     }
   };

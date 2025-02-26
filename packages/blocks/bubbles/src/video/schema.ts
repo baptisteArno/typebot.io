@@ -1,5 +1,5 @@
 import { blockBaseSchema } from "@typebot.io/blocks-base/schemas";
-import { variableStringSchema } from "@typebot.io/variables/schemas";
+import { singleVariableOrNumberSchema } from "@typebot.io/variables/schemas";
 import { z } from "@typebot.io/zod";
 import { BubbleBlockType } from "../constants";
 import { VideoBubbleContentType } from "./constants";
@@ -8,7 +8,7 @@ export const videoBubbleContentSchema = z.object({
   url: z.string().optional(),
   id: z.string().optional(),
   type: z.nativeEnum(VideoBubbleContentType).optional(),
-  height: z.number().or(variableStringSchema).optional(),
+  height: singleVariableOrNumberSchema.optional(),
   aspectRatio: z.string().optional(),
   maxWidth: z.string().optional(),
   queryParamsStr: z.string().optional(),

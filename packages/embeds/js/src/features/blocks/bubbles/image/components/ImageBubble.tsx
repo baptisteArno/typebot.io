@@ -1,3 +1,4 @@
+import { Modal } from "@/components/Modal";
 import { TypingBubble } from "@/components/TypingBubble";
 import { isMobile } from "@/utils/isMobileSignal";
 import { defaultImageBubbleContent } from "@typebot.io/blocks-bubbles/image/constants";
@@ -19,6 +20,7 @@ let typingTimeout: NodeJS.Timeout;
 export const ImageBubble = (props: Props) => {
   let ref: HTMLDivElement | undefined;
   let image: HTMLImageElement | undefined;
+  const [isExpanded, setIsExpanded] = createSignal(false);
   const [isTyping, setIsTyping] = createSignal(
     props.onTransitionEnd ? true : false,
   );
@@ -43,6 +45,14 @@ export const ImageBubble = (props: Props) => {
   onCleanup(() => {
     if (typingTimeout) clearTimeout(typingTimeout);
   });
+
+  const openModal = () => {
+    setIsExpanded(true);
+  };
+
+  const closeModal = () => {
+    setIsExpanded(false);
+  };
 
   const Image = (
     <img
@@ -101,16 +111,31 @@ export const ImageBubble = (props: Props) => {
           ) : (
             <figure
               class={clsx(
-                "z-10",
+                "z-10 cursor-pointer",
                 !isTyping() && "p-4",
                 isTyping() ? (isMobile() ? "h-8" : "h-9") : "",
               )}
+              on:click={
+                props.content?.url?.startsWith("data:image/svg")
+                  ? undefined
+                  : openModal
+              }
             >
               {Image}
             </figure>
           )}
         </div>
       </div>
+      <Modal isOpen={isExpanded()} onClose={closeModal}>
+        <img
+          src={props.content?.url}
+          alt={
+            props.content?.clickLink?.alt ??
+            defaultImageBubbleContent.clickLink.alt
+          }
+          class="max-h-[90vh] max-w-[90vw] rounded-[6px]"
+        />
+      </Modal>
     </div>
   );
 };

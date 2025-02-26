@@ -1,4 +1,5 @@
 import { useGraph } from "@/features/graph/providers/GraphProvider";
+import { useRightPanel } from "@/hooks/useRightPanel";
 import {
   Button,
   CloseButton,
@@ -12,7 +13,6 @@ import { useTranslate } from "@tolgee/react";
 import { useDrag } from "@use-gesture/react";
 import React, { useState } from "react";
 import { headerHeight } from "../../editor/constants";
-import { useEditor } from "../../editor/providers/EditorProvider";
 import { useTypebot } from "../../editor/providers/TypebotProvider";
 import { runtimes } from "../data";
 import { PreviewDrawerBody } from "./PreviewDrawerBody";
@@ -32,7 +32,6 @@ const getDefaultRuntime = (typebotId?: string) => {
 export const PreviewDrawer = () => {
   const { typebot, save, isSavingLoading } = useTypebot();
   const { t } = useTranslate();
-  const { setRightPanel } = useEditor();
   const { setPreviewingBlock } = useGraph();
   const [width, setWidth] = useState(500);
   const [isResizeHandleVisible, setIsResizeHandleVisible] = useState(false);
@@ -40,6 +39,7 @@ export const PreviewDrawer = () => {
   const [selectedRuntime, setSelectedRuntime] = useState<
     (typeof runtimes)[number]
   >(getDefaultRuntime(typebot?.id));
+  const [, setRightPanel] = useRightPanel();
 
   const handleRestartClick = async () => {
     await save();
@@ -48,7 +48,7 @@ export const PreviewDrawer = () => {
 
   const handleCloseClick = () => {
     setPreviewingBlock(undefined);
-    setRightPanel(undefined);
+    setRightPanel(null);
   };
 
   const useResizeHandleDrag = useDrag(

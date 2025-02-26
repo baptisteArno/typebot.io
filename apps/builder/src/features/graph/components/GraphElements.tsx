@@ -1,15 +1,15 @@
+import { EventNode } from "@/features/events/components/EventNode";
 import { isInputBlock } from "@typebot.io/blocks-core/helpers";
+import type { TEvent } from "@typebot.io/events/schemas";
 import type { GroupV6 } from "@typebot.io/groups/schemas";
 import type {
   EdgeWithTotalUsers,
   TotalAnswers,
 } from "@typebot.io/schemas/features/analytics";
 import type { Edge } from "@typebot.io/typebot/schemas/edge";
-import type { TEvent } from "@typebot.io/typebot/schemas/types";
 import React, { memo } from "react";
 import { EndpointsProvider } from "../providers/EndpointsProvider";
 import { Edges } from "./edges/Edges";
-import { EventNode } from "./nodes/event";
 import { GroupNode } from "./nodes/group/GroupNode";
 
 type Props = {

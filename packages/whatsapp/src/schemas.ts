@@ -91,6 +91,27 @@ const sharedIncomingMessageFieldsSchema = z.object({
   referral: incomingMessageReferral.optional(),
 });
 
+const incomingButtonReplySchema = z.object({
+  type: z.literal("button_reply"),
+  button_reply: z.object({
+    id: z.string(),
+    title: z.string(),
+  }),
+});
+
+const incomingListReplySchema = z.object({
+  type: z.literal("list_reply"),
+  list_reply: z.object({
+    id: z.string(),
+    title: z.string(),
+  }),
+});
+
+const incomingInteractiveReplySchema = z.discriminatedUnion("type", [
+  incomingButtonReplySchema,
+  incomingListReplySchema,
+]);
+
 export const incomingMessageSchema = z.discriminatedUnion("type", [
   sharedIncomingMessageFieldsSchema.extend({
     type: z.literal("text"),
@@ -107,12 +128,7 @@ export const incomingMessageSchema = z.discriminatedUnion("type", [
   }),
   sharedIncomingMessageFieldsSchema.extend({
     type: z.literal("interactive"),
-    interactive: z.object({
-      button_reply: z.object({
-        id: z.string(),
-        title: z.string(),
-      }),
-    }),
+    interactive: incomingInteractiveReplySchema,
   }),
   sharedIncomingMessageFieldsSchema.extend({
     type: z.literal("image"),
@@ -143,6 +159,27 @@ export const incomingMessageSchema = z.discriminatedUnion("type", [
       data: z.string().optional(),
     }),
   }),
+  sharedIncomingMessageFieldsSchema.extend({
+    type: z.literal("reaction"),
+    reaction: z.object({
+      emoji: z.string().optional(),
+    }),
+  }),
+  sharedIncomingMessageFieldsSchema.extend({
+    type: z.literal("sticker"),
+    sticker: z.object({
+      id: z.string(),
+    }),
+  }),
+  sharedIncomingMessageFieldsSchema.extend({
+    type: z.literal("unsupported"),
+  }),
+  sharedIncomingMessageFieldsSchema.extend({
+    type: z.literal("system"),
+    system: z.object({
+      body: z.string(),
+    }),
+  }),
 ]);
 
 const incomingErrors = z.object({
@@ -162,9 +199,11 @@ export const whatsAppWebhookRequestBodySchema = z.object({
       changes: z.array(
         z.object({
           value: z.object({
-            metadata: z.object({
-              phone_number_id: z.string(),
-            }),
+            metadata: z
+              .object({
+                phone_number_id: z.string(),
+              })
+              .optional(),
             contacts: z
               .array(
                 z.object({

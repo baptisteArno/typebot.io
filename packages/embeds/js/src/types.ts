@@ -8,18 +8,14 @@ export type BotContext = {
   resultId?: string;
   isPreview: boolean;
   apiHost?: string;
+  wsHost?: string;
   sessionId: string;
   storage: "local" | "session" | undefined;
 };
 
-export type OutgoingLog = {
-  status: string;
-  description: string;
-  details?: unknown;
-};
-
 export type ClientSideActionContext = {
   apiHost?: string;
+  wsHost?: string;
   sessionId: string;
   resultId?: string;
 };

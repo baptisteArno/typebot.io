@@ -1,5 +1,5 @@
 import { env } from "@typebot.io/env";
-import { stringifyError } from "@typebot.io/lib/stringifyError";
+import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
 import { isDefined } from "@typebot.io/lib/utils";
 import { Reference } from "isolated-vm";
 import { parseTransferrableValue } from "./codeRunners";
@@ -99,7 +99,10 @@ export const executeFunction = async ({
       console.error(e);
     }
 
-    const error = stringifyError(e);
+    const error = await parseUnknownError({
+      err: e,
+      context: "While executing function",
+    });
 
     return {
       error,

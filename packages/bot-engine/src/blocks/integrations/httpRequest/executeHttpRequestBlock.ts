@@ -21,6 +21,7 @@ import type {
 import { env } from "@typebot.io/env";
 import { JSONParse } from "@typebot.io/lib/JSONParse";
 import { isDefined, isEmpty, isNotDefined, omit } from "@typebot.io/lib/utils";
+import type { LogInSession } from "@typebot.io/logs/schemas";
 import prisma from "@typebot.io/prisma";
 import { parseAnswers } from "@typebot.io/results/parseAnswers";
 import type { AnswerInSessionState } from "@typebot.io/results/schemas/answers";
@@ -28,7 +29,6 @@ import { parseVariables } from "@typebot.io/variables/parseVariables";
 import type { Variable } from "@typebot.io/variables/schemas";
 import ky, { HTTPError, TimeoutError, type Options } from "ky";
 import { stringify } from "qs";
-import type { ChatLog } from "../../../schemas/api";
 import type { ExecuteIntegrationResponse } from "../../../types";
 import { saveDataInResponseVariableMapping } from "./saveDataInResponseVariableMapping";
 
@@ -55,7 +55,7 @@ export const executeHttpRequestBlock = async (
   block: HttpRequestBlock | ZapierBlock | MakeComBlock | PabblyConnectBlock,
   params: Params = {},
 ): Promise<ExecuteIntegrationResponse> => {
-  const logs: ChatLog[] = [];
+  const logs: LogInSession[] = [];
   const webhook =
     block.options?.webhook ??
     ("webhookId" in block
@@ -89,8 +89,8 @@ export const executeHttpRequestBlock = async (
       ],
     };
   const {
-    response: webhookResponse,
-    logs: executeWebhookLogs,
+    response: httpRequestResponse,
+    logs: httpRequestLogs,
     startTimeShouldBeUpdated,
   } = await executeHttpRequest(parsedHttpRequest, {
     ...params,
@@ -104,8 +104,8 @@ export const executeHttpRequestBlock = async (
       blockId: block.id,
       responseVariableMapping: block.options?.responseVariableMapping,
       outgoingEdgeId: block.outgoingEdgeId,
-      logs: executeWebhookLogs,
-      response: webhookResponse,
+      logs: httpRequestLogs,
+      response: httpRequestResponse,
     }),
     startTimeShouldBeUpdated,
   };
@@ -183,10 +183,10 @@ export const executeHttpRequest = async (
   params: Params = {},
 ): Promise<{
   response: HttpResponse;
-  logs?: ChatLog[];
+  logs?: LogInSession[];
   startTimeShouldBeUpdated?: boolean;
 }> => {
-  const logs: ChatLog[] = [];
+  const logs: LogInSession[] = [];
 
   const { headers, url, method, basicAuth, isJson } = webhook;
   const contentType = headers ? headers["Content-Type"] : undefined;
@@ -225,48 +225,38 @@ export const executeHttpRequest = async (
 
   try {
     const response = await ky(request.url, omit(request, "url"));
-    const body = response.headers.get("content-type")?.includes("json")
-      ? await response.json()
-      : await response.text();
+    const body = await response.text();
     logs.push({
       status: "success",
       description: webhookSuccessDescription,
-      details: {
+      details: JSON.stringify({
         statusCode: response.status,
-        response: typeof body === "string" ? safeJsonParse(body).data : body,
+        response: body,
         request,
-      },
+      }),
     });
     return {
       response: {
         statusCode: response.status,
-        data: typeof body === "string" ? safeJsonParse(body).data : body,
+        data: safeJsonParse(body).data,
       },
       logs,
       startTimeShouldBeUpdated: true,
     };
   } catch (error) {
     if (error instanceof HTTPError) {
-      const responseBody = error.response.headers
-        .get("content-type")
-        ?.includes("json")
-        ? await error.response.json()
-        : await error.response.text();
       const response = {
         statusCode: error.response.status,
-        data:
-          typeof responseBody === "string"
-            ? safeJsonParse(responseBody).data
-            : responseBody,
+        data: safeJsonParse(await error.response.text()).data,
       };
       logs.push({
         status: "error",
         description: webhookErrorDescription,
-        details: {
+        details: JSON.stringify({
           statusCode: error.response.status,
           request,
           response,
-        },
+        }),
       });
       return { response, logs, startTimeShouldBeUpdated: true };
     }
@@ -284,10 +274,10 @@ export const executeHttpRequest = async (
         description: `Webhook request timed out. (${
           (request.timeout ? request.timeout : 0) / 1000
         }s)`,
-        details: {
+        details: JSON.stringify({
           response,
           request,
-        },
+        }),
       });
       return { response, logs, startTimeShouldBeUpdated: true };
     }
@@ -299,10 +289,10 @@ export const executeHttpRequest = async (
     logs.push({
       status: "error",
       description: `Webhook failed to execute.`,
-      details: {
+      details: JSON.stringify({
         response,
         request,
-      },
+      }),
     });
     return { response, logs, startTimeShouldBeUpdated: true };
   }
@@ -347,7 +337,6 @@ export const convertKeyValueTableToObject = (
   }, {});
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const safeJsonParse = (json: unknown): { data: any; isJson: boolean } => {
   try {
     return { data: JSONParse(json as string), isJson: true };

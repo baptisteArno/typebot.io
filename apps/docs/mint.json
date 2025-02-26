@@ -147,6 +147,11 @@
             }
           ]
         },
+        {
+          "group": "Events",
+          "icon": "command",
+          "pages": ["editor/events/command"]
+        },
         "editor/variables",
         "editor/publish",
         "editor/share",
@@ -170,19 +175,15 @@
           "icon": "globe",
           "pages": [
             "deploy/web/overview",
-            {
-              "group": "Libraries",
-              "pages": [
-                "deploy/web/libraries/html-javascript",
-                "deploy/web/libraries/react",
-                "deploy/web/libraries/next-js"
-              ]
-            },
+            "deploy/web/custom-domain",
+            "deploy/web/html-javascript",
+            "deploy/web/react",
+            "deploy/web/next-js",
             "deploy/web/wordpress",
             "deploy/web/iframe",
             "deploy/web/script",
             "deploy/web/webflow",
-            "deploy/web/custom-domain"
+            "deploy/web/blink"
           ]
         },
         {
@@ -364,6 +365,18 @@
     {
       "source": "/editor/blocks/integrations/webhook",
       "destination": "/editor/blocks/integrations/http-request"
+    },
+    {
+      "source": "/deploy/web/libraries/html-javascript",
+      "destination": "/deploy/web/html-javascript"
+    },
+    {
+      "source": "/deploy/web/libraries/react",
+      "destination": "/deploy/web/react"
+    },
+    {
+      "source": "/deploy/web/libraries/next-js",
+      "destination": "/deploy/web/next-js"
     }
   ]
 }

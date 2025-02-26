@@ -1,4 +1,4 @@
-import { useToast } from "@/hooks/useToast";
+import { toast } from "@/lib/toast";
 import { trpc } from "@/lib/trpc";
 import {
   Alert,
@@ -45,14 +45,13 @@ export const CreateCustomDomainModal = ({
     subdomain: splitHostname(domain)?.subdomain ?? "",
   });
 
-  const { showToast } = useToast();
   const { mutate } = trpc.customDomains.createCustomDomain.useMutation({
     onMutate: () => {
       setIsLoading(true);
     },
     onError: (error) => {
-      showToast({
-        title: "Error while creating custom domain",
+      toast({
+        context: "Error while creating custom domain",
         description: error.message,
       });
     },

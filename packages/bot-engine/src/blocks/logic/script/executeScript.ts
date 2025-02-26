@@ -41,7 +41,7 @@ export const executeScript = async (
 
     return {
       outgoingEdgeId: block.outgoingEdgeId,
-      logs: error ? [{ status: "error", description: error }] : [],
+      logs: error ? [error] : [],
       newSessionState,
       newSetVariableHistory: updateVarResults?.newSetVariableHistory,
     };

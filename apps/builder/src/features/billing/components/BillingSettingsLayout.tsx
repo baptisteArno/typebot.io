@@ -7,7 +7,7 @@ import { InvoicesList } from "./InvoicesList";
 import { UsageProgressBars } from "./UsageProgressBars";
 
 export const BillingSettingsLayout = () => {
-  const { workspace, currentRole } = useWorkspace();
+  const { workspace, currentUserMode } = useWorkspace();
 
   if (!workspace) return null;
   return (
@@ -15,7 +15,10 @@ export const BillingSettingsLayout = () => {
       <UsageProgressBars workspace={workspace} />
       <Stack spacing="4">
         <CurrentSubscriptionSummary workspace={workspace} />
-        <ChangePlanForm workspace={workspace} currentRole={currentRole} />
+        <ChangePlanForm
+          workspace={workspace}
+          currentUserMode={currentUserMode}
+        />
       </Stack>
 
       {workspace.stripeId && <InvoicesList workspaceId={workspace.id} />}

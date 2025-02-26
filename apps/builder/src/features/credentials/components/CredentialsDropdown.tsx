@@ -1,5 +1,6 @@
 import { ChevronLeftIcon, PlusIcon, TrashIcon } from "@/components/icons";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
+import { toast } from "@/lib/toast";
 import { trpc } from "@/lib/trpc";
 import {
   Button,
@@ -16,7 +17,6 @@ import { useTranslate } from "@tolgee/react";
 import type { Credentials } from "@typebot.io/credentials/schemas";
 import type React from "react";
 import { useCallback, useState } from "react";
-import { useToast } from "../../../hooks/useToast";
 
 type Props = Omit<ButtonProps, "type"> & {
   type: Credentials["type"];
@@ -47,8 +47,7 @@ export const CredentialsDropdown = ({
   ...props
 }: Props) => {
   const { t } = useTranslate();
-  const { showToast } = useToast();
-  const { currentRole } = useWorkspace();
+  const { currentUserMode } = useWorkspace();
   const { data, refetch } = trpc.credentials.listCredentials.useQuery(
     scope.type === "workspace"
       ? {
@@ -67,7 +66,7 @@ export const CredentialsDropdown = ({
       setIsDeleting(credentialsId);
     },
     onError: (error) => {
-      showToast({
+      toast({
         description: error.message,
       });
     },
@@ -114,7 +113,7 @@ export const CredentialsDropdown = ({
         textAlign="left"
         leftIcon={<PlusIcon />}
         onClick={onCreateNewClick}
-        isDisabled={currentRole === "GUEST"}
+        isDisabled={currentUserMode === "guest"}
         {...props}
       >
         {t("add")} {credentialsName}
@@ -175,7 +174,7 @@ export const CredentialsDropdown = ({
               />
             </MenuItem>
           ))}
-          {currentRole === "GUEST" ? null : (
+          {currentUserMode === "guest" ? null : (
             <MenuItem
               maxW="500px"
               overflow="hidden"

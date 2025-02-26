@@ -1,9 +1,6 @@
 import type { Group } from "@typebot.io/groups/schemas";
-import type { Prisma } from "@typebot.io/prisma/types";
-import type {
-  Log,
-  ResultValuesInput,
-} from "@typebot.io/results/schemas/results";
+import type { LogInSession } from "@typebot.io/logs/schemas";
+import type { ResultValuesInput } from "@typebot.io/results/schemas/results";
 import type { Edge } from "@typebot.io/typebot/schemas/edge";
 import type { PublicTypebot } from "@typebot.io/typebot/schemas/publicTypebot";
 import type { Typebot } from "@typebot.io/typebot/schemas/typebot";
@@ -37,7 +34,7 @@ export type LogicState = {
   updateVariableValue: (variableId: string, value: unknown) => void;
   updateVariables: (variables: VariableWithUnknowValue[]) => void;
   injectLinkedTypebot: (typebot: Typebot | PublicTypebot) => LinkedTypebot;
-  onNewLog: (log: Omit<Log, "id" | "createdAt" | "resultId">) => void;
+  onNewLog: (log: Omit<LogInSession, "id" | "createdAt" | "resultId">) => void;
   createEdge: (edge: Edge) => void;
 };
 
@@ -54,5 +51,5 @@ export type IntegrationState = {
   parentTypebotIds: string[];
   updateVariables: (variables: VariableWithUnknowValue[]) => void;
   updateVariableValue: (variableId: string, value: unknown) => void;
-  onNewLog: (log: Omit<Log, "id" | "createdAt" | "resultId">) => void;
+  onNewLog: (log: Omit<LogInSession, "id" | "createdAt" | "resultId">) => void;
 };

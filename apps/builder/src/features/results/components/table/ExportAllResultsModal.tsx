@@ -2,8 +2,8 @@ import { AlertInfo } from "@/components/AlertInfo";
 import { DownloadIcon } from "@/components/icons";
 import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
-import { useToast } from "@/hooks/useToast";
-import { trpc } from "@/lib/trpc";
+import { toast } from "@/lib/toast";
+import { trpc, trpcVanilla } from "@/lib/trpc";
 import {
   Button,
   HStack,
@@ -38,7 +38,6 @@ export const ExportAllResultsModal = ({ isOpen, onClose }: Props) => {
   const { typebot, publishedTypebot } = useTypebot();
   const workspaceId = typebot?.workspaceId;
   const typebotId = typebot?.id;
-  const { showToast } = useToast();
   const { resultHeader: existingResultHeader, totalResults } = useResults();
   const trpcContext = trpc.useContext();
   const [isExportLoading, setIsExportLoading] = useState(false);
@@ -58,6 +57,12 @@ export const ExportAllResultsModal = ({ isOpen, onClose }: Props) => {
 
   const getAllResults = async () => {
     if (!workspaceId || !typebotId) return [];
+    const {
+      stats: { totalStarts },
+    } = await trpcVanilla.analytics.getStats.query({
+      typebotId,
+      timeFilter: "allTime",
+    });
     const allResults = [];
     let cursor: string | undefined;
     setExportProgressValue(0);
@@ -71,10 +76,10 @@ export const ExportAllResultsModal = ({ isOpen, onClose }: Props) => {
             timeFilter: "allTime",
           });
         allResults.push(...results);
-        setExportProgressValue((allResults.length / totalResults) * 100);
+        setExportProgressValue((allResults.length / totalStarts) * 100);
         cursor = nextCursor ?? undefined;
       } catch (error) {
-        showToast({ description: (error as TRPCError).message });
+        toast({ description: (error as TRPCError).message });
         return [];
       }
     } while (cursor);
@@ -167,7 +172,11 @@ export const ExportAllResultsModal = ({ isOpen, onClose }: Props) => {
           {isExportLoading && (
             <Stack>
               <Text>Fetching all results...</Text>
-              <Progress value={exportProgressValue} borderRadius="md" />
+              <Progress
+                value={exportProgressValue}
+                borderRadius="md"
+                colorScheme="orange"
+              />
             </Stack>
           )}
         </ModalBody>

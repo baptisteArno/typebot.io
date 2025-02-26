@@ -103,6 +103,9 @@ model Workspace {
   chatsHardLimit                Int?
   // TODO: remove
   settings                      Json?
+  lastActivityAt                DateTime?
+  inactiveFirstEmailSentAt      DateTime?
+  inactiveSecondEmailSentAt     DateTime?
 }
 
 model MemberInWorkspace {
@@ -296,6 +299,7 @@ model Log {
   createdAt   DateTime @default(now())
   resultId    String
   status      String
+  context     String?
   description String
   details     String?
   result      Result   @relation(fields: [resultId], references: [id], onDelete: Cascade)

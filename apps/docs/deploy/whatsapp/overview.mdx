@@ -14,6 +14,24 @@ You can preview and test your bot by clicking on the Preview button in the edito
   />
 </Frame>
 
+### Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="I receive the preview initial message but then the bot doesn't respond">
+    This can be due to a mismatch between the WhatsApp number displayed in your WhatsApp application profile settings and the number you have typed in Typebot.
+
+    For example, some Brazilians have 2 numbers, 1 with 8 digits, the other with 9 digits. In Typebot, you need to type the number that is displayed in your WhatsApp application profile settings to make sure the bot works properly.
+
+  </Accordion>
+  <Accordion title="I don't receive the preview initial message">
+    If you don't receive the preview initial message, it means that the phone number you are using is not valid or not accepted by WhatsApp.
+    - Make sure you can actually send a message to Typebot's business phone number (+33 7 56 95 36 64).
+    - Make sure that you have accepted WhatsApp's latest Terms of Service.
+    - Make sure you have the latest version of WhatsApp installed on your phone.
+    - Make sure to type the number that is displayed in your WhatsApp application profile settings to make sure you receive the preview initial message.
+  </Accordion>
+</AccordionGroup>
+
 ## Limitations
 
 WhatsApp environment have some limitations that you need to keep in mind when building the bot:
@@ -97,11 +115,5 @@ You can ask for the user's location with a basic [Text input block](../../editor
   </Accordion>
   <Accordion title="Does the integration with WhatsApp requires any paid API?">
     You integrate your typebots with your own WhatsApp Business Platform which is the official service from Meta. At the moment, the first 1,000 Service conversations each month are free. For more information, refer to <a href="https://developers.facebook.com/docs/whatsapp/cloud-api/get-started#pricing---payment-methods" target="_blank">their documentation</a>
-  </Accordion>
-  <Accordion title="I receive the preview initial message but then the bot doesn't respond">
-    This can be due to a mismatch between the WhatsApp number displayed in your WhatsApp application profile settings and the number you have typed in Typebot.
-
-    For example, some Brazilians have 2 numbers, 1 with 8 digits, the other with 9 digits. In Typebot, you need to type the number that is displayed in your WhatsApp application profile settings to make sure the bot works properly.
-
   </Accordion>
 </AccordionGroup>

@@ -208,7 +208,7 @@ const VariableItem = ({
             <PopoverContent>
               <PopoverBody>
                 <SwitchWithLabel
-                  label="Save in results?"
+                  label="Save in results"
                   moreInfoContent="Check this option if you want to save the variable value in the typebot Results table."
                   initialValue={!variable.isSessionVariable}
                   onCheckChange={() =>

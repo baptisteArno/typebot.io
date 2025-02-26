@@ -1,6 +1,6 @@
 import { TextInput } from "@/components/inputs/TextInput";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { useToast } from "@/hooks/useToast";
+import { toast } from "@/lib/toast";
 import { trpc } from "@/lib/trpc";
 import {
   Button,
@@ -31,7 +31,6 @@ export const UpdateForgedCredentialsModalContent = ({
   scope,
 }: Props) => {
   const { workspace } = useWorkspace();
-  const { showToast } = useToast();
   const [name, setName] = useState("");
   const [data, setData] = useState<any>();
 
@@ -64,9 +63,8 @@ export const UpdateForgedCredentialsModalContent = ({
     onMutate: () => setIsUpdating(true),
     onSettled: () => setIsUpdating(false),
     onError: (err) => {
-      showToast({
+      toast({
         description: err.message,
-        status: "error",
       });
     },
     onSuccess: () => {
@@ -84,7 +82,7 @@ export const UpdateForgedCredentialsModalContent = ({
             credentialsId,
             credentials: {
               type: blockDef.id,
-              name,
+              name: name ?? "My account",
               data,
             } as Credentials,
             scope: "workspace",
@@ -95,7 +93,7 @@ export const UpdateForgedCredentialsModalContent = ({
             credentialsId,
             credentials: {
               type: blockDef.id,
-              name,
+              name: name ?? "My account",
               data,
             } as Credentials,
           },
@@ -112,7 +110,8 @@ export const UpdateForgedCredentialsModalContent = ({
         <ModalBody as={Stack} spacing="6">
           <TextInput
             isRequired
-            label="Name"
+            label="Label"
+            moreInfoTooltip={`Choose a name to identify this ${blockDef.auth.name}`}
             defaultValue={name}
             onChange={setName}
             placeholder="My account"

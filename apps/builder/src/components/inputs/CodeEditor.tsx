@@ -41,6 +41,7 @@ type Props = {
   helperText?: ReactNode;
   isRequired?: boolean;
   onChange?: (value: string) => void;
+  withLineNumbers?: boolean;
 };
 export const CodeEditor = ({
   label,
@@ -54,6 +55,7 @@ export const CodeEditor = ({
   maxHeight = "70vh",
   minWidth,
   withVariableButton = true,
+  withLineNumbers = false,
   isReadOnly = false,
   debounceTimeout = 1000,
   ...props
@@ -132,6 +134,9 @@ export const CodeEditor = ({
         onMouseLeave={onClose}
         maxWidth={props.maxWidth}
         sx={{
+          "& .cm-gutters": {
+            display: withLineNumbers ? undefined : "none",
+          },
           "& .cm-editor": {
             maxH: maxHeight,
             outline: "0px solid transparent !important",
@@ -183,7 +188,6 @@ export const CodeEditor = ({
               right={0.5}
               top={0.5}
               size="xs"
-              colorScheme="orange"
             />
           </Fade>
         )}

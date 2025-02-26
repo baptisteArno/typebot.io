@@ -116,5 +116,7 @@ const VideoContent = ({
         />
       );
     }
+    default:
+      return null;
   }
 };

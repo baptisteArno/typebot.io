@@ -20,6 +20,7 @@ import { Avatar } from "../avatars/Avatar";
 type Props = {
   answer?: InputSubmitContent;
   theme: Theme;
+  avatarSrc: string | undefined;
 };
 
 export const GuestBubble = (props: Props) => {
@@ -54,7 +55,7 @@ export const GuestBubble = (props: Props) => {
         }
       >
         <Avatar
-          src={props.theme.chat?.guestAvatar?.url}
+          src={props.avatarSrc}
           isChatContainerLight={isChatContainerLight({
             chatContainer: props.theme.chat?.container,
             generalBackground: props.theme.general?.background,
@@ -137,7 +138,7 @@ const TextGuestBubble = (props: { answer: TextInputSubmitContent }) => {
         <img
           src={clickedImageSrc()}
           alt="Attachment"
-          style={{ "border-radius": "6px" }}
+          class="max-h-[90vh] max-w-[90vw] rounded-[6px]"
         />
       </Modal>
     </div>

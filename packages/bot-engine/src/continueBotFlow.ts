@@ -24,7 +24,7 @@ import type { ForgedBlock } from "@typebot.io/forge-repository/schemas";
 import { getBlockById } from "@typebot.io/groups/helpers/getBlockById";
 import type { Group } from "@typebot.io/groups/schemas";
 import { isURL } from "@typebot.io/lib/isURL";
-import { stringifyError } from "@typebot.io/lib/stringifyError";
+import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
 import { byId, isDefined } from "@typebot.io/lib/utils";
 import type { Prisma } from "@typebot.io/prisma/types";
 import type { AnswerInSessionState } from "@typebot.io/results/schemas/answers";
@@ -46,12 +46,18 @@ import { validateRatingReply } from "./blocks/inputs/rating/validateRatingReply"
 import { parseTime } from "./blocks/inputs/time/parseTime";
 import { saveDataInResponseVariableMapping } from "./blocks/integrations/httpRequest/saveDataInResponseVariableMapping";
 import { resumeChatCompletion } from "./blocks/integrations/legacy/openai/resumeChatCompletion";
+import { executeCommandEvent } from "./events/executeCommandEvent";
 import { executeGroup, parseInput } from "./executeGroup";
 import { getNextGroup } from "./getNextGroup";
 import { resetGlobals } from "./globals";
+import { isInputMessage } from "./helpers/isInputMessage";
 import { saveAnswer } from "./queries/saveAnswer";
 import { resetSessionState } from "./resetSessionState";
-import type { ContinueChatResponse, Message } from "./schemas/api";
+import type {
+  ContinueChatResponse,
+  InputMessage,
+  Message,
+} from "./schemas/api";
 import { startBotFlow } from "./startBotFlow";
 import type { ParsedReply } from "./types";
 import { updateVariablesInSession } from "./updateVariablesInSession";
@@ -82,9 +88,24 @@ export const continueBotFlow = async (
       textBubbleContentFormat,
     });
 
+  let newSessionState = state;
+
+  if (reply?.type === "command") {
+    newSessionState = await executeCommandEvent({
+      state,
+      command: reply.command,
+    });
+  }
+
+  if (!newSessionState.currentBlockId)
+    throw new TRPCError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Current block id is not set",
+    });
+
   const { block, group, blockIndex } = getBlockById(
-    state.currentBlockId,
-    state.typebotsQueue[0].typebot.groups,
+    newSessionState.currentBlockId,
+    newSessionState.typebotsQueue[0].typebot.groups,
   );
 
   if (!block)
@@ -95,16 +116,16 @@ export const continueBotFlow = async (
 
   const nonInputProcessResult = await processNonInputBlock({
     block,
-    state,
+    state: newSessionState,
     reply,
   });
 
-  let newSessionState = nonInputProcessResult.newSessionState;
+  newSessionState = nonInputProcessResult.newSessionState;
   const { setVariableHistory, firstBubbleWasStreamed } = nonInputProcessResult;
 
   let formattedReply: string | undefined;
 
-  if (isInputBlock(block)) {
+  if (isInputBlock(block) && isInputMessage(reply)) {
     const parsedReplyResult = await parseReply(newSessionState)(reply, block);
 
     if (parsedReplyResult.status === "fail")
@@ -123,7 +144,7 @@ export const continueBotFlow = async (
         ? parsedReplyResult.reply
         : undefined;
     newSessionState = await processAndSaveAnswer(
-      state,
+      newSessionState,
       block,
     )(
       isDefined(formattedReply)
@@ -165,7 +186,11 @@ export const continueBotFlow = async (
     };
   }
 
-  if (!nextEdgeId && state.typebotsQueue.length === 1)
+  if (
+    !nextEdgeId &&
+    newSessionState.typebotsQueue.length === 1 &&
+    (newSessionState.typebotsQueue[0].queuedEdgeIds ?? []).length === 0
+  )
     return {
       messages: [],
       newSessionState,
@@ -266,7 +291,7 @@ const processNonInputBlock = async ({
       throw new TRPCError({
         code: "BAD_REQUEST",
         message: "Provided response is not valid JSON",
-        cause: stringifyError(err),
+        cause: (await parseUnknownError({ err })).description,
       });
     }
     const result = saveDataInResponseVariableMapping({
@@ -338,7 +363,7 @@ const processNonInputBlock = async ({
 
 const processAndSaveAnswer =
   (state: SessionState, block: InputBlock) =>
-  async (reply: Message | undefined): Promise<SessionState> => {
+  async (reply: InputMessage | undefined): Promise<SessionState> => {
     if (!reply) return state;
     return saveAnswerInDb(state, block)(reply);
   };
@@ -530,7 +555,7 @@ const parseDefaultRetryMessage = ({
 
 const saveAnswerInDb =
   (state: SessionState, block: InputBlock) =>
-  async (reply: Message): Promise<SessionState> => {
+  async (reply: InputMessage): Promise<SessionState> => {
     let newSessionState = state;
     const replyContent = reply.type === "audio" ? reply.url : reply.text;
     const attachedFileUrls =
@@ -656,7 +681,7 @@ const getOutgoingEdgeId =
 const parseReply =
   (state: SessionState) =>
   async (
-    reply: Message | undefined,
+    reply: InputMessage | undefined,
     block: InputBlock,
   ): Promise<ParsedReply> => {
     switch (block.type) {

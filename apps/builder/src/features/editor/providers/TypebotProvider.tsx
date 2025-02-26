@@ -1,10 +1,10 @@
-import { useGroupsStore } from "@/features/graph/hooks/useGroupsStore";
+import { useSelectionStore } from "@/features/graph/hooks/useSelectionStore";
 import { areTypebotsEqual } from "@/features/publish/helpers/areTypebotsEqual";
 import { convertPublicTypebotToTypebot } from "@/features/publish/helpers/convertPublicTypebotToTypebot";
 import { isPublished as isPublishedHelper } from "@/features/publish/helpers/isPublished";
 import { preventUserFromRefreshing } from "@/helpers/preventUserFromRefreshing";
 import { useAutoSave } from "@/hooks/useAutoSave";
-import { useToast } from "@/hooks/useToast";
+import { toast } from "@/lib/toast";
 import { trpc } from "@/lib/trpc";
 import { isDefined, omit } from "@typebot.io/lib/utils";
 import type {
@@ -97,10 +97,9 @@ export const TypebotProvider = ({
   children: ReactNode;
   typebotId?: string;
 }) => {
-  const { showToast } = useToast();
   const [is404, setIs404] = useState(false);
-  const setGroupsCoordinates = useGroupsStore(
-    (state) => state.setGroupsCoordinates,
+  const setElementsCoordinates = useSelectionStore(
+    (state) => state.setElementsCoordinates,
   );
 
   const {
@@ -118,13 +117,10 @@ export const TypebotProvider = ({
           return;
         }
         setIs404(false);
-        showToast({
-          title: "Could not fetch typebot",
+        toast({
+          context: "Could not fetch typebot",
           description: error.message,
-          details: {
-            content: JSON.stringify(error.data?.zodError?.fieldErrors, null, 2),
-            lang: "json",
-          },
+          details: error.data?.zodError,
         });
       },
       onSuccess: () => {
@@ -142,17 +138,10 @@ export const TypebotProvider = ({
           (typebotData?.currentUserMode === "read" ||
             typebotData?.currentUserMode === "write"),
         onError: (error) => {
-          showToast({
-            title: "Could not fetch published typebot",
+          toast({
+            context: "Could not fetch published typebot",
             description: error.message,
-            details: {
-              content: JSON.stringify(
-                error.data?.zodError?.fieldErrors,
-                null,
-                2,
-              ),
-              lang: "json",
-            },
+            details: error.data?.zodError,
           });
         },
       },
@@ -160,11 +149,13 @@ export const TypebotProvider = ({
 
   const { mutateAsync: updateTypebot, isLoading: isSaving } =
     trpc.typebot.updateTypebot.useMutation({
-      onError: (error) =>
-        showToast({
-          title: "Error while updating typebot",
+      onError: (error) => {
+        if (error.data?.code === "CONFLICT") return;
+        toast({
+          context: "Error while updating typebot",
           description: error.message,
-        }),
+        });
+      },
       onSuccess: () => {
         if (!typebotId) return;
         refetchTypebot();
@@ -192,17 +183,23 @@ export const TypebotProvider = ({
   ] = useUndo<TypebotV6>(undefined, {
     isReadOnly,
     onUndo: (t) => {
-      setGroupsCoordinates(t.groups);
+      setElementsCoordinates({
+        groups: t.groups,
+        events: t.events,
+      });
     },
     onRedo: (t) => {
-      setGroupsCoordinates(t.groups);
+      setElementsCoordinates({
+        groups: t.groups,
+        events: t.events,
+      });
     },
   });
 
   useEffect(() => {
     if (!typebot && isDefined(localTypebot)) {
       setLocalTypebot(undefined);
-      setGroupsCoordinates(undefined);
+      setElementsCoordinates(undefined);
     }
     if (isFetchingTypebot || !typebot) return;
     if (
@@ -211,16 +208,18 @@ export const TypebotProvider = ({
         new Date(localTypebot.updatedAt).getTime()
     ) {
       setLocalTypebot({ ...typebot });
-      setGroupsCoordinates(typebot.groups);
+      setElementsCoordinates({
+        groups: typebot.groups,
+        events: typebot.events,
+      });
       flush();
     }
   }, [
     flush,
     isFetchingTypebot,
     localTypebot,
-    setGroupsCoordinates,
+    setElementsCoordinates,
     setLocalTypebot,
-    showToast,
     typebot,
   ]);
 

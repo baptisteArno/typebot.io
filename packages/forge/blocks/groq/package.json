@@ -11,7 +11,8 @@
     "@typebot.io/forge": "workspace:*",
     "@typebot.io/ai": "workspace:*",
     "@typebot.io/tsconfig": "workspace:*",
-    "@ai-sdk/groq": "1.1.7"
+    "@typebot.io/lib": "workspace:*",
+    "@ai-sdk/groq": "1.1.11"
   },
   "dependencies": {
     "ky": "1.2.4"

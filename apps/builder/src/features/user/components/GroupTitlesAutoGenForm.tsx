@@ -26,7 +26,7 @@ export const GroupTitlesAutoGenForm = ({
   onChange,
 }: Props) => {
   const { blockDef, actionDef } = useForgedBlock({
-    blockType: provider as BlockV6["type"],
+    nodeType: provider as BlockV6["type"],
     feature: "aiGenerate",
   });
   const [credsCreatingType, setCredsCreatingType] = useState<typeof provider>();
@@ -51,6 +51,7 @@ export const GroupTitlesAutoGenForm = ({
           <DropdownList
             direction="row"
             label="Provider:"
+            placeholder="Select"
             items={Object.values(forgedBlocks)
               .filter((block) => block.actions.some((a) => a.aiGenerate))
               .map((block) => ({

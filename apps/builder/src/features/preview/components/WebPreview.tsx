@@ -1,36 +1,24 @@
-import { ThunderIcon } from "@/components/icons";
 import { useEditor } from "@/features/editor/providers/EditorProvider";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { useGraph } from "@/features/graph/providers/GraphProvider";
 import { useUser } from "@/features/user/hooks/useUser";
-import { useToast } from "@/hooks/useToast";
+import { toast } from "@/lib/toast";
 import type { ContinueChatResponse } from "@typebot.io/bot-engine/schemas/api";
 import { Standard } from "@typebot.io/nextjs";
 
 export const WebPreview = () => {
   const { user } = useUser();
   const { typebot } = useTypebot();
-  const { startPreviewAtGroup, startPreviewAtEvent } = useEditor();
+  const { startPreviewFrom } = useEditor();
   const { setPreviewingBlock } = useGraph();
-
-  const { showToast } = useToast();
 
   const handleNewLogs = (logs: ContinueChatResponse["logs"]) => {
     logs?.forEach((log) => {
-      showToast({
-        icon: <ThunderIcon />,
+      toast({
+        context: log.context,
         status: log.status as "success" | "error" | "info",
-        title: log.status === "error" ? "An error occured" : undefined,
         description: log.description,
-        details: log.details
-          ? {
-              lang: "json",
-              content:
-                typeof log.details === "string"
-                  ? log.details
-                  : JSON.stringify(log.details, null, 2),
-            }
-          : undefined,
+        details: log.details,
       });
       if (log.status === "error") console.error(log);
     });
@@ -40,14 +28,14 @@ export const WebPreview = () => {
 
   return (
     <Standard
-      key={`web-preview${startPreviewAtGroup ?? ""}`}
+      key={`web-preview${startPreviewFrom?.id ?? ""}`}
       typebot={typebot}
       sessionId={user ? `${typebot.id}-${user.id}` : undefined}
       startFrom={
-        startPreviewAtGroup
-          ? { type: "group", groupId: startPreviewAtGroup }
-          : startPreviewAtEvent
-            ? { type: "event", eventId: startPreviewAtEvent }
+        startPreviewFrom?.type === "group"
+          ? { type: "group", groupId: startPreviewFrom.id }
+          : startPreviewFrom?.type === "event"
+            ? { type: "event", eventId: startPreviewFrom.id }
             : undefined
       }
       onNewInputBlock={(block) =>

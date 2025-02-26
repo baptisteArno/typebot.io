@@ -9,6 +9,7 @@ import { getCredentials } from "@typebot.io/credentials/getCredentials";
 import { forgedBlocks } from "@typebot.io/forge-repository/definitions";
 import type { AsyncVariableStore } from "@typebot.io/forge/types";
 import { getBlockById } from "@typebot.io/groups/helpers/getBlockById";
+import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
 import { isDefined } from "@typebot.io/lib/utils";
 import { deepParseVariables } from "@typebot.io/variables/deepParseVariables";
 import {
@@ -32,6 +33,8 @@ export const getMessageStream = async ({
   stream?: ReadableStream<any>;
   status?: number;
   message?: string;
+  details?: string;
+  context?: string;
 }> => {
   const session = await getSession(sessionId);
 
@@ -164,29 +167,34 @@ export const getMessageStream = async ({
         });
       },
     };
-    const { stream, httpError } = await action.run.stream.run({
+    const { stream, error } = await action.run.stream.run({
       credentials: decryptedCredentials,
       options: deepParseVariables(
         newSessionState.typebotsQueue[0].typebot.variables,
       )(block.options),
       variables,
     });
-    if (httpError) return httpError;
+    if (error)
+      return {
+        status: 500,
+        message: error.description,
+        details: error.details,
+        context: error.context,
+      };
 
     if (!stream) return { status: 500, message: "Could not create stream" };
 
     return { stream };
   } catch (error) {
-    if (error instanceof OpenAI.APIError) {
-      const { message } = error;
-      return {
-        status: 500,
-        message,
-      };
-    }
+    const parsedError = await parseUnknownError({
+      err: error,
+      context: "While streaming message",
+    });
     return {
       status: 500,
-      message: "Could not create stream",
+      message: parsedError.description,
+      details: parsedError.details,
+      context: parsedError.context,
     };
   }
 };

@@ -18,6 +18,7 @@ export const defaultBotProps: BotProps = {
   startFrom: undefined,
   prefilledVariables: undefined,
   apiHost: undefined,
+  wsHost: undefined,
   resultId: undefined,
   sessionId: undefined,
 };

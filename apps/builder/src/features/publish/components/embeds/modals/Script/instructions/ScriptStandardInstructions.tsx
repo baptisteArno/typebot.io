@@ -4,7 +4,6 @@ import { Code, Stack, Text } from "@chakra-ui/react";
 import { useState } from "react";
 import { StandardSettings } from "../../../settings/StandardSettings";
 import {
-  parseApiHostValue,
   parseInlineScript,
   typebotImportCode,
 } from "../../../snippetParsers/shared";
@@ -30,7 +29,7 @@ export const ScriptStandardInstructions = () => {
   
 ${parseInitStandardCode({
   typebot: typebot?.publicId ?? "",
-  apiHost: parseApiHostValue(typebot?.customDomain),
+  customDomain: typebot?.customDomain,
 })}`);
 
   return (

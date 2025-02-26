@@ -8,7 +8,7 @@ import {
 } from "@/features/graph/providers/GraphDndProvider";
 import { duplicateName } from "@/features/typebot/helpers/duplicateName";
 import { isMobile } from "@/helpers/isMobile";
-import { useToast } from "@/hooks/useToast";
+import { toast } from "@/lib/toast";
 import { trpc, trpcVanilla } from "@/lib/trpc";
 import {
   Alert,
@@ -62,11 +62,9 @@ const TypebotButton = ({
     deps: [],
   });
 
-  const { showToast } = useToast();
-
   const { mutate: importTypebot } = trpc.typebot.importTypebot.useMutation({
     onError: (error) => {
-      showToast({ description: error.message });
+      toast({ description: error.message });
     },
     onSuccess: ({ typebot }) => {
       router.push(`/typebots/${typebot.id}/edit`);
@@ -75,7 +73,7 @@ const TypebotButton = ({
 
   const { mutate: deleteTypebot } = trpc.typebot.deleteTypebot.useMutation({
     onError: (error) => {
-      showToast({ description: error.message });
+      toast({ description: error.message });
     },
     onSuccess: () => {
       onTypebotUpdated();
@@ -85,7 +83,7 @@ const TypebotButton = ({
   const { mutate: unpublishTypebot } =
     trpc.typebot.unpublishTypebot.useMutation({
       onError: (error) => {
-        showToast({ description: error.message });
+        toast({ description: error.message });
       },
       onSuccess: () => {
         onTypebotUpdated();

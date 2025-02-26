@@ -1,11 +1,11 @@
 import { startChatQuery } from "@/queries/startChatQuery";
-import type { BotContext, OutgoingLog } from "@/types";
+import type { BotContext } from "@/types";
 import { CorsError } from "@/utils/CorsError";
 import { setBotContainerHeight } from "@/utils/botContainerHeightSignal";
 import { setBotContainer } from "@/utils/botContainerSignal";
+import { mergeThemes } from "@/utils/dynamicTheme";
 import { injectFont } from "@/utils/injectFont";
 import { setIsMobile } from "@/utils/isMobileSignal";
-import { mergeThemes } from "@/utils/mergeThemes";
 import { persist } from "@/utils/persist";
 import { setCssVariablesValue } from "@/utils/setCssVariablesValue";
 import {
@@ -23,6 +23,7 @@ import type {
   StartFrom,
 } from "@typebot.io/bot-engine/schemas/api";
 import { isDefined, isNotDefined, isNotEmpty } from "@typebot.io/lib/utils";
+import type { LogInSession } from "@typebot.io/logs/schemas";
 import { isTypebotVersionAtLeastV6 } from "@typebot.io/schemas/helpers/isTypebotVersionAtLeastV6";
 import {
   defaultSettings,
@@ -52,6 +53,7 @@ export type BotProps = {
   resultId?: string;
   prefilledVariables?: Record<string, unknown>;
   apiHost?: string;
+  wsHost?: string;
   font?: Font;
   progressBarRef?: HTMLDivElement;
   startFrom?: StartFrom;
@@ -60,7 +62,7 @@ export type BotProps = {
   onAnswer?: (answer: { message: string; blockId: string }) => void;
   onInit?: () => void;
   onEnd?: () => void;
-  onNewLogs?: (logs: OutgoingLog[]) => void;
+  onNewLogs?: (logs: LogInSession[]) => void;
   onChatStatePersisted?: (isEnabled: boolean) => void;
   onScriptExecutionSuccess?: (message: string) => void;
 };
@@ -247,6 +249,7 @@ export const Bot = (props: BotProps & { class?: string }) => {
             }}
             context={{
               apiHost: props.apiHost,
+              wsHost: props.wsHost,
               isPreview:
                 typeof props.typebot !== "string" || (props.isPreview ?? false),
               resultId: initialChatReply.resultId,
@@ -284,7 +287,7 @@ type BotContentProps = {
   onNewInputBlock?: (inputBlock: InputBlock) => void;
   onAnswer?: (answer: { message: string; blockId: string }) => void;
   onEnd?: () => void;
-  onNewLogs?: (logs: OutgoingLog[]) => void;
+  onNewLogs?: (logs: LogInSession[]) => void;
   onScriptExecutionSuccess?: (message: string) => void;
 };
 

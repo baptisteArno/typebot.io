@@ -1,7 +1,7 @@
 import { DownloadIcon, TemplateIcon, ToolIcon } from "@/components/icons";
 import { useUser } from "@/features/user/hooks/useUser";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { useToast } from "@/hooks/useToast";
+import { toast } from "@/lib/toast";
 import { trpc } from "@/lib/trpc";
 import {
   Button,
@@ -27,15 +27,12 @@ export const CreateNewTypebotButtons = () => {
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const { showToast } = useToast();
-
   const { mutate: createTypebot } = trpc.typebot.createTypebot.useMutation({
     onMutate: () => {
       setIsLoading(true);
     },
     onError: (error) => {
-      showToast({
-        title: "Failed to create bot",
+      toast({
         description: error.message,
       });
     },
@@ -54,9 +51,8 @@ export const CreateNewTypebotButtons = () => {
       setIsLoading(true);
     },
     onError: (error) => {
-      showToast({
-        title: "Failed to import bot",
-        description: error.message,
+      toast({
+        description: error.data?.zodError ?? error.message,
       });
     },
     onSuccess: (data) => {

@@ -71,7 +71,7 @@ const components = {
       className={cn("flex gap-4 rounded-xl border px-6 bg-gray-1 text-gray-12")}
       {...props}
     >
-      <InfoIcon className="size-5 flex-shrink-0 mt-6 stroke-gray-11" />
+      <InfoIcon className="size-5 flex-shrink-0 mt-7 stroke-gray-11" />
       <div>{children}</div>
     </div>
   ),
@@ -82,7 +82,7 @@ const components = {
       )}
       {...props}
     >
-      <CheckIcon className="size-5 flex-shrink-0 mt-6 stroke-purple-11" />
+      <CheckIcon className="size-5 flex-shrink-0 mt-7 stroke-purple-11" />
       <div>{children}</div>
     </div>
   ),
@@ -93,7 +93,7 @@ const components = {
       )}
       {...props}
     >
-      <TriangleAlertIcon className="size-5 flex-shrink-0 mt-6 stroke-orange-11" />
+      <TriangleAlertIcon className="size-5 flex-shrink-0 mt-7 stroke-orange-11" />
       <div>{children}</div>
     </div>
   ),

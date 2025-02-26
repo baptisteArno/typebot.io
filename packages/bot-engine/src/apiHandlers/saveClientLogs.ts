@@ -1,12 +1,12 @@
 import { TRPCError } from "@trpc/server";
 import { getSession } from "@typebot.io/chat-session/queries/getSession";
-import { formatLogDetails } from "../logs/helpers/formatLogDetails";
+import type { LogInSession } from "@typebot.io/logs/schemas";
+import { shortenLogDetails } from "../logs/helpers/shortenLogDetails";
 import { saveLogs } from "../queries/saveLogs";
-import type { ChatLog } from "../schemas/api";
 
 type Props = {
   sessionId: string;
-  clientLogs: ChatLog[];
+  clientLogs: LogInSession[];
 };
 
 export const saveClientLogs = async ({ sessionId, clientLogs }: Props) => {
@@ -33,7 +33,7 @@ export const saveClientLogs = async ({ sessionId, clientLogs }: Props) => {
       clientLogs.map((log) => ({
         ...log,
         resultId,
-        details: formatLogDetails(log.details),
+        details: shortenLogDetails(log.details),
       })),
     );
     return {

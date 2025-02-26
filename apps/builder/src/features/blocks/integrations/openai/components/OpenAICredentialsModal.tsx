@@ -1,7 +1,7 @@
 import { TextLink } from "@/components/TextLink";
 import { TextInput } from "@/components/inputs/TextInput";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { useToast } from "@/hooks/useToast";
+import { toast } from "@/lib/toast";
 import { trpc } from "@/lib/trpc";
 import {
   Alert,
@@ -34,7 +34,6 @@ export const OpenAICredentialsModal = ({
   onNewCredentials,
 }: Props) => {
   const { workspace } = useWorkspace();
-  const { showToast } = useToast();
   const [apiKey, setApiKey] = useState("");
   const [name, setName] = useState("");
 
@@ -49,9 +48,8 @@ export const OpenAICredentialsModal = ({
     onMutate: () => setIsCreating(true),
     onSettled: () => setIsCreating(false),
     onError: (err) => {
-      showToast({
+      toast({
         description: err.message,
-        status: "error",
       });
     },
     onSuccess: (data) => {

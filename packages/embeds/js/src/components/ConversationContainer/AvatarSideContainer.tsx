@@ -8,6 +8,7 @@ type Props = {
   hideAvatar?: boolean;
   isTransitionDisabled?: boolean;
   theme: Theme;
+  avatarSrc: string | undefined;
 };
 
 export const AvatarSideContainer = (props: Props) => {
@@ -52,7 +53,7 @@ export const AvatarSideContainer = (props: Props) => {
         }}
       >
         <Avatar
-          src={props.theme.chat?.hostAvatar?.url}
+          src={props.avatarSrc}
           isChatContainerLight={isChatContainerLight({
             chatContainer: props.theme.chat?.container,
             generalBackground: props.theme.general?.background,

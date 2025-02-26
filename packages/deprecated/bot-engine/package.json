@@ -23,6 +23,7 @@
     "@typebot.io/blocks-integrations": "workspace:*",
     "@typebot.io/blocks-logic": "workspace:*",
     "@typebot.io/conditions": "workspace:*",
+    "@typebot.io/logs": "workspace:*",
     "@typebot.io/env": "workspace:*",
     "@typebot.io/groups": "workspace:*",
     "@typebot.io/lib": "workspace:*",

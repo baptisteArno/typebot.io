@@ -3,9 +3,8 @@ import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { Stack, Text } from "@chakra-ui/react";
 import { useState } from "react";
 import { PopupSettings } from "../../../settings/PopupSettings";
-import { parseInitPopupCode } from "../../../snippetParsers";
+import { parseInitPopupCode } from "../../../snippetParsers/popup";
 import {
-  parseApiHostValue,
   parseInlineScript,
   typebotImportCode,
 } from "../../../snippetParsers/shared";
@@ -19,7 +18,7 @@ export const ScriptPopupInstructions = () => {
 
 ${parseInitPopupCode({
   typebot: typebot?.publicId ?? "",
-  apiHost: parseApiHostValue(typebot?.customDomain),
+  customDomain: typebot?.customDomain,
   autoShowDelay: inputValue,
 })}`,
   );
