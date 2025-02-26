@@ -10,6 +10,7 @@
     "test:ui": "dotenv -e ./.env -e ../../.env -- playwright test --ui"
   },
   "dependencies": {
+    "@chakra-ui/react": "2.10.6",
     "partysocket": "1.0.2",
     "@typebot.io/trpc-openapi": "workspace:*",
     "@planetscale/database": "1.8.0",
@@ -25,6 +26,7 @@
     "@typebot.io/schemas": "workspace:*",
     "@typebot.io/credentials": "workspace:*",
     "@typebot.io/chat-session": "workspace:*",
+    "@typebot.io/logs": "workspace:*",
     "bot-engine": "workspace:*",
     "cors": "2.8.5",
     "google-spreadsheet": "4.1.4",
@@ -32,8 +34,8 @@
     "nextjs-cors": "2.1.2",
     "nodemailer": "6.9.15",
     "openai": "4.81.0",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
     "stripe": "17.1.0",
     "@faire/mjml-react": "3.3.0",
     "@paralleldrive/cuid2": "2.2.1",
@@ -64,7 +66,7 @@
     "@types/node": "20.4.2",
     "@types/nodemailer": "6.4.14",
     "@types/papaparse": "5.3.7",
-    "@types/react": "18.2.0",
+    "@types/react": "18.3.18",
     "dotenv": "16.4.5",
     "dotenv-cli": "8.0.0",
     "next-runtime-env": "1.6.2"

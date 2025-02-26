@@ -149,9 +149,7 @@ export const createChatMessage = createAction({
           : options.messages,
         tools: options.tools,
         isVisionEnabled: isModelCompatibleWithVision(modelName),
-        temperature: options.temperature
-          ? Number(options.temperature)
-          : undefined,
+        temperature: options.temperature,
         responseMapping: options.responseMapping,
         logs,
       });
@@ -189,9 +187,7 @@ export const createChatMessage = createAction({
             : options.messages,
           isVisionEnabled: isModelCompatibleWithVision(modelName),
           tools: options.tools,
-          temperature: options.temperature
-            ? Number(options.temperature)
-            : undefined,
+          temperature: options.temperature,
           responseMapping: options.responseMapping,
         });
       },

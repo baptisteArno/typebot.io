@@ -184,19 +184,30 @@ const convertWhatsAppMessageToTypebotMessage = async ({
         break;
       }
       case "interactive": {
-        if (text !== "") text += `\n\n${message.interactive.button_reply.id}`;
-        else text = message.interactive.button_reply.id;
+        switch (message.interactive.type) {
+          case "button_reply":
+            if (text !== "")
+              text += `\n\n${message.interactive.button_reply.id}`;
+            else text = message.interactive.button_reply.id;
+            break;
+          case "list_reply":
+            if (text !== "") text += `\n\n${message.interactive.list_reply.id}`;
+            else text = message.interactive.list_reply.id;
+            break;
+        }
         break;
       }
       case "document":
       case "audio":
       case "video":
+      case "sticker":
       case "image": {
         let mediaId: string | undefined;
         if (message.type === "video") mediaId = message.video.id;
         if (message.type === "image") mediaId = message.image.id;
         if (message.type === "audio") mediaId = message.audio.id;
         if (message.type === "document") mediaId = message.document.id;
+        if (message.type === "sticker") mediaId = message.sticker.id;
         if (!mediaId) return;
         const fileVisibility =
           block?.type === InputBlockType.TEXT &&

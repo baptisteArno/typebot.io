@@ -110,11 +110,16 @@ export const BlockNodesList = ({ blocks, groupIndex, groupRef }: Props) => {
       elem && (placeholderRefs.current[idx] = elem);
     };
 
-  useEventListener("mousemove", handleMouseMoveGlobal);
-  useEventListener("mousemove", handleMouseMoveOnGroup, groupRef.current);
-  useEventListener("mouseup", handleMouseUpOnGroup, mouseOverGroup?.element, {
-    capture: true,
-  });
+  useEventListener(document, "mousemove", handleMouseMoveGlobal);
+  useEventListener(groupRef.current, "mousemove", handleMouseMoveOnGroup);
+  useEventListener(
+    mouseOverGroup?.element ?? null,
+    "mouseup",
+    handleMouseUpOnGroup,
+    {
+      capture: true,
+    },
+  );
 
   return (
     <Stack spacing={1} transition="none">

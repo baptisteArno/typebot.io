@@ -1,0 +1,28 @@
+name: Daily job
+
+on:
+  schedule:
+    - cron: "30 5 * * *"
+
+jobs:
+  clean:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./packages/scripts
+    env:
+      DATABASE_URL: "${{ secrets.DATABASE_URL }}"
+      DATABASE_URL_REPLICA: "${{ secrets.DATABASE_URL_REPLICA }}"
+      ENCRYPTION_SECRET: "${{ secrets.ENCRYPTION_SECRET }}"
+      NEXTAUTH_URL: "http://localhost:3000"
+      NEXT_PUBLIC_VIEWER_URL: "http://localhost:3001"
+      MESSAGE_WEBHOOK_URL: "${{ secrets.MESSAGE_WEBHOOK_URL }}"
+      POSTHOG_PROJECT_ID: "${{ secrets.POSTHOG_PROJECT_ID }}"
+      POSTHOG_DAILY_DASHBOARD_ID: "${{ secrets.POSTHOG_DAILY_DASHBOARD_ID }}"
+      NEXT_PUBLIC_POSTHOG_KEY: "${{ secrets.NEXT_PUBLIC_POSTHOG_KEY }}"
+      NEXT_PUBLIC_POSTHOG_HOST: "${{ secrets.NEXT_PUBLIC_POSTHOG_HOST }}"
+    steps:
+      - uses: actions/checkout@v2
+      - uses: oven-sh/setup-bun@v2
+      - run: bun install
+      - run: bunx turbo run cron:daily

@@ -3,11 +3,8 @@ import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import type { BubbleProps } from "@typebot.io/js";
 import parserHtml from "prettier/parser-html";
 import prettier from "prettier/standalone";
-import {
-  parseApiHostValue,
-  parseInitBubbleCode,
-  typebotImportCode,
-} from "../../snippetParsers";
+import { parseInitBubbleCode } from "../../snippetParsers/bubble";
+import { typebotImportCode } from "../../snippetParsers/shared";
 
 type Props = Pick<BubbleProps, "theme" | "previewMessage">;
 
@@ -19,7 +16,7 @@ export const JavascriptBubbleSnippet = ({ theme, previewMessage }: Props) => {
 
 ${parseInitBubbleCode({
   typebot: typebot?.publicId ?? "",
-  apiHost: parseApiHostValue(typebot?.customDomain),
+  customDomain: typebot?.customDomain,
   theme: {
     ...theme,
     chatWindow: {

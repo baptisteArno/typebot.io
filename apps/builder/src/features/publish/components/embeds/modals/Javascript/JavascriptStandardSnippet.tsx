@@ -2,11 +2,8 @@ import { CodeEditor } from "@/components/inputs/CodeEditor";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import parserHtml from "prettier/parser-html";
 import prettier from "prettier/standalone";
-import {
-  parseApiHostValue,
-  parseInitStandardCode,
-  typebotImportCode,
-} from "../../snippetParsers";
+import { typebotImportCode } from "../../snippetParsers/shared";
+import { parseInitStandardCode } from "../../snippetParsers/standard";
 
 type Props = {
   widthLabel?: string;
@@ -40,7 +37,7 @@ export const parseStandardHeadCode = (
 
 ${parseInitStandardCode({
   typebot: publicId ?? "",
-  apiHost: parseApiHostValue(customDomain),
+  customDomain,
 })}</script>`,
     { parser: "html", plugins: [parserHtml] },
   );

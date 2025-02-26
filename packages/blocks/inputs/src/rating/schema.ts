@@ -2,7 +2,7 @@ import {
   blockBaseSchema,
   optionBaseSchema,
 } from "@typebot.io/blocks-base/schemas";
-import { variableStringSchema } from "@typebot.io/variables/schemas";
+import { singleVariableOrNumberSchema } from "@typebot.io/variables/schemas";
 import { z } from "@typebot.io/zod";
 import { InputBlockType } from "../constants";
 
@@ -10,7 +10,7 @@ export const ratingInputOptionsSchema = optionBaseSchema.merge(
   z.object({
     buttonType: z.literal("Icons").or(z.literal("Numbers")).optional(),
     length: z.number().optional(),
-    startsAt: z.number().or(variableStringSchema).optional(),
+    startsAt: singleVariableOrNumberSchema.optional(),
     labels: z
       .object({
         left: z.string().optional(),

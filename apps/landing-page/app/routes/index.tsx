@@ -40,8 +40,8 @@ function Home() {
           <div className="md:h-[200vh] motion-safe:md-scroll-use-cases-fade-in md:motion-safe:opacity-0">
             <UseCases className="md:sticky top-0" />
           </div>
-          <div id="magic-animation-separator" className="invisible -mt-32" />
           <Companies />
+          <div id="magic-animation-separator" className="invisible -mt-32" />
           <MainFeatures />
         </Section>
         <Section className="dark">

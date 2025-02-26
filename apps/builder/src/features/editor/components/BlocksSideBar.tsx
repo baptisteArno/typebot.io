@@ -78,7 +78,7 @@ export const BlocksSideBar = () => {
       y: clientY - relativeCoordinates.y,
     });
   };
-  useEventListener("mousemove", handleMouseMove);
+  useEventListener(document, "mousemove", handleMouseMove);
 
   const initBlockDragging = (e: React.MouseEvent, type: BlockV6["type"]) => {
     const element = e.currentTarget as HTMLDivElement;
@@ -112,7 +112,7 @@ export const BlocksSideBar = () => {
       y: 0,
     });
   };
-  useEventListener("mouseup", handleMouseUp);
+  useEventListener(document, "mouseup", handleMouseUp);
 
   const handleLockClick = () => {
     try {

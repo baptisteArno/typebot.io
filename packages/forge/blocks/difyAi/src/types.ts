@@ -19,3 +19,19 @@ type MessageEndChunk = {
 };
 
 export type Chunk = MessageChunk | AgentMessageChunk | MessageEndChunk;
+
+export type ListKnowledgeBasesResponse = {
+  data: {
+    id: string;
+    name: string;
+    created_at: string;
+  }[];
+};
+
+export type RetrieveKnowledgeBaseResponse = {
+  records: {
+    segment: {
+      content: string;
+    };
+  }[];
+};

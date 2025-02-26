@@ -5,7 +5,6 @@ import type { User } from "@typebot.io/schemas/features/user/schema";
 import { isAdminWriteWorkspaceForbidden } from "@typebot.io/workspaces/isAdminWriteWorkspaceForbidden";
 import Stripe from "stripe";
 import { createCheckoutSessionUrl } from "../helpers/createCheckoutSessionUrl";
-import type { taxIdTypes } from "../taxIdTypes";
 
 type Props = {
   workspaceId: string;

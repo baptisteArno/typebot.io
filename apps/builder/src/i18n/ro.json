@@ -116,6 +116,7 @@
   "blocks.inputs.file.settings.allowMultiple.label": "Permite fișiere multiple",
   "blocks.inputs.file.settings.required.label": "Obligatoriu",
   "blocks.inputs.fileUpload.blockCard.tooltip": "Încărca fișiere",
+  "blocks.inputs.payment.collect.label": "Colectează",
   "blocks.inputs.picture.settings.dynamicItems.label": "Elemente dinamice",
   "blocks.inputs.rating.settings.customIcon.label": "Pictogramă personalizată",
   "blocks.inputs.settings.isSearchable.label": "Este căutabil",

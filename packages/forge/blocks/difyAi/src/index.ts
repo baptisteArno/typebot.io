@@ -1,5 +1,6 @@
 import { createBlock } from "@typebot.io/forge";
 import { createChatMessage } from "./actions/createChatMessage";
+import { queryKnowledgeBase } from "./actions/queryKnowledgeBase";
 import { auth } from "./auth";
 import { DifyAiLogo } from "./logo";
 
@@ -9,6 +10,6 @@ export const difyAiBlock = createBlock({
   tags: ["dify", "ai", "documents", "files", "knowledge base"],
   LightLogo: DifyAiLogo,
   auth,
-  actions: [createChatMessage],
+  actions: [createChatMessage, queryKnowledgeBase],
   docsUrl: "https://docs.typebot.io/editor/blocks/integrations/dify-ai",
 });

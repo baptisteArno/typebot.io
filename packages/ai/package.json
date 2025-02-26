@@ -8,10 +8,10 @@
   },
   "dependencies": {
     "@typebot.io/forge": "workspace:*",
-    "@typebot.io/zod": "workspace:*",
     "@typebot.io/lib": "workspace:*",
     "@typebot.io/variables": "workspace:*",
-    "ai": "4.1.15",
+    "@typebot.io/zod": "workspace:*",
+    "ai": "4.1.46",
     "ky": "1.2.4"
   },
   "devDependencies": {

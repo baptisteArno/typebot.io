@@ -1,0 +1,502 @@
+---
+title: "Build AI Chatbot with Custom Knowledge Base Without Code"
+description: "Learn how to build an AI chatbot with a custom knowledge base using Flowise and Typebot. Create intelligent, context-aware conversations without coding. "
+postedAt: "2024-12-18"
+cover: "/blog-assets/build-ai-chatbot-with-custom-knowledge-base/cover.avif"
+author: younes
+---
+Creating an **AI assistant tailored to your business** can streamline operations and improve customer support. By integrating tools like Flowise and Typebot with your own knowledge base, you can develop a chatbot that provides accurate, context-aware responses. This approach ensures **data privacy and eliminates risks like hallucination** or exposing sensitive information to public models.
+
+Whether you're building an internal tool for your team or a customer-facing support bot, this guide will show you how to use your existing documentation in Notion and **leverage AI advancements**—all without needing to write code.
+
+## Understanding AI Chatbots and Custom Knowledge Bases
+
+Businesses increasingly rely on **AI chatbots with custom knowledge bases** to deliver intelligent, context-aware interactions. Before diving into implementation, it’s essential to understand the core components and how they work together.
+
+### What is an AI Chatbot?
+
+An AI chatbot is a software application that uses artificial intelligence to simulate human-like conversations. Unlike traditional rule-based chatbots that follow rigid decision trees, modern AI chatbots leverage large language models (LLMs) like GPT-4. This allows them to understand context, generate natural responses, and handle complex queries with flexibility.
+
+In this guide, we’ll use two [open-source tools](./open-source-chatbots.mdx): **Flowise** and **Typebot**. Flowise connects to various LLMs to handle AI processing, while Typebot provides an intuitive interface for creating conversational flows without coding.
+
+### What is a Custom Knowledge Base?
+
+A custom knowledge base is a structured collection of information tailored to your organization, products, or domain. It acts as a **centralized repository of knowledge** and may include:
+
+- Product documentation and specifications
+- Frequently Asked Questions (FAQs)
+- Internal policies and procedures
+- Customer support articles
+- Technical documentation
+- Sales and marketing materials
+
+Unlike generic knowledge bases, a custom knowledge base is curated to meet your specific needs, ensuring responses are accurate and relevant.
+
+### Why Combine AI Chatbots with Custom Knowledge Bases?
+
+Integrating AI chatbots with custom knowledge bases creates a **Retrieval-Augmented Generation (RAG) system**, [offering several advantages](./benefits-ai-chatbot.mdx):
+
+1. **Improved Accuracy**: Responses are grounded in your verified knowledge base, reducing the risk of hallucinated or outdated information.
+2. **Contextual Relevance**: The chatbot can access specific details about your organization, products, or services, leading to more helpful interactions.
+3. **Lower Training Costs**: Instead of fine-tuning an entire language model, you can simply update your knowledge base with new information.
+4. **Controlled Responses**: You maintain control over the source of information, ensuring compliance with company policies and reducing errors.
+
+In the next sections, we’ll explore how to build this system using Flowise and Typebot. Whether you aim to enhance customer support, streamline internal processes, or create a personal knowledge assistant, this guide will help you achieve your goals.
+
+## The Different Types of Knowledge Base Chatbots
+
+Knowledge base chatbots can serve different purposes based on their deployment context.
+
+### Customer-Facing Knowledge Base Chatbots
+
+These chatbots act as the first point of contact for users, addressing common queries and reducing the workload on support teams. They typically interact with:
+
+- Product documentation and feature guides
+- Frequently Asked Questions (FAQs)
+- Troubleshooting guides
+- Pricing details and plan comparisons
+
+For example, an e-commerce company might use a chatbot to help customers track orders, find product specifications, or understand return policies.
+
+### Internal Knowledge Base Chatbots
+
+Internal chatbots assist team members by providing quick access to company information. They are often integrated with:
+
+- Internal documentation and workflows
+- HR policies and procedures
+- Technical documentation
+- Project management guidelines
+- Company wikis and best practices
+
+A common use case is a chatbot that helps new employees navigate internal systems or assists developers in locating specific code documentation.
+
+### Personal Knowledge Base Chatbots
+
+Personal chatbots help individuals manage and interact with their own information. They can be configured to work with:
+
+- Personal notes and research
+- Reading lists and summaries
+- Project documentation
+- Learning materials and study notes
+
+For instance, a researcher might use a chatbot to quickly search through their research papers, or a student might create one to review study materials. **This emerging category is ideal for personal productivity and organization.**
+
+In the next section, we’ll cover the practical steps to set up your environment and create your first knowledge base chatbot.
+
+## Step-by-Step Guide: Setup
+
+Before building your AI-powered knowledge base chatbot, you need to set up the required infrastructure. This section covers how to configure **Flowise**, **Typebot**, and your **Notion integration** to get started.
+
+<Info>
+	Since Flowise is currently in private beta, this tutorial will guide you through deploying Flowise on Render.com. If Flowise becomes publicly available in the cloud version, you can opt to use their cloud platform instead.
+	
+	</Info>
+
+### Setting Up Your Notion Integration
+
+To allow programmatic access to your knowledge base, create a Notion integration:
+
+1. Go to [Notion's integration page](https://www.notion.so/my-integrations).
+2. Click "New integration" and name it (e.g., "Knowledge Base Chatbot").
+3. Select the workspace where your knowledge base resides.
+4. Grant the necessary permissions (read access is sufficient for most cases).
+5. Copy and securely store the **Integration Token**—you’ll need it later.
+
+**Pro Tip:** Use a dedicated workspace for your chatbot’s knowledge base. This keeps your data organized and ensures clear access controls.
+
+### Deploying Flowise on Render.com
+
+Flowise can be deployed on Render.com for free, making it accessible for small-scale projects:
+
+1. Sign up for a [Render.com](https://render.com) account.
+
+2. Click "New +" and select "Web Service."
+
+<Image src="/blog-assets/build-ai-chatbot-with-custom-knowledge-base/render-deployment-type.avif" alt="Render Deployment Type" width="320px" height="349px" />
+
+
+1. Paste the public Flowise repository URL: https://github.com/FlowiseAI/Flowise
+
+<Image src="/blog-assets/build-ai-chatbot-with-custom-knowledge-base/configure-flowise-deployment-render.avif" alt="Configure Flowise Deployment on Render" width="1423px" height="327px" />
+
+
+2. Then, most of the settings will apply automatically
+3. Add these environment variables:
+
+<Image src="/blog-assets/build-ai-chatbot-with-custom-knowledge-base/render-auth-environment-variables.avif" alt="Render Auth Environment Variables" width="1381px" height="544px" />
+
+
+4. Click "Create Web Service."
+
+Render’s free tier shuts down services after 15 minutes of inactivity. To keep Flowise running, you’ll need to set up a periodic ping.
+
+<Warning>
+	If you anticipate heavy usage or expect your Flowise chatbot to handle multiple concurrent requests, consider upgrading to a paid Render instance. The free tier has performance limitations and may not provide the responsiveness or reliability needed for high-traffic applications. A paid tier offers better computational resources, ensuring smoother operation and faster response times for your AI chatbot.
+</Warning>
+
+### Setting Up a Cron Job to Keep Flowise Active
+
+Prevent your Flowise instance from going dormant by configuring a cron job:
+
+1. Create an account on [cron-job.org](https://cron-job.org).
+2. Click "Create cronjob."
+
+<Image src="/blog-assets/build-ai-chatbot-with-custom-knowledge-base/cronjob-create-cron.avif" alt="Cronjob Create Cron" width="1283px" height="249px" />
+
+
+1. Configure the job:
+
+   - **Title**: "Keep Flowise Alive."
+
+   - **URL**: Your Render.com Flowise URL. You can find it on the Render dashboard
+
+     <Image src="/blog-assets/build-ai-chatbot-with-custom-knowledge-base/render-service-url.avif" alt="Render Service Url" width="630px" height="198px" />
+
+
+
+
+   - **Schedule**: Every 10 minutes.
+
+2. Save the configuration.
+
+<Image src="/blog-assets/build-ai-chatbot-with-custom-knowledge-base/cronjob-configuration.avif" alt="Cronjob Configuration" width="1280px" height="1055px" />
+
+
+Ensure the interval is no longer than 15 minutes. Otherwise, the service may go dormant between pings.
+
+### Preparing Your API Keys
+
+Gather the following API keys before proceeding:
+
+1. **OpenAI API key** (for the language and embeddings models).
+2. **Pinecone API key** (for vector storage).
+3. **Notion Integration Token** (from the earlier step).
+
+Store these keys securely, as they’ll be required when configuring Flowise.
+
+With this setup, you’ve established the foundation for your knowledge base chatbot. **This free-tier configuration is ideal for testing or small-scale deployments.** For larger-scale production environments, consider upgrading to paid tiers or exploring alternative hosting options.
+
+In the next section, we’ll focus on organizing your knowledge base in Notion and preparing it for seamless integration with your chatbot system.
+
+## Creating Your Knowledge Base in Notion
+
+An effective knowledge base in Notion requires thoughtful organization to ensure your AI chatbot retrieves information accurately. Follow these steps to set up and structure your database for optimal performance.
+
+### Setting Up Your Notion Database Structure
+
+Your Notion database will act as the backbone of your chatbot's knowledge. Here’s a recommended structure that works seamlessly with **Flowise**:
+
+- **Title**: The main topic or question (default Notion property).
+- **Content**: A rich text property for detailed information.
+- **Category**: A select property to group entries by topics (e.g., "FAQs," "Product Features").
+- **Status**: A select property to track the entry’s status (e.g., "Published," "Draft," "Needs Review").
+- **Last Updated**: A date property to ensure information is current.
+
+<Image src="/blog-assets/build-ai-chatbot-with-custom-knowledge-base/example-notion-knowledge-base.avif" alt="Example Notion Knowledge Base" width="1156px" height="559px" />
+
+
+### Organizing Your Knowledge Base Content
+
+To ensure your chatbot retrieves accurate and relevant information, follow these strategies:
+
+1. **Chunk Your Content Appropriately**Focus each entry on a single topic or question. For example, in a product FAQ, each entry should address one specific feature or query rather than combining multiple topics.
+
+2. **Use Consistent Formatting**Maintain a uniform structure for all entries. A recommended format is:
+
+   ```txt
+   Question/Topic: [Clear, specific question]  
+   Answer: [Detailed explanation]  
+   Example: [When applicable]  
+   Additional Notes: [Optional context or caveats]  
+   ```
+
+3. **Include Relevant Context**Ensure each entry is self-contained and provides enough detail to make sense independently.
+
+   **Example:**
+
+   ```markdown
+   ❌ Bad Entry:  
+   Q: How do I use it?  
+   A: Just click the button and wait.  
+   
+   ✅ Good Entry:  
+   Q: How do I activate the dark mode feature in the mobile app?  
+   A: To activate dark mode, navigate to Settings > Display > Theme, then tap the "Dark Mode" toggle. The interface will immediately switch to dark colors.  
+   ```
+
+<Success>
+	To save time, you can use a pre-built Notion template for your knowledge base. This ensures consistency and speeds up the setup process.
+</Success>
+
+### Connecting Your Knowledge Base
+
+Before configuring Flowise, ensure your Notion database is ready for integration:
+
+1. **Create a Notion integration** (covered in Section III).
+2. **Share your database** with the integration by inviting it via the "Share" button in Notion.
+3. **Copy your database ID** from the database URL.
+
+You can verify the connection by making a test API call in your terminal:
+
+```bash
+curl -X GET "https://api.notion.com/v1/databases/[YOUR_DATABASE_ID]" 
+  -H "Authorization: Bearer [YOUR_INTEGRATION_TOKEN]" 
+  -H "Notion-Version: 2022-06-28"
+```
+
+### Best Practices for Maintenance
+
+Your knowledge base is a dynamic resource. Follow these maintenance tips to keep it effective:
+
+- **Regular Reviews**: Schedule monthly or quarterly reviews to ensure content remains accurate.
+- **Timely Updates**: Update entries immediately when information changes.
+- **Monitor Interactions**: Analyze chatbot queries to identify gaps in your knowledge base.
+- **Use the Status Property**: Track entries that need updates or are under review.
+
+By structuring and maintaining your Notion database effectively, you’ll create a solid foundation for your AI chatbot. In the next section, we’ll configure **Flowise** to connect with this knowledge base and start processing queries.
+
+## Configuring the Flowise Flow
+
+With your Notion knowledge base ready and Flowise deployed, it’s time to build the AI processing flow that powers your chatbot. Flowise, built on LangChain, provides a visual interface to create **Retrieval-Augmented Generation (RAG)** workflows without coding.
+
+### Building the Document Processing Pipeline
+
+This pipeline handles how your system ingests and processes documents from Notion.
+
+1. **Add the Notion Loader**:
+
+   - Drag the **"Notion Database"** loader from the sidebar.
+
+   <Image src="/blog-assets/build-ai-chatbot-with-custom-knowledge-base/select-notion-loader-flowise.avif" alt="Select Notion Loader Flowise" width="409px" height="609px" />
+
+
+
+
+- Configure it with:
+  - Your **Integration Token**.
+  - Your **Database ID** (found in the Notion URL).
+
+2. **Configure Document Splitting**:
+
+   - Add a **"Text Splitter"** node.
+   - Connect it to the Notion loader.
+   - Set the chunk size to **1000 characters** (adjust based on your needs).
+   - Choose **"Markdown"** as the splitting format.
+
+<Image src="/blog-assets/build-ai-chatbot-with-custom-knowledge-base/notion-loader-with-markdown-splitter.avif" alt="Notion Loader With Markdown Splitter" width="1189px" height="859px" />
+
+
+<Info>
+	Smaller chunks (500–1000 characters) improve precision, while larger chunks (1000–2000) provide more context. Test different sizes to find the best fit for your content.	
+</Info>
+
+### Setting Up the Vector Store
+
+The vector store enables efficient semantic search, allowing the chatbot to retrieve relevant information.
+
+1. **Add Embeddings**:
+
+   - Drag the **"OpenAI Embeddings"** node.
+   - Input your **OpenAI API key**.
+   - Select the model (e.g., **"text-embedding-3-small"**).
+
+2. **Configure the Vector Database**:
+
+   - Add a **"Pinecone"** node (or another vector store).
+   - Connect it to both the Text Splitter and Embeddings nodes.
+   - Set up your Pinecone credentials:
+     - **API Key**
+     - **Environment**
+     - **Index Name**
+
+**Key Insight:** Vector stores allow the chatbot to understand the meaning behind user queries, rather than relying on keyword matching.
+
+### Creating the Conversation Chain
+
+This chain processes user queries and generates responses.
+
+1. **Add the Language Model**:
+
+   - Drag the **"ChatOpenAI"** node (or another LLM).
+   - Configure it with your **API key**.
+   - Recommended settings:
+     - **Temperature**: 0.7 (balances creativity and accuracy).
+     - **Max tokens**: 500.
+
+2. **Set Up the Conversational Chain**:
+
+   - Add a **"Conversational Retrieval QA Chain"**.
+   - Connect it to:
+     - The Vector Store.
+     - The Language Model.
+   - Configure the chain settings:
+     - Enable **"Return Source Documents"**.
+     - Set memory buffer size to **5 messages**.
+
+3. **Update the System Prompt to your needs**. A prompt is already provided by Flowise, but don't hesitate to tune it to your business needs
+
+4. You can **optionally add memory** to your Conversational Chain to enhance context retention and create a more coherent conversational experience.
+
+Here's what the complete flow should look like:
+
+<Image src="/blog-assets/build-ai-chatbot-with-custom-knowledge-base/flowise-complete-flow.avif" alt="Flowise Complete Flow" width="1492px" height="1238px" />
+
+
+### Testing and Deployment
+
+Before integrating with Typebot, test your flow:
+
+1. Click **"Save Flow"** and give it a name.
+2. Click on **"Upsert"** to upload all your documents to your Pinecone vector database.
+
+<Image src="/blog-assets/build-ai-chatbot-with-custom-knowledge-base/upsert-knowledge-base-flowise.avif" alt="Upsert Knowledge Base Flowise" width="152px" height="88px" />
+
+
+3. Use the **"Predict"** tab to test the flow with sample questions.
+4. Navigate to the **Code icon** to get your endpoint URL.
+
+<Image src="/blog-assets/build-ai-chatbot-with-custom-knowledge-base/get-endpoint-from-flowise.avif" alt="Get Endpoint From Flowise" width="459px" height="232px" />
+
+
+5. Set up authentication if needed (recommended for production environments).
+
+Your Flowise flow is now ready to connect with Typebot. This configuration provides a solid foundation for a chatbot that can retrieve contextually relevant information, maintain conversation history, and deliver accurate responses based on your custom knowledge base. In the next section, we’ll integrate this flow with Typebot to create a user-friendly interface.
+
+## Building the Chat Interface with Typebot
+
+Typebot provides an intuitive, no-code platform for creating conversational interfaces. In this section, we’ll configure Typebot to connect with your Flowise backend, enabling a seamless chat experience. **Typebot’s open-source nature and free tier make it ideal for testing and small projects.**
+
+### Creating Your First Typebot Flow
+
+Follow these steps to set up the basic chat interface:
+
+1. Log into your Typebot account and click **"Create a typebot."**
+2. Choose a **blank template** to start from scratch.
+3. Name your typebot to reflect its purpose (e.g., "Product Knowledge Assistant").
+
+### Designing the Conversation Flow
+
+A natural conversation flow is key to an effective chatbot. Here’s how to structure it:
+
+1. **Start Block Configuration**
+
+   - Add a **"Start"** block.
+   - Include a welcome message introducing the bot’s capabilities and clear instructions for users.
+
+2. Add an **Input** block to capture user questions:
+
+   - Click the "+" button to add a new block.
+   - Select **"Input"** from the menu.
+   - Configure it as **"Text" input**.
+   - Save the response in a variable called **"user_message.**
+
+<Info>
+	Want to explore real-world chatbot script examples that can inspire your custom AI chatbot design? [Check out these practical script templates](./chatbot-script-examples.mdx)
+</Info>
+
+### Setting Up the API Integration
+
+To connect Typebot to your Flowise backend:
+
+1. **Add an API Block**
+
+- Click "+" to add a new block.
+
+- Select **"Integrations" &gt; "HTTP Request."**
+
+- Configure the request like so:
+
+  <Image src="/blog-assets/build-ai-chatbot-with-custom-knowledge-base/typebot-http-request-config.avif" alt="Typebot Http Request Config" width="800px" height="1204px" />
+
+2. **Response Handling**
+
+- Save the API response to a variable (e.g., **"ai_response"**).
+- Add a **Text** block to display the response using the variable: `{{ai_response}}`.
+
+### Creating the Conversation Loop
+
+To allow users to ask multiple questions:
+
+1. Add a **"Jump"** block after the response.
+2. Connect it back to the **Input** block.
+3. This creates a loop, enabling ongoing conversations.
+
+Here is an example of basic flow:
+
+<Image src="/blog-assets/build-ai-chatbot-with-custom-knowledge-base/typebot-flow-using-flowise.avif" alt="Typebot Flow Using Flowise" width="1300px" height="741px" />
+
+
+### Testing Your Chat Interface
+
+Before deploying, thoroughly test your chatbot:
+
+1. Use the **"Preview"** mode to simulate interactions.
+2. Test various types of questions to ensure accurate responses.
+3. Check error scenarios to confirm proper handling.
+4. Monitor response times for performance.
+5. Verify that the conversation loop works smoothly.
+
+By following these steps, you’ll create a user-friendly chat interface that integrates seamlessly with your Flowise backend. **Monitor chat logs and user feedback regularly to improve the conversation flow and enhance the user experience.**
+
+<Cta />
+
+## Data Preparation and Integration for Custom Knowledge Bases
+
+Creating an effective knowledge base requires careful attention to **data quality, structure, and integration methods**. This section outlines how to prepare, organize, and integrate your data to build a strong foundation for your AI chatbot.
+
+### How to Prepare and Clean Your Data for Training
+
+Proper data preparation ensures your chatbot delivers **accurate and relevant responses**. Start by auditing your existing content and organizing it into logical categories. For instance, a product support chatbot might categorize information into **"Technical Specifications," "Troubleshooting Guides,"** and **"FAQs."**
+
+Key steps for cleaning your data include:
+
+- **Remove duplicate content** and outdated information.
+- **Standardize formatting and terminology** to ensure consistency.
+- **Break down long documents** into smaller, topic-focused chunks for better retrieval.
+- **Add metadata tags** (e.g., categories, keywords) to improve organization and searchability.
+
+### Tools and Techniques for Structuring Your Knowledge Base
+
+The structure of your knowledge base directly impacts your chatbot’s ability to retrieve relevant information. A well-organized knowledge base ensures faster and more accurate responses.
+
+Here’s an effective approach to structuring your data:
+
+1. **Create a hierarchical organization system**: Group related topics under broader categories.
+2. **Use consistent formatting**: Apply the same structure to all documents (e.g., headings, bullet points).
+3. **Implement clear naming conventions**: Use descriptive and standardized file names.
+4. **Add metadata**: Include tags like "Category," "Last Updated," or "Priority" to improve searchability.
+
+### Integrating External Data Sources
+
+Flowise supports various data loaders, making it easy to import content from multiple sources. Below are some common integration methods:
+
+#### Scraping Websites
+
+For website content, Flowise provides several web scraping options:
+
+- **Cheerio Web Scraper**: Ideal for simple HTML parsing.
+- **Playwright Web Scraper**: Handles dynamic content effectively.
+- **Puppeteer Web Scraper**: Suitable for complex web applications.
+
+#### Files (CSVs, JSON, PDFs, etc.)
+
+Flowise simplifies importing various file types:
+
+- **PDF Files**: Great for importing documentation, reports, and whitepapers.
+- **CSV Files**: Ideal for structured data like product catalogs or customer lists.
+- **JSON Files**: Useful for importing data from APIs or other structured sources.
+
+Flowise supports a variety of data loaders, making it easy to integrate content from multiple sources. Below are additional integration methods:
+
+- For teams using Atlassian tools, **the Confluence loader offers seamless integration**
+- **Airtable** is another powerful integration option in Flowise, offering seamless data import for your AI chatbot's knowledge base.
+
+By following these integration and maintenance strategies, you’ll create a **robust, secure, and maintainable knowledge base** that serves as a reliable foundation for your AI chatbot.
+
+### Conclusion
+
+Remember, building a knowledge base is an iterative process—**start small, test thoroughly, and expand based on user feedback and actual usage patterns**. Building an AI chatbot with a custom knowledge base is now more accessible than ever, thanks to open-source tools like **Flowise** and **Typebot**.
+
+Whether you're creating an internal documentation assistant, a customer support bot, or a personal knowledge companion, this approach allows you to tailor the chatbot to your specific needs. **The combination of these tools enables you to build AI-powered conversations that deliver real value to your organization.**
+
+<Cta />

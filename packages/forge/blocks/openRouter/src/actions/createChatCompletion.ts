@@ -25,6 +25,7 @@ export const createChatCompletion = createAction({
       blockId: "together-ai",
     },
     { blockId: "mistral" },
+    { blockId: "perplexity" },
     {
       blockId: "anthropic",
       transform: (options) => ({
@@ -34,7 +35,10 @@ export const createChatCompletion = createAction({
     },
   ],
   options: parseChatCompletionOptions({
-    modelFetchId: "fetchModels",
+    models: {
+      type: "fetcher",
+      id: "fetchModels",
+    },
   }),
   getSetVariableIds: getChatCompletionSetVarIds,
   fetchers: [
@@ -76,9 +80,7 @@ export const createChatCompletion = createAction({
         messages: options.messages,
         tools: options.tools,
         isVisionEnabled: false,
-        temperature: options.temperature
-          ? Number(options.temperature)
-          : undefined,
+        temperature: options.temperature,
         responseMapping: options.responseMapping,
         logs,
       });
@@ -114,9 +116,7 @@ export const createChatCompletion = createAction({
           messages: options.messages,
           tools: options.tools,
           isVisionEnabled: false,
-          temperature: options.temperature
-            ? Number(options.temperature)
-            : undefined,
+          temperature: options.temperature,
           responseMapping: options.responseMapping,
         });
       },

@@ -19,6 +19,8 @@ import { openRouterBlock } from "@typebot.io/open-router-block";
 import { openRouterBlockSchema } from "@typebot.io/open-router-block/schemas";
 import { openAIBlock } from "@typebot.io/openai-block";
 import { openAIBlockSchema } from "@typebot.io/openai-block/schemas";
+import { perplexityBlock } from "@typebot.io/perplexity-block";
+import { perplexityBlockSchema } from "@typebot.io/perplexity-block/schemas";
 import { posthogBlock } from "@typebot.io/posthog-block";
 import { posthogBlockSchema } from "@typebot.io/posthog-block/schemas";
 import { qrCodeBlock } from "@typebot.io/qrcode-block";
@@ -47,6 +49,7 @@ export const forgedBlockSchemas = {
   [groqBlock.id]: groqBlockSchema,
   [zendeskBlock.id]: zendeskBlockSchema,
   [posthogBlock.id]: posthogBlockSchema,
+  [perplexityBlock.id]: perplexityBlockSchema,
 } as const;
 
 export const forgedBlockSchema = z.discriminatedUnion("type", [
@@ -65,5 +68,6 @@ export const forgedBlockSchema = z.discriminatedUnion("type", [
   groqBlockSchema,
   zendeskBlockSchema,
   posthogBlockSchema,
+  perplexityBlockSchema,
 ]);
 export type ForgedBlock = z.infer<typeof forgedBlockSchema>;

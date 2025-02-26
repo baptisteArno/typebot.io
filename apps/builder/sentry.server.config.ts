@@ -22,6 +22,7 @@ Sentry.init({
         )
       )
         return null;
+      if (exception.cause?.name === "ClientToastError") return null;
       if (
         exception.code === "BAD_REQUEST" &&
         exception.cause?.name === "ZodError" &&

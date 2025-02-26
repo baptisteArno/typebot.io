@@ -77,6 +77,8 @@ Then the variables will be prefilled as following:
 - Email => `test@test.com`
 - First name => `John`
 
+Prefilled variables in your bot can be used in the same way as any other variables. For example if the first bot question is "What is your email?", you can decide to add a Condition block just before the question to check if the email was already prefilled to avoid asking the user to submit it. Or if you prefer your user to double check their existing email, you can enable the [prefill input](/settings/overview#general) option in the settings.
+
 Prefilling variables using the embed library is even easier. You need to add an object named `prefilledVariables` that contains a dictionary of your values. For example:
 
 ```js

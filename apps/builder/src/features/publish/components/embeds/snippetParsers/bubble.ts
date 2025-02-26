@@ -105,11 +105,11 @@ const parseBubbleProps = ({
 
 export const parseInitBubbleCode = ({
   typebot,
-  apiHost,
+  customDomain,
   previewMessage,
   theme,
-}: BubbleProps) => {
-  const botProps = parseBotProps({ typebot, apiHost });
+}: BubbleProps & { customDomain: string | undefined | null }) => {
+  const botProps = parseBotProps({ typebot, customDomain });
   const bubbleProps = parseBubbleProps({ previewMessage, theme });
 
   return prettier.format(`Typebot.initBubble({${botProps}${bubbleProps}});`, {
@@ -146,11 +146,11 @@ const parseReactPreviewMessage = (
 
 export const parseReactBubbleProps = ({
   typebot,
-  apiHost,
+  customDomain,
   previewMessage,
   theme,
-}: BubbleProps) => {
-  const botProps = parseReactBotProps({ typebot, apiHost });
+}: BubbleProps & { customDomain: string | undefined | null }) => {
+  const botProps = parseReactBotProps({ typebot, customDomain });
   const previewMessageProp = parseReactPreviewMessage(previewMessage);
   const themeProp = parseReactBubbleTheme(theme);
 

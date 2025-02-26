@@ -1,7 +1,7 @@
+import { createAuthConfig } from "@/features/auth/helpers/createAuthConfig";
 import type { User } from "@typebot.io/schemas/features/user/schema";
 import type { GetServerSidePropsContext } from "next";
 import { type Session, getServerSession } from "next-auth";
-import { getAuthOptions } from "./api/auth/[...nextauth]";
 
 export default function Page() {
   return null;
@@ -13,7 +13,7 @@ export const getServerSideProps = async (
   const session = (await getServerSession(
     context.req,
     context.res,
-    getAuthOptions({}),
+    createAuthConfig(),
   )) as Session & { user: User };
   if (!session?.user) {
     return {

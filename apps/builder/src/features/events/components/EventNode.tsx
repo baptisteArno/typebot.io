@@ -1,8 +1,5 @@
 import { ContextMenu } from "@/components/ContextMenu";
-import {
-  RightPanel,
-  useEditor,
-} from "@/features/editor/providers/EditorProvider";
+import { useEditor } from "@/features/editor/providers/EditorProvider";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { SettingsModal } from "@/features/graph/components/nodes/block/SettingsModal";
 import {
@@ -14,6 +11,7 @@ import { useSelectionStore } from "@/features/graph/hooks/useSelectionStore";
 import { useGraph } from "@/features/graph/providers/GraphProvider";
 import { ParentModalProvider } from "@/features/graph/providers/ParentModalProvider";
 import { setMultipleRefs } from "@/helpers/setMultipleRefs";
+import { useRightPanel } from "@/hooks/useRightPanel";
 import {
   Popover,
   PopoverTrigger,
@@ -43,8 +41,9 @@ export const EventNode = ({ event, eventIndex }: Props) => {
   const elementBgColor = useColorModeValue("white", "gray.950");
   const previewingBorderColor = useColorModeValue("orange.400", "orange.300");
   const { previewingEdge, isReadOnly, graphPosition } = useGraph();
-  const { updateEvent, deleteEvent, updateEventsCoordinates } = useTypebot();
-  const { setRightPanel, setStartPreviewFrom } = useEditor();
+  const { updateEvent, updateEventsCoordinates } = useTypebot();
+  const { setStartPreviewFrom } = useEditor();
+  const [, setRightPanel] = useRightPanel();
   const [isMouseDown, setIsMouseDown] = useState(false);
 
   const focusedElements = useSelectionStore(
@@ -88,7 +87,7 @@ export const EventNode = ({ event, eventIndex }: Props) => {
 
   const startPreviewAtThisEvent = () => {
     setStartPreviewFrom({ type: "event", id: event.id });
-    setRightPanel(RightPanel.PREVIEW);
+    setRightPanel("preview");
   };
 
   const handleOnNodeChange = (

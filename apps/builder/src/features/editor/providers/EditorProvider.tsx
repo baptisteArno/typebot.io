@@ -7,14 +7,7 @@ import {
   useState,
 } from "react";
 
-export enum RightPanel {
-  PREVIEW = 0,
-  VARIABLES = 1,
-}
-
 const editorContext = createContext<{
-  rightPanel?: RightPanel;
-  setRightPanel: Dispatch<SetStateAction<RightPanel | undefined>>;
   startPreviewFrom:
     | {
         type: "group" | "event";
@@ -34,7 +27,6 @@ const editorContext = createContext<{
 }>({});
 
 export const EditorProvider = ({ children }: { children: ReactNode }) => {
-  const [rightPanel, setRightPanel] = useState<RightPanel>();
   const [startPreviewFrom, setStartPreviewFrom] = useState<
     | {
         type: "group" | "event";
@@ -46,8 +38,6 @@ export const EditorProvider = ({ children }: { children: ReactNode }) => {
   return (
     <editorContext.Provider
       value={{
-        rightPanel,
-        setRightPanel,
         startPreviewFrom,
         setStartPreviewFrom,
       }}

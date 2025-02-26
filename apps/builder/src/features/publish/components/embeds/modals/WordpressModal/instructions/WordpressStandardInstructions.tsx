@@ -79,7 +79,7 @@ const parseWordpressShortcode = ({
   return `[typebot typebot="${publicId}"${
     isCloudProdInstance()
       ? ""
-      : ` host="${env.NEXT_PUBLIC_VIEWER_URL[0]}" lib_version="${packageJson.version}"`
+      : ` host="${env.NEXT_PUBLIC_VIEWER_URL[0]}" lib_version="${packageJson.version}"${env.NEXT_PUBLIC_PARTYKIT_HOST ? ` ws_host="${env.NEXT_PUBLIC_PARTYKIT_HOST}"` : ""}`
   }${width ? ` width="${width}"` : ""}${height ? ` height="${height}"` : ""}]
 `;
 };

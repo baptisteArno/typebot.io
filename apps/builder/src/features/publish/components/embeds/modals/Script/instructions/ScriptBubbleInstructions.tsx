@@ -4,12 +4,11 @@ import { Stack, Text } from "@chakra-ui/react";
 import type { BubbleProps } from "@typebot.io/js";
 import { useState } from "react";
 import { BubbleSettings } from "../../../settings/BubbleSettings/BubbleSettings";
+import { parseInitBubbleCode } from "../../../snippetParsers/bubble";
 import {
-  parseApiHostValue,
-  parseInitBubbleCode,
   parseInlineScript,
   typebotImportCode,
-} from "../../../snippetParsers";
+} from "../../../snippetParsers/shared";
 import { parseDefaultBubbleTheme } from "../../Javascript/instructions/JavascriptBubbleInstructions";
 
 export const ScriptBubbleInstructions = () => {
@@ -25,7 +24,7 @@ export const ScriptBubbleInstructions = () => {
 
 ${parseInitBubbleCode({
   typebot: typebot?.publicId ?? "",
-  apiHost: parseApiHostValue(typebot?.customDomain),
+  customDomain: typebot?.customDomain,
   theme,
   previewMessage,
 })}`,

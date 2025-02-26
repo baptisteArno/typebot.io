@@ -3,9 +3,9 @@ import type { BotContext } from "@/types";
 import { CorsError } from "@/utils/CorsError";
 import { setBotContainerHeight } from "@/utils/botContainerHeightSignal";
 import { setBotContainer } from "@/utils/botContainerSignal";
+import { mergeThemes } from "@/utils/dynamicTheme";
 import { injectFont } from "@/utils/injectFont";
 import { setIsMobile } from "@/utils/isMobileSignal";
-import { mergeThemes } from "@/utils/mergeThemes";
 import { persist } from "@/utils/persist";
 import { setCssVariablesValue } from "@/utils/setCssVariablesValue";
 import {
@@ -53,6 +53,7 @@ export type BotProps = {
   resultId?: string;
   prefilledVariables?: Record<string, unknown>;
   apiHost?: string;
+  wsHost?: string;
   font?: Font;
   progressBarRef?: HTMLDivElement;
   startFrom?: StartFrom;
@@ -248,6 +249,7 @@ export const Bot = (props: BotProps & { class?: string }) => {
             }}
             context={{
               apiHost: props.apiHost,
+              wsHost: props.wsHost,
               isPreview:
                 typeof props.typebot !== "string" || (props.isPreview ?? false),
               resultId: initialChatReply.resultId,
