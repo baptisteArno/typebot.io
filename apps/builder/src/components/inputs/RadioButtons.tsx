@@ -47,19 +47,21 @@ export const RadioButtons = <T extends string>({
   );
 };
 
-export const RadioCard = (
-  props: UseRadioProps & { children: ReactNode; size?: "md" | "sm" },
-) => {
-  const { getInputProps, getCheckboxProps } = useRadio(props);
+export const RadioCard = ({
+  children,
+  size = "md",
+  ...useRadioProps
+}: UseRadioProps & { children: ReactNode; size?: "md" | "sm" }) => {
+  const { getInputProps, getRadioProps } = useRadio(useRadioProps);
 
   const input = getInputProps();
-  const checkbox = getCheckboxProps();
+  const radioProps = getRadioProps();
 
   return (
     <Box as="label" flex="1">
       <input {...input} />
       <Flex
-        {...checkbox}
+        {...radioProps}
         cursor="pointer"
         borderWidth="2px"
         borderRadius="md"
@@ -72,13 +74,13 @@ export const RadioCard = (
         _active={{
           bgColor: useColorModeValue("gray.200", "gray.600"),
         }}
-        px={props.size === "sm" ? 3 : 5}
-        py={props.size === "sm" ? 1 : 2}
+        px={size === "sm" ? 3 : 5}
+        py={size === "sm" ? 1 : 2}
         transition="background-color 150ms, color 150ms, border 150ms"
         justifyContent="center"
-        fontSize={props.size === "sm" ? "sm" : undefined}
+        fontSize={size === "sm" ? "sm" : undefined}
       >
-        {props.children}
+        {children}
       </Flex>
     </Box>
   );

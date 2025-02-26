@@ -34,6 +34,7 @@ type Props<HasVariable extends boolean> = {
   direction?: "row" | "column";
   suffix?: string;
   helperText?: ReactNode;
+  placeholder?: string;
   onValueChange: (value?: Value<HasVariable>) => void;
 } & Omit<
   NumberInputProps,
@@ -51,6 +52,7 @@ export const NumberInput = <HasVariable extends boolean>({
   direction = "column",
   suffix,
   helperText,
+  placeholder,
   ...props
 }: Props<HasVariable>) => {
   const [isTouched, setIsTouched] = useState(false);
@@ -107,7 +109,7 @@ export const NumberInput = <HasVariable extends boolean>({
       w="full"
       {...props}
     >
-      <NumberInputField placeholder={props.placeholder} />
+      <NumberInputField placeholder={placeholder} />
       <NumberInputStepper>
         <NumberIncrementStepper />
         <NumberDecrementStepper />

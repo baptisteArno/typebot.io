@@ -237,7 +237,9 @@ export const Select = <T extends Item>({
               filteredItems.map((item, idx) => {
                 return (
                   <Button
-                    ref={(el) => (itemsRef.current[idx] = el)}
+                    ref={(el) => {
+                      if (el) itemsRef.current[idx] = el;
+                    }}
                     minH="40px"
                     key={idx}
                     onClick={handleItemClick(item)}
