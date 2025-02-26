@@ -47,6 +47,7 @@ export const clientUserSchema = userSchema.pick({
   preferredAppAppearance: true,
   displayedInAppNotifications: true,
   groupTitlesAutoGeneration: true,
+  preferredLanguage: true,
 });
 export type ClientUser = z.infer<typeof clientUserSchema>;
 
@@ -60,5 +61,6 @@ export const updateUserSchema = userSchema.pick({
   company: true,
   graphNavigation: true,
   preferredAppAppearance: true,
+  preferredLanguage: true,
 });
 export type UpdateUser = z.infer<typeof updateUserSchema>;
