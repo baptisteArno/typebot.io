@@ -1,6 +1,6 @@
 {
   "name": "@typebot.io/js",
-  "version": "0.3.57",
+  "version": "0.3.58",
   "description": "Javascript library to display typebots on your website",
   "license": "FSL-1.1-ALv2",
   "type": "module",
@@ -16,7 +16,7 @@
   },
   "devDependencies": {
     "@ai-sdk/ui-utils": "1.1.16",
-    "@ark-ui/solid": "4.2.1",
+    "@ark-ui/solid": "4.10.2",
     "@fix-webm-duration/fix": "1.0.1",
     "@stripe/stripe-js": "1.54.1",
     "clsx": "2.1.1",
@@ -24,8 +24,8 @@
     "ky": "1.2.4",
     "marked": "9.0.3",
     "partysocket": "1.0.2",
-    "solid-element": "1.9.0",
-    "solid-js": "1.9.2",
+    "solid-element": "1.9.1",
+    "solid-js": "1.9.5",
     "@typebot.io/blocks-bubbles": "workspace:*",
     "@typebot.io/blocks-inputs": "workspace:*",
     "@typebot.io/blocks-logic": "workspace:*",
