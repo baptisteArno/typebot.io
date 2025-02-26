@@ -138,7 +138,7 @@ const TextGuestBubble = (props: { answer: TextInputSubmitContent }) => {
         <img
           src={clickedImageSrc()}
           alt="Attachment"
-          style={{ "border-radius": "6px" }}
+          class="max-h-[90vh] max-w-[90vw] rounded-[6px]"
         />
       </Modal>
     </div>
