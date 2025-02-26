@@ -15,7 +15,7 @@
     "build": "tsup"
   },
   "devDependencies": {
-    "@ai-sdk/ui-utils": "1.1.8",
+    "@ai-sdk/ui-utils": "1.1.16",
     "@ark-ui/solid": "4.2.1",
     "@fix-webm-duration/fix": "1.0.1",
     "@stripe/stripe-js": "1.54.1",
