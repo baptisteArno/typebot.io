@@ -109,22 +109,20 @@ export const ImageBubble = (props: Props) => {
               {Image}
             </a>
           ) : (
-            <>
-              <figure
-                class={clsx(
-                  "z-10 cursor-pointer",
-                  !isTyping() && "p-4",
-                  isTyping() ? (isMobile() ? "h-8" : "h-9") : "",
-                )}
-                on:click={
-                  props.content?.url?.startsWith("data:image/svg")
-                    ? undefined
-                    : openModal
-                }
-              >
-                {Image}
-              </figure>
-            </>
+            <figure
+              class={clsx(
+                "z-10 cursor-pointer",
+                !isTyping() && "p-4",
+                isTyping() ? (isMobile() ? "h-8" : "h-9") : "",
+              )}
+              on:click={
+                props.content?.url?.startsWith("data:image/svg")
+                  ? undefined
+                  : openModal
+              }
+            >
+              {Image}
+            </figure>
           )}
         </div>
       </div>
