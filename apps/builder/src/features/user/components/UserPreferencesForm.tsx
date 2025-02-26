@@ -49,7 +49,7 @@ export const UserPreferencesForm = () => {
   };
 
   const updateLocale = (locale: keyof typeof localeHumanReadable) => () => {
-    document.cookie = `NEXT_LOCALE=${locale}; path=/; max-age=31536000`;
+    updateUser({ preferredLanguage: locale });
     router.replace(
       {
         pathname: router.pathname,
