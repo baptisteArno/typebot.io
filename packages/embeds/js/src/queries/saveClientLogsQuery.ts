@@ -16,7 +16,7 @@ export const saveClientLogsQuery = async ({
     await ky.post(
       `${
         isNotEmpty(apiHost) ? apiHost : guessApiHost()
-      }/api/v1/sessions/${sessionId}/clientLogs`,
+      }/api/v2/sessions/${sessionId}/clientLogs`,
       {
         json: {
           clientLogs,
