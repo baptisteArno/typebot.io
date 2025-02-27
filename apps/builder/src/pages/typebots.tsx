@@ -16,7 +16,6 @@ export const getServerSideProps = async (
     context.res,
     createAuthConfig({}),
   )) as Session & { user: User };
-  console.log("🚀 ~ session:", session);
 
   const preferredLanguagePath =
     session?.user?.preferredLanguage &&
