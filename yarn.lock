@@ -5919,7 +5919,7 @@
   devDependencies:
     "@typebot.io/tsconfig" "packages/tsconfig"
   dependencies:
-    "@ai-sdk/deepseek" ""
+    "@ai-sdk/deepseek" "^0.1.12"
     "@typebot.io/ai" "packages/ai"
     "@typebot.io/forge" "packages/forge/core"
     "@typebot.io/lib" "packages/lib"
@@ -6000,6 +6000,7 @@
     "@typebot.io/anthropic-block" "packages/forge/blocks/anthropic"
     "@typebot.io/cal-com-block" "packages/forge/blocks/calCom"
     "@typebot.io/chat-node-block" "packages/forge/blocks/chatNode"
+    "@typebot.io/deepseek-block" "packages/forge/blocks/deepseek"
     "@typebot.io/dify-ai-block" "packages/forge/blocks/difyAi"
     "@typebot.io/elevenlabs-block" "packages/forge/blocks/elevenlabs"
     "@typebot.io/groq-block" "packages/forge/blocks/groq"
