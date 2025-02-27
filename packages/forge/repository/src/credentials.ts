@@ -3,6 +3,8 @@ import { anthropicBlock } from "@typebot.io/anthropic-block";
 import { anthropicCredentialsSchema } from "@typebot.io/anthropic-block/schemas";
 import { chatNodeBlock } from "@typebot.io/chat-node-block";
 import { chatNodeCredentialsSchema } from "@typebot.io/chat-node-block/schemas";
+import { deepSeekBlock } from "@typebot.io/deepseek-block";
+import { deepSeekCredentialsSchema } from "@typebot.io/deepseek-block/schemas";
 import { difyAiBlock } from "@typebot.io/dify-ai-block";
 import { difyAiCredentialsSchema } from "@typebot.io/dify-ai-block/schemas";
 import { elevenlabsBlock } from "@typebot.io/elevenlabs-block";
@@ -43,4 +45,5 @@ export const forgedCredentialsSchemas = {
   [zendeskBlock.id]: zendeskCredentialsSchema,
   [posthogBlock.id]: posthogCredentialsSchema,
   [perplexityBlock.id]: perplexityCredentialsSchema,
+  [deepSeekBlock.id]: deepSeekCredentialsSchema,
 };

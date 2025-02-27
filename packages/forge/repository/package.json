@@ -23,7 +23,8 @@
     "@typebot.io/groq-block": "workspace:*",
     "@typebot.io/zendesk-block": "workspace:*",
     "@typebot.io/posthog-block": "workspace:*",
-    "@typebot.io/perplexity-block": "workspace:*"
+    "@typebot.io/perplexity-block": "workspace:*",
+    "@typebot.io/deepseek-block": "workspace:*"
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*"
