@@ -12,7 +12,10 @@ export const createChatCompletion = createAction({
   name: "Create chat completion",
   auth,
   options: parseChatCompletionOptions({
-    modelFetchId: "fetchModels",
+    models: {
+      type: "fetcher",
+      id: "fetchModels",
+    },
   }),
   turnableInto: [
     {
@@ -39,6 +42,13 @@ export const createChatCompletion = createAction({
         ...options,
         model: undefined,
         action: "Create Chat Message",
+      }),
+    },
+    {
+      blockId: "perplexity",
+      transform: (options) => ({
+        ...options,
+        model: undefined,
       }),
     },
   ],

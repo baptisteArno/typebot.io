@@ -13,7 +13,10 @@ export const createChatCompletion = createAction({
   name: "Create chat completion",
   auth,
   options: parseChatCompletionOptions({
-    modelFetchId: "fetchModels",
+    models: {
+      type: "fetcher",
+      id: "fetchModels",
+    },
   }),
   fetchers: [
     {
@@ -61,6 +64,9 @@ export const createChatCompletion = createAction({
         ...options,
         action: "Create Chat Message",
       }),
+    },
+    {
+      blockId: "perplexity",
     },
     {
       blockId: "together-ai",

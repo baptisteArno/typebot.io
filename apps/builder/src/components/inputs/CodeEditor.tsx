@@ -42,6 +42,7 @@ type Props = {
   isRequired?: boolean;
   onChange?: (value: string) => void;
   withLineNumbers?: boolean;
+  placeholder?: string;
 };
 export const CodeEditor = ({
   label,
@@ -58,6 +59,7 @@ export const CodeEditor = ({
   withLineNumbers = false,
   isReadOnly = false,
   debounceTimeout = 1000,
+  placeholder,
   ...props
 }: Props & Omit<BoxProps, "onChange">) => {
   const theme = useColorModeValue(githubLight, tokyoNight);
@@ -172,7 +174,7 @@ export const CodeEditor = ({
           basicSetup={{
             highlightActiveLine: false,
           }}
-          placeholder={props.placeholder}
+          placeholder={placeholder}
         />
         {isVariableButtonDisplayed && (
           <VariablesButton

@@ -97,22 +97,14 @@ export const EventSourceEndpoint = ({
     [deleteSourceEndpointYOffset, source.eventId],
   );
 
-  useEventListener(
-    "pointerdown",
-    (e) => {
-      e.stopPropagation();
-      setConnectingIds({ source });
-    },
-    ref.current,
-  );
+  useEventListener(ref.current, "pointerdown", (e) => {
+    e.stopPropagation();
+    setConnectingIds({ source });
+  });
 
-  useEventListener(
-    "mousedown",
-    (e) => {
-      e.stopPropagation();
-    },
-    ref.current,
-  );
+  useEventListener(ref.current, "mousedown", (e) => {
+    e.stopPropagation();
+  });
 
   return (
     <Flex

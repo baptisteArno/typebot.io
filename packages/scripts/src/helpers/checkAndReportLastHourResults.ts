@@ -434,7 +434,8 @@ const getLastHourResults = async () => {
   } satisfies Prisma.Prisma.ResultGroupByArgs;
 
   try {
-    return prisma.result.groupBy(queryParams);
+    const response = await prisma.result.groupBy(queryParams);
+    return response;
   } catch (err) {
     console.error("Failed to get last hour results, retrying once...", err);
     return prisma.result.groupBy(queryParams);

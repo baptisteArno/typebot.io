@@ -61,7 +61,7 @@ export const ConditionItemNode = ({ item, isMouseOver, indices }: Props) => {
   const handleMouseWheel = (e: WheelEvent) => {
     e.stopPropagation();
   };
-  useEventListener("wheel", handleMouseWheel, ref.current);
+  useEventListener(ref.current, "wheel", handleMouseWheel);
 
   return (
     <Popover

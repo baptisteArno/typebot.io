@@ -77,7 +77,7 @@ export const ItemNodesList = ({
       y: clientY - relativeCoordinates.y,
     });
   };
-  useEventListener("mousemove", handleGlobalMouseMove);
+  useEventListener(document, "mousemove", handleGlobalMouseMove);
 
   useEffect(() => {
     if (!showPlaceholders) return;
@@ -92,9 +92,9 @@ export const ItemNodesList = ({
     setExpandedPlaceholderIndex(index);
   };
   useEventListener(
+    mouseOverBlock?.element ?? null,
     "mousemove",
     handleMouseMoveOnBlock,
-    mouseOverBlock?.element,
   );
 
   const handleMouseUpOnGroup = (e: MouseEvent) => {
@@ -115,9 +115,14 @@ export const ItemNodesList = ({
       itemIndex,
     });
   };
-  useEventListener("mouseup", handleMouseUpOnGroup, mouseOverBlock?.element, {
-    capture: true,
-  });
+  useEventListener(
+    mouseOverBlock?.element ?? null,
+    "mouseup",
+    handleMouseUpOnGroup,
+    {
+      capture: true,
+    },
+  );
 
   const handleBlockMouseDown =
     (itemIndex: number) =>

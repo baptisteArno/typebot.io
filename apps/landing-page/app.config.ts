@@ -1,6 +1,6 @@
 import { resolve } from "path";
 import contentCollections from "@content-collections/vinxi";
-import { defineConfig } from "@tanstack/start/config";
+import { defineConfig } from "@tanstack/react-start/config";
 // import { visualizer } from "rollup-plugin-visualizer";
 import viteTsConfigPaths from "vite-tsconfig-paths";
 

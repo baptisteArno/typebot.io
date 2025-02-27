@@ -1,41 +1,60 @@
-import { createTogetherAI } from "@ai-sdk/togetherai";
-import { getChatCompletionSetVarIds } from "@typebot.io/ai/getChatCompletionSetVarIds";
+import { createPerplexity } from "@ai-sdk/perplexity";
 import { getChatCompletionStreamVarId } from "@typebot.io/ai/getChatCompletionStreamVarId";
 import { parseChatCompletionOptions } from "@typebot.io/ai/parseChatCompletionOptions";
 import { runChatCompletion } from "@typebot.io/ai/runChatCompletion";
 import { runChatCompletionStream } from "@typebot.io/ai/runChatCompletionStream";
 import { createAction } from "@typebot.io/forge";
+import { isDefined } from "@typebot.io/lib/utils";
 import { auth } from "../auth";
+import { perplexityModels } from "../constants";
 
 export const createChatCompletion = createAction({
   name: "Create chat completion",
   auth,
   options: parseChatCompletionOptions({
     models: {
-      type: "text",
-      helperText:
-        "You can find the list of all the models available [here](https://docs.together.ai/docs/inference-models#chat-models). Copy the model string for API.",
+      type: "static",
+      models: perplexityModels,
     },
   }),
   turnableInto: [
     {
       blockId: "openai",
+      transform: (opts) => ({
+        ...opts,
+        model: undefined,
+      }),
     },
     {
-      blockId: "open-router",
+      blockId: "mistral",
+      transform: (opts) => ({
+        ...opts,
+        model: undefined,
+      }),
     },
-    { blockId: "mistral" },
-    { blockId: "perplexity" },
+    {
+      blockId: "groq",
+      transform: (opts) => ({
+        ...opts,
+        model: undefined,
+      }),
+    },
+    {
+      blockId: "together-ai",
+    },
+    { blockId: "open-router" },
     {
       blockId: "anthropic",
       transform: (options) => ({
         ...options,
+        model: undefined,
         action: "Create Chat Message",
       }),
     },
-    { blockId: "groq" },
   ],
-  getSetVariableIds: getChatCompletionSetVarIds,
+  getSetVariableIds: (options) =>
+    options.responseMapping?.map((res) => res.variableId).filter(isDefined) ??
+    [],
   run: {
     server: ({ credentials: { apiKey }, options, variables, logs }) => {
       if (!apiKey) return logs.add("No API key provided");
@@ -44,7 +63,7 @@ export const createChatCompletion = createAction({
       if (!options.messages) return logs.add("No messages provided");
 
       return runChatCompletion({
-        model: createTogetherAI({
+        model: createPerplexity({
           apiKey,
         })(modelName),
         variables,
@@ -72,17 +91,19 @@ export const createChatCompletion = createAction({
           };
         if (!options.messages)
           return {
-            error: { description: "No messages provided" },
+            error: {
+              description: "No messages provided",
+            },
           };
 
         return runChatCompletionStream({
-          model: createTogetherAI({
+          model: createPerplexity({
             apiKey,
           })(modelName),
           variables,
           messages: options.messages,
-          tools: options.tools,
           isVisionEnabled: false,
+          tools: options.tools,
           temperature: options.temperature,
           responseMapping: options.responseMapping,
         });

@@ -113,7 +113,7 @@ export const FolderContent = ({ folder }: Props) => {
     setMouseOverFolderId(undefined);
     setDraggedTypebot(undefined);
   };
-  useEventListener("mouseup", handleMouseUp);
+  useEventListener(document, "mouseup", handleMouseUp);
 
   const handleTypebotDrag =
     (typebot: TypebotInDashboard) =>
@@ -135,7 +135,7 @@ export const FolderContent = ({ folder }: Props) => {
       y: clientY - mousePositionInElement.y,
     });
   };
-  useEventListener("mousemove", handleMouseMove);
+  useEventListener(document.body, "mousemove", handleMouseMove);
 
   useEffect(() => {
     if (!draggablePosition || !draggedTypebot) return;
