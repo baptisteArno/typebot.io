@@ -29,6 +29,7 @@ Sentry.init({
     const userAgent = event.contexts?.browser?.name;
     if (
       userAgent &&
+      typeof userAgent === "string" &&
       crawlersToIgnore.some((crawler) => userAgent.includes(crawler))
     )
       return null;
