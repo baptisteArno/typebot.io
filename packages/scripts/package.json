@@ -53,8 +53,7 @@
     "@typebot.io/workspaces": "workspace:*",
     "@typebot.io/typebot": "workspace:*",
     "@typebot.io/zod": "workspace:*",
-    "@typebot.io/emails": "workspace:*",
-    "posthog-node": "4.3.2"
+    "@typebot.io/emails": "workspace:*"
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*",

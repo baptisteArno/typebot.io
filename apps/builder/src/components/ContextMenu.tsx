@@ -50,18 +50,22 @@ export function ContextMenu<T extends HTMLElement = HTMLElement>(
     }
   }, [isOpened]);
 
-  useEventListener(targetRef.current, "contextmenu", (e) => {
-    if (props.isDisabled) return;
-    if (e.currentTarget === targetRef.current) {
-      e.preventDefault();
-      e.stopPropagation();
-      props.onOpen?.();
-      setIsOpened(true);
-      setPosition([e.pageX, e.pageY]);
-    } else {
-      setIsOpened(false);
-    }
-  });
+  useEventListener(
+    "contextmenu",
+    (e) => {
+      if (props.isDisabled) return;
+      if (e.currentTarget === targetRef.current) {
+        e.preventDefault();
+        e.stopPropagation();
+        props.onOpen?.();
+        setIsOpened(true);
+        setPosition([e.pageX, e.pageY]);
+      } else {
+        setIsOpened(false);
+      }
+    },
+    targetRef.current,
+  );
 
   const onCloseHandler = useCallback(() => {
     props.menuProps?.onClose?.();

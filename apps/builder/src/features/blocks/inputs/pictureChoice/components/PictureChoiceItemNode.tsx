@@ -57,7 +57,7 @@ export const PictureChoiceItemNode = ({
   const handleMouseWheel = (e: WheelEvent) => {
     e.stopPropagation();
   };
-  useEventListener(ref.current, "wheel", handleMouseWheel);
+  useEventListener("wheel", handleMouseWheel, ref.current);
 
   const blockId = typebot
     ? typebot.groups.at(indices.groupIndex)?.blocks?.at(indices.blockIndex)?.id

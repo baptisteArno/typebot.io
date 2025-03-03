@@ -10,7 +10,7 @@
     "test:ui": "dotenv -e ./.env -e ../../.env -- playwright test --ui"
   },
   "dependencies": {
-    "@chakra-ui/react": "2.10.6",
+    "@chakra-ui/react": "2.8.2",
     "partysocket": "1.0.2",
     "@typebot.io/trpc-openapi": "workspace:*",
     "@planetscale/database": "1.8.0",

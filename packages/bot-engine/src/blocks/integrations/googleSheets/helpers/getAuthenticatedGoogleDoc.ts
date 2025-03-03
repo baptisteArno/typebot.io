@@ -9,8 +9,7 @@ export const getAuthenticatedGoogleDoc = async ({
 }: {
   credentialsId: string;
   spreadsheetId: string;
-  // TO-DO: Remove workspaceId optionality once v3.4 is out
-  workspaceId?: string;
+  workspaceId: string;
 }) => {
   const client = await getAuthenticatedGoogleClient(credentialsId, workspaceId);
   if (!client)

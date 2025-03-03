@@ -144,7 +144,7 @@ const sendEmail = async ({
   typebot: Pick<TypebotInSession, "id" | "variables">;
   answers: AnswerInSessionState[];
   fileUrls?: string | string[];
-  workspaceId?: string;
+  workspaceId: string;
 }): Promise<LogInSession[] | undefined> => {
   const logs: LogInSession[] = [];
   const { name: replyToName } = parseEmailRecipient(replyTo);
@@ -241,8 +241,7 @@ const sendEmail = async ({
 
 const getEmailInfo = async (
   credentialsId: string,
-  // TO-DO: Remove workspaceId optionnality when deployed
-  workspaceId?: string,
+  workspaceId: string,
 ): Promise<SmtpCredentials["data"] | undefined> => {
   if (credentialsId === "default")
     return {

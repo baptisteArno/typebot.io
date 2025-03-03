@@ -100,8 +100,7 @@ const createStripePaymentIntent =
 
 const getStripeInfo = async (
   credentialsId: string,
-  // TO-DO: Remove workspaceId optionnality when deployed
-  workspaceId?: string,
+  workspaceId: string,
 ): Promise<StripeCredentials["data"] | undefined> => {
   const credentials = await getCredentials(credentialsId, workspaceId);
   if (!credentials) return;

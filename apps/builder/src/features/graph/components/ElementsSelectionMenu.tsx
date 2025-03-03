@@ -56,9 +56,9 @@ export const ElementsSelectionMenu = ({
       })),
     );
 
-  useEventListener(ref.current, "pointerup", (e) => e.stopPropagation());
+  useEventListener("pointerup", (e) => e.stopPropagation(), ref.current);
 
-  useEventListener(document, "mousemove", (e) => {
+  useEventListener("mousemove", (e) => {
     setMousePosition({
       x: e.clientX,
       y: e.clientY,

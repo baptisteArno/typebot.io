@@ -40,6 +40,7 @@
     "@typebot.io/tsconfig": "workspace:*",
     "@typebot.io/zendesk-block": "workspace:*",
     "@typebot.io/schemas": "workspace:*",
+    "@typebot.io/logs": "workspace:*",
     "@types/dompurify": "3.0.3",
     "autoprefixer": "10.4.20",
     "esbuild-plugin-solid": "^0.6.0",

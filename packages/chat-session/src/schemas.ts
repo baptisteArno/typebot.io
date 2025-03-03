@@ -137,8 +137,7 @@ const sessionStateSchemaV3 = sessionStateSchemaV2
     allowedOrigins: z.array(z.string()).optional(),
     setVariableIdsForHistory: z.array(z.string()).optional(),
     currentSetVariableHistoryIndex: z.number().optional(),
-    // TODO: Remove workspaceId optionality once v3.4 is out
-    workspaceId: z.string().optional(),
+    workspaceId: z.string(),
     previewMetadata: z
       .object({
         answers: z.array(answerSchema).optional(),
@@ -248,6 +247,7 @@ const migrateFromV2ToV3 = (
   ...state,
   version: "3",
   currentBlockId: state.currentBlock?.blockId,
+  workspaceId: "",
 });
 
 const chatSessionSchema = z.object({
