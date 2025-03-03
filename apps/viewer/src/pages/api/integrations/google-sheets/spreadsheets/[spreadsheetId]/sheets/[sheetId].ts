@@ -66,7 +66,7 @@ const getRows = async (req: NextApiRequest, res: NextApiResponse) => {
     return;
   }
 
-  const client = await getAuthenticatedGoogleClient(credentialsId);
+  const client = await getAuthenticatedGoogleClient(credentialsId, undefined);
   if (!client) {
     notFound(res, "Couldn't find credentials in database");
     return;
@@ -123,7 +123,7 @@ const insertRow = async (req: NextApiRequest, res: NextApiResponse) => {
       values: { [key: string]: string };
     };
   if (!hasValue(credentialsId)) return badRequest(res);
-  const client = await getAuthenticatedGoogleClient(credentialsId);
+  const client = await getAuthenticatedGoogleClient(credentialsId, undefined);
   if (!client)
     return res.status(404).send("Couldn't find credentials in database");
   const doc = new GoogleSpreadsheet(spreadsheetId, client);
@@ -155,7 +155,7 @@ const updateRow = async (req: NextApiRequest, res: NextApiResponse) => {
   const { resultId, credentialsId, values } = body;
 
   if (!hasValue(credentialsId) || !referenceCell) return badRequest(res);
-  const client = await getAuthenticatedGoogleClient(credentialsId);
+  const client = await getAuthenticatedGoogleClient(credentialsId, undefined);
   if (!client)
     return res.status(404).send("Couldn't find credentials in database");
   const doc = new GoogleSpreadsheet(spreadsheetId, client);

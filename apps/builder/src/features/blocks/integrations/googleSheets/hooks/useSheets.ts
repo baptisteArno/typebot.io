@@ -6,15 +6,17 @@ import type { Sheet } from "../types";
 export const useSheets = ({
   credentialsId,
   spreadsheetId,
+  workspaceId,
   onError,
 }: {
   credentialsId?: string;
   spreadsheetId?: string;
+  workspaceId?: string;
   onError?: (error: Error) => void;
 }) => {
   const queryParams = stringify({ credentialsId });
   const { data, error, mutate } = useSWR<{ sheets: Sheet[] }, Error>(
-    !credentialsId || !spreadsheetId
+    !credentialsId || !spreadsheetId || !workspaceId
       ? null
       : `/api/integrations/google-sheets/spreadsheets/${spreadsheetId}/sheets?${queryParams}`,
     fetcher,

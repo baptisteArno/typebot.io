@@ -2,7 +2,7 @@ import prisma from "@typebot.io/prisma";
 
 export const getCredentials = async (
   credentialsId: string,
-  workspaceId: string,
+  workspaceId: string | undefined,
 ) => {
   const credentials = await prisma.credentials.findUnique({
     where: { id: credentialsId },
@@ -12,7 +12,7 @@ export const getCredentials = async (
       workspaceId: true,
     },
   });
-  if (credentials?.workspaceId !== workspaceId) {
+  if (workspaceId && credentials?.workspaceId !== workspaceId) {
     return null;
   }
   return credentials;

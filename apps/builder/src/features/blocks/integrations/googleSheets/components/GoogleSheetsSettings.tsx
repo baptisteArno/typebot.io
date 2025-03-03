@@ -55,6 +55,7 @@ export const GoogleSheetsSettings = ({
   const { sheets, isLoading } = useSheets({
     credentialsId: options?.credentialsId,
     spreadsheetId: options?.spreadsheetId,
+    workspaceId: workspace?.id,
   });
   const { isOpen, onOpen, onClose } = useDisclosure();
   const sheet = useMemo(

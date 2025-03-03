@@ -8,7 +8,7 @@ import { getCredentials } from "./getCredentials";
 
 export const getAuthenticatedGoogleClient = async (
   credentialsId: string,
-  workspaceId: string,
+  workspaceId: string | undefined,
 ): Promise<OAuth2Client | undefined> => {
   const credentials = await getCredentials(credentialsId, workspaceId);
   if (!credentials) return;
