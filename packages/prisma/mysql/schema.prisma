@@ -64,6 +64,7 @@ model User {
   displayedInAppNotifications Json?
   credentials                 UserCredentials[]
   groupTitlesAutoGeneration   Json?
+  preferredLanguage           String?                   @db.VarChar(10)
 }
 
 model ApiToken {

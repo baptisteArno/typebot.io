@@ -17,6 +17,7 @@ import { GraphNavigation } from "@typebot.io/prisma/enum";
 import type { GroupTitlesAutoGeneration } from "@typebot.io/schemas/features/user/schema";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
+import { setLocaleInCookies } from "../helpers/setLocaleInCookies";
 import { useUser } from "../hooks/useUser";
 import { AppearanceRadioGroup } from "./AppearanceRadioGroup";
 import { GraphNavigationRadioGroup } from "./GraphNavigationRadioGroup";
@@ -49,7 +50,9 @@ export const UserPreferencesForm = () => {
   };
 
   const updateLocale = (locale: keyof typeof localeHumanReadable) => () => {
-    document.cookie = `NEXT_LOCALE=${locale}; path=/; max-age=31536000`;
+    updateUser({ preferredLanguage: locale });
+
+    setLocaleInCookies(locale);
     router.replace(
       {
         pathname: router.pathname,

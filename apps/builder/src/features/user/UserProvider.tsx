@@ -12,6 +12,7 @@ import { useRouter } from "next/router";
 import type { ReactNode } from "react";
 import { createContext, useEffect, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
+import { setLocaleInCookies } from "./helpers/setLocaleInCookies";
 import { updateUserQuery } from "./queries/updateUserQuery";
 
 export const userContext = createContext<{
@@ -84,6 +85,26 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
             : undefined,
       });
   }, [router.isReady, router.pathname, status]);
+
+  useEffect(() => {
+    if (!router.isReady) return;
+    if (status === "loading") return;
+
+    const preferredLanguage = session?.user?.preferredLanguage;
+    const currentLocale = router.locale;
+
+    if (preferredLanguage && preferredLanguage !== currentLocale) {
+      setLocaleInCookies(preferredLanguage);
+      router.replace(
+        {
+          pathname: router.pathname,
+          query: router.query,
+        },
+        undefined,
+        { locale: preferredLanguage },
+      );
+    }
+  }, [router.isReady, router.locale, status, session?.user?.preferredLanguage]);
 
   const saveUser = useDebouncedCallback(
     async (updates: Partial<User>) => {
