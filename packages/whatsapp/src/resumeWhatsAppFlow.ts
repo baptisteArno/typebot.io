@@ -289,7 +289,6 @@ const getWhatsAppCredentials = async ({
   isPreview,
 }: {
   credentialsId?: string;
-  // TO-DO: Remove workspaceId optionnality when deployed
   workspaceId?: string;
   isPreview: boolean;
 }): Promise<WhatsAppCredentials["data"] | undefined> => {
@@ -305,7 +304,7 @@ const getWhatsAppCredentials = async ({
     };
   }
 
-  if (!credentialsId) return;
+  if (!credentialsId || !workspaceId) return;
 
   const credentials = await getCredentials(credentialsId, workspaceId);
   if (!credentials) return;

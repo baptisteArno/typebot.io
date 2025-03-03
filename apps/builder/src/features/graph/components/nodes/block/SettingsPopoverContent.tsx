@@ -78,7 +78,7 @@ export const SettingsPopoverContent = ({ onExpandClick, ...props }: Props) => {
   const handleMouseWheel = (e: WheelEvent) => {
     e.stopPropagation();
   };
-  useEventListener(ref.current, "wheel", handleMouseWheel);
+  useEventListener("wheel", handleMouseWheel, ref.current);
 
   return (
     <Portal>

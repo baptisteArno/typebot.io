@@ -271,11 +271,11 @@ export const Graph = ({
 
   // Prevent back/forward navigation in Firefox
   useEventListener(
-    graphContainerRef.current,
     "wheel",
     (e) => {
       e.preventDefault();
     },
+    graphContainerRef.current,
     {
       passive: false,
     },
@@ -343,32 +343,36 @@ export const Graph = ({
     setAutoMoveDirection(undefined);
   };
 
-  useEventListener(document, "keydown", (e) => {
+  useEventListener("keydown", (e) => {
     if (e.key === " ") setIsDraggingGraph(true);
   });
-  useEventListener(document, "keyup", (e) => {
+  useEventListener("keyup", (e) => {
     if (e.key === " ") {
       setIsDraggingGraph(false);
       setIsDragging(false);
     }
   });
 
-  useEventListener(window, "blur", () => {
-    setIsDraggingGraph(false);
-    setIsDragging(false);
-  });
+  useEventListener(
+    "blur",
+    () => {
+      setIsDraggingGraph(false);
+      setIsDragging(false);
+    },
+    window as any,
+  );
 
-  useEventListener(document, "mousedown", handleCaptureMouseDown, {
+  useEventListener("mousedown", handleCaptureMouseDown, undefined, {
     capture: true,
   });
-  useEventListener(graphContainerRef.current, "mouseup", handleMouseUp);
-  useEventListener(editorContainerRef.current, "pointerup", handlePointerUp);
-  useEventListener(document, "mousemove", handleMouseMove);
+  useEventListener("mouseup", handleMouseUp, graphContainerRef.current);
+  useEventListener("pointerup", handlePointerUp, editorContainerRef.current);
+  useEventListener("mousemove", handleMouseMove);
 
   // Make sure pinch doesn't interfere with native Safari zoom
   // More info: https://use-gesture.netlify.app/docs/gestures/
-  useEventListener(document, "gesturestart" as any, (e) => e.preventDefault());
-  useEventListener(document, "gesturechange" as any, (e) => e.preventDefault());
+  useEventListener("gesturestart", (e) => e.preventDefault());
+  useEventListener("gesturechange", (e) => e.preventDefault());
 
   const zoomIn = () => zoom({ delta: zoomButtonsScaleBlock });
   const zoomOut = () => zoom({ delta: -zoomButtonsScaleBlock });

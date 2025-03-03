@@ -107,8 +107,8 @@ export const DrawingEdge = ({ connectingIds }: Props) => {
     };
     setMousePosition(coordinates);
   };
-  useEventListener(document, "mousemove", handleMouseMove);
-  useEventListener(document, "mouseup", () => {
+  useEventListener("mousemove", handleMouseMove);
+  useEventListener("mouseup", () => {
     if (connectingIds?.target) createNewEdge(connectingIds);
     setConnectingIds(null);
   });

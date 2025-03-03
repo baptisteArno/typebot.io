@@ -1,4 +1,5 @@
 import { continueChat } from "@/features/chat/api/continueChat";
+import { saveClientLogsV1 } from "@/features/chat/api/legacy/saveClientLogsV1";
 import { sendMessageV1 } from "@/features/chat/api/legacy/sendMessageV1";
 import { sendMessageV2 } from "@/features/chat/api/legacy/sendMessageV2";
 import { saveClientLogs } from "@/features/chat/api/saveClientLogs";
@@ -24,6 +25,7 @@ export const appRouter = router({
   generateUploadUrl,
   updateTypebotInSession,
   whatsAppRouter,
+  saveClientLogsV1,
   saveClientLogs,
 });
 

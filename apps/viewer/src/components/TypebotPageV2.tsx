@@ -65,7 +65,6 @@ export const TypebotPageV2 = ({
     if (isDefined(customHeadCode)) injectCustomHeadCode(customHeadCode);
     const gtmId = publishedTypebot.settings.metadata?.googleTagManagerId;
     if (isNotEmpty(gtmId)) document.body.prepend(gtmBodyElement(gtmId));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const clearQueryParams = () => {
@@ -103,7 +102,6 @@ export const TypebotPageV2 = ({
     if (!resultId || variableUpdateQueue.length === 0) return;
     Promise.all(variableUpdateQueue.map(sendNewVariables(resultId))).then();
     setVariableUpdateQueue([]);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [resultId]);
 
   const handleNewVariables = async (variables: VariableWithValue[]) => {

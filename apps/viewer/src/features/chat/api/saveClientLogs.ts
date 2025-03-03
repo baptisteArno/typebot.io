@@ -7,7 +7,7 @@ export const saveClientLogs = publicProcedure
   .meta({
     openapi: {
       method: "POST",
-      path: "/v1/sessions/{sessionId}/clientLogs",
+      path: "/v2/sessions/{sessionId}/clientLogs",
       summary: "Save logs",
     },
   })
