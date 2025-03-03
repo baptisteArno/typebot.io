@@ -97,14 +97,22 @@ export const BlockSourceEndpoint = ({
     [deleteSourceEndpointYOffset, id],
   );
 
-  useEventListener(ref.current, "pointerdown", (e) => {
-    e.stopPropagation();
-    if (groupId) setConnectingIds({ source: { ...source, groupId } });
-  });
+  useEventListener(
+    "pointerdown",
+    (e) => {
+      e.stopPropagation();
+      if (groupId) setConnectingIds({ source: { ...source, groupId } });
+    },
+    ref.current,
+  );
 
-  useEventListener(ref.current, "mousedown", (e) => {
-    e.stopPropagation();
-  });
+  useEventListener(
+    "mousedown",
+    (e) => {
+      e.stopPropagation();
+    },
+    ref.current,
+  );
 
   return (
     <Flex
