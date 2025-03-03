@@ -12,6 +12,7 @@ import { useRouter } from "next/router";
 import type { ReactNode } from "react";
 import { createContext, useEffect, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
+import { setLocaleInCookies } from "./helpers/setLocaleInCookies";
 import { updateUserQuery } from "./queries/updateUserQuery";
 
 export const userContext = createContext<{
@@ -93,6 +94,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     const currentLocale = router.locale;
 
     if (preferredLanguage && preferredLanguage !== currentLocale) {
+      setLocaleInCookies(preferredLanguage);
       router.replace(
         {
           pathname: router.pathname,

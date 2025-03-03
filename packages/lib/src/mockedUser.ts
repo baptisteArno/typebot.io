@@ -18,4 +18,5 @@ export const mockedUser: User = {
   },
   referral: null,
   groupTitlesAutoGeneration: null,
+  preferredLanguage: null,
 };
