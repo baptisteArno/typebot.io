@@ -1,6 +1,6 @@
 {
   "name": "root",
-  "version": "3.4.2",
+  "version": "3.5.0",
   "private": true,
   "workspaces": [
     "packages/*",
@@ -24,7 +24,7 @@
     "start-docker-compose-prod": "docker compose -f docker-compose.yml up",
     "build": "turbo build --filter=builder... --filter=viewer... --filter=landing-page... --filter=docs...",
     "dev": "turbo dev --filter=builder... --filter=viewer... --filter=@typebot.io/partykit... --concurrency=11",
-    "generate-change-log": "bun check-unused-dependencies && git fetch --all && pnpx gitmoji-changelog",
+    "generate-changelog": "bun check-unused-dependencies && git fetch --all && pnpx gitmoji-changelog",
     "sync-locales": "dotenv -e .env -- tolgee sync --continue-on-warning --remove-unused --no-strict-namespace --patterns './apps/builder/src/**/*.ts?(x)' --backup './.tolgee/backup'",
     "pull-locales": "dotenv -e .env -- tolgee pull && bun format-and-lint:fix",
     "create-new-block": "cd packages/forge/cli && bun start",
