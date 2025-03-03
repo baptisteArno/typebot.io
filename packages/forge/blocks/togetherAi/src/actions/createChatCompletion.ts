@@ -34,6 +34,7 @@ export const createChatCompletion = createAction({
       }),
     },
     { blockId: "groq" },
+    { blockId: "deepseek" },
   ],
   getSetVariableIds: getChatCompletionSetVarIds,
   run: {

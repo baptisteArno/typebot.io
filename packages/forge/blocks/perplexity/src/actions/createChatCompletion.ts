@@ -51,12 +51,24 @@ export const createChatCompletion = createAction({
         action: "Create Chat Message",
       }),
     },
+    {
+      blockId: "deepseek",
+      transform: (options) => ({
+        ...options,
+        model: undefined,
+      }),
+    },
   ],
   getSetVariableIds: (options) =>
     options.responseMapping?.map((res) => res.variableId).filter(isDefined) ??
     [],
   run: {
-    server: ({ credentials: { apiKey }, options, variables, logs }) => {
+    server: ({
+      credentials: { apiKey, baseUrl },
+      options,
+      variables,
+      logs,
+    }) => {
       if (!apiKey) return logs.add("No API key provided");
       const modelName = options.model?.trim();
       if (!modelName) return logs.add("No model provided");
@@ -65,6 +77,7 @@ export const createChatCompletion = createAction({
       return runChatCompletion({
         model: createPerplexity({
           apiKey,
+          baseURL: baseUrl ?? undefined,
         })(modelName),
         variables,
         messages: options.messages,
@@ -77,7 +90,7 @@ export const createChatCompletion = createAction({
     },
     stream: {
       getStreamVariableId: getChatCompletionStreamVarId,
-      run: async ({ credentials: { apiKey }, options, variables }) => {
+      run: async ({ credentials: { apiKey, baseUrl }, options, variables }) => {
         if (!apiKey)
           return {
             error: {
@@ -99,6 +112,7 @@ export const createChatCompletion = createAction({
         return runChatCompletionStream({
           model: createPerplexity({
             apiKey,
+            baseURL: baseUrl ?? undefined,
           })(modelName),
           variables,
           messages: options.messages,

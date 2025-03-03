@@ -51,6 +51,13 @@ export const createChatCompletion = createAction({
         model: undefined,
       }),
     },
+    {
+      blockId: "deepseek",
+      transform: (options) => ({
+        ...options,
+        model: undefined,
+      }),
+    },
   ],
   getSetVariableIds: (options) =>
     options.responseMapping?.map((res) => res.variableId).filter(isDefined) ??
