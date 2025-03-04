@@ -148,7 +148,7 @@ const FolderButton = ({
       <ConfirmModal
         isOpen={isOpen}
         onClose={onClose}
-        confirmButtonLabel={"Delete"}
+        confirmButtonLabel={t("delete")}
         message={
           <Text>
             <T
@@ -159,7 +159,7 @@ const FolderButton = ({
             />
           </Text>
         }
-        title={`Delete ${folder.name}?`}
+        title={`${t("delete")} ${folder.name}?`}
         onConfirm={() =>
           deleteFolder({
             workspaceId: folder.workspaceId,
