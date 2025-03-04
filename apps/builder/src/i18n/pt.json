@@ -152,6 +152,7 @@
   "dashboard.title": "Os meus typebots",
   "delete": "Apagar",
   "downgrade": "Downgrade",
+  "edit": "Editar",
   "editor.blockCard.logicBlock.tooltip.code.label": "Executar código Javascript",
   "editor.blockCard.logicBlock.tooltip.jump.label": "Encaminhar fluxo para outro grupo",
   "editor.blockCard.logicBlock.tooltip.typebotLink.label": "Link e salte para outro typebot",

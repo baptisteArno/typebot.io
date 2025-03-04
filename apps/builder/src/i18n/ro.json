@@ -139,6 +139,7 @@
   "dashboard.title": "Typebot-ii mei",
   "delete": "Șterge",
   "downgrade": "Degradează",
+  "edit": "Editează",
   "editor.blockCard.logicBlock.tooltip.code.label": "Executați codul Javascript",
   "editor.blockCard.logicBlock.tooltip.jump.label": "Avansați rapid fluxul către alt grup",
   "editor.blockCard.logicBlock.tooltip.typebotLink.label": "Conectați-vă și săriți la alt typebot",

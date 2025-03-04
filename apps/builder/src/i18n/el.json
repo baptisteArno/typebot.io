@@ -236,6 +236,7 @@
   "delete": "Διαγραφή",
   "downgrade": "Υποβάθμιση",
   "duplicate": "Αντιγραφή",
+  "edit": "Επεξεργασία",
   "editor.blockCard.logicBlock.tooltip.code.label": "Εκτέλεση κώδικα Javascript",
   "editor.blockCard.logicBlock.tooltip.jump.label": "Προωθήστε γρήγορα τη ροή σε μια άλλη ομάδα",
   "editor.blockCard.logicBlock.tooltip.typebotLink.label": "Σύνδεσμος και μετάβαση σε άλλο typebot",

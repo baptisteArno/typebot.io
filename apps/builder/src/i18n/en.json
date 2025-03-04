@@ -236,6 +236,7 @@
   "delete": "Delete",
   "downgrade": "Downgrade",
   "duplicate": "Duplicate",
+  "edit": "Edit",
   "editor.blockCard.logicBlock.tooltip.code.label": "Execute Javascript code",
   "editor.blockCard.logicBlock.tooltip.jump.label": "Fast forward the flow to another group",
   "editor.blockCard.logicBlock.tooltip.typebotLink.label": "Link and jump to another typebot",

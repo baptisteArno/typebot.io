@@ -138,6 +138,7 @@
   "dashboard.title": "Meine Typebots",
   "delete": "Löschen",
   "downgrade": "Downgrade",
+  "edit": "Bearbeiten",
   "editor.blockCard.logicBlock.tooltip.code.label": "JavaScript-Code ausführen",
   "editor.blockCard.logicBlock.tooltip.jump.label": "Ablauf zu einer anderen Gruppe beschleunigen",
   "editor.blockCard.logicBlock.tooltip.typebotLink.label": "Verlinkung zu einem anderen Typebot",
