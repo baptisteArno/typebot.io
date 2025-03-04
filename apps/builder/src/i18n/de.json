@@ -239,5 +239,6 @@
   "workspace.settings.modal.menu.settings.label": "Einstellungen",
   "workspace.settings.modal.menu.version.label": "Version: {version}",
   "workspace.settings.modal.menu.workspace.label": "Workspace",
-  "workspace.settings.name.label": "Name:"
+  "workspace.settings.name.label": "Name:",
+  "workspace.settings.id.helperText": "Wird verwendet, wenn mit der Typebot API interagiert wird."
 }

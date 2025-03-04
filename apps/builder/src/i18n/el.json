@@ -466,5 +466,6 @@
   "workspace.settings.modal.menu.settings.label": "Ρυθμίσεις",
   "workspace.settings.modal.menu.version.label": "Έκδοση: {version}",
   "workspace.settings.modal.menu.workspace.label": "Χώρος εργασίας",
-  "workspace.settings.name.label": "Όνομα:"
+  "workspace.settings.name.label": "Όνομα:",
+  "workspace.settings.id.helperText": "Χρησιμοποιείται κατά την αλληλεπίδραση με το API του Typebot."
 }
