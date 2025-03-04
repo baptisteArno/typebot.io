@@ -30,6 +30,7 @@
   "account.preferences.graphNavigation.trackpad.label": "Trackpad",
   "account.preferences.language.heading": "Limba",
   "account.preferences.language.tooltip": "Traducerile nu sunt încă complete. Este o lucrare în curs.",
+  "account.preferences.groupTitlesAutoGeneration.label": "Generează titluri de grupuri cu AI",
   "analytics.completionRateLabel": "Rata de finalizare",
   "analytics.notAvailableLabel": "Nu este disponibil",
   "analytics.startsLabel": "Începe",

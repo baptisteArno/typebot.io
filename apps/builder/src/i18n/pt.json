@@ -30,6 +30,7 @@
   "account.preferences.graphNavigation.trackpad.label": "Trackpad",
   "account.preferences.language.heading": "Idioma",
   "account.preferences.language.tooltip": "As traduções ainda não estão completas. É um trabalho em curso.",
+  "account.preferences.groupTitlesAutoGeneration.label": "Gerar títulos de grupos com IA",
   "add": "Adicionar",
   "analytics.completionRateLabel": "Taxa de conclusão",
   "analytics.notAvailableLabel": "Não disponível",

@@ -30,6 +30,7 @@
   "account.preferences.graphNavigation.trackpad.label": "Trackpad",
   "account.preferences.language.heading": "Γλώσσα",
   "account.preferences.language.tooltip": "Οι μεταφράσεις δεν έχουν ολοκληρωθεί ακόμη. Είναι ένα έργο σε εξέλιξη.",
+  "account.preferences.groupTitlesAutoGeneration.label": "Δημιουργία τίτλων ομάδων με AI",
   "add": "Προσθήκη",
   "analytics.completionRateLabel": "Ποσοστό ολοκλήρωσης",
   "analytics.notAvailableLabel": "Μη διαθέσιμο",
