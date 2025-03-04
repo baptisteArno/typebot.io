@@ -293,6 +293,7 @@
   "editor.sidebarBlocks.blockType.inputs.heading": "Είσοδοι",
   "editor.sidebarBlocks.blockType.integrations.heading": "Ενσωματώσεις",
   "editor.sidebarBlocks.blockType.logic.heading": "Λογική",
+  "editor.sidebarBlocks.blockType.events.heading": "Γεγονότα",
   "editor.sidebarBlock.script.label": "Σενάριο",
   "editor.sidebarBlock.setVariable.label": "Ορισμός μεταβλητής",
   "editor.sidebarBlock.sheets.label": "Sheets",

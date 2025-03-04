@@ -293,6 +293,7 @@
   "editor.sidebarBlocks.blockType.inputs.heading": "Inputs",
   "editor.sidebarBlocks.blockType.integrations.heading": "Integrations",
   "editor.sidebarBlocks.blockType.logic.heading": "Logic",
+  "editor.sidebarBlocks.blockType.events.heading": "Events",
   "editor.sidebarBlock.script.label": "Script",
   "editor.sidebarBlock.setVariable.label": "Set variable",
   "editor.sidebarBlock.sheets.label": "Sheets",

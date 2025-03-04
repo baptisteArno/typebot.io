@@ -186,6 +186,7 @@
   "editor.sidebarBlocks.blockType.inputs.heading": "Intrări",
   "editor.sidebarBlocks.blockType.integrations.heading": "Integrari",
   "editor.sidebarBlocks.blockType.logic.heading": "Logică",
+  "editor.sidebarBlocks.blockType.events.heading": "Evenimente",
   "editor.sidebarBlock.script.label": "Scenariul",
   "editor.sidebarBlock.setVariable.label": "Setați variabila",
   "editor.sidebarBlock.sheets.label": "Foi",

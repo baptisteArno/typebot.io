@@ -185,6 +185,7 @@
   "editor.sidebarBlocks.blockType.inputs.heading": "Eingaben",
   "editor.sidebarBlocks.blockType.integrations.heading": "Integrationen",
   "editor.sidebarBlocks.blockType.logic.heading": "Logik",
+  "editor.sidebarBlocks.blockType.events.heading": "Ereignisse",
   "editor.sidebarBlock.script.label": "Skript",
   "editor.sidebarBlock.setVariable.label": "Variable setzen",
   "editor.sidebarBlock.sheets.label": "Tabellen",
