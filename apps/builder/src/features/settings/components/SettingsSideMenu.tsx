@@ -102,7 +102,7 @@ export const SettingsSideMenu = () => {
           <AccordionButton py={4}>
             <HStack flex="1" pl={2}>
               <LockedIcon />
-              <Heading fontSize="md">Security</Heading>
+              <Heading fontSize="md">{t("settings.sideMenu.security")}</Heading>
             </HStack>
             <AccordionIcon />
           </AccordionButton>
