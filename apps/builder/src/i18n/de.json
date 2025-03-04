@@ -220,6 +220,8 @@
   "remove": "Entfernen",
   "rename": "Umbenennen",
   "share.button.label": "Teilen",
+  "sharePage.links.heading": "Ihre Typebot-Links",
+  "sharePage.embed.heading": "Binden Sie Ihren Typebot ein",
   "skip": "Überspringen",
   "templates.buttons.fromScratchButton.label": "Von Grund auf starten",
   "templates.buttons.fromTemplateButton.label": "Von einer Vorlage starten",

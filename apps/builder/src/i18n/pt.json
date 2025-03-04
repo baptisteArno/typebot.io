@@ -234,6 +234,8 @@
   "remove": "Remover",
   "rename": "Renomear",
   "share.button.label": "Compartilhar",
+  "sharePage.links.heading": "Seus links do typebot",
+  "sharePage.embed.heading": "Incorpore seu typebot",
   "skip": "Saltar",
   "templates.buttons.fromScratchButton.label": "Comece do zero",
   "templates.buttons.fromTemplateButton.label": "Comece a partir de um modelo",

@@ -363,6 +363,8 @@
   "share.button.popover.inviteButton.label": "invitare",
   "share.button.popover.inviteInput.placeholder": "colleague@company.com",
   "share.button.popover.publicFlow.label": "Rendere il flusso disponibile al pubblico",
+  "sharePage.links.heading": "I tuoi link Typebot",
+  "sharePage.embed.heading": "Incorpora il tuo Typebot",
   "skip": "Passa",
   "templates.buttons.fromScratchButton.label": "Iniziare da zero",
   "templates.buttons.fromTemplateButton.label": "Partendo da un modello",

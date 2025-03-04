@@ -221,6 +221,8 @@
   "remove": "Eliminar",
   "rename": "Renombrar",
   "share.button.label": "Compartir",
+  "sharePage.links.heading": "Tus enlaces de Typebot",
+  "sharePage.embed.heading": "Incrusta tu Typebot",
   "skip": "Saltar",
   "templates.buttons.fromScratchButton.label": "Empezar desde cero",
   "templates.buttons.fromTemplateButton.label": "Empezar desde una plantilla",

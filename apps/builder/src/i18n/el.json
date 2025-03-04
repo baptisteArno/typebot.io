@@ -363,6 +363,8 @@
   "share.button.popover.inviteButton.label": "Πρόσκληση",
   "share.button.popover.inviteInput.placeholder": "colleague@company.com",
   "share.button.popover.publicFlow.label": "Δημοσιοποίηση της ροής",
+  "sharePage.links.heading": "Οι συνδέσεις του τύπου σας",
+  "sharePage.embed.heading": "Ενσωματώστε το τύπο σας",
   "skip": "Παράλειψη",
   "templates.buttons.fromScratchButton.label": "Ξεκινήστε από το μηδέν",
   "templates.buttons.fromTemplateButton.label": "Ξεκινήστε από ένα πρότυπο",
