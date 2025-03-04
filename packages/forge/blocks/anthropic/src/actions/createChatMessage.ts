@@ -121,6 +121,14 @@ export const createChatMessage = createAction({
       blockId: "openai",
       transform: (opts) => transformToChatCompletionOptions(opts, true),
     },
+    {
+      blockId: "deepseek",
+      transform: (opts) => transformToChatCompletionOptions(opts, true),
+    },
+    {
+      blockId: "perplexity",
+      transform: (opts) => transformToChatCompletionOptions(opts, true),
+    },
     { blockId: "open-router", transform: transformToChatCompletionOptions },
     { blockId: "together-ai", transform: transformToChatCompletionOptions },
   ],

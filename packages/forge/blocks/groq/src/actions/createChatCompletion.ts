@@ -71,6 +71,9 @@ export const createChatCompletion = createAction({
     {
       blockId: "together-ai",
     },
+    {
+      blockId: "deepseek",
+    },
   ],
   getSetVariableIds: getChatCompletionSetVarIds,
   run: {
