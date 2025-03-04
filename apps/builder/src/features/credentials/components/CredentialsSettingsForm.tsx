@@ -30,6 +30,7 @@ import {
   Text,
   type TextProps,
 } from "@chakra-ui/react";
+import { useTranslate } from "@tolgee/react";
 import { IntegrationBlockType } from "@typebot.io/blocks-integrations/constants";
 import {
   type Credentials,
@@ -45,6 +46,7 @@ const nonEditableTypes = ["whatsApp", "google sheets"] as const;
 type CredentialsInfo = Pick<Credentials, "id" | "type" | "name">;
 
 export const CredentialsSettingsForm = () => {
+  const { t } = useTranslate();
   const [creatingType, setCreatingType] = useState<Credentials["type"]>();
   const [selectedScope, setSelectedScope] = useState<"workspace" | "user">(
     "workspace",
@@ -113,7 +115,7 @@ export const CredentialsSettingsForm = () => {
       />
       <HStack justifyContent="space-between">
         <HStack>
-          <Heading fontSize="2xl">Credentials</Heading>
+          <Heading fontSize="2xl">{t("credentials")}</Heading>
           <DropdownList
             size="sm"
             items={[
@@ -128,7 +130,7 @@ export const CredentialsSettingsForm = () => {
         </HStack>
         <Menu isLazy>
           <MenuButton as={Button} size="sm" leftIcon={<PlusIcon />}>
-            Create new
+            {t("account.preferences.credentials.addButton.label")}
           </MenuButton>
           <MenuList>
             {credentialsTypes.map((type) => (
@@ -292,6 +294,7 @@ const CredentialsItem = ({
   onEditClick?: () => void;
   onDeleteClick: () => void;
 }) => {
+  const { t } = useTranslate();
   const initialFocusRef = useRef<HTMLButtonElement>(null);
 
   return (
@@ -321,18 +324,19 @@ const CredentialsItem = ({
                 <PopoverBody>
                   <Stack spacing="2">
                     <Text fontSize="sm" fontWeight="medium">
-                      Are you sure?
+                      {t("confirmModal.defaultTitle")}
                     </Text>
                     <Text fontSize="sm">
-                      Make sure this credentials is not used in any of your
-                      published bot before proceeding.
+                      {t(
+                        "account.preferences.credentials.deleteButton.confirmMessage",
+                      )}
                     </Text>
                   </Stack>
                 </PopoverBody>
                 <PopoverFooter as={Flex} justifyContent="flex-end">
                   <HStack>
                     <Button ref={initialFocusRef} onClick={onClose} size="sm">
-                      Cancel
+                      {t("cancel")}
                     </Button>
                     <Button
                       colorScheme="red"
@@ -340,7 +344,7 @@ const CredentialsItem = ({
                       isLoading={isDeleting}
                       size="sm"
                     >
-                      Delete
+                      {t("delete")}
                     </Button>
                   </HStack>
                 </PopoverFooter>

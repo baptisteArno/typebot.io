@@ -97,7 +97,7 @@ export const SharePage = () => {
         <Stack maxW="970px" w="full" pt="10" spacing={10}>
           <Stack spacing={4} align="flex-start">
             <Heading fontSize="2xl" as="h1">
-              Your typebot links
+              {t("sharePage.links.heading")}
             </Heading>
             <Stack
               bg={useColorModeValue("white", "gray.900")}
@@ -150,7 +150,7 @@ export const SharePage = () => {
                       limitReachedType={t("billing.limitMessage.customDomain")}
                       excludedPlans={[Plan.STARTER]}
                     >
-                      <Text mr="2">Add my domain</Text>{" "}
+                      <Text mr="2">{t("customDomain.add")}</Text>{" "}
                       <LockTag plan={Plan.PRO} />
                     </UpgradeButton>
                   )}
@@ -161,7 +161,7 @@ export const SharePage = () => {
 
           <Stack spacing={4}>
             <Heading fontSize="2xl" as="h1">
-              Embed your typebot
+              {t("sharePage.embed.heading")}
             </Heading>
             <Wrap spacing={4}>
               {integrationsList.map((IntegrationButton, idx) => (

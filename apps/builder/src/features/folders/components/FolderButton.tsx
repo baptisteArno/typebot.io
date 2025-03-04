@@ -3,6 +3,8 @@ import { FolderIcon, MoreVerticalIcon } from "@/components/icons";
 import { toast } from "@/lib/toast";
 import { trpc } from "@/lib/trpc";
 import {
+  Alert,
+  AlertIcon,
   Button,
   Editable,
   EditableInput,
@@ -14,6 +16,7 @@ import {
   MenuList,
   SkeletonCircle,
   SkeletonText,
+  Stack,
   Text,
   VStack,
   WrapItem,
@@ -148,18 +151,24 @@ const FolderButton = ({
       <ConfirmModal
         isOpen={isOpen}
         onClose={onClose}
-        confirmButtonLabel={"Delete"}
+        confirmButtonLabel={t("delete")}
         message={
-          <Text>
-            <T
-              keyName="folders.folderButton.deleteConfirmationMessage"
-              params={{
-                strong: <strong>{folder.name}</strong>,
-              }}
-            />
-          </Text>
+          <Stack spacing="4">
+            <Text>
+              <T
+                keyName="folders.folderButton.deleteConfirmationMessage"
+                params={{
+                  strong: <strong>{folder.name}</strong>,
+                }}
+              />
+            </Text>
+            <Alert status="warning">
+              <AlertIcon />
+              {t("folders.folderButton.deleteConfirmationMessageWarning")}
+            </Alert>
+          </Stack>
         }
-        title={`Delete ${folder.name}?`}
+        title={`${t("delete")} ${folder.name}?`}
         onConfirm={() =>
           deleteFolder({
             workspaceId: folder.workspaceId,

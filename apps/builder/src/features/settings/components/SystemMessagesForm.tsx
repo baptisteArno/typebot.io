@@ -1,5 +1,6 @@
 import { TextInput, Textarea } from "@/components/inputs";
 import { Stack } from "@chakra-ui/react";
+import { useTranslate } from "@tolgee/react";
 import { defaultSystemMessages } from "@typebot.io/settings/constants";
 import type { SystemMessages } from "@typebot.io/settings/schemas";
 
@@ -11,6 +12,7 @@ export const SystemMessagesForm = ({
   systemMessages,
   onSystemMessagesChange,
 }: Props) => {
+  const { t } = useTranslate();
   const updateInvalidMessage = (
     invalidMessage: SystemMessages["invalidMessage"],
   ) => {
@@ -75,49 +77,63 @@ export const SystemMessagesForm = ({
   return (
     <Stack spacing="4">
       <Textarea
-        label="Default invalid message reply"
+        label={t(
+          "settings.sideMenu.general.systemMessages.invalidMessage.label",
+        )}
         defaultValue={systemMessages?.invalidMessage}
         placeholder={defaultSystemMessages.invalidMessage}
         onChange={updateInvalidMessage}
       />
       <Textarea
-        label="Popup blocked description"
+        label={t(
+          "settings.sideMenu.general.systemMessages.popupBlockedDescription.label",
+        )}
         defaultValue={systemMessages?.popupBlockedDescription}
         placeholder={defaultSystemMessages.popupBlockedDescription}
         onChange={updatePopupBlockedDescription}
         withVariableButton={false}
       />
       <TextInput
-        label="Popup blocked button label"
+        label={t(
+          "settings.sideMenu.general.systemMessages.popupBlockedButton.label",
+        )}
         defaultValue={systemMessages?.popupBlockedButtonLabel}
         placeholder={defaultSystemMessages.popupBlockedButtonLabel}
         onChange={updatePopupBlockedButtonLabel}
         withVariableButton={false}
       />
       <Textarea
-        label="Bot closed message"
+        label={t("settings.sideMenu.general.systemMessages.botClosed.label")}
         defaultValue={systemMessages?.botClosed}
         placeholder={defaultSystemMessages.botClosed}
         onChange={updateBotClosed}
         withVariableButton={false}
       />
       <Textarea
-        label="File upload error message"
+        label={t(
+          "settings.sideMenu.general.systemMessages.fileUploadError.label",
+        )}
         defaultValue={systemMessages?.fileUploadError}
         placeholder={defaultSystemMessages.fileUploadError}
         onChange={updateFileUploadError}
         withVariableButton={false}
       />
       <Textarea
-        label="File too large message"
-        moreInfoTooltip="You can use [[file]] and [[limit]] placeholders to display the file name and the limit size"
+        label={t(
+          "settings.sideMenu.general.systemMessages.fileUploadSizeError.label",
+        )}
+        moreInfoTooltip={t(
+          "settings.sideMenu.general.systemMessages.fileUploadSizeError.tooltip",
+        )}
         defaultValue={systemMessages?.fileUploadSizeError}
         placeholder={defaultSystemMessages.fileUploadSizeError}
         onChange={updateFileUploadSizeError}
         withVariableButton={false}
       />
       <TextInput
-        label="WhatsApp picture choice select label"
+        label={t(
+          "settings.sideMenu.general.systemMessages.whatsAppPictureChoiceSelectLabel.label",
+        )}
         defaultValue={systemMessages?.whatsAppPictureChoiceSelectLabel}
         placeholder={defaultSystemMessages.whatsAppPictureChoiceSelectLabel}
         onChange={updateWhatsAppPictureChoiceSelectLabel}

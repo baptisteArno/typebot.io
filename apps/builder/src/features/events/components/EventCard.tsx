@@ -1,3 +1,4 @@
+import { useTranslate } from "@tolgee/react";
 import { EventType } from "@typebot.io/events/constants";
 import type { TDraggableEvent, TEvent } from "@typebot.io/events/schemas";
 import type React from "react";
@@ -16,12 +17,13 @@ type Props = {
 export const EventCard = (
   props: Pick<Props, "type" | "onMouseDown">,
 ): JSX.Element => {
+  const { t } = useTranslate();
   switch (props.type) {
     case EventType.START:
       return (
         <EventCardLayout
           {...props}
-          tooltip={"Already added in the bot flow"}
+          tooltip={t("blocks.events.start.eventCard.tooltip")}
           isDisabled
         >
           <EventIcon type={props.type} />
@@ -32,7 +34,7 @@ export const EventCard = (
       return (
         <EventCardLayout
           {...props}
-          tooltip={"Triggered when a custom command is sent"}
+          tooltip={t("blocks.events.command.eventCard.tooltip")}
         >
           <EventIcon type={props.type} />
           <EventLabel type={props.type} />

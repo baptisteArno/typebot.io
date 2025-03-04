@@ -14,6 +14,7 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
+import { useTranslate } from "@tolgee/react";
 import type React from "react";
 import { useState } from "react";
 import { CreateCustomDomainModal } from "./CreateCustomDomainModal";
@@ -28,6 +29,7 @@ export const CustomDomainsDropdown = ({
   onCustomDomainSelect,
   ...props
 }: Props) => {
+  const { t } = useTranslate();
   const [isDeleting, setIsDeleting] = useState("");
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { workspace, currentUserMode } = useWorkspace();
@@ -99,7 +101,7 @@ export const CustomDomainsDropdown = ({
         {...props}
       >
         <Text noOfLines={1} overflowY="visible" h="20px">
-          {currentCustomDomain ?? "Add my domain"}
+          {currentCustomDomain ?? t("customDomain.add")}
         </Text>
       </MenuButton>
       <MenuList maxW="500px" shadow="md">
@@ -121,7 +123,7 @@ export const CustomDomainsDropdown = ({
               <IconButton
                 as="span"
                 icon={<TrashIcon />}
-                aria-label="Remove domain"
+                aria-label={t("customDomain.remove")}
                 size="xs"
                 onClick={handleDeleteDomainClick(customDomain.name)}
                 isLoading={isDeleting === customDomain.name}
@@ -136,7 +138,7 @@ export const CustomDomainsDropdown = ({
             icon={<PlusIcon />}
             onClick={onOpen}
           >
-            Connect new
+            {t("connectNew")}
           </MenuItem>
         </Stack>
       </MenuList>

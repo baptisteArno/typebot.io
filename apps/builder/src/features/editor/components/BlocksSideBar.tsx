@@ -176,7 +176,7 @@ export const BlocksSideBar = () => {
   );
 
   const filteredEventBlockTypes = Object.values(EventType).filter((type) =>
-    getEventBlockLabel()
+    getEventBlockLabel(t)
       [type].toLowerCase()
       .includes(searchInput.toLowerCase()),
   );
@@ -293,7 +293,9 @@ export const BlocksSideBar = () => {
         </Stack>
 
         <Stack>
-          <Heading fontSize="sm">Events</Heading>
+          <Heading fontSize="sm">
+            {t("editor.sidebarBlocks.blockType.events.heading")}
+          </Heading>
           <SimpleGrid columns={2} spacing="3">
             {filteredEventBlockTypes.map((type) => (
               <EventCard

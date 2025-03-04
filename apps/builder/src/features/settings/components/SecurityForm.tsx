@@ -1,6 +1,7 @@
 import { MoreInfoTooltip } from "@/components/MoreInfoTooltip";
 import { TagsInput } from "@/components/TagsInput";
 import { FormControl, FormLabel, Stack } from "@chakra-ui/react";
+import { useTranslate } from "@tolgee/react";
 import { env } from "@typebot.io/env";
 import { isDefined } from "@typebot.io/lib/utils";
 import type { Settings } from "@typebot.io/settings/schemas";
@@ -12,6 +13,7 @@ type Props = {
 };
 
 export const SecurityForm = ({ security, onUpdate }: Props) => {
+  const { t } = useTranslate();
   const updateItems = (items: string[]) => {
     if (items.length === 0) onUpdate(undefined);
     onUpdate({
@@ -23,10 +25,9 @@ export const SecurityForm = ({ security, onUpdate }: Props) => {
     <Stack spacing={6}>
       <FormControl>
         <FormLabel display="flex" flexShrink={0} gap="1" mr="0" mb="4">
-          Allowed origins
+          {t("settings.sideMenu.security.allowedOrigins")}
           <MoreInfoTooltip>
-            Restrict the execution of your typebot to specific website origins.
-            By default your bot can be executed on any website.
+            {t("settings.sideMenu.security.allowedOrigins.tooltip")}
           </MoreInfoTooltip>
         </FormLabel>
         <TagsInput

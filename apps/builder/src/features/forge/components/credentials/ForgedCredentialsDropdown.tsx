@@ -13,6 +13,7 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
+import { useTranslate } from "@tolgee/react";
 import type { Credentials } from "@typebot.io/credentials/schemas";
 import type { ForgedBlockDefinition } from "@typebot.io/forge-repository/definitions";
 import { useRouter } from "next/router";
@@ -36,6 +37,7 @@ export const ForgedCredentialsDropdown = ({
   ...props
 }: Props) => {
   const router = useRouter();
+  const { t } = useTranslate();
   const { workspace, currentUserMode } = useWorkspace();
   const { data, refetch, isLoading } =
     trpc.credentials.listCredentials.useQuery(
@@ -187,7 +189,7 @@ export const ForgedCredentialsDropdown = ({
               icon={<PlusIcon />}
               onClick={onAddClick}
             >
-              Connect new
+              {t("connectNew")}
             </MenuItem>
           )}
         </Stack>
