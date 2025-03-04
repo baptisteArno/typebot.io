@@ -31,6 +31,7 @@
   "account.preferences.language.heading": "Langue",
   "account.preferences.language.tooltip": "Les traductions ne sont pas encore complètes. C'est un travail en cours.",
   "account.preferences.groupTitlesAutoGeneration.label": "Générer des titres de groupe avec l'IA",
+  "account.preferences.credentials.addButton.label": "Créer une nouvelle",
   "account.preferences.credentials.deleteButton.confirmMessage": "Assurez-vous que ces identifiants ne sont pas utilisés dans l'un de vos bots publiés avant de continuer.",
   "add": "Ajouter",
   "analytics.completionRateLabel": "Taux de complétion",

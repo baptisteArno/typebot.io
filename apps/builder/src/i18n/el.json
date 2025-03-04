@@ -31,6 +31,7 @@
   "account.preferences.language.heading": "Γλώσσα",
   "account.preferences.language.tooltip": "Οι μεταφράσεις δεν έχουν ολοκληρωθεί ακόμη. Είναι ένα έργο σε εξέλιξη.",
   "account.preferences.groupTitlesAutoGeneration.label": "Δημιουργία τίτλων ομάδων με AI",
+  "account.preferences.credentials.addButton.label": "Δημιουργία νέας",
   "account.preferences.credentials.deleteButton.confirmMessage": "Βεβαιωθείτε ότι αυτά τα διαπιστευτήρια δεν χρησιμοποιούνται σε κανέναν από τους δημοσιευμένους σας ρομπότ πριν συνεχίσετε.",
   "add": "Προσθήκη",
   "analytics.completionRateLabel": "Ποσοστό ολοκλήρωσης",
