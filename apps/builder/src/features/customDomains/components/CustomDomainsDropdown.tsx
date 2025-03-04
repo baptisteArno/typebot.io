@@ -138,7 +138,7 @@ export const CustomDomainsDropdown = ({
             icon={<PlusIcon />}
             onClick={onOpen}
           >
-            Connect new
+            {t("connectNew")}
           </MenuItem>
         </Stack>
       </MenuList>
