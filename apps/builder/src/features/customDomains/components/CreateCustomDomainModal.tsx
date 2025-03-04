@@ -181,7 +181,7 @@ export const CreateCustomDomainModal = ({
                 isLoading={isLoading}
                 colorScheme="orange"
               >
-                Save
+                {t("save")}
               </Button>
             </span>
           </Tooltip>
