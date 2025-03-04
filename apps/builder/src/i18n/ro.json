@@ -115,6 +115,8 @@
   "billing.usage.heading": "Utilizare",
   "billing.usage.unlimited": "Nelimitat",
   "blocks.bubbles.embed.blockCard.tooltip": "Încorporați un pdf, un iframe, un site web...",
+  "blocks.events.start.eventCard.tooltip": "Deja adăugat în fluxul botului.",
+  "blocks.events.command.eventCard.tooltip": "Declanșat atunci când se trimite o comandă personalizată.",
   "blocks.inputs.date.settings.isRange.label": "Este interval",
   "blocks.inputs.date.settings.withTime.label": "Cu timp",
   "blocks.inputs.file.settings.allowMultiple.label": "Permite fișiere multiple",

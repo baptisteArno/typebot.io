@@ -116,6 +116,8 @@
   "billing.usage.heading": "Usage",
   "billing.usage.unlimited": "Unlimited",
   "blocks.bubbles.embed.blockCard.tooltip": "Embed a pdf, an iframe, a website...",
+  "blocks.events.start.eventCard.tooltip": "Already added in the bot flow.",
+  "blocks.events.command.eventCard.tooltip": "Triggered when a custom command is sent.",
   "blocks.inputs.button.addItem.ariaLabel": "Add item",
   "blocks.inputs.button.buttonSettings.addComparisonButton.label": "Add comparison",
   "blocks.inputs.button.buttonSettings.displayCondition.infoText.label": "Only display this item if a condition is met.",

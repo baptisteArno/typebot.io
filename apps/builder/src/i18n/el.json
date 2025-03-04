@@ -116,6 +116,8 @@
   "billing.usage.heading": "Χρήση",
   "billing.usage.unlimited": "Απεριόριστα",
   "blocks.bubbles.embed.blockCard.tooltip": "Ενσωματώστε ένα pdf, ένα iframe, έναν ιστότοπο...",
+  "blocks.events.start.eventCard.tooltip": "Ήδη προστέθηκε στη ροή του ρομπότ.",
+  "blocks.events.command.eventCard.tooltip": "Προκαλείται όταν αποστέλλεται μια εντολή προσαρμογής.",
   "blocks.inputs.button.addItem.ariaLabel": "Προσθήκη αντικειμένου",
   "blocks.inputs.button.buttonSettings.addComparisonButton.label": "Προσθήκη σύγκρισης",
   "blocks.inputs.button.buttonSettings.displayCondition.infoText.label": "Εμφανίζει αυτό το στοιχείο μόνο αν πληρούται μια συνθήκη.",

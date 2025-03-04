@@ -116,6 +116,8 @@
   "billing.usage.heading": "Utilizzo",
   "billing.usage.unlimited": "Illimitato",
   "blocks.bubbles.embed.blockCard.tooltip": "Incorporare un pdf, un iframe, un sito web...",
+  "blocks.events.start.eventCard.tooltip": "Già aggiunto nel flusso del bot.",
+  "blocks.events.command.eventCard.tooltip": "Attivato quando viene inviata un comando personalizzato.",
   "blocks.inputs.button.addItem.ariaLabel": "Aggiungi articolo",
   "blocks.inputs.button.buttonSettings.addComparisonButton.label": "Aggiungi confronto",
   "blocks.inputs.button.buttonSettings.displayCondition.infoText.label": "Visualizza questo elemento solo se è soddisfatta una condizione.",

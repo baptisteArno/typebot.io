@@ -115,6 +115,8 @@
   "billing.usage.heading": "Uso",
   "billing.usage.unlimited": "Ilimitado",
   "blocks.bubbles.embed.blockCard.tooltip": "Insertar un PDF, un iframe, un sitio web...",
+  "blocks.events.start.eventCard.tooltip": "Ya agregado en el flujo del bot.",
+  "blocks.events.command.eventCard.tooltip": "Se activa cuando se envía un comando personalizado.",
   "blocks.inputs.date.settings.isRange.label": "Es un rango",
   "blocks.inputs.date.settings.withTime.label": "Con tiempo",
   "blocks.inputs.file.settings.allowMultiple.label": "Permitir múltiples archivos",
