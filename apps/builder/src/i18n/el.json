@@ -110,6 +110,7 @@
   "billing.usage.chats.alert.soonReach": "Τα typebots σας είναι δημοφιλή! Σύντομα θα φτάσετε στο όριο των συνομιλιών του προγράμματός σας.",
   "billing.usage.chats.alert.updatePlan": "Φροντίστε να ενημερώσετε το πλάνο σας για να αυξήσετε αυτό το όριο και να συνεχίσετε να συνομιλείτε με τους χρήστες σας.",
   "billing.usage.chats.heading": "Συζητήσεις",
+  "billing.usage.chats.resetsOn": "Επαναφέρεται στις {date}",
   "billing.usage.heading": "Χρήση",
   "billing.usage.unlimited": "Απεριόριστα",
   "blocks.bubbles.embed.blockCard.tooltip": "Ενσωματώστε ένα pdf, ένα iframe, έναν ιστότοπο...",

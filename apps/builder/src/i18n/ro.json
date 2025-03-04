@@ -109,6 +109,7 @@
   "billing.usage.chats.alert.soonReach": "Typebot-ii tăi sunt populari! În curând vei atinge limita de chat-uri a planului tău.",
   "billing.usage.chats.alert.updatePlan": "Asigurați-vă că vă actualizați planul pentru a crește această limită și continuați să discutați cu utilizatorii dvs.",
   "billing.usage.chats.heading": "Chat-uri",
+  "billing.usage.chats.resetsOn": "Se resetează la {date}",
   "billing.usage.heading": "Utilizare",
   "billing.usage.unlimited": "Nelimitat",
   "blocks.bubbles.embed.blockCard.tooltip": "Încorporați un pdf, un iframe, un site web...",

@@ -109,6 +109,7 @@
   "billing.usage.chats.alert.soonReach": "¡Tus typebots son populares! Pronto alcanzarás el límite de chats de tu plan.",
   "billing.usage.chats.alert.updatePlan": "Asegúrate de actualizar tu plan para aumentar este límite y seguir chateando con tus usuarios.",
   "billing.usage.chats.heading": "Chats",
+  "billing.usage.chats.resetsOn": "Se restablece en {date}",
   "billing.usage.heading": "Uso",
   "billing.usage.unlimited": "Ilimitado",
   "blocks.bubbles.embed.blockCard.tooltip": "Insertar un PDF, un iframe, un sitio web...",

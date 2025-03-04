@@ -111,6 +111,7 @@
   "billing.usage.chats.alert.updatePlan": "Certifique-se de atualizar o seu plano para aumentar esse limite e continuar a conversar com os seus utilizadores.",
   "billing.usage.chats.heading": "Chats",
   "billing.usage.heading": "Uso",
+  "billing.usage.chats.resetsOn": "Reinicia em {date}",
   "billing.usage.unlimited": "Ilimitado",
   "blocks.bubbles.embed.blockCard.tooltip": "Incorporar pdf, iframe, website...",
   "blocks.inputs.button.addItem.ariaLabel": "Adicionar Item",
