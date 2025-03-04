@@ -179,6 +179,7 @@
   "editor.sidebarBlock.button.label": "Botão",
   "editor.sidebarBlock.chatwoot.label": "Chatwoot",
   "editor.sidebarBlock.condition.label": "Condição",
+  "editor.sidebarBlock.command.label": "Comando",
   "editor.sidebarBlock.date.label": "Data",
   "editor.sidebarBlock.email.label": "Email",
   "editor.sidebarBlock.embed.label": "Incorporar",

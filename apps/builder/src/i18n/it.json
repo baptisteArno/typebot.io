@@ -273,6 +273,7 @@
   "editor.sidebarBlock.button.label": "Pulsanti",
   "editor.sidebarBlock.chatwoot.label": "Chatwoot",
   "editor.sidebarBlock.condition.label": "Condizione",
+  "editor.sidebarBlock.command.label": "Comando",
   "editor.sidebarBlock.date.label": "Data",
   "editor.sidebarBlock.email.label": "Email",
   "editor.sidebarBlock.embed.label": "Incorporato",

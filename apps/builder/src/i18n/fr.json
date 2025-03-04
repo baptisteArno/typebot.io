@@ -273,6 +273,7 @@
   "editor.sidebarBlock.button.label": "Boutons",
   "editor.sidebarBlock.chatwoot.label": "Chatwoot",
   "editor.sidebarBlock.condition.label": "Condition",
+  "editor.sidebarBlock.command.label": "Commande",
   "editor.sidebarBlock.date.label": "Date",
   "editor.sidebarBlock.email.label": "Email",
   "editor.sidebarBlock.embed.label": "Iframe",
