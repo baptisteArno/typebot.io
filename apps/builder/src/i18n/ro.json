@@ -31,6 +31,7 @@
   "account.preferences.language.heading": "Limba",
   "account.preferences.language.tooltip": "Traducerile nu sunt încă complete. Este o lucrare în curs.",
   "account.preferences.groupTitlesAutoGeneration.label": "Generează titluri de grupuri cu AI",
+  "account.preferences.credentials.deleteButton.confirmMessage": "Asigurați-vă că aceste credențiale nu sunt folosite în niciunul dintre roboții publicați înainte de a continua.",
   "analytics.completionRateLabel": "Rata de finalizare",
   "analytics.notAvailableLabel": "Nu este disponibil",
   "analytics.startsLabel": "Începe",

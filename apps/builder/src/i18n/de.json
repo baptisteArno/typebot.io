@@ -31,6 +31,7 @@
   "account.preferences.language.heading": "Sprache",
   "account.preferences.language.tooltip": "Die Übersetzungen sind noch nicht vollständig. Es ist eine laufende Arbeit.",
   "account.preferences.groupTitlesAutoGeneration.label": "Gruppentitel mit KI generieren",
+  "account.preferences.credentials.deleteButton.confirmMessage": "Stellen Sie sicher, dass diese Zugangsdaten in keinem Ihrer veröffentlichten Bots verwendet werden, bevor Sie fortfahren.",
   "analytics.completionRateLabel": "Abschlussrate",
   "analytics.notAvailableLabel": "Nicht verfügbar",
   "analytics.startsLabel": "Starts",
