@@ -176,7 +176,7 @@ export const BlocksSideBar = () => {
   );
 
   const filteredEventBlockTypes = Object.values(EventType).filter((type) =>
-    getEventBlockLabel()
+    getEventBlockLabel(t)
       [type].toLowerCase()
       .includes(searchInput.toLowerCase()),
   );
