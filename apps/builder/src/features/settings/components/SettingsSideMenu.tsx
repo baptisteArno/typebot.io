@@ -85,7 +85,7 @@ export const SettingsSideMenu = () => {
           <AccordionButton py={4}>
             <HStack flex="1" pl={2}>
               <ChatIcon />
-              <Heading fontSize="md">Typing</Heading>
+              <Heading fontSize="md">{t("settings.sideMenu.typing")}</Heading>
             </HStack>
             <AccordionIcon />
           </AccordionButton>
