@@ -130,7 +130,7 @@ export const CredentialsSettingsForm = () => {
         </HStack>
         <Menu isLazy>
           <MenuButton as={Button} size="sm" leftIcon={<PlusIcon />}>
-            Create new
+            {t("account.preferences.credentials.addButton.label")}
           </MenuButton>
           <MenuList>
             {credentialsTypes.map((type) => (
