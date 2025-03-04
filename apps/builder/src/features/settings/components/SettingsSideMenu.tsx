@@ -119,7 +119,7 @@ export const SettingsSideMenu = () => {
           <AccordionButton py={4}>
             <HStack flex="1" pl={2}>
               <CodeIcon />
-              <Heading fontSize="md">Metadata</Heading>
+              <Heading fontSize="md">{t("settings.sideMenu.metadata")}</Heading>
             </HStack>
             <AccordionIcon />
           </AccordionButton>
