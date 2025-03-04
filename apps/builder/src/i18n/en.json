@@ -378,6 +378,14 @@
   "settings.sideMenu.general.rememberUser.storage.session.tooltip": "Choose <tag>session</tag> to remember the user as long as they do not close the tab or the browser.",
   "settings.sideMenu.general.rememberUser.tooltip": "If enabled, the chat state will be restored if the user comes back after exiting.",
   "settings.sideMenu.general.systemMessages": "System messages",
+  "settings.sideMenu.general.systemMessages.botClosed.label": "Bot closed message",
+  "settings.sideMenu.general.systemMessages.fileUploadError.label": "File upload error message",
+  "settings.sideMenu.general.systemMessages.fileUploadSizeError.label": "File too large message",
+  "settings.sideMenu.general.systemMessages.fileUploadSizeError.tooltip": "You can use [[file]] and [[limit]] placeholders to display the file name and the limit size",
+  "settings.sideMenu.general.systemMessages.invalidMessage.label": "Default invalid message reply",
+  "settings.sideMenu.general.systemMessages.popupBlockedButton.label": "Popup blocked button label",
+  "settings.sideMenu.general.systemMessages.popupBlockedDescription.label": "Popup blocked description",
+  "settings.sideMenu.general.systemMessages.whatsAppPictureChoiceSelectLabel.label": "WhatsApp picture choice select label",
   "share.button.label": "Share",
   "share.button.popover.ariaLabel": "Open share popover",
   "share.button.popover.invitationSent.successToast.label": "Invitation sent!",
@@ -501,3 +509,4 @@
   "workspace.settings.name.label": "Name:",
   "workspace.settings.id.helperText": "Used when interacting with the Typebot API."
 }
+
