@@ -21,7 +21,11 @@ export const trackAndReportYesterdaysResults = async () => {
         where: {
           role: "ADMIN",
         },
-        select: { user: { select: { id: true, email: true } }, role: true },
+        select: {
+          createdAt: true,
+          user: { select: { id: true, email: true } },
+          role: true,
+        },
       },
       typebots: {
         select: {
@@ -34,7 +38,11 @@ export const trackAndReportYesterdaysResults = async () => {
   let resultsSum = 0;
   const newResultsCollectedEvents: TelemetryEvent[] = [];
   for (const workspace of recentWorkspaces) {
-    const totalResults = await prisma.result.count({
+    const results = await prisma.result.groupBy({
+      by: ["typebotId"],
+      _count: {
+        _all: true,
+      },
       where: {
         typebotId: { in: workspace.typebots.map((typebot) => typebot.id) },
         hasStarted: true,
@@ -44,17 +52,23 @@ export const trackAndReportYesterdaysResults = async () => {
         },
       },
     });
-    resultsSum += totalResults;
-    workspace.members.forEach((member) => {
+    const olderAdmin = workspace.members
+      .sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime())
+      .at(0);
+    if (!olderAdmin) continue;
+    for (const result of results) {
+      if (result._count._all === 0) continue;
       newResultsCollectedEvents.push({
         name: "New results collected",
+        typebotId: result.typebotId,
         workspaceId: workspace.id,
-        userId: member.user.id,
+        userId: olderAdmin.user.id,
         data: {
-          total: totalResults,
+          total: result._count._all,
         },
       });
-    });
+      resultsSum += result._count._all;
+    }
   }
 
   await trackEvents(newResultsCollectedEvents);

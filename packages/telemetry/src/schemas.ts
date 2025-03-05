@@ -98,7 +98,7 @@ const subscriptionAutoUpdatedEventSchema = workspaceEvent.merge(
   }),
 );
 
-const newResultsCollectedEventSchema = workspaceEvent.merge(
+const newResultsCollectedEventSchema = typebotEvent.merge(
   z.object({
     name: z.literal("New results collected"),
     data: z.object({
