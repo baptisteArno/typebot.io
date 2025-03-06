@@ -1,29 +1,29 @@
-import { createMistral } from "@ai-sdk/mistral";
+import { createDeepSeek } from "@ai-sdk/deepseek";
+import { getChatCompletionSetVarIds } from "@typebot.io/ai/getChatCompletionSetVarIds";
 import { getChatCompletionStreamVarId } from "@typebot.io/ai/getChatCompletionStreamVarId";
 import { parseChatCompletionOptions } from "@typebot.io/ai/parseChatCompletionOptions";
 import { runChatCompletion } from "@typebot.io/ai/runChatCompletion";
 import { runChatCompletionStream } from "@typebot.io/ai/runChatCompletionStream";
 import { createAction } from "@typebot.io/forge";
-import { isDefined } from "@typebot.io/lib/utils";
 import { auth } from "../auth";
-import { fetchModels } from "../helpers/fetchModels";
+import { deepSeekModels } from "../constants";
 
 export const createChatCompletion = createAction({
   name: "Create chat completion",
   auth,
   options: parseChatCompletionOptions({
     models: {
-      type: "fetcher",
-      id: "fetchModels",
+      type: "static",
+      models: deepSeekModels,
     },
   }),
+  getSetVariableIds: getChatCompletionSetVarIds,
   turnableInto: [
     {
-      blockId: "openai",
-      transform: (opts) => ({
-        ...opts,
-        model: undefined,
-      }),
+      blockId: "open-router",
+    },
+    {
+      blockId: "together-ai",
     },
     {
       blockId: "groq",
@@ -33,9 +33,9 @@ export const createChatCompletion = createAction({
       }),
     },
     {
-      blockId: "together-ai",
+      blockId: "perplexity",
+      transform: (options) => ({ ...options, model: undefined }),
     },
-    { blockId: "open-router" },
     {
       blockId: "anthropic",
       transform: (options) => ({
@@ -45,53 +45,49 @@ export const createChatCompletion = createAction({
       }),
     },
     {
-      blockId: "perplexity",
-      transform: (options) => ({
-        ...options,
+      blockId: "openai",
+      transform: (opts) => ({
+        ...opts,
         model: undefined,
       }),
     },
     {
-      blockId: "deepseek",
-      transform: (options) => ({
-        ...options,
+      blockId: "mistral",
+      transform: (opts) => ({
+        ...opts,
         model: undefined,
       }),
-    },
-  ],
-  getSetVariableIds: (options) =>
-    options.responseMapping?.map((res) => res.variableId).filter(isDefined) ??
-    [],
-  fetchers: [
-    {
-      id: "fetchModels",
-      dependencies: [],
-      fetch: fetchModels,
     },
   ],
   run: {
-    server: ({ credentials: { apiKey }, options, variables, logs }) => {
+    server: ({
+      credentials: { apiKey, baseUrl },
+      options,
+      variables,
+      logs,
+    }) => {
       if (!apiKey) return logs.add("No API key provided");
       const modelName = options.model?.trim();
       if (!modelName) return logs.add("No model provided");
       if (!options.messages) return logs.add("No messages provided");
 
       return runChatCompletion({
-        model: createMistral({
+        model: createDeepSeek({
           apiKey,
-        }).chat(modelName),
+          baseURL: baseUrl ?? undefined,
+        })(modelName),
         variables,
         messages: options.messages,
         tools: options.tools,
         isVisionEnabled: false,
         temperature: options.temperature,
-        responseMapping: options.responseMapping,
         logs,
+        responseMapping: options.responseMapping,
       });
     },
     stream: {
       getStreamVariableId: getChatCompletionStreamVarId,
-      run: async ({ credentials: { apiKey }, options, variables }) => {
+      run: async ({ credentials: { apiKey, baseUrl }, options, variables }) => {
         if (!apiKey)
           return {
             error: {
@@ -101,7 +97,9 @@ export const createChatCompletion = createAction({
         const modelName = options.model?.trim();
         if (!modelName)
           return {
-            error: { description: "No model provided" },
+            error: {
+              description: "No model provided",
+            },
           };
         if (!options.messages)
           return {
@@ -111,15 +109,16 @@ export const createChatCompletion = createAction({
           };
 
         return runChatCompletionStream({
-          model: createMistral({
+          model: createDeepSeek({
             apiKey,
-          }).chat(modelName),
+            baseURL: baseUrl ?? undefined,
+          })(modelName),
           variables,
           messages: options.messages,
           isVisionEnabled: false,
+          responseMapping: options.responseMapping,
           tools: options.tools,
           temperature: options.temperature,
-          responseMapping: options.responseMapping,
         });
       },
     },

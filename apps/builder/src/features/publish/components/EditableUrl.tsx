@@ -45,7 +45,7 @@ export const EditableUrl = ({
       onSubmit={handleSubmit}
     >
       <HStack spacing={1}>
-        <Text>{hostname}/</Text>
+        <Text flexShrink={0}>{hostname}/</Text>
         <Tooltip label={t("edit")}>
           <EditablePreview
             mx={1}

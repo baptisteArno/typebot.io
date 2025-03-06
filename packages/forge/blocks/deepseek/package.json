@@ -1,0 +1,21 @@
+{
+  "name": "@typebot.io/deepseek-block",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./schemas": "./src/schemas.ts",
+    "./shared/*": "./src/shared/*.ts"
+  },
+  "dependencies": {
+    "@ai-sdk/deepseek": "0.1.12",
+    "@typebot.io/ai": "workspace:*",
+    "@typebot.io/forge": "workspace:*",
+    "@typebot.io/lib": "workspace:*",
+    "@typebot.io/zod": "workspace:*"
+  },
+  "devDependencies": {
+    "@typebot.io/tsconfig": "workspace:*"
+  }
+}

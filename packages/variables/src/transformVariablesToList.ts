@@ -1,3 +1,4 @@
+import { JSONParse } from "@typebot.io/lib/JSONParse";
 import { isNotDefined } from "@typebot.io/lib/utils";
 import type { Variable, VariableWithValue } from "./schemas";
 
@@ -12,6 +13,21 @@ export const transformVariablesToList =
           typeof variable.value !== "string"
         )
           return variables;
+        try {
+          const potentialArray = JSONParse(variable.value);
+          console.log(potentialArray);
+          if (Array.isArray(potentialArray))
+            return [
+              ...variables,
+              {
+                ...variable,
+                value: potentialArray,
+              },
+            ];
+          return variables;
+        } catch (error) {
+          // Not an stringified array, skipping...
+        }
         return [
           ...variables,
           {

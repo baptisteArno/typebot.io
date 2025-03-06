@@ -48,6 +48,13 @@ export const createChatCompletion = createAction({
         action: "Create Chat Message",
       }),
     },
+    {
+      blockId: "deepseek",
+      transform: (options) => ({
+        ...options,
+        model: undefined,
+      }),
+    },
   ],
   fetchers: [
     {
