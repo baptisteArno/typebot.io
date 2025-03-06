@@ -12,6 +12,7 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
+import { useTranslate } from "@tolgee/react";
 import { env } from "@typebot.io/env";
 import { defaultSettings } from "@typebot.io/settings/constants";
 import type { Settings } from "@typebot.io/settings/schemas";
@@ -32,6 +33,7 @@ export const MetadataForm = ({
   metadata,
   onMetadataChange,
 }: Props) => {
+  const { t } = useTranslate();
   const handleTitleChange = (title: string) =>
     onMetadataChange({ ...metadata, title });
   const handleDescriptionChange = (description: string) =>
@@ -57,7 +59,7 @@ export const MetadataForm = ({
     <Stack spacing="6">
       <Stack>
         <FormLabel mb="0" htmlFor="icon">
-          Icon:
+          {t("settings.sideMenu.metadata.icon.label")}
         </FormLabel>
         <Popover isLazy placement="top">
           <PopoverTrigger>
@@ -88,7 +90,7 @@ export const MetadataForm = ({
       </Stack>
       <Stack>
         <FormLabel mb="0" htmlFor="image">
-          Image:
+          {t("settings.sideMenu.metadata.image.label")}
         </FormLabel>
         <Popover isLazy placement="top">
           <PopoverTrigger>
@@ -116,7 +118,7 @@ export const MetadataForm = ({
         </Popover>
       </Stack>
       <TextInput
-        label="Title:"
+        label={t("settings.sideMenu.metadata.title.label")}
         defaultValue={metadata?.title ?? typebotName}
         onChange={handleTitleChange}
       />
@@ -125,21 +127,20 @@ export const MetadataForm = ({
           metadata?.description ?? defaultSettings.metadata.description
         }
         onChange={handleDescriptionChange}
-        label="Description:"
+        label={t("settings.sideMenu.metadata.description.label")}
       />
       <TextInput
         defaultValue={metadata?.googleTagManagerId}
         placeholder="GTM-XXXXXX"
         onChange={handleGoogleTagManagerIdChange}
         label="Google Tag Manager ID:"
-        moreInfoTooltip="Do not include it if you are embedding your typebot in an existing website. GTM should be installed in the parent website instead."
+        moreInfoTooltip={t("settings.sideMenu.metadata.gtm.tooltip")}
       />
       <Stack>
         <HStack as={FormLabel} mb="0" htmlFor="head">
-          <Text>Custom head code:</Text>
+          <Text>{t("settings.sideMenu.metadata.headCode.label")}</Text>
           <MoreInfoTooltip>
-            Will be pasted at the bottom of the header section, just above the
-            closing head tag. Only `meta` and `script` tags are allowed.
+            {t("settings.sideMenu.metadata.headCode.tooltip")}
           </MoreInfoTooltip>
         </HStack>
         <CodeEditor

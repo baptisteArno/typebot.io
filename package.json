@@ -27,6 +27,7 @@
     "generate-changelog": "bun check-unused-dependencies && git fetch --all && pnpx gitmoji-changelog",
     "sync-locales": "dotenv -e .env -- tolgee sync --continue-on-warning --remove-unused --no-strict-namespace --patterns './apps/builder/src/**/*.ts?(x)' --backup './.tolgee/backup'",
     "pull-locales": "dotenv -e .env -- tolgee pull && bun format-and-lint:fix",
+    "push-locales": "dotenv -e .env -- tolgee push",
     "create-new-block": "cd packages/forge/cli && bun start",
     "check-unused-dependencies": "bun packages/scripts/src/checkDependencies.ts"
   },

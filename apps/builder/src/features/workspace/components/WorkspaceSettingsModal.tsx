@@ -107,7 +107,7 @@ export const WorkspaceSettingsModal = ({
                 justifyContent="flex-start"
                 pl="4"
               >
-                Credentials
+                {t("credentials")}
               </Button>
             </Stack>
             <Stack>
