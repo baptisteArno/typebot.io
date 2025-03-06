@@ -2,6 +2,10 @@
 title: Command
 ---
 
-This event allows you to trigger a specifc flow when a command is sent to the bot. This command can be sent with an HTTP request with a `command` message type on the `continueChat` endpoint or with the [Typebot.sendCommand](/deploy/web/html-javascript#commands) function if your bot is embedded on a website.
+This event allows you to trigger a specifc flow when a command is sent to the bot. This command can be sent with an [continueChat HTTP request](/api-reference/chat/continue-chat) with a `command` message type or with the [Typebot.sendCommand](/deploy/web/html-javascript#commands) function if your bot is embedded on a website.
 
 You assign a unique command name for each node and you can optionally resume the flow after the command is sent.
+
+<Frame>
+  <img src="/images/events/command.avif" alt="Command event in Typebot editor" />
+</Frame>
