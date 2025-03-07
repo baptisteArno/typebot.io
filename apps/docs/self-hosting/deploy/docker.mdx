@@ -192,6 +192,7 @@ If you don't already have an S3 storage available, you could include it in your 
 services:
   minio:
     image: minio/minio
+    restart: always
     command: server /data
     ports:
       - '9000:9000'
@@ -203,6 +204,7 @@ services:
   # This service just makes sure a bucket with the right policies is created
   createbuckets:
     image: minio/mc
+    restart: always
     depends_on:
       - minio
     entrypoint: >
@@ -253,6 +255,7 @@ services:
     depends_on:
       - typebot-builder
       - typebot-viewer
+      - minio
   typebot-db:
     image: postgres:16
     restart: always
@@ -306,6 +309,7 @@ services:
       virtual.port: '9000'
       virtual.tls-email: 'admin@example.com' # change to your email
     image: minio/minio
+    restart: always
     command: server /data
     ports:
       - '9000:9000'
@@ -317,6 +321,7 @@ services:
   # This service just make sure a bucket with the right policies is created
   createbuckets:
     image: minio/mc
+    restart: always
     depends_on:
       - minio
     entrypoint: >
