@@ -104,9 +104,8 @@ test("table features should work", async ({ page }) => {
   });
 
   await test.step("Export", async () => {
-    // For some reason, we need to double click on checkboxes to check them
-    await getNthCheckbox(page, 1).dblclick();
-    await getNthCheckbox(page, 2).dblclick();
+    await page.locator(".chakra-checkbox__control").nth(1).dblclick();
+    await page.locator(".chakra-checkbox__control").nth(2).dblclick();
     await expect(
       page.getByRole("button", { name: "2 selected" }),
     ).toBeVisible();
@@ -120,7 +119,7 @@ test("table features should work", async ({ page }) => {
     const { data } = parse(file);
     validateExportSelection(data);
 
-    await getNthCheckbox(page, 0).click();
+    await page.locator(".chakra-checkbox__control").nth(0).click();
     await expect(
       page.getByRole("button", { name: "200 selected" }),
     ).toBeVisible();
@@ -133,7 +132,7 @@ test("table features should work", async ({ page }) => {
     const fileAll = readFileSync(pathAll as string).toString();
     const { data: dataAll } = parse(fileAll);
     validateExportAll(dataAll);
-    await getNthCheckbox(page, 0).click();
+    await page.locator(".chakra-checkbox__control").nth(0).click();
     await page.getByRole("button", { name: "Open table settings" }).click();
     await page.getByRole("button", { name: "Export all" }).click();
     const [downloadAllFromMenu] = await Promise.all([
@@ -149,8 +148,8 @@ test("table features should work", async ({ page }) => {
   });
 
   await test.step("Delete", async () => {
-    await getNthCheckbox(page, 1).click();
-    await getNthCheckbox(page, 2).click();
+    await page.locator(".chakra-checkbox__control").nth(1).click();
+    await page.locator(".chakra-checkbox__control").nth(2).click();
     await page.getByRole("button", { name: "Delete" }).click();
     await deleteButtonInConfirmDialog(page).click();
     await expect(page.locator("text=content199")).toBeHidden();
@@ -191,6 +190,3 @@ const saveAndReload = async (page: Page) => {
   await page.waitForTimeout(2000);
   await page.goto(`/typebots/${typebotId}/results`);
 };
-
-const getNthCheckbox = (page: Page, n: number) =>
-  page.getByTestId("checkbox").nth(n);

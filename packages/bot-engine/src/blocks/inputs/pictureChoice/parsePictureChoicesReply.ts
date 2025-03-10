@@ -65,7 +65,7 @@ export const parsePictureChoicesReply =
       if (matchedItems.length === 0) return { status: "fail" };
       return {
         status: "success",
-        reply: matchedItems
+        content: matchedItems
           .map((item) =>
             isNotEmpty(item.title) ? item.title : (item.pictureSrc ?? ""),
           )
@@ -85,7 +85,8 @@ export const parsePictureChoicesReply =
     if (!matchedItem) return { status: "fail" };
     return {
       status: "success",
-      reply: isNotEmpty(matchedItem.title)
+      outgoingEdgeId: matchedItem.outgoingEdgeId,
+      content: isNotEmpty(matchedItem.title)
         ? matchedItem.title
         : (matchedItem.pictureSrc ?? ""),
     };

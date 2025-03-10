@@ -12,6 +12,7 @@
     "apps/*"
   ],
   "scripts": {
+    "postinstall": "turbo run db:generate",
     "prepare": "husky",
     "pre-commit": "bun format-and-lint && bun lint-repo && turbo check-broken-links",
     "format-and-lint": "biome check .",

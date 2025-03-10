@@ -21,7 +21,7 @@ test.describe("Redirect block", () => {
     await page.click("text=Test");
     await page.locator("typebot-standard").locator("text=Go to URL").click();
     await expect(page).toHaveURL("https://www.google.com");
-    await page.goBack();
+    await page.goto(`/typebots/${typebotId}/edit`);
 
     await page.click("text=Redirect to google.com");
     await page.click("text=Open in new tab");

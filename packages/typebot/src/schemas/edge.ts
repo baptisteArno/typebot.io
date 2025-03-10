@@ -3,6 +3,7 @@ import { z } from "@typebot.io/zod";
 const blockSourceSchema = z.object({
   blockId: z.string(),
   itemId: z.string().optional(),
+  pathId: z.string().optional(),
 });
 export type BlockSource = z.infer<typeof blockSourceSchema>;
 const eventSourceSchema = z.object({

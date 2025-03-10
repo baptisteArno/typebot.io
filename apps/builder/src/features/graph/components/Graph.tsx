@@ -3,6 +3,7 @@ import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { useUser } from "@/features/user/hooks/useUser";
 import { Fade, Flex, type FlexProps, useEventListener } from "@chakra-ui/react";
 import { createId } from "@paralleldrive/cuid2";
+import { shouldOpenBlockSettingsOnCreation } from "@typebot.io/blocks-core/helpers";
 import type { BlockV6 } from "@typebot.io/blocks-core/schemas/schema";
 import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
 import { GraphNavigation } from "@typebot.io/prisma/enum";
@@ -150,7 +151,6 @@ export const Graph = ({
     if (!typebot) return;
     if (draggedItem) setDraggedItem(undefined);
     if (!draggedBlock && !draggedBlockType && !draggedEventType) return;
-
     const coordinates = projectMouse(
       { x: e.clientX, y: e.clientY },
       graphPosition,
@@ -174,11 +174,7 @@ export const Graph = ({
       });
       setDraggedBlock(undefined);
       setDraggedBlockType(undefined);
-      if (
-        newBlockId &&
-        draggedBlockType !== InputBlockType.CHOICE &&
-        draggedBlockType !== InputBlockType.PICTURE_CHOICE
-      ) {
+      if (newBlockId && shouldOpenBlockSettingsOnCreation(draggedBlockType)) {
         setOpenedNodeId(newBlockId);
       }
     }

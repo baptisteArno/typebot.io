@@ -156,23 +156,6 @@ pre {
   }
 }
 
-.typebot-button {
-  color: var(--typebot-button-color);
-  background-color: rgba(
-    var(--typebot-button-bg-rgb),
-    var(--typebot-button-opacity)
-  );
-  border-width: var(--typebot-button-border-width);
-  border-color: rgba(
-    var(--typebot-button-border-rgb),
-    var(--typebot-button-border-opacity)
-  );
-  border-radius: var(--typebot-button-border-radius);
-  box-shadow: var(--typebot-button-box-shadow);
-  backdrop-filter: blur(var(--typebot-button-blur));
-  transition: all 0.3s ease;
-}
-
 .typebot-selectable {
   border-width: var(--typebot-button-border-width);
   border-color: rgba(
@@ -344,15 +327,6 @@ pre {
 
 .typebot-upload-input.dragging-over {
   border-color: rgb(var(--typebot-button-bg-rgb));
-}
-
-.secondary-button {
-  background-color: rgba(
-    var(--typebot-host-bubble-bg-rgb),
-    var(--typebot-host-bubble-opacity)
-  );
-  color: var(--typebot-host-bubble-color);
-  border-radius: var(--typebot-button-border-radius);
 }
 
 .typebot-country-select {
@@ -631,4 +605,26 @@ select option {
 
 .typebot-buttons-input > .typebot-input {
   max-width: 350px;
+}
+
+.typebot-card {
+  color: var(--typebot-host-bubble-color);
+  background-color: rgba(
+    var(--typebot-host-bubble-bg-rgb),
+    var(--typebot-host-bubble-opacity)
+  );
+  border-width: var(--typebot-host-bubble-border-width);
+  border-color: rgba(
+    var(--typebot-host-bubble-border-rgb),
+    var(--typebot-host-bubble-border-opacity)
+  );
+  border-radius: var(--typebot-host-bubble-border-radius);
+  box-shadow: var(--typebot-host-bubble-box-shadow);
+  backdrop-filter: blur(var(--typebot-host-bubble-blur));
+}
+
+.typebot-card img {
+  border-radius: var(--typebot-host-bubble-border-radius);
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
 }

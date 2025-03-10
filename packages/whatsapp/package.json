@@ -23,7 +23,7 @@
     "@typebot.io/prisma": "workspace:*",
     "@typebot.io/chat-session": "workspace:*",
     "@typebot.io/credentials": "workspace:*",
-    "@sentry/nextjs": "9.1.0",
+    "@sentry/nextjs": "9.5.0",
     "ky": "1.2.4"
   },
   "devDependencies": {

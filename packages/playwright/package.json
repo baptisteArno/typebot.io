@@ -7,7 +7,7 @@
     "./*": "./src/*.ts"
   },
   "dependencies": {
-    "@playwright/test": "1.45.2",
+    "@playwright/test": "1.51.0",
     "@typebot.io/blocks-core": "workspace:*",
     "@typebot.io/blocks-inputs": "workspace:*",
     "@typebot.io/env": "workspace:*",

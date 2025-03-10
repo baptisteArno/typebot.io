@@ -13,7 +13,6 @@ import type { ZodObject } from "zod";
 type Props = {
   indices: BlockIndices;
   block: BlockV6;
-  /* eslint-disable @typescript-eslint/no-explicit-any */
   onTurnIntoClick: (params: TurnableIntoParam, schema: ZodObject<any>) => void;
 };
 

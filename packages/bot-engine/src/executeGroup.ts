@@ -16,6 +16,7 @@ import { isNotEmpty } from "@typebot.io/lib/utils";
 import type { Prisma } from "@typebot.io/prisma/types";
 import { deepParseVariables } from "@typebot.io/variables/deepParseVariables";
 import type { SetVariableHistoryItem } from "@typebot.io/variables/schemas";
+import { injectVariableValuesInCardsBlock } from "./blocks/cards/injectVariableValuesInCardsBlock";
 import { injectVariableValuesInButtonsInputBlock } from "./blocks/inputs/buttons/injectVariableValuesInButtonsInputBlock";
 import { parseDateInput } from "./blocks/inputs/date/parseDateInput";
 import { computePaymentInputRuntimeOptions } from "./blocks/inputs/payment/computePaymentInputRuntimeOptions";
@@ -315,6 +316,11 @@ export const parseInput =
             state.typebotsQueue[0].typebot.variables,
           )(block),
         });
+      }
+      case InputBlockType.CARDS: {
+        return injectVariableValuesInCardsBlock(
+          state.typebotsQueue[0].typebot.variables,
+        )(block);
       }
       default: {
         return deepParseVariables(state.typebotsQueue[0].typebot.variables)({

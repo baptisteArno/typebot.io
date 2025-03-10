@@ -12,7 +12,7 @@
     "validator": "13.12.0",
     "@paralleldrive/cuid2": "2.2.1",
     "next": "14.2.13",
-    "@sentry/nextjs": "9.1.0"
+    "@sentry/nextjs": "9.5.0"
   },
   "devDependencies": {
     "@typebot.io/env": "workspace:*",

@@ -1,4 +1,5 @@
 import { authenticatedProcedure } from "@/helpers/server/trpc";
+import { ClientToastError } from "@/lib/ClientToastError";
 import { TRPCError } from "@trpc/server";
 import { saveStateToDatabase } from "@typebot.io/bot-engine/saveStateToDatabase";
 import { startFromSchema } from "@typebot.io/bot-engine/schemas/api";
@@ -123,57 +124,62 @@ export const startWhatsAppPreview = authenticatedProcedure
       },
     });
 
-    if (canSendDirectMessagesToUser) {
-      await sendChatReplyToWhatsApp({
-        to,
-        messages,
-        input,
-        clientSideActions,
-        isFirstChatChunk: true,
-        credentials: {
-          phoneNumberId: env.WHATSAPP_PREVIEW_FROM_PHONE_NUMBER_ID,
-          systemUserAccessToken: env.META_SYSTEM_USER_TOKEN,
-        },
-        state: newSessionState,
-      });
-      await saveStateToDatabase({
-        clientSideActions: [],
-        input,
-        logs,
-        session: {
-          id: sessionId,
-          state: newSessionState,
-        },
-        visitedEdges,
-        setVariableHistory,
-      });
-
-      return {
-        message: "Sent direct WA message",
-      };
-    } else {
-      await restartSession({
-        state: newSessionState,
-        id: sessionId,
-      });
-      await sendWhatsAppMessage({
-        to,
-        message: {
-          type: "template",
-          template: {
-            language: {
-              code: env.WHATSAPP_PREVIEW_TEMPLATE_LANG,
-            },
-            name: env.WHATSAPP_PREVIEW_TEMPLATE_NAME,
+    try {
+      if (canSendDirectMessagesToUser) {
+        await sendChatReplyToWhatsApp({
+          to,
+          messages,
+          input,
+          clientSideActions,
+          isFirstChatChunk: true,
+          credentials: {
+            phoneNumberId: env.WHATSAPP_PREVIEW_FROM_PHONE_NUMBER_ID,
+            systemUserAccessToken: env.META_SYSTEM_USER_TOKEN,
           },
-        },
-        credentials: {
-          phoneNumberId: env.WHATSAPP_PREVIEW_FROM_PHONE_NUMBER_ID,
-          systemUserAccessToken: env.META_SYSTEM_USER_TOKEN,
-        },
-      });
-      return {
-        message: "Sent WA template",
-      };
+          state: newSessionState,
+        });
+        await saveStateToDatabase({
+          clientSideActions: [],
+          input,
+          logs,
+          session: {
+            id: sessionId,
+            state: newSessionState,
+          },
+          visitedEdges,
+          setVariableHistory,
+        });
+
+        return {
+          message: "Sent direct WA message",
+        };
+      } else {
+        await restartSession({
+          state: newSessionState,
+          id: sessionId,
+        });
+
+        await sendWhatsAppMessage({
+          to,
+          message: {
+            type: "template",
+            template: {
+              language: {
+                code: env.WHATSAPP_PREVIEW_TEMPLATE_LANG,
+              },
+              name: env.WHATSAPP_PREVIEW_TEMPLATE_NAME,
+            },
+          },
+          credentials: {
+            phoneNumberId: env.WHATSAPP_PREVIEW_FROM_PHONE_NUMBER_ID,
+            systemUserAccessToken: env.META_SYSTEM_USER_TOKEN,
+          },
+        });
+        return {
+          message: "Sent WA template",
+        };
+      }
+    } catch (error) {
+      throw await ClientToastError.fromUnkownError(error);
     }
   });

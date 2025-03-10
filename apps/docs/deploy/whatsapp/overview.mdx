@@ -38,8 +38,9 @@ WhatsApp environment have some limitations that you need to keep in mind when bu
 
 - GIF and SVG image files are not supported. They won't be displayed.
 - Only .mp4 videos are supported (See [Supported Media Types](https://developers.facebook.com/docs/whatsapp/cloud-api/reference/media#supported-media-types) for more info).
-- Buttons content can't be longer than 20 characters. If the content is longer, it will be truncated.
 - WhatsApp only allows to display 3 buttons at a time. So we work around that by adding "..." messages to display more buttons.
+- Cards input block can only display 3 buttons per card at a time.
+- Buttons content can't be longer than 20 characters. If the content is longer, it will be truncated.
 - Incompatible blocks, if present, they will be skipped:
 
   - Payment input block

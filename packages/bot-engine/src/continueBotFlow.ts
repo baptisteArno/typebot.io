@@ -35,6 +35,7 @@ import type {
   Variable,
 } from "@typebot.io/variables/schemas";
 import { resetVariablesGlobals } from "@typebot.io/variables/store";
+import { parseCardsReply } from "./blocks/cards/parseCardsReply";
 import { parseButtonsReply } from "./blocks/inputs/buttons/parseButtonsReply";
 import { parseDateReply } from "./blocks/inputs/date/parseDateReply";
 import { formatEmail } from "./blocks/inputs/email/formatEmail";
@@ -59,7 +60,7 @@ import type {
   Message,
 } from "./schemas/api";
 import { startBotFlow } from "./startBotFlow";
-import type { ParsedReply } from "./types";
+import type { ParsedReply, SkipReply, SuccessReply } from "./types";
 import { updateVariablesInSession } from "./updateVariablesInSession";
 
 export type ContinueBotFlowResponse = ContinueChatResponse & {
@@ -123,7 +124,7 @@ export const continueBotFlow = async (
   newSessionState = nonInputProcessResult.newSessionState;
   const { setVariableHistory, firstBubbleWasStreamed } = nonInputProcessResult;
 
-  let formattedReply: string | undefined;
+  let continueReply: SuccessReply | SkipReply | undefined;
 
   if (isInputBlock(block) && isInputMessage(reply)) {
     const parsedReplyResult = await parseReply(newSessionState)(reply, block);
@@ -139,9 +140,9 @@ export const continueBotFlow = async (
         setVariableHistory: [],
       };
 
-    formattedReply =
-      "reply" in parsedReplyResult && reply?.type === "text"
-        ? parsedReplyResult.reply
+    const formattedReply =
+      "content" in parsedReplyResult && reply?.type === "text"
+        ? parsedReplyResult.content
         : undefined;
     newSessionState = await processAndSaveAnswer(
       newSessionState,
@@ -151,18 +152,21 @@ export const continueBotFlow = async (
         ? { ...reply, type: "text", text: formattedReply }
         : reply,
     );
+    continueReply = parsedReplyResult;
   }
 
   const groupHasMoreBlocks = blockIndex < group.blocks.length - 1;
 
   const { edgeId: nextEdgeId, isOffDefaultPath } = getOutgoingEdgeId(
     newSessionState,
-  )(block, formattedReply);
+  )(block, continueReply);
 
-  const lastMessageNewFormat =
-    reply?.type === "text" && formattedReply !== reply?.text
-      ? formattedReply
+  const content =
+    continueReply && "content" in continueReply
+      ? continueReply.content
       : undefined;
+  const lastMessageNewFormat =
+    reply?.type === "text" && content !== reply?.text ? content : undefined;
 
   if (groupHasMoreBlocks && !nextEdgeId) {
     const chatReply = await executeGroup(
@@ -640,8 +644,12 @@ const getOutgoingEdgeId =
   (state: Pick<SessionState, "typebotsQueue">) =>
   (
     block: Block,
-    reply: string | undefined,
+    reply: SuccessReply | SkipReply | undefined,
   ): { edgeId: string | undefined; isOffDefaultPath: boolean } => {
+    if (!reply || reply.status === "skip")
+      return { edgeId: block.outgoingEdgeId, isOffDefaultPath: false };
+    if (reply.outgoingEdgeId)
+      return { edgeId: reply.outgoingEdgeId, isOffDefaultPath: true };
     const variables = state.typebotsQueue[0].typebot.variables;
     if (
       block.type === InputBlockType.CHOICE &&
@@ -654,7 +662,7 @@ const getOutgoingEdgeId =
       const matchedItem = block.items.find(
         (item) =>
           parseVariables(variables)(item.content).normalize() ===
-          reply.normalize(),
+          reply.content.normalize(),
       );
       if (matchedItem?.outgoingEdgeId)
         return { edgeId: matchedItem.outgoingEdgeId, isOffDefaultPath: true };
@@ -670,7 +678,7 @@ const getOutgoingEdgeId =
       const matchedItem = block.items.find(
         (item) =>
           parseVariables(variables)(item.title).normalize() ===
-          reply.normalize(),
+          reply.content.normalize(),
       );
       if (matchedItem?.outgoingEdgeId)
         return { edgeId: matchedItem.outgoingEdgeId, isOffDefaultPath: true };
@@ -689,7 +697,7 @@ const parseReply =
         if (!reply || reply.type !== "text") return { status: "fail" };
         const formattedEmail = formatEmail(reply.text);
         if (!formattedEmail) return { status: "fail" };
-        return { status: "success", reply: formattedEmail };
+        return { status: "success", content: formattedEmail };
       }
       case InputBlockType.PHONE: {
         if (!reply || reply.type !== "text") return { status: "fail" };
@@ -698,13 +706,13 @@ const parseReply =
           block.options?.defaultCountryCode,
         );
         if (!formattedPhone) return { status: "fail" };
-        return { status: "success", reply: formattedPhone };
+        return { status: "success", content: formattedPhone };
       }
       case InputBlockType.URL: {
         if (!reply || reply.type !== "text") return { status: "fail" };
         const isValid = isURL(reply.text, { require_protocol: false });
         if (!isValid) return { status: "fail" };
-        return { status: "success", reply: reply.text };
+        return { status: "success", content: reply.text };
       }
       case InputBlockType.CHOICE: {
         if (!reply || reply.type !== "text") return { status: "fail" };
@@ -717,7 +725,7 @@ const parseReply =
           variables: state.typebotsQueue[0].typebot.variables,
         });
         if (!isValid) return { status: "fail" };
-        return { status: "success", reply: parseNumber(reply.text) };
+        return { status: "success", content: parseNumber(reply.text) };
       }
       case InputBlockType.DATE: {
         if (!reply || reply.type !== "text") return { status: "fail" };
@@ -741,19 +749,19 @@ const parseReply =
           ? "success"
           : "fail";
         if (!block.options?.isMultipleAllowed && urls.length > 1)
-          return { status, reply: replyValue.split(",")[0] };
-        return { status, reply: replyValue };
+          return { status, content: replyValue.split(",")[0] };
+        return { status, content: replyValue };
       }
       case InputBlockType.PAYMENT: {
         if (!reply || reply.type !== "text") return { status: "fail" };
         if (reply.text === "fail") return { status: "fail" };
-        return { status: "success", reply: reply.text };
+        return { status: "success", content: reply.text };
       }
       case InputBlockType.RATING: {
         if (!reply || reply.type !== "text") return { status: "fail" };
         const isValid = validateRatingReply(reply.text, block);
         if (!isValid) return { status: "fail" };
-        return { status: "success", reply: reply.text };
+        return { status: "success", content: reply.text };
       }
       case InputBlockType.PICTURE_CHOICE: {
         if (!reply || reply.type !== "text") return { status: "fail" };
@@ -763,8 +771,12 @@ const parseReply =
         if (!reply) return { status: "fail" };
         return {
           status: "success",
-          reply: reply.type === "audio" ? reply.url : reply.text,
+          content: reply.type === "audio" ? reply.url : reply.text,
         };
+      }
+      case InputBlockType.CARDS: {
+        if (!reply || reply.type !== "text") return { status: "fail" };
+        return parseCardsReply(state)(reply.text, block);
       }
     }
   };

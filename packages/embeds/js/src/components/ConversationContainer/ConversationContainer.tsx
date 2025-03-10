@@ -20,6 +20,7 @@ import {
 } from "@/utils/formattedMessagesSignal";
 import { getAnswerContent } from "@/utils/getAnswerContent";
 import { hiddenInput, setHiddenInput } from "@/utils/hiddenInputSignal";
+import { setIsMediumContainer, setIsMobile } from "@/utils/isMobileSignal";
 import { persist } from "@/utils/persist";
 import { setGeneralBackground } from "@/utils/setCssVariablesValue";
 import { setStreamingMessage } from "@/utils/streamingMessageSignal";
@@ -64,6 +65,10 @@ type Props = {
 
 export const ConversationContainer = (props: Props) => {
   let chatContainer: HTMLDivElement | undefined;
+  const resizeObserver = new ResizeObserver((entries) => {
+    setIsMobile((entries[0]?.target.clientWidth ?? 0) < 432);
+    setIsMediumContainer((entries[0]?.target.clientWidth ?? 0) < 550);
+  });
   const [chatChunks, setChatChunks] = persist(
     createSignal<ChatChunkType[]>([
       {
@@ -121,6 +126,8 @@ export const ConversationContainer = (props: Props) => {
   );
 
   onMount(() => {
+    if (chatContainer) resizeObserver.observe(chatContainer);
+
     window.addEventListener("message", processIncomingEvent);
     (async () => {
       const isRecoveredFromStorage = chatChunks().length > 1;
@@ -133,6 +140,19 @@ export const ConversationContainer = (props: Props) => {
         await processClientSideActions(actionsBeforeFirstBubble);
       }
     })();
+  });
+
+  createEffect(() => {
+    setAvatarsHistory((prev) =>
+      addAvatarsToHistoryIfChanged({
+        newAvatars: getAvatarUrls(
+          props.initialChatReply.typebot.theme,
+          props.initialChatReply.dynamicTheme,
+        ),
+        avatarHistory: prev,
+        currentChunkIndex: chatChunks().length - 1,
+      }),
+    );
   });
 
   const cleanupRecoveredChat = () => {
@@ -388,6 +408,7 @@ export const ConversationContainer = (props: Props) => {
   };
 
   onCleanup(() => {
+    if (chatContainer) resizeObserver.unobserve(chatContainer);
     setStreamingMessage(undefined);
     setFormattedMessages([]);
     window.removeEventListener("message", processIncomingEvent);

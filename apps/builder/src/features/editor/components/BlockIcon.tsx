@@ -1,4 +1,4 @@
-import { FlagIcon, ThunderIcon } from "@/components/icons";
+import { FlagIcon, GalleryIcon, ThunderIcon } from "@/components/icons";
 import { AudioBubbleIcon } from "@/features/blocks/bubbles/audio/components/AudioBubbleIcon";
 import { EmbedBubbleIcon } from "@/features/blocks/bubbles/embed/components/EmbedBubbleIcon";
 import { ImageBubbleIcon } from "@/features/blocks/bubbles/image/components/ImageBubbleIcon";
@@ -86,6 +86,8 @@ export const BlockIcon = ({ type, ...props }: BlockIconProps): JSX.Element => {
       return <RatingInputIcon color={orange} {...props} />;
     case InputBlockType.FILE:
       return <FileInputIcon color={orange} {...props} />;
+    case InputBlockType.CARDS:
+      return <GalleryIcon color={orange} {...props} />;
     case LogicBlockType.SET_VARIABLE:
       return <SetVariableIcon color={purple} {...props} />;
     case LogicBlockType.CONDITION:
@@ -126,6 +128,7 @@ export const BlockIcon = ({ type, ...props }: BlockIconProps): JSX.Element => {
       return <FlagIcon {...props} />;
     case IntegrationBlockType.OPEN_AI:
       return <OpenAILogo {...props} fill={openAIColor} />;
+
     default:
       return <ForgedBlockIcon type={type} {...props} />;
   }

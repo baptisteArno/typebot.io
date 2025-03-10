@@ -167,7 +167,9 @@ export const GroupNode = ({ group, groupIndex }: Props) => {
           className="group"
           data-selectable={group.id}
           userSelect="none"
-          p="4"
+          px="4"
+          pt="4"
+          pb="2"
           rounded="xl"
           bg={bg}
           borderWidth="1px"
@@ -190,7 +192,7 @@ export const GroupNode = ({ group, groupIndex }: Props) => {
           cursor={isMouseDown ? "grabbing" : "pointer"}
           _hover={{ shadow: "md" }}
           zIndex={isFocused ? 10 : 1}
-          spacing={isEmpty(group.title) ? "0" : "2"}
+          spacing={0}
           pointerEvents={isDraggingGraph ? "none" : "auto"}
         >
           <Editable

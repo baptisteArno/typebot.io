@@ -5,7 +5,6 @@ import { setBotContainerHeight } from "@/utils/botContainerHeightSignal";
 import { setBotContainer } from "@/utils/botContainerSignal";
 import { mergeThemes } from "@/utils/dynamicTheme";
 import { injectFont } from "@/utils/injectFont";
-import { setIsMobile } from "@/utils/isMobileSignal";
 import { persist } from "@/utils/persist";
 import { setCssVariablesValue } from "@/utils/setCssVariablesValue";
 import {
@@ -35,6 +34,7 @@ import {
   defaultProgressBarPosition,
 } from "@typebot.io/theme/constants";
 import type { Font } from "@typebot.io/theme/schemas";
+import typebotColors from "@typebot.io/ui/colors.css";
 import clsx from "clsx";
 import { HTTPError } from "ky";
 import { Show, createEffect, createSignal, onCleanup, onMount } from "solid-js";
@@ -224,6 +224,7 @@ export const Bot = (props: BotProps & { class?: string }) => {
 
   return (
     <>
+      <style>{typebotColors}</style>
       <style>{customCss()}</style>
       <style>{immutableCss}</style>
       <Show when={error()} keyed>
@@ -301,14 +302,9 @@ const BotContent = (props: BotContentProps) => {
   );
   let botContainerElement: HTMLDivElement | undefined;
 
-  const resizeObserver = new ResizeObserver((entries) => {
-    return setIsMobile((entries[0]?.target.clientWidth ?? 0) < 432);
-  });
-
   onMount(() => {
     if (!botContainerElement) return;
     setBotContainer(botContainerElement);
-    resizeObserver.observe(botContainerElement);
     setBotContainerHeight(`${botContainerElement.clientHeight}px`);
   });
 
@@ -333,11 +329,6 @@ const BotContent = (props: BotContentProps) => {
         ? props.initialChatReply.typebot.version
         : "6",
     });
-  });
-
-  onCleanup(() => {
-    if (!botContainerElement) return;
-    resizeObserver.unobserve(botContainerElement);
   });
 
   return (

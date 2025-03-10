@@ -1,0 +1,10 @@
+@import "@typebot.io/ui/colors.css";
+
+/* Uncomment when Chakra UI is removed */
+/* @tailwind base; */
+@tailwind components;
+@tailwind utilities;
+
+.text-align-inherit {
+  text-align: inherit;
+}

@@ -50,7 +50,7 @@ export const Edge = ({ edge, fromElementId }: Props) => {
     const endpointId =
       "eventId" in edge.from
         ? edge.from.eventId
-        : (edge?.from.itemId ?? edge?.from.blockId);
+        : (edge?.from.pathId ?? edge?.from.itemId ?? edge?.from.blockId);
     if (!endpointId) return;
     return sourceEndpointYOffsets.get(endpointId)?.y;
   }, [edge.from, sourceEndpointYOffsets]);

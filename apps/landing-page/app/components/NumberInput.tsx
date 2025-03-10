@@ -7,6 +7,7 @@ import { ChevronUpIcon } from "@typebot.io/ui/icons/ChevronUpIcon";
 
 type Props = {
   label?: string;
+  placeholder?: string;
 } & NumberInputRootProps;
 export const NumberInput = ({ label, placeholder, ...props }: Props) => (
   <ArkNumberInput.Root {...props}>

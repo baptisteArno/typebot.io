@@ -1,4 +1,4 @@
-@import "@typebot.io/ui/colors/css";
+@import "@typebot.io/ui/colors.css";
 @import "font.css";
 
 @tailwind base;

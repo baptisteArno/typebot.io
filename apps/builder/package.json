@@ -10,6 +10,7 @@
     "test:ui": "dotenv -e ./.env -e ../../.env -- playwright test --ui"
   },
   "dependencies": {
+    "@ark-ui/react": "4.9.2",
     "@auth/core": "0.37.4",
     "@braintree/sanitize-url": "7.0.1",
     "@chakra-ui/react": "2.8.2",
@@ -21,7 +22,7 @@
     "@giphy/js-fetch-api": "5.0.0",
     "@giphy/react-components": "7.1.0",
     "@paralleldrive/cuid2": "2.2.1",
-    "@sentry/nextjs": "9.1.0",
+    "@sentry/nextjs": "9.5.0",
     "@tanstack/react-query": "4.29.19",
     "@tanstack/react-table": "8.9.3",
     "@tolgee/format-icu": "5.28.6",
@@ -30,6 +31,7 @@
     "@trpc/next": "10.45.2",
     "@trpc/react-query": "10.45.2",
     "@trpc/server": "10.45.2",
+    "posthog-node": "4.3.2",
     "@typebot.io/blocks-bubbles": "workspace:*",
     "@typebot.io/blocks-core": "workspace:*",
     "@typebot.io/blocks-inputs": "workspace:*",
@@ -112,7 +114,10 @@
     "zustand": "4.5.0"
   },
   "devDependencies": {
-    "@playwright/test": "1.45.2",
+    "tailwindcss": "3.4.17",
+    "postcss": "8.5.3",
+    "autoprefixer": "10.4.20",
+    "@playwright/test": "1.51.0",
     "@typebot.io/billing": "workspace:*",
     "@typebot.io/forge": "workspace:*",
     "@typebot.io/forge-repository": "workspace:*",

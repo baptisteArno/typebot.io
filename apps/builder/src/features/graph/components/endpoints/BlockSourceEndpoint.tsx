@@ -27,7 +27,7 @@ export const BlockSourceEndpoint = ({
   groupId: string;
   isHidden?: boolean;
 }) => {
-  const id = source.itemId ?? source.blockId;
+  const id = source.pathId ?? source.itemId ?? source.blockId;
   const color = useColorModeValue("orange.200", "orange.100");
   const connectedColor = useColorModeValue("orange.300", "orange.200");
   const bg = useColorModeValue("white", "gray.700");
@@ -144,7 +144,8 @@ export const BlockSourceEndpoint = ({
             previewingEdge &&
             "blockId" in previewingEdge.from &&
             previewingEdge.from.blockId === source.blockId &&
-            previewingEdge.from.itemId === source.itemId
+            previewingEdge.from.itemId === source.itemId &&
+            previewingEdge.from.pathId === source.pathId
               ? connectedColor
               : color
           }

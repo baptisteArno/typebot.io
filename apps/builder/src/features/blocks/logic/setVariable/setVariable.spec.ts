@@ -35,7 +35,7 @@ test.describe("Set variable block", () => {
       "Custom var",
     );
     await page.getByRole("menuitem", { name: "Create Custom var" }).click();
-    await expect(page.getByText("Save in results?")).toBeVisible();
+    await expect(page.getByText("Save in results")).toBeVisible();
     await expect(
       page.getByRole("group").nth(1).locator(".chakra-switch"),
     ).not.toHaveAttribute("data-checked");
@@ -79,7 +79,7 @@ test.describe("Set variable block", () => {
 
     await page.goto(`/typebots/${typebotId}/edit`);
     await page.getByText("Transcription =").click();
-    await expect(page.getByText("Save in results?")).toBeVisible();
+    await expect(page.getByText("Save in results")).toBeVisible();
     await page.locator('input[type="text"]').click();
     await page.getByRole("menuitem", { name: "Transcript" }).click();
     await expect(page.getByText("Save in results?")).toBeHidden();

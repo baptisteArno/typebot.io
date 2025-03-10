@@ -10,7 +10,7 @@
     "check-broken-links": "mdx-local-link-checker content public '*/(index.mdx|blog|about|pricing?isTiersModalOpened=true)'"
   },
   "dependencies": {
-    "@ark-ui/react": "4.9.1",
+    "@ark-ui/react": "4.9.2",
     "@tanstack/react-router": "1.112.0",
     "@tanstack/react-start": "1.112.3",
     "@typebot.io/billing": "workspace:*",
@@ -22,7 +22,7 @@
     "motion": "12.4.3",
     "react": "18.3.1",
     "react-dom": "18.3.1",
-    "tailwind-merge": "2.6.0",
+    "tailwind-merge": "3.0.2",
     "@typebot.io/zod": "workspace:*",
     "@typebot.io/ui": "workspace:*"
   },
@@ -40,7 +40,7 @@
     "autoprefixer": "10.4.20",
     "dotenv-cli": "8.0.0",
     "mdx-local-link-checker": "2.1.1",
-    "postcss": "8.5.1",
+    "postcss": "8.5.3",
     "rehype-autolink-headings": "7.1.0",
     "rehype-pretty-code": "0.14.0",
     "rehype-slug": "6.0.0",

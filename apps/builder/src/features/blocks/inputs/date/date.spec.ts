@@ -28,8 +28,8 @@ test.describe("Date input block", () => {
     await expect(page.locator('text="01/01/2021"')).toBeVisible();
 
     await page.click(`text=Pick a date`);
-    await page.click("text=Is range?");
-    await page.click("text=With time?");
+    await page.click("text=Is range");
+    await page.click("text=With time");
     await page.getByLabel("From label:").fill("Previous:");
     await page.getByLabel("To label:").fill("After:");
     await page.getByLabel("Button label:").fill("Go");

@@ -33,7 +33,7 @@
     "@typebot.io/schemas": "workspace:*",
     "@typebot.io/logs": "workspace:*",
     "@typebot.io/events": "workspace:*",
-    "@sentry/nextjs": "9.1.0",
+    "@sentry/nextjs": "9.5.0",
     "chrono-node": "2.7.6",
     "date-fns": "2.30.0",
     "date-fns-tz": "2.0.0",

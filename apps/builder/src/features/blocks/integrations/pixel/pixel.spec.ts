@@ -30,7 +30,7 @@ test.describe("Pixel block", () => {
     await page.getByPlaceholder("Value").fill("USD");
     await page.getByRole("button", { name: "Test" }).click();
     await expect(
-      page.getByText("Pixel is not enabled in Preview mode").nth(1),
+      page.getByText("Pixel is not enabled in Preview mode"),
     ).toBeVisible();
   });
 });

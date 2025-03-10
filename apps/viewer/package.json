@@ -14,7 +14,7 @@
     "partysocket": "1.0.2",
     "@typebot.io/trpc-openapi": "workspace:*",
     "@planetscale/database": "1.8.0",
-    "@sentry/nextjs": "9.1.0",
+    "@sentry/nextjs": "9.5.0",
     "@trpc/server": "10.45.2",
     "@typebot.io/bot-engine": "workspace:*",
     "@typebot.io/nextjs": "workspace:*",
@@ -59,7 +59,7 @@
     "@typebot.io/legacy": "workspace:*"
   },
   "devDependencies": {
-    "@playwright/test": "1.45.2",
+    "@playwright/test": "1.51.0",
     "@typebot.io/playwright": "workspace:*",
     "@typebot.io/tsconfig": "workspace:*",
     "@types/cors": "2.8.13",

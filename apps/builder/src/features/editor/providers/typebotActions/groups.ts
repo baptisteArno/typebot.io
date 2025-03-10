@@ -18,11 +18,7 @@ import { extractVariableIdsFromObject } from "@typebot.io/variables/extractVaria
 import type { Variable } from "@typebot.io/variables/schemas";
 import { type Draft, produce } from "immer";
 import type { SetTypebot } from "../TypebotProvider";
-import {
-  createBlockDraft,
-  deleteGroupDraft,
-  duplicateBlockDraft,
-} from "./blocks";
+import { createBlockDraft, deleteGroupDraft } from "./blocks";
 
 export type GroupsActions = {
   createGroup: (

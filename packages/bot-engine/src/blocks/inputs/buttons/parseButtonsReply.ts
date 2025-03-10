@@ -63,7 +63,7 @@ export const parseButtonsReply =
       if (matchedItems.length === 0) return { status: "fail" };
       return {
         status: "success",
-        reply: matchedItems.map((item) => item.content).join(", "),
+        content: matchedItems.map((item) => item.content).join(", "),
       };
     }
     const longestItemsFirst = [...displayedItems].sort(
@@ -77,6 +77,7 @@ export const parseButtonsReply =
     if (!matchedItem) return { status: "fail" };
     return {
       status: "success",
-      reply: matchedItem.content ?? "",
+      content: matchedItem.content ?? "",
+      outgoingEdgeId: matchedItem.outgoingEdgeId,
     };
   };

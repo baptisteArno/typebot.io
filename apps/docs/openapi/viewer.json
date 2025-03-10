@@ -257,6 +257,169 @@
                                   "$ref": "#/components/schemas/rating"
                                 },
                                 {
+                                  "type": "object",
+                                  "properties": {
+                                    "id": {
+                                      "type": "string"
+                                    },
+                                    "outgoingEdgeId": {
+                                      "type": "string"
+                                    },
+                                    "type": {
+                                      "type": "string",
+                                      "enum": [
+                                        "cards"
+                                      ]
+                                    },
+                                    "items": {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "object",
+                                        "properties": {
+                                          "id": {
+                                            "type": "string"
+                                          },
+                                          "outgoingEdgeId": {
+                                            "type": "string"
+                                          },
+                                          "options": {
+                                            "type": "object",
+                                            "properties": {
+                                              "displayCondition": {
+                                                "type": "object",
+                                                "properties": {
+                                                  "isEnabled": {
+                                                    "type": "boolean"
+                                                  },
+                                                  "condition": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                      "logicalOperator": {
+                                                        "type": "string",
+                                                        "enum": [
+                                                          "OR",
+                                                          "AND"
+                                                        ]
+                                                      },
+                                                      "comparisons": {
+                                                        "type": "array",
+                                                        "items": {
+                                                          "type": "object",
+                                                          "properties": {
+                                                            "id": {
+                                                              "type": "string"
+                                                            },
+                                                            "variableId": {
+                                                              "type": "string"
+                                                            },
+                                                            "comparisonOperator": {
+                                                              "type": "string",
+                                                              "enum": [
+                                                                "Equal to",
+                                                                "Not equal",
+                                                                "Contains",
+                                                                "Does not contain",
+                                                                "Greater than",
+                                                                "Greater or equal to",
+                                                                "Less than",
+                                                                "Less or equal to",
+                                                                "Is set",
+                                                                "Is empty",
+                                                                "Starts with",
+                                                                "Ends with",
+                                                                "Matches regex",
+                                                                "Does not match regex"
+                                                              ]
+                                                            },
+                                                            "value": {
+                                                              "type": "string"
+                                                            }
+                                                          },
+                                                          "required": [
+                                                            "id"
+                                                          ]
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          },
+                                          "imageUrl": {
+                                            "type": "string",
+                                            "nullable": true
+                                          },
+                                          "title": {
+                                            "type": "string",
+                                            "nullable": true
+                                          },
+                                          "description": {
+                                            "type": "string",
+                                            "nullable": true
+                                          },
+                                          "paths": {
+                                            "type": "array",
+                                            "items": {
+                                              "type": "object",
+                                              "properties": {
+                                                "id": {
+                                                  "type": "string"
+                                                },
+                                                "text": {
+                                                  "type": "string"
+                                                },
+                                                "outgoingEdgeId": {
+                                                  "type": "string"
+                                                }
+                                              },
+                                              "required": [
+                                                "id"
+                                              ]
+                                            }
+                                          }
+                                        },
+                                        "required": [
+                                          "id"
+                                        ]
+                                      }
+                                    },
+                                    "options": {
+                                      "type": "object",
+                                      "properties": {
+                                        "variableId": {
+                                          "type": "string"
+                                        },
+                                        "saveResponseMapping": {
+                                          "type": "array",
+                                          "items": {
+                                            "type": "object",
+                                            "properties": {
+                                              "field": {
+                                                "type": "string",
+                                                "enum": [
+                                                  "Image URL",
+                                                  "Title",
+                                                  "Description",
+                                                  "Button"
+                                                ]
+                                              },
+                                              "variableId": {
+                                                "type": "string"
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "required": [
+                                    "id",
+                                    "type",
+                                    "items"
+                                  ]
+                                },
+                                {
                                   "$ref": "#/components/schemas/buttonsInputV5"
                                 },
                                 {
@@ -265,24 +428,7 @@
                                 {
                                   "$ref": "#/components/schemas/pictureChoiceV5"
                                 }
-                              ],
-                              "discriminator": {
-                                "propertyName": "type",
-                                "mapping": {
-                                  "text input": "#/components/schemas/textInput",
-                                  "email input": "#/components/schemas/email",
-                                  "number input": "#/components/schemas/numberInput",
-                                  "url input": "#/components/schemas/url",
-                                  "phone number input": "#/components/schemas/phoneNumberInput",
-                                  "date input": "#/components/schemas/dateInput",
-                                  "time input": "#/components/schemas/time",
-                                  "payment input": "#/components/schemas/paymentInput",
-                                  "rating input": "#/components/schemas/rating",
-                                  "choice input": "#/components/schemas/buttonsInputV5",
-                                  "file input": "#/components/schemas/fileInputV5",
-                                  "picture choice input": "#/components/schemas/pictureChoiceV5"
-                                }
-                              }
+                              ]
                             },
                             {
                               "oneOf": [
@@ -314,6 +460,169 @@
                                   "$ref": "#/components/schemas/rating"
                                 },
                                 {
+                                  "type": "object",
+                                  "properties": {
+                                    "id": {
+                                      "type": "string"
+                                    },
+                                    "outgoingEdgeId": {
+                                      "type": "string"
+                                    },
+                                    "type": {
+                                      "type": "string",
+                                      "enum": [
+                                        "cards"
+                                      ]
+                                    },
+                                    "items": {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "object",
+                                        "properties": {
+                                          "id": {
+                                            "type": "string"
+                                          },
+                                          "outgoingEdgeId": {
+                                            "type": "string"
+                                          },
+                                          "options": {
+                                            "type": "object",
+                                            "properties": {
+                                              "displayCondition": {
+                                                "type": "object",
+                                                "properties": {
+                                                  "isEnabled": {
+                                                    "type": "boolean"
+                                                  },
+                                                  "condition": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                      "logicalOperator": {
+                                                        "type": "string",
+                                                        "enum": [
+                                                          "OR",
+                                                          "AND"
+                                                        ]
+                                                      },
+                                                      "comparisons": {
+                                                        "type": "array",
+                                                        "items": {
+                                                          "type": "object",
+                                                          "properties": {
+                                                            "id": {
+                                                              "type": "string"
+                                                            },
+                                                            "variableId": {
+                                                              "type": "string"
+                                                            },
+                                                            "comparisonOperator": {
+                                                              "type": "string",
+                                                              "enum": [
+                                                                "Equal to",
+                                                                "Not equal",
+                                                                "Contains",
+                                                                "Does not contain",
+                                                                "Greater than",
+                                                                "Greater or equal to",
+                                                                "Less than",
+                                                                "Less or equal to",
+                                                                "Is set",
+                                                                "Is empty",
+                                                                "Starts with",
+                                                                "Ends with",
+                                                                "Matches regex",
+                                                                "Does not match regex"
+                                                              ]
+                                                            },
+                                                            "value": {
+                                                              "type": "string"
+                                                            }
+                                                          },
+                                                          "required": [
+                                                            "id"
+                                                          ]
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          },
+                                          "imageUrl": {
+                                            "type": "string",
+                                            "nullable": true
+                                          },
+                                          "title": {
+                                            "type": "string",
+                                            "nullable": true
+                                          },
+                                          "description": {
+                                            "type": "string",
+                                            "nullable": true
+                                          },
+                                          "paths": {
+                                            "type": "array",
+                                            "items": {
+                                              "type": "object",
+                                              "properties": {
+                                                "id": {
+                                                  "type": "string"
+                                                },
+                                                "text": {
+                                                  "type": "string"
+                                                },
+                                                "outgoingEdgeId": {
+                                                  "type": "string"
+                                                }
+                                              },
+                                              "required": [
+                                                "id"
+                                              ]
+                                            }
+                                          }
+                                        },
+                                        "required": [
+                                          "id"
+                                        ]
+                                      }
+                                    },
+                                    "options": {
+                                      "type": "object",
+                                      "properties": {
+                                        "variableId": {
+                                          "type": "string"
+                                        },
+                                        "saveResponseMapping": {
+                                          "type": "array",
+                                          "items": {
+                                            "type": "object",
+                                            "properties": {
+                                              "field": {
+                                                "type": "string",
+                                                "enum": [
+                                                  "Image URL",
+                                                  "Title",
+                                                  "Description",
+                                                  "Button"
+                                                ]
+                                              },
+                                              "variableId": {
+                                                "type": "string"
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "required": [
+                                    "id",
+                                    "type",
+                                    "items"
+                                  ]
+                                },
+                                {
                                   "$ref": "#/components/schemas/buttonsInput"
                                 },
                                 {
@@ -322,24 +631,7 @@
                                 {
                                   "$ref": "#/components/schemas/pictureChoice"
                                 }
-                              ],
-                              "discriminator": {
-                                "propertyName": "type",
-                                "mapping": {
-                                  "text input": "#/components/schemas/textInput",
-                                  "email input": "#/components/schemas/email",
-                                  "number input": "#/components/schemas/numberInput",
-                                  "url input": "#/components/schemas/url",
-                                  "phone number input": "#/components/schemas/phoneNumberInput",
-                                  "date input": "#/components/schemas/dateInput",
-                                  "time input": "#/components/schemas/time",
-                                  "payment input": "#/components/schemas/paymentInput",
-                                  "rating input": "#/components/schemas/rating",
-                                  "choice input": "#/components/schemas/buttonsInput",
-                                  "file input": "#/components/schemas/fileInput",
-                                  "picture choice input": "#/components/schemas/pictureChoice"
-                                }
-                              }
+                              ]
                             }
                           ]
                         },
@@ -791,6 +1083,169 @@
                                   "$ref": "#/components/schemas/rating"
                                 },
                                 {
+                                  "type": "object",
+                                  "properties": {
+                                    "id": {
+                                      "type": "string"
+                                    },
+                                    "outgoingEdgeId": {
+                                      "type": "string"
+                                    },
+                                    "type": {
+                                      "type": "string",
+                                      "enum": [
+                                        "cards"
+                                      ]
+                                    },
+                                    "items": {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "object",
+                                        "properties": {
+                                          "id": {
+                                            "type": "string"
+                                          },
+                                          "outgoingEdgeId": {
+                                            "type": "string"
+                                          },
+                                          "options": {
+                                            "type": "object",
+                                            "properties": {
+                                              "displayCondition": {
+                                                "type": "object",
+                                                "properties": {
+                                                  "isEnabled": {
+                                                    "type": "boolean"
+                                                  },
+                                                  "condition": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                      "logicalOperator": {
+                                                        "type": "string",
+                                                        "enum": [
+                                                          "OR",
+                                                          "AND"
+                                                        ]
+                                                      },
+                                                      "comparisons": {
+                                                        "type": "array",
+                                                        "items": {
+                                                          "type": "object",
+                                                          "properties": {
+                                                            "id": {
+                                                              "type": "string"
+                                                            },
+                                                            "variableId": {
+                                                              "type": "string"
+                                                            },
+                                                            "comparisonOperator": {
+                                                              "type": "string",
+                                                              "enum": [
+                                                                "Equal to",
+                                                                "Not equal",
+                                                                "Contains",
+                                                                "Does not contain",
+                                                                "Greater than",
+                                                                "Greater or equal to",
+                                                                "Less than",
+                                                                "Less or equal to",
+                                                                "Is set",
+                                                                "Is empty",
+                                                                "Starts with",
+                                                                "Ends with",
+                                                                "Matches regex",
+                                                                "Does not match regex"
+                                                              ]
+                                                            },
+                                                            "value": {
+                                                              "type": "string"
+                                                            }
+                                                          },
+                                                          "required": [
+                                                            "id"
+                                                          ]
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          },
+                                          "imageUrl": {
+                                            "type": "string",
+                                            "nullable": true
+                                          },
+                                          "title": {
+                                            "type": "string",
+                                            "nullable": true
+                                          },
+                                          "description": {
+                                            "type": "string",
+                                            "nullable": true
+                                          },
+                                          "paths": {
+                                            "type": "array",
+                                            "items": {
+                                              "type": "object",
+                                              "properties": {
+                                                "id": {
+                                                  "type": "string"
+                                                },
+                                                "text": {
+                                                  "type": "string"
+                                                },
+                                                "outgoingEdgeId": {
+                                                  "type": "string"
+                                                }
+                                              },
+                                              "required": [
+                                                "id"
+                                              ]
+                                            }
+                                          }
+                                        },
+                                        "required": [
+                                          "id"
+                                        ]
+                                      }
+                                    },
+                                    "options": {
+                                      "type": "object",
+                                      "properties": {
+                                        "variableId": {
+                                          "type": "string"
+                                        },
+                                        "saveResponseMapping": {
+                                          "type": "array",
+                                          "items": {
+                                            "type": "object",
+                                            "properties": {
+                                              "field": {
+                                                "type": "string",
+                                                "enum": [
+                                                  "Image URL",
+                                                  "Title",
+                                                  "Description",
+                                                  "Button"
+                                                ]
+                                              },
+                                              "variableId": {
+                                                "type": "string"
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "required": [
+                                    "id",
+                                    "type",
+                                    "items"
+                                  ]
+                                },
+                                {
                                   "$ref": "#/components/schemas/buttonsInputV5"
                                 },
                                 {
@@ -799,24 +1254,7 @@
                                 {
                                   "$ref": "#/components/schemas/pictureChoiceV5"
                                 }
-                              ],
-                              "discriminator": {
-                                "propertyName": "type",
-                                "mapping": {
-                                  "text input": "#/components/schemas/textInput",
-                                  "email input": "#/components/schemas/email",
-                                  "number input": "#/components/schemas/numberInput",
-                                  "url input": "#/components/schemas/url",
-                                  "phone number input": "#/components/schemas/phoneNumberInput",
-                                  "date input": "#/components/schemas/dateInput",
-                                  "time input": "#/components/schemas/time",
-                                  "payment input": "#/components/schemas/paymentInput",
-                                  "rating input": "#/components/schemas/rating",
-                                  "choice input": "#/components/schemas/buttonsInputV5",
-                                  "file input": "#/components/schemas/fileInputV5",
-                                  "picture choice input": "#/components/schemas/pictureChoiceV5"
-                                }
-                              }
+                              ]
                             },
                             {
                               "oneOf": [
@@ -848,6 +1286,169 @@
                                   "$ref": "#/components/schemas/rating"
                                 },
                                 {
+                                  "type": "object",
+                                  "properties": {
+                                    "id": {
+                                      "type": "string"
+                                    },
+                                    "outgoingEdgeId": {
+                                      "type": "string"
+                                    },
+                                    "type": {
+                                      "type": "string",
+                                      "enum": [
+                                        "cards"
+                                      ]
+                                    },
+                                    "items": {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "object",
+                                        "properties": {
+                                          "id": {
+                                            "type": "string"
+                                          },
+                                          "outgoingEdgeId": {
+                                            "type": "string"
+                                          },
+                                          "options": {
+                                            "type": "object",
+                                            "properties": {
+                                              "displayCondition": {
+                                                "type": "object",
+                                                "properties": {
+                                                  "isEnabled": {
+                                                    "type": "boolean"
+                                                  },
+                                                  "condition": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                      "logicalOperator": {
+                                                        "type": "string",
+                                                        "enum": [
+                                                          "OR",
+                                                          "AND"
+                                                        ]
+                                                      },
+                                                      "comparisons": {
+                                                        "type": "array",
+                                                        "items": {
+                                                          "type": "object",
+                                                          "properties": {
+                                                            "id": {
+                                                              "type": "string"
+                                                            },
+                                                            "variableId": {
+                                                              "type": "string"
+                                                            },
+                                                            "comparisonOperator": {
+                                                              "type": "string",
+                                                              "enum": [
+                                                                "Equal to",
+                                                                "Not equal",
+                                                                "Contains",
+                                                                "Does not contain",
+                                                                "Greater than",
+                                                                "Greater or equal to",
+                                                                "Less than",
+                                                                "Less or equal to",
+                                                                "Is set",
+                                                                "Is empty",
+                                                                "Starts with",
+                                                                "Ends with",
+                                                                "Matches regex",
+                                                                "Does not match regex"
+                                                              ]
+                                                            },
+                                                            "value": {
+                                                              "type": "string"
+                                                            }
+                                                          },
+                                                          "required": [
+                                                            "id"
+                                                          ]
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          },
+                                          "imageUrl": {
+                                            "type": "string",
+                                            "nullable": true
+                                          },
+                                          "title": {
+                                            "type": "string",
+                                            "nullable": true
+                                          },
+                                          "description": {
+                                            "type": "string",
+                                            "nullable": true
+                                          },
+                                          "paths": {
+                                            "type": "array",
+                                            "items": {
+                                              "type": "object",
+                                              "properties": {
+                                                "id": {
+                                                  "type": "string"
+                                                },
+                                                "text": {
+                                                  "type": "string"
+                                                },
+                                                "outgoingEdgeId": {
+                                                  "type": "string"
+                                                }
+                                              },
+                                              "required": [
+                                                "id"
+                                              ]
+                                            }
+                                          }
+                                        },
+                                        "required": [
+                                          "id"
+                                        ]
+                                      }
+                                    },
+                                    "options": {
+                                      "type": "object",
+                                      "properties": {
+                                        "variableId": {
+                                          "type": "string"
+                                        },
+                                        "saveResponseMapping": {
+                                          "type": "array",
+                                          "items": {
+                                            "type": "object",
+                                            "properties": {
+                                              "field": {
+                                                "type": "string",
+                                                "enum": [
+                                                  "Image URL",
+                                                  "Title",
+                                                  "Description",
+                                                  "Button"
+                                                ]
+                                              },
+                                              "variableId": {
+                                                "type": "string"
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "required": [
+                                    "id",
+                                    "type",
+                                    "items"
+                                  ]
+                                },
+                                {
                                   "$ref": "#/components/schemas/buttonsInput"
                                 },
                                 {
@@ -856,24 +1457,7 @@
                                 {
                                   "$ref": "#/components/schemas/pictureChoice"
                                 }
-                              ],
-                              "discriminator": {
-                                "propertyName": "type",
-                                "mapping": {
-                                  "text input": "#/components/schemas/textInput",
-                                  "email input": "#/components/schemas/email",
-                                  "number input": "#/components/schemas/numberInput",
-                                  "url input": "#/components/schemas/url",
-                                  "phone number input": "#/components/schemas/phoneNumberInput",
-                                  "date input": "#/components/schemas/dateInput",
-                                  "time input": "#/components/schemas/time",
-                                  "payment input": "#/components/schemas/paymentInput",
-                                  "rating input": "#/components/schemas/rating",
-                                  "choice input": "#/components/schemas/buttonsInput",
-                                  "file input": "#/components/schemas/fileInput",
-                                  "picture choice input": "#/components/schemas/pictureChoice"
-                                }
-                              }
+                              ]
                             }
                           ]
                         },
@@ -1315,25 +1899,171 @@
                                 },
                                 {
                                   "$ref": "#/components/schemas/pictureChoice"
+                                },
+                                {
+                                  "type": "object",
+                                  "properties": {
+                                    "id": {
+                                      "type": "string"
+                                    },
+                                    "outgoingEdgeId": {
+                                      "type": "string"
+                                    },
+                                    "type": {
+                                      "type": "string",
+                                      "enum": [
+                                        "cards"
+                                      ]
+                                    },
+                                    "items": {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "object",
+                                        "properties": {
+                                          "id": {
+                                            "type": "string"
+                                          },
+                                          "outgoingEdgeId": {
+                                            "type": "string"
+                                          },
+                                          "options": {
+                                            "type": "object",
+                                            "properties": {
+                                              "displayCondition": {
+                                                "type": "object",
+                                                "properties": {
+                                                  "isEnabled": {
+                                                    "type": "boolean"
+                                                  },
+                                                  "condition": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                      "logicalOperator": {
+                                                        "type": "string",
+                                                        "enum": [
+                                                          "OR",
+                                                          "AND"
+                                                        ]
+                                                      },
+                                                      "comparisons": {
+                                                        "type": "array",
+                                                        "items": {
+                                                          "type": "object",
+                                                          "properties": {
+                                                            "id": {
+                                                              "type": "string"
+                                                            },
+                                                            "variableId": {
+                                                              "type": "string"
+                                                            },
+                                                            "comparisonOperator": {
+                                                              "type": "string",
+                                                              "enum": [
+                                                                "Equal to",
+                                                                "Not equal",
+                                                                "Contains",
+                                                                "Does not contain",
+                                                                "Greater than",
+                                                                "Greater or equal to",
+                                                                "Less than",
+                                                                "Less or equal to",
+                                                                "Is set",
+                                                                "Is empty",
+                                                                "Starts with",
+                                                                "Ends with",
+                                                                "Matches regex",
+                                                                "Does not match regex"
+                                                              ]
+                                                            },
+                                                            "value": {
+                                                              "type": "string"
+                                                            }
+                                                          },
+                                                          "required": [
+                                                            "id"
+                                                          ]
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          },
+                                          "imageUrl": {
+                                            "type": "string",
+                                            "nullable": true
+                                          },
+                                          "title": {
+                                            "type": "string",
+                                            "nullable": true
+                                          },
+                                          "description": {
+                                            "type": "string",
+                                            "nullable": true
+                                          },
+                                          "paths": {
+                                            "type": "array",
+                                            "items": {
+                                              "type": "object",
+                                              "properties": {
+                                                "id": {
+                                                  "type": "string"
+                                                },
+                                                "text": {
+                                                  "type": "string"
+                                                },
+                                                "outgoingEdgeId": {
+                                                  "type": "string"
+                                                }
+                                              },
+                                              "required": [
+                                                "id"
+                                              ]
+                                            }
+                                          }
+                                        },
+                                        "required": [
+                                          "id"
+                                        ]
+                                      }
+                                    },
+                                    "options": {
+                                      "type": "object",
+                                      "properties": {
+                                        "variableId": {
+                                          "type": "string"
+                                        },
+                                        "saveResponseMapping": {
+                                          "type": "array",
+                                          "items": {
+                                            "type": "object",
+                                            "properties": {
+                                              "field": {
+                                                "type": "string",
+                                                "enum": [
+                                                  "Image URL",
+                                                  "Title",
+                                                  "Description",
+                                                  "Button"
+                                                ]
+                                              },
+                                              "variableId": {
+                                                "type": "string"
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "required": [
+                                    "id",
+                                    "type",
+                                    "items"
+                                  ]
                                 }
-                              ],
-                              "discriminator": {
-                                "propertyName": "type",
-                                "mapping": {
-                                  "text input": "#/components/schemas/textInput",
-                                  "choice input": "#/components/schemas/buttonsInput",
-                                  "email input": "#/components/schemas/email",
-                                  "number input": "#/components/schemas/numberInput",
-                                  "url input": "#/components/schemas/url",
-                                  "phone number input": "#/components/schemas/phoneNumberInput",
-                                  "date input": "#/components/schemas/dateInput",
-                                  "time input": "#/components/schemas/time",
-                                  "payment input": "#/components/schemas/paymentInput",
-                                  "rating input": "#/components/schemas/rating",
-                                  "file input": "#/components/schemas/fileInput",
-                                  "picture choice input": "#/components/schemas/pictureChoice"
-                                }
-                              }
+                              ]
                             },
                             {
                               "oneOf": [
@@ -1689,25 +2419,171 @@
                                 },
                                 {
                                   "$ref": "#/components/schemas/pictureChoice"
+                                },
+                                {
+                                  "type": "object",
+                                  "properties": {
+                                    "id": {
+                                      "type": "string"
+                                    },
+                                    "outgoingEdgeId": {
+                                      "type": "string"
+                                    },
+                                    "type": {
+                                      "type": "string",
+                                      "enum": [
+                                        "cards"
+                                      ]
+                                    },
+                                    "items": {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "object",
+                                        "properties": {
+                                          "id": {
+                                            "type": "string"
+                                          },
+                                          "outgoingEdgeId": {
+                                            "type": "string"
+                                          },
+                                          "options": {
+                                            "type": "object",
+                                            "properties": {
+                                              "displayCondition": {
+                                                "type": "object",
+                                                "properties": {
+                                                  "isEnabled": {
+                                                    "type": "boolean"
+                                                  },
+                                                  "condition": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                      "logicalOperator": {
+                                                        "type": "string",
+                                                        "enum": [
+                                                          "OR",
+                                                          "AND"
+                                                        ]
+                                                      },
+                                                      "comparisons": {
+                                                        "type": "array",
+                                                        "items": {
+                                                          "type": "object",
+                                                          "properties": {
+                                                            "id": {
+                                                              "type": "string"
+                                                            },
+                                                            "variableId": {
+                                                              "type": "string"
+                                                            },
+                                                            "comparisonOperator": {
+                                                              "type": "string",
+                                                              "enum": [
+                                                                "Equal to",
+                                                                "Not equal",
+                                                                "Contains",
+                                                                "Does not contain",
+                                                                "Greater than",
+                                                                "Greater or equal to",
+                                                                "Less than",
+                                                                "Less or equal to",
+                                                                "Is set",
+                                                                "Is empty",
+                                                                "Starts with",
+                                                                "Ends with",
+                                                                "Matches regex",
+                                                                "Does not match regex"
+                                                              ]
+                                                            },
+                                                            "value": {
+                                                              "type": "string"
+                                                            }
+                                                          },
+                                                          "required": [
+                                                            "id"
+                                                          ]
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          },
+                                          "imageUrl": {
+                                            "type": "string",
+                                            "nullable": true
+                                          },
+                                          "title": {
+                                            "type": "string",
+                                            "nullable": true
+                                          },
+                                          "description": {
+                                            "type": "string",
+                                            "nullable": true
+                                          },
+                                          "paths": {
+                                            "type": "array",
+                                            "items": {
+                                              "type": "object",
+                                              "properties": {
+                                                "id": {
+                                                  "type": "string"
+                                                },
+                                                "text": {
+                                                  "type": "string"
+                                                },
+                                                "outgoingEdgeId": {
+                                                  "type": "string"
+                                                }
+                                              },
+                                              "required": [
+                                                "id"
+                                              ]
+                                            }
+                                          }
+                                        },
+                                        "required": [
+                                          "id"
+                                        ]
+                                      }
+                                    },
+                                    "options": {
+                                      "type": "object",
+                                      "properties": {
+                                        "variableId": {
+                                          "type": "string"
+                                        },
+                                        "saveResponseMapping": {
+                                          "type": "array",
+                                          "items": {
+                                            "type": "object",
+                                            "properties": {
+                                              "field": {
+                                                "type": "string",
+                                                "enum": [
+                                                  "Image URL",
+                                                  "Title",
+                                                  "Description",
+                                                  "Button"
+                                                ]
+                                              },
+                                              "variableId": {
+                                                "type": "string"
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "required": [
+                                    "id",
+                                    "type",
+                                    "items"
+                                  ]
                                 }
-                              ],
-                              "discriminator": {
-                                "propertyName": "type",
-                                "mapping": {
-                                  "text input": "#/components/schemas/textInput",
-                                  "choice input": "#/components/schemas/buttonsInput",
-                                  "email input": "#/components/schemas/email",
-                                  "number input": "#/components/schemas/numberInput",
-                                  "url input": "#/components/schemas/url",
-                                  "phone number input": "#/components/schemas/phoneNumberInput",
-                                  "date input": "#/components/schemas/dateInput",
-                                  "time input": "#/components/schemas/time",
-                                  "payment input": "#/components/schemas/paymentInput",
-                                  "rating input": "#/components/schemas/rating",
-                                  "file input": "#/components/schemas/fileInput",
-                                  "picture choice input": "#/components/schemas/pictureChoice"
-                                }
-                              }
+                              ]
                             },
                             {
                               "oneOf": [
@@ -2191,25 +3067,171 @@
                                 },
                                 {
                                   "$ref": "#/components/schemas/pictureChoice"
+                                },
+                                {
+                                  "type": "object",
+                                  "properties": {
+                                    "id": {
+                                      "type": "string"
+                                    },
+                                    "outgoingEdgeId": {
+                                      "type": "string"
+                                    },
+                                    "type": {
+                                      "type": "string",
+                                      "enum": [
+                                        "cards"
+                                      ]
+                                    },
+                                    "items": {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "object",
+                                        "properties": {
+                                          "id": {
+                                            "type": "string"
+                                          },
+                                          "outgoingEdgeId": {
+                                            "type": "string"
+                                          },
+                                          "options": {
+                                            "type": "object",
+                                            "properties": {
+                                              "displayCondition": {
+                                                "type": "object",
+                                                "properties": {
+                                                  "isEnabled": {
+                                                    "type": "boolean"
+                                                  },
+                                                  "condition": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                      "logicalOperator": {
+                                                        "type": "string",
+                                                        "enum": [
+                                                          "OR",
+                                                          "AND"
+                                                        ]
+                                                      },
+                                                      "comparisons": {
+                                                        "type": "array",
+                                                        "items": {
+                                                          "type": "object",
+                                                          "properties": {
+                                                            "id": {
+                                                              "type": "string"
+                                                            },
+                                                            "variableId": {
+                                                              "type": "string"
+                                                            },
+                                                            "comparisonOperator": {
+                                                              "type": "string",
+                                                              "enum": [
+                                                                "Equal to",
+                                                                "Not equal",
+                                                                "Contains",
+                                                                "Does not contain",
+                                                                "Greater than",
+                                                                "Greater or equal to",
+                                                                "Less than",
+                                                                "Less or equal to",
+                                                                "Is set",
+                                                                "Is empty",
+                                                                "Starts with",
+                                                                "Ends with",
+                                                                "Matches regex",
+                                                                "Does not match regex"
+                                                              ]
+                                                            },
+                                                            "value": {
+                                                              "type": "string"
+                                                            }
+                                                          },
+                                                          "required": [
+                                                            "id"
+                                                          ]
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          },
+                                          "imageUrl": {
+                                            "type": "string",
+                                            "nullable": true
+                                          },
+                                          "title": {
+                                            "type": "string",
+                                            "nullable": true
+                                          },
+                                          "description": {
+                                            "type": "string",
+                                            "nullable": true
+                                          },
+                                          "paths": {
+                                            "type": "array",
+                                            "items": {
+                                              "type": "object",
+                                              "properties": {
+                                                "id": {
+                                                  "type": "string"
+                                                },
+                                                "text": {
+                                                  "type": "string"
+                                                },
+                                                "outgoingEdgeId": {
+                                                  "type": "string"
+                                                }
+                                              },
+                                              "required": [
+                                                "id"
+                                              ]
+                                            }
+                                          }
+                                        },
+                                        "required": [
+                                          "id"
+                                        ]
+                                      }
+                                    },
+                                    "options": {
+                                      "type": "object",
+                                      "properties": {
+                                        "variableId": {
+                                          "type": "string"
+                                        },
+                                        "saveResponseMapping": {
+                                          "type": "array",
+                                          "items": {
+                                            "type": "object",
+                                            "properties": {
+                                              "field": {
+                                                "type": "string",
+                                                "enum": [
+                                                  "Image URL",
+                                                  "Title",
+                                                  "Description",
+                                                  "Button"
+                                                ]
+                                              },
+                                              "variableId": {
+                                                "type": "string"
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "required": [
+                                    "id",
+                                    "type",
+                                    "items"
+                                  ]
                                 }
-                              ],
-                              "discriminator": {
-                                "propertyName": "type",
-                                "mapping": {
-                                  "text input": "#/components/schemas/textInput",
-                                  "choice input": "#/components/schemas/buttonsInput",
-                                  "email input": "#/components/schemas/email",
-                                  "number input": "#/components/schemas/numberInput",
-                                  "url input": "#/components/schemas/url",
-                                  "phone number input": "#/components/schemas/phoneNumberInput",
-                                  "date input": "#/components/schemas/dateInput",
-                                  "time input": "#/components/schemas/time",
-                                  "payment input": "#/components/schemas/paymentInput",
-                                  "rating input": "#/components/schemas/rating",
-                                  "file input": "#/components/schemas/fileInput",
-                                  "picture choice input": "#/components/schemas/pictureChoice"
-                                }
-                              }
+                              ]
                             },
                             {
                               "oneOf": [
@@ -4131,6 +5153,9 @@
                         },
                         "itemId": {
                           "type": "string"
+                        },
+                        "pathId": {
+                          "type": "string"
                         }
                       },
                       "required": [
@@ -4347,6 +5372,169 @@
                       "$ref": "#/components/schemas/rating"
                     },
                     {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "outgoingEdgeId": {
+                          "type": "string"
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "cards"
+                          ]
+                        },
+                        "items": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string"
+                              },
+                              "outgoingEdgeId": {
+                                "type": "string"
+                              },
+                              "options": {
+                                "type": "object",
+                                "properties": {
+                                  "displayCondition": {
+                                    "type": "object",
+                                    "properties": {
+                                      "isEnabled": {
+                                        "type": "boolean"
+                                      },
+                                      "condition": {
+                                        "type": "object",
+                                        "properties": {
+                                          "logicalOperator": {
+                                            "type": "string",
+                                            "enum": [
+                                              "OR",
+                                              "AND"
+                                            ]
+                                          },
+                                          "comparisons": {
+                                            "type": "array",
+                                            "items": {
+                                              "type": "object",
+                                              "properties": {
+                                                "id": {
+                                                  "type": "string"
+                                                },
+                                                "variableId": {
+                                                  "type": "string"
+                                                },
+                                                "comparisonOperator": {
+                                                  "type": "string",
+                                                  "enum": [
+                                                    "Equal to",
+                                                    "Not equal",
+                                                    "Contains",
+                                                    "Does not contain",
+                                                    "Greater than",
+                                                    "Greater or equal to",
+                                                    "Less than",
+                                                    "Less or equal to",
+                                                    "Is set",
+                                                    "Is empty",
+                                                    "Starts with",
+                                                    "Ends with",
+                                                    "Matches regex",
+                                                    "Does not match regex"
+                                                  ]
+                                                },
+                                                "value": {
+                                                  "type": "string"
+                                                }
+                                              },
+                                              "required": [
+                                                "id"
+                                              ]
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              },
+                              "imageUrl": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "title": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "description": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "paths": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "id": {
+                                      "type": "string"
+                                    },
+                                    "text": {
+                                      "type": "string"
+                                    },
+                                    "outgoingEdgeId": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": [
+                                    "id"
+                                  ]
+                                }
+                              }
+                            },
+                            "required": [
+                              "id"
+                            ]
+                          }
+                        },
+                        "options": {
+                          "type": "object",
+                          "properties": {
+                            "variableId": {
+                              "type": "string"
+                            },
+                            "saveResponseMapping": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "field": {
+                                    "type": "string",
+                                    "enum": [
+                                      "Image URL",
+                                      "Title",
+                                      "Description",
+                                      "Button"
+                                    ]
+                                  },
+                                  "variableId": {
+                                    "type": "string"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "type",
+                        "items"
+                      ]
+                    },
+                    {
                       "$ref": "#/components/schemas/buttonsInput"
                     },
                     {
@@ -4355,24 +5543,7 @@
                     {
                       "$ref": "#/components/schemas/pictureChoice"
                     }
-                  ],
-                  "discriminator": {
-                    "propertyName": "type",
-                    "mapping": {
-                      "text input": "#/components/schemas/textInput",
-                      "email input": "#/components/schemas/email",
-                      "number input": "#/components/schemas/numberInput",
-                      "url input": "#/components/schemas/url",
-                      "phone number input": "#/components/schemas/phoneNumberInput",
-                      "date input": "#/components/schemas/dateInput",
-                      "time input": "#/components/schemas/time",
-                      "payment input": "#/components/schemas/paymentInput",
-                      "rating input": "#/components/schemas/rating",
-                      "choice input": "#/components/schemas/buttonsInput",
-                      "file input": "#/components/schemas/fileInput",
-                      "picture choice input": "#/components/schemas/pictureChoice"
-                    }
-                  }
+                  ]
                 },
                 {
                   "oneOf": [
@@ -4882,6 +6053,9 @@
                     },
                     {
                       "$ref": "#/components/schemas/perplexityBlock"
+                    },
+                    {
+                      "$ref": "#/components/schemas/deepseekBlock"
                     }
                   ],
                   "discriminator": {
@@ -4902,7 +6076,8 @@
                       "groq": "#/components/schemas/groqBlock",
                       "zendesk": "#/components/schemas/zendeskBlock",
                       "posthog": "#/components/schemas/posthogBlock",
-                      "perplexity": "#/components/schemas/perplexityBlock"
+                      "perplexity": "#/components/schemas/perplexityBlock",
+                      "deepseek": "#/components/schemas/deepseekBlock"
                     }
                   }
                 }
@@ -11397,6 +12572,321 @@
         ],
         "title": "Perplexity"
       },
+      "deepseekBlock": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "outgoingEdgeId": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "deepseek"
+            ]
+          },
+          "options": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "credentialsId": {
+                    "type": "string"
+                  }
+                }
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "credentialsId": {
+                    "type": "string"
+                  },
+                  "action": {
+                    "type": "string",
+                    "enum": [
+                      "Create chat completion"
+                    ]
+                  },
+                  "model": {
+                    "type": "string",
+                    "enum": [
+                      "deepseek-chat",
+                      "deepseek-reasoner"
+                    ]
+                  },
+                  "messages": {
+                    "type": "array",
+                    "items": {
+                      "oneOf": [
+                        {
+                          "type": "object",
+                          "properties": {}
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "role": {
+                              "type": "string",
+                              "enum": [
+                                "system"
+                              ]
+                            },
+                            "content": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "role"
+                          ]
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "role": {
+                              "type": "string",
+                              "enum": [
+                                "user"
+                              ]
+                            },
+                            "content": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "role"
+                          ]
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "role": {
+                              "type": "string",
+                              "enum": [
+                                "assistant"
+                              ]
+                            },
+                            "content": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "role"
+                          ]
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "role": {
+                              "type": "string",
+                              "enum": [
+                                "Dialogue"
+                              ]
+                            },
+                            "dialogueVariableId": {
+                              "type": "string"
+                            },
+                            "startsBy": {
+                              "type": "string",
+                              "enum": [
+                                "user",
+                                "assistant"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "role"
+                          ]
+                        }
+                      ]
+                    }
+                  },
+                  "tools": {
+                    "type": "array",
+                    "items": {
+                      "oneOf": [
+                        {
+                          "type": "object",
+                          "properties": {}
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "type": {
+                              "type": "string",
+                              "enum": [
+                                "function"
+                              ]
+                            },
+                            "name": {
+                              "type": "string"
+                            },
+                            "description": {
+                              "type": "string"
+                            },
+                            "parameters": {
+                              "type": "array",
+                              "items": {
+                                "oneOf": [
+                                  {
+                                    "type": "object",
+                                    "properties": {}
+                                  },
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "type": {
+                                        "type": "string",
+                                        "enum": [
+                                          "string"
+                                        ]
+                                      },
+                                      "name": {
+                                        "type": "string"
+                                      },
+                                      "description": {
+                                        "type": "string"
+                                      },
+                                      "required": {
+                                        "type": "boolean"
+                                      }
+                                    },
+                                    "required": [
+                                      "type"
+                                    ]
+                                  },
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "type": {
+                                        "type": "string",
+                                        "enum": [
+                                          "number"
+                                        ]
+                                      },
+                                      "name": {
+                                        "type": "string"
+                                      },
+                                      "description": {
+                                        "type": "string"
+                                      },
+                                      "required": {
+                                        "type": "boolean"
+                                      }
+                                    },
+                                    "required": [
+                                      "type"
+                                    ]
+                                  },
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "type": {
+                                        "type": "string",
+                                        "enum": [
+                                          "boolean"
+                                        ]
+                                      },
+                                      "name": {
+                                        "type": "string"
+                                      },
+                                      "description": {
+                                        "type": "string"
+                                      },
+                                      "required": {
+                                        "type": "boolean"
+                                      }
+                                    },
+                                    "required": [
+                                      "type"
+                                    ]
+                                  },
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "type": {
+                                        "type": "string",
+                                        "enum": [
+                                          "enum"
+                                        ]
+                                      },
+                                      "values": {
+                                        "type": "array",
+                                        "items": {
+                                          "type": "string"
+                                        }
+                                      },
+                                      "name": {
+                                        "type": "string"
+                                      },
+                                      "description": {
+                                        "type": "string"
+                                      },
+                                      "required": {
+                                        "type": "boolean"
+                                      }
+                                    },
+                                    "required": [
+                                      "type"
+                                    ]
+                                  }
+                                ]
+                              }
+                            },
+                            "code": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "type"
+                          ]
+                        }
+                      ]
+                    }
+                  },
+                  "temperature": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "number"
+                      }
+                    ]
+                  },
+                  "responseMapping": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "item": {
+                          "type": "string",
+                          "enum": [
+                            "Message content",
+                            "Total tokens"
+                          ]
+                        },
+                        "variableId": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                },
+                "required": [
+                  "action"
+                ]
+              }
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "type"
+        ],
+        "title": "DeepSeek"
+      },
       "settings": {
         "type": "object",
         "properties": {
@@ -12182,6 +13672,169 @@
                             "$ref": "#/components/schemas/rating"
                           },
                           {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string"
+                              },
+                              "outgoingEdgeId": {
+                                "type": "string"
+                              },
+                              "type": {
+                                "type": "string",
+                                "enum": [
+                                  "cards"
+                                ]
+                              },
+                              "items": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "id": {
+                                      "type": "string"
+                                    },
+                                    "outgoingEdgeId": {
+                                      "type": "string"
+                                    },
+                                    "options": {
+                                      "type": "object",
+                                      "properties": {
+                                        "displayCondition": {
+                                          "type": "object",
+                                          "properties": {
+                                            "isEnabled": {
+                                              "type": "boolean"
+                                            },
+                                            "condition": {
+                                              "type": "object",
+                                              "properties": {
+                                                "logicalOperator": {
+                                                  "type": "string",
+                                                  "enum": [
+                                                    "OR",
+                                                    "AND"
+                                                  ]
+                                                },
+                                                "comparisons": {
+                                                  "type": "array",
+                                                  "items": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                      "id": {
+                                                        "type": "string"
+                                                      },
+                                                      "variableId": {
+                                                        "type": "string"
+                                                      },
+                                                      "comparisonOperator": {
+                                                        "type": "string",
+                                                        "enum": [
+                                                          "Equal to",
+                                                          "Not equal",
+                                                          "Contains",
+                                                          "Does not contain",
+                                                          "Greater than",
+                                                          "Greater or equal to",
+                                                          "Less than",
+                                                          "Less or equal to",
+                                                          "Is set",
+                                                          "Is empty",
+                                                          "Starts with",
+                                                          "Ends with",
+                                                          "Matches regex",
+                                                          "Does not match regex"
+                                                        ]
+                                                      },
+                                                      "value": {
+                                                        "type": "string"
+                                                      }
+                                                    },
+                                                    "required": [
+                                                      "id"
+                                                    ]
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    },
+                                    "imageUrl": {
+                                      "type": "string",
+                                      "nullable": true
+                                    },
+                                    "title": {
+                                      "type": "string",
+                                      "nullable": true
+                                    },
+                                    "description": {
+                                      "type": "string",
+                                      "nullable": true
+                                    },
+                                    "paths": {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "object",
+                                        "properties": {
+                                          "id": {
+                                            "type": "string"
+                                          },
+                                          "text": {
+                                            "type": "string"
+                                          },
+                                          "outgoingEdgeId": {
+                                            "type": "string"
+                                          }
+                                        },
+                                        "required": [
+                                          "id"
+                                        ]
+                                      }
+                                    }
+                                  },
+                                  "required": [
+                                    "id"
+                                  ]
+                                }
+                              },
+                              "options": {
+                                "type": "object",
+                                "properties": {
+                                  "variableId": {
+                                    "type": "string"
+                                  },
+                                  "saveResponseMapping": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "object",
+                                      "properties": {
+                                        "field": {
+                                          "type": "string",
+                                          "enum": [
+                                            "Image URL",
+                                            "Title",
+                                            "Description",
+                                            "Button"
+                                          ]
+                                        },
+                                        "variableId": {
+                                          "type": "string"
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "required": [
+                              "id",
+                              "type",
+                              "items"
+                            ]
+                          },
+                          {
                             "$ref": "#/components/schemas/buttonsInputV5"
                           },
                           {
@@ -12190,24 +13843,7 @@
                           {
                             "$ref": "#/components/schemas/pictureChoiceV5"
                           }
-                        ],
-                        "discriminator": {
-                          "propertyName": "type",
-                          "mapping": {
-                            "text input": "#/components/schemas/textInput",
-                            "email input": "#/components/schemas/email",
-                            "number input": "#/components/schemas/numberInput",
-                            "url input": "#/components/schemas/url",
-                            "phone number input": "#/components/schemas/phoneNumberInput",
-                            "date input": "#/components/schemas/dateInput",
-                            "time input": "#/components/schemas/time",
-                            "payment input": "#/components/schemas/paymentInput",
-                            "rating input": "#/components/schemas/rating",
-                            "choice input": "#/components/schemas/buttonsInputV5",
-                            "file input": "#/components/schemas/fileInputV5",
-                            "picture choice input": "#/components/schemas/pictureChoiceV5"
-                          }
-                        }
+                        ]
                       },
                       {
                         "oneOf": [
@@ -13693,6 +15329,9 @@
                           "type": "string"
                         },
                         "itemId": {
+                          "type": "string"
+                        },
+                        "pathId": {
                           "type": "string"
                         }
                       },

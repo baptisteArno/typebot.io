@@ -1,4 +1,5 @@
 import { ButtonsBlockSettings } from "@/features/blocks/inputs/buttons/components/ButtonsBlockSettings";
+import { CardsBlockSettings } from "@/features/blocks/inputs/cards/components/CardsBlockSettings";
 import { DateInputSettings } from "@/features/blocks/inputs/date/components/DateInputSettings";
 import { EmailInputSettings } from "@/features/blocks/inputs/emailInput/components/EmailInputSettings";
 import { FileInputSettings } from "@/features/blocks/inputs/fileUpload/components/FileInputSettings";
@@ -44,7 +45,6 @@ import {
   useEventListener,
 } from "@chakra-ui/react";
 import type {
-  Block,
   BlockOptions,
   BlockWithOptions,
 } from "@typebot.io/blocks-core/schemas/schema";
@@ -236,6 +236,14 @@ export const NodeSettings = ({
     case InputBlockType.FILE: {
       return (
         <FileInputSettings
+          options={node.options}
+          onOptionsChange={updateOptions}
+        />
+      );
+    }
+    case InputBlockType.CARDS: {
+      return (
+        <CardsBlockSettings
           options={node.options}
           onOptionsChange={updateOptions}
         />

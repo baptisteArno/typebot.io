@@ -140,13 +140,46 @@ export const convertInputToWhatsAppMessages = (
         },
       }));
     }
+    case InputBlockType.CARDS: {
+      return input.items.map((item) => {
+        let bodyText = "";
+        if (item.title) bodyText += `*${item.title}*`;
+        if (item.description) {
+          if (item.title) bodyText += "\n\n";
+          bodyText += item.description;
+        }
+        return {
+          type: "interactive",
+          interactive: {
+            type: "button",
+            header: item.imageUrl
+              ? {
+                  type: "image",
+                  image: {
+                    link: item.imageUrl,
+                  },
+                }
+              : undefined,
+            body: isEmpty(bodyText) ? undefined : { text: bodyText },
+            action: {
+              buttons: (item.paths ?? []).slice(0, 3).map((path) => ({
+                type: "reply",
+                reply: {
+                  id: path.id,
+                  title: trimTextTo20Chars(path.text ?? ""),
+                },
+              })),
+            },
+          },
+        };
+      });
+    }
   }
 };
 
 const trimTextTo20Chars = (text: string): string =>
   text.length > 20 ? `${text.slice(0, 18)}..` : text;
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const groupArrayByArraySize = (arr: any[], n: number) =>
   arr.reduce(
     (r, e, i) => (i % n ? r[r.length - 1].push(e) : r.push([e])) && r,

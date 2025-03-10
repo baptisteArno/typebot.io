@@ -6,6 +6,7 @@ import {
 import { useGraph } from "@/features/graph/providers/GraphProvider";
 import { Portal, Stack, useEventListener } from "@chakra-ui/react";
 import type { Coordinates } from "@dnd-kit/utilities";
+import { shouldOpenBlockSettingsOnCreation } from "@typebot.io/blocks-core/helpers";
 import type { BlockV6 } from "@typebot.io/blocks-core/schemas/schema";
 import { isDefined } from "@typebot.io/lib/utils";
 import { useEffect, useRef, useState } from "react";
@@ -85,7 +86,8 @@ export const BlockNodesList = ({ blocks, groupIndex, groupRef }: Props) => {
     );
     setDraggedBlock(undefined);
     setDraggedBlockType(undefined);
-    if (blockId) setOpenedBlockId(blockId);
+    if (shouldOpenBlockSettingsOnCreation(draggedBlockType))
+      setOpenedBlockId(blockId);
   };
 
   const handleBlockMouseDown =
@@ -117,15 +119,19 @@ export const BlockNodesList = ({ blocks, groupIndex, groupRef }: Props) => {
   });
 
   return (
-    <Stack spacing={1} transition="none">
+    <Stack spacing={0} transition="none">
       <PlaceholderNode
         isVisible={showSortPlaceholders}
         isExpanded={expandedPlaceholderIndex === 0}
-        onRef={handlePushElementRef(0)}
+        ref={handlePushElementRef(0)}
+        expandedHeightPixels={50}
+        expandedPaddingPixel={8}
+        initialPaddingPixel={2}
+        initialHeightPixels={4}
       />
       {typebot &&
         blocks.map((block, idx) => (
-          <Stack key={block.id} spacing={1}>
+          <Stack key={block.id} spacing={0}>
             <BlockNode
               key={block.id}
               block={block}
@@ -136,7 +142,11 @@ export const BlockNodesList = ({ blocks, groupIndex, groupRef }: Props) => {
             <PlaceholderNode
               isVisible={showSortPlaceholders}
               isExpanded={expandedPlaceholderIndex === idx + 1}
-              onRef={handlePushElementRef(idx + 1)}
+              ref={handlePushElementRef(idx + 1)}
+              expandedHeightPixels={50}
+              expandedPaddingPixel={8}
+              initialPaddingPixel={2}
+              initialHeightPixels={4}
             />
           </Stack>
         ))}

@@ -22,7 +22,7 @@ import {
 import type { LogInSession } from "@typebot.io/logs/schemas";
 import { parseAnswers } from "@typebot.io/results/parseAnswers";
 import type { AnswerInSessionState } from "@typebot.io/results/schemas/answers";
-import { findUniqueVariable } from "@typebot.io/variables/findUniqueVariableValue";
+import { findUniqueVariable } from "@typebot.io/variables/findUniqueVariable";
 import { parseVariables } from "@typebot.io/variables/parseVariables";
 import type { Variable } from "@typebot.io/variables/schemas";
 import { createTransport } from "nodemailer";

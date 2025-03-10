@@ -1,5 +1,5 @@
 import { isDefined, isNotDefined } from "@typebot.io/lib/utils";
-import { findUniqueVariable } from "@typebot.io/variables/findUniqueVariableValue";
+import { findUniqueVariable } from "@typebot.io/variables/findUniqueVariable";
 import { parseVariables } from "@typebot.io/variables/parseVariables";
 import type { Variable } from "@typebot.io/variables/schemas";
 import { ComparisonOperators, LogicalOperator } from "./constants";
