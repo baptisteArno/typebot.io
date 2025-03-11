@@ -367,8 +367,9 @@ export const ConversationContainer = (props: Props) => {
           resultId: props.initialChatReply.resultId,
         },
         onMessageStream: streamMessage,
-        onStreamError: (error) => {
+        onStreamError: async (error) => {
           setHasError(true);
+          await saveLogs([error]);
           props.onNewLogs?.([error]);
         },
       });

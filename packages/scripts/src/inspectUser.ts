@@ -15,6 +15,7 @@ const inspectUser = async () => {
       email,
     },
     select: {
+      id: true,
       name: true,
       createdAt: true,
       lastActivityAt: true,
