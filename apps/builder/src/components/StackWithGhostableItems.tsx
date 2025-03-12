@@ -1,5 +1,6 @@
 import { useHoverExpandDebounce } from "@/features/graph/hooks/useHoverExpandDebounce";
 import { Button, Stack, type StackProps } from "@chakra-ui/react";
+import { isDefined } from "@typebot.io/lib/utils";
 import React, { useMemo } from "react";
 import { createContext, forwardRef, useContext } from "react";
 
@@ -50,10 +51,13 @@ export const StacksWithGhostableItems = forwardRef<
 
     childrenArray.forEach((child) => {
       const isGhostableItem =
-        React.isValidElement(child) &&
-        (child.type as any).displayName === "GhostableItem";
+        React.isValidElement(child) && isDefined(child.props.ghostLabel);
       if (!isGhostableItem) {
-        console.error("Child is not a GhostableItem", child);
+        console.error(
+          "Child is not a GhostableItem",
+          child,
+          React.isValidElement(child),
+        );
         return;
       }
       const isNull = isGhostableItem && child.props.children === null;
