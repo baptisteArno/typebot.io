@@ -7,24 +7,20 @@ export const transformVariablesToList =
   (variableIds: string[]): VariableWithValue[] => {
     const newVariables = variables.reduce<VariableWithValue[]>(
       (variables, variable) => {
-        if (
-          !variableIds.includes(variable.id) ||
-          isNotDefined(variable.value) ||
-          typeof variable.value !== "string"
-        )
+        if (!variableIds.includes(variable.id) || isNotDefined(variable.value))
           return variables;
         try {
-          const potentialArray = JSONParse(variable.value);
-          console.log(potentialArray);
-          if (Array.isArray(potentialArray))
-            return [
-              ...variables,
-              {
-                ...variable,
-                value: potentialArray,
-              },
-            ];
-          return variables;
+          if (typeof variable.value === "string") {
+            const potentialArray = JSONParse(variable.value);
+            if (Array.isArray(potentialArray))
+              return [
+                ...variables,
+                {
+                  ...variable,
+                  value: potentialArray,
+                },
+              ];
+          }
         } catch (error) {
           // Not an stringified array, skipping...
         }
