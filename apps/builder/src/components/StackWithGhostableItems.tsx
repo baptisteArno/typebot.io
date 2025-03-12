@@ -52,7 +52,10 @@ export const StacksWithGhostableItems = forwardRef<
       const isGhostableItem =
         React.isValidElement(child) &&
         (child.type as any).name === "GhostableItem";
-      if (!isGhostableItem) throw new Error("Child is not a GhostableItem");
+      if (!isGhostableItem) {
+        console.error("Child is not a GhostableItem", child);
+        return;
+      }
       const isNull = isGhostableItem && child.props.children === null;
 
       if ((isNull && !inNullGroup) || (!isNull && inNullGroup)) {
