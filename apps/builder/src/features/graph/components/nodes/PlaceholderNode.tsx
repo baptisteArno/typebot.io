@@ -1,4 +1,9 @@
-import { Flex, type FlexProps, useColorModeValue } from "@chakra-ui/react";
+import {
+  Flex,
+  type FlexProps,
+  chakra,
+  useColorModeValue,
+} from "@chakra-ui/react";
 import { isDefined } from "@typebot.io/lib/utils";
 import type React from "react";
 import { forwardRef } from "react";
@@ -7,6 +12,7 @@ import { useHoverExpandDebounce } from "../../hooks/useHoverExpandDebounce";
 type Props = {
   isVisible?: boolean;
   isExpanded?: boolean;
+  hitboxYExtensionPixels?: number;
   initialHeightPixels?: number;
   expandedHeightPixels?: number;
   initialPaddingPixel?: number;
@@ -20,6 +26,7 @@ export const PlaceholderNode = forwardRef<HTMLDivElement, Props>(
     {
       isVisible,
       isExpanded,
+      hitboxYExtensionPixels = 8,
       initialHeightPixels = 8,
       expandedHeightPixels = 36,
       initialPaddingPixel = 0,
@@ -46,14 +53,13 @@ export const PlaceholderNode = forwardRef<HTMLDivElement, Props>(
         ref={ref}
         onMouseEnter={onHover}
         onMouseLeave={onLeave}
-        opacity={isVisible || isHovered ? 1 : 0}
-        transition="opacity 200ms"
         fontWeight="semibold"
         fontSize="small"
         justify="center"
         align="center"
         onMouseUpCapture={onAbort}
         onClick={onClick}
+        pos="relative"
         py={
           isExpanded || isHoverExpanded
             ? expandedPaddingPixel + "px"
@@ -61,19 +67,32 @@ export const PlaceholderNode = forwardRef<HTMLDivElement, Props>(
         }
         {...props}
       >
+        {onClick && (
+          <chakra.span
+            pos="absolute"
+            w="full"
+            h={`calc(100% + ${hitboxYExtensionPixels * 2}px)`}
+            top={`-${hitboxYExtensionPixels}px`}
+            left="0"
+            zIndex={1}
+          />
+        )}
         <Flex
           bgColor={useColorModeValue("gray.200", "gray.800")}
           w="full"
           rounded="lg"
           justify="center"
           align="center"
+          opacity={isVisible || isHovered ? 1 : 0}
           h={
             isExpanded || isHoverExpanded
               ? expandedHeightPixels + "px"
               : initialHeightPixels + "px"
           }
           transition={
-            isDefined(onClick) || isVisible ? "height 200ms" : undefined
+            isDefined(onClick) || isVisible
+              ? "opacity 200ms, height 200ms"
+              : "opacity 200ms"
           }
         >
           {isHovered && isHoverExpanded ? children : null}

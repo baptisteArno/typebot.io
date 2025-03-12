@@ -244,6 +244,7 @@ export const CardsItemNode = ({
               </DeletableEditable>
             ))}
             <PlaceholderNode
+              hitboxYExtensionPixels={5}
               expandedHeightPixels={30}
               initialPaddingPixel={0}
               expandedPaddingPixel={0}

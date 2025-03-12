@@ -155,13 +155,7 @@ export const ItemNodesList = ({
   };
 
   return (
-    <Stack
-      flex={1}
-      spacing={0}
-      maxW="full"
-      onClick={stopPropagating}
-      isolation="isolate"
-    >
+    <Stack flex={1} spacing={0} maxW="full" onClick={stopPropagating}>
       <PlaceholderNode
         isVisible={showPlaceholders}
         isExpanded={expandedPlaceholderIndex === 0}
