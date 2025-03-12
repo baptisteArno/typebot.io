@@ -180,3 +180,5 @@ export const GhostableItem = ({
 };
 
 StacksWithGhostableItems.displayName = "StacksWithGhostableItems";
+GhostableItem.displayName = "GhostableItem";
+StackWithGhostableItems.displayName = "StackWithGhostableItems";
