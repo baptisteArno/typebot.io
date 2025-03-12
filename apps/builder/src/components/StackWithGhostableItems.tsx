@@ -51,7 +51,7 @@ export const StacksWithGhostableItems = forwardRef<
     childrenArray.forEach((child) => {
       const isGhostableItem =
         React.isValidElement(child) &&
-        (child.type as any).name === "GhostableItem";
+        (child.type as any).displayName === "GhostableItem";
       if (!isGhostableItem) {
         console.error("Child is not a GhostableItem", child);
         return;
