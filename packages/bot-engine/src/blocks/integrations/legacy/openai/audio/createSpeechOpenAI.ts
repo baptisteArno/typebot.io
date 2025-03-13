@@ -9,19 +9,22 @@ import { decrypt } from "@typebot.io/credentials/decrypt";
 import { getCredentials } from "@typebot.io/credentials/getCredentials";
 import { uploadFileToBucket } from "@typebot.io/lib/s3/uploadFileToBucket";
 import { isNotEmpty } from "@typebot.io/lib/utils";
+import type { SessionStore } from "@typebot.io/runtime-session-store";
 import { parseVariables } from "@typebot.io/variables/parseVariables";
 import OpenAI, { type ClientOptions } from "openai";
 import type { ExecuteIntegrationResponse } from "../../../../../types";
 import { updateVariablesInSession } from "../../../../../updateVariablesInSession";
 
 export const createSpeechOpenAI = async (
-  state: SessionState,
+  options: CreateSpeechOpenAIOptions,
   {
+    state,
     outgoingEdgeId,
-    options,
+    sessionStore,
   }: {
     outgoingEdgeId?: string;
-    options: CreateSpeechOpenAIOptions;
+    state: SessionState;
+    sessionStore: SessionStore;
   },
 ): Promise<ExecuteIntegrationResponse> => {
   let newSessionState = state;
@@ -95,7 +98,7 @@ export const createSpeechOpenAI = async (
   }
 
   const rawAudio = (await openai.audio.speech.create({
-    input: parseVariables(variables)(options.input),
+    input: parseVariables(options.input, { variables, sessionStore }),
     voice: options.voice,
     model: options.model as "tts-1" | "tts-1-hd",
   })) as any;

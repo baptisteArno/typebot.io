@@ -135,7 +135,13 @@ export const createChatMessage = createAction({
   getSetVariableIds: ({ responseMapping }) =>
     responseMapping?.map((res) => res.variableId).filter(isDefined) ?? [],
   run: {
-    server: ({ credentials: { apiKey }, options, variables, logs }) => {
+    server: ({
+      credentials: { apiKey },
+      options,
+      variables,
+      logs,
+      sessionStore,
+    }) => {
       if (!apiKey) return logs.add("No API key provided");
       const modelName = options.model?.trim();
       if (!modelName) return logs.add("No model provided");
@@ -160,11 +166,17 @@ export const createChatMessage = createAction({
         temperature: options.temperature,
         responseMapping: options.responseMapping,
         logs,
+        sessionStore,
       });
     },
     stream: {
       getStreamVariableId: getChatCompletionStreamVarId,
-      run: async ({ credentials: { apiKey }, options, variables }) => {
+      run: async ({
+        credentials: { apiKey },
+        options,
+        variables,
+        sessionStore,
+      }) => {
         if (!apiKey)
           return {
             error: { description: "No API key provided" },
@@ -197,6 +209,7 @@ export const createChatMessage = createAction({
           tools: options.tools,
           temperature: options.temperature,
           responseMapping: options.responseMapping,
+          sessionStore,
         });
       },
     },

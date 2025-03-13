@@ -45,7 +45,8 @@
     "openai": "4.81.0",
     "qs": "6.11.2",
     "stripe": "17.1.0",
-    "@typebot.io/legacy": "workspace:*"
+    "@typebot.io/legacy": "workspace:*",
+    "@typebot.io/runtime-session-store": "workspace:*"
   },
   "devDependencies": {
     "@typebot.io/forge": "workspace:*",

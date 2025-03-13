@@ -2,6 +2,7 @@ import type { GoogleSheetsUpdateRowOptions } from "@typebot.io/blocks-integratio
 import type { SessionState } from "@typebot.io/chat-session/schemas";
 import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
 import type { LogInSession } from "@typebot.io/logs/schemas";
+import type { SessionStore } from "@typebot.io/runtime-session-store";
 import { deepParseVariables } from "@typebot.io/variables/deepParseVariables";
 import type { ExecuteIntegrationResponse } from "../../../types";
 import { getAuthenticatedGoogleDoc } from "./helpers/getAuthenticatedGoogleDoc";
@@ -9,16 +10,23 @@ import { matchFilter } from "./helpers/matchFilter";
 import { parseNewCellValuesObject } from "./helpers/parseNewCellValuesObject";
 
 export const updateRow = async (
-  state: SessionState,
+  options: GoogleSheetsUpdateRowOptions,
   {
+    state,
     outgoingEdgeId,
-    options,
-  }: { outgoingEdgeId?: string; options: GoogleSheetsUpdateRowOptions },
+    sessionStore,
+  }: {
+    outgoingEdgeId?: string;
+    state: SessionState;
+    sessionStore: SessionStore;
+  },
 ): Promise<ExecuteIntegrationResponse> => {
   const { variables } = state.typebotsQueue[0].typebot;
-  const { sheetId, filter, ...parsedOptions } = deepParseVariables(variables, {
+  const { sheetId, filter, ...parsedOptions } = deepParseVariables(options, {
+    variables,
     removeEmptyStrings: true,
-  })(options);
+    sessionStore,
+  });
   if (!options.credentialsId || !options.spreadsheetId)
     return {
       outgoingEdgeId,
@@ -64,10 +72,11 @@ export const updateRow = async (
       return { outgoingEdgeId, logs };
     }
 
-    const parsedValues = parseNewCellValuesObject(variables)(
-      options.cellsToUpsert,
-      sheet.headerValues,
-    );
+    const parsedValues = parseNewCellValuesObject(options.cellsToUpsert, {
+      variables,
+      sessionStore,
+      headerValues: sheet.headerValues,
+    });
 
     for (const filteredRow of filteredRows) {
       const cellsRange = filteredRow.a1Range.split("!").pop();

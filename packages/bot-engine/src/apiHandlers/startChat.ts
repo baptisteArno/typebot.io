@@ -1,5 +1,10 @@
 import { BubbleBlockType } from "@typebot.io/blocks-bubbles/constants";
 import { restartSession } from "@typebot.io/chat-session/queries/restartSession";
+import { createId } from "@typebot.io/lib/createId";
+import {
+  deleteSessionStore,
+  getSessionStore,
+} from "@typebot.io/runtime-session-store";
 import { computeCurrentProgress } from "../computeCurrentProgress";
 import { filterPotentiallySensitiveLogs } from "../logs/filterPotentiallySensitiveLogs";
 import { saveStateToDatabase } from "../saveStateToDatabase";
@@ -27,6 +32,8 @@ export const startChat = async ({
   resultId: startResultId,
   textBubbleContentFormat,
 }: Props) => {
+  const sessionId = createId();
+  const sessionStore = getSessionStore(sessionId);
   const {
     typebot,
     messages,
@@ -40,6 +47,7 @@ export const startChat = async ({
     setVariableHistory,
   } = await startSession({
     version: 2,
+    sessionStore,
     startParams: {
       type: "live",
       isOnlyRegistering,
@@ -51,6 +59,7 @@ export const startChat = async ({
       message,
     },
   });
+  deleteSessionStore(sessionId);
 
   let corsOrigin;
 
@@ -70,6 +79,10 @@ export const startChat = async ({
     : await saveStateToDatabase({
         session: {
           state: newSessionState,
+        },
+        sessionId: {
+          type: "new",
+          id: sessionId,
         },
         input,
         logs,

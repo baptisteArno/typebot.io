@@ -25,6 +25,7 @@ import type { LogInSession } from "@typebot.io/logs/schemas";
 import prisma from "@typebot.io/prisma";
 import { parseAnswers } from "@typebot.io/results/parseAnswers";
 import type { AnswerInSessionState } from "@typebot.io/results/schemas/answers";
+import type { SessionStore } from "@typebot.io/runtime-session-store";
 import { parseVariables } from "@typebot.io/variables/parseVariables";
 import type { Variable } from "@typebot.io/variables/schemas";
 import ky, { HTTPError, TimeoutError, type Options } from "ky";
@@ -51,9 +52,15 @@ export const webhookErrorDescription = `Webhook returned an error.`;
 type Params = { disableRequestTimeout?: boolean; timeout?: number };
 
 export const executeHttpRequestBlock = async (
-  state: SessionState,
   block: HttpRequestBlock | ZapierBlock | MakeComBlock | PabblyConnectBlock,
-  params: Params = {},
+  {
+    state,
+    sessionStore,
+    ...params
+  }: {
+    state: SessionState;
+    sessionStore: SessionStore;
+  } & Params,
 ): Promise<ExecuteIntegrationResponse> => {
   const logs: LogInSession[] = [];
   const webhook =
@@ -69,6 +76,7 @@ export const executeHttpRequestBlock = async (
     isCustomBody: block.options?.isCustomBody,
     typebot: state.typebotsQueue[0].typebot,
     answers: state.typebotsQueue[0].answers,
+    sessionStore,
   });
   if (!parsedHttpRequest) {
     logs.push({
@@ -106,6 +114,7 @@ export const executeHttpRequestBlock = async (
       outgoingEdgeId: block.outgoingEdgeId,
       logs: httpRequestLogs,
       response: httpRequestResponse,
+      sessionStore,
     }),
     startTimeShouldBeUpdated,
   };
@@ -118,11 +127,13 @@ export const parseWebhookAttributes = async ({
   isCustomBody,
   typebot,
   answers,
+  sessionStore,
 }: {
   webhook: HttpRequest;
   isCustomBody?: boolean;
   typebot: TypebotInSession;
   answers: AnswerInSessionState[];
+  sessionStore: SessionStore;
 }): Promise<ParsedWebhook | undefined> => {
   if (!webhook.url) return;
   const basicAuth: { username?: string; password?: string } = {};
@@ -142,12 +153,18 @@ export const parseWebhookAttributes = async ({
     basicAuth.password = password;
     webhook.headers?.splice(basicAuthHeaderIdx, 1);
   }
-  const headers = convertKeyValueTableToObject(
-    webhook.headers,
-    typebot.variables,
-  ) as ExecutableHttpRequest["headers"] | undefined;
+  const headers = convertKeyValueTableToObject({
+    keyValues: webhook.headers,
+    variables: typebot.variables,
+    sessionStore,
+  }) as ExecutableHttpRequest["headers"] | undefined;
   const queryParams = stringify(
-    convertKeyValueTableToObject(webhook.queryParams, typebot.variables, true),
+    convertKeyValueTableToObject({
+      keyValues: webhook.queryParams,
+      variables: typebot.variables,
+      concatDuplicateInArray: true,
+      sessionStore,
+    }),
     { indices: false },
   );
   const bodyContent = await getBodyContent({
@@ -160,15 +177,18 @@ export const parseWebhookAttributes = async ({
   const { data: body, isJson } =
     bodyContent && method !== HttpMethod.GET
       ? safeJsonParse(
-          parseVariables(typebot.variables, {
+          parseVariables(bodyContent, {
+            variables: typebot.variables,
+            sessionStore,
             isInsideJson: !checkIfBodyIsAVariable(bodyContent),
-          })(bodyContent),
+          }),
         )
       : { data: undefined, isJson: false };
 
   return {
-    url: parseVariables(typebot.variables)(
+    url: parseVariables(
       webhook.url + (queryParams !== "" ? `?${queryParams}` : ""),
+      { variables: typebot.variables, sessionStore },
     ),
     basicAuth,
     method,
@@ -319,15 +339,21 @@ const getBodyContent = async ({
     : (body ?? undefined);
 };
 
-export const convertKeyValueTableToObject = (
-  keyValues: KeyValue[] | undefined,
-  variables: Variable[],
+export const convertKeyValueTableToObject = ({
+  keyValues,
+  variables,
+  sessionStore,
   concatDuplicateInArray = false,
-) => {
+}: {
+  keyValues: KeyValue[] | undefined;
+  variables: Variable[];
+  sessionStore: SessionStore;
+  concatDuplicateInArray?: boolean;
+}) => {
   if (!keyValues) return;
   return keyValues.reduce<Record<string, string | string[]>>((object, item) => {
-    const key = parseVariables(variables)(item.key);
-    const value = parseVariables(variables)(item.value);
+    const key = parseVariables(item.key, { variables, sessionStore });
+    const value = parseVariables(item.value, { variables, sessionStore });
     if (isEmpty(key) || isEmpty(value)) return object;
     if (object[key] && concatDuplicateInArray) {
       if (Array.isArray(object[key])) (object[key] as string[]).push(value);

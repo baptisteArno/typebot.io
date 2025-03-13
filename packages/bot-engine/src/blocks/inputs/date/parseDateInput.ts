@@ -1,42 +1,54 @@
 import type { DateInputBlock } from "@typebot.io/blocks-inputs/date/schema";
-import type { SessionState } from "@typebot.io/chat-session/schemas";
+import type { SessionStore } from "@typebot.io/runtime-session-store";
 import { deepParseVariables } from "@typebot.io/variables/deepParseVariables";
 import { parseVariables } from "@typebot.io/variables/parseVariables";
 import type { Variable } from "@typebot.io/variables/schemas";
 import { getPrefilledInputValue } from "../../../getPrefilledValue";
 
-export const parseDateInput =
-  (state: SessionState) => (block: DateInputBlock) => {
-    const variables = state.typebotsQueue[0].typebot.variables;
-    if (!block.options) return deepParseVariables(variables)(block);
-    return {
-      ...block,
-      options: {
-        ...deepParseVariables(variables)(block.options),
-        min: parseDateLimit(
-          block.options.min,
-          block.options.hasTime,
-          variables,
-        ),
-        max: parseDateLimit(
-          block.options.max,
-          block.options.hasTime,
-          variables,
-        ),
-      },
-      prefilledValue: getPrefilledInputValue(variables)(block),
-    };
+export const parseDateInput = (
+  block: DateInputBlock,
+  {
+    sessionStore,
+    variables,
+  }: { sessionStore: SessionStore; variables: Variable[] },
+) => {
+  if (!block.options)
+    return deepParseVariables(block, { variables, sessionStore });
+  return {
+    ...block,
+    options: {
+      ...deepParseVariables(block.options, { variables, sessionStore }),
+      min: parseDateLimit(block.options.min, {
+        hasTime: block.options.hasTime,
+        variables,
+        sessionStore,
+      }),
+      max: parseDateLimit(block.options.max, {
+        hasTime: block.options.hasTime,
+        variables,
+        sessionStore,
+      }),
+    },
+    prefilledValue: getPrefilledInputValue(variables)(block),
   };
+};
 
 const parseDateLimit = (
   limit:
     | NonNullable<DateInputBlock["options"]>["min"]
     | NonNullable<DateInputBlock["options"]>["max"],
-  hasTime: NonNullable<DateInputBlock["options"]>["hasTime"],
-  variables: Variable[],
+  {
+    hasTime,
+    variables,
+    sessionStore,
+  }: {
+    hasTime: NonNullable<DateInputBlock["options"]>["hasTime"];
+    variables: Variable[];
+    sessionStore: SessionStore;
+  },
 ) => {
   if (!limit) return;
-  const parsedLimit = parseVariables(variables)(limit);
+  const parsedLimit = parseVariables(limit, { variables, sessionStore });
   const dateIsoNoSecondsRegex = /\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d/;
   const matchDateTime = parsedLimit.match(dateIsoNoSecondsRegex);
   if (matchDateTime)

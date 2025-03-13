@@ -16,6 +16,7 @@ import { decrypt } from "@typebot.io/credentials/decrypt";
 import { getCredentials } from "@typebot.io/credentials/getCredentials";
 import { byId, isEmpty } from "@typebot.io/lib/utils";
 import type { Prisma } from "@typebot.io/prisma/types";
+import type { SessionStore } from "@typebot.io/runtime-session-store";
 import { parseVariableNumber } from "@typebot.io/variables/parseVariableNumber";
 import type { ExecuteIntegrationResponse } from "../../../../types";
 import { updateVariablesInSession } from "../../../../updateVariablesInSession";
@@ -29,10 +30,12 @@ export const createChatCompletionOpenAI = async (
     outgoingEdgeId,
     options,
     blockId,
+    sessionStore,
   }: {
     outgoingEdgeId?: string;
     options: ChatCompletionOpenAIOptions;
     blockId: string;
+    sessionStore: SessionStore;
   },
 ): Promise<ExecuteIntegrationResponse> => {
   let newSessionState = state;
@@ -64,7 +67,7 @@ export const createChatCompletionOpenAI = async (
 
   const { variablesTransformedToList, messages } = parseChatCompletionMessages(
     typebot.variables,
-  )(options.messages);
+  )(options.messages, { sessionStore });
   if (variablesTransformedToList.length > 0)
     newSessionState = updateVariablesInSession({
       state,
@@ -72,8 +75,9 @@ export const createChatCompletionOpenAI = async (
       currentBlockId: undefined,
     }).updatedState;
 
-  const temperature = parseVariableNumber(typebot.variables)(
+  const temperature = parseVariableNumber(
     options.advancedSettings?.temperature,
+    { variables: typebot.variables, sessionStore },
   );
 
   const assistantMessageVariableName = typebot.variables.find(

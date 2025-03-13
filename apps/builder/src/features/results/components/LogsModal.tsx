@@ -69,7 +69,11 @@ const LogCard = ({ log }: { log: Log }) => {
               <StatusTag status={log.status} flexShrink={0} mt={0.5} />
               <Stack>
                 <Text>
-                  <chakra.span fontWeight="medium">{log.context}</chakra.span>:{" "}
+                  {log.context && (
+                    <chakra.span fontWeight="medium">
+                      {log.context}:
+                    </chakra.span>
+                  )}{" "}
                   {log.description}
                 </Text>
               </Stack>
@@ -91,7 +95,9 @@ const LogCard = ({ log }: { log: Log }) => {
     <HStack p="4" gap={3} alignItems="flex-start">
       <StatusTag status={log.status} flexShrink={0} mt={0.5} />
       <Text>
-        <chakra.span fontWeight="medium">{log.context}</chakra.span>:{" "}
+        {log.context && (
+          <chakra.span fontWeight="medium">{log.context}:</chakra.span>
+        )}{" "}
         {log.description}
       </Text>
     </HStack>

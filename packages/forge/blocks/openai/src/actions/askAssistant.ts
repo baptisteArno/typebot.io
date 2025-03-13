@@ -8,6 +8,7 @@ import type {
 import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
 import { safeStringify } from "@typebot.io/lib/safeStringify";
 import { isDefined, isEmpty, isNotEmpty } from "@typebot.io/lib/utils";
+import type { SessionStore } from "@typebot.io/runtime-session-store";
 import { executeFunction } from "@typebot.io/variables/executeFunction";
 import { type ClientOptions, OpenAI } from "openai";
 import { auth } from "../auth";
@@ -174,7 +175,7 @@ export const askAssistant = createAction({
       getStreamVariableId: ({ responseMapping }) =>
         responseMapping?.find((m) => !m.item || m.item === "Message")
           ?.variableId,
-      run: async ({ credentials, options, variables }) => ({
+      run: async ({ credentials, options, variables, sessionStore }) => ({
         stream: await createAssistantStream({
           apiKey: credentials.apiKey,
           assistantId: options.assistantId,
@@ -186,6 +187,7 @@ export const askAssistant = createAction({
           functions: options.functions,
           responseMapping: options.responseMapping,
           additionalInstructions: options.additionalInstructions,
+          sessionStore,
         }),
       }),
     },
@@ -204,6 +206,7 @@ export const askAssistant = createAction({
       },
       variables,
       logs,
+      sessionStore,
     }) => {
       const stream = await createAssistantStream({
         apiKey,
@@ -217,6 +220,7 @@ export const askAssistant = createAction({
         threadId,
         functions,
         additionalInstructions,
+        sessionStore,
       });
 
       if (!stream) {
@@ -264,6 +268,7 @@ const createAssistantStream = async ({
   functions,
   responseMapping,
   additionalInstructions,
+  sessionStore,
 }: {
   apiKey?: string;
   assistantId?: string;
@@ -280,6 +285,7 @@ const createAssistantStream = async ({
   }[];
   logs?: LogsStore;
   variables: AsyncVariableStore | VariableStore;
+  sessionStore: SessionStore;
 }): Promise<ReadableStream<any> | undefined> => {
   if (isEmpty(assistantId)) {
     logs?.add("Assistant ID is empty");
@@ -372,6 +378,7 @@ const createAssistantStream = async ({
                   variables: variables.list(),
                   body: functionToExecute.code,
                   args: parameters,
+                  sessionStore,
                 });
 
                 if (newVariables && newVariables.length > 0)

@@ -3,6 +3,7 @@ import type { SessionState } from "@typebot.io/chat-session/schemas";
 import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
 import { byId, isDefined, isNotEmpty } from "@typebot.io/lib/utils";
 import type { LogInSession } from "@typebot.io/logs/schemas";
+import type { SessionStore } from "@typebot.io/runtime-session-store";
 import { deepParseVariables } from "@typebot.io/variables/deepParseVariables";
 import type { VariableWithValue } from "@typebot.io/variables/schemas";
 import type { ExecuteIntegrationResponse } from "../../../types";
@@ -11,21 +12,27 @@ import { getAuthenticatedGoogleDoc } from "./helpers/getAuthenticatedGoogleDoc";
 import { matchFilter } from "./helpers/matchFilter";
 
 export const getRow = async (
-  state: SessionState,
+  options: GoogleSheetsGetOptions,
   {
+    state,
+    sessionStore,
     blockId,
     outgoingEdgeId,
-    options,
   }: {
     blockId: string;
     outgoingEdgeId?: string;
-    options: GoogleSheetsGetOptions;
+    state: SessionState;
+    sessionStore: SessionStore;
   },
 ): Promise<ExecuteIntegrationResponse> => {
   const logs: LogInSession[] = [];
   const { variables } = state.typebotsQueue[0].typebot;
   const { sheetId, cellsToExtract, filter, ...parsedOptions } =
-    deepParseVariables(variables, { removeEmptyStrings: true })(options);
+    deepParseVariables(options, {
+      variables,
+      removeEmptyStrings: true,
+      sessionStore,
+    });
   if (!sheetId) return { outgoingEdgeId };
   if (!options.credentialsId || !options.spreadsheetId)
     return {

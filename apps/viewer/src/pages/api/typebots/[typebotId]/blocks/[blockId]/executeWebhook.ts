@@ -20,6 +20,10 @@ import { byId } from "@typebot.io/lib/utils";
 import prisma from "@typebot.io/prisma";
 import type { AnswerInSessionState } from "@typebot.io/results/schemas/answers";
 import type { ResultValues } from "@typebot.io/results/schemas/results";
+import {
+  deleteSessionStore,
+  getSessionStore,
+} from "@typebot.io/runtime-session-store";
 import type { PublicTypebot } from "@typebot.io/typebot/schemas/publicTypebot";
 import type { Typebot } from "@typebot.io/typebot/schemas/typebot";
 import type { Variable } from "@typebot.io/variables/schemas";
@@ -108,6 +112,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         }),
       },
       answers,
+      sessionStore: getSessionStore(typebotId),
     });
 
     if (!parsedWebhook)
@@ -132,6 +137,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         ) ?? [],
       );
 
+    deleteSessionStore(typebotId);
     return res.status(200).send(response);
   }
   return methodNotAllowed(res);

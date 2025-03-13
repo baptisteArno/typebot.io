@@ -3,6 +3,7 @@ import type { ChatwootBlock } from "@typebot.io/blocks-integrations/chatwoot/sch
 import type { SessionState } from "@typebot.io/chat-session/schemas";
 import { env } from "@typebot.io/env";
 import { isDefined } from "@typebot.io/lib/utils";
+import type { SessionStore } from "@typebot.io/runtime-session-store";
 import { extractVariablesFromText } from "@typebot.io/variables/extractVariablesFromText";
 import { parseGuessedValueType } from "@typebot.io/variables/parseGuessedValueType";
 import { parseVariables } from "@typebot.io/variables/parseVariables";
@@ -73,8 +74,8 @@ if (window.$chatwoot) {
 `;
 
 export const executeChatwootBlock = (
-  state: SessionState,
   block: ChatwootBlock,
+  { sessionStore, state }: { sessionStore: SessionStore; state: SessionState },
 ): ExecuteIntegrationResponse => {
   if (state.whatsApp) return { outgoingEdgeId: block.outgoingEdgeId };
   const { typebot, resultId } = state.typebotsQueue[0];
@@ -96,9 +97,11 @@ export const executeChatwootBlock = (
         type: "chatwoot",
         chatwoot: {
           scriptToExecute: {
-            content: parseVariables(typebot.variables, { fieldToParse: "id" })(
-              chatwootCode,
-            ),
+            content: parseVariables(chatwootCode, {
+              variables: typebot.variables,
+              sessionStore,
+              fieldToParse: "id",
+            }),
             args: extractVariablesFromText(typebot.variables)(chatwootCode).map(
               (variable) => ({
                 id: variable.id,

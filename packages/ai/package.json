@@ -12,7 +12,8 @@
     "@typebot.io/variables": "workspace:*",
     "@typebot.io/zod": "workspace:*",
     "ai": "4.1.46",
-    "ky": "1.2.4"
+    "ky": "1.2.4",
+    "@typebot.io/runtime-session-store": "workspace:*"
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*"

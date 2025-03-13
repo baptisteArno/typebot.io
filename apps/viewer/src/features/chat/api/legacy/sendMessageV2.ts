@@ -11,7 +11,12 @@ import {
 import { startSession } from "@typebot.io/bot-engine/startSession";
 import { getSession } from "@typebot.io/chat-session/queries/getSession";
 import { restartSession } from "@typebot.io/chat-session/queries/restartSession";
+import { createId } from "@typebot.io/lib/createId";
 import { isDefined } from "@typebot.io/lib/utils";
+import {
+  deleteSessionStore,
+  getSessionStore,
+} from "@typebot.io/runtime-session-store";
 
 export const sendMessageV2 = publicProcedure
   .meta({
@@ -33,6 +38,7 @@ export const sendMessageV2 = publicProcedure
       ctx: { user, res, origin },
     }) => {
       const session = sessionId ? await getSession(sessionId) : null;
+      const newSessionId = sessionId ?? createId();
 
       const isSessionExpired =
         session &&
@@ -45,6 +51,7 @@ export const sendMessageV2 = publicProcedure
           message: "Session expired. You need to start a new session.",
         });
 
+      const sessionStore = getSessionStore(newSessionId);
       if (!session) {
         if (!startParams)
           throw new TRPCError({
@@ -64,6 +71,7 @@ export const sendMessageV2 = publicProcedure
           setVariableHistory,
         } = await startSession({
           version: 2,
+          sessionStore,
           startParams:
             startParams.isPreview || typeof startParams.typebot !== "string"
               ? {
@@ -133,6 +141,10 @@ export const sendMessageV2 = publicProcedure
               state: newSessionState,
             })
           : await saveStateToDatabase({
+              sessionId: {
+                type: "new",
+                id: newSessionId,
+              },
               session: {
                 state: newSessionState,
               },
@@ -149,6 +161,7 @@ export const sendMessageV2 = publicProcedure
               setVariableHistory,
             });
 
+        deleteSessionStore(newSessionId);
         return {
           sessionId: session.id,
           typebot: typebot
@@ -193,6 +206,7 @@ export const sendMessageV2 = publicProcedure
             version: 2,
             state: session.state,
             textBubbleContentFormat: "richText",
+            sessionStore,
           },
         );
 
@@ -200,8 +214,11 @@ export const sendMessageV2 = publicProcedure
 
         if (newSessionState)
           await saveStateToDatabase({
-            session: {
+            sessionId: {
+              type: "existing",
               id: session.id,
+            },
+            session: {
               state: newSessionState,
             },
             input,
@@ -217,11 +234,17 @@ export const sendMessageV2 = publicProcedure
             setVariableHistory,
           });
 
+        const dynamicTheme = parseDynamicTheme({
+          state: newSessionState,
+          sessionStore,
+        });
+        deleteSessionStore(newSessionId);
+
         return {
           messages,
           input,
           clientSideActions,
-          dynamicTheme: parseDynamicTheme(newSessionState),
+          dynamicTheme,
           logs,
           lastMessageNewFormat,
         };

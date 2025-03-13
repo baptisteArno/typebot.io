@@ -1,6 +1,7 @@
 import type { VariableStore } from "@typebot.io/forge/types";
 import { safeStringify } from "@typebot.io/lib/safeStringify";
 import { isNotEmpty } from "@typebot.io/lib/utils";
+import type { SessionStore } from "@typebot.io/runtime-session-store";
 import { executeFunction } from "@typebot.io/variables/executeFunction";
 import type { Variable } from "@typebot.io/variables/schemas";
 import { z } from "@typebot.io/zod";
@@ -10,9 +11,11 @@ import type { Tools } from "./schemas";
 export const parseTools = ({
   tools,
   variables,
+  sessionStore,
 }: {
   tools: Tools;
   variables: VariableStore;
+  sessionStore: SessionStore;
   onNewVariabes?: (newVariables: Variable[]) => void;
 }): Record<string, Tool> => {
   if (!tools?.length) return {};
@@ -23,6 +26,7 @@ export const parseTools = ({
       parameters: parseParameters(tool.parameters),
       execute: async (args) => {
         const { output, newVariables } = await executeFunction({
+          sessionStore,
           variables: variables.list(),
           args,
           body: tool.code!,

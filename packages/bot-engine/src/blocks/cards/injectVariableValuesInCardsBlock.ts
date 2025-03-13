@@ -2,6 +2,7 @@ import type {
   CardsBlock,
   CardsItem,
 } from "@typebot.io/blocks-inputs/cards/schema";
+import type { SessionStore } from "@typebot.io/runtime-session-store";
 import { deepParseVariables } from "@typebot.io/variables/deepParseVariables";
 import { findUniqueVariable } from "@typebot.io/variables/findUniqueVariable";
 import type { Variable } from "@typebot.io/variables/schemas";
@@ -13,17 +14,33 @@ type DynamicProps = {
   descriptions: Variable["value"];
 };
 
-export const injectVariableValuesInCardsBlock =
-  (variables: Variable[]) =>
-  (block: CardsBlock): CardsBlock => {
-    const dynamicProps = getDynamicProps(variables)(block);
-    if (!dynamicProps)
-      return deepParseVariables(variables)(filterCardsItems(variables)(block));
-    return deepParseVariables(variables)({
+export const injectVariableValuesInCardsBlock = (
+  block: CardsBlock,
+  {
+    sessionStore,
+    variables,
+  }: { sessionStore: SessionStore; variables: Variable[] },
+): CardsBlock => {
+  const dynamicProps = getDynamicProps(variables)(block);
+  if (!dynamicProps)
+    return deepParseVariables(
+      filterCardsItems(block, { variables, sessionStore }),
+      {
+        variables,
+        sessionStore,
+      },
+    );
+  return deepParseVariables(
+    {
       ...block,
       items: createDynamicCards(block.items[0], dynamicProps),
-    });
-  };
+    },
+    {
+      variables,
+      sessionStore,
+    },
+  );
+};
 
 const getDynamicProps =
   (variables: Variable[]) =>

@@ -8,6 +8,10 @@ import { restartSession } from "@typebot.io/chat-session/queries/restartSession"
 import type { SessionState } from "@typebot.io/chat-session/schemas";
 import { env } from "@typebot.io/env";
 import prisma from "@typebot.io/prisma";
+import {
+  deleteSessionStore,
+  getSessionStore,
+} from "@typebot.io/runtime-session-store";
 import { isReadTypebotForbidden } from "@typebot.io/typebot/helpers/isReadTypebotForbidden";
 import { sendChatReplyToWhatsApp } from "@typebot.io/whatsapp/sendChatReplyToWhatsApp";
 import { sendWhatsAppMessage } from "@typebot.io/whatsapp/sendWhatsAppMessage";
@@ -99,6 +103,7 @@ export const startWhatsAppPreview = authenticatedProcedure
       (existingSession?.updatedAt.getTime() ?? 0) >
       Date.now() - 24 * 60 * 60 * 1000;
 
+    const sessionStore = getSessionStore(sessionId);
     const {
       newSessionState,
       messages,
@@ -109,6 +114,7 @@ export const startWhatsAppPreview = authenticatedProcedure
       setVariableHistory,
     } = await startSession({
       version: 2,
+      sessionStore,
       startParams: {
         isOnlyRegistering: !canSendDirectMessagesToUser,
         type: "preview",
@@ -123,6 +129,7 @@ export const startWhatsAppPreview = authenticatedProcedure
           ?.whatsApp,
       },
     });
+    deleteSessionStore(sessionId);
 
     try {
       if (canSendDirectMessagesToUser) {
@@ -142,8 +149,11 @@ export const startWhatsAppPreview = authenticatedProcedure
           clientSideActions: [],
           input,
           logs,
-          session: {
+          sessionId: {
+            type: "existing",
             id: sessionId,
+          },
+          session: {
             state: newSessionState,
           },
           visitedEdges,

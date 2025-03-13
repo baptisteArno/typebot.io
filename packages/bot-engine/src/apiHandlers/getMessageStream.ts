@@ -11,6 +11,10 @@ import type { AsyncVariableStore } from "@typebot.io/forge/types";
 import { getBlockById } from "@typebot.io/groups/helpers/getBlockById";
 import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
 import { isDefined } from "@typebot.io/lib/utils";
+import {
+  deleteSessionStore,
+  getSessionStore,
+} from "@typebot.io/runtime-session-store";
 import { deepParseVariables } from "@typebot.io/variables/deepParseVariables";
 import {
   type ParseVariablesOptions,
@@ -62,12 +66,14 @@ export const getMessageStream = async ({
       message: "This block does not have options",
     };
 
+  const sessionStore = getSessionStore(sessionId);
   if (block.type === IntegrationBlockType.OPEN_AI && messages) {
     try {
       const stream = await getOpenAIChatCompletionStream(
         newSessionState,
         block.options as ChatCompletionOpenAIOptions,
         messages,
+        sessionStore,
       );
       if (!stream)
         return {
@@ -129,10 +135,11 @@ export const getMessageStream = async ({
         return variable?.value;
       },
       parse: (text: string, params?: ParseVariablesOptions) =>
-        parseVariables(
-          newSessionState.typebotsQueue[0].typebot.variables,
-          params,
-        )(text),
+        parseVariables(text, {
+          variables: newSessionState.typebotsQueue[0].typebot.variables,
+          sessionStore,
+          ...params,
+        }),
       set: async (variables) => {
         const newVariables = variables
           .map((variable) => {
@@ -169,11 +176,14 @@ export const getMessageStream = async ({
     };
     const { stream, error } = await action.run.stream.run({
       credentials: decryptedCredentials,
-      options: deepParseVariables(
-        newSessionState.typebotsQueue[0].typebot.variables,
-      )(block.options),
+      options: deepParseVariables(block.options, {
+        variables: newSessionState.typebotsQueue[0].typebot.variables,
+        sessionStore,
+      }),
       variables,
+      sessionStore,
     });
+    deleteSessionStore(sessionId);
     if (error)
       return {
         status: 500,

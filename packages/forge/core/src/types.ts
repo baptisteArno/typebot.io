@@ -1,3 +1,4 @@
+import type { SessionStore } from "@typebot.io/runtime-session-store";
 import type { WithoutVariables } from "@typebot.io/variables/types";
 import type { z } from "@typebot.io/zod";
 import type { SVGProps } from "react";
@@ -72,6 +73,7 @@ export type ActionDefinition<
       options: WithoutVariables<z.infer<BaseOptions> & z.infer<Options>>;
       variables: VariableStore;
       logs: LogsStore;
+      sessionStore: SessionStore;
     }) => Promise<void> | void;
     /**
      * Used to stream a text bubble. Will only be used if the block following the integration block is a text bubble containing the variable returned by `getStreamVariableId`.
@@ -84,6 +86,7 @@ export type ActionDefinition<
         credentials: CredentialsFromAuthDef<A>;
         options: WithoutVariables<z.infer<BaseOptions> & z.infer<Options>>;
         variables: AsyncVariableStore;
+        sessionStore: SessionStore;
       }) => Promise<{
         stream?: ReadableStream<any>;
         error?: {

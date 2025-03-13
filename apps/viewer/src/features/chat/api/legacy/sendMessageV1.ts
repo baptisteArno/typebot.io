@@ -11,7 +11,12 @@ import {
 import { startSession } from "@typebot.io/bot-engine/startSession";
 import { getSession } from "@typebot.io/chat-session/queries/getSession";
 import { restartSession } from "@typebot.io/chat-session/queries/restartSession";
+import { createId } from "@typebot.io/lib/createId";
 import { isDefined } from "@typebot.io/lib/utils";
+import {
+  deleteSessionStore,
+  getSessionStore,
+} from "@typebot.io/runtime-session-store";
 
 export const sendMessageV1 = publicProcedure
   .meta({
@@ -33,6 +38,7 @@ export const sendMessageV1 = publicProcedure
       ctx: { user, origin, res },
     }) => {
       const session = sessionId ? await getSession(sessionId) : null;
+      const newSessionId = sessionId ?? createId();
 
       const isSessionExpired =
         session &&
@@ -45,6 +51,7 @@ export const sendMessageV1 = publicProcedure
           message: "Session expired. You need to start a new session.",
         });
 
+      const sessionStore = getSessionStore(newSessionId);
       if (!session) {
         if (!startParams)
           throw new TRPCError({
@@ -63,6 +70,7 @@ export const sendMessageV1 = publicProcedure
           visitedEdges,
           setVariableHistory,
         } = await startSession({
+          sessionStore,
           version: 1,
           startParams:
             startParams.isPreview || typeof startParams.typebot !== "string"
@@ -133,6 +141,10 @@ export const sendMessageV1 = publicProcedure
               state: newSessionState,
             })
           : await saveStateToDatabase({
+              sessionId: {
+                type: "new",
+                id: newSessionId,
+              },
               session: {
                 state: newSessionState,
               },
@@ -148,6 +160,8 @@ export const sendMessageV1 = publicProcedure
               ),
               setVariableHistory,
             });
+
+        deleteSessionStore(newSessionId);
 
         return {
           sessionId: session.id,
@@ -194,6 +208,7 @@ export const sendMessageV1 = publicProcedure
             version: 1,
             state: session.state,
             textBubbleContentFormat: "richText",
+            sessionStore,
           },
         );
 
@@ -201,8 +216,11 @@ export const sendMessageV1 = publicProcedure
 
         if (newSessionState)
           await saveStateToDatabase({
+            sessionId: {
+              type: "existing",
+              id: newSessionId,
+            },
             session: {
-              id: session.id,
               state: newSessionState,
             },
             input,
@@ -218,11 +236,17 @@ export const sendMessageV1 = publicProcedure
             setVariableHistory,
           });
 
+        const dynamicTheme = parseDynamicTheme({
+          state: newSessionState,
+          sessionStore,
+        });
+        deleteSessionStore(newSessionId);
+
         return {
           messages,
           input,
           clientSideActions,
-          dynamicTheme: parseDynamicTheme(newSessionState),
+          dynamicTheme,
           logs,
           lastMessageNewFormat,
         };

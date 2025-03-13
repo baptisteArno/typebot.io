@@ -12,8 +12,8 @@ import type { InputBlock } from "@typebot.io/blocks-inputs/schema";
 import type { SessionState } from "@typebot.io/chat-session/schemas";
 import { env } from "@typebot.io/env";
 import type { Group } from "@typebot.io/groups/schemas";
-import { isNotEmpty } from "@typebot.io/lib/utils";
 import type { Prisma } from "@typebot.io/prisma/types";
+import type { SessionStore } from "@typebot.io/runtime-session-store";
 import { deepParseVariables } from "@typebot.io/variables/deepParseVariables";
 import type { SetVariableHistoryItem } from "@typebot.io/variables/schemas";
 import { injectVariableValuesInCardsBlock } from "./blocks/cards/injectVariableValuesInCardsBlock";
@@ -35,6 +35,7 @@ import type { ExecuteIntegrationResponse, ExecuteLogicResponse } from "./types";
 type ContextProps = {
   version: 1 | 2;
   state: SessionState;
+  sessionStore: SessionStore;
   currentReply?: ContinueChatResponse;
   currentLastBubbleId?: string;
   firstBubbleWasStreamed?: boolean;
@@ -49,6 +50,7 @@ export const executeGroup = async (
   {
     version,
     state,
+    sessionStore,
     visitedEdges,
     setVariableHistory,
     currentReply,
@@ -99,6 +101,7 @@ export const executeGroup = async (
         variables: newSessionState.typebotsQueue[0].typebot.variables,
         typebotVersion: newSessionState.typebotsQueue[0].typebot.version,
         textBubbleContentFormat,
+        sessionStore,
       });
       messages.push(message);
       if (
@@ -125,7 +128,10 @@ export const executeGroup = async (
     if (isInputBlock(block))
       return {
         messages,
-        input: await parseInput(newSessionState)(block),
+        input: await parseInput(block, {
+          state: newSessionState,
+          sessionStore,
+        }),
         newSessionState: {
           ...newSessionState,
           currentBlockId: block.id,
@@ -137,9 +143,18 @@ export const executeGroup = async (
       };
     const executionResponse = (
       isLogicBlock(block)
-        ? await executeLogic(newSessionState)(block, setVariableHistory)
+        ? await executeLogic({
+            block,
+            state: newSessionState,
+            setVariableHistory,
+            sessionStore,
+          })
         : isIntegrationBlock(block)
-          ? await executeIntegration(newSessionState)(block)
+          ? await executeIntegration({
+              block,
+              state: newSessionState,
+              sessionStore,
+            })
           : null
     ) as ExecuteLogicResponse | ExecuteIntegrationResponse | null;
 
@@ -263,6 +278,7 @@ export const executeGroup = async (
   return executeGroup(nextGroup.group, {
     version,
     state: newSessionState,
+    sessionStore,
     visitedEdges,
     setVariableHistory,
     currentReply: {
@@ -276,60 +292,94 @@ export const executeGroup = async (
   });
 };
 
-const computeRuntimeOptions =
-  (state: SessionState) =>
-  (block: InputBlock): Promise<RuntimeOptions> | undefined => {
-    switch (block.type) {
-      case InputBlockType.PAYMENT: {
-        return computePaymentInputRuntimeOptions(state)(block.options);
-      }
+const computeRuntimeOptions = (
+  block: InputBlock,
+  { sessionStore, state }: { sessionStore: SessionStore; state: SessionState },
+): Promise<RuntimeOptions> | undefined => {
+  switch (block.type) {
+    case InputBlockType.PAYMENT: {
+      return computePaymentInputRuntimeOptions(block.options, {
+        sessionStore,
+        state,
+      });
     }
-  };
+  }
+};
 
-export const parseInput =
-  (state: SessionState) =>
-  async (block: InputBlock): Promise<ContinueChatResponse["input"]> => {
-    switch (block.type) {
-      case InputBlockType.CHOICE: {
-        return injectVariableValuesInButtonsInputBlock(state)(block);
-      }
-      case InputBlockType.PICTURE_CHOICE: {
-        return injectVariableValuesInPictureChoiceBlock(
-          state.typebotsQueue[0].typebot.variables,
-        )(block);
-      }
-      case InputBlockType.NUMBER: {
-        return deepParseVariables(state.typebotsQueue[0].typebot.variables)({
-          ...block,
-          prefilledValue: getPrefilledInputValue(
-            state.typebotsQueue[0].typebot.variables,
-          )(block),
-        });
-      }
-      case InputBlockType.DATE: {
-        return parseDateInput(state)(block);
-      }
-      case InputBlockType.RATING: {
-        return deepParseVariables(state.typebotsQueue[0].typebot.variables)({
-          ...block,
-          prefilledValue: getPrefilledInputValue(
-            state.typebotsQueue[0].typebot.variables,
-          )(block),
-        });
-      }
-      case InputBlockType.CARDS: {
-        return injectVariableValuesInCardsBlock(
-          state.typebotsQueue[0].typebot.variables,
-        )(block);
-      }
-      default: {
-        return deepParseVariables(state.typebotsQueue[0].typebot.variables)({
-          ...block,
-          runtimeOptions: await computeRuntimeOptions(state)(block),
-          prefilledValue: getPrefilledInputValue(
-            state.typebotsQueue[0].typebot.variables,
-          )(block),
-        });
-      }
+export const parseInput = async (
+  block: InputBlock,
+  { state, sessionStore }: { state: SessionState; sessionStore: SessionStore },
+): Promise<ContinueChatResponse["input"]> => {
+  switch (block.type) {
+    case InputBlockType.CHOICE: {
+      return injectVariableValuesInButtonsInputBlock(block, {
+        state,
+        sessionStore,
+      });
     }
-  };
+    case InputBlockType.PICTURE_CHOICE: {
+      return injectVariableValuesInPictureChoiceBlock(block, {
+        variables: state.typebotsQueue[0].typebot.variables,
+        sessionStore,
+      });
+    }
+    case InputBlockType.NUMBER: {
+      return deepParseVariables(
+        {
+          ...block,
+          prefilledValue: getPrefilledInputValue(
+            state.typebotsQueue[0].typebot.variables,
+          )(block),
+        },
+        {
+          variables: state.typebotsQueue[0].typebot.variables,
+          sessionStore,
+        },
+      );
+    }
+    case InputBlockType.DATE: {
+      return parseDateInput(block, {
+        variables: state.typebotsQueue[0].typebot.variables,
+        sessionStore,
+      });
+    }
+    case InputBlockType.RATING: {
+      return deepParseVariables(
+        {
+          ...block,
+          prefilledValue: getPrefilledInputValue(
+            state.typebotsQueue[0].typebot.variables,
+          )(block),
+        },
+        {
+          variables: state.typebotsQueue[0].typebot.variables,
+          sessionStore,
+        },
+      );
+    }
+    case InputBlockType.CARDS: {
+      return injectVariableValuesInCardsBlock(block, {
+        variables: state.typebotsQueue[0].typebot.variables,
+        sessionStore,
+      });
+    }
+    default: {
+      return deepParseVariables(
+        {
+          ...block,
+          runtimeOptions: await computeRuntimeOptions(block, {
+            sessionStore,
+            state,
+          }),
+          prefilledValue: getPrefilledInputValue(
+            state.typebotsQueue[0].typebot.variables,
+          )(block),
+        },
+        {
+          variables: state.typebotsQueue[0].typebot.variables,
+          sessionStore,
+        },
+      );
+    }
+  }
+};

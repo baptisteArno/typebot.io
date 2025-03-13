@@ -2,6 +2,10 @@ import { TRPCError } from "@trpc/server";
 import { BubbleBlockType } from "@typebot.io/blocks-bubbles/constants";
 import { getSession } from "@typebot.io/chat-session/queries/getSession";
 import { isDefined, isNotDefined } from "@typebot.io/lib/utils";
+import {
+  deleteSessionStore,
+  getSessionStore,
+} from "@typebot.io/runtime-session-store";
 import { computeCurrentProgress } from "../computeCurrentProgress";
 import { continueBotFlow } from "../continueBotFlow";
 import { filterPotentiallySensitiveLogs } from "../logs/filterPotentiallySensitiveLogs";
@@ -52,6 +56,7 @@ export const continueChat = async ({
     else corsOrigin = session.state.allowedOrigins[0];
   }
 
+  const sessionStore = getSessionStore(sessionId);
   const {
     messages,
     input,
@@ -66,12 +71,21 @@ export const continueChat = async ({
     state: session.state,
     startTime: Date.now(),
     textBubbleContentFormat,
+    sessionStore,
   });
+  const dynamicTheme = parseDynamicTheme({
+    state: newSessionState,
+    sessionStore,
+  });
+  deleteSessionStore(sessionId);
 
   if (newSessionState)
     await saveStateToDatabase({
-      session: {
+      sessionId: {
+        type: "existing",
         id: session.id,
+      },
+      session: {
         state: newSessionState,
       },
       input,
@@ -99,7 +113,7 @@ export const continueChat = async ({
     messages,
     input,
     clientSideActions,
-    dynamicTheme: parseDynamicTheme(newSessionState),
+    dynamicTheme,
     logs: isPreview ? logs : logs?.filter(filterPotentiallySensitiveLogs),
     lastMessageNewFormat,
     corsOrigin,

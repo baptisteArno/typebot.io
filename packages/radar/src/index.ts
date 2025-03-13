@@ -1,6 +1,7 @@
 import { LogicBlockType } from "@typebot.io/blocks-logic/constants";
 import { env } from "@typebot.io/env";
 import { safeStringify } from "@typebot.io/lib/safeStringify";
+import type { SessionStore } from "@typebot.io/runtime-session-store";
 import type { TypebotV6 } from "@typebot.io/typebot/schemas/typebot";
 import { evaluateSetVariableExpression } from "@typebot.io/variables/evaluateSetVariableExpression";
 import { parseVariables } from "@typebot.io/variables/parseVariables";
@@ -10,7 +11,14 @@ type Params = {
   debug: boolean;
 };
 
-const fillVariableValues = async (typebot: TypebotV6): Promise<Variable[]> => {
+const fillVariableValues = async (
+  typebot: TypebotV6,
+  {
+    sessionStore,
+  }: {
+    sessionStore: SessionStore;
+  },
+): Promise<Variable[]> => {
   const variables: Variable[] = [];
   for (const group of typebot.groups) {
     for (const block of group.blocks) {
@@ -31,10 +39,16 @@ const fillVariableValues = async (typebot: TypebotV6): Promise<Variable[]> => {
 
         const { value } =
           block.options.isCode && block.options.expressionToEvaluate
-            ? await evaluateSetVariableExpression(typebot.variables)({
-                type: "code",
-                code: block.options.expressionToEvaluate,
-              })
+            ? await evaluateSetVariableExpression(
+                {
+                  type: "code",
+                  code: block.options.expressionToEvaluate,
+                },
+                {
+                  variables: typebot.variables,
+                  sessionStore,
+                },
+              )
             : { value: block.options.expressionToEvaluate };
 
         variables.push({
@@ -50,9 +64,15 @@ const fillVariableValues = async (typebot: TypebotV6): Promise<Variable[]> => {
   return variables;
 };
 
-export const computeRiskLevel = async (typebot: TypebotV6, params?: Params) => {
-  const variables = await fillVariableValues(typebot);
-  const stringifiedTypebot = parseVariables(variables)(JSON.stringify(typebot));
+export const computeRiskLevel = async (
+  typebot: TypebotV6,
+  { sessionStore, ...params }: { sessionStore: SessionStore } & Params,
+) => {
+  const variables = await fillVariableValues(typebot, { sessionStore });
+  const stringifiedTypebot = parseVariables(JSON.stringify(typebot), {
+    variables,
+    sessionStore,
+  });
   if (
     env.RADAR_HIGH_RISK_KEYWORDS?.some((keyword) =>
       new RegExp(

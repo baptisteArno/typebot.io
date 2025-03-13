@@ -15,6 +15,11 @@ import { getBlockById } from "@typebot.io/groups/helpers/getBlockById";
 import redis from "@typebot.io/lib/redis";
 import { uploadFileToBucket } from "@typebot.io/lib/s3/uploadFileToBucket";
 import { isDefined } from "@typebot.io/lib/utils";
+import {
+  type SessionStore,
+  deleteSessionStore,
+  getSessionStore,
+} from "@typebot.io/runtime-session-store";
 import { WhatsAppError } from "./WhatsAppError";
 import { downloadMedia } from "./downloadMedia";
 import type {
@@ -114,6 +119,7 @@ export const resumeWhatsAppFlow = async ({
     block,
   });
 
+  const sessionStore = getSessionStore(sessionId);
   const {
     input,
     logs,
@@ -127,18 +133,22 @@ export const resumeWhatsAppFlow = async ({
     isSessionExpired,
     reply,
     session,
-    sessionId,
+    sessionStore,
     contact,
     workspaceId,
     credentialsId,
   });
+  deleteSessionStore(sessionId);
 
   await saveStateToDatabase({
     clientSideActions: [],
     input,
     logs,
-    session: {
+    sessionId: {
+      type: "existing",
       id: sessionId,
+    },
+    session: {
       isReplying: isWaitingForWebhook,
       state: {
         ...newSessionState,
@@ -382,7 +392,7 @@ const aggregateParallelMediaMessagesIfRedisEnabled = async ({
 const resumeFlowAndSendWhatsAppMessages = async (props: {
   to: string;
   session: Pick<ChatSession, "state"> | null;
-  sessionId: string;
+  sessionStore: SessionStore;
   reply: Message | undefined;
   contact?: NonNullable<SessionState["whatsApp"]>["contact"];
   referral?: WhatsAppMessageReferral;
@@ -443,6 +453,7 @@ const resumeFlow = ({
   credentials,
   credentialsId,
   workspaceId,
+  sessionStore,
 }: {
   reply: Message | undefined;
   contact?: NonNullable<SessionState["whatsApp"]>["contact"];
@@ -452,10 +463,12 @@ const resumeFlow = ({
   isSessionExpired: boolean | null;
   credentialsId?: string;
   workspaceId?: string;
+  sessionStore: SessionStore;
 }) => {
   if (session?.state && !isSessionExpired)
     return continueBotFlow(reply, {
       version: 2,
+      sessionStore,
       state: contact
         ? {
             ...session.state,
@@ -482,5 +495,6 @@ const resumeFlow = ({
     credentials: { ...credentials, id: credentialsId as string },
     contact,
     referral,
+    sessionStore,
   });
 };
