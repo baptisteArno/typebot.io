@@ -52,7 +52,17 @@ export const receiveMessagePreview = publicProcedure
         Sentry.captureMessage(err.message, err.details);
       } else {
         console.log("Sending unkown error to Sentry");
-        console.log((await parseUnknownError({ err })).details);
+        const details = safeJsonParse(
+          (await parseUnknownError({ err })).details,
+        );
+        Sentry.addBreadcrumb({
+          data:
+            typeof details === "object" && details
+              ? details
+              : {
+                  details,
+                },
+        });
         Sentry.captureException(err);
       }
     }
@@ -105,5 +115,14 @@ const processErrors = async (entry: WhatsAppWebhookRequestBody["entry"]) => {
     throw new Error(
       `WA unknown incoming errors: ${JSON.stringify(status.errors)}`,
     );
+  }
+};
+
+const safeJsonParse = (value: string | undefined): unknown => {
+  if (!value) return value;
+  try {
+    return JSON.parse(value);
+  } catch {
+    return value;
   }
 };

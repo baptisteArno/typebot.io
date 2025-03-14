@@ -60,7 +60,17 @@ export const receiveMessage = publicProcedure
         Sentry.captureMessage(err.message, err.details);
       } else {
         console.log("Sending unknown error to Sentry");
-        console.log((await parseUnknownError({ err })).details);
+        const details = safeJsonParse(
+          (await parseUnknownError({ err })).details,
+        );
+        Sentry.addBreadcrumb({
+          data:
+            typeof details === "object" && details
+              ? details
+              : {
+                  details,
+                },
+        });
         Sentry.captureException(err);
       }
     }
@@ -86,4 +96,13 @@ const extractMessageDetails = (entry: WhatsAppWebhookRequestBody["entry"]) => {
     phoneNumberId,
     referral,
   };
+};
+
+const safeJsonParse = (value: string | undefined): unknown => {
+  if (!value) return value;
+  try {
+    return JSON.parse(value);
+  } catch {
+    return value;
+  }
 };
