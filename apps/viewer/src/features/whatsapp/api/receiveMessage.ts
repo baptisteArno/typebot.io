@@ -59,10 +59,9 @@ export const receiveMessage = publicProcedure
       if (err instanceof WhatsAppError) {
         Sentry.captureMessage(err.message, err.details);
       } else {
-        console.error("sending unkown error to Sentry");
-        Sentry.captureException(err, {
-          data: await parseUnknownError({ err }),
-        });
+        console.log("Sending unknown error to Sentry");
+        console.log((await parseUnknownError({ err })).details);
+        Sentry.captureException(err);
       }
     }
 
