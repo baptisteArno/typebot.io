@@ -31,6 +31,7 @@ import OctaButton from 'components/octaComponents/OctaButton/OctaButton'
 import OctaInput from 'components/octaComponents/OctaInput/OctaInput'
 import { CustomFieldTitle } from 'enums/customFieldsTitlesEnum'
 import { StepNodeContext } from '../Graph/Nodes/StepNode/StepNode/StepNode'
+import { CreateChatFieldModal } from '../modals/CreateChatFieldModal/CreateChatFieldModal'
 
 type Props = {
   initialVariableId?: string
@@ -277,6 +278,7 @@ export const VariableSearchInput = ({
       borderStyle={'solid'}
       borderRadius={'6px'}
     >
+      <CreateChatFieldModal isOpen={true} onClose={() => {}}/>
       {screen === 'VIEWER' && (
         <Container data-screen={screen}>
           {labelDefault || 'Selecione uma variável para salvar a resposta:'}
