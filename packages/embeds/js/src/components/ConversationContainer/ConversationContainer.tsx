@@ -107,6 +107,8 @@ export const ConversationContainer = (props: Props) => {
     },
   );
   const [isSending, setIsSending] = createSignal(false);
+  const [isLastAutoScrollAtBottom, setIsLastAutoScrollAtBottom] =
+    createSignal(true);
   const [hasError, setHasError] = createSignal(false);
   const [inputAnswered, setInputAnswered] = createSignal<{
     [key: string]: boolean;
@@ -169,6 +171,7 @@ export const ConversationContainer = (props: Props) => {
 
   const streamMessage = ({ id, message }: { id: string; message: string }) => {
     setIsSending(false);
+    setIsLastAutoScrollAtBottom(false);
     const lastChunk = [...chatChunks()].pop();
     if (!lastChunk) return;
     if (lastChunk.streamingMessageId !== id)
@@ -310,7 +313,10 @@ export const ConversationContainer = (props: Props) => {
     ]);
   };
 
-  const autoScrollToBottom = (lastElement?: HTMLDivElement, offset = 0) => {
+  const autoScrollToBottom = ({
+    lastElement,
+    offset = 0,
+  }: { lastElement?: HTMLDivElement; offset?: number } = {}) => {
     if (!chatContainer) return;
 
     const isBottomOfLastElementTooFarBelow =
@@ -319,9 +325,35 @@ export const ConversationContainer = (props: Props) => {
         chatContainer.clientHeight *
           AUTO_SCROLL_CLIENT_HEIGHT_PERCENT_TOLERANCE;
 
-    if (isBottomOfLastElementTooFarBelow) return;
+    if (isBottomOfLastElementTooFarBelow && !isLastAutoScrollAtBottom()) return;
+
+    const onScrollEnd = (callback: () => void) => {
+      let scrollTimeout: number;
+
+      const scrollListener = () => {
+        clearTimeout(scrollTimeout);
+
+        scrollTimeout = window.setTimeout(() => {
+          callback();
+          chatContainer.removeEventListener("scroll", scrollListener);
+        }, 100);
+      };
+
+      chatContainer.addEventListener("scroll", scrollListener, {
+        passive: true,
+      });
+    };
 
     setTimeout(() => {
+      onScrollEnd(() => {
+        const isAtBottom =
+          Math.abs(
+            chatContainer.scrollHeight -
+              chatContainer.scrollTop -
+              chatContainer.clientHeight,
+          ) < 2;
+        setIsLastAutoScrollAtBottom(isAtBottom);
+      });
       chatContainer?.scrollTo({
         top: lastElement
           ? lastElement.offsetTop - offset
