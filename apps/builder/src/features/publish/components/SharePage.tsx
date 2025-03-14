@@ -33,7 +33,8 @@ import { integrationsList } from "./embeds/EmbedButton";
 export const SharePage = () => {
   const { t } = useTranslate();
   const { workspace } = useWorkspace();
-  const { typebot, updateTypebot, publishedTypebot, is404 } = useTypebot();
+  const { typebot, updateTypebot, publishedTypebot, is404, currentUserMode } =
+    useTypebot();
 
   const handlePublicIdChange = async (publicId: string) => {
     updateTypebot({ updates: { publicId }, save: true });
@@ -137,7 +138,8 @@ export const SharePage = () => {
                   )}
                 </HStack>
               )}
-              {isNotDefined(typebot?.customDomain) &&
+              {currentUserMode === "write" &&
+              isNotDefined(typebot?.customDomain) &&
               env.NEXT_PUBLIC_VERCEL_VIEWER_PROJECT_NAME ? (
                 <>
                   {hasProPerks(workspace) ? (
