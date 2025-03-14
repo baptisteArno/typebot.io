@@ -227,7 +227,7 @@ export const GroupNode = ({ group, groupIndex }: Props) => {
               groupRef={ref}
             />
           )}
-          {!isReadOnly && focusedGroups.length === 1 && (
+          {focusedGroups.length === 1 && (
             <SlideFade
               in={isFocused}
               style={{
@@ -239,6 +239,7 @@ export const GroupNode = ({ group, groupIndex }: Props) => {
             >
               <GroupFocusToolbar
                 groupId={group.id}
+                isReadOnly={isReadOnly}
                 onPlayClick={startPreviewAtThisGroup}
               />
             </SlideFade>
