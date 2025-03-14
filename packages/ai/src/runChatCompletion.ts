@@ -52,6 +52,12 @@ export const runChatCompletion = async ({
         variables.set([{ id: mapping.variableId, value: text }]);
       if (mapping.item === "Total tokens")
         variables.set([{ id: mapping.variableId, value: usage.totalTokens }]);
+      if (mapping.item === "Prompt tokens")
+        variables.set([{ id: mapping.variableId, value: usage.promptTokens }]);
+      if (mapping.item === "Completion tokens")
+        variables.set([
+          { id: mapping.variableId, value: usage.completionTokens },
+        ]);
     });
   } catch (err) {
     logs.add(

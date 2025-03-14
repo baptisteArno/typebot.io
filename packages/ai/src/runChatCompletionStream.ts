@@ -52,6 +52,17 @@ export const runChatCompletionStream = async ({
             variables.set([
               { id: mapping.variableId, value: response.usage.totalTokens },
             ]);
+          if (mapping.item === "Prompt tokens")
+            variables.set([
+              { id: mapping.variableId, value: response.usage.promptTokens },
+            ]);
+          if (mapping.item === "Completion tokens")
+            variables.set([
+              {
+                id: mapping.variableId,
+                value: response.usage.completionTokens,
+              },
+            ]);
         });
       },
     });
