@@ -81,7 +81,12 @@ export const parseChatCompletionOptions = ({ models }: Props) =>
       defaultValue: 1,
     }),
     responseMapping: option
-      .saveResponseArray(["Message content", "Total tokens"] as const)
+      .saveResponseArray([
+        "Message content",
+        "Total tokens",
+        "Prompt tokens",
+        "Completion tokens",
+      ] as const)
       .layout({
         accordion: "Save response",
       }),

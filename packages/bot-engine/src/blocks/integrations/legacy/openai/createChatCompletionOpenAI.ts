@@ -128,7 +128,11 @@ export const createChatCompletionOpenAI = async (
       logs,
     };
   const messageContent = chatCompletion.choices.at(0)?.message?.content;
-  const totalTokens = chatCompletion.usage?.total_tokens;
+  const tokens = {
+    totalTokens: chatCompletion.usage?.total_tokens,
+    promptTokens: chatCompletion.usage?.prompt_tokens,
+    completionTokens: chatCompletion.usage?.completion_tokens,
+  };
   if (isEmpty(messageContent)) {
     console.error(
       "OpenAI block returned empty message",
@@ -141,7 +145,7 @@ export const createChatCompletionOpenAI = async (
       options,
       outgoingEdgeId,
       logs,
-    })(messageContent, totalTokens)),
+    })(messageContent, tokens)),
     startTimeShouldBeUpdated: true,
   };
 };
