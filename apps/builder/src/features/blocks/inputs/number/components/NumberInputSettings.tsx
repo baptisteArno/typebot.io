@@ -143,7 +143,7 @@ export const NumberInputSettings = ({ options, onOptionsChange }: Props) => {
               }
             />
             {options?.style === NumberInputStyle.CURRENCY && (
-              <FormControl>
+              <FormControl mt={4}>
                 <FormLabel>
                   {t("blocks.inputs.number.settings.currency.label")}
                 </FormLabel>
@@ -161,7 +161,7 @@ export const NumberInputSettings = ({ options, onOptionsChange }: Props) => {
               </FormControl>
             )}
             {options?.style === NumberInputStyle.UNIT && (
-              <FormControl>
+              <FormControl mt={4}>
                 <FormLabel>
                   {t("blocks.inputs.number.settings.unit.label")}
                 </FormLabel>
