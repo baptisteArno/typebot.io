@@ -142,6 +142,7 @@
   "blocks.inputs.file.settings.skip.label": "Etichetta del pulsante di salto:",
   "blocks.inputs.fileUpload.blockCard.tooltip": "Etichetta del pulsante di salto:",
   "blocks.inputs.number.settings.currency.label": "Valuta:",
+  "blocks.inputs.number.settings.format.label": "Formato:",
   "blocks.inputs.number.settings.locale.label": "Locale:",
   "blocks.inputs.number.settings.step.label": "Passo:",
   "blocks.inputs.number.settings.style.label": "Stile:",

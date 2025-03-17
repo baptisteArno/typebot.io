@@ -6,7 +6,7 @@ import { singleVariableOrNumberSchema } from "@typebot.io/variables/schemas";
 import { z } from "@typebot.io/zod";
 import { InputBlockType } from "../constants";
 import { textInputOptionsBaseSchema } from "../text/schema";
-import { NumberInputStyle } from "./constants";
+import { NumberInputStyle, localeRegex } from "./constants";
 
 const supportedCurrencies = Intl.supportedValuesOf
   ? Intl.supportedValuesOf("currency")
@@ -23,7 +23,12 @@ export const numberInputOptionsSchema = optionBaseSchema
       min: singleVariableOrNumberSchema.optional(),
       max: singleVariableOrNumberSchema.optional(),
       step: singleVariableOrNumberSchema.optional(),
-      locale: z.string().optional(),
+      locale: z
+        .string()
+        .regex(localeRegex, {
+          message: "Invalid locale format. Expected format: 'en' or 'en-US'",
+        })
+        .optional(),
       style: z.nativeEnum(NumberInputStyle).optional(),
       currency:
         supportedCurrencies.length > 0

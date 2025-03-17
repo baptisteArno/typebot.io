@@ -2,10 +2,10 @@ import { SendButton } from "@/components/SendButton";
 import type { CommandData } from "@/features/commands/types";
 import type { InputSubmitContent } from "@/types";
 import { isMobile } from "@/utils/isMobileSignal";
+import { NumberInput as ArkNumberInput, useNumberInput } from "@ark-ui/solid";
 import { defaultNumberInputOptions } from "@typebot.io/blocks-inputs/number/constants";
 import type { NumberInputBlock } from "@typebot.io/blocks-inputs/number/schema";
-import { createSignal, onCleanup, onMount } from "solid-js";
-import { numberInputHelper } from "../numberInputHelper";
+import { onCleanup, onMount } from "solid-js";
 
 type NumberInputProps = {
   block: NumberInputBlock;
@@ -14,24 +14,22 @@ type NumberInputProps = {
 };
 
 export const NumberInput = (props: NumberInputProps) => {
-  const [inputValue, setInputValue] = createSignal<string | number>(
-    props.defaultValue ?? "",
-  );
-  const [staticValue, bindValue, targetValue] = numberInputHelper(() =>
-    inputValue(),
-  );
+  const numberInput = useNumberInput({
+    formatOptions: {
+      style: props.block.options?.style,
+      currency: props.block.options?.currency,
+      unit: props.block.options?.unit,
+    },
+  });
   let inputRef: HTMLInputElement | undefined;
 
-  const checkIfInputIsValid = () =>
-    inputRef?.value !== "" && inputRef?.reportValidity();
-
   const submit = () => {
-    if (checkIfInputIsValid())
+    if (!numberInput().invalid) {
       props.onSubmit({
         type: "text",
-        value: inputRef?.value ?? inputValue().toString(),
+        value: numberInput().valueAsNumber.toFixed(2),
       });
-    else inputRef?.focus();
+    } else numberInput().focus();
   };
 
   const submitWhenEnter = (e: KeyboardEvent) => {
@@ -50,36 +48,53 @@ export const NumberInput = (props: NumberInputProps) => {
   const processIncomingEvent = (event: MessageEvent<CommandData>) => {
     const { data } = event;
     if (!data.isFromTypebot) return;
-    if (data.command === "setInputValue") setInputValue(data.value);
+    if (data.command === "setInputValue")
+      numberInput().setValue(Number(data.value));
   };
+
+  const minValue =
+    props.block.options?.min !== undefined
+      ? Number(props.block.options.min)
+      : undefined;
+  const maxValue =
+    props.block.options?.max !== undefined
+      ? Number(props.block.options.max)
+      : undefined;
+  const stepValue =
+    props.block.options?.step !== undefined
+      ? Number(props.block.options.step)
+      : undefined;
 
   return (
     <div
       class="typebot-input-form flex w-full gap-2 items-end max-w-[350px]"
       onKeyDown={submitWhenEnter}
     >
-      <div class={"flex typebot-input w-full"}>
-        <input
+      <ArkNumberInput.RootProvider
+        value={numberInput}
+        class="flex typebot-input w-full"
+      >
+        <ArkNumberInput.Input
           ref={inputRef}
           class="focus:outline-none bg-transparent px-4 py-4 flex-1 w-full text-input"
           style={{ "font-size": "16px", appearance: "auto" }}
-          value={staticValue}
-          // @ts-expect-error not defined
-          // eslint-disable-next-line solid/jsx-no-undef
-          use:bindValue
           placeholder={
             props.block.options?.labels?.placeholder ??
             defaultNumberInputOptions.labels.placeholder
           }
-          onInput={(e) => {
-            setInputValue(targetValue(e.currentTarget));
-          }}
-          type="number"
-          min={props.block.options?.min}
-          max={props.block.options?.max}
-          step={props.block.options?.step ?? "any"}
+          min={minValue}
+          max={maxValue}
+          step={stepValue}
         />
-      </div>
+        <ArkNumberInput.Control class="flex flex-col items-center justify-center">
+          <ArkNumberInput.IncrementTrigger class="flex items-center justify-center w-8 h-4">
+            +
+          </ArkNumberInput.IncrementTrigger>
+          <ArkNumberInput.DecrementTrigger class="flex items-center justify-center w-8 h-4">
+            -
+          </ArkNumberInput.DecrementTrigger>
+        </ArkNumberInput.Control>
+      </ArkNumberInput.RootProvider>
       <SendButton type="button" class="h-[56px]" on:click={submit}>
         {props.block.options?.labels?.button}
       </SendButton>

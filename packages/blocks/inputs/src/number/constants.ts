@@ -5,6 +5,8 @@ export const defaultNumberInputOptions = {
   labels: { button: defaultButtonLabel, placeholder: "Type a number..." },
 } as const satisfies NumberInputBlock["options"];
 
+export const localeRegex = /^[a-z]{2}(-[A-Z]{2})?$/;
+
 export enum NumberInputStyle {
   DECIMAL = "decimal",
   CURRENCY = "currency",

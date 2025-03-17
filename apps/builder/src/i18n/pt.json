@@ -136,6 +136,7 @@
   "blocks.inputs.file.settings.required.label": "Obrigatório",
   "blocks.inputs.fileUpload.blockCard.tooltip": "Carregar Ficheiros",
   "blocks.inputs.number.settings.currency.label": "Moeda:",
+  "blocks.inputs.number.settings.format.label": "Formato:",
   "blocks.inputs.number.settings.locale.label": "Localidade:",
   "blocks.inputs.number.settings.step.label": "Passo:",
   "blocks.inputs.number.settings.style.label": "Estilo:",

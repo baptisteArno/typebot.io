@@ -766,7 +766,10 @@ const parseReply = async (
         sessionStore,
       });
       if (!isValid) return { status: "fail" };
-      return { status: "success", content: parseNumber(reply.text) };
+      return {
+        status: "success",
+        content: parseNumber(reply.text, block.options),
+      };
     }
     case InputBlockType.DATE: {
       if (!reply || reply.type !== "text") return { status: "fail" };

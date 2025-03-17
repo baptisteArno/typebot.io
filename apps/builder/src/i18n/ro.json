@@ -117,6 +117,7 @@
   "blocks.inputs.file.settings.required.label": "Obligatoriu",
   "blocks.inputs.fileUpload.blockCard.tooltip": "Încărca fișiere",
   "blocks.inputs.number.settings.currency.label": "Monedă:",
+  "blocks.inputs.number.settings.format.label": "Format:",
   "blocks.inputs.number.settings.locale.label": "Localitate:",
   "blocks.inputs.number.settings.step.label": "Pas:",
   "blocks.inputs.number.settings.style.label": "Stil:",

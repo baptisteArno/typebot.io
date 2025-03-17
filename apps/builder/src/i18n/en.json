@@ -148,6 +148,7 @@
   "blocks.inputs.file.settings.skip.label": "Skip button label:",
   "blocks.inputs.fileUpload.blockCard.tooltip": "Upload Files",
   "blocks.inputs.number.settings.currency.label": "Currency:",
+  "blocks.inputs.number.settings.format.label": "Format",
   "blocks.inputs.number.settings.locale.label": "Locale:",
   "blocks.inputs.number.settings.step.label": "Step:",
   "blocks.inputs.number.settings.style.label": "Style:",

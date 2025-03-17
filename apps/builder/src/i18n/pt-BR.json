@@ -148,6 +148,7 @@
   "blocks.inputs.file.settings.skip.label": "Legenda do botão de pular:",
   "blocks.inputs.fileUpload.blockCard.tooltip": "Anexar arquivos",
   "blocks.inputs.number.settings.currency.label": "Moeda:",
+  "blocks.inputs.number.settings.format.label": "Formato:",
   "blocks.inputs.number.settings.locale.label": "Localidade:",
   "blocks.inputs.number.settings.step.label": "Intervalo",
   "blocks.inputs.number.settings.style.label": "Estilo:",
