@@ -1,8 +1,20 @@
+import { DropdownList } from "@/components/DropdownList";
 import { NumberInput, TextInput } from "@/components/inputs";
+import { Select } from "@/components/inputs/Select";
 import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
-import { FormLabel, Stack } from "@chakra-ui/react";
+import { FormControl, FormLabel, Stack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
-import { defaultNumberInputOptions } from "@typebot.io/blocks-inputs/number/constants";
+import {
+  NumberInputStyle,
+  NumberInputUnit,
+  defaultNumberInputOptions,
+  numberStyleTranslationKeys,
+  unitTranslationKeys,
+} from "@typebot.io/blocks-inputs/number/constants";
+import {
+  Currency,
+  currencyDisplayNames,
+} from "@typebot.io/blocks-inputs/number/currencies";
 import type { NumberInputBlock } from "@typebot.io/blocks-inputs/number/schema";
 import type { Variable } from "@typebot.io/variables/schemas";
 import React from "react";
@@ -21,6 +33,8 @@ export const NumberInputSettings = ({ options, onOptionsChange }: Props) => {
     });
   const handleButtonLabelChange = (button: string) =>
     onOptionsChange({ ...options, labels: { ...options?.labels, button } });
+  const handleCurrencyChange = (currency: string) =>
+    onOptionsChange({ ...options, currency });
   const handleMinChange = (
     min?: NonNullable<NumberInputBlock["options"]>["min"],
   ) => onOptionsChange({ ...options, min });
@@ -30,6 +44,10 @@ export const NumberInputSettings = ({ options, onOptionsChange }: Props) => {
   const handleStepChange = (
     step?: NonNullable<NumberInputBlock["options"]>["step"],
   ) => onOptionsChange({ ...options, step });
+  const handleStyleChange = (style: NumberInputStyle) =>
+    onOptionsChange({ ...options, style });
+  const handleUnitChange = (unit: NumberInputUnit) =>
+    onOptionsChange({ ...options, unit });
   const handleVariableChange = (variable?: Variable) => {
     onOptionsChange({ ...options, variableId: variable?.id });
   };
@@ -51,6 +69,45 @@ export const NumberInputSettings = ({ options, onOptionsChange }: Props) => {
         }
         onChange={handleButtonLabelChange}
       />
+      <DropdownList
+        label={t("blocks.inputs.number.settings.style.label")}
+        items={Object.values(NumberInputStyle).map((style) => ({
+          label: t(numberStyleTranslationKeys[style]),
+          value: style,
+        }))}
+        currentItem={options?.style}
+        onItemSelect={(value) => handleStyleChange(value as NumberInputStyle)}
+      />
+      {options?.style === NumberInputStyle.CURRENCY && (
+        <FormControl>
+          <FormLabel>
+            {t("blocks.inputs.number.settings.currency.label")}
+          </FormLabel>
+          <Select
+            items={Object.values(Currency).map((currency) => ({
+              label: currencyDisplayNames[currency],
+              value: currency,
+            }))}
+            onSelect={(value) => handleCurrencyChange(value as Currency)}
+            placeholder={t("blocks.inputs.number.settings.currency.label")}
+            selectedItem={options?.currency}
+          />
+        </FormControl>
+      )}
+      {options?.style === NumberInputStyle.UNIT && (
+        <FormControl>
+          <FormLabel>{t("blocks.inputs.number.settings.unit.label")}</FormLabel>
+          <Select
+            items={Object.values(NumberInputUnit).map((unit) => ({
+              label: t(unitTranslationKeys[unit]),
+              value: unit,
+            }))}
+            onSelect={(value) => handleUnitChange(value as NumberInputUnit)}
+            placeholder={t("blocks.inputs.number.settings.unit.label")}
+            selectedItem={options?.unit}
+          />
+        </FormControl>
+      )}
       <NumberInput
         label={t("blocks.inputs.settings.min.label")}
         defaultValue={options?.min}

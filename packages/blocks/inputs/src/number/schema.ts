@@ -6,6 +6,15 @@ import { singleVariableOrNumberSchema } from "@typebot.io/variables/schemas";
 import { z } from "@typebot.io/zod";
 import { InputBlockType } from "../constants";
 import { textInputOptionsBaseSchema } from "../text/schema";
+import { NumberInputStyle } from "./constants";
+
+const supportedCurrencies = Intl.supportedValuesOf
+  ? Intl.supportedValuesOf("currency")
+  : [];
+
+const supportedUnits = Intl.supportedValuesOf
+  ? Intl.supportedValuesOf("unit")
+  : [];
 
 export const numberInputOptionsSchema = optionBaseSchema
   .merge(textInputOptionsBaseSchema)
@@ -14,6 +23,16 @@ export const numberInputOptionsSchema = optionBaseSchema
       min: singleVariableOrNumberSchema.optional(),
       max: singleVariableOrNumberSchema.optional(),
       step: singleVariableOrNumberSchema.optional(),
+      locale: z.string().optional(),
+      style: z.nativeEnum(NumberInputStyle).optional(),
+      currency:
+        supportedCurrencies.length > 0
+          ? z.enum(supportedCurrencies as [string, ...string[]]).optional()
+          : z.string().optional(),
+      unit:
+        supportedUnits.length > 0
+          ? z.enum(supportedUnits as [string, ...string[]]).optional()
+          : z.string().optional(),
     }),
   );
 
