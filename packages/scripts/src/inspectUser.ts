@@ -22,9 +22,6 @@ const inspectUser = async () => {
       company: true,
       onboardingCategories: true,
       workspaces: {
-        where: {
-          role: "ADMIN",
-        },
         select: {
           workspace: {
             select: {
@@ -43,9 +40,6 @@ const inspectUser = async () => {
                       email: true,
                     },
                   },
-                },
-                where: {
-                  user: { email: { not: email } },
                 },
               },
               additionalStorageIndex: true,
