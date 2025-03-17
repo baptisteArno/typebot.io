@@ -1,22 +1,22 @@
 import { VariablesButton } from "@/features/variables/components/VariablesButton";
 import {
-  NumberInput as ChakraNumberInput,
+  NumberInput as ArkNumberInput,
+  type NumberInputRootProps,
+} from "@ark-ui/react/number-input";
+import {
   FormControl,
   FormHelperText,
   FormLabel,
   HStack,
-  NumberDecrementStepper,
-  NumberIncrementStepper,
-  NumberInputField,
-  type NumberInputProps,
-  NumberInputStepper,
   Stack,
   Text,
 } from "@chakra-ui/react";
 import { env } from "@typebot.io/env";
+import { ChevronDownIcon } from "@typebot.io/ui/icons/ChevronDownIcon";
+import { ChevronUpIcon } from "@typebot.io/ui/icons/ChevronUpIcon";
 import type { Variable, VariableString } from "@typebot.io/variables/schemas";
 import type { ReactNode } from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import { MoreInfoTooltip } from "../MoreInfoTooltip";
 
@@ -36,9 +36,15 @@ type Props<HasVariable extends boolean> = {
   helperText?: ReactNode;
   placeholder?: string;
   onValueChange: (value?: Value<HasVariable>) => void;
+  width?: string | number;
 } & Omit<
-  NumberInputProps,
-  "defaultValue" | "value" | "onChange" | "isRequired"
+  NumberInputRootProps,
+  | "defaultValue"
+  | "value"
+  | "onChange"
+  | "onValueChange"
+  | "isRequired"
+  | "width"
 >;
 
 export const NumberInput = <HasVariable extends boolean>({
@@ -53,10 +59,19 @@ export const NumberInput = <HasVariable extends boolean>({
   suffix,
   helperText,
   placeholder,
+  width,
   ...props
 }: Props<HasVariable>) => {
+  const defaultValueStr = defaultValue?.toString() ?? "";
+  const isDefaultValueVariable =
+    typeof defaultValue === "string" &&
+    defaultValue.startsWith("{{") &&
+    defaultValue.endsWith("}}");
+
   const [isTouched, setIsTouched] = useState(false);
-  const [value, setValue] = useState(defaultValue?.toString() ?? "");
+  const [value, setValue] = useState(defaultValueStr);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const isVariableRef = useRef(isDefaultValueVariable);
 
   const onValueChangeDebounced = useDebouncedCallback(
     onValueChange,
@@ -65,7 +80,16 @@ export const NumberInput = <HasVariable extends boolean>({
 
   useEffect(() => {
     if (isTouched || value !== "" || !defaultValue) return;
-    setValue(defaultValue?.toString() ?? "");
+
+    const newDefaultValueStr = defaultValue.toString();
+    setValue(newDefaultValueStr);
+
+    const isVariable =
+      typeof defaultValue === "string" &&
+      defaultValue.startsWith("{{") &&
+      defaultValue.endsWith("}}");
+
+    isVariableRef.current = isVariable;
   }, [defaultValue, isTouched, value]);
 
   useEffect(
@@ -77,44 +101,88 @@ export const NumberInput = <HasVariable extends boolean>({
 
   const handleValueChange = (newValue: string) => {
     if (!isTouched) setIsTouched(true);
-    if (value.startsWith("{{") && value.endsWith("}}") && newValue !== "")
-      return;
+
+    if (isVariableRef.current && newValue === "") return;
+
     setValue(newValue);
+
     if (newValue.endsWith(".") || newValue.endsWith(",")) return;
-    if (newValue === "") return onValueChangeDebounced(undefined);
+    if (newValue === "") {
+      onValueChangeDebounced(undefined);
+      return;
+    }
+
     if (
       newValue.startsWith("{{") &&
       newValue.endsWith("}}") &&
       newValue.length > 4 &&
       (withVariableButton ?? true)
     ) {
+      isVariableRef.current = true;
       onValueChangeDebounced(newValue as Value<HasVariable>);
       return;
     }
+
+    isVariableRef.current = false;
     const numberedValue = Number.parseFloat(newValue);
     if (isNaN(numberedValue)) return;
-    onValueChangeDebounced(numberedValue);
+    onValueChangeDebounced(numberedValue as Value<HasVariable>);
   };
 
   const handleVariableSelected = (variable?: Variable) => {
     if (!variable) return;
     const newValue = `{{${variable.name}}}`;
-    handleValueChange(newValue);
+    setValue(newValue);
+    isVariableRef.current = true;
+    onValueChange(newValue as Value<HasVariable>);
+  };
+
+  const isValueVariable =
+    value.startsWith("{{") && value.endsWith("}}") && value.length > 4;
+
+  const CustomInput = () => {
+    return (
+      <input
+        ref={inputRef}
+        className="bg-transparent border-none outline-none w-full disabled:cursor-not-allowed row-span-2"
+        placeholder={placeholder}
+        value={value}
+        onChange={(e) => handleValueChange(e.target.value)}
+      />
+    );
   };
 
   const Input = (
-    <ChakraNumberInput
-      onChange={handleValueChange}
-      value={value}
-      w="full"
+    <ArkNumberInput.Root
+      value={isValueVariable ? "" : value}
+      onValueChange={(details) => {
+        if (!isValueVariable) {
+          handleValueChange(details.value.toString());
+        }
+      }}
+      className="w-full"
       {...props}
     >
-      <NumberInputField placeholder={placeholder} />
-      <NumberInputStepper>
-        <NumberIncrementStepper />
-        <NumberDecrementStepper />
-      </NumberInputStepper>
-    </ChakraNumberInput>
+      <ArkNumberInput.Control
+        className="border rounded-md grid-cols-[1fr_32px] grid-rows-[1fr_1fr] focus-within:border-blue-500 overflow-hidden divide-x grid ps-3"
+        style={{ width: width === "full" ? "100%" : width }}
+      >
+        {isValueVariable ? (
+          <CustomInput />
+        ) : (
+          <ArkNumberInput.Input
+            className="bg-transparent border-none outline-none w-full disabled:cursor-not-allowed row-span-2"
+            placeholder={placeholder}
+          />
+        )}
+        <ArkNumberInput.IncrementTrigger className="inline-flex items-center justify-center">
+          <ChevronUpIcon className="size-4" />
+        </ArkNumberInput.IncrementTrigger>
+        <ArkNumberInput.DecrementTrigger className="inline-flex items-center justify-center border-t">
+          <ChevronDownIcon className="size-4" />
+        </ArkNumberInput.DecrementTrigger>
+      </ArkNumberInput.Control>
+    </ArkNumberInput.Root>
   );
 
   return (
@@ -122,7 +190,7 @@ export const NumberInput = <HasVariable extends boolean>({
       as={direction === "column" ? Stack : HStack}
       isRequired={isRequired}
       justifyContent="space-between"
-      width={label || props.width === "full" ? "full" : "auto"}
+      width={label || width === "full" ? "full" : "auto"}
       spacing={direction === "column" ? 2 : 3}
     >
       {label && (
