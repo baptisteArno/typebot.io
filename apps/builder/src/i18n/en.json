@@ -150,6 +150,7 @@
   "blocks.inputs.number.settings.currency.label": "Currency:",
   "blocks.inputs.number.settings.format.label": "Format",
   "blocks.inputs.number.settings.locale.label": "Locale:",
+  "blocks.inputs.number.settings.locale.helper": "Locale codes follow the format 'en' or 'en-US' (language-region)",
   "blocks.inputs.number.settings.step.label": "Step:",
   "blocks.inputs.number.settings.style.label": "Style:",
   "blocks.inputs.number.settings.unit.label": "Unit:",

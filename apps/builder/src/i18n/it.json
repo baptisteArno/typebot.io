@@ -144,6 +144,7 @@
   "blocks.inputs.number.settings.currency.label": "Valuta:",
   "blocks.inputs.number.settings.format.label": "Formato:",
   "blocks.inputs.number.settings.locale.label": "Locale:",
+  "blocks.inputs.number.settings.locale.helper": "I codici locali seguono il formato 'it' o 'it-IT' (lingua-paese)",
   "blocks.inputs.number.settings.step.label": "Passo:",
   "blocks.inputs.number.settings.style.label": "Stile:",
   "blocks.inputs.number.settings.unit.label": "Unità:",

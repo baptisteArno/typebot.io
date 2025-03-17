@@ -150,6 +150,7 @@
   "blocks.inputs.number.settings.currency.label": "Monnaie:",
   "blocks.inputs.number.settings.format.label": "Format",
   "blocks.inputs.number.settings.locale.label": "Locale:",
+  "blocks.inputs.number.settings.locale.helper": "Les codes de localisation suivent le format 'fr' ou 'fr-FR' (langue-pays)",
   "blocks.inputs.number.settings.step.label": "Pas:",
   "blocks.inputs.number.settings.style.label": "Style:",
   "blocks.inputs.number.settings.unit.label": "Unité:",

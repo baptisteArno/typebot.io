@@ -150,6 +150,7 @@
   "blocks.inputs.number.settings.currency.label": "Moeda:",
   "blocks.inputs.number.settings.format.label": "Formato:",
   "blocks.inputs.number.settings.locale.label": "Localidade:",
+  "blocks.inputs.number.settings.locale.helper": "Os códigos de localidade seguem o formato 'pt' ou 'pt-BR' (idioma-país)",
   "blocks.inputs.number.settings.step.label": "Intervalo",
   "blocks.inputs.number.settings.style.label": "Estilo:",
   "blocks.inputs.number.settings.unit.label": "Unidade:",

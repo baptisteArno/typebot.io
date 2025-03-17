@@ -144,6 +144,7 @@
   "blocks.inputs.number.settings.currency.label": "Νόμισμα:",
   "blocks.inputs.number.settings.format.label": "Μορφή",
   "blocks.inputs.number.settings.locale.label": "Τοπικό:",
+  "blocks.inputs.number.settings.locale.helper": "Τοπικοί κωδικοί ακολουθούν το μορφότυπο 'el' ή 'el-GR' (γλώσσα-περιοχή)",
   "blocks.inputs.number.settings.step.label": "Βήμα:",
   "blocks.inputs.number.settings.style.label": "Στυλ:",
   "blocks.inputs.number.settings.unit.label": "Μονάδα:",

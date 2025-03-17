@@ -185,8 +185,9 @@ export const NumberInputSettings = ({ options, onOptionsChange }: Props) => {
                 })}
               </FormLabel>
               <TextInput
-                placeholder="en-US"
                 defaultValue={options?.locale ?? navigator.language}
+                helperText={t("blocks.inputs.number.settings.locale.helper")}
+                placeholder="en-US"
                 onChange={handleLocaleChange}
               />
             </FormControl>

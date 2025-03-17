@@ -7,6 +7,8 @@ import { defaultNumberInputOptions } from "@typebot.io/blocks-inputs/number/cons
 import type { NumberInputBlock } from "@typebot.io/blocks-inputs/number/schema";
 import { onCleanup, onMount } from "solid-js";
 
+const DEFAULT_PRECISION = 2;
+
 type NumberInputProps = {
   block: NumberInputBlock;
   defaultValue?: string;
@@ -27,7 +29,7 @@ export const NumberInput = (props: NumberInputProps) => {
     if (!numberInput().invalid) {
       props.onSubmit({
         type: "text",
-        value: numberInput().valueAsNumber.toFixed(2),
+        value: numberInput().valueAsNumber.toFixed(DEFAULT_PRECISION),
       });
     } else numberInput().focus();
   };
