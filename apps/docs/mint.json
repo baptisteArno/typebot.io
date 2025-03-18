@@ -264,7 +264,7 @@
     },
     {
       "group": "Get started",
-      "pages": ["contribute/overview"]
+      "pages": ["contribute/overview", "contribute/guidelines"]
     },
     {
       "group": "Guides",
