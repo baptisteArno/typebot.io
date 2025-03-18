@@ -44,7 +44,11 @@ export const NumberInput = (props: NumberInputProps) => {
   let inputRef: HTMLInputElement | undefined;
 
   const isInputValid = () => {
-    return !numberInput().invalid && inputRef?.reportValidity();
+    if (numberInput().invalid) {
+      inputRef?.reportValidity();
+      return false;
+    }
+    return true;
   };
 
   const submit = () => {
