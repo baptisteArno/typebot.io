@@ -111,7 +111,8 @@ export const DropdownList = <T extends Item>({
                       : currentItem === item.value,
                   ),
                 )
-              : (placeholder ?? t("ui.dropdownList.defaultPlaceholder"))}
+              : (placeholder ??
+                t("components.dropdownList.defaultPlaceholder"))}
           </chakra.span>
         </MenuButton>
         <Portal>

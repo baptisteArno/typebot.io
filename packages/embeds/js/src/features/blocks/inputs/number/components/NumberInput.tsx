@@ -1,4 +1,6 @@
 import { SendButton } from "@/components/SendButton";
+import { ArrowDownIcon } from "@/components/icons/ArrowDownIcon";
+import { ArrowUpIcon } from "@/components/icons/ArrowUpIcon";
 import type { CommandData } from "@/features/commands/types";
 import type { InputSubmitContent } from "@/types";
 import { isMobile } from "@/utils/isMobileSignal";
@@ -16,17 +18,37 @@ type NumberInputProps = {
 };
 
 export const NumberInput = (props: NumberInputProps) => {
+  const minValue =
+    props.block.options?.min !== undefined
+      ? Number(props.block.options.min)
+      : undefined;
+  const maxValue =
+    props.block.options?.max !== undefined
+      ? Number(props.block.options.max)
+      : undefined;
+  const stepValue =
+    props.block.options?.step !== undefined
+      ? Number(props.block.options.step)
+      : undefined;
+
   const numberInput = useNumberInput({
     formatOptions: {
       style: props.block.options?.style,
       currency: props.block.options?.currency,
       unit: props.block.options?.unit,
     },
+    min: minValue,
+    max: maxValue,
+    step: stepValue,
   });
   let inputRef: HTMLInputElement | undefined;
 
+  const isInputValid = () => {
+    return !numberInput().invalid && inputRef?.reportValidity();
+  };
+
   const submit = () => {
-    if (!numberInput().invalid) {
+    if (isInputValid()) {
       props.onSubmit({
         type: "text",
         value: numberInput().valueAsNumber.toFixed(DEFAULT_PRECISION),
@@ -54,19 +76,6 @@ export const NumberInput = (props: NumberInputProps) => {
       numberInput().setValue(Number(data.value));
   };
 
-  const minValue =
-    props.block.options?.min !== undefined
-      ? Number(props.block.options.min)
-      : undefined;
-  const maxValue =
-    props.block.options?.max !== undefined
-      ? Number(props.block.options.max)
-      : undefined;
-  const stepValue =
-    props.block.options?.step !== undefined
-      ? Number(props.block.options.step)
-      : undefined;
-
   return (
     <div
       class="typebot-input-form flex w-full gap-2 items-end max-w-[350px]"
@@ -84,16 +93,13 @@ export const NumberInput = (props: NumberInputProps) => {
             props.block.options?.labels?.placeholder ??
             defaultNumberInputOptions.labels.placeholder
           }
-          min={minValue}
-          max={maxValue}
-          step={stepValue}
         />
-        <ArkNumberInput.Control class="flex flex-col items-center justify-center">
-          <ArkNumberInput.IncrementTrigger class="flex items-center justify-center w-8 h-4">
-            +
+        <ArkNumberInput.Control class="flex flex-col rounded-r-md overflow-hidden divide-y h-[56px]">
+          <ArkNumberInput.IncrementTrigger class="flex items-center justify-center h-7 w-8 typebot-input-controls">
+            <ArrowUpIcon />
           </ArkNumberInput.IncrementTrigger>
-          <ArkNumberInput.DecrementTrigger class="flex items-center justify-center w-8 h-4">
-            -
+          <ArkNumberInput.DecrementTrigger class="flex items-center justify-center h-7 w-8 typebot-input-controls">
+            <ArrowDownIcon />
           </ArkNumberInput.DecrementTrigger>
         </ArkNumberInput.Control>
       </ArkNumberInput.RootProvider>

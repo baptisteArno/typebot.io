@@ -5,6 +5,7 @@ import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
 import {
   Accordion,
   AccordionButton,
+  AccordionIcon,
   AccordionItem,
   AccordionPanel,
   FormControl,
@@ -21,11 +22,11 @@ import {
   numberStyleTranslationKeys,
   unitTranslationKeys,
 } from "@typebot.io/blocks-inputs/number/constants";
+import { Currency } from "@typebot.io/blocks-inputs/number/currencies";
 import {
-  Currency,
-  currencyDisplayNames,
-} from "@typebot.io/blocks-inputs/number/currencies";
-import type { NumberInputBlock } from "@typebot.io/blocks-inputs/number/schema";
+  type NumberInputBlock,
+  numberInputOptionsSchema,
+} from "@typebot.io/blocks-inputs/number/schema";
 import type { Variable } from "@typebot.io/variables/schemas";
 import React, { useEffect, useMemo } from "react";
 
@@ -54,7 +55,10 @@ export const NumberInputSettings = ({ options, onOptionsChange }: Props) => {
   const handleButtonLabelChange = (button: string) =>
     onOptionsChange({ ...options, labels: { ...options?.labels, button } });
   const handleCurrencyChange = (currency: string) =>
-    onOptionsChange({ ...options, currency });
+    onOptionsChange({
+      ...options,
+      currency: currency ?? defaultNumberInputOptions.currency,
+    });
   const handleMinChange = (
     min?: NonNullable<NumberInputBlock["options"]>["min"],
   ) => onOptionsChange({ ...options, min });
@@ -65,11 +69,20 @@ export const NumberInputSettings = ({ options, onOptionsChange }: Props) => {
     step?: NonNullable<NumberInputBlock["options"]>["step"],
   ) => onOptionsChange({ ...options, step });
   const handleStyleChange = (style: NumberInputStyle) =>
-    onOptionsChange({ ...options, style });
+    onOptionsChange({
+      ...options,
+      style,
+      currency:
+        style === NumberInputStyle.CURRENCY
+          ? defaultNumberInputOptions.currency
+          : undefined,
+    });
   const handleUnitChange = (unit: NumberInputUnit) =>
     onOptionsChange({ ...options, unit });
   const handleLocaleChange = (locale: string) => {
-    const savableLocale = locale.match(localeRegex)
+    const savableLocale = numberInputOptionsSchema.shape.locale.safeParse(
+      locale,
+    ).success
       ? locale
       : (options?.locale ?? navigator.language);
     onOptionsChange({ ...options, locale: savableLocale });
@@ -77,18 +90,6 @@ export const NumberInputSettings = ({ options, onOptionsChange }: Props) => {
   const handleVariableChange = (variable?: Variable) => {
     onOptionsChange({ ...options, variableId: variable?.id });
   };
-
-  const formatAccordionLabel = useMemo(() => {
-    if (options?.style === NumberInputStyle.CURRENCY && options?.currency) {
-      return currencyDisplayNames[options?.currency as Currency];
-    }
-    if (options?.style === NumberInputStyle.UNIT && options?.unit) {
-      return t(unitTranslationKeys[options?.unit as NumberInputUnit]);
-    }
-    return t(
-      numberStyleTranslationKeys[options?.style ?? NumberInputStyle.DECIMAL],
-    );
-  }, [options?.style, options?.currency, options?.unit]);
 
   return (
     <Stack spacing={4}>
@@ -125,19 +126,18 @@ export const NumberInputSettings = ({ options, onOptionsChange }: Props) => {
       <Accordion allowToggle>
         <AccordionItem>
           <AccordionButton>
-            <Text>
+            <Text w="full" textAlign="left">
               {t("blocks.inputs.number.settings.format.label")}
-              {` (${formatAccordionLabel})`}
             </Text>
+            <AccordionIcon />
           </AccordionButton>
           <AccordionPanel>
             <DropdownList
-              label={t("blocks.inputs.number.settings.style.label")}
               items={Object.values(NumberInputStyle).map((style) => ({
                 label: t(numberStyleTranslationKeys[style]),
                 value: style,
               }))}
-              currentItem={options?.style}
+              currentItem={options?.style ?? defaultNumberInputOptions.style}
               onItemSelect={(value) =>
                 handleStyleChange(value as NumberInputStyle)
               }
@@ -148,10 +148,7 @@ export const NumberInputSettings = ({ options, onOptionsChange }: Props) => {
                   {t("blocks.inputs.number.settings.currency.label")}
                 </FormLabel>
                 <Select
-                  items={Object.values(Currency).map((currency) => ({
-                    label: currencyDisplayNames[currency],
-                    value: currency,
-                  }))}
+                  items={Object.values(Currency)}
                   onSelect={(value) => handleCurrencyChange(value as Currency)}
                   placeholder={t(
                     "blocks.inputs.number.settings.currency.label",
