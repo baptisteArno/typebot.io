@@ -1,5 +1,6 @@
 import type { NumberInputBlock } from "@typebot.io/blocks-inputs/number/schema";
 import { safeParseFloat } from "@typebot.io/lib/safeParseFloat";
+import { isNotDefined } from "@typebot.io/lib/utils";
 import type { SessionStore } from "@typebot.io/runtime-session-store";
 import { parseVariables } from "@typebot.io/variables/parseVariables";
 import type { Variable } from "@typebot.io/variables/schemas";
@@ -20,7 +21,7 @@ export const parseNumber = (
   if (inputValue === "") return { status: "fail" };
 
   const inputValueAsNumber = safeParseFloat(inputValue);
-  if (!inputValueAsNumber) return { status: "fail" };
+  if (isNotDefined(inputValueAsNumber)) return { status: "fail" };
 
   const min = safeParseFloat(
     parseVariables(options?.min?.toString(), { variables, sessionStore }),
