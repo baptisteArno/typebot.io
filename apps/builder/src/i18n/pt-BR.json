@@ -147,7 +147,7 @@
   "blocks.inputs.file.settings.saveSingleUpload.label": "Salve a URL carregada numa variável:",
   "blocks.inputs.file.settings.skip.label": "Legenda do botão de pular:",
   "blocks.inputs.fileUpload.blockCard.tooltip": "Anexar arquivos",
-  "blocks.inputs.number.settings.step.label": "Passo:",
+  "blocks.inputs.number.settings.step.label": "Intervalo",
   "blocks.inputs.payment.collect.label": "Coletar",
   "blocks.inputs.payment.placeholder.label": "Configure...",
   "blocks.inputs.payment.settings.account.label": "Conta:",
