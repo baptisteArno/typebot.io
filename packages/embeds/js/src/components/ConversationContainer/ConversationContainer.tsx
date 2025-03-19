@@ -197,14 +197,14 @@ export const ConversationContainer = (props: Props) => {
     });
   };
 
-  const triggerOfflineError = () => {
-    const { networkErrorTitle, networkErrorMessage } =
-      props.context.typebot.settings.general?.systemMessages ??
-      defaultSystemMessages;
+  const showOfflineErrorToast = () => {
     toaster.create({
-      title: networkErrorTitle ?? defaultSystemMessages.networkErrorTitle,
+      title:
+        props.context.typebot.settings.general?.systemMessages
+          ?.networkErrorTitle ?? defaultSystemMessages.networkErrorTitle,
       description:
-        networkErrorMessage ?? defaultSystemMessages.networkErrorMessage,
+        props.context.typebot.settings.general?.systemMessages
+          ?.networkErrorMessage ?? defaultSystemMessages.networkErrorMessage,
     });
   };
 
@@ -240,7 +240,7 @@ export const ConversationContainer = (props: Props) => {
     await processContinueChatResponse({ data, error });
 
     if (!navigator.onLine || isNetworkError(error as Error)) {
-      triggerOfflineError();
+      showOfflineErrorToast();
     }
   };
 
