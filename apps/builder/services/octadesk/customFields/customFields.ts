@@ -9,12 +9,11 @@ import { CustomFieldsServicesInterface } from './types.customFields'
 const getCustomFieldsClient = () => getBaseClient('customFields')
 
 const CustomFields = (): CustomFieldsServicesInterface => {
-
   const getCustomFields = async (): Promise<any> => {
     const client = await getCustomFieldsClient()
-  
+
     const { Person, Chat, Organization } = DomainType
-  
+
     const values = await Promise.all([
       client.get(
         `/system-type/${Person}?showEnabledItems=true`,
@@ -27,23 +26,25 @@ const CustomFields = (): CustomFieldsServicesInterface => {
       client.get(
         `/system-type/${Organization}?showEnabledItems=true`,
         loadParameterHeader()
-      )
+      ),
     ])
     return values.reduce((fields, current) => fields.concat(current.data), [])
   }
 
   const createCustomField = async (field: any): Promise<any> => {
-    await getCustomFieldsClient()
-      .then(client => client.post('/', field, loadParameterHeader()))
-      .catch(error => {
-        console.error('Error on create custom field', error)
-      })
+    try {
+      const client = await getCustomFieldsClient()
+      const response = await client.post('/', field, loadParameterHeader())
+      return response
+    } catch (error) {
+      console.error('Error on create custom field', error)
+      throw error 
+    }
   }
-
 
   return {
     getCustomFields,
-    createCustomField
+    createCustomField,
   }
 }
 
