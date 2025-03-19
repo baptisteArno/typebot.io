@@ -22,6 +22,7 @@ type NumberInputProps = {
 
 export const NumberInput = (props: NumberInputProps) => {
   const numberInput = useNumberInput({
+    defaultValue: props.defaultValue,
     locale: props.block.options?.locale,
     formatOptions: parseFormatOptions(props.block.options),
     min: safeParseFloat(props.block.options?.min),
