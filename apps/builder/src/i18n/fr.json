@@ -147,6 +147,7 @@
   "blocks.inputs.file.settings.saveSingleUpload.label": "Sauvegarder l'URL dans une variable:\n",
   "blocks.inputs.file.settings.skip.label": "Libellé \"skip\":",
   "blocks.inputs.fileUpload.blockCard.tooltip": "Télécharger des fichiers",
+  "blocks.inputs.number.settings.step.label": "Étape :",
   "blocks.inputs.payment.collect.label": "Récolter",
   "blocks.inputs.payment.placeholder.label": "Configurer...",
   "blocks.inputs.payment.settings.account.label": "Compte:",
