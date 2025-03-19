@@ -87,24 +87,12 @@ steps:
     image_name: "${{CF_REPO_NAME}}"
     tag: "${{TAG}}"
     dockerfile: build/Dockerfile
-    registry: gcr-octadesk
+    registry: gcr-octadesk-us-east1
     build_arguments:
       - GIT_TOKEN=${{GIT_NPM_TOKEN}}
       - GIT_NPM_TOKEN=${{GIT_NPM_TOKEN}}
       - GITHUB_PACKAGES_TOKEN=${{GITHUB_PACKAGES_TOKEN}}
       - SCOPE=${{SCOPE}}
-    when:
-      condition:
-        all:
-          releaseIsInBuildConditions: '${{SKIP_DEPLOY}} == "false"'
-
-  push_docker:
-    stage: build
-    title: "Push Docker Image"
-    type: push
-    candidate: "${{build_docker}}"
-    tag: "${{TAG}}"
-    registry: gcr-octadesk
     when:
       condition:
         all:
