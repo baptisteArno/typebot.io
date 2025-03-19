@@ -13,6 +13,7 @@ import {
 } from "@/utils/avatarHistory";
 import { botContainer } from "@/utils/botContainerSignal";
 import { getAvatarUrls } from "@/utils/dynamicTheme";
+import { isNetworkError } from "@/utils/error";
 import { executeClientSideAction } from "@/utils/executeClientSideActions";
 import {
   formattedMessages,
@@ -238,7 +239,7 @@ export const ConversationContainer = (props: Props) => {
 
     await processContinueChatResponse({ data, error });
 
-    if (!navigator.onLine) {
+    if (!navigator.onLine || isNetworkError(error as Error)) {
       triggerOfflineError();
     }
   };
