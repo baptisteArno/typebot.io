@@ -1,22 +1,47 @@
-import { NumberInputStyle } from "@typebot.io/blocks-inputs/number/constants";
+import type { NumberInputBlock } from "@typebot.io/blocks-inputs/number/schema";
+import { safeParseFloat } from "@typebot.io/lib/safeParseFloat";
+import type { SessionStore } from "@typebot.io/runtime-session-store";
+import { parseVariables } from "@typebot.io/variables/parseVariables";
+import type { Variable } from "@typebot.io/variables/schemas";
+import type { ParsedReply } from "../../../types";
+import { parseFormatOptions } from "./parseFormatOptions";
 
 export const parseNumber = (
-  value: string,
-  options?: {
-    locale?: string;
-    style?: NumberInputStyle;
-    currency?: string;
-    unit?: string;
+  inputValue: string,
+  {
+    options,
+    variables,
+    sessionStore,
+  }: {
+    options?: NumberInputBlock["options"];
+    variables: Variable[];
+    sessionStore: SessionStore;
   },
-) => {
-  if (value.startsWith("0")) return value;
+): ParsedReply => {
+  if (inputValue === "") return { status: "fail" };
 
-  const hasMissingCurrency =
-    options?.style === NumberInputStyle.CURRENCY && !options?.currency;
+  const inputValueAsNumber = safeParseFloat(inputValue);
+  if (!inputValueAsNumber) return { status: "fail" };
 
-  return Intl.NumberFormat(options?.locale, {
-    style: hasMissingCurrency ? NumberInputStyle.DECIMAL : options?.style,
-    currency: options?.currency,
-    unit: options?.unit,
-  }).format(Number.parseFloat(value));
+  const min = safeParseFloat(
+    parseVariables(options?.min?.toString(), { variables, sessionStore }),
+  );
+  const max = safeParseFloat(
+    parseVariables(options?.max?.toString(), { variables, sessionStore }),
+  );
+
+  if (min && inputValueAsNumber < min) return { status: "fail" };
+  if (max && inputValueAsNumber > max) return { status: "fail" };
+
+  // Edge case, return the inputValue as is if starting with 0
+  if (inputValue.startsWith("0"))
+    return { status: "success", content: inputValue };
+
+  return {
+    status: "success",
+    content: Intl.NumberFormat(
+      options?.locale,
+      parseFormatOptions(options),
+    ).format(inputValueAsNumber),
+  };
 };

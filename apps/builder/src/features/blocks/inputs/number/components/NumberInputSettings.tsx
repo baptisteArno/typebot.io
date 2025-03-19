@@ -17,7 +17,9 @@ import { useTranslate } from "@tolgee/react";
 import {
   NumberInputStyle,
   NumberInputUnit,
-  defaultNumberInputOptions,
+  defaultNumberInputButtonLabel,
+  defaultNumberInputPlaceholder,
+  defaultNumberInputStyle,
   localeRegex,
   numberStyleTranslationKeys,
   unitTranslationKeys,
@@ -92,16 +94,13 @@ export const NumberInputSettings = ({ options, onOptionsChange }: Props) => {
       <TextInput
         label={t("blocks.inputs.settings.placeholder.label")}
         defaultValue={
-          options?.labels?.placeholder ??
-          defaultNumberInputOptions.labels.placeholder
+          options?.labels?.placeholder ?? defaultNumberInputPlaceholder
         }
         onChange={handlePlaceholderChange}
       />
       <TextInput
         label={t("blocks.inputs.settings.button.label")}
-        defaultValue={
-          options?.labels?.button ?? defaultNumberInputOptions.labels.button
-        }
+        defaultValue={options?.labels?.button ?? defaultNumberInputButtonLabel}
         onChange={handleButtonLabelChange}
       />
       <NumberInput
@@ -133,7 +132,7 @@ export const NumberInputSettings = ({ options, onOptionsChange }: Props) => {
                 label: t(numberStyleTranslationKeys[style]),
                 value: style,
               }))}
-              currentItem={options?.style ?? defaultNumberInputOptions.style}
+              currentItem={options?.style ?? defaultNumberInputStyle}
               onItemSelect={(value) =>
                 handleStyleChange(value as NumberInputStyle)
               }
@@ -176,12 +175,10 @@ export const NumberInputSettings = ({ options, onOptionsChange }: Props) => {
             )}
             <FormControl mt={4}>
               <FormLabel>
-                {t("blocks.inputs.number.settings.locale.label", {
-                  defaultValue: "Locale",
-                })}
+                {t("blocks.inputs.number.settings.locale.label")}
               </FormLabel>
               <TextInput
-                defaultValue={options?.locale ?? navigator.language}
+                defaultValue={options?.locale}
                 helperText={t("blocks.inputs.number.settings.locale.helper")}
                 placeholder="en-US"
                 onChange={handleLocaleChange}

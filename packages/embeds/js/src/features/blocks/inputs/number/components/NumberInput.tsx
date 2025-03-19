@@ -1,16 +1,17 @@
 import { SendButton } from "@/components/SendButton";
-import { ArrowDownIcon } from "@/components/icons/ArrowDownIcon";
-import { ArrowUpIcon } from "@/components/icons/ArrowUpIcon";
+import { ChevronDownIcon } from "@/components/icons/ChevronDownIcon";
+import { ChevronUpIcon } from "@/components/icons/ChevronUpIcon";
 import type { CommandData } from "@/features/commands/types";
 import type { InputSubmitContent } from "@/types";
 import { isMobile } from "@/utils/isMobileSignal";
-import { toaster } from "@/utils/toaster";
 import { NumberInput as ArkNumberInput, useNumberInput } from "@ark-ui/solid";
 import {
-  NumberInputStyle,
-  defaultNumberInputOptions,
+  defaultNumberInputButtonLabel,
+  defaultNumberInputPlaceholder,
 } from "@typebot.io/blocks-inputs/number/constants";
 import type { NumberInputBlock } from "@typebot.io/blocks-inputs/number/schema";
+import { parseFormatOptions } from "@typebot.io/bot-engine/blocks/inputs/number/parseFormatOptions";
+import { safeParseFloat } from "@typebot.io/lib/safeParseFloat";
 import { onCleanup, onMount } from "solid-js";
 
 type NumberInputProps = {
@@ -20,32 +21,12 @@ type NumberInputProps = {
 };
 
 export const NumberInput = (props: NumberInputProps) => {
-  const { style, currency, unit } =
-    props.block.options ?? defaultNumberInputOptions;
-  const hasMissingCurrency = style === NumberInputStyle.CURRENCY && !currency;
-  const formatOptionsStyle = hasMissingCurrency
-    ? NumberInputStyle.DECIMAL
-    : style;
-
   const numberInput = useNumberInput({
-    formatOptions: {
-      style: formatOptionsStyle,
-      currency,
-      unit,
-    },
-    min:
-      props.block.options?.min !== undefined
-        ? Number(props.block.options.min)
-        : undefined,
-    max:
-      props.block.options?.max !== undefined
-        ? Number(props.block.options.max)
-        : undefined,
-    step:
-      props.block.options?.step !== undefined
-        ? Number(props.block.options.step)
-        : undefined,
-    translations: {},
+    locale: props.block.options?.locale,
+    formatOptions: parseFormatOptions(props.block.options),
+    min: safeParseFloat(props.block.options?.min),
+    max: safeParseFloat(props.block.options?.max),
+    step: safeParseFloat(props.block.options?.step),
   });
   let inputRef: HTMLInputElement | undefined;
 
@@ -101,20 +82,20 @@ export const NumberInput = (props: NumberInputProps) => {
           style={{ "font-size": "16px", appearance: "auto" }}
           placeholder={
             props.block.options?.labels?.placeholder ??
-            defaultNumberInputOptions.labels.placeholder
+            defaultNumberInputPlaceholder
           }
         />
         <ArkNumberInput.Control class="flex flex-col rounded-r-md overflow-hidden divide-y h-[56px]">
           <ArkNumberInput.IncrementTrigger class="flex items-center justify-center h-7 w-8 border-input-border border-l">
-            <ArrowUpIcon />
+            <ChevronUpIcon class="size-4" />
           </ArkNumberInput.IncrementTrigger>
           <ArkNumberInput.DecrementTrigger class="flex items-center justify-center h-7 w-8 border-input-border border-l">
-            <ArrowDownIcon />
+            <ChevronDownIcon class="size-4" />
           </ArkNumberInput.DecrementTrigger>
         </ArkNumberInput.Control>
       </ArkNumberInput.RootProvider>
       <SendButton type="button" class="h-[56px]" on:click={submit}>
-        {props.block.options?.labels?.button}
+        {props.block.options?.labels?.button ?? defaultNumberInputButtonLabel}
       </SendButton>
     </div>
   );

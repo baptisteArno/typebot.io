@@ -65,12 +65,9 @@ export enum NumberInputUnit {
   YEAR = "year",
 }
 
-export const defaultNumberInputOptions = {
-  style: NumberInputStyle.DECIMAL,
-  currency: "USD",
-  unit: NumberInputUnit.KILOGRAM,
-  labels: { button: defaultButtonLabel, placeholder: "Type a number..." },
-} as const satisfies NumberInputBlock["options"];
+export const defaultNumberInputStyle = NumberInputStyle.DECIMAL;
+export const defaultNumberInputButtonLabel = defaultButtonLabel;
+export const defaultNumberInputPlaceholder = "Type a number...";
 
 // Map unit types to translation keys
 export const unitTranslationKeys: Record<NumberInputUnit, string> = {
