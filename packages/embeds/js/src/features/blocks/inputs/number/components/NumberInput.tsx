@@ -6,7 +6,10 @@ import type { InputSubmitContent } from "@/types";
 import { isMobile } from "@/utils/isMobileSignal";
 import { toaster } from "@/utils/toaster";
 import { NumberInput as ArkNumberInput, useNumberInput } from "@ark-ui/solid";
-import { defaultNumberInputOptions } from "@typebot.io/blocks-inputs/number/constants";
+import {
+  NumberInputStyle,
+  defaultNumberInputOptions,
+} from "@typebot.io/blocks-inputs/number/constants";
 import type { NumberInputBlock } from "@typebot.io/blocks-inputs/number/schema";
 import { onCleanup, onMount } from "solid-js";
 
@@ -17,12 +20,18 @@ type NumberInputProps = {
 };
 
 export const NumberInput = (props: NumberInputProps) => {
+  const { style, currency, unit } =
+    props.block.options ?? defaultNumberInputOptions;
+  const hasMissingCurrency = style === NumberInputStyle.CURRENCY && !currency;
+  const formatOptionsStyle = hasMissingCurrency
+    ? NumberInputStyle.DECIMAL
+    : style;
+
   const numberInput = useNumberInput({
     formatOptions: {
-      style: props.block.options?.style ?? defaultNumberInputOptions.style,
-      currency:
-        props.block.options?.currency ?? defaultNumberInputOptions.currency,
-      unit: props.block.options?.unit,
+      style: formatOptionsStyle,
+      currency,
+      unit,
     },
     min:
       props.block.options?.min !== undefined

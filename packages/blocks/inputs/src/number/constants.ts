@@ -8,12 +8,6 @@ export enum NumberInputStyle {
   UNIT = "unit",
 }
 
-export const defaultNumberInputOptions = {
-  style: NumberInputStyle.DECIMAL,
-  currency: "EUR",
-  labels: { button: defaultButtonLabel, placeholder: "Type a number..." },
-} as const satisfies NumberInputBlock["options"];
-
 export const localeRegex = /^[a-z]{2}(-[A-Z]{2})?$/;
 
 export const numberStyleTranslationKeys: Record<NumberInputStyle, string> = {
@@ -70,6 +64,13 @@ export enum NumberInputUnit {
   YARD = "yard",
   YEAR = "year",
 }
+
+export const defaultNumberInputOptions = {
+  style: NumberInputStyle.DECIMAL,
+  currency: "USD",
+  unit: NumberInputUnit.KILOGRAM,
+  labels: { button: defaultButtonLabel, placeholder: "Type a number..." },
+} as const satisfies NumberInputBlock["options"];
 
 // Map unit types to translation keys
 export const unitTranslationKeys: Record<NumberInputUnit, string> = {

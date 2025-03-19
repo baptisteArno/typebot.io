@@ -1,4 +1,4 @@
-import type { NumberInputStyle } from "@typebot.io/blocks-inputs/number/constants";
+import { NumberInputStyle } from "@typebot.io/blocks-inputs/number/constants";
 
 export const parseNumber = (
   value: string,
@@ -11,8 +11,11 @@ export const parseNumber = (
 ) => {
   if (value.startsWith("0")) return value;
 
+  const hasMissingCurrency =
+    options?.style === NumberInputStyle.CURRENCY && !options?.currency;
+
   return Intl.NumberFormat(options?.locale, {
-    style: options?.style,
+    style: hasMissingCurrency ? NumberInputStyle.DECIMAL : options?.style,
     currency: options?.currency,
     unit: options?.unit,
   }).format(Number.parseFloat(value));
