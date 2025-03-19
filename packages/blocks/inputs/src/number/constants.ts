@@ -1,5 +1,4 @@
 import { defaultButtonLabel } from "../constants";
-import { Currency } from "./currencies";
 import type { NumberInputBlock } from "./schema";
 
 export enum NumberInputStyle {
@@ -11,7 +10,7 @@ export enum NumberInputStyle {
 
 export const defaultNumberInputOptions = {
   style: NumberInputStyle.DECIMAL,
-  currency: Currency.EUR,
+  currency: "EUR",
   labels: { button: defaultButtonLabel, placeholder: "Type a number..." },
 } as const satisfies NumberInputBlock["options"];
 

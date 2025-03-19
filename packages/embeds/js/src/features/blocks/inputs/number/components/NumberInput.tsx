@@ -4,12 +4,11 @@ import { ArrowUpIcon } from "@/components/icons/ArrowUpIcon";
 import type { CommandData } from "@/features/commands/types";
 import type { InputSubmitContent } from "@/types";
 import { isMobile } from "@/utils/isMobileSignal";
+import { toaster } from "@/utils/toaster";
 import { NumberInput as ArkNumberInput, useNumberInput } from "@ark-ui/solid";
 import { defaultNumberInputOptions } from "@typebot.io/blocks-inputs/number/constants";
 import type { NumberInputBlock } from "@typebot.io/blocks-inputs/number/schema";
 import { onCleanup, onMount } from "solid-js";
-
-const DEFAULT_PRECISION = 2;
 
 type NumberInputProps = {
   block: NumberInputBlock;
@@ -18,28 +17,26 @@ type NumberInputProps = {
 };
 
 export const NumberInput = (props: NumberInputProps) => {
-  const minValue =
-    props.block.options?.min !== undefined
-      ? Number(props.block.options.min)
-      : undefined;
-  const maxValue =
-    props.block.options?.max !== undefined
-      ? Number(props.block.options.max)
-      : undefined;
-  const stepValue =
-    props.block.options?.step !== undefined
-      ? Number(props.block.options.step)
-      : undefined;
-
   const numberInput = useNumberInput({
     formatOptions: {
-      style: props.block.options?.style,
-      currency: props.block.options?.currency,
+      style: props.block.options?.style ?? defaultNumberInputOptions.style,
+      currency:
+        props.block.options?.currency ?? defaultNumberInputOptions.currency,
       unit: props.block.options?.unit,
     },
-    min: minValue,
-    max: maxValue,
-    step: stepValue,
+    min:
+      props.block.options?.min !== undefined
+        ? Number(props.block.options.min)
+        : undefined,
+    max:
+      props.block.options?.max !== undefined
+        ? Number(props.block.options.max)
+        : undefined,
+    step:
+      props.block.options?.step !== undefined
+        ? Number(props.block.options.step)
+        : undefined,
+    translations: {},
   });
   let inputRef: HTMLInputElement | undefined;
 
@@ -55,7 +52,7 @@ export const NumberInput = (props: NumberInputProps) => {
     if (isInputValid()) {
       props.onSubmit({
         type: "text",
-        value: numberInput().valueAsNumber.toFixed(DEFAULT_PRECISION),
+        value: numberInput().valueAsNumber.toString(),
       });
     } else numberInput().focus();
   };

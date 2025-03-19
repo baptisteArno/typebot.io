@@ -22,13 +22,13 @@ import {
   numberStyleTranslationKeys,
   unitTranslationKeys,
 } from "@typebot.io/blocks-inputs/number/constants";
-import { Currency } from "@typebot.io/blocks-inputs/number/currencies";
 import {
   type NumberInputBlock,
   numberInputOptionsSchema,
 } from "@typebot.io/blocks-inputs/number/schema";
 import type { Variable } from "@typebot.io/variables/schemas";
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect } from "react";
+import { currencies } from "../../payment/currencies";
 
 type Props = {
   options: NumberInputBlock["options"];
@@ -45,7 +45,7 @@ export const NumberInputSettings = ({ options, onOptionsChange }: Props) => {
         onOptionsChange({ ...options, locale: browserLocale });
       }
     }
-  }, []);
+  });
 
   const handlePlaceholderChange = (placeholder: string) =>
     onOptionsChange({
@@ -57,7 +57,7 @@ export const NumberInputSettings = ({ options, onOptionsChange }: Props) => {
   const handleCurrencyChange = (currency: string) =>
     onOptionsChange({
       ...options,
-      currency: currency ?? defaultNumberInputOptions.currency,
+      currency,
     });
   const handleMinChange = (
     min?: NonNullable<NumberInputBlock["options"]>["min"],
@@ -72,10 +72,6 @@ export const NumberInputSettings = ({ options, onOptionsChange }: Props) => {
     onOptionsChange({
       ...options,
       style,
-      currency:
-        style === NumberInputStyle.CURRENCY
-          ? defaultNumberInputOptions.currency
-          : undefined,
     });
   const handleUnitChange = (unit: NumberInputUnit) =>
     onOptionsChange({ ...options, unit });
@@ -148,8 +144,11 @@ export const NumberInputSettings = ({ options, onOptionsChange }: Props) => {
                   {t("blocks.inputs.number.settings.currency.label")}
                 </FormLabel>
                 <Select
-                  items={Object.values(Currency)}
-                  onSelect={(value) => handleCurrencyChange(value as Currency)}
+                  items={currencies.map(({ code, description }) => ({
+                    label: description,
+                    value: code,
+                  }))}
+                  onSelect={(value) => handleCurrencyChange(value as string)}
                   placeholder={t(
                     "blocks.inputs.number.settings.currency.label",
                   )}
