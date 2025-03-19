@@ -4,7 +4,6 @@ import type { SessionStore } from "@typebot.io/runtime-session-store";
 import { parseVariables } from "@typebot.io/variables/parseVariables";
 import type { Variable } from "@typebot.io/variables/schemas";
 import type { ParsedReply } from "../../../types";
-import { parseFormatOptions } from "./parseFormatOptions";
 
 export const parseNumber = (
   inputValue: string,
@@ -39,9 +38,6 @@ export const parseNumber = (
 
   return {
     status: "success",
-    content: Intl.NumberFormat(
-      options?.locale,
-      parseFormatOptions(options),
-    ).format(inputValueAsNumber),
+    content: inputValueAsNumber.toString(),
   };
 };

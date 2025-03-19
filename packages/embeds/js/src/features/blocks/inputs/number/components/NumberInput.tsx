@@ -6,11 +6,12 @@ import type { InputSubmitContent } from "@/types";
 import { isMobile } from "@/utils/isMobileSignal";
 import { NumberInput as ArkNumberInput, useNumberInput } from "@ark-ui/solid";
 import {
+  NumberInputStyle,
   defaultNumberInputButtonLabel,
   defaultNumberInputPlaceholder,
+  defaultNumberInputStyle,
 } from "@typebot.io/blocks-inputs/number/constants";
 import type { NumberInputBlock } from "@typebot.io/blocks-inputs/number/schema";
-import { parseFormatOptions } from "@typebot.io/bot-engine/blocks/inputs/number/parseFormatOptions";
 import { safeParseFloat } from "@typebot.io/lib/safeParseFloat";
 import { onCleanup, onMount } from "solid-js";
 
@@ -22,7 +23,6 @@ type NumberInputProps = {
 
 export const NumberInput = (props: NumberInputProps) => {
   const numberInput = useNumberInput({
-    defaultValue: props.defaultValue,
     locale: props.block.options?.locale,
     formatOptions: parseFormatOptions(props.block.options),
     min: safeParseFloat(props.block.options?.min),
@@ -44,6 +44,7 @@ export const NumberInput = (props: NumberInputProps) => {
       props.onSubmit({
         type: "text",
         value: numberInput().valueAsNumber.toString(),
+        label: numberInput().value.toString(),
       });
     } else numberInput().focus();
   };
@@ -100,4 +101,23 @@ export const NumberInput = (props: NumberInputProps) => {
       </SendButton>
     </div>
   );
+};
+
+const parseFormatOptions = (
+  options: NumberInputBlock["options"],
+): Intl.NumberFormatOptions => {
+  const defaultFormat = {
+    style: defaultNumberInputStyle,
+  };
+  if (options?.style === NumberInputStyle.CURRENCY && options.currency)
+    return {
+      style: options.style,
+      currency: options.currency,
+    };
+  if (options?.style === NumberInputStyle.UNIT && options.unit)
+    return {
+      style: options.style,
+      unit: options.unit,
+    };
+  return defaultFormat;
 };
