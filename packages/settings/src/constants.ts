@@ -30,6 +30,8 @@ export const defaultSettings = {
 export const defaultSystemMessages = {
   invalidMessage: "Invalid message. Please, try again.",
   botClosed: "This bot is now closed",
+  networkErrorTitle: "Network Error",
+  networkErrorMessage: "Please check your internet connection and try again.",
   popupBlockedDescription: "Popup blocked",
   popupBlockedButtonLabel: "Continue in new tab",
   fileUploadError: "An error occured while uploading the files",

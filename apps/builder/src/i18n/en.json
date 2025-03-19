@@ -439,6 +439,8 @@
   "settings.sideMenu.general.systemMessages.fileUploadSizeError.label": "File too large message",
   "settings.sideMenu.general.systemMessages.fileUploadSizeError.tooltip": "You can use [[file]] and [[limit]] placeholders to display the file name and the limit size",
   "settings.sideMenu.general.systemMessages.invalidMessage.label": "Default invalid message reply",
+  "settings.sideMenu.general.systemMessages.networkErrorMessage.label": "Network error message",
+  "settings.sideMenu.general.systemMessages.networkErrorTitle.label": "Network error title",
   "settings.sideMenu.general.systemMessages.popupBlockedButton.label": "Popup blocked button label",
   "settings.sideMenu.general.systemMessages.popupBlockedDescription.label": "Popup blocked description",
   "settings.sideMenu.general.systemMessages.whatsAppPictureChoiceSelectLabel.label": "WhatsApp picture choice select label",

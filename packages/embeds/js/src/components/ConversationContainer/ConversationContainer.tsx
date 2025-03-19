@@ -13,6 +13,7 @@ import {
 } from "@/utils/avatarHistory";
 import { botContainer } from "@/utils/botContainerSignal";
 import { getAvatarUrls } from "@/utils/dynamicTheme";
+import { isNetworkError } from "@/utils/error";
 import { executeClientSideAction } from "@/utils/executeClientSideActions";
 import {
   formattedMessages,
@@ -196,9 +197,21 @@ export const ConversationContainer = (props: Props) => {
     });
   };
 
+  const showOfflineErrorToast = () => {
+    toaster.create({
+      title:
+        props.context.typebot.settings.general?.systemMessages
+          ?.networkErrorTitle ?? defaultSystemMessages.networkErrorTitle,
+      description:
+        props.context.typebot.settings.general?.systemMessages
+          ?.networkErrorMessage ?? defaultSystemMessages.networkErrorMessage,
+    });
+  };
+
   const sendMessage = async (answer?: InputSubmitContent) => {
     setHasError(false);
     const currentInputBlock = [...chatChunks()].pop()?.input;
+
     if (currentInputBlock?.id && answer) {
       if (props.onAnswer)
         props.onAnswer({
@@ -210,10 +223,12 @@ export const ConversationContainer = (props: Props) => {
         [parseInputUniqueKey(currentInputBlock.id)]: true,
       }));
     }
+
     const longRequest = setTimeout(() => {
       setIsSending(true);
     }, 1000);
     autoScrollToBottom();
+
     const { data, error } = await continueChatQuery({
       apiHost: props.context.apiHost,
       sessionId: props.initialChatReply.sessionId,
@@ -221,7 +236,12 @@ export const ConversationContainer = (props: Props) => {
     });
     clearTimeout(longRequest);
     setIsSending(false);
+
     await processContinueChatResponse({ data, error });
+
+    if (!navigator.onLine || isNetworkError(error as Error)) {
+      showOfflineErrorToast();
+    }
   };
 
   const processContinueChatResponse = async ({
