@@ -16,6 +16,7 @@ import {
   FormErrorMessage,
   Box,
   Text,
+  useToast,
 } from '@chakra-ui/react'
 import { Variable } from 'models'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -72,6 +73,10 @@ export const CreateChatFieldModal = ({
 
   const { createVariable } = useTypebot()
 
+  const toast = useToast({
+    position: 'top-right',
+  })
+
   const {
     setValue,
     handleSubmit,
@@ -90,26 +95,41 @@ export const CreateChatFieldModal = ({
   })
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
-    const { data: resData } = await CustomFields().createCustomField({
-      domainType: DomainType.Chat,
-      ...data,
-    })
-    if (resData) {
-      const variable: Variable = {
-        id: resData.id,
-        name: resData.title,
-        domain: 'CHAT',
-        token: '#' + resData.fieldId,
-        variableId: resData.id,
-        example: '',
-        fieldId: resData.fieldId,
-        type: resData.type || 'string',
-        fixed: true,
+    try {
+      const { data: resData } = await CustomFields().createCustomField({
+        domainType: DomainType.Chat,
+        ...data,
+      })
+
+      if (resData) {
+        const variable: Variable = {
+          id: resData.id,
+          name: resData.title,
+          domain: 'CHAT',
+          token: '#' + resData.fieldId,
+          variableId: resData.id,
+          example: '',
+          fieldId: resData.fieldId,
+          type: resData.type || 'string',
+          fixed: true,
+        }
+
+        createVariable(variable)
+        onCreateVariable(variable)
       }
-      createVariable(variable)
-      onCreateVariable(variable)
+
+      toast({
+        title: 'Campo de conversa criado com sucesso.',
+        status: 'success',
+      })
+
+      onClose()
+    } catch (error) {
+      toast({
+        title: 'Ocorreu um erro ao criar o campo. Tente novamente.',
+        status: 'error',
+      })
     }
-    onClose()
   }
 
   const replaceSpacesByUnderscore = useCallback((value: string) => {
@@ -144,9 +164,7 @@ export const CreateChatFieldModal = ({
                 alignItems="center"
               >
                 <FormLabel>Título do campo</FormLabel>
-                <Text fontSize="12px">
-                  {watch('title').length || 0}/30
-                </Text>
+                <Text fontSize="12px">{watch('title').length || 0}/30</Text>
               </Box>
               <Input
                 {...register('title', {
@@ -171,9 +189,7 @@ export const CreateChatFieldModal = ({
                 alignItems="center"
               >
                 <FormLabel>Código do campo</FormLabel>
-                <Text fontSize="12px">
-                  {watch('fieldId')?.length || 0}/30
-                </Text>
+                <Text fontSize="12px">{watch('fieldId')?.length || 0}/30</Text>
               </Box>
               <Input
                 {...register('fieldId', {
@@ -223,9 +239,7 @@ export const CreateChatFieldModal = ({
                 alignItems="center"
               >
                 <FormLabel>Texto de ajuda do campo</FormLabel>
-                <Text fontSize="12px">
-                  {watch('hint')?.length || 0}/240
-                </Text>
+                <Text fontSize="12px">{watch('hint')?.length || 0}/240</Text>
               </Box>
               <Textarea
                 {...register('hint', {
