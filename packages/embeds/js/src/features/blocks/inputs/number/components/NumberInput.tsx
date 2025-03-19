@@ -99,10 +99,10 @@ export const NumberInput = (props: NumberInputProps) => {
           }
         />
         <ArkNumberInput.Control class="flex flex-col rounded-r-md overflow-hidden divide-y h-[56px]">
-          <ArkNumberInput.IncrementTrigger class="flex items-center justify-center h-7 w-8 typebot-input-controls">
+          <ArkNumberInput.IncrementTrigger class="flex items-center justify-center h-7 w-8 border-input-border border-l">
             <ArrowUpIcon />
           </ArkNumberInput.IncrementTrigger>
-          <ArkNumberInput.DecrementTrigger class="flex items-center justify-center h-7 w-8 typebot-input-controls">
+          <ArkNumberInput.DecrementTrigger class="flex items-center justify-center h-7 w-8 border-input-border border-l">
             <ArrowDownIcon />
           </ArkNumberInput.DecrementTrigger>
         </ArkNumberInput.Control>

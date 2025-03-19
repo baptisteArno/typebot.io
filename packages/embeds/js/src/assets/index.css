@@ -270,14 +270,6 @@ pre {
   transition: filter 100ms ease;
 }
 
-.typebot-input-controls {
-  border-left-width: var(--typebot-input-border-width);
-  border-color: rgba(
-    var(--typebot-input-border-rgb),
-    var(--typebot-input-border-opacity)
-  );
-}
-
 .typebot-input-error-message {
   color: var(--typebot-input-color);
 }
