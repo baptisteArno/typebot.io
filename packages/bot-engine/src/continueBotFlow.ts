@@ -40,7 +40,6 @@ import { parseButtonsReply } from "./blocks/inputs/buttons/parseButtonsReply";
 import { parseDateReply } from "./blocks/inputs/date/parseDateReply";
 import { formatEmail } from "./blocks/inputs/email/formatEmail";
 import { parseNumber } from "./blocks/inputs/number/parseNumber";
-import { validateNumber } from "./blocks/inputs/number/validateNumber";
 import { formatPhoneNumber } from "./blocks/inputs/phone/formatPhoneNumber";
 import { parsePictureChoicesReply } from "./blocks/inputs/pictureChoice/parsePictureChoicesReply";
 import { validateRatingReply } from "./blocks/inputs/rating/validateRatingReply";
@@ -760,13 +759,11 @@ const parseReply = async (
     }
     case InputBlockType.NUMBER: {
       if (!reply || reply.type !== "text") return { status: "fail" };
-      const isValid = validateNumber(reply.text, {
+      return parseNumber(reply.text, {
         options: block.options,
         variables: state.typebotsQueue[0].typebot.variables,
         sessionStore,
       });
-      if (!isValid) return { status: "fail" };
-      return { status: "success", content: parseNumber(reply.text) };
     }
     case InputBlockType.DATE: {
       if (!reply || reply.type !== "text") return { status: "fail" };

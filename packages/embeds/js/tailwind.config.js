@@ -52,6 +52,8 @@ const config = {
         "rgba(var(--typebot-host-bubble-bg-rgb), var(--typebot-host-bubble-opacity));",
       "host-bubble-border":
         "rgba(var(--typebot-host-bubble-border-rgb), var(--typebot-host-bubble-border-opacity));",
+      "input-border":
+        "rgba(var(--typebot-input-border-rgb), var(--typebot-input-border-opacity));",
     },
     extend: {
       blur: {

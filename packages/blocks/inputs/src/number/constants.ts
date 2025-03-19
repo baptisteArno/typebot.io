@@ -1,6 +1,120 @@
 import { defaultButtonLabel } from "../constants";
 import type { NumberInputBlock } from "./schema";
 
-export const defaultNumberInputOptions = {
-  labels: { button: defaultButtonLabel, placeholder: "Type a number..." },
-} as const satisfies NumberInputBlock["options"];
+export enum NumberInputStyle {
+  DECIMAL = "decimal",
+  CURRENCY = "currency",
+  PERCENT = "percent",
+  UNIT = "unit",
+}
+
+export const localeRegex = /^[a-z]{2}(-[A-Z]{2})?$/;
+
+export const numberStyleTranslationKeys: Record<NumberInputStyle, string> = {
+  [NumberInputStyle.DECIMAL]: "blocks.inputs.number.style.decimal",
+  [NumberInputStyle.CURRENCY]: "blocks.inputs.number.style.currency",
+  [NumberInputStyle.PERCENT]: "blocks.inputs.number.style.percent",
+  [NumberInputStyle.UNIT]: "blocks.inputs.number.style.unit",
+};
+
+export enum NumberInputUnit {
+  ACRE = "acre",
+  BIT = "bit",
+  BYTE = "byte",
+  CELSIUS = "celsius",
+  CENTIMETER = "centimeter",
+  DAY = "day",
+  DEGREE = "degree",
+  FAHRENHEIT = "fahrenheit",
+  FLUID_OUNCE = "fluid-ounce",
+  FOOT = "foot",
+  GALLON = "gallon",
+  GIGABIT = "gigabit",
+  GIGABYTE = "gigabyte",
+  GRAM = "gram",
+  HECTARE = "hectare",
+  HOUR = "hour",
+  INCH = "inch",
+  KILOBIT = "kilobit",
+  KILOBYTE = "kilobyte",
+  KILOGRAM = "kilogram",
+  KILOMETER = "kilometer",
+  LITER = "liter",
+  MEGABIT = "megabit",
+  MEGABYTE = "megabyte",
+  METER = "meter",
+  MICROSECOND = "microsecond",
+  MILE = "mile",
+  MILE_SCANDINAVIAN = "mile-scandinavian",
+  MILLILITER = "milliliter",
+  MILLIMETER = "millimeter",
+  MILLISECOND = "millisecond",
+  MINUTE = "minute",
+  MONTH = "month",
+  NANOSECOND = "nanosecond",
+  OUNCE = "ounce",
+  PERCENT = "percent",
+  PETABYTE = "petabyte",
+  POUND = "pound",
+  SECOND = "second",
+  STONE = "stone",
+  TERABIT = "terabit",
+  TERABYTE = "terabyte",
+  WEEK = "week",
+  YARD = "yard",
+  YEAR = "year",
+}
+
+export const defaultNumberInputStyle = NumberInputStyle.DECIMAL;
+export const defaultNumberInputButtonLabel = defaultButtonLabel;
+export const defaultNumberInputPlaceholder = "Type a number...";
+
+// Map unit types to translation keys
+export const unitTranslationKeys: Record<NumberInputUnit, string> = {
+  [NumberInputUnit.ACRE]: "blocks.inputs.number.unit.acre",
+  [NumberInputUnit.BIT]: "blocks.inputs.number.unit.bit",
+  [NumberInputUnit.BYTE]: "blocks.inputs.number.unit.byte",
+  [NumberInputUnit.CELSIUS]: "blocks.inputs.number.unit.celsius",
+  [NumberInputUnit.CENTIMETER]: "blocks.inputs.number.unit.centimeter",
+  [NumberInputUnit.DAY]: "blocks.inputs.number.unit.day",
+  [NumberInputUnit.DEGREE]: "blocks.inputs.number.unit.degree",
+  [NumberInputUnit.FAHRENHEIT]: "blocks.inputs.number.unit.fahrenheit",
+  [NumberInputUnit.FLUID_OUNCE]: "blocks.inputs.number.unit.fluidOunce",
+  [NumberInputUnit.FOOT]: "blocks.inputs.number.unit.foot",
+  [NumberInputUnit.GALLON]: "blocks.inputs.number.unit.gallon",
+  [NumberInputUnit.GIGABIT]: "blocks.inputs.number.unit.gigabit",
+  [NumberInputUnit.GIGABYTE]: "blocks.inputs.number.unit.gigabyte",
+  [NumberInputUnit.GRAM]: "blocks.inputs.number.unit.gram",
+  [NumberInputUnit.HECTARE]: "blocks.inputs.number.unit.hectare",
+  [NumberInputUnit.HOUR]: "blocks.inputs.number.unit.hour",
+  [NumberInputUnit.INCH]: "blocks.inputs.number.unit.inch",
+  [NumberInputUnit.KILOBIT]: "blocks.inputs.number.unit.kilobit",
+  [NumberInputUnit.KILOBYTE]: "blocks.inputs.number.unit.kilobyte",
+  [NumberInputUnit.KILOGRAM]: "blocks.inputs.number.unit.kilogram",
+  [NumberInputUnit.KILOMETER]: "blocks.inputs.number.unit.kilometer",
+  [NumberInputUnit.LITER]: "blocks.inputs.number.unit.liter",
+  [NumberInputUnit.MEGABIT]: "blocks.inputs.number.unit.megabit",
+  [NumberInputUnit.MEGABYTE]: "blocks.inputs.number.unit.megabyte",
+  [NumberInputUnit.METER]: "blocks.inputs.number.unit.meter",
+  [NumberInputUnit.MICROSECOND]: "blocks.inputs.number.unit.microsecond",
+  [NumberInputUnit.MILE]: "blocks.inputs.number.unit.mile",
+  [NumberInputUnit.MILE_SCANDINAVIAN]:
+    "blocks.inputs.number.unit.mileScandinavian",
+  [NumberInputUnit.MILLILITER]: "blocks.inputs.number.unit.milliliter",
+  [NumberInputUnit.MILLIMETER]: "blocks.inputs.number.unit.millimeter",
+  [NumberInputUnit.MILLISECOND]: "blocks.inputs.number.unit.millisecond",
+  [NumberInputUnit.MINUTE]: "blocks.inputs.number.unit.minute",
+  [NumberInputUnit.MONTH]: "blocks.inputs.number.unit.month",
+  [NumberInputUnit.NANOSECOND]: "blocks.inputs.number.unit.nanosecond",
+  [NumberInputUnit.OUNCE]: "blocks.inputs.number.unit.ounce",
+  [NumberInputUnit.PERCENT]: "blocks.inputs.number.unit.percent",
+  [NumberInputUnit.PETABYTE]: "blocks.inputs.number.unit.petabyte",
+  [NumberInputUnit.POUND]: "blocks.inputs.number.unit.pound",
+  [NumberInputUnit.SECOND]: "blocks.inputs.number.unit.second",
+  [NumberInputUnit.STONE]: "blocks.inputs.number.unit.stone",
+  [NumberInputUnit.TERABIT]: "blocks.inputs.number.unit.terabit",
+  [NumberInputUnit.TERABYTE]: "blocks.inputs.number.unit.terabyte",
+  [NumberInputUnit.WEEK]: "blocks.inputs.number.unit.week",
+  [NumberInputUnit.YARD]: "blocks.inputs.number.unit.yard",
+  [NumberInputUnit.YEAR]: "blocks.inputs.number.unit.year",
+};

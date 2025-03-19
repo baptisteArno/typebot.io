@@ -1,7 +1,12 @@
 // The STRIPE-supported currencies, sorted by code
 // https://gist.github.com/chrisdavies/9e3f00889fb764013339632bd3f2a71b
 
-export const currencies = [
+export type Currency = {
+  code: string;
+  description: string;
+};
+
+export const currencies: Currency[] = [
   {
     code: "AED",
     description: "United Arab Emirates Dirham",
