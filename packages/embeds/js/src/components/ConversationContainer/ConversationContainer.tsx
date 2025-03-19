@@ -198,13 +198,13 @@ export const ConversationContainer = (props: Props) => {
   };
 
   const triggerOfflineError = () => {
-    const { offlineErrorTitle, offlineErrorMessage } =
+    const { networkErrorTitle, networkErrorMessage } =
       props.context.typebot.settings.general?.systemMessages ??
       defaultSystemMessages;
     toaster.create({
-      title: offlineErrorTitle ?? defaultSystemMessages.offlineErrorTitle,
+      title: networkErrorTitle ?? defaultSystemMessages.networkErrorTitle,
       description:
-        offlineErrorMessage ?? defaultSystemMessages.offlineErrorMessage,
+        networkErrorMessage ?? defaultSystemMessages.networkErrorMessage,
     });
   };
 

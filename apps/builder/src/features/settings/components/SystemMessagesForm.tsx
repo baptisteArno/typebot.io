@@ -48,20 +48,20 @@ export const SystemMessagesForm = ({
   };
 
   const updateOfflineErrorTitle = (
-    offlineErrorTitle: SystemMessages["offlineErrorTitle"],
+    networkErrorTitle: SystemMessages["networkErrorTitle"],
   ) => {
     onSystemMessagesChange({
       ...systemMessages,
-      offlineErrorTitle,
+      networkErrorTitle,
     });
   };
 
   const updateOfflineErrorMessage = (
-    offlineErrorMessage: SystemMessages["offlineErrorMessage"],
+    networkErrorMessage: SystemMessages["networkErrorMessage"],
   ) => {
     onSystemMessagesChange({
       ...systemMessages,
-      offlineErrorMessage,
+      networkErrorMessage,
     });
   };
 
@@ -104,18 +104,18 @@ export const SystemMessagesForm = ({
       />
       <TextInput
         label={t(
-          "settings.sideMenu.general.systemMessages.offlineErrorTitle.label",
+          "settings.sideMenu.general.systemMessages.networkErrorTitle.label",
         )}
-        defaultValue={systemMessages?.offlineErrorTitle}
-        placeholder={defaultSystemMessages.offlineErrorTitle}
+        defaultValue={systemMessages?.networkErrorTitle}
+        placeholder={defaultSystemMessages.networkErrorTitle}
         onChange={updateOfflineErrorTitle}
       />
       <Textarea
         label={t(
-          "settings.sideMenu.general.systemMessages.offlineErrorMessage.label",
+          "settings.sideMenu.general.systemMessages.networkErrorMessage.label",
         )}
-        defaultValue={systemMessages?.offlineErrorMessage}
-        placeholder={defaultSystemMessages.offlineErrorMessage}
+        defaultValue={systemMessages?.networkErrorMessage}
+        placeholder={defaultSystemMessages.networkErrorMessage}
         onChange={updateOfflineErrorMessage}
       />
       <Textarea
