@@ -47,6 +47,24 @@ export const SystemMessagesForm = ({
     });
   };
 
+  const updateOfflineErrorTitle = (
+    offlineErrorTitle: SystemMessages["offlineErrorTitle"],
+  ) => {
+    onSystemMessagesChange({
+      ...systemMessages,
+      offlineErrorTitle,
+    });
+  };
+
+  const updateOfflineErrorMessage = (
+    offlineErrorMessage: SystemMessages["offlineErrorMessage"],
+  ) => {
+    onSystemMessagesChange({
+      ...systemMessages,
+      offlineErrorMessage,
+    });
+  };
+
   const updatePopupBlockedDescription = (
     popupBlockedDescription: SystemMessages["popupBlockedDescription"],
   ) => {
@@ -83,6 +101,22 @@ export const SystemMessagesForm = ({
         defaultValue={systemMessages?.invalidMessage}
         placeholder={defaultSystemMessages.invalidMessage}
         onChange={updateInvalidMessage}
+      />
+      <TextInput
+        label={t(
+          "settings.sideMenu.general.systemMessages.offlineErrorTitle.label",
+        )}
+        defaultValue={systemMessages?.offlineErrorTitle}
+        placeholder={defaultSystemMessages.offlineErrorTitle}
+        onChange={updateOfflineErrorTitle}
+      />
+      <Textarea
+        label={t(
+          "settings.sideMenu.general.systemMessages.offlineErrorMessage.label",
+        )}
+        defaultValue={systemMessages?.offlineErrorMessage}
+        placeholder={defaultSystemMessages.offlineErrorMessage}
+        onChange={updateOfflineErrorMessage}
       />
       <Textarea
         label={t(

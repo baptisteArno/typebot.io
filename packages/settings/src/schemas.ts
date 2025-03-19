@@ -8,6 +8,8 @@ import { rememberUserStorages } from "./constants";
 export const systemMessagesSchema = z.object({
   invalidMessage: z.string().optional(),
   botClosed: z.string().optional(),
+  offlineErrorTitle: z.string().optional(),
+  offlineErrorMessage: z.string().optional(),
   popupBlockedDescription: z.string().optional(),
   popupBlockedButtonLabel: z.string().optional(),
   fileUploadError: z.string().optional(),
