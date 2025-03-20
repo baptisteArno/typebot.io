@@ -1,4 +1,3 @@
-import { useEventListener } from "@/hooks/useEventListener";
 import type { ItemV6 } from "@typebot.io/blocks-core/schemas/items/schema";
 import type {
   BlockV6,
@@ -68,24 +67,8 @@ export const GraphDndProvider = ({ children }: { children: ReactNode }) => {
   const [draggedEventType, setDraggedEventType] = useState<
     TDraggableEvent["type"] | undefined
   >();
-  const [mouseOverGroup, _setMouseOverGroup] = useState<NodeElement>();
-  const [mouseOverBlock, _setMouseOverBlock] = useState<NodeElement>();
-
-  const setMouseOverGroup = useCallback(
-    (node: NodeElement | undefined) => {
-      if (node && !draggedBlock && !draggedBlockType) return;
-      _setMouseOverGroup(node);
-    },
-    [draggedBlock, draggedBlockType],
-  );
-
-  const setMouseOverBlock = useCallback(
-    (node: NodeElement | undefined) => {
-      if (node && !draggedItem) return;
-      _setMouseOverBlock(node);
-    },
-    [draggedItem],
-  );
+  const [mouseOverGroup, setMouseOverGroup] = useState<NodeElement>();
+  const [mouseOverBlock, setMouseOverBlock] = useState<NodeElement>();
 
   return (
     <graphDndContext.Provider
@@ -127,24 +110,37 @@ export const useDragDistance = ({
     relative: Coordinates;
   }>();
 
-  const handleMouseUp = () => {
-    if (mouseDownPosition) mouseDownPosition.current = undefined;
-  };
-  useEventListener("mouseup", handleMouseUp, undefined, undefined, deps);
+  const onGlobalMouseUp = useCallback(() => {
+    if (mouseDownPosition.current) mouseDownPosition.current = undefined;
+  }, []);
 
-  const handleMouseDown = (e: MouseEvent) => {
-    if (isDisabled || !ref.current) return;
-    e.stopPropagation();
-    const { top, left } = ref.current.getBoundingClientRect();
-    mouseDownPosition.current = {
-      absolute: { x: e.clientX, y: e.clientY },
-      relative: {
-        x: e.clientX - left,
-        y: e.clientY - top,
-      },
+  useEffect(() => {
+    window.addEventListener("mouseup", onGlobalMouseUp);
+    return () => {
+      window.removeEventListener("mouseup", onGlobalMouseUp);
     };
-  };
-  useEventListener("mousedown", handleMouseDown, ref, undefined, deps);
+  }, [onGlobalMouseUp]);
+
+  useEffect(() => {
+    const onCurrentElementMouseDown = (e: MouseEvent) => {
+      if (isDisabled || !ref.current) return;
+      e.stopPropagation();
+      const { top, left } = ref.current.getBoundingClientRect();
+      mouseDownPosition.current = {
+        absolute: { x: e.clientX, y: e.clientY },
+        relative: {
+          x: e.clientX - left,
+          y: e.clientY - top,
+        },
+      };
+    };
+
+    ref.current?.addEventListener("mousedown", onCurrentElementMouseDown);
+
+    return () => {
+      ref.current?.removeEventListener("mousedown", onCurrentElementMouseDown);
+    };
+  }, [isDisabled, ...deps]);
 
   useEffect(() => {
     let triggered = false;

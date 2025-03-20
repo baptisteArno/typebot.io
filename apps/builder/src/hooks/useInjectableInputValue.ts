@@ -1,8 +1,7 @@
 import { injectVariableInText } from "@/features/variables/helpers/injectVariableInTextInput";
 import { focusInput } from "@/helpers/focusInput";
 import type { Variable } from "@typebot.io/variables/schemas";
-import { useState } from "react";
-import { useEventListener } from "./useEventListener";
+import { useCallback, useEffect, useState } from "react";
 
 export const useInjectableInputValue = ({
   ref,
@@ -17,14 +16,17 @@ export const useInjectableInputValue = ({
   );
   const [value, _setValue] = useState<string>(defaultValue ?? "");
 
-  useEventListener(
-    "blur",
-    () => {
-      if (!ref.current) return;
-      setCarretPosition(ref.current.selectionStart ?? 0);
-    },
-    ref,
-  );
+  const onInputBlur = useCallback(() => {
+    if (!ref.current) return;
+    setCarretPosition(ref.current.selectionStart ?? 0);
+  }, []);
+
+  useEffect(() => {
+    ref.current?.addEventListener("blur", onInputBlur);
+    return () => {
+      ref.current?.removeEventListener("blur", onInputBlur);
+    };
+  }, [onInputBlur]);
 
   const setValue = (text: string) => {
     if (!isTouched) setIsTouched(true);

@@ -4,12 +4,12 @@ import {
   useBlockDnd,
 } from "@/features/graph/providers/GraphDndProvider";
 import { useGraph } from "@/features/graph/providers/GraphProvider";
-import { Portal, Stack, useEventListener } from "@chakra-ui/react";
+import { Portal, Stack } from "@chakra-ui/react";
 import type { Coordinates } from "@dnd-kit/utilities";
 import { shouldOpenBlockSettingsOnCreation } from "@typebot.io/blocks-core/helpers";
 import type { BlockV6 } from "@typebot.io/blocks-core/schemas/schema";
 import { isDefined } from "@typebot.io/lib/utils";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { PlaceholderNode } from "../PlaceholderNode";
 import { BlockNode } from "./BlockNode";
 import { BlockNodeOverlay } from "./BlockNodeOverlay";
@@ -54,42 +54,6 @@ export const BlockNodesList = ({ blocks, groupIndex, groupRef }: Props) => {
     if (mouseOverGroup?.id !== groupId) setExpandedPlaceholderIndex(undefined);
   }, [groupId, mouseOverGroup?.id]);
 
-  const handleMouseMoveGlobal = (event: MouseEvent) => {
-    if (!draggedBlock || draggedBlock.groupId !== groupId) return;
-    const { clientX, clientY } = event;
-    setPosition({
-      x: clientX - mousePositionInElement.x,
-      y: clientY - mousePositionInElement.y,
-    });
-  };
-
-  const handleMouseMoveOnGroup = (event: MouseEvent) => {
-    if (!isDraggingOnCurrentGroup) return;
-    setExpandedPlaceholderIndex(
-      computeNearestPlaceholderIndex(event.pageY, placeholderRefs),
-    );
-  };
-
-  const handleMouseUpOnGroup = (e: MouseEvent) => {
-    setExpandedPlaceholderIndex(undefined);
-    if (!isDraggingOnCurrentGroup || !groupId) return;
-    const blockIndex = computeNearestPlaceholderIndex(
-      e.clientY,
-      placeholderRefs,
-    );
-    const blockId = createBlock(
-      (draggedBlock || draggedBlockType) as BlockV6 | BlockV6["type"],
-      {
-        groupIndex,
-        blockIndex,
-      },
-    );
-    setDraggedBlock(undefined);
-    setDraggedBlockType(undefined);
-    if (shouldOpenBlockSettingsOnCreation(draggedBlockType))
-      setOpenedBlockId(blockId);
-  };
-
   const handleBlockMouseDown =
     (blockIndex: number) =>
     (
@@ -112,11 +76,83 @@ export const BlockNodesList = ({ blocks, groupIndex, groupRef }: Props) => {
       elem && (placeholderRefs.current[idx] = elem);
     };
 
-  useEventListener("mousemove", handleMouseMoveGlobal);
-  useEventListener("mousemove", handleMouseMoveOnGroup, groupRef.current);
-  useEventListener("mouseup", handleMouseUpOnGroup, mouseOverGroup?.element, {
-    capture: true,
-  });
+  const onGroupMouseMove = useCallback(
+    (event: MouseEvent) => {
+      if (!isDraggingOnCurrentGroup) return;
+      setExpandedPlaceholderIndex(
+        computeNearestPlaceholderIndex(event.pageY, placeholderRefs),
+      );
+    },
+    [isDraggingOnCurrentGroup],
+  );
+  useEffect(() => {
+    groupRef.current?.addEventListener("mousemove", onGroupMouseMove);
+    return () => {
+      groupRef.current?.removeEventListener("mousemove", onGroupMouseMove);
+    };
+  }, [onGroupMouseMove]);
+
+  const onGlobalMouseMove = useCallback(
+    (event: MouseEvent) => {
+      if (!draggedBlock?.groupId || draggedBlock.groupId !== groupId) return;
+      const { clientX, clientY } = event;
+      setPosition({
+        x: clientX - mousePositionInElement.x,
+        y: clientY - mousePositionInElement.y,
+      });
+    },
+    [
+      draggedBlock?.groupId,
+      groupId,
+      mousePositionInElement.x,
+      mousePositionInElement.y,
+    ],
+  );
+  useEffect(() => {
+    window.addEventListener("mousemove", onGlobalMouseMove);
+    return () => {
+      window.removeEventListener("mousemove", onGlobalMouseMove);
+    };
+  }, [onGlobalMouseMove]);
+
+  const onGroupMouseUp = useCallback(
+    (e: MouseEvent) => {
+      setExpandedPlaceholderIndex(undefined);
+      if (!isDraggingOnCurrentGroup || !groupId) return;
+      const blockIndex = computeNearestPlaceholderIndex(
+        e.clientY,
+        placeholderRefs,
+      );
+      const blockId = createBlock(
+        (draggedBlock || draggedBlockType) as BlockV6 | BlockV6["type"],
+        {
+          groupIndex,
+          blockIndex,
+        },
+      );
+      setDraggedBlock(undefined);
+      setDraggedBlockType(undefined);
+      if (shouldOpenBlockSettingsOnCreation(draggedBlockType))
+        setOpenedBlockId(blockId);
+    },
+    [
+      isDraggingOnCurrentGroup,
+      groupId,
+      draggedBlock,
+      draggedBlockType,
+      groupIndex,
+    ],
+  );
+  useEffect(() => {
+    groupRef.current?.addEventListener("mouseup", onGroupMouseUp, {
+      capture: true,
+    });
+    return () => {
+      groupRef.current?.removeEventListener("mouseup", onGroupMouseUp, {
+        capture: true,
+      });
+    };
+  }, [onGroupMouseUp]);
 
   return (
     <Stack spacing={0} transition="none">
