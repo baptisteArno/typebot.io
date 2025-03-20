@@ -1,5 +1,5 @@
-import { cn } from "@/lib/utils";
 import { CheckIcon } from "@typebot.io/ui/icons/CheckIcon";
+import { cn } from "@typebot.io/ui/lib/cn";
 import type { ReactNode } from "react";
 
 export const PricingCardFooter = ({ children }: { children: ReactNode }) => (

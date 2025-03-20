@@ -42,7 +42,10 @@ const dialogueMessageItemSchema = option.object({
 });
 
 type Props = {
-  models: { helperText?: string } & (
+  models: {
+    helperText?: string;
+    allowCustomValue?: boolean;
+  } & (
     | { type: "fetcher"; id: string }
     | { type: "static"; models: readonly [string, ...string[]] }
     | { type: "text" }
@@ -56,10 +59,13 @@ export const parseChatCompletionOptions = ({ models }: Props) =>
         ? option.enum(models.models as [string, ...string[]]).layout({
             placeholder: "Select a model",
             label: "Model",
+            allowCustomValue: models.allowCustomValue,
+            helperText: models.helperText,
           })
         : option.string.layout({
             placeholder: "Select a model",
             label: "Model",
+            allowCustomValue: models.allowCustomValue,
             fetcher: models.type === "fetcher" ? models.id : undefined,
             helperText: models.helperText,
           }),

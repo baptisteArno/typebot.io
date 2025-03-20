@@ -1,4 +1,3 @@
-import { Button } from "@/components/Button";
 import { ButtonLink } from "@/components/link";
 import { registerUrl } from "@/constants";
 import { TopBar } from "./TopBar";

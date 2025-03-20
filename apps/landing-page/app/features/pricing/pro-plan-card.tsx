@@ -1,4 +1,3 @@
-import { Button } from "@/components/Button";
 import { MoreInfoTooltip } from "@/components/MoreInfoTooltip";
 import { ButtonLink } from "@/components/link";
 import { registerUrl } from "@/constants";
@@ -9,6 +8,7 @@ import {
 } from "@typebot.io/billing/constants";
 import { formatPrice } from "@typebot.io/billing/helpers/formatPrice";
 import { Plan } from "@typebot.io/prisma/enum";
+import { Button } from "@typebot.io/ui/components/Button";
 import {
   PerkListItem,
   PlanNamePill,

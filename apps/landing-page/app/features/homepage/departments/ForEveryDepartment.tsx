@@ -1,10 +1,10 @@
 import { IconButton } from "@/components/IconButton";
 import { MotionCard } from "@/components/motion-wrappers";
-import { cn } from "@/lib/utils";
 import { isDefined, isNotDefined } from "@typebot.io/lib/utils";
 import { CloseIcon } from "@typebot.io/ui/icons/CloseIcon";
 import { PlusIcon } from "@typebot.io/ui/icons/PlusIcon";
-import clsx from "clsx";
+import { cn } from "@typebot.io/ui/lib/cn";
+import { cx } from "@typebot.io/ui/lib/cva";
 import { motion } from "motion/react";
 import { useState } from "react";
 import marketingSrc from "./assets/marketing.png";
@@ -155,7 +155,7 @@ const DepartmentCard = ({
 }) => (
   <MotionCard
     layoutId={`dep-${index}`}
-    className={clsx(
+    className={cx(
       "p-2 relative isolate cursor-pointer",
       lastOpenedDepartmentIndex === index &&
         isNotDefined(openedDepartmentIndex) &&

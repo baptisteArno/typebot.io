@@ -5757,7 +5757,9 @@
                                         "type": "string",
                                         "enum": [
                                           "Message content",
-                                          "Total tokens"
+                                          "Total tokens",
+                                          "Prompt tokens",
+                                          "Completion tokens"
                                         ]
                                       },
                                       "variableId": {
@@ -6512,6 +6514,72 @@
                   {
                     "type": "number"
                   }
+                ]
+              },
+              "locale": {
+                "type": "string",
+                "pattern": "^[a-z]{2}(-[A-Z]{2})?$"
+              },
+              "style": {
+                "type": "string",
+                "enum": [
+                  "decimal",
+                  "currency",
+                  "percent",
+                  "unit"
+                ]
+              },
+              "currency": {
+                "type": "string"
+              },
+              "unit": {
+                "type": "string",
+                "enum": [
+                  "acre",
+                  "bit",
+                  "byte",
+                  "celsius",
+                  "centimeter",
+                  "day",
+                  "degree",
+                  "fahrenheit",
+                  "fluid-ounce",
+                  "foot",
+                  "gallon",
+                  "gigabit",
+                  "gigabyte",
+                  "gram",
+                  "hectare",
+                  "hour",
+                  "inch",
+                  "kilobit",
+                  "kilobyte",
+                  "kilogram",
+                  "kilometer",
+                  "liter",
+                  "megabit",
+                  "megabyte",
+                  "meter",
+                  "microsecond",
+                  "mile",
+                  "mile-scandinavian",
+                  "milliliter",
+                  "millimeter",
+                  "millisecond",
+                  "minute",
+                  "month",
+                  "nanosecond",
+                  "ounce",
+                  "percent",
+                  "petabyte",
+                  "pound",
+                  "second",
+                  "stone",
+                  "terabit",
+                  "terabyte",
+                  "week",
+                  "yard",
+                  "year"
                 ]
               }
             }
@@ -9082,7 +9150,9 @@
                           "type": "string",
                           "enum": [
                             "Message content",
-                            "Total tokens"
+                            "Total tokens",
+                            "Prompt tokens",
+                            "Completion tokens"
                           ]
                         },
                         "variableId": {
@@ -10028,7 +10098,9 @@
                           "type": "string",
                           "enum": [
                             "Message content",
-                            "Total tokens"
+                            "Total tokens",
+                            "Prompt tokens",
+                            "Completion tokens"
                           ]
                         },
                         "variableId": {
@@ -10996,7 +11068,9 @@
                           "type": "string",
                           "enum": [
                             "Message content",
-                            "Total tokens"
+                            "Total tokens",
+                            "Prompt tokens",
+                            "Completion tokens"
                           ]
                         },
                         "variableId": {
@@ -11307,7 +11381,9 @@
                           "type": "string",
                           "enum": [
                             "Message content",
-                            "Total tokens"
+                            "Total tokens",
+                            "Prompt tokens",
+                            "Completion tokens"
                           ]
                         },
                         "variableId": {
@@ -12026,7 +12102,9 @@
                           "type": "string",
                           "enum": [
                             "Message content",
-                            "Total tokens"
+                            "Total tokens",
+                            "Prompt tokens",
+                            "Completion tokens"
                           ]
                         },
                         "variableId": {
@@ -12549,7 +12627,9 @@
                           "type": "string",
                           "enum": [
                             "Message content",
-                            "Total tokens"
+                            "Total tokens",
+                            "Prompt tokens",
+                            "Completion tokens"
                           ]
                         },
                         "variableId": {
@@ -12864,7 +12944,9 @@
                           "type": "string",
                           "enum": [
                             "Message content",
-                            "Total tokens"
+                            "Total tokens",
+                            "Prompt tokens",
+                            "Completion tokens"
                           ]
                         },
                         "variableId": {
@@ -12930,6 +13012,12 @@
                     "type": "string"
                   },
                   "botClosed": {
+                    "type": "string"
+                  },
+                  "networkErrorTitle": {
+                    "type": "string"
+                  },
+                  "networkErrorMessage": {
                     "type": "string"
                   },
                   "popupBlockedDescription": {
@@ -14216,7 +14304,9 @@
                                               "type": "string",
                                               "enum": [
                                                 "Message content",
-                                                "Total tokens"
+                                                "Total tokens",
+                                                "Prompt tokens",
+                                                "Completion tokens"
                                               ]
                                             },
                                             "variableId": {

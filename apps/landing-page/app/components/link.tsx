@@ -1,13 +1,9 @@
-import { cn } from "@/lib/utils";
-import {
-  type LinkComponent,
-  type LinkComponentProps,
-  createLink,
-} from "@tanstack/react-router";
+import { type LinkComponentProps, createLink } from "@tanstack/react-router";
+import { buttonVariants } from "@typebot.io/ui/components/Button";
 import { ArrowUpRightIcon } from "@typebot.io/ui/icons/ArrowUpRightIcon";
-import { type VariantProps, cva } from "class-variance-authority";
+import { cn } from "@typebot.io/ui/lib/cn";
+import { type VariantProps, cva } from "@typebot.io/ui/lib/cva";
 import { type HTMLProps, forwardRef } from "react";
-import { buttonVariants } from "./Button";
 
 type Optional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
 

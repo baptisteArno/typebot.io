@@ -1,4 +1,5 @@
-import { type ClassValue, clsx } from "clsx";
+import { cx } from "class-variance-authority";
+import type { ClassValue } from "class-variance-authority/types";
 import { extendTailwindMerge } from "tailwind-merge";
 
 const twMerge = extendTailwindMerge({
@@ -11,5 +12,5 @@ const twMerge = extendTailwindMerge({
 });
 
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
+  return twMerge(cx(inputs));
 }

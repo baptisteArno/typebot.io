@@ -1,4 +1,3 @@
-import { buttonVariants } from "@/components/Button";
 import { IconButton } from "@/components/IconButton";
 import { TypebotLogoFull } from "@/components/TypebotLogo";
 import {
@@ -10,11 +9,12 @@ import {
   signinUrl,
 } from "@/constants";
 import { useWindowSize } from "@/features/homepage/hooks/useWindowSize";
-import { cn } from "@/lib/utils";
 import { Link, useLocation, useRouter } from "@tanstack/react-router";
+import { buttonVariants } from "@typebot.io/ui/components/Button";
 import { CloseIcon } from "@typebot.io/ui/icons/CloseIcon";
 import { MenuIcon } from "@typebot.io/ui/icons/MenuIcon";
-import clsx from "clsx";
+import { cn } from "@typebot.io/ui/lib/cn";
+import { cx } from "@typebot.io/ui/lib/cva";
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import React from "react";
@@ -263,7 +263,7 @@ const Desktop = React.forwardRef<
 
   return (
     <div
-      className={clsx(
+      className={cx(
         "flex gap-2 items-center transition-opacity",
         pathname === "/" && isScrolled && !isIntersecting
           ? "opacity-0 pointer-events-none"
@@ -273,7 +273,7 @@ const Desktop = React.forwardRef<
     >
       <nav
         ref={ref}
-        className={clsx(
+        className={cx(
           "flex rounded-2xl border border-gray-6 px-2 py-2 bg-gradient-to-b transition-colors gap-2 items-center",
           appearance === "dark"
             ? "dark from-[#393939] to-[#121212]"
@@ -301,7 +301,7 @@ const Desktop = React.forwardRef<
       </nav>
       {isChatBubbleMounted && pathname === "/" && (
         <div
-          className={clsx(
+          className={cx(
             "flex transition-opacity",
             isScrolled ? "opacity-0 pointer-events-none" : "opacity-100",
           )}

@@ -2,7 +2,7 @@ import { Progress } from "@/components/Progress";
 import { TypebotLogoFull } from "@/components/TypebotLogo";
 import { ButtonLink } from "@/components/link";
 import { enterpriseLeadTypebotUrl, registerUrl } from "@/constants";
-import { cn } from "@/lib/utils";
+import { cn } from "@typebot.io/ui/lib/cn";
 import { useInView } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import marketingBotSrc from "./assets/marketing-bot.png";

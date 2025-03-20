@@ -31,6 +31,8 @@ export interface ZodLayoutMetadata<
   isDebounceDisabled?: boolean;
   hiddenItems?: string[];
   mergeWithLastField?: boolean;
+  /** Useful for string options with fetcher when we also want to allow for custom text */
+  allowCustomValue?: boolean;
   toLabels?: (val?: string) => string | undefined;
 }
 

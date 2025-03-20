@@ -32,7 +32,7 @@ import type { CardsItem } from "@typebot.io/blocks-inputs/cards/schema";
 import type { ButtonItem } from "@typebot.io/blocks-inputs/choice/schema";
 import { isEmpty } from "@typebot.io/lib/utils";
 import { cn } from "@typebot.io/ui/lib/cn";
-import clsx from "clsx";
+import { cx } from "@typebot.io/ui/lib/cva";
 import { useRef, useState } from "react";
 import { ButtonsItemSettings } from "../../buttons/components/ButtonsItemSettings";
 
@@ -168,7 +168,7 @@ export const CardsItemNode = ({
             >
               {item.title !== null ? (
                 <DeletableEditable
-                  className={clsx(
+                  className={cx(
                     "flex-1 max-w-[180px] text-sm font-semibold px-2",
                     item.description !== null && "-mb-2",
                   )}
@@ -192,7 +192,7 @@ export const CardsItemNode = ({
             >
               {item.description !== null ? (
                 <DeletableEditable
-                  className={clsx("flex-1 max-w-[180px] text-xs mb-2 px-2")}
+                  className={cx("flex-1 max-w-[180px] text-xs mb-2 px-2")}
                   defaultValue={item.description ?? "Description"}
                   defaultEdit={item.description === undefined}
                   onValueCommit={updateDescription}

@@ -1,44 +1,7 @@
 import type { Config } from "tailwindcss";
+import sharedConfig from "../../packages/ui/tailwind.config";
 
 export default {
-  darkMode: ["class"],
-  content: [
-    "src/**/*.{ts,tsx}",
-    "../../packages/ui/src/components/**/*.{ts,tsx}",
-  ],
-  future: {
-    hoverOnlyWhenSupported: true,
-  },
-  theme: {
-    colors: {
-      gray: getColorScale("gray"),
-      blue: getColorScale("blue"),
-      orange: getColorScale("orange"),
-      purple: getColorScale("purple"),
-      red: getColorScale("red"),
-      white: "rgb(255, 255, 255)",
-      transparent: "transparent",
-      inherit: "inherit",
-    },
-    extend: {
-      fontSize: {
-        "4xl": ["2.5rem", "2.75rem"],
-      },
-      fontFamily: {
-        heading: ["Uxum Grotesque", "sans-serif"],
-        body: ["Untitled Sans", "sans-serif"],
-      },
-      fontWeight: {
-        inherit: "inherit",
-      },
-    },
-  },
+  presets: [sharedConfig],
+  content: ["src/**/*.{ts,tsx}", "../../packages/ui/src/**/*.{ts,tsx}"],
 } satisfies Config;
-
-function getColorScale(name: string) {
-  const scale: Record<string, string> = {};
-  for (let i = 1; i <= 12; i++) {
-    scale[i] = `rgb(var(--${name}-${i}))`;
-  }
-  return scale;
-}
