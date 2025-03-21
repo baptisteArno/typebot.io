@@ -13,12 +13,13 @@ import {
   Portal,
   Stack,
   Switch,
+  chakra,
   useDisclosure,
 } from "@chakra-ui/react";
+import { isSvgSrc } from "@typebot.io/lib/utils";
 import type { AvatarProps } from "@typebot.io/theme/schemas";
 import React from "react";
 import { DefaultAvatar } from "../DefaultAvatar";
-
 type Props = {
   uploadFileProps: FilePathUploadProps;
   title: string;
@@ -69,7 +70,17 @@ export const AvatarForm = ({
                       _hover={{ filter: "brightness(.9)" }}
                     />
                   </Box>
-                ) : (
+                ) : isSvgSrc(avatarProps?.url) ? (
+                  <Image
+                    onClick={onOpen}
+                    src={avatarProps.url}
+                    alt="Website image"
+                    cursor="pointer"
+                    _hover={{ filter: "brightness(.9)" }}
+                    transition="filter 200ms"
+                    boxSize="40px"
+                  />
+                ) : avatarProps?.url?.startsWith("http") ? (
                   <Image
                     onClick={onOpen}
                     src={avatarProps.url}
@@ -81,6 +92,17 @@ export const AvatarForm = ({
                     boxSize="40px"
                     objectFit="cover"
                   />
+                ) : (
+                  <chakra.span
+                    fontSize="40px"
+                    lineHeight="1"
+                    onClick={onOpen}
+                    cursor="pointer"
+                    _hover={{ filter: "brightness(.9)" }}
+                    transition="filter 200ms"
+                  >
+                    {avatarProps?.url}
+                  </chakra.span>
                 )}
               </PopoverAnchor>
               <Portal>
@@ -95,6 +117,12 @@ export const AvatarForm = ({
                     defaultUrl={avatarProps?.url}
                     imageSize="thumb"
                     onSubmit={handleImageUrl}
+                    additionalTabs={{
+                      emoji: true,
+                      giphy: true,
+                      unsplash: true,
+                      icon: true,
+                    }}
                   />
                 </PopoverContent>
               </Portal>

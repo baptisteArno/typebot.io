@@ -12,7 +12,6 @@ import {
   initializeAvatarHistory,
 } from "@/utils/avatarHistory";
 import { botContainer } from "@/utils/botContainerSignal";
-import { getAvatarUrls } from "@/utils/dynamicTheme";
 import { isNetworkError } from "@/utils/error";
 import { executeClientSideAction } from "@/utils/executeClientSideActions";
 import {
@@ -145,18 +144,33 @@ export const ConversationContainer = (props: Props) => {
     })();
   });
 
-  createEffect(() => {
-    setAvatarsHistory((prev) =>
-      addAvatarsToHistoryIfChanged({
-        newAvatars: getAvatarUrls(
-          props.initialChatReply.typebot.theme,
-          props.initialChatReply.dynamicTheme,
-        ),
-        avatarHistory: prev,
-        currentChunkIndex: chatChunks().length - 1,
-      }),
-    );
-  });
+  createEffect((prevUrl: string | undefined) => {
+    if (prevUrl === props.initialChatReply.typebot.theme.chat?.hostAvatar?.url)
+      return prevUrl;
+    setAvatarsHistory((prev) => [
+      ...prev,
+      {
+        role: "host",
+        chunkIndex: chatChunks().length - 1,
+        avatarUrl: props.initialChatReply.typebot.theme.chat?.hostAvatar?.url,
+      },
+    ]);
+    return props.initialChatReply.typebot.theme.chat?.hostAvatar?.url;
+  }, props.initialChatReply.typebot.theme.chat?.hostAvatar?.url);
+
+  createEffect((prevUrl: string | undefined) => {
+    if (prevUrl === props.initialChatReply.typebot.theme.chat?.guestAvatar?.url)
+      return prevUrl;
+    setAvatarsHistory((prev) => [
+      ...prev,
+      {
+        role: "guest",
+        chunkIndex: chatChunks().length - 1,
+        avatarUrl: props.initialChatReply.typebot.theme.chat?.guestAvatar?.url,
+      },
+    ]);
+    return props.initialChatReply.typebot.theme.chat?.guestAvatar?.url;
+  }, props.initialChatReply.typebot.theme.chat?.guestAvatar?.url);
 
   const cleanupRecoveredChat = () => {
     if ([...chatChunks()].pop()?.streamingMessageId)
@@ -279,10 +293,10 @@ export const ConversationContainer = (props: Props) => {
     if (data.dynamicTheme) {
       setAvatarsHistory((prev) =>
         addAvatarsToHistoryIfChanged({
-          newAvatars: getAvatarUrls(
-            props.initialChatReply.typebot.theme,
-            data.dynamicTheme,
-          ),
+          newAvatars: {
+            host: data.dynamicTheme?.hostAvatarUrl,
+            guest: data.dynamicTheme?.guestAvatarUrl,
+          },
           avatarHistory: prev,
           currentChunkIndex: chatChunks().length,
         }),

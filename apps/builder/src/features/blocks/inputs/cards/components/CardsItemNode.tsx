@@ -152,7 +152,10 @@ export const CardsItemNode = ({
                           onSubmit={(url) => {
                             updateImage(url);
                           }}
-                          excludedTabs={["emoji"]}
+                          additionalTabs={{
+                            giphy: true,
+                            unsplash: true,
+                          }}
                         />
                       )}
                     </PopoverContent>

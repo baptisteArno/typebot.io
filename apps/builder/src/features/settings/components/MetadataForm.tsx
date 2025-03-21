@@ -82,7 +82,9 @@ export const MetadataForm = ({
               }}
               defaultUrl={favIconUrl}
               onSubmit={handleFavIconSubmit}
-              excludedTabs={["giphy", "unsplash", "emoji"]}
+              additionalTabs={{
+                icon: true,
+              }}
               imageSize="thumb"
             />
           </PopoverContent>
@@ -112,7 +114,9 @@ export const MetadataForm = ({
               }}
               defaultUrl={imageUrl}
               onSubmit={handleImageSubmit}
-              excludedTabs={["giphy", "icon", "emoji"]}
+              additionalTabs={{
+                unsplash: true,
+              }}
             />
           </PopoverContent>
         </Popover>

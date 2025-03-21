@@ -101,17 +101,19 @@ export const InputChatBlock = (props: Props) => {
       );
   });
 
+  const avatarSrc = getAvatarAtIndex({
+    avatarHistory: props.avatarHistory,
+    currentIndex: props.chunkIndex,
+    currentRole: "guest",
+  });
+
   return (
     <Switch>
       <Match when={answer() && !props.hasError}>
         <GuestBubble
           answer={answer()}
           theme={props.theme}
-          avatarSrc={getAvatarAtIndex({
-            avatarHistory: props.avatarHistory,
-            currentIndex: props.chunkIndex,
-            currentRole: "guest",
-          })}
+          avatarSrc={avatarSrc}
         />
       </Match>
       <Match when={isNotDefined(answer()) || props.hasError}>

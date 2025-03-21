@@ -90,7 +90,11 @@ export const PictureChoiceItemSettings = ({
                     updateImage(url);
                     onClose();
                   }}
-                  excludedTabs={["emoji"]}
+                  additionalTabs={{
+                    giphy: true,
+                    unsplash: true,
+                    icon: true,
+                  }}
                 />
               </PopoverContent>
             </>
