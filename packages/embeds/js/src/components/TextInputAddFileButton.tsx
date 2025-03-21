@@ -26,7 +26,7 @@ export const TextInputAddFileButton = (props: Props) => {
       <input
         type="file"
         id="photos-upload"
-        accept="image/*, video/*"
+        accept="image/avif, image/*, video/*"
         multiple
         class="hidden"
         onChange={(e) => {
