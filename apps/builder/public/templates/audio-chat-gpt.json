@@ -23,7 +23,8 @@
             "variableId": "vudksu3zyrat6s1bq6qne0rx3",
             "audioClip": {
               "isEnabled": true,
-              "saveVariableId": "vwtuc6cw30xzl9i18usgxbszc"
+              "saveVariableId": "vwtuc6cw30xzl9i18usgxbszc",
+              "visibility": "Public"
             }
           }
         },
@@ -210,9 +211,9 @@
       "to": { "groupId": "a6ymhjwtkqwp8t127plz8qmk" }
     },
     {
+      "id": "f7s54kawqbiqr0gf17h62gbk",
       "from": { "eventId": "ewnfbo0exlu7ihfu2lu2lusm" },
-      "to": { "groupId": "yswu9fml4zflxaqlujb94ir8" },
-      "id": "f7s54kawqbiqr0gf17h62gbk"
+      "to": { "groupId": "yswu9fml4zflxaqlujb94ir8" }
     }
   ],
   "variables": [

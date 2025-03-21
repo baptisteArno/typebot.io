@@ -22,6 +22,7 @@ import {
 } from "@typebot.io/runtime-session-store";
 import { WhatsAppError } from "./WhatsAppError";
 import { downloadMedia } from "./downloadMedia";
+import { extensionFromMimeType } from "./extensionFromMimeType";
 import type {
   WhatsAppIncomingMessage,
   WhatsAppMessageReferral,
@@ -241,12 +242,13 @@ const convertWhatsAppMessageToTypebotMessage = async ({
             mediaId,
             systemUserAccessToken: accessToken,
           });
+          const extension = extensionFromMimeType[mimeType];
           const url = await uploadFileToBucket({
             file,
             key:
               resultId && workspaceId && typebotId
-                ? `public/workspaces/${workspaceId}/typebots/${typebotId}/results/${resultId}/${mediaId}`
-                : `tmp/whatsapp/media/${mediaId}`,
+                ? `public/workspaces/${workspaceId}/typebots/${typebotId}/results/${resultId}/${mediaId}${extension ? `.${extension}` : ""}`
+                : `tmp/whatsapp/media/${mediaId}${extension ? `.${extension}` : ""}`,
             mimeType,
           });
           fileUrl = url;
