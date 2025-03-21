@@ -22,7 +22,6 @@ export const SelectBox = ({ origin, dimension }: Props) => (
       top: origin.y - headerHeight,
       width: dimension.width,
       height: dimension.height,
-      zIndex: 1000,
     }}
   />
 );

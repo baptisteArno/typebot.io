@@ -47,7 +47,6 @@ export const EditorPage = () => {
         >
           {typebot ? (
             <GraphDndProvider>
-              {currentUserMode === "write" && <BlocksSideBar />}
               <GraphProvider
                 isReadOnly={
                   currentUserMode === "read" || currentUserMode === "guest"
@@ -61,6 +60,7 @@ export const EditorPage = () => {
                 />
                 <RightPanel />
               </GraphProvider>
+              {currentUserMode === "write" && <BlocksSideBar />}
             </GraphDndProvider>
           ) : (
             <Flex justify="center" align="center" boxSize="full">

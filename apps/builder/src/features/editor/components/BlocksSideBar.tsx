@@ -204,7 +204,6 @@ export const BlocksSideBar = () => {
       pos="absolute"
       left="0"
       h={`calc(100vh - ${headerHeight}px)`}
-      zIndex="2"
       pl="4"
       py="4"
       onMouseLeave={handleMouseLeave}

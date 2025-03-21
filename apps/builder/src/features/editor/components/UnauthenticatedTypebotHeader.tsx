@@ -41,7 +41,7 @@ export const GuestTypebotHeader = () => {
       justify="center"
       align="center"
       h={`${headerHeight}px`}
-      zIndex={100}
+      zIndex={1}
       pos="relative"
       bgColor={useColorModeValue("white", "gray.950")}
       flexShrink={0}

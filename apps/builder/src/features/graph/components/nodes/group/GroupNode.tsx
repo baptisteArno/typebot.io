@@ -191,7 +191,7 @@ export const GroupNode = ({ group, groupIndex }: Props) => {
           onMouseLeave={handleMouseLeave}
           cursor={isMouseDown ? "grabbing" : "pointer"}
           _hover={{ shadow: "md" }}
-          zIndex={isFocused ? 10 : 1}
+          zIndex={isFocused ? 1 : undefined}
           spacing={0}
           pointerEvents={isDraggingGraph ? "none" : "auto"}
         >
