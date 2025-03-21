@@ -58,20 +58,20 @@ export const WorkspaceSettingsModal = ({
   const [selectedTab, setSelectedTab] = useState<SettingsTab>(defaultTab);
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size="4xl">
+    <Modal isOpen={isOpen} onClose={onClose} size="6xl">
       <ModalOverlay />
       <ModalContent minH="600px" flexDir="row" ref={ref}>
         <Stack
           spacing={8}
-          w="180px"
+          w="250px"
           py="6"
           borderRightWidth={1}
           justifyContent="space-between"
         >
           <Stack spacing={8}>
             <Stack>
-              <Text pl="4" color="gray.500">
-                {user.email}
+              <Text pl="4" color="gray.500" fontSize="sm">
+                {t("account")}
               </Text>
               <Button
                 variant={selectedTab === "my-account" ? "solid" : "ghost"}
@@ -87,7 +87,7 @@ export const WorkspaceSettingsModal = ({
                 justifyContent="flex-start"
                 pl="4"
               >
-                {t("workspace.settings.modal.menu.myAccount.label")}
+                {user.name ?? user.email}
               </Button>
               <Button
                 variant={selectedTab === "user-settings" ? "solid" : "ghost"}
@@ -111,7 +111,7 @@ export const WorkspaceSettingsModal = ({
               </Button>
             </Stack>
             <Stack>
-              <Text pl="4" color="gray.500">
+              <Text pl="4" color="gray.500" fontSize="sm">
                 {t("workspace.settings.modal.menu.workspace.label")}
               </Text>
               {currentUserMode === "write" && (

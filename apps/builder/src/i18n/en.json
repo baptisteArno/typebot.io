@@ -33,6 +33,7 @@
   "account.preferences.groupTitlesAutoGeneration.label": "Generate groups title with AI",
   "account.preferences.language.heading": "Language",
   "account.preferences.language.tooltip": "The translations are not complete yet. It is a work in progress.",
+  "account": "Account",
   "add": "Add",
   "analytics.completionRateLabel": "Completion rate",
   "analytics.notAvailableLabel": "Not available",
