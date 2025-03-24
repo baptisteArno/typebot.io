@@ -553,13 +553,13 @@ export const ConversationContainer = (props: Props) => {
     <div
       ref={chatContainer}
       class={cx(
-        "flex flex-col overflow-y-auto relative scrollable-container typebot-chat-view scroll-smooth gap-2 w-full min-h-full items-center",
+        "overflow-y-auto relative scrollable-container typebot-chat-view scroll-smooth w-full min-h-full flex flex-col items-center",
         (props.initialChatReply.typebot.theme.chat?.container
-          ?.backgroundColor ?? defaultContainerBackgroundColor) ===
+          ?.backgroundColor ?? defaultContainerBackgroundColor) !==
           "transparent" && "max-w-chat-container",
       )}
     >
-      <div class="max-w-chat-container w-full">
+      <div class="max-w-chat-container w-full flex flex-col gap-2">
         <For each={chatChunks().slice(0, totalChunksDisplayed() + 1)}>
           {(chatChunk, index) => (
             <ChatChunk
