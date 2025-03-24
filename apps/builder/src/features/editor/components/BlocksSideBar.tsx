@@ -130,8 +130,8 @@ export const BlocksSideBar = () => {
     setIsExtended(true);
   };
 
-  const handleMouseLeave = () => {
-    if (isLocked) return;
+  const handleMouseLeave = (e: React.MouseEvent) => {
+    if (isLocked || e.clientX < 100) return;
     closeSideBar();
   };
 
