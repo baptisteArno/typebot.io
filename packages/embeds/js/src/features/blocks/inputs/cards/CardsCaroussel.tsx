@@ -6,7 +6,7 @@ import type { InputSubmitContent } from "@/types";
 import { isMediumContainer, isMobile } from "@/utils/isMobileSignal";
 import type { CardsBlock } from "@typebot.io/blocks-inputs/cards/schema";
 import { cn } from "@typebot.io/ui/lib/cn";
-import { For, Index, type JSX, Show } from "solid-js";
+import { For, Index, type JSX, Show, createMemo } from "solid-js";
 
 type Props = {
   block: CardsBlock;
@@ -26,15 +26,28 @@ export const CardsCaroussel = (props: Props) => {
     });
   };
 
+  const slidesPerPage = createMemo(() =>
+    computeSlidesPerPage(props.block.items.length),
+  );
+
   return (
     <Carousel.Root
       slideCount={props.block.items.length}
-      slidesPerPage={isMobile() ? 1.2 : isMediumContainer() ? 1.5 : 2.2}
+      slidesPerPage={slidesPerPage()}
       slidesPerMove={1}
       spacing="12px"
-      class="w-[min(calc(var(--slides-per-page)*270px),100%)] -mr-5"
+      class="w-[min(calc(var(--slides-per-page)*270px),100%)]"
+      style={{
+        "margin-right": isMobile() ? "-13px" : "-21px",
+      }}
     >
-      <div class="flex w-full justify-end mb-2 pr-2">
+      <div
+        class="flex w-full justify-end mb-2 pr-2"
+        style={{
+          display:
+            props.block.items.length > slidesPerPage() ? undefined : "none",
+        }}
+      >
         <Carousel.Control class="flex gap-2">
           <Carousel.PrevTrigger
             asChild={(props) => (
@@ -56,24 +69,32 @@ export const CardsCaroussel = (props: Props) => {
         <Index each={props.block.items}>
           {(item, index) => (
             <Carousel.Item index={index}>
-              <Card>
-                <Show when={item().imageUrl}>
-                  {(imageUrl) => (
-                    <img
-                      src={imageUrl()}
-                      alt="Card image"
-                      class="aspect-[16/11] object-cover"
-                    />
-                  )}
-                </Show>
-                <div class="flex flex-col gap-2">
-                  <Show when={item().title}>
-                    {(title) => <h2 class="px-4 font-semibold">{title()}</h2>}
+              <Card class="h-full">
+                <div
+                  class="flex flex-col gap-4"
+                  style={{
+                    "padding-top": item().imageUrl ? undefined : "12px",
+                  }}
+                >
+                  <Show when={item().imageUrl}>
+                    {(imageUrl) => (
+                      <img
+                        src={imageUrl()}
+                        alt="Card image"
+                        class="aspect-[16/11] object-cover rounded-t-host-bubble rounded-b-none"
+                      />
+                    )}
                   </Show>
-                  <Show when={item().description}>
-                    {(description) => <p class="px-4">{description()}</p>}
-                  </Show>
+                  <div class="flex flex-col gap-2">
+                    <Show when={item().title}>
+                      {(title) => <h2 class="px-4 font-semibold">{title()}</h2>}
+                    </Show>
+                    <Show when={item().description}>
+                      {(description) => <p class="px-4">{description()}</p>}
+                    </Show>
+                  </div>
                 </div>
+
                 <div class="px-3 pb-2">
                   <For each={item().paths}>
                     {(path, idx) => (
@@ -104,6 +125,25 @@ export const CardsCaroussel = (props: Props) => {
   );
 };
 
-const Card = (props: { children: JSX.Element }) => {
-  return <div class="typebot-card flex flex-col gap-4">{props.children}</div>;
+const Card = (props: { children: JSX.Element; class?: string }) => {
+  return (
+    <div
+      class={cn(
+        "typebot-card flex flex-col justify-between gap-4 text-host-bubble-text bg-host-bubble-bg border-host-bubble-border border-host-bubble rounded-host-bubble shadow-host-bubble filter-host-bubble",
+        props.class,
+      )}
+    >
+      {props.children}
+    </div>
+  );
+};
+
+const computeSlidesPerPage = (totalCards: number) => {
+  if (isMobile()) {
+    return totalCards > 1 ? 1.2 : 1;
+  }
+  if (isMediumContainer()) {
+    return totalCards > 1 ? 1.5 : 1;
+  }
+  return totalCards > 2 ? 2.2 : totalCards;
 };

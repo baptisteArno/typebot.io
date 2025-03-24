@@ -58,9 +58,11 @@ const config = {
     extend: {
       blur: {
         button: "var(--typebot-button-blur)",
+        "host-bubble": "var(--typebot-host-bubble-blur)",
       },
       boxShadow: {
         button: "var(--typebot-button-box-shadow)",
+        "host-bubble": "var(--typebot-host-bubble-box-shadow)",
       },
       borderRadius: {
         button: "var(--typebot-button-border-radius)",

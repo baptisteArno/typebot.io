@@ -606,25 +606,3 @@ select option {
 .typebot-buttons-input > .typebot-input {
   max-width: 350px;
 }
-
-.typebot-card {
-  color: var(--typebot-host-bubble-color);
-  background-color: rgba(
-    var(--typebot-host-bubble-bg-rgb),
-    var(--typebot-host-bubble-opacity)
-  );
-  border-width: var(--typebot-host-bubble-border-width);
-  border-color: rgba(
-    var(--typebot-host-bubble-border-rgb),
-    var(--typebot-host-bubble-border-opacity)
-  );
-  border-radius: var(--typebot-host-bubble-border-radius);
-  box-shadow: var(--typebot-host-bubble-box-shadow);
-  backdrop-filter: blur(var(--typebot-host-bubble-blur));
-}
-
-.typebot-card img {
-  border-radius: var(--typebot-host-bubble-border-radius);
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
-}
