@@ -227,6 +227,11 @@ export const ConversationContainer = (props: Props) => {
   };
 
   const sendMessage = async (answer?: InputSubmitContent) => {
+    if (hasError() && clientSideActions().length > 0) {
+      setHasError(false);
+      await processClientSideActions(clientSideActions());
+      return;
+    }
     setHasError(false);
     const currentInputBlock = [...chatChunks()].pop()?.input;
 
@@ -421,6 +426,7 @@ export const ConversationContainer = (props: Props) => {
   };
 
   const processClientSideActions = async (actions: ClientSideAction[]) => {
+    let hasStreamError = false;
     for (const action of actions) {
       if (
         "streamOpenAiChatCompletion" in action ||
@@ -439,6 +445,7 @@ export const ConversationContainer = (props: Props) => {
         onMessageStream: streamMessage,
         onStreamError: async (error) => {
           setHasError(true);
+          hasStreamError = true;
           await saveLogs([error]);
           props.onNewLogs?.([error]);
         },
@@ -450,6 +457,7 @@ export const ConversationContainer = (props: Props) => {
           continue;
         }
       }
+      if (hasStreamError) return;
 
       setClientSideActions((actions) => actions.slice(1));
       if (response && "logs" in response) saveLogs(response.logs);
