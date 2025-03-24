@@ -3,7 +3,7 @@ import { TypingBubble } from "@/components/TypingBubble";
 import { isMobile } from "@/utils/isMobileSignal";
 import { defaultImageBubbleContent } from "@typebot.io/blocks-bubbles/image/constants";
 import type { ImageBubbleBlock } from "@typebot.io/blocks-bubbles/image/schema";
-import clsx from "clsx";
+import { cx } from "@typebot.io/ui/lib/cva";
 import { createSignal, onCleanup, onMount } from "solid-js";
 
 type Props = {
@@ -61,7 +61,7 @@ export const ImageBubble = (props: Props) => {
       alt={
         props.content?.clickLink?.alt ?? defaultImageBubbleContent.clickLink.alt
       }
-      class={clsx(
+      class={cx(
         isTyping() ? "opacity-0" : "opacity-100",
         props.onTransitionEnd ? "text-fade-in" : undefined,
         props.content?.url?.endsWith(".svg") ? "w-full" : undefined,
@@ -82,7 +82,7 @@ export const ImageBubble = (props: Props) => {
 
   return (
     <div
-      class={clsx(
+      class={cx(
         "flex flex-col",
         props.onTransitionEnd ? "animate-fade-in" : undefined,
       )}
@@ -103,14 +103,14 @@ export const ImageBubble = (props: Props) => {
             <a
               href={props.content.clickLink.url}
               target="_blank"
-              class={clsx("z-10", isTyping() ? "h-8" : "p-4")}
+              class={cx("z-10", isTyping() ? "h-8" : "p-4")}
               rel="noreferrer"
             >
               {Image}
             </a>
           ) : (
             <figure
-              class={clsx(
+              class={cx(
                 "z-10 cursor-pointer",
                 !isTyping() && "p-4",
                 isTyping() ? (isMobile() ? "h-8" : "h-9") : "",

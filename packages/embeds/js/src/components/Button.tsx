@@ -1,4 +1,4 @@
-import clsx from "clsx";
+import { cx } from "@typebot.io/ui/lib/cva";
 import { type JSX, Show, children, splitProps } from "solid-js";
 import { Spinner } from "./Spinner";
 
@@ -25,7 +25,7 @@ export const Button = (props: ButtonProps) => {
     <button
       {...buttonProps}
       disabled={local.isDisabled || local.isLoading}
-      class={clsx(
+      class={cx(
         "py-2 px-4 font-semibold focus:outline-none filter hover:brightness-90 active:brightness-75 disabled:opacity-50 disabled:cursor-not-allowed disabled:brightness-100 flex justify-center flex-shrink-0 transition-[filter] duration-200",
         local.variant === "secondary"
           ? "secondary-button bg-host-bubble-bg text-host-bubble-text rounded-host-bubble border-host-bubble border-host-bubble-border"

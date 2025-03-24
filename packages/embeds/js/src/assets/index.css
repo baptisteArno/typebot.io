@@ -130,13 +130,11 @@ pre {
 
 .typebot-chat-view {
   @apply pt-5 px-3;
-  max-width: var(--typebot-chat-container-max-width);
   background-color: rgba(
     var(--typebot-chat-container-bg-rgb),
     var(--typebot-chat-container-opacity)
   );
   color: rgb(var(--typebot-chat-container-color));
-  min-height: 100%;
   backdrop-filter: blur(var(--typebot-chat-container-blur));
   border-width: var(--typebot-chat-container-border-width);
   border-color: rgba(

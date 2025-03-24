@@ -56,6 +56,9 @@ const config = {
         "rgba(var(--typebot-input-border-rgb), var(--typebot-input-border-opacity));",
     },
     extend: {
+      maxWidth: {
+        "chat-container": "var(--typebot-chat-container-max-width)",
+      },
       blur: {
         button: "var(--typebot-button-blur)",
         "host-bubble": "var(--typebot-host-bubble-blur)",

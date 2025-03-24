@@ -4,7 +4,7 @@ import { isMobile } from "@/utils/isMobileSignal";
 import { defaultEmbedBubbleContent } from "@typebot.io/blocks-bubbles/embed/constants";
 import type { EmbedBubbleBlock } from "@typebot.io/blocks-bubbles/embed/schema";
 import { isNotEmpty } from "@typebot.io/lib/utils";
-import clsx from "clsx";
+import { cx } from "@typebot.io/ui/lib/cva";
 import { createSignal, onCleanup, onMount } from "solid-js";
 
 type Props = {
@@ -62,7 +62,7 @@ export const EmbedBubble = (props: Props) => {
 
   return (
     <div
-      class={clsx(
+      class={cx(
         "flex flex-col w-full",
         props.onTransitionEnd ? "animate-fade-in" : undefined,
       )}
@@ -80,7 +80,7 @@ export const EmbedBubble = (props: Props) => {
             {isTyping() && <TypingBubble />}
           </div>
           <div
-            class={clsx(
+            class={cx(
               "p-4 z-20 text-fade-in w-full",
               isTyping() ? "opacity-0" : "opacity-100 p-4",
             )}

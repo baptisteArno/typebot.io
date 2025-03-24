@@ -1,4 +1,4 @@
-import clsx from "clsx";
+import { cx } from "@typebot.io/ui/lib/cva";
 import { Show, createSignal } from "solid-js";
 import type {
   BubbleTheme,
@@ -50,7 +50,7 @@ export const PreviewMessage = (props: PreviewMessageProps) => {
     <div
       part="preview-message"
       onClick={() => props.onClick()}
-      class={clsx(
+      class={cx(
         "absolute bottom-[calc(100%+12px)] w-64 rounded-md duration-200 flex items-center gap-4 shadow-md animate-fade-in cursor-pointer hover:shadow-lg p-4",
         props.placement === "left" ? "left-0" : "right-0",
       )}

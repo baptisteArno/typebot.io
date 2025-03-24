@@ -37,7 +37,11 @@ import { isNotDefined } from "@typebot.io/lib/utils";
 import type { LogInSession } from "@typebot.io/logs/schemas";
 import { latestTypebotVersion } from "@typebot.io/schemas/versions";
 import { defaultSystemMessages } from "@typebot.io/settings/constants";
-import { BackgroundType } from "@typebot.io/theme/constants";
+import {
+  BackgroundType,
+  defaultContainerBackgroundColor,
+} from "@typebot.io/theme/constants";
+import { cx } from "@typebot.io/ui/lib/cva";
 import {
   For,
   Show,
@@ -540,61 +544,69 @@ export const ConversationContainer = (props: Props) => {
   return (
     <div
       ref={chatContainer}
-      class="flex flex-col overflow-y-auto w-full relative scrollable-container typebot-chat-view scroll-smooth gap-2"
+      class={cx(
+        "flex flex-col overflow-y-auto relative scrollable-container typebot-chat-view scroll-smooth gap-2 w-full min-h-full items-center",
+        (props.initialChatReply.typebot.theme.chat?.container
+          ?.backgroundColor ?? defaultContainerBackgroundColor) ===
+          "transparent" && "max-w-chat-container",
+      )}
     >
-      <For each={chatChunks().slice(0, totalChunksDisplayed() + 1)}>
-        {(chatChunk, index) => (
-          <ChatChunk
-            index={index()}
-            messages={chatChunk.messages}
-            input={chatChunk.input}
+      <div class="max-w-chat-container w-full">
+        <For each={chatChunks().slice(0, totalChunksDisplayed() + 1)}>
+          {(chatChunk, index) => (
+            <ChatChunk
+              index={index()}
+              messages={chatChunk.messages}
+              input={chatChunk.input}
+              theme={props.initialChatReply.typebot.theme}
+              avatarsHistory={avatarsHistory()}
+              settings={props.initialChatReply.typebot.settings}
+              streamingMessageId={chatChunk.streamingMessageId}
+              context={props.context}
+              hideAvatar={
+                (!chatChunk.input ||
+                  hiddenInput()[`${chatChunk.input.id}-${index()}`]) &&
+                ((
+                  chatChunks().slice(0, totalChunksDisplayed() + 1)[index() + 1]
+                    ?.messages ?? []
+                ).length > 0 ||
+                  chatChunks().slice(0, totalChunksDisplayed() + 1)[index() + 1]
+                    ?.streamingMessageId !== undefined ||
+                  (chatChunk.messages.length > 0 && isSending()))
+              }
+              hasError={
+                hasError() &&
+                index() ===
+                  chatChunks().slice(0, totalChunksDisplayed() + 1).length - 1
+              }
+              isTransitionDisabled={
+                index() !==
+                chatChunks().slice(0, totalChunksDisplayed() + 1).length - 1
+              }
+              isOngoingLastChunk={
+                !isEnded() &&
+                index() ===
+                  chatChunks().slice(0, totalChunksDisplayed() + 1).length - 1
+              }
+              onNewBubbleDisplayed={handleNewBubbleDisplayed}
+              onAllBubblesDisplayed={handleAllBubblesDisplayed}
+              onSubmit={sendMessage}
+              onScrollToBottom={autoScrollToBottom}
+              onSkip={handleSkip}
+            />
+          )}
+        </For>
+        <Show when={isSending()}>
+          <LoadingChunk
             theme={props.initialChatReply.typebot.theme}
-            avatarsHistory={avatarsHistory()}
-            settings={props.initialChatReply.typebot.settings}
-            streamingMessageId={chatChunk.streamingMessageId}
-            context={props.context}
-            hideAvatar={
-              (!chatChunk.input ||
-                hiddenInput()[`${chatChunk.input.id}-${index()}`]) &&
-              ((
-                chatChunks().slice(0, totalChunksDisplayed() + 1)[index() + 1]
-                  ?.messages ?? []
-              ).length > 0 ||
-                chatChunks().slice(0, totalChunksDisplayed() + 1)[index() + 1]
-                  ?.streamingMessageId !== undefined ||
-                (chatChunk.messages.length > 0 && isSending()))
+            avatarSrc={
+              avatarsHistory().findLast((avatar) => avatar.role === "host")
+                ?.avatarUrl
             }
-            hasError={
-              hasError() &&
-              index() ===
-                chatChunks().slice(0, totalChunksDisplayed() + 1).length - 1
-            }
-            isTransitionDisabled={
-              index() !==
-              chatChunks().slice(0, totalChunksDisplayed() + 1).length - 1
-            }
-            isOngoingLastChunk={
-              !isEnded() &&
-              index() ===
-                chatChunks().slice(0, totalChunksDisplayed() + 1).length - 1
-            }
-            onNewBubbleDisplayed={handleNewBubbleDisplayed}
-            onAllBubblesDisplayed={handleAllBubblesDisplayed}
-            onSubmit={sendMessage}
-            onScrollToBottom={autoScrollToBottom}
-            onSkip={handleSkip}
           />
-        )}
-      </For>
-      <Show when={isSending()}>
-        <LoadingChunk
-          theme={props.initialChatReply.typebot.theme}
-          avatarSrc={
-            avatarsHistory().findLast((avatar) => avatar.role === "host")
-              ?.avatarUrl
-          }
-        />
-      </Show>
+        </Show>
+      </div>
+
       <BottomSpacer />
     </div>
   );
