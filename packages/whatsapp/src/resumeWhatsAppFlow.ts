@@ -133,7 +133,7 @@ export const resumeWhatsAppFlow = async ({
     credentials,
     isSessionExpired,
     reply,
-    session,
+    state: session?.state,
     sessionStore,
     contact,
     workspaceId,
@@ -393,7 +393,7 @@ const aggregateParallelMediaMessagesIfRedisEnabled = async ({
 
 const resumeFlowAndSendWhatsAppMessages = async (props: {
   to: string;
-  session: Pick<ChatSession, "state"> | null;
+  state: SessionState | undefined;
   sessionStore: SessionStore;
   reply: Message | undefined;
   contact?: NonNullable<SessionState["whatsApp"]>["contact"];
@@ -415,7 +415,7 @@ const resumeFlowAndSendWhatsAppMessages = async (props: {
     newSessionState,
   } = resumeResponse;
 
-  const isFirstChatChunk = (!props.session || props.isSessionExpired) ?? false;
+  const isFirstChatChunk = (!props.state || props.isSessionExpired) ?? false;
   const result = await sendChatReplyToWhatsApp({
     to: props.to,
     messages,
@@ -423,11 +423,12 @@ const resumeFlowAndSendWhatsAppMessages = async (props: {
     isFirstChatChunk,
     clientSideActions,
     credentials: props.credentials,
-    state: resumeResponse.newSessionState,
+    state: newSessionState,
   });
   if (result?.type === "replyToSend")
     return resumeFlowAndSendWhatsAppMessages({
       ...props,
+      state: newSessionState,
       reply: result.replyToSend
         ? {
             type: "text",
@@ -447,7 +448,7 @@ const resumeFlowAndSendWhatsAppMessages = async (props: {
 };
 
 const resumeFlow = ({
-  session,
+  state,
   isSessionExpired,
   reply,
   contact,
@@ -460,20 +461,20 @@ const resumeFlow = ({
   reply: Message | undefined;
   contact?: NonNullable<SessionState["whatsApp"]>["contact"];
   referral?: WhatsAppMessageReferral;
-  session: Pick<ChatSession, "state"> | null;
+  state: SessionState | undefined;
   credentials: WhatsAppCredentials["data"];
   isSessionExpired: boolean | null;
   credentialsId?: string;
   workspaceId?: string;
   sessionStore: SessionStore;
 }) => {
-  if (session?.state && !isSessionExpired)
+  if (state && !isSessionExpired)
     return continueBotFlow(reply, {
       version: 2,
       sessionStore,
       state: contact
         ? {
-            ...session.state,
+            ...state,
             whatsApp: {
               contact,
               referral: referral
@@ -484,7 +485,7 @@ const resumeFlow = ({
                 : undefined,
             },
           }
-        : session.state,
+        : state,
       textBubbleContentFormat: "richText",
     });
   if (!workspaceId || !contact)

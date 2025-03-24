@@ -3,7 +3,7 @@ export const extensionFromMimeType: { [key: string]: string } = {
   "audio/mp3": "mp3",
   "audio/mp4": "m4a",
   "audio/mpeg": "mp3",
-  "audio/ogg": "oga",
+  "audio/ogg": "ogg",
   "audio/wav": "wav",
   "audio/wave": "wav",
   "audio/webm": "weba",
