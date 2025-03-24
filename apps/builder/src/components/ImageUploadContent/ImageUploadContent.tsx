@@ -20,6 +20,7 @@ type Props = {
   initialTab?: Tabs;
   linkWithVariableButton?: boolean;
   additionalTabs?: Partial<Record<AdditionalTabs, boolean>>;
+  onDelete?: () => void;
   onSubmit: (url: string) => void;
   onClose?: () => void;
 };
@@ -33,6 +34,7 @@ export const ImageUploadContent = ({
   initialTab,
   linkWithVariableButton,
   additionalTabs,
+  onDelete,
 }: Props) => {
   const displayedTabs = [
     "link",
@@ -117,6 +119,7 @@ export const ImageUploadContent = ({
         onSubmit={handleSubmit}
         defaultUrl={defaultUrl}
         linkWithVariableButton={linkWithVariableButton}
+        onDelete={onDelete}
       />
     </Stack>
   );
@@ -129,6 +132,7 @@ const BodyContent = ({
   imageSize,
   linkWithVariableButton,
   onSubmit,
+  onDelete,
 }: {
   uploadFileProps?: FilePathUploadProps;
   tab: Tabs;
@@ -136,6 +140,7 @@ const BodyContent = ({
   imageSize: "small" | "regular" | "thumb";
   linkWithVariableButton?: boolean;
   onSubmit: (url: string) => void;
+  onDelete?: () => void;
 }) => {
   switch (tab) {
     case "upload": {
@@ -153,6 +158,7 @@ const BodyContent = ({
           defaultUrl={defaultUrl}
           onNewUrl={onSubmit}
           withVariableButton={linkWithVariableButton}
+          onDelete={onDelete}
         />
       );
     case "giphy":
@@ -192,7 +198,12 @@ const EmbedLinkContent = ({
   defaultUrl,
   onNewUrl,
   withVariableButton,
-}: ContentProps & { defaultUrl?: string; withVariableButton?: boolean }) => {
+  onDelete,
+}: ContentProps & {
+  defaultUrl?: string;
+  withVariableButton?: boolean;
+  onDelete?: () => void;
+}) => {
   const { t } = useTranslate();
 
   return (
@@ -202,6 +213,11 @@ const EmbedLinkContent = ({
         onChange={onNewUrl}
         defaultValue={defaultUrl ?? ""}
         withVariableButton={withVariableButton}
+        onKeyDown={(e) => {
+          if (e.key === "Backspace" && e.currentTarget.value === "") {
+            onDelete?.();
+          }
+        }}
       />
     </Stack>
   );

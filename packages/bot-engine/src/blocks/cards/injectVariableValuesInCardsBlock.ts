@@ -86,6 +86,7 @@ const createDynamicCards = (
       });
       idx += 1;
     }
+    return cards;
   }
   if (Array.isArray(dynamicProps.pictureSrcs)) {
     for (const pictureSrc of dynamicProps.pictureSrcs) {
@@ -101,6 +102,7 @@ const createDynamicCards = (
       });
       idx += 1;
     }
+    return cards;
   }
   if (Array.isArray(dynamicProps.descriptions)) {
     for (const description of dynamicProps.descriptions) {
@@ -116,6 +118,7 @@ const createDynamicCards = (
       });
       idx += 1;
     }
+    return cards;
   }
   return cards;
 };

@@ -26,7 +26,6 @@ export const PlaceholderNode = forwardRef<HTMLDivElement, Props>(
     {
       isVisible,
       isExpanded,
-      hitboxYExtensionPixels = 8,
       initialHeightPixels = 8,
       expandedHeightPixels = 36,
       initialPaddingPixel = 0,
@@ -67,16 +66,7 @@ export const PlaceholderNode = forwardRef<HTMLDivElement, Props>(
         }
         {...props}
       >
-        {onClick && (
-          <chakra.span
-            pos="absolute"
-            w="full"
-            h={`calc(100% + ${hitboxYExtensionPixels * 2}px)`}
-            top={`-${hitboxYExtensionPixels}px`}
-            left="0"
-            zIndex={1}
-          />
-        )}
+        {onClick && <chakra.span pos="absolute" w="full" left="0" zIndex={1} />}
         <Flex
           bgColor={useColorModeValue("gray.200", "gray.800")}
           w="full"

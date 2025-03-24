@@ -48,6 +48,7 @@ export type TextInputProps = {
   | "size"
   | "maxWidth"
   | "flexShrink"
+  | "onKeyDown"
 >;
 
 export const TextInput = forwardRef(function TextInput(
@@ -73,6 +74,7 @@ export const TextInput = forwardRef(function TextInput(
     direction = "column",
     width,
     flexShrink,
+    onKeyDown,
   }: TextInputProps,
   ref,
 ) {
@@ -136,6 +138,7 @@ export const TextInput = forwardRef(function TextInput(
       autoFocus={autoFocus}
       onFocus={onFocus}
       onKeyUp={onKeyUp}
+      onKeyDown={onKeyDown}
       onBlur={updateCarretPosition}
       onChange={(e) => changeValue(e.target.value)}
       size={size}

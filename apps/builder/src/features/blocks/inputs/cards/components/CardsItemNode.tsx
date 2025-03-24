@@ -120,11 +120,12 @@ export const CardsItemNode = ({
                 <Popover
                   isLazy
                   placement="right"
-                  onClose={() => {
-                    if (isEmpty(item.imageUrl)) updateImage(null);
-                  }}
+                  isOpen={
+                    openedNodeId === `${item.id}-${indices.itemIndex}-image`
+                  }
+                  closeOnBlur={false}
                 >
-                  <PopoverTrigger>
+                  <PopoverAnchor>
                     <ImageOrPlaceholder
                       w="full"
                       h="110px"
@@ -132,11 +133,16 @@ export const CardsItemNode = ({
                       _hover={{
                         filter: "brightness(0.95)",
                       }}
+                      onClick={() => {
+                        setOpenedNodeId(
+                          `${item.id}-${indices.itemIndex}-image`,
+                        );
+                      }}
                       transition="filter 0.2s ease"
                       src={item.imageUrl ?? undefined}
                       roundedBottom={0}
                     />
-                  </PopoverTrigger>
+                  </PopoverAnchor>
                   <Portal>
                     <PopoverContent p="4" w="500px">
                       <PopoverArrow bgColor={arrowColor} />
@@ -151,6 +157,9 @@ export const CardsItemNode = ({
                           defaultUrl={item.imageUrl ?? undefined}
                           onSubmit={(url) => {
                             updateImage(url);
+                          }}
+                          onDelete={() => {
+                            updateImage(null);
                           }}
                           additionalTabs={{
                             giphy: true,
