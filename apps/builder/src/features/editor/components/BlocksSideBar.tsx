@@ -1,5 +1,4 @@
 import { LockedIcon, UnlockedIcon } from "@/components/icons";
-import { useFeatureFlags } from "@/features/featureFlags/useFeatureFlags";
 import { useBlockDnd } from "@/features/graph/providers/GraphDndProvider";
 import {
   Fade,
@@ -46,7 +45,6 @@ const legacyIntegrationBlocks = [IntegrationBlockType.OPEN_AI];
 
 export const BlocksSideBar = () => {
   const { t } = useTranslate();
-  const flags = useFeatureFlags();
   const {
     setDraggedBlockType,
     draggedBlockType,
@@ -163,9 +161,6 @@ export const BlocksSideBar = () => {
 
   const filteredInputBlockTypes = Object.values(InputBlockType).filter(
     (type) => {
-      if (type === InputBlockType.CARDS) {
-        return flags?.cards;
-      }
       return getInputBlockLabel(t)
         [type].toLowerCase()
         .includes(searchInput.toLowerCase());
