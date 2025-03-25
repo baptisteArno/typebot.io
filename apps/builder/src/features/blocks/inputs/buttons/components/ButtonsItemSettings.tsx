@@ -61,9 +61,9 @@ export const ButtonsItemSettings = ({ item, onSettingsChange }: Props) => {
         />
       </SwitchWithRelatedSettings>
       <TextInput
-        label={t("blocks.inputs.button.buttonSettings.buttonValue.label")}
-        helperText={t(
-          "blocks.inputs.button.buttonSettings.buttonValue.helperText",
+        label={t("blocks.inputs.internalValue.label")}
+        moreInfoTooltip={t(
+          "blocks.inputs.button.buttonSettings.internalValue.helperText",
         )}
         defaultValue={item.value}
         onChange={updateButtonValue}

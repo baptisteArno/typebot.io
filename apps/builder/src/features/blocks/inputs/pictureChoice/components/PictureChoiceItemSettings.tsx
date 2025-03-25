@@ -117,9 +117,9 @@ export const PictureChoiceItemSettings = ({
         onChange={updateDescription}
       />
       <TextInput
-        label={t("blocks.inputs.picture.itemSettings.pictureVariable.label")}
-        helperText={t(
-          "blocks.inputs.picture.itemSettings.pictureVariable.helperText",
+        label={t("blocks.inputs.internalValue.label")}
+        moreInfoTooltip={t(
+          "blocks.inputs.picture.itemSettings.pictureValue.helperText",
         )}
         defaultValue={item.value}
         onChange={updateValue}
