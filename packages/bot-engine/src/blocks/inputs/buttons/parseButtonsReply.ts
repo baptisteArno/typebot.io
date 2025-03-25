@@ -2,6 +2,7 @@ import type { ChoiceInputBlock } from "@typebot.io/blocks-inputs/choice/schema";
 import type { SessionState } from "@typebot.io/chat-session/schemas";
 import type { SessionStore } from "@typebot.io/runtime-session-store";
 import {
+  getItemContent,
   matchByIndex,
   matchByKey,
   sortByContentLength,
@@ -20,8 +21,10 @@ const createMatchedItemsResponse = (
   return {
     status: "success",
     content: isSingleChoice
-      ? (firstItem.value ?? firstItem.content ?? "")
-      : matchedItems.map((item) => item.value ?? item.content).join(", "),
+      ? getItemContent(firstItem, ["value", "content"])
+      : matchedItems
+          .map((item) => getItemContent(item, ["value", "content"]))
+          .join(", "),
     ...(isSingleChoice && { outgoingEdgeId: firstItem.outgoingEdgeId }),
   };
 };

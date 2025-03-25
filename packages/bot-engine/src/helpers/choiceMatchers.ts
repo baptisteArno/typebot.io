@@ -98,10 +98,10 @@ export const matchByIndex = <T extends ChoiceItem>(
 
 export const getItemContent = <T extends ChoiceItem>(
   item: T,
-  contentKey = "content",
-  fallbackKey?: string,
+  contentKeys: string[],
 ): string => {
-  if (isNotEmpty(item[contentKey])) return item[contentKey];
-  if (fallbackKey && isNotEmpty(item[fallbackKey])) return item[fallbackKey];
+  for (const contentKey of contentKeys) {
+    if (isNotEmpty(item[contentKey])) return item[contentKey];
+  }
   return "";
 };

@@ -1,8 +1,8 @@
 import type { PictureChoiceBlock } from "@typebot.io/blocks-inputs/pictureChoice/schema";
 import type { SessionState } from "@typebot.io/chat-session/schemas";
-import { isNotEmpty } from "@typebot.io/lib/utils";
 import type { SessionStore } from "@typebot.io/runtime-session-store";
 import {
+  getItemContent,
   matchByIndex,
   matchByKey,
   sortByContentLength,
@@ -41,11 +41,7 @@ const handleMultipleChoice = (
 
   if (matchedItems.length === 0) return { status: "fail" };
   const content = matchedItems
-    .map((item) => {
-      if (item.value) return item.value;
-      if (isNotEmpty(item.title)) return item.title;
-      return item.pictureSrc;
-    })
+    .map((item) => getItemContent(item, ["value", "title", "pictureSrc"]))
     .join(", ");
 
   return {
@@ -68,14 +64,10 @@ const handleSingleChoice = (
 
   if (!matchedItem) return { status: "fail" };
 
-  const content = isNotEmpty(matchedItem?.title)
-    ? matchedItem.title!
-    : (matchedItem?.pictureSrc ?? "");
-
   return {
     status: "success",
     outgoingEdgeId: matchedItem.outgoingEdgeId,
-    content: isNotEmpty(matchedItem.value) ? matchedItem.value : content,
+    content: getItemContent(matchedItem, ["value", "title", "pictureSrc"]),
   };
 };
 
