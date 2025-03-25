@@ -210,7 +210,8 @@ const createAuthFile = async (
 ) =>
   writeFileSync(
     join(path, "auth.ts"),
-    `import { option, AuthDefinition } from '@typebot.io/forge'
+    `import { option } from '@typebot.io/forge'
+import type { AuthDefinition } from '@typebot.io/forge/types'
 
         export const auth = {
           type: 'encryptedCredentials',
