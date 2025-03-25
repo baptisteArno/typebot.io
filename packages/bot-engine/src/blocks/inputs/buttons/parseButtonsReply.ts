@@ -30,27 +30,29 @@ const handleMultipleChoice = (
   displayedItems: ChoiceInputBlock["items"],
   inputValue: string,
 ): ParsedReply => {
-  const { remaining: remainingAfterValueMatch, matchedItemIds: valueMatches } =
-    matchByKey({
-      items: sortByContentLength(displayedItems),
-      inputValue,
-      key: "value",
-    });
+  const valueMatches = matchByKey({
+    items: sortByContentLength(displayedItems),
+    inputValue,
+    key: "value",
+  });
 
-  const { remaining: remainingItems, matchedItemIds: contentMatches } =
-    matchByKey({
-      items: remainingAfterValueMatch,
-      inputValue,
-      key: "content",
-    });
+  const contentMatches = matchByKey({
+    items: valueMatches.remaining,
+    inputValue,
+    key: "content",
+  });
 
-  const { matchedItemIds: indexMatches } = matchByIndex(remainingItems, {
+  const indexMatches = matchByIndex(contentMatches.remaining, {
     strippedInput: inputValue,
-    matchedItemIds: contentMatches,
+    matchedItemIds: contentMatches.matchedItemIds,
   });
 
   const matchedItems = displayedItems.filter((item) =>
-    [...valueMatches, ...contentMatches, ...indexMatches].includes(item.id),
+    [
+      ...valueMatches.matchedItemIds,
+      ...contentMatches.matchedItemIds,
+      ...indexMatches.matchedItemIds,
+    ].includes(item.id),
   );
 
   return createMatchedItemsResponse(matchedItems);

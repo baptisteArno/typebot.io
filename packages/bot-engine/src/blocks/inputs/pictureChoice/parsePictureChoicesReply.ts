@@ -14,27 +14,29 @@ const handleMultipleChoice = (
   displayedItems: PictureChoiceBlock["items"],
   inputValue: string,
 ): ParsedReply => {
-  const { remaining: remainingAfterValueMatch, matchedItemIds: valueMatches } =
-    matchByKey({
-      items: sortByContentLength(displayedItems, "value"),
-      inputValue,
-      key: "value",
-    });
+  const valueMatches = matchByKey({
+    items: sortByContentLength(displayedItems, "value"),
+    inputValue,
+    key: "value",
+  });
 
-  const { remaining: remainingItems, matchedItemIds: contentMatches } =
-    matchByKey({
-      items: remainingAfterValueMatch,
-      inputValue,
-      key: "title",
-    });
+  const contentMatches = matchByKey({
+    items: valueMatches.remaining,
+    inputValue,
+    key: "title",
+  });
 
-  const { matchedItemIds: indexMatches } = matchByIndex(remainingItems, {
+  const indexMatches = matchByIndex(contentMatches.remaining, {
     strippedInput: inputValue,
-    matchedItemIds: contentMatches,
+    matchedItemIds: contentMatches.matchedItemIds,
   });
 
   const matchedItems = displayedItems.filter((item) =>
-    [...valueMatches, ...contentMatches, ...indexMatches].includes(item.id),
+    [
+      ...valueMatches.matchedItemIds,
+      ...contentMatches.matchedItemIds,
+      ...indexMatches.matchedItemIds,
+    ].includes(item.id),
   );
 
   if (matchedItems.length === 0) return { status: "fail" };
