@@ -31,7 +31,7 @@ export const parseUnknownError = async ({
         return {
           context,
           description: err.message,
-          details: JSON.stringify(await (err.response as Response).text()),
+          details: await (err.response as Response).text(),
         };
       }
       return {

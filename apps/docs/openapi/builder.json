@@ -16356,6 +16356,9 @@
                     },
                     {
                       "$ref": "#/components/schemas/deepseekBlock"
+                    },
+                    {
+                      "$ref": "#/components/schemas/blinkBlock"
                     }
                   ],
                   "discriminator": {
@@ -16377,7 +16380,8 @@
                       "zendesk": "#/components/schemas/zendeskBlock",
                       "posthog": "#/components/schemas/posthogBlock",
                       "perplexity": "#/components/schemas/perplexityBlock",
-                      "deepseek": "#/components/schemas/deepseekBlock"
+                      "deepseek": "#/components/schemas/deepseekBlock",
+                      "blink": "#/components/schemas/blinkBlock"
                     }
                   }
                 }
@@ -21677,6 +21681,129 @@
           "type"
         ],
         "title": "DeepSeek"
+      },
+      "blinkBlock": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "outgoingEdgeId": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "blink"
+            ]
+          },
+          "options": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "credentialsId": {
+                    "type": "string"
+                  }
+                }
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "credentialsId": {
+                    "type": "string"
+                  },
+                  "action": {
+                    "type": "string",
+                    "enum": [
+                      "Get Users"
+                    ]
+                  },
+                  "filter": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {}
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "User ID"
+                            ]
+                          },
+                          "userId": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "type"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "Employee ID"
+                            ]
+                          },
+                          "employeeId": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "type"
+                        ]
+                      }
+                    ]
+                  },
+                  "responseMapping": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "item": {
+                          "type": "string",
+                          "enum": [
+                            "Emails",
+                            "Company Names",
+                            "First Names",
+                            "Second Names",
+                            "Display Names",
+                            "Initials",
+                            "Job Titles",
+                            "Profile Photo IDs",
+                            "Timezones",
+                            "Manager IDs",
+                            "Department Names",
+                            "Account Statuses",
+                            "User IDs",
+                            "Employee IDs"
+                          ]
+                        },
+                        "variableId": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                },
+                "required": [
+                  "action"
+                ]
+              }
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "type"
+        ],
+        "title": "Blink"
       },
       "error.BAD_REQUEST": {
         "type": "object",

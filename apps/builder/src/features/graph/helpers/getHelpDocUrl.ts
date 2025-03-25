@@ -59,6 +59,8 @@ export const getHelpDocUrl = (
       return "https://docs.typebot.io/editor/blocks/integrations/http-request";
     case InputBlockType.PICTURE_CHOICE:
       return "https://docs.typebot.io/editor/blocks/inputs/picture-choice";
+    case InputBlockType.CARDS:
+      return "https://docs.typebot.io/editor/blocks/inputs/cards";
     case IntegrationBlockType.OPEN_AI:
       return "https://docs.typebot.io/editor/blocks/integrations/openai";
     case IntegrationBlockType.MAKE_COM:

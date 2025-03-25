@@ -1,0 +1,5 @@
+{
+  "name": "@typebot.io/blink-block",
+  "dependencies": { "@typebot.io/forge": "workspace:*", "ky": "1.2.4" },
+  "devDependencies": { "@typebot.io/tsconfig": "workspace:*" }
+}

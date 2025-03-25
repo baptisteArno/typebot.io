@@ -18,7 +18,6 @@ import {
   PopoverArrow,
   PopoverBody,
   PopoverContent,
-  PopoverTrigger,
   Portal,
   SlideFade,
   Stack,

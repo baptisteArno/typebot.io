@@ -100,7 +100,9 @@ export const ZodFieldLayout = ({
           schema={
             innerSchema as z.ZodDiscriminatedUnion<string, z.ZodObject<any>[]>
           }
-          dropdownPlaceholder={`Select a ${innerSchema._def.discriminator}`}
+          dropdownPlaceholder={
+            layout?.placeholder ?? `Select a ${innerSchema._def.discriminator}`
+          }
           onDataChange={onDataChange}
         />
       );
