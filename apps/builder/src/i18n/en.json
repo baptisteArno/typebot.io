@@ -239,6 +239,8 @@
   "blocks.inputs.picture.itemSettings.image.label": "Image:",
   "blocks.inputs.picture.itemSettings.image.pick.label": "Pick an image",
   "blocks.inputs.picture.itemSettings.title.label": "Title:",
+  "blocks.inputs.picture.itemSettings.pictureVariable.label": "Picture value:",
+  "blocks.inputs.picture.itemSettings.pictureVariable.helperText": "The value will be saved in the variable.",
   "blocks.inputs.picture.settings.dynamicItems.descriptions.label": "Descriptions:",
   "blocks.inputs.picture.settings.dynamicItems.images.label": "Images:",
   "blocks.inputs.picture.settings.dynamicItems.label": "Dynamic items",

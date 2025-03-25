@@ -93,10 +93,11 @@ export const InputChatBlock = (props: Props) => {
     const formattedMessage = formattedMessages().findLast(
       (message) => props.chunkIndex === message.inputIndex,
     )?.formattedMessage;
+
     if (formattedMessage && props.block.type !== InputBlockType.FILE)
       setAnswer((answer) =>
         answer?.type === "text"
-          ? { ...answer, label: formattedMessage }
+          ? { ...answer, label: answer.label ?? formattedMessage }
           : answer,
       );
   });
@@ -168,7 +169,9 @@ const Input = (props: {
   onSubmit: (answer: InputSubmitContent) => void;
   onSkip: (label: string) => void;
 }) => {
-  const onSubmit = (answer: InputSubmitContent) => props.onSubmit(answer);
+  const onSubmit = (answer: InputSubmitContent) => {
+    props.onSubmit(answer);
+  };
 
   const getPrefilledValue = () =>
     props.existingAnswer ??

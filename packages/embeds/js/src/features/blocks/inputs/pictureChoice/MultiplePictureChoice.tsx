@@ -45,18 +45,25 @@ export const MultiplePictureChoice = (props: Props) => {
     }
   };
 
-  const handleSubmit = () =>
+  const handleSubmit = () => {
+    const selectedItems = selectedItemIds().map((selectedItemId) =>
+      props.defaultItems.find((item) => item.id === selectedItemId),
+    );
     props.onSubmit({
       type: "text",
-      value: selectedItemIds()
-        .map((selectedItemId) => {
-          const item = props.defaultItems.find(
-            (item) => item.id === selectedItemId,
-          );
+      value: selectedItems
+        .map((item) => {
+          if (item?.value) return item.value;
+          return isNotEmpty(item?.title) ? item.title : item?.pictureSrc;
+        })
+        .join(", "),
+      label: selectedItems
+        .map((item) => {
           return isNotEmpty(item?.title) ? item.title : item?.pictureSrc;
         })
         .join(", "),
     });
+  };
 
   const filterItems = (inputValue: string) => {
     setFilteredItems(

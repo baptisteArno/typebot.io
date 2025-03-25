@@ -44,6 +44,8 @@ export const PictureChoiceItemSettings = ({
   const updateDescription = (description: string) =>
     onItemChange({ ...item, description });
 
+  const updateValue = (value: string) => onItemChange({ ...item, value });
+
   const updateIsDisplayConditionEnabled = (isEnabled: boolean) =>
     onItemChange({
       ...item,
@@ -113,6 +115,14 @@ export const PictureChoiceItemSettings = ({
         label={t("blocks.inputs.settings.description.label")}
         defaultValue={item.description}
         onChange={updateDescription}
+      />
+      <TextInput
+        label={t("blocks.inputs.picture.itemSettings.pictureVariable.label")}
+        helperText={t(
+          "blocks.inputs.picture.itemSettings.pictureVariable.helperText",
+        )}
+        defaultValue={item.value}
+        onChange={updateValue}
       />
       <SwitchWithRelatedSettings
         label={t("blocks.inputs.settings.displayCondition.label")}
