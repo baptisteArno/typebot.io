@@ -42,17 +42,24 @@ export const MultipleChoicesForm = (props: Props) => {
     }
   };
 
-  const handleSubmit = () =>
+  const handleSubmit = () => {
+    const selectedItems = selectedItemIds().map((selectedItemId) =>
+      props.defaultItems.find((item) => item.id === selectedItemId),
+    );
     props.onSubmit({
       type: "text",
-      value: selectedItemIds()
-        .map(
-          (selectedItemId) =>
-            props.defaultItems.find((item) => item.id === selectedItemId)
-              ?.content,
-        )
+      value: selectedItems
+        .map((item) => {
+          return item?.value ?? item?.content ?? "";
+        })
+        .join(", "),
+      label: selectedItems
+        .map((item) => {
+          return item?.content ?? item?.value ?? "";
+        })
         .join(", "),
     });
+  };
 
   const filterItems = (inputValue: string) => {
     if (inputValue === "" || inputValue.trim().length === 0) {

@@ -121,6 +121,8 @@
   "blocks.events.start.eventCard.tooltip": "Already added in the bot flow.",
   "blocks.inputs.button.addItem.ariaLabel": "Add item",
   "blocks.inputs.button.buttonSettings.addComparisonButton.label": "Add comparison",
+  "blocks.inputs.button.buttonSettings.buttonValue.label": "Button value:",
+  "blocks.inputs.button.buttonSettings.buttonValue.helperText": "The value of the button will be saved in the variable.",
   "blocks.inputs.button.buttonSettings.displayCondition.infoText.label": "Only display this item if a condition is met.",
   "blocks.inputs.button.buttonSettings.displayCondition.selectOperator.label": "Select an operator",
   "blocks.inputs.button.clickToEdit.label": "Click to edit",
