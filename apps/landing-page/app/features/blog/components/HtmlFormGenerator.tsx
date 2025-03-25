@@ -1,5 +1,10 @@
 "use client";
 
+import { Button } from "@/components/Button";
+import { Card } from "@/components/Card";
+import { Input } from "@/components/Input";
+import { Select, SelectItem } from "@/components/Select";
+import { createListCollection } from "@ark-ui/react";
 import { nanoid } from "nanoid";
 import { useState } from "react";
 
@@ -21,6 +26,7 @@ interface FormElement {
   width?: "25" | "50" | "75" | "100";
   options?: string[]; // For select/radio/multicheck
 }
+const WIDTH_OPTIONS = ["25", "50", "75", "100"];
 
 // Main component
 export const HtmlFormGenerator = () => {
@@ -28,22 +34,6 @@ export const HtmlFormGenerator = () => {
   const [selectedElement, setSelectedElement] = useState<string | null>(null);
   const [showExportModal, setShowExportModal] = useState(false);
   const [showLivePreview, setShowLivePreview] = useState(false);
-
-  // Component Palette items
-  const paletteItems: Omit<FormElement, "id">[] = [
-    { type: "text", label: "Text Input" },
-    { type: "email", label: "Email Input" },
-    { type: "phone", label: "Phone Input" },
-    { type: "select", label: "Dropdown", options: ["Option 1", "Option 2"] },
-    { type: "radio", label: "Radio Group", options: ["Option 1", "Option 2"] },
-    {
-      type: "multicheck",
-      label: "Multi Checkbox",
-      options: ["Option 1", "Option 2"],
-    },
-    { type: "checkbox", label: "Single Checkbox" },
-    { type: "textarea", label: "Text Area" },
-  ];
 
   const addElement = (item: Omit<FormElement, "id">) => {
     const newElement: FormElement = {
@@ -93,66 +83,100 @@ export const HtmlFormGenerator = () => {
   };
 
   return (
-    <div className="w-[1200px] mx-auto max-w-[90vw] left-1/2 -translate-x-1/2 relative bg-gray-2">
-      <div className="flex">
-        <ComponentsPalette items={paletteItems} onAddElement={addElement} />
-        <div className="flex-1 mx-4">
-          <FormCanvas
-            elements={formElements}
-            selectedElement={selectedElement}
-            setSelectedElement={setSelectedElement}
-            onRemoveElement={removeElement}
-          />
-          <div className="flex gap-2 mt-4 justify-end">
-            <button
-              onClick={() => setShowLivePreview(true)}
-              className="px-4 py-2 rounded-md transition-colors"
-              style={{
-                background: "rgb(var(--purple-9))",
-                color: "rgb(var(--gray-1))",
-              }}
-            >
-              View Live Form
-            </button>
-            <button
-              onClick={() => setShowExportModal(true)}
-              className="px-4 py-2 rounded-md transition-colors hover:bg-blue-10"
-              style={{
-                background: "rgb(var(--blue-9))",
-                color: "rgb(var(--gray-1))",
-              }}
-            >
-              Export HTML
-            </button>
+    <div className="px-4 -mx-[calc((100vw-min(100vw,42rem))/2)] min-w-[100vw] py-12">
+      <Card className="max-w-6xl mx-auto p-6 bg-white/20">
+        <div className="flex gap-4">
+          <div className="flex-1">
+            <Card className="mb-4 p-4">
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-lg font-semibold">Form Elements</h2>
+                <div className="flex gap-2">
+                  <Button
+                    onClick={() => setShowLivePreview(true)}
+                    variant="secondary"
+                    size="sm"
+                  >
+                    Live Preview
+                  </Button>
+                  <Button
+                    onClick={() => setShowExportModal(true)}
+                    variant="cta"
+                    size="sm"
+                  >
+                    Generate HTML
+                  </Button>
+                </div>
+              </div>
+              <div className="flex flex-wrap gap-4">
+                <FormCanvas
+                  elements={formElements}
+                  selectedElement={selectedElement}
+                  setSelectedElement={setSelectedElement}
+                  onRemoveElement={removeElement}
+                />
+              </div>
+            </Card>
+            <Card className="p-4">
+              <h2 className="text-lg font-semibold mb-4">Components</h2>
+              <ComponentsPalette
+                items={[
+                  { type: "text", label: "Text Input" },
+                  { type: "email", label: "Email Input" },
+                  { type: "phone", label: "Phone Input" },
+                  { type: "textarea", label: "Text Area" },
+                  {
+                    type: "select",
+                    label: "Select Dropdown",
+                    options: ["Option 1", "Option 2", "Option 3"],
+                  },
+                  { type: "checkbox", label: "Checkbox" },
+                  {
+                    type: "radio",
+                    label: "Radio Buttons",
+                    options: ["Option 1", "Option 2", "Option 3"],
+                  },
+                  {
+                    type: "multicheck",
+                    label: "Multiple Checkboxes",
+                    options: ["Option 1", "Option 2", "Option 3"],
+                  },
+                ]}
+                onAddElement={addElement}
+              />
+            </Card>
           </div>
+          <Card className="w-64 p-4">
+            <PropertiesPanel
+              selectedElement={
+                selectedElement
+                  ? formElements.find((el) => el.id === selectedElement) || null
+                  : null
+              }
+              onUpdate={(updates) => {
+                setFormElements((prev) =>
+                  prev.map((el) =>
+                    el.id === selectedElement ? { ...el, ...updates } : el,
+                  ),
+                );
+              }}
+            />
+          </Card>
         </div>
-        <PropertiesPanel
-          selectedElement={
-            selectedElement
-              ? (formElements.find((el) => el.id === selectedElement) ?? null)
-              : null
-          }
-          onUpdate={(updates) => {
-            setFormElements((elements) =>
-              elements.map((el) =>
-                el.id === selectedElement ? { ...el, ...updates } : el,
-              ),
-            );
-          }}
+      </Card>
+
+      {showExportModal && (
+        <ExportModal
+          html={generateHtmlCode()}
+          onClose={() => setShowExportModal(false)}
         />
-        {showExportModal && (
-          <ExportModal
-            html={generateHtmlCode()}
-            onClose={() => setShowExportModal(false)}
-          />
-        )}
-        {showLivePreview && (
-          <LivePreviewModal
-            elements={formElements}
-            onClose={() => setShowLivePreview(false)}
-          />
-        )}
-      </div>
+      )}
+
+      {showLivePreview && (
+        <LivePreviewModal
+          elements={formElements}
+          onClose={() => setShowLivePreview(false)}
+        />
+      )}
     </div>
   );
 };
@@ -168,11 +192,13 @@ const ExportModal = ({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-lg max-w-2xl w-full p-6">
+      <Card className="max-w-2xl w-full p-6">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-semibold">Export HTML</h2>
-          <button
+          <h2 className="text-xl font-semibold">Generated HTML</h2>
+          <Button
             onClick={onClose}
+            variant="ghost"
+            size="sm"
             className="text-gray-500 hover:text-gray-700"
           >
             <svg
@@ -182,33 +208,24 @@ const ExportModal = ({
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             >
               <path d="M18 6 6 18" />
               <path d="m6 6 12 12" />
             </svg>
-          </button>
+          </Button>
         </div>
-        <pre className="bg-gray-50 p-4 rounded-md overflow-x-auto text-sm">
-          <code>{html}</code>
-        </pre>
-        <div className="mt-4 flex justify-end gap-2">
-          <button
-            onClick={copyToClipboard}
-            className="px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-colors"
-          >
-            Copy to Clipboard
-          </button>
-          <button
-            onClick={onClose}
-            className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
-          >
-            Close
-          </button>
+        <div className="mb-4">
+          <pre className="bg-gray-100 p-4 rounded-md overflow-auto max-h-96 text-sm">
+            {html}
+          </pre>
         </div>
-      </div>
+        <Button onClick={copyToClipboard} variant="cta" className="w-full">
+          Copy to Clipboard
+        </Button>
+      </Card>
     </div>
   );
 };
@@ -222,20 +239,18 @@ const ComponentsPalette = ({
   onAddElement: (item: Omit<FormElement, "id">) => void;
 }) => {
   return (
-    <div className=" p-6 bg-white rounded-lg">
-      <h2 className="text-lg font-semibold mb-4">Form Components</h2>
-      <div className="grid gap-3">
-        {items.map((item) => (
-          <button
-            key={item.type}
-            onClick={() => onAddElement(item)}
-            className="flex items-center p-3 bg-gray-50 rounded-lg text-left hover:bg-gray-100 transition-colors group"
-          >
-            <span className="flex-1">{item.label}</span>
-            <span className="text-gray-400 group-hover:text-gray-600">+</span>
-          </button>
-        ))}
-      </div>
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+      {items.map((item, index) => (
+        <Card
+          key={index}
+          className="p-3 cursor-pointer hover:bg-gray-2 transition-colors"
+          onClick={() => onAddElement(item)}
+        >
+          <div className="text-center">
+            <span className="text-sm font-medium">{item.label}</span>
+          </div>
+        </Card>
+      ))}
     </div>
   );
 };
@@ -253,7 +268,7 @@ const FormCanvas = ({
   onRemoveElement: (id: string) => void;
 }) => {
   return (
-    <div className="bg-white p-8 rounded-lg min-h-[600px]">
+    <div className="bg-white p-8 rounded-lg min-h-[600px] w-full">
       <div className="space-y-4">
         {elements.map((element) => (
           <FormElement
@@ -290,18 +305,18 @@ const FormElement = ({
   onRemove: () => void;
 }) => {
   return (
-    <div
-      className={`relative p-4 border rounded group ${
-        isSelected ? "border-blue-500" : "border-gray-200"
-      }`}
+    <Card
+      className={`relative p-4 ${isSelected ? "border-blue-500" : ""}`}
       style={{ width: `${element.width || 100}%` }}
       onClick={onClick}
     >
-      <button
+      <Button
         onClick={(e) => {
           e.stopPropagation();
           onRemove();
         }}
+        variant="ghost"
+        size="xs"
         className="absolute top-2 right-2 text-gray-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"
         title="Remove element"
       >
@@ -319,7 +334,7 @@ const FormElement = ({
           <path d="M18 6 6 18" />
           <path d="m6 6 12 12" />
         </svg>
-      </button>
+      </Button>
       <span
         className="block text-sm font-medium"
         style={{ color: "rgb(var(--gray-11))" }}
@@ -330,7 +345,7 @@ const FormElement = ({
         <div className="mt-2 space-y-2">
           {element.options?.map((option, index) => (
             <div key={index} className="flex items-center gap-2">
-              <input
+              <Input
                 type="radio"
                 name={`preview-${element.id}`}
                 className="h-4 w-4"
@@ -349,7 +364,7 @@ const FormElement = ({
         <div className="mt-2 space-y-2">
           {element.options?.map((option, index) => (
             <div key={index} className="flex items-center gap-2">
-              <input type="checkbox" className="h-4 w-4" disabled />
+              <Input type="checkbox" className="h-4 w-4" disabled />
               <span
                 className="text-sm"
                 style={{ color: "rgb(var(--gray-11))" }}
@@ -360,14 +375,14 @@ const FormElement = ({
           ))}
         </div>
       ) : (
-        <input
+        <Input
           type={element.type === "textarea" ? "text" : element.type}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+          className="mt-1 block w-full"
           placeholder={element.placeholder}
           disabled
         />
       )}
-    </div>
+    </Card>
   );
 };
 
@@ -381,7 +396,7 @@ const PropertiesPanel = ({
 }) => {
   if (!selectedElement) {
     return (
-      <div className="w-64 bg-white p-4 rounded-lg">
+      <div className="w-full">
         <p style={{ color: "rgb(var(--gray-9))" }}>
           Select an element to edit its properties
         </p>
@@ -412,24 +427,24 @@ const PropertiesPanel = ({
   };
 
   return (
-    <div className="w-64 bg-white p-4 border-l border-gray-200">
+    <div className="w-full">
       <h2 className="text-lg font-semibold mb-4">Properties</h2>
       <div className="space-y-4">
-        {/* Label Field */}
+        {/* label Field */}
         <div>
           <label
             htmlFor="element-label"
             className="block text-sm font-medium"
             style={{ color: "rgb(var(--gray-11))" }}
           >
-            Label
+            label
           </label>
-          <input
+          <Input
             id="element-label"
             type="text"
             value={selectedElement.label}
             onChange={(e) => onUpdate({ label: e.target.value })}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
+            className="mt-1"
           />
         </div>
 
@@ -443,19 +458,19 @@ const PropertiesPanel = ({
             >
               Placeholder
             </label>
-            <input
+            <Input
               id="element-placeholder"
               type="text"
               value={selectedElement.placeholder || ""}
               onChange={(e) => onUpdate({ placeholder: e.target.value })}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
+              className="mt-1"
             />
           </div>
         )}
 
         {/* Required Field */}
         <div className="flex items-center gap-2">
-          <input
+          <Input
             id="element-required"
             type="checkbox"
             checked={selectedElement.required || false}
@@ -479,18 +494,20 @@ const PropertiesPanel = ({
           >
             Width
           </span>
-          <select
-            value={selectedElement.width || "100"}
-            onChange={(e) =>
-              onUpdate({ width: e.target.value as "25" | "50" | "75" | "100" })
+          <Select
+            collection={createListCollection({
+              items: WIDTH_OPTIONS,
+            })}
+            onValueChange={(e) =>
+              onUpdate({ width: e.items[0] as "25" | "50" | "75" | "100" })
             }
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"
           >
-            <option value="25">25%</option>
-            <option value="50">50%</option>
-            <option value="75">75%</option>
-            <option value="100">100%</option>
-          </select>
+            {WIDTH_OPTIONS.map((item) => (
+              <SelectItem key={item} item={item}>
+                {item}
+              </SelectItem>
+            ))}
+          </Select>
         </div>
 
         {/* Options for Select/Radio/MultiCheck */}
@@ -507,30 +524,30 @@ const PropertiesPanel = ({
             <div className="space-y-2">
               {selectedElement.options?.map((option, index) => (
                 <div key={index} className="flex gap-2">
-                  <input
+                  <Input
                     type="text"
                     value={option}
                     onChange={(e) => handleOptionsChange(index, e.target.value)}
-                    className="flex-1 rounded-md border-gray-300 shadow-sm p-2"
+                    className="flex-1"
                   />
-                  <button
+                  <Button
                     onClick={() => removeOption(index)}
-                    className="p-2 text-gray-500 hover:text-red-500"
+                    variant="ghost"
+                    size="sm"
+                    className="text-gray-500 hover:text-red-500"
                   >
                     ×
-                  </button>
+                  </Button>
                 </div>
               ))}
-              <button
+              <Button
                 onClick={addOption}
-                className="w-full p-2 rounded-md text-sm"
-                style={{
-                  background: "rgb(var(--gray-3))",
-                  color: "rgb(var(--gray-11))",
-                }}
+                variant="secondary"
+                size="sm"
+                className="w-full"
               >
                 Add Option
-              </button>
+              </Button>
             </div>
           </div>
         )}
@@ -549,11 +566,13 @@ const LivePreviewModal = ({
 }) => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-lg max-w-2xl w-full p-6">
+      <Card className="max-w-2xl w-full p-6">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-semibold">Live Form Preview</h2>
-          <button
+          <Button
             onClick={onClose}
+            variant="ghost"
+            size="sm"
             className="text-gray-500 hover:text-gray-700"
           >
             <svg
@@ -570,7 +589,7 @@ const LivePreviewModal = ({
               <path d="M18 6 6 18" />
               <path d="m6 6 12 12" />
             </svg>
-          </button>
+          </Button>
         </div>
         <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
           {elements.map((element) => (
@@ -589,25 +608,27 @@ const LivePreviewModal = ({
               {element.type === "textarea" ? (
                 <textarea
                   id={element.id}
-                  className="w-full p-2 border rounded-md"
+                  className="w-full p-2 border border-input rounded-md"
                   required={element.required}
                   placeholder={element.placeholder}
                 />
               ) : element.type === "select" ? (
-                <select
-                  id={element.id}
-                  className="w-full p-2 border rounded-md"
-                  required={element.required}
+                <Select
+                  collection={createListCollection({
+                    items: element.options || [],
+                  })}
                 >
                   {element.options?.map((option) => (
-                    <option key={option}>{option}</option>
+                    <SelectItem key={option} item={option}>
+                      {option}
+                    </SelectItem>
                   ))}
-                </select>
+                </Select>
               ) : element.type === "radio" ? (
                 <div className="space-y-2">
                   {element.options?.map((option, index) => (
                     <div key={index} className="flex items-center gap-2">
-                      <input
+                      <Input
                         type="radio"
                         id={`${element.id}-${index}`}
                         name={element.id}
@@ -621,7 +642,7 @@ const LivePreviewModal = ({
                 <div className="space-y-2">
                   {element.options?.map((option, index) => (
                     <div key={index} className="flex items-center gap-2">
-                      <input
+                      <Input
                         type="checkbox"
                         id={`${element.id}-${index}`}
                         name={`${element.id}[]`}
@@ -631,35 +652,38 @@ const LivePreviewModal = ({
                   ))}
                 </div>
               ) : element.type === "checkbox" ? (
-                <input
+                <Input
                   id={element.id}
                   type="checkbox"
                   className="h-4 w-4 text-blue-600"
                   required={element.required}
                 />
+              ) : element.type === "phone" ? (
+                <Input
+                  id={element.id}
+                  type="tel"
+                  required={element.required}
+                  placeholder={element.placeholder}
+                />
               ) : (
-                <input
+                <Input
                   id={element.id}
                   type={element.type}
-                  className="w-full p-2 border rounded-md"
                   required={element.required}
                   placeholder={element.placeholder}
                 />
               )}
             </div>
           ))}
-          <button
-            type="submit"
-            className="w-full p-2 rounded-md transition-colors hover:bg-blue-10"
-            style={{
-              background: "rgb(var(--blue-9))",
-              color: "rgb(var(--gray-1))",
-            }}
+          <Button
+            variant="cta"
+            className="w-full"
+            onClick={(e) => e.preventDefault()}
           >
             Submit
-          </button>
+          </Button>
         </form>
-      </div>
+      </Card>
     </div>
   );
 };
