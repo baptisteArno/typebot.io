@@ -8,6 +8,7 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
+  Portal,
   Stack,
   Text,
 } from "@chakra-ui/react";
@@ -77,26 +78,28 @@ export const PictureChoiceItemSettings = ({
                     : t("blocks.inputs.picture.itemSettings.image.pick.label")}
                 </Button>
               </PopoverTrigger>
-              <PopoverContent p="4" w="500px">
-                <ImageUploadContent
-                  uploadFileProps={{
-                    workspaceId,
-                    typebotId,
-                    blockId,
-                    itemId: item.id,
-                  }}
-                  defaultUrl={item.pictureSrc}
-                  onSubmit={(url) => {
-                    updateImage(url);
-                    onClose();
-                  }}
-                  additionalTabs={{
-                    giphy: true,
-                    unsplash: true,
-                    icon: true,
-                  }}
-                />
-              </PopoverContent>
+              <Portal>
+                <PopoverContent p="4" w="500px">
+                  <ImageUploadContent
+                    uploadFileProps={{
+                      workspaceId,
+                      typebotId,
+                      blockId,
+                      itemId: item.id,
+                    }}
+                    defaultUrl={item.pictureSrc}
+                    onSubmit={(url) => {
+                      updateImage(url);
+                      onClose();
+                    }}
+                    additionalTabs={{
+                      giphy: true,
+                      unsplash: true,
+                      icon: true,
+                    }}
+                  />
+                </PopoverContent>
+              </Portal>
             </>
           )}
         </Popover>
