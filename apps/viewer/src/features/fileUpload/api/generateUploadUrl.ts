@@ -7,11 +7,11 @@ import { getSession } from "@typebot.io/chat-session/queries/getSession";
 import { env } from "@typebot.io/env";
 import { getBlockById } from "@typebot.io/groups/helpers/getBlockById";
 import { parseGroups } from "@typebot.io/groups/helpers/parseGroups";
+import { getMimeTypesFromExtensions } from "@typebot.io/lib/extensionFromMimeType";
 import { generatePresignedPostPolicy } from "@typebot.io/lib/s3/generatePresignedPostPolicy";
 import prisma from "@typebot.io/prisma";
 import type { Prisma } from "@typebot.io/prisma/types";
 import { z } from "@typebot.io/zod";
-import { mimeTypeReferences } from "./mimeTypes";
 
 export const generateUploadUrl = publicProcedure
   .meta({
@@ -96,16 +96,13 @@ export const generateUploadUrl = publicProcedure
 
     const allowedMimeTypes =
       block.type === InputBlockType.FILE && block.options?.allowedFileTypes
-        ? block.options.allowedFileTypes.flatMap((extension) => {
-            const reference = mimeTypeReferences.find(
-              (m) => m.extension === extension,
-            );
-            if (!reference) return undefined;
-            return reference.mimeTypes;
-          })
+        ? getMimeTypesFromExtensions(block.options?.allowedFileTypes)
         : undefined;
 
-    if (allowedMimeTypes?.length && !allowedMimeTypes.includes(fileType))
+    if (
+      allowedMimeTypes?.length &&
+      (!fileType || !allowedMimeTypes.includes(fileType))
+    )
       throw new TRPCError({
         code: "BAD_REQUEST",
         message: "File type not allowed",
