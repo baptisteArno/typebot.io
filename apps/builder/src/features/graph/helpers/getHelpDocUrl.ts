@@ -66,7 +66,7 @@ export const getHelpDocUrl = (
     case IntegrationBlockType.MAKE_COM:
       return "https://docs.typebot.io/editor/blocks/integrations/make-com";
     case LogicBlockType.AB_TEST:
-      return "https://docs.typebot.io/editor/blocks/logic/abTest";
+      return "https://docs.typebot.io/editor/blocks/logic/ab-test";
     case LogicBlockType.JUMP:
       return "https://docs.typebot.io/editor/blocks/logic/jump";
     case IntegrationBlockType.PIXEL:
