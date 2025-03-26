@@ -65,6 +65,15 @@ export const SystemMessagesForm = ({
     });
   };
 
+  const updatePopupBlockedTitle = (
+    popupBlockedTitle: SystemMessages["popupBlockedTitle"],
+  ) => {
+    onSystemMessagesChange({
+      ...systemMessages,
+      popupBlockedTitle,
+    });
+  };
+
   const updatePopupBlockedDescription = (
     popupBlockedDescription: SystemMessages["popupBlockedDescription"],
   ) => {
@@ -117,6 +126,14 @@ export const SystemMessagesForm = ({
         defaultValue={systemMessages?.networkErrorMessage}
         placeholder={defaultSystemMessages.networkErrorMessage}
         onChange={updateOfflineErrorMessage}
+      />
+      <TextInput
+        label={t(
+          "settings.sideMenu.general.systemMessages.popupBlockedTitle.label",
+        )}
+        defaultValue={systemMessages?.popupBlockedTitle}
+        placeholder={defaultSystemMessages.popupBlockedTitle}
+        onChange={updatePopupBlockedTitle}
       />
       <Textarea
         label={t(

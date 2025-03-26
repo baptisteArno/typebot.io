@@ -472,6 +472,9 @@ export const ConversationContainer = (props: Props) => {
       }
       if (response && "blockedPopupUrl" in response) {
         toaster.create({
+          title:
+            props.context.typebot.settings.general?.systemMessages
+              ?.popupBlockedTitle ?? defaultSystemMessages.popupBlockedTitle,
           description:
             props.context.typebot.settings.general?.systemMessages
               ?.popupBlockedDescription ??

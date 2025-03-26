@@ -54,6 +54,9 @@ const config = {
         "rgba(var(--typebot-host-bubble-border-rgb), var(--typebot-host-bubble-border-opacity));",
       "input-border":
         "rgba(var(--typebot-input-border-rgb), var(--typebot-input-border-opacity));",
+      "input-text": "var(--typebot-input-color)",
+      "input-bg":
+        "rgba(var(--typebot-input-bg-rgb), var(--typebot-input-opacity));",
     },
     extend: {
       maxWidth: {
@@ -66,16 +69,39 @@ const config = {
       boxShadow: {
         button: "var(--typebot-button-box-shadow)",
         "host-bubble": "var(--typebot-host-bubble-box-shadow)",
+        input: "var(--typebot-input-box-shadow)",
       },
       borderRadius: {
+        chat: "var(--typebot-chat-container-border-radius)",
         button: "var(--typebot-button-border-radius)",
         "host-bubble": "var(--typebot-host-bubble-border-radius)",
       },
       borderWidth: {
         button: "var(--typebot-button-border-width)",
         "host-bubble": "var(--typebot-host-bubble-border-width)",
+        input: "var(--typebot-input-border-width)",
       },
       keyframes: {
+        fadeInFromBottom: {
+          "0%": {
+            opacity: "0",
+            transform: "translateY(4px)",
+          },
+          "100%": {
+            opacity: "1",
+            transform: "translateY(0)",
+          },
+        },
+        fadeOutFromBottom: {
+          "0%": {
+            opacity: "1",
+            transform: "translateY(0)",
+          },
+          "100%": {
+            opacity: "0",
+            transform: "translateY(4px)",
+          },
+        },
         "fade-in": {
           "0%": {
             opacity: "0",
@@ -87,6 +113,8 @@ const config = {
       },
       animation: {
         "fade-in": "fade-in 0.3s ease-out",
+        "fade-in-from-bottom": "fadeInFromBottom 150ms ease-out forwards",
+        "fade-out-from-bottom": "fadeOutFromBottom 50ms ease-out forwards",
       },
     },
   },

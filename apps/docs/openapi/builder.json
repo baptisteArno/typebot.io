@@ -22526,6 +22526,9 @@
                   "networkErrorMessage": {
                     "type": "string"
                   },
+                  "popupBlockedTitle": {
+                    "type": "string"
+                  },
                   "popupBlockedDescription": {
                     "type": "string"
                   },

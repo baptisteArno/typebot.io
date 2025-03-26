@@ -447,6 +447,7 @@
   "settings.sideMenu.general.systemMessages.networkErrorTitle.label": "Network error title",
   "settings.sideMenu.general.systemMessages.popupBlockedButton.label": "Popup blocked button label",
   "settings.sideMenu.general.systemMessages.popupBlockedDescription.label": "Popup blocked description",
+  "settings.sideMenu.general.systemMessages.popupBlockedTitle.label": "Popup blocked title",
   "settings.sideMenu.general.systemMessages.whatsAppPictureChoiceSelectLabel.label": "WhatsApp picture choice select label",
   "settings.sideMenu.metadata": "Metadata",
   "settings.sideMenu.metadata.description.label": "Description",

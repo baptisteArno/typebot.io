@@ -504,7 +504,9 @@ const setButtons = ({
 
   documentStyle.setProperty(
     botCssVariableNames.chat.buttons.blur,
-    isDefined(buttons?.blur) ? `${buttons.blur ?? 0}px` : "none",
+    isDefined(buttons?.blur)
+      ? `${buttons.blur ?? 0}px`
+      : defaultBlur.toString(),
   );
 
   setShadow(
