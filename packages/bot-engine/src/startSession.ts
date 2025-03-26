@@ -353,6 +353,15 @@ const getTypebot = async (startParams: StartParams): Promise<StartTypebot> => {
           ?.botClosed ?? defaultSystemMessages.botClosed,
     });
 
+  const disablePublicUrl = settingsSchema.parse(parsedTypebot.settings).security
+    ?.disablePublicUrl;
+
+  if (disablePublicUrl)
+    throw new TRPCError({
+      code: "BAD_REQUEST",
+      message: defaultSystemMessages.disablePublicUrl,
+    });
+
   return startTypebotSchema.parse(parsedTypebot);
 };
 
