@@ -53,7 +53,17 @@ export const extensionFromMimeType: { [key: string]: string } = {
 };
 
 export function getMimeTypesFromExtensions(extensions: string[]) {
+  const wildcardExtensions = extensions
+    .filter((ext) => ext.includes("*"))
+    .map((ext) => ext.split("/")[0]);
+
   return Object.entries(extensionFromMimeType)
-    .filter(([_, extension]) => extensions.includes(extension))
+    .filter(([mimeType, extension]) => {
+      const mimeBaseType = mimeType.split("/")[0];
+      return (
+        extensions.includes(extension) ||
+        wildcardExtensions.includes(mimeBaseType)
+      );
+    })
     .map(([mimeType]) => mimeType);
 }
