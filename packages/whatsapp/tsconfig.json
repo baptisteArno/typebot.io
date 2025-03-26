@@ -1,4 +1,4 @@
 {
   "extends": "@typebot.io/tsconfig/base.json",
-  "include": ["src/**/*.ts", "../lib/src/extensionFromMimeType.ts"]
+  "include": ["src/**/*.ts"]
 }
