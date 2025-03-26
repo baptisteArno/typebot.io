@@ -12,7 +12,6 @@ const fileInputOptionsV5Schema = optionBaseSchema.merge(
     isMultipleAllowed: z.boolean().optional(),
     labels: z
       .object({
-        allowedFileTypes: z.string().optional(),
         placeholder: z.string().optional(),
         button: z.string().optional(),
         clear: z.string().optional(),

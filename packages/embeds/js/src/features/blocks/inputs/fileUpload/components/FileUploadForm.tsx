@@ -233,13 +233,6 @@ export const FileUploadForm = (props: Props) => {
                     defaultFileInputOptions.labels.placeholder
                   }
                 />
-                {props.block.options?.allowedFileTypes && (
-                  <p class="text-sm text-gray-500 text-center">
-                    {props.block.options?.labels?.allowedFileTypes ??
-                      defaultFileInputOptions.labels.allowedFileTypes}{" "}
-                    {props.block.options?.allowedFileTypes?.join(", ")}
-                  </p>
-                )}
               </div>
               <input
                 id="dropzone-file"

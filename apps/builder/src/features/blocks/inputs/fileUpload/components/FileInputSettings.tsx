@@ -56,12 +56,6 @@ export const FileInputSettings = ({ options, onOptionsChange }: Props) => {
   const handleRequiredChange = (isRequired: boolean) =>
     onOptionsChange({ ...options, isRequired });
 
-  const updateAllowedFileTypesLabel = (allowedFileTypesLabel: string) =>
-    onOptionsChange({
-      ...options,
-      labels: { ...options?.labels, allowedFileTypes: allowedFileTypesLabel },
-    });
-
   const updateClearButtonLabel = (clear: string) =>
     onOptionsChange({ ...options, labels: { ...options?.labels, clear } });
 
@@ -164,16 +158,6 @@ export const FileInputSettings = ({ options, onOptionsChange }: Props) => {
                 withVariableButton={false}
               />
             </Stack>
-            {options?.allowedFileTypes && (
-              <TextInput
-                label={t("blocks.inputs.file.settings.allowedFileTypesLabel")}
-                defaultValue={
-                  options?.labels?.allowedFileTypes ??
-                  defaultFileInputOptions.labels.allowedFileTypes
-                }
-                onChange={updateAllowedFileTypesLabel}
-              />
-            )}
             <TextInput
               label={t("blocks.inputs.settings.button.label")}
               defaultValue={
