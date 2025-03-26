@@ -416,7 +416,10 @@ export const startChatResponseSchema = z
         typebotV6Schema.shape.version,
       ]),
       theme: themeSchema,
-      settings: settingsSchema,
+      settings: settingsSchema.pick({
+        general: true,
+        typingEmulation: true,
+      }),
       publishedAt: z.coerce.date().optional(),
     }),
   })

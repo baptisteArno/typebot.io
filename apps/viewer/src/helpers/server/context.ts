@@ -11,11 +11,10 @@ export async function createContext(opts: trpcNext.CreateNextContextOptions) {
 
   return {
     user,
-    origin:
-      (opts.req.headers["x-typebot-iframe-referrer-origin"] as
-        | string
-        | undefined) ?? opts.req.headers.origin,
-    res: opts.res,
+    origin: opts.req.headers.origin,
+    iframeReferrerOrigin: opts.req.headers[
+      "x-typebot-iframe-referrer-origin"
+    ] as string | undefined,
   };
 }
 

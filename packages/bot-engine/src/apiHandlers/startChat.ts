@@ -6,6 +6,7 @@ import {
   getSessionStore,
 } from "@typebot.io/runtime-session-store";
 import { computeCurrentProgress } from "../computeCurrentProgress";
+import { assertOriginIsAllowed } from "../helpers/isOriginAllowed";
 import { filterPotentiallySensitiveLogs } from "../logs/filterPotentiallySensitiveLogs";
 import { saveStateToDatabase } from "../saveStateToDatabase";
 import type { Message } from "../schemas/api";
@@ -13,6 +14,7 @@ import { startSession } from "../startSession";
 
 type Props = {
   origin: string | undefined;
+  iframeReferrerOrigin: string | undefined;
   message?: Message;
   isOnlyRegistering: boolean;
   publicId: string;
@@ -24,6 +26,7 @@ type Props = {
 
 export const startChat = async ({
   origin,
+  iframeReferrerOrigin,
   message,
   isOnlyRegistering,
   publicId,
@@ -61,16 +64,10 @@ export const startChat = async ({
   });
   deleteSessionStore(sessionId);
 
-  let corsOrigin;
-
-  if (
-    newSessionState.allowedOrigins &&
-    newSessionState.allowedOrigins.length > 0
-  ) {
-    if (origin && newSessionState.allowedOrigins.includes(origin))
-      corsOrigin = origin;
-    else corsOrigin = newSessionState.allowedOrigins[0];
-  }
+  assertOriginIsAllowed(origin, {
+    allowedOrigins: newSessionState.allowedOrigins,
+    iframeReferrerOrigin,
+  });
 
   const session = isOnlyRegistering
     ? await restartSession({
@@ -118,7 +115,6 @@ export const startChat = async ({
     dynamicTheme,
     logs: logs?.filter(filterPotentiallySensitiveLogs),
     clientSideActions,
-    corsOrigin,
     progress: newSessionState.progressMetadata
       ? isEnded
         ? 100

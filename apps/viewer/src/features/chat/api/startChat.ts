@@ -15,11 +15,10 @@ export const startChat = publicProcedure
   })
   .input(startChatInputSchema)
   .output(startChatResponseSchema)
-  .mutation(async ({ input, ctx: { origin, res } }) => {
-    const { corsOrigin, ...response } = await startChatFn({
+  .mutation(async ({ input, ctx: { origin, iframeReferrerOrigin } }) =>
+    startChatFn({
       ...input,
       origin,
-    });
-    if (corsOrigin) res.setHeader("Access-Control-Allow-Origin", corsOrigin);
-    return response;
-  });
+      iframeReferrerOrigin,
+    }),
+  );

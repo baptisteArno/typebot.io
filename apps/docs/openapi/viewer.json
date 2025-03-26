@@ -1790,7 +1790,98 @@
                           "$ref": "#/components/schemas/theme"
                         },
                         "settings": {
-                          "$ref": "#/components/schemas/settings"
+                          "type": "object",
+                          "properties": {
+                            "general": {
+                              "type": "object",
+                              "properties": {
+                                "isBrandingEnabled": {
+                                  "type": "boolean"
+                                },
+                                "isTypingEmulationEnabled": {
+                                  "type": "boolean"
+                                },
+                                "isInputPrefillEnabled": {
+                                  "type": "boolean"
+                                },
+                                "isHideQueryParamsEnabled": {
+                                  "type": "boolean"
+                                },
+                                "isNewResultOnRefreshEnabled": {
+                                  "type": "boolean"
+                                },
+                                "rememberUser": {
+                                  "type": "object",
+                                  "properties": {
+                                    "isEnabled": {
+                                      "type": "boolean"
+                                    },
+                                    "storage": {
+                                      "type": "string",
+                                      "enum": [
+                                        "session",
+                                        "local"
+                                      ]
+                                    }
+                                  }
+                                },
+                                "systemMessages": {
+                                  "type": "object",
+                                  "properties": {
+                                    "invalidMessage": {
+                                      "type": "string"
+                                    },
+                                    "botClosed": {
+                                      "type": "string"
+                                    },
+                                    "networkErrorTitle": {
+                                      "type": "string"
+                                    },
+                                    "networkErrorMessage": {
+                                      "type": "string"
+                                    },
+                                    "popupBlockedDescription": {
+                                      "type": "string"
+                                    },
+                                    "popupBlockedButtonLabel": {
+                                      "type": "string"
+                                    },
+                                    "fileUploadError": {
+                                      "type": "string"
+                                    },
+                                    "fileUploadSizeError": {
+                                      "type": "string"
+                                    },
+                                    "whatsAppPictureChoiceSelectLabel": {
+                                      "type": "string"
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "typingEmulation": {
+                              "type": "object",
+                              "properties": {
+                                "enabled": {
+                                  "type": "boolean"
+                                },
+                                "speed": {
+                                  "type": "number"
+                                },
+                                "maxDelay": {
+                                  "type": "number"
+                                },
+                                "delayBetweenBubbles": {
+                                  "type": "number",
+                                  "minimum": 0,
+                                  "maximum": 5
+                                },
+                                "isDisabledOnFirstMessage": {
+                                  "type": "boolean"
+                                }
+                              }
+                            }
+                          }
                         },
                         "publishedAt": {
                           "type": "string"
@@ -2958,7 +3049,98 @@
                           "$ref": "#/components/schemas/theme"
                         },
                         "settings": {
-                          "$ref": "#/components/schemas/settings"
+                          "type": "object",
+                          "properties": {
+                            "general": {
+                              "type": "object",
+                              "properties": {
+                                "isBrandingEnabled": {
+                                  "type": "boolean"
+                                },
+                                "isTypingEmulationEnabled": {
+                                  "type": "boolean"
+                                },
+                                "isInputPrefillEnabled": {
+                                  "type": "boolean"
+                                },
+                                "isHideQueryParamsEnabled": {
+                                  "type": "boolean"
+                                },
+                                "isNewResultOnRefreshEnabled": {
+                                  "type": "boolean"
+                                },
+                                "rememberUser": {
+                                  "type": "object",
+                                  "properties": {
+                                    "isEnabled": {
+                                      "type": "boolean"
+                                    },
+                                    "storage": {
+                                      "type": "string",
+                                      "enum": [
+                                        "session",
+                                        "local"
+                                      ]
+                                    }
+                                  }
+                                },
+                                "systemMessages": {
+                                  "type": "object",
+                                  "properties": {
+                                    "invalidMessage": {
+                                      "type": "string"
+                                    },
+                                    "botClosed": {
+                                      "type": "string"
+                                    },
+                                    "networkErrorTitle": {
+                                      "type": "string"
+                                    },
+                                    "networkErrorMessage": {
+                                      "type": "string"
+                                    },
+                                    "popupBlockedDescription": {
+                                      "type": "string"
+                                    },
+                                    "popupBlockedButtonLabel": {
+                                      "type": "string"
+                                    },
+                                    "fileUploadError": {
+                                      "type": "string"
+                                    },
+                                    "fileUploadSizeError": {
+                                      "type": "string"
+                                    },
+                                    "whatsAppPictureChoiceSelectLabel": {
+                                      "type": "string"
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "typingEmulation": {
+                              "type": "object",
+                              "properties": {
+                                "enabled": {
+                                  "type": "boolean"
+                                },
+                                "speed": {
+                                  "type": "number"
+                                },
+                                "maxDelay": {
+                                  "type": "number"
+                                },
+                                "delayBetweenBubbles": {
+                                  "type": "number",
+                                  "minimum": 0,
+                                  "maximum": 5
+                                },
+                                "isDisabledOnFirstMessage": {
+                                  "type": "boolean"
+                                }
+                              }
+                            }
+                          }
                         },
                         "publishedAt": {
                           "type": "string"

@@ -2,6 +2,7 @@ import { publicProcedure } from "@/helpers/server/trpc";
 import { TRPCError } from "@trpc/server";
 import { BubbleBlockType } from "@typebot.io/blocks-bubbles/constants";
 import { continueBotFlow } from "@typebot.io/bot-engine/continueBotFlow";
+import { assertOriginIsAllowed } from "@typebot.io/bot-engine/helpers/isOriginAllowed";
 import { parseDynamicTheme } from "@typebot.io/bot-engine/parseDynamicTheme";
 import { saveStateToDatabase } from "@typebot.io/bot-engine/saveStateToDatabase";
 import {
@@ -35,7 +36,7 @@ export const sendMessageV2 = publicProcedure
   .mutation(
     async ({
       input: { sessionId, message, startParams, clientLogs },
-      ctx: { user, res, origin },
+      ctx: { user, origin, iframeReferrerOrigin },
     }) => {
       const session = sessionId ? await getSession(sessionId) : null;
       const newSessionId = sessionId ?? createId();
@@ -120,18 +121,10 @@ export const sendMessageV2 = publicProcedure
         });
 
         if (startParams.isPreview || typeof startParams.typebot !== "string") {
-          if (
-            newSessionState.allowedOrigins &&
-            newSessionState.allowedOrigins.length > 0
-          ) {
-            if (origin && newSessionState.allowedOrigins.includes(origin))
-              res.setHeader("Access-Control-Allow-Origin", origin);
-            else
-              res.setHeader(
-                "Access-Control-Allow-Origin",
-                newSessionState.allowedOrigins[0],
-              );
-          }
+          assertOriginIsAllowed(origin, {
+            allowedOrigins: newSessionState.allowedOrigins,
+            iframeReferrerOrigin,
+          });
         }
 
         const allLogs = clientLogs ? [...(logs ?? []), ...clientLogs] : logs;
@@ -179,18 +172,11 @@ export const sendMessageV2 = publicProcedure
           clientSideActions,
         };
       } else {
-        if (
-          session.state.allowedOrigins &&
-          session.state.allowedOrigins.length > 0
-        ) {
-          if (origin && session.state.allowedOrigins.includes(origin))
-            res.setHeader("Access-Control-Allow-Origin", origin);
-          else
-            res.setHeader(
-              "Access-Control-Allow-Origin",
-              session.state.allowedOrigins[0],
-            );
-        }
+        assertOriginIsAllowed(origin, {
+          allowedOrigins: session.state.allowedOrigins,
+          iframeReferrerOrigin,
+        });
+
         const {
           messages,
           input,

@@ -3,7 +3,6 @@ import {
   removePaymentInProgressFromStorage,
 } from "@/features/blocks/inputs/payment/helpers/paymentInProgressStorage";
 import type { BotContext } from "@/types";
-import { CorsError } from "@/utils/CorsError";
 import { guessApiHost } from "@/utils/guessApiHost";
 import type {
   ContinueChatResponse,
@@ -16,7 +15,6 @@ import { isNotDefined, isNotEmpty } from "@typebot.io/lib/utils";
 import ky from "ky";
 
 type Props = {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   typebot: string | any;
   stripeRedirectStatus?: string;
   apiHost?: string;
@@ -90,16 +88,6 @@ export async function startChatQuery({
         timeout: false,
       },
     );
-
-    const corsAllowOrigin = response.headers.get("access-control-allow-origin");
-
-    if (
-      iframeReferrerOrigin &&
-      corsAllowOrigin &&
-      corsAllowOrigin !== "*" &&
-      !iframeReferrerOrigin.includes(corsAllowOrigin)
-    )
-      throw new CorsError(corsAllowOrigin);
 
     return { data: await response.json<StartChatResponse>() };
   } catch (error) {

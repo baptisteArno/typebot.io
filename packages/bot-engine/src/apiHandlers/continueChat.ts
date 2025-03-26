@@ -8,6 +8,7 @@ import {
 } from "@typebot.io/runtime-session-store";
 import { computeCurrentProgress } from "../computeCurrentProgress";
 import { continueBotFlow } from "../continueBotFlow";
+import { assertOriginIsAllowed } from "../helpers/isOriginAllowed";
 import { filterPotentiallySensitiveLogs } from "../logs/filterPotentiallySensitiveLogs";
 import { parseDynamicTheme } from "../parseDynamicTheme";
 import { saveStateToDatabase } from "../saveStateToDatabase";
@@ -15,12 +16,14 @@ import type { Message } from "../schemas/api";
 
 type Props = {
   origin: string | undefined;
+  iframeReferrerOrigin: string | undefined;
   message?: Message;
   sessionId: string;
   textBubbleContentFormat: "richText" | "markdown";
 };
 export const continueChat = async ({
   origin,
+  iframeReferrerOrigin,
   sessionId,
   message,
   textBubbleContentFormat,
@@ -34,6 +37,11 @@ export const continueChat = async ({
     });
   }
 
+  assertOriginIsAllowed(origin, {
+    allowedOrigins: session.state.allowedOrigins,
+    iframeReferrerOrigin,
+  });
+
   const isSessionExpired =
     session &&
     isDefined(session.state.expiryTimeout) &&
@@ -44,17 +52,6 @@ export const continueChat = async ({
       code: "NOT_FOUND",
       message: "Session expired. You need to start a new session.",
     });
-
-  let corsOrigin;
-
-  if (
-    session?.state.allowedOrigins &&
-    session.state.allowedOrigins.length > 0
-  ) {
-    if (origin && session.state.allowedOrigins.includes(origin))
-      corsOrigin = origin;
-    else corsOrigin = session.state.allowedOrigins[0];
-  }
 
   const sessionStore = getSessionStore(sessionId);
   const {
@@ -116,7 +113,6 @@ export const continueChat = async ({
     dynamicTheme,
     logs: isPreview ? logs : logs?.filter(filterPotentiallySensitiveLogs),
     lastMessageNewFormat,
-    corsOrigin,
     progress: newSessionState.progressMetadata
       ? isEnded
         ? 100
