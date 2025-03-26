@@ -1,4 +1,6 @@
 import { DropdownList } from "@/components/DropdownList";
+import { MoreInfoTooltip } from "@/components/MoreInfoTooltip";
+import { TagsInput } from "@/components/TagsInput";
 import { TextInput } from "@/components/inputs";
 import { CodeEditor } from "@/components/inputs/CodeEditor";
 import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
@@ -9,6 +11,7 @@ import {
   AccordionIcon,
   AccordionItem,
   AccordionPanel,
+  FormControl,
   FormLabel,
   Stack,
 } from "@chakra-ui/react";
@@ -29,6 +32,12 @@ type Props = {
 export const FileInputSettings = ({ options, onOptionsChange }: Props) => {
   const { t } = useTranslate();
 
+  const updateAllowedFileTypes = (allowedFileTypes: string[]) =>
+    onOptionsChange({
+      ...options,
+      allowedFileTypes,
+    });
+
   const handleButtonLabelChange = (button: string) =>
     onOptionsChange({ ...options, labels: { ...options?.labels, button } });
 
@@ -46,6 +55,12 @@ export const FileInputSettings = ({ options, onOptionsChange }: Props) => {
 
   const handleRequiredChange = (isRequired: boolean) =>
     onOptionsChange({ ...options, isRequired });
+
+  const updateAllowedFileTypesLabel = (allowedFileTypesLabel: string) =>
+    onOptionsChange({
+      ...options,
+      labels: { ...options?.labels, allowedFileTypes: allowedFileTypesLabel },
+    });
 
   const updateClearButtonLabel = (clear: string) =>
     onOptionsChange({ ...options, labels: { ...options?.labels, clear } });
@@ -90,6 +105,21 @@ export const FileInputSettings = ({ options, onOptionsChange }: Props) => {
         }
         onCheckChange={handleMultipleFilesChange}
       />
+      <FormControl>
+        <FormLabel>
+          {t("blocks.inputs.file.settings.allowedFileTypes.label")}
+          <MoreInfoTooltip>
+            {t("blocks.inputs.file.settings.allowedFileTypes.tooltip")}
+          </MoreInfoTooltip>
+        </FormLabel>
+        <TagsInput
+          items={options?.allowedFileTypes}
+          onChange={updateAllowedFileTypes}
+          placeholder={t(
+            "blocks.inputs.file.settings.allowedFileTypes.placeholder",
+          )}
+        />
+      </FormControl>
 
       <Stack>
         <FormLabel mb="0" htmlFor="variable">
@@ -115,7 +145,7 @@ export const FileInputSettings = ({ options, onOptionsChange }: Props) => {
       <Accordion allowToggle>
         <AccordionItem>
           <AccordionButton justifyContent="space-between">
-            Labels
+            {t("blocks.inputs.file.settings.labels")}
             <AccordionIcon />
           </AccordionButton>
           <AccordionPanel as={Stack} spacing={4}>
@@ -134,6 +164,16 @@ export const FileInputSettings = ({ options, onOptionsChange }: Props) => {
                 withVariableButton={false}
               />
             </Stack>
+            {options?.allowedFileTypes && (
+              <TextInput
+                label={t("blocks.inputs.file.settings.allowedFileTypesLabel")}
+                defaultValue={
+                  options?.labels?.allowedFileTypes ??
+                  defaultFileInputOptions.labels.allowedFileTypes
+                }
+                onChange={updateAllowedFileTypesLabel}
+              />
+            )}
             <TextInput
               label={t("blocks.inputs.settings.button.label")}
               defaultValue={

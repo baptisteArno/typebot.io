@@ -5,6 +5,7 @@ export const defaultFileInputOptions = {
   isMultipleAllowed: false,
   visibility: "Auto",
   labels: {
+    allowedFileTypes: "Allowed file types :",
     placeholder: `<strong>
       Click to upload
     </strong> or drag and drop<br>
