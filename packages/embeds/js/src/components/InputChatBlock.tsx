@@ -90,6 +90,9 @@ export const InputChatBlock = (props: Props) => {
   };
 
   createEffect(() => {
+    const currentAnswer = answer();
+    if (currentAnswer?.type === "text" && currentAnswer.label) return;
+
     const formattedMessage = formattedMessages().findLast(
       (message) => props.chunkIndex === message.inputIndex,
     )?.formattedMessage;
@@ -97,7 +100,7 @@ export const InputChatBlock = (props: Props) => {
     if (formattedMessage && props.block.type !== InputBlockType.FILE)
       setAnswer((answer) =>
         answer?.type === "text"
-          ? { ...answer, label: answer.label ?? formattedMessage }
+          ? { ...answer, label: formattedMessage }
           : answer,
       );
   });
@@ -169,10 +172,6 @@ const Input = (props: {
   onSubmit: (answer: InputSubmitContent) => void;
   onSkip: (label: string) => void;
 }) => {
-  const onSubmit = (answer: InputSubmitContent) => {
-    props.onSubmit(answer);
-  };
-
   const getPrefilledValue = () =>
     props.existingAnswer ??
     (props.isInputPrefillEnabled ? props.block.prefilledValue : undefined);
@@ -192,28 +191,28 @@ const Input = (props: {
           block={props.block as TextInputBlock}
           defaultValue={getPrefilledValue()}
           context={props.context}
-          onSubmit={onSubmit}
+          onSubmit={props.onSubmit}
         />
       </Match>
       <Match when={props.block.type === InputBlockType.NUMBER}>
         <NumberInput
           block={props.block as NumberInputBlock}
           defaultValue={getPrefilledValue()}
-          onSubmit={onSubmit}
+          onSubmit={props.onSubmit}
         />
       </Match>
       <Match when={props.block.type === InputBlockType.EMAIL}>
         <EmailInput
           block={props.block as EmailInputBlock}
           defaultValue={getPrefilledValue()}
-          onSubmit={onSubmit}
+          onSubmit={props.onSubmit}
         />
       </Match>
       <Match when={props.block.type === InputBlockType.URL}>
         <UrlInput
           block={props.block as UrlInputBlock}
           defaultValue={getPrefilledValue()}
-          onSubmit={onSubmit}
+          onSubmit={props.onSubmit}
         />
       </Match>
       <Match when={props.block.type === InputBlockType.PHONE}>
@@ -223,21 +222,21 @@ const Input = (props: {
             (props.block as PhoneNumberInputBlock).options?.defaultCountryCode
           }
           defaultValue={getPrefilledValue()}
-          onSubmit={onSubmit}
+          onSubmit={props.onSubmit}
         />
       </Match>
       <Match when={props.block.type === InputBlockType.DATE}>
         <DateForm
           options={props.block.options as DateInputBlock["options"]}
           defaultValue={getPrefilledValue()}
-          onSubmit={onSubmit}
+          onSubmit={props.onSubmit}
         />
       </Match>
       <Match when={props.block.type === InputBlockType.TIME}>
         <TimeForm
           block={props.block as TimeInputBlock["options"]}
           defaultValue={getPrefilledValue()}
-          onSubmit={onSubmit}
+          onSubmit={props.onSubmit}
         />
       </Match>
       <Match when={isButtonsBlock(props.block)} keyed>
@@ -248,14 +247,14 @@ const Input = (props: {
                 chunkIndex={props.chunkIndex}
                 defaultItems={block.items}
                 options={block.options}
-                onSubmit={onSubmit}
+                onSubmit={props.onSubmit}
               />
             </Match>
             <Match when={block.options?.isMultipleChoice}>
               <MultipleChoicesForm
                 defaultItems={block.items}
                 options={block.options}
-                onSubmit={onSubmit}
+                onSubmit={props.onSubmit}
               />
             </Match>
           </Switch>
@@ -268,7 +267,7 @@ const Input = (props: {
               <SinglePictureChoice
                 defaultItems={block.items}
                 options={block.options}
-                onSubmit={onSubmit}
+                onSubmit={props.onSubmit}
                 onTransitionEnd={props.onTransitionEnd}
               />
             </Match>
@@ -276,7 +275,7 @@ const Input = (props: {
               <MultiplePictureChoice
                 defaultItems={block.items}
                 options={block.options}
-                onSubmit={onSubmit}
+                onSubmit={props.onSubmit}
                 onTransitionEnd={props.onTransitionEnd}
               />
             </Match>
@@ -287,14 +286,14 @@ const Input = (props: {
         <RatingForm
           block={props.block as RatingInputBlock}
           defaultValue={getPrefilledValue()}
-          onSubmit={onSubmit}
+          onSubmit={props.onSubmit}
         />
       </Match>
       <Match when={props.block.type === InputBlockType.FILE}>
         <FileUploadForm
           context={props.context}
           block={props.block as FileInputBlock}
-          onSubmit={onSubmit}
+          onSubmit={props.onSubmit}
           onSkip={props.onSkip}
         />
       </Match>
@@ -314,7 +313,7 @@ const Input = (props: {
       <Match when={props.block.type === InputBlockType.CARDS}>
         <CardsCaroussel
           block={props.block as CardsBlock}
-          onSubmit={onSubmit}
+          onSubmit={props.onSubmit}
           onTransitionEnd={props.onTransitionEnd}
         />
       </Match>

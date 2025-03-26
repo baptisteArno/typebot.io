@@ -33,7 +33,7 @@ export const Buttons = (props: Props) => {
     props.onSubmit({
       type: "text",
       value: value ?? content ?? "",
-      label: content ?? value ?? "",
+      label: value ? content : undefined,
     });
   };
 

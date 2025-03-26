@@ -10,26 +10,7 @@ import {
 import type { ParsedReply } from "../../../types";
 import { injectVariableValuesInButtonsInputBlock } from "./injectVariableValuesInButtonsInputBlock";
 
-const createMatchedItemsResponse = (
-  matchedItems: ChoiceInputBlock["items"],
-  isSingleChoice = false,
-): ParsedReply => {
-  if (matchedItems.length === 0) return { status: "fail" };
-
-  const firstItem = matchedItems[0];
-
-  return {
-    status: "success",
-    content: isSingleChoice
-      ? getItemContent(firstItem, ["value", "content"])
-      : matchedItems
-          .map((item) => getItemContent(item, ["value", "content"]))
-          .join(", "),
-    ...(isSingleChoice && { outgoingEdgeId: firstItem.outgoingEdgeId }),
-  };
-};
-
-const handleMultipleChoice = (
+const parseMultipleChoiceReply = (
   displayedItems: ChoiceInputBlock["items"],
   inputValue: string,
 ): ParsedReply => {
@@ -58,10 +39,17 @@ const handleMultipleChoice = (
     ].includes(item.id),
   );
 
-  return createMatchedItemsResponse(matchedItems);
+  if (matchedItems.length === 0) return { status: "fail" };
+
+  return {
+    status: "success",
+    content: matchedItems
+      .map((item) => getItemContent(item, ["value", "content"]))
+      .join(", "),
+  };
 };
 
-const handleSingleChoice = (
+const parseSingleChoiceReply = (
   displayedItems: ChoiceInputBlock["items"],
   inputValue: string,
 ): ParsedReply => {
@@ -72,7 +60,13 @@ const handleSingleChoice = (
       (item.content && inputValue.trim() === item.content.trim()),
   );
 
-  return createMatchedItemsResponse(matchedItem ? [matchedItem] : [], true);
+  if (!matchedItem) return { status: "fail" };
+
+  return {
+    status: "success",
+    content: getItemContent(matchedItem, ["value", "content"]),
+    outgoingEdgeId: matchedItem.outgoingEdgeId,
+  };
 };
 
 export const parseButtonsReply = (
@@ -93,6 +87,6 @@ export const parseButtonsReply = (
   }).items;
 
   return block.options?.isMultipleChoice
-    ? handleMultipleChoice(displayedItems, inputValue)
-    : handleSingleChoice(displayedItems, inputValue);
+    ? parseMultipleChoiceReply(displayedItems, inputValue)
+    : parseSingleChoiceReply(displayedItems, inputValue);
 };

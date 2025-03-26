@@ -10,7 +10,7 @@ import {
 import type { ParsedReply } from "../../../types";
 import { injectVariableValuesInPictureChoiceBlock } from "./injectVariableValuesInPictureChoiceBlock";
 
-const handleMultipleChoice = (
+const parseMultipleChoiceReply = (
   displayedItems: PictureChoiceBlock["items"],
   inputValue: string,
 ): ParsedReply => {
@@ -50,7 +50,7 @@ const handleMultipleChoice = (
   };
 };
 
-const handleSingleChoice = (
+const parseSingleChoiceReply = (
   displayedItems: PictureChoiceBlock["items"],
   inputValue: string,
 ): ParsedReply => {
@@ -89,6 +89,6 @@ export const parsePictureChoicesReply = (
   }).items;
 
   return block.options?.isMultipleChoice
-    ? handleMultipleChoice(displayedItems, inputValue)
-    : handleSingleChoice(displayedItems, inputValue);
+    ? parseMultipleChoiceReply(displayedItems, inputValue)
+    : parseSingleChoiceReply(displayedItems, inputValue);
 };
