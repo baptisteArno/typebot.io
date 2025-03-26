@@ -26,11 +26,16 @@ export const Buttons = (props: Props) => {
     if (!isMobile() && inputRef) inputRef.focus({ preventScroll: true });
   });
 
-  const handleClick = (itemIndex: number) =>
+  const handleClick = (itemIndex: number) => {
+    const item = filteredItems()[itemIndex];
+    const { value, content } = item;
+
     props.onSubmit({
       type: "text",
-      value: filteredItems()[itemIndex]?.content ?? "",
+      value: value ?? content ?? "",
+      label: value ? content : undefined,
     });
+  };
 
   const filterItems = (inputValue: string) => {
     if (inputValue === "" || inputValue.trim().length === 0) {

@@ -29,6 +29,7 @@ export const pictureChoiceItemSchemas = {
     pictureSrc: z.string().optional(),
     title: z.string().optional(),
     description: z.string().optional(),
+    value: z.string().optional(),
     displayCondition: z
       .object({
         isEnabled: z.boolean().optional(),
@@ -40,6 +41,7 @@ export const pictureChoiceItemSchemas = {
     pictureSrc: z.string().optional(),
     title: z.string().optional(),
     description: z.string().optional(),
+    value: z.string().optional(),
     displayCondition: z
       .object({
         isEnabled: z.boolean().optional(),
