@@ -21,10 +21,12 @@ services:
       - POSTGRES_DB=typebot
       - POSTGRES_PASSWORD=typebot
     healthcheck:
-        test: ["CMD-SHELL", "pg_isready -U postgres"]
-        interval: 5s
-        timeout: 5s
-        retries: 5
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - typebot-network
 
   typebot-redis:
     image: redis:alpine
@@ -45,13 +47,13 @@ services:
     <<: *typebot-common
     image: baptistearno/typebot-builder:latest
     ports:
-      - '8080:3000'
+      - "8080:3000"
 
   typebot-viewer:
     <<: *typebot-common
     image: baptistearno/typebot-viewer:latest
     ports:
-      - '8081:3000'
+      - "8081:3000"
 
 networks:
   typebot-network:

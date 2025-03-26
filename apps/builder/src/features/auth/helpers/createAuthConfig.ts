@@ -1,6 +1,5 @@
 import { datesAreOnSameDay } from "@/helpers/datesAreOnSameDate";
 import { env } from "@typebot.io/env";
-import { getIp } from "@typebot.io/lib/getIp";
 import { isDefined } from "@typebot.io/lib/utils";
 import prisma from "@typebot.io/prisma";
 import { clientUserSchema } from "@typebot.io/schemas/features/user/schema";
