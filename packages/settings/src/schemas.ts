@@ -10,6 +10,7 @@ export const systemMessagesSchema = z.object({
   botClosed: z.string().optional(),
   networkErrorTitle: z.string().optional(),
   networkErrorMessage: z.string().optional(),
+  popupBlockedTitle: z.string().optional(),
   popupBlockedDescription: z.string().optional(),
   popupBlockedButtonLabel: z.string().optional(),
   fileUploadError: z.string().optional(),

@@ -1840,6 +1840,9 @@
                                     "networkErrorMessage": {
                                       "type": "string"
                                     },
+                                    "popupBlockedTitle": {
+                                      "type": "string"
+                                    },
                                     "popupBlockedDescription": {
                                       "type": "string"
                                     },
@@ -3097,6 +3100,9 @@
                                       "type": "string"
                                     },
                                     "networkErrorMessage": {
+                                      "type": "string"
+                                    },
+                                    "popupBlockedTitle": {
                                       "type": "string"
                                     },
                                     "popupBlockedDescription": {
@@ -13327,6 +13333,9 @@
                     "type": "string"
                   },
                   "networkErrorMessage": {
+                    "type": "string"
+                  },
+                  "popupBlockedTitle": {
                     "type": "string"
                   },
                   "popupBlockedDescription": {
