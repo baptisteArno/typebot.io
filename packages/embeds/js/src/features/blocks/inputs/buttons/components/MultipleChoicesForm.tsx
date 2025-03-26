@@ -46,6 +46,8 @@ export const MultipleChoicesForm = (props: Props) => {
     const selectedItems = selectedItemIds().map((selectedItemId) =>
       props.defaultItems.find((item) => item.id === selectedItemId),
     );
+    const hasIntervalValue = selectedItems.some((item) => item?.value);
+
     props.onSubmit({
       type: "text",
       value: selectedItems
@@ -53,11 +55,13 @@ export const MultipleChoicesForm = (props: Props) => {
           return item?.value ?? item?.content ?? "";
         })
         .join(", "),
-      label: selectedItems
-        .map((item) => {
-          return item?.content ?? item?.value ?? "";
-        })
-        .join(", "),
+      label: hasIntervalValue
+        ? selectedItems
+            .map((item) => {
+              return item?.content ?? item?.value ?? "";
+            })
+            .join(", ")
+        : undefined,
     });
   };
 
