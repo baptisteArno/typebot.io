@@ -11,6 +11,7 @@ import { generatePresignedPostPolicy } from "@typebot.io/lib/s3/generatePresigne
 import prisma from "@typebot.io/prisma";
 import type { Prisma } from "@typebot.io/prisma/types";
 import { z } from "@typebot.io/zod";
+import { mimeTypeReferences } from "./mimeTypes";
 
 export const generateUploadUrl = publicProcedure
   .meta({
@@ -91,6 +92,23 @@ export const generateUploadUrl = publicProcedure
       throw new TRPCError({
         code: "BAD_REQUEST",
         message: "Current block does not expect file upload",
+      });
+
+    const allowedMimeTypes =
+      block.type === InputBlockType.FILE && block.options?.allowedFileTypes
+        ? block.options.allowedFileTypes.flatMap((extension) => {
+            const reference = mimeTypeReferences.find(
+              (m) => m.extension === extension,
+            );
+            if (!reference) return undefined;
+            return reference.mimeTypes;
+          })
+        : undefined;
+
+    if (allowedMimeTypes?.length && !allowedMimeTypes.includes(fileType))
+      throw new TRPCError({
+        code: "BAD_REQUEST",
+        message: "File type not allowed",
       });
 
     const { visibility, maxFileSize } = parseFileUploadParams(block);
