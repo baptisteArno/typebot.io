@@ -46,19 +46,19 @@ export const MultipleChoicesForm = (props: Props) => {
     const selectedItems = selectedItemIds().map((selectedItemId) =>
       props.defaultItems.find((item) => item.id === selectedItemId),
     );
-    const hasIntervalValue = selectedItems.some((item) => item?.value);
+    const hasInternalValue = selectedItems.some((item) => item?.value);
 
     props.onSubmit({
       type: "text",
       value: selectedItems
         .map((item) => {
-          return item?.value ?? item?.content ?? "";
+          return item?.value ?? item?.content;
         })
         .join(", "),
-      label: hasIntervalValue
+      label: hasInternalValue
         ? selectedItems
             .map((item) => {
-              return item?.content ?? item?.value ?? "";
+              return item?.content ?? item?.value;
             })
             .join(", ")
         : undefined,

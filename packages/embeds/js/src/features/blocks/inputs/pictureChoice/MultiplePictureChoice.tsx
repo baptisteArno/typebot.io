@@ -49,7 +49,8 @@ export const MultiplePictureChoice = (props: Props) => {
     const selectedItems = selectedItemIds().map((selectedItemId) =>
       props.defaultItems.find((item) => item.id === selectedItemId),
     );
-    const hasIntervalValue = selectedItems.some((item) => item?.value);
+    const hasInternalValue = selectedItems.some((item) => item?.value);
+
     props.onSubmit({
       type: "text",
       value: selectedItems
@@ -58,7 +59,7 @@ export const MultiplePictureChoice = (props: Props) => {
           return isNotEmpty(item?.title) ? item.title : item?.pictureSrc;
         })
         .join(", "),
-      label: hasIntervalValue
+      label: hasInternalValue
         ? selectedItems
             .map((item) => {
               return isNotEmpty(item?.title) ? item.title : item?.pictureSrc;
