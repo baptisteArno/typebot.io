@@ -12,6 +12,7 @@ import { getCredentials } from "@typebot.io/credentials/getCredentials";
 import type { WhatsAppCredentials } from "@typebot.io/credentials/schemas";
 import { env } from "@typebot.io/env";
 import { getBlockById } from "@typebot.io/groups/helpers/getBlockById";
+import { extensionFromMimeType } from "@typebot.io/lib/extensionFromMimeType";
 import redis from "@typebot.io/lib/redis";
 import { uploadFileToBucket } from "@typebot.io/lib/s3/uploadFileToBucket";
 import { isDefined } from "@typebot.io/lib/utils";
@@ -22,7 +23,6 @@ import {
 } from "@typebot.io/runtime-session-store";
 import { WhatsAppError } from "./WhatsAppError";
 import { downloadMedia } from "./downloadMedia";
-import { extensionFromMimeType } from "./extensionFromMimeType";
 import type {
   WhatsAppIncomingMessage,
   WhatsAppMessageReferral,

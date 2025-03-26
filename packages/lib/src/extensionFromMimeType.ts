@@ -51,3 +51,9 @@ export const extensionFromMimeType: { [key: string]: string } = {
   "application/vnd.oasis.opendocument.spreadsheet": "ods",
   "application/vnd.oasis.opendocument.presentation": "odp",
 };
+
+export function getMimeTypesFromExtensions(extensions: string[]) {
+  return Object.entries(extensionFromMimeType)
+    .filter(([_, extension]) => extensions.includes(extension))
+    .map(([mimeType]) => mimeType);
+}
