@@ -1,9 +1,11 @@
 import { MoreInfoTooltip } from "@/components/MoreInfoTooltip";
 import { TagsInput } from "@/components/TagsInput";
+import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
 import { FormControl, FormLabel, Stack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { env } from "@typebot.io/env";
 import { isDefined } from "@typebot.io/lib/utils";
+import { defaultSettings } from "@typebot.io/settings/constants";
 import type { Settings } from "@typebot.io/settings/schemas";
 import React from "react";
 
@@ -18,6 +20,13 @@ export const SecurityForm = ({ security, onUpdate }: Props) => {
     if (items.length === 0) onUpdate(undefined);
     onUpdate({
       allowedOrigins: items.filter(isDefined),
+    });
+  };
+
+  const handledisablePublicUrlChange = (disablePublicUrl: boolean) => {
+    onUpdate({
+      ...security,
+      disablePublicUrl,
     });
   };
 
@@ -36,6 +45,18 @@ export const SecurityForm = ({ security, onUpdate }: Props) => {
           placeholder={env.NEXT_PUBLIC_VIEWER_URL[0]}
         />
       </FormControl>
+
+      <SwitchWithLabel
+        label={t("settings.sideMenu.security.disablePublicUrl")}
+        initialValue={
+          security?.disablePublicUrl ??
+          defaultSettings.security.disablePublicUrl
+        }
+        onCheckChange={handledisablePublicUrlChange}
+        moreInfoContent={t(
+          "settings.sideMenu.security.disablePublicUrl.tooltip",
+        )}
+      />
     </Stack>
   );
 };

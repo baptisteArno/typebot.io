@@ -456,6 +456,8 @@
   "settings.sideMenu.security": "Security",
   "settings.sideMenu.security.allowedOrigins": "Allowed origins",
   "settings.sideMenu.security.allowedOrigins.tooltip": "Restrict the execution of your typebot to specific website origins. By default your bot can be executed on any website.",
+  "settings.sideMenu.security.disablePublicUrl": "Disable public URL",
+  "settings.sideMenu.security.disablePublicUrl.tooltip": "Prevent direct access to your Typebot via public URL, allowing it to run only on specific origins.",
   "settings.sideMenu.typing": "Typing",
   "settings.sideMenu.typing.emulation": "Typing emulation",
   "settings.sideMenu.typing.emulation.delayBetweenBubbles": "Delay between messages:",
