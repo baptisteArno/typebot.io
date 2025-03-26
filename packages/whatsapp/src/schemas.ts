@@ -133,18 +133,22 @@ export const incomingMessageSchema = z.discriminatedUnion("type", [
   sharedIncomingMessageFieldsSchema.extend({
     type: z.literal("image"),
     image: z.object({ id: z.string(), caption: z.string().optional() }),
+    mime_type: z.string(),
   }),
   sharedIncomingMessageFieldsSchema.extend({
     type: z.literal("video"),
     video: z.object({ id: z.string(), caption: z.string().optional() }),
+    mime_type: z.string(),
   }),
   sharedIncomingMessageFieldsSchema.extend({
     type: z.literal("audio"),
     audio: z.object({ id: z.string() }),
+    mime_type: z.string(),
   }),
   sharedIncomingMessageFieldsSchema.extend({
     type: z.literal("document"),
     document: z.object({ id: z.string(), caption: z.string().optional() }),
+    mime_type: z.string(),
   }),
   sharedIncomingMessageFieldsSchema.extend({
     type: z.literal("location"),

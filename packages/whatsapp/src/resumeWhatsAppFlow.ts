@@ -220,6 +220,14 @@ const convertWhatsAppMessageToTypebotMessage = async ({
         if (message.type === "document") mediaId = message.document.id;
         if (message.type === "sticker") mediaId = message.sticker.id;
         if (!mediaId) return;
+
+        const hasMediaType = (
+          msg: WhatsAppIncomingMessage
+        ): msg is Extract<
+          WhatsAppIncomingMessage,
+          { type: "video" | "image" | "audio" | "document"; mime_type: string }
+        > => ["video", "image", "audio", "document"].includes(msg.type);
+
         const fileVisibility =
           block?.type === InputBlockType.TEXT &&
           block.options?.audioClip?.isEnabled &&
@@ -232,11 +240,13 @@ const convertWhatsAppMessageToTypebotMessage = async ({
                 : undefined;
         let fileUrl;
         if (fileVisibility !== "Public") {
+          const mimeType = hasMediaType(message) ? message.mime_type : undefined;
+          const extension = mimeType ? extensionFromMimeType[mimeType] : undefined;
           fileUrl =
             env.NEXTAUTH_URL +
             `/api/typebots/${typebotId}/whatsapp/media/${
               workspaceId ? `` : "preview/"
-            }${mediaId}`;
+            }${mediaId}${extension ? `.${extension}` : ""}`;
         } else {
           const { file, mimeType } = await downloadMedia({
             mediaId,
