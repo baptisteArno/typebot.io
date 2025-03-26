@@ -15,6 +15,7 @@ export const systemMessagesSchema = z.object({
   fileUploadError: z.string().optional(),
   fileUploadSizeError: z.string().optional(),
   whatsAppPictureChoiceSelectLabel: z.string().optional(),
+  disablePublicUrl: z.string().optional(),
 });
 export type SystemMessages = z.infer<typeof systemMessagesSchema>;
 
@@ -86,6 +87,7 @@ export const settingsSchema = z
     security: z
       .object({
         allowedOrigins: z.array(z.string()).optional(),
+        disablePublicUrl: z.boolean().optional(),
       })
       .optional(),
   })

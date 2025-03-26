@@ -25,6 +25,9 @@ export const defaultSettings = {
     favIconUrl: (viewerBaseUrl: string) => viewerBaseUrl + "/favicon.svg",
     imageUrl: (viewerBaseUrl: string) => viewerBaseUrl + "/site-preview.png",
   },
+  security: {
+    disablePublicUrl: false,
+  },
 } as const;
 
 export const defaultSystemMessages = {
@@ -37,6 +40,7 @@ export const defaultSystemMessages = {
   fileUploadError: "An error occured while uploading the files",
   fileUploadSizeError: "[[file]] is larger than [[limit]]MB",
   whatsAppPictureChoiceSelectLabel: "Select",
+  disablePublicUrl: "This bot is not available on public URL",
 } as const satisfies NonNullable<Settings["general"]>["systemMessages"];
 
 export const defaultSessionExpiryTimeout = 4;
