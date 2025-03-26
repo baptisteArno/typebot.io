@@ -16,6 +16,7 @@ export const assertOriginIsAllowed = (
   if (
     !origin ||
     !allowedOrigins ||
+    allowedOrigins.length === 0 ||
     allowedOrigins.includes(origin) ||
     (iframeReferrerOrigin &&
       trustedOrigins.includes(origin) &&
