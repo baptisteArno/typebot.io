@@ -222,7 +222,7 @@ const convertWhatsAppMessageToTypebotMessage = async ({
         if (!mediaId) return;
 
         const hasMediaType = (
-          msg: WhatsAppIncomingMessage
+          msg: WhatsAppIncomingMessage,
         ): msg is Extract<
           WhatsAppIncomingMessage,
           { type: "video" | "image" | "audio" | "document"; mime_type: string }
@@ -240,8 +240,12 @@ const convertWhatsAppMessageToTypebotMessage = async ({
                 : undefined;
         let fileUrl;
         if (fileVisibility !== "Public") {
-          const mimeType = hasMediaType(message) ? message.mime_type : undefined;
-          const extension = mimeType ? extensionFromMimeType[mimeType] : undefined;
+          const mimeType = hasMediaType(message)
+            ? message.mime_type
+            : undefined;
+          const extension = mimeType
+            ? extensionFromMimeType[mimeType]
+            : undefined;
           fileUrl =
             env.NEXTAUTH_URL +
             `/api/typebots/${typebotId}/whatsapp/media/${
