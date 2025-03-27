@@ -73,15 +73,20 @@ export const ButtonsItemNode = ({ item, indices, isMouseOver }: Props) => {
   };
 
   const handleEditableChange = (val: string) => {
-    if (itemValue !== "") return setItemValue(val);
+    if (
+      itemValue !== "" &&
+      itemValue !== t("blocks.inputs.button.clickToEdit.label")
+    )
+      return setItemValue(val);
     const values = convertStrToList(val);
     if (values.length === 1) {
       setItemValue(values[0]);
     } else {
-      values.forEach((v, i) => {
+      setItemValue(values[0]);
+      values.slice(1).forEach((v, i) => {
         createItem(
           { content: v },
-          { ...indices, itemIndex: indices.itemIndex + i },
+          { ...indices, itemIndex: indices.itemIndex + i + 1 },
         );
       });
     }

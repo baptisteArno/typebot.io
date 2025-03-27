@@ -7,7 +7,7 @@ export const convertStrToList = (str: string): string[] => {
   if (isPastingMultipleItems) {
     const values =
       splittedBreakLines.length >= 2 ? splittedBreakLines : splittedCommas;
-    return values.map((v) => v.trim());
+    return values.map((v) => v.trim()).filter((v) => v !== "");
   }
   return [str.trim()];
 };
