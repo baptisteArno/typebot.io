@@ -5,6 +5,7 @@ export const valueTypes = [
   "Empty",
   "Append value(s)",
   "Environment name",
+  "Device type",
   "Transcript",
   "User ID",
   "Result ID",
@@ -36,6 +37,7 @@ export const valueTypesWithNoOptions = [
   "Transcript",
   "Referral Click ID",
   "Referral Source ID",
+  "Device type",
 ] as const satisfies (typeof valueTypes)[number][];
 
 export const hiddenTypes = ["Today", "User ID"] as const;

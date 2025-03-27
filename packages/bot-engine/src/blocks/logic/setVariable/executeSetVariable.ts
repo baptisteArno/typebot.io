@@ -57,7 +57,8 @@ export const executeSetVariable = async (
     expressionToEvaluate.type === "code" &&
     !state.whatsApp &&
     (block.options.isExecutedOnClient ||
-      block.options.type === "Moment of the day")
+      block.options.type === "Moment of the day" ||
+      block.options.type === "Device type")
   ) {
     const scriptToExecute = parseScriptToExecuteClientSideAction(
       variables,
@@ -316,6 +317,19 @@ const getExpressionToEvaluate = async (
       return {
         type: "value",
         value: state.whatsApp ? "whatsapp" : "web",
+      };
+    }
+    case "Device type": {
+      return {
+        type: "code",
+        code: `
+function guessDevice() {
+  if (window.matchMedia('(max-width: 767px)').matches) return 'mobile';
+  if (window.matchMedia('(max-width: 1024px)').matches) return 'tablet';
+  return 'desktop';
+}
+
+return guessDevice()`,
       };
     }
     case "Transcript": {

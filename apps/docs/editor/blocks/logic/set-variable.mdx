@@ -114,6 +114,18 @@ A conveniant value that automatically transform your variable into a list of str
 
 This will set your variable with either `web` or `whatsapp` depending on the environment.
 
+## Device type
+
+This will set your variable with either `desktop`, `tablet` or `mobile` depending on the device type. Under the hood, it uses the `window.matchMedia` API to detect the screen size. We don't try to really detect the device type but rather infer it from the screen size. We use this simple function:
+
+```js
+function guessDevice() {
+  if (window.matchMedia('(max-width: 767px)').matches) return 'mobile';
+  if (window.matchMedia('(max-width: 1024px)').matches) return 'tablet';
+  return 'desktop';
+}
+```
+
 ## Transcript
 
 This preset value will save the entire conversation transcript in a variable. It is super useful to provide context to an AI block or to send it as a recap with the [Send email](../integrations/send-email) block.

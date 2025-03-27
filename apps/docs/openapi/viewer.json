@@ -7191,6 +7191,9 @@
                 "content": {
                   "type": "string"
                 },
+                "value": {
+                  "type": "string"
+                },
                 "displayCondition": {
                   "type": "object",
                   "properties": {
@@ -7395,6 +7398,9 @@
                   "type": "string"
                 },
                 "description": {
+                  "type": "string"
+                },
+                "value": {
                   "type": "string"
                 },
                 "displayCondition": {
@@ -7664,7 +7670,8 @@
                       "Contact name",
                       "Transcript",
                       "Referral Click ID",
-                      "Referral Source ID"
+                      "Referral Source ID",
+                      "Device type"
                     ]
                   }
                 },
@@ -15877,6 +15884,9 @@
                 "content": {
                   "type": "string"
                 },
+                "value": {
+                  "type": "string"
+                },
                 "displayCondition": {
                   "type": "object",
                   "properties": {
@@ -16087,6 +16097,9 @@
                   "type": "string"
                 },
                 "description": {
+                  "type": "string"
+                },
+                "value": {
                   "type": "string"
                 },
                 "displayCondition": {
