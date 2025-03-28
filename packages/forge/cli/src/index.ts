@@ -373,8 +373,8 @@ async function addBlockToRepoConstants(schemasPath: string, id: string) {
   writeFileSync(
     join(schemasPath, "src", "constants.ts"),
     existingDefinitionsData.replace(
-      `] as const satisfies ForgedBlock['type'][]`,
-      `'${id}'] as const satisfies ForgedBlock['type'][]`,
+      `] as const satisfies readonly ForgedBlock["type"][]`,
+      `'${id}'] as const satisfies readonly ForgedBlock["type"][]`,
     ),
   );
 }
