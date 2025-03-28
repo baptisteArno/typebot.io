@@ -786,12 +786,17 @@ const parseReply = async (
         isURL(url, { require_tld: env.S3_ENDPOINT !== "localhost" }),
       );
 
-      const allFilesAreAllowed = urls.every((url) => {
-        const extension = url.split(".").pop();
-        if (!extension) return false;
-        const mimeType = getMimeTypesFromExtensions([extension])[0];
-        return mimeType && block.options?.allowedFileTypes?.includes(mimeType);
-      });
+      const allFilesAreAllowed =
+        (block.options?.allowedFileTypes?.length ?? 0) > 0
+          ? urls.every((url) => {
+              const extension = url.split(".").pop();
+              if (!extension) return false;
+              const mimeType = getMimeTypesFromExtensions([extension])[0];
+              return (
+                mimeType && block.options?.allowedFileTypes?.includes(mimeType)
+              );
+            })
+          : true;
 
       const status = hasValidUrls && allFilesAreAllowed ? "success" : "fail";
       if (!block.options?.isMultipleAllowed && urls.length > 1)
