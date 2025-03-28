@@ -3,7 +3,7 @@ import type { Block } from "@typebot.io/blocks-core/schemas/schema";
 import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
 import { continueBotFlow } from "@typebot.io/bot-engine/continueBotFlow";
 import { saveStateToDatabase } from "@typebot.io/bot-engine/saveStateToDatabase";
-import type { ChatSession, Message } from "@typebot.io/bot-engine/schemas/api";
+import type { Message } from "@typebot.io/bot-engine/schemas/api";
 import { getSession } from "@typebot.io/chat-session/queries/getSession";
 import { setIsReplyingInChatSession } from "@typebot.io/chat-session/queries/setIsReplyingInChatSession";
 import type { SessionState } from "@typebot.io/chat-session/schemas";
@@ -214,19 +214,28 @@ const convertWhatsAppMessageToTypebotMessage = async ({
       case "sticker":
       case "image": {
         let mediaId: string | undefined;
-        if (message.type === "video") mediaId = message.video.id;
-        if (message.type === "image") mediaId = message.image.id;
-        if (message.type === "audio") mediaId = message.audio.id;
-        if (message.type === "document") mediaId = message.document.id;
-        if (message.type === "sticker") mediaId = message.sticker.id;
+        let mimeType: string | undefined;
+        if (message.type === "video") {
+          mediaId = message.video.id;
+          mimeType = message.video.mime_type;
+        }
+        if (message.type === "image") {
+          mediaId = message.image.id;
+          mimeType = message.image.mime_type;
+        }
+        if (message.type === "audio") {
+          mediaId = message.audio.id;
+          mimeType = message.audio.mime_type;
+        }
+        if (message.type === "document") {
+          mediaId = message.document.id;
+          mimeType = message.document.mime_type;
+        }
+        if (message.type === "sticker") {
+          mediaId = message.sticker.id;
+          mimeType = message.sticker.mime_type;
+        }
         if (!mediaId) return;
-
-        const hasMediaType = (
-          msg: WhatsAppIncomingMessage,
-        ): msg is Extract<
-          WhatsAppIncomingMessage,
-          { type: "video" | "image" | "audio" | "document"; mime_type: string }
-        > => ["video", "image", "audio", "document"].includes(msg.type);
 
         const fileVisibility =
           block?.type === InputBlockType.TEXT &&
@@ -240,9 +249,6 @@ const convertWhatsAppMessageToTypebotMessage = async ({
                 : undefined;
         let fileUrl;
         if (fileVisibility !== "Public") {
-          const mimeType = hasMediaType(message)
-            ? message.mime_type
-            : undefined;
           const extension = mimeType
             ? extensionFromMimeType[mimeType]
             : undefined;

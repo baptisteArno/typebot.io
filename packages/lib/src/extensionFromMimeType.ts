@@ -52,8 +52,13 @@ export const extensionFromMimeType: { [key: string]: string } = {
   "application/vnd.oasis.opendocument.presentation": "odp",
 };
 
-export function getMimeTypesFromExtensions(extensions: string[]) {
-  const wildcardExtensions = extensions
+export const getFileTypesMetadata = (
+  allowedFileTypes: string[],
+): {
+  mimeType: string;
+  extension: string;
+}[] => {
+  const wildcardExtensions = allowedFileTypes
     .filter((ext) => ext.includes("*"))
     .map((ext) => ext.split("/")[0]);
 
@@ -61,9 +66,9 @@ export function getMimeTypesFromExtensions(extensions: string[]) {
     .filter(([mimeType, extension]) => {
       const mimeBaseType = mimeType.split("/")[0];
       return (
-        extensions.includes(extension) ||
+        allowedFileTypes.some((fileType) => fileType.includes(extension)) ||
         wildcardExtensions.includes(mimeBaseType)
       );
     })
-    .map(([mimeType]) => mimeType);
-}
+    .map(([mimeType, extension]) => ({ mimeType, extension }));
+};

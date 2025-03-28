@@ -7,7 +7,7 @@ import { getSession } from "@typebot.io/chat-session/queries/getSession";
 import { env } from "@typebot.io/env";
 import { getBlockById } from "@typebot.io/groups/helpers/getBlockById";
 import { parseGroups } from "@typebot.io/groups/helpers/parseGroups";
-import { getMimeTypesFromExtensions } from "@typebot.io/lib/extensionFromMimeType";
+import { getFileTypesMetadata } from "@typebot.io/lib/extensionFromMimeType";
 import { generatePresignedPostPolicy } from "@typebot.io/lib/s3/generatePresignedPostPolicy";
 import prisma from "@typebot.io/prisma";
 import type { Prisma } from "@typebot.io/prisma/types";
@@ -94,14 +94,21 @@ export const generateUploadUrl = publicProcedure
         message: "Current block does not expect file upload",
       });
 
-    const allowedMimeTypes =
-      block.type === InputBlockType.FILE && block.options?.allowedFileTypes
-        ? getMimeTypesFromExtensions(block.options?.allowedFileTypes)
+    const allowedFileTypesMetadata =
+      block.type === InputBlockType.FILE &&
+      block.options?.allowedFileTypes &&
+      block.options?.allowedFileTypes.types &&
+      block.options?.allowedFileTypes.types.length > 0 &&
+      block.options?.allowedFileTypes.isEnabled
+        ? getFileTypesMetadata(block.options.allowedFileTypes.types)
         : undefined;
 
     if (
-      allowedMimeTypes?.length &&
-      (!fileType || !allowedMimeTypes.includes(fileType))
+      allowedFileTypesMetadata?.length &&
+      (!fileType ||
+        !allowedFileTypesMetadata.some(
+          (metadata) => metadata.mimeType === fileType,
+        ))
     )
       throw new TRPCError({
         code: "BAD_REQUEST",

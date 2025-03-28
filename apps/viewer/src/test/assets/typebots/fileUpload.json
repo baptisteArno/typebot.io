@@ -35,6 +35,10 @@
           "options": {
             "variableId": "vcl45ok77i000a2e6g79ye53a2",
             "isMultipleAllowed": true,
+            "allowedFileTypes": {
+              "types": [".json"],
+              "isEnabled": true
+            },
             "labels": {
               "placeholder": "<strong>\n      Click to upload\n    </strong> or drag and drop<br>\n    (size limit: 10MB)",
               "button": "Upload"
