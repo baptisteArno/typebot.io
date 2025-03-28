@@ -9,7 +9,7 @@
     "./shared/*": "./src/shared/*.ts"
   },
   "dependencies": {
-    "@ai-sdk/deepseek": "0.1.12",
+    "@ai-sdk/deepseek": "0.2.2",
     "@typebot.io/ai": "workspace:*",
     "@typebot.io/forge": "workspace:*",
     "@typebot.io/lib": "workspace:*",

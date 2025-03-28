@@ -13,7 +13,7 @@ import {
 } from "@typebot.io/ui/components/Select";
 import { cx } from "@typebot.io/ui/lib/cva";
 import { type ReactNode, useEffect, useRef } from "react";
-import { getItemLabel, getItemValue } from "../helpers/collections";
+import { type Item, getItemLabel, getItemValue } from "../helpers/collections";
 import { useFilteredCollection } from "../hooks/useFilteredCollection";
 import { useSelectItemsQuery } from "../hooks/useSelectItemsQuery";
 
@@ -34,11 +34,25 @@ type Props = {
   onChange: (value: string | undefined) => void;
 };
 export const ForgeAutocompleteInput = ({
-  defaultValue,
   credentialsScope,
   fetcherId,
   options,
   blockDef,
+  ...props
+}: Props) => {
+  const { items } = useSelectItemsQuery({
+    credentialsScope,
+    blockDef,
+    options,
+    fetcherId,
+  });
+
+  return <AutocompleteInput items={items} {...props} />;
+};
+
+export const AutocompleteInput = ({
+  items,
+  defaultValue,
   placeholder,
   label,
   helperText,
@@ -48,7 +62,9 @@ export const ForgeAutocompleteInput = ({
   width,
   withVariableButton = false,
   onChange,
-}: Props) => {
+}: Omit<Props, "credentialsScope" | "fetcherId" | "options" | "blockDef"> & {
+  items: Item[] | undefined;
+}) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const {
     value: inputValue,
@@ -58,13 +74,6 @@ export const ForgeAutocompleteInput = ({
     isTouched,
   } = useInjectableInputValue({
     ref: inputRef,
-  });
-
-  const { items } = useSelectItemsQuery({
-    credentialsScope,
-    blockDef,
-    options,
-    fetcherId,
   });
 
   const filteredCollection = useFilteredCollection({

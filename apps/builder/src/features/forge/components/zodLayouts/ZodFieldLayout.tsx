@@ -23,7 +23,10 @@ import type { ZodLayoutMetadata } from "@typebot.io/zod";
 import Markdown, { type Components } from "react-markdown";
 import type { ZodTypeAny, z } from "zod";
 import { getZodInnerSchema } from "../../helpers/getZodInnerSchema";
-import { ForgeAutocompleteInput } from "../ForgeAutocompleteInput";
+import {
+  AutocompleteInput,
+  ForgeAutocompleteInput,
+} from "../ForgeAutocompleteInput";
 import { ForgeSelectInput } from "../ForgeSelectInput";
 import { ZodDiscriminatedUnionLayout } from "./ZodDiscriminatedUnionLayout";
 import { ZodObjectLayout } from "./ZodObjectLayout";
@@ -194,6 +197,27 @@ export const ZodFieldLayout = ({
       );
     }
     case "ZodString": {
+      if (layout?.autoCompleteItems) {
+        return (
+          <AutocompleteInput
+            items={layout.autoCompleteItems}
+            defaultValue={data ?? layout.defaultValue}
+            placeholder={layout.placeholder}
+            label={layout.label}
+            helperText={
+              layout?.helperText ? (
+                <Markdown components={mdComponents}>
+                  {layout.helperText}
+                </Markdown>
+              ) : undefined
+            }
+            moreInfoTooltip={layout?.moreInfoTooltip}
+            onChange={onDataChange}
+            width={width}
+            withVariableButton={layout.withVariableButton ?? true}
+          />
+        );
+      }
       if (layout?.fetcher) {
         if (!blockDef) return null;
         if (layout.allowCustomText)

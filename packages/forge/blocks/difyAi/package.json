@@ -11,7 +11,7 @@
     "ky": "1.2.4",
     "@typebot.io/forge": "workspace:*",
     "@typebot.io/lib": "workspace:*",
-    "@ai-sdk/ui-utils": "1.1.16"
+    "@ai-sdk/ui-utils": "1.2.2"
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*"

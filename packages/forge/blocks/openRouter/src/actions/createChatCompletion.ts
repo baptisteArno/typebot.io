@@ -45,7 +45,6 @@ export const createChatCompletion = createAction({
     models: {
       type: "fetcher",
       id: "fetchModels",
-      allowCustomValue: true,
     },
   }),
   getSetVariableIds: getChatCompletionSetVarIds,

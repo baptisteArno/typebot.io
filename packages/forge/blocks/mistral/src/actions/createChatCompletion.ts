@@ -6,15 +6,15 @@ import { runChatCompletionStream } from "@typebot.io/ai/runChatCompletionStream"
 import { createAction } from "@typebot.io/forge";
 import { isDefined } from "@typebot.io/lib/utils";
 import { auth } from "../auth";
-import { fetchModels } from "../helpers/fetchModels";
+import { models } from "../constants";
 
 export const createChatCompletion = createAction({
   name: "Create chat completion",
   auth,
   options: parseChatCompletionOptions({
     models: {
-      type: "fetcher",
-      id: "fetchModels",
+      type: "static",
+      models,
     },
   }),
   turnableInto: [
@@ -62,13 +62,6 @@ export const createChatCompletion = createAction({
   getSetVariableIds: (options) =>
     options.responseMapping?.map((res) => res.variableId).filter(isDefined) ??
     [],
-  fetchers: [
-    {
-      id: "fetchModels",
-      dependencies: [],
-      fetch: fetchModels,
-    },
-  ],
   run: {
     server: ({
       credentials: { apiKey },

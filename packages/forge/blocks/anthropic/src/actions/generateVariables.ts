@@ -9,7 +9,12 @@ import { anthropicModels } from "../constants";
 export const generateVariables = createAction({
   name: "Generate variables",
   auth,
-  options: parseGenerateVariablesOptions({ modelFetch: anthropicModels }),
+  options: parseGenerateVariablesOptions({
+    models: {
+      type: "static",
+      models: anthropicModels,
+    },
+  }),
   turnableInto: [
     {
       blockId: "openai",

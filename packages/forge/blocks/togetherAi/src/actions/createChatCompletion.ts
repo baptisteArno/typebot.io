@@ -15,7 +15,6 @@ export const createChatCompletion = createAction({
       type: "text",
       helperText:
         "You can find the list of all the models available [here](https://docs.together.ai/docs/inference-models#chat-models). Copy the model string for API.",
-      allowCustomValue: true,
     },
   }),
   turnableInto: [

@@ -34,6 +34,7 @@ export interface ZodLayoutMetadata<
   /** Useful for string options with fetcher when we also want to allow for custom text */
   allowCustomValue?: boolean;
   toLabels?: (val?: string) => string | undefined;
+  autoCompleteItems?: string[];
 }
 
 declare module "zod" {

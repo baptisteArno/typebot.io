@@ -7,12 +7,7 @@ import { createAction, option } from "@typebot.io/forge";
 import { isDefined } from "@typebot.io/lib/utils";
 import { z } from "@typebot.io/zod";
 import { auth } from "../auth";
-import {
-  anthropicLegacyModels,
-  anthropicModelLabels,
-  anthropicModels,
-  defaultAnthropicOptions,
-} from "../constants";
+import { anthropicModels, defaultAnthropicMaxTokens } from "../constants";
 import { isModelCompatibleWithVision } from "../helpers/isModelCompatibleWithVision";
 
 const nativeMessageContentSchema = {
@@ -48,13 +43,11 @@ const dialogueMessageItemSchema = option.object({
 });
 
 export const options = option.object({
-  model: option.enum(anthropicModels).layout({
-    toLabels: (val) =>
-      val
-        ? anthropicModelLabels[val as (typeof anthropicModels)[number]]
-        : undefined,
-    hiddenItems: anthropicLegacyModels,
+  model: option.string.layout({
     placeholder: "Select a model",
+    allowCustomValue: true,
+    autoCompleteItems: anthropicModels,
+    label: "Model",
   }),
   messages: option
     .array(
@@ -76,13 +69,13 @@ export const options = option.object({
     accordion: "Advanced Settings",
     label: "Temperature",
     direction: "row",
-    defaultValue: defaultAnthropicOptions.temperature,
+    placeholder: "1",
   }),
   maxTokens: option.number.layout({
     accordion: "Advanced Settings",
     label: "Max Tokens",
     direction: "row",
-    defaultValue: defaultAnthropicOptions.maxTokens,
+    defaultValue: defaultAnthropicMaxTokens,
   }),
   responseMapping: z.preprocess(
     (val) =>

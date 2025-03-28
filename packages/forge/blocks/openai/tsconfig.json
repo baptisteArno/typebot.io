@@ -1,9 +1,4 @@
 {
   "extends": "@typebot.io/tsconfig/react.json",
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "../../../ai/src/getChatCompletionStreamVarId.ts",
-    "../../../ai/src/parseGenerateVariablesOptions.ts"
-  ]
+  "include": ["src/**/*.ts", "src/**/*.tsx"]
 }

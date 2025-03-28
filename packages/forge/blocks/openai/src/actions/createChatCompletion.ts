@@ -7,7 +7,8 @@ import { runChatCompletionStream } from "@typebot.io/ai/runChatCompletionStream"
 import { createAction } from "@typebot.io/forge";
 import { auth } from "../auth";
 import { baseOptions } from "../baseOptions";
-import { fetchGPTModels } from "../helpers/fetchModels";
+import { reasoningModels } from "../constants";
+import { chatModels } from "../constants";
 import { isModelCompatibleWithVision } from "../helpers/isModelCompatibleWithVision";
 
 export const createChatCompletion = createAction({
@@ -16,8 +17,8 @@ export const createChatCompletion = createAction({
   baseOptions,
   options: parseChatCompletionOptions({
     models: {
-      type: "fetcher",
-      id: "fetchModels",
+      type: "static",
+      models: chatModels.concat(reasoningModels),
     },
   }),
   getSetVariableIds: getChatCompletionSetVarIds,
@@ -54,18 +55,6 @@ export const createChatCompletion = createAction({
         ...options,
         model: undefined,
       }),
-    },
-  ],
-  fetchers: [
-    {
-      id: "fetchModels",
-      dependencies: ["baseUrl", "apiVersion"],
-      fetch: ({ credentials, options }) =>
-        fetchGPTModels({
-          apiKey: credentials?.apiKey,
-          baseUrl: credentials?.baseUrl ?? options.baseUrl,
-          apiVersion: options.apiVersion,
-        }),
     },
   ],
   run: {
