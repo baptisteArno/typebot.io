@@ -787,13 +787,15 @@ const parseReply = async (
       );
 
       const allFilesAreAllowed =
-        (block.options?.allowedFileTypes?.length ?? 0) > 0
+        (block.options?.allowedFileTypes?.types?.length ?? 0) > 0 &&
+        block.options?.allowedFileTypes?.isEnabled
           ? urls.every((url) => {
               const extension = url.split(".").pop();
               if (!extension) return false;
               const mimeType = getMimeTypesFromExtensions([extension])[0];
               return (
-                mimeType && block.options?.allowedFileTypes?.includes(mimeType)
+                mimeType &&
+                block.options?.allowedFileTypes?.types?.includes(mimeType)
               );
             })
           : true;

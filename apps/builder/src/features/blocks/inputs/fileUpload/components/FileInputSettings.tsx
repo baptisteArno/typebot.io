@@ -1,5 +1,6 @@
 import { DropdownList } from "@/components/DropdownList";
 import { MoreInfoTooltip } from "@/components/MoreInfoTooltip";
+import { SwitchWithRelatedSettings } from "@/components/SwitchWithRelatedSettings";
 import { TagsInput } from "@/components/TagsInput";
 import { TextInput } from "@/components/inputs";
 import { CodeEditor } from "@/components/inputs/CodeEditor";
@@ -35,7 +36,16 @@ export const FileInputSettings = ({ options, onOptionsChange }: Props) => {
   const updateAllowedFileTypes = (allowedFileTypes: string[]) =>
     onOptionsChange({
       ...options,
-      allowedFileTypes,
+      allowedFileTypes: {
+        ...options?.allowedFileTypes,
+        types: allowedFileTypes,
+      },
+    });
+
+  const updateAllowedFileTypesIsEnabled = (isEnabled: boolean) =>
+    onOptionsChange({
+      ...options,
+      allowedFileTypes: { ...options?.allowedFileTypes, isEnabled },
     });
 
   const handleButtonLabelChange = (button: string) =>
@@ -91,6 +101,19 @@ export const FileInputSettings = ({ options, onOptionsChange }: Props) => {
         initialValue={options?.isRequired ?? defaultFileInputOptions.isRequired}
         onCheckChange={handleRequiredChange}
       />
+      <SwitchWithRelatedSettings
+        label={t("blocks.inputs.file.settings.allowedFileTypes.label")}
+        initialValue={options?.allowedFileTypes?.isEnabled}
+        onCheckChange={updateAllowedFileTypesIsEnabled}
+      >
+        <TagsInput
+          items={options?.allowedFileTypes?.types}
+          onChange={updateAllowedFileTypes}
+          placeholder={t(
+            "blocks.inputs.file.settings.allowedFileTypes.placeholder",
+          )}
+        />
+      </SwitchWithRelatedSettings>
       <SwitchWithLabel
         label={t("blocks.inputs.file.settings.allowMultiple.label")}
         initialValue={
@@ -99,21 +122,6 @@ export const FileInputSettings = ({ options, onOptionsChange }: Props) => {
         }
         onCheckChange={handleMultipleFilesChange}
       />
-      <FormControl>
-        <FormLabel>
-          {t("blocks.inputs.file.settings.allowedFileTypes.label")}
-          <MoreInfoTooltip>
-            {t("blocks.inputs.file.settings.allowedFileTypes.tooltip")}
-          </MoreInfoTooltip>
-        </FormLabel>
-        <TagsInput
-          items={options?.allowedFileTypes}
-          onChange={updateAllowedFileTypes}
-          placeholder={t(
-            "blocks.inputs.file.settings.allowedFileTypes.placeholder",
-          )}
-        />
-      </FormControl>
 
       <Stack>
         <FormLabel mb="0" htmlFor="variable">

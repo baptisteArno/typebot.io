@@ -24,7 +24,12 @@ const fileInputOptionsV5Schema = optionBaseSchema.merge(
           .optional(),
       })
       .optional(),
-    allowedFileTypes: z.array(z.string()).optional(),
+    allowedFileTypes: z
+      .object({
+        isEnabled: z.boolean().optional(),
+        types: z.array(z.string()).optional(),
+      })
+      .optional(),
     sizeLimit: z.number().optional(),
     visibility: z.enum(fileVisibilityOptions).optional(),
   }),
