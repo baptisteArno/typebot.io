@@ -138,7 +138,7 @@ const TextGuestBubble = (props: { answer: TextInputSubmitContent }) => {
         <img
           src={clickedImageSrc()}
           alt="Attachment"
-          class="max-h-[90vh] max-w-[90vw] rounded-[6px]"
+          class="max-h-[calc(100vh-1rem)] max-w-[calc(100%-1rem)] rounded-[6px] m-auto"
         />
       </Modal>
     </div>
