@@ -322,14 +322,30 @@ const getExpressionToEvaluate = async (
     case "Device type": {
       return {
         type: "code",
-        code: `
-function guessDevice() {
-  if (window.matchMedia('(max-width: 767px)').matches) return 'mobile';
-  if (window.matchMedia('(max-width: 1024px)').matches) return 'tablet';
-  return 'desktop';
-}
+        code: `const detectDeviceType = () => {
+  const hasTouch = ('ontouchstart' in window) || 
+                   (navigator.maxTouchPoints > 0) || 
+                   (navigator.msMaxTouchPoints > 0);
+  
+  const isTabletByUA = /(tablet|ipad|playbook|silk)|(android(?!.*mobile))/i.test(
+    navigator.userAgent
+  );
+  
+  const isMobileByUA = /Mobile|Android|iP(hone|od)|IEMobile|BlackBerry|Kindle|Silk-Accelerated/i.test(
+    navigator.userAgent
+  );
+  
+  const width = window.innerWidth;
+  if (isTabletByUA || (hasTouch && width >= 768 && width <= 1024)) {
+    return 'tablet';
+  } else if (isMobileByUA || (hasTouch && width < 768)) {
+    return 'mobile';
+  } else {
+    return 'desktop';
+  }
+};
 
-return guessDevice()`,
+return detectDeviceType()`,
       };
     }
     case "Transcript": {
