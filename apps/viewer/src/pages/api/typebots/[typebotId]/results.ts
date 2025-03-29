@@ -25,7 +25,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.send({ results });
   }
   if (req.method === "POST") {
-    Sentry.captureMessage("Creating legacy result");
     const typebotId = req.query.typebotId as string;
     const typebot = await prisma.typebot.findFirst({
       where: { id: typebotId },
