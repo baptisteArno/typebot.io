@@ -1,4 +1,7 @@
 import { DropdownList } from "@/components/DropdownList";
+import { MoreInfoTooltip } from "@/components/MoreInfoTooltip";
+import { SwitchWithRelatedSettings } from "@/components/SwitchWithRelatedSettings";
+import { TagsInput } from "@/components/TagsInput";
 import { TextInput } from "@/components/inputs";
 import { CodeEditor } from "@/components/inputs/CodeEditor";
 import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
@@ -9,6 +12,7 @@ import {
   AccordionIcon,
   AccordionItem,
   AccordionPanel,
+  FormControl,
   FormLabel,
   Stack,
 } from "@chakra-ui/react";
@@ -28,6 +32,21 @@ type Props = {
 
 export const FileInputSettings = ({ options, onOptionsChange }: Props) => {
   const { t } = useTranslate();
+
+  const updateAllowedFileTypes = (allowedFileTypes: string[]) =>
+    onOptionsChange({
+      ...options,
+      allowedFileTypes: {
+        ...options?.allowedFileTypes,
+        types: allowedFileTypes,
+      },
+    });
+
+  const updateAllowedFileTypesIsEnabled = (isEnabled: boolean) =>
+    onOptionsChange({
+      ...options,
+      allowedFileTypes: { ...options?.allowedFileTypes, isEnabled },
+    });
 
   const handleButtonLabelChange = (button: string) =>
     onOptionsChange({ ...options, labels: { ...options?.labels, button } });
@@ -82,6 +101,19 @@ export const FileInputSettings = ({ options, onOptionsChange }: Props) => {
         initialValue={options?.isRequired ?? defaultFileInputOptions.isRequired}
         onCheckChange={handleRequiredChange}
       />
+      <SwitchWithRelatedSettings
+        label={t("blocks.inputs.file.settings.allowedFileTypes.label")}
+        initialValue={options?.allowedFileTypes?.isEnabled}
+        onCheckChange={updateAllowedFileTypesIsEnabled}
+      >
+        <TagsInput
+          items={options?.allowedFileTypes?.types}
+          onChange={updateAllowedFileTypes}
+          placeholder={t(
+            "blocks.inputs.file.settings.allowedFileTypes.placeholder",
+          )}
+        />
+      </SwitchWithRelatedSettings>
       <SwitchWithLabel
         label={t("blocks.inputs.file.settings.allowMultiple.label")}
         initialValue={
@@ -115,7 +147,7 @@ export const FileInputSettings = ({ options, onOptionsChange }: Props) => {
       <Accordion allowToggle>
         <AccordionItem>
           <AccordionButton justifyContent="space-between">
-            Labels
+            {t("blocks.inputs.file.settings.labels")}
             <AccordionIcon />
           </AccordionButton>
           <AccordionPanel as={Stack} spacing={4}>

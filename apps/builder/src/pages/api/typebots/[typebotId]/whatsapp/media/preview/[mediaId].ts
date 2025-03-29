@@ -44,7 +44,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     if (!typebot) return notFound(res, "Typebot not found");
 
-    const mediaId = req.query.mediaId as string;
+    const mediaIdWithExtension = req.query.mediaId as string;
+    const mediaId = mediaIdWithExtension.split(".")[0];
 
     const { file, mimeType } = await downloadMedia({
       mediaId,

@@ -7,7 +7,7 @@ import {
   WrapItem,
 } from "@chakra-ui/react";
 import { convertStrToList } from "@typebot.io/lib/convertStrToList";
-import { isEmpty } from "@typebot.io/lib/utils";
+import { isEmpty, isNotEmpty } from "@typebot.io/lib/utils";
 import { colors } from "@typebot.io/ui/chakraTheme";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRef, useState } from "react";
@@ -31,7 +31,7 @@ export const TagsInput = ({ items, placeholder, onChange }: Props) => {
     if (e.target.value.length - inputValue.length > 0) {
       const values = convertStrToList(e.target.value);
       if (values.length > 1) {
-        onChange([...(items ?? []), ...convertStrToList(e.target.value)]);
+        onChange([...(items ?? []), ...values.filter(isNotEmpty)]);
         setInputValue("");
       }
     }

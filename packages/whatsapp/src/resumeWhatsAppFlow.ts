@@ -3,7 +3,7 @@ import type { Block } from "@typebot.io/blocks-core/schemas/schema";
 import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
 import { continueBotFlow } from "@typebot.io/bot-engine/continueBotFlow";
 import { saveStateToDatabase } from "@typebot.io/bot-engine/saveStateToDatabase";
-import type { ChatSession, Message } from "@typebot.io/bot-engine/schemas/api";
+import type { Message } from "@typebot.io/bot-engine/schemas/api";
 import { getSession } from "@typebot.io/chat-session/queries/getSession";
 import { setIsReplyingInChatSession } from "@typebot.io/chat-session/queries/setIsReplyingInChatSession";
 import type { SessionState } from "@typebot.io/chat-session/schemas";
@@ -12,6 +12,7 @@ import { getCredentials } from "@typebot.io/credentials/getCredentials";
 import type { WhatsAppCredentials } from "@typebot.io/credentials/schemas";
 import { env } from "@typebot.io/env";
 import { getBlockById } from "@typebot.io/groups/helpers/getBlockById";
+import { extensionFromMimeType } from "@typebot.io/lib/extensionFromMimeType";
 import redis from "@typebot.io/lib/redis";
 import { uploadFileToBucket } from "@typebot.io/lib/s3/uploadFileToBucket";
 import { isDefined } from "@typebot.io/lib/utils";
@@ -22,7 +23,6 @@ import {
 } from "@typebot.io/runtime-session-store";
 import { WhatsAppError } from "./WhatsAppError";
 import { downloadMedia } from "./downloadMedia";
-import { extensionFromMimeType } from "./extensionFromMimeType";
 import type {
   WhatsAppIncomingMessage,
   WhatsAppMessageReferral,
@@ -214,12 +214,29 @@ const convertWhatsAppMessageToTypebotMessage = async ({
       case "sticker":
       case "image": {
         let mediaId: string | undefined;
-        if (message.type === "video") mediaId = message.video.id;
-        if (message.type === "image") mediaId = message.image.id;
-        if (message.type === "audio") mediaId = message.audio.id;
-        if (message.type === "document") mediaId = message.document.id;
-        if (message.type === "sticker") mediaId = message.sticker.id;
+        let mimeType: string | undefined;
+        if (message.type === "video") {
+          mediaId = message.video.id;
+          mimeType = message.video.mime_type;
+        }
+        if (message.type === "image") {
+          mediaId = message.image.id;
+          mimeType = message.image.mime_type;
+        }
+        if (message.type === "audio") {
+          mediaId = message.audio.id;
+          mimeType = message.audio.mime_type;
+        }
+        if (message.type === "document") {
+          mediaId = message.document.id;
+          mimeType = message.document.mime_type;
+        }
+        if (message.type === "sticker") {
+          mediaId = message.sticker.id;
+          mimeType = message.sticker.mime_type;
+        }
         if (!mediaId) return;
+
         const fileVisibility =
           block?.type === InputBlockType.TEXT &&
           block.options?.audioClip?.isEnabled &&
@@ -232,11 +249,14 @@ const convertWhatsAppMessageToTypebotMessage = async ({
                 : undefined;
         let fileUrl;
         if (fileVisibility !== "Public") {
+          const extension = mimeType
+            ? extensionFromMimeType[mimeType]
+            : undefined;
           fileUrl =
             env.NEXTAUTH_URL +
             `/api/typebots/${typebotId}/whatsapp/media/${
               workspaceId ? `` : "preview/"
-            }${mediaId}`;
+            }${mediaId}${extension ? `.${extension}` : ""}`;
         } else {
           const { file, mimeType } = await downloadMedia({
             mediaId,

@@ -238,6 +238,11 @@ export const FileUploadForm = (props: Props) => {
                 id="dropzone-file"
                 type="file"
                 class="hidden"
+                accept={
+                  props.block.options?.allowedFileTypes?.isEnabled
+                    ? props.block.options?.allowedFileTypes?.types?.join(", ")
+                    : undefined
+                }
                 multiple={
                   props.block.options?.isMultipleAllowed ??
                   defaultFileInputOptions.isMultipleAllowed
