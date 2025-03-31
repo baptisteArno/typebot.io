@@ -496,8 +496,21 @@ const sanitizeAndParseHeadCode = (code: string) => {
 };
 
 const removeLiteBadgeCss = (code: string) => {
-  const liteBadgeCssRegex = /.*#lite-badge.*{[\s\S][^{]*}/gm;
-  return code.replace(liteBadgeCssRegex, "");
+  // Remove all comments
+  code = code.replace(/\/\*[\s\S]*?\*\//gm, "");
+
+  // Match any rule containing lite-badge, handling nested blocks
+  let prevCode;
+  do {
+    prevCode = code;
+    code = code.replace(
+      /([^{}]*)lite-badge[^{]*{[^{}]*}|[^{}]*lite-badge[^{]*{([^{}]*{[^{}]*})*[^{}]*}/gi,
+      "",
+    );
+  } while (code !== prevCode);
+
+  // Clean up any empty media queries or other nested rules
+  return code.replace(/@[^{]+{[\s]*}/gm, "");
 };
 
 const convertStartTypebotToTypebotInSession = (

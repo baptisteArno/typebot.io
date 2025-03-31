@@ -12413,10 +12413,14 @@
                                                 },
                                                 "caption": {
                                                   "type": "string"
+                                                },
+                                                "mime_type": {
+                                                  "type": "string"
                                                 }
                                               },
                                               "required": [
-                                                "id"
+                                                "id",
+                                                "mime_type"
                                               ]
                                             }
                                           },
@@ -12461,10 +12465,14 @@
                                                 },
                                                 "caption": {
                                                   "type": "string"
+                                                },
+                                                "mime_type": {
+                                                  "type": "string"
                                                 }
                                               },
                                               "required": [
-                                                "id"
+                                                "id",
+                                                "mime_type"
                                               ]
                                             }
                                           },
@@ -12506,10 +12514,14 @@
                                               "properties": {
                                                 "id": {
                                                   "type": "string"
+                                                },
+                                                "mime_type": {
+                                                  "type": "string"
                                                 }
                                               },
                                               "required": [
-                                                "id"
+                                                "id",
+                                                "mime_type"
                                               ]
                                             }
                                           },
@@ -12554,10 +12566,14 @@
                                                 },
                                                 "caption": {
                                                   "type": "string"
+                                                },
+                                                "mime_type": {
+                                                  "type": "string"
                                                 }
                                               },
                                               "required": [
-                                                "id"
+                                                "id",
+                                                "mime_type"
                                               ]
                                             }
                                           },
@@ -12732,10 +12748,14 @@
                                               "properties": {
                                                 "id": {
                                                   "type": "string"
+                                                },
+                                                "mime_type": {
+                                                  "type": "string"
                                                 }
                                               },
                                               "required": [
-                                                "id"
+                                                "id",
+                                                "mime_type"
                                               ]
                                             }
                                           },
@@ -14679,6 +14699,20 @@
                   }
                 }
               },
+              "allowedFileTypes": {
+                "type": "object",
+                "properties": {
+                  "isEnabled": {
+                    "type": "boolean"
+                  },
+                  "types": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
               "sizeLimit": {
                 "type": "number"
               },
@@ -16586,6 +16620,20 @@
                       "multiple": {
                         "type": "string"
                       }
+                    }
+                  }
+                }
+              },
+              "allowedFileTypes": {
+                "type": "object",
+                "properties": {
+                  "isEnabled": {
+                    "type": "boolean"
+                  },
+                  "types": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
                     }
                   }
                 }

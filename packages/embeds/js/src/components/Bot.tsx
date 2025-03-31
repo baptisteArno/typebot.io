@@ -40,7 +40,6 @@ import clsx from "clsx";
 import { HTTPError } from "ky";
 import { Show, createEffect, createSignal, onCleanup, onMount } from "solid-js";
 import { Portal } from "solid-js/web";
-import immutableCss from "../assets/immutable.css";
 import { buttonVariants } from "./Button";
 import { ConversationContainer } from "./ConversationContainer/ConversationContainer";
 import { ErrorMessage } from "./ErrorMessage";
@@ -228,7 +227,6 @@ export const Bot = (props: BotProps & { class?: string }) => {
     <>
       <style>{typebotColors}</style>
       <style>{customCss()}</style>
-      <style>{immutableCss}</style>
       <Show when={error()} keyed>
         {(error) => <ErrorMessage error={error} />}
       </Show>
