@@ -7,6 +7,7 @@ import { getSession } from "@typebot.io/chat-session/queries/getSession";
 import { env } from "@typebot.io/env";
 import { getBlockById } from "@typebot.io/groups/helpers/getBlockById";
 import { parseGroups } from "@typebot.io/groups/helpers/parseGroups";
+import { parseAllowedFileTypesMetadata } from "@typebot.io/lib/extensionFromMimeType";
 import { generatePresignedPostPolicy } from "@typebot.io/lib/s3/generatePresignedPostPolicy";
 import prisma from "@typebot.io/prisma";
 import type { Prisma } from "@typebot.io/prisma/types";
@@ -91,6 +92,27 @@ export const generateUploadUrl = publicProcedure
       throw new TRPCError({
         code: "BAD_REQUEST",
         message: "Current block does not expect file upload",
+      });
+
+    const allowedFileTypesMetadata =
+      block.type === InputBlockType.FILE &&
+      block.options?.allowedFileTypes &&
+      block.options?.allowedFileTypes.types &&
+      block.options?.allowedFileTypes.types.length > 0 &&
+      block.options?.allowedFileTypes.isEnabled
+        ? parseAllowedFileTypesMetadata(block.options.allowedFileTypes.types)
+        : undefined;
+
+    if (
+      allowedFileTypesMetadata?.length &&
+      (!fileType ||
+        !allowedFileTypesMetadata.some(
+          (metadata) => metadata.mimeType === fileType,
+        ))
+    )
+      throw new TRPCError({
+        code: "BAD_REQUEST",
+        message: "File type not allowed",
       });
 
     const { visibility, maxFileSize } = parseFileUploadParams(block);

@@ -51,3 +51,24 @@ export const extensionFromMimeType: { [key: string]: string } = {
   "application/vnd.oasis.opendocument.spreadsheet": "ods",
   "application/vnd.oasis.opendocument.presentation": "odp",
 };
+
+export const parseAllowedFileTypesMetadata = (
+  allowedFileTypes: string[],
+): {
+  mimeType: string;
+  extension: string;
+}[] => {
+  const wildcardExtensions = allowedFileTypes
+    .filter((ext) => ext.includes("*"))
+    .map((ext) => ext.split("/")[0]);
+
+  return Object.entries(extensionFromMimeType)
+    .filter(([mimeType, extension]) => {
+      const mimeBaseType = mimeType.split("/")[0];
+      return (
+        allowedFileTypes.some((fileType) => fileType.includes(extension)) ||
+        wildcardExtensions.includes(mimeBaseType)
+      );
+    })
+    .map(([mimeType, extension]) => ({ mimeType, extension }));
+};

@@ -23,6 +23,7 @@ import { forgedBlocks } from "@typebot.io/forge-repository/definitions";
 import type { ForgedBlock } from "@typebot.io/forge-repository/schemas";
 import { getBlockById } from "@typebot.io/groups/helpers/getBlockById";
 import type { Group } from "@typebot.io/groups/schemas";
+import { parseAllowedFileTypesMetadata } from "@typebot.io/lib/extensionFromMimeType";
 import { isURL } from "@typebot.io/lib/isURL";
 import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
 import { byId, isDefined } from "@typebot.io/lib/utils";
@@ -778,13 +779,30 @@ const parseReply = async (
         return (block.options?.isRequired ?? defaultFileInputOptions.isRequired)
           ? { status: "fail" }
           : { status: "skip" };
+
       const replyValue = reply.type === "audio" ? reply.url : reply.text;
       const urls = replyValue.split(", ");
-      const status = urls.some((url) =>
+      const hasValidUrls = urls.some((url) =>
         isURL(url, { require_tld: env.S3_ENDPOINT !== "localhost" }),
-      )
-        ? "success"
-        : "fail";
+      );
+
+      const allowedFileTypesMetadata =
+        block.options?.allowedFileTypes?.types &&
+        block.options?.allowedFileTypes?.types?.length > 0 &&
+        block.options?.allowedFileTypes?.isEnabled
+          ? parseAllowedFileTypesMetadata(block.options.allowedFileTypes.types)
+          : undefined;
+      const allFilesAreAllowed = allowedFileTypesMetadata
+        ? urls.every((url) => {
+            const extension = url.split(".").pop();
+            if (!extension) return false;
+            return allowedFileTypesMetadata.some(
+              (metadata) => metadata.extension === extension,
+            );
+          })
+        : true;
+
+      const status = hasValidUrls && allFilesAreAllowed ? "success" : "fail";
       if (!block.options?.isMultipleAllowed && urls.length > 1)
         return { status, content: replyValue.split(",")[0] };
       return { status, content: replyValue };
