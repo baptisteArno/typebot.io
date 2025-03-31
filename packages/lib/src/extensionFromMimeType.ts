@@ -52,7 +52,7 @@ export const extensionFromMimeType: { [key: string]: string } = {
   "application/vnd.oasis.opendocument.presentation": "odp",
 };
 
-export const getFileTypesMetadata = (
+export const parseAllowedFileTypesMetadata = (
   allowedFileTypes: string[],
 ): {
   mimeType: string;

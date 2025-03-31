@@ -7,7 +7,7 @@ import { getSession } from "@typebot.io/chat-session/queries/getSession";
 import { env } from "@typebot.io/env";
 import { getBlockById } from "@typebot.io/groups/helpers/getBlockById";
 import { parseGroups } from "@typebot.io/groups/helpers/parseGroups";
-import { getFileTypesMetadata } from "@typebot.io/lib/extensionFromMimeType";
+import { parseAllowedFileTypesMetadata } from "@typebot.io/lib/extensionFromMimeType";
 import { generatePresignedPostPolicy } from "@typebot.io/lib/s3/generatePresignedPostPolicy";
 import prisma from "@typebot.io/prisma";
 import type { Prisma } from "@typebot.io/prisma/types";
@@ -100,7 +100,7 @@ export const generateUploadUrl = publicProcedure
       block.options?.allowedFileTypes.types &&
       block.options?.allowedFileTypes.types.length > 0 &&
       block.options?.allowedFileTypes.isEnabled
-        ? getFileTypesMetadata(block.options.allowedFileTypes.types)
+        ? parseAllowedFileTypesMetadata(block.options.allowedFileTypes.types)
         : undefined;
 
     if (
