@@ -116,7 +116,26 @@ export const createAuthPrismaAdapter = (p: Prisma.PrismaClient): Adapter => ({
     }) as Promise<AdapterUser>,
   deleteUser: (id) => p.user.delete({ where: { id } }) as Promise<AdapterUser>,
   linkAccount: (data) =>
-    p.account.create({ data }) as unknown as AdapterAccount,
+    p.account.create({
+      data: {
+        userId: data.userId,
+        type: data.type,
+        provider: data.provider,
+        providerAccountId: data.providerAccountId,
+        refresh_token: data.refresh_token,
+        access_token: data.access_token,
+        expires_at: data.expires_at,
+        token_type: data.token_type,
+        scope: data.scope,
+        id_token: data.id_token,
+        session_state: data.session_state as string | undefined,
+        oauth_token_secret: data.oauth_token_secret as string,
+        oauth_token: data.oauth_token as string,
+        refresh_token_expires_in: data.refresh_token_expires_in as
+          | number
+          | undefined,
+      },
+    }) as unknown as AdapterAccount,
   unlinkAccount: (provider_providerAccountId) =>
     p.account.delete({
       where: { provider_providerAccountId },
