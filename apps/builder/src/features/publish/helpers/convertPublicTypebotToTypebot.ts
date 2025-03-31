@@ -28,7 +28,6 @@ export const convertPublicTypebotToTypebot = (
     selectedThemeTemplateId: existingTypebot.selectedThemeTemplateId,
     whatsAppCredentialsId: existingTypebot.whatsAppCredentialsId,
     riskLevel: existingTypebot.riskLevel,
-    isShared: existingTypebot.isShared,
     events: typebot.events,
   };
 };

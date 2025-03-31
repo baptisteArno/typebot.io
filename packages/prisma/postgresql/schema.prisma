@@ -209,7 +209,6 @@ model Typebot {
   webhooks                Webhook[]
   isArchived              Boolean                   @default(false)
   isClosed                Boolean                   @default(false)
-  isShared                Boolean?
   whatsAppCredentialsId   String?
   riskLevel               Int?
   bannedIps               BannedIp[]

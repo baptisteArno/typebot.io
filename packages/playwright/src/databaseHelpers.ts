@@ -47,7 +47,6 @@ export const parseTestTypebot = (
     },
   ],
   groups: partialTypebot.groups ?? [],
-  isShared: null,
 });
 
 export const parseTypebotToPublicTypebot = (

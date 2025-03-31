@@ -63,7 +63,6 @@ export const typebotV5Schema = z
       isClosed: z.boolean(),
       whatsAppCredentialsId: z.string().nullable(),
       riskLevel: z.number().nullable(),
-      isShared: z.boolean().nullable(),
     }) satisfies z.ZodType<Prisma.Typebot, z.ZodTypeDef, unknown>,
   )
   ._def.schema.openapi({
