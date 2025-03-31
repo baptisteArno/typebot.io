@@ -81,7 +81,7 @@ export const matchByIndex = <T extends ChoiceItem>(
   { strippedInput }: MatchResult,
 ): MatcherResult<T> => {
   const matchFn: MatchFunction<T> = (item, input, idx) =>
-    input.includes(`${idx! + 1}`);
+    input === `${idx! + 1}`;
 
   const matchingItems = items.reduce(createMatchReducer(matchFn), {
     strippedInput,
