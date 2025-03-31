@@ -194,6 +194,7 @@ test.describe("Guest on public typebot", () => {
         id: typebotId,
         name: "Guest typebot",
         workspaceId: guestWorkspaceId,
+        isShared: true,
         ...parseDefaultGroupWithBlock({
           type: InputBlockType.TEXT,
         }),

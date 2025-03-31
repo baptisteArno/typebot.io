@@ -1,3 +1,9 @@
+App v3.7
+- publicShare > isEnabled has been removed in favor of isShared. Before upgrading to 3.6, make sure to first upgrade to 3.5 and update the public share status of your shared bots.
+
+App v3.6
+- If you have active user responding to bots, make sure to first upgrade to v3.5 and let it go run for at least 3 days
+
 Typebot 6.2
 - file block migrate html placeholder to markdown?
 - Set variable: stop interpreting Texte value as code

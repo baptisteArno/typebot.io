@@ -6,6 +6,7 @@ import type { Workspace } from "@typebot.io/workspaces/schemas";
 export const isReadTypebotForbidden = async (
   typebot: {
     settings?: Prisma.Typebot["settings"];
+    isShared?: boolean | null;
     collaborators: Pick<Prisma.CollaboratorsOnTypebots, "userId">[];
   } & {
     workspace: Pick<Workspace, "isSuspended" | "isPastDue"> & {
@@ -18,7 +19,7 @@ export const isReadTypebotForbidden = async (
     ? settingsSchema.parse(typebot.settings)
     : undefined;
   const isTypebotPublic = settings?.publicShare?.isEnabled === true;
-  if (isTypebotPublic) return false;
+  if (isTypebotPublic || typebot.isShared) return false;
   return (
     !user ||
     typebot.workspace.isSuspended ||

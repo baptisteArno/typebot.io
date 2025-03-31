@@ -15,6 +15,7 @@ export const SharePopoverContent = () => {
   const updateIsPublicShareEnabled = async (isEnabled: boolean) => {
     await updateTypebot({
       updates: {
+        isShared: isEnabled,
         settings: {
           ...typebot?.settings,
           publicShare: {
@@ -33,7 +34,11 @@ export const SharePopoverContent = () => {
       <Stack p="4" borderTopWidth={1}>
         <SwitchWithRelatedSettings
           label={t("share.button.popover.publicFlow.label")}
-          initialValue={typebot?.settings.publicShare?.isEnabled ?? false}
+          initialValue={
+            typebot?.isShared ??
+            typebot?.settings.publicShare?.isEnabled ??
+            false
+          }
           onCheckChange={updateIsPublicShareEnabled}
         >
           <Stack spacing={4}>

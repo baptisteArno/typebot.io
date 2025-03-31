@@ -6761,6 +6761,10 @@
                             "type": "string",
                             "nullable": true
                           },
+                          "isShared": {
+                            "type": "boolean",
+                            "nullable": true
+                          },
                           "resultsTablePreferences": {
                             "type": "object",
                             "nullable": true,
@@ -6811,7 +6815,8 @@
                           "theme",
                           "settings",
                           "icon",
-                          "folderId"
+                          "folderId",
+                          "isShared"
                         ],
                         "title": "Typebot V6"
                       },
@@ -8697,6 +8702,10 @@
                             "type": "string",
                             "nullable": true
                           },
+                          "isShared": {
+                            "type": "boolean",
+                            "nullable": true
+                          },
                           "resultsTablePreferences": {
                             "type": "object",
                             "nullable": true,
@@ -8747,7 +8756,8 @@
                           "theme",
                           "settings",
                           "icon",
-                          "folderId"
+                          "folderId",
+                          "isShared"
                         ],
                         "title": "Typebot V5"
                       }
@@ -22996,6 +23006,10 @@
           "riskLevel": {
             "type": "number",
             "nullable": true
+          },
+          "isShared": {
+            "type": "boolean",
+            "nullable": true
           }
         },
         "required": [
@@ -23020,7 +23034,8 @@
           "isArchived",
           "isClosed",
           "whatsAppCredentialsId",
-          "riskLevel"
+          "riskLevel",
+          "isShared"
         ],
         "title": "Typebot V6"
       },
@@ -24972,6 +24987,10 @@
           "riskLevel": {
             "type": "number",
             "nullable": true
+          },
+          "isShared": {
+            "type": "boolean",
+            "nullable": true
           }
         },
         "required": [
@@ -24996,7 +25015,8 @@
           "isArchived",
           "isClosed",
           "whatsAppCredentialsId",
-          "riskLevel"
+          "riskLevel",
+          "isShared"
         ],
         "title": "Typebot V5"
       },
