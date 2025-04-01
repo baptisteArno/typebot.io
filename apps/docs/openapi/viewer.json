@@ -4871,6 +4871,70 @@
                                             "type": {
                                               "type": "string",
                                               "enum": [
+                                                "contacts"
+                                              ]
+                                            },
+                                            "contacts": {
+                                              "type": "object",
+                                              "properties": {
+                                                "name": {
+                                                  "type": "object",
+                                                  "properties": {
+                                                    "formatted_name": {
+                                                      "type": "string"
+                                                    }
+                                                  },
+                                                  "required": [
+                                                    "formatted_name"
+                                                  ]
+                                                },
+                                                "phones": {
+                                                  "type": "array",
+                                                  "items": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                      "phone": {
+                                                        "type": "string"
+                                                      },
+                                                      "type": {
+                                                        "type": "string"
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          },
+                                          "required": [
+                                            "from",
+                                            "timestamp",
+                                            "type",
+                                            "contacts"
+                                          ]
+                                        },
+                                        {
+                                          "type": "object",
+                                          "properties": {
+                                            "from": {
+                                              "type": "string"
+                                            },
+                                            "timestamp": {
+                                              "type": "string"
+                                            },
+                                            "referral": {
+                                              "type": "object",
+                                              "properties": {
+                                                "ctwa_clid": {
+                                                  "type": "string"
+                                                },
+                                                "source_id": {
+                                                  "type": "string"
+                                                }
+                                              }
+                                            },
+                                            "type": {
+                                              "type": "string",
+                                              "enum": [
                                                 "unsupported"
                                               ]
                                             }
