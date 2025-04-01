@@ -1,4 +1,4 @@
-import { CommandIcon, FlagIcon } from "@/components/icons";
+import { CommandIcon, FlagIcon, MessageIcon } from "@/components/icons";
 import { type IconProps, useColorModeValue } from "@chakra-ui/react";
 import { EventType } from "@typebot.io/events/constants";
 import type { TEvent } from "@typebot.io/events/schemas";
@@ -14,5 +14,7 @@ export const EventIcon = ({ type, ...props }: Props): JSX.Element => {
       return <FlagIcon color={gray} {...props} />;
     case EventType.COMMAND:
       return <CommandIcon color={gray} {...props} />;
+    case EventType.ON_MESSAGE:
+      return <MessageIcon color={gray} {...props} />;
   }
 };
