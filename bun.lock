@@ -1250,6 +1250,7 @@
       "name": "@typebot.io/ui",
       "version": "0.0.1",
       "dependencies": {
+        "@ark-ui/react": "5.1.0",
         "@chakra-ui/anatomy": "2.3.4",
         "@chakra-ui/react": "2.8.2",
         "@chakra-ui/theme-tools": "2.2.6",
