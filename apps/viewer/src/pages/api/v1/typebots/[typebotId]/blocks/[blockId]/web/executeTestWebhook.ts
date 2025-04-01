@@ -1,4 +1,3 @@
-import { writeFileSync } from "fs";
 import { authenticateUser } from "@/helpers/authenticateUser";
 import { LogicBlockType } from "@typebot.io/blocks-logic/constants";
 import { env } from "@typebot.io/env";
@@ -58,13 +57,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return notFound(res, "Webhook block not found");
 
     try {
-      writeFileSync(
-        "test.txt",
-        JSON.stringify({
-          host: env.NEXT_PUBLIC_PARTYKIT_HOST,
-          room: `${user.id}/${typebotId}/webhooks`,
-        }),
-      );
       await PartySocket.fetch(
         {
           host: env.NEXT_PUBLIC_PARTYKIT_HOST,
@@ -76,7 +68,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         },
       );
     } catch (error) {
-      writeFileSync("test.txt", "FAIL");
       console.error("PartySocket.fetch error:", error);
       return res.status(500).send("PartySocket.fetch error");
     }
