@@ -3227,51 +3227,103 @@
                               ]
                             },
                             {
-                              "type": "object",
-                              "properties": {
-                                "id": {
-                                  "type": "string"
-                                },
-                                "outgoingEdgeId": {
-                                  "type": "string"
-                                },
-                                "graphCoordinates": {
+                              "oneOf": [
+                                {
                                   "type": "object",
                                   "properties": {
-                                    "x": {
-                                      "type": "number"
+                                    "id": {
+                                      "type": "string"
                                     },
-                                    "y": {
-                                      "type": "number"
+                                    "outgoingEdgeId": {
+                                      "type": "string"
+                                    },
+                                    "graphCoordinates": {
+                                      "type": "object",
+                                      "properties": {
+                                        "x": {
+                                          "type": "number"
+                                        },
+                                        "y": {
+                                          "type": "number"
+                                        }
+                                      },
+                                      "required": [
+                                        "x",
+                                        "y"
+                                      ]
+                                    },
+                                    "type": {
+                                      "type": "string",
+                                      "enum": [
+                                        "command"
+                                      ]
+                                    },
+                                    "options": {
+                                      "type": "object",
+                                      "properties": {
+                                        "command": {
+                                          "type": "string"
+                                        },
+                                        "resumeAfter": {
+                                          "type": "boolean"
+                                        }
+                                      }
                                     }
                                   },
                                   "required": [
-                                    "x",
-                                    "y"
+                                    "id",
+                                    "graphCoordinates",
+                                    "type"
                                   ]
                                 },
-                                "type": {
-                                  "type": "string",
-                                  "enum": [
-                                    "command"
-                                  ]
-                                },
-                                "options": {
+                                {
                                   "type": "object",
                                   "properties": {
-                                    "command": {
+                                    "id": {
                                       "type": "string"
                                     },
-                                    "resumeAfter": {
-                                      "type": "boolean"
+                                    "outgoingEdgeId": {
+                                      "type": "string"
+                                    },
+                                    "graphCoordinates": {
+                                      "type": "object",
+                                      "properties": {
+                                        "x": {
+                                          "type": "number"
+                                        },
+                                        "y": {
+                                          "type": "number"
+                                        }
+                                      },
+                                      "required": [
+                                        "x",
+                                        "y"
+                                      ]
+                                    },
+                                    "type": {
+                                      "type": "string",
+                                      "enum": [
+                                        "onMessage"
+                                      ]
+                                    },
+                                    "options": {
+                                      "type": "object",
+                                      "properties": {
+                                        "message": {
+                                          "type": "string"
+                                        },
+                                        "resumeAfter": {
+                                          "type": "boolean"
+                                        }
+                                      }
                                     }
-                                  }
+                                  },
+                                  "required": [
+                                    "id",
+                                    "graphCoordinates",
+                                    "type"
+                                  ]
                                 }
-                              },
-                              "required": [
-                                "id",
-                                "graphCoordinates",
-                                "type"
                               ]
                             }
                           ]
@@ -3886,51 +3938,103 @@
                                   ]
                                 },
                                 {
-                                  "type": "object",
-                                  "properties": {
-                                    "id": {
-                                      "type": "string"
-                                    },
-                                    "outgoingEdgeId": {
-                                      "type": "string"
-                                    },
-                                    "graphCoordinates": {
+                                  "oneOf": [
+                                    {
                                       "type": "object",
                                       "properties": {
-                                        "x": {
-                                          "type": "number"
+                                        "id": {
+                                          "type": "string"
                                         },
-                                        "y": {
-                                          "type": "number"
+                                        "outgoingEdgeId": {
+                                          "type": "string"
+                                        },
+                                        "graphCoordinates": {
+                                          "type": "object",
+                                          "properties": {
+                                            "x": {
+                                              "type": "number"
+                                            },
+                                            "y": {
+                                              "type": "number"
+                                            }
+                                          },
+                                          "required": [
+                                            "x",
+                                            "y"
+                                          ]
+                                        },
+                                        "type": {
+                                          "type": "string",
+                                          "enum": [
+                                            "command"
+                                          ]
+                                        },
+                                        "options": {
+                                          "type": "object",
+                                          "properties": {
+                                            "command": {
+                                              "type": "string"
+                                            },
+                                            "resumeAfter": {
+                                              "type": "boolean"
+                                            }
+                                          }
                                         }
                                       },
                                       "required": [
-                                        "x",
-                                        "y"
+                                        "id",
+                                        "graphCoordinates",
+                                        "type"
                                       ]
                                     },
-                                    "type": {
-                                      "type": "string",
-                                      "enum": [
-                                        "command"
-                                      ]
-                                    },
-                                    "options": {
+                                    {
                                       "type": "object",
                                       "properties": {
-                                        "command": {
+                                        "id": {
                                           "type": "string"
                                         },
-                                        "resumeAfter": {
-                                          "type": "boolean"
+                                        "outgoingEdgeId": {
+                                          "type": "string"
+                                        },
+                                        "graphCoordinates": {
+                                          "type": "object",
+                                          "properties": {
+                                            "x": {
+                                              "type": "number"
+                                            },
+                                            "y": {
+                                              "type": "number"
+                                            }
+                                          },
+                                          "required": [
+                                            "x",
+                                            "y"
+                                          ]
+                                        },
+                                        "type": {
+                                          "type": "string",
+                                          "enum": [
+                                            "onMessage"
+                                          ]
+                                        },
+                                        "options": {
+                                          "type": "object",
+                                          "properties": {
+                                            "message": {
+                                              "type": "string"
+                                            },
+                                            "resumeAfter": {
+                                              "type": "boolean"
+                                            }
+                                          }
                                         }
-                                      }
+                                      },
+                                      "required": [
+                                        "id",
+                                        "graphCoordinates",
+                                        "type"
+                                      ]
                                     }
-                                  },
-                                  "required": [
-                                    "id",
-                                    "graphCoordinates",
-                                    "type"
                                   ]
                                 }
                               ]
@@ -6593,51 +6697,103 @@
                                   ]
                                 },
                                 {
-                                  "type": "object",
-                                  "properties": {
-                                    "id": {
-                                      "type": "string"
-                                    },
-                                    "outgoingEdgeId": {
-                                      "type": "string"
-                                    },
-                                    "graphCoordinates": {
+                                  "oneOf": [
+                                    {
                                       "type": "object",
                                       "properties": {
-                                        "x": {
-                                          "type": "number"
+                                        "id": {
+                                          "type": "string"
                                         },
-                                        "y": {
-                                          "type": "number"
+                                        "outgoingEdgeId": {
+                                          "type": "string"
+                                        },
+                                        "graphCoordinates": {
+                                          "type": "object",
+                                          "properties": {
+                                            "x": {
+                                              "type": "number"
+                                            },
+                                            "y": {
+                                              "type": "number"
+                                            }
+                                          },
+                                          "required": [
+                                            "x",
+                                            "y"
+                                          ]
+                                        },
+                                        "type": {
+                                          "type": "string",
+                                          "enum": [
+                                            "command"
+                                          ]
+                                        },
+                                        "options": {
+                                          "type": "object",
+                                          "properties": {
+                                            "command": {
+                                              "type": "string"
+                                            },
+                                            "resumeAfter": {
+                                              "type": "boolean"
+                                            }
+                                          }
                                         }
                                       },
                                       "required": [
-                                        "x",
-                                        "y"
+                                        "id",
+                                        "graphCoordinates",
+                                        "type"
                                       ]
                                     },
-                                    "type": {
-                                      "type": "string",
-                                      "enum": [
-                                        "command"
-                                      ]
-                                    },
-                                    "options": {
+                                    {
                                       "type": "object",
                                       "properties": {
-                                        "command": {
+                                        "id": {
                                           "type": "string"
                                         },
-                                        "resumeAfter": {
-                                          "type": "boolean"
+                                        "outgoingEdgeId": {
+                                          "type": "string"
+                                        },
+                                        "graphCoordinates": {
+                                          "type": "object",
+                                          "properties": {
+                                            "x": {
+                                              "type": "number"
+                                            },
+                                            "y": {
+                                              "type": "number"
+                                            }
+                                          },
+                                          "required": [
+                                            "x",
+                                            "y"
+                                          ]
+                                        },
+                                        "type": {
+                                          "type": "string",
+                                          "enum": [
+                                            "onMessage"
+                                          ]
+                                        },
+                                        "options": {
+                                          "type": "object",
+                                          "properties": {
+                                            "message": {
+                                              "type": "string"
+                                            },
+                                            "resumeAfter": {
+                                              "type": "boolean"
+                                            }
+                                          }
                                         }
-                                      }
+                                      },
+                                      "required": [
+                                        "id",
+                                        "graphCoordinates",
+                                        "type"
+                                      ]
                                     }
-                                  },
-                                  "required": [
-                                    "id",
-                                    "graphCoordinates",
-                                    "type"
                                   ]
                                 }
                               ]
@@ -22829,51 +22985,103 @@
                   ]
                 },
                 {
-                  "type": "object",
-                  "properties": {
-                    "id": {
-                      "type": "string"
-                    },
-                    "outgoingEdgeId": {
-                      "type": "string"
-                    },
-                    "graphCoordinates": {
+                  "oneOf": [
+                    {
                       "type": "object",
                       "properties": {
-                        "x": {
-                          "type": "number"
+                        "id": {
+                          "type": "string"
                         },
-                        "y": {
-                          "type": "number"
+                        "outgoingEdgeId": {
+                          "type": "string"
+                        },
+                        "graphCoordinates": {
+                          "type": "object",
+                          "properties": {
+                            "x": {
+                              "type": "number"
+                            },
+                            "y": {
+                              "type": "number"
+                            }
+                          },
+                          "required": [
+                            "x",
+                            "y"
+                          ]
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "command"
+                          ]
+                        },
+                        "options": {
+                          "type": "object",
+                          "properties": {
+                            "command": {
+                              "type": "string"
+                            },
+                            "resumeAfter": {
+                              "type": "boolean"
+                            }
+                          }
                         }
                       },
                       "required": [
-                        "x",
-                        "y"
+                        "id",
+                        "graphCoordinates",
+                        "type"
                       ]
                     },
-                    "type": {
-                      "type": "string",
-                      "enum": [
-                        "command"
-                      ]
-                    },
-                    "options": {
+                    {
                       "type": "object",
                       "properties": {
-                        "command": {
+                        "id": {
                           "type": "string"
                         },
-                        "resumeAfter": {
-                          "type": "boolean"
+                        "outgoingEdgeId": {
+                          "type": "string"
+                        },
+                        "graphCoordinates": {
+                          "type": "object",
+                          "properties": {
+                            "x": {
+                              "type": "number"
+                            },
+                            "y": {
+                              "type": "number"
+                            }
+                          },
+                          "required": [
+                            "x",
+                            "y"
+                          ]
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "onMessage"
+                          ]
+                        },
+                        "options": {
+                          "type": "object",
+                          "properties": {
+                            "message": {
+                              "type": "string"
+                            },
+                            "resumeAfter": {
+                              "type": "boolean"
+                            }
+                          }
                         }
-                      }
+                      },
+                      "required": [
+                        "id",
+                        "graphCoordinates",
+                        "type"
+                      ]
                     }
-                  },
-                  "required": [
-                    "id",
-                    "graphCoordinates",
-                    "type"
                   ]
                 }
               ]
@@ -25134,51 +25342,103 @@
                   ]
                 },
                 {
-                  "type": "object",
-                  "properties": {
-                    "id": {
-                      "type": "string"
-                    },
-                    "outgoingEdgeId": {
-                      "type": "string"
-                    },
-                    "graphCoordinates": {
+                  "oneOf": [
+                    {
                       "type": "object",
                       "properties": {
-                        "x": {
-                          "type": "number"
+                        "id": {
+                          "type": "string"
                         },
-                        "y": {
-                          "type": "number"
+                        "outgoingEdgeId": {
+                          "type": "string"
+                        },
+                        "graphCoordinates": {
+                          "type": "object",
+                          "properties": {
+                            "x": {
+                              "type": "number"
+                            },
+                            "y": {
+                              "type": "number"
+                            }
+                          },
+                          "required": [
+                            "x",
+                            "y"
+                          ]
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "command"
+                          ]
+                        },
+                        "options": {
+                          "type": "object",
+                          "properties": {
+                            "command": {
+                              "type": "string"
+                            },
+                            "resumeAfter": {
+                              "type": "boolean"
+                            }
+                          }
                         }
                       },
                       "required": [
-                        "x",
-                        "y"
+                        "id",
+                        "graphCoordinates",
+                        "type"
                       ]
                     },
-                    "type": {
-                      "type": "string",
-                      "enum": [
-                        "command"
-                      ]
-                    },
-                    "options": {
+                    {
                       "type": "object",
                       "properties": {
-                        "command": {
+                        "id": {
                           "type": "string"
                         },
-                        "resumeAfter": {
-                          "type": "boolean"
+                        "outgoingEdgeId": {
+                          "type": "string"
+                        },
+                        "graphCoordinates": {
+                          "type": "object",
+                          "properties": {
+                            "x": {
+                              "type": "number"
+                            },
+                            "y": {
+                              "type": "number"
+                            }
+                          },
+                          "required": [
+                            "x",
+                            "y"
+                          ]
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "onMessage"
+                          ]
+                        },
+                        "options": {
+                          "type": "object",
+                          "properties": {
+                            "message": {
+                              "type": "string"
+                            },
+                            "resumeAfter": {
+                              "type": "boolean"
+                            }
+                          }
                         }
-                      }
+                      },
+                      "required": [
+                        "id",
+                        "graphCoordinates",
+                        "type"
+                      ]
                     }
-                  },
-                  "required": [
-                    "id",
-                    "graphCoordinates",
-                    "type"
                   ]
                 }
               ]
