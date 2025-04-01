@@ -75,12 +75,14 @@ const main = async () => {
     process.exit(1);
   }
   if (!existsSync(newBlockPath)) mkdirSync(newBlockPath);
+  const srcPath = join(newBlockPath, "src");
+  if (!existsSync(srcPath)) mkdirSync(srcPath);
   await createPackageJson(newBlockPath, prompt);
   await createTsConfig(newBlockPath);
-  await createIndexFile(newBlockPath, prompt);
-  await createLogoFile(newBlockPath, prompt);
-  if (prompt.auth !== "none") await createAuthFile(newBlockPath, prompt);
-  await createSchemasFile(newBlockPath, prompt);
+  await createIndexFile(srcPath, prompt);
+  await createLogoFile(srcPath, prompt);
+  if (prompt.auth !== "none") await createAuthFile(srcPath, prompt);
+  await createSchemasFile(srcPath, prompt);
   await addBlockToRepository(prompt);
   s.stop("Creating files...");
   s.start("Installing dependencies...");
