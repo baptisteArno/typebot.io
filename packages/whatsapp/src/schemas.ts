@@ -188,6 +188,24 @@ export const incomingMessageSchema = z.discriminatedUnion("type", [
     }),
   }),
   sharedIncomingMessageFieldsSchema.extend({
+    type: z.literal("contacts"),
+    contacts: z.object({
+      name: z
+        .object({
+          formatted_name: z.string(),
+        })
+        .optional(),
+      phones: z
+        .array(
+          z.object({
+            phone: z.string().optional(),
+            type: z.string().optional(),
+          }),
+        )
+        .optional(),
+    }),
+  }),
+  sharedIncomingMessageFieldsSchema.extend({
     type: z.literal("unsupported"),
   }),
   sharedIncomingMessageFieldsSchema.extend({
