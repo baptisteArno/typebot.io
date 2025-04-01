@@ -6628,6 +6628,7 @@
     "@typebot.io/tsconfig" "packages/tsconfig"
   dependencies:
     "@typebot.io/forge" "packages/forge/core"
+    "@typebot.io/lib" "packages/lib"
     ky "1.2.4"
 
 "@typebot.io/blocks-base@packages/blocks/base":
@@ -6790,6 +6791,7 @@
     "@typebot.io/tsconfig" "packages/tsconfig"
   dependencies:
     "@typebot.io/lib" "packages/lib"
+    "@typebot.io/runtime-session-store" "packages/runtime-session-store"
     "@typebot.io/variables" "packages/variables"
     "@typebot.io/zod" "packages/zod"
 
@@ -6815,8 +6817,6 @@
     "@ai-sdk/deepseek" "0.2.2"
     "@typebot.io/ai" "packages/ai"
     "@typebot.io/forge" "packages/forge/core"
-    "@typebot.io/lib" "packages/lib"
-    "@typebot.io/zod" "packages/zod"
 
 "@typebot.io/dify-ai-block@packages/forge/blocks/difyAi":
   version "workspace:packages/forge/blocks/difyAi"
@@ -7029,7 +7029,6 @@
   dependencies:
     "@ai-sdk/mistral" "1.2.1"
     "@typebot.io/ai" "packages/ai"
-    ky "1.2.4"
 
 "@typebot.io/nextjs@packages/embeds/nextjs":
   version "workspace:packages/embeds/nextjs"
@@ -7075,6 +7074,7 @@
     "@typebot.io/ai" "packages/ai"
     "@typebot.io/forge" "packages/forge/core"
     "@typebot.io/lib" "packages/lib"
+    "@typebot.io/runtime-session-store" "packages/runtime-session-store"
     "@typebot.io/variables" "packages/variables"
     ky "1.2.4"
     openai "4.81.0"
@@ -7096,7 +7096,6 @@
     "@typebot.io/ai" "packages/ai"
     "@typebot.io/forge" "packages/forge/core"
     "@typebot.io/lib" "packages/lib"
-    "@typebot.io/zod" "packages/zod"
 
 "@typebot.io/playwright@packages/playwright":
   version "workspace:packages/playwright"
@@ -7159,6 +7158,7 @@
     "@typebot.io/blocks-logic" "packages/blocks/logic"
     "@typebot.io/env" "packages/env"
     "@typebot.io/lib" "packages/lib"
+    "@typebot.io/runtime-session-store" "packages/runtime-session-store"
     "@typebot.io/typebot" "packages/typebot"
     "@typebot.io/variables" "packages/variables"
 
@@ -7404,6 +7404,7 @@
     "@typebot.io/lib" "packages/lib"
     "@typebot.io/prisma" "packages/prisma"
     "@typebot.io/rich-text" "packages/rich-text"
+    "@typebot.io/runtime-session-store" "packages/runtime-session-store"
     "@typebot.io/settings" "packages/settings"
     "@typebot.io/typebot" "packages/typebot"
     "@typebot.io/variables" "packages/variables"
@@ -11438,7 +11439,6 @@ buffer-from@^1.0.0:
     dotenv "16.4.5"
     dotenv-cli "8.0.0"
     next-runtime-env "1.6.2"
-    postcss "8.5.3"
     superjson "1.12.4"
     tailwindcss "3.4.17"
   dependencies:

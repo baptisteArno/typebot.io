@@ -16,6 +16,7 @@
     "@typebot.io/forge": "workspace:*",
     "@typebot.io/lib": "workspace:*",
     "@typebot.io/variables": "workspace:*",
+    "@typebot.io/runtime-session-store": "workspace:*",
     "ky": "1.2.4"
   },
   "devDependencies": {

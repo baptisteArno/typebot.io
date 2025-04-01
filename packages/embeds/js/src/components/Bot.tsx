@@ -36,7 +36,7 @@ import {
 import type { Font } from "@typebot.io/theme/schemas";
 import typebotColors from "@typebot.io/ui/colors.css";
 import { cn } from "@typebot.io/ui/lib/cn";
-import clsx from "clsx";
+import { cx } from "@typebot.io/ui/lib/cva";
 import { HTTPError } from "ky";
 import { Show, createEffect, createSignal, onCleanup, onMount } from "solid-js";
 import { Portal } from "solid-js/web";
@@ -334,7 +334,7 @@ const BotContent = (props: BotContentProps) => {
   return (
     <div
       ref={botContainerElement}
-      class={clsx(
+      class={cx(
         "relative flex w-full h-full text-base overflow-hidden flex-col justify-center items-center typebot-container",
         props.class,
       )}

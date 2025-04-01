@@ -169,15 +169,25 @@ export const ${camelCaseName}Block = createBlock({
 const createPackageJson = async (path: string, { id }: { id: unknown }) => {
   writeFileSync(
     join(path, "package.json"),
-    JSON.stringify({
-      name: `@typebot.io/${id}-block`,
-      dependencies: {
-        "@typebot.io/forge": "workspace:*",
+    JSON.stringify(
+      {
+        name: `@typebot.io/${id}-block`,
+        private: true,
+        type: "module",
+        exports: {
+          ".": "./src/index.ts",
+          "./schemas": "./src/schemas.ts",
+        },
+        dependencies: {
+          "@typebot.io/forge": "workspace:*",
+        },
+        devDependencies: {
+          "@typebot.io/tsconfig": "workspace:*",
+        },
       },
-      devDependencies: {
-        "@typebot.io/tsconfig": "workspace:*",
-      },
-    }),
+      null,
+      2,
+    ),
   );
 };
 

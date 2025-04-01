@@ -1,5 +1,17 @@
 {
   "name": "@typebot.io/blink-block",
-  "dependencies": { "@typebot.io/forge": "workspace:*", "ky": "1.2.4" },
-  "devDependencies": { "@typebot.io/tsconfig": "workspace:*" }
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./schemas": "./src/schemas.ts"
+  },
+  "dependencies": {
+    "@typebot.io/forge": "workspace:*",
+    "@typebot.io/lib": "workspace:*",
+    "ky": "1.2.4"
+  },
+  "devDependencies": {
+    "@typebot.io/tsconfig": "workspace:*"
+  }
 }
