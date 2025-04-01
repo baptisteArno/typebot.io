@@ -31,7 +31,6 @@ const findPackages = (dir: string): string[] => {
 // Main function to run depcheck on all packages
 const main = async () => {
   console.log("Checking unused and missing dependencies...");
-  let failed = false;
   const packages = findPackages(rootDir);
   const checks = packages.map(async (pkg) => {
     try {
@@ -41,19 +40,26 @@ const main = async () => {
           .quiet();
 
       if (exitCode === 255) {
-        console.log(`${pkg}/package.json`);
-        console.log(stdout.toString());
-        failed = true;
+        return {
+          fail: true,
+          stdout: `${pkg}/package.json:\n${stdout.toString()}`,
+        };
       }
+      return { fail: false };
     } catch (error) {
-      console.error(`Error checking ${pkg}:`, error);
-      failed = true;
+      return { fail: true, stdout: `Error checking ${pkg}:`, error };
     }
   });
 
-  await Promise.all(checks);
+  const statuses = await Promise.all(checks);
 
-  if (failed) {
+  if (statuses.some((status) => status.fail)) {
+    console.log(
+      statuses
+        .filter((status) => status.fail)
+        .map((status) => status.stdout)
+        .join("\n\n"),
+    );
     process.exit(1);
   }
 };
