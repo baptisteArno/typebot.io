@@ -10,6 +10,7 @@ const ignoreTrpcMessages = [
   "current block does not expect file upload",
   "couldn't find credentials in database",
   "start group doesn't exist",
+  "origin not allowed",
 ];
 
 const ignoreMessages = [
