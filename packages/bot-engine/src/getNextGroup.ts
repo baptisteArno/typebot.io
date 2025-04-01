@@ -22,9 +22,7 @@ export const getNextGroup = async ({
 }): Promise<NextGroup> => {
   const nextEdge = state.typebotsQueue[0].typebot.edges.find(byId(edgeId));
   if (!nextEdge) {
-    const nextEdgeResponse = state.typebotsQueue[0].edgeIdToTriggerWhenDone
-      ? { state, edgeId: state.typebotsQueue[0].edgeIdToTriggerWhenDone }
-      : popQueuedEdge(state);
+    const nextEdgeResponse = popQueuedEdge(state);
     let newSessionState = nextEdgeResponse.state;
     if (newSessionState.typebotsQueue.length > 1) {
       const isMergingWithParent =
@@ -90,10 +88,7 @@ export const getNextGroup = async ({
             newSessionState.typebotsQueue[0].answers.length,
         };
     }
-    if (
-      nextEdgeResponse.edgeId &&
-      !newSessionState.typebotsQueue[0].edgeIdToTriggerWhenDone
-    )
+    if (nextEdgeResponse.edgeId)
       return getNextGroup({
         state: newSessionState,
         edgeId: nextEdgeResponse.edgeId,
