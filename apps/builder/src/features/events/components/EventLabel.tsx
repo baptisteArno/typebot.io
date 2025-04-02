@@ -22,5 +22,5 @@ export const getEventBlockLabel = (
 ): { [key in EventType]: string } => ({
   [EventType.START]: t("editor.sidebarBlock.start.label"),
   [EventType.COMMAND]: t("editor.sidebarBlock.command.label"),
-  [EventType.ON_MESSAGE]: t("editor.sidebarBlock.onMessage.label"),
+  [EventType.REPLY]: t("editor.sidebarBlock.reply.label"),
 });

@@ -48,7 +48,7 @@ import { parseTime } from "./blocks/inputs/time/parseTime";
 import { saveDataInResponseVariableMapping } from "./blocks/integrations/httpRequest/saveDataInResponseVariableMapping";
 import { resumeChatCompletion } from "./blocks/integrations/legacy/openai/resumeChatCompletion";
 import { executeCommandEvent } from "./events/executeCommandEvent";
-import { executeOnMessageEvent } from "./events/executeOnMessageEvent";
+import { executeReplyEvent } from "./events/executeReplyEvent";
 import { executeGroup, parseInput } from "./executeGroup";
 import { getNextGroup } from "./getNextGroup";
 import { isInputMessage } from "./helpers/isInputMessage";
@@ -102,7 +102,7 @@ export const continueBotFlow = async (
   }
 
   if (reply?.type === "text") {
-    newSessionState = await executeOnMessageEvent({
+    newSessionState = await executeReplyEvent({
       state: newSessionState,
       reply,
       sessionStore,

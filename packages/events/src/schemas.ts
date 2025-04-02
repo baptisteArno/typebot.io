@@ -27,7 +27,7 @@ export const commandEventSchema = eventBaseSchema.extend({
     .optional(),
 });
 
-const onMessageEventOptionsSchema = optionBaseSchema.merge(
+const replyEventOptionsSchema = optionBaseSchema.merge(
   z.object({
     exitCondition: z
       .object({
@@ -38,15 +38,15 @@ const onMessageEventOptionsSchema = optionBaseSchema.merge(
   }),
 );
 
-export const onMessageEventSchema = eventBaseSchema.extend({
-  type: z.literal(EventType.ON_MESSAGE),
-  options: onMessageEventOptionsSchema.optional(),
+export const replyEventSchema = eventBaseSchema.extend({
+  type: z.literal(EventType.REPLY),
+  options: replyEventOptionsSchema.optional(),
 });
 
 export type CommandEvent = z.infer<typeof commandEventSchema>;
-export type OnMessageEvent = z.infer<typeof onMessageEventSchema>;
+export type ReplyEvent = z.infer<typeof replyEventSchema>;
 
-const draggableEventSchemas = [commandEventSchema, onMessageEventSchema];
+const draggableEventSchemas = [commandEventSchema, replyEventSchema];
 
 export const eventSchema = z.discriminatedUnion("type", [
   startEventSchema,
@@ -55,7 +55,7 @@ export const eventSchema = z.discriminatedUnion("type", [
 
 export const draggableEventSchema = z.discriminatedUnion("type", [
   commandEventSchema,
-  onMessageEventSchema,
+  replyEventSchema,
 ]);
 
 export type TEvent = z.infer<typeof eventSchema>;

@@ -2,7 +2,7 @@ import { StartEventNode } from "@/features/events/components/StartEventNode";
 import { EventType } from "@typebot.io/events/constants";
 import type { TEvent } from "@typebot.io/events/schemas";
 import { CommandEventNode } from "./CommandEventNode";
-import { OnMessageEventNode } from "./OnMessageEventNode";
+import { ReplyEventNode } from "./ReplyEventNode";
 
 type Props = {
   event: TEvent;
@@ -14,7 +14,7 @@ export const EventNodeContent = ({ event }: Props): JSX.Element => {
       return <StartEventNode />;
     case EventType.COMMAND:
       return <CommandEventNode options={event.options} />;
-    case EventType.ON_MESSAGE:
-      return <OnMessageEventNode options={event.options} />;
+    case EventType.REPLY:
+      return <ReplyEventNode options={event.options} />;
   }
 };

@@ -5,19 +5,19 @@ import { EventIcon } from "@/features/events/components/EventIcon";
 import { HStack, Stack, Text } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { EventType } from "@typebot.io/events/constants";
-import type { OnMessageEvent } from "@typebot.io/events/schemas";
+import type { ReplyEvent } from "@typebot.io/events/schemas";
 
 type Props = {
-  options: OnMessageEvent["options"];
+  options: ReplyEvent["options"];
 };
 
-export const OnMessageEventNode = ({ options }: Props) => {
+export const ReplyEventNode = ({ options }: Props) => {
   const { t } = useTranslate();
   const { typebot } = useTypebot();
 
   return (
     <HStack flex="1" align="flex-start" spacing={3} fontWeight="normal">
-      <EventIcon mt="0.25rem" type={EventType.ON_MESSAGE} />
+      <EventIcon mt="0.25rem" type={EventType.REPLY} />
       <Stack>
         {options?.exitCondition?.isEnabled ? (
           <ConditionContent
@@ -26,7 +26,7 @@ export const OnMessageEventNode = ({ options }: Props) => {
           />
         ) : (
           <Text color="gray.500" fontWeight="normal">
-            {t("nodes.events.onMessage.placeholder")}
+            {t("nodes.events.reply.placeholder")}
           </Text>
         )}
         {options?.variableId && (

@@ -5,15 +5,15 @@ import { FormLabel, Stack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { LogicalOperator } from "@typebot.io/conditions/constants";
 import type { Condition } from "@typebot.io/conditions/schemas";
-import type { OnMessageEvent } from "@typebot.io/events/schemas";
+import type { ReplyEvent } from "@typebot.io/events/schemas";
 import type { Variable } from "@typebot.io/variables/schemas";
 
-export const OnMessageEventSettings = ({
+export const ReplyEventSettings = ({
   options,
   onOptionsChange,
 }: {
-  options: OnMessageEvent["options"];
-  onOptionsChange: (options: OnMessageEvent["options"]) => void;
+  options: ReplyEvent["options"];
+  onOptionsChange: (options: ReplyEvent["options"]) => void;
 }) => {
   const { t } = useTranslate();
 
@@ -49,9 +49,9 @@ export const OnMessageEventSettings = ({
         />
       </Stack>
       <SwitchWithRelatedSettings
-        label={t("blocks.events.onMessage.settings.exitCondition.label")}
+        label={t("blocks.events.reply.settings.exitCondition.label")}
         moreInfoContent={t(
-          "blocks.events.onMessage.settings.exitCondition.infoText",
+          "blocks.events.reply.settings.exitCondition.infoText",
         )}
         initialValue={options?.exitCondition?.isEnabled ?? false}
         onCheckChange={updateIsExitConditionEnabled}

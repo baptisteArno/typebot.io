@@ -13,35 +13,7 @@ type Props = {
 
 export const executeEvent = async ({ state, event }: Props) => {
   let newSessionState = state;
-  if (event.options?.resumeAfter && newSessionState.currentBlockId) {
-    const { block, group } = getBlockById(
-      newSessionState.currentBlockId,
-      newSessionState.typebotsQueue[0].typebot.groups,
-    );
-    if (!block)
-      throw new TRPCError({
-        code: "BAD_REQUEST",
-        message: "Block not found",
-      });
-    newSessionState = addPortalEdge(`virtual-${event.id}`, newSessionState, {
-      to: { groupId: group.id, blockId: block.id },
-    });
-    newSessionState = {
-      ...newSessionState,
-      typebotsQueue: [
-        {
-          ...newSessionState.typebotsQueue[0],
-          queuedEdgeIds: newSessionState.typebotsQueue[0].queuedEdgeIds
-            ? [
-                `virtual-${event.id}`,
-                ...newSessionState.typebotsQueue[0].queuedEdgeIds,
-              ]
-            : [`virtual-${event.id}`],
-        },
-        ...newSessionState.typebotsQueue.slice(1),
-      ],
-    };
-  }
+
   const response = await getNextGroup({
     state: newSessionState,
     edgeId: event.outgoingEdgeId,
