@@ -1,9 +1,7 @@
 import { TRPCError } from "@trpc/server";
 import type { SessionState } from "@typebot.io/chat-session/schemas";
 import type { TDraggableEvent } from "@typebot.io/events/schemas";
-import { getBlockById } from "@typebot.io/groups/helpers/getBlockById";
 import { addBlockToTypebotIfMissing } from "../addBlockToTypebotIfMissing";
-import { addPortalEdge } from "../addPortalEdge";
 import { getNextGroup } from "../getNextGroup";
 
 type Props = {
