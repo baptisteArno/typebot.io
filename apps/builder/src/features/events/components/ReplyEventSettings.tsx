@@ -55,6 +55,17 @@ export const ReplyEventSettings = ({
 
   return (
     <Stack p="2">
+      <Stack>
+        <FormLabel mb="0" htmlFor="variable">
+          {t("blocks.inputs.settings.saveAnswer.label")}
+        </FormLabel>
+        <VariableSearchInput
+          initialVariableId={options?.variableId}
+          onSelectVariable={(variable?: Variable) =>
+            onOptionsChange({ ...options, variableId: variable?.id })
+          }
+        />
+      </Stack>
       <SwitchWithRelatedSettings
         label={t("blocks.events.reply.settings.entryCondition.label")}
         moreInfoContent={t(
@@ -91,17 +102,6 @@ export const ReplyEventSettings = ({
           onConditionChange={updateExitCondition}
         />
       </SwitchWithRelatedSettings>
-      <Stack>
-        <FormLabel mb="0" htmlFor="variable">
-          {t("blocks.inputs.settings.saveAnswer.label")}
-        </FormLabel>
-        <VariableSearchInput
-          initialVariableId={options?.variableId}
-          onSelectVariable={(variable?: Variable) =>
-            onOptionsChange({ ...options, variableId: variable?.id })
-          }
-        />
-      </Stack>
     </Stack>
   );
 };
