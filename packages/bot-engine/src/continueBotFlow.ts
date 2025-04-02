@@ -61,7 +61,10 @@ import type {
 } from "./schemas/api";
 import { startBotFlow } from "./startBotFlow";
 import type { ParsedReply, SkipReply, SuccessReply } from "./types";
-import { updateVariablesInSession } from "./updateVariablesInSession";
+import {
+  updateTextVariablesInSession,
+  updateVariablesInSession,
+} from "./updateVariablesInSession";
 
 export type ContinueBotFlowResponse = ContinueChatResponse & {
   newSessionState: SessionState;
@@ -102,6 +105,7 @@ export const continueBotFlow = async (
     newSessionState = await executeOnMessageEvent({
       state: newSessionState,
       reply,
+      sessionStore,
     });
   }
 
@@ -504,21 +508,11 @@ const saveInputVarIfAny = ({
   );
   if (!foundVariable) return state;
 
-  const { updatedState } = updateVariablesInSession({
-    newVariables: [
-      {
-        ...foundVariable,
-        value:
-          Array.isArray(foundVariable.value) && reply.text
-            ? foundVariable.value.concat(reply.text)
-            : reply.text,
-      },
-    ],
-    currentBlockId: undefined,
+  return updateTextVariablesInSession({
     state,
+    foundVariable,
+    reply,
   });
-
-  return updatedState;
 };
 
 const parseRetryMessage = async (
