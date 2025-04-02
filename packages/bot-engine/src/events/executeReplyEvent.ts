@@ -3,9 +3,11 @@ import { executeCondition } from "@typebot.io/conditions/executeCondition";
 import { EventType } from "@typebot.io/events/constants";
 import type { ReplyEvent } from "@typebot.io/events/schemas";
 import type { SessionStore } from "@typebot.io/runtime-session-store";
+import { removePortalEdge } from "../removePortalEdge";
 import type { InputMessage } from "../schemas/api";
 import { updateTextVariablesInSession } from "../updateVariablesInSession";
 import { executeEvent } from "./executeEvent";
+import { executeResumeAfter } from "./executeResumeAfter";
 
 type Props = {
   state: SessionState;
@@ -31,32 +33,49 @@ export const executeReplyEvent = async ({
     (variable) => variable.id === event.options?.variableId,
   );
 
+  let newSessionState = state;
+
   if (foundVariable) {
-    state = updateTextVariablesInSession({
-      state,
+    newSessionState = updateTextVariablesInSession({
+      state: newSessionState,
       foundVariable,
       reply,
     });
   }
 
-  if (
-    !event.options?.exitCondition?.isEnabled ||
-    !event.options.exitCondition.condition
-  )
-    return state;
+  const isEntryConditionMet =
+    !event.options?.entryCondition?.isEnabled ||
+    (event.options?.entryCondition?.condition &&
+      executeCondition(event.options.entryCondition.condition, {
+        variables: newSessionState.typebotsQueue[0].typebot.variables,
+        sessionStore,
+      }));
 
-  const isConditionMet = executeCondition(
-    event.options.exitCondition.condition,
-    {
-      variables: state.typebotsQueue[0].typebot.variables,
+  if (!isEntryConditionMet) return newSessionState;
+
+  const isExitConditionMet =
+    event.options?.exitCondition?.isEnabled &&
+    event.options?.exitCondition?.condition &&
+    executeCondition(event.options.exitCondition.condition, {
+      variables: newSessionState.typebotsQueue[0].typebot.variables,
       sessionStore,
-    },
-  );
+    });
 
-  if (!isConditionMet) return state;
+  if (!isExitConditionMet && !newSessionState.currentEventId) {
+    newSessionState = executeResumeAfter({
+      state: newSessionState,
+      event,
+    });
+    newSessionState.currentEventId = event.id;
+  } else if (isExitConditionMet) {
+    newSessionState = removePortalEdge(
+      `virtual-${newSessionState.currentEventId}`,
+      newSessionState,
+    );
+  }
 
   return await executeEvent({
-    state,
+    state: newSessionState,
     event,
   });
 };

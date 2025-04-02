@@ -132,6 +132,7 @@ const sessionStateSchemaV3 = sessionStateSchemaV2
     allowedOrigins: z.array(z.string()).optional(),
     setVariableIdsForHistory: z.array(z.string()).optional(),
     currentSetVariableHistoryIndex: z.number().optional(),
+    currentEventId: z.string().optional(),
     workspaceId: z.string(),
     previewMetadata: z
       .object({

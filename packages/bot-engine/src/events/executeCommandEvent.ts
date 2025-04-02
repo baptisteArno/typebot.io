@@ -2,9 +2,8 @@ import { TRPCError } from "@trpc/server";
 import type { SessionState } from "@typebot.io/chat-session/schemas";
 import { EventType } from "@typebot.io/events/constants";
 import type { CommandEvent } from "@typebot.io/events/schemas";
-import { getBlockById } from "@typebot.io/groups/helpers/getBlockById";
-import { addPortalEdge } from "../addPortalEdge";
 import { executeEvent } from "./executeEvent";
+import { executeResumeAfter } from "./executeResumeAfter";
 
 type Props = {
   state: SessionState;
@@ -24,34 +23,11 @@ export const executeCommandEvent = async ({
     });
 
   let newSessionState = state;
-  if (event.options?.resumeAfter && newSessionState.currentBlockId) {
-    const { block, group } = getBlockById(
-      newSessionState.currentBlockId,
-      newSessionState.typebotsQueue[0].typebot.groups,
-    );
-    if (!block)
-      throw new TRPCError({
-        code: "BAD_REQUEST",
-        message: "Block not found",
-      });
-    newSessionState = addPortalEdge(`virtual-${event.id}`, newSessionState, {
-      to: { groupId: group.id, blockId: block.id },
+  if (event.options?.resumeAfter) {
+    newSessionState = executeResumeAfter({
+      state: newSessionState,
+      event,
     });
-    newSessionState = {
-      ...newSessionState,
-      typebotsQueue: [
-        {
-          ...newSessionState.typebotsQueue[0],
-          queuedEdgeIds: newSessionState.typebotsQueue[0].queuedEdgeIds
-            ? [
-                `virtual-${event.id}`,
-                ...newSessionState.typebotsQueue[0].queuedEdgeIds,
-              ]
-            : [`virtual-${event.id}`],
-        },
-        ...newSessionState.typebotsQueue.slice(1),
-      ],
-    };
   }
 
   return await executeEvent({
