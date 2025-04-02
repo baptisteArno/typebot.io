@@ -207,6 +207,11 @@ export const continueBotFlow = async (
         sessionStore,
       },
     );
+
+    if (newSessionState.currentEventId) {
+      newSessionState.currentEventId = undefined;
+    }
+
     return {
       ...chatReply,
       lastMessageNewFormat,

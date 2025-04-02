@@ -19,21 +19,33 @@ export const ReplyEventNode = ({ options }: Props) => {
     <HStack flex="1" align="flex-start" spacing={3} fontWeight="normal">
       <EventIcon mt="0.25rem" type={EventType.REPLY} />
       <Stack>
-        {options?.exitCondition?.isEnabled ? (
-          <ConditionContent
-            condition={options?.exitCondition?.condition}
-            variables={typebot?.variables ?? []}
-          />
+        {options?.variableId && (
+          <Stack>
+            {options?.entryCondition?.isEnabled && (
+              <Text fontSize="xs" color="gray.500">
+                {t("nodes.events.reply.variable.label")}
+              </Text>
+            )}
+            <SetVariableLabel
+              variables={typebot?.variables}
+              variableId={options.variableId}
+            />
+          </Stack>
+        )}
+        {options?.entryCondition?.isEnabled ? (
+          <Stack>
+            <Text fontSize="xs" color="gray.500">
+              {t("blocks.events.reply.settings.entryCondition.label")}
+            </Text>
+            <ConditionContent
+              condition={options?.entryCondition?.condition}
+              variables={typebot?.variables ?? []}
+            />
+          </Stack>
         ) : (
           <Text color="gray.500" fontWeight="normal">
-            {t("nodes.events.reply.placeholder")}
+            {t("nodes.events.reply.alwaysTrigger")}
           </Text>
-        )}
-        {options?.variableId && (
-          <SetVariableLabel
-            variables={typebot?.variables}
-            variableId={options.variableId}
-          />
         )}
       </Stack>
     </HStack>

@@ -29,6 +29,12 @@ export const commandEventSchema = eventBaseSchema.extend({
 
 const replyEventOptionsSchema = optionBaseSchema.merge(
   z.object({
+    entryCondition: z
+      .object({
+        isEnabled: z.boolean().optional(),
+        condition: conditionSchema.optional(),
+      })
+      .optional(),
     exitCondition: z
       .object({
         isEnabled: z.boolean().optional(),
