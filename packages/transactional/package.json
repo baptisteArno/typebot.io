@@ -2,7 +2,8 @@
   "name": "@typebot.io/transactional",
   "type": "module",
   "scripts": {
-    "preview": "SKIP_ENV_CHECK=true dotenv -e ./.env -e ../../.env -- email dev --port=3005"
+    "preview": "SKIP_ENV_CHECK=true dotenv -e ./.env -e ../../.env -- email dev --port=3005",
+    "preview-marketing": "SKIP_ENV_CHECK=true dotenv -e ./.env -e ../../.env -- email dev --port=3005 --dir=marketing"
   },
   "exports": {
     "./*": "./*.tsx"

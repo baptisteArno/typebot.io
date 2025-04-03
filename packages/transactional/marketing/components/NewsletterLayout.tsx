@@ -9,7 +9,7 @@ import {
   Text,
 } from "@react-email/components";
 import { env } from "@typebot.io/env";
-import { container, footer, link, main } from "../styles";
+import { container, footer, link, logo, main } from "../styles";
 
 type Props = {
   children: React.ReactNode;
@@ -26,9 +26,7 @@ export const NewsletterLayout = ({ preview, children }: Props) => (
           width="32"
           height="32"
           alt="Typebot's Logo"
-          style={{
-            margin: "24px 0",
-          }}
+          style={logo}
         />
         {children}
         <Img
@@ -36,12 +34,10 @@ export const NewsletterLayout = ({ preview, children }: Props) => (
           width="32"
           height="32"
           alt="Typebot's Logo"
-          style={{
-            marginTop: "24px",
-          }}
+          style={logo}
         />
 
-        <Text style={footer}>Typebot.io - Powering Conversations at Scale</Text>
+        <Text style={footer}>Typebot.io - Build Faster, Chat Smarter</Text>
         <Link
           href="{{unsubscribe}}"
           target="_blank"
