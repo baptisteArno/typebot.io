@@ -4875,29 +4875,32 @@
                                               ]
                                             },
                                             "contacts": {
-                                              "type": "object",
-                                              "properties": {
-                                                "name": {
-                                                  "type": "object",
-                                                  "properties": {
-                                                    "formatted_name": {
-                                                      "type": "string"
-                                                    }
-                                                  },
-                                                  "required": [
-                                                    "formatted_name"
-                                                  ]
-                                                },
-                                                "phones": {
-                                                  "type": "array",
-                                                  "items": {
+                                              "type": "array",
+                                              "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                  "name": {
                                                     "type": "object",
                                                     "properties": {
-                                                      "phone": {
+                                                      "formatted_name": {
                                                         "type": "string"
-                                                      },
-                                                      "type": {
-                                                        "type": "string"
+                                                      }
+                                                    },
+                                                    "required": [
+                                                      "formatted_name"
+                                                    ]
+                                                  },
+                                                  "phones": {
+                                                    "type": "array",
+                                                    "items": {
+                                                      "type": "object",
+                                                      "properties": {
+                                                        "phone": {
+                                                          "type": "string"
+                                                        },
+                                                        "type": {
+                                                          "type": "string"
+                                                        }
                                                       }
                                                     }
                                                   }
