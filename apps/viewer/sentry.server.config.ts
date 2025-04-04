@@ -18,6 +18,7 @@ const ignoreMessages = [
   "is in reply state",
   "point to another phone ID",
   "message did not matched any condition",
+  "no public typebot with WhatsApp integration found",
 ];
 
 const crawlersToIgnore = ["Googlebot"];
