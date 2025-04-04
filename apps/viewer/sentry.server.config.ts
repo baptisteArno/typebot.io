@@ -17,6 +17,7 @@ const ignoreMessages = [
   "could not find credentials",
   "is in reply state",
   "point to another phone ID",
+  "message did not matched any condition",
 ];
 
 const crawlersToIgnore = ["Googlebot"];
