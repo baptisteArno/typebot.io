@@ -1,0 +1,107 @@
+import { SwitchWithRelatedSettings } from "@/components/SwitchWithRelatedSettings";
+import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
+import { ConditionForm } from "@/features/blocks/logic/condition/components/ConditionForm";
+import { FormLabel, Stack } from "@chakra-ui/react";
+import { useTranslate } from "@tolgee/react";
+import { LogicalOperator } from "@typebot.io/conditions/constants";
+import type { Condition } from "@typebot.io/conditions/schemas";
+import type { ReplyEvent } from "@typebot.io/events/schemas";
+import type { Variable } from "@typebot.io/variables/schemas";
+
+export const ReplyEventSettings = ({
+  options,
+  onOptionsChange,
+}: {
+  options: ReplyEvent["options"];
+  onOptionsChange: (options: ReplyEvent["options"]) => void;
+}) => {
+  const { t } = useTranslate();
+
+  const updateIsEntryConditionEnabled = (isEnabled: boolean) =>
+    onOptionsChange({
+      ...options,
+      entryCondition: {
+        ...options?.entryCondition,
+        isEnabled,
+      },
+    });
+
+  const updateEntryCondition = (condition: Condition) =>
+    onOptionsChange({
+      ...options,
+      entryCondition: {
+        ...options?.entryCondition,
+        condition,
+      },
+    });
+
+  const updateIsExitConditionEnabled = (isEnabled: boolean) =>
+    onOptionsChange({
+      ...options,
+      exitCondition: {
+        ...options?.exitCondition,
+        isEnabled,
+      },
+    });
+
+  const updateExitCondition = (condition: Condition) =>
+    onOptionsChange({
+      ...options,
+      exitCondition: {
+        ...options?.exitCondition,
+        condition,
+      },
+    });
+
+  return (
+    <Stack p="2">
+      <Stack>
+        <FormLabel mb="0" htmlFor="variable">
+          {t("blocks.inputs.settings.saveAnswer.label")}
+        </FormLabel>
+        <VariableSearchInput
+          initialVariableId={options?.variableId}
+          onSelectVariable={(variable?: Variable) =>
+            onOptionsChange({ ...options, variableId: variable?.id })
+          }
+        />
+      </Stack>
+      <SwitchWithRelatedSettings
+        label={t("blocks.events.reply.settings.entryCondition.label")}
+        moreInfoContent={t(
+          "blocks.events.reply.settings.entryCondition.infoText",
+        )}
+        initialValue={options?.entryCondition?.isEnabled ?? false}
+        onCheckChange={updateIsEntryConditionEnabled}
+      >
+        <ConditionForm
+          condition={
+            options?.entryCondition?.condition ?? {
+              logicalOperator: LogicalOperator.AND,
+              comparisons: [],
+            }
+          }
+          onConditionChange={updateEntryCondition}
+        />
+      </SwitchWithRelatedSettings>
+      <SwitchWithRelatedSettings
+        label={t("blocks.events.reply.settings.exitCondition.label")}
+        moreInfoContent={t(
+          "blocks.events.reply.settings.exitCondition.infoText",
+        )}
+        initialValue={options?.exitCondition?.isEnabled ?? false}
+        onCheckChange={updateIsExitConditionEnabled}
+      >
+        <ConditionForm
+          condition={
+            options?.exitCondition?.condition ?? {
+              logicalOperator: LogicalOperator.AND,
+              comparisons: [],
+            }
+          }
+          onConditionChange={updateExitCondition}
+        />
+      </SwitchWithRelatedSettings>
+    </Stack>
+  );
+};

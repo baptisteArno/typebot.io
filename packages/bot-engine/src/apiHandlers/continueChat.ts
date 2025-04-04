@@ -70,6 +70,7 @@ export const continueChat = async ({
     textBubbleContentFormat,
     sessionStore,
   });
+
   const dynamicTheme = parseDynamicTheme({
     state: newSessionState,
     sessionStore,

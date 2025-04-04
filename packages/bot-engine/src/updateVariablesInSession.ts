@@ -5,12 +5,42 @@ import type {
   Variable,
   VariableWithUnknowValue,
 } from "@typebot.io/variables/schemas";
+import type { InputMessage } from "./schemas/api";
 
 type Props = {
   state: SessionState;
   newVariables: VariableWithUnknowValue[];
   currentBlockId: string | undefined;
 };
+
+export const updateTextVariablesInSession = ({
+  state,
+  foundVariable,
+  reply,
+}: {
+  state: SessionState;
+  foundVariable: Variable;
+  reply: InputMessage;
+}) => {
+  if (reply.type !== "text") return state;
+
+  const { updatedState } = updateVariablesInSession({
+    newVariables: [
+      {
+        ...foundVariable,
+        value:
+          Array.isArray(foundVariable.value) && reply.text
+            ? foundVariable.value.concat(reply.text)
+            : reply.text,
+      },
+    ],
+    currentBlockId: undefined,
+    state,
+  });
+
+  return updatedState;
+};
+
 export const updateVariablesInSession = ({
   state,
   newVariables,

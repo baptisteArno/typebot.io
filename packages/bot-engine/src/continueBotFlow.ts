@@ -48,6 +48,7 @@ import { parseTime } from "./blocks/inputs/time/parseTime";
 import { saveDataInResponseVariableMapping } from "./blocks/integrations/httpRequest/saveDataInResponseVariableMapping";
 import { resumeChatCompletion } from "./blocks/integrations/legacy/openai/resumeChatCompletion";
 import { executeCommandEvent } from "./events/executeCommandEvent";
+import { executeReplyEvent } from "./events/executeReplyEvent";
 import { executeGroup, parseInput } from "./executeGroup";
 import { getNextGroup } from "./getNextGroup";
 import { isInputMessage } from "./helpers/isInputMessage";
@@ -60,7 +61,10 @@ import type {
 } from "./schemas/api";
 import { startBotFlow } from "./startBotFlow";
 import type { ParsedReply, SkipReply, SuccessReply } from "./types";
-import { updateVariablesInSession } from "./updateVariablesInSession";
+import {
+  updateTextVariablesInSession,
+  updateVariablesInSession,
+} from "./updateVariablesInSession";
 
 export type ContinueBotFlowResponse = ContinueChatResponse & {
   newSessionState: SessionState;
@@ -94,6 +98,14 @@ export const continueBotFlow = async (
     newSessionState = await executeCommandEvent({
       state,
       command: reply.command,
+    });
+  }
+
+  if (reply?.type === "text") {
+    newSessionState = await executeReplyEvent({
+      state: newSessionState,
+      reply,
+      sessionStore,
     });
   }
 
@@ -195,6 +207,11 @@ export const continueBotFlow = async (
         sessionStore,
       },
     );
+
+    if (newSessionState.currentEventId) {
+      newSessionState.currentEventId = undefined;
+    }
+
     return {
       ...chatReply,
       lastMessageNewFormat,
@@ -496,21 +513,11 @@ const saveInputVarIfAny = ({
   );
   if (!foundVariable) return state;
 
-  const { updatedState } = updateVariablesInSession({
-    newVariables: [
-      {
-        ...foundVariable,
-        value:
-          Array.isArray(foundVariable.value) && reply.text
-            ? foundVariable.value.concat(reply.text)
-            : reply.text,
-      },
-    ],
-    currentBlockId: undefined,
+  return updateTextVariablesInSession({
     state,
+    foundVariable,
+    reply,
   });
-
-  return updatedState;
 };
 
 const parseRetryMessage = async (
