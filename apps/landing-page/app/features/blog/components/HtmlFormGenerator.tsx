@@ -1,11 +1,13 @@
-"use client";
-
-import { Button } from "@/components/Button";
 import { Card } from "@/components/Card";
-import { Input } from "@/components/Input";
-import { Select, SelectItem } from "@/components/Select";
+import { IconButton } from "@/components/IconButton";
 import { createListCollection } from "@ark-ui/react";
-import { nanoid } from "nanoid";
+import { Dialog } from "@ark-ui/react/dialog";
+import { Portal } from "@ark-ui/react/portal";
+import { Button } from "@typebot.io/ui/components/Button";
+import { Input } from "@typebot.io/ui/components/Input";
+import { Select, SelectItem } from "@typebot.io/ui/components/Select";
+import { CloseIcon } from "@typebot.io/ui/icons/CloseIcon";
+import { cx } from "@typebot.io/ui/lib/cva";
 import { useState } from "react";
 
 // Types for our form elements
@@ -38,7 +40,7 @@ export const HtmlFormGenerator = () => {
   const addElement = (item: Omit<FormElement, "id">) => {
     const newElement: FormElement = {
       ...item,
-      id: nanoid(),
+      id: Math.random().toString(36).substring(2, 15),
     };
     setFormElements([...formElements, newElement]);
   };
@@ -86,147 +88,143 @@ export const HtmlFormGenerator = () => {
     <div className="px-4 -mx-[calc((100vw-min(100vw,42rem))/2)] min-w-[100vw] py-12">
       <Card className="max-w-6xl mx-auto p-6 bg-white/20">
         <div className="flex gap-4">
-          <div className="flex-1">
-            <Card className="mb-4 p-4">
-              <div className="flex justify-between items-center mb-4">
-                <h2 className="text-lg font-semibold">Form Elements</h2>
-                <div className="flex gap-2">
-                  <Button
-                    onClick={() => setShowLivePreview(true)}
-                    variant="secondary"
-                    size="sm"
-                  >
-                    Live Preview
-                  </Button>
-                  <Button
-                    onClick={() => setShowExportModal(true)}
-                    variant="cta"
-                    size="sm"
-                  >
-                    Generate HTML
-                  </Button>
-                </div>
-              </div>
-              <div className="flex flex-wrap gap-4">
-                <FormCanvas
-                  elements={formElements}
-                  selectedElement={selectedElement}
-                  setSelectedElement={setSelectedElement}
-                  onRemoveElement={removeElement}
-                />
-              </div>
-            </Card>
-            <Card className="p-4">
-              <h2 className="text-lg font-semibold mb-4">Components</h2>
-              <ComponentsPalette
-                items={[
-                  { type: "text", label: "Text Input" },
-                  { type: "email", label: "Email Input" },
-                  { type: "phone", label: "Phone Input" },
-                  { type: "textarea", label: "Text Area" },
-                  {
-                    type: "select",
-                    label: "Select Dropdown",
-                    options: ["Option 1", "Option 2", "Option 3"],
-                  },
-                  { type: "checkbox", label: "Checkbox" },
-                  {
-                    type: "radio",
-                    label: "Radio Buttons",
-                    options: ["Option 1", "Option 2", "Option 3"],
-                  },
-                  {
-                    type: "multicheck",
-                    label: "Multiple Checkboxes",
-                    options: ["Option 1", "Option 2", "Option 3"],
-                  },
-                ]}
-                onAddElement={addElement}
-              />
-            </Card>
-          </div>
-          <Card className="w-64 p-4">
-            <PropertiesPanel
-              selectedElement={
-                selectedElement
-                  ? formElements.find((el) => el.id === selectedElement) || null
-                  : null
-              }
-              onUpdate={(updates) => {
-                setFormElements((prev) =>
-                  prev.map((el) =>
-                    el.id === selectedElement ? { ...el, ...updates } : el,
-                  ),
-                );
-              }}
+          <Card className="p-4">
+            <h2 className="text-lg font-semibold mb-4">Select inputs</h2>
+            <ComponentsPalette
+              items={[
+                { type: "text", label: "Text Input" },
+                { type: "email", label: "Email Input" },
+                { type: "phone", label: "Phone Input" },
+                { type: "textarea", label: "Text Area" },
+                {
+                  type: "select",
+                  label: "Select Dropdown",
+                  options: ["Option 1", "Option 2", "Option 3"],
+                },
+                { type: "checkbox", label: "Checkbox" },
+                {
+                  type: "radio",
+                  label: "Radio Buttons",
+                  options: ["Option 1", "Option 2", "Option 3"],
+                },
+                {
+                  type: "multicheck",
+                  label: "Multiple Checkboxes",
+                  options: ["Option 1", "Option 2", "Option 3"],
+                },
+              ]}
+              onAddElement={addElement}
             />
           </Card>
+          <Card className="p-4 flex-1">
+            <div className="flex justify-between items-center">
+              <h2 className="text-lg font-semibold">Layout</h2>
+              <div className="flex gap-2">
+                <Button
+                  onClick={() => setShowLivePreview(true)}
+                  variant="secondary"
+                  size="sm"
+                >
+                  Live Preview
+                </Button>
+                <Button onClick={() => setShowExportModal(true)} size="sm">
+                  Generate HTML
+                </Button>
+              </div>
+            </div>
+            <FormCanvas
+              elements={formElements}
+              selectedElement={selectedElement}
+              setSelectedElement={setSelectedElement}
+              onRemoveElement={removeElement}
+            />
+          </Card>
+          {selectedElement && (
+            <Card className="w-64 p-4">
+              <PropertiesPanel
+                selectedElement={
+                  selectedElement
+                    ? formElements.find((el) => el.id === selectedElement) ||
+                      null
+                    : null
+                }
+                onUpdate={(updates) => {
+                  setFormElements((prev) =>
+                    prev.map((el) =>
+                      el.id === selectedElement ? { ...el, ...updates } : el,
+                    ),
+                  );
+                }}
+              />
+            </Card>
+          )}
         </div>
       </Card>
 
-      {showExportModal && (
-        <ExportModal
-          html={generateHtmlCode()}
-          onClose={() => setShowExportModal(false)}
-        />
-      )}
+      <ExportModal
+        isOpened={showExportModal}
+        html={generateHtmlCode()}
+        onClose={() => setShowExportModal(false)}
+      />
 
-      {showLivePreview && (
-        <LivePreviewModal
-          elements={formElements}
-          onClose={() => setShowLivePreview(false)}
-        />
-      )}
+      <LivePreviewModal
+        isOpened={showLivePreview}
+        elements={formElements}
+        onClose={() => setShowLivePreview(false)}
+      />
     </div>
   );
 };
 
 // Export Modal Component
 const ExportModal = ({
+  isOpened,
   html,
   onClose,
-}: { html: string; onClose: () => void }) => {
+}: {
+  isOpened: boolean;
+  html: string;
+  onClose: () => void;
+}) => {
   const copyToClipboard = () => {
     navigator.clipboard.writeText(html);
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
-      <Card className="max-w-2xl w-full p-6">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-semibold">Generated HTML</h2>
-          <Button
-            onClick={onClose}
-            variant="ghost"
-            size="sm"
-            className="text-gray-500 hover:text-gray-700"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M18 6 6 18" />
-              <path d="m6 6 12 12" />
-            </svg>
-          </Button>
-        </div>
-        <div className="mb-4">
-          <pre className="bg-gray-100 p-4 rounded-md overflow-auto max-h-96 text-sm">
-            {html}
-          </pre>
-        </div>
-        <Button onClick={copyToClipboard} variant="cta" className="w-full">
-          Copy to Clipboard
-        </Button>
-      </Card>
-    </div>
+    <Dialog.Root
+      open={isOpened}
+      onOpenChange={(e) => (!e.open ? onClose() : null)}
+    >
+      <Portal>
+        <Dialog.Backdrop className="fixed inset-0 w-full bg-gray-12/50 data-[state=open]:animate-in data-[state=open]:fade-in data-[state=closed]:animate-out data-[state=closed]:fade-out overflow-auto" />
+        <Dialog.Positioner className="flex justify-center fixed inset-0 w-full py-12">
+          <Dialog.Content className="relative bg-gray-1 p-6 rounded-xl w-full max-w-xl overflow-auto data-[state=open]:animate-in data-[state=open]:slide-in-from-bottom-5 data-[state=open]:fade-in data-[state=closed]:animate-out data-[state=closed]:slide-out-to-bottom-5 data-[state=closed]:fade-out">
+            <Dialog.Title className="text-2xl">Generated HTML</Dialog.Title>
+            <Dialog.CloseTrigger asChild>
+              <IconButton
+                aria-label="Close"
+                variant="secondary"
+                className="absolute top-4 right-4"
+              >
+                <CloseIcon />
+              </IconButton>
+            </Dialog.CloseTrigger>
+            <Dialog.Description>
+              <pre className="bg-gray-100 p-4 rounded-md overflow-auto max-h-96 text-sm">
+                {html}
+              </pre>
+              <Button
+                onClick={copyToClipboard}
+                variant="secondary"
+                className="w-full"
+              >
+                Copy to Clipboard
+              </Button>
+            </Dialog.Description>
+          </Dialog.Content>
+        </Dialog.Positioner>
+      </Portal>
+    </Dialog.Root>
   );
 };
 
@@ -239,7 +237,7 @@ const ComponentsPalette = ({
   onAddElement: (item: Omit<FormElement, "id">) => void;
 }) => {
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+    <div className="flex flex-col gap-3">
       {items.map((item, index) => (
         <Card
           key={index}
@@ -306,7 +304,10 @@ const FormElement = ({
 }) => {
   return (
     <Card
-      className={`relative p-4 ${isSelected ? "border-blue-500" : ""}`}
+      className={cx(
+        "relative p-4 cursor-pointer hover:filter hover:brightness-95 transition-all",
+        isSelected && "border-blue-500",
+      )}
       style={{ width: `${element.width || 100}%` }}
       onClick={onClick}
     >
@@ -348,8 +349,7 @@ const FormElement = ({
               <Input
                 type="radio"
                 name={`preview-${element.id}`}
-                className="h-4 w-4"
-                disabled
+                className="h-4 w-4 pointer-events-none"
               />
               <span
                 className="text-sm"
@@ -364,7 +364,7 @@ const FormElement = ({
         <div className="mt-2 space-y-2">
           {element.options?.map((option, index) => (
             <div key={index} className="flex items-center gap-2">
-              <Input type="checkbox" className="h-4 w-4" disabled />
+              <Input type="checkbox" className="h-4 w-4 pointer-events-none" />
               <span
                 className="text-sm"
                 style={{ color: "rgb(var(--gray-11))" }}
@@ -377,9 +377,8 @@ const FormElement = ({
       ) : (
         <Input
           type={element.type === "textarea" ? "text" : element.type}
-          className="mt-1 block w-full"
+          className="mt-1 block w-full pointer-events-none"
           placeholder={element.placeholder}
-          disabled
         />
       )}
     </Card>
@@ -558,132 +557,132 @@ const PropertiesPanel = ({
 
 // Add new LivePreviewModal component
 const LivePreviewModal = ({
+  isOpened,
   elements,
   onClose,
 }: {
+  isOpened: boolean;
   elements: FormElement[];
   onClose: () => void;
 }) => {
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
-      <Card className="max-w-2xl w-full p-6">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-semibold">Live Form Preview</h2>
-          <Button
-            onClick={onClose}
-            variant="ghost"
-            size="sm"
-            className="text-gray-500 hover:text-gray-700"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M18 6 6 18" />
-              <path d="m6 6 12 12" />
-            </svg>
-          </Button>
-        </div>
-        <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
-          {elements.map((element) => (
-            <div
-              key={element.id}
-              className="mb-4"
-              style={{ width: `${element.width || 100}%` }}
-            >
-              <label
-                htmlFor={element.id}
-                className="block text-sm font-medium mb-1"
-                style={{ color: "rgb(var(--gray-11))" }}
+    <Dialog.Root
+      open={isOpened}
+      onOpenChange={(e) => (!e.open ? onClose() : null)}
+    >
+      <Portal>
+        <Dialog.Backdrop className="fixed top-0 right-0 size-full bg-gray-12/50 data-[state=open]:animate-in data-[state=open]:fade-in data-[state=closed]:animate-out data-[state=closed]:fade-out overflow-auto" />
+        <Dialog.Positioner className="flex justify-center fixed top-0 w-full py-12">
+          <Dialog.Content className="relative bg-gray-1 p-6 rounded-xl w-full max-w-xl overflow-auto data-[state=open]:animate-in data-[state=open]:slide-in-from-bottom-5 data-[state=open]:fade-in data-[state=closed]:animate-out data-[state=closed]:slide-out-to-bottom-5 data-[state=closed]:fade-out">
+            <Dialog.Title className="text-2xl mb-8">
+              Live Form Preview
+            </Dialog.Title>
+            <Dialog.CloseTrigger asChild>
+              <IconButton
+                aria-label="Close"
+                variant="secondary"
+                className="absolute top-4 right-4"
               >
-                {element.label}
-              </label>
-              {element.type === "textarea" ? (
-                <textarea
-                  id={element.id}
-                  className="w-full p-2 border border-input rounded-md"
-                  required={element.required}
-                  placeholder={element.placeholder}
-                />
-              ) : element.type === "select" ? (
-                <Select
-                  collection={createListCollection({
-                    items: element.options || [],
-                  })}
-                >
-                  {element.options?.map((option) => (
-                    <SelectItem key={option} item={option}>
-                      {option}
-                    </SelectItem>
-                  ))}
-                </Select>
-              ) : element.type === "radio" ? (
-                <div className="space-y-2">
-                  {element.options?.map((option, index) => (
-                    <div key={index} className="flex items-center gap-2">
+                <CloseIcon />
+              </IconButton>
+            </Dialog.CloseTrigger>
+            <Dialog.Description>
+              <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
+                {elements.map((element) => (
+                  <div
+                    key={element.id}
+                    className="mb-4"
+                    style={{ width: `${element.width || 100}%` }}
+                  >
+                    <label
+                      htmlFor={element.id}
+                      className="block text-sm font-medium mb-1"
+                      style={{ color: "rgb(var(--gray-11))" }}
+                    >
+                      {element.label}
+                    </label>
+                    {element.type === "textarea" ? (
+                      <textarea
+                        id={element.id}
+                        className="w-full p-2 border border-input rounded-md"
+                        required={element.required}
+                        placeholder={element.placeholder}
+                      />
+                    ) : element.type === "select" ? (
+                      <Select
+                        collection={createListCollection({
+                          items: element.options || [],
+                        })}
+                      >
+                        {element.options?.map((option) => (
+                          <SelectItem key={option} item={option}>
+                            {option}
+                          </SelectItem>
+                        ))}
+                      </Select>
+                    ) : element.type === "radio" ? (
+                      <div className="space-y-2">
+                        {element.options?.map((option, index) => (
+                          <div key={index} className="flex items-center gap-2">
+                            <Input
+                              type="radio"
+                              id={`${element.id}-${index}`}
+                              name={element.id}
+                              required={element.required}
+                            />
+                            <label htmlFor={`${element.id}-${index}`}>
+                              {option}
+                            </label>
+                          </div>
+                        ))}
+                      </div>
+                    ) : element.type === "multicheck" ? (
+                      <div className="space-y-2">
+                        {element.options?.map((option, index) => (
+                          <div key={index} className="flex items-center gap-2">
+                            <Input
+                              type="checkbox"
+                              id={`${element.id}-${index}`}
+                              name={`${element.id}[]`}
+                            />
+                            <label htmlFor={`${element.id}-${index}`}>
+                              {option}
+                            </label>
+                          </div>
+                        ))}
+                      </div>
+                    ) : element.type === "checkbox" ? (
                       <Input
-                        type="radio"
-                        id={`${element.id}-${index}`}
-                        name={element.id}
+                        id={element.id}
+                        type="checkbox"
+                        className="h-4 w-4 text-blue-600"
                         required={element.required}
                       />
-                      <label htmlFor={`${element.id}-${index}`}>{option}</label>
-                    </div>
-                  ))}
-                </div>
-              ) : element.type === "multicheck" ? (
-                <div className="space-y-2">
-                  {element.options?.map((option, index) => (
-                    <div key={index} className="flex items-center gap-2">
+                    ) : element.type === "phone" ? (
                       <Input
-                        type="checkbox"
-                        id={`${element.id}-${index}`}
-                        name={`${element.id}[]`}
+                        id={element.id}
+                        type="tel"
+                        required={element.required}
+                        placeholder={element.placeholder}
                       />
-                      <label htmlFor={`${element.id}-${index}`}>{option}</label>
-                    </div>
-                  ))}
-                </div>
-              ) : element.type === "checkbox" ? (
-                <Input
-                  id={element.id}
-                  type="checkbox"
-                  className="h-4 w-4 text-blue-600"
-                  required={element.required}
-                />
-              ) : element.type === "phone" ? (
-                <Input
-                  id={element.id}
-                  type="tel"
-                  required={element.required}
-                  placeholder={element.placeholder}
-                />
-              ) : (
-                <Input
-                  id={element.id}
-                  type={element.type}
-                  required={element.required}
-                  placeholder={element.placeholder}
-                />
-              )}
-            </div>
-          ))}
-          <Button
-            variant="cta"
-            className="w-full"
-            onClick={(e) => e.preventDefault()}
-          >
-            Submit
-          </Button>
-        </form>
-      </Card>
-    </div>
+                    ) : (
+                      <Input
+                        id={element.id}
+                        type={element.type}
+                        required={element.required}
+                        placeholder={element.placeholder}
+                      />
+                    )}
+                  </div>
+                ))}
+                <Button className="w-full" onClick={(e) => e.preventDefault()}>
+                  Submit
+                </Button>
+              </form>
+            </Dialog.Description>
+          </Dialog.Content>
+        </Dialog.Positioner>
+      </Portal>
+    </Dialog.Root>
   );
 };
