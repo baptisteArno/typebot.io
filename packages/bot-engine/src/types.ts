@@ -16,7 +16,18 @@ export type ExecuteIntegrationResponse = {
   newSetVariableHistory?: SetVariableHistoryItem[];
 } & Pick<ContinueChatResponse, "clientSideActions" | "logs">;
 
-export type ParsedReply =
-  | { status: "success"; reply: string }
-  | { status: "fail" }
-  | { status: "skip" };
+export type SuccessReply = {
+  status: "success";
+  content: string;
+  outgoingEdgeId?: string;
+};
+
+export type SkipReply = {
+  status: "skip";
+};
+
+type FailReply = {
+  status: "fail";
+};
+
+export type ParsedReply = SuccessReply | SkipReply | FailReply;

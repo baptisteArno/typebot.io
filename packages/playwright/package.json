@@ -7,7 +7,7 @@
     "./*": "./src/*.ts"
   },
   "dependencies": {
-    "@playwright/test": "1.45.2",
+    "@playwright/test": "1.51.0",
     "@typebot.io/blocks-core": "workspace:*",
     "@typebot.io/blocks-inputs": "workspace:*",
     "@typebot.io/env": "workspace:*",
@@ -16,7 +16,8 @@
     "@typebot.io/schemas": "workspace:*",
     "@typebot.io/typebot": "workspace:*",
     "@typebot.io/workspaces": "workspace:*",
-    "@typebot.io/credentials": "workspace:*"
+    "@typebot.io/credentials": "workspace:*",
+    "@typebot.io/events": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "20.4.2",

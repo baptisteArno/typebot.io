@@ -4,12 +4,12 @@ import { NotFound } from "@/components/NotFound";
 import { Footer } from "@/components/footer/Footer";
 import { TanStackRouterDevtools } from "@/lib/router-dev-tool";
 import {
+  HeadContent,
   Outlet,
-  ScrollRestoration,
+  Scripts,
   createRootRoute,
   useNavigate,
 } from "@tanstack/react-router";
-import { Meta, Scripts } from "@tanstack/start";
 import { z } from "@typebot.io/zod";
 import { Suspense } from "react";
 
@@ -63,7 +63,7 @@ function RootComponent() {
   return (
     <html lang="en">
       <head>
-        <Meta />
+        <HeadContent />
       </head>
       <body>
         <div className="flex flex-col items-stretch">
@@ -80,7 +80,6 @@ function RootComponent() {
         <Suspense>
           <TanStackRouterDevtools />
         </Suspense>
-        <ScrollRestoration />
         <Scripts />
       </body>
     </html>

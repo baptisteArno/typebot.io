@@ -114,6 +114,10 @@ A conveniant value that automatically transform your variable into a list of str
 
 This will set your variable with either `web` or `whatsapp` depending on the environment.
 
+## Device type
+
+This will set your variable with either `desktop`, `tablet` or `mobile` depending on the device type. Under the hood, we uses a combination screen width, user agent and touch capabilities to detect the device type. You can find the code [here](https://github.com/baptisteArno/typebot.io/blob/e74b95fd65064b7e1c37f7fb789c316deb601d36/packages/bot-engine/src/blocks/logic/setVariable/executeSetVariable.ts#L322-L350)
+
 ## Transcript
 
 This preset value will save the entire conversation transcript in a variable. It is super useful to provide context to an AI block or to send it as a recap with the [Send email](../integrations/send-email) block.

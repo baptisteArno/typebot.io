@@ -1,8 +1,8 @@
 import { Card } from "@/components/Card";
 import { NumberInput } from "@/components/NumberInput";
-import { Select, SelectItem } from "@/components/Select";
 import { createListCollection } from "@ark-ui/react";
 import { isNotDefined } from "@typebot.io/lib/utils";
+import { Select, SelectItem } from "@typebot.io/ui/components/Select";
 import { useMemo, useState } from "react";
 import { whatsAppPricingData } from "../data/whatsAppPricingData";
 

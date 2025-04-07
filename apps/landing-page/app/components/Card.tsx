@@ -1,5 +1,5 @@
-import { cn } from "@/lib/utils";
 import { isDefined } from "@typebot.io/lib/utils";
+import { cn } from "@typebot.io/ui/lib/cn";
 import * as React from "react";
 
 const Card = React.forwardRef<

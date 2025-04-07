@@ -49,13 +49,13 @@ test.describe("Send email block", () => {
       "email1@gmail.com, email2@gmail.com",
     );
     await page.getByLabel("Subject:").fill("Email subject");
-    await page.click('text="Custom content?"');
+    await page.click('text="Custom content"');
     await page.locator("textarea").last().fill("Here is my email");
 
     await page.click("text=Test");
     await page.locator("typebot-standard").locator("text=Go").click();
     await expect(
-      page.locator("text=Emails are not sent in preview mode >> nth=0"),
+      page.locator("text=Emails are not sent in preview mode"),
     ).toBeVisible();
   });
 });

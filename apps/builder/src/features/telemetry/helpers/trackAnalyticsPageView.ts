@@ -1,4 +1,4 @@
-import { getAuthOptions } from "@/pages/api/auth/[...nextauth]";
+import { createAuthConfig } from "@/features/auth/helpers/createAuthConfig";
 import prisma from "@typebot.io/prisma";
 import type { User } from "@typebot.io/schemas/features/user/schema";
 import { trackEvents } from "@typebot.io/telemetry/trackEvents";
@@ -18,7 +18,7 @@ export const trackAnalyticsPageView = async (
   const session = await getServerSession(
     context.req,
     context.res,
-    getAuthOptions({}),
+    createAuthConfig(),
   );
   await trackEvents([
     {

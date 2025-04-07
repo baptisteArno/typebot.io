@@ -45,7 +45,7 @@ If you deploy on a Vercel Hobby plan, you will need to reduce the `maxDuration` 
 5. Change the build command to:
 
    ```sh
-   bunx turbo build --filter=builder... && bunx turbo db:migrate
+   bunx turbo build && bunx turbo db:migrate --filter=@typebot.io/prisma
    ```
 
 6. Add the required environment variables ([Check out the configuration guide](/self-hosting/configuration))
@@ -60,7 +60,7 @@ If you deploy on a Vercel Hobby plan, you will need to reduce the `maxDuration` 
 5. Change the build command to:
 
    ```sh
-   bunx turbo build --filter=viewer... && bunx turbo db:migrate
+   bunx turbo build && bunx turbo db:migrate --filter=@typebot.io/prisma
    ```
 
 6. Add the required environment variables ([Check out the configuration guide](/self-hosting/configuration))

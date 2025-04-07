@@ -3,7 +3,7 @@ import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import type { BubbleProps } from "@typebot.io/js";
 import parserBabel from "prettier/parser-babel";
 import prettier from "prettier/standalone";
-import { parseReactBubbleProps } from "../../snippetParsers";
+import { parseReactBubbleProps } from "../../snippetParsers/bubble";
 
 export const NextjsBubbleSnippet = ({
   theme,
@@ -17,6 +17,7 @@ export const NextjsBubbleSnippet = ({
       const App = () => {
         return <Bubble ${parseReactBubbleProps({
           typebot: typebot?.publicId ?? "",
+          customDomain: typebot?.customDomain,
           theme,
           previewMessage,
         })}/>

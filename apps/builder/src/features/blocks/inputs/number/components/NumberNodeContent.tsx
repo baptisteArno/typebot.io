@@ -1,6 +1,6 @@
 import { WithVariableContent } from "@/features/graph/components/nodes/block/WithVariableContent";
 import { Text } from "@chakra-ui/react";
-import { defaultNumberInputOptions } from "@typebot.io/blocks-inputs/number/constants";
+import { defaultNumberInputPlaceholder } from "@typebot.io/blocks-inputs/number/constants";
 import type { NumberInputBlock } from "@typebot.io/blocks-inputs/number/schema";
 import React from "react";
 
@@ -15,6 +15,6 @@ export const NumberNodeContent = ({
     <WithVariableContent variableId={variableId} />
   ) : (
     <Text color={"gray.500"}>
-      {labels?.placeholder ?? defaultNumberInputOptions.labels.placeholder}
+      {labels?.placeholder ?? defaultNumberInputPlaceholder}
     </Text>
   );

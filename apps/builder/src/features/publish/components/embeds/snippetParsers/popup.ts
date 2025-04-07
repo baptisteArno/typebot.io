@@ -33,11 +33,11 @@ const parsePopupProps = ({
 
 export const parseInitPopupCode = ({
   typebot,
-  apiHost,
+  customDomain,
   theme,
   autoShowDelay,
-}: PopupProps) => {
-  const botProps = parseBotProps({ typebot, apiHost });
+}: PopupProps & { customDomain: string | undefined | null }) => {
+  const botProps = parseBotProps({ typebot, customDomain });
   const bubbleProps = parsePopupProps({ theme, autoShowDelay });
 
   return prettier.format(`Typebot.initPopup({${botProps}${bubbleProps}});`, {
@@ -56,11 +56,11 @@ const parseReactThemeProp = (theme: PopupProps["theme"]): string => {
 
 export const parseReactPopupProps = ({
   typebot,
-  apiHost,
+  customDomain,
   theme,
   autoShowDelay,
-}: PopupProps) => {
-  const botProps = parseReactBotProps({ typebot, apiHost });
+}: PopupProps & { customDomain: string | undefined | null }) => {
+  const botProps = parseReactBotProps({ typebot, customDomain });
   const autoShowDelayProp = parseReactNumberOrBoolParam(
     "autoShowDelay",
     autoShowDelay,

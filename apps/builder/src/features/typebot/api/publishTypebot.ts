@@ -7,6 +7,10 @@ import { parseGroups } from "@typebot.io/groups/helpers/parseGroups";
 import prisma from "@typebot.io/prisma";
 import { Plan } from "@typebot.io/prisma/enum";
 import { computeRiskLevel } from "@typebot.io/radar";
+import {
+  deleteSessionStore,
+  getSessionStore,
+} from "@typebot.io/runtime-session-store";
 import { isTypebotVersionAtLeastV6 } from "@typebot.io/schemas/helpers/isTypebotVersionAtLeastV6";
 import { settingsSchema } from "@typebot.io/settings/schemas";
 import type { TelemetryEvent } from "@typebot.io/telemetry/schemas";
@@ -14,7 +18,7 @@ import { sendMessage } from "@typebot.io/telemetry/sendMessage";
 import { trackEvents } from "@typebot.io/telemetry/trackEvents";
 import { themeSchema } from "@typebot.io/theme/schemas";
 import { edgeSchema } from "@typebot.io/typebot/schemas/edge";
-import { startEventSchema } from "@typebot.io/typebot/schemas/events/start/schema";
+import { publicTypebotSchemaV6 } from "@typebot.io/typebot/schemas/publicTypebot";
 import { typebotV6Schema } from "@typebot.io/typebot/schemas/typebot";
 import { variableSchema } from "@typebot.io/variables/schemas";
 import { z } from "@typebot.io/zod";
@@ -100,11 +104,14 @@ export const publishTypebot = authenticatedProcedure
           "Radar detected a potential malicious typebot. This bot is being manually reviewed by Fraud Prevention team.",
       });
 
+    const sessionStore = getSessionStore(typebotId);
     const riskLevel = typebotWasVerified
       ? 0
       : await computeRiskLevel(typebotV6Schema.parse(existingTypebot), {
+          sessionStore,
           debug: env.NODE_ENV === "development",
         });
+    deleteSessionStore(typebotId);
 
     if (riskLevel > 0 && riskLevel !== existingTypebot.riskLevel) {
       if (riskLevel !== 100 && riskLevel > 60)
@@ -154,7 +161,7 @@ export const publishTypebot = authenticatedProcedure
           }),
           events:
             (isTypebotVersionAtLeastV6(existingTypebot.version)
-              ? z.tuple([startEventSchema])
+              ? publicTypebotSchemaV6.shape.events
               : z.null()
             ).parse(existingTypebot.events) ?? undefined,
           settings: settingsSchema.parse(existingTypebot.settings),
@@ -173,7 +180,7 @@ export const publishTypebot = authenticatedProcedure
           }),
           events:
             (isTypebotVersionAtLeastV6(existingTypebot.version)
-              ? z.tuple([startEventSchema])
+              ? publicTypebotSchemaV6.shape.events
               : z.null()
             ).parse(existingTypebot.events) ?? undefined,
           settings: settingsSchema.parse(existingTypebot.settings),

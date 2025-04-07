@@ -56,3 +56,8 @@ export const featureSection = {
 export const hr = {
   margin: "60px 0",
 };
+
+export const logo = {
+  margin: "24px 0",
+  borderRadius: "3px",
+};

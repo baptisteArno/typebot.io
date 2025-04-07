@@ -14,7 +14,7 @@ export const parseTime = (
 
   return {
     status: "success",
-    reply: format(
+    content: format(
       parsedDate,
       options?.format ?? defaultTimeInputOptions.format,
     ),

@@ -1,36 +1,37 @@
-import { useToast } from "@/hooks/useToast";
+import { useDebounce } from "@/hooks/useDebounce";
+import { toast } from "@/lib/toast";
 import { useColorMode } from "@chakra-ui/react";
-import { env } from "@typebot.io/env";
-import { isDefined, isNotDefined } from "@typebot.io/lib/utils";
-import type { User } from "@typebot.io/schemas/features/user/schema";
+import { isDefined } from "@typebot.io/lib/utils";
+import type {
+  ClientUser,
+  UpdateUser,
+  User,
+} from "@typebot.io/schemas/features/user/schema";
 import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import type { ReactNode } from "react";
 import { createContext, useEffect, useState } from "react";
-import { useDebouncedCallback } from "use-debounce";
+import { setLocaleInCookies } from "./helpers/setLocaleInCookies";
 import { updateUserQuery } from "./queries/updateUserQuery";
 
 export const userContext = createContext<{
-  user?: User;
+  user?: ClientUser;
   isLoading: boolean;
   currentWorkspaceId?: string;
   logOut: () => void;
-  updateUser: (newUser: Partial<User>) => void;
+  updateUser: (newUser: Partial<UpdateUser>) => void;
 }>({
   isLoading: false,
   logOut: () => {},
   updateUser: () => {},
 });
 
-const debounceTimeout = 1000;
-
 export const UserProvider = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
   const { data: session, status } = useSession();
-  const [user, setUser] = useState<User | undefined>();
-  const { showToast } = useToast();
   const [currentWorkspaceId, setCurrentWorkspaceId] = useState<string>();
   const { setColorMode } = useColorMode();
+  const [localUser, setLocalUser] = useState<ClientUser>();
 
   useEffect(() => {
     const currentColorScheme = localStorage.getItem("chakra-ui-color-mode") as
@@ -43,21 +44,21 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
       ? "dark"
       : "light";
     const userPrefersSystemMode =
-      !user?.preferredAppAppearance || user.preferredAppAppearance === "system";
+      !localUser?.preferredAppAppearance ||
+      localUser.preferredAppAppearance === "system";
     const computedColorMode = userPrefersSystemMode
       ? systemColorScheme
-      : user?.preferredAppAppearance;
+      : localUser?.preferredAppAppearance;
     if (computedColorMode === currentColorScheme) return;
     setColorMode(computedColorMode);
-  }, [setColorMode, user?.preferredAppAppearance]);
+  }, [localUser?.preferredAppAppearance]);
 
   useEffect(() => {
-    if (isDefined(user) || isNotDefined(session)) return;
+    if (isDefined(session?.user.id)) return;
     setCurrentWorkspaceId(
       localStorage.getItem("currentWorkspaceId") ?? undefined,
     );
-    setUser(session.user as User);
-  }, [session, user]);
+  }, [session?.user.id]);
 
   useEffect(() => {
     if (!router.isReady) return;
@@ -71,51 +72,64 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
       router.pathname,
     );
     if (isSignInPath || isPathPublicFriendly) return;
-    if (!user && status === "unauthenticated")
+    if (status === "unauthenticated")
       router.replace({
         pathname: "/signin",
-        query: {
-          redirectPath: router.asPath,
-        },
+        query:
+          router.asPath !== "/typebots"
+            ? {
+                redirectPath: router.asPath,
+              }
+            : undefined,
       });
-  }, [router, status, user]);
-
-  const updateUser = (updates: Partial<User>) => {
-    if (isNotDefined(user)) return;
-    const newUser = { ...user, ...updates };
-    setUser(newUser);
-    saveUser(updates);
-  };
-
-  const saveUser = useDebouncedCallback(
-    async (updates: Partial<User>) => {
-      if (isNotDefined(user)) return;
-      const { error } = await updateUserQuery(user.id, updates);
-      if (error) showToast({ title: error.name, description: error.message });
-      await refreshUser();
-    },
-    env.NEXT_PUBLIC_E2E_TEST ? 0 : debounceTimeout,
-  );
-
-  const logOut = () => {
-    signOut();
-    setUser(undefined);
-  };
+  }, [router.isReady, router.pathname, status]);
 
   useEffect(() => {
-    return () => {
-      saveUser.flush();
-    };
-  }, [saveUser]);
+    if (!router.isReady) return;
+    if (status === "loading") return;
+
+    const preferredLanguage = session?.user?.preferredLanguage;
+    const currentLocale = router.locale;
+
+    if (preferredLanguage && preferredLanguage !== currentLocale) {
+      setLocaleInCookies(preferredLanguage);
+      router.replace(
+        {
+          pathname: router.pathname,
+          query: router.query,
+        },
+        undefined,
+        { locale: preferredLanguage },
+      );
+    }
+  }, [router.isReady, router.locale, status, session?.user?.preferredLanguage]);
+
+  const updateUser = async (updates: Partial<User>) => {
+    if (!localUser) return;
+    setLocalUser({ ...localUser, ...updates });
+    await saveUser(updates);
+  };
+
+  const saveUser = useDebounce(async (updates: Partial<User>) => {
+    if (!localUser) return;
+    const { error } = await updateUserQuery(localUser.id, updates);
+    if (error) toast({ context: error.name, description: error.message });
+    await refreshUser();
+  });
+
+  useEffect(() => {
+    if ((!session?.user && !localUser) || (session?.user && localUser)) return;
+    setLocalUser(session?.user);
+  }, [session?.user, localUser]);
 
   return (
     <userContext.Provider
       value={{
-        user,
+        user: localUser,
         isLoading: status === "loading",
-        currentWorkspaceId,
-        logOut,
+        logOut: signOut,
         updateUser,
+        currentWorkspaceId,
       }}
     >
       {children}

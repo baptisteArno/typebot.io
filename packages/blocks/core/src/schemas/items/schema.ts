@@ -1,3 +1,4 @@
+import { cardsItemSchema } from "@typebot.io/blocks-inputs/cards/schema";
 import { buttonItemSchemas } from "@typebot.io/blocks-inputs/choice/schema";
 import { pictureChoiceItemSchemas } from "@typebot.io/blocks-inputs/pictureChoice/schema";
 import {
@@ -21,6 +22,7 @@ const itemSchemas = {
     pictureChoiceItemSchemas.v6,
     aItemSchemas.v6,
     bItemSchemas.v6,
+    cardsItemSchema,
   ]),
 } as const;
 
@@ -28,3 +30,19 @@ const itemSchema = z.union([itemSchemas.v5, itemSchemas.v6]);
 export type Item = z.infer<typeof itemSchema>;
 export type ItemV5 = z.infer<typeof itemSchemas.v5>;
 export type ItemV6 = z.infer<typeof itemSchemas.v6>;
+export type ItemWithPaths = Item & {
+  paths: { id: string; outgoingEdgeId?: string }[];
+};
+
+export type ItemIndices = {
+  blockIndex: number;
+  groupIndex: number;
+  itemIndex: number;
+};
+
+export type PathIndices = {
+  blockIndex: number;
+  groupIndex: number;
+  itemIndex: number;
+  pathIndex: number;
+};

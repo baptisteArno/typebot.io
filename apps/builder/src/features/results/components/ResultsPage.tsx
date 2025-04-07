@@ -2,13 +2,13 @@ import { Seo } from "@/components/Seo";
 import { AnalyticsGraphContainer } from "@/features/analytics/components/AnalyticsGraphContainer";
 import {
   defaultTimeFilter,
-  type timeFilterValues,
+  timeFilterValues,
 } from "@/features/analytics/constants";
 import { TypebotHeader } from "@/features/editor/components/TypebotHeader";
 import { TypebotNotFoundPage } from "@/features/editor/components/TypebotNotFoundPage";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { useToast } from "@/hooks/useToast";
+import { toast } from "@/lib/toast";
 import { trpc } from "@/lib/trpc";
 import {
   Button,
@@ -20,7 +20,8 @@ import {
 } from "@chakra-ui/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useMemo, useState } from "react";
+import { useQueryState } from "nuqs";
+import { useMemo } from "react";
 import { ResultsProvider } from "../ResultsProvider";
 import { ResultsTableContainer } from "./ResultsTableContainer";
 
@@ -38,10 +39,16 @@ export const ResultsPage = () => {
     router.pathname.endsWith("analytics") ? "#f4f5f8" : "white",
     router.pathname.endsWith("analytics") ? "gray.900" : "gray.950",
   );
-  const [timeFilter, setTimeFilter] =
-    useState<(typeof timeFilterValues)[number]>(defaultTimeFilter);
-
-  const { showToast } = useToast();
+  const [timeFilter, setTimeFilter] = useQueryState<
+    (typeof timeFilterValues)[number]
+  >("timeFilter", {
+    defaultValue: defaultTimeFilter,
+    parse: (val) => {
+      if (timeFilterValues.includes(val as (typeof timeFilterValues)[number]))
+        return val as (typeof timeFilterValues)[number];
+      return null;
+    },
+  });
 
   const {
     data: { stats } = {},
@@ -54,7 +61,7 @@ export const ResultsPage = () => {
     },
     {
       enabled: !!publishedTypebot,
-      onError: (err) => showToast({ description: err.message }),
+      onError: (err) => toast({ description: err.message }),
     },
   );
 
@@ -93,7 +100,16 @@ export const ResultsPage = () => {
               colorScheme={!isAnalytics ? "orange" : "gray"}
               variant={!isAnalytics ? "outline" : "ghost"}
               size="sm"
-              href={`/typebots/${typebot?.id}/results`}
+              href={{
+                pathname: "/typebots/[typebotId]/results",
+                query: {
+                  typebotId: publishedTypebot?.typebotId,
+                  timeFilter:
+                    timeFilter && timeFilter !== defaultTimeFilter
+                      ? timeFilter
+                      : undefined,
+                },
+              }}
             >
               <Text>Submissions</Text>
               {(stats?.totalStarts ?? 0) > 0 && (
@@ -106,7 +122,16 @@ export const ResultsPage = () => {
               as={Link}
               colorScheme={isAnalytics ? "orange" : "gray"}
               variant={isAnalytics ? "outline" : "ghost"}
-              href={`/typebots/${typebot?.id}/results/analytics`}
+              href={{
+                pathname: "/typebots/[typebotId]/results/analytics",
+                query: {
+                  typebotId: publishedTypebot?.typebotId,
+                  timeFilter:
+                    timeFilter && timeFilter !== defaultTimeFilter
+                      ? timeFilter
+                      : undefined,
+                },
+              }}
               size="sm"
             >
               Analytics

@@ -14,6 +14,7 @@ import {
   Stack,
   chakra,
 } from "@chakra-ui/react";
+import { useTranslate } from "@tolgee/react";
 import type { ReactElement, ReactNode } from "react";
 import React from "react";
 import { MoreInfoTooltip } from "./MoreInfoTooltip";
@@ -54,6 +55,7 @@ export const DropdownList = <T extends Item>({
   moreInfoTooltip,
   ...props
 }: Props<T> & ButtonProps) => {
+  const { t } = useTranslate();
   const handleMenuItemClick = (item: T) => () => {
     if (typeof item === "string" || typeof item === "number")
       onItemSelect(
@@ -109,7 +111,8 @@ export const DropdownList = <T extends Item>({
                       : currentItem === item.value,
                   ),
                 )
-              : (placeholder ?? "Select an item")}
+              : (placeholder ??
+                t("components.dropdownList.defaultPlaceholder"))}
           </chakra.span>
         </MenuButton>
         <Portal>

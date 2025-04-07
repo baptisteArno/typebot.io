@@ -1,4 +1,4 @@
-import { variableStringSchema } from "@typebot.io/variables/schemas";
+import { singleVariableOrNumberSchema } from "@typebot.io/variables/schemas";
 import { z } from "@typebot.io/zod";
 import type { ZodLayoutMetadata } from "@typebot.io/zod";
 import type {
@@ -119,7 +119,7 @@ export const option = {
   boolean: z.boolean().optional(),
   enum: <T extends string>(values: readonly [T, ...T[]]) =>
     z.enum(values).optional(),
-  number: z.number().or(variableStringSchema).optional(),
+  number: singleVariableOrNumberSchema.optional(),
   array: <T extends z.ZodTypeAny>(schema: T) => z.array(schema).optional(),
   discriminatedUnion: <
     T extends string,
@@ -152,7 +152,6 @@ export const option = {
             .layout({
               ...(layouts?.item ?? {}),
               placeholder: "Select a response",
-              defaultValue: items[0],
             }),
           variableId: z
             .string()

@@ -1,7 +1,7 @@
 import { createId } from "@paralleldrive/cuid2";
 import test, { expect } from "@playwright/test";
 import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
-import { defaultNumberInputOptions } from "@typebot.io/blocks-inputs/number/constants";
+import { defaultNumberInputPlaceholder } from "@typebot.io/blocks-inputs/number/constants";
 import { createTypebots } from "@typebot.io/playwright/databaseActions";
 import { parseDefaultGroupWithBlock } from "@typebot.io/playwright/databaseHelpers";
 
@@ -21,12 +21,10 @@ test.describe("Number input block", () => {
 
     await page.click("text=Test");
     await expect(
-      page.locator(
-        `input[placeholder="${defaultNumberInputOptions.labels.placeholder}"]`,
-      ),
+      page.locator(`input[placeholder="${defaultNumberInputPlaceholder}"]`),
     ).toHaveAttribute("type", "number");
 
-    await page.click(`text=${defaultNumberInputOptions.labels.placeholder}`);
+    await page.click(`text=${defaultNumberInputPlaceholder}`);
     await page.getByLabel("Placeholder:").fill("Your number...");
     await expect(page.locator("text=Your number...")).toBeVisible();
     await page.getByLabel("Button label:").fill("Go");

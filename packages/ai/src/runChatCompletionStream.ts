@@ -1,5 +1,10 @@
 import type { VariableStore } from "@typebot.io/forge/types";
-import { APICallError, type LanguageModel, streamText } from "ai";
+import {
+  parseUnknownError,
+  parseUnknownErrorSync,
+} from "@typebot.io/lib/parseUnknownError";
+import type { SessionStore } from "@typebot.io/runtime-session-store";
+import { type LanguageModel, streamText } from "ai";
 import { maxSteps } from "./constants";
 import { parseChatCompletionMessages } from "./parseChatCompletionMessages";
 import type { ChatCompletionOptions } from "./parseChatCompletionOptions";
@@ -15,6 +20,7 @@ type Props = {
   isVisionEnabled: boolean;
   temperature: number | undefined;
   responseMapping: ChatCompletionOptions["responseMapping"] | undefined;
+  sessionStore: SessionStore;
 };
 
 export const runChatCompletionStream = async ({
@@ -25,6 +31,7 @@ export const runChatCompletionStream = async ({
   temperature,
   tools,
   responseMapping,
+  sessionStore,
 }: Props) => {
   try {
     const response = streamText({
@@ -36,7 +43,7 @@ export const runChatCompletionStream = async ({
         variables,
       }),
       temperature,
-      tools: parseTools({ tools, variables }),
+      tools: parseTools({ tools, variables, sessionStore }),
       maxSteps,
       onFinish: (response) => {
         responseMapping?.forEach((mapping) => {
@@ -45,26 +52,37 @@ export const runChatCompletionStream = async ({
             variables.set([
               { id: mapping.variableId, value: response.usage.totalTokens },
             ]);
+          if (mapping.item === "Prompt tokens")
+            variables.set([
+              { id: mapping.variableId, value: response.usage.promptTokens },
+            ]);
+          if (mapping.item === "Completion tokens")
+            variables.set([
+              {
+                id: mapping.variableId,
+                value: response.usage.completionTokens,
+              },
+            ]);
         });
       },
     });
 
     return {
       stream: response.toDataStream({
+        getErrorMessage: (err) => {
+          return JSON.stringify(
+            parseUnknownErrorSync({ err, context: "While streaming AI" }),
+          );
+        },
         sendUsage: false,
       }),
     };
   } catch (err) {
-    if (err instanceof APICallError) {
-      return {
-        httpError: { status: err.statusCode ?? 500, message: err.message },
-      };
-    }
     return {
-      httpError: {
-        status: 500,
-        message: "An unknown error occured while generating the response",
-      },
+      error: await parseUnknownError({
+        err,
+        context: "While running chat completion stream",
+      }),
     };
   }
 };

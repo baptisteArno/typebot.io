@@ -2,14 +2,13 @@ import { canReadTypebots } from "@/helpers/databaseRules";
 import type { Block } from "@typebot.io/blocks-core/schemas/schema";
 import { LogicBlockType } from "@typebot.io/blocks-logic/constants";
 import prisma from "@typebot.io/prisma";
-import type { Prisma } from "@typebot.io/prisma/types";
 import type { User } from "@typebot.io/schemas/features/user/schema";
 import type { PublicTypebot } from "@typebot.io/typebot/schemas/publicTypebot";
 import type { Typebot } from "@typebot.io/typebot/schemas/typebot";
 
 export const fetchLinkedTypebots = async (
   typebot: Pick<PublicTypebot, "groups">,
-  user?: Prisma.User,
+  user?: Pick<User, "id" | "email">,
 ): Promise<(Typebot | PublicTypebot)[]> => {
   const linkedTypebotIds = typebot.groups
     .flatMap<Block>((group) => group.blocks)
@@ -31,7 +30,7 @@ export const fetchLinkedTypebots = async (
           ? {
               AND: [
                 { id: { in: linkedTypebotIds } },
-                canReadTypebots(linkedTypebotIds, user as User),
+                canReadTypebots(linkedTypebotIds, user),
               ],
             }
           : { id: { in: linkedTypebotIds } },

@@ -2,7 +2,7 @@ import { ContextMenu } from "@/components/ContextMenu";
 import { TextBubbleEditor } from "@/features/blocks/bubbles/textBubble/components/TextBubbleEditor";
 import { BlockIcon } from "@/features/editor/components/BlockIcon";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
-import { useGroupsStore } from "@/features/graph/hooks/useGroupsStore";
+import { useSelectionStore } from "@/features/graph/hooks/useSelectionStore";
 import {
   type NodePosition,
   useBlockDnd,
@@ -36,6 +36,7 @@ import type {
   BlockWithOptions,
 } from "@typebot.io/blocks-core/schemas/schema";
 import { LogicBlockType } from "@typebot.io/blocks-logic/constants";
+import type { TEventWithOptions } from "@typebot.io/events/schemas";
 import type { TurnableIntoParam } from "@typebot.io/forge/types";
 import { isDefined } from "@typebot.io/lib/utils";
 import type { TElement } from "@udecode/plate-common";
@@ -51,10 +52,7 @@ import { BlockNodeContent } from "./BlockNodeContent";
 import { BlockNodeContextMenu } from "./BlockNodeContextMenu";
 import { MediaBubblePopoverContent } from "./MediaBubblePopoverContent";
 import { SettingsModal } from "./SettingsModal";
-import {
-  BlockSettings,
-  SettingsPopoverContent,
-} from "./SettingsPopoverContent";
+import { NodeSettings, SettingsPopoverContent } from "./SettingsPopoverContent";
 
 export const BlockNode = ({
   block,
@@ -74,8 +72,8 @@ export const BlockNode = ({
   const {
     setConnectingIds,
     connectingIds,
-    openedBlockId,
-    setOpenedBlockId,
+    openedNodeId: openedBlockId,
+    setOpenedNodeId: setOpenedBlockId,
     setFocusedGroupId,
     previewingEdge,
     isReadOnly,
@@ -85,6 +83,7 @@ export const BlockNode = ({
   const { mouseOverBlock, setMouseOverBlock } = useBlockDnd();
   const { typebot, updateBlock } = useTypebot();
   const [isConnecting, setIsConnecting] = useState(false);
+  const [isContextMenuReady, setIsContextMenuReady] = useState(true);
   const blockRef = useRef<HTMLDivElement | null>(null);
 
   const isPreviewing =
@@ -94,7 +93,7 @@ export const BlockNode = ({
 
   const groupId = typebot?.groups.at(indices.groupIndex)?.id;
 
-  const isDraggingGraph = useGroupsStore((state) => state.isDraggingGraph);
+  const isDraggingGraph = useSelectionStore((state) => state.isDraggingGraph);
 
   const onDrag = (position: NodePosition) => {
     if (!onMouseDown) return;
@@ -152,6 +151,10 @@ export const BlockNode = ({
 
   const handleCloseEditor = () => {
     setOpenedBlockId(undefined);
+    setIsContextMenuReady(false);
+    setTimeout(() => {
+      setIsContextMenuReady(true);
+    }, 100);
   };
 
   const handleTextEditorChange = (content: TElement[]) => {
@@ -170,8 +173,9 @@ export const BlockNode = ({
     onModalOpen();
   };
 
-  const handleBlockUpdate = (updates: Partial<Block>) =>
-    updateBlock(indices, { ...block, ...updates });
+  const handleBlockUpdate = (
+    updates: Partial<BlockWithOptions | TEventWithOptions>,
+  ) => updateBlock(indices, { ...block, ...updates });
 
   const handleContentChange = (content: BubbleBlockContent) =>
     updateBlock(indices, { ...block, content } as Block);
@@ -190,7 +194,6 @@ export const BlockNode = ({
 
   const convertBlock = (
     turnIntoParams: TurnableIntoParam,
-    /* eslint-disable @typescript-eslint/no-explicit-any */
     targetBlockSchema: ZodObject<any>,
   ) => {
     if (!("options" in block) || !block.options) return;
@@ -247,6 +250,7 @@ export const BlockNode = ({
           }}
         />
       )}
+      isDisabled={!isContextMenuReady}
     >
       {(ref, isContextMenuOpened) => (
         <Popover
@@ -328,17 +332,17 @@ export const BlockNode = ({
           {hasSettingsPopover(block) && (
             <>
               <SettingsPopoverContent
-                block={block}
+                node={block}
                 groupId={groupId}
                 onExpandClick={handleExpandClick}
-                onBlockChange={handleBlockUpdate}
+                onNodeChange={handleBlockUpdate}
               />
               <ParentModalProvider>
                 <SettingsModal isOpen={isModalOpen} onClose={handleModalClose}>
-                  <BlockSettings
-                    block={block}
+                  <NodeSettings
+                    node={block}
                     groupId={groupId}
-                    onBlockChange={handleBlockUpdate}
+                    onNodeChange={handleBlockUpdate}
                   />
                 </SettingsModal>
               </ParentModalProvider>

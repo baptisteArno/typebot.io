@@ -22,8 +22,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
-import { WorkspaceRole } from "@typebot.io/prisma/enum";
-import type { Prisma } from "@typebot.io/prisma/types";
+import type { ClientUser } from "@typebot.io/schemas/features/user/schema";
 import { useState } from "react";
 import packageJson from "../../../../../../package.json";
 import { type WorkspaceInApp, useWorkspace } from "../WorkspaceProvider";
@@ -32,7 +31,7 @@ import { WorkspaceSettingsForm } from "./WorkspaceSettingsForm";
 
 type Props = {
   isOpen: boolean;
-  user: Prisma.User;
+  user: ClientUser;
   workspace: WorkspaceInApp;
   defaultTab?: SettingsTab;
   onClose: () => void;
@@ -55,26 +54,24 @@ export const WorkspaceSettingsModal = ({
 }: Props) => {
   const { t } = useTranslate();
   const { ref } = useParentModal();
-  const { currentRole } = useWorkspace();
+  const { currentUserMode } = useWorkspace();
   const [selectedTab, setSelectedTab] = useState<SettingsTab>(defaultTab);
 
-  const canEditWorkspace = currentRole === WorkspaceRole.ADMIN;
-
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size="4xl">
+    <Modal isOpen={isOpen} onClose={onClose} size="6xl">
       <ModalOverlay />
       <ModalContent minH="600px" flexDir="row" ref={ref}>
         <Stack
           spacing={8}
-          w="180px"
+          w="250px"
           py="6"
           borderRightWidth={1}
           justifyContent="space-between"
         >
           <Stack spacing={8}>
             <Stack>
-              <Text pl="4" color="gray.500">
-                {user.email}
+              <Text pl="4" color="gray.500" fontSize="sm">
+                {t("account")}
               </Text>
               <Button
                 variant={selectedTab === "my-account" ? "solid" : "ghost"}
@@ -90,7 +87,7 @@ export const WorkspaceSettingsModal = ({
                 justifyContent="flex-start"
                 pl="4"
               >
-                {t("workspace.settings.modal.menu.myAccount.label")}
+                {user.name ?? user.email}
               </Button>
               <Button
                 variant={selectedTab === "user-settings" ? "solid" : "ghost"}
@@ -110,14 +107,14 @@ export const WorkspaceSettingsModal = ({
                 justifyContent="flex-start"
                 pl="4"
               >
-                Credentials
+                {t("credentials")}
               </Button>
             </Stack>
             <Stack>
-              <Text pl="4" color="gray.500">
+              <Text pl="4" color="gray.500" fontSize="sm">
                 {t("workspace.settings.modal.menu.workspace.label")}
               </Text>
-              {canEditWorkspace && (
+              {currentUserMode === "write" && (
                 <Button
                   variant={
                     selectedTab === "workspace-settings" ? "solid" : "ghost"
@@ -138,7 +135,7 @@ export const WorkspaceSettingsModal = ({
                 </Button>
               )}
 
-              {currentRole !== WorkspaceRole.GUEST && (
+              {currentUserMode !== "guest" && (
                 <Button
                   variant={selectedTab === "members" ? "solid" : "ghost"}
                   onClick={() => setSelectedTab("members")}
@@ -150,7 +147,7 @@ export const WorkspaceSettingsModal = ({
                   {t("workspace.settings.modal.menu.members.label")}
                 </Button>
               )}
-              {canEditWorkspace && (
+              {currentUserMode === "write" && (
                 <Button
                   variant={selectedTab === "billing" ? "solid" : "ghost"}
                   onClick={() => setSelectedTab("billing")}

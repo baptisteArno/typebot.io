@@ -16,7 +16,8 @@
       ".next",
       "dist",
       "openapi/*.json",
-      "routeTree.gen.ts"
+      "routeTree.gen.ts",
+      "i18n-ally-custom-framework.yml"
     ],
     "enabled": true,
     "rules": {
@@ -86,7 +87,8 @@
       "iconNames.ts",
       ".last-run.json",
       "openapi/*.json",
-      "routeTree.gen.ts"
+      "routeTree.gen.ts",
+      "i18n-ally-custom-framework.yml"
     ],
     "indentStyle": "space"
   },

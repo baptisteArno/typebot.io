@@ -1,37 +1,36 @@
-import { getAuthOptions } from "@/pages/api/auth/[...nextauth]";
 import * as Sentry from "@sentry/nextjs";
 import { env } from "@typebot.io/env";
 import { mockedUser } from "@typebot.io/lib/mockedUser";
 import prisma from "@typebot.io/prisma";
-import type { Prisma } from "@typebot.io/prisma/types";
+import {
+  type ClientUser,
+  clientUserSchema,
+} from "@typebot.io/schemas/features/user/schema";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth";
+import { createAuthConfig } from "./createAuthConfig";
 
 export const getAuthenticatedUser = async (
   req: NextApiRequest,
   res: NextApiResponse,
-): Promise<Prisma.User | undefined> => {
+): Promise<ClientUser | undefined> => {
   const bearerToken = extractBearerToken(req);
   if (bearerToken) return authenticateByToken(bearerToken);
-  const user = env.NEXT_PUBLIC_E2E_TEST
+  return env.NEXT_PUBLIC_E2E_TEST
     ? mockedUser
-    : ((await getServerSession(req, res, getAuthOptions({})))?.user as
-        | Prisma.User
-        | undefined);
-  if (!user || !("id" in user)) return;
-  Sentry.setUser({ id: user.id });
-  return user;
+    : (await getServerSession(req, res, createAuthConfig()))?.user;
 };
 
 const authenticateByToken = async (
   apiToken: string,
-): Promise<Prisma.User | undefined> => {
+): Promise<ClientUser | undefined> => {
   if (typeof window !== "undefined") return;
-  const user = (await prisma.user.findFirst({
+  const user = await prisma.user.findFirst({
     where: { apiTokens: { some: { token: apiToken } } },
-  })) as Prisma.User;
+  });
+  if (!user) return;
   Sentry.setUser({ id: user.id });
-  return user;
+  return clientUserSchema.parse(user);
 };
 
 const extractBearerToken = (req: NextApiRequest) =>

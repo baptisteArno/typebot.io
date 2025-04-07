@@ -7,7 +7,7 @@ import {
   embedBaseUrls,
 } from "@typebot.io/blocks-bubbles/video/constants";
 import type { VideoBubbleBlock } from "@typebot.io/blocks-bubbles/video/schema";
-import { findUniqueVariable } from "@typebot.io/variables/findUniqueVariableValue";
+import { findUniqueVariable } from "@typebot.io/variables/findUniqueVariable";
 
 type Props = {
   block: VideoBubbleBlock;

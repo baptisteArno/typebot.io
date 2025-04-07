@@ -1,3 +1,4 @@
+import * as Sentry from "@sentry/nextjs";
 import { initTRPC } from "@trpc/server";
 import type { OpenApiMeta } from "@typebot.io/trpc-openapi/types";
 import superjson from "superjson";
@@ -15,8 +16,12 @@ const injectUser = t.middleware(({ next, ctx }) => {
   });
 });
 
+const sentryMiddleware = t.middleware(Sentry.trpcMiddleware());
+
 export const middleware = t.middleware;
 
 export const router = t.router;
 
-export const publicProcedure = t.procedure.use(injectUser);
+export const publicProcedure = t.procedure
+  .use(sentryMiddleware)
+  .use(injectUser);

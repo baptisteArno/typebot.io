@@ -1,5 +1,6 @@
 import { safeStringify } from "@typebot.io/lib/safeStringify";
 import { isDefined, isNotDefined, isNotEmpty } from "@typebot.io/lib/utils";
+import type { SessionStore } from "@typebot.io/runtime-session-store";
 import { createInlineSyncCodeRunner } from "./codeRunners";
 import type { Variable, VariableWithValue } from "./schemas";
 
@@ -10,75 +11,89 @@ export type ParseVariablesOptions = {
   isInsideHtml?: boolean;
 };
 
-export const defaultParseVariablesOptions: ParseVariablesOptions = {
-  fieldToParse: "value",
-  isInsideJson: false,
-  takeLatestIfList: false,
-  isInsideHtml: false,
-};
-
 // {{= inline code =}}
 const inlineCodeRegex = /\{\{=(.+?)=\}\}/g;
 
 // {{variable}} and ${{{variable}}}
 const variableRegex = /\{\{([^{}]+)\}\}|(\$)\{\{([^{}]+)\}\}/g;
 
-export const parseVariables =
-  (
-    variables: Variable[],
-    options: ParseVariablesOptions = defaultParseVariablesOptions,
-  ) =>
-  (text: string | undefined): string => {
-    if (!text || text === "") return "";
-    const textWithInlineCodeParsed = text.replace(
-      inlineCodeRegex,
-      (_full, inlineCodeToEvaluate) => {
-        const value = evaluateInlineCode(inlineCodeToEvaluate, { variables });
-        return safeStringify(value) ?? value;
-      },
-    );
+export const parseVariables = (
+  text: string | undefined,
+  {
+    variables,
+    sessionStore,
+    fieldToParse = "value",
+    isInsideJson = false,
+    takeLatestIfList = false,
+    isInsideHtml = false,
+  }: {
+    variables: Variable[];
+    sessionStore: SessionStore;
+    fieldToParse?: "value" | "id";
+    isInsideJson?: boolean;
+    takeLatestIfList?: boolean;
+    isInsideHtml?: boolean;
+  },
+): string => {
+  if (!text || text === "") return "";
+  const textWithInlineCodeParsed = text.replace(
+    inlineCodeRegex,
+    (_full, inlineCodeToEvaluate) => {
+      const value = evaluateInlineCode(inlineCodeToEvaluate, {
+        variables,
+        sessionStore,
+      });
+      return safeStringify(value) ?? value;
+    },
+  );
 
-    return textWithInlineCodeParsed.replace(
-      variableRegex,
-      (_full, nameInCurlyBraces, _dollarSign, nameInTemplateLitteral) => {
-        const dollarSign = (_dollarSign ?? "") as string;
-        const matchedVarName = nameInCurlyBraces ?? nameInTemplateLitteral;
-        const variable = variables.find((variable) => {
-          return (
-            matchedVarName === variable.name &&
-            (options.fieldToParse === "id" || isDefined(variable.value))
-          );
-        }) as VariableWithValue | undefined;
-        if (!variable) return dollarSign + "";
-        if (options.fieldToParse === "id") return dollarSign + variable.id;
-        const { value } = variable;
-        if (options.isInsideJson)
-          return dollarSign + parseVariableValueInJson(value);
-        const parsedValue =
-          dollarSign +
-          safeStringify(
-            options.takeLatestIfList && Array.isArray(value)
-              ? value[value.length - 1]
-              : value,
-          );
-        if (!parsedValue) return dollarSign + "";
-        if (options.isInsideHtml) return parseVariableValueInHtml(parsedValue);
-        return parsedValue;
-      },
-    );
-  };
+  return textWithInlineCodeParsed.replace(
+    variableRegex,
+    (_full, nameInCurlyBraces, _dollarSign, nameInTemplateLitteral) => {
+      const dollarSign = (_dollarSign ?? "") as string;
+      const matchedVarName = nameInCurlyBraces ?? nameInTemplateLitteral;
+      const variable = variables.find((variable) => {
+        return (
+          matchedVarName === variable.name &&
+          (fieldToParse === "id" || isDefined(variable.value))
+        );
+      }) as VariableWithValue | undefined;
+      if (!variable) return dollarSign + "";
+      if (fieldToParse === "id") return dollarSign + variable.id;
+      const { value } = variable;
+      if (isInsideJson) return dollarSign + parseVariableValueInJson(value);
+      const parsedValue =
+        dollarSign +
+        safeStringify(
+          takeLatestIfList && Array.isArray(value)
+            ? value[value.length - 1]
+            : value,
+        );
+      if (!parsedValue) return dollarSign + "";
+      if (isInsideHtml) return parseVariableValueInHtml(parsedValue);
+      return parsedValue;
+    },
+  );
+};
 
 const evaluateInlineCode = (
   code: string,
-  { variables }: { variables: Variable[] },
+  {
+    variables,
+    sessionStore,
+  }: { variables: Variable[]; sessionStore: SessionStore },
 ) => {
   try {
-    const body = parseVariables(variables, { fieldToParse: "id" })(code);
-    return createInlineSyncCodeRunner({ variables })(
+    const body = parseVariables(code, {
+      variables,
+      sessionStore,
+      fieldToParse: "id",
+    });
+    return createInlineSyncCodeRunner({ variables, sessionStore })(
       body.includes("return ") ? body : `return ${body}`,
     );
   } catch (err) {
-    return parseVariables(variables)(code);
+    return parseVariables(code, { variables, sessionStore });
   }
 };
 
@@ -94,8 +109,13 @@ export const getVariablesToParseInfoInText = (
   text: string,
   {
     variables,
+    sessionStore,
     takeLatestIfList,
-  }: { variables: Variable[]; takeLatestIfList?: boolean },
+  }: {
+    variables: Variable[];
+    sessionStore: SessionStore;
+    takeLatestIfList?: boolean;
+  },
 ): VariableToParseInformation[] => {
   const inlineVarsParseInfo: VariableToParseInformation[] = [];
   const inlineCodeMatches = [...text.matchAll(inlineCodeRegex)];
@@ -104,6 +124,7 @@ export const getVariablesToParseInfoInText = (
     const inlineCodeToEvaluate = match[1] ?? "";
     const evaluatedValue = evaluateInlineCode(inlineCodeToEvaluate, {
       variables,
+      sessionStore,
     });
     inlineVarsParseInfo.push({
       startIndex: match.index,

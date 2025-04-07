@@ -75,12 +75,14 @@ const main = async () => {
     process.exit(1);
   }
   if (!existsSync(newBlockPath)) mkdirSync(newBlockPath);
+  const srcPath = join(newBlockPath, "src");
+  if (!existsSync(srcPath)) mkdirSync(srcPath);
   await createPackageJson(newBlockPath, prompt);
   await createTsConfig(newBlockPath);
-  await createIndexFile(newBlockPath, prompt);
-  await createLogoFile(newBlockPath, prompt);
-  if (prompt.auth !== "none") await createAuthFile(newBlockPath, prompt);
-  await createSchemasFile(newBlockPath, prompt);
+  await createIndexFile(srcPath, prompt);
+  await createLogoFile(srcPath, prompt);
+  if (prompt.auth !== "none") await createAuthFile(srcPath, prompt);
+  await createSchemasFile(srcPath, prompt);
   await addBlockToRepository(prompt);
   s.stop("Creating files...");
   s.start("Installing dependencies...");
@@ -169,15 +171,25 @@ export const ${camelCaseName}Block = createBlock({
 const createPackageJson = async (path: string, { id }: { id: unknown }) => {
   writeFileSync(
     join(path, "package.json"),
-    JSON.stringify({
-      name: `@typebot.io/${id}-block`,
-      dependencies: {
-        "@typebot.io/forge": "workspace:*",
+    JSON.stringify(
+      {
+        name: `@typebot.io/${id}-block`,
+        private: true,
+        type: "module",
+        exports: {
+          ".": "./src/index.ts",
+          "./schemas": "./src/schemas.ts",
+        },
+        dependencies: {
+          "@typebot.io/forge": "workspace:*",
+        },
+        devDependencies: {
+          "@typebot.io/tsconfig": "workspace:*",
+        },
       },
-      devDependencies: {
-        "@typebot.io/tsconfig": "workspace:*",
-      },
-    }),
+      null,
+      2,
+    ),
   );
 };
 
@@ -210,7 +222,8 @@ const createAuthFile = async (
 ) =>
   writeFileSync(
     join(path, "auth.ts"),
-    `import { option, AuthDefinition } from '@typebot.io/forge'
+    `import { option } from '@typebot.io/forge'
+import type { AuthDefinition } from '@typebot.io/forge/types'
 
         export const auth = {
           type: 'encryptedCredentials',
@@ -372,8 +385,8 @@ async function addBlockToRepoConstants(schemasPath: string, id: string) {
   writeFileSync(
     join(schemasPath, "src", "constants.ts"),
     existingDefinitionsData.replace(
-      `] as const satisfies ForgedBlock['type'][]`,
-      `'${id}'] as const satisfies ForgedBlock['type'][]`,
+      `] as const satisfies readonly ForgedBlock["type"][]`,
+      `'${id}'] as const satisfies readonly ForgedBlock["type"][]`,
     ),
   );
 }

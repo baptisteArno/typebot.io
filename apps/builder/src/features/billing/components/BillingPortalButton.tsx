@@ -1,4 +1,4 @@
-import { useToast } from "@/hooks/useToast";
+import { toast } from "@/lib/toast";
 import { trpc } from "@/lib/trpc";
 import { Button, type ButtonProps, Link } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
@@ -9,14 +9,13 @@ type Props = {
 
 export const BillingPortalButton = ({ workspaceId, colorScheme }: Props) => {
   const { t } = useTranslate();
-  const { showToast } = useToast();
   const { data } = trpc.billing.getBillingPortalUrl.useQuery(
     {
       workspaceId,
     },
     {
       onError: (error) => {
-        showToast({
+        toast({
           description: error.message,
         });
       },

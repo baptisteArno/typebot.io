@@ -8,6 +8,7 @@ import type { SessionState } from "@typebot.io/chat-session/schemas";
 import { decryptV2 } from "@typebot.io/credentials/decryptV2";
 import { OpenAIStream } from "@typebot.io/legacy/ai";
 import { isNotEmpty } from "@typebot.io/lib/utils";
+import type { SessionStore } from "@typebot.io/runtime-session-store";
 import { parseVariableNumber } from "@typebot.io/variables/parseVariableNumber";
 import { type ClientOptions, OpenAI } from "openai";
 
@@ -17,6 +18,7 @@ export const getChatCompletionStream =
     state: SessionState,
     options: ChatCompletionOpenAIOptions,
     messages: OpenAI.Chat.ChatCompletionMessageParam[],
+    sessionStore: SessionStore,
   ) => {
     if (!options.credentialsId) return;
     const credentials = (
@@ -34,8 +36,9 @@ export const getChatCompletionStream =
     )) as OpenAICredentials["data"];
 
     const { typebot } = state.typebotsQueue[0];
-    const temperature = parseVariableNumber(typebot.variables)(
+    const temperature = parseVariableNumber(
       options.advancedSettings?.temperature,
+      { variables: typebot.variables, sessionStore },
     );
 
     const config = {

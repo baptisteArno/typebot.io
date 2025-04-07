@@ -12,6 +12,7 @@ import type { WhatsAppCredentials } from "@typebot.io/credentials/schemas";
 import { isNotDefined } from "@typebot.io/lib/utils";
 import prisma from "@typebot.io/prisma";
 import type { Prisma } from "@typebot.io/prisma/types";
+import type { SessionStore } from "@typebot.io/runtime-session-store";
 import { defaultSessionExpiryTimeout } from "@typebot.io/settings/constants";
 import type { Settings } from "@typebot.io/settings/schemas";
 import type { PublicTypebot } from "@typebot.io/typebot/schemas/publicTypebot";
@@ -26,6 +27,7 @@ type Props = {
   credentials: WhatsAppCredentials["data"] & Pick<WhatsAppCredentials, "id">;
   contact: NonNullable<SessionState["whatsApp"]>["contact"];
   referral?: WhatsAppMessageReferral;
+  sessionStore: SessionStore;
 };
 
 export const startWhatsAppSession = async ({
@@ -34,6 +36,7 @@ export const startWhatsAppSession = async ({
   credentials,
   contact,
   referral,
+  sessionStore,
 }: Props): Promise<
   ContinueChatResponse & {
     newSessionState: SessionState;
@@ -114,6 +117,7 @@ export const startWhatsAppSession = async ({
       },
       expiryTimeout: sessionExpiryTimeoutHours * 60 * 60 * 1000,
     },
+    sessionStore,
   });
 };
 

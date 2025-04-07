@@ -30,7 +30,11 @@ export const defaultSettings = {
 export const defaultSystemMessages = {
   invalidMessage: "Invalid message. Please, try again.",
   botClosed: "This bot is now closed",
-  popupBlockedDescription: "Popup blocked",
+  networkErrorTitle: "Network Error",
+  networkErrorMessage: "Please check your internet connection and try again.",
+  popupBlockedTitle: "Popup blocked",
+  popupBlockedDescription:
+    "The bot wants to open a new tab but it was blocked by your browser. It needs a manual approval.",
   popupBlockedButtonLabel: "Continue in new tab",
   fileUploadError: "An error occured while uploading the files",
   fileUploadSizeError: "[[file]] is larger than [[limit]]MB",

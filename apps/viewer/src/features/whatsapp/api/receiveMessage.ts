@@ -1,5 +1,6 @@
 import { publicProcedure } from "@/helpers/server/trpc";
 import * as Sentry from "@sentry/nextjs";
+import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
 import { WhatsAppError } from "@typebot.io/whatsapp/WhatsAppError";
 import { resumeWhatsAppFlow } from "@typebot.io/whatsapp/resumeWhatsAppFlow";
 import {
@@ -37,7 +38,8 @@ export const receiveMessage = publicProcedure
       phoneNumberId,
       referral,
     } = extractMessageDetails(entry);
-    if (!receivedMessage) return { message: "No message found" };
+    if (!receivedMessage || receivedMessage.type === "reaction")
+      return { message: "No message content found" };
     if (!phoneNumberId) return { message: "No phone number found" };
 
     try {
@@ -55,15 +57,24 @@ export const receiveMessage = publicProcedure
       });
     } catch (err) {
       if (err instanceof WhatsAppError) {
-        console.log("Known WhatsApp error:", err.message, err.details);
         Sentry.captureMessage(err.message, err.details);
       } else {
-        console.error("Unknown WhatsApp error:", err);
+        console.log("Sending unknown error to Sentry");
+        const details = safeJsonParse(
+          (await parseUnknownError({ err })).details,
+        );
+        console.log("details", details);
+        Sentry.addBreadcrumb({
+          data:
+            typeof details === "object" && details
+              ? details
+              : {
+                  details,
+                },
+        });
         Sentry.captureException(err);
       }
     }
-
-    await Sentry.flush();
 
     return {
       message: "Message received",
@@ -77,7 +88,7 @@ const extractMessageDetails = (entry: WhatsAppWebhookRequestBody["entry"]) => {
   const contactPhoneNumber =
     entry.at(0)?.changes.at(0)?.value?.messages?.at(0)?.from ?? "";
   const phoneNumberId = entry.at(0)?.changes.at(0)?.value
-    .metadata.phone_number_id;
+    .metadata?.phone_number_id;
   const referral = entry.at(0)?.changes.at(0)?.value.messages?.at(0)?.referral;
   return {
     receivedMessage,
@@ -86,4 +97,13 @@ const extractMessageDetails = (entry: WhatsAppWebhookRequestBody["entry"]) => {
     phoneNumberId,
     referral,
   };
+};
+
+const safeJsonParse = (value: string | undefined): unknown => {
+  if (!value) return value;
+  try {
+    return JSON.parse(value);
+  } catch {
+    return value;
+  }
 };

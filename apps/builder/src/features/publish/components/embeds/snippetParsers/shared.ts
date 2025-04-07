@@ -22,10 +22,17 @@ export const parseNumberOrBoolParam = (
   fieldValue?: number | boolean,
 ) => (isDefined(fieldValue) ? `${fieldName}: ${fieldValue},` : ``);
 
-export const parseBotProps = ({ typebot, apiHost }: BotProps) => {
+export const parseBotProps = ({
+  typebot,
+  customDomain,
+}: BotProps & { customDomain: string | undefined | null }) => {
   const typebotLine = parseStringParam("typebot", typebot as string);
-  const apiHostLine = parseStringParam("apiHost", apiHost);
-  return `${typebotLine}${apiHostLine}`;
+  const apiHostLine = parseStringParam(
+    "apiHost",
+    parseApiHostValue(customDomain),
+  );
+  const wsHostLine = parseStringParam("wsHost", parseWsHost());
+  return `${typebotLine}${apiHostLine}${wsHostLine}`;
 };
 
 export const parseReactStringParam = (
@@ -38,10 +45,17 @@ export const parseReactNumberOrBoolParam = (
   fieldValue?: number | boolean,
 ) => (isDefined(fieldValue) ? `${fieldName}={${fieldValue}}` : ``);
 
-export const parseReactBotProps = ({ typebot, apiHost }: BotProps) => {
+export const parseReactBotProps = ({
+  typebot,
+  customDomain,
+}: BotProps & { customDomain: string | undefined | null }) => {
   const typebotLine = parseReactStringParam("typebot", typebot as string);
-  const apiHostLine = parseReactStringParam("apiHost", apiHost);
-  return `${typebotLine} ${apiHostLine}`;
+  const apiHostLine = parseReactStringParam(
+    "apiHost",
+    parseApiHost(customDomain),
+  );
+  const wsHostLine = parseReactStringParam("wsHost", parseWsHost());
+  return `${typebotLine} ${apiHostLine} ${wsHostLine}`;
 };
 
 export const typebotImportCode = isCloudProdInstance()
@@ -64,9 +78,14 @@ export const parseApiHost = (
   return env.NEXT_PUBLIC_VIEWER_URL.at(1) ?? env.NEXT_PUBLIC_VIEWER_URL[0];
 };
 
-export const parseApiHostValue = (
+const parseApiHostValue = (
   customDomain: Typebot["customDomain"] | undefined,
 ) => {
   if (isCloudProdInstance()) return;
   return parseApiHost(customDomain);
+};
+
+const parseWsHost = () => {
+  if (isCloudProdInstance()) return;
+  return env.NEXT_PUBLIC_PARTYKIT_HOST;
 };

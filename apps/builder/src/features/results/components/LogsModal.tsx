@@ -15,11 +15,12 @@ import {
   Spinner,
   Stack,
   Tag,
+  type TagProps,
   Text,
+  chakra,
 } from "@chakra-ui/react";
 import { isDefined } from "@typebot.io/lib/utils";
-import type { Prisma } from "@typebot.io/prisma/types";
-import type { Log } from "@typebot.io/results/schemas/results";
+import type { Log } from "@typebot.io/logs/schemas";
 import { useLogs } from "../hooks/useLogs";
 
 type Props = {
@@ -64,9 +65,18 @@ const LogCard = ({ log }: { log: Log }) => {
             justifyContent="space-between"
             borderRadius="md"
           >
-            <HStack>
-              <StatusTag status={log.status} />
-              <Text>{log.description}</Text>
+            <HStack gap={3} alignItems="flex-start">
+              <StatusTag status={log.status} flexShrink={0} mt={0.5} />
+              <Stack>
+                <Text>
+                  {log.context && (
+                    <chakra.span fontWeight="medium">
+                      {log.context}:
+                    </chakra.span>
+                  )}{" "}
+                  {log.description}
+                </Text>
+              </Stack>
             </HStack>
             <AccordionIcon />
           </AccordionButton>
@@ -82,22 +92,43 @@ const LogCard = ({ log }: { log: Log }) => {
       </Accordion>
     );
   return (
-    <HStack p="4">
-      <StatusTag status={log.status} />
-      <Text>{log.description}</Text>
+    <HStack p="4" gap={3} alignItems="flex-start">
+      <StatusTag status={log.status} flexShrink={0} mt={0.5} />
+      <Text>
+        {log.context && (
+          <chakra.span fontWeight="medium">{log.context}:</chakra.span>
+        )}{" "}
+        {log.description}
+      </Text>
     </HStack>
   );
 };
 
-const StatusTag = ({ status }: { status: string }) => {
+const StatusTag = ({ status, ...tagProps }: { status: string } & TagProps) => {
   switch (status) {
     case "error":
-      return <Tag colorScheme={"red"}>Fail</Tag>;
+      return (
+        <Tag colorScheme={"red"} {...tagProps}>
+          Fail
+        </Tag>
+      );
     case "warning":
-      return <Tag colorScheme={"orange"}>Warn</Tag>;
+      return (
+        <Tag colorScheme={"orange"} {...tagProps}>
+          Warn
+        </Tag>
+      );
     case "info":
-      return <Tag colorScheme={"blue"}>Info</Tag>;
+      return (
+        <Tag colorScheme={"blue"} {...tagProps}>
+          Info
+        </Tag>
+      );
     default:
-      return <Tag colorScheme={"green"}>Ok</Tag>;
+      return (
+        <Tag colorScheme={"green"} {...tagProps}>
+          Ok
+        </Tag>
+      );
   }
 };

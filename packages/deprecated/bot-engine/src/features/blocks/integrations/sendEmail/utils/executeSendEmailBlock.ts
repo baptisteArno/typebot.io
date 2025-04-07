@@ -21,7 +21,6 @@ export const executeSendEmailBlock = (
     onNewLog({
       status: "info",
       description: "Emails are not sent in preview mode",
-      details: null,
     });
     return block.outgoingEdgeId;
   }

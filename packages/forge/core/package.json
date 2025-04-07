@@ -9,10 +9,11 @@
   },
   "dependencies": {
     "@typebot.io/zod": "workspace:*",
-    "@typebot.io/variables": "workspace:*"
+    "@typebot.io/variables": "workspace:*",
+    "@typebot.io/runtime-session-store": "workspace:*"
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*",
-    "@types/react": "18.2.0"
+    "@types/react": "18.3.18"
   }
 }

@@ -1,5 +1,5 @@
 import { blockBaseSchema } from "@typebot.io/blocks-base/schemas";
-import { variableStringSchema } from "@typebot.io/variables/schemas";
+import { singleVariableOrNumberSchema } from "@typebot.io/variables/schemas";
 import { z } from "@typebot.io/zod";
 import { IntegrationBlockType } from "../constants";
 
@@ -8,7 +8,7 @@ export const googleAnalyticsOptionsSchema = z.object({
   category: z.string().optional(),
   action: z.string().optional(),
   label: z.string().optional(),
-  value: z.number().or(variableStringSchema).optional(),
+  value: singleVariableOrNumberSchema.optional(),
   sendTo: z.string().optional(),
 });
 

@@ -18,37 +18,35 @@ import {
 } from "@chakra-ui/react";
 import type { Plan } from "@typebot.io/prisma/enum";
 import React from "react";
-import {
-  GtmLogo,
-  IframeLogo,
-  JavascriptLogo,
-  NotionLogo,
-  ReactLogo,
-  ShopifyLogo,
-  WebflowLogo,
-  WixLogo,
-  WordpressLogo,
-} from "./logos";
+import { BlinkLogo } from "./logos/BlinkLogo";
 import { FlutterFlowLogo } from "./logos/FlutterFlowLogo";
 import { FramerLogo } from "./logos/FramerLogo";
+import { GtmLogo } from "./logos/GtmLogo";
+import { IframeLogo } from "./logos/IframeLogo";
+import { JavascriptLogo } from "./logos/JavascriptLogo";
 import { NextjsLogo } from "./logos/NextjsLogo";
-import {
-  GtmModal,
-  IframeModal,
-  JavascriptModal,
-  NotionModal,
-  ReactModal,
-  ShopifyModal,
-  WebflowModal,
-  WixModal,
-  WordpressModal,
-} from "./modals";
+import { NotionLogo } from "./logos/NotionLogo";
+import { ReactLogo } from "./logos/ReactLogo";
+import { ShopifyLogo } from "./logos/ShopifyLogo";
+import { WebflowLogo } from "./logos/WebflowLogo";
+import { WixLogo } from "./logos/WixLogo";
+import { WordpressLogo } from "./logos/WordpressLogo";
 import { ApiModal } from "./modals/ApiModal";
+import { BlinkModal } from "./modals/BlinkModal";
 import { FlutterFlowModal } from "./modals/FlutterFlowModal";
 import { FramerModal } from "./modals/FramerModal";
+import { GtmModal } from "./modals/GtmModal";
+import { IframeModal } from "./modals/IframeModal/IframeModal";
+import { JavascriptModal } from "./modals/Javascript/JavascriptModal";
 import { NextjsModal } from "./modals/Nextjs/NextjsModal";
+import { NotionModal } from "./modals/NotionModal";
+import { ReactModal } from "./modals/React/ReactModal";
 import { ScriptModal } from "./modals/Script/ScriptModal";
+import { ShopifyModal } from "./modals/ShopifyModal";
+import { WebflowModal } from "./modals/WebflowModal";
 import { WhatsAppModal } from "./modals/WhatsAppModal/WhatsAppModal";
+import { WixModal } from "./modals/WixModal";
+import { WordpressModal } from "./modals/WordpressModal";
 
 export type ModalProps = {
   publicId: string;
@@ -212,6 +210,14 @@ export const integrationsList = [
       logo={<FlutterFlowLogo height={100} width="60px" />}
       label="FlutterFlow"
       modal={(modalProps) => <FlutterFlowModal {...modalProps} {...props} />}
+      {...props}
+    />
+  ),
+  (props: Pick<ModalProps, "publicId" | "isPublished">) => (
+    <EmbedButton
+      logo={<BlinkLogo height={100} width="100px" />}
+      label="Blink"
+      modal={(modalProps) => <BlinkModal {...modalProps} {...props} />}
       {...props}
     />
   ),

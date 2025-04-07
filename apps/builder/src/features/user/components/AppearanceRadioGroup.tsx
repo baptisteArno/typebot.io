@@ -55,7 +55,6 @@ export const AppearanceRadioGroup = ({ defaultValue, onChange }: Props) => {
                 src={option.image}
                 alt="Theme preview"
                 style={{ borderRadius: "0.250rem" }}
-                placeholder="blur"
               />
               <Stack>
                 <Text fontWeight="bold">{option.label}</Text>

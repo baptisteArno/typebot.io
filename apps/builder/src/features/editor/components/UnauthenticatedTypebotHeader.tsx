@@ -2,6 +2,7 @@ import { EmojiOrImageIcon } from "@/components/EmojiOrImageIcon";
 import { TypebotLogo } from "@/components/TypebotLogo";
 import { CopyIcon, PlayIcon } from "@/components/icons";
 import { useUser } from "@/features/user/hooks/useUser";
+import { useRightPanel } from "@/hooks/useRightPanel";
 import {
   Button,
   Divider,
@@ -16,7 +17,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 import { headerHeight } from "../constants";
-import { RightPanel, useEditor } from "../providers/EditorProvider";
+import { useEditor } from "../providers/EditorProvider";
 import { useTypebot } from "../providers/TypebotProvider";
 
 export const GuestTypebotHeader = () => {
@@ -24,18 +25,13 @@ export const GuestTypebotHeader = () => {
   const router = useRouter();
   const { user } = useUser();
   const { typebot, save } = useTypebot();
-  const {
-    setRightPanel,
-    rightPanel,
-    setStartPreviewAtGroup,
-    setStartPreviewAtEvent,
-  } = useEditor();
+  const { setStartPreviewFrom } = useEditor();
+  const [rightPanel, setRightPanel] = useRightPanel();
 
   const handlePreviewClick = async () => {
-    setStartPreviewAtGroup(undefined);
-    setStartPreviewAtEvent(undefined);
+    setStartPreviewFrom(undefined);
     save().then();
-    setRightPanel(RightPanel.PREVIEW);
+    setRightPanel("preview");
   };
 
   return (
@@ -45,7 +41,7 @@ export const GuestTypebotHeader = () => {
       justify="center"
       align="center"
       h={`${headerHeight}px`}
-      zIndex={100}
+      zIndex={1}
       pos="relative"
       bgColor={useColorModeValue("white", "gray.950")}
       flexShrink={0}

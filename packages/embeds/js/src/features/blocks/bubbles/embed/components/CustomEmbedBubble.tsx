@@ -4,7 +4,7 @@ import type { InputSubmitContent } from "@/types";
 import { botContainerHeight } from "@/utils/botContainerHeightSignal";
 import { isMobile } from "@/utils/isMobileSignal";
 import type { CustomEmbedBubble as CustomEmbedBubbleProps } from "@typebot.io/bot-engine/schemas/api";
-import clsx from "clsx";
+import { cx } from "@typebot.io/ui/lib/cva";
 import { createSignal, onCleanup, onMount } from "solid-js";
 
 type Props = {
@@ -55,7 +55,7 @@ export const CustomEmbedBubble = (props: Props) => {
 
   return (
     <div
-      class={clsx(
+      class={cx(
         "flex flex-col w-full",
         props.onTransitionEnd ? "animate-fade-in" : undefined,
       )}
@@ -73,7 +73,7 @@ export const CustomEmbedBubble = (props: Props) => {
             {isTyping() && <TypingBubble />}
           </div>
           <div
-            class={clsx(
+            class={cx(
               "p-2 z-20 text-fade-in w-full",
               isTyping() ? "opacity-0" : "opacity-100",
             )}

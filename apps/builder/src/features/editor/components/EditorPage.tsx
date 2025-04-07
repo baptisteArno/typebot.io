@@ -1,18 +1,14 @@
 import { Seo } from "@/components/Seo";
 import { Graph } from "@/features/graph/components/Graph";
-import { EventsCoordinatesProvider } from "@/features/graph/providers/EventsCoordinateProvider";
 import { GraphDndProvider } from "@/features/graph/providers/GraphDndProvider";
 import { GraphProvider } from "@/features/graph/providers/GraphProvider";
 import { VideoOnboardingFloatingWindow } from "@/features/onboarding/components/VideoOnboardingFloatingWindow";
 import { PreviewDrawer } from "@/features/preview/components/PreviewDrawer";
 import { VariablesDrawer } from "@/features/preview/components/VariablesDrawer";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
+import { useRightPanel } from "@/hooks/useRightPanel";
 import { Flex, Spinner, useColorModeValue } from "@chakra-ui/react";
-import {
-  EditorProvider,
-  RightPanel as RightPanelEnum,
-  useEditor,
-} from "../providers/EditorProvider";
+import { EditorProvider } from "../providers/EditorProvider";
 import { useTypebot } from "../providers/TypebotProvider";
 import { BlocksSideBar } from "./BlocksSideBar";
 import { BoardMenuButton } from "./BoardMenuButton";
@@ -51,22 +47,20 @@ export const EditorPage = () => {
         >
           {typebot ? (
             <GraphDndProvider>
-              {currentUserMode === "write" && <BlocksSideBar />}
               <GraphProvider
                 isReadOnly={
                   currentUserMode === "read" || currentUserMode === "guest"
                 }
               >
-                <EventsCoordinatesProvider events={typebot.events}>
-                  <Graph flex="1" typebot={typebot} key={typebot.id} />
-                  <BoardMenuButton
-                    pos="absolute"
-                    right="40px"
-                    top={`calc(20px + ${isSuspicious ? "70px" : "0px"})`}
-                  />
-                  <RightPanel />
-                </EventsCoordinatesProvider>
+                <Graph flex="1" typebot={typebot} key={typebot.id} />
+                <BoardMenuButton
+                  pos="absolute"
+                  right="40px"
+                  top={`calc(20px + ${isSuspicious ? "70px" : "0px"})`}
+                />
+                <RightPanel />
               </GraphProvider>
+              {currentUserMode === "write" && <BlocksSideBar />}
             </GraphDndProvider>
           ) : (
             <Flex justify="center" align="center" boxSize="full">
@@ -80,14 +74,14 @@ export const EditorPage = () => {
 };
 
 const RightPanel = () => {
-  const { rightPanel, setRightPanel } = useEditor();
+  const [rightPanel, setRightPanel] = useRightPanel();
 
   switch (rightPanel) {
-    case RightPanelEnum.PREVIEW:
+    case "preview":
       return <PreviewDrawer />;
-    case RightPanelEnum.VARIABLES:
-      return <VariablesDrawer onClose={() => setRightPanel(undefined)} />;
-    case undefined:
+    case "variables":
+      return <VariablesDrawer onClose={() => setRightPanel(null)} />;
+    case null:
       return null;
   }
 };

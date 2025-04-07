@@ -31,24 +31,35 @@ const findPackages = (dir: string): string[] => {
 // Main function to run depcheck on all packages
 const main = async () => {
   console.log("Checking unused and missing dependencies...");
-  let failed = false;
   const packages = findPackages(rootDir);
   const checks = packages.map(async (pkg) => {
-    const { stdout, exitCode } =
-      await $`bunx depcheck ${pkg} --ignore-patterns=.vinxi,.vercel --ignores=bun,jest-environment-jsdom,@types/jest,autoprefixer,tailwindcss`
-        .nothrow()
-        .quiet();
+    try {
+      const { stdout, exitCode } =
+        await $`bunx depcheck ${pkg} --ignore-patterns=.vinxi,.vercel --ignores=bun,jest-environment-jsdom,@types/jest,autoprefixer,tailwindcss`
+          .nothrow()
+          .quiet();
 
-    if (exitCode === 255) {
-      console.log(`${pkg}/package.json`);
-      console.log(stdout.toString());
-      failed = true;
+      if (exitCode === 255) {
+        return {
+          fail: true,
+          stdout: `${pkg}/package.json:\n${stdout.toString()}`,
+        };
+      }
+      return { fail: false };
+    } catch (error) {
+      return { fail: true, stdout: `Error checking ${pkg}:`, error };
     }
   });
 
-  await Promise.all(checks);
+  const statuses = await Promise.all(checks);
 
-  if (failed) {
+  if (statuses.some((status) => status.fail)) {
+    console.log(
+      statuses
+        .filter((status) => status.fail)
+        .map((status) => status.stdout)
+        .join("\n\n"),
+    );
     process.exit(1);
   }
 };

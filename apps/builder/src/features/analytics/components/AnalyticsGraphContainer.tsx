@@ -1,7 +1,6 @@
 import { ChangePlanModal } from "@/features/billing/components/ChangePlanModal";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { Graph } from "@/features/graph/components/Graph";
-import { EventsCoordinatesProvider } from "@/features/graph/providers/EventsCoordinateProvider";
 import { GraphProvider } from "@/features/graph/providers/GraphProvider";
 import { trpc } from "@/lib/trpc";
 import {
@@ -102,15 +101,13 @@ export const AnalyticsGraphContainer = ({
     >
       {publishedTypebot && stats ? (
         <GraphProvider isReadOnly isAnalytics>
-          <EventsCoordinatesProvider events={publishedTypebot?.events}>
-            <Graph
-              flex="1"
-              typebot={publishedTypebot}
-              onUnlockProPlanClick={onOpen}
-              totalAnswers={data?.totalAnswers}
-              edgesWithTotalUsers={edgesWithTotalUsers}
-            />
-          </EventsCoordinatesProvider>
+          <Graph
+            flex="1"
+            typebot={publishedTypebot}
+            onUnlockProPlanClick={onOpen}
+            totalAnswers={data?.totalAnswers}
+            edgesWithTotalUsers={edgesWithTotalUsers}
+          />
         </GraphProvider>
       ) : (
         <Flex

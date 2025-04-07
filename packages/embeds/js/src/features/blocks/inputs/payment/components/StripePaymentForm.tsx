@@ -20,7 +20,7 @@ type Props = {
 
 const slotName = "stripe-payment-form";
 
-let paymentElementSlot: HTMLSlotElement;
+let paymentElementSlot: HTMLSlotElement | undefined;
 let stripe: Stripe | null = null;
 let elements: StripeElements | null = null;
 
@@ -30,6 +30,7 @@ export const StripePaymentForm = (props: Props) => {
   const [isLoading, setIsLoading] = createSignal(false);
 
   onMount(async () => {
+    if (!paymentElementSlot) return;
     initShadowMountPoint(paymentElementSlot);
     if (!props.options?.publicKey)
       return setMessage("Missing Stripe public key");
@@ -56,7 +57,7 @@ export const StripePaymentForm = (props: Props) => {
     }, 1000);
   });
 
-  const handleSubmit = async (event: Event & { submitter: HTMLElement }) => {
+  const handleSubmit = async (event: SubmitEvent) => {
     event.preventDefault();
 
     if (!stripe || !elements) return;

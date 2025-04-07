@@ -11,13 +11,14 @@ import { LogicBlockType } from "@typebot.io/blocks-logic/constants";
 const parseDefaultItems = (type: BlockWithItems["type"]): ItemV6[] => {
   switch (type) {
     case InputBlockType.CHOICE:
-      return [{ id: createId() }];
     case InputBlockType.PICTURE_CHOICE:
-      return [{ id: createId() }];
     case LogicBlockType.CONDITION:
+      return [{ id: createId() }];
+    case InputBlockType.CARDS:
       return [
         {
           id: createId(),
+          paths: [{ id: createId() }],
         },
       ];
     case LogicBlockType.AB_TEST:

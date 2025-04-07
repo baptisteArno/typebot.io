@@ -5,6 +5,7 @@ import { parseChatCompletionOptions } from "@typebot.io/ai/parseChatCompletionOp
 import { runChatCompletion } from "@typebot.io/ai/runChatCompletion";
 import { runChatCompletionStream } from "@typebot.io/ai/runChatCompletionStream";
 import { createAction } from "@typebot.io/forge";
+import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
 import ky from "ky";
 import { auth } from "../auth";
 import { defaultOpenRouterOptions } from "../constants";
@@ -24,6 +25,7 @@ export const createChatCompletion = createAction({
       blockId: "together-ai",
     },
     { blockId: "mistral" },
+    { blockId: "perplexity" },
     {
       blockId: "anthropic",
       transform: (options) => ({
@@ -31,9 +33,19 @@ export const createChatCompletion = createAction({
         action: "Create Chat Message",
       }),
     },
+    {
+      blockId: "deepseek",
+      transform: (options) => ({
+        ...options,
+        model: undefined,
+      }),
+    },
   ],
   options: parseChatCompletionOptions({
-    modelFetchId: "fetchModels",
+    models: {
+      type: "fetcher",
+      id: "fetchModels",
+    },
   }),
   getSetVariableIds: getChatCompletionSetVarIds,
   fetchers: [
@@ -41,19 +53,33 @@ export const createChatCompletion = createAction({
       id: "fetchModels",
       dependencies: [],
       fetch: async () => {
-        const response = await ky
-          .get(defaultOpenRouterOptions.baseUrl + "/models")
-          .json<ModelsResponse>();
+        try {
+          const response = await ky
+            .get(defaultOpenRouterOptions.baseUrl + "/models")
+            .json<ModelsResponse>();
 
-        return response.data.map((model) => ({
-          value: model.id,
-          label: model.name,
-        }));
+          return {
+            data: response.data.map((model) => ({
+              value: model.id,
+              label: model.name,
+            })),
+          };
+        } catch (err) {
+          return {
+            error: await parseUnknownError({ err, context: "Fetching models" }),
+          };
+        }
       },
     },
   ],
   run: {
-    server: ({ credentials: { apiKey }, options, variables, logs }) => {
+    server: ({
+      credentials: { apiKey },
+      options,
+      variables,
+      logs,
+      sessionStore,
+    }) => {
       if (!apiKey) return logs.add("No API key provided");
       const modelName = options.model?.trim();
       if (!modelName) return logs.add("No model provided");
@@ -67,24 +93,38 @@ export const createChatCompletion = createAction({
         messages: options.messages,
         tools: options.tools,
         isVisionEnabled: false,
-        temperature: options.temperature
-          ? Number(options.temperature)
-          : undefined,
+        temperature: options.temperature,
         responseMapping: options.responseMapping,
         logs,
+        sessionStore,
       });
     },
     stream: {
       getStreamVariableId: getChatCompletionStreamVarId,
-      run: async ({ credentials: { apiKey }, options, variables }) => {
+      run: async ({
+        credentials: { apiKey },
+        options,
+        variables,
+        sessionStore,
+      }) => {
         if (!apiKey)
-          return { httpError: { status: 400, message: "No API key provided" } };
+          return {
+            error: {
+              description: "No API key provided",
+            },
+          };
         const modelName = options.model?.trim();
         if (!modelName)
-          return { httpError: { status: 400, message: "No model provided" } };
+          return {
+            error: {
+              description: "No model provided",
+            },
+          };
         if (!options.messages)
           return {
-            httpError: { status: 400, message: "No messages provided" },
+            error: {
+              description: "No messages provided",
+            },
           };
 
         return runChatCompletionStream({
@@ -95,10 +135,9 @@ export const createChatCompletion = createAction({
           messages: options.messages,
           tools: options.tools,
           isVisionEnabled: false,
-          temperature: options.temperature
-            ? Number(options.temperature)
-            : undefined,
+          temperature: options.temperature,
           responseMapping: options.responseMapping,
+          sessionStore,
         });
       },
     },

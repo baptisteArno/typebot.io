@@ -278,9 +278,9 @@ export const VariableSearchInput = ({
                     <Button
                       as="li"
                       cursor="pointer"
-                      ref={(el: HTMLButtonElement) =>
-                        (itemsRef.current[idx] = el)
-                      }
+                      ref={(el: HTMLButtonElement | null) => {
+                        if (el) itemsRef.current[idx] = el;
+                      }}
                       role="menuitem"
                       minH="40px"
                       key={idx}

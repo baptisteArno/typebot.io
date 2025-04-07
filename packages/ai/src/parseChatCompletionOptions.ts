@@ -42,20 +42,27 @@ const dialogueMessageItemSchema = option.object({
 });
 
 type Props = {
-  modelFetchId?: string;
-  modelHelperText?: string;
+  models: {
+    helperText?: string;
+  } & (
+    | { type: "fetcher"; id: string }
+    | {
+        type: "static";
+        models: string[];
+      }
+    | { type: "text" }
+  );
 };
 
-export const parseChatCompletionOptions = ({
-  modelFetchId,
-  modelHelperText,
-}: Props) =>
+export const parseChatCompletionOptions = ({ models }: Props) =>
   option.object({
     model: option.string.layout({
-      placeholder: modelFetchId ? "Select a model" : undefined,
-      label: modelFetchId ? undefined : "Model",
-      fetcher: modelFetchId,
-      helperText: modelHelperText,
+      placeholder: "Select a model",
+      label: "Model",
+      allowCustomValue: true,
+      helperText: models.helperText,
+      autoCompleteItems: models.type === "static" ? models.models : undefined,
+      fetcher: models.type === "fetcher" ? models.id : undefined,
     }),
     messages: option
       .array(
@@ -75,7 +82,12 @@ export const parseChatCompletionOptions = ({
       defaultValue: 1,
     }),
     responseMapping: option
-      .saveResponseArray(["Message content", "Total tokens"] as const)
+      .saveResponseArray([
+        "Message content",
+        "Total tokens",
+        "Prompt tokens",
+        "Completion tokens",
+      ] as const)
       .layout({
         accordion: "Save response",
       }),

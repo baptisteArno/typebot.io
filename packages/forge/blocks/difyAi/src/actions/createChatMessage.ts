@@ -1,8 +1,8 @@
 import { formatDataStreamPart } from "@ai-sdk/ui-utils";
 import { createAction, option } from "@typebot.io/forge";
-import { stringifyError } from "@typebot.io/lib/stringifyError";
+import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
 import { isDefined, isEmpty, isNotEmpty } from "@typebot.io/lib/utils";
-import ky, { HTTPError } from "ky";
+import ky from "ky";
 import { auth } from "../auth";
 import { defaultBaseUrl } from "../constants";
 import { deprecatedCreateChatMessageOptions } from "../deprecated";
@@ -171,20 +171,11 @@ export const createChatMessage = createAction({
             }),
           };
         } catch (err) {
-          if (err instanceof HTTPError) {
-            return {
-              httpError: {
-                status: err.response.status,
-                message: await err.response.text(),
-              },
-            };
-          }
-          console.error(err);
           return {
-            httpError: {
-              status: 500,
-              message: stringifyError(err),
-            },
+            error: await parseUnknownError({
+              err,
+              context: "While streaming Dify chat message",
+            }),
           };
         }
       },
@@ -303,19 +294,12 @@ export const createChatMessage = createAction({
             variables.set([{ id: mapping.variableId, value: totalTokens }]);
         });
       } catch (err) {
-        if (err instanceof HTTPError) {
-          return logs.add({
-            status: "error",
-            description: err.message,
-            details: await err.response.text(),
-          });
-        }
-        console.error(err);
-        return logs.add({
-          status: "error",
-          description: "An unknown error occurred",
-          details: stringifyError(err),
-        });
+        return logs.add(
+          await parseUnknownError({
+            err,
+            context: "While creating Dify chat message",
+          }),
+        );
       }
     },
   },

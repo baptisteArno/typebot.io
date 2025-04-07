@@ -15,15 +15,13 @@ const inspectUser = async () => {
       email,
     },
     select: {
+      id: true,
       name: true,
       createdAt: true,
       lastActivityAt: true,
       company: true,
       onboardingCategories: true,
       workspaces: {
-        where: {
-          role: "ADMIN",
-        },
         select: {
           workspace: {
             select: {
@@ -42,9 +40,6 @@ const inspectUser = async () => {
                       email: true,
                     },
                   },
-                },
-                where: {
-                  user: { email: { not: email } },
                 },
               },
               additionalStorageIndex: true,

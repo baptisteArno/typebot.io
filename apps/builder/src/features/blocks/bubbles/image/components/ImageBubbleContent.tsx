@@ -3,7 +3,7 @@ import { VariableTag } from "@/features/graph/components/nodes/block/VariableTag
 import { Box, Image, Text } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import type { ImageBubbleBlock } from "@typebot.io/blocks-bubbles/image/schema";
-import { findUniqueVariable } from "@typebot.io/variables/findUniqueVariableValue";
+import { findUniqueVariable } from "@typebot.io/variables/findUniqueVariable";
 
 type Props = {
   block: ImageBubbleBlock;

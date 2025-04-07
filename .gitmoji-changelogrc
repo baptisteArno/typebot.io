@@ -1,0 +1,94 @@
+{
+  "commitMapping": [
+    {
+      "group": "added",
+      "label": "New features",
+      "emojis": ["sparkles"]
+    },
+    {
+      "group": "changed",
+      "label": "UI/UX Improvements",
+      "emojis": [
+        "zap",
+        "lipstick",
+        "pushpin",
+        "wheelchair",
+        "speech_balloon",
+        "children_crossing",
+        "iphone",
+        "globe_with_meridians"
+      ]
+    },
+    {
+      "group": "content",
+      "label": "Content",
+      "emojis": ["memo", "pencil"]
+    },
+    {
+      "group": "internal",
+      "label": "Internal",
+      "emojis": [
+        "recycle",
+        "wrench",
+        "alien",
+        "truck",
+        "bento",
+        "card_file_box",
+        "building_construction",
+        "fire",
+        "lock"
+      ]
+    },
+    {
+      "group": "fixed",
+      "label": "Fixed",
+      "emojis": [
+        "bug",
+        "ambulance",
+        "apple",
+        "penguin",
+        "checkered_flag",
+        "robot",
+        "green_apple",
+        "green_heart",
+        "pencil2"
+      ]
+    },
+    {
+      "group": "useless",
+      "label": "Useless",
+      "emojis": [
+        "chart_with_upwards_trend",
+        "construction_worker",
+        "white_check_mark",
+        "heavy_plus_sign",
+        "heavy_minus_sign",
+        "loud_sound",
+        "art",
+        "rotating_light",
+        "arrow_down",
+        "arrow_up",
+        "rewind",
+        "mute",
+        "bookmark",
+        "triangular_flag_on_post",
+        "hammer"
+      ]
+    },
+    {
+      "group": "removed",
+      "label": "Removed",
+      "emojis": []
+    },
+    {
+      "group": "security",
+      "label": "Security",
+      "emojis": []
+    },
+    {
+      "group": "misc",
+      "label": "Miscellaneous",
+      "emojis": []
+    }
+  ]
+}

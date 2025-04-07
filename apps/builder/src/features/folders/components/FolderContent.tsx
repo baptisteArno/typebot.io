@@ -2,7 +2,6 @@ import { useTypebots } from "@/features/dashboard/hooks/useTypebots";
 import type { TypebotInDashboard } from "@/features/dashboard/types";
 import type { NodePosition } from "@/features/graph/providers/GraphDndProvider";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { useToast } from "@/hooks/useToast";
 import { trpc } from "@/lib/trpc";
 import {
   Flex,
@@ -14,7 +13,6 @@ import {
   Wrap,
   useEventListener,
 } from "@chakra-ui/react";
-import { WorkspaceRole } from "@typebot.io/prisma/enum";
 import type { Prisma } from "@typebot.io/prisma/types";
 import React, { useEffect, useState } from "react";
 import { useTypebotDnd } from "../TypebotDndProvider";
@@ -25,10 +23,11 @@ import FolderButton, { ButtonSkeleton } from "./FolderButton";
 import TypebotButton from "./TypebotButton";
 import { TypebotCardOverlay } from "./TypebotButtonOverlay";
 
+import { toast } from "@/lib/toast";
 type Props = { folder: Prisma.DashboardFolder | null };
 
 export const FolderContent = ({ folder }: Props) => {
-  const { workspace, currentRole } = useWorkspace();
+  const { workspace, currentUserMode } = useWorkspace();
   const [isCreatingFolder, setIsCreatingFolder] = useState(false);
   const {
     setDraggedTypebot,
@@ -41,8 +40,6 @@ export const FolderContent = ({ folder }: Props) => {
     x: 0,
     y: 0,
   });
-
-  const { showToast } = useToast();
 
   const {
     data: { folders } = {},
@@ -60,7 +57,7 @@ export const FolderContent = ({ folder }: Props) => {
 
   const { mutate: createFolder } = trpc.folders.createFolder.useMutation({
     onError: (error) => {
-      showToast({ description: error.message });
+      toast({ description: error.message });
     },
     onSuccess: () => {
       refetchFolders();
@@ -69,7 +66,7 @@ export const FolderContent = ({ folder }: Props) => {
 
   const { mutate: updateTypebot } = trpc.typebot.updateTypebot.useMutation({
     onError: (error) => {
-      showToast({ description: error.message });
+      toast({ description: error.message });
     },
     onSuccess: () => {
       refetchTypebots();
@@ -84,7 +81,7 @@ export const FolderContent = ({ folder }: Props) => {
     workspaceId: workspace?.id,
     folderId: folder === null ? "root" : folder.id,
     onError: (error) => {
-      showToast({
+      toast({
         description: error.message,
       });
     },
@@ -171,7 +168,7 @@ export const FolderContent = ({ folder }: Props) => {
         <Stack>
           <HStack>
             {folder && <BackButton id={folder.parentFolderId} />}
-            {currentRole !== WorkspaceRole.GUEST && (
+            {currentUserMode !== "guest" && (
               <CreateFolderButton
                 onClick={handleCreateFolder}
                 isLoading={isCreatingFolder || isFolderLoading}
@@ -179,7 +176,7 @@ export const FolderContent = ({ folder }: Props) => {
             )}
           </HStack>
           <Wrap spacing={4}>
-            {currentRole !== WorkspaceRole.GUEST && (
+            {currentUserMode !== "guest" && (
               <CreateBotButton
                 folderId={folder?.id}
                 isLoading={isTypebotLoading}

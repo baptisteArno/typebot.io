@@ -66,7 +66,10 @@ export const EditableEmojiOrImageIcon = ({
                 uploadFileProps={uploadFileProps}
                 defaultUrl={icon ?? ""}
                 onSubmit={onChangeIcon}
-                excludedTabs={["giphy", "unsplash"]}
+                additionalTabs={{
+                  emoji: true,
+                  icon: true,
+                }}
                 onClose={onClose}
                 initialTab="icon"
                 linkWithVariableButton={false}

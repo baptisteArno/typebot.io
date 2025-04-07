@@ -1,12 +1,13 @@
+import type { SessionStore } from "@typebot.io/runtime-session-store";
 import ivm from "isolated-vm";
-import { getOrCreateIsolate } from "./getOrCreateIsolate";
 import { parseGuessedValueType } from "./parseGuessedValueType";
 import type { Variable } from "./schemas";
 
 export const createInlineSyncCodeRunner = ({
   variables,
-}: { variables: Variable[] }) => {
-  const isolate = getOrCreateIsolate();
+  sessionStore,
+}: { variables: Variable[]; sessionStore: SessionStore }) => {
+  const isolate = sessionStore.getOrCreateIsolate();
   const context = isolate.createContextSync();
   const jail = context.global;
   jail.setSync("global", jail.derefInto());
@@ -23,14 +24,17 @@ export const createInlineSyncCodeRunner = ({
     );
 };
 
-export const createHttpReqResponseMappingRunner = (response: unknown) => {
+export const createHttpReqResponseMappingRunner = ({
+  response,
+  sessionStore,
+}: { response: unknown; sessionStore: SessionStore }) => {
   if (
     response === null ||
     typeof response !== "object" ||
     Array.isArray(response)
   )
     return;
-  const isolate = getOrCreateIsolate();
+  const isolate = sessionStore.getOrCreateIsolate();
   const context = isolate.createContextSync();
   const jail = context.global;
   jail.setSync("global", jail.derefInto());

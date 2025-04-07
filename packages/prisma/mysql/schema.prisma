@@ -64,6 +64,7 @@ model User {
   displayedInAppNotifications Json?
   credentials                 UserCredentials[]
   groupTitlesAutoGeneration   Json?
+  preferredLanguage           String?                   @db.VarChar(10)
 }
 
 model ApiToken {
@@ -109,6 +110,9 @@ model Workspace {
   chatsHardLimit                Int?
   // TODO: remove
   settings                      Json?
+  lastActivityAt                DateTime?
+  inactiveFirstEmailSentAt      DateTime?
+  inactiveSecondEmailSentAt     DateTime?
 }
 
 model MemberInWorkspace {
@@ -318,6 +322,7 @@ model Log {
   resultId    String
   status      String
   description String   @db.Text
+  context     String?  @db.Text
   details     String?  @db.Text
   result      Result   @relation(fields: [resultId], references: [id], onDelete: Cascade)
 

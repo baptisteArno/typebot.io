@@ -13,6 +13,7 @@ export const CustomCssSettings = ({ customCss, onCustomCssChange }: Props) => {
       lang="css"
       onChange={onCustomCssChange}
       withVariableButton={false}
+      withLineNumbers={true}
     />
   );
 };

@@ -1,6 +1,6 @@
 import { ChevronLeftIcon, PlusIcon, TrashIcon } from "@/components/icons";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { useToast } from "@/hooks/useToast";
+import { toast } from "@/lib/toast";
 import { trpc } from "@/lib/trpc";
 import {
   Button,
@@ -14,6 +14,7 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
+import { useTranslate } from "@tolgee/react";
 import type React from "react";
 import { useState } from "react";
 import { CreateCustomDomainModal } from "./CreateCustomDomainModal";
@@ -28,19 +29,19 @@ export const CustomDomainsDropdown = ({
   onCustomDomainSelect,
   ...props
 }: Props) => {
+  const { t } = useTranslate();
   const [isDeleting, setIsDeleting] = useState("");
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { workspace } = useWorkspace();
-  const { showToast } = useToast();
+  const { workspace, currentUserMode } = useWorkspace();
   const { data, refetch } = trpc.customDomains.listCustomDomains.useQuery(
     {
       workspaceId: workspace?.id as string,
     },
     {
-      enabled: !!workspace?.id,
+      enabled: !!workspace?.id && currentUserMode !== "guest",
       onError: (error) => {
-        showToast({
-          title: "Error while fetching custom domains",
+        toast({
+          context: "Error while fetching custom domains",
           description: error.message,
         });
       },
@@ -51,8 +52,8 @@ export const CustomDomainsDropdown = ({
       setIsDeleting(name);
     },
     onError: (error) => {
-      showToast({
-        title: "Error while deleting custom domain",
+      toast({
+        context: "Error while deleting custom domain",
         description: error.message,
       });
     },
@@ -100,7 +101,7 @@ export const CustomDomainsDropdown = ({
         {...props}
       >
         <Text noOfLines={1} overflowY="visible" h="20px">
-          {currentCustomDomain ?? "Add my domain"}
+          {currentCustomDomain ?? t("customDomain.add")}
         </Text>
       </MenuButton>
       <MenuList maxW="500px" shadow="md">
@@ -122,7 +123,7 @@ export const CustomDomainsDropdown = ({
               <IconButton
                 as="span"
                 icon={<TrashIcon />}
-                aria-label="Remove domain"
+                aria-label={t("customDomain.remove")}
                 size="xs"
                 onClick={handleDeleteDomainClick(customDomain.name)}
                 isLoading={isDeleting === customDomain.name}
@@ -137,7 +138,7 @@ export const CustomDomainsDropdown = ({
             icon={<PlusIcon />}
             onClick={onOpen}
           >
-            Connect new
+            {t("connectNew")}
           </MenuItem>
         </Stack>
       </MenuList>

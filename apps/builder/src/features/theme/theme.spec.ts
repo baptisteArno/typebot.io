@@ -198,6 +198,7 @@ test.describe
         await page
           .locator('input[placeholder="Paste the image link..."]')
           .fill(guestAvatarUrl);
+        await page.waitForTimeout(2000);
         await page.getByRole("button", { name: "Go" }).click();
         await expect(
           page.getByRole("img", { name: "Bot avatar" }).last(),

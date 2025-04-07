@@ -1,7 +1,7 @@
 import { Card } from "@/components/Card";
 import { TextLink } from "@/components/link";
-import { cn } from "@/lib/utils";
-import clsx from "clsx";
+import { cn } from "@typebot.io/ui/lib/cn";
+import { cx } from "@typebot.io/ui/lib/cva";
 import { AnimatePresence, motion } from "motion/react";
 import { type SVGProps, useEffect, useRef, useState } from "react";
 import { breakpoints } from "../../../constants";
@@ -166,7 +166,7 @@ export const MainFeatures = () => {
             className="min-w-[calc(100%-.75rem)] md:min-w-0 flex relative isolate items-center snap-start cursor-pointer"
           >
             <FeatureCard
-              className={clsx(carouselItemClassName)}
+              className={cx(carouselItemClassName)}
               feature={feature}
               isExpanded={isMobile || feature.title === currentFeature.title}
               onClick={() => expandCardIfDesktop(index)}
@@ -233,7 +233,7 @@ const FeatureCard = ({
         {feature.title.sub}
       </h2>
       <motion.div
-        className={clsx(
+        className={cx(
           "flex flex-col gap-4 overflow-hidden",
           isExpanded ? "pointer-events-auto" : "pointer-events-none",
         )}

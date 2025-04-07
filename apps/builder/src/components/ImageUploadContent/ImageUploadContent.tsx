@@ -9,7 +9,9 @@ import { UnsplashPicker } from "./UnsplashPicker";
 import { UploadButton } from "./UploadButton";
 import { EmojiSearchableList } from "./emoji/EmojiSearchableList";
 
-type Tabs = "link" | "upload" | "giphy" | "emoji" | "unsplash" | "icon";
+type PermanentTabs = "link" | "upload";
+type AdditionalTabs = "giphy" | "emoji" | "unsplash" | "icon";
+type Tabs = PermanentTabs | AdditionalTabs;
 
 type Props = {
   uploadFileProps: FilePathUploadProps | undefined;
@@ -17,25 +19,11 @@ type Props = {
   imageSize?: "small" | "regular" | "thumb";
   initialTab?: Tabs;
   linkWithVariableButton?: boolean;
+  additionalTabs?: Partial<Record<AdditionalTabs, boolean>>;
+  onDelete?: () => void;
   onSubmit: (url: string) => void;
   onClose?: () => void;
-} & (
-  | {
-      includedTabs?: Tabs[];
-    }
-  | {
-      excludedTabs?: Tabs[];
-    }
-);
-
-const defaultDisplayedTabs: Tabs[] = [
-  "link",
-  "upload",
-  "giphy",
-  "emoji",
-  "unsplash",
-  "icon",
-];
+};
 
 export const ImageUploadContent = ({
   uploadFileProps,
@@ -45,20 +33,19 @@ export const ImageUploadContent = ({
   onClose,
   initialTab,
   linkWithVariableButton,
-  ...props
+  additionalTabs,
+  onDelete,
 }: Props) => {
-  const includedTabs =
-    "includedTabs" in props
-      ? (props.includedTabs ?? defaultDisplayedTabs)
-      : defaultDisplayedTabs;
-  const excludedTabs =
-    "excludedTabs" in props ? (props.excludedTabs ?? []) : [];
-  const displayedTabs = defaultDisplayedTabs.filter(
-    (tab) => !excludedTabs.includes(tab) && includedTabs.includes(tab),
-  );
+  const displayedTabs = [
+    "link",
+    "upload",
+    ...Object.keys(additionalTabs ?? {}).filter(
+      (tab) => additionalTabs?.[tab as AdditionalTabs],
+    ),
+  ];
 
   const [currentTab, setCurrentTab] = useState<Tabs>(
-    initialTab ?? displayedTabs[0],
+    initialTab ?? (displayedTabs[0] as Tabs),
   );
 
   const handleSubmit = (url: string) => {
@@ -132,6 +119,7 @@ export const ImageUploadContent = ({
         onSubmit={handleSubmit}
         defaultUrl={defaultUrl}
         linkWithVariableButton={linkWithVariableButton}
+        onDelete={onDelete}
       />
     </Stack>
   );
@@ -144,6 +132,7 @@ const BodyContent = ({
   imageSize,
   linkWithVariableButton,
   onSubmit,
+  onDelete,
 }: {
   uploadFileProps?: FilePathUploadProps;
   tab: Tabs;
@@ -151,6 +140,7 @@ const BodyContent = ({
   imageSize: "small" | "regular" | "thumb";
   linkWithVariableButton?: boolean;
   onSubmit: (url: string) => void;
+  onDelete?: () => void;
 }) => {
   switch (tab) {
     case "upload": {
@@ -168,6 +158,7 @@ const BodyContent = ({
           defaultUrl={defaultUrl}
           onNewUrl={onSubmit}
           withVariableButton={linkWithVariableButton}
+          onDelete={onDelete}
         />
       );
     case "giphy":
@@ -207,7 +198,12 @@ const EmbedLinkContent = ({
   defaultUrl,
   onNewUrl,
   withVariableButton,
-}: ContentProps & { defaultUrl?: string; withVariableButton?: boolean }) => {
+  onDelete,
+}: ContentProps & {
+  defaultUrl?: string;
+  withVariableButton?: boolean;
+  onDelete?: () => void;
+}) => {
   const { t } = useTranslate();
 
   return (
@@ -217,6 +213,11 @@ const EmbedLinkContent = ({
         onChange={onNewUrl}
         defaultValue={defaultUrl ?? ""}
         withVariableButton={withVariableButton}
+        onKeyDown={(e) => {
+          if (e.key === "Backspace" && e.currentTarget.value === "") {
+            onDelete?.();
+          }
+        }}
       />
     </Stack>
   );

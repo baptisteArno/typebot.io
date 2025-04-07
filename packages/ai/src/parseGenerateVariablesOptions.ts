@@ -53,28 +53,27 @@ export const variablesToExtractSchema = option
   });
 
 type Props = {
-  modelFetch: string | readonly [string, ...string[]];
-  modelHelperText?: string;
+  models: {
+    helperText?: string;
+  } & (
+    | { type: "fetcher"; id: string }
+    | {
+        type: "static";
+        models: string[];
+      }
+  );
 };
 
-export const parseGenerateVariablesOptions = ({
-  modelFetch,
-  modelHelperText,
-}: Props) =>
+export const parseGenerateVariablesOptions = ({ models }: Props) =>
   option.object({
-    model:
-      typeof modelFetch === "string"
-        ? option.string.layout({
-            placeholder: "Select a model",
-            label: "Model",
-            fetcher: modelFetch,
-            helperText: modelHelperText,
-          })
-        : option.enum(modelFetch).layout({
-            placeholder: "Select a model",
-            label: "Model",
-            helperText: modelHelperText,
-          }),
+    model: option.string.layout({
+      placeholder: "Select a model",
+      label: "Model",
+      allowCustomValue: true,
+      helperText: models.helperText,
+      autoCompleteItems: models.type === "static" ? models.models : undefined,
+      fetcher: models.type === "fetcher" ? models.id : undefined,
+    }),
     prompt: option.string.layout({
       label: "Prompt",
       placeholder: "Type your text here",

@@ -1,4 +1,5 @@
 import { authenticateUser } from "@/helpers/authenticateUser";
+import * as Sentry from "@sentry/nextjs";
 import { methodNotAllowed } from "@typebot.io/lib/api/utils";
 import prisma from "@typebot.io/prisma";
 import type { ResultWithAnswers } from "@typebot.io/results/schemas/results";

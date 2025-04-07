@@ -85,7 +85,9 @@ export const BackgroundContent = ({
                 }}
                 defaultUrl={background?.content}
                 onSubmit={handleContentChange}
-                excludedTabs={["giphy", "icon"]}
+                additionalTabs={{
+                  unsplash: true,
+                }}
               />
             </PopoverContent>
           </Portal>

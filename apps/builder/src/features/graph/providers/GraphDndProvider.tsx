@@ -1,4 +1,3 @@
-import { useEventListener } from "@/hooks/useEventListener";
 import type { ItemV6 } from "@typebot.io/blocks-core/schemas/items/schema";
 import type {
   BlockV6,
@@ -6,6 +5,7 @@ import type {
 } from "@typebot.io/blocks-core/schemas/schema";
 import type { AbTestBlock } from "@typebot.io/blocks-logic/abTest/schema";
 import type { LogicBlockType } from "@typebot.io/blocks-logic/constants";
+import type { TDraggableEvent } from "@typebot.io/events/schemas";
 import {
   type Dispatch,
   type ReactNode,
@@ -47,7 +47,10 @@ const graphDndContext = createContext<{
   setMouseOverGroup: (node: NodeElement | undefined) => void;
   mouseOverBlock?: NodeElement;
   setMouseOverBlock: (node: NodeElement | undefined) => void;
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  draggedEventType?: TDraggableEvent["type"];
+  setDraggedEventType: Dispatch<
+    SetStateAction<TDraggableEvent["type"] | undefined>
+  >;
   //@ts-ignore
 }>({});
 
@@ -61,24 +64,11 @@ export const GraphDndProvider = ({ children }: { children: ReactNode }) => {
     BlockV6["type"] | undefined
   >();
   const [draggedItem, setDraggedItem] = useState<DraggableItem | undefined>();
-  const [mouseOverGroup, _setMouseOverGroup] = useState<NodeElement>();
-  const [mouseOverBlock, _setMouseOverBlock] = useState<NodeElement>();
-
-  const setMouseOverGroup = useCallback(
-    (node: NodeElement | undefined) => {
-      if (node && !draggedBlock && !draggedBlockType) return;
-      _setMouseOverGroup(node);
-    },
-    [draggedBlock, draggedBlockType],
-  );
-
-  const setMouseOverBlock = useCallback(
-    (node: NodeElement | undefined) => {
-      if (node && !draggedItem) return;
-      _setMouseOverBlock(node);
-    },
-    [draggedItem],
-  );
+  const [draggedEventType, setDraggedEventType] = useState<
+    TDraggableEvent["type"] | undefined
+  >();
+  const [mouseOverGroup, setMouseOverGroup] = useState<NodeElement>();
+  const [mouseOverBlock, setMouseOverBlock] = useState<NodeElement>();
 
   return (
     <graphDndContext.Provider
@@ -93,6 +83,8 @@ export const GraphDndProvider = ({ children }: { children: ReactNode }) => {
         setMouseOverGroup,
         mouseOverBlock,
         setMouseOverBlock,
+        draggedEventType,
+        setDraggedEventType,
       }}
     >
       {children}
@@ -118,24 +110,37 @@ export const useDragDistance = ({
     relative: Coordinates;
   }>();
 
-  const handleMouseUp = () => {
-    if (mouseDownPosition) mouseDownPosition.current = undefined;
-  };
-  useEventListener("mouseup", handleMouseUp, undefined, undefined, deps);
+  const onGlobalMouseUp = useCallback(() => {
+    if (mouseDownPosition.current) mouseDownPosition.current = undefined;
+  }, []);
 
-  const handleMouseDown = (e: MouseEvent) => {
-    if (isDisabled || !ref.current) return;
-    e.stopPropagation();
-    const { top, left } = ref.current.getBoundingClientRect();
-    mouseDownPosition.current = {
-      absolute: { x: e.clientX, y: e.clientY },
-      relative: {
-        x: e.clientX - left,
-        y: e.clientY - top,
-      },
+  useEffect(() => {
+    window.addEventListener("mouseup", onGlobalMouseUp);
+    return () => {
+      window.removeEventListener("mouseup", onGlobalMouseUp);
     };
-  };
-  useEventListener("mousedown", handleMouseDown, ref, undefined, deps);
+  }, [onGlobalMouseUp]);
+
+  useEffect(() => {
+    const onCurrentElementMouseDown = (e: MouseEvent) => {
+      if (isDisabled || !ref.current) return;
+      e.stopPropagation();
+      const { top, left } = ref.current.getBoundingClientRect();
+      mouseDownPosition.current = {
+        absolute: { x: e.clientX, y: e.clientY },
+        relative: {
+          x: e.clientX - left,
+          y: e.clientY - top,
+        },
+      };
+    };
+
+    ref.current?.addEventListener("mousedown", onCurrentElementMouseDown);
+
+    return () => {
+      ref.current?.removeEventListener("mousedown", onCurrentElementMouseDown);
+    };
+  }, [isDisabled, ...deps]);
 
   useEffect(() => {
     let triggered = false;

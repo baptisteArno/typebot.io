@@ -1,8 +1,8 @@
-import { Button } from "@/components/Button";
 import { Progress } from "@/components/Progress";
+import { TypebotLogoFull } from "@/components/TypebotLogo";
 import { ButtonLink } from "@/components/link";
 import { enterpriseLeadTypebotUrl, registerUrl } from "@/constants";
-import { cn } from "@/lib/utils";
+import { cn } from "@typebot.io/ui/lib/cn";
 import { useInView } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import marketingBotSrc from "./assets/marketing-bot.png";
@@ -106,13 +106,14 @@ export const UseCases = ({ className }: { className?: string }) => {
 
   return (
     <div
-      className={cn(
-        "flex flex-col gap-16 md:gap-20 px-4 md:pt-10 overflow-hidden",
-        className,
-      )}
+      className={cn("flex flex-col gap-16 md:gap-20 px-4 md:pt-10", className)}
       ref={containerRef}
     >
-      <div className="flex flex-col items-center gap-8 md:12">
+      <div className="flex flex-col items-center gap-20">
+        <TypebotLogoFull width="120px" />
+        <Cta />
+      </div>
+      <div className="flex flex-col items-center gap-4 md:12">
         <div className="flex items-end gap-4 md:gap-12">
           {useCases.map((useCase, index) => (
             <UsecaseTitle
@@ -140,7 +141,7 @@ export const UseCases = ({ className }: { className?: string }) => {
                 <img
                   src={useCase.images.builder.src}
                   alt={useCase.images.builder.alt}
-                  className="w-auto md:max-h-[60vh]"
+                  className="w-auto md:max-h-[85vh]"
                   width="3456px"
                   height="2158px"
                 />
@@ -149,7 +150,7 @@ export const UseCases = ({ className }: { className?: string }) => {
                 <img
                   src={useCase.images.bot.src}
                   alt={useCase.images.bot.alt}
-                  className="max-w-20 md:max-w-64 p-[2px] md:p-2"
+                  className="w-auto max-h-none max-w-20 md:max-w-64 2xl:max-w-none 2xl:max-h-[65vh] p-[2px] md:p-2"
                   width="1179px"
                   height="2556px"
                 />
@@ -158,7 +159,6 @@ export const UseCases = ({ className }: { className?: string }) => {
           ))}
         </div>
       </div>
-      <Cta />
     </div>
   );
 };
@@ -177,7 +177,7 @@ const UsecaseTitle = ({
     onClick={onClick}
   >
     <h3
-      className="text-lg md:text-2xl font-medium transition-opacity duration-200 ease-out text-center"
+      className="text-lg font-medium transition-opacity duration-200 ease-out text-center"
       style={{ opacity: progressValue ? 1 : 0.5 }}
     >
       {children}
@@ -188,7 +188,7 @@ const UsecaseTitle = ({
 
 export const Cta = () => (
   <div className="flex flex-col gap-6 items-center">
-    <p className="text-gray-11 text-balance max-w-4xl md:text-center">
+    <p className="text-gray-11 text-balance max-w-4xl md:text-center text-lg">
       Picture{" "}
       <span className="font-medium">
         a bot that goes beyond answering questions

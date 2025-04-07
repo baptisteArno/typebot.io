@@ -11,13 +11,12 @@ const extractBaseUrl = (val: string | undefined) => {
 
 export const auth = {
   type: "encryptedCredentials",
-  name: "Dify.AI assistant",
+  name: "Dify.AI account",
   schema: option.object({
     apiEndpoint: option.string
       .layout({
         label: "API Endpoint",
         isRequired: true,
-        helperText: "URI where the Service API is hosted.",
         withVariableButton: false,
         defaultValue: defaultBaseUrl,
       })
@@ -25,11 +24,16 @@ export const auth = {
       .transform(extractBaseUrl),
     apiKey: option.string.layout({
       label: "App API key",
-      isRequired: true,
-      helperText: "API Secret Key for your Dify App.",
       inputType: "password",
+      placeholder: "app-...",
       withVariableButton: false,
       isDebounceDisabled: true,
+    }),
+    knowledgeApiKey: option.string.layout({
+      label: "Knowledge API key",
+      inputType: "password",
+      placeholder: "dataset-...",
+      withVariableButton: false,
     }),
   }),
 } satisfies AuthDefinition;

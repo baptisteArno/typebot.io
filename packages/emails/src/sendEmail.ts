@@ -3,7 +3,7 @@ import type { SendMailOptions } from "nodemailer";
 import { createTransport } from "nodemailer";
 
 export const sendEmail = (
-  props: Pick<SendMailOptions, "to" | "html" | "subject">,
+  props: Pick<SendMailOptions, "to" | "html" | "subject" | "replyTo">,
 ) => {
   const transporter = createTransport({
     host: env.SMTP_HOST,

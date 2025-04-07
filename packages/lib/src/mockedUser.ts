@@ -1,6 +1,6 @@
-import type { Prisma } from "@typebot.io/prisma/types";
+import type { User } from "@typebot.io/schemas/features/user/schema";
 
-export const mockedUser: Prisma.User = {
+export const mockedUser: User = {
   id: "userId",
   name: "John Doe",
   email: "user@email.com",
@@ -18,4 +18,5 @@ export const mockedUser: Prisma.User = {
   },
   referral: null,
   groupTitlesAutoGeneration: null,
+  preferredLanguage: null,
 };

@@ -2,6 +2,7 @@ import type { BubbleProps } from "./features/bubble/components/Bubble";
 import { close } from "./features/commands/utils/close";
 import { hidePreviewMessage } from "./features/commands/utils/hidePreviewMessage";
 import { open } from "./features/commands/utils/open";
+import { sendCommand } from "./features/commands/utils/sendCommand";
 import { setInputValue } from "./features/commands/utils/setInputValue";
 import { setPrefilledVariables } from "./features/commands/utils/setPrefilledVariables";
 import { showPreviewMessage } from "./features/commands/utils/showPreviewMessage";
@@ -43,6 +44,7 @@ type Typebot = {
   toggle: typeof toggle;
   setInputValue: typeof setInputValue;
   unmount: typeof unmount;
+  sendCommand: typeof sendCommand;
 };
 
 declare const window:
@@ -63,6 +65,7 @@ export const parseTypebot = () => ({
   toggle,
   setInputValue,
   unmount,
+  sendCommand,
 });
 
 export const injectTypebotInWindow = (typebot: Typebot) => {

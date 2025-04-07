@@ -719,3 +719,17 @@ export const FileCurlyIcon = (props: IconProps) => (
     <path d="M14 18a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1 1 1 0 0 1-1-1v-1a1 1 0 0 0-1-1" />
   </Icon>
 );
+
+export const CommandIcon = (props: IconProps) => (
+  <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
+    <path d="M15 6v12a3 3 0 1 0 3-3H6a3 3 0 1 0 3 3V6a3 3 0 1 0-3 3h12a3 3 0 1 0-3-3" />
+  </Icon>
+);
+
+export const GalleryIcon = (props: IconProps) => (
+  <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
+    <path d="M2 3v18" />
+    <rect width="12" height="18" x="6" y="3" rx="2" />
+    <path d="M22 3v18" />
+  </Icon>
+);

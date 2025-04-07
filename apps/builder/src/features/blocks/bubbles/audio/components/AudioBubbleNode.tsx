@@ -4,7 +4,7 @@ import { Text, chakra } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import type { AudioBubbleBlock } from "@typebot.io/blocks-bubbles/audio/schema";
 import { isDefined } from "@typebot.io/lib/utils";
-import { findUniqueVariable } from "@typebot.io/variables/findUniqueVariableValue";
+import { findUniqueVariable } from "@typebot.io/variables/findUniqueVariable";
 
 type Props = {
   url: NonNullable<AudioBubbleBlock["content"]>["url"];

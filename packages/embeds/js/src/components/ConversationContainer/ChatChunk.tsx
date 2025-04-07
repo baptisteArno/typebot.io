@@ -3,6 +3,8 @@ import type {
   ChatChunk as ChatChunkType,
   InputSubmitContent,
 } from "@/types";
+import { type AvatarHistory, getAvatarAtIndex } from "@/utils/avatarHistory";
+import { hiddenInput } from "@/utils/hiddenInputSignal";
 import { isMobile } from "@/utils/isMobileSignal";
 import type { ContinueChatResponse } from "@typebot.io/bot-engine/schemas/api";
 import { defaultSettings } from "@typebot.io/settings/constants";
@@ -21,6 +23,7 @@ import { AvatarSideContainer } from "./AvatarSideContainer";
 type Props = Pick<ContinueChatResponse, "messages" | "input"> & {
   theme: Theme;
   settings: Settings;
+  avatarsHistory: AvatarHistory[];
   index: number;
   context: BotContext;
   hasError: boolean;
@@ -29,7 +32,13 @@ type Props = Pick<ContinueChatResponse, "messages" | "input"> & {
   isTransitionDisabled?: boolean;
   isOngoingLastChunk: boolean;
   onNewBubbleDisplayed: (blockId: string) => Promise<void>;
-  onScrollToBottom: (ref?: HTMLDivElement, offset?: number) => void;
+  onScrollToBottom: ({
+    lastElement,
+    offset,
+  }: {
+    lastElement?: HTMLDivElement;
+    offset?: number;
+  }) => void;
   onSubmit: (answer?: InputSubmitContent) => void;
   onSkip: () => void;
   onAllBubblesDisplayed: () => void;
@@ -47,7 +56,7 @@ export const ChatChunk = (props: Props) => {
     if (props.messages.length === 0) {
       props.onAllBubblesDisplayed();
     }
-    props.onScrollToBottom(inputRef, 50);
+    props.onScrollToBottom({ lastElement: inputRef, offset: 50 });
   });
 
   const displayNextMessage = async (bubbleRef?: HTMLDivElement) => {
@@ -71,12 +80,18 @@ export const ChatChunk = (props: Props) => {
         ? displayedMessageIndex()
         : displayedMessageIndex() + 1,
     );
-    props.onScrollToBottom(bubbleRef);
+    props.onScrollToBottom({ lastElement: bubbleRef });
     if (displayedMessageIndex() === props.messages.length) {
       setLastBubble(bubbleRef);
       props.onAllBubblesDisplayed();
     }
   };
+
+  const hostAvatarSrc = getAvatarAtIndex({
+    avatarHistory: props.avatarsHistory,
+    currentIndex: props.index,
+    currentRole: "host",
+  });
 
   return (
     <div class="flex flex-col w-full min-w-0 gap-2 typebot-chat-chunk">
@@ -93,6 +108,7 @@ export const ChatChunk = (props: Props) => {
               hideAvatar={props.hideAvatar}
               isTransitionDisabled={props.isTransitionDisabled}
               theme={props.theme}
+              avatarSrc={hostAvatarSrc}
             />
           </Show>
 
@@ -130,24 +146,29 @@ export const ChatChunk = (props: Props) => {
           </div>
         </div>
       </Show>
-      {props.input && displayedMessageIndex() === props.messages.length && (
-        <InputChatBlock
-          ref={inputRef}
-          block={props.input}
-          chunkIndex={props.index}
-          theme={props.theme}
-          context={props.context}
-          isInputPrefillEnabled={
-            props.settings.general?.isInputPrefillEnabled ??
-            defaultSettings.general.isInputPrefillEnabled
-          }
-          isOngoingLastChunk={props.isOngoingLastChunk}
-          hasError={props.hasError}
-          onTransitionEnd={() => props.onScrollToBottom(lastBubble())}
-          onSubmit={props.onSubmit}
-          onSkip={props.onSkip}
-        />
-      )}
+      {props.input &&
+        displayedMessageIndex() === props.messages.length &&
+        !hiddenInput()[`${props.input.id}-${props.index}`] && (
+          <InputChatBlock
+            ref={inputRef}
+            block={props.input}
+            chunkIndex={props.index}
+            theme={props.theme}
+            avatarHistory={props.avatarsHistory}
+            context={props.context}
+            isInputPrefillEnabled={
+              props.settings.general?.isInputPrefillEnabled ??
+              defaultSettings.general.isInputPrefillEnabled
+            }
+            isOngoingLastChunk={props.isOngoingLastChunk}
+            hasError={props.hasError}
+            onTransitionEnd={() =>
+              props.onScrollToBottom({ lastElement: lastBubble() })
+            }
+            onSubmit={props.onSubmit}
+            onSkip={props.onSkip}
+          />
+        )}
       <Show when={props.streamingMessageId} keyed>
         {(streamingMessageId) => (
           <div class={"flex" + (isMobile() ? " gap-1" : " gap-2")}>
@@ -160,6 +181,7 @@ export const ChatChunk = (props: Props) => {
               <AvatarSideContainer
                 hideAvatar={props.hideAvatar}
                 theme={props.theme}
+                avatarSrc={hostAvatarSrc}
               />
             </Show>
 

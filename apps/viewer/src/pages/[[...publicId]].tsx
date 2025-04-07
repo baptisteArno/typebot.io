@@ -9,15 +9,18 @@ import {
   TypebotPageV3,
   type TypebotV3PageProps,
 } from "@/components/TypebotPageV3";
+import * as Sentry from "@sentry/nextjs";
 import { env } from "@typebot.io/env";
 import { isNotDefined } from "@typebot.io/lib/utils";
 import prisma from "@typebot.io/prisma";
 import { isTypebotVersionAtLeastV6 } from "@typebot.io/schemas/helpers/isTypebotVersionAtLeastV6";
 import { defaultSettings } from "@typebot.io/settings/constants";
+import { settingsSchema } from "@typebot.io/settings/schemas";
 import {
   defaultBackgroundColor,
   defaultBackgroundType,
 } from "@typebot.io/theme/constants";
+import { themeSchema } from "@typebot.io/theme/schemas";
 import type { PublicTypebot } from "@typebot.io/typebot/schemas/publicTypebot";
 import type { GetServerSideProps, GetServerSidePropsContext } from "next";
 
@@ -82,6 +85,11 @@ export const getServerSideProps: GetServerSideProps = async (
       ? await getTypebotFromPublicId(context.query.publicId?.toString())
       : await getTypebotFromCustomDomain(customDomain);
 
+    if (!publishedTypebot || publishedTypebot?.isSuspended)
+      return {
+        notFound: true,
+      };
+
     return {
       props: {
         publishedTypebot,
@@ -102,7 +110,7 @@ export const getServerSideProps: GetServerSideProps = async (
 };
 
 const getTypebotFromPublicId = async (publicId?: string) => {
-  const publishedTypebot = (await prisma.publicTypebot.findFirst({
+  const publishedTypebot = await prisma.publicTypebot.findFirst({
     where: { typebot: { publicId: publicId ?? "" } },
     select: {
       variables: true,
@@ -119,43 +127,48 @@ const getTypebotFromPublicId = async (publicId?: string) => {
           isClosed: true,
           isArchived: true,
           publicId: true,
+          workspace: {
+            select: {
+              isSuspended: true,
+            },
+          },
         },
       },
     },
-  })) as TypebotPageProps["publishedTypebot"] | null;
+  });
   if (isNotDefined(publishedTypebot)) return null;
+  const theme = themeSchema.parse(publishedTypebot.theme);
+  const settings = settingsSchema.parse(publishedTypebot.settings);
+  if (!publishedTypebot.version) {
+    Sentry.setTag("publicId", publishedTypebot.typebot.publicId);
+    Sentry.captureMessage("Is using TypebotPageV2");
+  }
   return publishedTypebot.version
-    ? ({
+    ? {
         name: publishedTypebot.typebot.name,
         publicId: publishedTypebot.typebot.publicId ?? null,
-        background: publishedTypebot.theme.general?.background ?? {
+        background: theme.general?.background ?? {
           type: defaultBackgroundType,
           content: isTypebotVersionAtLeastV6(publishedTypebot.version)
             ? defaultBackgroundColor[publishedTypebot.version]
             : defaultBackgroundColor["6"],
         },
         isHideQueryParamsEnabled:
-          publishedTypebot.settings.general?.isHideQueryParamsEnabled ??
+          settings.general?.isHideQueryParamsEnabled ??
           defaultSettings.general.isHideQueryParamsEnabled,
-        metadata: publishedTypebot.settings.metadata ?? {},
-        font: publishedTypebot.theme.general?.font ?? null,
+        metadata: settings.metadata ?? {},
+        font: theme.general?.font ?? null,
         version: publishedTypebot.version,
-      } satisfies Pick<
-        TypebotV3PageProps,
-        | "name"
-        | "publicId"
-        | "background"
-        | "isHideQueryParamsEnabled"
-        | "metadata"
-        | "font"
-      > & {
-        version: PublicTypebot["version"];
-      })
-    : publishedTypebot;
+        isSuspended: publishedTypebot.typebot.workspace.isSuspended,
+      }
+    : {
+        ...publishedTypebot,
+        isSuspended: publishedTypebot.typebot.workspace.isSuspended,
+      };
 };
 
 const getTypebotFromCustomDomain = async (customDomain: string) => {
-  const publishedTypebot = (await prisma.publicTypebot.findFirst({
+  const publishedTypebot = await prisma.publicTypebot.findFirst({
     where: { typebot: { customDomain } },
     select: {
       variables: true,
@@ -172,39 +185,44 @@ const getTypebotFromCustomDomain = async (customDomain: string) => {
           isClosed: true,
           isArchived: true,
           publicId: true,
+          workspace: {
+            select: {
+              isSuspended: true,
+            },
+          },
         },
       },
     },
-  })) as TypebotPageProps["publishedTypebot"] | null;
+  });
   if (isNotDefined(publishedTypebot)) return null;
+  const theme = themeSchema.parse(publishedTypebot.theme);
+  const settings = settingsSchema.parse(publishedTypebot.settings);
+  if (!publishedTypebot.version) {
+    Sentry.setTag("publicId", publishedTypebot.typebot.publicId);
+    Sentry.captureMessage("Is using TypebotPageV2");
+  }
   return publishedTypebot.version
-    ? ({
+    ? {
         name: publishedTypebot.typebot.name,
         publicId: publishedTypebot.typebot.publicId ?? null,
-        background: publishedTypebot.theme.general?.background ?? {
+        background: theme.general?.background ?? {
           type: defaultBackgroundType,
           content: isTypebotVersionAtLeastV6(publishedTypebot.version)
             ? defaultBackgroundColor[publishedTypebot.version]
             : defaultBackgroundColor["6"],
         },
         isHideQueryParamsEnabled:
-          publishedTypebot.settings.general?.isHideQueryParamsEnabled ??
+          settings.general?.isHideQueryParamsEnabled ??
           defaultSettings.general.isHideQueryParamsEnabled,
-        metadata: publishedTypebot.settings.metadata ?? {},
-        font: publishedTypebot.theme.general?.font ?? null,
+        metadata: settings.metadata ?? {},
+        font: theme.general?.font ?? null,
         version: publishedTypebot.version,
-      } satisfies Pick<
-        TypebotV3PageProps,
-        | "name"
-        | "publicId"
-        | "background"
-        | "isHideQueryParamsEnabled"
-        | "metadata"
-        | "font"
-      > & {
-        version: PublicTypebot["version"];
-      })
-    : publishedTypebot;
+        isSuspended: publishedTypebot.typebot.workspace.isSuspended,
+      }
+    : {
+        ...publishedTypebot,
+        isSuspended: publishedTypebot.typebot.workspace.isSuspended,
+      };
 };
 
 const getHost = (

@@ -9,8 +9,8 @@ import {
 } from "@/utils/storage";
 import { EnvironmentProvider } from "@ark-ui/solid";
 import { isDefined, isNotDefined } from "@typebot.io/lib/utils";
+import { cx } from "@typebot.io/ui/lib/cva";
 import { zendeskWebWidgetOpenedMessage } from "@typebot.io/zendesk-block/constants";
-import clsx from "clsx";
 import {
   Show,
   createEffect,
@@ -188,7 +188,7 @@ export const Bubble = (props: BubbleProps) => {
         <style>{styles}</style>
         <div ref={progressBarContainerRef} />
         <div
-          class={clsx(
+          class={cx(
             bubbleProps.theme?.position !== "static"
               ? bubbleProps.theme?.placement === "left"
                 ? "z-[424242] fixed bottom-5 left-5"
@@ -233,7 +233,7 @@ export const Bubble = (props: BubbleProps) => {
               "background-color":
                 bubbleProps.theme?.chatWindow?.backgroundColor,
             }}
-            class={clsx(
+            class={cx(
               "absolute rounded-lg w-screen bottom-[calc(100%+12px)]",
               isBotOpened() ? "opacity-1" : "opacity-0 pointer-events-none",
               bubbleProps.theme?.placement === "left"

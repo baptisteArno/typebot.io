@@ -1,5 +1,7 @@
+import { safeParseFloat } from "@typebot.io/lib/safeParseFloat";
 import type { Prisma } from "@typebot.io/prisma/types";
 import { z } from "@typebot.io/zod";
+import { isSingleVariable } from "./isSingleVariable";
 
 export const listVariableValue = z.array(z.string().nullable());
 
@@ -36,6 +38,20 @@ export const variableStringSchema = z.custom<`{{${string}}}`>((val) =>
   /^{{.+}}$/g.test(val as string),
 );
 export type VariableString = z.infer<typeof variableStringSchema>;
+
+export const singleVariableOrNumberSchema = z
+  .string()
+  .or(z.number())
+  .transform((value) => {
+    if (typeof value === "string") {
+      if (isSingleVariable(value)) return value;
+      return safeParseFloat(value);
+    }
+    return value;
+  })
+  .openapi({
+    effectType: "input",
+  });
 
 export const setVariableHistoryItemSchema = z.object({
   resultId: z.string(),

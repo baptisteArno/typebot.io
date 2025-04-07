@@ -5,25 +5,15 @@ import { createAction } from "@typebot.io/forge";
 import { isDefined } from "@typebot.io/lib/utils";
 import { auth } from "../auth";
 import { baseOptions } from "../baseOptions";
-import { fetchGPTModels } from "../helpers/fetchModels";
+import { chatModels, reasoningModels } from "../constants";
 
 export const generateVariables = createAction({
   name: "Generate variables",
   auth,
   baseOptions,
-  options: parseGenerateVariablesOptions({ modelFetch: "fetchModels" }),
-  fetchers: [
-    {
-      id: "fetchModels",
-      dependencies: ["baseUrl", "apiVersion"],
-      fetch: ({ credentials, options }) =>
-        fetchGPTModels({
-          apiKey: credentials?.apiKey,
-          baseUrl: options.baseUrl,
-          apiVersion: options.apiVersion,
-        }),
-    },
-  ],
+  options: parseGenerateVariablesOptions({
+    models: { type: "static", models: chatModels.concat(reasoningModels) },
+  }),
   aiGenerate: {
     fetcherId: "fetchModels",
     getModel: ({ credentials, model }) =>

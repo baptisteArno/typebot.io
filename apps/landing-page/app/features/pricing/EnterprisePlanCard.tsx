@@ -17,14 +17,14 @@ export const EnterprisePlanCard = () => (
         </p>
       </div>
       <ul className="flex flex-col gap-3 flex-shrink-0">
+        <PerkListItem>Custom chats limit & seats</PerkListItem>
+        <PerkListItem>Contract with SLAs</PerkListItem>
         <PerkListItem>
-          Yearly contract with dedicated support representative
-        </PerkListItem>
-        <PerkListItem>
-          Custom chats limit & seats for all your team
+          24/7 support with a designated representative
         </PerkListItem>
         <PerkListItem>SSO & Granular access rights</PerkListItem>
-        <PerkListItem>Custom features development (add-on)</PerkListItem>
+        <PerkListItem>Custom Security Questionnaires</PerkListItem>
+        <PerkListItem>Custom Features Development (add-on)</PerkListItem>
       </ul>
     </div>
     <PricingCardFooter>

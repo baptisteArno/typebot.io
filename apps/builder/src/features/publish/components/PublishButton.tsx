@@ -11,7 +11,7 @@ import { isFreePlan } from "@/features/billing/helpers/isFreePlan";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { useTimeSince } from "@/hooks/useTimeSince";
-import { useToast } from "@/hooks/useToast";
+import { toast } from "@/lib/toast";
 import { trpc } from "@/lib/trpc";
 import {
   Button,
@@ -32,7 +32,6 @@ import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
 import { isNotDefined } from "@typebot.io/lib/utils";
 import { useRouter } from "next/router";
 import { parseDefaultPublicId } from "../helpers/parseDefaultPublicId";
-
 type Props = ButtonProps & {
   isMoreMenuDisabled?: boolean;
 };
@@ -58,23 +57,21 @@ export const PublishButton = ({
     updateTypebot,
     save,
     publishedTypebotVersion,
+    currentUserMode,
   } = useTypebot();
   const timeSinceLastPublish = useTimeSince(
     publishedTypebot?.updatedAt.toString(),
   );
-  const { showToast } = useToast();
 
   const {
-    typebot: {
-      getPublishedTypebot: { refetch: refetchPublishedTypebot },
-    },
-  } = trpc.useContext();
+    typebot: { getPublishedTypebot },
+  } = trpc.useUtils();
 
   const { mutate: publishTypebotMutate, isLoading: isPublishing } =
     trpc.typebot.publishTypebot.useMutation({
       onError: (error) => {
-        showToast({
-          title: t("publish.error.label"),
+        toast({
+          context: t("publish.error.label"),
           description: error.message,
         });
         if (error.data?.httpStatus === 403) {
@@ -84,9 +81,8 @@ export const PublishButton = ({
         }
       },
       onSuccess: () => {
-        refetchPublishedTypebot({
-          typebotId: typebot?.id as string,
-        });
+        if (!typebot?.id || currentUserMode === "guest") return;
+        getPublishedTypebot.invalidate();
         if (!publishedTypebot && !pathname.endsWith("share"))
           push(`/typebots/${query.typebotId}/share`);
       },
@@ -95,12 +91,12 @@ export const PublishButton = ({
   const { mutate: unpublishTypebotMutate, isLoading: isUnpublishing } =
     trpc.typebot.unpublishTypebot.useMutation({
       onError: (error) =>
-        showToast({
-          title: t("editor.header.unpublishTypebot.error.label"),
+        toast({
+          context: t("editor.header.unpublishTypebot.error.label"),
           description: error.message,
         }),
       onSuccess: () => {
-        refetchPublishedTypebot();
+        getPublishedTypebot.invalidate();
       },
     });
 

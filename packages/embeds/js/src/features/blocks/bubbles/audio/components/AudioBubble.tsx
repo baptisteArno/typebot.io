@@ -2,7 +2,7 @@ import { TypingBubble } from "@/components/TypingBubble";
 import { isMobile } from "@/utils/isMobileSignal";
 import { defaultAudioBubbleContent } from "@typebot.io/blocks-bubbles/audio/constants";
 import type { AudioBubbleBlock } from "@typebot.io/blocks-bubbles/audio/schema";
-import clsx from "clsx";
+import { cx } from "@typebot.io/ui/lib/cva";
 import { createSignal, onCleanup, onMount } from "solid-js";
 
 type Props = {
@@ -38,7 +38,7 @@ export const AudioBubble = (props: Props) => {
 
   return (
     <div
-      class={clsx(
+      class={cx(
         "flex flex-col",
         props.onTransitionEnd ? "animate-fade-in" : undefined,
       )}

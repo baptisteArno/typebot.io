@@ -53,9 +53,19 @@ const nextConfig = {
   experimental: {
     outputFileTracingRoot: join(__dirname, "../../"),
     serverComponentsExternalPackages: ["isolated-vm"],
+    instrumentationHook: true,
   },
   webpack: (config, { isServer }) => {
-    if (isServer) return config;
+    if (isServer) {
+      // TODO: Remove once https://github.com/getsentry/sentry-javascript/issues/8105 is merged and sentry is upgraded
+      config.ignoreWarnings = [
+        {
+          message:
+            /require function is used in a way in which dependencies cannot be statically extracted/,
+        },
+      ];
+      return config;
+    }
 
     config.resolve.alias["minio"] = false;
     config.resolve.alias["qrcode"] = false;
@@ -163,12 +173,9 @@ const nextConfig = {
 
 export default process.env.SENTRY_DSN
   ? withSentryConfig(nextConfig, {
-      release: process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA + "-viewer",
       org: process.env.SENTRY_ORG,
       project: process.env.SENTRY_PROJECT,
-      silent: true,
+      authToken: process.env.SENTRY_AUTH_TOKEN,
       widenClientFileUpload: true,
-      hideSourceMaps: true,
-      disableLogger: true,
     })
   : nextConfig;

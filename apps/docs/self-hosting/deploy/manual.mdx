@@ -52,7 +52,13 @@ cp .env.example .env
 bun install
 ```
 
-4. Build the builder and viewer
+4. Run the database migrations
+
+```sh
+bunx turbo db:migrate
+```
+
+5. Build the builder and viewer
 
 ```sh
 bunx turbo build --filter=builder... --filter=viewer...

@@ -6,6 +6,7 @@
   "envMode": "loose",
   "tasks": {
     "dev": {
+      "cache": false,
       "dependsOn": ["^db:generate", "^db:push", "@typebot.io/react#build"],
       "persistent": true
     },
@@ -44,13 +45,18 @@
     "check-broken-links": {
       "cache": false
     },
-    "db:cleanDatabase": {
+    "cron:hourly": {
+      "env": ["STRIPE_*", "NEXTAUTH_URL", "SMTP_*"],
+      "dependsOn": ["@typebot.io/prisma#db:generate"],
+      "cache": false
+    },
+    "cron:daily": {
       "env": ["NEXTAUTH_URL"],
       "dependsOn": ["@typebot.io/prisma#db:generate"],
       "cache": false
     },
-    "checkAndReportChatsUsage": {
-      "env": ["STRIPE_*", "NEXTAUTH_URL", "SMTP_*"],
+    "cron:monthly": {
+      "env": ["NEXTAUTH_URL"],
       "dependsOn": ["@typebot.io/prisma#db:generate"],
       "cache": false
     },

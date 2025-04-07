@@ -10,6 +10,7 @@ import type { SmtpCredentials } from "@typebot.io/credentials/schemas";
 import { render } from "@typebot.io/emails";
 import { DefaultBotNotificationEmail } from "@typebot.io/emails/emails/DefaultBotNotificationEmail";
 import { env } from "@typebot.io/env";
+import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
 import { getFileTempUrl } from "@typebot.io/lib/s3/getFileTempUrl";
 import {
   byId,
@@ -18,16 +19,16 @@ import {
   isNotDefined,
   omit,
 } from "@typebot.io/lib/utils";
+import type { LogInSession } from "@typebot.io/logs/schemas";
 import { parseAnswers } from "@typebot.io/results/parseAnswers";
 import type { AnswerInSessionState } from "@typebot.io/results/schemas/answers";
-import { findUniqueVariable } from "@typebot.io/variables/findUniqueVariableValue";
+import type { SessionStore } from "@typebot.io/runtime-session-store";
+import { findUniqueVariable } from "@typebot.io/variables/findUniqueVariable";
 import { parseVariables } from "@typebot.io/variables/parseVariables";
 import type { Variable } from "@typebot.io/variables/schemas";
 import { createTransport } from "nodemailer";
 import type Mail from "nodemailer/lib/mailer/index";
-import { globals } from "../../../globals";
 import { getTypebotWorkspaceId } from "../../../queries/getTypebotWorkspaceId";
-import type { ChatLog } from "../../../schemas/api";
 import type { ExecuteIntegrationResponse } from "../../../types";
 import { defaultFrom, defaultTransportOptions } from "./constants";
 
@@ -36,11 +37,16 @@ export const sendEmailErrorDescription = "Email not sent";
 
 const maxEmailSending = 5;
 
-export const executeSendEmailBlock = async (
-  state: SessionState,
-  block: SendEmailBlock,
-): Promise<ExecuteIntegrationResponse> => {
-  const logs: ChatLog[] = [];
+export const executeSendEmailBlock = async ({
+  state,
+  sessionStore,
+  block,
+}: {
+  state: SessionState;
+  sessionStore: SessionStore;
+  block: SendEmailBlock;
+}): Promise<ExecuteIntegrationResponse> => {
+  const logs: LogInSession[] = [];
   const { options } = block;
   if (!state.typebotsQueue[0]) throw new Error("No typebot in queue");
   const {
@@ -65,9 +71,11 @@ export const executeSendEmailBlock = async (
   )?.value;
   const body = bodyUniqueVariable
     ? stringifyUniqueVariableValueAsHtml(bodyUniqueVariable)
-    : parseVariables(variables, { isInsideHtml: !options?.isBodyCode })(
-        options?.body ?? "",
-      );
+    : parseVariables(options?.body ?? "", {
+        variables,
+        sessionStore,
+        isInsideHtml: !options?.isBodyCode,
+      });
 
   if (!options?.recipients)
     return { outgoingEdgeId: block.outgoingEdgeId, logs };
@@ -81,7 +89,7 @@ export const executeSendEmailBlock = async (
     return { outgoingEdgeId: block.outgoingEdgeId, logs };
   }
 
-  if (globals.emailSendingCount >= maxEmailSending)
+  if (sessionStore.getEmailSendingCount() >= maxEmailSending)
     throw new TRPCError({
       code: "FORBIDDEN",
       message: "Attempt to send more than 5 emails",
@@ -91,31 +99,38 @@ export const executeSendEmailBlock = async (
       typebot: { id, variables },
       answers,
       credentialsId: options.credentialsId,
-      recipients: options.recipients.map(parseVariables(variables)),
+      recipients: options.recipients.map((recipient) =>
+        parseVariables(recipient, { variables, sessionStore }),
+      ),
       subject: options.subject
-        ? parseVariables(variables)(options?.subject)
+        ? parseVariables(options.subject, { variables, sessionStore })
         : undefined,
       body,
-      cc: options.cc ? options.cc.map(parseVariables(variables)) : undefined,
-      bcc: options.bcc ? options.bcc.map(parseVariables(variables)) : undefined,
+      cc: options.cc
+        ? options.cc.map((recipient) =>
+            parseVariables(recipient, { variables, sessionStore }),
+          )
+        : undefined,
+      bcc: options.bcc
+        ? options.bcc.map((recipient) =>
+            parseVariables(recipient, { variables, sessionStore }),
+          )
+        : undefined,
       replyTo: options.replyTo
-        ? parseVariables(variables)(options.replyTo)
+        ? parseVariables(options.replyTo, { variables, sessionStore })
         : undefined,
       fileUrls: getFileUrls(variables)(options.attachmentsVariableId),
       isCustomBody: options.isCustomBody,
       isBodyCode: options.isBodyCode,
       workspaceId: state.workspaceId,
+      sessionStore,
     });
     if (sendEmailLogs) logs.push(...sendEmailLogs);
   } catch (err) {
-    logs.push({
-      status: "error",
-      details: err,
-      description: `Email not sent`,
-    });
+    logs.push(await parseUnknownError({ err, context: "While sending email" }));
   }
 
-  globals.emailSendingCount += 1;
+  sessionStore.incrementEmailSendingCount();
 
   return { outgoingEdgeId: block.outgoingEdgeId, logs };
 };
@@ -134,6 +149,7 @@ const sendEmail = async ({
   isCustomBody,
   fileUrls,
   workspaceId,
+  sessionStore,
 }: {
   credentialsId: string;
   recipients: string[];
@@ -147,9 +163,10 @@ const sendEmail = async ({
   typebot: Pick<TypebotInSession, "id" | "variables">;
   answers: AnswerInSessionState[];
   fileUrls?: string | string[];
-  workspaceId?: string;
-}): Promise<ChatLog[] | undefined> => {
-  const logs: ChatLog[] = [];
+  workspaceId: string;
+  sessionStore: SessionStore;
+}): Promise<LogInSession[] | undefined> => {
+  const logs: LogInSession[] = [];
   const { name: replyToName } = parseEmailRecipient(replyTo);
 
   const { host, port, isTlsEnabled, username, password, from } =
@@ -176,9 +193,8 @@ const sendEmail = async ({
 
   if (!emailBody) {
     logs.push({
-      status: "error",
       description: sendEmailErrorDescription,
-      details: {
+      details: JSON.stringify({
         error: "No email body found",
         transportConfig,
         recipients,
@@ -187,7 +203,7 @@ const sendEmail = async ({
         bcc,
         replyTo,
         emailBody,
-      },
+      }),
     });
     return logs;
   }
@@ -205,38 +221,38 @@ const sendEmail = async ({
   };
 
   const hash = JSON.stringify(email);
-  if (globals.prevHash && globals.prevHash === hash)
+  if (sessionStore.getPrevHash() && sessionStore.getPrevHash() === hash)
     throw new TRPCError({
       code: "FORBIDDEN",
       message: "Attempt to send the same email twice",
     });
-  globals.prevHash = hash;
+  sessionStore.setPrevHash(hash);
 
   try {
     await transporter.sendMail(email);
     logs.push({
       status: "success",
       description: sendEmailSuccessDescription,
-      details: {
+      details: JSON.stringify({
         transportConfig: {
           ...transportConfig,
           auth: { user: transportConfig.auth.user, pass: "******" },
         },
         email,
-      },
+      }),
     });
   } catch (err) {
     logs.push({
       status: "error",
       description: sendEmailErrorDescription,
-      details: {
+      details: JSON.stringify({
         error: err instanceof Error ? err.toString() : err,
         transportConfig: {
           ...transportConfig,
           auth: { user: transportConfig.auth.user, pass: "******" },
         },
         email,
-      },
+      }),
     });
   }
 
@@ -245,8 +261,7 @@ const sendEmail = async ({
 
 const getEmailInfo = async (
   credentialsId: string,
-  // TO-DO: Remove workspaceId optionnality when deployed
-  workspaceId?: string,
+  workspaceId: string,
 ): Promise<SmtpCredentials["data"] | undefined> => {
   if (credentialsId === "default")
     return {

@@ -1,6 +1,7 @@
 import { MoreInfoTooltip } from "@/components/MoreInfoTooltip";
 import { SwitchWithRelatedSettings } from "@/components/SwitchWithRelatedSettings";
 import { ChevronDownIcon } from "@/components/icons";
+import { VideoOnboardingPopover } from "@/features/onboarding/components/VideoOnboardingPopover";
 import {
   Button,
   HStack,
@@ -16,6 +17,7 @@ import { GraphNavigation } from "@typebot.io/prisma/enum";
 import type { GroupTitlesAutoGeneration } from "@typebot.io/schemas/features/user/schema";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
+import { setLocaleInCookies } from "../helpers/setLocaleInCookies";
 import { useUser } from "../hooks/useUser";
 import { AppearanceRadioGroup } from "./AppearanceRadioGroup";
 import { GraphNavigationRadioGroup } from "./GraphNavigationRadioGroup";
@@ -48,7 +50,9 @@ export const UserPreferencesForm = () => {
   };
 
   const updateLocale = (locale: keyof typeof localeHumanReadable) => () => {
-    document.cookie = `NEXT_LOCALE=${locale}; path=/; max-age=31536000`;
+    updateUser({ preferredLanguage: locale });
+
+    setLocaleInCookies(locale);
     router.replace(
       {
         pathname: router.pathname,
@@ -136,21 +140,27 @@ export const UserPreferencesForm = () => {
         />
       </Stack>
 
-      <SwitchWithRelatedSettings
-        label="Generate groups title with AI"
-        initialValue={user?.groupTitlesAutoGeneration?.isEnabled}
-        onCheckChange={(isEnabled) => {
-          updateGroupTitlesGenParams({ isEnabled });
-        }}
+      <VideoOnboardingPopover.Root
+        type="groupTitlesAutoGeneration"
+        isEnabled={user?.groupTitlesAutoGeneration?.isEnabled ?? false}
+        placement="top-end"
       >
-        {user?.groupTitlesAutoGeneration && (
-          <GroupTitlesAutoGenForm
-            userId={user.id}
-            values={user.groupTitlesAutoGeneration}
-            onChange={updateGroupTitlesGenParams}
-          />
-        )}
-      </SwitchWithRelatedSettings>
+        <SwitchWithRelatedSettings
+          label={t("account.preferences.groupTitlesAutoGeneration.label")}
+          initialValue={user?.groupTitlesAutoGeneration?.isEnabled}
+          onCheckChange={(isEnabled) => {
+            updateGroupTitlesGenParams({ isEnabled });
+          }}
+        >
+          {user?.groupTitlesAutoGeneration && (
+            <GroupTitlesAutoGenForm
+              userId={user.id}
+              values={user.groupTitlesAutoGeneration}
+              onChange={updateGroupTitlesGenParams}
+            />
+          )}
+        </SwitchWithRelatedSettings>
+      </VideoOnboardingPopover.Root>
     </Stack>
   );
 };

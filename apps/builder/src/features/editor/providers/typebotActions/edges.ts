@@ -1,6 +1,10 @@
 import { createId } from "@paralleldrive/cuid2";
-import { blockHasItems } from "@typebot.io/blocks-core/helpers";
-import type { ItemIndices } from "@typebot.io/blocks-core/schemas/items/types";
+import { blockHasItems, itemHasPaths } from "@typebot.io/blocks-core/helpers";
+import type {
+  ItemIndices,
+  ItemWithPaths,
+  PathIndices,
+} from "@typebot.io/blocks-core/schemas/items/schema";
 import type {
   Block,
   BlockIndices,
@@ -43,26 +47,42 @@ export const edgesAction = (setTypebot: SetTypebot): EdgesActions => ({
           const blockIndex = typebot.groups[groupIndex].blocks.findIndex(
             byId(edge.from.blockId),
           );
-          const itemIndex = edge.from.itemId
-            ? (
-                typebot.groups[groupIndex].blocks[blockIndex] as
-                  | BlockWithItems
-                  | undefined
-              )?.items.findIndex(byId(edge.from.itemId))
-            : null;
-
-          isDefined(itemIndex) && itemIndex !== -1
-            ? addEdgeIdToItem(typebot, newEdge.id, {
-                groupIndex,
-                blockIndex,
-                itemIndex,
-              })
-            : addEdgeIdToBlock(typebot, newEdge.id, {
-                groupIndex,
-                blockIndex,
-              });
 
           const block = typebot.groups[groupIndex].blocks[blockIndex];
+          const itemIndex =
+            edge.from.itemId && blockHasItems(block)
+              ? block.items.findIndex(byId(edge.from.itemId))
+              : null;
+
+          const item = isDefined(itemIndex)
+            ? (block as BlockWithItems).items[itemIndex]
+            : null;
+
+          const pathIndex =
+            item && edge.from.pathId && itemHasPaths(item)
+              ? item.paths.findIndex(byId(edge.from.pathId))
+              : null;
+
+          if (isDefined(pathIndex) && pathIndex !== -1) {
+            addEdgeIdToPath(typebot, newEdge.id, {
+              groupIndex,
+              blockIndex,
+              itemIndex: itemIndex ?? 0,
+              pathIndex,
+            });
+          } else if (isDefined(itemIndex) && itemIndex !== -1) {
+            addEdgeIdToItem(typebot, newEdge.id, {
+              groupIndex,
+              blockIndex,
+              itemIndex,
+            });
+          } else {
+            addEdgeIdToBlock(typebot, newEdge.id, {
+              groupIndex,
+              blockIndex,
+            });
+          }
+
           if (isDefined(itemIndex) && isDefined(block.outgoingEdgeId)) {
             const areAllItemsConnected = (block as BlockWithItems).items.every(
               (item) => isDefined(item.outgoingEdgeId),
@@ -122,6 +142,17 @@ const addEdgeIdToItem = (
   ((typebot.groups[groupIndex].blocks[blockIndex] as BlockWithItems).items[
     itemIndex
   ].outgoingEdgeId = edgeId);
+
+const addEdgeIdToPath = (
+  typebot: Draft<Typebot>,
+  edgeId: string,
+  { groupIndex, blockIndex, itemIndex, pathIndex }: PathIndices,
+) =>
+  ((
+    (typebot.groups[groupIndex].blocks[blockIndex] as BlockWithItems).items[
+      itemIndex
+    ] as ItemWithPaths
+  ).paths[pathIndex].outgoingEdgeId = edgeId);
 
 export const deleteEdgeDraft = ({
   typebot,
@@ -211,18 +242,25 @@ export const deleteConnectedEdgesDraft = (
 
 const removeExistingEdge = (
   typebot: Draft<Typebot>,
-  edge: Omit<Edge, "id">,
+  newEdge: Omit<Edge, "id">,
 ) => {
-  typebot.edges = typebot.edges.filter((e) => {
-    if ("eventId" in edge.from) {
-      if ("eventId" in e.from) return e.from.eventId !== edge.from.eventId;
+  typebot.edges = typebot.edges.filter((existingEdge) => {
+    if ("eventId" in newEdge.from) {
+      if ("eventId" in existingEdge.from)
+        return existingEdge.from.eventId !== newEdge.from.eventId;
       return true;
     }
 
-    if ("eventId" in e.from) return true;
+    if ("eventId" in existingEdge.from) return true;
 
-    return edge.from.itemId
-      ? e.from && e.from.itemId !== edge.from.itemId
-      : isDefined(e.from.itemId) || e.from.blockId !== edge.from.blockId;
+    if (newEdge.from.pathId)
+      return existingEdge.from.pathId !== newEdge.from.pathId;
+    if (existingEdge.from.pathId) return true;
+
+    if (newEdge.from.itemId)
+      return existingEdge.from.itemId !== newEdge.from.itemId;
+    if (existingEdge.from.itemId) return true;
+
+    return existingEdge.from.blockId !== newEdge.from.blockId;
   });
 };

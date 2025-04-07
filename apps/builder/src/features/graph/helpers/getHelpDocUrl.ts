@@ -2,13 +2,15 @@ import type { BlockWithOptions } from "@typebot.io/blocks-core/schemas/schema";
 import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
 import { IntegrationBlockType } from "@typebot.io/blocks-integrations/constants";
 import { LogicBlockType } from "@typebot.io/blocks-logic/constants";
+import { EventType } from "@typebot.io/events/constants";
+import type { TEventWithOptions } from "@typebot.io/events/schemas";
 import type { ForgedBlockDefinition } from "@typebot.io/forge-repository/definitions";
 
 export const getHelpDocUrl = (
-  blockType: BlockWithOptions["type"],
+  nodeType: BlockWithOptions["type"] | TEventWithOptions["type"],
   blockDef?: ForgedBlockDefinition,
 ): string | undefined => {
-  switch (blockType) {
+  switch (nodeType) {
     case LogicBlockType.TYPEBOT_LINK:
       return "https://docs.typebot.io/editor/blocks/logic/typebot-link";
     case LogicBlockType.SET_VARIABLE:
@@ -57,12 +59,14 @@ export const getHelpDocUrl = (
       return "https://docs.typebot.io/editor/blocks/integrations/http-request";
     case InputBlockType.PICTURE_CHOICE:
       return "https://docs.typebot.io/editor/blocks/inputs/picture-choice";
+    case InputBlockType.CARDS:
+      return "https://docs.typebot.io/editor/blocks/inputs/cards";
     case IntegrationBlockType.OPEN_AI:
       return "https://docs.typebot.io/editor/blocks/integrations/openai";
     case IntegrationBlockType.MAKE_COM:
       return "https://docs.typebot.io/editor/blocks/integrations/make-com";
     case LogicBlockType.AB_TEST:
-      return "https://docs.typebot.io/editor/blocks/logic/abTest";
+      return "https://docs.typebot.io/editor/blocks/logic/ab-test";
     case LogicBlockType.JUMP:
       return "https://docs.typebot.io/editor/blocks/logic/jump";
     case IntegrationBlockType.PIXEL:
@@ -71,6 +75,8 @@ export const getHelpDocUrl = (
       return "https://docs.typebot.io/editor/blocks/logic/condition";
     case LogicBlockType.WEBHOOK:
       return "https://docs.typebot.io/editor/blocks/logic/webhook";
+    case EventType.COMMAND:
+      return "https://docs.typebot.io/editor/events/command";
     default:
       return blockDef?.docsUrl;
   }

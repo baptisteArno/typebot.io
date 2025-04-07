@@ -2,6 +2,7 @@ import { publicProcedure } from "@/helpers/server/trpc";
 import { TRPCError } from "@trpc/server";
 import { BubbleBlockType } from "@typebot.io/blocks-bubbles/constants";
 import { continueBotFlow } from "@typebot.io/bot-engine/continueBotFlow";
+import { assertOriginIsAllowed } from "@typebot.io/bot-engine/helpers/isOriginAllowed";
 import { parseDynamicTheme } from "@typebot.io/bot-engine/parseDynamicTheme";
 import { saveStateToDatabase } from "@typebot.io/bot-engine/saveStateToDatabase";
 import {
@@ -11,7 +12,12 @@ import {
 import { startSession } from "@typebot.io/bot-engine/startSession";
 import { getSession } from "@typebot.io/chat-session/queries/getSession";
 import { restartSession } from "@typebot.io/chat-session/queries/restartSession";
+import { createId } from "@typebot.io/lib/createId";
 import { isDefined } from "@typebot.io/lib/utils";
+import {
+  deleteSessionStore,
+  getSessionStore,
+} from "@typebot.io/runtime-session-store";
 
 export const sendMessageV1 = publicProcedure
   .meta({
@@ -30,9 +36,10 @@ export const sendMessageV1 = publicProcedure
   .mutation(
     async ({
       input: { sessionId, message, startParams, clientLogs },
-      ctx: { user, origin, res },
+      ctx: { user, origin, iframeReferrerOrigin },
     }) => {
       const session = sessionId ? await getSession(sessionId) : null;
+      const newSessionId = sessionId ?? createId();
 
       const isSessionExpired =
         session &&
@@ -45,6 +52,7 @@ export const sendMessageV1 = publicProcedure
           message: "Session expired. You need to start a new session.",
         });
 
+      const sessionStore = getSessionStore(newSessionId);
       if (!session) {
         if (!startParams)
           throw new TRPCError({
@@ -63,6 +71,7 @@ export const sendMessageV1 = publicProcedure
           visitedEdges,
           setVariableHistory,
         } = await startSession({
+          sessionStore,
           version: 1,
           startParams:
             startParams.isPreview || typeof startParams.typebot !== "string"
@@ -112,18 +121,10 @@ export const sendMessageV1 = publicProcedure
         });
 
         if (startParams.isPreview || typeof startParams.typebot !== "string") {
-          if (
-            newSessionState.allowedOrigins &&
-            newSessionState.allowedOrigins.length > 0
-          ) {
-            if (origin && newSessionState.allowedOrigins.includes(origin))
-              res.setHeader("Access-Control-Allow-Origin", origin);
-            else
-              res.setHeader(
-                "Access-Control-Allow-Origin",
-                newSessionState.allowedOrigins[0],
-              );
-          }
+          assertOriginIsAllowed(origin, {
+            allowedOrigins: newSessionState.allowedOrigins,
+            iframeReferrerOrigin,
+          });
         }
 
         const allLogs = clientLogs ? [...(logs ?? []), ...clientLogs] : logs;
@@ -133,6 +134,10 @@ export const sendMessageV1 = publicProcedure
               state: newSessionState,
             })
           : await saveStateToDatabase({
+              sessionId: {
+                type: "new",
+                id: newSessionId,
+              },
               session: {
                 state: newSessionState,
               },
@@ -148,6 +153,8 @@ export const sendMessageV1 = publicProcedure
               ),
               setVariableHistory,
             });
+
+        deleteSessionStore(newSessionId);
 
         return {
           sessionId: session.id,
@@ -166,18 +173,10 @@ export const sendMessageV1 = publicProcedure
           clientSideActions,
         };
       } else {
-        if (
-          session.state.allowedOrigins &&
-          session.state.allowedOrigins.length > 0
-        ) {
-          if (origin && session.state.allowedOrigins.includes(origin))
-            res.setHeader("Access-Control-Allow-Origin", origin);
-          else
-            res.setHeader(
-              "Access-Control-Allow-Origin",
-              session.state.allowedOrigins[0],
-            );
-        }
+        assertOriginIsAllowed(origin, {
+          allowedOrigins: session.state.allowedOrigins,
+          iframeReferrerOrigin,
+        });
 
         const {
           messages,
@@ -194,6 +193,7 @@ export const sendMessageV1 = publicProcedure
             version: 1,
             state: session.state,
             textBubbleContentFormat: "richText",
+            sessionStore,
           },
         );
 
@@ -201,8 +201,11 @@ export const sendMessageV1 = publicProcedure
 
         if (newSessionState)
           await saveStateToDatabase({
+            sessionId: {
+              type: "existing",
+              id: newSessionId,
+            },
             session: {
-              id: session.id,
               state: newSessionState,
             },
             input,
@@ -218,11 +221,17 @@ export const sendMessageV1 = publicProcedure
             setVariableHistory,
           });
 
+        const dynamicTheme = parseDynamicTheme({
+          state: newSessionState,
+          sessionStore,
+        });
+        deleteSessionStore(newSessionId);
+
         return {
           messages,
           input,
           clientSideActions,
-          dynamicTheme: parseDynamicTheme(newSessionState),
+          dynamicTheme,
           logs,
           lastMessageNewFormat,
         };

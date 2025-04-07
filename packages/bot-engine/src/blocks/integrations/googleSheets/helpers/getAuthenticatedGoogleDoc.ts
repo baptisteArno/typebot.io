@@ -7,16 +7,10 @@ export const getAuthenticatedGoogleDoc = async ({
   spreadsheetId,
   workspaceId,
 }: {
-  credentialsId?: string;
-  spreadsheetId?: string;
-  // TO-DO: Remove workspaceId optionality once v3.4 is out
-  workspaceId?: string;
+  credentialsId: string;
+  spreadsheetId: string;
+  workspaceId: string;
 }) => {
-  if (!credentialsId || !spreadsheetId)
-    throw new TRPCError({
-      code: "BAD_REQUEST",
-      message: "Missing credentialsId or spreadsheetId",
-    });
   const client = await getAuthenticatedGoogleClient(credentialsId, workspaceId);
   if (!client)
     throw new TRPCError({

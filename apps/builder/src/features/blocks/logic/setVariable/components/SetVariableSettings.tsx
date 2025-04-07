@@ -109,7 +109,7 @@ export const SetVariableSettings = ({ options, onOptionsChange }: Props) => {
         {selectedVariable && !isSessionOnly && !isLinkedToAnswer && (
           <SwitchWithLabel
             key={selectedVariable.id}
-            label="Save in results?"
+            label="Save in results"
             moreInfoContent="By default, the variable is saved only for the user chat session. Check this option if you want to also store the variable in the typebot Results table."
             initialValue={!selectedVariable.isSessionVariable}
             onCheckChange={updateIsSessionVariable}
@@ -213,7 +213,7 @@ const SetVariableValue = ({
       return (
         <>
           <SwitchWithLabel
-            label="Execute on client?"
+            label="Execute on client"
             moreInfoContent="Check this if you need access to client-only variables like `window` or `document`."
             initialValue={
               options?.isExecutedOnClient ??
@@ -238,6 +238,7 @@ const SetVariableValue = ({
                   defaultValue={options?.expressionToEvaluate ?? ""}
                   onChange={updateExpression}
                   lang="javascript"
+                  withLineNumbers={true}
                 />
                 <VariableSearchInput
                   label="Save error"
@@ -302,6 +303,7 @@ const SetVariableValue = ({
         </Alert>
       );
     }
+
     case "Environment name": {
       return (
         <Alert fontSize="sm">
@@ -309,6 +311,17 @@ const SetVariableValue = ({
           <Text>
             Will return either <Tag size="sm">web</Tag> or{" "}
             <Tag size="sm">whatsapp</Tag>.
+          </Text>
+        </Alert>
+      );
+    }
+    case "Device type": {
+      return (
+        <Alert fontSize="sm">
+          <AlertIcon />
+          <Text>
+            Will return either <Tag size="sm">desktop</Tag>,{" "}
+            <Tag size="sm">tablet</Tag> or <Tag size="sm">mobile</Tag>.
           </Text>
         </Alert>
       );

@@ -13,6 +13,7 @@ import { ShareTypebotButton } from "@/features/share/components/ShareTypebotButt
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { isCloudProdInstance } from "@/helpers/isCloudProdInstance";
 import { useKeyboardShortcuts } from "@/hooks/useKeyboardShortcuts";
+import { useRightPanel } from "@/hooks/useRightPanel";
 import {
   Button,
   Flex,
@@ -34,7 +35,7 @@ import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import { headerHeight } from "../constants";
-import { RightPanel, useEditor } from "../providers/EditorProvider";
+import { useEditor } from "../providers/EditorProvider";
 import { useTypebot } from "../providers/TypebotProvider";
 import { EditableTypebotName } from "./EditableTypebotName";
 import { GuestTypebotHeader } from "./UnauthenticatedTypebotHeader";
@@ -42,7 +43,6 @@ import { GuestTypebotHeader } from "./UnauthenticatedTypebotHeader";
 export const TypebotHeader = () => {
   const { typebot, publishedTypebot, currentUserMode } = useTypebot();
   const { workspace } = useWorkspace();
-
   const { isOpen, onOpen } = useDisclosure();
   const headerBgColor = useColorModeValue("white", "gray.950");
 
@@ -254,18 +254,13 @@ const RightElements = ({
   const router = useRouter();
   const { t } = useTranslate();
   const { typebot, currentUserMode, save, isSavingLoading } = useTypebot();
-  const {
-    setRightPanel,
-    rightPanel,
-    setStartPreviewAtGroup,
-    setStartPreviewAtEvent,
-  } = useEditor();
+  const { setStartPreviewFrom } = useEditor();
+  const [rightPanel, setRightPanel] = useRightPanel();
 
   const handlePreviewClick = async () => {
-    setStartPreviewAtGroup(undefined);
-    setStartPreviewAtEvent(undefined);
+    setStartPreviewFrom(undefined);
     await save();
-    setRightPanel(RightPanel.PREVIEW);
+    setRightPanel("preview");
   };
 
   return (
@@ -278,21 +273,20 @@ const RightElements = ({
       <Flex pos="relative">
         <ShareTypebotButton isLoading={isNotDefined(typebot)} />
       </Flex>
-      {router.pathname.includes("/edit") &&
-        rightPanel !== RightPanel.PREVIEW && (
-          <Button
-            colorScheme="gray"
-            onClick={handlePreviewClick}
-            isLoading={isNotDefined(typebot) || isSavingLoading}
-            leftIcon={<PlayIcon />}
-            size="sm"
-            iconSpacing={{ base: 0, xl: 2 }}
-          >
-            <chakra.span display={{ base: "none", xl: "inline" }}>
-              {t("editor.header.previewButton.label")}
-            </chakra.span>
-          </Button>
-        )}
+      {router.pathname.includes("/edit") && rightPanel !== "preview" && (
+        <Button
+          colorScheme="gray"
+          onClick={handlePreviewClick}
+          isLoading={isNotDefined(typebot) || isSavingLoading}
+          leftIcon={<PlayIcon />}
+          size="sm"
+          iconSpacing={{ base: 0, xl: 2 }}
+        >
+          <chakra.span display={{ base: "none", xl: "inline" }}>
+            {t("editor.header.previewButton.label")}
+          </chakra.span>
+        </Button>
+      )}
       {currentUserMode === "guest" && (
         <Button
           as={Link}

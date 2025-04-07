@@ -11,8 +11,11 @@ export const createChatCompletion = createAction({
   name: "Create chat completion",
   auth,
   options: parseChatCompletionOptions({
-    modelHelperText:
-      "You can find the list of all the models available [here](https://docs.together.ai/docs/inference-models#chat-models). Copy the model string for API.",
+    models: {
+      type: "text",
+      helperText:
+        "You can find the list of all the models available [here](https://docs.together.ai/docs/inference-models#chat-models). Copy the model string for API.",
+    },
   }),
   turnableInto: [
     {
@@ -22,6 +25,7 @@ export const createChatCompletion = createAction({
       blockId: "open-router",
     },
     { blockId: "mistral" },
+    { blockId: "perplexity" },
     {
       blockId: "anthropic",
       transform: (options) => ({
@@ -30,10 +34,17 @@ export const createChatCompletion = createAction({
       }),
     },
     { blockId: "groq" },
+    { blockId: "deepseek" },
   ],
   getSetVariableIds: getChatCompletionSetVarIds,
   run: {
-    server: ({ credentials: { apiKey }, options, variables, logs }) => {
+    server: ({
+      credentials: { apiKey },
+      options,
+      variables,
+      logs,
+      sessionStore,
+    }) => {
       if (!apiKey) return logs.add("No API key provided");
       const modelName = options.model?.trim();
       if (!modelName) return logs.add("No model provided");
@@ -47,24 +58,34 @@ export const createChatCompletion = createAction({
         messages: options.messages,
         tools: options.tools,
         isVisionEnabled: false,
-        temperature: options.temperature
-          ? Number(options.temperature)
-          : undefined,
+        temperature: options.temperature,
         responseMapping: options.responseMapping,
         logs,
+        sessionStore,
       });
     },
     stream: {
       getStreamVariableId: getChatCompletionStreamVarId,
-      run: async ({ credentials: { apiKey }, options, variables }) => {
+      run: async ({
+        credentials: { apiKey },
+        options,
+        variables,
+        sessionStore,
+      }) => {
         if (!apiKey)
-          return { httpError: { status: 400, message: "No API key provided" } };
+          return {
+            error: {
+              description: "No API key provided",
+            },
+          };
         const modelName = options.model?.trim();
         if (!modelName)
-          return { httpError: { status: 400, message: "No model provided" } };
+          return {
+            error: { description: "No model provided" },
+          };
         if (!options.messages)
           return {
-            httpError: { status: 400, message: "No messages provided" },
+            error: { description: "No messages provided" },
           };
 
         return runChatCompletionStream({
@@ -75,10 +96,9 @@ export const createChatCompletion = createAction({
           messages: options.messages,
           tools: options.tools,
           isVisionEnabled: false,
-          temperature: options.temperature
-            ? Number(options.temperature)
-            : undefined,
+          temperature: options.temperature,
           responseMapping: options.responseMapping,
+          sessionStore,
         });
       },
     },

@@ -1,7 +1,6 @@
 import assert from "assert";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { useUser } from "@/features/user/hooks/useUser";
-import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { trpcVanilla } from "@/lib/trpc";
 import { useEventListener } from "@chakra-ui/react";
 import type { Coordinates } from "@dnd-kit/utilities";
@@ -12,9 +11,8 @@ import { toast } from "sonner";
 import { eventWidth, groupWidth } from "../../constants";
 import { computeConnectingEdgePath } from "../../helpers/computeConnectingEdgePath";
 import { computeEdgePathToMouse } from "../../helpers/computeEdgePathToMouth";
-import { useGroupsStore } from "../../hooks/useGroupsStore";
+import { useSelectionStore } from "../../hooks/useSelectionStore";
 import { useEndpoints } from "../../providers/EndpointsProvider";
-import { useEventsCoordinates } from "../../providers/EventsCoordinateProvider";
 import { useGraph } from "../../providers/GraphProvider";
 import type { ConnectingIds } from "../../types";
 
@@ -28,34 +26,33 @@ export const DrawingEdge = ({ connectingIds }: Props) => {
     sourceEndpointYOffsets: sourceEndpoints,
     targetEndpointYOffsets: targetEndpoints,
   } = useEndpoints();
-  const groupsCoordinates = useGroupsStore(
-    (state) => state.groupsCoordinates,
+  const elementsCoordinates = useSelectionStore(
+    (state) => state.elementsCoordinates,
     // Keep in cache because groups are not changing while drawing an edge
     () => true,
   );
-  const { eventsCoordinates } = useEventsCoordinates();
   const { user } = useUser();
   const { createEdge, typebot, updateGroup } = useTypebot();
   const [mousePosition, setMousePosition] = useState<Coordinates | null>(null);
 
   const sourceElementCoordinates = connectingIds
     ? "eventId" in connectingIds.source
-      ? eventsCoordinates[connectingIds?.source.eventId]
-      : groupsCoordinates
-        ? groupsCoordinates[connectingIds?.source.groupId ?? ""]
-        : undefined
+      ? elementsCoordinates?.[connectingIds?.source.eventId]
+      : elementsCoordinates?.[connectingIds?.source.groupId ?? ""]
     : undefined;
 
   const targetGroupCoordinates =
-    groupsCoordinates &&
-    groupsCoordinates[connectingIds?.target?.groupId ?? ""];
+    elementsCoordinates &&
+    elementsCoordinates[connectingIds?.target?.groupId ?? ""];
 
   const sourceTop = useMemo(() => {
     if (!connectingIds) return 0;
     const endpointId =
       "eventId" in connectingIds.source
         ? connectingIds.source.eventId
-        : (connectingIds.source.itemId ?? connectingIds.source.blockId);
+        : (connectingIds.source.pathId ??
+          connectingIds.source.itemId ??
+          connectingIds.source.blockId);
     return sourceEndpoints.get(endpointId)?.y;
   }, [connectingIds, sourceEndpoints]);
 

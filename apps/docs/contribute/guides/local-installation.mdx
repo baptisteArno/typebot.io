@@ -34,20 +34,28 @@ icon: 'laptop'
    docker compose -f docker-compose.dev.yml up -d
    ```
 
+   This will also create a minio instance to enable file uploads.
+
 5. Start the builder and viewer
 
    ```sh
-   bunx turbo dev --filter=builder... --filter=viewer...
+   bun dev
    ```
 
    Builder is available at [`http://localhost:3000`](http://localhost:3000)
 
    Viewer is available at [`http://localhost:3001`](http://localhost:3001)
 
-   By default, you can easily authenticate in the builder using the "Github Sign In" button. For other options, check out the [Configuration guide](https://docs.typebot.io/self-hosting/configuration)
+   By default, you can easily authenticate in the builder using the "Github Sign In" button. For other options, check out the [Configuration guide](https://docs.typebot.io/self-hosting/configuration). If you want to skip authentication or you want to run the e2e tests, you can set `NEXT_PUBLIC_E2E_TEST` to `true` in the `.env` file.
 
 6. Optionnally you can also run the other available apps:
 
-    ```sh
-    bunx turbo dev --filter=builder... --filter=viewer... --filter=@typebot.io/prisma... --filter=landing-page... --filter=docs...
-    ```
+   For the landing page:
+   ```sh
+   bunx turbo dev --filter=landing-page
+   ```
+
+   For the docs:
+   ```sh
+   bunx turbo dev --filter=docs
+   ```

@@ -3,6 +3,7 @@ import * as Sentry from "@sentry/nextjs";
 import { TRPCError } from "@trpc/server";
 import { deleteSession } from "@typebot.io/chat-session/queries/deleteSession";
 import { env } from "@typebot.io/env";
+import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
 import { WhatsAppError } from "@typebot.io/whatsapp/WhatsAppError";
 import { incomingWebhookErrorCodes } from "@typebot.io/whatsapp/constants";
 import { resumeWhatsAppFlow } from "@typebot.io/whatsapp/resumeWhatsAppFlow";
@@ -33,9 +34,11 @@ export const receiveMessagePreview = publicProcedure
     assertEnv();
 
     try {
-      processErrors(entry);
+      await processErrors(entry);
       const { receivedMessage, contactName, contactPhoneNumber } =
         extractMessageData(entry);
+      if (!receivedMessage || receivedMessage.type === "reaction")
+        return { message: "No message content found" };
       await resumeWhatsAppFlow({
         receivedMessage,
         sessionId: `${whatsAppPreviewSessionIdPrefix}${receivedMessage.from}`,
@@ -46,15 +49,25 @@ export const receiveMessagePreview = publicProcedure
       });
     } catch (err) {
       if (err instanceof WhatsAppError) {
-        console.log("Known WhatsApp error:", err.message, err.details);
         Sentry.captureMessage(err.message, err.details);
       } else {
-        console.error("Unknown WhatsApp error:", err);
+        console.log("Sending unkown error to Sentry");
+        const details = safeJsonParse(
+          (await parseUnknownError({ err })).details,
+        );
+        console.log("details", details);
+        Sentry.addBreadcrumb({
+          data:
+            typeof details === "object" && details
+              ? details
+              : {
+                  details,
+                },
+        });
         Sentry.captureException(err);
       }
     }
 
-    await Sentry.flush();
     return {
       message: "Message received",
     };
@@ -70,7 +83,6 @@ const assertEnv = () => {
 
 const extractMessageData = (entry: WhatsAppWebhookRequestBody["entry"]) => {
   const receivedMessage = entry.at(0)?.changes.at(0)?.value.messages?.at(0);
-  if (!receivedMessage) throw new WhatsAppError("No message found");
   const contactName =
     entry.at(0)?.changes.at(0)?.value?.contacts?.at(0)?.profile?.name ?? "";
   const contactPhoneNumber =
@@ -83,7 +95,7 @@ const processErrors = async (entry: WhatsAppWebhookRequestBody["entry"]) => {
   const status = entry.at(0)?.changes.at(0)?.value.statuses?.at(0);
   if (status?.errors) {
     const error = status.errors.at(0);
-    if (!error) return;
+    if (!error) throw new Error(`WA empty errors: ${JSON.stringify(status)}`);
     if (
       error?.code ===
       incomingWebhookErrorCodes["Could not send message to unengaged user"]
@@ -93,6 +105,25 @@ const processErrors = async (entry: WhatsAppWebhookRequestBody["entry"]) => {
       );
       throw new WhatsAppError("Could not send message to unengaged user");
     }
-    throw new WhatsAppError(`Received unknown error from WA`, error);
+    if (error?.code === incomingWebhookErrorCodes["Message undeliverable"]) {
+      throw new WhatsAppError("Message undeliverable");
+    }
+    if (error?.code === incomingWebhookErrorCodes["Media upload error"]) {
+      throw new WhatsAppError("Media upload error", {
+        reason: error.error_data,
+      });
+    }
+    throw new Error(
+      `WA unknown incoming errors: ${JSON.stringify(status.errors)}`,
+    );
+  }
+};
+
+const safeJsonParse = (value: string | undefined): unknown => {
+  if (!value) return value;
+  try {
+    return JSON.parse(value);
+  } catch {
+    return value;
   }
 };

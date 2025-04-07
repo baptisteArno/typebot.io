@@ -1,41 +1,40 @@
+import type { SessionStore } from "@typebot.io/runtime-session-store";
 import { parseGuessedTypeFromString } from "./parseGuessedTypeFromString";
-import {
-  type ParseVariablesOptions,
-  defaultParseVariablesOptions,
-  parseVariables,
-} from "./parseVariables";
+import { type ParseVariablesOptions, parseVariables } from "./parseVariables";
 import type { Variable } from "./schemas";
+import type { WithoutVariables } from "./types";
 
-type DeepParseOptions = {
-  guessCorrectTypes?: boolean;
-  removeEmptyStrings?: boolean;
-};
-
-export const deepParseVariables =
-  (
-    variables: Variable[],
-    deepParseOptions: DeepParseOptions = {
-      guessCorrectTypes: false,
-      removeEmptyStrings: false,
-    },
-    parseVariablesOptions: ParseVariablesOptions = defaultParseVariablesOptions,
-  ) =>
-  <T>(object: T): T => {
-    if (!object) return object as T;
-    if (typeof object !== "object") return object as T;
-    return Object.keys(object).reduce<T>((newObj, key) => {
+export const deepParseVariables = <T>(
+  object: T,
+  {
+    variables,
+    guessCorrectTypes = false,
+    removeEmptyStrings = false,
+    sessionStore,
+    ...parseVariablesOptions
+  }: {
+    variables: Variable[];
+    guessCorrectTypes?: boolean;
+    removeEmptyStrings?: boolean;
+    sessionStore: SessionStore;
+  } & ParseVariablesOptions,
+): WithoutVariables<T> => {
+  if (!object) return object as WithoutVariables<T>;
+  if (typeof object !== "object") return object as WithoutVariables<T>;
+  return Object.keys(object).reduce<WithoutVariables<T>>(
+    (newObj, key) => {
       const currentValue = (object as Record<string, unknown>)[key];
 
       if (typeof currentValue === "string") {
-        const parsedVariable = parseVariables(
+        const parsedVariable = parseVariables(currentValue, {
           variables,
-          parseVariablesOptions,
-        )(currentValue);
-        if (deepParseOptions.removeEmptyStrings && parsedVariable === "")
-          return newObj;
+          sessionStore,
+          ...parseVariablesOptions,
+        });
+        if (removeEmptyStrings && parsedVariable === "") return newObj;
         return {
           ...newObj,
-          [key]: deepParseOptions.guessCorrectTypes
+          [key]: guessCorrectTypes
             ? parseGuessedTypeFromString(parsedVariable)
             : parsedVariable,
         };
@@ -44,25 +43,31 @@ export const deepParseVariables =
       if (currentValue instanceof Object && currentValue.constructor === Object)
         return {
           ...newObj,
-          [key]: deepParseVariables(
+          [key]: deepParseVariables(currentValue as Record<string, unknown>, {
             variables,
-            deepParseOptions,
-            parseVariablesOptions,
-          )(currentValue as Record<string, unknown>),
+            guessCorrectTypes,
+            removeEmptyStrings,
+            sessionStore,
+            ...parseVariablesOptions,
+          }),
         };
 
       if (currentValue instanceof Array)
         return {
           ...newObj,
-          [key]: currentValue.map(
-            deepParseVariables(
+          [key]: currentValue.map((value) =>
+            deepParseVariables(value, {
               variables,
-              deepParseOptions,
-              parseVariablesOptions,
-            ),
+              guessCorrectTypes,
+              removeEmptyStrings,
+              sessionStore,
+              ...parseVariablesOptions,
+            }),
           ),
         };
 
       return { ...newObj, [key]: currentValue };
-    }, {} as T);
-  };
+    },
+    {} as WithoutVariables<T>,
+  );
+};

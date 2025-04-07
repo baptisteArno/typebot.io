@@ -57,7 +57,6 @@ export const executeChatwootBlock = (
     onNewLog({
       status: "info",
       description: "Chatwoot won't open in preview mode",
-      details: null,
     });
   } else if (isEmbedded) {
     sendEventToParent({

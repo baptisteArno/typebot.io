@@ -1,11 +1,36 @@
+import { DropdownList } from "@/components/DropdownList";
 import { NumberInput, TextInput } from "@/components/inputs";
+import { Select } from "@/components/inputs/Select";
 import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
-import { FormLabel, Stack } from "@chakra-ui/react";
+import {
+  Accordion,
+  AccordionButton,
+  AccordionIcon,
+  AccordionItem,
+  AccordionPanel,
+  FormControl,
+  FormLabel,
+  Stack,
+  Text,
+} from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
-import { defaultNumberInputOptions } from "@typebot.io/blocks-inputs/number/constants";
-import type { NumberInputBlock } from "@typebot.io/blocks-inputs/number/schema";
+import {
+  NumberInputStyle,
+  NumberInputUnit,
+  defaultNumberInputButtonLabel,
+  defaultNumberInputPlaceholder,
+  defaultNumberInputStyle,
+  localeRegex,
+  numberStyleTranslationKeys,
+  unitTranslationKeys,
+} from "@typebot.io/blocks-inputs/number/constants";
+import {
+  type NumberInputBlock,
+  numberInputOptionsSchema,
+} from "@typebot.io/blocks-inputs/number/schema";
 import type { Variable } from "@typebot.io/variables/schemas";
-import React from "react";
+import React, { useEffect } from "react";
+import { currencies } from "../../payment/currencies";
 
 type Props = {
   options: NumberInputBlock["options"];
@@ -14,6 +39,16 @@ type Props = {
 
 export const NumberInputSettings = ({ options, onOptionsChange }: Props) => {
   const { t } = useTranslate();
+
+  useEffect(() => {
+    if (!options?.locale) {
+      const browserLocale = navigator.language;
+      if (browserLocale.match(localeRegex)) {
+        onOptionsChange({ ...options, locale: browserLocale });
+      }
+    }
+  });
+
   const handlePlaceholderChange = (placeholder: string) =>
     onOptionsChange({
       ...options,
@@ -21,6 +56,11 @@ export const NumberInputSettings = ({ options, onOptionsChange }: Props) => {
     });
   const handleButtonLabelChange = (button: string) =>
     onOptionsChange({ ...options, labels: { ...options?.labels, button } });
+  const handleCurrencyChange = (currency: string) =>
+    onOptionsChange({
+      ...options,
+      currency,
+    });
   const handleMinChange = (
     min?: NonNullable<NumberInputBlock["options"]>["min"],
   ) => onOptionsChange({ ...options, min });
@@ -30,6 +70,21 @@ export const NumberInputSettings = ({ options, onOptionsChange }: Props) => {
   const handleStepChange = (
     step?: NonNullable<NumberInputBlock["options"]>["step"],
   ) => onOptionsChange({ ...options, step });
+  const handleStyleChange = (style: NumberInputStyle) =>
+    onOptionsChange({
+      ...options,
+      style,
+    });
+  const handleUnitChange = (unit: NumberInputUnit) =>
+    onOptionsChange({ ...options, unit });
+  const handleLocaleChange = (locale: string) => {
+    const savableLocale = numberInputOptionsSchema.shape.locale.safeParse(
+      locale,
+    ).success
+      ? locale
+      : (options?.locale ?? navigator.language);
+    onOptionsChange({ ...options, locale: savableLocale });
+  };
   const handleVariableChange = (variable?: Variable) => {
     onOptionsChange({ ...options, variableId: variable?.id });
   };
@@ -39,16 +94,13 @@ export const NumberInputSettings = ({ options, onOptionsChange }: Props) => {
       <TextInput
         label={t("blocks.inputs.settings.placeholder.label")}
         defaultValue={
-          options?.labels?.placeholder ??
-          defaultNumberInputOptions.labels.placeholder
+          options?.labels?.placeholder ?? defaultNumberInputPlaceholder
         }
         onChange={handlePlaceholderChange}
       />
       <TextInput
         label={t("blocks.inputs.settings.button.label")}
-        defaultValue={
-          options?.labels?.button ?? defaultNumberInputOptions.labels.button
-        }
+        defaultValue={options?.labels?.button ?? defaultNumberInputButtonLabel}
         onChange={handleButtonLabelChange}
       />
       <NumberInput
@@ -66,6 +118,75 @@ export const NumberInputSettings = ({ options, onOptionsChange }: Props) => {
         defaultValue={options?.step}
         onValueChange={handleStepChange}
       />
+      <Accordion allowToggle>
+        <AccordionItem>
+          <AccordionButton>
+            <Text w="full" textAlign="left">
+              {t("blocks.inputs.number.settings.format.label")}
+            </Text>
+            <AccordionIcon />
+          </AccordionButton>
+          <AccordionPanel>
+            <DropdownList
+              items={Object.values(NumberInputStyle).map((style) => ({
+                label: t(numberStyleTranslationKeys[style]),
+                value: style,
+              }))}
+              currentItem={options?.style ?? defaultNumberInputStyle}
+              onItemSelect={(value) =>
+                handleStyleChange(value as NumberInputStyle)
+              }
+            />
+            {options?.style === NumberInputStyle.CURRENCY && (
+              <FormControl mt={4}>
+                <FormLabel>
+                  {t("blocks.inputs.number.settings.currency.label")}
+                </FormLabel>
+                <Select
+                  items={currencies.map(({ code, description }) => ({
+                    label: description,
+                    value: code,
+                  }))}
+                  onSelect={(value) => handleCurrencyChange(value as string)}
+                  placeholder={t(
+                    "blocks.inputs.number.settings.currency.label",
+                  )}
+                  selectedItem={options?.currency}
+                />
+              </FormControl>
+            )}
+            {options?.style === NumberInputStyle.UNIT && (
+              <FormControl mt={4}>
+                <FormLabel>
+                  {t("blocks.inputs.number.settings.unit.label")}
+                </FormLabel>
+                <Select
+                  items={Object.values(NumberInputUnit).map((unit) => ({
+                    label: t(unitTranslationKeys[unit]),
+                    value: unit,
+                  }))}
+                  onSelect={(value) =>
+                    handleUnitChange(value as NumberInputUnit)
+                  }
+                  placeholder={t("blocks.inputs.number.settings.unit.label")}
+                  selectedItem={options?.unit}
+                />
+              </FormControl>
+            )}
+            <FormControl mt={4}>
+              <FormLabel>
+                {t("blocks.inputs.number.settings.locale.label")}
+              </FormLabel>
+              <TextInput
+                defaultValue={options?.locale}
+                helperText={t("blocks.inputs.number.settings.locale.helper")}
+                placeholder="en-US"
+                onChange={handleLocaleChange}
+              />
+            </FormControl>
+          </AccordionPanel>
+        </AccordionItem>
+      </Accordion>
       <Stack>
         <FormLabel mb="0" htmlFor="variable">
           {t("blocks.inputs.settings.saveAnswer.label")}

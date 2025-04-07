@@ -2,11 +2,10 @@ import { isWriteTypebotForbidden } from "@/features/typebot/helpers/isWriteTypeb
 import { authenticatedProcedure } from "@/helpers/server/trpc";
 import { TRPCError } from "@trpc/server";
 import { decrypt } from "@typebot.io/credentials/decrypt";
-import { getCredentials } from "@typebot.io/credentials/getCredentials";
 import { forgedBlocks } from "@typebot.io/forge-repository/definitions";
 import prisma from "@typebot.io/prisma";
+import { defaultGroupTitleGenPrompt } from "@typebot.io/schemas/features/user/constants";
 import { groupTitlesAutoGenerationSchema } from "@typebot.io/schemas/features/user/schema";
-import { defaultGroupTitleGenPrompt } from "@typebot.io/workspaces/constants";
 import { z } from "@typebot.io/zod";
 import { generateObject } from "ai";
 

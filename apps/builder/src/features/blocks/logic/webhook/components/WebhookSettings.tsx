@@ -6,6 +6,7 @@ import { DataVariableInputs } from "@/features/blocks/integrations/httpRequest/c
 import { getDeepKeys } from "@/features/blocks/integrations/httpRequest/helpers/getDeepKeys";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { useUser } from "@/features/user/hooks/useUser";
+import { toast } from "@/lib/toast";
 import {
   Accordion,
   AccordionButton,
@@ -31,10 +32,9 @@ import * as Sentry from "@sentry/nextjs";
 import type { ResponseVariableMapping } from "@typebot.io/blocks-integrations/httpRequest/schema";
 import type { WebhookBlock } from "@typebot.io/blocks-logic/webhook/schema";
 import { env } from "@typebot.io/env";
-import { stringifyError } from "@typebot.io/lib/stringifyError";
+import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
 import usePartySocket from "partysocket/react";
 import { useMemo, useState } from "react";
-import { toast } from "sonner";
 
 type Props = {
   blockId: string;
@@ -63,7 +63,7 @@ export const WebhookSettings = ({
     host: env.NEXT_PUBLIC_PARTYKIT_HOST,
     room: `${user?.id}/${typebot?.id}/webhooks`,
 
-    onMessage(e) {
+    async onMessage(e) {
       try {
         const parsedData = JSON.parse(e.data);
         if (Object.keys(parsedData).length > 0) {
@@ -73,13 +73,12 @@ export const WebhookSettings = ({
         setWebsocketStatus("closed");
         ws.close();
       } catch (err) {
-        toast.error("Failed to parse webhook data", {
-          description: stringifyError(err),
-        });
+        toast(await parseUnknownError({ err }));
       }
     },
-    onError(e) {
+    async onError(e) {
       console.error(e);
+      console.log((await parseUnknownError({ err: e })).details);
       Sentry.captureException(e);
     },
     startClosed: true,
@@ -112,7 +111,7 @@ export const WebhookSettings = ({
         <Tab>Production URL</Tab>
       </TabList>
       <TabPanels>
-        <TabPanel>
+        <TabPanel pb="0">
           <Stack spacing="4">
             {typebot && (
               <FormControl as={Stack}>
@@ -132,7 +131,7 @@ export const WebhookSettings = ({
             )}
             <Button
               onClick={listenForTestEvent}
-              colorScheme="blue"
+              colorScheme="orange"
               isLoading={websocketStatus === "opened"}
             >
               Listen for test event
@@ -179,7 +178,7 @@ export const WebhookSettings = ({
             )}
           </Stack>
         </TabPanel>
-        <TabPanel>
+        <TabPanel pb="0">
           {typebot && (
             <FormControl as={Stack}>
               <InputGroup size="sm">

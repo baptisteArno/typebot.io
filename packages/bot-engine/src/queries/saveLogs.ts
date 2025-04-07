@@ -1,5 +1,10 @@
+import type { LogInSession } from "@typebot.io/logs/schemas";
 import prisma from "@typebot.io/prisma";
-import type { Log } from "@typebot.io/results/schemas/results";
 
-export const saveLogs = (logs: Omit<Log, "id" | "createdAt">[]) =>
-  prisma.log.createMany({ data: logs });
+export const saveLogs = (logs: (LogInSession & { resultId: string })[]) =>
+  prisma.log.createMany({
+    data: logs.map((l) => ({
+      ...l,
+      status: l.status ?? "error",
+    })),
+  });

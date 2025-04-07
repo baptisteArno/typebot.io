@@ -8,6 +8,7 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
+  Portal,
   Stack,
   Text,
 } from "@chakra-ui/react";
@@ -43,6 +44,8 @@ export const PictureChoiceItemSettings = ({
   const updateDescription = (description: string) =>
     onItemChange({ ...item, description });
 
+  const updateValue = (value: string) => onItemChange({ ...item, value });
+
   const updateIsDisplayConditionEnabled = (isEnabled: boolean) =>
     onItemChange({
       ...item,
@@ -77,22 +80,28 @@ export const PictureChoiceItemSettings = ({
                     : t("blocks.inputs.picture.itemSettings.image.pick.label")}
                 </Button>
               </PopoverTrigger>
-              <PopoverContent p="4" w="500px">
-                <ImageUploadContent
-                  uploadFileProps={{
-                    workspaceId,
-                    typebotId,
-                    blockId,
-                    itemId: item.id,
-                  }}
-                  defaultUrl={item.pictureSrc}
-                  onSubmit={(url) => {
-                    updateImage(url);
-                    onClose();
-                  }}
-                  excludedTabs={["emoji"]}
-                />
-              </PopoverContent>
+              <Portal>
+                <PopoverContent p="4" w="500px">
+                  <ImageUploadContent
+                    uploadFileProps={{
+                      workspaceId,
+                      typebotId,
+                      blockId,
+                      itemId: item.id,
+                    }}
+                    defaultUrl={item.pictureSrc}
+                    onSubmit={(url) => {
+                      updateImage(url);
+                      onClose();
+                    }}
+                    additionalTabs={{
+                      giphy: true,
+                      unsplash: true,
+                      icon: true,
+                    }}
+                  />
+                </PopoverContent>
+              </Portal>
             </>
           )}
         </Popover>
@@ -106,6 +115,14 @@ export const PictureChoiceItemSettings = ({
         label={t("blocks.inputs.settings.description.label")}
         defaultValue={item.description}
         onChange={updateDescription}
+      />
+      <TextInput
+        label={t("blocks.inputs.internalValue.label")}
+        moreInfoTooltip={t(
+          "blocks.inputs.picture.itemSettings.pictureValue.helperText",
+        )}
+        defaultValue={item.value}
+        onChange={updateValue}
       />
       <SwitchWithRelatedSettings
         label={t("blocks.inputs.settings.displayCondition.label")}

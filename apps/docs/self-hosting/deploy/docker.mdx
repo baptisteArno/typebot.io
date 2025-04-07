@@ -75,8 +75,8 @@ Typebot is updated regularly, but it is up to you to apply these updates on your
    Alternatively, you can pull specific versions:
 
    ```sh
-    docker-compose pull typebot-builder:1.0.0
-    docker-compose pull typebot-viewer:1.0.0
+    docker-compose pull typebot-builder:3.4.2
+    docker-compose pull typebot-viewer:3.4.2
    ```
 
 2. Stop the server:
@@ -108,7 +108,6 @@ Alternatively, you can run your Caddy server as a reverse proxy. This way your S
 Here is an example of a docker-compose file using Caddy as a reverse proxy:
 
 ```yml
-version: '3.3'
 services:
   caddy-gen:
     container_name: caddy-gen
@@ -168,7 +167,6 @@ I highly recommend using an external SMTP service. There are tons of options out
 If, however, you don't want to, you can instantiate an SMTP server in the docker-compose file.
 
 ```yml
-version: '3.3'
 services:
   mail:
     image: bytemark/smtp
@@ -191,11 +189,6 @@ You can merge this compose file with the main one.
 If you don't already have an S3 storage available, you could include it in your docker-compose file:
 
 ```yml
-version: '3.3'
-
-volumes:
-  s3-data:
-
 services:
   minio:
     image: minio/minio
@@ -220,6 +213,9 @@ services:
       /usr/bin/mc anonymous set public minio/typebot/public;
       exit 0;
       "
+
+volumes:
+  s3-data:
 ```
 
 And add the following variables to your `.env` file:
@@ -244,12 +240,6 @@ You can merge this compose file with the main one.
 Here is a config example that spins up Typebot with HTTPS, SMTP and S3 storage.
 
 ```yml
-version: '3.3'
-
-volumes:
-  db-data:
-  s3-data:
-
 services:
   caddy-gen:
     image: 'wemakeservices/caddy-gen:latest'
@@ -337,6 +327,10 @@ services:
       /usr/bin/mc anonymous set public minio/typebot/public;
       exit 0;
       "
+
+volumes:
+  db-data:
+  s3-data:
 ```
 
 ## Build your own images
@@ -352,6 +346,36 @@ To build your own viewer Docker image
 ```sh
 docker build -t typebot-viewer --build-arg SCOPE=viewer .
 ```
+
+## Troubleshooting
+
+### Avoiding network issues when migrating in Portainer
+
+If you migrate a Typebot stack between Portainer instances, hostname resolution may fail, causing `typebot-viewer` to be unable to connect to `typebot-db`.
+
+Before deploying the stack in Portainer, ensure the network is **explicitly defined as attachable** in `docker-compose.yml`:
+
+```yml
+networks:
+  typebot_network:
+    driver: bridge
+    attachable: true
+
+services:
+  typebot-db:
+    ...
+    networks:
+      - typebot_network
+  typebot-builder:
+    ...
+    networks:
+      - typebot_network
+  typebot-viewer:
+    ...
+    networks:
+      - typebot_network
+```
+When deploying the stack, Portainer will automatically create the network with the correct settings. This prevents hostname resolution issues after migration.
 
 <Note>
   If you're self-hosting Typebot, [sponsoring

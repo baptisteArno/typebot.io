@@ -182,7 +182,7 @@ export const SendEmailSettings = ({ options, onOptionsChange }: Props) => {
         defaultValue={options?.subject ?? ""}
       />
       <SwitchWithLabel
-        label={"Custom content?"}
+        label={"Custom content"}
         moreInfoContent="By default, the email body will be a recap of what has been collected so far. You can override it with this option."
         initialValue={
           options?.isCustomBody ?? defaultSendEmailOptions.isCustomBody
@@ -210,6 +210,7 @@ export const SendEmailSettings = ({ options, onOptionsChange }: Props) => {
               defaultValue={options.body ?? ""}
               onChange={handleBodyChange}
               lang="html"
+              withLineNumbers={true}
             />
           ) : (
             <Textarea

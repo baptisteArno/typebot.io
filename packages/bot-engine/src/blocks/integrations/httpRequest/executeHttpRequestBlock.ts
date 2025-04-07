@@ -21,14 +21,15 @@ import type {
 import { env } from "@typebot.io/env";
 import { JSONParse } from "@typebot.io/lib/JSONParse";
 import { isDefined, isEmpty, isNotDefined, omit } from "@typebot.io/lib/utils";
+import type { LogInSession } from "@typebot.io/logs/schemas";
 import prisma from "@typebot.io/prisma";
 import { parseAnswers } from "@typebot.io/results/parseAnswers";
 import type { AnswerInSessionState } from "@typebot.io/results/schemas/answers";
+import type { SessionStore } from "@typebot.io/runtime-session-store";
 import { parseVariables } from "@typebot.io/variables/parseVariables";
 import type { Variable } from "@typebot.io/variables/schemas";
 import ky, { HTTPError, TimeoutError, type Options } from "ky";
 import { stringify } from "qs";
-import type { ChatLog } from "../../../schemas/api";
 import type { ExecuteIntegrationResponse } from "../../../types";
 import { saveDataInResponseVariableMapping } from "./saveDataInResponseVariableMapping";
 
@@ -51,11 +52,17 @@ export const webhookErrorDescription = `Webhook returned an error.`;
 type Params = { disableRequestTimeout?: boolean; timeout?: number };
 
 export const executeHttpRequestBlock = async (
-  state: SessionState,
   block: HttpRequestBlock | ZapierBlock | MakeComBlock | PabblyConnectBlock,
-  params: Params = {},
+  {
+    state,
+    sessionStore,
+    ...params
+  }: {
+    state: SessionState;
+    sessionStore: SessionStore;
+  } & Params,
 ): Promise<ExecuteIntegrationResponse> => {
-  const logs: ChatLog[] = [];
+  const logs: LogInSession[] = [];
   const webhook =
     block.options?.webhook ??
     ("webhookId" in block
@@ -69,6 +76,7 @@ export const executeHttpRequestBlock = async (
     isCustomBody: block.options?.isCustomBody,
     typebot: state.typebotsQueue[0].typebot,
     answers: state.typebotsQueue[0].answers,
+    sessionStore,
   });
   if (!parsedHttpRequest) {
     logs.push({
@@ -89,8 +97,8 @@ export const executeHttpRequestBlock = async (
       ],
     };
   const {
-    response: webhookResponse,
-    logs: executeWebhookLogs,
+    response: httpRequestResponse,
+    logs: httpRequestLogs,
     startTimeShouldBeUpdated,
   } = await executeHttpRequest(parsedHttpRequest, {
     ...params,
@@ -104,8 +112,9 @@ export const executeHttpRequestBlock = async (
       blockId: block.id,
       responseVariableMapping: block.options?.responseVariableMapping,
       outgoingEdgeId: block.outgoingEdgeId,
-      logs: executeWebhookLogs,
-      response: webhookResponse,
+      logs: httpRequestLogs,
+      response: httpRequestResponse,
+      sessionStore,
     }),
     startTimeShouldBeUpdated,
   };
@@ -118,11 +127,13 @@ export const parseWebhookAttributes = async ({
   isCustomBody,
   typebot,
   answers,
+  sessionStore,
 }: {
   webhook: HttpRequest;
   isCustomBody?: boolean;
   typebot: TypebotInSession;
   answers: AnswerInSessionState[];
+  sessionStore: SessionStore;
 }): Promise<ParsedWebhook | undefined> => {
   if (!webhook.url) return;
   const basicAuth: { username?: string; password?: string } = {};
@@ -142,12 +153,18 @@ export const parseWebhookAttributes = async ({
     basicAuth.password = password;
     webhook.headers?.splice(basicAuthHeaderIdx, 1);
   }
-  const headers = convertKeyValueTableToObject(
-    webhook.headers,
-    typebot.variables,
-  ) as ExecutableHttpRequest["headers"] | undefined;
+  const headers = convertKeyValueTableToObject({
+    keyValues: webhook.headers,
+    variables: typebot.variables,
+    sessionStore,
+  }) as ExecutableHttpRequest["headers"] | undefined;
   const queryParams = stringify(
-    convertKeyValueTableToObject(webhook.queryParams, typebot.variables, true),
+    convertKeyValueTableToObject({
+      keyValues: webhook.queryParams,
+      variables: typebot.variables,
+      concatDuplicateInArray: true,
+      sessionStore,
+    }),
     { indices: false },
   );
   const bodyContent = await getBodyContent({
@@ -160,15 +177,18 @@ export const parseWebhookAttributes = async ({
   const { data: body, isJson } =
     bodyContent && method !== HttpMethod.GET
       ? safeJsonParse(
-          parseVariables(typebot.variables, {
+          parseVariables(bodyContent, {
+            variables: typebot.variables,
+            sessionStore,
             isInsideJson: !checkIfBodyIsAVariable(bodyContent),
-          })(bodyContent),
+          }),
         )
       : { data: undefined, isJson: false };
 
   return {
-    url: parseVariables(typebot.variables)(
+    url: parseVariables(
       webhook.url + (queryParams !== "" ? `?${queryParams}` : ""),
+      { variables: typebot.variables, sessionStore },
     ),
     basicAuth,
     method,
@@ -183,10 +203,10 @@ export const executeHttpRequest = async (
   params: Params = {},
 ): Promise<{
   response: HttpResponse;
-  logs?: ChatLog[];
+  logs?: LogInSession[];
   startTimeShouldBeUpdated?: boolean;
 }> => {
-  const logs: ChatLog[] = [];
+  const logs: LogInSession[] = [];
 
   const { headers, url, method, basicAuth, isJson } = webhook;
   const contentType = headers ? headers["Content-Type"] : undefined;
@@ -225,48 +245,38 @@ export const executeHttpRequest = async (
 
   try {
     const response = await ky(request.url, omit(request, "url"));
-    const body = response.headers.get("content-type")?.includes("json")
-      ? await response.json()
-      : await response.text();
+    const body = await response.text();
     logs.push({
       status: "success",
       description: webhookSuccessDescription,
-      details: {
+      details: JSON.stringify({
         statusCode: response.status,
-        response: typeof body === "string" ? safeJsonParse(body).data : body,
+        response: body,
         request,
-      },
+      }),
     });
     return {
       response: {
         statusCode: response.status,
-        data: typeof body === "string" ? safeJsonParse(body).data : body,
+        data: safeJsonParse(body).data,
       },
       logs,
       startTimeShouldBeUpdated: true,
     };
   } catch (error) {
     if (error instanceof HTTPError) {
-      const responseBody = error.response.headers
-        .get("content-type")
-        ?.includes("json")
-        ? await error.response.json()
-        : await error.response.text();
       const response = {
         statusCode: error.response.status,
-        data:
-          typeof responseBody === "string"
-            ? safeJsonParse(responseBody).data
-            : responseBody,
+        data: safeJsonParse(await error.response.text()).data,
       };
       logs.push({
         status: "error",
         description: webhookErrorDescription,
-        details: {
+        details: JSON.stringify({
           statusCode: error.response.status,
           request,
           response,
-        },
+        }),
       });
       return { response, logs, startTimeShouldBeUpdated: true };
     }
@@ -284,10 +294,10 @@ export const executeHttpRequest = async (
         description: `Webhook request timed out. (${
           (request.timeout ? request.timeout : 0) / 1000
         }s)`,
-        details: {
+        details: JSON.stringify({
           response,
           request,
-        },
+        }),
       });
       return { response, logs, startTimeShouldBeUpdated: true };
     }
@@ -299,10 +309,10 @@ export const executeHttpRequest = async (
     logs.push({
       status: "error",
       description: `Webhook failed to execute.`,
-      details: {
+      details: JSON.stringify({
         response,
         request,
-      },
+      }),
     });
     return { response, logs, startTimeShouldBeUpdated: true };
   }
@@ -329,15 +339,21 @@ const getBodyContent = async ({
     : (body ?? undefined);
 };
 
-export const convertKeyValueTableToObject = (
-  keyValues: KeyValue[] | undefined,
-  variables: Variable[],
+export const convertKeyValueTableToObject = ({
+  keyValues,
+  variables,
+  sessionStore,
   concatDuplicateInArray = false,
-) => {
+}: {
+  keyValues: KeyValue[] | undefined;
+  variables: Variable[];
+  sessionStore: SessionStore;
+  concatDuplicateInArray?: boolean;
+}) => {
   if (!keyValues) return;
   return keyValues.reduce<Record<string, string | string[]>>((object, item) => {
-    const key = parseVariables(variables)(item.key);
-    const value = parseVariables(variables)(item.value);
+    const key = parseVariables(item.key, { variables, sessionStore });
+    const value = parseVariables(item.value, { variables, sessionStore });
     if (isEmpty(key) || isEmpty(value)) return object;
     if (object[key] && concatDuplicateInArray) {
       if (Array.isArray(object[key])) (object[key] as string[]).push(value);
@@ -347,7 +363,6 @@ export const convertKeyValueTableToObject = (
   }, {});
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const safeJsonParse = (json: unknown): { data: any; isJson: boolean } => {
   try {
     return { data: JSONParse(json as string), isJson: true };

@@ -7,16 +7,21 @@
     "./*": "./src/*.ts",
     "./components/*": "./src/components/*.tsx",
     "./icons/*": "./src/icons/*.tsx",
-    "./colors/css": "./src/colors.css"
+    "./colors.css": "./src/colors.css"
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*"
   },
   "dependencies": {
+    "@ark-ui/react": "5.1.0",
     "@chakra-ui/react": "2.8.2",
     "@chakra-ui/theme-tools": "2.2.6",
+    "class-variance-authority": "0.7.1",
+    "tailwindcss-animate": "1.0.7",
+    "tailwindcss": "3.4.17",
+    "tailwind-merge": "3.0.2",
     "@chakra-ui/anatomy": "2.3.4",
-    "next": "14.2.13",
-    "react": "18.2.0"
+    "next": "14.2.26",
+    "react": "18.3.1"
   }
 }

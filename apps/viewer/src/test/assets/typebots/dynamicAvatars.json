@@ -1,0 +1,164 @@
+{
+  "version": "6.1",
+  "id": "cm8iyllfn000113udjjfczg0d",
+  "name": "My typebot",
+  "events": [
+    {
+      "id": "ou67tqf0ok9jxhwps9qya4uv",
+      "outgoingEdgeId": "abp3c1nxr5lwwgxn53drz7ea",
+      "graphCoordinates": { "x": 0, "y": 0 },
+      "type": "start"
+    }
+  ],
+  "groups": [
+    {
+      "id": "qctoueogldpdjjhtw1sr684l",
+      "title": "",
+      "graphCoordinates": { "x": 242, "y": 59 },
+      "blocks": [
+        {
+          "id": "fesslv44fko54lpaxivezgr7",
+          "type": "Set variable",
+          "options": {
+            "variableId": "ve4830wt5nk9snpwru0l77yht",
+            "expressionToEvaluate": "https://images.unsplash.com/photo-1718563552473-2d97b224e801?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0MjU2MDR8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NDI1NzIzOTN8&ixlib=rb-4.0.3&q=80&w=1080"
+          }
+        },
+        {
+          "id": "eu99txj94e0wrld7u5th3fwi",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "First avatar" }] }
+            ]
+          }
+        },
+        {
+          "id": "dv3ijzymszurvwgw1nudr74v",
+          "type": "choice input",
+          "items": [
+            {
+              "id": "btd3xebfk0pnk3oqiih1l6hb",
+              "outgoingEdgeId": "wb2nwwq3vp7arbvqdqujwsur",
+              "content": "Next"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bxy97su516y22il376nz6c6o",
+      "title": "",
+      "graphCoordinates": { "x": 587, "y": 61.5 },
+      "blocks": [
+        {
+          "id": "i5rq474u6azmiba6yix35y93",
+          "type": "Set variable",
+          "options": {
+            "variableId": "ve4830wt5nk9snpwru0l77yht",
+            "expressionToEvaluate": "😅"
+          }
+        },
+        {
+          "id": "i2rxekdppzge3t8zyrw7v3o1",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "Second avatar" }] }
+            ]
+          }
+        },
+        {
+          "id": "gfy58nv9zxv3cekfcgutwq3n",
+          "type": "choice input",
+          "items": [
+            {
+              "id": "fcfaf5frmi7y6c1qqx710peb",
+              "outgoingEdgeId": "v98i4svqvrbe8qmmo80g7wbg",
+              "content": "Next"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "u7r0n90nlnnw8suik5nqs1z2",
+      "title": "",
+      "graphCoordinates": { "x": 930.5, "y": 58 },
+      "blocks": [
+        {
+          "id": "w09714ko49gja6nj14cjbnbq",
+          "type": "Set variable",
+          "options": {
+            "variableId": "ve4830wt5nk9snpwru0l77yht",
+            "expressionToEvaluate": "https://media1.giphy.com/media/CGXnGb7zpsvXD2uwvd/giphy-downsized.gif?cid=fe3852a3wdr6wsbqhljpeqqclihoay1kwtl091k4bjyuwouu&ep=v1_gifs_trending&rid=giphy-downsized.gif&ct=g"
+          }
+        },
+        {
+          "id": "uy3pphln2pu0qk27thmpfl21",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "Third avatar" }] }
+            ]
+          }
+        },
+        {
+          "id": "jssrktmm0fty951croebkdcx",
+          "type": "choice input",
+          "items": [{ "id": "epxu8bs6h3g823pmp19oxs7a", "content": "Next" }]
+        }
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "abp3c1nxr5lwwgxn53drz7ea",
+      "from": { "eventId": "ou67tqf0ok9jxhwps9qya4uv" },
+      "to": { "groupId": "qctoueogldpdjjhtw1sr684l" }
+    },
+    {
+      "id": "wb2nwwq3vp7arbvqdqujwsur",
+      "from": {
+        "blockId": "dv3ijzymszurvwgw1nudr74v",
+        "itemId": "btd3xebfk0pnk3oqiih1l6hb"
+      },
+      "to": { "groupId": "bxy97su516y22il376nz6c6o" }
+    },
+    {
+      "id": "v98i4svqvrbe8qmmo80g7wbg",
+      "from": {
+        "blockId": "gfy58nv9zxv3cekfcgutwq3n",
+        "itemId": "fcfaf5frmi7y6c1qqx710peb"
+      },
+      "to": { "groupId": "u7r0n90nlnnw8suik5nqs1z2" }
+    }
+  ],
+  "variables": [
+    {
+      "id": "ve4830wt5nk9snpwru0l77yht",
+      "name": "Avatar URL",
+      "isSessionVariable": true
+    }
+  ],
+  "theme": {
+    "chat": {
+      "hostAvatar": { "isEnabled": true, "url": "{{Avatar URL}}" },
+      "guestAvatar": { "isEnabled": true, "url": "{{Avatar URL}}" }
+    }
+  },
+  "selectedThemeTemplateId": null,
+  "settings": { "general": { "rememberUser": { "isEnabled": true } } },
+  "createdAt": "2025-03-21T15:52:54.467Z",
+  "updatedAt": "2025-03-21T15:55:33.416Z",
+  "icon": null,
+  "folderId": null,
+  "publicId": "my-typebot-jfczg0d",
+  "customDomain": null,
+  "workspaceId": "lifetimeWorkspaceId",
+  "resultsTablePreferences": null,
+  "isArchived": false,
+  "isClosed": false,
+  "whatsAppCredentialsId": null,
+  "riskLevel": null
+}

@@ -20,11 +20,16 @@ import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
 import { IntegrationBlockType } from "@typebot.io/blocks-integrations/constants";
 import { LogicBlockType } from "@typebot.io/blocks-logic/constants";
 import { env } from "@typebot.io/env";
+import { EventType } from "@typebot.io/events/constants";
+import type { TDraggableEvent } from "@typebot.io/events/schemas";
 import { forgedBlocks } from "@typebot.io/forge-repository/definitions";
 import { isDefined } from "@typebot.io/lib/utils";
 import type React from "react";
 import { useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
+import { EventCard } from "../../events/components/EventCard";
+import { EventCardOverlay } from "../../events/components/EventCardOverlay";
+import { getEventBlockLabel } from "../../events/components/EventLabel";
 import { headerHeight, leftSidebarLockedStorageKey } from "../constants";
 import { BlockCard } from "./BlockCard";
 import { BlockCardOverlay } from "./BlockCardOverlay";
@@ -40,7 +45,12 @@ const legacyIntegrationBlocks = [IntegrationBlockType.OPEN_AI];
 
 export const BlocksSideBar = () => {
   const { t } = useTranslate();
-  const { setDraggedBlockType, draggedBlockType } = useBlockDnd();
+  const {
+    setDraggedBlockType,
+    draggedBlockType,
+    draggedEventType,
+    setDraggedEventType,
+  } = useBlockDnd();
   const [position, setPosition] = useState({
     x: 0,
     y: 0,
@@ -50,17 +60,17 @@ export const BlocksSideBar = () => {
     y: 0,
   });
   const [isLocked, setIsLocked] = useState(
-    localStorage.getItem(leftSidebarLockedStorageKey) === "true",
+    localStorage.getItem(leftSidebarLockedStorageKey) !== "false",
   );
   const [isExtended, setIsExtended] = useState(
-    localStorage.getItem(leftSidebarLockedStorageKey) === "true",
+    localStorage.getItem(leftSidebarLockedStorageKey) !== "false",
   );
   const [searchInput, setSearchInput] = useState("");
 
   const closeSideBar = useDebouncedCallback(() => setIsExtended(false), 200);
 
   const handleMouseMove = (event: MouseEvent) => {
-    if (!draggedBlockType) return;
+    if (!draggedBlockType && !draggedEventType) return;
     const { clientX, clientY } = event;
     setPosition({
       ...position,
@@ -70,7 +80,7 @@ export const BlocksSideBar = () => {
   };
   useEventListener("mousemove", handleMouseMove);
 
-  const handleMouseDown = (e: React.MouseEvent, type: BlockV6["type"]) => {
+  const initBlockDragging = (e: React.MouseEvent, type: BlockV6["type"]) => {
     const element = e.currentTarget as HTMLDivElement;
     const rect = element.getBoundingClientRect();
     setPosition({ x: rect.left, y: rect.top });
@@ -80,9 +90,23 @@ export const BlocksSideBar = () => {
     setDraggedBlockType(type);
   };
 
+  const initEventDragging = (
+    e: React.MouseEvent,
+    type: TDraggableEvent["type"],
+  ) => {
+    const element = e.currentTarget as HTMLDivElement;
+    const rect = element.getBoundingClientRect();
+    setPosition({ x: rect.left, y: rect.top });
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    setRelativeCoordinates({ x, y });
+    setDraggedEventType(type);
+  };
+
   const handleMouseUp = () => {
-    if (!draggedBlockType) return;
+    if (!draggedBlockType && !draggedEventType) return;
     setDraggedBlockType(undefined);
+    setDraggedEventType(undefined);
     setPosition({
       x: 0,
       y: 0,
@@ -104,8 +128,8 @@ export const BlocksSideBar = () => {
     setIsExtended(true);
   };
 
-  const handleMouseLeave = () => {
-    if (isLocked) return;
+  const handleMouseLeave = (e: React.MouseEvent) => {
+    if (isLocked || e.clientX < 100) return;
     closeSideBar();
   };
 
@@ -135,23 +159,29 @@ export const BlocksSideBar = () => {
         .includes(searchInput.toLowerCase()),
   );
 
-  const filteredInputBlockTypes = Object.values(InputBlockType).filter((type) =>
-    getInputBlockLabel(t)
+  const filteredInputBlockTypes = Object.values(InputBlockType).filter(
+    (type) => {
+      return getInputBlockLabel(t)
+        [type].toLowerCase()
+        .includes(searchInput.toLowerCase());
+    },
+  );
+
+  const filteredLogicBlockTypes = Object.values(LogicBlockType).filter(
+    (type) =>
+      type === LogicBlockType.WEBHOOK
+        ? isDefined(env.NEXT_PUBLIC_PARTYKIT_HOST)
+        : true &&
+          getLogicBlockLabel(t)
+            [type].toLowerCase()
+            .includes(searchInput.toLowerCase()),
+  );
+
+  const filteredEventBlockTypes = Object.values(EventType).filter((type) =>
+    getEventBlockLabel(t)
       [type].toLowerCase()
       .includes(searchInput.toLowerCase()),
   );
-
-  const filteredLogicBlockTypes = Object.values(LogicBlockType)
-    .filter((type) =>
-      type === LogicBlockType.WEBHOOK
-        ? isDefined(env.NEXT_PUBLIC_PARTYKIT_HOST)
-        : true,
-    )
-    .filter((type) =>
-      getLogicBlockLabel(t)
-        [type].toLowerCase()
-        .includes(searchInput.toLowerCase()),
-    );
 
   const filteredIntegrationBlockTypes = Object.values(
     IntegrationBlockType,
@@ -169,7 +199,6 @@ export const BlocksSideBar = () => {
       pos="absolute"
       left="0"
       h={`calc(100vh - ${headerHeight}px)`}
-      zIndex="2"
       pl="4"
       py="4"
       onMouseLeave={handleMouseLeave}
@@ -225,7 +254,11 @@ export const BlocksSideBar = () => {
           </Heading>
           <SimpleGrid columns={2} spacing="3">
             {filteredBubbleBlockTypes.map((type) => (
-              <BlockCard key={type} type={type} onMouseDown={handleMouseDown} />
+              <BlockCard
+                key={type}
+                type={type}
+                onMouseDown={initBlockDragging}
+              />
             ))}
           </SimpleGrid>
         </Stack>
@@ -236,7 +269,11 @@ export const BlocksSideBar = () => {
           </Heading>
           <SimpleGrid columns={2} spacing="3">
             {filteredInputBlockTypes.map((type) => (
-              <BlockCard key={type} type={type} onMouseDown={handleMouseDown} />
+              <BlockCard
+                key={type}
+                type={type}
+                onMouseDown={initBlockDragging}
+              />
             ))}
           </SimpleGrid>
         </Stack>
@@ -247,7 +284,26 @@ export const BlocksSideBar = () => {
           </Heading>
           <SimpleGrid columns={2} spacing="3">
             {filteredLogicBlockTypes.map((type) => (
-              <BlockCard key={type} type={type} onMouseDown={handleMouseDown} />
+              <BlockCard
+                key={type}
+                type={type}
+                onMouseDown={initBlockDragging}
+              />
+            ))}
+          </SimpleGrid>
+        </Stack>
+
+        <Stack>
+          <Heading fontSize="sm">
+            {t("editor.sidebarBlocks.blockType.events.heading")}
+          </Heading>
+          <SimpleGrid columns={2} spacing="3">
+            {filteredEventBlockTypes.map((type) => (
+              <EventCard
+                key={type}
+                type={type}
+                onMouseDown={initEventDragging}
+              />
             ))}
           </SimpleGrid>
         </Stack>
@@ -263,7 +319,7 @@ export const BlocksSideBar = () => {
                 <BlockCard
                   key={type}
                   type={type}
-                  onMouseDown={handleMouseDown}
+                  onMouseDown={initBlockDragging}
                 />
               ))}
           </SimpleGrid>
@@ -273,6 +329,20 @@ export const BlocksSideBar = () => {
           <Portal>
             <BlockCardOverlay
               type={draggedBlockType}
+              onMouseUp={handleMouseUp}
+              pos="fixed"
+              top="0"
+              left="0"
+              style={{
+                transform: `translate(${position.x}px, ${position.y}px) rotate(-2deg)`,
+              }}
+            />
+          </Portal>
+        )}
+        {draggedEventType && (
+          <Portal>
+            <EventCardOverlay
+              type={draggedEventType}
               onMouseUp={handleMouseUp}
               pos="fixed"
               top="0"

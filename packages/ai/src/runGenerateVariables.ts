@@ -1,4 +1,5 @@
 import type { LogsStore, VariableStore } from "@typebot.io/forge/types";
+import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
 import { isNotEmpty } from "@typebot.io/lib/utils";
 import type { Variable } from "@typebot.io/variables/schemas";
 import { z } from "@typebot.io/zod";
@@ -37,22 +38,25 @@ export const runGenerateVariables = async ({
     (variableToExtract) => variableToExtract.isRequired === false,
   );
 
-  const { object } = await generateObject({
-    model,
-    schema,
-    prompt:
-      `${prompt}\n\nYou should generate a JSON object` +
-      (hasOptionalVariables
-        ? " and provide empty values if the information is not there or if you are unsure."
-        : "."),
-  });
-
-  Object.entries(object).forEach(([key, value]) => {
-    if (value === null) return;
-    const existingVariable = variables.find((v) => v.name === key);
-    if (!existingVariable) return;
-    variablesStore.set([{ id: existingVariable.id, value }]);
-  });
+  try {
+    const { object } = await generateObject({
+      model,
+      schema,
+      prompt:
+        `${prompt}\n\nYou should generate a JSON object` +
+        (hasOptionalVariables
+          ? " and provide empty values if the information is not there or if you are unsure."
+          : "."),
+    });
+    Object.entries(object).forEach(([key, value]) => {
+      if (value === null) return;
+      const existingVariable = variables.find((v) => v.name === key);
+      if (!existingVariable) return;
+      variablesStore.set([{ id: existingVariable.id, value }]);
+    });
+  } catch (error) {
+    logs.add(await parseUnknownError({ err: error }));
+  }
 };
 
 const convertVariablesToExtractToSchema = ({

@@ -1,6 +1,6 @@
 import { isMobile } from "@/utils/isMobileSignal";
 import { Menu } from "@ark-ui/solid";
-import clsx from "clsx";
+import { cx } from "@typebot.io/ui/lib/cva";
 import { Match, Switch } from "solid-js";
 import { FileIcon } from "./icons/FileIcon";
 import { PaperClipIcon } from "./icons/PaperClipIcon";
@@ -26,7 +26,7 @@ export const TextInputAddFileButton = (props: Props) => {
       <input
         type="file"
         id="photos-upload"
-        accept="image/*, video/*"
+        accept="image/avif, image/*, video/*"
         multiple
         class="hidden"
         onChange={(e) => {
@@ -40,7 +40,7 @@ export const TextInputAddFileButton = (props: Props) => {
           <label
             aria-label="Add attachments"
             for="document-upload"
-            class={clsx(
+            class={cx(
               "filter data-[state=open]:backdrop-brightness-90 hover:backdrop-brightness-95 transition rounded-md p-2 focus:outline-none",
               props.class,
             )}
@@ -51,7 +51,7 @@ export const TextInputAddFileButton = (props: Props) => {
         <Match when={true}>
           <Menu.Root>
             <Menu.Trigger
-              class={clsx(
+              class={cx(
                 "filter data-[state=open]:backdrop-brightness-90 hover:backdrop-brightness-95 transition rounded-md p-2 focus:outline-none",
                 props.class,
               )}

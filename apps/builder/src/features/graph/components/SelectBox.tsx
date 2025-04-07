@@ -16,13 +16,12 @@ export const SelectBox = ({ origin, dimension }: Props) => (
     rounded="md"
     borderWidth={1}
     borderColor="orange.200"
-    bgColor="rgba(0, 66, 218, 0.1)"
+    bgColor="rgba(255, 214, 199, 0.1)"
     style={{
       left: origin.x,
       top: origin.y - headerHeight,
       width: dimension.width,
       height: dimension.height,
-      zIndex: 1000,
     }}
   />
 );

@@ -13,7 +13,7 @@ const insertUsersInBrevoList = async () => {
     process.exit();
 
   const threeMonthsAgo = new Date();
-  threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
+  threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 5);
 
   const oneMonthAgo = new Date();
   oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);

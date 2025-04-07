@@ -5,9 +5,9 @@ import { parseBotProps } from "./shared";
 
 export const parseInitStandardCode = ({
   typebot,
-  apiHost,
-}: Pick<BotProps, "typebot" | "apiHost">) => {
-  const botProps = parseBotProps({ typebot, apiHost });
+  customDomain,
+}: Pick<BotProps, "typebot"> & { customDomain: string | undefined | null }) => {
+  const botProps = parseBotProps({ typebot, customDomain });
 
   return prettier.format(`Typebot.initStandard({${botProps}});`, {
     parser: "babel",

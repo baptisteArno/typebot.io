@@ -1,4 +1,5 @@
 import { CopyIcon, InfoIcon, PlayIcon, TrashIcon } from "@/components/icons";
+import { isMac } from "@/helpers/isMac";
 import {
   HStack,
   IconButton,
@@ -9,14 +10,24 @@ import {
 
 type Props = {
   groupId: string;
+  isReadOnly: boolean;
   onPlayClick: () => void;
 };
 
-export const GroupFocusToolbar = ({ groupId, onPlayClick }: Props) => {
+export const GroupFocusToolbar = ({
+  groupId,
+  isReadOnly,
+  onPlayClick,
+}: Props) => {
   const { hasCopied, onCopy } = useClipboard(groupId);
 
   const dispatchCopyEvent = () => {
-    dispatchEvent(new KeyboardEvent("keydown", { key: "c", metaKey: true }));
+    dispatchEvent(
+      new KeyboardEvent("keydown", {
+        key: "c",
+        [isMac() ? "metaKey" : "ctrlKey"]: true,
+      }),
+    );
   };
 
   const dispatchDeleteEvent = () => {
@@ -40,19 +51,21 @@ export const GroupFocusToolbar = ({ groupId, onPlayClick }: Props) => {
         onClick={onPlayClick}
         size="sm"
       />
-      <IconButton
-        icon={<CopyIcon />}
-        borderRightWidth="1px"
-        borderRightRadius="none"
-        borderLeftRadius="none"
-        aria-label={"Copy group"}
-        variant="ghost"
-        onClick={(e) => {
-          e.stopPropagation();
-          dispatchCopyEvent();
-        }}
-        size="sm"
-      />
+      {!isReadOnly && (
+        <IconButton
+          icon={<CopyIcon />}
+          borderRightWidth="1px"
+          borderRightRadius="none"
+          borderLeftRadius="none"
+          aria-label={"Copy group"}
+          variant="ghost"
+          onClick={(e) => {
+            e.stopPropagation();
+            dispatchCopyEvent();
+          }}
+          size="sm"
+        />
+      )}
       <Tooltip
         label={hasCopied ? "Copied!" : groupId}
         closeOnClick={false}
@@ -69,14 +82,16 @@ export const GroupFocusToolbar = ({ groupId, onPlayClick }: Props) => {
           onClick={onCopy}
         />
       </Tooltip>
-      <IconButton
-        aria-label="Delete"
-        borderLeftRadius="none"
-        icon={<TrashIcon />}
-        onClick={dispatchDeleteEvent}
-        variant="ghost"
-        size="sm"
-      />
+      {!isReadOnly && (
+        <IconButton
+          aria-label="Delete"
+          borderLeftRadius="none"
+          icon={<TrashIcon />}
+          onClick={dispatchDeleteEvent}
+          variant="ghost"
+          size="sm"
+        />
+      )}
     </HStack>
   );
 };

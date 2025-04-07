@@ -1,7 +1,6 @@
 import type { WhatsAppCredentials } from "@typebot.io/credentials/schemas";
 import { env } from "@typebot.io/env";
-import ky, { HTTPError } from "ky";
-import { WhatsAppError } from "./WhatsAppError";
+import ky from "ky";
 import type { WhatsAppSendingMessage } from "./schemas";
 
 type Props = {
@@ -15,27 +14,17 @@ export const sendWhatsAppMessage = async ({
   message,
   credentials,
 }: Props) => {
-  try {
-    await ky.post(
-      `${env.WHATSAPP_CLOUD_API_URL}/v21.0/${credentials.phoneNumberId}/messages`,
-      {
-        headers: {
-          Authorization: `Bearer ${credentials.systemUserAccessToken}`,
-        },
-        json: {
-          messaging_product: "whatsapp",
-          to,
-          ...message,
-        },
+  await ky.post(
+    `${env.WHATSAPP_CLOUD_API_URL}/v21.0/${credentials.phoneNumberId}/messages`,
+    {
+      headers: {
+        Authorization: `Bearer ${credentials.systemUserAccessToken}`,
       },
-    );
-  } catch (err) {
-    if (err instanceof HTTPError) {
-      throw new WhatsAppError("Error while sending whatsapp message", {
-        statusCode: err.response.status,
-        data: await err.response.text(),
-      });
-    }
-    throw err;
-  }
+      json: {
+        messaging_product: "whatsapp",
+        to,
+        ...message,
+      },
+    },
+  );
 };

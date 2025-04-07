@@ -9,7 +9,7 @@
   "dependencies": {
     "@paralleldrive/cuid2": "2.2.1",
     "@planetscale/database": "1.8.0",
-    "@trpc/server": "10.40.0",
+    "@trpc/server": "10.45.2",
     "@typebot.io/emails": "workspace:*",
     "@typebot.io/env": "workspace:*",
     "@typebot.io/lib": "workspace:*",
@@ -31,6 +31,9 @@
     "@typebot.io/groups": "workspace:*",
     "@typebot.io/credentials": "workspace:*",
     "@typebot.io/schemas": "workspace:*",
+    "@typebot.io/logs": "workspace:*",
+    "@typebot.io/events": "workspace:*",
+    "@sentry/nextjs": "9.5.0",
     "chrono-node": "2.7.6",
     "date-fns": "2.30.0",
     "date-fns-tz": "2.0.0",
@@ -42,7 +45,8 @@
     "openai": "4.81.0",
     "qs": "6.11.2",
     "stripe": "17.1.0",
-    "@typebot.io/legacy": "workspace:*"
+    "@typebot.io/legacy": "workspace:*",
+    "@typebot.io/runtime-session-store": "workspace:*"
   },
   "devDependencies": {
     "@typebot.io/forge": "workspace:*",

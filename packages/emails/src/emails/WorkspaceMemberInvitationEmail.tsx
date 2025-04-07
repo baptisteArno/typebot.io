@@ -64,6 +64,7 @@ export const sendWorkspaceMemberInvitationEmail = ({
   ComponentProps<typeof WorkspaceMemberInvitation>) =>
   sendEmail({
     to,
+    replyTo: props.hostEmail,
     subject: "You've been invited to collaborate 🤝",
     html: render(<WorkspaceMemberInvitation {...props} />).html,
   });
