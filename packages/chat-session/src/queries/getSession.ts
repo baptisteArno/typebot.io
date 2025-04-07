@@ -14,7 +14,7 @@ export const getSession = async (sessionId: string) => {
     return null;
   }
   const parsedState = sessionStateSchema.parse(session.state);
-  Sentry.setTag("typebotId", parsedState.typebotsQueue[0].typebot.id);
+  Sentry.setUser({ id: parsedState.typebotsQueue[0].typebot.id });
   return {
     ...session,
     state: parsedState,

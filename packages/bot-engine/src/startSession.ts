@@ -88,7 +88,7 @@ export const startSession = async ({
   }
 > => {
   const typebot = await getTypebot(startParams);
-  Sentry.setTag("typebotId", typebot.id);
+  Sentry.setUser({ id: typebot.id });
 
   const prefilledVariables = startParams.prefilledVariables
     ? prefillVariables(typebot.variables, startParams.prefilledVariables)
