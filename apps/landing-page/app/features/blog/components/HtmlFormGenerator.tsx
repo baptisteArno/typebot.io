@@ -85,81 +85,78 @@ export const HtmlFormGenerator = () => {
   };
 
   return (
-    <div className="px-4 -mx-[calc((100vw-min(100vw,42rem))/2)] min-w-[100vw] py-12">
-      <Card className="max-w-6xl mx-auto p-6 bg-white/20">
-        <div className="flex gap-4">
-          <Card className="p-4">
-            <h2 className="text-lg font-semibold mb-4">Select inputs</h2>
-            <ComponentsPalette
-              items={[
-                { type: "text", label: "Text Input" },
-                { type: "email", label: "Email Input" },
-                { type: "phone", label: "Phone Input" },
-                { type: "textarea", label: "Text Area" },
-                {
-                  type: "select",
-                  label: "Select Dropdown",
-                  options: ["Option 1", "Option 2", "Option 3"],
-                },
-                { type: "checkbox", label: "Checkbox" },
-                {
-                  type: "radio",
-                  label: "Radio Buttons",
-                  options: ["Option 1", "Option 2", "Option 3"],
-                },
-                {
-                  type: "multicheck",
-                  label: "Multiple Checkboxes",
-                  options: ["Option 1", "Option 2", "Option 3"],
-                },
-              ]}
-              onAddElement={addElement}
-            />
-          </Card>
-          <Card className="p-4 flex-1">
-            <div className="flex justify-between items-center">
-              <h2 className="text-lg font-semibold">Layout</h2>
-              <div className="flex gap-2">
-                <Button
-                  onClick={() => setShowLivePreview(true)}
-                  variant="secondary"
-                  size="sm"
-                >
-                  Live Preview
-                </Button>
-                <Button onClick={() => setShowExportModal(true)} size="sm">
-                  Generate HTML
-                </Button>
-              </div>
+    <div className="px-4 -mx-[calc((100vw-min(100vw,42rem))/2)] py-12">
+      <div className="flex flex-col md:flex-row items-stretch md:items-start gap-4 max-w-6xl mx-auto">
+        <Card className="p-4">
+          <h2 className="text-lg font-semibold mb-4">Add input</h2>
+          <ComponentsPalette
+            items={[
+              { type: "text", label: "Text Input" },
+              { type: "email", label: "Email Input" },
+              { type: "phone", label: "Phone Input" },
+              { type: "textarea", label: "Text Area" },
+              {
+                type: "select",
+                label: "Select Dropdown",
+                options: ["Option 1", "Option 2", "Option 3"],
+              },
+              { type: "checkbox", label: "Checkbox" },
+              {
+                type: "radio",
+                label: "Radio Buttons",
+                options: ["Option 1", "Option 2", "Option 3"],
+              },
+              {
+                type: "multicheck",
+                label: "Multiple Checkboxes",
+                options: ["Option 1", "Option 2", "Option 3"],
+              },
+            ]}
+            onAddElement={addElement}
+          />
+        </Card>
+        <Card className="p-4 flex-1">
+          <div className="flex justify-between items-center">
+            <h2 className="text-lg font-semibold">Layout</h2>
+            <div className="flex flex-col md:flex-row gap-2">
+              <Button
+                onClick={() => setShowLivePreview(true)}
+                variant="secondary"
+                size="sm"
+              >
+                Live Preview
+              </Button>
+              <Button onClick={() => setShowExportModal(true)} size="sm">
+                Generate HTML
+              </Button>
             </div>
-            <FormCanvas
-              elements={formElements}
-              selectedElement={selectedElement}
-              setSelectedElement={setSelectedElement}
-              onRemoveElement={removeElement}
+          </div>
+          <FormCanvas
+            elements={formElements}
+            selectedElement={selectedElement}
+            setSelectedElement={setSelectedElement}
+            onRemoveElement={removeElement}
+          />
+        </Card>
+        {selectedElement && (
+          <Card className="p-4">
+            <PropertiesPanel
+              selectedElement={
+                selectedElement
+                  ? formElements.find((el) => el.id === selectedElement) || null
+                  : null
+              }
+              onUpdate={(updates) => {
+                setFormElements((prev) =>
+                  prev.map((el) =>
+                    el.id === selectedElement ? { ...el, ...updates } : el,
+                  ),
+                );
+              }}
             />
           </Card>
-          {selectedElement && (
-            <Card className="w-64 p-4">
-              <PropertiesPanel
-                selectedElement={
-                  selectedElement
-                    ? formElements.find((el) => el.id === selectedElement) ||
-                      null
-                    : null
-                }
-                onUpdate={(updates) => {
-                  setFormElements((prev) =>
-                    prev.map((el) =>
-                      el.id === selectedElement ? { ...el, ...updates } : el,
-                    ),
-                  );
-                }}
-              />
-            </Card>
-          )}
-        </div>
-      </Card>
+        )}
+      </div>
 
       <ExportModal
         isOpened={showExportModal}
@@ -237,7 +234,7 @@ const ComponentsPalette = ({
   onAddElement: (item: Omit<FormElement, "id">) => void;
 }) => {
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-3 max-h-72 overflow-y-auto md:max-h-full">
       {items.map((item, index) => (
         <Card
           key={index}
@@ -266,8 +263,8 @@ const FormCanvas = ({
   onRemoveElement: (id: string) => void;
 }) => {
   return (
-    <div className="bg-white p-8 rounded-lg min-h-[600px] w-full">
-      <div className="space-y-4">
+    <div className="bg-white p-8 rounded-lg w-full ">
+      <div className="space-y-4 max-h-72 overflow-y-auto md:max-h-full">
         {elements.map((element) => (
           <FormElement
             key={element.id}
@@ -318,7 +315,7 @@ const FormElement = ({
         }}
         variant="ghost"
         size="xs"
-        className="absolute top-2 right-2 text-gray-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"
+        className="absolute top-2 right-2 text-gray-400 hover:text-red-500"
         title="Remove element"
       >
         <svg
@@ -436,7 +433,7 @@ const PropertiesPanel = ({
             className="block text-sm font-medium"
             style={{ color: "rgb(var(--gray-11))" }}
           >
-            label
+            Label
           </label>
           <Input
             id="element-label"
@@ -624,7 +621,7 @@ const LivePreviewModal = ({
                       <div className="space-y-2">
                         {element.options?.map((option, index) => (
                           <div key={index} className="flex items-center gap-2">
-                            <Input
+                            <input
                               type="radio"
                               id={`${element.id}-${index}`}
                               name={element.id}
@@ -640,7 +637,7 @@ const LivePreviewModal = ({
                       <div className="space-y-2">
                         {element.options?.map((option, index) => (
                           <div key={index} className="flex items-center gap-2">
-                            <Input
+                            <input
                               type="checkbox"
                               id={`${element.id}-${index}`}
                               name={`${element.id}[]`}
@@ -652,7 +649,7 @@ const LivePreviewModal = ({
                         ))}
                       </div>
                     ) : element.type === "checkbox" ? (
-                      <Input
+                      <input
                         id={element.id}
                         type="checkbox"
                         className="h-4 w-4 text-blue-600"
