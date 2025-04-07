@@ -57,7 +57,6 @@ export const resumeWhatsAppFlow = async ({
   contact,
   callFrom,
 }: Props) => {
-  if (workspaceId) Sentry.setUser({ id: workspaceId });
   if (isMessageTooOld(receivedMessage))
     throw new WhatsAppError("Message is too old", {
       timestamp: receivedMessage.timestamp,
