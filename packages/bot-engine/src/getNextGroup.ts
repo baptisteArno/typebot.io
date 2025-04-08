@@ -166,52 +166,6 @@ export const getNextGroup = async ({
   };
 };
 
-export async function getNextBlockById(
-  state: SessionState,
-  blockId: string,
-  groups: Group[],
-  sessionStore: SessionStore,
-): Promise<{
-  block: Block;
-  group: Group;
-  blockIndex: number;
-  groupIndex: number;
-} | null> {
-  const { block, blockIndex, groupIndex } = getBlockById(blockId, groups);
-
-  // If the block is the last block in the group, get the first block in the next group
-  if (blockIndex === groups[groupIndex]!.blocks.length - 1) {
-    const nextGroup = await getNextGroup({
-      state,
-      edgeId: block.outgoingEdgeId,
-      isOffDefaultPath: false,
-      sessionStore,
-    });
-    if (!nextGroup.group) {
-      return null;
-    }
-
-    const firstBlock = nextGroup.group.blocks[0];
-    if (!firstBlock) return null;
-
-    return {
-      block: firstBlock,
-      group: nextGroup.group,
-      blockIndex: 0,
-      groupIndex: groups.findIndex(byId(nextGroup.group.id)),
-    };
-  }
-
-  const nextBlockIndex = blockIndex + 1;
-  const nextBlock = groups[groupIndex]!.blocks[nextBlockIndex];
-  return {
-    block: nextBlock,
-    group: groups[groupIndex]!,
-    blockIndex: nextBlockIndex,
-    groupIndex,
-  };
-}
-
 const popQueuedEdge = (
   state: SessionState,
 ): { edgeId?: string; state: SessionState } => {

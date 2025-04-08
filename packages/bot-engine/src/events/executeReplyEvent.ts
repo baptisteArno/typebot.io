@@ -9,26 +9,22 @@ import {
   saveVariablesValueIfAny,
 } from "../saveVariables";
 import type { InputMessage } from "../schemas/api";
-import { executeEvent } from "./executeEvent";
-import { executeResumeAfter } from "./executeResumeAfter";
+import { connectEdgeToNextBlock } from "./connectEdgeToNextBlock";
+import { updateCurrentBlockIdWithEvent } from "./updateCurrentBlockIdWithEvent";
 
 type Props = {
   state: SessionState;
   reply: InputMessage;
   sessionStore: SessionStore;
+  replyEvent: ReplyEvent;
 };
 
 export const executeReplyEvent = async ({
   state,
   reply,
   sessionStore,
+  replyEvent: event,
 }: Props) => {
-  const event = state.typebotsQueue[0].typebot.events?.find(
-    (e) => e.type === EventType.REPLY,
-  ) as ReplyEvent | undefined;
-
-  if (!event) return state;
-
   let newSessionState = state;
 
   // Save the input variable of the event if any
@@ -49,13 +45,13 @@ export const executeReplyEvent = async ({
     }
   }
 
-  newSessionState = await executeResumeAfter({
+  newSessionState = await connectEdgeToNextBlock({
     state: newSessionState,
     event,
     sessionStore,
   });
 
-  return await executeEvent({
+  return await updateCurrentBlockIdWithEvent({
     state: newSessionState,
     event,
     sessionStore,

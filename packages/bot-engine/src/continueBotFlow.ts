@@ -51,6 +51,7 @@ import { executeCommandEvent } from "./events/executeCommandEvent";
 import { executeReplyEvent } from "./events/executeReplyEvent";
 import { executeGroup, parseInput } from "./executeGroup";
 import { getNextGroup } from "./getNextGroup";
+import { findReplyEvent } from "./helpers/findReplyEvent";
 import { isInputMessage } from "./helpers/isInputMessage";
 import { saveAnswer } from "./queries/saveAnswer";
 import { resetSessionState } from "./resetSessionState";
@@ -91,6 +92,7 @@ export const continueBotFlow = async (
     });
 
   let newSessionState = state;
+  const replyEvent = findReplyEvent(newSessionState);
 
   if (reply?.type === "command") {
     newSessionState = await executeCommandEvent({
@@ -98,11 +100,12 @@ export const continueBotFlow = async (
       command: reply.command,
       sessionStore,
     });
-  } else if (reply) {
+  } else if (reply && replyEvent) {
     newSessionState = await executeReplyEvent({
       state: newSessionState,
       reply,
       sessionStore,
+      replyEvent,
     });
   }
 

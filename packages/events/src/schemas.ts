@@ -46,20 +46,19 @@ export const replyEventSchema = eventBaseSchema.extend({
 export type CommandEvent = z.infer<typeof commandEventSchema>;
 export type ReplyEvent = z.infer<typeof replyEventSchema>;
 
-const draggableEventSchemas = [commandEventSchema, replyEventSchema];
+const draggableEventSchemas = [commandEventSchema, replyEventSchema] as const;
 
 export const eventSchema = z.discriminatedUnion("type", [
   startEventSchema,
   ...draggableEventSchemas,
 ]);
 
-export const draggableEventSchema = z.discriminatedUnion("type", [
-  commandEventSchema,
-  replyEventSchema,
-]);
-
 export type TEvent = z.infer<typeof eventSchema>;
 
 export type TEventWithOptions = Extract<TEvent, { options?: any }>;
+
+export const draggableEventSchema = z.discriminatedUnion("type", [
+  ...draggableEventSchemas,
+]);
 
 export type TDraggableEvent = z.infer<typeof draggableEventSchema>;

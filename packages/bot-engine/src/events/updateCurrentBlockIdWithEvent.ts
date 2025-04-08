@@ -4,13 +4,18 @@ import type { TDraggableEvent } from "@typebot.io/events/schemas";
 import type { SessionStore } from "@typebot.io/runtime-session-store";
 import { addBlockToTypebotIfMissing } from "../addBlockToTypebotIfMissing";
 import { getNextGroup } from "../getNextGroup";
+
 type Props = {
   state: SessionState;
   event: TDraggableEvent;
   sessionStore: SessionStore;
 };
 
-export const executeEvent = async ({ state, event, sessionStore }: Props) => {
+export const updateCurrentBlockIdWithEvent = async ({
+  state,
+  event,
+  sessionStore,
+}: Props) => {
   let newSessionState = state;
 
   const response = await getNextGroup({

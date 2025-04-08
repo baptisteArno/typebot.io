@@ -3,8 +3,8 @@ import type { SessionState } from "@typebot.io/chat-session/schemas";
 import { EventType } from "@typebot.io/events/constants";
 import type { CommandEvent } from "@typebot.io/events/schemas";
 import type { SessionStore } from "@typebot.io/runtime-session-store";
-import { executeEvent } from "./executeEvent";
-import { executeResumeAfter } from "./executeResumeAfter";
+import { connectEdgeToNextBlock } from "./connectEdgeToNextBlock";
+import { updateCurrentBlockIdWithEvent } from "./updateCurrentBlockIdWithEvent";
 
 type Props = {
   state: SessionState;
@@ -28,14 +28,14 @@ export const executeCommandEvent = async ({
 
   let newSessionState = state;
   if (event.options?.resumeAfter) {
-    newSessionState = await executeResumeAfter({
+    newSessionState = await connectEdgeToNextBlock({
       state: newSessionState,
       event,
       sessionStore,
     });
   }
 
-  return await executeEvent({
+  return await updateCurrentBlockIdWithEvent({
     state,
     event,
     sessionStore,
