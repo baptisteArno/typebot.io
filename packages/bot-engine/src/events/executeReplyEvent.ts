@@ -62,7 +62,7 @@ export const executeReplyEvent = async ({
     });
 
   if (!isExitConditionMet && !newSessionState.currentEventId) {
-    newSessionState = executeResumeAfter({
+    newSessionState = await executeResumeAfter({
       state: newSessionState,
       event,
     });

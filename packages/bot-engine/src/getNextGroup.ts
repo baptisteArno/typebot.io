@@ -1,4 +1,6 @@
+import type { Block } from "@typebot.io/blocks-core/schemas/schema";
 import type { SessionState } from "@typebot.io/chat-session/schemas";
+import { getBlockById } from "@typebot.io/groups/helpers/getBlockById";
 import type { Group } from "@typebot.io/groups/schemas";
 import { byId, isDefined, isNotDefined } from "@typebot.io/lib/utils";
 import type { Prisma } from "@typebot.io/prisma/types";
@@ -140,6 +142,42 @@ export const getNextGroup = async ({
         : undefined,
   };
 };
+
+export async function getNextBlockById(
+  state: SessionState,
+  blockId: string,
+  groups: Group[],
+): Promise<{
+  block: Block;
+  group: Group;
+  blockIndex: number;
+  groupIndex: number;
+} | null> {
+  const { block, blockIndex, groupIndex } = getBlockById(blockId, groups);
+
+  // If the block is the last block in the group, get the first block in the next group
+  if (blockIndex === groups[groupIndex]!.blocks.length - 1) {
+    const nextGroup = await getNextGroup({
+      state,
+      edgeId: block.outgoingEdgeId,
+      isOffDefaultPath: false,
+    });
+    if (!nextGroup.group) {
+      return null;
+    }
+
+    return getNextBlockById(state, nextGroup.group.blocks[0]?.id, groups);
+  }
+
+  const nextBlockIndex = blockIndex + 1;
+  const nextBlock = groups[groupIndex]!.blocks[nextBlockIndex];
+  return {
+    block: nextBlock,
+    group: groups[groupIndex]!,
+    blockIndex: nextBlockIndex,
+    groupIndex,
+  };
+}
 
 const popQueuedEdge = (
   state: SessionState,
