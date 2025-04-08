@@ -13,16 +13,81 @@ type Props = {
   currentBlockId: string | undefined;
 };
 
+type UpdateInputVarProps = {
+  state: SessionState;
+  foundVariable: Variable;
+  reply: InputMessage;
+};
+
+export const updateInputVariablesInSession = (params: UpdateInputVarProps) => {
+  let newSessionState = updateAttachmentVariablesInSession(params);
+  newSessionState = updateAudioVariablesInSession({
+    ...params,
+    state: newSessionState,
+  });
+  return updateTextVariablesInSession({ ...params, state: newSessionState });
+};
+
+export const updateAttachmentVariablesInSession = ({
+  state,
+  foundVariable,
+  reply,
+}: UpdateInputVarProps) => {
+  if (
+    reply.type !== "text" ||
+    !reply.attachedFileUrls ||
+    reply.attachedFileUrls.length === 0 ||
+    !foundVariable
+  )
+    return state;
+
+  const { updatedState } = updateVariablesInSession({
+    newVariables: [
+      {
+        id: foundVariable.id,
+        name: foundVariable.name,
+        value: Array.isArray(foundVariable.value)
+          ? foundVariable.value.concat(reply.attachedFileUrls)
+          : reply.attachedFileUrls.length === 1
+            ? reply.attachedFileUrls[0]
+            : reply.attachedFileUrls,
+      },
+    ],
+    currentBlockId: undefined,
+    state,
+  });
+
+  return updatedState;
+};
+
+export const updateAudioVariablesInSession = ({
+  state,
+  foundVariable,
+  reply,
+}: UpdateInputVarProps) => {
+  if (reply.type !== "audio" || !foundVariable) return state;
+
+  const { updatedState } = updateVariablesInSession({
+    newVariables: [
+      {
+        id: foundVariable.id,
+        name: foundVariable.name,
+        value: reply.url,
+      },
+    ],
+    currentBlockId: undefined,
+    state,
+  });
+
+  return updatedState;
+};
+
 export const updateTextVariablesInSession = ({
   state,
   foundVariable,
   reply,
-}: {
-  state: SessionState;
-  foundVariable: Variable;
-  reply: InputMessage;
-}) => {
-  if (reply.type !== "text") return state;
+}: UpdateInputVarProps) => {
+  if (reply.type !== "text" || !foundVariable) return state;
 
   const { updatedState } = updateVariablesInSession({
     newVariables: [

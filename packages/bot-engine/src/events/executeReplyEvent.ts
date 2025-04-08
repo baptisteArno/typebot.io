@@ -6,11 +6,14 @@ import type { ReplyEvent } from "@typebot.io/events/schemas";
 import { getBlockById } from "@typebot.io/groups/helpers/getBlockById";
 import type { SessionStore } from "@typebot.io/runtime-session-store";
 import { removePortalEdge } from "../removePortalEdge";
-import { saveVariablesValueIfAny } from "../saveVariables";
+import {
+  saveEventVariablesIfAny,
+  saveVariablesValueIfAny,
+} from "../saveVariables";
 import type { InputMessage } from "../schemas/api";
-import { updateTextVariablesInSession } from "../updateVariablesInSession";
 import { executeEvent } from "./executeEvent";
 import { executeResumeAfter } from "./executeResumeAfter";
+
 type Props = {
   state: SessionState;
   reply: InputMessage;
@@ -22,28 +25,20 @@ export const executeReplyEvent = async ({
   reply,
   sessionStore,
 }: Props) => {
-  const event =
-    reply.type === "text"
-      ? (state.typebotsQueue[0].typebot.events?.find(
-          (e) => e.type === EventType.REPLY,
-        ) as ReplyEvent | undefined)
-      : undefined;
+  const event = state.typebotsQueue[0].typebot.events?.find(
+    (e) => e.type === EventType.REPLY,
+  ) as ReplyEvent | undefined;
 
   if (!event) return state;
 
   let newSessionState = state;
 
   // Save the input variable of the event if any
-  const foundVariable = state.typebotsQueue[0].typebot.variables.find(
-    (variable) => variable.id === event.options?.variableId,
-  );
-  if (foundVariable) {
-    newSessionState = updateTextVariablesInSession({
-      state: newSessionState,
-      foundVariable,
-      reply,
-    });
-  }
+  newSessionState = saveEventVariablesIfAny({
+    state: newSessionState,
+    event,
+    reply,
+  });
 
   // Save the trigger block variable if any
   if (state.currentBlockId) {

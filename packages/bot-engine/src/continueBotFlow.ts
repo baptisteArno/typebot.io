@@ -97,9 +97,7 @@ export const continueBotFlow = async (
       state,
       command: reply.command,
     });
-  }
-
-  if (reply?.type === "text") {
+  } else if (reply) {
     newSessionState = await executeReplyEvent({
       state: newSessionState,
       reply,

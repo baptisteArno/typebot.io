@@ -1,11 +1,38 @@
 import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
 import type { InputBlock } from "@typebot.io/blocks-inputs/schema";
 import type { SessionState } from "@typebot.io/chat-session/schemas";
+import { EventType } from "@typebot.io/events/constants";
+import type { ReplyEvent } from "@typebot.io/events/schemas";
 import type { Message } from "./schemas/api";
 import {
+  updateAttachmentVariablesInSession,
+  updateAudioVariablesInSession,
+  updateInputVariablesInSession,
   updateTextVariablesInSession,
-  updateVariablesInSession,
 } from "./updateVariablesInSession";
+
+export const saveEventVariablesIfAny = ({
+  state,
+  event,
+  reply,
+}: {
+  state: SessionState;
+  event: ReplyEvent;
+  reply: Message;
+}) => {
+  if (event.type !== EventType.REPLY || reply.type === "command") return state;
+
+  const foundVariable = state.typebotsQueue[0].typebot.variables.find(
+    (variable) => variable.id === event.options?.variableId,
+  );
+  if (!foundVariable) return state;
+
+  return updateInputVariablesInSession({
+    state,
+    foundVariable,
+    reply,
+  });
+};
 
 export const saveVariablesValueIfAny =
   (state: SessionState, block: InputBlock) =>
@@ -19,15 +46,17 @@ export const saveVariablesValueIfAny =
     return saveInputVarIfAny({ block, reply, state: newSessionState });
   };
 
+type SaveVarProps = {
+  block: InputBlock;
+  reply: Message;
+  state: SessionState;
+};
+
 export const saveAttachmentsVarIfAny = ({
   block,
   reply,
   state,
-}: {
-  block: InputBlock;
-  reply: Message;
-  state: SessionState;
-}): SessionState => {
+}: SaveVarProps): SessionState => {
   if (
     reply.type !== "text" ||
     block.type !== InputBlockType.TEXT ||
@@ -44,33 +73,18 @@ export const saveAttachmentsVarIfAny = ({
 
   if (!variable) return state;
 
-  const { updatedState } = updateVariablesInSession({
-    newVariables: [
-      {
-        id: variable.id,
-        name: variable.name,
-        value: Array.isArray(variable.value)
-          ? variable.value.concat(reply.attachedFileUrls)
-          : reply.attachedFileUrls.length === 1
-            ? reply.attachedFileUrls[0]
-            : reply.attachedFileUrls,
-      },
-    ],
-    currentBlockId: undefined,
+  return updateAttachmentVariablesInSession({
     state,
+    foundVariable: variable,
+    reply,
   });
-  return updatedState;
 };
 
 export const saveAudioClipVarIfAny = ({
   block,
   reply,
   state,
-}: {
-  block: InputBlock;
-  reply: Message;
-  state: SessionState;
-}): SessionState => {
+}: SaveVarProps): SessionState => {
   if (
     reply.type !== "audio" ||
     block.type !== InputBlockType.TEXT ||
@@ -85,30 +99,18 @@ export const saveAudioClipVarIfAny = ({
 
   if (!variable) return state;
 
-  const { updatedState } = updateVariablesInSession({
-    newVariables: [
-      {
-        id: variable.id,
-        name: variable.name,
-        value: reply.url,
-      },
-    ],
-    currentBlockId: undefined,
+  return updateAudioVariablesInSession({
     state,
+    foundVariable: variable,
+    reply,
   });
-
-  return updatedState;
 };
 
 export const saveInputVarIfAny = ({
   block,
   reply,
   state,
-}: {
-  block: InputBlock;
-  reply: Message;
-  state: SessionState;
-}): SessionState => {
+}: SaveVarProps): SessionState => {
   if (reply.type !== "text" || !block.options?.variableId) return state;
 
   const foundVariable = state.typebotsQueue[0].typebot.variables.find(
