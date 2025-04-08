@@ -1,20 +1,20 @@
 {
   "version": "6.1",
-  "id": "cm1qmfbmd0001otew1vegx05q",
+  "id": "ly049sb08dcp7h9xup1hjuxy",
   "name": "My typebot‍‍‌‌‌‌‍‌‌‍‌‌‌‌‍‌‌‌",
   "events": [
     {
       "id": "aevmtgzc9rxzvxs2q5hvpwct",
+      "outgoingEdgeId": "l4t0scp44brhsaev2shrz1ww",
       "graphCoordinates": { "x": 0, "y": 0 },
-      "type": "start",
-      "outgoingEdgeId": "l4t0scp44brhsaev2shrz1ww"
+      "type": "start"
     }
   ],
   "groups": [
     {
       "id": "ad35ipsnb48e6ezkgdir18ti",
-      "graphCoordinates": { "x": 214.53, "y": 90.88 },
       "title": "Group #1",
+      "graphCoordinates": { "x": 214.53, "y": 90.88 },
       "blocks": [
         {
           "id": "ti3emvkuw16pno8hfoqhwohy",
@@ -30,15 +30,15 @@
         },
         {
           "id": "webhook-block-id",
-          "type": "webhook",
-          "outgoingEdgeId": "zmc9shyqackqkxqyjok5adip"
+          "outgoingEdgeId": "bh4wvrkba8bxujux709cjaa6",
+          "type": "webhook"
         }
       ]
     },
     {
       "id": "wt0gw2gk1bw8x7ajch6ppkkm",
-      "graphCoordinates": { "x": 607.12, "y": 92 },
       "title": "Group #2",
+      "graphCoordinates": { "x": 607.12, "y": 92 },
       "blocks": [
         {
           "id": "ysc1dd8tydgn810jzn5xkhep",
@@ -57,14 +57,19 @@
   ],
   "edges": [
     {
+      "id": "l4t0scp44brhsaev2shrz1ww",
       "from": { "eventId": "aevmtgzc9rxzvxs2q5hvpwct" },
-      "to": { "groupId": "ad35ipsnb48e6ezkgdir18ti" },
-      "id": "l4t0scp44brhsaev2shrz1ww"
+      "to": { "groupId": "ad35ipsnb48e6ezkgdir18ti" }
     },
     {
+      "id": "zmc9shyqackqkxqyjok5adip",
       "from": { "blockId": "n0i5queut7m0wa5am2gqa0ra" },
-      "to": { "groupId": "wt0gw2gk1bw8x7ajch6ppkkm" },
-      "id": "zmc9shyqackqkxqyjok5adip"
+      "to": { "groupId": "wt0gw2gk1bw8x7ajch6ppkkm" }
+    },
+    {
+      "id": "bh4wvrkba8bxujux709cjaa6",
+      "from": { "blockId": "webhook-block-id" },
+      "to": { "groupId": "wt0gw2gk1bw8x7ajch6ppkkm" }
     }
   ],
   "variables": [
@@ -77,13 +82,13 @@
   "theme": {},
   "selectedThemeTemplateId": null,
   "settings": { "general": { "isBrandingEnabled": true } },
-  "createdAt": "2024-10-01T15:56:19.477Z",
-  "updatedAt": "2024-10-01T15:56:19.477Z",
+  "createdAt": "2025-03-10T12:21:37.888Z",
+  "updatedAt": "2025-03-10T12:21:57.022Z",
   "icon": null,
   "folderId": null,
   "publicId": null,
   "customDomain": null,
-  "workspaceId": "freeWorkspace",
+  "workspaceId": "proWorkspace",
   "resultsTablePreferences": null,
   "isArchived": false,
   "isClosed": false,

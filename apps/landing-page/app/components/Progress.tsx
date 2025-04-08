@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { cn } from "@typebot.io/ui/lib/cn";
 import * as React from "react";
 
 const Progress = React.forwardRef<

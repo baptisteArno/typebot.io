@@ -10,6 +10,7 @@ import { forgedBlocks } from "@typebot.io/forge-repository/definitions";
 import type { ForgedBlock } from "@typebot.io/forge-repository/schemas";
 import type { LogsStore, VariableStore } from "@typebot.io/forge/types";
 import { byId, isDefined } from "@typebot.io/lib/utils";
+import type { SessionStore } from "@typebot.io/runtime-session-store";
 import { deepParseVariables } from "@typebot.io/variables/deepParseVariables";
 import {
   type ParseVariablesOptions,
@@ -21,8 +22,8 @@ import type { ExecuteIntegrationResponse } from "../types";
 import { updateVariablesInSession } from "../updateVariablesInSession";
 
 export const executeForgedBlock = async (
-  state: SessionState,
   block: ForgedBlock,
+  { state, sessionStore }: { state: SessionState; sessionStore: SessionStore },
 ): Promise<ExecuteIntegrationResponse> => {
   const blockDef = forgedBlocks[block.type];
   if (!blockDef) return { outgoingEdgeId: block.outgoingEdgeId };
@@ -118,10 +119,11 @@ export const executeForgedBlock = async (
       setVariableHistory.push(...newSetVariableHistory);
     },
     parse: (text: string, params?: ParseVariablesOptions) =>
-      parseVariables(
-        newSessionState.typebotsQueue[0].typebot.variables,
-        params,
-      )(text),
+      parseVariables(text, {
+        variables: newSessionState.typebotsQueue[0].typebot.variables,
+        sessionStore,
+        ...params,
+      }),
     list: () => newSessionState.typebotsQueue[0].typebot.variables,
   };
   const logs: NonNullable<ContinueChatResponse["logs"]> = [];
@@ -141,15 +143,17 @@ export const executeForgedBlock = async (
     ? await decrypt(credentials.data, credentials.iv)
     : undefined;
 
-  const parsedOptions = deepParseVariables(
-    state.typebotsQueue[0].typebot.variables,
-    { removeEmptyStrings: true },
-  )(block.options);
+  const parsedOptions = deepParseVariables(block.options, {
+    variables: newSessionState.typebotsQueue[0].typebot.variables,
+    sessionStore,
+    removeEmptyStrings: true,
+  });
   await action?.run?.server?.({
     credentials: credentialsData ?? {},
     options: parsedOptions,
     variables,
     logs: logsStore,
+    sessionStore,
   });
 
   const clientSideActions: ExecuteIntegrationResponse["clientSideActions"] = [];

@@ -4,9 +4,12 @@ import type {
 } from "@/features/graph/providers/GraphDndProvider";
 import { createId } from "@paralleldrive/cuid2";
 import { blockHasItems } from "@typebot.io/blocks-core/helpers";
-import type { Item } from "@typebot.io/blocks-core/schemas/items/schema";
-import type { ItemIndices } from "@typebot.io/blocks-core/schemas/items/types";
+import type {
+  Item,
+  ItemIndices,
+} from "@typebot.io/blocks-core/schemas/items/schema";
 import type { BlockWithItems } from "@typebot.io/blocks-core/schemas/schema";
+import type { CardsItem } from "@typebot.io/blocks-inputs/cards/schema";
 import type { ButtonItem } from "@typebot.io/blocks-inputs/choice/schema";
 import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
 import type { PictureChoiceItem } from "@typebot.io/blocks-inputs/pictureChoice/schema";
@@ -20,7 +23,7 @@ import { deleteConnectedEdgesDraft } from "./edges";
 type NewItem = Pick<DraggableItem, "outgoingEdgeId"> & Partial<DraggableItem>;
 
 export type ItemsActions = {
-  createItem: (item: NewItem, indices: ItemIndices) => void;
+  createItem: (item: NewItem, indices: ItemIndices) => string | undefined;
   duplicateItem: (indices: ItemIndices) => void;
   updateItem: (
     indices: ItemIndices,
@@ -65,6 +68,29 @@ const createItem = (
       block.items.splice(itemIndex, 0, newItem);
       return newItem;
     }
+    case InputBlockType.CARDS: {
+      const baseItem = item as CardsItem;
+      const existingItem =
+        block.items?.[itemIndex - 1] ?? block.items?.[itemIndex];
+      const newItem = {
+        ...baseItem,
+        id: "id" in baseItem && item.id ? item.id : createId(),
+        imageUrl:
+          baseItem.imageUrl ??
+          (existingItem?.imageUrl === null ? null : undefined),
+        title:
+          baseItem.title ?? (existingItem?.title === null ? null : undefined),
+        description:
+          baseItem.description ??
+          (existingItem?.description === null ? null : undefined),
+        paths: (baseItem.paths ?? existingItem?.paths ?? [{}]).map((path) => ({
+          ...path,
+          id: createId(),
+        })),
+      };
+      block.items.splice(itemIndex, 0, newItem);
+      return newItem;
+    }
   }
 };
 
@@ -103,6 +129,18 @@ const duplicateItem = (
       block.items.splice(itemIndex + 1, 0, newItem);
       return newItem;
     }
+    case InputBlockType.CARDS: {
+      const baseItem = item as CardsItem;
+      const newItem = {
+        ...baseItem,
+        paths: baseItem.paths?.map((path) => ({
+          ...path,
+          id: createId(),
+        })),
+      };
+      block.items.splice(itemIndex + 1, 0, newItem);
+      return newItem;
+    }
   }
 };
 
@@ -110,7 +148,8 @@ const itemsAction = (setTypebot: SetTypebot): ItemsActions => ({
   createItem: (
     item: NewItem,
     { groupIndex, blockIndex, itemIndex }: ItemIndices,
-  ) =>
+  ) => {
+    let newItemId: string | undefined;
     setTypebot((typebot) =>
       produce(typebot, (typebot) => {
         const block = typebot.groups[groupIndex].blocks[
@@ -130,8 +169,13 @@ const itemsAction = (setTypebot: SetTypebot): ItemsActions => ({
               })
             : (newItem.outgoingEdgeId = undefined);
         }
+
+        newItemId = newItem.id;
       }),
-    ),
+    );
+
+    return newItemId;
+  },
   duplicateItem: ({ groupIndex, blockIndex, itemIndex }: ItemIndices) =>
     setTypebot((typebot) =>
       produce(typebot, (typebot) => {

@@ -9,6 +9,7 @@ import type {
   BlockV6,
   BlockWithItems,
 } from "@typebot.io/blocks-core/schemas/schema";
+import { LogicBlockType } from "@typebot.io/blocks-logic/constants";
 import type { GroupV6 } from "@typebot.io/groups/schemas";
 import { parseUniqueKey } from "@typebot.io/lib/parseUniqueKey";
 import { byId, isEmpty } from "@typebot.io/lib/utils";
@@ -18,11 +19,7 @@ import { extractVariableIdsFromObject } from "@typebot.io/variables/extractVaria
 import type { Variable } from "@typebot.io/variables/schemas";
 import { type Draft, produce } from "immer";
 import type { SetTypebot } from "../TypebotProvider";
-import {
-  createBlockDraft,
-  deleteGroupDraft,
-  duplicateBlockDraft,
-} from "./blocks";
+import { createBlockDraft, deleteGroupDraft } from "./blocks";
 
 export type GroupsActions = {
   createGroup: (
@@ -132,6 +129,7 @@ const groupsActions = (setTypebot: SetTypebot): GroupsActions => ({
             id,
           });
         });
+        const newGroups: GroupV6[] = [];
         groups.forEach((group) => {
           const groupTitle = isEmpty(group.title)
             ? ""
@@ -205,8 +203,33 @@ const groupsActions = (setTypebot: SetTypebot): GroupsActions => ({
               };
             }),
           };
-          typebot.groups.push(newGroup);
+          newGroups.push(newGroup);
         });
+
+        typebot.groups.push(
+          ...newGroups.map((group) => {
+            return {
+              ...group,
+              blocks: group.blocks.map((block) => {
+                if (
+                  block.type === LogicBlockType.JUMP &&
+                  block.options?.groupId
+                )
+                  return {
+                    ...block,
+                    options: {
+                      ...block.options,
+                      groupId: oldToNewIdsMapping.get(block.options?.groupId),
+                      blockId: block.options?.blockId
+                        ? oldToNewIdsMapping.get(block.options?.blockId)
+                        : undefined,
+                    },
+                  };
+                return block;
+              }),
+            };
+          }),
+        );
 
         edgesToCreate.forEach((edge) => {
           if (!("blockId" in edge.from)) return;

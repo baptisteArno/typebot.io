@@ -21,24 +21,10 @@ export const parseUnknownError = async ({
         details: undefined,
       };
     if (err instanceof Error) {
-      if (
-        "response" in err &&
-        typeof err.response === "object" &&
-        err.response &&
-        "text" in err.response &&
-        typeof err.response.text === "function"
-      ) {
-        return {
-          context,
-          description: err.message,
-          details: JSON.stringify(await (err.response as Response).text()),
-        };
-      }
       return {
         context,
         description: err.message,
-        details:
-          typeof err.cause === "string" ? err.cause : JSON.stringify(err.cause),
+        details: await extractDetails(err),
       };
     }
     return {
@@ -73,8 +59,7 @@ export const parseUnknownErrorSync = ({
       return {
         context,
         description: err.message,
-        details:
-          typeof err.cause === "string" ? err.cause : JSON.stringify(err.cause),
+        details: extractDetailsSync(err),
       };
     }
     return {
@@ -88,4 +73,31 @@ export const parseUnknownErrorSync = ({
       description: "Unknown error (failed to parse)",
     };
   }
+};
+
+const extractDetailsSync = (err: Error): string => {
+  if ("responseBody" in err) {
+    return typeof err.responseBody === "string"
+      ? err.responseBody
+      : JSON.stringify(err.responseBody);
+  }
+  return typeof err.cause === "string" ? err.cause : JSON.stringify(err.cause);
+};
+
+const extractDetails = async (err: Error): Promise<string> => {
+  if ("responseBody" in err) {
+    return typeof err.responseBody === "string"
+      ? err.responseBody
+      : JSON.stringify(err.responseBody);
+  }
+  if (
+    "response" in err &&
+    typeof err.response === "object" &&
+    err.response &&
+    "text" in err.response &&
+    typeof err.response.text === "function"
+  ) {
+    return await (err.response as Response).text();
+  }
+  return typeof err.cause === "string" ? err.cause : JSON.stringify(err.cause);
 };

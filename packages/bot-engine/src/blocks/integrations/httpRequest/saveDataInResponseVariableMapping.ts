@@ -3,6 +3,7 @@ import { LogicBlockType } from "@typebot.io/blocks-logic/constants";
 import type { SessionState } from "@typebot.io/chat-session/schemas";
 import { byId } from "@typebot.io/lib/utils";
 import type { LogInSession } from "@typebot.io/logs/schemas";
+import type { SessionStore } from "@typebot.io/runtime-session-store";
 import { createHttpReqResponseMappingRunner } from "@typebot.io/variables/codeRunners";
 import { parseVariables } from "@typebot.io/variables/parseVariables";
 import type { VariableWithUnknowValue } from "@typebot.io/variables/schemas";
@@ -28,6 +29,7 @@ type Props = {
     statusCode?: number;
     data?: unknown;
   };
+  sessionStore: SessionStore;
 };
 
 export const saveDataInResponseVariableMapping = ({
@@ -38,6 +40,7 @@ export const saveDataInResponseVariableMapping = ({
   outgoingEdgeId,
   logs = [],
   response,
+  sessionStore,
 }: Props): ExecuteIntegrationResponse => {
   const { typebot } = state.typebotsQueue[0];
   const status = response.statusCode?.toString();
@@ -67,7 +70,7 @@ export const saveDataInResponseVariableMapping = ({
 
   let run: ((varMapping: string) => unknown) | undefined;
   if (responseVariableMapping) {
-    run = createHttpReqResponseMappingRunner(response);
+    run = createHttpReqResponseMappingRunner({ response, sessionStore });
   }
   const newVariables = responseVariableMapping?.reduce<
     VariableWithUnknowValue[]
@@ -81,7 +84,10 @@ export const saveDataInResponseVariableMapping = ({
 
     try {
       const value: unknown = run(
-        parseVariables(typebot.variables)(varMapping?.bodyPath),
+        parseVariables(varMapping?.bodyPath, {
+          variables: typebot.variables,
+          sessionStore,
+        }),
       );
       return [...newVariables, { ...existingVariable, value }];
     } catch (err) {

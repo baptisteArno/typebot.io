@@ -9,7 +9,8 @@
   },
   "dependencies": {
     "@typebot.io/zod": "workspace:*",
-    "@typebot.io/variables": "workspace:*"
+    "@typebot.io/variables": "workspace:*",
+    "@typebot.io/runtime-session-store": "workspace:*"
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*",

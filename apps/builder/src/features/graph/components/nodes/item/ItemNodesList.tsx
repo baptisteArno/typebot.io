@@ -15,6 +15,7 @@ import {
 } from "@chakra-ui/react";
 import type { Coordinates } from "@dnd-kit/utilities";
 import { useTranslate } from "@tolgee/react";
+import { shouldOpenItemSettingsOnCreation } from "@typebot.io/blocks-core/helpers";
 import type {
   BlockIndices,
   BlockWithItems,
@@ -27,6 +28,7 @@ import { useEffect, useRef, useState } from "react";
 import { BlockSourceEndpoint } from "../../endpoints/BlockSourceEndpoint";
 import { PlaceholderNode } from "../PlaceholderNode";
 import { ItemNode } from "./ItemNode";
+import { getItemName } from "./getItemName";
 
 type Props = {
   block: BlockWithItems;
@@ -40,7 +42,7 @@ export const ItemNodesList = ({
   const { typebot, createItem, detachItemFromBlock } = useTypebot();
   const { draggedItem, setDraggedItem, mouseOverBlock } = useBlockDnd();
   const placeholderRefs = useRef<HTMLDivElement[]>([]);
-  const { graphPosition } = useGraph();
+  const { graphPosition, setOpenedNodeId } = useGraph();
   const isDraggingOnCurrentBlock =
     (draggedItem && mouseOverBlock?.id === block.id) ?? false;
   const showPlaceholders =
@@ -144,21 +146,26 @@ export const ItemNodesList = ({
 
   const groupId = typebot?.groups.at(groupIndex)?.id;
 
+  const itemName = getItemName(block.type);
+
+  const insertItem = (itemIndex: number) => {
+    const newItemId = createItem({}, { groupIndex, blockIndex, itemIndex });
+    if (newItemId && shouldOpenItemSettingsOnCreation(block.type))
+      setOpenedNodeId(newItemId);
+  };
+
   return (
-    <Stack
-      flex={1}
-      spacing={1}
-      maxW="full"
-      onClick={stopPropagating}
-      isolation="isolate"
-    >
+    <Stack flex={1} spacing={0} maxW="full" onClick={stopPropagating}>
       <PlaceholderNode
         isVisible={showPlaceholders}
         isExpanded={expandedPlaceholderIndex === 0}
-        onRef={handlePushElementRef(0)}
-      />
+        ref={handlePushElementRef(0)}
+        onClick={() => insertItem(0)}
+      >
+        Add {itemName}
+      </PlaceholderNode>
       {block.items.map((item, idx) => (
-        <Stack key={item.id} spacing={1}>
+        <Stack key={item.id} spacing={0}>
           <ItemNode
             item={item}
             block={block}
@@ -168,8 +175,11 @@ export const ItemNodesList = ({
           <PlaceholderNode
             isVisible={showPlaceholders}
             isExpanded={expandedPlaceholderIndex === idx + 1}
-            onRef={handlePushElementRef(idx + 1)}
-          />
+            ref={handlePushElementRef(idx + 1)}
+            onClick={() => insertItem(idx + 1)}
+          >
+            Add {itemName}
+          </PlaceholderNode>
         </Stack>
       ))}
       {isLastBlock && someChoiceItemsAreNotConnected && groupId && (

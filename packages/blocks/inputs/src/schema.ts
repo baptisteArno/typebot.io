@@ -1,4 +1,5 @@
 import { z } from "@typebot.io/zod";
+import { cardsBlockSchema } from "./cards/schema";
 import { buttonsInputSchemas } from "./choice/schema";
 import { dateInputSchema } from "./date/schema";
 import { emailInputSchema } from "./email/schema";
@@ -22,6 +23,7 @@ const inputBlockSchemas = [
   timeInputSchema,
   paymentInputSchema,
   ratingInputBlockSchema,
+  cardsBlockSchema,
 ] as const;
 
 export const inputBlockV5Schema = z.discriminatedUnion("type", [

@@ -141,7 +141,6 @@ export const TableList = <T extends object>({
                       icon={<PlusIcon />}
                       size="xs"
                       shadow="md"
-                      colorScheme="orange"
                       onClick={insertItem(itemIndex - 1)}
                     />
                   </SlideFade>
@@ -160,7 +159,6 @@ export const TableList = <T extends object>({
                     icon={<PlusIcon />}
                     size="xs"
                     shadow="md"
-                    colorScheme="orange"
                     onClick={insertItem(itemIndex)}
                   />
                 </SlideFade>
@@ -170,12 +168,7 @@ export const TableList = <T extends object>({
         </Box>
       ))}
       {(!isOrdered || items.length === 0) && (
-        <Button
-          leftIcon={<PlusIcon />}
-          onClick={createItem}
-          flexShrink={0}
-          colorScheme="orange"
-        >
+        <Button leftIcon={<PlusIcon />} onClick={createItem} flexShrink={0}>
           {addLabel}
         </Button>
       )}

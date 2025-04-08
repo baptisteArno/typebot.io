@@ -53,7 +53,7 @@ export const parseDateReply = (
 
   return {
     status: "success",
-    reply: block.options?.isRange ? `${startDate} to ${endDate}` : startDate,
+    content: block.options?.isRange ? `${startDate} to ${endDate}` : startDate,
   };
 };
 

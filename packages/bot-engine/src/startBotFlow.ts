@@ -1,12 +1,12 @@
 import { TRPCError } from "@trpc/server";
 import type { SessionState } from "@typebot.io/chat-session/schemas";
 import type { Prisma } from "@typebot.io/prisma/types";
+import type { SessionStore } from "@typebot.io/runtime-session-store";
 import type { SetVariableHistoryItem } from "@typebot.io/variables/schemas";
 import { continueBotFlow } from "./continueBotFlow";
 import { executeGroup } from "./executeGroup";
 import { getFirstEdgeId } from "./getFirstEdgeId";
 import { getNextGroup } from "./getNextGroup";
-import { resetGlobals } from "./globals";
 import { upsertResult } from "./queries/upsertResult";
 import type { ContinueChatResponse, Message, StartFrom } from "./schemas/api";
 
@@ -23,17 +23,18 @@ type Props = {
   startFrom?: StartFrom;
   startTime?: number;
   textBubbleContentFormat: "richText" | "markdown";
+  sessionStore: SessionStore;
 };
 
 export const startBotFlow = async ({
   version,
   message,
   state,
+  sessionStore,
   startFrom,
   startTime,
   textBubbleContentFormat,
 }: Props): Promise<ChatReply> => {
-  resetGlobals();
   let newSessionState = state;
   const visitedEdges: Prisma.VisitedEdge[] = [];
   const setVariableHistory: SetVariableHistoryItem[] = [];
@@ -53,6 +54,7 @@ export const startBotFlow = async ({
       setVariableHistory,
       startTime,
       textBubbleContentFormat,
+      sessionStore,
     });
   }
   const firstEdgeId = getFirstEdgeId({
@@ -77,6 +79,7 @@ export const startBotFlow = async ({
   const chatReply = await executeGroup(nextGroup.group, {
     version,
     state: newSessionState,
+    sessionStore,
     visitedEdges,
     setVariableHistory,
     startTime,
@@ -89,6 +92,7 @@ export const startBotFlow = async ({
     chatReply,
     textBubbleContentFormat,
     version,
+    sessionStore,
   });
 };
 
@@ -97,6 +101,7 @@ const autoContinueChatIfStartingWithInput = async ({
   message,
   chatReply,
   textBubbleContentFormat,
+  sessionStore,
 }: Props & { chatReply: ChatReply }): Promise<ChatReply> => {
   if (
     !message ||
@@ -119,5 +124,6 @@ const autoContinueChatIfStartingWithInput = async ({
     state: chatReply.newSessionState,
     textBubbleContentFormat: textBubbleContentFormat,
     startTime: Date.now(),
+    sessionStore,
   });
 };

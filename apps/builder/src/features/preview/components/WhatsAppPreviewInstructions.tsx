@@ -35,7 +35,10 @@ export const WhatsAppPreviewInstructions = (props: StackProps) => {
   const { mutate } = trpc.whatsApp.startWhatsAppPreview.useMutation({
     onMutate: () => setIsSendingMessage(true),
     onSettled: () => setIsSendingMessage(false),
-    onError: (error) => toast({ description: error.message }),
+    onError: (error) => {
+      if (error.data?.logError) return toast(error.data.logError);
+      toast({ description: error.message });
+    },
     onSuccess: async (data) => {
       if (
         data?.message === "success" &&

@@ -1,8 +1,8 @@
 import { TypebotLogoFull } from "@/components/TypebotLogo";
 import { ButtonLink } from "@/components/link";
 import { signinUrl } from "@/constants";
-import { cn } from "@/lib/utils";
 import { Link, useLocation } from "@tanstack/react-router";
+import { cn } from "@typebot.io/ui/lib/cn";
 
 type Props = {
   className?: string;

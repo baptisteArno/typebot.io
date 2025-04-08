@@ -27,6 +27,7 @@ test.describe
       ]);
 
       await page.goto(`/typebots/${typebotId}/edit`);
+      await page.pause();
       await page.getByRole("textbox").last().fill("Item 1");
       await page.getByRole("textbox").last().press("Enter");
       await page.getByRole("textbox").last().fill("Item 2");
@@ -47,7 +48,7 @@ test.describe
       await page
         .getByTestId("block block2")
         .click({ position: { x: 0, y: 0 } });
-      await page.click("text=Multiple choice?");
+      await page.click("text=Multiple choice");
       await page.getByLabel("Button label:").fill("Go");
       await page.getByPlaceholder("Select a variable").nth(1).click();
       await page.getByText("var1").click();
@@ -64,7 +65,7 @@ test.describe
           force: true,
         });
       await page.waitForTimeout(1000);
-      await page.click('[aria-label="Add item"]');
+      await page.getByRole("button", { name: "Add Button" }).click();
       await page
         .getByTestId("block block2")
         .getByRole("textbox")
@@ -103,7 +104,7 @@ test("Variable buttons should work", async ({ page }) => {
   await page.click('text="Item 1"');
   await page.getByRole("textbox").last().fill("{{Item 2}}");
   await page.getByTestId("block block1").click({ position: { x: 0, y: 0 } });
-  await page.click("text=Multiple choice?");
+  await page.click("text=Multiple choice");
   await page.click('text="Restart"');
   await page
     .locator("typebot-standard")

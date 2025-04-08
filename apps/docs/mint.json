@@ -105,7 +105,8 @@
                 "editor/blocks/inputs/picture-choice",
                 "editor/blocks/inputs/payment",
                 "editor/blocks/inputs/rating",
-                "editor/blocks/inputs/file-upload"
+                "editor/blocks/inputs/file-upload",
+                "editor/blocks/inputs/cards"
               ]
             },
             {
@@ -264,7 +265,7 @@
     },
     {
       "group": "Get started",
-      "pages": ["contribute/overview"]
+      "pages": ["contribute/overview", "contribute/guidelines"]
     },
     {
       "group": "Guides",

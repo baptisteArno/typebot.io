@@ -10,6 +10,7 @@
     "test:ui": "dotenv -e ./.env -e ../../.env -- playwright test --ui"
   },
   "dependencies": {
+    "@ark-ui/react": "5.1.0",
     "@auth/core": "0.37.4",
     "@braintree/sanitize-url": "7.0.1",
     "@chakra-ui/react": "2.8.2",
@@ -21,7 +22,7 @@
     "@giphy/js-fetch-api": "5.0.0",
     "@giphy/react-components": "7.1.0",
     "@paralleldrive/cuid2": "2.2.1",
-    "@sentry/nextjs": "9.1.0",
+    "@sentry/nextjs": "9.5.0",
     "@tanstack/react-query": "4.29.19",
     "@tanstack/react-table": "8.9.3",
     "@tolgee/format-icu": "5.28.6",
@@ -30,6 +31,7 @@
     "@trpc/next": "10.45.2",
     "@trpc/react-query": "10.45.2",
     "@trpc/server": "10.45.2",
+    "posthog-node": "4.3.2",
     "@typebot.io/blocks-bubbles": "workspace:*",
     "@typebot.io/blocks-core": "workspace:*",
     "@typebot.io/blocks-inputs": "workspace:*",
@@ -66,7 +68,7 @@
     "@uiw/react-codemirror": "4.23.8",
     "@upstash/ratelimit": "0.4.3",
     "@use-gesture/react": "10.2.27",
-    "ai": "4.1.46",
+    "ai": "4.2.8",
     "browser-image-compression": "2.0.2",
     "canvas-confetti": "1.6.0",
     "codemirror": "6.0.1",
@@ -84,7 +86,7 @@
     "ky": "1.2.4",
     "mailchecker": "6.0.16",
     "micro-cors": "0.1.1",
-    "next": "14.2.13",
+    "next": "14.2.26",
     "next-auth": "4.24.11",
     "nextjs-cors": "2.1.2",
     "nodemailer": "6.9.15",
@@ -109,10 +111,11 @@
     "use-debounce": "9.0.4",
     "zod": "3.23.8",
     "zod-validation-error": "3.4.0",
-    "zustand": "4.5.0"
+    "zustand": "4.5.0",
+    "@typebot.io/runtime-session-store": "workspace:*"
   },
   "devDependencies": {
-    "@playwright/test": "1.45.2",
+    "@playwright/test": "1.51.0",
     "@typebot.io/billing": "workspace:*",
     "@typebot.io/forge": "workspace:*",
     "@typebot.io/forge-repository": "workspace:*",
@@ -136,9 +139,11 @@
     "@types/qs": "6.9.7",
     "@types/react": "18.3.18",
     "@types/tinycolor2": "1.4.3",
+    "autoprefixer": "10.4.20",
     "dotenv": "16.4.5",
     "dotenv-cli": "8.0.0",
+    "next-runtime-env": "1.6.2",
     "superjson": "1.12.4",
-    "next-runtime-env": "1.6.2"
+    "tailwindcss": "3.4.17"
   }
 }

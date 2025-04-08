@@ -3,6 +3,7 @@ import { BubbleBlockType } from "@typebot.io/blocks-bubbles/constants";
 import { embedBubbleContentSchema } from "@typebot.io/blocks-bubbles/embed/schema";
 import { imageBubbleContentSchema } from "@typebot.io/blocks-bubbles/image/schema";
 import { videoBubbleContentSchema } from "@typebot.io/blocks-bubbles/video/schema";
+import { cardsBlockSchema } from "@typebot.io/blocks-inputs/cards/schema";
 import { buttonsInputSchemas } from "@typebot.io/blocks-inputs/choice/schema";
 import { dateInputSchema } from "@typebot.io/blocks-inputs/date/schema";
 import { emailInputSchema } from "@typebot.io/blocks-inputs/email/schema";
@@ -366,6 +367,7 @@ const chatResponseBaseSchema = z.object({
         ratingInputBlockSchema,
         fileInputBlockSchemas.v6,
         pictureChoiceBlockSchemas.v6,
+        cardsBlockSchema,
       ]),
       z.discriminatedUnion("type", [
         buttonsInputSchemas.v5,
@@ -414,7 +416,10 @@ export const startChatResponseSchema = z
         typebotV6Schema.shape.version,
       ]),
       theme: themeSchema,
-      settings: settingsSchema,
+      settings: settingsSchema.pick({
+        general: true,
+        typingEmulation: true,
+      }),
       publishedAt: z.coerce.date().optional(),
     }),
   })

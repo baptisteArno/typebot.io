@@ -1,0 +1,18 @@
+---
+title: 'Guidelines'
+---
+
+## Code
+
+- When introducing new i18n keys, only provide en.json translations. The rest will be [translated in Tolgee](./guides/translation) later on.
+
+## Pull requests
+
+- Before pushing any changes, we recommend you to build the project to make sure it's working as expected by running `bun run build` at the root of the repository.
+- The PR title and description should simply describe what the PR is about. We don't follow any conventions.
+- It's appreciated to add screenshots or videos of the changes when it's UI related
+- No need to add any tags
+- If your PR should close an issue when merged, add `Closes #<issue-number>` in the PR description.
+- We prefer to push atomic commits without bothering about commit message conventions. All of them will be squashed before being merged, so it doesn't matter.
+- Always let the author resolve himself the review threads he started
+- Once you pushed changes after a review, make sure to [re-request a review](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/requesting-a-pull-request-review#requesting-reviews-from-collaborators-and-organization-members).

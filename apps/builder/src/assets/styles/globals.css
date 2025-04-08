@@ -1,0 +1,14 @@
+@import "@typebot.io/ui/colors.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.text-align-inherit {
+  text-align: inherit;
+}
+
+/* TODO: Remove this once Chakra UI is removed */
+.chakra-popover__popper {
+  z-index: auto !important;
+}

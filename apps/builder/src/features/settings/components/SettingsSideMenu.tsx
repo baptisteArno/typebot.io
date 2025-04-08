@@ -16,6 +16,7 @@ import {
   Stack,
   useColorModeValue,
 } from "@chakra-ui/react";
+import { useTranslate } from "@tolgee/react";
 import type { Settings } from "@typebot.io/settings/schemas";
 import React from "react";
 import { GeneralSettingsForm } from "./GeneralSettingsForm";
@@ -25,6 +26,7 @@ import { TypingEmulationForm } from "./TypingEmulationForm";
 
 export const SettingsSideMenu = () => {
   const { typebot, updateTypebot } = useTypebot();
+  const { t } = useTranslate();
 
   const updateTypingEmulation = (
     typingEmulation: Settings["typingEmulation"],
@@ -66,7 +68,7 @@ export const SettingsSideMenu = () => {
           <AccordionButton py={4}>
             <HStack flex="1" pl={2}>
               <MoreVerticalIcon transform={"rotate(90deg)"} />
-              <Heading fontSize="md">General</Heading>
+              <Heading fontSize="md">{t("settings.sideMenu.general")}</Heading>
             </HStack>
             <AccordionIcon />
           </AccordionButton>
@@ -83,7 +85,7 @@ export const SettingsSideMenu = () => {
           <AccordionButton py={4}>
             <HStack flex="1" pl={2}>
               <ChatIcon />
-              <Heading fontSize="md">Typing</Heading>
+              <Heading fontSize="md">{t("settings.sideMenu.typing")}</Heading>
             </HStack>
             <AccordionIcon />
           </AccordionButton>
@@ -100,7 +102,7 @@ export const SettingsSideMenu = () => {
           <AccordionButton py={4}>
             <HStack flex="1" pl={2}>
               <LockedIcon />
-              <Heading fontSize="md">Security</Heading>
+              <Heading fontSize="md">{t("settings.sideMenu.security")}</Heading>
             </HStack>
             <AccordionIcon />
           </AccordionButton>
@@ -117,7 +119,7 @@ export const SettingsSideMenu = () => {
           <AccordionButton py={4}>
             <HStack flex="1" pl={2}>
               <CodeIcon />
-              <Heading fontSize="md">Metadata</Heading>
+              <Heading fontSize="md">{t("settings.sideMenu.metadata")}</Heading>
             </HStack>
             <AccordionIcon />
           </AccordionButton>

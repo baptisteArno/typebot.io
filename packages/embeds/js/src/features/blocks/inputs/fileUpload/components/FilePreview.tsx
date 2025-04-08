@@ -1,5 +1,5 @@
 import { FileIcon } from "@/components/icons/FileIcon";
-import clsx from "clsx";
+import { cx } from "@typebot.io/ui/lib/cva";
 
 type Props = {
   file: { name: string };
@@ -15,7 +15,7 @@ export const FilePreview = (props: Props) => {
       }
     >
       <div
-        class={clsx(
+        class={cx(
           "rounded-md text-white p-2 flex items-center",
           fileColor === "pink" && "bg-pink-400",
           fileColor === "blue" && "bg-blue-400",

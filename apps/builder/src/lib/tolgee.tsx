@@ -12,7 +12,6 @@ import pt from "../i18n/pt.json";
 import ro from "../i18n/ro.json";
 
 export const tolgee = Tolgee()
-  .use(DevTools())
   .use(FormatIcu())
   .init({
     apiKey: env.NEXT_PUBLIC_TOLGEE_API_KEY,

@@ -1,6 +1,5 @@
 import type { ContinueChatResponse } from "@typebot.io/bot-engine/schemas/api";
 import type { Theme } from "@typebot.io/theme/schemas";
-import { getAvatarUrls } from "./dynamicTheme";
 
 export type AvatarHistory = {
   role: "host" | "guest";
@@ -15,7 +14,22 @@ export const initializeAvatarHistory = ({
   initialTheme: Theme;
   dynamicTheme: ContinueChatResponse["dynamicTheme"];
 }): AvatarHistory[] => {
-  const avatars = getAvatarUrls(initialTheme, dynamicTheme);
+  const avatars = {
+    host:
+      initialTheme.chat?.hostAvatar && dynamicTheme?.hostAvatarUrl
+        ? {
+            ...initialTheme.chat.hostAvatar,
+            url: dynamicTheme.hostAvatarUrl,
+          }.url
+        : initialTheme.chat?.hostAvatar?.url,
+    guest:
+      initialTheme.chat?.guestAvatar && dynamicTheme?.guestAvatarUrl
+        ? {
+            ...initialTheme.chat.guestAvatar,
+            url: dynamicTheme.guestAvatarUrl,
+          }.url
+        : initialTheme.chat?.guestAvatar?.url,
+  };
   const history: AvatarHistory[] = [];
   if (avatars.host) {
     history.push({
@@ -43,16 +57,12 @@ export const getAvatarAtIndex = ({
   currentIndex: number;
   currentRole: "host" | "guest";
 }) => {
-  const changes = avatarHistory
-    .filter(
-      (change) =>
-        change.role === currentRole && change.chunkIndex <= currentIndex,
-    )
-    .sort((a, b) => b.chunkIndex - a.chunkIndex);
+  const changes = avatarHistory.filter(
+    (change) =>
+      change.role === currentRole && change.chunkIndex <= currentIndex,
+  );
 
-  if (changes.length > 0) {
-    return changes[0].avatarUrl;
-  }
+  if (changes.length > 0) return changes.at(-1)?.avatarUrl;
 };
 
 export const addAvatarsToHistoryIfChanged = ({

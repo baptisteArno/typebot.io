@@ -2,7 +2,7 @@ import { SendButton } from "@/components/SendButton";
 import type { InputSubmitContent } from "@/types";
 import { defaultDateInputOptions } from "@typebot.io/blocks-inputs/date/constants";
 import type { DateInputBlock } from "@typebot.io/blocks-inputs/date/schema";
-import clsx from "clsx";
+import { cx } from "@typebot.io/ui/lib/cva";
 import { createSignal } from "solid-js";
 
 type Props = {
@@ -29,7 +29,7 @@ export const DateForm = (props: Props) => {
   return (
     <div class="typebot-input-form flex gap-2 items-end">
       <form
-        class={clsx(
+        class={cx(
           "flex typebot-input",
           props.options?.isRange ? "items-end" : "items-center",
         )}

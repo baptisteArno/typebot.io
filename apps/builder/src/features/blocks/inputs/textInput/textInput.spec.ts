@@ -31,7 +31,7 @@ test.describe
       await page.click(`text=${defaultTextInputOptions.labels.placeholder}`);
       await page.getByLabel("Placeholder:").fill("Your name...");
       await page.getByLabel("Button label:").fill("Go");
-      await page.click("text=Long text?");
+      await page.click("text=Long text");
 
       await page.click("text=Restart");
       await expect(

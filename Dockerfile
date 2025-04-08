@@ -1,7 +1,5 @@
 # ================= INSTALL BUN ===================
-ARG BUN_VERSION=1.1.42
-ARG YARN_PKG_MANAGER="this.packageManager=\"yarn@1.22.22\""
-ARG BUN_PKG_MANAGER="this.packageManager=\"bun@${BUN_VERSION}\""
+ARG BUN_VERSION=1.2.8
 FROM debian:bullseye-slim AS build-bun
 ARG BUN_VERSION
 RUN apt-get update -qq \
@@ -56,9 +54,9 @@ RUN apt-get update -qq \
     && which bun \
     && bun --version
 
-# ================= ADD BUN IN NODE 20 IMAGE ===================
+# ================= ADD BUN IN NODE 22 IMAGE ===================
 
-FROM node:22-bullseye-slim AS bun
+FROM node:22-bullseye-slim AS base
 ARG BUN_RUNTIME_TRANSPILER_CACHE_PATH=0
 ENV BUN_RUNTIME_TRANSPILER_CACHE_PATH=${BUN_RUNTIME_TRANSPILER_CACHE_PATH}
 ARG BUN_INSTALL_BIN=/usr/local/bin
@@ -80,26 +78,23 @@ WORKDIR /app
 
 # ================= TURBO PRUNE ===================
 
-FROM bun as pruned
-ARG YARN_PKG_MANAGER
+FROM base AS pruned
 ARG SCOPE
 COPY . .
-RUN bunx json -I -f package.json -e ${YARN_PKG_MANAGER}
-RUN bunx turbo prune --scope="${SCOPE}" --docker
+RUN bunx turbo@2.4.5-canary.7 prune "${SCOPE}" --docker
 
 # =============== INSTALL & BUILD =================
 
-FROM bun as builder
+FROM base AS builder
 ARG BUN_PKG_MANAGER
 ARG SCOPE
 COPY --from=pruned /app/out/full/ .
-RUN bunx json -I -f package.json -e ${BUN_PKG_MANAGER}
 RUN SENTRYCLI_SKIP_DOWNLOAD=1 bun install
-RUN SKIP_ENV_CHECK=true bunx turbo build --filter="${SCOPE}..."
+RUN SKIP_ENV_CHECK=true bunx turbo build --filter="${SCOPE}"
 
 # ================== RELEASE ======================
 
-FROM bun AS release
+FROM base AS release
 ARG SCOPE
 ENV SCOPE=${SCOPE}
 COPY --from=builder /app/node_modules ./node_modules
@@ -116,4 +111,4 @@ RUN chmod +x ./${SCOPE}-entrypoint.sh
 ENTRYPOINT ./${SCOPE}-entrypoint.sh
 
 EXPOSE 3000
-ENV PORT 3000
+ENV PORT=3000

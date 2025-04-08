@@ -41,7 +41,7 @@ test("options should work", async ({ page }) => {
   await page.getByText("One click submit").click();
   await page.click("text=Numbers");
   await page.click("text=Icons");
-  await page.click('text="Custom icon?"');
+  await page.click('text="Custom icon"');
   await page.fill('[placeholder="<svg>...</svg>"]', boxSvg);
   await page.fill('[placeholder="Not likely at all"]', "Not likely at all");
   await page.fill('[placeholder="Extremely likely"]', "Extremely likely");

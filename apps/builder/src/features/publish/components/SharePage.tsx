@@ -33,7 +33,8 @@ import { integrationsList } from "./embeds/EmbedButton";
 export const SharePage = () => {
   const { t } = useTranslate();
   const { workspace } = useWorkspace();
-  const { typebot, updateTypebot, publishedTypebot, is404 } = useTypebot();
+  const { typebot, updateTypebot, publishedTypebot, is404, currentUserMode } =
+    useTypebot();
 
   const handlePublicIdChange = async (publicId: string) => {
     updateTypebot({ updates: { publicId }, save: true });
@@ -97,7 +98,7 @@ export const SharePage = () => {
         <Stack maxW="970px" w="full" pt="10" spacing={10}>
           <Stack spacing={4} align="flex-start">
             <Heading fontSize="2xl" as="h1">
-              Your typebot links
+              {t("sharePage.links.heading")}
             </Heading>
             <Stack
               bg={useColorModeValue("white", "gray.900")}
@@ -137,7 +138,8 @@ export const SharePage = () => {
                   )}
                 </HStack>
               )}
-              {isNotDefined(typebot?.customDomain) &&
+              {currentUserMode === "write" &&
+              isNotDefined(typebot?.customDomain) &&
               env.NEXT_PUBLIC_VERCEL_VIEWER_PROJECT_NAME ? (
                 <>
                   {hasProPerks(workspace) ? (
@@ -150,7 +152,7 @@ export const SharePage = () => {
                       limitReachedType={t("billing.limitMessage.customDomain")}
                       excludedPlans={[Plan.STARTER]}
                     >
-                      <Text mr="2">Add my domain</Text>{" "}
+                      <Text mr="2">{t("customDomain.add")}</Text>{" "}
                       <LockTag plan={Plan.PRO} />
                     </UpgradeButton>
                   )}
@@ -161,7 +163,7 @@ export const SharePage = () => {
 
           <Stack spacing={4}>
             <Heading fontSize="2xl" as="h1">
-              Embed your typebot
+              {t("sharePage.embed.heading")}
             </Heading>
             <Wrap spacing={4}>
               {integrationsList.map((IntegrationButton, idx) => (

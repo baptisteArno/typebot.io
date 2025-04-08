@@ -16,17 +16,21 @@ type Props = {
   setVariableHistory: SetVariableHistoryItem[];
   isWaitingForExternalEvent?: boolean;
   initialSessionId?: string;
+  sessionId: {
+    type: "existing" | "new";
+    id: string;
+  };
 };
 
 export const saveStateToDatabase = async ({
-  session: { state, id, isReplying },
+  sessionId,
+  session: { state, isReplying },
   input,
   logs,
   clientSideActions,
   visitedEdges,
   setVariableHistory,
   isWaitingForExternalEvent,
-  initialSessionId,
 }: Props) => {
   const containsSetVariableClientSideAction = clientSideActions?.some(
     (action) => action.expectsDedicatedReply,
@@ -42,21 +46,26 @@ export const saveStateToDatabase = async ({
 
   const resultId = state.typebotsQueue[0].resultId;
 
-  if (id) {
-    if (isCompleted && resultId) queries.push(deleteSession(id));
+  if (sessionId.type === "existing") {
+    if (isCompleted && resultId) queries.push(deleteSession(sessionId.id));
     else
       queries.push(
-        updateSession({ id, state, isReplying: isReplying ?? false }),
+        updateSession({
+          id: sessionId.id,
+          state,
+          isReplying: isReplying ?? false,
+        }),
       );
   }
 
-  const session = id
-    ? { state, id }
-    : await createSession({
-        id: initialSessionId,
-        state,
-        isReplying: isReplying ?? false,
-      });
+  const session =
+    sessionId.type === "existing"
+      ? { state, id: sessionId.id }
+      : await createSession({
+          id: sessionId.id,
+          state,
+          isReplying: isReplying ?? false,
+        });
 
   if (!resultId) {
     if (queries.length > 0) await prisma.$transaction(queries);

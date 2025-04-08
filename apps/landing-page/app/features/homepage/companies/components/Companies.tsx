@@ -4,6 +4,7 @@ import {
   IbanFirst,
   Lemlist,
   MakerLead,
+  Mindeo,
   Obole,
   PinpointInteractive,
   Shadow,
@@ -19,13 +20,13 @@ export const Companies = () => (
     <div className="relative isolate flex w-full justify-center">
       <Marquee>
         <MakerLead width="100px" height="60px" />
-        <Webisharp width="100px" height="60px" />
         <Shadow width="100px" height="60px" />
         <Cora width="80px" height="60px" />
         <IbanFirst width="100px" height="60px" />
         <SocialHackrs width="100px" height="60px" />
         <Lemlist width="100px" height="60px" />
         <PinpointInteractive width="100px" height="60px" />
+        <Mindeo width="100px" height="60px" />
         <Obole width="80px" height="60px" />
       </Marquee>
       <div className="pointer-events-none absolute inset-y-0 right-0 w-[50px] bg-gradient-to-r from-gray-2/20 to-gray-2 " />

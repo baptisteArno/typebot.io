@@ -19,6 +19,7 @@ import "@/assets/styles/routerProgressBar.css";
 import "@/assets/styles/plate.css";
 import "@/assets/styles/resultsTable.css";
 import "@/assets/styles/custom.css";
+import "@/assets/styles/globals.css";
 import { NuqsAdapter } from "nuqs/adapters/next/pages";
 import { Toaster } from "sonner";
 

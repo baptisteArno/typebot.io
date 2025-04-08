@@ -7,7 +7,8 @@ import { runChatCompletionStream } from "@typebot.io/ai/runChatCompletionStream"
 import { createAction } from "@typebot.io/forge";
 import { auth } from "../auth";
 import { baseOptions } from "../baseOptions";
-import { fetchGPTModels } from "../helpers/fetchModels";
+import { reasoningModels } from "../constants";
+import { chatModels } from "../constants";
 import { isModelCompatibleWithVision } from "../helpers/isModelCompatibleWithVision";
 
 export const createChatCompletion = createAction({
@@ -16,8 +17,8 @@ export const createChatCompletion = createAction({
   baseOptions,
   options: parseChatCompletionOptions({
     models: {
-      type: "fetcher",
-      id: "fetchModels",
+      type: "static",
+      models: chatModels.concat(reasoningModels),
     },
   }),
   getSetVariableIds: getChatCompletionSetVarIds,
@@ -56,24 +57,13 @@ export const createChatCompletion = createAction({
       }),
     },
   ],
-  fetchers: [
-    {
-      id: "fetchModels",
-      dependencies: ["baseUrl", "apiVersion"],
-      fetch: ({ credentials, options }) =>
-        fetchGPTModels({
-          apiKey: credentials?.apiKey,
-          baseUrl: credentials?.baseUrl ?? options.baseUrl,
-          apiVersion: options.apiVersion,
-        }),
-    },
-  ],
   run: {
     server: ({
       credentials: { apiKey, baseUrl },
       options,
       variables,
       logs,
+      sessionStore,
     }) => {
       if (!apiKey) return logs.add("No API key provided");
       const modelName = options.model?.trim();
@@ -93,11 +83,17 @@ export const createChatCompletion = createAction({
         temperature: options.temperature,
         responseMapping: options.responseMapping,
         logs,
+        sessionStore,
       });
     },
     stream: {
       getStreamVariableId: getChatCompletionStreamVarId,
-      run: async ({ credentials: { apiKey, baseUrl }, options, variables }) => {
+      run: async ({
+        credentials: { apiKey, baseUrl },
+        options,
+        variables,
+        sessionStore,
+      }) => {
         const context = "While streaming OpenAI chat completion";
         if (!apiKey)
           return {
@@ -134,6 +130,7 @@ export const createChatCompletion = createAction({
           tools: options.tools,
           temperature: options.temperature,
           responseMapping: options.responseMapping,
+          sessionStore,
         });
       },
     },

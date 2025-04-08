@@ -83,6 +83,7 @@ export const BlockNode = ({
   const { mouseOverBlock, setMouseOverBlock } = useBlockDnd();
   const { typebot, updateBlock } = useTypebot();
   const [isConnecting, setIsConnecting] = useState(false);
+  const [isContextMenuReady, setIsContextMenuReady] = useState(true);
   const blockRef = useRef<HTMLDivElement | null>(null);
 
   const isPreviewing =
@@ -150,6 +151,10 @@ export const BlockNode = ({
 
   const handleCloseEditor = () => {
     setOpenedBlockId(undefined);
+    setIsContextMenuReady(false);
+    setTimeout(() => {
+      setIsContextMenuReady(true);
+    }, 100);
   };
 
   const handleTextEditorChange = (content: TElement[]) => {
@@ -245,6 +250,7 @@ export const BlockNode = ({
           }}
         />
       )}
+      isDisabled={!isContextMenuReady}
     >
       {(ref, isContextMenuOpened) => (
         <Popover

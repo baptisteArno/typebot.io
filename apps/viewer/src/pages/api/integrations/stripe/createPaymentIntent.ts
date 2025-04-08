@@ -9,6 +9,10 @@ import {
   methodNotAllowed,
 } from "@typebot.io/lib/api/utils";
 import prisma from "@typebot.io/prisma";
+import {
+  deleteSessionStore,
+  getSessionStore,
+} from "@typebot.io/runtime-session-store";
 import { parseVariables } from "@typebot.io/variables/parseVariables";
 import type { Variable } from "@typebot.io/variables/schemas";
 import Cors from "cors";
@@ -58,15 +62,26 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const currency =
       inputOptions.currency ?? defaultPaymentInputOptions.currency;
 
+    const mockedSessionId = "legacy-stripe";
+    const sessionStore = getSessionStore(mockedSessionId);
     const amount = Math.round(
-      Number(parseVariables(variables)(inputOptions.amount)) *
-        (isZeroDecimalCurrency(currency) ? 1 : 100),
+      Number(
+        parseVariables(inputOptions.amount, {
+          variables,
+          sessionStore,
+        }),
+      ) * (isZeroDecimalCurrency(currency) ? 1 : 100),
     );
     if (isNaN(amount)) return badRequest(res);
     // Create a PaymentIntent with the order amount and currency
-    const receiptEmail = parseVariables(variables)(
+    const receiptEmail = parseVariables(
       inputOptions.additionalInformation?.email,
+      {
+        variables,
+        sessionStore,
+      },
     );
+    deleteSessionStore(mockedSessionId);
     try {
       const paymentIntent = await stripe.paymentIntents.create({
         amount,

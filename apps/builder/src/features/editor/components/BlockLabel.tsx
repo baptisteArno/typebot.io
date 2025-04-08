@@ -65,6 +65,7 @@ export const getInputBlockLabel = (
   [InputBlockType.RATING]: t("editor.sidebarBlock.rating.label"),
   [InputBlockType.FILE]: t("editor.sidebarBlock.file.label"),
   [InputBlockType.TIME]: "Time",
+  [InputBlockType.CARDS]: "Cards",
 });
 
 export const getLogicBlockLabel = (

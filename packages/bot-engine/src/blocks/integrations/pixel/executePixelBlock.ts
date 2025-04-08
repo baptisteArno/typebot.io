@@ -1,11 +1,12 @@
 import type { PixelBlock } from "@typebot.io/blocks-integrations/pixel/schema";
 import type { SessionState } from "@typebot.io/chat-session/schemas";
+import type { SessionStore } from "@typebot.io/runtime-session-store";
 import { deepParseVariables } from "@typebot.io/variables/deepParseVariables";
 import type { ExecuteIntegrationResponse } from "../../../types";
 
 export const executePixelBlock = (
-  state: SessionState,
   block: PixelBlock,
+  { state, sessionStore }: { state: SessionState; sessionStore: SessionStore },
 ): ExecuteIntegrationResponse => {
   const { typebot, resultId } = state.typebotsQueue[0];
   if (
@@ -15,10 +16,12 @@ export const executePixelBlock = (
     state.whatsApp
   )
     return { outgoingEdgeId: block.outgoingEdgeId };
-  const pixel = deepParseVariables(typebot.variables, {
+  const pixel = deepParseVariables(block.options, {
+    variables: typebot.variables,
+    sessionStore,
     guessCorrectTypes: true,
     removeEmptyStrings: true,
-  })(block.options);
+  });
   return {
     outgoingEdgeId: block.outgoingEdgeId,
     clientSideActions: [

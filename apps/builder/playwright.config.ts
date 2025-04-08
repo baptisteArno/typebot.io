@@ -29,7 +29,7 @@ export default defineConfig({
     trace: "on-first-retry",
     locale: "en-US",
     baseURL: process.env.NEXTAUTH_URL,
-    storageState: "./src/test/storageState.json",
+    storageState: resolve(__dirname, "./src/test/storageState.json"),
     permissions: ["microphone"],
     launchOptions: {
       args: [

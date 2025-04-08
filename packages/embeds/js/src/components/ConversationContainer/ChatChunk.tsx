@@ -32,7 +32,13 @@ type Props = Pick<ContinueChatResponse, "messages" | "input"> & {
   isTransitionDisabled?: boolean;
   isOngoingLastChunk: boolean;
   onNewBubbleDisplayed: (blockId: string) => Promise<void>;
-  onScrollToBottom: (ref?: HTMLDivElement, offset?: number) => void;
+  onScrollToBottom: ({
+    lastElement,
+    offset,
+  }: {
+    lastElement?: HTMLDivElement;
+    offset?: number;
+  }) => void;
   onSubmit: (answer?: InputSubmitContent) => void;
   onSkip: () => void;
   onAllBubblesDisplayed: () => void;
@@ -50,7 +56,7 @@ export const ChatChunk = (props: Props) => {
     if (props.messages.length === 0) {
       props.onAllBubblesDisplayed();
     }
-    props.onScrollToBottom(inputRef, 50);
+    props.onScrollToBottom({ lastElement: inputRef, offset: 50 });
   });
 
   const displayNextMessage = async (bubbleRef?: HTMLDivElement) => {
@@ -74,7 +80,7 @@ export const ChatChunk = (props: Props) => {
         ? displayedMessageIndex()
         : displayedMessageIndex() + 1,
     );
-    props.onScrollToBottom(bubbleRef);
+    props.onScrollToBottom({ lastElement: bubbleRef });
     if (displayedMessageIndex() === props.messages.length) {
       setLastBubble(bubbleRef);
       props.onAllBubblesDisplayed();
@@ -156,7 +162,9 @@ export const ChatChunk = (props: Props) => {
             }
             isOngoingLastChunk={props.isOngoingLastChunk}
             hasError={props.hasError}
-            onTransitionEnd={() => props.onScrollToBottom(lastBubble())}
+            onTransitionEnd={() =>
+              props.onScrollToBottom({ lastElement: lastBubble() })
+            }
             onSubmit={props.onSubmit}
             onSkip={props.onSkip}
           />

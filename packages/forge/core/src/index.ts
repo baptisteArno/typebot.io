@@ -152,7 +152,6 @@ export const option = {
             .layout({
               ...(layouts?.item ?? {}),
               placeholder: "Select a response",
-              defaultValue: items[0],
             }),
           variableId: z
             .string()

@@ -11,6 +11,7 @@ import {
   Tooltip,
   useEditableControls,
 } from "@chakra-ui/react";
+import { useTranslate } from "@tolgee/react";
 import React, { useState } from "react";
 
 type EditableUrlProps = {
@@ -26,6 +27,7 @@ export const EditableUrl = ({
   isValid,
   onPathnameChange,
 }: EditableUrlProps) => {
+  const { t } = useTranslate();
   const [value, setValue] = useState(pathname);
 
   const handleSubmit = async (newPathname: string) => {
@@ -44,7 +46,7 @@ export const EditableUrl = ({
     >
       <HStack spacing={1}>
         <Text flexShrink={0}>{hostname}/</Text>
-        <Tooltip label="Edit">
+        <Tooltip label={t("edit")}>
           <EditablePreview
             mx={1}
             borderWidth="1px"
@@ -67,11 +69,12 @@ export const EditableUrl = ({
 };
 
 const EditButton = (props: ButtonProps) => {
+  const { t } = useTranslate();
   const { isEditing, getEditButtonProps } = useEditableControls();
 
   return isEditing ? null : (
     <Button leftIcon={<EditIcon />} {...props} {...getEditButtonProps()}>
-      Edit
+      {t("edit")}
     </Button>
   );
 };

@@ -1,4 +1,3 @@
-import { Button } from "@/components/Button";
 import { MoreInfoTooltip } from "@/components/MoreInfoTooltip";
 import {
   Table,
@@ -9,12 +8,13 @@ import {
   TableRoot,
   TableRow,
 } from "@/components/table";
-import { cn } from "@/lib/utils";
 import { chatsLimits, seatsLimits } from "@typebot.io/billing/constants";
 import { formatPrice } from "@typebot.io/billing/helpers/formatPrice";
 import { parseNumberWithCommas } from "@typebot.io/lib/utils";
+import { Button } from "@typebot.io/ui/components/Button";
 import { CheckIcon } from "@typebot.io/ui/icons/CheckIcon";
 import { InfinityIcon } from "@typebot.io/ui/icons/InfinityIcon";
+import { cn } from "@typebot.io/ui/lib/cn";
 import { chatsTooltip } from "./constants";
 
 type Props = {

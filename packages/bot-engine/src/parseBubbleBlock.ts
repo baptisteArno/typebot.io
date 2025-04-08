@@ -1,11 +1,11 @@
 import { BubbleBlockType } from "@typebot.io/blocks-bubbles/constants";
 import type { BubbleBlock } from "@typebot.io/blocks-bubbles/schema";
-import { defaultVideoBubbleContent } from "@typebot.io/blocks-bubbles/video/constants";
 import { parseVideoUrl } from "@typebot.io/blocks-bubbles/video/helpers";
 import { isDefined, isEmpty, isNotEmpty } from "@typebot.io/lib/utils";
 import { convertMarkdownToRichText } from "@typebot.io/rich-text/convertMarkdownToRichText";
 import { convertRichTextToMarkdown } from "@typebot.io/rich-text/convertRichTextToMarkdown";
 import type { TDescendant, TElement } from "@typebot.io/rich-text/types";
+import type { SessionStore } from "@typebot.io/runtime-session-store";
 import { isTypebotVersionAtLeastV6 } from "@typebot.io/schemas/helpers/isTypebotVersionAtLeastV6";
 import type { Typebot } from "@typebot.io/typebot/schemas/typebot";
 import { deepParseVariables } from "@typebot.io/variables/deepParseVariables";
@@ -22,6 +22,7 @@ type Params = {
   typebotVersion: Typebot["version"];
   variables: Variable[];
   textBubbleContentFormat: "richText" | "markdown";
+  sessionStore: SessionStore;
 };
 
 export type BubbleBlockWithDefinedContent = BubbleBlock & {
@@ -30,7 +31,13 @@ export type BubbleBlockWithDefinedContent = BubbleBlock & {
 
 export const parseBubbleBlock = (
   block: BubbleBlockWithDefinedContent,
-  { version, variables, typebotVersion, textBubbleContentFormat }: Params,
+  {
+    version,
+    variables,
+    typebotVersion,
+    textBubbleContentFormat,
+    sessionStore,
+  }: Params,
 ): ContinueChatResponse["messages"][0] => {
   switch (block.type) {
     case BubbleBlockType.TEXT: {
@@ -39,14 +46,18 @@ export const parseBubbleBlock = (
           ...block,
           content: {
             type: "richText",
-            richText: (block.content?.richText ?? []).map(
-              deepParseVariables(variables),
+            richText: (block.content?.richText ?? []).map((element) =>
+              deepParseVariables(element, {
+                variables,
+                sessionStore,
+              }),
             ),
           },
         };
 
       const richText = parseVariablesInRichText(block.content?.richText ?? [], {
         variables,
+        sessionStore,
         takeLatestIfList: !isTypebotVersionAtLeastV6(typebotVersion),
       }).parsedElements;
       return {
@@ -65,11 +76,17 @@ export const parseBubbleBlock = (
     }
 
     case BubbleBlockType.EMBED: {
-      return deepParseVariables(variables)(block);
+      return deepParseVariables(block, {
+        variables,
+        sessionStore,
+      });
     }
     case BubbleBlockType.VIDEO: {
       const parsedContent = block.content
-        ? deepParseVariables(variables)(block.content)
+        ? deepParseVariables(block.content, {
+            variables,
+            sessionStore,
+          })
         : undefined;
 
       return {
@@ -81,7 +98,10 @@ export const parseBubbleBlock = (
       };
     }
     default:
-      return deepParseVariables(variables)(block);
+      return deepParseVariables(block, {
+        variables,
+        sessionStore,
+      });
   }
 };
 
@@ -89,8 +109,13 @@ export const parseVariablesInRichText = (
   elements: TDescendant[],
   {
     variables,
+    sessionStore,
     takeLatestIfList,
-  }: { variables: Variable[]; takeLatestIfList?: boolean },
+  }: {
+    variables: Variable[];
+    sessionStore: SessionStore;
+    takeLatestIfList?: boolean;
+  },
 ): { parsedElements: TDescendant[]; parsedVariableIds: string[] } => {
   const parsedElements: TDescendant[] = [];
   const parsedVariableIds: string[] = [];
@@ -103,6 +128,7 @@ export const parseVariablesInRichText = (
       }
       const variablesInText = getVariablesToParseInfoInText(text, {
         variables,
+        sessionStore,
         takeLatestIfList,
       });
       parsedVariableIds.push(
@@ -188,6 +214,7 @@ export const parseVariablesInRichText = (
       parsedVariableIds: parsedChildrenVariableIds,
     } = parseVariablesInRichText(element.children as TDescendant[], {
       variables,
+      sessionStore,
       takeLatestIfList,
     });
 
@@ -195,7 +222,10 @@ export const parseVariablesInRichText = (
     parsedElements.push({
       ...element,
       url: element.url
-        ? parseVariables(variables)(element.url as string)
+        ? parseVariables(element.url as string, {
+            variables,
+            sessionStore,
+          })
         : undefined,
       type,
       children: parsedChildren,

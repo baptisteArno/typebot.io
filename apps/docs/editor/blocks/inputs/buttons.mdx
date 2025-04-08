@@ -3,6 +3,8 @@ title: Buttons
 icon: arrow-pointer
 ---
 
+import { YoutubeVideo } from '/snippets/youtube-video.mdx'
+
 The Buttons input block allows you to offer your user predefined choices, either single choice options or multiple choices
 
 ## Single choice
@@ -67,6 +69,18 @@ Instead of adding items manually, you can also display a dynamic list of items b
 
 This is useful when you want to display a list of items from another data source. For this to work, you first need to make sure the variable you are using contains a list of values. This list can be extracted from an integration block like Google Sheets.
 
+## Item options
+
+### Display condition
+
+Allows you to conditionally display a specific button.
+
+<YoutubeVideo id="c7LhC5BRSIA" />
+
+### Internal value
+
+Allows you to assign an internal value for that specific button. If your user selects this button, the internal value will be saved in the variable you've set in the `Save answer` option.
+
 ## How to
 
 ### Add a "Other" button
@@ -91,13 +105,3 @@ If you'd like to have different replies based on the multiple choices the user s
     alt="Condition multiple button flow"
   />
 </Frame>
-
-### Conditionally display a certain button
-
-<div className="relative" style={{ paddingBottom: '64.5933014354067%' }}>
-  <iframe
-    src="https://www.youtube.com/embed/c7LhC5BRSIA"
-    allowFullScreen
-    className="absolute top-0 left-0 w-full h-full"
-  />
-</div>

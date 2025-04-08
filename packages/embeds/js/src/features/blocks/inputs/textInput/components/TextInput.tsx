@@ -14,7 +14,7 @@ import { defaultTextInputOptions } from "@typebot.io/blocks-inputs/text/constant
 import type { TextInputBlock } from "@typebot.io/blocks-inputs/text/schema";
 import { getRuntimeVariable } from "@typebot.io/env/getRuntimeVariable";
 import { isDefined } from "@typebot.io/lib/utils";
-import clsx from "clsx";
+import { cx } from "@typebot.io/ui/lib/cva";
 import {
   For,
   Match,
@@ -252,7 +252,7 @@ export const TextInput = (props: Props) => {
 
   return (
     <div
-      class={clsx(
+      class={cx(
         "typebot-input-form flex w-full gap-2 items-end",
         props.block.options?.isLong && recordingStatus() !== "started"
           ? "max-w-full"
@@ -264,7 +264,7 @@ export const TextInput = (props: Props) => {
       onDragLeave={handleDragLeave}
     >
       <div
-        class={clsx(
+        class={cx(
           "relative typebot-input flex-col w-full",
           isDraggingOver() && "filter brightness-95",
         )}
@@ -302,7 +302,7 @@ export const TextInput = (props: Props) => {
             </div>
           </Show>
           <div
-            class={clsx(
+            class={cx(
               "flex justify-between px-2",
               props.block.options?.isLong ? "items-end" : "items-center",
             )}
@@ -338,7 +338,7 @@ export const TextInput = (props: Props) => {
             >
               <TextInputAddFileButton
                 onNewFiles={onNewFiles}
-                class={clsx(props.block.options?.isLong ? "ml-2" : undefined)}
+                class={cx(props.block.options?.isLong ? "ml-2" : undefined)}
               />
             </Show>
           </div>

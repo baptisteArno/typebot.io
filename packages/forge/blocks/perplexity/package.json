@@ -5,15 +5,13 @@
   "type": "module",
   "exports": {
     ".": "./src/index.ts",
-    "./schemas": "./src/schemas.ts",
-    "./shared/*": "./src/shared/*.ts"
+    "./schemas": "./src/schemas.ts"
   },
   "dependencies": {
-    "@ai-sdk/perplexity": "1.0.2",
+    "@ai-sdk/perplexity": "1.1.1",
     "@typebot.io/ai": "workspace:*",
     "@typebot.io/forge": "workspace:*",
-    "@typebot.io/lib": "workspace:*",
-    "@typebot.io/zod": "workspace:*"
+    "@typebot.io/lib": "workspace:*"
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*"

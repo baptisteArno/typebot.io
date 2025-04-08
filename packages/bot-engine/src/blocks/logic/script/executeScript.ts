@@ -1,6 +1,7 @@
 import { defaultScriptOptions } from "@typebot.io/blocks-logic/script/constants";
 import type { ScriptBlock } from "@typebot.io/blocks-logic/script/schema";
 import type { SessionState } from "@typebot.io/chat-session/schemas";
+import type { SessionStore } from "@typebot.io/runtime-session-store";
 import { executeFunction } from "@typebot.io/variables/executeFunction";
 import { extractVariablesFromText } from "@typebot.io/variables/extractVariablesFromText";
 import { parseGuessedValueType } from "@typebot.io/variables/parseGuessedValueType";
@@ -10,8 +11,14 @@ import type { ExecuteLogicResponse } from "../../../types";
 import { updateVariablesInSession } from "../../../updateVariablesInSession";
 
 export const executeScript = async (
-  state: SessionState,
   block: ScriptBlock,
+  {
+    state,
+    sessionStore,
+  }: {
+    state: SessionState;
+    sessionStore: SessionStore;
+  },
 ): Promise<ExecuteLogicResponse> => {
   const { variables } = state.typebotsQueue[0].typebot;
   if (!block.options?.content) return { outgoingEdgeId: block.outgoingEdgeId };
@@ -23,6 +30,7 @@ export const executeScript = async (
     const { newVariables, error } = await executeFunction({
       variables,
       body: block.options.content,
+      sessionStore,
     });
 
     const updateVarResults = newVariables
@@ -50,6 +58,7 @@ export const executeScript = async (
   const scriptToExecute = parseScriptToExecuteClientSideAction(
     variables,
     block.options.content,
+    sessionStore,
   );
 
   return {
@@ -66,10 +75,13 @@ export const executeScript = async (
 export const parseScriptToExecuteClientSideAction = (
   variables: Variable[],
   contentToEvaluate: string,
+  sessionStore: SessionStore,
 ) => {
-  const content = parseVariables(variables, { fieldToParse: "id" })(
-    contentToEvaluate,
-  );
+  const content = parseVariables(contentToEvaluate, {
+    variables,
+    sessionStore,
+    fieldToParse: "id",
+  });
   const args = extractVariablesFromText(variables)(contentToEvaluate).map(
     (variable) => ({
       id: variable.id,

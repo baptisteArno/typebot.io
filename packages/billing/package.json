@@ -17,7 +17,7 @@
     "@typebot.io/workspaces": "workspace:*",
     "@typebot.io/zod": "workspace:*",
     "@typebot.io/settings": "workspace:*",
-    "next": "14.2.13",
+    "next": "14.2.26",
     "micro": "10.0.1"
   },
   "devDependencies": {

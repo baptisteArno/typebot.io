@@ -31,15 +31,13 @@ export const continueChat = publicProcedure
   .mutation(
     async ({
       input: { sessionId, message, textBubbleContentFormat },
-      ctx: { origin, res },
-    }) => {
-      const { corsOrigin, ...response } = await continueChatFn({
+      ctx: { origin, iframeReferrerOrigin },
+    }) =>
+      continueChatFn({
         origin,
+        iframeReferrerOrigin,
         sessionId,
         message,
         textBubbleContentFormat,
-      });
-      if (corsOrigin) res.setHeader("Access-Control-Allow-Origin", corsOrigin);
-      return response;
-    },
+      }),
   );

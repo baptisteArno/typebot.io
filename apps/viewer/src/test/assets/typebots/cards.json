@@ -1,0 +1,205 @@
+{
+  "version": "6.1",
+  "id": "cm8n7j4ce0001opnb1iphikcp",
+  "name": "My typebot",
+  "events": [
+    {
+      "id": "qbkeqm5zublkgjyj53s6ms1a",
+      "outgoingEdgeId": "hbrvph48qfld5l6s69fal24n",
+      "graphCoordinates": { "x": 0, "y": 0 },
+      "type": "start"
+    }
+  ],
+  "groups": [
+    {
+      "id": "ml4nqagbhmfvxnyfbhtou9vo",
+      "title": "Group #1",
+      "graphCoordinates": { "x": 229, "y": 74 },
+      "blocks": [
+        {
+          "id": "qiqhqqi1fpr70n1dcdyydh4a",
+          "type": "text",
+          "content": {
+            "richText": [{ "type": "p", "children": [{ "text": "Hi there!" }] }]
+          }
+        },
+        {
+          "id": "jpgh9sydrjzwlcppxpnipmp5",
+          "type": "cards",
+          "items": [
+            {
+              "id": "dg6p643qp1v04abm9jjwodgu",
+              "imageUrl": "https://images.unsplash.com/photo-1499856871958-5b9627545d1a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0MjU2MDR8MHwxfHNlYXJjaHwxfHxwYXJpc3xlbnwwfDB8fHwxNzQyODI5Mjc1fDA&ixlib=rb-4.0.3&q=80&w=1080",
+              "title": "Paris",
+              "description": "A beautiful city",
+              "paths": [
+                { "id": "e1h0hsruoh5bv72c2ikhin01", "text": "Continue" },
+                {
+                  "id": "iygo3fs5oh6i8sggweqj81u1",
+                  "text": "More info",
+                  "outgoingEdgeId": "kckdcqimp2blg4y3qnlbqncj"
+                }
+              ]
+            },
+            {
+              "id": "dg6p643qp1v04abm9jjwodgu",
+              "imageUrl": "https://images.unsplash.com/photo-1533929736458-ca588d08c8be?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0MjU2MDR8MHwxfHNlYXJjaHwyfHxMb25kb258ZW58MHwwfHx8MTc0MjgyOTMxMXww&ixlib=rb-4.0.3&q=80&w=1080",
+              "title": "London",
+              "description": "A beautiful city",
+              "paths": [
+                { "id": "t8x6ooo57x8x60vfuxsvk65m", "text": "Continue" },
+                { "id": "acdlii6dlo8hp7avo8ezd5cu", "text": "More info" }
+              ]
+            },
+            {
+              "id": "dg6p643qp1v04abm9jjwodgu",
+              "imageUrl": "https://images.unsplash.com/photo-1518005068251-37900150dfca?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0MjU2MDR8MHwxfHNlYXJjaHwyfHxEdWJsaW58ZW58MHwwfHx8MTc0MjgyOTMzNHww&ixlib=rb-4.0.3&q=80&w=1080",
+              "title": "Dublin",
+              "description": "A beautiful city",
+              "paths": [
+                { "id": "lh83nmf0n8wefm2f9kxn717w", "text": "Continue" },
+                { "id": "mmkuyo1lw2tfvlidj5l4t5lu", "text": "More info" }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "nwfufqi3ymak9zg3eddsfpse",
+      "title": "Group #2",
+      "graphCoordinates": { "x": 645.78, "y": 74.79 },
+      "blocks": [
+        {
+          "id": "x1ebxsronv043hdc3xsg3hh0",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "Awesome pick!" }] }
+            ]
+          }
+        },
+        {
+          "id": "vug3mqpafhh9ijtjtr61rhl3",
+          "type": "Set variable",
+          "options": {
+            "variableId": "vnqzi4upki6qp8d8p3tyjajrr",
+            "expressionToEvaluate": "return [\n  \"https://images.unsplash.com/photo-1740938331134-d347f9ee3431?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0MjU2MDR8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NDI4MjkzNzJ8&ixlib=rb-4.0.3&q=80&w=1080\",\n  \"https://images.unsplash.com/photo-1740428639827-79acb8f07709?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0MjU2MDR8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NDI4MjkzODZ8&ixlib=rb-4.0.3&q=80&w=1080\"\n]",
+            "isCode": true
+          }
+        },
+        {
+          "id": "jgv3ihv9mmn46ke5i01b9vec",
+          "type": "Set variable",
+          "options": {
+            "variableId": "vqcjekhxop2puyqxg0itfervk",
+            "expressionToEvaluate": "return [\n  \"Title 1\",\n  \"Title 2\"\n]",
+            "isCode": true
+          }
+        },
+        {
+          "id": "fexx23numcrdsqq9sq2gtubc",
+          "type": "Set variable",
+          "options": {
+            "variableId": "viwvshpal36k3ykgf8rpby8ox",
+            "expressionToEvaluate": "return [\n  \"Desc 1\",\n  \"Desc 2\"\n]",
+            "isCode": true
+          }
+        },
+        {
+          "id": "mkilrak0ptkfm5hok3hqhy1i",
+          "type": "cards",
+          "items": [
+            {
+              "id": "qx1d4jwgy8fz59ti0dxjae8j",
+              "imageUrl": "{{Images}}",
+              "title": "{{Titles}}",
+              "description": "{{Descriptions}}",
+              "paths": [
+                {
+                  "id": "ri7s376vw7vpqsjzf6hm81la",
+                  "text": "Continue",
+                  "outgoingEdgeId": "uyzuqi8mg940bz755fl4nmi6"
+                },
+                { "id": "zotkgpjtmmyoa0yzk8uq03yh", "text": "More info" }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "x6wwl31j4ohtdwdtfdhftog9",
+      "title": "Group #3",
+      "graphCoordinates": { "x": 1041.72, "y": 75.37 },
+      "blocks": [
+        {
+          "id": "tlkg4rrak378puzk4sfipthv",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "Cool! Goodbye." }] }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "hbrvph48qfld5l6s69fal24n",
+      "from": { "eventId": "qbkeqm5zublkgjyj53s6ms1a" },
+      "to": { "groupId": "ml4nqagbhmfvxnyfbhtou9vo" }
+    },
+    {
+      "id": "uyzuqi8mg940bz755fl4nmi6",
+      "from": {
+        "blockId": "mkilrak0ptkfm5hok3hqhy1i",
+        "itemId": "qx1d4jwgy8fz59ti0dxjae8j",
+        "pathId": "ri7s376vw7vpqsjzf6hm81la"
+      },
+      "to": { "groupId": "x6wwl31j4ohtdwdtfdhftog9" }
+    },
+    {
+      "id": "kckdcqimp2blg4y3qnlbqncj",
+      "from": {
+        "blockId": "jpgh9sydrjzwlcppxpnipmp5",
+        "itemId": "dg6p643qp1v04abm9jjwodgu",
+        "pathId": "iygo3fs5oh6i8sggweqj81u1"
+      },
+      "to": { "groupId": "nwfufqi3ymak9zg3eddsfpse" }
+    }
+  ],
+  "variables": [
+    {
+      "id": "viwvshpal36k3ykgf8rpby8ox",
+      "name": "Descriptions",
+      "isSessionVariable": true
+    },
+    {
+      "id": "vqcjekhxop2puyqxg0itfervk",
+      "name": "Titles",
+      "isSessionVariable": true
+    },
+    {
+      "id": "vnqzi4upki6qp8d8p3tyjajrr",
+      "name": "Images",
+      "isSessionVariable": true
+    }
+  ],
+  "theme": {},
+  "selectedThemeTemplateId": null,
+  "settings": {},
+  "createdAt": "2025-03-24T15:14:00.255Z",
+  "updatedAt": "2025-03-24T15:41:16.248Z",
+  "icon": null,
+  "folderId": null,
+  "publicId": "my-typebot-iphikcp",
+  "customDomain": null,
+  "workspaceId": "proWorkspace",
+  "resultsTablePreferences": null,
+  "isArchived": false,
+  "isClosed": false,
+  "whatsAppCredentialsId": null,
+  "riskLevel": null
+}

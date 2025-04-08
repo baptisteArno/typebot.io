@@ -93,6 +93,7 @@ const Expression = ({
     case "Result ID":
     case "Moment of the day":
     case "Environment name":
+    case "Device type":
     case "Transcript":
     case "Yesterday": {
       return (

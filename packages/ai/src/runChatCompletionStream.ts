@@ -3,6 +3,7 @@ import {
   parseUnknownError,
   parseUnknownErrorSync,
 } from "@typebot.io/lib/parseUnknownError";
+import type { SessionStore } from "@typebot.io/runtime-session-store";
 import { type LanguageModel, streamText } from "ai";
 import { maxSteps } from "./constants";
 import { parseChatCompletionMessages } from "./parseChatCompletionMessages";
@@ -19,6 +20,7 @@ type Props = {
   isVisionEnabled: boolean;
   temperature: number | undefined;
   responseMapping: ChatCompletionOptions["responseMapping"] | undefined;
+  sessionStore: SessionStore;
 };
 
 export const runChatCompletionStream = async ({
@@ -29,6 +31,7 @@ export const runChatCompletionStream = async ({
   temperature,
   tools,
   responseMapping,
+  sessionStore,
 }: Props) => {
   try {
     const response = streamText({
@@ -40,7 +43,7 @@ export const runChatCompletionStream = async ({
         variables,
       }),
       temperature,
-      tools: parseTools({ tools, variables }),
+      tools: parseTools({ tools, variables, sessionStore }),
       maxSteps,
       onFinish: (response) => {
         responseMapping?.forEach((mapping) => {
@@ -48,6 +51,17 @@ export const runChatCompletionStream = async ({
           if (mapping.item === "Total tokens")
             variables.set([
               { id: mapping.variableId, value: response.usage.totalTokens },
+            ]);
+          if (mapping.item === "Prompt tokens")
+            variables.set([
+              { id: mapping.variableId, value: response.usage.promptTokens },
+            ]);
+          if (mapping.item === "Completion tokens")
+            variables.set([
+              {
+                id: mapping.variableId,
+                value: response.usage.completionTokens,
+              },
             ]);
         });
       },

@@ -1,7 +1,5 @@
-import { Button } from "@/components/Button";
 import { ButtonLink } from "@/components/link";
-import { Link } from "@tanstack/react-router";
-import clsx from "clsx";
+import { cx } from "@typebot.io/ui/lib/cva";
 import { discordUrl } from "../../../constants";
 import abhaySrc from "../testimonials/assets/abhay.jpeg";
 import annaFilouSrc from "../testimonials/assets/annaFilou.jpeg";
@@ -111,7 +109,7 @@ const FloatingAvatars = ({ className }: { className?: string }) => (
         key={alt}
         src={src}
         alt={alt}
-        className={clsx(
+        className={cx(
           `rounded-full w-16 h-16 border-4 absolute motion-preset-oscillate-sm motion-duration-[4000ms]`,
           position,
         )}

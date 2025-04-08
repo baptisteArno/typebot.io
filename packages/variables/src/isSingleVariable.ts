@@ -1,7 +1,7 @@
 import type { VariableString } from "./schemas";
 
 export const isSingleVariable = (
-  value: string | undefined,
+  value: string | undefined | null,
 ): value is VariableString =>
   !!value &&
   value.startsWith("{{") &&

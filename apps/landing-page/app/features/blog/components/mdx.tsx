@@ -11,11 +11,11 @@ import {
   TableRoot,
   TableRow,
 } from "@/components/table";
-import { cn } from "@/lib/utils";
 import { useMDXComponent } from "@content-collections/mdx/react";
 import { CheckIcon } from "@typebot.io/ui/icons/CheckIcon";
 import { InfoIcon } from "@typebot.io/ui/icons/InfoIcon";
 import { TriangleAlertIcon } from "@typebot.io/ui/icons/TriangleAlertIcon";
+import { cn } from "@typebot.io/ui/lib/cn";
 import type * as React from "react";
 import { Suspense } from "react";
 import { WhatsAppPricingCalculator } from "./WhatsAppPricingCalculator";

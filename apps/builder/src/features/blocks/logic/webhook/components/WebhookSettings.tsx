@@ -76,8 +76,9 @@ export const WebhookSettings = ({
         toast(await parseUnknownError({ err }));
       }
     },
-    onError(e) {
+    async onError(e) {
       console.error(e);
+      console.log((await parseUnknownError({ err: e })).details);
       Sentry.captureException(e);
     },
     startClosed: true,

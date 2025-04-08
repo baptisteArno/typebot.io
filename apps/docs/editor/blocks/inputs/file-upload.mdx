@@ -39,3 +39,11 @@ This option allows you to choose between generating public URLs for the uploaded
 Note that if you choose to keep the files private, you will not be able to use the file URL with other blocks like Attachment in the Send email block or others. These services won't be able to read the files.
 
 By default, this option is set to `Auto`. This means that the files will be public if uploaded from the web runtime but private if uploaded from the WhatsApp runtime. Because on WhatsApp, the file is already uploaded to the WhatsApp server, so there is no need to also upload it to Typebot (only if you need to make the file URL publicly accessible).
+
+## Allowed file types
+
+You can chose to restrict accepted file types. Add file extensions in the "Allowed file types" field to set up a whitelist of file extensions.
+
+We allow any value that is accepted by the [`accept` attribute of an HTML input of type `file`](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/accept#unique_file_type_specifiers). 
+
+All files will be allowed by default if this field is empty.

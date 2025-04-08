@@ -4,19 +4,14 @@ import { runGenerateVariables } from "@typebot.io/ai/runGenerateVariables";
 import { createAction } from "@typebot.io/forge";
 import { isDefined } from "@typebot.io/lib/utils";
 import { auth } from "../auth";
-import { fetchModels } from "../helpers/fetchModels";
+import { models } from "../constants";
 
 export const generateVariables = createAction({
   name: "Generate variables",
   auth,
-  options: parseGenerateVariablesOptions({ modelFetch: "fetchModels" }),
-  fetchers: [
-    {
-      id: "fetchModels",
-      dependencies: [],
-      fetch: fetchModels,
-    },
-  ],
+  options: parseGenerateVariablesOptions({
+    models: { type: "static", models },
+  }),
   turnableInto: [
     {
       blockId: "openai",

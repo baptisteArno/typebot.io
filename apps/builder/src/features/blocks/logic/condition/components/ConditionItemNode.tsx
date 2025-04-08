@@ -1,10 +1,7 @@
-import { PlusIcon } from "@/components/icons";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { useGraph } from "@/features/graph/providers/GraphProvider";
 import {
-  Fade,
   Flex,
-  IconButton,
   Popover,
   PopoverAnchor,
   PopoverArrow,
@@ -14,8 +11,7 @@ import {
   Text,
   useEventListener,
 } from "@chakra-ui/react";
-import { createId } from "@paralleldrive/cuid2";
-import type { ItemIndices } from "@typebot.io/blocks-core/schemas/items/types";
+import type { ItemIndices } from "@typebot.io/blocks-core/schemas/items/schema";
 import type { ConditionItem } from "@typebot.io/blocks-logic/condition/schema";
 import type { Comparison, Condition } from "@typebot.io/conditions/schemas";
 import { isNotDefined } from "@typebot.io/lib/utils";
@@ -26,11 +22,10 @@ import { ConditionForm } from "./ConditionForm";
 
 type Props = {
   item: ConditionItem;
-  isMouseOver: boolean;
   indices: ItemIndices;
 };
 
-export const ConditionItemNode = ({ item, isMouseOver, indices }: Props) => {
+export const ConditionItemNode = ({ item, indices }: Props) => {
   const { typebot, createItem, updateItem } = useTypebot();
   const { openedNodeId, setOpenedNodeId } = useGraph();
   const ref = useRef<HTMLDivElement | null>(null);
@@ -43,19 +38,6 @@ export const ConditionItemNode = ({ item, isMouseOver, indices }: Props) => {
 
   const updateCondition = (condition: Condition) => {
     updateItem(indices, { ...item, content: condition } as ConditionItem);
-  };
-
-  const handlePlusClick = (event: React.MouseEvent) => {
-    event.stopPropagation();
-    const itemIndex = indices.itemIndex + 1;
-    const newItemId = createId();
-    createItem(
-      {
-        id: newItemId,
-      },
-      { ...indices, itemIndex },
-    );
-    setOpenedNodeId(newItemId);
   };
 
   const handleMouseWheel = (e: WheelEvent) => {
@@ -81,25 +63,6 @@ export const ConditionItemNode = ({ item, isMouseOver, indices }: Props) => {
               variables={typebot?.variables ?? []}
             />
           )}
-          <Fade
-            in={isMouseOver}
-            style={{
-              position: "absolute",
-              bottom: "-15px",
-              zIndex: 3,
-              left: "90px",
-            }}
-            unmountOnExit
-          >
-            <IconButton
-              aria-label="Add item"
-              icon={<PlusIcon />}
-              size="xs"
-              shadow="md"
-              colorScheme="gray"
-              onClick={handlePlusClick}
-            />
-          </Fade>
         </Flex>
       </PopoverAnchor>
       <Portal>

@@ -1,5 +1,6 @@
 import type { ChatCompletionOpenAIOptions } from "@typebot.io/blocks-integrations/openai/schema";
 import { byId, isNotEmpty } from "@typebot.io/lib/utils";
+import type { SessionStore } from "@typebot.io/runtime-session-store";
 import { parseVariables } from "@typebot.io/variables/parseVariables";
 import type {
   Variable,
@@ -12,6 +13,7 @@ export const parseChatCompletionMessages =
   (variables: Variable[]) =>
   (
     messages: ChatCompletionOpenAIOptions["messages"],
+    { sessionStore }: { sessionStore: SessionStore },
   ): {
     variablesTransformedToList: VariableWithValue[];
     messages: OpenAI.Chat.ChatCompletionMessageParam[];
@@ -99,9 +101,15 @@ export const parseChatCompletionMessages =
         }
         return {
           role: message.role,
-          content: parseVariables(variables)(message.content),
+          content: parseVariables(message.content, {
+            variables,
+            sessionStore,
+          }),
           name: message.name
-            ? parseVariables(variables)(message.name)
+            ? parseVariables(message.name, {
+                variables,
+                sessionStore,
+              })
             : undefined,
         } satisfies OpenAI.Chat.ChatCompletionMessageParam;
       })

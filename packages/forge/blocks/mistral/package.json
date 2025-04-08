@@ -13,8 +13,7 @@
     "@typebot.io/tsconfig": "workspace:*"
   },
   "dependencies": {
-    "@ai-sdk/mistral": "1.1.13",
-    "@typebot.io/ai": "workspace:*",
-    "ky": "1.2.4"
+    "@ai-sdk/mistral": "1.2.1",
+    "@typebot.io/ai": "workspace:*"
   }
 }

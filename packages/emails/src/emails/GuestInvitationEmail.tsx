@@ -66,6 +66,7 @@ export const sendGuestInvitationEmail = ({
 }: Pick<SendMailOptions, "to"> & ComponentProps<typeof GuestInvitationEmail>) =>
   sendEmail({
     to,
+    replyTo: props.hostEmail,
     subject: "You've been invited to collaborate 🤝",
     html: render(<GuestInvitationEmail {...props} />).html,
   });

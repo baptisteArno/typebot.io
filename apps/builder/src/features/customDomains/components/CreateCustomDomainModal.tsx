@@ -17,6 +17,7 @@ import {
   Text,
   Tooltip,
 } from "@chakra-ui/react";
+import { useTranslate } from "@tolgee/react";
 import { useEffect, useRef, useState } from "react";
 
 const hostnameRegex =
@@ -37,6 +38,7 @@ export const CreateCustomDomainModal = ({
   onNewDomain,
   domain = "",
 }: Props) => {
+  const { t } = useTranslate();
   const inputRef = useRef<HTMLInputElement>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [inputValue, setInputValue] = useState(domain);
@@ -91,7 +93,7 @@ export const CreateCustomDomainModal = ({
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>
-          <Heading size="md">Add a custom domain</Heading>
+          <Heading size="md">{t("customDomain.modal.heading")}</Heading>
         </ModalHeader>
         <ModalCloseButton />
         <ModalBody>
@@ -104,9 +106,7 @@ export const CreateCustomDomainModal = ({
             />
             {hostname.domain !== "" && (
               <>
-                <Text>
-                  Add the following record in your DNS provider to continue:
-                </Text>
+                <Text>{t("customDomain.modal.recordText")}</Text>
                 {hostname.subdomain ? (
                   <HStack
                     bgColor="gray.700"
@@ -116,15 +116,21 @@ export const CreateCustomDomainModal = ({
                     spacing={8}
                   >
                     <Stack>
-                      <Text fontWeight="bold">Type</Text>
+                      <Text fontWeight="bold">
+                        {t("customDomain.modal.type")}
+                      </Text>
                       <Text>CNAME</Text>
                     </Stack>
                     <Stack>
-                      <Text fontWeight="bold">Name</Text>
+                      <Text fontWeight="bold">
+                        {t("customDomain.modal.name")}
+                      </Text>
                       <Text>{hostname.subdomain}</Text>
                     </Stack>
                     <Stack>
-                      <Text fontWeight="bold">Value</Text>
+                      <Text fontWeight="bold">
+                        {t("customDomain.modal.value")}
+                      </Text>
                       <Text>cname.vercel-dns.com</Text>
                     </Stack>
                   </HStack>
@@ -137,22 +143,27 @@ export const CreateCustomDomainModal = ({
                     spacing={8}
                   >
                     <Stack>
-                      <Text fontWeight="bold">Type</Text>
+                      <Text fontWeight="bold">
+                        {t("customDomain.modal.type")}
+                      </Text>
                       <Text>A</Text>
                     </Stack>
                     <Stack>
-                      <Text fontWeight="bold">Name</Text>
+                      <Text fontWeight="bold">
+                        {t("customDomain.modal.name")}
+                      </Text>
                       <Text>@</Text>
                     </Stack>
                     <Stack>
-                      <Text fontWeight="bold">Value</Text>
+                      <Text fontWeight="bold">
+                        {t("customDomain.modal.value")}
+                      </Text>
                       <Text>76.76.21.21</Text>
                     </Stack>
                   </HStack>
                 )}
                 <Alert rounded="md">
-                  Depending on your provider, it might take some time for the
-                  changes to apply
+                  {t("customDomain.modal.warningMessage")}
                 </Alert>
               </>
             )}
@@ -160,7 +171,7 @@ export const CreateCustomDomainModal = ({
         </ModalBody>
         <ModalFooter as={HStack}>
           <Tooltip
-            label="Domain is invalid"
+            label={t("customDomain.modal.domainInvalid.label")}
             isDisabled={hostname.domain !== ""}
           >
             <span>
@@ -170,7 +181,7 @@ export const CreateCustomDomainModal = ({
                 isLoading={isLoading}
                 colorScheme="orange"
               >
-                Save
+                {t("save")}
               </Button>
             </span>
           </Tooltip>

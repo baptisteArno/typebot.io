@@ -1,4 +1,5 @@
 import {
+  isCardsInput,
   isChoiceInput,
   isConditionBlock,
   isPictureChoiceInput,
@@ -12,6 +13,7 @@ export const hasDefaultConnector = (block: BlockV6) =>
   (!isChoiceInput(block) &&
     !isPictureChoiceInput(block) &&
     !isConditionBlock(block) &&
+    !isCardsInput(block) &&
     block.type !== LogicBlockType.AB_TEST) ||
   (block.type === InputBlockType.CHOICE &&
     isDefined(block.options?.dynamicVariableId)) ||

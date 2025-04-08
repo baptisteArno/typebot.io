@@ -167,7 +167,9 @@ export const GroupNode = ({ group, groupIndex }: Props) => {
           className="group"
           data-selectable={group.id}
           userSelect="none"
-          p="4"
+          px="4"
+          pt="4"
+          pb="2"
           rounded="xl"
           bg={bg}
           borderWidth="1px"
@@ -189,8 +191,8 @@ export const GroupNode = ({ group, groupIndex }: Props) => {
           onMouseLeave={handleMouseLeave}
           cursor={isMouseDown ? "grabbing" : "pointer"}
           _hover={{ shadow: "md" }}
-          zIndex={isFocused ? 10 : 1}
-          spacing={isEmpty(group.title) ? "0" : "2"}
+          zIndex={isFocused ? 1 : undefined}
+          spacing={0}
           pointerEvents={isDraggingGraph ? "none" : "auto"}
         >
           <Editable
@@ -225,7 +227,7 @@ export const GroupNode = ({ group, groupIndex }: Props) => {
               groupRef={ref}
             />
           )}
-          {!isReadOnly && focusedGroups.length === 1 && (
+          {focusedGroups.length === 1 && (
             <SlideFade
               in={isFocused}
               style={{
@@ -237,6 +239,7 @@ export const GroupNode = ({ group, groupIndex }: Props) => {
             >
               <GroupFocusToolbar
                 groupId={group.id}
+                isReadOnly={isReadOnly}
                 onPlayClick={startPreviewAtThisGroup}
               />
             </SlideFade>

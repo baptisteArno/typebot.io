@@ -42,27 +42,28 @@ const dialogueMessageItemSchema = option.object({
 });
 
 type Props = {
-  models: { helperText?: string } & (
+  models: {
+    helperText?: string;
+  } & (
     | { type: "fetcher"; id: string }
-    | { type: "static"; models: readonly [string, ...string[]] }
+    | {
+        type: "static";
+        models: string[];
+      }
     | { type: "text" }
   );
 };
 
 export const parseChatCompletionOptions = ({ models }: Props) =>
   option.object({
-    model:
-      models.type === "static"
-        ? option.enum(models.models as [string, ...string[]]).layout({
-            placeholder: "Select a model",
-            label: "Model",
-          })
-        : option.string.layout({
-            placeholder: "Select a model",
-            label: "Model",
-            fetcher: models.type === "fetcher" ? models.id : undefined,
-            helperText: models.helperText,
-          }),
+    model: option.string.layout({
+      placeholder: "Select a model",
+      label: "Model",
+      allowCustomValue: true,
+      helperText: models.helperText,
+      autoCompleteItems: models.type === "static" ? models.models : undefined,
+      fetcher: models.type === "fetcher" ? models.id : undefined,
+    }),
     messages: option
       .array(
         option.discriminatedUnion("role", [
@@ -81,7 +82,12 @@ export const parseChatCompletionOptions = ({ models }: Props) =>
       defaultValue: 1,
     }),
     responseMapping: option
-      .saveResponseArray(["Message content", "Total tokens"] as const)
+      .saveResponseArray([
+        "Message content",
+        "Total tokens",
+        "Prompt tokens",
+        "Completion tokens",
+      ] as const)
       .layout({
         accordion: "Save response",
       }),

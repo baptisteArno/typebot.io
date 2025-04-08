@@ -13,3 +13,9 @@ You are expected to provide the following parameters:
 - `Query`: The user message you want to send to your agent.
 - `Conversation ID`: The conversation ID you want to use for this message. If you don't provide one, a new conversation will be created. This variable content will be updated automatically if a new conversation is created.
 - `User`: The user email used to identify the user in the conversation.
+
+## Query Knowledge Base
+
+This action queries your Dify.AI's knowledge base for the most relevant documents based on a query. This query could be the last user message to look for content that is relevant to the user's reply for example.
+
+The retrieved chunks of information can be then saved into a variable that you can use in your typebot, for example you can add the chunks to the context of your AI block to help it answer the user's query.

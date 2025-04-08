@@ -11,6 +11,10 @@ import type { AsyncVariableStore } from "@typebot.io/forge/types";
 import { getBlockById } from "@typebot.io/groups/helpers/getBlockById";
 import { StreamingTextResponse } from "@typebot.io/legacy/ai";
 import {
+  deleteSessionStore,
+  getSessionStore,
+} from "@typebot.io/runtime-session-store";
+import {
   type ParseVariablesOptions,
   parseVariables,
 } from "@typebot.io/variables/parseVariables";
@@ -82,13 +86,16 @@ export async function POST(req: Request) {
       { status: 400, headers: responseHeaders },
     );
 
+  const sessionStore = getSessionStore(sessionId);
   if (block.type === IntegrationBlockType.OPEN_AI && messages) {
     try {
       const stream = await getChatCompletionStream(conn)(
         state,
         block.options as ChatCompletionOpenAIOptions,
         messages,
+        sessionStore,
       );
+      deleteSessionStore(sessionId);
       if (!stream)
         return NextResponse.json(
           { message: "Could not create stream" },
@@ -151,14 +158,20 @@ export async function POST(req: Request) {
         return variable?.value;
       },
       parse: (text: string, params?: ParseVariablesOptions) =>
-        parseVariables(state.typebotsQueue[0].typebot.variables, params)(text),
+        parseVariables(text, {
+          variables: state.typebotsQueue[0].typebot.variables,
+          sessionStore,
+          ...params,
+        }),
       set: async (_) => {},
     };
     const { stream } = await action.run.stream.run({
       credentials: decryptedCredentials,
       options: block.options,
       variables,
+      sessionStore,
     });
+    deleteSessionStore(sessionId);
     if (!stream)
       return NextResponse.json(
         { message: "Could not create stream" },

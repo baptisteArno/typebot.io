@@ -5,7 +5,6 @@ import { setBotContainerHeight } from "@/utils/botContainerHeightSignal";
 import { setBotContainer } from "@/utils/botContainerSignal";
 import { mergeThemes } from "@/utils/dynamicTheme";
 import { injectFont } from "@/utils/injectFont";
-import { setIsMobile } from "@/utils/isMobileSignal";
 import { persist } from "@/utils/persist";
 import { setCssVariablesValue } from "@/utils/setCssVariablesValue";
 import {
@@ -35,11 +34,13 @@ import {
   defaultProgressBarPosition,
 } from "@typebot.io/theme/constants";
 import type { Font } from "@typebot.io/theme/schemas";
-import clsx from "clsx";
+import typebotColors from "@typebot.io/ui/colors.css";
+import { cn } from "@typebot.io/ui/lib/cn";
+import { cx } from "@typebot.io/ui/lib/cva";
 import { HTTPError } from "ky";
 import { Show, createEffect, createSignal, onCleanup, onMount } from "solid-js";
 import { Portal } from "solid-js/web";
-import immutableCss from "../assets/immutable.css";
+import { buttonVariants } from "./Button";
 import { ConversationContainer } from "./ConversationContainer/ConversationContainer";
 import { ErrorMessage } from "./ErrorMessage";
 import { LiteBadge } from "./LiteBadge";
@@ -224,8 +225,8 @@ export const Bot = (props: BotProps & { class?: string }) => {
 
   return (
     <>
+      <style>{typebotColors}</style>
       <style>{customCss()}</style>
-      <style>{immutableCss}</style>
       <Show when={error()} keyed>
         {(error) => <ErrorMessage error={error} />}
       </Show>
@@ -301,14 +302,9 @@ const BotContent = (props: BotContentProps) => {
   );
   let botContainerElement: HTMLDivElement | undefined;
 
-  const resizeObserver = new ResizeObserver((entries) => {
-    return setIsMobile((entries[0]?.target.clientWidth ?? 0) < 432);
-  });
-
   onMount(() => {
     if (!botContainerElement) return;
     setBotContainer(botContainerElement);
-    resizeObserver.observe(botContainerElement);
     setBotContainerHeight(`${botContainerElement.clientHeight}px`);
   });
 
@@ -335,15 +331,10 @@ const BotContent = (props: BotContentProps) => {
     });
   });
 
-  onCleanup(() => {
-    if (!botContainerElement) return;
-    resizeObserver.unobserve(botContainerElement);
-  });
-
   return (
     <div
       ref={botContainerElement}
-      class={clsx(
+      class={cx(
         "relative flex w-full h-full text-base overflow-hidden flex-col justify-center items-center typebot-container",
         props.class,
       )}
@@ -384,12 +375,19 @@ const BotContent = (props: BotContentProps) => {
       >
         <LiteBadge botContainer={botContainerElement} />
       </Show>
-      <Toaster toaster={toaster}>
+      <Toaster toaster={toaster} class="w-full">
         {(toast) => (
-          <Toast.Root>
-            <Toast.Title>{toast().title}</Toast.Title>
-            <Toast.Description>{toast().description}</Toast.Description>
-            <Toast.CloseTrigger class="absolute right-2 top-2">
+          <Toast.Root class="flex flex-col pl-4 py-4 pr-8 gap-2 max-w-[350px] rounded-chat text-input-text border-input border-input-border bg-input-bg shadow-input data-[state=open]:animate-fade-in-from-bottom data-[state=closed]:animate-fade-out-from-bottom">
+            <Toast.Title class="font-semibold">{toast().title}</Toast.Title>
+            <Toast.Description class="text-sm">
+              {toast().description}
+            </Toast.Description>
+            <Toast.CloseTrigger
+              class={cn(
+                "absolute right-2 top-2",
+                buttonVariants({ variant: "secondary", size: "icon" }),
+              )}
+            >
               <CloseIcon class="w-4 h-4" />
             </Toast.CloseTrigger>
             <Show when={toast().meta?.link as string}>
@@ -397,7 +395,10 @@ const BotContent = (props: BotContentProps) => {
                 <a
                   href={link()}
                   target="_blank"
-                  class="py-1 mt-2 px-4 justify-center text-sm font-semibold text-white focus:outline-none flex items-center disabled:opacity-50 disabled:cursor-not-allowed disabled:brightness-100 filter hover:brightness-90 active:brightness-75 typebot-button no-underline"
+                  class={cn(
+                    buttonVariants({ variant: "primary", size: "sm" }),
+                    "no-underline",
+                  )}
                   rel="noreferrer"
                 >
                   {props.initialChatReply.typebot.settings.general

@@ -1,33 +1,15 @@
 import type { Config } from "tailwindcss";
+import sharedConfig from "../../packages/ui/tailwind.config";
 
 export default {
   darkMode: ["class"],
-  content: ["app/**/*.{ts,tsx,mdx}"],
-  future: {
-    hoverOnlyWhenSupported: true,
-  },
+  content: ["app/**/*.{ts,tsx}", "../../packages/ui/src/**/*.{ts,tsx}"],
+  presets: [sharedConfig],
   theme: {
     supports: {
       scrollanimation: "animation-timeline: scroll()",
     },
-    colors: {
-      gray: getColorScale("gray"),
-      blue: getColorScale("blue"),
-      orange: getColorScale("orange"),
-      purple: getColorScale("purple"),
-      red: getColorScale("red"),
-      white: "rgb(255, 255, 255)",
-      transparent: "transparent",
-      inherit: "inherit",
-    },
     extend: {
-      fontSize: {
-        "4xl": ["2.5rem", "2.75rem"],
-      },
-      fontFamily: {
-        heading: ["Uxum Grotesque", "sans-serif"],
-        body: ["Untitled Sans", "sans-serif"],
-      },
       animation: {
         marquee: "marquee 15s linear infinite",
         // Scroll animations
@@ -89,11 +71,3 @@ export default {
   },
   plugins: [require("@tailwindcss/typography"), require("tailwindcss-motion")],
 } satisfies Config;
-
-function getColorScale(name: string) {
-  const scale: Record<string, string> = {};
-  for (let i = 1; i <= 12; i++) {
-    scale[i] = `rgb(var(--${name}-${i}))`;
-  }
-  return scale;
-}

@@ -1,5 +1,5 @@
-import { cn } from "@/lib/utils";
-import { type VariantProps, cva } from "class-variance-authority";
+import { cn } from "@typebot.io/ui/lib/cn";
+import { type VariantProps, cva } from "@typebot.io/ui/lib/cva";
 import * as React from "react";
 
 const iconButtonVariants = cva(

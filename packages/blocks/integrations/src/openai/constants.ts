@@ -20,6 +20,8 @@ export const deprecatedRoles = ["Messages sequence ✨"] as const;
 export const chatCompletionResponseValues = [
   "Message content",
   "Total tokens",
+  "Prompt tokens",
+  "Completion tokens",
 ] as const;
 
 export const defaultOpenAIOptions = {

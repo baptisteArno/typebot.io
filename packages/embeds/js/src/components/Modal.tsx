@@ -19,8 +19,8 @@ export const Modal = (props: Props) => {
     >
       {/* Ideally we would want to mount it on the parent's body but Tailwind classes are (potentially) not defined there. */}
       <Portal mount={botContainer()}>
-        <Dialog.Backdrop class="fixed inset-0 bg-[rgba(0,0,0,0.8)] h-screen z-50" />
-        <Dialog.Positioner class="fixed inset-0 z-50 flex items-center justify-center px-2">
+        <Dialog.Backdrop class="absolute inset-0 bg-[rgba(0,0,0,0.8)] h-screen z-50" />
+        <Dialog.Positioner class="absolute inset-0 z-50 flex items-center justify-center px-2">
           <Dialog.Content class="focus:outline-none">
             {props.children}
           </Dialog.Content>

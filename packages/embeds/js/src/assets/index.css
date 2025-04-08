@@ -130,13 +130,11 @@ pre {
 
 .typebot-chat-view {
   @apply pt-5 px-3;
-  max-width: var(--typebot-chat-container-max-width);
   background-color: rgba(
     var(--typebot-chat-container-bg-rgb),
     var(--typebot-chat-container-opacity)
   );
   color: rgb(var(--typebot-chat-container-color));
-  min-height: 100%;
   backdrop-filter: blur(var(--typebot-chat-container-blur));
   border-width: var(--typebot-chat-container-border-width);
   border-color: rgba(
@@ -154,23 +152,6 @@ pre {
     max-height: var(--typebot-chat-container-max-height);
     border-radius: var(--typebot-chat-container-border-radius);
   }
-}
-
-.typebot-button {
-  color: var(--typebot-button-color);
-  background-color: rgba(
-    var(--typebot-button-bg-rgb),
-    var(--typebot-button-opacity)
-  );
-  border-width: var(--typebot-button-border-width);
-  border-color: rgba(
-    var(--typebot-button-border-rgb),
-    var(--typebot-button-border-opacity)
-  );
-  border-radius: var(--typebot-button-border-radius);
-  box-shadow: var(--typebot-button-box-shadow);
-  backdrop-filter: blur(var(--typebot-button-blur));
-  transition: all 0.3s ease;
 }
 
 .typebot-selectable {
@@ -346,15 +327,6 @@ pre {
   border-color: rgb(var(--typebot-button-bg-rgb));
 }
 
-.secondary-button {
-  background-color: rgba(
-    var(--typebot-host-bubble-bg-rgb),
-    var(--typebot-host-bubble-opacity)
-  );
-  color: var(--typebot-host-bubble-color);
-  border-radius: var(--typebot-button-border-radius);
-}
-
 .typebot-country-select {
   color: var(--typebot-input-color);
   background-color: var(--typebot-input-bg-color);
@@ -365,10 +337,6 @@ pre {
   color-scheme: light;
   color: var(--typebot-input-color);
   background-color: var(--typebot-input-bg-color);
-  border-radius: var(--typebot-input-border-radius);
-}
-
-.typebot-popup-blocked-toast {
   border-radius: var(--typebot-input-border-radius);
 }
 
@@ -561,43 +529,6 @@ select option {
 
 [data-scope="menu"][data-part="content"][data-state="closed"] {
   animation: fadeOutFromTop 50ms ease-out forwards;
-}
-
-[data-scope="toast"][data-part="group"] {
-  width: 100%;
-}
-
-[data-scope="toast"][data-part="root"] {
-  border-radius: var(--typebot-chat-container-border-radius);
-  color: var(--typebot-input-color);
-  background-color: rgba(
-    var(--typebot-input-bg-rgb),
-    var(--typebot-input-opacity)
-  );
-  box-shadow: var(--typebot-input-box-shadow);
-  border-width: var(--typebot-input-border-width);
-  border-color: rgba(
-    var(--typebot-input-border-rgb),
-    var(--typebot-input-border-opacity)
-  );
-  max-width: 350px;
-  @apply flex flex-col pl-4 py-4 pr-8 gap-1;
-}
-
-[data-scope="toast"][data-part="title"] {
-  @apply font-semibold;
-}
-
-[data-scope="toast"][data-part="description"] {
-  @apply text-sm;
-}
-
-[data-scope="toast"][data-part="root"][data-state="open"] {
-  animation: fadeInFromBottom 150ms ease-out forwards;
-}
-
-[data-scope="toast"][data-part="root"][data-state="closed"] {
-  animation: fadeOutFromBottom 50ms ease-out forwards;
 }
 
 [data-scope="progress"][data-part="root"] {

@@ -1,7 +1,7 @@
 import { CopyIcon, TrashIcon } from "@/components/icons";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { MenuItem, MenuList } from "@chakra-ui/react";
-import type { ItemIndices } from "@typebot.io/blocks-core/schemas/items/types";
+import type { ItemIndices } from "@typebot.io/blocks-core/schemas/items/schema";
 
 type Props = {
   indices: ItemIndices;

@@ -10,12 +10,15 @@ const ignoreTrpcMessages = [
   "current block does not expect file upload",
   "couldn't find credentials in database",
   "start group doesn't exist",
+  "origin not allowed",
 ];
 
 const ignoreMessages = [
   "could not find credentials",
   "is in reply state",
   "point to another phone ID",
+  "message did not matched any condition",
+  "no public typebot with WhatsApp integration found",
 ];
 
 const crawlersToIgnore = ["Googlebot"];

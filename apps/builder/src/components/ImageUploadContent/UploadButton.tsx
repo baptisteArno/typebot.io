@@ -72,7 +72,7 @@ export const UploadButton = ({
         id={`file-input-${id}`}
         display="none"
         onChange={handleInputChange}
-        accept={fileType === "image" ? "image/*" : "audio/*"}
+        accept={fileType === "image" ? "image/avif, image/*" : "audio/*"}
       />
       <Button
         as="label"

@@ -27,7 +27,7 @@ export const SinglePictureChoice = (props: Props) => {
     return props.onSubmit({
       type: "text",
       label: isNotEmpty(item.title) ? item.title : (item.pictureSrc ?? item.id),
-      value: item.id,
+      value: isNotEmpty(item.value) ? item.value : item.id,
     });
   };
 

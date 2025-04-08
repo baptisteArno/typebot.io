@@ -33,7 +33,7 @@
     "@typebot.io/schemas": "workspace:*",
     "@typebot.io/logs": "workspace:*",
     "@typebot.io/events": "workspace:*",
-    "@sentry/nextjs": "9.1.0",
+    "@sentry/nextjs": "9.5.0",
     "chrono-node": "2.7.6",
     "date-fns": "2.30.0",
     "date-fns-tz": "2.0.0",
@@ -45,7 +45,8 @@
     "openai": "4.81.0",
     "qs": "6.11.2",
     "stripe": "17.1.0",
-    "@typebot.io/legacy": "workspace:*"
+    "@typebot.io/legacy": "workspace:*",
+    "@typebot.io/runtime-session-store": "workspace:*"
   },
   "devDependencies": {
     "@typebot.io/forge": "workspace:*",

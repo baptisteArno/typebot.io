@@ -4,7 +4,7 @@ import { hexToRgb } from "@typebot.io/lib/hexToRgb";
 import { isTypebotVersionAtLeastV6 } from "@typebot.io/schemas/helpers/isTypebotVersionAtLeastV6";
 import { defaultButtonsBackgroundColor } from "@typebot.io/theme/constants";
 import type { Theme } from "@typebot.io/theme/schemas";
-import clsx from "clsx";
+import { cx } from "@typebot.io/ui/lib/cva";
 import { createEffect, createSignal, onCleanup } from "solid-js";
 import { volumeProcessorCode } from "./VolumeProcessor";
 
@@ -159,7 +159,7 @@ export const VoiceRecorder = (props: Props) => {
 
   return (
     <div
-      class={clsx(
+      class={cx(
         "w-full gap-2 items-center transition-opacity px-2 typebot-recorder",
         props.recordingStatus === "started"
           ? "opacity-1 flex"

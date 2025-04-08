@@ -2,16 +2,22 @@ import type { GoogleSheetsInsertRowOptions } from "@typebot.io/blocks-integratio
 import type { SessionState } from "@typebot.io/chat-session/schemas";
 import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
 import type { LogInSession } from "@typebot.io/logs/schemas";
+import type { SessionStore } from "@typebot.io/runtime-session-store";
 import type { ExecuteIntegrationResponse } from "../../../types";
 import { getAuthenticatedGoogleDoc } from "./helpers/getAuthenticatedGoogleDoc";
 import { parseNewRowObject } from "./helpers/parseNewRowObject";
 
 export const insertRow = async (
-  state: SessionState,
+  options: GoogleSheetsInsertRowOptions,
   {
     outgoingEdgeId,
-    options,
-  }: { outgoingEdgeId?: string; options: GoogleSheetsInsertRowOptions },
+    state,
+    sessionStore,
+  }: {
+    outgoingEdgeId?: string;
+    state: SessionState;
+    sessionStore: SessionStore;
+  },
 ): Promise<ExecuteIntegrationResponse> => {
   const { variables } = state.typebotsQueue[0].typebot;
   if (!options.cellsToInsert || !options.sheetId) return { outgoingEdgeId };
@@ -34,7 +40,10 @@ export const insertRow = async (
     workspaceId: state.workspaceId,
   });
 
-  const parsedValues = parseNewRowObject(variables)(options.cellsToInsert);
+  const parsedValues = parseNewRowObject(options.cellsToInsert, {
+    variables,
+    sessionStore,
+  });
 
   try {
     await doc.loadInfo();

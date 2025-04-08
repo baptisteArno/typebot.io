@@ -1,7 +1,7 @@
 import { iconButtonVariants } from "@/components/IconButton";
-import { cn } from "@/lib/utils";
 import { ChevronDownIcon } from "@typebot.io/ui/icons/ChevronDownIcon";
 import { ChevronUpIcon } from "@typebot.io/ui/icons/ChevronUpIcon";
+import { cn } from "@typebot.io/ui/lib/cn";
 import { motion } from "motion/react";
 import { type ReactNode, useState } from "react";
 

@@ -12,7 +12,7 @@ import {
   initializeAvatarHistory,
 } from "@/utils/avatarHistory";
 import { botContainer } from "@/utils/botContainerSignal";
-import { getAvatarUrls } from "@/utils/dynamicTheme";
+import { isNetworkError } from "@/utils/error";
 import { executeClientSideAction } from "@/utils/executeClientSideActions";
 import {
   formattedMessages,
@@ -20,6 +20,7 @@ import {
 } from "@/utils/formattedMessagesSignal";
 import { getAnswerContent } from "@/utils/getAnswerContent";
 import { hiddenInput, setHiddenInput } from "@/utils/hiddenInputSignal";
+import { setIsMediumContainer, setIsMobile } from "@/utils/isMobileSignal";
 import { persist } from "@/utils/persist";
 import { setGeneralBackground } from "@/utils/setCssVariablesValue";
 import { setStreamingMessage } from "@/utils/streamingMessageSignal";
@@ -36,7 +37,11 @@ import { isNotDefined } from "@typebot.io/lib/utils";
 import type { LogInSession } from "@typebot.io/logs/schemas";
 import { latestTypebotVersion } from "@typebot.io/schemas/versions";
 import { defaultSystemMessages } from "@typebot.io/settings/constants";
-import { BackgroundType } from "@typebot.io/theme/constants";
+import {
+  BackgroundType,
+  defaultContainerBackgroundColor,
+} from "@typebot.io/theme/constants";
+import { cx } from "@typebot.io/ui/lib/cva";
 import {
   For,
   Show,
@@ -64,6 +69,10 @@ type Props = {
 
 export const ConversationContainer = (props: Props) => {
   let chatContainer: HTMLDivElement | undefined;
+  const resizeObserver = new ResizeObserver((entries) => {
+    setIsMobile((entries[0]?.target.clientWidth ?? 0) < 432);
+    setIsMediumContainer((entries[0]?.target.clientWidth ?? 0) < 550);
+  });
   const [chatChunks, setChatChunks] = persist(
     createSignal<ChatChunkType[]>([
       {
@@ -102,6 +111,8 @@ export const ConversationContainer = (props: Props) => {
     },
   );
   const [isSending, setIsSending] = createSignal(false);
+  const [isLastAutoScrollAtBottom, setIsLastAutoScrollAtBottom] =
+    createSignal(true);
   const [hasError, setHasError] = createSignal(false);
   const [inputAnswered, setInputAnswered] = createSignal<{
     [key: string]: boolean;
@@ -121,6 +132,8 @@ export const ConversationContainer = (props: Props) => {
   );
 
   onMount(() => {
+    if (chatContainer) resizeObserver.observe(chatContainer);
+
     window.addEventListener("message", processIncomingEvent);
     (async () => {
       const isRecoveredFromStorage = chatChunks().length > 1;
@@ -134,6 +147,34 @@ export const ConversationContainer = (props: Props) => {
       }
     })();
   });
+
+  createEffect((prevUrl: string | undefined) => {
+    if (prevUrl === props.initialChatReply.typebot.theme.chat?.hostAvatar?.url)
+      return prevUrl;
+    setAvatarsHistory((prev) => [
+      ...prev,
+      {
+        role: "host",
+        chunkIndex: chatChunks().length - 1,
+        avatarUrl: props.initialChatReply.typebot.theme.chat?.hostAvatar?.url,
+      },
+    ]);
+    return props.initialChatReply.typebot.theme.chat?.hostAvatar?.url;
+  }, props.initialChatReply.typebot.theme.chat?.hostAvatar?.url);
+
+  createEffect((prevUrl: string | undefined) => {
+    if (prevUrl === props.initialChatReply.typebot.theme.chat?.guestAvatar?.url)
+      return prevUrl;
+    setAvatarsHistory((prev) => [
+      ...prev,
+      {
+        role: "guest",
+        chunkIndex: chatChunks().length - 1,
+        avatarUrl: props.initialChatReply.typebot.theme.chat?.guestAvatar?.url,
+      },
+    ]);
+    return props.initialChatReply.typebot.theme.chat?.guestAvatar?.url;
+  }, props.initialChatReply.typebot.theme.chat?.guestAvatar?.url);
 
   const cleanupRecoveredChat = () => {
     if ([...chatChunks()].pop()?.streamingMessageId)
@@ -149,6 +190,7 @@ export const ConversationContainer = (props: Props) => {
 
   const streamMessage = ({ id, message }: { id: string; message: string }) => {
     setIsSending(false);
+    setIsLastAutoScrollAtBottom(false);
     const lastChunk = [...chatChunks()].pop();
     if (!lastChunk) return;
     if (lastChunk.streamingMessageId !== id)
@@ -173,9 +215,26 @@ export const ConversationContainer = (props: Props) => {
     });
   };
 
+  const showOfflineErrorToast = () => {
+    toaster.create({
+      title:
+        props.context.typebot.settings.general?.systemMessages
+          ?.networkErrorTitle ?? defaultSystemMessages.networkErrorTitle,
+      description:
+        props.context.typebot.settings.general?.systemMessages
+          ?.networkErrorMessage ?? defaultSystemMessages.networkErrorMessage,
+    });
+  };
+
   const sendMessage = async (answer?: InputSubmitContent) => {
+    if (hasError() && clientSideActions().length > 0) {
+      setHasError(false);
+      await processClientSideActions(clientSideActions());
+      return;
+    }
     setHasError(false);
     const currentInputBlock = [...chatChunks()].pop()?.input;
+
     if (currentInputBlock?.id && answer) {
       if (props.onAnswer)
         props.onAnswer({
@@ -187,10 +246,12 @@ export const ConversationContainer = (props: Props) => {
         [parseInputUniqueKey(currentInputBlock.id)]: true,
       }));
     }
+
     const longRequest = setTimeout(() => {
       setIsSending(true);
     }, 1000);
     autoScrollToBottom();
+
     const { data, error } = await continueChatQuery({
       apiHost: props.context.apiHost,
       sessionId: props.initialChatReply.sessionId,
@@ -198,7 +259,12 @@ export const ConversationContainer = (props: Props) => {
     });
     clearTimeout(longRequest);
     setIsSending(false);
+
     await processContinueChatResponse({ data, error });
+
+    if (!navigator.onLine || isNetworkError(error as Error)) {
+      showOfflineErrorToast();
+    }
   };
 
   const processContinueChatResponse = async ({
@@ -236,10 +302,10 @@ export const ConversationContainer = (props: Props) => {
     if (data.dynamicTheme) {
       setAvatarsHistory((prev) =>
         addAvatarsToHistoryIfChanged({
-          newAvatars: getAvatarUrls(
-            props.initialChatReply.typebot.theme,
-            data.dynamicTheme,
-          ),
+          newAvatars: {
+            host: data.dynamicTheme?.hostAvatarUrl,
+            guest: data.dynamicTheme?.guestAvatarUrl,
+          },
           avatarHistory: prev,
           currentChunkIndex: chatChunks().length,
         }),
@@ -290,7 +356,10 @@ export const ConversationContainer = (props: Props) => {
     ]);
   };
 
-  const autoScrollToBottom = (lastElement?: HTMLDivElement, offset = 0) => {
+  const autoScrollToBottom = ({
+    lastElement,
+    offset = 0,
+  }: { lastElement?: HTMLDivElement; offset?: number } = {}) => {
     if (!chatContainer) return;
 
     const isBottomOfLastElementTooFarBelow =
@@ -299,9 +368,35 @@ export const ConversationContainer = (props: Props) => {
         chatContainer.clientHeight *
           AUTO_SCROLL_CLIENT_HEIGHT_PERCENT_TOLERANCE;
 
-    if (isBottomOfLastElementTooFarBelow) return;
+    if (isBottomOfLastElementTooFarBelow && !isLastAutoScrollAtBottom()) return;
+
+    const onScrollEnd = (callback: () => void) => {
+      let scrollTimeout: number;
+
+      const scrollListener = () => {
+        clearTimeout(scrollTimeout);
+
+        scrollTimeout = window.setTimeout(() => {
+          callback();
+          chatContainer.removeEventListener("scroll", scrollListener);
+        }, 100);
+      };
+
+      chatContainer.addEventListener("scroll", scrollListener, {
+        passive: true,
+      });
+    };
 
     setTimeout(() => {
+      onScrollEnd(() => {
+        const isAtBottom =
+          Math.abs(
+            chatContainer.scrollHeight -
+              chatContainer.scrollTop -
+              chatContainer.clientHeight,
+          ) < 2;
+        setIsLastAutoScrollAtBottom(isAtBottom);
+      });
       chatContainer?.scrollTo({
         top: lastElement
           ? lastElement.offsetTop - offset
@@ -331,6 +426,7 @@ export const ConversationContainer = (props: Props) => {
   };
 
   const processClientSideActions = async (actions: ClientSideAction[]) => {
+    let hasStreamError = false;
     for (const action of actions) {
       if (
         "streamOpenAiChatCompletion" in action ||
@@ -347,8 +443,10 @@ export const ConversationContainer = (props: Props) => {
           resultId: props.initialChatReply.resultId,
         },
         onMessageStream: streamMessage,
-        onStreamError: (error) => {
+        onStreamError: async (error) => {
           setHasError(true);
+          hasStreamError = true;
+          await saveLogs([error]);
           props.onNewLogs?.([error]);
         },
       });
@@ -359,6 +457,7 @@ export const ConversationContainer = (props: Props) => {
           continue;
         }
       }
+      if (hasStreamError) return;
 
       setClientSideActions((actions) => actions.slice(1));
       if (response && "logs" in response) saveLogs(response.logs);
@@ -373,6 +472,9 @@ export const ConversationContainer = (props: Props) => {
       }
       if (response && "blockedPopupUrl" in response) {
         toaster.create({
+          title:
+            props.context.typebot.settings.general?.systemMessages
+              ?.popupBlockedTitle ?? defaultSystemMessages.popupBlockedTitle,
           description:
             props.context.typebot.settings.general?.systemMessages
               ?.popupBlockedDescription ??
@@ -388,6 +490,7 @@ export const ConversationContainer = (props: Props) => {
   };
 
   onCleanup(() => {
+    if (chatContainer) resizeObserver.unobserve(chatContainer);
     setStreamingMessage(undefined);
     setFormattedMessages([]);
     window.removeEventListener("message", processIncomingEvent);
@@ -452,61 +555,69 @@ export const ConversationContainer = (props: Props) => {
   return (
     <div
       ref={chatContainer}
-      class="flex flex-col overflow-y-auto w-full relative scrollable-container typebot-chat-view scroll-smooth gap-2"
+      class={cx(
+        "overflow-y-auto relative scrollable-container typebot-chat-view scroll-smooth w-full min-h-full flex flex-col items-center",
+        (props.initialChatReply.typebot.theme.chat?.container
+          ?.backgroundColor ?? defaultContainerBackgroundColor) !==
+          "transparent" && "max-w-chat-container",
+      )}
     >
-      <For each={chatChunks().slice(0, totalChunksDisplayed() + 1)}>
-        {(chatChunk, index) => (
-          <ChatChunk
-            index={index()}
-            messages={chatChunk.messages}
-            input={chatChunk.input}
+      <div class="max-w-chat-container w-full flex flex-col gap-2">
+        <For each={chatChunks().slice(0, totalChunksDisplayed() + 1)}>
+          {(chatChunk, index) => (
+            <ChatChunk
+              index={index()}
+              messages={chatChunk.messages}
+              input={chatChunk.input}
+              theme={props.initialChatReply.typebot.theme}
+              avatarsHistory={avatarsHistory()}
+              settings={props.initialChatReply.typebot.settings}
+              streamingMessageId={chatChunk.streamingMessageId}
+              context={props.context}
+              hideAvatar={
+                (!chatChunk.input ||
+                  hiddenInput()[`${chatChunk.input.id}-${index()}`]) &&
+                ((
+                  chatChunks().slice(0, totalChunksDisplayed() + 1)[index() + 1]
+                    ?.messages ?? []
+                ).length > 0 ||
+                  chatChunks().slice(0, totalChunksDisplayed() + 1)[index() + 1]
+                    ?.streamingMessageId !== undefined ||
+                  (chatChunk.messages.length > 0 && isSending()))
+              }
+              hasError={
+                hasError() &&
+                index() ===
+                  chatChunks().slice(0, totalChunksDisplayed() + 1).length - 1
+              }
+              isTransitionDisabled={
+                index() !==
+                chatChunks().slice(0, totalChunksDisplayed() + 1).length - 1
+              }
+              isOngoingLastChunk={
+                !isEnded() &&
+                index() ===
+                  chatChunks().slice(0, totalChunksDisplayed() + 1).length - 1
+              }
+              onNewBubbleDisplayed={handleNewBubbleDisplayed}
+              onAllBubblesDisplayed={handleAllBubblesDisplayed}
+              onSubmit={sendMessage}
+              onScrollToBottom={autoScrollToBottom}
+              onSkip={handleSkip}
+            />
+          )}
+        </For>
+        <Show when={isSending()}>
+          <LoadingChunk
             theme={props.initialChatReply.typebot.theme}
-            avatarsHistory={avatarsHistory()}
-            settings={props.initialChatReply.typebot.settings}
-            streamingMessageId={chatChunk.streamingMessageId}
-            context={props.context}
-            hideAvatar={
-              (!chatChunk.input ||
-                hiddenInput()[`${chatChunk.input.id}-${index()}`]) &&
-              ((
-                chatChunks().slice(0, totalChunksDisplayed() + 1)[index() + 1]
-                  ?.messages ?? []
-              ).length > 0 ||
-                chatChunks().slice(0, totalChunksDisplayed() + 1)[index() + 1]
-                  ?.streamingMessageId !== undefined ||
-                (chatChunk.messages.length > 0 && isSending()))
+            avatarSrc={
+              avatarsHistory().findLast((avatar) => avatar.role === "host")
+                ?.avatarUrl
             }
-            hasError={
-              hasError() &&
-              index() ===
-                chatChunks().slice(0, totalChunksDisplayed() + 1).length - 1
-            }
-            isTransitionDisabled={
-              index() !==
-              chatChunks().slice(0, totalChunksDisplayed() + 1).length - 1
-            }
-            isOngoingLastChunk={
-              !isEnded() &&
-              index() ===
-                chatChunks().slice(0, totalChunksDisplayed() + 1).length - 1
-            }
-            onNewBubbleDisplayed={handleNewBubbleDisplayed}
-            onAllBubblesDisplayed={handleAllBubblesDisplayed}
-            onSubmit={sendMessage}
-            onScrollToBottom={autoScrollToBottom}
-            onSkip={handleSkip}
           />
-        )}
-      </For>
-      <Show when={isSending()}>
-        <LoadingChunk
-          theme={props.initialChatReply.typebot.theme}
-          avatarSrc={
-            avatarsHistory().findLast((avatar) => avatar.role === "host")
-              ?.avatarUrl
-          }
-        />
-      </Show>
+        </Show>
+      </div>
+
       <BottomSpacer />
     </div>
   );

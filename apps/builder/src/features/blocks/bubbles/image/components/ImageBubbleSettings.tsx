@@ -56,7 +56,11 @@ export const ImageBubbleSettings = ({
         uploadFileProps={uploadFileProps}
         defaultUrl={block.content?.url}
         onSubmit={updateImage}
-        excludedTabs={["emoji"]}
+        additionalTabs={{
+          giphy: true,
+          unsplash: true,
+          icon: true,
+        }}
       />
       <Stack>
         <SwitchWithLabel

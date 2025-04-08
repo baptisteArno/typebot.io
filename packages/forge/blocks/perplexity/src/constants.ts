@@ -4,6 +4,6 @@ export const perplexityModels = [
   "sonar-reasoning",
   "sonar-pro",
   "sonar",
-] as const;
+];
 
 export const defaultBaseUrl = "https://api.perplexity.ai";

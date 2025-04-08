@@ -3,6 +3,7 @@ import type { ImageBubbleBlock } from "@typebot.io/blocks-bubbles/image/schema";
 import type { BubbleBlock } from "@typebot.io/blocks-bubbles/schema";
 import type { TextBubbleBlock } from "@typebot.io/blocks-bubbles/text/schema";
 import type { VideoBubbleBlock } from "@typebot.io/blocks-bubbles/video/schema";
+import type { CardsBlock } from "@typebot.io/blocks-inputs/cards/schema";
 import { defaultChoiceInputOptions } from "@typebot.io/blocks-inputs/choice/constants";
 import type { ChoiceInputBlock } from "@typebot.io/blocks-inputs/choice/schema";
 import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
@@ -18,7 +19,8 @@ import type { LogicBlock } from "@typebot.io/blocks-logic/schema";
 import { forgedBlockIds } from "@typebot.io/forge-repository/constants";
 import { forgedBlocks } from "@typebot.io/forge-repository/definitions";
 import type { ForgedBlock } from "@typebot.io/forge-repository/schemas";
-import type { Block, BlockWithOptions } from "./schemas/schema";
+import type { Item, ItemV6, ItemWithPaths } from "./schemas/items/schema";
+import type { Block, BlockWithItems, BlockWithOptions } from "./schemas/schema";
 
 export const isInputBlock = (block: Block): block is InputBlock =>
   (Object.values(InputBlockType) as string[]).includes(block.type);
@@ -57,6 +59,9 @@ export const isSingleChoiceInput = (block: Block): block is ChoiceInputBlock =>
 
 export const isConditionBlock = (block: Block): block is ConditionBlock =>
   block.type === LogicBlockType.CONDITION;
+
+export const isCardsInput = (block: Block): block is CardsBlock =>
+  block.type === InputBlockType.CARDS;
 
 export const isIntegrationBlock = (block: Block): block is IntegrationBlock =>
   (
@@ -97,19 +102,34 @@ export const blockTypeHasItems = (
 ): type is
   | LogicBlockType.CONDITION
   | InputBlockType.CHOICE
-  | LogicBlockType.AB_TEST =>
+  | LogicBlockType.AB_TEST
+  | InputBlockType.CARDS =>
   type === LogicBlockType.CONDITION ||
   type === InputBlockType.CHOICE ||
   type === LogicBlockType.AB_TEST ||
-  type === InputBlockType.PICTURE_CHOICE;
+  type === InputBlockType.PICTURE_CHOICE ||
+  type === InputBlockType.CARDS;
 
-export const blockHasItems = (
-  block: Block,
-): block is ConditionBlock | ChoiceInputBlock =>
+export const blockHasItems = (block: Block): block is BlockWithItems =>
   "items" in block && block.items !== undefined && block.items !== null;
+
+export const itemHasPaths = (item: Item): item is ItemWithPaths =>
+  "paths" in item && item.paths !== undefined && item.paths !== null;
 
 export const isForgedBlock = (block: Block): block is ForgedBlock =>
   block.type in forgedBlocks;
 
 export const isForgedBlockType = (type: string): type is ForgedBlock["type"] =>
   type in forgedBlocks;
+
+export const shouldOpenBlockSettingsOnCreation = (
+  type: Block["type"] | undefined,
+) =>
+  type &&
+  type !== InputBlockType.CARDS &&
+  type !== InputBlockType.PICTURE_CHOICE &&
+  type !== LogicBlockType.CONDITION;
+
+export const shouldOpenItemSettingsOnCreation = (
+  type: Block["type"] | undefined,
+) => type && type === LogicBlockType.CONDITION;

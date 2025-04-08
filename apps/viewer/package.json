@@ -14,7 +14,7 @@
     "partysocket": "1.0.2",
     "@typebot.io/trpc-openapi": "workspace:*",
     "@planetscale/database": "1.8.0",
-    "@sentry/nextjs": "9.1.0",
+    "@sentry/nextjs": "9.5.0",
     "@trpc/server": "10.45.2",
     "@typebot.io/bot-engine": "workspace:*",
     "@typebot.io/nextjs": "workspace:*",
@@ -30,7 +30,7 @@
     "bot-engine": "workspace:*",
     "cors": "2.8.5",
     "google-spreadsheet": "4.1.4",
-    "next": "14.2.13",
+    "next": "14.2.26",
     "nextjs-cors": "2.1.2",
     "nodemailer": "6.9.15",
     "openai": "4.81.0",
@@ -56,10 +56,11 @@
     "@typebot.io/blocks-bubbles": "workspace:*",
     "papaparse": "5.4.1",
     "superjson": "1.12.4",
-    "@typebot.io/legacy": "workspace:*"
+    "@typebot.io/legacy": "workspace:*",
+    "@typebot.io/runtime-session-store": "workspace:*"
   },
   "devDependencies": {
-    "@playwright/test": "1.45.2",
+    "@playwright/test": "1.51.0",
     "@typebot.io/playwright": "workspace:*",
     "@typebot.io/tsconfig": "workspace:*",
     "@types/cors": "2.8.13",

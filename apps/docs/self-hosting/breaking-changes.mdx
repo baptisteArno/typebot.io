@@ -6,6 +6,11 @@ This lists all the breaking changes introduced in each version of Typebot.
 
 Make sure to check all the intermediate versions as well. For example, if you are on **v2.21** and would like to upgrade to **v2.29**, you should apply all the breaking changes from **v2.21** to **v2.29**.
 
+
+## v3.6
+
+Existing chat sessions will crash if you come from v3.4 or below as we deleted a deprecated prop in session state. Make sure to first upgrade to v3.5, let all the ongoing chat sessions end and then upgrade to v3.6.
+
 ## v3.5
 
 `workspaceId` optionnality was removed from chatSession state schema. If you have active chat sessions, make sure to first upgrade to v3.4 and wait for a few days for the incremental migration is done.

@@ -1,7 +1,7 @@
 import { isLight } from "@typebot.io/lib/hexToRgb";
 import { isNotDefined, isSvgSrc } from "@typebot.io/lib/utils";
 import { colors } from "@typebot.io/ui/colors";
-import { clsx } from "clsx";
+import { cx } from "@typebot.io/ui/lib/cva";
 import { Match, Switch } from "solid-js";
 import type { BubbleTheme, ButtonTheme } from "../types";
 
@@ -21,7 +21,7 @@ export const BubbleButton = (props: Props) => (
   <button
     part="button"
     onClick={() => props.toggleBot()}
-    class={clsx(
+    class={cx(
       "relative shadow-md rounded-2xl hover:scale-110 active:scale-95 transition-transform duration-200 flex justify-center items-center animate-fade-in",
     )}
     style={{
@@ -47,7 +47,7 @@ const OpenIcon = (props: Props) => (
       <svg
         part="button-icon"
         viewBox="0 0 16 16"
-        class={clsx(
+        class={cx(
           "fill-transparent absolute duration-200 transition size-6",
           props.isBotOpened ? "scale-0 opacity-0" : "scale-100 opacity-100",
         )}
@@ -62,7 +62,7 @@ const OpenIcon = (props: Props) => (
       <img
         part="button-icon"
         src={props.customIconSrc}
-        class={clsx(
+        class={cx(
           "duration-200 transition",
           props.isBotOpened ? "scale-0 opacity-0" : "scale-100 opacity-100",
           isSvgSrc(props.customIconSrc) ? "w-[60%]" : "w-full h-full",
@@ -74,7 +74,7 @@ const OpenIcon = (props: Props) => (
     <Match when={props.customIconSrc && !isImageSrc(props.customIconSrc)}>
       <span
         part="button-icon"
-        class={clsx(
+        class={cx(
           "text-4xl duration-200 transition",
           props.isBotOpened ? "scale-0 opacity-0" : "scale-100 opacity-100",
         )}
@@ -98,7 +98,7 @@ const CloseIcon = (props: Props) => (
         style={{
           fill: defaultLightIconColor,
         }}
-        class={clsx(
+        class={cx(
           "absolute duration-200 transition w-[60%]",
           props.isBotOpened
             ? "scale-100 rotate-0 opacity-100"
@@ -118,7 +118,7 @@ const CloseIcon = (props: Props) => (
       <img
         part="button-icon"
         src={props.customCloseIconSrc}
-        class={clsx(
+        class={cx(
           "absolute duration-200 transition",
           props.isBotOpened
             ? "scale-100 rotate-0 opacity-100"
@@ -134,7 +134,7 @@ const CloseIcon = (props: Props) => (
     >
       <span
         part="button-icon"
-        class={clsx(
+        class={cx(
           "absolute text-4xl duration-200 transition",
           props.isBotOpened
             ? "scale-100 rotate-0 opacity-100"

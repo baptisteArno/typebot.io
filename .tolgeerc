@@ -4,5 +4,8 @@
   "pull": {
     "path": "./apps/builder/src/i18n",
     "delimiter": null
+  },
+  "push": {
+    "files": []
   }
 }

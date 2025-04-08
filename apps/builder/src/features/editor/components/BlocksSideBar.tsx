@@ -128,8 +128,8 @@ export const BlocksSideBar = () => {
     setIsExtended(true);
   };
 
-  const handleMouseLeave = () => {
-    if (isLocked) return;
+  const handleMouseLeave = (e: React.MouseEvent) => {
+    if (isLocked || e.clientX < 100) return;
     closeSideBar();
   };
 
@@ -159,10 +159,12 @@ export const BlocksSideBar = () => {
         .includes(searchInput.toLowerCase()),
   );
 
-  const filteredInputBlockTypes = Object.values(InputBlockType).filter((type) =>
-    getInputBlockLabel(t)
-      [type].toLowerCase()
-      .includes(searchInput.toLowerCase()),
+  const filteredInputBlockTypes = Object.values(InputBlockType).filter(
+    (type) => {
+      return getInputBlockLabel(t)
+        [type].toLowerCase()
+        .includes(searchInput.toLowerCase());
+    },
   );
 
   const filteredLogicBlockTypes = Object.values(LogicBlockType).filter(
@@ -176,7 +178,7 @@ export const BlocksSideBar = () => {
   );
 
   const filteredEventBlockTypes = Object.values(EventType).filter((type) =>
-    getEventBlockLabel()
+    getEventBlockLabel(t)
       [type].toLowerCase()
       .includes(searchInput.toLowerCase()),
   );
@@ -197,7 +199,6 @@ export const BlocksSideBar = () => {
       pos="absolute"
       left="0"
       h={`calc(100vh - ${headerHeight}px)`}
-      zIndex="2"
       pl="4"
       py="4"
       onMouseLeave={handleMouseLeave}
@@ -293,7 +294,9 @@ export const BlocksSideBar = () => {
         </Stack>
 
         <Stack>
-          <Heading fontSize="sm">Events</Heading>
+          <Heading fontSize="sm">
+            {t("editor.sidebarBlocks.blockType.events.heading")}
+          </Heading>
           <SimpleGrid columns={2} spacing="3">
             {filteredEventBlockTypes.map((type) => (
               <EventCard

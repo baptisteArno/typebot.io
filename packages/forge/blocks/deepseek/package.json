@@ -5,15 +5,12 @@
   "type": "module",
   "exports": {
     ".": "./src/index.ts",
-    "./schemas": "./src/schemas.ts",
-    "./shared/*": "./src/shared/*.ts"
+    "./schemas": "./src/schemas.ts"
   },
   "dependencies": {
-    "@ai-sdk/deepseek": "0.1.12",
+    "@ai-sdk/deepseek": "0.2.2",
     "@typebot.io/ai": "workspace:*",
-    "@typebot.io/forge": "workspace:*",
-    "@typebot.io/lib": "workspace:*",
-    "@typebot.io/zod": "workspace:*"
+    "@typebot.io/forge": "workspace:*"
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*"

@@ -303,6 +303,7 @@ const SetVariableValue = ({
         </Alert>
       );
     }
+
     case "Environment name": {
       return (
         <Alert fontSize="sm">
@@ -310,6 +311,17 @@ const SetVariableValue = ({
           <Text>
             Will return either <Tag size="sm">web</Tag> or{" "}
             <Tag size="sm">whatsapp</Tag>.
+          </Text>
+        </Alert>
+      );
+    }
+    case "Device type": {
+      return (
+        <Alert fontSize="sm">
+          <AlertIcon />
+          <Text>
+            Will return either <Tag size="sm">desktop</Tag>,{" "}
+            <Tag size="sm">tablet</Tag> or <Tag size="sm">mobile</Tag>.
           </Text>
         </Alert>
       );

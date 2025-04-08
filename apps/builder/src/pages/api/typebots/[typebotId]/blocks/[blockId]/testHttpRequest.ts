@@ -15,6 +15,10 @@ import { notFound } from "@typebot.io/lib/api/utils";
 import { byId } from "@typebot.io/lib/utils";
 import prisma from "@typebot.io/prisma";
 import type { AnswerInSessionState } from "@typebot.io/results/schemas/answers";
+import {
+  deleteSessionStore,
+  getSessionStore,
+} from "@typebot.io/runtime-session-store";
 import type { Typebot } from "@typebot.io/typebot/schemas/typebot";
 import type { Variable } from "@typebot.io/variables/schemas";
 import type { NextApiRequest, NextApiResponse } from "next";
@@ -62,6 +66,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       await parseSampleResult(typebot, linkedTypebots)(group.id, variables),
     );
 
+    const mockedSessionId = "test-webhook";
+    const sessionStore = getSessionStore(mockedSessionId);
     const parsedWebhook = await parseWebhookAttributes({
       webhook,
       isCustomBody: block.options?.isCustomBody,
@@ -73,8 +79,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           return { ...v, value: matchingVariable.value };
         }),
       },
+      sessionStore,
       answers,
     });
+    deleteSessionStore(mockedSessionId);
 
     if (!parsedWebhook)
       return res.status(500).send({
