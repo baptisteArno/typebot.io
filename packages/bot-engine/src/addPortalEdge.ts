@@ -4,7 +4,7 @@ import type { Edge } from "@typebot.io/typebot/schemas/edge";
 export const addPortalEdge = (
   id: string,
   state: SessionState,
-  { to }: Pick<Edge, "to">,
+  { to, condition }: Pick<Edge, "to" | "condition">,
 ): SessionState => {
   const existingEdge = state.typebotsQueue[0].typebot.edges.find(
     (e) => e.id === id,
@@ -26,7 +26,10 @@ export const addPortalEdge = (
                 ? queue.typebot.edges.map((e) =>
                     e.id === id ? { ...e, to } : e,
                   )
-                : [...queue.typebot.edges, createPortalEdge({ id, to })],
+                : [
+                    ...queue.typebot.edges,
+                    createPortalEdge({ id, to, condition }),
+                  ],
             },
           }
         : queue,
@@ -35,8 +38,13 @@ export const addPortalEdge = (
   return newSessionState;
 };
 
-const createPortalEdge = ({ id, to }: Pick<Edge, "to" | "id">) => ({
+const createPortalEdge = ({
+  id,
+  to,
+  condition,
+}: Pick<Edge, "to" | "id" | "condition">) => ({
   id,
   from: { blockId: "", groupId: "" },
   to,
+  condition,
 });

@@ -258,6 +258,7 @@ export const executeGroup = async (
     state: newSessionState,
     edgeId: nextEdgeId ?? undefined,
     isOffDefaultPath: isNextEdgeOffDefaultPath,
+    sessionStore,
   });
 
   newSessionState = nextGroup.newSessionState;

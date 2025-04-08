@@ -1,17 +1,20 @@
-import { TRPCError } from "@trpc/server";
 import type { SessionState } from "@typebot.io/chat-session/schemas";
+import type { Condition } from "@typebot.io/conditions/schemas";
 import { EventType } from "@typebot.io/events/constants";
 import type { TEvent } from "@typebot.io/events/schemas";
 import { getBlockById } from "@typebot.io/groups/helpers/getBlockById";
+import type { SessionStore } from "@typebot.io/runtime-session-store";
 import { addPortalEdge } from "../addPortalEdge";
 import { getNextBlockById } from "../getNextGroup";
 
 export const executeResumeAfter = async ({
   state,
   event,
+  sessionStore,
 }: {
   state: SessionState;
   event: TEvent;
+  sessionStore: SessionStore;
 }) => {
   if (!state.currentBlockId) return state;
 
@@ -21,6 +24,7 @@ export const executeResumeAfter = async ({
           state,
           state.currentBlockId,
           state.typebotsQueue[0].typebot.groups,
+          sessionStore,
         )
       : getBlockById(
           state.currentBlockId,
@@ -29,10 +33,17 @@ export const executeResumeAfter = async ({
 
   let newSessionState = state;
 
+  let condition: Condition | undefined;
+
+  if (event.type === EventType.REPLY) {
+    condition = event.options?.exitCondition?.condition;
+  }
+
   if (portalEdge) {
     const { group, block } = portalEdge;
     newSessionState = addPortalEdge(`virtual-${event.id}`, newSessionState, {
       to: { groupId: group.id, blockId: block.id },
+      condition,
     });
   }
 

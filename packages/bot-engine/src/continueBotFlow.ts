@@ -96,6 +96,7 @@ export const continueBotFlow = async (
     newSessionState = await executeCommandEvent({
       state,
       command: reply.command,
+      sessionStore,
     });
   } else if (reply) {
     newSessionState = await executeReplyEvent({
@@ -204,10 +205,6 @@ export const continueBotFlow = async (
       },
     );
 
-    if (newSessionState.currentEventId) {
-      newSessionState.currentEventId = undefined;
-    }
-
     return {
       ...chatReply,
       lastMessageNewFormat,
@@ -231,6 +228,7 @@ export const continueBotFlow = async (
     state: newSessionState,
     edgeId: nextEdgeId,
     isOffDefaultPath,
+    sessionStore,
   });
 
   newSessionState = nextGroup.newSessionState;

@@ -1,3 +1,4 @@
+import { conditionSchema } from "@typebot.io/conditions/schemas";
 import { z } from "@typebot.io/zod";
 
 const blockSourceSchema = z.object({
@@ -23,5 +24,6 @@ export const edgeSchema = z.object({
   id: z.string(),
   from: sourceSchema,
   to: targetSchema,
+  condition: conditionSchema.optional(),
 });
 export type Edge = z.infer<typeof edgeSchema>;

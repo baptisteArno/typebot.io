@@ -1,11 +1,9 @@
 import { isInputBlock } from "@typebot.io/blocks-core/helpers";
 import type { SessionState } from "@typebot.io/chat-session/schemas";
-import { executeCondition } from "@typebot.io/conditions/executeCondition";
 import { EventType } from "@typebot.io/events/constants";
 import type { ReplyEvent } from "@typebot.io/events/schemas";
 import { getBlockById } from "@typebot.io/groups/helpers/getBlockById";
 import type { SessionStore } from "@typebot.io/runtime-session-store";
-import { removePortalEdge } from "../removePortalEdge";
 import {
   saveEventVariablesIfAny,
   saveVariablesValueIfAny,
@@ -51,29 +49,15 @@ export const executeReplyEvent = async ({
     }
   }
 
-  const isExitConditionMet =
-    event.options?.exitCondition?.isEnabled &&
-    event.options?.exitCondition?.condition &&
-    executeCondition(event.options.exitCondition.condition, {
-      variables: newSessionState.typebotsQueue[0].typebot.variables,
-      sessionStore,
-    });
-
-  if (!isExitConditionMet) {
-    newSessionState = await executeResumeAfter({
-      state: newSessionState,
-      event,
-    });
-    newSessionState.currentEventId = event.id;
-  } else if (isExitConditionMet) {
-    newSessionState = removePortalEdge(
-      `virtual-${newSessionState.currentEventId}`,
-      newSessionState,
-    );
-  }
+  newSessionState = await executeResumeAfter({
+    state: newSessionState,
+    event,
+    sessionStore,
+  });
 
   return await executeEvent({
     state: newSessionState,
     event,
+    sessionStore,
   });
 };

@@ -1,12 +1,13 @@
 import type { Block } from "@typebot.io/blocks-core/schemas/schema";
 import type { SessionState } from "@typebot.io/chat-session/schemas";
+import { executeCondition } from "@typebot.io/conditions/executeCondition";
 import { getBlockById } from "@typebot.io/groups/helpers/getBlockById";
 import type { Group } from "@typebot.io/groups/schemas";
 import { byId, isDefined, isNotDefined } from "@typebot.io/lib/utils";
 import type { Prisma } from "@typebot.io/prisma/types";
+import type { SessionStore } from "@typebot.io/runtime-session-store";
 import type { VariableWithValue } from "@typebot.io/variables/schemas";
 import { upsertResult } from "./queries/upsertResult";
-
 export type NextGroup = {
   group?: Group;
   newSessionState: SessionState;
@@ -17,14 +18,35 @@ export const getNextGroup = async ({
   state,
   edgeId,
   isOffDefaultPath,
+  sessionStore,
 }: {
   state: SessionState;
   edgeId?: string;
   isOffDefaultPath: boolean;
+  sessionStore: SessionStore;
 }): Promise<NextGroup> => {
   const nextEdge = state.typebotsQueue[0].typebot.edges.find(byId(edgeId));
   if (!nextEdge) {
     const nextEdgeResponse = popQueuedEdge(state);
+    const poppedEdgeId = nextEdgeResponse.edgeId;
+    const poppedEdge =
+      nextEdgeResponse.state.typebotsQueue[0].typebot.edges.find(
+        byId(poppedEdgeId),
+      );
+
+    const exitConditionMet =
+      poppedEdge?.condition &&
+      executeCondition(poppedEdge.condition, {
+        variables: nextEdgeResponse.state.typebotsQueue[0].typebot.variables,
+        sessionStore,
+      });
+
+    if (exitConditionMet) {
+      return {
+        newSessionState: state,
+      };
+    }
+
     let newSessionState = nextEdgeResponse.state;
     if (newSessionState.typebotsQueue.length > 1) {
       const isMergingWithParent =
@@ -95,6 +117,7 @@ export const getNextGroup = async ({
         state: newSessionState,
         edgeId: nextEdgeResponse.edgeId,
         isOffDefaultPath,
+        sessionStore,
       });
     return {
       newSessionState,
@@ -147,6 +170,7 @@ export async function getNextBlockById(
   state: SessionState,
   blockId: string,
   groups: Group[],
+  sessionStore: SessionStore,
 ): Promise<{
   block: Block;
   group: Group;
@@ -161,6 +185,7 @@ export async function getNextBlockById(
       state,
       edgeId: block.outgoingEdgeId,
       isOffDefaultPath: false,
+      sessionStore,
     });
     if (!nextGroup.group) {
       return null;

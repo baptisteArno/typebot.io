@@ -72,6 +72,7 @@ export const startBotFlow = async ({
     state: newSessionState,
     edgeId: firstEdgeId,
     isOffDefaultPath: false,
+    sessionStore,
   });
   newSessionState = nextGroup.newSessionState;
   if (!nextGroup.group)
