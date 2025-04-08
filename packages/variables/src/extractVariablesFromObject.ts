@@ -2,8 +2,8 @@ import type { Variable } from "./schemas";
 
 const variableNameRegex = /\{\{([^{}]+)\}\}/g;
 
-export const extractVariableIdReferencesInObject = (
-  obj: any,
+export const extractVariableIdReferencesInObject = <T>(
+  obj: T,
   existingVariables: Variable[],
 ): string[] =>
   [...(JSON.stringify(obj).match(variableNameRegex) ?? [])].reduce<string[]>(
