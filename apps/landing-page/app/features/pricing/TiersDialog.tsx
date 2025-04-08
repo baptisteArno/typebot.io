@@ -22,9 +22,9 @@ export const TiersDialog = ({
 }) => (
   <Dialog.Root open={open} onOpenChange={(e) => (!e.open ? onClose() : null)}>
     <Portal>
-      <Dialog.Backdrop className="fixed inset-0 w-full bg-gray-12/10 data-[state=closed]:motion-opacity-out-0 data-[state=open]:motion-opacity-in-0 data-[state=open]:motion-blur-in-0 data-[state=closed]:motion-blur-out-0 backdrop-blur-sm motion-duration-150 overflow-auto" />
+      <Dialog.Backdrop className="fixed inset-0 w-full bg-gray-12/50 data-[state=open]:animate-in data-[state=open]:fade-in data-[state=closed]:animate-out data-[state=closed]:fade-out overflow-auto" />
       <Dialog.Positioner className="flex justify-center fixed inset-0 w-full py-12">
-        <Dialog.Content className="bg-gray-1 p-6 rounded-xl data-[state=open]:motion-translate-y-in-[15px] data-[state=closed]:motion-translate-y-out-[15px] motion-duration-150 w-full max-w-xl overflow-auto">
+        <Dialog.Content className="relative bg-gray-1 p-6 rounded-xl w-full max-w-xl overflow-auto data-[state=open]:animate-in data-[state=open]:slide-in-from-bottom-5 data-[state=open]:fade-in data-[state=closed]:animate-out data-[state=closed]:slide-out-to-bottom-5 data-[state=closed]:fade-out">
           <Dialog.Title className="text-2xl">Chats pricing table</Dialog.Title>
           <Dialog.CloseTrigger asChild>
             <IconButton
