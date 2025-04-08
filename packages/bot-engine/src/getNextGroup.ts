@@ -166,7 +166,15 @@ export async function getNextBlockById(
       return null;
     }
 
-    return getNextBlockById(state, nextGroup.group.blocks[0]?.id, groups);
+    const firstBlock = nextGroup.group.blocks[0];
+    if (!firstBlock) return null;
+
+    return {
+      block: firstBlock,
+      group: nextGroup.group,
+      blockIndex: 0,
+      groupIndex: groups.findIndex(byId(nextGroup.group.id)),
+    };
   }
 
   const nextBlockIndex = blockIndex + 1;
