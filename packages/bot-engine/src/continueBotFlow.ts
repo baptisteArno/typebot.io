@@ -54,6 +54,7 @@ import { getNextGroup } from "./getNextGroup";
 import { isInputMessage } from "./helpers/isInputMessage";
 import { saveAnswer } from "./queries/saveAnswer";
 import { resetSessionState } from "./resetSessionState";
+import { saveVariablesValueIfAny } from "./saveVariables";
 import type {
   ContinueChatResponse,
   InputMessage,
@@ -61,10 +62,7 @@ import type {
 } from "./schemas/api";
 import { startBotFlow } from "./startBotFlow";
 import type { ParsedReply, SkipReply, SuccessReply } from "./types";
-import {
-  updateTextVariablesInSession,
-  updateVariablesInSession,
-} from "./updateVariablesInSession";
+import { updateVariablesInSession } from "./updateVariablesInSession";
 
 export type ContinueBotFlowResponse = ContinueChatResponse & {
   newSessionState: SessionState;
@@ -403,122 +401,6 @@ const processAndSaveAnswer =
     if (!reply) return state;
     return saveAnswerInDb(state, block)(reply);
   };
-
-const saveVariablesValueIfAny =
-  (state: SessionState, block: InputBlock) =>
-  (reply: Message): SessionState => {
-    let newSessionState = saveAttachmentsVarIfAny({ block, reply, state });
-    newSessionState = saveAudioClipVarIfAny({
-      block,
-      reply,
-      state: newSessionState,
-    });
-    return saveInputVarIfAny({ block, reply, state: newSessionState });
-  };
-
-const saveAttachmentsVarIfAny = ({
-  block,
-  reply,
-  state,
-}: {
-  block: InputBlock;
-  reply: Message;
-  state: SessionState;
-}): SessionState => {
-  if (
-    reply.type !== "text" ||
-    block.type !== InputBlockType.TEXT ||
-    !block.options?.attachments?.isEnabled ||
-    !block.options?.attachments?.saveVariableId ||
-    !reply.attachedFileUrls ||
-    reply.attachedFileUrls.length === 0
-  )
-    return state;
-
-  const variable = state.typebotsQueue[0].typebot.variables.find(
-    (variable) => variable.id === block.options?.attachments?.saveVariableId,
-  );
-
-  if (!variable) return state;
-
-  const { updatedState } = updateVariablesInSession({
-    newVariables: [
-      {
-        id: variable.id,
-        name: variable.name,
-        value: Array.isArray(variable.value)
-          ? variable.value.concat(reply.attachedFileUrls)
-          : reply.attachedFileUrls.length === 1
-            ? reply.attachedFileUrls[0]
-            : reply.attachedFileUrls,
-      },
-    ],
-    currentBlockId: undefined,
-    state,
-  });
-  return updatedState;
-};
-
-const saveAudioClipVarIfAny = ({
-  block,
-  reply,
-  state,
-}: {
-  block: InputBlock;
-  reply: Message;
-  state: SessionState;
-}): SessionState => {
-  if (
-    reply.type !== "audio" ||
-    block.type !== InputBlockType.TEXT ||
-    !block.options?.audioClip?.isEnabled ||
-    !block.options?.audioClip?.saveVariableId
-  )
-    return state;
-
-  const variable = state.typebotsQueue[0].typebot.variables.find(
-    (variable) => variable.id === block.options?.audioClip?.saveVariableId,
-  );
-
-  if (!variable) return state;
-
-  const { updatedState } = updateVariablesInSession({
-    newVariables: [
-      {
-        id: variable.id,
-        name: variable.name,
-        value: reply.url,
-      },
-    ],
-    currentBlockId: undefined,
-    state,
-  });
-
-  return updatedState;
-};
-
-const saveInputVarIfAny = ({
-  block,
-  reply,
-  state,
-}: {
-  block: InputBlock;
-  reply: Message;
-  state: SessionState;
-}): SessionState => {
-  if (reply.type !== "text" || !block.options?.variableId) return state;
-
-  const foundVariable = state.typebotsQueue[0].typebot.variables.find(
-    (variable) => variable.id === block.options?.variableId,
-  );
-  if (!foundVariable) return state;
-
-  return updateTextVariablesInSession({
-    state,
-    foundVariable,
-    reply,
-  });
-};
 
 const parseRetryMessage = async (
   block: InputBlock,
