@@ -43,16 +43,6 @@ export const executeReplyEvent = async ({
     });
   }
 
-  const isEntryConditionMet =
-    !event.options?.entryCondition?.isEnabled ||
-    (event.options?.entryCondition?.condition &&
-      executeCondition(event.options.entryCondition.condition, {
-        variables: newSessionState.typebotsQueue[0].typebot.variables,
-        sessionStore,
-      }));
-
-  if (!isEntryConditionMet) return newSessionState;
-
   const isExitConditionMet =
     event.options?.exitCondition?.isEnabled &&
     event.options?.exitCondition?.condition &&

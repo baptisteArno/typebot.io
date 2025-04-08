@@ -24,7 +24,7 @@ export const executeCommandEvent = async ({
 
   let newSessionState = state;
   if (event.options?.resumeAfter) {
-    newSessionState = executeResumeAfter({
+    newSessionState = await executeResumeAfter({
       state: newSessionState,
       event,
     });

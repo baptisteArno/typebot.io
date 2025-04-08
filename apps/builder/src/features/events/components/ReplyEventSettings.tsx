@@ -17,24 +17,6 @@ export const ReplyEventSettings = ({
 }) => {
   const { t } = useTranslate();
 
-  const updateIsEntryConditionEnabled = (isEnabled: boolean) =>
-    onOptionsChange({
-      ...options,
-      entryCondition: {
-        ...options?.entryCondition,
-        isEnabled,
-      },
-    });
-
-  const updateEntryCondition = (condition: Condition) =>
-    onOptionsChange({
-      ...options,
-      entryCondition: {
-        ...options?.entryCondition,
-        condition,
-      },
-    });
-
   const updateIsExitConditionEnabled = (isEnabled: boolean) =>
     onOptionsChange({
       ...options,
@@ -66,24 +48,6 @@ export const ReplyEventSettings = ({
           }
         />
       </Stack>
-      <SwitchWithRelatedSettings
-        label={t("blocks.events.reply.settings.entryCondition.label")}
-        moreInfoContent={t(
-          "blocks.events.reply.settings.entryCondition.infoText",
-        )}
-        initialValue={options?.entryCondition?.isEnabled ?? false}
-        onCheckChange={updateIsEntryConditionEnabled}
-      >
-        <ConditionForm
-          condition={
-            options?.entryCondition?.condition ?? {
-              logicalOperator: LogicalOperator.AND,
-              comparisons: [],
-            }
-          }
-          onConditionChange={updateEntryCondition}
-        />
-      </SwitchWithRelatedSettings>
       <SwitchWithRelatedSettings
         label={t("blocks.events.reply.settings.exitCondition.label")}
         moreInfoContent={t(

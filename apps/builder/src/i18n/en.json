@@ -121,8 +121,6 @@
   "blocks.events.command.settings.command.placeholder": "Command",
   "blocks.events.command.settings.resumeAfter.label": "Resume flow after",
   "blocks.events.reply.eventCard.tooltip": "Triggered when a reply is received.",
-  "blocks.events.reply.settings.entryCondition.label": "Trigger condition:",
-  "blocks.events.reply.settings.entryCondition.infoText": "If the condition is met, the main flow will exit to start this one.",
   "blocks.events.reply.settings.exitCondition.label": "Exit condition",
   "blocks.events.reply.settings.exitCondition.infoText": "If the condition is met, the bot will end after this flow.",
   "blocks.events.start.eventCard.tooltip": "Already added in the bot flow.",
