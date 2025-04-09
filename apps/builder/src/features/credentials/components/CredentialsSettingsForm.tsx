@@ -360,7 +360,9 @@ const CredentialsItem = ({
 const groupCredentialsByType = (
   credentials: CredentialsInfo[],
 ): Record<CredentialsInfo["type"], CredentialsInfo[]> => {
-  const groupedCredentials: any = {};
+  const groupedCredentials = {} as {
+    [key in CredentialsInfo["type"]]: CredentialsInfo[];
+  };
   credentials.forEach((cred) => {
     if (!groupedCredentials[cred.type]) {
       groupedCredentials[cred.type] = [];

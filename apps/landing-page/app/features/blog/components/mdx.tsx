@@ -18,6 +18,7 @@ import { TriangleAlertIcon } from "@typebot.io/ui/icons/TriangleAlertIcon";
 import { cn } from "@typebot.io/ui/lib/cn";
 import type * as React from "react";
 import { Suspense } from "react";
+import { HtmlFormGenerator } from "./HtmlFormGenerator";
 import { WhatsAppPricingCalculator } from "./WhatsAppPricingCalculator";
 
 const components = {
@@ -132,6 +133,7 @@ const components = {
     </div>
   ),
   WhatsAppPricingCalculator,
+  HtmlFormGenerator,
 };
 
 interface MdxProps {
