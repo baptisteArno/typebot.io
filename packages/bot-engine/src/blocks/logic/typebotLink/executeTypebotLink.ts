@@ -101,7 +101,7 @@ const addSameTypebotToState = async ({
           ...newSessionState.typebotsQueue[0].typebot,
         },
         resultId: newSessionState.typebotsQueue[0].resultId,
-        queuedEdgeIds: edgeIdToQueue ? [edgeIdToQueue] : undefined,
+        queuedEdges: edgeIdToQueue ? [{ id: edgeIdToQueue }] : undefined,
         answers: newSessionState.typebotsQueue[0].answers,
         isMergingWithParent: true,
       },
@@ -161,7 +161,7 @@ const addLinkedTypebotToState = async (
           : shouldMergeResults
             ? newSessionState.typebotsQueue[0].resultId
             : createId(),
-        queuedEdgeIds: edgeIdToQueue ? [edgeIdToQueue] : undefined,
+        queuedEdges: edgeIdToQueue ? [{ id: edgeIdToQueue }] : undefined,
         answers: shouldMergeResults
           ? newSessionState.typebotsQueue[0].answers
           : [],

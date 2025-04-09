@@ -217,7 +217,7 @@ export const continueBotFlow = async (
   if (
     !nextEdgeId &&
     newSessionState.typebotsQueue.length === 1 &&
-    (newSessionState.typebotsQueue[0].queuedEdgeIds ?? []).length === 0
+    (newSessionState.typebotsQueue[0].queuedEdges ?? []).length === 0
   )
     return {
       messages: [],

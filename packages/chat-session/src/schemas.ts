@@ -1,4 +1,5 @@
 import { isInputBlock } from "@typebot.io/blocks-core/helpers";
+import { conditionSchema } from "@typebot.io/conditions/schemas";
 import type { Prisma } from "@typebot.io/prisma/types";
 import {
   answerInSessionStateSchemaV2,
@@ -124,6 +125,12 @@ const sessionStateSchemaV2 = z.object({
     .optional(),
 });
 
+const queuedEdgeSchema = z.object({
+  id: z.string(),
+  condition: conditionSchema.optional(),
+});
+export type QueuedEdge = z.infer<typeof queuedEdgeSchema>;
+
 const sessionStateSchemaV3 = sessionStateSchemaV2
   .omit({ currentBlock: true })
   .extend({
@@ -150,19 +157,33 @@ const sessionStateSchemaV3 = sessionStateSchemaV2
       .optional(),
   });
 
-export type SessionState = z.infer<typeof sessionStateSchemaV3>;
+const sessionStateSchemaV4 = sessionStateSchemaV3.extend({
+  version: z.literal("4"),
+  typebotsQueue: z.array(
+    sessionStateSchemaV2.shape.typebotsQueue.element.extend({
+      queuedEdges: z.array(queuedEdgeSchema).optional(),
+    }),
+  ),
+});
+
+export type SessionState = z.infer<typeof sessionStateSchemaV4>;
 
 export const sessionStateSchema = z
   .discriminatedUnion("version", [
     sessionStateSchemaV1,
     sessionStateSchemaV2,
     sessionStateSchemaV3,
+    sessionStateSchemaV4,
   ])
   .transform((state): SessionState => {
-    if (state.version === "3") return state;
+    if (state.version === "4") return state;
     let migratedState: any = state;
     if (!state.version) migratedState = migrateFromV1ToV2(state);
-    return migrateFromV2ToV3(migratedState);
+    if (migratedState.version === "2")
+      migratedState = migrateFromV2ToV3(migratedState);
+    if (migratedState.version === "3")
+      migratedState = migrateFromV3ToV4(migratedState);
+    return migratedState;
   }) as z.ZodType<SessionState>;
 
 const migrateFromV1ToV2 = (
@@ -244,6 +265,20 @@ const migrateFromV2ToV3 = (
   version: "3",
   currentBlockId: state.currentBlock?.blockId,
   workspaceId: "",
+});
+
+const migrateFromV3ToV4 = (
+  state: z.infer<typeof sessionStateSchemaV3>,
+): z.infer<typeof sessionStateSchemaV4> => ({
+  ...state,
+  version: "4",
+  typebotsQueue: state.typebotsQueue.map((typebot) => ({
+    ...typebot,
+    queuedEdges: typebot.queuedEdgeIds?.map((id) => ({
+      id,
+    })),
+    queuedEdgeIds: undefined,
+  })),
 });
 
 const chatSessionSchema = z.object({

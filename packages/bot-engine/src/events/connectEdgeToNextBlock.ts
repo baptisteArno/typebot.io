@@ -83,30 +83,28 @@ export const connectEdgeToNextBlock = async ({
   if (!resumeMetadata) return state;
 
   let newSessionState = state;
-
   let condition: Condition | undefined;
 
   if (event.type === EventType.REPLY) {
     condition = event.options?.exitCondition?.condition;
   }
 
+  const virtualEdgeId = `virtual-${event.id}`;
   const { group, block } = resumeMetadata;
-  newSessionState = addPortalEdge(`virtual-${event.id}`, newSessionState, {
+  newSessionState = addPortalEdge(virtualEdgeId, newSessionState, {
     to: { groupId: group.id, blockId: block.id },
-    condition,
   });
+
+  const virtualEdge = { id: virtualEdgeId, condition };
 
   newSessionState = {
     ...newSessionState,
     typebotsQueue: [
       {
         ...newSessionState.typebotsQueue[0],
-        queuedEdgeIds: newSessionState.typebotsQueue[0].queuedEdgeIds
-          ? [
-              `virtual-${event.id}`,
-              ...newSessionState.typebotsQueue[0].queuedEdgeIds,
-            ]
-          : [`virtual-${event.id}`],
+        queuedEdges: newSessionState.typebotsQueue[0].queuedEdges
+          ? [virtualEdge, ...newSessionState.typebotsQueue[0].queuedEdges]
+          : [virtualEdge],
       },
       ...newSessionState.typebotsQueue.slice(1),
     ],
