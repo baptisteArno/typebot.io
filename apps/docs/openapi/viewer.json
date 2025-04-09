@@ -5397,8 +5397,64 @@
                             "command": {
                               "type": "string"
                             },
-                            "resumeAfter": {
-                              "type": "boolean"
+                            "exitCondition": {
+                              "type": "object",
+                              "properties": {
+                                "isEnabled": {
+                                  "type": "boolean"
+                                },
+                                "condition": {
+                                  "type": "object",
+                                  "properties": {
+                                    "logicalOperator": {
+                                      "type": "string",
+                                      "enum": [
+                                        "OR",
+                                        "AND"
+                                      ]
+                                    },
+                                    "comparisons": {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "object",
+                                        "properties": {
+                                          "id": {
+                                            "type": "string"
+                                          },
+                                          "variableId": {
+                                            "type": "string"
+                                          },
+                                          "comparisonOperator": {
+                                            "type": "string",
+                                            "enum": [
+                                              "Equal to",
+                                              "Not equal",
+                                              "Contains",
+                                              "Does not contain",
+                                              "Greater than",
+                                              "Greater or equal to",
+                                              "Less than",
+                                              "Less or equal to",
+                                              "Is set",
+                                              "Is empty",
+                                              "Starts with",
+                                              "Ends with",
+                                              "Matches regex",
+                                              "Does not match regex"
+                                            ]
+                                          },
+                                          "value": {
+                                            "type": "string"
+                                          }
+                                        },
+                                        "required": [
+                                          "id"
+                                        ]
+                                      }
+                                    }
+                                  }
+                                }
+                              }
                             }
                           }
                         }

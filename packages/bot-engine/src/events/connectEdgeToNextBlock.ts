@@ -90,7 +90,7 @@ export const connectEdgeToNextBlock = async ({
   let newSessionState = state;
   let condition: Condition | undefined;
 
-  if (event.type === EventType.REPLY) {
+  if (event.type === EventType.REPLY || event.type === EventType.COMMAND) {
     condition = event.options?.exitCondition?.condition;
   }
 
