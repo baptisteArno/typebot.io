@@ -15,11 +15,13 @@ async function getNextBlockById(
   blockId: string,
   groups: Group[],
   sessionStore: SessionStore,
+  nextEdgeId?: string,
 ): Promise<{
   block: Block;
   group: Group;
   blockIndex: number;
   groupIndex: number;
+  nextEdgeId?: string;
 } | null> {
   const { block, blockIndex, groupIndex } = getBlockById(blockId, groups);
 
@@ -27,7 +29,7 @@ async function getNextBlockById(
   if (blockIndex === groups[groupIndex]!.blocks.length - 1) {
     const nextGroup = await getNextGroup({
       state,
-      edgeId: block.outgoingEdgeId,
+      edgeId: nextEdgeId ?? block.outgoingEdgeId,
       isOffDefaultPath: false,
       sessionStore,
     });
@@ -60,10 +62,12 @@ export const connectEdgeToNextBlock = async ({
   state,
   event,
   sessionStore,
+  nextEdgeId,
 }: {
   state: SessionState;
   event: TEvent;
   sessionStore: SessionStore;
+  nextEdgeId?: string;
 }) => {
   if (!state.currentBlockId) return state;
 
@@ -74,6 +78,7 @@ export const connectEdgeToNextBlock = async ({
           state.currentBlockId,
           state.typebotsQueue[0].typebot.groups,
           sessionStore,
+          nextEdgeId,
         )
       : getBlockById(
           state.currentBlockId,

@@ -1,9 +1,10 @@
 import { isInputBlock } from "@typebot.io/blocks-core/helpers";
 import type { SessionState } from "@typebot.io/chat-session/schemas";
-import { EventType } from "@typebot.io/events/constants";
 import type { ReplyEvent } from "@typebot.io/events/schemas";
 import { getBlockById } from "@typebot.io/groups/helpers/getBlockById";
 import type { SessionStore } from "@typebot.io/runtime-session-store";
+import { getOutgoingEdgeId } from "../getOutgoingEdgeId";
+import { parseReply } from "../parseReply";
 import {
   saveEventVariablesIfAny,
   saveVariablesValueIfAny,
@@ -25,6 +26,14 @@ export const executeReplyEvent = async ({
   sessionStore,
   replyEvent: event,
 }: Props) => {
+  if (!state.currentBlockId) return state;
+  const { block } = getBlockById(
+    state.currentBlockId,
+    state.typebotsQueue[0].typebot.groups,
+  );
+
+  if (!isInputBlock(block)) return state;
+
   let newSessionState = state;
 
   // Save the input variable of the event if any
@@ -35,20 +44,30 @@ export const executeReplyEvent = async ({
   });
 
   // Save the trigger block variable if any
-  if (state.currentBlockId) {
-    const { block } = getBlockById(
-      state.currentBlockId,
-      state.typebotsQueue[0].typebot.groups,
-    );
-    if (isInputBlock(block)) {
-      newSessionState = saveVariablesValueIfAny(newSessionState, block)(reply);
-    }
+  newSessionState = saveVariablesValueIfAny(newSessionState, block)(reply);
+
+  // Anticipate the next edge by pre-parsing the reply
+  const parsedReply = await parseReply(reply, {
+    sessionStore,
+    state: newSessionState,
+    block,
+  });
+
+  let nextEdgeId: string | undefined;
+  if (parsedReply.status === "success") {
+    const { edgeId } = getOutgoingEdgeId(parsedReply, {
+      block,
+      state: newSessionState,
+      sessionStore,
+    });
+    nextEdgeId = edgeId;
   }
 
   newSessionState = await connectEdgeToNextBlock({
     state: newSessionState,
     event,
     sessionStore,
+    nextEdgeId,
   });
 
   return await updateCurrentBlockIdWithEvent({
