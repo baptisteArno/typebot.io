@@ -17,24 +17,24 @@ export const startEventSchema = eventBaseSchema.extend({
 });
 export type StartEvent = z.infer<typeof startEventSchema>;
 
+const exitConditionSchema = z.object({
+  isEnabled: z.boolean().optional(),
+  condition: conditionSchema.optional(),
+});
+
 export const commandEventSchema = eventBaseSchema.extend({
   type: z.literal(EventType.COMMAND),
   options: z
     .object({
       command: z.string().optional(),
-      resumeAfter: z.boolean().optional(),
+      exitCondition: exitConditionSchema.optional(),
     })
     .optional(),
 });
 
 const replyEventOptionsSchema = optionBaseSchema.merge(
   z.object({
-    exitCondition: z
-      .object({
-        isEnabled: z.boolean().optional(),
-        condition: conditionSchema.optional(),
-      })
-      .optional(),
+    exitCondition: exitConditionSchema.optional(),
   }),
 );
 

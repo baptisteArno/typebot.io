@@ -27,13 +27,11 @@ export const executeCommandEvent = async ({
     });
 
   let newSessionState = state;
-  if (event.options?.resumeAfter) {
-    newSessionState = await connectEdgeToNextBlock({
-      state: newSessionState,
-      event,
-      sessionStore,
-    });
-  }
+  newSessionState = await connectEdgeToNextBlock({
+    state: newSessionState,
+    event,
+    sessionStore,
+  });
 
   return await updateCurrentBlockIdWithEvent({
     state,

@@ -1,7 +1,10 @@
+import { SwitchWithRelatedSettings } from "@/components/SwitchWithRelatedSettings";
 import { TextInput } from "@/components/inputs";
-import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
+import { ConditionForm } from "@/features/blocks/logic/condition/components/ConditionForm";
 import { Stack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
+import { LogicalOperator } from "@typebot.io/conditions/constants";
+import type { Condition } from "@typebot.io/conditions/schemas";
 import type { CommandEvent } from "@typebot.io/events/schemas";
 
 export const CommandEventSettings = ({
@@ -13,6 +16,24 @@ export const CommandEventSettings = ({
 }) => {
   const { t } = useTranslate();
 
+  const updateIsExitConditionEnabled = (isEnabled: boolean) =>
+    onOptionsChange({
+      ...options,
+      exitCondition: {
+        ...options?.exitCondition,
+        isEnabled,
+      },
+    });
+
+  const updateExitCondition = (condition: Condition) =>
+    onOptionsChange({
+      ...options,
+      exitCondition: {
+        ...options?.exitCondition,
+        condition,
+      },
+    });
+
   return (
     <Stack>
       <TextInput
@@ -21,13 +42,24 @@ export const CommandEventSettings = ({
         onChange={(command) => onOptionsChange({ ...options, command })}
         withVariableButton={false}
       />
-      <SwitchWithLabel
-        label={t("blocks.events.command.settings.resumeAfter.label")}
-        initialValue={options?.resumeAfter}
-        onCheckChange={(resumeAfter) =>
-          onOptionsChange({ ...options, resumeAfter })
-        }
-      />
+      <SwitchWithRelatedSettings
+        label={t("blocks.events.reply.settings.exitCondition.label")}
+        moreInfoContent={t(
+          "blocks.events.reply.settings.exitCondition.infoText",
+        )}
+        initialValue={options?.exitCondition?.isEnabled ?? false}
+        onCheckChange={updateIsExitConditionEnabled}
+      >
+        <ConditionForm
+          condition={
+            options?.exitCondition?.condition ?? {
+              logicalOperator: LogicalOperator.AND,
+              comparisons: [],
+            }
+          }
+          onConditionChange={updateExitCondition}
+        />
+      </SwitchWithRelatedSettings>
     </Stack>
   );
 };
