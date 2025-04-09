@@ -67,7 +67,7 @@ export const connectEdgeToNextBlock = async ({
 }) => {
   if (!state.currentBlockId) return state;
 
-  const portalEdge =
+  const resumeMetadata =
     event.type === EventType.REPLY
       ? await getNextBlockById(
           state,
@@ -80,6 +80,8 @@ export const connectEdgeToNextBlock = async ({
           state.typebotsQueue[0].typebot.groups,
         );
 
+  if (!resumeMetadata) return state;
+
   let newSessionState = state;
 
   let condition: Condition | undefined;
@@ -88,13 +90,11 @@ export const connectEdgeToNextBlock = async ({
     condition = event.options?.exitCondition?.condition;
   }
 
-  if (portalEdge) {
-    const { group, block } = portalEdge;
-    newSessionState = addPortalEdge(`virtual-${event.id}`, newSessionState, {
-      to: { groupId: group.id, blockId: block.id },
-      condition,
-    });
-  }
+  const { group, block } = resumeMetadata;
+  newSessionState = addPortalEdge(`virtual-${event.id}`, newSessionState, {
+    to: { groupId: group.id, blockId: block.id },
+    condition,
+  });
 
   newSessionState = {
     ...newSessionState,
