@@ -2,9 +2,11 @@
 title: Reply Event
 ---
 
-This event will trigger everytime a reply is received. 
+This event will trigger everytime a reply is received, meaning whenever a user replies to any input in the flow. This is useful when you need to execute a specific flow / automation whenever the user replies to the bot.
 
-Enable and define an **Exit condition** to exit the bot at the end of the Reply Event block flow.
+## Exit condition
+
+By default, the flow will continue where it left off after the Reply Event sub-flow ends. You can add an **Exit condition** to exit the bot at the end of the Reply Event block flow. For example, you can decide to end the conversation whenever the user replies "exit".
 
 <Frame>
 	<img src="/images/events/reply-event.avif" alt="On New Message event in Typebot editor" />
