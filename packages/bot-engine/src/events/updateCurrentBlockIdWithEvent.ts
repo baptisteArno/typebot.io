@@ -1,41 +1,30 @@
 import { TRPCError } from "@trpc/server";
 import type { SessionState } from "@typebot.io/chat-session/schemas";
 import type { TDraggableEvent } from "@typebot.io/events/schemas";
-import type { SessionStore } from "@typebot.io/runtime-session-store";
-import { addBlockToTypebotIfMissing } from "../addBlockToTypebotIfMissing";
-import { getNextGroup } from "../getNextGroup";
+import { addDummyFirstBlockToGroupIfMissing } from "../addDummyFirstBlockToGroupIfMissing";
 
 type Props = {
   state: SessionState;
   event: TDraggableEvent;
-  sessionStore: SessionStore;
 };
 
-export const updateCurrentBlockIdWithEvent = async ({
-  state,
-  event,
-  sessionStore,
-}: Props) => {
+export const updateCurrentBlockIdWithEvent = ({ state, event }: Props) => {
   let newSessionState = state;
 
-  const response = await getNextGroup({
-    state: newSessionState,
-    edgeId: event.outgoingEdgeId,
-    isOffDefaultPath: false,
-    sessionStore,
-  });
-
-  newSessionState = response.newSessionState;
-  if (!response.group)
+  const edge = newSessionState.typebotsQueue[0].typebot.edges.find(
+    (edge) => edge.id === event.outgoingEdgeId,
+  );
+  if (!edge)
     throw new TRPCError({
       code: "BAD_REQUEST",
-      message: "Command event doesn't have a connected group",
+      message: "Event is not connected",
     });
-  newSessionState = addBlockToTypebotIfMissing(
+
+  newSessionState = addDummyFirstBlockToGroupIfMissing(
     `virtual-${event.id}-block`,
     newSessionState,
     {
-      groupId: response.group.id,
+      groupId: edge.to.groupId,
       index: 0,
     },
   );

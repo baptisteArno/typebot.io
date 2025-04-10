@@ -1,5 +1,4 @@
 import { BubbleBlockType } from "@typebot.io/blocks-bubbles/constants";
-import type { Block } from "@typebot.io/blocks-core/schemas/schema";
 import type {
   SessionState,
   TypebotInSession,
@@ -9,7 +8,7 @@ import { getCredentials } from "@typebot.io/credentials/getCredentials";
 import { forgedBlocks } from "@typebot.io/forge-repository/definitions";
 import type { ForgedBlock } from "@typebot.io/forge-repository/schemas";
 import type { LogsStore, VariableStore } from "@typebot.io/forge/types";
-import { byId, isDefined } from "@typebot.io/lib/utils";
+import { isDefined } from "@typebot.io/lib/utils";
 import type { SessionStore } from "@typebot.io/runtime-session-store";
 import { deepParseVariables } from "@typebot.io/variables/deepParseVariables";
 import {
@@ -17,6 +16,7 @@ import {
   parseVariables,
 } from "@typebot.io/variables/parseVariables";
 import type { SetVariableHistoryItem } from "@typebot.io/variables/schemas";
+import { getNextBlock } from "../getNextBlock";
 import type { ContinueChatResponse } from "../schemas/api";
 import type { ExecuteIntegrationResponse } from "../types";
 import { updateVariablesInSession } from "../updateVariablesInSession";
@@ -212,7 +212,7 @@ const isNextBubbleTextWithStreamingVar =
       (variable) => variable.id === streamVariableId,
     );
     if (!streamVariable) return false;
-    const nextBlock = getNextBlock(typebot)(blockId);
+    const { block: nextBlock } = getNextBlock(blockId, { typebot }) ?? {};
     if (!nextBlock) return false;
     return (
       nextBlock.type === BubbleBlockType.TEXT &&
@@ -220,27 +220,4 @@ const isNextBubbleTextWithStreamingVar =
       nextBlock.content?.richText?.at(0)?.children.at(0).text ===
         `{{${streamVariable.name}}}`
     );
-  };
-
-const getNextBlock =
-  (typebot: TypebotInSession) =>
-  (blockId: string): Block | undefined => {
-    const group = typebot.groups.find((group) =>
-      group.blocks.find(byId(blockId)),
-    );
-    if (!group) return;
-    const blockIndex = group.blocks.findIndex(byId(blockId));
-    const nextBlockInGroup = group.blocks.at(blockIndex + 1);
-    if (nextBlockInGroup) return nextBlockInGroup;
-    const outgoingEdgeId = group.blocks.at(blockIndex)?.outgoingEdgeId;
-    if (!outgoingEdgeId) return;
-    const outgoingEdge = typebot.edges.find(byId(outgoingEdgeId));
-    if (!outgoingEdge) return;
-    const connectedGroup = typebot.groups.find(byId(outgoingEdge?.to.groupId));
-    if (!connectedGroup) return;
-    return outgoingEdge.to.blockId
-      ? connectedGroup.blocks.find(
-          (block) => block.id === outgoingEdge.to.blockId,
-        )
-      : connectedGroup?.blocks.at(0);
   };

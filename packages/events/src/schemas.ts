@@ -56,6 +56,14 @@ export const eventSchema = z.discriminatedUnion("type", [
 export type TEvent = z.infer<typeof eventSchema>;
 
 export type TEventWithOptions = Extract<TEvent, { options?: any }>;
+export type TEventWithExitCondition = Extract<
+  TEvent,
+  {
+    options: {
+      exitCondition: NonNullable<ReplyEvent["options"]>["exitCondition"];
+    };
+  }
+>;
 
 export const draggableEventSchema = z.discriminatedUnion("type", [
   ...draggableEventSchemas,

@@ -2,77 +2,60 @@ import { isInputBlock } from "@typebot.io/blocks-core/helpers";
 import type { SessionState } from "@typebot.io/chat-session/schemas";
 import type { ReplyEvent } from "@typebot.io/events/schemas";
 import { getBlockById } from "@typebot.io/groups/helpers/getBlockById";
-import type { SessionStore } from "@typebot.io/runtime-session-store";
-import { getOutgoingEdgeId } from "../getOutgoingEdgeId";
-import { parseReply } from "../parseReply";
-import {
-  saveEventVariablesIfAny,
-  saveVariablesValueIfAny,
-} from "../saveVariables";
 import type { InputMessage } from "../schemas/api";
+import { updateVariablesInSession } from "../updateVariablesInSession";
 import { connectEdgeToNextBlock } from "./connectEdgeToNextBlock";
 import { updateCurrentBlockIdWithEvent } from "./updateCurrentBlockIdWithEvent";
 
 type Props = {
   state: SessionState;
   reply: InputMessage;
-  sessionStore: SessionStore;
   replyEvent: ReplyEvent;
 };
 
-export const executeReplyEvent = async ({
+export const executeReplyEvent = ({
   state,
   reply,
-  sessionStore,
   replyEvent: event,
 }: Props) => {
-  if (!state.currentBlockId) return state;
-  const { block } = getBlockById(
-    state.currentBlockId,
-    state.typebotsQueue[0].typebot.groups,
-  );
-
-  if (!isInputBlock(block)) return state;
+  if (!state.currentBlockId)
+    return { updatedState: state, setVariableHistory: [] };
 
   let newSessionState = state;
 
-  // Save the input variable of the event if any
-  newSessionState = saveEventVariablesIfAny({
+  const foundVariable = state.typebotsQueue[0].typebot.variables.find(
+    (variable) => variable.id === event.options?.variableId,
+  );
+  if (!foundVariable) return { updatedState: state, setVariableHistory: [] };
+
+  const { updatedState, newSetVariableHistory } = updateVariablesInSession({
+    state: newSessionState,
+    newVariables: [
+      {
+        ...foundVariable,
+        value:
+          Array.isArray(foundVariable.value) && reply.type === "text"
+            ? foundVariable.value.concat(reply.text)
+            : reply.type === "text"
+              ? reply.text
+              : reply.url,
+      },
+    ],
+    currentBlockId: state.currentBlockId,
+  });
+
+  newSessionState = updatedState;
+
+  newSessionState = connectEdgeToNextBlock({
     state: newSessionState,
     event,
-    reply,
   });
 
-  // Save the trigger block variable if any
-  newSessionState = saveVariablesValueIfAny(newSessionState, block)(reply);
-
-  // Anticipate the next edge by pre-parsing the reply
-  const parsedReply = await parseReply(reply, {
-    sessionStore,
-    state: newSessionState,
-    block,
-  });
-
-  let nextEdgeId: string | undefined;
-  if (parsedReply.status === "success") {
-    const { edgeId } = getOutgoingEdgeId(parsedReply, {
-      block,
+  return {
+    updatedState: updateCurrentBlockIdWithEvent({
       state: newSessionState,
-      sessionStore,
-    });
-    nextEdgeId = edgeId;
-  }
-
-  newSessionState = await connectEdgeToNextBlock({
-    state: newSessionState,
-    event,
-    sessionStore,
-    nextEdgeId,
-  });
-
-  return await updateCurrentBlockIdWithEvent({
-    state: newSessionState,
-    event,
-    sessionStore,
-  });
+      event,
+    }),
+    newSetVariableHistory,
+  };
 };

@@ -80,22 +80,24 @@ export const continueBotFlow = async (
     });
 
   let newSessionState = state;
+  const setVariableHistory: SetVariableHistoryItem[] = [];
 
   if (reply?.type === "command") {
-    newSessionState = await executeCommandEvent({
+    newSessionState = executeCommandEvent({
       state,
       command: reply.command,
-      sessionStore,
     });
   } else {
     const replyEvent = findReplyEvent(newSessionState);
     if (reply && replyEvent) {
-      newSessionState = await executeReplyEvent({
+      const response = executeReplyEvent({
         state: newSessionState,
         reply,
-        sessionStore,
         replyEvent,
       });
+      if (response.updatedState) newSessionState = response.updatedState;
+      if (response.setVariableHistory)
+        setVariableHistory.push(...response.setVariableHistory);
     }
   }
 
@@ -124,7 +126,8 @@ export const continueBotFlow = async (
   });
 
   newSessionState = nonInputProcessResult.newSessionState;
-  const { setVariableHistory, firstBubbleWasStreamed } = nonInputProcessResult;
+  setVariableHistory.push(...nonInputProcessResult.setVariableHistory);
+  const { firstBubbleWasStreamed } = nonInputProcessResult;
 
   let continueReply: SuccessReply | SkipReply | undefined;
 
