@@ -1,7 +1,5 @@
-import { isInputBlock } from "@typebot.io/blocks-core/helpers";
 import type { SessionState } from "@typebot.io/chat-session/schemas";
 import type { ReplyEvent } from "@typebot.io/events/schemas";
-import { getBlockById } from "@typebot.io/groups/helpers/getBlockById";
 import type { InputMessage } from "../schemas/api";
 import { updateVariablesInSession } from "../updateVariablesInSession";
 import { connectEdgeToNextBlock } from "./connectEdgeToNextBlock";
@@ -33,12 +31,7 @@ export const executeReplyEvent = ({
     newVariables: [
       {
         ...foundVariable,
-        value:
-          Array.isArray(foundVariable.value) && reply.type === "text"
-            ? foundVariable.value.concat(reply.text)
-            : reply.type === "text"
-              ? reply.text
-              : reply.url,
+        value: reply.type === "text" ? reply.text : reply.url,
       },
     ],
     currentBlockId: state.currentBlockId,
