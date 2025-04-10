@@ -15,6 +15,8 @@ import type {
   SessionState,
   TypebotInSession,
 } from "@typebot.io/chat-session/schemas";
+import { EventType } from "@typebot.io/events/constants";
+import type { ReplyEvent } from "@typebot.io/events/schemas";
 import { forgedBlocks } from "@typebot.io/forge-repository/definitions";
 import type { ForgedBlock } from "@typebot.io/forge-repository/schemas";
 import { getBlockById } from "@typebot.io/groups/helpers/getBlockById";
@@ -37,8 +39,6 @@ import { executeReplyEvent } from "./events/executeReplyEvent";
 import { executeGroup, parseInput } from "./executeGroup";
 import { getNextGroup } from "./getNextGroup";
 import { getOutgoingEdgeId } from "./getOutgoingEdgeId";
-import { findReplyEvent } from "./helpers/findReplyEvent";
-import { isInputMessage } from "./helpers/isInputMessage";
 import { parseReply } from "./parseReply";
 import { saveAnswer } from "./queries/saveAnswer";
 import { resetSessionState } from "./resetSessionState";
@@ -49,7 +49,7 @@ import type {
   Message,
 } from "./schemas/api";
 import { startBotFlow } from "./startBotFlow";
-import type { ParsedReply, SkipReply, SuccessReply } from "./types";
+import type { SkipReply, SuccessReply } from "./types";
 import { updateVariablesInSession } from "./updateVariablesInSession";
 
 export type ContinueBotFlowResponse = ContinueChatResponse & {
@@ -80,7 +80,6 @@ export const continueBotFlow = async (
     });
 
   let newSessionState = state;
-  const replyEvent = findReplyEvent(newSessionState);
 
   if (reply?.type === "command") {
     newSessionState = await executeCommandEvent({
@@ -88,13 +87,16 @@ export const continueBotFlow = async (
       command: reply.command,
       sessionStore,
     });
-  } else if (reply && replyEvent) {
-    newSessionState = await executeReplyEvent({
-      state: newSessionState,
-      reply,
-      sessionStore,
-      replyEvent,
-    });
+  } else {
+    const replyEvent = findReplyEvent(newSessionState);
+    if (reply && replyEvent) {
+      newSessionState = await executeReplyEvent({
+        state: newSessionState,
+        reply,
+        sessionStore,
+        replyEvent,
+      });
+    }
   }
 
   if (!newSessionState.currentBlockId)
@@ -549,3 +551,12 @@ export const safeJsonParse = (value: string): unknown => {
     return value;
   }
 };
+
+const findReplyEvent = (state: SessionState): ReplyEvent | undefined =>
+  state.typebotsQueue[0].typebot.events?.find(
+    (e) => e.type === EventType.REPLY,
+  );
+
+const isInputMessage = (
+  message: Message | undefined,
+): message is InputMessage => message?.type !== "command";
