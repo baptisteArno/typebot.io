@@ -8,7 +8,7 @@ import {
 } from "@typebot.io/runtime-session-store";
 import { computeCurrentProgress } from "../computeCurrentProgress";
 import { continueBotFlow } from "../continueBotFlow";
-import { assertOriginIsAllowed } from "../helpers/isOriginAllowed";
+import { assertOriginIsAllowed } from "../helpers/assertOriginIsAllowed";
 import { filterPotentiallySensitiveLogs } from "../logs/filterPotentiallySensitiveLogs";
 import { parseDynamicTheme } from "../parseDynamicTheme";
 import { saveStateToDatabase } from "../saveStateToDatabase";
