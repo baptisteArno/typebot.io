@@ -125,12 +125,6 @@ const sessionStateSchemaV2 = z.object({
     .optional(),
 });
 
-const queuedEdgeSchema = z.object({
-  id: z.string(),
-  condition: conditionSchema.optional(),
-});
-export type QueuedEdge = z.infer<typeof queuedEdgeSchema>;
-
 const sessionStateSchemaV3 = sessionStateSchemaV2
   .omit({ currentBlock: true })
   .extend({
@@ -157,6 +151,12 @@ const sessionStateSchemaV3 = sessionStateSchemaV2
       .optional(),
   });
 
+const queuedEdgeSchema = z.object({
+  id: z.string(),
+  condition: conditionSchema.optional(),
+});
+export type QueuedEdge = z.infer<typeof queuedEdgeSchema>;
+
 const sessionStateSchemaV4 = sessionStateSchemaV3.extend({
   version: z.literal("4"),
   typebotsQueue: z.array(
@@ -181,9 +181,7 @@ export const sessionStateSchema = z
     if (!state.version) migratedState = migrateFromV1ToV2(state);
     if (migratedState.version === "2")
       migratedState = migrateFromV2ToV3(migratedState);
-    if (migratedState.version === "3")
-      migratedState = migrateFromV3ToV4(migratedState);
-    return migratedState;
+    return migrateFromV3ToV4(migratedState);
   }) as z.ZodType<SessionState>;
 
 const migrateFromV1ToV2 = (
@@ -277,7 +275,6 @@ const migrateFromV3ToV4 = (
     queuedEdges: typebot.queuedEdgeIds?.map((id) => ({
       id,
     })),
-    queuedEdgeIds: undefined,
   })),
 });
 
