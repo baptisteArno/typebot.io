@@ -18,7 +18,7 @@ export const CommandEventNode = ({ options }: Props) => {
         <Tag p="2">{options?.command}</Tag>
       ) : (
         <Text color="gray.500" fontWeight="normal">
-          {t("nodes.events.command.placeholder")}
+          {t("configure")}
         </Text>
       )}
     </HStack>
