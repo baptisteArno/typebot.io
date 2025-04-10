@@ -193,8 +193,8 @@ const ExportModal = ({
       onOpenChange={(e) => (!e.open ? onClose() : null)}
     >
       <Portal>
-        <Dialog.Backdrop className="fixed inset-0 w-full bg-gray-12/50 data-[state=open]:animate-in data-[state=open]:fade-in data-[state=closed]:animate-out data-[state=closed]:fade-out overflow-auto" />
-        <Dialog.Positioner className="flex justify-center fixed inset-0 w-full py-12">
+        <Dialog.Backdrop className="fixed top-0 size-full bg-gray-12/50 data-[state=open]:animate-in data-[state=open]:fade-in data-[state=closed]:animate-out data-[state=closed]:fade-out overflow-auto" />
+        <Dialog.Positioner className="flex justify-center fixed top-0 w-full py-12">
           <Dialog.Content className="relative bg-gray-1 p-6 rounded-xl w-full max-w-xl overflow-auto data-[state=open]:animate-in data-[state=open]:slide-in-from-bottom-5 data-[state=open]:fade-in data-[state=closed]:animate-out data-[state=closed]:slide-out-to-bottom-5 data-[state=closed]:fade-out">
             <Dialog.Title className="text-2xl">Generated HTML</Dialog.Title>
             <Dialog.CloseTrigger asChild>
