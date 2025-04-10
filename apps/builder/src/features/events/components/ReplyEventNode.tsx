@@ -1,5 +1,4 @@
 import { SetVariableLabel } from "@/components/SetVariableLabel";
-import { ConditionContent } from "@/features/blocks/logic/condition/components/ConditionContent";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { EventIcon } from "@/features/events/components/EventIcon";
 import { HStack, Stack, Text } from "@chakra-ui/react";
@@ -17,18 +16,15 @@ export const ReplyEventNode = ({ options }: Props) => {
 
   return (
     <HStack flex="1" align="flex-start" spacing={3} fontWeight="normal">
-      <EventIcon mt="0.25rem" type={EventType.REPLY} />
+      <EventIcon type={EventType.REPLY} mt="1.5" />
       <Stack>
+        <Text>{t("blocks.events.reply.node.prefix")}</Text>
         {options?.variableId ? (
           <SetVariableLabel
             variables={typebot?.variables}
             variableId={options.variableId}
           />
-        ) : (
-          <Text color="gray.500" fontWeight="normal">
-            {t("nodes.events.command.placeholder")}
-          </Text>
-        )}
+        ) : null}
       </Stack>
     </HStack>
   );

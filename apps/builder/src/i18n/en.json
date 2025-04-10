@@ -123,6 +123,8 @@
   "blocks.events.reply.eventCard.tooltip": "Triggered when a reply is received.",
   "blocks.events.reply.settings.exitCondition.label": "Exit condition",
   "blocks.events.reply.settings.exitCondition.infoText": "If the condition is met, the bot will end after this flow.",
+  "blocks.events.reply.node.prefix": "On reply",
+  "blocks.events.reply.settings.saveInVariable.label": "Save reply content",
   "blocks.events.start.eventCard.tooltip": "Already added in the bot flow.",
   "blocks.inputs.internalValue.label": "Internal value:",
   "blocks.inputs.button.addItem.ariaLabel": "Add item",

@@ -39,7 +39,7 @@ export const ReplyEventSettings = ({
     <Stack p="2">
       <Stack>
         <FormLabel mb="0" htmlFor="variable">
-          {t("blocks.inputs.settings.saveAnswer.label")}
+          {t("blocks.events.reply.settings.saveInVariable.label")}
         </FormLabel>
         <VariableSearchInput
           initialVariableId={options?.variableId}
