@@ -11,11 +11,7 @@ export const PaymentInputContent = ({ block }: Props) => {
   const { t } = useTranslate();
 
   if (!block.options?.amount || !block.options.credentialsId)
-    return (
-      <Text color="gray.500">
-        {t("blocks.inputs.payment.placeholder.label")}
-      </Text>
-    );
+    return <Text color="gray.500">{t("configure")}</Text>;
   return (
     <Text noOfLines={1} pr="6">
       {t("blocks.inputs.payment.collect.label")} {block.options.amount}{" "}

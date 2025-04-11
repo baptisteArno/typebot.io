@@ -3227,51 +3227,165 @@
                               ]
                             },
                             {
-                              "type": "object",
-                              "properties": {
-                                "id": {
-                                  "type": "string"
-                                },
-                                "outgoingEdgeId": {
-                                  "type": "string"
-                                },
-                                "graphCoordinates": {
+                              "oneOf": [
+                                {
                                   "type": "object",
                                   "properties": {
-                                    "x": {
-                                      "type": "number"
+                                    "id": {
+                                      "type": "string"
                                     },
-                                    "y": {
-                                      "type": "number"
+                                    "outgoingEdgeId": {
+                                      "type": "string"
+                                    },
+                                    "graphCoordinates": {
+                                      "type": "object",
+                                      "properties": {
+                                        "x": {
+                                          "type": "number"
+                                        },
+                                        "y": {
+                                          "type": "number"
+                                        }
+                                      },
+                                      "required": [
+                                        "x",
+                                        "y"
+                                      ]
+                                    },
+                                    "type": {
+                                      "type": "string",
+                                      "enum": [
+                                        "command"
+                                      ]
+                                    },
+                                    "options": {
+                                      "type": "object",
+                                      "properties": {
+                                        "command": {
+                                          "type": "string"
+                                        },
+                                        "resumeAfter": {
+                                          "type": "boolean"
+                                        }
+                                      }
                                     }
                                   },
                                   "required": [
-                                    "x",
-                                    "y"
+                                    "id",
+                                    "graphCoordinates",
+                                    "type"
                                   ]
                                 },
-                                "type": {
-                                  "type": "string",
-                                  "enum": [
-                                    "command"
-                                  ]
-                                },
-                                "options": {
+                                {
                                   "type": "object",
                                   "properties": {
-                                    "command": {
+                                    "id": {
                                       "type": "string"
                                     },
-                                    "resumeAfter": {
-                                      "type": "boolean"
+                                    "outgoingEdgeId": {
+                                      "type": "string"
+                                    },
+                                    "graphCoordinates": {
+                                      "type": "object",
+                                      "properties": {
+                                        "x": {
+                                          "type": "number"
+                                        },
+                                        "y": {
+                                          "type": "number"
+                                        }
+                                      },
+                                      "required": [
+                                        "x",
+                                        "y"
+                                      ]
+                                    },
+                                    "type": {
+                                      "type": "string",
+                                      "enum": [
+                                        "reply"
+                                      ]
+                                    },
+                                    "options": {
+                                      "type": "object",
+                                      "properties": {
+                                        "contentVariableId": {
+                                          "type": "string"
+                                        },
+                                        "inputNameVariableId": {
+                                          "type": "string"
+                                        },
+                                        "inputTypeVariableId": {
+                                          "type": "string"
+                                        },
+                                        "exitCondition": {
+                                          "type": "object",
+                                          "properties": {
+                                            "isEnabled": {
+                                              "type": "boolean"
+                                            },
+                                            "condition": {
+                                              "type": "object",
+                                              "properties": {
+                                                "logicalOperator": {
+                                                  "type": "string",
+                                                  "enum": [
+                                                    "OR",
+                                                    "AND"
+                                                  ]
+                                                },
+                                                "comparisons": {
+                                                  "type": "array",
+                                                  "items": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                      "id": {
+                                                        "type": "string"
+                                                      },
+                                                      "variableId": {
+                                                        "type": "string"
+                                                      },
+                                                      "comparisonOperator": {
+                                                        "type": "string",
+                                                        "enum": [
+                                                          "Equal to",
+                                                          "Not equal",
+                                                          "Contains",
+                                                          "Does not contain",
+                                                          "Greater than",
+                                                          "Greater or equal to",
+                                                          "Less than",
+                                                          "Less or equal to",
+                                                          "Is set",
+                                                          "Is empty",
+                                                          "Starts with",
+                                                          "Ends with",
+                                                          "Matches regex",
+                                                          "Does not match regex"
+                                                        ]
+                                                      },
+                                                      "value": {
+                                                        "type": "string"
+                                                      }
+                                                    },
+                                                    "required": [
+                                                      "id"
+                                                    ]
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
                                     }
-                                  }
+                                  },
+                                  "required": [
+                                    "id",
+                                    "graphCoordinates",
+                                    "type"
+                                  ]
                                 }
-                              },
-                              "required": [
-                                "id",
-                                "graphCoordinates",
-                                "type"
                               ]
                             }
                           ]
@@ -3886,51 +4000,165 @@
                                   ]
                                 },
                                 {
-                                  "type": "object",
-                                  "properties": {
-                                    "id": {
-                                      "type": "string"
-                                    },
-                                    "outgoingEdgeId": {
-                                      "type": "string"
-                                    },
-                                    "graphCoordinates": {
+                                  "oneOf": [
+                                    {
                                       "type": "object",
                                       "properties": {
-                                        "x": {
-                                          "type": "number"
+                                        "id": {
+                                          "type": "string"
                                         },
-                                        "y": {
-                                          "type": "number"
+                                        "outgoingEdgeId": {
+                                          "type": "string"
+                                        },
+                                        "graphCoordinates": {
+                                          "type": "object",
+                                          "properties": {
+                                            "x": {
+                                              "type": "number"
+                                            },
+                                            "y": {
+                                              "type": "number"
+                                            }
+                                          },
+                                          "required": [
+                                            "x",
+                                            "y"
+                                          ]
+                                        },
+                                        "type": {
+                                          "type": "string",
+                                          "enum": [
+                                            "command"
+                                          ]
+                                        },
+                                        "options": {
+                                          "type": "object",
+                                          "properties": {
+                                            "command": {
+                                              "type": "string"
+                                            },
+                                            "resumeAfter": {
+                                              "type": "boolean"
+                                            }
+                                          }
                                         }
                                       },
                                       "required": [
-                                        "x",
-                                        "y"
+                                        "id",
+                                        "graphCoordinates",
+                                        "type"
                                       ]
                                     },
-                                    "type": {
-                                      "type": "string",
-                                      "enum": [
-                                        "command"
-                                      ]
-                                    },
-                                    "options": {
+                                    {
                                       "type": "object",
                                       "properties": {
-                                        "command": {
+                                        "id": {
                                           "type": "string"
                                         },
-                                        "resumeAfter": {
-                                          "type": "boolean"
+                                        "outgoingEdgeId": {
+                                          "type": "string"
+                                        },
+                                        "graphCoordinates": {
+                                          "type": "object",
+                                          "properties": {
+                                            "x": {
+                                              "type": "number"
+                                            },
+                                            "y": {
+                                              "type": "number"
+                                            }
+                                          },
+                                          "required": [
+                                            "x",
+                                            "y"
+                                          ]
+                                        },
+                                        "type": {
+                                          "type": "string",
+                                          "enum": [
+                                            "reply"
+                                          ]
+                                        },
+                                        "options": {
+                                          "type": "object",
+                                          "properties": {
+                                            "contentVariableId": {
+                                              "type": "string"
+                                            },
+                                            "inputNameVariableId": {
+                                              "type": "string"
+                                            },
+                                            "inputTypeVariableId": {
+                                              "type": "string"
+                                            },
+                                            "exitCondition": {
+                                              "type": "object",
+                                              "properties": {
+                                                "isEnabled": {
+                                                  "type": "boolean"
+                                                },
+                                                "condition": {
+                                                  "type": "object",
+                                                  "properties": {
+                                                    "logicalOperator": {
+                                                      "type": "string",
+                                                      "enum": [
+                                                        "OR",
+                                                        "AND"
+                                                      ]
+                                                    },
+                                                    "comparisons": {
+                                                      "type": "array",
+                                                      "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                          "id": {
+                                                            "type": "string"
+                                                          },
+                                                          "variableId": {
+                                                            "type": "string"
+                                                          },
+                                                          "comparisonOperator": {
+                                                            "type": "string",
+                                                            "enum": [
+                                                              "Equal to",
+                                                              "Not equal",
+                                                              "Contains",
+                                                              "Does not contain",
+                                                              "Greater than",
+                                                              "Greater or equal to",
+                                                              "Less than",
+                                                              "Less or equal to",
+                                                              "Is set",
+                                                              "Is empty",
+                                                              "Starts with",
+                                                              "Ends with",
+                                                              "Matches regex",
+                                                              "Does not match regex"
+                                                            ]
+                                                          },
+                                                          "value": {
+                                                            "type": "string"
+                                                          }
+                                                        },
+                                                        "required": [
+                                                          "id"
+                                                        ]
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
                                         }
-                                      }
+                                      },
+                                      "required": [
+                                        "id",
+                                        "graphCoordinates",
+                                        "type"
+                                      ]
                                     }
-                                  },
-                                  "required": [
-                                    "id",
-                                    "graphCoordinates",
-                                    "type"
                                   ]
                                 }
                               ]
@@ -6593,51 +6821,165 @@
                                   ]
                                 },
                                 {
-                                  "type": "object",
-                                  "properties": {
-                                    "id": {
-                                      "type": "string"
-                                    },
-                                    "outgoingEdgeId": {
-                                      "type": "string"
-                                    },
-                                    "graphCoordinates": {
+                                  "oneOf": [
+                                    {
                                       "type": "object",
                                       "properties": {
-                                        "x": {
-                                          "type": "number"
+                                        "id": {
+                                          "type": "string"
                                         },
-                                        "y": {
-                                          "type": "number"
+                                        "outgoingEdgeId": {
+                                          "type": "string"
+                                        },
+                                        "graphCoordinates": {
+                                          "type": "object",
+                                          "properties": {
+                                            "x": {
+                                              "type": "number"
+                                            },
+                                            "y": {
+                                              "type": "number"
+                                            }
+                                          },
+                                          "required": [
+                                            "x",
+                                            "y"
+                                          ]
+                                        },
+                                        "type": {
+                                          "type": "string",
+                                          "enum": [
+                                            "command"
+                                          ]
+                                        },
+                                        "options": {
+                                          "type": "object",
+                                          "properties": {
+                                            "command": {
+                                              "type": "string"
+                                            },
+                                            "resumeAfter": {
+                                              "type": "boolean"
+                                            }
+                                          }
                                         }
                                       },
                                       "required": [
-                                        "x",
-                                        "y"
+                                        "id",
+                                        "graphCoordinates",
+                                        "type"
                                       ]
                                     },
-                                    "type": {
-                                      "type": "string",
-                                      "enum": [
-                                        "command"
-                                      ]
-                                    },
-                                    "options": {
+                                    {
                                       "type": "object",
                                       "properties": {
-                                        "command": {
+                                        "id": {
                                           "type": "string"
                                         },
-                                        "resumeAfter": {
-                                          "type": "boolean"
+                                        "outgoingEdgeId": {
+                                          "type": "string"
+                                        },
+                                        "graphCoordinates": {
+                                          "type": "object",
+                                          "properties": {
+                                            "x": {
+                                              "type": "number"
+                                            },
+                                            "y": {
+                                              "type": "number"
+                                            }
+                                          },
+                                          "required": [
+                                            "x",
+                                            "y"
+                                          ]
+                                        },
+                                        "type": {
+                                          "type": "string",
+                                          "enum": [
+                                            "reply"
+                                          ]
+                                        },
+                                        "options": {
+                                          "type": "object",
+                                          "properties": {
+                                            "contentVariableId": {
+                                              "type": "string"
+                                            },
+                                            "inputNameVariableId": {
+                                              "type": "string"
+                                            },
+                                            "inputTypeVariableId": {
+                                              "type": "string"
+                                            },
+                                            "exitCondition": {
+                                              "type": "object",
+                                              "properties": {
+                                                "isEnabled": {
+                                                  "type": "boolean"
+                                                },
+                                                "condition": {
+                                                  "type": "object",
+                                                  "properties": {
+                                                    "logicalOperator": {
+                                                      "type": "string",
+                                                      "enum": [
+                                                        "OR",
+                                                        "AND"
+                                                      ]
+                                                    },
+                                                    "comparisons": {
+                                                      "type": "array",
+                                                      "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                          "id": {
+                                                            "type": "string"
+                                                          },
+                                                          "variableId": {
+                                                            "type": "string"
+                                                          },
+                                                          "comparisonOperator": {
+                                                            "type": "string",
+                                                            "enum": [
+                                                              "Equal to",
+                                                              "Not equal",
+                                                              "Contains",
+                                                              "Does not contain",
+                                                              "Greater than",
+                                                              "Greater or equal to",
+                                                              "Less than",
+                                                              "Less or equal to",
+                                                              "Is set",
+                                                              "Is empty",
+                                                              "Starts with",
+                                                              "Ends with",
+                                                              "Matches regex",
+                                                              "Does not match regex"
+                                                            ]
+                                                          },
+                                                          "value": {
+                                                            "type": "string"
+                                                          }
+                                                        },
+                                                        "required": [
+                                                          "id"
+                                                        ]
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
                                         }
-                                      }
+                                      },
+                                      "required": [
+                                        "id",
+                                        "graphCoordinates",
+                                        "type"
+                                      ]
                                     }
-                                  },
-                                  "required": [
-                                    "id",
-                                    "graphCoordinates",
-                                    "type"
                                   ]
                                 }
                               ]
@@ -22832,51 +23174,165 @@
                   ]
                 },
                 {
-                  "type": "object",
-                  "properties": {
-                    "id": {
-                      "type": "string"
-                    },
-                    "outgoingEdgeId": {
-                      "type": "string"
-                    },
-                    "graphCoordinates": {
+                  "oneOf": [
+                    {
                       "type": "object",
                       "properties": {
-                        "x": {
-                          "type": "number"
+                        "id": {
+                          "type": "string"
                         },
-                        "y": {
-                          "type": "number"
+                        "outgoingEdgeId": {
+                          "type": "string"
+                        },
+                        "graphCoordinates": {
+                          "type": "object",
+                          "properties": {
+                            "x": {
+                              "type": "number"
+                            },
+                            "y": {
+                              "type": "number"
+                            }
+                          },
+                          "required": [
+                            "x",
+                            "y"
+                          ]
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "command"
+                          ]
+                        },
+                        "options": {
+                          "type": "object",
+                          "properties": {
+                            "command": {
+                              "type": "string"
+                            },
+                            "resumeAfter": {
+                              "type": "boolean"
+                            }
+                          }
                         }
                       },
                       "required": [
-                        "x",
-                        "y"
+                        "id",
+                        "graphCoordinates",
+                        "type"
                       ]
                     },
-                    "type": {
-                      "type": "string",
-                      "enum": [
-                        "command"
-                      ]
-                    },
-                    "options": {
+                    {
                       "type": "object",
                       "properties": {
-                        "command": {
+                        "id": {
                           "type": "string"
                         },
-                        "resumeAfter": {
-                          "type": "boolean"
+                        "outgoingEdgeId": {
+                          "type": "string"
+                        },
+                        "graphCoordinates": {
+                          "type": "object",
+                          "properties": {
+                            "x": {
+                              "type": "number"
+                            },
+                            "y": {
+                              "type": "number"
+                            }
+                          },
+                          "required": [
+                            "x",
+                            "y"
+                          ]
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "reply"
+                          ]
+                        },
+                        "options": {
+                          "type": "object",
+                          "properties": {
+                            "contentVariableId": {
+                              "type": "string"
+                            },
+                            "inputNameVariableId": {
+                              "type": "string"
+                            },
+                            "inputTypeVariableId": {
+                              "type": "string"
+                            },
+                            "exitCondition": {
+                              "type": "object",
+                              "properties": {
+                                "isEnabled": {
+                                  "type": "boolean"
+                                },
+                                "condition": {
+                                  "type": "object",
+                                  "properties": {
+                                    "logicalOperator": {
+                                      "type": "string",
+                                      "enum": [
+                                        "OR",
+                                        "AND"
+                                      ]
+                                    },
+                                    "comparisons": {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "object",
+                                        "properties": {
+                                          "id": {
+                                            "type": "string"
+                                          },
+                                          "variableId": {
+                                            "type": "string"
+                                          },
+                                          "comparisonOperator": {
+                                            "type": "string",
+                                            "enum": [
+                                              "Equal to",
+                                              "Not equal",
+                                              "Contains",
+                                              "Does not contain",
+                                              "Greater than",
+                                              "Greater or equal to",
+                                              "Less than",
+                                              "Less or equal to",
+                                              "Is set",
+                                              "Is empty",
+                                              "Starts with",
+                                              "Ends with",
+                                              "Matches regex",
+                                              "Does not match regex"
+                                            ]
+                                          },
+                                          "value": {
+                                            "type": "string"
+                                          }
+                                        },
+                                        "required": [
+                                          "id"
+                                        ]
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
                         }
-                      }
+                      },
+                      "required": [
+                        "id",
+                        "graphCoordinates",
+                        "type"
+                      ]
                     }
-                  },
-                  "required": [
-                    "id",
-                    "graphCoordinates",
-                    "type"
                   ]
                 }
               ]
@@ -25137,51 +25593,165 @@
                   ]
                 },
                 {
-                  "type": "object",
-                  "properties": {
-                    "id": {
-                      "type": "string"
-                    },
-                    "outgoingEdgeId": {
-                      "type": "string"
-                    },
-                    "graphCoordinates": {
+                  "oneOf": [
+                    {
                       "type": "object",
                       "properties": {
-                        "x": {
-                          "type": "number"
+                        "id": {
+                          "type": "string"
                         },
-                        "y": {
-                          "type": "number"
+                        "outgoingEdgeId": {
+                          "type": "string"
+                        },
+                        "graphCoordinates": {
+                          "type": "object",
+                          "properties": {
+                            "x": {
+                              "type": "number"
+                            },
+                            "y": {
+                              "type": "number"
+                            }
+                          },
+                          "required": [
+                            "x",
+                            "y"
+                          ]
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "command"
+                          ]
+                        },
+                        "options": {
+                          "type": "object",
+                          "properties": {
+                            "command": {
+                              "type": "string"
+                            },
+                            "resumeAfter": {
+                              "type": "boolean"
+                            }
+                          }
                         }
                       },
                       "required": [
-                        "x",
-                        "y"
+                        "id",
+                        "graphCoordinates",
+                        "type"
                       ]
                     },
-                    "type": {
-                      "type": "string",
-                      "enum": [
-                        "command"
-                      ]
-                    },
-                    "options": {
+                    {
                       "type": "object",
                       "properties": {
-                        "command": {
+                        "id": {
                           "type": "string"
                         },
-                        "resumeAfter": {
-                          "type": "boolean"
+                        "outgoingEdgeId": {
+                          "type": "string"
+                        },
+                        "graphCoordinates": {
+                          "type": "object",
+                          "properties": {
+                            "x": {
+                              "type": "number"
+                            },
+                            "y": {
+                              "type": "number"
+                            }
+                          },
+                          "required": [
+                            "x",
+                            "y"
+                          ]
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "reply"
+                          ]
+                        },
+                        "options": {
+                          "type": "object",
+                          "properties": {
+                            "contentVariableId": {
+                              "type": "string"
+                            },
+                            "inputNameVariableId": {
+                              "type": "string"
+                            },
+                            "inputTypeVariableId": {
+                              "type": "string"
+                            },
+                            "exitCondition": {
+                              "type": "object",
+                              "properties": {
+                                "isEnabled": {
+                                  "type": "boolean"
+                                },
+                                "condition": {
+                                  "type": "object",
+                                  "properties": {
+                                    "logicalOperator": {
+                                      "type": "string",
+                                      "enum": [
+                                        "OR",
+                                        "AND"
+                                      ]
+                                    },
+                                    "comparisons": {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "object",
+                                        "properties": {
+                                          "id": {
+                                            "type": "string"
+                                          },
+                                          "variableId": {
+                                            "type": "string"
+                                          },
+                                          "comparisonOperator": {
+                                            "type": "string",
+                                            "enum": [
+                                              "Equal to",
+                                              "Not equal",
+                                              "Contains",
+                                              "Does not contain",
+                                              "Greater than",
+                                              "Greater or equal to",
+                                              "Less than",
+                                              "Less or equal to",
+                                              "Is set",
+                                              "Is empty",
+                                              "Starts with",
+                                              "Ends with",
+                                              "Matches regex",
+                                              "Does not match regex"
+                                            ]
+                                          },
+                                          "value": {
+                                            "type": "string"
+                                          }
+                                        },
+                                        "required": [
+                                          "id"
+                                        ]
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
                         }
-                      }
+                      },
+                      "required": [
+                        "id",
+                        "graphCoordinates",
+                        "type"
+                      ]
                     }
-                  },
-                  "required": [
-                    "id",
-                    "graphCoordinates",
-                    "type"
                   ]
                 }
               ]

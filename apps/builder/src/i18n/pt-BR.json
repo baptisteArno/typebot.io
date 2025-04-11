@@ -149,7 +149,6 @@
   "blocks.inputs.fileUpload.blockCard.tooltip": "Anexar arquivos",
   "blocks.inputs.number.settings.step.label": "Intervalo",
   "blocks.inputs.payment.collect.label": "Coletar",
-  "blocks.inputs.payment.placeholder.label": "Configure...",
   "blocks.inputs.payment.settings.account.label": "Conta:",
   "blocks.inputs.payment.settings.accountText.label": "conta {provider}",
   "blocks.inputs.payment.settings.additionalInformation.description.placeholder.label": "Um produto digital",

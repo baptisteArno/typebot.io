@@ -19,6 +19,8 @@ import type {
   TypebotInSession,
 } from "@typebot.io/chat-session/schemas";
 import { env } from "@typebot.io/env";
+import { EventType } from "@typebot.io/events/constants";
+import type { ReplyEvent } from "@typebot.io/events/schemas";
 import { forgedBlocks } from "@typebot.io/forge-repository/definitions";
 import type { ForgedBlock } from "@typebot.io/forge-repository/schemas";
 import { getBlockById } from "@typebot.io/groups/helpers/getBlockById";
@@ -48,9 +50,9 @@ import { parseTime } from "./blocks/inputs/time/parseTime";
 import { saveDataInResponseVariableMapping } from "./blocks/integrations/httpRequest/saveDataInResponseVariableMapping";
 import { resumeChatCompletion } from "./blocks/integrations/legacy/openai/resumeChatCompletion";
 import { executeCommandEvent } from "./events/executeCommandEvent";
+import { executeReplyEvent } from "./events/executeReplyEvent";
 import { executeGroup, parseInput } from "./executeGroup";
 import { getNextGroup } from "./getNextGroup";
-import { isInputMessage } from "./helpers/isInputMessage";
 import { saveAnswer } from "./queries/saveAnswer";
 import { resetSessionState } from "./resetSessionState";
 import type {
@@ -75,6 +77,7 @@ type Params = {
   textBubbleContentFormat: "richText" | "markdown";
   sessionStore: SessionStore;
 };
+
 export const continueBotFlow = async (
   reply: Message | undefined,
   { state, version, startTime, textBubbleContentFormat, sessionStore }: Params,
@@ -89,12 +92,25 @@ export const continueBotFlow = async (
     });
 
   let newSessionState = state;
+  const setVariableHistory: SetVariableHistoryItem[] = [];
 
   if (reply?.type === "command") {
-    newSessionState = await executeCommandEvent({
+    newSessionState = executeCommandEvent({
       state,
       command: reply.command,
     });
+  } else {
+    const replyEvent = findReplyEvent(newSessionState);
+    if (reply && replyEvent) {
+      const response = executeReplyEvent({
+        state: newSessionState,
+        reply,
+        replyEvent,
+      });
+      if (response.updatedState) newSessionState = response.updatedState;
+      if (response.setVariableHistory)
+        setVariableHistory.push(...response.setVariableHistory);
+    }
   }
 
   if (!newSessionState.currentBlockId)
@@ -122,7 +138,8 @@ export const continueBotFlow = async (
   });
 
   newSessionState = nonInputProcessResult.newSessionState;
-  const { setVariableHistory, firstBubbleWasStreamed } = nonInputProcessResult;
+  setVariableHistory.push(...nonInputProcessResult.setVariableHistory);
+  const { firstBubbleWasStreamed } = nonInputProcessResult;
 
   let continueReply: SuccessReply | SkipReply | undefined;
 
@@ -195,6 +212,7 @@ export const continueBotFlow = async (
         sessionStore,
       },
     );
+
     return {
       ...chatReply,
       lastMessageNewFormat,
@@ -204,7 +222,7 @@ export const continueBotFlow = async (
   if (
     !nextEdgeId &&
     newSessionState.typebotsQueue.length === 1 &&
-    (newSessionState.typebotsQueue[0].queuedEdgeIds ?? []).length === 0
+    (newSessionState.typebotsQueue[0].queuedEdges ?? []).length === 0
   )
     return {
       messages: [],
@@ -218,6 +236,7 @@ export const continueBotFlow = async (
     state: newSessionState,
     edgeId: nextEdgeId,
     isOffDefaultPath,
+    sessionStore,
   });
 
   newSessionState = nextGroup.newSessionState;
@@ -851,3 +870,12 @@ export const safeJsonParse = (value: string): unknown => {
     return value;
   }
 };
+
+const findReplyEvent = (state: SessionState): ReplyEvent | undefined =>
+  state.typebotsQueue[0].typebot.events?.find(
+    (e) => e.type === EventType.REPLY,
+  );
+
+const isInputMessage = (
+  message: Message | undefined,
+): message is InputMessage => message?.type !== "command";

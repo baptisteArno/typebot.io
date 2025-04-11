@@ -1,10 +1,14 @@
-import type { SessionState } from "@typebot.io/chat-session/schemas";
+import type {
+  QueuedEdge,
+  SessionState,
+} from "@typebot.io/chat-session/schemas";
+import { executeCondition } from "@typebot.io/conditions/executeCondition";
 import type { Group } from "@typebot.io/groups/schemas";
 import { byId, isDefined, isNotDefined } from "@typebot.io/lib/utils";
 import type { Prisma } from "@typebot.io/prisma/types";
+import type { SessionStore } from "@typebot.io/runtime-session-store";
 import type { VariableWithValue } from "@typebot.io/variables/schemas";
 import { upsertResult } from "./queries/upsertResult";
-
 export type NextGroup = {
   group?: Group;
   newSessionState: SessionState;
@@ -15,15 +19,31 @@ export const getNextGroup = async ({
   state,
   edgeId,
   isOffDefaultPath,
+  sessionStore,
 }: {
   state: SessionState;
   edgeId?: string;
   isOffDefaultPath: boolean;
+  sessionStore: SessionStore;
 }): Promise<NextGroup> => {
   const nextEdge = state.typebotsQueue[0].typebot.edges.find(byId(edgeId));
   if (!nextEdge) {
-    const nextEdgeResponse = popQueuedEdge(state);
-    let newSessionState = nextEdgeResponse.state;
+    const queuedEdgeResponse = popQueuedEdge(state);
+
+    const exitConditionMet =
+      queuedEdgeResponse.queuedEdge?.condition &&
+      executeCondition(queuedEdgeResponse.queuedEdge.condition, {
+        variables: state.typebotsQueue[0].typebot.variables,
+        sessionStore,
+      });
+
+    if (exitConditionMet) {
+      return {
+        newSessionState: state,
+      };
+    }
+
+    let newSessionState = queuedEdgeResponse.state;
     if (newSessionState.typebotsQueue.length > 1) {
       const isMergingWithParent =
         newSessionState.typebotsQueue[0].isMergingWithParent;
@@ -88,11 +108,12 @@ export const getNextGroup = async ({
             newSessionState.typebotsQueue[0].answers.length,
         };
     }
-    if (nextEdgeResponse.edgeId)
+    if (queuedEdgeResponse.queuedEdge?.id)
       return getNextGroup({
         state: newSessionState,
-        edgeId: nextEdgeResponse.edgeId,
+        edgeId: queuedEdgeResponse.queuedEdge.id,
         isOffDefaultPath,
+        sessionStore,
       });
     return {
       newSessionState,
@@ -143,17 +164,17 @@ export const getNextGroup = async ({
 
 const popQueuedEdge = (
   state: SessionState,
-): { edgeId?: string; state: SessionState } => {
-  const edgeId = state.typebotsQueue[0].queuedEdgeIds?.[0];
-  if (!edgeId) return { state };
+): { queuedEdge?: QueuedEdge; state: SessionState } => {
+  const queuedEdge = state.typebotsQueue[0].queuedEdges?.[0];
+  if (!queuedEdge) return { state };
   return {
-    edgeId,
+    queuedEdge,
     state: {
       ...state,
       typebotsQueue: [
         {
           ...state.typebotsQueue[0],
-          queuedEdgeIds: state.typebotsQueue[0].queuedEdgeIds?.slice(1),
+          queuedEdges: state.typebotsQueue[0].queuedEdges?.slice(1),
         },
         ...state.typebotsQueue.slice(1),
       ],

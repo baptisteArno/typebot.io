@@ -143,7 +143,6 @@
   "blocks.inputs.fileUpload.blockCard.tooltip": "Etichetta del pulsante di salto:",
   "blocks.inputs.number.settings.step.label": "Passo:",
   "blocks.inputs.payment.collect.label": "Raccogliere",
-  "blocks.inputs.payment.placeholder.label": "Configurare...",
   "blocks.inputs.payment.settings.account.label": "Account:",
   "blocks.inputs.payment.settings.accountText.label": "{provider} account",
   "blocks.inputs.payment.settings.additionalInformation.description.placeholder.label": "Un prodotto digitale",
