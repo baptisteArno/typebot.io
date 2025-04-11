@@ -5,6 +5,14 @@ sidebarTitle: Reply
 
 This event will trigger everytime a reply is received, meaning whenever a user replies to any input in the flow. This is triggered even before the reply is processed and validated. This is useful when you need to execute a specific flow / automation whenever the user replies to the bot.
 
+## Variable mapping
+
+- **Reply content**: The content of the reply.
+- **Input type**: The type of the current input. Can be `text`, `number`, `email`, `url`, `date`, `time`, `phone`, `buttons`, `picture choice`, `payment`, `rating`, `file`, `cards`.
+- **Input name**: The name of the current input. If a variable is attached to the input, it will be the name of the variable. Otherwise, it will be the title of the group.
+
+Type and name ultimately can help you filter the reply event by input type and/or name.
+
 ## Exit condition
 
 By default, the flow will continue where it left off after the Reply Event sub-flow ends. You can add an **Exit condition** to end the chat session at the end of the Reply Event flow. For example, you can decide to end the conversation whenever the user replies "exit".

@@ -16,13 +16,25 @@ export const ReplyEventNode = ({ options }: Props) => {
 
   return (
     <HStack flex="1" align="flex-start" spacing={3} fontWeight="normal">
-      <EventIcon type={EventType.REPLY} mt="1.5" />
+      <EventIcon type={EventType.REPLY} mt="5px" />
       <Stack>
         <Text>{t("blocks.events.reply.node.prefix")}</Text>
-        {options?.variableId ? (
+        {options?.contentVariableId ? (
           <SetVariableLabel
             variables={typebot?.variables}
-            variableId={options.variableId}
+            variableId={options.contentVariableId}
+          />
+        ) : null}
+        {options?.inputTypeVariableId ? (
+          <SetVariableLabel
+            variables={typebot?.variables}
+            variableId={options.inputTypeVariableId}
+          />
+        ) : null}
+        {options?.inputNameVariableId ? (
+          <SetVariableLabel
+            variables={typebot?.variables}
+            variableId={options.inputNameVariableId}
           />
         ) : null}
       </Stack>

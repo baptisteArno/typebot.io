@@ -3309,7 +3309,13 @@
                                     "options": {
                                       "type": "object",
                                       "properties": {
-                                        "variableId": {
+                                        "contentVariableId": {
+                                          "type": "string"
+                                        },
+                                        "inputNameVariableId": {
+                                          "type": "string"
+                                        },
+                                        "inputTypeVariableId": {
                                           "type": "string"
                                         },
                                         "exitCondition": {
@@ -4076,7 +4082,13 @@
                                         "options": {
                                           "type": "object",
                                           "properties": {
-                                            "variableId": {
+                                            "contentVariableId": {
+                                              "type": "string"
+                                            },
+                                            "inputNameVariableId": {
+                                              "type": "string"
+                                            },
+                                            "inputTypeVariableId": {
                                               "type": "string"
                                             },
                                             "exitCondition": {
@@ -6891,7 +6903,13 @@
                                         "options": {
                                           "type": "object",
                                           "properties": {
-                                            "variableId": {
+                                            "contentVariableId": {
+                                              "type": "string"
+                                            },
+                                            "inputNameVariableId": {
+                                              "type": "string"
+                                            },
+                                            "inputTypeVariableId": {
                                               "type": "string"
                                             },
                                             "exitCondition": {
@@ -23238,7 +23256,13 @@
                         "options": {
                           "type": "object",
                           "properties": {
-                            "variableId": {
+                            "contentVariableId": {
+                              "type": "string"
+                            },
+                            "inputNameVariableId": {
+                              "type": "string"
+                            },
+                            "inputTypeVariableId": {
                               "type": "string"
                             },
                             "exitCondition": {
@@ -25651,7 +25675,13 @@
                         "options": {
                           "type": "object",
                           "properties": {
-                            "variableId": {
+                            "contentVariableId": {
+                              "type": "string"
+                            },
+                            "inputNameVariableId": {
+                              "type": "string"
+                            },
+                            "inputTypeVariableId": {
                               "type": "string"
                             },
                             "exitCondition": {

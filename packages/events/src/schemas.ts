@@ -1,4 +1,3 @@
-import { optionBaseSchema } from "@typebot.io/blocks-base/schemas";
 import { conditionSchema } from "@typebot.io/conditions/schemas";
 import { z } from "@typebot.io/zod";
 import { EventType } from "./constants";
@@ -27,16 +26,17 @@ export const commandEventSchema = eventBaseSchema.extend({
     .optional(),
 });
 
-const replyEventOptionsSchema = optionBaseSchema.merge(
-  z.object({
-    exitCondition: z
-      .object({
-        isEnabled: z.boolean().optional(),
-        condition: conditionSchema.optional(),
-      })
-      .optional(),
-  }),
-);
+const replyEventOptionsSchema = z.object({
+  contentVariableId: z.string().optional(),
+  inputNameVariableId: z.string().optional(),
+  inputTypeVariableId: z.string().optional(),
+  exitCondition: z
+    .object({
+      isEnabled: z.boolean().optional(),
+      condition: conditionSchema.optional(),
+    })
+    .optional(),
+});
 
 export const replyEventSchema = eventBaseSchema.extend({
   type: z.literal(EventType.REPLY),
