@@ -1,14 +1,13 @@
 import {
   blockBaseSchema,
   itemBaseSchemas,
-  optionBaseSchema,
 } from "@typebot.io/blocks-base/schemas";
 import { conditionSchema } from "@typebot.io/conditions/schemas";
 import { z } from "@typebot.io/zod";
 import { InputBlockType } from "../constants";
 import { cardMappableFields } from "./constants";
 
-const cardsOptionsSchema = optionBaseSchema.extend({
+const cardsOptionsSchema = z.object({
   saveResponseMapping: z
     .array(
       z.object({
@@ -28,6 +27,7 @@ export const cardsItemSchema = itemBaseSchemas.v6.extend({
           condition: conditionSchema.optional(),
         })
         .optional(),
+      internalValue: z.string().optional(),
     })
     .optional(),
   imageUrl: z.string().nullish(),

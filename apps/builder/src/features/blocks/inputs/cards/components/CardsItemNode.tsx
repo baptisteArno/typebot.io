@@ -28,12 +28,10 @@ import { useTranslate } from "@tolgee/react";
 import type { Item } from "@typebot.io/blocks-core/schemas/items/schema";
 import type { ItemIndices } from "@typebot.io/blocks-core/schemas/items/schema";
 import type { CardsItem } from "@typebot.io/blocks-inputs/cards/schema";
-import type { ButtonItem } from "@typebot.io/blocks-inputs/choice/schema";
-import { isEmpty } from "@typebot.io/lib/utils";
 import { cn } from "@typebot.io/ui/lib/cn";
 import { cx } from "@typebot.io/ui/lib/cva";
 import { useRef, useState } from "react";
-import { ButtonsItemSettings } from "../../buttons/components/ButtonsItemSettings";
+import { CardsItemSettings } from "./CardsItemSettings";
 
 type Props = {
   item: CardsItem;
@@ -71,8 +69,8 @@ export const CardsItemNode = ({
     } as Item);
   };
 
-  const updateItemSettings = (settings: Omit<ButtonItem, "content">) => {
-    updateItem(indices, { ...item, ...settings });
+  const updateItemSettings = (options: CardsItem["options"]) => {
+    updateItem(indices, { ...item, options } as Item);
   };
 
   const updateImage = (url: string | null | undefined) => {
@@ -303,8 +301,8 @@ export const CardsItemNode = ({
             shadow="md"
             ref={ref}
           >
-            <ButtonsItemSettings
-              item={item}
+            <CardsItemSettings
+              options={item.options}
               onSettingsChange={updateItemSettings}
             />
           </PopoverBody>

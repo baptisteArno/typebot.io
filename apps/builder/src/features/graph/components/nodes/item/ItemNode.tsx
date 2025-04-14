@@ -78,6 +78,8 @@ export const ItemNode = ({
 
   const groupId = typebot?.groups.at(indices.groupIndex)?.id;
 
+  const displayCondition = getDisplayCondition(item);
+
   return (
     <ContextMenu<HTMLDivElement>
       renderMenu={() => <ItemNodeContextMenu indices={indices} />}
@@ -89,16 +91,14 @@ export const ItemNode = ({
           ref={setMultipleRefs([ref, itemRef])}
           w="full"
         >
-          {"displayCondition" in item &&
-            item.displayCondition?.isEnabled &&
-            item.displayCondition.condition && (
-              <ConditionContent
-                condition={item.displayCondition.condition}
-                variables={typebot?.variables ?? []}
-                size="xs"
-                displaySemicolon
-              />
-            )}
+          {displayCondition && (
+            <ConditionContent
+              condition={displayCondition}
+              variables={typebot?.variables ?? []}
+              size="xs"
+              displaySemicolon
+            />
+          )}
           <Flex
             align="center"
             onMouseEnter={handleMouseEnter}
@@ -145,4 +145,22 @@ export const ItemNode = ({
       )}
     </ContextMenu>
   );
+};
+
+const getDisplayCondition = (item: Item) => {
+  if (
+    "displayCondition" in item &&
+    item.displayCondition?.isEnabled &&
+    item.displayCondition.condition
+  )
+    return item.displayCondition.condition;
+  if (
+    "options" in item &&
+    item.options &&
+    "displayCondition" in item.options &&
+    item.options.displayCondition?.isEnabled &&
+    item.options.displayCondition.condition
+  )
+    return item.options.displayCondition.condition;
+  return undefined;
 };

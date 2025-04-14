@@ -132,6 +132,10 @@ export const continueBotFlow = async (
       state: newSessionState,
       sessionStore,
     });
+    if (parsedReplyResult.newSessionState)
+      newSessionState = parsedReplyResult.newSessionState;
+    if (parsedReplyResult.newSetVariableHistory)
+      setVariableHistory.push(...parsedReplyResult.newSetVariableHistory);
 
     if (parsedReplyResult.status === "fail")
       return {
@@ -727,7 +731,12 @@ const parseReply = async (
     state,
     block,
   }: { sessionStore: SessionStore; state: SessionState; block: InputBlock },
-): Promise<ParsedReply> => {
+): Promise<
+  ParsedReply & {
+    newSessionState?: SessionState;
+    newSetVariableHistory?: SetVariableHistoryItem[];
+  }
+> => {
   switch (block.type) {
     case InputBlockType.EMAIL: {
       if (!reply || reply.type !== "text") return { status: "fail" };
