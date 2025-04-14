@@ -11,6 +11,7 @@ import {
   PopoverContent,
   PopoverHeader,
   PopoverTrigger,
+  Portal,
   SimpleGrid,
   Stack,
 } from "@chakra-ui/react";
@@ -37,12 +38,14 @@ type Props = {
   defaultValue?: string;
   isDisabled?: boolean;
   onColorChange: (color: string) => void;
+  portalled?: boolean;
 };
 
 export const ColorPicker = ({
   value,
   defaultValue,
   isDisabled,
+  portalled = true,
   onColorChange,
 }: Props) => {
   const { t } = useTranslate();
@@ -59,6 +62,57 @@ export const ColorPicker = ({
     onColorChange(color);
   };
 
+  const content = (
+    <PopoverContent width="170px">
+      <PopoverArrow />
+      <PopoverCloseButton color="white" />
+      <PopoverHeader
+        height="100px"
+        backgroundColor={displayedValue}
+        borderTopLeftRadius={5}
+        borderTopRightRadius={5}
+        color={tinyColor(displayedValue).isLight() ? "gray.900" : "white"}
+      >
+        <Center height="100%">{displayedValue}</Center>
+      </PopoverHeader>
+      <PopoverBody as={Stack}>
+        <SimpleGrid columns={5} spacing={2}>
+          {colorsSelection.map((color) => (
+            <Button
+              key={color}
+              aria-label={color}
+              background={color}
+              height="22px"
+              width="22px"
+              padding={0}
+              minWidth="unset"
+              borderRadius={3}
+              borderWidth={color === "#FFFFFF" ? 1 : undefined}
+              _hover={{ background: color }}
+              onClick={handleClick(color)}
+            />
+          ))}
+        </SimpleGrid>
+        <Input
+          borderRadius={3}
+          marginTop={3}
+          placeholder="#2a9d8f"
+          aria-label={t("colorPicker.colorValue.ariaLabel")}
+          size="sm"
+          value={displayedValue}
+          onChange={(e) => handleColorChange(e.target.value)}
+        />
+        <NativeColorPicker
+          size="sm"
+          color={displayedValue}
+          onColorChange={handleColorChange}
+        >
+          {t("colorPicker.advancedColors")}
+        </NativeColorPicker>
+      </PopoverBody>
+    </PopoverContent>
+  );
+
   return (
     <Popover variant="picker" placement="right" isLazy>
       <PopoverTrigger>
@@ -74,54 +128,7 @@ export const ColorPicker = ({
           <Box rounded="full" boxSize="14px" bgColor={displayedValue} />
         </Button>
       </PopoverTrigger>
-      <PopoverContent width="170px">
-        <PopoverArrow />
-        <PopoverCloseButton color="white" />
-        <PopoverHeader
-          height="100px"
-          backgroundColor={displayedValue}
-          borderTopLeftRadius={5}
-          borderTopRightRadius={5}
-          color={tinyColor(displayedValue).isLight() ? "gray.900" : "white"}
-        >
-          <Center height="100%">{displayedValue}</Center>
-        </PopoverHeader>
-        <PopoverBody as={Stack}>
-          <SimpleGrid columns={5} spacing={2}>
-            {colorsSelection.map((color) => (
-              <Button
-                key={color}
-                aria-label={color}
-                background={color}
-                height="22px"
-                width="22px"
-                padding={0}
-                minWidth="unset"
-                borderRadius={3}
-                borderWidth={color === "#FFFFFF" ? 1 : undefined}
-                _hover={{ background: color }}
-                onClick={handleClick(color)}
-              />
-            ))}
-          </SimpleGrid>
-          <Input
-            borderRadius={3}
-            marginTop={3}
-            placeholder="#2a9d8f"
-            aria-label={t("colorPicker.colorValue.ariaLabel")}
-            size="sm"
-            value={displayedValue}
-            onChange={(e) => handleColorChange(e.target.value)}
-          />
-          <NativeColorPicker
-            size="sm"
-            color={displayedValue}
-            onColorChange={handleColorChange}
-          >
-            {t("colorPicker.advancedColors")}
-          </NativeColorPicker>
-        </PopoverBody>
-      </PopoverContent>
+      {portalled ? <Portal>{content}</Portal> : content}
     </Popover>
   );
 };

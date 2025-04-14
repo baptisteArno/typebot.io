@@ -114,7 +114,11 @@ export const IconPicker = ({ onIconSelected }: Props) => {
           withVariableButton={false}
           debounceTimeout={300}
         />
-        <ColorPicker value={selectedColor} onColorChange={updateColor} />
+        <ColorPicker
+          value={selectedColor}
+          onColorChange={updateColor}
+          portalled={false}
+        />
       </HStack>
 
       <Stack overflowY="auto" maxH="350px" ref={scrollContainer} spacing={4}>
