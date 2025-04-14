@@ -50,12 +50,7 @@ export const ZodObjectLayout = ({
         | undefined;
 
       if (evaluateIsHidden(layout?.isHidden, blockOptions)) return nodes;
-      if (
-        layout &&
-        layout.accordion &&
-        !isInAccordion &&
-        keySchema._def.typeName !== "ZodArray"
-      ) {
+      if (layout && layout.accordion && !isInAccordion) {
         if (nodes.accordionsCreated.includes(layout.accordion)) return nodes;
         const accordionKeys = getObjectKeysWithSameAccordionAttr(
           layout.accordion,

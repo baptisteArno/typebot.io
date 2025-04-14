@@ -29,9 +29,24 @@ export const bookEvent = createAction({
     }),
     phone: option.string.layout({
       accordion: "Prefill information",
-      label: "Phone number",
+      label: "Attendee Phone Number",
+      moreInfoTooltip: "Will be used as meeting location",
       placeholder: "+919999999999",
     }),
+    anyPrefilledInformations: option
+      .array(
+        option.object({
+          questionId: option.string.layout({
+            label: "Question Identifier",
+          }),
+          value: option.string.layout({
+            label: "Value",
+          }),
+        }),
+      )
+      .layout({
+        accordion: "Prefill information",
+      }),
     saveBookedDateInVariableId: option.string.layout({
       label: "Save booked date",
       inputType: "variableDropdown",
@@ -81,6 +96,14 @@ export const bookEvent = createAction({
               layout: parseLayoutAttr(options.layout),
               phone: options.phone ?? null,
               additionalNotes: options.additionalNotes ?? null,
+              otherPrefilledInformations:
+                options.anyPrefilledInformations?.reduce<
+                  Record<string, string>
+                >((acc, curr) => {
+                  if (!curr.questionId || !curr.value) return acc;
+                  acc[curr.questionId] = curr.value;
+                  return acc;
+                }, {}) ?? null,
             },
             content: `(function (C, A, L) {
                 let p = function (a, ar) {
@@ -128,7 +151,8 @@ export const bookEvent = createAction({
                   name: name ?? undefined,
                   email: email ?? undefined,
                   notes: additionalNotes ?? undefined,
-                  location
+                  location,
+                  ...otherPrefilledInformations,
                 }
               });
 

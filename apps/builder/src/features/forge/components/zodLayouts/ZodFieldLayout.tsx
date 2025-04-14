@@ -6,16 +6,7 @@ import { NumberInput, TextInput, Textarea } from "@/components/inputs";
 import { CodeEditor } from "@/components/inputs/CodeEditor";
 import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
 import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
-import {
-  Accordion,
-  AccordionButton,
-  AccordionIcon,
-  AccordionItem,
-  AccordionPanel,
-  FormLabel,
-  Stack,
-  Text,
-} from "@chakra-ui/react";
+import { FormLabel, Stack } from "@chakra-ui/react";
 import type { ForgedBlockDefinition } from "@typebot.io/forge-repository/definitions";
 import type { ForgedBlock } from "@typebot.io/forge-repository/schemas";
 import { evaluateIsHidden } from "@typebot.io/forge/helpers/evaluateIsHidden";
@@ -111,30 +102,6 @@ export const ZodFieldLayout = ({
       );
     }
     case "ZodArray": {
-      if (layout?.accordion)
-        return (
-          <Accordion allowToggle>
-            <AccordionItem>
-              <AccordionButton>
-                <Text w="full" textAlign="left">
-                  {layout?.accordion}
-                </Text>
-                <AccordionIcon />
-              </AccordionButton>
-              <AccordionPanel as={Stack} pt="4">
-                <ZodArrayContent
-                  data={data}
-                  schema={innerSchema}
-                  blockDef={blockDef}
-                  blockOptions={blockOptions}
-                  layout={layout}
-                  onDataChange={onDataChange}
-                  isInAccordion
-                />
-              </AccordionPanel>
-            </AccordionItem>
-          </Accordion>
-        );
       return (
         <ZodArrayContent
           data={data}

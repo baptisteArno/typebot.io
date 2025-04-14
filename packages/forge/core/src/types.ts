@@ -32,7 +32,7 @@ export type LogsStore = {
 };
 
 export type FunctionToExecute = {
-  args: Record<string, string | number | null>;
+  args: Record<string, string | number | object | null>;
   content: string;
 };
 

@@ -18362,6 +18362,20 @@
                   "phone": {
                     "type": "string"
                   },
+                  "anyPrefilledInformations": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "questionId": {
+                          "type": "string"
+                        },
+                        "value": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
                   "saveBookedDateInVariableId": {
                     "type": "string"
                   }
