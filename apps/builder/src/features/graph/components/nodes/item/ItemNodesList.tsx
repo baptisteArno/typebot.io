@@ -161,6 +161,7 @@ export const ItemNodesList = ({
         isExpanded={expandedPlaceholderIndex === 0}
         ref={handlePushElementRef(0)}
         onClick={() => insertItem(0)}
+        initialHeightPixels={5}
       >
         Add {itemName}
       </PlaceholderNode>
