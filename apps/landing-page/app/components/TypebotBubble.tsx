@@ -1,11 +1,12 @@
-import { Suspense, lazy } from "react";
+import { lazy } from "react";
+import { ClientOnly } from "./ClientOnly";
 
 export const Bubble = lazy(() =>
   import("@typebot.io/react").then((m) => ({ default: m.Bubble })),
 );
 
 export const TypebotBubble = () => (
-  <Suspense fallback={<div className="size-12" />}>
+  <ClientOnly fallback={<div className="size-12" />}>
     <Bubble
       typebot="typebot-demo"
       theme={{
@@ -15,5 +16,5 @@ export const TypebotBubble = () => (
         },
       }}
     />
-  </Suspense>
+  </ClientOnly>
 );

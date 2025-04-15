@@ -3,4 +3,5 @@ export const cardMappableFields = [
   "Title",
   "Description",
   "Button",
+  "Internal Value",
 ] as const;

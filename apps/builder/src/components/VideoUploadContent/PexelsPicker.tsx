@@ -21,68 +21,82 @@ import {
   createClient,
 } from "pexels";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { DropdownList } from "../DropdownList";
 import { TextLink } from "../TextLink";
 import { TextInput } from "../inputs";
 import { PexelsLogo } from "../logos/PexelsLogo";
 
-/* eslint-disable react-hooks/exhaustive-deps */
 const client = createClient(env.NEXT_PUBLIC_PEXELS_API_KEY ?? "dummy");
 
 type Props = {
-  videoSize: "large" | "medium" | "small";
   onVideoSelect: (videoUrl: string) => void;
 };
 
-export const PexelsPicker = ({ videoSize, onVideoSelect }: Props) => {
+export const PexelsPicker = ({ onVideoSelect }: Props) => {
   const [isFetching, setIsFetching] = useState(false);
   const [videos, setVideos] = useState<Video[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const scrollContainer = useRef<HTMLDivElement>(null);
   const bottomAnchor = useRef<HTMLDivElement>(null);
+  const [orientation, setOrientation] = useState("landscape");
+  const [size, setSize] = useState("medium");
 
   const [nextPage, setNextPage] = useState(0);
 
-  const fetchNewVideos = useCallback(async (query: string, page: number) => {
-    if (query === "") getInitialVideos();
-    if (query.length <= 2) {
-      setNextPage(0);
-      return;
-    }
-    setError(null);
-    setIsFetching(true);
-    try {
-      const result = await client.videos.search({
-        query,
-        per_page: 24,
-        size: videoSize,
-        page,
-      });
-      if ((result as ErrorResponse).error)
-        setError((result as ErrorResponse).error);
-      if (isDefined((result as Videos).videos)) {
-        if (page === 0) setVideos((result as Videos).videos);
-        else
-          setVideos((videos) => [
-            ...videos,
-            ...((result as Videos)?.videos ?? []),
-          ]);
-        setNextPage((page) => page + 1);
+  const fetchNewVideos = useCallback(
+    async (
+      query: string,
+      page: number,
+      { orientation, size }: { orientation: string; size: string },
+    ) => {
+      if (query === "") setVideos([]);
+      if (query.length <= 2) {
+        setNextPage(0);
+        return;
       }
-    } catch (err) {
-      if (err && typeof err === "object" && "message" in err)
-        setError(err.message as string);
-      setError("Something went wrong");
-    }
-    setIsFetching(false);
-  }, []);
+      setError(null);
+      setIsFetching(true);
+      try {
+        const result = await client.videos.search({
+          query,
+          per_page: 24,
+          size,
+          orientation,
+          page,
+        });
+        if ((result as ErrorResponse).error)
+          setError((result as ErrorResponse).error);
+        if (isDefined((result as Videos).videos)) {
+          if (page === 0) setVideos((result as Videos).videos);
+          else
+            setVideos((videos) => [
+              ...videos,
+              ...((result as Videos)?.videos ?? []),
+            ]);
+
+          setNextPage((page) => page + 1);
+        }
+      } catch (err) {
+        if (err && typeof err === "object" && "message" in err)
+          setError(err.message as string);
+        setError("Something went wrong");
+      }
+      setIsFetching(false);
+    },
+    [],
+  );
 
   useEffect(() => {
     if (!bottomAnchor.current) return;
     const observer = new IntersectionObserver(
       (entities: IntersectionObserverEntry[]) => {
         const target = entities[0];
-        if (target.isIntersecting) fetchNewVideos(searchQuery, nextPage + 1);
+        if (target.isIntersecting)
+          fetchNewVideos(searchQuery, nextPage + 1, {
+            orientation,
+            size,
+          });
       },
       {
         root: scrollContainer.current,
@@ -93,59 +107,57 @@ export const PexelsPicker = ({ videoSize, onVideoSelect }: Props) => {
     return () => {
       observer.disconnect();
     };
-  }, [fetchNewVideos, nextPage, searchQuery]);
-
-  const getInitialVideos = async () => {
-    setError(null);
-    setIsFetching(true);
-    client.videos
-      .popular({
-        per_page: 24,
-        size: videoSize,
-      })
-      .then((res) => {
-        if ((res as ErrorResponse).error) {
-          setError((res as ErrorResponse).error);
-        }
-        setVideos((res as Videos).videos);
-        setIsFetching(false);
-      })
-      .catch((err) => {
-        if (err && typeof err === "object" && "message" in err)
-          setError(err.message as string);
-        setError("Something went wrong");
-        setIsFetching(false);
-      });
-  };
+  }, [fetchNewVideos, nextPage, searchQuery, orientation, size]);
 
   const selectVideo = (video: Video) => {
     const videoUrl = video.video_files[0].link;
     if (isDefined(videoUrl)) onVideoSelect(videoUrl);
   };
 
-  useEffect(() => {
-    if (!env.NEXT_PUBLIC_PEXELS_API_KEY) return;
-    getInitialVideos();
-  }, []);
+  const updateOrientation = (orientation: string) => {
+    setOrientation(orientation);
+    fetchNewVideos(searchQuery, 0, { orientation, size });
+  };
+
+  const updateSize = (size: string) => {
+    setSize(size);
+    fetchNewVideos(searchQuery, 0, { orientation, size });
+  };
 
   if (!env.NEXT_PUBLIC_PEXELS_API_KEY)
     return <Text>NEXT_PUBLIC_PEXELS_API_KEY is missing in environment</Text>;
 
   return (
     <Stack spacing={4} pt="2">
-      <HStack align="center">
-        <TextInput
-          autoFocus
-          placeholder="Search..."
-          onChange={(query) => {
-            setSearchQuery(query);
-            fetchNewVideos(query, 0);
-          }}
-          withVariableButton={false}
-          debounceTimeout={500}
-          forceDebounce
-          width="full"
-        />
+      <HStack align="flex-start">
+        <Stack>
+          <TextInput
+            autoFocus
+            placeholder="Search..."
+            onChange={(query) => {
+              setSearchQuery(query);
+              fetchNewVideos(query, 0, { orientation, size });
+            }}
+            withVariableButton={false}
+            debounceTimeout={500}
+            forceDebounce
+            width="full"
+          />
+          <HStack>
+            <DropdownList
+              size="sm"
+              currentItem={orientation}
+              onItemSelect={updateOrientation}
+              items={["landscape", "portrait", "square"]}
+            />
+            <DropdownList
+              size="sm"
+              currentItem={size}
+              onItemSelect={updateSize}
+              items={["small", "medium", "large"]}
+            />
+          </HStack>
+        </Stack>
         <Link isExternal href={`https://www.pexels.com`}>
           <PexelsLogo width="100px" height="40px" />
         </Link>
@@ -220,7 +232,6 @@ const PexelsVideo = ({ video, onClick }: PexelsVideoProps) => {
       pos="relative"
       onMouseEnter={() => setIsImageHovered(true)}
       onMouseLeave={() => setIsImageHovered(false)}
-      h="full"
     >
       {
         <Image
@@ -229,7 +240,8 @@ const PexelsVideo = ({ video, onClick }: PexelsVideoProps) => {
           alt={`Pexels Video ${video.id}`}
           onClick={onClick}
           rounded="md"
-          h="100%"
+          h={video.height < video.width ? "100%" : undefined}
+          w={video.height < video.width ? "100%" : undefined}
           aspectRatio={4 / 3}
           cursor="pointer"
         />

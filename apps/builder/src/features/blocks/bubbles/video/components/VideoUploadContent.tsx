@@ -95,9 +95,7 @@ export const VideoUploadContent = ({
           onSubmit={onSubmit}
         />
       )}
-      {currentTab === "pexels" && (
-        <PexelsPicker videoSize="medium" onVideoSelect={updateUrl} />
-      )}
+      {currentTab === "pexels" && <PexelsPicker onVideoSelect={updateUrl} />}
     </Stack>
   );
 };

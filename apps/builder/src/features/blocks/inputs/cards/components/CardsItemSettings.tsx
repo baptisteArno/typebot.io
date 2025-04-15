@@ -1,4 +1,5 @@
 import { SwitchWithRelatedSettings } from "@/components/SwitchWithRelatedSettings";
+import { TextInput } from "@/components/inputs/TextInput";
 import { ConditionForm } from "@/features/blocks/logic/condition/components/ConditionForm";
 import { Stack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
@@ -33,6 +34,12 @@ export const CardsItemSettings = ({ options, onSettingsChange }: Props) => {
       },
     });
 
+  const updateButtonValue = (value: string) =>
+    onSettingsChange({
+      ...options,
+      internalValue: value,
+    });
+
   return (
     <Stack spacing={4}>
       <SwitchWithRelatedSettings
@@ -53,6 +60,14 @@ export const CardsItemSettings = ({ options, onSettingsChange }: Props) => {
           onConditionChange={updateDisplayCondition}
         />
       </SwitchWithRelatedSettings>
+      <TextInput
+        label={t("blocks.inputs.internalValue.label")}
+        moreInfoTooltip={t(
+          "blocks.inputs.button.buttonSettings.internalValue.helperText",
+        )}
+        defaultValue={options?.internalValue}
+        onChange={updateButtonValue}
+      />
     </Stack>
   );
 };

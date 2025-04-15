@@ -28,6 +28,7 @@ export const cardsItemSchema = itemBaseSchemas.v6.extend({
           condition: conditionSchema.optional(),
         })
         .optional(),
+      internalValue: z.string().optional(),
     })
     .optional(),
   imageUrl: z.string().nullish(),

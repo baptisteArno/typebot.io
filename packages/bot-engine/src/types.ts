@@ -1,4 +1,5 @@
 import type { SessionState } from "@typebot.io/chat-session/schemas";
+import type { Prisma } from "@typebot.io/prisma/types";
 import type { SetVariableHistoryItem } from "@typebot.io/variables/schemas";
 import type { ContinueChatResponse, CustomEmbedBubble } from "./schemas/api";
 
@@ -31,3 +32,9 @@ type FailReply = {
 };
 
 export type ParsedReply = SuccessReply | SkipReply | FailReply;
+
+export type ContinueBotFlowResponse = ContinueChatResponse & {
+  newSessionState: SessionState;
+  visitedEdges: Prisma.VisitedEdge[];
+  setVariableHistory: SetVariableHistoryItem[];
+};

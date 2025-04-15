@@ -1,27 +1,19 @@
 import { TRPCError } from "@trpc/server";
 import type { SessionState } from "@typebot.io/chat-session/schemas";
-import type { Prisma } from "@typebot.io/prisma/types";
 import type { SessionStore } from "@typebot.io/runtime-session-store";
 import type { SetVariableHistoryItem } from "@typebot.io/variables/schemas";
 import { continueBotFlow } from "./continueBotFlow";
-import { executeGroup } from "./executeGroup";
 import { getFirstEdgeId } from "./getFirstEdgeId";
-import { getNextGroup } from "./getNextGroup";
 import { upsertResult } from "./queries/upsertResult";
-import type { ContinueChatResponse, Message, StartFrom } from "./schemas/api";
-
-type ChatReply = ContinueChatResponse & {
-  newSessionState: SessionState;
-  visitedEdges: Prisma.VisitedEdge[];
-  setVariableHistory: SetVariableHistoryItem[];
-};
+import type { Message, StartFrom } from "./schemas/api";
+import type { ContinueBotFlowResponse } from "./types";
+import { type WalkFlowStartingPoint, walkFlowForward } from "./walkFlowForward";
 
 type Props = {
   version: 1 | 2;
   message: Message | undefined;
   state: SessionState;
   startFrom?: StartFrom;
-  startTime?: number;
   textBubbleContentFormat: "richText" | "markdown";
   sessionStore: SessionStore;
 };
@@ -32,58 +24,27 @@ export const startBotFlow = async ({
   state,
   sessionStore,
   startFrom,
-  startTime,
   textBubbleContentFormat,
-}: Props): Promise<ChatReply> => {
-  let newSessionState = state;
-  const visitedEdges: Prisma.VisitedEdge[] = [];
+}: Props): Promise<ContinueBotFlowResponse> => {
+  const newSessionState = state;
   const setVariableHistory: SetVariableHistoryItem[] = [];
-  if (startFrom?.type === "group") {
-    const group = state.typebotsQueue[0]?.typebot.groups.find(
-      (group) => group.id === startFrom.groupId,
-    );
-    if (!group)
-      throw new TRPCError({
-        code: "BAD_REQUEST",
-        message: "Start group doesn't exist",
-      });
-    return executeGroup(group, {
-      version,
-      state: newSessionState,
-      visitedEdges,
-      setVariableHistory,
-      startTime,
-      textBubbleContentFormat,
-      sessionStore,
-    });
-  }
-  const firstEdgeId = getFirstEdgeId({
-    typebot: newSessionState.typebotsQueue[0]?.typebot,
-    startEventId: startFrom?.type === "event" ? startFrom.eventId : undefined,
+  const startingPoint = getStartingPoint({
+    state: newSessionState,
+    startFrom,
   });
-  if (!firstEdgeId)
+  if (!startingPoint)
     return {
       messages: [],
       newSessionState,
       setVariableHistory: [],
       visitedEdges: [],
     };
-  const nextGroup = await getNextGroup({
-    state: newSessionState,
-    edgeId: firstEdgeId,
-    isOffDefaultPath: false,
-    sessionStore,
-  });
-  newSessionState = nextGroup.newSessionState;
-  if (!nextGroup.group)
-    return { messages: [], newSessionState, visitedEdges, setVariableHistory };
-  const chatReply = await executeGroup(nextGroup.group, {
+
+  const chatReply = await walkFlowForward(startingPoint, {
     version,
     state: newSessionState,
     sessionStore,
-    visitedEdges,
     setVariableHistory,
-    startTime,
     textBubbleContentFormat,
   });
 
@@ -97,13 +58,46 @@ export const startBotFlow = async ({
   });
 };
 
+const getStartingPoint = ({
+  state,
+  startFrom,
+}: {
+  state: SessionState;
+  startFrom?: StartFrom;
+}): WalkFlowStartingPoint | undefined => {
+  if (startFrom?.type === "group") {
+    const group = state.typebotsQueue[0]?.typebot.groups.find(
+      (group) => group.id === startFrom.groupId,
+    );
+    if (!group)
+      throw new TRPCError({
+        code: "BAD_REQUEST",
+        message: "Start group doesn't exist",
+      });
+  }
+  const firstEdgeId = getFirstEdgeId({
+    typebot: state.typebotsQueue[0]?.typebot,
+    startEventId: startFrom?.type === "event" ? startFrom.eventId : undefined,
+  });
+  if (!firstEdgeId) return;
+  return {
+    type: "nextEdge",
+    nextEdge: {
+      id: firstEdgeId,
+      isOffDefaultPath: false,
+    },
+  };
+};
+
 const autoContinueChatIfStartingWithInput = async ({
   version,
   message,
   chatReply,
   textBubbleContentFormat,
   sessionStore,
-}: Props & { chatReply: ChatReply }): Promise<ChatReply> => {
+}: Props & {
+  chatReply: ContinueBotFlowResponse;
+}): Promise<ContinueBotFlowResponse> => {
   if (
     !message ||
     chatReply.messages.length > 0 ||
@@ -124,7 +118,6 @@ const autoContinueChatIfStartingWithInput = async ({
     version,
     state: chatReply.newSessionState,
     textBubbleContentFormat: textBubbleContentFormat,
-    startTime: Date.now(),
     sessionStore,
   });
 };

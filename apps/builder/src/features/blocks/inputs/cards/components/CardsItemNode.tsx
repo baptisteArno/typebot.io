@@ -28,12 +28,10 @@ import { useTranslate } from "@tolgee/react";
 import type { Item } from "@typebot.io/blocks-core/schemas/items/schema";
 import type { ItemIndices } from "@typebot.io/blocks-core/schemas/items/schema";
 import type { CardsItem } from "@typebot.io/blocks-inputs/cards/schema";
-import type { ButtonItem } from "@typebot.io/blocks-inputs/choice/schema";
-import { isEmpty } from "@typebot.io/lib/utils";
 import { cn } from "@typebot.io/ui/lib/cn";
 import { cx } from "@typebot.io/ui/lib/cva";
 import { useRef, useState } from "react";
-import { ButtonsItemSettings } from "../../buttons/components/ButtonsItemSettings";
+import { CardsItemSettings } from "./CardsItemSettings";
 
 type Props = {
   item: CardsItem;
@@ -71,8 +69,8 @@ export const CardsItemNode = ({
     } as Item);
   };
 
-  const updateItemSettings = (settings: Omit<ButtonItem, "content">) => {
-    updateItem(indices, { ...item, ...settings });
+  const updateItemSettings = (options: CardsItem["options"]) => {
+    updateItem(indices, { ...item, options } as Item);
   };
 
   const updateImage = (url: string | null | undefined) => {
@@ -269,13 +267,13 @@ export const CardsItemNode = ({
           </Stack>
 
           <SlideFade
-            offsetY="0px"
-            offsetX="-10px"
+            offsetY="5px"
+            offsetX="-5px"
             in={isMouseOver}
             style={{
               position: "absolute",
-              right: "-10px",
-              top: "-10px",
+              right: "-0.25rem",
+              top: "-0.25rem",
               zIndex: 3,
             }}
             unmountOnExit
@@ -285,7 +283,7 @@ export const CardsItemNode = ({
                 aria-label={t("blocks.inputs.button.openSettings.ariaLabel")}
                 icon={<SettingsIcon />}
                 variant="ghost"
-                size="sm"
+                size="xs"
                 shadow="md"
                 onClick={() => setOpenedNodeId(item.id)}
               />
@@ -303,8 +301,8 @@ export const CardsItemNode = ({
             shadow="md"
             ref={ref}
           >
-            <ButtonsItemSettings
-              item={item}
+            <CardsItemSettings
+              options={item.options}
               onSettingsChange={updateItemSettings}
             />
           </PopoverBody>

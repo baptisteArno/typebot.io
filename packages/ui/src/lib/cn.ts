@@ -5,8 +5,12 @@ import { extendTailwindMerge } from "tailwind-merge";
 const twMerge = extendTailwindMerge({
   extend: {
     classGroups: {
-      "border-w": ["border-host-bubble"],
-      "border-color": ["border-host-bubble-border"],
+      "border-w": ["border-host-bubble", "border-button", "border-input"],
+      "border-color": [
+        "border-host-bubble-border",
+        "border-button-border",
+        "border-input-border",
+      ],
     },
   },
 });
