@@ -1,73 +1,98 @@
 {
+  "version": "6.1",
   "id": "cl0ibhi7s0018n21aarlmg0cm",
-  "createdAt": "2022-03-08T15:58:49.720Z",
-  "updatedAt": "2022-03-08T16:07:18.899Z",
-  "name": "My typebot",
-  "version": "4",
-  "folderId": null,
-  "groups": [
+  "name": "1",
+  "events": [
     {
       "id": "1qQrnsLzRim1LqCrhbj1MW",
-      "blocks": [
-        {
-          "id": "8srsGhdBJK8v88Xo1RRS4C",
-          "type": "start",
-          "label": "Start",
-          "groupId": "1qQrnsLzRim1LqCrhbj1MW",
-          "outgoingEdgeId": "ovUHhwr6THMhqtn8QbkjtA"
-        }
-      ],
-      "title": "Start",
-      "graphCoordinates": { "x": 0, "y": 0 }
-    },
+      "outgoingEdgeId": "ovUHhwr6THMhqtn8QbkjtA",
+      "graphCoordinates": { "x": 0, "y": 0 },
+      "type": "start"
+    }
+  ],
+  "groups": [
     {
       "id": "wSR4VCcDNDTTsD9Szi2xH8",
+      "title": "Group #1",
+      "graphCoordinates": { "x": 363, "y": 199 },
       "blocks": [
+        {
+          "id": "y3ptzm07xpl272zhokvjoqa4",
+          "type": "Typebot link",
+          "options": {
+            "typebotId": "current",
+            "groupId": "vs65r7x7budygdfg9vhxcq7m"
+          }
+        },
         {
           "id": "sw6nHJfkMsM4pxZxMBB6QqW",
           "type": "Typebot link",
-          "groupId": "wSR4VCcDNDTTsD9Szi2xH8",
-          "options": { "typebotId": "cl0ibhv8d0130n21aw8doxhj5" }
+          "options": {
+            "typebotId": "cl0ibhv8d0130n21aw8doxhj5",
+            "mergeResults": true
+          }
         }
-      ],
-      "title": "Group #1",
-      "graphCoordinates": { "x": 363, "y": 199 }
+      ]
+    },
+    {
+      "id": "vs65r7x7budygdfg9vhxcq7m",
+      "graphCoordinates": { "x": -8, "y": 458 },
+      "title": "Group #2",
+      "blocks": [
+        {
+          "id": "t4u8h07eq17f6oqmsydcqyaj",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "First test message" }] }
+            ]
+          }
+        }
+      ]
     }
   ],
-  "variables": [],
   "edges": [
     {
       "id": "ovUHhwr6THMhqtn8QbkjtA",
-      "to": { "groupId": "wSR4VCcDNDTTsD9Szi2xH8" },
-      "from": {
-        "blockId": "8srsGhdBJK8v88Xo1RRS4C",
-        "groupId": "1qQrnsLzRim1LqCrhbj1MW"
-      }
+      "from": { "eventId": "1qQrnsLzRim1LqCrhbj1MW" },
+      "to": { "groupId": "wSR4VCcDNDTTsD9Szi2xH8" }
     }
   ],
+  "variables": [],
   "theme": {
+    "general": { "font": "Open Sans", "background": { "type": "None" } },
     "chat": {
+      "hostBubbles": { "backgroundColor": "#F7F8FF", "color": "#303235" },
+      "guestBubbles": { "backgroundColor": "#FF8E21", "color": "#FFFFFF" },
+      "buttons": { "backgroundColor": "#0042DA", "color": "#FFFFFF" },
       "inputs": {
-        "color": "#303235",
         "backgroundColor": "#FFFFFF",
+        "color": "#303235",
         "placeholderColor": "#9095A0"
-      },
-      "buttons": { "color": "#FFFFFF", "backgroundColor": "#0042DA" },
-      "hostBubbles": { "color": "#303235", "backgroundColor": "#F7F8FF" },
-      "guestBubbles": { "color": "#FFFFFF", "backgroundColor": "#FF8E21" }
-    },
-    "general": { "font": "Open Sans", "background": { "type": "None" } }
+      }
+    }
   },
+  "selectedThemeTemplateId": null,
   "settings": {
     "general": {
       "isBrandingEnabled": true,
       "isNewResultOnRefreshEnabled": false
     },
+    "typingEmulation": { "enabled": true, "speed": 300, "maxDelay": 1.5 },
     "metadata": {
       "description": "Build beautiful conversational forms and embed them directly in your applications without a line of code. Triple your response rate and collect answers that has more value compared to a traditional form."
-    },
-    "typingEmulation": { "speed": 300, "enabled": true, "maxDelay": 1.5 }
+    }
   },
-  "publicId": null,
-  "customDomain": null
+  "createdAt": "2022-03-08T15:58:49.720Z",
+  "updatedAt": "2022-03-08T16:07:18.899Z",
+  "icon": null,
+  "folderId": null,
+  "publicId": "cl0ibhi7s0018n21aarlmg0cm-public",
+  "customDomain": null,
+  "workspaceId": "proWorkspace",
+  "resultsTablePreferences": null,
+  "isArchived": false,
+  "isClosed": false,
+  "whatsAppCredentialsId": null,
+  "riskLevel": null
 }
