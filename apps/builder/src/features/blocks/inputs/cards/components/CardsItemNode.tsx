@@ -267,13 +267,13 @@ export const CardsItemNode = ({
           </Stack>
 
           <SlideFade
-            offsetY="0px"
-            offsetX="-10px"
+            offsetY="5px"
+            offsetX="-5px"
             in={isMouseOver}
             style={{
               position: "absolute",
-              right: "-10px",
-              top: "-10px",
+              right: "-0.25rem",
+              top: "-0.25rem",
               zIndex: 3,
             }}
             unmountOnExit
@@ -283,7 +283,7 @@ export const CardsItemNode = ({
                 aria-label={t("blocks.inputs.button.openSettings.ariaLabel")}
                 icon={<SettingsIcon />}
                 variant="ghost"
-                size="sm"
+                size="xs"
                 shadow="md"
                 onClick={() => setOpenedNodeId(item.id)}
               />
