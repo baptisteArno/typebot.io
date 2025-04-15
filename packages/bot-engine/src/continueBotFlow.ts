@@ -48,8 +48,7 @@ import { parseTime } from "./blocks/inputs/time/parseTime";
 import { saveDataInResponseVariableMapping } from "./blocks/integrations/httpRequest/saveDataInResponseVariableMapping";
 import { resumeChatCompletion } from "./blocks/integrations/legacy/openai/resumeChatCompletion";
 import { executeCommandEvent } from "./events/executeCommandEvent";
-import { executeGroup, parseInput } from "./executeGroup";
-import { getNextGroup } from "./getNextGroup";
+import { formatInputForChatResponse } from "./formatInputForChatResponse";
 import { isInputMessage } from "./helpers/isInputMessage";
 import { saveAnswer } from "./queries/saveAnswer";
 import { resetSessionState } from "./resetSessionState";
@@ -59,25 +58,24 @@ import type {
   Message,
 } from "./schemas/api";
 import { startBotFlow } from "./startBotFlow";
-import type { ParsedReply, SkipReply, SuccessReply } from "./types";
+import type {
+  ContinueBotFlowResponse,
+  ParsedReply,
+  SkipReply,
+  SuccessReply,
+} from "./types";
 import { updateVariablesInSession } from "./updateVariablesInSession";
-
-export type ContinueBotFlowResponse = ContinueChatResponse & {
-  newSessionState: SessionState;
-  visitedEdges: Prisma.VisitedEdge[];
-  setVariableHistory: SetVariableHistoryItem[];
-};
+import { walkFlowForward } from "./walkFlowForward";
 
 type Params = {
   version: 1 | 2;
   state: SessionState;
-  startTime?: number;
   textBubbleContentFormat: "richText" | "markdown";
   sessionStore: SessionStore;
 };
 export const continueBotFlow = async (
   reply: Message | undefined,
-  { state, version, startTime, textBubbleContentFormat, sessionStore }: Params,
+  { state, version, textBubbleContentFormat, sessionStore }: Params,
 ): Promise<ContinueBotFlowResponse> => {
   if (!state.currentBlockId)
     return startBotFlow({
@@ -164,16 +162,11 @@ export const continueBotFlow = async (
     continueReply = parsedReplyResult;
   }
 
-  const groupHasMoreBlocks = blockIndex < group.blocks.length - 1;
-
-  const { edgeId: nextEdgeId, isOffDefaultPath } = getOutgoingEdgeId(
-    continueReply,
-    {
-      block,
-      state: newSessionState,
-      sessionStore,
-    },
-  );
+  const nextEdge = getReplyOutgoingEdge(continueReply, {
+    block,
+    state: newSessionState,
+    sessionStore,
+  });
 
   const content =
     continueReply && "content" in continueReply
@@ -182,33 +175,13 @@ export const continueBotFlow = async (
   const lastMessageNewFormat =
     reply?.type === "text" && content !== reply?.text ? content : undefined;
 
-  if (groupHasMoreBlocks && !nextEdgeId) {
-    const chatReply = await executeGroup(
-      {
-        ...group,
-        blocks: group.blocks.slice(blockIndex + 1),
-      } as Group,
-      {
-        version,
-        state: newSessionState,
-        visitedEdges: [],
-        setVariableHistory,
-        firstBubbleWasStreamed,
-        startTime,
-        textBubbleContentFormat,
-        sessionStore,
-      },
-    );
-    return {
-      ...chatReply,
-      lastMessageNewFormat,
-    };
-  }
+  const groupHasMoreBlocks = blockIndex < group.blocks.length - 1;
 
   if (
-    !nextEdgeId &&
-    newSessionState.typebotsQueue.length === 1 &&
-    (newSessionState.typebotsQueue[0].queuedEdgeIds ?? []).length === 0
+    !nextEdge &&
+    !groupHasMoreBlocks &&
+    (newSessionState.typebotsQueue[0].queuedEdgeIds ?? []).length === 0 &&
+    newSessionState.typebotsQueue.length === 1
   )
     return {
       messages: [],
@@ -218,36 +191,36 @@ export const continueBotFlow = async (
       setVariableHistory,
     };
 
-  const nextGroup = await getNextGroup({
-    state: newSessionState,
-    edgeId: nextEdgeId,
-    isOffDefaultPath,
-  });
-
-  newSessionState = nextGroup.newSessionState;
-
-  if (!nextGroup.group)
-    return {
-      messages: [],
-      newSessionState,
-      lastMessageNewFormat,
-      visitedEdges: nextGroup.visitedEdge ? [nextGroup.visitedEdge] : [],
-      setVariableHistory,
-    };
-
-  const chatReply = await executeGroup(nextGroup.group, {
+  const walkStartingPoint =
+    groupHasMoreBlocks && !nextEdge
+      ? {
+          type: "group" as const,
+          group: {
+            ...group,
+            blocks: group.blocks.slice(blockIndex + 1),
+          } as Group,
+        }
+      : {
+          type: "nextEdge" as const,
+          nextEdge,
+        };
+  const executionResponse = await walkFlowForward(walkStartingPoint, {
     version,
     state: newSessionState,
-    firstBubbleWasStreamed,
-    visitedEdges: nextGroup.visitedEdge ? [nextGroup.visitedEdge] : [],
     setVariableHistory,
-    startTime,
+    skipFirstMessageBubble: firstBubbleWasStreamed,
     textBubbleContentFormat,
     sessionStore,
   });
 
   return {
-    ...chatReply,
+    messages: executionResponse.messages,
+    input: executionResponse.input,
+    clientSideActions: executionResponse.clientSideActions,
+    logs: executionResponse.logs,
+    newSessionState: executionResponse.newSessionState,
+    visitedEdges: executionResponse.visitedEdges,
+    setVariableHistory: executionResponse.setVariableHistory,
     lastMessageNewFormat,
   };
 };
@@ -558,7 +531,7 @@ const parseRetryMessage = async (
               },
       },
     ],
-    input: await parseInput(block, { state, sessionStore }),
+    input: await formatInputForChatResponse(block, { state, sessionStore }),
   };
 };
 
@@ -670,7 +643,7 @@ const setNewAnswerInState =
     } satisfies SessionState;
   };
 
-const getOutgoingEdgeId = (
+const getReplyOutgoingEdge = (
   reply: SuccessReply | SkipReply | undefined,
   {
     block,
@@ -681,11 +654,15 @@ const getOutgoingEdgeId = (
     state: SessionState;
     sessionStore: SessionStore;
   },
-): { edgeId: string | undefined; isOffDefaultPath: boolean } => {
+): { id: string; isOffDefaultPath: boolean } | undefined => {
   if (!reply || reply.status === "skip")
-    return { edgeId: block.outgoingEdgeId, isOffDefaultPath: false };
+    return block.outgoingEdgeId
+      ? { id: block.outgoingEdgeId, isOffDefaultPath: false }
+      : undefined;
   if (reply.outgoingEdgeId)
-    return { edgeId: reply.outgoingEdgeId, isOffDefaultPath: true };
+    return reply.outgoingEdgeId
+      ? { id: reply.outgoingEdgeId, isOffDefaultPath: true }
+      : undefined;
   const variables = state.typebotsQueue[0].typebot.variables;
   if (
     block.type === InputBlockType.CHOICE &&
@@ -703,7 +680,7 @@ const getOutgoingEdgeId = (
         }).normalize() === reply.content.normalize(),
     );
     if (matchedItem?.outgoingEdgeId)
-      return { edgeId: matchedItem.outgoingEdgeId, isOffDefaultPath: true };
+      return { id: matchedItem.outgoingEdgeId, isOffDefaultPath: true };
   }
   if (
     block.type === InputBlockType.PICTURE_CHOICE &&
@@ -719,9 +696,11 @@ const getOutgoingEdgeId = (
         reply.content.normalize(),
     );
     if (matchedItem?.outgoingEdgeId)
-      return { edgeId: matchedItem.outgoingEdgeId, isOffDefaultPath: true };
+      return { id: matchedItem.outgoingEdgeId, isOffDefaultPath: true };
   }
-  return { edgeId: block.outgoingEdgeId, isOffDefaultPath: false };
+  return block.outgoingEdgeId
+    ? { id: block.outgoingEdgeId, isOffDefaultPath: false }
+    : undefined;
 };
 
 const parseReply = async (

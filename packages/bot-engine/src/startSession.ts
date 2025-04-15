@@ -207,7 +207,6 @@ export const startSession = async ({
     state: initialState,
     startFrom:
       startParams.type === "preview" ? startParams.startFrom : undefined,
-    startTime: Date.now(),
     textBubbleContentFormat: startParams.textBubbleContentFormat,
   });
 

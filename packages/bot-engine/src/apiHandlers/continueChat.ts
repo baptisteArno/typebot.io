@@ -66,7 +66,6 @@ export const continueChat = async ({
   } = await continueBotFlow(message, {
     version: 2,
     state: session.state,
-    startTime: Date.now(),
     textBubbleContentFormat,
     sessionStore,
   });

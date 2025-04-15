@@ -75,7 +75,6 @@ export const PexelsPicker = ({ onVideoSelect }: Props) => {
               ...((result as Videos)?.videos ?? []),
             ]);
 
-          console.log(videos[0]);
           setNextPage((page) => page + 1);
         }
       } catch (err) {
