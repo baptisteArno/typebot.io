@@ -105,7 +105,11 @@ export const walkFlowForward = async (
       clientSideActions.push(...executionResponse.clientSideActions);
 
     nextEdge = executionResponse.nextEdge;
-  } while (nextEdge);
+  } while (
+    nextEdge ||
+    newSessionState.typebotsQueue[0].queuedEdgeIds?.length ||
+    newSessionState.typebotsQueue.length > 1
+  );
 
   return {
     newSessionState,
