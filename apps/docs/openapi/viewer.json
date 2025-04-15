@@ -343,6 +343,9 @@
                                                     }
                                                   }
                                                 }
+                                              },
+                                              "internalValue": {
+                                                "type": "string"
                                               }
                                             }
                                           },
@@ -401,7 +404,8 @@
                                                   "Image URL",
                                                   "Title",
                                                   "Description",
-                                                  "Button"
+                                                  "Button",
+                                                  "Internal Value"
                                                 ]
                                               },
                                               "variableId": {
@@ -546,6 +550,9 @@
                                                     }
                                                   }
                                                 }
+                                              },
+                                              "internalValue": {
+                                                "type": "string"
                                               }
                                             }
                                           },
@@ -604,7 +611,8 @@
                                                   "Image URL",
                                                   "Title",
                                                   "Description",
-                                                  "Button"
+                                                  "Button",
+                                                  "Internal Value"
                                                 ]
                                               },
                                               "variableId": {
@@ -1169,6 +1177,9 @@
                                                     }
                                                   }
                                                 }
+                                              },
+                                              "internalValue": {
+                                                "type": "string"
                                               }
                                             }
                                           },
@@ -1227,7 +1238,8 @@
                                                   "Image URL",
                                                   "Title",
                                                   "Description",
-                                                  "Button"
+                                                  "Button",
+                                                  "Internal Value"
                                                 ]
                                               },
                                               "variableId": {
@@ -1372,6 +1384,9 @@
                                                     }
                                                   }
                                                 }
+                                              },
+                                              "internalValue": {
+                                                "type": "string"
                                               }
                                             }
                                           },
@@ -1430,7 +1445,8 @@
                                                   "Image URL",
                                                   "Title",
                                                   "Description",
-                                                  "Button"
+                                                  "Button",
+                                                  "Internal Value"
                                                 ]
                                               },
                                               "variableId": {
@@ -2081,6 +2097,9 @@
                                                     }
                                                   }
                                                 }
+                                              },
+                                              "internalValue": {
+                                                "type": "string"
                                               }
                                             }
                                           },
@@ -2139,7 +2158,8 @@
                                                   "Image URL",
                                                   "Title",
                                                   "Description",
-                                                  "Button"
+                                                  "Button",
+                                                  "Internal Value"
                                                 ]
                                               },
                                               "variableId": {
@@ -2601,6 +2621,9 @@
                                                     }
                                                   }
                                                 }
+                                              },
+                                              "internalValue": {
+                                                "type": "string"
                                               }
                                             }
                                           },
@@ -2659,7 +2682,8 @@
                                                   "Image URL",
                                                   "Title",
                                                   "Description",
-                                                  "Button"
+                                                  "Button",
+                                                  "Internal Value"
                                                 ]
                                               },
                                               "variableId": {
@@ -3343,6 +3367,9 @@
                                                     }
                                                   }
                                                 }
+                                              },
+                                              "internalValue": {
+                                                "type": "string"
                                               }
                                             }
                                           },
@@ -3401,7 +3428,8 @@
                                                   "Image URL",
                                                   "Title",
                                                   "Description",
-                                                  "Button"
+                                                  "Button",
+                                                  "Internal Value"
                                                 ]
                                               },
                                               "variableId": {
@@ -5733,6 +5761,9 @@
                                         }
                                       }
                                     }
+                                  },
+                                  "internalValue": {
+                                    "type": "string"
                                   }
                                 }
                               },
@@ -5791,7 +5822,8 @@
                                       "Image URL",
                                       "Title",
                                       "Description",
-                                      "Button"
+                                      "Button",
+                                      "Internal Value"
                                     ]
                                   },
                                   "variableId": {
@@ -14251,6 +14283,9 @@
                                               }
                                             }
                                           }
+                                        },
+                                        "internalValue": {
+                                          "type": "string"
                                         }
                                       }
                                     },
@@ -14309,7 +14344,8 @@
                                             "Image URL",
                                             "Title",
                                             "Description",
-                                            "Button"
+                                            "Button",
+                                            "Internal Value"
                                           ]
                                         },
                                         "variableId": {
