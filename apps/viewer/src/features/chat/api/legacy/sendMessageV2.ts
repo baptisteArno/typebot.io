@@ -2,7 +2,7 @@ import { publicProcedure } from "@/helpers/server/trpc";
 import { TRPCError } from "@trpc/server";
 import { BubbleBlockType } from "@typebot.io/blocks-bubbles/constants";
 import { continueBotFlow } from "@typebot.io/bot-engine/continueBotFlow";
-import { assertOriginIsAllowed } from "@typebot.io/bot-engine/helpers/isOriginAllowed";
+import { assertOriginIsAllowed } from "@typebot.io/bot-engine/helpers/assertOriginIsAllowed";
 import { parseDynamicTheme } from "@typebot.io/bot-engine/parseDynamicTheme";
 import { saveStateToDatabase } from "@typebot.io/bot-engine/saveStateToDatabase";
 import {

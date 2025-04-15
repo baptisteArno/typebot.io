@@ -11,6 +11,7 @@ type Props = {
   newVariables: VariableWithUnknowValue[];
   currentBlockId: string | undefined;
 };
+
 export const updateVariablesInSession = ({
   state,
   newVariables,

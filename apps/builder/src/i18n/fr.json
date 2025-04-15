@@ -149,7 +149,6 @@
   "blocks.inputs.fileUpload.blockCard.tooltip": "Télécharger des fichiers",
   "blocks.inputs.number.settings.step.label": "Étape :",
   "blocks.inputs.payment.collect.label": "Récolter",
-  "blocks.inputs.payment.placeholder.label": "Configurer...",
   "blocks.inputs.payment.settings.account.label": "Compte:",
   "blocks.inputs.payment.settings.accountText.label": "compte {provider}",
   "blocks.inputs.payment.settings.additionalInformation.description.placeholder.label": "Un produit numérique",
