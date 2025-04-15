@@ -3,9 +3,9 @@ import type { SessionState } from "@typebot.io/chat-session/schemas";
 import { EventType } from "@typebot.io/events/constants";
 import type { CommandEvent } from "@typebot.io/events/schemas";
 import { getBlockById } from "@typebot.io/groups/helpers/getBlockById";
+import { byId } from "@typebot.io/lib/utils";
 import { addBlockToTypebotIfMissing } from "../addBlockToTypebotIfMissing";
 import { addPortalEdge } from "../addPortalEdge";
-import { getNextGroup } from "../getNextGroup";
 
 type Props = {
   state: SessionState;
@@ -53,23 +53,29 @@ export const executeCommandEvent = async ({
       ],
     };
   }
-  const response = await getNextGroup({
-    state: newSessionState,
-    edgeId: event.outgoingEdgeId,
-    isOffDefaultPath: false,
-  });
-  newSessionState = response.newSessionState;
-  if (!response.group)
+  const nextEdge = newSessionState.typebotsQueue[0].typebot.edges.find(
+    byId(event.outgoingEdgeId),
+  );
+  if (!nextEdge)
+    throw new TRPCError({
+      code: "BAD_REQUEST",
+      message: "Command event doesn't have a connected edge",
+    });
+  const nextGroup = newSessionState.typebotsQueue[0].typebot.groups.find(
+    byId(nextEdge.to.groupId),
+  );
+  if (!nextGroup)
     throw new TRPCError({
       code: "BAD_REQUEST",
       message: "Command event doesn't have a connected group",
     });
+  const nextBlockIndex = nextGroup.blocks.findIndex(byId(nextEdge.to.blockId));
   newSessionState = addBlockToTypebotIfMissing(
     `virtual-${event.id}-block`,
     newSessionState,
     {
-      groupId: response.group.id,
-      index: 0,
+      groupId: nextGroup.id,
+      index: nextBlockIndex !== -1 ? nextBlockIndex : 0,
     },
   );
   return {
