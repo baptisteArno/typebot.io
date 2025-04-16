@@ -7,29 +7,20 @@ import { KeycloackLogo } from "@/components/logos/KeycloakLogo";
 import { Button, Stack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { omit } from "@typebot.io/lib/utils";
-import type { BuiltInProviderType } from "next-auth/providers/index";
-import {
-  type ClientSafeProvider,
-  type LiteralUnion,
-  signIn,
-  useSession,
-} from "next-auth/react";
+import { type getProviders, signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { stringify } from "qs";
 import React, { useState } from "react";
 
 type Props = {
-  providers:
-    | Record<LiteralUnion<BuiltInProviderType, string>, ClientSafeProvider>
-    | undefined;
+  providers: Awaited<ReturnType<typeof getProviders>> | undefined;
 };
 
 export const SocialLoginButtons = ({ providers }: Props) => {
   const { t } = useTranslate();
   const { query } = useRouter();
   const { status } = useSession();
-  const [authLoading, setAuthLoading] =
-    useState<LiteralUnion<BuiltInProviderType, string>>();
+  const [authLoading, setAuthLoading] = useState<string>();
 
   const handleSignIn = async (provider: string) => {
     setAuthLoading(provider);
