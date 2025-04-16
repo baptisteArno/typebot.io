@@ -4,7 +4,6 @@ import {
   Head,
   Hr,
   Html,
-  Img,
   Link,
   Text,
 } from "@react-email/components";
@@ -14,6 +13,7 @@ import type { SendMailOptions } from "nodemailer";
 import type { ComponentProps } from "react";
 import { sendEmail } from "../helpers/sendEmail";
 import { link } from "../marketing/styles";
+import { Logo } from "./components/Logo";
 import { container, footerText, hr, main, paragraph } from "./styles";
 
 interface Props {
@@ -29,15 +29,7 @@ export const InactiveWorkspaceFirstNoticeEmail = ({
     <Head />
     <Body style={main}>
       <Container style={container}>
-        <Img
-          src={`${env.NEXTAUTH_URL}/images/logo.png`}
-          width="32"
-          height="32"
-          alt="Typebot's Logo"
-          style={{
-            margin: "24px 0",
-          }}
-        />
+        <Logo />
         <Text style={paragraph}>
           It's been at least 60+ days since <strong>{workspaceName}</strong>{" "}
           workspace has been inactive. Meaning you did not log in or your

@@ -84,7 +84,7 @@ export const SignInForm = ({
     if (isMagicCodeSent) return;
     setAuthLoading(true);
     try {
-      const response = await signIn("email", {
+      const response = await signIn("nodemailer", {
         email: emailValue,
         redirect: false,
       });
@@ -144,7 +144,7 @@ export const SignInForm = ({
       {!isMagicCodeSent && (
         <>
           <SocialLoginButtons providers={providers} />
-          {providers?.email && (
+          {providers?.nodemailer && (
             <>
               <DividerWithText>{t("auth.orEmailLabel")}</DividerWithText>
               <HStack as="form" onSubmit={handleEmailSubmit}>

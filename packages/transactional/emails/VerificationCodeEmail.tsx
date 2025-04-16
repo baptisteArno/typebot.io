@@ -5,7 +5,6 @@ import {
   Heading,
   Hr,
   Html,
-  Link,
   Preview,
   Text,
 } from "@react-email/components";
@@ -25,24 +24,20 @@ import {
 } from "./styles";
 
 interface Props {
-  url: string;
   code: string;
 }
 
-export const LoginCodeEmail = ({ url, code }: Props) => (
+export const VerificationCodeEmail = ({ code }: Props) => (
   <Html>
     <Head />
-    <Preview>Your login code for Typebot</Preview>
+    <Preview>Your verification code for Typebot</Preview>
     <Body style={main}>
       <Container style={container}>
         <Logo />
-        <Heading style={heading}>Your login code for Typebot</Heading>
+        <Heading style={heading}>Your verification code for Typebot</Heading>
         <code style={codeStyle}>{code}</code>
         <Text style={paragraph}>
-          This code will only be valid for the next 5 minutes.
-        </Text>
-        <Text style={paragraph}>
-          You can also sign in by <Link href={url}>clicking here</Link>.
+          This code will only be valid for the next hour.
         </Text>
         <Hr style={hr} />
         <Text style={footerText}>Typebot - Build faster, Chat smarter</Text>
@@ -51,19 +46,19 @@ export const LoginCodeEmail = ({ url, code }: Props) => (
   </Html>
 );
 
-LoginCodeEmail.PreviewProps = {
-  url: "https://typebot.io",
-  code: "654778",
+VerificationCodeEmail.PreviewProps = {
+  code: "free-rrree-free-rrree",
 } as Props;
 
-export default LoginCodeEmail;
+export default VerificationCodeEmail;
 
-export const sendLoginCodeEmail = async ({
+export const sendVerificationCodeEmail = async ({
   to,
   ...props
-}: Pick<SendMailOptions, "to"> & ComponentProps<typeof LoginCodeEmail>) =>
+}: Pick<SendMailOptions, "to"> &
+  ComponentProps<typeof VerificationCodeEmail>) =>
   sendEmail({
     to,
-    subject: "Sign in to Typebot",
-    html: await render(<LoginCodeEmail {...props} />),
+    subject: "Your verification code for Typebot",
+    html: await render(<VerificationCodeEmail {...props} />),
   });

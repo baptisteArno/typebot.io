@@ -18,6 +18,7 @@ if (env.GITHUB_CLIENT_ID && env.GITHUB_CLIENT_SECRET)
     GitHubProvider({
       clientId: env.GITHUB_CLIENT_ID,
       clientSecret: env.GITHUB_CLIENT_SECRET,
+      allowDangerousEmailAccountLinking: true,
     }),
   );
 
@@ -50,6 +51,7 @@ if (env.GOOGLE_AUTH_CLIENT_ID && env.GOOGLE_AUTH_CLIENT_SECRET)
     GoogleProvider({
       clientId: env.GOOGLE_AUTH_CLIENT_ID,
       clientSecret: env.GOOGLE_AUTH_CLIENT_SECRET,
+      allowDangerousEmailAccountLinking: true,
     }),
   );
 
@@ -58,6 +60,7 @@ if (env.FACEBOOK_CLIENT_ID && env.FACEBOOK_CLIENT_SECRET)
     FacebookProvider({
       clientId: env.FACEBOOK_CLIENT_ID,
       clientSecret: env.FACEBOOK_CLIENT_SECRET,
+      allowDangerousEmailAccountLinking: true,
     }),
   );
 

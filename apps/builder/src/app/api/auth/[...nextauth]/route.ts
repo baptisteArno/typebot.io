@@ -4,7 +4,6 @@ import { mockedUser } from "@typebot.io/lib/mockedUser";
 import { type NextRequest, NextResponse } from "next/server";
 
 export const GET = (req: NextRequest) => {
-  console.log("GET", req.url, env.NEXT_PUBLIC_E2E_TEST);
   const isMockingSession =
     req.url.endsWith("/api/auth/session") && env.NEXT_PUBLIC_E2E_TEST;
   if (isMockingSession) return NextResponse.json({ user: mockedUser });
