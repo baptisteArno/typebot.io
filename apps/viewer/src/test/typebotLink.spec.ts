@@ -31,6 +31,8 @@ test.beforeAll(async () => {
 
 test("should work as expected", async ({ page }) => {
   await page.goto(`/${typebotId}-public`);
+  await page.getByPlaceholder("Type your answer...").fill("Start");
+  await page.getByPlaceholder("Type your answer...").press("Enter");
   await expect(page.getByText("First test message")).toBeVisible();
   await page.getByPlaceholder("Type your answer...").fill("Hello there!");
   await page.getByPlaceholder("Type your answer...").press("Enter");

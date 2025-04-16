@@ -68,9 +68,11 @@ export const walkFlowForward = async (
   let nextEdge: { id: string; isOffDefaultPath: boolean } | undefined =
     startingPoint.type === "nextEdge" ? startingPoint.nextEdge : undefined;
 
+  let i = -1;
   do {
+    i += 1;
     const nextGroupResponse =
-      startingPoint.type === "group" && !nextEdge
+      i === 0 && startingPoint.type === "group" && !nextEdge
         ? {
             group: startingPoint.group,
             newSessionState,
