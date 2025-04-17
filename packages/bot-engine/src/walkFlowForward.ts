@@ -56,7 +56,7 @@ export const walkFlowForward = async (
     textBubbleContentFormat: "richText" | "markdown";
   },
 ) => {
-  const timeoutStartTime = Date.now();
+  let timeoutStartTime = Date.now();
 
   const visitedEdges: Prisma.VisitedEdge[] = [];
   let newSessionState: SessionState = state;
@@ -105,6 +105,8 @@ export const walkFlowForward = async (
     if (executionResponse.input) input = executionResponse.input;
     if (executionResponse.clientSideActions)
       clientSideActions.push(...executionResponse.clientSideActions);
+    if (executionResponse.updatedTimeoutStartTime)
+      timeoutStartTime = executionResponse.updatedTimeoutStartTime;
 
     nextEdge = executionResponse.nextEdge;
   } while (
@@ -141,6 +143,7 @@ export type ExecuteGroupResponse = ContinueChatResponse & {
   newSessionState: SessionState;
   setVariableHistory: SetVariableHistoryItem[];
   visitedEdges: Prisma.VisitedEdge[];
+  updatedTimeoutStartTime?: number;
   nextEdge?: {
     id: string;
     isOffDefaultPath: boolean;
@@ -166,6 +169,7 @@ const executeGroup = async (
   let logs: ContinueChatResponse["logs"] = [];
   let nextEdge;
   let lastBubbleBlockId: string | undefined = currentLastBubbleId;
+  let updatedTimeoutStartTime = timeoutStartTime;
 
   let newSessionState = state;
 
@@ -287,7 +291,7 @@ const executeGroup = async (
       "startTimeShouldBeUpdated" in logicOrIntegrationExecutionResponse &&
       logicOrIntegrationExecutionResponse.startTimeShouldBeUpdated
     )
-      timeoutStartTime = Date.now();
+      updatedTimeoutStartTime = Date.now();
     if (logicOrIntegrationExecutionResponse.logs)
       logs = [...(logs ?? []), ...logicOrIntegrationExecutionResponse.logs];
     if (logicOrIntegrationExecutionResponse.newSessionState)
@@ -351,6 +355,7 @@ const executeGroup = async (
     messages,
     newSessionState,
     clientSideActions,
+    updatedTimeoutStartTime,
     logs,
     visitedEdges,
     setVariableHistory,
