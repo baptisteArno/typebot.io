@@ -176,9 +176,9 @@ const executeGroup = async (
   let index = -1;
   for (const block of group.blocks) {
     if (
-      timeoutStartTime &&
+      updatedTimeoutStartTime &&
       env.CHAT_API_TIMEOUT &&
-      Date.now() - timeoutStartTime > env.CHAT_API_TIMEOUT
+      Date.now() - updatedTimeoutStartTime > env.CHAT_API_TIMEOUT
     ) {
       throw new TRPCError({
         code: "TIMEOUT",
