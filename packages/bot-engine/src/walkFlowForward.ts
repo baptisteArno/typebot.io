@@ -111,6 +111,7 @@ export const walkFlowForward = async (
   } while (
     nextEdge ||
     (!input &&
+      !clientSideActions.some((ca) => ca.expectsDedicatedReply) &&
       (newSessionState.typebotsQueue[0].queuedEdgeIds?.length ||
         newSessionState.typebotsQueue.length > 1))
   );
