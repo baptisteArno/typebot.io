@@ -141,22 +141,20 @@ const groupsActions = (setTypebot: SetTypebot): GroupsActions => ({
             ...group,
             title: groupTitle,
             blocks: group.blocks.map((block) => {
-              const newBlock = { ...block };
+              let newBlock = { ...block };
               const blockId = createId();
               oldToNewIdsMapping.set(newBlock.id, blockId);
-              if (blockHasOptions(newBlock) && newBlock.options) {
-                const variableIdsToReplace = extractVariableIdsFromObject(
-                  newBlock.options,
-                ).filter((v) => oldToNewIdsMapping.has(v));
-                if (variableIdsToReplace.length > 0) {
-                  let optionsStr = JSON.stringify(newBlock.options);
-                  variableIdsToReplace.forEach((variableId) => {
-                    const newId = oldToNewIdsMapping.get(variableId);
-                    if (!newId) return;
-                    optionsStr = optionsStr.replace(variableId, newId);
-                  });
-                  newBlock.options = JSON.parse(optionsStr);
-                }
+              const variableIdsToReplace = extractVariableIdsFromObject(
+                newBlock,
+              ).filter((v) => oldToNewIdsMapping.has(v));
+              if (variableIdsToReplace.length > 0) {
+                let blockStr = JSON.stringify(newBlock);
+                variableIdsToReplace.forEach((variableId) => {
+                  const newId = oldToNewIdsMapping.get(variableId);
+                  if (!newId) return;
+                  blockStr = blockStr.replace(variableId, newId);
+                });
+                newBlock = JSON.parse(blockStr);
               }
               if (blockHasItems(newBlock)) {
                 newBlock.items = newBlock.items?.map((item) => {

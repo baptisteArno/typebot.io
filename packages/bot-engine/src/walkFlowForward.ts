@@ -83,11 +83,12 @@ export const walkFlowForward = async (
             isOffDefaultPath: nextEdge?.isOffDefaultPath ?? false,
           });
     newSessionState = nextGroupResponse.newSessionState;
+    if (nextGroupResponse.visitedEdge)
+      visitedEdges.push(nextGroupResponse.visitedEdge);
     if (!nextGroupResponse?.group) break;
     const executionResponse = await executeGroup(nextGroupResponse.group, {
       version,
       state: newSessionState,
-      visitedEdges,
       setVariableHistory,
       skipFirstMessageBubble,
       timeoutStartTime,
@@ -96,10 +97,8 @@ export const walkFlowForward = async (
     });
     if (executionResponse.logs) logs.push(...executionResponse.logs);
     newSessionState = executionResponse.newSessionState;
-    if (executionResponse.visitedEdges)
-      visitedEdges.push(...executionResponse.visitedEdges);
-    if (executionResponse.setVariableHistory)
-      setVariableHistory.push(...executionResponse.setVariableHistory);
+    if (executionResponse.newSetVariableHistoryItems)
+      setVariableHistory.push(...executionResponse.newSetVariableHistoryItems);
     if (executionResponse.messages)
       messages.push(...executionResponse.messages);
     if (executionResponse.input) input = executionResponse.input;
@@ -112,6 +111,7 @@ export const walkFlowForward = async (
   } while (
     nextEdge ||
     (!input &&
+      !clientSideActions.some((ca) => ca.expectsDedicatedReply) &&
       (newSessionState.typebotsQueue[0].queuedEdgeIds?.length ||
         newSessionState.typebotsQueue.length > 1))
   );
@@ -133,7 +133,6 @@ type ContextProps = {
   sessionStore: SessionStore;
   currentLastBubbleId?: string;
   skipFirstMessageBubble?: boolean;
-  visitedEdges: Prisma.VisitedEdge[];
   setVariableHistory: SetVariableHistoryItem[];
   timeoutStartTime?: number;
   textBubbleContentFormat: "richText" | "markdown";
@@ -141,8 +140,7 @@ type ContextProps = {
 
 export type ExecuteGroupResponse = ContinueChatResponse & {
   newSessionState: SessionState;
-  setVariableHistory: SetVariableHistoryItem[];
-  visitedEdges: Prisma.VisitedEdge[];
+  newSetVariableHistoryItems: SetVariableHistoryItem[];
   updatedTimeoutStartTime?: number;
   nextEdge?: {
     id: string;
@@ -156,7 +154,6 @@ const executeGroup = async (
     version,
     state,
     sessionStore,
-    visitedEdges,
     setVariableHistory,
     currentLastBubbleId,
     skipFirstMessageBubble,
@@ -170,7 +167,7 @@ const executeGroup = async (
   let nextEdge;
   let lastBubbleBlockId: string | undefined = currentLastBubbleId;
   let updatedTimeoutStartTime = timeoutStartTime;
-
+  const newSetVariableHistoryItems: SetVariableHistoryItem[] = [];
   let newSessionState = state;
 
   let index = -1;
@@ -216,8 +213,7 @@ const executeGroup = async (
           },
           clientSideActions,
           logs,
-          visitedEdges,
-          setVariableHistory,
+          newSetVariableHistoryItems,
         };
       }
 
@@ -238,8 +234,7 @@ const executeGroup = async (
         },
         clientSideActions,
         logs,
-        visitedEdges,
-        setVariableHistory,
+        newSetVariableHistoryItems,
       };
     const logicOrIntegrationExecutionResponse = (
       isLogicBlock(block)
@@ -282,7 +277,7 @@ const executeGroup = async (
           },
         };
       else
-        setVariableHistory.push(
+        newSetVariableHistoryItems.push(
           ...logicOrIntegrationExecutionResponse.newSetVariableHistory,
         );
     }
@@ -333,8 +328,7 @@ const executeGroup = async (
           },
           clientSideActions,
           logs,
-          visitedEdges,
-          setVariableHistory,
+          newSetVariableHistoryItems,
         };
       }
     }
@@ -357,8 +351,7 @@ const executeGroup = async (
     clientSideActions,
     updatedTimeoutStartTime,
     logs,
-    visitedEdges,
-    setVariableHistory,
+    newSetVariableHistoryItems,
   };
 };
 
