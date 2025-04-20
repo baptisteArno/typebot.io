@@ -1,11 +1,11 @@
 {
   "functions": {
     "src/pages/api/[...trpc].ts": {
-      "maxDuration": 10,
+      "maxDuration": 60,
       "memory": 500
     },
     "src/pages/api/typebots/[typebotId]/blocks/[blockId]/executeWebhook.ts": {
-      "maxDuration": 10,
+      "maxDuration": 60,
       "memory": 500
     }
   },
