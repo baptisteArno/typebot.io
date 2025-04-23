@@ -1,7 +1,6 @@
 ---
-title: "Feedback chatbot: how to build one with Typebot  "
-description: "Build a feedback chatbot that gets results! Learn how to gather actionable customer insights, boost engagement & improve your business.
-"
+title: "Feedback chatbot: how to build one with Typebot"
+description: "Build a feedback chatbot that gets results! Learn how to gather actionable customer insights, boost engagement & improve your business."
 postedAt: "2025-04-23"
 cover: "/blog-assets/feedback-chatbot/featured-image-feedback-chatbot.avif"
 author: younes
@@ -90,7 +89,7 @@ Let's walk through building a SaaS feedback bot in Typebot, one step at a time:
 
 
 5. **Open-Ended Feedback**: Include `Text` blocks with `Text Input` blocks for open-ended questions like "What do you like most about our product?" (`productLikes` variable) and "What could we improve?" (`productImprovements` variable). Make sure to set `isLong` to `true` in the Text Input options.
-6. **Thank You**: End with a `Text` block thanking the user for their feedback, using their name ({{userName}}) and ask for their email. Add an `Email Input` to capture the email to `userEmail` variable, and set `isRequired` to `false` so it's optional.
+6. **Thank You**: End with a `Text` block thanking the user for their feedback, using their name (\{\{userName\}\}) and ask for their email. Add an `Email Input` to capture the email to `userEmail` variable, and set `isRequired` to `false` so it's optional.
 7. **Connect the blocks**: Add the proper edges between the blocks to connect the flow between the blocks
 
 ### 
@@ -166,9 +165,9 @@ function FeedbackWidget() {
 
 These variables can then be used within your chatbot flow to:
 
-- Personalize greetings: "Hi {{userName}}, we noticed you've been using our {{preferredCategory}} section a lot"
-- Target specific behaviors: "Since your last purchase on {{lastPurchase}}, how would you rate our service?"
-- Segment feedback based on user patterns: "As a frequent customer with {{totalOrders}} orders..."
+- Personalize greetings: "Hi \{\{userName\}\}, we noticed you've been using our \{\{preferredCategory\}\} section a lot"
+- Target specific behaviors: "Since your last purchase on \{\{lastPurchase\}\}, how would you rate our service?"
+- Segment feedback based on user patterns: "As a frequent customer with \{\{totalOrders\}\} orders..."
 
 ### Optimal timing for chatbot appearances
 
