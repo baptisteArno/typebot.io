@@ -4,6 +4,10 @@ on:
   push:
     tags: ["v*", "next"]
 
+permissions:
+  contents: read
+  actions: write
+
 jobs:
   build-amd:
     env:
@@ -161,6 +165,8 @@ jobs:
   create-release:
     name: Create Release
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     needs: merge-and-push
     if: startsWith(github.ref, 'refs/tags/v')
     steps:
