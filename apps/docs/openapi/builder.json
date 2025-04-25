@@ -260,7 +260,8 @@
                                                               }
                                                             },
                                                             "internalValue": {
-                                                              "type": "string"
+                                                              "type": "string",
+                                                              "nullable": true
                                                             }
                                                           }
                                                         },
@@ -4173,7 +4174,8 @@
                                                           }
                                                         },
                                                         "internalValue": {
-                                                          "type": "string"
+                                                          "type": "string",
+                                                          "nullable": true
                                                         }
                                                       }
                                                     },
@@ -7045,7 +7047,8 @@
                                                           }
                                                         },
                                                         "internalValue": {
-                                                          "type": "string"
+                                                          "type": "string",
+                                                          "nullable": true
                                                         }
                                                       }
                                                     },
@@ -15882,7 +15885,8 @@
                                     }
                                   },
                                   "internalValue": {
-                                    "type": "string"
+                                    "type": "string",
+                                    "nullable": true
                                   }
                                 }
                               },
@@ -23347,7 +23351,8 @@
                                           }
                                         },
                                         "internalValue": {
-                                          "type": "string"
+                                          "type": "string",
+                                          "nullable": true
                                         }
                                       }
                                     },
@@ -25570,7 +25575,8 @@
                                           }
                                         },
                                         "internalValue": {
-                                          "type": "string"
+                                          "type": "string",
+                                          "nullable": true
                                         }
                                       }
                                     },
