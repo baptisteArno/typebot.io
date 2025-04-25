@@ -2322,7 +2322,8 @@
                               "LIFETIME",
                               "OFFERED",
                               "CUSTOM",
-                              "UNLIMITED"
+                              "UNLIMITED",
+                              "ENTERPRISE"
                             ]
                           }
                         },
@@ -2442,7 +2443,8 @@
                             "LIFETIME",
                             "OFFERED",
                             "CUSTOM",
-                            "UNLIMITED"
+                            "UNLIMITED",
+                            "ENTERPRISE"
                           ]
                         },
                         "stripeId": {
@@ -2631,7 +2633,8 @@
                             "LIFETIME",
                             "OFFERED",
                             "CUSTOM",
-                            "UNLIMITED"
+                            "UNLIMITED",
+                            "ENTERPRISE"
                           ]
                         },
                         "stripeId": {
@@ -10381,7 +10384,8 @@
                             "LIFETIME",
                             "OFFERED",
                             "CUSTOM",
-                            "UNLIMITED"
+                            "UNLIMITED",
+                            "ENTERPRISE"
                           ]
                         },
                         "stripeId": {

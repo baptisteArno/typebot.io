@@ -89,6 +89,7 @@ export const AnalyticsGraphContainer = ({
     <Flex
       w="full"
       pos="relative"
+      overflow="clip"
       bgColor={useColorModeValue("#f4f5f8", "gray.900")}
       backgroundImage={useColorModeValue(
         "radial-gradient(#c6d0e1 1px, transparent 0)",
@@ -128,6 +129,7 @@ export const AnalyticsGraphContainer = ({
       <StatsCards
         stats={stats}
         pos="absolute"
+        top="1rem"
         timeFilter={timeFilter}
         onTimeFilterChange={onTimeFilterChange}
       />

@@ -21,7 +21,7 @@ export const CardsBlockNode = ({ block, indices }: Props) => {
     .filter(isDefined);
 
   return (
-    <Stack w="full">
+    <Stack w="90%">
       <ItemNodesList block={block} indices={indices} />
       {savingVariableIds?.map((variableId) => (
         <SetVariableLabel
