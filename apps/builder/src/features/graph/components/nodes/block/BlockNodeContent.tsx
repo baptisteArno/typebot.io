@@ -27,6 +27,7 @@ import { PixelNodeBody } from "@/features/blocks/integrations/pixel/components/P
 import { SendEmailContent } from "@/features/blocks/integrations/sendEmail/components/SendEmailContent";
 import { ZapierContent } from "@/features/blocks/integrations/zapier/components/ZapierContent";
 import { AbTestNodeBody } from "@/features/blocks/logic/abTest/components/AbTestNodeBody";
+import { ConditionBlockContent } from "@/features/blocks/logic/condition/components/ConditionBlockContent";
 import { JumpNodeBody } from "@/features/blocks/logic/jump/components/JumpNodeBody";
 import { RedirectNodeContent } from "@/features/blocks/logic/redirect/components/RedirectNodeContent";
 import { ScriptNodeContent } from "@/features/blocks/logic/script/components/ScriptNodeContent";
@@ -131,7 +132,7 @@ export const BlockNodeContent = ({
     case LogicBlockType.TYPEBOT_LINK:
       return <TypebotLinkNode block={block} />;
     case LogicBlockType.CONDITION:
-      return <ItemNodesList block={block} indices={indices} />;
+      return <ConditionBlockContent block={block} indices={indices} />;
     case LogicBlockType.WEBHOOK:
       return <WebhookNodeContent options={block.options} />;
     case IntegrationBlockType.GOOGLE_SHEETS: {
