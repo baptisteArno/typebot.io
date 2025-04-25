@@ -230,6 +230,7 @@ export const deleteConnectedEdgesDraft = (
     return [
       edge.from.blockId,
       edge.from.itemId,
+      edge.from.pathId,
       edge.to.groupId,
       edge.to.blockId,
     ].includes(deletedNodeId);

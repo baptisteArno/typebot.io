@@ -13,7 +13,7 @@
     "@typebot.io/tsconfig": "workspace:*"
   },
   "dependencies": {
-    "@ark-ui/react": "5.1.0",
+    "@ark-ui/react": "5.7.0",
     "@chakra-ui/react": "2.8.2",
     "@chakra-ui/theme-tools": "2.2.6",
     "class-variance-authority": "0.7.1",

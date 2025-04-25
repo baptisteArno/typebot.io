@@ -3,7 +3,7 @@ import type {
   DraggableItem,
 } from "@/features/graph/providers/GraphDndProvider";
 import { createId } from "@paralleldrive/cuid2";
-import { blockHasItems } from "@typebot.io/blocks-core/helpers";
+import { blockHasItems, itemHasPaths } from "@typebot.io/blocks-core/helpers";
 import type {
   Item,
   ItemIndices,
@@ -31,6 +31,7 @@ export type ItemsActions = {
   ) => void;
   detachItemFromBlock: (indices: ItemIndices) => void;
   deleteItem: (indices: ItemIndices) => void;
+  deleteItemPath: (indices: ItemIndices & { pathIndex: number }) => void;
 };
 
 const createItem = (
@@ -220,6 +221,25 @@ const itemsAction = (setTypebot: SetTypebot): ItemsActions => ({
         const removingItem = block.items[itemIndex];
         block.items.splice(itemIndex, 1);
         deleteConnectedEdgesDraft(typebot, removingItem.id);
+      }),
+    ),
+  deleteItemPath: ({
+    groupIndex,
+    blockIndex,
+    itemIndex,
+    pathIndex,
+  }: ItemIndices & { pathIndex: number }) =>
+    setTypebot((typebot) =>
+      produce(typebot, (typebot) => {
+        const block = typebot.groups[groupIndex].blocks[blockIndex];
+        if (!blockHasItems(block)) return;
+        const item = (
+          typebot.groups[groupIndex].blocks[blockIndex] as BlockWithItems
+        ).items[itemIndex];
+        if (!itemHasPaths(item)) return;
+        const pathId = item.paths?.[pathIndex]?.id;
+        deleteConnectedEdgesDraft(typebot, pathId);
+        item.paths.splice(pathIndex, 1);
       }),
     ),
 });

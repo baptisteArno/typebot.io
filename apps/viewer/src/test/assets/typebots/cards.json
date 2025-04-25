@@ -1,6 +1,6 @@
 {
   "version": "6.1",
-  "id": "cm8n7j4ce0001opnb1iphikcp",
+  "id": "vtxh1cve88t5hq9ra21nudtz",
   "name": "My typebot",
   "events": [
     {
@@ -124,7 +124,16 @@
                 { "id": "zotkgpjtmmyoa0yzk8uq03yh", "text": "More info" }
               ]
             }
-          ]
+          ],
+          "options": {
+            "saveResponseMapping": [
+              {
+                "id": "jrmfn4c1q9xmxy0s2dsjkvvb",
+                "field": "Title",
+                "variableId": "vdjay5oard8fxyjtuc19zenac"
+              }
+            ]
+          }
         }
       ]
     },
@@ -134,11 +143,14 @@
       "graphCoordinates": { "x": 1041.72, "y": 75.37 },
       "blocks": [
         {
-          "id": "tlkg4rrak378puzk4sfipthv",
+          "id": "syw8562h3q774z4t68hnsk85",
           "type": "text",
           "content": {
             "richText": [
-              { "type": "p", "children": [{ "text": "Cool! Goodbye." }] }
+              {
+                "type": "p",
+                "children": [{ "text": "You've selected {{Selected title}}" }]
+              }
             ]
           }
         }
@@ -172,6 +184,11 @@
   ],
   "variables": [
     {
+      "id": "vdjay5oard8fxyjtuc19zenac",
+      "name": "Selected title",
+      "isSessionVariable": true
+    },
+    {
       "id": "viwvshpal36k3ykgf8rpby8ox",
       "name": "Descriptions",
       "isSessionVariable": true
@@ -194,7 +211,7 @@
   "updatedAt": "2025-03-24T15:41:16.248Z",
   "icon": null,
   "folderId": null,
-  "publicId": "my-typebot-iphikcp",
+  "publicId": "vtxh1cve88t5hq9ra21nudtz-public",
   "customDomain": null,
   "workspaceId": "proWorkspace",
   "resultsTablePreferences": null,

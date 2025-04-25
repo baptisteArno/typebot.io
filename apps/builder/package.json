@@ -10,7 +10,7 @@
     "test:ui": "dotenv -e ./.env -e ../../.env -- playwright test --ui"
   },
   "dependencies": {
-    "@ark-ui/react": "5.1.0",
+    "@ark-ui/react": "5.7.0",
     "@auth/core": "0.37.4",
     "@braintree/sanitize-url": "7.0.1",
     "@chakra-ui/react": "2.8.2",
