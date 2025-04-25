@@ -250,7 +250,7 @@ export const FileUploadForm = (props: Props) => {
                 onChange={(e) => {
                   if (!e.currentTarget.files) return;
                   onNewFiles(e.currentTarget.files);
-                  e.currentTarget.value = ''
+                  e.currentTarget.value = "";
                 }}
               />
             </>
