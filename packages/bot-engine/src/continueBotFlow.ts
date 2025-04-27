@@ -15,6 +15,11 @@ import type { InputBlock } from "@typebot.io/blocks-inputs/schema";
 import { IntegrationBlockType } from "@typebot.io/blocks-integrations/constants";
 import { LogicBlockType } from "@typebot.io/blocks-logic/constants";
 import type {
+  ContinueChatResponse,
+  InputMessage,
+  Message,
+} from "@typebot.io/chat-api/schemas";
+import type {
   SessionState,
   TypebotInSession,
 } from "@typebot.io/chat-session/schemas";
@@ -52,11 +57,6 @@ import { formatInputForChatResponse } from "./formatInputForChatResponse";
 import { isInputMessage } from "./helpers/isInputMessage";
 import { saveAnswer } from "./queries/saveAnswer";
 import { resetSessionState } from "./resetSessionState";
-import type {
-  ContinueChatResponse,
-  InputMessage,
-  Message,
-} from "./schemas/api";
 import { startBotFlow } from "./startBotFlow";
 import type {
   ContinueBotFlowResponse,

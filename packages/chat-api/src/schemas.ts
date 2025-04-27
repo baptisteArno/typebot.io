@@ -19,7 +19,6 @@ import { ratingInputBlockSchema } from "@typebot.io/blocks-inputs/rating/schema"
 import { textInputSchema } from "@typebot.io/blocks-inputs/text/schema";
 import { timeInputSchema } from "@typebot.io/blocks-inputs/time/schema";
 import { urlInputSchema } from "@typebot.io/blocks-inputs/url/schema";
-import { sessionStateSchema } from "@typebot.io/chat-session/schemas";
 import { logInSessionSchema } from "@typebot.io/logs/schemas";
 import { settingsSchema } from "@typebot.io/settings/schemas";
 import { themeSchema } from "@typebot.io/theme/schemas";
@@ -71,30 +70,18 @@ const commandMessageSchema = z
     ref: "commandMessage",
   });
 
+const inputMessageSchemas = [textMessageSchema, audioMessageSchema] as const;
+
 export const messageSchema = z.preprocess(
   (val) => (typeof val === "string" ? { type: "text", text: val } : val),
-  z.discriminatedUnion("type", [
-    textMessageSchema,
-    audioMessageSchema,
-    commandMessageSchema,
-  ]),
+  z.discriminatedUnion("type", [...inputMessageSchemas, commandMessageSchema]),
 );
 export type Message = z.infer<typeof messageSchema>;
-export type InputMessage = Exclude<Message, { type: "command" }>;
 
-const chatSessionSchema = z.object({
-  id: z.string(),
-  createdAt: z.date(),
-  updatedAt: z.date(),
-  state: sessionStateSchema,
-  isReplying: z
-    .boolean()
-    .nullable()
-    .describe(
-      "Used in WhatsApp runtime to avoid concurrent replies from the bot",
-    ),
-});
-export type ChatSession = z.infer<typeof chatSessionSchema>;
+export const inputMessageSchema = z.discriminatedUnion("type", [
+  ...inputMessageSchemas,
+]);
+export type InputMessage = Exclude<Message, { type: "command" }>;
 
 const textBubbleSchema = z
   .object({

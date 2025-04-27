@@ -1,4 +1,4 @@
-import type { InputMessage, Message } from "../schemas/api";
+import type { InputMessage, Message } from "@typebot.io/chat-api/schemas";
 
 export const isInputMessage = (
   message: Message | undefined,

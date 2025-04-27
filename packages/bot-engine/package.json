@@ -19,6 +19,7 @@
     "@typebot.io/variables": "workspace:*",
     "@typebot.io/typebot": "workspace:*",
     "@typebot.io/rich-text": "workspace:*",
+    "@typebot.io/chat-api": "workspace:*",
     "@typebot.io/blocks-core": "workspace:*",
     "@typebot.io/blocks-inputs": "workspace:*",
     "@typebot.io/blocks-integrations": "workspace:*",

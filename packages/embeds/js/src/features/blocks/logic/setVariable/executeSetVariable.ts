@@ -1,4 +1,4 @@
-import type { ScriptToExecute } from "@typebot.io/bot-engine/schemas/clientSideAction";
+import type { ScriptToExecute } from "@typebot.io/chat-api/clientSideAction";
 import { parseUnknownClientError } from "@typebot.io/lib/parseUnknownClientError";
 import { safeStringify } from "@typebot.io/lib/safeStringify";
 import type { LogInSession } from "@typebot.io/logs/schemas";

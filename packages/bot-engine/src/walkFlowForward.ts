@@ -7,6 +7,7 @@ import {
   isIntegrationBlock,
   isLogicBlock,
 } from "@typebot.io/blocks-core/helpers";
+import type { ContinueChatResponse } from "@typebot.io/chat-api/schemas";
 import type { SessionState } from "@typebot.io/chat-session/schemas";
 import { env } from "@typebot.io/env";
 import type { Group } from "@typebot.io/groups/schemas";
@@ -25,7 +26,6 @@ import {
   parseBubbleBlock,
 } from "./parseBubbleBlock";
 import { upsertResult } from "./queries/upsertResult";
-import type { ContinueChatResponse } from "./schemas/api";
 import type { ExecuteIntegrationResponse, ExecuteLogicResponse } from "./types";
 
 export type WalkFlowStartingPoint =

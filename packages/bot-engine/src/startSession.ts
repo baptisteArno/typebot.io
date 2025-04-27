@@ -8,6 +8,14 @@ import { IntegrationBlockType } from "@typebot.io/blocks-integrations/constants"
 import type { GoogleAnalyticsBlock } from "@typebot.io/blocks-integrations/googleAnalytics/schema";
 import type { PixelBlock } from "@typebot.io/blocks-integrations/pixel/schema";
 import { LogicBlockType } from "@typebot.io/blocks-logic/constants";
+import {
+  type StartChatInput,
+  type StartChatResponse,
+  type StartPreviewChatInput,
+  type StartTypebot,
+  type StartTypebotV6,
+  startTypebotSchema,
+} from "@typebot.io/chat-api/schemas";
 import type {
   SessionState,
   TypebotInSession,
@@ -48,14 +56,6 @@ import { parseDynamicTheme } from "./parseDynamicTheme";
 import { findPublicTypebot } from "./queries/findPublicTypebot";
 import { findResult } from "./queries/findResult";
 import { findTypebot } from "./queries/findTypebot";
-import {
-  type StartChatInput,
-  type StartChatResponse,
-  type StartPreviewChatInput,
-  type StartTypebot,
-  type StartTypebotV6,
-  startTypebotSchema,
-} from "./schemas/api";
 import { startBotFlow } from "./startBotFlow";
 
 type StartParams =

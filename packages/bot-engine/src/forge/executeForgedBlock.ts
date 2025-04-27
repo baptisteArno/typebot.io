@@ -1,5 +1,6 @@
 import { BubbleBlockType } from "@typebot.io/blocks-bubbles/constants";
 import type { Block } from "@typebot.io/blocks-core/schemas/schema";
+import type { ContinueChatResponse } from "@typebot.io/chat-api/schemas";
 import type {
   SessionState,
   TypebotInSession,
@@ -17,7 +18,6 @@ import {
   parseVariables,
 } from "@typebot.io/variables/parseVariables";
 import type { SetVariableHistoryItem } from "@typebot.io/variables/schemas";
-import type { ContinueChatResponse } from "../schemas/api";
 import type { ExecuteIntegrationResponse } from "../types";
 import { updateVariablesInSession } from "../updateVariablesInSession";
 

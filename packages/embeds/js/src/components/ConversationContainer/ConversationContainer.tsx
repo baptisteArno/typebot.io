@@ -26,12 +26,12 @@ import { setGeneralBackground } from "@/utils/setCssVariablesValue";
 import { setStreamingMessage } from "@/utils/streamingMessageSignal";
 import { toaster } from "@/utils/toaster";
 import type { InputBlock } from "@typebot.io/blocks-inputs/schema";
+import type { ClientSideAction } from "@typebot.io/chat-api/clientSideAction";
 import type {
   ContinueChatResponse,
   Message,
   StartChatResponse,
-} from "@typebot.io/bot-engine/schemas/api";
-import type { ClientSideAction } from "@typebot.io/bot-engine/schemas/clientSideAction";
+} from "@typebot.io/chat-api/schemas";
 import { parseUnknownClientError } from "@typebot.io/lib/parseUnknownClientError";
 import { isNotDefined } from "@typebot.io/lib/utils";
 import type { LogInSession } from "@typebot.io/logs/schemas";

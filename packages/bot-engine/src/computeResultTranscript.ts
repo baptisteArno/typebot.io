@@ -5,6 +5,7 @@ import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
 import { defaultPictureChoiceOptions } from "@typebot.io/blocks-inputs/pictureChoice/constants";
 import type { InputBlock } from "@typebot.io/blocks-inputs/schema";
 import { LogicBlockType } from "@typebot.io/blocks-logic/constants";
+import type { ContinueChatResponse } from "@typebot.io/chat-api/schemas";
 import type { TypebotInSession } from "@typebot.io/chat-session/schemas";
 import { executeCondition } from "@typebot.io/conditions/executeCondition";
 import type { Group } from "@typebot.io/groups/schemas";
@@ -20,7 +21,6 @@ import {
   type BubbleBlockWithDefinedContent,
   parseBubbleBlock,
 } from "./parseBubbleBlock";
-import type { ContinueChatResponse } from "./schemas/api";
 
 type TranscriptMessage = {
   role: "bot" | "user";

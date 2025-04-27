@@ -1,5 +1,6 @@
 import { TRPCError } from "@trpc/server";
 import { BubbleBlockType } from "@typebot.io/blocks-bubbles/constants";
+import type { Message } from "@typebot.io/chat-api/schemas";
 import { getSession } from "@typebot.io/chat-session/queries/getSession";
 import { isDefined, isNotDefined } from "@typebot.io/lib/utils";
 import {
@@ -12,7 +13,6 @@ import { assertOriginIsAllowed } from "../helpers/isOriginAllowed";
 import { filterPotentiallySensitiveLogs } from "../logs/filterPotentiallySensitiveLogs";
 import { parseDynamicTheme } from "../parseDynamicTheme";
 import { saveStateToDatabase } from "../saveStateToDatabase";
-import type { Message } from "../schemas/api";
 
 type Props = {
   origin: string | undefined;
