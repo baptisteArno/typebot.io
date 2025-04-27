@@ -1,6 +1,6 @@
 import type { BotContext } from "@/types";
 import type { PaymentInputBlock } from "@typebot.io/blocks-inputs/payment/schema";
-import type { RuntimeOptions } from "@typebot.io/bot-engine/schemas/api";
+import type { RuntimeOptions } from "@typebot.io/chat-api/schemas";
 import { StripePaymentForm } from "./StripePaymentForm";
 
 type Props = {

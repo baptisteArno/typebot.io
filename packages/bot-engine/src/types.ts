@@ -1,7 +1,10 @@
+import type {
+  ContinueChatResponse,
+  CustomEmbedBubble,
+} from "@typebot.io/chat-api/schemas";
 import type { SessionState } from "@typebot.io/chat-session/schemas";
 import type { Prisma } from "@typebot.io/prisma/types";
 import type { SetVariableHistoryItem } from "@typebot.io/variables/schemas";
-import type { ContinueChatResponse, CustomEmbedBubble } from "./schemas/api";
 
 export type ExecuteLogicResponse = {
   outgoingEdgeId: string | undefined;

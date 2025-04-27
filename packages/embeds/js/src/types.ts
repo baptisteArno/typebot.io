@@ -1,7 +1,7 @@
 import type {
   ContinueChatResponse,
   StartChatResponse,
-} from "@typebot.io/bot-engine/schemas/api";
+} from "@typebot.io/chat-api/schemas";
 
 export type BotContext = {
   typebot: StartChatResponse["typebot"];

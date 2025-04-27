@@ -26,6 +26,7 @@
     "@typebot.io/schemas": "workspace:*",
     "@typebot.io/credentials": "workspace:*",
     "@typebot.io/chat-session": "workspace:*",
+    "@typebot.io/chat-api": "workspace:*",
     "@typebot.io/logs": "workspace:*",
     "bot-engine": "workspace:*",
     "cors": "2.8.5",

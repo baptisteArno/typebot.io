@@ -1,7 +1,7 @@
 import { BubbleBlockType } from "@typebot.io/blocks-bubbles/constants";
 import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
-import type { ContinueChatResponse } from "@typebot.io/bot-engine/schemas/api";
-import type { ClientSideAction } from "@typebot.io/bot-engine/schemas/clientSideAction";
+import type { ClientSideAction } from "@typebot.io/chat-api/clientSideAction";
+import type { ContinueChatResponse } from "@typebot.io/chat-api/schemas";
 import type { SessionState } from "@typebot.io/chat-session/schemas";
 import type { WhatsAppCredentials } from "@typebot.io/credentials/schemas";
 import { isNotDefined } from "@typebot.io/lib/utils";

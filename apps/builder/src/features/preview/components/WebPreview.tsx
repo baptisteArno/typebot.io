@@ -3,7 +3,7 @@ import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { useGraph } from "@/features/graph/providers/GraphProvider";
 import { useUser } from "@/features/user/hooks/useUser";
 import { toast } from "@/lib/toast";
-import type { ContinueChatResponse } from "@typebot.io/bot-engine/schemas/api";
+import type { ContinueChatResponse } from "@typebot.io/chat-api/schemas";
 import { Standard } from "@typebot.io/nextjs";
 
 export const WebPreview = () => {

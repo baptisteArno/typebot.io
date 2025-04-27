@@ -1,9 +1,8 @@
-import * as Sentry from "@sentry/nextjs";
 import type { Block } from "@typebot.io/blocks-core/schemas/schema";
 import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
 import { continueBotFlow } from "@typebot.io/bot-engine/continueBotFlow";
 import { saveStateToDatabase } from "@typebot.io/bot-engine/saveStateToDatabase";
-import type { Message } from "@typebot.io/bot-engine/schemas/api";
+import type { Message } from "@typebot.io/chat-api/schemas";
 import { getSession } from "@typebot.io/chat-session/queries/getSession";
 import { setIsReplyingInChatSession } from "@typebot.io/chat-session/queries/setIsReplyingInChatSession";
 import type { SessionState } from "@typebot.io/chat-session/schemas";

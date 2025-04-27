@@ -1,7 +1,7 @@
+import type { ContinueChatResponse } from "@typebot.io/chat-api/schemas";
 import type { SessionState } from "@typebot.io/chat-session/schemas";
 import type { SessionStore } from "@typebot.io/runtime-session-store";
 import { parseVariables } from "@typebot.io/variables/parseVariables";
-import type { ContinueChatResponse } from "./schemas/api";
 
 export const parseDynamicTheme = ({
   state,

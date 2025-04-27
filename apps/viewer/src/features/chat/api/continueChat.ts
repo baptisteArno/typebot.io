@@ -3,7 +3,7 @@ import { continueChat as continueChatFn } from "@typebot.io/bot-engine/apiHandle
 import {
   continueChatResponseSchema,
   messageSchema,
-} from "@typebot.io/bot-engine/schemas/api";
+} from "@typebot.io/chat-api/schemas";
 import { z } from "@typebot.io/zod";
 
 export const continueChat = publicProcedure

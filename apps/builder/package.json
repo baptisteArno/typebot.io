@@ -56,6 +56,7 @@
     "@typebot.io/ui": "workspace:*",
     "@typebot.io/whatsapp": "workspace:*",
     "@typebot.io/workspaces": "workspace:*",
+    "@typebot.io/chat-api": "workspace:*",
     "@typebot.io/zod": "workspace:*",
     "@udecode/plate-basic-marks": "30.5.3",
     "@udecode/plate-common": "30.4.5",

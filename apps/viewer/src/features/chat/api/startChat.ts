@@ -3,7 +3,7 @@ import { startChat as startChatFn } from "@typebot.io/bot-engine/apiHandlers/sta
 import {
   startChatInputSchema,
   startChatResponseSchema,
-} from "@typebot.io/bot-engine/schemas/api";
+} from "@typebot.io/chat-api/schemas";
 
 export const startChat = publicProcedure
   .meta({

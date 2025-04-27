@@ -6,7 +6,7 @@ import type {
 import { type AvatarHistory, getAvatarAtIndex } from "@/utils/avatarHistory";
 import { hiddenInput } from "@/utils/hiddenInputSignal";
 import { isMobile } from "@/utils/isMobileSignal";
-import type { ContinueChatResponse } from "@typebot.io/bot-engine/schemas/api";
+import type { ContinueChatResponse } from "@typebot.io/chat-api/schemas";
 import { defaultSettings } from "@typebot.io/settings/constants";
 import type { Settings } from "@typebot.io/settings/schemas";
 import {

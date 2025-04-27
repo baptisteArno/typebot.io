@@ -1,6 +1,7 @@
 import { BubbleBlockType } from "@typebot.io/blocks-bubbles/constants";
 import type { BubbleBlock } from "@typebot.io/blocks-bubbles/schema";
 import { parseVideoUrl } from "@typebot.io/blocks-bubbles/video/helpers";
+import type { ContinueChatResponse } from "@typebot.io/chat-api/schemas";
 import { isDefined, isEmpty, isNotEmpty } from "@typebot.io/lib/utils";
 import { convertMarkdownToRichText } from "@typebot.io/rich-text/convertMarkdownToRichText";
 import { convertRichTextToMarkdown } from "@typebot.io/rich-text/convertRichTextToMarkdown";
@@ -15,7 +16,6 @@ import {
   parseVariables,
 } from "@typebot.io/variables/parseVariables";
 import type { Variable } from "@typebot.io/variables/schemas";
-import type { ContinueChatResponse } from "./schemas/api";
 
 type Params = {
   version: 1 | 2;

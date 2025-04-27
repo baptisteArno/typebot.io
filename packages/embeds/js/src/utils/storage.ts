@@ -1,4 +1,4 @@
-import type { StartChatResponse } from "@typebot.io/bot-engine/schemas/api";
+import type { StartChatResponse } from "@typebot.io/chat-api/schemas";
 import { defaultSettings } from "@typebot.io/settings/constants";
 
 const storageResultIdKey = "resultId";
