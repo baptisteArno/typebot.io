@@ -342,6 +342,11 @@ const executeGroup = async (
       };
       break;
     }
+
+    if (logicOrIntegrationExecutionResponse.outgoingEdgeId === null) {
+      nextEdge = undefined;
+      break;
+    }
   }
 
   return {

@@ -7,7 +7,7 @@ import type { Prisma } from "@typebot.io/prisma/types";
 import type { SetVariableHistoryItem } from "@typebot.io/variables/schemas";
 
 export type ExecuteLogicResponse = {
-  outgoingEdgeId: string | undefined;
+  outgoingEdgeId: string | undefined | null;
   newSessionState?: SessionState;
   newSetVariableHistory?: SetVariableHistoryItem[];
 } & Pick<ContinueChatResponse, "clientSideActions" | "logs">;
