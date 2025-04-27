@@ -1,0 +1,277 @@
+---
+title: "Feedback chatbot: how to build one with Typebot"
+description: "Build a feedback chatbot that gets results! Learn how to gather actionable customer insights, boost engagement & improve your business."
+postedAt: "2025-04-23"
+cover: "/blog-assets/feedback-chatbot/featured-image-feedback-chatbot.avif"
+author: younes
+---
+A feedback chatbot isn't just another digital tool. **It's your secret weapon for transforming how businesses understand and respond to their customers' needs.** It turns gathering customer feedback into a seamless and engaging conversation that customers actually look forward to.
+
+Whether you're a startup refining your product or an established company seeking deeper customer insights, a well-designed feedback chatbot can bridge the gap between your team and your audience, turning silent users into vocal advocates.
+
+## What is a feedback chatbot?
+
+Feedback chatbots are changing how businesses collect and analyze customer opinions. These [AI-powered tools](./ai-open-source-tools.mdx) use conversations to gather valuable insights, creating a smooth and interactive experience.
+
+Unlike traditional surveys or feedback forms, feedback chatbots **offer a dynamic and personalized way to understand customer feelings**.
+
+### How feedback chatbots differ from other chatbot types
+
+Many chatbots focus on customer support or sales. However, **feedback chatbots actively seek and collect user opinions**. They ask specific questions, adapt to responses, and explore areas of interest. This focus separates them from more general chatbots.
+
+For instance, a customer service chatbot might help users solve problems or find information. A feedback chatbot would proactively ask users for their thoughts on a recent experience or product. **This proactive approach helps businesses capture valuable insights that might otherwise be missed.**
+
+### Key features and capabilities of feedback chatbots
+
+Feedback chatbots have many features that make them effective for gathering user input.
+
+They include:
+
+- **Adaptive questioning:** Chatbots adjust questions based on user responses, ensuring relevant interactions.
+- **Multi-format input:** They collect various feedback types, from yes/no answers to open-ended text and numerical ratings.
+- **Sentiment analysis:** Advanced chatbots analyze the tone and emotion in user responses, providing deeper insights.
+- **Data visualization:** Many offer built-in analytics and reporting to help businesses understand the data quickly.
+- **Integration capabilities:** They often connect with other business tools like CRM systems for seamless data flow and analysis.
+
+**These features create a tool that gathers feedback and helps businesses derive actionable insights.**
+
+<Success>
+Sentiment analysis in feedback chatbots allows businesses to understand not just *what* customers say, but also *how* they feel, providing a richer understanding of customer opinions.
+</Success>
+
+### Examples of feedback chatbot use cases
+
+Feedback chatbots are used across various industries and scenarios.
+
+Here are some common use cases:
+
+- Post-purchase surveys: [E-commerce](./ecommerce-chatbot.mdx) businesses gather feedback on the shopping experience and product satisfaction.
+- Event feedback: Organizers collect attendee opinions during or after conferences, webinars, or workshops.
+- Employee satisfaction surveys: HR departments check in on employee morale and workplace satisfaction.
+- Product development: Companies gather user opinions on new features or products in development.
+- Customer service improvement: Businesses assess satisfaction and identify areas for improvement after interactions.
+
+### What makes a feedback chatbot effective compared to traditional feedback methods?
+
+Feedback chatbots have several advantages over traditional methods like email surveys or paper forms.
+
+1. **Higher engagement rates:** The interactive nature of chatbots often results in more responses than static surveys.
+2. **Real-time data collection:** Feedback is gathered and analyzed instantly, allowing quick action on urgent issues.
+3. **Personalized experiences:** Chatbots tailor questions based on user responses, creating a more relevant experience.
+4. **Reduced survey fatigue:** The conversational format feels less tedious than long surveys, encouraging more thoughtful responses.
+5. **Cost-effective:** Automated chatbots handle many interactions without human intervention, saving time and resources.
+6. **24/7 availability:** Chatbots collect feedback anytime, accommodating users across time zones and schedules.
+
+**By using these advantages, feedback chatbots give businesses a powerful tool to gather more accurate, timely, and actionable customer insights.** These AI-powered assistants are becoming invaluable for continuous improvement and customer satisfaction.
+
+## How to create a feedback chatbot with Typebot
+
+Creating a feedback chatbot with Typebot is an intuitive process. It allows you to **use conversational interfaces for gathering valuable customer insights**. Let's dive into the step-by-step process of building an effective feedback chatbot using Typebot's user-friendly platform.
+
+### Step-by-step guide to building a feedback chatbot using Typebot
+
+Let's walk through building a SaaS feedback bot in Typebot, one step at a time:
+
+1. **New Typebot**: Create a new typebot from scratch.
+2. **Welcome**: Add two `Text` blocks to greet the user and ask for their name. Then, use a `Text Input` block to capture their name in a variable called `userName`.r
+
+<Image src="/blog-assets/feedback-chatbot/chatbot-welcome-message-example.avif" alt="Chatbot welcome message example" width="278px" height="309px"  />
+
+
+3. **Satisfaction**: Ask about product satisfaction using a `Rating Input` block with a scale of 1-5. Store the result in a `satisfactionRating` variable.
+
+<Image src="/blog-assets/feedback-chatbot/satisfaction-rating-prompt-box.avif" alt="Satisfaction rating prompt box" width="260px" height="204px"  />
+
+
+4. **Feature Usage**: Use a `Choice Input` block (with multiple choice enabled) to let users select which features they use most. Options could include "Dashboard", "Reports & Analytics", etc. The selected features are saved in the `usedFeatures` variable.
+
+<Image src="/blog-assets/feedback-chatbot/feature-usage-selection-form.avif" alt="Feature usage selection form" width="285px" height="548px"  />
+
+
+5. **Open-Ended Feedback**: Include `Text` blocks with `Text Input` blocks for open-ended questions like "What do you like most about our product?" (`productLikes` variable) and "What could we improve?" (`productImprovements` variable). Make sure to set `isLong` to `true` in the Text Input options.
+6. **Thank You**: End with a `Text` block thanking the user for their feedback, using their name (\{\{userName\}\}) and ask for their email. Add an `Email Input` to capture the email to `userEmail` variable, and set `isRequired` to `false` so it's optional.
+7. **Connect the blocks**: Add the proper edges between the blocks to connect the flow between the blocks
+
+### 
+
+<Image src="/blog-assets/feedback-chatbot/product-feedback-flow-diagram.avif" alt="Product feedback flow diagram" width="1200px" height="348px" caption="This is what your chatbot should look like at this point" />
+
+
+### AI-powered feedback deep dive
+
+Now, let's enhance our feedback chatbot with AI-powered deep dive questions to make it even more intelligent and insightful.
+
+We'll create two additional conversation branches that use OpenAI to analyze previous responses and generate relevant follow-up questions. This approach helps gather more detailed and meaningful feedback by adapting the conversation based on what your users share.
+
+<Image src="/blog-assets/feedback-chatbot/feedback-chat-interface-example.avif" alt="Feedback chat interface example" width="436px" height="952px"  />
+
+
+The real magic happens when we use AI for follow-up questions:
+
+1. **AI Integration**: After the "Improvements" group, add an "OpenAI" block. This block will use the OpenAI API to analyze the user's previous answers and formulate follow-up questions.
+
+2. **Configure the AI**:
+
+   - **Model**: Select a powerful model like `gpt-4o-mini`.
+   - **Prompt**: Craft a detailed prompt. This is where you instruct the AI on how to behave. Inject the variables collected so far (`userName`, `satisfactionRating`, `usedFeatures`, `productLikes`, `productImprovements`). Ask the AI to formulate 1-2 specific follow-up questions based on the user's input. Tell it to be conversational and avoid topics already covered. Format the output as plain text.
+   - **Temperature**: A temperature of 0.7 is a good starting point for a balance between creativity and coherence.
+   - **Response Mapping**: Map the AI's response to a new variable, like `aiFollowUpQuestions`.
+
+3. **Display AI Questions**: Add a `Text` block to display the `aiFollowUpQuestions` to the user.
+
+4. **Capture the Response**: Use a `Text Input` block (`followUpResponse` variable) to get the user's answer to the AI's questions.
+
+5. **Second AI Follow-up**: Repeat the OpenAI block pattern. This time, include the `followUpResponse` variable in your prompt so the AI can refine its line of questioning even further. Map the response to `finalAiQuestion`.
+
+6. **Final Input**: Add a `Text Input` block (`finalResponse` variable) to capture the user's final answer.
+
+<Image src="/blog-assets/feedback-chatbot/ai-workflow-diagram-questions.avif" alt="AI workflow diagram questions" width="962px" height="779px"  />
+
+
+<Info>
+Want to take your chatbot to the next level? Learn how to [train your chatbot on your own data](./train-chatbot-on-your-own-data.mdx) to provide more accurate and personalized responses.
+</Info>
+
+### Advanced personalization with dynamic variables
+
+Typebot allows you to pass custom variables to your chatbot, enabling highly personalized feedback experiences. Here's how to leverage this powerful feature:
+
+```javascript
+import { Standard } from '@typebot.io/react'
+
+function FeedbackWidget() {
+  // Example user and behavioral data
+  const userData = {
+    userName: 'John Doe',
+    lastPurchase: '2024-01-15',
+    totalOrders: 12,
+    preferredCategory: 'electronics',
+    timeOnSite: '45min'
+  }
+
+  return (
+    <Standard
+      typebot="your-typebot-id"
+      prefilledVariables={{
+        ...userData,
+        currentPage: window.location.pathname,
+        deviceType: navigator.userAgent,
+        interactionHistory: JSON.stringify(getUserInteractions()),
+      }}
+    />
+  )
+}
+```
+
+These variables can then be used within your chatbot flow to:
+
+- Personalize greetings: "Hi \{\{userName\}\}, we noticed you've been using our \{\{preferredCategory\}\} section a lot"
+- Target specific behaviors: "Since your last purchase on \{\{lastPurchase\}\}, how would you rate our service?"
+- Segment feedback based on user patterns: "As a frequent customer with \{\{totalOrders\}\} orders..."
+
+### Optimal timing for chatbot appearances
+
+Timing is crucial for feedback collection. Here are some effective trigger points to display your chatbot:
+
+- After a user completes a specific action (like making a purchase or using a feature multiple times)
+- When users have spent significant time on a particular page (e.g., &gt; 2 minutes)
+- Upon detecting exit intent
+- After multiple visits to the same feature or page
+
+Using Typebot's React SDK, you can implement these triggers with simple code:
+
+```tsx
+import { Popup } from '@typebot.io/react'
+
+function MyComponent() {
+  const [isOpen, setIsOpen] = useState(false)
+
+  // Example: Trigger after multiple feature uses
+  useEffect(() => {
+    const featureUseCount = Number(localStorage.getItem('featureUses') || 0)
+    if (featureUseCount > 3) {
+      setIsOpen(true)
+    }
+  }, [])
+
+  return (
+    {isOpen && (
+      <Popup
+  // Other example: Time-based trigger
+        autoShowDelay={3000}
+        typebot="your-typebot-id"
+        onClose={() => setIsOpen(false)}
+      />
+    )}
+  )
+}
+```
+
+<Info>
+Remember to balance timing with user experience - too frequent or poorly timed feedback requests can lead to survey fatigue.
+</Info>
+
+### Where to add the chatbot and in what form (standard, popup, bubble)
+
+The placement and format of your feedback chatbot can greatly impact its effectiveness. Typebot provides several options for integrating your chatbot:
+
+<Image src="/blog-assets/embed-options-standard-popup-bubble.avif" alt="Embed options standard popup bubble" width="650px" height="278px"  />
+
+
+- Standard embed: **Integrate the chatbot directly into a webpage, ideal for dedicated feedback pages.**
+- Popup: Have the chatbot appear as a popup after a specific action or time delay, great for capturing immediate post-interaction feedback.
+- Bubble: Add a small chat bubble to the corner of your website, allowing users to initiate the feedback process at their convenience.
+
+When deciding on placement, consider your website layout, user journey, and the nature of the feedback you're seeking. For instance, a bubble format might work well for ongoing general feedback. A popup could be more effective for gathering specific product or service feedback immediately after use.
+
+<Cta />
+
+## Integrating your feedback chatbot with other tools
+
+Creating a feedback chatbot with Typebot is just the beginning. To truly **use the power of customer feedback**, you'll want to integrate your chatbot with other tools in your tech stack. This integration allows you to streamline your workflow, analyze data more effectively, and act on the insights you gather. Let's explore how you can connect your Typebot feedback chatbot with various tools and systems to maximize its potential.
+
+### Using Typebot's native integrations
+
+Typebot offers several native integrations that make storing and organizing feedback responses seamless:
+
+1. **Google Sheets**: Easily export and store feedback data in a spreadsheet for tracking and analysis.
+
+2. **Airtable**: Create dynamic databases to capture and categorize feedback responses.
+
+3. **Nocodb:** Automatically log feedback entries into your team's database.
+
+By leveraging these integrations, you can effortlessly collect, store, and manage feedback data without manual data entry.
+
+### Connecting your chatbot to external tools via webhooks
+
+For tools that don't have native integrations with Typebot, webhooks offer a solution. **Webhooks allow your chatbot to send data to any external system that supports them.** Here's how to use webhooks in Typebot:
+
+1. In your chatbot flow, add a "Webhook" block.
+2. Enter the URL of the external service you want to connect to.
+3. Configure the data you want to send in the request body.
+4. Set up the receiving end in your external tool to process the incoming webhook data.
+
+This flexibility allows you to connect your feedback chatbot to CRM systems, project management tools, or custom databases. This ensures that feedback data flows seamlessly into your existing workflows.
+
+### Automating feedback analysis with AI-powered integrations
+
+Deriving actionable insights from collected feedback becomes simpler using **Typebot's OpenAI integration**. Here's how you can streamline this process without leaving Typebot:
+
+1. Add an OpenAI block in your Typebot workflow to automatically analyze feedback.
+2. Configure it to categorize responses or extract key themes directly within the conversation flow.
+3. Store the processed insights in Google Sheets or Airtable using Typebot's native integrations for easy tracking.
+4. Use Typebot's conditional logic to trigger follow-up actions based on the analysis, such as personalized thank-you messages or escalation to a team member for negative feedback.
+
+This setup helps instantly analyze feedback and act on recurring issues or trends, all within the Typebot ecosystem—eliminating manual processing entirely.
+
+Integrating your Typebot feedback chatbot with other tools amplifies its effectiveness. It turns it from a simple data collection tool into a powerful engine for customer insights and action.
+
+Whether you're using native integrations, webhooks, or AI-powered analysis, the key is to create a seamless flow of information.
+
+## Transforming customer insights with feedback chatbots
+
+Using a feedback chatbot is more than just upgrading technology. **It's a strategic way to understand and improve customer experience.**
+
+By using tools like Typebot, businesses can create dynamic, personalized feedback systems. These systems capture valuable insights and engage customers in a more interactive way. Feedback chatbots will help close communication gaps and improve processes.
+
+<Cta />

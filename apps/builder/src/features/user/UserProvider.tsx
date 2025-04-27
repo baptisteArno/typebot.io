@@ -20,10 +20,12 @@ export const userContext = createContext<{
   currentWorkspaceId?: string;
   logOut: () => void;
   updateUser: (newUser: Partial<UpdateUser>) => void;
+  updateLocalUserEmail: (newEmail: string) => void;
 }>({
   isLoading: false,
   logOut: () => {},
   updateUser: () => {},
+  updateLocalUserEmail: () => {},
 });
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
@@ -117,6 +119,11 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     await refreshUser();
   });
 
+  const updateLocalUserEmail = (newEmail: string) => {
+    if (!localUser) return;
+    setLocalUser({ ...localUser, email: newEmail });
+  };
+
   useEffect(() => {
     if ((!session?.user && !localUser) || (session?.user && localUser)) return;
     setLocalUser(session?.user);
@@ -130,6 +137,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         logOut: signOut,
         updateUser,
         currentWorkspaceId,
+        updateLocalUserEmail,
       }}
     >
       {children}

@@ -21,6 +21,7 @@ export const TextInputAddFileButton = (props: Props) => {
         onChange={(e) => {
           if (!e.currentTarget.files) return;
           props.onNewFiles(e.currentTarget.files);
+          e.currentTarget.value = "";
         }}
       />
       <input
@@ -32,6 +33,7 @@ export const TextInputAddFileButton = (props: Props) => {
         onChange={(e) => {
           if (!e.currentTarget.files) return;
           props.onNewFiles(e.currentTarget.files);
+          e.currentTarget.value = "";
         }}
       />
 

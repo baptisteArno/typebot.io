@@ -1,3 +1,4 @@
+import { authRouter } from "@/features/auth/api/router";
 import { googleSheetsRouter } from "@/features/blocks/integrations/googleSheets/api/router";
 import { openAIRouter } from "@/features/blocks/integrations/openai/api/router";
 import { credentialsRouter } from "@/features/credentials/api/router";
@@ -19,6 +20,7 @@ export const internalRouter = router({
   generateGroupTitle,
   credentials: credentialsRouter,
   getFeatureFlags,
+  auth: authRouter,
 });
 
 export type InternalRouter = typeof internalRouter;

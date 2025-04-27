@@ -10,6 +10,7 @@ export const chatsLimits = {
   [Plan.FREE]: 200,
   [Plan.STARTER]: 2000,
   [Plan.PRO]: 10000,
+  [Plan.ENTERPRISE]: 100000,
 } as const;
 
 export const seatsLimits = {
@@ -18,6 +19,7 @@ export const seatsLimits = {
   [Plan.STARTER]: 2,
   [Plan.PRO]: 5,
   [Plan.LIFETIME]: 8,
+  [Plan.ENTERPRISE]: 10,
 } as const;
 
 export const starterChatTiers = [

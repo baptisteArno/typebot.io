@@ -74,6 +74,10 @@ const getStartingPoint = ({
         code: "BAD_REQUEST",
         message: "Start group doesn't exist",
       });
+    return {
+      type: "group",
+      group,
+    };
   }
   const firstEdgeId = getFirstEdgeId({
     typebot: state.typebotsQueue[0]?.typebot,

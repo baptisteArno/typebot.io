@@ -1,17 +1,14 @@
 import { env } from "@typebot.io/env";
 import { getAtPath } from "@typebot.io/lib/utils";
-import {
-  type User,
-  userSchema,
-} from "@typebot.io/schemas/features/user/schema";
-import AzureADProvider from "next-auth/providers/azure-ad";
-import EmailProvider from "next-auth/providers/email";
+import { userSchema } from "@typebot.io/schemas/features/user/schema";
 import FacebookProvider from "next-auth/providers/facebook";
 import GitHubProvider from "next-auth/providers/github";
 import GitlabProvider from "next-auth/providers/gitlab";
 import GoogleProvider from "next-auth/providers/google";
 import type { Provider } from "next-auth/providers/index";
 import KeycloakProvider from "next-auth/providers/keycloak";
+import MicrosoftEntraID from "next-auth/providers/microsoft-entra-id";
+import Nodemailer from "next-auth/providers/nodemailer";
 import { sendVerificationRequest } from "../helpers/sendVerificationRequest";
 
 export const providers: Provider[] = [];
@@ -21,12 +18,13 @@ if (env.GITHUB_CLIENT_ID && env.GITHUB_CLIENT_SECRET)
     GitHubProvider({
       clientId: env.GITHUB_CLIENT_ID,
       clientSecret: env.GITHUB_CLIENT_SECRET,
+      allowDangerousEmailAccountLinking: true,
     }),
   );
 
 if (env.NEXT_PUBLIC_SMTP_FROM && !env.SMTP_AUTH_DISABLED)
   providers.push(
-    EmailProvider({
+    Nodemailer({
       server: {
         host: env.SMTP_HOST,
         port: env.SMTP_PORT,
@@ -53,6 +51,7 @@ if (env.GOOGLE_AUTH_CLIENT_ID && env.GOOGLE_AUTH_CLIENT_SECRET)
     GoogleProvider({
       clientId: env.GOOGLE_AUTH_CLIENT_ID,
       clientSecret: env.GOOGLE_AUTH_CLIENT_SECRET,
+      allowDangerousEmailAccountLinking: true,
     }),
   );
 
@@ -61,6 +60,7 @@ if (env.FACEBOOK_CLIENT_ID && env.FACEBOOK_CLIENT_SECRET)
     FacebookProvider({
       clientId: env.FACEBOOK_CLIENT_ID,
       clientSecret: env.FACEBOOK_CLIENT_SECRET,
+      allowDangerousEmailAccountLinking: true,
     }),
   );
 
@@ -84,10 +84,10 @@ if (
   env.AZURE_AD_TENANT_ID
 ) {
   providers.push(
-    AzureADProvider({
+    MicrosoftEntraID({
       clientId: env.AZURE_AD_CLIENT_ID,
       clientSecret: env.AZURE_AD_CLIENT_SECRET,
-      tenantId: env.AZURE_AD_TENANT_ID,
+      issuer: `https://login.microsoftonline.com/${env.AZURE_AD_TENANT_ID || "common"}/v2.0`,
     }),
   );
 }

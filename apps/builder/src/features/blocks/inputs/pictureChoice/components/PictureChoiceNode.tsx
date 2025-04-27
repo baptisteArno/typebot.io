@@ -21,7 +21,7 @@ export const PictureChoiceNode = ({ block, indices }: Props) => {
   )?.name;
 
   return (
-    <Stack w="full">
+    <Stack w="90%">
       {block.options?.dynamicItems?.isEnabled && dynamicVariableName ? (
         <Wrap spacing={1}>
           <Text>

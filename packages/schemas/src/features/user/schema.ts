@@ -56,7 +56,6 @@ export const updateUserSchema = userSchema.pick({
   displayedInAppNotifications: true,
   groupTitlesAutoGeneration: true,
   name: true,
-  email: true,
   image: true,
   company: true,
   graphNavigation: true,

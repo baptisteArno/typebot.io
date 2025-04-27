@@ -1,24 +1,27 @@
 import { datesAreOnSameDay } from "@/helpers/datesAreOnSameDate";
 import { env } from "@typebot.io/env";
+import { getIp } from "@typebot.io/lib/getIp";
 import { isDefined } from "@typebot.io/lib/utils";
 import prisma from "@typebot.io/prisma";
 import { clientUserSchema } from "@typebot.io/schemas/features/user/schema";
 import { trackEvents } from "@typebot.io/telemetry/trackEvents";
-import type { AuthOptions } from "next-auth";
-import { providers } from "../lib/providers";
-import rateLimiter from "../lib/rateLimiter";
-import { accountHasRequiredOAuthGroups } from "./accountHasRequiredOAuthGroups";
-import { createAuthPrismaAdapter } from "./createAuthPrismaAdapter";
-import { isEmailLegit } from "./emailValidation";
-import { getNewUserInvitations } from "./getNewUserInvitations";
+import NextAuth from "next-auth";
+import { accountHasRequiredOAuthGroups } from "../helpers/accountHasRequiredOAuthGroups";
+import { createAuthPrismaAdapter } from "../helpers/createAuthPrismaAdapter";
+import { isEmailLegit } from "../helpers/emailValidation";
+import { getNewUserInvitations } from "../helpers/getNewUserInvitations";
+import { providers } from "./providers";
+import rateLimiter from "./rateLimiter";
 
-export const createAuthConfig = (props?: { ip?: string }): AuthOptions => ({
+export const {
+  auth,
+  handlers: authHandlers,
+  signIn,
+  signOut,
+} = NextAuth((req) => ({
   adapter: createAuthPrismaAdapter(prisma),
   secret: env.ENCRYPTION_SECRET,
   providers,
-  session: {
-    strategy: "database",
-  },
   pages: {
     signIn: "/signin",
     newUser: env.NEXT_PUBLIC_ONBOARDING_TYPEBOT_ID ? "/onboarding" : undefined,
@@ -34,7 +37,7 @@ export const createAuthConfig = (props?: { ip?: string }): AuthOptions => ({
       }
     },
     async signIn({ user, isNewUser }) {
-      if (isNewUser) return;
+      if (!user.id || isNewUser) return;
       await trackEvents([
         {
           name: "User logged in",
@@ -42,11 +45,12 @@ export const createAuthConfig = (props?: { ip?: string }): AuthOptions => ({
         },
       ]);
     },
-    async signOut({ session }) {
+    async signOut(props) {
+      if ("token" in props) return;
       await trackEvents([
         {
           name: "User logged out",
-          userId: (session as unknown as { userId: string }).userId,
+          userId: (props.session as unknown as { userId: string }).userId,
         },
       ]);
     },
@@ -60,8 +64,9 @@ export const createAuthConfig = (props?: { ip?: string }): AuthOptions => ({
       if (!account) return false;
       const isNewUser = !("createdAt" in user && isDefined(user.createdAt));
       if (user.email && email?.verificationRequest) {
-        if (rateLimiter && props?.ip) {
-          const { success } = await rateLimiter.limit(props.ip);
+        const ip = req ? getIp(req) : null;
+        if (rateLimiter && ip) {
+          const { success } = await rateLimiter.limit(ip);
           if (!success) throw new Error("too-many-requests");
         }
         if (!isEmailLegit(user.email)) throw new Error("email-not-legit");
@@ -80,4 +85,4 @@ export const createAuthConfig = (props?: { ip?: string }): AuthOptions => ({
       return await accountHasRequiredOAuthGroups(account);
     },
   },
-});
+}));
