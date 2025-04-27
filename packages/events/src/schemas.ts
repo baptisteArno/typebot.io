@@ -1,4 +1,3 @@
-import { conditionSchema } from "@typebot.io/conditions/schemas";
 import { z } from "@typebot.io/zod";
 import { EventType } from "./constants";
 
@@ -31,12 +30,6 @@ const replyEventOptionsSchema = z.object({
   contentVariableId: z.string().optional(),
   inputNameVariableId: z.string().optional(),
   inputTypeVariableId: z.string().optional(),
-  exitCondition: z
-    .object({
-      isEnabled: z.boolean().optional(),
-      condition: conditionSchema.optional(),
-    })
-    .optional(),
 });
 
 export const replyEventSchema = eventBaseSchema.extend({
@@ -57,14 +50,6 @@ export const eventSchema = z.discriminatedUnion("type", [
 export type TEvent = z.infer<typeof eventSchema>;
 
 export type TEventWithOptions = Extract<TEvent, { options?: any }>;
-export type TEventWithExitCondition = Extract<
-  TEvent,
-  {
-    options: {
-      exitCondition: NonNullable<ReplyEvent["options"]>["exitCondition"];
-    };
-  }
->;
 
 export const draggableEventSchema = z.discriminatedUnion("type", [
   ...draggableEventSchemas,

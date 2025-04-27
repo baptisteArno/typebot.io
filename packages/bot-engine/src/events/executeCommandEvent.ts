@@ -3,6 +3,9 @@ import type { SessionState } from "@typebot.io/chat-session/schemas";
 import { EventType } from "@typebot.io/events/constants";
 import type { CommandEvent } from "@typebot.io/events/schemas";
 import { getBlockById } from "@typebot.io/groups/helpers/getBlockById";
+import { byId } from "@typebot.io/lib/utils";
+import { addDummyFirstBlockToGroupIfMissing } from "../addDummyFirstBlockToGroupIfMissing";
+import { addPortalEdge } from "../addPortalEdge";
 
 type Props = {
   state: SessionState;
@@ -51,6 +54,7 @@ export const executeCommandEvent = ({ state, command }: Props) => {
       };
     } else {
       newSessionState.returnMark = {
+        status: "pending",
         blockId: newSessionState.currentBlockId,
       };
     }
@@ -73,7 +77,7 @@ export const executeCommandEvent = ({ state, command }: Props) => {
       message: "Command event doesn't have a connected group",
     });
   const nextBlockIndex = nextGroup.blocks.findIndex(byId(nextEdge.to.blockId));
-  newSessionState = addBlockToTypebotIfMissing(
+  newSessionState = addDummyFirstBlockToGroupIfMissing(
     `virtual-${event.id}-block`,
     newSessionState,
     {

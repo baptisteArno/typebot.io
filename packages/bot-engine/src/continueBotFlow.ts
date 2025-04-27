@@ -73,11 +73,18 @@ type Params = {
   state: SessionState;
   textBubbleContentFormat: "richText" | "markdown";
   sessionStore: SessionStore;
+  skipReplyEvent?: boolean;
 };
 
 export const continueBotFlow = async (
   reply: Message | undefined,
-  { state, version, textBubbleContentFormat, sessionStore }: Params,
+  {
+    state,
+    version,
+    textBubbleContentFormat,
+    sessionStore,
+    skipReplyEvent,
+  }: Params,
 ): Promise<ContinueBotFlowResponse> => {
   if (!state.currentBlockId)
     return startBotFlow({
@@ -96,7 +103,7 @@ export const continueBotFlow = async (
       state,
       command: reply.command,
     });
-  } else {
+  } else if (!skipReplyEvent) {
     const replyEvent = findReplyEvent(newSessionState);
     if (reply && replyEvent) {
       const response = executeReplyEvent({
@@ -220,6 +227,7 @@ export const continueBotFlow = async (
           type: "nextEdge" as const,
           nextEdge,
         };
+
   const executionResponse = await walkFlowForward(walkStartingPoint, {
     version,
     state: newSessionState,
@@ -228,6 +236,48 @@ export const continueBotFlow = async (
     textBubbleContentFormat,
     sessionStore,
   });
+
+  // Is resuming from a reply event flow
+  if (
+    executionResponse.input &&
+    executionResponse.newSessionState.returnMark?.status === "called" &&
+    executionResponse.newSessionState.returnMark?.autoResumeMessage &&
+    executionResponse.newSessionState.returnMark.blockId ===
+      executionResponse.input.id
+  ) {
+    const resumeContinueFlowResponse = await continueBotFlow(
+      executionResponse.newSessionState.returnMark.autoResumeMessage,
+      {
+        state: {
+          ...executionResponse.newSessionState,
+          returnMark: undefined,
+        },
+        version,
+        textBubbleContentFormat,
+        sessionStore,
+        skipReplyEvent: true,
+      },
+    );
+
+    return {
+      ...resumeContinueFlowResponse,
+      messages: executionResponse.messages.concat(
+        resumeContinueFlowResponse.messages,
+      ),
+      clientSideActions: executionResponse.clientSideActions.concat(
+        resumeContinueFlowResponse.clientSideActions ?? [],
+      ),
+      logs: executionResponse.logs.concat(
+        resumeContinueFlowResponse.logs ?? [],
+      ),
+      setVariableHistory: executionResponse.setVariableHistory.concat(
+        resumeContinueFlowResponse.setVariableHistory ?? [],
+      ),
+      visitedEdges: executionResponse.visitedEdges.concat(
+        resumeContinueFlowResponse.visitedEdges ?? [],
+      ),
+    };
+  }
 
   return {
     messages: executionResponse.messages,

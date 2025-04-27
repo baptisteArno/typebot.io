@@ -161,7 +161,7 @@ const addLinkedTypebotToState = async (
           : shouldMergeResults
             ? newSessionState.typebotsQueue[0].resultId
             : createId(),
-        queuedEdges: edgeIdToQueue ? [{ id: edgeIdToQueue }] : undefined,
+        queuedEdgeIds: edgeIdToQueue ? [edgeIdToQueue] : undefined,
         answers: shouldMergeResults
           ? newSessionState.typebotsQueue[0].answers
           : [],

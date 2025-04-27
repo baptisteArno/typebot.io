@@ -121,8 +121,6 @@
   "blocks.events.command.settings.command.placeholder": "Command",
   "blocks.events.command.settings.resumeAfter.label": "Resume flow after",
   "blocks.events.reply.eventCard.tooltip": "Triggered when a reply is received.",
-  "blocks.events.reply.settings.exitCondition.label": "Exit condition",
-  "blocks.events.reply.settings.exitCondition.infoText": "If the condition is met, the bot will end after this flow.",
   "blocks.events.reply.node.prefix": "On reply",
   "blocks.events.reply.settings.variableMappingAccordion.title": "Map reply to variables",
   "blocks.events.reply.settings.contentVariable.label": "Reply content",

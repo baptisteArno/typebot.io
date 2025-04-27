@@ -1,12 +1,11 @@
 import { isInputBlockType } from "@typebot.io/blocks-core/helpers";
 import { replyEventInputTypeFromEnum } from "@typebot.io/blocks-inputs/constants";
+import type { InputMessage } from "@typebot.io/chat-api/schemas";
 import type { SessionState } from "@typebot.io/chat-session/schemas";
 import type { ReplyEvent } from "@typebot.io/events/schemas";
 import { getBlockById } from "@typebot.io/groups/helpers/getBlockById";
 import type { VariableWithUnknowValue } from "@typebot.io/variables/schemas";
-import type { InputMessage } from "../schemas/api";
 import { updateVariablesInSession } from "../updateVariablesInSession";
-import { connectEdgeToNextBlock } from "./connectEdgeToNextBlock";
 import { updateCurrentBlockIdWithEvent } from "./updateCurrentBlockIdWithEvent";
 
 type Props = {
@@ -79,10 +78,12 @@ export const executeReplyEvent = ({
 
   newSessionState = updatedState;
 
-  newSessionState = connectEdgeToNextBlock({
-    state: newSessionState,
-    event,
-  });
+  if (newSessionState.currentBlockId)
+    newSessionState.returnMark = {
+      status: "pending",
+      blockId: newSessionState.currentBlockId,
+      autoResumeMessage: reply,
+    };
 
   return {
     updatedState: updateCurrentBlockIdWithEvent({
