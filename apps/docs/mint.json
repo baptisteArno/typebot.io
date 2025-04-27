@@ -119,6 +119,7 @@
                 "editor/blocks/logic/typebot-link",
                 "editor/blocks/logic/wait",
                 "editor/blocks/logic/jump",
+                "editor/blocks/logic/return",
                 "editor/blocks/logic/ab-test",
                 "editor/blocks/logic/webhook"
               ]

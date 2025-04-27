@@ -371,6 +371,9 @@
                                                 "$ref": "#/components/schemas/jumpLogic"
                                               },
                                               {
+                                                "$ref": "#/components/schemas/returnLogic"
+                                              },
+                                              {
                                                 "type": "object",
                                                 "properties": {
                                                   "id": {
@@ -4513,6 +4516,9 @@
                                             "$ref": "#/components/schemas/jumpLogic"
                                           },
                                           {
+                                            "$ref": "#/components/schemas/returnLogic"
+                                          },
+                                          {
                                             "type": "object",
                                             "properties": {
                                               "id": {
@@ -7498,6 +7504,9 @@
                                           },
                                           {
                                             "$ref": "#/components/schemas/jumpLogic"
+                                          },
+                                          {
+                                            "$ref": "#/components/schemas/returnLogic"
                                           },
                                           {
                                             "type": "object",
@@ -15699,6 +15708,28 @@
         ],
         "title": "Jump"
       },
+      "returnLogic": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "outgoingEdgeId": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "Return"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "type"
+        ],
+        "title": "Return"
+      },
       "chatwootBlock": {
         "type": "object",
         "properties": {
@@ -16338,6 +16369,9 @@
                       "$ref": "#/components/schemas/jumpLogic"
                     },
                     {
+                      "$ref": "#/components/schemas/returnLogic"
+                    },
+                    {
                       "$ref": "#/components/schemas/conditionLogic"
                     },
                     {
@@ -16356,6 +16390,7 @@
                       "Typebot link": "#/components/schemas/typebotLinkLogic",
                       "Wait": "#/components/schemas/waitLogic",
                       "Jump": "#/components/schemas/jumpLogic",
+                      "Return": "#/components/schemas/returnLogic",
                       "Condition": "#/components/schemas/conditionLogic",
                       "AB test": "#/components/schemas/abTestLogic",
                       "webhook": "#/components/schemas/webhookLogic"
@@ -23918,6 +23953,9 @@
                             "$ref": "#/components/schemas/jumpLogic"
                           },
                           {
+                            "$ref": "#/components/schemas/returnLogic"
+                          },
+                          {
                             "type": "object",
                             "properties": {
                               "id": {
@@ -26254,6 +26292,9 @@
                           },
                           {
                             "$ref": "#/components/schemas/jumpLogic"
+                          },
+                          {
+                            "$ref": "#/components/schemas/returnLogic"
                           },
                           {
                             "type": "object",

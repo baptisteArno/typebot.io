@@ -2,6 +2,7 @@ import { TRPCError } from "@trpc/server";
 import type { JumpBlock } from "@typebot.io/blocks-logic/jump/schema";
 import type { SessionState } from "@typebot.io/chat-session/schemas";
 import { addPortalEdge } from "../../../addPortalEdge";
+import { getNextBlock } from "../../../getNextBlock";
 import type { ExecuteLogicResponse } from "../../../types";
 
 export const executeJumpBlock = (
@@ -25,6 +26,13 @@ export const executeJumpBlock = (
   const newSessionState = addPortalEdge(`virtual-${block.id}`, state, {
     to: { groupId, blockId: blockToJumpTo?.id },
   });
+
+  const nextBlock = getNextBlock(block.id, { typebot });
+
+  if (nextBlock)
+    newSessionState.returnMark = {
+      blockId: nextBlock.id,
+    };
 
   return {
     outgoingEdgeId: `virtual-${block.id}`,

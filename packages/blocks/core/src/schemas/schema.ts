@@ -72,12 +72,9 @@ export type BlockV6 =
 
 export type Block = BlockV5 | BlockV6;
 
-export type BlockOptions =
-  | InputBlock["options"]
-  | LogicBlock["options"]
-  | IntegrationBlock["options"];
-
 export type BlockWithOptions = Extract<Block, { options?: any }>;
+
+export type BlockOptions = BlockWithOptions["options"];
 
 export type BlockWithOptionsType = BlockWithOptions["type"];
 

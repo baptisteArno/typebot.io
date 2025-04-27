@@ -5995,6 +5995,9 @@
                       "$ref": "#/components/schemas/jumpLogic"
                     },
                     {
+                      "$ref": "#/components/schemas/returnLogic"
+                    },
+                    {
                       "$ref": "#/components/schemas/conditionLogic"
                     },
                     {
@@ -6013,6 +6016,7 @@
                       "Typebot link": "#/components/schemas/typebotLinkLogic",
                       "Wait": "#/components/schemas/waitLogic",
                       "Jump": "#/components/schemas/jumpLogic",
+                      "Return": "#/components/schemas/returnLogic",
                       "Condition": "#/components/schemas/conditionLogic",
                       "AB test": "#/components/schemas/abTestLogic",
                       "webhook": "#/components/schemas/webhookLogic"
@@ -8154,6 +8158,28 @@
           "type"
         ],
         "title": "Jump"
+      },
+      "returnLogic": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "outgoingEdgeId": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "Return"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "type"
+        ],
+        "title": "Return"
       },
       "conditionLogic": {
         "type": "object",
@@ -14516,6 +14542,9 @@
                           },
                           {
                             "$ref": "#/components/schemas/jumpLogic"
+                          },
+                          {
+                            "$ref": "#/components/schemas/returnLogic"
                           },
                           {
                             "type": "object",

@@ -21,6 +21,7 @@ export const commandEventSchema = eventBaseSchema.extend({
   options: z
     .object({
       command: z.string().optional(),
+      // TODO: remove and use Return block instead.
       resumeAfter: z.boolean().optional(),
     })
     .optional(),
