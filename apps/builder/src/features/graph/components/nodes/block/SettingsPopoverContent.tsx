@@ -44,10 +44,7 @@ import {
   useColorModeValue,
   useEventListener,
 } from "@chakra-ui/react";
-import type {
-  BlockOptions,
-  BlockWithOptions,
-} from "@typebot.io/blocks-core/schemas/schema";
+import type { BlockWithOptions } from "@typebot.io/blocks-core/schemas/schema";
 import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
 import { IntegrationBlockType } from "@typebot.io/blocks-integrations/constants";
 import { LogicBlockType } from "@typebot.io/blocks-logic/constants";
@@ -139,7 +136,7 @@ export const NodeSettings = ({
   onNodeChange: (node: Partial<BlockWithOptions | TEventWithOptions>) => void;
 }): JSX.Element | null => {
   const updateOptions = (
-    options: BlockOptions | TEventWithOptions["options"],
+    options: BlockWithOptions["options"] | TEventWithOptions["options"],
   ) => {
     onNodeChange({ options });
   };

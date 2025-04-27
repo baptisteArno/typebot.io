@@ -122,6 +122,12 @@ const sessionStateSchemaV2 = z.object({
       totalAnswers: z.number(),
     })
     .optional(),
+  returnMark: z
+    .object({
+      blockId: z.string(),
+    })
+    .optional()
+    .describe("Used by a potential future Return block"),
 });
 
 const sessionStateSchemaV3 = sessionStateSchemaV2
