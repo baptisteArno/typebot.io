@@ -177,7 +177,7 @@ export const ItemNodesList = ({
           </PlaceholderNode>
         </Stack>
       ))}
-      {isLastBlock && checkIfDefaultItemIsNeeded(block) && groupId && (
+      {checkIfDefaultItemIsNeeded(block, isLastBlock) && groupId && (
         <DefaultItemNode block={block} groupId={groupId} />
       )}
 
@@ -245,8 +245,13 @@ const DefaultItemNode = ({
   );
 };
 
-const checkIfDefaultItemIsNeeded = (block: BlockWithItems) => {
-  if (block.outgoingEdgeId) return true;
+const checkIfDefaultItemIsNeeded = (
+  block: BlockWithItems,
+  isLastBlock: boolean,
+) => {
+  if (!isLastBlock) return false;
+  if (block.outgoingEdgeId || block.type === LogicBlockType.CONDITION)
+    return true;
   if (block.items.length === 1) return false;
   if (block.type === InputBlockType.CARDS) {
     return block.items.some((item) =>
