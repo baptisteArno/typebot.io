@@ -10,7 +10,7 @@ export class SessionStore {
   private prevHash: string | undefined;
   private createdAt: Date;
 
-  constructor(sessionId:string) {
+  constructor(sessionId: string) {
     this.isolate = undefined;
     this.emailSendingCount = 0;
     this.prevHash = undefined;

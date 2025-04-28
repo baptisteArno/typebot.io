@@ -62,9 +62,6 @@ export const executeHttpRequestBlock = async (
     sessionStore: SessionStore;
   } & Params,
 ): Promise<ExecuteIntegrationResponse> => {
-  console.log('state',state);
-  console.log('sessionStore',sessionStore);
-
   const logs: LogInSession[] = [];
   const webhook =
     block.options?.webhook ??
