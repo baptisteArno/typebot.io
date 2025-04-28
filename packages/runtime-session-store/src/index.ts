@@ -5,15 +5,17 @@ const CLEANUP_INTERVAL_MS = 30 * 60 * 1000;
 
 export class SessionStore {
   private isolate: Isolate | undefined;
+  private sessionId: string;
   private emailSendingCount: number;
   private prevHash: string | undefined;
   private createdAt: Date;
 
-  constructor() {
+  constructor(sessionId:string) {
     this.isolate = undefined;
     this.emailSendingCount = 0;
     this.prevHash = undefined;
     this.createdAt = new Date();
+    this.sessionId = sessionId;
   }
 
   getEmailSendingCount(): number {
@@ -47,6 +49,10 @@ export class SessionStore {
   getCreatedAt(): Date {
     return this.createdAt;
   }
+
+  getSessionId(): string {
+    return this.sessionId;
+  }
 }
 
 export const sessionStores = new Map<string, SessionStore>();
@@ -60,8 +66,9 @@ export const getSessionStore = (sessionId: string): SessionStore => {
   }
 
   if (!sessionStores.has(sessionId)) {
-    sessionStores.set(sessionId, new SessionStore());
+    sessionStores.set(sessionId, new SessionStore(sessionId));
   }
+
   return sessionStores.get(sessionId)!;
 };
 

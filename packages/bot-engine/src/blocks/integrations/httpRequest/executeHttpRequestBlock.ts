@@ -62,6 +62,9 @@ export const executeHttpRequestBlock = async (
     sessionStore: SessionStore;
   } & Params,
 ): Promise<ExecuteIntegrationResponse> => {
+  console.log('state',state);
+  console.log('sessionStore',sessionStore);
+
   const logs: LogInSession[] = [];
   const webhook =
     block.options?.webhook ??
@@ -71,6 +74,7 @@ export const executeHttpRequestBlock = async (
         })) as HttpRequest | null)
       : null);
   if (!webhook) return { outgoingEdgeId: block.outgoingEdgeId };
+
   const parsedHttpRequest = await parseWebhookAttributes({
     webhook,
     isCustomBody: block.options?.isCustomBody,
@@ -78,6 +82,7 @@ export const executeHttpRequestBlock = async (
     answers: state.typebotsQueue[0].answers,
     sessionStore,
   });
+
   if (!parsedHttpRequest) {
     logs.push({
       status: "error",
@@ -85,6 +90,7 @@ export const executeHttpRequestBlock = async (
     });
     return { outgoingEdgeId: block.outgoingEdgeId, logs };
   }
+
   if (block.options?.isExecutedOnClient && !state.whatsApp)
     return {
       outgoingEdgeId: block.outgoingEdgeId,
@@ -103,7 +109,7 @@ export const executeHttpRequestBlock = async (
   } = await executeHttpRequest(parsedHttpRequest, {
     ...params,
     timeout: block.options?.timeout,
-  });
+  }, sessionStore, state);
 
   return {
     ...saveDataInResponseVariableMapping({
@@ -201,6 +207,8 @@ export const parseWebhookAttributes = async ({
 export const executeHttpRequest = async (
   webhook: ParsedWebhook,
   params: Params = {},
+  sessionStore: SessionStore,
+  state?: SessionState,
 ): Promise<{
   response: HttpResponse;
   logs?: LogInSession[];
@@ -210,6 +218,13 @@ export const executeHttpRequest = async (
 
   const { headers, url, method, basicAuth, isJson } = webhook;
   const contentType = headers ? headers["Content-Type"] : undefined;
+
+  console.log('state',state);
+  console.log('sessionStore',sessionStore);
+
+  if (headers) {
+    headers["Session-ID"] = sessionStore.getSessionId();
+  }
 
   const isLongRequest = params.disableRequestTimeout
     ? true
@@ -226,7 +241,9 @@ export const executeHttpRequest = async (
   const baseRequest = {
     url,
     method,
-    headers: headers ?? {},
+    headers: headers ?? {
+      "Session-ID": sessionStore.getSessionId(),
+    },
     ...(basicAuth ?? {}),
     timeout: isNotDefined(env.CHAT_API_TIMEOUT)
       ? false

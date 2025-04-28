@@ -92,7 +92,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const { response, logs } = await executeHttpRequest(parsedWebhook, {
       timeout: block.options?.timeout,
-    });
+    }, sessionStore);
 
     if (resultId)
       await Promise.all(

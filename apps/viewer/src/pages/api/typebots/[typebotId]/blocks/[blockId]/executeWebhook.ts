@@ -123,7 +123,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const { response, logs } = await executeHttpRequest(parsedWebhook, {
       timeout: block.options?.timeout,
-    });
+    }, getSessionStore(typebotId));
 
     if (resultId)
       await Promise.all(
