@@ -163,12 +163,12 @@ export const deleteEdgeDraft = ({
   groupIndex?: number;
 }) => {
   const edgeIndex = typebot.edges.findIndex(byId(edgeId));
-  deleteOutgoingEdgeIdProps({ typebot, edgeId, groupIndex });
+  resetOutgoingEdgeIdProp({ typebot, edgeId, groupIndex });
   if (edgeIndex === -1) return;
   typebot.edges.splice(edgeIndex, 1);
 };
 
-const deleteOutgoingEdgeIdProps = ({
+const resetOutgoingEdgeIdProp = ({
   typebot,
   edgeId,
   groupIndex,
@@ -186,14 +186,10 @@ const deleteOutgoingEdgeIdProps = ({
   }
   const group = groupIndex
     ? typebot.groups[groupIndex]
-    : typebot.groups.find(
-        (group) =>
-          edge.to.groupId === group.id ||
-          group.blocks.some(
-            (block) =>
-              "blockId" in edge.from &&
-              (block.id === edge.from.blockId || block.id === edge.to.blockId),
-          ),
+    : typebot.groups.find((group) =>
+        group.blocks.some(
+          (block) => "blockId" in edge.from && block.id === edge.from.blockId,
+        ),
       );
   if (!group) return;
 
@@ -216,6 +212,7 @@ const deleteOutgoingEdgeIdProps = ({
     item.outgoingEdgeId = undefined;
     return;
   }
+
   block.outgoingEdgeId = undefined;
 };
 
