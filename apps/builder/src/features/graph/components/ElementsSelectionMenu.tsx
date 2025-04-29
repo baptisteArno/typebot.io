@@ -9,7 +9,6 @@ import {
   useColorModeValue,
   useEventListener,
 } from "@chakra-ui/react";
-import { createId } from "@paralleldrive/cuid2";
 import { EventType } from "@typebot.io/events/constants";
 import type { TDraggableEvent } from "@typebot.io/events/schemas";
 import type { GroupV6 } from "@typebot.io/groups/schemas";
@@ -84,9 +83,9 @@ export const ElementsSelectionMenu = ({
     );
     const elements = {
       groups,
+      events: events as TDraggableEvent[],
       edges,
       variables,
-      events: events as TDraggableEvent[],
     };
     copyElements(elements);
     return elements;
@@ -106,25 +105,36 @@ export const ElementsSelectionMenu = ({
   }) => {
     if (!groupsInClipboard || isReadOnly || !mousePosition) return;
     const clipboard = overrideClipBoard ?? groupsInClipboard;
-    const { groups, events, oldToNewIdsMapping } = parseElementsToPaste({
-      groups: clipboard.groups,
-      events: clipboard.events,
-      mousePosition: projectMouse(mousePosition, graphPosition),
+    const farLeftElement = [...clipboard.groups, ...clipboard.events].sort(
+      (a, b) => a.graphCoordinates.x - b.graphCoordinates.x,
+    )[0];
+    const { newGroups, oldToNewIdsMapping } = pasteGroups(clipboard, {
+      newCoordinates: {
+        mousePosition: projectMouse(mousePosition, graphPosition),
+        farLeftElement: {
+          id: farLeftElement.id,
+          ...farLeftElement.graphCoordinates,
+        },
+      },
     });
-    groups.forEach((group) => {
+    newGroups.forEach((group) => {
       updateElementCoordinates(group.id, group.graphCoordinates);
     });
-    events.forEach((event) => {
+    const { newEvents } = pasteEvents(clipboard, {
+      oldToNewIdsMapping,
+      updateCoordinates: {
+        mousePosition: projectMouse(mousePosition, graphPosition),
+        farLeftElement: {
+          id: farLeftElement.id,
+          ...farLeftElement.graphCoordinates,
+        },
+      },
+    });
+    newEvents.forEach((event) => {
       updateElementCoordinates(event.id, event.graphCoordinates);
     });
-    pasteEvents(events, clipboard.edges, oldToNewIdsMapping);
-    pasteGroups(
-      groups,
-      clipboard.edges,
-      clipboard.variables,
-      oldToNewIdsMapping,
-    );
-    setFocusedElements([...groups, ...events].map((g) => g.id));
+
+    setFocusedElements([...newGroups, ...newEvents].map((g) => g.id));
   };
 
   useKeyboardShortcuts({
@@ -200,79 +210,6 @@ export const ElementsSelectionMenu = ({
     </HStack>
   );
 };
-
-const parseElementsToPaste = ({
-  groups,
-  events,
-  mousePosition,
-}: {
-  groups: GroupV6[];
-  events: TDraggableEvent[];
-  mousePosition: Coordinates;
-}): {
-  groups: GroupV6[];
-  events: TDraggableEvent[];
-  oldToNewIdsMapping: Map<string, string>;
-} => {
-  const farLeftElement = [...groups, ...events].sort(
-    (a, b) => a.graphCoordinates.x - b.graphCoordinates.x,
-  )[0];
-  const farLeftElementCoord = farLeftElement.graphCoordinates;
-
-  const oldToNewIdsMapping = new Map<string, string>();
-  const newGroups = groups.map((group) => {
-    const newId = createId();
-    oldToNewIdsMapping.set(group.id, newId);
-
-    return {
-      ...group,
-      id: newId,
-      graphCoordinates:
-        group.id === farLeftElement.id
-          ? mousePosition
-          : {
-              x:
-                mousePosition.x +
-                group.graphCoordinates.x -
-                farLeftElementCoord.x,
-              y:
-                mousePosition.y +
-                group.graphCoordinates.y -
-                farLeftElementCoord.y,
-            },
-    };
-  });
-
-  const newEvents = events.map((event) => {
-    const newId = createId();
-    oldToNewIdsMapping.set(event.id, newId);
-
-    return {
-      ...event,
-      id: newId,
-      graphCoordinates:
-        event.id === farLeftElement.id
-          ? mousePosition
-          : {
-              x:
-                mousePosition.x +
-                event.graphCoordinates.x -
-                farLeftElementCoord.x,
-              y:
-                mousePosition.y +
-                event.graphCoordinates.y -
-                farLeftElementCoord.y,
-            },
-    };
-  });
-
-  return {
-    groups: newGroups,
-    events: newEvents,
-    oldToNewIdsMapping,
-  };
-};
-
 export const extractVariablesFromCopiedElements = (
   elements: (GroupV6 | TDraggableEvent)[],
   existingVariables: Variable[],

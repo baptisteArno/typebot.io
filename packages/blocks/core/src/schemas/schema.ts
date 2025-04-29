@@ -2,6 +2,7 @@ import {
   type BubbleBlock,
   bubbleBlockSchema,
 } from "@typebot.io/blocks-bubbles/schema";
+import type { CardsItem } from "@typebot.io/blocks-inputs/cards/schema";
 import {
   type InputBlock,
   type InputBlockV5,
@@ -79,3 +80,5 @@ export type BlockOptions = BlockWithOptions["options"];
 export type BlockWithOptionsType = BlockWithOptions["type"];
 
 export type BlockWithItems = Extract<BlockV6, { items: ItemV6[] }>;
+
+export type BlockWithItemsWithPaths = Extract<BlockV6, { items: CardsItem[] }>;

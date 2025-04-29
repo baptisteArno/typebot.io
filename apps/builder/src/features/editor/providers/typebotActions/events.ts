@@ -1,8 +1,8 @@
-import type { CoordinatesMap } from "@/features/graph/types";
+import type { Coordinates, CoordinatesMap } from "@/features/graph/types";
 import { EventType } from "@typebot.io/events/constants";
 import type { TDraggableEvent, TEvent } from "@typebot.io/events/schemas";
 import { createId } from "@typebot.io/lib/createId";
-import { byId } from "@typebot.io/lib/utils";
+import { byId, isDefined } from "@typebot.io/lib/utils";
 import type { Edge } from "@typebot.io/typebot/schemas/edge";
 import type { TypebotV6 } from "@typebot.io/typebot/schemas/typebot";
 import { produce } from "immer";
@@ -21,10 +21,20 @@ export type EventsActions = {
   deleteEvents: (eventIds: string[]) => void;
   updateEventsCoordinates: (newCoord: CoordinatesMap) => void;
   pasteEvents: (
-    events: TDraggableEvent[],
-    edges: Edge[],
-    oldToNewIdsMapping: Map<string, string>,
-  ) => void;
+    clipboard: {
+      events: TDraggableEvent[];
+      edges: Edge[];
+    },
+    params: {
+      oldToNewIdsMapping: Map<string, string>;
+      updateCoordinates: {
+        mousePosition: Coordinates;
+        farLeftElement: {
+          id: string;
+        } & Coordinates;
+      };
+    },
+  ) => { newEvents: TDraggableEvent[] };
 };
 
 const eventsActions = (setTypebot: SetTypebot): EventsActions => ({
@@ -69,49 +79,80 @@ const eventsActions = (setTypebot: SetTypebot): EventsActions => ({
         );
       }),
     ),
-  pasteEvents: (events, edges, oldToNewIdsMapping) => {
-    setTypebot((typebot) =>
-      produce(typebot, (typebot) => {
-        const edgesToCreate: Edge[] = [];
-        typebot.events.push(...events);
-        events.forEach((event) => {
-          const edge = edges.find(byId(event.outgoingEdgeId));
-          if (edge) {
-            event.outgoingEdgeId = createId();
-            edgesToCreate.push({
-              ...edge,
-              id: event.outgoingEdgeId,
-            });
-            oldToNewIdsMapping.set(event.id, event.outgoingEdgeId);
-          } else {
-            event.outgoingEdgeId = undefined;
-          }
+  pasteEvents: (clipboard, { oldToNewIdsMapping, updateCoordinates }) => {
+    let newEvents: TDraggableEvent[] = [];
+    setTypebot((typebot) => {
+      const newEdgesWithOldIds: Edge[] = [];
+      newEvents = clipboard.events.map((event) => {
+        const { newEdge, newEvent } = duplicateEvent(event, {
+          edges: clipboard.edges,
         });
-
-        edgesToCreate.forEach((edge) => {
+        if (newEdge) newEdgesWithOldIds.push(newEdge);
+        return {
+          ...newEvent,
+          graphCoordinates:
+            event.id === updateCoordinates.farLeftElement.id
+              ? updateCoordinates.mousePosition
+              : {
+                  x:
+                    updateCoordinates.mousePosition.x +
+                    event.graphCoordinates.x -
+                    updateCoordinates.farLeftElement.x,
+                  y:
+                    updateCoordinates.mousePosition.y +
+                    event.graphCoordinates.y -
+                    updateCoordinates.farLeftElement.y,
+                },
+        };
+      });
+      const edgesToCreate = newEdgesWithOldIds
+        .map((edge) => {
           if (!("eventId" in edge.from)) return;
-          const fromEventId = oldToNewIdsMapping.get(edge.from.eventId);
           const toGroupId = oldToNewIdsMapping.get(edge.to.groupId);
-          if (!fromEventId || !toGroupId) return;
-          const newEdge: Edge = {
+          if (!toGroupId) return;
+          return {
             ...edge,
-            from: {
-              ...edge.from,
-              eventId: fromEventId,
-            },
             to: {
-              ...edge.to,
               groupId: toGroupId,
               blockId: edge.to.blockId
                 ? oldToNewIdsMapping.get(edge.to.blockId)
                 : undefined,
             },
-          };
-          typebot.edges.push(newEdge);
-        });
-      }),
-    );
+          } satisfies Edge;
+        })
+        .filter(isDefined);
+      return produce(typebot, (typebot) => {
+        typebot.events.push(...newEvents);
+        typebot.edges.push(...edgesToCreate);
+      });
+    });
+    return { newEvents };
   },
 });
+
+const duplicateEvent = (
+  event: TDraggableEvent,
+  { edges }: { edges: Edge[] },
+): { newEvent: TDraggableEvent; newEdge: Edge | undefined } => {
+  const associatedEdge = event.outgoingEdgeId
+    ? edges.find(byId(event.outgoingEdgeId))
+    : undefined;
+  const newEventId = createId();
+  const newEdge = associatedEdge
+    ? {
+        ...associatedEdge,
+        id: createId(),
+        from: {
+          eventId: newEventId,
+        },
+      }
+    : undefined;
+  const newEvent = {
+    ...event,
+    id: newEventId,
+    outgoingEdgeId: newEdge?.id,
+  };
+  return { newEvent, newEdge };
+};
 
 export { eventsActions };
