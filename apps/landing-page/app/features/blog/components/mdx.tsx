@@ -100,7 +100,7 @@ const components = {
   ),
   Cta: ({
     highlight,
-    buttonLabel,
+    buttonLabel = "Create a typebot",
     children,
   }: {
     highlight?: "default";
