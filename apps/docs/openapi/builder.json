@@ -2073,16 +2073,32 @@
                       "items": {
                         "type": "object",
                         "properties": {
-                          "edgeId": {
+                          "id": {
                             "type": "string"
                           },
                           "total": {
                             "type": "number"
+                          },
+                          "to": {
+                            "type": "object",
+                            "nullable": true,
+                            "properties": {
+                              "groupId": {
+                                "type": "string"
+                              },
+                              "blockId": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "groupId"
+                            ]
                           }
                         },
                         "required": [
-                          "edgeId",
-                          "total"
+                          "id",
+                          "total",
+                          "to"
                         ]
                       }
                     }

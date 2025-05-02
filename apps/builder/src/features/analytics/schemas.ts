@@ -1,3 +1,4 @@
+import { edgeSchema } from "@typebot.io/typebot/schemas/edge";
 import { z } from "@typebot.io/zod";
 
 export const totalAnswersSchema = z.object({
@@ -7,8 +8,9 @@ export const totalAnswersSchema = z.object({
 });
 export type TotalAnswers = z.infer<typeof totalAnswersSchema>;
 
-export const edgeWithTotalUsersSchema = z.object({
-  edgeId: z.string(),
+export const edgeWithTotalVisitsSchema = z.object({
+  id: z.string(),
   total: z.number(),
+  to: edgeSchema.shape.to.nullable(),
 });
-export type EdgeWithTotalUsers = z.infer<typeof edgeWithTotalUsersSchema>;
+export type EdgeWithTotalVisits = z.infer<typeof edgeWithTotalVisitsSchema>;

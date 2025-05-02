@@ -5,7 +5,7 @@ import type { CommandEvent } from "@typebot.io/events/schemas";
 import { getBlockById } from "@typebot.io/groups/helpers/getBlockById";
 import { byId } from "@typebot.io/lib/utils";
 import { addBlockToTypebotIfMissing } from "../addBlockToTypebotIfMissing";
-import { addPortalEdge } from "../addPortalEdge";
+import { addVirtualEdge } from "../addPortalEdge";
 
 type Props = {
   state: SessionState;
@@ -35,9 +35,10 @@ export const executeCommandEvent = async ({
           code: "BAD_REQUEST",
           message: "Block not found",
         });
-      newSessionState = addPortalEdge(`virtual-${event.id}`, newSessionState, {
+      const virtualEdgeMetadata = addVirtualEdge(newSessionState, {
         to: { groupId: group.id, blockId: block.id },
       });
+      newSessionState = virtualEdgeMetadata.newSessionState;
       newSessionState = {
         ...newSessionState,
         typebotsQueue: [
@@ -45,10 +46,10 @@ export const executeCommandEvent = async ({
             ...newSessionState.typebotsQueue[0],
             queuedEdgeIds: newSessionState.typebotsQueue[0].queuedEdgeIds
               ? [
-                  `virtual-${event.id}`,
+                  virtualEdgeMetadata.edgeId,
                   ...newSessionState.typebotsQueue[0].queuedEdgeIds,
                 ]
-              : [`virtual-${event.id}`],
+              : [virtualEdgeMetadata.edgeId],
           },
           ...newSessionState.typebotsQueue.slice(1),
         ],
@@ -78,7 +79,7 @@ export const executeCommandEvent = async ({
     });
   const nextBlockIndex = nextGroup.blocks.findIndex(byId(nextEdge.to.blockId));
   newSessionState = addBlockToTypebotIfMissing(
-    `virtual-${event.id}-block`,
+    `virtual-${event.id}`,
     newSessionState,
     {
       groupId: nextGroup.id,
@@ -87,6 +88,6 @@ export const executeCommandEvent = async ({
   );
   return {
     ...newSessionState,
-    currentBlockId: `virtual-${event.id}-block`,
+    currentBlockId: `virtual-${event.id}`,
   };
 };

@@ -1,6 +1,6 @@
 import { byId } from "@typebot.io/lib/utils";
-import type { TotalAnswers } from "@typebot.io/schemas/features/analytics";
 import type { PublicTypebotV6 } from "@typebot.io/typebot/schemas/publicTypebot";
+import type { TotalAnswers } from "../schemas";
 
 export const getTotalAnswersAtBlock = (
   currentBlockId: string,

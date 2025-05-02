@@ -13,7 +13,7 @@ import { isTypebotVersionAtLeastV6 } from "@typebot.io/schemas/helpers/isTypebot
 import { settingsSchema } from "@typebot.io/settings/schemas";
 import type { Edge } from "@typebot.io/typebot/schemas/edge";
 import type { Variable } from "@typebot.io/variables/schemas";
-import { addPortalEdge } from "../../../addPortalEdge";
+import { addVirtualEdge } from "../../../addPortalEdge";
 import { isTypebotInSessionAtLeastV6 } from "../../../helpers/isTypebotInSessionAtLeastV6";
 import { createResultIfNotExist } from "../../../queries/createResultIfNotExist";
 import type { ExecuteLogicResponse } from "../../../types";
@@ -66,12 +66,14 @@ export const executeTypebotLink = async (
     return { outgoingEdgeId: block.outgoingEdgeId, logs };
   }
 
-  newSessionState = addPortalEdge(`virtual-${block.id}`, newSessionState, {
+  const virtualEdgeMetadata = addVirtualEdge(newSessionState, {
     to: { groupId: nextGroupId },
   });
 
+  newSessionState = virtualEdgeMetadata.newSessionState;
+
   return {
-    outgoingEdgeId: `virtual-${block.id}`,
+    outgoingEdgeId: virtualEdgeMetadata.edgeId,
     newSessionState,
   };
 };
@@ -84,15 +86,17 @@ const addSameTypebotToState = async ({
   block: TypebotLinkBlock;
 }) => {
   let newSessionState = state;
-  const newEdgeId = `virtual-${block.id}-after`;
-  const newEdge = createResumeEdgeIfNecessary(state, block);
-  if (newEdge) {
-    newSessionState = addPortalEdge(newEdgeId, state, {
-      to: newEdge.to,
+  const resumeTo = getResumeEdgeToProps(state, block);
+  let resumeEdgeId: string | undefined;
+  if (resumeTo) {
+    const virtualEdgeMetadata = addVirtualEdge(state, {
+      to: resumeTo,
     });
+    newSessionState = virtualEdgeMetadata.newSessionState;
+    resumeEdgeId = virtualEdgeMetadata.edgeId;
   }
 
-  const edgeIdToQueue = block.outgoingEdgeId ?? newEdgeId;
+  const edgeIdToQueue = block.outgoingEdgeId ?? resumeEdgeId;
   return {
     ...newSessionState,
     typebotsQueue: [
@@ -117,12 +121,14 @@ const addLinkedTypebotToState = async (
   linkedTypebot: TypebotInSession,
 ): Promise<SessionState> => {
   let newSessionState = state;
-  const newEdgeId = `virtual-${block.id}-after`;
-  const newEdge = createResumeEdgeIfNecessary(state, block);
-  if (newEdge) {
-    newSessionState = addPortalEdge(newEdgeId, state, {
-      to: newEdge.to,
+  const resumeTo = getResumeEdgeToProps(state, block);
+  let resumeEdgeId: string | undefined;
+  if (resumeTo) {
+    const virtualEdgeMetadata = addVirtualEdge(state, {
+      to: resumeTo,
     });
+    newSessionState = virtualEdgeMetadata.newSessionState;
+    resumeEdgeId = virtualEdgeMetadata.edgeId;
   }
 
   const shouldMergeResults = isTypebotVersionAtLeastV6(
@@ -144,7 +150,7 @@ const addLinkedTypebotToState = async (
   }
 
   const isPreview = isNotDefined(newSessionState.typebotsQueue[0].resultId);
-  const edgeIdToQueue = block.outgoingEdgeId ?? newEdgeId;
+  const edgeIdToQueue = block.outgoingEdgeId ?? resumeEdgeId;
   return {
     ...state,
     typebotsQueue: [
@@ -173,10 +179,10 @@ const addLinkedTypebotToState = async (
   };
 };
 
-const createResumeEdgeIfNecessary = (
+const getResumeEdgeToProps = (
   state: SessionState,
   block: TypebotLinkBlock,
-): Edge | undefined => {
+): Edge["to"] | undefined => {
   const currentTypebotInQueue = state.typebotsQueue[0];
   const blockId = block.id;
   if (block.outgoingEdgeId) return;
@@ -193,14 +199,8 @@ const createResumeEdgeIfNecessary = (
       : currentGroup.blocks[currentBlockIndex + 1];
   if (!nextBlockInGroup) return;
   return {
-    id: createId(),
-    from: {
-      blockId: "",
-    },
-    to: {
-      groupId: currentGroup.id,
-      blockId: nextBlockInGroup.id,
-    },
+    groupId: currentGroup.id,
+    blockId: nextBlockInGroup.id,
   };
 };
 

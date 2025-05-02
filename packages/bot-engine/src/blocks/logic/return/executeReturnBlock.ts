@@ -1,6 +1,6 @@
 import type { SessionState } from "@typebot.io/chat-session/schemas";
 import { getBlockById } from "@typebot.io/groups/helpers/getBlockById";
-import { addPortalEdge } from "../../../addPortalEdge";
+import { addVirtualEdge } from "../../../addPortalEdge";
 import type { ExecuteLogicResponse } from "../../../types";
 
 export const executeReturnBlock = (
@@ -19,14 +19,14 @@ export const executeReturnBlock = (
       outgoingEdgeId: undefined,
     };
 
-  const newSessionState = addPortalEdge(`virtual-${blockId}`, state, {
+  const { newSessionState, edgeId } = addVirtualEdge(state, {
     to: { groupId: group.id, blockId: blockToReturnTo.id },
   });
 
   newSessionState.returnMark = undefined;
 
   return {
-    outgoingEdgeId: `virtual-${blockId}`,
+    outgoingEdgeId: edgeId,
     newSessionState,
   };
 };
