@@ -28,7 +28,25 @@ test("Transcript set variable should be correctly computed", async ({
   await expect(
     page.getByText('Assistant: "How are you? You said hey 2"'),
   ).toBeVisible();
-  await expect(page.getByText('User: "hey"')).toBeVisible();
-  await expect(page.getByText('User: "hey 2"')).toBeVisible();
-  await expect(page.getByText('User: "hey 3"')).toBeVisible();
+  await expect(
+    page.getByText('Assistant: "Let me think..."', { exact: true }).nth(0),
+  ).toBeVisible();
+  await expect(
+    page.getByText('Assistant: "Let me think..."', { exact: true }).nth(1),
+  ).toBeVisible();
+  await expect(
+    page.getByText('Assistant: "Let me think..."', { exact: true }).nth(2),
+  ).toBeVisible();
+  await expect(
+    page.getByText('Assistant: "How are you? You said "', { exact: true }),
+  ).toBeVisible();
+  await expect(
+    page.getByText('Assistant: "How are you? You said hey"', { exact: true }),
+  ).toBeVisible();
+  await expect(
+    page.getByText('Assistant: "How are you? You said hey 2"', { exact: true }),
+  ).toBeVisible();
+  await expect(page.getByText('User: "hey"', { exact: true })).toBeVisible();
+  await expect(page.getByText('User: "hey 2"', { exact: true })).toBeVisible();
+  await expect(page.getByText('User: "hey 3"', { exact: true })).toBeVisible();
 });

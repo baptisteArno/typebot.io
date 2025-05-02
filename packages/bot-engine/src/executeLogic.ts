@@ -46,7 +46,7 @@ export const executeLogic = async ({
     case LogicBlockType.JUMP:
       return executeJumpBlock(state, block);
     case LogicBlockType.AB_TEST:
-      return executeAbTest(state, block);
+      return executeAbTest(block);
     case LogicBlockType.WEBHOOK:
       return executeWebhookBlock(block);
     case LogicBlockType.RETURN:

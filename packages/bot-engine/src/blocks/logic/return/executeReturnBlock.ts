@@ -16,7 +16,13 @@ export const executeReturnBlock = (
 
   if (!blockToReturnTo)
     return {
-      outgoingEdgeId: undefined,
+      outgoingEdgeId: null,
+      logs: [
+        {
+          context: "Error while executing Return block",
+          description: "Could not find block to return to",
+        },
+      ],
     };
 
   const { newSessionState, edgeId } = addVirtualEdge(state, {
