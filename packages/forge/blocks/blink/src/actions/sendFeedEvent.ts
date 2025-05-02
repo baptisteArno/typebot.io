@@ -346,6 +346,8 @@ export const sendFeedEvent = createAction({
         group_ids: options.groupIds,
         notification_title: options.pushNotification?.title,
         notification_text: options.pushNotification?.text,
+        allow_comments: options.allowComments,
+        allow_reactions: options.allowReactions,
       };
 
       try {
