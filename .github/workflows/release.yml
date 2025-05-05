@@ -81,6 +81,10 @@ jobs:
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
+        # Specify the latest buildkit version because the default one on arm uses deprecated GH cache API
+        with:
+          version: latest
+          driver-opts: image=moby/buildkit:master
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
