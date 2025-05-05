@@ -35,11 +35,11 @@ export const AnalyticsGraphContainer = ({
   const { typebot, publishedTypebot } = useTypebot();
   const { data } = trpc.analytics.getInDepthAnalyticsData.useQuery(
     {
-      typebotId: typebot?.id as string,
+      typebotId: typebot!.id,
       timeFilter,
       timeZone,
     },
-    { enabled: isDefined(publishedTypebot) },
+    { enabled: isDefined(typebot?.id) && isDefined(publishedTypebot) },
   );
 
   const edgesWithTotalUsers = useMemo(() => {
