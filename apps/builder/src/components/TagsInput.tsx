@@ -80,11 +80,15 @@ export const TagsInput = ({ items, placeholder, onChange }: Props) => {
     onChange(newItems);
   };
 
-  const addItem = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const addItem = () => {
     if (isEmpty(inputValue)) return;
     setInputValue("");
     onChange(items ? [...items, inputValue.trim()] : [inputValue.trim()]);
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    addItem();
   };
 
   return (
@@ -99,6 +103,7 @@ export const TagsInput = ({ items, placeholder, onChange }: Props) => {
       transitionDuration="150ms"
       transitionTimingFunction="ease-in-out"
       onClick={() => inputRef.current?.focus()}
+      onBlur={addItem}
       onKeyDown={handleKeyDown}
     >
       <AnimatePresence mode="popLayout">
@@ -109,6 +114,9 @@ export const TagsInput = ({ items, placeholder, onChange }: Props) => {
             animate={{ opacity: 1, transform: "translateY(0)" }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.1 }}
+            style={{
+              maxWidth: "100%",
+            }}
           >
             <WrapItem>
               <Tag
@@ -121,7 +129,7 @@ export const TagsInput = ({ items, placeholder, onChange }: Props) => {
         ))}
       </AnimatePresence>
       <WrapItem>
-        <form onSubmit={addItem}>
+        <form onSubmit={handleSubmit}>
           <Input
             ref={inputRef}
             h="24px"
