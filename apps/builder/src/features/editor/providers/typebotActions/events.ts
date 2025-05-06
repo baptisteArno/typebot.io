@@ -49,7 +49,10 @@ const eventsActions = (setTypebot: SetTypebot): EventsActions => ({
     setTypebot((typebot) =>
       produce(typebot, (typebot) => {
         const event = typebot.events[eventIndex];
-        typebot.events[eventIndex] = { ...event, ...updates };
+        typebot.events[eventIndex] = {
+          ...event,
+          ...updates,
+        } as typeof event;
       }),
     ),
   deleteEvent: (eventIndex) =>

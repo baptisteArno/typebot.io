@@ -29,7 +29,12 @@ export const executeReturnBlock = (
     to: { groupId: group.id, blockId: blockToReturnTo.id },
   });
 
-  newSessionState.returnMark = undefined;
+  newSessionState.returnMark = newSessionState.returnMark?.autoResumeMessage
+    ? {
+        ...newSessionState.returnMark,
+        status: "called",
+      }
+    : undefined;
 
   return {
     outgoingEdgeId: edgeId,

@@ -26,17 +26,33 @@ export const commandEventSchema = eventBaseSchema.extend({
     .optional(),
 });
 
-export type CommandEvent = z.infer<typeof commandEventSchema>;
+const replyEventOptionsSchema = z.object({
+  contentVariableId: z.string().optional(),
+  inputNameVariableId: z.string().optional(),
+  inputTypeVariableId: z.string().optional(),
+});
 
-const draggableEventSchemas = [commandEventSchema];
+export const replyEventSchema = eventBaseSchema.extend({
+  type: z.literal(EventType.REPLY),
+  options: replyEventOptionsSchema.optional(),
+});
+
+export type CommandEvent = z.infer<typeof commandEventSchema>;
+export type ReplyEvent = z.infer<typeof replyEventSchema>;
+
+const draggableEventSchemas = [commandEventSchema, replyEventSchema] as const;
 
 export const eventSchema = z.discriminatedUnion("type", [
   startEventSchema,
   ...draggableEventSchemas,
 ]);
+
 export type TEvent = z.infer<typeof eventSchema>;
 
 export type TEventWithOptions = Extract<TEvent, { options?: any }>;
 
-export const draggableEventSchema = draggableEventSchemas[0];
+export const draggableEventSchema = z.discriminatedUnion("type", [
+  ...draggableEventSchemas,
+]);
+
 export type TDraggableEvent = z.infer<typeof draggableEventSchema>;

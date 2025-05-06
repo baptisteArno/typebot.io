@@ -38,6 +38,7 @@ export const executeJumpBlock = (
 
   if (nextBlock)
     newSessionState.returnMark = {
+      status: "pending",
       blockId: nextBlock.id,
     };
 

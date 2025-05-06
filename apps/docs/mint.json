@@ -152,7 +152,7 @@
         {
           "group": "Events",
           "icon": "command",
-          "pages": ["editor/events/command"]
+          "pages": ["editor/events/command", "editor/events/reply"]
         },
         "editor/variables",
         "editor/publish",

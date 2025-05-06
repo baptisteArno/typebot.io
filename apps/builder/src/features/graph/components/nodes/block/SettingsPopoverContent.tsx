@@ -30,6 +30,7 @@ import { TypebotLinkForm } from "@/features/blocks/logic/typebotLink/components/
 import { WaitSettings } from "@/features/blocks/logic/wait/components/WaitSettings";
 import { WebhookSettings } from "@/features/blocks/logic/webhook/components/WebhookSettings";
 import { CommandEventSettings } from "@/features/events/components/CommandEventSettings";
+import { ReplyEventSettings } from "@/features/events/components/ReplyEventSettings";
 import { useForgedBlock } from "@/features/forge/hooks/useForgedBlock";
 import { VideoOnboardingPopover } from "@/features/onboarding/components/VideoOnboardingPopover";
 import { hasOnboardingVideo } from "@/features/onboarding/helpers/hasOnboardingVideo";
@@ -372,6 +373,13 @@ export const NodeSettings = ({
     case EventType.COMMAND:
       return (
         <CommandEventSettings
+          options={node.options}
+          onOptionsChange={updateOptions}
+        />
+      );
+    case EventType.REPLY:
+      return (
+        <ReplyEventSettings
           options={node.options}
           onOptionsChange={updateOptions}
         />

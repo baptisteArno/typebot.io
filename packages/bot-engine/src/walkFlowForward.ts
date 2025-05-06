@@ -7,7 +7,10 @@ import {
   isIntegrationBlock,
   isLogicBlock,
 } from "@typebot.io/blocks-core/helpers";
-import type { ContinueChatResponse } from "@typebot.io/chat-api/schemas";
+import type {
+  ContinueChatResponse,
+  InputMessage,
+} from "@typebot.io/chat-api/schemas";
 import type { SessionState } from "@typebot.io/chat-session/schemas";
 import { env } from "@typebot.io/env";
 import type { Group } from "@typebot.io/groups/schemas";
@@ -81,6 +84,7 @@ export const walkFlowForward = async (
             state: newSessionState,
             edgeId: nextEdge?.id,
             isOffDefaultPath: nextEdge?.isOffDefaultPath ?? false,
+            sessionStore,
           });
     newSessionState = nextGroupResponse.newSessionState;
     if (nextGroupResponse.visitedEdge)
@@ -370,15 +374,19 @@ const navigateToNextGroupAndUpdateState = async ({
   state,
   edgeId,
   isOffDefaultPath,
+  sessionStore,
 }: {
   state: SessionState;
   edgeId?: string;
   isOffDefaultPath: boolean;
+  sessionStore: SessionStore;
 }): Promise<NextGroup> => {
   const nextEdge = state.typebotsQueue[0].typebot.edges.find(byId(edgeId));
   if (!nextEdge) {
-    const nextEdgeResponse = popQueuedEdge(state);
-    let newSessionState = nextEdgeResponse.state;
+    const queuedEdgeResponse = popQueuedEdge(state);
+
+    let newSessionState = queuedEdgeResponse.state;
+
     if (newSessionState.typebotsQueue.length > 1) {
       const isMergingWithParent =
         newSessionState.typebotsQueue[0].isMergingWithParent;
@@ -443,11 +451,12 @@ const navigateToNextGroupAndUpdateState = async ({
             newSessionState.typebotsQueue[0].answers.length,
         };
     }
-    if (nextEdgeResponse.edgeId)
+    if (queuedEdgeResponse.edgeId)
       return navigateToNextGroupAndUpdateState({
         state: newSessionState,
-        edgeId: nextEdgeResponse.edgeId,
+        edgeId: queuedEdgeResponse.edgeId,
         isOffDefaultPath,
+        sessionStore,
       });
     return {
       newSessionState,
@@ -499,10 +508,10 @@ const navigateToNextGroupAndUpdateState = async ({
 const popQueuedEdge = (
   state: SessionState,
 ): { edgeId?: string; state: SessionState } => {
-  const edgeId = state.typebotsQueue[0].queuedEdgeIds?.[0];
-  if (!edgeId) return { state };
+  const queuedEdgeId = state.typebotsQueue[0].queuedEdgeIds?.[0];
+  if (!queuedEdgeId) return { state };
   return {
-    edgeId,
+    edgeId: queuedEdgeId,
     state: {
       ...state,
       typebotsQueue: [

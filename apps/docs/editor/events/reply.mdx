@@ -1,0 +1,27 @@
+---
+title: Reply Event
+sidebarTitle: Reply
+---
+
+This event will trigger everytime a reply is received, meaning whenever a user replies to any input in the flow. This is triggered even before the reply is processed and validated. This is useful when you need to execute a specific flow / automation whenever the user replies to the bot.
+
+<Frame>
+	<img src="/images/events/reply-event.avif" alt="On New Message event in Typebot editor" />
+</Frame>
+
+## Variable mapping
+
+- **Reply content**: The content of the reply.
+- **Input type**: The type of the current input. Can be `text`, `number`, `email`, `url`, `date`, `time`, `phone`, `buttons`, `picture choice`, `payment`, `rating`, `file`, `cards`.
+- **Input name**: The name of the current input. If a variable is attached to the input, it will be the name of the variable. Otherwise, it will be the title of the group.
+
+Type and name ultimately can help you filter the reply event by input type and/or name.
+
+## Return to main flow
+
+By default, when an event is executed, the session will end and not return to the main flow. Use a [Return block](/editor/blocks/logic/return) to return to the main flow. This allows you to have the flexibility to conditionally end the session.
+
+## Example use cases
+
+- Automatically end the session if the user replies with "end", "exit", "quit".
+- Automatically trigger a feedback collection flow whenever a user replies with specific keywords like "feedback" "suggestion" or "comment".

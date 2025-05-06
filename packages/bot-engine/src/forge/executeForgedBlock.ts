@@ -1,5 +1,4 @@
 import { BubbleBlockType } from "@typebot.io/blocks-bubbles/constants";
-import type { Block } from "@typebot.io/blocks-core/schemas/schema";
 import type { ContinueChatResponse } from "@typebot.io/chat-api/schemas";
 import type {
   SessionState,
@@ -10,7 +9,7 @@ import { getCredentials } from "@typebot.io/credentials/getCredentials";
 import { forgedBlocks } from "@typebot.io/forge-repository/definitions";
 import type { ForgedBlock } from "@typebot.io/forge-repository/schemas";
 import type { LogsStore, VariableStore } from "@typebot.io/forge/types";
-import { byId, isDefined } from "@typebot.io/lib/utils";
+import { isDefined } from "@typebot.io/lib/utils";
 import type { SessionStore } from "@typebot.io/runtime-session-store";
 import { deepParseVariables } from "@typebot.io/variables/deepParseVariables";
 import {

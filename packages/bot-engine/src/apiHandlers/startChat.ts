@@ -7,7 +7,7 @@ import {
   getSessionStore,
 } from "@typebot.io/runtime-session-store";
 import { computeCurrentProgress } from "../computeCurrentProgress";
-import { assertOriginIsAllowed } from "../helpers/isOriginAllowed";
+import { assertOriginIsAllowed } from "../helpers/assertOriginIsAllowed";
 import { filterPotentiallySensitiveLogs } from "../logs/filterPotentiallySensitiveLogs";
 import { saveStateToDatabase } from "../saveStateToDatabase";
 import { startSession } from "../startSession";

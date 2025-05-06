@@ -84,7 +84,7 @@ const addSameTypebotToState = async ({
 }: {
   state: SessionState;
   block: TypebotLinkBlock;
-}) => {
+}): Promise<SessionState> => {
   let newSessionState = state;
   const resumeTo = getResumeEdgeToProps(state, block);
   let resumeEdgeId: string | undefined;
