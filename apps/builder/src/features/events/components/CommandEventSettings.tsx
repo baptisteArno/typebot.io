@@ -21,13 +21,6 @@ export const CommandEventSettings = ({
         onChange={(command) => onOptionsChange({ ...options, command })}
         withVariableButton={false}
       />
-      <SwitchWithLabel
-        label={t("blocks.events.command.settings.resumeAfter.label")}
-        initialValue={options?.resumeAfter}
-        onCheckChange={(resumeAfter) =>
-          onOptionsChange({ ...options, resumeAfter })
-        }
-      />
     </Stack>
   );
 };
