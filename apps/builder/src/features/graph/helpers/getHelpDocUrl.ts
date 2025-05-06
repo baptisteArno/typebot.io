@@ -79,8 +79,6 @@ export const getHelpDocUrl = (
       return "https://docs.typebot.io/editor/events/command";
     case EventType.REPLY:
       return "https://docs.typebot.io/editor/events/reply";
-    case LogicBlockType.RETURN:
-      return "https://docs.typebot.io/editor/blocks/logic/return";
     default:
       return blockDef?.docsUrl;
   }
