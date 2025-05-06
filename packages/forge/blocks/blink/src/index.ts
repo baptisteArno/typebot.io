@@ -1,5 +1,6 @@
 import { createBlock } from "@typebot.io/forge";
 import { getUsers } from "./actions/getUsers";
+import { sendFeedEvent } from "./actions/sendFeedEvent";
 import { auth } from "./auth";
 import { BlinkLogo } from "./logo";
 
@@ -9,5 +10,5 @@ export const blinkBlock = createBlock({
   tags: ["CRM", "HR"],
   LightLogo: BlinkLogo,
   auth,
-  actions: [getUsers],
+  actions: [getUsers, sendFeedEvent],
 });

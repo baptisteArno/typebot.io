@@ -22,12 +22,12 @@ jobs:
 
       - name: Extract existing image metadata
         id: image-meta
-        uses: docker/metadata-action@v4
+        uses: docker/metadata-action@v5
         with:
           images: baptistearno/typebot-${{ matrix.app }}
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@v3
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
@@ -37,7 +37,7 @@ jobs:
 
       - name: Build image
         id: docker_build
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@v6
         with:
           context: .
           labels: ${{ steps.image-meta.outputs.labels }}
@@ -75,12 +75,16 @@ jobs:
 
       - name: Extract existing image metadata
         id: image-meta
-        uses: docker/metadata-action@v4
+        uses: docker/metadata-action@v5
         with:
           images: baptistearno/typebot-${{ matrix.app }}
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@v3
+        # Specify the latest buildkit version because the default one on arm uses deprecated GH cache API
+        with:
+          version: latest
+          driver-opts: image=moby/buildkit:master
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
@@ -90,7 +94,7 @@ jobs:
 
       - name: Build image
         id: docker_build
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@v6
         with:
           context: .
           labels: ${{ steps.image-meta.outputs.labels }}
@@ -136,10 +140,10 @@ jobs:
           name: digests-amd-${{ matrix.app }}
           path: /tmp/digests/${{ matrix.app }}
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@v3
       - name: Docker meta
         id: meta
-        uses: docker/metadata-action@v4
+        uses: docker/metadata-action@v5
         with:
           images: baptistearno/typebot-${{ matrix.app }}
           tags: |

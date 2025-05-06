@@ -19,6 +19,13 @@ const cardsOptionsSchema = optionBaseSchema.extend({
     .optional(),
 });
 
+const cardsItemPathSchema = z.object({
+  id: z.string(),
+  text: z.string().optional(),
+  outgoingEdgeId: z.string().optional(),
+});
+export type CardsItemPath = z.infer<typeof cardsItemPathSchema>;
+
 export const cardsItemSchema = itemBaseSchemas.v6.extend({
   options: z
     .object({
@@ -34,15 +41,7 @@ export const cardsItemSchema = itemBaseSchemas.v6.extend({
   imageUrl: z.string().nullish(),
   title: z.string().nullish(),
   description: z.string().nullish(),
-  paths: z
-    .array(
-      z.object({
-        id: z.string(),
-        text: z.string().optional(),
-        outgoingEdgeId: z.string().optional(),
-      }),
-    )
-    .optional(),
+  paths: z.array(cardsItemPathSchema).optional(),
 });
 export type CardsItem = z.infer<typeof cardsItemSchema>;
 

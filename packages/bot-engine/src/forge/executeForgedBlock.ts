@@ -212,7 +212,10 @@ const isNextBubbleTextWithStreamingVar =
       (variable) => variable.id === streamVariableId,
     );
     if (!streamVariable) return false;
-    const nextBlock = getNextBlock(blockId, { typebot });
+    const nextBlock = getNextBlock(blockId, {
+      groups: typebot.groups,
+      edges: typebot.edges,
+    });
     if (!nextBlock) return false;
     return (
       nextBlock.type === BubbleBlockType.TEXT &&

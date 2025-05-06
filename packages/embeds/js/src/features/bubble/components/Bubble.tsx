@@ -217,7 +217,7 @@ export const Bubble = (props: BubbleProps) => {
           <div
             part="bot"
             style={{
-              "max-height": `calc(100vh - ${defaultBottom} - ${buttonSize()} - ${buttonBotGap})`,
+              "max-height": `calc(100dvh - ${defaultBottom} - ${buttonSize()} - ${buttonBotGap})`,
               height: bubbleProps.theme?.chatWindow?.maxHeight ?? "704px",
               "max-width": bubbleProps.theme?.chatWindow?.maxWidth ?? "400px",
               transition:

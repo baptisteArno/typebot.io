@@ -599,7 +599,7 @@
     },
     "packages/embeds/js": {
       "name": "@typebot.io/js",
-      "version": "0.3.83",
+      "version": "0.3.86",
       "devDependencies": {
         "@ai-sdk/ui-utils": "1.2.2",
         "@ark-ui/solid": "5.0.0",
@@ -636,7 +636,7 @@
     },
     "packages/embeds/nextjs": {
       "name": "@typebot.io/nextjs",
-      "version": "0.3.83",
+      "version": "0.3.86",
       "dependencies": {
         "next": "15.3.0",
         "react": "18.3.1",
@@ -655,7 +655,7 @@
     },
     "packages/embeds/react": {
       "name": "@typebot.io/react",
-      "version": "0.3.83",
+      "version": "0.3.86",
       "dependencies": {
         "react": "18.3.1",
       },
@@ -732,6 +732,7 @@
     "packages/forge/blocks/blink": {
       "name": "@typebot.io/blink-block",
       "dependencies": {
+        "@typebot.io/blocks-bubbles": "workspace:*",
         "@typebot.io/forge": "workspace:*",
         "@typebot.io/lib": "workspace:*",
         "ky": "1.2.4",

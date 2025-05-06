@@ -495,7 +495,7 @@ const navigateToNextGroupAndUpdateState = async ({
             },
     },
     visitedEdge:
-      resultId && isOffDefaultPath && !nextEdge.id.startsWith("virtual-")
+      resultId && isOffDefaultPath
         ? {
             index: currentVisitedEdgeIndex as number,
             edgeId: nextEdge.id,

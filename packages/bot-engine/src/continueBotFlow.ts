@@ -349,11 +349,16 @@ const processNonInputBlock = async ({
     try {
       response = JSON.parse(reply.text);
     } catch (err) {
-      throw new TRPCError({
-        code: "BAD_REQUEST",
-        message: "Provided response is not valid JSON",
-        cause: (await parseUnknownError({ err })).description,
-      });
+      if (block.type === IntegrationBlockType.HTTP_REQUEST)
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Provided response is not valid JSON",
+          cause: (await parseUnknownError({ err })).description,
+        });
+      response = {
+        statusCode: 200,
+        data: reply.text,
+      };
     }
     const result = saveDataInResponseVariableMapping({
       state,
