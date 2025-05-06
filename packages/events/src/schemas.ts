@@ -25,6 +25,7 @@ export const commandEventSchema = eventBaseSchema.extend({
     })
     .optional(),
 });
+export type CommandEvent = z.infer<typeof commandEventSchema>;
 
 const replyEventOptionsSchema = z.object({
   contentVariableId: z.string().optional(),
@@ -36,11 +37,19 @@ export const replyEventSchema = eventBaseSchema.extend({
   type: z.literal(EventType.REPLY),
   options: replyEventOptionsSchema.optional(),
 });
-
-export type CommandEvent = z.infer<typeof commandEventSchema>;
 export type ReplyEvent = z.infer<typeof replyEventSchema>;
 
-const draggableEventSchemas = [commandEventSchema, replyEventSchema] as const;
+export const invalidReplyEventSchema = eventBaseSchema.extend({
+  type: z.literal(EventType.INVALID_REPLY),
+  options: replyEventOptionsSchema.optional(),
+});
+export type InvalidReplyEvent = z.infer<typeof invalidReplyEventSchema>;
+
+const draggableEventSchemas = [
+  commandEventSchema,
+  replyEventSchema,
+  invalidReplyEventSchema,
+] as const;
 
 export const eventSchema = z.discriminatedUnion("type", [
   startEventSchema,

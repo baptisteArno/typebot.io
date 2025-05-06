@@ -740,3 +740,11 @@ export const SendIcon = (props: IconProps) => (
     <path d="M6 12h16" />
   </Icon>
 );
+
+export const CircleXIcon = (props: IconProps) => (
+  <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
+    <circle cx="12" cy="12" r="10" />
+    <path d="m15 9-6 6" />
+    <path d="m9 9 6 6" />
+  </Icon>
+);

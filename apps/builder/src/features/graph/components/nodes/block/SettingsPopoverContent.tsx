@@ -30,6 +30,7 @@ import { TypebotLinkForm } from "@/features/blocks/logic/typebotLink/components/
 import { WaitSettings } from "@/features/blocks/logic/wait/components/WaitSettings";
 import { WebhookSettings } from "@/features/blocks/logic/webhook/components/WebhookSettings";
 import { CommandEventSettings } from "@/features/events/components/CommandEventSettings";
+import { InvalidReplyEventSettings } from "@/features/events/components/InvalidReplyEventSettings";
 import { ReplyEventSettings } from "@/features/events/components/ReplyEventSettings";
 import { useForgedBlock } from "@/features/forge/hooks/useForgedBlock";
 import { VideoOnboardingPopover } from "@/features/onboarding/components/VideoOnboardingPopover";
@@ -380,6 +381,13 @@ export const NodeSettings = ({
     case EventType.REPLY:
       return (
         <ReplyEventSettings
+          options={node.options}
+          onOptionsChange={updateOptions}
+        />
+      );
+    case EventType.INVALID_REPLY:
+      return (
+        <InvalidReplyEventSettings
           options={node.options}
           onOptionsChange={updateOptions}
         />

@@ -25,7 +25,7 @@ import type {
 } from "@typebot.io/chat-session/schemas";
 import { env } from "@typebot.io/env";
 import { EventType } from "@typebot.io/events/constants";
-import type { ReplyEvent } from "@typebot.io/events/schemas";
+import type { InvalidReplyEvent, ReplyEvent } from "@typebot.io/events/schemas";
 import { forgedBlocks } from "@typebot.io/forge-repository/definitions";
 import type { ForgedBlock } from "@typebot.io/forge-repository/schemas";
 import { getBlockById } from "@typebot.io/groups/helpers/getBlockById";
@@ -54,6 +54,7 @@ import { parseTime } from "./blocks/inputs/time/parseTime";
 import { saveDataInResponseVariableMapping } from "./blocks/integrations/httpRequest/saveDataInResponseVariableMapping";
 import { resumeChatCompletion } from "./blocks/integrations/legacy/openai/resumeChatCompletion";
 import { executeCommandEvent } from "./events/executeCommandEvent";
+import { executeInvalidReplyEvent } from "./events/executeInvalidReplyEvent";
 import { executeReplyEvent } from "./events/executeReplyEvent";
 import { formatInputForChatResponse } from "./formatInputForChatResponse";
 import { saveAnswer } from "./queries/saveAnswer";
@@ -103,18 +104,6 @@ export const continueBotFlow = async (
       state,
       command: reply.command,
     });
-  } else if (!skipReplyEvent) {
-    const replyEvent = findReplyEvent(newSessionState);
-    if (reply && replyEvent) {
-      const response = executeReplyEvent({
-        state: newSessionState,
-        reply,
-        replyEvent,
-      });
-      if (response.updatedState) newSessionState = response.updatedState;
-      if (response.setVariableHistory)
-        setVariableHistory.push(...response.setVariableHistory);
-    }
   }
 
   if (!newSessionState.currentBlockId)
@@ -158,7 +147,48 @@ export const continueBotFlow = async (
     if (parsedReplyResult.newSetVariableHistory)
       setVariableHistory.push(...parsedReplyResult.newSetVariableHistory);
 
-    if (parsedReplyResult.status === "fail")
+    const invalidReplyEvent =
+      parsedReplyResult.status === "fail"
+        ? findInvalidReplyEvent(newSessionState)
+        : undefined;
+
+    if (!skipReplyEvent && !invalidReplyEvent) {
+      const replyEvent = findReplyEvent(newSessionState);
+      if (replyEvent) {
+        const { updatedState, newSetVariableHistory } = executeReplyEvent(
+          replyEvent,
+          {
+            state: newSessionState,
+            reply,
+          },
+        );
+        newSessionState = updatedState;
+        setVariableHistory.push(...newSetVariableHistory);
+        return continueBotFlow(undefined, {
+          state: newSessionState,
+          version,
+          textBubbleContentFormat,
+          sessionStore,
+        });
+      }
+    }
+
+    if (parsedReplyResult.status === "fail") {
+      if (invalidReplyEvent) {
+        const { updatedState, newSetVariableHistory } =
+          executeInvalidReplyEvent(invalidReplyEvent, {
+            state: newSessionState,
+            reply,
+          });
+        newSessionState = updatedState;
+        setVariableHistory.push(...newSetVariableHistory);
+        return continueBotFlow(undefined, {
+          state: newSessionState,
+          version,
+          textBubbleContentFormat,
+          sessionStore,
+        });
+      }
       return {
         ...(await parseRetryMessage(block, {
           textBubbleContentFormat,
@@ -169,6 +199,7 @@ export const continueBotFlow = async (
         visitedEdges: [],
         setVariableHistory: [],
       };
+    }
 
     const formattedReply =
       "content" in parsedReplyResult && reply?.type === "text"
@@ -914,6 +945,13 @@ export const safeJsonParse = (value: string): unknown => {
 const findReplyEvent = (state: SessionState): ReplyEvent | undefined =>
   state.typebotsQueue[0].typebot.events?.find(
     (e) => e.type === EventType.REPLY,
+  );
+
+const findInvalidReplyEvent = (
+  state: SessionState,
+): InvalidReplyEvent | undefined =>
+  state.typebotsQueue[0].typebot.events?.find(
+    (e) => e.type === EventType.INVALID_REPLY,
   );
 
 const isInputMessage = (

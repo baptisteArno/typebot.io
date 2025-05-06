@@ -5494,6 +5494,57 @@
                         "graphCoordinates",
                         "type"
                       ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "outgoingEdgeId": {
+                          "type": "string"
+                        },
+                        "graphCoordinates": {
+                          "type": "object",
+                          "properties": {
+                            "x": {
+                              "type": "number"
+                            },
+                            "y": {
+                              "type": "number"
+                            }
+                          },
+                          "required": [
+                            "x",
+                            "y"
+                          ]
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "invalidReply"
+                          ]
+                        },
+                        "options": {
+                          "type": "object",
+                          "properties": {
+                            "contentVariableId": {
+                              "type": "string"
+                            },
+                            "inputNameVariableId": {
+                              "type": "string"
+                            },
+                            "inputTypeVariableId": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "graphCoordinates",
+                        "type"
+                      ]
                     }
                   ]
                 }

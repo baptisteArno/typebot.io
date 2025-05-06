@@ -1,4 +1,9 @@
-import { CommandIcon, FlagIcon, SendIcon } from "@/components/icons";
+import {
+  CircleXIcon,
+  CommandIcon,
+  FlagIcon,
+  SendIcon,
+} from "@/components/icons";
 import { type IconProps, useColorModeValue } from "@chakra-ui/react";
 import { EventType } from "@typebot.io/events/constants";
 import type { TEvent } from "@typebot.io/events/schemas";
@@ -16,5 +21,7 @@ export const EventIcon = ({ type, ...props }: Props): JSX.Element => {
       return <CommandIcon color={gray} {...props} />;
     case EventType.REPLY:
       return <SendIcon color={gray} {...props} />;
+    case EventType.INVALID_REPLY:
+      return <CircleXIcon color={gray} {...props} />;
   }
 };
