@@ -84,7 +84,7 @@ const addSameTypebotToState = async ({
 }: {
   state: SessionState;
   block: TypebotLinkBlock;
-}) => {
+}): Promise<SessionState> => {
   let newSessionState = state;
   const resumeTo = getResumeEdgeToProps(state, block);
   let resumeEdgeId: string | undefined;
@@ -105,7 +105,7 @@ const addSameTypebotToState = async ({
           ...newSessionState.typebotsQueue[0].typebot,
         },
         resultId: newSessionState.typebotsQueue[0].resultId,
-        queuedEdges: edgeIdToQueue ? [{ id: edgeIdToQueue }] : undefined,
+        queuedEdgeIds: edgeIdToQueue ? [edgeIdToQueue] : undefined,
         answers: newSessionState.typebotsQueue[0].answers,
         isMergingWithParent: true,
       },

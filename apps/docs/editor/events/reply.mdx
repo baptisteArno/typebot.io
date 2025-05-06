@@ -5,6 +5,10 @@ sidebarTitle: Reply
 
 This event will trigger everytime a reply is received, meaning whenever a user replies to any input in the flow. This is triggered even before the reply is processed and validated. This is useful when you need to execute a specific flow / automation whenever the user replies to the bot.
 
+<Frame>
+	<img src="/images/events/reply-event.avif" alt="On New Message event in Typebot editor" />
+</Frame>
+
 ## Variable mapping
 
 - **Reply content**: The content of the reply.
@@ -13,13 +17,9 @@ This event will trigger everytime a reply is received, meaning whenever a user r
 
 Type and name ultimately can help you filter the reply event by input type and/or name.
 
-## Exit condition
+## Return to main flow
 
-By default, the flow will continue where it left off after the Reply Event sub-flow ends. You can add an **Exit condition** to end the chat session at the end of the Reply Event flow. For example, you can decide to end the conversation whenever the user replies "exit".
-
-<Frame>
-	<img src="/images/events/reply-event.avif" alt="On New Message event in Typebot editor" />
-</Frame>
+By default, when an event is executed, the session will end and not return to the main flow. Use a [Return block](/editor/blocks/logic/return) to return to the main flow. This allows you to have the flexibility to conditionally end the session.
 
 ## Example use cases
 
