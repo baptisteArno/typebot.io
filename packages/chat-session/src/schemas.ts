@@ -125,7 +125,7 @@ const sessionStateSchemaV2 = z.object({
     .optional(),
   returnMark: z
     .object({
-      status: z.enum(["pending", "called"]),
+      status: z.enum(["pending", "called"]).default("pending"),
       blockId: z.string(),
       autoResumeMessage: inputMessageSchema.optional(),
     })
