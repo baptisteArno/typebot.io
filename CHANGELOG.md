@@ -1,5 +1,17 @@
 # Changelog
 
+<a name="3.7.1"></a>
+## 3.7.1 (2025-05-06)
+
+### Fixed
+
+- 🐛 Fix host trusting issue for self-hosting instances [[9737fee](https://github.com/baptisteArno/typebot.io/commit/9737fee8b5f8321b75cf96d36d9eb5d5d2698462)]
+
+### Content
+
+- 📝 Add &quot;Chatbot Survey Questions&quot; blog post ([#2149](https://github.com/baptisteArno/typebot.io/issues/2149)) [[71be123](https://github.com/baptisteArno/typebot.io/commit/71be1233d8b0edde495d9bdfc64e1be75dc045cd)]
+
+
 <a name="3.7.0"></a>
 ## 3.7.0 (2025-05-05)
 
