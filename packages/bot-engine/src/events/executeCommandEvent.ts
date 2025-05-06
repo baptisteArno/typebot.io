@@ -78,8 +78,9 @@ export const executeCommandEvent = ({ state, command }: Props) => {
       message: "Command event doesn't have a connected group",
     });
   const nextBlockIndex = nextGroup.blocks.findIndex(byId(nextEdge.to.blockId));
+  const newBlockId = `virtual-${event.id}-block`;
   newSessionState = addDummyFirstBlockToGroupIfMissing(
-    `virtual-${event.id}-block`,
+    newBlockId,
     newSessionState,
     {
       groupId: nextGroup.id,
@@ -88,6 +89,6 @@ export const executeCommandEvent = ({ state, command }: Props) => {
   );
   return {
     ...newSessionState,
-    currentBlockId: `virtual-${event.id}`,
+    currentBlockId: newBlockId,
   };
 };
