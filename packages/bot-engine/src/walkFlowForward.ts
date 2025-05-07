@@ -70,6 +70,7 @@ export const walkFlowForward = async (
   const clientSideActions: ContinueChatResponse["clientSideActions"] = [];
   let nextEdge: { id: string; isOffDefaultPath: boolean } | undefined =
     startingPoint.type === "nextEdge" ? startingPoint.nextEdge : undefined;
+  let lastBubbleBlockId: string | undefined;
 
   let i = -1;
   do {
@@ -98,6 +99,7 @@ export const walkFlowForward = async (
       timeoutStartTime,
       textBubbleContentFormat,
       sessionStore,
+      currentLastBubbleId: lastBubbleBlockId,
     });
     if (executionResponse.logs) logs.push(...executionResponse.logs);
     newSessionState = executionResponse.newSessionState;
@@ -110,6 +112,7 @@ export const walkFlowForward = async (
       clientSideActions.push(...executionResponse.clientSideActions);
     if (executionResponse.updatedTimeoutStartTime)
       timeoutStartTime = executionResponse.updatedTimeoutStartTime;
+    lastBubbleBlockId = executionResponse.lastBubbleBlockId;
 
     nextEdge = executionResponse.nextEdge;
   } while (
@@ -150,6 +153,7 @@ export type ExecuteGroupResponse = ContinueChatResponse & {
     id: string;
     isOffDefaultPath: boolean;
   };
+  lastBubbleBlockId: string | undefined;
 };
 
 const executeGroup = async (
@@ -218,6 +222,7 @@ const executeGroup = async (
           clientSideActions,
           logs,
           newSetVariableHistoryItems,
+          lastBubbleBlockId,
         };
       }
 
@@ -239,6 +244,7 @@ const executeGroup = async (
         clientSideActions,
         logs,
         newSetVariableHistoryItems,
+        lastBubbleBlockId,
       };
     const logicOrIntegrationExecutionResponse = (
       isLogicBlock(block)
@@ -333,6 +339,7 @@ const executeGroup = async (
           clientSideActions,
           logs,
           newSetVariableHistoryItems,
+          lastBubbleBlockId,
         };
       }
     }
@@ -361,6 +368,7 @@ const executeGroup = async (
     updatedTimeoutStartTime,
     logs,
     newSetVariableHistoryItems,
+    lastBubbleBlockId,
   };
 };
 
