@@ -221,6 +221,14 @@ const customOAuthEnv = {
     CUSTOM_OAUTH_USER_EMAIL_PATH: z.string().min(1).optional().default("email"),
     CUSTOM_OAUTH_USER_NAME_PATH: z.string().min(1).optional().default("name"),
     CUSTOM_OAUTH_USER_IMAGE_PATH: z.string().min(1).optional().default("image"),
+    CUSTOM_OAUTH_ISSUER: z.preprocess((val) => {
+      if (!val)
+        // Attempt to guess the issuer URL from the well-known URL for backward compatibility
+        return process.env.CUSTOM_OAUTH_WELL_KNOWN_URL?.split(
+          "/.well-known",
+        )[0];
+      return val;
+    }, z.string().url().optional()),
   },
 };
 
