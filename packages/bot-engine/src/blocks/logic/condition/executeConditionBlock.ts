@@ -16,7 +16,7 @@ export const executeConditionBlock = (
   );
   return {
     outgoingEdgeId: passedCondition
-      ? passedCondition.outgoingEdgeId
+      ? (passedCondition.outgoingEdgeId ?? null)
       : block.outgoingEdgeId,
   };
 };

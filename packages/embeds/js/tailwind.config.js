@@ -39,6 +39,7 @@ const config = {
   theme: {
     ...rem2px(defaultTheme),
     colors: {
+      black: "rgb(0, 0, 0)",
       white: "rgb(255, 255, 255)",
       transparent: "transparent",
       inherit: "inherit",

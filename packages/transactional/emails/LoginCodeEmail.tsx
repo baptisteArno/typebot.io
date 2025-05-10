@@ -5,16 +5,15 @@ import {
   Heading,
   Hr,
   Html,
-  Img,
   Link,
   Preview,
   Text,
 } from "@react-email/components";
 import { render } from "@react-email/render";
-import { env } from "@typebot.io/env";
 import type { SendMailOptions } from "nodemailer";
 import type { ComponentProps } from "react";
 import { sendEmail } from "../helpers/sendEmail";
+import { Logo } from "./components/Logo";
 import {
   codeStyle,
   container,
@@ -36,15 +35,7 @@ export const LoginCodeEmail = ({ url, code }: Props) => (
     <Preview>Your login code for Typebot</Preview>
     <Body style={main}>
       <Container style={container}>
-        <Img
-          src={`${env.NEXTAUTH_URL}/images/logo.png`}
-          width="32"
-          height="32"
-          alt="Typebot's Logo"
-          style={{
-            margin: "24px 0",
-          }}
-        />
+        <Logo />
         <Heading style={heading}>Your login code for Typebot</Heading>
         <code style={codeStyle}>{code}</code>
         <Text style={paragraph}>

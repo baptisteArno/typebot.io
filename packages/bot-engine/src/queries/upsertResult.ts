@@ -1,3 +1,4 @@
+import type { ContinueChatResponse } from "@typebot.io/chat-api/schemas";
 import type { TypebotInSession } from "@typebot.io/chat-session/schemas";
 import prisma from "@typebot.io/prisma";
 import { JsonNull } from "@typebot.io/prisma/enum";
@@ -5,7 +6,6 @@ import type { Prisma } from "@typebot.io/prisma/types";
 import { filterNonSessionVariablesWithValues } from "@typebot.io/variables/filterVariablesWithValues";
 import type { SetVariableHistoryItem } from "@typebot.io/variables/schemas";
 import { shortenLogDetails } from "../logs/helpers/shortenLogDetails";
-import type { ContinueChatResponse } from "../schemas/api";
 
 type Props = {
   resultId: string;

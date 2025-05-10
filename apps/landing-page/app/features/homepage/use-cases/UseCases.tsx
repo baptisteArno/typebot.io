@@ -203,14 +203,7 @@ export const Cta = () => (
     </p>
     <div className="w-full md:w-auto flex flex-col md:flex-row gap-4">
       <ButtonLink variant="cta" size="lg" href={registerUrl}>
-        Try it out for free
-      </ButtonLink>
-      <ButtonLink
-        variant="ctaSecondary"
-        size="lg"
-        href={enterpriseLeadTypebotUrl}
-      >
-        Book a demo
+        Get started free
       </ButtonLink>
     </div>
   </div>

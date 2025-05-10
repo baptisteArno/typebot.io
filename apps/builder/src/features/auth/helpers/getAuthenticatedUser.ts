@@ -7,8 +7,7 @@ import {
   clientUserSchema,
 } from "@typebot.io/schemas/features/user/schema";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { getServerSession } from "next-auth";
-import { createAuthConfig } from "./createAuthConfig";
+import { auth } from "../lib/nextAuth";
 
 export const getAuthenticatedUser = async (
   req: NextApiRequest,
@@ -16,9 +15,7 @@ export const getAuthenticatedUser = async (
 ): Promise<ClientUser | undefined> => {
   const bearerToken = extractBearerToken(req);
   if (bearerToken) return authenticateByToken(bearerToken);
-  return env.NEXT_PUBLIC_E2E_TEST
-    ? mockedUser
-    : (await getServerSession(req, res, createAuthConfig()))?.user;
+  return env.NEXT_PUBLIC_E2E_TEST ? mockedUser : (await auth(req, res))?.user;
 };
 
 const authenticateByToken = async (

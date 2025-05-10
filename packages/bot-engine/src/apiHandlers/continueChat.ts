@@ -1,5 +1,6 @@
 import { TRPCError } from "@trpc/server";
 import { BubbleBlockType } from "@typebot.io/blocks-bubbles/constants";
+import type { Message } from "@typebot.io/chat-api/schemas";
 import { getSession } from "@typebot.io/chat-session/queries/getSession";
 import { isDefined, isNotDefined } from "@typebot.io/lib/utils";
 import {
@@ -8,11 +9,10 @@ import {
 } from "@typebot.io/runtime-session-store";
 import { computeCurrentProgress } from "../computeCurrentProgress";
 import { continueBotFlow } from "../continueBotFlow";
-import { assertOriginIsAllowed } from "../helpers/isOriginAllowed";
+import { assertOriginIsAllowed } from "../helpers/assertOriginIsAllowed";
 import { filterPotentiallySensitiveLogs } from "../logs/filterPotentiallySensitiveLogs";
 import { parseDynamicTheme } from "../parseDynamicTheme";
 import { saveStateToDatabase } from "../saveStateToDatabase";
-import type { Message } from "../schemas/api";
 
 type Props = {
   origin: string | undefined;
@@ -69,6 +69,7 @@ export const continueChat = async ({
     textBubbleContentFormat,
     sessionStore,
   });
+
   const dynamicTheme = parseDynamicTheme({
     state: newSessionState,
     sessionStore,

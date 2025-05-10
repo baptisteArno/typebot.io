@@ -196,3 +196,8 @@ export const botCssVariableNames = {
     },
   },
 } as const;
+
+export const defaultPreviewMessageBackgroundColor = "#F7F8FF";
+export const defaultPreviewMessageTextColor = "#303235";
+export const defaultPreviewMessageCloseButtonBackgroundColor = "#F7F8FF";
+export const defaultPreviewMessageCloseButtonIconColor = "#303235";

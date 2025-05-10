@@ -3,7 +3,7 @@ import { executeCode } from "@/features/blocks/logic/script/executeScript";
 import type { InputSubmitContent } from "@/types";
 import { botContainerHeight } from "@/utils/botContainerHeightSignal";
 import { isMobile } from "@/utils/isMobileSignal";
-import type { CustomEmbedBubble as CustomEmbedBubbleProps } from "@typebot.io/bot-engine/schemas/api";
+import type { CustomEmbedBubble as CustomEmbedBubbleProps } from "@typebot.io/chat-api/schemas";
 import { cx } from "@typebot.io/ui/lib/cva";
 import { createSignal, onCleanup, onMount } from "solid-js";
 

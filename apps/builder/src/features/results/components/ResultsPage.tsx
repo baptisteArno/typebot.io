@@ -35,10 +35,7 @@ export const ResultsPage = () => {
     () => router.pathname.endsWith("analytics"),
     [router.pathname],
   );
-  const bgColor = useColorModeValue(
-    router.pathname.endsWith("analytics") ? "#f4f5f8" : "white",
-    router.pathname.endsWith("analytics") ? "gray.900" : "gray.950",
-  );
+  const bgColor = useColorModeValue("white", "gray.950");
   const [timeFilter, setTimeFilter] = useQueryState<
     (typeof timeFilterValues)[number]
   >("timeFilter", {

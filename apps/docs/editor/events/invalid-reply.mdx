@@ -1,0 +1,42 @@
+---
+title: Invalid Reply Event  
+sidebarTitle: Invalid Reply  
+---
+
+The **Invalid Reply Event** is triggered every time a user submits an invalid response to an input block — for example, an incorrectly formatted email or a number outside a defined range. It allows you to define a custom subflow that replaces the default "Invalid message. Please, try again." behavior.
+
+This is useful when you want to handle invalid inputs in a more conversational, branded, or dynamic way — such as providing specific guidance, logging the error, or redirecting users.
+
+## Supported inputs
+
+This event is triggered by any input block that supports validation, including:
+
+- Email
+- Number
+- URL
+- Phone
+- Date / Time  
+...
+
+## Variable mapping
+
+- **Reply content**: The content of the invalid reply.
+- **Input type**: The type of the current input. Can be `text`, `number`, `email`, `url`, `date`, `time`, `phone`, `buttons`, `picture choice`, `payment`, `rating`, `file`, `cards`.
+- **Input name**: The name of the current input. If a variable is attached to the input, it will be the name of the variable. Otherwise, it will be the title of the group.
+
+These variables can help you customize messages based on what the user did wrong (e.g., “It looks like **\{\{invalid value\}\}** is not a valid email”).
+
+## Input blocks inside the event subflow
+
+You can technically use input blocks inside the `Invalid Reply Event` subflow, but this is not recommended unless you plan to **manually handle flow redirection** using a Jump block.  
+If your subflow includes inputs but doesn't use a Jump block, Typebot will still retry the original input block at the end — which could confuse users.
+
+## Return to main flow
+
+By default, when an event is executed, the session will end and not return to the main flow. Use a [Return block](/editor/blocks/logic/return) to return to the main flow. This allows you to have the flexibility to conditionally end the session.
+
+## Example use cases
+
+- Show a friendlier explanation of why the input is invalid (e.g., "Oops! That doesn't look like a real email").
+- Track how many invalid attempts a user makes with a variable and show a warning after 3 tries.
+- Redirect the user to a help flow if they keep entering invalid values.

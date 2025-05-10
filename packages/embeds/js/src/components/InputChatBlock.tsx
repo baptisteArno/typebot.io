@@ -37,7 +37,7 @@ import type { UrlInputBlock } from "@typebot.io/blocks-inputs/url/schema";
 import type {
   ContinueChatResponse,
   RuntimeOptions,
-} from "@typebot.io/bot-engine/schemas/api";
+} from "@typebot.io/chat-api/schemas";
 import { isDefined, isNotDefined } from "@typebot.io/lib/utils";
 import { defaultHostAvatarIsEnabled } from "@typebot.io/theme/constants";
 import type { Theme } from "@typebot.io/theme/schemas";

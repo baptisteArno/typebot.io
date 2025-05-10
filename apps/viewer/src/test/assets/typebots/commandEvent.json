@@ -1,0 +1,198 @@
+{
+  "version": "6.1",
+  "id": "h51hlphvwlh7pgxsmnkm94dq",
+  "name": "Lead Generation",
+  "events": [
+    {
+      "id": "k6kY6gwRE6noPoYQNGzgUq",
+      "outgoingEdgeId": "oNvqaqNExdSH2kKEhKZHuE",
+      "graphCoordinates": { "x": 0, "y": 0 },
+      "type": "start"
+    },
+    {
+      "id": "vogcxe73q3oqbhfcci4sj60b",
+      "outgoingEdgeId": "v71r8nav3xbs5t1x4efck7xx",
+      "graphCoordinates": { "x": 12.5, "y": 799.5 },
+      "type": "command",
+      "options": { "command": "wizz" }
+    },
+    {
+      "id": "b9am2580tsnshe7fxll5fy8t",
+      "outgoingEdgeId": "p0x77ajq91n5lrccgdz7hrn5",
+      "graphCoordinates": { "x": -26.95246447085812, "y": 1100.559466258603 },
+      "type": "command",
+      "options": { "command": "leave" }
+    }
+  ],
+  "groups": [
+    {
+      "id": "kinRXxYop2X4d7F9qt8WNB",
+      "title": "Welcome",
+      "graphCoordinates": { "x": 239.17, "y": 219.35 },
+      "blocks": [
+        {
+          "id": "sc1y8VwDabNJgiVTBi4qtif",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  { "text": "Welcome to " },
+                  { "bold": true, "text": "AA" },
+                  { "text": " (Awesome Agency)" }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "s7YqZTBeyCa4Hp3wN2j922c",
+          "type": "image",
+          "content": {
+            "url": "https://media2.giphy.com/media/XD9o33QG9BoMis7iM4/giphy.gif?cid=fe3852a3ihg8rvipzzky5lybmdyq38fhke2tkrnshwk52c7d&rid=giphy.gif&ct=g"
+          }
+        },
+        {
+          "id": "sbjZWLJGVkHAkDqS4JQeGow",
+          "type": "choice input",
+          "items": [
+            {
+              "id": "hQw2zbp7FDX7XYK9cFpbgC",
+              "outgoingEdgeId": "vokha1klf8gg5vhptqrdud58",
+              "content": "Hi!"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "vF7AD7zSAj7SNvN3gr9N94",
+      "title": "Bye",
+      "graphCoordinates": { "x": 1668, "y": 143 },
+      "blocks": [
+        {
+          "id": "seLegenCgUwMopRFeAefqZ7",
+          "type": "text",
+          "content": {
+            "richText": [{ "type": "p", "children": [{ "text": "Perfect!" }] }]
+          }
+        },
+        {
+          "id": "s779Q1y51aVaDUJVrFb16vv",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [{ "text": "We'll get back to you at {{Email}}" }]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "egxcw5phb1idevjgn151hoi4",
+      "title": "Group #7",
+      "graphCoordinates": { "x": 346.81, "y": 808.16 },
+      "blocks": [
+        {
+          "id": "lzd3cj7meitzpezgt80uoi51",
+          "type": "text",
+          "content": {
+            "richText": [{ "type": "p", "children": [{ "text": "Wizzzzz" }] }]
+          }
+        },
+        { "id": "prfhynhapg8g94riwazu5uj7", "type": "Return" }
+      ]
+    },
+    {
+      "id": "pkd8hrkvfxsor6h5y6q7qd0v",
+      "title": "Group #4",
+      "graphCoordinates": { "x": 636.1, "y": 259.38 },
+      "blocks": [
+        {
+          "id": "roviemzps2ucmx9y5yjuwbbt",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "Hey there!" }] }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "bopq6dlh8hi98lz4ccnn25df",
+      "title": "Group #5",
+      "graphCoordinates": { "x": 357.26, "y": 1127.9 },
+      "blocks": [
+        {
+          "id": "b4ueiqrsrnhlcbq8d4y3tg60",
+          "type": "text",
+          "content": {
+            "richText": [{ "type": "p", "children": [{ "text": "Leaving!" }] }]
+          }
+        }
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "oNvqaqNExdSH2kKEhKZHuE",
+      "from": { "eventId": "k6kY6gwRE6noPoYQNGzgUq" },
+      "to": { "groupId": "kinRXxYop2X4d7F9qt8WNB" }
+    },
+    {
+      "id": "sH5nUssG2XQbm6ZidGv9BY",
+      "from": { "blockId": "sqFy2G3C1mh9p6s3QBdSS5x" },
+      "to": { "groupId": "vF7AD7zSAj7SNvN3gr9N94" }
+    },
+    {
+      "id": "v71r8nav3xbs5t1x4efck7xx",
+      "from": { "eventId": "vogcxe73q3oqbhfcci4sj60b" },
+      "to": { "groupId": "egxcw5phb1idevjgn151hoi4" }
+    },
+    {
+      "id": "vokha1klf8gg5vhptqrdud58",
+      "from": {
+        "blockId": "sbjZWLJGVkHAkDqS4JQeGow",
+        "itemId": "hQw2zbp7FDX7XYK9cFpbgC"
+      },
+      "to": { "groupId": "pkd8hrkvfxsor6h5y6q7qd0v" }
+    },
+    {
+      "id": "p0x77ajq91n5lrccgdz7hrn5",
+      "from": { "eventId": "b9am2580tsnshe7fxll5fy8t" },
+      "to": { "groupId": "bopq6dlh8hi98lz4ccnn25df" }
+    }
+  ],
+  "variables": [
+    {
+      "id": "giiLFGw5xXBCHzvp1qAbdX",
+      "name": "Name",
+      "isSessionVariable": false
+    },
+    {
+      "id": "v3VFChNVSCXQ2rXv4DrJ8Ah",
+      "name": "Email",
+      "isSessionVariable": false
+    }
+  ],
+  "theme": {},
+  "selectedThemeTemplateId": null,
+  "settings": {},
+  "createdAt": "2025-05-06T14:29:43.068Z",
+  "updatedAt": "2025-05-06T14:35:33.369Z",
+  "icon": "🤝",
+  "folderId": null,
+  "publicId": "lead-generation-nkm94dq",
+  "customDomain": null,
+  "workspaceId": "proWorkspace",
+  "resultsTablePreferences": null,
+  "isArchived": false,
+  "isClosed": false,
+  "whatsAppCredentialsId": null,
+  "riskLevel": null
+}

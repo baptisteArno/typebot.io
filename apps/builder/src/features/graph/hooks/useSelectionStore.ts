@@ -122,9 +122,9 @@ export const useSelectionStore = createWithEqualityFn<SelectionStore>()(
         },
       }));
     },
-    copyElements: (groupsInClipboard) =>
+    copyElements: (elementsInClipboard) =>
       set({
-        elementsInClipboard: groupsInClipboard,
+        elementsInClipboard,
       }),
     setIsDraggingGraph: (isDragging) => set({ isDraggingGraph: isDragging }),
   })),

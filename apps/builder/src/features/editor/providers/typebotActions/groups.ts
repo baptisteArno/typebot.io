@@ -1,25 +1,21 @@
 import type { Coordinates, CoordinatesMap } from "@/features/graph/types";
 import { createId } from "@paralleldrive/cuid2";
-import {
-  blockHasItems,
-  blockHasOptions,
-} from "@typebot.io/blocks-core/helpers";
 import type {
   BlockIndices,
   BlockV6,
-  BlockWithItems,
 } from "@typebot.io/blocks-core/schemas/schema";
-import { LogicBlockType } from "@typebot.io/blocks-logic/constants";
 import type { GroupV6 } from "@typebot.io/groups/schemas";
-import { parseUniqueKey } from "@typebot.io/lib/parseUniqueKey";
-import { byId, isEmpty } from "@typebot.io/lib/utils";
+import { byId, isDefined } from "@typebot.io/lib/utils";
 import type { Edge } from "@typebot.io/typebot/schemas/edge";
 import type { TypebotV6 } from "@typebot.io/typebot/schemas/typebot";
-import { extractVariableIdsFromObject } from "@typebot.io/variables/extractVariablesFromObject";
 import type { Variable } from "@typebot.io/variables/schemas";
 import { type Draft, produce } from "immer";
 import type { SetTypebot } from "../TypebotProvider";
-import { createBlockDraft, deleteGroupDraft } from "./blocks";
+import {
+  createBlockDraft,
+  deleteGroupDraft,
+  duplicateBlockDraft,
+} from "./blocks";
 
 export type GroupsActions = {
   createGroup: (
@@ -34,11 +30,20 @@ export type GroupsActions = {
     updates: Partial<Omit<GroupV6, "id">>,
   ) => void;
   pasteGroups: (
-    groups: GroupV6[],
-    edges: Edge[],
-    variables: Pick<Variable, "id" | "name">[],
-    oldToNewIdsMapping: Map<string, string>,
-  ) => void;
+    clipboard: {
+      groups: GroupV6[];
+      edges: Edge[];
+      variables: Omit<Variable, "value">[];
+    },
+    params: {
+      newCoordinates: {
+        mousePosition: Coordinates;
+        farLeftElement: {
+          id: string;
+        } & Coordinates;
+      };
+    },
+  ) => { newGroups: GroupV6[]; oldToNewIdsMapping: Map<string, string> };
   updateGroupsCoordinates: (newCoord: CoordinatesMap) => void;
   deleteGroup: (groupIndex: number) => void;
   deleteGroups: (groupIds: string[]) => void;
@@ -104,165 +109,123 @@ const groupsActions = (setTypebot: SetTypebot): GroupsActions => ({
         });
       }),
     ),
-  pasteGroups: (
-    groups: GroupV6[],
-    edges: Edge[],
-    variables: Omit<Variable, "value">[],
-    oldToNewIdsMapping: Map<string, string>,
-  ) => {
-    setTypebot((typebot) =>
-      produce(typebot, (typebot) => {
-        const edgesToCreate: Edge[] = [];
-        const variablesToCreate: Omit<Variable, "value">[] = [];
-        variables.forEach((variable) => {
+  pasteGroups: (clipboard, { newCoordinates }) => {
+    const oldToNewIdsMapping = new Map<string, string>();
+    const newEdgesWithOldIds: Edge[] = [];
+    let newGroups: GroupV6[] = [];
+
+    setTypebot((typebot) => {
+      const variablesToCreate = clipboard.variables
+        .map((variable) => {
           const existingVariable = typebot.variables.find(
-            (v) => v.name === variable.name,
+            (v) => v.name === variable.name || v.id === variable.id,
           );
           if (existingVariable) {
             oldToNewIdsMapping.set(variable.id, existingVariable.id);
             return;
           }
-          const id = createId();
-          oldToNewIdsMapping.set(variable.id, id);
-          variablesToCreate.push({
+          const newVariableId = createId();
+          oldToNewIdsMapping.set(variable.id, newVariableId);
+          return {
             ...variable,
-            id,
-          });
-        });
-        const newGroups: GroupV6[] = [];
-        groups.forEach((group) => {
-          const groupTitle = isEmpty(group.title)
-            ? ""
-            : parseUniqueKey(
-                group.title,
-                typebot.groups.map((g) => g.title),
-              );
-          const newGroup: GroupV6 = {
-            ...group,
-            title: groupTitle,
-            blocks: group.blocks.map((block) => {
-              const newBlock = { ...block };
-              const blockId = createId();
-              oldToNewIdsMapping.set(newBlock.id, blockId);
-              if (blockHasOptions(newBlock) && newBlock.options) {
-                const variableIdsToReplace = extractVariableIdsFromObject(
-                  newBlock.options,
-                ).filter((v) => oldToNewIdsMapping.has(v));
-                if (variableIdsToReplace.length > 0) {
-                  let optionsStr = JSON.stringify(newBlock.options);
-                  variableIdsToReplace.forEach((variableId) => {
-                    const newId = oldToNewIdsMapping.get(variableId);
-                    if (!newId) return;
-                    optionsStr = optionsStr.replace(variableId, newId);
-                  });
-                  newBlock.options = JSON.parse(optionsStr);
-                }
-              }
-              if (blockHasItems(newBlock)) {
-                newBlock.items = newBlock.items?.map((item) => {
-                  const id = createId();
-                  let outgoingEdgeId = item.outgoingEdgeId;
-                  if (outgoingEdgeId) {
-                    const edge = edges.find(byId(outgoingEdgeId));
-                    if (edge) {
-                      outgoingEdgeId = createId();
-                      edgesToCreate.push({
-                        ...edge,
-                        id: outgoingEdgeId,
-                      });
-                      oldToNewIdsMapping.set(item.id, id);
-                    } else {
-                      outgoingEdgeId = undefined;
-                    }
-                  }
-                  return {
-                    ...item,
-                    blockId,
-                    id,
-                    outgoingEdgeId,
-                  };
-                }) as BlockWithItems["items"];
-              }
-              let outgoingEdgeId = newBlock.outgoingEdgeId;
-              if (outgoingEdgeId) {
-                const edge = edges.find(byId(outgoingEdgeId));
-                if (edge) {
-                  outgoingEdgeId = createId();
-                  edgesToCreate.push({
-                    ...edge,
-                    id: outgoingEdgeId,
-                  });
-                } else {
-                  outgoingEdgeId = undefined;
-                }
-              }
-              return {
-                ...newBlock,
-                id: blockId,
-                outgoingEdgeId,
-              };
-            }),
+            id: newVariableId,
           };
-          newGroups.push(newGroup);
+        })
+        .filter(isDefined);
+
+      newGroups = clipboard.groups.map((group) => {
+        const newGroupId = createId();
+        oldToNewIdsMapping.set(group.id, newGroupId);
+
+        const newBlocks = group.blocks.map((block) => {
+          const { newBlock, newEdges } = duplicateBlockDraft(block, {
+            edges: clipboard.edges,
+          });
+          oldToNewIdsMapping.set(block.id, newBlock.id);
+
+          if (newEdges) newEdgesWithOldIds.push(...newEdges);
+          return replaceOldIdReferences(newBlock, oldToNewIdsMapping);
         });
 
-        typebot.groups.push(
-          ...newGroups.map((group) => {
-            return {
-              ...group,
-              blocks: group.blocks.map((block) => {
-                if (
-                  block.type === LogicBlockType.JUMP &&
-                  block.options?.groupId
-                )
-                  return {
-                    ...block,
-                    options: {
-                      ...block.options,
-                      groupId: oldToNewIdsMapping.get(block.options?.groupId),
-                      blockId: block.options?.blockId
-                        ? oldToNewIdsMapping.get(block.options?.blockId)
-                        : undefined,
-                    },
-                  };
-                return block;
-              }),
-            };
-          }),
-        );
-
-        edgesToCreate.forEach((edge) => {
-          if (!("blockId" in edge.from)) return;
-          const fromBlockId = oldToNewIdsMapping.get(edge.from.blockId);
+        return {
+          ...group,
+          id: newGroupId,
+          graphCoordinates:
+            group.id === newCoordinates.farLeftElement.id
+              ? newCoordinates.mousePosition
+              : {
+                  x:
+                    newCoordinates.mousePosition.x +
+                    group.graphCoordinates.x -
+                    newCoordinates.farLeftElement.x,
+                  y:
+                    newCoordinates.mousePosition.y +
+                    group.graphCoordinates.y -
+                    newCoordinates.farLeftElement.y,
+                },
+          blocks: newBlocks,
+        };
+      });
+      const edgesToCreate = newEdgesWithOldIds
+        .map((edge) => {
+          if ("eventId" in edge.from) return;
           const toGroupId = oldToNewIdsMapping.get(edge.to.groupId);
-          if (!fromBlockId || !toGroupId) return;
-          const newEdge: Edge = {
+          if (!toGroupId) return;
+          return {
             ...edge,
-            from: {
-              ...edge.from,
-              blockId: fromBlockId,
-              itemId: edge.from.itemId
-                ? oldToNewIdsMapping.get(edge.from.itemId)
-                : undefined,
-            },
             to: {
-              ...edge.to,
               groupId: toGroupId,
               blockId: edge.to.blockId
                 ? oldToNewIdsMapping.get(edge.to.blockId)
                 : undefined,
             },
-          };
-          typebot.edges.push(newEdge);
-        });
+          } satisfies Edge;
+        })
+        .filter(isDefined);
 
-        variablesToCreate.forEach((variableToCreate) => {
-          typebot.variables.unshift(variableToCreate);
-        });
-      }),
-    );
+      return produce(typebot, (typebot) => {
+        typebot.groups.push(...newGroups);
+        typebot.edges.push(...edgesToCreate);
+        typebot.variables.unshift(...variablesToCreate);
+      });
+    });
+    return { newGroups, oldToNewIdsMapping };
   },
 });
+
+const replaceOldIdReferences = <T>(obj: T, mapping: Map<string, string>): T => {
+  if (Array.isArray(obj)) {
+    return obj.map((item) =>
+      replaceOldIdReferences(item, mapping),
+    ) as unknown as T;
+  }
+
+  if (typeof obj === "object" && obj !== null) {
+    const newObj: any = { ...obj };
+
+    Object.keys(newObj).forEach((key) => {
+      const value = newObj[key];
+
+      if (
+        (key.toLowerCase().endsWith("variableid") ||
+          key === "blockId" ||
+          key === "groupId") &&
+        typeof value === "string"
+      ) {
+        const newId = mapping.get(value);
+        if (newId) {
+          newObj[key] = newId;
+        }
+      } else {
+        newObj[key] = replaceOldIdReferences(value, mapping);
+      }
+    });
+
+    return newObj;
+  }
+
+  return obj;
+};
 
 const deleteGroupByIdDraft =
   (typebot: Draft<TypebotV6>) => (groupId: string) => {

@@ -279,7 +279,7 @@ export const TextInput = (props: Props) => {
         <Show when={recordingStatus() !== "started"}>
           <Show when={selectedFiles().length}>
             <div
-              class="p-2 flex gap-2 border-gray-100 overflow-auto"
+              class="p-2 flex gap-2 border-input-border overflow-auto"
               style={{ "border-bottom-width": "1px" }}
             >
               <For each={selectedFiles()}>

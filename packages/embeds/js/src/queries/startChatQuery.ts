@@ -10,7 +10,7 @@ import type {
   StartChatResponse,
   StartFrom,
   StartPreviewChatInput,
-} from "@typebot.io/bot-engine/schemas/api";
+} from "@typebot.io/chat-api/schemas";
 import { isNotDefined, isNotEmpty } from "@typebot.io/lib/utils";
 import ky from "ky";
 

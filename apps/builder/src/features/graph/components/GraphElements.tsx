@@ -1,11 +1,11 @@
+import type {
+  EdgeWithTotalVisits,
+  TotalAnswers,
+} from "@/features/analytics/schemas";
 import { EventNode } from "@/features/events/components/EventNode";
 import { isInputBlock } from "@typebot.io/blocks-core/helpers";
 import type { TEvent } from "@typebot.io/events/schemas";
 import type { GroupV6 } from "@typebot.io/groups/schemas";
-import type {
-  EdgeWithTotalUsers,
-  TotalAnswers,
-} from "@typebot.io/schemas/features/analytics";
 import type { Edge } from "@typebot.io/typebot/schemas/edge";
 import React, { memo } from "react";
 import { EndpointsProvider } from "../providers/EndpointsProvider";
@@ -16,7 +16,7 @@ type Props = {
   edges: Edge[];
   groups: GroupV6[];
   events: TEvent[];
-  edgesWithTotalUsers?: EdgeWithTotalUsers[];
+  edgesWithTotalUsers?: EdgeWithTotalVisits[];
   totalAnswers?: TotalAnswers[];
   onUnlockProPlanClick?: () => void;
 };

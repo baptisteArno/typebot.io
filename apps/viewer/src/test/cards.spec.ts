@@ -23,5 +23,5 @@ test("should work as expected", async ({ page }) => {
   await expect(page.getByRole("heading", { name: "Title 2" })).toBeVisible();
   await expect(page.getByText("Desc 2")).toBeVisible();
   await page.getByRole("button", { name: "Continue" }).nth(1).click();
-  await expect(page.getByText("Cool! Goodbye.")).toBeVisible();
+  await expect(page.getByText("You've selected Title 2")).toBeVisible();
 });

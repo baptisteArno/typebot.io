@@ -1,4 +1,5 @@
 import { BubbleBlockType } from "@typebot.io/blocks-bubbles/constants";
+import type { Message } from "@typebot.io/chat-api/schemas";
 import { restartSession } from "@typebot.io/chat-session/queries/restartSession";
 import { createId } from "@typebot.io/lib/createId";
 import {
@@ -6,10 +7,9 @@ import {
   getSessionStore,
 } from "@typebot.io/runtime-session-store";
 import { computeCurrentProgress } from "../computeCurrentProgress";
-import { assertOriginIsAllowed } from "../helpers/isOriginAllowed";
+import { assertOriginIsAllowed } from "../helpers/assertOriginIsAllowed";
 import { filterPotentiallySensitiveLogs } from "../logs/filterPotentiallySensitiveLogs";
 import { saveStateToDatabase } from "../saveStateToDatabase";
-import type { Message } from "../schemas/api";
 import { startSession } from "../startSession";
 
 type Props = {

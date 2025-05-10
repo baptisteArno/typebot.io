@@ -1,0 +1,239 @@
+{
+  "version": "6.1",
+  "id": "voq8aixb1zvzxac9m126knil",
+  "name": "My typebot",
+  "events": [
+    {
+      "id": "cN46uqNAR3ohjrS8jHJ6xT",
+      "outgoingEdgeId": "7wxB76VK81JsXMX9jU9dbQ",
+      "graphCoordinates": { "x": 0, "y": 0 },
+      "type": "start"
+    }
+  ],
+  "groups": [
+    {
+      "id": "eh2ohNATnGg6RTdjG9h5kb",
+      "title": "Group #1",
+      "graphCoordinates": { "x": 159, "y": 224 },
+      "blocks": [
+        {
+          "id": "sb6xdkJRr6P6BxtTM3ku5JD",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "How old are you?" }] }
+            ]
+          }
+        },
+        {
+          "id": "ssyBKZve7bihSxUASYTruZA",
+          "outgoingEdgeId": "r8LX7iuEXxjF5SW5dbS6qT",
+          "type": "number input",
+          "options": {
+            "variableId": "iDJzzyzAY2jrapm3NwhGMz",
+            "labels": { "placeholder": "Type a number...", "button": "Send" }
+          }
+        }
+      ]
+    },
+    {
+      "id": "eMk84KvFM53sBxchTeackR",
+      "title": "Group #2",
+      "graphCoordinates": { "x": 561, "y": 295 },
+      "blocks": [
+        {
+          "id": "sv8uvEXgYWQNMfZWcdbfyCs",
+          "outgoingEdgeId": "hVScFHNzToiEsMfYVv5AWZ",
+          "type": "Condition",
+          "items": [
+            {
+              "id": "56s4R9THRKeoJtBdKzEGLn",
+              "outgoingEdgeId": "s57bs2xrwiw85hce9x2jbjkp",
+              "content": {
+                "logicalOperator": "AND",
+                "comparisons": [
+                  {
+                    "id": "wxWqL7JuZhy9uwCZNPDJjM",
+                    "variableId": "iDJzzyzAY2jrapm3NwhGMz",
+                    "comparisonOperator": "Greater than",
+                    "value": "80"
+                  }
+                ]
+              }
+            },
+            {
+              "id": "ijYfW38tGhCMRrCtmR3bcr",
+              "outgoingEdgeId": "s1uVbzP1zMMJjsCguAfhGV",
+              "content": {
+                "logicalOperator": "AND",
+                "comparisons": [
+                  {
+                    "id": "3di6P3ypWf3XusgBLLHYBE",
+                    "variableId": "iDJzzyzAY2jrapm3NwhGMz",
+                    "comparisonOperator": "Greater than",
+                    "value": "20"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fGrzjahWecA8hoNMRrLSwn",
+      "title": "Group #3",
+      "graphCoordinates": { "x": 936, "y": 63 },
+      "blocks": [
+        {
+          "id": "soZqPdPUjYAht9nHmVpba1Q",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "You are older than 80" }] }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "49Jv45UJi9R3U4FuWS8R2c",
+      "title": "Group #4",
+      "graphCoordinates": { "x": 950, "y": 298 },
+      "blocks": [
+        {
+          "id": "svipUacs1sDk9KDxzaGhnsG",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "You are older than 20" }] }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "fD28kefdySKK7XA7SyTozC",
+      "title": "Group #5",
+      "graphCoordinates": { "x": 985, "y": 537 },
+      "blocks": [
+        {
+          "id": "spHJ7v9bDdVrFfuF2zg3YNR",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [{ "text": "You are younger than 20" }]
+              }
+            ]
+          }
+        },
+        {
+          "id": "y5jfywgapq33x1ixlfj8u4xh",
+          "type": "Condition",
+          "items": [
+            {
+              "id": "b3sbvh8gm1j18oz8zfs6y5mk",
+              "content": {
+                "comparisons": [
+                  {
+                    "id": "h0b65xgim4jkbzfu8jxdcci3",
+                    "variableId": "iDJzzyzAY2jrapm3NwhGMz",
+                    "comparisonOperator": "Less or equal to",
+                    "value": "20"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "eqg3us9b59ehvro536onzx1b",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [{ "text": "This should never be displayed" }]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "7wxB76VK81JsXMX9jU9dbQ",
+      "from": { "eventId": "cN46uqNAR3ohjrS8jHJ6xT" },
+      "to": { "groupId": "eh2ohNATnGg6RTdjG9h5kb" }
+    },
+    {
+      "id": "s1uVbzP1zMMJjsCguAfhGV",
+      "from": {
+        "blockId": "sv8uvEXgYWQNMfZWcdbfyCs",
+        "itemId": "ijYfW38tGhCMRrCtmR3bcr"
+      },
+      "to": { "groupId": "49Jv45UJi9R3U4FuWS8R2c" }
+    },
+    {
+      "id": "hVScFHNzToiEsMfYVv5AWZ",
+      "from": { "blockId": "sv8uvEXgYWQNMfZWcdbfyCs" },
+      "to": { "groupId": "fD28kefdySKK7XA7SyTozC" }
+    },
+    {
+      "id": "r8LX7iuEXxjF5SW5dbS6qT",
+      "from": { "blockId": "ssyBKZve7bihSxUASYTruZA" },
+      "to": { "groupId": "eMk84KvFM53sBxchTeackR" }
+    },
+    {
+      "from": {
+        "blockId": "sv8uvEXgYWQNMfZWcdbfyCs",
+        "itemId": "56s4R9THRKeoJtBdKzEGLn"
+      },
+      "to": { "groupId": "fGrzjahWecA8hoNMRrLSwn" },
+      "id": "s57bs2xrwiw85hce9x2jbjkp"
+    }
+  ],
+  "variables": [
+    {
+      "id": "iDJzzyzAY2jrapm3NwhGMz",
+      "name": "Age",
+      "isSessionVariable": false
+    }
+  ],
+  "theme": {
+    "general": { "font": "Open Sans", "background": { "type": "None" } },
+    "chat": {
+      "hostBubbles": { "backgroundColor": "#F7F8FF", "color": "#303235" },
+      "guestBubbles": { "backgroundColor": "#FF8E21", "color": "#FFFFFF" },
+      "buttons": { "backgroundColor": "#0042DA", "color": "#FFFFFF" },
+      "inputs": {
+        "backgroundColor": "#FFFFFF",
+        "color": "#303235",
+        "placeholderColor": "#9095A0"
+      }
+    }
+  },
+  "selectedThemeTemplateId": null,
+  "settings": {
+    "general": { "isBrandingEnabled": true },
+    "typingEmulation": { "enabled": true, "speed": 300, "maxDelay": 1.5 },
+    "metadata": {
+      "description": "Build beautiful conversational forms and embed them directly in your applications without a line of code. Triple your response rate and collect answers that has more value compared to a traditional form."
+    }
+  },
+  "createdAt": "2025-04-27T16:27:28.330Z",
+  "updatedAt": "2025-04-27T16:28:18.310Z",
+  "icon": null,
+  "folderId": null,
+  "publicId": null,
+  "customDomain": null,
+  "workspaceId": "proWorkspace",
+  "resultsTablePreferences": null,
+  "isArchived": false,
+  "isClosed": false,
+  "whatsAppCredentialsId": null,
+  "riskLevel": null
+}

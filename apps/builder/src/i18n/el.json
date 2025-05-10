@@ -143,7 +143,6 @@
   "blocks.inputs.fileUpload.blockCard.tooltip": "Ανέβασμα Αρχείων",
   "blocks.inputs.number.settings.step.label": "Βήμα:",
   "blocks.inputs.payment.collect.label": "Coletar",
-  "blocks.inputs.payment.placeholder.label": "Ρύθμιση...",
   "blocks.inputs.payment.settings.account.label": "Λογαριασμός:",
   "blocks.inputs.payment.settings.accountText.label": "Λογαριασμός {provider}",
   "blocks.inputs.payment.settings.additionalInformation.description.placeholder.label": "Ένα ψηφιακό προϊόν",

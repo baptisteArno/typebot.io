@@ -11,6 +11,7 @@ type Props = {
   newVariables: VariableWithUnknowValue[];
   currentBlockId: string | undefined;
 };
+// TODO: Refacto newVariables param first, other in second
 export const updateVariablesInSession = ({
   state,
   newVariables,

@@ -10,7 +10,7 @@
     "test:ui": "dotenv -e ./.env -e ../../.env -- playwright test --ui"
   },
   "dependencies": {
-    "@ark-ui/react": "5.1.0",
+    "@ark-ui/react": "5.7.0",
     "@auth/core": "0.37.4",
     "@braintree/sanitize-url": "7.0.1",
     "@chakra-ui/react": "2.8.2",
@@ -31,7 +31,6 @@
     "@trpc/next": "10.45.2",
     "@trpc/react-query": "10.45.2",
     "@trpc/server": "10.45.2",
-    "posthog-node": "4.3.2",
     "@typebot.io/blocks-bubbles": "workspace:*",
     "@typebot.io/blocks-core": "workspace:*",
     "@typebot.io/blocks-inputs": "workspace:*",
@@ -48,6 +47,7 @@
     "@typebot.io/js": "workspace:*",
     "@typebot.io/logs": "workspace:*",
     "@typebot.io/nextjs": "workspace:*",
+    "@typebot.io/runtime-session-store": "workspace:*",
     "@typebot.io/settings": "workspace:*",
     "@typebot.io/theme": "workspace:*",
     "@typebot.io/transactional": "workspace:*",
@@ -56,6 +56,7 @@
     "@typebot.io/ui": "workspace:*",
     "@typebot.io/whatsapp": "workspace:*",
     "@typebot.io/workspaces": "workspace:*",
+    "@typebot.io/chat-api": "workspace:*",
     "@typebot.io/zod": "workspace:*",
     "@udecode/plate-basic-marks": "30.5.3",
     "@udecode/plate-common": "30.4.5",
@@ -86,8 +87,9 @@
     "ky": "1.2.4",
     "mailchecker": "6.0.16",
     "micro-cors": "0.1.1",
-    "next": "14.2.26",
-    "next-auth": "4.24.11",
+    "next": "15.3.0",
+    "nanoid": "5.1.5",
+    "next-auth": "5.0.0-beta.25",
     "nextjs-cors": "2.1.2",
     "nodemailer": "6.9.15",
     "nprogress": "0.2.0",
@@ -96,6 +98,7 @@
     "papaparse": "5.4.1",
     "partysocket": "1.0.2",
     "pexels": "^1.4.0",
+    "posthog-node": "4.3.2",
     "prettier": "2.8.8",
     "qs": "6.11.2",
     "react": "18.3.1",
@@ -111,8 +114,7 @@
     "use-debounce": "9.0.4",
     "zod": "3.23.8",
     "zod-validation-error": "3.4.0",
-    "zustand": "4.5.0",
-    "@typebot.io/runtime-session-store": "workspace:*"
+    "zustand": "4.5.0"
   },
   "devDependencies": {
     "@playwright/test": "1.51.0",

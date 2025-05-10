@@ -5,6 +5,9 @@ on:
     types:
       - labeled
 
+permissions:
+  contents: write
+
 jobs:
   add-to-project:
     name: Add issue to project
@@ -13,4 +16,4 @@ jobs:
       - uses: actions/add-to-project@v0.3.0
         with:
           project-url: https://github.com/users/baptisteArno/projects/4
-          github-token: ${{ secrets.PERSONAL_TOKEN }}
+          github-token: ${{ secrets.AUTO_ADD_PROJECT_PAT }}
