@@ -395,6 +395,8 @@
   "settings.sideMenu.metadata.icon.label": "Ícone:",
   "settings.sideMenu.metadata.image.label": "Imagem:",
   "settings.sideMenu.metadata.title.label": "Título:",
+  "settings.sideMenu.metadata.allowIndexing.label": "Permitir que motores de busca indexem",
+  "settings.sideMenu.metadata.allowIndexing.tooltip": "Quando ativado, a meta tag noindex será removida, permitindo que mecanismos de busca como Google indexem seu typebot.",
   "settings.sideMenu.security": "Segurança",
   "settings.sideMenu.security.allowedOrigins": "Origens permitidas",
   "settings.sideMenu.security.allowedOrigins.tooltip": "Restringir a execução do seu typebot a origens de sites específicas. Por padrão, seu bot pode ser executado em qualquer site.",

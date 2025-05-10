@@ -2,6 +2,7 @@ import { ImageUploadContent } from "@/components/ImageUploadContent";
 import { MoreInfoTooltip } from "@/components/MoreInfoTooltip";
 import { TextInput, Textarea } from "@/components/inputs";
 import { CodeEditor } from "@/components/inputs/CodeEditor";
+import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
 import {
   FormLabel,
   HStack,
@@ -10,6 +11,7 @@ import {
   PopoverContent,
   PopoverTrigger,
   Stack,
+  Switch,
   Text,
 } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
@@ -46,6 +48,8 @@ export const MetadataForm = ({
     onMetadataChange({ ...metadata, googleTagManagerId });
   const handleHeadCodeChange = (customHeadCode: string) =>
     onMetadataChange({ ...metadata, customHeadCode });
+  const handleAllowIndexingChange = (allowIndexing: boolean) =>
+    onMetadataChange({ ...metadata, allowIndexing });
 
   const favIconUrl =
     metadata?.favIconUrl ??
@@ -155,6 +159,26 @@ export const MetadataForm = ({
           withVariableButton={false}
         />
       </Stack>
+      {/* <Stack>
+        <HStack as={FormLabel} mb="0" htmlFor="allowIndexing">
+          <Text>{t("settings.sideMenu.metadata.allowIndexing.label")}</Text>
+          <MoreInfoTooltip>
+            {t("settings.sideMenu.metadata.allowIndexing.tooltip")}
+          </MoreInfoTooltip>
+        </HStack>
+        <Switch
+          id="allowIndexing"
+          isChecked={metadata?.allowIndexing}
+          onChange={(e) => handleAllowIndexingChange(e.target.checked)}
+          colorScheme="primary"
+        />
+      </Stack> */}
+      <SwitchWithLabel
+        label={t("settings.sideMenu.metadata.allowIndexing.label")}
+        initialValue={metadata?.allowIndexing}
+        onCheckChange={handleAllowIndexingChange}
+        moreInfoContent={t("settings.sideMenu.metadata.allowIndexing.tooltip")}
+      />
     </Stack>
   );
 };
