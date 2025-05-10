@@ -12,6 +12,7 @@ export const phoneNumberInputOptionsSchema = optionBaseSchema
     z.object({
       retryMessageContent: z.string().optional(),
       defaultCountryCode: z.string().optional(),
+      inputMode: z.enum(["text", "tel", "numeric"]).optional(),
     }),
   );
 

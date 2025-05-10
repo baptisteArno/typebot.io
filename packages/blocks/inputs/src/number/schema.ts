@@ -24,6 +24,7 @@ export const numberInputOptionsSchema = optionBaseSchema
       style: z.nativeEnum(NumberInputStyle).optional(),
       currency: z.string().optional(),
       unit: z.nativeEnum(NumberInputUnit).optional(),
+      inputMode: z.enum(["text", "numeric", "decimal"]).optional().optional(),
     }),
   );
 

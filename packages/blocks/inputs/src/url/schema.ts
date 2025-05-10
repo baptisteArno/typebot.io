@@ -11,6 +11,7 @@ export const urlInputOptionsSchema = optionBaseSchema
   .merge(
     z.object({
       retryMessageContent: z.string().optional(),
+      inputMode: z.enum(["text", "url"]).optional(),
     }),
   );
 
