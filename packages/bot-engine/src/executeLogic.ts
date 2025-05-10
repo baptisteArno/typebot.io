@@ -7,6 +7,7 @@ import { executeAbTest } from "./blocks/logic/abTest/executeAbTest";
 import { executeConditionBlock } from "./blocks/logic/condition/executeConditionBlock";
 import { executeJumpBlock } from "./blocks/logic/jump/executeJumpBlock";
 import { executeRedirect } from "./blocks/logic/redirect/executeRedirect";
+import { executeReturnBlock } from "./blocks/logic/return/executeReturnBlock";
 import { executeScript } from "./blocks/logic/script/executeScript";
 import { executeSetVariable } from "./blocks/logic/setVariable/executeSetVariable";
 import { executeTypebotLink } from "./blocks/logic/typebotLink/executeTypebotLink";
@@ -45,8 +46,10 @@ export const executeLogic = async ({
     case LogicBlockType.JUMP:
       return executeJumpBlock(state, block);
     case LogicBlockType.AB_TEST:
-      return executeAbTest(state, block);
+      return executeAbTest(block);
     case LogicBlockType.WEBHOOK:
       return executeWebhookBlock(block);
+    case LogicBlockType.RETURN:
+      return executeReturnBlock(state);
   }
 };

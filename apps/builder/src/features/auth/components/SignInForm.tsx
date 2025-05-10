@@ -19,14 +19,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
-import type { BuiltInProviderType } from "next-auth/providers/index";
-import {
-  type ClientSafeProvider,
-  type LiteralUnion,
-  getProviders,
-  signIn,
-  useSession,
-} from "next-auth/react";
+import { getProviders, signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useQueryState } from "nuqs";
 import type { ChangeEvent, FormEvent } from "react";
@@ -55,9 +48,7 @@ export const SignInForm = ({
   const [isMagicCodeSent, setIsMagicCodeSent] = useState(false);
 
   const [providers, setProviders] =
-    useState<
-      Record<LiteralUnion<BuiltInProviderType, string>, ClientSafeProvider>
-    >();
+    useState<Awaited<ReturnType<typeof getProviders>>>();
 
   const hasNoAuthProvider =
     !isLoadingProviders && Object.keys(providers ?? {}).length === 0;
@@ -93,7 +84,7 @@ export const SignInForm = ({
     if (isMagicCodeSent) return;
     setAuthLoading(true);
     try {
-      const response = await signIn("email", {
+      const response = await signIn("nodemailer", {
         email: emailValue,
         redirect: false,
       });
@@ -153,7 +144,7 @@ export const SignInForm = ({
       {!isMagicCodeSent && (
         <>
           <SocialLoginButtons providers={providers} />
-          {providers?.email && (
+          {providers?.nodemailer && (
             <>
               <DividerWithText>{t("auth.orEmailLabel")}</DividerWithText>
               <HStack as="form" onSubmit={handleEmailSubmit}>

@@ -3,6 +3,7 @@ import { abTestBlockSchemas } from "./abTest/schema";
 import { conditionBlockSchemas } from "./condition/schema";
 import { jumpBlockSchema } from "./jump/schema";
 import { redirectBlockSchema } from "./redirect/schema";
+import { returnBlockSchema } from "./return/schema";
 import { scriptBlockSchema } from "./script/schema";
 import { setVariableBlockSchema } from "./setVariable/schema";
 import { typebotLinkBlockSchema } from "./typebotLink/schema";
@@ -16,6 +17,7 @@ const logicBlockSchemas = [
   typebotLinkBlockSchema,
   waitBlockSchema,
   jumpBlockSchema,
+  returnBlockSchema,
 ] as const;
 
 export const logicBlockV5Schema = z.discriminatedUnion("type", [

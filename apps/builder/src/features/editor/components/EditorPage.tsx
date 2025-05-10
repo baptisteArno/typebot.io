@@ -39,6 +39,7 @@ export const EditorPage = () => {
         <Flex
           flex="1"
           pos="relative"
+          overflow="clip"
           h="full"
           bgColor={bgColor}
           backgroundImage={backgroundImage}

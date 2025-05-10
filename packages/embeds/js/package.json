@@ -1,6 +1,6 @@
 {
   "name": "@typebot.io/js",
-  "version": "0.3.80",
+  "version": "0.3.87",
   "description": "Javascript library to display typebots on your website",
   "license": "FSL-1.1-ALv2",
   "type": "module",
@@ -29,7 +29,7 @@
     "@typebot.io/blocks-inputs": "workspace:*",
     "@typebot.io/blocks-logic": "workspace:*",
     "@typebot.io/blocks-integrations": "workspace:*",
-    "@typebot.io/bot-engine": "workspace:*",
+    "@typebot.io/chat-api": "workspace:*",
     "@typebot.io/env": "workspace:*",
     "@typebot.io/lib": "workspace:*",
     "@typebot.io/rich-text": "workspace:*",

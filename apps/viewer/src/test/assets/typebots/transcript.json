@@ -1,6 +1,6 @@
 {
   "version": "6.1",
-  "id": "clvxf9ent0001tjmcr3e4bypk",
+  "id": "b3c6hwrfhx5zyd6vwhgjqn3z",
   "name": "My typebot",
   "events": [
     {
@@ -16,6 +16,11 @@
       "title": "Answer",
       "graphCoordinates": { "x": 579.3, "y": -31.43 },
       "blocks": [
+        {
+          "id": "xidgxrey2g2f7kbt6aneyhhk",
+          "type": "Jump",
+          "options": { "groupId": "lx3enyxosaluzjfknw2johf4" }
+        },
         {
           "id": "pkadqaxm0ow0qvt4d6k9eznd",
           "type": "text",
@@ -51,10 +56,12 @@
       "blocks": [
         {
           "id": "k7hs4zsybbbece1b0080d2pj",
+          "outgoingEdgeId": "cz2ayuq8nsoqosxlzu8pyebd",
           "type": "Condition",
           "items": [
             {
               "id": "ukawer7gc6qdpr4eh0fw2pnv",
+              "outgoingEdgeId": "hyel5nw6btuiudmt83b25dvu",
               "content": {
                 "comparisons": [
                   {
@@ -64,11 +71,9 @@
                     "value": "3"
                   }
                 ]
-              },
-              "outgoingEdgeId": "hyel5nw6btuiudmt83b25dvu"
+              }
             }
-          ],
-          "outgoingEdgeId": "cz2ayuq8nsoqosxlzu8pyebd"
+          ]
         }
       ]
     },
@@ -91,7 +96,7 @@
     {
       "id": "wno2kz74jmhzgbi05z4ftjoj",
       "title": "Transcript",
-      "graphCoordinates": { "x": 1308.8, "y": -41 },
+      "graphCoordinates": { "x": 1364.3, "y": -17.5 },
       "blocks": [
         {
           "id": "ejy8vk6gnzegn5copktmw74q",
@@ -110,6 +115,23 @@
             ]
           }
         }
+      ]
+    },
+    {
+      "id": "lx3enyxosaluzjfknw2johf4",
+      "graphCoordinates": { "x": 230, "y": 483 },
+      "title": "Group #5",
+      "blocks": [
+        {
+          "id": "zzq22snyqkimfct7yink638i",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "Let me think..." }] }
+            ]
+          }
+        },
+        { "id": "a49zal5w8xza6tinmartacfg", "type": "Return" }
       ]
     }
   ],
@@ -130,17 +152,17 @@
       "to": { "groupId": "sw6habablg7wmyxzcat99wia" }
     },
     {
+      "id": "hyel5nw6btuiudmt83b25dvu",
       "from": {
         "blockId": "k7hs4zsybbbece1b0080d2pj",
         "itemId": "ukawer7gc6qdpr4eh0fw2pnv"
       },
-      "to": { "groupId": "wno2kz74jmhzgbi05z4ftjoj" },
-      "id": "hyel5nw6btuiudmt83b25dvu"
+      "to": { "groupId": "wno2kz74jmhzgbi05z4ftjoj" }
     },
     {
+      "id": "cz2ayuq8nsoqosxlzu8pyebd",
       "from": { "blockId": "k7hs4zsybbbece1b0080d2pj" },
-      "to": { "groupId": "tfsvlygr7lay21s5w475syd8" },
-      "id": "cz2ayuq8nsoqosxlzu8pyebd"
+      "to": { "groupId": "tfsvlygr7lay21s5w475syd8" }
     }
   ],
   "variables": [
@@ -162,14 +184,12 @@
   ],
   "theme": {},
   "selectedThemeTemplateId": null,
-  "settings": {
-    "typingEmulation": { "enabled": false }
-  },
+  "settings": { "typingEmulation": { "enabled": false } },
   "createdAt": "2024-05-08T06:11:55.385Z",
-  "updatedAt": "2024-05-08T06:28:18.313Z",
+  "updatedAt": "2025-05-02T17:18:28.123Z",
   "icon": null,
   "folderId": null,
-  "publicId": null,
+  "publicId": "b3c6hwrfhx5zyd6vwhgjqn3z-public",
   "customDomain": null,
   "workspaceId": "proWorkspace",
   "resultsTablePreferences": null,

@@ -1,5 +1,4 @@
 import { BubbleBlockType } from "@typebot.io/blocks-bubbles/constants";
-import type { Block } from "@typebot.io/blocks-core/schemas/schema";
 import {
   type chatCompletionMessageRoles,
   defaultOpenAIOptions,
@@ -14,10 +13,10 @@ import type {
 } from "@typebot.io/chat-session/schemas";
 import { decrypt } from "@typebot.io/credentials/decrypt";
 import { getCredentials } from "@typebot.io/credentials/getCredentials";
-import { byId, isEmpty } from "@typebot.io/lib/utils";
-import type { Prisma } from "@typebot.io/prisma/types";
+import { isEmpty } from "@typebot.io/lib/utils";
 import type { SessionStore } from "@typebot.io/runtime-session-store";
 import { parseVariableNumber } from "@typebot.io/variables/parseVariableNumber";
+import { getNextBlock } from "../../../../getNextBlock";
 import type { ExecuteIntegrationResponse } from "../../../../types";
 import { updateVariablesInSession } from "../../../../updateVariablesInSession";
 import { executeChatCompletionOpenAIRequest } from "./executeChatCompletionOpenAIRequest";
@@ -154,7 +153,10 @@ const isNextBubbleMessageWithAssistantMessage =
   (typebot: TypebotInSession) =>
   (blockId: string, assistantVariableName?: string): boolean => {
     if (!assistantVariableName) return false;
-    const nextBlock = getNextBlock(typebot)(blockId);
+    const nextBlock = getNextBlock(blockId, {
+      groups: typebot.groups,
+      edges: typebot.edges,
+    });
     if (!nextBlock) return false;
     return (
       nextBlock.type === BubbleBlockType.TEXT &&
@@ -163,29 +165,3 @@ const isNextBubbleMessageWithAssistantMessage =
         `{{${assistantVariableName}}}`
     );
   };
-
-const getNextBlock =
-  (typebot: TypebotInSession) =>
-  (blockId: string): Block | undefined => {
-    const group = typebot.groups.find((group) =>
-      group.blocks.find(byId(blockId)),
-    );
-    if (!group) return;
-    const blockIndex = group.blocks.findIndex(byId(blockId));
-    const nextBlockInGroup = group.blocks.at(blockIndex + 1);
-    if (nextBlockInGroup) return nextBlockInGroup;
-    const outgoingEdgeId = group.blocks.at(blockIndex)?.outgoingEdgeId;
-    if (!outgoingEdgeId) return;
-    const outgoingEdge = typebot.edges.find(byId(outgoingEdgeId));
-    if (!outgoingEdge) return;
-    const connectedGroup = typebot.groups.find(byId(outgoingEdge?.to.groupId));
-    if (!connectedGroup) return;
-    return outgoingEdge.to.blockId
-      ? connectedGroup.blocks.find(
-          (block) => block.id === outgoingEdge.to.blockId,
-        )
-      : connectedGroup?.blocks.at(0);
-  };
-
-const isCredentialsV2 = (credentials: Pick<Prisma.Credentials, "iv">) =>
-  credentials.iv.length === 24;

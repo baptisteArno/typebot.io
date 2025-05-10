@@ -9,6 +9,7 @@
   "dependencies": {
     "@typebot.io/forge": "workspace:*",
     "@typebot.io/lib": "workspace:*",
+    "@typebot.io/blocks-bubbles": "workspace:*",
     "ky": "1.2.4"
   },
   "devDependencies": {

@@ -17,6 +17,14 @@
       "graphCoordinates": { "x": 363, "y": 199 },
       "blocks": [
         {
+          "id": "py3nbq24fal5hgvzlejibzkd",
+          "type": "text",
+          "content": {
+            "richText": [{ "type": "p", "children": [{ "text": "Hey!" }] }]
+          }
+        },
+        { "id": "r26l9tdez17sgx4xiwku15mk", "type": "text input" },
+        {
           "id": "y3ptzm07xpl272zhokvjoqa4",
           "type": "Typebot link",
           "options": {
@@ -36,8 +44,8 @@
     },
     {
       "id": "vs65r7x7budygdfg9vhxcq7m",
-      "graphCoordinates": { "x": -8, "y": 458 },
       "title": "Group #2",
+      "graphCoordinates": { "x": -8, "y": 458 },
       "blocks": [
         {
           "id": "t4u8h07eq17f6oqmsydcqyaj",
@@ -84,7 +92,7 @@
     }
   },
   "createdAt": "2022-03-08T15:58:49.720Z",
-  "updatedAt": "2022-03-08T16:07:18.899Z",
+  "updatedAt": "2025-04-16T19:56:24.043Z",
   "icon": null,
   "folderId": null,
   "publicId": "cl0ibhi7s0018n21aarlmg0cm-public",

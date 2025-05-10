@@ -64,7 +64,8 @@ export const ImageBubble = (props: Props) => {
       class={cx(
         isTyping() ? "opacity-0" : "opacity-100",
         props.onTransitionEnd ? "text-fade-in" : undefined,
-        props.content?.url?.endsWith(".svg") ? "w-full" : undefined,
+        // w-full works on Chrome, but not on Firefox. Setting a fixed high width works on all browsers. 🤷‍♂️
+        props.content?.url?.endsWith(".svg") ? "w-96" : undefined,
       )}
       style={{
         width: props.content?.url?.startsWith("data:image/svg")

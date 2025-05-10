@@ -50,7 +50,7 @@ export const CardsItemNode = ({
 }: Props) => {
   const { t } = useTranslate();
   const { typebot } = useTypebot();
-  const { updateItem } = useTypebot();
+  const { updateItem, deleteItemPath } = useTypebot();
   const { openedNodeId, setOpenedNodeId } = useGraph();
   const ref = useRef<HTMLDivElement | null>(null);
   const arrowColor = useColorModeValue("white", "gray.900");
@@ -84,9 +84,10 @@ export const CardsItemNode = ({
   };
 
   const deletePath = (idx: number) => {
-    updateItem(indices, {
-      paths: item.paths?.filter((_, i) => i !== idx),
-    } as Item);
+    deleteItemPath({
+      ...indices,
+      pathIndex: idx,
+    });
   };
 
   const updatePathText = (idx: number, value: string) => {

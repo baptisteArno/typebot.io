@@ -2,6 +2,12 @@ import {
   inputBlockV5Schema,
   inputBlockV6Schema,
 } from "@typebot.io/blocks-inputs/schema";
+import { clientSideActionSchema } from "@typebot.io/chat-api/clientSideAction";
+import {
+  chatBubbleSchema,
+  runtimeOptionsSchema,
+  startTypebotSchema,
+} from "@typebot.io/chat-api/schemas";
 import { logInSessionSchema } from "@typebot.io/logs/schemas";
 import { dynamicThemeSchema } from "@typebot.io/theme/schemas";
 import {
@@ -9,12 +15,6 @@ import {
   typebotV6Schema,
 } from "@typebot.io/typebot/schemas/typebot";
 import { z } from "@typebot.io/zod";
-import {
-  chatBubbleSchema,
-  runtimeOptionsSchema,
-  startTypebotSchema,
-} from "../api";
-import { clientSideActionSchema } from "../clientSideAction";
 
 export const startElementIdSchema = z.union([
   z.object({

@@ -1,4 +1,4 @@
-import type { StartChatResponse } from "@typebot.io/bot-engine/schemas/api";
+import type { StartChatResponse } from "@typebot.io/chat-api/schemas";
 
 export const setPaymentInProgressInStorage = (
   state: Pick<StartChatResponse, "typebot" | "sessionId" | "resultId">,

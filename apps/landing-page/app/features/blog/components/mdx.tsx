@@ -100,11 +100,16 @@ const components = {
   ),
   Cta: ({
     highlight,
+    buttonLabel = "Create a typebot",
+    children,
   }: {
     highlight?: "default";
+    buttonLabel?: string;
+    children?: React.ReactNode;
   }) => (
-    <Cta className="not-prose" buttonLabel="Create a typebot">
+    <Cta className="not-prose" buttonLabel={buttonLabel}>
       {highlight === "default" ? undefined : null}
+      {children}
     </Cta>
   ),
   Typebot: (props: any) => (

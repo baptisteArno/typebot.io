@@ -20,7 +20,7 @@ export const ButtonsBlockNode = ({ block, indices }: Props) => {
   )?.name;
 
   return (
-    <Stack w="full">
+    <Stack w="90%">
       {block.options?.dynamicVariableId ? (
         <Wrap spacing={1}>
           <Text>{t("blocks.inputs.button.variables.display.label")}</Text>

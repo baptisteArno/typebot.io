@@ -1,8 +1,8 @@
+import { startSession } from "@typebot.io/bot-engine/startSession";
 import type {
   ContinueChatResponse,
   Message,
-} from "@typebot.io/bot-engine/schemas/api";
-import { startSession } from "@typebot.io/bot-engine/startSession";
+} from "@typebot.io/chat-api/schemas";
 import type { SessionState } from "@typebot.io/chat-session/schemas";
 import {
   ComparisonOperators,

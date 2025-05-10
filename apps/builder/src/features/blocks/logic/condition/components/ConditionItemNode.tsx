@@ -26,7 +26,7 @@ type Props = {
 };
 
 export const ConditionItemNode = ({ item, indices }: Props) => {
-  const { typebot, createItem, updateItem } = useTypebot();
+  const { typebot, updateItem } = useTypebot();
   const { openedNodeId, setOpenedNodeId } = useGraph();
   const ref = useRef<HTMLDivElement | null>(null);
 
@@ -53,7 +53,13 @@ export const ConditionItemNode = ({ item, indices }: Props) => {
       closeOnBlur={false}
     >
       <PopoverAnchor>
-        <Flex p={3} pos="relative" w="full" onClick={openPopover}>
+        <Flex
+          p={3}
+          pos="relative"
+          maxW="full"
+          overflow="hidden"
+          onClick={openPopover}
+        >
           {item.content?.comparisons?.length === 0 ||
           comparisonIsEmpty(item.content?.comparisons?.at(0)) ? (
             <Text color={"gray.500"}>Configure...</Text>

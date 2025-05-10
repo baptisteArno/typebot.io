@@ -6,7 +6,6 @@ import type {
   PathIndices,
 } from "@typebot.io/blocks-core/schemas/items/schema";
 import type {
-  Block,
   BlockIndices,
   BlockWithItems,
 } from "@typebot.io/blocks-core/schemas/schema";
@@ -164,12 +163,12 @@ export const deleteEdgeDraft = ({
   groupIndex?: number;
 }) => {
   const edgeIndex = typebot.edges.findIndex(byId(edgeId));
+  resetOutgoingEdgeIdProp({ typebot, edgeId, groupIndex });
   if (edgeIndex === -1) return;
-  deleteOutgoingEdgeIdProps({ typebot, edgeId, groupIndex });
   typebot.edges.splice(edgeIndex, 1);
 };
 
-const deleteOutgoingEdgeIdProps = ({
+const resetOutgoingEdgeIdProp = ({
   typebot,
   edgeId,
   groupIndex,
@@ -181,40 +180,40 @@ const deleteOutgoingEdgeIdProps = ({
   const edge = typebot.edges.find(byId(edgeId));
   if (!edge) return;
   if ("eventId" in edge.from) {
-    const eventIndex = typebot.events.findIndex(byId(edge.from.eventId));
-    if (eventIndex === -1) return;
-    typebot.events[eventIndex].outgoingEdgeId = undefined;
+    const event = typebot.events.find(byId(edge.from.eventId));
+    if (event) event.outgoingEdgeId = undefined;
     return;
   }
-  const fromGroupIndex =
-    groupIndex ??
-    typebot.groups.findIndex(
-      (g) =>
-        edge.to.groupId === g.id ||
-        g.blocks.some(
-          (b) =>
-            "blockId" in edge.from &&
-            (b.id === edge.from.blockId || b.id === edge.to.blockId),
+  const group = groupIndex
+    ? typebot.groups[groupIndex]
+    : typebot.groups.find((group) =>
+        group.blocks.some(
+          (block) => "blockId" in edge.from && block.id === edge.from.blockId,
         ),
-    );
-  const fromBlockIndex = typebot.groups[fromGroupIndex].blocks.findIndex(
-    byId(edge.from.blockId),
-  );
-  const block = typebot.groups[fromGroupIndex].blocks[fromBlockIndex] as
-    | Block
-    | undefined;
+      );
+  if (!group) return;
+
+  const block = group.blocks.find(byId(edge.from.blockId));
   if (!block) return;
-  const fromItemIndex =
-    edge.from.itemId && blockHasItems(block)
-      ? block.items?.findIndex(byId(edge.from.itemId))
-      : -1;
-  if (fromItemIndex !== -1) {
-    (
-      typebot.groups[fromGroupIndex].blocks[fromBlockIndex] as BlockWithItems
-    ).items[fromItemIndex ?? 0].outgoingEdgeId = undefined;
-  } else if (fromBlockIndex !== -1)
-    typebot.groups[fromGroupIndex].blocks[fromBlockIndex].outgoingEdgeId =
-      undefined;
+
+  const hasItem = "itemId" in edge.from && blockHasItems(block);
+  if (hasItem) {
+    const item = block.items.find(byId(edge.from.itemId));
+    if (!item) return;
+
+    const hasPath = "pathId" in edge.from && itemHasPaths(item);
+    if (hasPath) {
+      const path = item.paths.find(byId(edge.from.pathId));
+      if (!path) return;
+      path.outgoingEdgeId = undefined;
+      return;
+    }
+
+    item.outgoingEdgeId = undefined;
+    return;
+  }
+
+  block.outgoingEdgeId = undefined;
 };
 
 export const deleteConnectedEdgesDraft = (
@@ -230,6 +229,7 @@ export const deleteConnectedEdgesDraft = (
     return [
       edge.from.blockId,
       edge.from.itemId,
+      edge.from.pathId,
       edge.to.groupId,
       edge.to.blockId,
     ].includes(deletedNodeId);

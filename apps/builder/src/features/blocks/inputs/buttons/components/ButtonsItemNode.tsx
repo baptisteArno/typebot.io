@@ -109,7 +109,7 @@ export const ButtonsItemNode = ({ item, indices, isMouseOver }: Props) => {
       closeOnBlur={false}
     >
       <PopoverAnchor>
-        <Flex px={4} py={2} justify="center" w="90%">
+        <Flex px={4} py={2} justify="center" w="full">
           <Editable
             ref={editableRef}
             flex="1"
