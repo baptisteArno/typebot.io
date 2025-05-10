@@ -12,7 +12,7 @@ import { For, createSignal, onCleanup, onMount } from "solid-js";
 
 type PhoneInputProps = Pick<
   NonNullable<PhoneNumberInputBlock["options"]>,
-  "labels" | "defaultCountryCode"
+  "labels" | "defaultCountryCode" | "inputMode"
 > & {
   defaultValue?: string;
   onSubmit: (value: InputSubmitContent) => void;
@@ -154,6 +154,7 @@ export const PhoneInput = (props: PhoneInputProps) => {
             defaultPhoneInputOptions.labels.placeholder
           }
           autofocus={!isMobile()}
+          inputMode={props.inputMode}
         />
       </div>
       <SendButton type="button" class="h-[56px]" on:click={submit}>

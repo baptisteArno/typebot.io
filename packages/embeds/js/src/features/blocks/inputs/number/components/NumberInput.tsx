@@ -86,6 +86,7 @@ export const NumberInput = (props: NumberInputProps) => {
             props.block.options?.labels?.placeholder ??
             defaultNumberInputPlaceholder
           }
+          inputMode={props.block.options?.inputMode}
         />
         <ArkNumberInput.Control class="flex flex-col rounded-r-md overflow-hidden divide-y h-[56px]">
           <ArkNumberInput.IncrementTrigger class="flex items-center justify-center h-7 w-8 border-input-border border-l">

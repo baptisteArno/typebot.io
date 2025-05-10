@@ -4,10 +4,18 @@ import { type JSX, splitProps } from "solid-js";
 type TextareaProps = {
   ref: HTMLTextAreaElement | undefined;
   onInput: (value: string) => void;
+  inputMode?:
+    | "text"
+    | "email"
+    | "search"
+    | "tel"
+    | "url"
+    | "numeric"
+    | "decimal";
 } & Omit<JSX.TextareaHTMLAttributes<HTMLTextAreaElement>, "onInput">;
 
 export const Textarea = (props: TextareaProps) => {
-  const [local, others] = splitProps(props, ["ref", "onInput"]);
+  const [local, others] = splitProps(props, ["ref", "onInput", "inputMode"]);
 
   return (
     <textarea
@@ -18,6 +26,7 @@ export const Textarea = (props: TextareaProps) => {
       required
       autofocus={!isMobile()}
       onInput={(e) => local.onInput(e.currentTarget.value)}
+      inputMode={local.inputMode}
       {...others}
     />
   );
