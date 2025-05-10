@@ -1,3 +1,4 @@
+import { DropdownList } from "@/components/DropdownList";
 import { TextInput } from "@/components/inputs";
 import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
 import { FormLabel, Stack } from "@chakra-ui/react";
@@ -25,7 +26,11 @@ export const EmailInputSettings = ({ options, onOptionsChange }: Props) => {
     onOptionsChange({ ...options, variableId: variable?.id });
   const handleRetryMessageChange = (retryMessageContent: string) =>
     onOptionsChange({ ...options, retryMessageContent });
-
+  const updateInputMode = (inputMode: string) =>
+    onOptionsChange({
+      ...options,
+      inputMode: inputMode as "text" | "email",
+    });
   return (
     <Stack spacing={4}>
       <TextInput
@@ -42,6 +47,17 @@ export const EmailInputSettings = ({ options, onOptionsChange }: Props) => {
           options?.labels?.button ?? defaultEmailInputOptions.labels.button
         }
         onChange={handleButtonLabelChange}
+      />
+      <DropdownList
+        label="Keyboard type:"
+        moreInfoTooltip="Changes the type of keyboard that appears on mobile devices.
+This is helpful for collecting email addresses."
+        currentItem={options?.inputMode ?? "email"}
+        onItemSelect={updateInputMode}
+        items={[
+          { label: "Default", value: "text" },
+          { label: "Email", value: "email" },
+        ]}
       />
       <TextInput
         label={t("blocks.inputs.settings.retryMessage.label")}

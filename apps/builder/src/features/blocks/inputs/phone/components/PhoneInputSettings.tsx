@@ -1,3 +1,4 @@
+import { DropdownList } from "@/components/DropdownList";
 import { TextInput } from "@/components/inputs";
 import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
 import { FormLabel, Stack } from "@chakra-ui/react";
@@ -28,7 +29,11 @@ export const PhoneInputSettings = ({ options, onOptionsChange }: Props) => {
     onOptionsChange({ ...options, retryMessageContent });
   const handleDefaultCountryChange = (defaultCountryCode: string) =>
     onOptionsChange({ ...options, defaultCountryCode });
-
+  const updateInputMode = (inputMode: string) =>
+    onOptionsChange({
+      ...options,
+      inputMode: inputMode as "text" | "tel" | "numeric",
+    });
   return (
     <Stack spacing={4}>
       <TextInput
@@ -55,6 +60,18 @@ export const PhoneInputSettings = ({ options, onOptionsChange }: Props) => {
           countryCode={options?.defaultCountryCode}
         />
       </Stack>
+      <DropdownList
+        label="Keyboard type:"
+        moreInfoTooltip="Changes the type of keyboard that appears on mobile devices.
+  This is helpful for collecting phone numbers."
+        currentItem={options?.inputMode ?? "tel"}
+        onItemSelect={updateInputMode}
+        items={[
+          { label: "Default", value: "text" },
+          { label: "Telephone", value: "tel" },
+          { label: "Numeric", value: "numeric" },
+        ]}
+      />
       <TextInput
         label={t("blocks.inputs.settings.retryMessage.label")}
         defaultValue={

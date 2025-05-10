@@ -1,3 +1,4 @@
+import { DropdownList } from "@/components/DropdownList";
 import { TextInput } from "@/components/inputs";
 import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
 import { FormLabel, Stack } from "@chakra-ui/react";
@@ -25,7 +26,11 @@ export const UrlInputSettings = ({ options, onOptionsChange }: Props) => {
     onOptionsChange({ ...options, variableId: variable?.id });
   const handleRetryMessageChange = (retryMessageContent: string) =>
     onOptionsChange({ ...options, retryMessageContent });
-
+  const updateInputMode = (inputMode: string) =>
+    onOptionsChange({
+      ...options,
+      inputMode: inputMode as "text" | "url",
+    });
   return (
     <Stack spacing={4}>
       <TextInput
@@ -42,6 +47,17 @@ export const UrlInputSettings = ({ options, onOptionsChange }: Props) => {
           options?.labels?.button ?? defaultUrlInputOptions.labels.button
         }
         onChange={handleButtonLabelChange}
+      />
+      <DropdownList
+        label="Keyboard type:"
+        moreInfoTooltip="Changes the type of keyboard that appears on mobile devices.
+This is helpful for collecting website URLs."
+        currentItem={options?.inputMode ?? "url"}
+        onItemSelect={updateInputMode}
+        items={[
+          { label: "Default", value: "text" },
+          { label: "URL", value: "url" },
+        ]}
       />
       <TextInput
         label={t("blocks.inputs.settings.retryMessage.label")}
