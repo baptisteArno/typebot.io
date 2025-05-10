@@ -159,20 +159,6 @@ export const MetadataForm = ({
           withVariableButton={false}
         />
       </Stack>
-      {/* <Stack>
-        <HStack as={FormLabel} mb="0" htmlFor="allowIndexing">
-          <Text>{t("settings.sideMenu.metadata.allowIndexing.label")}</Text>
-          <MoreInfoTooltip>
-            {t("settings.sideMenu.metadata.allowIndexing.tooltip")}
-          </MoreInfoTooltip>
-        </HStack>
-        <Switch
-          id="allowIndexing"
-          isChecked={metadata?.allowIndexing}
-          onChange={(e) => handleAllowIndexingChange(e.target.checked)}
-          colorScheme="primary"
-        />
-      </Stack> */}
       <SwitchWithLabel
         label={t("settings.sideMenu.metadata.allowIndexing.label")}
         initialValue={metadata?.allowIndexing}
