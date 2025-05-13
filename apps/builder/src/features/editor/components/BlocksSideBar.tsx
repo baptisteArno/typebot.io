@@ -26,11 +26,74 @@ import { BlockV6 } from '@typebot.io/schemas'
 import { useDebouncedCallback } from 'use-debounce'
 import { forgedBlockIds } from '@typebot.io/forge-repository/constants'
 
-// Integration blocks migrated to forged blocks
-const legacyIntegrationBlocks = [
-  IntegrationBlockType.OPEN_AI,
+const hiddenTypes = [
+  BubbleBlockType.IMAGE,
+  BubbleBlockType.VIDEO,
+  BubbleBlockType.EMBED,
+  BubbleBlockType.AUDIO,
+]
+
+const hiddenInputTypes = [
+  InputBlockType.NUMBER,
+  InputBlockType.EMAIL,
+  InputBlockType.URL,
+  InputBlockType.DATE,
+  InputBlockType.PHONE,
+  InputBlockType.CHOICE,
+  InputBlockType.PICTURE_CHOICE,
+  InputBlockType.PAYMENT,
+  InputBlockType.RATING,
+  InputBlockType.FILE,
+]
+
+const hiddenLogicTypes = [
+  LogicBlockType.REDIRECT,
+  LogicBlockType.WAIT,
+  LogicBlockType.AB_TEST,
+]
+
+const hiddenIntegrationTypes = [
+  IntegrationBlockType.GOOGLE_ANALYTICS,
+  IntegrationBlockType.PABBLY_CONNECT,
+  IntegrationBlockType.CHATWOOT,
+  IntegrationBlockType.PIXEL,
   IntegrationBlockType.ZEMANTIC_AI,
 ]
+
+const hiddenForgedBlocks = [
+  'openai',
+  'zemantic-ai',
+  'chat-node',
+  'qr-code',
+  'dify-ai',
+  'mistral',
+  'elevenlabs',
+  'together-ai',
+  'open-router',
+  'nocodb',
+]
+
+const preferredOrder = [
+  'claudia',
+  IntegrationBlockType.WEBHOOK,
+  IntegrationBlockType.GOOGLE_SHEETS,
+]
+
+const allBlocks = [...Object.values(IntegrationBlockType), ...forgedBlockIds]
+  .filter(
+    (type) => !hiddenIntegrationTypes.includes(type as IntegrationBlockType)
+  )
+  .filter((type) => !hiddenForgedBlocks.includes(type as string))
+  .sort((a, b) => {
+    const indexA = preferredOrder.indexOf(a)
+    const indexB = preferredOrder.indexOf(b)
+
+    if (indexA !== -1 && indexB !== -1) return indexA - indexB
+    if (indexA !== -1) return -1
+    if (indexB !== -1) return 1
+
+    return String(a).localeCompare(String(b))
+  })
 
 export const BlocksSideBar = () => {
   const { t } = useTranslate()
@@ -140,9 +203,15 @@ export const BlocksSideBar = () => {
             {t('editor.sidebarBlocks.blockType.bubbles.heading')}
           </Text>
           <SimpleGrid columns={2} spacing="3">
-            {Object.values(BubbleBlockType).map((type) => (
-              <BlockCard key={type} type={type} onMouseDown={handleMouseDown} />
-            ))}
+            {Object.values(BubbleBlockType)
+              .filter((type) => !hiddenTypes.includes(type))
+              .map((type) => (
+                <BlockCard
+                  key={type}
+                  type={type}
+                  onMouseDown={handleMouseDown}
+                />
+              ))}
           </SimpleGrid>
         </Stack>
 
@@ -151,9 +220,15 @@ export const BlocksSideBar = () => {
             {t('editor.sidebarBlocks.blockType.inputs.heading')}
           </Text>
           <SimpleGrid columns={2} spacing="3">
-            {Object.values(InputBlockType).map((type) => (
-              <BlockCard key={type} type={type} onMouseDown={handleMouseDown} />
-            ))}
+            {Object.values(InputBlockType)
+              .filter((type) => !hiddenInputTypes.includes(type))
+              .map((type) => (
+                <BlockCard
+                  key={type}
+                  type={type}
+                  onMouseDown={handleMouseDown}
+                />
+              ))}
           </SimpleGrid>
         </Stack>
 
@@ -162,9 +237,15 @@ export const BlocksSideBar = () => {
             {t('editor.sidebarBlocks.blockType.logic.heading')}
           </Text>
           <SimpleGrid columns={2} spacing="3">
-            {Object.values(LogicBlockType).map((type) => (
-              <BlockCard key={type} type={type} onMouseDown={handleMouseDown} />
-            ))}
+            {Object.values(LogicBlockType)
+              .filter((type) => !hiddenLogicTypes.includes(type))
+              .map((type) => (
+                <BlockCard
+                  key={type}
+                  type={type}
+                  onMouseDown={handleMouseDown}
+                />
+              ))}
           </SimpleGrid>
         </Stack>
 
@@ -173,16 +254,9 @@ export const BlocksSideBar = () => {
             {t('editor.sidebarBlocks.blockType.integrations.heading')}
           </Text>
           <SimpleGrid columns={2} spacing="3">
-            {Object.values(IntegrationBlockType)
-              .concat(forgedBlockIds as any)
-              .filter((type) => !legacyIntegrationBlocks.includes(type))
-              .map((type) => (
-                <BlockCard
-                  key={type}
-                  type={type}
-                  onMouseDown={handleMouseDown}
-                />
-              ))}
+            {allBlocks.map((type) => (
+              <BlockCard key={type} type={type} onMouseDown={handleMouseDown} />
+            ))}
           </SimpleGrid>
         </Stack>
 
