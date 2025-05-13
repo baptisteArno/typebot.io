@@ -126,16 +126,23 @@ export const convertInputToWhatsAppMessages = (
         interactive: {
           type: "button",
           body: {
-            text: idx === 0 ? (lastMessageText ?? "...") : "...",
+            text: idx === 0 ? (lastMessageText ?? "―") : "―",
           },
           action: {
-            buttons: items.map((item) => ({
-              type: "reply",
-              reply: {
-                id: item.id,
-                title: trimTextTo20Chars(item.content as string),
-              },
-            })),
+            buttons: (() => {
+              const buttonTexts = items
+                .filter((item) => item.content)
+                .map((item) => item.content as string);
+              const uniqueTitles = getUniqueButtonTitles(buttonTexts);
+
+              return items.map((item, index) => ({
+                type: "reply",
+                reply: {
+                  id: item.id,
+                  title: uniqueTitles[index],
+                },
+              }));
+            })(),
           },
         },
       }));
@@ -162,13 +169,19 @@ export const convertInputToWhatsAppMessages = (
               : undefined,
             body: isEmpty(bodyText) ? undefined : { text: bodyText },
             action: {
-              buttons: (item.paths ?? []).slice(0, 3).map((path) => ({
-                type: "reply",
-                reply: {
-                  id: path.id,
-                  title: trimTextTo20Chars(path.text ?? ""),
-                },
-              })),
+              buttons: (() => {
+                const paths = (item.paths ?? []).slice(0, 3);
+                const buttonTexts = paths.map((path) => path.text ?? "");
+                const uniqueTitles = getUniqueButtonTitles(buttonTexts);
+
+                return paths.map((path, index) => ({
+                  type: "reply",
+                  reply: {
+                    id: path.id,
+                    title: uniqueTitles[index],
+                  },
+                }));
+              })(),
             },
           },
         };
@@ -177,8 +190,36 @@ export const convertInputToWhatsAppMessages = (
   }
 };
 
-const trimTextTo20Chars = (text: string): string =>
-  text.length > 20 ? `${text.slice(0, 18)}..` : text;
+const trimTextTo20Chars = (
+  text: string,
+  existingTitles: string[] = [],
+): string => {
+  const baseTitle = text.length > 20 ? `${text.slice(0, 18)}..` : text;
+
+  if (!existingTitles.includes(baseTitle)) return baseTitle;
+
+  let counter = 1;
+  let uniqueTitle = "";
+
+  do {
+    const suffix = ` (${counter})`;
+    const availableChars = 20 - suffix.length - 3; // 3 for ".." and a space
+    uniqueTitle = `${text.slice(0, availableChars)} ${suffix}..`;
+    counter++;
+  } while (existingTitles.includes(uniqueTitle));
+
+  return uniqueTitle;
+};
+
+const getUniqueButtonTitles = (texts: string[]): string[] => {
+  const uniqueTitles: string[] = [];
+
+  return texts.map((text) => {
+    const uniqueTitle = trimTextTo20Chars(text, uniqueTitles);
+    uniqueTitles.push(uniqueTitle);
+    return uniqueTitle;
+  });
+};
 
 const groupArrayByArraySize = (arr: any[], n: number) =>
   arr.reduce(
