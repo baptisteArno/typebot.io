@@ -11,11 +11,12 @@ import type {
   Target,
 } from "@typebot.io/typebot/schemas/edge";
 import type { EdgeWithTotalVisits, TotalAnswers } from "../schemas";
+import type {
+  DropoffLogger,
+  TraversalFrame,
+  VisitedPathsByEdge,
+} from "../types";
 import { getVisitedEdgeToPropFromId } from "./getVisitedEdgeToPropFromId";
-
-type Logger = (msg: string, ctx?: Record<string, unknown>) => void;
-
-type Frame = { edgeId: string; totalUsers: number; depth: number };
 
 type Params = {
   initialEdge: {
@@ -26,7 +27,7 @@ type Params = {
   edges: Edge[];
   groups: GroupV6[];
   totalAnswers: TotalAnswers[];
-  logger?: Logger;
+  logger?: DropoffLogger;
 };
 
 export function populateEdgesWithTotalVisits({
@@ -37,36 +38,56 @@ export function populateEdgesWithTotalVisits({
   totalAnswers,
   logger,
 }: Params): EdgeWithTotalVisits[] {
-  const edgesById = new Map(edges.map((e) => [e.id, e]));
-  const groupsById = new Map(groups.map((g) => [g.id, g]));
+  const edgesById = new Map(edges.map((edge) => [edge.id, edge]));
+  const groupsById = new Map(groups.map((group) => [group.id, group]));
   const totalAnswersByInputBlockId = new Map(
-    totalAnswers.map((t) => [t.blockId, t.total]),
+    totalAnswers.map((answer) => [answer.blockId, answer.total]),
   );
 
-  const offDefaultPathEdgeIds = new Set(
-    offDefaultPathEdgeWithTotalVisits.map((e) => e.id),
+  const offPathEdgeIds = new Set(
+    offDefaultPathEdgeWithTotalVisits.map((offPathEdge) => offPathEdge.id),
   );
-  const totals = new Map<string, number>(
-    offDefaultPathEdgeWithTotalVisits.map((e) => [e.id, e.total]),
+  const edgeTotalsById = new Map(
+    offDefaultPathEdgeWithTotalVisits.map((offPathEdge) => [
+      offPathEdge.id,
+      offPathEdge.total,
+    ]),
   );
 
-  const visited = new Set<string>();
+  const visitedByEdge: VisitedPathsByEdge = new Map();
 
-  const stack: Frame[] = [
-    { edgeId: initialEdge.id, totalUsers: initialEdge.total, depth: 0 },
+  const depthFirstFrames: TraversalFrame[] = [
+    {
+      edgeId: initialEdge.id,
+      usersRemaining: initialEdge.total,
+      pathIndex: 0,
+    },
   ];
 
-  while (stack.length) {
-    const { edgeId, totalUsers, depth } = stack.pop()!;
+  while (depthFirstFrames.length) {
+    visitFrame(depthFirstFrames.pop()!);
+  }
 
-    if (totalUsers <= 0) continue;
+  return [...edgeTotalsById.entries()].map(([id, total]) => ({
+    id,
+    total,
+    to: getVisitedEdgeToPropFromId(id, { edges }),
+  }));
 
-    if (!offDefaultPathEdgeIds.has(edgeId)) {
-      totals.set(edgeId, (totals.get(edgeId) ?? 0) + totalUsers);
+  /* ================================================================ */
+  /* Inner helpers                                                     */
+  /* ================================================================ */
+  function visitFrame({ edgeId, usersRemaining, pathIndex }: TraversalFrame) {
+    if (usersRemaining <= 0) return;
+
+    if (markVisited(visitedByEdge, edgeId, pathIndex)) return;
+
+    if (!offPathEdgeIds.has(edgeId)) {
+      edgeTotalsById.set(
+        edgeId,
+        (edgeTotalsById.get(edgeId) ?? 0) + usersRemaining,
+      );
     }
-
-    if (visited.has(edgeId)) continue;
-    visited.add(edgeId);
 
     logger?.(
       `▶︎ visiting ${edgeIdToHumanReadableLabel(edgeId, {
@@ -75,37 +96,40 @@ export function populateEdgesWithTotalVisits({
         offDefaultPathEdgeWithTotalVisits,
       })}`,
       {
-        totalUsers,
-        depth,
+        usersRemaining,
       },
     );
 
     const edge = edgesById.get(edgeId);
-    if (!edge?.to) continue;
+    if (!edge?.to) return;
 
     const group = groupsById.get(edge.to.groupId);
-    if (!group) continue;
+    if (!group) return;
 
-    let remainingForNextDefaultOutgoingEdge = totalUsers;
+    let remainingForNextDefaultOutgoingEdge = usersRemaining;
 
+    let nextPathIndexIncrement = 1;
     for (const block of sliceFrom(group.blocks, edge.to.blockId)) {
-      if (isInputBlock(block))
+      if (isInputBlock(block)) {
         remainingForNextDefaultOutgoingEdge =
           totalAnswersByInputBlockId.get(block.id) ?? 0;
+        totalAnswersByInputBlockId.delete(block.id);
+      }
 
       for (const itemEdgeId of outgoingItemEdges(block)) {
-        const itemTotal = totals.get(itemEdgeId);
-        if (itemTotal) {
-          enqueue(itemEdgeId, itemTotal, depth + 1);
+        const itemTotal = edgeTotalsById.get(itemEdgeId);
+        if (itemTotal && itemTotal > 0) {
+          enqueue(itemEdgeId, itemTotal, pathIndex + nextPathIndexIncrement);
+          nextPathIndexIncrement++;
           remainingForNextDefaultOutgoingEdge -= itemTotal;
         }
       }
 
       if (isJump(block)) {
         const virtualId = createVirtualEdgeId(block.options);
-        const virtualTotal = totals.get(virtualId);
-        if (virtualTotal) {
-          enqueue(virtualId, virtualTotal, depth + 1);
+        const virtualTotal = edgeTotalsById.get(virtualId);
+        if (virtualTotal && virtualTotal > 0) {
+          enqueue(virtualId, virtualTotal, pathIndex + 1);
         }
       }
 
@@ -113,21 +137,15 @@ export function populateEdgesWithTotalVisits({
         enqueue(
           block.outgoingEdgeId,
           remainingForNextDefaultOutgoingEdge,
-          depth + 1,
+          pathIndex,
         );
       }
     }
   }
 
-  return [...totals.entries()].map(([id, total]) => ({
-    id,
-    total,
-    to: getVisitedEdgeToPropFromId(id, { edges }),
-  }));
-
-  function enqueue(id: string, totalUsers: number, depth: number) {
-    if (totalUsers <= 0 || visited.has(id)) return;
-    stack.push({ edgeId: id, totalUsers, depth });
+  function enqueue(edgeId: string, usersRemaining: number, pathIndex: number) {
+    if (usersRemaining <= 0) return;
+    depthFirstFrames.push({ edgeId, usersRemaining, pathIndex });
   }
 }
 
@@ -136,10 +154,11 @@ const sliceFrom = (blocks: Block[], startId?: string) =>
 
 const outgoingItemEdges = (block: Block) => {
   if (!blockHasItems(block)) return [];
-  return (
-    block.items?.flatMap((i) => (i.outgoingEdgeId ? [i.outgoingEdgeId] : [])) ??
-    []
-  );
+  const ids: string[] = [];
+  for (const item of block.items ?? []) {
+    if (item.outgoingEdgeId) ids.push(item.outgoingEdgeId);
+  }
+  return ids;
 };
 
 const isJump = (
@@ -190,4 +209,19 @@ const edgeIdToHumanReadableLabel = (
 
   label += "]";
   return label;
+};
+
+const markVisited = (
+  visitedByEdge: VisitedPathsByEdge,
+  edgeId: string,
+  pathIdx: number,
+): boolean => {
+  let paths = visitedByEdge.get(edgeId);
+  if (!paths) {
+    paths = new Set<number>();
+    visitedByEdge.set(edgeId, paths);
+  }
+  if (paths.has(pathIdx)) return true;
+  paths.add(pathIdx);
+  return false;
 };
