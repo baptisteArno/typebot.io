@@ -221,7 +221,6 @@ const Input = (props: {
           defaultCountryCode={
             (props.block as PhoneNumberInputBlock).options?.defaultCountryCode
           }
-          inputMode={(props.block as PhoneNumberInputBlock).options?.inputMode}
           defaultValue={getPrefilledValue()}
           onSubmit={props.onSubmit}
         />
