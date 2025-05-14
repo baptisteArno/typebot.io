@@ -70,7 +70,6 @@ export const UrlInput = (props: Props) => {
           onInput={handleInput}
           type="url"
           autocomplete="url"
-          inputMode={props.block.options?.inputMode}
         />
       </div>
       <SendButton type="button" class="h-[56px]" on:click={submit}>

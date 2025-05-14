@@ -11,7 +11,6 @@ export const emailInputOptionsSchema = optionBaseSchema
   .merge(
     z.object({
       retryMessageContent: z.string().optional(),
-      inputMode: z.enum(["text", "email"]).optional(),
     }),
   );
 

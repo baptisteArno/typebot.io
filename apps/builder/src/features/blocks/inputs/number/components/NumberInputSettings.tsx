@@ -89,11 +89,6 @@ export const NumberInputSettings = ({ options, onOptionsChange }: Props) => {
     onOptionsChange({ ...options, variableId: variable?.id });
   };
 
-  const updateInputMode = (inputMode: string) =>
-    onOptionsChange({
-      ...options,
-      inputMode: inputMode as "text" | "numeric" | "decimal",
-    });
   return (
     <Stack spacing={4}>
       <TextInput
@@ -201,18 +196,6 @@ export const NumberInputSettings = ({ options, onOptionsChange }: Props) => {
           onSelectVariable={handleVariableChange}
         />
       </Stack>
-      <DropdownList
-        label="Keyboard type:"
-        moreInfoTooltip="Changes the type of keyboard that appears on mobile devices.
-This is helpful for collecting numerical data."
-        currentItem={options?.inputMode ?? "numeric"}
-        onItemSelect={updateInputMode}
-        items={[
-          { label: "Default", value: "text" },
-          { label: "Numeric", value: "numeric" },
-          { label: "Decimal", value: "decimal" },
-        ]}
-      />
     </Stack>
   );
 };

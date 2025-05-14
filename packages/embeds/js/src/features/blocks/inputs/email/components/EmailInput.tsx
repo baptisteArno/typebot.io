@@ -63,7 +63,6 @@ export const EmailInput = (props: Props) => {
           onInput={handleInput}
           type="email"
           autocomplete="email"
-          inputMode={props.block.options?.inputMode}
         />
       </div>
       <SendButton type="button" class="h-[56px]" on:click={submit}>
