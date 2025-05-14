@@ -11,7 +11,6 @@ import {
   PopoverContent,
   PopoverTrigger,
   Stack,
-  Switch,
   Text,
 } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
