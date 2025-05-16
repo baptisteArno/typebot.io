@@ -24,12 +24,15 @@ export const SEO = ({
     favIconUrl,
     imageUrl,
     googleTagManagerId,
+    allowIndexing,
   } = {},
 }: SEOProps) => (
   <>
     <Head key="seo">
       <title>{title ?? typebotName}</title>
-      {isMatchingViewerUrl ? <meta name="robots" content="noindex" /> : null}
+      {isMatchingViewerUrl && allowIndexing !== true ? (
+        <meta name="robots" content="noindex" />
+      ) : null}
       <link
         rel="icon"
         type={favIconUrl ? "image/png" : "images/svg+xml"}
