@@ -20,6 +20,9 @@ export const textInputOptionsSchema = textInputOptionsBaseSchema
   .merge(
     z.object({
       isLong: z.boolean().optional(),
+      inputMode: z
+        .enum(["text", "email", "search", "tel", "url", "numeric", "decimal"])
+        .optional(),
       audioClip: z
         .object({
           isEnabled: z.boolean().optional(),

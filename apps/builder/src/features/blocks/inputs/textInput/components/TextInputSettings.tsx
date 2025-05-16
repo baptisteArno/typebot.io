@@ -29,7 +29,18 @@ export const TextInputSettings = ({ options, onOptionsChange }: Props) => {
 
   const updateIsLong = (isLong: boolean) =>
     onOptionsChange({ ...options, isLong });
-
+  const updateInputMode = (inputMode: string) =>
+    onOptionsChange({
+      ...options,
+      inputMode: inputMode as
+        | "text"
+        | "email"
+        | "search"
+        | "tel"
+        | "url"
+        | "numeric"
+        | "decimal",
+    });
   const updateVariableId = (variable?: Variable) =>
     onOptionsChange({ ...options, variableId: variable?.id });
 
@@ -95,6 +106,22 @@ export const TextInputSettings = ({ options, onOptionsChange }: Props) => {
         }
         onChange={updateButtonLabel}
       />
+      <DropdownList
+        label="Keyboard type:"
+        moreInfoTooltip="Changes the type of keyboard that appears on mobile devices.
+    This is helpful for collecting specific types of information."
+        currentItem={options?.inputMode ?? "text"}
+        onItemSelect={updateInputMode}
+        items={[
+          { label: "Default", value: "text" },
+          { label: "Email", value: "email" },
+          { label: "Search", value: "search" },
+          { label: "Telephone", value: "tel" },
+          { label: "URL", value: "url" },
+          { label: "Numeric", value: "numeric" },
+          { label: "Decimal", value: "decimal" },
+        ]}
+      />
       <SwitchWithRelatedSettings
         label={"Allow audio clip"}
         initialValue={
@@ -114,7 +141,9 @@ export const TextInputSettings = ({ options, onOptionsChange }: Props) => {
         </Stack>
         <DropdownList
           label="Visibility:"
-          moreInfoTooltip='This setting determines who can see the uploaded files. "Public" means that anyone who has the link can see the files. "Private" means that only a members of this workspace can see the files.'
+          moreInfoTooltip='This setting determines who can see the uploaded files.
+    "Public" means that anyone who has the link can see the files. "Private" means that
+    only a members of this workspace can see the files.'
           currentItem={
             options?.audioClip?.visibility ??
             defaultTextInputOptions.audioClip.visibility
@@ -142,7 +171,9 @@ export const TextInputSettings = ({ options, onOptionsChange }: Props) => {
         </Stack>
         <DropdownList
           label="Visibility:"
-          moreInfoTooltip='This setting determines who can see the uploaded files. "Public" means that anyone who has the link can see the files. "Private" means that only a members of this workspace can see the files.'
+          moreInfoTooltip='This setting determines who can see the uploaded files.
+"Public" means that anyone who has the link can see the files. "Private" means that
+only a members of this workspace can see the files.'
           currentItem={
             options?.attachments?.visibility ??
             defaultTextInputOptions.attachments.visibility
