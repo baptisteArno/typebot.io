@@ -1,6 +1,7 @@
 import { Bot, type BotProps } from "@/components/Bot";
 import type { CommandData } from "@/features/commands/types";
 import { EnvironmentProvider } from "@ark-ui/solid";
+import typebotColors from "@typebot.io/ui/colors.css";
 import { Show, createEffect, createSignal, onCleanup, onMount } from "solid-js";
 import styles from "../../../assets/index.css";
 
@@ -63,6 +64,7 @@ export const Standard = (
       value={document.querySelector("typebot-standard")?.shadowRoot as Node}
     >
       <style>
+        {typebotColors}
         {styles}
         {hostElementCss}
       </style>
