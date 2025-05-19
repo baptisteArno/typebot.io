@@ -36,6 +36,7 @@ const landingPagePaths = [
   "/terms-of-service",
   "/about",
   "/oss-friends",
+  "/business-continuity",
   "/blog",
   "/blog/:slug*",
 ];
