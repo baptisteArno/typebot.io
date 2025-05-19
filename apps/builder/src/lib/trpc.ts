@@ -1,5 +1,5 @@
 import type { AppRouter } from "@/helpers/server/routers/appRouter";
-import { createTRPCProxyClient, httpBatchLink, loggerLink } from "@trpc/client";
+import { createTRPCProxyClient, httpBatchLink } from "@trpc/client";
 import { createTRPCNext } from "@trpc/next";
 import { env } from "@typebot.io/env";
 import superjson from "superjson";
@@ -11,11 +11,6 @@ export const trpc = createTRPCNext<AppRouter>({
   config() {
     return {
       links: [
-        loggerLink({
-          enabled: (opts) =>
-            process.env.NODE_ENV === "development" ||
-            (opts.direction === "down" && opts.result instanceof Error),
-        }),
         httpBatchLink({
           url: `${getBaseUrl()}/api/trpc`,
         }),

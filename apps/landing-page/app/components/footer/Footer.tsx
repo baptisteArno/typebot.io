@@ -73,6 +73,13 @@ const data = [
           slug: "privacy-policy",
         },
       },
+      {
+        label: "Business Continuity",
+        to: "/$slug",
+        params: {
+          slug: "business-continuity",
+        },
+      },
     ],
   },
 ] as const;

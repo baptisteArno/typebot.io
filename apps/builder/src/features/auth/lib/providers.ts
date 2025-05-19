@@ -107,11 +107,11 @@ if (
   );
 }
 
-if (env.CUSTOM_OAUTH_WELL_KNOWN_URL) {
+if (env.CUSTOM_OAUTH_ISSUER) {
   providers.push({
     id: "custom-oauth",
     name: env.CUSTOM_OAUTH_NAME,
-    type: "oauth",
+    type: "oidc",
     authorization: {
       params: {
         scope: env.CUSTOM_OAUTH_SCOPE,
