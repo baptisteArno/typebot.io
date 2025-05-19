@@ -9,6 +9,7 @@ import {
 } from "@/utils/storage";
 import { EnvironmentProvider } from "@ark-ui/solid";
 import { isDefined, isNotDefined } from "@typebot.io/lib/utils";
+import typebotColors from "@typebot.io/ui/colors.css";
 import { cx } from "@typebot.io/ui/lib/cva";
 import { zendeskWebWidgetOpenedMessage } from "@typebot.io/zendesk-block/constants";
 import {
@@ -185,7 +186,10 @@ export const Bubble = (props: BubbleProps) => {
       <EnvironmentProvider
         value={document.querySelector("typebot-bubble")?.shadowRoot as Node}
       >
-        <style>{styles}</style>
+        <style>
+          {typebotColors}
+          {styles}
+        </style>
         <div ref={progressBarContainerRef} />
         <div
           class={cx(

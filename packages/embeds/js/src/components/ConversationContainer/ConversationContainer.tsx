@@ -556,7 +556,7 @@ export const ConversationContainer = (props: Props) => {
     <div
       ref={chatContainer}
       class={cx(
-        "overflow-y-auto relative scrollable-container typebot-chat-view scroll-smooth w-full min-h-full flex flex-col items-center",
+        "overflow-y-auto relative scrollable-container typebot-chat-view scroll-smooth w-full min-h-full flex flex-col items-center @sm:px-5 @sm:min-h-chat-container @sm:max-h-chat-container @sm:rounded-chat-container",
         (props.initialChatReply.typebot.theme.chat?.container
           ?.backgroundColor ?? defaultContainerBackgroundColor) !==
           "transparent" && "max-w-chat-container",
@@ -625,7 +625,7 @@ export const ConversationContainer = (props: Props) => {
 
 // Needed because we need to simulate a bottom padding relative to the chat view height
 const BottomSpacer = () => (
-  <div class="w-full flex-shrink-0 typebot-bottom-spacer h-[20%]" />
+  <div class="w-full flex-shrink-0 typebot-bottom-spacer h-5" />
 );
 
 const convertSubmitContentToMessage = (
