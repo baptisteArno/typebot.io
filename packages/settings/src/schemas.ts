@@ -49,6 +49,7 @@ const metadataSchema = z.object({
   favIconUrl: z.string().optional(),
   customHeadCode: z.string().optional(),
   googleTagManagerId: z.string().optional(),
+  allowIndexing: z.boolean().optional(),
 });
 
 const startConditionSchema = z.object({

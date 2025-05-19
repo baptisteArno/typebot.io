@@ -8,6 +8,7 @@ import {
 } from "@/utils/storage";
 import { EnvironmentProvider } from "@ark-ui/solid";
 import { isDefined, isNotDefined } from "@typebot.io/lib/utils";
+import typebotColors from "@typebot.io/ui/colors.css";
 import { zendeskWebWidgetOpenedMessage } from "@typebot.io/zendesk-block/constants";
 import {
   Show,
@@ -135,7 +136,10 @@ export const Popup = (props: PopupProps) => {
       <EnvironmentProvider
         value={document.querySelector("typebot-popup")?.shadowRoot as Node}
       >
-        <style>{styles}</style>
+        <style>
+          {typebotColors}
+          {styles}
+        </style>
         <div
           class="relative"
           aria-labelledby="modal-title"
@@ -145,7 +149,6 @@ export const Popup = (props: PopupProps) => {
             "z-index": props.theme?.zIndex ?? 42424242,
           }}
         >
-          <style>{styles}</style>
           <div
             class="fixed inset-0 bg-black bg-opacity-50 transition-opacity animate-fade-in"
             part="overlay"

@@ -34,7 +34,6 @@ import {
   defaultProgressBarPosition,
 } from "@typebot.io/theme/constants";
 import type { Font } from "@typebot.io/theme/schemas";
-import typebotColors from "@typebot.io/ui/colors.css";
 import { cn } from "@typebot.io/ui/lib/cn";
 import { cx } from "@typebot.io/ui/lib/cva";
 import { HTTPError } from "ky";
@@ -225,8 +224,7 @@ export const Bot = (props: BotProps & { class?: string }) => {
 
   return (
     <>
-      <style>{typebotColors}</style>
-      <style>{customCss()}</style>
+      <Show when={customCss()}>{(css) => <style>{css()}</style>}</Show>
       <Show when={error()} keyed>
         {(error) => <ErrorMessage error={error} />}
       </Show>
