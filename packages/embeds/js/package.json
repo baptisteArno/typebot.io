@@ -1,6 +1,6 @@
 {
   "name": "@typebot.io/js",
-  "version": "0.3.90",
+  "version": "0.3.91",
   "description": "Javascript library to display typebots on your website",
   "license": "FSL-1.1-ALv2",
   "type": "module",
@@ -8,7 +8,8 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": "./dist/index.js",
-    "./web": "./dist/web.js"
+    "./web": "./dist/web.js",
+    "./commands": "./dist/features/commands/index.js"
   },
   "scripts": {
     "dev": "tsup --watch",

@@ -1,6 +1,6 @@
 {
   "name": "@typebot.io/react",
-  "version": "0.3.90",
+  "version": "0.3.91",
   "description": "Convenient library to display typebots on your React app",
   "license": "FSL-1.1-ALv2",
   "type": "module",
@@ -10,6 +10,10 @@
     ".": {
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
+    },
+    "./commands": {
+      "types": "./dist/commands.d.ts",
+      "default": "./dist/commands.js"
     }
   },
   "scripts": {
