@@ -599,7 +599,7 @@
     },
     "packages/embeds/js": {
       "name": "@typebot.io/js",
-      "version": "0.3.89",
+      "version": "0.3.90",
       "devDependencies": {
         "@ai-sdk/ui-utils": "1.2.2",
         "@ark-ui/solid": "5.0.0",
@@ -637,7 +637,7 @@
     },
     "packages/embeds/nextjs": {
       "name": "@typebot.io/nextjs",
-      "version": "0.3.89",
+      "version": "0.3.90",
       "dependencies": {
         "next": "15.3.0",
         "react": "18.3.1",
@@ -656,7 +656,7 @@
     },
     "packages/embeds/react": {
       "name": "@typebot.io/react",
-      "version": "0.3.89",
+      "version": "0.3.90",
       "dependencies": {
         "react": "18.3.1",
       },
