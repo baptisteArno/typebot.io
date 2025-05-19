@@ -77,6 +77,10 @@ export const getHelpDocUrl = (
       return "https://docs.typebot.io/editor/blocks/logic/webhook";
     case EventType.COMMAND:
       return "https://docs.typebot.io/editor/events/command";
+    case EventType.REPLY:
+      return "https://docs.typebot.io/editor/events/reply";
+    case EventType.INVALID_REPLY:
+      return "https://docs.typebot.io/editor/events/invalid-reply";
     default:
       return blockDef?.docsUrl;
   }

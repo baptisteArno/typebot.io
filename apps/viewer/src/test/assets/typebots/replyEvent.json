@@ -1,0 +1,378 @@
+{
+  "version": "6.1",
+  "id": "dw1nupnnce4w8267a2g41rg7",
+  "name": "Lead Generation",
+  "events": [
+    {
+      "id": "k6kY6gwRE6noPoYQNGzgUq",
+      "outgoingEdgeId": "oNvqaqNExdSH2kKEhKZHuE",
+      "graphCoordinates": { "x": 0, "y": 0 },
+      "type": "start"
+    },
+    {
+      "id": "yyfuin7bzyr7daftpabkqh6y",
+      "outgoingEdgeId": "e9l3fbtnuy88ul1m3rqcrp25",
+      "graphCoordinates": { "x": -114, "y": 807 },
+      "type": "reply",
+      "options": {
+        "contentVariableId": "vp05xutnjxadoep6a2bqv4pa6",
+        "inputNameVariableId": "vdja7y9552cf64u4zvlgxgr3h",
+        "inputTypeVariableId": "vqjrm6ccgg660fs55gx2r1nef"
+      }
+    }
+  ],
+  "groups": [
+    {
+      "id": "kinRXxYop2X4d7F9qt8WNB",
+      "title": "Welcome",
+      "graphCoordinates": { "x": 1, "y": 148 },
+      "blocks": [
+        {
+          "id": "sc1y8VwDabNJgiVTBi4qtif",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  { "text": "Welcome to " },
+                  { "bold": true, "text": "AA" },
+                  { "text": " (Awesome Agency)" }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "s7YqZTBeyCa4Hp3wN2j922c",
+          "type": "image",
+          "content": {
+            "url": "https://media2.giphy.com/media/XD9o33QG9BoMis7iM4/giphy.gif?cid=fe3852a3ihg8rvipzzky5lybmdyq38fhke2tkrnshwk52c7d&rid=giphy.gif&ct=g"
+          }
+        },
+        {
+          "id": "sbjZWLJGVkHAkDqS4JQeGow",
+          "outgoingEdgeId": "i51YhHpk1dtSyduFNf5Wim",
+          "type": "choice input",
+          "items": [{ "id": "hQw2zbp7FDX7XYK9cFpbgC", "content": "Hi!" }]
+        }
+      ]
+    },
+    {
+      "id": "o4SH1UtKANnW5N5D67oZUz",
+      "title": "Email",
+      "graphCoordinates": { "x": 669, "y": 141 },
+      "blocks": [
+        {
+          "id": "sxeYubYN6XzhAfG7m9Fivhc",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [{ "text": "Great! Nice to meet you {{Name}}" }]
+              }
+            ]
+          }
+        },
+        {
+          "id": "scQ5kduafAtfP9T8SHUJnGi",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  { "text": "What's the best email we can reach you at?" }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "snbsad18Bgry8yZ8DZCfdFD",
+          "outgoingEdgeId": "w3MiN1Ct38jT5NykVsgmb5",
+          "type": "email input",
+          "options": { "variableId": "v3VFChNVSCXQ2rXv4DrJ8Ah" }
+        }
+      ]
+    },
+    {
+      "id": "q5dAhqSTCaNdiGSJm9B9Rw",
+      "title": "Name",
+      "graphCoordinates": { "x": 340, "y": 143 },
+      "blocks": [
+        {
+          "id": "sgtE2Sy7cKykac9B223Kq9R",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "What's your name?" }] }
+            ]
+          }
+        },
+        {
+          "id": "sqEsMo747LTDnY9FjQcEwUv",
+          "outgoingEdgeId": "4tYbERpi5Po4goVgt6rWXg",
+          "type": "text input",
+          "options": { "variableId": "giiLFGw5xXBCHzvp1qAbdX" }
+        }
+      ]
+    },
+    {
+      "id": "fKqRz7iswk7ULaj5PJocZL",
+      "title": "Services",
+      "graphCoordinates": { "x": 1002, "y": 144 },
+      "blocks": [
+        {
+          "id": "su7HceVXWyTCzi2vv3m4QbK",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [{ "text": "What services are you interested in?" }]
+              }
+            ]
+          }
+        },
+        {
+          "id": "s5VQGsVF4hQgziQsXVdwPDW",
+          "outgoingEdgeId": "ohTRakmcYJ7GdFWRZrWRjk",
+          "type": "choice input",
+          "items": [
+            { "id": "fnLCBF4NdraSwcubnBhk8H", "content": "Website dev" },
+            { "id": "a782h8ynMouY84QjH7XSnR", "content": "Content Marketing" },
+            { "id": "jGvh94zBByvVFpSS3w97zY", "content": "Social Media" },
+            { "id": "6PRLbKUezuFmwWtLVbvAQ7", "content": "UI / UX Design" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "7qHBEyCMvKEJryBHzPmHjV",
+      "title": "Additional information",
+      "graphCoordinates": { "x": 1337, "y": 145 },
+      "blocks": [
+        {
+          "id": "sqR8Sz9gW21aUYKtUikq7qZ",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  { "text": "Can you tell me a bit more about your needs?" }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "sqFy2G3C1mh9p6s3QBdSS5x",
+          "outgoingEdgeId": "sH5nUssG2XQbm6ZidGv9BY",
+          "type": "text input",
+          "options": { "isLong": true }
+        }
+      ]
+    },
+    {
+      "id": "vF7AD7zSAj7SNvN3gr9N94",
+      "title": "Bye",
+      "graphCoordinates": { "x": 1668, "y": 143 },
+      "blocks": [
+        {
+          "id": "seLegenCgUwMopRFeAefqZ7",
+          "type": "text",
+          "content": {
+            "richText": [{ "type": "p", "children": [{ "text": "Perfect!" }] }]
+          }
+        },
+        {
+          "id": "s779Q1y51aVaDUJVrFb16vv",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [{ "text": "We'll get back to you at {{Email}}" }]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "g3glk7r2pvho3lon25fjuu3v",
+      "title": "Group #7",
+      "graphCoordinates": { "x": 243.5, "y": 797.5 },
+      "blocks": [
+        {
+          "id": "mbmcxfnmyongty8m97xc08nt",
+          "type": "Condition",
+          "items": [
+            {
+              "id": "hp5s989w55udrrg7xq1ohk8h",
+              "content": {
+                "comparisons": [
+                  {
+                    "id": "zk0cr47yghunydsrskpk9we4",
+                    "variableId": "vqjrm6ccgg660fs55gx2r1nef",
+                    "comparisonOperator": "Equal to",
+                    "value": "email"
+                  }
+                ]
+              },
+              "outgoingEdgeId": "s64sm5qgfbtfqnmb5oio71r4"
+            }
+          ]
+        },
+        {
+          "id": "o4x9fapbdg6a6qxkx9xjffas",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "{{last utterance}}" }] }
+            ]
+          }
+        },
+        {
+          "id": "xnybplh4i9u72hjyn7exxrv5",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "{{last input type}}" }] }
+            ]
+          }
+        },
+        {
+          "id": "d0xelysotf9hlixjyr04e70l",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "{{last input name}}" }] }
+            ]
+          }
+        },
+        {
+          "id": "bluodmh8vhp3bmw7ibwudugv",
+          "outgoingEdgeId": "mw21g81e6xvejxogkckbnzqz",
+          "type": "Condition",
+          "items": [
+            {
+              "id": "bftiukqe8n5klkuzhxnjjhok",
+              "content": {
+                "comparisons": [
+                  {
+                    "id": "l86vgtoz0cv4830rrgk4r0mn",
+                    "variableId": "vp05xutnjxadoep6a2bqv4pa6",
+                    "comparisonOperator": "Contains",
+                    "value": "leave"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ql315pm9ofdo4imo7y4srvet",
+      "title": "",
+      "graphCoordinates": { "x": 671.38, "y": 1024.73 },
+      "blocks": [{ "id": "a284f972e2dhbqwmyw9las89", "type": "Return" }]
+    }
+  ],
+  "edges": [
+    {
+      "id": "oNvqaqNExdSH2kKEhKZHuE",
+      "from": { "eventId": "k6kY6gwRE6noPoYQNGzgUq" },
+      "to": { "groupId": "kinRXxYop2X4d7F9qt8WNB" }
+    },
+    {
+      "id": "i51YhHpk1dtSyduFNf5Wim",
+      "from": { "blockId": "sbjZWLJGVkHAkDqS4JQeGow" },
+      "to": { "groupId": "q5dAhqSTCaNdiGSJm9B9Rw" }
+    },
+    {
+      "id": "4tYbERpi5Po4goVgt6rWXg",
+      "from": { "blockId": "sqEsMo747LTDnY9FjQcEwUv" },
+      "to": { "groupId": "o4SH1UtKANnW5N5D67oZUz" }
+    },
+    {
+      "id": "w3MiN1Ct38jT5NykVsgmb5",
+      "from": { "blockId": "snbsad18Bgry8yZ8DZCfdFD" },
+      "to": { "groupId": "fKqRz7iswk7ULaj5PJocZL" }
+    },
+    {
+      "id": "ohTRakmcYJ7GdFWRZrWRjk",
+      "from": { "blockId": "s5VQGsVF4hQgziQsXVdwPDW" },
+      "to": { "groupId": "7qHBEyCMvKEJryBHzPmHjV" }
+    },
+    {
+      "id": "sH5nUssG2XQbm6ZidGv9BY",
+      "from": { "blockId": "sqFy2G3C1mh9p6s3QBdSS5x" },
+      "to": { "groupId": "vF7AD7zSAj7SNvN3gr9N94" }
+    },
+    {
+      "id": "e9l3fbtnuy88ul1m3rqcrp25",
+      "from": { "eventId": "yyfuin7bzyr7daftpabkqh6y" },
+      "to": { "groupId": "g3glk7r2pvho3lon25fjuu3v" }
+    },
+    {
+      "id": "mw21g81e6xvejxogkckbnzqz",
+      "from": { "blockId": "bluodmh8vhp3bmw7ibwudugv" },
+      "to": { "groupId": "ql315pm9ofdo4imo7y4srvet" }
+    },
+    {
+      "from": {
+        "blockId": "mbmcxfnmyongty8m97xc08nt",
+        "itemId": "hp5s989w55udrrg7xq1ohk8h"
+      },
+      "to": { "groupId": "ql315pm9ofdo4imo7y4srvet" },
+      "id": "s64sm5qgfbtfqnmb5oio71r4"
+    }
+  ],
+  "variables": [
+    {
+      "id": "vdja7y9552cf64u4zvlgxgr3h",
+      "name": "last input name",
+      "isSessionVariable": true
+    },
+    {
+      "id": "vqjrm6ccgg660fs55gx2r1nef",
+      "name": "last input type",
+      "isSessionVariable": true
+    },
+    {
+      "id": "vp05xutnjxadoep6a2bqv4pa6",
+      "name": "last utterance",
+      "isSessionVariable": true
+    },
+    {
+      "id": "giiLFGw5xXBCHzvp1qAbdX",
+      "name": "Name",
+      "isSessionVariable": false
+    },
+    {
+      "id": "v3VFChNVSCXQ2rXv4DrJ8Ah",
+      "name": "Email",
+      "isSessionVariable": false
+    }
+  ],
+  "theme": {},
+  "selectedThemeTemplateId": null,
+  "settings": {},
+  "createdAt": "2025-04-27T16:38:07.215Z",
+  "updatedAt": "2025-04-27T16:43:10.126Z",
+  "icon": "🤝",
+  "folderId": null,
+  "publicId": null,
+  "customDomain": null,
+  "workspaceId": "proWorkspace",
+  "resultsTablePreferences": null,
+  "isArchived": false,
+  "isClosed": false,
+  "whatsAppCredentialsId": null,
+  "riskLevel": null
+}

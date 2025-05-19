@@ -7,29 +7,20 @@ import { KeycloackLogo } from "@/components/logos/KeycloakLogo";
 import { Button, Stack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { omit } from "@typebot.io/lib/utils";
-import type { BuiltInProviderType } from "next-auth/providers/index";
-import {
-  type ClientSafeProvider,
-  type LiteralUnion,
-  signIn,
-  useSession,
-} from "next-auth/react";
+import { type getProviders, signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { stringify } from "qs";
 import React, { useState } from "react";
 
 type Props = {
-  providers:
-    | Record<LiteralUnion<BuiltInProviderType, string>, ClientSafeProvider>
-    | undefined;
+  providers: Awaited<ReturnType<typeof getProviders>> | undefined;
 };
 
 export const SocialLoginButtons = ({ providers }: Props) => {
   const { t } = useTranslate();
   const { query } = useRouter();
   const { status } = useSession();
-  const [authLoading, setAuthLoading] =
-    useState<LiteralUnion<BuiltInProviderType, string>>();
+  const [authLoading, setAuthLoading] = useState<string>();
 
   const handleSignIn = async (provider: string) => {
     setAuthLoading(provider);
@@ -49,7 +40,7 @@ export const SocialLoginButtons = ({ providers }: Props) => {
 
   const handleGitlabClick = () => handleSignIn("gitlab");
 
-  const handleAzureAdClick = () => handleSignIn("azure-ad");
+  const handleMicrosoftEntraIdClick = () => handleSignIn("microsoft-entra-id");
 
   const handleCustomOAuthClick = () => handleSignIn("custom-oauth");
 
@@ -115,19 +106,19 @@ export const SocialLoginButtons = ({ providers }: Props) => {
           })}
         </Button>
       )}
-      {providers?.["azure-ad"] && (
+      {providers?.["microsoft-entra-id"] && (
         <Button
           leftIcon={<AzureAdLogo />}
-          onClick={handleAzureAdClick}
-          data-testid="azure-ad"
+          onClick={handleMicrosoftEntraIdClick}
+          data-testid="microsoft-entra-id"
           isLoading={
             ["loading", "authenticated"].includes(status) ||
-            authLoading === "azure-ad"
+            authLoading === "microsoft-entra-id"
           }
           variant="outline"
         >
           {t("auth.socialLogin.azureButton.label", {
-            azureProviderName: providers["azure-ad"].name,
+            azureProviderName: providers["microsoft-entra-id"].name,
           })}
         </Button>
       )}

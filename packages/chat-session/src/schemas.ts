@@ -1,4 +1,5 @@
 import { isInputBlock } from "@typebot.io/blocks-core/helpers";
+import { inputMessageSchema } from "@typebot.io/chat-api/schemas";
 import type { Prisma } from "@typebot.io/prisma/types";
 import {
   answerInSessionStateSchemaV2,
@@ -122,6 +123,14 @@ const sessionStateSchemaV2 = z.object({
       totalAnswers: z.number(),
     })
     .optional(),
+  returnMark: z
+    .object({
+      status: z.enum(["pending", "called"]).default("pending"),
+      blockId: z.string(),
+      autoResumeMessage: inputMessageSchema.optional(),
+    })
+    .optional()
+    .describe("Used by a potential future Return block"),
 });
 
 const sessionStateSchemaV3 = sessionStateSchemaV2

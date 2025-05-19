@@ -12,6 +12,7 @@ type DynamicProps = {
   pictureSrcs: Variable["value"];
   titles: Variable["value"];
   descriptions: Variable["value"];
+  internalValues: Variable["value"];
 };
 
 export const injectVariableValuesInCardsBlock = (
@@ -52,10 +53,14 @@ const getDynamicProps =
     const descriptionsVariable = findUniqueVariable(variables)(
       item.description,
     );
+    const internalValuesVariable = findUniqueVariable(variables)(
+      item.options?.internalValue,
+    );
     const dynamicItems = {
       pictureSrcs: pictureSrcsVariable?.value,
       titles: titlesVariable?.value,
       descriptions: descriptionsVariable?.value,
+      internalValues: internalValuesVariable?.value,
     };
     if (
       !Array.isArray(dynamicItems.pictureSrcs) &&
@@ -70,55 +75,44 @@ const createDynamicCards = (
   item: CardsItem,
   dynamicProps: DynamicProps,
 ): CardsItem[] => {
-  const cards: CardsItem[] = [];
-  let idx = 0;
+  let drivingArray: Variable["value"] | undefined;
+  let arrayLength = 0;
+
   if (Array.isArray(dynamicProps.titles)) {
-    for (const title of dynamicProps.titles) {
-      cards.push({
-        ...item,
-        title,
-        description: Array.isArray(dynamicProps.descriptions)
-          ? dynamicProps.descriptions[idx]
-          : dynamicProps.descriptions,
-        imageUrl: Array.isArray(dynamicProps.pictureSrcs)
-          ? dynamicProps.pictureSrcs[idx]
-          : dynamicProps.pictureSrcs,
-      });
-      idx += 1;
-    }
-    return cards;
+    drivingArray = dynamicProps.titles;
+  } else if (Array.isArray(dynamicProps.pictureSrcs)) {
+    drivingArray = dynamicProps.pictureSrcs;
+  } else if (Array.isArray(dynamicProps.descriptions)) {
+    drivingArray = dynamicProps.descriptions;
+  } else if (Array.isArray(dynamicProps.internalValues)) {
+    drivingArray = dynamicProps.internalValues;
   }
-  if (Array.isArray(dynamicProps.pictureSrcs)) {
-    for (const pictureSrc of dynamicProps.pictureSrcs) {
-      cards.push({
-        ...item,
-        imageUrl: pictureSrc,
-        title: Array.isArray(dynamicProps.titles)
-          ? dynamicProps.titles[idx]
-          : dynamicProps.titles,
-        description: Array.isArray(dynamicProps.descriptions)
-          ? dynamicProps.descriptions[idx]
-          : dynamicProps.descriptions,
-      });
-      idx += 1;
-    }
-    return cards;
+
+  if (!drivingArray || !Array.isArray(drivingArray)) {
+    return [];
   }
-  if (Array.isArray(dynamicProps.descriptions)) {
-    for (const description of dynamicProps.descriptions) {
-      cards.push({
-        ...item,
-        description,
-        imageUrl: Array.isArray(dynamicProps.pictureSrcs)
-          ? dynamicProps.pictureSrcs[idx]
-          : dynamicProps.pictureSrcs,
-        title: Array.isArray(dynamicProps.titles)
-          ? dynamicProps.titles[idx]
-          : dynamicProps.titles,
-      });
-      idx += 1;
-    }
-    return cards;
+  arrayLength = drivingArray.length;
+
+  const cards: CardsItem[] = [];
+  for (let idx = 0; idx < arrayLength; idx++) {
+    cards.push({
+      ...item,
+      title: getDynamicValue(dynamicProps.titles, idx),
+      description: getDynamicValue(dynamicProps.descriptions, idx),
+      imageUrl: getDynamicValue(dynamicProps.pictureSrcs, idx),
+      paths: item.paths?.map((path, index) => ({
+        ...path,
+        id: `dynamic-card-${idx}-path-${index}`,
+      })),
+      options: {
+        ...item.options,
+        internalValue: getDynamicValue(dynamicProps.internalValues, idx),
+      },
+    });
   }
+
   return cards;
 };
+
+const getDynamicValue = <T>(prop: T | T[], index: number): T | undefined =>
+  Array.isArray(prop) ? prop[index] : prop;

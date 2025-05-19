@@ -23,7 +23,7 @@ export const isReadTypebotForbidden = async (
     !user ||
     typebot.workspace.isSuspended ||
     typebot.workspace.isPastDue ||
-    (env.ADMIN_EMAIL?.every((email) => email !== user.email) &&
+    ((env.ADMIN_EMAIL ?? []).every((email) => email !== user.email) &&
       !typebot.collaborators.some(
         (collaborator) => collaborator.userId === user.id,
       ) &&

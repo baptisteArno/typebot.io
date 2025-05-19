@@ -3,7 +3,7 @@ export const createEmailMagicLink = (
   email: string,
   redirectPath?: string,
 ) => {
-  const url = new URL(`${window.location.origin}/api/auth/callback/email`);
+  const url = new URL(`${window.location.origin}/api/auth/callback/nodemailer`);
   url.searchParams.set("token", token);
   url.searchParams.set("email", email);
   url.searchParams.set(

@@ -2,7 +2,7 @@ import { guessApiHost } from "@/utils/guessApiHost";
 import type {
   ContinueChatResponse,
   Message,
-} from "@typebot.io/bot-engine/schemas/api";
+} from "@typebot.io/chat-api/schemas";
 import { isNotEmpty } from "@typebot.io/lib/utils";
 import ky from "ky";
 

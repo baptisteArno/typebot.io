@@ -1,6 +1,6 @@
 {
   "name": "@typebot.io/nextjs",
-  "version": "0.3.80",
+  "version": "0.3.90",
   "license": "FSL-1.1-ALv2",
   "description": "Convenient library to display typebots on your Next.js website",
   "type": "module",
@@ -19,7 +19,7 @@
   "dependencies": {
     "@typebot.io/js": "workspace:*",
     "react": "18.3.1",
-    "next": "14.2.26"
+    "next": "15.3.0"
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*",

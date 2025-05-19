@@ -1,5 +1,5 @@
 import { executeScript } from "@/features/blocks/logic/script/executeScript";
-import type { ScriptToExecute } from "@typebot.io/bot-engine/schemas/clientSideAction";
+import type { ScriptToExecute } from "@typebot.io/chat-api/clientSideAction";
 import { chatwootWebWidgetOpenedMessage } from "../constants";
 
 export const executeChatwoot = (chatwoot: {

@@ -1,0 +1,356 @@
+{
+  "version": "6.1",
+  "id": "fnnfi9xoa2armp9ucvnt5tev",
+  "name": "Customer Support",
+  "events": [
+    {
+      "id": "uG1tt8JdDyu2nju3oJ4wc1",
+      "outgoingEdgeId": "2dzxChB1qm9WGfzNF91tfg",
+      "graphCoordinates": { "x": -281, "y": -89 },
+      "type": "start"
+    }
+  ],
+  "groups": [
+    {
+      "id": "vLUAPaxKwPF49iZhg4XZYa",
+      "title": "Menu",
+      "graphCoordinates": { "x": -28.4, "y": -88.19 },
+      "blocks": [
+        {
+          "id": "spud6U3K1omh2dZG8yN2CW4",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "Hey friend 👋" }] },
+              { "type": "p", "children": [{ "text": "How can I help you?" }] }
+            ]
+          }
+        },
+        {
+          "id": "1",
+          "type": "choice input",
+          "items": [
+            {
+              "id": "fQ8oLDnKmDBuPDK7riJ2kt",
+              "outgoingEdgeId": "dhniFxrsH5r54aEE5JXwK2",
+              "content": "I have a feature request ✨"
+            },
+            {
+              "id": "h2rFDX2UnKS4Kdu3Eyuqq3",
+              "outgoingEdgeId": "2C4mhU5o2Hdm7dztR9xNE9",
+              "content": "There is a bug 🐛"
+            },
+            {
+              "id": "hcUFBPeQA3gSyXRprRk2v9",
+              "outgoingEdgeId": "bTo6CZD1YapDDyVdvJgFDV",
+              "content": "I have a question 💭"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "7MuqF6nen1ZTwGB53Mz8VY",
+      "title": "Bug",
+      "graphCoordinates": { "x": 366.35, "y": 77.9 },
+      "blocks": [
+        {
+          "id": "sjsECyfSBMkUnoWaEnBTmJX",
+          "type": "text",
+          "content": {
+            "richText": [{ "type": "p", "children": [{ "text": "Shoot! 🤪" }] }]
+          }
+        },
+        {
+          "id": "seomQsnPWgiMzQVeZ3us7x2",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "Can you describe the bug with as many details as possible?"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "3",
+          "outgoingEdgeId": "cl1571jhh00022e6dk77f52wg",
+          "type": "text input",
+          "options": {
+            "labels": { "placeholder": "Describe the bug..." },
+            "variableId": "v51BcuecnB6kRU1tsttaGyR",
+            "isLong": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "kyK8JQ77NodUYaz3JLS88A",
+      "title": "Feature request",
+      "graphCoordinates": { "x": 364.36, "y": -517.93 },
+      "blocks": [
+        {
+          "id": "s9bgHcWdobb8Z5cTbrnTz6R",
+          "type": "text",
+          "content": {
+            "richText": [{ "type": "p", "children": [{ "text": "Awesome!" }] }]
+          }
+        },
+        {
+          "id": "s2NbNaBGKhMvdEUdVPXKZjy",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [{ "text": "Head up to the feedback board." }]
+              },
+              { "type": "p", "children": [{ "text": "" }] },
+              {
+                "type": "p",
+                "children": [
+                  { "text": "👉 " },
+                  {
+                    "url": "https://app.typebot.io/feedback",
+                    "type": "a",
+                    "children": [{ "text": "https://app.typebot.io/feedback" }]
+                  },
+                  { "text": "" }
+                ]
+              },
+              { "type": "p", "children": [{ "text": "" }] },
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "There, you'll be able to check existing feature requests and submit yours if it's missing 💪"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "2",
+          "type": "choice input",
+          "items": [{ "id": "2", "content": "Restart" }]
+        },
+        {
+          "id": "j08qxg0h804rngfroedblt5f",
+          "type": "Jump",
+          "options": { "groupId": "vLUAPaxKwPF49iZhg4XZYa" }
+        }
+      ]
+    },
+    {
+      "id": "puWCBhGWSQRbqTkVH89RCf",
+      "title": "Question",
+      "graphCoordinates": { "x": 365.4, "y": 491.3 },
+      "blocks": [
+        {
+          "id": "sm4iHhLQs9yNdRG3b7xqV8Y",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  { "text": "First, don't forget to check out the " },
+                  {
+                    "url": "https://docs.typebot.io/",
+                    "type": "a",
+                    "children": [{ "text": "Documentation 🙏" }]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "sreX6rwMevEmbTpnkGCtp3k",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [{ "text": "Otherwise, I'm all ears!" }]
+              }
+            ]
+          }
+        },
+        {
+          "id": "so4GiKFWWjKCjXgmMJYCGbe",
+          "type": "image",
+          "content": {
+            "url": "https://media0.giphy.com/media/rhgwg4qBu97ISgbfni/giphy-downsized.gif?cid=fe3852a3wimy48e55djt23j44uto7gdlu8ksytylafisvr0q&rid=giphy-downsized.gif&ct=g"
+          }
+        },
+        {
+          "id": "sjd4qACugMarB7gJC8nMhb3",
+          "outgoingEdgeId": "cl1571ktd00032e6dyti22850",
+          "type": "text input",
+          "options": { "variableId": "v51BcuecnB6kRU1tsttaGyR", "isLong": true }
+        }
+      ]
+    },
+    {
+      "id": "1GvxCAAEysxJMxrVngud3X",
+      "title": "Bye",
+      "graphCoordinates": { "x": 1115.81, "y": 728.71 },
+      "blocks": [
+        {
+          "id": "s6uLw72EAKbACrpYHr7DSyY",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  { "text": "Thank you so much for your submission 💙" }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "stM7cTBFCLhpQagRHT64K6u",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "I'll get back to you ASAP (usually within 24 hours)"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "5",
+          "type": "choice input",
+          "items": [
+            {
+              "id": "jqm8wZa5yYb73493n5s3Uc",
+              "outgoingEdgeId": "xw4br4f7grm7zs2cnf2aa8fw",
+              "content": "Restart"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "wncvzVDFJDvhh1M3CXJ6aL",
+      "title": "Email",
+      "graphCoordinates": { "x": 746.29, "y": 577.22 },
+      "blocks": [
+        {
+          "id": "soiDpBL5r1dbvHxuT2Sd3mH",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [{ "text": "On which email can I contact you?" }]
+              }
+            ]
+          }
+        },
+        {
+          "id": "4",
+          "outgoingEdgeId": "cl1571xtc00042e6dcptam5jw",
+          "type": "email input",
+          "options": { "variableId": "t2k6cj3uYfNdJX13APA4b9" }
+        }
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "2dzxChB1qm9WGfzNF91tfg",
+      "from": { "eventId": "uG1tt8JdDyu2nju3oJ4wc1" },
+      "to": { "groupId": "vLUAPaxKwPF49iZhg4XZYa" }
+    },
+    {
+      "id": "dhniFxrsH5r54aEE5JXwK2",
+      "from": {
+        "blockId": "s6kp2Z4igeY3kL7B64qBdUg",
+        "itemId": "fQ8oLDnKmDBuPDK7riJ2kt"
+      },
+      "to": { "groupId": "kyK8JQ77NodUYaz3JLS88A" }
+    },
+    {
+      "id": "2C4mhU5o2Hdm7dztR9xNE9",
+      "from": {
+        "blockId": "s6kp2Z4igeY3kL7B64qBdUg",
+        "itemId": "h2rFDX2UnKS4Kdu3Eyuqq3"
+      },
+      "to": { "groupId": "7MuqF6nen1ZTwGB53Mz8VY" }
+    },
+    {
+      "id": "bTo6CZD1YapDDyVdvJgFDV",
+      "from": {
+        "blockId": "s6kp2Z4igeY3kL7B64qBdUg",
+        "itemId": "hcUFBPeQA3gSyXRprRk2v9"
+      },
+      "to": { "groupId": "puWCBhGWSQRbqTkVH89RCf" }
+    },
+    {
+      "id": "cl1571jhh00022e6dk77f52wg",
+      "from": { "blockId": "s3LYyyYtjdQ88jkMMV5DSW7" },
+      "to": { "groupId": "wncvzVDFJDvhh1M3CXJ6aL" }
+    },
+    {
+      "id": "cl1571ktd00032e6dyti22850",
+      "from": { "blockId": "sjd4qACugMarB7gJC8nMhb3" },
+      "to": { "groupId": "wncvzVDFJDvhh1M3CXJ6aL" }
+    },
+    {
+      "id": "cl1571xtc00042e6dcptam5jw",
+      "from": { "blockId": "s5Fh7zHUw3j4zDM5xjzwsXB" },
+      "to": { "groupId": "1GvxCAAEysxJMxrVngud3X" }
+    },
+    {
+      "id": "xw4br4f7grm7zs2cnf2aa8fw",
+      "from": {
+        "blockId": "s4JATFkBxzmcqqEKQB2xFfa",
+        "itemId": "jqm8wZa5yYb73493n5s3Uc"
+      },
+      "to": { "groupId": "vLUAPaxKwPF49iZhg4XZYa" }
+    }
+  ],
+  "variables": [
+    {
+      "id": "t2k6cj3uYfNdJX13APA4b9",
+      "name": "Email",
+      "isSessionVariable": false
+    },
+    {
+      "id": "v51BcuecnB6kRU1tsttaGyR",
+      "name": "Content",
+      "isSessionVariable": false
+    }
+  ],
+  "theme": {},
+  "selectedThemeTemplateId": null,
+  "settings": {},
+  "createdAt": "2025-05-02T15:38:58.925Z",
+  "updatedAt": "2025-05-02T15:39:20.855Z",
+  "icon": "😍",
+  "folderId": null,
+  "publicId": "customer-support-vnt5tev",
+  "customDomain": null,
+  "workspaceId": "proWorkspace",
+  "resultsTablePreferences": null,
+  "isArchived": false,
+  "isClosed": false,
+  "whatsAppCredentialsId": null,
+  "riskLevel": null
+}

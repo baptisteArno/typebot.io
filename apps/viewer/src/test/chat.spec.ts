@@ -4,7 +4,7 @@ import test, { expect } from "@playwright/test";
 import type {
   StartChatInput,
   StartPreviewChatInput,
-} from "@typebot.io/bot-engine/schemas/api";
+} from "@typebot.io/chat-api/schemas";
 import { importTypebotInDatabase } from "@typebot.io/playwright/databaseActions";
 import prisma from "@typebot.io/prisma";
 

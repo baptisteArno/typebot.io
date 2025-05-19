@@ -5,6 +5,7 @@ import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
 import { defaultPictureChoiceOptions } from "@typebot.io/blocks-inputs/pictureChoice/constants";
 import type { InputBlock } from "@typebot.io/blocks-inputs/schema";
 import { LogicBlockType } from "@typebot.io/blocks-logic/constants";
+import type { ContinueChatResponse } from "@typebot.io/chat-api/schemas";
 import type { TypebotInSession } from "@typebot.io/chat-session/schemas";
 import { executeCondition } from "@typebot.io/conditions/executeCondition";
 import type { Group } from "@typebot.io/groups/schemas";
@@ -15,12 +16,33 @@ import type { Edge } from "@typebot.io/typebot/schemas/edge";
 import { parseVariables } from "@typebot.io/variables/parseVariables";
 import type { Variable } from "@typebot.io/variables/schemas";
 import type { SetVariableHistoryItem } from "@typebot.io/variables/schemas";
+import { executeAbTest } from "./blocks/logic/abTest/executeAbTest";
 import { isTypebotInSessionAtLeastV6 } from "./helpers/isTypebotInSessionAtLeastV6";
 import {
   type BubbleBlockWithDefinedContent,
   parseBubbleBlock,
 } from "./parseBubbleBlock";
-import type { ContinueChatResponse } from "./schemas/api";
+
+// -----------------------------------------------------------------------------
+// 🛠️  Queue helpers ────────────────────────────────────────────────────────────
+// -----------------------------------------------------------------------------
+
+type QueueIterator<T> = {
+  peek: () => T | undefined;
+  next: () => T | undefined;
+};
+
+const iterator = <T>(items: readonly T[]): QueueIterator<T> => {
+  let i = 0;
+  return {
+    peek: () => items[i],
+    next: () => (i < items.length ? items[i++] : undefined),
+  };
+};
+
+type SetVarSnapshot = Readonly<
+  Pick<SetVariableHistoryItem, "blockId" | "variableId" | "value">
+>;
 
 type TranscriptMessage = {
   role: "bot" | "user";
@@ -46,6 +68,10 @@ export const parseTranscriptMessageText = (
   }
 };
 
+// -----------------------------------------------------------------------------
+// 🧮  Public API ────────────────────────────────────────────────────────────────
+// -----------------------------------------------------------------------------
+
 export const computeResultTranscript = ({
   typebot,
   answers,
@@ -55,11 +81,8 @@ export const computeResultTranscript = ({
   sessionStore,
 }: {
   typebot: TypebotInSession;
-  answers: Pick<Answer, "blockId" | "content" | "attachedFileUrls">[];
-  setVariableHistory: Pick<
-    SetVariableHistoryItem,
-    "blockId" | "variableId" | "value"
-  >[];
+  answers: Answer[];
+  setVariableHistory: SetVarSnapshot[];
   visitedEdges: string[];
   stopAtBlockId?: string;
   sessionStore: SessionStore;
@@ -70,17 +93,26 @@ export const computeResultTranscript = ({
   if (!firstEdge) return [];
   const firstGroup = getNextGroup(typebot, firstEdgeId);
   if (!firstGroup) return [];
+
+  const queues = {
+    answers: iterator(answers),
+    setVariableHistory: iterator(setVariableHistory),
+    visitedEdges: iterator(visitedEdges),
+  } as const;
+
   return executeGroup({
     typebotsQueue: [{ typebot }],
     nextGroup: firstGroup,
     currentTranscript: [],
-    answers: [...answers],
-    setVariableHistory: [...setVariableHistory],
-    visitedEdges,
+    queues,
     stopAtBlockId,
     sessionStore,
   });
 };
+
+// -----------------------------------------------------------------------------
+// 🔍  Helpers ───────────────────────────────────────────────────────────────────
+// -----------------------------------------------------------------------------
 
 const getFirstEdgeId = (typebot: TypebotInSession) => {
   if (isTypebotInSessionAtLeastV6(typebot))
@@ -102,54 +134,54 @@ const getNextGroup = (
   return { group, blockIndex };
 };
 
+// -----------------------------------------------------------------------------
+// 🚶‍♂️  Graph traversal ──────────────────────────────────────────────────────────
+// -----------------------------------------------------------------------------
+
 const executeGroup = ({
   currentTranscript,
-  typebotsQueue,
-  answers,
   nextGroup,
-  setVariableHistory,
-  visitedEdges,
+  typebotsQueue,
+  queues,
   stopAtBlockId,
   sessionStore,
 }: {
   currentTranscript: TranscriptMessage[];
-  nextGroup:
-    | {
-        group: Group;
-        blockIndex?: number | undefined;
-      }
-    | undefined;
-  typebotsQueue: {
-    typebot: TypebotInSession;
-    resumeEdgeId?: string;
-  }[];
-  answers: Pick<Answer, "blockId" | "content" | "attachedFileUrls">[];
-  setVariableHistory: Pick<
-    SetVariableHistoryItem,
-    "blockId" | "variableId" | "value"
-  >[];
-  visitedEdges: string[];
+  nextGroup: { group: Group; blockIndex?: number } | undefined;
+  typebotsQueue: { typebot: TypebotInSession; resumeEdgeId?: string }[];
+  queues: {
+    answers: QueueIterator<Answer>;
+    setVariableHistory: QueueIterator<SetVarSnapshot>;
+    visitedEdges: QueueIterator<string>;
+  };
   stopAtBlockId?: string;
   sessionStore: SessionStore;
 }): TranscriptMessage[] => {
   if (!nextGroup) return currentTranscript;
-  for (const block of nextGroup?.group.blocks.slice(
-    nextGroup.blockIndex ?? 0,
-  )) {
+
+  const { answers, setVariableHistory, visitedEdges } = queues;
+
+  for (const block of nextGroup.group.blocks.slice(nextGroup.blockIndex ?? 0)) {
     if (
       stopAtBlockId &&
       block.id === stopAtBlockId &&
-      answers.length === 0 &&
-      setVariableHistory.length === 0 &&
-      visitedEdges.length === 0
+      !answers.peek() &&
+      !setVariableHistory.peek() &&
+      !visitedEdges.peek()
     )
       return currentTranscript;
     if (stopAtBlockId && block.id === stopAtBlockId) return currentTranscript;
+
     const typebot = typebotsQueue[0]?.typebot;
     if (!typebot) throw new Error("Typebot not found in session");
-    if (setVariableHistory.at(0)?.blockId === block.id)
-      typebot.variables = applySetVariable(setVariableHistory.shift(), typebot);
+
+    if (setVariableHistory.peek()?.blockId === block.id) {
+      typebot.variables = applySetVariable(setVariableHistory.next(), typebot);
+    }
+
     let nextEdgeId = block.outgoingEdgeId;
+
+    // ──────────────────────────────────────────────────────────── Bubble blocks
     if (isBubbleBlock(block)) {
       if (!block.content) continue;
       const parsedBubbleBlock = parseBubbleBlock(
@@ -165,29 +197,34 @@ const executeGroup = ({
       const newMessage =
         convertChatMessageToTranscriptMessage(parsedBubbleBlock);
       if (newMessage) currentTranscript.push(newMessage);
-    } else if (isInputBlock(block)) {
-      const answer = answers.shift();
+    }
+    // ──────────────────────────────────────────────────────────── Input blocks
+    else if (isInputBlock(block)) {
+      const answer = answers.next();
       if (!answer) break;
+
+      // variable binding
       if (block.options?.variableId) {
-        const replyVariable = typebot.variables.find(
-          (variable) => variable.id === block.options?.variableId,
+        const replyVar = typebot.variables.find(
+          (v) => v.id === block.options?.variableId,
         );
-        if (replyVariable) {
+        if (replyVar) {
           typebot.variables = typebot.variables.map((v) =>
-            v.id === replyVariable.id ? { ...v, value: answer.content } : v,
+            v.id === replyVar.id ? { ...v, value: answer.content } : v,
           );
         }
       }
+
+      // attachments (TEXT blocks only for now)
       if (
         block.type === InputBlockType.TEXT &&
         block.options?.attachments?.isEnabled &&
-        block.options?.attachments?.saveVariableId &&
+        block.options.attachments.saveVariableId &&
         answer.attachedFileUrls &&
-        answer.attachedFileUrls?.length > 0
+        answer.attachedFileUrls.length > 0
       ) {
         const variable = typebot.variables.find(
-          (variable) =>
-            variable.id === block.options?.attachments?.saveVariableId,
+          (v) => v.id === block.options!.attachments!.saveVariableId,
         );
         if (variable) {
           typebot.variables = typebot.variables.map((v) =>
@@ -204,6 +241,7 @@ const executeGroup = ({
           );
         }
       }
+
       currentTranscript.push({
         role: "user",
         type: "text",
@@ -212,15 +250,18 @@ const executeGroup = ({
             ? `${answer.attachedFileUrls?.join(", ")}\n\n${answer.content}`
             : answer.content,
       });
-      const outgoingEdge = getOutgoingEdgeId(block, {
+
+      const outgoing = getOutgoingEdgeId(block, {
         answer: answer.content,
         variables: typebot.variables,
         sessionStore,
       });
-      if (outgoingEdge.isOffDefaultPath) visitedEdges.shift();
-      nextEdgeId = outgoingEdge.edgeId;
-    } else if (block.type === LogicBlockType.CONDITION) {
-      const passedCondition = block.items.find(
+      if (outgoing.isOffDefaultPath) visitedEdges.next();
+      nextEdgeId = outgoing.edgeId;
+    }
+    // ──────────────────────────────────────────────────────────── Condition
+    else if (block.type === LogicBlockType.CONDITION) {
+      const passed = block.items.find(
         (item) =>
           item.content &&
           executeCondition(item.content, {
@@ -228,139 +269,119 @@ const executeGroup = ({
             sessionStore,
           }),
       );
-      if (passedCondition) {
-        visitedEdges.shift();
-        nextEdgeId = passedCondition.outgoingEdgeId;
+      if (passed) {
+        visitedEdges.next();
+        nextEdgeId = passed.outgoingEdgeId;
       }
-    } else if (block.type === LogicBlockType.AB_TEST) {
-      nextEdgeId = visitedEdges.shift() ?? nextEdgeId;
-    } else if (block.type === LogicBlockType.JUMP) {
-      if (!block.options?.groupId) continue;
-      const groupToJumpTo = typebot.groups.find(
-        (group) => group.id === block.options?.groupId,
-      );
-      const blockToJumpTo =
-        groupToJumpTo?.blocks.find((b) => b.id === block.options?.blockId) ??
-        groupToJumpTo?.blocks[0];
-
-      if (!blockToJumpTo) continue;
-
-      const portalEdge = {
-        id: createId(),
-        from: { blockId: "", groupId: "" },
-        to: { groupId: block.options.groupId, blockId: blockToJumpTo.id },
-      };
-      typebot.edges.push(portalEdge);
-      visitedEdges.shift();
-      nextEdgeId = portalEdge.id;
-    } else if (block.type === LogicBlockType.TYPEBOT_LINK) {
-      const isLinkingSameTypebot =
+    }
+    // ──────────────────────────────────────────────────────────── AB Test
+    // ──────────────────────────────────────────────────────────── Jump
+    // ──────────────────────────────────────────────────────────── Return
+    else if (
+      block.type === LogicBlockType.AB_TEST ||
+      block.type === LogicBlockType.JUMP ||
+      block.type === LogicBlockType.RETURN
+    ) {
+      nextEdgeId = visitedEdges.next();
+    }
+    // ──────────────────────────────────────────────────────────── Typebot link
+    else if (block.type === LogicBlockType.TYPEBOT_LINK) {
+      const linksSame =
         block.options &&
         (block.options.typebotId === "current" ||
           block.options.typebotId === typebot.id);
-
       const linkedGroup = typebot.groups.find(
         (g) => g.id === block.options?.groupId,
       );
-      if (!isLinkingSameTypebot || !linkedGroup) continue;
+      if (!linksSame || !linkedGroup) continue;
+
       let resumeEdge: Edge | undefined;
       if (!block.outgoingEdgeId) {
-        const currentBlockIndex = nextGroup.group.blocks.findIndex(
-          (b) => b.id === block.id,
-        );
-        const nextBlockInGroup =
-          currentBlockIndex === -1
-            ? undefined
-            : nextGroup.group.blocks.at(currentBlockIndex + 1);
-        if (nextBlockInGroup)
+        const idx = nextGroup.group.blocks.findIndex((b) => b.id === block.id);
+        const nextBlock =
+          idx === -1 ? undefined : nextGroup.group.blocks.at(idx + 1);
+        if (nextBlock) {
           resumeEdge = {
             id: createId(),
-            from: {
-              blockId: "",
-            },
-            to: {
-              groupId: nextGroup.group.id,
-              blockId: nextBlockInGroup.id,
-            },
+            from: { blockId: "" },
+            to: { groupId: nextGroup.group.id, blockId: nextBlock.id },
           };
+        }
       }
+
+      // tail‑call into linked group
       return executeGroup({
         typebotsQueue: [
           {
-            typebot: typebot,
+            typebot,
             resumeEdgeId: resumeEdge ? resumeEdge.id : block.outgoingEdgeId,
           },
           {
             typebot: resumeEdge
-              ? {
-                  ...typebot,
-                  edges: typebot.edges.concat([resumeEdge]),
-                }
+              ? { ...typebot, edges: typebot.edges.concat([resumeEdge]) }
               : typebot,
           },
         ],
-        answers,
-        setVariableHistory,
+        queues,
         currentTranscript,
-        nextGroup: {
-          group: linkedGroup,
-        },
-        visitedEdges,
+        nextGroup: { group: linkedGroup },
         stopAtBlockId,
         sessionStore,
       });
     }
+
+    // ──────────────────────────────────────────────────────────── Recurse
     if (nextEdgeId) {
-      const nextGroup = getNextGroup(typebot, nextEdgeId);
-      if (nextGroup) {
+      const next = getNextGroup(typebot, nextEdgeId);
+      if (next) {
         return executeGroup({
           typebotsQueue,
-          answers,
-          setVariableHistory,
+          queues,
           currentTranscript,
-          nextGroup,
-          visitedEdges,
+          nextGroup: next,
           stopAtBlockId,
           sessionStore,
         });
       }
     }
   }
+
+  // ────────────────────────────────────────── handle multi‑typebot queue unwind
   if (
     typebotsQueue.length > 1 &&
     typebotsQueue[0]?.resumeEdgeId &&
     typebotsQueue[1]?.typebot
   ) {
+    visitedEdges.next(); // drop first visited edge to stay aligned with queue
     return executeGroup({
       typebotsQueue: typebotsQueue.slice(1),
-      answers,
-      setVariableHistory,
+      queues,
       currentTranscript,
       nextGroup: getNextGroup(
         typebotsQueue[1].typebot,
         typebotsQueue[0].resumeEdgeId,
       ),
-      visitedEdges: visitedEdges.slice(1),
       stopAtBlockId,
       sessionStore,
     });
   }
+
   return currentTranscript;
 };
 
+// -----------------------------------------------------------------------------
+// 🔄  Misc utilities ────────────────────────────────────────────────────────────
+// -----------------------------------------------------------------------------
+
 const applySetVariable = (
-  setVariable:
-    | Pick<SetVariableHistoryItem, "blockId" | "variableId" | "value">
-    | undefined,
+  setVar: SetVarSnapshot | undefined,
   typebot: TypebotInSession,
 ): Variable[] => {
-  if (!setVariable) return typebot.variables;
-  const variable = typebot.variables.find(
-    (variable) => variable.id === setVariable.variableId,
-  );
+  if (!setVar) return typebot.variables;
+  const variable = typebot.variables.find((v) => v.id === setVar.variableId);
   if (!variable) return typebot.variables;
   return typebot.variables.map((v) =>
-    v.id === variable.id ? { ...v, value: setVariable.value } : v,
+    v.id === variable.id ? { ...v, value: setVar.value } : v,
   );
 };
 

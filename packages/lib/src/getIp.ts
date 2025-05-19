@@ -1,14 +1,10 @@
-import type { NextApiRequest } from "next";
+import type { NextRequest } from "next/server";
 
-export const getIp = (req: NextApiRequest): string | undefined => {
-  let ip = req.headers["x-real-ip"] as string | undefined;
+export const getIp = (req: NextRequest): string | null => {
+  let ip = req.headers.get("x-real-ip");
   if (!ip) {
-    const forwardedFor = req.headers["x-forwarded-for"];
-    if (Array.isArray(forwardedFor)) {
-      ip = forwardedFor.at(0);
-    } else {
-      ip = forwardedFor?.split(",").at(0);
-    }
+    const forwardedFor = req.headers.get("x-forwarded-for");
+    ip = forwardedFor?.split(",").at(0) ?? null;
   }
   return ip;
 };

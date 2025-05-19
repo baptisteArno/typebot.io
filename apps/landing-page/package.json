@@ -10,7 +10,7 @@
     "check-broken-links": "mdx-local-link-checker content public '*/(index.mdx|blog|about|pricing?isTiersModalOpened=true)'"
   },
   "dependencies": {
-    "@ark-ui/react": "5.1.0",
+    "@ark-ui/react": "5.7.0",
     "@tanstack/react-router": "1.115.0",
     "@tanstack/react-start": "1.115.1",
     "@typebot.io/billing": "workspace:*",

@@ -39,6 +39,7 @@ const config = {
   theme: {
     ...rem2px(defaultTheme),
     colors: {
+      black: "rgb(0, 0, 0)",
       white: "rgb(255, 255, 255)",
       transparent: "transparent",
       inherit: "inherit",
@@ -58,9 +59,18 @@ const config = {
       "input-bg":
         "rgba(var(--typebot-input-bg-rgb), var(--typebot-input-opacity));",
     },
+    containers: {
+      sm: "432px",
+    },
     extend: {
       maxWidth: {
         "chat-container": "var(--typebot-chat-container-max-width)",
+      },
+      maxHeight: {
+        "chat-container": "var(--typebot-chat-container-max-height)",
+      },
+      minHeight: {
+        "chat-container": "var(--typebot-chat-container-max-height)",
       },
       blur: {
         button: "var(--typebot-button-blur)",
@@ -75,6 +85,7 @@ const config = {
         chat: "var(--typebot-chat-container-border-radius)",
         button: "var(--typebot-button-border-radius)",
         "host-bubble": "var(--typebot-host-bubble-border-radius)",
+        "chat-container": "var(--typebot-chat-container-border-radius)",
       },
       borderWidth: {
         button: "var(--typebot-button-border-width)",
@@ -118,7 +129,7 @@ const config = {
       },
     },
   },
-  plugins: [],
+  plugins: [require("@tailwindcss/container-queries")],
 };
 
 export default config;

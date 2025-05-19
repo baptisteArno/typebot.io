@@ -178,17 +178,20 @@ Follow the official Keycloak guide for creating OAuth2 applications [here](https
 
 ## Custom OAuth Provider (Auth)
 
-| Parameter                    | Default              | Description                                                                             |
-| ---------------------------- | -------------------- | --------------------------------------------------------------------------------------- |
-| CUSTOM_OAUTH_NAME            | Custom OAuth         | Provider name. Will be displayed in the sign in form.                                   |
-| CUSTOM_OAUTH_CLIENT_ID       |                      | OAuth client ID.                                                                        |
-| CUSTOM_OAUTH_CLIENT_SECRET   |                      | OAuth client secret.                                                                    |
-| CUSTOM_OAUTH_WELL_KNOWN_URL  |                      | OAuth .well-known URL (i.e. `https://auth.domain.com/.well-known/openid-configuration`) |
-| CUSTOM_OAUTH_USER_ID_PATH    | id                   | Used to map the id from the user info object                                            |
-| CUSTOM_OAUTH_USER_NAME_PATH  | name                 | Used to map the name from the user info object                                          |
-| CUSTOM_OAUTH_USER_EMAIL_PATH | email                | Used to map the email from the user info object                                         |
-| CUSTOM_OAUTH_USER_IMAGE_PATH | image                | Used to map the image from the user info object                                         |
-| CUSTOM_OAUTH_SCOPE           | openid profile email | OAuth scope                                                                             |
+Your provider needs to support the [OpenID Connect](https://openid.net/connect/) standards.
+
+| Parameter                                                             | Default                                                | Description                                                                             |
+| --------------------------------------------------------------------- | ------------------------------------------------------ | --------------------------------------------------------------------------------------- |
+| CUSTOM_OAUTH_CLIENT_ID <span style={{color: '#ef5151'}}>\*</span>     |                                                        | OAuth client ID.                                                                        |
+| CUSTOM_OAUTH_CLIENT_SECRET <span style={{color: '#ef5151'}}>\*</span> |                                                        | OAuth client secret.                                                                    |
+| CUSTOM_OAUTH_ISSUER <span style={{color: '#ef5151'}}>\*</span>        |                                                        | OAuth issuer URL (i.e. `https://auth.domain.com/openid`)                                       |
+| CUSTOM_OAUTH_NAME                                                     | Custom OAuth                                           | Provider name. Will be displayed in the sign in form.                                   |
+| CUSTOM_OAUTH_WELL_KNOWN_URL                                           | `CUSTOM_OAUTH_ISSUER`/.well-known/openid-configuration | Provider .well-known URL |
+| CUSTOM_OAUTH_USER_ID_PATH                                             | id                                                     | Used to map the id from the user info object                                            |
+| CUSTOM_OAUTH_USER_NAME_PATH                                           | name                                                   | Used to map the name from the user info object                                          |
+| CUSTOM_OAUTH_USER_EMAIL_PATH                                          | email                                                  | Used to map the email from the user info object                                         |
+| CUSTOM_OAUTH_USER_IMAGE_PATH                                          | image                                                  | Used to map the image from the user info object                                         |
+| CUSTOM_OAUTH_SCOPE                                                    | openid profile email                                   | OAuth scope                                                                             |
 
 For `*_PATH` parameters, you can use dot notation to access nested properties (i.e. `account.name`).
 

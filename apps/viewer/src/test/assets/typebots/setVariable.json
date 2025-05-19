@@ -1,0 +1,70 @@
+{
+  "version": "6.1",
+  "id": "cmadjs01m0001f63rw64lwp1z",
+  "name": "My typebot",
+  "events": [
+    {
+      "id": "lhnsbzt5yzoevcsbj1ysfquu",
+      "graphCoordinates": { "x": 0, "y": 0 },
+      "type": "start",
+      "outgoingEdgeId": "s4r3grxnxmvczspz49uxqc7q"
+    }
+  ],
+  "groups": [
+    {
+      "id": "aa1fpxpe8eeov325fm07q9yq",
+      "graphCoordinates": { "x": 250, "y": 75 },
+      "title": "Group #1",
+      "blocks": [
+        {
+          "id": "argl00xpck0rrluny8jnwbw3",
+          "type": "Set variable",
+          "options": {
+            "isExecutedOnClient": true,
+            "isCode": true,
+            "expressionToEvaluate": "document.location.port",
+            "variableId": "vggtwtqnbcynlw0b0f52dc6kw"
+          }
+        },
+        {
+          "id": "kouofwhknpq3knimbhuk91r0",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "{{Location}}" }] }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "from": { "eventId": "lhnsbzt5yzoevcsbj1ysfquu" },
+      "to": { "groupId": "aa1fpxpe8eeov325fm07q9yq" },
+      "id": "s4r3grxnxmvczspz49uxqc7q"
+    }
+  ],
+  "variables": [
+    {
+      "id": "vggtwtqnbcynlw0b0f52dc6kw",
+      "name": "Location",
+      "isSessionVariable": true
+    }
+  ],
+  "theme": {},
+  "selectedThemeTemplateId": null,
+  "settings": {},
+  "createdAt": "2025-05-07T06:18:32.890Z",
+  "updatedAt": "2025-05-07T06:19:09.980Z",
+  "icon": null,
+  "folderId": null,
+  "publicId": null,
+  "customDomain": null,
+  "workspaceId": "proWorkspace",
+  "resultsTablePreferences": null,
+  "isArchived": false,
+  "isClosed": false,
+  "whatsAppCredentialsId": null,
+  "riskLevel": null
+}

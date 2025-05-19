@@ -1,0 +1,29 @@
+---
+title: Return
+icon: arrow-turn-left
+---
+
+The Return block is used to bring the conversation back to where it left off before a temporary jump happened.
+
+Whenever you "jump" to another part of your flow (using a Jump block or an Event trigger), the conversation temporarily moves away from the main path.
+By placing a Return block, you tell Typebot:
+
+> "Okay, I'm done here — now go back to where the user was."
+
+## When should you use a Return block?
+
+You should use a Return block whenever you want the conversation to resume its previous flow after a jump.
+
+✅ After using a [Jump block](./jump).
+
+✅ Inside an Event-triggered subflow.
+
+## When is a Return block NOT needed?
+
+Some blocks automatically return to where they were without needing a Return block.
+
+You do NOT need a Return block when using the [Link to Typebot block](./typebot-link). It automatically returns when the linked flow finishes.
+
+## Example use cases
+
+- You use a Jump block to temporarily ask the user a few clarification questions, then you place a Return block to resume the original conversation.

@@ -29,6 +29,7 @@ import { AbTestIcon } from "@/features/blocks/logic/abTest/components/AbTestIcon
 import { ConditionIcon } from "@/features/blocks/logic/condition/components/ConditionIcon";
 import { JumpIcon } from "@/features/blocks/logic/jump/components/JumpIcon";
 import { RedirectIcon } from "@/features/blocks/logic/redirect/components/RedirectIcon";
+import { ReturnBlockIcon } from "@/features/blocks/logic/return/components/ReturnBlockIcon";
 import { ScriptIcon } from "@/features/blocks/logic/script/components/ScriptIcon";
 import { SetVariableIcon } from "@/features/blocks/logic/setVariable/components/SetVariableIcon";
 import { TypebotLinkIcon } from "@/features/blocks/logic/typebotLink/components/TypebotLinkIcon";
@@ -104,6 +105,8 @@ export const BlockIcon = ({ type, ...props }: BlockIconProps): JSX.Element => {
       return <TypebotLinkIcon color={purple} {...props} />;
     case LogicBlockType.AB_TEST:
       return <AbTestIcon color={purple} {...props} />;
+    case LogicBlockType.RETURN:
+      return <ReturnBlockIcon color={purple} {...props} />;
     case LogicBlockType.WEBHOOK:
       return <WebhookIcon {...props} />;
     case IntegrationBlockType.GOOGLE_SHEETS:

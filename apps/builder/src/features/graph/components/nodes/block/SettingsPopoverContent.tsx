@@ -30,6 +30,8 @@ import { TypebotLinkForm } from "@/features/blocks/logic/typebotLink/components/
 import { WaitSettings } from "@/features/blocks/logic/wait/components/WaitSettings";
 import { WebhookSettings } from "@/features/blocks/logic/webhook/components/WebhookSettings";
 import { CommandEventSettings } from "@/features/events/components/CommandEventSettings";
+import { InvalidReplyEventSettings } from "@/features/events/components/InvalidReplyEventSettings";
+import { ReplyEventSettings } from "@/features/events/components/ReplyEventSettings";
 import { useForgedBlock } from "@/features/forge/hooks/useForgedBlock";
 import { VideoOnboardingPopover } from "@/features/onboarding/components/VideoOnboardingPopover";
 import { hasOnboardingVideo } from "@/features/onboarding/helpers/hasOnboardingVideo";
@@ -44,10 +46,7 @@ import {
   useColorModeValue,
   useEventListener,
 } from "@chakra-ui/react";
-import type {
-  BlockOptions,
-  BlockWithOptions,
-} from "@typebot.io/blocks-core/schemas/schema";
+import type { BlockWithOptions } from "@typebot.io/blocks-core/schemas/schema";
 import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
 import { IntegrationBlockType } from "@typebot.io/blocks-integrations/constants";
 import { LogicBlockType } from "@typebot.io/blocks-logic/constants";
@@ -139,7 +138,7 @@ export const NodeSettings = ({
   onNodeChange: (node: Partial<BlockWithOptions | TEventWithOptions>) => void;
 }): JSX.Element | null => {
   const updateOptions = (
-    options: BlockOptions | TEventWithOptions["options"],
+    options: BlockWithOptions["options"] | TEventWithOptions["options"],
   ) => {
     onNodeChange({ options });
   };
@@ -375,6 +374,20 @@ export const NodeSettings = ({
     case EventType.COMMAND:
       return (
         <CommandEventSettings
+          options={node.options}
+          onOptionsChange={updateOptions}
+        />
+      );
+    case EventType.REPLY:
+      return (
+        <ReplyEventSettings
+          options={node.options}
+          onOptionsChange={updateOptions}
+        />
+      );
+    case EventType.INVALID_REPLY:
+      return (
+        <InvalidReplyEventSettings
           options={node.options}
           onOptionsChange={updateOptions}
         />

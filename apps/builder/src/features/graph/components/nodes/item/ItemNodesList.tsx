@@ -52,12 +52,6 @@ export const ItemNodesList = ({
     isDefined(typebot) &&
     typebot.groups.at(groupIndex)?.blocks?.at(blockIndex + 1) === undefined;
 
-  const someChoiceItemsAreNotConnected =
-    block.type === InputBlockType.CHOICE ||
-    block.type === InputBlockType.PICTURE_CHOICE
-      ? block.items.some((item) => item.outgoingEdgeId === undefined)
-      : true;
-
   const [position, setPosition] = useState({
     x: 0,
     y: 0,
@@ -183,7 +177,7 @@ export const ItemNodesList = ({
           </PlaceholderNode>
         </Stack>
       ))}
-      {isLastBlock && someChoiceItemsAreNotConnected && groupId && (
+      {checkIfDefaultItemIsNeeded(block, isLastBlock) && groupId && (
         <DefaultItemNode block={block} groupId={groupId} />
       )}
 
@@ -249,4 +243,25 @@ const DefaultItemNode = ({
       />
     </Flex>
   );
+};
+
+const checkIfDefaultItemIsNeeded = (
+  block: BlockWithItems,
+  isLastBlock: boolean,
+) => {
+  if (!isLastBlock) return false;
+  if (block.outgoingEdgeId || block.type === LogicBlockType.CONDITION)
+    return true;
+  if (block.items.length === 1) return false;
+  if (block.type === InputBlockType.CARDS) {
+    return block.items.some((item) =>
+      item.paths?.some((path) => path.outgoingEdgeId === undefined),
+    );
+  }
+  if (
+    block.type === InputBlockType.CHOICE ||
+    block.type === InputBlockType.PICTURE_CHOICE
+  )
+    return block.items.some((item) => item.outgoingEdgeId === undefined);
+  return true;
 };

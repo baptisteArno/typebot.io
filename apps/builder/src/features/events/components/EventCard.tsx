@@ -40,5 +40,25 @@ export const EventCard = (
           <EventLabel type={props.type} />
         </EventCardLayout>
       );
+    case EventType.REPLY:
+      return (
+        <EventCardLayout
+          {...props}
+          tooltip={t("blocks.events.reply.eventCard.tooltip")}
+        >
+          <EventIcon type={props.type} />
+          <EventLabel type={props.type} />
+        </EventCardLayout>
+      );
+    case EventType.INVALID_REPLY:
+      return (
+        <EventCardLayout
+          {...props}
+          tooltip={t("blocks.events.invalidReply.eventCard.tooltip")}
+        >
+          <EventIcon type={props.type} />
+          <EventLabel type={props.type} />
+        </EventCardLayout>
+      );
   }
 };

@@ -6,7 +6,7 @@ import type {
 import { type AvatarHistory, getAvatarAtIndex } from "@/utils/avatarHistory";
 import { hiddenInput } from "@/utils/hiddenInputSignal";
 import { isMobile } from "@/utils/isMobileSignal";
-import type { ContinueChatResponse } from "@typebot.io/bot-engine/schemas/api";
+import type { ContinueChatResponse } from "@typebot.io/chat-api/schemas";
 import { defaultSettings } from "@typebot.io/settings/constants";
 import type { Settings } from "@typebot.io/settings/schemas";
 import {
@@ -96,7 +96,7 @@ export const ChatChunk = (props: Props) => {
   return (
     <div class="flex flex-col w-full min-w-0 gap-2 typebot-chat-chunk">
       <Show when={props.messages.length > 0}>
-        <div class={"flex" + (isMobile() ? " gap-1" : " gap-2")}>
+        <div class="flex gap-1 @sm:gap-2">
           <Show
             when={
               (props.theme.chat?.hostAvatar?.isEnabled ??

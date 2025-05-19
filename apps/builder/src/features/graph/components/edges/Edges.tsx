@@ -1,9 +1,9 @@
+import type {
+  EdgeWithTotalVisits,
+  TotalAnswers,
+} from "@/features/analytics/schemas";
 import { chakra, useColorMode } from "@chakra-ui/react";
 import type { GroupV6 } from "@typebot.io/groups/schemas";
-import type {
-  EdgeWithTotalUsers,
-  TotalAnswers,
-} from "@typebot.io/schemas/features/analytics";
 import type { BlockSource } from "@typebot.io/typebot/schemas/edge";
 import type { Edge as EdgeProps } from "@typebot.io/typebot/schemas/edge";
 import { colors } from "@typebot.io/ui/chakraTheme";
@@ -17,7 +17,7 @@ type Props = {
   edges: EdgeProps[];
   groups: GroupV6[];
   inputBlockIds: string[];
-  edgesWithTotalUsers?: EdgeWithTotalUsers[];
+  edgesWithTotalUsers?: EdgeWithTotalVisits[];
   totalAnswers?: TotalAnswers[];
   onUnlockProPlanClick?: () => void;
 };

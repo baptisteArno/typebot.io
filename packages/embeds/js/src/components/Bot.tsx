@@ -20,7 +20,7 @@ import type { InputBlock } from "@typebot.io/blocks-inputs/schema";
 import type {
   StartChatResponse,
   StartFrom,
-} from "@typebot.io/bot-engine/schemas/api";
+} from "@typebot.io/chat-api/schemas";
 import { isDefined, isNotDefined, isNotEmpty } from "@typebot.io/lib/utils";
 import type { LogInSession } from "@typebot.io/logs/schemas";
 import { isTypebotVersionAtLeastV6 } from "@typebot.io/schemas/helpers/isTypebotVersionAtLeastV6";
@@ -34,7 +34,6 @@ import {
   defaultProgressBarPosition,
 } from "@typebot.io/theme/constants";
 import type { Font } from "@typebot.io/theme/schemas";
-import typebotColors from "@typebot.io/ui/colors.css";
 import { cn } from "@typebot.io/ui/lib/cn";
 import { cx } from "@typebot.io/ui/lib/cva";
 import { HTTPError } from "ky";
@@ -225,8 +224,7 @@ export const Bot = (props: BotProps & { class?: string }) => {
 
   return (
     <>
-      <style>{typebotColors}</style>
-      <style>{customCss()}</style>
+      <Show when={customCss()}>{(css) => <style>{css()}</style>}</Show>
       <Show when={error()} keyed>
         {(error) => <ErrorMessage error={error} />}
       </Show>

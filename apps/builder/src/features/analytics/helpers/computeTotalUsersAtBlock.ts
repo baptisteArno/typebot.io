@@ -1,10 +1,28 @@
 import { isInputBlock } from "@typebot.io/blocks-core/helpers";
 import { isNotDefined } from "@typebot.io/lib/utils";
-import type {
-  EdgeWithTotalUsers,
-  TotalAnswers,
-} from "@typebot.io/schemas/features/analytics";
 import type { PublicTypebotV6 } from "@typebot.io/typebot/schemas/publicTypebot";
+import type { EdgeWithTotalVisits, TotalAnswers } from "../schemas";
+
+const buildEdgeTotalsByTarget = (edges: EdgeWithTotalVisits[]) => {
+  const byBlock = new Map<string, number>();
+  const byGroupRoot = new Map<string, number>(); // edge.to.blockId is undefined
+
+  for (const edge of edges) {
+    if (!edge.to) continue;
+    if (isNotDefined(edge.to.blockId)) {
+      byGroupRoot.set(
+        edge.to.groupId,
+        (byGroupRoot.get(edge.to.groupId) ?? 0) + edge.total,
+      );
+    } else {
+      byBlock.set(
+        edge.to.blockId,
+        (byBlock.get(edge.to.blockId) ?? 0) + edge.total,
+      );
+    }
+  }
+  return { byBlock, byGroupRoot };
+};
 
 export const computeTotalUsersAtBlock = (
   currentBlockId: string,
@@ -14,48 +32,36 @@ export const computeTotalUsersAtBlock = (
     totalAnswers,
   }: {
     publishedTypebot: PublicTypebotV6;
-    edgesWithTotalUsers: EdgeWithTotalUsers[];
+    edgesWithTotalUsers: EdgeWithTotalVisits[];
     totalAnswers: TotalAnswers[];
   },
 ): number => {
-  let totalUsers = 0;
-  const currentGroup = publishedTypebot.groups.find((group) =>
-    group.blocks.find((block) => block.id === currentBlockId),
+  const edgeTotalsByTarget = buildEdgeTotalsByTarget(edgesWithTotalUsers);
+  const answersByBlock = new Map(totalAnswers.map((a) => [a.blockId, a.total]));
+
+  const currentGroup = publishedTypebot.groups.find((g) =>
+    g.blocks.some((b) => b.id === currentBlockId),
   );
   if (!currentGroup) return 0;
-  const currentBlockIndex = currentGroup.blocks.findIndex(
-    (block) => block.id === currentBlockId,
+
+  const blockIndex = currentGroup.blocks.findIndex(
+    (b) => b.id === currentBlockId,
   );
-  const previousBlocks = currentGroup.blocks.slice(0, currentBlockIndex + 1);
-  for (const block of previousBlocks.reverse()) {
-    if (currentBlockId !== block.id && isInputBlock(block))
-      return totalAnswers.find((t) => t.blockId === block.id)?.total ?? 0;
-    const incomingEdges = publishedTypebot.edges.filter(
-      (edge) => edge.to.blockId === block.id,
-    );
-    if (!incomingEdges.length) continue;
-    totalUsers += incomingEdges.reduce(
-      (acc, incomingEdge) =>
-        acc +
-        (edgesWithTotalUsers.find(
-          (totalEdge) => totalEdge.edgeId === incomingEdge.id,
-        )?.total ?? 0),
-      0,
-    );
+  if (blockIndex === -1) return 0;
+
+  let total = 0;
+
+  for (let i = blockIndex; i >= 0; i--) {
+    const block = currentGroup.blocks[i];
+
+    if (block.id !== currentBlockId && isInputBlock(block)) {
+      return answersByBlock.get(block.id) ?? 0;
+    }
+
+    total += edgeTotalsByTarget.byBlock.get(block.id) ?? 0;
   }
-  const edgesConnectedToGroup = publishedTypebot.edges.filter(
-    (edge) =>
-      edge.to.groupId === currentGroup.id && isNotDefined(edge.to.blockId),
-  );
 
-  totalUsers += edgesConnectedToGroup.reduce(
-    (acc, connectedEdge) =>
-      acc +
-      (edgesWithTotalUsers.find(
-        (totalEdge) => totalEdge.edgeId === connectedEdge.id,
-      )?.total ?? 0),
-    0,
-  );
+  total += edgeTotalsByTarget.byGroupRoot.get(currentGroup.id) ?? 0;
 
-  return totalUsers;
+  return total;
 };

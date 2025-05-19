@@ -1,0 +1,110 @@
+{
+  "version": "6.1",
+  "id": "je85k18n5vhn1euhq7lgoig2",
+  "name": "Lead Generation",
+  "events": [
+    {
+      "id": "k6kY6gwRE6noPoYQNGzgUq",
+      "outgoingEdgeId": "oNvqaqNExdSH2kKEhKZHuE",
+      "graphCoordinates": { "x": 0, "y": 0 },
+      "type": "start"
+    }
+  ],
+  "groups": [
+    {
+      "id": "kinRXxYop2X4d7F9qt8WNB",
+      "title": "Welcome",
+      "graphCoordinates": { "x": 1, "y": 148 },
+      "blocks": [
+        {
+          "id": "ylur1vb8seednicxbais5z4g",
+          "type": "Jump",
+          "options": { "groupId": "khnrhseeuxvduswsomfnjti2" }
+        },
+        {
+          "id": "sbjZWLJGVkHAkDqS4JQeGow",
+          "outgoingEdgeId": "i51YhHpk1dtSyduFNf5Wim",
+          "type": "choice input",
+          "items": [{ "id": "hQw2zbp7FDX7XYK9cFpbgC", "content": "Hi!" }]
+        }
+      ]
+    },
+    {
+      "id": "q5dAhqSTCaNdiGSJm9B9Rw",
+      "title": "Name",
+      "graphCoordinates": { "x": 340, "y": 143 },
+      "blocks": [
+        {
+          "id": "sgtE2Sy7cKykac9B223Kq9R",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "What's your name?" }] }
+            ]
+          }
+        },
+        { "id": "ivbbzofvowapqqi1h8whctsf", "type": "Return" },
+        {
+          "id": "sqEsMo747LTDnY9FjQcEwUv",
+          "outgoingEdgeId": "4tYbERpi5Po4goVgt6rWXg",
+          "type": "text input",
+          "options": { "variableId": "giiLFGw5xXBCHzvp1qAbdX" }
+        }
+      ]
+    },
+    {
+      "id": "khnrhseeuxvduswsomfnjti2",
+      "title": "Hey message",
+      "graphCoordinates": { "x": 1, "y": 480.5 },
+      "blocks": [
+        {
+          "id": "sgdbjwzfams7so4xx7o78w94",
+          "type": "text",
+          "content": {
+            "richText": [{ "type": "p", "children": [{ "text": "Hey!" }] }]
+          }
+        },
+        { "id": "dk295g765vazd06252err93z", "type": "Return" }
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "oNvqaqNExdSH2kKEhKZHuE",
+      "from": { "eventId": "k6kY6gwRE6noPoYQNGzgUq" },
+      "to": { "groupId": "kinRXxYop2X4d7F9qt8WNB" }
+    },
+    {
+      "id": "i51YhHpk1dtSyduFNf5Wim",
+      "from": { "blockId": "sbjZWLJGVkHAkDqS4JQeGow" },
+      "to": { "groupId": "q5dAhqSTCaNdiGSJm9B9Rw" }
+    }
+  ],
+  "variables": [
+    {
+      "id": "giiLFGw5xXBCHzvp1qAbdX",
+      "name": "Name",
+      "isSessionVariable": false
+    },
+    {
+      "id": "v3VFChNVSCXQ2rXv4DrJ8Ah",
+      "name": "Email",
+      "isSessionVariable": false
+    }
+  ],
+  "theme": {},
+  "selectedThemeTemplateId": null,
+  "settings": {},
+  "createdAt": "2025-04-27T14:47:47.841Z",
+  "updatedAt": "2025-04-27T15:23:23.538Z",
+  "icon": "🤝",
+  "folderId": null,
+  "publicId": null,
+  "customDomain": null,
+  "workspaceId": "proWorkspace",
+  "resultsTablePreferences": null,
+  "isArchived": false,
+  "isClosed": false,
+  "whatsAppCredentialsId": null,
+  "riskLevel": null
+}

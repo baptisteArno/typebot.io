@@ -1,4 +1,4 @@
-import type { ContinueChatResponse } from "@typebot.io/bot-engine/schemas/api";
+import type { ContinueChatResponse } from "@typebot.io/chat-api/schemas";
 import type { Theme } from "@typebot.io/theme/schemas";
 
 export const mergeThemes = (

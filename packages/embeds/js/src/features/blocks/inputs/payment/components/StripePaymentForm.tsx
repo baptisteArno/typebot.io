@@ -4,7 +4,7 @@ import type { Stripe, StripeElements } from "@stripe/stripe-js";
 import { loadStripe } from "@stripe/stripe-js/pure";
 import { defaultPaymentInputOptions } from "@typebot.io/blocks-inputs/payment/constants";
 import type { PaymentInputBlock } from "@typebot.io/blocks-inputs/payment/schema";
-import type { RuntimeOptions } from "@typebot.io/bot-engine/schemas/api";
+import type { RuntimeOptions } from "@typebot.io/chat-api/schemas";
 import { Show, createSignal, onMount } from "solid-js";
 import {
   removePaymentInProgressFromStorage,

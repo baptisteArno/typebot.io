@@ -1,11 +1,12 @@
+import type { ContinueChatResponse } from "@typebot.io/chat-api/schemas";
 import { createSession } from "@typebot.io/chat-session/queries/createSession";
 import { deleteSession } from "@typebot.io/chat-session/queries/deleteSession";
 import { updateSession } from "@typebot.io/chat-session/queries/updateSession";
+import type { ChatSession } from "@typebot.io/chat-session/schemas";
 import prisma from "@typebot.io/prisma";
 import type { Prisma } from "@typebot.io/prisma/types";
 import type { SetVariableHistoryItem } from "@typebot.io/variables/schemas";
 import { upsertResult } from "./queries/upsertResult";
-import type { ChatSession, ContinueChatResponse } from "./schemas/api";
 
 type Props = {
   session: Pick<ChatSession, "state"> & { id?: string; isReplying?: boolean };

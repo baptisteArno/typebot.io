@@ -1,3 +1,9 @@
+import {
+  defaultPreviewMessageBackgroundColor,
+  defaultPreviewMessageCloseButtonBackgroundColor,
+  defaultPreviewMessageCloseButtonIconColor,
+  defaultPreviewMessageTextColor,
+} from "@typebot.io/theme/constants";
 import { cx } from "@typebot.io/ui/lib/cva";
 import { Show, createSignal } from "solid-js";
 import type {
@@ -14,9 +20,6 @@ export type PreviewMessageProps = Pick<BubbleTheme, "placement"> &
     onClick: () => void;
     onCloseClick: () => void;
   };
-
-const defaultBackgroundColor = "#F7F8FF";
-const defaultTextColor = "#303235";
 
 export const PreviewMessage = (props: PreviewMessageProps) => {
   const [isPreviewMessageHovered, setIsPreviewMessageHovered] =
@@ -56,8 +59,11 @@ export const PreviewMessage = (props: PreviewMessageProps) => {
       )}
       style={{
         "background-color":
-          props.previewMessageTheme?.backgroundColor ?? defaultBackgroundColor,
-        color: props.previewMessageTheme?.textColor ?? defaultTextColor,
+          props.previewMessageTheme?.backgroundColor ??
+          defaultPreviewMessageBackgroundColor,
+        color:
+          props.previewMessageTheme?.textColor ??
+          defaultPreviewMessageTextColor,
       }}
       onMouseEnter={() => setIsPreviewMessageHovered(true)}
       onMouseLeave={() => setIsPreviewMessageHovered(false)}
@@ -104,9 +110,10 @@ const CloseButton = (props: {
     style={{
       "background-color":
         props.previewMessageTheme?.closeButtonBackgroundColor ??
-        defaultBackgroundColor,
+        defaultPreviewMessageCloseButtonBackgroundColor,
       color:
-        props.previewMessageTheme?.closeButtonIconColor ?? defaultTextColor,
+        props.previewMessageTheme?.closeButtonIconColor ??
+        defaultPreviewMessageCloseButtonIconColor,
     }}
   >
     <svg
