@@ -3,6 +3,7 @@ kind: Deployment
 metadata:
   name: typebot-viewer
   labels:
+    app: typebot-viewer
     tags.datadoghq.com/env: production
     tags.datadoghq.com/service: typebot-viewer
     tags.datadoghq.com/version: "1.0"

@@ -3,6 +3,7 @@ kind: Deployment
 metadata:
   name: typebot-builder
   labels:
+    app: typebot-builder
     tags.datadoghq.com/env: production
     tags.datadoghq.com/service: typebot-builder
     tags.datadoghq.com/version: "1.0"
