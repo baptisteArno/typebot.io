@@ -8,14 +8,12 @@ import { cx } from "@typebot.io/ui/lib/cva";
 import { Show, createSignal } from "solid-js";
 import type {
   BubbleTheme,
-  ButtonTheme,
   PreviewMessageParams,
   PreviewMessageTheme,
 } from "../types";
 
 export type PreviewMessageProps = Pick<BubbleTheme, "placement"> &
   Pick<PreviewMessageParams, "avatarUrl" | "message"> & {
-    buttonSize: ButtonTheme["size"];
     previewMessageTheme?: PreviewMessageTheme;
     onClick: () => void;
     onCloseClick: () => void;

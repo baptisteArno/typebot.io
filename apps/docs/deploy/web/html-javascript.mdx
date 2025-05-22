@@ -309,6 +309,7 @@ This code will show the bubble and let a preview message appear after 5 seconds.
        maxHeight?: string;
      };
      button?: {
+       isHidden?: boolean;
        size?: "medium" | "large" | `${number}px`;
        backgroundColor?: string;
        iconColor?: string;
@@ -329,6 +330,7 @@ This code will show the bubble and let a preview message appear after 5 seconds.
      autoShowDelay?: number;
    };
    autoShowDelay?: number;
+   isOpen?: boolean;
    onNewInputBlock?: (inputBlock: any) => void;
    onAnswer?: (answer: { message: string; blockId: string }) => void;
    onInit?: () => void;

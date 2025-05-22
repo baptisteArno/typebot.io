@@ -35,6 +35,7 @@ export const defaultPopupProps: PopupProps = {
 
 export const defaultBubbleProps: BubbleProps = {
   ...defaultBotProps,
+  isOpen: undefined,
   onClose: undefined,
   onOpen: undefined,
   theme: undefined,
