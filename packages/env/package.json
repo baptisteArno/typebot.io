@@ -17,7 +17,7 @@
     "zod": "3.23.8"
   },
   "devDependencies": {
-    "tsup": "8.3.0",
+    "tsup": "8.5.0",
     "@typebot.io/tsconfig": "workspace:*"
   }
 }

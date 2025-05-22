@@ -4,7 +4,8 @@ import { useGraph } from "@/features/graph/providers/GraphProvider";
 import { useUser } from "@/features/user/hooks/useUser";
 import { toast } from "@/lib/toast";
 import type { ContinueChatResponse } from "@typebot.io/chat-api/schemas";
-import { Standard } from "@typebot.io/nextjs";
+import { Standard } from "@typebot.io/react";
+import { defaultBackgroundColor } from "@typebot.io/theme/constants";
 
 export const WebPreview = () => {
   const { user } = useUser();
@@ -50,6 +51,9 @@ export const WebPreview = () => {
       style={{
         borderWidth: "1px",
         borderRadius: "0.25rem",
+        backgroundColor:
+          typebot.theme.general?.background?.content ??
+          defaultBackgroundColor[typebot.version],
       }}
     />
   );

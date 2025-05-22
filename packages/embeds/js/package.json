@@ -1,6 +1,6 @@
 {
   "name": "@typebot.io/js",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "Javascript library to display typebots on your website",
   "license": "FSL-1.1-ALv2",
   "type": "module",
@@ -8,12 +8,11 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": "./dist/index.js",
-    "./web": "./dist/web.js",
-    "./commands": "./dist/features/commands/index.js"
+    "./web": "./dist/web.js"
   },
   "scripts": {
     "dev": "tsup --watch",
-    "build": "tsup"
+    "build": "tsup --metafile"
   },
   "devDependencies": {
     "@ai-sdk/ui-utils": "1.2.2",
@@ -47,7 +46,7 @@
     "solid-element": "1.9.1",
     "solid-js": "1.9.5",
     "tailwindcss": "3.4.17",
-    "tsup": "8.3.0"
+    "tsup": "8.5.0"
   },
   "publishConfig": {
     "access": "public"

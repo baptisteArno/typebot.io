@@ -11,8 +11,8 @@
   },
   "dependencies": {
     "@ark-ui/react": "5.7.0",
-    "@tanstack/react-router": "1.115.0",
-    "@tanstack/react-start": "1.115.1",
+    "@tanstack/react-router": "1.120.5",
+    "@tanstack/react-start": "1.120.5",
     "@typebot.io/billing": "workspace:*",
     "@typebot.io/lib": "workspace:*",
     "@typebot.io/prisma": "workspace:*",

@@ -1,7 +1,6 @@
 import type { BotProps } from "@typebot.io/js";
 import type React from "react";
 import { useEffect, useRef } from "react";
-import "@typebot.io/js/web";
 
 type Props = BotProps & {
   style?: React.CSSProperties;
@@ -25,6 +24,7 @@ export const Standard = ({ style, className, ...assignableProps }: Props) => {
   const ref = useRef<StandardElement | null>(null);
 
   useEffect(() => {
+    import("./web");
     if (!ref.current) return;
     const { typebot, ...rest } = assignableProps;
     // We assign typebot last to ensure initializeBot is triggered with all the initial values

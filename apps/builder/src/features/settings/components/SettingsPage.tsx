@@ -4,7 +4,8 @@ import { TypebotNotFoundPage } from "@/features/editor/components/TypebotNotFoun
 import { headerHeight } from "@/features/editor/constants";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { Flex, HStack, useColorModeValue } from "@chakra-ui/react";
-import { Standard } from "@typebot.io/nextjs";
+import { Standard } from "@typebot.io/react";
+import { defaultBackgroundColor } from "@typebot.io/theme/constants";
 import { SettingsSideMenu } from "./SettingsSideMenu";
 
 export const SettingsPage = () => {
@@ -33,6 +34,9 @@ export const SettingsPage = () => {
                 borderRadius: "0.75rem",
                 width: "100%",
                 height: "100%",
+                backgroundColor:
+                  typebot.theme.general?.background?.content ??
+                  defaultBackgroundColor[typebot.version],
               }}
             />
           )}

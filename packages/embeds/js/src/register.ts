@@ -10,7 +10,6 @@ import { Standard } from "./features/standard/components/Standard";
 
 export const registerWebComponents = () => {
   if (typeof window === "undefined") return;
-  //@ts-ignore
   customElement("typebot-standard", defaultBotProps, Standard);
   customElement("typebot-bubble", defaultBubbleProps, Bubble);
   customElement("typebot-popup", defaultPopupProps, Popup);

@@ -9,7 +9,7 @@ type Props = { widthLabel?: string; heightLabel: string };
 export const NextjsStandardSnippet = ({ widthLabel, heightLabel }: Props) => {
   const { typebot } = useTypebot();
   const snippet = prettier.format(
-    `import { Standard } from "@typebot.io/nextjs";
+    `import { Standard } from "@typebot.io/react";
 
       const App = () => {
         return <Standard ${parseReactBotProps({

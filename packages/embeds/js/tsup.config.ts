@@ -4,7 +4,7 @@ import { version } from "./package.json";
 
 export default defineConfig((options) => [
   {
-    entry: ["src/index.ts", "src/features/commands/index.ts"],
+    entry: ["src/index.ts"],
     minify: !options.watch,
     format: "esm",
     platform: "browser",

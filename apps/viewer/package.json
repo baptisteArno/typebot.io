@@ -17,7 +17,7 @@
     "@sentry/nextjs": "9.5.0",
     "@trpc/server": "10.45.2",
     "@typebot.io/bot-engine": "workspace:*",
-    "@typebot.io/nextjs": "workspace:*",
+    "@typebot.io/react": "workspace:*",
     "@typebot.io/prisma": "workspace:*",
     "@typebot.io/groups": "workspace:*",
     "@typebot.io/blocks-core": "workspace:*",

@@ -36,7 +36,7 @@
     "@tolgee/cli": "2.8.2",
     "husky": "9.1.7",
     "sherif": "1.4.0",
-    "turbo": "2.4.5-canary.7",
+    "turbo": "2.5.3",
     "typescript": "5.8.2"
   },
   "packageManager": "bun@1.2.8",

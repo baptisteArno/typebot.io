@@ -14,10 +14,7 @@ const hostElementCss = `
 }
 `;
 
-export const Standard = (
-  props: BotProps,
-  { element }: { element: HTMLElement },
-) => {
+export const Standard = (props: BotProps, { element }: { element: any }) => {
   const [isBotDisplayed, setIsBotDisplayed] = createSignal(false);
   const [prefilledVariables, setPrefilledVariables] = createSignal(
     props.prefilledVariables,

@@ -144,11 +144,13 @@ pre {
   box-shadow: var(--typebot-chat-container-box-shadow);
 }
 
-@container (min-height: 300px) {
+@container (min-height: 500px) {
   .typebot-chat-view {
     @apply pt-10;
   }
+}
 
+@container (min-height: 300px) {
   .typebot-bottom-spacer {
     @apply h-[20%];
   }

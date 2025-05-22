@@ -11,7 +11,7 @@ export const NextjsPopupSnippet = ({
   const { typebot } = useTypebot();
 
   const snippet = prettier.format(
-    `import { Popup } from "@typebot.io/nextjs";
+    `import { Popup } from "@typebot.io/react";
 
       const App = () => {
         return <Popup ${parseReactPopupProps({

@@ -10,6 +10,7 @@ import {
 } from "@/constants";
 import { useWindowSize } from "@/features/homepage/hooks/useWindowSize";
 import { Link, useLocation, useRouter } from "@tanstack/react-router";
+import { Bubble } from "@typebot.io/react";
 import { buttonVariants } from "@typebot.io/ui/components/Button";
 import { CloseIcon } from "@typebot.io/ui/icons/CloseIcon";
 import { MenuIcon } from "@typebot.io/ui/icons/MenuIcon";
@@ -18,7 +19,6 @@ import { cx } from "@typebot.io/ui/lib/cva";
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import React from "react";
-import { TypebotBubble } from "./TypebotBubble";
 import { ButtonLink, TextLink } from "./link";
 
 const links = [
@@ -306,7 +306,16 @@ const Desktop = React.forwardRef<
             isScrolled ? "opacity-0 pointer-events-none" : "opacity-100",
           )}
         >
-          <TypebotBubble />
+          <Bubble
+            typebot="typebot-demo"
+            theme={{
+              position: "static",
+              chatWindow: {
+                maxHeight: "400px",
+                backgroundColor: "#1D1D1D",
+              },
+            }}
+          />
         </div>
       )}
     </div>

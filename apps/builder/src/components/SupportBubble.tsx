@@ -2,9 +2,8 @@ import { planToReadable } from "@/features/billing/helpers/planToReadable";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { useUser } from "@/features/user/hooks/useUser";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import type { BubbleProps } from "@typebot.io/js";
-import { Bubble } from "@typebot.io/nextjs";
 import { Plan } from "@typebot.io/prisma/enum";
+import { Bubble, type BubbleProps } from "@typebot.io/react";
 import { useEffect, useState } from "react";
 
 export const SupportBubble = (props: Omit<BubbleProps, "typebot">) => {

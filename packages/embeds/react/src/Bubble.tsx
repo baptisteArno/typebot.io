@@ -1,7 +1,6 @@
 import type { BubbleProps } from "@typebot.io/js";
 import type React from "react";
 import { useEffect, useRef } from "react";
-import "@typebot.io/js/web";
 
 type Props = BubbleProps & {
   inlineStyle?: {
@@ -24,6 +23,10 @@ type BubbleElement = HTMLElement & Props;
 
 export const Bubble = (props: Props) => {
   const ref = useRef<BubbleElement | null>(null);
+
+  useEffect(() => {
+    import("./web");
+  }, []);
 
   useEffect(() => {
     if (props.theme?.position === "static" && !ref.current) return;
