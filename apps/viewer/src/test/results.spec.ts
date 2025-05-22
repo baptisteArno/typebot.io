@@ -13,8 +13,10 @@ test("Big groups should work as expected", async ({ page }) => {
   await page.goto(`/${typebotId}-public`);
   await page.locator("input").fill("Baptiste");
   await page.locator("input").press("Enter");
+  await expect(page.getByText("Baptiste")).toBeVisible();
   await page.locator("input").fill("26");
   await page.locator("input").press("Enter");
+  await expect(page.getByText("26")).toBeVisible();
   await page.getByRole("button", { name: "Yes" }).click();
   await page.goto(`${env.NEXTAUTH_URL}/typebots/${typebotId}/results`);
   await expect(page.locator('text="Baptiste"')).toBeVisible({

@@ -44,6 +44,8 @@ test("should ignore unknown commands", async ({ page }) => {
   await page.evaluate(() => {
     window.Typebot.sendCommand("UNKNOWN_COMMAND");
   });
+  await page.waitForTimeout(1000);
+  await expect(page.getByRole("button", { name: "Hi!" })).toBeVisible();
   // Ensure "Wizzzzz" and "Leaving!" are not visible
   await expect(page.getByText("Wizzzzz")).toBeHidden();
   await expect(page.getByText("Leaving!")).toBeHidden();

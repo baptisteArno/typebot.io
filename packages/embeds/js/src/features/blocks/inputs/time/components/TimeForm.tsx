@@ -1,8 +1,8 @@
 import { SendButton } from "@/components/SendButton";
 import type { CommandData } from "@/features/commands/types";
 import type { InputSubmitContent } from "@/types";
-import { isMobile } from "@/utils/isMobileSignal";
 import type { TimeInputBlock } from "@typebot.io/blocks-inputs/time/schema";
+import { guessDeviceIsMobile } from "@typebot.io/lib/guessDeviceIsMobile";
 import { createSignal, onCleanup, onMount } from "solid-js";
 
 type Props = {
@@ -31,7 +31,8 @@ export const TimeForm = (props: Props) => {
   };
 
   onMount(() => {
-    if (!isMobile() && inputRef) inputRef.focus({ preventScroll: true });
+    if (!guessDeviceIsMobile() && inputRef)
+      inputRef.focus({ preventScroll: true });
     window.addEventListener("message", processIncomingEvent);
   });
 

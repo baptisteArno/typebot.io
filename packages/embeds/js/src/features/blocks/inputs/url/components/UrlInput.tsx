@@ -2,9 +2,9 @@ import { SendButton } from "@/components/SendButton";
 import { ShortTextInput } from "@/components/inputs/ShortTextInput";
 import type { CommandData } from "@/features/commands/types";
 import type { InputSubmitContent } from "@/types";
-import { isMobile } from "@/utils/isMobileSignal";
 import { defaultUrlInputOptions } from "@typebot.io/blocks-inputs/url/constants";
 import type { UrlInputBlock } from "@typebot.io/blocks-inputs/url/schema";
+import { guessDeviceIsMobile } from "@typebot.io/lib/guessDeviceIsMobile";
 import { createSignal, onCleanup, onMount } from "solid-js";
 
 type Props = {
@@ -37,7 +37,7 @@ export const UrlInput = (props: Props) => {
   };
 
   onMount(() => {
-    if (!isMobile() && inputRef)
+    if (!guessDeviceIsMobile() && inputRef)
       inputRef.focus({
         preventScroll: true,
       });

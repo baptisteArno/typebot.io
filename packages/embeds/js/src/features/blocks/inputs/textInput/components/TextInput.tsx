@@ -7,12 +7,12 @@ import { Textarea } from "@/components/inputs/Textarea";
 import type { CommandData } from "@/features/commands/types";
 import type { Attachment, BotContext, InputSubmitContent } from "@/types";
 import { guessApiHost } from "@/utils/guessApiHost";
-import { isMobile } from "@/utils/isMobileSignal";
 import { toaster } from "@/utils/toaster";
 import { fixWebmDuration } from "@fix-webm-duration/fix";
 import { defaultTextInputOptions } from "@typebot.io/blocks-inputs/text/constants";
 import type { TextInputBlock } from "@typebot.io/blocks-inputs/text/schema";
 import { getRuntimeVariable } from "@typebot.io/env/getRuntimeVariable";
+import { guessDeviceIsMobile } from "@typebot.io/lib/guessDeviceIsMobile";
 import { isDefined } from "@typebot.io/lib/utils";
 import { cx } from "@typebot.io/ui/lib/cva";
 import {
@@ -107,7 +107,7 @@ export const TextInput = (props: Props) => {
   };
 
   onMount(() => {
-    if (!isMobile() && inputRef)
+    if (!guessDeviceIsMobile() && inputRef)
       inputRef.focus({
         preventScroll: true,
       });

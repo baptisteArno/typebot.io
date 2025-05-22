@@ -20,8 +20,16 @@ export type ClientSideActionContext = {
   resultId?: string;
 };
 
-export type ChatChunk = Pick<ContinueChatResponse, "messages" | "input"> & {
-  streamingMessageId?: string;
+export type ChatChunk = Pick<
+  ContinueChatResponse,
+  "messages" | "clientSideActions" | "dynamicTheme"
+> & {
+  version: "2";
+  input?: NonNullable<ContinueChatResponse["input"]> & {
+    answer?: InputSubmitContent;
+    isHidden?: boolean;
+  };
+  streamingMessage?: string | string[];
 };
 
 export type Attachment = {

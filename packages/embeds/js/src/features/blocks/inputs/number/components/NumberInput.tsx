@@ -3,7 +3,6 @@ import { ChevronDownIcon } from "@/components/icons/ChevronDownIcon";
 import { ChevronUpIcon } from "@/components/icons/ChevronUpIcon";
 import type { CommandData } from "@/features/commands/types";
 import type { InputSubmitContent } from "@/types";
-import { isMobile } from "@/utils/isMobileSignal";
 import { NumberInput as ArkNumberInput, useNumberInput } from "@ark-ui/solid";
 import {
   NumberInputStyle,
@@ -12,6 +11,7 @@ import {
   defaultNumberInputStyle,
 } from "@typebot.io/blocks-inputs/number/constants";
 import type { NumberInputBlock } from "@typebot.io/blocks-inputs/number/schema";
+import { guessDeviceIsMobile } from "@typebot.io/lib/guessDeviceIsMobile";
 import { safeParseFloat } from "@typebot.io/lib/safeParseFloat";
 import { onCleanup, onMount } from "solid-js";
 
@@ -54,7 +54,8 @@ export const NumberInput = (props: NumberInputProps) => {
   };
 
   onMount(() => {
-    if (!isMobile() && inputRef) inputRef.focus({ preventScroll: true });
+    if (!guessDeviceIsMobile() && inputRef)
+      inputRef.focus({ preventScroll: true });
     window.addEventListener("message", processIncomingEvent);
   });
 

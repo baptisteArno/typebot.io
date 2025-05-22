@@ -5,17 +5,22 @@ import { defaultSettings } from "@typebot.io/settings/constants";
 import type { Setter, Signal } from "solid-js";
 import { untrack } from "solid-js";
 import { reconcile } from "solid-js/store";
+import { getStorage } from "./storage";
 
-type Params = {
+export type PersistParams<T> = {
   key: string;
   storage: "local" | "session" | undefined;
+  transformInitDataFromStorage?: (data: any) => T;
   onRecovered?: () => void;
 };
 
-export function persist<T>(signal: Signal<T>, params: Params): [...Signal<T>] {
+export function persist<T>(
+  signal: Signal<T>,
+  params: PersistParams<T>,
+): [...Signal<T>] {
   if (!params.storage) return [...signal];
 
-  const storage = parseRememberUserStorage(
+  const storage = getStorage(
     params.storage || defaultSettings.general.rememberUser.storage,
   );
   const serialize: (data: T) => string = (data: T) => {
@@ -39,13 +44,18 @@ export function persist<T>(signal: Signal<T>, params: Params): [...Signal<T>] {
   };
   const deserialize: (data: string) => T = JSON.parse.bind(JSON);
   const init = storage.getItem(params.key);
-  const set =
-    typeof signal[0] === "function"
-      ? (data: string) => (signal[1] as any)(() => deserialize(data))
-      : (data: string) => (signal[1] as any)(reconcile(deserialize(data)));
 
   if (init) {
-    set(init);
+    const set =
+      typeof signal[0] === "function"
+        ? (data: any) => (signal[1] as any)(() => data)
+        : (data: any) => (signal[1] as any)(reconcile(data));
+    let parsedInit = deserialize(init);
+    if (params.transformInitDataFromStorage) {
+      parsedInit = params.transformInitDataFromStorage(parsedInit);
+      storage.setItem(params.key, serialize(parsedInit));
+    }
+    set(parsedInit);
     params.onRecovered?.();
   }
 
@@ -66,10 +76,3 @@ export function persist<T>(signal: Signal<T>, params: Params): [...Signal<T>] {
         },
   ] as [...typeof signal];
 }
-
-const parseRememberUserStorage = (
-  storage: "local" | "session" | undefined,
-): typeof localStorage | typeof sessionStorage =>
-  (storage ?? defaultSettings.general.rememberUser.storage) === "session"
-    ? sessionStorage
-    : localStorage;

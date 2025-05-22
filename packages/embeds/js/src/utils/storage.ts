@@ -20,7 +20,7 @@ export const setResultInStorage =
   (storageType: "local" | "session" = "session") =>
   (typebotId: string, resultId: string) => {
     try {
-      parseRememberUserStorage(storageType).setItem(
+      getStorage(storageType).setItem(
         `${storageResultIdKey}-${typebotId}`,
         resultId,
       );
@@ -55,7 +55,7 @@ export const setInitialChatReplyInStorage = (
 ) => {
   try {
     const rawInitialChatReply = JSON.stringify(initialChatReply);
-    parseRememberUserStorage(storage).setItem(
+    getStorage(storage).setItem(
       `typebot-${typebotId}-initialChatReply`,
       rawInitialChatReply,
     );
@@ -88,7 +88,7 @@ export const getBotOpenedStateFromStorage = () => {
   }
 };
 
-export const parseRememberUserStorage = (
+export const getStorage = (
   storage: "local" | "session" | undefined,
 ): typeof localStorage | typeof sessionStorage =>
   (storage ?? defaultSettings.general.rememberUser.storage) === "session"

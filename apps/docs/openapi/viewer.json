@@ -14076,6 +14076,9 @@
               },
               "googleTagManagerId": {
                 "type": "string"
+              },
+              "allowIndexing": {
+                "type": "boolean"
               }
             }
           },

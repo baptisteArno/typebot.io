@@ -1,22 +1,14 @@
-import type { BotContext } from "@/types";
-import { persist } from "@/utils/persist";
-import { streamingMessage } from "@/utils/streamingMessageSignal";
+import type { ChatChunk } from "@/types";
 import { isNotEmpty } from "@typebot.io/lib/utils";
 import domPurify from "dompurify";
 import { marked } from "marked";
-import { For, createEffect, createSignal } from "solid-js";
+import { For, createMemo } from "solid-js";
 
 type Props = {
-  streamingMessageId: string;
-  context: BotContext;
+  content: NonNullable<ChatChunk["streamingMessage"]>;
 };
 
 export const StreamingBubble = (props: Props) => {
-  const [content, setContent] = persist(createSignal<string[]>([]), {
-    key: `typebot-streaming-message-${props.streamingMessageId}`,
-    storage: props.context.storage,
-  });
-
   marked.use({
     renderer: {
       link: (href, _title, text) => {
@@ -25,11 +17,11 @@ export const StreamingBubble = (props: Props) => {
     },
   });
 
-  createEffect(() => {
-    if (streamingMessage()?.id !== props.streamingMessageId) return [];
-    setContent(
-      streamingMessage()
-        ?.content.split("```")
+  const formattedContent = createMemo(() => {
+    if (Array.isArray(props.content)) return props.content;
+    return (
+      props.content
+        .split("```")
         .flatMap((block, index) => {
           if (index % 2 === 0) {
             return block.split("\n\n").map((line) =>
@@ -66,7 +58,7 @@ export const StreamingBubble = (props: Props) => {
             ];
           }
         })
-        .filter(isNotEmpty) ?? [],
+        ?.filter(isNotEmpty) ?? []
     );
   });
 
@@ -87,7 +79,9 @@ export const StreamingBubble = (props: Props) => {
               "flex flex-col overflow-hidden text-fade-in mx-4 my-2 relative text-ellipsis h-full gap-6"
             }
           >
-            <For each={content()}>{(line) => <span innerHTML={line} />}</For>
+            <For each={formattedContent()}>
+              {(line) => <span innerHTML={line} />}
+            </For>
           </div>
         </div>
       </div>

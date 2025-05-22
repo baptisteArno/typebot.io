@@ -58,9 +58,7 @@ export const parseReactBotProps = ({
   return `${typebotLine} ${apiHostLine} ${wsHostLine}`;
 };
 
-export const typebotImportCode = isCloudProdInstance()
-  ? `import Typebot from 'https://cdn.jsdelivr.net/npm/@typebot.io/js@0.3/dist/web.js'`
-  : `import Typebot from 'https://cdn.jsdelivr.net/npm/@typebot.io/js@${packageJson.version}/dist/web.js'`;
+export const typebotImportCode = `import Typebot from 'https://cdn.jsdelivr.net/npm/@typebot.io/js@${packageJson.version.split(".")[0]}/dist/web.js'`;
 
 export const parseInlineScript = (script: string) =>
   prettier.format(

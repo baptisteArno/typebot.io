@@ -1,6 +1,5 @@
 import { Modal } from "@/components/Modal";
 import { TypingBubble } from "@/components/TypingBubble";
-import { isMobile } from "@/utils/isMobileSignal";
 import { defaultImageBubbleContent } from "@typebot.io/blocks-bubbles/image/constants";
 import type { ImageBubbleBlock } from "@typebot.io/blocks-bubbles/image/schema";
 import { cx } from "@typebot.io/ui/lib/cva";
@@ -113,8 +112,7 @@ export const ImageBubble = (props: Props) => {
             <figure
               class={cx(
                 "z-10 cursor-pointer",
-                !isTyping() && "p-4",
-                isTyping() ? (isMobile() ? "h-8" : "h-9") : "",
+                isTyping() ? "h-8 @sm:h-9" : "p-4",
               )}
               on:click={
                 props.content?.url?.startsWith("data:image/svg")

@@ -1,4 +1,4 @@
-import { isMobile } from "@/utils/isMobileSignal";
+import { guessDeviceIsMobile } from "@typebot.io/lib/guessDeviceIsMobile";
 import { type JSX, splitProps } from "solid-js";
 
 type TextareaProps = {
@@ -9,6 +9,8 @@ type TextareaProps = {
 export const Textarea = (props: TextareaProps) => {
   const [local, others] = splitProps(props, ["ref", "onInput"]);
 
+  const isMobile = guessDeviceIsMobile();
+
   return (
     <textarea
       ref={local.ref}
@@ -16,7 +18,7 @@ export const Textarea = (props: TextareaProps) => {
       rows={6}
       data-testid="textarea"
       required
-      autofocus={!isMobile()}
+      autofocus={!isMobile}
       onInput={(e) => local.onInput(e.currentTarget.value)}
       {...others}
     />

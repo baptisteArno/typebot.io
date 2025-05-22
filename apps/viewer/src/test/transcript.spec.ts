@@ -15,10 +15,17 @@ test("Transcript set variable should be correctly computed", async ({
   await page.goto(`/${typebotId}-public`);
   await page.getByPlaceholder("Type your answer...").fill("hey");
   await page.getByLabel("Send").click();
+  await expect(page.getByTestId("guest-bubble").getByText("hey")).toBeVisible();
   await page.getByPlaceholder("Type your answer...").fill("hey 2");
   await page.getByLabel("Send").click();
+  await expect(
+    page.getByTestId("guest-bubble").getByText("hey 2"),
+  ).toBeVisible();
   await page.getByPlaceholder("Type your answer...").fill("hey 3");
   await page.getByLabel("Send").click();
+  await expect(
+    page.getByTestId("guest-bubble").getByText("hey 3"),
+  ).toBeVisible();
   await expect(
     page.getByText('Assistant: "How are you? You said "'),
   ).toBeVisible();

@@ -1,7 +1,7 @@
 import { SearchInput } from "@/components/inputs/SearchInput";
 import type { InputSubmitContent } from "@/types";
-import { isMobile } from "@/utils/isMobileSignal";
 import type { PictureChoiceBlock } from "@typebot.io/blocks-inputs/pictureChoice/schema";
+import { guessDeviceIsMobile } from "@typebot.io/lib/guessDeviceIsMobile";
 import { isDefined, isNotEmpty, isSvgSrc } from "@typebot.io/lib/utils";
 import { For, Show, createEffect, createSignal, onMount } from "solid-js";
 
@@ -18,7 +18,8 @@ export const SinglePictureChoice = (props: Props) => {
   const [totalLoadedImages, setTotalLoadedImages] = createSignal(0);
 
   onMount(() => {
-    if (!isMobile() && inputRef) inputRef.focus({ preventScroll: true });
+    if (!guessDeviceIsMobile() && inputRef)
+      inputRef.focus({ preventScroll: true });
   });
 
   const handleClick = (itemIndex: number) => {

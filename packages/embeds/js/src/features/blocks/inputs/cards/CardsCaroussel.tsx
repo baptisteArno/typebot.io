@@ -2,11 +2,12 @@ import { Button } from "@/components/Button";
 import { Carousel } from "@/components/carousel";
 import { ArrowLeftIcon } from "@/components/icons/ArrowLeftIcon";
 import { ArrowRightIcon } from "@/components/icons/ArrowRightIcon";
+import { useBotContainer } from "@/contexts/BotContainerContext";
 import type { InputSubmitContent } from "@/types";
-import { isMediumContainer, isMobile } from "@/utils/isMobileSignal";
+import { type ContainerSize, getContainerSize } from "@/utils/getContainerSize";
 import type { CardsBlock } from "@typebot.io/blocks-inputs/cards/schema";
 import { cn } from "@typebot.io/ui/lib/cn";
-import { For, Index, type JSX, Show, createMemo } from "solid-js";
+import { For, Index, type JSX, Show, createMemo, useContext } from "solid-js";
 
 type Props = {
   block: CardsBlock;
@@ -26,9 +27,14 @@ export const CardsCaroussel = (props: Props) => {
     });
   };
 
-  const slidesPerPage = createMemo(() =>
-    computeSlidesPerPage(props.block.items.length),
-  );
+  const botContainer = useBotContainer();
+
+  const slidesPerPage = createMemo(() => {
+    if (!botContainer()) return 1;
+    return computeSlidesPerPage(props.block.items.length, {
+      containerSize: getContainerSize(botContainer()!),
+    });
+  });
 
   return (
     <Carousel.Root
@@ -36,10 +42,7 @@ export const CardsCaroussel = (props: Props) => {
       slidesPerPage={slidesPerPage()}
       slidesPerMove={1}
       spacing="12px"
-      class="w-[min(calc(var(--slides-per-page)*270px),100%)]"
-      style={{
-        "margin-right": isMobile() ? "-13px" : "-21px",
-      }}
+      class="w-[min(calc(var(--slides-per-page)*270px),100%)] -mr-[13px] @sm:-mr-[21px]"
     >
       <div
         class="flex w-full justify-end mb-2 pr-2"
@@ -138,11 +141,14 @@ const Card = (props: { children: JSX.Element; class?: string }) => {
   );
 };
 
-const computeSlidesPerPage = (totalCards: number) => {
-  if (isMobile()) {
+const computeSlidesPerPage = (
+  totalCards: number,
+  { containerSize }: { containerSize: ContainerSize },
+) => {
+  if (containerSize === "sm") {
     return totalCards > 1 ? 1.2 : 1;
   }
-  if (isMediumContainer()) {
+  if (containerSize === "md") {
     return totalCards > 1 ? 1.5 : 1;
   }
   return totalCards > 2 ? 2.2 : totalCards;

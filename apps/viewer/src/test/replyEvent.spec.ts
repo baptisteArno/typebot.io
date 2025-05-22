@@ -22,7 +22,7 @@ test("should work as expected", async ({ page }) => {
   await page
     .getByRole("textbox", { name: "Type your answer..." })
     .press("Enter");
-  await expect(page.getByText("Baptiste")).toBeVisible();
+  await expect(page.getByText("Baptiste").nth(1)).toBeVisible();
   await page
     .getByRole("textbox", { name: "Type your email..." })
     .fill("baptiste@typebot.io");

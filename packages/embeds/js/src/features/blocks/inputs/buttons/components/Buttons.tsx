@@ -1,9 +1,9 @@
 import { Button } from "@/components/Button";
 import { SearchInput } from "@/components/inputs/SearchInput";
 import type { InputSubmitContent } from "@/types";
-import { isMobile } from "@/utils/isMobileSignal";
 import { defaultChoiceInputOptions } from "@typebot.io/blocks-inputs/choice/constants";
 import type { ChoiceInputBlock } from "@typebot.io/blocks-inputs/choice/schema";
+import { guessDeviceIsMobile } from "@typebot.io/lib/guessDeviceIsMobile";
 import { cx } from "@typebot.io/ui/lib/cva";
 import { For, Show, createSignal, onMount } from "solid-js";
 
@@ -24,7 +24,8 @@ export const Buttons = (props: Props) => {
   );
 
   onMount(() => {
-    if (!isMobile() && inputRef) inputRef.focus({ preventScroll: true });
+    if (!guessDeviceIsMobile() && inputRef)
+      inputRef.focus({ preventScroll: true });
   });
 
   const handleClick = (itemIndex: number) => {
