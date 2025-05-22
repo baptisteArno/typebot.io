@@ -73,7 +73,6 @@ export const TypebotPageV3 = ({
         font={font ?? undefined}
         apiHost={apiOrigin}
       />
-      <Bubble typebot={publicId} apiHost={apiOrigin} />
     </div>
   );
 };
