@@ -1,6 +1,6 @@
-import type { BubbleProps } from "@typebot.io/js";
+import { type BubbleProps, resolveButtonSize } from "@typebot.io/js";
 import type React from "react";
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 
 type Props = BubbleProps & {
   inlineStyle?: {
@@ -47,7 +47,20 @@ export const Bubble = (props: Props) => {
     };
   }, [props.theme?.position]);
 
+  const buttonSize = useMemo(() => {
+    return resolveButtonSize(props.theme?.button?.size);
+  }, [props.theme?.button?.size]);
+
   if (props.theme?.position === "static")
-    return <typebot-bubble ref={ref} style={{ display: "inline-flex" }} />;
+    return (
+      <typebot-bubble
+        ref={ref}
+        style={{
+          display: "inline-flex",
+          width: buttonSize,
+          height: buttonSize,
+        }}
+      />
+    );
   return null;
 };

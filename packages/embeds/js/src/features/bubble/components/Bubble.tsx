@@ -2,6 +2,7 @@ import { Bot, type BotProps } from "@/components/Bot";
 import { getPaymentInProgressInStorage } from "@/features/blocks/inputs/payment/helpers/paymentInProgressStorage";
 import { chatwootWebWidgetOpenedMessage } from "@/features/blocks/integrations/chatwoot/constants";
 import type { CommandData } from "@/features/commands/types";
+import { resolveButtonSize } from "@/utils/resolveBubbleButtonSize";
 import {
   getBotOpenedStateFromStorage,
   removeBotOpenedStateInStorage,
@@ -314,21 +315,4 @@ export const Bubble = (props: BubbleProps) => {
       </EnvironmentProvider>
     </Show>
   );
-};
-
-const resolveButtonSize = (
-  size: NonNullable<NonNullable<BubbleProps["theme"]>["button"]>["size"],
-  { isHidden = false }: { isHidden?: boolean } = {},
-): `${number}px` => {
-  if (isHidden) return "0px";
-  if (size === "large") return "64px";
-  if (size === "medium" || !size) return "48px";
-  const regex = /^\d+px$/;
-  if (typeof size === "string" && regex.test(size.trim())) {
-    return size.trim() as `${number}px`;
-  }
-  console.warn(
-    "[Typebot] Invalid button size. Use 'medium', 'large' or an explicit pixel string (e.g. '52px').",
-  );
-  return "48px";
 };
