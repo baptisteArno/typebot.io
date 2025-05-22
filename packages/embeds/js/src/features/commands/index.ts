@@ -8,3 +8,4 @@ export * from "./utils/setPrefilledVariables";
 export * from "./utils/hidePreviewMessage";
 export * from "./utils/sendCommand";
 export * from "./types";
+export * from "./utils/reload";

@@ -8,7 +8,13 @@ export type CommandData = CommandArgs & {
   isFromTypebot: boolean;
 } & (
     | {
-        command: "open" | "toggle" | "close" | "hidePreviewMessage" | "unmount";
+        command:
+          | "open"
+          | "toggle"
+          | "close"
+          | "hidePreviewMessage"
+          | "unmount"
+          | "reload";
       }
     | ShowMessageCommandData
     | SetPrefilledVariablesCommandData

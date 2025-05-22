@@ -9,7 +9,7 @@ import { showPreviewMessage } from "./features/commands/utils/showPreviewMessage
 import { toggle } from "./features/commands/utils/toggle";
 import { unmount } from "./features/commands/utils/unmount";
 import type { PopupProps } from "./features/popup/components/Popup";
-import type { BotProps } from "./index";
+import { type BotProps, reload } from "./index";
 
 export const initStandard = (props: BotProps & { id?: string }) => {
   const standardElement = props.id
@@ -32,27 +32,6 @@ export const initBubble = (props: BubbleProps) => {
   document.body.prepend(bubbleElement);
 };
 
-type Typebot = {
-  initStandard: typeof initStandard;
-  initPopup: typeof initPopup;
-  initBubble: typeof initBubble;
-  close: typeof close;
-  hidePreviewMessage: typeof hidePreviewMessage;
-  open: typeof open;
-  setPrefilledVariables: typeof setPrefilledVariables;
-  showPreviewMessage: typeof showPreviewMessage;
-  toggle: typeof toggle;
-  setInputValue: typeof setInputValue;
-  unmount: typeof unmount;
-  sendCommand: typeof sendCommand;
-};
-
-declare const window:
-  | {
-      Typebot: Typebot | undefined;
-    }
-  | undefined;
-
 export const parseTypebot = () => ({
   initStandard,
   initPopup,
@@ -66,7 +45,16 @@ export const parseTypebot = () => ({
   setInputValue,
   unmount,
   sendCommand,
+  reload,
 });
+
+type Typebot = ReturnType<typeof parseTypebot>;
+
+declare const window:
+  | {
+      Typebot: Typebot;
+    }
+  | undefined;
 
 export const injectTypebotInWindow = (typebot: Typebot) => {
   if (typeof window === "undefined") return;

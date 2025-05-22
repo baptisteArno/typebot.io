@@ -129,6 +129,9 @@ export const Bubble = (props: BubbleProps) => {
       case "unmount":
         unmountBubble();
         break;
+      case "reload":
+        reloadBot();
+        break;
     }
   };
 
@@ -149,6 +152,11 @@ export const Bubble = (props: BubbleProps) => {
 
   const toggleBot = () => {
     isOpen() ? closeBot() : openBot();
+  };
+
+  const reloadBot = () => {
+    setHasOpenedOnce(false);
+    setHasOpenedOnce(true);
   };
 
   const handlePreviewMessageClick = () => {

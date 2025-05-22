@@ -7,6 +7,7 @@ export * from "./features/commands/utils/unmount";
 export * from "./features/commands/utils/setPrefilledVariables";
 export * from "./features/commands/utils/hidePreviewMessage";
 export * from "./features/commands/utils/sendCommand";
+export * from "./features/commands/utils/reload";
 export * from "./features/commands/types";
 
 export type { BotProps } from "./components/Bot";

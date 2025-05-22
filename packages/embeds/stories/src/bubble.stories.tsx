@@ -3,6 +3,7 @@ import {
   close,
   hidePreviewMessage,
   open,
+  reload,
   sendCommand,
   setInputValue,
   setPrefilledVariables,
@@ -20,6 +21,7 @@ export const Default = () => {
         <button onClick={toggle}>Toggle chat window</button>
         <button onClick={open}>Open chat window</button>
         <button onClick={close}>Close chat window</button>
+        <button onClick={reload}>Reload chat</button>
         <button onClick={() => showPreviewMessage()}>
           Show Preview Message
         </button>
@@ -34,7 +36,7 @@ export const Default = () => {
           </button>
         </div>
         <Bubble
-          typebot="my-typebot-hearhbv"
+          typebot="lead-generation-hdb7t54"
           apiHost="http://localhost:3001"
           wsHost="localhost:1999"
           prefilledVariables={{

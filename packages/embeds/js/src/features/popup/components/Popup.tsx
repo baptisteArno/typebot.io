@@ -88,14 +88,26 @@ export const Popup = (props: PopupProps) => {
   const processIncomingEvent = (event: MessageEvent<CommandData>) => {
     const { data } = event;
     if (!data.isFromTypebot || (data.id && botProps.id !== data.id)) return;
-    if (data.command === "open") openBot();
-    if (data.command === "close") closeBot();
-    if (data.command === "toggle") toggleBot();
-    if (data.command === "setPrefilledVariables")
-      setPrefilledVariables((existingPrefilledVariables) => ({
-        ...existingPrefilledVariables,
-        ...data.variables,
-      }));
+    switch (data.command) {
+      case "open":
+        openBot();
+        break;
+      case "close":
+        closeBot();
+        break;
+      case "toggle":
+        toggleBot();
+        break;
+      case "setPrefilledVariables":
+        setPrefilledVariables((existingPrefilledVariables) => ({
+          ...existingPrefilledVariables,
+          ...data.variables,
+        }));
+        break;
+      case "reload":
+        reloadBot();
+        break;
+    }
   };
 
   const openBot = () => {
@@ -115,6 +127,11 @@ export const Popup = (props: PopupProps) => {
 
   const toggleBot = () => {
     isBotOpened() ? closeBot() : openBot();
+  };
+
+  const reloadBot = () => {
+    setIsBotOpened(false);
+    setIsBotOpened(true);
   };
 
   const handleOnChatStatePersisted = (isPersisted: boolean) => {

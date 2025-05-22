@@ -27,6 +27,13 @@ export const Standard = (
     setIsBotDisplayed(true);
   };
 
+  const reloadBot = () => {
+    setIsBotDisplayed(false);
+    setTimeout(() => {
+      setIsBotDisplayed(true);
+    }, 1);
+  };
+
   const botLauncherObserver = new IntersectionObserver((intersections) => {
     if (intersections.some((intersection) => intersection.isIntersecting))
       launchBot();
@@ -48,11 +55,17 @@ export const Standard = (
   const processIncomingEvent = (event: MessageEvent<CommandData>) => {
     const { data } = event;
     if (!data.isFromTypebot || (data.id && props.id !== data.id)) return;
-    if (data.command === "setPrefilledVariables")
-      setPrefilledVariables((existingPrefilledVariables) => ({
-        ...existingPrefilledVariables,
-        ...data.variables,
-      }));
+    switch (data.command) {
+      case "setPrefilledVariables":
+        setPrefilledVariables((existingPrefilledVariables) => ({
+          ...existingPrefilledVariables,
+          ...data.variables,
+        }));
+        break;
+      case "reload":
+        reloadBot();
+        break;
+    }
   };
 
   onCleanup(() => {
