@@ -179,7 +179,7 @@ export const CardsItemNode = ({
               {item.title !== null ? (
                 <DeletableEditable
                   className={cx(
-                    "flex-1 max-w-[180px] text-sm font-semibold px-2",
+                    "flex-1 text-sm font-semibold px-2",
                     item.description !== null && "-mb-2",
                   )}
                   defaultValue={item.title ?? "Title"}
@@ -202,7 +202,7 @@ export const CardsItemNode = ({
             >
               {item.description !== null ? (
                 <DeletableEditable
-                  className={cx("flex-1 max-w-[180px] text-xs mb-2 px-2")}
+                  className={cx("flex-1 text-xs mb-2 px-2")}
                   defaultValue={item.description ?? "Description"}
                   defaultEdit={item.description === undefined}
                   onValueCommit={updateDescription}

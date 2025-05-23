@@ -2,7 +2,7 @@ import { Editable as ArkEditable } from "@ark-ui/react/editable";
 import { useColorMode } from "@chakra-ui/react";
 import { inputVariants } from "@typebot.io/ui/components/Input";
 import { cn } from "@typebot.io/ui/lib/cn";
-import { forwardRef } from "react";
+import { forwardRef, useCallback } from "react";
 
 const Root = forwardRef<HTMLDivElement, ArkEditable.RootProps>((props, ref) => {
   const { colorMode } = useColorMode();
@@ -42,18 +42,29 @@ const Input = forwardRef<HTMLInputElement, ArkEditable.InputProps>(
   ),
 );
 
+const ADDITIONAL_FOCUS_HEIGHT = 20 as const;
+
 const Textarea = forwardRef<HTMLInputElement, ArkEditable.InputProps>(
-  ({ className, ...props }, ref) => (
-    <ArkEditable.Input ref={ref} {...props} asChild>
-      <textarea
-        className={cn(
-          inputVariants({ variant: "noSize" }),
-          "px-[3px] py-[3px] font-inherit text-align-inherit",
-          className,
-        )}
-      />
-    </ArkEditable.Input>
-  ),
+  ({ className, ...props }, ref) => {
+    const autoResize = (textarea: HTMLTextAreaElement) => {
+      if (!textarea) return;
+      textarea.style.height = "auto";
+      textarea.style.height = `${textarea.scrollHeight + ADDITIONAL_FOCUS_HEIGHT}px`;
+    };
+
+    return (
+      <ArkEditable.Input ref={ref} {...props} asChild>
+        <textarea
+          className={cn(
+            inputVariants({ variant: "noSize" }),
+            "px-[3px] py-[3px] font-inherit text-align-inherit",
+            className,
+          )}
+          onFocus={(e) => autoResize(e.currentTarget)}
+        />
+      </ArkEditable.Input>
+    );
+  },
 );
 
 const Preview = forwardRef<
