@@ -147,9 +147,15 @@ export const useDragDistance = ({
     const triggerDragCallbackIfMouseMovedEnough = (e: MouseEvent) => {
       if (!mouseDownPosition.current || triggered) return;
 
-      const selection = window.getSelection();
-      const isSelectingText = selection && selection.toString().length > 0;
-      if (isSelectingText) return;
+      const target = e.target as HTMLElement;
+      if (
+        target.tagName === "INPUT" ||
+        target.tagName === "TEXTAREA" ||
+        target.tagName === "SELECT" ||
+        target.contentEditable === "true" ||
+        target.closest("[contenteditable=true]")
+      )
+        return;
 
       const { clientX, clientY } = e;
       if (
