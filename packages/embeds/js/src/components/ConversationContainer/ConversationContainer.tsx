@@ -1,4 +1,8 @@
 import { useBotContainer } from "@/contexts/BotContainerContext";
+import {
+  ChatContainerSizeContext,
+  createChatContainerProviderValue,
+} from "@/contexts/ChatContainerSizeContext";
 import type { CommandData } from "@/features/commands/types";
 import { continueChatQuery } from "@/queries/continueChatQuery";
 import { saveClientLogsQuery } from "@/queries/saveClientLogsQuery";
@@ -36,6 +40,7 @@ import { cx } from "@typebot.io/ui/lib/cva";
 import {
   Index,
   Show,
+  createEffect,
   createMemo,
   createSignal,
   onCleanup,
@@ -478,55 +483,61 @@ export const ConversationContainer = (props: Props) => {
     ),
   );
 
-  return (
-    <div
-      ref={chatContainer}
-      class={cx(
-        "overflow-y-auto relative scrollable-container typebot-chat-view scroll-smooth w-full min-h-full flex flex-col items-center @sm:px-5 @sm:min-h-chat-container @sm:max-h-chat-container @sm:rounded-chat-container",
-        (props.initialChatReply.typebot.theme.chat?.container
-          ?.backgroundColor ?? defaultContainerBackgroundColor) !==
-          "transparent" && "max-w-chat-container",
-      )}
-    >
-      <div class="max-w-chat-container w-full flex flex-col gap-2">
-        <Show when={isReadyToShowFirstChunk()}>
-          <Index each={chatChunks()}>
-            {(chunk, index) => (
-              <ChatChunk
-                index={index}
-                messages={chunk().messages}
-                input={chunk().input}
-                theme={mergeThemes(
-                  props.initialChatReply.typebot.theme,
-                  chunk().dynamicTheme,
-                )}
-                settings={props.initialChatReply.typebot.settings}
-                context={props.context}
-                hideAvatar={
-                  (!chunk().input || Boolean(chunk().input?.isHidden)) &&
-                  ((chatChunks()[index + 1]?.messages ?? []).length > 0 ||
-                    chatChunks()[index + 1]?.streamingMessage !== undefined ||
-                    (chunk().messages.length > 0 && isSending()))
-                }
-                hasError={hasError() && index === chatChunks().length - 1}
-                isTransitionDisabled={index !== chatChunks().length - 1}
-                streamingMessage={chunk().streamingMessage}
-                onNewBubbleDisplayed={handleNewBubbleDisplayed}
-                onAllBubblesDisplayed={handleAllBubblesDisplayed}
-                onSubmit={sendMessage}
-                onScrollToBottom={autoScrollToBottom}
-                onSkip={handleSkip}
-              />
-            )}
-          </Index>
-        </Show>
-        <Show when={isSending()}>
-          <LoadingChunk theme={latestTheme()} />
-        </Show>
-      </div>
+  const chatContainerSize = createChatContainerProviderValue(
+    () => chatContainer,
+  );
 
-      <BottomSpacer />
-    </div>
+  return (
+    <ChatContainerSizeContext.Provider value={chatContainerSize}>
+      <div
+        ref={chatContainer}
+        class={cx(
+          "overflow-y-auto relative scrollable-container typebot-chat-view scroll-smooth w-full min-h-full flex flex-col items-center @sm:px-5 @sm:min-h-chat-container @sm:max-h-chat-container @sm:rounded-chat-container",
+          (props.initialChatReply.typebot.theme.chat?.container
+            ?.backgroundColor ?? defaultContainerBackgroundColor) !==
+            "transparent" && "max-w-chat-container",
+        )}
+      >
+        <div class="max-w-chat-container w-full flex flex-col gap-2">
+          <Show when={isReadyToShowFirstChunk()}>
+            <Index each={chatChunks()}>
+              {(chunk, index) => (
+                <ChatChunk
+                  index={index}
+                  messages={chunk().messages}
+                  input={chunk().input}
+                  theme={mergeThemes(
+                    props.initialChatReply.typebot.theme,
+                    chunk().dynamicTheme,
+                  )}
+                  settings={props.initialChatReply.typebot.settings}
+                  context={props.context}
+                  hideAvatar={
+                    (!chunk().input || Boolean(chunk().input?.isHidden)) &&
+                    ((chatChunks()[index + 1]?.messages ?? []).length > 0 ||
+                      chatChunks()[index + 1]?.streamingMessage !== undefined ||
+                      (chunk().messages.length > 0 && isSending()))
+                  }
+                  hasError={hasError() && index === chatChunks().length - 1}
+                  isTransitionDisabled={index !== chatChunks().length - 1}
+                  streamingMessage={chunk().streamingMessage}
+                  onNewBubbleDisplayed={handleNewBubbleDisplayed}
+                  onAllBubblesDisplayed={handleAllBubblesDisplayed}
+                  onSubmit={sendMessage}
+                  onScrollToBottom={autoScrollToBottom}
+                  onSkip={handleSkip}
+                />
+              )}
+            </Index>
+          </Show>
+          <Show when={isSending()}>
+            <LoadingChunk theme={latestTheme()} />
+          </Show>
+        </div>
+
+        <BottomSpacer />
+      </div>
+    </ChatContainerSizeContext.Provider>
   );
 };
 

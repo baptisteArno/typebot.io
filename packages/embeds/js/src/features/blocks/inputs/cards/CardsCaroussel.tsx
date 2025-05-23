@@ -2,12 +2,14 @@ import { Button } from "@/components/Button";
 import { Carousel } from "@/components/carousel";
 import { ArrowLeftIcon } from "@/components/icons/ArrowLeftIcon";
 import { ArrowRightIcon } from "@/components/icons/ArrowRightIcon";
-import { useBotContainer } from "@/contexts/BotContainerContext";
+import {
+  type ContainerSize,
+  useChatContainerSize,
+} from "@/contexts/ChatContainerSizeContext";
 import type { InputSubmitContent } from "@/types";
-import { type ContainerSize, getContainerSize } from "@/utils/getContainerSize";
 import type { CardsBlock } from "@typebot.io/blocks-inputs/cards/schema";
 import { cn } from "@typebot.io/ui/lib/cn";
-import { For, Index, type JSX, Show, createMemo, useContext } from "solid-js";
+import { For, Index, type JSX, Show, createMemo } from "solid-js";
 
 type Props = {
   block: CardsBlock;
@@ -27,12 +29,11 @@ export const CardsCaroussel = (props: Props) => {
     });
   };
 
-  const botContainer = useBotContainer();
+  const chatContainerSize = useChatContainerSize();
 
   const slidesPerPage = createMemo(() => {
-    if (!botContainer()) return 1;
     return computeSlidesPerPage(props.block.items.length, {
-      containerSize: getContainerSize(botContainer()!),
+      containerSize: chatContainerSize(),
     });
   });
 

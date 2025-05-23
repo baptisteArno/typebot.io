@@ -1,5 +1,4 @@
-import { useBotContainer } from "@/contexts/BotContainerContext";
-import { getContainerSize } from "@/utils/getContainerSize";
+import { useChatContainerSize } from "@/contexts/ChatContainerSizeContext";
 import { isEmpty } from "@typebot.io/lib/utils";
 import { cx } from "@typebot.io/ui/lib/cva";
 import { Match, Switch, splitProps } from "solid-js";
@@ -13,18 +12,15 @@ type SendButtonProps = {
 } & ButtonProps;
 
 export const SendButton = (props: SendButtonProps) => {
-  const botContainer = useBotContainer();
+  const chatContainerSize = useChatContainerSize();
   const [local, buttonProps] = splitProps(props, [
     "isDisabled",
     "isLoading",
     "disableIcon",
   ]);
-  const botContainerSize = botContainer()
-    ? getContainerSize(botContainer()!)
-    : "sm";
 
   const showIcon =
-    (botContainerSize === "sm" && !local.disableIcon) ||
+    (chatContainerSize() === "sm" && !local.disableIcon) ||
     !buttonProps.children ||
     (typeof buttonProps.children === "string" && isEmpty(buttonProps.children));
   return (

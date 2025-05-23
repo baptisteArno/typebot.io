@@ -304,10 +304,7 @@ const BotContent = (props: BotContentProps) => {
       key: `typebot-${props.context.typebot.id}-progressValue`,
     },
   );
-  let botContainerElement: HTMLDivElement | undefined;
-  const [botContainer, setBotContainer] = createSignal<
-    HTMLDivElement | undefined
-  >(undefined);
+  let botContainer: HTMLDivElement | undefined;
 
   createEffect(() => {
     injectFont(
@@ -316,13 +313,13 @@ const BotContent = (props: BotContentProps) => {
         family: defaultFontFamily,
       },
     );
-    if (!botContainerElement) return;
+    if (!botContainer) return;
     setCssVariablesValue({
       theme: mergeThemes(
         props.initialChatReply.typebot.theme,
         props.initialChatReply.dynamicTheme,
       ),
-      container: botContainerElement,
+      container: botContainer,
       isPreview: props.context.isPreview,
       typebotVersion: isTypebotVersionAtLeastV6(
         props.initialChatReply.typebot.version,
@@ -333,19 +330,14 @@ const BotContent = (props: BotContentProps) => {
   });
 
   const botContainerHeight = createMemo(() => {
-    if (!botContainerElement) return "100%";
-    return botContainerElement.clientHeight;
-  });
-
-  createEffect(() => {
-    if (!botContainerElement) return;
-    setBotContainer(botContainerElement);
+    if (!botContainer) return "100%";
+    return botContainer.clientHeight;
   });
 
   return (
-    <BotContainerContext.Provider value={botContainer}>
+    <BotContainerContext.Provider value={() => botContainer}>
       <div
-        ref={botContainerElement}
+        ref={botContainer}
         class={cx(
           "relative flex w-full h-full text-base overflow-hidden flex-col justify-center items-center typebot-container",
           props.class,
@@ -388,7 +380,7 @@ const BotContent = (props: BotContentProps) => {
             props.initialChatReply.typebot.settings.general?.isBrandingEnabled
           }
         >
-          <LiteBadge botContainer={botContainerElement} />
+          <LiteBadge botContainer={botContainer} />
         </Show>
         <Toaster toaster={toaster} class="w-full">
           {(toast) => (
