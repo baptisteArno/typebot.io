@@ -1,0 +1,71 @@
+{
+  "version": "6.1",
+  "id": "cmb59sp8b00017f8m3ni5vsqm",
+  "name": "3",
+  "events": [
+    {
+      "id": "a9wau00x136v28l17kbaibro",
+      "outgoingEdgeId": "c2nlonqi0gyormqtvfyq4klc",
+      "graphCoordinates": { "x": 0, "y": 0 },
+      "type": "start"
+    }
+  ],
+  "groups": [
+    {
+      "id": "vdnh8sj45jpmk2r2v5sdz80o",
+      "title": "Group #1",
+      "graphCoordinates": { "x": 302.5, "y": 36.5 },
+      "blocks": [
+        {
+          "id": "w8hj1gdfy5lj7s3cioblvn4t",
+          "type": "text",
+          "content": {
+            "richText": [{ "type": "p", "children": [{ "text": "test 3" }] }]
+          }
+        },
+        {
+          "id": "sbp0efedjfp04u3in44rezhq",
+          "type": "Jump",
+          "options": { "groupId": "d1agsev8ekdjp19wifgz7n9l" }
+        }
+      ]
+    },
+    {
+      "id": "d1agsev8ekdjp19wifgz7n9l",
+      "title": "Group #2",
+      "graphCoordinates": { "x": 698.5, "y": 24 },
+      "blocks": [
+        {
+          "id": "i3lx9dkpz4z4zpcf9sdltz9v",
+          "type": "text",
+          "content": {
+            "richText": [{ "type": "p", "children": [{ "text": "end 3" }] }]
+          }
+        }
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "c2nlonqi0gyormqtvfyq4klc",
+      "from": { "eventId": "a9wau00x136v28l17kbaibro" },
+      "to": { "groupId": "vdnh8sj45jpmk2r2v5sdz80o" }
+    }
+  ],
+  "variables": [],
+  "theme": {},
+  "selectedThemeTemplateId": null,
+  "settings": {},
+  "createdAt": "2025-05-26T15:56:42.299Z",
+  "updatedAt": "2025-05-26T15:57:10.928Z",
+  "icon": null,
+  "folderId": null,
+  "publicId": null,
+  "customDomain": null,
+  "workspaceId": "proWorkspace",
+  "resultsTablePreferences": null,
+  "isArchived": false,
+  "isClosed": false,
+  "whatsAppCredentialsId": null,
+  "riskLevel": null
+}

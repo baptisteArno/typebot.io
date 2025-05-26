@@ -39,6 +39,13 @@
             "typebotId": "cl0ibhv8d0130n21aw8doxhj5",
             "mergeResults": true
           }
+        },
+        {
+          "id": "vmq1r8xw94wwjwn06egqsmee",
+          "type": "text",
+          "content": {
+            "richText": [{ "type": "p", "children": [{ "text": "End" }] }]
+          }
         }
       ]
     },
@@ -92,7 +99,7 @@
     }
   },
   "createdAt": "2022-03-08T15:58:49.720Z",
-  "updatedAt": "2025-04-16T19:56:24.043Z",
+  "updatedAt": "2025-05-26T15:55:39.069Z",
   "icon": null,
   "folderId": null,
   "publicId": "cl0ibhi7s0018n21aarlmg0cm-public",

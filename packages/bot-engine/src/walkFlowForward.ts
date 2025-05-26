@@ -459,7 +459,10 @@ const navigateToNextGroupAndUpdateState = async ({
             newSessionState.typebotsQueue[0].answers.length,
         };
     }
-    if (queuedEdgeResponse.edgeId)
+    if (
+      queuedEdgeResponse.edgeId ||
+      newSessionState.typebotsQueue[0].queuedEdgeIds?.length
+    )
       return navigateToNextGroupAndUpdateState({
         state: newSessionState,
         edgeId: queuedEdgeResponse.edgeId,

@@ -69,21 +69,21 @@ export const importTypebotInDatabase = async (
   updates?: Partial<Typebot>,
 ) => {
   const typebotFile = JSON.parse(readFileSync(path).toString());
+  const publicId = updates?.id ? `${updates?.id}-public` : createId();
   const typebot = {
     events: null,
     ...typebotFile,
     workspaceId: proWorkspaceId,
+    publicId,
     ...updates,
   };
+
   await prisma.typebot.create({
     data: parseCreateTypebot(typebot),
   });
   return prisma.publicTypebot.create({
     data: {
-      ...parseTypebotToPublicTypebot(
-        updates?.id ? `${updates?.id}-public` : "publicBot",
-        typebot,
-      ),
+      ...parseTypebotToPublicTypebot(publicId, typebot),
       events: typebot.events === null ? DbNull : typebot.events,
     },
   });
