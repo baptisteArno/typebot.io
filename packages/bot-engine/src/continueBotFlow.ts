@@ -887,7 +887,8 @@ const parseReply = async (
             const extension = url.split(".").pop();
             if (!extension) return false;
             return allowedFileTypesMetadata.some(
-              (metadata) => metadata.extension === extension,
+              (metadata) =>
+                metadata.extension.toLowerCase() === extension.toLowerCase(),
             );
           })
         : true;
