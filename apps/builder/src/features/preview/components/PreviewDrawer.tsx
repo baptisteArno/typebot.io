@@ -12,7 +12,6 @@ import { useGraph } from '@/features/graph/providers/GraphProvider'
 import { useTypebot } from '../../editor/providers/TypebotProvider'
 import React, { useState } from 'react'
 import { headerHeight } from '../../editor/constants'
-import { RuntimeMenu } from './RuntimeMenu'
 import { runtimes } from '../data'
 import { PreviewDrawerBody } from './PreviewDrawerBody'
 import { useDrag } from '@use-gesture/react'
@@ -37,9 +36,9 @@ export const PreviewDrawer = () => {
   const [width, setWidth] = useState(500)
   const [isResizeHandleVisible, setIsResizeHandleVisible] = useState(false)
   const [restartKey, setRestartKey] = useState(0)
-  const [selectedRuntime, setSelectedRuntime] = useState<
-    (typeof runtimes)[number]
-  >(getDefaultRuntime(typebot?.id))
+  const [selectedRuntime] = useState<(typeof runtimes)[number]>(
+    getDefaultRuntime(typebot?.id)
+  )
 
   const handleRestartClick = async () => {
     await save()
@@ -60,12 +59,12 @@ export const PreviewDrawer = () => {
     }
   )
 
-  const setPreviewRuntimeAndSaveIntoLocalStorage = (
-    runtime: (typeof runtimes)[number]
-  ) => {
-    setSelectedRuntime(runtime)
-    localStorage.setItem(preferredRuntimeKey, runtime.name)
-  }
+  // const setPreviewRuntimeAndSaveIntoLocalStorage = (
+  //   runtime: (typeof runtimes)[number]
+  // ) => {
+  //   setSelectedRuntime(runtime)
+  //   localStorage.setItem(preferredRuntimeKey, runtime.name)
+  // }
 
   return (
     <Flex
@@ -95,10 +94,10 @@ export const PreviewDrawer = () => {
       <VStack w="full" spacing={4}>
         <HStack justifyContent={'space-between'} w="full">
           <HStack>
-            <RuntimeMenu
+            {/* <RuntimeMenu
               selectedRuntime={selectedRuntime}
               onSelectRuntime={setPreviewRuntimeAndSaveIntoLocalStorage}
-            />
+            /> */}
             {selectedRuntime.name === 'Web' ? (
               <Button
                 onClick={handleRestartClick}

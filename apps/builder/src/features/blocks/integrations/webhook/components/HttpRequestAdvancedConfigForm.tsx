@@ -32,12 +32,9 @@ import { VariableForTestInputs } from './VariableForTestInputs'
 import { SwitchWithRelatedSettings } from '@/components/SwitchWithRelatedSettings'
 import {
   HttpMethod,
-  defaultTimeout,
   defaultWebhookAttributes,
   defaultWebhookBlockOptions,
-  maxTimeout,
 } from '@typebot.io/schemas/features/blocks/integrations/webhook/constants'
-import { NumberInput } from '@/components/inputs'
 
 type Props = {
   blockId: string
@@ -84,8 +81,8 @@ export const HttpRequestAdvancedConfigForm = ({
   const updateIsCustomBody = (isCustomBody: boolean) =>
     onOptionsChange({ ...options, isCustomBody })
 
-  const updateTimeout = (timeout: number | undefined) =>
-    onOptionsChange({ ...options, timeout })
+  // const updateTimeout = (timeout: number | undefined) =>
+  //   onOptionsChange({ ...options, timeout })
 
   const executeTestRequest = async () => {
     if (!typebot) return
@@ -107,8 +104,8 @@ export const HttpRequestAdvancedConfigForm = ({
     setIsTestResponseLoading(false)
   }
 
-  const updateIsExecutedOnClient = (isExecutedOnClient: boolean) =>
-    onOptionsChange({ ...options, isExecutedOnClient })
+  // const updateIsExecutedOnClient = (isExecutedOnClient: boolean) =>
+  //   onOptionsChange({ ...options, isExecutedOnClient })
 
   const ResponseMappingInputs = useMemo(
     () =>
@@ -131,7 +128,7 @@ export const HttpRequestAdvancedConfigForm = ({
         }
         onCheckChange={updateAdvancedConfig}
       >
-        <SwitchWithLabel
+        {/* <SwitchWithLabel
           label="Execute on client"
           moreInfoContent="If enabled, the webhook will be executed on the client. It means it will be executed in the browser of your visitor. Make sure to enable CORS and do not expose sensitive data."
           initialValue={
@@ -139,7 +136,7 @@ export const HttpRequestAdvancedConfigForm = ({
             defaultWebhookBlockOptions.isExecutedOnClient
           }
           onCheckChange={updateIsExecutedOnClient}
-        />
+        /> */}
         <HStack justify="space-between">
           <Text>Method:</Text>
           <DropdownList
@@ -202,7 +199,7 @@ export const HttpRequestAdvancedConfigForm = ({
               )}
             </AccordionPanel>
           </AccordionItem>
-          <AccordionItem>
+          {/* <AccordionItem>
             <AccordionButton justifyContent="space-between">
               Advanced parameters
               <AccordionIcon />
@@ -217,7 +214,7 @@ export const HttpRequestAdvancedConfigForm = ({
                 withVariableButton={false}
               />
             </AccordionPanel>
-          </AccordionItem>
+          </AccordionItem> */}
           <AccordionItem>
             <AccordionButton justifyContent="space-between">
               Variable values for test

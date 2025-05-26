@@ -2,19 +2,15 @@ import { Alert, AlertIcon, FormLabel, Stack, Tag, Text } from '@chakra-ui/react'
 import { CodeEditor } from '@/components/inputs/CodeEditor'
 import { SetVariableBlock, Variable } from '@typebot.io/schemas'
 import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
-import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
 import { Select } from '@/components/inputs/Select'
 import { WhatsAppLogo } from '@/components/logos/WhatsAppLogo'
 import {
   defaultSetVariableOptions,
   hiddenTypes,
-  sessionOnlySetVariableOptions,
   valueTypes,
 } from '@typebot.io/schemas/features/blocks/logic/setVariable/constants'
 import { TextInput } from '@/components/inputs'
 import { isDefined } from '@typebot.io/lib'
-import { useTypebot } from '@/features/editor/providers/TypebotProvider'
-import { isInputBlock } from '@typebot.io/schemas/helpers'
 
 type Props = {
   options: SetVariableBlock['options']
@@ -26,10 +22,10 @@ const setVarTypes = valueTypes.filter(
 )
 
 export const SetVariableSettings = ({ options, onOptionsChange }: Props) => {
-  const { typebot, updateVariable } = useTypebot()
-  const selectedVariable = typebot?.variables.find(
-    (variable) => variable.id === options?.variableId
-  )
+  // const { typebot, updateVariable } = useTypebot()
+  // const selectedVariable = typebot?.variables.find(
+  //   (variable) => variable.id === options?.variableId
+  // )
 
   const updateVariableId = (variable?: Pick<Variable, 'id'>) =>
     onOptionsChange({
@@ -43,26 +39,26 @@ export const SetVariableSettings = ({ options, onOptionsChange }: Props) => {
       type: type as NonNullable<SetVariableBlock['options']>['type'],
     })
 
-  const updateIsSessionVariable = (isSavingInResults: boolean) => {
-    if (!selectedVariable?.id) return
-    updateVariable(selectedVariable.id, {
-      isSessionVariable: !isSavingInResults,
-    })
-  }
+  // const updateIsSessionVariable = (isSavingInResults: boolean) => {
+  //   if (!selectedVariable?.id) return
+  //   updateVariable(selectedVariable.id, {
+  //     isSessionVariable: !isSavingInResults,
+  //   })
+  // }
 
-  const isSessionOnly =
-    options?.type &&
-    sessionOnlySetVariableOptions.includes(
-      options.type as (typeof sessionOnlySetVariableOptions)[number]
-    )
+  // const isSessionOnly =
+  //   options?.type &&
+  //   sessionOnlySetVariableOptions.includes(
+  //     options.type as (typeof sessionOnlySetVariableOptions)[number]
+  //   )
 
-  const isLinkedToAnswer =
-    options?.variableId &&
-    typebot?.groups.some((g) =>
-      g.blocks.some(
-        (b) => isInputBlock(b) && b.options?.variableId === options.variableId
-      )
-    )
+  // const isLinkedToAnswer =
+  //   options?.variableId &&
+  //   typebot?.groups.some((g) =>
+  //     g.blocks.some(
+  //       (b) => isInputBlock(b) && b.options?.variableId === options.variableId
+  //     )
+  //   )
 
   return (
     <Stack spacing={4}>
@@ -96,7 +92,7 @@ export const SetVariableSettings = ({ options, onOptionsChange }: Props) => {
           />
         </Stack>
 
-        {selectedVariable && !isSessionOnly && !isLinkedToAnswer && (
+        {/* {selectedVariable && !isSessionOnly && !isLinkedToAnswer && (
           <SwitchWithLabel
             key={selectedVariable.id}
             label="Save in results?"
@@ -104,7 +100,7 @@ export const SetVariableSettings = ({ options, onOptionsChange }: Props) => {
             initialValue={!selectedVariable.isSessionVariable}
             onCheckChange={updateIsSessionVariable}
           />
-        )}
+        )} */}
         <SetVariableValue options={options} onOptionsChange={onOptionsChange} />
       </Stack>
     </Stack>
@@ -125,11 +121,11 @@ const SetVariableValue = ({
       expressionToEvaluate,
     })
 
-  const updateClientExecution = (isExecutedOnClient: boolean) =>
-    onOptionsChange({
-      ...options,
-      isExecutedOnClient,
-    })
+  // const updateClientExecution = (isExecutedOnClient: boolean) =>
+  //   onOptionsChange({
+  //     ...options,
+  //     isExecutedOnClient,
+  //   })
 
   const updateItemVariableId = (variable?: Pick<Variable, 'id'>) => {
     if (!options || options.type !== 'Map item with same index') return
@@ -177,7 +173,7 @@ const SetVariableValue = ({
     case undefined:
       return (
         <>
-          <SwitchWithLabel
+          {/* <SwitchWithLabel
             label="Execute on client?"
             moreInfoContent="Check this if you need access to client-only variables like `window` or `document`."
             initialValue={
@@ -185,7 +181,7 @@ const SetVariableValue = ({
               defaultSetVariableOptions.isExecutedOnClient
             }
             onCheckChange={updateClientExecution}
-          />
+          /> */}
           <CodeEditor
             defaultValue={options?.expressionToEvaluate ?? ''}
             onChange={updateExpression}
