@@ -28,3 +28,9 @@ services:
     ports:
       - '8081:3000'
     env_file: .env
+    environment:
+      - DD_LOGS_ENABLED=true
+      - DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL=true
+      - DD_ENV=production
+      - DD_SERVICE=typebot-viewer
+      - DD_VERSION=1.0
