@@ -32,8 +32,8 @@ import type {
   VariableForTest,
 } from "@typebot.io/blocks-integrations/httpRequest/schema";
 import { useMemo, useState } from "react";
+import { computeDeepKeysMappingSuggestionList } from "../helpers/computeDeepKeysMappingSuggestionList";
 import { convertVariablesForTestToVariables } from "../helpers/convertVariablesForTestToVariables";
-import { getDeepKeys } from "../helpers/getDeepKeys";
 import { executeHttpRequest } from "../queries/executeHttpRequestQuery";
 import { HeadersInputs, QueryParamsInputs } from "./KeyValueInputs";
 import { DataVariableInputs } from "./ResponseMappingInputs";
@@ -102,7 +102,7 @@ export const HttpRequestAdvancedConfigForm = ({
     );
     if (error) return toast({ description: error.message });
     setTestResponse(JSON.stringify(data, undefined, 2));
-    setResponseKeys(getDeepKeys(data));
+    setResponseKeys(computeDeepKeysMappingSuggestionList(data));
     setIsTestResponseLoading(false);
   };
 

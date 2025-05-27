@@ -60,6 +60,12 @@
       "dependsOn": ["@typebot.io/prisma#db:generate"],
       "cache": false
     },
+    "test:unit": {
+      "cache": false
+    },
+    "lint-repo": {
+      "cache": false
+    },
     "//#format-and-lint": {},
     "//#format-and-lint:fix": {
       "cache": false
