@@ -28,6 +28,7 @@ spec:
         admission.datadoghq.com/enabled: 'true'
       annotations:
         admission.datadoghq.com/js-lib.version: v5.24.0
+        ad.datadoghq.com/typebot-builder.logs: '[{"source":"nodejs","service":"typebot-builder","log_processing_rules":[{"type":"multi_line","name":"no_multiline","pattern":".*"}]}]'
     spec:
       containers:
         - name: typebot-builder
