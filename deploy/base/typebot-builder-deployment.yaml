@@ -6,7 +6,7 @@ metadata:
     app: typebot-builder
     tags.datadoghq.com/env: production
     tags.datadoghq.com/service: typebot-builder
-    tags.datadoghq.com/version: "1.0"
+    tags.datadoghq.com/version: '1.0'
 spec:
   replicas: 1
   revisionHistoryLimit: 10
@@ -24,8 +24,8 @@ spec:
         app: typebot-builder
         tags.datadoghq.com/env: production
         tags.datadoghq.com/service: typebot-builder
-        tags.datadoghq.com/version: "1.0"
-        admission.datadoghq.com/enabled: "true"
+        tags.datadoghq.com/version: '1.0'
+        admission.datadoghq.com/enabled: 'true'
       annotations:
         admission.datadoghq.com/js-lib.version: v5.24.0
     spec:
@@ -37,9 +37,19 @@ spec:
                 fieldRef:
                   fieldPath: status.hostIP
             - name: DD_PROFILING_ENABLED
-              value: "true"
+              value: 'true'
             - name: DD_LOGS_INJECTION
-              value: "true"
+              value: 'true'
+            - name: DD_LOGS_ENABLED
+              value: 'true'
+            - name: DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL
+              value: 'true'
+            - name: DD_ENV
+              value: 'production'
+            - name: DD_SERVICE
+              value: 'typebot-builder'
+            - name: DD_VERSION
+              value: '1.0'
           envFrom:
             - configMapRef:
                 name: typebot-builder
@@ -72,7 +82,7 @@ spec:
             periodSeconds: 20
             timeoutSeconds: 3
             successThreshold: 2
-            initialDelaySeconds: 35                 
+            initialDelaySeconds: 35
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
