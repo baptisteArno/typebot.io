@@ -48,3 +48,12 @@ dd/MM/yy
 dd/MM/yyyy HH:mm:ss
 d.MM.yy
 ```
+
+There are 4 tokens that cause most of the confusion:
+- D and DD that represent the day of a year (1, 2, ..., 365, 366) are often confused with d and dd that represent the day of a month (1, 2, ..., 31).
+- YY and YYYY that represent the local week-numbering year (44, 01, 00, 17) are often confused with yy and yyyy that represent the calendar year.
+
+To help with the common confusion, on Typebot by default, we interpret the tokens `D` and `Y` as `d` and `y` respectively.
+
+More information: https://github.com/date-fns/date-fns/blob/main/docs/unicodeTokens.md
+
