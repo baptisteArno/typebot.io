@@ -51,6 +51,12 @@ export type RecordingInputSubmitContent = {
   blobUrl?: string;
 };
 
+export type ClientSideResult = {
+  type: "clientSideResult";
+  result: string;
+};
+
 export type InputSubmitContent =
   | TextInputSubmitContent
-  | RecordingInputSubmitContent;
+  | RecordingInputSubmitContent
+  | ClientSideResult;

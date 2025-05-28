@@ -192,7 +192,8 @@ export const ConversationContainer = (props: Props) => {
   };
 
   const sendMessage = async (answer?: InputSubmitContent) => {
-    if (answer) setChatChunks(addAnswerToLastChunk(answer));
+    if (answer && answer.type !== "clientSideResult")
+      setChatChunks(addAnswerToLastChunk(answer));
     const currentChunk = chatChunks().at(-1);
     if (hasError() && (currentChunk?.clientSideActions ?? []).length > 0) {
       setHasError(false);
@@ -398,7 +399,7 @@ export const ConversationContainer = (props: Props) => {
         setIsSending(false);
         sendMessage(
           response.replyToSend
-            ? { type: "text", value: response.replyToSend }
+            ? { type: "clientSideResult", result: response.replyToSend }
             : undefined,
         );
         return;
@@ -550,6 +551,11 @@ const convertSubmitContentToMessage = (
   answer: InputSubmitContent | undefined,
 ): Message | undefined => {
   if (!answer) return;
+  if (answer.type === "clientSideResult")
+    return {
+      type: "text",
+      text: answer.result,
+    };
   if (answer.type === "text")
     return {
       type: "text",
