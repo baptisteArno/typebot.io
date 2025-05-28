@@ -11,8 +11,9 @@
     "./web": "./dist/web.js"
   },
   "scripts": {
+    "typecheck": "tsc --noEmit",
     "dev": "tsup --watch",
-    "build": "tsup --metafile"
+    "build": "tsup"
   },
   "devDependencies": {
     "@ai-sdk/ui-utils": "1.2.2",
@@ -38,7 +39,7 @@
     "@types/dompurify": "3.2.0",
     "autoprefixer": "10.4.20",
     "dompurify": "3.2.4",
-    "esbuild-plugin-solid": "^0.6.0",
+    "esbuild-plugin-solid": "0.6.0",
     "ky": "1.2.4",
     "marked": "9.0.3",
     "partysocket": "1.0.2",

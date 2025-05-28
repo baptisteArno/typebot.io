@@ -9,6 +9,7 @@ import { saveClientLogsQuery } from "@/queries/saveClientLogsQuery";
 import type {
   BotContext,
   ChatChunk as ChatChunkType,
+  ClientSideResult,
   InputSubmitContent,
 } from "@/types";
 import { mergeThemes } from "@/utils/dynamicTheme";
@@ -191,7 +192,9 @@ export const ConversationContainer = (props: Props) => {
     });
   };
 
-  const sendMessage = async (answer?: InputSubmitContent) => {
+  const sendMessage = async (
+    answer?: InputSubmitContent | ClientSideResult,
+  ) => {
     if (answer && answer.type !== "clientSideResult")
       setChatChunks(addAnswerToLastChunk(answer));
     const currentChunk = chatChunks().at(-1);
@@ -202,7 +205,11 @@ export const ConversationContainer = (props: Props) => {
     }
     setHasError(false);
 
-    if (currentChunk?.input?.id && answer) {
+    if (
+      currentChunk?.input?.id &&
+      answer &&
+      answer.type !== "clientSideResult"
+    ) {
       if (props.onAnswer)
         props.onAnswer({
           message: getAnswerContent(answer),
@@ -548,7 +555,7 @@ const BottomSpacer = () => (
 );
 
 const convertSubmitContentToMessage = (
-  answer: InputSubmitContent | undefined,
+  answer: InputSubmitContent | ClientSideResult | undefined,
 ): Message | undefined => {
   if (!answer) return;
   if (answer.type === "clientSideResult")

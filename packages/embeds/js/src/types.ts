@@ -58,5 +58,4 @@ export type ClientSideResult = {
 
 export type InputSubmitContent =
   | TextInputSubmitContent
-  | RecordingInputSubmitContent
-  | ClientSideResult;
+  | RecordingInputSubmitContent;
