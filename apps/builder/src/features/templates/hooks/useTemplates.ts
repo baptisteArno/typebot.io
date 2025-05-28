@@ -124,7 +124,6 @@ export const useTemplates = (): TemplateProps[] => {
     {
       name: "High ticket lead follow-up",
       emoji: "📞",
-      isNew: true,
       fileName: "high-ticket-lead-follow-up.json",
       category: "marketing",
       description:
@@ -133,7 +132,6 @@ export const useTemplates = (): TemplateProps[] => {
     {
       name: "Quick Carb Calculator",
       emoji: "🏃‍♂️",
-      isNew: true,
       fileName: "quick-carb-calculator.json",
       category: "marketing",
       description:
@@ -142,7 +140,6 @@ export const useTemplates = (): TemplateProps[] => {
     {
       name: "Skin Typology",
       emoji: "💆‍♀️",
-      isNew: true,
       fileName: "skin-typology.json",
       category: "marketing",
       description:
@@ -158,7 +155,6 @@ export const useTemplates = (): TemplateProps[] => {
       name: "Savings Estimator",
       emoji: "💰",
       fileName: "savings-estimator.json",
-      isNew: true,
       category: "marketing",
       description:
         "This bot works for INGA, a commerce that sells reusable sponges and paper towels. It asks simple question to estimate the user's potential savings if he decides to buy INGA products.",
