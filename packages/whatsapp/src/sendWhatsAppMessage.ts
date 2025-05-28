@@ -1,3 +1,4 @@
+import * as Sentry from "@sentry/nextjs";
 import type { WhatsAppCredentials } from "@typebot.io/credentials/schemas";
 import { env } from "@typebot.io/env";
 import ky from "ky";
@@ -14,17 +15,24 @@ export const sendWhatsAppMessage = async ({
   message,
   credentials,
 }: Props) => {
-  await ky.post(
-    `${env.WHATSAPP_CLOUD_API_URL}/v21.0/${credentials.phoneNumberId}/messages`,
-    {
-      headers: {
-        Authorization: `Bearer ${credentials.systemUserAccessToken}`,
+  try {
+    await ky.post(
+      `${env.WHATSAPP_CLOUD_API_URL}/v21.0/${credentials.phoneNumberId}/messages`,
+      {
+        headers: {
+          Authorization: `Bearer ${credentials.systemUserAccessToken}`,
+        },
+        json: {
+          messaging_product: "whatsapp",
+          to,
+          ...message,
+        },
       },
-      json: {
-        messaging_product: "whatsapp",
-        to,
-        ...message,
-      },
-    },
-  );
+    );
+  } catch (err) {
+    Sentry.addBreadcrumb({
+      message: JSON.stringify(message),
+    });
+    throw err;
+  }
 };
