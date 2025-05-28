@@ -22,6 +22,8 @@
     "dompurify": "3.2.4",
     "ky": "1.2.4",
     "marked": "9.0.3",
+    "solid-textarea-autosize": "0.0.5",
+    "@solid-primitives/input-mask": "0.3.1",
     "partysocket": "1.0.2",
     "solid-element": "1.9.1",
     "solid-js": "1.9.5",

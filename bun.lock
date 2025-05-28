@@ -581,6 +581,7 @@
         "@ai-sdk/ui-utils": "1.2.2",
         "@ark-ui/solid": "5.0.0",
         "@fix-webm-duration/fix": "1.0.1",
+        "@solid-primitives/input-mask": "0.3.1",
         "@stripe/stripe-js": "1.54.1",
         "@typebot.io/blocks-bubbles": "workspace:*",
         "@typebot.io/blocks-inputs": "workspace:*",
@@ -607,6 +608,7 @@
         "postcss": "8.5.3",
         "solid-element": "1.9.1",
         "solid-js": "1.9.5",
+        "solid-textarea-autosize": "0.0.5",
         "tailwindcss": "3.4.17",
         "tsup": "8.3.0",
       },
@@ -2486,6 +2488,8 @@
     "@sinonjs/fake-timers": ["@sinonjs/fake-timers@10.3.0", "", { "dependencies": { "@sinonjs/commons": "^3.0.0" } }, "sha512-V4BG07kuYSUkTCSBHG8G8TNhM+F19jXFWnQtzj+we8DrkpSBCee9Z3Ms8yiGer/dlmhe35/Xdgyo3/0rQKg7YA=="],
 
     "@socket.io/component-emitter": ["@socket.io/component-emitter@3.1.2", "", {}, "sha512-9BCxFwvbGg/RsZK9tjXd8s4UcwR0MWeFQ1XEKIQVVvAGJyINdrqKMcTRyLoK8Rse1GjzLV9cwjWV1olXRWEXVA=="],
+
+    "@solid-primitives/input-mask": ["@solid-primitives/input-mask@0.3.1", "", { "peerDependencies": { "solid-js": "^1.6.12" }, "optionalPeers": ["solid-js"] }, "sha512-JHsBdY1hP5MqCf71RL5NiZYxADJwUNvF7WLYnt1ZzaJiyOad4wrCnMadK1+o2zYqR4j7lp6Nq/PQw4eVMTzlvQ=="],
 
     "@solid-primitives/keyed": ["@solid-primitives/keyed@1.5.0", "", { "peerDependencies": { "solid-js": "^1.6.12" } }, "sha512-g04CXywgWG/7L4sTxQP6q1gdiirItVBq6ZO9YuLTqPFlkX3uD4IEjeL9cLHP6waahrnO8yL3OZl64pcKGYN5Qw=="],
 
@@ -5368,6 +5372,8 @@
     "solid-element": ["solid-element@1.9.1", "", { "dependencies": { "component-register": "^0.8.7" }, "peerDependencies": { "solid-js": "^1.9.3" } }, "sha512-baJy6Qz27oAUgkPlqOf3Y+7RsBiuVQrS51Nrh1ddDbrqrNPvJbIvehpUsTzLNFb2ZHIoHuNnDg330go/ZKcRdg=="],
 
     "solid-js": ["solid-js@1.9.5", "", { "dependencies": { "csstype": "^3.1.0", "seroval": "^1.1.0", "seroval-plugins": "^1.1.0" } }, "sha512-ogI3DaFcyn6UhYhrgcyRAMbu/buBJitYQASZz5WzfQVPP10RD2AbCoRZ517psnezrasyCbWzIxZ6kVqet768xw=="],
+
+    "solid-textarea-autosize": ["solid-textarea-autosize@0.0.5", "", { "peerDependencies": { "solid-js": ">=1.0.0" } }, "sha512-le/X+VLr4G3PEE/gZuKBDNqh5e9OoNiIYIN0fSebAuOABxJIY/Eh/9rjDEMB8DbPdeD/wHIVk4Wd9zBvFFIt1A=="],
 
     "sonner": ["sonner@1.7.4", "", { "peerDependencies": { "react": "^18.0.0 || ^19.0.0 || ^19.0.0-rc", "react-dom": "^18.0.0 || ^19.0.0 || ^19.0.0-rc" } }, "sha512-DIS8z4PfJRbIyfVFDVnK9rO3eYDtse4Omcm6bt0oEr5/jtLgysmjuBl1frJ9E/EQZrFmKx2A8m/s5s9CRXIzhw=="],
 

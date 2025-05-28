@@ -2,7 +2,7 @@
   "name": "viewer",
   "private": true,
   "scripts": {
-    "dev": "dotenv -e ./.env -e ../../.env  -- next dev -p 3001",
+    "dev": "dotenv -e ./.env -e ../../.env  -- next dev -p 3003",
     "build": "dotenv -e ./.env -e ../../.env -- next build",
     "start": "dotenv -e ./.env -e ../../.env -- next start",
     "test": "dotenv -e ./.env -e ../../.env -- playwright test",

@@ -22,5 +22,7 @@ export default defineConfig((options) => [
       js: `// v${version}`,
     },
     esbuildPlugins: [solidPlugin()],
+    // fix for local development, where the builder files will go to the viewer app
+    outDir: "./../../../apps/viewer/public",
   },
 ]);
