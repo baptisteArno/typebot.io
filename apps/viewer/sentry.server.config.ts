@@ -12,6 +12,8 @@ const ignoreTrpcMessages = [
   "start group doesn't exist",
   "origin not allowed",
   "Missing credentialsId",
+  "Provided response is not valid JSON",
+  "Could not parse amount, make sure your block is configured correctly",
 ];
 
 const ignoreMessages = [
