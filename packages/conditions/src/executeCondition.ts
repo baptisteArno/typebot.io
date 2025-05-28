@@ -12,7 +12,7 @@ export const executeCondition = (
     sessionStore,
     variables,
   }: { sessionStore: SessionStore; variables: Variable[] },
-): { passed: boolean; logs?: ContinueChatResponse["logs"] } => {
+): boolean => {
   if (!condition.comparisons || condition.comparisons.length === 0)
     return false;
   return (condition.logicalOperator ?? LogicalOperator.AND) ===
