@@ -139,10 +139,6 @@ const getTypebotFromPublicId = async (publicId?: string) => {
   if (isNotDefined(publishedTypebot)) return null;
   const theme = themeSchema.parse(publishedTypebot.theme);
   const settings = settingsSchema.parse(publishedTypebot.settings);
-  if (!publishedTypebot.version) {
-    Sentry.setTag("publicId", publishedTypebot.typebot.publicId);
-    Sentry.captureMessage("Is using TypebotPageV2");
-  }
   return publishedTypebot.version
     ? {
         name: publishedTypebot.typebot.name,
@@ -197,10 +193,6 @@ const getTypebotFromCustomDomain = async (customDomain: string) => {
   if (isNotDefined(publishedTypebot)) return null;
   const theme = themeSchema.parse(publishedTypebot.theme);
   const settings = settingsSchema.parse(publishedTypebot.settings);
-  if (!publishedTypebot.version) {
-    Sentry.setTag("publicId", publishedTypebot.typebot.publicId);
-    Sentry.captureMessage("Is using TypebotPageV2");
-  }
   return publishedTypebot.version
     ? {
         name: publishedTypebot.typebot.name,
