@@ -71,8 +71,10 @@ const updateTypebotVariables = ({
   const serializedNewVariables = newVariables.map((variable) => ({
     ...variable,
     value: Array.isArray(variable.value)
-      ? variable.value.map(safeStringify)
-      : safeStringify(variable.value),
+      ? variable.value.map((value) =>
+          sanitizeNewVariableValue(safeStringify(value)),
+        )
+      : sanitizeNewVariableValue(safeStringify(variable.value)),
   }));
 
   let setVariableHistoryIndex = state.currentSetVariableHistoryIndex ?? 0;
@@ -105,4 +107,20 @@ const updateTypebotVariables = ({
     newSetVariableHistory: setVariableHistory,
     setVariableHistoryIndex,
   };
+};
+
+const sanitizeNewVariableValue = (value: string | null): string | null =>
+  value ? sanitizeString(value) : null;
+
+export const sanitizeString = (input: string): string => {
+  // 1. Replace unpaired surrogate halves with �
+  let output = input.replace(
+    /([\uD800-\uDBFF](?![\uDC00-\uDFFF]))|((?<![\uD800-\uDBFF])[\uDC00-\uDFFF])/g,
+    "�",
+  );
+
+  // 2. Escape lone backslashes that could break downstream JSON parsing
+  output = output.replace(/\\(?![\\ntbrf"'u])/g, "\\\\");
+
+  return output;
 };
