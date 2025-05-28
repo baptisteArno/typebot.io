@@ -4,6 +4,7 @@ import { OpenApiMeta } from '@lilyrose2798/trpc-openapi'
 import superjson from 'superjson'
 import * as Sentry from '@sentry/nextjs'
 import { ZodError } from 'zod'
+import tracer from 'dd-trace'
 
 const t = initTRPC
   .context<Context>()
@@ -21,6 +22,22 @@ const t = initTRPC
       }
     },
   })
+
+const datadogLoggerMiddleware = t.middleware(async ({ ctx, next }) => {
+  const span = tracer.scope().active()
+  const traceId = span?.context()?.toTraceId?.() || null
+  const spanId = span?.context()?.toSpanId?.() || null
+
+  return next({
+    ctx: {
+      ...ctx,
+      datadog: {
+        traceId,
+        spanId,
+      },
+    },
+  })
+})
 
 const sentryMiddleware = t.middleware(
   Sentry.Handlers.trpcMiddleware({
@@ -41,7 +58,9 @@ const isAuthed = t.middleware(({ next, ctx }) => {
   })
 })
 
-const finalMiddleware = sentryMiddleware.unstable_pipe(isAuthed)
+const finalMiddleware = datadogLoggerMiddleware
+  .unstable_pipe(sentryMiddleware)
+  .unstable_pipe(isAuthed)
 
 export const middleware = t.middleware
 
