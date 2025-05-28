@@ -1,5 +1,8 @@
 export type ListTableRecordsResponse = {
-  list: Array<Record<string, any>>;
+  list: Array<{
+    Id: number;
+    [key: string]: any;
+  }>;
   pageInfo: {
     totalRows: number;
     page: number;
@@ -7,4 +10,15 @@ export type ListTableRecordsResponse = {
     isFirstPage: boolean;
     isLastPage: boolean;
   };
+};
+
+// Non exhaustive list of types
+type UiDataType = "SingleLineText" | "ID" | "Email" | "LinkToAnotherRecord";
+
+export type TableMetaResponse = {
+  columns: Array<{
+    id: string;
+    title: string;
+    uidt: UiDataType;
+  }>;
 };
