@@ -16,7 +16,7 @@ export const continueChat = publicProcedure
   })
   .input(
     z.object({
-      message: messageSchema.optional(),
+      message: messageSchema.nullish(),
       sessionId: z
         .string()
         .describe(
@@ -37,7 +37,7 @@ export const continueChat = publicProcedure
         origin,
         iframeReferrerOrigin,
         sessionId,
-        message,
+        message: message ?? undefined,
         textBubbleContentFormat,
       }),
   );
