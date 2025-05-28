@@ -137,6 +137,11 @@ const components = {
       </div>
     </div>
   ),
+  Video: ({ src }: { src: string }) => (
+    <div className="w-full">
+      <video src={src} className="w-full rounded-xl" controls />
+    </div>
+  ),
   WhatsAppPricingCalculator,
   HtmlFormGenerator,
 };
