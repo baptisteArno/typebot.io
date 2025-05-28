@@ -943,10 +943,12 @@ export const safeJsonParse = (value: string): unknown => {
   }
 };
 
-const findReplyEvent = (state: SessionState): ReplyEvent | undefined =>
+const findReplyEvent = (
+  state: SessionState,
+): (ReplyEvent & { outgoingEdgeId: string }) | undefined =>
   state.typebotsQueue[0].typebot.events?.find(
-    (e) => e.type === EventType.REPLY,
-  );
+    (e) => e.type === EventType.REPLY && e.outgoingEdgeId,
+  ) as (ReplyEvent & { outgoingEdgeId: string }) | undefined;
 
 const findInvalidReplyEvent = (
   state: SessionState,

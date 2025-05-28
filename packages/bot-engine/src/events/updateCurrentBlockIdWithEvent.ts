@@ -5,7 +5,7 @@ import { addDummyFirstBlockToGroupIfMissing } from "../addDummyFirstBlockToGroup
 
 type Props = {
   state: SessionState;
-  event: TDraggableEvent;
+  event: TDraggableEvent & { outgoingEdgeId: string };
 };
 
 export const updateCurrentBlockIdWithEvent = ({ state, event }: Props) => {
@@ -14,10 +14,11 @@ export const updateCurrentBlockIdWithEvent = ({ state, event }: Props) => {
   const edge = newSessionState.typebotsQueue[0].typebot.edges.find(
     (edge) => edge.id === event.outgoingEdgeId,
   );
+
   if (!edge)
     throw new TRPCError({
       code: "BAD_REQUEST",
-      message: "Event is not connected",
+      message: `Could not find outgoing edge`,
     });
 
   newSessionState = addDummyFirstBlockToGroupIfMissing(

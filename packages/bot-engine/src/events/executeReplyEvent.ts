@@ -10,8 +10,15 @@ type Props = {
   reply: InputMessage;
 };
 
+type ReplyEventWithDefinedOutgoingEdgeId = Omit<
+  ReplyEvent,
+  "outgoingEdgeId"
+> & {
+  outgoingEdgeId: string;
+};
+
 export const executeReplyEvent = (
-  event: ReplyEvent,
+  event: ReplyEventWithDefinedOutgoingEdgeId,
   { state, reply }: Props,
 ) => {
   if (!state.currentBlockId)
