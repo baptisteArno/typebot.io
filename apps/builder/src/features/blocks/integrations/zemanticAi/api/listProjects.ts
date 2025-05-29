@@ -6,6 +6,7 @@ import { isReadWorkspaceFobidden } from '@/features/workspace/helpers/isReadWork
 import { decrypt } from '@typebot.io/lib/api/encryption/decrypt'
 import { ZemanticAiCredentials } from '@typebot.io/schemas/features/blocks/integrations/zemanticAi'
 import ky from 'ky'
+import logger from '@/helpers/logger'
 
 export const listProjects = authenticatedProcedure
   .input(
@@ -38,7 +39,7 @@ export const listProjects = authenticatedProcedure
 
     if (!workspace || isReadWorkspaceFobidden(workspace, user)) {
       const message = `No workspace found or read forbidden. workspaceId: ${workspaceId}, credentialsId: ${credentialsId}`
-      console.error(message)
+      logger.error(message)
       throw new TRPCError({
         code: 'NOT_FOUND',
         message,
@@ -49,7 +50,7 @@ export const listProjects = authenticatedProcedure
 
     if (!credentials) {
       const message = `No credentials found for workspaceId: ${workspaceId}, credentialsId: ${credentialsId}`
-      console.error(message)
+      logger.error(message)
       throw new TRPCError({
         code: 'NOT_FOUND',
         message,
@@ -85,7 +86,7 @@ export const listProjects = authenticatedProcedure
       }
     } catch (e) {
       const message = 'Could not list projects'
-      console.error(`${message}. Cause: ${e}`)
+      logger.error(`${message}. Cause: ${e}`)
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
         message,

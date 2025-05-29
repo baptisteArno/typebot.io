@@ -19,6 +19,7 @@ import { ExecuteIntegrationResponse } from '../types'
 import { byId } from '@typebot.io/lib'
 import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/constants'
 import { getCredentials } from '../queries/getCredentials'
+import logger from '@typebot.io/lib/logger'
 
 export const executeForgedBlock = async (
   state: SessionState,
@@ -42,7 +43,7 @@ export const executeForgedBlock = async (
     }
     credentials = await getCredentials(block.options.credentialsId)
     if (!credentials) {
-      console.error('Could not find credentials in database')
+      logger.error('Could not find credentials in database')
       return {
         outgoingEdgeId: block.outgoingEdgeId,
         logs: [noCredentialsError],

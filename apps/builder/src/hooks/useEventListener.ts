@@ -1,4 +1,5 @@
 import { RefObject, useEffect, useLayoutEffect, useRef } from 'react'
+import logger from '@/helpers/logger'
 
 export const useIsomorphicLayoutEffect =
   typeof window !== 'undefined' ? useLayoutEffect : useEffect
@@ -77,10 +78,10 @@ function useEventListener<
     if (!(targetElement && targetElement.addEventListener)) return
 
     if (options && typeof options !== 'boolean')
-      console.log('Add event listener', {
-        elementText: (targetElement as HTMLElement).textContent,
-        eventName,
+      logger.info('Add event listener', {
+        event: eventName,
         element: targetElement,
+        handler,
         options,
       })
     // Create event listener that calls handler function stored in ref
@@ -91,10 +92,10 @@ function useEventListener<
     // Remove event listener on cleanup
     return () => {
       if (options && typeof options !== 'boolean')
-        console.log('Remove event listener', {
-          elementText: (targetElement as HTMLElement).textContent,
-          eventName,
+        logger.info('Remove event listener', {
+          event: eventName,
           element: targetElement,
+          handler,
           options,
         })
       targetElement.removeEventListener(eventName, listener, options)

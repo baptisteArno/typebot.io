@@ -8,6 +8,7 @@ import { env } from '@typebot.io/env'
 import { encrypt } from '@typebot.io/lib/api/encryption/encrypt'
 import { OAuth2Client } from 'google-auth-library'
 import { parseGroups } from '@typebot.io/schemas'
+import logger from '@/helpers/logger'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req, res)
@@ -29,7 +30,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     )
     const { tokens } = await oauth2Client.getToken(code)
     if (!tokens?.access_token) {
-      console.error('Error getting oAuth tokens:')
+      logger.error('Error getting oAuth tokens:')
       throw new Error('ERROR')
     }
     oauth2Client.setCredentials(tokens)

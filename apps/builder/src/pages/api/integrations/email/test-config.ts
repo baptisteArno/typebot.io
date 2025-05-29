@@ -3,6 +3,7 @@ import { createTransport } from 'nodemailer'
 import { getAuthenticatedUser } from '@/features/auth/helpers/getAuthenticatedUser'
 import { notAuthenticated } from '@typebot.io/lib/api'
 import { SmtpCredentials } from '@typebot.io/schemas'
+import logger from '@/helpers/logger'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req, res)
@@ -29,7 +30,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       })
       res.status(200).send({ message: 'Email sent!', info })
     } catch (err) {
-      console.log(err)
+      logger.error(err)
       res.status(500).send(err)
     }
   }

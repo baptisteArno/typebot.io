@@ -3,6 +3,7 @@ import { ContinueChatResponse } from '@typebot.io/schemas'
 import { OpenAIBlock } from '@typebot.io/schemas/features/blocks/integrations/openai'
 import { HTTPError } from 'ky'
 import { ClientOptions, OpenAI } from 'openai'
+import logger from '@typebot.io/lib/logger'
 
 type Props = Pick<
   OpenAI.Chat.ChatCompletionCreateParams,
@@ -60,7 +61,7 @@ export const executeChatCompletionOpenAIRequest = async ({
           error.response.status === 403) &&
         !isRetrying
       ) {
-        console.log('OpenAI API error - 503, retrying in 3 seconds')
+        logger.info('OpenAI API error - 503, retrying in 3 seconds')
         await new Promise((resolve) => setTimeout(resolve, 3000))
         return executeChatCompletionOpenAIRequest({
           apiKey,

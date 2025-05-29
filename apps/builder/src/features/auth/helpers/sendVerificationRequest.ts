@@ -1,4 +1,5 @@
 import { sendMagicLinkEmail } from '@typebot.io/emails'
+import logger from '@/helpers/logger'
 
 type Props = {
   identifier: string
@@ -9,7 +10,7 @@ export const sendVerificationRequest = async ({ identifier, url }: Props) => {
   try {
     await sendMagicLinkEmail({ url, to: identifier })
   } catch (err) {
-    console.error(err)
+    logger.error(err)
     throw new Error(`Magic link email could not be sent. See error above.`)
   }
 }

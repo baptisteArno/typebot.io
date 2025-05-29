@@ -16,6 +16,7 @@ import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integr
 import { getChatCompletionStream } from '@typebot.io/bot-engine/blocks/integrations/legacy/openai/getChatCompletionStream'
 import { ChatCompletionOpenAIOptions } from '@typebot.io/schemas/features/blocks/integrations/openai/schema'
 import { isForgedBlockType } from '@typebot.io/schemas/features/blocks/forged/helpers'
+import logger from '@/helpers/logger'
 
 export const preferredRegion = 'lhr1'
 export const dynamic = 'force-dynamic'
@@ -133,7 +134,7 @@ export async function POST(req: Request) {
       ])
     ).rows.at(0) as { data: string; iv: string } | undefined
     if (!credentials) {
-      console.error('Could not find credentials in database')
+      logger.error('Could not find credentials in database')
       return
     }
     const decryptedCredentials = await decryptV2(

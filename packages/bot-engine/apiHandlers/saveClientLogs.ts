@@ -3,6 +3,7 @@ import { ChatLog } from '@typebot.io/schemas'
 import { formatLogDetails } from '../logs/helpers/formatLogDetails'
 import { getSession } from '../queries/getSession'
 import { saveLogs } from '../queries/saveLogs'
+import logger from '@typebot.io/lib/logger'
 
 type Props = {
   sessionId: string
@@ -40,7 +41,7 @@ export const saveClientLogs = async ({ sessionId, clientLogs }: Props) => {
       message: 'Logs successfully saved.',
     }
   } catch (e) {
-    console.error('Failed to save logs', e)
+    logger.error('Failed to save logs', e)
     throw new TRPCError({
       code: 'INTERNAL_SERVER_ERROR',
       message: 'Failed to save logs.',

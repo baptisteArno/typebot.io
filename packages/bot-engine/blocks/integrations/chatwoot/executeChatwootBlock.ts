@@ -6,6 +6,7 @@ import { extractVariablesFromText } from '@typebot.io/variables/extractVariables
 import { parseGuessedValueType } from '@typebot.io/variables/parseGuessedValueType'
 import { parseVariables } from '@typebot.io/variables/parseVariables'
 import { defaultChatwootOptions } from '@typebot.io/schemas/features/blocks/integrations/chatwoot/constants'
+import logger from '@typebot.io/lib/logger'
 
 const parseSetUserCode = (
   user: NonNullable<ChatwootBlock['options']>['user'],
@@ -40,7 +41,7 @@ const parseChatwootOpenCode = ({
 
   return `
   window.addEventListener("chatwoot:error", function (error) {
-    console.log(error);
+    logger.error(error);
   });
 
   if (window.$chatwoot) {${openChatwoot}}

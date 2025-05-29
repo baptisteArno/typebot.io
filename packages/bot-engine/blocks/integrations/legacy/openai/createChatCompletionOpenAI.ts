@@ -22,6 +22,7 @@ import {
   defaultOpenAIOptions,
 } from '@typebot.io/schemas/features/blocks/integrations/openai/constants'
 import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/constants'
+import logger from '@typebot.io/lib/logger'
 
 export const createChatCompletionOpenAI = async (
   state: SessionState,
@@ -53,7 +54,7 @@ export const createChatCompletionOpenAI = async (
     },
   })
   if (!credentials) {
-    console.error('Could not find credentials in database')
+    logger.error('Could not find credentials in database')
     return { outgoingEdgeId, logs: [noCredentialsError] }
   }
   const { apiKey } = (await decrypt(
@@ -127,7 +128,7 @@ export const createChatCompletionOpenAI = async (
   const messageContent = chatCompletion.choices.at(0)?.message?.content
   const totalTokens = chatCompletion.usage?.total_tokens
   if (isEmpty(messageContent)) {
-    console.error('OpenAI block returned empty message', chatCompletion.choices)
+    logger.error('OpenAI block returned empty message', chatCompletion.choices)
     return { outgoingEdgeId, newSessionState, startTimeShouldBeUpdated: true }
   }
   return {

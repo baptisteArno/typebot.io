@@ -2,6 +2,7 @@ import { getTestAsset } from '@/test/utils/playwright'
 import test, { expect } from '@playwright/test'
 import { env } from '@typebot.io/env'
 import { importTypebotInDatabase } from '@typebot.io/playwright/databaseActions'
+import logger from '@/helpers/logger'
 
 const typebotId = 'cl0ibhi7s0018n21aarlmg0cm'
 const typebotWithMergeDisabledId = 'cl0ibhi7s0018n21aarlag0cm'
@@ -25,7 +26,7 @@ test.beforeAll(async () => {
       { id: linkedTypebotId, publicId: `${linkedTypebotId}-public` }
     )
   } catch (err) {
-    console.error(err)
+    logger.error(err)
   }
 })
 
