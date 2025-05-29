@@ -1,4 +1,4 @@
-import { Textarea } from "@/components/inputs";
+import { TextInput, Textarea } from "@/components/inputs";
 import { CodeEditor } from "@/components/inputs/CodeEditor";
 import { RadioButtons } from "@/components/inputs/RadioButtons";
 import { Select } from "@/components/inputs/Select";
@@ -195,6 +195,8 @@ const SetVariableValue = ({
     if (options?.type && options.type !== "Custom") return;
     onOptionsChange({
       ...options,
+      expressionDescription:
+        radio !== "Code" ? undefined : options?.expressionDescription,
       isCode: radio === "Code",
     });
   };
@@ -204,6 +206,14 @@ const SetVariableValue = ({
     onOptionsChange({
       ...options,
       saveErrorInVariableId: variable?.id,
+    });
+  };
+
+  const updateExpressionDescription = (description: string) => {
+    if (options?.type && options.type !== "Custom") return;
+    onOptionsChange({
+      ...options,
+      expressionDescription: description,
     });
   };
 
@@ -233,7 +243,13 @@ const SetVariableValue = ({
               onSelect={updateIsCode}
             />
             {options?.isCode ? (
-              <>
+              <Stack>
+                <TextInput
+                  placeholder="Code description"
+                  defaultValue={options?.expressionDescription}
+                  onChange={updateExpressionDescription}
+                  withVariableButton={false}
+                />
                 <CodeEditor
                   defaultValue={options?.expressionToEvaluate ?? ""}
                   onChange={updateExpression}
@@ -245,7 +261,7 @@ const SetVariableValue = ({
                   initialVariableId={options.saveErrorInVariableId}
                   onSelectVariable={updateSaveErrorInVariableId}
                 />
-              </>
+              </Stack>
             ) : (
               <Textarea
                 defaultValue={options?.expressionToEvaluate ?? ""}
