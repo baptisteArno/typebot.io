@@ -17,6 +17,9 @@ import { PreviewDrawerBody } from './PreviewDrawerBody'
 import { useDrag } from '@use-gesture/react'
 import { ResizeHandle } from './ResizeHandle'
 import { useTranslate } from '@tolgee/react'
+import { RuntimeMenu } from './RuntimeMenu'
+import { emailIsCloudhumans } from '@typebot.io/lib'
+import { useUser } from '@/features/account/hooks/useUser'
 
 const preferredRuntimeKey = 'preferredRuntime'
 
@@ -29,6 +32,7 @@ const getDefaultRuntime = (typebotId?: string) => {
 }
 
 export const PreviewDrawer = () => {
+  const { user } = useUser()
   const { typebot, save, isSavingLoading } = useTypebot()
   const { t } = useTranslate()
   const { setRightPanel } = useEditor()
@@ -36,9 +40,9 @@ export const PreviewDrawer = () => {
   const [width, setWidth] = useState(500)
   const [isResizeHandleVisible, setIsResizeHandleVisible] = useState(false)
   const [restartKey, setRestartKey] = useState(0)
-  const [selectedRuntime] = useState<(typeof runtimes)[number]>(
-    getDefaultRuntime(typebot?.id)
-  )
+  const [selectedRuntime, setSelectedRuntime] = useState<
+    (typeof runtimes)[number]
+  >(getDefaultRuntime(typebot?.id))
 
   const handleRestartClick = async () => {
     await save()
@@ -59,12 +63,12 @@ export const PreviewDrawer = () => {
     }
   )
 
-  // const setPreviewRuntimeAndSaveIntoLocalStorage = (
-  //   runtime: (typeof runtimes)[number]
-  // ) => {
-  //   setSelectedRuntime(runtime)
-  //   localStorage.setItem(preferredRuntimeKey, runtime.name)
-  // }
+  const setPreviewRuntimeAndSaveIntoLocalStorage = (
+    runtime: (typeof runtimes)[number]
+  ) => {
+    setSelectedRuntime(runtime)
+    localStorage.setItem(preferredRuntimeKey, runtime.name)
+  }
 
   return (
     <Flex
@@ -94,10 +98,12 @@ export const PreviewDrawer = () => {
       <VStack w="full" spacing={4}>
         <HStack justifyContent={'space-between'} w="full">
           <HStack>
-            {/* <RuntimeMenu
-              selectedRuntime={selectedRuntime}
-              onSelectRuntime={setPreviewRuntimeAndSaveIntoLocalStorage}
-            /> */}
+            {emailIsCloudhumans(user?.email) && (
+              <RuntimeMenu
+                selectedRuntime={selectedRuntime}
+                onSelectRuntime={setPreviewRuntimeAndSaveIntoLocalStorage}
+              />
+            )}
             {selectedRuntime.name === 'Web' ? (
               <Button
                 onClick={handleRestartClick}

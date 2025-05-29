@@ -152,3 +152,7 @@ export const getAtPath = <T>(obj: T, path: string): unknown => {
 
 export const isSvgSrc = (src: string | undefined) =>
   src?.startsWith('data:image/svg') || src?.endsWith('.svg')
+
+export const emailIsCloudhumans = (email?: string | null) => {
+  return typeof email === 'string' && email.endsWith('@cloudhumans.com')
+}

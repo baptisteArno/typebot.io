@@ -4,6 +4,9 @@ import React from 'react'
 import { TextInput } from '@/components/inputs'
 import { ScriptBlock } from '@typebot.io/schemas'
 import { defaultScriptOptions } from '@typebot.io/schemas/features/blocks/logic/script/constants'
+import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
+import { useUser } from '@/features/account/hooks/useUser'
+import { emailIsCloudhumans } from '@typebot.io/lib'
 
 type Props = {
   options: ScriptBlock['options']
@@ -11,14 +14,16 @@ type Props = {
 }
 
 export const ScriptSettings = ({ options, onOptionsChange }: Props) => {
+  const { user } = useUser()
+
   const handleNameChange = (name: string) =>
     onOptionsChange({ ...options, name })
 
   const handleCodeChange = (content: string) =>
     onOptionsChange({ ...options, content })
 
-  // const updateClientExecution = (isExecutedOnClient: boolean) =>
-  //   onOptionsChange({ ...options, isExecutedOnClient })
+  const updateClientExecution = (isExecutedOnClient: boolean) =>
+    onOptionsChange({ ...options, isExecutedOnClient })
 
   return (
     <Stack spacing={4}>
@@ -35,15 +40,17 @@ export const ScriptSettings = ({ options, onOptionsChange }: Props) => {
           lang="javascript"
           onChange={handleCodeChange}
         />
-        {/* <SwitchWithLabel
-          label="Execute on client?"
-          moreInfoContent="Check this if you need access to client variables like `window` or `document`."
-          initialValue={
-            options?.isExecutedOnClient ??
-            defaultScriptOptions.isExecutedOnClient
-          }
-          onCheckChange={updateClientExecution}
-        /> */}
+        {emailIsCloudhumans(user?.email) && (
+          <SwitchWithLabel
+            label="Execute on client?"
+            moreInfoContent="Check this if you need access to client variables like `window` or `document`."
+            initialValue={
+              options?.isExecutedOnClient ??
+              defaultScriptOptions.isExecutedOnClient
+            }
+            onCheckChange={updateClientExecution}
+          />
+        )}
       </Stack>
     </Stack>
   )
