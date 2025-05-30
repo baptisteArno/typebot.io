@@ -49,6 +49,17 @@ const processMessage = (
   if (data.redirectUrl) window.open(data.redirectUrl);
   if (data.newVariableValue && callbacks.onNewVariableValue)
     callbacks.onNewVariableValue(data.newVariableValue);
-  if (data.codeToExecute) Function(data.codeToExecute)();
+  if (data.codeToExecute) {
+    const allowedCommands: { [key: string]: () => void } = {
+      exampleCommand: () => console.log("Executing exampleCommand"),
+      anotherCommand: () => alert("Executing anotherCommand"),
+    };
+    const executeCommand = allowedCommands[data.codeToExecute];
+    if (executeCommand) {
+      executeCommand();
+    } else {
+      console.warn(`Unrecognized command: ${data.codeToExecute}`);
+    }
+  }
   if (data.closeChatBubble) close();
 };
