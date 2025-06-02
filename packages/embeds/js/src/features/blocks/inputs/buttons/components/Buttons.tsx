@@ -72,7 +72,7 @@ export const Buttons = (props: Props) => {
 
       <div
         class={cx(
-          "flex justify-end gap-2 w-full",
+          "flex justify-end gap-2 w-full @xs:w-auto",
           props.options?.isSearchable &&
             "overflow-y-scroll max-h-80 rounded-md",
         )}
@@ -80,12 +80,7 @@ export const Buttons = (props: Props) => {
       >
         <For each={filteredItems()}>
           {(item, index) => (
-            <span
-              class={cx(
-                "relative",
-                filteredItems().length > 2 && "w-full @xs:w-auto",
-              )}
-            >
+            <span class="relative">
               <Button
                 on:click={() => handleClick(index())}
                 data-itemid={item.id}
