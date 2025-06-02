@@ -8,12 +8,14 @@ export class SessionStore {
   private emailSendingCount: number;
   private prevHash: string | undefined;
   private createdAt: Date;
+  private variableStore: Record<string, any>;
 
   constructor() {
     this.isolate = undefined;
     this.emailSendingCount = 0;
     this.prevHash = undefined;
     this.createdAt = new Date();
+    this.variableStore = {};
   }
 
   getEmailSendingCount(): number {
@@ -46,6 +48,14 @@ export class SessionStore {
 
   getCreatedAt(): Date {
     return this.createdAt;
+  }
+
+  setVariable(name: string, value: any): void {
+    this.variableStore[name] = value;
+  }
+
+  getVariable(name: string): any {
+    return this.variableStore[name];
   }
 }
 
