@@ -1246,9 +1246,6 @@
                                                           ]
                                                         }
                                                       },
-                                                      "isAdvancedConfig": {
-                                                        "type": "boolean"
-                                                      },
                                                       "isCustomBody": {
                                                         "type": "boolean"
                                                       },
@@ -1399,9 +1396,6 @@
                                                             "id"
                                                           ]
                                                         }
-                                                      },
-                                                      "isAdvancedConfig": {
-                                                        "type": "boolean"
                                                       },
                                                       "isCustomBody": {
                                                         "type": "boolean"
@@ -1555,9 +1549,6 @@
                                                           ]
                                                         }
                                                       },
-                                                      "isAdvancedConfig": {
-                                                        "type": "boolean"
-                                                      },
                                                       "isCustomBody": {
                                                         "type": "boolean"
                                                       },
@@ -1708,9 +1699,6 @@
                                                             "id"
                                                           ]
                                                         }
-                                                      },
-                                                      "isAdvancedConfig": {
-                                                        "type": "boolean"
                                                       },
                                                       "isCustomBody": {
                                                         "type": "boolean"
@@ -5391,9 +5379,6 @@
                                                       ]
                                                     }
                                                   },
-                                                  "isAdvancedConfig": {
-                                                    "type": "boolean"
-                                                  },
                                                   "isCustomBody": {
                                                     "type": "boolean"
                                                   },
@@ -5544,9 +5529,6 @@
                                                         "id"
                                                       ]
                                                     }
-                                                  },
-                                                  "isAdvancedConfig": {
-                                                    "type": "boolean"
                                                   },
                                                   "isCustomBody": {
                                                     "type": "boolean"
@@ -5700,9 +5682,6 @@
                                                       ]
                                                     }
                                                   },
-                                                  "isAdvancedConfig": {
-                                                    "type": "boolean"
-                                                  },
                                                   "isCustomBody": {
                                                     "type": "boolean"
                                                   },
@@ -5853,9 +5832,6 @@
                                                         "id"
                                                       ]
                                                     }
-                                                  },
-                                                  "isAdvancedConfig": {
-                                                    "type": "boolean"
                                                   },
                                                   "isCustomBody": {
                                                     "type": "boolean"
@@ -8373,9 +8349,6 @@
                                                       ]
                                                     }
                                                   },
-                                                  "isAdvancedConfig": {
-                                                    "type": "boolean"
-                                                  },
                                                   "isCustomBody": {
                                                     "type": "boolean"
                                                   },
@@ -8526,9 +8499,6 @@
                                                         "id"
                                                       ]
                                                     }
-                                                  },
-                                                  "isAdvancedConfig": {
-                                                    "type": "boolean"
                                                   },
                                                   "isCustomBody": {
                                                     "type": "boolean"
@@ -8682,9 +8652,6 @@
                                                       ]
                                                     }
                                                   },
-                                                  "isAdvancedConfig": {
-                                                    "type": "boolean"
-                                                  },
                                                   "isCustomBody": {
                                                     "type": "boolean"
                                                   },
@@ -8835,9 +8802,6 @@
                                                         "id"
                                                       ]
                                                     }
-                                                  },
-                                                  "isAdvancedConfig": {
-                                                    "type": "boolean"
                                                   },
                                                   "isCustomBody": {
                                                     "type": "boolean"
@@ -16781,9 +16745,6 @@
                                 ]
                               }
                             },
-                            "isAdvancedConfig": {
-                              "type": "boolean"
-                            },
                             "isCustomBody": {
                               "type": "boolean"
                             },
@@ -17829,9 +17790,6 @@
                   ]
                 }
               },
-              "isAdvancedConfig": {
-                "type": "boolean"
-              },
               "isCustomBody": {
                 "type": "boolean"
               },
@@ -17979,9 +17937,6 @@
                   ]
                 }
               },
-              "isAdvancedConfig": {
-                "type": "boolean"
-              },
               "isCustomBody": {
                 "type": "boolean"
               },
@@ -18062,9 +18017,6 @@
                     "id"
                   ]
                 }
-              },
-              "isAdvancedConfig": {
-                "type": "boolean"
               },
               "isCustomBody": {
                 "type": "boolean"
@@ -25239,9 +25191,6 @@
                                       ]
                                     }
                                   },
-                                  "isAdvancedConfig": {
-                                    "type": "boolean"
-                                  },
                                   "isCustomBody": {
                                     "type": "boolean"
                                   },
@@ -25392,9 +25341,6 @@
                                         "id"
                                       ]
                                     }
-                                  },
-                                  "isAdvancedConfig": {
-                                    "type": "boolean"
                                   },
                                   "isCustomBody": {
                                     "type": "boolean"
@@ -25548,9 +25494,6 @@
                                       ]
                                     }
                                   },
-                                  "isAdvancedConfig": {
-                                    "type": "boolean"
-                                  },
                                   "isCustomBody": {
                                     "type": "boolean"
                                   },
@@ -25701,9 +25644,6 @@
                                         "id"
                                       ]
                                     }
-                                  },
-                                  "isAdvancedConfig": {
-                                    "type": "boolean"
                                   },
                                   "isCustomBody": {
                                     "type": "boolean"
@@ -27572,9 +27512,6 @@
                                       ]
                                     }
                                   },
-                                  "isAdvancedConfig": {
-                                    "type": "boolean"
-                                  },
                                   "isCustomBody": {
                                     "type": "boolean"
                                   },
@@ -27725,9 +27662,6 @@
                                         "id"
                                       ]
                                     }
-                                  },
-                                  "isAdvancedConfig": {
-                                    "type": "boolean"
                                   },
                                   "isCustomBody": {
                                     "type": "boolean"
@@ -27881,9 +27815,6 @@
                                       ]
                                     }
                                   },
-                                  "isAdvancedConfig": {
-                                    "type": "boolean"
-                                  },
                                   "isCustomBody": {
                                     "type": "boolean"
                                   },
@@ -28034,9 +27965,6 @@
                                         "id"
                                       ]
                                     }
-                                  },
-                                  "isAdvancedConfig": {
-                                    "type": "boolean"
                                   },
                                   "isCustomBody": {
                                     "type": "boolean"
