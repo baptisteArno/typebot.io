@@ -68,7 +68,7 @@ export const InputChatBlock = (props: Props) => {
       </Match>
       <Match when={isNotDefined(props.input.answer) || props.hasError}>
         <div
-          class="flex justify-end animate-fade-in gap-1 @sm:gap-2 typebot-input-container"
+          class="flex justify-end animate-fade-in gap-1 @xs:gap-2 typebot-input-container"
           data-blockid={props.input.id}
           ref={props.ref}
         >
@@ -78,7 +78,7 @@ export const InputChatBlock = (props: Props) => {
               defaultHostAvatarIsEnabled
             }
           >
-            <div class="flex flex-shrink-0 items-center w-6 h-6 @sm:w-10 @sm:h-10" />
+            <div class="flex flex-shrink-0 items-center w-6 h-6 @xs:w-10 @xs:h-10" />
           </Show>
           <Input
             context={props.context}

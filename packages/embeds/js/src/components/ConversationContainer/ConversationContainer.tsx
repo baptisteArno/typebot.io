@@ -500,13 +500,10 @@ export const ConversationContainer = (props: Props) => {
       <div
         ref={chatContainer}
         class={cx(
-          "overflow-y-auto relative scrollable-container typebot-chat-view scroll-smooth w-full min-h-full flex flex-col items-center @sm:px-5 @sm:min-h-chat-container @sm:max-h-chat-container @sm:rounded-chat-container",
-          (props.initialChatReply.typebot.theme.chat?.container
-            ?.backgroundColor ?? defaultContainerBackgroundColor) !==
-            "transparent" && "max-w-chat-container",
+          "@container overflow-y-auto relative scrollable-container typebot-chat-view scroll-smooth w-full min-h-full flex flex-col items-center @xs:min-h-chat-container @xs:max-h-chat-container @xs:rounded-chat-container max-w-chat-container pt-5",
         )}
       >
-        <div class="max-w-chat-container w-full flex flex-col gap-2">
+        <div class="w-full flex flex-col gap-2 @xs:px-5 px-3">
           <Show when={isReadyToShowFirstChunk()}>
             <Index each={chatChunks()}>
               {(chunk, index) => (

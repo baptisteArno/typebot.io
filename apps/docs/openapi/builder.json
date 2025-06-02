@@ -15417,10 +15417,45 @@
                   "isCode": {
                     "type": "boolean"
                   },
+                  "expressionDescription": {
+                    "type": "string"
+                  },
                   "saveErrorInVariableId": {
                     "type": "string"
                   }
                 }
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "variableId": {
+                    "type": "string"
+                  },
+                  "isExecutedOnClient": {
+                    "type": "boolean"
+                  },
+                  "expressionToEvaluate": {
+                    "type": "string"
+                  },
+                  "isCode": {
+                    "type": "boolean"
+                  },
+                  "expressionDescription": {
+                    "type": "string"
+                  },
+                  "saveErrorInVariableId": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "Custom"
+                    ]
+                  }
+                },
+                "required": [
+                  "type"
+                ]
               },
               {
                 "type": "object",
@@ -15473,35 +15508,6 @@
                       "Referral Source ID",
                       "Device type"
                     ]
-                  }
-                },
-                "required": [
-                  "type"
-                ]
-              },
-              {
-                "type": "object",
-                "properties": {
-                  "variableId": {
-                    "type": "string"
-                  },
-                  "isExecutedOnClient": {
-                    "type": "boolean"
-                  },
-                  "type": {
-                    "type": "string",
-                    "enum": [
-                      "Custom"
-                    ]
-                  },
-                  "expressionToEvaluate": {
-                    "type": "string"
-                  },
-                  "isCode": {
-                    "type": "boolean"
-                  },
-                  "saveErrorInVariableId": {
-                    "type": "string"
                   }
                 },
                 "required": [

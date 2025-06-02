@@ -84,7 +84,7 @@ export const ChatChunk = (props: Props) => {
   return (
     <div class="flex flex-col w-full min-w-0 gap-2 typebot-chat-chunk">
       <Show when={props.messages.length > 0}>
-        <div class="flex gap-1 @sm:gap-2">
+        <div class="flex gap-1 @xs:gap-2">
           <Show
             when={
               (props.theme.chat?.hostAvatar?.isEnabled ??
@@ -156,7 +156,7 @@ export const ChatChunk = (props: Props) => {
         />
       </Show>
       <Show when={props.streamingMessage}>
-        <div class="flex gap-1 @sm:gap-2">
+        <div class="flex gap-1 @xs:gap-2">
           <Show
             when={
               props.theme.chat?.hostAvatar?.isEnabled ??

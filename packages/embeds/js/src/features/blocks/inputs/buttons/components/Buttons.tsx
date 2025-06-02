@@ -83,7 +83,7 @@ export const Buttons = (props: Props) => {
             <span
               class={cx(
                 "relative",
-                filteredItems().length > 2 && "w-full @sm:w-auto",
+                filteredItems().length > 2 && "w-full @xs:w-auto",
               )}
             >
               <Button

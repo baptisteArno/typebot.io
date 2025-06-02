@@ -129,7 +129,6 @@ pre {
 }
 
 .typebot-chat-view {
-  @apply pt-5 px-3;
   background-color: rgba(
     var(--typebot-chat-container-bg-rgb),
     var(--typebot-chat-container-opacity)

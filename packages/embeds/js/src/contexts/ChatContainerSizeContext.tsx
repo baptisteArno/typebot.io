@@ -1,3 +1,5 @@
+import { chatContainerBreakpoints } from "@/constants";
+import type { ChatContainerSize } from "@/constants";
 import {
   type Accessor,
   createContext,
@@ -7,12 +9,11 @@ import {
   useContext,
 } from "solid-js";
 
-export type ContainerSize = "sm" | "md" | "lg";
 const DEFAULT_CONTAINER_SIZE = "lg" as const;
 
-export const ChatContainerSizeContext = createContext<Accessor<ContainerSize>>(
-  () => DEFAULT_CONTAINER_SIZE,
-);
+export const ChatContainerSizeContext = createContext<
+  Accessor<ChatContainerSize>
+>(() => DEFAULT_CONTAINER_SIZE);
 
 export const useChatContainerSize = () => useContext(ChatContainerSizeContext);
 
@@ -21,8 +22,9 @@ export const useChatContainerSize = () => useContext(ChatContainerSizeContext);
  */
 export const createChatContainerProviderValue = (
   containerAccessor: Accessor<HTMLDivElement | undefined>,
-): Accessor<ContainerSize> => {
-  const [containerSize, setContainerSize] = createSignal<ContainerSize>("lg");
+): Accessor<ChatContainerSize> => {
+  const [containerSize, setContainerSize] =
+    createSignal<ChatContainerSize>("lg");
 
   const resizeObserver = new ResizeObserver(() => {
     const container = containerAccessor();
@@ -49,9 +51,11 @@ export const createChatContainerProviderValue = (
   return containerSize;
 };
 
-const getContainerSize = (container: HTMLDivElement): ContainerSize => {
+const getContainerSize = (container: HTMLDivElement): ChatContainerSize => {
   const width = container.clientWidth;
-  if (width < 432) return "sm";
-  if (width < 550) return "md";
-  return "lg";
+  if (width < chatContainerBreakpoints.xs) return "xs";
+  if (width < chatContainerBreakpoints.sm) return "sm";
+  if (width < chatContainerBreakpoints.md) return "md";
+  if (width < chatContainerBreakpoints.lg) return "lg";
+  return "xl";
 };
