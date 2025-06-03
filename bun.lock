@@ -600,7 +600,7 @@
     },
     "packages/embeds/js": {
       "name": "@typebot.io/js",
-      "version": "0.7.3",
+      "version": "0.8.1",
       "devDependencies": {
         "@ai-sdk/ui-utils": "1.2.2",
         "@ark-ui/solid": "5.11.0",
@@ -638,7 +638,7 @@
     },
     "packages/embeds/react": {
       "name": "@typebot.io/react",
-      "version": "0.7.3",
+      "version": "0.8.1",
       "dependencies": {
         "@typebot.io/js": "workspace:*",
         "react": "18.3.1",
@@ -659,7 +659,6 @@
         "@typebot.io/blocks-bubbles": "workspace:*",
         "@typebot.io/blocks-inputs": "workspace:*",
         "@typebot.io/blocks-logic": "workspace:*",
-        "@typebot.io/bot-engine": "workspace:*",
         "@typebot.io/chat-api": "workspace:*",
         "@typebot.io/conditions": "workspace:*",
         "@typebot.io/react": "workspace:*",
