@@ -17,7 +17,7 @@ jobs:
       NEXTAUTH_URL: "${{ secrets.NEXTAUTH_URL }}"
       NEXT_PUBLIC_VIEWER_URL: "${{ secrets.NEXT_PUBLIC_VIEWER_URL }}"
       NEXT_PUBLIC_POSTHOG_KEY: "${{ secrets.NEXT_PUBLIC_POSTHOG_KEY }}"
-      NEXT_PUBLIC_POSTHOG_HOST: "${{ secrets.NEXT_PUBLIC_POSTHOG_HOST }}"
+      POSTHOG_API_HOST: "${{ secrets.POSTHOG_API_HOST }}"
       SMTP_USERNAME: "${{ secrets.SMTP_USERNAME }}"
       SMTP_PASSWORD: "${{ secrets.SMTP_PASSWORD }}"
       SMTP_HOST: "${{ secrets.SMTP_HOST }}"

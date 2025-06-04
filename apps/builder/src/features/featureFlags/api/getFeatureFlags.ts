@@ -12,7 +12,7 @@ export const getFeatureFlags = authenticatedProcedure
   .query(async ({ ctx: { user } }) => {
     if (!env.NEXT_PUBLIC_POSTHOG_KEY) return { flags: {} };
     const client = new PostHog(env.NEXT_PUBLIC_POSTHOG_KEY, {
-      host: env.NEXT_PUBLIC_POSTHOG_HOST,
+      host: env.POSTHOG_API_HOST,
     });
     return { flags: await client.getAllFlags(user.id) };
   });

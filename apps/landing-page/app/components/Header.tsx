@@ -2,6 +2,7 @@ import { IconButton } from "@/components/IconButton";
 import { TypebotLogoFull } from "@/components/TypebotLogo";
 import {
   breakpoints,
+  dashboardUrl,
   discordUrl,
   docsUrl,
   githubRepoUrl,
@@ -9,6 +10,7 @@ import {
   signinUrl,
 } from "@/constants";
 import { useWindowSize } from "@/features/homepage/hooks/useWindowSize";
+import { useIsAuthenticated } from "@/hooks/useIsAuthenticated";
 import { Link, useLocation, useRouter } from "@tanstack/react-router";
 import { Bubble } from "@typebot.io/react";
 import { buttonVariants } from "@typebot.io/ui/components/Button";
@@ -233,6 +235,7 @@ const Desktop = React.forwardRef<
   const [isScrolled, setIsScrolled] = useState(false);
   const [isChatBubbleMounted, setIsChatBubbleMounted] = useState(true);
   const [isIntersecting, setIsIntersecting] = useState(false);
+  const isAuthenticated = useIsAuthenticated();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -295,9 +298,15 @@ const Desktop = React.forwardRef<
             {link.label}
           </ButtonLink>
         ))}
-        <ButtonLink variant="cta" size="sm" href={registerUrl}>
-          Get started free
-        </ButtonLink>
+        {isAuthenticated ? (
+          <ButtonLink variant="cta" size="sm" href={dashboardUrl}>
+            Go to dashboard
+          </ButtonLink>
+        ) : (
+          <ButtonLink variant="cta" size="sm" href={registerUrl}>
+            Get started free
+          </ButtonLink>
+        )}
       </nav>
       {isChatBubbleMounted && pathname === "/" && (
         <div

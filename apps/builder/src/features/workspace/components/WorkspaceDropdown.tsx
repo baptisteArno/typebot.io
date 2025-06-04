@@ -22,6 +22,7 @@ import type { WorkspaceInApp } from "../WorkspaceProvider";
 
 type Props = {
   currentWorkspace?: WorkspaceInApp;
+  isLoggingOut: boolean;
   onWorkspaceSelected: (workspaceId: string) => void;
   onCreateNewWorkspaceClick: () => void;
   onLogoutClick: () => void;
@@ -29,6 +30,7 @@ type Props = {
 
 export const WorkspaceDropdown = ({
   currentWorkspace,
+  isLoggingOut,
   onWorkspaceSelected,
   onLogoutClick,
   onCreateNewWorkspaceClick,
@@ -42,7 +44,7 @@ export const WorkspaceDropdown = ({
     <Menu placement="bottom-end">
       <MenuButton as={Button} variant="outline" px="2">
         <HStack>
-          {currentWorkspace && (
+          {!isLoggingOut && currentWorkspace && (
             <>
               <Text isTruncated maxW="300px">
                 {currentWorkspace.name}

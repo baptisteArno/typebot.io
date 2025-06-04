@@ -406,15 +406,17 @@ const telemetryEnv = {
 const posthogEnv = {
   client: {
     NEXT_PUBLIC_POSTHOG_KEY: z.string().min(1).optional(),
-    NEXT_PUBLIC_POSTHOG_HOST: z
-      .string()
-      .min(1)
-      .optional()
-      .default("https://app.posthog.com"),
+  },
+  server: {
+    POSTHOG_API_HOST: z.preprocess((val) => {
+      if (val) return val;
+      return process.env.POSTHOG_API_HOST;
+    }, z.string().url().optional().default("https://us.posthog.com")),
+    POSTHOG_PERSONAL_API_KEY: z.string().min(1).optional(),
+    POSTHOG_PROJECT_ID: z.string().min(1).optional(),
   },
   runtimeEnv: {
     NEXT_PUBLIC_POSTHOG_KEY: getRuntimeVariable("NEXT_PUBLIC_POSTHOG_KEY"),
-    NEXT_PUBLIC_POSTHOG_HOST: getRuntimeVariable("NEXT_PUBLIC_POSTHOG_HOST"),
   },
 };
 
@@ -475,6 +477,7 @@ export const env = createEnv({
     ...sentryEnv.server,
     ...telemetryEnv.server,
     ...keycloakEnv.server,
+    ...posthogEnv.server,
   },
   client: {
     ...baseEnv.client,
