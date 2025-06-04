@@ -19,4 +19,5 @@ export const mockedUser: User = {
   referral: null,
   groupTitlesAutoGeneration: null,
   preferredLanguage: null,
+  termsAcceptedAt: new Date("2022-01-01"),
 };

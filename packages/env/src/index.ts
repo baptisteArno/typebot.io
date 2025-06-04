@@ -123,8 +123,6 @@ const baseEnv = {
       .string()
       .optional()
       .default("The bot you're looking for doesn't exist"),
-    NEXT_PUBLIC_TERMS_OF_SERVICE_URL: z.string().url().optional(),
-    NEXT_PUBLIC_PRIVACY_POLICY_URL: z.string().url().optional(),
   },
   runtimeEnv: {
     NEXT_PUBLIC_E2E_TEST: getRuntimeVariable("NEXT_PUBLIC_E2E_TEST"),
@@ -144,12 +142,6 @@ const baseEnv = {
     ),
     NEXT_PUBLIC_VIEWER_404_SUBTITLE: getRuntimeVariable(
       "NEXT_PUBLIC_VIEWER_404_SUBTITLE",
-    ),
-    NEXT_PUBLIC_TERMS_OF_SERVICE_URL: getRuntimeVariable(
-      "NEXT_PUBLIC_TERMS_OF_SERVICE_URL",
-    ),
-    NEXT_PUBLIC_PRIVACY_POLICY_URL: getRuntimeVariable(
-      "NEXT_PUBLIC_PRIVACY_POLICY_URL",
     ),
   },
 };

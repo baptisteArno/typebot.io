@@ -12,3 +12,8 @@
 .chakra-popover__popper {
   z-index: auto !important;
 }
+
+/* Offset top position so that it is right below onboarding header */
+typebot-standard::part(progress-bar-container) {
+  top: 55px;
+}

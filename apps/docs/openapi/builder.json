@@ -13953,7 +13953,7 @@
         }
       }
     },
-    "/v1/user": {
+    "/v1/users/me": {
       "patch": {
         "operationId": "user-update",
         "tags": [
@@ -14034,6 +14034,10 @@
                         "nullable": true
                       },
                       "preferredLanguage": {
+                        "type": "string",
+                        "nullable": true
+                      },
+                      "referral": {
                         "type": "string",
                         "nullable": true
                       }

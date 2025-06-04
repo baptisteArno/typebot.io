@@ -61,6 +61,7 @@ model User {
   credentials                 UserCredentials[]
   groupTitlesAutoGeneration   Json?
   preferredLanguage           String?
+  termsAcceptedAt             DateTime?
 }
 
 model ApiToken {
