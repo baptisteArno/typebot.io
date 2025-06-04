@@ -49,6 +49,7 @@ export const clientUserSchema = userSchema.pick({
   displayedInAppNotifications: true,
   groupTitlesAutoGeneration: true,
   preferredLanguage: true,
+  termsAcceptedAt: true,
 });
 export type ClientUser = z.infer<typeof clientUserSchema>;
 

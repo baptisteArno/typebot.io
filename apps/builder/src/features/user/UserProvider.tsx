@@ -1,3 +1,4 @@
+import { datesAreOnSameDay } from "@/helpers/datesAreOnSameDate";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useColorMode } from "@chakra-ui/react";
 import { isDefined } from "@typebot.io/lib/utils";
@@ -81,7 +82,15 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
               }
             : undefined,
       });
-  }, [router.isReady, router.pathname, status]);
+    if (
+      !router.pathname.includes("/onboarding") &&
+      !session?.user.termsAcceptedAt &&
+      session?.user.createdAt &&
+      datesAreOnSameDay(new Date(session.user.createdAt), new Date())
+    ) {
+      router.replace("/onboarding");
+    }
+  }, [router.isReady, router.pathname, status, session?.user.termsAcceptedAt]);
 
   useEffect(() => {
     if (!router.isReady) return;
