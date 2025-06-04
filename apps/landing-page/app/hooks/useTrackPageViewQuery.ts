@@ -51,5 +51,30 @@ const getPageViewBodyProps = () => {
     utm_campaign:
       new URLSearchParams(window.location.search).get("utm_campaign") ??
       undefined,
+    device_type: detectDeviceType(navigator.userAgent),
   } satisfies z.infer<typeof trackPageViewBodySchema>;
+};
+
+const detectDeviceType = (
+  userAgent: string,
+): "Desktop" | "Mobile" | "Tablet" | undefined => {
+  const ua = userAgent.toLowerCase();
+
+  if (
+    ua.includes("iphone") ||
+    (ua.includes("android") && ua.includes("mobile"))
+  )
+    return "Mobile";
+
+  if (ua.includes("ipad") || (ua.includes("android") && !ua.includes("mobile")))
+    return "Tablet";
+
+  if (
+    ua.includes("macintosh") ||
+    ua.includes("windows") ||
+    ua.includes("linux")
+  )
+    return "Desktop";
+
+  return undefined;
 };

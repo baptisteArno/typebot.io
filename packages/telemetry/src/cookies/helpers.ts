@@ -1,3 +1,4 @@
+import { env } from "@typebot.io/env";
 import { createId, createUUIDv7 } from "@typebot.io/lib/createId";
 import { parse, serialize } from "cookie";
 import {
@@ -74,6 +75,15 @@ export const resetCookie = (cookie: TypebotCookieValue): TypebotCookieValue => {
 export const serializeTypebotCookie = (value: TypebotCookieValue): string =>
   serialize(TYPEBOT_COOKIE_NAME, JSON.stringify(value), {
     maxAge: COOKIE_EXPIRATION,
-    domain: DEFAULT_COOKIE_DOMAIN,
+    domain: getCookieDomain(),
     path: "/" as const,
   });
+
+const getCookieDomain = () => {
+  if (
+    typeof window === "undefined" &&
+    env.LANDING_PAGE_URL?.includes("localhost")
+  )
+    return "localhost";
+  return DEFAULT_COOKIE_DOMAIN;
+};

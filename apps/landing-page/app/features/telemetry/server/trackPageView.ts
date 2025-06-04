@@ -23,6 +23,7 @@ export const trackPageViewBodySchema = z.object({
   utm_source: z.string().optional(),
   utm_medium: z.string().optional(),
   utm_campaign: z.string().optional(),
+  device_type: z.enum(["Desktop", "Mobile", "Tablet"]).optional(),
 });
 
 export const trackPageView = createServerFn({
@@ -32,12 +33,12 @@ export const trackPageView = createServerFn({
   .validator(trackPageViewBodySchema)
   .handler(async (ctx) => {
     if (!env.LANDING_PAGE_URL || !env.NEXT_PUBLIC_POSTHOG_KEY)
-      return new Response("OK", { status: 200 });
+      return new Response("NO ENV, SKIPPING...", { status: 200 });
 
     const headers = getHeaders();
 
     if (isBot(headers["user-agent"]))
-      return new Response("BOT OK", { status: 200 });
+      return new Response("BOT, SKIPPING...", { status: 200 });
 
     let typebotCookie = getTypebotCookie(parseCookies());
 
@@ -73,9 +74,10 @@ export const trackPageView = createServerFn({
             }
           })(),
           $process_person_profile: false,
-          $utm_source: ctx.data.utm_source || undefined,
-          $utm_medium: ctx.data.utm_medium || undefined,
-          $utm_campaign: ctx.data.utm_campaign || undefined,
+          $utm_source: ctx.data.utm_source,
+          $utm_medium: ctx.data.utm_medium,
+          $utm_campaign: ctx.data.utm_campaign,
+          $device_type: ctx.data.device_type,
         },
       },
     ]);
