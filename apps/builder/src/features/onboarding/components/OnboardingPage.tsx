@@ -18,11 +18,6 @@ export const OnboardingPage = () => {
   const [pendingCategories, setPendingCategories] = useState<string[]>([]);
   const [canSkipOnboarding, setCanSkipOnboarding] = useState(false);
 
-  const isNewUser =
-    user &&
-    new Date(user.createdAt as unknown as string).toDateString() ===
-      new Date().toDateString();
-
   const acceptTermsMutation = useAcceptTermsMutation({
     onSuccess: () => {
       setCanSkipOnboarding(true);
@@ -35,9 +30,9 @@ export const OnboardingPage = () => {
 
   useEffect(() => {
     if (!user?.createdAt) return;
-    if (isNewUser === false || !env.NEXT_PUBLIC_ONBOARDING_TYPEBOT_ID)
+    if (!env.NEXT_PUBLIC_ONBOARDING_TYPEBOT_ID)
       replace({ pathname: "/typebots", query });
-  }, [isNewUser, query, replace, user?.createdAt]);
+  }, [query, replace, user?.createdAt]);
 
   const initConfettis = () => {
     if (!confettiCanvaContainer.current || confettiCanon.current) return;
@@ -98,7 +93,7 @@ export const OnboardingPage = () => {
     }, 2000);
   };
 
-  if (!isNewUser) return null;
+  if (!env.NEXT_PUBLIC_ONBOARDING_TYPEBOT_ID) return null;
   return (
     <VStack h="100vh" flexDir="column" justifyContent="center" spacing={0}>
       <HStack
