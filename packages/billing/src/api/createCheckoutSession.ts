@@ -1,7 +1,7 @@
 import { TRPCError } from "@trpc/server";
 import { env } from "@typebot.io/env";
 import prisma from "@typebot.io/prisma";
-import type { User } from "@typebot.io/schemas/features/user/schema";
+import type { User } from "@typebot.io/user/schemas";
 import { isAdminWriteWorkspaceForbidden } from "@typebot.io/workspaces/isAdminWriteWorkspaceForbidden";
 import Stripe from "stripe";
 import { createCheckoutSessionUrl } from "../helpers/createCheckoutSessionUrl";

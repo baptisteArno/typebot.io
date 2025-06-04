@@ -25,20 +25,7 @@ export const workspaceInvitationSchema = z.object({
   Omit<Prisma.WorkspaceInvitation, "workspaceId" | "userId" | "id">
 >;
 
-export const groupTitlesAutoGenerationSchema = z.object({
-  isEnabled: z.boolean().optional(),
-  provider: z.string().optional(),
-  credentialsId: z.string().optional(),
-  model: z.string().optional(),
-  prompt: z.string().optional(),
-});
-export type GroupTitlesAutoGeneration = z.infer<
-  typeof groupTitlesAutoGenerationSchema
->;
-
-const workspaceSettingsSchema = z.object({
-  groupTitlesAutoGeneration: groupTitlesAutoGenerationSchema.optional(),
-});
+const workspaceSettingsSchema = z.object({});
 
 export const workspaceSchema = z.object({
   id: z.string(),

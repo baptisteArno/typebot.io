@@ -1,6 +1,7 @@
 import { UploadButton } from "@/components/ImageUploadContent/UploadButton";
 import { UploadIcon } from "@/components/icons";
 import { TextInput } from "@/components/inputs/TextInput";
+import { refreshSessionUser } from "@/features/auth/helpers/refreshSessionUser";
 import { toast } from "@/lib/toast";
 import { trpc } from "@/lib/trpc";
 import {
@@ -18,7 +19,6 @@ import {
 import { useTranslate } from "@tolgee/react";
 import type React from "react";
 import { useState } from "react";
-import { refreshUser } from "../UserProvider";
 import { useUser } from "../hooks/useUser";
 import { ApiTokensList } from "./ApiTokensList";
 
@@ -130,7 +130,7 @@ const ChangeEmailModal = ({
       });
     },
     onSuccess: () => {
-      refreshUser();
+      refreshSessionUser();
       onClose(newEmail);
     },
   });

@@ -1,6 +1,6 @@
 import { useDisclosure } from "@chakra-ui/react";
 import type { ForgedBlockDefinition } from "@typebot.io/forge-repository/definitions";
-import type { User } from "@typebot.io/schemas/features/user/schema";
+import type { User } from "@typebot.io/user/schemas";
 import { useEffect, useState } from "react";
 import { onboardingVideos } from "../data";
 

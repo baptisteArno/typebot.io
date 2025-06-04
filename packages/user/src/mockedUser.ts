@@ -1,4 +1,4 @@
-import type { User } from "@typebot.io/schemas/features/user/schema";
+import type { User } from "./schemas";
 
 export const mockedUser: User = {
   id: "userId",

@@ -3,7 +3,7 @@ import {
   authHandlers,
 } from "@/features/auth/lib/nextAuth";
 import { env } from "@typebot.io/env";
-import { mockedUser } from "@typebot.io/lib/mockedUser";
+import { mockedUser } from "@typebot.io/user/mockedUser";
 import { type NextRequest, NextResponse } from "next/server";
 
 export const GET = async (req: NextRequest) => {

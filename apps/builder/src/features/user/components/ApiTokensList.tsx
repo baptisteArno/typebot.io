@@ -20,7 +20,7 @@ import {
 } from "@chakra-ui/react";
 import { T, useTranslate } from "@tolgee/react";
 import { byId, isDefined } from "@typebot.io/lib/utils";
-import type { ClientUser } from "@typebot.io/schemas/features/user/schema";
+import type { ClientUser } from "@typebot.io/user/schemas";
 import React, { useState } from "react";
 import { useApiTokens } from "../hooks/useApiTokens";
 import { deleteApiTokenQuery } from "../queries/deleteApiTokenQuery";

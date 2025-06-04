@@ -8,6 +8,7 @@ import { folderRouter } from "@/features/folders/api/router";
 import { resultsRouter } from "@/features/results/api/router";
 import { themeRouter } from "@/features/theme/api/router";
 import { typebotRouter } from "@/features/typebot/api/router";
+import { userRouter } from "@/features/user/server/router";
 import { publicWhatsAppRouter } from "@/features/whatsapp/router";
 import { workspaceRouter } from "@/features/workspace/api/router";
 import { router } from "../trpc";
@@ -25,6 +26,7 @@ export const publicRouter = router({
   customDomains: customDomainsRouter,
   whatsApp: publicWhatsAppRouter,
   folders: folderRouter,
+  user: userRouter,
 });
 
 export type PublicRouter = typeof publicRouter;

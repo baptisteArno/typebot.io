@@ -2461,29 +2461,7 @@
                         },
                         "settings": {
                           "type": "object",
-                          "nullable": true,
-                          "properties": {
-                            "groupTitlesAutoGeneration": {
-                              "type": "object",
-                              "properties": {
-                                "isEnabled": {
-                                  "type": "boolean"
-                                },
-                                "provider": {
-                                  "type": "string"
-                                },
-                                "credentialsId": {
-                                  "type": "string"
-                                },
-                                "model": {
-                                  "type": "string"
-                                },
-                                "prompt": {
-                                  "type": "string"
-                                }
-                              }
-                            }
-                          }
+                          "nullable": true
                         },
                         "isSuspended": {
                           "type": "boolean"
@@ -2651,29 +2629,7 @@
                         },
                         "settings": {
                           "type": "object",
-                          "nullable": true,
-                          "properties": {
-                            "groupTitlesAutoGeneration": {
-                              "type": "object",
-                              "properties": {
-                                "isEnabled": {
-                                  "type": "boolean"
-                                },
-                                "provider": {
-                                  "type": "string"
-                                },
-                                "credentialsId": {
-                                  "type": "string"
-                                },
-                                "model": {
-                                  "type": "string"
-                                },
-                                "prompt": {
-                                  "type": "string"
-                                }
-                              }
-                            }
-                          }
+                          "nullable": true
                         },
                         "customChatsLimit": {
                           "type": "number",
@@ -10726,29 +10682,7 @@
                         },
                         "settings": {
                           "type": "object",
-                          "nullable": true,
-                          "properties": {
-                            "groupTitlesAutoGeneration": {
-                              "type": "object",
-                              "properties": {
-                                "isEnabled": {
-                                  "type": "boolean"
-                                },
-                                "provider": {
-                                  "type": "string"
-                                },
-                                "credentialsId": {
-                                  "type": "string"
-                                },
-                                "model": {
-                                  "type": "string"
-                                },
-                                "prompt": {
-                                  "type": "string"
-                                }
-                              }
-                            }
-                          }
+                          "nullable": true
                         },
                         "customChatsLimit": {
                           "type": "number",
@@ -13961,6 +13895,249 @@
                   },
                   "required": [
                     "folders"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error.BAD_REQUEST"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authorization not provided",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error.UNAUTHORIZED"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient access",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error.FORBIDDEN"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error.NOT_FOUND"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error.INTERNAL_SERVER_ERROR"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/user": {
+      "patch": {
+        "operationId": "user-update",
+        "tags": [
+          "User"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "updates": {
+                    "type": "object",
+                    "properties": {
+                      "onboardingCategories": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "displayedInAppNotifications": {
+                        "type": "object",
+                        "nullable": true,
+                        "additionalProperties": {
+                          "type": "boolean"
+                        }
+                      },
+                      "groupTitlesAutoGeneration": {
+                        "type": "object",
+                        "nullable": true,
+                        "properties": {
+                          "isEnabled": {
+                            "type": "boolean"
+                          },
+                          "provider": {
+                            "type": "string"
+                          },
+                          "credentialsId": {
+                            "type": "string"
+                          },
+                          "model": {
+                            "type": "string"
+                          },
+                          "prompt": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "name": {
+                        "type": "string",
+                        "nullable": true
+                      },
+                      "image": {
+                        "type": "string",
+                        "nullable": true
+                      },
+                      "company": {
+                        "type": "string",
+                        "nullable": true
+                      },
+                      "graphNavigation": {
+                        "type": "string",
+                        "nullable": true,
+                        "enum": [
+                          "MOUSE",
+                          "TRACKPAD",
+                          null
+                        ]
+                      },
+                      "preferredAppAppearance": {
+                        "type": "string",
+                        "nullable": true
+                      },
+                      "preferredLanguage": {
+                        "type": "string",
+                        "nullable": true
+                      }
+                    }
+                  }
+                },
+                "required": [
+                  "updates"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "image": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "company": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "createdAt": {
+                      "type": "string"
+                    },
+                    "lastActivityAt": {
+                      "type": "string"
+                    },
+                    "graphNavigation": {
+                      "type": "string",
+                      "nullable": true,
+                      "enum": [
+                        "MOUSE",
+                        "TRACKPAD",
+                        null
+                      ]
+                    },
+                    "preferredAppAppearance": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "displayedInAppNotifications": {
+                      "type": "object",
+                      "nullable": true,
+                      "additionalProperties": {
+                        "type": "boolean"
+                      }
+                    },
+                    "groupTitlesAutoGeneration": {
+                      "type": "object",
+                      "nullable": true,
+                      "properties": {
+                        "isEnabled": {
+                          "type": "boolean"
+                        },
+                        "provider": {
+                          "type": "string"
+                        },
+                        "credentialsId": {
+                          "type": "string"
+                        },
+                        "model": {
+                          "type": "string"
+                        },
+                        "prompt": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "preferredLanguage": {
+                      "type": "string",
+                      "nullable": true
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "name",
+                    "email",
+                    "image",
+                    "company",
+                    "createdAt",
+                    "lastActivityAt",
+                    "graphNavigation",
+                    "preferredAppAppearance",
+                    "displayedInAppNotifications",
+                    "groupTitlesAutoGeneration",
+                    "preferredLanguage"
                   ]
                 }
               }

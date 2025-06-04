@@ -1,11 +1,8 @@
 import * as Sentry from "@sentry/nextjs";
 import { env } from "@typebot.io/env";
-import { mockedUser } from "@typebot.io/lib/mockedUser";
 import prisma from "@typebot.io/prisma";
-import {
-  type ClientUser,
-  clientUserSchema,
-} from "@typebot.io/schemas/features/user/schema";
+import { mockedUser } from "@typebot.io/user/mockedUser";
+import { type ClientUser, clientUserSchema } from "@typebot.io/user/schemas";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { auth } from "../lib/nextAuth";
 

@@ -3,7 +3,6 @@ import { env } from "@typebot.io/env";
 import { getIp } from "@typebot.io/lib/getIp";
 import { isDefined } from "@typebot.io/lib/utils";
 import prisma from "@typebot.io/prisma";
-import { clientUserSchema } from "@typebot.io/schemas/features/user/schema";
 import {
   getTypebotCookie,
   serializeTypebotCookie,
@@ -11,6 +10,7 @@ import {
 import type { TypebotCookieValue } from "@typebot.io/telemetry/cookies/schema";
 import { mergeIds } from "@typebot.io/telemetry/mergeIds";
 import { trackEvents } from "@typebot.io/telemetry/trackEvents";
+import { clientUserSchema } from "@typebot.io/user/schemas";
 import NextAuth from "next-auth";
 import type { NextRequest } from "next/server";
 import { accountHasRequiredOAuthGroups } from "../helpers/accountHasRequiredOAuthGroups";

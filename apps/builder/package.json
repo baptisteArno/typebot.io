@@ -69,6 +69,7 @@
     "@uiw/react-codemirror": "4.23.8",
     "@upstash/ratelimit": "0.4.3",
     "@use-gesture/react": "10.2.27",
+    "@typebot.io/user": "workspace:*",
     "ai": "4.2.8",
     "browser-image-compression": "2.0.2",
     "canvas-confetti": "1.6.0",
