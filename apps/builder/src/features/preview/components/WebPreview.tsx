@@ -43,7 +43,6 @@ export const WebPreview = () => {
       key={`web-preview${startPreviewAtGroup ?? ''}`}
       typebot={typebot}
       sessionId={user ? `${typebot.id}-${user.id}` : undefined}
-      userId={user?.id}
       startFrom={
         startPreviewAtGroup
           ? { type: 'group', groupId: startPreviewAtGroup }

@@ -2,14 +2,12 @@ import prisma from '@typebot.io/lib/prisma'
 import { inferAsyncReturnType } from '@trpc/server'
 import * as trpcNext from '@trpc/server/adapters/next'
 import { User } from '@typebot.io/prisma'
-import { NextApiRequest, NextApiResponse } from 'next'
+import { NextApiRequest } from 'next'
 import { mockedUser } from '@typebot.io/lib/mockedUser'
 import { env } from '@typebot.io/env'
-import { getServerSession } from 'next-auth'
-import { getAuthOptions } from '@/pages/api/auth/[...nextauth]'
 
 export async function createContext(opts: trpcNext.CreateNextContextOptions) {
-  const user = await getAuthenticatedUser(opts.req, opts.res)
+  const user = await getAuthenticatedUser(opts.req)
 
   return {
     user,
@@ -19,18 +17,12 @@ export async function createContext(opts: trpcNext.CreateNextContextOptions) {
 }
 
 const getAuthenticatedUser = async (
-  req: NextApiRequest,
-  res: NextApiResponse
+  req: NextApiRequest
 ): Promise<User | undefined> => {
   if (env.NEXT_PUBLIC_E2E_TEST) return mockedUser
   const bearerToken = extractBearerToken(req)
-  if (bearerToken) return authenticateByToken(bearerToken)
-
-  // use session if available
-  const user = (await getServerSession(req, res, getAuthOptions({})))?.user as
-    | User
-    | undefined
-  return user
+  if (!bearerToken) return
+  return authenticateByToken(bearerToken)
 }
 
 const authenticateByToken = async (

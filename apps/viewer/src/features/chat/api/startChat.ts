@@ -1,17 +1,16 @@
-import { authenticatedProcedure } from '@/helpers/server/trpc'
+import { publicProcedure } from '@/helpers/server/trpc'
 import {
   startChatInputSchema,
   startChatResponseSchema,
 } from '@typebot.io/schemas/features/chat/schema'
 import { startChat as startChatFn } from '@typebot.io/bot-engine/apiHandlers/startChat'
 
-export const startChat = authenticatedProcedure
+export const startChat = publicProcedure
   .meta({
     openapi: {
       method: 'POST',
       path: '/v1/typebots/{publicId}/startChat',
       summary: 'Start chat',
-      protect: true,
     },
   })
   .input(startChatInputSchema)

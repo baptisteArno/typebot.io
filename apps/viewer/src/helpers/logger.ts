@@ -1,10 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 let logger: any
 
-if (
-  typeof window === 'undefined' &&
-  !process.env.NODE_ENV?.includes('development')
-) {
+if (typeof window === 'undefined') {
   // Só importa winston no server
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   const winston = require('winston')
@@ -32,23 +29,20 @@ if (
     ],
   })
 
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const util = require('util')
-
   // Redireciona console para o logger
-  console.log = (...args: unknown[]) => logger.log(util.format(...args))
-  console.info = (...args: unknown[]) => logger.info(util.format(...args))
-  console.warn = (...args: unknown[]) => logger.warn(util.format(...args))
-  console.error = (...args: unknown[]) => logger.error(util.format(...args))
-  console.debug = (...args: unknown[]) => logger.debug(util.format(...args))
+  console.log = (...args) => logger.info(...args)
+  console.info = (...args) => logger.info(...args)
+  console.warn = (...args) => logger.warn(...args)
+  console.error = (...args) => logger.error(...args)
+  console.debug = (...args) => logger.debug(...args)
 } else {
   // No client, logger é um objeto fake
   logger = {
-    info: (...args: unknown[]) => console.info(...args),
-    error: (...args: unknown[]) => console.error(...args),
-    warn: (...args: unknown[]) => console.warn(...args),
-    debug: (...args: unknown[]) => console.debug(...args),
-    log: (...args: unknown[]) => console.log(...args),
+    info: function () {},
+    error: function () {},
+    warn: function () {},
+    debug: function () {},
+    log: function () {},
   }
 }
 

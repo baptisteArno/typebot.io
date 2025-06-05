@@ -154,10 +154,5 @@ export const isSvgSrc = (src: string | undefined) =>
   src?.startsWith('data:image/svg') || src?.endsWith('.svg')
 
 export const emailIsCloudhumans = (email?: string | null) => {
-  return (
-    typeof email === 'string' &&
-    (email.endsWith('@cloudhumans.com') ||
-      process.env.NODE_ENV === 'development' ||
-      process.env.ADMIN_EMAIL === email)
-  )
+  return typeof email === 'string' && email.endsWith('@cloudhumans.com')
 }
