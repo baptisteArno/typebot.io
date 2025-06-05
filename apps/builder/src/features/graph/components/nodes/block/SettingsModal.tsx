@@ -1,40 +1,30 @@
 import { useParentModal } from "@/features/graph/providers/ParentModalProvider";
-import {
-  Modal,
-  ModalBody,
-  type ModalBodyProps,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
-} from "@chakra-ui/react";
+import { Portal } from "@ark-ui/react";
+import { Dialog } from "@ark-ui/react/dialog";
+import { dialogClassNames } from "@typebot.io/ui/components/Dialog";
 import type React from "react";
 
 type Props = {
   isOpen: boolean;
   onClose: () => void;
+  children: React.ReactNode;
 };
 
-export const SettingsModal = ({
-  isOpen,
-  onClose,
-  ...props
-}: Props & ModalBodyProps) => {
+export const SettingsModal = ({ isOpen, onClose, children }: Props) => {
   const { ref } = useParentModal();
-  const handleMouseDown = (e: React.MouseEvent) => {
-    e.stopPropagation();
-  };
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size="3xl">
-      <ModalOverlay />
-      <ModalContent onMouseDown={handleMouseDown} ref={ref}>
-        <ModalHeader mb="2">
-          <ModalCloseButton />
-        </ModalHeader>
-        <ModalBody {...props}>{props.children}</ModalBody>
-        <ModalFooter />
-      </ModalContent>
-    </Modal>
+    <Dialog.Root
+      open={isOpen}
+      onOpenChange={(e) => (e.open ? undefined : onClose())}
+    >
+      <Portal>
+        <Dialog.Backdrop className={dialogClassNames.backdrop} />
+        <Dialog.Positioner className={dialogClassNames.positioner}>
+          <Dialog.Content className={dialogClassNames.content} ref={ref}>
+            {children}
+          </Dialog.Content>
+        </Dialog.Positioner>
+      </Portal>
+    </Dialog.Root>
   );
 };

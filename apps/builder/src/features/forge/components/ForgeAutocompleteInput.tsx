@@ -1,6 +1,7 @@
 import { MoreInfoTooltip } from "@/components/MoreInfoTooltip";
 import { Combobox } from "@/components/combobox";
 import { Field } from "@/components/field";
+import { useParentModal } from "@/features/graph/providers/ParentModalProvider";
 import { VariablesButton } from "@/features/variables/components/VariablesButton";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useInjectableInputValue } from "@/hooks/useInjectableInputValue";
@@ -66,6 +67,7 @@ export const AutocompleteInput = ({
   items: Item[] | undefined;
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
+  const { ref: parentModalRef } = useParentModal();
   const {
     value: inputValue,
     setValue: setInputValue,
@@ -124,7 +126,7 @@ export const AutocompleteInput = ({
             )}
           </Combobox.Label>
         )}
-        <div className="flex items-center">
+        <div className="flex items-center w-full">
           <Combobox.Control>
             <Combobox.Input />
           </Combobox.Control>
@@ -138,7 +140,7 @@ export const AutocompleteInput = ({
           )}
         </div>
 
-        <Portal>
+        <Portal container={parentModalRef}>
           <Combobox.Positioner>
             {filteredCollection.size > 0 &&
               (filteredCollection.size > 1 ||

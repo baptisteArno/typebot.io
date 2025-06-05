@@ -16,7 +16,6 @@ export const ZoomButtons = ({
     right="40px"
     bgColor={useColorModeValue("white", "gray.950")}
     rounded="md"
-    zIndex={1}
     spacing="0"
     shadow="md"
   >
