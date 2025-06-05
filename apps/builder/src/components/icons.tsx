@@ -748,3 +748,12 @@ export const CircleXIcon = (props: IconProps) => (
     <path d="m9 9 6 6" />
   </Icon>
 );
+
+export const MinimizeIcon = (props: IconProps) => (
+  <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
+    <path d="m14 10 7-7" />
+    <path d="M20 10h-6V4" />
+    <path d="m3 21 7-7" />
+    <path d="M4 14h6v6" />
+  </Icon>
+);

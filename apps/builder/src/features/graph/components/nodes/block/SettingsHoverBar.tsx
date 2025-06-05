@@ -1,4 +1,4 @@
-import { BuoyIcon, ExpandIcon } from "@/components/icons";
+import { BuoyIcon, ExpandIcon, MinimizeIcon } from "@/components/icons";
 import { getHelpDocUrl } from "@/features/graph/helpers/getHelpDocUrl";
 import { VideoOnboardingPopover } from "@/features/onboarding/components/VideoOnboardingPopover";
 import {
@@ -17,6 +17,7 @@ type Props = {
   nodeType: BlockWithOptions["type"] | TEventWithOptions["type"];
   blockDef?: (typeof forgedBlocks)[keyof typeof forgedBlocks];
   isVideoOnboardingItemDisplayed: boolean;
+  isExpanded: boolean;
   onExpandClick: () => void;
   onVideoOnboardingClick: () => void;
 };
@@ -25,6 +26,7 @@ export const SettingsHoverBar = ({
   nodeType,
   blockDef,
   isVideoOnboardingItemDisplayed,
+  isExpanded,
   onExpandClick,
   onVideoOnboardingClick,
 }: Props) => {
@@ -39,7 +41,7 @@ export const SettingsHoverBar = ({
       shadow="md"
     >
       <IconButton
-        icon={<ExpandIcon />}
+        icon={isExpanded ? <MinimizeIcon /> : <ExpandIcon />}
         borderRightWidth="1px"
         borderRightRadius="none"
         borderLeftRadius="none"

@@ -9,7 +9,6 @@ import {
   useDragDistance,
 } from "@/features/graph/providers/GraphDndProvider";
 import { useGraph } from "@/features/graph/providers/GraphProvider";
-import { ParentModalProvider } from "@/features/graph/providers/ParentModalProvider";
 import { hasDefaultConnector } from "@/features/typebot/helpers/hasDefaultConnector";
 import { setMultipleRefs } from "@/helpers/setMultipleRefs";
 import {
@@ -51,8 +50,7 @@ import { TargetEndpoint } from "../../endpoints/TargetEndpoint";
 import { BlockNodeContent } from "./BlockNodeContent";
 import { BlockNodeContextMenu } from "./BlockNodeContextMenu";
 import { MediaBubblePopoverContent } from "./MediaBubblePopoverContent";
-import { SettingsModal } from "./SettingsModal";
-import { NodeSettings, SettingsPopoverContent } from "./SettingsPopoverContent";
+import { SettingsPopoverContent } from "./SettingsPopoverContent";
 
 export const BlockNode = ({
   block,
@@ -329,23 +327,12 @@ export const BlockNode = ({
             </Flex>
           </PopoverTrigger>
           {hasSettingsPopover(block) && (
-            <>
-              <SettingsPopoverContent
-                node={block}
-                groupId={groupId}
-                onExpandClick={handleExpandClick}
-                onNodeChange={handleBlockUpdate}
-              />
-              <ParentModalProvider>
-                <SettingsModal isOpen={isModalOpen} onClose={handleModalClose}>
-                  <NodeSettings
-                    node={block}
-                    groupId={groupId}
-                    onNodeChange={handleBlockUpdate}
-                  />
-                </SettingsModal>
-              </ParentModalProvider>
-            </>
+            <SettingsPopoverContent
+              node={block}
+              groupId={groupId}
+              onNodeChange={handleBlockUpdate}
+              isOpen={openedBlockId === block.id}
+            />
           )}
           {typebot && isMediaBubbleBlock(block) && (
             <MediaBubblePopoverContent
