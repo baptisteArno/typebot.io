@@ -1,6 +1,6 @@
+import { type Item, getItemLabel } from "@/components/collections";
 import { createListCollection } from "@ark-ui/react";
 import { useMemo } from "react";
-import { type Item, getItemLabel } from "../helpers/collections";
 
 export const useFilteredCollection = <T extends Item>({
   items,

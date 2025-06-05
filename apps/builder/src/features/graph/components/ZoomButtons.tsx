@@ -18,6 +18,7 @@ export const ZoomButtons = ({
     rounded="md"
     spacing="0"
     shadow="md"
+    zIndex={1}
   >
     <IconButton
       icon={<PlusIcon />}
