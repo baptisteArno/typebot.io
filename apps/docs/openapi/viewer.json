@@ -6790,6 +6790,18 @@
               "isLong": {
                 "type": "boolean"
               },
+              "inputMode": {
+                "type": "string",
+                "enum": [
+                  "text",
+                  "decimal",
+                  "numeric",
+                  "tel",
+                  "search",
+                  "email",
+                  "url"
+                ]
+              },
               "audioClip": {
                 "type": "object",
                 "properties": {

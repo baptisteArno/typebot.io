@@ -15,11 +15,22 @@ export const textInputOptionsBaseSchema = z.object({
     .optional(),
 });
 
+export const inputModeOptions = [
+  "text",
+  "decimal",
+  "numeric",
+  "tel",
+  "search",
+  "email",
+  "url",
+] as const;
+
 export const textInputOptionsSchema = textInputOptionsBaseSchema
   .merge(optionBaseSchema)
   .merge(
     z.object({
       isLong: z.boolean().optional(),
+      inputMode: z.enum(inputModeOptions).optional(),
       audioClip: z
         .object({
           isEnabled: z.boolean().optional(),
