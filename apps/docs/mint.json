@@ -144,7 +144,8 @@
                 "editor/blocks/integrations/nocodb",
                 "editor/blocks/integrations/posthog",
                 "editor/blocks/integrations/segment",
-                "editor/blocks/integrations/zendesk"
+                "editor/blocks/integrations/zendesk",
+                "editor/blocks/integrations/blink"
               ]
             }
           ]
