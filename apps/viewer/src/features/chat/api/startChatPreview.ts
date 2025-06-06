@@ -2,10 +2,10 @@ import {
   startPreviewChatInputSchema,
   startPreviewChatResponseSchema,
 } from '@typebot.io/schemas/features/chat/schema'
-import { publicProcedure } from '@/helpers/server/trpc'
+import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { startChatPreview as startChatPreviewFn } from '@typebot.io/bot-engine/apiHandlers/startChatPreview'
 
-export const startChatPreview = publicProcedure
+export const startChatPreview = authenticatedProcedure
   .meta({
     openapi: {
       method: 'POST',
@@ -13,6 +13,7 @@ export const startChatPreview = publicProcedure
       summary: 'Start preview chat',
       description:
         'Use this endpoint to test your bot. The answers will not be saved. And some blocks like "Send email" will be skipped.',
+      protect: true,
     },
   })
   .input(startPreviewChatInputSchema)

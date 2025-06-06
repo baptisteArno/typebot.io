@@ -140,6 +140,7 @@ export const ConversationContainer = (props: Props) => {
       await saveClientLogsQuery({
         apiHost: props.context.apiHost,
         sessionId: props.initialChatReply.sessionId,
+        apiToken: props.context.apiToken,
         clientLogs,
       })
     }
@@ -162,6 +163,7 @@ export const ConversationContainer = (props: Props) => {
       apiHost: props.context.apiHost,
       sessionId: props.initialChatReply.sessionId,
       message,
+      apiToken: props.context.apiToken,
     })
     clearTimeout(longRequest)
     setIsSending(false)

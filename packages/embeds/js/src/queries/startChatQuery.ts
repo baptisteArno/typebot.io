@@ -37,6 +37,10 @@ export async function startChatQuery({
   if (isNotDefined(typebot))
     throw new Error('Typebot ID is required to get initial messages')
 
+  const headers = typebot?.apiToken
+    ? { Authorization: `Bearer ${typebot?.apiToken}` }
+    : {}
+
   const paymentInProgressStateStr = getPaymentInProgressInStorage() ?? undefined
   const paymentInProgressState = paymentInProgressStateStr
     ? (JSON.parse(paymentInProgressStateStr) as {
@@ -62,6 +66,7 @@ export async function startChatQuery({
                 : undefined,
             },
             timeout: false,
+            headers,
           }
         )
         .json<InitialChatReply>()
@@ -91,6 +96,7 @@ export async function startChatQuery({
               'typebotId' | 'isOnlyRegistering' | 'textBubbleContentFormat'
             >,
             timeout: false,
+            headers,
           }
         )
         .json<InitialChatReply>()
@@ -118,6 +124,7 @@ export async function startChatQuery({
             'publicId' | 'textBubbleContentFormat'
           >,
           timeout: false,
+          headers,
         }
       )
       .json<InitialChatReply>()
