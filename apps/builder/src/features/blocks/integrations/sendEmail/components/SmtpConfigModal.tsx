@@ -1,7 +1,7 @@
 import { useUser } from "@/features/user/hooks/useUser";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
+import { queryClient, trpc } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
-import { trpc } from "@/lib/trpc";
 import {
   Button,
   Modal,
@@ -12,6 +12,7 @@ import {
   ModalHeader,
   ModalOverlay,
 } from "@chakra-ui/react";
+import { useMutation } from "@tanstack/react-query";
 import type { SmtpCredentials } from "@typebot.io/credentials/schemas";
 import { isNotDefined } from "@typebot.io/lib/utils";
 import type React from "react";
@@ -53,23 +54,22 @@ export const SmtpCreateModalContent = ({
     from: {},
     port: 25,
   });
-  const {
-    credentials: {
-      listCredentials: { refetch: refetchCredentials },
-    },
-  } = trpc.useContext();
-  const { mutate } = trpc.credentials.createCredentials.useMutation({
-    onSettled: () => setIsCreating(false),
-    onError: (err) => {
-      toast({
-        description: err.message,
-      });
-    },
-    onSuccess: (data) => {
-      refetchCredentials();
-      onNewCredentials(data.credentialsId);
-    },
-  });
+  const { mutate } = useMutation(
+    trpc.credentials.createCredentials.mutationOptions({
+      onSettled: () => setIsCreating(false),
+      onError: (err) => {
+        toast({
+          description: err.message,
+        });
+      },
+      onSuccess: (data) => {
+        queryClient.invalidateQueries({
+          queryKey: trpc.credentials.listCredentials.queryKey(),
+        });
+        onNewCredentials(data.credentialsId);
+      },
+    }),
+  );
 
   const handleCreateClick = async (e: React.FormEvent) => {
     e.preventDefault();

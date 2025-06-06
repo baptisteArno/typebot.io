@@ -1,18 +1,22 @@
 import { refreshSessionUser } from "@/features/auth/helpers/refreshSessionUser";
+import { trpc } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
-import { trpc } from "@/lib/trpc";
+
+import { useMutation } from "@tanstack/react-query";
 
 export const useAcceptTermsMutation = ({
   onSuccess,
 }: {
   onSuccess?: () => void;
 }) =>
-  trpc.userInternal.acceptTerms.useMutation({
-    onError: (error) => {
-      toast({ description: error.message });
-    },
-    onSettled: () => {
-      refreshSessionUser();
-    },
-    onSuccess,
-  });
+  useMutation(
+    trpc.userInternal.acceptTerms.mutationOptions({
+      onError: (error) => {
+        toast({ description: error.message });
+      },
+      onSettled: () => {
+        refreshSessionUser();
+      },
+      onSuccess,
+    }),
+  );

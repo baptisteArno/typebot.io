@@ -1,5 +1,6 @@
+import { trpc } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
-import { trpc } from "@/lib/trpc";
+import { useQuery } from "@tanstack/react-query";
 import { LogicBlockType } from "@typebot.io/blocks-logic/constants";
 import { isDefined } from "@typebot.io/lib/utils";
 import { convertResultsToTableData } from "@typebot.io/results/convertResultsToTableData";
@@ -66,13 +67,15 @@ export const ResultsProvider = ({
           : typebotIds;
       }, []) ?? [];
 
-  const { data: linkedTypebotsData } = trpc.getLinkedTypebots.useQuery(
-    {
-      typebotId,
-    },
-    {
-      enabled: linkedTypebotIds.length > 0,
-    },
+  const { data: linkedTypebotsData } = useQuery(
+    trpc.getLinkedTypebots.queryOptions(
+      {
+        typebotId,
+      },
+      {
+        enabled: linkedTypebotIds.length > 0,
+      },
+    ),
   );
 
   const flatResults = useMemo(

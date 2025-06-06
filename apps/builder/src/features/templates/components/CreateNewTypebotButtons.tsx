@@ -1,8 +1,8 @@
 import { DownloadIcon, TemplateIcon, ToolIcon } from "@/components/icons";
 import { useUser } from "@/features/user/hooks/useUser";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
+import { trpc } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
-import { trpc } from "@/lib/trpc";
 import {
   Button,
   Heading,
@@ -11,6 +11,7 @@ import {
   useColorModeValue,
   useDisclosure,
 } from "@chakra-ui/react";
+import { useMutation } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
 import type { Typebot } from "@typebot.io/typebot/schemas/typebot";
 import { useRouter } from "next/router";
@@ -27,43 +28,47 @@ export const CreateNewTypebotButtons = () => {
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const { mutate: createTypebot } = trpc.typebot.createTypebot.useMutation({
-    onMutate: () => {
-      setIsLoading(true);
-    },
-    onError: (error) => {
-      toast({
-        description: error.message,
-      });
-    },
-    onSuccess: (data) => {
-      router.push({
-        pathname: `/typebots/${data.typebot.id}/edit`,
-      });
-    },
-    onSettled: () => {
-      setIsLoading(false);
-    },
-  });
+  const { mutate: createTypebot } = useMutation(
+    trpc.typebot.createTypebot.mutationOptions({
+      onMutate: () => {
+        setIsLoading(true);
+      },
+      onError: (error) => {
+        toast({
+          description: error.message,
+        });
+      },
+      onSuccess: (data) => {
+        router.push({
+          pathname: `/typebots/${data.typebot.id}/edit`,
+        });
+      },
+      onSettled: () => {
+        setIsLoading(false);
+      },
+    }),
+  );
 
-  const { mutate: importTypebot } = trpc.typebot.importTypebot.useMutation({
-    onMutate: () => {
-      setIsLoading(true);
-    },
-    onError: (error) => {
-      toast({
-        description: error.data?.zodError ?? error.message,
-      });
-    },
-    onSuccess: (data) => {
-      router.push({
-        pathname: `/typebots/${data.typebot.id}/edit`,
-      });
-    },
-    onSettled: () => {
-      setIsLoading(false);
-    },
-  });
+  const { mutate: importTypebot } = useMutation(
+    trpc.typebot.importTypebot.mutationOptions({
+      onMutate: () => {
+        setIsLoading(true);
+      },
+      onError: (error) => {
+        toast({
+          description: error.data?.zodError ?? error.message,
+        });
+      },
+      onSuccess: (data) => {
+        router.push({
+          pathname: `/typebots/${data.typebot.id}/edit`,
+        });
+      },
+      onSettled: () => {
+        setIsLoading(false);
+      },
+    }),
+  );
 
   const handleCreateSubmit = async (
     typebot?: Typebot,

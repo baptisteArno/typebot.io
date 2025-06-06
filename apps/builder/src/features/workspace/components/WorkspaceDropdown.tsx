@@ -7,7 +7,7 @@ import {
   PlusIcon,
 } from "@/components/icons";
 import { PlanTag } from "@/features/billing/components/PlanTag";
-import { trpc } from "@/lib/trpc";
+import { trpc } from "@/lib/queryClient";
 import {
   Button,
   HStack,
@@ -17,6 +17,7 @@ import {
   MenuList,
   Text,
 } from "@chakra-ui/react";
+import { useQuery } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
 import type { WorkspaceInApp } from "../WorkspaceProvider";
 
@@ -36,7 +37,7 @@ export const WorkspaceDropdown = ({
   onCreateNewWorkspaceClick,
 }: Props) => {
   const { t } = useTranslate();
-  const { data } = trpc.workspace.listWorkspaces.useQuery();
+  const { data } = useQuery(trpc.workspace.listWorkspaces.queryOptions());
 
   const workspaces = data?.workspaces ?? [];
 

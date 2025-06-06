@@ -1,6 +1,7 @@
 import { FileIcon } from "@/components/icons";
-import { trpc } from "@/lib/trpc";
+import { trpc } from "@/lib/queryClient";
 import { Button, Flex, HStack, IconButton, Text } from "@chakra-ui/react";
+import { useQuery } from "@tanstack/react-query";
 import { env } from "@typebot.io/env";
 import { isDefined } from "@typebot.io/lib/utils";
 import React, { useEffect, useState } from "react";
@@ -23,19 +24,22 @@ export const GoogleSpreadsheetPicker = ({
 }: Props) => {
   const [isPickerInitialized, setIsPickerInitialized] = useState(false);
 
-  const { data } = trpc.sheets.getAccessToken.useQuery({
-    workspaceId,
-    credentialsId,
-  });
-  const { data: spreadsheetData, status } =
-    trpc.sheets.getSpreadsheetName.useQuery(
+  const { data } = useQuery(
+    trpc.sheets.getAccessToken.queryOptions({
+      workspaceId,
+      credentialsId,
+    }),
+  );
+  const { data: spreadsheetData, status } = useQuery(
+    trpc.sheets.getSpreadsheetName.queryOptions(
       {
         workspaceId,
         credentialsId,
         spreadsheetId: spreadsheetId as string,
       },
       { enabled: !!spreadsheetId },
-    );
+    ),
+  );
 
   useEffect(() => {
     loadScript("gapi", "https://apis.google.com/js/api.js", () => {
@@ -112,7 +116,7 @@ export const GoogleSpreadsheetPicker = ({
       onClick={createPicker}
       isLoading={
         !isPickerInitialized ||
-        (isDefined(spreadsheetId) && status === "loading")
+        (isDefined(spreadsheetId) && status === "pending")
       }
     >
       Pick a spreadsheet

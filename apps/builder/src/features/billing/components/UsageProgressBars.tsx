@@ -1,6 +1,6 @@
 import { AlertIcon } from "@/components/icons";
 import type { WorkspaceInApp } from "@/features/workspace/WorkspaceProvider";
-import { defaultQueryOptions, trpc } from "@/lib/trpc";
+import { trpc } from "@/lib/queryClient";
 import {
   Flex,
   HStack,
@@ -11,6 +11,7 @@ import {
   Text,
   Tooltip,
 } from "@chakra-ui/react";
+import { useQuery } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
 import { getChatsLimit } from "@typebot.io/billing/helpers/getChatsLimit";
 import { parseNumberWithCommas } from "@typebot.io/lib/utils";
@@ -21,11 +22,10 @@ type Props = {
 
 export const UsageProgressBars = ({ workspace }: Props) => {
   const { t } = useTranslate();
-  const { data, isLoading } = trpc.billing.getUsage.useQuery(
-    {
+  const { data, isLoading } = useQuery(
+    trpc.billing.getUsage.queryOptions({
       workspaceId: workspace.id,
-    },
-    defaultQueryOptions,
+    }),
   );
   const totalChatsUsed = data?.totalChatsUsed ?? 0;
 

@@ -1,5 +1,6 @@
 import type { timeFilterValues } from "@/features/analytics/constants";
-import { trpc } from "@/lib/trpc";
+import { trpc } from "@/lib/queryClient";
+import { useInfiniteQuery } from "@tanstack/react-query";
 
 type Params = {
   timeFilter: (typeof timeFilterValues)[number];
@@ -10,8 +11,8 @@ type Params = {
 const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
 export const useResultsQuery = ({ timeFilter, typebotId, onError }: Params) => {
-  const { data, error, fetchNextPage, hasNextPage, refetch } =
-    trpc.results.getResults.useInfiniteQuery(
+  const { data, error, fetchNextPage, hasNextPage, refetch } = useInfiniteQuery(
+    trpc.results.getResults.infiniteQueryOptions(
       {
         timeZone,
         timeFilter,
@@ -20,7 +21,8 @@ export const useResultsQuery = ({ timeFilter, typebotId, onError }: Params) => {
       {
         getNextPageParam: (lastPage) => lastPage.nextCursor,
       },
-    );
+    ),
+  );
 
   if (error && onError) onError(error.message);
   return {

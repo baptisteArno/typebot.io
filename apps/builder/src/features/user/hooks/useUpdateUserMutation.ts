@@ -1,13 +1,17 @@
 import { refreshSessionUser } from "@/features/auth/helpers/refreshSessionUser";
+import { trpc } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
-import { trpc } from "@/lib/trpc";
+
+import { useMutation } from "@tanstack/react-query";
 
 export const useUpdateUserMutation = () =>
-  trpc.user.update.useMutation({
-    onError: (error) => {
-      toast({ description: error.message });
-    },
-    onSettled: () => {
-      refreshSessionUser();
-    },
-  });
+  useMutation(
+    trpc.user.update.mutationOptions({
+      onError: (error) => {
+        toast({ description: error.message });
+      },
+      onSettled: () => {
+        refreshSessionUser();
+      },
+    }),
+  );

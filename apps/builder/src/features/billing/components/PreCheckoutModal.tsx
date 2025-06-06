@@ -1,8 +1,8 @@
 import { TextInput } from "@/components/inputs";
 import { Select } from "@/components/inputs/Select";
 import { useParentModal } from "@/features/graph/providers/ParentModalProvider";
+import { trpc } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
-import { trpc } from "@/lib/trpc";
 import {
   Button,
   FormControl,
@@ -14,6 +14,7 @@ import {
   ModalOverlay,
   Stack,
 } from "@chakra-ui/react";
+import { useMutation } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
 import { taxIdTypes } from "@typebot.io/billing/taxIdTypes";
 import { isDefined } from "@typebot.io/lib/utils";
@@ -51,17 +52,19 @@ export const PreCheckoutModal = ({
   const { ref } = useParentModal();
   const vatValueInputRef = React.useRef<HTMLInputElement>(null);
   const router = useRouter();
-  const { mutate: createCheckoutSession, isLoading: isCreatingCheckout } =
-    trpc.billing.createCheckoutSession.useMutation({
-      onError: (error) => {
-        toast({
-          description: error.message,
-        });
-      },
-      onSuccess: ({ checkoutUrl }) => {
-        router.push(checkoutUrl);
-      },
-    });
+  const { mutate: createCheckoutSession, status: createCheckoutSessionStatus } =
+    useMutation(
+      trpc.billing.createCheckoutSession.mutationOptions({
+        onError: (error) => {
+          toast({
+            description: error.message,
+          });
+        },
+        onSuccess: ({ checkoutUrl }) => {
+          router.push(checkoutUrl);
+        },
+      }),
+    );
 
   const [customer, setCustomer] = useState({
     company: existingCompany ?? "",
@@ -166,7 +169,7 @@ export const PreCheckoutModal = ({
 
             <Button
               type="submit"
-              isLoading={isCreatingCheckout}
+              isLoading={createCheckoutSessionStatus === "pending"}
               colorScheme="blue"
               isDisabled={customer.company === "" || customer.email === ""}
             >

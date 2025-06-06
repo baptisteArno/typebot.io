@@ -12,7 +12,7 @@ import { CredentialsDropdown } from "@/features/credentials/components/Credentia
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { useParentModal } from "@/features/graph/providers/ParentModalProvider";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { trpc } from "@/lib/trpc";
+import { trpc } from "@/lib/queryClient";
 import {
   Accordion,
   AccordionButton,
@@ -35,6 +35,7 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
+import { useQuery } from "@tanstack/react-query";
 import { LogicalOperator } from "@typebot.io/conditions/constants";
 import type { Comparison } from "@typebot.io/conditions/schemas";
 import { isDefined } from "@typebot.io/lib/utils";
@@ -56,15 +57,16 @@ export const WhatsAppModal = ({ isOpen, onClose }: ModalProps): JSX.Element => {
 
   const whatsAppSettings = typebot?.settings.whatsApp;
 
-  const { data: phoneNumberData } =
-    trpc.whatsAppInternal.getPhoneNumber.useQuery(
+  const { data: phoneNumberData } = useQuery(
+    trpc.whatsAppInternal.getPhoneNumber.queryOptions(
       {
         credentialsId: typebot?.whatsAppCredentialsId as string,
       },
       {
         enabled: !!typebot?.whatsAppCredentialsId,
       },
-    );
+    ),
+  );
 
   const toggleEnableWhatsApp = (isChecked: boolean) => {
     if (!phoneNumberData?.id || !typebot) return;

@@ -12,10 +12,10 @@
   "dependencies": {
     "@chakra-ui/react": "2.8.2",
     "partysocket": "1.0.2",
-    "@typebot.io/trpc-openapi": "workspace:*",
     "@planetscale/database": "1.8.0",
     "@sentry/nextjs": "9.5.0",
-    "@trpc/server": "10.45.2",
+    "@trpc/server": "11.3.1",
+    "trpc-to-openapi": "2.3.1",
     "@typebot.io/bot-engine": "workspace:*",
     "@typebot.io/react": "workspace:*",
     "@typebot.io/prisma": "workspace:*",

@@ -8,8 +8,8 @@ import {
 } from "@/features/graph/providers/GraphDndProvider";
 import { duplicateName } from "@/features/typebot/helpers/duplicateName";
 import { isMobile } from "@/helpers/isMobile";
+import { trpc, trpcClient } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
-import { trpc, trpcVanilla } from "@/lib/trpc";
 import {
   Alert,
   AlertIcon,
@@ -25,6 +25,7 @@ import {
   useColorModeValue,
   useDisclosure,
 } from "@chakra-ui/react";
+import { useMutation } from "@tanstack/react-query";
 import { T, useTranslate } from "@tolgee/react";
 import { useRouter } from "next/router";
 import React, { memo } from "react";
@@ -62,33 +63,38 @@ const TypebotButton = ({
     deps: [],
   });
 
-  const { mutate: importTypebot } = trpc.typebot.importTypebot.useMutation({
-    onError: (error) => {
-      toast({ description: error.message });
-    },
-    onSuccess: ({ typebot }) => {
-      router.push(`/typebots/${typebot.id}/edit`);
-    },
-  });
+  const { mutate: importTypebot } = useMutation(
+    trpc.typebot.importTypebot.mutationOptions({
+      onError: (error) => {
+        toast({ description: error.message });
+      },
+      onSuccess: ({ typebot }) => {
+        router.push(`/typebots/${typebot.id}/edit`);
+      },
+    }),
+  );
 
-  const { mutate: deleteTypebot } = trpc.typebot.deleteTypebot.useMutation({
-    onError: (error) => {
-      toast({ description: error.message });
-    },
-    onSuccess: () => {
-      onTypebotUpdated();
-    },
-  });
-
-  const { mutate: unpublishTypebot } =
-    trpc.typebot.unpublishTypebot.useMutation({
+  const { mutate: deleteTypebot } = useMutation(
+    trpc.typebot.deleteTypebot.mutationOptions({
       onError: (error) => {
         toast({ description: error.message });
       },
       onSuccess: () => {
         onTypebotUpdated();
       },
-    });
+    }),
+  );
+
+  const { mutate: unpublishTypebot } = useMutation(
+    trpc.typebot.unpublishTypebot.mutationOptions({
+      onError: (error) => {
+        toast({ description: error.message });
+      },
+      onSuccess: () => {
+        onTypebotUpdated();
+      },
+    }),
+  );
 
   const handleTypebotClick = () => {
     if (draggedTypebotDebounced) return;
@@ -109,7 +115,7 @@ const TypebotButton = ({
   const handleDuplicateClick = async (e: React.MouseEvent) => {
     e.stopPropagation();
     const { typebot: typebotToDuplicate } =
-      await trpcVanilla.typebot.getTypebot.query({
+      await trpcClient.typebot.getTypebot.query({
         typebotId: typebot.id,
       });
     if (!typebotToDuplicate) return;

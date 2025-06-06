@@ -3,7 +3,7 @@ import { TextLink } from "@/components/TextLink";
 import { TextInput } from "@/components/inputs";
 import { useUser } from "@/features/user/hooks/useUser";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { trpc } from "@/lib/trpc";
+import { trpc } from "@/lib/queryClient";
 import {
   Button,
   FormControl,
@@ -17,6 +17,8 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
+import { useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
 import type { StripeCredentials } from "@typebot.io/credentials/schemas";
 import { isNotEmpty } from "@typebot.io/lib/utils";
@@ -39,8 +41,8 @@ export const UpdateStripeCredentialsModalContent = ({
     StripeCredentials["data"] & { name: string }
   >();
 
-  const { data: existingCredentials } =
-    trpc.credentials.getCredentials.useQuery(
+  const { data: existingCredentials } = useQuery(
+    trpc.credentials.getCredentials.queryOptions(
       {
         scope: "workspace",
         credentialsId,
@@ -49,24 +51,27 @@ export const UpdateStripeCredentialsModalContent = ({
       {
         enabled: !!workspace?.id,
       },
-    );
+    ),
+  );
 
   useEffect(() => {
     if (!existingCredentials || stripeConfig) return;
     setStripeConfig({
       name: existingCredentials.name,
-      live: existingCredentials.data.live,
-      test: existingCredentials.data.test,
+      live: (existingCredentials.data as any).live,
+      test: (existingCredentials.data as any).test,
     });
   }, [existingCredentials, stripeConfig]);
 
-  const { mutate } = trpc.credentials.updateCredentials.useMutation({
-    onMutate: () => setIsCreating(true),
-    onSettled: () => setIsCreating(false),
-    onSuccess: () => {
-      onUpdate();
-    },
-  });
+  const { mutate } = useMutation(
+    trpc.credentials.updateCredentials.mutationOptions({
+      onMutate: () => setIsCreating(true),
+      onSettled: () => setIsCreating(false),
+      onSuccess: () => {
+        onUpdate();
+      },
+    }),
+  );
 
   const handleNameChange = (name: string) =>
     stripeConfig &&

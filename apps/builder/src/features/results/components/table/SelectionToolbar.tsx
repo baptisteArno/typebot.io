@@ -1,8 +1,8 @@
 import { ConfirmModal } from "@/components/ConfirmModal";
 import { DownloadIcon, TrashIcon } from "@/components/icons";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
+import { trpc } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
-import { trpc } from "@/lib/trpc";
 import {
   Button,
   HStack,
@@ -11,6 +11,8 @@ import {
   useColorModeValue,
   useDisclosure,
 } from "@chakra-ui/react";
+import { useMutation } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { parseUniqueKey } from "@typebot.io/lib/parseUniqueKey";
 import { byId } from "@typebot.io/lib/utils";
 import { parseColumnsOrder } from "@typebot.io/results/parseColumnsOrder";
@@ -33,21 +35,25 @@ export const SelectionToolbar = ({
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isDeleteLoading, setIsDeleteLoading] = useState(false);
   const [isExportLoading, setIsExportLoading] = useState(false);
-  const trpcContext = trpc.useContext();
-  const deleteResultsMutation = trpc.results.deleteResults.useMutation({
-    onMutate: () => {
-      setIsDeleteLoading(true);
-    },
-    onError: (error) => toast({ description: error.message }),
-    onSuccess: async () => {
-      await trpcContext.results.getResults.invalidate();
-    },
-    onSettled: () => {
-      onDeleteResults(selectedResultsId.length);
-      onClearSelection();
-      setIsDeleteLoading(false);
-    },
-  });
+  const queryClient = useQueryClient();
+  const deleteResultsMutation = useMutation(
+    trpc.results.deleteResults.mutationOptions({
+      onMutate: () => {
+        setIsDeleteLoading(true);
+      },
+      onError: (error) => toast({ description: error.message }),
+      onSuccess: async () => {
+        await queryClient.invalidateQueries(
+          trpc.results.getResults.pathFilter(),
+        );
+      },
+      onSettled: () => {
+        onDeleteResults(selectedResultsId.length);
+        onClearSelection();
+        setIsDeleteLoading(false);
+      },
+    }),
+  );
 
   const workspaceId = typebot?.workspaceId;
   const typebotId = typebot?.id;

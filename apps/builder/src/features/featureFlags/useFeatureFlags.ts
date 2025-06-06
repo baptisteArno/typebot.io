@@ -1,7 +1,8 @@
-import { trpc } from "@/lib/trpc";
+import { trpc } from "@/lib/queryClient";
+import { useQuery } from "@tanstack/react-query";
 
 export const useFeatureFlags = () => {
-  const { data } = trpc.getFeatureFlags.useQuery();
+  const { data } = useQuery(trpc.getFeatureFlags.queryOptions());
 
   return data?.flags;
 };

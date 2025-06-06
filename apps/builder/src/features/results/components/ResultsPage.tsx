@@ -5,11 +5,9 @@ import {
   timeFilterValues,
 } from "@/features/analytics/constants";
 import { TypebotHeader } from "@/features/editor/components/TypebotHeader";
-import { TypebotNotFoundPage } from "@/features/editor/components/TypebotNotFoundPage";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { toast } from "@/lib/toast";
-import { trpc } from "@/lib/trpc";
+import { trpc } from "@/lib/queryClient";
 import {
   Button,
   Flex,
@@ -18,6 +16,7 @@ import {
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
+import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useQueryState } from "nuqs";
@@ -30,7 +29,7 @@ const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 export const ResultsPage = () => {
   const router = useRouter();
   const { workspace } = useWorkspace();
-  const { typebot, publishedTypebot, is404 } = useTypebot();
+  const { typebot, publishedTypebot } = useTypebot();
   const isAnalytics = useMemo(
     () => router.pathname.endsWith("analytics"),
     [router.pathname],
@@ -50,16 +49,17 @@ export const ResultsPage = () => {
   const {
     data: { stats } = {},
     refetch,
-  } = trpc.analytics.getStats.useQuery(
-    {
-      typebotId: publishedTypebot?.typebotId as string,
-      timeFilter,
-      timeZone,
-    },
-    {
-      enabled: !!publishedTypebot,
-      onError: (err) => toast({ description: err.message }),
-    },
+  } = useQuery(
+    trpc.analytics.getStats.queryOptions(
+      {
+        typebotId: publishedTypebot?.typebotId as string,
+        timeFilter,
+        timeZone,
+      },
+      {
+        enabled: !!publishedTypebot,
+      },
+    ),
   );
 
   const handleDeletedResults = () => {
@@ -67,7 +67,6 @@ export const ResultsPage = () => {
     refetch();
   };
 
-  if (is404) return <TypebotNotFoundPage />;
   return (
     <Flex overflow="hidden" h="100vh" flexDir="column">
       <Seo

@@ -14,10 +14,9 @@ import { BlocksSideBar } from "./BlocksSideBar";
 import { BoardMenuButton } from "./BoardMenuButton";
 import { SuspectedTypebotBanner } from "./SuspectedTypebotBanner";
 import { TypebotHeader } from "./TypebotHeader";
-import { TypebotNotFoundPage } from "./TypebotNotFoundPage";
 
 export const EditorPage = () => {
-  const { typebot, currentUserMode, is404 } = useTypebot();
+  const { typebot, currentUserMode } = useTypebot();
   const { workspace } = useWorkspace();
   const backgroundImage = useColorModeValue(
     "radial-gradient(var(--chakra-colors-gray-300), 1px, transparent 0)",
@@ -26,8 +25,6 @@ export const EditorPage = () => {
   const bgColor = useColorModeValue("gray.100", "gray.900");
 
   const isSuspicious = typebot?.riskLevel === 100 && !workspace?.isVerified;
-
-  if (is404) return <TypebotNotFoundPage />;
 
   return (
     <EditorProvider>

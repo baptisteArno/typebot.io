@@ -1,6 +1,6 @@
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { toast } from "@/lib/toast";
-import { trpc } from "@/lib/trpc";
+import { trpc } from "@/lib/queryClient";
+import { useQuery } from "@tanstack/react-query";
 import type { ForgedBlockDefinition } from "@typebot.io/forge-repository/definitions";
 import type { ForgedBlock } from "@typebot.io/forge-repository/schemas";
 import { useMemo } from "react";
@@ -24,34 +24,33 @@ export const useSelectItemsQuery = ({
     [blockDef, fetcherId],
   );
 
-  const { data } = trpc.forge.fetchSelectItems.useQuery(
-    credentialsScope === "workspace"
-      ? {
-          scope: "workspace",
-          integrationId: blockDef.id,
-          options: pick(
-            options,
-            (blockDef.auth ? ["credentialsId"] : []).concat(
-              fetcher?.dependencies ?? [],
+  const { data } = useQuery(
+    trpc.forge.fetchSelectItems.queryOptions(
+      credentialsScope === "workspace"
+        ? {
+            scope: "workspace",
+            integrationId: blockDef.id,
+            options: pick(
+              options,
+              (blockDef.auth ? ["credentialsId"] : []).concat(
+                fetcher?.dependencies ?? [],
+              ),
             ),
-          ),
-          workspaceId: workspace?.id as string,
-          fetcherId,
-        }
-      : {
-          scope: "user",
-          integrationId: blockDef.id,
-          options: {
-            credentialsId: options.credentialsId,
+            workspaceId: workspace?.id as string,
+            fetcherId,
+          }
+        : {
+            scope: "user",
+            integrationId: blockDef.id,
+            options: {
+              credentialsId: options.credentialsId,
+            },
+            fetcherId,
           },
-          fetcherId,
-        },
-    {
-      enabled: !!workspace?.id && !!fetcher,
-      onError: (error) => {
-        if (error.data?.logError) toast(error.data.logError);
+      {
+        enabled: !!workspace?.id && !!fetcher,
       },
-    },
+    ),
   );
 
   return {

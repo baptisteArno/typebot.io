@@ -2,13 +2,14 @@ import { ChangePlanModal } from "@/features/billing/components/ChangePlanModal";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { Graph } from "@/features/graph/components/Graph";
 import { GraphProvider } from "@/features/graph/providers/GraphProvider";
-import { trpc } from "@/lib/trpc";
+import { trpc } from "@/lib/queryClient";
 import {
   Flex,
   Spinner,
   useColorModeValue,
   useDisclosure,
 } from "@chakra-ui/react";
+import { useQuery } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
 import { isDefined } from "@typebot.io/lib/utils";
 import type { Stats } from "@typebot.io/results/schemas/answers";
@@ -33,13 +34,15 @@ export const AnalyticsGraphContainer = ({
   const { t } = useTranslate();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { typebot, publishedTypebot } = useTypebot();
-  const { data } = trpc.analytics.getInDepthAnalyticsData.useQuery(
-    {
-      typebotId: typebot!.id,
-      timeFilter,
-      timeZone,
-    },
-    { enabled: isDefined(typebot?.id) && isDefined(publishedTypebot) },
+  const { data } = useQuery(
+    trpc.analytics.getInDepthAnalyticsData.queryOptions(
+      {
+        typebotId: typebot!.id,
+        timeFilter,
+        timeZone,
+      },
+      { enabled: isDefined(typebot?.id) && isDefined(publishedTypebot) },
+    ),
   );
 
   const edgesWithTotalUsers = useMemo(() => {

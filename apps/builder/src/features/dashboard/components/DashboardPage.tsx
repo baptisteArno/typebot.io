@@ -8,9 +8,9 @@ import { FolderContent } from "@/features/folders/components/FolderContent";
 import { ParentModalProvider } from "@/features/graph/providers/ParentModalProvider";
 import { useUser } from "@/features/user/hooks/useUser";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { toast } from "@/lib/toast";
-import { trpc } from "@/lib/trpc";
-import { Button, Spinner, Stack, Text, VStack } from "@chakra-ui/react";
+import { trpc } from "@/lib/queryClient";
+import { Spinner, Stack, Text, VStack } from "@chakra-ui/react";
+import { useMutation } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
 import type { Plan } from "@typebot.io/prisma/enum";
 import { useRouter } from "next/router";
@@ -25,12 +25,13 @@ export const DashboardPage = () => {
   const { workspace } = useWorkspace();
   const [preCheckoutPlan, setPreCheckoutPlan] =
     useState<PreCheckoutModalProps["selectedSubscription"]>();
-  const { mutate: createCustomCheckoutSession } =
-    trpc.billing.createCustomCheckoutSession.useMutation({
+  const { mutate: createCustomCheckoutSession } = useMutation(
+    trpc.billing.createCustomCheckoutSession.mutationOptions({
       onSuccess: (data) => {
         router.push(data.checkoutUrl);
       },
-    });
+    }),
+  );
 
   useEffect(() => {
     const { subscribePlan, claimCustomPlan } = router.query as {

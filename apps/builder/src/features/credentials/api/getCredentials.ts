@@ -19,12 +19,6 @@ export const getCredentials = authenticatedProcedure
       }),
     ]),
   )
-  .output(
-    z.object({
-      name: z.string(),
-      data: z.any(),
-    }),
-  )
   .query(async ({ input, ctx: { user } }) => {
     if (input.scope === "user") {
       const credentials = await prisma.userCredentials.findFirst({

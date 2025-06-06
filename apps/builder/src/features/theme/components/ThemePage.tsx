@@ -1,6 +1,5 @@
 import { Seo } from "@/components/Seo";
 import { TypebotHeader } from "@/features/editor/components/TypebotHeader";
-import { TypebotNotFoundPage } from "@/features/editor/components/TypebotNotFoundPage";
 import { headerHeight } from "@/features/editor/constants";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { Flex, HStack, useColorModeValue } from "@chakra-ui/react";
@@ -9,9 +8,8 @@ import { defaultBackgroundColor } from "@typebot.io/theme/constants";
 import { ThemeSideMenu } from "./ThemeSideMenu";
 
 export const ThemePage = () => {
-  const { typebot, is404 } = useTypebot();
+  const { typebot } = useTypebot();
 
-  if (is404) return <TypebotNotFoundPage />;
   return (
     <Flex overflow="hidden" h="100vh" flexDir="column">
       <Seo title={typebot?.name ? `${typebot.name} | Theme` : "Theme"} />

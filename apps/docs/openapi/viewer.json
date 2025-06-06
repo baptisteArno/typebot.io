@@ -21,841 +21,10 @@
         "tags": [
           "Deprecated"
         ],
-        "deprecated": true,
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "message": {
-                    "type": "string",
-                    "description": "The answer to the previous chat input. Do not provide it if you are starting a new chat."
-                  },
-                  "sessionId": {
-                    "type": "string",
-                    "description": "Session ID that you get from the initial chat request to a bot. If not provided, it will create a new session."
-                  },
-                  "startParams": {
-                    "allOf": [
-                      {
-                        "type": "object",
-                        "properties": {
-                          "typebot": {
-                            "anyOf": [
-                              {
-                                "oneOf": [
-                                  {
-                                    "$ref": "#/components/schemas/typebotV6"
-                                  },
-                                  {
-                                    "$ref": "#/components/schemas/typebotV5"
-                                  }
-                                ],
-                                "discriminator": {
-                                  "propertyName": "version",
-                                  "mapping": {
-                                    "3": "#/components/schemas/typebotV5",
-                                    "4": "#/components/schemas/typebotV5",
-                                    "5": "#/components/schemas/typebotV5",
-                                    "6": "#/components/schemas/typebotV6",
-                                    "6.1": "#/components/schemas/typebotV6"
-                                  }
-                                }
-                              },
-                              {
-                                "type": "string"
-                              }
-                            ],
-                            "description": "Either a Typebot ID or a Typebot object. If you provide a Typebot object, it will be executed in preview mode. ([How can I find my typebot ID?](https://docs.typebot.io/api-reference#how-to-find-my-typebotid))."
-                          },
-                          "isPreview": {
-                            "type": "boolean",
-                            "description": "If set to `true`, it will start a Preview session with the unpublished bot and it won't be saved in the Results tab. You need to be authenticated with a bearer token for this to work."
-                          },
-                          "resultId": {
-                            "type": "string",
-                            "description": "Provide it if you'd like to overwrite an existing result."
-                          },
-                          "prefilledVariables": {
-                            "type": "object",
-                            "additionalProperties": {},
-                            "description": "[More info about prefilled variables.](https://docs.typebot.io/editor/variables#prefilled-variables)"
-                          },
-                          "isStreamEnabled": {
-                            "type": "boolean",
-                            "description": "Set this to `true` if you intend to stream OpenAI completions on a client."
-                          },
-                          "isOnlyRegistering": {
-                            "type": "boolean",
-                            "description": "If set to `true`, it will only register the session and not start the chat. This is used for other chat platform integration as it can require a session to be registered before sending the first message."
-                          }
-                        },
-                        "required": [
-                          "typebot"
-                        ]
-                      },
-                      {
-                        "anyOf": [
-                          {
-                            "type": "object",
-                            "properties": {
-                              "startGroupId": {
-                                "type": "string",
-                                "description": "Start chat from a specific group."
-                              },
-                              "startEventId": {
-                                "type": "string"
-                              }
-                            },
-                            "required": [
-                              "startGroupId"
-                            ]
-                          },
-                          {
-                            "type": "object",
-                            "properties": {
-                              "startEventId": {
-                                "type": "string",
-                                "description": "Start chat from a specific event."
-                              },
-                              "startGroupId": {
-                                "type": "string"
-                              }
-                            },
-                            "required": [
-                              "startEventId"
-                            ]
-                          },
-                          {
-                            "type": "object"
-                          }
-                        ]
-                      }
-                    ]
-                  },
-                  "clientLogs": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "status": {
-                          "type": "string"
-                        },
-                        "description": {
-                          "type": "string"
-                        },
-                        "details": {
-                          "type": "string"
-                        },
-                        "context": {
-                          "type": "string"
-                        }
-                      },
-                      "required": [
-                        "description"
-                      ]
-                    },
-                    "description": "Logs while executing client side actions"
-                  }
-                }
-              }
-            }
+        "security": [
+          {
+            "Authorization": []
           }
-        },
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "messages": {
-                      "type": "array",
-                      "items": {
-                        "allOf": [
-                          {
-                            "type": "object",
-                            "properties": {
-                              "id": {
-                                "type": "string"
-                              }
-                            },
-                            "required": [
-                              "id"
-                            ]
-                          },
-                          {
-                            "oneOf": [
-                              {
-                                "$ref": "#/components/schemas/textBubble"
-                              },
-                              {
-                                "$ref": "#/components/schemas/imageBubble"
-                              },
-                              {
-                                "$ref": "#/components/schemas/videoBubble"
-                              },
-                              {
-                                "$ref": "#/components/schemas/audioBubble"
-                              },
-                              {
-                                "$ref": "#/components/schemas/embedBubble"
-                              },
-                              {
-                                "$ref": "#/components/schemas/customEmbedBubble"
-                              }
-                            ],
-                            "discriminator": {
-                              "propertyName": "type",
-                              "mapping": {
-                                "text": "#/components/schemas/textBubble",
-                                "image": "#/components/schemas/imageBubble",
-                                "video": "#/components/schemas/videoBubble",
-                                "audio": "#/components/schemas/audioBubble",
-                                "embed": "#/components/schemas/embedBubble",
-                                "custom-embed": "#/components/schemas/customEmbedBubble"
-                              }
-                            }
-                          }
-                        ]
-                      }
-                    },
-                    "input": {
-                      "allOf": [
-                        {
-                          "anyOf": [
-                            {
-                              "oneOf": [
-                                {
-                                  "$ref": "#/components/schemas/textInput"
-                                },
-                                {
-                                  "$ref": "#/components/schemas/email"
-                                },
-                                {
-                                  "$ref": "#/components/schemas/numberInput"
-                                },
-                                {
-                                  "$ref": "#/components/schemas/url"
-                                },
-                                {
-                                  "$ref": "#/components/schemas/phoneNumberInput"
-                                },
-                                {
-                                  "$ref": "#/components/schemas/dateInput"
-                                },
-                                {
-                                  "$ref": "#/components/schemas/time"
-                                },
-                                {
-                                  "$ref": "#/components/schemas/paymentInput"
-                                },
-                                {
-                                  "$ref": "#/components/schemas/rating"
-                                },
-                                {
-                                  "type": "object",
-                                  "properties": {
-                                    "id": {
-                                      "type": "string"
-                                    },
-                                    "outgoingEdgeId": {
-                                      "type": "string"
-                                    },
-                                    "type": {
-                                      "type": "string",
-                                      "enum": [
-                                        "cards"
-                                      ]
-                                    },
-                                    "items": {
-                                      "type": "array",
-                                      "items": {
-                                        "type": "object",
-                                        "properties": {
-                                          "id": {
-                                            "type": "string"
-                                          },
-                                          "outgoingEdgeId": {
-                                            "type": "string"
-                                          },
-                                          "options": {
-                                            "type": "object",
-                                            "properties": {
-                                              "displayCondition": {
-                                                "type": "object",
-                                                "properties": {
-                                                  "isEnabled": {
-                                                    "type": "boolean"
-                                                  },
-                                                  "condition": {
-                                                    "type": "object",
-                                                    "properties": {
-                                                      "logicalOperator": {
-                                                        "type": "string",
-                                                        "enum": [
-                                                          "OR",
-                                                          "AND"
-                                                        ]
-                                                      },
-                                                      "comparisons": {
-                                                        "type": "array",
-                                                        "items": {
-                                                          "type": "object",
-                                                          "properties": {
-                                                            "id": {
-                                                              "type": "string"
-                                                            },
-                                                            "variableId": {
-                                                              "type": "string"
-                                                            },
-                                                            "comparisonOperator": {
-                                                              "type": "string",
-                                                              "enum": [
-                                                                "Equal to",
-                                                                "Not equal",
-                                                                "Contains",
-                                                                "Does not contain",
-                                                                "Greater than",
-                                                                "Greater or equal to",
-                                                                "Less than",
-                                                                "Less or equal to",
-                                                                "Is set",
-                                                                "Is empty",
-                                                                "Starts with",
-                                                                "Ends with",
-                                                                "Matches regex",
-                                                                "Does not match regex"
-                                                              ]
-                                                            },
-                                                            "value": {
-                                                              "type": "string"
-                                                            }
-                                                          },
-                                                          "required": [
-                                                            "id"
-                                                          ]
-                                                        }
-                                                      }
-                                                    }
-                                                  }
-                                                }
-                                              },
-                                              "internalValue": {
-                                                "type": "string",
-                                                "nullable": true
-                                              }
-                                            }
-                                          },
-                                          "imageUrl": {
-                                            "type": "string",
-                                            "nullable": true
-                                          },
-                                          "title": {
-                                            "type": "string",
-                                            "nullable": true
-                                          },
-                                          "description": {
-                                            "type": "string",
-                                            "nullable": true
-                                          },
-                                          "paths": {
-                                            "type": "array",
-                                            "items": {
-                                              "type": "object",
-                                              "properties": {
-                                                "id": {
-                                                  "type": "string"
-                                                },
-                                                "text": {
-                                                  "type": "string"
-                                                },
-                                                "outgoingEdgeId": {
-                                                  "type": "string"
-                                                }
-                                              },
-                                              "required": [
-                                                "id"
-                                              ]
-                                            }
-                                          }
-                                        },
-                                        "required": [
-                                          "id"
-                                        ]
-                                      }
-                                    },
-                                    "options": {
-                                      "type": "object",
-                                      "properties": {
-                                        "variableId": {
-                                          "type": "string"
-                                        },
-                                        "saveResponseMapping": {
-                                          "type": "array",
-                                          "items": {
-                                            "type": "object",
-                                            "properties": {
-                                              "field": {
-                                                "type": "string",
-                                                "enum": [
-                                                  "Image URL",
-                                                  "Title",
-                                                  "Description",
-                                                  "Button",
-                                                  "Internal Value"
-                                                ]
-                                              },
-                                              "variableId": {
-                                                "type": "string"
-                                              }
-                                            }
-                                          }
-                                        }
-                                      }
-                                    }
-                                  },
-                                  "required": [
-                                    "id",
-                                    "type",
-                                    "items"
-                                  ]
-                                },
-                                {
-                                  "$ref": "#/components/schemas/buttonsInputV5"
-                                },
-                                {
-                                  "$ref": "#/components/schemas/fileInputV5"
-                                },
-                                {
-                                  "$ref": "#/components/schemas/pictureChoiceV5"
-                                }
-                              ]
-                            },
-                            {
-                              "oneOf": [
-                                {
-                                  "$ref": "#/components/schemas/textInput"
-                                },
-                                {
-                                  "$ref": "#/components/schemas/email"
-                                },
-                                {
-                                  "$ref": "#/components/schemas/numberInput"
-                                },
-                                {
-                                  "$ref": "#/components/schemas/url"
-                                },
-                                {
-                                  "$ref": "#/components/schemas/phoneNumberInput"
-                                },
-                                {
-                                  "$ref": "#/components/schemas/dateInput"
-                                },
-                                {
-                                  "$ref": "#/components/schemas/time"
-                                },
-                                {
-                                  "$ref": "#/components/schemas/paymentInput"
-                                },
-                                {
-                                  "$ref": "#/components/schemas/rating"
-                                },
-                                {
-                                  "type": "object",
-                                  "properties": {
-                                    "id": {
-                                      "type": "string"
-                                    },
-                                    "outgoingEdgeId": {
-                                      "type": "string"
-                                    },
-                                    "type": {
-                                      "type": "string",
-                                      "enum": [
-                                        "cards"
-                                      ]
-                                    },
-                                    "items": {
-                                      "type": "array",
-                                      "items": {
-                                        "type": "object",
-                                        "properties": {
-                                          "id": {
-                                            "type": "string"
-                                          },
-                                          "outgoingEdgeId": {
-                                            "type": "string"
-                                          },
-                                          "options": {
-                                            "type": "object",
-                                            "properties": {
-                                              "displayCondition": {
-                                                "type": "object",
-                                                "properties": {
-                                                  "isEnabled": {
-                                                    "type": "boolean"
-                                                  },
-                                                  "condition": {
-                                                    "type": "object",
-                                                    "properties": {
-                                                      "logicalOperator": {
-                                                        "type": "string",
-                                                        "enum": [
-                                                          "OR",
-                                                          "AND"
-                                                        ]
-                                                      },
-                                                      "comparisons": {
-                                                        "type": "array",
-                                                        "items": {
-                                                          "type": "object",
-                                                          "properties": {
-                                                            "id": {
-                                                              "type": "string"
-                                                            },
-                                                            "variableId": {
-                                                              "type": "string"
-                                                            },
-                                                            "comparisonOperator": {
-                                                              "type": "string",
-                                                              "enum": [
-                                                                "Equal to",
-                                                                "Not equal",
-                                                                "Contains",
-                                                                "Does not contain",
-                                                                "Greater than",
-                                                                "Greater or equal to",
-                                                                "Less than",
-                                                                "Less or equal to",
-                                                                "Is set",
-                                                                "Is empty",
-                                                                "Starts with",
-                                                                "Ends with",
-                                                                "Matches regex",
-                                                                "Does not match regex"
-                                                              ]
-                                                            },
-                                                            "value": {
-                                                              "type": "string"
-                                                            }
-                                                          },
-                                                          "required": [
-                                                            "id"
-                                                          ]
-                                                        }
-                                                      }
-                                                    }
-                                                  }
-                                                }
-                                              },
-                                              "internalValue": {
-                                                "type": "string",
-                                                "nullable": true
-                                              }
-                                            }
-                                          },
-                                          "imageUrl": {
-                                            "type": "string",
-                                            "nullable": true
-                                          },
-                                          "title": {
-                                            "type": "string",
-                                            "nullable": true
-                                          },
-                                          "description": {
-                                            "type": "string",
-                                            "nullable": true
-                                          },
-                                          "paths": {
-                                            "type": "array",
-                                            "items": {
-                                              "type": "object",
-                                              "properties": {
-                                                "id": {
-                                                  "type": "string"
-                                                },
-                                                "text": {
-                                                  "type": "string"
-                                                },
-                                                "outgoingEdgeId": {
-                                                  "type": "string"
-                                                }
-                                              },
-                                              "required": [
-                                                "id"
-                                              ]
-                                            }
-                                          }
-                                        },
-                                        "required": [
-                                          "id"
-                                        ]
-                                      }
-                                    },
-                                    "options": {
-                                      "type": "object",
-                                      "properties": {
-                                        "variableId": {
-                                          "type": "string"
-                                        },
-                                        "saveResponseMapping": {
-                                          "type": "array",
-                                          "items": {
-                                            "type": "object",
-                                            "properties": {
-                                              "field": {
-                                                "type": "string",
-                                                "enum": [
-                                                  "Image URL",
-                                                  "Title",
-                                                  "Description",
-                                                  "Button",
-                                                  "Internal Value"
-                                                ]
-                                              },
-                                              "variableId": {
-                                                "type": "string"
-                                              }
-                                            }
-                                          }
-                                        }
-                                      }
-                                    }
-                                  },
-                                  "required": [
-                                    "id",
-                                    "type",
-                                    "items"
-                                  ]
-                                },
-                                {
-                                  "$ref": "#/components/schemas/buttonsInput"
-                                },
-                                {
-                                  "$ref": "#/components/schemas/fileInput"
-                                },
-                                {
-                                  "$ref": "#/components/schemas/pictureChoice"
-                                }
-                              ]
-                            }
-                          ]
-                        },
-                        {
-                          "type": "object",
-                          "properties": {
-                            "prefilledValue": {
-                              "type": "string"
-                            },
-                            "runtimeOptions": {
-                              "type": "object",
-                              "properties": {
-                                "paymentIntentSecret": {
-                                  "type": "string"
-                                },
-                                "amountLabel": {
-                                  "type": "string"
-                                },
-                                "publicKey": {
-                                  "type": "string"
-                                }
-                              },
-                              "required": [
-                                "paymentIntentSecret",
-                                "amountLabel",
-                                "publicKey"
-                              ]
-                            }
-                          }
-                        }
-                      ]
-                    },
-                    "clientSideActions": {
-                      "type": "array",
-                      "items": {
-                        "oneOf": [
-                          {
-                            "$ref": "#/components/schemas/csaScriptToExecute"
-                          },
-                          {
-                            "$ref": "#/components/schemas/csaRedirect"
-                          },
-                          {
-                            "$ref": "#/components/schemas/csaChatwoot"
-                          },
-                          {
-                            "$ref": "#/components/schemas/csaGa"
-                          },
-                          {
-                            "$ref": "#/components/schemas/csaWait"
-                          },
-                          {
-                            "$ref": "#/components/schemas/csaSetVariable"
-                          },
-                          {
-                            "$ref": "#/components/schemas/csaStreamOpenAiChatCompletion"
-                          },
-                          {
-                            "$ref": "#/components/schemas/csaHttpRequestToExecute"
-                          },
-                          {
-                            "$ref": "#/components/schemas/csaInjectStartProps"
-                          },
-                          {
-                            "$ref": "#/components/schemas/csaPixel"
-                          },
-                          {
-                            "$ref": "#/components/schemas/csaStream"
-                          },
-                          {
-                            "$ref": "#/components/schemas/csaCodeToExecute"
-                          },
-                          {
-                            "$ref": "#/components/schemas/csaListenForWebhook"
-                          }
-                        ],
-                        "discriminator": {
-                          "propertyName": "type",
-                          "mapping": {
-                            "scriptToExecute": "#/components/schemas/csaScriptToExecute",
-                            "redirect": "#/components/schemas/csaRedirect",
-                            "chatwoot": "#/components/schemas/csaChatwoot",
-                            "googleAnalytics": "#/components/schemas/csaGa",
-                            "wait": "#/components/schemas/csaWait",
-                            "setVariable": "#/components/schemas/csaSetVariable",
-                            "streamOpenAiChatCompletion": "#/components/schemas/csaStreamOpenAiChatCompletion",
-                            "httpRequestToExecute": "#/components/schemas/csaHttpRequestToExecute",
-                            "startPropsToInject": "#/components/schemas/csaInjectStartProps",
-                            "pixel": "#/components/schemas/csaPixel",
-                            "stream": "#/components/schemas/csaStream",
-                            "codeToExecute": "#/components/schemas/csaCodeToExecute",
-                            "listenForWebhook": "#/components/schemas/csaListenForWebhook"
-                          }
-                        }
-                      }
-                    },
-                    "sessionId": {
-                      "type": "string"
-                    },
-                    "typebot": {
-                      "type": "object",
-                      "properties": {
-                        "id": {
-                          "type": "string"
-                        },
-                        "theme": {
-                          "anyOf": [
-                            {
-                              "$ref": "#/components/schemas/theme"
-                            },
-                            {
-                              "$ref": "#/components/schemas/theme"
-                            }
-                          ]
-                        },
-                        "settings": {
-                          "anyOf": [
-                            {
-                              "$ref": "#/components/schemas/settings"
-                            },
-                            {
-                              "$ref": "#/components/schemas/settings"
-                            }
-                          ]
-                        }
-                      },
-                      "required": [
-                        "id",
-                        "theme",
-                        "settings"
-                      ]
-                    },
-                    "resultId": {
-                      "type": "string"
-                    },
-                    "dynamicTheme": {
-                      "type": "object",
-                      "properties": {
-                        "hostAvatarUrl": {
-                          "type": "string"
-                        },
-                        "guestAvatarUrl": {
-                          "type": "string"
-                        },
-                        "backgroundUrl": {
-                          "type": "string"
-                        }
-                      }
-                    },
-                    "logs": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "status": {
-                            "type": "string"
-                          },
-                          "description": {
-                            "type": "string"
-                          },
-                          "details": {
-                            "type": "string"
-                          },
-                          "context": {
-                            "type": "string"
-                          }
-                        },
-                        "required": [
-                          "description"
-                        ]
-                      }
-                    },
-                    "lastMessageNewFormat": {
-                      "type": "string",
-                      "description": "The sent message is validated and formatted on the backend. This is set only if the message differs from the formatted version."
-                    }
-                  },
-                  "required": [
-                    "messages"
-                  ]
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid input data",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/error.BAD_REQUEST"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/error.INTERNAL_SERVER_ERROR"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v2/sendMessage": {
-      "post": {
-        "operationId": "sendMessageV2",
-        "summary": "Send a message",
-        "description": "To initiate a chat, do not provide a `sessionId` nor a `message`.\n\nContinue the conversation by providing the `sessionId` and the `message` that should answer the previous question.\n\nSet the `isPreview` option to `true` to chat with the non-published version of the typebot.",
-        "tags": [
-          "Deprecated"
         ],
         "deprecated": true,
         "requestBody": {
@@ -1672,6 +841,887 @@
               }
             }
           },
+          "401": {
+            "description": "Authorization not provided",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error.UNAUTHORIZED"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient access",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error.FORBIDDEN"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error.INTERNAL_SERVER_ERROR"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/sendMessage": {
+      "post": {
+        "operationId": "sendMessageV2",
+        "summary": "Send a message",
+        "description": "To initiate a chat, do not provide a `sessionId` nor a `message`.\n\nContinue the conversation by providing the `sessionId` and the `message` that should answer the previous question.\n\nSet the `isPreview` option to `true` to chat with the non-published version of the typebot.",
+        "tags": [
+          "Deprecated"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "deprecated": true,
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string",
+                    "description": "The answer to the previous chat input. Do not provide it if you are starting a new chat."
+                  },
+                  "sessionId": {
+                    "type": "string",
+                    "description": "Session ID that you get from the initial chat request to a bot. If not provided, it will create a new session."
+                  },
+                  "startParams": {
+                    "allOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "typebot": {
+                            "anyOf": [
+                              {
+                                "oneOf": [
+                                  {
+                                    "$ref": "#/components/schemas/typebotV6"
+                                  },
+                                  {
+                                    "$ref": "#/components/schemas/typebotV5"
+                                  }
+                                ],
+                                "discriminator": {
+                                  "propertyName": "version",
+                                  "mapping": {
+                                    "3": "#/components/schemas/typebotV5",
+                                    "4": "#/components/schemas/typebotV5",
+                                    "5": "#/components/schemas/typebotV5",
+                                    "6": "#/components/schemas/typebotV6",
+                                    "6.1": "#/components/schemas/typebotV6"
+                                  }
+                                }
+                              },
+                              {
+                                "type": "string"
+                              }
+                            ],
+                            "description": "Either a Typebot ID or a Typebot object. If you provide a Typebot object, it will be executed in preview mode. ([How can I find my typebot ID?](https://docs.typebot.io/api-reference#how-to-find-my-typebotid))."
+                          },
+                          "isPreview": {
+                            "type": "boolean",
+                            "description": "If set to `true`, it will start a Preview session with the unpublished bot and it won't be saved in the Results tab. You need to be authenticated with a bearer token for this to work."
+                          },
+                          "resultId": {
+                            "type": "string",
+                            "description": "Provide it if you'd like to overwrite an existing result."
+                          },
+                          "prefilledVariables": {
+                            "type": "object",
+                            "additionalProperties": {},
+                            "description": "[More info about prefilled variables.](https://docs.typebot.io/editor/variables#prefilled-variables)"
+                          },
+                          "isStreamEnabled": {
+                            "type": "boolean",
+                            "description": "Set this to `true` if you intend to stream OpenAI completions on a client."
+                          },
+                          "isOnlyRegistering": {
+                            "type": "boolean",
+                            "description": "If set to `true`, it will only register the session and not start the chat. This is used for other chat platform integration as it can require a session to be registered before sending the first message."
+                          }
+                        },
+                        "required": [
+                          "typebot"
+                        ]
+                      },
+                      {
+                        "anyOf": [
+                          {
+                            "type": "object",
+                            "properties": {
+                              "startGroupId": {
+                                "type": "string",
+                                "description": "Start chat from a specific group."
+                              },
+                              "startEventId": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "startGroupId"
+                            ]
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "startEventId": {
+                                "type": "string",
+                                "description": "Start chat from a specific event."
+                              },
+                              "startGroupId": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "startEventId"
+                            ]
+                          },
+                          {
+                            "type": "object"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "clientLogs": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "string"
+                        },
+                        "description": {
+                          "type": "string"
+                        },
+                        "details": {
+                          "type": "string"
+                        },
+                        "context": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "description"
+                      ]
+                    },
+                    "description": "Logs while executing client side actions"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "messages": {
+                      "type": "array",
+                      "items": {
+                        "allOf": [
+                          {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "id"
+                            ]
+                          },
+                          {
+                            "oneOf": [
+                              {
+                                "$ref": "#/components/schemas/textBubble"
+                              },
+                              {
+                                "$ref": "#/components/schemas/imageBubble"
+                              },
+                              {
+                                "$ref": "#/components/schemas/videoBubble"
+                              },
+                              {
+                                "$ref": "#/components/schemas/audioBubble"
+                              },
+                              {
+                                "$ref": "#/components/schemas/embedBubble"
+                              },
+                              {
+                                "$ref": "#/components/schemas/customEmbedBubble"
+                              }
+                            ],
+                            "discriminator": {
+                              "propertyName": "type",
+                              "mapping": {
+                                "text": "#/components/schemas/textBubble",
+                                "image": "#/components/schemas/imageBubble",
+                                "video": "#/components/schemas/videoBubble",
+                                "audio": "#/components/schemas/audioBubble",
+                                "embed": "#/components/schemas/embedBubble",
+                                "custom-embed": "#/components/schemas/customEmbedBubble"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    "input": {
+                      "allOf": [
+                        {
+                          "anyOf": [
+                            {
+                              "oneOf": [
+                                {
+                                  "$ref": "#/components/schemas/textInput"
+                                },
+                                {
+                                  "$ref": "#/components/schemas/email"
+                                },
+                                {
+                                  "$ref": "#/components/schemas/numberInput"
+                                },
+                                {
+                                  "$ref": "#/components/schemas/url"
+                                },
+                                {
+                                  "$ref": "#/components/schemas/phoneNumberInput"
+                                },
+                                {
+                                  "$ref": "#/components/schemas/dateInput"
+                                },
+                                {
+                                  "$ref": "#/components/schemas/time"
+                                },
+                                {
+                                  "$ref": "#/components/schemas/paymentInput"
+                                },
+                                {
+                                  "$ref": "#/components/schemas/rating"
+                                },
+                                {
+                                  "type": "object",
+                                  "properties": {
+                                    "id": {
+                                      "type": "string"
+                                    },
+                                    "outgoingEdgeId": {
+                                      "type": "string"
+                                    },
+                                    "type": {
+                                      "type": "string",
+                                      "enum": [
+                                        "cards"
+                                      ]
+                                    },
+                                    "items": {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "object",
+                                        "properties": {
+                                          "id": {
+                                            "type": "string"
+                                          },
+                                          "outgoingEdgeId": {
+                                            "type": "string"
+                                          },
+                                          "options": {
+                                            "type": "object",
+                                            "properties": {
+                                              "displayCondition": {
+                                                "type": "object",
+                                                "properties": {
+                                                  "isEnabled": {
+                                                    "type": "boolean"
+                                                  },
+                                                  "condition": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                      "logicalOperator": {
+                                                        "type": "string",
+                                                        "enum": [
+                                                          "OR",
+                                                          "AND"
+                                                        ]
+                                                      },
+                                                      "comparisons": {
+                                                        "type": "array",
+                                                        "items": {
+                                                          "type": "object",
+                                                          "properties": {
+                                                            "id": {
+                                                              "type": "string"
+                                                            },
+                                                            "variableId": {
+                                                              "type": "string"
+                                                            },
+                                                            "comparisonOperator": {
+                                                              "type": "string",
+                                                              "enum": [
+                                                                "Equal to",
+                                                                "Not equal",
+                                                                "Contains",
+                                                                "Does not contain",
+                                                                "Greater than",
+                                                                "Greater or equal to",
+                                                                "Less than",
+                                                                "Less or equal to",
+                                                                "Is set",
+                                                                "Is empty",
+                                                                "Starts with",
+                                                                "Ends with",
+                                                                "Matches regex",
+                                                                "Does not match regex"
+                                                              ]
+                                                            },
+                                                            "value": {
+                                                              "type": "string"
+                                                            }
+                                                          },
+                                                          "required": [
+                                                            "id"
+                                                          ]
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              },
+                                              "internalValue": {
+                                                "type": "string",
+                                                "nullable": true
+                                              }
+                                            }
+                                          },
+                                          "imageUrl": {
+                                            "type": "string",
+                                            "nullable": true
+                                          },
+                                          "title": {
+                                            "type": "string",
+                                            "nullable": true
+                                          },
+                                          "description": {
+                                            "type": "string",
+                                            "nullable": true
+                                          },
+                                          "paths": {
+                                            "type": "array",
+                                            "items": {
+                                              "type": "object",
+                                              "properties": {
+                                                "id": {
+                                                  "type": "string"
+                                                },
+                                                "text": {
+                                                  "type": "string"
+                                                },
+                                                "outgoingEdgeId": {
+                                                  "type": "string"
+                                                }
+                                              },
+                                              "required": [
+                                                "id"
+                                              ]
+                                            }
+                                          }
+                                        },
+                                        "required": [
+                                          "id"
+                                        ]
+                                      }
+                                    },
+                                    "options": {
+                                      "type": "object",
+                                      "properties": {
+                                        "variableId": {
+                                          "type": "string"
+                                        },
+                                        "saveResponseMapping": {
+                                          "type": "array",
+                                          "items": {
+                                            "type": "object",
+                                            "properties": {
+                                              "field": {
+                                                "type": "string",
+                                                "enum": [
+                                                  "Image URL",
+                                                  "Title",
+                                                  "Description",
+                                                  "Button",
+                                                  "Internal Value"
+                                                ]
+                                              },
+                                              "variableId": {
+                                                "type": "string"
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "required": [
+                                    "id",
+                                    "type",
+                                    "items"
+                                  ]
+                                },
+                                {
+                                  "$ref": "#/components/schemas/buttonsInputV5"
+                                },
+                                {
+                                  "$ref": "#/components/schemas/fileInputV5"
+                                },
+                                {
+                                  "$ref": "#/components/schemas/pictureChoiceV5"
+                                }
+                              ]
+                            },
+                            {
+                              "oneOf": [
+                                {
+                                  "$ref": "#/components/schemas/textInput"
+                                },
+                                {
+                                  "$ref": "#/components/schemas/email"
+                                },
+                                {
+                                  "$ref": "#/components/schemas/numberInput"
+                                },
+                                {
+                                  "$ref": "#/components/schemas/url"
+                                },
+                                {
+                                  "$ref": "#/components/schemas/phoneNumberInput"
+                                },
+                                {
+                                  "$ref": "#/components/schemas/dateInput"
+                                },
+                                {
+                                  "$ref": "#/components/schemas/time"
+                                },
+                                {
+                                  "$ref": "#/components/schemas/paymentInput"
+                                },
+                                {
+                                  "$ref": "#/components/schemas/rating"
+                                },
+                                {
+                                  "type": "object",
+                                  "properties": {
+                                    "id": {
+                                      "type": "string"
+                                    },
+                                    "outgoingEdgeId": {
+                                      "type": "string"
+                                    },
+                                    "type": {
+                                      "type": "string",
+                                      "enum": [
+                                        "cards"
+                                      ]
+                                    },
+                                    "items": {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "object",
+                                        "properties": {
+                                          "id": {
+                                            "type": "string"
+                                          },
+                                          "outgoingEdgeId": {
+                                            "type": "string"
+                                          },
+                                          "options": {
+                                            "type": "object",
+                                            "properties": {
+                                              "displayCondition": {
+                                                "type": "object",
+                                                "properties": {
+                                                  "isEnabled": {
+                                                    "type": "boolean"
+                                                  },
+                                                  "condition": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                      "logicalOperator": {
+                                                        "type": "string",
+                                                        "enum": [
+                                                          "OR",
+                                                          "AND"
+                                                        ]
+                                                      },
+                                                      "comparisons": {
+                                                        "type": "array",
+                                                        "items": {
+                                                          "type": "object",
+                                                          "properties": {
+                                                            "id": {
+                                                              "type": "string"
+                                                            },
+                                                            "variableId": {
+                                                              "type": "string"
+                                                            },
+                                                            "comparisonOperator": {
+                                                              "type": "string",
+                                                              "enum": [
+                                                                "Equal to",
+                                                                "Not equal",
+                                                                "Contains",
+                                                                "Does not contain",
+                                                                "Greater than",
+                                                                "Greater or equal to",
+                                                                "Less than",
+                                                                "Less or equal to",
+                                                                "Is set",
+                                                                "Is empty",
+                                                                "Starts with",
+                                                                "Ends with",
+                                                                "Matches regex",
+                                                                "Does not match regex"
+                                                              ]
+                                                            },
+                                                            "value": {
+                                                              "type": "string"
+                                                            }
+                                                          },
+                                                          "required": [
+                                                            "id"
+                                                          ]
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              },
+                                              "internalValue": {
+                                                "type": "string",
+                                                "nullable": true
+                                              }
+                                            }
+                                          },
+                                          "imageUrl": {
+                                            "type": "string",
+                                            "nullable": true
+                                          },
+                                          "title": {
+                                            "type": "string",
+                                            "nullable": true
+                                          },
+                                          "description": {
+                                            "type": "string",
+                                            "nullable": true
+                                          },
+                                          "paths": {
+                                            "type": "array",
+                                            "items": {
+                                              "type": "object",
+                                              "properties": {
+                                                "id": {
+                                                  "type": "string"
+                                                },
+                                                "text": {
+                                                  "type": "string"
+                                                },
+                                                "outgoingEdgeId": {
+                                                  "type": "string"
+                                                }
+                                              },
+                                              "required": [
+                                                "id"
+                                              ]
+                                            }
+                                          }
+                                        },
+                                        "required": [
+                                          "id"
+                                        ]
+                                      }
+                                    },
+                                    "options": {
+                                      "type": "object",
+                                      "properties": {
+                                        "variableId": {
+                                          "type": "string"
+                                        },
+                                        "saveResponseMapping": {
+                                          "type": "array",
+                                          "items": {
+                                            "type": "object",
+                                            "properties": {
+                                              "field": {
+                                                "type": "string",
+                                                "enum": [
+                                                  "Image URL",
+                                                  "Title",
+                                                  "Description",
+                                                  "Button",
+                                                  "Internal Value"
+                                                ]
+                                              },
+                                              "variableId": {
+                                                "type": "string"
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "required": [
+                                    "id",
+                                    "type",
+                                    "items"
+                                  ]
+                                },
+                                {
+                                  "$ref": "#/components/schemas/buttonsInput"
+                                },
+                                {
+                                  "$ref": "#/components/schemas/fileInput"
+                                },
+                                {
+                                  "$ref": "#/components/schemas/pictureChoice"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "prefilledValue": {
+                              "type": "string"
+                            },
+                            "runtimeOptions": {
+                              "type": "object",
+                              "properties": {
+                                "paymentIntentSecret": {
+                                  "type": "string"
+                                },
+                                "amountLabel": {
+                                  "type": "string"
+                                },
+                                "publicKey": {
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "paymentIntentSecret",
+                                "amountLabel",
+                                "publicKey"
+                              ]
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    "clientSideActions": {
+                      "type": "array",
+                      "items": {
+                        "oneOf": [
+                          {
+                            "$ref": "#/components/schemas/csaScriptToExecute"
+                          },
+                          {
+                            "$ref": "#/components/schemas/csaRedirect"
+                          },
+                          {
+                            "$ref": "#/components/schemas/csaChatwoot"
+                          },
+                          {
+                            "$ref": "#/components/schemas/csaGa"
+                          },
+                          {
+                            "$ref": "#/components/schemas/csaWait"
+                          },
+                          {
+                            "$ref": "#/components/schemas/csaSetVariable"
+                          },
+                          {
+                            "$ref": "#/components/schemas/csaStreamOpenAiChatCompletion"
+                          },
+                          {
+                            "$ref": "#/components/schemas/csaHttpRequestToExecute"
+                          },
+                          {
+                            "$ref": "#/components/schemas/csaInjectStartProps"
+                          },
+                          {
+                            "$ref": "#/components/schemas/csaPixel"
+                          },
+                          {
+                            "$ref": "#/components/schemas/csaStream"
+                          },
+                          {
+                            "$ref": "#/components/schemas/csaCodeToExecute"
+                          },
+                          {
+                            "$ref": "#/components/schemas/csaListenForWebhook"
+                          }
+                        ],
+                        "discriminator": {
+                          "propertyName": "type",
+                          "mapping": {
+                            "scriptToExecute": "#/components/schemas/csaScriptToExecute",
+                            "redirect": "#/components/schemas/csaRedirect",
+                            "chatwoot": "#/components/schemas/csaChatwoot",
+                            "googleAnalytics": "#/components/schemas/csaGa",
+                            "wait": "#/components/schemas/csaWait",
+                            "setVariable": "#/components/schemas/csaSetVariable",
+                            "streamOpenAiChatCompletion": "#/components/schemas/csaStreamOpenAiChatCompletion",
+                            "httpRequestToExecute": "#/components/schemas/csaHttpRequestToExecute",
+                            "startPropsToInject": "#/components/schemas/csaInjectStartProps",
+                            "pixel": "#/components/schemas/csaPixel",
+                            "stream": "#/components/schemas/csaStream",
+                            "codeToExecute": "#/components/schemas/csaCodeToExecute",
+                            "listenForWebhook": "#/components/schemas/csaListenForWebhook"
+                          }
+                        }
+                      }
+                    },
+                    "sessionId": {
+                      "type": "string"
+                    },
+                    "typebot": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "theme": {
+                          "anyOf": [
+                            {
+                              "$ref": "#/components/schemas/theme"
+                            },
+                            {
+                              "$ref": "#/components/schemas/theme"
+                            }
+                          ]
+                        },
+                        "settings": {
+                          "anyOf": [
+                            {
+                              "$ref": "#/components/schemas/settings"
+                            },
+                            {
+                              "$ref": "#/components/schemas/settings"
+                            }
+                          ]
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "theme",
+                        "settings"
+                      ]
+                    },
+                    "resultId": {
+                      "type": "string"
+                    },
+                    "dynamicTheme": {
+                      "type": "object",
+                      "properties": {
+                        "hostAvatarUrl": {
+                          "type": "string"
+                        },
+                        "guestAvatarUrl": {
+                          "type": "string"
+                        },
+                        "backgroundUrl": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "logs": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "status": {
+                            "type": "string"
+                          },
+                          "description": {
+                            "type": "string"
+                          },
+                          "details": {
+                            "type": "string"
+                          },
+                          "context": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "description"
+                        ]
+                      }
+                    },
+                    "lastMessageNewFormat": {
+                      "type": "string",
+                      "description": "The sent message is validated and formatted on the backend. This is set only if the message differs from the formatted version."
+                    }
+                  },
+                  "required": [
+                    "messages"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error.BAD_REQUEST"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authorization not provided",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error.UNAUTHORIZED"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient access",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error.FORBIDDEN"
+                }
+              }
+            }
+          },
           "500": {
             "description": "Internal server error",
             "content": {
@@ -1689,6 +1739,11 @@
       "post": {
         "operationId": "startChat",
         "summary": "Start chat",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -2364,6 +2419,26 @@
               }
             }
           },
+          "401": {
+            "description": "Authorization not provided",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error.UNAUTHORIZED"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient access",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error.FORBIDDEN"
+                }
+              }
+            }
+          },
           "500": {
             "description": "Internal server error",
             "content": {
@@ -2381,6 +2456,11 @@
       "post": {
         "operationId": "continueChat",
         "summary": "Continue chat",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -2888,6 +2968,26 @@
               }
             }
           },
+          "401": {
+            "description": "Authorization not provided",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error.UNAUTHORIZED"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient access",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error.FORBIDDEN"
+                }
+              }
+            }
+          },
           "500": {
             "description": "Internal server error",
             "content": {
@@ -2906,6 +3006,11 @@
         "operationId": "startChatPreview",
         "summary": "Start preview chat",
         "description": "Use this endpoint to test your bot. The answers will not be saved. And some blocks like \"Send email\" will be skipped.",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -3637,6 +3742,26 @@
               }
             }
           },
+          "401": {
+            "description": "Authorization not provided",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error.UNAUTHORIZED"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient access",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error.FORBIDDEN"
+                }
+              }
+            }
+          },
           "500": {
             "description": "Internal server error",
             "content": {
@@ -3657,6 +3782,11 @@
         "description": "Used for the web client to get the bucket upload file.",
         "tags": [
           "Deprecated"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
         ],
         "deprecated": true,
         "parameters": [
@@ -3725,6 +3855,26 @@
               }
             }
           },
+          "401": {
+            "description": "Authorization not provided",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error.UNAUTHORIZED"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient access",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error.FORBIDDEN"
+                }
+              }
+            }
+          },
           "404": {
             "description": "Not found",
             "content": {
@@ -3753,6 +3903,11 @@
         "operationId": "generateUploadUrlV1",
         "summary": "Generate upload URL",
         "description": "Used to upload anything from the client to S3 bucket",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -3851,6 +4006,26 @@
               }
             }
           },
+          "401": {
+            "description": "Authorization not provided",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error.UNAUTHORIZED"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient access",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error.FORBIDDEN"
+                }
+              }
+            }
+          },
           "500": {
             "description": "Internal server error",
             "content": {
@@ -3869,6 +4044,11 @@
         "operationId": "generateUploadUrlV2",
         "summary": "Generate upload URL",
         "description": "Used to upload anything from the client to S3 bucket",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -3932,6 +4112,26 @@
               }
             }
           },
+          "401": {
+            "description": "Authorization not provided",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error.UNAUTHORIZED"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient access",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error.FORBIDDEN"
+                }
+              }
+            }
+          },
           "500": {
             "description": "Internal server error",
             "content": {
@@ -3950,6 +4150,11 @@
         "operationId": "generateUploadUrl",
         "summary": "Generate upload URL",
         "description": "Used to upload anything from the client to S3 bucket",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -4013,6 +4218,26 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/error.BAD_REQUEST"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authorization not provided",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error.UNAUTHORIZED"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient access",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error.FORBIDDEN"
                 }
               }
             }
@@ -4229,6 +4454,11 @@
         "summary": "Message webhook",
         "tags": [
           "WhatsApp"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
         ],
         "parameters": [
           {
@@ -5127,6 +5357,26 @@
               }
             }
           },
+          "401": {
+            "description": "Authorization not provided",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error.UNAUTHORIZED"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient access",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error.FORBIDDEN"
+                }
+              }
+            }
+          },
           "500": {
             "description": "Internal server error",
             "content": {
@@ -5144,6 +5394,11 @@
       "post": {
         "operationId": "saveClientLogsV1",
         "summary": "Save logs",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -5219,6 +5474,26 @@
               }
             }
           },
+          "401": {
+            "description": "Authorization not provided",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error.UNAUTHORIZED"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient access",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error.FORBIDDEN"
+                }
+              }
+            }
+          },
           "500": {
             "description": "Internal server error",
             "content": {
@@ -5236,6 +5511,11 @@
       "post": {
         "operationId": "saveClientLogs",
         "summary": "Save logs",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -5309,6 +5589,26 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/error.BAD_REQUEST"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authorization not provided",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error.UNAUTHORIZED"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient access",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error.FORBIDDEN"
                 }
               }
             }
@@ -17976,11 +18276,95 @@
           "message",
           "code"
         ],
-        "title": "Error",
+        "title": "Invalid input data error (400)",
         "description": "The error information",
         "example": {
           "code": "BAD_REQUEST",
           "message": "Invalid input data",
+          "issues": []
+        }
+      },
+      "error.UNAUTHORIZED": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "The error message",
+            "example": "Authorization not provided"
+          },
+          "code": {
+            "type": "string",
+            "description": "The error code",
+            "example": "UNAUTHORIZED"
+          },
+          "issues": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "message"
+              ]
+            },
+            "description": "An array of issues that were responsible for the error",
+            "example": []
+          }
+        },
+        "required": [
+          "message",
+          "code"
+        ],
+        "title": "Authorization not provided error (401)",
+        "description": "The error information",
+        "example": {
+          "code": "UNAUTHORIZED",
+          "message": "Authorization not provided",
+          "issues": []
+        }
+      },
+      "error.FORBIDDEN": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "The error message",
+            "example": "Insufficient access"
+          },
+          "code": {
+            "type": "string",
+            "description": "The error code",
+            "example": "FORBIDDEN"
+          },
+          "issues": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "message"
+              ]
+            },
+            "description": "An array of issues that were responsible for the error",
+            "example": []
+          }
+        },
+        "required": [
+          "message",
+          "code"
+        ],
+        "title": "Insufficient access error (403)",
+        "description": "The error information",
+        "example": {
+          "code": "FORBIDDEN",
+          "message": "Insufficient access",
           "issues": []
         }
       },
@@ -18018,7 +18402,7 @@
           "message",
           "code"
         ],
-        "title": "Error",
+        "title": "Internal server error error (500)",
         "description": "The error information",
         "example": {
           "code": "INTERNAL_SERVER_ERROR",
@@ -18125,95 +18509,11 @@
           "message",
           "code"
         ],
-        "title": "Error",
+        "title": "Not found error (404)",
         "description": "The error information",
         "example": {
           "code": "NOT_FOUND",
           "message": "Not found",
-          "issues": []
-        }
-      },
-      "error.UNAUTHORIZED": {
-        "type": "object",
-        "properties": {
-          "message": {
-            "type": "string",
-            "description": "The error message",
-            "example": "Authorization not provided"
-          },
-          "code": {
-            "type": "string",
-            "description": "The error code",
-            "example": "UNAUTHORIZED"
-          },
-          "issues": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "message": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "message"
-              ]
-            },
-            "description": "An array of issues that were responsible for the error",
-            "example": []
-          }
-        },
-        "required": [
-          "message",
-          "code"
-        ],
-        "title": "Error",
-        "description": "The error information",
-        "example": {
-          "code": "UNAUTHORIZED",
-          "message": "Authorization not provided",
-          "issues": []
-        }
-      },
-      "error.FORBIDDEN": {
-        "type": "object",
-        "properties": {
-          "message": {
-            "type": "string",
-            "description": "The error message",
-            "example": "Insufficient access"
-          },
-          "code": {
-            "type": "string",
-            "description": "The error code",
-            "example": "FORBIDDEN"
-          },
-          "issues": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "message": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "message"
-              ]
-            },
-            "description": "An array of issues that were responsible for the error",
-            "example": []
-          }
-        },
-        "required": [
-          "message",
-          "code"
-        ],
-        "title": "Error",
-        "description": "The error information",
-        "example": {
-          "code": "FORBIDDEN",
-          "message": "Insufficient access",
           "issues": []
         }
       }

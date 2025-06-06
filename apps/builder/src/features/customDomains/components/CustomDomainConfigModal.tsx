@@ -1,5 +1,5 @@
 import { XCircleIcon } from "@/components/icons";
-import { trpc } from "@/lib/trpc";
+import { trpc } from "@/lib/queryClient";
 import {
   Alert,
   AlertIcon,
@@ -17,6 +17,7 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
+import { useQuery } from "@tanstack/react-query";
 
 type Props = {
   workspaceId: string;
@@ -31,10 +32,12 @@ export const CustomDomainConfigModal = ({
   onClose,
   domain,
 }: Props) => {
-  const { data, error } = trpc.customDomains.verifyCustomDomain.useQuery({
-    name: domain,
-    workspaceId,
-  });
+  const { data, error } = useQuery(
+    trpc.customDomains.verifyCustomDomain.queryOptions({
+      name: domain,
+      workspaceId,
+    }),
+  );
 
   const { domainJson, status } = data ?? {};
 

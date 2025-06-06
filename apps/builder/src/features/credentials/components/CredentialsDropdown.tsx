@@ -1,7 +1,7 @@
 import { ChevronLeftIcon, PlusIcon, TrashIcon } from "@/components/icons";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
+import { trpc } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
-import { trpc } from "@/lib/trpc";
 import {
   Button,
   type ButtonProps,
@@ -13,6 +13,8 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
+import { useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
 import type { Credentials } from "@typebot.io/credentials/schemas";
 import type React from "react";
@@ -48,37 +50,41 @@ export const CredentialsDropdown = ({
 }: Props) => {
   const { t } = useTranslate();
   const { currentUserMode } = useWorkspace();
-  const { data, refetch } = trpc.credentials.listCredentials.useQuery(
-    scope.type === "workspace"
-      ? {
-          scope: "workspace",
-          workspaceId: scope.workspaceId,
-          type: type,
-        }
-      : {
-          scope: "user",
-          type,
-        },
+  const { data, refetch } = useQuery(
+    trpc.credentials.listCredentials.queryOptions(
+      scope.type === "workspace"
+        ? {
+            scope: "workspace",
+            workspaceId: scope.workspaceId,
+            type: type,
+          }
+        : {
+            scope: "user",
+            type,
+          },
+    ),
   );
   const [isDeleting, setIsDeleting] = useState<string>();
-  const { mutate } = trpc.credentials.deleteCredentials.useMutation({
-    onMutate: ({ credentialsId }) => {
-      setIsDeleting(credentialsId);
-    },
-    onError: (error) => {
-      toast({
-        description: error.message,
-      });
-    },
-    onSuccess: ({ credentialsId }) => {
-      if (credentialsId === currentCredentialsId)
-        onCredentialsSelect(undefined);
-      refetch();
-    },
-    onSettled: () => {
-      setIsDeleting(undefined);
-    },
-  });
+  const { mutate } = useMutation(
+    trpc.credentials.deleteCredentials.mutationOptions({
+      onMutate: ({ credentialsId }) => {
+        setIsDeleting(credentialsId);
+      },
+      onError: (error) => {
+        toast({
+          description: error.message,
+        });
+      },
+      onSuccess: ({ credentialsId }) => {
+        if (credentialsId === currentCredentialsId)
+          onCredentialsSelect(undefined);
+        refetch();
+      },
+      onSettled: () => {
+        setIsDeleting(undefined);
+      },
+    }),
+  );
 
   const defaultCredentialsLabel =
     defaultCredentialLabel ?? `${t("select")} ${credentialsName}`;

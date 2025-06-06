@@ -2,7 +2,8 @@ import { useTypebots } from "@/features/dashboard/hooks/useTypebots";
 import type { TypebotInDashboard } from "@/features/dashboard/types";
 import type { NodePosition } from "@/features/graph/providers/GraphDndProvider";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { trpc } from "@/lib/trpc";
+import { trpc } from "@/lib/queryClient";
+import { toast } from "@/lib/toast";
 import {
   Flex,
   HStack,
@@ -13,6 +14,8 @@ import {
   Wrap,
   useEventListener,
 } from "@chakra-ui/react";
+import { useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import type { Prisma } from "@typebot.io/prisma/types";
 import React, { useEffect, useState } from "react";
 import { useTypebotDnd } from "../TypebotDndProvider";
@@ -23,7 +26,6 @@ import FolderButton, { ButtonSkeleton } from "./FolderButton";
 import TypebotButton from "./TypebotButton";
 import { TypebotCardOverlay } from "./TypebotButtonOverlay";
 
-import { toast } from "@/lib/toast";
 type Props = { folder: Prisma.DashboardFolder | null };
 
 export const FolderContent = ({ folder }: Props) => {
@@ -45,33 +47,39 @@ export const FolderContent = ({ folder }: Props) => {
     data: { folders } = {},
     isLoading: isFolderLoading,
     refetch: refetchFolders,
-  } = trpc.folders.listFolders.useQuery(
-    {
-      workspaceId: workspace?.id as string,
-      parentFolderId: folder?.id,
-    },
-    {
-      enabled: !!workspace,
-    },
+  } = useQuery(
+    trpc.folders.listFolders.queryOptions(
+      {
+        workspaceId: workspace?.id as string,
+        parentFolderId: folder?.id,
+      },
+      {
+        enabled: !!workspace,
+      },
+    ),
   );
 
-  const { mutate: createFolder } = trpc.folders.createFolder.useMutation({
-    onError: (error) => {
-      toast({ description: error.message });
-    },
-    onSuccess: () => {
-      refetchFolders();
-    },
-  });
+  const { mutate: createFolder } = useMutation(
+    trpc.folders.createFolder.mutationOptions({
+      onError: (error) => {
+        toast({ description: error.message });
+      },
+      onSuccess: () => {
+        refetchFolders();
+      },
+    }),
+  );
 
-  const { mutate: updateTypebot } = trpc.typebot.updateTypebot.useMutation({
-    onError: (error) => {
-      toast({ description: error.message });
-    },
-    onSuccess: () => {
-      refetchTypebots();
-    },
-  });
+  const { mutate: updateTypebot } = useMutation(
+    trpc.typebot.updateTypebot.mutationOptions({
+      onError: (error) => {
+        toast({ description: error.message });
+      },
+      onSuccess: () => {
+        refetchTypebots();
+      },
+    }),
+  );
 
   const {
     typebots,
@@ -80,11 +88,6 @@ export const FolderContent = ({ folder }: Props) => {
   } = useTypebots({
     workspaceId: workspace?.id,
     folderId: folder === null ? "root" : folder.id,
-    onError: (error) => {
-      toast({
-        description: error.message,
-      });
-    },
   });
 
   const moveTypebotToFolder = async (typebotId: string, folderId: string) => {

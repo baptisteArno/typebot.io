@@ -1,6 +1,7 @@
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
-import { trpc } from "@/lib/trpc";
+import { trpc } from "@/lib/queryClient";
 import { Tag, Text } from "@chakra-ui/react";
+import { useQuery } from "@tanstack/react-query";
 import type { TypebotLinkBlock } from "@typebot.io/blocks-logic/typebotLink/schema";
 import { byId, isNotEmpty } from "@typebot.io/lib/utils";
 import { isSingleVariable } from "@typebot.io/variables/isSingleVariable";
@@ -13,15 +14,17 @@ type Props = {
 export const TypebotLinkNode = ({ block }: Props) => {
   const { typebot } = useTypebot();
 
-  const { data: linkedTypebotData } = trpc.typebot.getTypebot.useQuery(
-    {
-      typebotId: block.options?.typebotId as string,
-    },
-    {
-      enabled:
-        isNotEmpty(block.options?.typebotId) &&
-        block.options?.typebotId !== "current",
-    },
+  const { data: linkedTypebotData } = useQuery(
+    trpc.typebot.getTypebot.queryOptions(
+      {
+        typebotId: block.options?.typebotId as string,
+      },
+      {
+        enabled:
+          isNotEmpty(block.options?.typebotId) &&
+          block.options?.typebotId !== "current",
+      },
+    ),
   );
 
   const isCurrentTypebot =

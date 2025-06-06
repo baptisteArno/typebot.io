@@ -1,8 +1,9 @@
 import type { FilePathUploadProps } from "@/features/upload/api/generateUploadUrl";
 import { compressFile } from "@/helpers/compressFile";
+import { trpc } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
-import { trpc } from "@/lib/trpc";
 import { Button, type ButtonProps, chakra } from "@chakra-ui/react";
+import { useMutation } from "@tanstack/react-query";
 import type { ChangeEvent } from "react";
 import { useId, useState } from "react";
 
@@ -22,32 +23,34 @@ export const UploadButton = ({
   const [isUploading, setIsUploading] = useState(false);
   const [file, setFile] = useState<File>();
 
-  const { mutate } = trpc.generateUploadUrl.useMutation({
-    onSettled: () => {
-      setIsUploading(false);
-    },
-    onSuccess: async (data) => {
-      if (!file) return;
-      const formData = new FormData();
-      Object.entries(data.formData).forEach(([key, value]) => {
-        formData.append(key, value);
-      });
-      formData.append("file", file);
-      const upload = await fetch(data.presignedUrl, {
-        method: "POST",
-        body: formData,
-      });
-
-      if (!upload.ok) {
-        toast({
-          description: "Error while trying to upload the file.",
+  const { mutate } = useMutation(
+    trpc.generateUploadUrl.mutationOptions({
+      onSettled: () => {
+        setIsUploading(false);
+      },
+      onSuccess: async (data) => {
+        if (!file) return;
+        const formData = new FormData();
+        Object.entries(data.formData).forEach(([key, value]) => {
+          formData.append(key, value);
         });
-        return;
-      }
+        formData.append("file", file);
+        const upload = await fetch(data.presignedUrl, {
+          method: "POST",
+          body: formData,
+        });
 
-      onFileUploaded(data.fileUrl + "?v=" + Date.now());
-    },
-  });
+        if (!upload.ok) {
+          toast({
+            description: "Error while trying to upload the file.",
+          });
+          return;
+        }
+
+        onFileUploaded(data.fileUrl + "?v=" + Date.now());
+      },
+    }),
+  );
 
   const handleInputChange = async (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target?.files) return;

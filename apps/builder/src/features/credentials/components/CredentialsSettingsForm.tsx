@@ -5,7 +5,7 @@ import { WhatsAppLogo } from "@/components/logos/WhatsAppLogo";
 import { BlockIcon } from "@/features/editor/components/BlockIcon";
 import { BlockLabel } from "@/features/editor/components/BlockLabel";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { trpc } from "@/lib/trpc";
+import { trpc } from "@/lib/queryClient";
 import {
   Button,
   Divider,
@@ -30,6 +30,8 @@ import {
   Text,
   type TextProps,
 } from "@chakra-ui/react";
+import { useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
 import { IntegrationBlockType } from "@typebot.io/blocks-integrations/constants";
 import {
@@ -57,8 +59,8 @@ export const CredentialsSettingsForm = () => {
   }>();
   const [deletingCredentialsId, setDeletingCredentialsId] = useState<string>();
   const { workspace } = useWorkspace();
-  const { data, isLoading, refetch } =
-    trpc.credentials.listCredentials.useQuery(
+  const { data, isLoading, refetch } = useQuery(
+    trpc.credentials.listCredentials.queryOptions(
       selectedScope === "workspace"
         ? {
             scope: "workspace",
@@ -70,10 +72,11 @@ export const CredentialsSettingsForm = () => {
       {
         enabled: selectedScope === "user" || !!workspace?.id,
       },
-    );
+    ),
+  );
 
-  const { mutate: deleteCredentials } =
-    trpc.credentials.deleteCredentials.useMutation({
+  const { mutate: deleteCredentials } = useMutation(
+    trpc.credentials.deleteCredentials.mutationOptions({
       onMutate: ({ credentialsId }) =>
         setDeletingCredentialsId(credentialsId as string),
       onSettled: () => {
@@ -85,7 +88,8 @@ export const CredentialsSettingsForm = () => {
       onSuccess: () => {
         refetch();
       },
-    });
+    }),
+  );
 
   const credentials = useMemo(
     () =>

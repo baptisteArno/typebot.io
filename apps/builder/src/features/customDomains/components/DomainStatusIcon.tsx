@@ -1,7 +1,7 @@
 import { XCircleIcon } from "@/components/icons";
-import { toast } from "@/lib/toast";
-import { trpc } from "@/lib/trpc";
+import { trpc } from "@/lib/queryClient";
 import { Flex, Tooltip, useDisclosure } from "@chakra-ui/react";
+import { useQuery } from "@tanstack/react-query";
 import { CustomDomainConfigModal } from "./CustomDomainConfigModal";
 
 type Props = {
@@ -10,16 +10,11 @@ type Props = {
 };
 export default function DomainStatusIcon({ domain, workspaceId }: Props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { data, isLoading } = trpc.customDomains.verifyCustomDomain.useQuery(
-    {
+  const { data, isLoading } = useQuery(
+    trpc.customDomains.verifyCustomDomain.queryOptions({
       name: domain,
       workspaceId,
-    },
-    {
-      onError: (err) => {
-        toast({ description: err.message });
-      },
-    },
+    }),
   );
 
   if (isLoading || data?.status === "Valid Configuration") return null;

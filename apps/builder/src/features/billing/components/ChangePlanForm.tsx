@@ -2,9 +2,10 @@ import { TextLink } from "@/components/TextLink";
 import { ParentModalProvider } from "@/features/graph/providers/ParentModalProvider";
 import { useUser } from "@/features/user/hooks/useUser";
 import type { WorkspaceInApp } from "@/features/workspace/WorkspaceProvider";
+import { queryClient, trpc } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
-import { trpc } from "@/lib/trpc";
 import { HStack, Stack, Text } from "@chakra-ui/react";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
 import { Plan } from "@typebot.io/prisma/enum";
 import { useState } from "react";
@@ -31,34 +32,40 @@ export const ChangePlanForm = ({
   const [preCheckoutPlan, setPreCheckoutPlan] =
     useState<PreCheckoutModalProps["selectedSubscription"]>();
 
-  const trpcContext = trpc.useContext();
+  const { data, refetch } = useQuery(
+    trpc.billing.getSubscription.queryOptions({
+      workspaceId: workspace.id,
+    }),
+  );
 
-  const { data, refetch } = trpc.billing.getSubscription.useQuery({
-    workspaceId: workspace.id,
-  });
-
-  const { mutate: updateSubscription, isLoading: isUpdatingSubscription } =
-    trpc.billing.updateSubscription.useMutation({
-      onError: (error) => {
-        toast({
-          description: error.message,
-        });
-      },
-      onSuccess: ({ workspace, checkoutUrl }) => {
-        if (checkoutUrl) {
-          window.location.href = checkoutUrl;
-          return;
-        }
-        refetch();
-        trpcContext.workspace.getWorkspace.invalidate();
-        toast({
-          status: "success",
-          description: t("billing.updateSuccessToast.description", {
-            plan: workspace?.plan,
-          }),
-        });
-      },
-    });
+  const { mutate: updateSubscription, status: updateSubscriptionStatus } =
+    useMutation(
+      trpc.billing.updateSubscription.mutationOptions({
+        onError: (error) => {
+          toast({
+            description: error.message,
+          });
+        },
+        onSuccess: ({ workspace, checkoutUrl }) => {
+          if (checkoutUrl) {
+            window.location.href = checkoutUrl;
+            return;
+          }
+          refetch();
+          queryClient.invalidateQueries({
+            queryKey: trpc.workspace.getWorkspace.queryKey({
+              workspaceId: workspace?.id,
+            }),
+          });
+          toast({
+            status: "success",
+            description: t("billing.updateSuccessToast.description", {
+              plan: workspace?.plan,
+            }),
+          });
+        },
+      }),
+    );
 
   const handlePayClick = async (plan: "STARTER" | "PRO") => {
     if (!user) return;
@@ -125,7 +132,7 @@ export const ChangePlanForm = ({
               <StarterPlanPricingCard
                 currentPlan={workspace.plan}
                 onPayClick={() => handlePayClick(Plan.STARTER)}
-                isLoading={isUpdatingSubscription}
+                isLoading={updateSubscriptionStatus === "pending"}
                 currency={data.subscription?.currency}
               />
             )}
@@ -134,7 +141,7 @@ export const ChangePlanForm = ({
               <ProPlanPricingCard
                 currentPlan={workspace.plan}
                 onPayClick={() => handlePayClick(Plan.PRO)}
-                isLoading={isUpdatingSubscription}
+                isLoading={updateSubscriptionStatus === "pending"}
                 currency={data.subscription?.currency}
               />
             )}
