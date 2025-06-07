@@ -19,6 +19,7 @@ import type { InputBlock } from "@typebot.io/blocks-inputs/schema";
 import type {
   StartChatResponse,
   StartFrom,
+  StartTypebot,
 } from "@typebot.io/chat-api/schemas";
 import { isDefined, isNotDefined, isNotEmpty } from "@typebot.io/lib/utils";
 import type { LogInSession } from "@typebot.io/logs/schemas";
@@ -42,7 +43,6 @@ import {
   createMemo,
   createSignal,
   onCleanup,
-  onMount,
 } from "solid-js";
 import { Portal } from "solid-js/web";
 import { buttonVariants } from "./Button";
@@ -54,7 +54,7 @@ import { CloseIcon } from "./icons/CloseIcon";
 
 export type BotProps = {
   id?: string;
-  typebot: string | any;
+  typebot: string | StartTypebot | undefined;
   isPreview?: boolean;
   resultId?: string;
   prefilledVariables?: Record<string, unknown>;
@@ -243,12 +243,12 @@ export const Bot = (props: BotProps & { class?: string }) => {
               typebot: {
                 ...initialChatReply.typebot,
                 settings:
-                  typeof props.typebot === "string"
-                    ? initialChatReply.typebot?.settings
+                  typeof props.typebot === "string" || !props.typebot
+                    ? initialChatReply.typebot.settings
                     : props.typebot?.settings,
                 theme:
-                  typeof props.typebot === "string"
-                    ? initialChatReply.typebot?.theme
+                  typeof props.typebot === "string" || !props.typebot
+                    ? initialChatReply.typebot.theme
                     : props.typebot?.theme,
               },
             }}
