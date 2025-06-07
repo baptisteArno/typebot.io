@@ -1,10 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 let logger: any
 
-if (
-  typeof window === 'undefined' &&
-  !process.env.NODE_ENV?.includes('development')
-) {
+if (typeof window === 'undefined' && process.env.NODE_ENV === 'production') {
   // Só importa winston no server
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   const winston = require('winston')

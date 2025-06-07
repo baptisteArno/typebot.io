@@ -47,12 +47,6 @@ Duplicate the `.env.dev.example` file and name it `.env`:
 cp .env.dev.example .env
 ```
 
-## Start docker compose
-
-```bash
-docker compose up -d
-```
-
 ---
 
 ## Start the app
