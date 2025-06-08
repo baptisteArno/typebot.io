@@ -112,7 +112,7 @@ export const ImageBubble = (props: Props) => {
             <figure
               class={cx(
                 "z-10 cursor-pointer",
-                isTyping() ? "h-8 @sm:h-9" : "p-4",
+                isTyping() ? "h-8 @xs:h-9" : "p-4",
               )}
               on:click={
                 props.content?.url?.startsWith("data:image/svg")

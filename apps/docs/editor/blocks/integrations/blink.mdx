@@ -1,0 +1,65 @@
+---
+title: Blink
+---
+
+The Blink integration allows you to interact with your [Blink](https://joinblink.com) workplace communication platform directly from your typebot. You can retrieve user information and send rich feed events to keep your team informed and engaged.
+
+## Authentication
+
+To get started, you'll need to create a Blink app and generate an API token:
+
+1. Follow the [official Blink instructions](https://developer.joinblink.com/docs/creating-an-integration) to create your integration
+2. Generate an app token from your Blink admin dashboard
+3. Add your app token to the Typebot credentials section
+
+## Get Users
+
+The "Get Users" action allows you to retrieve user information from your Blink workspace. You can filter users by either User ID or Employee ID.
+
+### Configuration
+
+- **Filter**: Choose between filtering by "User ID" or "Employee ID"
+- **Save in variables**: Select which user data fields to save in your typebot variables
+
+### Available User Data
+
+The block can retrieve the following user information:
+
+- **Email addresses**
+- **Company names**
+- **First and last names**
+- **Display names**
+- **Initials**
+- **Job titles**
+- **Profile photo IDs**
+- **Timezones**
+- **Manager IDs**
+- **Department names**
+- **Account statuses**
+- **User IDs**
+- **Employee IDs**
+
+## Send Feed Event
+
+The "Send Feed Event" action allows you to create rich, interactive cards in your Blink feed. These cards support various content types and interactive elements.
+
+### Basic Configuration
+
+- **Category ID**: The Blink category where the event should be posted
+- **Ribbon Color**: Hex color code for the card's ribbon (e.g., #FF0000)
+- **Allow Comments**: Enable/disable commenting on the feed event
+- **Allow Reactions**: Enable/disable reactions on the feed event
+
+### Card Content Types
+
+The Blink integration supports a rich variety of content types for your feed cards. For comprehensive UI options and examples, refer to the [official Blink CardKit documentation](https://developer.joinblink.com/docs/cardkit).
+
+
+### Targeting
+
+- **User IDs**: Specific users who should see this feed event
+- **Group IDs**: Specific groups who should see this feed event
+
+### Push Notifications
+
+Optionally configure a push notifications to receive whenever the feed event is posted.

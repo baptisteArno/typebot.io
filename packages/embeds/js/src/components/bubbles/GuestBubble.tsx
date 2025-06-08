@@ -28,7 +28,7 @@ export const GuestBubble = (props: Props) => {
         "flex justify-end items-end animate-fade-in gap-2 guest-container",
         (props.theme.chat?.hostAvatar?.isEnabled ??
           defaultHostAvatarIsEnabled) &&
-          "ml-7 @sm:ml-[50px]",
+          "ml-7 @xs:ml-[50px]",
       )}
     >
       <Switch>
@@ -66,7 +66,7 @@ const TextGuestBubble = (props: { answer: TextInputSubmitContent }) => {
   return (
     <div class="flex flex-col gap-1 items-end">
       <Show when={(props.answer.attachments ?? []).length > 0}>
-        <div class="flex gap-1 overflow-auto max-w-[350px] flex-wrap justify-end @sm:items-center @sm:flex-nowrap">
+        <div class="flex gap-1 overflow-auto max-w-[350px] flex-wrap justify-end @xs:items-center @xs:flex-nowrap">
           <For
             each={props.answer.attachments?.filter((attachment) =>
               attachment.type.startsWith("image"),
@@ -89,7 +89,7 @@ const TextGuestBubble = (props: { answer: TextInputSubmitContent }) => {
             )}
           </For>
         </div>
-        <div class="flex gap-1 overflow-auto max-w-[350px] flex-wrap justify-end @sm:items-center @sm:flex-nowrap">
+        <div class="flex gap-1 overflow-auto max-w-[350px] flex-wrap justify-end @xs:items-center @xs:flex-nowrap">
           <For
             each={props.answer.attachments?.filter(
               (attachment) => !attachment.type.startsWith("image"),

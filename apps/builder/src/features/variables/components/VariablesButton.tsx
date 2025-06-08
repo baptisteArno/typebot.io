@@ -1,6 +1,5 @@
 import { BracesIcon } from "@/components/icons";
 import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
-import { useParentModal } from "@/features/graph/providers/ParentModalProvider";
 import { useOutsideClick } from "@/hooks/useOutsideClick";
 import {
   Flex,
@@ -25,7 +24,6 @@ export const VariablesButton = ({ onSelectVariable, ...props }: Props) => {
   const { t } = useTranslate();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const popoverRef = useRef<HTMLDivElement>(null);
-  const { ref: parentModalRef } = useParentModal();
 
   useOutsideClick({
     ref: popoverRef,
@@ -48,7 +46,7 @@ export const VariablesButton = ({ onSelectVariable, ...props }: Props) => {
           </Tooltip>
         </Flex>
       </PopoverAnchor>
-      <Portal containerRef={parentModalRef}>
+      <Portal>
         <PopoverContent w="full" ref={popoverRef}>
           <VariableSearchInput
             initialVariableId={undefined}

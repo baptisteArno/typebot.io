@@ -313,6 +313,7 @@ export const TextInput = (props: Props) => {
                 onInput={handleInput}
                 onKeyDown={submitIfCtrlEnter}
                 value={inputValue()}
+                inputmode={props.block.options?.inputMode}
                 placeholder={
                   props.block.options?.labels?.placeholder ??
                   defaultTextInputOptions.labels.placeholder
@@ -323,6 +324,7 @@ export const TextInput = (props: Props) => {
                 ref={inputRef as HTMLInputElement}
                 onInput={handleInput}
                 value={inputValue()}
+                inputmode={props.block.options?.inputMode}
                 placeholder={
                   props.block.options?.labels?.placeholder ??
                   defaultTextInputOptions.labels.placeholder

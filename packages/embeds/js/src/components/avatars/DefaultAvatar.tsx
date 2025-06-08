@@ -3,7 +3,7 @@ export const DefaultAvatar = ({
 }: { backgroundColor: string }) => (
   <svg
     viewBox="0 0 156 156"
-    class="size-6 @sm:size-10"
+    class="size-6 @xs:size-10"
     data-testid="default-avatar"
   >
     <rect width="156" height="156" rx="78" fill={backgroundColor} />

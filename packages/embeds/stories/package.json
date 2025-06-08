@@ -7,7 +7,6 @@
   },
   "dependencies": {
     "@ladle/react": "5.0.1",
-    "@typebot.io/bot-engine": "workspace:*",
     "@typebot.io/conditions": "workspace:*",
     "@typebot.io/react": "workspace:*",
     "@typebot.io/theme": "workspace:*",

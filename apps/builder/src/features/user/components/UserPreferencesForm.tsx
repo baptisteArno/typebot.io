@@ -14,7 +14,7 @@ import {
 } from "@chakra-ui/react";
 import { useTolgee, useTranslate } from "@tolgee/react";
 import { GraphNavigation } from "@typebot.io/prisma/enum";
-import type { GroupTitlesAutoGeneration } from "@typebot.io/schemas/features/user/schema";
+import type { GroupTitlesAutoGeneration } from "@typebot.io/user/schemas";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import { setLocaleInCookies } from "../helpers/setLocaleInCookies";

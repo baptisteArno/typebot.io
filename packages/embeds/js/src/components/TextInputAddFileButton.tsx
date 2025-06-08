@@ -39,7 +39,7 @@ export const TextInputAddFileButton = (props: Props) => {
         aria-label="Add attachments"
         for="document-upload"
         class={cx(
-          "filter data-[state=open]:backdrop-brightness-90 hover:backdrop-brightness-95 transition rounded-md p-2 focus:outline-none @sm:hidden",
+          "filter data-[state=open]:backdrop-brightness-90 hover:backdrop-brightness-95 transition rounded-md p-2 focus:outline-none @xs:hidden",
           props.class,
         )}
       >
@@ -48,7 +48,7 @@ export const TextInputAddFileButton = (props: Props) => {
       <Menu.Root>
         <Menu.Trigger
           class={cx(
-            "filter data-[state=open]:backdrop-brightness-90 hover:backdrop-brightness-95 transition rounded-md p-2 focus:outline-none @sm:block hidden",
+            "filter data-[state=open]:backdrop-brightness-90 hover:backdrop-brightness-95 transition rounded-md p-2 focus:outline-none @xs:block hidden",
             props.class,
           )}
           aria-label="Add attachments"

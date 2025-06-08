@@ -118,7 +118,7 @@ export const MultipleChoicesForm = (props: Props) => {
       >
         <For each={filteredItems()}>
           {(item) => (
-            <span class="relative w-full @sm:w-auto">
+            <span class="relative w-full @xs:w-auto">
               <div
                 role="checkbox"
                 aria-checked={selectedItemIds().some(
@@ -154,7 +154,7 @@ export const MultipleChoicesForm = (props: Props) => {
           )}
         >
           {(selectedItemId) => (
-            <span class="relative w-full @sm:w-auto">
+            <span class="relative w-full @xs:w-auto">
               <div
                 role="checkbox"
                 aria-checked

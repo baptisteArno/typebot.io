@@ -3,15 +3,24 @@ import { env } from "@typebot.io/env";
 import { getIp } from "@typebot.io/lib/getIp";
 import { isDefined } from "@typebot.io/lib/utils";
 import prisma from "@typebot.io/prisma";
-import { clientUserSchema } from "@typebot.io/schemas/features/user/schema";
+import {
+  getTypebotCookie,
+  serializeTypebotCookie,
+} from "@typebot.io/telemetry/cookies/helpers";
+import type { TypebotCookieValue } from "@typebot.io/telemetry/cookies/schema";
+import { mergeIds } from "@typebot.io/telemetry/mergeIds";
 import { trackEvents } from "@typebot.io/telemetry/trackEvents";
+import { clientUserSchema } from "@typebot.io/user/schemas";
 import NextAuth from "next-auth";
+import type { NextRequest } from "next/server";
 import { accountHasRequiredOAuthGroups } from "../helpers/accountHasRequiredOAuthGroups";
 import { createAuthPrismaAdapter } from "../helpers/createAuthPrismaAdapter";
 import { isEmailLegit } from "../helpers/emailValidation";
 import { getNewUserInvitations } from "../helpers/getNewUserInvitations";
 import { providers } from "./providers";
 import rateLimiter from "./rateLimiter";
+
+export const SET_TYPEBOT_COOKIE_HEADER = "Set-Typebot-Cookie" as const;
 
 export const {
   auth,
@@ -36,9 +45,26 @@ export const {
           data: { lastActivityAt: new Date() },
         });
       }
+      const typebotCookie = getTypebotCookieFromNextReq(req);
+      if (typebotCookie) {
+        if (
+          typebotCookie?.landingPage?.id &&
+          !typebotCookie.landingPage.isMerged
+        ) {
+          await mergeIds({
+            visitorId: typebotCookie.landingPage.id,
+            userId: session.user.id,
+          });
+          updateCookieIsMerged({ req, typebotCookie });
+        }
+      }
     },
-    async signIn({ user, isNewUser }) {
-      if (!user.id || isNewUser) return;
+    async signIn({ user, isNewUser, account }) {
+      if (!user.id) return;
+      const typebotCookie = getTypebotCookieFromNextReq(req);
+      if (typebotCookie && account?.provider)
+        updateCookieLastProvider(account.provider, { req, typebotCookie });
+      if (isNewUser) return;
       await trackEvents([
         {
           name: "User logged in",
@@ -48,6 +74,8 @@ export const {
     },
     async signOut(props) {
       if ("token" in props) return;
+      const typebotCookie = getTypebotCookieFromNextReq(req);
+      if (typebotCookie) resetLandingPageCookie({ req, typebotCookie });
       await trackEvents([
         {
           name: "User logged out",
@@ -65,7 +93,12 @@ export const {
       if (!account) return false;
       const isNewUser = !("createdAt" in user && isDefined(user.createdAt));
       if (user.email && email?.verificationRequest) {
-        const ip = req ? getIp(req) : null;
+        const ip = req
+          ? getIp({
+              "x-forwarded-for": req.headers.get("x-forwarded-for"),
+              "cf-connecting-ip": req.headers.get("cf-connecting-ip"),
+            })
+          : null;
         if (rateLimiter && ip) {
           const { success } = await rateLimiter.limit(ip);
           if (!success) throw new Error("too-many-requests");
@@ -87,3 +120,68 @@ export const {
     },
   },
 }));
+
+const updateCookieIsMerged = ({
+  req,
+  typebotCookie,
+}: { req: NextRequest | undefined; typebotCookie: TypebotCookieValue }) => {
+  if (!isValidNextRequest(req) || !typebotCookie.landingPage) return;
+  req.headers.set(
+    SET_TYPEBOT_COOKIE_HEADER,
+    serializeTypebotCookie({
+      ...typebotCookie,
+      landingPage: {
+        ...typebotCookie.landingPage,
+        isMerged: true,
+      },
+    }),
+  );
+};
+
+const updateCookieLastProvider = (
+  provider: string,
+  {
+    req,
+    typebotCookie,
+  }: { req: NextRequest | undefined; typebotCookie: TypebotCookieValue },
+) => {
+  if (!isValidNextRequest(req)) return;
+  req.headers.set(
+    SET_TYPEBOT_COOKIE_HEADER,
+    serializeTypebotCookie({
+      ...typebotCookie,
+      lastProvider: provider,
+    }),
+  );
+};
+
+const resetLandingPageCookie = ({
+  req,
+  typebotCookie,
+}: { req: NextRequest | undefined; typebotCookie: TypebotCookieValue }) => {
+  if (!isValidNextRequest(req)) return;
+  req.headers.set(
+    SET_TYPEBOT_COOKIE_HEADER,
+    serializeTypebotCookie({
+      ...typebotCookie,
+      lastProvider: undefined,
+      landingPage: undefined,
+    }),
+  );
+};
+
+const getTypebotCookieFromNextReq = (
+  req: NextRequest | undefined,
+): TypebotCookieValue | null => {
+  if (!isValidNextRequest(req)) return null;
+  const cookieStr = req.headers.get("cookie");
+  if (!cookieStr) return null;
+  return getTypebotCookie(cookieStr);
+};
+
+// Nextauth req type is not correct, so we need to assert it
+const isValidNextRequest = (
+  req: NextRequest | undefined,
+): req is NextRequest => {
+  return Boolean(req && "headers" in req && "get" in req.headers);
+};

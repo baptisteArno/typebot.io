@@ -60,19 +60,6 @@ export const SignInPage = ({ type }: Props) => {
         </Stack>
 
         <SignInForm defaultEmail={query.g?.toString()} />
-        {type === "signup" &&
-        env.NEXT_PUBLIC_TERMS_OF_SERVICE_URL &&
-        env.NEXT_PUBLIC_PRIVACY_POLICY_URL ? (
-          <Text fontSize="sm" maxW="330px" textAlign="center">
-            <T
-              keyName="auth.register.aggreeToTerms"
-              params={{
-                terms: <TextLink href={env.NEXT_PUBLIC_TERMS_OF_SERVICE_URL} />,
-                privacy: <TextLink href={env.NEXT_PUBLIC_PRIVACY_POLICY_URL} />,
-              }}
-            />
-          </Text>
-        ) : null}
       </Stack>
     </VStack>
   );

@@ -17,7 +17,8 @@
     "@typebot.io/typebot": "workspace:*",
     "@typebot.io/workspaces": "workspace:*",
     "@typebot.io/credentials": "workspace:*",
-    "@typebot.io/events": "workspace:*"
+    "@typebot.io/events": "workspace:*",
+    "@typebot.io/user": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "20.4.2",

@@ -69,7 +69,9 @@
     "lint-repo": {
       "cache": false
     },
-    "//#format-and-lint": {},
+    "//#format-and-lint": {
+      "cache": false
+    },
     "//#format-and-lint:fix": {
       "cache": false
     }

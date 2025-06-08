@@ -1,6 +1,6 @@
 import { env } from "@typebot.io/env";
 import { getAtPath } from "@typebot.io/lib/utils";
-import { userSchema } from "@typebot.io/schemas/features/user/schema";
+import { userSchema } from "@typebot.io/user/schemas";
 import FacebookProvider from "next-auth/providers/facebook";
 import GitHubProvider from "next-auth/providers/github";
 import GitlabProvider from "next-auth/providers/gitlab";

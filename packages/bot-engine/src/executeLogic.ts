@@ -41,11 +41,11 @@ export const executeLogic = async ({
     case LogicBlockType.SCRIPT:
       return executeScript(block, { state, sessionStore });
     case LogicBlockType.TYPEBOT_LINK:
-      return executeTypebotLink(state, block);
+      return executeTypebotLink(block, { state, sessionStore });
     case LogicBlockType.WAIT:
       return executeWait(block, { state, sessionStore });
     case LogicBlockType.JUMP:
-      return executeJumpBlock(state, block);
+      return executeJumpBlock(block, { state, sessionStore });
     case LogicBlockType.AB_TEST:
       return executeAbTest(block);
     case LogicBlockType.WEBHOOK:

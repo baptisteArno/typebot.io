@@ -66,7 +66,7 @@ export const AudioBubble = (props: Props) => {
             class={cx(
               "z-10 text-fade-in",
               isTyping()
-                ? "opacity-0 h-8 @sm:h-9"
+                ? "opacity-0 h-8 @xs:h-9"
                 : "opacity-100 m-2 h-[revert]",
             )}
             controls

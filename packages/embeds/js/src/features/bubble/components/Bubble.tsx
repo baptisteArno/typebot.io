@@ -238,6 +238,7 @@ export const Bubble = (props: BubbleProps) => {
           {typebotColors}
           {styles}
         </style>
+        {/* Needed for progress bar with fixed position we need to be outside of fixed bubble container */}
         <div ref={progressBarContainerRef} />
         <div
           class={cx(
@@ -307,7 +308,6 @@ export const Bubble = (props: BubbleProps) => {
                 onScriptExecutionSuccess={handleScriptExecutionSuccess}
                 onChatStatePersisted={handleOnChatStatePersisted}
                 prefilledVariables={prefilledVariables()}
-                progressBarRef={progressBarContainerRef}
               />
             </Show>
           </div>

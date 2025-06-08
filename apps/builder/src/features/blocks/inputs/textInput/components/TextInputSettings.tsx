@@ -1,6 +1,7 @@
 import { DropdownList } from "@/components/DropdownList";
 import { SwitchWithRelatedSettings } from "@/components/SwitchWithRelatedSettings";
 import { TextInput } from "@/components/inputs";
+import { Select } from "@/components/inputs/Select";
 import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
 import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
 import { FormLabel, Stack } from "@chakra-ui/react";
@@ -8,6 +9,7 @@ import { useTranslate } from "@tolgee/react";
 import { fileVisibilityOptions } from "@typebot.io/blocks-inputs/file/constants";
 import { defaultTextInputOptions } from "@typebot.io/blocks-inputs/text/constants";
 import type { TextInputBlock } from "@typebot.io/blocks-inputs/text/schema";
+import { inputModeOptions } from "@typebot.io/blocks-inputs/text/schema";
 import type { Variable } from "@typebot.io/variables/schemas";
 import React from "react";
 
@@ -73,6 +75,12 @@ export const TextInputSettings = ({ options, onOptionsChange }: Props) => {
       audioClip: { ...options?.audioClip, visibility },
     });
 
+  const updateInputMode = (inputMode?: string) =>
+    onOptionsChange({
+      ...options,
+      inputMode: inputMode as (typeof inputModeOptions)[number] | undefined,
+    });
+
   return (
     <Stack spacing={4}>
       <SwitchWithLabel
@@ -95,6 +103,17 @@ export const TextInputSettings = ({ options, onOptionsChange }: Props) => {
         }
         onChange={updateButtonLabel}
       />
+      <Stack>
+        <FormLabel mb="0" htmlFor="input-mode">
+          Input mode
+        </FormLabel>
+        <Select
+          selectedItem={options?.inputMode ?? "text"}
+          items={inputModeOptions}
+          onSelect={updateInputMode}
+          placeholder="Select input mode..."
+        />
+      </Stack>
       <SwitchWithRelatedSettings
         label={"Allow audio clip"}
         initialValue={

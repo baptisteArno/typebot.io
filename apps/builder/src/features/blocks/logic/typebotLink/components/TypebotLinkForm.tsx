@@ -59,7 +59,7 @@ export const TypebotLinkForm = ({ options, onOptionsChange }: Props) => {
               : (linkedTypebotData?.typebot?.groups ?? [])
           }
           groupId={options.groupId}
-          onGroupIdSelected={handleGroupIdChange}
+          onChange={handleGroupIdChange}
           isLoading={
             linkedTypebotData?.typebot === undefined &&
             options.typebotId !== "current" &&

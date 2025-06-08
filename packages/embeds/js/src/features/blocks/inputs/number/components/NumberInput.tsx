@@ -23,7 +23,7 @@ type NumberInputProps = {
 
 export const NumberInput = (props: NumberInputProps) => {
   const numberInput = useNumberInput({
-    locale: props.block.options?.locale,
+    locale: navigator.language,
     formatOptions: parseFormatOptions(props.block.options),
     min: safeParseFloat(props.block.options?.min),
     max: safeParseFloat(props.block.options?.max),

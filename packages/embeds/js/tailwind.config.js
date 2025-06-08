@@ -1,4 +1,5 @@
 import defaultTheme from "tailwindcss/defaultTheme";
+import { chatContainerBreakpoints } from "./src/constants";
 
 function rem2px(input, fontSize = 16) {
   if (input == null) {
@@ -60,7 +61,7 @@ const config = {
         "rgba(var(--typebot-input-bg-rgb), var(--typebot-input-opacity));",
     },
     containers: {
-      sm: "432px",
+      xs: `${chatContainerBreakpoints.xs}px`,
     },
     extend: {
       maxWidth: {

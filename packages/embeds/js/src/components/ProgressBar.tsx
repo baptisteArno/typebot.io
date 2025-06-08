@@ -3,7 +3,7 @@ type Props = {
 };
 
 export const ProgressBar = (props: Props) => (
-  <div class="typebot-progress-bar-container">
+  <div class="typebot-progress-bar-container" part="progress-bar-container">
     <div
       class="typebot-progress-bar"
       style={{

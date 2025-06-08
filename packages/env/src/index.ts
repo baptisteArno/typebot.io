@@ -123,8 +123,6 @@ const baseEnv = {
       .string()
       .optional()
       .default("The bot you're looking for doesn't exist"),
-    NEXT_PUBLIC_TERMS_OF_SERVICE_URL: z.string().url().optional(),
-    NEXT_PUBLIC_PRIVACY_POLICY_URL: z.string().url().optional(),
   },
   runtimeEnv: {
     NEXT_PUBLIC_E2E_TEST: getRuntimeVariable("NEXT_PUBLIC_E2E_TEST"),
@@ -144,12 +142,6 @@ const baseEnv = {
     ),
     NEXT_PUBLIC_VIEWER_404_SUBTITLE: getRuntimeVariable(
       "NEXT_PUBLIC_VIEWER_404_SUBTITLE",
-    ),
-    NEXT_PUBLIC_TERMS_OF_SERVICE_URL: getRuntimeVariable(
-      "NEXT_PUBLIC_TERMS_OF_SERVICE_URL",
-    ),
-    NEXT_PUBLIC_PRIVACY_POLICY_URL: getRuntimeVariable(
-      "NEXT_PUBLIC_PRIVACY_POLICY_URL",
     ),
   },
 };
@@ -406,15 +398,17 @@ const telemetryEnv = {
 const posthogEnv = {
   client: {
     NEXT_PUBLIC_POSTHOG_KEY: z.string().min(1).optional(),
-    NEXT_PUBLIC_POSTHOG_HOST: z
-      .string()
-      .min(1)
-      .optional()
-      .default("https://app.posthog.com"),
+  },
+  server: {
+    POSTHOG_API_HOST: z.preprocess((val) => {
+      if (val) return val;
+      return process.env.POSTHOG_API_HOST;
+    }, z.string().url().optional().default("https://us.posthog.com")),
+    POSTHOG_PERSONAL_API_KEY: z.string().min(1).optional(),
+    POSTHOG_PROJECT_ID: z.string().min(1).optional(),
   },
   runtimeEnv: {
     NEXT_PUBLIC_POSTHOG_KEY: getRuntimeVariable("NEXT_PUBLIC_POSTHOG_KEY"),
-    NEXT_PUBLIC_POSTHOG_HOST: getRuntimeVariable("NEXT_PUBLIC_POSTHOG_HOST"),
   },
 };
 
@@ -475,6 +469,7 @@ export const env = createEnv({
     ...sentryEnv.server,
     ...telemetryEnv.server,
     ...keycloakEnv.server,
+    ...posthogEnv.server,
   },
   client: {
     ...baseEnv.client,

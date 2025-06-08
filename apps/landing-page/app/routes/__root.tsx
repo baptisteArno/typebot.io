@@ -1,8 +1,9 @@
 import css from "@/assets/globals.css?url";
-import { Header } from "@/components/Header";
+import { CookieConsentBot } from "@/components/CookieConsentBot";
 import { NotFound } from "@/components/NotFound";
 import { Footer } from "@/components/footer/Footer";
-import { TanStackRouterDevtools } from "@/lib/router-dev-tool";
+import { useCookieConsentStatus } from "@/hooks/useIsCookieConsentNeeded";
+import { useTrackPageViewQuery } from "@/hooks/useTrackPageViewQuery";
 import {
   HeadContent,
   Outlet,
@@ -10,8 +11,11 @@ import {
   createRootRoute,
   useNavigate,
 } from "@tanstack/react-router";
+import { serializeTypebotCookie } from "@typebot.io/telemetry/cookies/helpers";
 import { z } from "@typebot.io/zod";
-import { Suspense } from "react";
+import { Header } from "app/components/Header";
+
+const HERO_ANIMATION_DELAY = 1800;
 
 export const Route = createRootRoute({
   head: () => ({
@@ -46,6 +50,8 @@ export const Route = createRootRoute({
 function RootComponent() {
   const { isHeaderOpened } = Route.useSearch();
   const navigate = useNavigate({ from: Route.fullPath });
+  const { cookieConsentStatus, setCookieConsentStatus } =
+    useCookieConsentStatus();
 
   const openHeader = () => {
     navigate({
@@ -59,6 +65,12 @@ function RootComponent() {
       resetScroll: false,
     });
   };
+
+  useTrackPageViewQuery({
+    enabled:
+      cookieConsentStatus === "not-needed" ||
+      cookieConsentStatus === "accepted",
+  });
 
   return (
     <html lang="en">
@@ -75,13 +87,24 @@ function RootComponent() {
             />
           </div>
           <Outlet />
+          <CookieConsentBot
+            isOpen={cookieConsentStatus === "need-consent"}
+            openDelay={HERO_ANIMATION_DELAY}
+            onSubmit={(response) => {
+              setCookie(response);
+              setCookieConsentStatus(response);
+            }}
+          />
           <Footer />
         </div>
-        <Suspense>
-          <TanStackRouterDevtools />
-        </Suspense>
         <Scripts />
       </body>
     </html>
   );
 }
+
+const setCookie = (consent: "declined" | "accepted") => {
+  document.cookie = serializeTypebotCookie({
+    consent,
+  });
+};

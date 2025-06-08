@@ -33,14 +33,14 @@ export const AvatarSideContainer = (props: Props) => {
   return (
     <div
       ref={avatarContainer}
-      class="flex flex-shrink-0 items-center relative typebot-avatar-container w-6 @sm:w-10"
+      class="flex flex-shrink-0 items-center relative typebot-avatar-container w-6 @xs:w-10"
       style={{
         "--top": `${top()}px`,
       }}
     >
       <div
         class={cx(
-          "absolute flex items-center w-6 h-6 @sm:w-10 @sm:h-10 top-[max(0px,calc(var(--top)-24px))] @sm:top-[max(0px,calc(var(--top)-40px))]",
+          "absolute flex items-center w-6 h-6 @xs:w-10 @xs:h-10 top-[max(0px,calc(var(--top)-24px))] @xs:top-[max(0px,calc(var(--top)-40px))]",
           props.hideAvatar ? "opacity-0" : "opacity-100",
         )}
         style={{

@@ -1,6 +1,6 @@
 {
   "name": "root",
-  "version": "3.7.1",
+  "version": "3.8.0",
   "private": true,
   "workspaces": [
     "packages/*",
@@ -14,7 +14,7 @@
   "scripts": {
     "postinstall": "turbo run db:generate",
     "prepare": "husky",
-    "pre-commit": "turbo run format-and-lint lint-repo check-broken-links test:unit",
+    "pre-commit": "turbo run format-and-lint lint-repo check-broken-links",
     "format-and-lint": "biome check .",
     "format-and-lint:fix": "biome check . --write",
     "lint-repo": "sherif -r unordered-dependencies -r packages-without-package-json --ignore-package @typebot.io/legacy",

@@ -11,4 +11,5 @@ export const blinkBlock = createBlock({
   LightLogo: BlinkLogo,
   auth,
   actions: [getUsers, sendFeedEvent],
+  docsUrl: "https://docs.typebot.io/editor/blocks/integrations/blink",
 });

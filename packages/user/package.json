@@ -1,0 +1,16 @@
+{
+  "name": "@typebot.io/user",
+  "version": "0.0.1",
+  "type": "module",
+  "private": true,
+  "exports": {
+    "./*": "./src/*.ts"
+  },
+  "dependencies": {
+    "@typebot.io/zod": "workspace:*",
+    "@typebot.io/prisma": "workspace:*"
+  },
+  "devDependencies": {
+    "@typebot.io/tsconfig": "workspace:*"
+  }
+}

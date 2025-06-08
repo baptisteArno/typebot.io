@@ -82,7 +82,7 @@ export const EmbedBubble = (props: Props) => {
             class={cx(
               "p-4 z-20 text-fade-in w-full",
               isTyping()
-                ? "opacity-0 h-8 @sm:h-9"
+                ? "opacity-0 h-8 @xs:h-9"
                 : "opacity-100 p-4 h-[var(--embed-bubble-height)]",
             )}
             style={{
