@@ -10,6 +10,7 @@ import type {
   BlockWithItems,
 } from "@typebot.io/blocks-core/schemas/schema";
 import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
+import { LogicBlockType } from "@typebot.io/blocks-logic/constants";
 import { byId, isDefined } from "@typebot.io/lib/utils";
 import type { Edge } from "@typebot.io/typebot/schemas/edge";
 import type { Typebot, TypebotV6 } from "@typebot.io/typebot/schemas/typebot";
@@ -238,6 +239,26 @@ export const deleteConnectedEdgesDraft = (
   edgesToDelete.forEach((edge) =>
     deleteEdgeDraft({ typebot, edgeId: edge.id }),
   );
+
+  // Clean up references to the deleted block in Jump blocks
+  cleanupJumpBlockReferences(typebot, deletedNodeId);
+};
+
+const cleanupJumpBlockReferences = (
+  typebot: Draft<TypebotV6>,
+  deletedNodeId: string,
+) => {
+  // Only clean up blockId references when the deletedNodeId is a block
+  for (const group of typebot.groups) {
+    for (const block of group.blocks) {
+      // Check if it's a Jump block with options that has a blockId reference to the deleted block
+      if (block.type === LogicBlockType.JUMP && block.options) {
+        if (block.options.blockId === deletedNodeId) {
+          block.options.blockId = undefined;
+        }
+      }
+    }
+  }
 };
 
 const removeExistingEdge = (
