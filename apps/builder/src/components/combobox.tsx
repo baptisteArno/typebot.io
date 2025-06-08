@@ -20,7 +20,11 @@ const Root = forwardRef<HTMLDivElement, ArkCombobox.RootProps<CollectionItem>>(
           gutter: 4,
           placement: "bottom-start",
         }}
-        className={cn(props.className, colorMode === "dark" && "dark")}
+        className={cn(
+          "items-start",
+          props.className,
+          colorMode === "dark" && "dark",
+        )}
       />
     );
   },
@@ -34,8 +38,14 @@ const Label = forwardRef<HTMLLabelElement, ArkCombobox.LabelProps>(
 Label.displayName = ArkCombobox.Label.displayName;
 
 const Control = forwardRef<HTMLDivElement, ArkCombobox.ControlProps>(
-  (props, ref) => {
-    return <ArkCombobox.Control ref={ref} {...props} />;
+  ({ className, ...props }, ref) => {
+    return (
+      <ArkCombobox.Control
+        ref={ref}
+        className={cn("flex-1", className)}
+        {...props}
+      />
+    );
   },
 );
 Control.displayName = ArkCombobox.Control.displayName;

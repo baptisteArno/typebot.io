@@ -3,8 +3,10 @@ import { BlockIcon } from "@/features/editor/components/BlockIcon";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { Stack } from "@chakra-ui/react";
 import type { JumpBlock } from "@typebot.io/blocks-logic/jump/schema";
-import { byId, isNotEmpty } from "@typebot.io/lib/utils";
-import React from "react";
+import { byId } from "@typebot.io/lib/utils";
+import { isSingleVariable } from "@typebot.io/variables/isSingleVariable";
+import React, { useMemo } from "react";
+import { GroupsDropdown } from "../../typebotLink/components/GroupsDropdown";
 
 type Props = {
   groupId: string;
@@ -21,26 +23,18 @@ export const JumpSettings = ({ groupId, options, onOptionsChange }: Props) => {
   const handleBlockIdChange = (blockId?: string) =>
     onOptionsChange({ ...options, blockId });
 
-  const currentGroupId = typebot?.groups.find(byId(groupId))?.id;
-
-  const selectedGroup = typebot?.groups.find(byId(options?.groupId));
+  const selectedGroup = useMemo(() => {
+    if (!options?.groupId || isSingleVariable(options?.groupId)) return;
+    return typebot?.groups.find(byId(options?.groupId));
+  }, [options?.groupId, typebot?.groups]);
 
   if (!typebot) return null;
-
   return (
     <Stack spacing={4}>
-      <Select
-        items={typebot.groups
-          .filter(
-            (group) => group.id !== currentGroupId && isNotEmpty(group.title),
-          )
-          .map((group) => ({
-            label: group.title,
-            value: group.id,
-          }))}
-        selectedItem={selectedGroup?.id}
-        onSelect={handleGroupIdChange}
-        placeholder="Select a group"
+      <GroupsDropdown
+        groups={typebot.groups}
+        groupId={options?.groupId}
+        onChange={handleGroupIdChange}
       />
       {selectedGroup && selectedGroup.blocks.length > 1 && (
         <Select

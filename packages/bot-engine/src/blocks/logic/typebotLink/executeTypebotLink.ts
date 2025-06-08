@@ -9,9 +9,12 @@ import {
 import { byId, isNotDefined } from "@typebot.io/lib/utils";
 import type { LogInSession } from "@typebot.io/logs/schemas";
 import prisma from "@typebot.io/prisma";
+import type { SessionStore } from "@typebot.io/runtime-session-store";
 import { isTypebotVersionAtLeastV6 } from "@typebot.io/schemas/helpers/isTypebotVersionAtLeastV6";
 import { settingsSchema } from "@typebot.io/settings/schemas";
 import type { Edge } from "@typebot.io/typebot/schemas/edge";
+import { isSingleVariable } from "@typebot.io/variables/isSingleVariable";
+import { parseVariables } from "@typebot.io/variables/parseVariables";
 import type { Variable } from "@typebot.io/variables/schemas";
 import { addVirtualEdge } from "../../../addPortalEdge";
 import { isTypebotInSessionAtLeastV6 } from "../../../helpers/isTypebotInSessionAtLeastV6";
@@ -19,8 +22,8 @@ import { createResultIfNotExist } from "../../../queries/createResultIfNotExist"
 import type { ExecuteLogicResponse } from "../../../types";
 
 export const executeTypebotLink = async (
-  state: SessionState,
   block: TypebotLinkBlock,
+  { sessionStore, state }: { sessionStore: SessionStore; state: SessionState },
 ): Promise<ExecuteLogicResponse> => {
   const logs: LogInSession[] = [];
   const typebotId = block.options?.typebotId;
@@ -38,7 +41,11 @@ export const executeTypebotLink = async (
   let nextGroupId: string | undefined;
   if (isLinkingSameTypebot) {
     newSessionState = await addSameTypebotToState({ state, block });
-    nextGroupId = block.options?.groupId;
+    nextGroupId = getNextGroupId(block.options?.groupId, {
+      nextTypebot: state.typebotsQueue[0].typebot,
+      state,
+      sessionStore,
+    });
   } else {
     const linkedTypebot = await fetchTypebot(state, typebotId);
     if (!linkedTypebot) {
@@ -54,7 +61,11 @@ export const executeTypebotLink = async (
       block,
       linkedTypebot,
     );
-    nextGroupId = getNextGroupId(block.options?.groupId, linkedTypebot);
+    nextGroupId = getNextGroupId(block.options?.groupId, {
+      nextTypebot: linkedTypebot,
+      state,
+      sessionStore,
+    });
   }
 
   if (!nextGroupId) {
@@ -270,17 +281,32 @@ const fetchTypebot = async (state: SessionState, typebotId: string) => {
 };
 
 const getNextGroupId = (
-  groupId: string | undefined,
-  typebot: TypebotInSession,
+  groupIdOrVariable: string | undefined,
+  {
+    nextTypebot,
+    state,
+    sessionStore,
+  }: {
+    nextTypebot: TypebotInSession;
+    state: SessionState;
+    sessionStore: SessionStore;
+  },
 ) => {
-  if (groupId) return groupId;
-  if (isTypebotInSessionAtLeastV6(typebot)) {
-    const startEdge = typebot.edges.find(
-      byId(typebot.events[0].outgoingEdgeId),
+  if (isSingleVariable(groupIdOrVariable)) {
+    const groupTitle = parseVariables(groupIdOrVariable, {
+      variables: state.typebotsQueue[0].typebot.variables,
+      sessionStore,
+    });
+    return nextTypebot.groups.find((group) => group.title === groupTitle)?.id;
+  }
+  if (groupIdOrVariable) return groupIdOrVariable;
+  if (isTypebotInSessionAtLeastV6(nextTypebot)) {
+    const startEdge = nextTypebot.edges.find(
+      byId(nextTypebot.events[0].outgoingEdgeId),
     );
     return startEdge?.to.groupId;
   }
-  return typebot.groups.find((group) =>
+  return nextTypebot.groups.find((group) =>
     group.blocks.some((block) => block.type === "start"),
   )?.id;
 };

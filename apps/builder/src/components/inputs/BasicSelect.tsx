@@ -1,61 +1,32 @@
-import { MoreInfoTooltip } from "@/components/MoreInfoTooltip";
-import {
-  type Item,
-  getItemLabel,
-  getItemValue,
-} from "@/components/collections";
-import { Combobox } from "@/components/combobox";
-import { Field } from "@/components/field";
+import { useFilteredCollection } from "@/features/forge/hooks/useFilteredCollection";
 import { useParentModal } from "@/features/graph/providers/ParentModalProvider";
 import { VariablesButton } from "@/features/variables/components/VariablesButton";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useInjectableInputValue } from "@/hooks/useInjectableInputValue";
 import { Portal } from "@ark-ui/react";
-import type { ForgedBlockDefinition } from "@typebot.io/forge-repository/definitions";
-import type { ForgedBlock } from "@typebot.io/forge-repository/schemas";
 import {
   selectContentClassNames,
   selectItemClassNames,
 } from "@typebot.io/ui/components/Select";
 import { cx } from "@typebot.io/ui/lib/cva";
 import { type ReactNode, useEffect, useRef } from "react";
-import { useFilteredCollection } from "../hooks/useFilteredCollection";
-import { useSelectItemsQuery } from "../hooks/useSelectItemsQuery";
+import { MoreInfoTooltip } from "../MoreInfoTooltip";
+import { type Item, getItemLabel, getItemValue } from "../collections";
+import { Combobox } from "../combobox";
+import { Field } from "../field";
 
 type Props = {
-  blockDef: ForgedBlockDefinition;
+  items: Item[] | undefined;
   defaultValue?: string;
-  fetcherId: string;
-  options: ForgedBlock["options"];
   placeholder?: string;
   label?: string;
   helperText?: ReactNode;
   moreInfoTooltip?: string;
-  direction?: "row" | "column";
   isRequired?: boolean;
-  width?: "full";
-  withVariableButton?: boolean;
-  credentialsScope: "workspace" | "user";
   onChange: (value: string | undefined) => void;
 };
-export const ForgeAutocompleteInput = ({
-  credentialsScope,
-  fetcherId,
-  options,
-  blockDef,
-  ...props
-}: Props) => {
-  const { items } = useSelectItemsQuery({
-    credentialsScope,
-    blockDef,
-    options,
-    fetcherId,
-  });
 
-  return <AutocompleteInput items={items} {...props} />;
-};
-
-export const AutocompleteInput = ({
+export const BasicSelect = ({
   items,
   defaultValue,
   placeholder,
@@ -63,19 +34,14 @@ export const AutocompleteInput = ({
   helperText,
   moreInfoTooltip,
   isRequired,
-  direction = "column",
-  width,
-  withVariableButton = false,
   onChange,
 }: Omit<Props, "credentialsScope" | "fetcherId" | "options" | "blockDef"> & {
   items: Item[] | undefined;
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
-  const { ref: parentModalRef } = useParentModal();
   const {
     value: inputValue,
     setValue: setInputValue,
-    injectVariable,
     replaceDefaultValue,
     isTouched,
   } = useInjectableInputValue({
@@ -110,14 +76,13 @@ export const AutocompleteInput = ({
       <Combobox.Root
         placeholder={placeholder}
         collection={filteredCollection}
-        className={cx(
-          "flex justify-between",
-          direction === "column" ? "flex-col gap-2" : "gap-3",
-          label || width === "full" ? "w-full" : "w-auto",
-        )}
+        className={cx("flex justify-between flex-col gap-2")}
         onInputValueChange={(details) => {
           setInputValue(details.inputValue);
           transformToValueAndPropagate(details.inputValue);
+        }}
+        onSelect={(details) => {
+          onChange(getItemValue(details.itemValue));
         }}
         inputValue={inputValue}
         allowCustomValue
@@ -134,14 +99,12 @@ export const AutocompleteInput = ({
           <Combobox.Control>
             <Combobox.Input />
           </Combobox.Control>
-          {withVariableButton && (
-            <VariablesButton
-              onSelectVariable={(variable) => {
-                const newValue = injectVariable(variable);
-                onChange(newValue);
-              }}
-            />
-          )}
+          <VariablesButton
+            onSelectVariable={(variable) => {
+              setInputValue(`{{${variable.name}}}`);
+              onChange(`{{${variable.name}}}`);
+            }}
+          />
         </div>
 
         <Portal>
