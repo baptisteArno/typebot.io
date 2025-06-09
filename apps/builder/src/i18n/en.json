@@ -607,5 +607,9 @@
   "workspace.settings.modal.menu.settings.label": "Settings",
   "workspace.settings.modal.menu.version.label": "Version: {version}",
   "workspace.settings.modal.menu.workspace.label": "Workspace",
-  "workspace.settings.name.label": "Name:"
+  "workspace.settings.name.label": "Name:",
+  "settings.sideMenu.general.chatLimits.enable": "Enable chat limits",
+  "settings.sideMenu.general.chatLimits.enable.tooltip": "When enabled, the bot will be closed to new responses once the configured limit is reached.",
+  "settings.sideMenu.general.chatLimits.limit": "Limit",
+  "settings.sideMenu.general.chatLimits.currentUsage": "{count} / {limit} chats used"
 }
