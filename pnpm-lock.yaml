@@ -433,6 +433,9 @@ importers:
       '@typebot.io/prisma':
         specifier: workspace:*
         version: link:../../packages/prisma
+      '@typebot.io/telemetry':
+        specifier: workspace:^
+        version: link:../../packages/telemetry
       ai:
         specifier: 3.1.12
         version: 3.1.12(openai@4.47.1)(react@18.2.0)(solid-js@1.7.8)(svelte@4.2.12)(vue@3.4.21)(zod@3.22.4)
@@ -457,6 +460,9 @@ importers:
       next:
         specifier: 14.1.0
         version: 14.1.0(@babel/core@7.22.9)(react-dom@18.2.0)(react@18.2.0)
+      next-auth:
+        specifier: 4.22.1
+        version: 4.22.1(next@14.1.0)(nodemailer@6.9.8)(react-dom@18.2.0)(react@18.2.0)
       nextjs-cors:
         specifier: 2.1.2
         version: 2.1.2(next@14.1.0)
@@ -12353,7 +12359,6 @@ packages:
     dependencies:
       color-name: 1.1.4
       simple-swizzle: 0.2.2
-    dev: true
 
   /color2k@2.0.3:
     resolution: {integrity: sha512-zW190nQTIoXcGCaU08DvVNFTmQhUpnJfVuAKfWqUQkflXKpaDdpaYoM0iluLS9lgJNHyBF58KKA2FBEwkD7wog==}
@@ -15682,7 +15687,6 @@ packages:
 
   /is-arrayish@0.3.2:
     resolution: {integrity: sha512-eVRqCvVlZbuw3GrM63ovNSNAeA1K16kaR/LRY/92w0zxQ5/1YzwblUX652i4Xs9RwAGjW9d9y6X88t8OaAJfWQ==}
-    dev: true
 
   /is-async-function@2.0.0:
     resolution: {integrity: sha512-Y1JXKrfykRJGdlDwdKlLpLyMIiWqWvuSd17TvZk68PLAOGOoF4Xyav1z0Xhoi+gCYjZVeC5SI+hYFOfvXmGRCA==}
@@ -21341,7 +21345,6 @@ packages:
     resolution: {integrity: sha512-JA//kQgZtbuY83m+xT+tXJkmJncGMTFT+C+g2h2R9uxkYIrE2yy9sgmcLhCnw57/WSD+Eh3J97FPEDFnbXnDUg==}
     dependencies:
       is-arrayish: 0.3.2
-    dev: true
 
   /sisteransi@1.0.5:
     resolution: {integrity: sha512-bLGGlR1QxBcynn2d5YmDX4MGjlZvy2MRBDRNHLJ8VI6l6+9FUiyTFNJ0IveOSP0bcXgVDPRcfGqA0pjaqUpfVg==}
@@ -23625,7 +23628,6 @@ packages:
   /xtend@4.0.2:
     resolution: {integrity: sha512-LKYU1iAXJXUgAXn9URjiu+MWhyUXHsvfp7mcuYm9dSUKK0/CjtrUwFAxD82/mCWbtLsGjFIad0wIsod4zrTAEQ==}
     engines: {node: '>=0.4'}
-    dev: true
 
   /y18n@4.0.3:
     resolution: {integrity: sha512-JKhqTOwSrqNA1NY5lSztJ1GrBiUodLMmIZuLiDaMRJ+itFd+ABVE8XBjOvIWL+rSqNDC74LCSFmlb/U4UZ4hJQ==}

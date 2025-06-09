@@ -6,12 +6,16 @@ import ky from 'ky'
 export const saveClientLogsQuery = async ({
   apiHost,
   sessionId,
+  apiToken,
   clientLogs,
 }: {
   apiHost?: string
   sessionId: string
+  apiToken?: string
   clientLogs: ChatLog[]
 }) => {
+  const headers = apiToken ? { Authorization: `Bearer ${apiToken}` } : {}
+
   try {
     await ky.post(
       `${
@@ -21,6 +25,7 @@ export const saveClientLogsQuery = async ({
         json: {
           clientLogs,
         },
+        headers,
       }
     )
   } catch (e) {

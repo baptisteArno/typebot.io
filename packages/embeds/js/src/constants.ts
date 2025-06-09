@@ -15,6 +15,7 @@ export const defaultBotProps: BotProps = {
   apiHost: undefined,
   resultId: undefined,
   sessionId: undefined,
+  userId: undefined,
 }
 
 export const defaultPopupProps: PopupProps = {

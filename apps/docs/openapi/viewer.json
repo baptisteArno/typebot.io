@@ -1037,6 +1037,11 @@
       "post": {
         "operationId": "startChat",
         "summary": "Start chat",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -1411,6 +1416,26 @@
               }
             }
           },
+          "401": {
+            "description": "Authorization not provided",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error.UNAUTHORIZED"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient access",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error.FORBIDDEN"
+                }
+              }
+            }
+          },
           "500": {
             "description": "Internal server error",
             "content": {
@@ -1768,6 +1793,11 @@
         "operationId": "startChatPreview",
         "summary": "Start preview chat",
         "description": "Use this endpoint to test your bot. The answers will not be saved. And some blocks like \"Send email\" will be skipped.",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -2193,6 +2223,26 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/error.BAD_REQUEST"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authorization not provided",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error.UNAUTHORIZED"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient access",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error.FORBIDDEN"
                 }
               }
             }
@@ -11749,6 +11799,116 @@
               "id",
               "type"
             ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "outgoingEdgeId": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "claudia"
+                ]
+              },
+              "options": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "credentialsId": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "credentialsId": {
+                        "type": "string"
+                      },
+                      "action": {
+                        "type": "string",
+                        "enum": [
+                          "End Flow [N1]"
+                        ]
+                      },
+                      "topic": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "action"
+                    ]
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "credentialsId": {
+                        "type": "string"
+                      },
+                      "action": {
+                        "type": "string",
+                        "enum": [
+                          "Forward to Human [N2]"
+                        ]
+                      },
+                      "topic": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "action"
+                    ]
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "credentialsId": {
+                        "type": "string"
+                      },
+                      "action": {
+                        "type": "string",
+                        "enum": [
+                          "Close Ticket [N1]"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "action"
+                    ]
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "credentialsId": {
+                        "type": "string"
+                      },
+                      "action": {
+                        "type": "string",
+                        "enum": [
+                          "Answer Ticket [N1]"
+                        ]
+                      },
+                      "topic": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "action"
+                    ]
+                  }
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "type"
+            ]
           }
         ],
         "title": "Block"
@@ -13189,48 +13349,6 @@
           "issues": []
         }
       },
-      "error.NOT_FOUND": {
-        "type": "object",
-        "properties": {
-          "message": {
-            "type": "string",
-            "description": "The error message",
-            "example": "Not found"
-          },
-          "code": {
-            "type": "string",
-            "description": "The error code",
-            "example": "NOT_FOUND"
-          },
-          "issues": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "message": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "message"
-              ]
-            },
-            "description": "An array of issues that were responsible for the error",
-            "example": []
-          }
-        },
-        "required": [
-          "message",
-          "code"
-        ],
-        "title": "Error",
-        "description": "The error information",
-        "example": {
-          "code": "NOT_FOUND",
-          "message": "Not found",
-          "issues": []
-        }
-      },
       "error.UNAUTHORIZED": {
         "type": "object",
         "properties": {
@@ -13312,6 +13430,48 @@
         "example": {
           "code": "FORBIDDEN",
           "message": "Insufficient access",
+          "issues": []
+        }
+      },
+      "error.NOT_FOUND": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "The error message",
+            "example": "Not found"
+          },
+          "code": {
+            "type": "string",
+            "description": "The error code",
+            "example": "NOT_FOUND"
+          },
+          "issues": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "message"
+              ]
+            },
+            "description": "An array of issues that were responsible for the error",
+            "example": []
+          }
+        },
+        "required": [
+          "message",
+          "code"
+        ],
+        "title": "Error",
+        "description": "The error information",
+        "example": {
+          "code": "NOT_FOUND",
+          "message": "Not found",
           "issues": []
         }
       }

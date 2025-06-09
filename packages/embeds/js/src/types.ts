@@ -10,6 +10,7 @@ export type BotContext = {
   resultId?: string
   isPreview: boolean
   apiHost?: string
+  apiToken?: string
   sessionId: string
   storage: 'local' | 'session' | undefined
 }
