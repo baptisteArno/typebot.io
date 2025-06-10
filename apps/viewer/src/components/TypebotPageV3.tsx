@@ -68,7 +68,7 @@ export const TypebotPageV3 = ({
         isMatchingViewerUrl={isMatchingViewerUrl}
       />
       <Standard
-        typebot={publicId}
+        typebot={publicId ?? undefined}
         onInit={clearQueryParamsIfNecessary}
         font={font ?? undefined}
         apiHost={apiOrigin}
