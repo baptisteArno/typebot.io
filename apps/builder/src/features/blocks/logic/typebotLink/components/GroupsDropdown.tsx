@@ -1,7 +1,6 @@
 import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { Input } from "@chakra-ui/react";
 import type { Group } from "@typebot.io/groups/schemas";
-import { isNotEmpty } from "@typebot.io/lib/utils";
 
 type Props = {
   groups: Group[];
@@ -21,12 +20,10 @@ export const GroupsDropdown = ({
     return <Input value="No groups found" isDisabled />;
   return (
     <BasicSelect
-      items={groups
-        .filter((group) => group.id !== groupId && isNotEmpty(group.title))
-        .map((group) => ({
-          label: group.title,
-          value: group.id,
-        }))}
+      items={groups.map((group) => ({
+        label: group.title,
+        value: group.id,
+      }))}
       defaultValue={groupId}
       onChange={onChange}
       placeholder="Select a group"

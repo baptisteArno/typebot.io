@@ -9,12 +9,11 @@ import React, { useMemo } from "react";
 import { GroupsDropdown } from "../../typebotLink/components/GroupsDropdown";
 
 type Props = {
-  groupId: string;
   options: JumpBlock["options"];
   onOptionsChange: (options: JumpBlock["options"]) => void;
 };
 
-export const JumpSettings = ({ groupId, options, onOptionsChange }: Props) => {
+export const JumpSettings = ({ options, onOptionsChange }: Props) => {
   const { typebot } = useTypebot();
 
   const handleGroupIdChange = (groupId?: string) =>
@@ -36,18 +35,19 @@ export const JumpSettings = ({ groupId, options, onOptionsChange }: Props) => {
         groupId={options?.groupId}
         onChange={handleGroupIdChange}
       />
-      {selectedGroup && selectedGroup.blocks.length > 1 && (
-        <Select
-          selectedItem={options?.blockId}
-          items={selectedGroup.blocks.map((block, index) => ({
-            label: `Block #${(index + 1).toString()}`,
-            value: block.id,
-            icon: <BlockIcon type={block.type} />,
-          }))}
-          onSelect={handleBlockIdChange}
-          placeholder="Select a block"
-        />
-      )}
+      {selectedGroup &&
+        (selectedGroup.blocks.length > 1 || options?.blockId) && (
+          <Select
+            selectedItem={options?.blockId}
+            items={selectedGroup.blocks.map((block, index) => ({
+              label: `Block #${(index + 1).toString()}`,
+              value: block.id,
+              icon: <BlockIcon type={block.type} />,
+            }))}
+            onSelect={handleBlockIdChange}
+            placeholder="Select a block"
+          />
+        )}
     </Stack>
   );
 };

@@ -144,11 +144,9 @@ export const SettingsPopoverContent = ({ isOpen, ...props }: Props) => {
 
 export const NodeSettings = ({
   node,
-  groupId,
   onNodeChange,
 }: {
   node: BlockWithOptions | TEventWithOptions;
-  groupId: string | undefined;
   onNodeChange: (node: Partial<BlockWithOptions | TEventWithOptions>) => void;
 }): JSX.Element | null => {
   const updateOptions = (
@@ -300,14 +298,8 @@ export const NodeSettings = ({
       );
     }
     case LogicBlockType.JUMP: {
-      return groupId ? (
-        <JumpSettings
-          groupId={groupId}
-          options={node.options}
-          onOptionsChange={updateOptions}
-        />
-      ) : (
-        <></>
+      return (
+        <JumpSettings options={node.options} onOptionsChange={updateOptions} />
       );
     }
     case LogicBlockType.AB_TEST: {
