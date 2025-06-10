@@ -11,6 +11,7 @@ import {
 import { Dialog, Portal } from "@ark-ui/react";
 import { proChatTiers } from "@typebot.io/billing/constants";
 import { formatPrice } from "@typebot.io/billing/helpers/formatPrice";
+import { dialogClassNames } from "@typebot.io/ui/components/Dialog";
 import { CloseIcon } from "@typebot.io/ui/icons/CloseIcon";
 
 export const TiersDialog = ({
@@ -22,10 +23,12 @@ export const TiersDialog = ({
 }) => (
   <Dialog.Root open={open} onOpenChange={(e) => (!e.open ? onClose() : null)}>
     <Portal>
-      <Dialog.Backdrop className="fixed inset-0 w-full bg-gray-12/50 data-[state=open]:animate-in data-[state=open]:fade-in data-[state=closed]:animate-out data-[state=closed]:fade-out overflow-auto" />
-      <Dialog.Positioner className="flex justify-center fixed inset-0 w-full py-12">
-        <Dialog.Content className="relative bg-gray-1 p-6 rounded-xl w-full max-w-xl overflow-auto data-[state=open]:animate-in data-[state=open]:slide-in-from-bottom-5 data-[state=open]:fade-in data-[state=closed]:animate-out data-[state=closed]:slide-out-to-bottom-5 data-[state=closed]:fade-out">
-          <Dialog.Title className="text-2xl">Chats pricing table</Dialog.Title>
+      <Dialog.Backdrop className={dialogClassNames.backdrop} />
+      <Dialog.Positioner className={dialogClassNames.positioner}>
+        <Dialog.Content className={dialogClassNames.content}>
+          <Dialog.Title className={dialogClassNames.title}>
+            Chats pricing table
+          </Dialog.Title>
           <Dialog.CloseTrigger asChild>
             <IconButton
               aria-label="Close"

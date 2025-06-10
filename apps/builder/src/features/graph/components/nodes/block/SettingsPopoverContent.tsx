@@ -52,27 +52,35 @@ import { IntegrationBlockType } from "@typebot.io/blocks-integrations/constants"
 import { LogicBlockType } from "@typebot.io/blocks-logic/constants";
 import { EventType } from "@typebot.io/events/constants";
 import type { TEventWithOptions } from "@typebot.io/events/schemas";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ForgedBlockSettings } from "../../../../forge/components/ForgedBlockSettings";
 import { SettingsHoverBar } from "./SettingsHoverBar";
 
 type Props = {
   node: BlockWithOptions | TEventWithOptions;
   groupId: string | undefined;
-  onExpandClick: () => void;
   onNodeChange: (
     updates: Partial<BlockWithOptions | TEventWithOptions>,
   ) => void;
+  isOpen?: boolean;
 };
 
-export const SettingsPopoverContent = ({ onExpandClick, ...props }: Props) => {
+export const SettingsPopoverContent = ({ isOpen, ...props }: Props) => {
   const [isHovering, setIsHovering] = useState(false);
   const arrowColor = useColorModeValue("white", "gray.900");
   const { blockDef } = useForgedBlock({
     nodeType: props.node.type,
   });
+  const [isExpanded, setIsExpanded] = useState(false);
   const ref = useRef<HTMLDivElement | null>(null);
   const handleMouseDown = (e: React.MouseEvent) => e.stopPropagation();
+
+  useEffect(() => {
+    if (!isExpanded || isOpen) return;
+    setTimeout(() => {
+      setIsExpanded(false);
+    }, 300);
+  }, [isOpen, isExpanded]);
 
   const handleMouseWheel = (e: WheelEvent) => {
     e.stopPropagation();
@@ -81,7 +89,13 @@ export const SettingsPopoverContent = ({ onExpandClick, ...props }: Props) => {
 
   return (
     <Portal>
-      <PopoverContent onMouseDown={handleMouseDown} pos="relative">
+      <PopoverContent
+        onMouseDown={handleMouseDown}
+        pos="relative"
+        w={isExpanded ? "650px" : undefined}
+        maxH={isExpanded ? "70vh" : "400px"}
+        h="full"
+      >
         <PopoverArrow bgColor={arrowColor} />
 
         <VideoOnboardingPopover.Root type={props.node.type} blockDef={blockDef}>
@@ -89,7 +103,6 @@ export const SettingsPopoverContent = ({ onExpandClick, ...props }: Props) => {
             <PopoverBody
               py="3"
               overflowY="auto"
-              maxH="400px"
               ref={ref}
               shadow="md"
               onMouseEnter={() => setIsHovering(true)}
@@ -107,7 +120,8 @@ export const SettingsPopoverContent = ({ onExpandClick, ...props }: Props) => {
                 >
                   <SlideFade in={isHovering} unmountOnExit>
                     <SettingsHoverBar
-                      onExpandClick={onExpandClick}
+                      isExpanded={isExpanded}
+                      onExpandClick={() => setIsExpanded(!isExpanded)}
                       onVideoOnboardingClick={onOpen}
                       nodeType={props.node.type}
                       blockDef={blockDef}

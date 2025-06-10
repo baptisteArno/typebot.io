@@ -1,15 +1,10 @@
 import { ContextMenu } from "@/components/ContextMenu";
 import { useEditor } from "@/features/editor/providers/EditorProvider";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
-import { SettingsModal } from "@/features/graph/components/nodes/block/SettingsModal";
-import {
-  NodeSettings,
-  SettingsPopoverContent,
-} from "@/features/graph/components/nodes/block/SettingsPopoverContent";
+import { SettingsPopoverContent } from "@/features/graph/components/nodes/block/SettingsPopoverContent";
 import { eventWidth } from "@/features/graph/constants";
 import { useSelectionStore } from "@/features/graph/hooks/useSelectionStore";
 import { useGraph } from "@/features/graph/providers/GraphProvider";
-import { ParentModalProvider } from "@/features/graph/providers/ParentModalProvider";
 import { setMultipleRefs } from "@/helpers/setMultipleRefs";
 import { useRightPanel } from "@/hooks/useRightPanel";
 import {
@@ -217,23 +212,11 @@ export const EventNode = ({ event, eventIndex }: Props) => {
             </Stack>
           </PopoverTrigger>
           {hasSettingsPopover(event) && (
-            <>
-              <SettingsPopoverContent
-                node={event}
-                groupId={undefined}
-                onExpandClick={onModalOpen}
-                onNodeChange={handleOnNodeChange}
-              />
-              <ParentModalProvider>
-                <SettingsModal isOpen={isModalOpen} onClose={handleModalClose}>
-                  <NodeSettings
-                    node={event}
-                    groupId={undefined}
-                    onNodeChange={handleOnNodeChange}
-                  />
-                </SettingsModal>
-              </ParentModalProvider>
-            </>
+            <SettingsPopoverContent
+              node={event}
+              groupId={undefined}
+              onNodeChange={handleOnNodeChange}
+            />
           )}
         </Popover>
       )}

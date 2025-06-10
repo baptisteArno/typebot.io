@@ -152,6 +152,7 @@ export const sendFeedEvent = createAction({
 
     sections: option.array(sectionItem).layout({
       accordion: "Card Content",
+      isOrdered: true,
     }),
 
     // Options
