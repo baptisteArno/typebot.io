@@ -33,6 +33,10 @@ export const executeJumpBlock = (
         {
           context: "Error while executing Jump block",
           description: "Group to jump to is not found",
+          details: JSON.stringify({
+            groupIdOrTitle: groupTitle ?? groupId,
+            jumpBlockId: block.id,
+          }),
         },
       ],
     };
@@ -49,6 +53,11 @@ export const executeJumpBlock = (
         {
           context: "Error while executing Jump block",
           description: "Block to jump to is not found",
+          details: JSON.stringify({
+            groupIdOrTitle: groupTitle ?? groupId,
+            blockId: blockId,
+            jumpBlockId: block.id,
+          }),
         },
       ],
     };
