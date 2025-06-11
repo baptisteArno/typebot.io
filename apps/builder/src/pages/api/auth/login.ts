@@ -63,16 +63,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       }
     }
 
-    const user = await prisma.user.findUnique({
-      where: { email },
-    })
-
-    if (!user) {
-      return res.status(404).json({
-        error: 'No account found with this email',
-      })
-    }
-
     await prisma.verificationToken.deleteMany({
       where: {
         expires: {
