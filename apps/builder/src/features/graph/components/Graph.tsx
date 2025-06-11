@@ -339,7 +339,8 @@ export const Graph = ({
   };
 
   useEventListener("keydown", (e) => {
-    if (e.key === " ") setIsDraggingGraph(true);
+    if (e.key === " " && !e.metaKey && !e.ctrlKey && !e.altKey && !e.shiftKey)
+      setIsDraggingGraph(true);
   });
   useEventListener("keyup", (e) => {
     if (e.key === " ") {
