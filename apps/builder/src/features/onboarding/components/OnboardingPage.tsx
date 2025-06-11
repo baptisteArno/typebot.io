@@ -116,6 +116,7 @@ export const OnboardingPage = () => {
       <Flex w="full" h="full" justifyContent="center" alignItems="center">
         <Flex w="full" maxW="800px" rounded="lg" h="full" maxH="70vh">
           <Standard
+            id="onboarding"
             typebot={env.NEXT_PUBLIC_ONBOARDING_TYPEBOT_ID}
             style={{ borderRadius: "1rem" }}
             prefilledVariables={{ Name: user?.name, Email: user?.email }}
