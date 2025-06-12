@@ -74,6 +74,14 @@ if (env.GITLAB_CLIENT_ID && env.GITLAB_CLIENT_SECRET) {
       token: `${BASE_URL}/oauth/token`,
       userinfo: `${BASE_URL}/api/v4/user`,
       name: env.GITLAB_NAME,
+      profile(profile) {
+        return {
+          id: profile.sub?.toString() || profile.id.toString(),
+          name: profile.name ?? profile.username,
+          email: profile.email,
+          image: profile.avatar_url,
+        };
+      },
     }),
   );
 }
