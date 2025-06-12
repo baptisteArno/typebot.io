@@ -1,6 +1,7 @@
 import { datesAreOnSameDay } from "@/helpers/datesAreOnSameDate";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useColorMode } from "@chakra-ui/react";
+import { env } from "@typebot.io/env";
 import { isDefined } from "@typebot.io/lib/utils";
 import type { ClientUser, UpdateUser, User } from "@typebot.io/user/schemas";
 import { signOut, useSession } from "next-auth/react";
@@ -83,6 +84,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
             : undefined,
       });
     if (
+      env.NEXT_PUBLIC_ONBOARDING_TYPEBOT_ID &&
       !router.pathname.includes("/onboarding") &&
       !session?.user.termsAcceptedAt &&
       session?.user.createdAt &&

@@ -21,6 +21,7 @@ const inspectUser = async () => {
       lastActivityAt: true,
       company: true,
       onboardingCategories: true,
+      termsAcceptedAt: true,
       workspaces: {
         select: {
           workspace: {
