@@ -10,11 +10,11 @@ There, you can change the container dimensions. Here is a code example:
 
 ```html
 <script type="module">
-  import Typebot from 'https://cdn.jsdelivr.net/npm/@typebot.io/js@0/dist/web.js'
+  import Typebot from "https://cdn.jsdelivr.net/npm/@typebot.io/js@0/dist/web.js";
 
   Typebot.initStandard({
-    typebot: 'my-typebot',
-  })
+    typebot: "my-typebot",
+  });
 </script>
 
 <typebot-standard style="width: 100%; height: 600px; "></typebot-standard>
@@ -24,81 +24,81 @@ This code is creating a container with a 100% width (will match parent width) an
 
 <Accordion title="See all possible settings">
 
- ```ts
- type BotProps = {
-   id?: string;
-   typebot: string | any;
-   isPreview?: boolean;
-   resultId?: string;
-   prefilledVariables?: Record<string, unknown>;
-   apiHost?: string;
-   wsHost?: string;
-   font?:
-     | string
-     | {
-         type: "Google";
-         family?: string | undefined;
-       }
-     | {
-         type: "Custom";
-         url?: string | undefined;
-         family?: string | undefined;
-         css?: string | undefined;
-       };
-   progressBarRef?: HTMLDivElement;
-   startFrom?:
-     | {
-         type: "group";
-         groupId: string;
-       }
-     | {
-         type: "event";
-         eventId: string;
-       };
-   sessionId?: string;
-   theme?: {
-     chatWindow?: {
-       backgroundColor?: string;
-       maxWidth?: string;
-       maxHeight?: string;
-     };
-     button?: {
-       size?: "medium" | "large" | `${number}px`;
-       backgroundColor?: string;
-       iconColor?: string;
-       customIconSrc?: string;
-       customCloseIconSrc?: string;
-     };
-     previewMessage?: {
-       backgroundColor?: string;
-       textColor?: string;
-       closeButtonBackgroundColor?: string;
-       closeButtonIconColor?: string;
-     };
-     position?: "fixed" | "static"; // Defaults to "fixed"
-     placement?: "left" | "right"; // Defaults to "right"
-   };
-   previewMessage?: {
-     avatarUrl?: string;
-     message: string;
-     autoShowDelay?: number;
-   };
-   autoShowDelay?: number;
-   onNewInputBlock?: (inputBlock: any) => void;
-   onAnswer?: (answer: { message: string; blockId: string }) => void;
-   onInit?: () => void;
-   onEnd?: () => void;
-   onNewLogs?: (
-     logs: {
-       status: string;
-       description: string;
-       details?: unknown;
-     }[],
-   ) => void;
-   onChatStatePersisted?: (isEnabled: boolean) => void;
-   onScriptExecutionSuccess?: (message: string) => void;
- };
- ```
+```ts
+type BotProps = {
+  id?: string;
+  typebot: string | any;
+  isPreview?: boolean;
+  resultId?: string;
+  prefilledVariables?: Record<string, unknown>;
+  apiHost?: string;
+  wsHost?: string;
+  font?:
+    | string
+    | {
+        type: "Google";
+        family?: string | undefined;
+      }
+    | {
+        type: "Custom";
+        url?: string | undefined;
+        family?: string | undefined;
+        css?: string | undefined;
+      };
+  progressBarRef?: HTMLDivElement;
+  startFrom?:
+    | {
+        type: "group";
+        groupId: string;
+      }
+    | {
+        type: "event";
+        eventId: string;
+      };
+  sessionId?: string;
+  theme?: {
+    chatWindow?: {
+      backgroundColor?: string;
+      maxWidth?: string;
+      maxHeight?: string;
+    };
+    button?: {
+      size?: "medium" | "large" | `${number}px`;
+      backgroundColor?: string;
+      iconColor?: string;
+      customIconSrc?: string;
+      customCloseIconSrc?: string;
+    };
+    previewMessage?: {
+      backgroundColor?: string;
+      textColor?: string;
+      closeButtonBackgroundColor?: string;
+      closeButtonIconColor?: string;
+    };
+    position?: "fixed" | "static"; // Defaults to "fixed"
+    placement?: "left" | "right"; // Defaults to "right"
+  };
+  previewMessage?: {
+    avatarUrl?: string;
+    message: string;
+    autoShowDelay?: number;
+  };
+  autoShowDelay?: number;
+  onNewInputBlock?: (inputBlock: any) => void;
+  onAnswer?: (answer: { message: string; blockId: string }) => void;
+  onInit?: () => void;
+  onEnd?: () => void;
+  onNewLogs?: (
+    logs: {
+      status: string;
+      description: string;
+      details?: unknown;
+    }[]
+  ) => void;
+  onChatStatePersisted?: (isEnabled: boolean) => void;
+  onScriptExecutionSuccess?: (message: string) => void;
+};
+```
 
 </Accordion>
 
@@ -140,12 +140,12 @@ Here is an example:
 
 ```html
 <script type="module">
-  import Typebot from 'https://cdn.jsdelivr.net/npm/@typebot.io/js@0/dist/web.js'
+  import Typebot from "https://cdn.jsdelivr.net/npm/@typebot.io/js@0/dist/web.js";
 
   Typebot.initPopup({
-    typebot: 'my-typebot',
+    typebot: "my-typebot",
     autoShowDelay: 3000,
-  })
+  });
 </script>
 ```
 
@@ -153,90 +153,90 @@ This code will automatically trigger the popup window after 3 seconds.
 
 <Accordion title="See all possible settings">
 
- ```ts
- type PopupProps = {
-   id?: string;
-   typebot: string | any;
-   isPreview?: boolean;
-   resultId?: string;
-   prefilledVariables?: Record<string, unknown>;
-   apiHost?: string;
-   wsHost?: string;
-   font?:
-     | string
-     | {
-         type: "Google";
-         family?: string | undefined;
-       }
-     | {
-         type: "Custom";
-         url?: string | undefined;
-         family?: string | undefined;
-         css?: string | undefined;
-       };
-   progressBarRef?: HTMLDivElement;
-   startFrom?:
-     | {
-         type: "group";
-         groupId: string;
-       }
-     | {
-         type: "event";
-         eventId: string;
-       };
-   sessionId?: string;
-   theme?: {
-     chatWindow?: {
-       backgroundColor?: string;
-       maxWidth?: string;
-       maxHeight?: string;
-     };
-     button?: {
-       size?: "medium" | "large" | `${number}px`;
-       backgroundColor?: string;
-       iconColor?: string;
-       customIconSrc?: string;
-       customCloseIconSrc?: string;
-     };
-     previewMessage?: {
-       backgroundColor?: string;
-       textColor?: string;
-       closeButtonBackgroundColor?: string;
-       closeButtonIconColor?: string;
-     };
-     placement?: "left" | "right";
-   };
-   previewMessage?: {
-     avatarUrl?: string;
-     message: string;
-     autoShowDelay?: number;
-   };
-   autoShowDelay?: number;
-   onNewInputBlock?: (inputBlock: any) => void;
-   onAnswer?: (answer: { message: string; blockId: string }) => void;
-   onInit?: () => void;
-   onEnd?: () => void;
-   onNewLogs?: (
-     logs: {
-       status: string;
-       description: string;
-       details?: unknown;
-     }[],
-   ) => void;
-   onChatStatePersisted?: (isEnabled: boolean) => void;
-   onScriptExecutionSuccess?: (message: string) => void;
-   autoShowDelay?: number;
-   theme?: {
-     width?: string;
-     backgroundColor?: string;
-     zIndex?: number;
-   };
-   defaultOpen?: boolean;
-   isOpen?: boolean;
-   onOpen?: () => void;
-   onClose?: () => void;
- };
- ```
+```ts
+type PopupProps = {
+  id?: string;
+  typebot: string | any;
+  isPreview?: boolean;
+  resultId?: string;
+  prefilledVariables?: Record<string, unknown>;
+  apiHost?: string;
+  wsHost?: string;
+  font?:
+    | string
+    | {
+        type: "Google";
+        family?: string | undefined;
+      }
+    | {
+        type: "Custom";
+        url?: string | undefined;
+        family?: string | undefined;
+        css?: string | undefined;
+      };
+  progressBarRef?: HTMLDivElement;
+  startFrom?:
+    | {
+        type: "group";
+        groupId: string;
+      }
+    | {
+        type: "event";
+        eventId: string;
+      };
+  sessionId?: string;
+  theme?: {
+    chatWindow?: {
+      backgroundColor?: string;
+      maxWidth?: string;
+      maxHeight?: string;
+    };
+    button?: {
+      size?: "medium" | "large" | `${number}px`;
+      backgroundColor?: string;
+      iconColor?: string;
+      customIconSrc?: string;
+      customCloseIconSrc?: string;
+    };
+    previewMessage?: {
+      backgroundColor?: string;
+      textColor?: string;
+      closeButtonBackgroundColor?: string;
+      closeButtonIconColor?: string;
+    };
+    placement?: "left" | "right";
+  };
+  previewMessage?: {
+    avatarUrl?: string;
+    message: string;
+    autoShowDelay?: number;
+  };
+  autoShowDelay?: number;
+  onNewInputBlock?: (inputBlock: any) => void;
+  onAnswer?: (answer: { message: string; blockId: string }) => void;
+  onInit?: () => void;
+  onEnd?: () => void;
+  onNewLogs?: (
+    logs: {
+      status: string;
+      description: string;
+      details?: unknown;
+    }[]
+  ) => void;
+  onChatStatePersisted?: (isEnabled: boolean) => void;
+  onScriptExecutionSuccess?: (message: string) => void;
+  autoShowDelay?: number;
+  theme?: {
+    width?: string;
+    backgroundColor?: string;
+    zIndex?: number;
+  };
+  defaultOpen?: boolean;
+  isOpen?: boolean;
+  onOpen?: () => void;
+  onClose?: () => void;
+};
+```
 
 </Accordion>
 
@@ -248,21 +248,21 @@ Here is an example:
 
 ```html
 <script type="module">
-  import Typebot from 'https://cdn.jsdelivr.net/npm/@typebot.io/js@0/dist/web.js'
+  import Typebot from "https://cdn.jsdelivr.net/npm/@typebot.io/js@0/dist/web.js";
 
   Typebot.initBubble({
-    typebot: 'my-typebot',
+    typebot: "my-typebot",
     previewMessage: {
-      message: 'I have a question for you!',
+      message: "I have a question for you!",
       autoShowDelay: 5000,
-      avatarUrl: 'https://avatars.githubusercontent.com/u/16015833?v=4',
+      avatarUrl: "https://avatars.githubusercontent.com/u/16015833?v=4",
     }, // Defaults to undefined
     theme: {
-      button: { backgroundColor: '#0042DA', iconColor: '#FFFFFF' },
-      previewMessage: { backgroundColor: '#ffffff', textColor: 'black' },
-      chatWindow: { backgroundColor: '#ffffff', maxWidth: '100%' },
+      button: { backgroundColor: "#0042DA", iconColor: "#FFFFFF" },
+      previewMessage: { backgroundColor: "#ffffff", textColor: "black" },
+      chatWindow: { backgroundColor: "#ffffff", maxWidth: "100%" },
     },
-  })
+  });
 </script>
 ```
 
@@ -270,90 +270,88 @@ This code will show the bubble and let a preview message appear after 5 seconds.
 
 <Accordion title="See all possible settings">
 
- ```ts
- type BubbleProps = {
-   id?: string;
-   typebot: string | any;
-   isPreview?: boolean;
-   resultId?: string;
-   prefilledVariables?: Record<string, unknown>;
-   apiHost?: string;
-   wsHost?: string;
-   font?:
-     | string
-     | {
-         type: "Google";
-         family?: string | undefined;
-       }
-     | {
-         type: "Custom";
-         url?: string | undefined;
-         family?: string | undefined;
-         css?: string | undefined;
-       };
-   progressBarRef?: HTMLDivElement;
-   startFrom?:
-     | {
-         type: "group";
-         groupId: string;
-       }
-     | {
-         type: "event";
-         eventId: string;
-       };
-   sessionId?: string;
-   theme?: {
-     chatWindow?: {
-       backgroundColor?: string;
-       maxWidth?: string;
-       maxHeight?: string;
-     };
-     button?: {
-       isHidden?: boolean;
-       size?: "medium" | "large" | `${number}px`;
-       backgroundColor?: string;
-       iconColor?: string;
-       customIconSrc?: string;
-       customCloseIconSrc?: string;
-     };
-     previewMessage?: {
-       backgroundColor?: string;
-       textColor?: string;
-       closeButtonBackgroundColor?: string;
-       closeButtonIconColor?: string;
-     };
-     placement?: "left" | "right";
-   };
-   previewMessage?: {
-     avatarUrl?: string;
-     message: string;
-     autoShowDelay?: number;
-   };
-   autoShowDelay?: number;
-   isOpen?: boolean;
-   onNewInputBlock?: (inputBlock: any) => void;
-   onAnswer?: (answer: { message: string; blockId: string }) => void;
-   onInit?: () => void;
-   onEnd?: () => void;
-   onNewLogs?: (
-     logs: {
-       status: string;
-       description: string;
-       details?: unknown;
-     }[],
-   ) => void;
-   onChatStatePersisted?: (isEnabled: boolean) => void;
-   onScriptExecutionSuccess?: (message: string) => void;
-   onOpen?: () => void;
-   onClose?: () => void;
-   onPreviewMessageClick?: () => void;
-   onPreviewMessageDismissed?: () => void;
- };
- ```
+```ts
+type BubbleProps = {
+  id?: string;
+  typebot: string | any;
+  isPreview?: boolean;
+  resultId?: string;
+  prefilledVariables?: Record<string, unknown>;
+  apiHost?: string;
+  wsHost?: string;
+  font?:
+    | string
+    | {
+        type: "Google";
+        family?: string | undefined;
+      }
+    | {
+        type: "Custom";
+        url?: string | undefined;
+        family?: string | undefined;
+        css?: string | undefined;
+      };
+  progressBarRef?: HTMLDivElement;
+  startFrom?:
+    | {
+        type: "group";
+        groupId: string;
+      }
+    | {
+        type: "event";
+        eventId: string;
+      };
+  sessionId?: string;
+  theme?: {
+    chatWindow?: {
+      backgroundColor?: string;
+      maxWidth?: string;
+      maxHeight?: string;
+    };
+    button?: {
+      isHidden?: boolean;
+      size?: "medium" | "large" | `${number}px`;
+      backgroundColor?: string;
+      iconColor?: string;
+      customIconSrc?: string;
+      customCloseIconSrc?: string;
+    };
+    previewMessage?: {
+      backgroundColor?: string;
+      textColor?: string;
+      closeButtonBackgroundColor?: string;
+      closeButtonIconColor?: string;
+    };
+    placement?: "left" | "right";
+  };
+  previewMessage?: {
+    avatarUrl?: string;
+    message: string;
+    autoShowDelay?: number;
+  };
+  autoShowDelay?: number;
+  isOpen?: boolean;
+  onNewInputBlock?: (inputBlock: any) => void;
+  onAnswer?: (answer: { message: string; blockId: string }) => void;
+  onInit?: () => void;
+  onEnd?: () => void;
+  onNewLogs?: (
+    logs: {
+      status: string;
+      description: string;
+      details?: unknown;
+    }[]
+  ) => void;
+  onChatStatePersisted?: (isEnabled: boolean) => void;
+  onScriptExecutionSuccess?: (message: string) => void;
+  onOpen?: () => void;
+  onClose?: () => void;
+  onPreviewMessageClick?: () => void;
+  onPreviewMessageDismissed?: () => void;
+};
+```
 
 </Accordion>
-
-
 
 ### Custom button position
 
@@ -378,11 +376,32 @@ typebot-bubble::part(preview-message) {
 }
 ```
 
+### Hide preview message after interaction
+
+You can hide the preview message after the user has interacted with the bot. For example, this code will show the preview message only until the user has either launched the bot or dismissed the preview message:
+
+```js
+Typebot.initBubble({
+  typebot: "my-typebot",
+  previewMessage: localStorage.getItem("hideBotPreviewMessage")
+    ? undefined
+    : { message: "I have a question for you!" },
+  onPreviewMessageDismissed: () => {
+    localStorage.setItem("hideBotPreviewMessage", "true");
+  },
+  onInit: () => {
+    localStorage.setItem("hideBotPreviewMessage", "false");
+  },
+});
+```
+
+This uses the `localStorage` API to remember the state of the preview message.
+
 ## Commands
 
 Here are the commands you can use to trigger your embedded typebot:
 
-- `Typebot.open()`: Open popup or bubble 
+- `Typebot.open()`: Open popup or bubble
 - `Typebot.close()`: Close popup or bubble
 - `Typebot.toggle()`: Toggle the bubble or popup open/close state,
 - `Typebot.showPreviewMessage()`: Show preview message from the bubble,
@@ -392,9 +411,9 @@ Here are the commands you can use to trigger your embedded typebot:
 
   ```js
   Typebot.setPrefilledVariables({
-    Name: 'Jhon',
-    Email: 'john@gmail.com',
-  })
+    Name: "Jhon",
+    Email: "john@gmail.com",
+  });
   ```
 
   For more information, check out [Additional configuration](#additional-configuration).
@@ -417,20 +436,20 @@ If you need to trigger events on your parent website when the user interact with
 
 ```js
 Typebot.initStandard({
-  typebot: 'my-typebot',
+  typebot: "my-typebot",
   onNewInputBlock: (inputBlock) => {
-    console.log('New input block displayed', inputBlock.id)
+    console.log("New input block displayed", inputBlock.id);
   },
   onAnswer: (answer) => {
-    console.log('Answer received', answer.message, answer.blockId)
+    console.log("Answer received", answer.message, answer.blockId);
   },
   onInit: () => {
-    console.log('Bot initialized')
+    console.log("Bot initialized");
   },
   onEnd: () => {
-    console.log('Bot ended')
+    console.log("Bot ended");
   },
-})
+});
 ```
 
 ## Additional configuration
@@ -439,12 +458,12 @@ You can prefill the bot variable values in your embed code by adding the `prefil
 
 ```js
 Typebot.initStandard({
-  typebot: 'my-typebot',
+  typebot: "my-typebot",
   prefilledVariables: {
-    'Current URL': 'https://my-site/account',
-    'User name': 'John Doe',
+    "Current URL": "https://my-site/account",
+    "User name": "John Doe",
   },
-})
+});
 ```
 
 It will prefill the `Current URL` variable with "https://my-site/account" and the `User name` variable with "John Doe". More info about variables: [here](/editor/variables).
