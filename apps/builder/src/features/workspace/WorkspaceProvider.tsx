@@ -85,9 +85,9 @@ export const WorkspaceProvider = ({
     trpc.workspace.createWorkspace.mutationOptions({
       onError: (error) => toast({ description: error.message }),
       onSuccess: async () => {
-        queryClient.invalidateQueries(
-          trpc.workspace.listWorkspaces.pathFilter(),
-        );
+        queryClient.invalidateQueries({
+          queryKey: trpc.workspace.listWorkspaces.queryKey(),
+        });
       },
     }),
   );
@@ -96,7 +96,12 @@ export const WorkspaceProvider = ({
     trpc.workspace.updateWorkspace.mutationOptions({
       onError: (error) => toast({ description: error.message }),
       onSuccess: async () => {
-        queryClient.invalidateQueries(trpc.workspace.getWorkspace.pathFilter());
+        if (!workspaceId) return;
+        queryClient.invalidateQueries({
+          queryKey: trpc.workspace.getWorkspace.queryKey({
+            workspaceId,
+          }),
+        });
       },
     }),
   );
@@ -105,9 +110,9 @@ export const WorkspaceProvider = ({
     trpc.workspace.deleteWorkspace.mutationOptions({
       onError: (error) => toast({ description: error.message }),
       onSuccess: async () => {
-        queryClient.invalidateQueries(
-          trpc.workspace.listWorkspaces.pathFilter(),
-        );
+        queryClient.invalidateQueries({
+          queryKey: trpc.workspace.listWorkspaces.queryKey(),
+        });
         setWorkspaceId(undefined);
       },
     }),
@@ -119,10 +124,18 @@ export const WorkspaceProvider = ({
       !isRouterReady ||
       !workspaces ||
       workspaces.length === 0 ||
-      workspaceId ||
       (typebotId && !typebot?.workspaceId)
     )
       return;
+    if (workspaceId) {
+      const currentWorkspace = workspaces.find(byId(workspaceId));
+      // Workspace was just deleted
+      if (!currentWorkspace) {
+        setWorkspaceIdInLocalStorage(workspaces[0].id);
+        setWorkspaceId(workspaces[0].id);
+      }
+      return;
+    }
     const lastWorspaceId =
       typebot?.workspaceId ??
       query.workspaceId?.toString() ??
