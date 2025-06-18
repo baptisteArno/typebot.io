@@ -22,7 +22,6 @@ type Props = Pick<ChatChunkType, "messages" | "input" | "streamingMessage"> & {
   settings: Settings;
   index: number;
   context: BotContext;
-  hasError: boolean;
   hideAvatar: boolean;
   isTransitionDisabled?: boolean;
   onNewBubbleDisplayed: (blockId: string) => Promise<void>;
@@ -147,7 +146,6 @@ export const ChatChunk = (props: Props) => {
             props.settings.general?.isInputPrefillEnabled ??
             defaultSettings.general.isInputPrefillEnabled
           }
-          hasError={props.hasError}
           onTransitionEnd={() =>
             props.onScrollToBottom({ lastElement: lastBubble() })
           }

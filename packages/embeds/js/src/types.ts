@@ -56,6 +56,7 @@ export type ClientSideResult = {
   result: string;
 };
 
-export type InputSubmitContent =
+export type InputSubmitContent = { status?: "retry" } & (
   | TextInputSubmitContent
-  | RecordingInputSubmitContent;
+  | RecordingInputSubmitContent
+);

@@ -45,7 +45,6 @@ type Props = {
   chunkIndex: number;
   context: BotContext;
   isInputPrefillEnabled: boolean;
-  hasError: boolean;
   theme: Theme;
   onTransitionEnd: () => void;
   onSubmit: (content: InputSubmitContent) => void;
@@ -63,10 +62,15 @@ export const InputChatBlock = (props: Props) => {
 
   return (
     <Switch>
-      <Match when={props.input.answer && !props.hasError}>
+      <Match when={props.input.answer && props.input.answer.status !== "retry"}>
         <GuestBubble answer={props.input.answer} theme={props.theme} />
       </Match>
-      <Match when={isNotDefined(props.input.answer) || props.hasError}>
+      <Match
+        when={
+          isNotDefined(props.input.answer) ||
+          props.input.answer?.status === "retry"
+        }
+      >
         <div
           class="flex justify-end animate-fade-in gap-1 @xs:gap-2 typebot-input-container"
           data-blockid={props.input.id}
@@ -86,7 +90,9 @@ export const InputChatBlock = (props: Props) => {
             chunkIndex={props.chunkIndex}
             isInputPrefillEnabled={props.isInputPrefillEnabled}
             existingAnswer={
-              props.hasError ? getAnswerValue(props.input.answer!) : undefined
+              props.input.answer?.status === "retry"
+                ? getAnswerValue(props.input.answer)
+                : undefined
             }
             onTransitionEnd={props.onTransitionEnd}
             onSubmit={handleSubmit}

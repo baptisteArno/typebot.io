@@ -33,15 +33,11 @@ import { isNotDefined } from "@typebot.io/lib/utils";
 import type { LogInSession } from "@typebot.io/logs/schemas";
 import { latestTypebotVersion } from "@typebot.io/schemas/versions";
 import { defaultSystemMessages } from "@typebot.io/settings/constants";
-import {
-  BackgroundType,
-  defaultContainerBackgroundColor,
-} from "@typebot.io/theme/constants";
+import { BackgroundType } from "@typebot.io/theme/constants";
 import { cx } from "@typebot.io/ui/lib/cva";
 import {
   Index,
   Show,
-  createEffect,
   createMemo,
   createSignal,
   onCleanup,
@@ -92,8 +88,6 @@ export const ConversationContainer = (props: Props) => {
       },
     },
   );
-  const [isReadyToShowFirstChunk, setIsReadyToShowFirstChunk] =
-    createSignal(false);
 
   const [isEnded, setIsEnded] = persist(createSignal(false), {
     key: `typebot-${props.context.typebot.id}-isEnded`,
@@ -102,14 +96,13 @@ export const ConversationContainer = (props: Props) => {
   const [isSending, setIsSending] = createSignal(false);
   const [isLastAutoScrollAtBottom, setIsLastAutoScrollAtBottom] =
     createSignal(true);
-  const [hasError, setHasError] = createSignal(false);
 
   onMount(() => {
     window.addEventListener("message", processIncomingEvent);
     (async () => {
       const isRecoveredFromStorage = chatChunks().length > 1;
       if (isRecoveredFromStorage) {
-        cleanupRecoveredChat();
+        cleanupRecoveredChatChunks();
         const lastDynamicThemeWithBg = chatChunks().findLast(
           (chunk) => chunk.dynamicTheme?.backgroundUrl,
         )?.dynamicTheme;
@@ -121,30 +114,15 @@ export const ConversationContainer = (props: Props) => {
         // Most likely refreshed when the answer was sent to server
         if (chatChunks().at(-1)?.input?.answer)
           sendMessage(chatChunks().at(-1)?.input?.answer);
-      } else {
-        const actionsBeforeFirstBubble =
-          props.initialChatReply.clientSideActions?.filter((action) =>
-            isNotDefined(action.lastBubbleBlockId),
-          );
-        if (actionsBeforeFirstBubble && actionsBeforeFirstBubble.length > 0)
-          await processClientSideActions(actionsBeforeFirstBubble);
       }
-      setIsReadyToShowFirstChunk(true);
+      await popClientSideActions();
     })();
   });
 
-  const cleanupRecoveredChat = () => {
+  const cleanupRecoveredChatChunks = () => {
     // Remove aborted streaming message
     if (chatChunks().at(-1)?.streamingMessage)
       setChatChunks((chunks) => chunks.slice(0, -1));
-    const actionsBeforeFirstBubble = getNextClientSideActionsBatch({
-      clientSideActions: chatChunks().at(-1)?.clientSideActions ?? [],
-      lastBubbleBlockId: undefined,
-    });
-    if (actionsBeforeFirstBubble.length > 0)
-      setChatChunks(
-        sliceLastChunkClientSideAction(actionsBeforeFirstBubble.length),
-      );
   };
 
   const streamMessage = ({ message }: { message: string }) => {
@@ -195,15 +173,18 @@ export const ConversationContainer = (props: Props) => {
   const sendMessage = async (
     answer?: InputSubmitContent | ClientSideResult,
   ) => {
+    const currentChunk = chatChunks().at(-1);
     if (answer && answer.type !== "clientSideResult")
       setChatChunks(addAnswerToLastChunk(answer));
-    const currentChunk = chatChunks().at(-1);
-    if (hasError() && (currentChunk?.clientSideActions ?? []).length > 0) {
-      setHasError(false);
-      await processClientSideActions(currentChunk!.clientSideActions!);
+    // Most likely had stream error, user just sent the same message back, we need to execute the stream client action again
+    if (
+      currentChunk?.clientSideActions &&
+      currentChunk.clientSideActions.length > 0 &&
+      currentChunk.input?.answer?.status === "retry"
+    ) {
+      await popClientSideActions();
       return;
     }
-    setHasError(false);
 
     if (
       currentChunk?.input?.id &&
@@ -242,7 +223,6 @@ export const ConversationContainer = (props: Props) => {
     error,
   }: { data: ContinueChatResponse | undefined; error: unknown }) => {
     if (error) {
-      setHasError(true);
       const errorLogs = [
         await parseUnknownClientError({
           err: error,
@@ -267,37 +247,8 @@ export const ConversationContainer = (props: Props) => {
     if (data.input && props.onNewInputBlock) {
       props.onNewInputBlock(data.input);
     }
-    if (data.clientSideActions) {
-      const actionsBeforeFirstBubble = getNextClientSideActionsBatch({
-        clientSideActions: data.clientSideActions,
-        lastBubbleBlockId: undefined,
-      });
-      await processClientSideActions(actionsBeforeFirstBubble);
-      if (
-        data.clientSideActions.length > 0 &&
-        data.messages.length === 0 &&
-        data.input === undefined
-      )
-        return;
-    }
-    setChatChunks((displayedChunks) => [
-      ...displayedChunks,
-      {
-        version: "2",
-        clientSideActions: data.clientSideActions,
-        input: data.input,
-        dynamicTheme: data.dynamicTheme,
-        messages: data.messages.filter((message) => {
-          return (
-            message.type !== "text" ||
-            message.content.type !== "richText" ||
-            message.content.richText.length > 1 ||
-            message.content.richText[0].type !== "variable" ||
-            message.content.richText[0].children.length > 0
-          );
-        }),
-      },
-    ]);
+    setChatChunks(addNewChunk(data));
+    await popClientSideActions();
   };
 
   const autoScrollToBottom = ({
@@ -360,16 +311,21 @@ export const ConversationContainer = (props: Props) => {
   };
 
   const handleNewBubbleDisplayed = async (blockId: string) => {
-    const actionsToExecute = getNextClientSideActionsBatch({
-      clientSideActions: chatChunks().at(-1)?.clientSideActions ?? [],
-      lastBubbleBlockId: blockId,
-    });
-    await processClientSideActions(actionsToExecute);
+    await popClientSideActions(blockId);
   };
 
-  const processClientSideActions = async (actions: ClientSideAction[]) => {
+  /**
+   * Executes current chat chunk client side actions (matching `lastBubbleBlockId`) and pop them from the queue one by one.
+   */
+  const popClientSideActions = async (lastBubbleBlockId?: string) => {
     let hasStreamError = false;
-    for (const action of actions) {
+    const actionsToExecuteNow = [];
+    for (const action of chatChunks().at(-1)?.clientSideActions ?? []) {
+      if (lastBubbleBlockId !== action.lastBubbleBlockId) break;
+      actionsToExecuteNow.push(action);
+    }
+    if (actionsToExecuteNow.length === 0) return;
+    for (const action of actionsToExecuteNow) {
       if (
         "streamOpenAiChatCompletion" in action ||
         "webhookToExecute" in action ||
@@ -386,7 +342,7 @@ export const ConversationContainer = (props: Props) => {
         },
         onMessageStream: streamMessage,
         onStreamError: async (error) => {
-          setHasError(true);
+          setChatChunks(setRetryStatusOnLastAnswer);
           hasStreamError = true;
           await saveLogs([error]);
           props.onNewLogs?.([error]);
@@ -400,7 +356,7 @@ export const ConversationContainer = (props: Props) => {
       }
       if (hasStreamError) return;
 
-      setChatChunks(sliceLastChunkClientSideAction(1));
+      setChatChunks(popClientSideAction);
       if (response && "logs" in response) saveLogs(response.logs);
       if (response && "replyToSend" in response) {
         setIsSending(false);
@@ -504,37 +460,36 @@ export const ConversationContainer = (props: Props) => {
         )}
       >
         <div class="w-full flex flex-col gap-2 @xs:px-5 px-3">
-          <Show when={isReadyToShowFirstChunk()}>
-            <Index each={chatChunks()}>
-              {(chunk, index) => (
-                <ChatChunk
-                  index={index}
-                  messages={chunk().messages}
-                  input={chunk().input}
-                  theme={mergeThemes(
-                    props.initialChatReply.typebot.theme,
-                    chunk().dynamicTheme,
-                  )}
-                  settings={props.initialChatReply.typebot.settings}
-                  context={props.context}
-                  hideAvatar={
-                    (!chunk().input || Boolean(chunk().input?.isHidden)) &&
-                    ((chatChunks()[index + 1]?.messages ?? []).length > 0 ||
-                      chatChunks()[index + 1]?.streamingMessage !== undefined ||
-                      (chunk().messages.length > 0 && isSending()))
-                  }
-                  hasError={hasError() && index === chatChunks().length - 1}
-                  isTransitionDisabled={index !== chatChunks().length - 1}
-                  streamingMessage={chunk().streamingMessage}
-                  onNewBubbleDisplayed={handleNewBubbleDisplayed}
-                  onAllBubblesDisplayed={handleAllBubblesDisplayed}
-                  onSubmit={sendMessage}
-                  onScrollToBottom={autoScrollToBottom}
-                  onSkip={handleSkip}
-                />
-              )}
-            </Index>
-          </Show>
+          <Index
+            each={chatChunks().filter(hasExecutedInitialClientSideActions)}
+          >
+            {(chunk, index) => (
+              <ChatChunk
+                index={index}
+                messages={chunk().messages}
+                input={chunk().input}
+                theme={mergeThemes(
+                  props.initialChatReply.typebot.theme,
+                  chunk().dynamicTheme,
+                )}
+                settings={props.initialChatReply.typebot.settings}
+                context={props.context}
+                hideAvatar={
+                  (!chunk().input || Boolean(chunk().input?.isHidden)) &&
+                  ((chatChunks()[index + 1]?.messages ?? []).length > 0 ||
+                    chatChunks()[index + 1]?.streamingMessage !== undefined ||
+                    (chunk().messages.length > 0 && isSending()))
+                }
+                isTransitionDisabled={index !== chatChunks().length - 1}
+                streamingMessage={chunk().streamingMessage}
+                onNewBubbleDisplayed={handleNewBubbleDisplayed}
+                onAllBubblesDisplayed={handleAllBubblesDisplayed}
+                onSubmit={sendMessage}
+                onScrollToBottom={autoScrollToBottom}
+                onSkip={handleSkip}
+              />
+            )}
+          </Index>
           <Show when={isSending()}>
             <LoadingChunk theme={latestTheme()} />
           </Show>
@@ -641,17 +596,29 @@ const addAnswerToLastChunk =
     );
   };
 
-const sliceLastChunkClientSideAction =
-  (start: number) =>
-  (chunks: ChatChunkType[]): ChatChunkType[] => {
-    const lastChunk = chunks[chunks.length - 1];
-    if (!lastChunk || !lastChunk.clientSideActions) return chunks;
-    return chunks.map((chunk, i) =>
-      i === chunks.length - 1
-        ? { ...chunk, clientSideActions: chunk.clientSideActions!.slice(start) }
-        : chunk,
-    );
-  };
+/**
+ * Pop 1 client side action from the last chunk client side actions queue
+ * If the chunk does not have messages, or input and no remaining actions are left, the chunk is removed.
+ */
+const popClientSideAction = (chunks: ChatChunkType[]): ChatChunkType[] => {
+  const lastChunk = chunks[chunks.length - 1];
+  if (!lastChunk || !lastChunk.clientSideActions) return chunks;
+  return chunks.reduce<ChatChunkType[]>((acc, chunk, i) => {
+    if (i === chunks.length - 1) {
+      const remainingActions = chunk.clientSideActions!.slice(1);
+      if (
+        remainingActions.length === 0 &&
+        chunk.messages.length === 0 &&
+        !chunk.input
+      )
+        return acc;
+      acc.push({ ...chunk, clientSideActions: remainingActions });
+    } else {
+      acc.push(chunk);
+    }
+    return acc;
+  }, []);
+};
 
 const updateBgImage = (
   url: string,
@@ -665,4 +632,56 @@ const updateBgImage = (
     documentStyle: botContainerStyle ?? document.documentElement.style,
     typebotVersion: latestTypebotVersion,
   });
+};
+
+const addNewChunk =
+  (data: ContinueChatResponse) =>
+  (chunks: ChatChunkType[]): ChatChunkType[] => {
+    return [
+      ...chunks,
+      {
+        version: "2",
+        clientSideActions: data.clientSideActions,
+        input: data.input,
+        dynamicTheme: data.dynamicTheme,
+        messages: sanitizeMessages(data.messages),
+      },
+    ];
+  };
+
+const sanitizeMessages = (messages: ContinueChatResponse["messages"]) => {
+  return messages.filter((message) => {
+    return (
+      message.type !== "text" ||
+      message.content.type !== "richText" ||
+      message.content.richText.length > 1 ||
+      message.content.richText[0].type !== "variable" ||
+      message.content.richText[0].children.length > 0
+    );
+  });
+};
+
+const hasExecutedInitialClientSideActions = (chunk: ChatChunkType) => {
+  return (
+    !chunk.clientSideActions ||
+    chunk.clientSideActions.every((action) => action.lastBubbleBlockId)
+  );
+};
+
+const setRetryStatusOnLastAnswer = (
+  chunks: ChatChunkType[],
+): ChatChunkType[] => {
+  const lastChunk = chunks[chunks.length - 1];
+  if (!lastChunk || !lastChunk.input || !lastChunk.input.answer) return chunks;
+  return chunks.map((chunk, i) =>
+    i === chunks.length - 1
+      ? {
+          ...chunk,
+          input: {
+            ...chunk.input!,
+            answer: { ...chunk.input!.answer!, status: "retry" },
+          },
+        }
+      : chunk,
+  );
 };
