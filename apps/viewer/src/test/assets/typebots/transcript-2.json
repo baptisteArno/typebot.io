@@ -1,0 +1,145 @@
+{
+  "version": "6",
+  "id": "h0rdb8nievqteeytm16ldke3",
+  "name": "Basic ChatGPT‌‌‍‍‌‍‍‍‌",
+  "events": [
+    {
+      "id": "ewnfbo0exlu7ihfu2lu2lusm",
+      "outgoingEdgeId": "pm9qrbw7un9luucfc0r173sc",
+      "graphCoordinates": { "x": -228.25, "y": -123.31 },
+      "type": "start"
+    }
+  ],
+  "groups": [
+    {
+      "id": "qfrz5nwm63g12dajsjxothb5",
+      "title": "User input",
+      "graphCoordinates": { "x": 198.64, "y": 179.04 },
+      "blocks": [
+        {
+          "id": "ohxrs8lef8r1gtba0rxjlbq8",
+          "type": "Set variable",
+          "options": {
+            "variableId": "va7ip6p8oyxg1t8s1yiq78rzy",
+            "type": "Transcript"
+          }
+        },
+        {
+          "id": "i9mxlta3uopx2cvv3xcys17j",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "{{Transcript}}" }] }
+            ]
+          }
+        },
+        {
+          "id": "ovgk70u0kfxrbtz9dy4e040o",
+          "outgoingEdgeId": "ecqjd5jt1ysukyv4bwtththp",
+          "type": "text input",
+          "options": { "variableId": "vudksu3zyrat6s1bq6qne0rx3" }
+        }
+      ]
+    },
+    {
+      "id": "a6ymhjwtkqwp8t127plz8qmk",
+      "title": "ChatGPT reply",
+      "graphCoordinates": { "x": 624.57, "y": 200.09 },
+      "blocks": [
+        {
+          "id": "myldn1l1nfdwwm8qvza71rwv",
+          "outgoingEdgeId": "hs52e5sw0kxv7nu5yhdwd9yq",
+          "type": "text",
+          "content": {
+            "richText": [{ "type": "p", "children": [{ "text": "Test" }] }]
+          }
+        }
+      ]
+    },
+    {
+      "id": "c5f00f3oclwi1srcz10jjt9u",
+      "title": "Intro",
+      "graphCoordinates": { "x": -183.19, "y": 156.03 },
+      "blocks": [
+        {
+          "id": "vzcrfk4vl9gy8igu0ysja5nc",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "Hi there 👋" }] }
+            ]
+          }
+        },
+        {
+          "id": "gphm5wy1md9cunwkdtbzg6nq",
+          "outgoingEdgeId": "h5sk58j0ryrxmfv4gmw7r4dw",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "How can I help?" }] }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "h5sk58j0ryrxmfv4gmw7r4dw",
+      "from": { "blockId": "gphm5wy1md9cunwkdtbzg6nq" },
+      "to": { "groupId": "qfrz5nwm63g12dajsjxothb5" }
+    },
+    {
+      "id": "pm9qrbw7un9luucfc0r173sc",
+      "from": { "eventId": "ewnfbo0exlu7ihfu2lu2lusm" },
+      "to": { "groupId": "c5f00f3oclwi1srcz10jjt9u" }
+    },
+    {
+      "id": "hs52e5sw0kxv7nu5yhdwd9yq",
+      "from": { "blockId": "myldn1l1nfdwwm8qvza71rwv" },
+      "to": { "groupId": "qfrz5nwm63g12dajsjxothb5" }
+    },
+    {
+      "id": "ecqjd5jt1ysukyv4bwtththp",
+      "from": { "blockId": "ovgk70u0kfxrbtz9dy4e040o" },
+      "to": { "groupId": "a6ymhjwtkqwp8t127plz8qmk" }
+    }
+  ],
+  "variables": [
+    {
+      "id": "va7ip6p8oyxg1t8s1yiq78rzy",
+      "name": "Transcript",
+      "isSessionVariable": true
+    },
+    {
+      "id": "vni6kwbch8zlq92dclgcivzyr",
+      "name": "Assistant Message",
+      "isSessionVariable": true
+    },
+    {
+      "id": "vudksu3zyrat6s1bq6qne0rx3",
+      "name": "User Message",
+      "isSessionVariable": false
+    },
+    {
+      "id": "vabkycu0qqff5d6ar2ama16pf",
+      "name": "Chat history",
+      "isSessionVariable": true
+    }
+  ],
+  "theme": {},
+  "selectedThemeTemplateId": null,
+  "settings": { "general": {} },
+  "createdAt": "2025-06-18T19:18:37.843Z",
+  "updatedAt": "2025-06-18T19:18:37.843Z",
+  "icon": "🤖",
+  "folderId": null,
+  "publicId": null,
+  "customDomain": null,
+  "workspaceId": "proWorkspace",
+  "resultsTablePreferences": null,
+  "isArchived": false,
+  "isClosed": false,
+  "whatsAppCredentialsId": null,
+  "riskLevel": null
+}

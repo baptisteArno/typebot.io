@@ -604,7 +604,7 @@
     },
     "packages/embeds/js": {
       "name": "@typebot.io/js",
-      "version": "0.8.5",
+      "version": "0.8.6",
       "devDependencies": {
         "@ai-sdk/ui-utils": "1.2.2",
         "@ark-ui/solid": "5.11.0",
@@ -642,7 +642,7 @@
     },
     "packages/embeds/react": {
       "name": "@typebot.io/react",
-      "version": "0.8.5",
+      "version": "0.8.6",
       "dependencies": {
         "@typebot.io/js": "workspace:*",
         "react": "18.3.1",
@@ -1150,6 +1150,7 @@
         "cli-progress": "3.12.0",
         "ky": "1.2.4",
         "papaparse": "5.4.1",
+        "posthog-node": "4.3.2",
         "prompts": "2.4.2",
         "stripe": "17.1.0",
       },
