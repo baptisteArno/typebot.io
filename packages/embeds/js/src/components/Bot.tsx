@@ -29,6 +29,7 @@ import {
   defaultSystemMessages,
 } from "@typebot.io/settings/constants";
 import {
+  defaultContainerBackgroundColor,
   defaultFontFamily,
   defaultFontType,
   defaultProgressBarPosition,
@@ -46,7 +47,7 @@ import {
 } from "solid-js";
 import { Portal } from "solid-js/web";
 import { buttonVariants } from "./Button";
-import { ConversationContainer } from "./ConversationContainer/ConversationContainer";
+import { ChatContainer } from "./ConversationContainer/ChatContainer";
 import { ErrorMessage } from "./ErrorMessage";
 import { LiteBadge } from "./LiteBadge";
 import { ProgressBar } from "./ProgressBar";
@@ -339,8 +340,13 @@ const BotContent = (props: BotContentProps) => {
       <div
         ref={botContainer}
         class={cx(
-          "relative flex w-full h-full text-base overflow-hidden flex-col justify-center items-center typebot-container",
+          "relative flex w-full h-full text-base flex-col justify-center items-center typebot-container",
           props.class,
+          (props.initialChatReply.typebot.theme.chat?.container
+            ?.backgroundColor ?? defaultContainerBackgroundColor) ===
+            "transparent"
+            ? "overflow-y-auto scroll-smooth scrollable-container"
+            : "overflow-hidden",
         )}
         style={{
           "--bot-container-height": botContainerHeight(),
@@ -365,7 +371,7 @@ const BotContent = (props: BotContentProps) => {
             </Portal>
           </Show>
         </Show>
-        <ConversationContainer
+        <ChatContainer
           context={props.context}
           initialChatReply={props.initialChatReply}
           onNewInputBlock={props.onNewInputBlock}

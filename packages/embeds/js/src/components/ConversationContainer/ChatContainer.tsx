@@ -33,7 +33,10 @@ import { isNotDefined } from "@typebot.io/lib/utils";
 import type { LogInSession } from "@typebot.io/logs/schemas";
 import { latestTypebotVersion } from "@typebot.io/schemas/versions";
 import { defaultSystemMessages } from "@typebot.io/settings/constants";
-import { BackgroundType } from "@typebot.io/theme/constants";
+import {
+  BackgroundType,
+  defaultContainerBackgroundColor,
+} from "@typebot.io/theme/constants";
 import { cx } from "@typebot.io/ui/lib/cva";
 import {
   Index,
@@ -60,7 +63,7 @@ type Props = {
   onScriptExecutionSuccess?: (message: string) => void;
 };
 
-export const ConversationContainer = (props: Props) => {
+export const ChatContainer = (props: Props) => {
   let chatContainer: HTMLDivElement | undefined;
   const botContainer = useBotContainer();
   const [chatChunks, setChatChunks] = persist(
@@ -255,12 +258,17 @@ export const ConversationContainer = (props: Props) => {
     lastElement,
     offset = 0,
   }: { lastElement?: HTMLDivElement; offset?: number } = {}) => {
-    if (!chatContainer) return;
+    const scrollContainer =
+      (props.initialChatReply.typebot.theme.chat?.container?.backgroundColor ??
+        defaultContainerBackgroundColor) === "transparent"
+        ? botContainer()
+        : chatContainer;
+    if (!scrollContainer) return;
 
     const isBottomOfLastElementTooFarBelow =
-      chatContainer.scrollTop + chatContainer.clientHeight <
-      chatContainer.scrollHeight -
-        chatContainer.clientHeight *
+      scrollContainer.scrollTop + scrollContainer.clientHeight <
+      scrollContainer.scrollHeight -
+        scrollContainer.clientHeight *
           AUTO_SCROLL_CLIENT_HEIGHT_PERCENT_TOLERANCE;
 
     if (isBottomOfLastElementTooFarBelow && !isLastAutoScrollAtBottom()) return;
@@ -273,11 +281,11 @@ export const ConversationContainer = (props: Props) => {
 
         scrollTimeout = window.setTimeout(() => {
           callback();
-          chatContainer.removeEventListener("scroll", scrollListener);
+          scrollContainer.removeEventListener("scroll", scrollListener);
         }, 100);
       };
 
-      chatContainer.addEventListener("scroll", scrollListener, {
+      scrollContainer.addEventListener("scroll", scrollListener, {
         passive: true,
       });
     };
@@ -286,16 +294,16 @@ export const ConversationContainer = (props: Props) => {
       onScrollEnd(() => {
         const isAtBottom =
           Math.abs(
-            chatContainer.scrollHeight -
-              chatContainer.scrollTop -
-              chatContainer.clientHeight,
+            scrollContainer.scrollHeight -
+              scrollContainer.scrollTop -
+              scrollContainer.clientHeight,
           ) < 2;
         setIsLastAutoScrollAtBottom(isAtBottom);
       });
-      chatContainer?.scrollTo({
+      scrollContainer?.scrollTo({
         top: lastElement
           ? lastElement.offsetTop - offset
-          : chatContainer.scrollHeight,
+          : scrollContainer.scrollHeight,
         behavior: "smooth",
       });
     }, AUTO_SCROLL_DELAY);
@@ -456,7 +464,13 @@ export const ConversationContainer = (props: Props) => {
       <div
         ref={chatContainer}
         class={cx(
-          "@container overflow-y-auto relative scrollable-container typebot-chat-view scroll-smooth w-full min-h-full flex flex-col items-center @xs:min-h-chat-container @xs:max-h-chat-container @xs:rounded-chat-container max-w-chat-container pt-5",
+          "@container relative typebot-chat-view w-full min-h-full flex flex-col items-center @xs:min-h-chat-container @xs:max-h-chat-container @xs:rounded-chat-container max-w-chat-container pt-5",
+          // If chat container is transparent, the scroll container is the bot container (parent)
+          (props.initialChatReply.typebot.theme.chat?.container
+            ?.backgroundColor ?? defaultContainerBackgroundColor) !==
+            "transparent"
+            ? "overflow-y-auto scroll-smooth scrollable-container"
+            : undefined,
         )}
       >
         <div class="w-full flex flex-col gap-2 @xs:px-5 px-3">
