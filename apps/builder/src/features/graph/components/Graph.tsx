@@ -5,7 +5,14 @@ import type {
 import { headerHeight } from "@/features/editor/constants";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { useUser } from "@/features/user/hooks/useUser";
-import { Fade, Flex, type FlexProps, useEventListener } from "@chakra-ui/react";
+import {
+  Box,
+  Fade,
+  Flex,
+  type FlexProps,
+  Portal,
+  useEventListener,
+} from "@chakra-ui/react";
 import { createId } from "@paralleldrive/cuid2";
 import { shouldOpenBlockSettingsOnCreation } from "@typebot.io/blocks-core/helpers";
 import type { BlockV6 } from "@typebot.io/blocks-core/schemas/schema";
@@ -384,7 +391,6 @@ export const Graph = ({
       }}
       {...props}
     >
-      <ZoomButtons onZoomInClick={zoomIn} onZoomOutClick={zoomOut} />
       <Flex
         flex="1"
         w="full"
@@ -410,18 +416,27 @@ export const Graph = ({
         />
       </Flex>
       {!isReadOnly && (
-        <>
+        <Portal>
           {selectBoxCoordinates && <SelectBox {...selectBoxCoordinates} />}
           <Fade in={!isReadOnly && focusedElementsId.length > 1}>
-            <ElementsSelectionMenu
-              graphPosition={graphPosition}
-              focusedElementIds={focusedElementsId}
-              blurElements={blurElements}
-              isReadOnly={isReadOnly}
-            />
+            <Box
+              pos="absolute"
+              top={`calc(${headerHeight}px + 20px)`}
+              right="140px"
+            >
+              <ElementsSelectionMenu
+                graphPosition={graphPosition}
+                focusedElementIds={focusedElementsId}
+                blurElements={blurElements}
+                isReadOnly={isReadOnly}
+              />
+            </Box>
           </Fade>
-        </>
+        </Portal>
       )}
+      <Box pos="absolute" top="70px" right="40px">
+        <ZoomButtons onZoomInClick={zoomIn} onZoomOutClick={zoomOut} />
+      </Box>
     </Flex>
   );
 };

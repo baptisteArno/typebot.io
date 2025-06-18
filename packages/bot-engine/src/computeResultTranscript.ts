@@ -77,14 +77,14 @@ export const computeResultTranscript = ({
   answers,
   setVariableHistory,
   visitedEdges,
-  stopAtBlockId,
+  currentBlockId,
   sessionStore,
 }: {
   typebot: TypebotInSession;
   answers: Answer[];
   setVariableHistory: SetVarSnapshot[];
   visitedEdges: string[];
-  stopAtBlockId?: string;
+  currentBlockId?: string;
   sessionStore: SessionStore;
 }): TranscriptMessage[] => {
   const firstEdgeId = getFirstEdgeId(typebot);
@@ -105,7 +105,7 @@ export const computeResultTranscript = ({
     nextGroup: firstGroup,
     currentTranscript: [],
     queues,
-    stopAtBlockId,
+    currentBlockId,
     sessionStore,
   });
 };
@@ -143,7 +143,7 @@ const executeGroup = ({
   nextGroup,
   typebotsQueue,
   queues,
-  stopAtBlockId,
+  currentBlockId,
   sessionStore,
 }: {
   currentTranscript: TranscriptMessage[];
@@ -154,7 +154,7 @@ const executeGroup = ({
     setVariableHistory: QueueIterator<SetVarSnapshot>;
     visitedEdges: QueueIterator<string>;
   };
-  stopAtBlockId?: string;
+  currentBlockId?: string;
   sessionStore: SessionStore;
 }): TranscriptMessage[] => {
   if (!nextGroup) return currentTranscript;
@@ -163,14 +163,13 @@ const executeGroup = ({
 
   for (const block of nextGroup.group.blocks.slice(nextGroup.blockIndex ?? 0)) {
     if (
-      stopAtBlockId &&
-      block.id === stopAtBlockId &&
+      currentBlockId &&
+      block.id === currentBlockId &&
       !answers.peek() &&
       !setVariableHistory.peek() &&
       !visitedEdges.peek()
     )
       return currentTranscript;
-    if (stopAtBlockId && block.id === stopAtBlockId) return currentTranscript;
 
     const typebot = typebotsQueue[0]?.typebot;
     if (!typebot) throw new Error("Typebot not found in session");
@@ -325,7 +324,7 @@ const executeGroup = ({
         queues,
         currentTranscript,
         nextGroup: { group: linkedGroup },
-        stopAtBlockId,
+        currentBlockId,
         sessionStore,
       });
     }
@@ -339,7 +338,7 @@ const executeGroup = ({
           queues,
           currentTranscript,
           nextGroup: next,
-          stopAtBlockId,
+          currentBlockId,
           sessionStore,
         });
       }
@@ -361,7 +360,7 @@ const executeGroup = ({
         typebotsQueue[1].typebot,
         typebotsQueue[0].resumeEdgeId,
       ),
-      stopAtBlockId,
+      currentBlockId,
       sessionStore,
     });
   }

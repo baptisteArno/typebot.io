@@ -1,9 +1,4 @@
-import {
-  CheckIcon,
-  MoreHorizontalIcon,
-  PlusIcon,
-  TrashIcon,
-} from "@/components/icons";
+import { MoreHorizontalIcon, PlusIcon, TrashIcon } from "@/components/icons";
 import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
 import {
   CloseButton,
@@ -20,6 +15,7 @@ import {
   PopoverBody,
   PopoverContent,
   PopoverTrigger,
+  Portal,
   SlideFade,
   Stack,
   useColorModeValue,
@@ -95,7 +91,6 @@ export const VariablesDrawer = ({ onClose }: Props) => {
       onMouseOver={() => setIsResizeHandleVisible(true)}
       onMouseLeave={() => setIsResizeHandleVisible(false)}
       p="6"
-      zIndex={10}
       style={{ width: `${width}px` }}
     >
       <Fade in={isResizeHandleVisible}>
@@ -197,7 +192,7 @@ const VariableItem = ({
 
       <HStack>
         {!isSessionOnly && !isLinkedToAnswer && (
-          <Popover>
+          <Popover isLazy>
             <PopoverTrigger>
               <IconButton
                 icon={<MoreHorizontalIcon />}
@@ -205,21 +200,23 @@ const VariableItem = ({
                 size="sm"
               />
             </PopoverTrigger>
-            <PopoverContent>
-              <PopoverBody>
-                <SwitchWithLabel
-                  label="Save in results"
-                  moreInfoContent="Check this option if you want to save the variable value in the typebot Results table."
-                  initialValue={!variable.isSessionVariable}
-                  onCheckChange={() =>
-                    onChange({
-                      ...variable,
-                      isSessionVariable: !variable.isSessionVariable,
-                    })
-                  }
-                />
-              </PopoverBody>
-            </PopoverContent>
+            <Portal>
+              <PopoverContent>
+                <PopoverBody>
+                  <SwitchWithLabel
+                    label="Save in results"
+                    moreInfoContent="Check this option if you want to save the variable value in the typebot Results table."
+                    initialValue={!variable.isSessionVariable}
+                    onCheckChange={() =>
+                      onChange({
+                        ...variable,
+                        isSessionVariable: !variable.isSessionVariable,
+                      })
+                    }
+                  />
+                </PopoverBody>
+              </PopoverContent>
+            </Portal>
           </Popover>
         )}
         <IconButton

@@ -95,6 +95,7 @@ export const walkFlowForward = async (
       version,
       state: newSessionState,
       setVariableHistory,
+      visitedEdges,
       skipFirstMessageBubble,
       timeoutStartTime,
       textBubbleContentFormat,
@@ -143,6 +144,7 @@ type ContextProps = {
   setVariableHistory: SetVariableHistoryItem[];
   timeoutStartTime?: number;
   textBubbleContentFormat: "richText" | "markdown";
+  visitedEdges: Prisma.VisitedEdge[];
 };
 
 export type ExecuteGroupResponse = ContinueChatResponse & {
@@ -167,6 +169,7 @@ const executeGroup = async (
     skipFirstMessageBubble,
     timeoutStartTime,
     textBubbleContentFormat,
+    visitedEdges,
   }: ContextProps,
 ): Promise<ExecuteGroupResponse> => {
   const messages: ContinueChatResponse["messages"] = [];
@@ -252,6 +255,7 @@ const executeGroup = async (
             block,
             state: newSessionState,
             setVariableHistory,
+            visitedEdges,
             sessionStore,
           })
         : isIntegrationBlock(block)
