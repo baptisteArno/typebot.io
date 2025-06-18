@@ -45,25 +45,6 @@ export const UsageProgressBars = ({ workspace }: Props) => {
             <Heading fontSize="xl" as="h3">
               {t("billing.usage.chats.heading")}
             </Heading>
-            {chatsPercentage >= 80 && (
-              <Tooltip
-                placement="top"
-                rounded="md"
-                p="3"
-                label={
-                  <Text>
-                    {t("billing.usage.chats.alert.soonReach")}
-                    <br />
-                    <br />
-                    {t("billing.usage.chats.alert.updatePlan")}
-                  </Text>
-                }
-              >
-                <span>
-                  <AlertIcon color="orange.500" />
-                </span>
-              </Tooltip>
-            )}
             <Text fontSize="sm" fontStyle="italic" color="gray.500">
               {t("billing.usage.chats.resetsOn", {
                 date: data?.resetsAt.toLocaleDateString(),
