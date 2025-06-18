@@ -60,7 +60,6 @@ export const ResultsTable = ({
   const background = useColorModeValue("white", colors.gray[900]);
   const { updateTypebot, currentUserMode } = useTypebot();
   const [rowSelection, setRowSelection] = useState<Record<string, boolean>>({});
-  const [isTableScrolled, setIsTableScrolled] = useState(false);
   const bottomElement = useRef<HTMLDivElement | null>(null);
   const tableWrapper = useRef<HTMLDivElement | null>(null);
 
@@ -241,22 +240,11 @@ export const ResultsTable = ({
           onColumnOrderChange={changeColumnOrder}
         />
       </HStack>
-      <Box
-        ref={tableWrapper}
-        overflow="auto"
-        data-testid="results-table"
-        onScroll={(e) =>
-          setIsTableScrolled((e.target as HTMLElement).scrollTop > 0)
-        }
-      >
+      <Box ref={tableWrapper} overflow="auto" data-testid="results-table">
         <chakra.table background={background}>
           <thead>
             {instance.getHeaderGroups().map((headerGroup) => (
-              <HeaderRow
-                key={headerGroup.id}
-                headerGroup={headerGroup}
-                isTableScrolled={isTableScrolled}
-              />
+              <HeaderRow key={headerGroup.id} headerGroup={headerGroup} />
             ))}
           </thead>
 

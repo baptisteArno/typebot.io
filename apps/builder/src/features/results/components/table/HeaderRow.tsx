@@ -11,10 +11,9 @@ import React from "react";
 
 type Props = {
   headerGroup: HeaderGroup<TableData>;
-  isTableScrolled: boolean;
 };
 
-export const HeaderRow = ({ headerGroup, isTableScrolled }: Props) => {
+export const HeaderRow = ({ headerGroup }: Props) => {
   const borderColor = useColorModeValue(colors.gray[200], colors.gray[700]);
   const backgroundColor = useColorModeValue("white", colors.gray[900]);
 
@@ -28,8 +27,8 @@ export const HeaderRow = ({ headerGroup, isTableScrolled }: Props) => {
             py="3"
             borderX="1px"
             borderColor={borderColor}
-            backgroundColor={isTableScrolled ? backgroundColor : undefined}
-            zIndex={10}
+            backgroundColor={backgroundColor}
+            zIndex={1}
             pos="sticky"
             top="0"
             fontWeight="normal"
@@ -67,7 +66,6 @@ const ResizeHandle = (props: BoxProps) => {
       h="full"
       top="0"
       cursor="col-resize"
-      zIndex={2}
       userSelect="none"
       data-testid="resize-handle"
       {...props}
