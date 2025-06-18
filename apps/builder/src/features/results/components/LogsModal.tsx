@@ -95,7 +95,7 @@ const StatusTag = ({ status }: { status: string }) => {
     case 'warning':
       return <Tag colorScheme={'orange'}>Warn</Tag>
     case 'info':
-      return <Tag colorScheme={'blue'}>Info</Tag>
+      return <Tag colorScheme={'orange'}>Info</Tag>
     default:
       return <Tag colorScheme={'green'}>Ok</Tag>
   }

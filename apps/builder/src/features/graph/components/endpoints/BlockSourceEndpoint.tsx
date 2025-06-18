@@ -28,8 +28,8 @@ export const BlockSourceEndpoint = ({
   isHidden?: boolean
 }) => {
   const id = source.itemId ?? source.blockId
-  const color = useColorModeValue('blue.200', 'blue.100')
-  const connectedColor = useColorModeValue('blue.300', 'blue.200')
+  const color = useColorModeValue('orange.200', 'orange.100')
+  const connectedColor = useColorModeValue('orange.300', 'orange.200')
   const bg = useColorModeValue('gray.100', 'gray.700')
   const { setConnectingIds, previewingEdge, graphPosition } = useGraph()
   const { setSourceEndpointYOffset, deleteSourceEndpointYOffset } =

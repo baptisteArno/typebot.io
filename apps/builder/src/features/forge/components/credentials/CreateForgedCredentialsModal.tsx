@@ -122,7 +122,7 @@ export const CreateForgedCredentialsModalContent = ({
             type="submit"
             isLoading={isCreating}
             isDisabled={Object.keys(data).length === 0}
-            colorScheme="blue"
+            colorScheme="orange"
           >
             Create
           </Button>

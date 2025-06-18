@@ -99,7 +99,7 @@ export const WhatsAppPreviewInstructions = (props: StackProps) => {
           isDisabled={isEmpty(phoneNumber) || isMessageSent}
           isLoading={isSendingMessage}
           type="submit"
-          colorScheme="blue"
+          colorScheme="orange"
         >
           {hasMessageBeenSent ? 'Restart' : 'Start'} the chat
         </Button>
@@ -110,7 +110,7 @@ export const WhatsAppPreviewInstructions = (props: StackProps) => {
             as={Link}
             href={`https://web.whatsapp.com/`}
             isExternal
-            colorScheme="blue"
+            colorScheme="orange"
             rightIcon={<ExternalLinkIcon />}
           >
             Open WhatsApp Web

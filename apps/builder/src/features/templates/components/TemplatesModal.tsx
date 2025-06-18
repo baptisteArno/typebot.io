@@ -233,7 +233,7 @@ export const TemplatesModal = ({
                 <Text>{selectedTemplate.description}</Text>
               </Stack>
               <Button
-                colorScheme="blue"
+                colorScheme="orange"
                 onClick={onUseThisTemplateClick}
                 isLoading={isLoading}
               >

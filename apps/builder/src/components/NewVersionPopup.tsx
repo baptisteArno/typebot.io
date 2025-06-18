@@ -48,13 +48,13 @@ export const NewVersionPopup = () => {
         unmountOnExit
       >
         <Stack
-          bgColor="blue.400"
+          bgColor="orange.400"
           p="4"
           px="4"
           rounded="lg"
           shadow="lg"
           borderWidth="1px"
-          borderColor="blue.300"
+          borderColor="orange.300"
           maxW="320px"
         >
           <HStack spacing={3}>

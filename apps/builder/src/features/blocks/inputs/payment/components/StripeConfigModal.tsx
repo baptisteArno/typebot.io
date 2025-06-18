@@ -225,7 +225,7 @@ export const StripeCreateModalContent = ({
         <ModalFooter>
           <Button
             type="submit"
-            colorScheme="blue"
+            colorScheme="orange"
             isDisabled={
               stripeConfig.live.publicKey === '' ||
               stripeConfig.name === '' ||

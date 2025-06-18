@@ -4,7 +4,7 @@ import { motion } from 'framer-motion'
 import { animationVariants } from './animationVariants'
 
 export const PopupIllustration = () => {
-  const bubbleColor = useColorModeValue('white', colors.blue[100])
+  const bubbleColor = useColorModeValue('white', colors.orange[100])
   return (
     <svg
       width="100"

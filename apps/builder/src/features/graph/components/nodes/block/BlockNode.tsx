@@ -62,7 +62,7 @@ export const BlockNode = ({
   onMouseDown?: (blockNodePosition: NodePosition, block: BlockV6) => void
 }) => {
   const bg = useColorModeValue('gray.50', 'gray.850')
-  const previewingBorderColor = useColorModeValue('blue.400', 'blue.300')
+  const previewingBorderColor = useColorModeValue('orange.400', 'orange.300')
   const borderColor = useColorModeValue('gray.200', 'gray.800')
   const { pathname, query } = useRouter()
   const {

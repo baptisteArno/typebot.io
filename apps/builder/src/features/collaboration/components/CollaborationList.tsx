@@ -163,7 +163,7 @@ export const CollaborationList = () => {
         )}
         <Button
           size="sm"
-          colorScheme="blue"
+          colorScheme="orange"
           isLoading={isSendingInvitation}
           flexShrink={0}
           type="submit"

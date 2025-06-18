@@ -108,7 +108,7 @@ export const UpdateForgedCredentialsModalContent = ({
             type="submit"
             isLoading={isUpdating}
             isDisabled={!data || Object.keys(data).length === 0}
-            colorScheme="blue"
+            colorScheme="orange"
           >
             Update
           </Button>

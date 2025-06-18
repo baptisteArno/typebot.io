@@ -82,7 +82,7 @@ const Modal = createMultiStyleConfigHelpers(
   modalAnatomy.keys
 ).defineMultiStyleConfig({
   baseStyle: ({ colorMode }) => ({
-    dialog: { bg: colorMode === 'dark' ? 'gray.800' : 'white' },
+    dialog: { bg: colorMode === 'dark' ? 'orange.800' : 'white' },
   }),
 })
 
@@ -95,7 +95,7 @@ const Popover = createMultiStyleConfigHelpers(
       maxWidth: 'fit-content',
     },
     content: {
-      bg: colorMode === 'dark' ? 'gray.800' : 'white',
+      bg: colorMode === 'dark' ? 'orange.800' : 'white',
     },
   }),
 })
@@ -106,12 +106,12 @@ const Menu = createMultiStyleConfigHelpers(
   baseStyle: ({ colorMode }) => ({
     list: {
       shadow: 'lg',
-      bg: colorMode === 'dark' ? 'gray.800' : 'white',
+      bg: colorMode === 'dark' ? 'orange.800' : 'white',
     },
     item: {
-      bg: colorMode === 'dark' ? 'gray.800' : 'white',
+      bg: colorMode === 'dark' ? 'orange.800' : 'white',
       _hover: {
-        bg: colorMode === 'dark' ? 'gray.700' : 'gray.100',
+        bg: colorMode === 'dark' ? 'orange.700' : 'orange.100',
       },
     },
   }),
@@ -123,7 +123,7 @@ const Accordion = createMultiStyleConfigHelpers(
   baseStyle: ({ colorMode }) => ({
     button: {
       _hover: {
-        bg: colorMode === 'dark' ? 'gray.800' : 'gray.100',
+        bg: colorMode === 'dark' ? 'orange.800' : 'orange.100',
       },
     },
   }),
@@ -131,19 +131,19 @@ const Accordion = createMultiStyleConfigHelpers(
 
 const Button = defineStyleConfig({
   baseStyle: ({ colorMode }) => ({
-    bg: colorMode === 'dark' ? 'gray.800' : 'white',
+    bg: colorMode === 'dark' ? 'orange.800' : 'white',
   }),
   variants: {
     solid: ({ colorMode, colorScheme }) => {
-      if (colorScheme !== 'blue') return {}
+      if (colorScheme !== 'orange') return {}
       return {
-        bg: colorMode === 'dark' ? 'blue.400' : 'blue.500',
+        bg: colorMode === 'dark' ? 'orange.400' : 'orange.500',
         color: 'white',
         _hover: {
-          bg: colorMode === 'dark' ? 'blue.500' : 'blue.600',
+          bg: colorMode === 'dark' ? 'orange.500' : 'orange.600',
         },
         _active: {
-          bg: colorMode === 'dark' ? 'blue.600' : 'blue.700',
+          bg: colorMode === 'dark' ? 'orange.600' : 'orange.700',
         },
       }
     },
@@ -161,10 +161,10 @@ const Alert = createMultiStyleConfigHelpers(
 ).defineMultiStyleConfig({
   variants: {
     subtle: ({ colorScheme, colorMode }) => {
-      if (colorScheme !== 'blue' || colorMode === 'dark') return {}
+      if (colorScheme !== 'orange' || colorMode === 'dark') return {}
       return {
         container: {
-          bg: 'blue.50',
+          bg: 'orange.50',
         },
       }
     },
@@ -198,22 +198,22 @@ const components = {
   Switch,
   Spinner: {
     defaultProps: {
-      colorScheme: 'blue',
+      colorScheme: 'orange',
     },
   },
   NumberInput: {
     baseStyle: {
-      focusBorderColor: 'blue.200',
+      focusBorderColor: 'orange.200',
     },
   },
   Input: {
     baseStyle: {
-      focusBorderColor: 'blue.200',
+      focusBorderColor: 'orange.200',
     },
   },
   Textarea: {
     baseStyle: {
-      focusBorderColor: 'blue.200',
+      focusBorderColor: 'orange.200',
     },
   },
   Link: {
@@ -231,7 +231,7 @@ const components = {
 const styles = {
   global: (props: StyleFunctionProps) => ({
     body: {
-      bg: mode('white', 'gray.900')(props),
+      bg: mode('white', 'orange.900')(props),
     },
   }),
 }

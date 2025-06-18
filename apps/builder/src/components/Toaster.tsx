@@ -7,12 +7,12 @@ export const Toaster = () => {
   const theme = useColorModeValue(
     {
       bg: undefined,
-      actionBg: colors.blue[500],
+      actionBg: colors.orange[500],
       actionColor: undefined,
     },
     {
       bg: colors.gray[900],
-      actionBg: colors.blue[400],
+      actionBg: colors.orange[400],
       actionColor: 'white',
     }
   )

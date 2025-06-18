@@ -90,7 +90,7 @@ const FolderButton = ({
       pos="relative"
       cursor="pointer"
       variant="outline"
-      colorScheme={isTypebotOver || draggedTypebot ? 'blue' : 'gray'}
+      colorScheme={isTypebotOver || draggedTypebot ? 'orange' : 'gray'}
       borderWidth={isTypebotOver ? '2px' : '1px'}
       transition={'border-width 0.1s ease'}
       justifyContent="center"
@@ -126,7 +126,7 @@ const FolderButton = ({
       <VStack spacing="4">
         <FolderIcon
           fontSize={50}
-          color={useColorModeValue('blue.500', 'blue.400')}
+          color={useColorModeValue('orange.500', 'orange.400')}
         />
         <Editable
           defaultValue={folder.name === '' ? 'New folder' : folder.name}

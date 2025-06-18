@@ -33,7 +33,7 @@ export const PricingCard = ({
   ...rest
 }: PricingCardProps) => {
   const { features, price, name } = data
-  const accentColor = useColorModeValue('blue.500', 'white')
+  const accentColor = useColorModeValue('orange.500', 'white')
   const formattedPrice = typeof price === 'number' ? formatPrice(price) : price
 
   return (

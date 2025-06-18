@@ -38,7 +38,7 @@ export const PlanComparisonTables = ({ onChatsTiersClick }: Props) => (
             </Th>
             <Th>Free</Th>
             <Th color="orange.200">Starter</Th>
-            <Th color="blue.200">Pro</Th>
+            <Th color="orange.200">Pro</Th>
           </Tr>
         </Thead>
         <Tbody>
@@ -99,7 +99,7 @@ export const PlanComparisonTables = ({ onChatsTiersClick }: Props) => (
             </Th>
             <Th>Free</Th>
             <Th color="orange.200">Starter</Th>
-            <Th color="blue.200">Pro</Th>
+            <Th color="orange.200">Pro</Th>
           </Tr>
         </Thead>
         <Tbody>
@@ -304,7 +304,7 @@ export const PlanComparisonTables = ({ onChatsTiersClick }: Props) => (
             </Th>
             <Th>Free</Th>
             <Th color="orange.200">Starter</Th>
-            <Th color="blue.200">Pro</Th>
+            <Th color="orange.200">Pro</Th>
           </Tr>
         </Thead>
         <Tbody>
@@ -383,7 +383,7 @@ export const PlanComparisonTables = ({ onChatsTiersClick }: Props) => (
         </Link>
       </Stack>
       <Stack spacing={4}>
-        <Heading as="h3" size="md" color="blue.200">
+        <Heading as="h3" size="md" color="orange.200">
           Pro
         </Heading>
         <Heading as="h3">

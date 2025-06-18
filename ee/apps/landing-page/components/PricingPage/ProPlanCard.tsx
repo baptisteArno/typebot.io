@@ -60,12 +60,12 @@ independant of the number of messages he sends and receives."
       ],
     }}
     borderWidth="3px"
-    borderColor="blue.200"
+    borderColor="orange.200"
     button={
       <Button
         as={Link}
         href={`https://app.typebot.io/register?subscribePlan=${Plan.PRO}`}
-        colorScheme="blue"
+        colorScheme="orange"
         size="lg"
         w="full"
         fontWeight="extrabold"

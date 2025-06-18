@@ -66,7 +66,7 @@ const TriggerIconButton = (props: Omit<IconButtonProps, 'aria-label'>) => (
     icon={<VideoPopoverIcon />}
     aria-label={'Open Bubbles help video'}
     variant="ghost"
-    colorScheme="blue"
+    colorScheme="orange"
     {...props}
   />
 )

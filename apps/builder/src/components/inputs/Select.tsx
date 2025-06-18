@@ -46,7 +46,7 @@ export const Select = <T extends Item>({
   onSelect,
 }: Props<T>) => {
   const focusedItemBgColor = useColorModeValue('gray.200', 'gray.700')
-  const selectedItemBgColor = useColorModeValue('blue.50', 'blue.400')
+  const selectedItemBgColor = useColorModeValue('orange.50', 'orange.400')
   const [isTouched, setIsTouched] = useState(false)
   const { onOpen, onClose, isOpen } = useDisclosure()
   const [inputValue, setInputValue] = useState(

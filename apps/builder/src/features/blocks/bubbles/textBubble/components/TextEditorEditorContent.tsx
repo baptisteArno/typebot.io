@@ -78,7 +78,7 @@ export const TextEditorEditorContent = ({ closeEditor }: Props) => {
       flex="1"
       ref={textEditorRef}
       borderWidth="2px"
-      borderColor="blue.400"
+      borderColor="orange.400"
       rounded="md"
       pos="relative"
       spacing={0}
@@ -87,7 +87,7 @@ export const TextEditorEditorContent = ({ closeEditor }: Props) => {
       onContextMenuCapture={(e) => e.stopPropagation()}
       sx={{
         '.slate-ToolbarButton-active': {
-          color: useColorModeValue('blue.500', 'blue.300') + ' !important',
+          color: useColorModeValue('orange.500', 'orange.300') + ' !important',
         },
         '[class^="PlateFloatingLink___Styled"]': {
           '--tw-bg-opacity': useColorModeValue('1', '.1') + '!important',
@@ -100,7 +100,7 @@ export const TextEditorEditorContent = ({ closeEditor }: Props) => {
           '--tw-bg-opacity': useColorModeValue('1', '.4') + '!important',
         },
         '.slate-a': {
-          color: useColorModeValue('blue.500', 'blue.300'),
+          color: useColorModeValue('orange.500', 'orange.300'),
         },
       }}
     >

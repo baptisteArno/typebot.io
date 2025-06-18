@@ -126,7 +126,7 @@ export const PrimitiveList = <T extends number | string | boolean>({
         leftIcon={<PlusIcon />}
         onClick={createItem}
         flexShrink={0}
-        colorScheme="blue"
+        colorScheme="orange"
       >
         {addLabel}
       </Button>

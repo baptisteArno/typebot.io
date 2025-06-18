@@ -40,7 +40,7 @@ export const UnlockPlanAlertInfo = ({
         <Text>{props.children}</Text>
       </HStack>
       <Button
-        colorScheme={props.status === 'warning' ? 'orange' : 'blue'}
+        colorScheme={props.status === 'warning' ? 'orange' : 'orange'}
         onClick={onOpen}
         flexShrink={0}
         ml="2"

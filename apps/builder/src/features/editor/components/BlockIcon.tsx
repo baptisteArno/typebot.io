@@ -47,22 +47,21 @@ import { GlobalJumpIcon } from '../../blocks/logic/globalJump/components/GlobalJ
 type BlockIconProps = { type: Block['type'] } & IconProps
 
 export const BlockIcon = ({ type, ...props }: BlockIconProps): JSX.Element => {
-  const blue = useColorModeValue('blue.500', 'blue.300')
   const orange = useColorModeValue('orange.500', 'orange.300')
   const purple = useColorModeValue('purple.500', 'purple.300')
   const openAIColor = useColorModeValue('black', 'white')
 
   switch (type) {
     case BubbleBlockType.TEXT:
-      return <TextBubbleIcon color={blue} {...props} />
+      return <TextBubbleIcon color={orange} {...props} />
     case BubbleBlockType.IMAGE:
-      return <ImageBubbleIcon color={blue} {...props} />
+      return <ImageBubbleIcon color={orange} {...props} />
     case BubbleBlockType.VIDEO:
-      return <VideoBubbleIcon color={blue} {...props} />
+      return <VideoBubbleIcon color={orange} {...props} />
     case BubbleBlockType.EMBED:
-      return <EmbedBubbleIcon color={blue} {...props} />
+      return <EmbedBubbleIcon color={orange} {...props} />
     case BubbleBlockType.AUDIO:
-      return <AudioBubbleIcon color={blue} {...props} />
+      return <AudioBubbleIcon color={orange} {...props} />
     case InputBlockType.TEXT:
       return <TextInputIcon color={orange} {...props} />
     case InputBlockType.NUMBER:

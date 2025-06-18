@@ -46,7 +46,7 @@ export const TypebotLinkNode = ({ block }: Props) => {
       )}{' '}
       {!isCurrentTypebot ? (
         <>
-          in <Tag colorScheme="blue">{linkedTypebot?.name}</Tag>
+          in <Tag colorScheme="orange">{linkedTypebot?.name}</Tag>
         </>
       ) : (
         <></>

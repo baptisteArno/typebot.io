@@ -101,7 +101,7 @@ export const CreateNewTypebotButtons = () => {
           fontSize="lg"
           leftIcon={
             <ToolIcon
-              color={useColorModeValue('blue.500', 'blue.300')}
+              color={useColorModeValue('orange.500', 'orange.300')}
               boxSize="25px"
               mr="2"
             />

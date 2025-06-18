@@ -151,7 +151,7 @@ const parseColor = (status: ToastProps['status']) => {
     case 'success':
       return 'green'
     case 'info':
-      return 'blue'
+      return 'orange'
   }
 }
 

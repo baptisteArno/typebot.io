@@ -58,7 +58,7 @@ const Pricing = () => {
                   solo business owner
                 </Text>
                 , a{' '}
-                <Text as="span" color="blue.200" fontWeight="bold">
+                <Text as="span" color="orange.200" fontWeight="bold">
                   growing startup
                 </Text>{' '}
                 or a{' '}

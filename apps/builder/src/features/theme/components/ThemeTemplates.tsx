@@ -32,7 +32,7 @@ export const ThemeTemplates = ({
         <Button
           flex="1"
           variant="outline"
-          colorScheme={selectedTab === 'my-templates' ? 'blue' : 'gray'}
+          colorScheme={selectedTab === 'my-templates' ? 'orange' : 'gray'}
           onClick={() => setSelectedTab('my-templates')}
         >
           {t('theme.sideMenu.template.myTemplates')}
@@ -40,7 +40,7 @@ export const ThemeTemplates = ({
         <Button
           flex="1"
           variant="outline"
-          colorScheme={selectedTab === 'gallery' ? 'blue' : 'gray'}
+          colorScheme={selectedTab === 'gallery' ? 'orange' : 'gray'}
           onClick={() => setSelectedTab('gallery')}
         >
           {t('theme.sideMenu.template.gallery')}
