@@ -86,7 +86,7 @@ export const ChatContainer = (props: Props) => {
         }),
       onRecovered: () => {
         setTimeout(() => {
-          chatContainer?.scrollTo(0, chatContainer.scrollHeight);
+          getScrollContainer()?.scrollTo(0, getScrollContainer()!.scrollHeight);
         }, 200);
       },
     },
@@ -121,6 +121,9 @@ export const ChatContainer = (props: Props) => {
       await popClientSideActions();
     })();
   });
+
+  const getScrollContainer = () =>
+    botContainer()?.querySelector(".scrollable-container");
 
   const cleanupRecoveredChatChunks = () => {
     // Remove aborted streaming message
@@ -258,11 +261,7 @@ export const ChatContainer = (props: Props) => {
     lastElement,
     offset = 0,
   }: { lastElement?: HTMLDivElement; offset?: number } = {}) => {
-    const scrollContainer =
-      (props.initialChatReply.typebot.theme.chat?.container?.backgroundColor ??
-        defaultContainerBackgroundColor) === "transparent"
-        ? botContainer()
-        : chatContainer;
+    const scrollContainer = getScrollContainer();
     if (!scrollContainer) return;
 
     const isBottomOfLastElementTooFarBelow =
@@ -281,17 +280,18 @@ export const ChatContainer = (props: Props) => {
 
         scrollTimeout = window.setTimeout(() => {
           callback();
-          scrollContainer.removeEventListener("scroll", scrollListener);
+          scrollContainer?.removeEventListener("scroll", scrollListener);
         }, 100);
       };
 
-      scrollContainer.addEventListener("scroll", scrollListener, {
+      scrollContainer?.addEventListener("scroll", scrollListener, {
         passive: true,
       });
     };
 
     setTimeout(() => {
       onScrollEnd(() => {
+        if (!scrollContainer) return;
         const isAtBottom =
           Math.abs(
             scrollContainer.scrollHeight -
@@ -303,7 +303,7 @@ export const ChatContainer = (props: Props) => {
       scrollContainer?.scrollTo({
         top: lastElement
           ? lastElement.offsetTop - offset
-          : scrollContainer.scrollHeight,
+          : scrollContainer?.scrollHeight,
         behavior: "smooth",
       });
     }, AUTO_SCROLL_DELAY);
@@ -459,57 +459,69 @@ export const ChatContainer = (props: Props) => {
     () => chatContainer,
   );
 
+  const isChatContainerTransparent = createMemo(
+    () =>
+      (props.initialChatReply.typebot.theme.chat?.container?.backgroundColor ??
+        defaultContainerBackgroundColor) === "transparent",
+  );
+
   return (
     <ChatContainerSizeContext.Provider value={chatContainerSize}>
       <div
-        ref={chatContainer}
         class={cx(
-          "@container relative typebot-chat-view w-full min-h-full flex flex-col items-center @xs:min-h-chat-container @xs:max-h-chat-container @xs:rounded-chat-container max-w-chat-container pt-5",
-          // If chat container is transparent, the scroll container is the bot container (parent)
-          (props.initialChatReply.typebot.theme.chat?.container
-            ?.backgroundColor ?? defaultContainerBackgroundColor) !==
-            "transparent"
+          "w-full h-full px-[calc((100%-var(--typebot-chat-container-max-width))/2)]",
+          // If chat container is transparent, we make sure the scroll area takes the entire width of the container
+          isChatContainerTransparent()
             ? "overflow-y-auto scroll-smooth scrollable-container"
             : undefined,
         )}
       >
-        <div class="w-full flex flex-col gap-2 @xs:px-5 px-3">
-          <Index
-            each={chatChunks().filter(hasExecutedInitialClientSideActions)}
-          >
-            {(chunk, index) => (
-              <ChatChunk
-                index={index}
-                messages={chunk().messages}
-                input={chunk().input}
-                theme={mergeThemes(
-                  props.initialChatReply.typebot.theme,
-                  chunk().dynamicTheme,
-                )}
-                settings={props.initialChatReply.typebot.settings}
-                context={props.context}
-                hideAvatar={
-                  (!chunk().input || Boolean(chunk().input?.isHidden)) &&
-                  ((chatChunks()[index + 1]?.messages ?? []).length > 0 ||
-                    chatChunks()[index + 1]?.streamingMessage !== undefined ||
-                    (chunk().messages.length > 0 && isSending()))
-                }
-                isTransitionDisabled={index !== chatChunks().length - 1}
-                streamingMessage={chunk().streamingMessage}
-                onNewBubbleDisplayed={handleNewBubbleDisplayed}
-                onAllBubblesDisplayed={handleAllBubblesDisplayed}
-                onSubmit={sendMessage}
-                onScrollToBottom={autoScrollToBottom}
-                onSkip={handleSkip}
-              />
-            )}
-          </Index>
-          <Show when={isSending()}>
-            <LoadingChunk theme={latestTheme()} />
-          </Show>
+        <div
+          ref={chatContainer}
+          class={cx(
+            "@container relative typebot-chat-view w-full min-h-full flex flex-col items-center @xs:min-h-chat-container @xs:max-h-chat-container @xs:rounded-chat-container pt-5  max-w-chat-container h-full",
+            isChatContainerTransparent()
+              ? undefined
+              : "overflow-y-auto scroll-smooth scrollable-container",
+          )}
+        >
+          <div class="w-full flex flex-col gap-2 @xs:px-5 px-3">
+            <Index
+              each={chatChunks().filter(hasExecutedInitialClientSideActions)}
+            >
+              {(chunk, index) => (
+                <ChatChunk
+                  index={index}
+                  messages={chunk().messages}
+                  input={chunk().input}
+                  theme={mergeThemes(
+                    props.initialChatReply.typebot.theme,
+                    chunk().dynamicTheme,
+                  )}
+                  settings={props.initialChatReply.typebot.settings}
+                  context={props.context}
+                  hideAvatar={
+                    (!chunk().input || Boolean(chunk().input?.isHidden)) &&
+                    ((chatChunks()[index + 1]?.messages ?? []).length > 0 ||
+                      chatChunks()[index + 1]?.streamingMessage !== undefined ||
+                      (chunk().messages.length > 0 && isSending()))
+                  }
+                  isTransitionDisabled={index !== chatChunks().length - 1}
+                  streamingMessage={chunk().streamingMessage}
+                  onNewBubbleDisplayed={handleNewBubbleDisplayed}
+                  onAllBubblesDisplayed={handleAllBubblesDisplayed}
+                  onSubmit={sendMessage}
+                  onScrollToBottom={autoScrollToBottom}
+                  onSkip={handleSkip}
+                />
+              )}
+            </Index>
+            <Show when={isSending()}>
+              <LoadingChunk theme={latestTheme()} />
+            </Show>
+          </div>
+          <BottomSpacer />
         </div>
-
-        <BottomSpacer />
       </div>
     </ChatContainerSizeContext.Provider>
   );

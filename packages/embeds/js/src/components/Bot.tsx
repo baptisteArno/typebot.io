@@ -340,13 +340,8 @@ const BotContent = (props: BotContentProps) => {
       <div
         ref={botContainer}
         class={cx(
-          "relative flex w-full h-full text-base flex-col justify-center items-center typebot-container",
+          "relative flex w-full overflow-hidden h-full text-base flex-col justify-center items-center typebot-container",
           props.class,
-          (props.initialChatReply.typebot.theme.chat?.container
-            ?.backgroundColor ?? defaultContainerBackgroundColor) ===
-            "transparent"
-            ? "overflow-y-auto scroll-smooth scrollable-container"
-            : "overflow-hidden",
         )}
         style={{
           "--bot-container-height": botContainerHeight(),
