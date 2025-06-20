@@ -119,6 +119,7 @@
                 "editor/blocks/logic/typebot-link",
                 "editor/blocks/logic/wait",
                 "editor/blocks/logic/jump",
+                "editor/blocks/logic/return",
                 "editor/blocks/logic/ab-test",
                 "editor/blocks/logic/webhook"
               ]
@@ -143,7 +144,8 @@
                 "editor/blocks/integrations/nocodb",
                 "editor/blocks/integrations/posthog",
                 "editor/blocks/integrations/segment",
-                "editor/blocks/integrations/zendesk"
+                "editor/blocks/integrations/zendesk",
+                "editor/blocks/integrations/blink"
               ]
             }
           ]
@@ -151,7 +153,11 @@
         {
           "group": "Events",
           "icon": "command",
-          "pages": ["editor/events/command"]
+          "pages": [
+            "editor/events/command",
+            "editor/events/reply",
+            "editor/events/invalid-reply"
+          ]
         },
         "editor/variables",
         "editor/publish",

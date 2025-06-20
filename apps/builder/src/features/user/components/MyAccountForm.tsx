@@ -1,8 +1,9 @@
 import { UploadButton } from "@/components/ImageUploadContent/UploadButton";
 import { UploadIcon } from "@/components/icons";
 import { TextInput } from "@/components/inputs/TextInput";
+import { refreshSessionUser } from "@/features/auth/helpers/refreshSessionUser";
+import { trpc } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
-import { trpc } from "@/lib/trpc";
 import {
   Avatar,
   Button,
@@ -15,10 +16,10 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
+import { useMutation } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
 import type React from "react";
 import { useState } from "react";
-import { refreshUser } from "../UserProvider";
 import { useUser } from "../hooks/useUser";
 import { ApiTokensList } from "./ApiTokensList";
 
@@ -108,8 +109,8 @@ const ChangeEmailModal = ({
   onClose: (newEmail?: string) => void;
   userEmail: string;
 }) => {
-  const { mutate: sendUpdateEmailVerifCodeEmail } =
-    trpc.auth.sendUpdateEmailVerifCodeEmail.useMutation({
+  const { mutate: sendUpdateEmailVerifCodeEmail } = useMutation(
+    trpc.auth.sendUpdateEmailVerifCodeEmail.mutationOptions({
       onError: (error) => {
         toast({
           description: error.message,
@@ -119,21 +120,24 @@ const ChangeEmailModal = ({
       onSuccess: () => {
         setVerificationCodeStatus("sent");
       },
-    });
-  const { mutate: updateUserEmail } = trpc.auth.updateUserEmail.useMutation({
-    onSettled: () => {
-      setIsUpdatingEmail(false);
-    },
-    onError: (error) => {
-      toast({
-        description: error.message,
-      });
-    },
-    onSuccess: () => {
-      refreshUser();
-      onClose(newEmail);
-    },
-  });
+    }),
+  );
+  const { mutate: updateUserEmail } = useMutation(
+    trpc.auth.updateUserEmail.mutationOptions({
+      onSettled: () => {
+        setIsUpdatingEmail(false);
+      },
+      onError: (error) => {
+        toast({
+          description: error.message,
+        });
+      },
+      onSuccess: () => {
+        refreshSessionUser();
+        onClose(newEmail);
+      },
+    }),
+  );
   const [newEmail, setNewEmail] = useState("");
   const [verificationCode, setVerificationCode] = useState("");
   const [verificationCodeStatus, setVerificationCodeStatus] = useState<

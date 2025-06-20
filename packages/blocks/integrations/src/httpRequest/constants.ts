@@ -17,7 +17,6 @@ export const defaultHttpRequestAttributes = {
 } as const;
 
 export const defaultHttpRequestBlockOptions = {
-  isAdvancedConfig: false,
   isCustomBody: false,
   isExecutedOnClient: false,
 } as const satisfies HttpRequestBlockV6["options"];

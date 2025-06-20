@@ -1,6 +1,3 @@
 src
-.env.local.example
-.eslintignore
-.eslintrc.cjs
-rollup.config.js
 tsconfig.json
+tsup.config.ts

@@ -1,9 +1,9 @@
 import { SendButton } from "@/components/SendButton";
 import { SearchInput } from "@/components/inputs/SearchInput";
 import type { InputSubmitContent } from "@/types";
-import { isMobile } from "@/utils/isMobileSignal";
 import { defaultChoiceInputOptions } from "@typebot.io/blocks-inputs/choice/constants";
 import type { ChoiceInputBlock } from "@typebot.io/blocks-inputs/choice/schema";
+import { guessDeviceIsMobile } from "@typebot.io/lib/guessDeviceIsMobile";
 import { For, Show, createSignal, onMount } from "solid-js";
 import { Checkbox } from "./Checkbox";
 
@@ -24,7 +24,8 @@ export const MultipleChoicesForm = (props: Props) => {
   const [selectedItemIds, setSelectedItemIds] = createSignal<string[]>([]);
 
   onMount(() => {
-    if (!isMobile() && inputRef) inputRef.focus({ preventScroll: true });
+    if (!guessDeviceIsMobile() && inputRef)
+      inputRef.focus({ preventScroll: true });
   });
 
   const handleClick = (itemId: string) => {
@@ -117,7 +118,7 @@ export const MultipleChoicesForm = (props: Props) => {
       >
         <For each={filteredItems()}>
           {(item) => (
-            <span class={"relative" + (isMobile() ? " w-full" : "")}>
+            <span class="relative w-full @xs:w-auto">
               <div
                 role="checkbox"
                 aria-checked={selectedItemIds().some(
@@ -153,7 +154,7 @@ export const MultipleChoicesForm = (props: Props) => {
           )}
         >
           {(selectedItemId) => (
-            <span class={"relative" + (isMobile() ? " w-full" : "")}>
+            <span class="relative w-full @xs:w-auto">
               <div
                 role="checkbox"
                 aria-checked

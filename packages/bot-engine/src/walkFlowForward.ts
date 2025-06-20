@@ -7,6 +7,10 @@ import {
   isIntegrationBlock,
   isLogicBlock,
 } from "@typebot.io/blocks-core/helpers";
+import type {
+  ContinueChatResponse,
+  InputMessage,
+} from "@typebot.io/chat-api/schemas";
 import type { SessionState } from "@typebot.io/chat-session/schemas";
 import { env } from "@typebot.io/env";
 import type { Group } from "@typebot.io/groups/schemas";
@@ -25,7 +29,6 @@ import {
   parseBubbleBlock,
 } from "./parseBubbleBlock";
 import { upsertResult } from "./queries/upsertResult";
-import type { ContinueChatResponse } from "./schemas/api";
 import type { ExecuteIntegrationResponse, ExecuteLogicResponse } from "./types";
 
 export type WalkFlowStartingPoint =
@@ -67,6 +70,7 @@ export const walkFlowForward = async (
   const clientSideActions: ContinueChatResponse["clientSideActions"] = [];
   let nextEdge: { id: string; isOffDefaultPath: boolean } | undefined =
     startingPoint.type === "nextEdge" ? startingPoint.nextEdge : undefined;
+  let lastBubbleBlockId: string | undefined;
 
   let i = -1;
   do {
@@ -81,6 +85,7 @@ export const walkFlowForward = async (
             state: newSessionState,
             edgeId: nextEdge?.id,
             isOffDefaultPath: nextEdge?.isOffDefaultPath ?? false,
+            sessionStore,
           });
     newSessionState = nextGroupResponse.newSessionState;
     if (nextGroupResponse.visitedEdge)
@@ -90,10 +95,12 @@ export const walkFlowForward = async (
       version,
       state: newSessionState,
       setVariableHistory,
+      visitedEdges,
       skipFirstMessageBubble,
       timeoutStartTime,
       textBubbleContentFormat,
       sessionStore,
+      currentLastBubbleId: lastBubbleBlockId,
     });
     if (executionResponse.logs) logs.push(...executionResponse.logs);
     newSessionState = executionResponse.newSessionState;
@@ -106,6 +113,7 @@ export const walkFlowForward = async (
       clientSideActions.push(...executionResponse.clientSideActions);
     if (executionResponse.updatedTimeoutStartTime)
       timeoutStartTime = executionResponse.updatedTimeoutStartTime;
+    lastBubbleBlockId = executionResponse.lastBubbleBlockId;
 
     nextEdge = executionResponse.nextEdge;
   } while (
@@ -136,6 +144,7 @@ type ContextProps = {
   setVariableHistory: SetVariableHistoryItem[];
   timeoutStartTime?: number;
   textBubbleContentFormat: "richText" | "markdown";
+  visitedEdges: Prisma.VisitedEdge[];
 };
 
 export type ExecuteGroupResponse = ContinueChatResponse & {
@@ -146,6 +155,7 @@ export type ExecuteGroupResponse = ContinueChatResponse & {
     id: string;
     isOffDefaultPath: boolean;
   };
+  lastBubbleBlockId: string | undefined;
 };
 
 const executeGroup = async (
@@ -159,6 +169,7 @@ const executeGroup = async (
     skipFirstMessageBubble,
     timeoutStartTime,
     textBubbleContentFormat,
+    visitedEdges,
   }: ContextProps,
 ): Promise<ExecuteGroupResponse> => {
   const messages: ContinueChatResponse["messages"] = [];
@@ -214,6 +225,7 @@ const executeGroup = async (
           clientSideActions,
           logs,
           newSetVariableHistoryItems,
+          lastBubbleBlockId,
         };
       }
 
@@ -235,6 +247,7 @@ const executeGroup = async (
         clientSideActions,
         logs,
         newSetVariableHistoryItems,
+        lastBubbleBlockId,
       };
     const logicOrIntegrationExecutionResponse = (
       isLogicBlock(block)
@@ -242,6 +255,7 @@ const executeGroup = async (
             block,
             state: newSessionState,
             setVariableHistory,
+            visitedEdges,
             sessionStore,
           })
         : isIntegrationBlock(block)
@@ -329,6 +343,7 @@ const executeGroup = async (
           clientSideActions,
           logs,
           newSetVariableHistoryItems,
+          lastBubbleBlockId,
         };
       }
     }
@@ -342,6 +357,11 @@ const executeGroup = async (
       };
       break;
     }
+
+    if (logicOrIntegrationExecutionResponse.outgoingEdgeId === null) {
+      nextEdge = undefined;
+      break;
+    }
   }
 
   return {
@@ -352,6 +372,7 @@ const executeGroup = async (
     updatedTimeoutStartTime,
     logs,
     newSetVariableHistoryItems,
+    lastBubbleBlockId,
   };
 };
 
@@ -365,15 +386,19 @@ const navigateToNextGroupAndUpdateState = async ({
   state,
   edgeId,
   isOffDefaultPath,
+  sessionStore,
 }: {
   state: SessionState;
   edgeId?: string;
   isOffDefaultPath: boolean;
+  sessionStore: SessionStore;
 }): Promise<NextGroup> => {
   const nextEdge = state.typebotsQueue[0].typebot.edges.find(byId(edgeId));
   if (!nextEdge) {
-    const nextEdgeResponse = popQueuedEdge(state);
-    let newSessionState = nextEdgeResponse.state;
+    const queuedEdgeResponse = popQueuedEdge(state);
+
+    let newSessionState = queuedEdgeResponse.state;
+
     if (newSessionState.typebotsQueue.length > 1) {
       const isMergingWithParent =
         newSessionState.typebotsQueue[0].isMergingWithParent;
@@ -438,11 +463,15 @@ const navigateToNextGroupAndUpdateState = async ({
             newSessionState.typebotsQueue[0].answers.length,
         };
     }
-    if (nextEdgeResponse.edgeId)
+    if (
+      queuedEdgeResponse.edgeId ||
+      newSessionState.typebotsQueue[0].queuedEdgeIds?.length
+    )
       return navigateToNextGroupAndUpdateState({
         state: newSessionState,
-        edgeId: nextEdgeResponse.edgeId,
+        edgeId: queuedEdgeResponse.edgeId,
         isOffDefaultPath,
+        sessionStore,
       });
     return {
       newSessionState,
@@ -481,7 +510,7 @@ const navigateToNextGroupAndUpdateState = async ({
             },
     },
     visitedEdge:
-      resultId && isOffDefaultPath && !nextEdge.id.startsWith("virtual-")
+      resultId && isOffDefaultPath
         ? {
             index: currentVisitedEdgeIndex as number,
             edgeId: nextEdge.id,
@@ -494,10 +523,10 @@ const navigateToNextGroupAndUpdateState = async ({
 const popQueuedEdge = (
   state: SessionState,
 ): { edgeId?: string; state: SessionState } => {
-  const edgeId = state.typebotsQueue[0].queuedEdgeIds?.[0];
-  if (!edgeId) return { state };
+  const queuedEdgeId = state.typebotsQueue[0].queuedEdgeIds?.[0];
+  if (!queuedEdgeId) return { state };
   return {
-    edgeId,
+    edgeId: queuedEdgeId,
     state: {
       ...state,
       typebotsQueue: [

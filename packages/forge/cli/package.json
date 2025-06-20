@@ -10,7 +10,7 @@
     "start": "bun ./src/index.ts"
   },
   "dependencies": {
-    "@clack/prompts": "0.7.0"
+    "@clack/prompts": "0.11.0"
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*"

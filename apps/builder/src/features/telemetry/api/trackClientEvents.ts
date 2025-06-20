@@ -3,7 +3,6 @@ import { getUserModeInWorkspace } from "@/features/workspace/helpers/getUserRole
 import { authenticatedProcedure } from "@/helpers/server/trpc";
 import { TRPCError } from "@trpc/server";
 import prisma from "@typebot.io/prisma";
-import { WorkspaceRole } from "@typebot.io/prisma/enum";
 import { clientSideCreateEventSchema } from "@typebot.io/telemetry/schemas";
 import { trackEvents } from "@typebot.io/telemetry/trackEvents";
 import { z } from "@typebot.io/zod";

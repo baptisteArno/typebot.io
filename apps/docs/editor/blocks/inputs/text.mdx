@@ -53,6 +53,25 @@ You can also ask your user for a longer text answer by enabling it in the input 
   </Tab>
 </Tabs>
 
+## Input mode
+
+The input mode option allows you to specify the type of virtual keyboard that should be displayed on mobile devices. This provides a better user experience by showing the most appropriate keyboard for the expected input.
+
+Available input modes:
+- **text**: Shows a standard keyboard
+- **decimal**: Shows a numeric keypad with decimal support
+- **numeric**: Shows a numeric keypad for whole numbers
+- **tel**: Shows a telephone keypad
+- **search**: Shows a keyboard optimized for search inputs
+- **email**: Shows a keyboard optimized for email addresses
+- **url**: Shows a keyboard optimized for URL entry
+
+<Note>
+Input mode is a hint to the browser and may not be supported on all devices or browsers. It's particularly useful for mobile devices.
+</Note>
+
+For more information, see the [MDN documentation](https://developer.mozilla.org/docs/Web/HTML/Reference/Global_attributes/inputmode).
+
 ## Allow attachments
 
 This option, when enabled, allows users to attach files to their message. This is useful when you want to ask for a document or a picture attached to the user messages.

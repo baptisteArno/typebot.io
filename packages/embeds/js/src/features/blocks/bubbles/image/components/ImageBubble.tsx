@@ -1,6 +1,5 @@
 import { Modal } from "@/components/Modal";
 import { TypingBubble } from "@/components/TypingBubble";
-import { isMobile } from "@/utils/isMobileSignal";
 import { defaultImageBubbleContent } from "@typebot.io/blocks-bubbles/image/constants";
 import type { ImageBubbleBlock } from "@typebot.io/blocks-bubbles/image/schema";
 import { cx } from "@typebot.io/ui/lib/cva";
@@ -64,7 +63,8 @@ export const ImageBubble = (props: Props) => {
       class={cx(
         isTyping() ? "opacity-0" : "opacity-100",
         props.onTransitionEnd ? "text-fade-in" : undefined,
-        props.content?.url?.endsWith(".svg") ? "w-full" : undefined,
+        // w-full works on Chrome, but not on Firefox. Setting a fixed high width works on all browsers. 🤷‍♂️
+        props.content?.url?.endsWith(".svg") ? "w-96" : undefined,
       )}
       style={{
         width: props.content?.url?.startsWith("data:image/svg")
@@ -112,8 +112,7 @@ export const ImageBubble = (props: Props) => {
             <figure
               class={cx(
                 "z-10 cursor-pointer",
-                !isTyping() && "p-4",
-                isTyping() ? (isMobile() ? "h-8" : "h-9") : "",
+                isTyping() ? "h-8 @xs:h-9" : "p-4",
               )}
               on:click={
                 props.content?.url?.startsWith("data:image/svg")

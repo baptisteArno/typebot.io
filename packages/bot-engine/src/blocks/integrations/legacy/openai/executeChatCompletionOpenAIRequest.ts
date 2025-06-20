@@ -1,8 +1,8 @@
 import type { OpenAIBlock } from "@typebot.io/blocks-integrations/openai/schema";
+import type { ContinueChatResponse } from "@typebot.io/chat-api/schemas";
 import { isNotEmpty } from "@typebot.io/lib/utils";
 import { HTTPError } from "ky";
 import { type ClientOptions, OpenAI } from "openai";
-import type { ContinueChatResponse } from "../../../../schemas/api";
 
 type Props = Pick<OpenAI.Chat.ChatCompletionCreateParams, "model"> & {
   messages: OpenAI.Chat.ChatCompletionMessageParam[] | undefined;

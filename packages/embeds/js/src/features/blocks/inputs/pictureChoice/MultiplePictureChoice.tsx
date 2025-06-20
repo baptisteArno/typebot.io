@@ -1,9 +1,9 @@
 import { SendButton } from "@/components/SendButton";
 import { SearchInput } from "@/components/inputs/SearchInput";
 import type { InputSubmitContent } from "@/types";
-import { isMobile } from "@/utils/isMobileSignal";
 import { defaultPictureChoiceOptions } from "@typebot.io/blocks-inputs/pictureChoice/constants";
 import type { PictureChoiceBlock } from "@typebot.io/blocks-inputs/pictureChoice/schema";
+import { guessDeviceIsMobile } from "@typebot.io/lib/guessDeviceIsMobile";
 import {
   isDefined,
   isEmpty,
@@ -27,7 +27,8 @@ export const MultiplePictureChoice = (props: Props) => {
   const [totalLoadedImages, setTotalLoadedImages] = createSignal(0);
 
   onMount(() => {
-    if (!isMobile() && inputRef) inputRef.focus({ preventScroll: true });
+    if (!guessDeviceIsMobile() && inputRef)
+      inputRef.focus({ preventScroll: true });
   });
 
   const handleClick = (itemId: string) => {

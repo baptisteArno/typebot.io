@@ -1,5 +1,5 @@
 import { EditIcon, MoreHorizontalIcon, TrashIcon } from "@/components/icons";
-import { trpc } from "@/lib/trpc";
+import { queryClient, trpc } from "@/lib/queryClient";
 import {
   Box,
   Flex,
@@ -14,6 +14,7 @@ import {
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
+import { useMutation } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
 import {
   BackgroundType,
@@ -51,19 +52,18 @@ export const ThemeTemplateCard = ({
   const borderWidth = useColorModeValue(undefined, "1px");
   const [isDeleting, setIsDeleting] = useState(false);
 
-  const {
-    theme: {
-      listThemeTemplates: { refetch: refetchThemeTemplates },
-    },
-  } = trpc.useContext();
-  const { mutate } = trpc.theme.deleteThemeTemplate.useMutation({
-    onMutate: () => setIsDeleting(true),
-    onSettled: () => setIsDeleting(false),
-    onSuccess: () => {
-      refetchThemeTemplates();
-      if (onDeleteSuccess) onDeleteSuccess();
-    },
-  });
+  const { mutate } = useMutation(
+    trpc.theme.deleteThemeTemplate.mutationOptions({
+      onMutate: () => setIsDeleting(true),
+      onSettled: () => setIsDeleting(false),
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: trpc.theme.listThemeTemplates.queryKey(),
+        });
+        if (onDeleteSuccess) onDeleteSuccess();
+      },
+    }),
+  );
 
   const deleteThemeTemplate = () => {
     mutate({ themeTemplateId: themeTemplate.id, workspaceId });

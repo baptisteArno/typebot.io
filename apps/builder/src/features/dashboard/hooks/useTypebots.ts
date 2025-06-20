@@ -1,25 +1,23 @@
-import { trpc } from "@/lib/trpc";
+import { trpc } from "@/lib/queryClient";
+import { useQuery } from "@tanstack/react-query";
 
 export const useTypebots = ({
   folderId,
   workspaceId,
-  onError,
 }: {
   workspaceId?: string;
   folderId?: string | "root";
-  onError: (error: Error) => void;
 }) => {
-  const { data, isLoading, refetch } = trpc.typebot.listTypebots.useQuery(
-    {
-      workspaceId: workspaceId as string,
-      folderId,
-    },
-    {
-      enabled: !!workspaceId,
-      onError: (error) => {
-        onError(new Error(error.message));
+  const { data, isLoading, refetch } = useQuery(
+    trpc.typebot.listTypebots.queryOptions(
+      {
+        workspaceId: workspaceId as string,
+        folderId,
       },
-    },
+      {
+        enabled: !!workspaceId,
+      },
+    ),
   );
   return {
     typebots: data?.typebots,

@@ -1,7 +1,7 @@
 import { TextInput } from "@/components/inputs/TextInput";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
+import { trpc } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
-import { trpc } from "@/lib/trpc";
 import {
   Button,
   ModalBody,
@@ -11,6 +11,8 @@ import {
   ModalHeader,
   Stack,
 } from "@chakra-ui/react";
+import { useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import type { Credentials } from "@typebot.io/credentials/schemas";
 import type { ForgedBlockDefinition } from "@typebot.io/forge-repository/definitions";
 import type React from "react";
@@ -36,8 +38,8 @@ export const UpdateForgedCredentialsModalContent = ({
 
   const [isUpdating, setIsUpdating] = useState(false);
 
-  const { data: existingCredentials, refetch: refetchCredentials } =
-    trpc.credentials.getCredentials.useQuery(
+  const { data: existingCredentials, refetch: refetchCredentials } = useQuery(
+    trpc.credentials.getCredentials.queryOptions(
       scope === "workspace"
         ? {
             scope: "workspace",
@@ -51,7 +53,8 @@ export const UpdateForgedCredentialsModalContent = ({
       {
         enabled: !!workspace?.id,
       },
-    );
+    ),
+  );
 
   useEffect(() => {
     if (!existingCredentials || data) return;
@@ -59,19 +62,21 @@ export const UpdateForgedCredentialsModalContent = ({
     setData(existingCredentials.data);
   }, [data, existingCredentials]);
 
-  const { mutate } = trpc.credentials.updateCredentials.useMutation({
-    onMutate: () => setIsUpdating(true),
-    onSettled: () => setIsUpdating(false),
-    onError: (err) => {
-      toast({
-        description: err.message,
-      });
-    },
-    onSuccess: () => {
-      onUpdate();
-      refetchCredentials();
-    },
-  });
+  const { mutate } = useMutation(
+    trpc.credentials.updateCredentials.mutationOptions({
+      onMutate: () => setIsUpdating(true),
+      onSettled: () => setIsUpdating(false),
+      onError: (err) => {
+        toast({
+          description: err.message,
+        });
+      },
+      onSuccess: () => {
+        onUpdate();
+        refetchCredentials();
+      },
+    }),
+  );
 
   const updateCredentials = async (e: React.FormEvent) => {
     e.preventDefault();

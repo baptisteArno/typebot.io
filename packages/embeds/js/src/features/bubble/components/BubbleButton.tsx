@@ -7,9 +7,8 @@ import type { BubbleTheme, ButtonTheme } from "../types";
 
 type Props = Pick<BubbleTheme, "placement"> &
   ButtonTheme & {
-    isBotOpened: boolean;
+    isBotOpen: boolean;
     toggleBot: () => void;
-    buttonSize: `${number}px`;
   };
 
 const defaultLightIconColor = "#fff";
@@ -22,7 +21,7 @@ export const BubbleButton = (props: Props) => (
     part="button"
     onClick={() => props.toggleBot()}
     class={cx(
-      "relative shadow-md rounded-2xl hover:scale-110 active:scale-95 transition-transform duration-200 flex justify-center items-center animate-fade-in",
+      "relative shadow-md rounded-2xl hover:scale-110 active:scale-95 transition-transform duration-200 flex justify-center items-center animate-fade-in size-[var(--button-size)]",
     )}
     style={{
       "background-color": props.backgroundColor ?? colors.gray.dark["2"],
@@ -31,10 +30,9 @@ export const BubbleButton = (props: Props) => (
           ? colors.gray.light["12"]
           : colors.gray.dark["12"]
         : colors.gray.dark["12"],
-      width: props.buttonSize,
-      height: props.buttonSize,
     }}
-    aria-label="Open chatbot"
+    aria-label={props.isBotOpen ? "Close chatbot" : "Open chatbot"}
+    aria-pressed={props.isBotOpen}
   >
     <OpenIcon {...props} />
     <CloseIcon {...props} />
@@ -49,7 +47,7 @@ const OpenIcon = (props: Props) => (
         viewBox="0 0 16 16"
         class={cx(
           "fill-transparent absolute duration-200 transition size-6",
-          props.isBotOpened ? "scale-0 opacity-0" : "scale-100 opacity-100",
+          props.isBotOpen ? "scale-0 opacity-0" : "scale-100 opacity-100",
         )}
       >
         <path
@@ -64,7 +62,7 @@ const OpenIcon = (props: Props) => (
         src={props.customIconSrc}
         class={cx(
           "duration-200 transition",
-          props.isBotOpened ? "scale-0 opacity-0" : "scale-100 opacity-100",
+          props.isBotOpen ? "scale-0 opacity-0" : "scale-100 opacity-100",
           isSvgSrc(props.customIconSrc) ? "w-[60%]" : "w-full h-full",
           isSvgSrc(props.customIconSrc) ? "" : "object-cover rounded-2xl",
         )}
@@ -76,7 +74,7 @@ const OpenIcon = (props: Props) => (
         part="button-icon"
         class={cx(
           "text-4xl duration-200 transition",
-          props.isBotOpened ? "scale-0 opacity-0" : "scale-100 opacity-100",
+          props.isBotOpen ? "scale-0 opacity-0" : "scale-100 opacity-100",
         )}
         style={{
           "font-family":
@@ -100,7 +98,7 @@ const CloseIcon = (props: Props) => (
         }}
         class={cx(
           "absolute duration-200 transition w-[60%]",
-          props.isBotOpened
+          props.isBotOpen
             ? "scale-100 rotate-0 opacity-100"
             : "scale-0 -rotate-180 opacity-0",
         )}
@@ -120,7 +118,7 @@ const CloseIcon = (props: Props) => (
         src={props.customCloseIconSrc}
         class={cx(
           "absolute duration-200 transition",
-          props.isBotOpened
+          props.isBotOpen
             ? "scale-100 rotate-0 opacity-100"
             : "scale-0 -rotate-180 opacity-0",
           isSvgSrc(props.customCloseIconSrc) ? "w-[60%]" : "w-full h-full",
@@ -136,7 +134,7 @@ const CloseIcon = (props: Props) => (
         part="button-icon"
         class={cx(
           "absolute text-4xl duration-200 transition",
-          props.isBotOpened
+          props.isBotOpen
             ? "scale-100 rotate-0 opacity-100"
             : "scale-0 -rotate-180 opacity-0",
         )}

@@ -7,12 +7,12 @@ import { Textarea } from "@/components/inputs/Textarea";
 import type { CommandData } from "@/features/commands/types";
 import type { Attachment, BotContext, InputSubmitContent } from "@/types";
 import { guessApiHost } from "@/utils/guessApiHost";
-import { isMobile } from "@/utils/isMobileSignal";
 import { toaster } from "@/utils/toaster";
 import { fixWebmDuration } from "@fix-webm-duration/fix";
 import { defaultTextInputOptions } from "@typebot.io/blocks-inputs/text/constants";
 import type { TextInputBlock } from "@typebot.io/blocks-inputs/text/schema";
 import { getRuntimeVariable } from "@typebot.io/env/getRuntimeVariable";
+import { guessDeviceIsMobile } from "@typebot.io/lib/guessDeviceIsMobile";
 import { isDefined } from "@typebot.io/lib/utils";
 import { cx } from "@typebot.io/ui/lib/cva";
 import {
@@ -107,7 +107,7 @@ export const TextInput = (props: Props) => {
   };
 
   onMount(() => {
-    if (!isMobile() && inputRef)
+    if (!guessDeviceIsMobile() && inputRef)
       inputRef.focus({
         preventScroll: true,
       });
@@ -279,7 +279,7 @@ export const TextInput = (props: Props) => {
         <Show when={recordingStatus() !== "started"}>
           <Show when={selectedFiles().length}>
             <div
-              class="p-2 flex gap-2 border-gray-100 overflow-auto"
+              class="p-2 flex gap-2 border-input-border overflow-auto"
               style={{ "border-bottom-width": "1px" }}
             >
               <For each={selectedFiles()}>
@@ -313,6 +313,7 @@ export const TextInput = (props: Props) => {
                 onInput={handleInput}
                 onKeyDown={submitIfCtrlEnter}
                 value={inputValue()}
+                inputmode={props.block.options?.inputMode}
                 placeholder={
                   props.block.options?.labels?.placeholder ??
                   defaultTextInputOptions.labels.placeholder
@@ -323,6 +324,7 @@ export const TextInput = (props: Props) => {
                 ref={inputRef as HTMLInputElement}
                 onInput={handleInput}
                 value={inputValue()}
+                inputmode={props.block.options?.inputMode}
                 placeholder={
                   props.block.options?.labels?.placeholder ??
                   defaultTextInputOptions.labels.placeholder

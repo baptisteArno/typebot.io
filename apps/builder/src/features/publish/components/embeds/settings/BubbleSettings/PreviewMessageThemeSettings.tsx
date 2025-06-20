@@ -1,6 +1,12 @@
 import { ColorPicker } from "@/components/ColorPicker";
 import { HStack, Heading, Stack, Text } from "@chakra-ui/react";
 import type { PreviewMessageTheme } from "@typebot.io/js";
+import {
+  defaultPreviewMessageBackgroundColor,
+  defaultPreviewMessageCloseButtonBackgroundColor,
+  defaultPreviewMessageCloseButtonIconColor,
+  defaultPreviewMessageTextColor,
+} from "@typebot.io/theme/constants";
 import React from "react";
 
 type Props = {
@@ -49,29 +55,44 @@ export const PreviewMessageThemeSettings = ({
         <HStack justify="space-between">
           <Text>Background color</Text>
           <ColorPicker
-            defaultValue={previewMessageTheme?.backgroundColor}
+            defaultValue={
+              previewMessageTheme?.backgroundColor ??
+              defaultPreviewMessageBackgroundColor
+            }
             onColorChange={updateBackgroundColor}
+            portalled={false}
           />
         </HStack>
         <HStack justify="space-between">
           <Text>Text color</Text>
           <ColorPicker
-            defaultValue={previewMessageTheme?.textColor}
+            defaultValue={
+              previewMessageTheme?.textColor ?? defaultPreviewMessageTextColor
+            }
             onColorChange={updateTextColor}
+            portalled={false}
           />
         </HStack>
         <HStack justify="space-between">
           <Text>Close button background</Text>
           <ColorPicker
-            defaultValue={previewMessageTheme?.closeButtonBackgroundColor}
+            defaultValue={
+              previewMessageTheme?.closeButtonBackgroundColor ??
+              defaultPreviewMessageCloseButtonBackgroundColor
+            }
             onColorChange={updateCloseButtonBackgroundColor}
+            portalled={false}
           />
         </HStack>
         <HStack justify="space-between">
           <Text>Close icon color</Text>
           <ColorPicker
-            defaultValue={previewMessageTheme?.closeButtonIconColor}
+            defaultValue={
+              previewMessageTheme?.closeButtonIconColor ??
+              defaultPreviewMessageCloseButtonIconColor
+            }
             onColorChange={updateCloseButtonIconColor}
+            portalled={false}
           />
         </HStack>
       </Stack>

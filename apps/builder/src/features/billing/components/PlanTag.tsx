@@ -9,6 +9,7 @@ export const planColorSchemes: Record<Plan, ThemeTypings["colorSchemes"]> = {
   [Plan.FREE]: "gray",
   [Plan.CUSTOM]: "yellow",
   [Plan.UNLIMITED]: "yellow",
+  [Plan.ENTERPRISE]: "yellow",
 };
 
 export const PlanTag = ({
@@ -80,6 +81,13 @@ export const PlanTag = ({
           {...props}
         >
           Unlimited
+        </Tag>
+      );
+    }
+    case Plan.ENTERPRISE: {
+      return (
+        <Tag colorScheme={planColorSchemes[Plan.ENTERPRISE]} {...props}>
+          Enterprise
         </Tag>
       );
     }

@@ -1,5 +1,4 @@
 import { MinusIcon, PlusIcon } from "@/components/icons";
-import { headerHeight } from "@/features/editor/constants";
 import { IconButton, Stack, useColorModeValue } from "@chakra-ui/react";
 
 type Props = {
@@ -11,12 +10,8 @@ export const ZoomButtons = ({
   onZoomOutClick: onZoomOut,
 }: Props) => (
   <Stack
-    pos="fixed"
-    top={`calc(${headerHeight}px + 70px)`}
-    right="40px"
     bgColor={useColorModeValue("white", "gray.950")}
     rounded="md"
-    zIndex={1}
     spacing="0"
     shadow="md"
   >

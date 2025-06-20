@@ -1,0 +1,164 @@
+{
+  "version": "6.1",
+  "id": "raejz4pibrqjzjuzv0w3rmhy",
+  "name": "Basic ChatGPT",
+  "events": [
+    {
+      "id": "ewnfbo0exlu7ihfu2lu2lusm",
+      "outgoingEdgeId": "efox9d02gjnzvju31tepd8w5",
+      "graphCoordinates": { "x": -228.25, "y": -123.31 },
+      "type": "start"
+    }
+  ],
+  "groups": [
+    {
+      "id": "qfrz5nwm63g12dajsjxothb5",
+      "title": "User input",
+      "graphCoordinates": { "x": 198.64, "y": 179.04 },
+      "blocks": [
+        {
+          "id": "ovgk70u0kfxrbtz9dy4e040o",
+          "type": "text input",
+          "options": { "variableId": "vudksu3zyrat6s1bq6qne0rx3" }
+        },
+        {
+          "id": "m4jadtknjb3za3gvxj1xdn1k",
+          "outgoingEdgeId": "fpj0xacppqd1s5slyljzhzc9",
+          "type": "Set variable",
+          "options": {
+            "variableId": "vabkycu0qqff5d6ar2ama16pf",
+            "type": "Append value(s)",
+            "item": "{{User Message}}"
+          }
+        }
+      ]
+    },
+    {
+      "id": "a6ymhjwtkqwp8t127plz8qmk",
+      "title": "ChatGPT reply",
+      "graphCoordinates": { "x": 624.57, "y": 200.09 },
+      "blocks": [
+        {
+          "id": "p4q3wbk4wcw818qocrvu7dxs",
+          "type": "mistral",
+          "options": {
+            "credentialsId": "mistral",
+            "action": "Create chat completion",
+            "model": "mistral-small-latest",
+            "messages": [
+              {
+                "role": "Dialogue",
+                "dialogueVariableId": "vabkycu0qqff5d6ar2ama16pf"
+              }
+            ],
+            "responseMapping": [
+              {
+                "item": "Message content",
+                "variableId": "vni6kwbch8zlq92dclgcivzyr"
+              }
+            ]
+          }
+        },
+        {
+          "id": "myldn1l1nfdwwm8qvza71rwv",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "{{Assistant Message}}" }] }
+            ]
+          }
+        },
+        {
+          "id": "yblc864bzipaqfja7b2o3oo0",
+          "outgoingEdgeId": "at8takz56suqmaul5teazymb",
+          "type": "Set variable",
+          "options": {
+            "variableId": "vabkycu0qqff5d6ar2ama16pf",
+            "type": "Append value(s)",
+            "item": "{{Assistant Message}}"
+          }
+        }
+      ]
+    },
+    {
+      "id": "c5f00f3oclwi1srcz10jjt9u",
+      "title": "Intro",
+      "graphCoordinates": { "x": -183.19, "y": 156.03 },
+      "blocks": [
+        {
+          "id": "vzcrfk4vl9gy8igu0ysja5nc",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "Hi there 👋" }] }
+            ]
+          }
+        },
+        {
+          "id": "gphm5wy1md9cunwkdtbzg6nq",
+          "outgoingEdgeId": "h5sk58j0ryrxmfv4gmw7r4dw",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "How can I help?" }] }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "h5sk58j0ryrxmfv4gmw7r4dw",
+      "from": { "blockId": "gphm5wy1md9cunwkdtbzg6nq" },
+      "to": { "groupId": "qfrz5nwm63g12dajsjxothb5" }
+    },
+    {
+      "id": "fpj0xacppqd1s5slyljzhzc9",
+      "from": { "blockId": "m4jadtknjb3za3gvxj1xdn1k" },
+      "to": { "groupId": "a6ymhjwtkqwp8t127plz8qmk" }
+    },
+    {
+      "id": "at8takz56suqmaul5teazymb",
+      "from": { "blockId": "yblc864bzipaqfja7b2o3oo0" },
+      "to": { "groupId": "qfrz5nwm63g12dajsjxothb5" }
+    },
+    {
+      "id": "efox9d02gjnzvju31tepd8w5",
+      "from": { "eventId": "ewnfbo0exlu7ihfu2lu2lusm" },
+      "to": { "groupId": "c5f00f3oclwi1srcz10jjt9u" }
+    }
+  ],
+  "variables": [
+    {
+      "id": "vni6kwbch8zlq92dclgcivzyr",
+      "name": "Assistant Message",
+      "isSessionVariable": true
+    },
+    {
+      "id": "vudksu3zyrat6s1bq6qne0rx3",
+      "name": "User Message",
+      "isSessionVariable": false
+    },
+    {
+      "id": "vabkycu0qqff5d6ar2ama16pf",
+      "name": "Chat history",
+      "isSessionVariable": true
+    }
+  ],
+  "theme": {},
+  "selectedThemeTemplateId": null,
+  "settings": { "general": { "isBrandingEnabled": true } },
+  "createdAt": "2025-05-21T09:49:34.035Z",
+  "updatedAt": "2025-05-21T09:54:30.477Z",
+  "icon": "🤖",
+  "folderId": null,
+  "publicId": "basic-chat-gpt-0w3rmhy",
+  "customDomain": null,
+  "workspaceId": "freeWorkspace",
+  "resultsTablePreferences": null,
+  "isArchived": false,
+  "isClosed": false,
+  "whatsAppCredentialsId": null,
+  "riskLevel": null
+}

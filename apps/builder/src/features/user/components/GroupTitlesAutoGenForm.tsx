@@ -11,8 +11,8 @@ import { HStack, Stack } from "@chakra-ui/react";
 import type { BlockV6 } from "@typebot.io/blocks-core/schemas/schema";
 import type { Credentials } from "@typebot.io/credentials/schemas";
 import { forgedBlocks } from "@typebot.io/forge-repository/definitions";
-import { defaultGroupTitleGenPrompt } from "@typebot.io/schemas/features/user/constants";
-import type { GroupTitlesAutoGeneration } from "@typebot.io/schemas/features/user/schema";
+import { defaultGroupTitleGenPrompt } from "@typebot.io/user/constants";
+import type { GroupTitlesAutoGeneration } from "@typebot.io/user/schemas";
 import { useState } from "react";
 
 type Props = {

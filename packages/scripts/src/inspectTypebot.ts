@@ -11,6 +11,7 @@ const inspectTypebot = async () => {
     options: [
       { label: "ID", value: "id" },
       { label: "Public ID", value: "publicId" },
+      { label: "Custom domain", value: "customDomain" },
     ],
   });
 
@@ -22,10 +23,10 @@ const inspectTypebot = async () => {
 
   if (!val || isCancel(val)) process.exit();
 
+  const where = parseWhere(type, val);
+
   const typebot = await prisma.typebot.findFirst({
-    where: {
-      [type]: val,
-    },
+    where,
     select: {
       id: true,
       name: true,
@@ -79,6 +80,13 @@ const inspectTypebot = async () => {
   console.log(`https://app.typebot.io/typebots/${typebot.id}/edit`);
 
   console.log(JSON.stringify(typebot, null, 2));
+};
+
+const parseWhere = (type: "id" | "publicId" | "customDomain", val: string) => {
+  if (type === "id") return { id: val };
+  if (type === "publicId") return { publicId: val };
+  if (type === "customDomain")
+    return { customDomain: val.replace("https://", "") };
 };
 
 inspectTypebot();

@@ -1,6 +1,6 @@
-import { toast } from "@/lib/toast";
-import { trpc } from "@/lib/trpc";
+import { trpc } from "@/lib/queryClient";
 import { Button, type ButtonProps, Link } from "@chakra-ui/react";
+import { useQuery } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
 
 type Props = {
@@ -9,18 +9,19 @@ type Props = {
 
 export const BillingPortalButton = ({ workspaceId, colorScheme }: Props) => {
   const { t } = useTranslate();
-  const { data } = trpc.billing.getBillingPortalUrl.useQuery(
-    {
-      workspaceId,
-    },
-    {
-      onError: (error) => {
-        toast({
-          description: error.message,
-        });
+  const { data } = useQuery(
+    trpc.billing.getBillingPortalUrl.queryOptions(
+      {
+        workspaceId,
       },
-    },
+      {
+        meta: {
+          errorContext: "Error getting billing portal url",
+        },
+      },
+    ),
   );
+
   return (
     <Button
       as={Link}

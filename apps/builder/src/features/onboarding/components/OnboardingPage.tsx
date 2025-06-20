@@ -1,22 +1,13 @@
 import { ChevronLastIcon } from "@/components/icons";
+import { useAcceptTermsMutation } from "@/features/user/hooks/useAcceptTermsMutation";
 import { useUser } from "@/features/user/hooks/useUser";
-import {
-  Button,
-  Flex,
-  HStack,
-  type StackProps,
-  VStack,
-  chakra,
-  useColorModeValue,
-} from "@chakra-ui/react";
+import { Button, Flex, HStack, VStack, chakra } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { env } from "@typebot.io/env";
-import { Standard } from "@typebot.io/nextjs";
+import { Standard } from "@typebot.io/react";
 import confetti from "canvas-confetti";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
-
-const totalSteps = 5;
 
 export const OnboardingPage = () => {
   const { t } = useTranslate();
@@ -24,18 +15,14 @@ export const OnboardingPage = () => {
   const confettiCanvaContainer = useRef<HTMLCanvasElement | null>(null);
   const confettiCanon = useRef<confetti.CreateTypes>();
   const { user, updateUser } = useUser();
-  const [currentStep, setCurrentStep] = useState<number>(user?.name ? 2 : 1);
-  const [onboardingReplies, setOnboardingReplies] = useState<{
-    name?: string;
-    company?: string;
-    onboardingCategories?: string[];
-    referral?: string;
-  }>({});
+  const [pendingCategories, setPendingCategories] = useState<string[]>([]);
+  const [canSkipOnboarding, setCanSkipOnboarding] = useState(false);
 
-  const isNewUser =
-    user &&
-    new Date(user.createdAt as unknown as string).toDateString() ===
-      new Date().toDateString();
+  const acceptTermsMutation = useAcceptTermsMutation({
+    onSuccess: () => {
+      setCanSkipOnboarding(true);
+    },
+  });
 
   useEffect(() => {
     initConfettis();
@@ -43,9 +30,9 @@ export const OnboardingPage = () => {
 
   useEffect(() => {
     if (!user?.createdAt) return;
-    if (isNewUser === false || !env.NEXT_PUBLIC_ONBOARDING_TYPEBOT_ID)
+    if (!env.NEXT_PUBLIC_ONBOARDING_TYPEBOT_ID)
       replace({ pathname: "/typebots", query });
-  }, [isNewUser, query, replace, user?.createdAt]);
+  }, [query, replace, user?.createdAt]);
 
   const initConfettis = () => {
     if (!confettiCanvaContainer.current || confettiCanon.current) return;
@@ -59,46 +46,45 @@ export const OnboardingPage = () => {
     message: string;
     blockId: string;
   }) => {
-    const isName = answer.blockId === "cl126820m000g2e6dfleq78bt";
-    const isCompany = answer.blockId === "cl126jioz000v2e6dwrk1f2cb";
-    const isCategories = answer.blockId === "cl126lb8v00142e6duv5qe08l";
-    const isOtherCategory = answer.blockId === "cl126pv7n001o2e6dajltc4qz";
-    const isReferral = answer.blockId === "phcb0s1e9qgp0f8l2amcu7xr";
-    const isOtherReferral = answer.blockId === "saw904bfzgspmt0l24achtiy";
-    if (isName)
-      setOnboardingReplies((prev) => ({ ...prev, name: answer.message }));
+    const isName = answer.blockId === "f39pygb7ixqpiqj65coj0a6c";
+    const isCompany = answer.blockId === "kci15d0e13gxjvn2qqycy5qf";
+    const isCategories = answer.blockId === "u7afj5htbmpsmqrckulrxsge";
+    const isOtherCategory = answer.blockId === "itskd3iryo0zifb23wee8h2n";
+    const isReferral = answer.blockId === "zpkbure6ptz7tbhn3bj74box";
+    const isOtherReferral = answer.blockId === "vgbe54n1xwax8uoc4a43n0pl";
+    const isTerms = answer.blockId === "mgdnryz48pbpo8a8hisq3ux1";
+
+    if (isTerms) {
+      acceptTermsMutation.mutate();
+    }
+    if (isName) updateUser({ name: answer.message });
     if (isCategories) {
       const onboardingCategories = answer.message.split(", ");
-      setOnboardingReplies((prev) => ({
-        ...prev,
-        onboardingCategories,
-      }));
+      if (onboardingCategories.includes("Other"))
+        setPendingCategories(onboardingCategories.filter((c) => c !== "Other"));
+      else updateUser({ onboardingCategories });
     }
-    if (isOtherCategory)
-      setOnboardingReplies((prev) => ({
-        ...prev,
-        onboardingCategories: prev.onboardingCategories
-          ? [...prev.onboardingCategories, answer.message]
-          : [answer.message],
-      }));
+    if (isOtherCategory && pendingCategories) {
+      updateUser({
+        onboardingCategories: [...pendingCategories, answer.message],
+      });
+    }
     if (isCompany) {
-      setOnboardingReplies((prev) => ({ ...prev, company: answer.message }));
+      updateUser({ company: answer.message });
       if (confettiCanon.current) shootConfettis(confettiCanon.current);
     }
-    if (isReferral)
-      setOnboardingReplies((prev) => ({ ...prev, referral: answer.message }));
-    if (isOtherReferral)
-      setOnboardingReplies((prev) => ({ ...prev, referral: answer.message }));
-    setCurrentStep((prev) => prev + 1);
+    if (isReferral) {
+      if (answer.message === "Other") return;
+      updateUser({ referral: answer.message });
+    }
+    if (isOtherReferral) updateUser({ referral: answer.message });
   };
 
   const skipOnboarding = () => {
-    updateUser(onboardingReplies);
     replace({ pathname: "/typebots", query });
   };
 
-  const updateUserAndProceedToTypebotCreation = () => {
-    updateUser(onboardingReplies);
+  const redirectToDashboard = () => {
     setTimeout(() => {
       replace({
         pathname: "/typebots",
@@ -107,30 +93,39 @@ export const OnboardingPage = () => {
     }, 2000);
   };
 
-  if (!isNewUser) return null;
+  if (!env.NEXT_PUBLIC_ONBOARDING_TYPEBOT_ID) return null;
   return (
-    <VStack h="100vh" flexDir="column" justifyContent="center" spacing="10">
-      <Button
-        rightIcon={<ChevronLastIcon />}
-        pos="fixed"
-        top="5"
-        right="5"
-        variant="ghost"
-        size="sm"
-        onClick={skipOnboarding}
+    <VStack h="100vh" flexDir="column" justifyContent="center" spacing={0}>
+      <HStack
+        bgColor="white"
+        h="60px"
+        w="full"
+        justifyContent="flex-end"
+        px="10"
       >
-        {t("skip")}
-      </Button>
-      <Dots currentStep={currentStep} pos="fixed" top="9" />
-      <Flex w="full" maxW="800px" h="full" maxH="70vh" rounded="lg">
-        <Standard
-          typebot={env.NEXT_PUBLIC_ONBOARDING_TYPEBOT_ID}
-          style={{ borderRadius: "1rem" }}
-          prefilledVariables={{ Name: user?.name, Email: user?.email }}
-          onEnd={updateUserAndProceedToTypebotCreation}
-          onAnswer={setOnboardingAnswer}
-        />
+        <Button
+          rightIcon={<ChevronLastIcon />}
+          size="sm"
+          onClick={skipOnboarding}
+          isDisabled={!canSkipOnboarding}
+        >
+          {t("skip")}
+        </Button>
+      </HStack>
+
+      <Flex w="full" h="full" justifyContent="center" alignItems="center">
+        <Flex w="full" maxW="800px" rounded="lg" h="full" maxH="70vh">
+          <Standard
+            id="onboarding"
+            typebot={env.NEXT_PUBLIC_ONBOARDING_TYPEBOT_ID}
+            style={{ borderRadius: "1rem" }}
+            prefilledVariables={{ Name: user?.name, Email: user?.email }}
+            onEnd={redirectToDashboard}
+            onAnswer={setOnboardingAnswer}
+          />
+        </Flex>
       </Flex>
+
       <chakra.canvas
         ref={confettiCanvaContainer}
         pos="fixed"
@@ -142,27 +137,6 @@ export const OnboardingPage = () => {
         pointerEvents="none"
       />
     </VStack>
-  );
-};
-
-const Dots = ({
-  currentStep,
-  ...props
-}: { currentStep: number } & StackProps) => {
-  const highlightedBgColor = useColorModeValue("gray.500", "gray.100");
-  const baseBgColor = useColorModeValue("gray.200", "gray.700");
-  return (
-    <HStack spacing="10" {...props}>
-      {Array.from({ length: totalSteps }).map((_, index) => (
-        <chakra.div
-          key={index}
-          boxSize={"2"}
-          bgColor={currentStep === index + 1 ? highlightedBgColor : baseBgColor}
-          rounded="full"
-          transition="background-color 0.2s ease"
-        />
-      ))}
-    </HStack>
   );
 };
 

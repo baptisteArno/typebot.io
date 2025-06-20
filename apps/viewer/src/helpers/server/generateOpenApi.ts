@@ -1,5 +1,5 @@
 import { writeFileSync } from "fs";
-import { generateOpenApiDocument } from "@typebot.io/trpc-openapi/generator";
+import { generateOpenApiDocument } from "trpc-to-openapi";
 import { appRouter } from "./appRouter";
 
 const openApiDocument = generateOpenApiDocument(appRouter, {

@@ -22,13 +22,12 @@
           "options": {
             "variableId": "viwz31ebsd50rrmas15t8dl8c",
             "isExecutedOnClient": true,
-            "isCode": true,
-            "expressionToEvaluate": "location.href"
+            "expressionToEvaluate": "location.href",
+            "isCode": true
           }
         },
         {
           "id": "s8ZeBL9p5za77eBmdKECLYq",
-          "outgoingEdgeId": "clbovbaw600123b6o3i4ouzoq",
           "type": "text input",
           "options": {
             "labels": {
@@ -37,6 +36,11 @@
             },
             "isLong": false
           }
+        },
+        {
+          "id": "p69tpk4rivsjmjti56ufdh89",
+          "type": "Jump",
+          "options": { "groupId": "clbovb3vu00103b6o1pjjuagi" }
         }
       ]
     },
@@ -51,6 +55,14 @@
           "content": {
             "richText": [{ "type": "p", "children": [{ "text": "Cheers!" }] }]
           }
+        },
+        {
+          "id": "zqoitsp26zdwb7rzsdex30o4",
+          "type": "Typebot link",
+          "options": {
+            "typebotId": "cmb59sp8b00017f8m3ni5vsqm",
+            "mergeResults": true
+          }
         }
       ]
     }
@@ -60,11 +72,6 @@
       "id": "clbovazhy000s3b6ocjqtqedw",
       "from": { "eventId": "clbovazhy000q3b6o716dlfq8" },
       "to": { "groupId": "clbovazhy000r3b6onjzopbsn" }
-    },
-    {
-      "id": "clbovbaw600123b6o3i4ouzoq",
-      "from": { "blockId": "s8ZeBL9p5za77eBmdKECLYq" },
-      "to": { "groupId": "clbovb3vu00103b6o1pjjuagi" }
     }
   ],
   "variables": [
@@ -103,7 +110,7 @@
     }
   },
   "createdAt": "2022-12-15T09:17:00.598Z",
-  "updatedAt": "2025-04-17T15:33:35.444Z",
+  "updatedAt": "2025-05-26T15:58:09.557Z",
   "icon": null,
   "folderId": null,
   "publicId": "cl0ibhv8d0130n21aw8doxhj5-public",

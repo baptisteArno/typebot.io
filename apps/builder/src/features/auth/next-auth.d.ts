@@ -1,4 +1,4 @@
-import type { ClientUser } from "@typebot.io/schemas/features/user/schema";
+import type { ClientUser } from "@typebot.io/user/schemas";
 
 declare module "next-auth" {
   interface Session extends DefaultSession {

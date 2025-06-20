@@ -61,6 +61,7 @@ model User {
   credentials                 UserCredentials[]
   groupTitlesAutoGeneration   Json?
   preferredLanguage           String?
+  termsAcceptedAt             DateTime?
 }
 
 model ApiToken {
@@ -418,6 +419,7 @@ enum Plan {
   OFFERED
   CUSTOM
   UNLIMITED
+  ENTERPRISE
 }
 
 enum CollaborationType {

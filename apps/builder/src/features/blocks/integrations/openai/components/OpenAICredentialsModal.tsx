@@ -1,8 +1,8 @@
 import { TextLink } from "@/components/TextLink";
 import { TextInput } from "@/components/inputs/TextInput";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
+import { queryClient, trpc } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
-import { trpc } from "@/lib/trpc";
 import {
   Alert,
   AlertIcon,
@@ -16,6 +16,7 @@ import {
   ModalOverlay,
   Stack,
 } from "@chakra-ui/react";
+import { useMutation } from "@tanstack/react-query";
 import type { Credentials } from "@typebot.io/credentials/schemas";
 import type React from "react";
 import { useState } from "react";
@@ -39,25 +40,24 @@ export const OpenAICredentialsModal = ({
 
   const [isCreating, setIsCreating] = useState(false);
 
-  const {
-    credentials: {
-      listCredentials: { refetch: refetchCredentials },
-    },
-  } = trpc.useContext();
-  const { mutate } = trpc.credentials.createCredentials.useMutation({
-    onMutate: () => setIsCreating(true),
-    onSettled: () => setIsCreating(false),
-    onError: (err) => {
-      toast({
-        description: err.message,
-      });
-    },
-    onSuccess: (data) => {
-      refetchCredentials();
-      onNewCredentials(data.credentialsId);
-      onClose();
-    },
-  });
+  const { mutate } = useMutation(
+    trpc.credentials.createCredentials.mutationOptions({
+      onMutate: () => setIsCreating(true),
+      onSettled: () => setIsCreating(false),
+      onError: (err) => {
+        toast({
+          description: err.message,
+        });
+      },
+      onSuccess: (data) => {
+        queryClient.invalidateQueries({
+          queryKey: trpc.credentials.listCredentials.queryKey(),
+        });
+        onNewCredentials(data.credentialsId);
+        onClose();
+      },
+    }),
+  );
 
   const createOpenAICredentials = async (e: React.FormEvent) => {
     e.preventDefault();

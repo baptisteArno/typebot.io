@@ -1,7 +1,7 @@
 import type {
   ContinueChatResponse,
   StartChatResponse,
-} from "@typebot.io/bot-engine/schemas/api";
+} from "@typebot.io/chat-api/schemas";
 
 export type BotContext = {
   typebot: StartChatResponse["typebot"];
@@ -20,8 +20,16 @@ export type ClientSideActionContext = {
   resultId?: string;
 };
 
-export type ChatChunk = Pick<ContinueChatResponse, "messages" | "input"> & {
-  streamingMessageId?: string;
+export type ChatChunk = Pick<
+  ContinueChatResponse,
+  "messages" | "clientSideActions" | "dynamicTheme"
+> & {
+  version: "2";
+  input?: NonNullable<ContinueChatResponse["input"]> & {
+    answer?: InputSubmitContent;
+    isHidden?: boolean;
+  };
+  streamingMessage?: string | string[];
 };
 
 export type Attachment = {
@@ -43,6 +51,12 @@ export type RecordingInputSubmitContent = {
   blobUrl?: string;
 };
 
-export type InputSubmitContent =
+export type ClientSideResult = {
+  type: "clientSideResult";
+  result: string;
+};
+
+export type InputSubmitContent = { status?: "retry" } & (
   | TextInputSubmitContent
-  | RecordingInputSubmitContent;
+  | RecordingInputSubmitContent
+);

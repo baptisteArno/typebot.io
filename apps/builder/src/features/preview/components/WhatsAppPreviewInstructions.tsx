@@ -2,8 +2,8 @@ import { BuoyIcon, ExternalLinkIcon } from "@/components/icons";
 import { TextInput } from "@/components/inputs";
 import { useEditor } from "@/features/editor/providers/EditorProvider";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
+import { trpc } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
-import { trpc } from "@/lib/trpc";
 import {
   Alert,
   AlertIcon,
@@ -15,6 +15,7 @@ import {
   type StackProps,
   Text,
 } from "@chakra-ui/react";
+import { useMutation } from "@tanstack/react-query";
 import { isEmpty } from "@typebot.io/lib/utils";
 import { type FormEvent, useState } from "react";
 import {
@@ -32,24 +33,26 @@ export const WhatsAppPreviewInstructions = (props: StackProps) => {
   const [isMessageSent, setIsMessageSent] = useState(false);
   const [hasMessageBeenSent, setHasMessageBeenSent] = useState(false);
 
-  const { mutate } = trpc.whatsApp.startWhatsAppPreview.useMutation({
-    onMutate: () => setIsSendingMessage(true),
-    onSettled: () => setIsSendingMessage(false),
-    onError: (error) => {
-      if (error.data?.logError) return toast(error.data.logError);
-      toast({ description: error.message });
-    },
-    onSuccess: async (data) => {
-      if (
-        data?.message === "success" &&
-        phoneNumber !== getPhoneNumberFromLocalStorage()
-      )
-        setPhoneNumberInLocalStorage(phoneNumber);
-      setHasMessageBeenSent(true);
-      setIsMessageSent(true);
-      setTimeout(() => setIsMessageSent(false), 30000);
-    },
-  });
+  const { mutate } = useMutation(
+    trpc.whatsApp.startWhatsAppPreview.mutationOptions({
+      onMutate: () => setIsSendingMessage(true),
+      onSettled: () => setIsSendingMessage(false),
+      onError: (error) => {
+        if (error.data?.logError) return toast(error.data.logError);
+        toast({ description: error.message });
+      },
+      onSuccess: async (data) => {
+        if (
+          data?.message === "success" &&
+          phoneNumber !== getPhoneNumberFromLocalStorage()
+        )
+          setPhoneNumberInLocalStorage(phoneNumber);
+        setHasMessageBeenSent(true);
+        setIsMessageSent(true);
+        setTimeout(() => setIsMessageSent(false), 30000);
+      },
+    }),
+  );
 
   const sendWhatsAppPreviewStartMessage = async (e: FormEvent) => {
     e.preventDefault();

@@ -733,3 +733,27 @@ export const GalleryIcon = (props: IconProps) => (
     <path d="M22 3v18" />
   </Icon>
 );
+
+export const SendIcon = (props: IconProps) => (
+  <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
+    <path d="M3.714 3.048a.498.498 0 0 0-.683.627l2.843 7.627a2 2 0 0 1 0 1.396l-2.842 7.627a.498.498 0 0 0 .682.627l18-8.5a.5.5 0 0 0 0-.904z" />
+    <path d="M6 12h16" />
+  </Icon>
+);
+
+export const CircleXIcon = (props: IconProps) => (
+  <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
+    <circle cx="12" cy="12" r="10" />
+    <path d="m15 9-6 6" />
+    <path d="m9 9 6 6" />
+  </Icon>
+);
+
+export const MinimizeIcon = (props: IconProps) => (
+  <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
+    <path d="m14 10 7-7" />
+    <path d="M20 10h-6V4" />
+    <path d="m3 21 7-7" />
+    <path d="M4 14h6v6" />
+  </Icon>
+);

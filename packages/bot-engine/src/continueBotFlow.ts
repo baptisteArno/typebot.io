@@ -15,10 +15,17 @@ import type { InputBlock } from "@typebot.io/blocks-inputs/schema";
 import { IntegrationBlockType } from "@typebot.io/blocks-integrations/constants";
 import { LogicBlockType } from "@typebot.io/blocks-logic/constants";
 import type {
+  ContinueChatResponse,
+  InputMessage,
+  Message,
+} from "@typebot.io/chat-api/schemas";
+import type {
   SessionState,
   TypebotInSession,
 } from "@typebot.io/chat-session/schemas";
 import { env } from "@typebot.io/env";
+import { EventType } from "@typebot.io/events/constants";
+import type { InvalidReplyEvent, ReplyEvent } from "@typebot.io/events/schemas";
 import { forgedBlocks } from "@typebot.io/forge-repository/definitions";
 import type { ForgedBlock } from "@typebot.io/forge-repository/schemas";
 import { getBlockById } from "@typebot.io/groups/helpers/getBlockById";
@@ -27,7 +34,6 @@ import { parseAllowedFileTypesMetadata } from "@typebot.io/lib/extensionFromMime
 import { isURL } from "@typebot.io/lib/isURL";
 import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
 import { byId, isDefined } from "@typebot.io/lib/utils";
-import type { Prisma } from "@typebot.io/prisma/types";
 import type { AnswerInSessionState } from "@typebot.io/results/schemas/answers";
 import type { SessionStore } from "@typebot.io/runtime-session-store";
 import { defaultSystemMessages } from "@typebot.io/settings/constants";
@@ -48,15 +54,11 @@ import { parseTime } from "./blocks/inputs/time/parseTime";
 import { saveDataInResponseVariableMapping } from "./blocks/integrations/httpRequest/saveDataInResponseVariableMapping";
 import { resumeChatCompletion } from "./blocks/integrations/legacy/openai/resumeChatCompletion";
 import { executeCommandEvent } from "./events/executeCommandEvent";
+import { executeInvalidReplyEvent } from "./events/executeInvalidReplyEvent";
+import { executeReplyEvent } from "./events/executeReplyEvent";
 import { formatInputForChatResponse } from "./formatInputForChatResponse";
-import { isInputMessage } from "./helpers/isInputMessage";
 import { saveAnswer } from "./queries/saveAnswer";
 import { resetSessionState } from "./resetSessionState";
-import type {
-  ContinueChatResponse,
-  InputMessage,
-  Message,
-} from "./schemas/api";
 import { startBotFlow } from "./startBotFlow";
 import type {
   ContinueBotFlowResponse,
@@ -72,10 +74,18 @@ type Params = {
   state: SessionState;
   textBubbleContentFormat: "richText" | "markdown";
   sessionStore: SessionStore;
+  skipReplyEvent?: boolean;
 };
+
 export const continueBotFlow = async (
   reply: Message | undefined,
-  { state, version, textBubbleContentFormat, sessionStore }: Params,
+  {
+    state,
+    version,
+    textBubbleContentFormat,
+    sessionStore,
+    skipReplyEvent,
+  }: Params,
 ): Promise<ContinueBotFlowResponse> => {
   if (!state.currentBlockId)
     return startBotFlow({
@@ -87,9 +97,10 @@ export const continueBotFlow = async (
     });
 
   let newSessionState = state;
+  const setVariableHistory: SetVariableHistoryItem[] = [];
 
   if (reply?.type === "command") {
-    newSessionState = await executeCommandEvent({
+    newSessionState = executeCommandEvent({
       state,
       command: reply.command,
     });
@@ -120,7 +131,8 @@ export const continueBotFlow = async (
   });
 
   newSessionState = nonInputProcessResult.newSessionState;
-  const { setVariableHistory, firstBubbleWasStreamed } = nonInputProcessResult;
+  setVariableHistory.push(...nonInputProcessResult.setVariableHistory);
+  const { firstBubbleWasStreamed } = nonInputProcessResult;
 
   let continueReply: SuccessReply | SkipReply | undefined;
 
@@ -135,7 +147,48 @@ export const continueBotFlow = async (
     if (parsedReplyResult.newSetVariableHistory)
       setVariableHistory.push(...parsedReplyResult.newSetVariableHistory);
 
-    if (parsedReplyResult.status === "fail")
+    const invalidReplyEvent =
+      parsedReplyResult.status === "fail"
+        ? findInvalidReplyEvent(newSessionState)
+        : undefined;
+
+    if (!skipReplyEvent && !invalidReplyEvent) {
+      const replyEvent = findReplyEvent(newSessionState);
+      if (replyEvent) {
+        const { updatedState, newSetVariableHistory } = executeReplyEvent(
+          replyEvent,
+          {
+            state: newSessionState,
+            reply,
+          },
+        );
+        newSessionState = updatedState;
+        setVariableHistory.push(...newSetVariableHistory);
+        return continueBotFlow(undefined, {
+          state: newSessionState,
+          version,
+          textBubbleContentFormat,
+          sessionStore,
+        });
+      }
+    }
+
+    if (parsedReplyResult.status === "fail") {
+      if (invalidReplyEvent) {
+        const { updatedState, newSetVariableHistory } =
+          executeInvalidReplyEvent(invalidReplyEvent, {
+            state: newSessionState,
+            reply,
+          });
+        newSessionState = updatedState;
+        setVariableHistory.push(...newSetVariableHistory);
+        return continueBotFlow(undefined, {
+          state: newSessionState,
+          version,
+          textBubbleContentFormat,
+          sessionStore,
+        });
+      }
       return {
         ...(await parseRetryMessage(block, {
           textBubbleContentFormat,
@@ -146,6 +199,7 @@ export const continueBotFlow = async (
         visitedEdges: [],
         setVariableHistory: [],
       };
+    }
 
     const formattedReply =
       "content" in parsedReplyResult && reply?.type === "text"
@@ -204,6 +258,7 @@ export const continueBotFlow = async (
           type: "nextEdge" as const,
           nextEdge,
         };
+
   const executionResponse = await walkFlowForward(walkStartingPoint, {
     version,
     state: newSessionState,
@@ -212,6 +267,48 @@ export const continueBotFlow = async (
     textBubbleContentFormat,
     sessionStore,
   });
+
+  // Is resuming from a reply event flow
+  if (
+    executionResponse.input &&
+    executionResponse.newSessionState.returnMark?.status === "called" &&
+    executionResponse.newSessionState.returnMark?.autoResumeMessage &&
+    executionResponse.newSessionState.returnMark.blockId ===
+      executionResponse.input.id
+  ) {
+    const resumeContinueFlowResponse = await continueBotFlow(
+      executionResponse.newSessionState.returnMark.autoResumeMessage,
+      {
+        state: {
+          ...executionResponse.newSessionState,
+          returnMark: undefined,
+        },
+        version,
+        textBubbleContentFormat,
+        sessionStore,
+        skipReplyEvent: true,
+      },
+    );
+
+    return {
+      ...resumeContinueFlowResponse,
+      messages: executionResponse.messages.concat(
+        resumeContinueFlowResponse.messages,
+      ),
+      clientSideActions: executionResponse.clientSideActions.concat(
+        resumeContinueFlowResponse.clientSideActions ?? [],
+      ),
+      logs: executionResponse.logs.concat(
+        resumeContinueFlowResponse.logs ?? [],
+      ),
+      setVariableHistory: executionResponse.setVariableHistory.concat(
+        resumeContinueFlowResponse.setVariableHistory ?? [],
+      ),
+      visitedEdges: executionResponse.visitedEdges.concat(
+        resumeContinueFlowResponse.visitedEdges ?? [],
+      ),
+    };
+  }
 
   return {
     messages: executionResponse.messages,
@@ -283,11 +380,16 @@ const processNonInputBlock = async ({
     try {
       response = JSON.parse(reply.text);
     } catch (err) {
-      throw new TRPCError({
-        code: "BAD_REQUEST",
-        message: "Provided response is not valid JSON",
-        cause: (await parseUnknownError({ err })).description,
-      });
+      if (block.type === IntegrationBlockType.HTTP_REQUEST)
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Provided response is not valid JSON",
+          cause: (await parseUnknownError({ err })).description,
+        });
+      response = {
+        statusCode: 200,
+        data: reply.text,
+      };
     }
     const result = saveDataInResponseVariableMapping({
       state,
@@ -785,7 +887,8 @@ const parseReply = async (
             const extension = url.split(".").pop();
             if (!extension) return false;
             return allowedFileTypesMetadata.some(
-              (metadata) => metadata.extension === extension,
+              (metadata) =>
+                metadata.extension.toLowerCase() === extension.toLowerCase(),
             );
           })
         : true;
@@ -839,3 +942,21 @@ export const safeJsonParse = (value: string): unknown => {
     return value;
   }
 };
+
+const findReplyEvent = (
+  state: SessionState,
+): (ReplyEvent & { outgoingEdgeId: string }) | undefined =>
+  state.typebotsQueue[0].typebot.events?.find(
+    (e) => e.type === EventType.REPLY && e.outgoingEdgeId,
+  ) as (ReplyEvent & { outgoingEdgeId: string }) | undefined;
+
+const findInvalidReplyEvent = (
+  state: SessionState,
+): InvalidReplyEvent | undefined =>
+  state.typebotsQueue[0].typebot.events?.find(
+    (e) => e.type === EventType.INVALID_REPLY,
+  );
+
+const isInputMessage = (
+  message: Message | undefined,
+): message is InputMessage => message?.type !== "command";

@@ -11,8 +11,8 @@ import { isFreePlan } from "@/features/billing/helpers/isFreePlan";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { useTimeSince } from "@/hooks/useTimeSince";
+import { queryClient, trpc } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
-import { trpc } from "@/lib/trpc";
 import {
   Button,
   type ButtonProps,
@@ -27,11 +27,13 @@ import {
   Tooltip,
   useDisclosure,
 } from "@chakra-ui/react";
+import { useMutation } from "@tanstack/react-query";
 import { T, useTranslate } from "@tolgee/react";
 import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
 import { isNotDefined } from "@typebot.io/lib/utils";
 import { useRouter } from "next/router";
 import { parseDefaultPublicId } from "../helpers/parseDefaultPublicId";
+
 type Props = ButtonProps & {
   isMoreMenuDisabled?: boolean;
 };
@@ -63,42 +65,46 @@ export const PublishButton = ({
     publishedTypebot?.updatedAt.toString(),
   );
 
-  const {
-    typebot: { getPublishedTypebot },
-  } = trpc.useUtils();
+  const { mutate: publishTypebotMutate, status: publishTypebotStatus } =
+    useMutation(
+      trpc.typebot.publishTypebot.mutationOptions({
+        onError: (error) => {
+          toast({
+            context: t("publish.error.label"),
+            description: error.message,
+          });
+          if (error.data?.httpStatus === 403) {
+            setTimeout(() => {
+              window.location.reload();
+            }, 3000);
+          }
+        },
+        onSuccess: () => {
+          if (!typebot?.id || currentUserMode === "guest") return;
+          queryClient.invalidateQueries({
+            queryKey: trpc.typebot.getPublishedTypebot.queryKey(),
+          });
+          if (!publishedTypebot && !pathname.endsWith("share"))
+            push(`/typebots/${query.typebotId}/share`);
+        },
+      }),
+    );
 
-  const { mutate: publishTypebotMutate, isLoading: isPublishing } =
-    trpc.typebot.publishTypebot.useMutation({
-      onError: (error) => {
-        toast({
-          context: t("publish.error.label"),
-          description: error.message,
-        });
-        if (error.data?.httpStatus === 403) {
-          setTimeout(() => {
-            window.location.reload();
-          }, 3000);
-        }
-      },
-      onSuccess: () => {
-        if (!typebot?.id || currentUserMode === "guest") return;
-        getPublishedTypebot.invalidate();
-        if (!publishedTypebot && !pathname.endsWith("share"))
-          push(`/typebots/${query.typebotId}/share`);
-      },
-    });
-
-  const { mutate: unpublishTypebotMutate, isLoading: isUnpublishing } =
-    trpc.typebot.unpublishTypebot.useMutation({
-      onError: (error) =>
-        toast({
-          context: t("editor.header.unpublishTypebot.error.label"),
-          description: error.message,
-        }),
-      onSuccess: () => {
-        getPublishedTypebot.invalidate();
-      },
-    });
+  const { mutate: unpublishTypebotMutate, status: unpublishTypebotStatus } =
+    useMutation(
+      trpc.typebot.unpublishTypebot.mutationOptions({
+        onError: (error) =>
+          toast({
+            context: t("editor.header.unpublishTypebot.error.label"),
+            description: error.message,
+          }),
+        onSuccess: () => {
+          queryClient.invalidateQueries({
+            queryKey: trpc.typebot.getPublishedTypebot.queryKey(),
+          });
+        },
+      }),
+    );
 
   const hasInputFile = typebot?.groups
     .flatMap((g) => g.blocks)
@@ -196,7 +202,10 @@ export const PublishButton = ({
       >
         <Button
           colorScheme="orange"
-          isLoading={isPublishing || isUnpublishing}
+          isLoading={
+            publishTypebotStatus === "pending" ||
+            unpublishTypebotStatus === "pending"
+          }
           isDisabled={isPublished || isSavingLoading}
           onClick={() => {
             publishedTypebot && publishedTypebotVersion !== typebot?.version
@@ -225,7 +234,7 @@ export const PublishButton = ({
             icon={<ChevronLeftIcon transform="rotate(-90deg)" />}
             aria-label={t("publishButton.dropdown.showMenu.label")}
             size="sm"
-            isDisabled={isPublishing || isSavingLoading}
+            isDisabled={publishTypebotStatus === "pending" || isSavingLoading}
           />
           <MenuList>
             {!isPublished && (

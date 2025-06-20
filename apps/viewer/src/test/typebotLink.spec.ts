@@ -2,58 +2,58 @@ import { getTestAsset } from "@/test/utils/playwright";
 import test, { expect } from "@playwright/test";
 import { env } from "@typebot.io/env";
 import { importTypebotInDatabase } from "@typebot.io/playwright/databaseActions";
+import type { Prisma } from "@typebot.io/prisma/types";
 
-const typebotId = "cl0ibhi7s0018n21aarlmg0cm";
-const typebotWithMergeDisabledId = "cl0ibhi7s0018n21aarlag0cm";
-const linkedTypebotId = "cl0ibhv8d0130n21aw8doxhj5";
+let publicTypebot1: Prisma.PublicTypebot;
+let publicTypebot2: Prisma.PublicTypebot;
+let publicTypebot1MergeDisabled: Prisma.PublicTypebot;
 
 test.beforeAll(async () => {
   try {
-    await importTypebotInDatabase(
+    publicTypebot1 = await importTypebotInDatabase(
       getTestAsset("typebots/linkTypebots/1.json"),
-      { id: typebotId, publicId: `${typebotId}-public` },
     );
-    await importTypebotInDatabase(
+    publicTypebot1MergeDisabled = await importTypebotInDatabase(
       getTestAsset("typebots/linkTypebots/1-merge-disabled.json"),
-      {
-        id: typebotWithMergeDisabledId,
-        publicId: `${typebotWithMergeDisabledId}-public`,
-      },
     );
-    await importTypebotInDatabase(
+    publicTypebot2 = await importTypebotInDatabase(
       getTestAsset("typebots/linkTypebots/2.json"),
-      { id: linkedTypebotId, publicId: `${linkedTypebotId}-public` },
     );
+    await importTypebotInDatabase(getTestAsset("typebots/linkTypebots/3.json"));
   } catch (err) {
     console.error(err);
   }
 });
 
 test("should work as expected", async ({ page }) => {
-  await page.goto(`/${typebotId}-public`);
+  await page.goto(`/${publicTypebot1.id}`);
   await page.getByPlaceholder("Type your answer...").fill("Start");
   await page.getByPlaceholder("Type your answer...").press("Enter");
   await expect(page.getByText("First test message")).toBeVisible();
   await page.getByPlaceholder("Type your answer...").fill("Hello there!");
   await page.getByPlaceholder("Type your answer...").press("Enter");
   await expect(page.getByText("Cheers!")).toBeVisible();
-  await page.goto(`${env.NEXTAUTH_URL}/typebots/${typebotId}/results`);
+  await expect(page.getByText("end 3")).toBeVisible();
+  await expect(page.getByText("End", { exact: true })).toBeVisible();
+  await page.goto(
+    `${env.NEXTAUTH_URL}/typebots/${publicTypebot1.typebotId}/results`,
+  );
   await expect(page.locator("text=Hello there!")).toBeVisible();
 });
 
 test.describe("Merge disabled", () => {
   test("should work as expected", async ({ page }) => {
-    await page.goto(`/${typebotWithMergeDisabledId}-public`);
+    await page.goto(`/${publicTypebot1MergeDisabled.id}`);
     await page.getByPlaceholder("Type your answer...").fill("Hello there!");
     await page.getByPlaceholder("Type your answer...").press("Enter");
     await expect(page.getByText("Cheers!")).toBeVisible();
     await page.goto(
-      `${process.env.NEXTAUTH_URL}/typebots/${typebotWithMergeDisabledId}/results`,
+      `${process.env.NEXTAUTH_URL}/typebots/${publicTypebot1MergeDisabled.typebotId}/results`,
     );
     await expect(page.locator("text=Submitted at")).toBeVisible();
     await expect(page.locator("text=Hello there!")).toBeHidden();
     await page.goto(
-      `${process.env.NEXTAUTH_URL}/typebots/${linkedTypebotId}/results`,
+      `${env.NEXTAUTH_URL}/typebots/${publicTypebot2.typebotId}/results`,
     );
     await expect(page.locator("text=Hello there!")).toBeVisible();
   });

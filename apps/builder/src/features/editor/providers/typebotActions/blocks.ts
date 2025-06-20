@@ -5,9 +5,11 @@ import type {
   Block,
   BlockIndices,
   BlockV6,
+  BlockWithItems,
 } from "@typebot.io/blocks-core/schemas/schema";
 import type { HttpRequest } from "@typebot.io/blocks-integrations/httpRequest/schema";
 import { byId } from "@typebot.io/lib/utils";
+import type { Edge } from "@typebot.io/typebot/schemas/edge";
 import type { Typebot, TypebotV6 } from "@typebot.io/typebot/schemas/typebot";
 import { type Draft, produce } from "immer";
 import type { SetTypebot } from "../TypebotProvider";
@@ -65,10 +67,20 @@ export const blocksAction = (setTypebot: SetTypebot): BlocksActions => ({
       produce(typebot, (typebot) => {
         const block = { ...typebot.groups[groupIndex].blocks[blockIndex] };
         const blocks = typebot.groups[groupIndex].blocks;
+        const { newBlock, newEdges } = duplicateBlockDraft(block, {
+          edges: typebot.edges,
+        });
         if (blockIndex === blocks.length - 1 && block.outgoingEdgeId)
-          deleteEdgeDraft({ typebot, edgeId: block.outgoingEdgeId });
-        const newBlock = duplicateBlockDraft(block);
+          deleteEdgeDraft({
+            typebot,
+            edgeId: block.outgoingEdgeId,
+          });
         typebot.groups[groupIndex].blocks.splice(blockIndex + 1, 0, newBlock);
+        if (newEdges) {
+          newEdges.forEach((edge) => {
+            typebot.edges.push(edge);
+          });
+        }
       }),
     ),
   detachBlockFromGroup: (indices: BlockIndices) =>
@@ -132,7 +144,11 @@ const moveBlockToGroup = (
   const newBlock = { ...block };
   if (block.outgoingEdgeId) {
     if (typebot.groups[groupIndex].blocks.length > blockIndex) {
-      deleteEdgeDraft({ typebot, edgeId: block.outgoingEdgeId, groupIndex });
+      deleteEdgeDraft({
+        typebot,
+        edgeId: block.outgoingEdgeId,
+        groupIndex,
+      });
       newBlock.outgoingEdgeId = undefined;
     } else {
       const edgeIndex = typebot.edges.findIndex(byId(block.outgoingEdgeId));
@@ -148,19 +164,55 @@ const moveBlockToGroup = (
   typebot.groups[groupIndex].blocks.splice(blockIndex ?? 0, 0, newBlock);
 };
 
-export const duplicateBlockDraft = (block: BlockV6): BlockV6 => {
-  const blockId = createId();
-  if (blockHasItems(block))
+export const duplicateBlockDraft = (
+  block: Draft<BlockV6>,
+  { edges }: { edges: Edge[] },
+): { newBlock: BlockV6; newEdges?: Edge[] } => {
+  const associatedEdge = block.outgoingEdgeId
+    ? edges.find((edge) => edge.id === block.outgoingEdgeId)
+    : undefined;
+  const newBlockId = createId();
+  const newDefaultOutgoingEdge = associatedEdge
+    ? {
+        ...associatedEdge,
+        id: createId(),
+        from: {
+          blockId: newBlockId,
+        },
+      }
+    : undefined;
+  const newEdges: Edge[] = newDefaultOutgoingEdge
+    ? [newDefaultOutgoingEdge]
+    : [];
+
+  if (blockHasItems(block)) {
+    const newItems = block.items?.map((item) =>
+      duplicateItemDraft(item, {
+        blockType: block.type,
+        blockId: newBlockId,
+        edges,
+      }),
+    );
+    newItems?.forEach((item) => {
+      if (item.newEdges) newEdges.push(...item.newEdges);
+    });
     return {
-      ...block,
-      id: blockId,
-      items: block.items?.map(duplicateItemDraft(blockId)),
-      outgoingEdgeId: undefined,
-    } as BlockV6;
+      newBlock: {
+        ...block,
+        id: newBlockId,
+        items: newItems.map((item) => item.newItem),
+        outgoingEdgeId: newDefaultOutgoingEdge?.id,
+      } as BlockWithItems,
+      newEdges,
+    };
+  }
   return {
-    ...block,
-    id: blockId,
-    outgoingEdgeId: undefined,
+    newBlock: {
+      ...block,
+      id: newBlockId,
+      outgoingEdgeId: newDefaultOutgoingEdge?.id,
+    },
+    newEdges,
   };
 };
 

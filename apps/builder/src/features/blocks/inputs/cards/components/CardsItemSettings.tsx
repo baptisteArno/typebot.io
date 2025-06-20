@@ -65,7 +65,7 @@ export const CardsItemSettings = ({ options, onSettingsChange }: Props) => {
         moreInfoTooltip={t(
           "blocks.inputs.button.buttonSettings.internalValue.helperText",
         )}
-        defaultValue={options?.internalValue}
+        defaultValue={options?.internalValue ?? undefined}
         onChange={updateButtonValue}
       />
     </Stack>

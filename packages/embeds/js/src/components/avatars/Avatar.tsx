@@ -1,4 +1,3 @@
-import { isMobile } from "@/utils/isMobileSignal";
 import { isNotEmpty, isSvgSrc } from "@typebot.io/lib/utils";
 import { colors } from "@typebot.io/ui/colors";
 import { Match, Show, Switch } from "solid-js";
@@ -30,20 +29,12 @@ export const Avatar = (props: {
           <img
             src={props.src}
             alt="Bot avatar"
-            class={
-              "flex justify-center items-center relative animate-fade-in flex-shrink-0 " +
-              (isMobile() ? "w-6 h-6 text-sm" : "w-10 h-10 text-xl")
-            }
+            class="flex justify-center items-center relative animate-fade-in flex-shrink-0 w-6 h-6 text-sm @xs:w-10 @xs:h-10 @xs:text-xl"
             elementtiming={"Bot avatar"}
           />
         </Match>
         <Match when={true}>
-          <figure
-            class={
-              "flex justify-center items-center rounded-full text-white relative animate-fade-in flex-shrink-0 " +
-              (isMobile() ? "w-6 h-6 text-sm" : "w-10 h-10 text-xl")
-            }
-          >
+          <figure class="flex justify-center items-center rounded-full text-white relative animate-fade-in flex-shrink-0 w-6 h-6 text-sm @xs:w-10 @xs:h-10 @xs:text-xl">
             <img
               src={props.src}
               alt="Bot avatar"

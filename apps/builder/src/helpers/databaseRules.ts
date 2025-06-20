@@ -7,7 +7,7 @@ import {
   WorkspaceRole,
 } from "@typebot.io/prisma/enum";
 import type { Prisma } from "@typebot.io/prisma/types";
-import type { User } from "@typebot.io/schemas/features/user/schema";
+import type { User } from "@typebot.io/user/schemas";
 import type { NextApiResponse } from "next";
 
 export const canWriteTypebots = (

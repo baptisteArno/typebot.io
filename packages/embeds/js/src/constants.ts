@@ -35,6 +35,7 @@ export const defaultPopupProps: PopupProps = {
 
 export const defaultBubbleProps: BubbleProps = {
   ...defaultBotProps,
+  isOpen: undefined,
   onClose: undefined,
   onOpen: undefined,
   theme: undefined,
@@ -44,3 +45,12 @@ export const defaultBubbleProps: BubbleProps = {
   autoShowDelay: undefined,
   inlineStyle: undefined,
 };
+
+export const chatContainerBreakpoints = {
+  xs: 440,
+  sm: 640,
+  md: 768,
+  lg: 1024,
+  xl: 1280,
+} as const;
+export type ChatContainerSize = keyof typeof chatContainerBreakpoints;

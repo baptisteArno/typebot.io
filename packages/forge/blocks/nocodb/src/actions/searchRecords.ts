@@ -126,13 +126,12 @@ export const searchRecords = createAction({
           ]);
         });
       } catch (error) {
-        if (error instanceof HTTPError)
-          return logs.add(
-            await parseUnknownError({
-              err: error,
-              context: "While searching NocoDB records",
-            }),
-          );
+        logs.add(
+          await parseUnknownError({
+            err: error,
+            context: "While searching NocoDB records",
+          }),
+        );
       }
     },
   },

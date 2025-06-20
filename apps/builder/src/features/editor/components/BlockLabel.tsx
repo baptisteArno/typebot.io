@@ -80,6 +80,7 @@ export const getLogicBlockLabel = (
   [LogicBlockType.JUMP]: t("editor.sidebarBlock.jump.label"),
   [LogicBlockType.AB_TEST]: t("editor.sidebarBlock.abTest.label"),
   [LogicBlockType.WEBHOOK]: "Webhook",
+  [LogicBlockType.RETURN]: "Return",
 });
 
 export const getIntegrationBlockLabel = (

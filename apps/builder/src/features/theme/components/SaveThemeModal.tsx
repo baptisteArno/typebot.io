@@ -1,6 +1,6 @@
 import { TextInput } from "@/components/inputs";
+import { queryClient, trpc } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
-import { trpc } from "@/lib/trpc";
 import {
   Button,
   HStack,
@@ -13,6 +13,7 @@ import {
   ModalOverlay,
 } from "@chakra-ui/react";
 import { createId } from "@paralleldrive/cuid2";
+import { useMutation } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
 import type { ThemeTemplate } from "@typebot.io/theme/schemas";
 import { type FormEvent, useRef, useState } from "react";
@@ -35,24 +36,23 @@ export const SaveThemeModal = ({
   const { t } = useTranslate();
   const [isSaving, setIsSaving] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
-  const {
-    theme: {
-      listThemeTemplates: { refetch: refetchThemeTemplates },
-    },
-  } = trpc.useContext();
-  const { mutate } = trpc.theme.saveThemeTemplate.useMutation({
-    onMutate: () => setIsSaving(true),
-    onSettled: () => setIsSaving(false),
-    onSuccess: ({ themeTemplate }) => {
-      refetchThemeTemplates();
-      onClose(themeTemplate);
-    },
-    onError: (error) => {
-      toast({
-        description: error.message,
-      });
-    },
-  });
+  const { mutate } = useMutation(
+    trpc.theme.saveThemeTemplate.mutationOptions({
+      onMutate: () => setIsSaving(true),
+      onSettled: () => setIsSaving(false),
+      onSuccess: ({ themeTemplate }) => {
+        queryClient.invalidateQueries({
+          queryKey: trpc.theme.listThemeTemplates.queryKey(),
+        });
+        onClose(themeTemplate);
+      },
+      onError: (error) => {
+        toast({
+          description: error.message,
+        });
+      },
+    }),
+  );
 
   const updateExistingTemplate = (e: FormEvent) => {
     e.preventDefault();

@@ -1,8 +1,8 @@
 import { createContext } from "@/helpers/server/context";
 import { publicRouter } from "@/helpers/server/routers/publicRouter";
-import { createOpenApiNextHandler } from "@typebot.io/trpc-openapi/adapters";
 import type { NextApiRequest, NextApiResponse } from "next";
 import cors from "nextjs-cors";
+import { createOpenApiNextHandler } from "trpc-to-openapi";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   await cors(req, res, {

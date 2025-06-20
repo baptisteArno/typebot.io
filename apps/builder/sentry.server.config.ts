@@ -14,7 +14,6 @@ const crawlersToIgnore = ["Googlebot"];
 Sentry.init({
   dsn: process.env.SENTRY_DSN,
   environment: process.env.NODE_ENV,
-  tracesSampleRate: 1,
   beforeSend: (event, hint) => {
     const exception = hint.originalException;
     const userAgent = event.contexts?.browser?.name;

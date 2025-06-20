@@ -1,4 +1,4 @@
-import { trpc } from "@/lib/trpc";
+import { trpc } from "@/lib/queryClient";
 import {
   Alert,
   AlertIcon,
@@ -7,6 +7,7 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
+import { useQuery } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
 import { Plan } from "@typebot.io/prisma/enum";
 import type { Workspace } from "@typebot.io/workspaces/schemas";
@@ -21,9 +22,11 @@ type Props = {
 export const CurrentSubscriptionSummary = ({ workspace }: Props) => {
   const { t } = useTranslate();
 
-  const { data } = trpc.billing.getSubscription.useQuery({
-    workspaceId: workspace.id,
-  });
+  const { data } = useQuery(
+    trpc.billing.getSubscription.queryOptions({
+      workspaceId: workspace.id,
+    }),
+  );
 
   const isSubscribed =
     (workspace.plan === Plan.STARTER || workspace.plan === Plan.PRO) &&

@@ -2,7 +2,8 @@ import { getUserModeInWorkspace } from "@/features/workspace/helpers/getUserRole
 import { authenticatedProcedure } from "@/helpers/server/trpc";
 import { createId } from "@paralleldrive/cuid2";
 import { TRPCError } from "@trpc/server";
-import { duplicateTypebotS3Objects } from "@typebot.io/lib/s3/duplicateTypebotS3Objects";
+import { copyObjects } from "@typebot.io/lib/s3/copyObjects";
+import { replaceTypebotUploadUrlsWithNewIds } from "@typebot.io/lib/s3/replaceTypebotUploadUrlsWithNewIds";
 import prisma from "@typebot.io/prisma";
 import { Plan } from "@typebot.io/prisma/enum";
 import { trackEvents } from "@typebot.io/telemetry/trackEvents";
@@ -133,13 +134,15 @@ export const importTypebot = authenticatedProcedure
 
       const newBotId = createId();
 
-      let duplicatingBot = await duplicateTypebotS3Objects({
+      const newUploadUrlsResponse = await replaceTypebotUploadUrlsWithNewIds({
         typebot,
         newTypebotId: newBotId,
         newWorkspaceId: workspaceId,
       });
 
-      duplicatingBot = await migrateImportingTypebot(duplicatingBot);
+      const duplicatingBot = await migrateImportingTypebot(
+        newUploadUrlsResponse.typebot,
+      );
 
       const groups = (
         duplicatingBot.groups
@@ -188,6 +191,8 @@ export const importTypebot = authenticatedProcedure
       });
 
       const parsedNewTypebot = typebotV6Schema.parse(newTypebot);
+
+      await copyObjects(newUploadUrlsResponse.filesToCopy);
 
       await trackEvents([
         {

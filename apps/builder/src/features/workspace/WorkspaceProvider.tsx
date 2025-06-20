@@ -1,5 +1,7 @@
+import { queryClient, trpc } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
-import { trpc } from "@/lib/trpc";
+import { useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { byId } from "@typebot.io/lib/utils";
 import type { Workspace } from "@typebot.io/workspaces/schemas";
 import { useRouter } from "next/router";
@@ -60,47 +62,61 @@ export const WorkspaceProvider = ({
 
   const { typebot } = useTypebot();
 
-  const trpcContext = trpc.useContext();
-
-  const { data: workspacesData } = trpc.workspace.listWorkspaces.useQuery(
-    undefined,
-    {
+  const { data: workspacesData } = useQuery(
+    trpc.workspace.listWorkspaces.queryOptions(undefined, {
       enabled: !!user,
-    },
+    }),
   );
   const workspaces = useMemo(
     () => workspacesData?.workspaces ?? [],
     [workspacesData?.workspaces],
   );
 
-  const { data: workspaceData } = trpc.workspace.getWorkspace.useQuery(
-    { workspaceId: workspaceId as string },
-    { enabled: !!workspaceId },
+  const { data: workspaceData } = useQuery(
+    trpc.workspace.getWorkspace.queryOptions(
+      { workspaceId: workspaceId as string },
+      { enabled: !!workspaceId },
+    ),
   );
 
   const workspace = workspaceData?.workspace;
 
-  const createWorkspaceMutation = trpc.workspace.createWorkspace.useMutation({
-    onError: (error) => toast({ description: error.message }),
-    onSuccess: async () => {
-      trpcContext.workspace.listWorkspaces.invalidate();
-    },
-  });
+  const createWorkspaceMutation = useMutation(
+    trpc.workspace.createWorkspace.mutationOptions({
+      onError: (error) => toast({ description: error.message }),
+      onSuccess: async () => {
+        queryClient.invalidateQueries({
+          queryKey: trpc.workspace.listWorkspaces.queryKey(),
+        });
+      },
+    }),
+  );
 
-  const updateWorkspaceMutation = trpc.workspace.updateWorkspace.useMutation({
-    onError: (error) => toast({ description: error.message }),
-    onSuccess: async () => {
-      trpcContext.workspace.getWorkspace.invalidate();
-    },
-  });
+  const updateWorkspaceMutation = useMutation(
+    trpc.workspace.updateWorkspace.mutationOptions({
+      onError: (error) => toast({ description: error.message }),
+      onSuccess: async () => {
+        if (!workspaceId) return;
+        queryClient.invalidateQueries({
+          queryKey: trpc.workspace.getWorkspace.queryKey({
+            workspaceId,
+          }),
+        });
+      },
+    }),
+  );
 
-  const deleteWorkspaceMutation = trpc.workspace.deleteWorkspace.useMutation({
-    onError: (error) => toast({ description: error.message }),
-    onSuccess: async () => {
-      trpcContext.workspace.listWorkspaces.invalidate();
-      setWorkspaceId(undefined);
-    },
-  });
+  const deleteWorkspaceMutation = useMutation(
+    trpc.workspace.deleteWorkspace.mutationOptions({
+      onError: (error) => toast({ description: error.message }),
+      onSuccess: async () => {
+        queryClient.invalidateQueries({
+          queryKey: trpc.workspace.listWorkspaces.queryKey(),
+        });
+        setWorkspaceId(undefined);
+      },
+    }),
+  );
 
   useEffect(() => {
     if (
@@ -108,10 +124,18 @@ export const WorkspaceProvider = ({
       !isRouterReady ||
       !workspaces ||
       workspaces.length === 0 ||
-      workspaceId ||
       (typebotId && !typebot?.workspaceId)
     )
       return;
+    if (workspaceId) {
+      const currentWorkspace = workspaces.find(byId(workspaceId));
+      // Workspace was just deleted
+      if (!currentWorkspace) {
+        setWorkspaceIdInLocalStorage(workspaces[0].id);
+        setWorkspaceId(workspaces[0].id);
+      }
+      return;
+    }
     const lastWorspaceId =
       typebot?.workspaceId ??
       query.workspaceId?.toString() ??

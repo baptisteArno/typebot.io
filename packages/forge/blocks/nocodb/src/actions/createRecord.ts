@@ -1,8 +1,9 @@
 import { createAction, option } from "@typebot.io/forge";
 import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
-import ky, { HTTPError } from "ky";
+import ky from "ky";
 import { auth } from "../auth";
 import { defaultBaseUrl } from "../constants";
+import { linkRelationUpdatesIfAny } from "../helpers/linkRelationUpdatesIfAny";
 import { parseRecordsCreateBody } from "../helpers/parseRecordCreateBody";
 
 export const createRecord = createAction({
@@ -39,24 +40,34 @@ export const createRecord = createAction({
     }) => {
       try {
         if (!fields || fields.length === 0) return;
-        await ky.post(
-          `${baseUrl ?? defaultBaseUrl}/api/v2/tables/${tableId}/records`,
-          {
-            headers: {
-              "xc-token": apiKey,
+        if (!apiKey) return logs.add("API key is required");
+        if (!tableId) return logs.add("Table ID is required");
+
+        const response = await ky
+          .post(
+            `${baseUrl ?? defaultBaseUrl}/api/v2/tables/${tableId}/records`,
+            {
+              headers: {
+                "xc-token": apiKey,
+              },
+              json: parseRecordsCreateBody(fields),
             },
-            json: parseRecordsCreateBody(fields),
-          },
-        );
+          )
+          .json<{ Id: number }>();
+        await linkRelationUpdatesIfAny({
+          baseUrl,
+          apiKey,
+          tableId,
+          updates: fields,
+          recordIdsToUpdate: [response.Id],
+        });
       } catch (error) {
-        if (error instanceof HTTPError)
-          return logs.add(
-            await parseUnknownError({
-              err: error,
-              context: "While creating NoCodb record",
-            }),
-          );
-        console.error(error);
+        logs.add(
+          await parseUnknownError({
+            err: error,
+            context: "While creating NocoDB record",
+          }),
+        );
       }
     },
   },

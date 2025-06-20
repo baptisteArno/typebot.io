@@ -140,6 +140,9 @@ const setupCredentials = async () => {
       secretKey: env.STRIPE_SECRET_KEY ?? "",
     },
   } satisfies StripeCredentials["data"]);
+  const { encryptedData: mistralEncryptedData, iv: mistralIv } = await encrypt({
+    apiKey: process.env.MISTRAL,
+  });
   return prisma.credentials.createMany({
     data: [
       {
@@ -156,6 +159,14 @@ const setupCredentials = async () => {
         data: stripeEncryptedData,
         workspaceId: proWorkspaceId,
         iv: stripeIv,
+      },
+      {
+        id: "mistral",
+        name: "Mistral",
+        type: "mistral",
+        data: mistralEncryptedData,
+        workspaceId: proWorkspaceId,
+        iv: mistralIv,
       },
     ],
   });

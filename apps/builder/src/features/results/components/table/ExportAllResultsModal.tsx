@@ -2,8 +2,8 @@ import { AlertInfo } from "@/components/AlertInfo";
 import { DownloadIcon } from "@/components/icons";
 import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
+import { trpc, trpcClient } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
-import { trpc, trpcVanilla } from "@/lib/trpc";
 import {
   Button,
   HStack,
@@ -17,6 +17,8 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
+import { useQuery } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import type { TRPCError } from "@trpc/server";
 import { parseUniqueKey } from "@typebot.io/lib/parseUniqueKey";
 import { byId, isDefined } from "@typebot.io/lib/utils";
@@ -39,27 +41,29 @@ export const ExportAllResultsModal = ({ isOpen, onClose }: Props) => {
   const workspaceId = typebot?.workspaceId;
   const typebotId = typebot?.id;
   const { resultHeader: existingResultHeader, totalResults } = useResults();
-  const trpcContext = trpc.useContext();
+  const queryClient = useQueryClient();
   const [isExportLoading, setIsExportLoading] = useState(false);
   const [exportProgressValue, setExportProgressValue] = useState(0);
 
   const [areDeletedBlocksIncluded, setAreDeletedBlocksIncluded] =
     useState(false);
 
-  const { data: linkedTypebotsData } = trpc.getLinkedTypebots.useQuery(
-    {
-      typebotId: typebotId as string,
-    },
-    {
-      enabled: isDefined(typebotId),
-    },
+  const { data: linkedTypebotsData } = useQuery(
+    trpc.getLinkedTypebots.queryOptions(
+      {
+        typebotId: typebotId as string,
+      },
+      {
+        enabled: isDefined(typebotId),
+      },
+    ),
   );
 
   const getAllResults = async () => {
     if (!workspaceId || !typebotId) return [];
     const {
       stats: { totalStarts },
-    } = await trpcVanilla.analytics.getStats.query({
+    } = await trpcClient.analytics.getStats.query({
       typebotId,
       timeFilter: "allTime",
     });
@@ -68,13 +72,14 @@ export const ExportAllResultsModal = ({ isOpen, onClose }: Props) => {
     setExportProgressValue(0);
     do {
       try {
-        const { results, nextCursor } =
-          await trpcContext.results.getResults.fetch({
+        const { results, nextCursor } = await queryClient.fetchQuery(
+          trpc.results.getResults.queryOptions({
             typebotId,
             limit: 100,
             cursor,
             timeFilter: "allTime",
-          });
+          }),
+        );
         allResults.push(...results);
         setExportProgressValue((allResults.length / totalStarts) * 100);
         cursor = nextCursor ?? undefined;

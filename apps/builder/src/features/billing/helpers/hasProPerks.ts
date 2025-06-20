@@ -7,4 +7,5 @@ export const hasProPerks = (workspace?: Pick<Workspace, "plan">) =>
   (workspace.plan === Plan.PRO ||
     workspace.plan === Plan.LIFETIME ||
     workspace.plan === Plan.CUSTOM ||
+    workspace.plan === Plan.ENTERPRISE ||
     workspace.plan === Plan.UNLIMITED);

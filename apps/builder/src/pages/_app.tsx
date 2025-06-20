@@ -5,7 +5,6 @@ import { WorkspaceProvider } from "@/features/workspace/WorkspaceProvider";
 import { isCloudProdInstance } from "@/helpers/isCloudProdInstance";
 import { useRouterProgressBar } from "@/lib/routerProgressBar";
 import { tolgee } from "@/lib/tolgee";
-import { trpc } from "@/lib/trpc";
 import { ChakraProvider, createStandaloneToast } from "@chakra-ui/react";
 import { TolgeeProvider, useTolgeeSSR } from "@tolgee/react";
 import { toTitleCase } from "@typebot.io/lib/utils";
@@ -20,6 +19,8 @@ import "@/assets/styles/plate.css";
 import "@/assets/styles/resultsTable.css";
 import "@/assets/styles/custom.css";
 import "@/assets/styles/globals.css";
+import { queryClient } from "@/lib/queryClient";
+import { QueryClientProvider } from "@tanstack/react-query";
 import { NuqsAdapter } from "nuqs/adapters/next/pages";
 import { Toaster } from "sonner";
 
@@ -63,21 +64,23 @@ const App = ({ Component, pageProps }: AppProps) => {
         <ToastContainer />
         <ChakraProvider theme={customTheme}>
           <Toaster offset={24} position="top-right" />
-          <SessionProvider session={pageProps.session}>
-            <UserProvider>
-              <TypebotProvider typebotId={typebotId}>
-                <WorkspaceProvider typebotId={typebotId}>
-                  <Component {...pageProps} />
-                  {!router.pathname.endsWith("edit") &&
-                    isCloudProdInstance() && <SupportBubble />}
-                </WorkspaceProvider>
-              </TypebotProvider>
-            </UserProvider>
-          </SessionProvider>
+          <QueryClientProvider client={queryClient}>
+            <SessionProvider session={pageProps.session}>
+              <UserProvider>
+                <TypebotProvider typebotId={typebotId}>
+                  <WorkspaceProvider typebotId={typebotId}>
+                    <Component {...pageProps} />
+                    {!router.pathname.endsWith("edit") &&
+                      isCloudProdInstance() && <SupportBubble />}
+                  </WorkspaceProvider>
+                </TypebotProvider>
+              </UserProvider>
+            </SessionProvider>
+          </QueryClientProvider>
         </ChakraProvider>
       </NuqsAdapter>
     </TolgeeProvider>
   );
 };
 
-export default trpc.withTRPC(App);
+export default App;

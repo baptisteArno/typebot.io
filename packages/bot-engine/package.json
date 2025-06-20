@@ -9,7 +9,7 @@
   "dependencies": {
     "@paralleldrive/cuid2": "2.2.1",
     "@planetscale/database": "1.8.0",
-    "@trpc/server": "10.45.2",
+    "@trpc/server": "11.3.1",
     "@typebot.io/emails": "workspace:*",
     "@typebot.io/env": "workspace:*",
     "@typebot.io/lib": "workspace:*",
@@ -19,6 +19,7 @@
     "@typebot.io/variables": "workspace:*",
     "@typebot.io/typebot": "workspace:*",
     "@typebot.io/rich-text": "workspace:*",
+    "@typebot.io/chat-api": "workspace:*",
     "@typebot.io/blocks-core": "workspace:*",
     "@typebot.io/blocks-inputs": "workspace:*",
     "@typebot.io/blocks-integrations": "workspace:*",

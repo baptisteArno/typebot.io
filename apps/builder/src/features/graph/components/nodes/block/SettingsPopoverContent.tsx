@@ -30,6 +30,8 @@ import { TypebotLinkForm } from "@/features/blocks/logic/typebotLink/components/
 import { WaitSettings } from "@/features/blocks/logic/wait/components/WaitSettings";
 import { WebhookSettings } from "@/features/blocks/logic/webhook/components/WebhookSettings";
 import { CommandEventSettings } from "@/features/events/components/CommandEventSettings";
+import { InvalidReplyEventSettings } from "@/features/events/components/InvalidReplyEventSettings";
+import { ReplyEventSettings } from "@/features/events/components/ReplyEventSettings";
 import { useForgedBlock } from "@/features/forge/hooks/useForgedBlock";
 import { VideoOnboardingPopover } from "@/features/onboarding/components/VideoOnboardingPopover";
 import { hasOnboardingVideo } from "@/features/onboarding/helpers/hasOnboardingVideo";
@@ -44,36 +46,41 @@ import {
   useColorModeValue,
   useEventListener,
 } from "@chakra-ui/react";
-import type {
-  BlockOptions,
-  BlockWithOptions,
-} from "@typebot.io/blocks-core/schemas/schema";
+import type { BlockWithOptions } from "@typebot.io/blocks-core/schemas/schema";
 import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
 import { IntegrationBlockType } from "@typebot.io/blocks-integrations/constants";
 import { LogicBlockType } from "@typebot.io/blocks-logic/constants";
 import { EventType } from "@typebot.io/events/constants";
 import type { TEventWithOptions } from "@typebot.io/events/schemas";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ForgedBlockSettings } from "../../../../forge/components/ForgedBlockSettings";
 import { SettingsHoverBar } from "./SettingsHoverBar";
 
 type Props = {
   node: BlockWithOptions | TEventWithOptions;
   groupId: string | undefined;
-  onExpandClick: () => void;
   onNodeChange: (
     updates: Partial<BlockWithOptions | TEventWithOptions>,
   ) => void;
+  isOpen?: boolean;
 };
 
-export const SettingsPopoverContent = ({ onExpandClick, ...props }: Props) => {
+export const SettingsPopoverContent = ({ isOpen, ...props }: Props) => {
   const [isHovering, setIsHovering] = useState(false);
   const arrowColor = useColorModeValue("white", "gray.900");
   const { blockDef } = useForgedBlock({
     nodeType: props.node.type,
   });
+  const [isExpanded, setIsExpanded] = useState(false);
   const ref = useRef<HTMLDivElement | null>(null);
   const handleMouseDown = (e: React.MouseEvent) => e.stopPropagation();
+
+  useEffect(() => {
+    if (!isExpanded || isOpen) return;
+    setTimeout(() => {
+      setIsExpanded(false);
+    }, 300);
+  }, [isOpen, isExpanded]);
 
   const handleMouseWheel = (e: WheelEvent) => {
     e.stopPropagation();
@@ -82,7 +89,13 @@ export const SettingsPopoverContent = ({ onExpandClick, ...props }: Props) => {
 
   return (
     <Portal>
-      <PopoverContent onMouseDown={handleMouseDown} pos="relative">
+      <PopoverContent
+        onMouseDown={handleMouseDown}
+        pos="relative"
+        w={isExpanded ? "650px" : undefined}
+        maxH={isExpanded ? "70vh" : "400px"}
+        h="full"
+      >
         <PopoverArrow bgColor={arrowColor} />
 
         <VideoOnboardingPopover.Root type={props.node.type} blockDef={blockDef}>
@@ -90,7 +103,6 @@ export const SettingsPopoverContent = ({ onExpandClick, ...props }: Props) => {
             <PopoverBody
               py="3"
               overflowY="auto"
-              maxH="400px"
               ref={ref}
               shadow="md"
               onMouseEnter={() => setIsHovering(true)}
@@ -108,7 +120,8 @@ export const SettingsPopoverContent = ({ onExpandClick, ...props }: Props) => {
                 >
                   <SlideFade in={isHovering} unmountOnExit>
                     <SettingsHoverBar
-                      onExpandClick={onExpandClick}
+                      isExpanded={isExpanded}
+                      onExpandClick={() => setIsExpanded(!isExpanded)}
                       onVideoOnboardingClick={onOpen}
                       nodeType={props.node.type}
                       blockDef={blockDef}
@@ -131,15 +144,13 @@ export const SettingsPopoverContent = ({ onExpandClick, ...props }: Props) => {
 
 export const NodeSettings = ({
   node,
-  groupId,
   onNodeChange,
 }: {
   node: BlockWithOptions | TEventWithOptions;
-  groupId: string | undefined;
   onNodeChange: (node: Partial<BlockWithOptions | TEventWithOptions>) => void;
 }): JSX.Element | null => {
   const updateOptions = (
-    options: BlockOptions | TEventWithOptions["options"],
+    options: BlockWithOptions["options"] | TEventWithOptions["options"],
   ) => {
     onNodeChange({ options });
   };
@@ -287,14 +298,8 @@ export const NodeSettings = ({
       );
     }
     case LogicBlockType.JUMP: {
-      return groupId ? (
-        <JumpSettings
-          groupId={groupId}
-          options={node.options}
-          onOptionsChange={updateOptions}
-        />
-      ) : (
-        <></>
+      return (
+        <JumpSettings options={node.options} onOptionsChange={updateOptions} />
       );
     }
     case LogicBlockType.AB_TEST: {
@@ -375,6 +380,20 @@ export const NodeSettings = ({
     case EventType.COMMAND:
       return (
         <CommandEventSettings
+          options={node.options}
+          onOptionsChange={updateOptions}
+        />
+      );
+    case EventType.REPLY:
+      return (
+        <ReplyEventSettings
+          options={node.options}
+          onOptionsChange={updateOptions}
+        />
+      );
+    case EventType.INVALID_REPLY:
+      return (
+        <InvalidReplyEventSettings
           options={node.options}
           onOptionsChange={updateOptions}
         />

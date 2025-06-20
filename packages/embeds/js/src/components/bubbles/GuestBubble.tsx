@@ -4,7 +4,6 @@ import type {
   RecordingInputSubmitContent,
   TextInputSubmitContent,
 } from "@/types";
-import { isMobile } from "@/utils/isMobileSignal";
 import { isNotEmpty } from "@typebot.io/lib/utils";
 import {
   defaultGuestAvatarIsEnabled,
@@ -20,22 +19,17 @@ import { Avatar } from "../avatars/Avatar";
 type Props = {
   answer?: InputSubmitContent;
   theme: Theme;
-  avatarSrc: string | undefined;
 };
 
 export const GuestBubble = (props: Props) => {
   return (
     <div
-      class="flex justify-end items-end animate-fade-in gap-2 guest-container"
-      style={{
-        "margin-left":
-          (props.theme.chat?.hostAvatar?.isEnabled ??
-          defaultHostAvatarIsEnabled)
-            ? isMobile()
-              ? "28px"
-              : "50px"
-            : undefined,
-      }}
+      class={cx(
+        "flex justify-end items-end animate-fade-in gap-2 guest-container",
+        (props.theme.chat?.hostAvatar?.isEnabled ??
+          defaultHostAvatarIsEnabled) &&
+          "ml-7 @xs:ml-[50px]",
+      )}
     >
       <Switch>
         <Match when={props.answer?.type === "text"}>
@@ -55,7 +49,7 @@ export const GuestBubble = (props: Props) => {
         }
       >
         <Avatar
-          src={props.avatarSrc}
+          src={props.theme.chat?.guestAvatar?.url}
           isChatContainerLight={isChatContainerLight({
             chatContainer: props.theme.chat?.container,
             generalBackground: props.theme.general?.background,
@@ -72,12 +66,7 @@ const TextGuestBubble = (props: { answer: TextInputSubmitContent }) => {
   return (
     <div class="flex flex-col gap-1 items-end">
       <Show when={(props.answer.attachments ?? []).length > 0}>
-        <div
-          class={cx(
-            "flex gap-1 overflow-auto max-w-[350px]",
-            isMobile() ? "flex-wrap justify-end" : "items-center",
-          )}
-        >
+        <div class="flex gap-1 overflow-auto max-w-[350px] flex-wrap justify-end @xs:items-center @xs:flex-nowrap">
           <For
             each={props.answer.attachments?.filter((attachment) =>
               attachment.type.startsWith("image"),
@@ -100,12 +89,7 @@ const TextGuestBubble = (props: { answer: TextInputSubmitContent }) => {
             )}
           </For>
         </div>
-        <div
-          class={cx(
-            "flex gap-1 overflow-auto max-w-[350px]",
-            isMobile() ? "flex-wrap justify-end" : "items-center",
-          )}
-        >
+        <div class="flex gap-1 overflow-auto max-w-[350px] flex-wrap justify-end @xs:items-center @xs:flex-nowrap">
           <For
             each={props.answer.attachments?.filter(
               (attachment) => !attachment.type.startsWith("image"),

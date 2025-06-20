@@ -1,7 +1,7 @@
 import assert from "assert";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { useUser } from "@/features/user/hooks/useUser";
-import { trpcVanilla } from "@/lib/trpc";
+import { trpcClient } from "@/lib/queryClient";
 import { useEventListener } from "@chakra-ui/react";
 import type { Coordinates } from "@dnd-kit/utilities";
 import { omit } from "@typebot.io/lib/utils";
@@ -139,7 +139,7 @@ export const DrawingEdge = ({ connectingIds }: Props) => {
       const group = typebot.groups[groupIndex];
       if (!group || !group?.title.startsWith("Group #")) return;
       try {
-        const result = await trpcVanilla.generateGroupTitle.mutate({
+        const result = await trpcClient.generateGroupTitle.mutate({
           credentialsId: groupTitlesAutoGeneration.credentialsId,
           typebotId: typebot.id,
           groupContent: JSON.stringify({

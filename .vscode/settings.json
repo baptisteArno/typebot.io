@@ -36,5 +36,8 @@
   "i18n-ally.keystyle": "flat",
   "i18n-ally.displayLanguage": "en",
   "i18n-ally.sortKeys": true,
-  "i18n-ally.enabledFrameworks": ["custom"]
+  "i18n-ally.enabledFrameworks": ["custom"],
+  "search.exclude": {
+    "**/deprecated/**": true
+  }
 }

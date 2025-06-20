@@ -5,6 +5,9 @@
   "globalPassThroughEnv": ["ENCRYPTION_SECRET"],
   "envMode": "loose",
   "tasks": {
+    "typecheck": {
+      "cache": false
+    },
     "dev": {
       "cache": false,
       "dependsOn": ["^db:generate", "^db:push", "@typebot.io/react#build"],
@@ -60,7 +63,15 @@
       "dependsOn": ["@typebot.io/prisma#db:generate"],
       "cache": false
     },
-    "//#format-and-lint": {},
+    "test:unit": {
+      "cache": false
+    },
+    "lint-repo": {
+      "cache": false
+    },
+    "//#format-and-lint": {
+      "cache": false
+    },
     "//#format-and-lint:fix": {
       "cache": false
     }

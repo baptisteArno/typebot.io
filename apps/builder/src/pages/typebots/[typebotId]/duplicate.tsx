@@ -4,7 +4,7 @@ import { RadioButtons } from "@/components/inputs/RadioButtons";
 import { PlanTag } from "@/features/billing/components/PlanTag";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { trpc } from "@/lib/trpc";
+import { trpc } from "@/lib/queryClient";
 import {
   Button,
   HStack,
@@ -12,6 +12,7 @@ import {
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
+import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
@@ -20,11 +21,13 @@ const Page = () => {
   const { typebot } = useTypebot();
   const { workspaces } = useWorkspace();
   const [selectedWorkspaceId, setSelectedWorkspaceId] = useState<string>();
-  const { mutate, isLoading } = trpc.typebot.importTypebot.useMutation({
-    onSuccess: (data) => {
-      push(`/typebots/${data.typebot.id}/edit`);
-    },
-  });
+  const { mutate, status } = useMutation(
+    trpc.typebot.importTypebot.mutationOptions({
+      onSuccess: (data) => {
+        push(`/typebots/${data.typebot.id}/edit`);
+      },
+    }),
+  );
 
   const duplicateTypebot = (workspaceId: string) => {
     mutate({ workspaceId, typebot });
@@ -70,7 +73,7 @@ const Page = () => {
         <Button
           isDisabled={!selectedWorkspaceId}
           onClick={() => duplicateTypebot(selectedWorkspaceId as string)}
-          isLoading={isLoading}
+          isLoading={status === "pending"}
           colorScheme="orange"
           size="sm"
         >

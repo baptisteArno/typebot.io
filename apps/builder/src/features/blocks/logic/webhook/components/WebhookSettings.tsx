@@ -3,7 +3,7 @@ import { TableList, type TableListItemProps } from "@/components/TableList";
 import { TextLink } from "@/components/TextLink";
 import { CodeEditor } from "@/components/inputs/CodeEditor";
 import { DataVariableInputs } from "@/features/blocks/integrations/httpRequest/components/ResponseMappingInputs";
-import { getDeepKeys } from "@/features/blocks/integrations/httpRequest/helpers/getDeepKeys";
+import { computeDeepKeysMappingSuggestionList } from "@/features/blocks/integrations/httpRequest/helpers/computeDeepKeysMappingSuggestionList";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { useUser } from "@/features/user/hooks/useUser";
 import { toast } from "@/lib/toast";
@@ -68,7 +68,7 @@ export const WebhookSettings = ({
         const parsedData = JSON.parse(e.data);
         if (Object.keys(parsedData).length > 0) {
           setReceivedData(JSON.stringify(parsedData, null, 2));
-          setResponseKeys(getDeepKeys(parsedData));
+          setResponseKeys(computeDeepKeysMappingSuggestionList(parsedData));
         }
         setWebsocketStatus("closed");
         ws.close();

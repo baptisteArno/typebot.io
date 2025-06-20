@@ -300,7 +300,7 @@ export const executeHttpRequest = async (
         data: {
           message: `Request timed out. (${
             (request.timeout ? request.timeout : 0) / 1000
-          }ms)`,
+          }s)`,
         },
       };
       logs.push({

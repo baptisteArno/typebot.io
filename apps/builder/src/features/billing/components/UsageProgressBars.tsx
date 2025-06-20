@@ -1,6 +1,6 @@
 import { AlertIcon } from "@/components/icons";
 import type { WorkspaceInApp } from "@/features/workspace/WorkspaceProvider";
-import { defaultQueryOptions, trpc } from "@/lib/trpc";
+import { trpc } from "@/lib/queryClient";
 import {
   Flex,
   HStack,
@@ -11,6 +11,7 @@ import {
   Text,
   Tooltip,
 } from "@chakra-ui/react";
+import { useQuery } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
 import { getChatsLimit } from "@typebot.io/billing/helpers/getChatsLimit";
 import { parseNumberWithCommas } from "@typebot.io/lib/utils";
@@ -21,11 +22,10 @@ type Props = {
 
 export const UsageProgressBars = ({ workspace }: Props) => {
   const { t } = useTranslate();
-  const { data, isLoading } = trpc.billing.getUsage.useQuery(
-    {
+  const { data, isLoading } = useQuery(
+    trpc.billing.getUsage.queryOptions({
       workspaceId: workspace.id,
-    },
-    defaultQueryOptions,
+    }),
   );
   const totalChatsUsed = data?.totalChatsUsed ?? 0;
 
@@ -45,25 +45,6 @@ export const UsageProgressBars = ({ workspace }: Props) => {
             <Heading fontSize="xl" as="h3">
               {t("billing.usage.chats.heading")}
             </Heading>
-            {chatsPercentage >= 80 && (
-              <Tooltip
-                placement="top"
-                rounded="md"
-                p="3"
-                label={
-                  <Text>
-                    {t("billing.usage.chats.alert.soonReach")}
-                    <br />
-                    <br />
-                    {t("billing.usage.chats.alert.updatePlan")}
-                  </Text>
-                }
-              >
-                <span>
-                  <AlertIcon color="orange.500" />
-                </span>
-              </Tooltip>
-            )}
             <Text fontSize="sm" fontStyle="italic" color="gray.500">
               {t("billing.usage.chats.resetsOn", {
                 date: data?.resetsAt.toLocaleDateString(),

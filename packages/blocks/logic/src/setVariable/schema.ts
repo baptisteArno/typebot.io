@@ -22,17 +22,10 @@ const dateSetVariableOptionsSchema = baseOptions.extend({
   timeZone: z.string().optional(),
 });
 
-const initialSetVariableOptionsSchema = baseOptions.extend({
-  type: z.undefined(),
-  expressionToEvaluate: z.string().optional(),
-  isCode: z.boolean().optional(),
-  saveErrorInVariableId: z.string().optional(),
-});
-
 const customSetVariableOptionsSchema = baseOptions.extend({
-  type: z.literal("Custom"),
   expressionToEvaluate: z.string().optional(),
   isCode: z.boolean().optional(),
+  expressionDescription: z.string().optional(),
   saveErrorInVariableId: z.string().optional(),
 });
 
@@ -53,10 +46,14 @@ const appendItemToListOptionsSchema = baseOptions.extend({
 });
 
 export const setVariableOptionsSchema = z.discriminatedUnion("type", [
-  initialSetVariableOptionsSchema,
+  customSetVariableOptionsSchema.extend({
+    type: z.undefined(),
+  }),
+  customSetVariableOptionsSchema.extend({
+    type: z.literal("Custom"),
+  }),
   dateSetVariableOptionsSchema,
   basicSetVariableOptionsSchema,
-  customSetVariableOptionsSchema,
   mapListItemsOptionsSchema,
   appendItemToListOptionsSchema,
   popOrShiftSetVariableOptionsSchema,

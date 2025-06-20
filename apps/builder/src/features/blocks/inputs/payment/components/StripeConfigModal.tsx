@@ -3,8 +3,8 @@ import { TextLink } from "@/components/TextLink";
 import { TextInput } from "@/components/inputs";
 import { useUser } from "@/features/user/hooks/useUser";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
+import { queryClient, trpc } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
-import { trpc } from "@/lib/trpc";
 import {
   Button,
   FormControl,
@@ -20,6 +20,7 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
+import { useMutation } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
 import type { StripeCredentials } from "@typebot.io/credentials/schemas";
 import { isNotEmpty } from "@typebot.io/lib/utils";
@@ -63,25 +64,26 @@ export const StripeCreateModalContent = ({
     live: { publicKey: "", secretKey: "" },
     test: { publicKey: "", secretKey: "" },
   });
-  const {
-    credentials: {
-      listCredentials: { refetch: refetchCredentials },
-    },
-  } = trpc.useContext();
-  const { mutate } = trpc.credentials.createCredentials.useMutation({
-    onMutate: () => setIsCreating(true),
-    onSettled: () => setIsCreating(false),
-    onError: (err) => {
-      toast({
-        description: err.message,
-      });
-    },
-    onSuccess: (data) => {
-      refetchCredentials();
-      onNewCredentials(data.credentialsId);
-      onClose();
-    },
-  });
+  const { mutate } = useMutation(
+    trpc.credentials.createCredentials.mutationOptions({
+      onMutate: () => setIsCreating(true),
+      onSettled: () => setIsCreating(false),
+      onError: (err) => {
+        toast({
+          description: err.message,
+        });
+      },
+      onSuccess: (data) => {
+        queryClient.invalidateQueries({
+          queryKey: trpc.credentials.listCredentials.queryKey({
+            workspaceId: workspace?.id,
+          }),
+        });
+        onNewCredentials(data.credentialsId);
+        onClose();
+      },
+    }),
+  );
 
   const handleNameChange = (name: string) =>
     setStripeConfig({

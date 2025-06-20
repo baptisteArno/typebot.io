@@ -1,6 +1,6 @@
 import { SetVariableLabel } from "@/components/SetVariableLabel";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
-import { Stack, Tag, Text } from "@chakra-ui/react";
+import { Stack, Tag, Text, chakra } from "@chakra-ui/react";
 import type { SetVariableBlock } from "@typebot.io/blocks-logic/setVariable/schema";
 import { byId } from "@typebot.io/lib/utils";
 import type { Variable } from "@typebot.io/variables/schemas";
@@ -37,7 +37,12 @@ const Expression = ({
       return (
         <Stack maxH="60vh">
           <Text as="span">
-            {variableName} = {options?.expressionToEvaluate}
+            <CustomExpression
+              variableName={variableName}
+              expressionDescription={options?.expressionDescription}
+              isCode={options?.isCode ?? false}
+              expression={options?.expressionToEvaluate}
+            />
           </Text>
           {options?.saveErrorInVariableId && (
             <SetVariableLabel
@@ -113,4 +118,38 @@ const Expression = ({
         </Text>
       );
   }
+};
+
+const CustomExpression = ({
+  expressionDescription,
+  isCode,
+  expression,
+  variableName,
+}: {
+  expressionDescription?: string;
+  isCode: boolean;
+  expression?: string;
+  variableName: string;
+}) => {
+  if (!expression) return null;
+  if (expressionDescription)
+    return (
+      <Text as="span">
+        {variableName} = <Tag colorScheme="gray">{expressionDescription}</Tag>
+      </Text>
+    );
+  if (isCode)
+    return (
+      <Stack spacing={1}>
+        <Text>{variableName} =</Text>
+        <chakra.pre bgColor="gray.100" rounded="md" p="2" noOfLines={6}>
+          {expression}
+        </chakra.pre>
+      </Stack>
+    );
+  return (
+    <Text as="span" noOfLines={5}>
+      {variableName} = {expression}
+    </Text>
+  );
 };

@@ -15,9 +15,9 @@ import {
   WorkspaceRole,
 } from "@typebot.io/prisma/enum";
 import type { Prisma } from "@typebot.io/prisma/types";
-import { userSchema } from "@typebot.io/schemas/features/user/schema";
 import type { TelemetryEvent } from "@typebot.io/telemetry/schemas";
 import { trackEvents } from "@typebot.io/telemetry/trackEvents";
+import { userSchema } from "@typebot.io/user/schemas";
 import ky from "ky";
 
 export const createAuthPrismaAdapter = (p: Prisma.PrismaClient): Adapter => ({

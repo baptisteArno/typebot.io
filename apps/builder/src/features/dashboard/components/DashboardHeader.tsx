@@ -16,13 +16,14 @@ import { useTranslate } from "@tolgee/react";
 import { isNotDefined } from "@typebot.io/lib/utils";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useState } from "react";
 
 export const DashboardHeader = () => {
   const { t } = useTranslate();
   const { user, logOut } = useUser();
   const { workspace, switchWorkspace, createWorkspace } = useWorkspace();
   const { asPath } = useRouter();
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   const isRedirectFromCredentialsCreation = asPath.includes("credentials");
 
@@ -32,6 +33,11 @@ export const DashboardHeader = () => {
 
   const handleCreateNewWorkspace = () =>
     createWorkspace(user?.name ?? undefined);
+
+  const handleLogout = () => {
+    setIsLoggingOut(true);
+    logOut();
+  };
 
   return (
     <Flex
@@ -72,14 +78,15 @@ export const DashboardHeader = () => {
             <Button
               leftIcon={<SettingsIcon />}
               onClick={onOpen}
-              isLoading={isNotDefined(workspace)}
+              isLoading={isNotDefined(workspace) || isLoggingOut}
             >
               {t("dashboard.header.settingsButton.label")}
             </Button>
           )}
           <WorkspaceDropdown
+            isLoggingOut={isLoggingOut}
             currentWorkspace={workspace}
-            onLogoutClick={logOut}
+            onLogoutClick={handleLogout}
             onCreateNewWorkspaceClick={handleCreateNewWorkspace}
             onWorkspaceSelected={switchWorkspace}
           />

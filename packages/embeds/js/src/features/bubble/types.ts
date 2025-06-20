@@ -19,6 +19,7 @@ export type ChatWindowTheme = {
 };
 
 export type ButtonTheme = {
+  isHidden?: boolean;
   size?: "medium" | "large" | `${number}px`;
   backgroundColor?: string;
   iconColor?: string;

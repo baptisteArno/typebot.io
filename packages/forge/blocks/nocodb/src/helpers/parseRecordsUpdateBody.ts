@@ -1,5 +1,5 @@
 export const parseRecordsUpdateBody = (
-  ids: string[],
+  ids: number[],
   updates: { fieldName?: string; value?: string }[],
 ): Record<string, any>[] =>
   ids.map((id) => {

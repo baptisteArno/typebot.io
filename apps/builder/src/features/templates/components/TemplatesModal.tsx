@@ -16,7 +16,7 @@ import {
 } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { sendRequest } from "@typebot.io/lib/utils";
-import { Standard } from "@typebot.io/nextjs";
+import { Standard } from "@typebot.io/react";
 import type { Typebot } from "@typebot.io/typebot/schemas/typebot";
 import React, { useCallback, useEffect, useState } from "react";
 import { useTemplates } from "../hooks/useTemplates";

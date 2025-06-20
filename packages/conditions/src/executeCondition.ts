@@ -13,7 +13,8 @@ export const executeCondition = (
     variables,
   }: { sessionStore: SessionStore; variables: Variable[] },
 ): boolean => {
-  if (!condition.comparisons) return false;
+  if (!condition.comparisons || condition.comparisons.length === 0)
+    return false;
   return (condition.logicalOperator ?? LogicalOperator.AND) ===
     LogicalOperator.AND
     ? condition.comparisons.every((comparison) =>
@@ -177,7 +178,12 @@ const executeComparison = (
         if (b === "" || !b || !a) return false;
         const regex = preprocessRegex(b);
         if (!regex.pattern) return false;
-        return new RegExp(regex.pattern, regex.flags).test(a);
+        try {
+          return new RegExp(regex.pattern, regex.flags).test(a);
+        } catch {
+          // Most likelInvalid regex, treat as non-match
+          return false;
+        }
       };
       return compare(matchesRegex, inputValue, value, "some");
     }

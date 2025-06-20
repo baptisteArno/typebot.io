@@ -204,6 +204,18 @@ const builderEvents = [
 const pageViewEventSchema = z.object({
   name: z.literal("$pageview"),
   visitorId: z.string(),
+  data: z.object({
+    $current_url: z.string(),
+    $pathname: z.string(),
+    $referrer: z.string().optional(),
+    $referring_domain: z.string().optional(),
+    $process_person_profile: z.literal(false),
+    $session_id: z.string(),
+    $utm_source: z.string().optional(),
+    $utm_medium: z.string().optional(),
+    $utm_campaign: z.string().optional(),
+    $device_type: z.enum(["Desktop", "Mobile", "Tablet"]).optional(),
+  }),
 });
 
 const landingPageEvents = [pageViewEventSchema] as const;

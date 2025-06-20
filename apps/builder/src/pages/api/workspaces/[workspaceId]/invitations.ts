@@ -34,7 +34,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const [existingMembersCount, existingInvitationsCount] =
       await prisma.$transaction([
         prisma.memberInWorkspace.count({
-          where: { workspaceId: workspace.id },
+          where: {
+            workspaceId: workspace.id,
+            role: { not: WorkspaceRole.GUEST },
+          },
         }),
         prisma.workspaceInvitation.count({
           where: { workspaceId: workspace.id },

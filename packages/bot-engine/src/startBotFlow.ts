@@ -1,11 +1,11 @@
 import { TRPCError } from "@trpc/server";
+import type { Message, StartFrom } from "@typebot.io/chat-api/schemas";
 import type { SessionState } from "@typebot.io/chat-session/schemas";
 import type { SessionStore } from "@typebot.io/runtime-session-store";
 import type { SetVariableHistoryItem } from "@typebot.io/variables/schemas";
 import { continueBotFlow } from "./continueBotFlow";
 import { getFirstEdgeId } from "./getFirstEdgeId";
 import { upsertResult } from "./queries/upsertResult";
-import type { Message, StartFrom } from "./schemas/api";
 import type { ContinueBotFlowResponse } from "./types";
 import { type WalkFlowStartingPoint, walkFlowForward } from "./walkFlowForward";
 

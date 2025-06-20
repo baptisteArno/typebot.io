@@ -2,8 +2,9 @@ import { Button } from "@/components/Button";
 import { Carousel } from "@/components/carousel";
 import { ArrowLeftIcon } from "@/components/icons/ArrowLeftIcon";
 import { ArrowRightIcon } from "@/components/icons/ArrowRightIcon";
+import type { ChatContainerSize } from "@/constants";
+import { useChatContainerSize } from "@/contexts/ChatContainerSizeContext";
 import type { InputSubmitContent } from "@/types";
-import { isMediumContainer, isMobile } from "@/utils/isMobileSignal";
 import type { CardsBlock } from "@typebot.io/blocks-inputs/cards/schema";
 import { cn } from "@typebot.io/ui/lib/cn";
 import { For, Index, type JSX, Show, createMemo } from "solid-js";
@@ -26,9 +27,13 @@ export const CardsCaroussel = (props: Props) => {
     });
   };
 
-  const slidesPerPage = createMemo(() =>
-    computeSlidesPerPage(props.block.items.length),
-  );
+  const chatContainerSize = useChatContainerSize();
+
+  const slidesPerPage = createMemo(() => {
+    return computeSlidesPerPage(props.block.items.length, {
+      containerSize: chatContainerSize(),
+    });
+  });
 
   return (
     <Carousel.Root
@@ -36,19 +41,16 @@ export const CardsCaroussel = (props: Props) => {
       slidesPerPage={slidesPerPage()}
       slidesPerMove={1}
       spacing="12px"
-      class="w-[min(calc(var(--slides-per-page)*270px),100%)]"
-      style={{
-        "margin-right": isMobile() ? "-13px" : "-21px",
-      }}
+      class="overflow-hidden @xs:-mr-5 -mr-4"
     >
       <div
-        class="flex w-full justify-end mb-2 pr-2"
+        class="flex justify-end mb-2"
         style={{
           display:
             props.block.items.length > slidesPerPage() ? undefined : "none",
         }}
       >
-        <Carousel.Control class="flex gap-2">
+        <Carousel.Control class="flex gap-2 @xs:mr-5 mr-4">
           <Carousel.PrevTrigger
             asChild={(props) => (
               <Button variant="secondary" {...props}>
@@ -65,7 +67,7 @@ export const CardsCaroussel = (props: Props) => {
           ></Carousel.NextTrigger>
         </Carousel.Control>
       </div>
-      <Carousel.ItemGroup class="rounded-host-bubble">
+      <Carousel.ItemGroup class="rounded-l-host-bubble @xs:pr-5 pr-4">
         <Index each={props.block.items}>
           {(item, index) => (
             <Carousel.Item index={index}>
@@ -81,7 +83,7 @@ export const CardsCaroussel = (props: Props) => {
                       <img
                         src={imageUrl()}
                         alt="Card image"
-                        class="aspect-[16/11] object-cover rounded-t-host-bubble rounded-b-none"
+                        class="aspect-[16/11] object-cover"
                       />
                     )}
                   </Show>
@@ -129,7 +131,7 @@ const Card = (props: { children: JSX.Element; class?: string }) => {
   return (
     <div
       class={cn(
-        "typebot-card flex flex-col justify-between gap-4 text-host-bubble-text bg-host-bubble-bg border-host-bubble-border border-host-bubble rounded-host-bubble shadow-host-bubble filter-host-bubble",
+        "typebot-card flex flex-col justify-between gap-4 text-host-bubble-text bg-host-bubble-bg border-host-bubble-border border-host-bubble rounded-host-bubble shadow-host-bubble filter-host-bubble overflow-hidden",
         props.class,
       )}
     >
@@ -138,12 +140,18 @@ const Card = (props: { children: JSX.Element; class?: string }) => {
   );
 };
 
-const computeSlidesPerPage = (totalCards: number) => {
-  if (isMobile()) {
+const computeSlidesPerPage = (
+  totalCards: number,
+  { containerSize }: { containerSize: ChatContainerSize },
+) => {
+  if (containerSize === "xs") {
     return totalCards > 1 ? 1.2 : 1;
   }
-  if (isMediumContainer()) {
+  if (containerSize === "sm") {
     return totalCards > 1 ? 1.5 : 1;
   }
-  return totalCards > 2 ? 2.2 : totalCards;
+  if (containerSize === "md" || containerSize === "lg") {
+    return totalCards > 2 ? 2.2 : totalCards;
+  }
+  return totalCards > 3 ? 3.2 : totalCards; // xl
 };

@@ -1,7 +1,7 @@
 import { ChevronLeftIcon, PlusIcon, TrashIcon } from "@/components/icons";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
+import { trpc } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
-import { trpc } from "@/lib/trpc";
 import {
   Button,
   IconButton,
@@ -14,6 +14,8 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
+import { useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
 import type React from "react";
 import { useState } from "react";
@@ -33,37 +35,35 @@ export const CustomDomainsDropdown = ({
   const [isDeleting, setIsDeleting] = useState("");
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { workspace, currentUserMode } = useWorkspace();
-  const { data, refetch } = trpc.customDomains.listCustomDomains.useQuery(
-    {
-      workspaceId: workspace?.id as string,
-    },
-    {
-      enabled: !!workspace?.id && currentUserMode !== "guest",
+  const { data, refetch } = useQuery(
+    trpc.customDomains.listCustomDomains.queryOptions(
+      {
+        workspaceId: workspace?.id as string,
+      },
+      {
+        enabled: !!workspace?.id && currentUserMode !== "guest",
+      },
+    ),
+  );
+  const { mutate } = useMutation(
+    trpc.customDomains.deleteCustomDomain.mutationOptions({
+      onMutate: ({ name }) => {
+        setIsDeleting(name);
+      },
       onError: (error) => {
         toast({
-          context: "Error while fetching custom domains",
+          context: "Error while deleting custom domain",
           description: error.message,
         });
       },
-    },
+      onSettled: () => {
+        setIsDeleting("");
+      },
+      onSuccess: () => {
+        refetch();
+      },
+    }),
   );
-  const { mutate } = trpc.customDomains.deleteCustomDomain.useMutation({
-    onMutate: ({ name }) => {
-      setIsDeleting(name);
-    },
-    onError: (error) => {
-      toast({
-        context: "Error while deleting custom domain",
-        description: error.message,
-      });
-    },
-    onSettled: () => {
-      setIsDeleting("");
-    },
-    onSuccess: () => {
-      refetch();
-    },
-  });
 
   const handleMenuItemClick = (customDomain: string) => () =>
     onCustomDomainSelect(customDomain);

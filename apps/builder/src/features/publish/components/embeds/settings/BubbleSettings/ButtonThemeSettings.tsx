@@ -70,6 +70,7 @@ export const ButtonThemeSettings = ({ buttonTheme, onChange }: Props) => {
           <ColorPicker
             defaultValue={buttonTheme?.backgroundColor}
             onColorChange={updateBackgroundColor}
+            portalled={false}
           />
         </HStack>
         <HStack justify="space-between">

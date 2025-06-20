@@ -22,7 +22,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
-import type { ClientUser } from "@typebot.io/schemas/features/user/schema";
+import type { ClientUser } from "@typebot.io/user/schemas";
 import { useState } from "react";
 import packageJson from "../../../../../../package.json";
 import { type WorkspaceInApp, useWorkspace } from "../WorkspaceProvider";

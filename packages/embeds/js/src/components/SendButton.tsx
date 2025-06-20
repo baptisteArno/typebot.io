@@ -1,4 +1,4 @@
-import { isMobile } from "@/utils/isMobileSignal";
+import { useChatContainerSize } from "@/contexts/ChatContainerSizeContext";
 import { isEmpty } from "@typebot.io/lib/utils";
 import { cx } from "@typebot.io/ui/lib/cva";
 import { Match, Switch, splitProps } from "solid-js";
@@ -12,6 +12,7 @@ type SendButtonProps = {
 } & ButtonProps;
 
 export const SendButton = (props: SendButtonProps) => {
+  const chatContainerSize = useChatContainerSize();
   const [local, buttonProps] = splitProps(props, [
     "isDisabled",
     "isLoading",
@@ -19,7 +20,7 @@ export const SendButton = (props: SendButtonProps) => {
   ]);
 
   const showIcon =
-    (isMobile() && !local.disableIcon) ||
+    (chatContainerSize() === "sm" && !local.disableIcon) ||
     !buttonProps.children ||
     (typeof buttonProps.children === "string" && isEmpty(buttonProps.children));
   return (

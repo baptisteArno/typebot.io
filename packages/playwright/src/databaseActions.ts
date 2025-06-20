@@ -3,8 +3,8 @@ import { createId } from "@typebot.io/lib/createId";
 import prisma from "@typebot.io/prisma";
 import { DbNull, Plan, WorkspaceRole } from "@typebot.io/prisma/enum";
 import type { Prisma } from "@typebot.io/prisma/types";
-import type { User } from "@typebot.io/schemas/features/user/schema";
 import type { Typebot, TypebotV6 } from "@typebot.io/typebot/schemas/typebot";
+import type { User } from "@typebot.io/user/schemas";
 import type { Workspace } from "@typebot.io/workspaces/schemas";
 import {
   parseTestTypebot,
@@ -69,21 +69,21 @@ export const importTypebotInDatabase = async (
   updates?: Partial<Typebot>,
 ) => {
   const typebotFile = JSON.parse(readFileSync(path).toString());
+  const publicId = updates?.id ? `${updates?.id}-public` : createId();
   const typebot = {
     events: null,
     ...typebotFile,
     workspaceId: proWorkspaceId,
+    publicId,
     ...updates,
   };
+
   await prisma.typebot.create({
     data: parseCreateTypebot(typebot),
   });
   return prisma.publicTypebot.create({
     data: {
-      ...parseTypebotToPublicTypebot(
-        updates?.id ? `${updates?.id}-public` : "publicBot",
-        typebot,
-      ),
+      ...parseTypebotToPublicTypebot(publicId, typebot),
       events: typebot.events === null ? DbNull : typebot.events,
     },
   });

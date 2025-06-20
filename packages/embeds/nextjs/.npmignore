@@ -1,5 +1,0 @@
-src
-.eslintignore
-.eslintrc.cjs
-rollup.config.js
-tsconfig.json

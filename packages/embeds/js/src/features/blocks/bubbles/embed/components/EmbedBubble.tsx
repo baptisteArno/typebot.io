@@ -1,6 +1,5 @@
 import { TypingBubble } from "@/components/TypingBubble";
 import type { InputSubmitContent } from "@/types";
-import { isMobile } from "@/utils/isMobileSignal";
 import { defaultEmbedBubbleContent } from "@typebot.io/blocks-bubbles/embed/constants";
 import type { EmbedBubbleBlock } from "@typebot.io/blocks-bubbles/embed/schema";
 import { isNotEmpty } from "@typebot.io/lib/utils";
@@ -82,22 +81,20 @@ export const EmbedBubble = (props: Props) => {
           <div
             class={cx(
               "p-4 z-20 text-fade-in w-full",
-              isTyping() ? "opacity-0" : "opacity-100 p-4",
+              isTyping()
+                ? "opacity-0 h-8 @xs:h-9"
+                : "opacity-100 p-4 h-[var(--embed-bubble-height)]",
             )}
             style={{
-              height: isTyping()
-                ? isMobile()
-                  ? "32px"
-                  : "36px"
-                : `${
-                    props.content?.height ?? defaultEmbedBubbleContent.height
-                  }px`,
+              "--embed-bubble-height": `${
+                props.content?.height ?? defaultEmbedBubbleContent.height
+              }px`,
             }}
           >
             <iframe
               id="embed-bubble-content"
               src={props.content?.url}
-              class={"w-full h-full "}
+              class="w-full h-full"
             />
           </div>
         </div>

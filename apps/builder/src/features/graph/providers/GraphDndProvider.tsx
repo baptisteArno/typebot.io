@@ -146,6 +146,17 @@ export const useDragDistance = ({
     let triggered = false;
     const triggerDragCallbackIfMouseMovedEnough = (e: MouseEvent) => {
       if (!mouseDownPosition.current || triggered) return;
+
+      const target = e.target as HTMLElement;
+      if (
+        target.tagName === "INPUT" ||
+        target.tagName === "TEXTAREA" ||
+        target.tagName === "SELECT" ||
+        target.contentEditable === "true" ||
+        target.closest("[contenteditable=true]")
+      )
+        return;
+
       const { clientX, clientY } = e;
       if (
         Math.abs(mouseDownPosition.current.absolute.x - clientX) >

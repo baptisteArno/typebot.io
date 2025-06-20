@@ -3,8 +3,8 @@ import { TextLink } from "@/components/TextLink";
 import { ChevronLeftIcon, ExternalLinkIcon } from "@/components/icons";
 import { TextInput } from "@/components/inputs/TextInput";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
+import { queryClient, trpc, trpcClient } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
-import { trpc, trpcVanilla } from "@/lib/trpc";
 import {
   Box,
   Button,
@@ -40,6 +40,8 @@ import {
   useSteps,
 } from "@chakra-ui/react";
 import { createId } from "@paralleldrive/cuid2";
+import { useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { TRPCClientError } from "@trpc/client";
 import { env } from "@typebot.io/env";
 import { parseUnknownClientError } from "@typebot.io/lib/parseUnknownClientError";
@@ -93,35 +95,36 @@ export const WhatsAppCreateModalContent = ({
   const [isVerifying, setIsVerifying] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
 
-  const {
-    credentials: {
-      listCredentials: { refetch: refetchCredentials },
-    },
-  } = trpc.useContext();
+  const { mutate } = useMutation(
+    trpc.credentials.createCredentials.mutationOptions({
+      onMutate: () => setIsCreating(true),
+      onSettled: () => setIsCreating(false),
+      onError: (err) => {
+        toast({
+          description: err.message,
+        });
+      },
+      onSuccess: (data) => {
+        queryClient.invalidateQueries({
+          queryKey: trpc.credentials.listCredentials.queryKey({
+            workspaceId: workspace?.id,
+          }),
+        });
+        onNewCredentials(data.credentialsId);
+        onClose();
+        resetForm();
+      },
+    }),
+  );
 
-  const { mutate } = trpc.credentials.createCredentials.useMutation({
-    onMutate: () => setIsCreating(true),
-    onSettled: () => setIsCreating(false),
-    onError: (err) => {
-      toast({
-        description: err.message,
-      });
-    },
-    onSuccess: (data) => {
-      refetchCredentials();
-      onNewCredentials(data.credentialsId);
-      onClose();
-      resetForm();
-    },
-  });
-
-  const { data: tokenInfoData } =
-    trpc.whatsAppInternal.getSystemTokenInfo.useQuery(
+  const { data: tokenInfoData } = useQuery(
+    trpc.whatsAppInternal.getSystemTokenInfo.queryOptions(
       {
         token: systemUserAccessToken,
       },
       { enabled: isNotEmpty(systemUserAccessToken) },
-    );
+    ),
+  );
 
   const resetForm = () => {
     setActiveStep(0);
@@ -150,7 +153,7 @@ export const WhatsAppCreateModalContent = ({
     setIsVerifying(true);
     try {
       const { expiresAt, scopes } =
-        await trpcVanilla.whatsAppInternal.getSystemTokenInfo.query({
+        await trpcClient.whatsAppInternal.getSystemTokenInfo.query({
           token: systemUserAccessToken,
         });
       if (expiresAt !== 0) {
@@ -188,18 +191,16 @@ export const WhatsAppCreateModalContent = ({
   const isPhoneNumberAvailable = async () => {
     setIsVerifying(true);
     try {
-      const { name } = await trpcVanilla.whatsAppInternal.getPhoneNumber.query({
+      const { name } = await trpcClient.whatsAppInternal.getPhoneNumber.query({
         systemToken: systemUserAccessToken,
         phoneNumberId,
       });
       setPhoneNumberName(name);
       try {
         const { message } =
-          await trpcVanilla.whatsAppInternal.verifyIfPhoneNumberAvailable.query(
-            {
-              phoneNumberDisplayName: name,
-            },
-          );
+          await trpcClient.whatsAppInternal.verifyIfPhoneNumberAvailable.query({
+            phoneNumberDisplayName: name,
+          });
 
         if (message === "taken") {
           setIsVerifying(false);
@@ -209,7 +210,7 @@ export const WhatsAppCreateModalContent = ({
           return false;
         }
         const { verificationToken } =
-          await trpcVanilla.whatsAppInternal.generateVerificationToken.mutate();
+          await trpcClient.whatsAppInternal.generateVerificationToken.mutate();
         setVerificationToken(verificationToken);
       } catch (err) {
         console.error(err);

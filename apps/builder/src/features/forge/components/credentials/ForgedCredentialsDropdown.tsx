@@ -1,7 +1,7 @@
 import { ChevronLeftIcon, PlusIcon, TrashIcon } from "@/components/icons";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
+import { trpc } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
-import { trpc } from "@/lib/trpc";
 import {
   Button,
   type ButtonProps,
@@ -13,8 +13,9 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
+import { useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
-import type { Credentials } from "@typebot.io/credentials/schemas";
 import type { ForgedBlockDefinition } from "@typebot.io/forge-repository/definitions";
 import { useRouter } from "next/router";
 import type React from "react";
@@ -28,6 +29,12 @@ type Props = Omit<ButtonProps, "type"> & {
   scope: "workspace" | "user";
 };
 
+const getAuthTypeFromBlockId = (blockId: ForgedBlockDefinition["id"]) => {
+  if (blockId === "cal-com" || blockId === "qr-code")
+    throw new Error("Block has no auth");
+  return blockId;
+};
+
 export const ForgedCredentialsDropdown = ({
   currentCredentialsId,
   blockDef,
@@ -39,40 +46,43 @@ export const ForgedCredentialsDropdown = ({
   const router = useRouter();
   const { t } = useTranslate();
   const { workspace, currentUserMode } = useWorkspace();
-  const { data, refetch, isLoading } =
-    trpc.credentials.listCredentials.useQuery(
+  const { data, refetch, isLoading } = useQuery(
+    trpc.credentials.listCredentials.queryOptions(
       scope === "workspace"
         ? {
             scope: "workspace",
-            workspaceId: workspace?.id as string,
-            type: blockDef.id as Credentials["type"],
+            workspaceId: workspace!.id,
+            type: getAuthTypeFromBlockId(blockDef.id),
           }
         : {
             scope: "user",
-            type: blockDef.id as Credentials["type"],
+            type: getAuthTypeFromBlockId(blockDef.id),
           },
       { enabled: !!workspace?.id },
-    );
+    ),
+  );
   const [isDeleting, setIsDeleting] = useState<string>();
 
-  const { mutate } = trpc.credentials.deleteCredentials.useMutation({
-    onMutate: ({ credentialsId }) => {
-      setIsDeleting(credentialsId);
-    },
-    onError: (error) => {
-      toast({
-        description: error.message,
-      });
-    },
-    onSuccess: ({ credentialsId }) => {
-      if (credentialsId === currentCredentialsId)
-        onCredentialsSelect(undefined);
-      refetch();
-    },
-    onSettled: () => {
-      setIsDeleting(undefined);
-    },
-  });
+  const { mutate } = useMutation(
+    trpc.credentials.deleteCredentials.mutationOptions({
+      onMutate: ({ credentialsId }) => {
+        setIsDeleting(credentialsId);
+      },
+      onError: (error) => {
+        toast({
+          description: error.message,
+        });
+      },
+      onSuccess: ({ credentialsId }) => {
+        if (credentialsId === currentCredentialsId)
+          onCredentialsSelect(undefined);
+        refetch();
+      },
+      onSettled: () => {
+        setIsDeleting(undefined);
+      },
+    }),
+  );
 
   const currentCredential = data?.credentials.find(
     (c) => c.id === currentCredentialsId,

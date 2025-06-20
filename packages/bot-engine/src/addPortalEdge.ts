@@ -1,11 +1,11 @@
 import type { SessionState } from "@typebot.io/chat-session/schemas";
 import type { Edge } from "@typebot.io/typebot/schemas/edge";
 
-export const addPortalEdge = (
-  id: string,
+export const addVirtualEdge = (
   state: SessionState,
   { to }: Pick<Edge, "to">,
-): SessionState => {
+): { newSessionState: SessionState; edgeId: string } => {
+  const id = createVirtualEdgeId(to);
   const existingEdge = state.typebotsQueue[0].typebot.edges.find(
     (e) => e.id === id,
   );
@@ -13,7 +13,7 @@ export const addPortalEdge = (
     existingEdge?.to.groupId === to.groupId &&
     existingEdge?.to.blockId === to.blockId
   )
-    return state;
+    return { newSessionState: state, edgeId: id };
   const newSessionState = {
     ...state,
     typebotsQueue: state.typebotsQueue.map((queue, index) =>
@@ -32,7 +32,7 @@ export const addPortalEdge = (
         : queue,
     ),
   };
-  return newSessionState;
+  return { newSessionState, edgeId: id };
 };
 
 const createPortalEdge = ({ id, to }: Pick<Edge, "to" | "id">) => ({
@@ -40,3 +40,6 @@ const createPortalEdge = ({ id, to }: Pick<Edge, "to" | "id">) => ({
   from: { blockId: "", groupId: "" },
   to,
 });
+
+export const createVirtualEdgeId = (to: Edge["to"]) =>
+  `virtual-${to.groupId}${to.blockId ? `-${to.blockId}` : ""}`;

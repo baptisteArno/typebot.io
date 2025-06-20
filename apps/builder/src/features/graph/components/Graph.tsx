@@ -1,15 +1,22 @@
+import type {
+  EdgeWithTotalVisits,
+  TotalAnswers,
+} from "@/features/analytics/schemas";
 import { headerHeight } from "@/features/editor/constants";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { useUser } from "@/features/user/hooks/useUser";
-import { Fade, Flex, type FlexProps, useEventListener } from "@chakra-ui/react";
+import {
+  Box,
+  Fade,
+  Flex,
+  type FlexProps,
+  Portal,
+  useEventListener,
+} from "@chakra-ui/react";
 import { createId } from "@paralleldrive/cuid2";
 import { shouldOpenBlockSettingsOnCreation } from "@typebot.io/blocks-core/helpers";
 import type { BlockV6 } from "@typebot.io/blocks-core/schemas/schema";
 import { GraphNavigation } from "@typebot.io/prisma/enum";
-import type {
-  EdgeWithTotalUsers,
-  TotalAnswers,
-} from "@typebot.io/schemas/features/analytics";
 import type { PublicTypebotV6 } from "@typebot.io/typebot/schemas/publicTypebot";
 import type { TypebotV6 } from "@typebot.io/typebot/schemas/typebot";
 import { useGesture } from "@use-gesture/react";
@@ -42,7 +49,7 @@ export const Graph = ({
   ...props
 }: {
   typebot: TypebotV6 | PublicTypebotV6;
-  edgesWithTotalUsers?: EdgeWithTotalUsers[];
+  edgesWithTotalUsers?: EdgeWithTotalVisits[];
   totalAnswers?: TotalAnswers[];
   onUnlockProPlanClick?: () => void;
 } & FlexProps) => {
@@ -339,7 +346,8 @@ export const Graph = ({
   };
 
   useEventListener("keydown", (e) => {
-    if (e.key === " ") setIsDraggingGraph(true);
+    if (e.key === " " && !e.metaKey && !e.ctrlKey && !e.altKey && !e.shiftKey)
+      setIsDraggingGraph(true);
   });
   useEventListener("keyup", (e) => {
     if (e.key === " ") {
@@ -383,7 +391,6 @@ export const Graph = ({
       }}
       {...props}
     >
-      <ZoomButtons onZoomInClick={zoomIn} onZoomOutClick={zoomOut} />
       <Flex
         flex="1"
         w="full"
@@ -409,18 +416,27 @@ export const Graph = ({
         />
       </Flex>
       {!isReadOnly && (
-        <>
+        <Portal>
           {selectBoxCoordinates && <SelectBox {...selectBoxCoordinates} />}
           <Fade in={!isReadOnly && focusedElementsId.length > 1}>
-            <ElementsSelectionMenu
-              graphPosition={graphPosition}
-              focusedElementIds={focusedElementsId}
-              blurElements={blurElements}
-              isReadOnly={isReadOnly}
-            />
+            <Box
+              pos="absolute"
+              top={`calc(${headerHeight}px + 20px)`}
+              right="140px"
+            >
+              <ElementsSelectionMenu
+                graphPosition={graphPosition}
+                focusedElementIds={focusedElementsId}
+                blurElements={blurElements}
+                isReadOnly={isReadOnly}
+              />
+            </Box>
           </Fade>
-        </>
+        </Portal>
       )}
+      <Box pos="absolute" top="70px" right="40px">
+        <ZoomButtons onZoomInClick={zoomIn} onZoomOutClick={zoomOut} />
+      </Box>
     </Flex>
   );
 };

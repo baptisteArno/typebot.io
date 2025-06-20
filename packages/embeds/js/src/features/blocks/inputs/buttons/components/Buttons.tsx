@@ -1,9 +1,10 @@
 import { Button } from "@/components/Button";
 import { SearchInput } from "@/components/inputs/SearchInput";
 import type { InputSubmitContent } from "@/types";
-import { isMobile } from "@/utils/isMobileSignal";
 import { defaultChoiceInputOptions } from "@typebot.io/blocks-inputs/choice/constants";
 import type { ChoiceInputBlock } from "@typebot.io/blocks-inputs/choice/schema";
+import { guessDeviceIsMobile } from "@typebot.io/lib/guessDeviceIsMobile";
+import { cx } from "@typebot.io/ui/lib/cva";
 import { For, Show, createSignal, onMount } from "solid-js";
 
 type Props = {
@@ -23,7 +24,8 @@ export const Buttons = (props: Props) => {
   );
 
   onMount(() => {
-    if (!isMobile() && inputRef) inputRef.focus({ preventScroll: true });
+    if (!guessDeviceIsMobile() && inputRef)
+      inputRef.focus({ preventScroll: true });
   });
 
   const handleClick = (itemIndex: number) => {
@@ -32,7 +34,7 @@ export const Buttons = (props: Props) => {
 
     props.onSubmit({
       type: "text",
-      value: value ?? content ?? "",
+      value: value || content || "",
       label: value ? content : undefined,
     });
   };
@@ -69,17 +71,16 @@ export const Buttons = (props: Props) => {
       </Show>
 
       <div
-        class={
-          "flex justify-end gap-2" +
-          (props.options?.isSearchable
-            ? " overflow-y-scroll max-h-80 rounded-md"
-            : "")
-        }
+        class={cx(
+          "flex justify-end gap-2 w-full @xs:w-auto",
+          props.options?.isSearchable &&
+            "overflow-y-scroll max-h-80 rounded-md",
+        )}
         data-slot="list"
       >
         <For each={filteredItems()}>
           {(item, index) => (
-            <span class={"relative" + (isMobile() ? " w-full" : "")}>
+            <span class="relative">
               <Button
                 on:click={() => handleClick(index())}
                 data-itemid={item.id}

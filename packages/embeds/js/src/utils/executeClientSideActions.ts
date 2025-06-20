@@ -12,7 +12,7 @@ import { executeSetVariable } from "@/features/blocks/logic/setVariable/executeS
 import { executeWait } from "@/features/blocks/logic/wait/utils/executeWait";
 import { listenForWebhook } from "@/features/blocks/logic/webhook/listenForWebhook";
 import type { ClientSideActionContext } from "@/types";
-import type { ContinueChatResponse } from "@typebot.io/bot-engine/schemas/api";
+import type { ContinueChatResponse } from "@typebot.io/chat-api/schemas";
 import type { LogInSession } from "@typebot.io/logs/schemas";
 import { injectStartProps } from "./injectStartProps";
 

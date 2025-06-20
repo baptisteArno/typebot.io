@@ -26,6 +26,13 @@ export const DateForm = (props: Props) => {
     });
   };
 
+  const handleKeyDown = (e: KeyboardEvent) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      submit();
+    }
+  };
+
   return (
     <div class="typebot-input-form flex gap-2 items-end">
       <form
@@ -66,6 +73,7 @@ export const DateForm = (props: Props) => {
                   from: e.currentTarget.value,
                 })
               }
+              onKeyDown={handleKeyDown}
               min={props.options?.min}
               max={props.options?.max}
               data-testid="from-date"
@@ -94,6 +102,7 @@ export const DateForm = (props: Props) => {
                     to: e.currentTarget.value,
                   })
                 }
+                onKeyDown={handleKeyDown}
                 min={props.options?.min}
                 max={props.options?.max}
                 data-testid="to-date"

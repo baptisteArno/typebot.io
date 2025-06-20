@@ -2,6 +2,7 @@ import { ImageUploadContent } from "@/components/ImageUploadContent";
 import { MoreInfoTooltip } from "@/components/MoreInfoTooltip";
 import { TextInput, Textarea } from "@/components/inputs";
 import { CodeEditor } from "@/components/inputs/CodeEditor";
+import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
 import {
   FormLabel,
   HStack,
@@ -46,6 +47,8 @@ export const MetadataForm = ({
     onMetadataChange({ ...metadata, googleTagManagerId });
   const handleHeadCodeChange = (customHeadCode: string) =>
     onMetadataChange({ ...metadata, customHeadCode });
+  const handleAllowIndexingChange = (allowIndexing: boolean) =>
+    onMetadataChange({ ...metadata, allowIndexing });
 
   const favIconUrl =
     metadata?.favIconUrl ??
@@ -155,6 +158,12 @@ export const MetadataForm = ({
           withVariableButton={false}
         />
       </Stack>
+      <SwitchWithLabel
+        label={t("settings.sideMenu.metadata.allowIndexing.label")}
+        initialValue={metadata?.allowIndexing}
+        onCheckChange={handleAllowIndexingChange}
+        moreInfoContent={t("settings.sideMenu.metadata.allowIndexing.tooltip")}
+      />
     </Stack>
   );
 };

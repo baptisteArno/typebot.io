@@ -148,5 +148,7 @@
 
   typebot-bubble::part(bot) {
     border: 1px solid rgb(58 58 58);
+    border-radius: 1rem;
+    background-color: #0d0d0d;
   }
 }

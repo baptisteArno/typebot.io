@@ -5,7 +5,7 @@ import {
   embeddableVideoTypes,
 } from "@typebot.io/blocks-bubbles/video/constants";
 import type { EmbeddableVideoBubbleContentType } from "@typebot.io/blocks-bubbles/video/schema";
-import type { ContinueChatResponse } from "@typebot.io/bot-engine/schemas/api";
+import type { ContinueChatResponse } from "@typebot.io/chat-api/schemas";
 import { isSvgSrc } from "@typebot.io/lib/utils";
 import { convertRichTextToMarkdown } from "@typebot.io/rich-text/convertRichTextToMarkdown";
 import type { WhatsAppSendingMessage } from "./schemas";

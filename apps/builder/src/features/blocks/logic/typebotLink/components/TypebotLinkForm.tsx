@@ -1,7 +1,8 @@
 import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
-import { trpc } from "@/lib/trpc";
+import { trpc } from "@/lib/queryClient";
 import { Stack } from "@chakra-ui/react";
+import { useQuery } from "@tanstack/react-query";
 import { defaultTypebotLinkOptions } from "@typebot.io/blocks-logic/typebotLink/constants";
 import type { TypebotLinkBlock } from "@typebot.io/blocks-logic/typebotLink/schema";
 import { isNotEmpty } from "@typebot.io/lib/utils";
@@ -20,14 +21,16 @@ export const TypebotLinkForm = ({ options, onOptionsChange }: Props) => {
     typebotId: string | "current" | undefined,
   ) => onOptionsChange({ ...options, typebotId, groupId: undefined });
 
-  const { data: linkedTypebotData } = trpc.typebot.getTypebot.useQuery(
-    {
-      typebotId: options?.typebotId as string,
-    },
-    {
-      enabled:
-        isNotEmpty(options?.typebotId) && options?.typebotId !== "current",
-    },
+  const { data: linkedTypebotData } = useQuery(
+    trpc.typebot.getTypebot.queryOptions(
+      {
+        typebotId: options?.typebotId as string,
+      },
+      {
+        enabled:
+          isNotEmpty(options?.typebotId) && options?.typebotId !== "current",
+      },
+    ),
   );
 
   const handleGroupIdChange = (groupId: string | undefined) =>
@@ -59,7 +62,7 @@ export const TypebotLinkForm = ({ options, onOptionsChange }: Props) => {
               : (linkedTypebotData?.typebot?.groups ?? [])
           }
           groupId={options.groupId}
-          onGroupIdSelected={handleGroupIdChange}
+          onChange={handleGroupIdChange}
           isLoading={
             linkedTypebotData?.typebot === undefined &&
             options.typebotId !== "current" &&

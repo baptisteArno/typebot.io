@@ -1,5 +1,4 @@
 import { TypingBubble } from "@/components/TypingBubble";
-import { isMobile } from "@/utils/isMobileSignal";
 import { defaultAudioBubbleContent } from "@typebot.io/blocks-bubbles/audio/constants";
 import type { AudioBubbleBlock } from "@typebot.io/blocks-bubbles/audio/schema";
 import { cx } from "@typebot.io/ui/lib/cva";
@@ -64,13 +63,12 @@ export const AudioBubble = (props: Props) => {
                   defaultAudioBubbleContent.isAutoplayEnabled)
                 : false
             }
-            class={
-              "z-10 text-fade-in " +
-              (isTyping() ? "opacity-0" : "opacity-100 m-2")
-            }
-            style={{
-              height: isTyping() ? (isMobile() ? "32px" : "36px") : "revert",
-            }}
+            class={cx(
+              "z-10 text-fade-in",
+              isTyping()
+                ? "opacity-0 h-8 @xs:h-9"
+                : "opacity-100 m-2 h-[revert]",
+            )}
             controls
           />
         </div>

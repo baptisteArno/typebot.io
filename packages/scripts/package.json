@@ -39,7 +39,7 @@
   },
   "dependencies": {
     "ky": "1.2.4",
-    "@clack/prompts": "0.7.0",
+    "@clack/prompts": "0.11.0",
     "@paralleldrive/cuid2": "2.2.1",
     "@typebot.io/billing": "workspace:*",
     "@typebot.io/results": "workspace:*",
@@ -48,6 +48,7 @@
     "papaparse": "5.4.1",
     "@typebot.io/lib": "workspace:*",
     "@typebot.io/prisma": "workspace:*",
+    "posthog-node": "4.3.2",
     "prompts": "2.4.2",
     "stripe": "17.1.0",
     "@typebot.io/workspaces": "workspace:*",

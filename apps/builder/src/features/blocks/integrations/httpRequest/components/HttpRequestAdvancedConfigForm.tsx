@@ -1,5 +1,4 @@
 import { DropdownList } from "@/components/DropdownList";
-import { SwitchWithRelatedSettings } from "@/components/SwitchWithRelatedSettings";
 import { TableList, type TableListItemProps } from "@/components/TableList";
 import { NumberInput } from "@/components/inputs";
 import { CodeEditor } from "@/components/inputs/CodeEditor";
@@ -32,8 +31,8 @@ import type {
   VariableForTest,
 } from "@typebot.io/blocks-integrations/httpRequest/schema";
 import { useMemo, useState } from "react";
+import { computeDeepKeysMappingSuggestionList } from "../helpers/computeDeepKeysMappingSuggestionList";
 import { convertVariablesForTestToVariables } from "../helpers/convertVariablesForTestToVariables";
-import { getDeepKeys } from "../helpers/getDeepKeys";
 import { executeHttpRequest } from "../queries/executeHttpRequestQuery";
 import { HeadersInputs, QueryParamsInputs } from "./KeyValueInputs";
 import { DataVariableInputs } from "./ResponseMappingInputs";
@@ -45,6 +44,7 @@ type Props = {
   options: HttpRequestBlock["options"];
   onHttpRequestChange: (httpRequest: HttpRequest) => void;
   onOptionsChange: (options: HttpRequestBlock["options"]) => void;
+  onNewTestResponse?: () => void;
 };
 
 export const HttpRequestAdvancedConfigForm = ({
@@ -53,6 +53,7 @@ export const HttpRequestAdvancedConfigForm = ({
   options,
   onHttpRequestChange,
   onOptionsChange,
+  onNewTestResponse,
 }: Props) => {
   const { typebot, save } = useTypebot();
   const [isTestResponseLoading, setIsTestResponseLoading] = useState(false);
@@ -78,9 +79,6 @@ export const HttpRequestAdvancedConfigForm = ({
     responseVariableMapping: ResponseVariableMapping[],
   ) => onOptionsChange({ ...options, responseVariableMapping });
 
-  const updateAdvancedConfig = (isAdvancedConfig: boolean) =>
-    onOptionsChange({ ...options, isAdvancedConfig });
-
   const updateIsCustomBody = (isCustomBody: boolean) =>
     onOptionsChange({ ...options, isCustomBody });
 
@@ -102,8 +100,9 @@ export const HttpRequestAdvancedConfigForm = ({
     );
     if (error) return toast({ description: error.message });
     setTestResponse(JSON.stringify(data, undefined, 2));
-    setResponseKeys(getDeepKeys(data));
+    setResponseKeys(computeDeepKeysMappingSuggestionList(data));
     setIsTestResponseLoading(false);
+    onNewTestResponse?.();
   };
 
   const updateIsExecutedOnClient = (isExecutedOnClient: boolean) =>
@@ -122,120 +121,122 @@ export const HttpRequestAdvancedConfigForm = ({
 
   return (
     <>
-      <SwitchWithRelatedSettings
-        label="Advanced configuration"
-        initialValue={
-          options?.isAdvancedConfig ??
-          defaultHttpRequestBlockOptions.isAdvancedConfig
-        }
-        onCheckChange={updateAdvancedConfig}
-      >
-        <SwitchWithLabel
-          label="Execute on client"
-          moreInfoContent="If enabled, the httpRequest will be executed on the client. It means it will be executed in the browser of your visitor. Make sure to enable CORS and do not expose sensitive data."
-          initialValue={
-            options?.isExecutedOnClient ??
-            defaultHttpRequestBlockOptions.isExecutedOnClient
-          }
-          onCheckChange={updateIsExecutedOnClient}
-        />
-        <HStack justify="space-between">
-          <Text>Method:</Text>
-          <DropdownList
-            currentItem={
-              (httpRequest?.method ??
-                defaultHttpRequestAttributes.method) as HttpMethod
-            }
-            onItemSelect={updateMethod}
-            items={Object.values(HttpMethod)}
-          />
-        </HStack>
-        <Accordion allowMultiple>
-          <AccordionItem>
-            <AccordionButton justifyContent="space-between">
-              Query params
-              <AccordionIcon />
-            </AccordionButton>
-            <AccordionPanel pt="4">
-              <TableList<KeyValue>
-                initialItems={httpRequest?.queryParams}
-                onItemsChange={updateQueryParams}
-                addLabel="Add a param"
-              >
-                {(props) => <QueryParamsInputs {...props} />}
-              </TableList>
-            </AccordionPanel>
-          </AccordionItem>
-          <AccordionItem>
-            <AccordionButton justifyContent="space-between">
-              Headers
-              <AccordionIcon />
-            </AccordionButton>
-            <AccordionPanel pt="4">
-              <TableList<KeyValue>
-                initialItems={httpRequest?.headers}
-                onItemsChange={updateHeaders}
-                addLabel="Add a value"
-              >
-                {(props) => <HeadersInputs {...props} />}
-              </TableList>
-            </AccordionPanel>
-          </AccordionItem>
-          <AccordionItem>
-            <AccordionButton justifyContent="space-between">
-              Body
-              <AccordionIcon />
-            </AccordionButton>
-            <AccordionPanel py={4} as={Stack} spacing="6">
-              <SwitchWithLabel
-                label="Custom body"
-                initialValue={isCustomBody}
-                onCheckChange={updateIsCustomBody}
+      <Accordion allowToggle>
+        <AccordionItem>
+          <AccordionButton justifyContent="space-between">
+            Advanced configuration
+            <AccordionIcon />
+          </AccordionButton>
+          <AccordionPanel pt="4" as={Stack} spacing="3">
+            <SwitchWithLabel
+              label="Execute on client"
+              moreInfoContent="If enabled, the httpRequest will be executed on the client. It means it will be executed in the browser of your visitor. Make sure to enable CORS and do not expose sensitive data."
+              initialValue={
+                options?.isExecutedOnClient ??
+                defaultHttpRequestBlockOptions.isExecutedOnClient
+              }
+              onCheckChange={updateIsExecutedOnClient}
+            />
+            <HStack justify="space-between">
+              <Text>Method:</Text>
+              <DropdownList
+                currentItem={
+                  (httpRequest?.method ??
+                    defaultHttpRequestAttributes.method) as HttpMethod
+                }
+                onItemSelect={updateMethod}
+                items={Object.values(HttpMethod)}
               />
-              {isCustomBody && (
-                <CodeEditor
-                  defaultValue={httpRequest?.body}
-                  lang="json"
-                  onChange={updateBody}
-                  debounceTimeout={0}
-                  withLineNumbers={true}
-                />
-              )}
-            </AccordionPanel>
-          </AccordionItem>
-          <AccordionItem>
-            <AccordionButton justifyContent="space-between">
-              Advanced parameters
-              <AccordionIcon />
-            </AccordionButton>
-            <AccordionPanel pt="4">
-              <NumberInput
-                label="Timeout (s)"
-                defaultValue={options?.timeout ?? defaultTimeout}
-                min={1}
-                max={maxTimeout}
-                onValueChange={updateTimeout}
-                withVariableButton={false}
-              />
-            </AccordionPanel>
-          </AccordionItem>
-          <AccordionItem>
-            <AccordionButton justifyContent="space-between">
-              Variable values for test
-              <AccordionIcon />
-            </AccordionButton>
-            <AccordionPanel pt="4">
-              <TableList<VariableForTest>
-                initialItems={options?.variablesForTest}
-                onItemsChange={updateVariablesForTest}
-                addLabel="Add an entry"
-              >
-                {(props) => <VariableForTestInputs {...props} />}
-              </TableList>
-            </AccordionPanel>
-          </AccordionItem>
-        </Accordion>
-      </SwitchWithRelatedSettings>
+            </HStack>
+            <Accordion allowMultiple>
+              <AccordionItem>
+                <AccordionButton justifyContent="space-between">
+                  Query params
+                  <AccordionIcon />
+                </AccordionButton>
+                <AccordionPanel pt="4">
+                  <TableList<KeyValue>
+                    initialItems={httpRequest?.queryParams}
+                    onItemsChange={updateQueryParams}
+                    addLabel="Add a param"
+                  >
+                    {(props) => <QueryParamsInputs {...props} />}
+                  </TableList>
+                </AccordionPanel>
+              </AccordionItem>
+              <AccordionItem>
+                <AccordionButton justifyContent="space-between">
+                  Headers
+                  <AccordionIcon />
+                </AccordionButton>
+                <AccordionPanel pt="4">
+                  <TableList<KeyValue>
+                    initialItems={httpRequest?.headers}
+                    onItemsChange={updateHeaders}
+                    addLabel="Add a value"
+                  >
+                    {(props) => <HeadersInputs {...props} />}
+                  </TableList>
+                </AccordionPanel>
+              </AccordionItem>
+              <AccordionItem>
+                <AccordionButton justifyContent="space-between">
+                  Body
+                  <AccordionIcon />
+                </AccordionButton>
+                <AccordionPanel py={4} as={Stack} spacing="6">
+                  <SwitchWithLabel
+                    label="Custom body"
+                    initialValue={isCustomBody}
+                    onCheckChange={updateIsCustomBody}
+                  />
+                  {isCustomBody && (
+                    <CodeEditor
+                      defaultValue={httpRequest?.body}
+                      lang="json"
+                      onChange={updateBody}
+                      debounceTimeout={0}
+                      withLineNumbers={true}
+                    />
+                  )}
+                </AccordionPanel>
+              </AccordionItem>
+              <AccordionItem>
+                <AccordionButton justifyContent="space-between">
+                  Advanced parameters
+                  <AccordionIcon />
+                </AccordionButton>
+                <AccordionPanel pt="4">
+                  <NumberInput
+                    label="Timeout (s)"
+                    defaultValue={options?.timeout ?? defaultTimeout}
+                    min={1}
+                    max={maxTimeout}
+                    onValueChange={updateTimeout}
+                    withVariableButton={false}
+                  />
+                </AccordionPanel>
+              </AccordionItem>
+              <AccordionItem>
+                <AccordionButton justifyContent="space-between">
+                  Variable values for test
+                  <AccordionIcon />
+                </AccordionButton>
+                <AccordionPanel pt="4">
+                  <TableList<VariableForTest>
+                    initialItems={options?.variablesForTest}
+                    onItemsChange={updateVariablesForTest}
+                    addLabel="Add an entry"
+                  >
+                    {(props) => <VariableForTestInputs {...props} />}
+                  </TableList>
+                </AccordionPanel>
+              </AccordionItem>
+            </Accordion>
+          </AccordionPanel>
+        </AccordionItem>
+      </Accordion>
+
       {httpRequest?.url && (
         <Button
           onClick={executeTestRequest}

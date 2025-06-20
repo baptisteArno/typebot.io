@@ -7,7 +7,7 @@ import {
   PlusIcon,
 } from "@/components/icons";
 import { PlanTag } from "@/features/billing/components/PlanTag";
-import { trpc } from "@/lib/trpc";
+import { trpc } from "@/lib/queryClient";
 import {
   Button,
   HStack,
@@ -17,11 +17,13 @@ import {
   MenuList,
   Text,
 } from "@chakra-ui/react";
+import { useQuery } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
 import type { WorkspaceInApp } from "../WorkspaceProvider";
 
 type Props = {
   currentWorkspace?: WorkspaceInApp;
+  isLoggingOut: boolean;
   onWorkspaceSelected: (workspaceId: string) => void;
   onCreateNewWorkspaceClick: () => void;
   onLogoutClick: () => void;
@@ -29,12 +31,13 @@ type Props = {
 
 export const WorkspaceDropdown = ({
   currentWorkspace,
+  isLoggingOut,
   onWorkspaceSelected,
   onLogoutClick,
   onCreateNewWorkspaceClick,
 }: Props) => {
   const { t } = useTranslate();
-  const { data } = trpc.workspace.listWorkspaces.useQuery();
+  const { data } = useQuery(trpc.workspace.listWorkspaces.queryOptions());
 
   const workspaces = data?.workspaces ?? [];
 
@@ -42,7 +45,7 @@ export const WorkspaceDropdown = ({
     <Menu placement="bottom-end">
       <MenuButton as={Button} variant="outline" px="2">
         <HStack>
-          {currentWorkspace && (
+          {!isLoggingOut && currentWorkspace && (
             <>
               <Text isTruncated maxW="300px">
                 {currentWorkspace.name}

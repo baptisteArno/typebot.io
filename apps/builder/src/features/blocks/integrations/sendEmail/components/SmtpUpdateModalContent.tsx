@@ -1,7 +1,7 @@
 import { useUser } from "@/features/user/hooks/useUser";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
+import { trpc } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
-import { trpc } from "@/lib/trpc";
 import {
   Button,
   ModalBody,
@@ -10,6 +10,8 @@ import {
   ModalFooter,
   ModalHeader,
 } from "@chakra-ui/react";
+import { useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import type { SmtpCredentials } from "@typebot.io/credentials/schemas";
 import { isNotDefined } from "@typebot.io/lib/utils";
 import type React from "react";
@@ -28,8 +30,8 @@ export const SmtpUpdateModalContent = ({ credentialsId, onUpdate }: Props) => {
   const [isCreating, setIsCreating] = useState(false);
   const [smtpConfig, setSmtpConfig] = useState<SmtpCredentials["data"]>();
 
-  const { data: existingCredentials } =
-    trpc.credentials.getCredentials.useQuery(
+  const { data: existingCredentials } = useQuery(
+    trpc.credentials.getCredentials.queryOptions(
       {
         scope: "workspace",
         workspaceId: workspace!.id,
@@ -38,24 +40,27 @@ export const SmtpUpdateModalContent = ({ credentialsId, onUpdate }: Props) => {
       {
         enabled: !!workspace?.id,
       },
-    );
+    ),
+  );
 
   useEffect(() => {
     if (!existingCredentials || smtpConfig) return;
-    setSmtpConfig(existingCredentials.data);
+    setSmtpConfig(existingCredentials.data as any);
   }, [existingCredentials, smtpConfig]);
 
-  const { mutate } = trpc.credentials.updateCredentials.useMutation({
-    onSettled: () => setIsCreating(false),
-    onError: (err) => {
-      toast({
-        description: err.message,
-      });
-    },
-    onSuccess: () => {
-      onUpdate();
-    },
-  });
+  const { mutate } = useMutation(
+    trpc.credentials.updateCredentials.mutationOptions({
+      onSettled: () => setIsCreating(false),
+      onError: (err) => {
+        toast({
+          description: err.message,
+        });
+      },
+      onSuccess: () => {
+        onUpdate();
+      },
+    }),
+  );
 
   const handleUpdateClick = async (e: React.FormEvent) => {
     e.preventDefault();

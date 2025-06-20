@@ -6,7 +6,6 @@ import { hasProPerks } from "@/features/billing/helpers/hasProPerks";
 import { CustomDomainsDropdown } from "@/features/customDomains/components/CustomDomainsDropdown";
 import DomainStatusIcon from "@/features/customDomains/components/DomainStatusIcon";
 import { TypebotHeader } from "@/features/editor/components/TypebotHeader";
-import { TypebotNotFoundPage } from "@/features/editor/components/TypebotNotFoundPage";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { isCloudProdInstance } from "@/helpers/isCloudProdInstance";
@@ -33,7 +32,7 @@ import { integrationsList } from "./embeds/EmbedButton";
 export const SharePage = () => {
   const { t } = useTranslate();
   const { workspace } = useWorkspace();
-  const { typebot, updateTypebot, publishedTypebot, is404, currentUserMode } =
+  const { typebot, updateTypebot, publishedTypebot, currentUserMode } =
     useTypebot();
 
   const handlePublicIdChange = async (publicId: string) => {
@@ -89,7 +88,6 @@ export const SharePage = () => {
     return true;
   };
 
-  if (is404) return <TypebotNotFoundPage />;
   return (
     <Flex flexDir="column" pb="40">
       <Seo title={typebot?.name ? `${typebot.name} | Share` : "Share"} />

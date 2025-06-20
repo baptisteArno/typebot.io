@@ -5,6 +5,10 @@ import { en as chronoParser } from "chrono-node";
 import { format } from "date-fns";
 import type { ParsedReply } from "../../../types";
 
+const formatOptions = {
+  useAdditionalDayOfYearTokens: true,
+  useAdditionalWeekYearTokens: true,
+};
 export const parseDateReply = (
   reply: string,
   block: DateInputBlock,
@@ -24,13 +28,13 @@ export const parseDateReply = (
   const detectedStartDate = parseDateWithNeutralTimezone(
     parsedDate[0].start.date(),
   );
-  const startDate = format(detectedStartDate, formatString);
+  const startDate = format(detectedStartDate, formatString, formatOptions);
 
   const detectedEndDate = parsedDate[0].end?.date()
     ? parseDateWithNeutralTimezone(parsedDate[0].end?.date())
     : undefined;
   const endDate = detectedEndDate
-    ? format(detectedEndDate, formatString)
+    ? format(detectedEndDate, formatString, formatOptions)
     : undefined;
 
   if (block.options?.isRange && !endDate) return { status: "fail" };

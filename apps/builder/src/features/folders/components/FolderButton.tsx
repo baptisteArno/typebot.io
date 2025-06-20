@@ -1,7 +1,7 @@
 import { ConfirmModal } from "@/components/ConfirmModal";
 import { FolderIcon, MoreVerticalIcon } from "@/components/icons";
+import { trpc } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
-import { trpc } from "@/lib/trpc";
 import {
   Alert,
   AlertIcon,
@@ -23,11 +23,13 @@ import {
   useColorModeValue,
   useDisclosure,
 } from "@chakra-ui/react";
+import { useMutation } from "@tanstack/react-query";
 import { T, useTranslate } from "@tolgee/react";
 import type { Prisma } from "@typebot.io/prisma/types";
 import { useRouter } from "next/router";
 import React, { memo, useMemo } from "react";
 import { useTypebotDnd } from "../TypebotDndProvider";
+
 type Props = {
   folder: Prisma.DashboardFolder;
   index: number;
@@ -51,19 +53,23 @@ const FolderButton = ({
   );
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const { mutate: deleteFolder } = trpc.folders.deleteFolder.useMutation({
-    onError: (error) => {
-      toast({ description: error.message });
-    },
-    onSuccess: onFolderDeleted,
-  });
+  const { mutate: deleteFolder } = useMutation(
+    trpc.folders.deleteFolder.mutationOptions({
+      onError: (error) => {
+        toast({ description: error.message });
+      },
+      onSuccess: onFolderDeleted,
+    }),
+  );
 
-  const { mutate: updateFolder } = trpc.folders.updateFolder.useMutation({
-    onError: (error) => {
-      toast({ description: error.message });
-    },
-    onSuccess: onFolderRenamed,
-  });
+  const { mutate: updateFolder } = useMutation(
+    trpc.folders.updateFolder.mutationOptions({
+      onError: (error) => {
+        toast({ description: error.message });
+      },
+      onSuccess: onFolderRenamed,
+    }),
+  );
 
   const onRenameSubmit = async (newName: string) => {
     if (newName === "" || newName === folder.name) return;

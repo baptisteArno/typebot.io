@@ -1,3 +1,4 @@
+import { isPublicTypebotAtLeastV6 } from "@typebot.io/typebot/helpers/isPublicTypebotAtLeastV6";
 import type { PublicTypebot } from "@typebot.io/typebot/schemas/publicTypebot";
 import type { TypebotV6 } from "@typebot.io/typebot/schemas/typebot";
 
@@ -5,7 +6,7 @@ export const convertPublicTypebotToTypebot = (
   typebot: PublicTypebot,
   existingTypebot: TypebotV6,
 ): TypebotV6 => {
-  if (typebot.version !== "6") return existingTypebot;
+  if (!isPublicTypebotAtLeastV6(typebot)) return existingTypebot;
   return {
     id: typebot.typebotId,
     version: typebot.version,

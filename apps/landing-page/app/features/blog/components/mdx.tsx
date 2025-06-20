@@ -100,11 +100,16 @@ const components = {
   ),
   Cta: ({
     highlight,
+    buttonLabel = "Create a typebot",
+    children,
   }: {
     highlight?: "default";
+    buttonLabel?: string;
+    children?: React.ReactNode;
   }) => (
-    <Cta className="not-prose" buttonLabel="Create a typebot">
+    <Cta className="not-prose" buttonLabel={buttonLabel}>
       {highlight === "default" ? undefined : null}
+      {children}
     </Cta>
   ),
   Typebot: (props: any) => (
@@ -130,6 +135,11 @@ const components = {
           className="absolute inset-0 size-full rounded-xl"
         />
       </div>
+    </div>
+  ),
+  Video: ({ src }: { src: string }) => (
+    <div className="w-full">
+      <video src={src} className="w-full rounded-xl" controls />
     </div>
   ),
   WhatsAppPricingCalculator,

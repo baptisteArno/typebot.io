@@ -1,4 +1,5 @@
 import { ChevronLeftIcon } from "@/components/icons";
+import { toast } from "@/lib/toast";
 import {
   Button,
   HStack,
@@ -41,14 +42,21 @@ export const AddMemberForm = ({
   const handleInvitationSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setIsSendingInvitation(true);
-    const { data } = await sendInvitationQuery({
+    const { data, error } = await sendInvitationQuery({
       email: invitationEmail,
       type: invitationRole,
       workspaceId,
     });
+    if (error) {
+      toast({
+        description: error.message,
+        status: "error",
+      });
+    } else {
+      setInvitationEmail("");
+    }
     if (data?.member) onNewMember(data.member);
     if (data?.invitation) onNewInvitation(data.invitation);
-    setInvitationEmail("");
     setIsSendingInvitation(false);
   };
 

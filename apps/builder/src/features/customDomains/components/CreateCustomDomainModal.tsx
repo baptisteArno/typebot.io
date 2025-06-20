@@ -1,5 +1,5 @@
+import { trpc } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
-import { trpc } from "@/lib/trpc";
 import {
   Alert,
   Button,
@@ -17,6 +17,7 @@ import {
   Text,
   Tooltip,
 } from "@chakra-ui/react";
+import { useMutation } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
 import { useEffect, useRef, useState } from "react";
 
@@ -47,24 +48,26 @@ export const CreateCustomDomainModal = ({
     subdomain: splitHostname(domain)?.subdomain ?? "",
   });
 
-  const { mutate } = trpc.customDomains.createCustomDomain.useMutation({
-    onMutate: () => {
-      setIsLoading(true);
-    },
-    onError: (error) => {
-      toast({
-        context: "Error while creating custom domain",
-        description: error.message,
-      });
-    },
-    onSettled: () => {
-      setIsLoading(false);
-    },
-    onSuccess: (data) => {
-      onNewDomain(data.customDomain.name);
-      onClose();
-    },
-  });
+  const { mutate } = useMutation(
+    trpc.customDomains.createCustomDomain.mutationOptions({
+      onMutate: () => {
+        setIsLoading(true);
+      },
+      onError: (error) => {
+        toast({
+          context: "Error while creating custom domain",
+          description: error.message,
+        });
+      },
+      onSettled: () => {
+        setIsLoading(false);
+      },
+      onSuccess: (data) => {
+        onNewDomain(data.customDomain.name);
+        onClose();
+      },
+    }),
+  );
 
   useEffect(() => {
     if (inputValue === "" || !isOpen) return;

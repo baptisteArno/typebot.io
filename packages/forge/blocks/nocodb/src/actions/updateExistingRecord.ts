@@ -1,6 +1,6 @@
 import { createAction, option } from "@typebot.io/forge";
 import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
-import ky, { HTTPError } from "ky";
+import ky from "ky";
 import { auth } from "../auth";
 import {
   defaultBaseUrl,
@@ -8,6 +8,7 @@ import {
   filterOperators,
 } from "../constants";
 import { convertFilterToWhereClause } from "../helpers/convertFilterToWhereClause";
+import { linkRelationUpdatesIfAny } from "../helpers/linkRelationUpdatesIfAny";
 import { parseRecordsUpdateBody } from "../helpers/parseRecordsUpdateBody";
 import { parseSearchParams } from "../helpers/parseSearchParams";
 import type { ListTableRecordsResponse } from "../types";
@@ -59,6 +60,7 @@ export const updateExistingRecord = createAction({
     }) => {
       if (!apiKey) return logs.add("API key is required");
       if (!updates) return logs.add("At least one update is required");
+      if (!tableId) return logs.add("Table ID is required");
       if (!filter?.comparisons || filter.comparisons.length === 0)
         return logs.add("At least one filter is required");
       try {
@@ -90,14 +92,21 @@ export const updateExistingRecord = createAction({
             ),
           },
         );
+
+        await linkRelationUpdatesIfAny({
+          baseUrl,
+          apiKey,
+          tableId,
+          updates,
+          recordIdsToUpdate: listData.list.map((item) => item.Id),
+        });
       } catch (error) {
-        if (error instanceof HTTPError)
-          return logs.add(
-            await parseUnknownError({
-              err: error,
-              context: "While updating NocoDB existing record",
-            }),
-          );
+        logs.add(
+          await parseUnknownError({
+            err: error,
+            context: "While updating NocoDB existing record",
+          }),
+        );
       }
     },
   },

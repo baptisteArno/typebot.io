@@ -8,9 +8,66 @@ import {
 } from "fs";
 import { join } from "path";
 import * as p from "@clack/prompts";
-import { spinner } from "@clack/prompts";
+import { isCancel, spinner } from "@clack/prompts";
+
+interface CliArgs {
+  name?: string;
+  id?: string;
+  auth?: "apiKey" | "encryptedData" | "none";
+  help?: boolean;
+}
 
 const slugRegex = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+
+const parseArgs = (args: string[]): CliArgs => {
+  const result: CliArgs = {};
+
+  for (let i = 0; i < args.length; i++) {
+    const arg = args[i];
+
+    if (arg === "--help" || arg === "-h") {
+      result.help = true;
+    } else if (arg === "--name" || arg === "-n") {
+      result.name = args[++i];
+    } else if (arg === "--id") {
+      result.id = args[++i];
+    } else if (arg === "--auth" || arg === "-a") {
+      const authValue = args[++i];
+      if (
+        authValue === "apiKey" ||
+        authValue === "encryptedData" ||
+        authValue === "none"
+      ) {
+        result.auth = authValue;
+      } else {
+        console.error(
+          `Invalid auth value: ${authValue}. Must be one of: apiKey, encryptedData, none`,
+        );
+        process.exit(1);
+      }
+    }
+  }
+
+  return result;
+};
+
+const showHelp = () => {
+  console.log(`
+Usage: bun create-new-block [options]
+
+Options:
+  --name, -n <name>     Integration name (e.g., "Sheets", "Analytics", "Cal.com")
+  --id <id>             Integration ID (slug format, e.g., "cal-com", "openai")
+  --auth, -a <type>     Authentication type: apiKey, encryptedData, or none
+  --help, -h            Show this help message
+
+Examples:
+  bun create-new-block --name "My Service" --id "my-service" --auth "apiKey"
+  bun create-new-block -n "Analytics" --id "analytics" -a "none"
+  
+If no arguments are provided, the interactive mode will be used.
+`);
+};
 
 type PromptResult = {
   name: string;
@@ -19,7 +76,30 @@ type PromptResult = {
   camelCaseId: string;
 };
 
-const main = async () => {
+const getPromptFromArgs = (args: CliArgs): PromptResult => {
+  if (!args.name || !args.id || !args.auth) {
+    console.error(
+      "Missing required arguments. Use --help for usage information.",
+    );
+    process.exit(1);
+  }
+
+  if (!slugRegex.test(args.id)) {
+    console.error(
+      `Invalid ID: ${args.id}. Must be a slug, like: "google-sheets".`,
+    );
+    process.exit(1);
+  }
+
+  return {
+    name: args.name,
+    id: args.id,
+    auth: args.auth,
+    camelCaseId: camelize(args.id),
+  };
+};
+
+const getPromptInteractive = async (): Promise<PromptResult> => {
   p.intro("Create a new Typebot integration block");
   const { name, id } = await p.group(
     {
@@ -48,21 +128,40 @@ const main = async () => {
     },
   );
 
-  const auth = (await p.select({
+  const auth = await p.select({
     message: "Does this integration require authentication to work?",
     options: [
       { value: "apiKey", label: "API key or token" },
       { value: "encryptedData", label: "Custom encrypted data" },
       { value: "none", label: "None" },
     ],
-  })) as "apiKey" | "encryptedData" | "none";
+  });
 
-  const prompt: PromptResult = {
+  if (!auth || isCancel(auth)) {
+    p.cancel("Operation cancelled.");
+    process.exit(0);
+  }
+
+  return {
     name,
     id: id as string,
     auth,
     camelCaseId: camelize(id as string),
   };
+};
+
+const main = async () => {
+  const args = parseArgs(process.argv.slice(2));
+
+  if (args.help) {
+    showHelp();
+    return;
+  }
+
+  const prompt: PromptResult =
+    args.name && args.id && args.auth
+      ? getPromptFromArgs(args)
+      : await getPromptInteractive();
 
   const s = spinner();
   s.start("Creating files...");

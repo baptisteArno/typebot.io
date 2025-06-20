@@ -1,11 +1,12 @@
 import * as Sentry from "@sentry/nextjs";
 import { TRPCError, initTRPC } from "@trpc/server";
-import type { OpenApiMeta } from "@typebot.io/trpc-openapi/types";
 import superjson from "superjson";
+import type { OpenApiMeta } from "trpc-to-openapi";
 import { ZodError } from "zod";
 import { fromError } from "zod-validation-error";
 import { ClientToastError } from "../../lib/ClientToastError";
 import type { Context } from "./context";
+
 const t = initTRPC
   .context<Context>()
   .meta<OpenApiMeta>()

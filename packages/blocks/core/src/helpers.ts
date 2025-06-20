@@ -128,7 +128,8 @@ export const shouldOpenBlockSettingsOnCreation = (
   type &&
   type !== InputBlockType.CARDS &&
   type !== InputBlockType.PICTURE_CHOICE &&
-  type !== LogicBlockType.CONDITION;
+  type !== LogicBlockType.CONDITION &&
+  type !== InputBlockType.CHOICE;
 
 export const shouldOpenItemSettingsOnCreation = (
   type: Block["type"] | undefined,

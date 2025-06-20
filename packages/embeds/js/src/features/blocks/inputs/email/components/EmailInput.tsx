@@ -2,9 +2,9 @@ import { SendButton } from "@/components/SendButton";
 import { ShortTextInput } from "@/components/inputs/ShortTextInput";
 import type { CommandData } from "@/features/commands/types";
 import type { InputSubmitContent } from "@/types";
-import { isMobile } from "@/utils/isMobileSignal";
 import { defaultEmailInputOptions } from "@typebot.io/blocks-inputs/email/constants";
 import type { EmailInputBlock } from "@typebot.io/blocks-inputs/email/schema";
+import { guessDeviceIsMobile } from "@typebot.io/lib/guessDeviceIsMobile";
 import { createSignal, onCleanup, onMount } from "solid-js";
 
 type Props = {
@@ -33,7 +33,8 @@ export const EmailInput = (props: Props) => {
   };
 
   onMount(() => {
-    if (!isMobile() && inputRef) inputRef.focus({ preventScroll: true });
+    if (!guessDeviceIsMobile() && inputRef)
+      inputRef.focus({ preventScroll: true });
     window.addEventListener("message", processIncomingEvent);
   });
 

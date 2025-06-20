@@ -3,9 +3,9 @@ import { ChevronDownIcon } from "@/components/icons/ChevronDownIcon";
 import { ShortTextInput } from "@/components/inputs/ShortTextInput";
 import type { CommandData } from "@/features/commands/types";
 import type { InputSubmitContent } from "@/types";
-import { isMobile } from "@/utils/isMobileSignal";
 import { defaultPhoneInputOptions } from "@typebot.io/blocks-inputs/phone/constants";
 import type { PhoneNumberInputBlock } from "@typebot.io/blocks-inputs/phone/schema";
+import { guessDeviceIsMobile } from "@typebot.io/lib/guessDeviceIsMobile";
 import { phoneCountries } from "@typebot.io/lib/phoneCountries";
 import { isEmpty } from "@typebot.io/lib/utils";
 import { For, createSignal, onCleanup, onMount } from "solid-js";
@@ -94,7 +94,8 @@ export const PhoneInput = (props: PhoneInputProps) => {
   };
 
   onMount(() => {
-    if (!isMobile() && inputRef) inputRef.focus({ preventScroll: true });
+    if (!guessDeviceIsMobile() && inputRef)
+      inputRef.focus({ preventScroll: true });
     window.addEventListener("message", processIncomingEvent);
   });
 
@@ -153,7 +154,7 @@ export const PhoneInput = (props: PhoneInputProps) => {
             props.labels?.placeholder ??
             defaultPhoneInputOptions.labels.placeholder
           }
-          autofocus={!isMobile()}
+          autofocus={!guessDeviceIsMobile()}
         />
       </div>
       <SendButton type="button" class="h-[56px]" on:click={submit}>

@@ -4,13 +4,15 @@ import { TRPCError } from "@trpc/server";
 import { isInputBlock } from "@typebot.io/blocks-core/helpers";
 import { parseGroups } from "@typebot.io/groups/helpers/parseGroups";
 import prisma from "@typebot.io/prisma";
-import { totalAnswersSchema } from "@typebot.io/schemas/features/analytics";
+import { edgeSchema } from "@typebot.io/typebot/schemas/edge";
 import { z } from "@typebot.io/zod";
 import { defaultTimeFilter, timeFilterValues } from "../constants";
+import { getVisitedEdgeToPropFromId } from "../helpers/getVisitedEdgeToPropFromId";
 import {
   parseFromDateFromTimeFilter,
   parseToDateFromTimeFilter,
 } from "../helpers/parseDateFromTimeFilter";
+import { edgeWithTotalVisitsSchema, totalAnswersSchema } from "../schemas";
 
 export const getInDepthAnalyticsData = authenticatedProcedure
   .meta({
@@ -33,16 +35,22 @@ export const getInDepthAnalyticsData = authenticatedProcedure
   .output(
     z.object({
       totalAnswers: z.array(totalAnswersSchema),
-      offDefaultPathVisitedEdges: z.array(
-        z.object({ edgeId: z.string(), total: z.number() }),
-      ),
+      offDefaultPathVisitedEdges: z.array(edgeWithTotalVisitsSchema),
     }),
   )
   .query(
     async ({ input: { typebotId, timeFilter, timeZone }, ctx: { user } }) => {
       const typebot = await prisma.typebot.findFirst({
         where: canReadTypebots(typebotId, user),
-        select: { publishedTypebot: true },
+        select: {
+          publishedTypebot: {
+            select: {
+              groups: true,
+              version: true,
+              edges: true,
+            },
+          },
+        },
       });
       if (!typebot?.publishedTypebot)
         throw new TRPCError({
@@ -54,10 +62,10 @@ export const getInDepthAnalyticsData = authenticatedProcedure
       const toDate = parseToDateFromTimeFilter(timeFilter, timeZone);
 
       const totalAnswersPerBlock = await prisma.answer.groupBy({
-        by: ["blockId", "resultId"],
+        by: ["blockId"],
         where: {
           result: {
-            typebotId: typebot.publishedTypebot.typebotId,
+            typebotId,
             createdAt: fromDate
               ? {
                   gte: fromDate,
@@ -73,13 +81,14 @@ export const getInDepthAnalyticsData = authenticatedProcedure
             ),
           },
         },
+        _count: { resultId: true },
       });
 
       const totalAnswersV2PerBlock = await prisma.answerV2.groupBy({
-        by: ["blockId", "resultId"],
+        by: ["blockId"],
         where: {
           result: {
-            typebotId: typebot.publishedTypebot.typebotId,
+            typebotId,
             createdAt: fromDate
               ? {
                   gte: fromDate,
@@ -95,23 +104,14 @@ export const getInDepthAnalyticsData = authenticatedProcedure
             ),
           },
         },
+        _count: { resultId: true },
       });
-
-      const uniqueCounts = totalAnswersPerBlock
-        .concat(totalAnswersV2PerBlock)
-        .reduce<{
-          [key: string]: Set<string>;
-        }>((acc, { blockId, resultId }) => {
-          acc[blockId] = acc[blockId] || new Set();
-          acc[blockId].add(resultId);
-          return acc;
-        }, {});
 
       const offDefaultPathVisitedEdges = await prisma.visitedEdge.groupBy({
         by: ["edgeId"],
         where: {
           result: {
-            typebotId: typebot.publishedTypebot.typebotId,
+            typebotId,
             createdAt: fromDate
               ? {
                   gte: fromDate,
@@ -123,15 +123,22 @@ export const getInDepthAnalyticsData = authenticatedProcedure
         _count: { resultId: true },
       });
 
+      const edges = z.array(edgeSchema).parse(typebot.publishedTypebot.edges);
+
       return {
-        totalAnswers: Object.keys(uniqueCounts).map((blockId) => ({
-          blockId,
-          total: uniqueCounts[blockId].size,
-        })),
-        offDefaultPathVisitedEdges: offDefaultPathVisitedEdges.map((e) => ({
-          edgeId: e.edgeId,
-          total: e._count.resultId,
-        })),
+        totalAnswers: totalAnswersPerBlock
+          .concat(totalAnswersV2PerBlock)
+          .map((block) => ({
+            blockId: block.blockId,
+            total: block._count.resultId,
+          })),
+        offDefaultPathVisitedEdges: offDefaultPathVisitedEdges.map(
+          (visitedEdge) => ({
+            id: visitedEdge.edgeId,
+            total: visitedEdge._count.resultId,
+            to: getVisitedEdgeToPropFromId(visitedEdge.edgeId, { edges }),
+          }),
+        ),
       };
     },
   );

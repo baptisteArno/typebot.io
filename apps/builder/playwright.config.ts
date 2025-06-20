@@ -15,6 +15,7 @@ export default defineConfig({
     [process.env.CI ? "github" : "list"],
     ["html", { outputFolder: "src/test/reporters" }],
   ],
+  testIgnore: ["**/*.test.ts"],
   maxFailures: 10,
   webServer: process.env.CI
     ? {

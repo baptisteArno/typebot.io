@@ -2,7 +2,7 @@ import { getUserModeInWorkspace } from "@/features/workspace/helpers/getUserRole
 import { authenticatedProcedure } from "@/helpers/server/trpc";
 import { TRPCError } from "@trpc/server";
 import prisma from "@typebot.io/prisma";
-import { Plan, WorkspaceRole } from "@typebot.io/prisma/enum";
+import { Plan } from "@typebot.io/prisma/enum";
 import type { Prisma } from "@typebot.io/prisma/types";
 import { folderSchema } from "@typebot.io/schemas/features/folder";
 import { trackEvents } from "@typebot.io/telemetry/trackEvents";

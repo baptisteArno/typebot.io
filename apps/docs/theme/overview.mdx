@@ -4,13 +4,37 @@ title: Theme
 icon: brush
 ---
 
-import { LoomVideo } from '/snippets/loom-video.mdx'
+import { LoomVideo } from "/snippets/loom-video.mdx";
 
 The theme tab allows you to customize the look of your typebot.
 
 ## Global
 
 This section allows you to enable or disable the typebot branding, change the font and the background of your bot.
+
+### Progress Bar
+
+The Progress Bar allows you to visually indicate a user’s progress through the bot. This helps improve user experience by providing a sense of advancement and completion.
+
+To enable the progress bar in your chatbot:
+
+1. Navigate to the Theme tab of your typebot.
+2. Locate the Progress Bar option in the Global section.
+3. Toggle the `Enable progress bar` switch to activate it.
+
+| Option                     | Description                                                                                |
+| -------------------------- | ------------------------------------------------------------------------------------------ |
+| **Placement**              | Determines where the bar appears. Options: `Top` or `Bottom`.                              |
+| **Background color**       | Sets the color of the bar’s background.                                                    |
+| **Color**                  | Sets the color of the progress indicator.                                                  |
+| **Thickness**              | Controls the height of the bar in pixels. Default: `4`.                                    |
+| **Position when embedded** | Controls how the bar is positioned when the bot is embedded on another website. See below. |
+
+#### Position When Embedded
+
+Use this option to adjust how the progress bar behaves when Typebot is embedded in a webpage:
+- `fixed`: Pins the progress bar to the top of the window. It stays visible even if the chat container scrolls.
+- `absolute`: Positions the progress bar at the top of the embedded chat container. It scrolls with the chat.
 
 ## Chat
 
@@ -49,7 +73,7 @@ For example, if I want my buttons to be more rounded, and have a fancy gradient 
 Thanks to custom CSS, you can customize the color of a single button for example by using the `data-itemid` attribute:
 
 ```css
-[data-itemid='cl3iunm4p000f2e6gfr8cznnn'] {
+[data-itemid="cl3iunm4p000f2e6gfr8cznnn"] {
   background-color: gray;
   border-color: gray;
 }

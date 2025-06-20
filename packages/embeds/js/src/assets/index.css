@@ -125,11 +125,10 @@ pre {
   font-family: var(--typebot-container-font-family), -apple-system,
     BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-  container-type: inline-size;
+  container-type: size;
 }
 
 .typebot-chat-view {
-  @apply pt-5 px-3;
   background-color: rgba(
     var(--typebot-chat-container-bg-rgb),
     var(--typebot-chat-container-opacity)
@@ -144,13 +143,15 @@ pre {
   box-shadow: var(--typebot-chat-container-box-shadow);
 }
 
-/* TODO: Use @tailwindcss/container-queries*/
-@container (min-width: 432px) {
+@container (min-height: 500px) {
   .typebot-chat-view {
-    @apply pt-10 px-5;
-    min-height: var(--typebot-chat-container-max-height);
-    max-height: var(--typebot-chat-container-max-height);
-    border-radius: var(--typebot-chat-container-border-radius);
+    @apply pt-10;
+  }
+}
+
+@container (min-height: 300px) {
+  .typebot-bottom-spacer {
+    @apply h-[20%];
   }
 }
 
