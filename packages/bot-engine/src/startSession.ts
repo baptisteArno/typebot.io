@@ -53,6 +53,7 @@ import { NodeType, parse } from "node-html-parser";
 import { isTypebotInSessionAtLeastV6 } from "./helpers/isTypebotInSessionAtLeastV6";
 import { parseVariablesInRichText } from "./parseBubbleBlock";
 import { parseDynamicTheme } from "./parseDynamicTheme";
+import { countResults } from "./queries/countResults";
 import { findPublicTypebot } from "./queries/findPublicTypebot";
 import { findResult } from "./queries/findResult";
 import { findTypebot } from "./queries/findTypebot";
@@ -344,15 +345,68 @@ const getTypebot = async (startParams: StartParams): Promise<StartTypebot> => {
       message: defaultSystemMessages.botClosed,
     });
 
-  if ("isClosed" in parsedTypebot && parsedTypebot.isClosed)
+  let isClosed = "isClosed" in parsedTypebot && parsedTypebot.isClosed;
+
+  const openTypebot = startTypebotSchema.parse(parsedTypebot);
+
+  // Check chat limits if enabled
+  if (openTypebot.settings?.general?.chatLimits?.isEnabled) {
+    const { chatLimits } = openTypebot.settings.general;
+
+    // If limit is undefined, null, or 0, treat as unlimited
+    if (
+      chatLimits.limit === undefined ||
+      chatLimits.limit === null ||
+      chatLimits.limit === 0
+    )
+      return openTypebot;
+
+    // Calculate date range based on limit type
+    let fromDate: Date | undefined;
+    const now = new Date();
+
+    switch (chatLimits.limitType) {
+      case "daily":
+        fromDate = new Date(now);
+        fromDate.setHours(0, 0, 0, 0);
+        break;
+      case "weekly":
+        fromDate = new Date(now);
+        fromDate.setDate(now.getDate() - now.getDay());
+        fromDate.setHours(0, 0, 0, 0);
+        break;
+      case "monthly":
+        fromDate = new Date(now);
+        fromDate.setDate(1);
+        fromDate.setHours(0, 0, 0, 0);
+        break;
+      default:
+        // "total" or anything else
+        fromDate = undefined;
+    }
+
+    // Count results based on date range
+    const resultsCount = await countResults({
+      typebotId: openTypebot.id,
+      fromDate,
+    });
+
+    // Check if results count exceeds the limit
+    if (resultsCount >= chatLimits.limit) {
+      isClosed = true;
+    }
+  }
+
+  if (isClosed) {
     throw new TRPCError({
       code: "BAD_REQUEST",
       message:
-        settingsSchema.parse(parsedTypebot.settings).general?.systemMessages
+        settingsSchema.parse(openTypebot.settings).general?.systemMessages
           ?.botClosed ?? defaultSystemMessages.botClosed,
     });
+  }
 
-  return startTypebotSchema.parse(parsedTypebot);
+  return openTypebot;
 };
 
 const getResult = async ({
