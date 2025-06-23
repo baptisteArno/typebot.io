@@ -133,7 +133,20 @@ export const TypebotProvider = ({
     useMutation(
       trpc.typebot.updateTypebot.mutationOptions({
         onError: (error) => {
-          if (error.data?.code === "CONFLICT") return;
+          if (error.data?.code === "CONFLICT") {
+            toast({
+              context: "Could not update the typebot",
+              description:
+                "We detected that the typebot was updated since you last saved it so we couldn't save your current changes. If it is not expected, we suggest you overwrite the changes.",
+              action: {
+                label: "Overwrite",
+                onClick: async () => {
+                  await saveTypebot(undefined, true);
+                },
+              },
+            });
+            return;
+          }
           toast({
             context: "Error while updating typebot",
             description: error.message,
@@ -227,6 +240,7 @@ export const TypebotProvider = ({
         const { typebot } = await updateTypebot({
           typebotId: newParsedTypebot.id,
           typebot: newParsedTypebot,
+          overwrite,
         });
         setUpdateDate(typebot.updatedAt);
         if (overwrite) {
