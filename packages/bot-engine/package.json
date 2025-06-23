@@ -54,6 +54,11 @@
     "@typebot.io/forge-repository": "workspace:*",
     "@types/nodemailer": "6.4.14",
     "@types/qs": "6.9.7",
-    "@typebot.io/tsconfig": "workspace:*"
+    "@typebot.io/tsconfig": "workspace:*",
+    "vitest": "3.1.4",
+    "vite-tsconfig-paths": "5.1.4"
+  },
+  "scripts": {
+    "test:unit": "vitest run"
   }
 }

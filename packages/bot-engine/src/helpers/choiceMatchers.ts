@@ -80,8 +80,11 @@ export const matchByIndex = <T extends ChoiceItem>(
   items: T[],
   { strippedInput }: MatchResult,
 ): MatcherResult<T> => {
-  const matchFn: MatchFunction<T> = (item, input, idx) =>
-    input === `${idx! + 1}`;
+  const matchFn: MatchFunction<T> = (_, input, idx) => {
+    const indexStr = `${idx! + 1}`;
+    const regex = new RegExp(`\\b${indexStr}\\b`);
+    return regex.test(input);
+  };
 
   const matchingItems = items.reduce(createMatchReducer(matchFn), {
     strippedInput,

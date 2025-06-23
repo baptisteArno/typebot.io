@@ -43,7 +43,9 @@ import type {
   Variable,
 } from "@typebot.io/variables/schemas";
 import { parseCardsReply } from "./blocks/cards/parseCardsReply";
-import { parseButtonsReply } from "./blocks/inputs/buttons/parseButtonsReply";
+import { injectVariableValuesInButtonsInputBlock } from "./blocks/inputs/buttons/injectVariableValuesInButtonsInputBlock";
+import { parseMultipleChoiceReply } from "./blocks/inputs/buttons/parseMultipleChoiceReply";
+import { parseSingleChoiceReply } from "./blocks/inputs/buttons/parseSingleChoiceReply";
 import { parseDateReply } from "./blocks/inputs/date/parseDateReply";
 import { formatEmail } from "./blocks/inputs/email/formatEmail";
 import { parseNumber } from "./blocks/inputs/number/parseNumber";
@@ -842,11 +844,13 @@ const parseReply = async (
     }
     case InputBlockType.CHOICE: {
       if (!reply || reply.type !== "text") return { status: "fail" };
-      return parseButtonsReply(reply.text, {
-        block,
+      const displayedItems = injectVariableValuesInButtonsInputBlock(block, {
         state,
         sessionStore,
-      });
+      }).items;
+      if (block.options?.isMultipleChoice)
+        return parseMultipleChoiceReply(reply.text, { items: displayedItems });
+      return parseSingleChoiceReply(displayedItems, reply.text);
     }
     case InputBlockType.NUMBER: {
       if (!reply || reply.type !== "text") return { status: "fail" };
