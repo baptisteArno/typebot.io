@@ -6,7 +6,14 @@ import { createOpenApiNextHandler } from "trpc-to-openapi";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   await cors(req, res, {
-    origin: ["https://docs.typebot.io", "http://localhost:3000"],
+    origin: [
+      "https://docs.typebot.io",
+      "http://localhost:3000",
+      "http://localhost:3010",
+      "http://localhost:3011",
+      "http://localhost:3012",
+      "http://localhost:3013",
+    ],
   });
 
   return createOpenApiNextHandler({

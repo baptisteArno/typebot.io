@@ -10,6 +10,11 @@
     "jsxImportSource": "solid-js",
     "outDir": "dist",
     "declaration": true,
-    "declarationMap": true
+    "declarationMap": true,
+    "typeRoots": [
+      "./src/global.d.ts",
+      "./src/env.d.ts",
+      "./node_modules/@types"
+    ]
   }
 }

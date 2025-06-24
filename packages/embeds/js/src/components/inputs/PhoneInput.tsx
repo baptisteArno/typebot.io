@@ -1,9 +1,7 @@
-import { SendButton } from "@/components/SendButton";
 import { ChevronDownIcon } from "@/components/icons/ChevronDownIcon";
 import { ShortTextInput } from "@/components/inputs/ShortTextInput";
 import type { CommandData } from "@/features/commands/types";
-import type { InputSubmitContent } from "@/types";
-import { defaultPhoneInputOptions } from "@typebot.io/blocks-inputs/phone/constants";
+import type { BotContext, InputSubmitContent } from "@/types";
 import type { PhoneNumberInputBlock } from "@typebot.io/blocks-inputs/phone/schema";
 import { guessDeviceIsMobile } from "@typebot.io/lib/guessDeviceIsMobile";
 import { phoneCountries } from "@typebot.io/lib/phoneCountries";
@@ -15,14 +13,23 @@ type PhoneInputProps = Pick<
   "labels" | "defaultCountryCode"
 > & {
   defaultValue?: string;
-  onSubmit: (value: InputSubmitContent) => void;
+  error?: boolean;
+  context: BotContext;
+  name: string;
+  onSubmit?: (value: InputSubmitContent) => void;
 };
 
 export const PhoneInput = (props: PhoneInputProps) => {
   const [selectedCountryCode, setSelectedCountryCode] = createSignal(
     isEmpty(props.defaultCountryCode) ? "INT" : props.defaultCountryCode,
   );
+
+  console.log(props.defaultCountryCode);
+
+  console.log(selectedCountryCode());
+
   const [inputValue, setInputValue] = createSignal(props.defaultValue ?? "");
+
   let inputRef: HTMLInputElement | undefined;
 
   const handleInput = (inputValue: string | undefined) => {
@@ -114,7 +121,12 @@ export const PhoneInput = (props: PhoneInputProps) => {
       class="typebot-input-form flex w-full gap-2 items-end max-w-[350px]"
       onKeyDown={submitWhenEnter}
     >
-      <div class={"flex typebot-input w-full"}>
+      <div
+        class={"flex typebot-input w-full"}
+        style={{
+          "border-color": props.error ? " #FF4949" : "",
+        }}
+      >
         <div class="relative typebot-country-select flex justify-center items-center">
           <div class="pl-2 pr-1 flex items-center gap-2">
             <span>
@@ -124,6 +136,7 @@ export const PhoneInput = (props: PhoneInputProps) => {
                 )?.flag
               }
             </span>
+
             <ChevronDownIcon class="w-3" />
           </div>
 
@@ -147,22 +160,13 @@ export const PhoneInput = (props: PhoneInputProps) => {
 
         <ShortTextInput
           type="tel"
+          name={props.name}
           ref={inputRef}
           value={inputValue()}
           onInput={handleInput}
-          placeholder={
-            props.labels?.placeholder ??
-            defaultPhoneInputOptions.labels.placeholder
-          }
           autofocus={!guessDeviceIsMobile()}
         />
       </div>
-      <SendButton
-        type="button"
-        on:click={submit}
-      >
-        {props.labels?.button}
-      </SendButton>
     </div>
   );
 };

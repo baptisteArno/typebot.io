@@ -18,7 +18,9 @@
 }
 
 .bubble-typing {
-  transition: width 400ms ease-out, height 400ms ease-out;
+  transition:
+    width 400ms ease-out,
+    height 400ms ease-out;
 }
 
 .bubble1,
@@ -122,10 +124,20 @@ pre {
   background-color: var(--typebot-container-bg-color);
   background-position: center;
   background-size: cover;
-  font-family: var(--typebot-container-font-family), -apple-system,
-    BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif,
-    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-family:
+    var(--typebot-container-font-family),
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif,
+    "Apple Color Emoji",
+    "Segoe UI Emoji",
+    "Segoe UI Symbol";
   container-type: size;
+  border-radius: 20px;
 }
 
 .typebot-chat-view {
@@ -143,11 +155,11 @@ pre {
   box-shadow: var(--typebot-chat-container-box-shadow);
 }
 
-@container (min-height: 500px) {
+/* @container (min-height: 500px) {
   .typebot-chat-view {
     @apply pt-10;
   }
-}
+} */
 
 @container (min-height: 300px) {
   .typebot-bottom-spacer {
@@ -233,6 +245,7 @@ pre {
 }
 
 .typebot-guest-bubble {
+  word-break: break-all;
   color: var(--typebot-guest-bubble-color);
   background-color: rgba(
     var(--typebot-guest-bubble-bg-rgb),
@@ -271,6 +284,28 @@ pre {
 
 .typebot-input-error-message {
   color: var(--typebot-input-color);
+}
+
+.typebot-input-form {
+  height: 100%;
+  width: 100%;
+  padding: 0;
+}
+
+.typebot-input-form div {
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  align-items: center;
+}
+
+.typebot-input-form input {
+  padding: 0;
+}
+
+.typebot-input-form textarea {
+  padding: 0;
+  resize: none;
 }
 
 .typebot-input-form .typebot-button {

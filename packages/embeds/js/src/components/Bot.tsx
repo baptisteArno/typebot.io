@@ -29,7 +29,6 @@ import {
   defaultSystemMessages,
 } from "@typebot.io/settings/constants";
 import {
-  defaultContainerBackgroundColor,
   defaultFontFamily,
   defaultFontType,
   defaultProgressBarPosition,
@@ -49,7 +48,6 @@ import { Portal } from "solid-js/web";
 import { buttonVariants } from "./Button";
 import { ChatContainer } from "./ConversationContainer/ChatContainer";
 import { ErrorMessage } from "./ErrorMessage";
-import { LiteBadge } from "./LiteBadge";
 import { ProgressBar } from "./ProgressBar";
 import { CloseIcon } from "./icons/CloseIcon";
 
@@ -232,10 +230,18 @@ export const Bot = (props: BotProps & { class?: string }) => {
   return (
     <>
       <Show when={customCss()}>{(css) => <style>{css()}</style>}</Show>
-      <Show when={error()} keyed>
+
+      <Show
+        when={error()}
+        keyed
+      >
         {(error) => <ErrorMessage error={error} />}
       </Show>
-      <Show when={initialChatReply()} keyed>
+
+      <Show
+        when={initialChatReply()}
+        keyed
+      >
         {(initialChatReply) => (
           <BotContent
             class={props.class}
@@ -305,6 +311,7 @@ const BotContent = (props: BotContentProps) => {
       key: `typebot-${props.context.typebot.id}-progressValue`,
     },
   );
+
   let botContainer: HTMLDivElement | undefined;
 
   createEffect(() => {
@@ -366,6 +373,7 @@ const BotContent = (props: BotContentProps) => {
             </Portal>
           </Show>
         </Show>
+
         <ChatContainer
           context={props.context}
           initialChatReply={props.initialChatReply}
@@ -376,14 +384,11 @@ const BotContent = (props: BotContentProps) => {
           onProgressUpdate={setProgressValue}
           onScriptExecutionSuccess={props.onScriptExecutionSuccess}
         />
-        <Show
-          when={
-            props.initialChatReply.typebot.settings.general?.isBrandingEnabled
-          }
+
+        <Toaster
+          toaster={toaster}
+          class="w-full"
         >
-          <LiteBadge botContainer={botContainer} />
-        </Show>
-        <Toaster toaster={toaster} class="w-full">
           {(toast) => (
             <Toast.Root class="flex flex-col pl-4 py-4 pr-8 gap-2 max-w-[350px] rounded-chat text-input-text border-input border-input-border bg-input-bg shadow-input data-[state=open]:animate-fade-in-from-bottom data-[state=closed]:animate-fade-out-from-bottom">
               <Toast.Title class="font-semibold">{toast().title}</Toast.Title>
@@ -418,6 +423,30 @@ const BotContent = (props: BotContentProps) => {
             </Toast.Root>
           )}
         </Toaster>
+
+        <div
+          style={{
+            display: "flex",
+            "align-self": "center",
+            "align-items": "center",
+            gap: "10px",
+            color: "#777777",
+            "font-size": "10px",
+            width: "100%",
+            height: "40px",
+            "justify-content": "center",
+          }}
+        >
+          <span>Um produto</span>
+
+          <span>
+            <img
+              src="https://leadfy.me/wp-content/uploads/2025/02/logoLeadFy.svg"
+              style={{ width: "50px" }}
+              alt="Site Logo"
+            />
+          </span>
+        </div>
       </div>
     </BotContainerContext.Provider>
   );

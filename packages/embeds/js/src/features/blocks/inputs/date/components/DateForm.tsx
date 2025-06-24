@@ -111,9 +111,7 @@ export const DateForm = (props: Props) => {
           )}
         </div>
       </form>
-      <SendButton class="h-[56px]" on:click={submit}>
-        {props.options?.labels?.button}
-      </SendButton>
+      <SendButton on:click={submit}>{props.options?.labels?.button}</SendButton>
     </div>
   );
 };

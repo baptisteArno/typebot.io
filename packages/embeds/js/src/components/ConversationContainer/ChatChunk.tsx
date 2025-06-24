@@ -39,9 +39,11 @@ type Props = Pick<ChatChunkType, "messages" | "input" | "streamingMessage"> & {
 
 export const ChatChunk = (props: Props) => {
   let inputRef: HTMLDivElement | undefined;
+
   const [displayedMessageIndex, setDisplayedMessageIndex] = createSignal(
     props.isTransitionDisabled ? props.messages.length : 0,
   );
+
   const [lastBubble, setLastBubble] = createSignal<HTMLDivElement>();
 
   onMount(() => {
@@ -129,6 +131,7 @@ export const ChatChunk = (props: Props) => {
           </div>
         </div>
       </Show>
+
       <Show
         when={
           props.input &&
@@ -153,6 +156,7 @@ export const ChatChunk = (props: Props) => {
           onSkip={props.onSkip}
         />
       </Show>
+
       <Show when={props.streamingMessage}>
         <div class="flex gap-1 @xs:gap-2">
           <Show

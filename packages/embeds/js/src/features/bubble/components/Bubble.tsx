@@ -1,4 +1,5 @@
 import { Bot, type BotProps } from "@/components/Bot";
+import { BotPreForm } from "@/components/BotPreForm";
 import { getPaymentInProgressInStorage } from "@/features/blocks/inputs/payment/helpers/paymentInProgressStorage";
 import { chatwootWebWidgetOpenedMessage } from "@/features/blocks/integrations/chatwoot/constants";
 import type { CommandData } from "@/features/commands/types";
@@ -43,7 +44,55 @@ export type BubbleProps = BotProps &
     onPreviewMessageDismissed?: () => void;
   };
 
+const getLocalStorageValue = (key: string) => {
+  try {
+    const value = localStorage.getItem(key);
+    return value ? value : null;
+  } catch {
+    return null;
+  }
+};
+
+const setLocalStorageValue = (key: string, value: string | null) => {
+  try {
+    if (value === null) {
+      localStorage.removeItem(key);
+    } else {
+      localStorage.setItem(key, value);
+    }
+  } catch {}
+};
+
 export const Bubble = (props: BubbleProps) => {
+  const LEAD_NAME_KEY = "leadName";
+  const LEAD_EMAIL_KEY = "leadEmail";
+  const LEAD_PHONE_KEY = "leadPhone";
+
+  const [leadName, _setLeadName] = createSignal<string | null>(
+    getLocalStorageValue(LEAD_NAME_KEY),
+  );
+  const [leadEmail, _setLeadEmail] = createSignal<string | null>(
+    getLocalStorageValue(LEAD_EMAIL_KEY),
+  );
+  const [leadPhone, _setLeadPhone] = createSignal<string | null>(
+    getLocalStorageValue(LEAD_PHONE_KEY),
+  );
+
+  const setLeadName = (value: string | null) => {
+    _setLeadName(value);
+    setLocalStorageValue(LEAD_NAME_KEY, value);
+  };
+
+  const setLeadEmail = (value: string | null) => {
+    _setLeadEmail(value);
+    setLocalStorageValue(LEAD_EMAIL_KEY, value);
+  };
+
+  const setLeadPhone = (value: string | null) => {
+    _setLeadPhone(value);
+    setLocalStorageValue(LEAD_PHONE_KEY, value);
+  };
+
   const [bubbleProps, botProps] = splitProps(props, [
     "isOpen",
     "onOpen",
@@ -238,8 +287,10 @@ export const Bubble = (props: BubbleProps) => {
           {typebotColors}
           {styles}
         </style>
+
         {/* Needed for progress bar with fixed position we need to be outside of fixed bubble container */}
         <div ref={progressBarContainerRef} />
+
         <div
           class={cx(
             bubbleProps.theme?.position === "static"
@@ -258,7 +309,7 @@ export const Bubble = (props: BubbleProps) => {
             "--bot-max-width":
               bubbleProps.theme?.chatWindow?.maxWidth ?? "400px",
             "--bot-max-height":
-              bubbleProps.theme?.chatWindow?.maxHeight ?? "704px",
+              bubbleProps.theme?.chatWindow?.maxHeight ?? "680px",
             "--container-border-radius": "7px",
             ...bubbleProps.inlineStyle,
           }}
@@ -272,6 +323,7 @@ export const Bubble = (props: BubbleProps) => {
               onCloseClick={hidePreviewMessage}
             />
           </Show>
+
           <Show when={!bubbleProps.theme?.button?.isHidden}>
             <BubbleButton
               {...bubbleProps.theme?.button}
@@ -280,6 +332,7 @@ export const Bubble = (props: BubbleProps) => {
               isBotOpen={isOpen()}
             />
           </Show>
+
           <div
             part="bot"
             style={{
@@ -290,9 +343,12 @@ export const Bubble = (props: BubbleProps) => {
                   ? "bottom left"
                   : "bottom right",
               transform: isOpen() ? "scale3d(1, 1, 1)" : "scale3d(0, 0, 1)",
+              "border-radius": "20px",
+              display: "flex",
+              "flex-direction": "column",
             }}
             class={cx(
-              "absolute rounded-lg max-h-[calc(100dvh-var(--container-bottom)-var(--button-gap)-var(--button-size))] shadow-lg bg-[var(--bot-bg-color)] h-[var(--bot-max-height)] max-w-[var(--bot-max-width)] overflow-hidden",
+              "absolute rounded-lg max-h-[calc(100dvh-20px-var(--container-bottom)-var(--button-gap)-var(--button-size))] shadow-lg bg-[var(--bot-bg-color)] h-[var(--bot-max-height)] max-w-[var(--bot-max-width)] overflow-hidden",
               isOpen() ? "opacity-1" : "opacity-0 pointer-events-none",
               bubbleProps.theme?.placement === "left"
                 ? "sm:left-0 -left-5"
@@ -302,12 +358,44 @@ export const Bubble = (props: BubbleProps) => {
                 : "bottom-[calc(100%+var(--button-gap))] w-screen",
             )}
           >
-            <Show when={hasOpenedOnce()}>
+            <Show
+              when={hasOpenedOnce() && leadName() && leadEmail() && leadPhone()}
+            >
               <Bot
                 {...botProps}
                 onScriptExecutionSuccess={handleScriptExecutionSuccess}
                 onChatStatePersisted={handleOnChatStatePersisted}
-                prefilledVariables={prefilledVariables()}
+                // prefilledVariables={prefilledVariables()}
+                prefilledVariables={{
+                  UserName: leadName(),
+                  UserEmail: leadEmail(),
+                  UserPhone: leadPhone(),
+                }}
+              />
+            </Show>
+
+            <Show
+              when={
+                hasOpenedOnce() && (!leadName() || !leadEmail() || !leadPhone())
+              }
+            >
+              <BotPreForm
+                {...botProps}
+                onScriptExecutionSuccess={handleScriptExecutionSuccess}
+                onChatStatePersisted={handleOnChatStatePersisted}
+                prefilledVariables={{
+                  UserName: leadName(),
+                  UserEmail: leadEmail(),
+                  UserPhone: leadPhone(),
+                }}
+                // prefilledVariables={prefilledVariables()}
+                setLead={(values) => {
+                  console.log("Setting lead values:", values);
+
+                  setLeadName(values.name);
+                  setLeadEmail(values.email);
+                  setLeadPhone(values.phone);
+                }}
               />
             </Show>
           </div>

@@ -97,7 +97,10 @@ export const NumberInput = (props: NumberInputProps) => {
           </ArkNumberInput.DecrementTrigger>
         </ArkNumberInput.Control>
       </ArkNumberInput.RootProvider>
-      <SendButton type="button" class="h-[56px]" on:click={submit}>
+      <SendButton
+        type="button"
+        on:click={submit}
+      >
         {props.block.options?.labels?.button ?? defaultNumberInputButtonLabel}
       </SendButton>
     </div>

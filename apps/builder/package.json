@@ -99,7 +99,7 @@
     "partysocket": "1.0.2",
     "pexels": "^1.4.0",
     "posthog-node": "4.3.2",
-    "prettier": "2.8.8",
+    "prettier": "^3.4.2",
     "qs": "6.11.2",
     "react": "18.3.1",
     "react-dom": "18.3.1",

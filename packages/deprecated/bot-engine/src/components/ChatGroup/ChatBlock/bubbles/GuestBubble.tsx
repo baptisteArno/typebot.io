@@ -1,5 +1,5 @@
 import { Avatar } from "@/components/avatars/Avatar";
-import React, { useState } from "react";
+import { useState } from "react";
 import { CSSTransition } from "react-transition-group";
 
 interface Props {
@@ -16,7 +16,10 @@ export const GuestBubble = ({
   const [content] = useState(message);
 
   return (
-    <CSSTransition classNames="bubble" timeout={1000}>
+    <CSSTransition
+      classNames="bubble"
+      timeout={1000}
+    >
       <div
         className="flex justify-end mb-2 items-end"
         style={{ marginLeft: "50px" }}
@@ -27,6 +30,7 @@ export const GuestBubble = ({
         >
           {content}
         </span>
+
         {showAvatar && <Avatar avatarSrc={avatarSrc} />}
       </div>
     </CSSTransition>

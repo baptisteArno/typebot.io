@@ -8,6 +8,7 @@ export type ButtonProps = {
   variant?: "primary" | "secondary";
   isDisabled?: boolean;
   isLoading?: boolean;
+  fullWidth?: boolean;
 } & Pick<
   JSX.ButtonHTMLAttributes<HTMLButtonElement>,
   "class" | "children" | "type" | "on:click"
@@ -43,6 +44,7 @@ export const Button = (props: ButtonProps) => {
     "size",
     "isDisabled",
     "isLoading",
+    "fullWidth",
   ]);
 
   return (
@@ -52,9 +54,13 @@ export const Button = (props: ButtonProps) => {
       class={cn(
         buttonVariants({ variant: local.variant, size: local.size }),
         buttonProps.class,
+        local.fullWidth && "w-full",
       )}
     >
-      <Show when={!local.isLoading} fallback={<Spinner />}>
+      <Show
+        when={!local.isLoading}
+        fallback={<Spinner />}
+      >
         {childrenReturn()}
       </Show>
     </button>

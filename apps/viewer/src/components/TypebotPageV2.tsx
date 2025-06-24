@@ -9,7 +9,6 @@ import { gtmBodyElement } from "@/lib/google-tag-manager";
 import {
   injectCustomHeadCode,
   isDefined,
-  isNotDefined,
   isNotEmpty,
 } from "@typebot.io/lib/utils";
 import type { AnswerInput } from "@typebot.io/results/schemas/answers";
@@ -17,9 +16,9 @@ import { defaultSettings } from "@typebot.io/settings/constants";
 import type { PublicTypebot } from "@typebot.io/typebot/schemas/publicTypebot";
 import type { Typebot } from "@typebot.io/typebot/schemas/typebot";
 import type { VariableWithValue } from "@typebot.io/variables/schemas";
-import { TypebotViewer } from "bot-engine";
+// import { TypebotViewer } from "bot-engine";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { ErrorPage } from "./ErrorPage";
 import { SEO } from "./Seo";
 
@@ -145,15 +144,16 @@ export const TypebotPageV2 = ({
         metadata={publishedTypebot.settings.metadata}
       />
       {showTypebot && (
-        <TypebotViewer
-          typebot={publishedTypebot}
-          resultId={resultId}
-          predefinedVariables={predefinedVariables}
-          onNewAnswer={handleNewAnswer}
-          onCompleted={handleCompleted}
-          onVariablesUpdated={handleNewVariables}
-          isLoading={isNotDefined(resultId)}
-        />
+        <div>deprecated typebot</div>
+        // <TypebotViewer
+        //   typebot={publishedTypebot}
+        //   resultId={resultId}
+        //   predefinedVariables={predefinedVariables}
+        //   onNewAnswer={handleNewAnswer}
+        //   onCompleted={handleCompleted}
+        //   onVariablesUpdated={handleNewVariables}
+        //   isLoading={isNotDefined(resultId)}
+        // />
       )}
     </div>
   );

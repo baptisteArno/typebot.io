@@ -65,7 +65,9 @@ type Props = {
 
 export const ChatContainer = (props: Props) => {
   let chatContainer: HTMLDivElement | undefined;
+
   const botContainer = useBotContainer();
+
   const [chatChunks, setChatChunks] = persist(
     createSignal<ChatChunkType[]>([
       {
@@ -227,7 +229,10 @@ export const ChatContainer = (props: Props) => {
   const processContinueChatResponse = async ({
     data,
     error,
-  }: { data: ContinueChatResponse | undefined; error: unknown }) => {
+  }: {
+    data: ContinueChatResponse | undefined;
+    error: unknown;
+  }) => {
     if (error) {
       const errorLogs = [
         await parseUnknownClientError({
@@ -475,6 +480,13 @@ export const ChatContainer = (props: Props) => {
             ? "overflow-y-auto scroll-smooth scrollable-container"
             : undefined,
         )}
+        style={{
+          padding: "15px",
+          "padding-bottom": "0px",
+          flex: 1,
+          height: "100%",
+          overflow: "auto",
+        }}
       >
         <div
           ref={chatContainer}
@@ -484,6 +496,9 @@ export const ChatContainer = (props: Props) => {
               ? undefined
               : "overflow-y-auto scroll-smooth scrollable-container",
           )}
+          style={{
+            "border-radius": "10px",
+          }}
         >
           <div class="w-full flex flex-col gap-2 @xs:px-5 px-3">
             <Index
@@ -516,10 +531,12 @@ export const ChatContainer = (props: Props) => {
                 />
               )}
             </Index>
+
             <Show when={isSending()}>
               <LoadingChunk theme={latestTheme()} />
             </Show>
           </div>
+
           <BottomSpacer />
         </div>
       </div>
