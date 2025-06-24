@@ -469,20 +469,24 @@ export const ChatContainer = (props: Props) => {
     <ChatContainerSizeContext.Provider value={chatContainerSize}>
       <div
         class={cx(
-          "w-full h-full px-[calc((100%-var(--typebot-chat-container-max-width))/2)]",
+          "w-full h-full flex px-[calc((100%-var(--typebot-chat-container-max-width))/2)]",
           // If chat container is transparent, we make sure the scroll area takes the entire width of the container
           isChatContainerTransparent()
             ? "overflow-y-auto scroll-smooth scrollable-container"
-            : undefined,
+            : // on mobile view, we want the chat container to be full height and start-aligned
+              "@container @xs:items-center",
         )}
       >
         <div
           ref={chatContainer}
           class={cx(
-            "@container relative typebot-chat-view w-full min-h-full flex flex-col items-center @xs:min-h-chat-container @xs:max-h-chat-container @xs:rounded-chat-container pt-5  max-w-chat-container h-full",
+            "@container relative typebot-chat-view w-full flex flex-col items-center pt-5 max-w-chat-container",
             isChatContainerTransparent()
               ? undefined
-              : "overflow-y-auto scroll-smooth scrollable-container",
+              : cx(
+                  "overflow-y-auto scroll-smooth scrollable-container",
+                  "@xs:min-h-chat-container max-h-full @xs:max-h-chat-container @xs:rounded-chat-container",
+                ),
           )}
         >
           <div class="w-full flex flex-col gap-2 @xs:px-5 px-3">

@@ -11,6 +11,7 @@
 .scrollable-container {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
+  -webkit-overflow-scrolling: touch;
 }
 
 .text-fade-in {
@@ -151,7 +152,7 @@ pre {
 
 @container (min-height: 300px) {
   .typebot-bottom-spacer {
-    @apply h-[20%];
+    @apply h-[calc(0.2*var(--bot-container-height))];
   }
 }
 
