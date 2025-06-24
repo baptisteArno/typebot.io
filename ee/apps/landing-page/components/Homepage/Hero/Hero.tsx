@@ -59,7 +59,7 @@ export const Hero = () => {
                 height="4rem"
                 px="2rem"
               >
-                Create a typebot for free
+                Create a bot for free
               </Button>
             </Stack>
           </VStack>

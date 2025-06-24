@@ -12,7 +12,7 @@ export const ArticleCallToAction = () => (
       as="a"
       href="https://app.typebot.io/register"
     >
-      Create a typebot
+      Create a bot
     </Button>
     <Text fontSize="sm" fontStyle="italic" color="gray.600">
       It&apos;s free!

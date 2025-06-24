@@ -102,7 +102,7 @@ export const Header = () => {
             colorScheme="orange"
             fontWeight={700}
           >
-            Create a typebot
+            Create a bot
           </Button>
         </HStack>
       </HStack>
