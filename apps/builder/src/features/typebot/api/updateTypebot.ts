@@ -123,9 +123,12 @@ export const updateTypebot = authenticatedProcedure
           message: "Typebot not found",
         });
 
+      // Add a 5-second margin of error to account for clock synchronization issues
+      const conflictMarginMs = 5 * 1000; // 5 seconds
       if (
         typebot.updatedAt &&
-        existingTypebot.updatedAt.getTime() > typebot.updatedAt.getTime() &&
+        existingTypebot.updatedAt.getTime() >
+          typebot.updatedAt.getTime() + conflictMarginMs &&
         !overwrite
       )
         throw new TRPCError({
