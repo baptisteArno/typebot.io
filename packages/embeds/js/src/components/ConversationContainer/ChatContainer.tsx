@@ -468,13 +468,15 @@ export const ChatContainer = (props: Props) => {
   return (
     <ChatContainerSizeContext.Provider value={chatContainerSize}>
       <div
+        // Be extra careful when changing class names of the following containers, make sure to test scroll behavior on iOS devices.
         class={cx(
-          "w-full h-full flex px-[calc((100%-var(--typebot-chat-container-max-width))/2)]",
+          "w-full h-full px-[calc((100%-var(--typebot-chat-container-max-width))/2)]",
           // If chat container is transparent, we make sure the scroll area takes the entire width of the container
           isChatContainerTransparent()
             ? "overflow-y-auto scroll-smooth scrollable-container"
             : // on mobile view, we want the chat container to be full height and start-aligned
-              "@container @xs:items-center",
+              // flex needs to be set when the continaier is not scrollable (some iOS devices quirks)
+              "@container flex @xs:items-center",
         )}
       >
         <div
