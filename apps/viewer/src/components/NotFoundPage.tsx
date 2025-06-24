@@ -3,7 +3,7 @@ import { env } from "@typebot.io/env";
 export const NotFoundPage = () => (
   <div
     style={{
-      height: "100vh",
+      height: "100dvh",
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
