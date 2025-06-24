@@ -307,6 +307,12 @@ const BotContent = (props: BotContentProps) => {
   );
   let botContainer: HTMLDivElement | undefined;
 
+  const [botContainerHeight, setBotContainerHeight] = createSignal("100%");
+  createEffect(() => {
+    if (!botContainer) return;
+    setBotContainerHeight(`${botContainer.clientHeight}px`);
+  });
+
   createEffect(() => {
     injectFont(
       props.initialChatReply.typebot.theme.general?.font ?? {
@@ -328,11 +334,6 @@ const BotContent = (props: BotContentProps) => {
         ? props.initialChatReply.typebot.version
         : "6",
     });
-  });
-
-  const botContainerHeight = createMemo(() => {
-    if (!botContainer) return "100%";
-    return botContainer.clientHeight;
   });
 
   return (
