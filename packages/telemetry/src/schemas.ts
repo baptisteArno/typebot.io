@@ -98,6 +98,21 @@ const subscriptionAutoUpdatedEventSchema = workspaceEvent.merge(
   }),
 );
 
+const subscriptionScheduledForCancellationEventSchema = workspaceEvent.merge(
+  z.object({
+    name: z.literal("Subscription scheduled for cancellation"),
+  }),
+);
+
+const removedCancellationEventSchema = workspaceEvent.merge(
+  z.object({
+    name: z.literal("Subscription cancellation removed"),
+    data: z.object({
+      plan: z.enum([Plan.STARTER, Plan.PRO]),
+    }),
+  }),
+);
+
 const newResultsCollectedEventSchema = typebotEvent.merge(
   z.object({
     name: z.literal("New results collected"),
@@ -199,6 +214,8 @@ const builderEvents = [
   limitFirstEmailSentEventSchema,
   limitSecondEmailSentEventSchema,
   removedBrandingEventSchema,
+  subscriptionScheduledForCancellationEventSchema,
+  removedCancellationEventSchema,
 ] as const;
 
 const pageViewEventSchema = z.object({
