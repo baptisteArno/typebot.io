@@ -95,5 +95,5 @@ export const formatSubscriptionMessage = (
   const sign = netRevenue >= 0 ? "+" : "-";
   messages.push(`Net revenue: ${sign}$${Math.abs(netRevenue)}`);
 
-  return messages.length > 2 ? messages.join("\n") + "\n" : ""; // > 2 because we always add header + empty line
+  return messages.join("\n");
 };

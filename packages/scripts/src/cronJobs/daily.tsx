@@ -6,27 +6,25 @@ import { getSubscriptionTransitions } from "../helpers/getSubscriptionTransition
 import { trackAndReportYesterdaysResults } from "../helpers/trackAndReportYesterdaysResults";
 
 export const main = async () => {
-  let reportMessage = "Daily cron job:\n\n";
-
   await cleanExpiredData();
-
   const { totalResults, totalWorkspaces } =
     await trackAndReportYesterdaysResults();
-  reportMessage += `📥 ${totalWorkspaces} workspaces collected a total of ${totalResults} results.\n`;
-
-  const subscriptionTransitions = await getSubscriptionTransitions();
-  reportMessage += formatSubscriptionMessage(subscriptionTransitions);
-
   const uniqueVisitors = await getLandingPageVisitors();
-  reportMessage += `🌐 ${uniqueVisitors} unique visitors on the landing page yesterday.\n`;
+  const subscriptionTransitions = await getSubscriptionTransitions();
 
   // const { totalDeletedWorkspaces } = await deleteOrWarnInactiveWorkspaces();
   // reportMessage += `🔥 ${totalDeletedWorkspaces} workspaces were deleted.\n`;
 
-  reportMessage += `[Go to daily dashboard](https://eu.posthog.com/project/${process.env.POSTHOG_PROJECT_ID}/dashboard/${process.env.POSTHOG_DAILY_DASHBOARD_ID})\n`;
-  reportMessage += `[Go to web analytics](https://eu.posthog.com/project/${process.env.POSTHOG_PROJECT_ID}/web)`;
+  await sendMessage(`Daily report:
+    
+📥 ${totalResults} collected results
+🏭 ${totalWorkspaces} active workspaces
+🌐 ${uniqueVisitors} landing page visits
 
-  await sendMessage(reportMessage);
+${formatSubscriptionMessage(subscriptionTransitions)}
+
+[Go to daily dashboard](https://eu.posthog.com/project/${process.env.POSTHOG_PROJECT_ID}/dashboard/${process.env.POSTHOG_DAILY_DASHBOARD_ID})
+[Go to web analytics](https://eu.posthog.com/project/${process.env.POSTHOG_PROJECT_ID}/web)`);
 };
 
 main().then();
