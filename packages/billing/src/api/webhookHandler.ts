@@ -143,7 +143,7 @@ export const webhookHandler = async (
 
           if (
             subscription.cancel_at_period_end &&
-            !previous?.cancel_at_period_end
+            previous?.cancel_at_period_end === false
           )
             await trackEvents(
               existingWorkspace.members.map((m) => ({
