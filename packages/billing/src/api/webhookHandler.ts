@@ -120,6 +120,11 @@ export const webhookHandler = async (
           const subscription = event.data.object as Stripe.Subscription;
           const previous = event.data.previous_attributes;
 
+          if (previous?.status === "incomplete")
+            return res.send({
+              message: "Subscription just created, skipping.",
+            });
+
           const existingWorkspace = await prisma.workspace.findFirst({
             where: {
               stripeId: subscription.customer as string,
