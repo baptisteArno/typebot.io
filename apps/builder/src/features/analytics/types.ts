@@ -4,9 +4,6 @@ export type DropoffLogger = (
 ) => void;
 
 export type TraversalFrame = {
-  edgeId: string;
   usersRemaining: number;
-  pathIndex: number;
+  pathKey: string;
 };
-
-export type VisitedPathsByEdge = Map<string, Set<number>>;
