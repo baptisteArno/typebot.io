@@ -552,4 +552,40 @@ export const taxIdTypes = [
     emoji: "🇿🇦",
     placeholder: "1234567890",
   },
+  {
+    name: "Argentina",
+    code: "AR CUIT",
+    emoji: "🇦🇷",
+    placeholder: "12-3456789-01",
+  },
+  {
+    name: "Colombia",
+    code: "CO NIT",
+    emoji: "🇨🇴",
+    placeholder: "123.456.789-0",
+  },
+  {
+    name: "Peru",
+    code: "PE RUC",
+    emoji: "🇵🇪",
+    placeholder: "12345678901",
+  },
+  {
+    name: "Vietnam",
+    code: "VN MST",
+    emoji: "🇻🇳",
+    placeholder: "1234567890",
+  },
+  {
+    name: "Bangladesh",
+    code: "BD BIN",
+    emoji: "🇧🇩",
+    placeholder: "123456789-0123",
+  },
+  {
+    name: "Costa Rica",
+    code: "CR NITE",
+    emoji: "🇨🇷",
+    placeholder: "1-234-567890",
+  },
 ] as const;
