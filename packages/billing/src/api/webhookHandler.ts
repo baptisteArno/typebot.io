@@ -150,6 +150,12 @@ export const webhookHandler = async (
                 name: "Subscription scheduled for cancellation",
                 workspaceId: existingWorkspace.id,
                 userId: m.userId,
+                data: {
+                  plan:
+                    existingWorkspace.plan === Plan.PRO
+                      ? Plan.PRO
+                      : Plan.STARTER,
+                },
               })),
             );
           if (

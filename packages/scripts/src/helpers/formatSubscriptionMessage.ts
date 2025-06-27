@@ -20,6 +20,11 @@ export const formatSubscriptionMessage = (
   const downgradeLoss =
     subscriptionTransitions.downgrades.proToStarter *
     (prices[Plan.PRO] - prices[Plan.STARTER]);
+  const scheduledForCancellationRevenue =
+    subscriptionTransitions.downgrades.scheduledForCancellation.starter *
+      prices[Plan.STARTER] +
+    subscriptionTransitions.downgrades.scheduledForCancellation.pro *
+      prices[Plan.PRO];
   const cancellationRemovedRevenue =
     subscriptionTransitions.downgrades.cancellationRemoved.starter *
       prices[Plan.STARTER] +
@@ -77,9 +82,12 @@ export const formatSubscriptionMessage = (
   }
 
   // Scheduled for cancellation (intentions) with 📅
-  if (subscriptionTransitions.downgrades.scheduledForCancellation > 0) {
+  if (
+    subscriptionTransitions.downgrades.scheduledForCancellation.starter > 0 ||
+    subscriptionTransitions.downgrades.scheduledForCancellation.pro > 0
+  ) {
     messages.push(
-      `📅 Scheduled for cancellation: ${subscriptionTransitions.downgrades.scheduledForCancellation}`,
+      `😢 Scheduled for cancellation: ${subscriptionTransitions.downgrades.scheduledForCancellation.starter + subscriptionTransitions.downgrades.scheduledForCancellation.pro} (-$${scheduledForCancellationRevenue})`,
     );
   }
 
@@ -89,7 +97,7 @@ export const formatSubscriptionMessage = (
     starterToProRevenue +
     autoUpgradeRevenue +
     cancellationRemovedRevenue;
-  const totalLost = downgradeLoss;
+  const totalLost = downgradeLoss + scheduledForCancellationRevenue;
   const netRevenue = totalGained - totalLost;
 
   const sign = netRevenue >= 0 ? "+" : "-";

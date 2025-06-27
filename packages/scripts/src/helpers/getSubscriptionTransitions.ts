@@ -10,7 +10,10 @@ export interface SubscriptionTransitions {
     automaticStarterToPro: number;
   };
   downgrades: {
-    scheduledForCancellation: number;
+    scheduledForCancellation: {
+      starter: number;
+      pro: number;
+    };
     cancellationRemoved: {
       starter: number;
       pro: number;
@@ -34,7 +37,10 @@ export const getSubscriptionTransitions =
         automaticStarterToPro: 0,
       },
       downgrades: {
-        scheduledForCancellation: 0,
+        scheduledForCancellation: {
+          starter: 0,
+          pro: 0,
+        },
         cancellationRemoved: {
           starter: 0,
           pro: 0,
@@ -66,7 +72,7 @@ export const getSubscriptionTransitions =
 
       // Query for "Subscription scheduled for cancellation" events
       const subscriptionScheduledForCancellationQuery = `
-      SELECT COUNT(*) as count
+      SELECT JSONExtractString(properties, 'plan') as plan
       FROM events
       WHERE event = 'Subscription scheduled for cancellation'
       AND toDate(timestamp) = toDate(now() - INTERVAL 1 DAY)
@@ -113,12 +119,14 @@ export const getSubscriptionTransitions =
         typeof autoStarterToProCount === "number" ? autoStarterToProCount : 0;
 
       // Process "Subscription scheduled for cancellation" events
-      const scheduledForCancellationCount =
-        scheduledForCancellationResponse.results?.[0]?.[0] ?? 0;
-      transitions.downgrades.scheduledForCancellation =
-        typeof scheduledForCancellationCount === "number"
-          ? scheduledForCancellationCount
-          : 0;
+      for (const row of scheduledForCancellationResponse.results) {
+        const plan = String(row[0]);
+        if (plan === Plan.STARTER) {
+          transitions.downgrades.scheduledForCancellation.starter++;
+        } else if (plan === Plan.PRO) {
+          transitions.downgrades.scheduledForCancellation.pro++;
+        }
+      }
 
       // Process "Subscription cancellation removed" events
       for (const row of cancellationRemovedResponse.results) {
