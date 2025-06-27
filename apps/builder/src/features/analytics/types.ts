@@ -4,6 +4,7 @@ export type DropoffLogger = (
 ) => void;
 
 export type TraversalFrame = {
+  edgeId: string;
   usersRemaining: number;
-  pathKey: string;
+  isOffDefaultPath: boolean;
 };

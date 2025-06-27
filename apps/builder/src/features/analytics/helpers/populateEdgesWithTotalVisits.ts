@@ -54,16 +54,13 @@ export function populateEdgesWithTotalVisits({
     ]),
   );
 
-  // A path key looks like "edgeId1.edgeId2.edgeId3"
-  // So the current path would be the last edgeId in the path key.
-  type PathKey = string;
-
-  const visitedPaths: Set<PathKey> = new Set();
+  const visitedOffDefaultEdgeIds: Set<string> = new Set();
 
   const depthFirstFrames: TraversalFrame[] = [
     {
       usersRemaining: initialEdge.total,
-      pathKey: initialEdge.id,
+      edgeId: initialEdge.id,
+      isOffDefaultPath: false,
     },
   ];
 
@@ -81,24 +78,25 @@ export function populateEdgesWithTotalVisits({
   /* Inner helpers                                                     */
   /* ================================================================ */
   function visitFrame(
-    { usersRemaining, pathKey }: TraversalFrame,
+    { usersRemaining, edgeId, isOffDefaultPath }: TraversalFrame,
     { depth }: { depth: number },
   ) {
+    // These checks are to avoid infinite loops.
+    // - If usersRemaining is 0 then we don't need to visit this edge.
+    // - Since offDefaultPath inject usersRemaining with fixed total answers then we need to skip off default paths if we already visited this edge.
     if (usersRemaining <= 0) return;
+    if (isOffDefaultPath && markVisited(visitedOffDefaultEdgeIds, edgeId))
+      return;
 
-    if (markVisited(visitedPaths, pathKey)) return;
-
-    const currentEdgeId = pathKey.split(".").pop()!;
-
-    if (!offPathEdgeIds.has(currentEdgeId)) {
+    if (!offPathEdgeIds.has(edgeId)) {
       edgeTotalsById.set(
-        currentEdgeId,
-        (edgeTotalsById.get(currentEdgeId) ?? 0) + usersRemaining,
+        edgeId,
+        (edgeTotalsById.get(edgeId) ?? 0) + usersRemaining,
       );
     }
 
     logger?.(
-      `▶︎ visiting ${edgeIdToHumanReadableLabel(currentEdgeId, {
+      `▶︎ visiting ${edgeIdToHumanReadableLabel(edgeId, {
         edges,
         groups,
         offDefaultPathEdgeWithTotalVisits,
@@ -109,7 +107,7 @@ export function populateEdgesWithTotalVisits({
       },
     );
 
-    const edge = edgesById.get(currentEdgeId);
+    const edge = edgesById.get(edgeId);
     if (!edge?.to) return;
 
     const group = groupsById.get(edge.to.groupId);
@@ -127,7 +125,11 @@ export function populateEdgesWithTotalVisits({
       for (const itemEdgeId of outgoingItemEdges(block)) {
         const itemTotal = edgeTotalsById.get(itemEdgeId);
         if (itemTotal && itemTotal > 0) {
-          enqueue(`${pathKey}.${itemEdgeId}`, itemTotal);
+          enqueue({
+            edgeId: itemEdgeId,
+            usersRemaining: itemTotal,
+            isOffDefaultPath: true,
+          });
           remainingForNextDefaultOutgoingEdge -= itemTotal;
         }
       }
@@ -136,22 +138,31 @@ export function populateEdgesWithTotalVisits({
         const virtualId = createVirtualEdgeId(block.options);
         const virtualTotal = edgeTotalsById.get(virtualId);
         if (virtualTotal && virtualTotal > 0) {
-          enqueue(`${pathKey}.${virtualId}`, virtualTotal);
+          enqueue({
+            edgeId: virtualId,
+            usersRemaining: virtualTotal,
+            isOffDefaultPath: true,
+          });
         }
       }
 
       if (block.outgoingEdgeId) {
-        enqueue(
-          `${pathKey}.${block.outgoingEdgeId}`,
-          remainingForNextDefaultOutgoingEdge,
-        );
+        enqueue({
+          edgeId: block.outgoingEdgeId,
+          usersRemaining: remainingForNextDefaultOutgoingEdge,
+          isOffDefaultPath: false,
+        });
       }
     }
   }
 
-  function enqueue(pathKey: PathKey, usersRemaining: number) {
+  function enqueue({
+    edgeId,
+    usersRemaining,
+    isOffDefaultPath,
+  }: { edgeId: string; usersRemaining: number; isOffDefaultPath: boolean }) {
     if (usersRemaining <= 0) return;
-    depthFirstFrames.push({ usersRemaining, pathKey });
+    depthFirstFrames.push({ edgeId, usersRemaining, isOffDefaultPath });
   }
 }
 
@@ -217,15 +228,8 @@ const edgeIdToHumanReadableLabel = (
   return label;
 };
 
-const markVisited = (
-  visitedPathKeys: Set<string>,
-  pathKey: string,
-): boolean => {
-  const currentEdgeId = pathKey.split(".").pop()!;
-  const hasAlreadyVisitedEdgeInPath = [...visitedPathKeys].some((key) =>
-    key.includes(currentEdgeId),
-  );
-  if (hasAlreadyVisitedEdgeInPath) return true;
-  visitedPathKeys.add(pathKey);
+const markVisited = (visitedEdgeIds: Set<string>, edgeId: string): boolean => {
+  if (visitedEdgeIds.has(edgeId)) return true;
+  visitedEdgeIds.add(edgeId);
   return false;
 };
