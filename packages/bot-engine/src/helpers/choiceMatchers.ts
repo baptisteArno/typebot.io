@@ -27,7 +27,7 @@ export type MatchFunction<T extends ChoiceItem> = (
   idx?: number,
 ) => boolean;
 
-export const sortByContentLength = <T extends ChoiceItem>(
+export const sortByContentLengthDesc = <T extends ChoiceItem>(
   items: T[],
   contentKey = "content",
 ): T[] =>

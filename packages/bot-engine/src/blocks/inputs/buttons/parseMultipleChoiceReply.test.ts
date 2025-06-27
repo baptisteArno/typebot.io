@@ -8,7 +8,6 @@ const createMockItem = (
 ): ChoiceInputBlock["items"][number] => ({
   id,
   content,
-  value: content,
   outgoingEdgeId: "edge1",
 });
 
@@ -54,10 +53,38 @@ describe("parseMultipleChoiceReply", () => {
     expect(result).toEqual({ status: "success", content: "item, second item" });
   });
 
+  it("should work with dirty values / input", () => {
+    const result = parseMultipleChoiceReply("item and second item", {
+      items: [
+        createMockItem("id1", "item\n"),
+        createMockItem("id2", " second item "),
+      ],
+    });
+    expect(result).toEqual({ status: "success", content: "item, second item" });
+
+    const result2 = parseMultipleChoiceReply(" item and second item \n", {
+      items: [
+        createMockItem("id1", "item"),
+        createMockItem("id2", "second item"),
+      ],
+    });
+    expect(result2).toEqual({
+      status: "success",
+      content: "item, second item",
+    });
+  });
+
   it("should not work when the choice is inside a longer word", () => {
     const result = parseMultipleChoiceReply("tests", {
       items: [createMockItem("id1", "Just a few tests")],
     });
     expect(result).toEqual({ status: "fail" });
+  });
+
+  it("should work with korean characters", () => {
+    const result = parseMultipleChoiceReply("아이템", {
+      items: [createMockItem("id1", "아이템")],
+    });
+    expect(result).toEqual({ status: "success", content: "아이템" });
   });
 });

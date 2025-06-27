@@ -5,7 +5,7 @@ import {
   getItemContent,
   matchByIndex,
   matchByKey,
-  sortByContentLength,
+  sortByContentLengthDesc,
 } from "../../../helpers/choiceMatchers";
 import type { ParsedReply } from "../../../types";
 import { injectVariableValuesInPictureChoiceBlock } from "./injectVariableValuesInPictureChoiceBlock";
@@ -15,7 +15,7 @@ const parseMultipleChoiceReply = (
   inputValue: string,
 ): ParsedReply => {
   const valueMatches = matchByKey({
-    items: sortByContentLength(displayedItems, "value"),
+    items: sortByContentLengthDesc(displayedItems, "value"),
     inputValue,
     key: "value",
   });
@@ -54,7 +54,7 @@ const parseSingleChoiceReply = (
   displayedItems: PictureChoiceBlock["items"],
   inputValue: string,
 ): ParsedReply => {
-  const matchedItem = sortByContentLength(displayedItems).find(
+  const matchedItem = sortByContentLengthDesc(displayedItems).find(
     (item) =>
       item.id === inputValue ||
       item.value?.toLowerCase().trim() === inputValue.toLowerCase().trim() ||

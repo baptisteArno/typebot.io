@@ -1,7 +1,7 @@
 import type { ChoiceInputBlock } from "@typebot.io/blocks-inputs/choice/schema";
 import {
   getItemContent,
-  sortByContentLength,
+  sortByContentLengthDesc,
 } from "../../../helpers/choiceMatchers";
 import type { ParsedReply } from "../../../types";
 
@@ -9,7 +9,7 @@ export const parseSingleChoiceReply = (
   displayedItems: ChoiceInputBlock["items"],
   inputValue: string,
 ): ParsedReply => {
-  const matchedItem = sortByContentLength(displayedItems).find(
+  const matchedItem = sortByContentLengthDesc(displayedItems).find(
     (item) =>
       item.id === inputValue ||
       (item.value && inputValue.trim() === item.value.trim()) ||
