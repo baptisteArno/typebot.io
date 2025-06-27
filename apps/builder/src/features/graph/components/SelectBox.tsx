@@ -1,4 +1,3 @@
-import { headerHeight } from "@/features/editor/constants";
 import { Box } from "@chakra-ui/react";
 import type { Coordinates } from "../types";
 
@@ -19,7 +18,7 @@ export const SelectBox = ({ origin, dimension }: Props) => (
     bgColor="rgba(255, 214, 199, 0.1)"
     style={{
       left: origin.x,
-      top: origin.y - headerHeight,
+      top: origin.y,
       width: dimension.width,
       height: dimension.height,
     }}
