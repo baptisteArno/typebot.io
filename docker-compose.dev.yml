@@ -1,21 +1,21 @@
-version: '3.3'
+version: "3.3"
 services:
   typebot-db:
     image: postgres:16
     ports:
-      - '5432:5432'
+      - "5432:5432"
     restart: always
     volumes:
       - db_data:/var/lib/postgresql/data
     environment:
-      POSTGRES_DB: 'typebot'
-      POSTGRES_PASSWORD: 'typebot'
+      POSTGRES_DB: "typebot"
+      POSTGRES_PASSWORD: "typebot"
   minio:
     image: minio/minio
     command: server /data --console-address ":9001"
     ports:
-      - '9000:9000'
-      - '9001:9001'
+      - "9000:9000"
+      - "9001:9001"
     environment:
       MINIO_ROOT_USER: minio
       MINIO_ROOT_PASSWORD: minio123
@@ -29,8 +29,8 @@ services:
     entrypoint: >
       /bin/sh -c "
       sleep 10;
-      /usr/bin/mc config host add minio http://minio:9000 minio minio123;
-      /usr/bin/mc mb minio/typebot;
+      /usr/bin/mc alias set minio http://minio:9000 minio minio123;
+      /usr/bin/mc mb --ignore-existing minio/typebot;
       /usr/bin/mc anonymous set public minio/typebot/public;
       exit 0;
       "
