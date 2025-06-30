@@ -6,7 +6,7 @@ import { promptAndSetEnvironment } from "./utils";
 const inspectTypebot = async () => {
   await promptAndSetEnvironment("production");
 
-  const type = await p.select<any, "id" | "publicId">({
+  const type = await p.select<"id" | "publicId">({
     message: "Select way",
     options: [
       { label: "ID", value: "id" },

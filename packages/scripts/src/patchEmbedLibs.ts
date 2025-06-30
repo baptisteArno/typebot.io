@@ -1,6 +1,5 @@
 import { writeFileSync } from "fs";
 import jsPackageJson from "../../embeds/js/package.json";
-import nextjsPackageJson from "../../embeds/nextjs/package.json";
 import reactPackageJson from "../../embeds/react/package.json";
 
 const currentVersion = jsPackageJson.version;
@@ -28,18 +27,6 @@ writeFileSync(
   JSON.stringify(
     {
       ...reactPackageJson,
-      version: newVersion,
-    },
-    null,
-    2,
-  ) + "\n",
-);
-
-writeFileSync(
-  "./packages/embeds/nextjs/package.json",
-  JSON.stringify(
-    {
-      ...nextjsPackageJson,
       version: newVersion,
     },
     null,

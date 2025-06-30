@@ -55,15 +55,17 @@ export const getSubscriptionTransitions =
       const subscriptionUpdatedQuery = `
       SELECT 
         JSONExtractString(properties, 'prevPlan') as prevPlan,
-        JSONExtractString(properties, 'plan') as plan
+        JSONExtractString(properties, 'plan') as plan,
+        events.$group_1 as workspace
       FROM events
       WHERE event = 'Subscription updated'
       AND toDate(timestamp) = toDate(now() - INTERVAL 1 DAY)
+      GROUP BY events.$group_1, JSONExtractString(properties, 'prevPlan'), JSONExtractString(properties, 'plan')
     `;
 
       // Query for "Subscription automatically updated" events (only STARTER -> PRO)
       const subscriptionAutoUpdatedQuery = `
-      SELECT COUNT(*) as count
+      SELECT COUNT(DISTINCT events.$group_1) as count
       FROM events
       WHERE event = 'Subscription automatically updated'
       AND JSONExtractString(properties, 'plan') = 'PRO'
@@ -72,18 +74,22 @@ export const getSubscriptionTransitions =
 
       // Query for "Subscription scheduled for cancellation" events
       const subscriptionScheduledForCancellationQuery = `
-      SELECT JSONExtractString(properties, 'plan') as plan
+      SELECT JSONExtractString(properties, 'plan') as plan,
+             events.$group_1 as workspace
       FROM events
       WHERE event = 'Subscription scheduled for cancellation'
       AND toDate(timestamp) = toDate(now() - INTERVAL 1 DAY)
+      GROUP BY events.$group_1, JSONExtractString(properties, 'plan')
     `;
 
       // Query for "Subscription cancellation removed" events
       const subscriptionCancellationRemovedQuery = `
-      SELECT JSONExtractString(properties, 'plan') as plan
+      SELECT JSONExtractString(properties, 'plan') as plan,
+             events.$group_1 as workspace
       FROM events
       WHERE event = 'Subscription cancellation removed'
       AND toDate(timestamp) = toDate(now() - INTERVAL 1 DAY)
+      GROUP BY events.$group_1, JSONExtractString(properties, 'plan')
     `;
 
       const [

@@ -6,7 +6,7 @@ import { promptAndSetEnvironment } from "./utils";
 const suspendWorkspace = async () => {
   await promptAndSetEnvironment("production");
 
-  const type = await select<any, "id" | "publicId" | "workspaceId">({
+  const type = await select<"id" | "publicId" | "workspaceId">({
     message: "Select way",
     options: [
       { label: "Typebot ID", value: "id" },
