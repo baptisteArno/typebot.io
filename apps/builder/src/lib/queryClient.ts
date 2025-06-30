@@ -1,6 +1,6 @@
 import type { AppRouter } from "@/helpers/server/routers/appRouter";
 import { type Query, QueryCache, QueryClient } from "@tanstack/react-query";
-import { TRPCClientError, createTRPCClient, httpBatchLink } from "@trpc/client";
+import { TRPCClientError, createTRPCClient, httpLink } from "@trpc/client";
 import { createTRPCOptionsProxy } from "@trpc/tanstack-react-query";
 import { env } from "@typebot.io/env";
 import superjson from "superjson";
@@ -35,7 +35,7 @@ const parseDefaultErrorContext = (
 
 export const trpcClient = createTRPCClient<AppRouter>({
   links: [
-    httpBatchLink({
+    httpLink({
       url: (() => {
         if (typeof window === "undefined")
           return `${env.NEXTAUTH_URL}/api/trpc`;
