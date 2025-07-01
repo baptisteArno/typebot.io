@@ -17,7 +17,7 @@
     "pre-commit": "turbo run format-and-lint lint-repo check-broken-links",
     "format-and-lint": "biome check .",
     "format-and-lint:fix": "biome check . --write",
-    "lint-repo": "sherif -r unordered-dependencies -r packages-without-package-json --ignore-package @typebot.io/legacy",
+    "lint-repo": "sherif -r unordered-dependencies -r packages-without-package-json --ignore-package @typebot.io/legacy --ignore-package bot-engine",
     "lint-repo:fix": "bun lint-repo --fix",
     "patch-embed-libs": "bun packages/scripts/src/patchEmbedLibs.ts && bun install",
     "start-docker-compose-dev": "docker compose -f docker-compose.dev.yml up",

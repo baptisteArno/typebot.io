@@ -3,7 +3,7 @@ import sharedConfig from "../../packages/ui/tailwind.config";
 
 export default {
   darkMode: ["class"],
-  content: ["app/**/*.{ts,tsx}", "../../packages/ui/src/**/*.{ts,tsx}"],
+  content: ["src/**/*.{ts,tsx}", "../../packages/ui/src/**/*.{ts,tsx}"],
   presets: [sharedConfig],
   theme: {
     supports: {

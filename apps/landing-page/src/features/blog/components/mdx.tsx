@@ -144,6 +144,11 @@ const components = {
   ),
   WhatsAppPricingCalculator,
   HtmlFormGenerator,
+  Variable: ({ children }: { children: string }) => (
+    <code className="bg-gray-3 px-1 py-0.5 rounded text-sm">
+      {`{{${children}}}`}
+    </code>
+  ),
 };
 
 interface MdxProps {

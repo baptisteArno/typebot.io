@@ -5,6 +5,7 @@ postedAt: "2025-06-17"
 cover: "/blog-assets/how-to-create-chatbot-for-beginners/featured-image-how-to-create-chatbot-for-beginners.avif"
 author: younes
 ---
+
 Most businesses spend weeks planning their first chatbot, sketching complex conversation trees and mapping every possible user path.
 
 Then they launch it, and 90% of users abandon the conversation within the first three exchanges. The problem isn't poor planning. It's overthinking.
@@ -17,8 +18,12 @@ The most successful chatbots aren't sophisticated AI assistants; they're simple,
 
 A chatbot is software designed to mimic human conversation through text or voice. It acts like a digital assistant that never sleeps, always ready to welcome visitors, answer questions, or guide users through a process.
 
-<Image src="/blog-assets/presentation-typebot-save-responses.gif" alt="Presentation Typebot Save Responses" width="800px" height="800px"  />
-
+<Image
+  src="/blog-assets/presentation-typebot-save-responses.gif"
+  alt="Presentation Typebot Save Responses"
+  width="800px"
+  height="800px"
+/>
 
 For your project—whether an online store, personal blog, or service business—a chatbot is a practical tool for handling routine interactions. It can manage repetitive questions, collect initial details from new clients, and make visitors feel acknowledged immediately.
 
@@ -40,8 +45,13 @@ Sometimes, a simple Q&A bot is best. Train it on your frequently asked questions
 
 In this section, we'll walk through how to easily build your first chatbot step by step, even if you have zero coding experience. For our tutorials, we’ll use **Typebot**, a beginner-friendly, no-code chatbot builder with a simple drag-and-drop interface.
 
-<Image src="/blog-assets/typebot-builder.avif" alt="Typebot Builder" width="3454px" height="1976px" caption="Typebot makes it easy to create a chatbot by simply dragging and dropping blocks." />
-
+<Image
+  src="/blog-assets/typebot-builder.avif"
+  alt="Typebot Builder"
+  width="3454px"
+  height="1976px"
+  caption="Typebot makes it easy to create a chatbot by simply dragging and dropping blocks."
+/>
 
 Typebot makes it super easy to create conversational flows for lead capture, scheduling, and more.
 
@@ -51,29 +61,48 @@ Coordinating meeting times over email wastes time. An appointment scheduler bot 
 
 Let’s see a quick demo of a lead capture quiz in action:
 
-<video src="/blog-assets/how-to-create-chatbot-for-beginners/demo-appointment-scheduling-chatbot.mp4" autoPlay muted loop controls />
+<video
+  src="/blog-assets/how-to-create-chatbot-for-beginners/demo-appointment-scheduling-chatbot.mp4"
+  autoPlay
+  muted
+  loop
+  controls
+/>
 
 Here’s how to build a consultation booking bot with Typebot:
 
 - **Begin with a new Typebot**: Start a new typebot and name it "Consultation Booker."
 
-- **Welcome and initial information**: Use the first group to greet the user and explain the bot’s purpose. Ask for their name with a "Text input" block to personalize the experience. 
-<video src="/blog-assets/how-to-create-chatbot-for-beginners/step-1-appointment-scheduling-example.mp4" autoPlay muted loop controls />
+- **Welcome and initial information**: Use the first group to greet the user and explain the bot’s purpose. Ask for their name with a "Text input" block to personalize the experience.
+
+  <video
+    src="/blog-assets/how-to-create-chatbot-for-beginners/step-1-appointment-scheduling-example.mp4"
+    autoPlay
+    muted
+    loop
+    controls
+  />
 
 - **Offer choices (if applicable)**: If you provide different consultation types or services, add a group with "Button" input blocks so users can select what they need (e.g., "Business Strategy Call," "Marketing Review"). Store their choice in a variable like `service_type`.
 
-<Image src="/blog-assets/how-to-create-chatbot-for-beginners/service-selection-options-list.avif" alt="Service Selection Options List" width="335px" height="544px"  />
-
+<Image
+  src="/blog-assets/how-to-create-chatbot-for-beginners/service-selection-options-list.avif"
+  alt="Service Selection Options List"
+  width="335px"
+  height="544px"
+/>
 
 - **Embed your calendar**: Add a new group with an "Embed" block, pasting the URL of your scheduling tool (like Calendly or Google Calendar). If you use Cal.com, Typebot’s native integration simplifies this. You can just drag-and-drop it and put the event link.
 
 - **If needed, collect contact details for confirmation**: After users select a time slot, ask for their email to send a confirmation. Add a group with an "Email input" block.
 
-- **Confirm the booking**: Finish with a group containing a text block to confirm their booking. Personalize the message: "Great, {{client_name}}! Your {{service_type}} consultation is booked. A calendar invite will be sent to {{client_email}}."
+- **Confirm the booking**: Finish with a group containing a text block to confirm their booking. Personalize the message: "Great, \{\{client_name\}\}! Your \{\{service_type\}\} consultation is booked. A calendar invite will be sent to \{\{client_email\}\}."
 
 This bot **automates client interaction**, saving time and making it easy for people to connect with you.
 
-<Cta buttonLabel="Build Your First Bot Today">Create fully customizable chatbots without writing a single line of code.</Cta>
+<Cta buttonLabel="Build Your First Bot Today">
+  Create fully customizable chatbots without writing a single line of code.
+</Cta>
 
 ### Building a lead capture quiz with Typebot for beginners
 
@@ -87,33 +116,52 @@ Here’s how to build your own engaging lead capture quiz, such as one that help
 
 - **Craft a welcoming start**: Edit the initial blocks to greet users warmly. Explain the quiz’s purpose, then ask your first question, such as "What’s your marketing experience level?"
 
-  <Image src="/blog-assets/how-to-create-chatbot-for-beginners/experience-level-selection-quiz.avif" alt="Experience Level Selection Quiz" width="325px" height="496px"  />
-
+  <Image
+    src="/blog-assets/how-to-create-chatbot-for-beginners/experience-level-selection-quiz.avif"
+    alt="Experience Level Selection Quiz"
+    width="325px"
+    height="496px"
+  />
 
 - **Develop the conversation**: Add more questions by creating new groups of blocks. Each group can represent a new question or stage. For example, ask about their biggest challenges using "Multiple Choice" inputs. This keeps the conversation organized and logical.
 
-  <Image src="/blog-assets/how-to-create-chatbot-for-beginners/message-marketing-challenge-question-2.avif" alt="Message Marketing Challenge Question 2" width="327px" height="459px"  />
+  <Image
+    src="/blog-assets/how-to-create-chatbot-for-beginners/message-marketing-challenge-question-2.avif"
+    alt="Message Marketing Challenge Question 2"
+    width="327px"
+    height="459px"
+  />
 
+- **Implement simple scoring (optional but engaging)**: Assign scores using a "Set variable" block. Typebot lets you use simple logic (JavaScript expressions) to set scores based on answers. For example, if `experience_level` is 'Advanced', set `quiz_score` to 85. Enable "Execute as code." Then, show the score with a text block: "Your Marketing Skills Score: \{\{quiz_score\}\}/100."
 
-- **Implement simple scoring (optional but engaging)**: Assign scores using a "Set variable" block. Typebot lets you use simple logic (JavaScript expressions) to set scores based on answers. For example, if `experience_level` is 'Advanced', set `quiz_score` to 85. Enable "Execute as code." Then, show the score with a text block: "Your Marketing Skills Score: {{quiz_score}}/100."
-
-<Image src="/blog-assets/how-to-create-chatbot-for-beginners/calculate-score-quiz-marketing-skills.avif" alt="Calculate Score Quiz Marketing Skills" width="364px" height="354px"  />
-
+<Image
+  src="/blog-assets/how-to-create-chatbot-for-beginners/calculate-score-quiz-marketing-skills.avif"
+  alt="Calculate Score Quiz Marketing Skills"
+  width="364px"
+  height="354px"
+/>
 
 - **The lead capture moment**: After providing value like a score or feedback, ask for their email. Create a new group for this step. Use a text block such as, "Enter your email to receive a personalized action plan," followed by an "Email input" block.
 
-  <Image src="/blog-assets/how-to-create-chatbot-for-beginners/lead-capture-email-form.avif" alt="Lead Capture Email Form" width="338px" height="320px"  />
+  <Image
+    src="/blog-assets/how-to-create-chatbot-for-beginners/lead-capture-email-form.avif"
+    alt="Lead Capture Email Form"
+    width="338px"
+    height="320px"
+  />
 
+- **A gracious thank you**: Add a final group with a text block to reassure users that their information and action plan will be sent soon, like "Thank you! Your action plan will be sent to \{\{user_email\}\}".
 
-- **A gracious thank you**: Add a final group with a text block to reassure users that their information and action plan will be sent soon, like "Thank you! Your action plan will be sent to {{user_email}}".
-
-  <Image src="/blog-assets/how-to-create-chatbot-for-beginners/thank-you-confirmation-message.avif" alt="Thank You Confirmation Message" width="328px" height="277px"  />
-
+  <Image
+    src="/blog-assets/how-to-create-chatbot-for-beginners/thank-you-confirmation-message.avif"
+    alt="Thank You Confirmation Message"
+    width="328px"
+    height="277px"
+  />
 
 - **Test and refine**: Use the "Test" feature. Click through every option to ensure variables display correctly and any logic (like scoring) works as intended.
 
 This method **turns routine data collection into an engaging exchange**, boosting both user engagement and lead quality.
-
 
 ### Crafting a simple pricing calculator using Typebot
 
@@ -127,42 +175,64 @@ Here’s how to build a basic pricing calculator, such as for website design ser
 
 - **Initial welcome and service selection**: Greet the user and present choices that affect pricing. Use "Button" inputs like "Basic Website (5 pages) - $2,000" or "E-commerce Store - $8,000." Store the selection in a variable like `site_type`.
 
-  <Image src="/blog-assets/how-to-create-chatbot-for-beginners/website-design-price-calculator-chatbot-message.avif" alt="Website Design Price Calculator Chatbot Message" width="348px" height="586px"  />
-
+  <Image
+    src="/blog-assets/how-to-create-chatbot-for-beginners/website-design-price-calculator-chatbot-message.avif"
+    alt="Website Design Price Calculator Chatbot Message"
+    width="348px"
+    height="586px"
+  />
 
 - **Factor in additional features**: Add another group to ask about optional add-ons, using "Button" inputs such as "SEO Optimization - $500" or "Analytics Setup - $300." Store these in a variable like `extra_features`.
 
-  <Image src="/blog-assets/how-to-create-chatbot-for-beginners/additional-features-options-list.avif" alt="additional features options list" width="339px" height="548px"  />
-
+  <Image
+    src="/blog-assets/how-to-create-chatbot-for-beginners/additional-features-options-list.avif"
+    alt="additional features options list"
+    width="339px"
+    height="548px"
+  />
 
 - **The calculation engine**. Here some basic javascript is needed. Use Typebot’s "Set variable" block to handle calculations:
 
-  - Create a variable (e.g., `base_price`) and set its value based on `site_type`. For example: `{{site_type}} === 'Basic Website (5 pages) - $2,000' ? 2000 : ({{site_type}} === 'E-commerce Store - $8,000' ? 8000 : 4000)`. Enable "Execute as code."
+  - Create a variable (e.g., `base_price`) and set its value based on `site_type`. For example: `\{\{site_type\}\} === 'Basic Website (5 pages) - $2,000' ? 2000 : (\{\{site_type\}\} === 'E-commerce Store - $8,000' ? 8000 : 4000)`. Enable "Execute as code."
 
   - Do the same for `extras_price` based on `extra_features`.
 
-  - Add a `total_price` variable by combining `{{base_price}} + {{extras_price}}` (also as code).
+  - Add a `total_price` variable by combining `\{\{base_price\}\} + \{\{extras_price\}\}` (also as code).
 
-    <Image src="/blog-assets/how-to-create-chatbot-for-beginners/price-calculation-interface-code.avif" alt="Price Calculation Interface Code" width="340px" height="552px"  />
+    <Image
+      src="/blog-assets/how-to-create-chatbot-for-beginners/price-calculation-interface-code.avif"
+      alt="Price Calculation Interface Code"
+      width="340px"
+      height="552px"
+    />
 
-
-- **Display the quote**: Use a text block to present the calculated quote clearly: "Your Estimated Website Cost: Base Package: ${{base_price}}, Extras: ${{extras_price}}, Total: ${{total_price}}."
+- **Display the quote**: Use a text block to present the calculated quote clearly: "Your Estimated Website Cost: Base Package: $\{\{base_price\}\}, Extras: $\{\{extras_price\}\}, Total: $\{\{total_price\}\}."
 
 - **Option to receive quote**: Offer to email the detailed quote. Add a group with an "Email input" block to capture leads.
 
-  <Image src="/blog-assets/how-to-create-chatbot-for-beginners/get-quote-email-example.avif" alt="Get Quote Email Example" width="345px" height="303px"  />
-
+  <Image
+    src="/blog-assets/how-to-create-chatbot-for-beginners/get-quote-email-example.avif"
+    alt="Get Quote Email Example"
+    width="345px"
+    height="303px"
+  />
 
 - **Final confirmation**: Conclude with a text block confirming the quote has been sent or displayed, and suggest next steps.
 
-  <Image src="/blog-assets/how-to-create-chatbot-for-beginners/thank-you-message-notification.avif" alt="Thank You Message Notification" width="358px" height="338px"  />
-
+  <Image
+    src="/blog-assets/how-to-create-chatbot-for-beginners/thank-you-message-notification.avif"
+    alt="Thank You Message Notification"
+    width="358px"
+    height="338px"
+  />
 
 - **Test all combinations**: Preview and test different selections to ensure calculations are accurate and the flow makes sense.
 
 This bot **delivers immediate value to visitors** and helps you gather detailed requirements from potential clients, making follow-up conversations more focused and productive.
 
-<Cta buttonLabel="Start Building">Create, customize, and deploy your first Typebot today. No coding required.</Cta>
+<Cta buttonLabel="Start Building">
+  Create, customize, and deploy your first Typebot today. No coding required.
+</Cta>
 
 ## How to include your chatbot in other places
 
@@ -210,8 +280,15 @@ No-code chatbot builders, such as Typebot, offer **visual drag-and-drop interfac
 
 Typebot also offers a wide range of out-of-the-box integrations, making it easy to connect your chatbot with popular tools and services.
 
-<Image src="/blog-assets/typebot-integrations.avif" alt="Typebot Integrations" width="632px" height="1232px"  />
-The learning curve is gentle, so you can launch a useful bot quickly. While no-code tools may have some limitations for specialized needs, they cover most common business scenarios well.
+<Image
+  src="/blog-assets/typebot-integrations.avif"
+  alt="Typebot Integrations"
+  width="632px"
+  height="1232px"
+/>
+The learning curve is gentle, so you can launch a useful bot quickly. While no-code
+tools may have some limitations for specialized needs, they cover most common business
+scenarios well.
 
 Custom coding is like the master carpenter’s approach. Frameworks like Rasa or Microsoft Bot Framework give you **nearly unlimited flexibility**.
 
@@ -267,8 +344,8 @@ Make sure you understand what each plan includes.
 Next, consider **features** that fit your needs. Beginners often value:
 
 - A **visual builder** with drag-and-drop interfaces, like Typebot’s.
-- **Templates** for common scenarios such as lead generation, [FAQs](./faq-chatbot.mdx), or booking. 
-- **Simple integrations** with tools you already use, like email marketing, Google Sheets, or CRMs. 
+- **Templates** for common scenarios such as lead generation, [FAQs](./faq-chatbot.mdx), or booking.
+- **Simple integrations** with tools you already use, like email marketing, Google Sheets, or CRMs.
 - **Basic analytics** to track user interactions and bot effectiveness. Tidio and Chatbase provide analytics dashboards.
 - **Customization** options to match your bot’s look to your brand. Tidio allows chat widget customization.
 
@@ -280,4 +357,7 @@ Building your first chatbot doesn't require technical expertise or months of lea
 
 The key to mastering how to create chatbot for beginners lies in starting simple, testing frequently, and gradually adding complexity as your confidence grows. So pick one of these three examples and launch your first conversational experience today.
 
-<Cta buttonLabel="Get Started Now">Discover how Typebot's drag-and-drop builder can transform your website visitors into loyal customers.</Cta>
+<Cta buttonLabel="Get Started Now">
+  Discover how Typebot's drag-and-drop builder can transform your website
+  visitors into loyal customers.
+</Cta>

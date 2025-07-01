@@ -1,4 +1,5 @@
 import { defineCollection, defineConfig } from "@content-collections/core";
+import { suppressDeprecatedWarnings } from "@content-collections/core";
 import { compileMDX } from "@content-collections/mdx";
 import {
   transformerMetaHighlight,
@@ -11,6 +12,8 @@ import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
 import type { Pluggable } from "unified";
 import { visit } from "unist-util-visit";
+
+suppressDeprecatedWarnings("legacySchema");
 
 const posts = defineCollection({
   name: "posts",
