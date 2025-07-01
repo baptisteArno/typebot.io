@@ -50,11 +50,11 @@ export const StripePaymentForm = (props: Props) => {
     const paymentElement = elements.create("payment", {
       layout: "tabs",
     });
-    paymentElement.mount("#payment-element");
-    setTimeout(() => {
+    paymentElement.on("ready", () => {
       setIsMounted(true);
       props.onTransitionEnd();
-    }, 1000);
+    });
+    paymentElement.mount("#payment-element");
   });
 
   const handleSubmit = async (event: SubmitEvent) => {
