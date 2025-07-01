@@ -1763,6 +1763,10 @@
               "schema": {
                 "type": "object",
                 "properties": {
+                  "resultId": {
+                    "type": "string",
+                    "description": "Provide it if you'd like to overwrite an existing result."
+                  },
                   "message": {
                     "oneOf": [
                       {
@@ -1790,10 +1794,6 @@
                     "default": false,
                     "description": "If enabled, you will be required to stream OpenAI completions on a client and send the generated response back to the API."
                   },
-                  "resultId": {
-                    "type": "string",
-                    "description": "Provide it if you'd like to overwrite an existing result."
-                  },
                   "isOnlyRegistering": {
                     "type": "boolean",
                     "default": false,
@@ -1815,6 +1815,46 @@
                       "markdown"
                     ],
                     "default": "richText"
+                  },
+                  "startFrom": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "group"
+                            ]
+                          },
+                          "groupId": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "type",
+                          "groupId"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "event"
+                            ]
+                          },
+                          "eventId": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "type",
+                          "eventId"
+                        ]
+                      }
+                    ]
                   }
                 }
               }
@@ -3030,36 +3070,6 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "isStreamEnabled": {
-                    "type": "boolean",
-                    "default": false
-                  },
-                  "message": {
-                    "oneOf": [
-                      {
-                        "$ref": "#/components/schemas/textMessage"
-                      },
-                      {
-                        "$ref": "#/components/schemas/audioMessage"
-                      },
-                      {
-                        "$ref": "#/components/schemas/commandMessage"
-                      }
-                    ],
-                    "discriminator": {
-                      "propertyName": "type",
-                      "mapping": {
-                        "text": "#/components/schemas/textMessage",
-                        "audio": "#/components/schemas/audioMessage",
-                        "command": "#/components/schemas/commandMessage"
-                      }
-                    }
-                  },
-                  "isOnlyRegistering": {
-                    "type": "boolean",
-                    "description": "If set to `true`, it will only register the session and not start the bot. This is used for 3rd party chat platforms as it can require a session to be registered before sending the first message.",
-                    "default": false
-                  },
                   "typebot": {
                     "oneOf": [
                       {
@@ -3080,6 +3090,59 @@
                       }
                     },
                     "description": "If set, it will override the typebot that is used to start the chat."
+                  },
+                  "sessionId": {
+                    "type": "string",
+                    "description": "If provided, will be used as the session ID and will overwrite any existing session with the same ID."
+                  },
+                  "message": {
+                    "oneOf": [
+                      {
+                        "$ref": "#/components/schemas/textMessage"
+                      },
+                      {
+                        "$ref": "#/components/schemas/audioMessage"
+                      },
+                      {
+                        "$ref": "#/components/schemas/commandMessage"
+                      }
+                    ],
+                    "discriminator": {
+                      "propertyName": "type",
+                      "mapping": {
+                        "text": "#/components/schemas/textMessage",
+                        "audio": "#/components/schemas/audioMessage",
+                        "command": "#/components/schemas/commandMessage"
+                      }
+                    },
+                    "description": "Only provide it if your flow starts with an input block and you'd like to directly provide an answer to it."
+                  },
+                  "isStreamEnabled": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "If enabled, you will be required to stream OpenAI completions on a client and send the generated response back to the API."
+                  },
+                  "isOnlyRegistering": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "If set to `true`, it will only register the session and not start the bot. This is used for 3rd party chat platforms as it can require a session to be registered before sending the first message."
+                  },
+                  "prefilledVariables": {
+                    "type": "object",
+                    "additionalProperties": {},
+                    "description": "[More info about prefilled variables.](../../editor/variables#prefilled-variables)",
+                    "example": {
+                      "First name": "John",
+                      "Email": "john@gmail.com"
+                    }
+                  },
+                  "textBubbleContentFormat": {
+                    "type": "string",
+                    "enum": [
+                      "richText",
+                      "markdown"
+                    ],
+                    "default": "richText"
                   },
                   "startFrom": {
                     "oneOf": [
@@ -3120,27 +3183,6 @@
                         ]
                       }
                     ]
-                  },
-                  "prefilledVariables": {
-                    "type": "object",
-                    "additionalProperties": {},
-                    "description": "[More info about prefilled variables.](../../editor/variables#prefilled-variables)",
-                    "example": {
-                      "First name": "John",
-                      "Email": "john@gmail.com"
-                    }
-                  },
-                  "sessionId": {
-                    "type": "string",
-                    "description": "If provided, will be used as the session ID and will overwrite any existing session with the same ID."
-                  },
-                  "textBubbleContentFormat": {
-                    "type": "string",
-                    "enum": [
-                      "richText",
-                      "markdown"
-                    ],
-                    "default": "richText"
                   }
                 }
               }
