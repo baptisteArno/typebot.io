@@ -74,14 +74,10 @@ export const WorkspaceSettingsModal = ({ isOpen, user, onClose }: Props) => {
 
         {isOpen && (
           <Flex flex="1" p="10">
-            <SettingsContent />
+            <UserPreferencesForm />
           </Flex>
         )}
       </ModalContent>
     </Modal>
   )
-}
-
-const SettingsContent = () => {
-  return <UserPreferencesForm />
 }
