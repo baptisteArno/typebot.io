@@ -194,7 +194,7 @@ services:
     image: minio/minio
     command: server /data
     ports:
-      - '9000:9000'
+      - "9000:9000"
     environment:
       MINIO_ROOT_USER: minio
       MINIO_ROOT_PASSWORD: minio123
@@ -208,8 +208,8 @@ services:
     entrypoint: >
       /bin/sh -c "
       sleep 10;
-      /usr/bin/mc config host add minio http://minio:9000 minio minio123;
-      /usr/bin/mc mb minio/typebot;
+      /usr/bin/mc alias set minio http://minio:9000 minio minio123;
+      /usr/bin/mc mb --ignore-existing minio/typebot;
       /usr/bin/mc anonymous set public minio/typebot/public;
       exit 0;
       "
@@ -322,8 +322,8 @@ services:
     entrypoint: >
       /bin/sh -c "
       sleep 10;
-      /usr/bin/mc config host add minio http://minio:9000 minio minio123;
-      /usr/bin/mc mb minio/typebot;
+      /usr/bin/mc alias set minio http://minio:9000 minio minio123;
+      /usr/bin/mc mb --ignore-existing minio/typebot;
       /usr/bin/mc anonymous set public minio/typebot/public;
       exit 0;
       "
@@ -375,6 +375,7 @@ services:
     networks:
       - typebot_network
 ```
+
 When deploying the stack, Portainer will automatically create the network with the correct settings. This prevents hostname resolution issues after migration.
 
 <Note>
