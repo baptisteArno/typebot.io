@@ -1,4 +1,4 @@
-export const isNetworkError = (error: Error) => {
+export const isNetworkError = (error: unknown) => {
   if (error instanceof TypeError) {
     const networkErrorMessages = [
       "Connection refused",

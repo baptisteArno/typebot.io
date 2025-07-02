@@ -218,10 +218,6 @@ export const ChatContainer = (props: Props) => {
     setIsSending(false);
 
     await processContinueChatResponse({ data, error });
-
-    if (!navigator.onLine || isNetworkError(error as Error)) {
-      showOfflineErrorToast();
-    }
   };
 
   const processContinueChatResponse = async ({
@@ -229,6 +225,7 @@ export const ChatContainer = (props: Props) => {
     error,
   }: { data: ContinueChatResponse | undefined; error: unknown }) => {
     if (error) {
+      if (isNetworkError(error)) showOfflineErrorToast();
       const errorLogs = [
         await parseUnknownClientError({
           err: error,
