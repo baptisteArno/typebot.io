@@ -8,6 +8,180 @@ import { defaultBaseUrl } from "../constants";
 import { deprecatedCreateChatMessageOptions } from "../deprecated";
 import type { Chunk } from "../types";
 
+interface DifyBlockingResponse {
+  answer: string;
+  conversation_id: string;
+  metadata: {
+    usage: {
+      total_tokens: number;
+    };
+  };
+}
+
+interface DifyRequestPayload {
+  inputs: Record<string, string>;
+  query: string | undefined;
+  response_mode: string | undefined;
+  conversation_id?: string | (string | null)[] | null;
+  user?: string;
+  files: never[];
+  timeout: boolean;
+}
+
+interface ProcessedResponse {
+  answer: string;
+  conversationId: string | undefined;
+  totalTokens: number | undefined;
+}
+
+const buildDifyRequest = ({
+  apiEndpoint,
+  apiKey,
+  query,
+  response_mode,
+  existingDifyConversationId,
+  user,
+  inputs,
+}: {
+  apiEndpoint?: string;
+  apiKey: string | undefined;
+  query: string | undefined;
+  response_mode: string | undefined;
+  existingDifyConversationId?: string | (string | null)[] | null;
+  user?: string;
+  inputs?: Array<{ key?: string; value?: string }>;
+}) => {
+  if (!apiKey) {
+    throw new Error("API key is required");
+  }
+
+  const cleanedExistingId = Array.isArray(existingDifyConversationId)
+    ? existingDifyConversationId[0] || undefined
+    : existingDifyConversationId || undefined;
+
+  const payload: DifyRequestPayload = {
+    inputs:
+      inputs?.reduce((acc, { key, value }) => {
+        if (isEmpty(key) || isEmpty(value)) return acc;
+        return { ...acc, [key!]: value! };
+      }, {}) ?? {},
+    query,
+    response_mode,
+    conversation_id: cleanedExistingId,
+    user,
+    files: [],
+    timeout: false,
+  };
+
+  return ky((apiEndpoint ?? defaultBaseUrl) + "/v1/chat-messages", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload),
+  });
+};
+
+const setResponseVariables = ({
+  variables,
+  responseMapping,
+  answer,
+  conversationId,
+  totalTokens,
+  conversationVariableId,
+  existingDifyConversationId,
+}: {
+  variables: any;
+  responseMapping?: Array<{ variableId?: string; item?: string }>;
+  answer: string;
+  conversationId?: string;
+  totalTokens?: number;
+  conversationVariableId?: string;
+  existingDifyConversationId?: string | (string | null)[] | null;
+}) => {
+  const cleanedExistingId = Array.isArray(existingDifyConversationId)
+    ? existingDifyConversationId[0] || undefined
+    : existingDifyConversationId || undefined;
+
+  if (
+    conversationVariableId &&
+    isNotEmpty(conversationId) &&
+    isEmpty(cleanedExistingId?.toString())
+  ) {
+    variables.set([{ id: conversationVariableId, value: conversationId }]);
+  }
+
+  responseMapping?.forEach((mapping) => {
+    if (!mapping.variableId) return;
+
+    const item = mapping.item ?? "Answer";
+    if (item === "Answer") {
+      variables.set([
+        {
+          id: mapping.variableId,
+          value: convertNonMarkdownLinks(answer),
+        },
+      ]);
+    }
+
+    if (
+      item === "Conversation ID" &&
+      isNotEmpty(conversationId) &&
+      isEmpty(cleanedExistingId?.toString())
+    ) {
+      variables.set([{ id: mapping.variableId, value: conversationId }]);
+    }
+
+    if (item === "Total Tokens") {
+      variables.set([{ id: mapping.variableId, value: totalTokens }]);
+    }
+  });
+};
+
+const handleBlockingResponse = async (
+  response: Response,
+): Promise<ProcessedResponse> => {
+  const data = (await response.json()) as DifyBlockingResponse;
+  return {
+    answer: data.answer || "",
+    conversationId: data.conversation_id,
+    totalTokens: data.metadata?.usage?.total_tokens,
+  };
+};
+
+const handleStreamingResponse = async (
+  response: Response,
+): Promise<ProcessedResponse> => {
+  const reader = response.body?.getReader();
+  if (!reader) {
+    throw new Error("Could not get reader from Dify response");
+  }
+
+  return new Promise<ProcessedResponse>(async (resolve, reject) => {
+    let answer = "";
+    let conversationId: string | undefined;
+    let totalTokens: number | undefined;
+
+    try {
+      await processDifyStream(reader, {
+        onMessage: (message) => {
+          answer += message;
+        },
+        onMessageEnd: async ({ totalTokens: tokens, conversationId: id }) => {
+          totalTokens = tokens;
+          conversationId = id;
+        },
+        onDone: () => {
+          resolve({ answer, conversationId, totalTokens });
+        },
+      });
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
 export const createChatMessage = createAction({
   auth,
   name: "Create Chat Message",
@@ -99,32 +273,15 @@ export const createChatMessage = createAction({
           ? variables.get(conversationVariableId)
           : conversation_id;
         try {
-          const response = await ky(
-            (apiEndpoint ?? defaultBaseUrl) + "/v1/chat-messages",
-            {
-              method: "POST",
-              headers: {
-                Authorization: `Bearer ${apiKey}`,
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                inputs:
-                  inputs?.reduce((acc, { key, value }) => {
-                    if (isEmpty(key) || isEmpty(value)) return acc;
-                    return {
-                      ...acc,
-                      [key]: value,
-                    };
-                  }, {}) ?? {},
-                query,
-                response_mode,
-                conversation_id: existingDifyConversationId,
-                user,
-                files: [],
-                timeout: false,
-              }),
-            },
-          );
+          const response = await buildDifyRequest({
+            apiEndpoint,
+            apiKey,
+            query,
+            response_mode,
+            existingDifyConversationId,
+            user,
+            inputs,
+          });
 
           const reader = response.body?.getReader();
 
@@ -216,145 +373,30 @@ export const createChatMessage = createAction({
         ? variables.get(conversationVariableId)
         : conversation_id;
       try {
-        const response = await ky(
-          (apiEndpoint ?? defaultBaseUrl) + "/v1/chat-messages",
-          {
-            method: "POST",
-            headers: {
-              Authorization: `Bearer ${apiKey}`,
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              inputs:
-                inputs?.reduce((acc, { key, value }) => {
-                  if (isEmpty(key) || isEmpty(value)) return acc;
-                  return {
-                    ...acc,
-                    [key]: value,
-                  };
-                }, {}) ?? {},
-              query,
-              response_mode,
-              conversation_id: existingDifyConversationId,
-              user,
-              files: [],
-              timeout: false,
-            }),
-          },
-        );
+        const response = await buildDifyRequest({
+          apiEndpoint,
+          apiKey,
+          query,
+          response_mode,
+          existingDifyConversationId,
+          user,
+          inputs,
+        });
 
-        if (response_mode === "blocking") {
-          const data = await response.json();
-          const answer = data.answer || "";
-          const conversationId = data.conversation_id;
-          const totalTokens = data.metadata?.usage?.total_tokens;
+        const processedResponse =
+          response_mode === "blocking"
+            ? await handleBlockingResponse(response)
+            : await handleStreamingResponse(response);
 
-          if (
-            conversationVariableId &&
-            isNotEmpty(conversationId) &&
-            isEmpty(existingDifyConversationId?.toString())
-          )
-            variables.set([
-              { id: conversationVariableId, value: conversationId },
-            ]);
-
-          responseMapping?.forEach((mapping) => {
-            if (!mapping.variableId) return;
-
-            const item = mapping.item ?? "Answer";
-            if (item === "Answer")
-              variables.set([
-                {
-                  id: mapping.variableId,
-                  value: convertNonMarkdownLinks(answer),
-                },
-              ]);
-
-            if (
-              item === "Conversation ID" &&
-              isNotEmpty(conversationId) &&
-              isEmpty(existingDifyConversationId?.toString())
-            )
-              variables.set([
-                { id: mapping.variableId, value: conversationId },
-              ]);
-
-            if (item === "Total Tokens")
-              variables.set([{ id: mapping.variableId, value: totalTokens }]);
-          });
-        } else {
-          const reader = response.body?.getReader();
-
-          if (!reader)
-            return logs.add({
-              status: "error",
-              description: "Failed to read response stream",
-            });
-
-          const { answer, conversationId, totalTokens } = await new Promise<{
-            answer: string;
-            conversationId: string | undefined;
-            totalTokens: number | undefined;
-          }>(async (resolve, reject) => {
-            let answer = "";
-            let conversationId: string | undefined;
-            let totalTokens: number | undefined;
-
-            try {
-              await processDifyStream(reader, {
-                onMessage: (message) => {
-                  answer += message;
-                },
-                onMessageEnd: async ({
-                  totalTokens: tokens,
-                  conversationId: id,
-                }) => {
-                  totalTokens = tokens;
-                  conversationId = id;
-                },
-                onDone: () => {
-                  resolve({ answer, conversationId, totalTokens });
-                },
-              });
-            } catch (e) {
-              reject(e);
-            }
-          });
-
-          if (
-            conversationVariableId &&
-            isNotEmpty(conversationId) &&
-            isEmpty(existingDifyConversationId?.toString())
-          )
-            variables.set([
-              { id: conversationVariableId, value: conversationId },
-            ]);
-
-          responseMapping?.forEach((mapping) => {
-            if (!mapping.variableId) return;
-
-            const item = mapping.item ?? "Answer";
-            if (item === "Answer")
-              variables.set([
-                {
-                  id: mapping.variableId,
-                  value: convertNonMarkdownLinks(answer),
-                },
-              ]);
-
-            if (
-              item === "Conversation ID" &&
-              isNotEmpty(conversationId) &&
-              isEmpty(existingDifyConversationId?.toString())
-            )
-              variables.set([
-                { id: mapping.variableId, value: conversationId },
-              ]);
-
-            if (item === "Total Tokens")
-              variables.set([{ id: mapping.variableId, value: totalTokens }]);
-          });
-        }
+        setResponseVariables({
+          variables,
+          responseMapping,
+          answer: processedResponse.answer,
+          conversationId: processedResponse.conversationId,
+          totalTokens: processedResponse.totalTokens,
+          conversationVariableId,
+          existingDifyConversationId,
+        });
       } catch (err) {
         return logs.add(
           await parseUnknownError({
