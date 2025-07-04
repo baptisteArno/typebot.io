@@ -24,6 +24,7 @@ import {
   onCleanup,
   onMount,
 } from "solid-js";
+import { Timer } from "../../buttons/components/Timer";
 import { SelectedFile } from "../../fileUpload/components/SelectedFile";
 import { sanitizeNewFile } from "../../fileUpload/helpers/sanitizeSelectedFiles";
 import { uploadFiles } from "../../fileUpload/helpers/uploadFiles";
@@ -34,6 +35,7 @@ type Props = {
   defaultValue?: string;
   context: BotContext;
   onSubmit: (value: InputSubmitContent) => void;
+  onTimeout?: () => void;
 };
 
 export const TextInput = (props: Props) => {
@@ -46,6 +48,7 @@ export const TextInput = (props: Props) => {
   const [recordingStatus, setRecordingStatus] = createSignal<
     "started" | "asking" | "stopped"
   >("stopped");
+  const [isTimerExpired, setIsTimerExpired] = createSignal(false);
   let inputRef: HTMLInputElement | HTMLTextAreaElement | undefined;
   let mediaRecorder: MediaRecorder | undefined;
   let recordedChunks: Blob[] = [];
@@ -56,6 +59,7 @@ export const TextInput = (props: Props) => {
     inputRef?.value !== "" && inputRef?.reportValidity();
 
   const submit = async () => {
+    if (isTimerExpired()) return;
     if (recordingStatus() === "started" && mediaRecorder) {
       mediaRecorder.stop();
       return;
@@ -94,6 +98,13 @@ export const TextInput = (props: Props) => {
         attachments,
       });
     } else inputRef?.focus();
+  };
+
+  const handleTimeout = () => {
+    setIsTimerExpired(true);
+    if (props.onTimeout) {
+      props.onTimeout();
+    }
   };
 
   const submitWhenEnter = (e: KeyboardEvent) => {
@@ -263,10 +274,23 @@ export const TextInput = (props: Props) => {
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
     >
+      <Show
+        when={
+          props.block.options?.timerSeconds &&
+          props.block.options.timerSeconds > 0 &&
+          !isTimerExpired()
+        }
+      >
+        <Timer
+          timerSeconds={props.block.options?.timerSeconds || 0}
+          onTimeout={handleTimeout}
+        />
+      </Show>
       <div
         class={cx(
           "relative typebot-input flex-col w-full",
           isDraggingOver() && "filter brightness-95",
+          isTimerExpired() && "opacity-50 pointer-events-none",
         )}
       >
         <VoiceRecorder
@@ -366,7 +390,7 @@ export const TextInput = (props: Props) => {
           <SendButton
             type="button"
             on:click={submit}
-            isDisabled={Boolean(uploadProgress())}
+            isDisabled={Boolean(uploadProgress()) || isTimerExpired()}
             class="h-[56px]"
           >
             {props.block.options?.labels?.button}

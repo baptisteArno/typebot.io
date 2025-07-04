@@ -12,4 +12,6 @@ export const defaultTextInputOptions = {
     isEnabled: false,
     visibility: "Auto",
   },
+  timerSeconds: undefined,
+  timerOutgoingEdgeId: undefined,
 } as const satisfies TextInputBlock["options"];

@@ -958,6 +958,10 @@ const parseReply = async (
     }
     case InputBlockType.TEXT: {
       if (!reply) return { status: "fail" };
+
+      if (reply.type === "text" && reply.text === "timeout") {
+        return { status: "timeout" };
+      }
       return {
         status: "success",
         content: reply.type === "audio" ? reply.url : reply.text,

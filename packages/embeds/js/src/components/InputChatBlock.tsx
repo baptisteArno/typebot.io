@@ -142,6 +142,7 @@ const Input = (props: {
           defaultValue={getPrefilledValue()}
           context={props.context}
           onSubmit={props.onSubmit}
+          onTimeout={props.onTimeout}
         />
       </Match>
       <Match when={props.block.type === InputBlockType.NUMBER}>
