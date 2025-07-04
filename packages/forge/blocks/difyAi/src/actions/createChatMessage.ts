@@ -13,6 +13,13 @@ export const createChatMessage = createAction({
   name: "Create Chat Message",
   options: option
     .object({
+      response_mode: option.enum(["streaming", "blocking"]).layout({
+        label: "Response Mode",
+        placeholder: "Method of response to be used",
+        inputType: "variableDropdown",
+        isRequired: true,
+        defaultValue: "streaming",
+      }),
       query: option.string.layout({
         label: "Query",
         placeholder: "User input/question content",
@@ -69,6 +76,7 @@ export const createChatMessage = createAction({
       run: async ({
         credentials: { apiEndpoint, apiKey },
         options: {
+          response_mode,
           conversation_id,
           conversationVariableId,
           query,
@@ -78,6 +86,15 @@ export const createChatMessage = createAction({
         },
         variables,
       }) => {
+        if (response_mode !== "streaming") {
+          return {
+            error: {
+              description:
+                "Stream handler only supports streaming mode. Use server handler for blocking mode.",
+            },
+          };
+        }
+
         const existingDifyConversationId = conversationVariableId
           ? variables.get(conversationVariableId)
           : conversation_id;
@@ -100,7 +117,7 @@ export const createChatMessage = createAction({
                     };
                   }, {}) ?? {},
                 query,
-                response_mode: "streaming",
+                response_mode,
                 conversation_id: existingDifyConversationId,
                 user,
                 files: [],
@@ -108,6 +125,7 @@ export const createChatMessage = createAction({
               }),
             },
           );
+
           const reader = response.body?.getReader();
 
           if (!reader)
@@ -183,6 +201,7 @@ export const createChatMessage = createAction({
     server: async ({
       credentials: { apiEndpoint, apiKey },
       options: {
+        response_mode,
         conversationVariableId,
         conversation_id,
         query,
@@ -215,7 +234,7 @@ export const createChatMessage = createAction({
                   };
                 }, {}) ?? {},
               query,
-              response_mode: "streaming",
+              response_mode,
               conversation_id: existingDifyConversationId,
               user,
               files: [],
@@ -224,75 +243,118 @@ export const createChatMessage = createAction({
           },
         );
 
-        const reader = response.body?.getReader();
-
-        if (!reader)
-          return logs.add({
-            status: "error",
-            description: "Failed to read response stream",
-          });
-
-        const { answer, conversationId, totalTokens } = await new Promise<{
-          answer: string;
-          conversationId: string | undefined;
-          totalTokens: number | undefined;
-        }>(async (resolve, reject) => {
-          let answer = "";
-          let conversationId: string | undefined;
-          let totalTokens: number | undefined;
-
-          try {
-            await processDifyStream(reader, {
-              onMessage: (message) => {
-                answer += message;
-              },
-              onMessageEnd: async ({
-                totalTokens: tokens,
-                conversationId: id,
-              }) => {
-                totalTokens = tokens;
-                conversationId = id;
-              },
-              onDone: () => {
-                resolve({ answer, conversationId, totalTokens });
-              },
-            });
-          } catch (e) {
-            reject(e);
-          }
-        });
-
-        if (
-          conversationVariableId &&
-          isNotEmpty(conversationId) &&
-          isEmpty(existingDifyConversationId?.toString())
-        )
-          variables.set([
-            { id: conversationVariableId, value: conversationId },
-          ]);
-
-        responseMapping?.forEach((mapping) => {
-          if (!mapping.variableId) return;
-
-          const item = mapping.item ?? "Answer";
-          if (item === "Answer")
-            variables.set([
-              {
-                id: mapping.variableId,
-                value: convertNonMarkdownLinks(answer),
-              },
-            ]);
+        if (response_mode === "blocking") {
+          const data = await response.json();
+          const answer = data.answer || "";
+          const conversationId = data.conversation_id;
+          const totalTokens = data.metadata?.usage?.total_tokens;
 
           if (
-            item === "Conversation ID" &&
+            conversationVariableId &&
             isNotEmpty(conversationId) &&
             isEmpty(existingDifyConversationId?.toString())
           )
-            variables.set([{ id: mapping.variableId, value: conversationId }]);
+            variables.set([
+              { id: conversationVariableId, value: conversationId },
+            ]);
 
-          if (item === "Total Tokens")
-            variables.set([{ id: mapping.variableId, value: totalTokens }]);
-        });
+          responseMapping?.forEach((mapping) => {
+            if (!mapping.variableId) return;
+
+            const item = mapping.item ?? "Answer";
+            if (item === "Answer")
+              variables.set([
+                {
+                  id: mapping.variableId,
+                  value: convertNonMarkdownLinks(answer),
+                },
+              ]);
+
+            if (
+              item === "Conversation ID" &&
+              isNotEmpty(conversationId) &&
+              isEmpty(existingDifyConversationId?.toString())
+            )
+              variables.set([
+                { id: mapping.variableId, value: conversationId },
+              ]);
+
+            if (item === "Total Tokens")
+              variables.set([{ id: mapping.variableId, value: totalTokens }]);
+          });
+        } else {
+          const reader = response.body?.getReader();
+
+          if (!reader)
+            return logs.add({
+              status: "error",
+              description: "Failed to read response stream",
+            });
+
+          const { answer, conversationId, totalTokens } = await new Promise<{
+            answer: string;
+            conversationId: string | undefined;
+            totalTokens: number | undefined;
+          }>(async (resolve, reject) => {
+            let answer = "";
+            let conversationId: string | undefined;
+            let totalTokens: number | undefined;
+
+            try {
+              await processDifyStream(reader, {
+                onMessage: (message) => {
+                  answer += message;
+                },
+                onMessageEnd: async ({
+                  totalTokens: tokens,
+                  conversationId: id,
+                }) => {
+                  totalTokens = tokens;
+                  conversationId = id;
+                },
+                onDone: () => {
+                  resolve({ answer, conversationId, totalTokens });
+                },
+              });
+            } catch (e) {
+              reject(e);
+            }
+          });
+
+          if (
+            conversationVariableId &&
+            isNotEmpty(conversationId) &&
+            isEmpty(existingDifyConversationId?.toString())
+          )
+            variables.set([
+              { id: conversationVariableId, value: conversationId },
+            ]);
+
+          responseMapping?.forEach((mapping) => {
+            if (!mapping.variableId) return;
+
+            const item = mapping.item ?? "Answer";
+            if (item === "Answer")
+              variables.set([
+                {
+                  id: mapping.variableId,
+                  value: convertNonMarkdownLinks(answer),
+                },
+              ]);
+
+            if (
+              item === "Conversation ID" &&
+              isNotEmpty(conversationId) &&
+              isEmpty(existingDifyConversationId?.toString())
+            )
+              variables.set([
+                { id: mapping.variableId, value: conversationId },
+              ]);
+
+            if (item === "Total Tokens")
+              variables.set([{ id: mapping.variableId, value: totalTokens }]);
+          });
+        }
       } catch (err) {
         return logs.add(
           await parseUnknownError({
