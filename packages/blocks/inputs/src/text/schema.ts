@@ -45,6 +45,8 @@ export const textInputOptionsSchema = textInputOptionsBaseSchema
           visibility: z.enum(fileVisibilityOptions).optional(),
         })
         .optional(),
+      timerSeconds: z.number().optional(),
+      timerOutgoingEdgeId: z.string().optional(),
     }),
   );
 
