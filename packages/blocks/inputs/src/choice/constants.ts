@@ -7,4 +7,6 @@ export const defaultChoiceInputOptions = {
   isMultipleChoice: false,
   isSearchable: false,
   areInitialSearchButtonsVisible: true,
+  timerSeconds: undefined,
+  timerOutgoingEdgeId: undefined,
 } as const satisfies ChoiceInputBlock["options"];

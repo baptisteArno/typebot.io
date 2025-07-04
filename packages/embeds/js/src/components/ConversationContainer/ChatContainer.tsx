@@ -445,6 +445,15 @@ export const ChatContainer = (props: Props) => {
     sendMessage(undefined);
   };
 
+  const handleTimeout = () => {
+    const currentChunk = chatChunks().at(-1);
+    if (currentChunk?.input?.id) {
+      setIsSending(true);
+      setChatChunks(updateIsInputHiddenOnLastChunk);
+    }
+    sendMessage({ type: "text", value: "timeout" });
+  };
+
   const latestTheme = createMemo(() =>
     mergeThemes(
       props.initialChatReply.typebot.theme,
@@ -516,6 +525,7 @@ export const ChatContainer = (props: Props) => {
                   onSubmit={sendMessage}
                   onScrollToBottom={autoScrollToBottom}
                   onSkip={handleSkip}
+                  onTimeout={handleTimeout}
                 />
               )}
             </Index>

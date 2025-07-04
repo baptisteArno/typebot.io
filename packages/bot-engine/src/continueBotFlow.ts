@@ -25,7 +25,11 @@ import type {
 } from "@typebot.io/chat-session/schemas";
 import { env } from "@typebot.io/env";
 import { EventType } from "@typebot.io/events/constants";
-import type { InvalidReplyEvent, ReplyEvent } from "@typebot.io/events/schemas";
+import type {
+  InvalidReplyEvent,
+  ReplyEvent,
+  TimeoutEvent,
+} from "@typebot.io/events/schemas";
 import { forgedBlocks } from "@typebot.io/forge-repository/definitions";
 import type { ForgedBlock } from "@typebot.io/forge-repository/schemas";
 import { getBlockById } from "@typebot.io/groups/helpers/getBlockById";
@@ -58,6 +62,7 @@ import { resumeChatCompletion } from "./blocks/integrations/legacy/openai/resume
 import { executeCommandEvent } from "./events/executeCommandEvent";
 import { executeInvalidReplyEvent } from "./events/executeInvalidReplyEvent";
 import { executeReplyEvent } from "./events/executeReplyEvent";
+import { executeTimeoutEvent } from "./events/executeTimeoutEvent";
 import { formatInputForChatResponse } from "./formatInputForChatResponse";
 import { saveAnswer } from "./queries/saveAnswer";
 import { resetSessionState } from "./resetSessionState";
@@ -67,6 +72,7 @@ import type {
   ParsedReply,
   SkipReply,
   SuccessReply,
+  TimeoutReply,
 } from "./types";
 import { updateVariablesInSession } from "./updateVariablesInSession";
 import { walkFlowForward } from "./walkFlowForward";
@@ -136,7 +142,7 @@ export const continueBotFlow = async (
   setVariableHistory.push(...nonInputProcessResult.setVariableHistory);
   const { firstBubbleWasStreamed } = nonInputProcessResult;
 
-  let continueReply: SuccessReply | SkipReply | undefined;
+  let continueReply: SuccessReply | SkipReply | TimeoutReply | undefined;
 
   if (isInputBlock(block) && isInputMessage(reply)) {
     const parsedReplyResult = await parseReply(reply, {
@@ -173,6 +179,29 @@ export const continueBotFlow = async (
           sessionStore,
         });
       }
+    }
+
+    if (parsedReplyResult.status === "timeout") {
+      const timeoutEvent = findTimeoutEvent(newSessionState);
+      if (timeoutEvent) {
+        const { updatedState, newSetVariableHistory } = executeTimeoutEvent(
+          timeoutEvent,
+          {
+            state: newSessionState,
+            reply,
+          },
+        );
+        newSessionState = updatedState;
+        setVariableHistory.push(...newSetVariableHistory);
+        return continueBotFlow(undefined, {
+          state: newSessionState,
+          version,
+          textBubbleContentFormat,
+          sessionStore,
+        });
+      }
+      // Se não há evento timeout configurado, usa o edge padrão
+      continueReply = { status: "skip" };
     }
 
     if (parsedReplyResult.status === "fail") {
@@ -748,7 +777,7 @@ const setNewAnswerInState =
   };
 
 const getReplyOutgoingEdge = (
-  reply: SuccessReply | SkipReply | undefined,
+  reply: SuccessReply | SkipReply | TimeoutReply | undefined,
   {
     block,
     state,
@@ -759,7 +788,7 @@ const getReplyOutgoingEdge = (
     sessionStore: SessionStore;
   },
 ): { id: string; isOffDefaultPath: boolean } | undefined => {
-  if (!reply || reply.status === "skip")
+  if (!reply || reply.status === "skip" || reply.status === "timeout")
     return block.outgoingEdgeId
       ? { id: block.outgoingEdgeId, isOffDefaultPath: false }
       : undefined;
@@ -844,6 +873,12 @@ const parseReply = async (
     }
     case InputBlockType.CHOICE: {
       if (!reply || reply.type !== "text") return { status: "fail" };
+
+      if (reply.text === "timeout") {
+        return { status: "timeout" };
+      }
+
+      // Lógica normal de escolha
       const displayedItems = injectVariableValuesInButtonsInputBlock(block, {
         state,
         sessionStore,
@@ -923,6 +958,10 @@ const parseReply = async (
     }
     case InputBlockType.TEXT: {
       if (!reply) return { status: "fail" };
+
+      if (reply.type === "text" && reply.text === "timeout") {
+        return { status: "timeout" };
+      }
       return {
         status: "success",
         content: reply.type === "audio" ? reply.url : reply.text,
@@ -959,6 +998,11 @@ const findInvalidReplyEvent = (
 ): InvalidReplyEvent | undefined =>
   state.typebotsQueue[0].typebot.events?.find(
     (e) => e.type === EventType.INVALID_REPLY,
+  );
+
+const findTimeoutEvent = (state: SessionState): TimeoutEvent | undefined =>
+  state.typebotsQueue[0].typebot.events?.find(
+    (e) => e.type === EventType.TIMEOUT,
   );
 
 const isInputMessage = (
