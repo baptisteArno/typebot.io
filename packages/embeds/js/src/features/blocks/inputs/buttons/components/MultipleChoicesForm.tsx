@@ -6,11 +6,13 @@ import type { ChoiceInputBlock } from "@typebot.io/blocks-inputs/choice/schema";
 import { guessDeviceIsMobile } from "@typebot.io/lib/guessDeviceIsMobile";
 import { For, Show, createSignal, onMount } from "solid-js";
 import { Checkbox } from "./Checkbox";
+import { Timer } from "./Timer";
 
 type Props = {
   defaultItems: ChoiceInputBlock["items"];
   options: ChoiceInputBlock["options"];
   onSubmit: (value: InputSubmitContent) => void;
+  onTimeout?: () => void;
 };
 
 export const MultipleChoicesForm = (props: Props) => {
@@ -22,6 +24,7 @@ export const MultipleChoicesForm = (props: Props) => {
       : props.defaultItems,
   );
   const [selectedItemIds, setSelectedItemIds] = createSignal<string[]>([]);
+  const [isTimerExpired, setIsTimerExpired] = createSignal(false);
 
   onMount(() => {
     if (!guessDeviceIsMobile() && inputRef)
@@ -29,6 +32,7 @@ export const MultipleChoicesForm = (props: Props) => {
   });
 
   const handleClick = (itemId: string) => {
+    if (isTimerExpired()) return;
     toggleSelectedItemId(itemId);
   };
 
@@ -44,6 +48,8 @@ export const MultipleChoicesForm = (props: Props) => {
   };
 
   const handleSubmit = () => {
+    if (isTimerExpired()) return;
+
     const selectedItems = selectedItemIds().map((selectedItemId) =>
       props.defaultItems.find((item) => item.id === selectedItemId),
     );
@@ -64,6 +70,13 @@ export const MultipleChoicesForm = (props: Props) => {
             .join(", ")
         : undefined,
     });
+  };
+
+  const handleTimeout = () => {
+    setIsTimerExpired(true);
+    if (props.onTimeout) {
+      props.onTimeout();
+    }
   };
 
   const filterItems = (inputValue: string) => {
@@ -88,7 +101,20 @@ export const MultipleChoicesForm = (props: Props) => {
       class="flex flex-col items-end gap-2 w-full typebot-buttons-input"
       onSubmit={handleSubmit}
     >
-      <Show when={props.options?.isSearchable}>
+      <Show
+        when={
+          props.options?.timerSeconds &&
+          props.options.timerSeconds > 0 &&
+          !isTimerExpired()
+        }
+      >
+        <Timer
+          timerSeconds={props.options?.timerSeconds || 0}
+          onTimeout={handleTimeout}
+        />
+      </Show>
+
+      <Show when={props.options?.isSearchable && !isTimerExpired()}>
         <div class="flex items-end typebot-input w-full">
           <SearchInput
             ref={inputRef}
@@ -104,6 +130,7 @@ export const MultipleChoicesForm = (props: Props) => {
                   : props.defaultItems,
               )
             }
+            disabled={isTimerExpired()}
           />
         </div>
       </Show>
@@ -112,7 +139,8 @@ export const MultipleChoicesForm = (props: Props) => {
           "flex justify-end gap-2" +
           (props.options?.isSearchable
             ? " overflow-y-scroll max-h-80 rounded-md"
-            : "")
+            : "") +
+          (isTimerExpired() ? " opacity-50 pointer-events-none" : "")
         }
         data-slot="list"
       >
@@ -131,7 +159,8 @@ export const MultipleChoicesForm = (props: Props) => {
                     (selectedItemId) => selectedItemId === item.id,
                   )
                     ? " selected"
-                    : "")
+                    : "") +
+                  (isTimerExpired() ? " pointer-events-none" : "")
                 }
                 data-itemid={item.id}
               >
@@ -160,7 +189,8 @@ export const MultipleChoicesForm = (props: Props) => {
                 aria-checked
                 on:click={() => handleClick(selectedItemId)}
                 class={
-                  "w-full py-2 px-4 font-semibold focus:outline-none cursor-pointer select-none typebot-selectable selected"
+                  "w-full py-2 px-4 font-semibold focus:outline-none cursor-pointer select-none typebot-selectable selected" +
+                  (isTimerExpired() ? " pointer-events-none" : "")
                 }
                 data-itemid={selectedItemId}
               >
@@ -179,7 +209,7 @@ export const MultipleChoicesForm = (props: Props) => {
           )}
         </For>
       </div>
-      {selectedItemIds().length > 0 && (
+      {selectedItemIds().length > 0 && !isTimerExpired() && (
         <SendButton disableIcon>
           {props.options?.buttonLabel ?? defaultChoiceInputOptions.buttonLabel}
         </SendButton>

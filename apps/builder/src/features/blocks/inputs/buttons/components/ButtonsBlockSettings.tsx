@@ -1,6 +1,7 @@
 import { MoreInfoTooltip } from "@/components/MoreInfoTooltip";
 import { SwitchWithRelatedSettings } from "@/components/SwitchWithRelatedSettings";
 import { TextInput } from "@/components/inputs";
+import { NumberInput } from "@/components/inputs/NumberInput";
 import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
 import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
 import { FormControl, FormLabel, Stack } from "@chakra-ui/react";
@@ -32,6 +33,8 @@ export const ButtonsBlockSettings = ({ options, onOptionsChange }: Props) => {
   const updateAreInitialSearchButtonsVisible = (
     areInitialSearchButtonsVisible: boolean,
   ) => onOptionsChange({ ...options, areInitialSearchButtonsVisible });
+  const updateTimerSeconds = (timerSeconds?: number) =>
+    onOptionsChange({ ...options, timerSeconds });
 
   return (
     <Stack spacing={4}>
@@ -75,6 +78,21 @@ export const ButtonsBlockSettings = ({ options, onOptionsChange }: Props) => {
           onChange={updateSearchInputPlaceholder}
         />
       </SwitchWithRelatedSettings>
+      <FormControl>
+        <FormLabel>
+          {t("blocks.inputs.button.settings.timeout.label")}{" "}
+          <MoreInfoTooltip>
+            {t("blocks.inputs.button.settings.timeout.tooltip")}
+          </MoreInfoTooltip>
+        </FormLabel>
+        <NumberInput
+          defaultValue={options?.timerSeconds}
+          placeholder={t("blocks.inputs.button.settings.timeout.placeholder")}
+          withVariableButton={false}
+          min={0}
+          onValueChange={updateTimerSeconds}
+        />
+      </FormControl>
       <FormControl>
         <FormLabel>
           {t("blocks.inputs.button.settings.dynamicData.label")}{" "}

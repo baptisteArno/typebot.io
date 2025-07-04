@@ -34,6 +34,7 @@ type Props = Pick<ChatChunkType, "messages" | "input" | "streamingMessage"> & {
   }) => void;
   onSubmit: (answer?: InputSubmitContent) => void;
   onSkip: (label: string) => void;
+  onTimeout: () => void;
   onAllBubblesDisplayed: () => void;
 };
 
@@ -151,6 +152,7 @@ export const ChatChunk = (props: Props) => {
           }
           onSubmit={props.onSubmit}
           onSkip={props.onSkip}
+          onTimeout={props.onTimeout}
         />
       </Show>
       <Show when={props.streamingMessage}>

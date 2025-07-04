@@ -18,6 +18,8 @@ test/report
 .cache-loader
 build
 firebaseServiceAccount.json
+memory-bank
+.cursor
 
 .env.production
 .env.staging
@@ -60,3 +62,4 @@ snapshots
 
 .tanstack
 .nitro
+

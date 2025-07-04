@@ -844,6 +844,24 @@ const parseReply = async (
     }
     case InputBlockType.CHOICE: {
       if (!reply || reply.type !== "text") return { status: "fail" };
+
+      if (reply.text === "timeout") {
+        if (block.options?.timerOutgoingEdgeId) {
+          return {
+            status: "success",
+            content: "timeout",
+            outgoingEdgeId: block.options.timerOutgoingEdgeId,
+          };
+        }
+
+        return {
+          status: "success",
+          content: "timeout",
+          outgoingEdgeId: block.outgoingEdgeId,
+        };
+      }
+
+      // Lógica normal de escolha
       const displayedItems = injectVariableValuesInButtonsInputBlock(block, {
         state,
         sessionStore,
