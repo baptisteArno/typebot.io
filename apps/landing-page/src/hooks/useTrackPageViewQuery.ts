@@ -23,7 +23,7 @@ export const useTrackPageViewQuery = ({ enabled }: Props) => {
     if (!enabled) return;
 
     const routerSub = router.subscribe("onLoad", (event) => {
-      if (event.pathChanged && event.fromLocation)
+      if (event.pathChanged)
         trackPageView({
           data: getPageViewBodyProps(),
         });
