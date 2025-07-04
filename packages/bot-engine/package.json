@@ -55,7 +55,7 @@
     "@types/nodemailer": "6.4.14",
     "@types/qs": "6.9.7",
     "@typebot.io/tsconfig": "workspace:*",
-    "vitest": "3.1.4",
+    "vitest": "3.2.4",
     "vite-tsconfig-paths": "5.1.4"
   },
   "scripts": {
