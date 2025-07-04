@@ -138,7 +138,7 @@ export const TypebotPageV2 = ({
     return <ErrorPage error={error} />;
   }
   return (
-    <div style={{ height: "100vh" }}>
+    <div style={{ height: "100dvh" }}>
       <SEO
         url={url}
         typebotName={publishedTypebot.typebot.name}

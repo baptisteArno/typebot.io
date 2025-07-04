@@ -3,7 +3,7 @@ import { cn } from "../lib/cn";
 import { type VariantProps, cva } from "../lib/cva";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg font-medium transition-colors data-[focus-visible]:ring-1 data-[focus-visible]:ring-orange-8 data-[aria-disabled=true]:pointer-events-none data-[aria-disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg font-medium transition-colors data-[focus-visible]:ring-1 data-[focus-visible]:ring-orange-8 data-[aria-disabled=true]:pointer-events-none data-[aria-disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
       variant: {
@@ -32,7 +32,7 @@ const buttonVariants = cva(
 );
 
 export interface ButtonProps
-  extends React.HTMLAttributes<HTMLButtonElement>,
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {}
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(function Button(

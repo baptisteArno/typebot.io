@@ -1,6 +1,7 @@
 import type { IncomingMessage } from "http";
 import { ErrorPage } from "@/components/ErrorPage";
 import { NotFoundPage } from "@/components/NotFoundPage";
+import { RootPage } from "@/components/RootPage";
 import {
   type TypebotPageProps,
   TypebotPageV2,
@@ -9,7 +10,6 @@ import {
   TypebotPageV3,
   type TypebotV3PageProps,
 } from "@/components/TypebotPageV3";
-import * as Sentry from "@sentry/nextjs";
 import { env } from "@typebot.io/env";
 import { isNotDefined } from "@typebot.io/lib/utils";
 import prisma from "@typebot.io/prisma";
@@ -78,6 +78,14 @@ export const getServerSideProps: GetServerSideProps = async (
                 .includes(url.split("//")[1].split(":")[0])),
         );
     log(`isMatchingViewerUrl: ${isMatchingViewerUrl}`);
+    if (isMatchingViewerUrl && pathname === "/") {
+      // Early return, will just show a root page
+      return {
+        props: {
+          dashboardUrl: `${env.NEXTAUTH_URL ?? "https://app.typebot.io"}/typebots`,
+        },
+      };
+    }
     const customDomain = `${forwardedHost ?? host}${
       pathname === "/" ? "" : pathname
     }`;
@@ -227,12 +235,14 @@ const getHost = (
 const App = ({
   publishedTypebot,
   incompatibleBrowser,
+  dashboardUrl,
   ...props
 }: {
   isIE: boolean;
   customHeadCode: string | null;
   url: string;
   isMatchingViewerUrl?: boolean;
+  dashboardUrl?: string;
   publishedTypebot:
     | TypebotPageProps["publishedTypebot"]
     | (Pick<
@@ -258,6 +268,7 @@ const App = ({
         }
       />
     );
+  if (dashboardUrl) return <RootPage dashboardUrl={dashboardUrl} />;
   if (
     !publishedTypebot ||
     ("typebot" in publishedTypebot && publishedTypebot.typebot.isArchived)

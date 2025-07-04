@@ -1,41 +1,9 @@
-import prisma from "@typebot.io/prisma";
-import { promptAndSetEnvironment } from "./utils";
+import { formatSubscriptionMessage } from "./helpers/formatSubscriptionMessage";
+import { getSubscriptionTransitions } from "./helpers/getSubscriptionTransitions";
 
 const executePlayground = async () => {
-  await promptAndSetEnvironment();
-
-  const result = await prisma.workspace.findMany({
-    where: {
-      members: {
-        some: {
-          user: {
-            email: "",
-          },
-        },
-      },
-    },
-    include: {
-      members: true,
-      typebots: {
-        select: {
-          name: true,
-          riskLevel: true,
-          id: true,
-        },
-      },
-    },
-  });
-  console.log(JSON.stringify(result));
-
-  // await prisma.bannedIp.deleteMany({})
-
-  // const result = await prisma.coupon.findMany({
-  //   where: {
-  //     code: '',
-  //   },
-  // })
-
-  // console.log(result)
+  const result = await getSubscriptionTransitions();
+  console.log(formatSubscriptionMessage(result));
 };
 
 executePlayground();

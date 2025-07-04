@@ -6,7 +6,5 @@ export type DropoffLogger = (
 export type TraversalFrame = {
   edgeId: string;
   usersRemaining: number;
-  pathIndex: number;
+  isOffDefaultPath: boolean;
 };
-
-export type VisitedPathsByEdge = Map<string, Set<number>>;

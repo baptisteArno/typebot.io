@@ -15,3 +15,8 @@ export const howToGetHelpUrl = `${docsUrl}/guides/how-to-get-help`;
 export const stripeClimateUrl = "https://climate.stripe.com/5VCRAq";
 export const enterpriseLeadTypebotUrl =
   "https://typebot.io/enterprise-lead-form";
+
+export const legacyRedirects = {
+  "/typebot-lib": "https://unpkg.com/typebot-js@2.0.21/dist/index.umd.min.js",
+  "/typebot-lib/v2": "https://unpkg.com/typebot-js@2.1.3/dist/index.umd.min.js",
+} as const;

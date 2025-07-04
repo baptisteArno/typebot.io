@@ -95,6 +95,7 @@ export const walkFlowForward = async (
       version,
       state: newSessionState,
       setVariableHistory,
+      visitedEdges,
       skipFirstMessageBubble,
       timeoutStartTime,
       textBubbleContentFormat,
@@ -118,7 +119,7 @@ export const walkFlowForward = async (
   } while (
     nextEdge ||
     (!input &&
-      !clientSideActions.some((ca) => ca.expectsDedicatedReply) &&
+      !isDedicatedReplyNeeded({ clientSideActions, messages }) &&
       (newSessionState.typebotsQueue[0].queuedEdgeIds?.length ||
         newSessionState.typebotsQueue.length > 1))
   );
@@ -134,6 +135,17 @@ export const walkFlowForward = async (
   };
 };
 
+const isDedicatedReplyNeeded = ({
+  clientSideActions,
+  messages,
+}: {
+  clientSideActions: ContinueChatResponse["clientSideActions"];
+  messages: ContinueChatResponse["messages"];
+}) =>
+  // Either a client side action expects a dedicated reply or the last message is an embed which means it waits for an event
+  clientSideActions?.some((ca) => ca.expectsDedicatedReply) ||
+  messages.at(-1)?.type === BubbleBlockType.EMBED;
+
 type ContextProps = {
   version: 1 | 2;
   state: SessionState;
@@ -143,6 +155,7 @@ type ContextProps = {
   setVariableHistory: SetVariableHistoryItem[];
   timeoutStartTime?: number;
   textBubbleContentFormat: "richText" | "markdown";
+  visitedEdges: Prisma.VisitedEdge[];
 };
 
 export type ExecuteGroupResponse = ContinueChatResponse & {
@@ -167,6 +180,7 @@ const executeGroup = async (
     skipFirstMessageBubble,
     timeoutStartTime,
     textBubbleContentFormat,
+    visitedEdges,
   }: ContextProps,
 ): Promise<ExecuteGroupResponse> => {
   const messages: ContinueChatResponse["messages"] = [];
@@ -252,6 +266,7 @@ const executeGroup = async (
             block,
             state: newSessionState,
             setVariableHistory,
+            visitedEdges,
             sessionStore,
           })
         : isIntegrationBlock(block)

@@ -21,6 +21,7 @@ jobs:
       POSTHOG_DAILY_DASHBOARD_ID: "${{ secrets.POSTHOG_DAILY_DASHBOARD_ID }}"
       NEXT_PUBLIC_POSTHOG_KEY: "${{ secrets.NEXT_PUBLIC_POSTHOG_KEY }}"
       POSTHOG_API_HOST: "${{ secrets.POSTHOG_API_HOST }}"
+      POSTHOG_PERSONAL_API_KEY: "${{ secrets.POSTHOG_PERSONAL_API_KEY }}"
     steps:
       - uses: actions/checkout@v2
       - uses: oven-sh/setup-bun@v2

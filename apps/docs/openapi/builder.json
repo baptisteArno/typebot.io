@@ -6062,6 +6062,10 @@
                         "title": "Typebot V5"
                       }
                     ]
+                  },
+                  "overwrite": {
+                    "type": "boolean",
+                    "description": "If true, even if we detect a conflict, we will overwrite push the updates to the typebot"
                   }
                 },
                 "required": [

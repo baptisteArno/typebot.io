@@ -66,6 +66,12 @@ export const updateTypebot = authenticatedProcedure
           title: "Typebot V5",
         }),
       ]),
+      overwrite: z
+        .boolean()
+        .optional()
+        .describe(
+          "If true, even if we detect a conflict, we will overwrite push the updates to the typebot",
+        ),
     }),
   )
   .output(
@@ -73,144 +79,150 @@ export const updateTypebot = authenticatedProcedure
       typebot: typebotV6Schema,
     }),
   )
-  .mutation(async ({ input: { typebotId, typebot }, ctx: { user } }) => {
-    const existingTypebot = await prisma.typebot.findFirst({
-      where: {
-        id: typebotId,
-      },
-      select: {
-        version: true,
-        id: true,
-        customDomain: true,
-        publicId: true,
-        collaborators: {
-          select: {
-            userId: true,
-            type: true,
-          },
+  .mutation(
+    async ({ input: { typebotId, typebot, overwrite }, ctx: { user } }) => {
+      const existingTypebot = await prisma.typebot.findFirst({
+        where: {
+          id: typebotId,
         },
-        workspace: {
-          select: {
-            id: true,
-            plan: true,
-            isSuspended: true,
-            isPastDue: true,
-            members: {
-              select: {
-                userId: true,
-                role: true,
+        select: {
+          version: true,
+          id: true,
+          customDomain: true,
+          publicId: true,
+          collaborators: {
+            select: {
+              userId: true,
+              type: true,
+            },
+          },
+          workspace: {
+            select: {
+              id: true,
+              plan: true,
+              isSuspended: true,
+              isPastDue: true,
+              members: {
+                select: {
+                  userId: true,
+                  role: true,
+                },
               },
             },
           },
+          updatedAt: true,
         },
-        updatedAt: true,
-      },
-    });
-
-    if (
-      !existingTypebot?.id ||
-      (await isWriteTypebotForbidden(existingTypebot, user))
-    )
-      throw new TRPCError({
-        code: "NOT_FOUND",
-        message: "Typebot not found",
       });
 
-    if (
-      typebot.updatedAt &&
-      existingTypebot.updatedAt.getTime() > typebot.updatedAt.getTime()
-    )
-      throw new TRPCError({
-        code: "CONFLICT",
-        message: "Found newer version of the typebot in database",
-      });
-
-    if (
-      typebot.customDomain &&
-      existingTypebot.customDomain !== typebot.customDomain &&
-      (await isCustomDomainNotAvailable({
-        customDomain: typebot.customDomain,
-        workspaceId: existingTypebot.workspace.id,
-      }))
-    )
-      throw new TRPCError({
-        code: "BAD_REQUEST",
-        message: "Custom domain not available",
-      });
-
-    if (typebot.publicId) {
-      if (isCloudProdInstance() && typebot.publicId.length < 4)
-        throw new TRPCError({
-          code: "BAD_REQUEST",
-          message: "Public id should be at least 4 characters long",
-        });
       if (
-        existingTypebot.publicId !== typebot.publicId &&
-        (await isPublicIdNotAvailable(typebot.publicId))
+        !existingTypebot?.id ||
+        (await isWriteTypebotForbidden(existingTypebot, user))
+      )
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Typebot not found",
+        });
+
+      // Add a 5-second margin of error to account for clock synchronization issues
+      const conflictMarginMs = 5 * 1000; // 5 seconds
+      if (
+        typebot.updatedAt &&
+        existingTypebot.updatedAt.getTime() >
+          typebot.updatedAt.getTime() + conflictMarginMs &&
+        !overwrite
+      )
+        throw new TRPCError({
+          code: "CONFLICT",
+          message: "Found newer version of the typebot in database",
+        });
+
+      if (
+        typebot.customDomain &&
+        existingTypebot.customDomain !== typebot.customDomain &&
+        (await isCustomDomainNotAvailable({
+          customDomain: typebot.customDomain,
+          workspaceId: existingTypebot.workspace.id,
+        }))
       )
         throw new TRPCError({
           code: "BAD_REQUEST",
-          message: "Public id not available",
+          message: "Custom domain not available",
         });
-    }
 
-    const groups = typebot.groups
-      ? await sanitizeGroups(existingTypebot.workspace)(typebot.groups)
-      : undefined;
+      if (typebot.publicId) {
+        if (isCloudProdInstance() && typebot.publicId.length < 4)
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: "Public id should be at least 4 characters long",
+          });
+        if (
+          existingTypebot.publicId !== typebot.publicId &&
+          (await isPublicIdNotAvailable(typebot.publicId))
+        )
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: "Public id not available",
+          });
+      }
 
-    const newTypebot = await prisma.typebot.update({
-      where: {
-        id: existingTypebot.id,
-      },
-      data: {
-        version: typebot.version ?? undefined,
-        name: typebot.name,
-        icon: typebot.icon,
-        selectedThemeTemplateId: typebot.selectedThemeTemplateId,
-        events: typebot.events ?? undefined,
-        groups,
-        theme: typebot.theme ? typebot.theme : undefined,
-        settings: typebot.settings
-          ? sanitizeSettings(
-              typebot.settings,
-              existingTypebot.workspace.plan,
-              "update",
-            )
-          : undefined,
-        folderId: typebot.folderId,
-        variables:
-          typebot.variables && groups
-            ? sanitizeVariables({
-                variables: typebot.variables,
-                groups,
-              })
+      const groups = typebot.groups
+        ? await sanitizeGroups(existingTypebot.workspace)(typebot.groups)
+        : undefined;
+
+      const newTypebot = await prisma.typebot.update({
+        where: {
+          id: existingTypebot.id,
+        },
+        data: {
+          version: typebot.version ?? undefined,
+          name: typebot.name,
+          icon: typebot.icon,
+          selectedThemeTemplateId: typebot.selectedThemeTemplateId,
+          events: typebot.events ?? undefined,
+          groups,
+          theme: typebot.theme ? typebot.theme : undefined,
+          settings: typebot.settings
+            ? sanitizeSettings(
+                typebot.settings,
+                existingTypebot.workspace.plan,
+                "update",
+              )
             : undefined,
-        edges: typebot.edges,
-        resultsTablePreferences:
-          typebot.resultsTablePreferences === null
-            ? DbNull
-            : typebot.resultsTablePreferences,
-        publicId:
-          typebot.publicId === null
-            ? null
-            : typebot.publicId && isPublicIdValid(typebot.publicId)
-              ? typebot.publicId
+          folderId: typebot.folderId,
+          variables:
+            typebot.variables && groups
+              ? sanitizeVariables({
+                  variables: typebot.variables,
+                  groups,
+                })
               : undefined,
-        customDomain: await sanitizeCustomDomain({
-          customDomain: typebot.customDomain,
-          workspaceId: existingTypebot.workspace.id,
-        }),
-        isClosed: typebot.isClosed,
-        whatsAppCredentialsId: typebot.whatsAppCredentialsId ?? undefined,
-      },
-    });
+          edges: typebot.edges,
+          resultsTablePreferences:
+            typebot.resultsTablePreferences === null
+              ? DbNull
+              : typebot.resultsTablePreferences,
+          publicId:
+            typebot.publicId === null
+              ? null
+              : typebot.publicId && isPublicIdValid(typebot.publicId)
+                ? typebot.publicId
+                : undefined,
+          customDomain: await sanitizeCustomDomain({
+            customDomain: typebot.customDomain,
+            workspaceId: existingTypebot.workspace.id,
+          }),
+          isClosed: typebot.isClosed,
+          whatsAppCredentialsId: typebot.whatsAppCredentialsId ?? undefined,
+        },
+      });
 
-    const migratedTypebot = await migrateTypebot(
-      typebotSchema.parse(newTypebot),
-    );
+      const migratedTypebot = await migrateTypebot(
+        typebotSchema.parse(newTypebot),
+      );
 
-    return { typebot: migratedTypebot };
-  });
+      return { typebot: migratedTypebot };
+    },
+  );
 
 const isPublicIdValid = (str: string) =>
   /^([a-z0-9]+-[a-z0-9]*)*$/.test(str) || /^[a-z0-9]*$/.test(str);

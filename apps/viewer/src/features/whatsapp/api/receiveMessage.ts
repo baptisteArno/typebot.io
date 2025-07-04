@@ -60,10 +60,9 @@ export const receiveMessage = publicProcedure
         Sentry.captureMessage(err.message, err.details);
       } else {
         console.log("Sending unknown error to Sentry");
-        const details = safeJsonParse(
-          (await parseUnknownError({ err })).details,
-        );
-        console.log("details", details);
+        const parsedError = await parseUnknownError({ err });
+        console.log(parsedError);
+        const details = safeJsonParse(parsedError.details);
         Sentry.addBreadcrumb({
           data:
             typeof details === "object" && details

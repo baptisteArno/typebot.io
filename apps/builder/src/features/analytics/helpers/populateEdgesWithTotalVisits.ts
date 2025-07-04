@@ -11,11 +11,7 @@ import type {
   Target,
 } from "@typebot.io/typebot/schemas/edge";
 import type { EdgeWithTotalVisits, TotalAnswers } from "../schemas";
-import type {
-  DropoffLogger,
-  TraversalFrame,
-  VisitedPathsByEdge,
-} from "../types";
+import type { DropoffLogger, TraversalFrame } from "../types";
 import { getVisitedEdgeToPropFromId } from "./getVisitedEdgeToPropFromId";
 
 type Params = {
@@ -30,6 +26,10 @@ type Params = {
   logger?: DropoffLogger;
 };
 
+/**
+ * We already have total users on offDefaultEdges. This function computes the total users on all other edges.
+ * We know total answers at each input block, so we can compute the total users on each edge.
+ */
 export function populateEdgesWithTotalVisits({
   initialEdge,
   offDefaultPathEdgeWithTotalVisits,
@@ -54,18 +54,18 @@ export function populateEdgesWithTotalVisits({
     ]),
   );
 
-  const visitedByEdge: VisitedPathsByEdge = new Map();
+  const visitedOffDefaultEdgeIds: Set<string> = new Set();
 
   const depthFirstFrames: TraversalFrame[] = [
     {
-      edgeId: initialEdge.id,
       usersRemaining: initialEdge.total,
-      pathIndex: 0,
+      edgeId: initialEdge.id,
+      isOffDefaultPath: false,
     },
   ];
 
   while (depthFirstFrames.length) {
-    visitFrame(depthFirstFrames.pop()!);
+    visitFrame(depthFirstFrames.pop()!, { depth: depthFirstFrames.length });
   }
 
   return [...edgeTotalsById.entries()].map(([id, total]) => ({
@@ -77,10 +77,16 @@ export function populateEdgesWithTotalVisits({
   /* ================================================================ */
   /* Inner helpers                                                     */
   /* ================================================================ */
-  function visitFrame({ edgeId, usersRemaining, pathIndex }: TraversalFrame) {
+  function visitFrame(
+    { usersRemaining, edgeId, isOffDefaultPath }: TraversalFrame,
+    { depth }: { depth: number },
+  ) {
+    // These checks are to avoid infinite loops.
+    // - If usersRemaining is 0 then we don't need to visit this edge.
+    // - Since offDefaultPath inject usersRemaining with fixed total answers then we need to skip off default paths if we already visited this edge.
     if (usersRemaining <= 0) return;
-
-    if (markVisited(visitedByEdge, edgeId, pathIndex)) return;
+    if (isOffDefaultPath && markVisited(visitedOffDefaultEdgeIds, edgeId))
+      return;
 
     if (!offPathEdgeIds.has(edgeId)) {
       edgeTotalsById.set(
@@ -97,6 +103,7 @@ export function populateEdgesWithTotalVisits({
       })}`,
       {
         usersRemaining,
+        depth,
       },
     );
 
@@ -108,7 +115,6 @@ export function populateEdgesWithTotalVisits({
 
     let remainingForNextDefaultOutgoingEdge = usersRemaining;
 
-    let nextPathIndexIncrement = 1;
     for (const block of sliceFrom(group.blocks, edge.to.blockId)) {
       if (isInputBlock(block)) {
         remainingForNextDefaultOutgoingEdge =
@@ -119,8 +125,11 @@ export function populateEdgesWithTotalVisits({
       for (const itemEdgeId of outgoingItemEdges(block)) {
         const itemTotal = edgeTotalsById.get(itemEdgeId);
         if (itemTotal && itemTotal > 0) {
-          enqueue(itemEdgeId, itemTotal, pathIndex + nextPathIndexIncrement);
-          nextPathIndexIncrement++;
+          enqueue({
+            edgeId: itemEdgeId,
+            usersRemaining: itemTotal,
+            isOffDefaultPath: true,
+          });
           remainingForNextDefaultOutgoingEdge -= itemTotal;
         }
       }
@@ -129,23 +138,31 @@ export function populateEdgesWithTotalVisits({
         const virtualId = createVirtualEdgeId(block.options);
         const virtualTotal = edgeTotalsById.get(virtualId);
         if (virtualTotal && virtualTotal > 0) {
-          enqueue(virtualId, virtualTotal, pathIndex + 1);
+          enqueue({
+            edgeId: virtualId,
+            usersRemaining: virtualTotal,
+            isOffDefaultPath: true,
+          });
         }
       }
 
       if (block.outgoingEdgeId) {
-        enqueue(
-          block.outgoingEdgeId,
-          remainingForNextDefaultOutgoingEdge,
-          pathIndex,
-        );
+        enqueue({
+          edgeId: block.outgoingEdgeId,
+          usersRemaining: remainingForNextDefaultOutgoingEdge,
+          isOffDefaultPath: false,
+        });
       }
     }
   }
 
-  function enqueue(edgeId: string, usersRemaining: number, pathIndex: number) {
+  function enqueue({
+    edgeId,
+    usersRemaining,
+    isOffDefaultPath,
+  }: { edgeId: string; usersRemaining: number; isOffDefaultPath: boolean }) {
     if (usersRemaining <= 0) return;
-    depthFirstFrames.push({ edgeId, usersRemaining, pathIndex });
+    depthFirstFrames.push({ edgeId, usersRemaining, isOffDefaultPath });
   }
 }
 
@@ -211,17 +228,8 @@ const edgeIdToHumanReadableLabel = (
   return label;
 };
 
-const markVisited = (
-  visitedByEdge: VisitedPathsByEdge,
-  edgeId: string,
-  pathIdx: number,
-): boolean => {
-  let paths = visitedByEdge.get(edgeId);
-  if (!paths) {
-    paths = new Set<number>();
-    visitedByEdge.set(edgeId, paths);
-  }
-  if (paths.has(pathIdx)) return true;
-  paths.add(pathIdx);
+const markVisited = (visitedEdgeIds: Set<string>, edgeId: string): boolean => {
+  if (visitedEdgeIds.has(edgeId)) return true;
+  visitedEdgeIds.add(edgeId);
   return false;
 };

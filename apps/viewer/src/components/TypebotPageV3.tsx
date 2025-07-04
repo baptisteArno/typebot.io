@@ -51,7 +51,7 @@ export const TypebotPageV3 = ({
   return (
     <div
       style={{
-        height: "100vh",
+        height: "100dvh",
         // Set background color to avoid SSR flash
         backgroundColor:
           background?.type === BackgroundType.COLOR

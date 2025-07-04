@@ -71,7 +71,6 @@ export const AutocompleteInput = ({
   items: Item[] | undefined;
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
-  const { ref: parentModalRef } = useParentModal();
   const {
     value: inputValue,
     setValue: setInputValue,
@@ -145,7 +144,7 @@ export const AutocompleteInput = ({
         </div>
 
         <Portal>
-          <Combobox.Positioner>
+          <Combobox.Positioner className="ark-positioner-z-10">
             {filteredCollection.size > 0 &&
               (filteredCollection.size > 1 ||
                 getItemLabel(filteredCollection.items[0]) !== inputValue) && (

@@ -9,11 +9,13 @@ export const toast = ({
   return sonnerToast.custom(
     (id) => <Toast id={id} {...props} details={parsedDetails} />,
     {
-      duration: details
-        ? 30000
-        : (props.status ?? "error") === "error"
-          ? 8000
-          : undefined,
+      duration: props.action
+        ? 60000
+        : details
+          ? 30000
+          : (props.status ?? "error") === "error"
+            ? 8000
+            : undefined,
     },
   );
 };

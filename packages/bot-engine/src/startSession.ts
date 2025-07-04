@@ -205,8 +205,7 @@ export const startSession = async ({
     sessionStore,
     message: startParams.message,
     state: initialState,
-    startFrom:
-      startParams.type === "preview" ? startParams.startFrom : undefined,
+    startFrom: startParams.startFrom,
     textBubbleContentFormat: startParams.textBubbleContentFormat,
   });
 

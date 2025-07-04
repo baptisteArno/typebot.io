@@ -8,12 +8,16 @@
   text-align: inherit;
 }
 
-/* TODO: Remove this once Chakra UI is removed */
-.chakra-popover__popper {
-  z-index: auto !important;
-}
-
 /* Offset top position so that it is right below onboarding header */
 typebot-standard#onboarding::part(progress-bar-container) {
   top: 55px;
+}
+
+body {
+  isolation: isolate;
+}
+
+/* Keep this as long as we use Chakra portalled element, they apply a z-index of 10. We need to match it to avoid z-index stacking issues */
+.ark-positioner-z-10 {
+  z-index: 10 !important;
 }

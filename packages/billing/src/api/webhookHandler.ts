@@ -118,8 +118,13 @@ export const webhookHandler = async (
         }
         case "customer.subscription.updated": {
           const subscription = event.data.object as Stripe.Subscription;
-          if (subscription.status !== "past_due")
-            return res.send({ message: "Not past_due, skipping." });
+          const previous = event.data.previous_attributes;
+
+          if (previous?.status === "incomplete")
+            return res.send({
+              message: "Subscription just created, skipping.",
+            });
+
           const existingWorkspace = await prisma.workspace.findFirst({
             where: {
               stripeId: subscription.customer as string,
@@ -127,6 +132,7 @@ export const webhookHandler = async (
             select: {
               isPastDue: true,
               id: true,
+              plan: true,
               members: {
                 select: { userId: true, role: true },
                 where: { role: WorkspaceRole.ADMIN },
@@ -134,10 +140,47 @@ export const webhookHandler = async (
             },
           });
           if (!existingWorkspace) throw new Error("Workspace not found");
-          if (existingWorkspace?.isPastDue)
+
+          if (
+            subscription.cancel_at_period_end &&
+            previous?.cancel_at_period_end === false
+          )
+            await trackEvents(
+              existingWorkspace.members.map((m) => ({
+                name: "Subscription scheduled for cancellation",
+                workspaceId: existingWorkspace.id,
+                userId: m.userId,
+                data: {
+                  plan:
+                    existingWorkspace.plan === Plan.PRO
+                      ? Plan.PRO
+                      : Plan.STARTER,
+                },
+              })),
+            );
+          if (
+            previous?.cancel_at_period_end &&
+            !subscription.cancel_at_period_end
+          )
+            await trackEvents(
+              existingWorkspace.members.map((m) => ({
+                name: "Subscription cancellation removed",
+                workspaceId: existingWorkspace.id,
+                userId: m.userId,
+                data: {
+                  plan:
+                    existingWorkspace.plan === Plan.PRO
+                      ? Plan.PRO
+                      : Plan.STARTER,
+                },
+              })),
+            );
+
+          if (subscription.status !== "past_due" || existingWorkspace.isPastDue)
             return res.send({
-              message: "Workspace already past due, skipping.",
+              message: "Not newly past due, skipping.",
             });
+
           await prisma.workspace.updateMany({
             where: {
               id: existingWorkspace.id,
@@ -146,6 +189,7 @@ export const webhookHandler = async (
               isPastDue: true,
             },
           });
+
           await trackEvents(
             existingWorkspace.members.map((m) => ({
               name: "Workspace past due",

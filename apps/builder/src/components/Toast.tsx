@@ -7,11 +7,14 @@ import {
   Flex,
   HStack,
   IconButton,
+  Spinner,
   Stack,
   Text,
   useColorMode,
   useColorModeValue,
 } from "@chakra-ui/react";
+import { Button } from "@typebot.io/ui/components/Button";
+import { useState } from "react";
 import { toast as sonnerToast } from "sonner";
 import { AlertIcon, CloseIcon, InfoIcon, SmileIcon } from "./icons";
 import { CodeEditor } from "./inputs/CodeEditor";
@@ -25,6 +28,10 @@ export type ToastProps = {
     lang: "shell" | "json";
     content: string;
   };
+  action?: {
+    label: string;
+    onClick: () => Promise<void>;
+  };
   icon?: React.ReactNode;
 };
 
@@ -34,10 +41,19 @@ export const Toast = ({
   status = "error",
   description,
   details,
+  action,
   icon,
 }: ToastProps) => {
+  const [isLoading, setIsLoading] = useState(false);
   const bgColor = useColorModeValue("white", "gray.900");
   const detailsLabelColor = useColorModeValue("gray.600", "gray.400");
+
+  const handleAction = async () => {
+    setIsLoading(true);
+    await action?.onClick();
+    setIsLoading(false);
+    sonnerToast.dismiss(id);
+  };
 
   return (
     <Stack
@@ -58,6 +74,14 @@ export const Toast = ({
           <Stack spacing={1}>
             {context && <Text fontWeight="medium">{context}</Text>}
             {description && <Text>{description}</Text>}
+            {action && (
+              <Flex justify="flex-end">
+                <Button onClick={handleAction} size="sm" disabled={isLoading}>
+                  {isLoading && <Spinner size="xs" />}
+                  {action.label}
+                </Button>
+              </Flex>
+            )}
           </Stack>
         </Stack>
       </HStack>

@@ -108,7 +108,7 @@ export const BasicSelect = ({
         </div>
 
         <Portal>
-          <Combobox.Positioner>
+          <Combobox.Positioner className="ark-positioner-z-10">
             {filteredCollection.size > 0 &&
               (filteredCollection.size > 1 ||
                 getItemLabel(filteredCollection.items[0]) !== inputValue) && (

@@ -84,7 +84,6 @@ export const ResultsPage = () => {
       <Flex h="full" w="full" bgColor={bgColor}>
         <Flex
           pos="absolute"
-          zIndex={2}
           w="full"
           justifyContent="center"
           h="60px"

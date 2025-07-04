@@ -168,11 +168,7 @@ export const ElementsSelectionMenu = ({
       ref={ref}
       rounded="md"
       spacing={0}
-      pos="fixed"
-      top={`calc(${headerHeight}px + 20px)`}
       bgColor={useColorModeValue("white", "gray.950")}
-      zIndex={1}
-      right="100px"
       shadow="md"
     >
       <Button

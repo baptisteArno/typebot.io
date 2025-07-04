@@ -3,15 +3,17 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./app/*"],
+      "@/*": ["./src/*"],
       "@/content-collections": ["./.content-collections/generated"]
     },
     "module": "ESNext"
   },
   "include": [
-    "app/**/*.ts",
-    "app/**/*.tsx",
-    "app.config.ts",
-    "content-collection.ts"
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/vite-env.d.ts",
+    "vite.config.ts",
+    "content-collection.ts",
+    "content-collection-vite-plugin.ts"
   ]
 }

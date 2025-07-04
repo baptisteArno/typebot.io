@@ -1,0 +1,69 @@
+{
+  "version": "6.1",
+  "id": "cmc20myhs0001941r5t967kor",
+  "name": "My typebot",
+  "events": [
+    {
+      "id": "n2k1tagsufjrxlbwpmv48ws2",
+      "graphCoordinates": { "x": 0, "y": 0 },
+      "type": "start",
+      "outgoingEdgeId": "zzjdolsbe7qoe7vry3521edd"
+    }
+  ],
+  "groups": [
+    {
+      "id": "lexxergnak1994d9nkwumlky",
+      "graphCoordinates": { "x": 269, "y": 40 },
+      "title": "Group #1",
+      "blocks": [
+        {
+          "id": "o7hnp9uloipauksy9ix4nksz",
+          "type": "choice input",
+          "items": [{ "id": "mkph2de646nutldrb3fs918o", "content": "Go" }]
+        },
+        {
+          "id": "gi2q86k78b42vji0aweh4evj",
+          "type": "Wait",
+          "options": { "secondsToWaitFor": "1" }
+        },
+        {
+          "id": "kb86l5axoml9yofrlo7rh7ir",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "Redirecting..." }] }
+            ]
+          }
+        },
+        {
+          "id": "pznifav9yvnk9cgmj4an0ybd",
+          "type": "Redirect",
+          "options": { "url": "google.com" }
+        }
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "from": { "eventId": "n2k1tagsufjrxlbwpmv48ws2" },
+      "to": { "groupId": "lexxergnak1994d9nkwumlky" },
+      "id": "zzjdolsbe7qoe7vry3521edd"
+    }
+  ],
+  "variables": [],
+  "theme": {},
+  "selectedThemeTemplateId": null,
+  "settings": {},
+  "createdAt": "2025-06-18T13:56:41.632Z",
+  "updatedAt": "2025-06-18T13:57:24.193Z",
+  "icon": null,
+  "folderId": null,
+  "publicId": null,
+  "customDomain": null,
+  "workspaceId": "proWorkspace",
+  "resultsTablePreferences": null,
+  "isArchived": false,
+  "isClosed": false,
+  "whatsAppCredentialsId": null,
+  "riskLevel": null
+}

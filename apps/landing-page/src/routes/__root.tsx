@@ -1,5 +1,6 @@
 import css from "@/assets/globals.css?url";
 import { CookieConsentBot } from "@/components/CookieConsentBot";
+import { Header } from "@/components/Header";
 import { NotFound } from "@/components/NotFound";
 import { Footer } from "@/components/footer/Footer";
 import { useCookieConsentStatus } from "@/hooks/useIsCookieConsentNeeded";
@@ -13,7 +14,6 @@ import {
 } from "@tanstack/react-router";
 import { serializeTypebotCookie } from "@typebot.io/telemetry/cookies/helpers";
 import { z } from "@typebot.io/zod";
-import { Header } from "app/components/Header";
 
 const HERO_ANIMATION_DELAY = 1800;
 

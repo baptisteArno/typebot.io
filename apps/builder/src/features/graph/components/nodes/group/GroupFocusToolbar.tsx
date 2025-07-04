@@ -1,4 +1,5 @@
 import { CopyIcon, InfoIcon, PlayIcon, TrashIcon } from "@/components/icons";
+import { useIsAnalyzing } from "@/features/graph/hooks/useIsAnalyzing";
 import { isMac } from "@/helpers/isMac";
 import {
   HStack,
@@ -19,6 +20,7 @@ export const GroupFocusToolbar = ({
   isReadOnly,
   onPlayClick,
 }: Props) => {
+  const isAnalyzing = useIsAnalyzing();
   const { hasCopied, onCopy } = useClipboard(groupId);
 
   const dispatchCopyEvent = () => {
@@ -42,15 +44,17 @@ export const GroupFocusToolbar = ({
       bgColor={useColorModeValue("white", "gray.900")}
       shadow="md"
     >
-      <IconButton
-        icon={<PlayIcon />}
-        borderRightWidth="1px"
-        borderRightRadius="none"
-        aria-label={"Preview bot from this group"}
-        variant="ghost"
-        onClick={onPlayClick}
-        size="sm"
-      />
+      {!isAnalyzing && (
+        <IconButton
+          icon={<PlayIcon />}
+          borderRightWidth="1px"
+          borderRightRadius="none"
+          aria-label={"Preview bot from this group"}
+          variant="ghost"
+          onClick={onPlayClick}
+          size="sm"
+        />
+      )}
       {!isReadOnly && (
         <IconButton
           icon={<CopyIcon />}

@@ -211,51 +211,6 @@ export const startTypebotSchema = z.preprocess(
 );
 export type StartTypebot = StartTypebotV6 | StartTypebotV5;
 
-export const startChatInputSchema = z.object({
-  publicId: z
-    .string()
-    .describe(
-      "[Where to find my bot's public ID?](../how-to#how-to-find-my-publicid)",
-    ),
-  message: messageSchema
-    .optional()
-    .describe(
-      "Only provide it if your flow starts with an input block and you'd like to directly provide an answer to it.",
-    ),
-  isStreamEnabled: z
-    .boolean()
-    .optional()
-    .default(false)
-    .describe(
-      "If enabled, you will be required to stream OpenAI completions on a client and send the generated response back to the API.",
-    ),
-  resultId: z
-    .string()
-    .optional()
-    .describe("Provide it if you'd like to overwrite an existing result."),
-  isOnlyRegistering: z
-    .boolean()
-    .optional()
-    .default(false)
-    .describe(
-      "If set to `true`, it will only register the session and not start the bot. This is used for 3rd party chat platforms as it can require a session to be registered before sending the first message.",
-    ),
-  prefilledVariables: z
-    .record(z.unknown())
-    .optional()
-    .describe(
-      "[More info about prefilled variables.](../../editor/variables#prefilled-variables)",
-    )
-    .openapi({
-      example: {
-        "First name": "John",
-        Email: "john@gmail.com",
-      },
-    }),
-  textBubbleContentFormat: z.enum(["richText", "markdown"]).default("richText"),
-});
-export type StartChatInput = z.infer<typeof startChatInputSchema>;
-
 export const startFromSchema = z.discriminatedUnion("type", [
   z.object({
     type: z.literal("group"),
@@ -268,27 +223,26 @@ export const startFromSchema = z.discriminatedUnion("type", [
 ]);
 export type StartFrom = z.infer<typeof startFromSchema>;
 
-export const startPreviewChatInputSchema = z.object({
-  typebotId: z
-    .string()
+const commonStartChatInputSchema = z.object({
+  message: messageSchema
+    .optional()
     .describe(
-      "[Where to find my bot's ID?](../how-to#how-to-find-my-typebotid)",
+      "Only provide it if your flow starts with an input block and you'd like to directly provide an answer to it.",
     ),
-  isStreamEnabled: z.boolean().optional().default(false),
-  message: messageSchema.optional(),
+  isStreamEnabled: z
+    .boolean()
+    .optional()
+    .default(false)
+    .describe(
+      "If enabled, you will be required to stream OpenAI completions on a client and send the generated response back to the API.",
+    ),
   isOnlyRegistering: z
     .boolean()
     .optional()
+    .default(false)
     .describe(
       "If set to `true`, it will only register the session and not start the bot. This is used for 3rd party chat platforms as it can require a session to be registered before sending the first message.",
-    )
-    .default(false),
-  typebot: startTypebotSchema
-    .optional()
-    .describe(
-      "If set, it will override the typebot that is used to start the chat.",
     ),
-  startFrom: startFromSchema.optional(),
   prefilledVariables: z
     .record(z.unknown())
     .optional()
@@ -301,14 +255,44 @@ export const startPreviewChatInputSchema = z.object({
         Email: "john@gmail.com",
       },
     }),
-  sessionId: z
-    .string()
-    .optional()
-    .describe(
-      "If provided, will be used as the session ID and will overwrite any existing session with the same ID.",
-    ),
   textBubbleContentFormat: z.enum(["richText", "markdown"]).default("richText"),
+  startFrom: startFromSchema.optional(),
 });
+export const startChatInputSchema = z
+  .object({
+    publicId: z
+      .string()
+      .describe(
+        "[Where to find my bot's public ID?](../how-to#how-to-find-my-publicid)",
+      ),
+    resultId: z
+      .string()
+      .optional()
+      .describe("Provide it if you'd like to overwrite an existing result."),
+  })
+  .merge(commonStartChatInputSchema);
+export type StartChatInput = z.infer<typeof startChatInputSchema>;
+
+export const startPreviewChatInputSchema = z
+  .object({
+    typebotId: z
+      .string()
+      .describe(
+        "[Where to find my bot's ID?](../how-to#how-to-find-my-typebotid)",
+      ),
+    typebot: startTypebotSchema
+      .optional()
+      .describe(
+        "If set, it will override the typebot that is used to start the chat.",
+      ),
+    sessionId: z
+      .string()
+      .optional()
+      .describe(
+        "If provided, will be used as the session ID and will overwrite any existing session with the same ID.",
+      ),
+  })
+  .merge(commonStartChatInputSchema);
 export type StartPreviewChatInput = z.infer<typeof startPreviewChatInputSchema>;
 
 export const runtimeOptionsSchema = paymentInputRuntimeOptionsSchema.optional();
