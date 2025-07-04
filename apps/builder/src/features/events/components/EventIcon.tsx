@@ -1,5 +1,6 @@
 import {
   CircleXIcon,
+  ClockIcon,
   CommandIcon,
   FlagIcon,
   SendIcon,
@@ -23,5 +24,7 @@ export const EventIcon = ({ type, ...props }: Props): JSX.Element => {
       return <SendIcon color={gray} {...props} />;
     case EventType.INVALID_REPLY:
       return <CircleXIcon color={gray} {...props} />;
+    case EventType.TIMEOUT:
+      return <ClockIcon color={gray} {...props} />;
   }
 };

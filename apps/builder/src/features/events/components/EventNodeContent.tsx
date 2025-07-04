@@ -4,6 +4,7 @@ import type { TEvent } from "@typebot.io/events/schemas";
 import { CommandEventNode } from "./CommandEventNode";
 import { InvalidReplyEventNode } from "./InvalidReplyEventNode";
 import { ReplyEventNode } from "./ReplyEventNode";
+import { TimeoutEventNode } from "./TimeoutEventNode";
 
 type Props = {
   event: TEvent;
@@ -19,5 +20,7 @@ export const EventNodeContent = ({ event }: Props): JSX.Element => {
       return <ReplyEventNode options={event.options} />;
     case EventType.INVALID_REPLY:
       return <InvalidReplyEventNode options={event.options} />;
+    case EventType.TIMEOUT:
+      return <TimeoutEventNode options={event.options} />;
   }
 };

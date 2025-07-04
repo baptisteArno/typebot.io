@@ -32,6 +32,7 @@ import { WebhookSettings } from "@/features/blocks/logic/webhook/components/Webh
 import { CommandEventSettings } from "@/features/events/components/CommandEventSettings";
 import { InvalidReplyEventSettings } from "@/features/events/components/InvalidReplyEventSettings";
 import { ReplyEventSettings } from "@/features/events/components/ReplyEventSettings";
+import { TimeoutEventSettings } from "@/features/events/components/TimeoutEventSettings";
 import { useForgedBlock } from "@/features/forge/hooks/useForgedBlock";
 import { VideoOnboardingPopover } from "@/features/onboarding/components/VideoOnboardingPopover";
 import { hasOnboardingVideo } from "@/features/onboarding/helpers/hasOnboardingVideo";
@@ -394,6 +395,13 @@ export const NodeSettings = ({
     case EventType.INVALID_REPLY:
       return (
         <InvalidReplyEventSettings
+          options={node.options}
+          onOptionsChange={updateOptions}
+        />
+      );
+    case EventType.TIMEOUT:
+      return (
+        <TimeoutEventSettings
           options={node.options}
           onOptionsChange={updateOptions}
         />

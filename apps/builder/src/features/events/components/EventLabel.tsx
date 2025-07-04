@@ -24,4 +24,5 @@ export const getEventBlockLabel = (
   [EventType.COMMAND]: t("editor.sidebarBlock.command.label"),
   [EventType.REPLY]: t("editor.sidebarBlock.reply.label"),
   [EventType.INVALID_REPLY]: t("editor.sidebarBlock.invalidReply.label"),
+  [EventType.TIMEOUT]: t("editor.sidebarBlock.timeout.label"),
 });

@@ -34,7 +34,11 @@ type FailReply = {
   status: "fail";
 };
 
-export type ParsedReply = SuccessReply | SkipReply | FailReply;
+export type TimeoutReply = {
+  status: "timeout";
+};
+
+export type ParsedReply = SuccessReply | SkipReply | FailReply | TimeoutReply;
 
 export type ContinueBotFlowResponse = ContinueChatResponse & {
   newSessionState: SessionState;
