@@ -6,12 +6,14 @@ import type { ChoiceInputBlock } from "@typebot.io/blocks-inputs/choice/schema";
 import { guessDeviceIsMobile } from "@typebot.io/lib/guessDeviceIsMobile";
 import { cx } from "@typebot.io/ui/lib/cva";
 import { For, Show, createSignal, onMount } from "solid-js";
+import { Timer } from "./Timer";
 
 type Props = {
   chunkIndex: number;
   defaultItems: ChoiceInputBlock["items"];
   options: ChoiceInputBlock["options"];
   onSubmit: (value: InputSubmitContent) => void;
+  onTimeout?: () => void;
 };
 
 export const Buttons = (props: Props) => {
@@ -22,6 +24,7 @@ export const Buttons = (props: Props) => {
   const [filteredItems, setFilteredItems] = createSignal(
     props.options?.isSearchable && !areButtonsVisible ? [] : props.defaultItems,
   );
+  const [isTimerExpired, setIsTimerExpired] = createSignal(false);
 
   onMount(() => {
     if (!guessDeviceIsMobile() && inputRef)
@@ -29,6 +32,8 @@ export const Buttons = (props: Props) => {
   });
 
   const handleClick = (itemIndex: number) => {
+    if (isTimerExpired()) return;
+
     const item = filteredItems()[itemIndex];
     const { value, content } = item;
 
@@ -37,6 +42,13 @@ export const Buttons = (props: Props) => {
       value: value || content || "",
       label: value ? content : undefined,
     });
+  };
+
+  const handleTimeout = () => {
+    setIsTimerExpired(true);
+    if (props.onTimeout) {
+      props.onTimeout();
+    }
   };
 
   const filterItems = (inputValue: string) => {
@@ -54,7 +66,20 @@ export const Buttons = (props: Props) => {
 
   return (
     <div class="flex flex-col items-end gap-2 w-full typebot-buttons-input">
-      <Show when={props.options?.isSearchable}>
+      <Show
+        when={
+          props.options?.timerSeconds &&
+          props.options.timerSeconds > 0 &&
+          !isTimerExpired()
+        }
+      >
+        <Timer
+          timerSeconds={props.options?.timerSeconds || 0}
+          onTimeout={handleTimeout}
+        />
+      </Show>
+
+      <Show when={props.options?.isSearchable && !isTimerExpired()}>
         <div class="flex items-end typebot-input w-full">
           <SearchInput
             ref={inputRef}
@@ -66,6 +91,7 @@ export const Buttons = (props: Props) => {
             onClear={() =>
               setFilteredItems(!areButtonsVisible ? [] : props.defaultItems)
             }
+            disabled={isTimerExpired()}
           />
         </div>
       </Show>
@@ -75,6 +101,7 @@ export const Buttons = (props: Props) => {
           "flex justify-end gap-2 w-full @xs:w-auto",
           props.options?.isSearchable &&
             "overflow-y-scroll max-h-80 rounded-md",
+          isTimerExpired() && "opacity-50 pointer-events-none",
         )}
         data-slot="list"
       >
@@ -84,16 +111,18 @@ export const Buttons = (props: Props) => {
               <Button
                 on:click={() => handleClick(index())}
                 data-itemid={item.id}
-                class="w-full"
+                class={cx("w-full", isTimerExpired() && "pointer-events-none")}
               >
                 {item.content}
               </Button>
-              {props.chunkIndex === 0 && props.defaultItems.length === 1 && (
-                <span class="flex h-3 w-3 absolute top-0 right-0 -mt-1 -mr-1 ping">
-                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full brightness-200 opacity-75" />
-                  <span class="relative inline-flex rounded-full h-3 w-3 brightness-150" />
-                </span>
-              )}
+              {props.chunkIndex === 0 &&
+                props.defaultItems.length === 1 &&
+                !isTimerExpired() && (
+                  <span class="flex h-3 w-3 absolute top-0 right-0 -mt-1 -mr-1 ping">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full brightness-200 opacity-75" />
+                    <span class="relative inline-flex rounded-full h-3 w-3 brightness-150" />
+                  </span>
+                )}
             </span>
           )}
         </For>

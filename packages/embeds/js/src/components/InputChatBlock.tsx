@@ -49,6 +49,7 @@ type Props = {
   onTransitionEnd: () => void;
   onSubmit: (content: InputSubmitContent) => void;
   onSkip: (label: string) => void;
+  onTimeout: () => void;
 };
 
 export const InputChatBlock = (props: Props) => {
@@ -97,6 +98,7 @@ export const InputChatBlock = (props: Props) => {
             onTransitionEnd={props.onTransitionEnd}
             onSubmit={handleSubmit}
             onSkip={handleSkip}
+            onTimeout={props.onTimeout}
           />
         </div>
       </Match>
@@ -118,6 +120,7 @@ const Input = (props: {
   onTransitionEnd: () => void;
   onSubmit: (answer: InputSubmitContent) => void;
   onSkip: (label: string) => void;
+  onTimeout: () => void;
 }) => {
   const getPrefilledValue = () =>
     props.existingAnswer ??
@@ -195,6 +198,7 @@ const Input = (props: {
                 defaultItems={block.items}
                 options={block.options}
                 onSubmit={props.onSubmit}
+                onTimeout={props.onTimeout}
               />
             </Match>
             <Match when={block.options?.isMultipleChoice}>
@@ -202,6 +206,7 @@ const Input = (props: {
                 defaultItems={block.items}
                 options={block.options}
                 onSubmit={props.onSubmit}
+                onTimeout={props.onTimeout}
               />
             </Match>
           </Switch>
