@@ -16,6 +16,8 @@ import {
   HStack,
   Popover,
   PopoverTrigger,
+  Text,
+  Tooltip,
   useColorModeValue,
   useDisclosure,
 } from "@chakra-ui/react";
@@ -45,6 +47,10 @@ import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { ZodError, type ZodObject } from "zod";
 import { fromZodError } from "zod-validation-error";
+import {
+  type BlockValidationError,
+  useBlockValidation,
+} from "../../../hooks/useBlockValidation";
 import { BlockSourceEndpoint } from "../../endpoints/BlockSourceEndpoint";
 import { TargetEndpoint } from "../../endpoints/TargetEndpoint";
 import { BlockNodeContent } from "./BlockNodeContent";
@@ -66,6 +72,7 @@ export const BlockNode = ({
   const bg = useColorModeValue("gray.50", "gray.900");
   const previewingBorderColor = useColorModeValue("orange.400", "orange.300");
   const borderColor = useColorModeValue("gray.200", "gray.900");
+  const errorBorderColor = useColorModeValue("red.400", "red.300");
   const { pathname, query } = useRouter();
   const {
     setConnectingIds,
@@ -83,6 +90,9 @@ export const BlockNode = ({
   const [isConnecting, setIsConnecting] = useState(false);
   const [isContextMenuReady, setIsContextMenuReady] = useState(true);
   const blockRef = useRef<HTMLDivElement | null>(null);
+
+  // Block validation
+  const { isValid, errors, hasErrors } = useBlockValidation(block);
 
   const isPreviewing =
     isConnecting ||
@@ -269,61 +279,85 @@ export const BlockNode = ({
               className="prevent-group-drag"
               pointerEvents={isAnalytics || isDraggingGraph ? "none" : "auto"}
             >
-              <HStack
-                flex="1"
-                userSelect="none"
+              <Tooltip
+                label={
+                  hasErrors ? (
+                    <Text>
+                      Block configuration issues:
+                      {errors.map(
+                        (error: BlockValidationError, index: number) => (
+                          <Text key={index} fontSize="sm" mt={1}>
+                            • {error.message}
+                          </Text>
+                        ),
+                      )}
+                    </Text>
+                  ) : undefined
+                }
+                hasArrow
+                placement="top"
+                isDisabled={!hasErrors}
+                rounded="md"
                 p="3"
-                borderWidth={
-                  isContextMenuOpened || isPreviewing ? "2px" : "1px"
-                }
-                borderColor={
-                  isContextMenuOpened || isPreviewing
-                    ? previewingBorderColor
-                    : borderColor
-                }
-                margin={isContextMenuOpened || isPreviewing ? "-1px" : 0}
-                rounded="lg"
-                cursor={"pointer"}
-                bg={bg}
-                align="flex-start"
-                w="full"
-                transition="border-color 0.2s"
               >
-                <BlockIcon type={block.type} mt=".25rem" />
-                {typebot?.groups.at(indices.groupIndex)?.id && (
-                  <BlockNodeContent
-                    block={block}
-                    indices={indices}
-                    groupId={
-                      typebot.groups.at(indices.groupIndex)?.id as string
-                    }
-                  />
-                )}
-                {(hasIcomingEdge || isDefined(connectingIds)) && (
-                  <TargetEndpoint
-                    pos="absolute"
-                    left="-34px"
-                    top="16px"
-                    blockId={block.id}
-                    groupId={groupId}
-                  />
-                )}
-                {(isConnectable ||
-                  (pathname.endsWith("analytics") && isInputBlock(block))) &&
-                  hasDefaultConnector(block) &&
-                  groupId && (
-                    <BlockSourceEndpoint
-                      source={{
-                        blockId: block.id,
-                      }}
-                      groupId={groupId}
-                      pos="absolute"
-                      right="-34px"
-                      bottom="10px"
-                      isHidden={!isConnectable}
+                <HStack
+                  flex="1"
+                  userSelect="none"
+                  p="3"
+                  borderWidth={
+                    isContextMenuOpened || isPreviewing ? "2px" : "1px"
+                  }
+                  borderColor={
+                    isContextMenuOpened || isPreviewing
+                      ? previewingBorderColor
+                      : hasErrors
+                        ? errorBorderColor
+                        : borderColor
+                  }
+                  margin={isContextMenuOpened || isPreviewing ? "-1px" : 0}
+                  rounded="lg"
+                  cursor={"pointer"}
+                  bg={bg}
+                  align="flex-start"
+                  w="full"
+                  transition="border-color 0.2s"
+                >
+                  <BlockIcon type={block.type} mt=".25rem" />
+                  {typebot?.groups.at(indices.groupIndex)?.id && (
+                    <BlockNodeContent
+                      block={block}
+                      indices={indices}
+                      groupId={
+                        typebot.groups.at(indices.groupIndex)?.id as string
+                      }
                     />
                   )}
-              </HStack>
+                  {(hasIcomingEdge || isDefined(connectingIds)) && (
+                    <TargetEndpoint
+                      pos="absolute"
+                      left="-34px"
+                      top="16px"
+                      blockId={block.id}
+                      groupId={groupId}
+                    />
+                  )}
+                  {(isConnectable ||
+                    (pathname.endsWith("analytics") && isInputBlock(block))) &&
+                    hasDefaultConnector(block) &&
+                    groupId && (
+                      <BlockSourceEndpoint
+                        source={{
+                          blockId: block.id,
+                        }}
+                        groupId={groupId}
+                        pos="absolute"
+                        right="-34px"
+                        bottom="10px"
+                        isHidden={!isConnectable}
+                      />
+                    )}
+                </HStack>
+              </Tooltip>
             </Flex>
           </PopoverTrigger>
           {hasSettingsPopover(block) && (
