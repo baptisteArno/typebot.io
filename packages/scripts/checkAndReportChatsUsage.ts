@@ -1,6 +1,5 @@
 import { Plan, PrismaClient, WorkspaceRole } from '@typebot.io/prisma'
 import { isDefined, isEmpty } from '@typebot.io/lib'
-import { getChatsLimit } from '@typebot.io/billing/helpers/getChatsLimit'
 import { promptAndSetEnvironment } from './utils'
 import { Workspace } from '@typebot.io/schemas'
 import { sendAlmostReachedChatsLimitEmail } from '@typebot.io/emails/src/emails/AlmostReachedChatsLimitEmail'
@@ -80,7 +79,7 @@ export const checkAndReportChatsUsage = async () => {
 
   for (const workspace of workspaces) {
     if (workspace.isQuarantined) continue
-    const chatsLimit = getChatsLimit(workspace)
+    const chatsLimit = 'inf'
     const subscription = await getSubscription(workspace, { stripe })
     const { totalChatsUsed } = await getUsage(prisma)({
       workspaceId: workspace.id,

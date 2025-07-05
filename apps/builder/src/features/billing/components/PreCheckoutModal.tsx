@@ -18,8 +18,15 @@ import { useRouter } from 'next/router'
 import React, { FormEvent, useState } from 'react'
 import { isDefined } from '@typebot.io/lib'
 import { useTranslate } from '@tolgee/react'
-import { taxIdTypes } from '@typebot.io/billing/taxIdTypes'
-
+const taxIdTypes = [
+  {
+    type: 'us_ein',
+    code: 'US EIN',
+    name: 'United States',
+    emoji: '🇺🇸',
+    placeholder: '12-3456789',
+  },
+]
 export type PreCheckoutModalProps = {
   selectedSubscription:
     | {

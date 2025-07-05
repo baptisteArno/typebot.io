@@ -1,6 +1,5 @@
 import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { z } from 'zod'
-import { getUsage as getUsageHandler } from '@typebot.io/billing/api/getUsage'
 
 export const getUsage = authenticatedProcedure
   .meta({
@@ -22,6 +21,3 @@ export const getUsage = authenticatedProcedure
     })
   )
   .output(z.object({ totalChatsUsed: z.number(), resetsAt: z.date() }))
-  .query(async ({ input: { workspaceId }, ctx: { user } }) =>
-    getUsageHandler({ workspaceId, user })
-  )

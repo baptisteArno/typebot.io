@@ -1,6 +1,5 @@
 import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { z } from 'zod'
-import { getBillingPortalUrl as getBillingPortalUrlHandler } from '@typebot.io/billing/api/getBillingPortalUrl'
 
 export const getBillingPortalUrl = authenticatedProcedure
   .meta({
@@ -21,7 +20,4 @@ export const getBillingPortalUrl = authenticatedProcedure
     z.object({
       billingPortalUrl: z.string(),
     })
-  )
-  .query(async ({ input: { workspaceId }, ctx: { user } }) =>
-    getBillingPortalUrlHandler({ workspaceId, user })
   )

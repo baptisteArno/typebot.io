@@ -1,7 +1,6 @@
 import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { z } from 'zod'
 import { invoiceSchema } from '@typebot.io/schemas/features/billing/invoice'
-import { listInvoices as listInvoicesHandler } from '@typebot.io/billing/api/listInvoices'
 
 export const listInvoices = authenticatedProcedure
   .meta({
@@ -26,7 +25,4 @@ export const listInvoices = authenticatedProcedure
     z.object({
       invoices: z.array(invoiceSchema),
     })
-  )
-  .query(async ({ input: { workspaceId }, ctx: { user } }) =>
-    listInvoicesHandler({ workspaceId, user })
   )

@@ -14,7 +14,6 @@ import { FolderContent } from '@/features/folders/components/FolderContent'
 import { TypebotDndProvider } from '@/features/folders/TypebotDndProvider'
 import { ParentModalProvider } from '@/features/graph/providers/ParentModalProvider'
 import { trpc } from '@/lib/trpc'
-import { guessIfUserIsEuropean } from '@typebot.io/billing/helpers/guessIfUserIsEuropean'
 import { useTranslate } from '@tolgee/react'
 
 export const DashboardPage = () => {
@@ -51,7 +50,7 @@ export const DashboardPage = () => {
       setPreCheckoutPlan({
         plan: subscribePlan as 'PRO' | 'STARTER',
         workspaceId: workspace.id,
-        currency: guessIfUserIsEuropean() ? 'eur' : 'usd',
+        currency: 'usd',
       })
     }
   }, [createCustomCheckoutSession, router.query, user, workspace])

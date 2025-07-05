@@ -10,8 +10,6 @@ import {
 import { Plan } from '@typebot.io/prisma'
 import { FeaturesList } from './FeaturesList'
 import { MoreInfoTooltip } from '@/components/MoreInfoTooltip'
-import { formatPrice } from '@typebot.io/billing/helpers/formatPrice'
-import { prices } from '@typebot.io/billing/constants'
 import { T, useTranslate } from '@tolgee/react'
 
 type Props = {
@@ -61,7 +59,7 @@ export const StarterPlanPricingCard = ({
             <Text>{t('billing.pricingCard.starter.description')}</Text>
           </Stack>
           <Heading>
-            {formatPrice(prices.STARTER, { currency })}
+            {currency}
             <chakra.span fontSize="md">
               {t('billing.pricingCard.perMonth')}
             </chakra.span>

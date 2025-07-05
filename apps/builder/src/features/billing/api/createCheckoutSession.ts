@@ -1,7 +1,6 @@
 import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { Plan } from '@typebot.io/prisma'
 import { z } from 'zod'
-import { createCheckoutSession as createCheckoutSessionHandler } from '@typebot.io/billing/api/createCheckoutSession'
 
 export const createCheckoutSession = authenticatedProcedure
   .meta({
@@ -33,7 +32,4 @@ export const createCheckoutSession = authenticatedProcedure
     z.object({
       checkoutUrl: z.string(),
     })
-  )
-  .mutation(async ({ input, ctx: { user } }) =>
-    createCheckoutSessionHandler({ ...input, user })
   )

@@ -12,7 +12,6 @@ import { AlertIcon } from '@/components/icons'
 import { WorkspaceInApp } from '@/features/workspace/WorkspaceProvider'
 import { parseNumberWithCommas } from '@typebot.io/lib'
 import { defaultQueryOptions, trpc } from '@/lib/trpc'
-import { getChatsLimit } from '@typebot.io/billing/helpers/getChatsLimit'
 import { useTranslate } from '@tolgee/react'
 
 type Props = {
@@ -29,7 +28,7 @@ export const UsageProgressBars = ({ workspace }: Props) => {
   )
   const totalChatsUsed = data?.totalChatsUsed ?? 0
 
-  const workspaceChatsLimit = getChatsLimit(workspace)
+  const workspaceChatsLimit = 'inf'
 
   const chatsPercentage =
     workspaceChatsLimit === 'inf'

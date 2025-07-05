@@ -8,7 +8,6 @@ import {
 } from '@typebot.io/lib/api'
 import { getAuthenticatedUser } from '@/features/auth/helpers/getAuthenticatedUser'
 import { sendWorkspaceMemberInvitationEmail } from '@typebot.io/emails'
-import { getSeatsLimit } from '@typebot.io/billing/helpers/getSeatsLimit'
 import { env } from '@typebot.io/env'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -36,7 +35,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           where: { workspaceId: workspace.id },
         }),
       ])
-    const seatsLimit = getSeatsLimit(workspace)
+    const seatsLimit = 'inf'
     if (
       seatsLimit !== 'inf' &&
       seatsLimit <= existingMembersCount + existingInvitationsCount

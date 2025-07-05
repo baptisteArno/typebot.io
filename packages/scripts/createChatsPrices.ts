@@ -1,8 +1,19 @@
 import Stripe from 'stripe'
 import { promptAndSetEnvironment } from './utils'
-import { proChatTiers, starterChatTiers } from '@typebot.io/billing/constants'
 
 const chatsProductId = 'prod_MVXtq5sATQzIcM'
+const proChatTiers = [
+  {
+    up_to: 'inf',
+    unit_amount_decimal: '0.442',
+  },
+] satisfies Stripe.PriceCreateParams.Tier[]
+const starterChatTiers = [
+  {
+    up_to: 'inf',
+    unit_amount: 2,
+  },
+] satisfies Stripe.PriceCreateParams.Tier[]
 
 const createChatsPrices = async () => {
   await promptAndSetEnvironment()

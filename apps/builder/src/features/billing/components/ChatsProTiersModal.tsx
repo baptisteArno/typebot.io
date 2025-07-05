@@ -17,13 +17,18 @@ import {
   Tr,
 } from '@chakra-ui/react'
 import { useTranslate } from '@tolgee/react'
-import { proChatTiers } from '@typebot.io/billing/constants'
-import { formatPrice } from '@typebot.io/billing/helpers/formatPrice'
 
 type Props = {
   isOpen: boolean
   onClose: () => void
 }
+
+const proChatTiers = [
+  {
+    up_to: 'inf',
+    unit_amount_decimal: '0.442',
+  },
+]
 
 export const ChatsProTiersModal = ({ isOpen, onClose }: Props) => {
   const { t } = useTranslate()
@@ -47,11 +52,7 @@ export const ChatsProTiersModal = ({ isOpen, onClose }: Props) => {
                 </Tr>
               </Thead>
               <Tbody>
-                {proChatTiers.map((tier, index) => {
-                  const pricePerMonth =
-                    (tier.flat_amount ??
-                      proChatTiers.at(-2)?.flat_amount ??
-                      0) / 100
+                {proChatTiers.map((tier) => {
                   return (
                     <Tr key={tier.up_to}>
                       <Td isNumeric>
@@ -59,23 +60,8 @@ export const ChatsProTiersModal = ({ isOpen, onClose }: Props) => {
                           ? '2,000,000+'
                           : tier.up_to.toLocaleString()}
                       </Td>
-                      <Td isNumeric>
-                        {index === 0 ? 'included' : formatPrice(pricePerMonth)}
-                      </Td>
-                      <Td isNumeric>
-                        {index === proChatTiers.length - 1
-                          ? formatPrice(4.42, { maxFractionDigits: 2 })
-                          : index === 0
-                          ? 'included'
-                          : formatPrice(
-                              (((pricePerMonth * 100) /
-                                ((tier.up_to as number) -
-                                  (proChatTiers.at(0)?.up_to as number))) *
-                                1000) /
-                                100,
-                              { maxFractionDigits: 2 }
-                            )}
-                      </Td>
+                      <Td isNumeric>{'included'}</Td>
+                      <Td isNumeric>{'included'}</Td>
                     </Tr>
                   )
                 })}

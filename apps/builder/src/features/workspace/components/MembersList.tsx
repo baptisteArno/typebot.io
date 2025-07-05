@@ -19,7 +19,6 @@ import { updateInvitationQuery } from '../queries/updateInvitationQuery'
 import { updateMemberQuery } from '../queries/updateMemberQuery'
 import { Member } from '../types'
 import { useWorkspace } from '../WorkspaceProvider'
-import { getSeatsLimit } from '@typebot.io/billing/helpers/getSeatsLimit'
 import { useTranslate } from '@tolgee/react'
 
 export const MembersList = () => {
@@ -90,7 +89,7 @@ export const MembersList = () => {
     members.filter((member) => member.role !== WorkspaceRole.GUEST).length +
     invitations.length
 
-  const seatsLimit = workspace ? getSeatsLimit(workspace) : undefined
+  const seatsLimit = undefined
 
   const canInviteNewMember =
     seatsLimit === 'inf'
