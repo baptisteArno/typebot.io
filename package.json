@@ -14,7 +14,7 @@
   "scripts": {
     "postinstall": "turbo run db:generate",
     "prepare": "husky",
-    "pre-commit": "turbo run format-and-lint lint-repo check-broken-links",
+    "pre-commit": "turbo run format-and-lint lint-repo check-broken-links test",
     "format-and-lint": "biome check .",
     "format-and-lint:fix": "biome check . --write",
     "lint-repo": "sherif -r unordered-dependencies -r packages-without-package-json --ignore-package @typebot.io/legacy --ignore-package bot-engine",
