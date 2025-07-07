@@ -22,7 +22,7 @@
           "options": {
             "isExecutedOnClient": true,
             "isCode": true,
-            "expressionToEvaluate": "document.location.port",
+            "expressionToEvaluate": "document.location.origin",
             "variableId": "vggtwtqnbcynlw0b0f52dc6kw"
           }
         },

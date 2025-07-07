@@ -1,6 +1,6 @@
 {
   "name": "@typebot.io/react",
-  "version": "0.8.13",
+  "version": "0.8.14",
   "description": "Convenient library to display typebots on your React app",
   "license": "FSL-1.1-ALv2",
   "type": "module",
