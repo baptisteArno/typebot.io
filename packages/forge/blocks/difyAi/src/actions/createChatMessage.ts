@@ -6,11 +6,6 @@ import { isDefined } from "@typebot.io/lib/utils";
 import { createDifyProvider } from "dify-ai-provider";
 import { auth } from "../auth";
 
-const convertNonMarkdownLinks = (text: string) => {
-  const nonMarkdownLinks = /(?<![\([])https?:\/\/\S+/g;
-  return text.replace(nonMarkdownLinks, (match) => `[${match}](${match})`);
-};
-
 type InputItem = { key?: string; value?: any };
 
 const toInputsObject = (inputs?: InputItem[]): Record<string, any> => {
@@ -21,6 +16,52 @@ const toInputsObject = (inputs?: InputItem[]): Record<string, any> => {
   });
 
   return result;
+};
+
+const validateCredentials = (
+  apiEndpoint: string | undefined,
+  apiKey: string | undefined,
+  applicationId: string | undefined,
+):
+  | {
+      success: true;
+      applicationId: string;
+      apiKey: string;
+      apiEndpoint: string;
+    }
+  | { success: false; error: string } => {
+  if (!apiEndpoint)
+    return { success: false, error: "No API Endpoint provided" };
+
+  if (!apiKey) return { success: false, error: "No API key provided" };
+
+  const trimmedApplicationId = applicationId?.trim();
+  if (!trimmedApplicationId)
+    return { success: false, error: "No applicationId provided" };
+
+  return {
+    success: true,
+    applicationId: trimmedApplicationId,
+    apiKey,
+    apiEndpoint,
+  };
+};
+
+const createDifyModelInstance = (
+  apiEndpoint: string,
+  applicationId: string,
+  apiKey: string,
+  inputs: InputItem[] | undefined,
+  responseMode: "blocking" | "streaming",
+) => {
+  const difyProvider = createDifyProvider({
+    baseURL: `${apiEndpoint}/v1`,
+  });
+  return difyProvider(applicationId, {
+    apiKey,
+    inputs: toInputsObject(inputs),
+    responseMode,
+  });
 };
 
 const options = option.object({
@@ -67,43 +108,10 @@ const options = option.object({
     }),
 });
 
-const transformToChatCompletionOptions = (
-  options: any,
-  resetModel = false,
-) => ({
-  ...options,
-  model: resetModel ? undefined : options.model,
-  action: "Create chat message",
-});
-
 export const createChatMessage = createAction({
   name: "Create Chat Message",
   auth,
   options,
-  turnableInto: [
-    {
-      blockId: "mistral",
-      transform: (opts) => transformToChatCompletionOptions(opts, true),
-    },
-    {
-      blockId: "openai",
-      transform: (opts) => transformToChatCompletionOptions(opts, true),
-    },
-    {
-      blockId: "deepseek",
-      transform: (opts) => transformToChatCompletionOptions(opts, true),
-    },
-    {
-      blockId: "perplexity",
-      transform: (opts) => transformToChatCompletionOptions(opts, true),
-    },
-    { blockId: "open-router", transform: transformToChatCompletionOptions },
-    { blockId: "together-ai", transform: transformToChatCompletionOptions },
-    {
-      blockId: "dify-ai",
-      transform: (opts) => transformToChatCompletionOptions(opts, false),
-    },
-  ],
   getSetVariableIds: ({ responseMapping }) =>
     responseMapping?.map((res) => res.variableId).filter(isDefined) ?? [],
   run: {
@@ -114,18 +122,20 @@ export const createChatMessage = createAction({
       logs,
       sessionStore,
     }) => {
-      if (!apiKey) return logs.add("No API key provided");
-      const applicationId = options.applicationId?.trim();
-      if (!applicationId) return logs.add("No applicationId provided");
-
-      const difyProvider = createDifyProvider({
-        baseURL: `${apiEndpoint}/v1`,
-      });
-      const difyModel = difyProvider(applicationId, {
+      const validation = validateCredentials(
+        apiEndpoint,
         apiKey,
-        inputs: toInputsObject(options.inputs),
-        responseMode: "blocking",
-      });
+        options.applicationId,
+      );
+      if (!validation.success) return logs.add(validation.error);
+
+      const difyModel = createDifyModelInstance(
+        validation.apiEndpoint,
+        validation.applicationId,
+        validation.apiKey,
+        options.inputs,
+        "blocking",
+      );
 
       return runChatCompletion({
         model: difyModel,
@@ -152,20 +162,21 @@ export const createChatMessage = createAction({
         variables,
         sessionStore,
       }) => {
-        if (!apiKey) return { error: { description: "No API key provided" } };
-
-        const applicationId = options.applicationId?.trim();
-        if (!applicationId)
-          return { error: { description: "No ApplicationID provided" } };
-
-        const difyProvider = createDifyProvider({
-          baseURL: `${apiEndpoint}/v1`,
-        });
-        const difyModel = difyProvider(applicationId, {
+        const validation = validateCredentials(
+          apiEndpoint,
           apiKey,
-          inputs: toInputsObject(options.inputs),
-          responseMode: "streaming",
-        });
+          options.applicationId,
+        );
+        if (!validation.success)
+          return { error: { description: validation.error } };
+
+        const difyModel = createDifyModelInstance(
+          validation.apiEndpoint,
+          validation.applicationId,
+          validation.apiKey,
+          options.inputs,
+          "streaming",
+        );
 
         return runChatCompletionStream({
           model: difyModel,
