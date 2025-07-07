@@ -6,6 +6,9 @@
   "exports": {
     "./*": "./src/*.ts"
   },
+  "scripts": {
+    "test": "dotenv -e ./.env -e ../../.env -- vitest run"
+  },
   "dependencies": {
     "@typebot.io/blocks-core": "workspace:*",
     "@typebot.io/bot-engine": "workspace:*",
@@ -29,6 +32,8 @@
     "@typebot.io/runtime-session-store": "workspace:*"
   },
   "devDependencies": {
-    "@typebot.io/tsconfig": "workspace:*"
+    "@typebot.io/tsconfig": "workspace:*",
+    "vitest": "3.2.4",
+    "vite-tsconfig-paths": "5.1.4"
   }
 }
