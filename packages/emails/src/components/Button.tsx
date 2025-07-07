@@ -1,6 +1,6 @@
 import React from 'react'
 import { IMjmlButtonProps, MjmlButton } from '@faire/mjml-react'
-import { blue, grayLight } from '../theme'
+import { grayLight } from '../theme'
 import { leadingTight, textBase, borderBase } from '../theme'
 
 type ButtonProps = {
@@ -17,7 +17,7 @@ export const Button = ({ link, children, ...props }: ButtonProps) => (
     padding="0"
     align="left"
     href={link}
-    backgroundColor={blue}
+    backgroundColor={'orange'}
     color={grayLight}
     borderRadius={borderBase}
     {...props}

@@ -58,7 +58,7 @@ export const GuestTypebotHeader = () => {
         <Button
           as={Link}
           href={`/typebots/${typebot?.id}/edit`}
-          colorScheme={router.pathname.includes('/edit') ? 'blue' : 'gray'}
+          colorScheme={router.pathname.includes('/edit') ? 'orange' : 'gray'}
           variant={router.pathname.includes('/edit') ? 'outline' : 'ghost'}
           size="sm"
         >
@@ -67,7 +67,7 @@ export const GuestTypebotHeader = () => {
         <Button
           as={Link}
           href={`/typebots/${typebot?.id}/theme`}
-          colorScheme={router.pathname.endsWith('theme') ? 'blue' : 'gray'}
+          colorScheme={router.pathname.endsWith('theme') ? 'orange' : 'gray'}
           variant={router.pathname.endsWith('theme') ? 'outline' : 'ghost'}
           size="sm"
         >
@@ -76,7 +76,7 @@ export const GuestTypebotHeader = () => {
         <Button
           as={Link}
           href={`/typebots/${typebot?.id}/settings`}
-          colorScheme={router.pathname.endsWith('settings') ? 'blue' : 'gray'}
+          colorScheme={router.pathname.endsWith('settings') ? 'orange' : 'gray'}
           variant={router.pathname.endsWith('settings') ? 'outline' : 'ghost'}
           size="sm"
         >
@@ -136,7 +136,7 @@ export const GuestTypebotHeader = () => {
           )}
           {router.pathname.includes('/edit') && isNotDefined(rightPanel) && (
             <Button
-              colorScheme="blue"
+              colorScheme="orange"
               onClick={handlePreviewClick}
               isLoading={isNotDefined(typebot)}
               leftIcon={<PlayIcon />}

@@ -12,7 +12,7 @@ export const links = [
         label: 'GitHub repository',
         description: 'Check out the entire source code of the project',
         href: 'https://github.com/baptisteArno/typebot.io',
-        icon: <GitHubIcon fill="blue.300" />,
+        icon: <GitHubIcon fill="orange.300" />,
       },
       {
         label: 'Documentation',

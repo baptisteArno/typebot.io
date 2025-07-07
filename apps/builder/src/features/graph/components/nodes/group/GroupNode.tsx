@@ -33,7 +33,7 @@ type Props = {
 
 export const GroupNode = ({ group, groupIndex }: Props) => {
   const bg = useColorModeValue('white', 'gray.900')
-  const previewingBorderColor = useColorModeValue('blue.400', 'blue.300')
+  const previewingBorderColor = useColorModeValue('orange.400', 'orange.300')
   const borderColor = useColorModeValue('white', 'gray.800')
   const editableHoverBg = useColorModeValue('gray.100', 'gray.700')
   const {

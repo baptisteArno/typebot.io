@@ -29,7 +29,7 @@
   --tweet-color-green-primary-hover: rgba(0, 186, 124, 0.1);
   --tweet-twitter-icon-color: var(--tweet-font-color);
   --tweet-verified-old-color: rgb(130, 154, 171);
-  --tweet-verified-blue-color: var(--tweet-color-blue-primary);
+  --tweet-verified-orange-color: var(--tweet-color-orange-primary);
 
   --tweet-actions-font-weight: 500;
   --tweet-replies-font-weight: 500;

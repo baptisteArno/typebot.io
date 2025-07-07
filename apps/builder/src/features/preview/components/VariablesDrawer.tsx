@@ -130,7 +130,7 @@ export const VariablesDrawer = ({ onClose }: Props) => {
               icon={isVariableCreated ? <CheckIcon /> : <PlusIcon />}
               aria-label="Create"
               type="submit"
-              colorScheme={isVariableCreated ? 'green' : 'blue'}
+              colorScheme={isVariableCreated ? 'green' : 'orange'}
               flexShrink={0}
             />
           </SlideFade>

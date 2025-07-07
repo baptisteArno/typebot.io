@@ -56,7 +56,7 @@ export const EndCta = ({ heading, polygonsBaseTop, ...props }: Props) => {
             data-aos="fade-up"
             data-aos-delay="300"
           >
-            Create a typebot
+            Create a bot
           </Button>
         </Flex>
 

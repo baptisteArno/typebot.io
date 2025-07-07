@@ -27,7 +27,7 @@ export const SelectionToolbar = ({
   selectedResultsId,
   onClearSelection,
 }: Props) => {
-  const selectLabelColor = useColorModeValue('blue.500', 'blue.200')
+  const selectLabelColor = useColorModeValue('orange.500', 'orange.200')
   const { typebot } = useTypebot()
   const { showToast } = useToast()
   const { resultHeader, tableData, onDeleteResults } = useResults()

@@ -5,7 +5,7 @@ import { animationVariants } from './animationVariants'
 
 export const StandardIllustration = () => {
   const gray = useColorModeValue(colors.gray[400], colors.gray[700])
-  const bubbleColor = useColorModeValue('white', colors.blue[100])
+  const bubbleColor = useColorModeValue('white', colors.orange[100])
   return (
     <svg
       viewBox="0 0 500 500"

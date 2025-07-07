@@ -91,7 +91,7 @@ export const UsageProgressBars = ({ workspace }: Props) => {
           value={chatsPercentage}
           rounded="full"
           isIndeterminate={isLoading}
-          colorScheme={'blue'}
+          colorScheme={'orange'}
         />
       </Stack>
     </Stack>

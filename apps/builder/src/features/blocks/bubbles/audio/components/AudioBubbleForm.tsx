@@ -53,7 +53,7 @@ export const AudioBubbleForm = ({
                 fileType="audio"
                 filePathProps={uploadFileProps}
                 onFileUploaded={updateUrl}
-                colorScheme="blue"
+                colorScheme="orange"
               >
                 {t('editor.blocks.bubbles.audio.settings.chooseFile.label')}
               </UploadButton>

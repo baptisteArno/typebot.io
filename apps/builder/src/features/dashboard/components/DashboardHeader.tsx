@@ -18,7 +18,7 @@ export const DashboardHeader = () => {
   const { workspace, switchWorkspace, createWorkspace } = useWorkspace()
   const { asPath } = useRouter()
 
-  const isRedirectFromCredentialsCreation = asPath.includes('credentials')
+  const isRedirectFromCredentialsCreation = asPath.includes('preferences')
 
   const { isOpen, onOpen, onClose } = useDisclosure({
     defaultIsOpen: isRedirectFromCredentialsCreation,
@@ -63,7 +63,7 @@ export const DashboardHeader = () => {
               onClick={onOpen}
               isLoading={isNotDefined(workspace)}
             >
-              {t('dashboard.header.settingsButton.label')}
+              {t('workspace.settings.modal.menu.preferences.label')}
             </Button>
           )}
           <WorkspaceDropdown

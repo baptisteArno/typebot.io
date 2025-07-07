@@ -35,7 +35,7 @@ export const MakeComSettings = ({
               as={Link}
               href="https://www.make.com/en/integrations/typebot"
               isExternal
-              colorScheme="blue"
+              colorScheme="orange"
             >
               <Text mr="2">Make.com</Text> <ExternalLinkIcon />
             </Button>

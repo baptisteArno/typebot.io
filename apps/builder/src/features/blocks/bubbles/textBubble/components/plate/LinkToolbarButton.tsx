@@ -15,7 +15,7 @@ export const LinkToolbarButton = ({ ...rest }: Props) => {
     <IconButton
       size="sm"
       variant={props.pressed ? 'outline' : 'ghost'}
-      colorScheme={props.pressed ? 'blue' : undefined}
+      colorScheme={props.pressed ? 'orange' : undefined}
       {...props}
       {...rest}
     />

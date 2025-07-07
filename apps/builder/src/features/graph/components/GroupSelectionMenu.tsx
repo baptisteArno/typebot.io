@@ -141,7 +141,7 @@ export const GroupSelectionMenu = ({
     >
       <Button
         pointerEvents={'none'}
-        color={useColorModeValue('blue.500', 'blue.200')}
+        color={useColorModeValue('orange.500', 'orange.200')}
         borderRightWidth="1px"
         borderRightRadius="none"
         bgColor={useColorModeValue('white', undefined)}

@@ -45,7 +45,7 @@ export default function OSSFriendsPage({ ossFriends }: Props) {
           <Stack pt="20" px="2" spacing="4">
             <Heading fontSize={{ base: '4xl', xl: '6xl' }} textAlign="center">
               Our{' '}
-              <Text as="span" color="blue.200" fontWeight="bold">
+              <Text as="span" color="orange.200" fontWeight="bold">
                 Open-source
               </Text>{' '}
               Friends

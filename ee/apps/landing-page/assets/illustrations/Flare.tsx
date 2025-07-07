@@ -1,7 +1,7 @@
 import { Icon, IconProps } from '@chakra-ui/react'
 import React from 'react'
 
-export const Flare = (props: IconProps & { color: 'blue' | 'orange' }) => (
+export const Flare = (props: IconProps & { color: 'orange' | 'orange' }) => (
   <Icon
     boxSize="600px"
     viewBox="0 0 1381 1078"
@@ -16,7 +16,7 @@ export const Flare = (props: IconProps & { color: 'blue' | 'orange' }) => (
         height="676.089"
         rx="51.3311"
         transform="rotate(50.5977 859.42 335)"
-        fill={props.color === 'blue' ? '#0042DA' : '#FF8B1A'}
+        fill={props.color === 'orange' ? '#0042DA' : '#FF8B1A'}
         fillOpacity="0.28"
       />
     </g>
@@ -28,7 +28,7 @@ export const Flare = (props: IconProps & { color: 'blue' | 'orange' }) => (
         height="676.089"
         rx="47.8325"
         transform="rotate(50.5977 956.42 414)"
-        fill={props.color === 'blue' ? '#0042DA' : '#FF8B1A'}
+        fill={props.color === 'orange' ? '#0042DA' : '#FF8B1A'}
         fillOpacity="0.28"
       />
     </g>
@@ -40,7 +40,7 @@ export const Flare = (props: IconProps & { color: 'blue' | 'orange' }) => (
         height="676.089"
         rx="40.8534"
         transform="rotate(50.5977 706.42 563)"
-        fill={props.color === 'blue' ? '#0042DA' : '#FF8B1A'}
+        fill={props.color === 'orange' ? '#0042DA' : '#FF8B1A'}
         fillOpacity="0.28"
       />
     </g>
@@ -52,7 +52,7 @@ export const Flare = (props: IconProps & { color: 'blue' | 'orange' }) => (
         height="676.089"
         rx="40.8534"
         transform="rotate(50.5977 1145.42 184)"
-        fill={props.color === 'blue' ? '#0042DA' : '#FF8B1A'}
+        fill={props.color === 'orange' ? '#0042DA' : '#FF8B1A'}
         fillOpacity="0.28"
       />
     </g>

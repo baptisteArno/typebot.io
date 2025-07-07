@@ -110,7 +110,7 @@ export const ThemeTemplateCard = ({
       rounded="md"
       boxShadow={
         isSelected
-          ? `${colors['blue']['400']} 0 0 0 4px`
+          ? `${colors['orange']['400']} 0 0 0 4px`
           : `rgba(0, 0, 0, 0.08) 0px 2px 4px`
       }
       style={{
@@ -122,7 +122,7 @@ export const ThemeTemplateCard = ({
         borderTopRadius="md"
         backgroundSize="cover"
         {...parseBackground(themeTemplate.theme.general?.background)}
-        borderColor={isSelected ? 'blue.400' : undefined}
+        borderColor={isSelected ? 'orange.400' : undefined}
       >
         <HStack mt="4" ml="4" spacing={0.5} alignItems="flex-end">
           <AvatarPreview avatar={hostAvatar} />

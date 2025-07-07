@@ -55,7 +55,7 @@ export const CurrentSubscriptionSummary = ({ workspace }: Props) => {
         <BillingPortalButton
           workspaceId={workspace.id}
           colorScheme={
-            data?.subscription?.status === 'past_due' ? 'blue' : undefined
+            data?.subscription?.status === 'past_due' ? 'orange' : undefined
           }
         />
       )}

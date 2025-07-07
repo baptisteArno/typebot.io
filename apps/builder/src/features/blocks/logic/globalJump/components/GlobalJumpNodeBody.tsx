@@ -16,11 +16,11 @@ export const GlobalJumpNodeBody = ({ options }: Props) => {
     return <Text color="gray.500">Configure...</Text>
   return (
     <Text>
-      When <Tag colorScheme="blue">{options.text}</Tag>, jump to{' '}
-      <Tag colorScheme="blue">{selectedGroup.title}</Tag>{' '}
+      When <Tag colorScheme="orange">{options.text}</Tag>, jump to{' '}
+      <Tag colorScheme="orange">{selectedGroup.title}</Tag>{' '}
       {isDefined(blockIndex) && blockIndex >= 0 ? (
         <>
-          at block <Tag colorScheme="blue">{blockIndex + 1}</Tag>
+          at block <Tag colorScheme="orange">{blockIndex + 1}</Tag>
         </>
       ) : null}
     </Text>

@@ -52,7 +52,7 @@ const NonMemoizedDraggableEventNode = ({
   onEventDrag,
 }: Props & { onEventDrag: (newCoord: Coordinates) => void }) => {
   const elementBgColor = useColorModeValue('white', 'gray.900')
-  const previewingBorderColor = useColorModeValue('blue.400', 'blue.300')
+  const previewingBorderColor = useColorModeValue('orange.400', 'orange.300')
   const { previewingEdge, isReadOnly, graphPosition } = useGraph()
   const { updateEvent } = useTypebot()
   const { setRightPanel, setStartPreviewAtEvent } = useEditor()

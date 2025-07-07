@@ -37,7 +37,7 @@ export const ItemNode = ({
   onMouseDown,
   connectionDisabled,
 }: Props) => {
-  const previewingBorderColor = useColorModeValue('blue.400', 'blue.300')
+  const previewingBorderColor = useColorModeValue('orange.400', 'orange.300')
   const borderColor = useColorModeValue('gray.200', 'gray.700')
   const bg = useColorModeValue('white', 'gray.850')
   const { typebot } = useTypebot()

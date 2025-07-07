@@ -15,7 +15,6 @@ import { BackButton } from './BackButton'
 import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import { useToast } from '@/hooks/useToast'
 import { CreateBotButton } from './CreateBotButton'
-import { CreateFolderButton } from './CreateFolderButton'
 import FolderButton, { ButtonSkeleton } from './FolderButton'
 import TypebotButton from './TypebotButton'
 import { TypebotCardOverlay } from './TypebotButtonOverlay'
@@ -28,7 +27,6 @@ type Props = { folder: DashboardFolder | null }
 
 export const FolderContent = ({ folder }: Props) => {
   const { workspace, currentRole } = useWorkspace()
-  const [isCreatingFolder, setIsCreatingFolder] = useState(false)
   const {
     setDraggedTypebot,
     draggedTypebot,
@@ -62,15 +60,6 @@ export const FolderContent = ({ folder }: Props) => {
     }
   )
 
-  const { mutate: createFolder } = trpc.folders.createFolder.useMutation({
-    onError: (error) => {
-      showToast({ description: error.message })
-    },
-    onSuccess: () => {
-      refetchFolders()
-    },
-  })
-
   const { mutate: updateTypebot } = trpc.typebot.updateTypebot.useMutation({
     onError: (error) => {
       showToast({ description: error.message })
@@ -102,16 +91,6 @@ export const FolderContent = ({ folder }: Props) => {
         folderId: folderId === 'root' ? null : folderId,
       },
     })
-  }
-
-  const handleCreateFolder = () => {
-    if (!folders || !workspace) return
-    setIsCreatingFolder(true)
-    createFolder({
-      workspaceId: workspace.id,
-      parentFolderId: folder?.id,
-    })
-    setIsCreatingFolder(false)
   }
 
   const handleMouseUp = async () => {
@@ -173,15 +152,7 @@ export const FolderContent = ({ folder }: Props) => {
           <Heading as="h1">{folder?.name}</Heading>
         </Skeleton>
         <Stack>
-          <HStack>
-            {folder && <BackButton id={folder.parentFolderId} />}
-            {currentRole !== WorkspaceRole.GUEST && (
-              <CreateFolderButton
-                onClick={handleCreateFolder}
-                isLoading={isCreatingFolder || isFolderLoading}
-              />
-            )}
-          </HStack>
+          <HStack>{folder && <BackButton id={folder.parentFolderId} />}</HStack>
           <Wrap spacing={4}>
             {currentRole !== WorkspaceRole.GUEST && (
               <CreateBotButton

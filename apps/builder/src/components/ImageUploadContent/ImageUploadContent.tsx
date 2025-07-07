@@ -194,7 +194,7 @@ const UploadFileContent = ({
         fileType="image"
         filePathProps={uploadFileProps}
         onFileUploaded={onNewUrl}
-        colorScheme="blue"
+        colorScheme="orange"
       >
         {t('editor.header.uploadTab.uploadButton.label')}
       </UploadButton>

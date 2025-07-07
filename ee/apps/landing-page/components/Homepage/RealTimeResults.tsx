@@ -73,7 +73,7 @@ export const RealTimeResults = () => {
               rightIcon={<ArrowRight />}
               href={`https://app.typebot.io/register`}
               variant="ghost"
-              colorScheme="blue"
+              colorScheme="orange"
               data-aos="fade"
             >
               Try it now
@@ -101,7 +101,7 @@ export const RealTimeResults = () => {
           )}
           <iframe
             ref={iframeRef}
-            src="https://airtable.com/embed/shr8nkV6DVN88LVIv?backgroundColor=blue"
+            src="https://airtable.com/embed/shr8nkV6DVN88LVIv?backgroundColor=orange"
             width="100%"
             height="533"
             style={{

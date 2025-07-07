@@ -17,7 +17,7 @@ type ConfirmDeleteModalProps = {
   message: JSX.Element
   title?: string
   confirmButtonLabel: string
-  confirmButtonColor?: 'blue' | 'red'
+  confirmButtonColor?: 'orange' | 'red'
 }
 
 export const ConfirmModal = ({

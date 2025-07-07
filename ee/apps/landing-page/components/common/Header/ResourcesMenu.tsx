@@ -56,7 +56,7 @@ export const ResourcesMenu = ({ isOpen }: Props) => (
                 w="10"
                 h="10"
                 fontSize="3xl"
-                color={'blue.300'}
+                color={'orange.300'}
               >
                 {item.icon}
               </Center>
@@ -65,7 +65,7 @@ export const ResourcesMenu = ({ isOpen }: Props) => (
                   <Text
                     fontWeight="semibold"
                     color={mode('gray.900', 'white')}
-                    _groupHover={{ color: mode('blue.600', 'inherit') }}
+                    _groupHover={{ color: mode('orange.600', 'inherit') }}
                   >
                     {item.label}
                   </Text>
@@ -74,7 +74,7 @@ export const ResourcesMenu = ({ isOpen }: Props) => (
                     as={ChevronRightIcon}
                     transition="all 0.2s"
                     _groupHover={{
-                      color: mode('blue.600', 'inherit'),
+                      color: mode('orange.600', 'inherit'),
                       transform: 'translateX(2px)',
                     }}
                   />

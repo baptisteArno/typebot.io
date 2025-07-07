@@ -50,7 +50,7 @@ export const StripePaymentForm = ({ options, onSuccess }: Props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  if (!stripe || !clientSecret) return <Spinner className="text-blue-500" />
+  if (!stripe || !clientSecret) return <Spinner className="text-orange-500" />
   return (
     <Elements stripe={stripe} options={{ clientSecret }}>
       <CheckoutForm

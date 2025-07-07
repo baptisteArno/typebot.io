@@ -18,7 +18,7 @@ export const FilePreview = (props: Props) => {
         class={clsx(
           'rounded-md text-white p-2 flex items-center',
           fileColor === 'pink' && 'bg-pink-400',
-          fileColor === 'blue' && 'bg-blue-400',
+          fileColor === 'orange' && 'bg-orange-400',
           fileColor === 'green' && 'bg-green-400',
           fileColor === 'gray' && 'bg-gray-400',
           fileColor === 'orange' && 'bg-orange-400'

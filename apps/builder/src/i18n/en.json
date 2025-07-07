@@ -367,7 +367,7 @@
   "emojiList.searchInput.placeholder": "Search...",
   "errorMessage": "An error occured",
   "folders.createFolderButton.label": "Create a folder",
-  "folders.createTypebotButton.label": "Create a typebot",
+  "folders.createTypebotButton.label": "Create a bot",
   "folders.folderButton.deleteConfirmationMessage": "Are you sure you want to delete <strong>folderName</strong> folder? (Everything inside will be move to your dashboard)",
   "folders.typebotButton.delete": "Delete",
   "folders.typebotButton.deleteConfirmationMessage": "Are you sure you want to delete your typebot <strong>typebotName</strong>?",

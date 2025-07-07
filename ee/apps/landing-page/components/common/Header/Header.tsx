@@ -90,7 +90,7 @@ export const Header = () => {
           <Button
             as={Link}
             href="https://app.typebot.io/signin"
-            colorScheme="blue"
+            colorScheme="orange"
             variant="outline"
             fontWeight={700}
           >
@@ -102,7 +102,7 @@ export const Header = () => {
             colorScheme="orange"
             fontWeight={700}
           >
-            Create a typebot
+            Create a bot
           </Button>
         </HStack>
       </HStack>
