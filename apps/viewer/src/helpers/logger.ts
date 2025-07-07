@@ -40,7 +40,7 @@ if (typeof window === 'undefined' && process.env.NODE_ENV === 'production') {
   const util = require('util')
 
   // Redireciona console para o logger
-  console.log = (...args: unknown[]) => logger.log(util.format(...args))
+  console.log = (...args: unknown[]) => logger.info(util.format(...args))
   console.info = (...args: unknown[]) => logger.info(util.format(...args))
   console.warn = (...args: unknown[]) => logger.warn(util.format(...args))
   console.error = (...args: unknown[]) => logger.error(util.format(...args))
