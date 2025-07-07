@@ -29,12 +29,15 @@ if (typeof window === 'undefined' && process.env.NODE_ENV === 'production') {
     ],
   })
 
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const util = require('util')
+
   // Redireciona console para o logger
-  console.log = (...args) => logger.info(...args)
-  console.info = (...args) => logger.info(...args)
-  console.warn = (...args) => logger.warn(...args)
-  console.error = (...args) => logger.error(...args)
-  console.debug = (...args) => logger.debug(...args)
+  console.log = (...args: unknown[]) => logger.info(util.format(...args))
+  console.info = (...args: unknown[]) => logger.info(util.format(...args))
+  console.warn = (...args: unknown[]) => logger.warn(util.format(...args))
+  console.error = (...args: unknown[]) => logger.error(util.format(...args))
+  console.debug = (...args: unknown[]) => logger.debug(util.format(...args))
 } else {
   // No client, logger é um objeto fake
   logger = {
