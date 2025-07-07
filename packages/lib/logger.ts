@@ -14,26 +14,8 @@ if (typeof window === 'undefined' && process.env.NODE_ENV === 'production') {
       winston.format.json()
     ),
     transports: [
-      new winston.transports.Console(),
-      ...(process.env.DD_LOGS_ENABLED === 'true'
-        ? [
-            new winston.transports.Http({
-              host: 'http-intake.logs.datadoghq.com',
-              path: `/v1/input/${
-                process.env.DD_API_KEY
-              }?ddsource=nodejs&service=${process.env.DD_SERVICE || 'typebot'}`,
-              ssl: true,
-              format: winston.format.combine(
-                winston.format.timestamp(),
-                winston.format.json()
-              ),
-              headers: {
-                'Content-Type': 'application/json'
-              }
-            }),
-          ]
-        : []),
-    ],
+      new winston.transports.Console()
+    ]
   })
 
   // eslint-disable-next-line @typescript-eslint/no-var-requires
