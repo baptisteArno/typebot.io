@@ -23,6 +23,13 @@ if (typeof window === 'undefined' && process.env.NODE_ENV === 'production') {
                 process.env.DD_API_KEY
               }?ddsource=nodejs&service=${process.env.DD_SERVICE || 'typebot'}`,
               ssl: true,
+              format: winston.format.combine(
+                winston.format.timestamp(),
+                winston.format.json()
+              ),
+              headers: {
+                'Content-Type': 'application/json'
+              }
             }),
           ]
         : []),
