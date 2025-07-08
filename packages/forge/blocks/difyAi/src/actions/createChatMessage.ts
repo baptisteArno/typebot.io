@@ -8,6 +8,46 @@ import { auth } from "../auth";
 
 type InputItem = { key?: string; value?: any };
 
+const LEGACY_RESPONSE_MAPPING = [
+  "Answer",
+  "Conversation ID",
+  "Total Tokens",
+] as const;
+
+const NEW_RESPONSE_MAPPING = [
+  "Message content",
+  "Total tokens",
+  "Prompt tokens",
+  "Completion tokens",
+] as const;
+
+const COMBINED_RESPONSE_MAPPING = [
+  ...LEGACY_RESPONSE_MAPPING,
+  ...NEW_RESPONSE_MAPPING,
+] as const;
+
+const LEGACY_TO_NEW_MAPPING = {
+  Answer: "Message content",
+  "Total Tokens": "Total tokens",
+  "Conversation ID": "Conversation ID",
+} as const;
+
+const normalizeResponseMappingItem = (item: string): string => {
+  return (
+    LEGACY_TO_NEW_MAPPING[item as keyof typeof LEGACY_TO_NEW_MAPPING] || item
+  );
+};
+
+// Not sure if this is the best way to handle the backward compatibility
+const getCompatibleStreamVariableId = (options: any): string | undefined => {
+  const normalizedOptions = {
+    ...options,
+    responseMapping: normalizeResponseMappingForAI(options.responseMapping),
+  };
+
+  return getChatCompletionStreamVarId(normalizedOptions);
+};
+
 const toInputsObject = (inputs?: InputItem[]): Record<string, any> => {
   const result: Record<string, any> = {};
 
@@ -30,20 +70,18 @@ const validateCredentials = (
       apiEndpoint: string;
     }
   | { success: false; error: string } => {
-  if (!apiEndpoint)
+  if (!apiEndpoint?.trim())
     return { success: false, error: "No API Endpoint provided" };
 
-  if (!apiKey) return { success: false, error: "No API key provided" };
+  if (!apiKey?.trim()) return { success: false, error: "No API key provided" };
 
-  const trimmedApplicationId = applicationId?.trim();
-  if (!trimmedApplicationId)
-    return { success: false, error: "No applicationId provided" };
+  const resolvedApplicationId = applicationId?.trim() || "default-app-id";
 
   return {
     success: true,
-    applicationId: trimmedApplicationId,
-    apiKey,
-    apiEndpoint,
+    applicationId: resolvedApplicationId,
+    apiKey: apiKey.trim(),
+    apiEndpoint: apiEndpoint.trim(),
   };
 };
 
@@ -64,12 +102,41 @@ const createDifyModelInstance = (
   });
 };
 
+const normalizeResponseMappingForAI = (
+  responseMapping: Array<{ item?: string; variableId?: string }> | undefined,
+):
+  | Array<{
+      item?:
+        | "Message content"
+        | "Total tokens"
+        | "Prompt tokens"
+        | "Completion tokens";
+      variableId?: string;
+    }>
+  | undefined => {
+  if (!responseMapping) return undefined;
+
+  return responseMapping
+    .map((mapping) => ({
+      ...mapping,
+      item: mapping.item
+        ? (normalizeResponseMappingItem(mapping.item) as any)
+        : undefined,
+    }))
+    .filter(
+      (mapping) =>
+        !mapping.item || NEW_RESPONSE_MAPPING.includes(mapping.item as any),
+    );
+};
+
 const options = option.object({
   applicationId: option.string.layout({
+    isRequired: false,
+    label: "Application ID",
     placeholder: "Fill the applicationId",
     helperText: "Dify Application ID",
     allowCustomValue: true,
-    label: "Application ID",
+    defaultValue: "default-app-id",
   }),
   query: option.string.layout({
     label: "Query",
@@ -96,16 +163,9 @@ const options = option.object({
       }),
     )
     .layout({ accordion: "Inputs" }),
-  responseMapping: option
-    .saveResponseArray([
-      "Message content",
-      "Total tokens",
-      "Prompt tokens",
-      "Completion tokens",
-    ] as const)
-    .layout({
-      accordion: "Save response",
-    }),
+  responseMapping: option.saveResponseArray(COMBINED_RESPONSE_MAPPING).layout({
+    accordion: "Save response",
+  }),
 });
 
 export const createChatMessage = createAction({
@@ -140,7 +200,7 @@ export const createChatMessage = createAction({
       return runChatCompletion({
         model: difyModel,
         variables,
-        responseMapping: options.responseMapping,
+        responseMapping: normalizeResponseMappingForAI(options.responseMapping),
         logs,
         sessionStore,
         isVisionEnabled: false,
@@ -155,7 +215,7 @@ export const createChatMessage = createAction({
       });
     },
     stream: {
-      getStreamVariableId: getChatCompletionStreamVarId,
+      getStreamVariableId: getCompatibleStreamVariableId,
       run: async ({
         credentials: { apiKey, apiEndpoint },
         options,
@@ -181,7 +241,9 @@ export const createChatMessage = createAction({
         return runChatCompletionStream({
           model: difyModel,
           variables,
-          responseMapping: options.responseMapping,
+          responseMapping: normalizeResponseMappingForAI(
+            options.responseMapping,
+          ),
           sessionStore,
           isVisionEnabled: false,
           messages: [
