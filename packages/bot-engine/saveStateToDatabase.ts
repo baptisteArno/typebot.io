@@ -33,6 +33,7 @@ export const saveStateToDatabase = async ({
   initialSessionId,
 }: Props) => {
   logger.info('saveStateToDatabase called', {
+    sessionId: id,
     hasExistingSessionId: !!id,
     existingSessionId: id,
     initialSessionId,
@@ -57,12 +58,23 @@ export const saveStateToDatabase = async ({
   const resultId = state.typebotsQueue[0].resultId
 
   logger.info('saveStateToDatabase session handling', {
+    sessionId: id,
     hasExistingSessionId: !!id,
     existingSessionId: id,
     initialSessionId,
     resultId,
     isCompleted,
+    isCompletedConditions: {
+      hasNoInput: !input,
+      hasNoSetVariableClientSideAction: !containsSetVariableClientSideAction,
+      hasNoCustomEmbedBubble: !hasCustomEmbedBubble,
+    },
     willDeleteSession: !!(id && isCompleted && resultId),
+    willDeleteSessionConditions: {
+      hasSessionId: !!id,
+      isCompleted,
+      hasResultId: !!resultId,
+    },
     willUpdateSession: !!(id && !(isCompleted && resultId)),
     willCreateSession: !id,
   })
