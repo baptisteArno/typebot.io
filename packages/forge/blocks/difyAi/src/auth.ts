@@ -42,6 +42,7 @@ export const auth = {
       helperText: "Dify Application ID",
       allowCustomValue: true,
       defaultValue: "default-app-id",
+      withVariableButton: false,
     }),
   }),
 } satisfies AuthDefinition;
