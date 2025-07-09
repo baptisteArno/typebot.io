@@ -130,14 +130,6 @@ const normalizeResponseMappingForAI = (
 };
 
 const options = option.object({
-  applicationId: option.string.layout({
-    isRequired: false,
-    label: "Application ID",
-    placeholder: "Fill the applicationId",
-    helperText: "Dify Application ID",
-    allowCustomValue: true,
-    defaultValue: "default-app-id",
-  }),
   query: option.string.layout({
     label: "Query",
     placeholder: "User input/question content",
@@ -176,7 +168,7 @@ export const createChatMessage = createAction({
     responseMapping?.map((res) => res.variableId).filter(isDefined) ?? [],
   run: {
     server: ({
-      credentials: { apiKey, apiEndpoint },
+      credentials: { apiKey, apiEndpoint, applicationId },
       options,
       variables,
       logs,
@@ -185,7 +177,7 @@ export const createChatMessage = createAction({
       const validation = validateCredentials(
         apiEndpoint,
         apiKey,
-        options.applicationId,
+        applicationId,
       );
       if (!validation.success) return logs.add(validation.error);
 
@@ -210,14 +202,12 @@ export const createChatMessage = createAction({
             content: options.query,
           },
         ],
-        temperature: undefined,
-        tools: undefined,
       });
     },
     stream: {
       getStreamVariableId: getCompatibleStreamVariableId,
       run: async ({
-        credentials: { apiKey, apiEndpoint },
+        credentials: { apiKey, apiEndpoint, applicationId },
         options,
         variables,
         sessionStore,
@@ -225,7 +215,7 @@ export const createChatMessage = createAction({
         const validation = validateCredentials(
           apiEndpoint,
           apiKey,
-          options.applicationId,
+          applicationId,
         );
         if (!validation.success)
           return { error: { description: validation.error } };
@@ -252,8 +242,6 @@ export const createChatMessage = createAction({
               content: options.query,
             },
           ],
-          temperature: undefined,
-          tools: undefined,
         });
       },
     },
