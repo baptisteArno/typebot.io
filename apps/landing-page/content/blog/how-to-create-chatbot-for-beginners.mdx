@@ -193,11 +193,11 @@ Here’s how to build a basic pricing calculator, such as for website design ser
 
 - **The calculation engine**. Here some basic javascript is needed. Use Typebot’s "Set variable" block to handle calculations:
 
-  - Create a variable (e.g., `base_price`) and set its value based on `site_type`. For example: `\{\{site_type\}\} === 'Basic Website (5 pages) - $2,000' ? 2000 : (\{\{site_type\}\} === 'E-commerce Store - $8,000' ? 8000 : 4000)`. Enable "Execute as code."
+  - Create a variable (e.g., `base_price`) and set its value based on `site_type`. For example: `{{site_type}} === 'Basic Website (5 pages) - $2,000' ? 2000 : ({{site_type}} === 'E-commerce Store - $8,000' ? 8000 : 4000)`. Enable "Execute as code."
 
   - Do the same for `extras_price` based on `extra_features`.
 
-  - Add a `total_price` variable by combining `\{\{base_price\}\} + \{\{extras_price\}\}` (also as code).
+  - Add a `total_price` variable by combining `{{base_price}} + {{extras_price}}` (also as code).
 
     <Image
       src="/blog-assets/how-to-create-chatbot-for-beginners/price-calculation-interface-code.avif"
@@ -244,7 +244,7 @@ Once your chatbot is ready, it’s easy to deploy it almost anywhere your audien
 
 - [**WordPress**](./add-chatbot-to-wordpress.mdx): Install the [Typebot WordPress plugin](https://wordpress.org/plugins/typebot/) and paste your bot’s specific embed snippet from the Share tab. You can further personalize bot behavior, exclude pages, and inject user data with predefined variables.
 
-- **Shopify, Wix, and other site builders**: For platforms like Shopify or Wix, copy your bot’s standard Embed or Iframe code from the Share tab and paste it into your store or site’s HTML section—the experience is plug-and-play.
+- **Shopify, Wix, and other site builders**: For platforms like [Shopify](./best-shopify-chatbot.mdx) or Wix, copy your bot’s standard Embed or Iframe code from the Share tab and paste it into your store or site’s HTML section—the experience is plug-and-play.
 
 - **Notion**: Want your chatbot inside a Notion page or doc? Use the Iframe embedding option to drop the bot straight into any workspace.
 
