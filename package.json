@@ -34,7 +34,6 @@
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
     "@tolgee/cli": "2.8.2",
-    "@types/cookie": "^1.0.0",
     "husky": "9.1.7",
     "sherif": "1.4.0",
     "turbo": "2.5.3",

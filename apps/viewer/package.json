@@ -47,7 +47,7 @@
     "@typebot.io/zod": "workspace:*",
     "bot-engine": "workspace:*",
     "cors": "2.8.5",
-    "dify-ai-provider": "^0.1.6",
+    "dify-ai-provider": "0.1.6",
     "google-spreadsheet": "4.1.4",
     "next": "15.3.0",
     "nextjs-cors": "2.1.2",
