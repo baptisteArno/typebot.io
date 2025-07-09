@@ -22,7 +22,6 @@ import { setGeneralBackground } from "@/utils/setCssVariablesValue";
 import { toaster } from "@/utils/toaster";
 import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
 import type { InputBlock } from "@typebot.io/blocks-inputs/schema";
-import type { ClientSideAction } from "@typebot.io/chat-api/clientSideAction";
 import type {
   ContinueChatResponse,
   Message,
@@ -462,6 +461,25 @@ export const ChatContainer = (props: Props) => {
         defaultContainerBackgroundColor) === "transparent",
   );
 
+  const filteredChunks = createMemo(() =>
+    chatChunks().filter(hasExecutedInitialClientSideActions),
+  );
+
+  const hideAvatarFlags = createMemo(() => {
+    const list = filteredChunks();
+    const sending = isSending();
+    return list.map((c, idx) => {
+      const n = list[idx + 1];
+      return (
+        ((!c.input || c.input?.isHidden) &&
+          ((n?.messages?.length ?? 0) > 0 ||
+            n?.streamingMessage !== undefined ||
+            (c.messages.length > 0 && sending))) ??
+        false
+      );
+    });
+  });
+
   return (
     <ChatContainerSizeContext.Provider value={chatContainerSize}>
       <div
@@ -489,12 +507,10 @@ export const ChatContainer = (props: Props) => {
           )}
         >
           <div class="w-full flex flex-col gap-2 @xs:px-5 px-3">
-            <Index
-              each={chatChunks().filter(hasExecutedInitialClientSideActions)}
-            >
-              {(chunk, index) => (
+            <Index each={filteredChunks()}>
+              {(chunk, i) => (
                 <ChatChunk
-                  index={index}
+                  index={i}
                   messages={chunk().messages}
                   input={chunk().input}
                   theme={mergeThemes(
@@ -503,13 +519,8 @@ export const ChatContainer = (props: Props) => {
                   )}
                   settings={props.initialChatReply.typebot.settings}
                   context={props.context}
-                  hideAvatar={
-                    (!chunk().input || Boolean(chunk().input?.isHidden)) &&
-                    ((chatChunks()[index + 1]?.messages ?? []).length > 0 ||
-                      chatChunks()[index + 1]?.streamingMessage !== undefined ||
-                      (chunk().messages.length > 0 && isSending()))
-                  }
-                  isTransitionDisabled={index !== chatChunks().length - 1}
+                  hideAvatar={hideAvatarFlags()[i]}
+                  isTransitionDisabled={i !== filteredChunks().length - 1}
                   streamingMessage={chunk().streamingMessage}
                   onNewBubbleDisplayed={handleNewBubbleDisplayed}
                   onAllBubblesDisplayed={handleAllBubblesDisplayed}
@@ -551,24 +562,6 @@ const convertSubmitContentToMessage = (
       attachedFileUrls: answer.attachments?.map((attachment) => attachment.url),
     };
   if (answer.type === "recording") return { type: "audio", url: answer.url };
-};
-
-const getNextClientSideActionsBatch = ({
-  clientSideActions,
-  lastBubbleBlockId,
-}: {
-  clientSideActions: ClientSideAction[];
-  lastBubbleBlockId: string | undefined;
-}) => {
-  const actionsBatch: ClientSideAction[] = [];
-  let currentLastBubbleBlockId = lastBubbleBlockId;
-  for (const action of clientSideActions) {
-    if (currentLastBubbleBlockId !== action.lastBubbleBlockId) break;
-    currentLastBubbleBlockId = action.lastBubbleBlockId;
-    if (lastBubbleBlockId === action.lastBubbleBlockId)
-      actionsBatch.push(action);
-  }
-  return actionsBatch;
 };
 
 const updateIsInputHiddenOnLastChunk = (

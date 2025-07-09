@@ -2,6 +2,7 @@ import { createId } from "@paralleldrive/cuid2";
 import test, { expect } from "@playwright/test";
 import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
 import { defaultTextInputOptions } from "@typebot.io/blocks-inputs/text/constants";
+import { env } from "@typebot.io/env";
 import {
   createTypebots,
   updateTypebot,
@@ -84,7 +85,9 @@ test("Hide query params", async ({ page }) => {
   ]);
   await page.goto(`/${typebotId}-public?Name=John`);
   await page.waitForTimeout(1000);
-  expect(page.url()).toEqual(`http://localhost:3001/${typebotId}-public`);
+  expect(page.url()).toEqual(
+    `${env.NEXT_PUBLIC_VIEWER_URL[0]}/${typebotId}-public`,
+  );
   await updateTypebot({
     id: typebotId,
     settings: {
@@ -94,7 +97,7 @@ test("Hide query params", async ({ page }) => {
   await page.goto(`/${typebotId}-public?Name=John`);
   await page.waitForTimeout(1000);
   expect(page.url()).toEqual(
-    `http://localhost:3001/${typebotId}-public?Name=John`,
+    `${env.NEXT_PUBLIC_VIEWER_URL[0]}/${typebotId}-public?Name=John`,
   );
 });
 

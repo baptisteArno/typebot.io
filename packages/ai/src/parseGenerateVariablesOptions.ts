@@ -39,6 +39,11 @@ export const variablesToExtractSchema = option
         .extend(extractInfoBaseShape),
       option
         .object({
+          type: option.literal("array"),
+        })
+        .extend(extractInfoBaseShape),
+      option
+        .object({
           type: option.literal("enum"),
           values: option
             .array(option.string)

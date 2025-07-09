@@ -39,5 +39,11 @@
   "i18n-ally.enabledFrameworks": ["custom"],
   "search.exclude": {
     "**/deprecated/**": true
+  },
+  "vitest.nodeEnv": {
+    "DATABASE_URL": "postgresql://postgres:typebot@127.0.0.1:5432/typebot",
+    "ENCRYPTION_SECRET": "dummy_XMHwTK1T5q3XZCgJIeWGCN3T3I",
+    "NEXTAUTH_URL": "http://localhost:3000",
+    "NEXT_PUBLIC_VIEWER_URL": "http://localhost:3001"
   }
 }

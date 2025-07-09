@@ -5,9 +5,8 @@
     "dev": "dotenv -e ./.env -e ../../.env  -- next dev -p 3001",
     "build": "dotenv -e ./.env -e ../../.env -- next build",
     "start": "dotenv -e ./.env -e ../../.env -- next start",
-    "test": "dotenv -e ./.env -e ../../.env -- playwright test",
-    "test:report": "playwright show-report",
-    "test:ui": "dotenv -e ./.env -e ../../.env -- playwright test --ui"
+    "test:e2e": "dotenv -e ./.env -e ../../.env -- playwright test",
+    "test:e2e:report": "playwright show-report"
   },
   "dependencies": {
     "@chakra-ui/react": "2.8.2",

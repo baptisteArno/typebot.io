@@ -1,0 +1,20 @@
+---
+alwaysApply: true
+---
+
+## Environment
+
+- Always use `bun` as the package manager
+
+## Coding
+
+- Never use `any` type. Always use proper TypeScript types, interfaces, or union types instead.
+- Use `satisfies` instead of `as` when possible to make sure we keep strong type-safety.
+- Prefer writing long and complex functions that provide good, deep abstraction. These functions should have a TSDoc comment description of what it does in great details. Avoid providing `@param` description, params name should be self-explanatory. In the function itself you can add inline comments only if the code is hard to understand.
+- Helper functions should be placed at the bottom of the file.
+
+## Testing
+
+- Use `bun run test` to run the unit test script (which executes `vitest run`)
+- We test only complexe and critical functions
+- We never use Vitest mocks. We almost always want to modify the function signature to have dependencies as arguments instead.
