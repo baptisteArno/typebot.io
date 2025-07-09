@@ -6,6 +6,9 @@
   "exports": {
     "./*": "./src/*.ts"
   },
+  "scripts": {
+    "test": "dotenv -e ./.env -e ../../.env -- vitest run"
+  },
   "dependencies": {
     "@paralleldrive/cuid2": "2.2.1",
     "@planetscale/database": "1.8.0",
@@ -57,8 +60,5 @@
     "@typebot.io/tsconfig": "workspace:*",
     "vitest": "3.2.4",
     "vite-tsconfig-paths": "5.1.4"
-  },
-  "scripts": {
-    "test:unit": "vitest run"
   }
 }

@@ -1,0 +1,7 @@
+---
+alwaysApply: true
+---
+
+## Translations
+
+- When introducing new i18n keys, only provide en.json translations. The rest will be translated in Tolgee later on.

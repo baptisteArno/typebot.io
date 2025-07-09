@@ -85,6 +85,9 @@ const convertVariablesToExtractToSchema = ({
       case "boolean":
         shape[matchingVariable.name] = z.boolean();
         break;
+      case "array":
+        shape[matchingVariable.name] = z.array(z.string());
+        break;
       case "enum": {
         if (!variableToExtract.values || variableToExtract.values.length === 0)
           return;

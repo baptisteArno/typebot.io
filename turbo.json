@@ -63,8 +63,8 @@
       "dependsOn": ["@typebot.io/prisma#db:generate"],
       "cache": false
     },
-    "test:unit": {
-      "cache": false
+    "test": {
+      "dependsOn": ["^test"]
     },
     "lint-repo": {
       "cache": false

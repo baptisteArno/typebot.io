@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "tsup --watch",
     "build": "tsup",
-    "test": "bun jest"
+    "test:unit": "bun jest"
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*",

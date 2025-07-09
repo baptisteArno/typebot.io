@@ -47,6 +47,9 @@ export default defineConfig({
 
 const rehypePrettyCodeSettings = {
   theme: "material-theme-palenight",
+  defaultLang: {
+    block: "md",
+  },
   transformers: [
     transformerMetaHighlight(),
     transformerMetaWordHighlight(),

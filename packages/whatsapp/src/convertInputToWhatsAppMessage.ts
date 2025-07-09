@@ -130,12 +130,13 @@ export const convertInputToWhatsAppMessages = (
           },
           action: {
             buttons: (() => {
-              const buttonTexts = items
-                .filter((item) => item.content)
-                .map((item) => item.content as string);
+              const nonEmptyItems = items.filter((item) => item.content);
+              const buttonTexts = nonEmptyItems.map(
+                (item) => item.content as string,
+              );
               const uniqueTitles = getUniqueButtonTitles(buttonTexts);
 
-              return items.map((item, index) => ({
+              return nonEmptyItems.map((item, index) => ({
                 type: "reply",
                 reply: {
                   id: item.id,
@@ -202,7 +203,7 @@ const trimTextTo20Chars = (
   let uniqueTitle = "";
 
   do {
-    const suffix = ` (${counter})`;
+    const suffix = `(${counter})`;
     const availableChars = 20 - suffix.length - 3; // 3 for ".." and a space
     uniqueTitle = `${text.slice(0, availableChars)} ${suffix}..`;
     counter++;

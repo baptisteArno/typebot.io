@@ -25,6 +25,12 @@ const components = {
   a: (props: React.HTMLAttributes<HTMLAnchorElement>) => (
     <TextLink {...props} />
   ),
+  code: ({ className, ...props }: React.HTMLAttributes<HTMLElement>) => (
+    <code
+      className={cn("before:content-none after:content-none", className)}
+      {...props}
+    />
+  ),
   table: (props: React.HTMLAttributes<HTMLTableElement>) => (
     <TableRoot className="not-prose bg-gray-1 rounded-xl border">
       <Table {...props} />

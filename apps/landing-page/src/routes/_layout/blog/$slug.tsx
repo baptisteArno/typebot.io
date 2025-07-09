@@ -7,6 +7,7 @@ import { authors } from "@/features/blog/data/authors";
 import { formatDate } from "@/features/blog/helpers";
 import { createMetaTags } from "@/lib/createMetaTags";
 import { createFileRoute, redirect } from "@tanstack/react-router";
+import { cx } from "@typebot.io/ui/lib/cva";
 
 export const Route = createFileRoute("/_layout/blog/$slug")({
   loader: async ({ params }) => {
@@ -40,7 +41,13 @@ function RouteComponent() {
   const { post, author } = Route.useLoaderData();
   return (
     <ContentPageWrapper className="max-w-2xl">
-      <article className="prose prose-p:text-lg prose-strong:font-medium prose-img:rounded-xl prose-img:max-h-[60vh] prose-img:w-auto prose-video:rounded-xl prose-figure:my-0 prose-a:text-[currentColor]">
+      <article
+        className={cx(
+          "prose prose-p:text-lg prose-strong:font-medium prose-video:rounded-xl prose-a:text-[currentColor] ",
+          "prose-figure:my-0 prose-img:rounded-xl prose-img:max-h-[60vh] prose-img:w-auto",
+          "prose-code:bg-gray-4 prose-code:rounded-md prose-code:text-orange-10 prose-code:border prose-code:border-gray-6 prose-code:p-1 prose-code:py-0.5 prose-code:font-normal",
+        )}
+      >
         <div>
           <span className="inline-flex gap-1 items-center not-prose text-sm">
             {post.postedAt && (
