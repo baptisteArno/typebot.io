@@ -96,7 +96,7 @@ Here’s how to build a consultation booking bot with Typebot:
 
 - **If needed, collect contact details for confirmation**: After users select a time slot, ask for their email to send a confirmation. Add a group with an "Email input" block.
 
-- **Confirm the booking**: Finish with a group containing a text block to confirm their booking. Personalize the message: "Great, \{\{client_name\}\}! Your \{\{service_type\}\} consultation is booked. A calendar invite will be sent to \{\{client_email\}\}."
+- **Confirm the booking**: Finish with a group containing a text block to confirm their booking. Personalize the message: Great, \{\{client_name\}\}! Your \{\{service_type\}\} consultation is booked. A calendar invite will be sent to \{\{client_email\}\}."
 
 This bot **automates client interaction**, saving time and making it easy for people to connect with you.
 
@@ -193,11 +193,11 @@ Here’s how to build a basic pricing calculator, such as for website design ser
 
 - **The calculation engine**. Here some basic javascript is needed. Use Typebot’s "Set variable" block to handle calculations:
 
-  - Create a variable (e.g., `base_price`) and set its value based on `site_type`. For example: `\{\{site_type\}\} === 'Basic Website (5 pages) - $2,000' ? 2000 : (\{\{site_type\}\} === 'E-commerce Store - $8,000' ? 8000 : 4000)`. Enable "Execute as code."
+  - Create a variable (e.g., `base_price`) and set its value based on `site_type`. For example: `{{site_type}} === 'Basic Website (5 pages) - $2,000' ? 2000 : ({{site_type}} === 'E-commerce Store - $8,000' ? 8000 : 4000)`. Enable "Execute as code."
 
   - Do the same for `extras_price` based on `extra_features`.
 
-  - Add a `total_price` variable by combining `\{\{base_price\}\} + \{\{extras_price\}\}` (also as code).
+  - Add a `total_price` variable by combining `{{base_price}} + {{extras_price}}` (also as code).
 
     <Image
       src="/blog-assets/how-to-create-chatbot-for-beginners/price-calculation-interface-code.avif"
