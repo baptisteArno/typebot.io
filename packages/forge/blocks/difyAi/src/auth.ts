@@ -35,5 +35,14 @@ export const auth = {
       placeholder: "dataset-...",
       withVariableButton: false,
     }),
+    applicationId: option.string.layout({
+      isRequired: false,
+      label: "Application ID",
+      placeholder: "Fill the applicationId",
+      helperText: "Dify Application ID",
+      allowCustomValue: true,
+      defaultValue: "default-app-id",
+      withVariableButton: false,
+    }),
   }),
 } satisfies AuthDefinition;
