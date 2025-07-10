@@ -3,9 +3,9 @@ sidebarTitle: Overview
 title: WhatsApp
 ---
 
-## Preview
+## Test
 
-You can preview and test your bot by clicking on the Preview button in the editor and change the runtime to "WhatsApp".
+You can preview and test your bot by clicking on the `Test` button in the editor and change the runtime to `WhatsApp`.
 
 <Frame>
   <img
@@ -86,7 +86,7 @@ You can ask for the user's location with a basic [Text input block](../../editor
 
 <Tabs>
   <Tab title="Flow">
-    <Frame style={{ maxWidth: '400px' }}>
+    <Frame style={{ maxWidth: "400px" }}>
       <img
         src="/images/whatsapp/position-flow.jpg"
         alt="Position collection flow"
@@ -95,7 +95,7 @@ You can ask for the user's location with a basic [Text input block](../../editor
     </Frame>
   </Tab>
   <Tab title="Bot">
-    <Frame style={{ maxWidth: '400px' }}>
+    <Frame style={{ maxWidth: "400px" }}>
       <img
         src="/images/whatsapp/position-bot.png"
         alt="Position collection bot"
@@ -109,12 +109,37 @@ You can ask for the user's location with a basic [Text input block](../../editor
 
 <AccordionGroup>
   <Accordion title="How many WhatsApp numbers can I use?">
-    You can integrate as many numbers as you'd like. Keep in mind that Typebot does not provide those numbers. We work as a "Bring your own Meta application" and we give you clear instructions on [how to set up your Meta app](./create-meta-app).
+    You can integrate as many numbers as you'd like. Keep in mind that Typebot
+    does not provide those numbers. We work as a "Bring your own Meta
+    application" and we give you clear instructions on [how to set up your Meta
+    app](./create-meta-app).
   </Accordion>
   <Accordion title="Can I link multiple bots to the same WhatsApp number?">
-    Yes, you can. You will have to add a "Start bot condition" to each of your bots to make sure that the right bot is triggered when a user starts a conversation.
+    Yes, you can. You will have to add a "Start bot condition" to each of your
+    bots to make sure that the right bot is triggered when a user starts a
+    conversation.
   </Accordion>
   <Accordion title="Does the integration with WhatsApp requires any paid API?">
-    You integrate your typebots with your own WhatsApp Business Platform which is the official service from Meta. At the moment, the first 1,000 Service conversations each month are free. For more information, refer to <a href="https://developers.facebook.com/docs/whatsapp/cloud-api/get-started#pricing---payment-methods" target="_blank">their documentation</a>
+    You integrate your typebots with your own WhatsApp Business Platform which
+    is the official service from Meta. At the moment, the first 1,000 Service
+    conversations each month are free. For more information, refer to{" "}
+    <a
+      href="https://developers.facebook.com/docs/whatsapp/cloud-api/get-started#pricing---payment-methods"
+      target="_blank"
+    >
+      their documentation
+    </a>
+  </Accordion>
+  <Accordion title="My WhatsApp integration is not working">
+    It can happen that you configured your WhatsApp number, you send the first
+    message to try it out but it never replies back.
+
+    To troubleshoot this we suggest you to:
+
+    1. Make sure the bot works fine in [Test mode](#test)
+    2. Delete the number and configure it again while making sure you read all the instructions thoroughly
+    3. Make sure you don't have any Start conditions or that your first message is matching the condition
+    4. If it really does not work, contact support at <a href="mailto:support@typebot.io">support@typebot.io</a>
+
   </Accordion>
 </AccordionGroup>
