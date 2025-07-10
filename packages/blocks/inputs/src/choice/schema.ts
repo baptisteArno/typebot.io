@@ -15,6 +15,8 @@ export const choiceInputOptionsSchema = optionBaseSchema.merge(
     isSearchable: z.boolean().optional(),
     searchInputPlaceholder: z.string().optional(),
     areInitialSearchButtonsVisible: z.boolean().optional(),
+    timerSeconds: z.number().optional(),
+    timerOutgoingEdgeId: z.string().optional(),
   }),
 );
 
