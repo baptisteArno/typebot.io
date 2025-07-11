@@ -5,7 +5,7 @@ metadata:
     app: typebot-viewer
   name: typebot-viewer
 spec:
-  maxReplicas: 20
+  maxReplicas: 30
   minReplicas: 1
   scaleTargetRef:
     apiVersion: apps/v1

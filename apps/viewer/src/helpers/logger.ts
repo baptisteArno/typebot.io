@@ -13,9 +13,7 @@ if (typeof window === 'undefined' && process.env.NODE_ENV === 'production') {
       winston.format.errors({ stack: true }),
       winston.format.json()
     ),
-    transports: [
-      new winston.transports.Console()
-    ],
+    transports: [new winston.transports.Console()],
   })
 
   // eslint-disable-next-line @typescript-eslint/no-var-requires

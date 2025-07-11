@@ -34,7 +34,7 @@ export const startChat = authenticatedProcedure
         ...input,
         origin,
       })
-      
+
       logger.info('startChat API endpoint completed', {
         publicId: input.publicId,
         sessionId: response.sessionId,
