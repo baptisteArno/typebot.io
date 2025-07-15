@@ -34,6 +34,11 @@ export const destroyUser = async (userEmail?: string) => {
     },
   });
 
+  if (workspaces.length === 0) {
+    console.log("No workspaces found");
+    return;
+  }
+
   console.log(`Found ${workspaces.length} workspaces`);
 
   if (
