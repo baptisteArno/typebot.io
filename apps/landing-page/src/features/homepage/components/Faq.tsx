@@ -88,6 +88,8 @@ const data = [
     title: "How secure is Typebot, and how do you handle data privacy?",
     content: (
       <p>
+        Typebot is ISO 27001 certified, demonstrating our commitment to
+        maintaining the highest standards of information security management.
         Our guiding principle is to collect only what we need to provide the
         best service to you. We use a select number of trusted external service
         providers for certain service offerings.

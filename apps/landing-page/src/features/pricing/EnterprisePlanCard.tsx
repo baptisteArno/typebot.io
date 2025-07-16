@@ -23,6 +23,7 @@ export const EnterprisePlanCard = () => (
           24/7 support with a designated representative
         </PerkListItem>
         <PerkListItem>SSO & Granular access rights</PerkListItem>
+        <PerkListItem>ISO 27001 Certified Security</PerkListItem>
         <PerkListItem>Custom Security Questionnaires</PerkListItem>
         <PerkListItem>Custom Features Development (add-on)</PerkListItem>
       </ul>
