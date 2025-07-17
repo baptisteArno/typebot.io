@@ -4,6 +4,7 @@ class Typebot_Loader
 {
 	protected $actions;
 	protected $filters;
+    	protected $shortcodes;
 
 	public function __construct()
 	{
