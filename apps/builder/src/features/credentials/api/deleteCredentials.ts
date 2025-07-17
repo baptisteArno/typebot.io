@@ -10,7 +10,7 @@ export const deleteCredentials = authenticatedProcedure
       z.object({
         scope: z.literal("workspace"),
         credentialsId: z.string(),
-        workspaceId: z.string(),
+        workspaceId: z.string().optional(),
       }),
       z.object({
         scope: z.literal("user"),

@@ -757,3 +757,14 @@ export const MinimizeIcon = (props: IconProps) => (
     <path d="M4 14h6v6" />
   </Icon>
 );
+
+export const AIIcon = (props: IconProps) => (
+  <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
+    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" />
+    <path d="M8 12h8" />
+    <path d="M12 8v8" />
+    <circle cx="9" cy="9" r="1" />
+    <circle cx="15" cy="9" r="1" />
+    <path d="M9 15a3 3 0 0 0 6 0" />
+  </Icon>
+);
