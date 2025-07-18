@@ -64,7 +64,7 @@ spec:
               cpu: 100m
               memory: 256Mi
             limits:
-              cpu: 400m
+              cpu: 300m
               memory: 2Gi
           livenessProbe:
             failureThreshold: 3
