@@ -56,11 +56,31 @@ Our guiding principle is to collect only what we need to provide the best servic
 
 - All emails are sent using a third-party email provider. Transactional emails and email reports are sent using Brevo. See the Brevo [privacy policy](https://www.brevo.com/legal/privacypolicy) for full details.
 
+### Third-Party Service Integrations
+
+Typebot offers optional integrations with various third-party services to enhance your chatbot functionality. When you choose to connect these services, we handle your data with the following practices:
+
+**OAuth Authentication**: If you choose to sign in with or connect third-party services (such as Google, GitHub, or other providers), we collect your basic profile information (name, email address, and profile picture) to create and maintain your Typebot user account. This information is stored securely in our encrypted database.
+
+**Service Credentials**: All authentication credentials, including OAuth access tokens, refresh tokens, API keys, and other authentication secrets, are encrypted using industry-standard encryption before being stored in our database. These credentials are used exclusively to authenticate and authorize API calls to the connected services on your behalf.
+
+**Service Integrations**: When you use integration blocks in your typebots (such as Google Sheets, OpenAI, Anthropic, or other third-party services), we access your data through the respective APIs. We only access the specific resources and data you explicitly configure in your typebot blocks. This data is processed in real-time and is not stored permanently on our servers unless specifically required for the integration to function.
+
+**Data Protection and Sharing**:
+
+- We do not share, sell, or transfer your third-party service data to any other parties except as necessary to provide the services you've requested
+- We only access the specific services and data you explicitly authorize
+- We comply with each service provider's API terms of service and data usage policies
+
+**Data Retention**: Third-party credentials are retained as long as your Typebot account is active or until you disconnect the service. Integration data is processed in real-time and is not permanently stored on our servers. You can delete your account and all associated data at any time.
+
 ## As a user of a typebot (the web chatbot itself)
 
 You are bound to what the chatbot creator has set up in terms of data collection and data handling. We do not collect any personal data from chatbot users. We do not use behavioral insights to sell advertisements. We will never collect or store any personally identifiable information and we will never abuse your user’s privacy.
 
 If the Remember user setting is on, data is stored to either local or session storage of the browser. This is to remember the user's answers if they leave the chatbot and come back later.
+
+**Third-Party Services in Typebots**: If the typebot creator has configured third-party integrations (such as Google Sheets, Gmail, or other service blocks), your interactions with the typebot may result in data being sent to those third-party services. This data handling is controlled by the typebot creator and is subject to the respective service providers' privacy policies. We only facilitate the connection between the typebot and third-party services as configured by the creator.
 
 ### Services we use
 
@@ -90,4 +110,4 @@ We may update this policy as needed to comply with relevant regulations and refl
 
 [Contact us](mailto:contact@typebot.io) if you have any questions, comments, or concerns about this privacy policy, your data, or your rights with respect to your information.
 
-Last updated: July 16, 2025
+Last updated: July 18, 2025
