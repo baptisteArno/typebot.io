@@ -130,16 +130,22 @@ You can ask for the user's location with a basic [Text input block](../../editor
       their documentation
     </a>
   </Accordion>
-  <Accordion title="My WhatsApp integration is not working">
-    It can happen that you configured your WhatsApp number, you send the first
-    message to try it out but it never replies back.
-
-    To troubleshoot this we suggest you to:
-
-    1. Make sure the bot works fine in [Test mode](#test)
-    2. Delete the number and configure it again while making sure you read all the instructions thoroughly
-    3. Make sure you don't have any Start conditions or that your first message is matching the condition
-    4. If it really does not work, contact support at <a href="mailto:support@typebot.io">support@typebot.io</a>
-
-  </Accordion>
 </AccordionGroup>
+
+## Troubleshooting
+
+### After publishing the bot on my phone number, it doesn't reply back
+
+It can happen that you configured your WhatsApp number, you send the first
+message to try it out but it never replies back.
+
+To troubleshoot this we suggest you to:
+
+1. Make sure the bot works fine in [Test mode](#test)
+2. Make sure the phone number you are using is not already used in WhatsApp Business app.
+
+   If it is, you won't be able to use the same number to use with Typebot. The process of associating a phone number to Typebot blocks that number from being used for a regular WhatsApp account. Even though we recommend to use a dedicated phone number number for Typebot, you can migrate your phone number registered with WhatsApp Business app by deleting your WhatsApp Business app account. It should unlock the number after 24 hours.
+
+3. Delete the phone number configuration on Typebot and configure it again while making sure you read all the instructions thoroughly.
+4. Make sure you don't have any Start conditions or that your first message is matching the condition
+5. If using a test phone number, make sure the phone number you are using to send the first message is in the list of allowed numbers of that test phone number.
