@@ -7,6 +7,7 @@ import type { SetVariableHistoryItem } from "@typebot.io/variables/schemas";
 import { executeAbTest } from "./blocks/logic/abTest/executeAbTest";
 import { executeConditionBlock } from "./blocks/logic/condition/executeConditionBlock";
 import { executeJumpBlock } from "./blocks/logic/jump/executeJumpBlock";
+import { executeLoopBlock } from "./blocks/logic/loop/executeLoopBlock";
 import { executeRedirect } from "./blocks/logic/redirect/executeRedirect";
 import { executeReturnBlock } from "./blocks/logic/return/executeReturnBlock";
 import { executeScript } from "./blocks/logic/script/executeScript";
@@ -55,5 +56,7 @@ export const executeLogic = async ({
       return executeWebhookBlock(block);
     case LogicBlockType.RETURN:
       return executeReturnBlock(state);
+    case LogicBlockType.LOOP:
+      return executeLoopBlock(block, { state, sessionStore });
   }
 };
