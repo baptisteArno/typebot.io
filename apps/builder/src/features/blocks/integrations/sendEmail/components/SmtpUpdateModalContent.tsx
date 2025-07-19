@@ -10,8 +10,7 @@ import {
   ModalFooter,
   ModalHeader,
 } from "@chakra-ui/react";
-import { useQuery } from "@tanstack/react-query";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import type { SmtpCredentials } from "@typebot.io/credentials/schemas";
 import { isNotDefined } from "@typebot.io/lib/utils";
 import type React from "react";
@@ -34,7 +33,7 @@ export const SmtpUpdateModalContent = ({ credentialsId, onUpdate }: Props) => {
     trpc.credentials.getCredentials.queryOptions(
       {
         scope: "workspace",
-        workspaceId: workspace!.id,
+        workspaceId: workspace?.id,
         credentialsId: credentialsId,
       },
       {

@@ -17,8 +17,7 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
-import { useQuery } from "@tanstack/react-query";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
 import type { StripeCredentials } from "@typebot.io/credentials/schemas";
 import { isNotEmpty } from "@typebot.io/lib/utils";
@@ -46,7 +45,7 @@ export const UpdateStripeCredentialsModalContent = ({
       {
         scope: "workspace",
         credentialsId,
-        workspaceId: workspace!.id,
+        workspaceId: workspace?.id,
       },
       {
         enabled: !!workspace?.id,

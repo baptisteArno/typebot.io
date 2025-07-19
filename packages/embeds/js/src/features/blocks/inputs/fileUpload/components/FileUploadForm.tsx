@@ -182,7 +182,7 @@ export const FileUploadForm = (props: Props) => {
       <label
         for="dropzone-file"
         class={
-          "typebot-upload-input py-6 flex flex-col justify-center items-center w-full bg-gray-50 border-2 border-gray-300 border-dashed cursor-pointer hover:bg-gray-100 px-8 " +
+          "typebot-upload-input py-6 flex flex-col justify-center items-center w-full bg-input-bg border-2 border-input-border border-dashed cursor-pointer hover:opacity-80 px-8 " +
           (isDraggingOver() ? "dragging-over" : "")
         }
         onDragOver={handleDragOver}
@@ -192,7 +192,7 @@ export const FileUploadForm = (props: Props) => {
         <Switch>
           <Match when={isUploading()}>
             <Show when={selectedFiles().length > 1} fallback={<Spinner />}>
-              <div class="w-full bg-gray-200 rounded-full h-2.5">
+              <div class="w-full bg-input-border rounded-full h-2.5 opacity-50">
                 <div
                   class="upload-progress-bar h-2.5 rounded-full"
                   style={{
@@ -210,7 +210,7 @@ export const FileUploadForm = (props: Props) => {
               <div class="flex flex-col justify-center items-center gap-4 max-w-[90%]">
                 <Show when={selectedFiles().length} fallback={<UploadIcon />}>
                   <div
-                    class="p-4 flex gap-2 border-gray-200 border overflow-auto bg-white rounded-md w-full"
+                    class="p-4 flex gap-2 border-input-border border overflow-auto bg-input-bg rounded-md w-full"
                     on:click={(e) => {
                       e.preventDefault();
                       e.stopPropagation();
@@ -227,7 +227,7 @@ export const FileUploadForm = (props: Props) => {
                   </div>
                 </Show>
                 <p
-                  class="text-sm text-gray-500 text-center"
+                  class="text-sm text-input-text opacity-70 text-center"
                   innerHTML={
                     props.block.options?.labels?.placeholder ??
                     defaultFileInputOptions.labels.placeholder
@@ -312,7 +312,7 @@ const UploadIcon = () => (
     stroke-width="2"
     stroke-linecap="round"
     stroke-linejoin="round"
-    class="text-gray-500"
+    class="text-input-text opacity-70"
   >
     <polyline points="16 16 12 12 8 16" />
     <line x1="12" y1="12" x2="12" y2="21" />

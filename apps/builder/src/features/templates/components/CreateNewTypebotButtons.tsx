@@ -1,4 +1,5 @@
 import { DownloadIcon, TemplateIcon, ToolIcon } from "@/components/icons";
+import { CreateWithAIButton } from "@/features/ai";
 import { useUser } from "@/features/user/hooks/useUser";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { trpc } from "@/lib/queryClient";
@@ -15,7 +16,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
 import type { Typebot } from "@typebot.io/typebot/schemas/typebot";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import { useState } from "react";
 import { ImportTypebotFromFileButton } from "./ImportTypebotFromFileButton";
 import { TemplatesModal } from "./TemplatesModal";
 
@@ -159,6 +160,7 @@ export const CreateNewTypebotButtons = () => {
           >
             {t("templates.buttons.importFileButton.label")}
           </ImportTypebotFromFileButton>
+          <CreateWithAIButton />
         </Stack>
       </Stack>
 

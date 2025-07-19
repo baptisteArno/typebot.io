@@ -21,7 +21,7 @@ export const listCredentials = authenticatedProcedure
     z.discriminatedUnion("scope", [
       z.object({
         scope: z.literal("workspace"),
-        workspaceId: z.string(),
+        workspaceId: z.string().optional(),
         type: credentialsTypeSchema.optional(),
       }),
       z.object({
