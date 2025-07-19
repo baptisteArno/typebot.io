@@ -1,362 +1,249 @@
-import { formatDataStreamPart } from "@ai-sdk/ui-utils";
+import { getChatCompletionStreamVarId } from "@typebot.io/ai/getChatCompletionStreamVarId";
+import { runChatCompletion } from "@typebot.io/ai/runChatCompletion";
+import { runChatCompletionStream } from "@typebot.io/ai/runChatCompletionStream";
 import { createAction, option } from "@typebot.io/forge";
-import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
-import { isDefined, isEmpty, isNotEmpty } from "@typebot.io/lib/utils";
-import ky from "ky";
+import { isDefined } from "@typebot.io/lib/utils";
+import { createDifyProvider } from "dify-ai-provider";
 import { auth } from "../auth";
-import { defaultBaseUrl } from "../constants";
-import { deprecatedCreateChatMessageOptions } from "../deprecated";
-import type { Chunk } from "../types";
+
+type InputItem = { key?: string; value?: any };
+
+const LEGACY_RESPONSE_MAPPING = [
+  "Answer",
+  "Conversation ID",
+  "Total Tokens",
+] as const;
+
+const NEW_RESPONSE_MAPPING = [
+  "Message content",
+  "Total tokens",
+  "Prompt tokens",
+  "Completion tokens",
+] as const;
+
+const COMBINED_RESPONSE_MAPPING = [
+  ...LEGACY_RESPONSE_MAPPING,
+  ...NEW_RESPONSE_MAPPING,
+] as const;
+
+const LEGACY_TO_NEW_MAPPING = {
+  Answer: "Message content",
+  "Total Tokens": "Total tokens",
+  "Conversation ID": "Conversation ID",
+} as const;
+
+const normalizeResponseMappingItem = (item: string): string => {
+  return (
+    LEGACY_TO_NEW_MAPPING[item as keyof typeof LEGACY_TO_NEW_MAPPING] || item
+  );
+};
+
+// Not sure if this is the best way to handle the backward compatibility
+const getCompatibleStreamVariableId = (options: any): string | undefined => {
+  const normalizedOptions = {
+    ...options,
+    responseMapping: normalizeResponseMappingForAI(options.responseMapping),
+  };
+
+  return getChatCompletionStreamVarId(normalizedOptions);
+};
+
+const toInputsObject = (inputs?: InputItem[]): Record<string, any> => {
+  const result: Record<string, any> = {};
+
+  inputs?.forEach(({ key, value }) => {
+    if (key) result[key] = value;
+  });
+
+  return result;
+};
+
+const validateCredentials = (
+  apiEndpoint: string | undefined,
+  apiKey: string | undefined,
+  applicationId: string | undefined,
+):
+  | {
+      success: true;
+      applicationId: string;
+      apiKey: string;
+      apiEndpoint: string;
+    }
+  | { success: false; error: string } => {
+  if (!apiEndpoint?.trim())
+    return { success: false, error: "No API Endpoint provided" };
+
+  if (!apiKey?.trim()) return { success: false, error: "No API key provided" };
+
+  const resolvedApplicationId = applicationId?.trim() || "default-app-id";
+
+  return {
+    success: true,
+    applicationId: resolvedApplicationId,
+    apiKey: apiKey.trim(),
+    apiEndpoint: apiEndpoint.trim(),
+  };
+};
+
+const createDifyModelInstance = (
+  apiEndpoint: string,
+  applicationId: string,
+  apiKey: string,
+  inputs: InputItem[] | undefined,
+  responseMode: "blocking" | "streaming",
+) => {
+  const difyProvider = createDifyProvider({
+    baseURL: `${apiEndpoint}/v1`,
+  });
+  return difyProvider(applicationId, {
+    apiKey,
+    inputs: toInputsObject(inputs),
+    responseMode,
+  });
+};
+
+const normalizeResponseMappingForAI = (
+  responseMapping: Array<{ item?: string; variableId?: string }> | undefined,
+):
+  | Array<{
+      item?:
+        | "Message content"
+        | "Total tokens"
+        | "Prompt tokens"
+        | "Completion tokens";
+      variableId?: string;
+    }>
+  | undefined => {
+  if (!responseMapping) return undefined;
+
+  return responseMapping
+    .map((mapping) => ({
+      ...mapping,
+      item: mapping.item
+        ? (normalizeResponseMappingItem(mapping.item) as any)
+        : undefined,
+    }))
+    .filter(
+      (mapping) =>
+        !mapping.item || NEW_RESPONSE_MAPPING.includes(mapping.item as any),
+    );
+};
+
+const options = option.object({
+  query: option.string.layout({
+    label: "Query",
+    placeholder: "User input/question content",
+    inputType: "textarea",
+    isRequired: true,
+  }),
+  conversationVariableId: option.string.layout({
+    label: "Conversation ID",
+    moreInfoTooltip:
+      "Used to remember the conversation with the user. If empty, a new conversation ID is created.",
+    inputType: "variableDropdown",
+  }),
+  user: option.string.layout({
+    label: "User",
+    moreInfoTooltip:
+      "The user identifier, defined by the developer, must ensure uniqueness within the app.",
+  }),
+  inputs: option
+    .array(
+      option.object({
+        key: option.string.layout({ label: "Key" }),
+        value: option.string.layout({ label: "Value" }),
+      }),
+    )
+    .layout({ accordion: "Inputs" }),
+  responseMapping: option.saveResponseArray(COMBINED_RESPONSE_MAPPING).layout({
+    accordion: "Save response",
+  }),
+});
 
 export const createChatMessage = createAction({
-  auth,
   name: "Create Chat Message",
-  options: option
-    .object({
-      query: option.string.layout({
-        label: "Query",
-        placeholder: "User input/question content",
-        inputType: "textarea",
-        isRequired: true,
-      }),
-
-      conversationVariableId: option.string.layout({
-        label: "Conversation ID",
-        moreInfoTooltip:
-          "Used to remember the conversation with the user. If empty, a new conversation ID is created.",
-        inputType: "variableDropdown",
-      }),
-      user: option.string.layout({
-        label: "User",
-        moreInfoTooltip:
-          "The user identifier, defined by the developer, must ensure uniqueness within the app.",
-      }),
-      inputs: option
-        .array(
-          option.object({
-            key: option.string.layout({
-              label: "Key",
-            }),
-            value: option.string.layout({
-              label: "Value",
-            }),
-          }),
-        )
-        .layout({
-          accordion: "Inputs",
-        }),
-      responseMapping: option
-        .saveResponseArray(
-          ["Answer", "Conversation ID", "Total Tokens"] as const,
-          {
-            item: {
-              hiddenItems: ["Conversation ID"],
-            },
-          },
-        )
-        .layout({
-          accordion: "Save response",
-        }),
-    })
-    .merge(deprecatedCreateChatMessageOptions),
+  auth,
+  options,
   getSetVariableIds: ({ responseMapping }) =>
-    responseMapping?.map((r) => r.variableId).filter(isDefined) ?? [],
+    responseMapping?.map((res) => res.variableId).filter(isDefined) ?? [],
   run: {
-    stream: {
-      getStreamVariableId: ({ responseMapping }) =>
-        responseMapping?.find((r) => !r.item || r.item === "Answer")
-          ?.variableId,
-      run: async ({
-        credentials: { apiEndpoint, apiKey },
-        options: {
-          conversation_id,
-          conversationVariableId,
-          query,
-          user,
-          inputs,
-          responseMapping,
-        },
-        variables,
-      }) => {
-        const existingDifyConversationId = conversationVariableId
-          ? variables.get(conversationVariableId)
-          : conversation_id;
-        try {
-          const response = await ky(
-            (apiEndpoint ?? defaultBaseUrl) + "/v1/chat-messages",
-            {
-              method: "POST",
-              headers: {
-                Authorization: `Bearer ${apiKey}`,
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                inputs:
-                  inputs?.reduce((acc, { key, value }) => {
-                    if (isEmpty(key) || isEmpty(value)) return acc;
-                    return {
-                      ...acc,
-                      [key]: value,
-                    };
-                  }, {}) ?? {},
-                query,
-                response_mode: "streaming",
-                conversation_id: existingDifyConversationId,
-                user,
-                files: [],
-                timeout: false,
-              }),
-            },
-          );
-          const reader = response.body?.getReader();
-
-          if (!reader)
-            return {
-              httpError: {
-                status: 500,
-                message: "Could not get reader from Dify response",
-              },
-            };
-
-          return {
-            stream: new ReadableStream({
-              async start(controller) {
-                try {
-                  await processDifyStream(reader, {
-                    onDone: () => {
-                      controller.close();
-                    },
-                    onMessage: (message) => {
-                      controller.enqueue(
-                        new TextEncoder().encode(
-                          formatDataStreamPart("text", message),
-                        ),
-                      );
-                    },
-                    async onMessageEnd({ totalTokens, conversationId }) {
-                      if (
-                        conversationVariableId &&
-                        isNotEmpty(conversationId) &&
-                        isEmpty(existingDifyConversationId?.toString())
-                      )
-                        await variables.set([
-                          { id: conversationVariableId, value: conversationId },
-                        ]);
-
-                      if ((responseMapping?.length ?? 0) === 0) return;
-                      for (const mapping of responseMapping ?? []) {
-                        if (!mapping.variableId) continue;
-
-                        if (
-                          mapping.item === "Conversation ID" &&
-                          isNotEmpty(conversationId) &&
-                          isEmpty(existingDifyConversationId?.toString())
-                        )
-                          await variables.set([
-                            { id: mapping.variableId, value: conversationId },
-                          ]);
-
-                        if (mapping.item === "Total Tokens")
-                          await variables.set([
-                            { id: mapping.variableId, value: totalTokens },
-                          ]);
-                      }
-                    },
-                  });
-                } catch (e) {
-                  console.error(e);
-                  controller.error(e); // Properly closing the stream with an error
-                }
-              },
-            }),
-          };
-        } catch (err) {
-          return {
-            error: await parseUnknownError({
-              err,
-              context: "While streaming Dify chat message",
-            }),
-          };
-        }
-      },
-    },
-    server: async ({
-      credentials: { apiEndpoint, apiKey },
-      options: {
-        conversationVariableId,
-        conversation_id,
-        query,
-        user,
-        inputs,
-        responseMapping,
-      },
+    server: ({
+      credentials: { apiKey, apiEndpoint, applicationId },
+      options,
       variables,
       logs,
+      sessionStore,
     }) => {
-      const existingDifyConversationId = conversationVariableId
-        ? variables.get(conversationVariableId)
-        : conversation_id;
-      try {
-        const response = await ky(
-          (apiEndpoint ?? defaultBaseUrl) + "/v1/chat-messages",
+      const validation = validateCredentials(
+        apiEndpoint,
+        apiKey,
+        applicationId,
+      );
+      if (!validation.success) return logs.add(validation.error);
+
+      const difyModel = createDifyModelInstance(
+        validation.apiEndpoint,
+        validation.applicationId,
+        validation.apiKey,
+        options.inputs,
+        "blocking",
+      );
+
+      return runChatCompletion({
+        model: difyModel,
+        variables,
+        responseMapping: normalizeResponseMappingForAI(options.responseMapping),
+        logs,
+        sessionStore,
+        isVisionEnabled: false,
+        messages: [
           {
-            method: "POST",
-            headers: {
-              Authorization: `Bearer ${apiKey}`,
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              inputs:
-                inputs?.reduce((acc, { key, value }) => {
-                  if (isEmpty(key) || isEmpty(value)) return acc;
-                  return {
-                    ...acc,
-                    [key]: value,
-                  };
-                }, {}) ?? {},
-              query,
-              response_mode: "streaming",
-              conversation_id: existingDifyConversationId,
-              user,
-              files: [],
-              timeout: false,
-            }),
+            role: "user",
+            content: options.query,
           },
+        ],
+      });
+    },
+    stream: {
+      getStreamVariableId: getCompatibleStreamVariableId,
+      run: async ({
+        credentials: { apiKey, apiEndpoint, applicationId },
+        options,
+        variables,
+        sessionStore,
+      }) => {
+        const validation = validateCredentials(
+          apiEndpoint,
+          apiKey,
+          applicationId,
+        );
+        if (!validation.success)
+          return { error: { description: validation.error } };
+
+        const difyModel = createDifyModelInstance(
+          validation.apiEndpoint,
+          validation.applicationId,
+          validation.apiKey,
+          options.inputs,
+          "streaming",
         );
 
-        const reader = response.body?.getReader();
-
-        if (!reader)
-          return logs.add({
-            status: "error",
-            description: "Failed to read response stream",
-          });
-
-        const { answer, conversationId, totalTokens } = await new Promise<{
-          answer: string;
-          conversationId: string | undefined;
-          totalTokens: number | undefined;
-        }>(async (resolve, reject) => {
-          let answer = "";
-          let conversationId: string | undefined;
-          let totalTokens: number | undefined;
-
-          try {
-            await processDifyStream(reader, {
-              onMessage: (message) => {
-                answer += message;
-              },
-              onMessageEnd: async ({
-                totalTokens: tokens,
-                conversationId: id,
-              }) => {
-                totalTokens = tokens;
-                conversationId = id;
-              },
-              onDone: () => {
-                resolve({ answer, conversationId, totalTokens });
-              },
-            });
-          } catch (e) {
-            reject(e);
-          }
+        return runChatCompletionStream({
+          model: difyModel,
+          variables,
+          responseMapping: normalizeResponseMappingForAI(
+            options.responseMapping,
+          ),
+          sessionStore,
+          isVisionEnabled: false,
+          messages: [
+            {
+              role: "user",
+              content: options.query,
+            },
+          ],
         });
-
-        if (
-          conversationVariableId &&
-          isNotEmpty(conversationId) &&
-          isEmpty(existingDifyConversationId?.toString())
-        )
-          variables.set([
-            { id: conversationVariableId, value: conversationId },
-          ]);
-
-        responseMapping?.forEach((mapping) => {
-          if (!mapping.variableId) return;
-
-          const item = mapping.item ?? "Answer";
-          if (item === "Answer")
-            variables.set([
-              {
-                id: mapping.variableId,
-                value: convertNonMarkdownLinks(answer),
-              },
-            ]);
-
-          if (
-            item === "Conversation ID" &&
-            isNotEmpty(conversationId) &&
-            isEmpty(existingDifyConversationId?.toString())
-          )
-            variables.set([{ id: mapping.variableId, value: conversationId }]);
-
-          if (item === "Total Tokens")
-            variables.set([{ id: mapping.variableId, value: totalTokens }]);
-        });
-      } catch (err) {
-        return logs.add(
-          await parseUnknownError({
-            err,
-            context: "While creating Dify chat message",
-          }),
-        );
-      }
+      },
     },
   },
 });
-
-const convertNonMarkdownLinks = (text: string) => {
-  const nonMarkdownLinks = /(?<![\([])https?:\/\/\S+/g;
-  return text.replace(nonMarkdownLinks, (match) => `[${match}](${match})`);
-};
-
-const processDifyStream = async (
-  reader: ReadableStreamDefaultReader<Uint8Array>,
-  callbacks: {
-    onDone: () => void;
-    onMessage: (message: string) => void;
-    onMessageEnd?: ({
-      totalTokens,
-      conversationId,
-    }: {
-      totalTokens?: number;
-      conversationId: string;
-    }) => Promise<void>;
-  },
-) => {
-  let jsonChunk = "";
-
-  while (true) {
-    const { value, done } = await reader.read();
-    if (done) {
-      callbacks.onDone();
-      return;
-    }
-
-    const chunk = new TextDecoder().decode(value);
-
-    const lines = chunk.toString().split("\n") as string[];
-    for (const line of lines.filter(
-      (line) => line.length > 0 && line !== "\n",
-    )) {
-      jsonChunk += line;
-      if (jsonChunk.startsWith("event: ")) {
-        jsonChunk = "";
-        continue;
-      }
-      if (!jsonChunk.startsWith("data: ") || !jsonChunk.endsWith("}")) continue;
-
-      const data = JSON.parse(jsonChunk.slice(6)) as Chunk;
-      jsonChunk = "";
-      if (data.event === "message" || data.event === "agent_message") {
-        callbacks.onMessage(data.answer);
-      }
-      if (data.event === "message_end") {
-        await callbacks.onMessageEnd?.({
-          totalTokens: data.metadata.usage?.total_tokens,
-          conversationId: data.conversation_id,
-        });
-      }
-    }
-  }
-};
