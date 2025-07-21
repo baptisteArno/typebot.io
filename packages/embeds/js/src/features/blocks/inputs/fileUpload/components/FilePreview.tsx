@@ -11,7 +11,7 @@ export const FilePreview = (props: Props) => {
   return (
     <div
       class={
-        "flex items-center gap-4 border bg-white border-gray-200 rounded-md p-2 text-gray-900 min-w-[250px]"
+        "flex items-center gap-4 border bg-input-bg border-input-border rounded-md p-2 text-input-text min-w-[250px]"
       }
     >
       <div
@@ -28,7 +28,7 @@ export const FilePreview = (props: Props) => {
       </div>
       <div class="flex flex-col">
         <span class="text-md font-semibold text-sm">{props.file.name}</span>
-        <span class="text-gray-500 text-xs">
+        <span class="text-input-text opacity-70 text-xs">
           {formatFileExtensionHumanReadable(props.file)}
         </span>
       </div>

@@ -13,8 +13,7 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
-import { useQuery } from "@tanstack/react-query";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
 import type { ForgedBlockDefinition } from "@typebot.io/forge-repository/definitions";
 import { useRouter } from "next/router";
@@ -51,7 +50,7 @@ export const ForgedCredentialsDropdown = ({
       scope === "workspace"
         ? {
             scope: "workspace",
-            workspaceId: workspace!.id,
+            workspaceId: workspace?.id,
             type: getAuthTypeFromBlockId(blockDef.id),
           }
         : {

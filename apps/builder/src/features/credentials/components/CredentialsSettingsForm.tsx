@@ -30,8 +30,7 @@ import {
   Text,
   type TextProps,
 } from "@chakra-ui/react";
-import { useQuery } from "@tanstack/react-query";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
 import { IntegrationBlockType } from "@typebot.io/blocks-integrations/constants";
 import {
@@ -64,7 +63,7 @@ export const CredentialsSettingsForm = () => {
       selectedScope === "workspace"
         ? {
             scope: "workspace",
-            workspaceId: workspace!.id,
+            workspaceId: workspace?.id,
           }
         : {
             scope: "user",
@@ -187,7 +186,7 @@ export const CredentialsSettingsForm = () => {
                         selectedScope === "workspace"
                           ? {
                               scope: "workspace",
-                              workspaceId: workspace!.id,
+                              workspaceId: workspace?.id,
                               credentialsId: cred.id,
                             }
                           : { scope: "user", credentialsId: cred.id },

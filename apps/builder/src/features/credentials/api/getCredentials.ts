@@ -10,7 +10,7 @@ export const getCredentials = authenticatedProcedure
     z.discriminatedUnion("scope", [
       z.object({
         scope: z.literal("workspace"),
-        workspaceId: z.string(),
+        workspaceId: z.string().optional(),
         credentialsId: z.string(),
       }),
       z.object({
