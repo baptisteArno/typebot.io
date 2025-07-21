@@ -13,6 +13,6 @@ test("client side exec should work", async ({ page }) => {
   await page.goto(`/${typebotId}-public`);
 
   await expect(
-    page.getByText(new URL(env.NEXT_PUBLIC_VIEWER_URL[0]).origin),
+    page.getByText(new URL(env.NEXT_PUBLIC_VIEWER_URL.at(-1) ?? "").origin),
   ).toBeVisible();
 });

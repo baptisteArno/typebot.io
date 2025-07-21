@@ -6,5 +6,5 @@ import { segmentBlock } from "./index";
 export const segmentBlockSchema = parseBlockSchema(segmentBlock);
 export const segmentCredentialsSchema = parseBlockCredentials(
   segmentBlock.id,
-  auth.schema,
+  auth,
 );

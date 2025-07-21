@@ -22,11 +22,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       credentialsId,
       workspaceId,
     );
-    if (!client)
+    if (!client?.credentials.access_token)
       return res
         .status(404)
         .send({ message: "Couldn't find credentials in database" });
-    const doc = new GoogleSpreadsheet(spreadsheetId, client);
+    const doc = new GoogleSpreadsheet(spreadsheetId, {
+      token: client.credentials.access_token,
+    });
     try {
       await doc.loadInfo();
       return res.send({

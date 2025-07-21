@@ -6,5 +6,5 @@ import { openRouterBlock } from "./index";
 export const openRouterBlockSchema = parseBlockSchema(openRouterBlock);
 export const openRouterCredentialsSchema = parseBlockCredentials(
   openRouterBlock.id,
-  auth.schema,
+  auth,
 );

@@ -6,5 +6,5 @@ import { anthropicBlock } from "./index";
 export const anthropicBlockSchema = parseBlockSchema(anthropicBlock);
 export const anthropicCredentialsSchema = parseBlockCredentials(
   anthropicBlock.id,
-  auth.schema,
+  auth,
 );

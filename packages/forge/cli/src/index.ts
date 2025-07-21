@@ -10,12 +10,21 @@ import { join } from "path";
 import * as p from "@clack/prompts";
 import { isCancel, spinner } from "@clack/prompts";
 
-interface CliArgs {
+type CliArgs = {
   name?: string;
   id?: string;
-  auth?: "apiKey" | "encryptedData" | "none";
   help?: boolean;
-}
+} & (
+  | {
+      auth?: "apiKey" | "encryptedData" | "none";
+    }
+  | {
+      auth: "oauth";
+      authUrl: string;
+      tokenUrl: string;
+      scopes: string[];
+    }
+);
 
 const slugRegex = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
@@ -58,7 +67,10 @@ Usage: bun create-new-block [options]
 Options:
   --name, -n <name>     Integration name (e.g., "Sheets", "Analytics", "Cal.com")
   --id <id>             Integration ID (slug format, e.g., "cal-com", "openai")
-  --auth, -a <type>     Authentication type: apiKey, encryptedData, or none
+  --auth, -a <type>     Authentication type: apiKey, encryptedData, oauth, or none
+  --auth-url <url>      OAuth auth URL
+  --token-url <url>     OAuth token URL
+  --scopes <scopes>     OAuth scopes (comma separated)
   --help, -h            Show this help message
 
 Examples:
@@ -72,9 +84,18 @@ If no arguments are provided, the interactive mode will be used.
 type PromptResult = {
   name: string;
   id: string;
-  auth: "apiKey" | "encryptedData" | "none";
   camelCaseId: string;
-};
+} & (
+  | {
+      auth: "apiKey" | "encryptedData" | "none";
+    }
+  | {
+      auth: "oauth";
+      authUrl: string;
+      tokenUrl: string;
+      scopes: string[];
+    }
+);
 
 const getPromptFromArgs = (args: CliArgs): PromptResult => {
   if (!args.name || !args.id || !args.auth) {
@@ -91,11 +112,30 @@ const getPromptFromArgs = (args: CliArgs): PromptResult => {
     process.exit(1);
   }
 
+  if (
+    args.auth === "oauth" &&
+    (!args.authUrl || !args.tokenUrl || !args.scopes)
+  ) {
+    console.error(
+      "Missing required arguments. Use --help for usage information.",
+    );
+    process.exit(1);
+  }
+
   return {
     name: args.name,
     id: args.id,
-    auth: args.auth,
     camelCaseId: camelize(args.id),
+    ...(args.auth === "oauth"
+      ? {
+          auth: args.auth,
+          authUrl: args.authUrl,
+          tokenUrl: args.tokenUrl,
+          scopes: args.scopes,
+        }
+      : {
+          auth: args.auth,
+        }),
   };
 };
 
@@ -132,6 +172,7 @@ const getPromptInteractive = async (): Promise<PromptResult> => {
     message: "Does this integration require authentication to work?",
     options: [
       { value: "apiKey", label: "API key or token" },
+      { value: "oauth", label: "OAuth" },
       { value: "encryptedData", label: "Custom encrypted data" },
       { value: "none", label: "None" },
     ],
@@ -140,6 +181,27 @@ const getPromptInteractive = async (): Promise<PromptResult> => {
   if (!auth || isCancel(auth)) {
     p.cancel("Operation cancelled.");
     process.exit(0);
+  }
+
+  if (auth === "oauth") {
+    const { authUrl, tokenUrl, scopes } = await p.group({
+      authUrl: () => p.text({ message: "OAuth auth URL" }),
+      tokenUrl: () => p.text({ message: "OAuth token URL" }),
+      scopes: () => p.text({ message: "OAuth scopes (comma separated)" }),
+    });
+    if (!authUrl || !tokenUrl || !scopes) {
+      p.cancel("Operation cancelled.");
+      process.exit(0);
+    }
+    return {
+      name,
+      id: id as string,
+      auth,
+      camelCaseId: camelize(id as string),
+      authUrl,
+      tokenUrl,
+      scopes: scopes.split(",").map((scope) => scope.trim()),
+    };
   }
 
   return {
@@ -180,7 +242,23 @@ const main = async () => {
   await createTsConfig(newBlockPath);
   await createIndexFile(srcPath, prompt);
   await createLogoFile(srcPath, prompt);
-  if (prompt.auth !== "none") await createAuthFile(srcPath, prompt);
+  if (prompt.auth !== "none")
+    await createAuthFile(
+      prompt.auth === "oauth"
+        ? {
+            authUrl: prompt.authUrl,
+            scopes: prompt.scopes,
+            tokenUrl: prompt.tokenUrl,
+            path: srcPath,
+            name: prompt.name,
+            type: prompt.auth,
+          }
+        : {
+            path: srcPath,
+            name: prompt.name,
+            type: prompt.auth,
+          },
+    );
   await createSchemasFile(srcPath, prompt);
   await addBlockToRepository(prompt);
   s.stop("Creating files...");
@@ -315,10 +393,21 @@ const createLogoFile = async (
   );
 };
 
-const createAuthFile = async (
-  path: string,
-  { name, auth }: { name: string; auth: "apiKey" | "encryptedData" | "none" },
-) =>
+const createAuthFile = async ({
+  path,
+  name,
+  ...rest
+}: { path: string; name: string } & (
+  | {
+      type: "apiKey" | "encryptedData";
+    }
+  | {
+      type: "oauth";
+      authUrl: string;
+      tokenUrl: string;
+      scopes: string[];
+    }
+)) =>
   writeFileSync(
     join(path, "auth.ts"),
     `import { option } from '@typebot.io/forge'
@@ -328,7 +417,7 @@ import type { AuthDefinition } from '@typebot.io/forge/types'
           type: 'encryptedCredentials',
           name: '${name} account',
           ${
-            auth === "apiKey"
+            rest.type === "apiKey"
               ? `schema: option.object({
                     apiKey: option.string.layout({
                       label: 'API key',
@@ -340,7 +429,11 @@ import type { AuthDefinition } from '@typebot.io/forge/types'
                       isDebounceDisabled: true,
                     }),
                   }),`
-              : ""
+              : rest.type === "oauth"
+                ? `authUrl: "${rest.authUrl}",
+                  tokenUrl: "${rest.tokenUrl}",
+                  scopes: ${JSON.stringify(rest.scopes)},`
+                : ""
           }
         } satisfies AuthDefinition`,
   );
@@ -367,7 +460,7 @@ const createSchemasFile = async (
   {
     id,
     auth,
-  }: { id: string; name: string; auth: "apiKey" | "encryptedData" | "none" },
+  }: { id: string; auth: "apiKey" | "oauth" | "encryptedData" | "none" },
 ) => {
   const camelCaseName = camelize(id as string);
   writeFileSync(

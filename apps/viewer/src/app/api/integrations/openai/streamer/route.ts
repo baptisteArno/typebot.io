@@ -166,7 +166,7 @@ export async function POST(req: Request) {
       set: async (_) => {},
     };
     const { stream } = await action.run.stream.run({
-      credentials: decryptedCredentials,
+      credentials: decryptedCredentials as any,
       options: block.options,
       variables,
       sessionStore,

@@ -4,6 +4,7 @@ import type {
   GoogleSheetsInsertRowOptions,
   GoogleSheetsUpdateRowOptions,
 } from "@typebot.io/blocks-integrations/googleSheets/schema";
+import { getAuthenticatedGoogleDoc } from "@typebot.io/bot-engine/blocks/integrations/googleSheets/helpers/getAuthenticatedGoogleDoc";
 import { saveErrorLog } from "@typebot.io/bot-engine/logs/saveErrorLog";
 import { saveSuccessLog } from "@typebot.io/bot-engine/logs/saveSuccessLog";
 import { LogicalOperator } from "@typebot.io/conditions/constants";
@@ -66,12 +67,11 @@ const getRows = async (req: NextApiRequest, res: NextApiResponse) => {
     return;
   }
 
-  const client = await getAuthenticatedGoogleClient(credentialsId, undefined);
-  if (!client) {
-    notFound(res, "Couldn't find credentials in database");
-    return;
-  }
-  const doc = new GoogleSpreadsheet(spreadsheetId, client);
+  const doc = await getAuthenticatedGoogleDoc({
+    credentialsId,
+    spreadsheetId,
+    workspaceId: "",
+  });
   await doc.loadInfo();
   const sheet = doc.sheetsById[Number(sheetId)];
   try {
@@ -123,10 +123,11 @@ const insertRow = async (req: NextApiRequest, res: NextApiResponse) => {
       values: { [key: string]: string };
     };
   if (!hasValue(credentialsId)) return badRequest(res);
-  const client = await getAuthenticatedGoogleClient(credentialsId, undefined);
-  if (!client)
-    return res.status(404).send("Couldn't find credentials in database");
-  const doc = new GoogleSpreadsheet(spreadsheetId, client);
+  const doc = await getAuthenticatedGoogleDoc({
+    credentialsId,
+    spreadsheetId,
+    workspaceId: "",
+  });
   try {
     await doc.loadInfo();
     const sheet = doc.sheetsById[Number(sheetId)];
@@ -155,10 +156,11 @@ const updateRow = async (req: NextApiRequest, res: NextApiResponse) => {
   const { resultId, credentialsId, values } = body;
 
   if (!hasValue(credentialsId) || !referenceCell) return badRequest(res);
-  const client = await getAuthenticatedGoogleClient(credentialsId, undefined);
-  if (!client)
-    return res.status(404).send("Couldn't find credentials in database");
-  const doc = new GoogleSpreadsheet(spreadsheetId, client);
+  const doc = await getAuthenticatedGoogleDoc({
+    credentialsId,
+    spreadsheetId,
+    workspaceId: "",
+  });
   try {
     await doc.loadInfo();
     const sheet = doc.sheetsById[Number(sheetId)];

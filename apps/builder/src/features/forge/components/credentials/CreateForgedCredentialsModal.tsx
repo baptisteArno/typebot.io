@@ -16,6 +16,7 @@ import {
 import { useMutation } from "@tanstack/react-query";
 import type { Credentials } from "@typebot.io/credentials/schemas";
 import type { ForgedBlockDefinition } from "@typebot.io/forge-repository/definitions";
+import { z } from "@typebot.io/zod";
 import { useState } from "react";
 import { ZodObjectLayout } from "../zodLayouts/ZodObjectLayout";
 
@@ -82,7 +83,7 @@ export const CreateForgedCredentialsModalContent = ({
     }),
   );
 
-  const createOpenAICredentials = async (e: React.FormEvent) => {
+  const createForgedCredentials = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!workspace || !blockDef.auth) return;
     mutate(
@@ -112,7 +113,7 @@ export const CreateForgedCredentialsModalContent = ({
     <ModalContent>
       <ModalHeader>Add {blockDef.auth.name}</ModalHeader>
       <ModalCloseButton />
-      <form onSubmit={createOpenAICredentials}>
+      <form onSubmit={createForgedCredentials}>
         <ModalBody as={Stack} spacing="6">
           <TextInput
             label="Label"
@@ -123,7 +124,11 @@ export const CreateForgedCredentialsModalContent = ({
             debounceTimeout={0}
           />
           <ZodObjectLayout
-            schema={blockDef.auth.schema}
+            schema={
+              blockDef.auth.type === "encryptedCredentials"
+                ? blockDef.auth.schema
+                : z.object({})
+            }
             data={data}
             onDataChange={setData}
           />

@@ -2,7 +2,8 @@ import { isReadWorkspaceFobidden } from "@/features/workspace/helpers/isReadWork
 import { authenticatedProcedure } from "@/helpers/server/trpc";
 import { ClientToastError } from "@/lib/ClientToastError";
 import { TRPCError } from "@trpc/server";
-import { decrypt } from "@typebot.io/credentials/decrypt";
+import { decryptAndRefreshCredentialsData } from "@typebot.io/credentials/decryptAndRefreshCredentials";
+import type { Credentials } from "@typebot.io/credentials/schemas";
 import { forgedBlockIds } from "@typebot.io/forge-repository/constants";
 import { forgedBlocks } from "@typebot.io/forge-repository/definitions";
 import prisma from "@typebot.io/prisma";
@@ -78,11 +79,19 @@ export const fetchSelectItems = authenticatedProcedure
       credentials = workspace.credentials?.at(0);
     }
 
-    const credentialsData = credentials
-      ? await decrypt(credentials.data, credentials.iv)
-      : undefined;
-
     const blockDef = forgedBlocks[input.integrationId];
+
+    const credentialsData = credentials
+      ? await decryptAndRefreshCredentialsData(
+          {
+            ...credentials,
+            type: input.integrationId as Credentials["type"],
+          },
+          blockDef.auth && "defaultClientEnvKeys" in blockDef.auth
+            ? blockDef.auth.defaultClientEnvKeys
+            : undefined,
+        )
+      : undefined;
 
     const fetcher = getFetchers(blockDef).find(
       (fetcher) => fetcher.id === input.fetcherId,

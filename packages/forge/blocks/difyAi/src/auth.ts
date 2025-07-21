@@ -1,5 +1,4 @@
-import { option } from "@typebot.io/forge";
-import type { AuthDefinition } from "@typebot.io/forge/types";
+import { createAuth, option } from "@typebot.io/forge";
 import { isURL } from "@typebot.io/lib/isURL";
 import { defaultBaseUrl } from "./constants";
 
@@ -9,7 +8,7 @@ const extractBaseUrl = (val: string | undefined) => {
   return url.origin;
 };
 
-export const auth = {
+export const auth = createAuth({
   type: "encryptedCredentials",
   name: "Dify.AI account",
   schema: option.object({
@@ -36,4 +35,4 @@ export const auth = {
       withVariableButton: false,
     }),
   }),
-} satisfies AuthDefinition;
+});

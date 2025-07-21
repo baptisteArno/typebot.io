@@ -66,6 +66,9 @@ const nextConfig = {
     config.resolve.alias["minio"] = false;
     config.resolve.alias["qrcode"] = false;
     config.resolve.alias["isolated-vm"] = false;
+    config.resolve.alias["@googleapis/gmail"] = false;
+    config.resolve.alias["nodemailer"] = false;
+    config.resolve.alias["google-auth-library"] = false;
     return config;
   },
   headers: async () => {

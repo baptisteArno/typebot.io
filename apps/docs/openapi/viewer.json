@@ -6826,6 +6826,9 @@
                     },
                     {
                       "$ref": "#/components/schemas/blinkBlock"
+                    },
+                    {
+                      "$ref": "#/components/schemas/gmailBlock"
                     }
                   ],
                   "discriminator": {
@@ -6848,7 +6851,8 @@
                       "posthog": "#/components/schemas/posthogBlock",
                       "perplexity": "#/components/schemas/perplexityBlock",
                       "deepseek": "#/components/schemas/deepseekBlock",
-                      "blink": "#/components/schemas/blinkBlock"
+                      "blink": "#/components/schemas/blinkBlock",
+                      "gmail": "#/components/schemas/gmailBlock"
                     }
                   }
                 }
@@ -10164,6 +10168,29 @@
                             "type": {
                               "type": "string",
                               "enum": [
+                                "array"
+                              ]
+                            },
+                            "variableId": {
+                              "type": "string"
+                            },
+                            "description": {
+                              "type": "string"
+                            },
+                            "isRequired": {
+                              "type": "boolean"
+                            }
+                          },
+                          "required": [
+                            "type"
+                          ]
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "type": {
+                              "type": "string",
+                              "enum": [
                                 "enum"
                               ]
                             },
@@ -11050,6 +11077,29 @@
                             "type": {
                               "type": "string",
                               "enum": [
+                                "array"
+                              ]
+                            },
+                            "variableId": {
+                              "type": "string"
+                            },
+                            "description": {
+                              "type": "string"
+                            },
+                            "isRequired": {
+                              "type": "boolean"
+                            }
+                          },
+                          "required": [
+                            "type"
+                          ]
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "type": {
+                              "type": "string",
+                              "enum": [
                                 "enum"
                               ]
                             },
@@ -11529,6 +11579,29 @@
                               "type": "string",
                               "enum": [
                                 "boolean"
+                              ]
+                            },
+                            "variableId": {
+                              "type": "string"
+                            },
+                            "description": {
+                              "type": "string"
+                            },
+                            "isRequired": {
+                              "type": "boolean"
+                            }
+                          },
+                          "required": [
+                            "type"
+                          ]
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "type": {
+                              "type": "string",
+                              "enum": [
+                                "array"
                               ]
                             },
                             "variableId": {
@@ -14309,6 +14382,98 @@
           "type"
         ],
         "title": "Blink"
+      },
+      "gmailBlock": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "outgoingEdgeId": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "gmail"
+            ]
+          },
+          "options": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "credentialsId": {
+                    "type": "string"
+                  }
+                }
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "credentialsId": {
+                    "type": "string"
+                  },
+                  "action": {
+                    "type": "string",
+                    "enum": [
+                      "Send email"
+                    ]
+                  },
+                  "to": {
+                    "type": "string"
+                  },
+                  "subject": {
+                    "type": "string"
+                  },
+                  "body": {
+                    "type": "string"
+                  },
+                  "attachments": {
+                    "type": "string"
+                  },
+                  "label": {
+                    "type": "string"
+                  },
+                  "from": {
+                    "type": "string"
+                  },
+                  "threadId": {
+                    "type": "string"
+                  },
+                  "replyTo": {
+                    "type": "string"
+                  },
+                  "responseMapping": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "item": {
+                          "type": "string",
+                          "enum": [
+                            "Thread ID"
+                          ]
+                        },
+                        "variableId": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                },
+                "required": [
+                  "action"
+                ]
+              }
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "type"
+        ],
+        "title": "Gmail"
       },
       "settings": {
         "type": "object",

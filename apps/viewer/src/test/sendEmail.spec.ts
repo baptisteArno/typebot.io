@@ -8,13 +8,13 @@ import { getTestAsset } from "./utils/playwright";
 
 export const mockSmtpCredentials: SmtpCredentials["data"] = {
   from: {
-    email: "pedro.morissette@ethereal.email",
-    name: "Pedro Morissette",
+    email: "miller48@ethereal.email",
+    name: "Miller Anderson",
   },
   host: "smtp.ethereal.email",
   port: 587,
-  username: "pedro.morissette@ethereal.email",
-  password: "ctDZ8SyeFyTT5MReJM",
+  username: "miller48@ethereal.email",
+  password: "EFazdmrTmQt1MwKMxG",
 };
 
 test.beforeAll(async () => {

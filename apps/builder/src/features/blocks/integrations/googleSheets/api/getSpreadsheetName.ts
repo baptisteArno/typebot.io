@@ -56,14 +56,16 @@ export const getSpreadsheetName = authenticatedProcedure
         workspaceId,
       );
 
-      if (!client)
+      if (!client?.credentials.access_token)
         throw new TRPCError({
           code: "NOT_FOUND",
           message: "Google client could not be initialized",
         });
 
       try {
-        const googleSheet = new GoogleSpreadsheet(spreadsheetId, client);
+        const googleSheet = new GoogleSpreadsheet(spreadsheetId, {
+          token: client.credentials.access_token,
+        });
 
         await googleSheet.loadInfo();
 

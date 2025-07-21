@@ -6,5 +6,5 @@ import { chatNodeBlock } from "./index";
 export const chatNodeBlockSchema = parseBlockSchema(chatNodeBlock);
 export const chatNodeCredentialsSchema = parseBlockCredentials(
   chatNodeBlock.id,
-  auth.schema,
+  auth,
 );

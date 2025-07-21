@@ -6,5 +6,5 @@ import { nocodbBlock } from "./index";
 export const nocodbBlockSchema = parseBlockSchema(nocodbBlock);
 export const nocodbCredentialsSchema = parseBlockCredentials(
   nocodbBlock.id,
-  auth.schema,
+  auth,
 );

@@ -23,10 +23,80 @@ Example:
 option.object({
   apiKey: option.string.layout({
     isRequired: true,
-    label: 'API key',
+    label: "API key",
     withVariableButton: false,
   }),
-})
+});
 ```
 
 </ResponseField>
+
+## OAuth
+
+<ResponseField name="type" type="'oauth'" required>
+  The authentication type for OAuth 2.0 flow.
+</ResponseField>
+
+<ResponseField name="name" type="string" required>
+  The name of the credentials. I.e. `Gmail account`, `Google Drive`, `GitHub
+  account`, etc.
+</ResponseField>
+
+<ResponseField name="authUrl" type="string" required>
+  The authorization URL for the OAuth provider where users will be redirected to
+  authenticate.
+</ResponseField>
+
+<ResponseField name="tokenUrl" type="string" required>
+  The token endpoint URL where the authorization code will be exchanged for
+  access tokens.
+</ResponseField>
+
+<ResponseField name="scopes" type="string[]" required>
+  An array of OAuth scopes that define the permissions your application is
+  requesting.
+</ResponseField>
+
+<ResponseField name="defaultClientEnvKeys" type="object" optional>
+  An object defining the default environment variable names for the OAuth client
+  credentials.
+  <Expandable title="Properties">
+    <ResponseField name="id" type="string" required>
+      The environment variable name for the OAuth client ID.
+    </ResponseField>
+    <ResponseField name="secret" type="string" required>
+      The environment variable name for the OAuth client secret.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="extraAuthParams" type="object" optional>
+  Additional parameters to include in the authorization request.
+</ResponseField>
+
+Example:
+
+```ts
+const gmailScopes = [
+  "https://www.googleapis.com/auth/gmail.send",
+  "https://www.googleapis.com/auth/gmail.labels",
+  "https://www.googleapis.com/auth/userinfo.profile",
+  "https://www.googleapis.com/auth/userinfo.email",
+] as const;
+
+export const auth = createAuth({
+  type: "oauth",
+  name: "Gmail account",
+  authUrl: "https://accounts.google.com/o/oauth2/v2/auth",
+  tokenUrl: "https://oauth2.googleapis.com/token",
+  scopes: gmailScopes,
+  defaultClientEnvKeys: {
+    id: "GMAIL_CLIENT_ID",
+    secret: "GMAIL_CLIENT_SECRET",
+  },
+  extraAuthParams: {
+    access_type: "offline",
+    prompt: "consent",
+  },
+});
+```

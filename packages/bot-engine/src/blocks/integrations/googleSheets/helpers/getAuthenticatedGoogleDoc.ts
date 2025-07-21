@@ -9,7 +9,7 @@ export const getAuthenticatedGoogleDoc = async ({
 }: {
   credentialsId: string;
   spreadsheetId: string;
-  workspaceId: string;
+  workspaceId: string | undefined;
 }) => {
   const client = await getAuthenticatedGoogleClient(credentialsId, workspaceId);
   if (!client)
@@ -17,5 +17,15 @@ export const getAuthenticatedGoogleDoc = async ({
       code: "NOT_FOUND",
       message: "Couldn't find credentials in database",
     });
-  return new GoogleSpreadsheet(spreadsheetId, client);
+
+  const accessToken = client.credentials.access_token;
+  if (!accessToken)
+    throw new TRPCError({
+      code: "NOT_FOUND",
+      message: "No access token found in credentials",
+    });
+
+  return new GoogleSpreadsheet(spreadsheetId, {
+    token: accessToken,
+  });
 };
