@@ -195,6 +195,8 @@ export const createChatMessage = createAction({
         responseMapping: normalizeResponseMappingForAI(options.responseMapping),
         logs,
         sessionStore,
+        tools: undefined,
+        temperature: undefined,
         isVisionEnabled: false,
         messages: [
           {
@@ -236,6 +238,8 @@ export const createChatMessage = createAction({
           ),
           sessionStore,
           isVisionEnabled: false,
+          tools: undefined,
+          temperature: undefined,
           messages: [
             {
               role: "user",

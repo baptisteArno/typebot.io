@@ -16,9 +16,9 @@ type Props = {
   model: LanguageModel;
   variables: VariableStore;
   messages: Message[];
-  tools?: Tools | undefined;
+  tools: Tools | undefined;
   isVisionEnabled: boolean;
-  temperature?: number | undefined;
+  temperature: number | undefined;
   responseMapping: ChatCompletionOptions["responseMapping"] | undefined;
   sessionStore: SessionStore;
 };
