@@ -9,7 +9,7 @@ export const getAuthenticatedGoogleDoc = async ({
 }: {
   credentialsId: string;
   spreadsheetId: string;
-  workspaceId: string;
+  workspaceId: string | undefined;
 }) => {
   const client = await getAuthenticatedGoogleClient(credentialsId, workspaceId);
   if (!client)

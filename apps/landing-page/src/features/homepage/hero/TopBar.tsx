@@ -24,7 +24,7 @@ export const TopBar = ({ className }: Props) => {
         <TypebotLogoFull />
       </Link>
       {pathname === "/" && isAuthenticated && (
-        <ButtonLink href={dashboardUrl} variant="outline">
+        <ButtonLink href={dashboardUrl} variant="outline-secondary">
           Go to dashboard
         </ButtonLink>
       )}

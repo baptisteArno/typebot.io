@@ -37,7 +37,6 @@ export const linkRelationUpdatesIfAny = async ({
 
   for (const relationUpdate of relationUpdates) {
     for (const record of recordIdsToUpdate) {
-      console.log(relationUpdate);
       await ky
         .post(
           `${baseUrl ?? defaultBaseUrl}/api/v2/tables/${tableId}/links/${relationUpdate.id}/records/${record}`,

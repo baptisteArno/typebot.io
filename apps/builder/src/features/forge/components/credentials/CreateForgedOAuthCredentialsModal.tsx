@@ -109,7 +109,6 @@ export const CreateForgedOAuthCredentialsModalContent = ({
     );
 
     const handleOAuthResponse = (event: MessageEvent) => {
-      console.log(event);
       if (event.data?.type === "oauth") {
         window.removeEventListener("message", handleOAuthResponse);
         setIsAuthorizing(false);
@@ -143,8 +142,6 @@ export const CreateForgedOAuthCredentialsModalContent = ({
 
     window.addEventListener("message", handleOAuthResponse);
   };
-
-  console.log(isAuthorizing);
 
   if (!blockDef.auth) return null;
   return (

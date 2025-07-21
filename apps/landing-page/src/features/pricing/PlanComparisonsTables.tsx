@@ -69,7 +69,11 @@ export const PlanComparisonTables = ({ onChatsTiersClick }: Props) => (
             <TableCell />
             <TableCell>{formatPrice(10)} per 500 chats</TableCell>
             <TableCell>
-              <Button variant="outline" size="xs" onClick={onChatsTiersClick}>
+              <Button
+                variant="outline-secondary"
+                size="xs"
+                onClick={onChatsTiersClick}
+              >
                 See tiers
               </Button>
             </TableCell>

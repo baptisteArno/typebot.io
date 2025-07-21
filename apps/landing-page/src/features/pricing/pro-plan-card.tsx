@@ -64,7 +64,11 @@ export const ProPerksList = ({ onChatsTiersClick }: ProPerksListProps) => (
         </span>
         <span className="text-xs text-gray-11">
           Extra chats:{" "}
-          <Button size="xs" variant="outline" onClick={onChatsTiersClick}>
+          <Button
+            size="xs"
+            variant="outline-secondary"
+            onClick={onChatsTiersClick}
+          >
             See tiers
           </Button>
         </span>
