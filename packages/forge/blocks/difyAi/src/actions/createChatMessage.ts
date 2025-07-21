@@ -1,133 +1,18 @@
-import { getChatCompletionStreamVarId } from "@typebot.io/ai/getChatCompletionStreamVarId";
+import { chatCompletionResponseValues } from "@typebot.io/ai/constants";
 import { runChatCompletion } from "@typebot.io/ai/runChatCompletion";
 import { runChatCompletionStream } from "@typebot.io/ai/runChatCompletionStream";
 import { createAction, option } from "@typebot.io/forge";
 import { isDefined } from "@typebot.io/lib/utils";
 import { createDifyProvider } from "dify-ai-provider";
 import { auth } from "../auth";
-
-type InputItem = { key?: string; value?: any };
-
-const LEGACY_RESPONSE_MAPPING = [
-  "Answer",
-  "Conversation ID",
-  "Total Tokens",
-] as const;
-
-const NEW_RESPONSE_MAPPING = [
-  "Message content",
-  "Total tokens",
-  "Prompt tokens",
-  "Completion tokens",
-] as const;
-
-const COMBINED_RESPONSE_MAPPING = [
-  ...LEGACY_RESPONSE_MAPPING,
-  ...NEW_RESPONSE_MAPPING,
-] as const;
-
-const LEGACY_TO_NEW_MAPPING = {
-  Answer: "Message content",
-  "Total Tokens": "Total tokens",
-  "Conversation ID": "Conversation ID",
-} as const;
-
-const normalizeResponseMappingItem = (item: string): string => {
-  return (
-    LEGACY_TO_NEW_MAPPING[item as keyof typeof LEGACY_TO_NEW_MAPPING] || item
-  );
-};
-
-// Not sure if this is the best way to handle the backward compatibility
-const getCompatibleStreamVariableId = (options: any): string | undefined => {
-  const normalizedOptions = {
-    ...options,
-    responseMapping: normalizeResponseMappingForAI(options.responseMapping),
-  };
-
-  return getChatCompletionStreamVarId(normalizedOptions);
-};
-
-const toInputsObject = (inputs?: InputItem[]): Record<string, any> => {
-  const result: Record<string, any> = {};
-
-  inputs?.forEach(({ key, value }) => {
-    if (key) result[key] = value;
-  });
-
-  return result;
-};
-
-const validateCredentials = (
-  apiEndpoint: string | undefined,
-  apiKey: string | undefined,
-  applicationId: string | undefined,
-):
-  | {
-      success: true;
-      applicationId: string;
-      apiKey: string;
-      apiEndpoint: string;
-    }
-  | { success: false; error: string } => {
-  if (!apiEndpoint?.trim())
-    return { success: false, error: "No API Endpoint provided" };
-
-  if (!apiKey?.trim()) return { success: false, error: "No API key provided" };
-
-  const resolvedApplicationId = applicationId?.trim() || "default-app-id";
-
-  return {
-    success: true,
-    applicationId: resolvedApplicationId,
-    apiKey: apiKey.trim(),
-    apiEndpoint: apiEndpoint.trim(),
-  };
-};
-
-const createDifyModelInstance = (
-  apiEndpoint: string,
-  applicationId: string,
-  apiKey: string,
-  inputs: InputItem[] | undefined,
-  responseMode: "blocking" | "streaming",
-) => {
-  const difyProvider = createDifyProvider({
-    baseURL: `${apiEndpoint}/v1`,
-  });
-  return difyProvider(applicationId, {
-    apiKey,
-    inputs: toInputsObject(inputs),
-    responseMode,
-  });
-};
-
-const normalizeResponseMappingForAI = (
-  responseMapping: Array<{ item?: string; variableId?: string }> | undefined,
-):
-  | Array<{
-      item?:
-        | "Message content"
-        | "Total tokens"
-        | "Prompt tokens"
-        | "Completion tokens";
-      variableId?: string;
-    }>
-  | undefined => {
-  if (!responseMapping) return undefined;
-
-  return responseMapping
-    .map((mapping) => ({
-      ...mapping,
-      item: mapping.item
-        ? (normalizeResponseMappingItem(mapping.item) as any)
-        : undefined,
-    }))
-    .filter(
-      (mapping) =>
-        !mapping.item || NEW_RESPONSE_MAPPING.includes(mapping.item as any),
-    );
-};
+import {
+  LEGACY_RESPONSE_MAPPING,
+  defaultAppId,
+  defaultUserId,
+} from "../constants";
+import { transformKeyValueListToObject } from "../helpers/transformKeyValueListToObject";
+import { transformLegacyResponseMapping } from "../helpers/transformLegacyResponseMapping";
+import { validateCredentials } from "../helpers/validateCredentials";
 
 const options = option.object({
   query: option.string.layout({
@@ -146,6 +31,7 @@ const options = option.object({
     label: "User",
     moreInfoTooltip:
       "The user identifier, defined by the developer, must ensure uniqueness within the app.",
+    isHidden: true,
   }),
   inputs: option
     .array(
@@ -155,9 +41,22 @@ const options = option.object({
       }),
     )
     .layout({ accordion: "Inputs" }),
-  responseMapping: option.saveResponseArray(COMBINED_RESPONSE_MAPPING).layout({
-    accordion: "Save response",
-  }),
+  responseMapping: option
+    .saveResponseArray(
+      [...LEGACY_RESPONSE_MAPPING, ...chatCompletionResponseValues],
+      {
+        item: {
+          hiddenItems: LEGACY_RESPONSE_MAPPING,
+        },
+      },
+    )
+    .layout({
+      accordion: "Save response",
+    })
+    .transform(transformLegacyResponseMapping)
+    .openapi({
+      effectType: "input",
+    }),
 });
 
 export const createChatMessage = createAction({
@@ -167,37 +66,39 @@ export const createChatMessage = createAction({
   getSetVariableIds: ({ responseMapping }) =>
     responseMapping?.map((res) => res.variableId).filter(isDefined) ?? [],
   run: {
-    server: ({
-      credentials: { apiKey, apiEndpoint, applicationId },
+    server: async ({
+      credentials: { apiKey, apiEndpoint },
       options,
       variables,
       logs,
       sessionStore,
     }) => {
-      const validation = validateCredentials(
-        apiEndpoint,
-        apiKey,
-        applicationId,
-      );
-      if (!validation.success) return logs.add(validation.error);
+      const credentials = validateCredentials(apiEndpoint, apiKey);
+      if (!credentials.success) return logs.add(credentials.error);
 
-      const difyModel = createDifyModelInstance(
-        validation.apiEndpoint,
-        validation.applicationId,
-        validation.apiKey,
-        options.inputs,
-        "blocking",
-      );
+      const difyModel = createDifyProvider({
+        baseURL: `${credentials.apiEndpoint}/v1`,
+      })(defaultAppId, {
+        apiKey: credentials.apiKey,
+        inputs: transformKeyValueListToObject(options.inputs),
+        responseMode: "blocking",
+      });
 
-      return runChatCompletion({
+      const response = await runChatCompletion({
         model: difyModel,
         variables,
-        responseMapping: normalizeResponseMappingForAI(options.responseMapping),
+        responseMapping: options.responseMapping,
         logs,
         sessionStore,
         tools: undefined,
         temperature: undefined,
         isVisionEnabled: false,
+        headers: {
+          "user-id": options.user ?? defaultUserId,
+          "chat-id": options.conversationVariableId
+            ? variables.get(options.conversationVariableId)?.toString()
+            : undefined,
+        },
         messages: [
           {
             role: "user",
@@ -205,47 +106,74 @@ export const createChatMessage = createAction({
           },
         ],
       });
+
+      if (!response)
+        return logs.add({
+          status: "error",
+          description: "No response from Dify",
+        });
+
+      if (!options.conversationVariableId) return;
+      variables.set([
+        {
+          id: options.conversationVariableId,
+          value: response.providerMetadata?.difyWorkflowData
+            .conversationId as string,
+        },
+      ]);
     },
     stream: {
-      getStreamVariableId: getCompatibleStreamVariableId,
+      getStreamVariableId: ({ responseMapping }) =>
+        responseMapping?.find((res) => res.item === "Message content")
+          ?.variableId,
       run: async ({
-        credentials: { apiKey, apiEndpoint, applicationId },
+        credentials: { apiKey, apiEndpoint },
         options,
         variables,
         sessionStore,
       }) => {
-        const validation = validateCredentials(
-          apiEndpoint,
-          apiKey,
-          applicationId,
-        );
-        if (!validation.success)
-          return { error: { description: validation.error } };
+        const credentials = validateCredentials(apiEndpoint, apiKey);
+        if (!credentials.success)
+          return { error: { description: credentials.error } };
 
-        const difyModel = createDifyModelInstance(
-          validation.apiEndpoint,
-          validation.applicationId,
-          validation.apiKey,
-          options.inputs,
-          "streaming",
-        );
+        const difyModel = createDifyProvider({
+          baseURL: `${credentials.apiEndpoint}/v1`,
+        })(defaultAppId, {
+          apiKey: credentials.apiKey,
+          inputs: transformKeyValueListToObject(options.inputs),
+          responseMode: "streaming",
+        });
 
         return runChatCompletionStream({
           model: difyModel,
           variables,
-          responseMapping: normalizeResponseMappingForAI(
-            options.responseMapping,
-          ),
+          responseMapping: options.responseMapping,
           sessionStore,
           isVisionEnabled: false,
           tools: undefined,
           temperature: undefined,
+          headers: {
+            "user-id": options.user ?? defaultUserId,
+            "chat-id": options.conversationVariableId
+              ? variables.get(options.conversationVariableId)?.toString()
+              : undefined,
+          },
           messages: [
             {
               role: "user",
               content: options.query,
             },
           ],
+          onFinish: (response) => {
+            if (!options.conversationVariableId) return;
+            variables.set([
+              {
+                id: options.conversationVariableId,
+                value: response.providerMetadata?.difyWorkflowData
+                  .conversationId as string,
+              },
+            ]);
+          },
         });
       },
     },

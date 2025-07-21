@@ -13,15 +13,6 @@ export const auth = {
   type: "encryptedCredentials",
   name: "Dify.AI account",
   schema: option.object({
-    apiEndpoint: option.string
-      .layout({
-        label: "API Endpoint",
-        isRequired: true,
-        withVariableButton: false,
-        defaultValue: defaultBaseUrl,
-      })
-      .refine((val) => !val || isURL(val))
-      .transform(extractBaseUrl),
     apiKey: option.string.layout({
       label: "App API key",
       inputType: "password",
@@ -35,14 +26,15 @@ export const auth = {
       placeholder: "dataset-...",
       withVariableButton: false,
     }),
-    applicationId: option.string.layout({
-      isRequired: false,
-      label: "Application ID",
-      placeholder: "Fill the applicationId",
-      helperText: "Dify Application ID",
-      allowCustomValue: true,
-      defaultValue: "default-app-id",
-      withVariableButton: false,
-    }),
+    apiEndpoint: option.string
+      .layout({
+        label: "API Endpoint",
+        isRequired: true,
+        withVariableButton: false,
+        defaultValue: defaultBaseUrl,
+        accordion: "Advanced settings",
+      })
+      .refine((val) => !val || isURL(val))
+      .transform(extractBaseUrl),
   }),
 } satisfies AuthDefinition;

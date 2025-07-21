@@ -4,7 +4,6 @@ import type { SessionStore } from "@typebot.io/runtime-session-store";
 import { type LanguageModel, generateText } from "ai";
 import { maxSteps } from "./constants";
 import { parseChatCompletionMessages } from "./parseChatCompletionMessages";
-import type { ChatCompletionOptions } from "./parseChatCompletionOptions";
 import { parseTools } from "./parseTools";
 import type { Tools } from "./schemas";
 import type { Message } from "./types";
@@ -17,8 +16,14 @@ type Props = {
   isVisionEnabled: boolean;
   temperature: number | undefined;
   logs: LogsStore;
-  responseMapping: ChatCompletionOptions["responseMapping"] | undefined;
+  responseMapping:
+    | {
+        item?: string;
+        variableId?: string;
+      }[]
+    | undefined;
   sessionStore: SessionStore;
+  headers?: Record<string, string | undefined>;
 };
 
 export const runChatCompletion = async ({
@@ -31,9 +36,10 @@ export const runChatCompletion = async ({
   responseMapping,
   logs,
   sessionStore,
+  headers,
 }: Props) => {
   try {
-    const { text, usage } = await generateText({
+    const response = await generateText({
       model,
       temperature,
       messages: await parseChatCompletionMessages({
@@ -44,21 +50,28 @@ export const runChatCompletion = async ({
       }),
       tools: parseTools({ tools, variables, sessionStore }),
       maxSteps,
+      headers,
     });
 
     responseMapping?.forEach((mapping) => {
       if (!mapping.variableId) return;
       if (!mapping.item || mapping.item === "Message content")
-        variables.set([{ id: mapping.variableId, value: text }]);
+        variables.set([{ id: mapping.variableId, value: response.text }]);
       if (mapping.item === "Total tokens")
-        variables.set([{ id: mapping.variableId, value: usage.totalTokens }]);
+        variables.set([
+          { id: mapping.variableId, value: response.usage.totalTokens },
+        ]);
       if (mapping.item === "Prompt tokens")
-        variables.set([{ id: mapping.variableId, value: usage.promptTokens }]);
+        variables.set([
+          { id: mapping.variableId, value: response.usage.promptTokens },
+        ]);
       if (mapping.item === "Completion tokens")
         variables.set([
-          { id: mapping.variableId, value: usage.completionTokens },
+          { id: mapping.variableId, value: response.usage.completionTokens },
         ]);
     });
+
+    return response;
   } catch (err) {
     logs.add(
       await parseUnknownError({

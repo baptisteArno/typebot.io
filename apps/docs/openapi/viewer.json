@@ -10164,6 +10164,29 @@
                             "type": {
                               "type": "string",
                               "enum": [
+                                "array"
+                              ]
+                            },
+                            "variableId": {
+                              "type": "string"
+                            },
+                            "description": {
+                              "type": "string"
+                            },
+                            "isRequired": {
+                              "type": "boolean"
+                            }
+                          },
+                          "required": [
+                            "type"
+                          ]
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "type": {
+                              "type": "string",
+                              "enum": [
                                 "enum"
                               ]
                             },
@@ -10577,8 +10600,11 @@
                           "type": "string",
                           "enum": [
                             "Answer",
-                            "Conversation ID",
-                            "Total Tokens"
+                            "Total Tokens",
+                            "Message content",
+                            "Total tokens",
+                            "Prompt tokens",
+                            "Completion tokens"
                           ]
                         },
                         "variableId": {
@@ -10586,10 +10612,6 @@
                         }
                       }
                     }
-                  },
-                  "conversation_id": {
-                    "type": "string",
-                    "description": "Deprecated, use `conversationVariableId` instead"
                   }
                 },
                 "required": [
@@ -11028,6 +11050,29 @@
                               "type": "string",
                               "enum": [
                                 "boolean"
+                              ]
+                            },
+                            "variableId": {
+                              "type": "string"
+                            },
+                            "description": {
+                              "type": "string"
+                            },
+                            "isRequired": {
+                              "type": "boolean"
+                            }
+                          },
+                          "required": [
+                            "type"
+                          ]
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "type": {
+                              "type": "string",
+                              "enum": [
+                                "array"
                               ]
                             },
                             "variableId": {
@@ -11529,6 +11574,29 @@
                               "type": "string",
                               "enum": [
                                 "boolean"
+                              ]
+                            },
+                            "variableId": {
+                              "type": "string"
+                            },
+                            "description": {
+                              "type": "string"
+                            },
+                            "isRequired": {
+                              "type": "boolean"
+                            }
+                          },
+                          "required": [
+                            "type"
+                          ]
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "type": {
+                              "type": "string",
+                              "enum": [
+                                "array"
                               ]
                             },
                             "variableId": {
