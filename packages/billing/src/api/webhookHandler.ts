@@ -176,79 +176,59 @@ export const webhookHandler = async (
               })),
             );
 
-          if (subscription.status !== "past_due" || existingWorkspace.isPastDue)
-            return res.send({
-              message: "Not newly past due, skipping.",
-            });
-
-          await prisma.workspace.updateMany({
-            where: {
-              id: existingWorkspace.id,
-            },
-            data: {
-              isPastDue: true,
-            },
-          });
-
-          await trackEvents(
-            existingWorkspace.members.map((m) => ({
-              name: "Workspace past due",
-              workspaceId: existingWorkspace.id,
-              userId: m.userId,
-            })),
-          );
-          return res.send({ message: "Workspace set to past due." });
-        }
-        case "invoice.paid": {
-          const invoice = event.data.object as Stripe.Invoice;
-          const workspace = await prisma.workspace.findFirst({
-            where: {
-              stripeId: invoice.customer as string,
-            },
-            select: {
-              isPastDue: true,
-            },
-          });
-          if (!workspace?.isPastDue)
-            return res.send({ message: "Workspace not past_due, skipping." });
-          const outstandingInvoices = await stripe.invoices.list({
-            customer: invoice.customer as string,
-            status: "open",
-          });
-          const outstandingInvoicesWithAdditionalUsageCosts =
-            outstandingInvoices.data.filter(
-              (invoice) => invoice.amount_due > prices["PRO"] * 100,
-            );
-          if (outstandingInvoicesWithAdditionalUsageCosts.length > 0)
-            return res.send({
-              message: "Workspace has outstanding invoices, skipping.",
-            });
-          const updatedWorkspace = await prisma.workspace.update({
-            where: {
-              stripeId: invoice.customer as string,
-            },
-            data: {
-              isPastDue: false,
-            },
-            select: {
-              id: true,
-              members: {
-                select: { userId: true },
-                where: {
-                  role: WorkspaceRole.ADMIN,
-                },
+          if (
+            subscription.status === "past_due" &&
+            previous &&
+            previous.status !== "past_due" &&
+            !existingWorkspace.isPastDue
+          ) {
+            await prisma.workspace.updateMany({
+              where: {
+                id: existingWorkspace.id,
               },
-            },
-          });
-          await trackEvents(
-            updatedWorkspace.members.map((m) => ({
-              name: "Workspace past due status removed",
-              workspaceId: updatedWorkspace.id,
-              userId: m.userId,
-            })),
-          );
-          return res.send({ message: "Workspace was regulated" });
+              data: {
+                isPastDue: true,
+              },
+            });
+
+            await trackEvents(
+              existingWorkspace.members.map((m) => ({
+                name: "Workspace past due",
+                workspaceId: existingWorkspace.id,
+                userId: m.userId,
+              })),
+            );
+            return res.send({ message: "Workspace set to past due." });
+          }
+
+          if (
+            subscription.status === "active" &&
+            previous &&
+            previous.status === "past_due" &&
+            existingWorkspace.isPastDue
+          ) {
+            await prisma.workspace.updateMany({
+              where: {
+                id: existingWorkspace.id,
+              },
+              data: {
+                isPastDue: false,
+              },
+            });
+
+            await trackEvents(
+              existingWorkspace.members.map((m) => ({
+                name: "Workspace past due status removed",
+                workspaceId: existingWorkspace.id,
+                userId: m.userId,
+              })),
+            );
+            return res.send({ message: "Workspace past due status removed." });
+          }
+
+          return res.send({ message: "Nothing to do" });
         }
+
         case "customer.subscription.deleted": {
           const subscription = event.data.object as Stripe.Subscription;
           const { data } = await stripe.subscriptions.list({
