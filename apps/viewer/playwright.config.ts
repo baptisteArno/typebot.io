@@ -28,7 +28,7 @@ export default defineConfig({
   use: {
     trace: "on-first-retry",
     locale: "en-US",
-    baseURL: process.env.NEXT_PUBLIC_VIEWER_URL?.split(",")[0],
+    baseURL: process.env.NEXT_PUBLIC_VIEWER_URL?.split(",").at(-1),
   },
   projects: [
     {

@@ -1,0 +1,45 @@
+---
+title: Gmail
+---
+
+The Gmail integration allows you to send emails directly through your Gmail account using Google's Gmail API. This provides a more reliable and feature-rich email sending experience compared to generic SMTP.
+
+## Authentication
+
+The Gmail integration requires OAuth2 authentication to access your Gmail account.
+
+You can connect with Typebot default OAuth app or use your own credentials.
+
+## Configuration Options
+
+### Basic Settings
+
+- **To**: The recipient's email address
+- **Subject**: The email subject line
+- **Body**: The email content (supports plain text and HTML)
+- **Attachments**: Include file attachments (variable containing file URLs)
+
+### Advanced Settings
+
+- **Label**: Apply a Gmail label to the sent email
+- **From**: Specify a custom sender name and email (e.g., "John Doe &lt;john.doe@gmail.com&gt;"). By default, the sender name and email is the one of the account used to connect to Gmail.
+- **Reply To**: Set a different email address for replies
+- **Thread ID**: Send email as a reply to an existing conversation thread
+
+## Attachments
+
+You can attach files to your Gmail emails by providing a variable that contains file URLs. The attachments can be:
+
+- A single file URL (string)
+- Multiple file URLs (array of strings)
+
+<Warning>
+  Gmail has a 25MB total attachment size limit. Make sure your combined
+  attachments don't exceed this limit.
+</Warning>
+
+## Response Mapping
+
+The Gmail block can save response data to variables:
+
+- **Thread ID**: The conversation thread ID (useful for tracking email conversations)

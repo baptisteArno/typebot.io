@@ -6,5 +6,5 @@ import { auth } from "./auth";
 export const zendeskBlockSchema = parseBlockSchema(zendeskBlock);
 export const zendeskCredentialsSchema = parseBlockCredentials(
   zendeskBlock.id,
-  auth.schema,
+  auth,
 );

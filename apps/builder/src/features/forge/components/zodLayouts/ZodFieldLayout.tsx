@@ -74,6 +74,24 @@ export const ZodFieldLayout = ({
 
   if (evaluateIsHidden(layout?.isHidden, blockOptions)) return null;
 
+  if (layout?.inputType === "variableDropdown") {
+    return (
+      <VariableSearchInput
+        initialVariableId={data}
+        onSelectVariable={(variable) => onDataChange(variable?.id)}
+        placeholder={layout?.placeholder}
+        label={layout?.label}
+        moreInfoTooltip={layout.moreInfoTooltip}
+        helperText={
+          layout?.helperText ? (
+            <Markdown components={mdComponents}>{layout.helperText}</Markdown>
+          ) : undefined
+        }
+        width={width}
+      />
+    );
+  }
+
   switch (innerSchema._def.typeName) {
     case "ZodObject":
       return (
@@ -230,25 +248,6 @@ export const ZodFieldLayout = ({
             onChange={onDataChange}
             width={width}
             withVariableButton={layout.withVariableButton ?? true}
-          />
-        );
-      }
-      if (layout?.inputType === "variableDropdown") {
-        return (
-          <VariableSearchInput
-            initialVariableId={data}
-            onSelectVariable={(variable) => onDataChange(variable?.id)}
-            placeholder={layout?.placeholder}
-            label={layout?.label}
-            moreInfoTooltip={layout.moreInfoTooltip}
-            helperText={
-              layout?.helperText ? (
-                <Markdown components={mdComponents}>
-                  {layout.helperText}
-                </Markdown>
-              ) : undefined
-            }
-            width={width}
           />
         );
       }

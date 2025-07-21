@@ -6,5 +6,5 @@ import { difyAiBlock } from "./index";
 export const difyAiBlockSchema = parseBlockSchema(difyAiBlock);
 export const difyAiCredentialsSchema = parseBlockCredentials(
   difyAiBlock.id,
-  auth.schema,
+  auth,
 );

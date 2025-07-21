@@ -32,6 +32,7 @@ export const parseUnknownError = async ({
       description: JSON.stringify(err),
     };
   } catch (err) {
+    console.error(err);
     Sentry.captureException(err);
     return {
       context,
@@ -95,7 +96,8 @@ const extractDetails = async (err: Error): Promise<string> => {
     typeof err.response === "object" &&
     err.response &&
     "text" in err.response &&
-    typeof err.response.text === "function"
+    typeof err.response.text === "function" &&
+    !(err.response as Response).bodyUsed
   ) {
     return await (err.response as Response).text();
   }

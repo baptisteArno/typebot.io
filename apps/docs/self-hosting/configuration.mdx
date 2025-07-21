@@ -76,7 +76,7 @@ Used for sending email notifications and authentication
 
 2. Head over the Credentials tab: https://console.developers.google.com/apis/credentials
 
-3. Create an API key with access to the Google Picker API. This will be your `NEXT_PUBLIC_GOOGLE_SHEETS_API_KEY`
+3. Create an API key. This will be your `NEXT_PUBLIC_GOOGLE_SHEETS_API_KEY`
 
 4. Create a OAuth client ID. This will be your `GOOGLE_SHEETS_CLIENT_ID` and `GOOGLE_SHEETS_CLIENT_SECRET`
 
@@ -99,6 +99,35 @@ Used for sending email notifications and authentication
 | GOOGLE_SHEETS_CLIENT_ID           |         | The Client ID from the Google API Console     |
 | GOOGLE_SHEETS_CLIENT_SECRET       |         | The Client secret from the Google API Console |
 | NEXT_PUBLIC_GOOGLE_SHEETS_API_KEY |         | The API Key from the Google API Console       |
+
+## Gmail
+
+<Accordion title="Requirements">
+
+1. Enable the following APIs in the Google Cloud Console: Google Sheets API, Google Picker API
+
+2. Head over the Credentials tab: https://console.developers.google.com/apis/credentials
+
+3. Create a OAuth client ID. This will be your `GMAIL_CLIENT_ID` and `GMAIL_CLIENT_SECRET`
+
+   Make sure to set the following scopes located in your OAuth Consent Screen: `gmail.send`, `gmail.labels`, `userinfo.profile`, `userinfo.email`
+   https://developers.google.com/identity/protocols/oauth2/scopes
+
+   The "Authorized redirect URIs" used when creating the credentials must include your full domain and end in the callback path:
+
+   - For production:
+     - https://\<YOUR_DOMAIN\>/oauth/redirect
+   - For development:
+     - http://localhost:3000/oauth/redirect
+
+4. To avoid having to always reconnect credentials every 7 days, you need to promote your OAuth client to production (https://developers.google.com/nest/device-access/reference/errors/authorization#refresh_token_keeps_expiring)
+
+| Parameter           | Default | Description                                   |
+| ------------------- | ------- | --------------------------------------------- |
+| GMAIL_CLIENT_ID     |         | The Client ID from the Google API Console     |
+| GMAIL_CLIENT_SECRET |         | The Client secret from the Google API Console |
+
+</Accordion>
 
 ## Google Fonts
 

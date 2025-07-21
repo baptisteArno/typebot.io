@@ -1,7 +1,6 @@
-import { option } from "@typebot.io/forge";
-import type { AuthDefinition } from "@typebot.io/forge/types";
+import { createAuth, option } from "@typebot.io/forge";
 
-export const auth = {
+export const auth = createAuth({
   type: "encryptedCredentials",
   name: "Together account",
   schema: option.object({
@@ -14,4 +13,4 @@ export const auth = {
       isDebounceDisabled: true,
     }),
   }),
-} satisfies AuthDefinition;
+});

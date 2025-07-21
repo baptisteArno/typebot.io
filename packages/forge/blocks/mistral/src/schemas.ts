@@ -6,5 +6,5 @@ import { mistralBlock } from "./index";
 export const mistralBlockSchema = parseBlockSchema(mistralBlock);
 export const mistralCredentialsSchema = parseBlockCredentials(
   mistralBlock.id,
-  auth.schema,
+  auth,
 );

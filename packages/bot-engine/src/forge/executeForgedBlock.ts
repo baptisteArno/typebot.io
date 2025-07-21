@@ -4,8 +4,9 @@ import type {
   SessionState,
   TypebotInSession,
 } from "@typebot.io/chat-session/schemas";
-import { decrypt } from "@typebot.io/credentials/decrypt";
+import { decryptAndRefreshCredentialsData } from "@typebot.io/credentials/decryptAndRefreshCredentials";
 import { getCredentials } from "@typebot.io/credentials/getCredentials";
+import type { Credentials } from "@typebot.io/credentials/schemas";
 import { forgedBlocks } from "@typebot.io/forge-repository/definitions";
 import type { ForgedBlock } from "@typebot.io/forge-repository/schemas";
 import type { LogsStore, VariableStore } from "@typebot.io/forge/types";
@@ -37,31 +38,6 @@ export const executeForgedBlock = async (
         },
       ],
     };
-  const noCredentialsError = {
-    status: "error",
-    description: "Credentials not provided for integration",
-  };
-
-  let credentials: { data: string; iv: string } | null = null;
-  if (blockDef.auth) {
-    if (!block.options.credentialsId) {
-      return {
-        outgoingEdgeId: block.outgoingEdgeId,
-        logs: [noCredentialsError],
-      };
-    }
-    credentials = await getCredentials(
-      block.options.credentialsId,
-      state.workspaceId,
-    );
-    if (!credentials) {
-      console.error("Could not find credentials in database");
-      return {
-        outgoingEdgeId: block.outgoingEdgeId,
-        logs: [noCredentialsError],
-      };
-    }
-  }
 
   const typebot = state.typebotsQueue[0].typebot;
   if (
@@ -139,17 +115,63 @@ export const executeForgedBlock = async (
       logs.push(log);
     },
   };
-  const credentialsData = credentials
-    ? await decrypt(credentials.data, credentials.iv)
-    : undefined;
+
+  let credentialsData: any;
+  if (blockDef.auth) {
+    const noCredsErrorLog = [
+      {
+        status: "error",
+        description: `Could not find credentials for block ${block.type}`,
+      },
+    ];
+
+    if (!block.options.credentialsId)
+      return {
+        outgoingEdgeId: block.outgoingEdgeId,
+        logs: noCredsErrorLog,
+      };
+
+    const defaultClientEnvKeys =
+      "defaultClientEnvKeys" in blockDef.auth
+        ? blockDef.auth.defaultClientEnvKeys
+        : undefined;
+
+    const credentials = await getCredentials(
+      block.options.credentialsId,
+      state.workspaceId,
+    );
+
+    if (!credentials)
+      return {
+        outgoingEdgeId: block.outgoingEdgeId,
+        logs: noCredsErrorLog,
+      };
+
+    credentialsData = await decryptAndRefreshCredentialsData(
+      {
+        id: block.options.credentialsId,
+        type: blockDef.id as Credentials["type"],
+        data: credentials.data,
+        iv: credentials.iv,
+      },
+      defaultClientEnvKeys,
+    );
+
+    if (!credentialsData)
+      return {
+        outgoingEdgeId: block.outgoingEdgeId,
+        logs: noCredsErrorLog,
+      };
+  }
 
   const parsedOptions = deepParseVariables(block.options, {
     variables: newSessionState.typebotsQueue[0].typebot.variables,
     sessionStore,
     removeEmptyStrings: true,
   });
+
   await action?.run?.server?.({
-    credentials: credentialsData ?? {},
+    credentials: credentialsData,
     options: parsedOptions,
     variables,
     logs: logsStore,

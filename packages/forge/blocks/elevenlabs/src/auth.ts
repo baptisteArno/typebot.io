@@ -1,7 +1,6 @@
-import { option } from "@typebot.io/forge";
-import type { AuthDefinition } from "@typebot.io/forge/types";
+import { createAuth, option } from "@typebot.io/forge";
 
-export const auth = {
+export const auth = createAuth({
   type: "encryptedCredentials",
   name: "ElevenLabs account",
   schema: option.object({
@@ -15,4 +14,4 @@ export const auth = {
       withVariableButton: false,
     }),
   }),
-} satisfies AuthDefinition;
+});

@@ -175,7 +175,7 @@ export const getMessageStream = async ({
       },
     };
     const { stream, error } = await action.run.stream.run({
-      credentials: decryptedCredentials,
+      credentials: decryptedCredentials as any,
       options: deepParseVariables(block.options, {
         variables: newSessionState.typebotsQueue[0].typebot.variables,
         sessionStore,

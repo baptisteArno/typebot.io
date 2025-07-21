@@ -1,5 +1,4 @@
 import { createAuth, option } from "@typebot.io/forge";
-import type { AuthDefinition } from "@typebot.io/forge/types";
 import { defaultBaseUrl } from "./constants";
 
 export const auth = createAuth({
@@ -23,4 +22,4 @@ export const auth = createAuth({
       isDebounceDisabled: true,
     }),
   }),
-}) satisfies AuthDefinition;
+});

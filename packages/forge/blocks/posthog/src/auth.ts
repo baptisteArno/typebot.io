@@ -1,8 +1,7 @@
-import { option } from "@typebot.io/forge";
-import type { AuthDefinition } from "@typebot.io/forge/types";
+import { createAuth, option } from "@typebot.io/forge";
 import { defaultHost } from "./constants";
 
-export const auth = {
+export const auth = createAuth({
   type: "encryptedCredentials",
   name: "Posthog account",
   schema: option.object({
@@ -20,4 +19,4 @@ export const auth = {
       defaultValue: defaultHost,
     }),
   }),
-} satisfies AuthDefinition;
+});

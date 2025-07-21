@@ -6,5 +6,5 @@ import { elevenlabsBlock } from "./index";
 export const elevenlabsBlockSchema = parseBlockSchema(elevenlabsBlock);
 export const elevenlabsCredentialsSchema = parseBlockCredentials(
   elevenlabsBlock.id,
-  auth.schema,
+  auth,
 );

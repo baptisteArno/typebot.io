@@ -4,7 +4,4 @@ import { auth } from "./auth";
 import { groqBlock } from "./index";
 
 export const groqBlockSchema = parseBlockSchema(groqBlock);
-export const groqCredentialsSchema = parseBlockCredentials(
-  groqBlock.id,
-  auth.schema,
-);
+export const groqCredentialsSchema = parseBlockCredentials(groqBlock.id, auth);
