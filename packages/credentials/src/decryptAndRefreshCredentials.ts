@@ -39,7 +39,7 @@ export const decryptAndRefreshCredentialsData = async (
 
     if (!client) throw new Error("No client found for oauth block");
 
-    if (!expiryDate || expiryDate > Date.now())
+    if (expiryDate && expiryDate > Date.now())
       return {
         ...decryptedData,
         client,

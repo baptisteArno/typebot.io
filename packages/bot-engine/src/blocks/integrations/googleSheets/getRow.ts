@@ -1,5 +1,6 @@
 import type { GoogleSheetsGetOptions } from "@typebot.io/blocks-integrations/googleSheets/schema";
 import type { SessionState } from "@typebot.io/chat-session/schemas";
+import { getGoogleSpreadsheet } from "@typebot.io/credentials/getGoogleSpreadsheet";
 import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
 import { byId, isDefined, isNotEmpty } from "@typebot.io/lib/utils";
 import type { LogInSession } from "@typebot.io/logs/schemas";
@@ -8,7 +9,6 @@ import { deepParseVariables } from "@typebot.io/variables/deepParseVariables";
 import type { VariableWithValue } from "@typebot.io/variables/schemas";
 import type { ExecuteIntegrationResponse } from "../../../types";
 import { updateVariablesInSession } from "../../../updateVariablesInSession";
-import { getAuthenticatedGoogleDoc } from "./helpers/getAuthenticatedGoogleDoc";
 import { matchFilter } from "./helpers/matchFilter";
 
 export const getRow = async (
@@ -45,11 +45,23 @@ export const getRow = async (
       ],
     };
 
-  const doc = await getAuthenticatedGoogleDoc({
+  const doc = await getGoogleSpreadsheet({
     credentialsId: options.credentialsId,
     spreadsheetId: options.spreadsheetId,
     workspaceId: state.workspaceId,
   });
+
+  if (!doc)
+    return {
+      outgoingEdgeId,
+      logs: [
+        {
+          status: "error",
+          description: "Couldn't find credentials in database",
+          context: "While getting spreadsheet row",
+        },
+      ],
+    };
 
   try {
     await doc.loadInfo();
