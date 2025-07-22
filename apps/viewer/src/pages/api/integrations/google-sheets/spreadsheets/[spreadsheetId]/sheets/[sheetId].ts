@@ -4,12 +4,11 @@ import type {
   GoogleSheetsInsertRowOptions,
   GoogleSheetsUpdateRowOptions,
 } from "@typebot.io/blocks-integrations/googleSheets/schema";
-import { getAuthenticatedGoogleDoc } from "@typebot.io/bot-engine/blocks/integrations/googleSheets/helpers/getAuthenticatedGoogleDoc";
 import { saveErrorLog } from "@typebot.io/bot-engine/logs/saveErrorLog";
 import { saveSuccessLog } from "@typebot.io/bot-engine/logs/saveSuccessLog";
 import { LogicalOperator } from "@typebot.io/conditions/constants";
 import { ComparisonOperators } from "@typebot.io/conditions/constants";
-import { getAuthenticatedGoogleClient } from "@typebot.io/credentials/getAuthenticatedGoogleClient";
+import { getGoogleSpreadsheet } from "@typebot.io/credentials/getGoogleSpreadsheet";
 import {
   badRequest,
   initMiddleware,
@@ -18,10 +17,7 @@ import {
 } from "@typebot.io/lib/api/utils";
 import { hasValue, isDefined } from "@typebot.io/lib/utils";
 import Cors from "cors";
-import {
-  GoogleSpreadsheet,
-  type GoogleSpreadsheetRow,
-} from "google-spreadsheet";
+import type { GoogleSpreadsheetRow } from "google-spreadsheet";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 const cors = initMiddleware(Cors());
@@ -67,11 +63,15 @@ const getRows = async (req: NextApiRequest, res: NextApiResponse) => {
     return;
   }
 
-  const doc = await getAuthenticatedGoogleDoc({
+  const doc = await getGoogleSpreadsheet({
     credentialsId,
     spreadsheetId,
-    workspaceId: "",
+    workspaceId: undefined,
   });
+  if (!doc) {
+    notFound(res);
+    return;
+  }
   await doc.loadInfo();
   const sheet = doc.sheetsById[Number(sheetId)];
   try {
@@ -123,11 +123,15 @@ const insertRow = async (req: NextApiRequest, res: NextApiResponse) => {
       values: { [key: string]: string };
     };
   if (!hasValue(credentialsId)) return badRequest(res);
-  const doc = await getAuthenticatedGoogleDoc({
+  const doc = await getGoogleSpreadsheet({
     credentialsId,
     spreadsheetId,
-    workspaceId: "",
+    workspaceId: undefined,
   });
+  if (!doc) {
+    notFound(res);
+    return;
+  }
   try {
     await doc.loadInfo();
     const sheet = doc.sheetsById[Number(sheetId)];
@@ -156,11 +160,15 @@ const updateRow = async (req: NextApiRequest, res: NextApiResponse) => {
   const { resultId, credentialsId, values } = body;
 
   if (!hasValue(credentialsId) || !referenceCell) return badRequest(res);
-  const doc = await getAuthenticatedGoogleDoc({
+  const doc = await getGoogleSpreadsheet({
     credentialsId,
     spreadsheetId,
-    workspaceId: "",
+    workspaceId: undefined,
   });
+  if (!doc) {
+    notFound(res);
+    return;
+  }
   try {
     await doc.loadInfo();
     const sheet = doc.sheetsById[Number(sheetId)];

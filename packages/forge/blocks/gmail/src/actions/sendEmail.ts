@@ -1,7 +1,7 @@
 import { gmail } from "@googleapis/gmail";
 import { createAction, option } from "@typebot.io/forge";
 import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
-import { isDefined } from "@typebot.io/lib/utils";
+import { isDefined, isNotEmpty } from "@typebot.io/lib/utils";
 import { OAuth2Client } from "google-auth-library";
 import { auth } from "../auth";
 import { buildEmail } from "../helpers/buildEmail";
@@ -50,6 +50,7 @@ export const sendEmail = createAction({
       placeholder: "john.doe@gmail.com",
       moreInfoTooltip:
         "If provided, the reply to this email will be set to the provided email address",
+      isHidden: ({ threadId }) => isNotEmpty(threadId),
     }),
     responseMapping: option.saveResponseArray(["Thread ID"]).layout({
       accordion: "Save response",
@@ -156,6 +157,7 @@ export const sendEmail = createAction({
               },
             });
           } catch (labelError) {
+            console.error(labelError);
             logs.add(`Failed to apply label: ${labelError}`);
           }
         }

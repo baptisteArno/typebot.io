@@ -1,11 +1,11 @@
 import type { GoogleSheetsUpdateRowOptions } from "@typebot.io/blocks-integrations/googleSheets/schema";
 import type { SessionState } from "@typebot.io/chat-session/schemas";
+import { getGoogleSpreadsheet } from "@typebot.io/credentials/getGoogleSpreadsheet";
 import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
 import type { LogInSession } from "@typebot.io/logs/schemas";
 import type { SessionStore } from "@typebot.io/runtime-session-store";
 import { deepParseVariables } from "@typebot.io/variables/deepParseVariables";
 import type { ExecuteIntegrationResponse } from "../../../types";
-import { getAuthenticatedGoogleDoc } from "./helpers/getAuthenticatedGoogleDoc";
 import { matchFilter } from "./helpers/matchFilter";
 import { parseNewCellValuesObject } from "./helpers/parseNewCellValuesObject";
 
@@ -48,11 +48,23 @@ export const updateRow = async (
 
   const logs: LogInSession[] = [];
 
-  const doc = await getAuthenticatedGoogleDoc({
+  const doc = await getGoogleSpreadsheet({
     credentialsId: options.credentialsId,
     spreadsheetId: options.spreadsheetId,
     workspaceId: state.workspaceId,
   });
+
+  if (!doc)
+    return {
+      outgoingEdgeId,
+      logs: [
+        {
+          status: "error",
+          description: "Couldn't find credentials in database",
+          context: "While updating row in spreadsheet",
+        },
+      ],
+    };
 
   try {
     await doc.loadInfo();
