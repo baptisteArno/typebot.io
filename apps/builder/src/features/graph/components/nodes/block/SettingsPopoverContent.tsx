@@ -23,6 +23,7 @@ import { SendEmailSettings } from "@/features/blocks/integrations/sendEmail/comp
 import { ZapierSettings } from "@/features/blocks/integrations/zapier/components/ZapierSettings";
 import { AbTestSettings } from "@/features/blocks/logic/abTest/components/AbTestSettings";
 import { JumpSettings } from "@/features/blocks/logic/jump/components/JumpSettings";
+import { LoopSettings } from "@/features/blocks/logic/loop/components/LoopSettings";
 import { RedirectSettings } from "@/features/blocks/logic/redirect/components/RedirectSettings";
 import { ScriptSettings } from "@/features/blocks/logic/script/components/ScriptSettings";
 import { SetVariableSettings } from "@/features/blocks/logic/setVariable/components/SetVariableSettings";
@@ -300,6 +301,11 @@ export const NodeSettings = ({
     case LogicBlockType.JUMP: {
       return (
         <JumpSettings options={node.options} onOptionsChange={updateOptions} />
+      );
+    }
+    case LogicBlockType.LOOP: {
+      return (
+        <LoopSettings options={node.options} onOptionsChange={updateOptions} />
       );
     }
     case LogicBlockType.AB_TEST: {
