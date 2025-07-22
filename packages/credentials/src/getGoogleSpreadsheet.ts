@@ -35,8 +35,6 @@ export const getGoogleSpreadsheet = async ({
     secret: env.GOOGLE_SHEETS_CLIENT_SECRET,
   };
 
-  console.log("is expired", expiry_date && expiry_date > Date.now());
-
   if (expiry_date && expiry_date > Date.now())
     return new GoogleSpreadsheet(spreadsheetId, {
       token: access_token,

@@ -46,7 +46,6 @@ export const decryptAndRefreshCredentialsData = async (
       };
 
     try {
-      console.log("refreshing credentials");
       const tokens = await ky
         .post(blockDef.auth.tokenUrl, {
           json: {
