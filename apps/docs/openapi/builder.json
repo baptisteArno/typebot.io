@@ -10089,6 +10089,149 @@
         }
       }
     },
+    "/v1/typebots/{typebotId}/results/{resultId}/transcript": {
+      "get": {
+        "operationId": "results-getResultTranscript",
+        "summary": "Get result transcript",
+        "tags": [
+          "Results"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "typebotId",
+            "description": "[Where to find my bot's ID?](../how-to#how-to-find-my-typebotid)",
+            "schema": {
+              "type": "string",
+              "description": "[Where to find my bot's ID?](../how-to#how-to-find-my-typebotid)"
+            },
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "resultId",
+            "description": "The `resultId` is returned by the /startChat endpoint or you can find it by listing results with `/results` endpoint",
+            "schema": {
+              "type": "string",
+              "description": "The `resultId` is returned by the /startChat endpoint or you can find it by listing results with `/results` endpoint"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "transcript": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "role": {
+                            "type": "string",
+                            "enum": [
+                              "bot",
+                              "user"
+                            ]
+                          },
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "text",
+                              "image",
+                              "video",
+                              "audio"
+                            ]
+                          },
+                          "text": {
+                            "type": "string"
+                          },
+                          "image": {
+                            "type": "string"
+                          },
+                          "video": {
+                            "type": "string"
+                          },
+                          "audio": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "role",
+                          "type"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "transcript"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error.BAD_REQUEST"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authorization not provided",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error.UNAUTHORIZED"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient access",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error.FORBIDDEN"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error.NOT_FOUND"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error.INTERNAL_SERVER_ERROR"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/typebots/{typebotId}/results/{resultId}/logs": {
       "get": {
         "operationId": "results-getResultLogs",
