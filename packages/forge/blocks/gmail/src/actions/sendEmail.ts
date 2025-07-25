@@ -1,10 +1,9 @@
-import { gmail } from "@googleapis/gmail";
 import { createAction, option } from "@typebot.io/forge";
 import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
 import { isDefined, isNotEmpty } from "@typebot.io/lib/utils";
-import { OAuth2Client } from "google-auth-library";
 import { auth } from "../auth";
 import { buildEmail } from "../helpers/buildEmail";
+import { createGmailClient } from "../helpers/createGmailClient";
 import { parseFrom } from "../helpers/parseFrom";
 
 export const sendEmail = createAction({
@@ -66,27 +65,31 @@ export const sendEmail = createAction({
             data: [],
           };
 
-        const client = new OAuth2Client({
-          credentials: {
-            access_token: credentials.accessToken,
-          },
-        });
+        try {
+          const gmailClient = createGmailClient(credentials.accessToken);
 
-        const gmailClient = gmail({
-          version: "v1",
-          auth: client,
-        });
+          const response = await gmailClient.users.labels.list({
+            userId: "me",
+          });
 
-        const response = await gmailClient.users.labels.list({ userId: "me" });
-        return {
-          data:
-            response.data.labels
-              ?.filter((label) => label.type === "user")
-              .map((label) => ({
-                value: label.id ?? "",
-                label: label.name ?? "",
-              })) ?? [],
-        };
+          return {
+            data:
+              response.data.labels
+                ?.filter((label) => label.type === "user")
+                .map((label) => ({
+                  value: label.id ?? "",
+                  label: label.name ?? "",
+                })) ?? [],
+          };
+        } catch (err) {
+          const parsedError = await parseUnknownError({
+            err,
+            context: "While fetching Gmail labels",
+          });
+          return {
+            error: parsedError,
+          };
+        }
       },
     },
   ],
@@ -98,17 +101,7 @@ export const sendEmail = createAction({
         logs.add("No access token available");
         return;
       }
-
-      const client = new OAuth2Client({
-        credentials: {
-          access_token: credentials.accessToken,
-        },
-      });
-
-      const gmailClient = gmail({
-        version: "v1",
-        auth: client,
-      });
+      const gmailClient = createGmailClient(credentials.accessToken);
 
       const attachmentsVariableValue = options.attachments
         ? variables.get(options.attachments)

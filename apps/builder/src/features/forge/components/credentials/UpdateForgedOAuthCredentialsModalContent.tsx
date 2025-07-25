@@ -1,4 +1,3 @@
-import { stringify } from "querystring";
 import { CopyButton } from "@/components/CopyButton";
 import { TextInput } from "@/components/inputs/TextInput";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
@@ -19,6 +18,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import type { ForgedBlockDefinition } from "@typebot.io/forge-repository/definitions";
 import { Button } from "@typebot.io/ui/components/Button";
 import { useEffect, useState } from "react";
+import { useOAuthPopup } from "./useOAuthPopup";
 
 type Props = {
   credentialsId: string;
@@ -96,41 +96,30 @@ export const UpdateForgedOAuthCredentialsModalContent = ({
     }),
   );
 
-  const openOAuthPopup = async () => {
+  const handleOAuthSuccess = (code: string) => {
     if (!workspace) return;
-
-    window.open(
-      `/api/${blockDef.id}/oauth/authorize?${stringify({
-        clientId: clientId,
-      })}`,
-      "oauthPopup",
-      "width=500,height=700",
-    );
-
-    const handleOAuthResponse = (event: MessageEvent) => {
-      if (event.data?.type === "oauth") {
-        window.removeEventListener("message", handleOAuthResponse);
-        const { code } = event.data;
-        mutate({
-          name,
-          blockType: blockDef.id,
-          workspaceId: workspace.id,
-          credentialsId,
-          code,
-          customClient:
-            tab === "your-app"
-              ? {
-                  id: clientId,
-                  secret: clientSecret,
-                }
-              : undefined,
-        });
-      }
-    };
-
-    window.removeEventListener("message", handleOAuthResponse);
-    window.addEventListener("message", handleOAuthResponse);
+    mutate({
+      name,
+      blockType: blockDef.id,
+      workspaceId: workspace.id,
+      credentialsId,
+      code,
+      customClient:
+        tab === "your-app"
+          ? {
+              id: clientId,
+              secret: clientSecret,
+            }
+          : undefined,
+    });
   };
+
+  const { openOAuthPopup, isAuthorizing } = useOAuthPopup({
+    blockId: blockDef.id,
+    clientId,
+    workspace: workspace ?? null,
+    onSuccess: handleOAuthSuccess,
+  });
 
   if (!blockDef.auth) return null;
   return (
@@ -196,7 +185,8 @@ export const UpdateForgedOAuthCredentialsModalContent = ({
           disabled={
             !name ||
             isPending ||
-            (tab === "your-app" && (!clientId || !clientSecret))
+            (tab === "your-app" && (!clientId || !clientSecret)) ||
+            isAuthorizing
           }
         >
           <blockDef.LightLogo />
