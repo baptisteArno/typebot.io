@@ -45,10 +45,17 @@ export const invalidReplyEventSchema = eventBaseSchema.extend({
 });
 export type InvalidReplyEvent = z.infer<typeof invalidReplyEventSchema>;
 
+export const timeoutEventSchema = eventBaseSchema.extend({
+  type: z.literal(EventType.TIMEOUT),
+  options: replyEventOptionsSchema.optional(),
+});
+export type TimeoutEvent = z.infer<typeof timeoutEventSchema>;
+
 const draggableEventSchemas = [
   commandEventSchema,
   replyEventSchema,
   invalidReplyEventSchema,
+  timeoutEventSchema,
 ] as const;
 
 export const eventSchema = z.discriminatedUnion("type", [

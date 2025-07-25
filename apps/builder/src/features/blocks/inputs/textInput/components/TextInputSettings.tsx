@@ -1,10 +1,12 @@
 import { DropdownList } from "@/components/DropdownList";
+import { MoreInfoTooltip } from "@/components/MoreInfoTooltip";
 import { SwitchWithRelatedSettings } from "@/components/SwitchWithRelatedSettings";
 import { TextInput } from "@/components/inputs";
+import { NumberInput } from "@/components/inputs/NumberInput";
 import { Select } from "@/components/inputs/Select";
 import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
 import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
-import { FormLabel, Stack } from "@chakra-ui/react";
+import { FormControl, FormLabel, Stack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { fileVisibilityOptions } from "@typebot.io/blocks-inputs/file/constants";
 import { defaultTextInputOptions } from "@typebot.io/blocks-inputs/text/constants";
@@ -81,6 +83,9 @@ export const TextInputSettings = ({ options, onOptionsChange }: Props) => {
       inputMode: inputMode as (typeof inputModeOptions)[number] | undefined,
     });
 
+  const updateTimerSeconds = (timerSeconds?: number) =>
+    onOptionsChange({ ...options, timerSeconds });
+
   return (
     <Stack spacing={4}>
       <SwitchWithLabel
@@ -88,6 +93,21 @@ export const TextInputSettings = ({ options, onOptionsChange }: Props) => {
         initialValue={options?.isLong ?? defaultTextInputOptions.isLong}
         onCheckChange={updateIsLong}
       />
+      <FormControl>
+        <FormLabel>
+          {t("blocks.inputs.button.settings.timeout.label")}{" "}
+          <MoreInfoTooltip>
+            {t("blocks.inputs.button.settings.timeout.tooltip")}
+          </MoreInfoTooltip>
+        </FormLabel>
+        <NumberInput
+          defaultValue={options?.timerSeconds}
+          placeholder={t("blocks.inputs.button.settings.timeout.placeholder")}
+          withVariableButton={false}
+          min={0}
+          onValueChange={updateTimerSeconds}
+        />
+      </FormControl>
       <TextInput
         label={t("blocks.inputs.settings.placeholder.label")}
         defaultValue={
