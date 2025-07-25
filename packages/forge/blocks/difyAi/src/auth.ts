@@ -12,15 +12,6 @@ export const auth = createAuth({
   type: "encryptedCredentials",
   name: "Dify.AI account",
   schema: option.object({
-    apiEndpoint: option.string
-      .layout({
-        label: "API Endpoint",
-        isRequired: true,
-        withVariableButton: false,
-        defaultValue: defaultBaseUrl,
-      })
-      .refine((val) => !val || isURL(val))
-      .transform(extractBaseUrl),
     apiKey: option.string.layout({
       label: "App API key",
       inputType: "password",
@@ -34,5 +25,15 @@ export const auth = createAuth({
       placeholder: "dataset-...",
       withVariableButton: false,
     }),
+    apiEndpoint: option.string
+      .layout({
+        label: "API Endpoint",
+        isRequired: true,
+        withVariableButton: false,
+        defaultValue: defaultBaseUrl,
+        accordion: "Advanced settings",
+      })
+      .refine((val) => !val || isURL(val))
+      .transform(extractBaseUrl),
   }),
 });

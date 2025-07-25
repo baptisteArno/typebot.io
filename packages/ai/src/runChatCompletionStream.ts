@@ -4,10 +4,9 @@ import {
   parseUnknownErrorSync,
 } from "@typebot.io/lib/parseUnknownError";
 import type { SessionStore } from "@typebot.io/runtime-session-store";
-import { type LanguageModel, streamText } from "ai";
+import { type LanguageModel, type StepResult, type Tool, streamText } from "ai";
 import { maxSteps } from "./constants";
 import { parseChatCompletionMessages } from "./parseChatCompletionMessages";
-import type { ChatCompletionOptions } from "./parseChatCompletionOptions";
 import { parseTools } from "./parseTools";
 import type { Tools } from "./schemas";
 import type { Message } from "./types";
@@ -19,8 +18,22 @@ type Props = {
   tools: Tools | undefined;
   isVisionEnabled: boolean;
   temperature: number | undefined;
-  responseMapping: ChatCompletionOptions["responseMapping"] | undefined;
+  responseMapping:
+    | {
+        item?: string;
+        variableId?: string;
+      }[]
+    | undefined;
+  onFinish?: (
+    response: Omit<
+      StepResult<Record<string, Tool>>,
+      "stepType" | "isContinued"
+    > & {
+      readonly steps: StepResult<Record<string, Tool>>[];
+    },
+  ) => void;
   sessionStore: SessionStore;
+  headers?: Record<string, string | undefined>;
 };
 
 export const runChatCompletionStream = async ({
@@ -31,7 +44,9 @@ export const runChatCompletionStream = async ({
   temperature,
   tools,
   responseMapping,
+  onFinish,
   sessionStore,
+  headers,
 }: Props) => {
   try {
     const response = streamText({
@@ -45,6 +60,7 @@ export const runChatCompletionStream = async ({
       temperature,
       tools: parseTools({ tools, variables, sessionStore }),
       maxSteps,
+      headers,
       onFinish: (response) => {
         responseMapping?.forEach((mapping) => {
           if (!mapping.variableId) return;
@@ -64,6 +80,7 @@ export const runChatCompletionStream = async ({
               },
             ]);
         });
+        onFinish?.(response);
       },
     });
 
