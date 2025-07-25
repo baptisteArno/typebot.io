@@ -16,7 +16,7 @@ import {
 } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import type { FormEvent } from "react";
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { createApiTokenQuery } from "../queries/createApiTokenQuery";
 import type { ApiTokenFromServer } from "../types";
 
@@ -38,6 +38,14 @@ export const CreateTokenModal = ({
   const [name, setName] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [newTokenValue, setNewTokenValue] = useState<string>();
+
+  useEffect(() => {
+    if (!isOpen) {
+      setName("");
+      setNewTokenValue(undefined);
+      setIsSubmitting(false);
+    }
+  }, [isOpen]);
 
   const createToken = async (e: FormEvent) => {
     e.preventDefault();
