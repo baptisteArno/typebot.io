@@ -202,6 +202,9 @@ model Typebot {
   customDomain            String?                   @unique
   workspaceId             String
   resultsTablePreferences Json?
+  defaultLocale           String                    @default("en") @db.Char(10)
+  supportedLocales        Json                      @default("[\"en\"]")
+  localeDetectionConfig   Json                      @default("{}")
   folder                  DashboardFolder?          @relation(fields: [folderId], references: [id])
   workspace               Workspace                 @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   collaborators           CollaboratorsOnTypebots[]
@@ -217,6 +220,7 @@ model Typebot {
 
   @@index([workspaceId])
   @@index([isArchived, createdAt(sort: Desc)])
+  @@index([defaultLocale])
 }
 
 model Invitation {
@@ -243,18 +247,23 @@ model CollaboratorsOnTypebots {
 }
 
 model PublicTypebot {
-  id        String   @id @default(cuid())
-  version   String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
-  typebotId String   @unique
-  groups    Json
-  events    Json?
-  variables Json
-  edges     Json
-  theme     Json
-  settings  Json
-  typebot   Typebot  @relation(fields: [typebotId], references: [id], onDelete: Cascade)
+  id                    String   @id @default(cuid())
+  version               String?
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @default(now()) @updatedAt
+  typebotId             String   @unique
+  groups                Json
+  events                Json?
+  variables             Json
+  edges                 Json
+  theme                 Json
+  settings              Json
+  defaultLocale         String   @default("en") @db.Char(10)
+  supportedLocales      Json     @default("[\"en\"]")
+  localeDetectionConfig Json     @default("{}")
+  typebot               Typebot  @relation(fields: [typebotId], references: [id], onDelete: Cascade)
+
+  @@index([defaultLocale])
 }
 
 model Result {

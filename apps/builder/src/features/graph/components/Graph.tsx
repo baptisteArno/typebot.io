@@ -3,7 +3,10 @@ import type {
   TotalAnswers,
 } from "@/features/analytics/schemas";
 import { headerHeight } from "@/features/editor/constants";
-import { useTypebot } from "@/features/editor/providers/TypebotProvider";
+import {
+  type FrontendTypebotV6,
+  useTypebot,
+} from "@/features/editor/providers/TypebotProvider";
 import { useUser } from "@/features/user/hooks/useUser";
 import {
   Box,
@@ -48,7 +51,7 @@ export const Graph = ({
   onUnlockProPlanClick,
   ...props
 }: {
-  typebot: TypebotV6 | PublicTypebotV6;
+  typebot: TypebotV6 | PublicTypebotV6 | FrontendTypebotV6;
   edgesWithTotalUsers?: EdgeWithTotalVisits[];
   totalAnswers?: TotalAnswers[];
   onUnlockProPlanClick?: () => void;

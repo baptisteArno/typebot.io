@@ -11,6 +11,12 @@ import {
   type TypebotV3PageProps,
 } from "@/components/TypebotPageV3";
 import { env } from "@typebot.io/env";
+import {
+  type LocaleDetectionConfig,
+  type LocaleDetectionContext,
+  detectLocaleServer,
+  localizationService,
+} from "@typebot.io/lib/localization";
 import { isNotDefined } from "@typebot.io/lib/utils";
 import prisma from "@typebot.io/prisma";
 import { isTypebotVersionAtLeastV6 } from "@typebot.io/schemas/helpers/isTypebotVersionAtLeastV6";
@@ -98,12 +104,60 @@ export const getServerSideProps: GetServerSideProps = async (
         notFound: true,
       };
 
+    // Detect locale if localization is enabled
+    let detectedLocale = publishedTypebot.defaultLocale || "en";
+    const availableLocales = Array.isArray(publishedTypebot.supportedLocales)
+      ? publishedTypebot.supportedLocales
+      : JSON.parse((publishedTypebot.supportedLocales as string) || '["en"]');
+    let localeDetectionMeta = null;
+
+    const localeDetectionConfig =
+      typeof publishedTypebot.localeDetectionConfig === "string"
+        ? JSON.parse((publishedTypebot.localeDetectionConfig as string) || "{}")
+        : publishedTypebot.localeDetectionConfig || {};
+
+    if (localeDetectionConfig.enabled && availableLocales.length > 1) {
+      const detectionContext: LocaleDetectionContext = {
+        headers: context.req.headers as Record<string, string>,
+        query: context.query as Record<string, string | string[]>,
+        pathname,
+        hostname: host,
+      };
+
+      const detectionResult = detectLocaleServer(
+        detectionContext,
+        localeDetectionConfig,
+      );
+      detectedLocale = detectionResult.locale;
+      localeDetectionMeta = {
+        method: detectionResult.method,
+        confidence: detectionResult.confidence,
+        fallbackUsed: detectionResult.fallbackUsed,
+      };
+    }
+
+    // Resolve localized content if needed
+    let localizedTypebot = publishedTypebot;
+    if (detectedLocale !== (publishedTypebot.defaultLocale || "en")) {
+      localizedTypebot = {
+        ...publishedTypebot,
+        groups: localizationService.resolveTypebotContent(
+          { groups: publishedTypebot.groups },
+          detectedLocale,
+          publishedTypebot.defaultLocale || "en",
+        ).groups,
+      };
+    }
+
     return {
       props: {
-        publishedTypebot,
+        publishedTypebot: localizedTypebot,
         incompatibleBrowser,
         isMatchingViewerUrl,
         url: `${protocol}://${forwardedHost ?? host}${pathname}`,
+        locale: detectedLocale,
+        availableLocales,
+        localeDetectionMeta,
       },
     };
   } catch (err) {
@@ -129,6 +183,9 @@ const getTypebotFromPublicId = async (publicId?: string) => {
       edges: true,
       typebotId: true,
       id: true,
+      defaultLocale: true,
+      supportedLocales: true,
+      localeDetectionConfig: true,
       typebot: {
         select: {
           name: true,
@@ -163,6 +220,10 @@ const getTypebotFromPublicId = async (publicId?: string) => {
         metadata: settings.metadata ?? {},
         font: theme.general?.font ?? null,
         version: publishedTypebot.version,
+        groups: publishedTypebot.groups,
+        defaultLocale: publishedTypebot.defaultLocale,
+        supportedLocales: publishedTypebot.supportedLocales,
+        localeDetectionConfig: publishedTypebot.localeDetectionConfig,
         isSuspended: publishedTypebot.typebot.workspace.isSuspended,
       }
     : {
@@ -183,6 +244,9 @@ const getTypebotFromCustomDomain = async (customDomain: string) => {
       edges: true,
       typebotId: true,
       id: true,
+      defaultLocale: true,
+      supportedLocales: true,
+      localeDetectionConfig: true,
       typebot: {
         select: {
           name: true,
@@ -217,6 +281,10 @@ const getTypebotFromCustomDomain = async (customDomain: string) => {
         metadata: settings.metadata ?? {},
         font: theme.general?.font ?? null,
         version: publishedTypebot.version,
+        groups: publishedTypebot.groups,
+        defaultLocale: publishedTypebot.defaultLocale,
+        supportedLocales: publishedTypebot.supportedLocales,
+        localeDetectionConfig: publishedTypebot.localeDetectionConfig,
         isSuspended: publishedTypebot.typebot.workspace.isSuspended,
       }
     : {
@@ -236,6 +304,9 @@ const App = ({
   publishedTypebot,
   incompatibleBrowser,
   dashboardUrl,
+  locale,
+  availableLocales,
+  localeDetectionMeta,
   ...props
 }: {
   isIE: boolean;
@@ -243,6 +314,9 @@ const App = ({
   url: string;
   isMatchingViewerUrl?: boolean;
   dashboardUrl?: string;
+  locale?: string;
+  availableLocales?: string[];
+  localeDetectionMeta?: any;
   publishedTypebot:
     | TypebotPageProps["publishedTypebot"]
     | (Pick<
@@ -298,6 +372,9 @@ const App = ({
       }
       metadata={publishedTypebot.metadata ?? {}}
       font={publishedTypebot.font}
+      locale={locale}
+      availableLocales={availableLocales}
+      localeDetectionMeta={localeDetectionMeta}
     />
   );
 };

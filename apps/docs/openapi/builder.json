@@ -3498,6 +3498,65 @@
                       "customDomain": {
                         "type": "string",
                         "nullable": true
+                      },
+                      "defaultLocale": {
+                        "type": "string",
+                        "default": "en"
+                      },
+                      "supportedLocales": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        },
+                        "default": [
+                          "en"
+                        ]
+                      },
+                      "localeDetectionConfig": {
+                        "type": "object",
+                        "properties": {
+                          "enabled": {
+                            "type": "boolean",
+                            "default": false
+                          },
+                          "methods": {
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "enum": [
+                                "url-param",
+                                "url-path",
+                                "subdomain",
+                                "browser-header",
+                                "browser-js",
+                                "user-preference",
+                                "geolocation",
+                                "custom-variable"
+                              ]
+                            },
+                            "default": [
+                              "url-param",
+                              "browser-header"
+                            ]
+                          },
+                          "fallbackLocale": {
+                            "type": "string",
+                            "default": "en"
+                          },
+                          "urlParamName": {
+                            "type": "string",
+                            "default": "locale"
+                          },
+                          "pathSegmentIndex": {
+                            "type": "number",
+                            "default": 0
+                          }
+                        },
+                        "default": {
+                          "enabled": false,
+                          "methods": [],
+                          "fallbackLocale": "en"
+                        }
                       }
                     }
                   }
@@ -4121,6 +4180,65 @@
                           },
                           "updatedAt": {
                             "type": "string"
+                          },
+                          "defaultLocale": {
+                            "type": "string",
+                            "default": "en"
+                          },
+                          "supportedLocales": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "default": [
+                              "en"
+                            ]
+                          },
+                          "localeDetectionConfig": {
+                            "type": "object",
+                            "properties": {
+                              "enabled": {
+                                "type": "boolean",
+                                "default": false
+                              },
+                              "methods": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string",
+                                  "enum": [
+                                    "url-param",
+                                    "url-path",
+                                    "subdomain",
+                                    "browser-header",
+                                    "browser-js",
+                                    "user-preference",
+                                    "geolocation",
+                                    "custom-variable"
+                                  ]
+                                },
+                                "default": [
+                                  "url-param",
+                                  "browser-header"
+                                ]
+                              },
+                              "fallbackLocale": {
+                                "type": "string",
+                                "default": "en"
+                              },
+                              "urlParamName": {
+                                "type": "string",
+                                "default": "locale"
+                              },
+                              "pathSegmentIndex": {
+                                "type": "number",
+                                "default": 0
+                              }
+                            },
+                            "default": {
+                              "enabled": false,
+                              "methods": [],
+                              "fallbackLocale": "en"
+                            }
                           }
                         },
                         "title": "Typebot V6"
@@ -6057,6 +6175,65 @@
                           },
                           "updatedAt": {
                             "type": "string"
+                          },
+                          "defaultLocale": {
+                            "type": "string",
+                            "default": "en"
+                          },
+                          "supportedLocales": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "default": [
+                              "en"
+                            ]
+                          },
+                          "localeDetectionConfig": {
+                            "type": "object",
+                            "properties": {
+                              "enabled": {
+                                "type": "boolean",
+                                "default": false
+                              },
+                              "methods": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string",
+                                  "enum": [
+                                    "url-param",
+                                    "url-path",
+                                    "subdomain",
+                                    "browser-header",
+                                    "browser-js",
+                                    "user-preference",
+                                    "geolocation",
+                                    "custom-variable"
+                                  ]
+                                },
+                                "default": [
+                                  "url-param",
+                                  "browser-header"
+                                ]
+                              },
+                              "fallbackLocale": {
+                                "type": "string",
+                                "default": "en"
+                              },
+                              "urlParamName": {
+                                "type": "string",
+                                "default": "locale"
+                              },
+                              "pathSegmentIndex": {
+                                "type": "number",
+                                "default": 0
+                              }
+                            },
+                            "default": {
+                              "enabled": false,
+                              "methods": [],
+                              "fallbackLocale": "en"
+                            }
                           }
                         },
                         "title": "Typebot V5"
@@ -7049,6 +7226,65 @@
                           "folderId": {
                             "type": "string",
                             "nullable": true
+                          },
+                          "defaultLocale": {
+                            "type": "string",
+                            "default": "en"
+                          },
+                          "supportedLocales": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "default": [
+                              "en"
+                            ]
+                          },
+                          "localeDetectionConfig": {
+                            "type": "object",
+                            "properties": {
+                              "enabled": {
+                                "type": "boolean",
+                                "default": false
+                              },
+                              "methods": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string",
+                                  "enum": [
+                                    "url-param",
+                                    "url-path",
+                                    "subdomain",
+                                    "browser-header",
+                                    "browser-js",
+                                    "user-preference",
+                                    "geolocation",
+                                    "custom-variable"
+                                  ]
+                                },
+                                "default": [
+                                  "url-param",
+                                  "browser-header"
+                                ]
+                              },
+                              "fallbackLocale": {
+                                "type": "string",
+                                "default": "en"
+                              },
+                              "urlParamName": {
+                                "type": "string",
+                                "default": "locale"
+                              },
+                              "pathSegmentIndex": {
+                                "type": "number",
+                                "default": 0
+                              }
+                            },
+                            "default": {
+                              "enabled": false,
+                              "methods": [],
+                              "fallbackLocale": "en"
+                            }
                           },
                           "resultsTablePreferences": {
                             "type": "object",
@@ -8981,6 +9217,65 @@
                           "folderId": {
                             "type": "string",
                             "nullable": true
+                          },
+                          "defaultLocale": {
+                            "type": "string",
+                            "default": "en"
+                          },
+                          "supportedLocales": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "default": [
+                              "en"
+                            ]
+                          },
+                          "localeDetectionConfig": {
+                            "type": "object",
+                            "properties": {
+                              "enabled": {
+                                "type": "boolean",
+                                "default": false
+                              },
+                              "methods": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string",
+                                  "enum": [
+                                    "url-param",
+                                    "url-path",
+                                    "subdomain",
+                                    "browser-header",
+                                    "browser-js",
+                                    "user-preference",
+                                    "geolocation",
+                                    "custom-variable"
+                                  ]
+                                },
+                                "default": [
+                                  "url-param",
+                                  "browser-header"
+                                ]
+                              },
+                              "fallbackLocale": {
+                                "type": "string",
+                                "default": "en"
+                              },
+                              "urlParamName": {
+                                "type": "string",
+                                "default": "locale"
+                              },
+                              "pathSegmentIndex": {
+                                "type": "number",
+                                "default": 0
+                              }
+                            },
+                            "default": {
+                              "enabled": false,
+                              "methods": [],
+                              "fallbackLocale": "en"
+                            }
                           },
                           "resultsTablePreferences": {
                             "type": "object",
@@ -14295,6 +14590,24 @@
               },
               "plainText": {
                 "type": "string"
+              },
+              "localizations": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "object",
+                  "properties": {
+                    "html": {
+                      "type": "string"
+                    },
+                    "richText": {
+                      "type": "array",
+                      "items": {}
+                    },
+                    "plainText": {
+                      "type": "string"
+                    }
+                  }
+                }
               }
             }
           }
@@ -14334,6 +14647,28 @@
                   },
                   "alt": {
                     "type": "string"
+                  }
+                }
+              },
+              "localizations": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "object",
+                  "properties": {
+                    "url": {
+                      "type": "string"
+                    },
+                    "clickLink": {
+                      "type": "object",
+                      "properties": {
+                        "url": {
+                          "type": "string"
+                        },
+                        "alt": {
+                          "type": "string"
+                        }
+                      }
+                    }
                   }
                 }
               }
@@ -14530,6 +14865,25 @@
                   }
                 }
               },
+              "localizations": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "object",
+                  "properties": {
+                    "labels": {
+                      "type": "object",
+                      "properties": {
+                        "placeholder": {
+                          "type": "string"
+                        },
+                        "button": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
               "variableId": {
                 "type": "string"
               },
@@ -14627,6 +14981,25 @@
                   }
                 }
               },
+              "localizations": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "object",
+                  "properties": {
+                    "labels": {
+                      "type": "object",
+                      "properties": {
+                        "placeholder": {
+                          "type": "string"
+                        },
+                        "button": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
               "retryMessageContent": {
                 "type": "string"
               }
@@ -14668,6 +15041,25 @@
                   },
                   "button": {
                     "type": "string"
+                  }
+                }
+              },
+              "localizations": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "object",
+                  "properties": {
+                    "labels": {
+                      "type": "object",
+                      "properties": {
+                        "placeholder": {
+                          "type": "string"
+                        },
+                        "button": {
+                          "type": "string"
+                        }
+                      }
+                    }
                   }
                 }
               },
@@ -14808,6 +15200,25 @@
                   }
                 }
               },
+              "localizations": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "object",
+                  "properties": {
+                    "labels": {
+                      "type": "object",
+                      "properties": {
+                        "placeholder": {
+                          "type": "string"
+                        },
+                        "button": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
               "retryMessageContent": {
                 "type": "string"
               }
@@ -14849,6 +15260,25 @@
                   },
                   "button": {
                     "type": "string"
+                  }
+                }
+              },
+              "localizations": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "object",
+                  "properties": {
+                    "labels": {
+                      "type": "object",
+                      "properties": {
+                        "placeholder": {
+                          "type": "string"
+                        },
+                        "button": {
+                          "type": "string"
+                        }
+                      }
+                    }
                   }
                 }
               },
@@ -15245,6 +15675,17 @@
                             ]
                           }
                         }
+                      }
+                    }
+                  }
+                },
+                "localizations": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object",
+                    "properties": {
+                      "content": {
+                        "type": "string"
                       }
                     }
                   }
@@ -17208,6 +17649,17 @@
                             ]
                           }
                         }
+                      }
+                    }
+                  }
+                },
+                "localizations": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object",
+                    "properties": {
+                      "content": {
+                        "type": "string"
                       }
                     }
                   }
@@ -24372,6 +24824,70 @@
           "riskLevel": {
             "type": "number",
             "nullable": true
+          },
+          "defaultLocale": {
+            "type": "string",
+            "default": "en"
+          },
+          "supportedLocales": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "default": [
+              "en"
+            ]
+          },
+          "localeDetectionConfig": {
+            "type": "object",
+            "properties": {
+              "enabled": {
+                "type": "boolean",
+                "default": false
+              },
+              "methods": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "url-param",
+                    "url-path",
+                    "subdomain",
+                    "browser-header",
+                    "browser-js",
+                    "user-preference",
+                    "geolocation",
+                    "custom-variable"
+                  ]
+                },
+                "default": [
+                  "url-param",
+                  "browser-header"
+                ]
+              },
+              "fallbackLocale": {
+                "type": "string",
+                "default": "en"
+              },
+              "urlParamName": {
+                "type": "string",
+                "default": "locale"
+              },
+              "pathSegmentIndex": {
+                "type": "number",
+                "default": 0
+              }
+            },
+            "required": [
+              "enabled",
+              "methods",
+              "fallbackLocale"
+            ],
+            "default": {
+              "enabled": false,
+              "methods": [],
+              "fallbackLocale": "en"
+            }
           }
         },
         "required": [
@@ -24396,7 +24912,10 @@
           "isArchived",
           "isClosed",
           "whatsAppCredentialsId",
-          "riskLevel"
+          "riskLevel",
+          "defaultLocale",
+          "supportedLocales",
+          "localeDetectionConfig"
         ],
         "title": "Typebot V6"
       },
@@ -26344,6 +26863,70 @@
           "riskLevel": {
             "type": "number",
             "nullable": true
+          },
+          "defaultLocale": {
+            "type": "string",
+            "default": "en"
+          },
+          "supportedLocales": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "default": [
+              "en"
+            ]
+          },
+          "localeDetectionConfig": {
+            "type": "object",
+            "properties": {
+              "enabled": {
+                "type": "boolean",
+                "default": false
+              },
+              "methods": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "url-param",
+                    "url-path",
+                    "subdomain",
+                    "browser-header",
+                    "browser-js",
+                    "user-preference",
+                    "geolocation",
+                    "custom-variable"
+                  ]
+                },
+                "default": [
+                  "url-param",
+                  "browser-header"
+                ]
+              },
+              "fallbackLocale": {
+                "type": "string",
+                "default": "en"
+              },
+              "urlParamName": {
+                "type": "string",
+                "default": "locale"
+              },
+              "pathSegmentIndex": {
+                "type": "number",
+                "default": 0
+              }
+            },
+            "required": [
+              "enabled",
+              "methods",
+              "fallbackLocale"
+            ],
+            "default": {
+              "enabled": false,
+              "methods": [],
+              "fallbackLocale": "en"
+            }
           }
         },
         "required": [
@@ -26368,7 +26951,10 @@
           "isArchived",
           "isClosed",
           "whatsAppCredentialsId",
-          "riskLevel"
+          "riskLevel",
+          "defaultLocale",
+          "supportedLocales",
+          "localeDetectionConfig"
         ],
         "title": "Typebot V5"
       },
@@ -26701,6 +27287,70 @@
           },
           "settings": {
             "$ref": "#/components/schemas/settings"
+          },
+          "defaultLocale": {
+            "type": "string",
+            "default": "en"
+          },
+          "supportedLocales": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "default": [
+              "en"
+            ]
+          },
+          "localeDetectionConfig": {
+            "type": "object",
+            "properties": {
+              "enabled": {
+                "type": "boolean",
+                "default": false
+              },
+              "methods": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "url-param",
+                    "url-path",
+                    "subdomain",
+                    "browser-header",
+                    "browser-js",
+                    "user-preference",
+                    "geolocation",
+                    "custom-variable"
+                  ]
+                },
+                "default": [
+                  "url-param",
+                  "browser-header"
+                ]
+              },
+              "fallbackLocale": {
+                "type": "string",
+                "default": "en"
+              },
+              "urlParamName": {
+                "type": "string",
+                "default": "locale"
+              },
+              "pathSegmentIndex": {
+                "type": "number",
+                "default": 0
+              }
+            },
+            "required": [
+              "enabled",
+              "methods",
+              "fallbackLocale"
+            ],
+            "default": {
+              "enabled": false,
+              "methods": [],
+              "fallbackLocale": "en"
+            }
           }
         },
         "required": [
@@ -26714,7 +27364,10 @@
           "edges",
           "variables",
           "theme",
-          "settings"
+          "settings",
+          "defaultLocale",
+          "supportedLocales",
+          "localeDetectionConfig"
         ],
         "title": "Public Typebot V6"
       },
@@ -28596,6 +29249,70 @@
           },
           "settings": {
             "$ref": "#/components/schemas/settings"
+          },
+          "defaultLocale": {
+            "type": "string",
+            "default": "en"
+          },
+          "supportedLocales": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "default": [
+              "en"
+            ]
+          },
+          "localeDetectionConfig": {
+            "type": "object",
+            "properties": {
+              "enabled": {
+                "type": "boolean",
+                "default": false
+              },
+              "methods": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "url-param",
+                    "url-path",
+                    "subdomain",
+                    "browser-header",
+                    "browser-js",
+                    "user-preference",
+                    "geolocation",
+                    "custom-variable"
+                  ]
+                },
+                "default": [
+                  "url-param",
+                  "browser-header"
+                ]
+              },
+              "fallbackLocale": {
+                "type": "string",
+                "default": "en"
+              },
+              "urlParamName": {
+                "type": "string",
+                "default": "locale"
+              },
+              "pathSegmentIndex": {
+                "type": "number",
+                "default": 0
+              }
+            },
+            "required": [
+              "enabled",
+              "methods",
+              "fallbackLocale"
+            ],
+            "default": {
+              "enabled": false,
+              "methods": [],
+              "fallbackLocale": "en"
+            }
           }
         },
         "required": [
@@ -28609,7 +29326,10 @@
           "edges",
           "variables",
           "theme",
-          "settings"
+          "settings",
+          "defaultLocale",
+          "supportedLocales",
+          "localeDetectionConfig"
         ],
         "title": "Public Typebot V5"
       }

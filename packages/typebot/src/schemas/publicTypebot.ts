@@ -3,6 +3,7 @@ import {
   startEventSchema,
 } from "@typebot.io/events/schemas";
 import { groupV5Schema, groupV6Schema } from "@typebot.io/groups/schemas";
+import { localeDetectionConfigSchema } from "@typebot.io/lib/localization/types";
 import type { Prisma } from "@typebot.io/prisma/types";
 import { typebotV6Versions } from "@typebot.io/schemas/versions";
 import { settingsSchema } from "@typebot.io/settings/schemas";
@@ -29,6 +30,13 @@ export const publicTypebotSchemaV5 = (
       variables: z.array(variableSchema),
       theme: themeSchema,
       settings: settingsSchema,
+      defaultLocale: z.string().default("en"),
+      supportedLocales: z.array(z.string()).default(["en"]),
+      localeDetectionConfig: localeDetectionConfigSchema.default({
+        enabled: false,
+        methods: [],
+        fallbackLocale: "en",
+      }),
     }),
   ) satisfies z.ZodType<Partial<Prisma.PublicTypebot>, z.ZodTypeDef, unknown>
 )._def.schema.openapi({

@@ -14,6 +14,9 @@ export const convertTypebotToPublicTypebot = (
   settings: typebot.settings,
   theme: typebot.theme,
   variables: typebot.variables,
+  defaultLocale: typebot.defaultLocale,
+  supportedLocales: typebot.supportedLocales,
+  localeDetectionConfig: typebot.localeDetectionConfig,
   createdAt: new Date(),
   updatedAt: new Date(),
 });
