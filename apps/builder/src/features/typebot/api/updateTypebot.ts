@@ -39,6 +39,9 @@ const typebotUpdateSchemaPick = {
   riskLevel: true,
   events: true,
   updatedAt: true,
+  defaultLocale: true,
+  supportedLocales: true,
+  localeDetectionConfig: true,
 } as const;
 
 export const updateTypebot = authenticatedProcedure
@@ -213,6 +216,9 @@ export const updateTypebot = authenticatedProcedure
           }),
           isClosed: typebot.isClosed,
           whatsAppCredentialsId: typebot.whatsAppCredentialsId ?? undefined,
+          defaultLocale: typebot.defaultLocale,
+          supportedLocales: typebot.supportedLocales ?? undefined,
+          localeDetectionConfig: typebot.localeDetectionConfig ?? undefined,
         },
       });
 

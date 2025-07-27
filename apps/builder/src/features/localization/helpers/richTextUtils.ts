@@ -1,0 +1,110 @@
+import type { TElement } from "@udecode/plate-common";
+
+/**
+ * Check if the content has rich text formatting (more than just plain text)
+ */
+export const hasRichTextFormatting = (richText: TElement[]): boolean => {
+  if (!richText || richText.length === 0) return false;
+
+  // Check if there's any formatting beyond plain paragraphs with text
+  return richText.some((element: any) => {
+    // Check for non-paragraph elements
+    if (element.type && element.type !== "p") return true;
+
+    // Check for formatted text within paragraphs
+    if (element.children) {
+      return element.children.some((child: any) => {
+        // Check for text nodes with formatting
+        if (child.text !== undefined) {
+          return child.bold || child.italic || child.underline;
+        }
+        // Check for non-text nodes (like links)
+        return child.type !== undefined;
+      });
+    }
+
+    return false;
+  });
+};
+
+/**
+ * Convert rich text to plain text
+ */
+export const richTextToPlainText = (richText: TElement[]): string => {
+  if (!richText || richText.length === 0) return "";
+
+  const extractText = (element: any): string => {
+    if (typeof element === "string") return element;
+    if (element.text !== undefined) return element.text;
+    if (element.children) {
+      return element.children.map(extractText).join("");
+    }
+    return "";
+  };
+
+  return richText.map(extractText).join("\n").trim();
+};
+
+/**
+ * Convert plain text to rich text format
+ */
+export const plainTextToRichText = (text: string): TElement[] => {
+  if (!text || text.trim() === "") {
+    return [{ type: "p", children: [{ text: "" }] }];
+  }
+
+  // Split by newlines and create paragraph elements
+  const lines = text.split("\n");
+  return lines.map((line) => ({
+    type: "p",
+    children: [{ text: line }],
+  }));
+};
+
+/**
+ * Check if content should use rich text editor
+ * Returns true if the content has rich text formatting or is explicitly rich text
+ */
+export const shouldUseRichTextEditor = (content: any): boolean => {
+  // If it has richText property and it's formatted, use rich text editor
+  if (content.richText && hasRichTextFormatting(content.richText)) {
+    return true;
+  }
+
+  // If it has richText property but no formatting, and no plainText, use rich text editor
+  if (content.richText && !content.plainText && !content.html) {
+    return true;
+  }
+
+  // If it only has plainText or html, use textarea
+  return false;
+};
+
+/**
+ * Get the appropriate content for editing based on the content structure
+ */
+export const getEditableContent = (
+  content: any,
+): {
+  isRichText: boolean;
+  text: string;
+  richText: TElement[];
+} => {
+  const useRichText = shouldUseRichTextEditor(content);
+
+  if (useRichText && content.richText) {
+    return {
+      isRichText: true,
+      text: richTextToPlainText(content.richText),
+      richText: content.richText,
+    };
+  }
+
+  // Fallback to plain text
+  const text = content.plainText || content.html || "";
+  return {
+    isRichText: false,
+    text,
+    richText: plainTextToRichText(text),
+  };
+};

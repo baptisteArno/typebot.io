@@ -34,6 +34,9 @@ const typebotCreateSchemaPick = {
   resultsTablePreferences: true,
   publicId: true,
   customDomain: true,
+  defaultLocale: true,
+  supportedLocales: true,
+  localeDetectionConfig: true,
 } as const;
 
 export const createTypebot = authenticatedProcedure
@@ -130,6 +133,13 @@ export const createTypebot = authenticatedProcedure
         resultsTablePreferences: typebot.resultsTablePreferences ?? undefined,
         publicId: typebot.publicId ?? undefined,
         customDomain: typebot.customDomain ?? undefined,
+        defaultLocale: typebot.defaultLocale ?? "en",
+        supportedLocales: typebot.supportedLocales ?? ["en"],
+        localeDetectionConfig: typebot.localeDetectionConfig ?? {
+          enabled: false,
+          methods: [],
+          fallbackLocale: "en",
+        },
       } satisfies Partial<TypebotV6>,
     });
 

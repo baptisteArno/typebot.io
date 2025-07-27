@@ -16,6 +16,9 @@ export type TypebotV3PageProps = {
   isHideQueryParamsEnabled: boolean | null;
   background: NonNullable<Typebot["theme"]["general"]>["background"];
   metadata: Typebot["settings"]["metadata"];
+  locale?: string;
+  availableLocales?: string[];
+  localeDetectionMeta?: any;
 };
 
 export const TypebotPageV3 = ({
@@ -27,6 +30,9 @@ export const TypebotPageV3 = ({
   isHideQueryParamsEnabled,
   metadata,
   background,
+  locale,
+  availableLocales,
+  localeDetectionMeta,
 }: TypebotV3PageProps) => {
   const { asPath, push } = useRouter();
 
@@ -72,6 +78,9 @@ export const TypebotPageV3 = ({
         onInit={clearQueryParamsIfNecessary}
         font={font ?? undefined}
         apiHost={apiOrigin}
+        locale={locale}
+        availableLocales={availableLocales}
+        localeDetectionMeta={localeDetectionMeta}
       />
     </div>
   );

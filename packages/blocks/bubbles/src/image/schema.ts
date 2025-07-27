@@ -10,6 +10,20 @@ export const imageBubbleContentSchema = z.object({
       alt: z.string().optional(),
     })
     .optional(),
+  localizations: z
+    .record(
+      z.string(),
+      z.object({
+        url: z.string().optional(),
+        clickLink: z
+          .object({
+            url: z.string().optional(),
+            alt: z.string().optional(),
+          })
+          .optional(),
+      }),
+    )
+    .optional(),
 });
 
 export const imageBubbleBlockSchema = blockBaseSchema

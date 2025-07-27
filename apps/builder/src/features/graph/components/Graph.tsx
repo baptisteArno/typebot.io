@@ -6,7 +6,10 @@ import type {
 } from "@/features/analytics/schemas";
 import { BoardMenuButton } from "@/features/editor/components/BoardMenuButton";
 import { headerHeight } from "@/features/editor/constants";
-import { useTypebot } from "@/features/editor/providers/TypebotProvider";
+import {
+  type FrontendTypebotV6,
+  useTypebot,
+} from "@/features/editor/providers/TypebotProvider";
 import { useUser } from "@/features/user/hooks/useUser";
 import { useRightPanel } from "@/hooks/useRightPanel";
 import { Flex, type FlexProps, useEventListener } from "@chakra-ui/react";
@@ -46,7 +49,7 @@ export const Graph = ({
   onUnlockProPlanClick,
   ...props
 }: {
-  typebot: TypebotV6 | PublicTypebotV6;
+  typebot: TypebotV6 | PublicTypebotV6 | FrontendTypebotV6;
   edgesWithTotalUsers?: EdgeWithTotalVisits[];
   totalAnswers?: TotalAnswers[];
   onUnlockProPlanClick?: () => void;

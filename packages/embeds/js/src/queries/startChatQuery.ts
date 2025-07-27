@@ -24,6 +24,9 @@ type Props = {
   prefilledVariables?: Record<string, unknown>;
   resultId?: string;
   sessionId?: string;
+  locale?: string;
+  availableLocales?: string[];
+  localeDetectionMeta?: any;
 };
 
 export async function startChatQuery({
@@ -35,6 +38,9 @@ export async function startChatQuery({
   stripeRedirectStatus,
   startFrom,
   sessionId,
+  locale,
+  availableLocales,
+  localeDetectionMeta,
 }: Props) {
   if (isNotDefined(typebot))
     throw new Error("Typebot ID is required to get initial messages");
@@ -63,6 +69,9 @@ export async function startChatQuery({
       typebot,
       prefilledVariables,
       sessionId,
+      locale,
+      availableLocales,
+      localeDetectionMeta,
     });
   }
 
@@ -79,6 +88,9 @@ export async function startChatQuery({
           prefilledVariables,
           resultId,
           isOnlyRegistering: false,
+          locale,
+          availableLocales,
+          localeDetectionMeta,
         } satisfies Omit<
           StartChatInput,
           "publicId" | "textBubbleContentFormat"
@@ -144,6 +156,9 @@ const startPreviewChat = async ({
   typebot,
   prefilledVariables,
   sessionId,
+  locale,
+  availableLocales,
+  localeDetectionMeta,
 }: {
   apiHost?: string;
   typebotId: string;
@@ -151,6 +166,9 @@ const startPreviewChat = async ({
   typebot: StartPreviewChatInput["typebot"];
   prefilledVariables?: Record<string, unknown>;
   sessionId?: string;
+  locale?: string;
+  availableLocales?: string[];
+  localeDetectionMeta?: any;
 }) => {
   try {
     const data = await ky
@@ -163,6 +181,9 @@ const startPreviewChat = async ({
             typebot,
             prefilledVariables,
             sessionId,
+            locale,
+            availableLocales,
+            localeDetectionMeta,
           } satisfies Omit<
             StartPreviewChatInput,
             "typebotId" | "isOnlyRegistering" | "textBubbleContentFormat"

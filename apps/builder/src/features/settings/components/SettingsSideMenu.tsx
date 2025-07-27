@@ -1,10 +1,12 @@
 import {
   ChatIcon,
   CodeIcon,
+  GlobeIcon,
   LockedIcon,
   MoreVerticalIcon,
 } from "@/components/icons";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
+import { LocalizationSettingsForm } from "@/features/localization/components/LocalizationSettingsForm";
 import {
   Accordion,
   AccordionButton,
@@ -50,6 +52,20 @@ export const SettingsSideMenu = () => {
     typebot &&
     updateTypebot({ updates: { settings: { ...typebot.settings, metadata } } });
 
+  const handleLocalizationSettingsChange = (localizationSettings: {
+    defaultLocale: string;
+    supportedLocales: string[];
+    localeDetectionConfig: any;
+  }) =>
+    typebot &&
+    updateTypebot({
+      updates: {
+        defaultLocale: localizationSettings.defaultLocale,
+        supportedLocales: localizationSettings.supportedLocales,
+        localeDetectionConfig: localizationSettings.localeDetectionConfig,
+      },
+    });
+
   return (
     <Stack
       flex="1"
@@ -77,6 +93,32 @@ export const SettingsSideMenu = () => {
               <GeneralSettingsForm
                 generalSettings={typebot.settings.general}
                 onGeneralSettingsChange={handleGeneralSettingsChange}
+              />
+            )}
+          </AccordionPanel>
+        </AccordionItem>
+        <AccordionItem>
+          <AccordionButton py={4}>
+            <HStack flex="1" pl={2}>
+              <GlobeIcon />
+              <Heading fontSize="md">Localization</Heading>
+            </HStack>
+            <AccordionIcon />
+          </AccordionButton>
+          <AccordionPanel>
+            {typebot && (
+              <LocalizationSettingsForm
+                localizationSettings={{
+                  defaultLocale: typebot.defaultLocale || "en",
+                  supportedLocales: Array.isArray(typebot.supportedLocales)
+                    ? typebot.supportedLocales
+                    : JSON.parse(typebot.supportedLocales || '["en"]'),
+                  localeDetectionConfig:
+                    typeof typebot.localeDetectionConfig === "string"
+                      ? JSON.parse(typebot.localeDetectionConfig || "{}")
+                      : typebot.localeDetectionConfig || {},
+                }}
+                onLocalizationSettingsChange={handleLocalizationSettingsChange}
               />
             )}
           </AccordionPanel>

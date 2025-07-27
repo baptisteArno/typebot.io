@@ -202,6 +202,9 @@ model Typebot {
   customDomain            String?                   @unique
   workspaceId             String
   resultsTablePreferences Json?
+  defaultLocale           String                    @default("en") @db.Char(10)
+  supportedLocales        Json                      @default("[\"en\"]")
+  localeDetectionConfig   Json                      @default("{}")
   folder                  DashboardFolder?          @relation(fields: [folderId], references: [id])
   workspace               Workspace                 @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   collaborators           CollaboratorsOnTypebots[]
@@ -217,6 +220,7 @@ model Typebot {
 
   @@index([workspaceId])
   @@index([isArchived, createdAt(sort: Desc)])
+  @@index([defaultLocale])
 }
 
 model Invitation {

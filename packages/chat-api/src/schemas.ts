@@ -266,6 +266,18 @@ const commonStartChatInputSchema = z.object({
     }),
   textBubbleContentFormat: z.enum(["richText", "markdown"]).default("richText"),
   startFrom: startFromSchema.optional(),
+  locale: z
+    .string()
+    .optional()
+    .describe("Preferred locale for the chat session"),
+  availableLocales: z
+    .array(z.string())
+    .optional()
+    .describe("List of available locales for the typebot"),
+  localeDetectionMeta: z
+    .any()
+    .optional()
+    .describe("Additional metadata for locale detection"),
 });
 export const startChatInputSchema = z
   .object({
@@ -402,6 +414,18 @@ export const startChatResponseSchema = z
       }),
       publishedAt: z.coerce.date().optional(),
     }),
+    locale: z
+      .string()
+      .optional()
+      .describe("The locale used for this chat session"),
+    availableLocales: z
+      .array(z.string())
+      .optional()
+      .describe("List of available locales for the typebot"),
+    localeDetectionMeta: z
+      .any()
+      .optional()
+      .describe("Metadata about how the locale was detected"),
   })
   .merge(chatResponseBaseSchema);
 export type StartChatResponse = z.infer<typeof startChatResponseSchema>;

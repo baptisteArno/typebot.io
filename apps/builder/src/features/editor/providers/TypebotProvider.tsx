@@ -27,6 +27,7 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useState,
 } from "react";
 import { useUndo } from "../hooks/useUndo";
 import { type BlocksActions, blocksAction } from "./typebotActions/blocks";
@@ -40,6 +41,33 @@ import {
 } from "./typebotActions/variables";
 
 const autoSaveTimeout = 15000;
+
+// Frontend-specific TypebotV6 type with parsed localization fields
+export type FrontendTypebotV6 = Omit<
+  TypebotV6,
+  "supportedLocales" | "localeDetectionConfig"
+> & {
+  supportedLocales: string[];
+  localeDetectionConfig: any;
+};
+
+// Transform typebot from API format (JSON strings) to frontend format (arrays/objects)
+const transformTypebotFromAPI = (typebot: TypebotV6): FrontendTypebotV6 => ({
+  ...typebot,
+  supportedLocales:
+    typeof typebot.supportedLocales === "string"
+      ? JSON.parse(typebot.supportedLocales)
+      : typebot.supportedLocales,
+  localeDetectionConfig:
+    typeof typebot.localeDetectionConfig === "string"
+      ? JSON.parse(typebot.localeDetectionConfig)
+      : typebot.localeDetectionConfig,
+});
+
+// Transform typebot from frontend format to API format
+const transformTypebotForAPI = (typebot: FrontendTypebotV6): TypebotV6 => ({
+  ...typebot,
+});
 
 type UpdateTypebotPayload = Partial<
   Pick<
@@ -55,22 +83,31 @@ type UpdateTypebotPayload = Partial<
     | "isClosed"
     | "whatsAppCredentialsId"
     | "riskLevel"
-  >
+    | "defaultLocale"
+  > & {
+    supportedLocales: string[];
+    localeDetectionConfig: any;
+  }
 >;
 
 export type SetTypebot = (
-  newPresent: TypebotV6 | ((current: TypebotV6) => TypebotV6),
+  newPresent:
+    | FrontendTypebotV6
+    | ((current: FrontendTypebotV6) => FrontendTypebotV6),
 ) => void;
 
 const typebotContext = createContext<
   {
-    typebot?: TypebotV6;
+    typebot?: FrontendTypebotV6;
     publishedTypebot?: PublicTypebotV6;
     publishedTypebotVersion?: PublicTypebot["version"];
     currentUserMode: "guest" | "read" | "write";
     isPublished: boolean;
     isSavingLoading: boolean;
-    save: (updates?: Partial<TypebotV6>, overwrite?: boolean) => Promise<void>;
+    save: (
+      updates?: Partial<FrontendTypebotV6>,
+      overwrite?: boolean,
+    ) => Promise<void>;
     undo: () => void;
     redo: () => void;
     canRedo: boolean;
@@ -79,8 +116,9 @@ const typebotContext = createContext<
       updates: UpdateTypebotPayload;
       save?: boolean;
       overwrite?: boolean;
-    }) => Promise<TypebotV6 | undefined>;
+    }) => Promise<FrontendTypebotV6 | undefined>;
     restorePublishedTypebot: () => void;
+    setAutoSaveEnabled: (enabled: boolean) => void;
   } & GroupsActions &
     BlocksActions &
     ItemsActions &
@@ -101,6 +139,8 @@ export const TypebotProvider = ({
   const setElementsCoordinates = useSelectionStore(
     (state) => state.setElementsCoordinates,
   );
+
+  const [autoSaveEnabled, setAutoSaveEnabled] = useState(true);
 
   const {
     data: typebotData,
@@ -178,7 +218,7 @@ export const TypebotProvider = ({
       set: setLocalTypebot,
       setUpdateDate,
     },
-  ] = useUndo<TypebotV6>(undefined, {
+  ] = useUndo<FrontendTypebotV6>(undefined, {
     isReadOnly,
     onUndo: (t) => {
       setElementsCoordinates({
@@ -205,7 +245,7 @@ export const TypebotProvider = ({
       new Date(typebot.updatedAt).getTime() >
         new Date(localTypebot.updatedAt).getTime()
     ) {
-      setLocalTypebot({ ...typebot });
+      setLocalTypebot(transformTypebotFromAPI({ ...typebot }));
       setElementsCoordinates({
         groups: typebot.groups,
         events: typebot.events,
@@ -222,9 +262,9 @@ export const TypebotProvider = ({
   ]);
 
   const saveTypebot = useCallback(
-    async (updates?: Partial<TypebotV6>, overwrite?: boolean) => {
+    async (updates?: Partial<FrontendTypebotV6>, overwrite?: boolean) => {
       if (!localTypebot || !typebot || isReadOnly) return;
-      const typebotToSave = {
+      const typebotToSave: FrontendTypebotV6 = {
         ...localTypebot,
         ...updates,
       };
@@ -235,17 +275,22 @@ export const TypebotProvider = ({
         )
       )
         return;
-      const newParsedTypebot = typebotV6Schema.parse({ ...typebotToSave });
-      setLocalTypebot(newParsedTypebot);
+      // Transform for schema validation (API format with JSON strings)
+      const typebotForSchema = transformTypebotForAPI(typebotToSave);
+      const newParsedTypebot = typebotV6Schema.parse(typebotForSchema);
+
+      // Keep frontend-friendly format for local state
+      setLocalTypebot(typebotToSave);
+
       try {
         const { typebot } = await updateTypebot({
-          typebotId: newParsedTypebot.id,
-          typebot: newParsedTypebot,
+          typebotId: typebotToSave.id,
+          typebot: typebotForSchema, // Use transformed data for API
           overwrite,
         });
         setUpdateDate(typebot.updatedAt);
         if (overwrite) {
-          setLocalTypebot(typebot);
+          setLocalTypebot(transformTypebotFromAPI(typebot));
         }
       } catch {
         setLocalTypebot({
@@ -265,11 +310,11 @@ export const TypebotProvider = ({
 
   useAutoSave(
     {
-      handler: saveTypebot,
-      item: localTypebot,
+      handler: autoSaveEnabled ? saveTypebot : () => Promise.resolve(),
+      item: autoSaveEnabled ? localTypebot : null,
       debounceTimeout: autoSaveTimeout,
     },
-    [saveTypebot, localTypebot],
+    [saveTypebot, localTypebot, autoSaveEnabled],
   );
 
   useEffect(() => {
@@ -287,13 +332,13 @@ export const TypebotProvider = ({
       isDefined(localTypebot) &&
       isDefined(localTypebot.publicId) &&
       isDefined(publishedTypebot) &&
-      isPublishedHelper(localTypebot, publishedTypebot),
+      isPublishedHelper(transformTypebotForAPI(localTypebot), publishedTypebot),
     [localTypebot, publishedTypebot],
   );
 
   useEffect(() => {
     if (!localTypebot || !typebot || isReadOnly) return;
-    if (!areTypebotsEqual(localTypebot, typebot)) {
+    if (!areTypebotsEqual(transformTypebotForAPI(localTypebot), typebot)) {
       window.addEventListener("beforeunload", preventUserFromRefreshing);
     }
 
@@ -321,7 +366,12 @@ export const TypebotProvider = ({
   const restorePublishedTypebot = () => {
     if (!publishedTypebot || !localTypebot) return;
     setLocalTypebot(
-      convertPublicTypebotToTypebot(publishedTypebot, localTypebot),
+      transformTypebotFromAPI(
+        convertPublicTypebotToTypebot(
+          publishedTypebot,
+          transformTypebotForAPI(localTypebot),
+        ),
+      ),
     );
   };
 
@@ -343,6 +393,7 @@ export const TypebotProvider = ({
         isPublished,
         updateTypebot: updateLocalTypebot,
         restorePublishedTypebot,
+        setAutoSaveEnabled,
         ...groupsActions(setLocalTypebot as SetTypebot),
         ...blocksAction(setLocalTypebot as SetTypebot),
         ...variablesAction(setLocalTypebot as SetTypebot),

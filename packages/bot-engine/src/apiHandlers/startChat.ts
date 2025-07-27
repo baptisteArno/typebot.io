@@ -22,6 +22,9 @@ type Props = {
   prefilledVariables?: Record<string, unknown>;
   resultId?: string;
   textBubbleContentFormat: "richText" | "markdown";
+  locale?: string;
+  availableLocales?: string[];
+  localeDetectionMeta?: any;
 };
 
 export const startChat = async ({
@@ -34,6 +37,9 @@ export const startChat = async ({
   prefilledVariables,
   resultId: startResultId,
   textBubbleContentFormat,
+  locale,
+  availableLocales,
+  localeDetectionMeta,
 }: Props) => {
   const sessionId = createId();
   const sessionStore = getSessionStore(sessionId);
@@ -60,6 +66,9 @@ export const startChat = async ({
       resultId: startResultId,
       textBubbleContentFormat,
       message,
+      locale,
+      availableLocales,
+      localeDetectionMeta,
     },
   });
   deleteSessionStore(sessionId);
@@ -124,5 +133,8 @@ export const startChat = async ({
             currentInputBlockId: input?.id,
           })
       : undefined,
+    locale,
+    availableLocales,
+    localeDetectionMeta,
   };
 };

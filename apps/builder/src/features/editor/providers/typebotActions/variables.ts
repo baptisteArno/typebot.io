@@ -1,7 +1,7 @@
 import type { Typebot } from "@typebot.io/typebot/schemas/typebot";
 import type { Variable } from "@typebot.io/variables/schemas";
 import { type Draft, produce } from "immer";
-import type { SetTypebot } from "../TypebotProvider";
+import type { FrontendTypebotV6, SetTypebot } from "../TypebotProvider";
 
 export type VariablesActions = {
   createVariable: (variable: Variable) => void;
@@ -39,7 +39,7 @@ export const variablesAction = (setTypebot: SetTypebot): VariablesActions => ({
 });
 
 export const deleteVariableDraft = (
-  typebot: Draft<Typebot>,
+  typebot: Draft<FrontendTypebotV6>,
   variableId: string,
 ) => {
   const index = typebot.variables.findIndex((v) => v.id === variableId);
