@@ -1,4 +1,4 @@
-import type { FrontendTypebotV6 } from "@/features/editor/providers/TypebotProvider";
+import type { LocalizedTypebotV6 } from "@/features/editor/providers/TypebotProvider";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import {
   Alert,
@@ -64,7 +64,7 @@ export const EditTranslationModal = ({
   groupTitle,
   defaultContent,
 }: EditTranslationModalProps) => {
-  const { typebot, save, setAutoSaveEnabled } = useTypebot();
+  const { typebot, save, setAutoSaveEnabled, updateBlock } = useTypebot();
   const { availableLocales, fallbackLocale } = useLocalization();
   const [localizations, setLocalizations] = useState<LocalizationData>({});
   const [isSaving, setIsSaving] = useState(false);
@@ -72,18 +72,34 @@ export const EditTranslationModal = ({
   const [isDefaultRichText, setIsDefaultRichText] = useState(false);
   const toast = useToast();
 
-  // Find the block in the typebot
-  const findBlock = () => {
+  // Find the block and its indices in the typebot
+  const findBlockWithIndices = () => {
     if (!typebot || !blockId) return null;
 
-    for (const group of typebot.groups || []) {
-      for (const block of group.blocks || []) {
+    for (
+      let groupIndex = 0;
+      groupIndex < (typebot.groups || []).length;
+      groupIndex++
+    ) {
+      const group = typebot.groups[groupIndex];
+      for (
+        let blockIndex = 0;
+        blockIndex < (group.blocks || []).length;
+        blockIndex++
+      ) {
+        const block = group.blocks[blockIndex];
         if (block.id === blockId) {
-          return block;
+          return { block, groupIndex, blockIndex };
         }
       }
     }
     return null;
+  };
+
+  // Find the block in the typebot (backwards compatibility)
+  const findBlock = () => {
+    const result = findBlockWithIndices();
+    return result ? result.block : null;
   };
 
   // Extract current localizations from the block
@@ -300,18 +316,28 @@ export const EditTranslationModal = ({
     });
   };
 
-  // Apply localizations to the block
+  // Apply localizations to the block using proper immutable updates
   const applyLocalizationsToBlock = () => {
     console.log("🔍 Finding block with ID:", blockId);
-    const block = findBlock();
-    if (!block) {
+    const blockData = findBlockWithIndices();
+    if (!blockData) {
       console.log("❌ Block not found!");
       return false;
     }
-    console.log("✅ Block found:", { type: block.type, id: block.id });
 
-    let updated = false;
+    const { block, groupIndex, blockIndex } = blockData;
+    console.log("✅ Block found:", {
+      type: block.type,
+      id: block.id,
+      groupIndex,
+      blockIndex,
+    });
+
+    let hasAnyUpdates = false;
     console.log("📊 Localizations to process:", localizations);
+
+    // Collect all changes to apply in a single update
+    const blockUpdates: any = {};
 
     Object.entries(localizations).forEach(([locale, data]) => {
       console.log(`🔄 Processing locale ${locale}:`, data);
@@ -327,37 +353,45 @@ export const EditTranslationModal = ({
         const content = block.content as any;
         console.log("📄 Block content structure:", content);
 
-        if (!content.localizations) {
-          content.localizations = {};
+        // Prepare the content updates
+        if (!blockUpdates.content) {
+          blockUpdates.content = { ...content };
         }
-        if (!content.localizations[locale]) {
-          content.localizations[locale] = {};
+        if (!blockUpdates.content.localizations) {
+          blockUpdates.content.localizations = {
+            ...(content.localizations || {}),
+          };
+        }
+        if (!blockUpdates.content.localizations[locale]) {
+          blockUpdates.content.localizations[locale] = {
+            ...(content.localizations?.[locale] || {}),
+          };
         }
 
         // Determine content type and apply
         if (content.richText !== undefined && data.isRichText) {
           console.log(`📝 Setting richText for ${locale}:`, data.richText);
-          content.localizations[locale].richText = data.richText;
+          blockUpdates.content.localizations[locale].richText = data.richText;
           // Also set plainText as fallback
-          content.localizations[locale].plainText = data.content;
+          blockUpdates.content.localizations[locale].plainText = data.content;
         } else if (content.plainText !== undefined) {
           console.log(`✏️ Setting plainText for ${locale}:`, data.content);
-          content.localizations[locale].plainText = data.content;
+          blockUpdates.content.localizations[locale].plainText = data.content;
         } else if (content.html !== undefined) {
           console.log(`🏷️ Setting html for ${locale}:`, data.content);
-          content.localizations[locale].html = data.content;
+          blockUpdates.content.localizations[locale].html = data.content;
         } else if (content.url !== undefined) {
           console.log(`🔗 Setting url for ${locale}:`, data.content);
-          content.localizations[locale].url = data.content;
+          blockUpdates.content.localizations[locale].url = data.content;
         } else if (content.richText !== undefined) {
           console.log(
             `📝 Setting richText as plainText for ${locale}:`,
             data.content,
           );
-          content.localizations[locale].plainText = data.content;
+          blockUpdates.content.localizations[locale].plainText = data.content;
         }
 
-        updated = true;
+        hasAnyUpdates = true;
         console.log(`✅ Content block updated for ${locale}`);
       }
 
@@ -372,7 +406,11 @@ export const EditTranslationModal = ({
         const localizedItems = data.content.split(", ");
         console.log("📋 Items to update:", localizedItems);
 
-        items.forEach((item, index) => {
+        if (!blockUpdates.items) {
+          blockUpdates.items = [...items];
+        }
+
+        blockUpdates.items.forEach((item: any, index: number) => {
           if (localizedItems[index] !== undefined) {
             console.log(
               `🔹 Updating item ${index} for ${locale}:`,
@@ -385,7 +423,7 @@ export const EditTranslationModal = ({
               item.localizations[locale] = {};
             }
             item.localizations[locale].content = localizedItems[index];
-            updated = true;
+            hasAnyUpdates = true;
           }
         });
         console.log(`✅ Items block updated for ${locale}`);
@@ -402,29 +440,47 @@ export const EditTranslationModal = ({
         const [placeholder, button] = data.content.split(" / ");
         console.log("🏷️ Labels to update:", { placeholder, button });
 
-        if (!options.labels.localizations) {
-          options.labels.localizations = {};
+        if (!blockUpdates.options) {
+          blockUpdates.options = { ...options };
         }
-        if (!options.labels.localizations[locale]) {
-          options.labels.localizations[locale] = {};
+        if (!blockUpdates.options.labels) {
+          blockUpdates.options.labels = { ...options.labels };
+        }
+        if (!blockUpdates.options.labels.localizations) {
+          blockUpdates.options.labels.localizations = {
+            ...(options.labels.localizations || {}),
+          };
+        }
+        if (!blockUpdates.options.labels.localizations[locale]) {
+          blockUpdates.options.labels.localizations[locale] = {
+            ...(options.labels.localizations?.[locale] || {}),
+          };
         }
 
         if (placeholder !== undefined) {
           console.log(`📝 Setting placeholder for ${locale}:`, placeholder);
-          options.labels.localizations[locale].placeholder = placeholder;
-          updated = true;
+          blockUpdates.options.labels.localizations[locale].placeholder =
+            placeholder;
+          hasAnyUpdates = true;
         }
         if (button !== undefined) {
           console.log(`🔘 Setting button for ${locale}:`, button);
-          options.labels.localizations[locale].button = button;
-          updated = true;
+          blockUpdates.options.labels.localizations[locale].button = button;
+          hasAnyUpdates = true;
         }
         console.log(`✅ Options block updated for ${locale}`);
       }
     });
 
-    console.log("🏁 Final update result:", updated);
-    return updated;
+    // Apply all updates at once using the updateBlock action
+    if (hasAnyUpdates && Object.keys(blockUpdates).length > 0) {
+      console.log("🚀 Applying block updates:", blockUpdates);
+      updateBlock({ groupIndex, blockIndex }, blockUpdates);
+      console.log("✅ Block updated successfully");
+    }
+
+    console.log("🏁 Final update result:", hasAnyUpdates);
+    return hasAnyUpdates;
   };
 
   // Handle save

@@ -14,7 +14,7 @@ import { byId, isDefined } from "@typebot.io/lib/utils";
 import type { Edge } from "@typebot.io/typebot/schemas/edge";
 import type { Typebot, TypebotV6 } from "@typebot.io/typebot/schemas/typebot";
 import { type Draft, produce } from "immer";
-import type { FrontendTypebotV6, SetTypebot } from "../TypebotProvider";
+import type { LocalizedTypebotV6, SetTypebot } from "../TypebotProvider";
 
 export type EdgesActions = {
   createEdge: (edge: Omit<Edge, "id">) => void;
@@ -120,13 +120,13 @@ export const edgesAction = (setTypebot: SetTypebot): EdgesActions => ({
 });
 
 const addEdgeIdToEvent = (
-  typebot: Draft<FrontendTypebotV6>,
+  typebot: Draft<LocalizedTypebotV6>,
   edgeId: string,
   { eventIndex }: { eventIndex: number },
 ) => (typebot.events[eventIndex].outgoingEdgeId = edgeId);
 
 const addEdgeIdToBlock = (
-  typebot: Draft<FrontendTypebotV6>,
+  typebot: Draft<LocalizedTypebotV6>,
   edgeId: string,
   { groupIndex, blockIndex }: BlockIndices,
 ) => {
@@ -134,7 +134,7 @@ const addEdgeIdToBlock = (
 };
 
 const addEdgeIdToItem = (
-  typebot: Draft<FrontendTypebotV6>,
+  typebot: Draft<LocalizedTypebotV6>,
   edgeId: string,
   { groupIndex, blockIndex, itemIndex }: ItemIndices,
 ) =>
@@ -143,7 +143,7 @@ const addEdgeIdToItem = (
   ].outgoingEdgeId = edgeId);
 
 const addEdgeIdToPath = (
-  typebot: Draft<FrontendTypebotV6>,
+  typebot: Draft<LocalizedTypebotV6>,
   edgeId: string,
   { groupIndex, blockIndex, itemIndex, pathIndex }: PathIndices,
 ) =>
@@ -158,7 +158,7 @@ export const deleteEdgeDraft = ({
   edgeId,
   groupIndex,
 }: {
-  typebot: Draft<FrontendTypebotV6>;
+  typebot: Draft<LocalizedTypebotV6>;
   edgeId: string;
   groupIndex?: number;
 }) => {
@@ -173,7 +173,7 @@ const resetOutgoingEdgeIdProp = ({
   edgeId,
   groupIndex,
 }: {
-  typebot: Draft<FrontendTypebotV6>;
+  typebot: Draft<LocalizedTypebotV6>;
   edgeId: string;
   groupIndex?: number;
 }) => {
@@ -217,7 +217,7 @@ const resetOutgoingEdgeIdProp = ({
 };
 
 export const deleteConnectedEdgesDraft = (
-  typebot: Draft<FrontendTypebotV6>,
+  typebot: Draft<LocalizedTypebotV6>,
   deletedNodeId: string,
 ) => {
   const edgesToDelete = typebot.edges.filter((edge) => {
@@ -241,7 +241,7 @@ export const deleteConnectedEdgesDraft = (
 };
 
 const removeExistingEdge = (
-  typebot: Draft<FrontendTypebotV6>,
+  typebot: Draft<LocalizedTypebotV6>,
   newEdge: Omit<Edge, "id">,
 ) => {
   typebot.edges = typebot.edges.filter((existingEdge) => {

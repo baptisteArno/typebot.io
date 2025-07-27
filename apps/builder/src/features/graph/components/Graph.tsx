@@ -4,7 +4,7 @@ import type {
 } from "@/features/analytics/schemas";
 import { headerHeight } from "@/features/editor/constants";
 import {
-  type FrontendTypebotV6,
+  type LocalizedTypebotV6,
   useTypebot,
 } from "@/features/editor/providers/TypebotProvider";
 import { useUser } from "@/features/user/hooks/useUser";
@@ -51,7 +51,7 @@ export const Graph = ({
   onUnlockProPlanClick,
   ...props
 }: {
-  typebot: TypebotV6 | PublicTypebotV6 | FrontendTypebotV6;
+  typebot: TypebotV6 | PublicTypebotV6 | LocalizedTypebotV6;
   edgesWithTotalUsers?: EdgeWithTotalVisits[];
   totalAnswers?: TotalAnswers[];
   onUnlockProPlanClick?: () => void;
