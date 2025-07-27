@@ -55,6 +55,26 @@ export class ClientLocaleDetector {
   detectLocale(context: ClientLocaleDetectionContext): LocaleDetectionResult {
     const startTime = performance.now();
 
+    // Always check URL parameter first, even if localization is not fully configured
+    const urlParamLocale = this.detectFromUrlParam(context);
+    if (urlParamLocale) {
+      const result = {
+        locale: urlParamLocale,
+        method: "urlParam",
+        confidence: 1.0,
+        fallbackUsed: false,
+      };
+
+      recordLocaleDetectionPerformance({
+        detectionTime: performance.now() - startTime,
+        cacheHit: false,
+        method: "urlParam",
+        locale: urlParamLocale,
+      });
+
+      return result;
+    }
+
     if (!this.config.enabled || this.availableLocales.length <= 1) {
       const result = {
         locale: this.availableLocales[0] || "en",
@@ -183,7 +203,7 @@ export class ClientLocaleDetector {
   private detectFromUrlParam(
     context: ClientLocaleDetectionContext,
   ): string | null {
-    const paramName = this.config.urlParamName || "lang";
+    const paramName = this.config.urlParamName || "locale";
     const locale = context.searchParams.get(paramName);
     return locale ? this.validateLocale(locale) : null;
   }

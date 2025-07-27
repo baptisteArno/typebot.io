@@ -42,6 +42,26 @@ export function resolveLocalizedContent<T extends Record<string, any>>(
     });
   }
 
+  // Special handling for text blocks: if plainText is localized but richText is not,
+  // generate richText from plainText to ensure UI displays localized content
+  if (
+    typeof (resolved as any).plainText === "string" &&
+    (resolved as any).richText &&
+    Array.isArray((resolved as any).richText)
+  ) {
+    // Always regenerate richText from plainText for localized content to ensure consistency
+    (resolved as any).richText = [
+      {
+        type: "p",
+        children: [
+          {
+            text: (resolved as any).plainText,
+          },
+        ],
+      },
+    ];
+  }
+
   // Remove localizations from resolved content
   resolved.localizations = undefined;
 

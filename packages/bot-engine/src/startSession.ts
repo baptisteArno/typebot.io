@@ -57,6 +57,7 @@ import { findPublicTypebot } from "./queries/findPublicTypebot";
 import { findResult } from "./queries/findResult";
 import { findTypebot } from "./queries/findTypebot";
 import { startBotFlow } from "./startBotFlow";
+import { localizationService } from "@typebot.io/lib/localization";
 
 type StartParams =
   | ({
@@ -353,7 +354,27 @@ const getTypebot = async (startParams: StartParams) => {
           ?.botClosed ?? defaultSystemMessages.botClosed,
     });
 
-  return startTypebotSchema.parse(parsedTypebot);
+  // Apply localization if locale is specified
+  let localizedTypebot = parsedTypebot;
+  
+  if (
+    startParams.type === "live" && 
+    startParams.locale && 
+    startParams.locale !== "en"
+  ) {
+    try {
+      localizedTypebot = localizationService.resolveTypebotContent(
+        parsedTypebot,
+        startParams.locale,
+        (parsedTypebot as any).defaultLocale || "en"
+      );
+    } catch (error) {
+      console.warn(`Failed to localize typebot content for locale ${startParams.locale}:`, error);
+      // Continue with original typebot if localization fails
+    }
+  }
+
+  return startTypebotSchema.parse(localizedTypebot);
 };
 
 const getResult = async ({

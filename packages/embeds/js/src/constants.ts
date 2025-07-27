@@ -21,6 +21,10 @@ export const defaultBotProps: BotProps = {
   wsHost: undefined,
   resultId: undefined,
   sessionId: undefined,
+  locale: undefined,
+  availableLocales: undefined,
+  localeDetectionMeta: undefined,
+  localeDetectionConfig: undefined,
 };
 
 export const defaultPopupProps: PopupProps = {

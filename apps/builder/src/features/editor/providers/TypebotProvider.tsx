@@ -42,8 +42,8 @@ import {
 
 const autoSaveTimeout = 15000;
 
-// Frontend-specific TypebotV6 type with parsed localization fields
-export type FrontendTypebotV6 = Omit<
+// Localized TypebotV6 type with parsed localization fields
+export type LocalizedTypebotV6 = Omit<
   TypebotV6,
   "supportedLocales" | "localeDetectionConfig"
 > & {
@@ -52,7 +52,7 @@ export type FrontendTypebotV6 = Omit<
 };
 
 // Transform typebot from API format (JSON strings) to frontend format (arrays/objects)
-const transformTypebotFromAPI = (typebot: TypebotV6): FrontendTypebotV6 => ({
+const transformTypebotFromAPI = (typebot: TypebotV6): LocalizedTypebotV6 => ({
   ...typebot,
   supportedLocales:
     typeof typebot.supportedLocales === "string"
@@ -65,7 +65,7 @@ const transformTypebotFromAPI = (typebot: TypebotV6): FrontendTypebotV6 => ({
 });
 
 // Transform typebot from frontend format to API format
-const transformTypebotForAPI = (typebot: FrontendTypebotV6): TypebotV6 => ({
+const transformTypebotForAPI = (typebot: LocalizedTypebotV6): TypebotV6 => ({
   ...typebot,
 });
 
@@ -92,20 +92,20 @@ type UpdateTypebotPayload = Partial<
 
 export type SetTypebot = (
   newPresent:
-    | FrontendTypebotV6
-    | ((current: FrontendTypebotV6) => FrontendTypebotV6),
+    | LocalizedTypebotV6
+    | ((current: LocalizedTypebotV6) => LocalizedTypebotV6),
 ) => void;
 
 const typebotContext = createContext<
   {
-    typebot?: FrontendTypebotV6;
+    typebot?: LocalizedTypebotV6;
     publishedTypebot?: PublicTypebotV6;
     publishedTypebotVersion?: PublicTypebot["version"];
     currentUserMode: "guest" | "read" | "write";
     isPublished: boolean;
     isSavingLoading: boolean;
     save: (
-      updates?: Partial<FrontendTypebotV6>,
+      updates?: Partial<LocalizedTypebotV6>,
       overwrite?: boolean,
     ) => Promise<void>;
     undo: () => void;
@@ -116,7 +116,7 @@ const typebotContext = createContext<
       updates: UpdateTypebotPayload;
       save?: boolean;
       overwrite?: boolean;
-    }) => Promise<FrontendTypebotV6 | undefined>;
+    }) => Promise<LocalizedTypebotV6 | undefined>;
     restorePublishedTypebot: () => void;
     setAutoSaveEnabled: (enabled: boolean) => void;
   } & GroupsActions &
@@ -218,7 +218,7 @@ export const TypebotProvider = ({
       set: setLocalTypebot,
       setUpdateDate,
     },
-  ] = useUndo<FrontendTypebotV6>(undefined, {
+  ] = useUndo<LocalizedTypebotV6>(undefined, {
     isReadOnly,
     onUndo: (t) => {
       setElementsCoordinates({
@@ -262,9 +262,9 @@ export const TypebotProvider = ({
   ]);
 
   const saveTypebot = useCallback(
-    async (updates?: Partial<FrontendTypebotV6>, overwrite?: boolean) => {
+    async (updates?: Partial<LocalizedTypebotV6>, overwrite?: boolean) => {
       if (!localTypebot || !typebot || isReadOnly) return;
-      const typebotToSave: FrontendTypebotV6 = {
+      const typebotToSave: LocalizedTypebotV6 = {
         ...localTypebot,
         ...updates,
       };

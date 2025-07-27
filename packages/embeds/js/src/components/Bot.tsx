@@ -120,7 +120,7 @@ export const Bot = (props: BotProps & { class?: string }) => {
     let detectedLocale = props.locale;
     let detectionMeta = props.localeDetectionMeta;
     let availableLocales = props.availableLocales;
-
+    
     if (
       !detectedLocale &&
       props.localeDetectionConfig &&
@@ -155,6 +155,7 @@ export const Bot = (props: BotProps & { class?: string }) => {
     if (detectedLocale && typebotIdFromProps && !isPreview) {
       migrateToLocalizedStorage(typebotIdFromProps, detectedLocale);
     }
+    
     const { data, error } = await startChatQuery({
       stripeRedirectStatus: urlParams.get("redirect_status") ?? undefined,
       typebot: props.typebot,

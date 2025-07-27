@@ -1,4 +1,4 @@
-import type { FrontendTypebotV6 } from "@/features/editor/providers/TypebotProvider";
+import type { LocalizedTypebotV6 } from "@/features/editor/providers/TypebotProvider";
 import type { ImportedTranslationData } from "../schemas/importValidation";
 
 interface ImportResult {
@@ -12,7 +12,7 @@ interface ImportResult {
  * Imports translations from exported JSON data and applies them to the typebot
  */
 export const importTranslations = (
-  typebot: FrontendTypebotV6,
+  typebot: LocalizedTypebotV6,
   importData: ImportedTranslationData,
 ): ImportResult => {
   const result: ImportResult = {

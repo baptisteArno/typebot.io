@@ -10,7 +10,7 @@ import type { Edge } from "@typebot.io/typebot/schemas/edge";
 import type { TypebotV6 } from "@typebot.io/typebot/schemas/typebot";
 import type { Variable } from "@typebot.io/variables/schemas";
 import { type Draft, produce } from "immer";
-import type { FrontendTypebotV6, SetTypebot } from "../TypebotProvider";
+import type { LocalizedTypebotV6, SetTypebot } from "../TypebotProvider";
 import {
   createBlockDraft,
   deleteGroupDraft,
@@ -228,7 +228,7 @@ const replaceOldIdReferences = <T>(obj: T, mapping: Map<string, string>): T => {
 };
 
 const deleteGroupByIdDraft =
-  (typebot: Draft<FrontendTypebotV6>) => (groupId: string) => {
+  (typebot: Draft<LocalizedTypebotV6>) => (groupId: string) => {
     const groupIndex = typebot.groups.findIndex(byId(groupId));
     if (groupIndex === -1) return;
     deleteGroupDraft(typebot)(groupIndex);
