@@ -109,48 +109,103 @@ export class LocalizationService {
 
   // Block-level content resolution
   resolveBlockContent(block: any, locale: string, fallbackLocale: string): any {
-    if (!block.content) return block;
-
     const resolved = { ...block };
 
-    // Handle different block types
-    switch (block.type) {
-      case "text":
-        if (block.content) {
+    // Handle content if it exists
+    if (block.content) {
+      // Handle different block types
+      switch (block.type) {
+        case "text":
           resolved.content = this.resolveTextContent(
             block.content,
             locale,
             fallbackLocale,
           );
-        }
-        break;
+          break;
 
-      case "image":
-        if (block.content) {
+        case "image":
           resolved.content = this.resolveImageContent(
             block.content,
             locale,
             fallbackLocale,
           );
-        }
-        break;
+          break;
 
-      case "choice":
-        if (block.items) {
-          resolved.items = block.items.map((item: any) =>
-            this.resolveButtonContent(item, locale, fallbackLocale),
+        case "choice":
+        case "choice input":
+        case "picture choice input":
+        case "cards":
+          if (block.items) {
+            resolved.items = block.items.map((item: any) =>
+              this.resolveButtonContent(item, locale, fallbackLocale),
+            );
+          }
+          break;
+
+        default:
+          // Generic content resolution for other block types
+          resolved.content = this.resolveContent(
+            block.content,
+            locale,
+            fallbackLocale,
           );
-        }
-        break;
+          break;
+      }
+    }
 
-      default:
-        // Generic content resolution for other block types
-        resolved.content = this.resolveContent(
-          block.content,
+    // Handle input blocks with options.labels
+    if (block.options?.labels) {
+      resolved.options = {
+        ...block.options,
+        labels: this.resolveContent(
+          block.options.labels,
+          locale,
+          fallbackLocale,
+        ),
+      };
+    }
+
+    // Handle choice items (for choice blocks, picture choice, and cards)
+    if (
+      block.items &&
+      (block.type === "choice" ||
+        block.type === "choice input" ||
+        block.type === "picture choice input" ||
+        block.type === "cards")
+    ) {
+      console.log(
+        `🔄 Resolving choice block ${block.id} for locale ${locale}:`,
+        {
+          originalItems: block.items.map((item) => ({
+            id: item.id,
+            content: item.content,
+            hasLocalizations: !!item.localizations,
+            localizationKeys: item.localizations
+              ? Object.keys(item.localizations)
+              : [],
+            localizationForLocale: item.localizations?.[locale],
+          })),
+        },
+      );
+
+      resolved.items = block.items.map((item: any) => {
+        const resolvedItem = this.resolveButtonContent(
+          item,
           locale,
           fallbackLocale,
         );
-        break;
+        console.log(
+          `  ✏️ Item ${item.id}: "${item.content}" → "${resolvedItem.content}"`,
+        );
+        return resolvedItem;
+      });
+
+      console.log(`✅ Choice block ${block.id} resolved:`, {
+        resolvedItems: resolved.items.map((item) => ({
+          id: item.id,
+          content: item.content,
+        })),
+      });
     }
 
     return resolved;

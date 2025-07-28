@@ -120,6 +120,13 @@ export const startSession = async ({
   const initialState: SessionState = {
     version: "3",
     workspaceId: typebot.workspaceId,
+    localization: startParams.locale
+      ? {
+          locale: startParams.locale,
+          availableLocales: startParams.availableLocales || [],
+          fallbackLocale: (typebot as any).defaultLocale || "en",
+        }
+      : undefined,
     typebotsQueue: [
       {
         resultId: result?.id,
@@ -355,17 +362,59 @@ const getTypebot = async (startParams: StartParams): Promise<StartTypebot> => {
   // Apply localization if locale is specified
   let localizedTypebot = parsedTypebot;
 
-  if (
-    startParams.type === "live" &&
-    startParams.locale &&
-    startParams.locale !== "en"
-  ) {
+  console.log("🔍 Localization check:", {
+    hasLocale: !!startParams.locale,
+    locale: startParams.locale,
+    availableLocales: startParams.availableLocales,
+    type: startParams.type,
+  });
+
+  if (startParams.locale) {
     try {
+      console.log("🌍 Applying localization:", {
+        locale: startParams.locale,
+        defaultLocale: (parsedTypebot as any).defaultLocale || "en",
+        hasGroups: !!parsedTypebot.groups,
+        groupCount: parsedTypebot.groups?.length || 0,
+      });
+
       localizedTypebot = localizationService.resolveTypebotContent(
         parsedTypebot,
         startParams.locale,
         (parsedTypebot as any).defaultLocale || "en",
       );
+
+      console.log("✅ Localization applied successfully");
+
+      // Debug: Log first choice block to see if localization worked
+      const allChoiceBlocks = localizedTypebot.groups
+        ?.flatMap((g) => g.blocks)
+        ?.filter(
+          (b) =>
+            b.type === "choice" ||
+            b.type === "choice input" ||
+            b.type === "picture choice input" ||
+            b.type === "cards",
+        );
+
+      console.log("🔍 Found choice blocks:", allChoiceBlocks?.length || 0);
+
+      const firstChoiceBlock = allChoiceBlocks?.[0];
+      if (firstChoiceBlock) {
+        console.log("🔍 First choice block after localization:", {
+          blockId: firstChoiceBlock.id,
+          items: firstChoiceBlock.items?.map((item) => ({
+            id: item.id,
+            content: item.content,
+            hasLocalizations: !!item.localizations,
+            localizationKeys: item.localizations
+              ? Object.keys(item.localizations)
+              : [],
+          })),
+        });
+      } else {
+        console.log("❌ No choice blocks found in typebot");
+      }
     } catch (error) {
       console.warn(
         `Failed to localize typebot content for locale ${startParams.locale}:`,
