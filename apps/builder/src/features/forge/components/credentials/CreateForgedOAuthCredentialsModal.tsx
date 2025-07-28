@@ -1,4 +1,3 @@
-import { stringify } from "querystring";
 import { CopyButton } from "@/components/CopyButton";
 import { TextInput } from "@/components/inputs/TextInput";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
@@ -21,6 +20,7 @@ import { useMutation } from "@tanstack/react-query";
 import type { ForgedBlockDefinition } from "@typebot.io/forge-repository/definitions";
 import { Button } from "@typebot.io/ui/components/Button";
 import { useState } from "react";
+import { useOAuthPopup } from "./useOAuthPopup";
 
 type Props = {
   blockDef: ForgedBlockDefinition;
@@ -69,7 +69,6 @@ export const CreateForgedOAuthCredentialsModalContent = ({
   "blockDef" | "onNewCredentials" | "defaultData" | "editorContext" | "scope"
 >) => {
   const { workspace } = useWorkspace();
-  const [isAuthorizing, setIsAuthorizing] = useState(false);
   const [name, setName] = useState("");
   const [tab, setTab] = useState<"default" | "your-app">(
     blockDef.auth && "defaultClientEnvKeys" in blockDef.auth
@@ -95,53 +94,41 @@ export const CreateForgedOAuthCredentialsModalContent = ({
     }),
   );
 
-  const openOAuthPopup = async () => {
+  const handleOAuthSuccess = (code: string) => {
     if (!workspace) return;
-
-    setIsAuthorizing(true);
-
-    window.open(
-      `/api/${blockDef.id}/oauth/authorize?${stringify({
-        clientId: clientId,
-      })}`,
-      "oauthPopup",
-      "width=500,height=700",
-    );
-
-    const handleOAuthResponse = (event: MessageEvent) => {
-      if (event.data?.type === "oauth") {
-        window.removeEventListener("message", handleOAuthResponse);
-        setIsAuthorizing(false);
-        const { code } = event.data;
-        const credentials = {
-          name,
-          blockType: blockDef.id,
-          code,
-          customClient:
-            tab === "your-app"
-              ? {
-                  id: clientId,
-                  secret: clientSecret,
-                }
-              : undefined,
-        };
-        mutate(
-          scope === "workspace"
-            ? {
-                ...credentials,
-                scope: "workspace",
-                workspaceId: workspace.id,
-              }
-            : {
-                ...credentials,
-                scope: "user",
-              },
-        );
-      }
+    const credentials = {
+      name: name.trim(),
+      blockType: blockDef.id,
+      code,
+      customClient:
+        tab === "your-app"
+          ? {
+              id: clientId.trim(),
+              secret: clientSecret.trim(),
+            }
+          : undefined,
     };
 
-    window.addEventListener("message", handleOAuthResponse);
+    mutate(
+      scope === "workspace"
+        ? {
+            ...credentials,
+            scope: "workspace",
+            workspaceId: workspace.id,
+          }
+        : {
+            ...credentials,
+            scope: "user",
+          },
+    );
   };
+
+  const { openOAuthPopup, isAuthorizing } = useOAuthPopup({
+    blockId: blockDef.id,
+    clientId,
+    workspace: workspace ?? null,
+    onSuccess: handleOAuthSuccess,
+  });
 
   if (!blockDef.auth) return null;
   return (

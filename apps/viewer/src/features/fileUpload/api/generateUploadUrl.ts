@@ -112,7 +112,7 @@ export const generateUploadUrl = publicProcedure
     )
       throw new TRPCError({
         code: "BAD_REQUEST",
-        message: "File type not allowed",
+        message: `File type ${fileType} not allowed`,
       });
 
     const { visibility, maxFileSize } = parseFileUploadParams(block);

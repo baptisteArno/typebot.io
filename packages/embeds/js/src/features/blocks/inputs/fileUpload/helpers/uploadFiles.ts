@@ -22,14 +22,17 @@ export const uploadFiles = async ({
   apiHost,
   files,
   onUploadProgress,
-}: UploadFileProps): Promise<UrlList> => {
+}: UploadFileProps): Promise<
+  { type: "success"; urls: UrlList } | { type: "error"; error: string }
+> => {
   const urls: UrlList = [];
+  const errors: string[] = [];
   let i = 0;
   for (const { input, file } of files) {
     onUploadProgress &&
       onUploadProgress({ progress: (i / files.length) * 100, fileIndex: i });
     i += 1;
-    const { data } = await sendRequest<{
+    const { data, error } = await sendRequest<{
       presignedUrl: string;
       formData: Record<string, string>;
       fileUrl: string;
@@ -43,6 +46,11 @@ export const uploadFiles = async ({
         blockId: input.blockId,
       },
     });
+
+    if (error) {
+      errors.push(error.message);
+      continue;
+    }
 
     if (!data?.presignedUrl) continue;
     else {
@@ -61,5 +69,7 @@ export const uploadFiles = async ({
       urls.push({ url: data.fileUrl, type: file.type });
     }
   }
-  return urls;
+  return errors.length > 0
+    ? { type: "error", error: errors.join(", ") }
+    : { type: "success", urls };
 };
