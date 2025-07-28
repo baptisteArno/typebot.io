@@ -22,6 +22,7 @@ import type {
   TypebotInSessionV5,
 } from "@typebot.io/chat-session/schemas";
 import { env } from "@typebot.io/env";
+import { localizationService } from "@typebot.io/lib/localization";
 import { isDefined, isNotEmpty, omit } from "@typebot.io/lib/utils";
 import type { Prisma } from "@typebot.io/prisma/types";
 import type { SessionStore } from "@typebot.io/runtime-session-store";
@@ -57,7 +58,6 @@ import { findPublicTypebot } from "./queries/findPublicTypebot";
 import { findResult } from "./queries/findResult";
 import { findTypebot } from "./queries/findTypebot";
 import { startBotFlow } from "./startBotFlow";
-import { localizationService } from "@typebot.io/lib/localization";
 
 type StartParams =
   | ({
@@ -356,20 +356,23 @@ const getTypebot = async (startParams: StartParams) => {
 
   // Apply localization if locale is specified
   let localizedTypebot = parsedTypebot;
-  
+
   if (
-    startParams.type === "live" && 
-    startParams.locale && 
+    startParams.type === "live" &&
+    startParams.locale &&
     startParams.locale !== "en"
   ) {
     try {
       localizedTypebot = localizationService.resolveTypebotContent(
         parsedTypebot,
         startParams.locale,
-        (parsedTypebot as any).defaultLocale || "en"
+        (parsedTypebot as any).defaultLocale || "en",
       );
     } catch (error) {
-      console.warn(`Failed to localize typebot content for locale ${startParams.locale}:`, error);
+      console.warn(
+        `Failed to localize typebot content for locale ${startParams.locale}:`,
+        error,
+      );
       // Continue with original typebot if localization fails
     }
   }

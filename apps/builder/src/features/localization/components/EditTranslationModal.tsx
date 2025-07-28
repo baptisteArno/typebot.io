@@ -353,19 +353,19 @@ export const EditTranslationModal = ({
         const content = block.content as any;
         console.log("📄 Block content structure:", content);
 
-        // Prepare the content updates
+        // Prepare the content updates with deep cloning to avoid immutability issues
         if (!blockUpdates.content) {
-          blockUpdates.content = { ...content };
+          blockUpdates.content = JSON.parse(JSON.stringify(content));
         }
         if (!blockUpdates.content.localizations) {
-          blockUpdates.content.localizations = {
-            ...(content.localizations || {}),
-          };
+          blockUpdates.content.localizations = JSON.parse(
+            JSON.stringify(content.localizations || {}),
+          );
         }
         if (!blockUpdates.content.localizations[locale]) {
-          blockUpdates.content.localizations[locale] = {
-            ...(content.localizations?.[locale] || {}),
-          };
+          blockUpdates.content.localizations[locale] = JSON.parse(
+            JSON.stringify(content.localizations?.[locale] || {}),
+          );
         }
 
         // Determine content type and apply
@@ -407,7 +407,7 @@ export const EditTranslationModal = ({
         console.log("📋 Items to update:", localizedItems);
 
         if (!blockUpdates.items) {
-          blockUpdates.items = [...items];
+          blockUpdates.items = JSON.parse(JSON.stringify(items));
         }
 
         blockUpdates.items.forEach((item: any, index: number) => {
@@ -441,20 +441,22 @@ export const EditTranslationModal = ({
         console.log("🏷️ Labels to update:", { placeholder, button });
 
         if (!blockUpdates.options) {
-          blockUpdates.options = { ...options };
+          blockUpdates.options = JSON.parse(JSON.stringify(options));
         }
         if (!blockUpdates.options.labels) {
-          blockUpdates.options.labels = { ...options.labels };
+          blockUpdates.options.labels = JSON.parse(
+            JSON.stringify(options.labels),
+          );
         }
         if (!blockUpdates.options.labels.localizations) {
-          blockUpdates.options.labels.localizations = {
-            ...(options.labels.localizations || {}),
-          };
+          blockUpdates.options.labels.localizations = JSON.parse(
+            JSON.stringify(options.labels.localizations || {}),
+          );
         }
         if (!blockUpdates.options.labels.localizations[locale]) {
-          blockUpdates.options.labels.localizations[locale] = {
-            ...(options.labels.localizations?.[locale] || {}),
-          };
+          blockUpdates.options.labels.localizations[locale] = JSON.parse(
+            JSON.stringify(options.labels.localizations?.[locale] || {}),
+          );
         }
 
         if (placeholder !== undefined) {
