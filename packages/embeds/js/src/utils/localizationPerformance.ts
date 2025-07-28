@@ -177,7 +177,7 @@ try {
   // Dynamically import to avoid potential circular dependencies
   globalSupportedLocales = [
     "en",
-    "fr", 
+    "fr",
     "de",
     "pt",
     "pt-BR",
@@ -188,7 +188,17 @@ try {
   ] as const;
 } catch {
   // Fallback in case of import issues
-  globalSupportedLocales = ["en", "fr", "de", "pt", "pt-BR", "es", "ro", "it", "el"];
+  globalSupportedLocales = [
+    "en",
+    "fr",
+    "de",
+    "pt",
+    "pt-BR",
+    "es",
+    "ro",
+    "it",
+    "el",
+  ];
 }
 
 export function optimizedValidateLocale(
@@ -208,25 +218,25 @@ export function optimizedValidateLocale(
   } else if (availableLocales.includes(locale)) {
     result = locale;
   } else if (globalSupportedLocales.includes(locale)) {
-    // If locale is globally supported but not in availableLocales, 
+    // If locale is globally supported but not in availableLocales,
     // still allow it for dynamic locale support
     result = locale;
   } else {
     // Check case-insensitive match against both available and global locales
     const lowerLocale = locale.toLowerCase();
-    
+
     // First check available locales
     let match = availableLocales.find(
       (available) => available.toLowerCase() === lowerLocale,
     );
-    
+
     // If not found, check global supported locales
     if (!match) {
       match = globalSupportedLocales.find(
         (supported) => supported.toLowerCase() === lowerLocale,
       );
     }
-    
+
     result = match || null;
   }
 
