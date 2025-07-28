@@ -37,13 +37,13 @@ export const runChatCompletionStream = async ({
   const openai = new OpenAI(config)
 
   const tools = options.tools
-    ?.filter((t) => t.name && t.parameters)
+    ?.filter((t) => t.name)
     .map((t) => ({
       type: 'function',
       function: {
         name: t.name as string,
         description: t.description,
-        parameters: parseToolParameters(t.parameters!),
+        parameters: parseToolParameters(t.parameters),
       },
     })) satisfies ChatCompletionTool[] | undefined
 
@@ -66,7 +66,7 @@ export const runChatCompletionStream = async ({
         const name = toolCall.func?.name
         if (!name) continue
         const toolDefinition = options.tools?.find((t) => t.name === name)
-        if (!toolDefinition?.code || !toolDefinition.parameters) {
+        if (!toolDefinition?.code) {
           messages.push({
             tool_call_id: toolCall.id,
             role: 'tool',
