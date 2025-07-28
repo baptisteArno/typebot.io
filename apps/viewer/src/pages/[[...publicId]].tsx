@@ -171,11 +171,15 @@ export const getServerSideProps: GetServerSideProps = async (
       log(`URL locale parameter found: ${urlLocaleValue}`);
       // Validate that the locale is supported globally
       // Also check if typebot has translations for this locale by examining the content
-      const isGloballySupported = supportedLocales.includes(urlLocaleValue as any);
+      const isGloballySupported = supportedLocales.includes(
+        urlLocaleValue as any,
+      );
       const isInAvailableLocales = availableLocales.includes(urlLocaleValue);
-      
-      log(`Locale validation - Global support: ${isGloballySupported}, In available locales: ${isInAvailableLocales}`);
-      
+
+      log(
+        `Locale validation - Global support: ${isGloballySupported}, In available locales: ${isInAvailableLocales}`,
+      );
+
       // Allow the locale if it's globally supported, regardless of typebot configuration
       // This enables dynamic locale support as new translations are added
       if (isGloballySupported) {
@@ -186,14 +190,16 @@ export const getServerSideProps: GetServerSideProps = async (
           fallbackUsed: false,
         };
         log(`Locale set to: ${detectedLocale} via URL parameter`);
-        
+
         // Ensure the locale is included in available locales for the client
         if (!isInAvailableLocales) {
           availableLocales.push(urlLocaleValue);
           log(`Added ${urlLocaleValue} to available locales for this session`);
         }
       } else {
-        log(`Unsupported locale in URL parameter: ${urlLocaleValue}. Not in global supported locales.`);
+        log(
+          `Unsupported locale in URL parameter: ${urlLocaleValue}. Not in global supported locales.`,
+        );
       }
     }
 
@@ -207,7 +213,7 @@ export const getServerSideProps: GetServerSideProps = async (
         detectionContext,
         localeDetectionConfig,
       );
-      
+
       // Validate the detected locale is globally supported
       if (supportedLocales.includes(detectionResult.locale as any)) {
         detectedLocale = detectionResult.locale;
@@ -216,18 +222,20 @@ export const getServerSideProps: GetServerSideProps = async (
           confidence: detectionResult.confidence,
           fallbackUsed: detectionResult.fallbackUsed,
         };
-        
+
         // Ensure the detected locale is in available locales
         if (!availableLocales.includes(detectedLocale)) {
           availableLocales.push(detectedLocale);
           log(`Added detected locale ${detectedLocale} to available locales`);
         }
-        
+
         log(
           `Locale detected via configured method: ${detectedLocale} (${detectionResult.method})`,
         );
       } else {
-        log(`Detected locale ${detectionResult.locale} is not globally supported, falling back to default`);
+        log(
+          `Detected locale ${detectionResult.locale} is not globally supported, falling back to default`,
+        );
       }
     }
 
