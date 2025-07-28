@@ -14,7 +14,6 @@ import {
   AlertDescription,
   AlertIcon,
   AlertTitle,
-  Badge,
   Box,
   Button,
   CloseButton,
@@ -44,8 +43,10 @@ import { localizationService } from "@typebot.io/lib/localization";
 import type React from "react";
 import { useMemo, useRef, useState } from "react";
 import { importTranslations } from "../helpers/importTranslations";
+import { isLogicBlock } from "../helpers/logicBlockTypes";
 import { useLocalization } from "../providers/LocalizationProvider";
 import { validateImportedTranslations } from "../schemas/importValidation";
+import { ContentRenderer } from "./ContentRenderer";
 import { EditTranslationModal } from "./EditTranslationModal";
 import { LocaleSwitcher } from "./LocaleSwitcher";
 import { TranslationStatusIndicator } from "./TranslationStatusIndicator";
@@ -65,6 +66,7 @@ interface TranslationTableRow {
 }
 
 export const TranslationManagementPage = () => {
+  // ALL HOOKS MUST BE CALLED FIRST - BEFORE ANY CONDITIONAL LOGIC
   const { typebot, save } = useTypebot();
   const {
     availableLocales,
@@ -74,7 +76,6 @@ export const TranslationManagementPage = () => {
     fallbackLocale,
   } = useLocalization();
 
-  const [selectedBlocks, setSelectedBlocks] = useState<string[]>([]);
   const [filterBy, setFilterBy] = useState<"all" | "missing" | "incomplete">(
     "all",
   );
@@ -95,6 +96,7 @@ export const TranslationManagementPage = () => {
   const toast = useToast();
   const bgColor = useColorModeValue("white", "gray.900");
   const borderColor = useColorModeValue("gray.200", "gray.600");
+  const tableHeaderBg = useColorModeValue("gray.50", "gray.800");
 
   // Build translation table data
   const translationData = useMemo(() => {
@@ -104,6 +106,11 @@ export const TranslationManagementPage = () => {
 
     typebot.groups?.forEach((group) => {
       group.blocks?.forEach((block) => {
+        // Skip logic blocks - they contain technical configuration, not user-facing content
+        if (isLogicBlock(block.type as string)) {
+          return;
+        }
+
         let defaultContent = "";
         let hasTranslatableContent = false;
 
@@ -111,9 +118,13 @@ export const TranslationManagementPage = () => {
         if ("content" in block && block.content) {
           hasTranslatableContent = true;
           const content = block.content as any;
-          if (content.richText || content.html || content.plainText) {
-            defaultContent =
-              content.plainText || content.html || "Rich text content";
+          if (content.richText) {
+            // For rich text, store the JSON structure so ContentRenderer can process it
+            defaultContent = JSON.stringify(content.richText);
+          } else if (content.html) {
+            defaultContent = content.html;
+          } else if (content.plainText) {
+            defaultContent = content.plainText;
           } else if (content.url) {
             defaultContent = content.url;
           }
@@ -132,9 +143,18 @@ export const TranslationManagementPage = () => {
         if ("options" in block && block.options?.labels) {
           hasTranslatableContent = true;
           const labels = (block.options as any).labels;
-          defaultContent = [labels.placeholder, labels.button]
-            .filter(Boolean)
-            .join(" / ");
+
+          // Handle rating input blocks differently
+          if (block.type === "rating input") {
+            defaultContent = [labels.left, labels.right, labels.button]
+              .filter(Boolean)
+              .join(" | ");
+          } else {
+            // Regular input blocks
+            defaultContent = [labels.placeholder, labels.button]
+              .filter(Boolean)
+              .join(" / ");
+          }
         }
 
         if (!hasTranslatableContent) return;
@@ -159,7 +179,11 @@ export const TranslationManagementPage = () => {
             const content = block.content as any;
             if (content.localizations?.[locale]) {
               const loc = content.localizations[locale];
-              localizedContent = loc.plainText || loc.html || loc.url || "";
+              if (loc.richText) {
+                localizedContent = JSON.stringify(loc.richText);
+              } else {
+                localizedContent = loc.plainText || loc.html || loc.url || "";
+              }
             }
           }
 
@@ -174,6 +198,21 @@ export const TranslationManagementPage = () => {
               .join(", ");
           }
 
+          // Handle rating input block localizations
+          if (
+            "options" in block &&
+            block.options?.labels &&
+            block.type === "rating input"
+          ) {
+            const options = block.options as any;
+            if (options.labels.localizations?.[locale]) {
+              const loc = options.labels.localizations[locale];
+              localizedContent = [loc.left, loc.right, loc.button]
+                .filter(Boolean)
+                .join(" | ");
+            }
+          }
+
           translations[locale] = {
             content: localizedContent,
             completeness,
@@ -184,9 +223,7 @@ export const TranslationManagementPage = () => {
           blockId: block.id,
           blockType: block.type,
           groupTitle: group.title || "Untitled Group",
-          defaultContent:
-            defaultContent.substring(0, 100) +
-            (defaultContent.length > 100 ? "..." : ""),
+          defaultContent: defaultContent,
           translations,
         });
       });
@@ -371,6 +408,7 @@ export const TranslationManagementPage = () => {
     setEditModalData(null);
   };
 
+  // Conditional rendering moved to the end after all hooks are called
   if (!isLocalizationEnabled) {
     return (
       <Flex overflow="hidden" h="100vh" flexDir="column">
@@ -565,11 +603,11 @@ export const TranslationManagementPage = () => {
         {/* Translation table */}
         <Box flex="1" overflow="auto" bg={bgColor}>
           <Table variant="simple" size="sm">
-            <Thead bg={useColorModeValue("gray.50", "gray.800")}>
+            <Thead bg={tableHeaderBg} position="sticky" top={0}>
               <Tr>
-                <Th>Block</Th>
+                <Th>Block ID</Th>
                 <Th>Group</Th>
-                <Th>Default Content ({fallbackLocale.toUpperCase()})</Th>
+                <Th>Block Content</Th>
                 {availableLocales
                   .filter((locale) => locale !== fallbackLocale)
                   .map((locale) => (
@@ -585,11 +623,8 @@ export const TranslationManagementPage = () => {
                 <Tr key={row.blockId}>
                   <Td>
                     <VStack align="start" spacing={1}>
-                      <Badge colorScheme="blue" size="sm">
-                        {row.blockType}
-                      </Badge>
                       <Text fontSize="xs" color="gray.500" fontFamily="mono">
-                        {row.blockId.substring(0, 8)}...
+                        {row.blockId}
                       </Text>
                     </VStack>
                   </Td>
@@ -598,10 +633,11 @@ export const TranslationManagementPage = () => {
                       {row.groupTitle}
                     </Text>
                   </Td>
-                  <Td maxW="200px">
-                    <Text fontSize="sm" noOfLines={2}>
-                      {row.defaultContent}
-                    </Text>
+                  <Td maxW="300px">
+                    <ContentRenderer
+                      content={row.defaultContent}
+                      blockType={row.blockType}
+                    />
                   </Td>
                   {availableLocales
                     .filter((locale) => locale !== fallbackLocale)
@@ -616,14 +652,12 @@ export const TranslationManagementPage = () => {
                               size="xs"
                             />
                             <Text fontSize="xs" color="gray.500">
-                              {row.translations[locale]?.completeness || 0}%
+                              {row.translations[locale]?.content &&
+                              row.translations[locale].content.length > 0
+                                ? "Localized"
+                                : "No localization"}
                             </Text>
                           </HStack>
-                          {row.translations[locale]?.content && (
-                            <Text fontSize="sm" noOfLines={2} color="gray.700">
-                              {row.translations[locale].content}
-                            </Text>
-                          )}
                         </VStack>
                       </Td>
                     ))}

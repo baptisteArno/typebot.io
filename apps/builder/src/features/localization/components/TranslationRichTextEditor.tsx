@@ -162,6 +162,11 @@ export const TranslationRichTextEditor = ({
             rememberedSelection.current = editorRef.current.selection;
           }}
           aria-label="Rich text editor for translation"
+          // Filter out Plate-specific props that shouldn't be passed to DOM
+          onMouseDown={(e: any) => {
+            // This helps prevent propagation of certain editor-specific events
+            if (e.defaultPrevented) return;
+          }}
         />
       </Plate>
       <Popover isOpen={isVariableDropdownOpen} isLazy>

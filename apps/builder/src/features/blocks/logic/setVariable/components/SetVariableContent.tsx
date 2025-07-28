@@ -10,16 +10,16 @@ export const SetVariableContent = ({ block }: { block: SetVariableBlock }) => {
   const variableName =
     typebot?.variables.find(byId(block.options?.variableId))?.name ?? "";
   return (
-    <Text color={"gray.500"} noOfLines={4}>
+    <chakra.div color={"gray.500"} noOfLines={4}>
       {variableName === "" ? (
-        "Click to edit..."
+        <Text>Click to edit...</Text>
       ) : (
         <Expression
           options={block.options}
           variables={typebot?.variables ?? []}
         />
       )}
-    </Text>
+    </chakra.div>
   );
 };
 
@@ -36,14 +36,12 @@ const Expression = ({
     case undefined:
       return (
         <Stack maxH="60vh">
-          <Text as="span">
-            <CustomExpression
-              variableName={variableName}
-              expressionDescription={options?.expressionDescription}
-              isCode={options?.isCode ?? false}
-              expression={options?.expressionToEvaluate}
-            />
-          </Text>
+          <CustomExpression
+            variableName={variableName}
+            expressionDescription={options?.expressionDescription}
+            isCode={options?.isCode ?? false}
+            expression={options?.expressionToEvaluate}
+          />
           {options?.saveErrorInVariableId && (
             <SetVariableLabel
               variables={variables}

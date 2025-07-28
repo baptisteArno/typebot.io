@@ -2,6 +2,7 @@ import { TRPCError } from "@trpc/server";
 import { BubbleBlockType } from "@typebot.io/blocks-bubbles/constants";
 import type { Message } from "@typebot.io/chat-api/schemas";
 import { getSession } from "@typebot.io/chat-session/queries/getSession";
+import { localizationService } from "@typebot.io/lib/localization";
 import { isDefined, isNotDefined } from "@typebot.io/lib/utils";
 import {
   deleteSessionStore,
@@ -106,9 +107,36 @@ export const continueChat = async ({
     (clientSideActions?.filter((c) => c.expectsDedicatedReply).length ?? 0) ===
       0;
 
+  // Apply localization to the input block if locale is available
+  let localizedInput = input;
+  if (input && session.state.localization) {
+    try {
+      console.log("🔄 Applying localization to input block in continueChat:", {
+        blockId: input.id,
+        blockType: input.type,
+        locale: session.state.localization.locale,
+        fallbackLocale: session.state.localization.fallbackLocale,
+        hasItems: !!(input as any).items,
+        hasLabels: !!(input as any).options?.labels,
+        itemsCount: (input as any).items?.length || 0,
+      });
+
+      localizedInput = localizationService.resolveBlockContent(
+        input,
+        session.state.localization.locale,
+        session.state.localization.fallbackLocale,
+      );
+
+      console.log("✅ Input block localized successfully");
+    } catch (error) {
+      console.warn("Failed to localize input block:", error);
+      // Continue with original input if localization fails
+    }
+  }
+
   return {
     messages,
-    input,
+    input: localizedInput,
     clientSideActions,
     dynamicTheme,
     logs: isPreview ? logs : logs?.filter(filterPotentiallySensitiveLogs),

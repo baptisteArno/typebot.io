@@ -23,6 +23,21 @@ export const Buttons = (props: Props) => {
     props.options?.isSearchable && !areButtonsVisible ? [] : props.defaultItems,
   );
 
+  // Debug: Log the button items to see if they're localized
+  console.log("🔘 Buttons component received items:");
+  console.log("  Total items:", props.defaultItems?.length || 0);
+  props.defaultItems?.forEach((item, index) => {
+    console.log(`  Item ${index}:`, {
+      id: item.id,
+      content: item.content,
+      hasLocalizations: !!(item as any).localizations,
+      localizationKeys: (item as any).localizations
+        ? Object.keys((item as any).localizations)
+        : [],
+      localizationData: (item as any).localizations,
+    });
+  });
+
   onMount(() => {
     if (!guessDeviceIsMobile() && inputRef)
       inputRef.focus({ preventScroll: true });

@@ -14,12 +14,15 @@ export const MarkToolbarButton = ({ clear, nodeType, ...rest }: Props) => {
   const state = useMarkToolbarButtonState({ clear, nodeType });
   const { props } = useMarkToolbarButton(state);
 
+  // Extract the pressed state and remove it from props to avoid DOM warning
+  const { pressed, ...cleanProps } = props;
+
   return (
     <IconButton
       size="sm"
-      variant={props.pressed ? "outline" : "ghost"}
-      colorScheme={props.pressed ? "blue" : undefined}
-      {...props}
+      variant={pressed ? "outline" : "ghost"}
+      colorScheme={pressed ? "blue" : undefined}
+      {...cleanProps}
       {...rest}
     />
   );
