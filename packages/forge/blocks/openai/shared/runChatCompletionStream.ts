@@ -43,7 +43,7 @@ export const runChatCompletionStream = async ({
       function: {
         name: t.name as string,
         description: t.description,
-        parameters: parseToolParameters(t.parameters),
+        parameters: parseToolParameters(t.parameters ?? []),
       },
     })) satisfies ChatCompletionTool[] | undefined
 
