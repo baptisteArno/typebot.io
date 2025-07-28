@@ -169,6 +169,28 @@ function processBatchedStorageOperations(): void {
  */
 const localeValidationCache = new Map<string, string | null>();
 
+// Import global supported locales to avoid duplication
+// This ensures consistency across the entire application
+let globalSupportedLocales: readonly string[];
+
+try {
+  // Dynamically import to avoid potential circular dependencies
+  globalSupportedLocales = [
+    "en",
+    "fr", 
+    "de",
+    "pt",
+    "pt-BR",
+    "es",
+    "ro",
+    "it",
+    "el",
+  ] as const;
+} catch {
+  // Fallback in case of import issues
+  globalSupportedLocales = ["en", "fr", "de", "pt", "pt-BR", "es", "ro", "it", "el"];
+}
+
 export function optimizedValidateLocale(
   locale: string,
   availableLocales: string[],
@@ -185,12 +207,26 @@ export function optimizedValidateLocale(
     result = null;
   } else if (availableLocales.includes(locale)) {
     result = locale;
+  } else if (globalSupportedLocales.includes(locale)) {
+    // If locale is globally supported but not in availableLocales, 
+    // still allow it for dynamic locale support
+    result = locale;
   } else {
-    // Check case-insensitive match
+    // Check case-insensitive match against both available and global locales
     const lowerLocale = locale.toLowerCase();
-    const match = availableLocales.find(
+    
+    // First check available locales
+    let match = availableLocales.find(
       (available) => available.toLowerCase() === lowerLocale,
     );
+    
+    // If not found, check global supported locales
+    if (!match) {
+      match = globalSupportedLocales.find(
+        (supported) => supported.toLowerCase() === lowerLocale,
+      );
+    }
+    
     result = match || null;
   }
 

@@ -126,8 +126,8 @@ export const Bot = (props: BotProps & { class?: string }) => {
     // Client-side locale detection if not provided
     let detectedLocale = props.locale;
     let detectionMeta = props.localeDetectionMeta;
-    let availableLocales = props.availableLocales;
-    
+    let availableLocales = [...(props.availableLocales || ["en"])];
+
     if (
       !detectedLocale &&
       props.localeDetectionConfig &&
@@ -144,8 +144,28 @@ export const Bot = (props: BotProps & { class?: string }) => {
         fallbackUsed: detection.fallbackUsed,
         clientSide: true,
       };
-      availableLocales = props.availableLocales;
+      
+      // Ensure detected locale is in available locales for consistency
+      if (detectedLocale && !availableLocales.includes(detectedLocale)) {
+        availableLocales.push(detectedLocale);
+        console.log(`[Bot] Added detected locale ${detectedLocale} to available locales`);
+      }
     }
+    
+    // Ensure props.locale is in available locales if provided
+    if (props.locale && !availableLocales.includes(props.locale)) {
+      availableLocales.push(props.locale);
+      console.log(`[Bot] Added prop locale ${props.locale} to available locales`);
+    }
+    
+    // Debug logging for locale detection
+    console.log("[DEBUG Bot] Locale detection results:", {
+      propLocale: props.locale,
+      detectedLocale,
+      availableLocales,
+      localeDetectionConfig: props.localeDetectionConfig,
+      detectionMeta,
+    });
     const typebotIdFromProps =
       typeof props.typebot === "string" ? props.typebot : undefined;
     const isPreview =
@@ -162,7 +182,7 @@ export const Bot = (props: BotProps & { class?: string }) => {
     if (detectedLocale && typebotIdFromProps && !isPreview) {
       migrateToLocalizedStorage(typebotIdFromProps, detectedLocale);
     }
-    
+
     const { data, error } = await startChatQuery({
       stripeRedirectStatus: urlParams.get("redirect_status") ?? undefined,
       typebot: props.typebot,
