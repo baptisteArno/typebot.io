@@ -225,8 +225,8 @@ export const EditTranslationModal = ({
 
         // Extract separate placeholder and button values
         const placeholder =
-          options.labels.localizations?.[locale]?.placeholder || "";
-        const button = options.labels.localizations?.[locale]?.button || "";
+          options.localizations?.[locale]?.labels?.placeholder || "";
+        const button = options.localizations?.[locale]?.labels?.button || "";
 
         // Store both separate values and combined content for backward compatibility
         currentContent = [placeholder, button].filter(Boolean).join(" / ");
@@ -248,9 +248,9 @@ export const EditTranslationModal = ({
         const options = block.options as any;
 
         // Extract rating-specific labels
-        const leftLabel = options.labels.localizations?.[locale]?.left || "";
-        const rightLabel = options.labels.localizations?.[locale]?.right || "";
-        const button = options.labels.localizations?.[locale]?.button || "";
+        const leftLabel = options.localizations?.[locale]?.labels?.left || "";
+        const rightLabel = options.localizations?.[locale]?.labels?.right || "";
+        const button = options.localizations?.[locale]?.labels?.button || "";
 
         // Store combined content as used in TranslationManagementPage
         currentContent = [leftLabel, rightLabel, button]
@@ -916,27 +916,27 @@ export const EditTranslationModal = ({
         if (!blockUpdates.options) {
           blockUpdates.options = JSON.parse(JSON.stringify(options));
         }
-        if (!blockUpdates.options.labels) {
-          blockUpdates.options.labels = JSON.parse(
-            JSON.stringify(options.labels),
+        if (!blockUpdates.options.localizations) {
+          blockUpdates.options.localizations = JSON.parse(
+            JSON.stringify(options.localizations || {}),
           );
         }
-        if (!blockUpdates.options.labels.localizations) {
-          blockUpdates.options.labels.localizations = JSON.parse(
-            JSON.stringify(options.labels.localizations || {}),
+        if (!blockUpdates.options.localizations[locale]) {
+          blockUpdates.options.localizations[locale] = JSON.parse(
+            JSON.stringify(options.localizations?.[locale] || {}),
           );
         }
-        if (!blockUpdates.options.labels.localizations[locale]) {
-          blockUpdates.options.labels.localizations[locale] = JSON.parse(
-            JSON.stringify(options.labels.localizations?.[locale] || {}),
+        if (!blockUpdates.options.localizations[locale].labels) {
+          blockUpdates.options.localizations[locale].labels = JSON.parse(
+            JSON.stringify(options.localizations?.[locale]?.labels || {}),
           );
         }
 
         console.log(`📝 Setting placeholder for ${locale}:`, placeholder);
-        blockUpdates.options.labels.localizations[locale].placeholder =
+        blockUpdates.options.localizations[locale].labels.placeholder =
           placeholder;
         console.log(`🔘 Setting button for ${locale}:`, button);
-        blockUpdates.options.labels.localizations[locale].button = button;
+        blockUpdates.options.localizations[locale].labels.button = button;
         hasAnyUpdates = true;
         console.log(`✅ Options block updated for ${locale}`);
       }
@@ -975,28 +975,28 @@ export const EditTranslationModal = ({
         if (!blockUpdates.options) {
           blockUpdates.options = JSON.parse(JSON.stringify(options));
         }
-        if (!blockUpdates.options.labels) {
-          blockUpdates.options.labels = JSON.parse(
-            JSON.stringify(options.labels),
+        if (!blockUpdates.options.localizations) {
+          blockUpdates.options.localizations = JSON.parse(
+            JSON.stringify(options.localizations || {}),
           );
         }
-        if (!blockUpdates.options.labels.localizations) {
-          blockUpdates.options.labels.localizations = JSON.parse(
-            JSON.stringify(options.labels.localizations || {}),
+        if (!blockUpdates.options.localizations[locale]) {
+          blockUpdates.options.localizations[locale] = JSON.parse(
+            JSON.stringify(options.localizations?.[locale] || {}),
           );
         }
-        if (!blockUpdates.options.labels.localizations[locale]) {
-          blockUpdates.options.labels.localizations[locale] = JSON.parse(
-            JSON.stringify(options.labels.localizations?.[locale] || {}),
+        if (!blockUpdates.options.localizations[locale].labels) {
+          blockUpdates.options.localizations[locale].labels = JSON.parse(
+            JSON.stringify(options.localizations?.[locale]?.labels || {}),
           );
         }
 
         console.log(`⬅️ Setting left label for ${locale}:`, leftLabel);
-        blockUpdates.options.labels.localizations[locale].left = leftLabel;
+        blockUpdates.options.localizations[locale].labels.left = leftLabel;
         console.log(`➡️ Setting right label for ${locale}:`, rightLabel);
-        blockUpdates.options.labels.localizations[locale].right = rightLabel;
+        blockUpdates.options.localizations[locale].labels.right = rightLabel;
         console.log(`🔘 Setting button for ${locale}:`, button);
-        blockUpdates.options.labels.localizations[locale].button = button;
+        blockUpdates.options.localizations[locale].labels.button = button;
         hasAnyUpdates = true;
         console.log(`✅ Rating input block updated for ${locale}`);
       }

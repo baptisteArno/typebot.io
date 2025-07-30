@@ -153,8 +153,16 @@ export class LocalizationService {
       }
     }
 
-    // Handle input blocks with options.labels
-    if (block.options?.labels) {
+    // Handle input blocks with options.localizations (like rating input)
+    if (block.options?.localizations) {
+      resolved.options = this.resolveContent(
+        block.options,
+        locale,
+        fallbackLocale,
+      );
+    }
+    // Handle input blocks with options.labels (legacy structure)
+    else if (block.options?.labels) {
       resolved.options = {
         ...block.options,
         labels: this.resolveContent(

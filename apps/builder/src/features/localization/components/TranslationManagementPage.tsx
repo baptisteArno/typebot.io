@@ -205,11 +205,36 @@ export const TranslationManagementPage = () => {
             block.type === "rating input"
           ) {
             const options = block.options as any;
-            if (options.labels.localizations?.[locale]) {
-              const loc = options.labels.localizations[locale];
+            if (options.localizations?.[locale]?.labels) {
+              const loc = options.localizations[locale].labels;
               localizedContent = [loc.left, loc.right, loc.button]
                 .filter(Boolean)
                 .join(" | ");
+            }
+          }
+
+          // Handle regular input block localizations (text, email, number, etc.)
+          if (
+            "options" in block &&
+            block.options?.labels &&
+            block.type !== "rating input" &&
+            [
+              "text input",
+              "number input",
+              "email input",
+              "url input",
+              "date input",
+              "time input",
+              "phone number input",
+              "file input",
+            ].includes(block.type)
+          ) {
+            const options = block.options as any;
+            if (options.localizations?.[locale]?.labels) {
+              const loc = options.localizations[locale].labels;
+              localizedContent = [loc.placeholder, loc.button]
+                .filter(Boolean)
+                .join(" / ");
             }
           }
 
