@@ -191,7 +191,7 @@
   "editor.sidebarBlock.zemanticAi.label": "Zemantic AI",
   "errorMessage": "Se produjo un error",
   "folders.createFolderButton.label": "Crear una carpeta",
-  "folders.createTypebotButton.label": "Crear un Typebot",
+  "folders.createbotButton.label": "Crear un Typebot",
   "folders.folderButton.deleteConfirmationMessage": "¿Estás seguro de que quieres eliminar la carpeta <strong>folderName</strong>? (Todo lo que hay dentro se moverá a tu tablero)",
   "folders.typebotButton.delete": "Eliminar",
   "folders.typebotButton.deleteConfirmationMessage": "¿Estás seguro de que quieres eliminar tu Typebot <strong>typebotName</strong>?",

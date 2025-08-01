@@ -1,22 +1,23 @@
 import React from 'react'
-import { HStack, Flex, Button, useDisclosure } from '@chakra-ui/react'
-import { HardDriveIcon, SettingsIcon } from '@/components/icons'
+import { HStack, Flex, Button, useDisclosure, IconButton } from '@chakra-ui/react'
+import { SettingsIcon } from '@/components/icons'
 import { useUser } from '@/features/account/hooks/useUser'
 import { isNotDefined } from '@typebot.io/lib'
 import Link from 'next/link'
-import { EmojiOrImageIcon } from '@/components/EmojiOrImageIcon'
 import { useTranslate } from '@tolgee/react'
 import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
-import { WorkspaceDropdown } from '@/features/workspace/components/WorkspaceDropdown'
 import { WorkspaceSettingsModal } from '@/features/workspace/components/WorkspaceSettingsModal'
 import { ParentModalProvider } from '@/features/graph/providers/ParentModalProvider'
 import { useRouter } from 'next/router'
+import { env } from '@typebot.io/env'
+import { ChevronLeftIcon } from './../../../components/icons'
 
 export const DashboardHeader = () => {
   const { t } = useTranslate()
-  const { user, logOut } = useUser()
-  const { workspace, switchWorkspace, createWorkspace } = useWorkspace()
+  const { user } = useUser()
+  const { workspace } = useWorkspace()
   const { asPath } = useRouter()
+  const dashboardUrl = env.NEXT_PUBLIC_E2E_TEST?"https://test.app.avocad0.dev/apps": "https://app.mottasl.ai/apps"
 
   const isRedirectFromCredentialsCreation = asPath.includes('preferences')
 
@@ -24,8 +25,6 @@ export const DashboardHeader = () => {
     defaultIsOpen: isRedirectFromCredentialsCreation,
   })
 
-  const handleCreateNewWorkspace = () =>
-    createWorkspace(user?.name ?? undefined)
 
   return (
     <Flex w="full" borderBottomWidth="1px" justify="center">
@@ -36,13 +35,18 @@ export const DashboardHeader = () => {
         maxW="1000px"
         flex="1"
       >
-        <Link href="/typebots" data-testid="typebot-logo">
-          <EmojiOrImageIcon
-            boxSize="30px"
-            icon={workspace?.icon}
-            defaultIcon={HardDriveIcon}
-          />
-        </Link>
+    <IconButton
+           as={Link}
+           aria-label="Navigate back"
+           icon={<ChevronLeftIcon fontSize={25} />}
+           href={{
+             pathname: dashboardUrl
+               ,
+             query: {
+             },
+           }}
+           size="sm"
+         />
         <HStack>
           {user && workspace && !workspace.isPastDue && (
             <ParentModalProvider>
@@ -66,12 +70,6 @@ export const DashboardHeader = () => {
               {t('workspace.settings.modal.menu.preferences.label')}
             </Button>
           )}
-          <WorkspaceDropdown
-            currentWorkspace={workspace}
-            onLogoutClick={logOut}
-            onCreateNewWorkspaceClick={handleCreateNewWorkspace}
-            onWorkspaceSelected={switchWorkspace}
-          />
         </HStack>
       </Flex>
     </Flex>

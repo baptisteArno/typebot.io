@@ -190,7 +190,7 @@
   "editor.sidebarBlock.zemanticAi.label": "Zemantic AI",
   "errorMessage": "Ein Fehler ist aufgetreten",
   "folders.createFolderButton.label": "Ordner erstellen",
-  "folders.createTypebotButton.label": "Typebot erstellen",
+  "folders.createbotButton.label": "Typebot erstellen",
   "folders.folderButton.deleteConfirmationMessage": "Möchtest du den Ordner <strong>folderName</strong> wirklich löschen? (Alles im Inneren wird in dein Dashboard verschoben)",
   "folders.typebotButton.delete": "Löschen",
   "folders.typebotButton.deleteConfirmationMessage": "Möchtest du deinen Typebot <strong>typebotName</strong> wirklich löschen?",
