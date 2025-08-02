@@ -29,6 +29,11 @@ export const convertPublicTypebotToTypebot = (
     selectedThemeTemplateId: existingTypebot.selectedThemeTemplateId,
     whatsAppCredentialsId: existingTypebot.whatsAppCredentialsId,
     riskLevel: existingTypebot.riskLevel,
+    defaultLocale: typebot.defaultLocale || existingTypebot.defaultLocale,
+    supportedLocales:
+      typebot.supportedLocales || existingTypebot.supportedLocales,
+    localeDetectionConfig:
+      typebot.localeDetectionConfig || existingTypebot.localeDetectionConfig,
     events: typebot.events,
   };
 };

@@ -13,6 +13,19 @@ export const textInputOptionsBaseSchema = z.object({
       button: z.string().optional(),
     })
     .optional(),
+  localizations: z
+    .record(
+      z.string(),
+      z.object({
+        labels: z
+          .object({
+            placeholder: z.string().optional(),
+            button: z.string().optional(),
+          })
+          .optional(),
+      }),
+    )
+    .optional(),
 });
 
 export const inputModeOptions = [

@@ -18,6 +18,20 @@ export const ratingInputOptionsSchema = optionBaseSchema.merge(
         button: z.string().optional(),
       })
       .optional(),
+    localizations: z
+      .record(
+        z.string(),
+        z.object({
+          labels: z
+            .object({
+              left: z.string().optional(),
+              right: z.string().optional(),
+              button: z.string().optional(),
+            })
+            .optional(),
+        }),
+      )
+      .optional(),
     customIcon: z
       .object({
         isEnabled: z.boolean().optional(),

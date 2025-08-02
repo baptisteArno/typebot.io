@@ -4,6 +4,15 @@ import type { BotContext } from "@/types";
 import { CorsError } from "@/utils/CorsError";
 import { mergeThemes } from "@/utils/dynamicTheme";
 import { injectFont } from "@/utils/injectFont";
+import {
+  getLocalizedInitialChatReplyFromStorage,
+  getLocalizedResultIdFromStorage,
+  migrateToLocalizedStorage,
+  setLocalizedInitialChatReplyInStorage,
+  setLocalizedResultIdInStorage,
+  setPreferredLocaleInStorage,
+  wipeLocalizedChatStateInStorage,
+} from "@/utils/localizedStorage";
 import { persist } from "@/utils/persist";
 import { setCssVariablesValue } from "@/utils/setCssVariablesValue";
 import {
@@ -46,12 +55,27 @@ import {
   onCleanup,
 } from "solid-js";
 import { Portal } from "solid-js/web";
+import { detectClientLocale } from "../utils/localeDetection";
+import {
+  cleanupLocalizationPerformance,
+  initializeLocalizationPerformance,
+} from "../utils/localizationPerformance";
 import { buttonVariants } from "./Button";
 import { ChatContainer } from "./ConversationContainer/ChatContainer";
 import { ErrorMessage } from "./ErrorMessage";
 import { LiteBadge } from "./LiteBadge";
 import { ProgressBar } from "./ProgressBar";
 import { CloseIcon } from "./icons/CloseIcon";
+
+// Local type definition for locale detection config (avoids import issues)
+export interface LocaleDetectionConfig {
+  enabled?: boolean;
+  methods?: string[];
+  fallbackLocale?: string;
+  urlParamName?: string;
+  pathSegmentIndex?: number;
+  customVariableName?: string;
+}
 
 export type BotProps = {
   id?: string;
@@ -65,6 +89,10 @@ export type BotProps = {
   progressBarRef?: HTMLDivElement;
   startFrom?: StartFrom;
   sessionId?: string;
+  locale?: string;
+  availableLocales?: string[];
+  localeDetectionMeta?: any;
+  localeDetectionConfig?: LocaleDetectionConfig;
   onNewInputBlock?: (inputBlock: InputBlock) => void;
   onAnswer?: (answer: { message: string; blockId: string }) => void;
   onInit?: () => void;
@@ -83,6 +111,9 @@ export const Bot = (props: BotProps & { class?: string }) => {
   const [error, setError] = createSignal<Error | undefined>();
 
   const initializeBot = async () => {
+    // Initialize performance optimizations
+    initializeLocalizationPerformance();
+
     if (props.font) injectFont(props.font);
     setIsInitialized(true);
     const urlParams = new URLSearchParams(location.search);
@@ -91,12 +122,71 @@ export const Bot = (props: BotProps & { class?: string }) => {
     urlParams.forEach((value, key) => {
       prefilledVariables[key] = value;
     });
+
+    // Client-side locale detection if not provided
+    let detectedLocale = props.locale;
+    let detectionMeta = props.localeDetectionMeta;
+    const availableLocales = [...(props.availableLocales || ["en"])];
+
+    if (
+      !detectedLocale &&
+      props.localeDetectionConfig &&
+      props.availableLocales
+    ) {
+      const detection = detectClientLocale(
+        props.localeDetectionConfig,
+        props.availableLocales,
+      );
+      detectedLocale = detection.locale;
+      detectionMeta = {
+        method: detection.method,
+        confidence: detection.confidence,
+        fallbackUsed: detection.fallbackUsed,
+        clientSide: true,
+      };
+
+      // Ensure detected locale is in available locales for consistency
+      if (detectedLocale && !availableLocales.includes(detectedLocale)) {
+        availableLocales.push(detectedLocale);
+        console.log(
+          `[Bot] Added detected locale ${detectedLocale} to available locales`,
+        );
+      }
+    }
+
+    // Ensure props.locale is in available locales if provided
+    if (props.locale && !availableLocales.includes(props.locale)) {
+      availableLocales.push(props.locale);
+      console.log(
+        `[Bot] Added prop locale ${props.locale} to available locales`,
+      );
+    }
+
+    // Debug logging for locale detection
+    console.log("[DEBUG Bot] Locale detection results:", {
+      propLocale: props.locale,
+      detectedLocale,
+      availableLocales,
+      localeDetectionConfig: props.localeDetectionConfig,
+      detectionMeta,
+    });
     const typebotIdFromProps =
       typeof props.typebot === "string" ? props.typebot : undefined;
     const isPreview =
       typeof props.typebot !== "string" || (props.isPreview ?? false);
+
+    // Use localized storage if locale is available
     const resultIdInStorage =
-      getExistingResultIdFromStorage(typebotIdFromProps);
+      detectedLocale && typebotIdFromProps
+        ? getLocalizedResultIdFromStorage(typebotIdFromProps, detectedLocale) ||
+          getExistingResultIdFromStorage(typebotIdFromProps)
+        : getExistingResultIdFromStorage(typebotIdFromProps);
+
+    // Migrate existing non-localized data to localized storage if needed
+    if (detectedLocale && typebotIdFromProps && !isPreview) {
+      migrateToLocalizedStorage(typebotIdFromProps, detectedLocale);
+    }
+
     const { data, error } = await startChatQuery({
       stripeRedirectStatus: urlParams.get("redirect_status") ?? undefined,
       typebot: props.typebot,
@@ -109,6 +199,9 @@ export const Bot = (props: BotProps & { class?: string }) => {
       },
       startFrom: props.startFrom,
       sessionId: props.sessionId,
+      locale: detectedLocale,
+      availableLocales: availableLocales,
+      localeDetectionMeta: detectionMeta,
     });
     if (error instanceof HTTPError) {
       if (isPreview) {
@@ -158,15 +251,36 @@ export const Bot = (props: BotProps & { class?: string }) => {
       (data.typebot.settings.general?.rememberUser?.isEnabled ??
         defaultSettings.general.rememberUser.isEnabled)
     ) {
-      if (resultIdInStorage && resultIdInStorage !== data.resultId)
-        wipeExistingChatStateInStorage(data.typebot.id);
+      if (resultIdInStorage && resultIdInStorage !== data.resultId) {
+        if (detectedLocale) {
+          wipeLocalizedChatStateInStorage(data.typebot.id, detectedLocale);
+        } else {
+          wipeExistingChatStateInStorage(data.typebot.id);
+        }
+      }
       const storage =
         data.typebot.settings.general?.rememberUser?.storage ??
         defaultSettings.general.rememberUser.storage;
-      setResultInStorage(storage)(typebotIdFromProps, data.resultId);
-      const initialChatInStorage = getInitialChatReplyFromStorage(
-        data.typebot.id,
-      );
+
+      // Store result ID with locale if available
+      if (detectedLocale) {
+        setLocalizedResultIdInStorage(storage)(
+          typebotIdFromProps,
+          detectedLocale,
+          data.resultId,
+        );
+        // Save locale preference
+        setPreferredLocaleInStorage(detectedLocale, typebotIdFromProps);
+      } else {
+        setResultInStorage(storage)(typebotIdFromProps, data.resultId);
+      }
+
+      const initialChatInStorage = detectedLocale
+        ? getLocalizedInitialChatReplyFromStorage(
+            data.typebot.id,
+            detectedLocale,
+          ) || getInitialChatReplyFromStorage(data.typebot.id)
+        : getInitialChatReplyFromStorage(data.typebot.id);
       if (
         initialChatInStorage &&
         initialChatInStorage.typebot.publishedAt &&
@@ -179,23 +293,49 @@ export const Bot = (props: BotProps & { class?: string }) => {
           setInitialChatReply(initialChatInStorage);
         } else {
           // Restart chat by resetting remembered state
-          wipeExistingChatStateInStorage(data.typebot.id);
+          if (detectedLocale) {
+            wipeLocalizedChatStateInStorage(data.typebot.id, detectedLocale);
+          } else {
+            wipeExistingChatStateInStorage(data.typebot.id);
+          }
           setInitialChatReply(data);
+
+          if (detectedLocale) {
+            setLocalizedInitialChatReplyInStorage(data, {
+              typebotId: data.typebot.id,
+              locale: detectedLocale,
+              storage,
+            });
+          } else {
+            setInitialChatReplyInStorage(data, {
+              typebotId: data.typebot.id,
+              storage,
+            });
+          }
+        }
+      } else {
+        setInitialChatReply(data);
+
+        if (detectedLocale) {
+          setLocalizedInitialChatReplyInStorage(data, {
+            typebotId: data.typebot.id,
+            locale: detectedLocale,
+            storage,
+          });
+        } else {
           setInitialChatReplyInStorage(data, {
             typebotId: data.typebot.id,
             storage,
           });
         }
-      } else {
-        setInitialChatReply(data);
-        setInitialChatReplyInStorage(data, {
-          typebotId: data.typebot.id,
-          storage,
-        });
       }
       props.onChatStatePersisted?.(true);
     } else {
-      wipeExistingChatStateInStorage(data.typebot.id);
+      if (detectedLocale) {
+        wipeLocalizedChatStateInStorage(data.typebot.id, detectedLocale);
+      } else {
+        wipeExistingChatStateInStorage(data.typebot.id);
+      }
       setInitialChatReply(data);
       if (data.input?.id && props.onNewInputBlock)
         props.onNewInputBlock(data.input);
@@ -227,6 +367,7 @@ export const Bot = (props: BotProps & { class?: string }) => {
 
   onCleanup(() => {
     setIsInitialized(false);
+    cleanupLocalizationPerformance();
   });
 
   return (

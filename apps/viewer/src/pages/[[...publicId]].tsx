@@ -11,6 +11,13 @@ import {
   type TypebotV3PageProps,
 } from "@/components/TypebotPageV3";
 import { env } from "@typebot.io/env";
+import {
+  type LocaleDetectionConfig,
+  type LocaleDetectionContext,
+  detectLocaleServer,
+  localizationService,
+  supportedLocales,
+} from "@typebot.io/lib/localization";
 import { isNotDefined } from "@typebot.io/lib/utils";
 import prisma from "@typebot.io/prisma";
 import { isTypebotVersionAtLeastV6 } from "@typebot.io/schemas/helpers/isTypebotVersionAtLeastV6";
@@ -43,6 +50,36 @@ const incompatibleBrowsers = [
 const log = (message: string) => {
   if (!env.DEBUG) return;
   console.log(`[DEBUG] ${message}`);
+};
+
+// Utility to remove undefined values from objects for JSON serialization
+const removeUndefined = (obj: any): any => {
+  if (obj === null || obj === undefined) {
+    return null;
+  }
+
+  if (Array.isArray(obj)) {
+    return obj.map(removeUndefined).filter((item) => item !== null);
+  }
+
+  if (typeof obj === "object") {
+    const cleaned: any = {};
+    for (const [key, value] of Object.entries(obj)) {
+      if (value !== undefined) {
+        const cleanedValue = removeUndefined(value);
+        // Only add non-null values, except for specific structure preservation
+        if (cleanedValue !== null) {
+          cleaned[key] = cleanedValue;
+        } else if (key === "localizations") {
+          // Keep empty localizations as empty object instead of null
+          cleaned[key] = {};
+        }
+      }
+    }
+    return cleaned;
+  }
+
+  return obj;
 };
 
 export const getServerSideProps: GetServerSideProps = async (
@@ -98,12 +135,219 @@ export const getServerSideProps: GetServerSideProps = async (
         notFound: true,
       };
 
+    // Detect locale if localization is enabled
+    let detectedLocale = publishedTypebot.defaultLocale || "en";
+    const availableLocales = Array.isArray(publishedTypebot.supportedLocales)
+      ? publishedTypebot.supportedLocales
+      : JSON.parse((publishedTypebot.supportedLocales as string) || '["en"]');
+    let localeDetectionMeta = null;
+
+    const localeDetectionConfig =
+      typeof publishedTypebot.localeDetectionConfig === "string"
+        ? JSON.parse((publishedTypebot.localeDetectionConfig as string) || "{}")
+        : publishedTypebot.localeDetectionConfig || {};
+
+    log(`Locale detection config: ${JSON.stringify(localeDetectionConfig)}`);
+    log(`Available locales: ${JSON.stringify(availableLocales)}`);
+    log(`Default locale: ${publishedTypebot.defaultLocale || "en"}`);
+    log(`Query parameters: ${JSON.stringify(context.query)}`);
+
+    // Always check for URL parameters first, even if localization is not fully configured
+    const detectionContext: LocaleDetectionContext = {
+      headers: context.req.headers as Record<string, string>,
+      query: context.query as Record<string, string | string[]>,
+      pathname,
+      hostname: host,
+    };
+
+    // Check for explicit locale URL parameter first
+    const urlParamName = localeDetectionConfig.urlParamName || "locale";
+    const urlLocaleParam = context.query[urlParamName];
+    const urlLocaleValue = Array.isArray(urlLocaleParam)
+      ? urlLocaleParam[0]
+      : urlLocaleParam;
+
+    if (urlLocaleValue && typeof urlLocaleValue === "string") {
+      log(`URL locale parameter found: ${urlLocaleValue}`);
+      // Validate that the locale is supported globally
+      // Also check if typebot has translations for this locale by examining the content
+      const isGloballySupported = supportedLocales.includes(
+        urlLocaleValue as any,
+      );
+      const isInAvailableLocales = availableLocales.includes(urlLocaleValue);
+
+      log(
+        `Locale validation - Global support: ${isGloballySupported}, In available locales: ${isInAvailableLocales}`,
+      );
+
+      // Allow the locale if it's globally supported, regardless of typebot configuration
+      // This enables dynamic locale support as new translations are added
+      if (isGloballySupported) {
+        detectedLocale = urlLocaleValue;
+        localeDetectionMeta = {
+          method: "url-param",
+          confidence: 1.0,
+          fallbackUsed: false,
+        };
+        log(`Locale set to: ${detectedLocale} via URL parameter`);
+
+        // Ensure the locale is included in available locales for the client
+        if (!isInAvailableLocales) {
+          availableLocales.push(urlLocaleValue);
+          log(`Added ${urlLocaleValue} to available locales for this session`);
+        }
+      } else {
+        log(
+          `Unsupported locale in URL parameter: ${urlLocaleValue}. Not in global supported locales.`,
+        );
+      }
+    }
+
+    // If no URL parameter override and localization is properly configured, run full detection
+    if (
+      !urlLocaleValue &&
+      localeDetectionConfig.enabled &&
+      availableLocales.length > 1
+    ) {
+      const detectionResult = detectLocaleServer(
+        detectionContext,
+        localeDetectionConfig,
+      );
+
+      // Validate the detected locale is globally supported
+      if (supportedLocales.includes(detectionResult.locale as any)) {
+        detectedLocale = detectionResult.locale;
+        localeDetectionMeta = {
+          method: detectionResult.method,
+          confidence: detectionResult.confidence,
+          fallbackUsed: detectionResult.fallbackUsed,
+        };
+
+        // Ensure the detected locale is in available locales
+        if (!availableLocales.includes(detectedLocale)) {
+          availableLocales.push(detectedLocale);
+          log(`Added detected locale ${detectedLocale} to available locales`);
+        }
+
+        log(
+          `Locale detected via configured method: ${detectedLocale} (${detectionResult.method})`,
+        );
+      } else {
+        log(
+          `Detected locale ${detectionResult.locale} is not globally supported, falling back to default`,
+        );
+      }
+    }
+
+    // Always attempt to resolve localized content if we have a detected locale
+    let localizedTypebot = publishedTypebot;
+    if (detectedLocale && detectedLocale !== "en") {
+      log(`Resolving localized content for locale: ${detectedLocale}`);
+      log(`Default locale: ${publishedTypebot.defaultLocale || "en"}`);
+
+      // Debug: Check what localization data exists
+      const groups = Array.isArray(publishedTypebot.groups)
+        ? publishedTypebot.groups
+        : JSON.parse((publishedTypebot.groups as string) || "[]");
+
+      if (groups && groups.length > 0) {
+        const firstGroup = groups[0];
+        if (firstGroup.blocks && firstGroup.blocks.length > 0) {
+          const firstBlock = firstGroup.blocks[0];
+          log(`First block type: ${firstBlock.type}`);
+          log(
+            `First block content: ${JSON.stringify(firstBlock.content, null, 2)}`,
+          );
+          if (firstBlock.content?.localizations) {
+            log(
+              `Available localizations: ${Object.keys(firstBlock.content.localizations)}`,
+            );
+            log(
+              `French localization: ${JSON.stringify(firstBlock.content.localizations.fr, null, 2)}`,
+            );
+          } else {
+            log(`No localizations found in first block`);
+            // For testing: Create sample French translations if debug mode and no translations exist
+            if (
+              env.DEBUG &&
+              detectedLocale === "fr" &&
+              firstBlock.content &&
+              firstBlock.type === "text"
+            ) {
+              log(`Creating test French translation for debugging`);
+              if (!firstBlock.content.localizations) {
+                firstBlock.content.localizations = {};
+              }
+              firstBlock.content.localizations.fr = {
+                plainText: `[TEST FR] ${firstBlock.content.plainText || firstBlock.content.html || "Hello"}`,
+                html: `[TEST FR] ${firstBlock.content.html || firstBlock.content.plainText || "Hello"}`,
+              };
+              log(
+                `Test French translation created: ${JSON.stringify(firstBlock.content.localizations.fr, null, 2)}`,
+              );
+            }
+          }
+        }
+      }
+
+      try {
+        const resolvedContent = localizationService.resolveTypebotContent(
+          { groups: groups },
+          detectedLocale,
+          publishedTypebot.defaultLocale || "en",
+        );
+        localizedTypebot = {
+          ...publishedTypebot,
+          groups: resolvedContent.groups,
+        };
+
+        // Debug: Check what was resolved
+        if (resolvedContent.groups && resolvedContent.groups.length > 0) {
+          const firstResolvedGroup = resolvedContent.groups[0];
+          if (
+            firstResolvedGroup.blocks &&
+            firstResolvedGroup.blocks.length > 0
+          ) {
+            const firstResolvedBlock = firstResolvedGroup.blocks[0];
+            log(
+              `Resolved block content: ${JSON.stringify(firstResolvedBlock.content, null, 2)}`,
+            );
+            log(
+              `Resolved block has localizations: ${!!firstResolvedBlock.content?.localizations}`,
+            );
+            if (firstResolvedBlock.content?.plainText) {
+              log(
+                `Resolved plainText: "${firstResolvedBlock.content.plainText}"`,
+              );
+            }
+            if (firstResolvedBlock.content?.html) {
+              log(`Resolved html: "${firstResolvedBlock.content.html}"`);
+            }
+            if (firstResolvedBlock.content?.richText) {
+              log(
+                `Resolved richText: ${JSON.stringify(firstResolvedBlock.content.richText, null, 2)}`,
+              );
+            }
+          }
+        }
+
+        log(`Localized content resolved successfully for ${detectedLocale}`);
+      } catch (error) {
+        log(`Failed to resolve localized content: ${error}`);
+        // Fallback to original typebot if localization fails
+        localizedTypebot = publishedTypebot;
+      }
+    }
+
     return {
       props: {
-        publishedTypebot,
+        publishedTypebot: removeUndefined(localizedTypebot),
         incompatibleBrowser,
         isMatchingViewerUrl,
         url: `${protocol}://${forwardedHost ?? host}${pathname}`,
+        locale: detectedLocale,
+        availableLocales,
+        localeDetectionMeta: removeUndefined(localeDetectionMeta),
       },
     };
   } catch (err) {
@@ -129,6 +373,9 @@ const getTypebotFromPublicId = async (publicId?: string) => {
       edges: true,
       typebotId: true,
       id: true,
+      defaultLocale: true,
+      supportedLocales: true,
+      localeDetectionConfig: true,
       typebot: {
         select: {
           name: true,
@@ -163,6 +410,10 @@ const getTypebotFromPublicId = async (publicId?: string) => {
         metadata: settings.metadata ?? {},
         font: theme.general?.font ?? null,
         version: publishedTypebot.version,
+        groups: publishedTypebot.groups,
+        defaultLocale: publishedTypebot.defaultLocale,
+        supportedLocales: publishedTypebot.supportedLocales,
+        localeDetectionConfig: publishedTypebot.localeDetectionConfig,
         isSuspended: publishedTypebot.typebot.workspace.isSuspended,
       }
     : {
@@ -183,6 +434,9 @@ const getTypebotFromCustomDomain = async (customDomain: string) => {
       edges: true,
       typebotId: true,
       id: true,
+      defaultLocale: true,
+      supportedLocales: true,
+      localeDetectionConfig: true,
       typebot: {
         select: {
           name: true,
@@ -217,6 +471,10 @@ const getTypebotFromCustomDomain = async (customDomain: string) => {
         metadata: settings.metadata ?? {},
         font: theme.general?.font ?? null,
         version: publishedTypebot.version,
+        groups: publishedTypebot.groups,
+        defaultLocale: publishedTypebot.defaultLocale,
+        supportedLocales: publishedTypebot.supportedLocales,
+        localeDetectionConfig: publishedTypebot.localeDetectionConfig,
         isSuspended: publishedTypebot.typebot.workspace.isSuspended,
       }
     : {
@@ -236,6 +494,9 @@ const App = ({
   publishedTypebot,
   incompatibleBrowser,
   dashboardUrl,
+  locale,
+  availableLocales,
+  localeDetectionMeta,
   ...props
 }: {
   isIE: boolean;
@@ -243,6 +504,9 @@ const App = ({
   url: string;
   isMatchingViewerUrl?: boolean;
   dashboardUrl?: string;
+  locale?: string;
+  availableLocales?: string[];
+  localeDetectionMeta?: any;
   publishedTypebot:
     | TypebotPageProps["publishedTypebot"]
     | (Pick<
@@ -298,6 +562,10 @@ const App = ({
       }
       metadata={publishedTypebot.metadata ?? {}}
       font={publishedTypebot.font}
+      locale={locale}
+      availableLocales={availableLocales}
+      localeDetectionMeta={localeDetectionMeta}
+      typebotData={publishedTypebot}
     />
   );
 };
