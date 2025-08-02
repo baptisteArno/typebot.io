@@ -168,11 +168,8 @@ export const TranslationManagementPage = () => {
         availableLocales.forEach((locale) => {
           if (locale === fallbackLocale) return;
 
-          const blockWithLocalizations = { ...block };
           const completeness =
-            localizationService.getTranslationStatus(blockWithLocalizations, [
-              locale,
-            ])[locale]?.completeness || 0;
+            localizationService.getBlockTranslationCompleteness(block, locale);
 
           let localizedContent = "";
           if ("content" in block && block.content) {

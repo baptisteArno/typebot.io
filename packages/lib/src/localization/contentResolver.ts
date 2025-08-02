@@ -128,19 +128,42 @@ export function getTranslationCompleteness<T extends Record<string, any>>(
   if (!content.localizations?.[locale]) return 0;
 
   const localization = content.localizations[locale];
-  const totalFields = Object.keys(content).filter(
-    (key) => key !== "localizations",
-  ).length;
-  const translatedFields = Object.keys(localization).filter(
-    (key) =>
-      localization[key] !== undefined &&
-      localization[key] !== null &&
-      localization[key] !== "",
-  ).length;
 
-  return totalFields > 0
-    ? Math.round((translatedFields / totalFields) * 100)
-    : 0;
+  // Get translatable fields based on content structure
+  const translatableFields = getTranslatableFields(content);
+
+  if (translatableFields.length === 0) return 0;
+
+  const translatedFields = translatableFields.filter((key) => {
+    const value = localization[key];
+    return value !== undefined && value !== null && value !== "";
+  }).length;
+
+  return Math.round((translatedFields / translatableFields.length) * 100);
+}
+
+// Helper function to identify translatable fields based on content structure
+function getTranslatableFields<T extends Record<string, any>>(
+  content: T,
+): string[] {
+  const translatableFields: string[] = [];
+
+  // Text content fields
+  if (content.plainText !== undefined) translatableFields.push("plainText");
+  if (content.richText !== undefined) translatableFields.push("richText");
+  if (content.html !== undefined) translatableFields.push("html");
+  if (content.url !== undefined) translatableFields.push("url");
+
+  // Button/choice content
+  if (content.content !== undefined) translatableFields.push("content");
+
+  // Input label fields
+  if (content.placeholder !== undefined) translatableFields.push("placeholder");
+  if (content.button !== undefined) translatableFields.push("button");
+  if (content.left !== undefined) translatableFields.push("left");
+  if (content.right !== undefined) translatableFields.push("right");
+
+  return translatableFields;
 }
 
 // Helper to check if content needs translation
