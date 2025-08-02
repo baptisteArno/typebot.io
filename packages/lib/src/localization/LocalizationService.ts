@@ -184,7 +184,7 @@ export class LocalizationService {
       console.log(
         `🔄 Resolving choice block ${block.id} for locale ${locale}:`,
         {
-          originalItems: block.items.map((item) => ({
+          originalItems: block.items.map((item: any) => ({
             id: item.id,
             content: item.content,
             hasLocalizations: !!item.localizations,
@@ -209,7 +209,7 @@ export class LocalizationService {
       });
 
       console.log(`✅ Choice block ${block.id} resolved:`, {
-        resolvedItems: resolved.items.map((item) => ({
+        resolvedItems: resolved.items.map((item: any) => ({
           id: item.id,
           content: item.content,
         })),
@@ -231,12 +231,55 @@ export class LocalizationService {
 
     for (const locale of requiredLocales) {
       status[locale] = {
-        completeness: getTranslationCompleteness(content, locale),
+        completeness: this.getBlockTranslationCompleteness(content, locale),
         hasUntranslated: hasUntranslatedContent(content, [locale]),
       };
     }
 
     return status;
+  }
+
+  // Calculate completeness for an entire block considering all its translatable content
+  getBlockTranslationCompleteness(block: any, locale: string): number {
+    const completenessScores: number[] = [];
+
+    // Handle main content
+    if (block.content) {
+      completenessScores.push(
+        getTranslationCompleteness(block.content, locale),
+      );
+    }
+
+    // Handle choice items (for choice blocks, picture choice, cards)
+    if (block.items && Array.isArray(block.items)) {
+      for (const item of block.items) {
+        completenessScores.push(getTranslationCompleteness(item, locale));
+      }
+    }
+
+    // Handle input labels (for input blocks)
+    if (block.options?.labels) {
+      completenessScores.push(
+        getTranslationCompleteness(block.options.labels, locale),
+      );
+    }
+
+    // Handle options with direct localizations (for newer input blocks)
+    if (block.options?.localizations) {
+      completenessScores.push(
+        getTranslationCompleteness(block.options, locale),
+      );
+    }
+
+    // If no translatable content found, return 0
+    if (completenessScores.length === 0) return 0;
+
+    // Return average completeness across all translatable parts
+    const totalCompleteness = completenessScores.reduce(
+      (sum, score) => sum + score,
+      0,
+    );
+    return Math.round(totalCompleteness / completenessScores.length);
   }
 
   getTypebotTranslationStatus(
