@@ -204,7 +204,7 @@
   "editor.sidebarBlock.zemanticAi.label": "Zemantic AI",
   "errorMessage": "Ocorreu um erro",
   "folders.createFolderButton.label": "Criar uma pasta",
-  "folders.createTypebotButton.label": "Criar um typebot",
+  "folders.createbotButton.label": "Criar um typebot",
   "folders.folderButton.deleteConfirmationMessage": "Tem a certeza de que deseja excluir a pasta <strong>folderName</strong>? (Tudo o que estiver dentro será movido para o seu painel)",
   "folders.typebotButton.delete": "Apagar",
   "folders.typebotButton.deleteConfirmationMessage": "Tem a certeza de que deseja excluir o seu typebot <strong>typebotName</strong>?",

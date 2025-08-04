@@ -191,7 +191,7 @@
   "editor.sidebarBlock.zemanticAi.label": "Zemantic AI",
   "errorMessage": "A aparut o eroare",
   "folders.createFolderButton.label": "Creați un folder",
-  "folders.createTypebotButton.label": "Creați un typebot",
+  "folders.createbotButton.label": "Creați un typebot",
   "folders.folderButton.deleteConfirmationMessage": "Sigur doriți să ștergeți dosarul <strong>folderName</strong>? (Totul din interior va fi mutat în tabloul de bord)",
   "folders.typebotButton.delete": "Șterge",
   "folders.typebotButton.deleteConfirmationMessage": "Sigur doriți să ștergeți <strong>typebotName</strong> de typebot?",

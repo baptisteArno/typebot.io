@@ -40,7 +40,7 @@ export const CreateBotButton = ({
           textAlign="center"
           mt="6"
         >
-          {t('folders.createTypebotButton.label')}
+          {t('folders.createbotButton.label')}
         </Text>
       </VStack>
     </Button>
