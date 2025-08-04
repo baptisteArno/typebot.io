@@ -72,6 +72,7 @@ const nextConfig = {
     return config;
   },
   headers: async () => {
+    const isDev = process.env.NODE_ENV !== "production";
     return [
       {
         source: "/(.*)?",
@@ -79,6 +80,23 @@ const nextConfig = {
           {
             key: "X-Frame-Options",
             value: "SAMEORIGIN",
+          },
+          {
+            key: "Content-Security-Policy",
+            value: [
+              "default-src 'self'",
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https:",
+              "style-src 'self' 'unsafe-inline' https:",
+              `connect-src 'self' https: wss:${
+                isDev ? " http://localhost:*" : ""
+              }`,
+              "frame-src 'self' https:",
+              "img-src 'self' data: blob: https:",
+              "font-src 'self' https: data:",
+              "media-src 'self' https:",
+              "worker-src 'self' blob:",
+              "object-src 'none'",
+            ].join("; "),
           },
         ],
       },
