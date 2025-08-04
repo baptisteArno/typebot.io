@@ -6,7 +6,8 @@ import { GmailLogo } from "./logo";
 export const gmailBlock = createBlock({
   id: "gmail",
   name: "Gmail",
-  tags: [],
+  badge: "beta",
+  tags: ["email", "notification", "send"],
   LightLogo: GmailLogo,
   auth,
   actions: [sendEmail],

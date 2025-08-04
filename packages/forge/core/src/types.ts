@@ -225,6 +225,7 @@ export type BlockDefinition<
     deployedAt: Date;
     youtubeId: string;
   };
+  badge?: "beta";
   auth?: Auth;
   options?: Options | undefined;
   fetchers?: FetcherDefinition<Auth, Options>[];
