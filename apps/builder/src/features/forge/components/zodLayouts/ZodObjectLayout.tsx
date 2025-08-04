@@ -116,7 +116,8 @@ export const ZodObjectLayout = ({
 
 const getObjectKeysWithSameAccordionAttr = (accordion: string, shape: any) =>
   Object.keys(shape).reduce<string[]>((keys, currentKey) => {
-    const l = shape[currentKey]._def.layout as
+    const innerSchema = getZodInnerSchema(shape[currentKey]);
+    const l = innerSchema._def.layout as
       | ZodLayoutMetadata<ZodTypeAny>
       | undefined;
     return !l?.accordion || l.accordion !== accordion
