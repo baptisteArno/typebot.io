@@ -49,7 +49,7 @@ export const runChatCompletion = async ({
   const openai = new OpenAI(config)
 
   const tools = options.tools
-    ?.filter((t) => t.name && t.parameters)
+    ?.filter((t) => t.name)
     .map((t) => ({
       type: 'function',
       function: {
@@ -85,7 +85,7 @@ export const runChatCompletion = async ({
       const name = toolCall.function?.name
       if (!name) continue
       const toolDefinition = options.tools?.find((t) => t.name === name)
-      if (!toolDefinition?.code || !toolDefinition.parameters) {
+      if (!toolDefinition?.code) {
         messages.push({
           tool_call_id: toolCall.id,
           role: 'tool',
@@ -94,7 +94,7 @@ export const runChatCompletion = async ({
         continue
       }
       const toolParams = Object.fromEntries(
-        toolDefinition.parameters.map(({ name }) => [name, null])
+        (toolDefinition.parameters ?? []).map(({ name }) => [name, null])
       )
       const toolArgs = toolCall.function?.arguments
         ? JSON.parse(toolCall.function?.arguments)
