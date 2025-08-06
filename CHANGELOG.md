@@ -1,5 +1,54 @@
 # Changelog
 
+<a name="3.10.0"></a>
+## 3.10.0 (2025-08-06)
+
+### New features
+
+- ✨ Add 360Dialog provider [[43328f4](https://github.com/baptisteArno/typebot.io/commit/43328f48445e746534c170b6f8fdbe723af25840)]
+- ✨ Add Transcript tab in Results details modal [[43a3eb5](https://github.com/baptisteArno/typebot.io/commit/43a3eb5432c8c2bc331b11f3fa86481b70c1dd86)]
+- ✨ Add Gmail block ([#2253](https://github.com/baptisteArno/typebot.io/issues/2253)) [[40884d5](https://github.com/baptisteArno/typebot.io/commit/40884d5df9d5a3faf5f138fe9dc5f6f2a3cc2795)]
+- ✨ Add support for array type in Generate variables actions [[de7f96a](https://github.com/baptisteArno/typebot.io/commit/de7f96ac0caf3a46a8d90cea0e700075f166fd58)]
+
+### UI/UX Improvements
+
+- ⚡ (dify) Switch to ai-sdk ([#2247](https://github.com/baptisteArno/typebot.io/issues/2247)) [[085397e](https://github.com/baptisteArno/typebot.io/commit/085397ea09638d313662f24854cddcd2e8fbadd3)]
+- 🚸 (gmail) Improve OAuth credential popup handling [[ce7627f](https://github.com/baptisteArno/typebot.io/commit/ce7627fd99aae5de492a15c30b57dfe55259054e)]
+- 🚸 (bot) Improve error message on failed file upload [[bac1ee2](https://github.com/baptisteArno/typebot.io/commit/bac1ee280e7544689e787dbb7a1c664123c36d70)]
+- 🚸 Add Claude 4 models in suggestion dropdown [[16abe1c](https://github.com/baptisteArno/typebot.io/commit/16abe1c0e357ebfba85a31fdd0fe626d10add89c)]
+
+### Fixed
+
+- 🐛 Fix empty accordion in forged block with preprocessing [[167b252](https://github.com/baptisteArno/typebot.io/commit/167b252d08c56cf572528ffadcee14b2042f9a40)]
+- 🐛 Fix gmail add label [[77eb695](https://github.com/baptisteArno/typebot.io/commit/77eb695f00019e7a9d7398cbe67902ed4815c5b4)]
+- 🚑 Fix Google Sheet authentication not refreshing [[f33d3b2](https://github.com/baptisteArno/typebot.io/commit/f33d3b224d1801dc298a050b2d4d6a589f0a09ba)]
+- 🐛 Fix bot avatar not displayed on streaming message [[541d744](https://github.com/baptisteArno/typebot.io/commit/541d7446500844f7eab60387c0db1093435111c2)]
+
+### Content
+
+- 📝 Remove temporary absence notice from help documentation [[dfe98a1](https://github.com/baptisteArno/typebot.io/commit/dfe98a115122834d954705421feb4dfc39aca418)]
+- 📝 Add &quot;create multi step form&quot; and &quot;lead qualification questions&quot; blog posts ([#2256](https://github.com/baptisteArno/typebot.io/issues/2256)) [[9049101](https://github.com/baptisteArno/typebot.io/commit/904910128140aaa78b68d2e841ff78cef2b36a6c)]
+- 📝 Update help documentation to reflect maintainer&#x27;s temporary absence [[8068860](https://github.com/baptisteArno/typebot.io/commit/80688607f585f0bac77515e04cd7fda6a9494961)]
+- 📝 Add refund policy to terms of service, outlining 14-day refund period for new accounts [[217049d](https://github.com/baptisteArno/typebot.io/commit/217049d2962feff35d2f94b1fbb0b36f3c7f3dc6)]
+- 📝 Add Google workspace limited use of user data policy [[1572426](https://github.com/baptisteArno/typebot.io/commit/1572426998124ce4d962d44d5582ef34f3edb243)]
+- 📝 Update privacy policy to include third-party integration policy [[a21d6e9](https://github.com/baptisteArno/typebot.io/commit/a21d6e914e66ef65166db7a864e9881590ab0fad)]
+- 📝 Add WA allow list phone number screenshot [[0c374d9](https://github.com/baptisteArno/typebot.io/commit/0c374d96179b277bfc52a1702680f6fd5c5ee647)]
+- 📝 Add more troobleshoot steps to WhatsApp deployment [[85b7bae](https://github.com/baptisteArno/typebot.io/commit/85b7bae1eda80d79223830947a002764ad5477bc)]
+- 📝 Add cookies info and state ISO 27001 compliance [[0681926](https://github.com/baptisteArno/typebot.io/commit/0681926f162f27cee270c58daa2c0676c5f30fb0)]
+- 📝 Update WhatsApp doc and troubleshooting [[65921bb](https://github.com/baptisteArno/typebot.io/commit/65921bbde4958559a166a3c60e1725746df03512)]
+- 📝 Add june blog posts ([#2246](https://github.com/baptisteArno/typebot.io/issues/2246)) [[96c08dc](https://github.com/baptisteArno/typebot.io/commit/96c08dc8b24354108b9534cc28a7cbbd7be99f49)]
+
+### Internal
+
+- 🔒 Add Content Security Policy header on builder [[a034176](https://github.com/baptisteArno/typebot.io/commit/a034176962527a0f2c72571c97d1ab3a630ede19)]
+- 🔧 (gmail) Add beta badge [[763c101](https://github.com/baptisteArno/typebot.io/commit/763c1012a59ce0e66ad4dcfe332224cfe8308c1f)]
+- 🔧 Refactor webhookHandler to streamline past due status updates for workspaces [[913dbd7](https://github.com/baptisteArno/typebot.io/commit/913dbd7051c0f7aca643e34350f80cf0e582c4a1)]
+- 🔧 Properly exit execute prisma script [[24313ba](https://github.com/baptisteArno/typebot.io/commit/24313ba6b842a50f0bf844f9bd7adcea7298bff5)]
+- ♻️ Fix wordpress PHP deprecation warning ([#2248](https://github.com/baptisteArno/typebot.io/issues/2248)) [[b5958bd](https://github.com/baptisteArno/typebot.io/commit/b5958bd6edf49b79023411984a0abf72c1f39bd1)]
+- 🔧 Exit destroy user if no workspaces found [[6b8a7dd](https://github.com/baptisteArno/typebot.io/commit/6b8a7dd795cf908dc5e3aa6c61fbbaec5807d125)]
+- ♻️ Harmonize unit test execution across the workspace [[354b9e7](https://github.com/baptisteArno/typebot.io/commit/354b9e7893e53de38767c8ba40bfa8c804f076b2)]
+
+
 <a name="3.9.0"></a>
 ## 3.9.0 (2025-07-04)
 
