@@ -128,7 +128,7 @@ export const createChatMessage = createAction({
   getSetVariableIds: ({ responseMapping }) =>
     responseMapping?.map((res) => res.variableId).filter(isDefined) ?? [],
   run: {
-    server: ({
+    server: async ({
       credentials: { apiKey },
       options,
       variables,
@@ -140,7 +140,7 @@ export const createChatMessage = createAction({
       if (!modelName) return logs.add("No model provided");
       if (!options.messages) return logs.add("No messages provided");
 
-      return runChatCompletion({
+      await runChatCompletion({
         model: createAnthropic({
           apiKey,
         })(modelName),

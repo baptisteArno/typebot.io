@@ -58,7 +58,7 @@ export const createChatCompletion = createAction({
     },
   ],
   run: {
-    server: ({
+    server: async ({
       credentials: { apiKey, baseUrl },
       options,
       variables,
@@ -70,7 +70,7 @@ export const createChatCompletion = createAction({
       if (!modelName) return logs.add("No model provided");
       if (!options.messages) return logs.add("No messages provided");
 
-      return runChatCompletion({
+      await runChatCompletion({
         model: createOpenAI({
           baseURL: baseUrl ?? options.baseUrl,
           apiKey,

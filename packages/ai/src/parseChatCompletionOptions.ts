@@ -1,5 +1,6 @@
 import { option } from "@typebot.io/forge";
 import type { z } from "@typebot.io/zod";
+import { chatCompletionResponseValues } from "./constants";
 import type { baseOptions } from "./legacy/chatCompletionBaseOptions";
 import { toolsSchema } from "./schemas";
 
@@ -82,12 +83,7 @@ export const parseChatCompletionOptions = ({ models }: Props) =>
       defaultValue: 1,
     }),
     responseMapping: option
-      .saveResponseArray([
-        "Message content",
-        "Total tokens",
-        "Prompt tokens",
-        "Completion tokens",
-      ] as const)
+      .saveResponseArray(chatCompletionResponseValues)
       .layout({
         accordion: "Save response",
       }),

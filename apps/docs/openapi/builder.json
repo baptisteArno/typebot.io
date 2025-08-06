@@ -19370,8 +19370,11 @@
                           "type": "string",
                           "enum": [
                             "Answer",
-                            "Conversation ID",
-                            "Total Tokens"
+                            "Total Tokens",
+                            "Message content",
+                            "Total tokens",
+                            "Prompt tokens",
+                            "Completion tokens"
                           ]
                         },
                         "variableId": {
@@ -19379,10 +19382,6 @@
                         }
                       }
                     }
-                  },
-                  "conversation_id": {
-                    "type": "string",
-                    "description": "Deprecated, use `conversationVariableId` instead"
                   }
                 },
                 "required": [
