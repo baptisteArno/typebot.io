@@ -86,7 +86,7 @@ test("Hide query params", async ({ page }) => {
   await page.goto(`/${typebotId}-public?Name=John`);
   await page.waitForTimeout(1000);
   expect(page.url()).toEqual(
-    `${env.NEXT_PUBLIC_VIEWER_URL[0]}/${typebotId}-public`,
+    `${env.NEXT_PUBLIC_VIEWER_URL.at(-1)}/${typebotId}-public`,
   );
   await updateTypebot({
     id: typebotId,
@@ -97,7 +97,7 @@ test("Hide query params", async ({ page }) => {
   await page.goto(`/${typebotId}-public?Name=John`);
   await page.waitForTimeout(1000);
   expect(page.url()).toEqual(
-    `${env.NEXT_PUBLIC_VIEWER_URL[0]}/${typebotId}-public?Name=John`,
+    `${env.NEXT_PUBLIC_VIEWER_URL.at(-1)}/${typebotId}-public?Name=John`,
   );
 });
 

@@ -45,15 +45,19 @@ export const executePrismaCommand = (command: string, options?: Options) => {
 };
 
 const executeCommand = (command: string) => {
-  exec(command, (error, stdout, stderr) => {
-    if (error) {
-      console.log(error.message);
-      return;
-    }
-    if (stderr) {
-      console.log(stderr);
-      return;
-    }
-    console.log(stdout);
+  return new Promise<void>((resolve, reject) => {
+    exec(command, (error, stdout, stderr) => {
+      if (error) {
+        console.log(error.message);
+        reject(error);
+        return;
+      }
+      if (stderr) {
+        console.log(stderr);
+        return;
+      }
+      console.log(stdout);
+      resolve();
+    });
   });
 };

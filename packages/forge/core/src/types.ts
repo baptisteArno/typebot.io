@@ -45,7 +45,7 @@ export type TurnableIntoParam<T = {}> = {
 };
 
 export type ActionDefinition<
-  A extends AuthDefinition,
+  A extends AuthDefinition<any>,
   BaseOptions extends z.ZodObject<z.ZodRawShape> = z.ZodObject<{}>,
   Options extends z.ZodObject<z.ZodRawShape> = z.ZodObject<{}>,
 > = {
@@ -135,7 +135,25 @@ export type ActionDefinition<
   };
 };
 
-export type FetcherDefinition<A extends AuthDefinition, T = {}> = {
+type BackendFuncReturnType<T> = {
+  data?: T;
+  error?: {
+    /**
+     * Context of the error. i.e. "Fetching models", "Creating chat completion"
+     */
+    context?: string;
+    /**
+     * Description of the error. i.e. "No API key provided", "No model provided"
+     */
+    description: string;
+    /**
+     * Details of the error, is often a JSON stringified object.
+     */
+    details?: string;
+  };
+};
+
+export type FetcherDefinition<A extends AuthDefinition<any>, T = {}> = {
   id: string;
   /**
    * List of option keys to determine if the fetcher should be re-executed whenever these options are updated.
@@ -144,41 +162,53 @@ export type FetcherDefinition<A extends AuthDefinition, T = {}> = {
   fetch: (params: {
     credentials: CredentialsFromAuthDef<A> | undefined;
     options: T;
-  }) => Promise<{
-    data?: (string | { label: string; value: string })[];
-    error?: {
-      /**
-       * Context of the error. i.e. "Fetching models", "Creating chat completion"
-       */
-      context?: string;
-      /**
-       * Description of the error. i.e. "No API key provided", "No model provided"
-       */
-      description: string;
-      /**
-       * Details of the error, is often a JSON stringified object.
-       */
-      details?: string;
-    };
-  }>;
+  }) => Promise<
+    BackendFuncReturnType<(string | { label: string; value: string })[]>
+  >;
 };
 
-export type AuthDefinition = {
-  type: "encryptedCredentials";
+export type OAuthDefinition = {
+  type: "oauth";
   name: string;
-  schema: z.ZodObject<any>;
+  defaultClient?: {
+    id: string;
+    secret: string;
+  };
+  authUrl: string;
+  tokenUrl: string;
+  scopes: readonly string[];
+  extraAuthParams?: Record<string, string>;
+  defaultClientEnvKeys?: {
+    id: string;
+    secret: string;
+  };
 };
 
-export type CredentialsFromAuthDef<A extends AuthDefinition> = A extends {
-  type: "encryptedCredentials";
+export type AuthDefinition<T extends z.ZodObject<z.ZodRawShape>> =
+  | {
+      type: "encryptedCredentials";
+      name: string;
+      schema: T;
+    }
+  | OAuthDefinition;
+
+export type CredentialsFromAuthDef<A extends AuthDefinition<any>> = A extends {
   schema: infer S extends z.ZodObject<any>;
 }
   ? z.infer<S>
-  : never;
+  : {
+      client: {
+        id: string;
+        secret: string;
+      };
+      accessToken: string;
+      refreshToken: string;
+      expiryDate: number;
+    };
 
 export type BlockDefinition<
   Id extends string,
-  Auth extends AuthDefinition,
+  Auth extends AuthDefinition<any>,
   Options extends z.ZodObject<any>,
 > = {
   id: Id;
@@ -195,6 +225,7 @@ export type BlockDefinition<
     deployedAt: Date;
     youtubeId: string;
   };
+  badge?: "beta";
   auth?: Auth;
   options?: Options | undefined;
   fetchers?: FetcherDefinition<Auth, Options>[];

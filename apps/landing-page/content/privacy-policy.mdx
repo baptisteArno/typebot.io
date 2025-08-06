@@ -4,16 +4,25 @@ author: baptistearno
 ---
 
 <Info>
-The content of this document is greatly inspired by the Plausible's [Privacy Policy](https://plausible.io/privacy). Plausible is a big source of inspiration for us in terms of transparency and privacy.
+  The content of this document is greatly inspired by the Plausible's [Privacy
+  Policy](https://plausible.io/privacy). Plausible is a big source of
+  inspiration for us in terms of transparency and privacy.
 </Info>
 
 In this policy, we lay out what data we collect and why, how your data is handled and your rights to your data. We promise we never sell your data.
 
+At Typebot, we are committed to complying with the GDPR and ensuring the highest level of data protection for our users. As part of this commitment, we are ISO/IEC 27001:2022 certified, demonstrating our dedication to rigorous information security standards.
+
 ## As a visitor to the typebot.io website
+
 As a visitor to the typebot.io website:
 
-- No personal information is collected
-- No information such as cookies is stored in the browser
+- No personal information is collected beyond what is described below
+- A first-party cookie named "typebot" is stored in the browser to track anonymous usage patterns and remember consent preferences. This cookie contains:
+  - Anonymous visitor ID for analytics purposes
+  - Session information to track visit duration
+  - Consent status (whether you've accepted or declined anonymous analytics tracking)
+  - Last authentication provider used (if you sign in)
 - No information is shared with advertising companies
 - No information is monetized
 
@@ -23,9 +32,13 @@ We use PostHog EU to collect anonymous data. The goal is to track overall trends
 
 Our guiding principle is to collect only what we need to provide the best service to you. We use a select number of trusted external service providers for certain service offerings.
 
-### Services we use
+### Cookies
 
-- A persistent first-party cookie is stored to remember you’re logged in. If you log in to your Typebot account, you give us permission to use cookies so you don’t have to log in on each returning session. This makes it easier for you to use our product. A cookie is a piece of text stored by your browser. You can adjust cookie retention settings in your own browser. Cookies that are already stored may be deleted at any time.
+- **Authentication**: A persistent first-party session cookie is stored to remember you're logged in.
+
+- **Typebot telemetry**: The same `typebot` cookie described above is used to link your anonymous visitor activity to your user account when you sign in.
+
+### Services we use
 
 - We use Vercel for web app hosting. The Vercel platform caches all static content at their [Edge Network](https://vercel.com/docs/edge-network/overview) by default. This means you will get static files like HTML, CSS, and JavaScript served from servers that are closest to you. Server Functions (API calls) are hosted on servers in London, UK (lhr1). See Vercel [privacy policy](https://vercel.com/legal/privacy-policy) for full details.
 
@@ -43,11 +56,33 @@ Our guiding principle is to collect only what we need to provide the best servic
 
 - All emails are sent using a third-party email provider. Transactional emails and email reports are sent using Brevo. See the Brevo [privacy policy](https://www.brevo.com/legal/privacypolicy) for full details.
 
+### Third-Party Service Integrations
+
+Typebot offers optional integrations with various third-party services to enhance your chatbot functionality. When you choose to connect these services, we handle your data with the following practices:
+
+**OAuth Authentication**: If you choose to sign in with or connect third-party services (such as Google, GitHub, or other providers), we collect your basic profile information (name, email address, and profile picture) to create and maintain your Typebot user account. This information is stored securely in our encrypted database.
+
+**Service Credentials**: All authentication credentials, including OAuth access tokens, refresh tokens, API keys, and other authentication secrets, are encrypted using industry-standard encryption before being stored in our database. These credentials are used exclusively to authenticate and authorize API calls to the connected services on your behalf.
+
+**Service Integrations**: When you use integration blocks in your typebots (such as Google Sheets, OpenAI, Anthropic, or other third-party services), we access your data through the respective APIs. We only access the specific resources and data you explicitly configure in your typebot blocks. This data is processed in real-time and is not stored permanently on our servers unless specifically required for the integration to function.
+
+**Data Protection and Sharing**:
+
+- We do not share, sell, or transfer your third-party service data to any other parties except as necessary to provide the services you've requested
+- We only access the specific services and data you explicitly authorize
+- We comply with each service provider's API terms of service and data usage policies
+
+**Data Retention**: Third-party credentials are retained as long as your Typebot account is active or until you disconnect the service. Integration data is processed in real-time and is not permanently stored on our servers. You can delete your account and all associated data at any time.
+
+**Google Workspace APIs Compliance**: The use of information received from Google Workspace APIs will adhere to the [Google API Services User Data Policy](https://developers.google.com/terms/api-services-user-data-policy), including the [Limited Use requirements](https://developers.google.com/workspace/workspace-api-user-data-developer-policy#limited-use).
+
 ## As a user of a typebot (the web chatbot itself)
 
 You are bound to what the chatbot creator has set up in terms of data collection and data handling. We do not collect any personal data from chatbot users. We do not use behavioral insights to sell advertisements. We will never collect or store any personally identifiable information and we will never abuse your user’s privacy.
 
 If the Remember user setting is on, data is stored to either local or session storage of the browser. This is to remember the user's answers if they leave the chatbot and come back later.
+
+**Third-Party Services in Typebots**: If the typebot creator has configured third-party integrations (such as Google Sheets, Gmail, or other service blocks), your interactions with the typebot may result in data being sent to those third-party services. This data handling is controlled by the typebot creator and is subject to the respective service providers' privacy policies. We only facilitate the connection between the typebot and third-party services as configured by the creator.
 
 ### Services we use
 
@@ -63,7 +98,6 @@ If the Remember user setting is on, data is stored to either local or session st
 
 - Send email blocks that use the default `notifications@get-typebot.com` will ultimately use AWS SES in eu-west-3 (Paris).
 
-
 ## Retention of data
 
 We will retain your information as long as your account is active, as necessary to provide you with the services or as otherwise set forth in this policy.
@@ -78,4 +112,4 @@ We may update this policy as needed to comply with relevant regulations and refl
 
 [Contact us](mailto:contact@typebot.io) if you have any questions, comments, or concerns about this privacy policy, your data, or your rights with respect to your information.
 
-Last updated: January 13, 2025
+Last updated: July 18, 2025

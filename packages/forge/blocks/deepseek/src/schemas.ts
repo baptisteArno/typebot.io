@@ -6,5 +6,5 @@ export const deepSeekBlockSchema = parseBlockSchema(deepSeekBlock);
 
 export const deepSeekCredentialsSchema = parseBlockCredentials(
   deepSeekBlock.id,
-  auth.schema,
+  auth,
 );

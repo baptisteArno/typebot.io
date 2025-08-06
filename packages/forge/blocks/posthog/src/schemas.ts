@@ -6,5 +6,5 @@ import { posthogBlock } from "./index";
 export const posthogBlockSchema = parseBlockSchema(posthogBlock);
 export const posthogCredentialsSchema = parseBlockCredentials(
   posthogBlock.id,
-  auth.schema,
+  auth,
 );

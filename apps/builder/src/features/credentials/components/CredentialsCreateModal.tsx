@@ -1,7 +1,9 @@
 import { StripeCreateModalContent } from "@/features/blocks/inputs/payment/components/StripeConfigModal";
 import { GoogleSheetConnectModalContent } from "@/features/blocks/integrations/googleSheets/components/GoogleSheetsConnectModal";
 import { SmtpCreateModalContent } from "@/features/blocks/integrations/sendEmail/components/SmtpConfigModal";
+import { useFeatureFlagsQuery } from "@/features/featureFlags/useFeatureFlagsQuery";
 import { CreateForgedCredentialsModalContent } from "@/features/forge/components/credentials/CreateForgedCredentialsModal";
+import { CreateForgedOAuthCredentialsModalContent } from "@/features/forge/components/credentials/CreateForgedOAuthCredentialsModal";
 import { WhatsAppCreateModalContent } from "@/features/publish/components/embeds/modals/WhatsAppModal/WhatsAppCredentialsModal";
 import { Modal, ModalOverlay } from "@chakra-ui/react";
 import type { Credentials } from "@typebot.io/credentials/schemas";
@@ -48,34 +50,39 @@ const CredentialsCreateModalContent = ({
   onClose: () => void;
   onSubmit: () => void;
 }) => {
-  switch (type) {
-    case "google sheets":
-      return <GoogleSheetConnectModalContent />;
-    case "smtp":
-      return <SmtpCreateModalContent onNewCredentials={onSubmit} />;
-    case "stripe":
-      return (
-        <StripeCreateModalContent
-          onNewCredentials={onSubmit}
-          onClose={onClose}
-        />
-      );
-    case "whatsApp":
-      return (
-        <WhatsAppCreateModalContent
-          onNewCredentials={onSubmit}
-          onClose={onClose}
-        />
-      );
-    default:
-      return (
-        <CreateForgedCredentialsModalContent
-          blockDef={forgedBlocks[type]}
-          onNewCredentials={onSubmit}
-          scope={scope}
-        />
-      );
-  }
+  const featureFlags = useFeatureFlagsQuery();
+  if (type === "google sheets") return <GoogleSheetConnectModalContent />;
+  if (type === "smtp")
+    return <SmtpCreateModalContent onNewCredentials={onSubmit} />;
+  if (type === "stripe")
+    return (
+      <StripeCreateModalContent onNewCredentials={onSubmit} onClose={onClose} />
+    );
+  if (type === "whatsApp")
+    return (
+      <WhatsAppCreateModalContent
+        is360DialogEnabled={featureFlags?.["360dialog"] ?? false}
+        onNewCredentials={onSubmit}
+        onClose={onClose}
+      />
+    );
+
+  if (forgedBlocks[type].auth?.type === "oauth")
+    return (
+      <CreateForgedOAuthCredentialsModalContent
+        blockDef={forgedBlocks[type]}
+        onNewCredentials={onSubmit}
+        scope={scope}
+      />
+    );
+
+  return (
+    <CreateForgedCredentialsModalContent
+      blockDef={forgedBlocks[type]}
+      onNewCredentials={onSubmit}
+      scope={scope}
+    />
+  );
 };
 
 const parseModalSize = (type?: Credentials["type"]) => {

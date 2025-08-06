@@ -70,7 +70,11 @@ export const resumeWhatsAppFlow = async ({
   });
   if (!credentials) throw new WhatsAppError("Could not find credentials");
 
-  if (phoneNumberId && credentials.phoneNumberId !== phoneNumberId)
+  if (
+    phoneNumberId &&
+    credentials.provider === "meta" &&
+    credentials.phoneNumberId !== phoneNumberId
+  )
     throw new WhatsAppError("Credentials point to another phone ID", {
       credentialsPhoneNumberId: credentials.phoneNumberId,
       receivedPhoneNumberId: phoneNumberId,
@@ -112,7 +116,7 @@ export const resumeWhatsAppFlow = async ({
   const reply = await convertWhatsAppMessageToTypebotMessage({
     messages: aggregationResponse.incomingMessages,
     workspaceId,
-    accessToken: credentials?.systemUserAccessToken,
+    credentials,
     typebotId: currentTypebot?.id,
     resultId: session?.state.typebotsQueue[0].resultId,
     block,
@@ -166,14 +170,14 @@ export const resumeWhatsAppFlow = async ({
 const convertWhatsAppMessageToTypebotMessage = async ({
   messages,
   workspaceId,
-  accessToken,
+  credentials,
   typebotId,
   resultId,
   block,
 }: {
   messages: WhatsAppIncomingMessage[];
   workspaceId?: string;
-  accessToken: string;
+  credentials: WhatsAppCredentials["data"];
   typebotId?: string;
   resultId?: string;
   block?: Block;
@@ -258,7 +262,7 @@ const convertWhatsAppMessageToTypebotMessage = async ({
         } else {
           const { file, mimeType } = await downloadMedia({
             mediaId,
-            systemUserAccessToken: accessToken,
+            credentials,
           });
           const extension = extensionFromMimeType[mimeType];
           const url = await uploadFileToBucket({
@@ -329,6 +333,7 @@ const getWhatsAppCredentials = async ({
     )
       return;
     return {
+      provider: "meta",
       systemUserAccessToken: env.META_SYSTEM_USER_TOKEN,
       phoneNumberId: env.WHATSAPP_PREVIEW_FROM_PHONE_NUMBER_ID,
     };
@@ -342,10 +347,7 @@ const getWhatsAppCredentials = async ({
     credentials.data,
     credentials.iv,
   )) as WhatsAppCredentials["data"];
-  return {
-    systemUserAccessToken: data.systemUserAccessToken,
-    phoneNumberId: data.phoneNumberId,
-  };
+  return data;
 };
 
 const aggregateParallelMediaMessagesIfRedisEnabled = async ({

@@ -1,12 +1,11 @@
 import { getAuthenticatedUser } from "@/features/auth/helpers/getAuthenticatedUser";
-import { getAuthenticatedGoogleClient } from "@typebot.io/credentials/getAuthenticatedGoogleClient";
+import { getGoogleSpreadsheet } from "@typebot.io/credentials/getGoogleSpreadsheet";
 import {
   badRequest,
   methodNotAllowed,
   notAuthenticated,
 } from "@typebot.io/lib/api/utils";
 import { isDefined } from "@typebot.io/lib/utils";
-import { GoogleSpreadsheet } from "google-spreadsheet";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -18,15 +17,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const workspaceId = req.query.workspaceId as string | undefined;
     if (!credentialsId || workspaceId) return badRequest(res);
     const spreadsheetId = req.query.id as string;
-    const client = await getAuthenticatedGoogleClient(
+    const doc = await getGoogleSpreadsheet({
       credentialsId,
+      spreadsheetId,
       workspaceId,
-    );
-    if (!client)
+    });
+    if (!doc)
       return res
         .status(404)
         .send({ message: "Couldn't find credentials in database" });
-    const doc = new GoogleSpreadsheet(spreadsheetId, client);
+
     try {
       await doc.loadInfo();
       return res.send({
@@ -51,6 +51,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         ).filter(isDefined),
       });
     } catch (err) {
+      console.log(err);
       return res.status(404).send({
         message:
           "Couldn't find sheet, you maybe don't have permission to read it",

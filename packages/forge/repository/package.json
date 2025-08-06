@@ -25,7 +25,8 @@
     "@typebot.io/posthog-block": "workspace:*",
     "@typebot.io/perplexity-block": "workspace:*",
     "@typebot.io/deepseek-block": "workspace:*",
-    "@typebot.io/blink-block": "workspace:*"
+    "@typebot.io/blink-block": "workspace:*",
+    "@typebot.io/gmail-block": "workspace:*"
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*"

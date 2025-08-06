@@ -10,7 +10,8 @@ alwaysApply: true
 
 - Never use `any` type. Always use proper TypeScript types, interfaces, or union types instead.
 - Use `satisfies` instead of `as` when possible to make sure we keep strong type-safety.
-- Prefer writing long and complex functions that provide good, deep abstraction. These functions should have a TSDoc comment description of what it does in great details. Avoid providing `@param` description, params name should be self-explanatory. In the function itself you can add inline comments only if the code is hard to understand.
+- Prefer writing long and complex functions that provide good, deep abstraction. These functions should have a TSDoc comment description of what it does in great details. Avoid providing `@param` description, params name should be self-explanatory. IMPORTANT: Only add inline comments if a piece of logic is hard to understand, it should ideally explain what happens in the next N lines of code, never add a comment to explain a single line.
+- Prefer infer the return type of a function instead of declaring it.
 - Helper functions should be placed at the bottom of the file.
 
 ## Testing

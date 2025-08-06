@@ -123,7 +123,7 @@ export const UpdateForgedCredentialsModalContent = ({
             withVariableButton={false}
             debounceTimeout={0}
           />
-          {data && (
+          {data && blockDef.auth.type === "encryptedCredentials" && (
             <ZodObjectLayout
               schema={blockDef.auth.schema}
               data={data}

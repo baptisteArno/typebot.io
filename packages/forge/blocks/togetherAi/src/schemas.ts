@@ -6,5 +6,5 @@ import { togetherAiBlock } from "./index";
 export const togetherAiBlockSchema = parseBlockSchema(togetherAiBlock);
 export const togetherAiCredentialsSchema = parseBlockCredentials(
   togetherAiBlock.id,
-  auth.schema,
+  auth,
 );

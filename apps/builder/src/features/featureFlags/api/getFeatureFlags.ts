@@ -4,13 +4,13 @@ import { z } from "@typebot.io/zod";
 import { PostHog } from "posthog-node";
 
 const flagsSchema = z.object({
-  flags: z.record(z.enum(["cards"]), z.boolean()),
+  flags: z.record(z.enum(["cards", "360dialog"]), z.boolean()),
 });
 
 export const getFeatureFlags = authenticatedProcedure
   .output(flagsSchema)
   .query(async ({ ctx: { user } }) => {
-    if (!env.NEXT_PUBLIC_POSTHOG_KEY) return { flags: {} };
+    if (!env.NEXT_PUBLIC_POSTHOG_KEY) return { flags: { "360dialog": true } };
     const client = new PostHog(env.NEXT_PUBLIC_POSTHOG_KEY, {
       host: env.POSTHOG_API_HOST,
     });

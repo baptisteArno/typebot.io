@@ -2,6 +2,7 @@ import * as Sentry from "@sentry/nextjs";
 import type { WhatsAppCredentials } from "@typebot.io/credentials/schemas";
 import { env } from "@typebot.io/env";
 import ky from "ky";
+import { dialog360AuthHeaderName, dialog360BaseUrl } from "./constants";
 import type { WhatsAppSendingMessage } from "./schemas";
 
 type Props = {
@@ -16,19 +17,30 @@ export const sendWhatsAppMessage = async ({
   credentials,
 }: Props) => {
   try {
-    await ky.post(
-      `${env.WHATSAPP_CLOUD_API_URL}/v21.0/${credentials.phoneNumberId}/messages`,
-      {
+    const json = {
+      messaging_product: "whatsapp",
+      to,
+      ...message,
+    };
+
+    if (credentials.provider === "meta") {
+      await ky.post(
+        `${env.WHATSAPP_CLOUD_API_URL}/v21.0/${credentials.phoneNumberId}/messages`,
+        {
+          headers: {
+            Authorization: `Bearer ${credentials.systemUserAccessToken}`,
+          },
+          json,
+        },
+      );
+    } else if (credentials.provider === "360dialog") {
+      await ky.post(`${dialog360BaseUrl}/messages`, {
         headers: {
-          Authorization: `Bearer ${credentials.systemUserAccessToken}`,
+          [dialog360AuthHeaderName]: credentials.apiKey,
         },
-        json: {
-          messaging_product: "whatsapp",
-          to,
-          ...message,
-        },
-      },
-    );
+        json,
+      });
+    }
   } catch (err) {
     Sentry.addBreadcrumb({
       message: JSON.stringify(message),

@@ -111,7 +111,7 @@ export const generateGroupTitle = authenticatedProcedure
       const aiModel = action?.aiGenerate?.getModel?.({
         credentials: {
           apiKey,
-        },
+        } as any,
         model,
       });
       if (!aiModel)

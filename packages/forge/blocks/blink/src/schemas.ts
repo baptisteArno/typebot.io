@@ -6,5 +6,5 @@ import { auth } from "./auth";
 export const blinkBlockSchema = parseBlockSchema(blinkBlock);
 export const blinkCredentialsSchema = parseBlockCredentials(
   blinkBlock.id,
-  auth.schema,
+  auth,
 );

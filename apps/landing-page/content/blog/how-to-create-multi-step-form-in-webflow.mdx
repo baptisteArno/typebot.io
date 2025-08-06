@@ -1,0 +1,249 @@
+---
+title: "How to create a multi-step form in Webflow: A simple guide"
+description: "Learn how to create multi step form in Webflow to stop losing leads. Build engaging, conversational forms that boost conversions and users love to complete."
+postedAt: "2025-07-22"
+cover: "/blog-assets/how-to-create-multi-step-form-in-webflow/featured-image-how-to-create-multi-step-form-in-webflow.avif"
+author: younes
+---
+
+Traditional web forms kill 67% of potential conversions before users reach the submit button.
+
+Most designers obsess over visual polish and field optimization, but the real conversion assassin lurks in cognitive overload—that overwhelming wall of 15+ input fields that makes visitors flee faster than a poorly timed popup.
+
+The solution isn't better styling or smarter copy; it's breaking the entire experience into digestible, conversation-like steps. Learning how to create multi step form in Webflow transforms this conversion nightmare into an engaging journey that guides users naturally toward completion, turning form abandonment from your biggest liability into your competitive advantage.
+
+## Comparing the methods for building a multi-step form in Webflow
+
+### The three paths: from hand-coded labyrinths to no-code power tools
+
+<Image
+  src="/blog-assets/how-to-create-multi-step-form-in-webflow/multistep-form-creation-options.avif"
+  alt="Multistep Form Creation Options"
+  width="1200px"
+  height="646px"
+/>
+
+A digital marketer, a customer support lead, and a freelance designer all need to create a multi-step form in Webflow. Their solutions vary based on their skills and goals.
+
+#### **Building from scratch: the “roll up your sleeves” route**
+
+Hand-coding a multi-step form in Webflow offers **complete control over every detail**. You can:
+
+- Divide your form into multiple steps.
+- Write custom JavaScript for navigation, validation, and progress.
+- Manage error states, conditional logic, and data persistence manually.
+
+This method demands significant time and attention. A single bug can disrupt the user experience. Adding features like branching logic or dynamic redirects requires more coding. While this approach suits complex flows like product configurators, it may be excessive for simple signups.
+
+#### **Formly: the attribute-driven Swiss Army knife**
+
+Formly provides a no-code solution designed for Webflow users. It works like assembling a solution with **purpose-built LEGO bricks**:
+
+- Add a script and use custom HTML attributes to define steps and navigation.
+- Set up conditional logic and branching with data attributes.
+- Style everything directly in Webflow Designer to maintain brand consistency.
+
+<Image
+  src="/blog-assets/how-to-create-multi-step-form-in-webflow/multi-step-form-example.avif"
+  alt="Multi Step Form Example"
+  width="947px"
+  height="997px"
+  caption="Multi-step forms can sometimes overwhelm users with repetitive steps and unclear progress. Source: Una Bassil on Dribbble"
+/>
+
+Formly suits marketers and designers who want advanced features—such as multi-step flows, [quizzes](./how-to-create-a-product-recommendation-quiz-shopify.mdx), and dynamic redirects—without coding.
+
+The free plan covers basic forms, while the Pro plan unlocks advanced logic and custom success paths. Features like personalized messages or skipping questions require a paid plan. Payment integration isn’t included, and analytics are limited, so users needing robust reporting or e-commerce should look elsewhere.
+
+<Success>
+  Formly offers a generous free plan for basic multi-step forms. Advanced
+  features like conditional logic require the Pro plan, which costs around
+  $15-$19 per month, or a one-time lifetime purchase for $329.
+</Success>
+
+#### **Typebot: conversational forms with superpowers**
+
+Typebot transforms forms into **interactive, chat-like experiences**:
+
+- Visually build flows by dragging and dropping text bubbles, input fields, and logic blocks.
+- Personalize each step with variables, conditional logic, and integrations like Google Sheets or OpenAI.
+- Embed your conversational form in Webflow as a container, [popup](./webflow-popup-contact-form.mdx), or chat bubble—no coding needed.
+
+Typebot excels in onboarding, support, and [lead qualification](./b2b-lead-qualification.mdx). For example, a SaaS onboarding flow can greet users by name, adapt questions based on previous answers, and offer instant help. Quizzes can tailor questions, send results to Google Sheets, and trigger follow-up emails—all without JavaScript.
+
+Typebot offers a free plan (200 chats/month), with paid plans starting at $39/month for Starter and $89/month for Pro with more features and higher limits.
+
+### **Comparing the three: a scenario-based table**
+
+| Use case                        | Hand-coded form             | Formly                       | Typebot                          |
+| ------------------------------- | --------------------------- | ---------------------------- | -------------------------------- |
+| Simple multi-step signup        | High effort, overkill       | Free, easy, fast             | Conversational, engaging         |
+| Product configurator with logic | Complex, time-consuming     | Pro plan needed, no payments | Dynamic, personalized, API-ready |
+| Onboarding with branching paths | Tedious, error-prone        | Pro plan, attribute setup    | Visual, logic-rich, AI-ready     |
+| Lead gen with analytics         | Custom code for tracking    | Basic analytics, 3rd party   | Built-in analytics, integrations |
+| Quiz with custom results        | Manual logic, hard to scale | Pro plan, attribute logic    | Adaptive, variable-driven        |
+
+**Insight**:Hand-coding offers ultimate flexibility but requires much work. Formly balances advanced features with no code, though its best options need a subscription. Typebot creates engaging conversations that guide users through personalized, logic-rich flows.
+
+For marketers aiming for higher conversions or support teams focused on smooth onboarding, the tool choice shapes not only the data collected but the entire user experience. **The right solution improves the journey, not just the form.**
+
+<Info>
+  Want to see more examples of effective lead generation forms in action? Check
+  out these [proven lead generation form
+  examples](./lead-generation-form-examples.mdx) that convert visitors into
+  qualified prospects.
+</Info>
+
+## How to create and embed a custom multi-step form in Webflow using Typebot
+
+### Step 1: Building your conversational form in Typebot
+
+Imagine onboarding a new client for your digital marketing agency. You need to collect their contact details, goals, budget, and preferred communication style without making the process tedious. Instead of a static form, offer a conversational, multi-step experience that feels like a friendly interview.
+
+In the Typebot editor, use the intuitive canvas to start. Drag a **Text** bubble onto the canvas to greet your user: “Welcome! What’s your first name?”
+
+<Image
+  src="/blog-assets/faq-chatbot/create-a-welcome-message-faq.gif"
+  alt="How to create a welcome message"
+  width="800px"
+  height="472px"
+/>
+
+Capture their response in a variable called `First name`. This variable personalizes the journey. You can reference it in later questions, such as: `Nice to meet you, {{First name}}! What’s your email address?`
+
+Variables in Typebot enable personalization and branching. For example, add a **Condition** block to tailor follow-up questions based on the user’s role:
+
+- If `Role` is “Founder,” ask about funding stage.
+- If `Role` is “Marketer,” ask about campaign goals.
+
+<Image
+  src="/blog-assets/how-to-create-multi-step-form-in-webflow/role-selection-flowchart.avif"
+  alt="Role Selection Flowchart"
+  width="725px"
+  height="541px"
+/>
+
+This branching logic makes the experience feel tailored. Using conditional paths in onboarding flows has significantly reduced drop-off rates because users only see [relevant questions](./lead-qualification-questions.mdx).
+
+With **Set variable** and **Condition** blocks, you can:
+
+- Personalize questions
+- Calculate scores
+- Segment leads
+- Trigger integrations like sending data to Google Sheets or notifying a Slack channel when a high-value lead appears
+
+For advanced users, inline JavaScript lets you format names, calculate percentages, or split full names into first and last.
+
+<Cta buttonLabel="Try Conversational Forms">
+  Use Typebot's conversational forms to simplify data collection and boost
+  engagement.
+</Cta>
+
+### Step 2: Integrating your Typebot form into Webflow
+
+After building your conversational form, [embedding it in your Webflow](./webflow-chatbot.mdx) site is straightforward.
+
+<Image
+  src="/blog-assets/how-to-create-multi-step-form-in-webflow/typebot-webflow-embed-options-popup.avif"
+  alt="Typebot Webflow Embed Options Popup"
+  width="693px"
+  height="369px"
+/>
+
+Go to the **Share** tab in Typebot, where you’ll find integration options:
+
+- Standard as a standard form within a container
+- Trigger as a popup
+- Float as a bubble in the bottom right corner
+
+For most multi-step forms, embedding directly into a landing page works best. Copy the embed code from Typebot. In Webflow, add an **Embed** element where you want the form, paste the code, and publish your site.
+
+Typebot supports prefilled variables via URL parameters. For example, if you know a user’s email from a retargeting campaign, append `?Email=known@email.com` to your Typebot URL. The form will greet the user by name and skip unnecessary questions. This can significantly boost completion rates, especially for returning visitors.
+
+If you run A/B tests, Typebot’s **AB Test** block lets you experiment with question order or copy variants. All results track in the analytics dashboard. For example, changing the sequence of pricing and project scope questions has increased form completions.
+
+[Insert screenshot placeholder: Webflow designer with Typebot embed code in place, showing live preview]
+
+The integration process is smooth, but the real benefit is in how you use the data. Every answer, branch, and variable is available for export or integration, eliminating manual data entry. You can trigger webhooks to automate onboarding, send personalized follow-ups, or update your CRM instantly.
+
+Building and embedding a multi-step conversational form with Typebot goes beyond data collection. It creates a real dialogue, adapts to users in real time, and delivers an engaging experience. The result is [higher completion rates](./benefits-ai-chatbot.mdx), richer insights, and a user journey that stands out.
+
+## Taking your Webflow form to the next level with advanced logic and integrations
+
+### Dynamic logic beyond the linear form
+
+A form that adapts in real time works like a skilled interviewer who adjusts questions based on your answers. Advanced logic lets you create branching paths that feel natural and relevant.
+
+For example, a custom sneaker brand might ask, “What’s your primary activity—running, basketball, or casual wear?” If the user picks “running,” the next question focuses on preferred terrain. For “basketball,” it asks about ankle support. Each answer shapes the next step, skipping irrelevant questions and keeping the process smooth.
+
+**Using conditional logic to skip unnecessary questions reduces form abandonment by 27% compared to static, linear forms.**
+
+Modern tools let you set up these branches visually and without code. Variables track user choices, while conditions guide them down the most relevant path. The result is a form that feels like a guided conversation instead of paperwork.
+
+### Real-time personalization with variables as memory
+
+<Image
+  src="/blog-assets/how-to-create-multi-step-form-in-webflow/communication-style-form-summary.avif"
+  alt="Communication Style Form Summary"
+  width="722px"
+  height="526px"
+/>
+
+Variables store every input—like name, email, or selected options—giving your form a memory. This lets you display personalized content at any step.
+
+For instance, after a user enters their first name, the form can say, `Thanks, {{First name}}, would you like to add breakfast to your stay?` If the user’s company is captured earlier, the form can offer tailored business amenities. Variables can also prefill from URL parameters or previous sessions, so returning users don’t repeat themselves.
+
+**Forms that address users by name and reference previous choices achieve a 19% higher completion rate than generic forms.**
+
+### Integrations turning forms into business engines
+
+Forms become powerful when they connect with your business tools. For example, a support intake form can:
+
+- Create a helpdesk ticket instantly
+- Send a summary to Slack
+- Update a Google Sheet for analytics automatically
+
+A SaaS onboarding form that collects team size, industry, and goals can trigger:
+
+- Personalized onboarding email sequences
+- CRM updates with segmented tags for sales follow-up
+- Webhooks notifying your product team about high-priority feature requests
+
+AI integrations expand possibilities further. Connecting to a language model lets your form generate custom recommendations, summarize input, or answer questions in real time. For example, a financial advisor’s intake form could analyze responses and suggest relevant investment products instantly.
+
+### Analytics and feedback loops measuring what matters
+
+<Image
+  src="/blog-assets/chatbot-for-real-estate-agents/typebot-example-analytics-flow-chart.avif"
+  alt="Typebot Example Analytics Flow Chart"
+  width="1200px"
+  height="818px"
+/>
+
+Building a smart form is just the start. Tracking user interactions helps you improve continuously. Built-in analytics show where users drop off, completion rates, and popular branches.
+
+If many users abandon the form at the “budget” question, you can try:
+
+- Rephrasing the question
+- Making it optional
+- Moving it later in the flow
+
+**Small adjustments like these boost conversion rates and user satisfaction over time.**
+
+### Forms as living, learning systems
+
+Advanced logic, variables, and integrations turn forms from static questionnaires into dynamic, responsive systems. They adapt, remember, and connect—making every interaction personalized and every submission actionable.
+
+**This transforms a simple form into a true growth engine that meets high user expectations and limited attention spans.**
+
+## Start Building Your Perfect Multi-Step Form Today
+
+Whether you choose Formly's Webflow-native approach or Typebot's conversational interface, knowing how to create multi step form in Webflow opens up powerful opportunities to boost your conversion rates by 35% or more.
+
+The key is matching your form strategy to your specific goals: use Formly for traditional step-by-step data collection, or leverage Typebot's [AI-powered conversations](./whatsapp-ai-agent.mdx) to create forms that feel more like helpful consultations than tedious questionnaires.
+
+With either approach, you're just minutes away from transforming those conversion-killing long forms into engaging experiences that your users will actually want to complete.
+
+<Cta buttonLabel="Build Your First Bot Today">
+  Create fully customizable chatbots without writing a single line of code.
+</Cta>

@@ -64,7 +64,7 @@ export const TextInput = (props: Props) => {
       let attachments: Attachment[] | undefined;
       if (selectedFiles().length > 0) {
         setUploadProgress(undefined);
-        const urls = await uploadFiles({
+        const result = await uploadFiles({
           apiHost:
             props.context.apiHost ?? guessApiHost({ ignoreChatApiUrl: true }),
           files: selectedFiles().map((file) => ({
@@ -77,7 +77,13 @@ export const TextInput = (props: Props) => {
           })),
           onUploadProgress: setUploadProgress,
         });
-        attachments = urls
+        if (result.type === "error") {
+          toaster.create({
+            description: result.error,
+          });
+          return;
+        }
+        attachments = result.urls
           ?.map((urls, index) =>
             urls
               ? {
@@ -214,25 +220,28 @@ export const TextInput = (props: Props) => {
       );
 
       setUploadProgress(undefined);
-      const urls = (
-        await uploadFiles({
-          apiHost:
-            props.context.apiHost ?? guessApiHost({ ignoreChatApiUrl: true }),
-          files: [
-            {
-              file: audioFile,
-              input: {
-                blockId: props.block.id,
-                sessionId: props.context.sessionId,
-                fileName: audioFile.name,
-              },
+      const result = await uploadFiles({
+        apiHost:
+          props.context.apiHost ?? guessApiHost({ ignoreChatApiUrl: true }),
+        files: [
+          {
+            file: audioFile,
+            input: {
+              blockId: props.block.id,
+              sessionId: props.context.sessionId,
+              fileName: audioFile.name,
             },
-          ],
-          onUploadProgress: setUploadProgress,
-        })
-      )
-        .filter(isDefined)
-        .map((url) => url.url);
+          },
+        ],
+        onUploadProgress: setUploadProgress,
+      });
+      if (result.type === "error") {
+        toaster.create({
+          description: result.error,
+        });
+        return;
+      }
+      const urls = result.urls.filter(isDefined).map((url) => url.url);
       props.onSubmit({
         type: "recording",
         url: urls[0],

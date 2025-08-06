@@ -140,6 +140,7 @@ export const startWhatsAppPreview = authenticatedProcedure
           clientSideActions,
           isFirstChatChunk: true,
           credentials: {
+            provider: "meta",
             phoneNumberId: env.WHATSAPP_PREVIEW_FROM_PHONE_NUMBER_ID,
             systemUserAccessToken: env.META_SYSTEM_USER_TOKEN,
           },
@@ -181,6 +182,7 @@ export const startWhatsAppPreview = authenticatedProcedure
             },
           },
           credentials: {
+            provider: "meta",
             phoneNumberId: env.WHATSAPP_PREVIEW_FROM_PHONE_NUMBER_ID,
             systemUserAccessToken: env.META_SYSTEM_USER_TOKEN,
           },

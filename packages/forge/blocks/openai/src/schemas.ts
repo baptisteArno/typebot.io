@@ -4,7 +4,8 @@ import { auth } from "./auth";
 import { openAIBlock } from "./index";
 
 export const openAIBlockSchema = parseBlockSchema(openAIBlock);
+
 export const openAICredentialsSchema = parseBlockCredentials(
   openAIBlock.id,
-  auth.schema,
+  auth,
 );

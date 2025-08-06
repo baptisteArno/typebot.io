@@ -6,5 +6,5 @@ import { perplexityBlock } from "./index";
 export const perplexityBlockSchema = parseBlockSchema(perplexityBlock);
 export const perplexityCredentialsSchema = parseBlockCredentials(
   perplexityBlock.id,
-  auth.schema,
+  auth,
 );

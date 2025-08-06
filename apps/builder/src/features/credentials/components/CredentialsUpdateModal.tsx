@@ -1,6 +1,7 @@
 import { UpdateStripeCredentialsModalContent } from "@/features/blocks/inputs/payment/components/UpdateStripeCredentialsModalContent";
 import { SmtpUpdateModalContent } from "@/features/blocks/integrations/sendEmail/components/SmtpUpdateModalContent";
 import { UpdateForgedCredentialsModalContent } from "@/features/forge/components/credentials/UpdateForgedCredentialsModalContent";
+import { UpdateForgedOAuthCredentialsModalContent } from "@/features/forge/components/credentials/UpdateForgedOAuthCredentialsModalContent";
 import { Modal, ModalOverlay } from "@chakra-ui/react";
 import type { Credentials } from "@typebot.io/credentials/schemas";
 import { forgedBlocks } from "@typebot.io/forge-repository/definitions";
@@ -45,33 +46,42 @@ const CredentialsUpdateModalContent = ({
   scope: "workspace" | "user";
   onSubmit: () => void;
 }) => {
-  switch (editingCredentials.type) {
-    case "google sheets":
-      return null;
-    case "smtp":
-      return (
-        <SmtpUpdateModalContent
-          credentialsId={editingCredentials.id}
-          onUpdate={onSubmit}
-        />
-      );
-    case "stripe":
-      return (
-        <UpdateStripeCredentialsModalContent
-          credentialsId={editingCredentials.id}
-          onUpdate={onSubmit}
-        />
-      );
-    case "whatsApp":
-      return null;
-    default:
-      return (
-        <UpdateForgedCredentialsModalContent
-          credentialsId={editingCredentials.id}
-          blockDef={forgedBlocks[editingCredentials.type]}
-          onUpdate={onSubmit}
-          scope={scope}
-        />
-      );
-  }
+  if (editingCredentials.type === "google sheets") return null;
+
+  if (editingCredentials.type === "smtp")
+    return (
+      <SmtpUpdateModalContent
+        credentialsId={editingCredentials.id}
+        onUpdate={onSubmit}
+      />
+    );
+
+  if (editingCredentials.type === "stripe")
+    return (
+      <UpdateStripeCredentialsModalContent
+        credentialsId={editingCredentials.id}
+        onUpdate={onSubmit}
+      />
+    );
+
+  if (editingCredentials.type === "whatsApp") return null;
+
+  if (forgedBlocks[editingCredentials.type].auth?.type === "oauth")
+    return (
+      <UpdateForgedOAuthCredentialsModalContent
+        credentialsId={editingCredentials.id}
+        blockDef={forgedBlocks[editingCredentials.type]}
+        onUpdate={onSubmit}
+        scope={scope}
+      />
+    );
+
+  return (
+    <UpdateForgedCredentialsModalContent
+      credentialsId={editingCredentials.id}
+      blockDef={forgedBlocks[editingCredentials.type]}
+      onUpdate={onSubmit}
+      scope={scope}
+    />
+  );
 };
