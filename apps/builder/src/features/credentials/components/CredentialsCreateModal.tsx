@@ -1,6 +1,7 @@
 import { StripeCreateModalContent } from "@/features/blocks/inputs/payment/components/StripeConfigModal";
 import { GoogleSheetConnectModalContent } from "@/features/blocks/integrations/googleSheets/components/GoogleSheetsConnectModal";
 import { SmtpCreateModalContent } from "@/features/blocks/integrations/sendEmail/components/SmtpConfigModal";
+import { useFeatureFlagsQuery } from "@/features/featureFlags/useFeatureFlagsQuery";
 import { CreateForgedCredentialsModalContent } from "@/features/forge/components/credentials/CreateForgedCredentialsModal";
 import { CreateForgedOAuthCredentialsModalContent } from "@/features/forge/components/credentials/CreateForgedOAuthCredentialsModal";
 import { WhatsAppCreateModalContent } from "@/features/publish/components/embeds/modals/WhatsAppModal/WhatsAppCredentialsModal";
@@ -49,6 +50,7 @@ const CredentialsCreateModalContent = ({
   onClose: () => void;
   onSubmit: () => void;
 }) => {
+  const featureFlags = useFeatureFlagsQuery();
   if (type === "google sheets") return <GoogleSheetConnectModalContent />;
   if (type === "smtp")
     return <SmtpCreateModalContent onNewCredentials={onSubmit} />;
@@ -59,6 +61,7 @@ const CredentialsCreateModalContent = ({
   if (type === "whatsApp")
     return (
       <WhatsAppCreateModalContent
+        is360DialogEnabled={featureFlags?.["360dialog"] ?? false}
         onNewCredentials={onSubmit}
         onClose={onClose}
       />

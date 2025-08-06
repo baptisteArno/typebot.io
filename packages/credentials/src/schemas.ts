@@ -11,10 +11,17 @@ export const credentialsBaseSchema = z.object({
 export const whatsAppCredentialsSchema = z
   .object({
     type: z.literal("whatsApp"),
-    data: z.object({
-      systemUserAccessToken: z.string(),
-      phoneNumberId: z.string(),
-    }),
+    data: z.union([
+      z.object({
+        provider: z.literal("meta").optional(),
+        systemUserAccessToken: z.string(),
+        phoneNumberId: z.string(),
+      }),
+      z.object({
+        provider: z.literal("360dialog"),
+        apiKey: z.string(),
+      }),
+    ]),
   })
   .merge(credentialsBaseSchema);
 export type WhatsAppCredentials = z.infer<typeof whatsAppCredentialsSchema>;

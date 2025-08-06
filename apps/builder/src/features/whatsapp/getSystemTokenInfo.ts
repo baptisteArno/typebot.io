@@ -63,7 +63,7 @@ export const getSystemTokenInfo = authenticatedProcedure
 const getCredentials = async (
   userId: string,
   input: z.infer<typeof inputSchema>,
-): Promise<Omit<WhatsAppCredentials["data"], "phoneNumberId"> | undefined> => {
+): Promise<{ systemUserAccessToken: string } | undefined> => {
   if (input.token)
     return {
       systemUserAccessToken: input.token,
@@ -75,8 +75,19 @@ const getCredentials = async (
     },
   });
   if (!credentials) return;
-  return (await decrypt(
+  const decryptedData = (await decrypt(
     credentials.data,
     credentials.iv,
   )) as WhatsAppCredentials["data"];
+
+  if (decryptedData.provider !== "meta") {
+    throw new TRPCError({
+      code: "BAD_REQUEST",
+      message: "This endpoint only supports Meta credentials",
+    });
+  }
+
+  return {
+    systemUserAccessToken: decryptedData.systemUserAccessToken,
+  };
 };

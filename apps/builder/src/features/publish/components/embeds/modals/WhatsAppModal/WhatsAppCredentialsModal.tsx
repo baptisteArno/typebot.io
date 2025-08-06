@@ -2,12 +2,18 @@ import { CopyButton } from "@/components/CopyButton";
 import { TextLink } from "@/components/TextLink";
 import { ChevronLeftIcon, ExternalLinkIcon } from "@/components/icons";
 import { TextInput } from "@/components/inputs/TextInput";
+import { Dialog360Logo } from "@/components/logos/Dialog360Logo";
+import { MetaLogo } from "@/components/logos/MetaLogo";
+import { useFeatureFlagsQuery } from "@/features/featureFlags/useFeatureFlagsQuery";
+import { formatPhoneNumberDisplayName } from "@/features/whatsapp/formatPhoneNumberDisplayName";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { queryClient, trpc, trpcClient } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
 import {
   Box,
   Button,
+  Card,
+  CardBody,
   Code,
   HStack,
   Heading,
@@ -35,8 +41,10 @@ import {
   StepStatus,
   StepTitle,
   Stepper,
+  Tag,
   Text,
   UnorderedList,
+  VStack,
   useSteps,
 } from "@chakra-ui/react";
 import { createId } from "@paralleldrive/cuid2";
@@ -48,12 +56,14 @@ import { parseUnknownClientError } from "@typebot.io/lib/parseUnknownClientError
 import { isEmpty, isNotEmpty } from "@typebot.io/lib/utils";
 import React, { useState } from "react";
 
-const steps = [
+const metaSteps = [
   { title: "Requirements" },
   { title: "User Token" },
   { title: "Phone Number" },
   { title: "Webhook" },
 ];
+
+const dialog360Steps = [{ title: "Phone Number" }, { title: "Webhook" }];
 
 type Props = {
   isOpen: boolean;
@@ -68,10 +78,13 @@ export const WhatsAppCredentialsModal = ({
   onClose,
   onNewCredentials,
 }: Props) => {
+  const featureFlags = useFeatureFlagsQuery();
+
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="3xl">
       <ModalOverlay />
       <WhatsAppCreateModalContent
+        is360DialogEnabled={featureFlags?.["360dialog"] ?? false}
         onNewCredentials={onNewCredentials}
         onClose={onClose}
       />
@@ -80,15 +93,26 @@ export const WhatsAppCredentialsModal = ({
 };
 
 export const WhatsAppCreateModalContent = ({
+  is360DialogEnabled,
   onNewCredentials,
   onClose,
-}: Pick<Props, "onNewCredentials" | "onClose">) => {
+}: {
+  is360DialogEnabled: boolean;
+  onNewCredentials: (id: string) => void;
+  onClose: () => void;
+}) => {
   const { workspace } = useWorkspace();
+  const [provider, setProvider] = useState<"meta" | "360dialog" | null>(
+    is360DialogEnabled ? null : "meta",
+  );
+  const steps = provider === "meta" ? metaSteps : dialog360Steps;
+
   const { activeStep, goToNext, goToPrevious, setActiveStep } = useSteps({
     index: 0,
     count: steps.length,
   });
   const [systemUserAccessToken, setSystemUserAccessToken] = useState("");
+  const [apiKey, setApiKey] = useState("");
   const [phoneNumberId, setPhoneNumberId] = useState("");
   const [phoneNumberName, setPhoneNumberName] = useState("");
   const [verificationToken, setVerificationToken] = useState("");
@@ -132,21 +156,39 @@ export const WhatsAppCreateModalContent = ({
     setPhoneNumberId("");
   };
 
-  const createMetaCredentials = async () => {
-    if (!workspace) return;
-    mutate({
-      scope: "workspace",
-      workspaceId: workspace.id,
-      credentials: {
-        id: credentialsId,
-        type: "whatsApp",
-        name: phoneNumberName,
-        data: {
-          systemUserAccessToken,
-          phoneNumberId,
+  const createCredentials = async () => {
+    if (!workspace || !provider) return;
+
+    if (provider === "meta") {
+      mutate({
+        scope: "workspace",
+        workspaceId: workspace.id,
+        credentials: {
+          id: credentialsId,
+          type: "whatsApp",
+          name: phoneNumberName,
+          data: {
+            provider: "meta",
+            systemUserAccessToken,
+            phoneNumberId,
+          },
         },
-      },
-    });
+      });
+    } else if (provider === "360dialog") {
+      mutate({
+        scope: "workspace",
+        workspaceId: workspace.id,
+        credentials: {
+          id: credentialsId,
+          type: "whatsApp",
+          name: phoneNumberName,
+          data: {
+            provider: "360dialog",
+            apiKey,
+          },
+        },
+      });
+    }
   };
 
   const isTokenValid = async () => {
@@ -237,9 +279,17 @@ export const WhatsAppCreateModalContent = ({
   };
 
   const goToNextStep = async () => {
-    if (activeStep === steps.length - 1) return createMetaCredentials();
-    if (activeStep === 1 && !(await isTokenValid())) return;
-    if (activeStep === 2 && !(await isPhoneNumberAvailable())) return;
+    if (activeStep === steps.length - 1) return createCredentials();
+
+    if (provider === "meta") {
+      if (activeStep === 1 && !(await isTokenValid())) return;
+      if (activeStep === 2 && !(await isPhoneNumberAvailable())) return;
+    } else if (provider === "360dialog") {
+      if (activeStep === 0) {
+        if (!phoneNumberName.trim() || !apiKey.trim()) return;
+        setPhoneNumberName(formatPhoneNumberDisplayName(phoneNumberName));
+      }
+    }
 
     goToNext();
   };
@@ -247,72 +297,116 @@ export const WhatsAppCreateModalContent = ({
     <ModalContent>
       <ModalHeader>
         <HStack h="40px">
-          {activeStep > 0 && (
+          {(activeStep > 0 || provider) && (
             <IconButton
               icon={<ChevronLeftIcon />}
               aria-label={"Go back"}
               variant="ghost"
-              onClick={goToPrevious}
+              onClick={() => {
+                if (activeStep === 0 && provider && is360DialogEnabled) {
+                  setProvider(null);
+                } else {
+                  goToPrevious();
+                }
+              }}
             />
           )}
-          <Heading size="md">Add a WhatsApp phone number</Heading>
+          <Heading size="md">
+            {!provider
+              ? "Choose WhatsApp Provider"
+              : provider === "meta"
+                ? "Add Meta WhatsApp number"
+                : "Add 360Dialog Integration"}
+          </Heading>
         </HStack>
       </ModalHeader>
       <ModalCloseButton />
       <ModalBody as={Stack} spacing="10">
-        <Stepper index={activeStep} size="sm" pt="4">
-          {steps.map((step, index) => (
-            <Step key={index}>
-              <StepIndicator>
-                <StepStatus
-                  complete={<StepIcon />}
-                  incomplete={<StepNumber />}
-                  active={<StepNumber />}
-                />
-              </StepIndicator>
+        {!provider ? (
+          <ProviderSelection onProviderSelect={setProvider} />
+        ) : (
+          <>
+            <Stepper index={activeStep} size="sm" pt="4" colorScheme="orange">
+              {steps.map((step, index) => (
+                <Step key={index}>
+                  <StepIndicator>
+                    <StepStatus
+                      complete={<StepIcon />}
+                      incomplete={<StepNumber />}
+                      active={<StepNumber />}
+                    />
+                  </StepIndicator>
 
-              <Box flexShrink="0">
-                <StepTitle>{step.title}</StepTitle>
-              </Box>
+                  <Box flexShrink="0">
+                    <StepTitle>{step.title}</StepTitle>
+                  </Box>
 
-              <StepSeparator />
-            </Step>
-          ))}
-        </Stepper>
-        {activeStep === 0 && <Requirements />}
-        {activeStep === 1 && (
-          <SystemUserToken
-            initialToken={systemUserAccessToken}
-            setToken={setSystemUserAccessToken}
-          />
-        )}
-        {activeStep === 2 && (
-          <PhoneNumber
-            appId={tokenInfoData?.appId}
-            initialPhoneNumberId={phoneNumberId}
-            setPhoneNumberId={setPhoneNumberId}
-          />
-        )}
-        {activeStep === 3 && (
-          <Webhook
-            appId={tokenInfoData?.appId}
-            verificationToken={verificationToken}
-            credentialsId={credentialsId}
-          />
+                  <StepSeparator />
+                </Step>
+              ))}
+            </Stepper>
+            {provider === "meta" && (
+              <>
+                {activeStep === 0 && <Requirements />}
+                {activeStep === 1 && (
+                  <SystemUserToken
+                    initialToken={systemUserAccessToken}
+                    setToken={setSystemUserAccessToken}
+                  />
+                )}
+                {activeStep === 2 && (
+                  <PhoneNumber
+                    appId={tokenInfoData?.appId}
+                    initialPhoneNumberId={phoneNumberId}
+                    setPhoneNumberId={setPhoneNumberId}
+                  />
+                )}
+                {activeStep === 3 && (
+                  <Webhook
+                    appId={tokenInfoData?.appId}
+                    verificationToken={verificationToken}
+                    credentialsId={credentialsId}
+                  />
+                )}
+              </>
+            )}
+            {provider === "360dialog" && (
+              <>
+                {activeStep === 0 && (
+                  <Dialog360PhoneNumber
+                    initialApiKey={apiKey}
+                    setApiKey={setApiKey}
+                    initialPhoneNumber={phoneNumberName}
+                    setPhoneNumber={setPhoneNumberName}
+                  />
+                )}
+                {activeStep === 1 && (
+                  <Dialog360Webhook credentialsId={credentialsId} />
+                )}
+              </>
+            )}
+          </>
         )}
       </ModalBody>
       <ModalFooter>
-        <Button
-          onClick={goToNextStep}
-          colorScheme="orange"
-          isDisabled={
-            (activeStep === 1 && isEmpty(systemUserAccessToken)) ||
-            (activeStep === 2 && isEmpty(phoneNumberId))
-          }
-          isLoading={isVerifying || isCreating}
-        >
-          {activeStep === steps.length - 1 ? "Submit" : "Continue"}
-        </Button>
+        {provider && (
+          <Button
+            onClick={goToNextStep}
+            colorScheme="orange"
+            isDisabled={
+              (provider === "meta" &&
+                activeStep === 1 &&
+                isEmpty(systemUserAccessToken)) ||
+              (provider === "meta" &&
+                activeStep === 2 &&
+                isEmpty(phoneNumberId)) ||
+              (provider === "360dialog" && activeStep === 0 && isEmpty(apiKey))
+            }
+            isLoading={isVerifying || isCreating}
+          >
+            {activeStep === steps.length - 1 ? "Submit" : "Continue"}
+          </Button>
+        )}
       </ModalFooter>
     </ModalContent>
   );
@@ -523,6 +617,140 @@ const Webhook = ({
           </HStack>
         </ListItem>
       </UnorderedList>
+    </Stack>
+  );
+};
+
+const ProviderSelection = ({
+  onProviderSelect,
+}: {
+  onProviderSelect: (provider: "meta" | "360dialog") => void;
+}) => (
+  <HStack spacing={4} w="full">
+    <Card
+      w="full"
+      cursor="pointer"
+      onClick={() => onProviderSelect("meta")}
+      _hover={{ bg: "gray.50" }}
+    >
+      <CardBody textAlign="center">
+        <VStack spacing={3}>
+          <MetaLogo boxSize={10} />
+          <Stack>
+            <Text fontWeight="bold">Meta (Facebook)</Text>
+            <Text fontSize="sm" color="gray.600">
+              Official Meta WhatsApp Business API
+            </Text>
+          </Stack>
+          <Text fontSize="xs" color="gray.500">
+            Requires Meta Developer account, system user token, and phone number
+            setup
+          </Text>
+        </VStack>
+      </CardBody>
+    </Card>
+    <Card
+      w="full"
+      cursor="pointer"
+      onClick={() => onProviderSelect("360dialog")}
+      _hover={{ bg: "gray.50" }}
+    >
+      <CardBody textAlign="center">
+        <VStack spacing={3}>
+          <Dialog360Logo boxSize={10} />
+          <Stack>
+            <Text fontWeight="bold">
+              360Dialog <Tag colorScheme="orange">Beta</Tag>
+            </Text>
+            <Text fontSize="sm" color="gray.600">
+              Third-party WhatsApp Business Solution Provider
+            </Text>
+          </Stack>
+          <Text fontSize="xs" color="gray.500">
+            Simple setup with API key only
+          </Text>
+        </VStack>
+      </CardBody>
+    </Card>
+  </HStack>
+);
+
+const Dialog360PhoneNumber = ({
+  initialPhoneNumber,
+  initialApiKey,
+  setPhoneNumber,
+  setApiKey,
+}: {
+  initialPhoneNumber: string;
+  initialApiKey: string;
+  setPhoneNumber: (phoneNumber: string) => void;
+  setApiKey: (apiKey: string) => void;
+}) => (
+  <Stack spacing={4}>
+    <TextInput
+      isRequired
+      label="Phone number"
+      defaultValue={initialPhoneNumber}
+      onChange={(val) => setPhoneNumber(val.trim())}
+      withVariableButton={false}
+      debounceTimeout={0}
+      placeholder="+1234567890"
+    />
+    <TextInput
+      isRequired
+      type="password"
+      label="API Key"
+      defaultValue={initialApiKey}
+      onChange={(val) => setApiKey(val.trim())}
+      helperText={
+        <Text>
+          You can find this in your{" "}
+          <TextLink href="https://hub.360dialog.com/" isExternal>
+            360Dialog Hub dashboard
+          </TextLink>
+          .
+        </Text>
+      }
+      withVariableButton={false}
+      debounceTimeout={0}
+    />
+  </Stack>
+);
+
+const Dialog360Webhook = ({
+  credentialsId,
+}: {
+  credentialsId: string;
+}) => {
+  const { workspace } = useWorkspace();
+  const webhookUrl = `${
+    env.NEXT_PUBLIC_VIEWER_URL.at(1) ?? env.NEXT_PUBLIC_VIEWER_URL[0]
+  }/api/v1/workspaces/${workspace?.id}/whatsapp/${credentialsId}/webhook`;
+
+  return (
+    <Stack spacing={6}>
+      <Text>
+        In your{" "}
+        <TextLink href="https://hub.360dialog.com/" isExternal>
+          360Dialog Hub dashboard
+        </TextLink>
+        , go to <Code>Channels → WhatsApp → Webhooks</Code> and add the
+        following webhook URL:
+      </Text>
+      <Stack>
+        <HStack>
+          <InputGroup size="sm">
+            <Input type={"text"} defaultValue={webhookUrl} />
+            <InputRightElement width="60px">
+              <CopyButton size="sm" textToCopy={webhookUrl} />
+            </InputRightElement>
+          </InputGroup>
+        </HStack>
+        <Text fontSize="sm" color="gray.600">
+          Make sure to enable webhooks for message events in your 360Dialog
+          configuration.
+        </Text>
+      </Stack>
     </Stack>
   );
 };

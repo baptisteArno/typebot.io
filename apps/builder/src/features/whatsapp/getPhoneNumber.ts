@@ -7,6 +7,7 @@ import { env } from "@typebot.io/env";
 import prisma from "@typebot.io/prisma";
 import { z } from "@typebot.io/zod";
 import ky from "ky";
+import { formatPhoneNumberDisplayName } from "./formatPhoneNumberDisplayName";
 
 const inputSchema = z.object({
   credentialsId: z.string().optional(),
@@ -23,6 +24,11 @@ export const getPhoneNumber = authenticatedProcedure
         code: "NOT_FOUND",
         message: "Credentials not found",
       });
+
+    if (credentials.type === "360dialog")
+      return {
+        name: credentials.phoneNumber,
+      };
     try {
       const { display_phone_number } = await ky
         .get(
@@ -35,12 +41,10 @@ export const getPhoneNumber = authenticatedProcedure
         )
         .json<{ display_phone_number: string }>();
 
-      const formattedPhoneNumber = `${
-        display_phone_number.startsWith("+") ? "" : "+"
-      }${display_phone_number.replace(/[\s-]/g, "")}`;
+      const formattedPhoneNumber =
+        formatPhoneNumberDisplayName(display_phone_number);
 
       return {
-        id: credentials.phoneNumberId,
         name: formattedPhoneNumber,
       };
     } catch (err) {
@@ -51,9 +55,14 @@ export const getPhoneNumber = authenticatedProcedure
 const getCredentials = async (
   userId: string,
   input: z.infer<typeof inputSchema>,
-): Promise<WhatsAppCredentials["data"] | undefined> => {
+): Promise<
+  | { type: "meta"; systemUserAccessToken: string; phoneNumberId: string }
+  | { type: "360dialog"; phoneNumber: string }
+  | undefined
+> => {
   if (input.systemToken && input.phoneNumberId)
     return {
+      type: "meta",
       systemUserAccessToken: input.systemToken,
       phoneNumberId: input.phoneNumberId,
     };
@@ -65,8 +74,23 @@ const getCredentials = async (
     },
   });
   if (!credentials) return;
-  return (await decrypt(
+  const decryptedData = (await decrypt(
     credentials.data,
     credentials.iv,
   )) as WhatsAppCredentials["data"];
+
+  if (decryptedData.provider === "meta") {
+    return {
+      type: "meta",
+      systemUserAccessToken: decryptedData.systemUserAccessToken,
+      phoneNumberId: decryptedData.phoneNumberId,
+    };
+  }
+
+  if (decryptedData.provider === "360dialog") {
+    return {
+      type: "360dialog",
+      phoneNumber: credentials.name,
+    };
+  }
 };

@@ -69,7 +69,7 @@ export const WhatsAppModal = ({ isOpen, onClose }: ModalProps): JSX.Element => {
   );
 
   const toggleEnableWhatsApp = (isChecked: boolean) => {
-    if (!phoneNumberData?.id || !typebot) return;
+    if (!phoneNumberData || !typebot) return;
     updateTypebot({
       updates: {
         settings: {
@@ -188,7 +188,7 @@ export const WhatsAppModal = ({ isOpen, onClose }: ModalProps): JSX.Element => {
               enable WhatsApp integration.
             </UnlockPlanAlertInfo>
           )}
-          {!isPublished && phoneNumberData?.id && (
+          {!isPublished && phoneNumberData && (
             <AlertInfo>You have modifications that can be published.</AlertInfo>
           )}
           <OrderedList spacing={4} pl="4">
@@ -298,7 +298,7 @@ export const WhatsAppModal = ({ isOpen, onClose }: ModalProps): JSX.Element => {
                     <PublishButton size="sm" isMoreMenuDisabled />
                   </HStack>
                 </ListItem>
-                {phoneNumberData?.id && (
+                {phoneNumberData && (
                   <ListItem>
                     <TextLink
                       href={`https://wa.me/${phoneNumberData.name}?text=Start`}

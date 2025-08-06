@@ -63,7 +63,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const { file, mimeType } = await downloadMedia({
       mediaId,
-      systemUserAccessToken: credentialsData.systemUserAccessToken,
+      credentials: credentialsData,
     });
 
     res.setHeader("Content-Type", mimeType);

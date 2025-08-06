@@ -49,7 +49,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const { file, mimeType } = await downloadMedia({
       mediaId,
-      systemUserAccessToken: env.META_SYSTEM_USER_TOKEN,
+      credentials: {
+        provider: "meta",
+        systemUserAccessToken: env.META_SYSTEM_USER_TOKEN,
+        phoneNumberId: env.WHATSAPP_PREVIEW_FROM_PHONE_NUMBER_ID ?? "",
+      },
     });
 
     res.setHeader("Content-Type", mimeType);
