@@ -11,6 +11,11 @@ export const defaultSettings = {
     },
     isBrandingEnabled: false,
     isTypingEmulationEnabled: true,
+    chatLimits: {
+      isEnabled: false,
+      limit: 1000,
+      limitType: "total",
+    },
   },
   typingEmulation: {
     enabled: true,
