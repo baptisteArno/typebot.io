@@ -3,7 +3,7 @@ import {
   LogicalOperator,
 } from "@typebot.io/conditions/constants";
 import { z } from "@typebot.io/zod";
-import { rememberUserStorages } from "./constants";
+import { maxTypingEmulationMaxDelay, rememberUserStorages } from "./constants";
 
 export const systemMessagesSchema = z.object({
   invalidMessage: z.string().optional(),
@@ -38,7 +38,11 @@ const typingEmulation = z.object({
   enabled: z.boolean().optional(),
   speed: z.number().optional(),
   maxDelay: z.number().optional(),
-  delayBetweenBubbles: z.number().min(0).max(5).optional(),
+  delayBetweenBubbles: z
+    .number()
+    .min(0)
+    .max(maxTypingEmulationMaxDelay)
+    .optional(),
   isDisabledOnFirstMessage: z.boolean().optional(),
 });
 

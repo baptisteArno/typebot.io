@@ -27,6 +27,8 @@ export const defaultSettings = {
   },
 } as const;
 
+export const maxTypingEmulationMaxDelay = 5;
+
 export const defaultSystemMessages = {
   invalidMessage: "Invalid message. Please, try again.",
   botClosed: "This bot is now closed",

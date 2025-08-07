@@ -4,7 +4,10 @@ import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
 import { HStack, Stack, Text } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { isDefined } from "@typebot.io/lib/utils";
-import { defaultSettings } from "@typebot.io/settings/constants";
+import {
+  defaultSettings,
+  maxTypingEmulationMaxDelay,
+} from "@typebot.io/settings/constants";
 import type { Settings } from "@typebot.io/settings/schemas";
 import React from "react";
 
@@ -73,6 +76,8 @@ export const TypingEmulationForm = ({ typingEmulation, onUpdate }: Props) => {
             onValueChange={updateMaxDelay}
             withVariableButton={false}
             maxW="100px"
+            min={0}
+            max={maxTypingEmulationMaxDelay}
             step={0.1}
             direction="row"
             size="sm"
