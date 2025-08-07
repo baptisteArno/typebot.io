@@ -23,7 +23,14 @@ export const sendWhatsAppMessage = async ({
       ...message,
     };
 
-    if (credentials.provider === "meta") {
+    if (credentials.provider === "360dialog") {
+      await ky.post(`${dialog360BaseUrl}/messages`, {
+        headers: {
+          [dialog360AuthHeaderName]: credentials.apiKey,
+        },
+        json,
+      });
+    } else {
       await ky.post(
         `${env.WHATSAPP_CLOUD_API_URL}/v21.0/${credentials.phoneNumberId}/messages`,
         {
@@ -33,13 +40,6 @@ export const sendWhatsAppMessage = async ({
           json,
         },
       );
-    } else if (credentials.provider === "360dialog") {
-      await ky.post(`${dialog360BaseUrl}/messages`, {
-        headers: {
-          [dialog360AuthHeaderName]: credentials.apiKey,
-        },
-        json,
-      });
     }
   } catch (err) {
     Sentry.addBreadcrumb({
