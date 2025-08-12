@@ -50,24 +50,36 @@
                           "typebot": {
                             "anyOf": [
                               {
-                                "oneOf": [
+                                "allOf": [
                                   {
-                                    "$ref": "#/components/schemas/typebotV6"
+                                    "oneOf": [
+                                      {
+                                        "$ref": "#/components/schemas/typebotV6"
+                                      },
+                                      {
+                                        "$ref": "#/components/schemas/typebotV5"
+                                      }
+                                    ],
+                                    "discriminator": {
+                                      "propertyName": "version",
+                                      "mapping": {
+                                        "3": "#/components/schemas/typebotV5",
+                                        "4": "#/components/schemas/typebotV5",
+                                        "5": "#/components/schemas/typebotV5",
+                                        "6": "#/components/schemas/typebotV6",
+                                        "6.1": "#/components/schemas/typebotV6"
+                                      }
+                                    }
                                   },
                                   {
-                                    "$ref": "#/components/schemas/typebotV5"
+                                    "type": "object",
+                                    "properties": {
+                                      "publicTypebotId": {
+                                        "type": "string"
+                                      }
+                                    }
                                   }
-                                ],
-                                "discriminator": {
-                                  "propertyName": "version",
-                                  "mapping": {
-                                    "3": "#/components/schemas/typebotV5",
-                                    "4": "#/components/schemas/typebotV5",
-                                    "5": "#/components/schemas/typebotV5",
-                                    "6": "#/components/schemas/typebotV6",
-                                    "6.1": "#/components/schemas/typebotV6"
-                                  }
-                                }
+                                ]
                               },
                               {
                                 "type": "string"
@@ -911,24 +923,36 @@
                           "typebot": {
                             "anyOf": [
                               {
-                                "oneOf": [
+                                "allOf": [
                                   {
-                                    "$ref": "#/components/schemas/typebotV6"
+                                    "oneOf": [
+                                      {
+                                        "$ref": "#/components/schemas/typebotV6"
+                                      },
+                                      {
+                                        "$ref": "#/components/schemas/typebotV5"
+                                      }
+                                    ],
+                                    "discriminator": {
+                                      "propertyName": "version",
+                                      "mapping": {
+                                        "3": "#/components/schemas/typebotV5",
+                                        "4": "#/components/schemas/typebotV5",
+                                        "5": "#/components/schemas/typebotV5",
+                                        "6": "#/components/schemas/typebotV6",
+                                        "6.1": "#/components/schemas/typebotV6"
+                                      }
+                                    }
                                   },
                                   {
-                                    "$ref": "#/components/schemas/typebotV5"
+                                    "type": "object",
+                                    "properties": {
+                                      "publicTypebotId": {
+                                        "type": "string"
+                                      }
+                                    }
                                   }
-                                ],
-                                "discriminator": {
-                                  "propertyName": "version",
-                                  "mapping": {
-                                    "3": "#/components/schemas/typebotV5",
-                                    "4": "#/components/schemas/typebotV5",
-                                    "5": "#/components/schemas/typebotV5",
-                                    "6": "#/components/schemas/typebotV6",
-                                    "6.1": "#/components/schemas/typebotV6"
-                                  }
-                                }
+                                ]
                               },
                               {
                                 "type": "string"
@@ -3071,24 +3095,36 @@
                 "type": "object",
                 "properties": {
                   "typebot": {
-                    "oneOf": [
+                    "allOf": [
                       {
-                        "$ref": "#/components/schemas/typebotV6"
+                        "oneOf": [
+                          {
+                            "$ref": "#/components/schemas/typebotV6"
+                          },
+                          {
+                            "$ref": "#/components/schemas/typebotV5"
+                          }
+                        ],
+                        "discriminator": {
+                          "propertyName": "version",
+                          "mapping": {
+                            "3": "#/components/schemas/typebotV5",
+                            "4": "#/components/schemas/typebotV5",
+                            "5": "#/components/schemas/typebotV5",
+                            "6": "#/components/schemas/typebotV6",
+                            "6.1": "#/components/schemas/typebotV6"
+                          }
+                        }
                       },
                       {
-                        "$ref": "#/components/schemas/typebotV5"
+                        "type": "object",
+                        "properties": {
+                          "publicTypebotId": {
+                            "type": "string"
+                          }
+                        }
                       }
                     ],
-                    "discriminator": {
-                      "propertyName": "version",
-                      "mapping": {
-                        "3": "#/components/schemas/typebotV5",
-                        "4": "#/components/schemas/typebotV5",
-                        "5": "#/components/schemas/typebotV5",
-                        "6": "#/components/schemas/typebotV6",
-                        "6.1": "#/components/schemas/typebotV6"
-                      }
-                    },
                     "description": "If set, it will override the typebot that is used to start the chat."
                   },
                   "sessionId": {

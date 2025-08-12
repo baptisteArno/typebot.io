@@ -8,11 +8,17 @@ import type { EmbeddableVideoBubbleContentType } from "@typebot.io/blocks-bubble
 import type { ContinueChatResponse } from "@typebot.io/chat-api/schemas";
 import { isSvgSrc } from "@typebot.io/lib/utils";
 import { convertRichTextToMarkdown } from "@typebot.io/rich-text/convertRichTextToMarkdown";
+import { type UploadMediaCache, getOrUploadMedia } from "./getOrUploadMedia";
 import type { WhatsAppSendingMessage } from "./schemas";
 
-export const convertMessageToWhatsAppMessage = (
-  message: ContinueChatResponse["messages"][number],
-): WhatsAppSendingMessage | null => {
+type Props = {
+  message: ContinueChatResponse["messages"][number];
+  mediaCache?: UploadMediaCache;
+};
+export const convertMessageToWhatsAppMessage = async ({
+  message,
+  mediaCache,
+}: Props): Promise<WhatsAppSendingMessage | null> => {
   switch (message.type) {
     case BubbleBlockType.TEXT: {
       if (message.content.type === "markdown")
@@ -31,6 +37,23 @@ export const convertMessageToWhatsAppMessage = (
     case BubbleBlockType.IMAGE: {
       if (!message.content.url || isImageUrlNotCompatible(message.content.url))
         return null;
+
+      if (mediaCache) {
+        const mediaId = await getOrUploadMedia({
+          url: message.content.url,
+          cache: mediaCache,
+        });
+
+        if (mediaId) {
+          return {
+            type: "image",
+            image: {
+              id: mediaId,
+            },
+          };
+        }
+      }
+
       return {
         type: "image",
         image: {
@@ -38,24 +61,59 @@ export const convertMessageToWhatsAppMessage = (
         },
       };
     }
-    case BubbleBlockType.AUDIO: {
+    case BubbleBlockType.AUDIO:
       if (!message.content.url) return null;
+
+      if (mediaCache) {
+        const mediaId = await getOrUploadMedia({
+          url: message.content.url,
+          cache: mediaCache,
+        });
+
+        if (mediaId) {
+          return {
+            type: "audio",
+            audio: {
+              id: mediaId,
+            },
+          };
+        }
+      }
+
       return {
         type: "audio",
         audio: {
           link: message.content.url,
         },
       };
-    }
-    case BubbleBlockType.VIDEO: {
+    case BubbleBlockType.VIDEO:
       if (!message.content.url) return null;
-      if (message.content.type === VideoBubbleContentType.URL)
+      if (message.content.type === VideoBubbleContentType.URL) {
+        // Try to pre-upload media if credentials are provided
+        if (mediaCache) {
+          const mediaId = await getOrUploadMedia({
+            url: message.content.url,
+            cache: mediaCache,
+          });
+
+          if (mediaId) {
+            return {
+              type: "video",
+              video: {
+                id: mediaId,
+              },
+            };
+          }
+        }
+
+        // Fall back to using the URL if pre-upload fails or credentials not provided
         return {
           type: "video",
           video: {
             link: message.content.url,
           },
         };
+      }
       if (
         embeddableVideoTypes.includes(
           message.content.type as EmbeddableVideoBubbleContentType,
@@ -64,17 +122,12 @@ export const convertMessageToWhatsAppMessage = (
         return {
           type: "text",
           text: {
-            body: `${
-              embedBaseUrls[
-                message.content.type as EmbeddableVideoBubbleContentType
-              ]
-            }/${message.content.id}`,
+            body: `${embedBaseUrls[message.content.type as EmbeddableVideoBubbleContentType]}/${message.content.id}`,
             preview_url: true,
           },
         };
       return null;
-    }
-    case BubbleBlockType.EMBED: {
+    case BubbleBlockType.EMBED:
       if (!message.content.url) return null;
       return {
         type: "text",
@@ -83,8 +136,7 @@ export const convertMessageToWhatsAppMessage = (
           preview_url: true,
         },
       };
-    }
-    case "custom-embed": {
+    case "custom-embed":
       if (!message.content.url) return null;
       return {
         type: "text",
@@ -93,7 +145,6 @@ export const convertMessageToWhatsAppMessage = (
           preview_url: true,
         },
       };
-    }
   }
 };
 

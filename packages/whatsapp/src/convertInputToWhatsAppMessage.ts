@@ -9,13 +9,22 @@ import { isDefined, isEmpty } from "@typebot.io/lib/utils";
 import { convertRichTextToMarkdown } from "@typebot.io/rich-text/convertRichTextToMarkdown";
 import { defaultSystemMessages } from "@typebot.io/settings/constants";
 import type { SystemMessages } from "@typebot.io/settings/schemas";
+import { type UploadMediaCache, getOrUploadMedia } from "./getOrUploadMedia";
 import type { WhatsAppSendingMessage } from "./schemas";
 
-export const convertInputToWhatsAppMessages = (
-  input: NonNullable<ContinueChatResponse["input"]>,
-  lastMessage: ContinueChatResponse["messages"][number] | undefined,
-  systemMessages?: Pick<SystemMessages, "whatsAppPictureChoiceSelectLabel">,
-): WhatsAppSendingMessage[] => {
+type Props = {
+  input: NonNullable<ContinueChatResponse["input"]>;
+  lastMessage: ContinueChatResponse["messages"][number] | undefined;
+  systemMessages?: Pick<SystemMessages, "whatsAppPictureChoiceSelectLabel">;
+  mediaCache?: UploadMediaCache;
+};
+
+export const convertInputToWhatsAppMessages = async ({
+  input,
+  lastMessage,
+  systemMessages,
+  mediaCache,
+}: Props): Promise<WhatsAppSendingMessage[]> => {
   const lastMessageText =
     lastMessage?.type === BubbleBlockType.TEXT &&
     lastMessage.content.type === "richText"
@@ -39,54 +48,84 @@ export const convertInputToWhatsAppMessages = (
       if (
         input.options?.isMultipleChoice ??
         defaultPictureChoiceOptions.isMultipleChoice
-      )
-        return input.items.flatMap((item, idx) => {
+      ) {
+        const messages = [];
+        for (let idx = 0; idx < input.items.length; idx++) {
+          const item = input.items[idx];
           let bodyText = "";
           if (item.title) bodyText += `*${item.title}*`;
           if (item.description) {
             if (item.title) bodyText += "\n\n";
             bodyText += item.description;
           }
-          const imageMessage = item.pictureSrc
-            ? ({
-                type: "image",
-                image: {
-                  link: item.pictureSrc ?? "",
-                },
-              } as const)
-            : undefined;
-          const textMessage = {
-            type: "text",
+
+          if (item.pictureSrc) {
+            if (mediaCache) {
+              const mediaId = await getOrUploadMedia({
+                url: item.pictureSrc,
+                cache: mediaCache,
+              });
+
+              messages.push({
+                type: "image" as const,
+                image: mediaId ? { id: mediaId } : { link: item.pictureSrc },
+              });
+            } else {
+              messages.push({
+                type: "image" as const,
+                image: { link: item.pictureSrc },
+              });
+            }
+          }
+
+          messages.push({
+            type: "text" as const,
             text: {
               body: `${idx + 1}. ${bodyText}`,
             },
-          } as const;
-          return imageMessage ? [imageMessage, textMessage] : textMessage;
-        });
-      return input.items.map((item) => {
+          });
+        }
+        return messages;
+      }
+      const messages = [];
+      for (const item of input.items) {
         let bodyText = "";
         if (item.title) bodyText += `*${item.title}*`;
         if (item.description) {
           if (item.title) bodyText += "\n\n";
           bodyText += item.description;
         }
-        return {
-          type: "interactive",
+
+        let header;
+        if (item.pictureSrc) {
+          if (mediaCache) {
+            const mediaId = await getOrUploadMedia({
+              url: item.pictureSrc,
+              cache: mediaCache,
+            });
+
+            header = {
+              type: "image" as const,
+              image: mediaId ? { id: mediaId } : { link: item.pictureSrc },
+            };
+          } else {
+            header = {
+              type: "image" as const,
+              image: { link: item.pictureSrc },
+            };
+          }
+        }
+
+        messages.push({
+          type: "interactive" as const,
           interactive: {
-            type: "button",
-            header: item.pictureSrc
-              ? {
-                  type: "image",
-                  image: {
-                    link: item.pictureSrc,
-                  },
-                }
-              : undefined,
+            type: "button" as const,
+            header,
             body: isEmpty(bodyText) ? undefined : { text: bodyText },
             action: {
               buttons: [
                 {
-                  type: "reply",
+                  type: "reply" as const,
                   reply: {
                     id: item.id,
                     title:
@@ -97,8 +136,9 @@ export const convertInputToWhatsAppMessages = (
               ],
             },
           },
-        };
-      });
+        });
+      }
+      return messages;
     }
     case InputBlockType.CHOICE: {
       if (
@@ -149,25 +189,40 @@ export const convertInputToWhatsAppMessages = (
       }));
     }
     case InputBlockType.CARDS: {
-      return input.items.map((item) => {
+      const messages = [];
+      for (const item of input.items) {
         let bodyText = "";
         if (item.title) bodyText += `*${item.title}*`;
         if (item.description) {
           if (item.title) bodyText += "\n\n";
           bodyText += item.description;
         }
-        return {
-          type: "interactive",
+
+        let header;
+        if (item.imageUrl) {
+          if (mediaCache) {
+            const mediaId = await getOrUploadMedia({
+              url: item.imageUrl,
+              cache: mediaCache,
+            });
+
+            header = {
+              type: "image" as const,
+              image: mediaId ? { id: mediaId } : { link: item.imageUrl },
+            };
+          } else {
+            header = {
+              type: "image" as const,
+              image: { link: item.imageUrl },
+            };
+          }
+        }
+
+        messages.push({
+          type: "interactive" as const,
           interactive: {
-            type: "button",
-            header: item.imageUrl
-              ? {
-                  type: "image",
-                  image: {
-                    link: item.imageUrl,
-                  },
-                }
-              : undefined,
+            type: "button" as const,
+            header,
             body: isEmpty(bodyText) ? undefined : { text: bodyText },
             action: {
               buttons: (() => {
@@ -176,7 +231,7 @@ export const convertInputToWhatsAppMessages = (
                 const uniqueTitles = getUniqueButtonTitles(buttonTexts);
 
                 return paths.map((path, index) => ({
-                  type: "reply",
+                  type: "reply" as const,
                   reply: {
                     id: path.id,
                     title: uniqueTitles[index],
@@ -185,8 +240,9 @@ export const convertInputToWhatsAppMessages = (
               })(),
             },
           },
-        };
-      });
+        });
+      }
+      return messages;
     }
   }
 };

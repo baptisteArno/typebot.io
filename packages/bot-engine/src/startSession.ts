@@ -119,6 +119,7 @@ export const startSession = async ({
   const initialState: SessionState = {
     version: "3",
     workspaceId: typebot.workspaceId,
+    publicTypebotId: typebot.publicTypebotId,
     typebotsQueue: [
       {
         resultId: result?.id,
@@ -294,7 +295,7 @@ export const startSession = async ({
   };
 };
 
-const getTypebot = async (startParams: StartParams): Promise<StartTypebot> => {
+const getTypebot = async (startParams: StartParams) => {
   if (startParams.type === "preview" && startParams.typebot)
     return startParams.typebot;
 
@@ -319,9 +320,10 @@ const getTypebot = async (startParams: StartParams): Promise<StartTypebot> => {
   const parsedTypebot =
     typebotQuery && "typebot" in typebotQuery
       ? {
+          publicTypebotId: typebotQuery.id,
           id: typebotQuery.typebotId,
           ...omit(typebotQuery.typebot, "workspace"),
-          ...omit(typebotQuery, "typebot", "typebotId"),
+          ...omit(typebotQuery, "typebot", "typebotId", "id"),
         }
       : typebotQuery;
 

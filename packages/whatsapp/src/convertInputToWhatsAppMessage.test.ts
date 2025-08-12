@@ -8,8 +8,8 @@ import { describe, expect, it } from "vitest";
 import { convertInputToWhatsAppMessages } from "./convertInputToWhatsAppMessage";
 import type { WhatsAppSendingMessage } from "./schemas";
 
-describe("Simple input types", () => {
-  it("should return empty array for simple input types", () => {
+describe("Simple input types", async () => {
+  it("should return empty array for simple input types", async () => {
     const simpleInputTypes = [
       InputBlockType.DATE,
       InputBlockType.TIME,
@@ -23,21 +23,24 @@ describe("Simple input types", () => {
       InputBlockType.TEXT,
     ];
 
-    simpleInputTypes.forEach((type) => {
+    for (const type of simpleInputTypes) {
       const input = {
         type,
         id: "input1",
         options: {},
       } as NonNullable<ContinueChatResponse["input"]>;
 
-      const result = convertInputToWhatsAppMessages(input, undefined);
+      const result = await convertInputToWhatsAppMessages({
+        input,
+        lastMessage: undefined,
+      });
       expect(result).toEqual([]);
-    });
+    }
   });
 });
 
-describe("Choice input", () => {
-  it("should return text message for multiple choice", () => {
+describe("Choice input", async () => {
+  it("should return text message for multiple choice", async () => {
     const input = createMockButtonsInput(
       [
         { id: "choice1", content: "Option 1" },
@@ -47,7 +50,7 @@ describe("Choice input", () => {
     );
     const lastMessage = createMockTextMessage("Choose your options:");
 
-    const result = convertInputToWhatsAppMessages(input, lastMessage);
+    const result = await convertInputToWhatsAppMessages({ input, lastMessage });
 
     expect(result).toEqual([
       {
@@ -59,14 +62,14 @@ describe("Choice input", () => {
     ]);
   });
 
-  it("should return interactive buttons for single choice", () => {
+  it("should return interactive buttons for single choice", async () => {
     const input = createMockButtonsInput([
       { id: "choice1", content: "Option 1" },
       { id: "choice2", content: "Option 2" },
     ]);
     const lastMessage = createMockTextMessage("Choose one:");
 
-    const result = convertInputToWhatsAppMessages(input, lastMessage);
+    const result = await convertInputToWhatsAppMessages({ input, lastMessage });
 
     expect(result).toHaveLength(1);
     expect(result).toEqual([
@@ -100,7 +103,7 @@ describe("Choice input", () => {
     ]);
   });
 
-  it("should handle choice buttons with long text", () => {
+  it("should handle choice buttons with long text", async () => {
     const input = createMockButtonsInput([
       {
         id: "choice1",
@@ -109,7 +112,10 @@ describe("Choice input", () => {
       { id: "choice2", content: "Short option" },
     ]);
 
-    const result = convertInputToWhatsAppMessages(input, undefined);
+    const result = await convertInputToWhatsAppMessages({
+      input,
+      lastMessage: undefined,
+    });
 
     // Type guard to ensure interactive message
     const interactiveMessage = expectInteractiveMessage(result[0]);
@@ -121,13 +127,16 @@ describe("Choice input", () => {
     );
   });
 
-  it("should handle duplicate button titles", () => {
+  it("should handle duplicate button titles", async () => {
     const input = createMockButtonsInput([
       { id: "choice1", content: "Option" },
       { id: "choice2", content: "Option" },
     ]);
 
-    const result = convertInputToWhatsAppMessages(input, undefined);
+    const result = await convertInputToWhatsAppMessages({
+      input,
+      lastMessage: undefined,
+    });
 
     const interactiveMessage = expectInteractiveMessage(result[0]);
     expect(interactiveMessage.interactive.action.buttons[0].reply.title).toBe(
@@ -138,7 +147,7 @@ describe("Choice input", () => {
     );
   });
 
-  it("should group buttons when exceeding group size", () => {
+  it("should group buttons when exceeding group size", async () => {
     const input = createMockButtonsInput([
       { id: "choice1", content: "Option 1" },
       { id: "choice2", content: "Option 2" },
@@ -147,7 +156,7 @@ describe("Choice input", () => {
     ]);
     const lastMessage = createMockTextMessage("Choose:");
 
-    const result = convertInputToWhatsAppMessages(input, lastMessage);
+    const result = await convertInputToWhatsAppMessages({ input, lastMessage });
 
     expect(result).toHaveLength(2);
     const firstMessage = expectInteractiveMessage(result[0]);
@@ -156,14 +165,17 @@ describe("Choice input", () => {
     expect(secondMessage.interactive.body?.text).toBe("―");
   });
 
-  it("should filter out items with no content", () => {
+  it("should filter out items with no content", async () => {
     const input = createMockButtonsInput([
       { id: "choice1", content: "Option 1" },
       { id: "choice2", content: "" },
       { id: "choice3", content: "Option 3" },
     ]);
 
-    const result = convertInputToWhatsAppMessages(input, undefined);
+    const result = await convertInputToWhatsAppMessages({
+      input,
+      lastMessage: undefined,
+    });
 
     const interactiveMessage = expectInteractiveMessage(result[0]);
     expect(interactiveMessage.interactive.action.buttons).toHaveLength(2);
@@ -176,8 +188,8 @@ describe("Choice input", () => {
   });
 });
 
-describe("Picture choice input", () => {
-  it("should return numbered list for multiple choice", () => {
+describe("Picture choice input", async () => {
+  it("should return numbered list for multiple choice", async () => {
     const input = createMockPictureChoiceInput(
       [
         {
@@ -191,7 +203,10 @@ describe("Picture choice input", () => {
       true,
     );
 
-    const result = convertInputToWhatsAppMessages(input, undefined);
+    const result = await convertInputToWhatsAppMessages({
+      input,
+      lastMessage: undefined,
+    });
 
     expect(result).toEqual([
       {
@@ -215,7 +230,7 @@ describe("Picture choice input", () => {
     ]);
   });
 
-  it("should return interactive buttons for single choice", () => {
+  it("should return interactive buttons for single choice", async () => {
     const input = createMockPictureChoiceInput([
       {
         id: "pic1",
@@ -225,7 +240,10 @@ describe("Picture choice input", () => {
       },
     ]);
 
-    const result = convertInputToWhatsAppMessages(input, undefined);
+    const result = await convertInputToWhatsAppMessages({
+      input,
+      lastMessage: undefined,
+    });
 
     expect(result).toEqual([
       {
@@ -257,12 +275,15 @@ describe("Picture choice input", () => {
     ]);
   });
 
-  it("should handle picture choice without image", () => {
+  it("should handle picture choice without image", async () => {
     const input = createMockPictureChoiceInput([
       { id: "pic1", title: "Picture 1", description: "Description 1" },
     ]);
 
-    const result = convertInputToWhatsAppMessages(input, undefined);
+    const result = await convertInputToWhatsAppMessages({
+      input,
+      lastMessage: undefined,
+    });
 
     const interactiveMessage = expectInteractiveMessage(result[0]);
     expect(interactiveMessage.interactive.header).toBeUndefined();
@@ -271,13 +292,17 @@ describe("Picture choice input", () => {
     );
   });
 
-  it("should handle picture choice with custom system message", () => {
+  it("should handle picture choice with custom system message", async () => {
     const input = createMockPictureChoiceInput([
       { id: "pic1", title: "Picture 1" },
     ]);
 
-    const result = convertInputToWhatsAppMessages(input, undefined, {
-      whatsAppPictureChoiceSelectLabel: "Choose this",
+    const result = await convertInputToWhatsAppMessages({
+      input,
+      lastMessage: undefined,
+      systemMessages: {
+        whatsAppPictureChoiceSelectLabel: "Choose this",
+      },
     });
 
     const interactiveMessage = expectInteractiveMessage(result[0]);
@@ -286,20 +311,23 @@ describe("Picture choice input", () => {
     );
   });
 
-  it("should handle empty title and description", () => {
+  it("should handle empty title and description", async () => {
     const input = createMockPictureChoiceInput([
       { id: "pic1", pictureSrc: "https://example.com/pic1.jpg" },
     ]);
 
-    const result = convertInputToWhatsAppMessages(input, undefined);
+    const result = await convertInputToWhatsAppMessages({
+      input,
+      lastMessage: undefined,
+    });
 
     const interactiveMessage = expectInteractiveMessage(result[0]);
     expect(interactiveMessage.interactive.body).toBeUndefined();
   });
 });
 
-describe("Cards input", () => {
-  it("should return interactive buttons for each card", () => {
+describe("Cards input", async () => {
+  it("should return interactive buttons for each card", async () => {
     const input = createMockCardsInput([
       {
         id: "card1",
@@ -313,7 +341,10 @@ describe("Cards input", () => {
       },
     ]);
 
-    const result = convertInputToWhatsAppMessages(input, undefined);
+    const result = await convertInputToWhatsAppMessages({
+      input,
+      lastMessage: undefined,
+    });
 
     expect(result).toEqual([
       {
@@ -352,7 +383,7 @@ describe("Cards input", () => {
     ]);
   });
 
-  it("should limit paths to 3 buttons", () => {
+  it("should limit paths to 3 buttons", async () => {
     const input = createMockCardsInput([
       {
         id: "card1",
@@ -366,13 +397,16 @@ describe("Cards input", () => {
       },
     ]);
 
-    const result = convertInputToWhatsAppMessages(input, undefined);
+    const result = await convertInputToWhatsAppMessages({
+      input,
+      lastMessage: undefined,
+    });
 
     const interactiveMessage = expectInteractiveMessage(result[0]);
     expect(interactiveMessage.interactive.action.buttons).toHaveLength(3);
   });
 
-  it("should handle cards without image", () => {
+  it("should handle cards without image", async () => {
     const input = createMockCardsInput([
       {
         id: "card1",
@@ -382,13 +416,16 @@ describe("Cards input", () => {
       },
     ]);
 
-    const result = convertInputToWhatsAppMessages(input, undefined);
+    const result = await convertInputToWhatsAppMessages({
+      input,
+      lastMessage: undefined,
+    });
 
     const interactiveMessage = expectInteractiveMessage(result[0]);
     expect(interactiveMessage.interactive.header).toBeUndefined();
   });
 
-  it("should handle empty paths array", () => {
+  it("should handle empty paths array", async () => {
     const input = createMockCardsInput([
       {
         id: "card1",
@@ -397,26 +434,32 @@ describe("Cards input", () => {
       },
     ]);
 
-    const result = convertInputToWhatsAppMessages(input, undefined);
+    const result = await convertInputToWhatsAppMessages({
+      input,
+      lastMessage: undefined,
+    });
 
     const interactiveMessage = expectInteractiveMessage(result[0]);
     expect(interactiveMessage.interactive.action.buttons).toEqual([]);
   });
 });
 
-describe("Edge cases", () => {
-  it("should handle undefined lastMessage", () => {
+describe("Edge cases", async () => {
+  it("should handle undefined lastMessage", async () => {
     const input = createMockButtonsInput([
       { id: "choice1", content: "Option 1" },
     ]);
 
-    const result = convertInputToWhatsAppMessages(input, undefined);
+    const result = await convertInputToWhatsAppMessages({
+      input,
+      lastMessage: undefined,
+    });
 
     const interactiveMessage = expectInteractiveMessage(result[0]);
     expect(interactiveMessage.interactive.body?.text).toBe("―");
   });
 
-  it("should handle non-richText lastMessage", () => {
+  it("should handle non-richText lastMessage", async () => {
     const lastMessage = {
       id: "msg1",
       type: BubbleBlockType.TEXT,
@@ -430,7 +473,7 @@ describe("Edge cases", () => {
       { id: "choice1", content: "Option 1" },
     ]);
 
-    const result = convertInputToWhatsAppMessages(input, lastMessage);
+    const result = await convertInputToWhatsAppMessages({ input, lastMessage });
 
     const interactiveMessage = expectInteractiveMessage(result[0]);
     expect(interactiveMessage.interactive.body?.text).toBe("―");

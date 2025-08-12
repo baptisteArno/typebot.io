@@ -157,6 +157,7 @@ const sessionStateSchemaV3 = sessionStateSchemaV2
           .optional(),
       })
       .optional(),
+    publicTypebotId: z.string().optional(),
   });
 
 export type SessionState = z.infer<typeof sessionStateSchemaV3>;

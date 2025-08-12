@@ -1,4 +1,5 @@
 import {
+  ChatProvider,
   CollaborationType,
   GraphNavigation,
   Plan,
@@ -19,4 +20,5 @@ export {
   JsonNull,
   DbNull,
   PrismaClientKnownRequestError,
+  ChatProvider,
 };

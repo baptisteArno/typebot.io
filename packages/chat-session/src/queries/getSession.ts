@@ -9,7 +9,7 @@ export const getSession = async (sessionId: string) => {
     select: { id: true, state: true, updatedAt: true, isReplying: true },
   });
   if (!session?.state) return null;
-  if (Object.keys(session.state).length === 0) {
+  if (Object.keys(session.state).length === 0 && !session.isReplying) {
     await deleteSession(session.id);
     return null;
   }

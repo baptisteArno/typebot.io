@@ -264,18 +264,36 @@ model CollaboratorsOnTypebots {
 }
 
 model PublicTypebot {
-  id        String   @id @default(cuid())
-  version   String?  @db.VarChar(10)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
-  typebotId String   @unique
-  groups    Json
-  events    Json?
-  variables Json
-  edges     Json
-  theme     Json
-  settings  Json
-  typebot   Typebot  @relation(fields: [typebotId], references: [id], onDelete: Cascade)
+  id            String                @id @default(cuid())
+  version       String?               @db.VarChar(10)
+  createdAt     DateTime              @default(now())
+  updatedAt     DateTime              @default(now()) @updatedAt
+  typebotId     String                @unique
+  groups        Json
+  events        Json?
+  variables     Json
+  edges         Json
+  theme         Json
+  settings      Json
+  typebot       Typebot               @relation(fields: [typebotId], references: [id], onDelete: Cascade)
+  mediaIdsCache RuntimeMediaIdCache[]
+}
+
+model RuntimeMediaIdCache {
+  provider        ChatProvider
+  url             String         @db.VarChar(512)
+  mediaId         String
+  expiresAt       DateTime?
+  publicTypebot   PublicTypebot? @relation(fields: [publicTypebotId], references: [id], onDelete: Cascade)
+  publicTypebotId String
+
+  @@unique([publicTypebotId, provider, url])
+  @@index([expiresAt])
+}
+
+enum ChatProvider {
+  WHATSAPP
+  DIALOG360
 }
 
 model Result {

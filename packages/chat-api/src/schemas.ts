@@ -205,10 +205,19 @@ const startTypebotV6Schema = typebotV6Schema.pick(startTypebotPick).openapi({
 });
 export type StartTypebotV6 = z.infer<typeof startTypebotV6Schema>;
 
-export const startTypebotSchema = z.preprocess(
-  preprocessTypebot,
-  z.discriminatedUnion("version", [startTypebotV6Schema, startTypebotV5Schema]),
-);
+export const startTypebotSchema = z
+  .preprocess(
+    preprocessTypebot,
+    z.discriminatedUnion("version", [
+      startTypebotV6Schema,
+      startTypebotV5Schema,
+    ]),
+  )
+  .and(
+    z.object({
+      publicTypebotId: z.string().optional(),
+    }),
+  );
 export type StartTypebot = StartTypebotV6 | StartTypebotV5;
 
 export const startFromSchema = z.discriminatedUnion("type", [

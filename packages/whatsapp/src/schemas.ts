@@ -1,7 +1,14 @@
 import { ComparisonOperators } from "@typebot.io/conditions/constants";
 import { z } from "@typebot.io/zod";
 
-const mediaSchema = z.object({ link: z.string() });
+const mediaSchema = z
+  .object({
+    link: z.string().optional(),
+    id: z.string().optional(),
+  })
+  .refine((data) => data.link || data.id, {
+    message: "Either link or id must be provided",
+  });
 
 const headerSchema = z
   .object({
