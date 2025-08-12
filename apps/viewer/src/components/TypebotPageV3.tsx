@@ -16,6 +16,10 @@ export type TypebotV3PageProps = {
   isHideQueryParamsEnabled: boolean | null;
   background: NonNullable<Typebot["theme"]["general"]>["background"];
   metadata: Typebot["settings"]["metadata"];
+  locale?: string;
+  availableLocales?: string[];
+  localeDetectionMeta?: any;
+  typebotData?: any; // Localized typebot data to pass to the chat component
 };
 
 export const TypebotPageV3 = ({
@@ -27,6 +31,10 @@ export const TypebotPageV3 = ({
   isHideQueryParamsEnabled,
   metadata,
   background,
+  locale,
+  availableLocales,
+  localeDetectionMeta,
+  typebotData,
 }: TypebotV3PageProps) => {
   const { asPath, push } = useRouter();
 
@@ -47,6 +55,31 @@ export const TypebotPageV3 = ({
     if (isMatchingViewerUrl) return;
     return new URL(url).origin;
   }, [isMatchingViewerUrl, url]);
+
+  // Transform typebotData to match StartTypebot interface if needed
+  const formattedTypebotData = useMemo(() => {
+    if (!typebotData || typeof typebotData === "string") return typebotData;
+
+    // Ensure the typebot data has the structure expected by the Standard component
+    const formatted = {
+      version: typebotData.version,
+      id: typebotData.id || typebotData.typebotId,
+      groups: typebotData.groups,
+      events: typebotData.events || [],
+      edges: typebotData.edges || [],
+      variables: typebotData.variables || [],
+      settings: typebotData.settings || {},
+      theme: {
+        ...typebotData.theme,
+        // Ensure customCss exists to prevent undefined errors
+        customCss: typebotData.theme?.customCss || "",
+      },
+      updatedAt: typebotData.updatedAt,
+      workspaceId: typebotData.workspaceId,
+    };
+
+    return formatted;
+  }, [typebotData]);
 
   return (
     <div
@@ -72,6 +105,9 @@ export const TypebotPageV3 = ({
         onInit={clearQueryParamsIfNecessary}
         font={font ?? undefined}
         apiHost={apiOrigin}
+        locale={locale}
+        availableLocales={availableLocales}
+        localeDetectionMeta={localeDetectionMeta}
       />
     </div>
   );

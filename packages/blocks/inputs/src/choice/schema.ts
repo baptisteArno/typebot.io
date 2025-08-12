@@ -28,6 +28,14 @@ export const buttonItemSchemas = {
         condition: conditionSchema.optional(),
       })
       .optional(),
+    localizations: z
+      .record(
+        z.string(),
+        z.object({
+          content: z.string().optional(),
+        }),
+      )
+      .optional(),
   }),
   v6: itemBaseSchemas.v6.extend({
     content: z.string().optional(),
@@ -37,6 +45,14 @@ export const buttonItemSchemas = {
         isEnabled: z.boolean().optional(),
         condition: conditionSchema.optional(),
       })
+      .optional(),
+    localizations: z
+      .record(
+        z.string(),
+        z.object({
+          content: z.string().optional(),
+        }),
+      )
       .optional(),
   }),
 };
