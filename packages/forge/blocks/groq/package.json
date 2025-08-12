@@ -12,7 +12,7 @@
     "@typebot.io/ai": "workspace:*",
     "@typebot.io/tsconfig": "workspace:*",
     "@typebot.io/lib": "workspace:*",
-    "@ai-sdk/groq": "1.2.1"
+    "@ai-sdk/groq": "1.2.9"
   },
   "dependencies": {
     "ky": "1.2.4"

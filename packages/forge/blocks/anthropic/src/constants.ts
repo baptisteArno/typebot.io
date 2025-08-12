@@ -1,4 +1,5 @@
 export const anthropicModels = [
+  "claude-opus-4-1",
   "claude-sonnet-4-0",
   "claude-opus-4-0",
   "claude-3-7-sonnet-latest",

@@ -11,7 +11,7 @@
     "@typebot.io/ai": "workspace:*",
     "@typebot.io/forge": "workspace:*",
     "@typebot.io/lib": "workspace:*",
-    "@ai-sdk/anthropic": "1.2.2",
+    "@ai-sdk/anthropic": "1.2.12",
     "@typebot.io/zod": "workspace:*"
   },
   "devDependencies": {
