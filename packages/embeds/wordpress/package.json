@@ -1,13 +1,13 @@
 {
   "name": "@typebot.io/wordpress",
-  "version": "4.2.0",
+  "version": "4.3.0",
   "main": "index.js",
   "repository": "https://github.com/baptisteArno/typebot.io",
   "author": "baptisteArno",
   "license": "FSL-1.1-ALv2",
   "scripts": {
     "deploy": "bun copy && bun commit",
-    "copy": "svn copy ./trunk ./tags/4.2.0",
-    "commit": "svn ci -m 'Add ws_host parameter to the shortcode'"
+    "copy": "svn copy ./trunk ./tags/4.3.0",
+    "commit": "svn ci -m 'Add shortcode protected prop'"
   }
 }

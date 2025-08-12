@@ -2,10 +2,10 @@
 Contributors: baptistearnaud
 Tags: chatbot, ai chat, customer support, chatbot builder
 Requires at least: 5.0
-Tested up to: 6.7.1
+Tested up to: 6.8.2
 License: GPL 2.0
 License URI: http://www.gnu.org/licenses/gpl-2.0.txt
-Stable Tag: 4.2.0
+Stable Tag: 4.3.0
 
 == Short Description ==
 Create advanced chat experiences without coding
@@ -27,6 +27,9 @@ This plugin relies on Typebot which is a tool that allows you to create conversa
 3. Activate your Typebot with the "Typebot" admin button located in the sidebar
 
 == Changelog ==
+= 4.3.0 =
+* Add shortcode protected prop
+
 = 4.2.0 =
 * Add ws_host parameter to the shortcode
 
