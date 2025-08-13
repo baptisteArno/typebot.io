@@ -106,6 +106,10 @@ const nextConfig = {
               source: "/images/:image*",
               destination: `${process.env.LANDING_PAGE_URL}/images/:image*`,
             },
+            {
+              source: "/sitemap.xml",
+              destination: `${process.env.LANDING_PAGE_URL}/sitemap.xml`,
+            },
           ].concat(
             landingPagePaths.map((path) => ({
               source: path,

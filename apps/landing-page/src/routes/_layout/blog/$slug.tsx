@@ -66,6 +66,11 @@ function RouteComponent() {
           <h1 className="my-4 inline-block font-heading text-4xl leading-tight lg:text-5xl">
             {post.title}
           </h1>
+          {post.updatedAt && (
+            <span className="inline-flex gap-1 items-center not-prose text-sm italic">
+              Updated on {formatDate(post.updatedAt)}
+            </span>
+          )}
         </div>
         <Mdx code={post.mdx} />
       </article>
