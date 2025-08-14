@@ -13,7 +13,7 @@ type Props = {
   onSubmit: (content: EmbedBubbleBlock["content"]) => void;
 };
 
-export const EmbedUploadContent = ({ content, onSubmit }: Props) => {
+export const EmbedBubbleSettings = ({ content, onSubmit }: Props) => {
   const { t } = useTranslate();
   const handleUrlChange = (url: string) => {
     const iframeUrl = sanitizeUrl(

@@ -76,14 +76,15 @@ export const omit: Omit = (obj, ...keys) => {
   return ret;
 };
 
-const isVariableString = (str: string): boolean => /^\{\{.*\}\}$/.test(str);
+const isStartingWithVariableString = (str: string): boolean =>
+  /^\{\{.*\}\}/.test(str);
 
 export const sanitizeUrl = (url: string): string =>
   url.startsWith("http") ||
   url.startsWith("mailto:") ||
   url.startsWith("tel:") ||
   url.startsWith("sms:") ||
-  isVariableString(url)
+  isStartingWithVariableString(url)
     ? url
     : `https://${url}`;
 

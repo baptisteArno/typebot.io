@@ -1,5 +1,5 @@
 import { AudioBubbleForm } from "@/features/blocks/bubbles/audio/components/AudioBubbleForm";
-import { EmbedUploadContent } from "@/features/blocks/bubbles/embed/components/EmbedUploadContent";
+import { EmbedBubbleSettings } from "@/features/blocks/bubbles/embed/components/EmbedBubbleSettings";
 import { ImageBubbleSettings } from "@/features/blocks/bubbles/image/components/ImageBubbleSettings";
 import { VideoUploadContent } from "@/features/blocks/bubbles/video/components/VideoUploadContent";
 import type { FilePathUploadProps } from "@/features/upload/api/generateUploadUrl";
@@ -67,7 +67,7 @@ export const MediaBubbleContent = ({
     }
     case BubbleBlockType.EMBED: {
       return (
-        <EmbedUploadContent
+        <EmbedBubbleSettings
           content={block.content}
           onSubmit={onContentChange}
         />
