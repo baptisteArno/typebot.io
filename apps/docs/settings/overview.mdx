@@ -8,7 +8,7 @@ icon: wrench
 
 The general settings represent the general behaviors of your typebot.
 
-<Frame style={{ maxWidth: '400px' }}>
+<Frame style={{ maxWidth: "400px" }}>
   <img src="/images/settings/general.png" alt="General" />
 </Frame>
 
@@ -23,7 +23,7 @@ By default, your typebot will emulate a certain typing speed. It is considered a
 
 You can customize this typing speed in the settings:
 
-<Frame style={{ maxWidth: '400px' }}>
+<Frame style={{ maxWidth: "400px" }}>
   <img src="/images/settings/typing-emulation.png" alt="Typing emulation" />
 </Frame>
 
@@ -49,6 +49,32 @@ For example, if you want to allow your typebot to be executed only on `https://m
 In the Metadata section, you can customize how the preview card will look if you share your bot URL on social media for example.
 
 You can also add some custom head code to add third-party scripts.
+
+### Icon, image, title and description
+
+- **Icon**: The small icon shown in the browser tab of your bot’s standalone page. Click the icon preview in Metadata to upload a new one. Recommended format: PNG or SVG, 32×32 or 48×48. If you embed your Typebot inside an existing website, the website’s favicon is used instead.
+
+- **Image (social share image)**: Displayed when your bot link is shared on social networks and messaging apps. Recommended size: 1200×630 px (1.91:1 ratio), JPG or PNG. Keep the file reasonably small for faster loading.
+
+- **Title**: Used for the page `<title>` and Open Graph `og:title`. If left empty, your bot name is used.
+
+- **Description**: Used for the meta description and Open Graph `og:description`. If left empty, a sensible default description is used.
+
+- **Allow indexing**: Toggle to allow search engines to index your bot’s standalone page. Disable it if you want to keep it out of search results.
+
+### Troubleshooting: I don’t see my new metadata
+
+- **Hard refresh your browser**: Clear cache or perform a hard reload to fetch the latest favicon and meta tags.
+
+- **Force social platforms to re-scrape**: Social networks cache previews aggressively. Use their tools to refresh:
+
+  - [Facebook Sharing Debugger](https://developers.facebook.com/tools/debug/)
+  - [X Card Validator](https://cards-dev.x.com/validator)
+  - [LinkedIn Post Inspector](https://www.linkedin.com/post-inspector/)
+
+- **If you embed the bot**: The parent page controls favicon and Open Graph tags. Update the metadata in your website rather than in the bot settings.
+
+- **Give it a few minutes**: Caches can take a short time to expire. Search engines may also reflect changes after their next crawl, especially if indexing is enabled.
 
 ### Google Tag Manager
 
