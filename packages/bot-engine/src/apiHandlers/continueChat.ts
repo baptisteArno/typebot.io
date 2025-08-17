@@ -37,7 +37,7 @@ export const continueChat = async ({
     });
   }
 
-  assertOriginIsAllowed(origin, {
+  assertOriginIsAllowed(origin ?? iframeReferrerOrigin, {
     allowedOrigins: session.state.allowedOrigins,
     iframeReferrerOrigin,
   });
