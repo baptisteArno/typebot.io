@@ -50,8 +50,19 @@ export const CreateTokenModal = ({
     setIsSubmitting(false);
   };
 
+  const reset = () => {
+    setNewTokenValue(undefined);
+    setName("");
+  };
+
+  const handleClose = () => {
+    console.log("handleClose");
+    setTimeout(reset, 100);
+    onClose();
+  };
+
   return (
-    <Modal isOpen={isOpen} onClose={onClose} initialFocusRef={inputRef}>
+    <Modal isOpen={isOpen} onClose={handleClose} initialFocusRef={inputRef}>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>
@@ -92,7 +103,7 @@ export const CreateTokenModal = ({
 
         <ModalFooter>
           {newTokenValue ? (
-            <Button onClick={onClose} colorScheme="orange">
+            <Button onClick={handleClose} colorScheme="orange">
               {t("account.apiTokens.createModal.doneButton.label")}
             </Button>
           ) : (
