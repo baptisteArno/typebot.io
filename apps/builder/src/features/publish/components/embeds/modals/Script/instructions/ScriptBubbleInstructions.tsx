@@ -9,12 +9,12 @@ import {
   parseInlineScript,
   typebotImportCode,
 } from "../../../snippetParsers/shared";
-import { parseDefaultBubbleTheme } from "../../Javascript/instructions/JavascriptBubbleInstructions";
+import { getInitialBubbleTheme } from "../../Javascript/instructions/JavascriptBubbleInstructions";
 
 export const ScriptBubbleInstructions = () => {
   const { typebot } = useTypebot();
   const [theme, setTheme] = useState<BubbleProps["theme"]>(
-    parseDefaultBubbleTheme(typebot),
+    getInitialBubbleTheme(typebot),
   );
   const [previewMessage, setPreviewMessage] =
     useState<BubbleProps["previewMessage"]>();

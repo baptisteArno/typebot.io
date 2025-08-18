@@ -17,12 +17,7 @@ export const JavascriptBubbleSnippet = ({ theme, previewMessage }: Props) => {
 ${parseInitBubbleCode({
   typebot: typebot?.publicId ?? "",
   customDomain: typebot?.customDomain,
-  theme: {
-    ...theme,
-    chatWindow: {
-      backgroundColor: typebot?.theme.general?.background?.content ?? "#fff",
-    },
-  },
+  theme,
   previewMessage,
 })}</script>`,
     {

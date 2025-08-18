@@ -3,14 +3,14 @@ import { ListItem, OrderedList, Stack, Text } from "@chakra-ui/react";
 import type { BubbleProps } from "@typebot.io/js";
 import { useState } from "react";
 import { BubbleSettings } from "../../../settings/BubbleSettings/BubbleSettings";
-import { parseDefaultBubbleTheme } from "../../Javascript/instructions/JavascriptBubbleInstructions";
+import { getInitialBubbleTheme } from "../../Javascript/instructions/JavascriptBubbleInstructions";
 import { InstallNextjsPackageSnippet } from "../InstallNextjsPackageSnippet";
 import { NextjsBubbleSnippet } from "../NextjsBubbleSnippet";
 
 export const NextjsBubbleInstructions = () => {
   const { typebot } = useTypebot();
   const [theme, setTheme] = useState<BubbleProps["theme"]>(
-    parseDefaultBubbleTheme(typebot),
+    getInitialBubbleTheme(typebot),
   );
   const [previewMessage, setPreviewMessage] =
     useState<BubbleProps["previewMessage"]>();

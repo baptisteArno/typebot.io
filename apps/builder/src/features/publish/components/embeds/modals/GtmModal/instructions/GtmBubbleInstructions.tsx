@@ -4,12 +4,12 @@ import type { BubbleProps } from "@typebot.io/js";
 import { useState } from "react";
 import { BubbleSettings } from "../../../settings/BubbleSettings/BubbleSettings";
 import { JavascriptBubbleSnippet } from "../../Javascript/JavascriptBubbleSnippet";
-import { parseDefaultBubbleTheme } from "../../Javascript/instructions/JavascriptBubbleInstructions";
+import { getInitialBubbleTheme } from "../../Javascript/instructions/JavascriptBubbleInstructions";
 
 export const GtmBubbleInstructions = () => {
   const { typebot } = useTypebot();
   const [theme, setTheme] = useState<BubbleProps["theme"]>(
-    parseDefaultBubbleTheme(typebot),
+    getInitialBubbleTheme(typebot),
   );
   const [previewMessage, setPreviewMessage] =
     useState<BubbleProps["previewMessage"]>();

@@ -16,7 +16,7 @@ import { useState } from "react";
 import packageJson from "../../../../../../../../../../packages/embeds/js/package.json";
 import { BubbleSettings } from "../../../settings/BubbleSettings/BubbleSettings";
 import { parseInitBubbleCode } from "../../../snippetParsers/bubble";
-import { parseDefaultBubbleTheme } from "../../Javascript/instructions/JavascriptBubbleInstructions";
+import { getInitialBubbleTheme } from "../../Javascript/instructions/JavascriptBubbleInstructions";
 import { typebotCloudLibraryVersion } from "./constants";
 
 type Props = {
@@ -26,7 +26,7 @@ export const WordpressBubbleInstructions = ({ publicId }: Props) => {
   const { typebot } = useTypebot();
 
   const [theme, setTheme] = useState<BubbleProps["theme"]>(
-    parseDefaultBubbleTheme(typebot),
+    getInitialBubbleTheme(typebot),
   );
   const [previewMessage, setPreviewMessage] =
     useState<BubbleProps["previewMessage"]>();
@@ -34,12 +34,7 @@ export const WordpressBubbleInstructions = ({ publicId }: Props) => {
   const initCode = parseInitBubbleCode({
     typebot: publicId,
     customDomain: typebot?.customDomain,
-    theme: {
-      ...theme,
-      chatWindow: {
-        backgroundColor: typebot?.theme.general?.background?.content ?? "#fff",
-      },
-    },
+    theme,
     previewMessage,
   });
 
