@@ -25,12 +25,14 @@ export const convertMessageToWhatsAppMessage = async ({
         throw new Error("Expect rich text message");
       if (!message.content.richText || message.content.richText.length === 0)
         return null;
+      const body = convertRichTextToMarkdown(message.content.richText, {
+        flavour: "whatsapp",
+      });
+      if (!body) return null;
       return {
         type: "text",
         text: {
-          body: convertRichTextToMarkdown(message.content.richText, {
-            flavour: "whatsapp",
-          }),
+          body,
         },
       };
     }

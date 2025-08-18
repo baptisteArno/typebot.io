@@ -149,11 +149,14 @@ export const convertInputToWhatsAppMessages = async ({
           {
             type: "text",
             text: {
-              body:
-                `${lastMessageText}\n\n` +
-                input.items
-                  .map((item, idx) => `${idx + 1}. ${item.content}`)
-                  .join("\n"),
+              body: lastMessageText
+                ? `${lastMessageText}\n\n` +
+                  input.items
+                    .map((item, idx) => `${idx + 1}. ${item.content}`)
+                    .join("\n")
+                : input.items
+                    .map((item, idx) => `${idx + 1}. ${item.content}`)
+                    .join("\n"),
             },
           },
         ];
@@ -166,7 +169,7 @@ export const convertInputToWhatsAppMessages = async ({
         interactive: {
           type: "button",
           body: {
-            text: idx === 0 ? (lastMessageText ?? "―") : "―",
+            text: idx === 0 ? lastMessageText || "―" : "―",
           },
           action: {
             buttons: (() => {
