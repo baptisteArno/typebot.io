@@ -3,6 +3,7 @@ import {
   removePaymentInProgressFromStorage,
 } from "@/features/blocks/inputs/payment/helpers/paymentInProgressStorage";
 import type { BotContext } from "@/types";
+import { getIframeReferrerOrigin } from "@/utils/getIframeReferrerOrigin";
 import { guessApiHost } from "@/utils/guessApiHost";
 import type {
   ContinueChatResponse,
@@ -66,10 +67,7 @@ export async function startChatQuery({
   }
 
   try {
-    const iframeReferrerOrigin =
-      parent !== window && isNotEmpty(document.referrer)
-        ? new URL(document.referrer).origin
-        : undefined;
+    const iframeReferrerOrigin = getIframeReferrerOrigin();
     const response = await ky.post(
       `${getApiHost(apiHost)}/api/v1/typebots/${typebotId}/startChat`,
       {
@@ -110,12 +108,16 @@ const resumeChatAfterPaymentRedirect = async ({
   removePaymentInProgressFromStorage();
 
   try {
+    const iframeReferrerOrigin = getIframeReferrerOrigin();
     const data = await ky
       .post(
         `${getApiHost(apiHost)}/api/v1/sessions/${
           paymentInProgressState.sessionId
         }/continueChat`,
         {
+          headers: {
+            "x-typebot-iframe-referrer-origin": iframeReferrerOrigin,
+          },
           json: {
             message: stripeRedirectStatus === "failed" ? "fail" : "Success",
           },

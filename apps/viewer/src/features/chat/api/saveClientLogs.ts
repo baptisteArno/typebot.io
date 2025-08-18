@@ -18,6 +18,10 @@ export const saveClientLogs = publicProcedure
     }),
   )
   .output(z.object({ message: z.string() }))
-  .mutation(({ input: { sessionId, clientLogs } }) =>
-    saveClientLogsFn({ sessionId, clientLogs }),
+  .mutation(
+    ({
+      input: { sessionId, clientLogs },
+      ctx: { origin, iframeReferrerOrigin },
+    }) =>
+      saveClientLogsFn({ sessionId, clientLogs, origin, iframeReferrerOrigin }),
   );

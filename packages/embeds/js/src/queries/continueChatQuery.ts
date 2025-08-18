@@ -1,3 +1,4 @@
+import { getIframeReferrerOrigin } from "@/utils/getIframeReferrerOrigin";
 import { guessApiHost } from "@/utils/guessApiHost";
 import type {
   ContinueChatResponse,
@@ -16,12 +17,16 @@ export const continueChatQuery = async ({
   sessionId: string;
 }) => {
   try {
+    const iframeReferrerOrigin = getIframeReferrerOrigin();
     const data = await ky
       .post(
         `${
           isNotEmpty(apiHost) ? apiHost : guessApiHost()
         }/api/v1/sessions/${sessionId}/continueChat`,
         {
+          headers: {
+            "x-typebot-iframe-referrer-origin": iframeReferrerOrigin,
+          },
           json: {
             message,
           },

@@ -1,15 +1,23 @@
 import { TRPCError } from "@trpc/server";
 import { getSession } from "@typebot.io/chat-session/queries/getSession";
 import type { LogInSession } from "@typebot.io/logs/schemas";
+import { assertOriginIsAllowed } from "../helpers/assertOriginIsAllowed";
 import { shortenLogDetails } from "../logs/helpers/shortenLogDetails";
 import { saveLogs } from "../queries/saveLogs";
 
 type Props = {
+  origin: string | undefined;
+  iframeReferrerOrigin: string | undefined;
   sessionId: string;
   clientLogs: LogInSession[];
 };
 
-export const saveClientLogs = async ({ sessionId, clientLogs }: Props) => {
+export const saveClientLogs = async ({
+  origin,
+  iframeReferrerOrigin,
+  sessionId,
+  clientLogs,
+}: Props) => {
   const session = await getSession(sessionId);
 
   if (!session) {
@@ -18,6 +26,11 @@ export const saveClientLogs = async ({ sessionId, clientLogs }: Props) => {
       message: "Session not found.",
     });
   }
+
+  assertOriginIsAllowed(origin, {
+    allowedOrigins: session.state.allowedOrigins,
+    iframeReferrerOrigin,
+  });
 
   const resultId = session.state.typebotsQueue[0].resultId;
 
