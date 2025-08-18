@@ -211,7 +211,10 @@ export default function serialize(
       }\n${children}\n\`\`\`\n`;
 
     case nodeTypes.link:
-      return `[${children}](${(chunk as any).url || ""})`;
+      return (children === (chunk as any).url || "") &&
+        opts.flavour === "whatsapp"
+        ? children
+        : `[${children}](${(chunk as any).url || ""})`;
     case nodeTypes.image:
       return `![${(chunk as BlockType).caption}](${
         (chunk as BlockType).link || ""
