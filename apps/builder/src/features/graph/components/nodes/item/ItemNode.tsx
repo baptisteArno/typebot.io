@@ -90,6 +90,8 @@ export const ItemNode = ({
           pos="relative"
           ref={setMultipleRefs([ref, itemRef])}
           w="full"
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
         >
           {displayCondition && (
             <ConditionContent
@@ -101,8 +103,6 @@ export const ItemNode = ({
           )}
           <Flex
             align="center"
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
             transition="box-shadow 200ms, border-color 200ms"
             rounded="md"
             bg={bg}
