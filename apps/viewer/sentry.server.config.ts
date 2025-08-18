@@ -14,6 +14,7 @@ const ignoreTrpcMessages = [
   "Missing credentialsId",
   "Provided response is not valid JSON",
   "Could not parse amount, make sure your block is configured correctly",
+  "Start event doesn't exist",
 ];
 
 const ignoreMessages = [
