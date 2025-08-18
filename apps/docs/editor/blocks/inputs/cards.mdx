@@ -21,7 +21,21 @@ To display cards dynamically from variables. Make sure you have list variables. 
 
 Simply add those variables to a single card in the flow editor and the 3 cards will be displayed in the bot.
 
+## Save answer in variables
 
+You can store parts of the selected card into variables. Open the Cards block settings and add a mapping, then choose what to extract and which variable to save it to. Add multiple rows if you want to store several fields.
 
+Fields you can save:
 
+- **Image URL**: the URL of the selected card image.
+- **Title**: the selected card title.
+- **Description**: the selected card description.
+- **Button**: the label of the button the user clicked on the selected card.
+- **Internal Value**: a hidden value defined per card, ideal for stable identifiers (IDs, slugs). Configure it in a card’s settings under "Internal value".
 
+<Frame>
+  <img
+    src="/images/blocks/inputs/cards-save-answer.png"
+    alt="Cards input block"
+  />
+</Frame>
