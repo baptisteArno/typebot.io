@@ -1,11 +1,9 @@
 import { Card } from "@/components/Card";
 import { IconButton } from "@/components/IconButton";
-import { createListCollection } from "@ark-ui/react";
-import { Dialog } from "@ark-ui/react/dialog";
-import { Portal } from "@ark-ui/react/portal";
 import { Button } from "@typebot.io/ui/components/Button";
+import { Dialog } from "@typebot.io/ui/components/Dialog";
 import { Input } from "@typebot.io/ui/components/Input";
-import { Select, SelectItem } from "@typebot.io/ui/components/Select";
+import { Select } from "@typebot.io/ui/components/Select";
 import { CloseIcon } from "@typebot.io/ui/icons/CloseIcon";
 import { cx } from "@typebot.io/ui/lib/cva";
 import { useState } from "react";
@@ -25,10 +23,15 @@ interface FormElement {
   label: string;
   placeholder?: string;
   required?: boolean;
-  width?: "25" | "50" | "75" | "100";
+  width?: string;
   options?: string[]; // For select/radio/multicheck
 }
-const WIDTH_OPTIONS = ["25", "50", "75", "100"];
+const WIDTH_OPTIONS = [
+  { label: "25%", value: "25" },
+  { label: "50%", value: "50" },
+  { label: "75%", value: "75" },
+  { label: "100%", value: "100" },
+];
 
 // Main component
 export const HtmlFormGenerator = () => {
@@ -159,7 +162,7 @@ export const HtmlFormGenerator = () => {
       </div>
 
       <ExportModal
-        isOpened={showExportModal}
+        isOpen={showExportModal}
         html={generateHtmlCode()}
         onClose={() => setShowExportModal(false)}
       />
@@ -175,11 +178,11 @@ export const HtmlFormGenerator = () => {
 
 // Export Modal Component
 const ExportModal = ({
-  isOpened,
+  isOpen,
   html,
   onClose,
 }: {
-  isOpened: boolean;
+  isOpen: boolean;
   html: string;
   onClose: () => void;
 }) => {
@@ -188,39 +191,21 @@ const ExportModal = ({
   };
 
   return (
-    <Dialog.Root
-      open={isOpened}
-      onOpenChange={(e) => (!e.open ? onClose() : null)}
-    >
-      <Portal>
-        <Dialog.Backdrop className="fixed top-0 size-full bg-gray-12/50 data-[state=open]:animate-in data-[state=open]:fade-in data-[state=closed]:animate-out data-[state=closed]:fade-out overflow-auto" />
-        <Dialog.Positioner className="flex justify-center fixed top-0 w-full py-12">
-          <Dialog.Content className="relative bg-gray-1 p-6 rounded-xl w-full max-w-xl overflow-auto data-[state=open]:animate-in data-[state=open]:slide-in-from-bottom-5 data-[state=open]:fade-in data-[state=closed]:animate-out data-[state=closed]:slide-out-to-bottom-5 data-[state=closed]:fade-out">
-            <Dialog.Title className="text-2xl">Generated HTML</Dialog.Title>
-            <Dialog.CloseTrigger asChild>
-              <IconButton
-                aria-label="Close"
-                variant="secondary"
-                className="absolute top-4 right-4"
-              >
-                <CloseIcon />
-              </IconButton>
-            </Dialog.CloseTrigger>
-            <Dialog.Description>
-              <pre className="bg-gray-100 p-4 rounded-md overflow-auto max-h-96 text-sm">
-                {html}
-              </pre>
-              <Button
-                onClick={copyToClipboard}
-                variant="secondary"
-                className="w-full"
-              >
-                Copy to Clipboard
-              </Button>
-            </Dialog.Description>
-          </Dialog.Content>
-        </Dialog.Positioner>
-      </Portal>
+    <Dialog.Root isOpen={isOpen} onClose={onClose}>
+      <Dialog.Popup>
+        <Dialog.Title className="text-2xl">Generated HTML</Dialog.Title>
+        <Dialog.CloseButton />
+        <pre className="bg-gray-100 p-4 rounded-md overflow-auto max-h-96 text-sm">
+          {html}
+        </pre>
+        <Button
+          onClick={copyToClipboard}
+          variant="secondary"
+          className="w-full"
+        >
+          Copy to Clipboard
+        </Button>
+      </Dialog.Popup>
     </Dialog.Root>
   );
 };
@@ -490,20 +475,19 @@ const PropertiesPanel = ({
           >
             Width
           </span>
-          <Select
-            collection={createListCollection({
-              items: WIDTH_OPTIONS,
-            })}
-            onValueChange={(e) =>
-              onUpdate({ width: e.items[0] as "25" | "50" | "75" | "100" })
-            }
+          <Select.Root
+            items={WIDTH_OPTIONS}
+            onValueChange={(value) => onUpdate({ width: value })}
           >
-            {WIDTH_OPTIONS.map((item) => (
-              <SelectItem key={item} item={item}>
-                {item}
-              </SelectItem>
-            ))}
-          </Select>
+            <Select.Trigger />
+            <Select.Popup>
+              {WIDTH_OPTIONS.map((item) => (
+                <Select.Item key={item.value} value={item.value}>
+                  {item.label}
+                </Select.Item>
+              ))}
+            </Select.Popup>
+          </Select.Root>
         </div>
 
         {/* Options for Select/Radio/MultiCheck */}
@@ -563,123 +547,104 @@ const LivePreviewModal = ({
   onClose: () => void;
 }) => {
   return (
-    <Dialog.Root
-      open={isOpened}
-      onOpenChange={(e) => (!e.open ? onClose() : null)}
-    >
-      <Portal>
-        <Dialog.Backdrop className="fixed top-0 right-0 size-full bg-gray-12/50 data-[state=open]:animate-in data-[state=open]:fade-in data-[state=closed]:animate-out data-[state=closed]:fade-out overflow-auto" />
-        <Dialog.Positioner className="flex justify-center fixed top-0 w-full py-12">
-          <Dialog.Content className="relative bg-gray-1 p-6 rounded-xl w-full max-w-xl overflow-auto data-[state=open]:animate-in data-[state=open]:slide-in-from-bottom-5 data-[state=open]:fade-in data-[state=closed]:animate-out data-[state=closed]:slide-out-to-bottom-5 data-[state=closed]:fade-out">
-            <Dialog.Title className="text-2xl mb-8">
-              Live Form Preview
-            </Dialog.Title>
-            <Dialog.CloseTrigger asChild>
-              <IconButton
-                aria-label="Close"
-                variant="secondary"
-                className="absolute top-4 right-4"
+    <Dialog.Root isOpen={isOpened} onClose={onClose}>
+      <Dialog.Popup>
+        <Dialog.Title className="text-2xl mb-8">Live Form Preview</Dialog.Title>
+        <Dialog.CloseButton />
+
+        <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
+          {elements.map((element) => (
+            <div
+              key={element.id}
+              className="mb-4"
+              style={{ width: `${element.width || 100}%` }}
+            >
+              <label
+                htmlFor={element.id}
+                className="block text-sm font-medium mb-1"
+                style={{ color: "rgb(var(--gray-11))" }}
               >
-                <CloseIcon />
-              </IconButton>
-            </Dialog.CloseTrigger>
-            <Dialog.Description>
-              <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
-                {elements.map((element) => (
-                  <div
-                    key={element.id}
-                    className="mb-4"
-                    style={{ width: `${element.width || 100}%` }}
-                  >
-                    <label
-                      htmlFor={element.id}
-                      className="block text-sm font-medium mb-1"
-                      style={{ color: "rgb(var(--gray-11))" }}
-                    >
-                      {element.label}
-                    </label>
-                    {element.type === "textarea" ? (
-                      <textarea
-                        id={element.id}
-                        className="w-full p-2 border border-input rounded-md"
-                        required={element.required}
-                        placeholder={element.placeholder}
-                      />
-                    ) : element.type === "select" ? (
-                      <Select
-                        collection={createListCollection({
-                          items: element.options || [],
-                        })}
-                      >
-                        {element.options?.map((option) => (
-                          <SelectItem key={option} item={option}>
-                            {option}
-                          </SelectItem>
-                        ))}
-                      </Select>
-                    ) : element.type === "radio" ? (
-                      <div className="space-y-2">
-                        {element.options?.map((option, index) => (
-                          <div key={index} className="flex items-center gap-2">
-                            <input
-                              type="radio"
-                              id={`${element.id}-${index}`}
-                              name={element.id}
-                              required={element.required}
-                            />
-                            <label htmlFor={`${element.id}-${index}`}>
-                              {option}
-                            </label>
-                          </div>
-                        ))}
-                      </div>
-                    ) : element.type === "multicheck" ? (
-                      <div className="space-y-2">
-                        {element.options?.map((option, index) => (
-                          <div key={index} className="flex items-center gap-2">
-                            <input
-                              type="checkbox"
-                              id={`${element.id}-${index}`}
-                              name={`${element.id}[]`}
-                            />
-                            <label htmlFor={`${element.id}-${index}`}>
-                              {option}
-                            </label>
-                          </div>
-                        ))}
-                      </div>
-                    ) : element.type === "checkbox" ? (
+                {element.label}
+              </label>
+              {element.type === "textarea" ? (
+                <textarea
+                  id={element.id}
+                  className="w-full p-2 border border-input rounded-md"
+                  required={element.required}
+                  placeholder={element.placeholder}
+                />
+              ) : element.type === "select" ? (
+                <Select.Root
+                  items={element.options?.map((option) => ({
+                    label: option,
+                    value: option,
+                  }))}
+                >
+                  <Select.Trigger />
+                  <Select.Popup>
+                    {element.options?.map((option) => (
+                      <Select.Item key={option} value={option}>
+                        {option}
+                      </Select.Item>
+                    ))}
+                  </Select.Popup>
+                </Select.Root>
+              ) : element.type === "radio" ? (
+                <div className="space-y-2">
+                  {element.options?.map((option, index) => (
+                    <div key={index} className="flex items-center gap-2">
                       <input
-                        id={element.id}
+                        type="radio"
+                        id={`${element.id}-${index}`}
+                        name={element.id}
+                        required={element.required}
+                      />
+                      <label htmlFor={`${element.id}-${index}`}>{option}</label>
+                    </div>
+                  ))}
+                </div>
+              ) : element.type === "multicheck" ? (
+                <div className="space-y-2">
+                  {element.options?.map((option, index) => (
+                    <div key={index} className="flex items-center gap-2">
+                      <input
                         type="checkbox"
-                        className="h-4 w-4 text-blue-600"
-                        required={element.required}
+                        id={`${element.id}-${index}`}
+                        name={`${element.id}[]`}
                       />
-                    ) : element.type === "phone" ? (
-                      <Input
-                        id={element.id}
-                        type="tel"
-                        required={element.required}
-                        placeholder={element.placeholder}
-                      />
-                    ) : (
-                      <Input
-                        id={element.id}
-                        type={element.type}
-                        required={element.required}
-                        placeholder={element.placeholder}
-                      />
-                    )}
-                  </div>
-                ))}
-                <Button className="w-full" onClick={(e) => e.preventDefault()}>
-                  Submit
-                </Button>
-              </form>
-            </Dialog.Description>
-          </Dialog.Content>
-        </Dialog.Positioner>
-      </Portal>
+                      <label htmlFor={`${element.id}-${index}`}>{option}</label>
+                    </div>
+                  ))}
+                </div>
+              ) : element.type === "checkbox" ? (
+                <input
+                  id={element.id}
+                  type="checkbox"
+                  className="h-4 w-4 text-blue-600"
+                  required={element.required}
+                />
+              ) : element.type === "phone" ? (
+                <Input
+                  id={element.id}
+                  type="tel"
+                  required={element.required}
+                  placeholder={element.placeholder}
+                />
+              ) : (
+                <Input
+                  id={element.id}
+                  type={element.type}
+                  required={element.required}
+                  placeholder={element.placeholder}
+                />
+              )}
+            </div>
+          ))}
+          <Button className="w-full" onClick={(e) => e.preventDefault()}>
+            Submit
+          </Button>
+        </form>
+      </Dialog.Popup>
     </Dialog.Root>
   );
 };

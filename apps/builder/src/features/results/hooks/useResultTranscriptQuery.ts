@@ -4,18 +4,10 @@ import { useQuery } from "@tanstack/react-query";
 type Params = {
   typebotId: string;
   resultId: string;
-  enabled?: boolean;
 };
 
-export const useResultTranscriptQuery = ({
-  typebotId,
-  resultId,
-  enabled = false,
-}: Params) => {
+export const useResultTranscriptQuery = ({ typebotId, resultId }: Params) => {
   return useQuery(
-    trpc.results.getResultTranscript.queryOptions(
-      { typebotId, resultId },
-      { enabled },
-    ),
+    trpc.results.getResultTranscript.queryOptions({ typebotId, resultId }),
   );
 };

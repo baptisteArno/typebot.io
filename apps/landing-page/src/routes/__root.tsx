@@ -78,7 +78,7 @@ function RootComponent() {
         <HeadContent />
       </head>
       <body>
-        <div className="flex flex-col items-stretch">
+        <div className="isolate flex flex-col items-stretch">
           <div className="fixed z-10 top-4 md:bottom-12 md:top-auto w-full">
             <Header
               onOpen={openHeader}

@@ -1,0 +1,195 @@
+import { EmojiOrImageIcon } from "@/components/EmojiOrImageIcon";
+import {
+  CreditCardIcon,
+  HardDriveIcon,
+  SettingsIcon,
+  UsersIcon,
+  WalletIcon,
+} from "@/components/icons";
+import { BillingSettingsLayout } from "@/features/billing/components/BillingSettingsLayout";
+import { CredentialsSettingsForm } from "@/features/credentials/components/CredentialsSettingsForm";
+import { MyAccountForm } from "@/features/user/components/MyAccountForm";
+import { UserPreferencesForm } from "@/features/user/components/UserPreferencesForm";
+import { Avatar, Button, Flex, Stack, Text } from "@chakra-ui/react";
+import { useTranslate } from "@tolgee/react";
+import { Dialog } from "@typebot.io/ui/components/Dialog";
+import type { ClientUser } from "@typebot.io/user/schemas";
+import { useState } from "react";
+import packageJson from "../../../../../../package.json";
+import { type WorkspaceInApp, useWorkspace } from "../WorkspaceProvider";
+import { MembersList } from "./MembersList";
+import { WorkspaceSettingsForm } from "./WorkspaceSettingsForm";
+
+type Props = {
+  isOpen: boolean;
+  user: ClientUser;
+  workspace: WorkspaceInApp;
+  defaultTab?: SettingsTab;
+  onClose: () => void;
+};
+
+type SettingsTab =
+  | "my-account"
+  | "user-settings"
+  | "workspace-settings"
+  | "members"
+  | "billing"
+  | "credentials";
+
+export const WorkspaceSettingsDialog = ({
+  isOpen,
+  user,
+  workspace,
+  defaultTab = "my-account",
+  onClose,
+}: Props) => {
+  const { t } = useTranslate();
+  const { currentUserMode } = useWorkspace();
+  const [selectedTab, setSelectedTab] = useState<SettingsTab>(defaultTab);
+
+  return (
+    <Dialog.Root isOpen={isOpen} onClose={onClose}>
+      <Dialog.Popup className="p-0 flex flex-row max-w-6xl min-h-full gap-0">
+        <Stack
+          spacing={8}
+          w="250px"
+          py="6"
+          borderRightWidth={1}
+          justifyContent="space-between"
+        >
+          <Stack spacing={8}>
+            <Stack>
+              <Text pl="4" color="gray.500" fontSize="sm">
+                {t("account")}
+              </Text>
+              <Button
+                variant={selectedTab === "my-account" ? "solid" : "ghost"}
+                onClick={() => setSelectedTab("my-account")}
+                leftIcon={
+                  <Avatar
+                    name={user.name ?? undefined}
+                    src={user.image ?? undefined}
+                    boxSize="15px"
+                  />
+                }
+                size="sm"
+                justifyContent="flex-start"
+                pl="4"
+              >
+                {user.name ?? user.email}
+              </Button>
+              <Button
+                variant={selectedTab === "user-settings" ? "solid" : "ghost"}
+                onClick={() => setSelectedTab("user-settings")}
+                leftIcon={<SettingsIcon />}
+                size="sm"
+                justifyContent="flex-start"
+                pl="4"
+              >
+                {t("workspace.settings.modal.menu.preferences.label")}
+              </Button>
+              <Button
+                variant={selectedTab === "credentials" ? "solid" : "ghost"}
+                onClick={() => setSelectedTab("credentials")}
+                leftIcon={<WalletIcon />}
+                size="sm"
+                justifyContent="flex-start"
+                pl="4"
+              >
+                {t("credentials")}
+              </Button>
+            </Stack>
+            <Stack>
+              <Text pl="4" color="gray.500" fontSize="sm">
+                {t("workspace.settings.modal.menu.workspace.label")}
+              </Text>
+              {currentUserMode === "write" && (
+                <Button
+                  variant={
+                    selectedTab === "workspace-settings" ? "solid" : "ghost"
+                  }
+                  onClick={() => setSelectedTab("workspace-settings")}
+                  leftIcon={
+                    <EmojiOrImageIcon
+                      icon={workspace.icon}
+                      defaultIcon={HardDriveIcon}
+                      size="sm"
+                    />
+                  }
+                  size="sm"
+                  justifyContent="flex-start"
+                  pl="4"
+                >
+                  {t("workspace.settings.modal.menu.settings.label")}
+                </Button>
+              )}
+
+              {currentUserMode !== "guest" && (
+                <Button
+                  variant={selectedTab === "members" ? "solid" : "ghost"}
+                  onClick={() => setSelectedTab("members")}
+                  leftIcon={<UsersIcon />}
+                  size="sm"
+                  justifyContent="flex-start"
+                  pl="4"
+                >
+                  {t("workspace.settings.modal.menu.members.label")}
+                </Button>
+              )}
+              {currentUserMode === "write" && (
+                <Button
+                  variant={selectedTab === "billing" ? "solid" : "ghost"}
+                  onClick={() => setSelectedTab("billing")}
+                  leftIcon={<CreditCardIcon />}
+                  size="sm"
+                  justifyContent="flex-start"
+                  pl="4"
+                  overflow="auto"
+                >
+                  {t("workspace.settings.modal.menu.billingAndUsage.label")}
+                </Button>
+              )}
+            </Stack>
+          </Stack>
+
+          <Flex justify="center" pt="10">
+            <Text color="gray.500" fontSize="xs">
+              {t("workspace.settings.modal.menu.version.label", {
+                version: packageJson.version,
+              })}
+            </Text>
+          </Flex>
+        </Stack>
+
+        <Flex flex="1" p="10">
+          <SettingsContent tab={selectedTab} onClose={onClose} />
+        </Flex>
+      </Dialog.Popup>
+    </Dialog.Root>
+  );
+};
+
+const SettingsContent = ({
+  tab,
+  onClose,
+}: {
+  tab: SettingsTab;
+  onClose: () => void;
+}) => {
+  switch (tab) {
+    case "my-account":
+      return <MyAccountForm />;
+    case "user-settings":
+      return <UserPreferencesForm />;
+    case "workspace-settings":
+      return <WorkspaceSettingsForm onClose={onClose} />;
+    case "members":
+      return <MembersList />;
+    case "billing":
+      return <BillingSettingsLayout />;
+    case "credentials":
+      return <CredentialsSettingsForm />;
+    default:
+      return null;
+  }
+};

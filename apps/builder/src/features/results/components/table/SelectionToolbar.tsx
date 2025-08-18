@@ -1,4 +1,4 @@
-import { ConfirmModal } from "@/components/ConfirmModal";
+import { ConfirmDialog } from "@/components/ConfirmDialog";
 import { DownloadIcon, TrashIcon } from "@/components/icons";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { trpc } from "@/lib/queryClient";
@@ -161,22 +161,21 @@ export const SelectionToolbar = ({
         size="sm"
       />
 
-      <ConfirmModal
+      <ConfirmDialog
         isOpen={isOpen}
         onConfirm={deleteResults}
         onClose={onClose}
-        message={
-          <Text>
-            You are about to delete{" "}
-            <strong>
-              {totalSelected} submission
-              {totalSelected > 1 ? "s" : ""}
-            </strong>
-            . Are you sure you wish to continue?
-          </Text>
-        }
         confirmButtonLabel={"Delete"}
-      />
+      >
+        <Text>
+          You are about to delete{" "}
+          <strong>
+            {totalSelected} submission
+            {totalSelected > 1 ? "s" : ""}
+          </strong>
+          . Are you sure you wish to continue?
+        </Text>
+      </ConfirmDialog>
     </HStack>
   );
 };

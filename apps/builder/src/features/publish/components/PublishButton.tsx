@@ -1,4 +1,4 @@
-import { ConfirmModal } from "@/components/ConfirmModal";
+import { ConfirmDialog } from "@/components/ConfirmDialog";
 import { TextLink } from "@/components/TextLink";
 import {
   ChevronLeftIcon,
@@ -6,7 +6,7 @@ import {
   LockedIcon,
   UnlockedIcon,
 } from "@/components/icons";
-import { ChangePlanModal } from "@/features/billing/components/ChangePlanModal";
+import { ChangePlanDialog } from "@/features/billing/components/ChangePlanDialog";
 import { isFreePlan } from "@/features/billing/helpers/isFreePlan";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
@@ -19,20 +19,17 @@ import {
   Button,
   type ButtonProps,
   HStack,
-  IconButton,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
   Stack,
   Text,
-  Tooltip,
   useDisclosure,
 } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
 import { T, useTranslate } from "@tolgee/react";
 import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
 import { isNotDefined } from "@typebot.io/lib/utils";
+import { Menu } from "@typebot.io/ui/components/Menu";
+import { Tooltip } from "@typebot.io/ui/components/Tooltip";
+import { ChevronDownIcon } from "@typebot.io/ui/icons/ChevronDownIcon";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { parseDefaultPublicId } from "../helpers/parseDefaultPublicId";
@@ -75,7 +72,7 @@ export const PublishButton = ({
       trpc.typebot.publishTypebot.mutationOptions({
         onError: (error) => {
           toast({
-            context: t("publish.error.label"),
+            title: t("publish.error.label"),
             description: error.message,
           });
           if (error.data?.httpStatus === 403) {
@@ -102,7 +99,7 @@ export const PublishButton = ({
       trpc.typebot.unpublishTypebot.mutationOptions({
         onError: (error) =>
           toast({
-            context: t("editor.header.unpublishTypebot.error.label"),
+            title: t("editor.header.unpublishTypebot.error.label"),
             description: error.message,
           }),
         onSuccess: () => {
@@ -150,7 +147,7 @@ export const PublishButton = ({
 
   return (
     <HStack spacing="1px">
-      <ChangePlanModal
+      <ChangePlanDialog
         isOpen={isOpen}
         onClose={onClose}
         type={t("billing.limitMessage.fileInput")}
@@ -188,41 +185,62 @@ export const PublishButton = ({
         confirmButtonLabel="Publish anyway"
       />
       {publishedTypebot && publishedTypebotVersion !== typebot?.version && (
-        <ConfirmModal
+        <ConfirmDialog
           isOpen={isNewEngineWarningOpen}
           onConfirm={handlePublishClick}
           onClose={onNewEngineWarningClose}
           confirmButtonColor="blue"
           title={t("publish.versionWarning.title.label")}
-          message={
-            <Stack spacing="3">
-              <Text>
-                {t("publish.versionWarning.message.aboutToDeploy.label")}
-              </Text>
-              <Text fontWeight="bold">
-                <T
-                  keyName="publish.versionWarning.checkBreakingChanges"
-                  params={{
-                    link: (
-                      <TextLink
-                        href="https://docs.typebot.io/breaking-changes#typebot-v6"
-                        isExternal
-                      />
-                    ),
-                  }}
-                />
-              </Text>
-              <Text>
-                {t("publish.versionWarning.message.testInPreviewMode.label")}
-              </Text>
-            </Stack>
-          }
           confirmButtonLabel={t("publishButton.label")}
-        />
+        >
+          <Text>{t("publish.versionWarning.message.aboutToDeploy.label")}</Text>
+          <Text fontWeight="bold">
+            <T
+              keyName="publish.versionWarning.checkBreakingChanges"
+              params={{
+                link: (
+                  <TextLink
+                    href="https://docs.typebot.io/breaking-changes#typebot-v6"
+                    isExternal
+                  />
+                ),
+              }}
+            />
+          </Text>
+          <Text>
+            {t("publish.versionWarning.message.testInPreviewMode.label")}
+          </Text>
+        </ConfirmDialog>
       )}
-      <Tooltip
-        placement="bottom-end"
-        label={
+      <Tooltip.Root disabled={isNotDefined(publishedTypebot) || isPublished}>
+        <Tooltip.Trigger
+          render={
+            <Button
+              colorScheme="orange"
+              isLoading={
+                publishTypebotStatus === "pending" ||
+                unpublishTypebotStatus === "pending"
+              }
+              isDisabled={isPublished || isSavingLoading}
+              onClick={() => {
+                publishedTypebot && publishedTypebotVersion !== typebot?.version
+                  ? onNewEngineWarningOpen()
+                  : handlePublishClick();
+              }}
+              borderRightRadius={
+                publishedTypebot && !isMoreMenuDisabled ? 0 : undefined
+              }
+              {...props}
+            >
+              {isPublished
+                ? typebot?.isClosed
+                  ? t("publishButton.closed.label")
+                  : t("publishButton.published.label")
+                : t("publishButton.label")}
+            </Button>
+          }
+        />
+        <Tooltip.Popup>
           <Stack>
             <Text>{t("publishButton.tooltip.nonPublishedChanges.label")}</Text>
             {timeSinceLastPublish ? (
@@ -236,65 +254,42 @@ export const PublishButton = ({
               </Text>
             ) : null}
           </Stack>
-        }
-        isDisabled={isNotDefined(publishedTypebot) || isPublished}
-      >
-        <Button
-          colorScheme="orange"
-          isLoading={
-            publishTypebotStatus === "pending" ||
-            unpublishTypebotStatus === "pending"
-          }
-          isDisabled={isPublished || isSavingLoading}
-          onClick={() => {
-            publishedTypebot && publishedTypebotVersion !== typebot?.version
-              ? onNewEngineWarningOpen()
-              : handlePublishClick();
-          }}
-          borderRightRadius={
-            publishedTypebot && !isMoreMenuDisabled ? 0 : undefined
-          }
-          {...props}
-        >
-          {isPublished
-            ? typebot?.isClosed
-              ? t("publishButton.closed.label")
-              : t("publishButton.published.label")
-            : t("publishButton.label")}
-        </Button>
-      </Tooltip>
+        </Tooltip.Popup>
+      </Tooltip.Root>
 
       {!isMoreMenuDisabled && publishedTypebot && (
-        <Menu isLazy>
-          <MenuButton
-            as={IconButton}
-            colorScheme="orange"
-            borderLeftRadius={0}
-            icon={<ChevronLeftIcon transform="rotate(-90deg)" />}
+        <Menu.Root>
+          <Menu.TriggerButton
+            size="icon"
+            className="rounded-l-none size-8"
             aria-label={t("publishButton.dropdown.showMenu.label")}
-            size="sm"
-            isDisabled={publishTypebotStatus === "pending" || isSavingLoading}
-          />
-          <MenuList>
+            disabled={publishTypebotStatus === "pending" || isSavingLoading}
+          >
+            <ChevronDownIcon />
+          </Menu.TriggerButton>
+          <Menu.Popup align="end">
             {!isPublished && (
-              <MenuItem onClick={restorePublishedTypebot}>
+              <Menu.Item onClick={restorePublishedTypebot}>
                 {t("publishButton.dropdown.restoreVersion.label")}
-              </MenuItem>
+              </Menu.Item>
             )}
             {!typebot?.isClosed ? (
-              <MenuItem onClick={closeTypebot} icon={<LockedIcon />}>
+              <Menu.Item onClick={closeTypebot}>
+                <LockedIcon />
                 {t("publishButton.dropdown.close.label")}
-              </MenuItem>
+              </Menu.Item>
             ) : (
-              <MenuItem onClick={openTypebot} icon={<UnlockedIcon />}>
+              <Menu.Item onClick={openTypebot}>
+                <UnlockedIcon />
                 {t("publishButton.dropdown.reopen.label")}
-              </MenuItem>
+              </Menu.Item>
             )}
-            <MenuItem onClick={unpublishTypebot} icon={<CloudOffIcon />}>
+            <Menu.Item onClick={unpublishTypebot}>
+              <CloudOffIcon />
               {t("publishButton.dropdown.unpublish.label")}
-            </MenuItem>
-          </MenuList>
-        </Menu>
+            </Menu.Item>
+          </Menu.Popup>
+        </Menu.Root>
       )}
     </HStack>
   );
