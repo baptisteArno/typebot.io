@@ -1,24 +1,14 @@
 import type { TableListItemProps } from "@/components/TableList";
 import { TextInput } from "@/components/inputs";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
-import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
-import { Stack } from "@chakra-ui/react";
-import { useTranslate } from "@tolgee/react";
+import { HStack, Text } from "@chakra-ui/react";
 import { ComparisonOperators } from "@typebot.io/conditions/constants";
-import type { Comparison } from "@typebot.io/conditions/schemas";
-import type { Variable } from "@typebot.io/variables/schemas";
+import type { WhatsAppComparison } from "@typebot.io/whatsapp/schemas";
 
-export const ComparisonItem = ({
+export const WhatsAppComparisonItem = ({
   item,
   onItemChange,
-}: TableListItemProps<Comparison>) => {
-  const { t } = useTranslate();
-
-  const handleSelectVariable = (variable?: Variable) => {
-    if (variable?.id === item.variableId) return;
-    onItemChange({ ...item, variableId: variable?.id });
-  };
-
+}: TableListItemProps<WhatsAppComparison>) => {
   const handleSelectComparisonOperator = (
     comparisonOperator: ComparisonOperators,
   ) => {
@@ -31,19 +21,13 @@ export const ComparisonItem = ({
   };
 
   return (
-    <Stack p="4" rounded="md" flex="1" borderWidth="1px">
-      <VariableSearchInput
-        initialVariableId={item.variableId}
-        onSelectVariable={handleSelectVariable}
-        placeholder={t("variables.search")}
-      />
+    <HStack p="4" rounded="md" flex="1" borderWidth="1px">
+      <Text flexShrink={0}>User message</Text>
       <BasicSelect
         value={item.comparisonOperator}
         onChange={handleSelectComparisonOperator}
         items={Object.values(ComparisonOperators)}
-        placeholder={t(
-          "blocks.inputs.button.buttonSettings.displayCondition.selectOperator.label",
-        )}
+        placeholder="Select an operator"
       />
       {item.comparisonOperator !== ComparisonOperators.IS_SET &&
         item.comparisonOperator !== ComparisonOperators.IS_EMPTY && (
@@ -51,9 +35,11 @@ export const ComparisonItem = ({
             defaultValue={item.value ?? ""}
             onChange={handleChangeValue}
             placeholder={parseValuePlaceholder(item.comparisonOperator)}
+            withVariableButton={false}
+            size="sm"
           />
         )}
-    </Stack>
+    </HStack>
   );
 };
 
@@ -79,6 +65,6 @@ const parseValuePlaceholder = (
       return "";
     case ComparisonOperators.MATCHES_REGEX:
     case ComparisonOperators.NOT_MATCH_REGEX:
-      return "/^[0-9]+$/";
+      return "^[0-9]+$";
   }
 };

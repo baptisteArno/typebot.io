@@ -1,8 +1,8 @@
-import { DropdownList } from "@/components/DropdownList";
 import { MoreInfoTooltip } from "@/components/MoreInfoTooltip";
 import { SwitchWithRelatedSettings } from "@/components/SwitchWithRelatedSettings";
 import { TagsInput } from "@/components/TagsInput";
 import { TextInput } from "@/components/inputs";
+import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { CodeEditor } from "@/components/inputs/CodeEditor";
 import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
 import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
@@ -12,7 +12,6 @@ import {
   AccordionIcon,
   AccordionItem,
   AccordionPanel,
-  FormControl,
   FormLabel,
   Stack,
 } from "@chakra-ui/react";
@@ -22,6 +21,7 @@ import {
   fileVisibilityOptions,
 } from "@typebot.io/blocks-inputs/file/constants";
 import type { FileInputBlock } from "@typebot.io/blocks-inputs/file/schema";
+import { Field } from "@typebot.io/ui/components/Field";
 import type { Variable } from "@typebot.io/variables/schemas";
 import React from "react";
 
@@ -135,14 +135,23 @@ export const FileInputSettings = ({ options, onOptionsChange }: Props) => {
         />
       </Stack>
 
-      <DropdownList
-        label="Visibility:"
-        direction="row"
-        moreInfoTooltip='This setting determines who can see the uploaded files. "Public" means that anyone who has the link can see the files. "Private" means that only a member of this workspace can see the files. Check the docs for more information.'
-        currentItem={options?.visibility ?? defaultFileInputOptions.visibility}
-        onItemSelect={updateVisibility}
-        items={fileVisibilityOptions}
-      />
+      <Field.Root>
+        <Field.Label>
+          Visibility:{" "}
+          <MoreInfoTooltip>
+            This setting determines who can see the uploaded files. "Public"
+            means that anyone who has the link can see the files. "Private"
+            means that only a member of this workspace can see the files. Check
+            the docs for more information.
+          </MoreInfoTooltip>
+        </Field.Label>
+        <BasicSelect
+          value={options?.visibility}
+          defaultValue={defaultFileInputOptions.visibility}
+          onChange={updateVisibility}
+          items={fileVisibilityOptions}
+        />
+      </Field.Root>
 
       <Accordion allowToggle>
         <AccordionItem>

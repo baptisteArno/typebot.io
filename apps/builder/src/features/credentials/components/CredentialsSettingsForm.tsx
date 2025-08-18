@@ -1,11 +1,13 @@
-import { DropdownList } from "@/components/DropdownList";
 import { EditIcon, PlusIcon, TrashIcon } from "@/components/icons";
+import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { StripeLogo } from "@/components/logos/StripeLogo";
 import { WhatsAppLogo } from "@/components/logos/WhatsAppLogo";
 import { BlockIcon } from "@/features/editor/components/BlockIcon";
 import { BlockLabel } from "@/features/editor/components/BlockLabel";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
+import { useOpenControls } from "@/hooks/useOpenControls";
 import { trpc } from "@/lib/queryClient";
+import { toast } from "@/lib/toast";
 import {
   Button,
   Divider,
@@ -14,16 +16,6 @@ import {
   Heading,
   IconButton,
   type IconProps,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-  Popover,
-  PopoverArrow,
-  PopoverBody,
-  PopoverContent,
-  PopoverFooter,
-  PopoverTrigger,
   Skeleton,
   SkeletonCircle,
   Stack,
@@ -38,10 +30,12 @@ import {
   type Credentials,
   credentialsTypes,
 } from "@typebot.io/credentials/schemas";
+import { Menu } from "@typebot.io/ui/components/Menu";
+import { Popover } from "@typebot.io/ui/components/Popover";
+import { ChevronDownIcon } from "@typebot.io/ui/icons/ChevronDownIcon";
 import React, { useMemo, useRef, useState } from "react";
-import { toast } from "sonner";
-import { CredentialsCreateModal } from "./CredentialsCreateModal";
-import { CredentialsUpdateModal } from "./CredentialsUpdateModal";
+import { CredentialsCreateDialog } from "./CredentialsCreateDialog";
+import { CredentialsUpdateDialog } from "./CredentialsUpdateDialog";
 
 const nonEditableTypes = ["whatsApp", "google sheets"] as const;
 
@@ -49,6 +43,8 @@ type CredentialsInfo = Pick<Credentials, "id" | "type" | "name">;
 
 export const CredentialsSettingsForm = () => {
   const { t } = useTranslate();
+  const [isCreateDialogOpened, setIsCreateDialogOpened] = useState(false);
+  const [isUpdateDialogOpened, setIsUpdateDialogOpened] = useState(false);
   const [creatingType, setCreatingType] = useState<Credentials["type"]>();
   const [selectedScope, setSelectedScope] = useState<"workspace" | "user">(
     "workspace",
@@ -83,7 +79,10 @@ export const CredentialsSettingsForm = () => {
         setDeletingCredentialsId(undefined);
       },
       onError: (error) => {
-        toast.error(error.message);
+        toast({
+          description: error.message,
+          title: "While deleting credentials",
+        });
       },
       onSuccess: () => {
         refetch();
@@ -99,55 +98,41 @@ export const CredentialsSettingsForm = () => {
 
   return (
     <Stack spacing="6" w="full">
-      <CredentialsCreateModal
-        scope={selectedScope}
-        creatingType={creatingType}
-        onSubmit={() => {
-          refetch();
-          setCreatingType(undefined);
-        }}
-        onClose={() => setCreatingType(undefined)}
-      />
-      <CredentialsUpdateModal
-        scope={selectedScope}
-        editingCredentials={editingCredentials}
-        onSubmit={() => {
-          refetch();
-          setEditingCredentials(undefined);
-        }}
-        onClose={() => setEditingCredentials(undefined)}
-      />
       <HStack justifyContent="space-between">
         <HStack>
           <Heading fontSize="2xl">{t("credentials")}</Heading>
-          <DropdownList
+          <BasicSelect
             size="sm"
             items={[
               { label: "User", value: "user" },
               { label: "Workspace", value: "workspace" },
             ]}
-            currentItem={selectedScope}
-            onItemSelect={(value) =>
+            value={selectedScope}
+            onChange={(value) =>
               setSelectedScope(value as "user" | "workspace")
             }
           />
         </HStack>
-        <Menu isLazy>
-          <MenuButton as={Button} size="sm" leftIcon={<PlusIcon />}>
+        <Menu.Root>
+          <Menu.TriggerButton variant="secondary">
             {t("account.preferences.credentials.addButton.label")}
-          </MenuButton>
-          <MenuList>
+            <ChevronDownIcon />
+          </Menu.TriggerButton>
+          <Menu.Popup>
             {credentialsTypes.map((type) => (
-              <MenuItem
+              <Menu.Item
                 key={type}
-                icon={<CredentialsIcon type={type} boxSize="16px" />}
-                onClick={() => setCreatingType(type)}
+                onClick={() => {
+                  setCreatingType(type);
+                  setIsCreateDialogOpened(true);
+                }}
               >
+                <CredentialsIcon type={type} boxSize="16px" />
                 <CredentialsLabel type={type} />
-              </MenuItem>
+              </Menu.Item>
             ))}
-          </MenuList>
-        </Menu>
+          </Menu.Popup>
+        </Menu.Root>
       </HStack>
 
       {credentials && !isLoading ? (
@@ -176,11 +161,13 @@ export const CredentialsSettingsForm = () => {
                         cred.type as (typeof nonEditableTypes)[number],
                       )
                         ? undefined
-                        : () =>
+                        : () => {
                             setEditingCredentials({
                               id: cred.id,
                               type: cred.type,
-                            })
+                            });
+                            setIsUpdateDialogOpened(true);
+                          }
                     }
                     onDeleteClick={() =>
                       deleteCredentials(
@@ -232,6 +219,28 @@ export const CredentialsSettingsForm = () => {
           </Stack>
         </Stack>
       )}
+      <CredentialsCreateDialog
+        scope={selectedScope}
+        type={creatingType}
+        onSubmit={() => {
+          refetch();
+          setCreatingType(undefined);
+          setIsCreateDialogOpened(false);
+        }}
+        isOpen={isCreateDialogOpened}
+        onClose={() => setIsCreateDialogOpened(false)}
+      />
+      <CredentialsUpdateDialog
+        scope={selectedScope}
+        editingCredentials={editingCredentials}
+        onSubmit={() => {
+          refetch();
+          setEditingCredentials(undefined);
+          setIsUpdateDialogOpened(false);
+        }}
+        isOpen={isUpdateDialogOpened}
+        onClose={() => setIsUpdateDialogOpened(false)}
+      />
     </Stack>
   );
 };
@@ -300,6 +309,7 @@ const CredentialsItem = ({
 }) => {
   const { t } = useTranslate();
   const initialFocusRef = useRef<HTMLButtonElement>(null);
+  const deletePopoverControls = useOpenControls();
 
   return (
     <HStack justifyContent="space-between" py="2">
@@ -313,49 +323,42 @@ const CredentialsItem = ({
             onClick={onEditClick}
           />
         )}
-        <Popover isLazy initialFocusRef={initialFocusRef}>
-          {({ onClose }) => (
-            <>
-              <PopoverTrigger>
-                <IconButton
-                  aria-label="Delete"
-                  icon={<TrashIcon />}
-                  size="xs"
-                />
-              </PopoverTrigger>
-              <PopoverContent>
-                <PopoverArrow />
-                <PopoverBody>
-                  <Stack spacing="2">
-                    <Text fontSize="sm" fontWeight="medium">
-                      {t("confirmModal.defaultTitle")}
-                    </Text>
-                    <Text fontSize="sm">
-                      {t(
-                        "account.preferences.credentials.deleteButton.confirmMessage",
-                      )}
-                    </Text>
-                  </Stack>
-                </PopoverBody>
-                <PopoverFooter as={Flex} justifyContent="flex-end">
-                  <HStack>
-                    <Button ref={initialFocusRef} onClick={onClose} size="sm">
-                      {t("cancel")}
-                    </Button>
-                    <Button
-                      colorScheme="red"
-                      onClick={onDeleteClick}
-                      isLoading={isDeleting}
-                      size="sm"
-                    >
-                      {t("delete")}
-                    </Button>
-                  </HStack>
-                </PopoverFooter>
-              </PopoverContent>
-            </>
-          )}
-        </Popover>
+        <Popover.Root {...deletePopoverControls}>
+          <Popover.Trigger>
+            <IconButton aria-label="Delete" icon={<TrashIcon />} size="xs" />
+          </Popover.Trigger>
+          <Popover.Popup initialFocus={initialFocusRef}>
+            <Stack spacing="2">
+              <Text fontSize="sm" fontWeight="medium">
+                {t("confirmModal.defaultTitle")}
+              </Text>
+              <Text fontSize="sm">
+                {t(
+                  "account.preferences.credentials.deleteButton.confirmMessage",
+                )}
+              </Text>
+            </Stack>
+            <Flex justifyContent="flex-end">
+              <HStack>
+                <Button
+                  ref={initialFocusRef}
+                  onClick={deletePopoverControls.onClose}
+                  size="sm"
+                >
+                  {t("cancel")}
+                </Button>
+                <Button
+                  colorScheme="red"
+                  onClick={onDeleteClick}
+                  isLoading={isDeleting}
+                  size="sm"
+                >
+                  {t("delete")}
+                </Button>
+              </HStack>
+            </Flex>
+          </Popover.Popup>
+        </Popover.Root>
       </HStack>
     </HStack>
   );

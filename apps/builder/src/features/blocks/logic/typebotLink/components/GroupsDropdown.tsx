@@ -18,14 +18,16 @@ export const GroupsDropdown = ({
   if (isLoading) return <Input value="Loading..." isDisabled />;
   if (!groups || groups.length === 0)
     return <Input value="No groups found" isDisabled />;
+
   return (
     <BasicSelect
       items={groups.map((group) => ({
         label: group.title,
         value: group.id,
       }))}
-      defaultValue={groupId}
       onChange={onChange}
+      includeVariables
+      value={groupId}
       placeholder="Select a group"
     />
   );

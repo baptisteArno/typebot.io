@@ -1,5 +1,5 @@
-import { DropdownList } from "@/components/DropdownList";
 import { TableList } from "@/components/TableList";
+import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { CredentialsDropdown } from "@/features/credentials/components/CredentialsDropdown";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
@@ -28,12 +28,13 @@ import type {
   GoogleSheetsUpdateRowOptionsV6,
 } from "@typebot.io/blocks-integrations/googleSheets/schema";
 import { isDefined } from "@typebot.io/lib/utils";
+import { Menu } from "@typebot.io/ui/components/Menu";
 import React, { useMemo } from "react";
 import { useSheets } from "../hooks/useSheets";
 import type { Sheet } from "../types";
 import { CellWithValueStack } from "./CellWithValueStack";
 import { CellWithVariableIdStack } from "./CellWithVariableIdStack";
-import { GoogleSheetConnectModal } from "./GoogleSheetsConnectModal";
+import { GoogleSheetConnectDialog } from "./GoogleSheetsConnectDialog";
 import { GoogleSpreadsheetPicker } from "./GoogleSpreadsheetPicker";
 import { RowsFilterTableList } from "./RowsFilterTableList";
 import { SheetsDropdown } from "./SheetsDropdown";
@@ -98,7 +99,7 @@ export const GoogleSheetsSettings = ({
         />
       )}
       {typebot && (
-        <GoogleSheetConnectModal
+        <GoogleSheetConnectDialog
           typebotId={typebot.id}
           blockId={blockId}
           isOpen={isOpen}
@@ -124,9 +125,9 @@ export const GoogleSheetsSettings = ({
       {options?.spreadsheetId &&
         options.credentialsId &&
         isDefined(options.sheetId) && (
-          <DropdownList
-            currentItem={"action" in options ? options.action : undefined}
-            onItemSelect={handleActionChange}
+          <BasicSelect
+            value={"action" in options ? options.action : undefined}
+            onChange={handleActionChange}
             items={Object.values(GoogleSheetsAction)}
             placeholder="Select an operation"
           />
@@ -258,13 +259,13 @@ const ActionOptions = ({
               </AccordionButton>
 
               <AccordionPanel pt="4" as={Stack}>
-                <DropdownList
+                <BasicSelect
                   items={totalRowsToExtractOptions}
-                  currentItem={
+                  value={
                     options.totalRowsToExtract ??
                     defaultGoogleSheetsOptions.totalRowsToExtract
                   }
-                  onItemSelect={updateTotalRowsToExtract}
+                  onChange={updateTotalRowsToExtract}
                 />
                 <RowsFilterTableList
                   columns={sheet?.columns ?? []}

@@ -1,16 +1,18 @@
-import { DropdownList } from "@/components/DropdownList";
 import { MoreInfoTooltip } from "@/components/MoreInfoTooltip";
 import { Textarea } from "@/components/inputs";
-import { CredentialsCreateModal } from "@/features/credentials/components/CredentialsCreateModal";
+import { BasicSelect } from "@/components/inputs/BasicSelect";
+import { CredentialsCreateDialog } from "@/features/credentials/components/CredentialsCreateDialog";
 import { CredentialsDropdown } from "@/features/credentials/components/CredentialsDropdown";
 import { BlockIcon } from "@/features/editor/components/BlockIcon";
 import { BlockLabel } from "@/features/editor/components/BlockLabel";
+import { AutocompleteInput } from "@/features/forge/components/ForgeAutocompleteInput";
 import { ForgeSelectInput } from "@/features/forge/components/ForgeSelectInput";
 import { useForgedBlock } from "@/features/forge/hooks/useForgedBlock";
 import { HStack, Stack } from "@chakra-ui/react";
 import type { BlockV6 } from "@typebot.io/blocks-core/schemas/schema";
 import type { Credentials } from "@typebot.io/credentials/schemas";
 import { forgedBlocks } from "@typebot.io/forge-repository/definitions";
+import { Field } from "@typebot.io/ui/components/Field";
 import { defaultGroupTitleGenPrompt } from "@typebot.io/user/constants";
 import type { GroupTitlesAutoGeneration } from "@typebot.io/user/schemas";
 import { useState } from "react";
@@ -25,6 +27,7 @@ export const GroupTitlesAutoGenForm = ({
   values: { credentialsId, provider, prompt, model },
   onChange,
 }: Props) => {
+  const [isCredsDialogOpen, setIsCredsDialogOpen] = useState(false);
   const { blockDef, actionDef } = useForgedBlock({
     nodeType: provider as BlockV6["type"],
     feature: "aiGenerate",
@@ -41,6 +44,7 @@ export const GroupTitlesAutoGenForm = ({
     onChange({
       credentialsId,
     });
+    setIsCredsDialogOpen(false);
     setCredsCreatingType(undefined);
   };
 
@@ -48,20 +52,25 @@ export const GroupTitlesAutoGenForm = ({
     <Stack>
       <HStack>
         <HStack>
-          <DropdownList
-            direction="row"
-            label="Provider:"
-            placeholder="Select"
-            items={Object.values(forgedBlocks)
-              .filter((block) => block.actions.some((a) => a.aiGenerate))
-              .map((block) => ({
-                value: block.id,
-                label: <BlockLabel type={block.id} />,
-                icon: <BlockIcon type={block.id} boxSize="16px" />,
-              }))}
-            currentItem={provider}
-            onItemSelect={updateProvider}
-          />
+          <Field.Root className="flex-row items-center">
+            <Field.Label>Provider:</Field.Label>
+            <BasicSelect
+              placeholder="Select"
+              items={Object.values(forgedBlocks)
+                .filter((block) => block.actions.some((a) => a.aiGenerate))
+                .map((block) => ({
+                  value: block.id,
+                  label: (
+                    <div className="flex items-center gap-2">
+                      <BlockIcon type={block.id} boxSize="16px" />
+                      <BlockLabel type={block.id} />
+                    </div>
+                  ),
+                }))}
+              value={provider}
+              onChange={updateProvider}
+            />
+          </Field.Root>
         </HStack>
         {provider && (
           <CredentialsDropdown
@@ -71,27 +80,40 @@ export const GroupTitlesAutoGenForm = ({
             onCredentialsSelect={updateCredentialsId}
             onCreateNewClick={() => {
               setCredsCreatingType(provider);
+              setIsCredsDialogOpen(true);
             }}
             credentialsName="account"
             flexShrink={0}
           />
         )}
-        {blockDef && credentialsId && actionDef?.aiGenerate?.fetcherId && (
+        {blockDef && credentialsId && actionDef?.aiGenerate && (
           <HStack>
-            <ForgeSelectInput
-              defaultValue={model}
-              blockDef={blockDef}
-              credentialsScope="user"
-              fetcherId={actionDef.aiGenerate.fetcherId}
-              options={{
-                credentialsId,
-              }}
-              onChange={(value) => {
-                onChange({
-                  model: value,
-                });
-              }}
-            />
+            {actionDef.aiGenerate.models.type === "dynamic" ? (
+              <ForgeSelectInput
+                defaultValue={model}
+                blockDef={blockDef}
+                credentialsScope="user"
+                fetcherId={actionDef.aiGenerate.models.fetcherId}
+                options={{
+                  credentialsId,
+                }}
+                onChange={(value) => {
+                  onChange({
+                    model: value,
+                  });
+                }}
+              />
+            ) : (
+              <AutocompleteInput
+                items={actionDef.aiGenerate.models.items}
+                defaultValue={model}
+                onChange={(value) => {
+                  onChange({
+                    model: value,
+                  });
+                }}
+              />
+            )}
             <MoreInfoTooltip>
               We recommend choosing a small model for this feature
             </MoreInfoTooltip>
@@ -108,11 +130,12 @@ export const GroupTitlesAutoGenForm = ({
           });
         }}
       />
-      <CredentialsCreateModal
-        creatingType={credsCreatingType as Credentials["type"]}
+      <CredentialsCreateDialog
+        type={credsCreatingType as Credentials["type"]}
         scope="user"
+        isOpen={isCredsDialogOpen}
         onClose={() => {
-          setCredsCreatingType(undefined);
+          setIsCredsDialogOpen(false);
         }}
         onSubmit={updateCredentialsId}
       />

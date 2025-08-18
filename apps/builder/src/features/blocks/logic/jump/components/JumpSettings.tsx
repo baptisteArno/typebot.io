@@ -1,4 +1,4 @@
-import { Select } from "@/components/inputs/Select";
+import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { BlockIcon } from "@/features/editor/components/BlockIcon";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { Stack } from "@chakra-ui/react";
@@ -37,14 +37,14 @@ export const JumpSettings = ({ options, onOptionsChange }: Props) => {
       />
       {selectedGroup &&
         (selectedGroup.blocks.length > 1 || options?.blockId) && (
-          <Select
-            selectedItem={options?.blockId}
+          <BasicSelect
+            value={options?.blockId}
             items={selectedGroup.blocks.map((block, index) => ({
               label: `Block #${(index + 1).toString()}`,
               value: block.id,
               icon: <BlockIcon type={block.type} />,
             }))}
-            onSelect={handleBlockIdChange}
+            onChange={handleBlockIdChange}
             placeholder="Select a block"
           />
         )}

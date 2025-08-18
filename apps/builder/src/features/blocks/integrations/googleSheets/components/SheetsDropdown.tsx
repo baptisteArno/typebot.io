@@ -1,5 +1,5 @@
 import { MoreInfoTooltip } from "@/components/MoreInfoTooltip";
-import { Select } from "@/components/inputs/Select";
+import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { HStack, Input } from "@chakra-ui/react";
 import type { Sheet } from "../types";
 
@@ -28,10 +28,10 @@ export const SheetsDropdown = ({
       </HStack>
     );
   return (
-    <Select
-      selectedItem={sheetId}
+    <BasicSelect
+      value={sheetId}
       items={(sheets ?? []).map((s) => ({ label: s.name, value: s.id }))}
-      onSelect={onSelectSheetId}
+      onChange={onSelectSheetId}
       placeholder={"Select the sheet"}
     />
   );

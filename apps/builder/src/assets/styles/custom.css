@@ -20,14 +20,6 @@ audio::-webkit-media-controls-panel {
   justify-content: space-between;
 }
 
-[data-sonner-toast] {
-  width: 100%;
-}
-
-[data-sonner-toast] > [data-theme="dark"] * {
-  border-color: var(--chakra-colors-whiteAlpha-300) !important;
-}
-
 .md-link {
   text-decoration: underline;
 }

@@ -1,10 +1,9 @@
-import { DropdownList } from "@/components/DropdownList";
 import { SwitchWithRelatedSettings } from "@/components/SwitchWithRelatedSettings";
 import { TableList } from "@/components/TableList";
 import { TextLink } from "@/components/TextLink";
 import { TextInput } from "@/components/inputs";
+import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { CodeEditor } from "@/components/inputs/CodeEditor";
-import { Select } from "@/components/inputs/Select";
 import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
 import { Stack, Text } from "@chakra-ui/react";
 import {
@@ -46,8 +45,7 @@ export const PixelSettings = ({ options, onOptionsChange }: Props) => {
     });
 
   const updateEventType = (
-    _: string | undefined,
-    eventType?: (typeof pixelEventTypes)[number] | "Custom",
+    eventType: (typeof pixelEventTypes)[number] | "Custom",
   ) =>
     onOptionsChange({
       ...options,
@@ -95,11 +93,11 @@ export const PixelSettings = ({ options, onOptionsChange }: Props) => {
           </TextLink>{" "}
           to better understand the available options.
         </Text>
-        <Select
-          items={["Custom", ...pixelEventTypes] as const}
-          selectedItem={options?.eventType}
+        <BasicSelect
+          items={["Custom", ...pixelEventTypes]}
+          value={options?.eventType}
           placeholder="Select event type"
-          onSelect={updateEventType}
+          onChange={updateEventType}
         />
         {options?.eventType === "Custom" && (
           <TextInput
@@ -169,10 +167,10 @@ const ParamItem = ({ item, eventType, onItemChange }: ParamItemProps) => {
           placeholder="Key"
         />
       ) : (
-        <DropdownList
-          currentItem={item.key}
+        <BasicSelect
+          value={item.key}
           items={possibleObjectProps.map((prop) => prop.key)}
-          onItemSelect={updateKey}
+          onChange={updateKey}
           placeholder="Select key"
         />
       )}

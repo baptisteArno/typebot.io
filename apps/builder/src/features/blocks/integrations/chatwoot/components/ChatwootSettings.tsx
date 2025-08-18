@@ -1,5 +1,5 @@
-import { DropdownList } from "@/components/DropdownList";
 import { TextInput } from "@/components/inputs";
+import { BasicSelect } from "@/components/inputs/BasicSelect";
 import {
   Accordion,
   AccordionButton,
@@ -29,9 +29,10 @@ export const ChatwootSettings = ({ options, onOptionsChange }: Props) => {
 
   return (
     <Stack spacing={4}>
-      <DropdownList
-        currentItem={options?.task ?? defaultChatwootOptions.task}
-        onItemSelect={updateTask}
+      <BasicSelect
+        value={options?.task}
+        defaultValue={defaultChatwootOptions.task}
+        onChange={updateTask}
         items={chatwootTasks}
       />
       {task === "Show widget" && (

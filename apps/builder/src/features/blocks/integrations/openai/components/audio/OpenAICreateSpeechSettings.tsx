@@ -1,6 +1,6 @@
-import { DropdownList } from "@/components/DropdownList";
 import { TextLink } from "@/components/TextLink";
 import { Textarea } from "@/components/inputs";
+import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
 import { FormControl, FormLabel, Stack, Text } from "@chakra-ui/react";
 import { openAIVoices } from "@typebot.io/blocks-integrations/openai/constants";
@@ -76,12 +76,11 @@ export const OpenAICreateSpeechSettings = ({
           />
           <FormControl>
             <FormLabel>Voice:</FormLabel>
-            <DropdownList
-              currentItem={options.voice}
-              onItemSelect={updateVoice}
+            <BasicSelect
+              value={options.voice}
+              onChange={updateVoice}
               items={openAIVoices}
               placeholder="Select a voice"
-              w="full"
             />
           </FormControl>
           <FormControl>

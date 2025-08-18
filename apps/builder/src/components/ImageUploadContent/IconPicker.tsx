@@ -113,11 +113,12 @@ export const IconPicker = ({ onIconSelected }: Props) => {
           onChange={searchIcon}
           withVariableButton={false}
           debounceTimeout={300}
+          width="full"
         />
         <ColorPicker
           value={selectedColor}
           onColorChange={updateColor}
-          portalled={false}
+          side="right"
         />
       </HStack>
 

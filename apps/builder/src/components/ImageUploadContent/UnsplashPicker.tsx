@@ -143,6 +143,7 @@ export const UnsplashPicker = ({ imageSize, onImageSelect }: Props) => {
           withVariableButton={false}
           debounceTimeout={500}
           forceDebounce
+          width="full"
         />
         <Link
           isExternal

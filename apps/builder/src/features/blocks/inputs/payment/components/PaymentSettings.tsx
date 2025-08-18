@@ -1,5 +1,5 @@
-import { DropdownList } from "@/components/DropdownList";
 import { TextInput } from "@/components/inputs";
+import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { CredentialsDropdown } from "@/features/credentials/components/CredentialsDropdown";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import {
@@ -9,7 +9,6 @@ import {
   AccordionItem,
   AccordionPanel,
   HStack,
-  Select,
   Stack,
   Text,
   useDisclosure,
@@ -23,10 +22,10 @@ import type {
   PaymentAddress,
   PaymentInputBlock,
 } from "@typebot.io/blocks-inputs/payment/schema";
-import React, { type ChangeEvent } from "react";
+import React, { useMemo } from "react";
 import { currencies } from "../currencies";
+import { CreateStripeCredentialsDialog } from "./CreateStripeCredentialsDialog";
 import { PaymentAddressSettings } from "./PaymentAddressSettings";
-import { StripeConfigModal } from "./StripeConfigModal";
 
 type Props = {
   options: PaymentInputBlock["options"];
@@ -58,10 +57,10 @@ export const PaymentSettings = ({ options, onOptionsChange }: Props) => {
       amount,
     });
 
-  const updateCurrency = (e: ChangeEvent<HTMLSelectElement>) =>
+  const updateCurrency = (currency: string) =>
     onOptionsChange({
       ...options,
-      currency: e.target.value,
+      currency,
     });
 
   const updateName = (name: string) =>
@@ -106,14 +105,24 @@ export const PaymentSettings = ({ options, onOptionsChange }: Props) => {
       additionalInformation: { ...options?.additionalInformation, address },
     });
 
+  const providers = useMemo(
+    () =>
+      Object.values(PaymentProvider).map((provider) => ({
+        label: provider,
+        value: provider,
+      })),
+    [],
+  );
+
   return (
     <Stack spacing={4}>
       <Stack>
         <Text>{t("blocks.inputs.payment.settings.provider.label")}</Text>
-        <DropdownList
-          onItemSelect={updateProvider}
-          items={Object.values(PaymentProvider)}
-          currentItem={options?.provider ?? defaultPaymentInputOptions.provider}
+        <BasicSelect
+          items={providers}
+          onChange={updateProvider}
+          value={options?.provider}
+          defaultValue={defaultPaymentInputOptions.provider}
         />
       </Stack>
       <Stack>
@@ -143,17 +152,12 @@ export const PaymentSettings = ({ options, onOptionsChange }: Props) => {
         />
         <Stack>
           <Text>{t("blocks.inputs.payment.settings.currency.label")}</Text>
-          <Select
-            placeholder="Select option"
-            value={options?.currency ?? defaultPaymentInputOptions.currency}
+          <BasicSelect
+            items={currencies.map((currency) => currency.code)}
             onChange={updateCurrency}
-          >
-            {currencies.map((currency) => (
-              <option value={currency.code} key={currency.code}>
-                {currency.code}
-              </option>
-            ))}
-          </Select>
+            value={options?.currency}
+            defaultValue={defaultPaymentInputOptions.currency}
+          />
         </Stack>
       </HStack>
       <TextInput
@@ -217,7 +221,7 @@ export const PaymentSettings = ({ options, onOptionsChange }: Props) => {
         </AccordionItem>
       </Accordion>
 
-      <StripeConfigModal
+      <CreateStripeCredentialsDialog
         isOpen={isOpen}
         onClose={onClose}
         onNewCredentials={updateCredentials}

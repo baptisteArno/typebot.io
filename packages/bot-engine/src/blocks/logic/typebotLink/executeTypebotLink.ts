@@ -292,14 +292,24 @@ const getNextGroupId = (
     sessionStore: SessionStore;
   },
 ) => {
-  if (isSingleVariable(groupIdOrVariable)) {
-    const groupTitle = parseVariables(groupIdOrVariable, {
-      variables: state.typebotsQueue[0].typebot.variables,
-      sessionStore,
-    });
-    return nextTypebot.groups.find((group) => group.title === groupTitle)?.id;
+  if (groupIdOrVariable) {
+    if (isSingleVariable(groupIdOrVariable)) {
+      const groupTitle = parseVariables(groupIdOrVariable, {
+        variables: state.typebotsQueue[0].typebot.variables,
+        sessionStore,
+      });
+      return nextTypebot.groups.find((group) => group.title === groupTitle)?.id;
+    }
+    const matchingVariable = nextTypebot.variables.find(
+      byId(groupIdOrVariable),
+    );
+    if (matchingVariable) {
+      return nextTypebot.groups.find(
+        (group) => group.title === matchingVariable.value,
+      )?.id;
+    }
+    return groupIdOrVariable;
   }
-  if (groupIdOrVariable) return groupIdOrVariable;
   if (isTypebotInSessionAtLeastV6(nextTypebot)) {
     const startEdge = nextTypebot.edges.find(
       byId(nextTypebot.events[0].outgoingEdgeId),

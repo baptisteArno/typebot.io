@@ -1,18 +1,11 @@
 import { ChevronLeftIcon } from "@/components/icons";
+import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { toast } from "@/lib/toast";
-import {
-  Button,
-  HStack,
-  Input,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-  Stack,
-} from "@chakra-ui/react";
+import { Button, HStack, Input, Stack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { WorkspaceRole } from "@typebot.io/prisma/enum";
 import type { Prisma } from "@typebot.io/prisma/types";
+import { Menu } from "@typebot.io/ui/components/Menu";
 import { type FormEvent, useState } from "react";
 import { sendInvitationQuery } from "../queries/sendInvitationQuery";
 import type { Member } from "../types";
@@ -50,7 +43,6 @@ export const AddMemberForm = ({
     if (error) {
       toast({
         description: error.message,
-        status: "error",
       });
     } else {
       setInvitationEmail("");
@@ -98,25 +90,14 @@ const WorkspaceRoleMenuButton = ({
   onChange: (role: WorkspaceRole) => void;
 }) => {
   return (
-    <Menu placement="bottom" isLazy matchWidth>
-      <MenuButton
-        flexShrink={0}
-        as={Button}
-        rightIcon={<ChevronLeftIcon transform={"rotate(-90deg)"} />}
-      >
-        {convertWorkspaceRoleToReadable(role)}
-      </MenuButton>
-      <MenuList minW={0}>
-        <Stack maxH={"35vh"} overflowY="auto" spacing="0">
-          <MenuItem onClick={() => onChange(WorkspaceRole.ADMIN)}>
-            {convertWorkspaceRoleToReadable(WorkspaceRole.ADMIN)}
-          </MenuItem>
-          <MenuItem onClick={() => onChange(WorkspaceRole.MEMBER)}>
-            {convertWorkspaceRoleToReadable(WorkspaceRole.MEMBER)}
-          </MenuItem>
-        </Stack>
-      </MenuList>
-    </Menu>
+    <BasicSelect
+      items={[
+        { label: "Admin", value: WorkspaceRole.ADMIN },
+        { label: "Member", value: WorkspaceRole.MEMBER },
+      ]}
+      value={role}
+      onChange={onChange}
+    />
   );
 };
 

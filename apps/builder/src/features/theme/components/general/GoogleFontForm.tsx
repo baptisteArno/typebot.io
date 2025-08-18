@@ -1,4 +1,4 @@
-import { Select } from "@/components/inputs/Select";
+import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { env } from "@typebot.io/env";
 import { defaultFontFamily } from "@typebot.io/theme/constants";
 import type { GoogleFont } from "@typebot.io/theme/schemas";
@@ -41,10 +41,10 @@ export const GoogleFontForm = ({ font, onFontChange }: Props) => {
   };
 
   return (
-    <Select
-      selectedItem={currentFont}
+    <BasicSelect
+      value={currentFont}
       items={googleFonts}
-      onSelect={handleFontSelected}
+      onChange={handleFontSelected}
     />
   );
 };

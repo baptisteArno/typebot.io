@@ -1,5 +1,5 @@
-import { DropdownList } from "@/components/DropdownList";
 import { TableList } from "@/components/TableList";
+import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { Flex } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { defaultConditionItemContent } from "@typebot.io/blocks-logic/condition/constants";
@@ -26,12 +26,12 @@ export const ConditionForm = ({ condition, onConditionChange }: Props) => {
       onItemsChange={handleComparisonsChange}
       ComponentBetweenItems={() => (
         <Flex justify="center">
-          <DropdownList
-            currentItem={
+          <BasicSelect
+            value={
               condition?.logicalOperator ??
               defaultConditionItemContent.logicalOperator
             }
-            onItemSelect={handleLogicalOperatorChange}
+            onChange={handleLogicalOperatorChange}
             items={Object.values(LogicalOperator)}
           />
         </Flex>

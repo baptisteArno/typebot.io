@@ -20,7 +20,7 @@ export const executeJumpBlock = (
         sessionStore: sessionStore,
         variables: state.typebotsQueue[0].typebot.variables,
       })
-    : undefined;
+    : typebot.variables.find(byId(groupId))?.value;
 
   const groupToJumpTo = groupTitle
     ? typebot.groups.find((group) => group.title === groupTitle)

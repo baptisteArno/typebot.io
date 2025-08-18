@@ -1,5 +1,5 @@
-import { DropdownList } from "@/components/DropdownList";
 import { TextInput } from "@/components/inputs";
+import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { CredentialsDropdown } from "@/features/credentials/components/CredentialsDropdown";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import {
@@ -23,7 +23,7 @@ import type {
   OpenAIBlock,
 } from "@typebot.io/blocks-integrations/openai/schema";
 import React from "react";
-import { OpenAICredentialsModal } from "./OpenAICredentialsModal";
+import { OpenAICredentialsDialog } from "./OpenAICredentialsDialog";
 import { OpenAICreateSpeechSettings } from "./audio/OpenAICreateSpeechSettings";
 import { OpenAIChatCompletionSettings } from "./createChatCompletion/OpenAIChatCompletionSettings";
 
@@ -83,7 +83,7 @@ export const OpenAISettings = ({
             onCreateNewClick={onOpen}
             credentialsName="OpenAI account"
           />
-          <OpenAICredentialsModal
+          <OpenAICredentialsDialog
             isOpen={isOpen}
             onClose={onClose}
             onNewCredentials={updateCredentialsId}
@@ -117,10 +117,10 @@ export const OpenAISettings = ({
             </AccordionItem>
           </Accordion>
 
-          <DropdownList
-            currentItem={options.task}
+          <BasicSelect
+            value={options.task}
             items={openAITasks.slice(0, -1)}
-            onItemSelect={updateTask}
+            onChange={updateTask}
             placeholder="Select task"
           />
           {options.task && (
