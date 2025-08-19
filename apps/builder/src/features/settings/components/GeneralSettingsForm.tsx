@@ -1,6 +1,6 @@
-import { DropdownList } from "@/components/DropdownList";
 import { MoreInfoTooltip } from "@/components/MoreInfoTooltip";
 import { SwitchWithRelatedSettings } from "@/components/SwitchWithRelatedSettings";
+import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
 import {
   Accordion,
@@ -133,11 +133,12 @@ export const GeneralSettingsForm = ({
               </Stack>
             </MoreInfoTooltip>
           </FormLabel>
-          <DropdownList
-            currentItem={generalSettings?.rememberUser?.storage ?? "session"}
-            onItemSelect={updateRememberUserStorage}
+          <BasicSelect
+            value={generalSettings?.rememberUser?.storage}
+            defaultValue={defaultSettings.general.rememberUser.storage}
+            onChange={updateRememberUserStorage}
             items={rememberUserStorages}
-          ></DropdownList>
+          />
         </FormControl>
       </SwitchWithRelatedSettings>
       <Accordion allowToggle>

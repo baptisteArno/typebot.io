@@ -21,9 +21,9 @@ import {
   createClient,
 } from "pexels";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { DropdownList } from "../DropdownList";
 import { TextLink } from "../TextLink";
 import { TextInput } from "../inputs";
+import { BasicSelect } from "../inputs/BasicSelect";
 import { PexelsLogo } from "../logos/PexelsLogo";
 
 const client = createClient(env.NEXT_PUBLIC_PEXELS_API_KEY ?? "dummy");
@@ -129,39 +129,47 @@ export const PexelsPicker = ({ onVideoSelect }: Props) => {
 
   return (
     <Stack spacing={4} pt="2">
-      <HStack align="flex-start">
-        <Stack>
-          <TextInput
-            autoFocus
-            placeholder="Search..."
-            onChange={(query) => {
-              setSearchQuery(query);
-              fetchNewVideos(query, 0, { orientation, size });
-            }}
-            withVariableButton={false}
-            debounceTimeout={500}
-            forceDebounce
-            width="full"
+      <Stack>
+        <HStack align="flex-start">
+          <Stack>
+            <TextInput
+              autoFocus
+              placeholder="Search..."
+              onChange={(query) => {
+                setSearchQuery(query);
+                fetchNewVideos(query, 0, { orientation, size });
+              }}
+              withVariableButton={false}
+              debounceTimeout={500}
+              forceDebounce
+              width="full"
+            />
+          </Stack>
+          <Link isExternal href={`https://www.pexels.com`}>
+            <PexelsLogo width="100px" height="40px" />
+          </Link>
+        </HStack>
+        <HStack w="full">
+          <BasicSelect
+            value={orientation}
+            onChange={updateOrientation}
+            items={[
+              { label: "Landscape", value: "landscape" },
+              { label: "Portrait", value: "portrait" },
+              { label: "Square", value: "square" },
+            ]}
           />
-          <HStack>
-            <DropdownList
-              size="sm"
-              currentItem={orientation}
-              onItemSelect={updateOrientation}
-              items={["landscape", "portrait", "square"]}
-            />
-            <DropdownList
-              size="sm"
-              currentItem={size}
-              onItemSelect={updateSize}
-              items={["small", "medium", "large"]}
-            />
-          </HStack>
-        </Stack>
-        <Link isExternal href={`https://www.pexels.com`}>
-          <PexelsLogo width="100px" height="40px" />
-        </Link>
-      </HStack>
+          <BasicSelect
+            value={size}
+            onChange={updateSize}
+            items={[
+              { label: "Small", value: "small" },
+              { label: "Medium", value: "medium" },
+              { label: "Large", value: "large" },
+            ]}
+          />
+        </HStack>
+      </Stack>
       {isDefined(error) && (
         <Alert status="error">
           <AlertIcon />

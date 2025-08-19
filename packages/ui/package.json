@@ -13,15 +13,16 @@
     "@typebot.io/tsconfig": "workspace:*"
   },
   "dependencies": {
-    "@ark-ui/react": "5.7.0",
+    "@base-ui-components/react": "https://pkg.pr.new/@base-ui-components/react@2508",
+    "@chakra-ui/anatomy": "2.3.4",
     "@chakra-ui/react": "2.8.2",
     "@chakra-ui/theme-tools": "2.2.6",
     "class-variance-authority": "0.7.1",
-    "tailwindcss-animate": "1.0.7",
-    "tailwindcss": "3.4.17",
-    "tailwind-merge": "3.0.2",
-    "@chakra-ui/anatomy": "2.3.4",
+    "@typebot.io/zod": "workspace:*",
     "next": "15.3.0",
-    "react": "18.3.1"
+    "react": "18.3.1",
+    "tailwind-merge": "3.0.2",
+    "tailwindcss": "3.4.17",
+    "tailwindcss-animate": "1.0.7"
   }
 }

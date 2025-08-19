@@ -1,6 +1,6 @@
-import { DropdownList } from "@/components/DropdownList";
 import type { TableListItemProps } from "@/components/TableList";
 import { TextInput } from "@/components/inputs";
+import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { Stack } from "@chakra-ui/react";
 import type { RowsFilterComparison } from "@typebot.io/blocks-integrations/googleSheets/schema";
 import { ComparisonOperators } from "@typebot.io/conditions/constants";
@@ -30,15 +30,15 @@ export const RowsFilterComparisonItem = ({
 
   return (
     <Stack p="4" rounded="md" flex="1" borderWidth="1px">
-      <DropdownList
-        currentItem={item.column}
-        onItemSelect={handleColumnSelect}
+      <BasicSelect
+        value={item.column}
+        onChange={handleColumnSelect}
         items={columns}
         placeholder="Select a column"
       />
-      <DropdownList
-        currentItem={item.comparisonOperator}
-        onItemSelect={handleSelectComparisonOperator}
+      <BasicSelect
+        value={item.comparisonOperator}
+        onChange={handleSelectComparisonOperator}
         items={Object.values(ComparisonOperators)}
         placeholder="Select an operator"
       />

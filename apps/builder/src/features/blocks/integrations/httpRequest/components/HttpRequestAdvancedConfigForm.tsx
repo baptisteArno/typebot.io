@@ -1,6 +1,6 @@
-import { DropdownList } from "@/components/DropdownList";
 import { TableList, type TableListItemProps } from "@/components/TableList";
 import { NumberInput } from "@/components/inputs";
+import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { CodeEditor } from "@/components/inputs/CodeEditor";
 import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
@@ -100,7 +100,15 @@ export const HttpRequestAdvancedConfigForm = ({
     );
     if (error) return toast({ description: error.message });
     setTestResponse(JSON.stringify(data, undefined, 2));
-    setResponseKeys(computeDeepKeysMappingSuggestionList(data));
+    setResponseKeys(
+      computeDeepKeysMappingSuggestionList({
+        test: "yo",
+        test2: "yo2",
+        test3: "yo3",
+        test4: "yo4",
+        test5: "yo5",
+      }),
+    );
     setIsTestResponseLoading(false);
     onNewTestResponse?.();
   };
@@ -139,12 +147,10 @@ export const HttpRequestAdvancedConfigForm = ({
             />
             <HStack justify="space-between">
               <Text>Method:</Text>
-              <DropdownList
-                currentItem={
-                  (httpRequest?.method ??
-                    defaultHttpRequestAttributes.method) as HttpMethod
-                }
-                onItemSelect={updateMethod}
+              <BasicSelect
+                value={httpRequest?.method}
+                defaultValue={defaultHttpRequestAttributes.method}
+                onChange={updateMethod}
                 items={Object.values(HttpMethod)}
               />
             </HStack>

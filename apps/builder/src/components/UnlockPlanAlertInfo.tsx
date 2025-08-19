@@ -1,5 +1,5 @@
-import type { ChangePlanModalProps } from "@/features/billing/components/ChangePlanModal";
-import { ChangePlanModal } from "@/features/billing/components/ChangePlanModal";
+import type { ChangePlanDialogProps } from "@/features/billing/components/ChangePlanDialog";
+import { ChangePlanDialog } from "@/features/billing/components/ChangePlanDialog";
 import {
   Alert,
   AlertIcon,
@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 
-type Props = AlertProps & Pick<ChangePlanModalProps, "type" | "excludedPlans">;
+type Props = AlertProps & Pick<ChangePlanDialogProps, "type" | "excludedPlans">;
 
 export const UnlockPlanAlertInfo = ({
   type,
@@ -30,7 +30,7 @@ export const UnlockPlanAlertInfo = ({
         <AlertIcon />
         <Text>{props.children}</Text>
       </HStack>
-      <ChangePlanModal
+      <ChangePlanDialog
         isOpen={isOpen}
         onClose={onClose}
         type={type}

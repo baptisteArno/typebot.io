@@ -1,5 +1,5 @@
-import { DropdownList } from "@/components/DropdownList";
 import { NumberInput, TextInput } from "@/components/inputs";
+import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
 import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
 import { FormLabel, Stack } from "@chakra-ui/react";
@@ -17,8 +17,8 @@ type Props = {
 export const RatingInputSettings = ({ options, onOptionsChange }: Props) => {
   const { t } = useTranslate();
 
-  const handleLengthChange = (length: number) =>
-    onOptionsChange({ ...options, length });
+  const handleLengthChange = (length: string) =>
+    onOptionsChange({ ...options, length: Number(length) });
 
   const handleTypeChange = (buttonType: "Icons" | "Numbers") =>
     onOptionsChange({ ...options, buttonType });
@@ -53,7 +53,6 @@ export const RatingInputSettings = ({ options, onOptionsChange }: Props) => {
   const updateStartsAt = (startsAt: number | `{{${string}}}` | undefined) =>
     onOptionsChange({ ...options, startsAt });
 
-  const length = options?.length ?? defaultRatingInputOptions.length;
   const isOneClickSubmitEnabled =
     options?.isOneClickSubmitEnabled ??
     defaultRatingInputOptions.isOneClickSubmitEnabled;
@@ -66,10 +65,11 @@ export const RatingInputSettings = ({ options, onOptionsChange }: Props) => {
         <FormLabel mb="0" htmlFor="button">
           {t("blocks.inputs.rating.settings.maximum.label")}
         </FormLabel>
-        <DropdownList
-          onItemSelect={handleLengthChange}
-          items={[3, 4, 5, 6, 7, 8, 9, 10]}
-          currentItem={length}
+        <BasicSelect
+          value={options?.length?.toString()}
+          defaultValue={defaultRatingInputOptions.length.toString()}
+          onChange={handleLengthChange}
+          items={["3", "4", "5", "6", "7", "8", "9", "10"]}
         />
       </Stack>
 
@@ -77,10 +77,10 @@ export const RatingInputSettings = ({ options, onOptionsChange }: Props) => {
         <FormLabel mb="0" htmlFor="button">
           {t("blocks.inputs.rating.settings.type.label")}
         </FormLabel>
-        <DropdownList
-          onItemSelect={handleTypeChange}
-          items={["Icons", "Numbers"] as const}
-          currentItem={buttonType}
+        <BasicSelect
+          items={["Icons", "Numbers"]}
+          value={buttonType}
+          onChange={handleTypeChange}
         />
       </Stack>
 
@@ -126,7 +126,7 @@ export const RatingInputSettings = ({ options, onOptionsChange }: Props) => {
       />
       <TextInput
         label={t("blocks.inputs.rating.settings.rateLabel.label", {
-          rate: length,
+          rate: options?.length ?? defaultRatingInputOptions.length,
         })}
         defaultValue={options?.labels?.right}
         onChange={handleRightLabelChange}
@@ -156,6 +156,7 @@ export const RatingInputSettings = ({ options, onOptionsChange }: Props) => {
           {t("blocks.inputs.settings.saveAnswer.label")}
         </FormLabel>
         <VariableSearchInput
+          className="flex-1"
           initialVariableId={options?.variableId}
           onSelectVariable={handleVariableChange}
         />

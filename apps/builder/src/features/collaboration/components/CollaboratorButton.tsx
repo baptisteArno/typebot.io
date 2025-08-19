@@ -1,17 +1,7 @@
-import {
-  Avatar,
-  HStack,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-  Stack,
-  Tag,
-  Text,
-  useColorModeValue,
-} from "@chakra-ui/react";
+import { Avatar, HStack, Stack, Tag, Text } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { CollaborationType } from "@typebot.io/prisma/enum";
+import { Menu } from "@typebot.io/ui/components/Menu";
 import React from "react";
 import { ReadableCollaborationType } from "./ReadableCollaborationType";
 
@@ -37,14 +27,13 @@ export const CollaboratorItem = ({
   onChangeCollaborationType,
 }: Props) => {
   const { t } = useTranslate();
-  const hoverBgColor = useColorModeValue("gray.100", "gray.700");
   const handleEditClick = () =>
     onChangeCollaborationType(CollaborationType.WRITE);
   const handleViewClick = () =>
     onChangeCollaborationType(CollaborationType.READ);
   return (
-    <Menu placement="bottom-end">
-      <MenuButton _hover={{ backgroundColor: hoverBgColor }} borderRadius="md">
+    <Menu.Root>
+      <Menu.Trigger className="rounded-md hover:bg-gray-2 transition-colors">
         <CollaboratorIdentityContent
           email={email}
           name={name}
@@ -52,21 +41,21 @@ export const CollaboratorItem = ({
           isGuest={isGuest}
           type={type}
         />
-      </MenuButton>
+      </Menu.Trigger>
       {isOwner && (
-        <MenuList shadow="md">
-          <MenuItem onClick={handleEditClick}>
+        <Menu.Popup>
+          <Menu.Item onClick={handleEditClick}>
             <ReadableCollaborationType type={CollaborationType.WRITE} />
-          </MenuItem>
-          <MenuItem onClick={handleViewClick}>
+          </Menu.Item>
+          <Menu.Item onClick={handleViewClick}>
             <ReadableCollaborationType type={CollaborationType.READ} />
-          </MenuItem>
-          <MenuItem color="red.500" onClick={onDeleteClick}>
+          </Menu.Item>
+          <Menu.Item className="text-red-9" onClick={onDeleteClick}>
             {t("remove")}
-          </MenuItem>
-        </MenuList>
+          </Menu.Item>
+        </Menu.Popup>
       )}
-    </Menu>
+    </Menu.Root>
   );
 };
 

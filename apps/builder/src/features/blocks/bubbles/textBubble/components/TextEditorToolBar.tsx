@@ -50,6 +50,7 @@ export const TextEditorToolBar = ({
         size="sm"
         onMouseDown={handleVariablesButtonMouseDown}
         icon={<BracesIcon />}
+        data-base-ui-click-trigger
       />
       <span data-testid="bold-button">
         <MarkToolbarButton

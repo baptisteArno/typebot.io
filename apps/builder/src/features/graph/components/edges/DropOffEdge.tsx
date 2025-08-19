@@ -7,9 +7,10 @@ import type {
 import { hasProPerks } from "@/features/billing/helpers/hasProPerks";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { Tag, Text, Tooltip, VStack, theme } from "@chakra-ui/react";
+import { Tag, Text, VStack, theme } from "@chakra-ui/react";
 import { blockHasItems } from "@typebot.io/blocks-core/helpers";
 import { byId, isNotDefined } from "@typebot.io/lib/utils";
+import { Tooltip } from "@typebot.io/ui/components/Tooltip";
 import React, { useMemo } from "react";
 import { useShallow } from "zustand/react/shallow";
 import { groupWidth } from "../../constants";
@@ -150,9 +151,50 @@ export const DropOffEdge = ({
             : -(dropOffBoxDimensions.height / 2))
         }
       >
-        <Tooltip
-          label={
-            isWorkspaceProPlan ? (
+        <Tooltip.Root>
+          <Tooltip.Trigger
+            render={
+              <VStack
+                data-testid={`dropoff-edge-${blockId}`}
+                bgColor={theme.colors.red[500]}
+                color="white"
+                rounded="md"
+                p="2"
+                justifyContent="center"
+                w="full"
+                h="full"
+                onClick={isWorkspaceProPlan ? undefined : onUnlockProPlanClick}
+                cursor={isWorkspaceProPlan ? "auto" : "pointer"}
+                spacing={0.5}
+              >
+                <Text
+                  filter={isWorkspaceProPlan ? "" : "blur(2px)"}
+                  fontSize="sm"
+                >
+                  {isWorkspaceProPlan ? (
+                    dropOffRate
+                  ) : (
+                    <Text as="span" filter="blur(2px)">
+                      X
+                    </Text>
+                  )}
+                  %
+                </Text>
+                <Tag colorScheme="red" size="sm">
+                  {isWorkspaceProPlan ? (
+                    totalDroppedUser
+                  ) : (
+                    <Text as="span" filter="blur(3px)" mr="1">
+                      NN
+                    </Text>
+                  )}{" "}
+                  user{(totalDroppedUser ?? 2) > 1 ? "s" : ""}
+                </Tag>
+              </VStack>
+            }
+          ></Tooltip.Trigger>
+          <Tooltip.Popup>
+            {isWorkspaceProPlan ? (
               <>
                 <Text>👀 Displayed {totalUsersAtBlock} times.</Text>
                 <Text>
@@ -167,45 +209,9 @@ export const DropOffEdge = ({
               </>
             ) : (
               "Upgrade your plan to PRO to reveal drop-off rate."
-            )
-          }
-          placement="top"
-        >
-          <VStack
-            data-testid={`dropoff-edge-${blockId}`}
-            bgColor={theme.colors.red[500]}
-            color="white"
-            rounded="md"
-            p="2"
-            justifyContent="center"
-            w="full"
-            h="full"
-            onClick={isWorkspaceProPlan ? undefined : onUnlockProPlanClick}
-            cursor={isWorkspaceProPlan ? "auto" : "pointer"}
-            spacing={0.5}
-          >
-            <Text filter={isWorkspaceProPlan ? "" : "blur(2px)"} fontSize="sm">
-              {isWorkspaceProPlan ? (
-                dropOffRate
-              ) : (
-                <Text as="span" filter="blur(2px)">
-                  X
-                </Text>
-              )}
-              %
-            </Text>
-            <Tag colorScheme="red" size="sm">
-              {isWorkspaceProPlan ? (
-                totalDroppedUser
-              ) : (
-                <Text as="span" filter="blur(3px)" mr="1">
-                  NN
-                </Text>
-              )}{" "}
-              user{(totalDroppedUser ?? 2) > 1 ? "s" : ""}
-            </Tag>
-          </VStack>
-        </Tooltip>
+            )}
+          </Tooltip.Popup>
+        </Tooltip.Root>
       </foreignObject>
     </>
   );

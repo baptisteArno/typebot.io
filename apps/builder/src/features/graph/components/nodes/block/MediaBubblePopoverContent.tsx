@@ -3,42 +3,40 @@ import { EmbedBubbleSettings } from "@/features/blocks/bubbles/embed/components/
 import { ImageBubbleSettings } from "@/features/blocks/bubbles/image/components/ImageBubbleSettings";
 import { VideoUploadContent } from "@/features/blocks/bubbles/video/components/VideoUploadContent";
 import type { FilePathUploadProps } from "@/features/upload/api/generateUploadUrl";
-import {
-  PopoverArrow,
-  PopoverBody,
-  PopoverContent,
-  Portal,
-} from "@chakra-ui/react";
 import { BubbleBlockType } from "@typebot.io/blocks-bubbles/constants";
 import type {
   BubbleBlock,
   BubbleBlockContent,
 } from "@typebot.io/blocks-bubbles/schema";
 import type { TextBubbleBlock } from "@typebot.io/blocks-bubbles/text/schema";
-import { useRef } from "react";
+import { Menu } from "@typebot.io/ui/components/Menu";
+import { Popover } from "@typebot.io/ui/components/Popover";
+import { cx } from "@typebot.io/ui/lib/cva";
 
 type Props = {
   uploadFileProps: FilePathUploadProps;
   block: Exclude<BubbleBlock, TextBubbleBlock>;
+  side?: "left" | "right" | "top" | "bottom";
   onContentChange: (content: BubbleBlockContent) => void;
 };
 
 export const MediaBubblePopoverContent = (props: Props) => {
-  const ref = useRef<HTMLDivElement | null>(null);
-  const handleMouseDown = (e: React.MouseEvent) => e.stopPropagation();
-
   return (
-    <Portal>
-      <PopoverContent
-        onMouseDown={handleMouseDown}
-        w={props.block.type === BubbleBlockType.IMAGE ? "500px" : "400px"}
-      >
-        <PopoverArrow />
-        <PopoverBody ref={ref} shadow="md">
-          <MediaBubbleContent {...props} />
-        </PopoverBody>
-      </PopoverContent>
-    </Portal>
+    <Popover.Popup
+      className={cx(
+        "p-4",
+        props.block.type === BubbleBlockType.IMAGE ? "w-[500px]" : "w-[400px]",
+      )}
+      side={props.side}
+    >
+      <Menu.Root>
+        <Menu.Trigger>Connect Spreadsheets</Menu.Trigger>
+        <Menu.Popup>
+          <Menu.Item>Yo</Menu.Item>
+        </Menu.Popup>
+      </Menu.Root>
+      <MediaBubbleContent {...props} />
+    </Popover.Popup>
   );
 };
 

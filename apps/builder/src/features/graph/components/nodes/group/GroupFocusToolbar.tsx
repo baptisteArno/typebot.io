@@ -1,13 +1,7 @@
-import { CopyIcon, InfoIcon, PlayIcon, TrashIcon } from "@/components/icons";
+import { CopyIcon, PlayIcon, TrashIcon } from "@/components/icons";
 import { useIsAnalyzing } from "@/features/graph/hooks/useIsAnalyzing";
 import { isMac } from "@/helpers/isMac";
-import {
-  HStack,
-  IconButton,
-  Tooltip,
-  useClipboard,
-  useColorModeValue,
-} from "@chakra-ui/react";
+import { HStack, IconButton, useColorModeValue } from "@chakra-ui/react";
 
 type Props = {
   groupId: string;
@@ -15,13 +9,8 @@ type Props = {
   onPlayClick: () => void;
 };
 
-export const GroupFocusToolbar = ({
-  groupId,
-  isReadOnly,
-  onPlayClick,
-}: Props) => {
+export const GroupFocusToolbar = ({ isReadOnly, onPlayClick }: Props) => {
   const isAnalyzing = useIsAnalyzing();
-  const { hasCopied, onCopy } = useClipboard(groupId);
 
   const dispatchCopyEvent = () => {
     dispatchEvent(
@@ -70,22 +59,6 @@ export const GroupFocusToolbar = ({
           size="sm"
         />
       )}
-      <Tooltip
-        label={hasCopied ? "Copied!" : groupId}
-        closeOnClick={false}
-        placement="top"
-      >
-        <IconButton
-          icon={<InfoIcon />}
-          borderRightWidth="1px"
-          borderRightRadius="none"
-          borderLeftRadius="none"
-          aria-label={"Show group info"}
-          variant="ghost"
-          size="sm"
-          onClick={onCopy}
-        />
-      </Tooltip>
       {!isReadOnly && (
         <IconButton
           aria-label="Delete"

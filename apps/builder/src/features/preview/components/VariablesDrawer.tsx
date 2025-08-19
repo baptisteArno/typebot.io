@@ -1,5 +1,7 @@
 import { MoreHorizontalIcon, PlusIcon, TrashIcon } from "@/components/icons";
 import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
+import { useOpenControls } from "@/hooks/useOpenControls";
+import { toast } from "@/lib/toast";
 import {
   CloseButton,
   Editable,
@@ -11,11 +13,6 @@ import {
   Heading,
   IconButton,
   Input,
-  Popover,
-  PopoverBody,
-  PopoverContent,
-  PopoverTrigger,
-  Portal,
   SlideFade,
   Stack,
   useColorModeValue,
@@ -27,10 +24,10 @@ import { LogicBlockType } from "@typebot.io/blocks-logic/constants";
 import { sessionOnlySetVariableOptions } from "@typebot.io/blocks-logic/setVariable/constants";
 import type { SetVariableBlock } from "@typebot.io/blocks-logic/setVariable/schema";
 import { isNotEmpty } from "@typebot.io/lib/utils";
+import { Popover } from "@typebot.io/ui/components/Popover";
 import type { Variable } from "@typebot.io/variables/schemas";
 import { useDrag } from "@use-gesture/react";
 import { type FormEvent, useState } from "react";
-import { toast } from "sonner";
 import { headerHeight } from "../../editor/constants";
 import { useTypebot } from "../../editor/providers/TypebotProvider";
 import { ResizeHandle } from "./ResizeHandle";
@@ -38,6 +35,7 @@ import { ResizeHandle } from "./ResizeHandle";
 type Props = {
   onClose: () => void;
 };
+
 export const VariablesDrawer = ({ onClose }: Props) => {
   const { typebot, createVariable, updateVariable, deleteVariable } =
     useTypebot();
@@ -61,7 +59,7 @@ export const VariablesDrawer = ({ onClose }: Props) => {
 
   const handleCreateSubmit = (e: FormEvent) => {
     e.preventDefault();
-    toast.success("Variable created");
+    toast({ description: "Variable created", type: "success" });
     setSearchValue("");
     createVariable({
       id: createId(),
@@ -159,6 +157,7 @@ const VariableItem = ({
   onDelete: () => void;
   setVariableAndInputBlocks: (InputBlock | SetVariableBlock)[];
 }) => {
+  const settingsPopoverControls = useOpenControls();
   const isSessionOnly = setVariableAndInputBlocks.some(
     (b) =>
       b.type === LogicBlockType.SET_VARIABLE &&
@@ -192,32 +191,28 @@ const VariableItem = ({
 
       <HStack>
         {!isSessionOnly && !isLinkedToAnswer && (
-          <Popover isLazy>
-            <PopoverTrigger>
+          <Popover.Root {...settingsPopoverControls}>
+            <Popover.Trigger>
               <IconButton
                 icon={<MoreHorizontalIcon />}
                 aria-label={"Settings"}
                 size="sm"
               />
-            </PopoverTrigger>
-            <Portal>
-              <PopoverContent>
-                <PopoverBody>
-                  <SwitchWithLabel
-                    label="Save in results"
-                    moreInfoContent="Check this option if you want to save the variable value in the typebot Results table."
-                    initialValue={!variable.isSessionVariable}
-                    onCheckChange={() =>
-                      onChange({
-                        ...variable,
-                        isSessionVariable: !variable.isSessionVariable,
-                      })
-                    }
-                  />
-                </PopoverBody>
-              </PopoverContent>
-            </Portal>
-          </Popover>
+            </Popover.Trigger>
+            <Popover.Popup>
+              <SwitchWithLabel
+                label="Save in results"
+                moreInfoContent="Check this option if you want to save the variable value in the typebot Results table."
+                initialValue={!variable.isSessionVariable}
+                onCheckChange={() =>
+                  onChange({
+                    ...variable,
+                    isSessionVariable: !variable.isSessionVariable,
+                  })
+                }
+              />
+            </Popover.Popup>
+          </Popover.Root>
         )}
         <IconButton
           icon={<TrashIcon />}

@@ -18,7 +18,7 @@ const buttonVariants = cva(
         secondary: "bg-gray-3 hover:bg-gray-4 active:bg-gray-5",
         outline: "bg-transparent border border-orange-8 text-orange-11",
         "outline-secondary":
-          "bg-transparent border border-gray-7 text-gray-12 hover:bg-gray-2 active:bg-gray-4",
+          "bg-transparent border border-gray-7 text-gray-12 hover:bg-gray-2 active:bg-gray-4 data-[popup-open]:bg-gray-4",
         ghost: "text-gray-12 bg-transparent hover:bg-gray-4 active:bg-gray-5",
         destructive:
           "bg-red-9 hover:bg-red-10 active:bg-red-11 text-gray-1 dark:text-gray-12",
@@ -30,8 +30,8 @@ const buttonVariants = cva(
       size: {
         default: "h-9 px-4 py-2",
         xs: "h-6 px-2 text-xs",
-        sm: "h-8 px-3",
-        lg: "h-11 px-6 rounded-lg text-base",
+        sm: "h-8 px-3 text-sm",
+        lg: "h-10 px-4 py-2 text-base",
         icon: "size-9 leading-none",
       },
     },

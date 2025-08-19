@@ -17,7 +17,7 @@ import type { Typebot } from "@typebot.io/typebot/schemas/typebot";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { ImportTypebotFromFileButton } from "./ImportTypebotFromFileButton";
-import { TemplatesModal } from "./TemplatesModal";
+import { TemplatesDialog } from "./TemplatesDialog";
 
 export const CreateNewTypebotButtons = () => {
   const { t } = useTranslate();
@@ -162,7 +162,7 @@ export const CreateNewTypebotButtons = () => {
         </Stack>
       </Stack>
 
-      <TemplatesModal
+      <TemplatesDialog
         isOpen={isOpen}
         onClose={onClose}
         onTypebotChoose={handleCreateSubmit}

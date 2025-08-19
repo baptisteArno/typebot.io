@@ -3,9 +3,9 @@ import type { BlockOptions } from "@typebot.io/blocks-core/schemas/schema";
 import type { ForgedBlock } from "@typebot.io/forge-repository/schemas";
 import { useState } from "react";
 import { useForgedBlock } from "../hooks/useForgedBlock";
-import { CreateForgedCredentialsModal } from "./credentials/CreateForgedCredentialsModal";
-import { CreateForgedOAuthCredentialsModal } from "./credentials/CreateForgedOAuthCredentialsModal";
+import { ForgedCredentialsCreateDialog } from "./credentials/ForgedCredentialsCreateDialog";
 import { ForgedCredentialsDropdown } from "./credentials/ForgedCredentialsDropdown";
+import { ForgedOAuthCredentialsCreateDialog } from "./credentials/ForgedOAuthCredentialsCreateDialog";
 import { ZodActionDiscriminatedUnion } from "./zodLayouts/ZodActionDiscriminatedUnion";
 import { ZodObjectLayout } from "./zodLayouts/ZodObjectLayout";
 
@@ -64,7 +64,7 @@ export const ForgedBlockSettings = ({ block, onOptionsChange }: Props) => {
       {blockDef.auth && (
         <>
           {blockDef.auth.type === "oauth" ? (
-            <CreateForgedOAuthCredentialsModal
+            <ForgedOAuthCredentialsCreateDialog
               scope="workspace"
               blockDef={blockDef}
               isOpen={isOpen}
@@ -72,7 +72,7 @@ export const ForgedBlockSettings = ({ block, onOptionsChange }: Props) => {
               onNewCredentials={updateCredentialsId}
             />
           ) : (
-            <CreateForgedCredentialsModal
+            <ForgedCredentialsCreateDialog
               scope="workspace"
               blockDef={blockDef}
               isOpen={isOpen}

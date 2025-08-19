@@ -16,8 +16,8 @@ export const WebPreview = () => {
   const handleNewLogs = (logs: ContinueChatResponse["logs"]) => {
     logs?.forEach((log) => {
       toast({
-        context: log.context,
-        status: log.status as "success" | "error" | "info",
+        title: log.context,
+        type: log.status as "success" | "error" | "info",
         description: log.description,
         details: log.details,
       });

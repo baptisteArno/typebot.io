@@ -102,7 +102,6 @@ export const useOAuthPopup = ({
         "Workspace not available. Please refresh and try again.";
       toast({
         description: errorMessage,
-        status: "error",
       });
       onError?.(errorMessage);
       return;
@@ -135,7 +134,6 @@ export const useOAuthPopup = ({
           "OAuth authentication timed out. Please try again.";
         toast({
           description: errorMessage,
-          status: "error",
         });
         onError?.(errorMessage);
       }, timeout);
@@ -175,7 +173,6 @@ export const useOAuthPopup = ({
             err instanceof Error ? err.message : "OAuth authentication failed";
           toast({
             description: errorMessage,
-            status: "error",
           });
           onError?.(errorMessage);
         }
@@ -205,7 +202,6 @@ export const useOAuthPopup = ({
           : "Failed to start OAuth authentication";
       toast({
         description: errorMessage,
-        status: "error",
       });
       onError?.(errorMessage);
     }

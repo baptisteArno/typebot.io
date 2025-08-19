@@ -1,5 +1,5 @@
-import { DropdownList } from "@/components/DropdownList";
 import { NumberInput } from "@/components/inputs";
+import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { FormLabel, HStack, Stack } from "@chakra-ui/react";
 import {
   defaultBlur,
@@ -72,11 +72,11 @@ export const ChatContainerForm = ({
             withVariableButton={false}
             onValueChange={updateMaxWidth}
           />
-          <DropdownList
+          <BasicSelect
             size="sm"
             items={["px", "%", "vh", "vw"]}
-            currentItem={maxWidthUnit}
-            onItemSelect={updateMaxWidthUnit}
+            value={maxWidthUnit}
+            onChange={updateMaxWidthUnit}
           />
         </HStack>
       </HStack>
@@ -95,11 +95,11 @@ export const ChatContainerForm = ({
             onValueChange={updateMaxHeight}
             withVariableButton={false}
           />
-          <DropdownList
+          <BasicSelect
             size="sm"
             items={["px", "%", "vh", "vw"]}
-            currentItem={maxHeightUnit}
-            onItemSelect={updateMaxHeightUnit}
+            value={maxHeightUnit}
+            onChange={updateMaxHeightUnit}
           />
         </HStack>
       </HStack>

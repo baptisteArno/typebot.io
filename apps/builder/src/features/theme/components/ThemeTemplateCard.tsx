@@ -4,12 +4,7 @@ import {
   Box,
   Flex,
   HStack,
-  IconButton,
   Image,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
   Stack,
   Text,
   useColorModeValue,
@@ -28,6 +23,7 @@ import {
 import type { Theme, ThemeTemplate } from "@typebot.io/theme/schemas";
 import type { TypebotV6 } from "@typebot.io/typebot/schemas/typebot";
 import { colors } from "@typebot.io/ui/chakraTheme";
+import { Menu } from "@typebot.io/ui/components/Menu";
 import { useState } from "react";
 import { DefaultAvatar } from "./DefaultAvatar";
 
@@ -166,32 +162,31 @@ export const ThemeTemplateCard = ({
           {themeTemplate.name}
         </Text>
         {onDeleteSuccess && onRenameClick && (
-          <Menu isLazy>
-            <MenuButton
-              as={IconButton}
-              icon={<MoreHorizontalIcon />}
+          <Menu.Root>
+            <Menu.TriggerButton
               aria-label={t(
                 "theme.sideMenu.template.myTemplates.menu.ariaLabel",
               )}
-              variant="ghost"
-              size="xs"
+              variant="outline-secondary"
+              size="icon"
+              className="size-7"
               onClick={(e) => e.stopPropagation()}
-            />
-            <MenuList onClick={(e) => e.stopPropagation()}>
+            >
+              <MoreHorizontalIcon />
+            </Menu.TriggerButton>
+            <Menu.Popup align="end">
               {isSelected && (
-                <MenuItem icon={<EditIcon />} onClick={onRenameClick}>
+                <Menu.Item onClick={onRenameClick}>
+                  <EditIcon />
                   {t("rename")}
-                </MenuItem>
+                </Menu.Item>
               )}
-              <MenuItem
-                icon={<TrashIcon />}
-                color="red.500"
-                onClick={deleteThemeTemplate}
-              >
+              <Menu.Item className="text-red-10" onClick={deleteThemeTemplate}>
+                <TrashIcon />
                 {t("delete")}
-              </MenuItem>
-            </MenuList>
-          </Menu>
+              </Menu.Item>
+            </Menu.Popup>
+          </Menu.Root>
         )}
       </HStack>
     </Stack>

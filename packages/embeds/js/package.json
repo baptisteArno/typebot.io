@@ -17,7 +17,7 @@
   },
   "devDependencies": {
     "@ai-sdk/ui-utils": "1.2.11",
-    "@ark-ui/solid": "5.11.0",
+    "@ark-ui/solid": "5.19.0",
     "@fix-webm-duration/fix": "1.0.1",
     "@stripe/stripe-js": "7.4.0",
     "@tailwindcss/container-queries": "0.1.1",
@@ -45,7 +45,7 @@
     "partysocket": "1.0.2",
     "postcss": "8.5.3",
     "solid-element": "1.9.1",
-    "solid-js": "1.9.5",
+    "solid-js": "1.9.9",
     "tailwindcss": "3.4.17",
     "tsup": "8.5.0"
   },

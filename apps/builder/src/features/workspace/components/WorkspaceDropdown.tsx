@@ -8,17 +8,11 @@ import {
 } from "@/components/icons";
 import { PlanTag } from "@/features/billing/components/PlanTag";
 import { trpc } from "@/lib/queryClient";
-import {
-  Button,
-  HStack,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-  Text,
-} from "@chakra-ui/react";
+import { HStack, Text } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
+import { Menu } from "@typebot.io/ui/components/Menu";
+import { cx } from "@typebot.io/ui/lib/cva";
 import type { WorkspaceInApp } from "../WorkspaceProvider";
 
 type Props = {
@@ -42,8 +36,8 @@ export const WorkspaceDropdown = ({
   const workspaces = data?.workspaces ?? [];
 
   return (
-    <Menu placement="bottom-end">
-      <MenuButton as={Button} variant="outline" px="2">
+    <Menu.Root>
+      <Menu.TriggerButton variant="outline-secondary" size="lg">
         <HStack>
           {!isLoggingOut && currentWorkspace && (
             <>
@@ -55,10 +49,10 @@ export const WorkspaceDropdown = ({
           )}
           <ChevronLeftIcon transform="rotate(-90deg)" />
         </HStack>
-      </MenuButton>
-      <MenuList>
+      </Menu.TriggerButton>
+      <Menu.Popup align="end">
         {workspaces.map((workspace) => (
-          <MenuItem
+          <Menu.Item
             key={workspace.id}
             onClick={() => onWorkspaceSelected(workspace.id)}
           >
@@ -66,8 +60,8 @@ export const WorkspaceDropdown = ({
               <HStack>
                 <EmojiOrImageIcon
                   icon={workspace.icon}
-                  boxSize="16px"
                   defaultIcon={HardDriveIcon}
+                  size="sm"
                 />
                 <Text isTruncated maxW="250px">
                   {workspace.name}
@@ -77,19 +71,17 @@ export const WorkspaceDropdown = ({
 
               {workspace.id === currentWorkspace?.id && <CheckIcon />}
             </HStack>
-          </MenuItem>
+          </Menu.Item>
         ))}
-        <MenuItem onClick={onCreateNewWorkspaceClick} icon={<PlusIcon />}>
+        <Menu.Item onClick={onCreateNewWorkspaceClick}>
+          <PlusIcon />
           {t("workspace.dropdown.newButton.label")}
-        </MenuItem>
-        <MenuItem
-          onClick={onLogoutClick}
-          icon={<LogOutIcon />}
-          color="orange.500"
-        >
+        </Menu.Item>
+        <Menu.Item onClick={onLogoutClick} className="text-orange-9">
+          <LogOutIcon />
           {t("workspace.dropdown.logoutButton.label")}
-        </MenuItem>
-      </MenuList>
-    </Menu>
+        </Menu.Item>
+      </Menu.Popup>
+    </Menu.Root>
   );
 };

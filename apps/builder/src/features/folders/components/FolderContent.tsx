@@ -1,3 +1,4 @@
+import { Portal } from "@/components/Portal";
 import { useTypebots } from "@/features/dashboard/hooks/useTypebots";
 import type { TypebotInDashboard } from "@/features/dashboard/types";
 import type { NodePosition } from "@/features/graph/providers/GraphDndProvider";
@@ -8,7 +9,6 @@ import {
   Flex,
   HStack,
   Heading,
-  Portal,
   Skeleton,
   Stack,
   Wrap,

@@ -1,5 +1,5 @@
 import { RadioButtons } from "@/components/inputs/RadioButtons";
-import { ChangePlanModal } from "@/features/billing/components/ChangePlanModal";
+import { ChangePlanDialog } from "@/features/billing/components/ChangePlanDialog";
 import { LockTag } from "@/features/billing/components/LockTag";
 import { isFreePlan } from "@/features/billing/helpers/isFreePlan";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
@@ -103,7 +103,7 @@ export const GeneralSettings = ({
 
   return (
     <Stack spacing={6}>
-      <ChangePlanModal
+      <ChangePlanDialog
         isOpen={isOpen}
         onClose={onClose}
         type={t("billing.limitMessage.brand")}

@@ -1,11 +1,9 @@
-import { ContextMenu } from "@/components/ContextMenu";
 import { useEditor } from "@/features/editor/providers/EditorProvider";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { groupWidth } from "@/features/graph/constants";
 import { useSelectionStore } from "@/features/graph/hooks/useSelectionStore";
 import { useBlockDnd } from "@/features/graph/providers/GraphDndProvider";
 import { useGraph } from "@/features/graph/providers/GraphProvider";
-import { setMultipleRefs } from "@/helpers/setMultipleRefs";
 import { useRightPanel } from "@/hooks/useRightPanel";
 import {
   Editable,
@@ -17,12 +15,13 @@ import {
 } from "@chakra-ui/react";
 import type { GroupV6 } from "@typebot.io/groups/schemas";
 import { isEmpty, isNotDefined } from "@typebot.io/lib/utils";
+import { ContextMenu } from "@typebot.io/ui/components/ContextMenu";
 import { useDrag } from "@use-gesture/react";
 import React, { useEffect, useRef, useState } from "react";
 import { useShallow } from "zustand/react/shallow";
 import { BlockNodesList } from "../block/BlockNodesList";
 import { GroupFocusToolbar } from "./GroupFocusToolbar";
-import { GroupNodeContextMenu } from "./GroupNodeContextMenu";
+import { GroupNodeContextMenuPopup } from "./GroupNodeContextMenuPopup";
 type Props = {
   group: GroupV6;
   groupIndex: number;
@@ -48,6 +47,7 @@ export const GroupNode = ({ group, groupIndex }: Props) => {
   const [isMouseDown, setIsMouseDown] = useState(false);
   const [isConnecting, setIsConnecting] = useState(false);
   const [groupTitle, setGroupTitle] = useState(group.title);
+  const [isContextMenuOpened, setIsContextMenuOpened] = useState(false);
 
   const isPreviewing =
     previewingBlock?.groupId === group.id ||
@@ -154,14 +154,16 @@ export const GroupNode = ({ group, groupIndex }: Props) => {
   const isFocused = focusedGroups.includes(group.id);
 
   return (
-    <ContextMenu<HTMLDivElement>
-      onOpen={() => focusElement(group.id)}
-      renderMenu={() => <GroupNodeContextMenu />}
-      isDisabled={isReadOnly}
+    <ContextMenu.Root
+      onOpenChange={(open) => {
+        setIsContextMenuOpened(open);
+        if (open) focusElement(group.id);
+      }}
+      disabled={isReadOnly}
     >
-      {(ref, isContextMenuOpened) => (
+      <ContextMenu.Trigger>
         <Stack
-          ref={setMultipleRefs([ref, groupRef])}
+          ref={groupRef}
           id={`group-${group.id}`}
           data-testid="group"
           className="group"
@@ -224,7 +226,7 @@ export const GroupNode = ({ group, groupIndex }: Props) => {
             <BlockNodesList
               blocks={group.blocks}
               groupIndex={groupIndex}
-              groupRef={ref}
+              groupRef={groupRef}
             />
           )}
           {focusedGroups.length === 1 && (
@@ -245,7 +247,8 @@ export const GroupNode = ({ group, groupIndex }: Props) => {
             </SlideFade>
           )}
         </Stack>
-      )}
-    </ContextMenu>
+      </ContextMenu.Trigger>
+      <GroupNodeContextMenuPopup />
+    </ContextMenu.Root>
   );
 };

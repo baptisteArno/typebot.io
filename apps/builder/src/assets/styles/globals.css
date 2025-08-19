@@ -4,6 +4,27 @@
 @tailwind components;
 @tailwind utilities;
 
+h1 {
+  @apply text-4xl md:text-6xl;
+}
+
+h2 {
+  @apply text-4xl;
+}
+
+h3 {
+  @apply text-2xl;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  @apply font-heading font-medium;
+}
+
 .text-align-inherit {
   text-align: inherit;
 }
@@ -13,11 +34,7 @@ typebot-standard#onboarding::part(progress-bar-container) {
   top: 55px;
 }
 
-body {
+/* https://base-ui.com/react/overview/quick-start#set-up-portals */
+#__next {
   isolation: isolate;
-}
-
-/* Keep this as long as we use Chakra portalled element, they apply a z-index of 10. We need to match it to avoid z-index stacking issues */
-.ark-positioner-z-10 {
-  z-index: 10 !important;
 }

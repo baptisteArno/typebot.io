@@ -1,6 +1,6 @@
 import { EmojiOrImageIcon } from "@/components/EmojiOrImageIcon";
-import { ExternalLinkIcon } from "@/components/icons";
-import { Select } from "@/components/inputs/Select";
+import { ExternalLinkIcon, ToolIcon } from "@/components/icons";
+import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { useTypebots } from "@/features/dashboard/hooks/useTypebots";
 import { HStack, IconButton, Input } from "@chakra-ui/react";
 import Link from "next/link";
@@ -28,9 +28,10 @@ export const TypebotsDropdown = ({
   if (!typebots || typebots.length === 0)
     return <Input value="No typebots found" isDisabled />;
   return (
-    <HStack>
-      <Select
-        selectedItem={typebotId}
+    <HStack flex={1}>
+      <BasicSelect
+        value={typebotId}
+        className="w-full"
         items={[
           {
             label: "Current typebot",
@@ -42,15 +43,15 @@ export const TypebotsDropdown = ({
               icon: (
                 <EmojiOrImageIcon
                   icon={typebot.icon}
-                  boxSize="18px"
-                  emojiFontSize="18px"
+                  size="sm"
+                  defaultIcon={ToolIcon}
                 />
               ),
               label: typebot.name,
               value: typebot.id,
             })),
         ]}
-        onSelect={onSelect}
+        onChange={onSelect}
         placeholder={"Select a typebot"}
       />
       {typebotId && typebotId !== "current" && (

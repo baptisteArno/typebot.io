@@ -1,14 +1,6 @@
 import { ChevronDownIcon } from "@/components/icons";
-import {
-  Button,
-  HStack,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-  Tag,
-  Text,
-} from "@chakra-ui/react";
+import { HStack, Tag, Text } from "@chakra-ui/react";
+import { Menu } from "@typebot.io/ui/components/Menu";
 import { runtimes } from "../data";
 
 type Runtime = (typeof runtimes)[number];
@@ -20,38 +12,36 @@ type Props = {
 
 export const RuntimeMenu = ({ selectedRuntime, onSelectRuntime }: Props) => {
   return (
-    <Menu>
-      <MenuButton
-        as={Button}
-        leftIcon={selectedRuntime.icon}
-        rightIcon={<ChevronDownIcon />}
-      >
+    <Menu.Root>
+      <Menu.TriggerButton variant="secondary">
         <HStack justifyContent="space-between">
+          {selectedRuntime.icon}
           <Text>{selectedRuntime.name}</Text>
           {"status" in selectedRuntime &&
           typeof selectedRuntime.status === "string" ? (
             <Tag colorScheme="orange">{selectedRuntime.status}</Tag>
           ) : null}
+          <ChevronDownIcon />
         </HStack>
-      </MenuButton>
-      <MenuList w="100px">
+      </Menu.TriggerButton>
+      <Menu.Popup>
         {runtimes
           .filter((runtime) => runtime.name !== selectedRuntime.name)
           .map((runtime) => (
-            <MenuItem
+            <Menu.Item
               key={runtime.name}
-              icon={runtime.icon}
               onClick={() => onSelectRuntime(runtime)}
             >
               <HStack justifyContent="space-between">
+                {runtime.icon}
                 <Text>{runtime.name}</Text>
                 {"status" in runtime && typeof runtime.status === "string" ? (
                   <Tag colorScheme="orange">{runtime.status}</Tag>
                 ) : null}
               </HStack>
-            </MenuItem>
+            </Menu.Item>
           ))}
-      </MenuList>
-    </Menu>
+      </Menu.Popup>
+    </Menu.Root>
   );
 };

@@ -1,5 +1,5 @@
-import { DropdownList } from "@/components/DropdownList";
 import { TableList } from "@/components/TableList";
+import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { Flex } from "@chakra-ui/react";
 import type {
   GoogleSheetsGetOptions,
@@ -36,9 +36,9 @@ export const RowsFilterTableList = ({
       onItemsChange={updateComparisons}
       ComponentBetweenItems={() => (
         <Flex justify="center">
-          <DropdownList
-            currentItem={filter?.logicalOperator}
-            onItemSelect={updateLogicalOperator}
+          <BasicSelect
+            value={filter?.logicalOperator}
+            onChange={updateLogicalOperator}
             items={Object.values(LogicalOperator)}
           />
         </Flex>

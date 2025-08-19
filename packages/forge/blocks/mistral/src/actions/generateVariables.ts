@@ -25,7 +25,10 @@ export const generateVariables = createAction({
     },
   ],
   aiGenerate: {
-    fetcherId: "fetchModels",
+    models: {
+      type: "static",
+      items: models,
+    },
     getModel: ({ credentials, model }) =>
       createMistral({
         apiKey: credentials.apiKey,

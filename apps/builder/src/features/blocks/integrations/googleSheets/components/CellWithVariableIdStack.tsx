@@ -1,5 +1,5 @@
-import { DropdownList } from "@/components/DropdownList";
 import type { TableListItemProps } from "@/components/TableList";
+import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
 import { Stack } from "@chakra-ui/react";
 import type { ExtractingCell } from "@typebot.io/blocks-integrations/googleSheets/schema";
@@ -22,9 +22,9 @@ export const CellWithVariableIdStack = ({
 
   return (
     <Stack p="4" rounded="md" flex="1" borderWidth="1px">
-      <DropdownList
-        currentItem={item.column}
-        onItemSelect={handleColumnSelect}
+      <BasicSelect
+        value={item.column}
+        onChange={handleColumnSelect}
         items={columns}
         placeholder="Select a column"
       />

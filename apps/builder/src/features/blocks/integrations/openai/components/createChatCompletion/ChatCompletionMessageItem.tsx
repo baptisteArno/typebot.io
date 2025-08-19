@@ -1,6 +1,6 @@
-import { DropdownList } from "@/components/DropdownList";
 import type { TableListItemProps } from "@/components/TableList";
 import { Textarea } from "@/components/inputs";
+import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
 import { HStack, Stack, Text } from "@chakra-ui/react";
 import {
@@ -49,13 +49,13 @@ export const ChatCompletionMessageItem = ({ item, onItemChange }: Props) => {
 
   return (
     <Stack p="4" rounded="md" flex="1" borderWidth="1px">
-      <DropdownList
-        currentItem={item.role}
+      <BasicSelect
+        value={item.role}
+        onChange={changeRole}
         items={roles.filter(
           (role) =>
             !deprecatedRoles.includes(role as (typeof deprecatedRoles)[number]),
         )}
-        onItemSelect={changeRole}
         placeholder="Select type"
       />
       <ChatCompletionMessageItemContent
@@ -104,11 +104,10 @@ const ChatCompletionMessageItemContent = ({
           />
           <HStack>
             <Text>starts by</Text>
-            <DropdownList
-              size="sm"
-              currentItem={item.startsBy ?? "user"}
-              onItemSelect={onStartsByChange}
-              items={["user", "assistant"] as const}
+            <BasicSelect
+              value={item.startsBy ?? "user"}
+              onChange={onStartsByChange}
+              items={["user", "assistant"]}
             />
           </HStack>
         </Stack>

@@ -68,7 +68,7 @@ export const SignInForm = ({
   useEffect(() => {
     if (authError === "ip-banned") {
       toast({
-        status: "info",
+        type: "info",
         description:
           "Your account has suspicious activity and is being reviewed by our team. Feel free to contact us.",
       });
@@ -91,12 +91,12 @@ export const SignInForm = ({
       if (response?.error) {
         if (response.error.includes("too-many-requests"))
           toast({
-            status: "info",
+            type: "info",
             description: t("auth.signinErrorToast.tooManyRequests"),
           });
         else if (response.error.includes("sign-up-disabled"))
           toast({
-            status: "info",
+            type: "info",
             description: t("auth.signinErrorToast.title"),
           });
         else if (response.error.includes("email-not-legit"))
@@ -113,7 +113,7 @@ export const SignInForm = ({
       }
     } catch (e) {
       toast({
-        status: "info",
+        type: "info",
         description: "An error occured while signing in",
       });
     }

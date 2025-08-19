@@ -1,22 +1,17 @@
-import { useParentModal } from "@/features/graph/providers/ParentModalProvider";
 import { VariablesButton } from "@/features/variables/components/VariablesButton";
 import { injectVariableInText } from "@/features/variables/helpers/injectVariableInTextInput";
 import { focusInput } from "@/helpers/focusInput";
-import { useOutsideClick } from "@/hooks/useOutsideClick";
+import { useOpenControls } from "@/hooks/useOpenControls";
 import {
   Button,
   FormControl,
   HStack,
   Input,
-  Popover,
-  PopoverAnchor,
-  PopoverContent,
-  Portal,
   useColorModeValue,
-  useDisclosure,
 } from "@chakra-ui/react";
 import { env } from "@typebot.io/env";
 import { isDefined } from "@typebot.io/lib/utils";
+import { Popover } from "@typebot.io/ui/components/Popover";
 import type { Variable } from "@typebot.io/variables/schemas";
 import { useEffect, useRef, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
@@ -44,7 +39,7 @@ export const AutocompleteInput = ({
   isRequired,
 }: Props) => {
   const bg = useColorModeValue("gray.200", "gray.700");
-  const { onOpen, onClose, isOpen } = useDisclosure();
+  const controls = useOpenControls();
   const [isTouched, setIsTouched] = useState(false);
   const [inputValue, setInputValue] = useState(defaultValue ?? "");
   const [carretPosition, setCarretPosition] = useState<number>(
@@ -68,7 +63,6 @@ export const AutocompleteInput = ({
   const dropdownRef = useRef(null);
   const itemsRef = useRef<(HTMLButtonElement | null)[]>([]);
   const inputRef = useRef<HTMLInputElement & HTMLTextAreaElement>(null);
-  const { ref: parentModalRef } = useParentModal();
 
   const filteredItems = (
     inputValue === ""
@@ -82,12 +76,6 @@ export const AutocompleteInput = ({
         ]
   ).slice(0, 50);
 
-  useOutsideClick({
-    ref: dropdownRef,
-    handler: onClose,
-    isEnabled: isOpen,
-  });
-
   useEffect(
     () => () => {
       onChange.flush();
@@ -97,7 +85,7 @@ export const AutocompleteInput = ({
 
   const changeValue = (value: string) => {
     if (!isTouched) setIsTouched(true);
-    if (!isOpen) onOpen();
+    if (!controls.isOpen) controls.onOpen();
     setInputValue(value);
     onChange(value);
   };
@@ -157,65 +145,54 @@ export const AutocompleteInput = ({
   return (
     <FormControl isRequired={isRequired}>
       <HStack ref={dropdownRef} spacing={0} w="full">
-        <Popover
-          isOpen={isOpen}
-          initialFocusRef={inputRef}
-          offset={[0, 1]}
-          isLazy
-          placement="bottom-start"
-        >
-          <PopoverAnchor>
+        <Popover.Root isOpen={controls.isOpen} onClose={controls.onClose}>
+          <Popover.Trigger>
             <Input
               autoComplete="off"
               ref={inputRef}
               value={value ?? inputValue}
               onChange={(e) => changeValue(e.target.value)}
-              onFocus={onOpen}
+              onFocus={controls.onOpen}
               onBlur={updateCarretPosition}
               onKeyDown={updateFocusedDropdownItem}
               placeholder={!items ? "Loading..." : placeholder}
               isDisabled={!items}
             />
-          </PopoverAnchor>
+          </Popover.Trigger>
           {filteredItems.length > 0 && (
-            <Portal containerRef={parentModalRef}>
-              <PopoverContent
-                maxH="35vh"
-                maxW="35vw"
-                overflowY="auto"
-                role="menu"
-                w="inherit"
-                shadow="md"
-                onMouseDown={(e) => e.stopPropagation()}
-                onPointerDown={(e) => e.stopPropagation()}
-              >
-                {filteredItems.map((item, idx) => {
-                  return (
-                    <Button
-                      ref={(el) => {
-                        itemsRef.current[idx] = el;
-                      }}
-                      minH="40px"
-                      key={idx}
-                      onClick={handleItemClick(item)}
-                      fontSize="16px"
-                      fontWeight="normal"
-                      rounded="none"
-                      colorScheme="gray"
-                      role="menuitem"
-                      variant="ghost"
-                      bg={keyboardFocusIndex === idx ? bg : "transparent"}
-                      justifyContent="flex-start"
-                      transition="none"
-                    >
-                      {item}
-                    </Button>
-                  );
-                })}
-              </PopoverContent>
-            </Portal>
+            <Popover.Popup
+              initialFocus={inputRef}
+              className="max-h-[35vh] max-w-[35vw] overflow-y-auto gap-0 p-0"
+              align="start"
+              side="bottom"
+              offset={1}
+            >
+              {filteredItems.map((item, idx) => {
+                return (
+                  <Button
+                    ref={(el) => {
+                      itemsRef.current[idx] = el;
+                    }}
+                    minH="40px"
+                    key={idx}
+                    onClick={handleItemClick(item)}
+                    fontSize="16px"
+                    fontWeight="normal"
+                    rounded="none"
+                    colorScheme="gray"
+                    role="menuitem"
+                    variant="ghost"
+                    bg={keyboardFocusIndex === idx ? bg : "transparent"}
+                    justifyContent="flex-start"
+                    transition="none"
+                  >
+                    {item}
+                  </Button>
+                );
+              })}
+            </Popover.Popup>
           )}
-        </Popover>
+        </Popover.Root>
         {withVariableButton && (
           <VariablesButton onSelectVariable={handleVariableSelected} />
         )}

@@ -1,6 +1,6 @@
-import { DropdownList } from "@/components/DropdownList";
 import type { TableListItemProps } from "@/components/TableList";
 import { TextInput } from "@/components/inputs";
+import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
 import { Stack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
@@ -37,9 +37,9 @@ export const ComparisonItem = ({
         onSelectVariable={handleSelectVariable}
         placeholder={t("variables.search")}
       />
-      <DropdownList
-        currentItem={item.comparisonOperator}
-        onItemSelect={handleSelectComparisonOperator}
+      <BasicSelect
+        value={item.comparisonOperator}
+        onChange={handleSelectComparisonOperator}
         items={Object.values(ComparisonOperators)}
         placeholder={t(
           "blocks.inputs.button.buttonSettings.displayCondition.selectOperator.label",

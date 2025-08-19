@@ -1,6 +1,7 @@
-import { ConfirmModal } from "@/components/ConfirmModal";
+import { ConfirmDialog } from "@/components/ConfirmDialog";
 import { CopyButton } from "@/components/CopyButton";
 import { EditableEmojiOrImageIcon } from "@/components/EditableEmojiOrImageIcon";
+import { HardDriveIcon } from "@/components/icons";
 import { TextInput } from "@/components/inputs";
 import {
   Button,
@@ -49,7 +50,8 @@ export const WorkspaceSettingsForm = ({ onClose }: { onClose: () => void }) => {
               }}
               icon={workspace.icon}
               onChangeIcon={handleChangeIcon}
-              boxSize="40px"
+              size="lg"
+              defaultIcon={HardDriveIcon}
             />
           )}
         </Flex>
@@ -105,19 +107,18 @@ const DeleteWorkspaceButton = ({
       <Button colorScheme="red" variant="outline" onClick={onOpen}>
         {t("workspace.settings.deleteButton.label")}
       </Button>
-      <ConfirmModal
+      <ConfirmDialog
         isOpen={isOpen}
         onConfirm={onConfirm}
         onClose={onClose}
-        message={
-          <Text>
-            {t("workspace.settings.deleteButton.confirmMessage", {
-              workspaceName,
-            })}
-          </Text>
-        }
         confirmButtonLabel="Delete"
-      />
+      >
+        <Text>
+          {t("workspace.settings.deleteButton.confirmMessage", {
+            workspaceName,
+          })}
+        </Text>
+      </ConfirmDialog>
     </>
   );
 };

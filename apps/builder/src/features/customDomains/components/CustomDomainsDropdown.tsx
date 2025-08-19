@@ -1,15 +1,10 @@
-import { ChevronLeftIcon, PlusIcon, TrashIcon } from "@/components/icons";
+import { PlusIcon, TrashIcon } from "@/components/icons";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { trpc } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
 import {
   Button,
   IconButton,
-  Menu,
-  MenuButton,
-  type MenuButtonProps,
-  MenuItem,
-  MenuList,
   Stack,
   Text,
   useDisclosure,
@@ -17,11 +12,13 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import { useMutation } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
+import { Menu } from "@typebot.io/ui/components/Menu";
+import { ChevronDownIcon } from "@typebot.io/ui/icons/ChevronDownIcon";
 import type React from "react";
 import { useState } from "react";
-import { CreateCustomDomainModal } from "./CreateCustomDomainModal";
+import { CreateCustomDomainDialog } from "./CreateCustomDomainDialog";
 
-type Props = Omit<MenuButtonProps, "type"> & {
+type Props = {
   currentCustomDomain?: string;
   onCustomDomainSelect: (domain: string) => void;
 };
@@ -29,7 +26,6 @@ type Props = Omit<MenuButtonProps, "type"> & {
 export const CustomDomainsDropdown = ({
   currentCustomDomain,
   onCustomDomainSelect,
-  ...props
 }: Props) => {
   const { t } = useTranslate();
   const [isDeleting, setIsDeleting] = useState("");
@@ -52,7 +48,7 @@ export const CustomDomainsDropdown = ({
       },
       onError: (error) => {
         toast({
-          context: "Error while deleting custom domain",
+          title: "Error while deleting custom domain",
           description: error.message,
         });
       },
@@ -83,41 +79,28 @@ export const CustomDomainsDropdown = ({
   };
 
   return (
-    <Menu isLazy placement="bottom-start">
+    <Menu.Root>
       {workspace?.id && (
-        <CreateCustomDomainModal
+        <CreateCustomDomainDialog
           workspaceId={workspace.id}
           isOpen={isOpen}
           onClose={onClose}
           onNewDomain={handleNewDomain}
         />
       )}
-      <MenuButton
-        as={Button}
-        rightIcon={<ChevronLeftIcon transform={"rotate(-90deg)"} />}
-        colorScheme="gray"
-        justifyContent="space-between"
-        textAlign="left"
-        {...props}
-      >
+      <Menu.TriggerButton variant="secondary" className="justify-between">
         <Text noOfLines={1} overflowY="visible" h="20px">
           {currentCustomDomain ?? t("customDomain.add")}
         </Text>
-      </MenuButton>
-      <MenuList maxW="500px" shadow="md">
+        <ChevronDownIcon />
+      </Menu.TriggerButton>
+      <Menu.Popup>
         <Stack maxH={"35vh"} overflowY="auto" spacing="0">
           {(data?.customDomains ?? []).map((customDomain) => (
-            <Button
-              role="menuitem"
-              minH="40px"
+            <Menu.Item
               key={customDomain.name}
               onClick={handleMenuItemClick(customDomain.name)}
-              fontSize="16px"
-              fontWeight="normal"
-              rounded="none"
-              colorScheme="gray"
-              variant="ghost"
-              justifyContent="space-between"
+              className="justify-between"
             >
               {customDomain.name}
               <IconButton
@@ -128,20 +111,14 @@ export const CustomDomainsDropdown = ({
                 onClick={handleDeleteDomainClick(customDomain.name)}
                 isLoading={isDeleting === customDomain.name}
               />
-            </Button>
+            </Menu.Item>
           ))}
-          <MenuItem
-            maxW="500px"
-            overflow="hidden"
-            whiteSpace="nowrap"
-            textOverflow="ellipsis"
-            icon={<PlusIcon />}
-            onClick={onOpen}
-          >
+          <Menu.Item onClick={onOpen}>
+            <PlusIcon />
             {t("connectNew")}
-          </MenuItem>
+          </Menu.Item>
         </Stack>
-      </MenuList>
-    </Menu>
+      </Menu.Popup>
+    </Menu.Root>
   );
 };

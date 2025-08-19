@@ -1,6 +1,10 @@
-import { BuoyIcon, ExpandIcon, MinimizeIcon } from "@/components/icons";
+import {
+  BuoyIcon,
+  ExpandIcon,
+  MinimizeIcon,
+  VideoPopoverIcon,
+} from "@/components/icons";
 import { getHelpDocUrl } from "@/features/graph/helpers/getHelpDocUrl";
-import { VideoOnboardingPopover } from "@/features/onboarding/components/VideoOnboardingPopover";
 import {
   Button,
   HStack,
@@ -68,7 +72,11 @@ export const SettingsHoverBar = ({
         </Button>
       )}
       {isVideoOnboardingItemDisplayed && (
-        <VideoOnboardingPopover.TriggerIconButton
+        <IconButton
+          icon={<VideoPopoverIcon />}
+          aria-label={"Open Bubbles help video"}
+          variant="ghost"
+          colorScheme="orange"
           onClick={onVideoOnboardingClick}
           size="xs"
           borderLeftRadius="none"

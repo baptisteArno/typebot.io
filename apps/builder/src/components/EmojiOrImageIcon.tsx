@@ -1,39 +1,50 @@
-import { ToolIcon } from "@/components/icons";
 import { type IconProps, Image, chakra } from "@chakra-ui/react";
 import { isSvgSrc } from "@typebot.io/lib/utils";
+import { cx } from "@typebot.io/ui/lib/cva";
 import React from "react";
 
 type Props = {
   icon?: string | null;
-  emojiFontSize?: string;
-  boxSize?: string;
-  defaultIcon?: (props: IconProps) => JSX.Element;
+  size?: "sm" | "md" | "lg";
+  defaultIcon: (props: IconProps) => JSX.Element;
 };
 
-export const EmojiOrImageIcon = ({
-  icon,
-  boxSize = "25px",
-  emojiFontSize,
-  defaultIcon = ToolIcon,
-}: Props) => {
+export const EmojiOrImageIcon = ({ icon, size = "md", defaultIcon }: Props) => {
   return (
     <>
       {icon ? (
         icon.startsWith("http") || isSvgSrc(icon) ? (
           <Image
             src={icon}
-            boxSize={boxSize}
+            boxSize={cx(
+              size === "sm" && "18px",
+              size === "md" && "25px",
+              size === "lg" && "36px",
+            )}
             objectFit={isSvgSrc(icon) ? undefined : "cover"}
             alt="typebot icon"
             rounded="10%"
           />
         ) : (
-          <chakra.span role="img" fontSize={emojiFontSize}>
+          <chakra.span
+            role="img"
+            className={cx(
+              size === "sm" && "text-xl",
+              size === "md" && "text-2xl",
+              size === "lg" && "text-[2.25rem]",
+            )}
+          >
             {icon}
           </chakra.span>
         )
       ) : (
-        defaultIcon({ boxSize })
+        defaultIcon({
+          boxSize: cx(
+            size === "sm" && "18px",
+            size === "md" && "25px",
+            size === "lg" && "36px",
+          ),
+        })
       )}
     </>
   );

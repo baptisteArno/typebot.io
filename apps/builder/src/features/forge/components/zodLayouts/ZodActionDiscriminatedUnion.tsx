@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { DropdownList } from "@/components/DropdownList";
+import { BasicSelect } from "@/components/inputs/BasicSelect";
 import type { ForgedBlockDefinition } from "@typebot.io/forge-repository/definitions";
 import type { ForgedBlock } from "@typebot.io/forge-repository/schemas";
 import { isDefined } from "@typebot.io/lib/utils";
@@ -34,9 +33,9 @@ export const ZodActionDiscriminatedUnion = ({
   }, [currentOptions]);
   return (
     <>
-      <DropdownList
-        currentItem={blockOptions?.action}
-        onItemSelect={(item) => onDataChange({ ...blockOptions, action: item })}
+      <BasicSelect
+        value={blockOptions?.action}
+        onChange={(item) => onDataChange({ ...blockOptions, action: item })}
         items={
           [...innerSchema._def.optionsMap.keys()].filter(isDefined) as string[]
         }

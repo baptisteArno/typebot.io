@@ -6555,6 +6555,27 @@
                       "enum": [
                         "success"
                       ]
+                    },
+                    "warnings": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "trademarkInfringement"
+                            ]
+                          },
+                          "trademark": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "type",
+                          "trademark"
+                        ]
+                      }
                     }
                   },
                   "required": [

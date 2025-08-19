@@ -1,4 +1,5 @@
 import { Seo } from "@/components/Seo";
+import { toast } from "@/lib/toast";
 import {
   Button,
   Heading,
@@ -9,7 +10,6 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { useQueryState } from "nuqs";
-import { toast } from "sonner";
 import { createEmailMagicLink } from "../helpers/createEmailMagicLink";
 
 export const EmailRedirectPage = () => {
@@ -20,7 +20,7 @@ export const EmailRedirectPage = () => {
 
   const redirectToMagicLink = () => {
     if (!token || !email) {
-      toast.error("Missing token or email query params");
+      toast({ description: "Missing token or email query params" });
       return;
     }
     window.location.assign(

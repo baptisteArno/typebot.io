@@ -1,7 +1,7 @@
 import { TextInput, Textarea } from "@/components/inputs";
+import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { CodeEditor } from "@/components/inputs/CodeEditor";
 import { RadioButtons } from "@/components/inputs/RadioButtons";
-import { Select } from "@/components/inputs/Select";
 import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
 import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
 import { WhatsAppLogo } from "@/components/logos/WhatsAppLogo";
@@ -93,8 +93,8 @@ export const SetVariableSettings = ({ options, onOptionsChange }: Props) => {
           <Text mb="0" fontWeight="medium">
             Value:
           </Text>
-          <Select
-            selectedItem={options?.type ?? defaultSetVariableOptions.type}
+          <BasicSelect
+            value={options?.type ?? defaultSetVariableOptions.type}
             items={setVarTypes.map((type) => ({
               label: type,
               value: type,
@@ -102,7 +102,7 @@ export const SetVariableSettings = ({ options, onOptionsChange }: Props) => {
                 <WhatsAppLogo />
               ) : undefined,
             }))}
-            onSelect={updateValueType}
+            onChange={updateValueType}
           />
         </Stack>
 
@@ -346,11 +346,11 @@ const SetVariableValue = ({
     case "Yesterday":
     case "Tomorrow": {
       return (
-        <Select
+        <BasicSelect
           items={timeZones}
-          onSelect={(timeZone) => onOptionsChange({ ...options, timeZone })}
+          onChange={(timeZone) => onOptionsChange({ ...options, timeZone })}
           placeholder="Select time zone"
-          selectedItem={options?.timeZone}
+          value={options?.timeZone}
         />
       );
     }

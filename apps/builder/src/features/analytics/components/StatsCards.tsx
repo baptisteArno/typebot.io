@@ -11,7 +11,7 @@ import { useTranslate } from "@tolgee/react";
 import type { Stats } from "@typebot.io/results/schemas/answers";
 import React from "react";
 import type { timeFilterValues } from "../constants";
-import { TimeFilterDropdown } from "./TimeFilterDropdown";
+import { TimeFilterSelect } from "./TimeFilterSelect";
 
 const computeCompletionRate =
   (notAvailableLabel: string) =>
@@ -69,11 +69,9 @@ export const StatsCards = ({
           <Skeleton w="50%" h="10px" mt="2" />
         )}
       </Stat>
-      <TimeFilterDropdown
+      <TimeFilterSelect
         timeFilter={timeFilter}
         onTimeFilterChange={onTimeFilterChange}
-        backgroundColor={bg}
-        boxShadow="md"
       />
     </SimpleGrid>
   );

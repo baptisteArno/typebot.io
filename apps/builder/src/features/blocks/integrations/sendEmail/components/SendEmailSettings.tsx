@@ -27,7 +27,7 @@ import { isNotEmpty } from "@typebot.io/lib/utils";
 import type { Variable } from "@typebot.io/variables/schemas";
 import type { Workspace } from "@typebot.io/workspaces/schemas";
 import React from "react";
-import { SmtpConfigModal } from "./SmtpConfigModal";
+import { SmtpCredentialsCreateDialog } from "./SmtpCredentialsCreateDialog";
 
 type Props = {
   options: SendEmailBlock["options"];
@@ -239,7 +239,7 @@ export const SendEmailSettings = ({ options, onOptionsChange }: Props) => {
         </Stack>
       )}
 
-      <SmtpConfigModal
+      <SmtpCredentialsCreateDialog
         isOpen={isOpen}
         onClose={onClose}
         onNewCredentials={updateCredentialsId}

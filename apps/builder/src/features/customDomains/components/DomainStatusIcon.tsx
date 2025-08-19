@@ -1,8 +1,9 @@
+import { MoreInfoTooltip } from "@/components/MoreInfoTooltip";
 import { XCircleIcon } from "@/components/icons";
 import { trpc } from "@/lib/queryClient";
-import { Flex, Tooltip, useDisclosure } from "@chakra-ui/react";
+import { useDisclosure } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
-import { CustomDomainConfigModal } from "./CustomDomainConfigModal";
+import { CustomDomainConfigDialog } from "./CustomDomainConfigDialog";
 
 type Props = {
   domain: string;
@@ -21,12 +22,10 @@ export default function DomainStatusIcon({ domain, workspaceId }: Props) {
 
   return (
     <>
-      <Tooltip label={data?.status}>
-        <Flex onClick={onOpen} cursor="pointer">
-          <XCircleIcon stroke="red.500" />
-        </Flex>
-      </Tooltip>
-      <CustomDomainConfigModal
+      <MoreInfoTooltip icon={<XCircleIcon stroke="red.500" />} onClick={onOpen}>
+        {data?.status}
+      </MoreInfoTooltip>
+      <CustomDomainConfigDialog
         workspaceId={workspaceId}
         isOpen={isOpen}
         domain={domain}

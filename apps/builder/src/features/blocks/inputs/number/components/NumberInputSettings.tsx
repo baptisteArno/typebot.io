@@ -1,6 +1,5 @@
-import { DropdownList } from "@/components/DropdownList";
 import { NumberInput, TextInput } from "@/components/inputs";
-import { Select } from "@/components/inputs/Select";
+import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
 import {
   Accordion,
@@ -127,31 +126,27 @@ export const NumberInputSettings = ({ options, onOptionsChange }: Props) => {
             <AccordionIcon />
           </AccordionButton>
           <AccordionPanel>
-            <DropdownList
+            <BasicSelect
               items={Object.values(NumberInputStyle).map((style) => ({
                 label: t(numberStyleTranslationKeys[style]),
                 value: style,
               }))}
-              currentItem={options?.style ?? defaultNumberInputStyle}
-              onItemSelect={(value) =>
-                handleStyleChange(value as NumberInputStyle)
-              }
+              value={options?.style}
+              defaultValue={defaultNumberInputStyle}
+              onChange={handleStyleChange}
             />
             {options?.style === NumberInputStyle.CURRENCY && (
               <FormControl mt={4}>
                 <FormLabel>
                   {t("blocks.inputs.number.settings.currency.label")}
                 </FormLabel>
-                <Select
+                <BasicSelect
                   items={currencies.map(({ code, description }) => ({
                     label: description,
                     value: code,
                   }))}
-                  onSelect={(value) => handleCurrencyChange(value as string)}
-                  placeholder={t(
-                    "blocks.inputs.number.settings.currency.label",
-                  )}
-                  selectedItem={options?.currency}
+                  onChange={(value) => handleCurrencyChange(value as string)}
+                  value={options?.currency}
                 />
               </FormControl>
             )}
@@ -160,16 +155,15 @@ export const NumberInputSettings = ({ options, onOptionsChange }: Props) => {
                 <FormLabel>
                   {t("blocks.inputs.number.settings.unit.label")}
                 </FormLabel>
-                <Select
+                <BasicSelect
                   items={Object.values(NumberInputUnit).map((unit) => ({
                     label: t(unitTranslationKeys[unit]),
                     value: unit,
                   }))}
-                  onSelect={(value) =>
+                  onChange={(value) =>
                     handleUnitChange(value as NumberInputUnit)
                   }
-                  placeholder={t("blocks.inputs.number.settings.unit.label")}
-                  selectedItem={options?.unit}
+                  value={options?.unit}
                 />
               </FormControl>
             )}

@@ -2,7 +2,7 @@ import { TextLink } from "@/components/TextLink";
 import { CodeEditor } from "@/components/inputs/CodeEditor";
 import { useEditor } from "@/features/editor/providers/EditorProvider";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
-import { parseApiHost } from "@/features/publish/components/embeds/snippetParsers/shared";
+import { parseApiHost } from "@/features/publish/components/deploy/snippetParsers/shared";
 import {
   Code,
   ListItem,

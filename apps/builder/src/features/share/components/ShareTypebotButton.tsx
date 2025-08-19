@@ -1,22 +1,18 @@
 import { UsersIcon } from "@/components/icons";
-import {
-  Button,
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-  Portal,
-  chakra,
-} from "@chakra-ui/react";
+import { useOpenControls } from "@/hooks/useOpenControls";
+import { Button, chakra } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
+import { Popover } from "@typebot.io/ui/components/Popover";
 import React from "react";
 import { SharePopoverContent } from "./SharePopoverContent";
 
 export const ShareTypebotButton = ({ isLoading }: { isLoading: boolean }) => {
+  const controls = useOpenControls();
   const { t } = useTranslate();
 
   return (
-    <Popover isLazy placement="bottom-end">
-      <PopoverTrigger>
+    <Popover.Root {...controls}>
+      <Popover.Trigger>
         <Button
           isLoading={isLoading}
           leftIcon={<UsersIcon fontSize="md" />}
@@ -28,16 +24,10 @@ export const ShareTypebotButton = ({ isLoading }: { isLoading: boolean }) => {
             {t("share.button.label")}
           </chakra.span>
         </Button>
-      </PopoverTrigger>
-      <Portal>
-        <PopoverContent
-          shadow="md"
-          width="430px"
-          rootProps={{ style: { transform: "scale(0)" } }}
-        >
-          <SharePopoverContent />
-        </PopoverContent>
-      </Portal>
-    </Popover>
+      </Popover.Trigger>
+      <Popover.Popup className="w-[430px]" side="bottom" align="end">
+        <SharePopoverContent />
+      </Popover.Popup>
+    </Popover.Root>
   );
 };

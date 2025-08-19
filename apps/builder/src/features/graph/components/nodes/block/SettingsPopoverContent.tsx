@@ -35,52 +35,37 @@ import { ReplyEventSettings } from "@/features/events/components/ReplyEventSetti
 import { useForgedBlock } from "@/features/forge/hooks/useForgedBlock";
 import { VideoOnboardingPopover } from "@/features/onboarding/components/VideoOnboardingPopover";
 import { hasOnboardingVideo } from "@/features/onboarding/helpers/hasOnboardingVideo";
-import {
-  Flex,
-  PopoverArrow,
-  PopoverBody,
-  PopoverContent,
-  Portal,
-  SlideFade,
-  Stack,
-  useColorModeValue,
-  useEventListener,
-} from "@chakra-ui/react";
+import { Flex, SlideFade, Stack, useEventListener } from "@chakra-ui/react";
 import type { BlockWithOptions } from "@typebot.io/blocks-core/schemas/schema";
 import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
 import { IntegrationBlockType } from "@typebot.io/blocks-integrations/constants";
 import { LogicBlockType } from "@typebot.io/blocks-logic/constants";
 import { EventType } from "@typebot.io/events/constants";
 import type { TEventWithOptions } from "@typebot.io/events/schemas";
-import { useEffect, useRef, useState } from "react";
+import { Popover } from "@typebot.io/ui/components/Popover";
+import { cn } from "@typebot.io/ui/lib/cn";
+import { useRef, useState } from "react";
 import { ForgedBlockSettings } from "../../../../forge/components/ForgedBlockSettings";
 import { SettingsHoverBar } from "./SettingsHoverBar";
 
 type Props = {
   node: BlockWithOptions | TEventWithOptions;
   groupId: string | undefined;
+  isExpanded: boolean;
+  onExpandClick: () => void;
   onNodeChange: (
     updates: Partial<BlockWithOptions | TEventWithOptions>,
   ) => void;
-  isOpen?: boolean;
+  side?: "left" | "right" | "top" | "bottom";
 };
 
-export const SettingsPopoverContent = ({ isOpen, ...props }: Props) => {
+export const SettingsPopoverContent = (props: Props) => {
   const [isHovering, setIsHovering] = useState(false);
-  const arrowColor = useColorModeValue("white", "gray.900");
   const { blockDef } = useForgedBlock({
     nodeType: props.node.type,
   });
-  const [isExpanded, setIsExpanded] = useState(false);
   const ref = useRef<HTMLDivElement | null>(null);
   const handleMouseDown = (e: React.MouseEvent) => e.stopPropagation();
-
-  useEffect(() => {
-    if (!isExpanded || isOpen) return;
-    setTimeout(() => {
-      setIsExpanded(false);
-    }, 300);
-  }, [isOpen, isExpanded]);
 
   const handleMouseWheel = (e: WheelEvent) => {
     e.stopPropagation();
@@ -88,57 +73,55 @@ export const SettingsPopoverContent = ({ isOpen, ...props }: Props) => {
   useEventListener("wheel", handleMouseWheel, ref.current);
 
   return (
-    <Portal>
-      <PopoverContent
-        onMouseDown={handleMouseDown}
-        pos="relative"
-        w={isExpanded ? "650px" : undefined}
-        maxH={isExpanded ? "70vh" : "400px"}
-        h="full"
+    <Popover.Popup
+      ref={ref}
+      onMouseDown={handleMouseDown}
+      className={cn(
+        "p-4 min-w-[300px]",
+        props.isExpanded
+          ? "w-[calc(var(--available-width)-42px)]"
+          : "max-w-[400px]",
+        props.isExpanded ? "max-h-[80vh]" : "max-h-[60vh]",
+      )}
+      onMouseEnter={() => setIsHovering(true)}
+      onMouseLeave={() => setIsHovering(false)}
+      side={props.side}
+    >
+      <VideoOnboardingPopover
+        type={props.node.type}
+        blockDef={blockDef}
+        offset={20}
       >
-        <PopoverArrow bgColor={arrowColor} />
-
-        <VideoOnboardingPopover.Root type={props.node.type} blockDef={blockDef}>
-          {({ onOpen }) => (
-            <PopoverBody
-              py="3"
-              overflowY="auto"
-              ref={ref}
-              shadow="md"
-              onMouseEnter={() => setIsHovering(true)}
-              onMouseLeave={() => setIsHovering(false)}
+        {({ onToggle }) => (
+          <Stack spacing={3}>
+            <Flex
+              w="full"
+              pos="absolute"
+              top="-56px"
+              height="64px"
+              right={0}
+              justifyContent="flex-end"
+              align="center"
             >
-              <Stack spacing={3}>
-                <Flex
-                  w="full"
-                  pos="absolute"
-                  top="-56px"
-                  height="64px"
-                  right={0}
-                  justifyContent="flex-end"
-                  align="center"
-                >
-                  <SlideFade in={isHovering} unmountOnExit>
-                    <SettingsHoverBar
-                      isExpanded={isExpanded}
-                      onExpandClick={() => setIsExpanded(!isExpanded)}
-                      onVideoOnboardingClick={onOpen}
-                      nodeType={props.node.type}
-                      blockDef={blockDef}
-                      isVideoOnboardingItemDisplayed={hasOnboardingVideo({
-                        nodeType: props.node.type,
-                        blockDef,
-                      })}
-                    />
-                  </SlideFade>
-                </Flex>
-                <NodeSettings {...props} />
-              </Stack>
-            </PopoverBody>
-          )}
-        </VideoOnboardingPopover.Root>
-      </PopoverContent>
-    </Portal>
+              <SlideFade in={isHovering} unmountOnExit>
+                <SettingsHoverBar
+                  isExpanded={props.isExpanded}
+                  onExpandClick={props.onExpandClick}
+                  onVideoOnboardingClick={onToggle}
+                  nodeType={props.node.type}
+                  blockDef={blockDef}
+                  isVideoOnboardingItemDisplayed={hasOnboardingVideo({
+                    nodeType: props.node.type,
+                    blockDef,
+                  })}
+                />
+              </SlideFade>
+            </Flex>
+            <NodeSettings {...props} />
+          </Stack>
+        )}
+      </VideoOnboardingPopover>
+    </Popover.Popup>
   );
 };
 

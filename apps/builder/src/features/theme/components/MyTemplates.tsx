@@ -7,7 +7,7 @@ import { useTranslate } from "@tolgee/react";
 import type { ThemeTemplate } from "@typebot.io/theme/schemas";
 import type { TypebotV6 } from "@typebot.io/typebot/schemas/typebot";
 import { areThemesEqual } from "../helpers/areThemesEqual";
-import { SaveThemeModal } from "./SaveThemeModal";
+import { SaveThemeDialog } from "./SaveThemeDialog";
 import { ThemeTemplateCard } from "./ThemeTemplateCard";
 
 type Props = {
@@ -44,7 +44,7 @@ export const MyTemplates = ({
     (themeTemplate) => themeTemplate.id === selectedTemplateId,
   );
 
-  const closeModalAndSelectTemplate = (
+  const closeDialogAndSelectTemplate = (
     template?: Pick<ThemeTemplate, "id" | "theme">,
   ) => {
     if (template) onTemplateSelect(template);
@@ -59,11 +59,11 @@ export const MyTemplates = ({
           {t("theme.sideMenu.template.myTemplates.saveTheme")}
         </Button>
       )}
-      <SaveThemeModal
+      <SaveThemeDialog
         workspaceId={workspaceId}
         selectedTemplate={selectedTemplate}
         isOpen={isOpen}
-        onClose={closeModalAndSelectTemplate}
+        onClose={closeDialogAndSelectTemplate}
         theme={currentTheme}
       />
       <SimpleGrid columns={2} spacing={4}>

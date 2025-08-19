@@ -1,6 +1,6 @@
 import { EmojiOrImageIcon } from "@/components/EmojiOrImageIcon";
 import { TypebotLogo } from "@/components/TypebotLogo";
-import { CopyIcon, PlayIcon } from "@/components/icons";
+import { CopyIcon, PlayIcon, ToolIcon } from "@/components/icons";
 import { useUser } from "@/features/user/hooks/useUser";
 import { useRightPanel } from "@/hooks/useRightPanel";
 import {
@@ -88,7 +88,7 @@ export const GuestTypebotHeader = () => {
       >
         <HStack alignItems="center" spacing={3}>
           {typebot && (
-            <EmojiOrImageIcon icon={typebot.icon} emojiFontSize="2xl" />
+            <EmojiOrImageIcon icon={typebot.icon} defaultIcon={ToolIcon} />
           )}
           <Text
             noOfLines={2}

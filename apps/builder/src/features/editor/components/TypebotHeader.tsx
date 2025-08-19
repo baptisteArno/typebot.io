@@ -6,6 +6,7 @@ import {
   CopyIcon,
   PlayIcon,
   RedoIcon,
+  ToolIcon,
   UndoIcon,
 } from "@/components/icons";
 import { PublishButton } from "@/features/publish/components/PublishButton";
@@ -13,6 +14,7 @@ import { ShareTypebotButton } from "@/features/share/components/ShareTypebotButt
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { isCloudProdInstance } from "@/helpers/isCloudProdInstance";
 import { useKeyboardShortcuts } from "@/hooks/useKeyboardShortcuts";
+import { useOpenControls } from "@/hooks/useOpenControls";
 import { useRightPanel } from "@/hooks/useRightPanel";
 import {
   Button,
@@ -22,7 +24,6 @@ import {
   Spinner,
   type StackProps,
   Text,
-  Tooltip,
   chakra,
   useColorModeValue,
   useDisclosure,
@@ -30,6 +31,7 @@ import {
 import { useTranslate } from "@tolgee/react";
 import { isDefined, isNotDefined } from "@typebot.io/lib/utils";
 import { Plan } from "@typebot.io/prisma/enum";
+import { Tooltip } from "@typebot.io/ui/components/Tooltip";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
@@ -99,19 +101,22 @@ const LeftElements = ({
     isSavingLoading,
   } = useTypebot();
 
-  const [isRedoShortcutTooltipOpen, setRedoShortcutTooltipOpen] =
-    useState(false);
-
-  const [isUndoShortcutTooltipOpen, setUndoShortcutTooltipOpen] =
-    useState(false);
-
-  const hideUndoShortcutTooltipLater = useDebouncedCallback(() => {
-    setUndoShortcutTooltipOpen(false);
-  }, 1000);
-
-  const hideRedoShortcutTooltipLater = useDebouncedCallback(() => {
-    setRedoShortcutTooltipOpen(false);
-  }, 1000);
+  const [isUndoExecuted, setIsUndoExecuted] = useState(false);
+  const [isRedoExecuted, setIsRedoExecuted] = useState(false);
+  const undoOpenControls = useOpenControls({
+    onClose: () => {
+      setTimeout(() => {
+        setIsUndoExecuted(false);
+      }, 150);
+    },
+  });
+  const redoOpenControls = useOpenControls({
+    onClose: () => {
+      setTimeout(() => {
+        setIsRedoExecuted(false);
+      }, 150);
+    },
+  });
 
   const handleNameSubmit = (name: string) =>
     updateTypebot({ updates: { name } });
@@ -119,20 +124,37 @@ const LeftElements = ({
   const handleChangeIcon = (icon: string) =>
     updateTypebot({ updates: { icon } });
 
+  const handleUndoClick = () => {
+    if (!canUndo) return;
+    setIsUndoExecuted(true);
+    undo();
+  };
+
+  const handleRedoClick = () => {
+    if (!canRedo) return;
+    setIsRedoExecuted(true);
+    redo();
+  };
+
+  const debouncedCloseUndoTooltip = useDebouncedCallback(() => {
+    undoOpenControls.onClose();
+  }, 1000);
+  const debouncedCloseRedoTooltip = useDebouncedCallback(() => {
+    redoOpenControls.onClose();
+  }, 1000);
+
   useKeyboardShortcuts({
     undo: () => {
       if (!canUndo) return;
-      hideUndoShortcutTooltipLater.flush();
-      setUndoShortcutTooltipOpen(true);
-      hideUndoShortcutTooltipLater();
-      undo();
+      undoOpenControls.onOpen();
+      handleUndoClick();
+      debouncedCloseUndoTooltip();
     },
     redo: () => {
       if (!canRedo) return;
-      hideUndoShortcutTooltipLater.flush();
-      setRedoShortcutTooltipOpen(true);
-      hideRedoShortcutTooltipLater();
-      redo();
+      redoOpenControls.onOpen();
+      handleRedoClick();
+      debouncedCloseRedoTooltip();
     },
   });
 
@@ -171,6 +193,7 @@ const LeftElements = ({
               }}
               icon={typebot?.icon}
               onChangeIcon={handleChangeIcon}
+              defaultIcon={ToolIcon}
             />
           )}
           (
@@ -184,43 +207,45 @@ const LeftElements = ({
 
         {currentUserMode === "write" && (
           <HStack>
-            <Tooltip
-              label={
-                isUndoShortcutTooltipOpen
-                  ? t("editor.header.undo.tooltip.label")
-                  : t("editor.header.undoButton.label")
-              }
-              isOpen={isUndoShortcutTooltipOpen ? true : undefined}
-              hasArrow={isUndoShortcutTooltipOpen}
-            >
-              <IconButton
-                display={["none", "flex"]}
-                icon={<UndoIcon fontSize="16px" />}
-                size="sm"
-                aria-label={t("editor.header.undoButton.label")}
-                onClick={undo}
-                isDisabled={!canUndo}
+            <Tooltip.Root {...undoOpenControls} keepOpenOnClick>
+              <Tooltip.Trigger
+                render={
+                  <IconButton
+                    display={["none", "flex"]}
+                    icon={<UndoIcon fontSize="16px" />}
+                    size="sm"
+                    aria-label={t("editor.header.undoButton.label")}
+                    onClick={handleUndoClick}
+                    isDisabled={!canUndo}
+                  />
+                }
               />
-            </Tooltip>
+              <Tooltip.Popup>
+                {isUndoExecuted
+                  ? t("editor.header.undo.tooltip.label")
+                  : t("editor.header.undoButton.label")}
+              </Tooltip.Popup>
+            </Tooltip.Root>
 
-            <Tooltip
-              label={
-                isRedoShortcutTooltipOpen
-                  ? t("editor.header.undo.tooltip.label")
-                  : t("editor.header.redoButton.label")
-              }
-              isOpen={isRedoShortcutTooltipOpen ? true : undefined}
-              hasArrow={isRedoShortcutTooltipOpen}
-            >
-              <IconButton
-                display={["none", "flex"]}
-                icon={<RedoIcon fontSize="16px" />}
-                size="sm"
-                aria-label={t("editor.header.redoButton.label")}
-                onClick={redo}
-                isDisabled={!canRedo}
+            <Tooltip.Root {...redoOpenControls} keepOpenOnClick>
+              <Tooltip.Trigger
+                render={
+                  <IconButton
+                    display={["none", "flex"]}
+                    icon={<RedoIcon fontSize="16px" />}
+                    size="sm"
+                    aria-label={t("editor.header.redoButton.label")}
+                    onClick={handleRedoClick}
+                    isDisabled={!canRedo}
+                  />
+                }
               />
-            </Tooltip>
+              <Tooltip.Popup>
+                {isRedoExecuted
+                  ? t("editor.header.undo.tooltip.label")
+                  : t("editor.header.redoButton.label")}
+              </Tooltip.Popup>
+            </Tooltip.Root>
           </HStack>
         )}
         <Button

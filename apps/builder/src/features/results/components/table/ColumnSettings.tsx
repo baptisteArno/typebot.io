@@ -1,6 +1,6 @@
+import { Portal } from "@/components/Portal";
 import { EyeIcon, EyeOffIcon, GripIcon } from "@/components/icons";
-import { Flex, HStack, IconButton, Portal, Stack } from "@chakra-ui/react";
-import { Text } from "@chakra-ui/react";
+import { Flex, HStack, IconButton, Stack, Text } from "@chakra-ui/react";
 import {
   DndContext,
   type DragEndEvent,

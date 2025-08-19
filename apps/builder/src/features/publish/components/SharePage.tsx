@@ -27,7 +27,7 @@ import { Plan } from "@typebot.io/prisma/enum";
 import { parseDefaultPublicId } from "../helpers/parseDefaultPublicId";
 import { isPublicDomainAvailableQuery } from "../queries/isPublicDomainAvailableQuery";
 import { EditableUrl } from "./EditableUrl";
-import { integrationsList } from "./embeds/EmbedButton";
+import { integrationsList } from "./deploy/DeployButton";
 
 export const SharePage = () => {
   const { t } = useTranslate();
