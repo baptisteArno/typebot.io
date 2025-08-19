@@ -6,14 +6,15 @@ import {
   TrashIcon,
 } from "@/components/icons";
 import { isMac } from "@/helpers/isMac";
+import { toast } from "@/lib/toast";
 import {
   HStack,
   IconButton,
-  Tooltip,
   useClipboard,
   useColorModeValue,
 } from "@chakra-ui/react";
 import { EventType } from "@typebot.io/events/constants";
+import { Tooltip } from "@typebot.io/ui/components/Tooltip";
 
 type Props = {
   eventId: string;
@@ -28,7 +29,7 @@ export const EventFocusToolbar = ({
   onPlayClick,
   onSettingsClick,
 }: Props) => {
-  const { hasCopied, onCopy } = useClipboard(eventId);
+  const { onCopy } = useClipboard(eventId);
 
   const dispatchCopyEvent = () => {
     if (type === EventType.START) return;
@@ -84,22 +85,7 @@ export const EventFocusToolbar = ({
           size="sm"
         />
       )}
-      <Tooltip
-        label={hasCopied ? "Copied!" : eventId}
-        closeOnClick={false}
-        placement="top"
-      >
-        <IconButton
-          icon={<InfoIcon />}
-          borderRightWidth="1px"
-          borderRightRadius="none"
-          borderLeftRadius="none"
-          aria-label={"Show group info"}
-          variant="ghost"
-          size="sm"
-          onClick={onCopy}
-        />
-      </Tooltip>
+
       {type !== EventType.START && (
         <IconButton
           aria-label="Delete"

@@ -2,35 +2,22 @@ import assert from "assert";
 import {
   BookIcon,
   DownloadIcon,
-  FileCurlyIcon,
   MoreVerticalIcon,
   SettingsIcon,
 } from "@/components/icons";
-import { ParentModalProvider } from "@/features/graph/providers/ParentModalProvider";
 import { parseDefaultPublicId } from "@/features/publish/helpers/parseDefaultPublicId";
-import { useRightPanel } from "@/hooks/useRightPanel";
-import {
-  HStack,
-  IconButton,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-  type StackProps,
-  useColorModeValue,
-  useDisclosure,
-} from "@chakra-ui/react";
+import { useDisclosure } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
+import { Menu } from "@typebot.io/ui/components/Menu";
 import React, { useState } from "react";
 import { useTypebot } from "../providers/TypebotProvider";
-import { EditorSettingsModal } from "./EditorSettingsModal";
+import { EditorSettingsDialog } from "./EditorSettingsDialog";
 
-export const BoardMenuButton = (props: StackProps) => {
+export const BoardMenuButton = () => {
   const { typebot, currentUserMode } = useTypebot();
   const [isDownloading, setIsDownloading] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { t } = useTranslate();
-  const [, setRightPanel] = useRightPanel();
 
   const downloadFlow = () => {
     assert(typebot);
@@ -53,41 +40,32 @@ export const BoardMenuButton = (props: StackProps) => {
     window.open("https://docs.typebot.io/editor/graph", "_blank");
 
   return (
-    <HStack rounded="md" spacing="4" {...props}>
-      <IconButton
-        icon={<FileCurlyIcon />}
-        aria-label="Open variables drawer"
-        size="sm"
-        shadow="md"
-        bgColor={useColorModeValue("white", undefined)}
-        onClick={() => setRightPanel("variables")}
-      />
-      <Menu>
-        <MenuButton
-          as={IconButton}
-          icon={<MoreVerticalIcon transform={"rotate(90deg)"} />}
-          isLoading={isDownloading}
-          size="sm"
-          shadow="md"
-          bgColor={useColorModeValue("white", undefined)}
-        />
-        <MenuList>
-          <MenuItem icon={<BookIcon />} onClick={redirectToDocumentation}>
-            {t("editor.graph.menu.documentationItem.label")}
-          </MenuItem>
-          <MenuItem icon={<SettingsIcon />} onClick={onOpen}>
-            {t("editor.graph.menu.editorSettingsItem.label")}
-          </MenuItem>
-          {currentUserMode !== "guest" ? (
-            <MenuItem icon={<DownloadIcon />} onClick={downloadFlow}>
-              {t("editor.graph.menu.exportFlowItem.label")}
-            </MenuItem>
-          ) : null}
-        </MenuList>
-        <ParentModalProvider>
-          <EditorSettingsModal isOpen={isOpen} onClose={onClose} />
-        </ParentModalProvider>
-      </Menu>
-    </HStack>
+    <Menu.Root>
+      <Menu.TriggerButton
+        disabled={isDownloading}
+        size="icon"
+        className="size-8"
+        variant="secondary"
+      >
+        <MoreVerticalIcon transform={"rotate(90deg)"} />
+      </Menu.TriggerButton>
+      <Menu.Popup align="end">
+        <Menu.Item onClick={redirectToDocumentation}>
+          <BookIcon />
+          {t("editor.graph.menu.documentationItem.label")}
+        </Menu.Item>
+        <Menu.Item onClick={onOpen}>
+          <SettingsIcon />
+          {t("editor.graph.menu.editorSettingsItem.label")}
+        </Menu.Item>
+        {currentUserMode !== "guest" ? (
+          <Menu.Item onClick={downloadFlow}>
+            <DownloadIcon />
+            {t("editor.graph.menu.exportFlowItem.label")}
+          </Menu.Item>
+        ) : null}
+      </Menu.Popup>
+      <EditorSettingsDialog isOpen={isOpen} onClose={onClose} />
+    </Menu.Root>
   );
 };

@@ -44,7 +44,7 @@ const Popup = ({
   ...props
 }: DialogPrimitive.Popup.Props) => (
   <DialogPrimitive.Portal>
-    <DialogPrimitive.Backdrop className="fixed inset-0 w-full bg-gray-12/50 data-[open]:animate-in data-[open]:fade-in data-[closed]:animate-out data-[closed]:fade-out" />
+    <DialogPrimitive.Backdrop className="fixed inset-0 w-full bg-gray-12/50 dark:bg-gray-1/70 data-[open]:animate-in data-[open]:fade-in data-[closed]:animate-out data-[closed]:fade-out" />
     <div
       className={cn(
         "flex justify-center items-start fixed top-0 w-full py-12 h-full overflow-y-auto",
@@ -60,7 +60,7 @@ const Popup = ({
       >
         {children}
         <div
-          className="size-full absolute top-0 left-0 bg-gray-12/20 rounded-[calc(.75rem-1px)] hidden"
+          className="size-full absolute top-0 left-0 bg-gray-12/20 dark:bg-gray-1/60 rounded-[calc(.75rem-1px)] hidden"
           data-scope="inside-backdrop"
         />
       </DialogPrimitive.Popup>

@@ -15,7 +15,7 @@ export const generateVariables = createAction({
     models: { type: "static", models: chatModels.concat(reasoningModels) },
   }),
   aiGenerate: {
-    fetcherId: "fetchModels",
+    models: { type: "static", items: chatModels.concat(reasoningModels) },
     getModel: ({ credentials, model }) =>
       createOpenAI({
         apiKey: credentials.apiKey,

@@ -25,7 +25,6 @@ export const SmtpCredentialsCreateDialog = ({
 }: Props) => {
   return (
     <Dialog.Root isOpen={isOpen} onClose={onClose}>
-      <SmtpCredentialsDialogTitle mode="create" />
       <SmtpCredentialsCreateDialogBody
         onNewCredentials={(id) => {
           onNewCredentials(id);
@@ -107,6 +106,7 @@ export const SmtpCredentialsCreateDialogBody = ({
   };
   return (
     <Dialog.Popup render={<form onSubmit={handleCreateClick} />}>
+      <SmtpCredentialsDialogTitle mode="create" />
       <SmtpConfigForm config={smtpConfig} onConfigChange={setSmtpConfig} />
 
       <Dialog.Footer>

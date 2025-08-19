@@ -1,17 +1,8 @@
 import { ImageUploadContent } from "@/components/ImageUploadContent";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
+import { useOpenControls } from "@/hooks/useOpenControls";
 import { useOutsideClick } from "@/hooks/useOutsideClick";
-import {
-  Button,
-  Flex,
-  Image,
-  Popover,
-  PopoverAnchor,
-  PopoverContent,
-  Portal,
-  Text,
-  useDisclosure,
-} from "@chakra-ui/react";
+import { Button, Flex, Image, Text, useDisclosure } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { isNotEmpty } from "@typebot.io/lib/utils";
 import {
@@ -20,6 +11,7 @@ import {
   defaultBackgroundType,
 } from "@typebot.io/theme/constants";
 import type { Background } from "@typebot.io/theme/schemas";
+import { Popover } from "@typebot.io/ui/components/Popover";
 import React from "react";
 import { ColorPicker } from "../../../../components/ColorPicker";
 
@@ -32,30 +24,23 @@ export const BackgroundContent = ({
   background,
   onBackgroundContentChange,
 }: BackgroundContentProps) => {
-  const { isOpen, onClose, onOpen } = useDisclosure();
+  const controls = useOpenControls();
   const { t } = useTranslate();
   const { typebot } = useTypebot();
   const handleContentChange = (content: string) =>
     onBackgroundContentChange(content);
   const popoverContainerRef = React.useRef<HTMLDivElement>(null);
 
-  useOutsideClick({
-    ref: popoverContainerRef,
-    handler: onClose,
-    isEnabled: isOpen,
-  });
-
   if ((background?.type ?? defaultBackgroundType) === BackgroundType.IMAGE) {
     if (!typebot) return null;
     return (
       <Flex ref={popoverContainerRef}>
-        <Popover isLazy isOpen={isOpen} placement="top">
-          <PopoverAnchor>
+        <Popover.Root {...controls}>
+          <Popover.Trigger>
             {isNotEmpty(background?.content) ? (
               <Image
                 src={background?.content}
                 alt={t("theme.sideMenu.global.background.image.alt")}
-                onClick={onOpen}
                 cursor="pointer"
                 _hover={{ filter: "brightness(.9)" }}
                 transition="filter 200ms"
@@ -65,33 +50,26 @@ export const BackgroundContent = ({
                 objectFit="cover"
               />
             ) : (
-              <Button onClick={onOpen} w="full">
+              <Button w="full">
                 {t("theme.sideMenu.global.background.image.button")}
               </Button>
             )}
-          </PopoverAnchor>
-          <Portal>
-            <PopoverContent
-              p="4"
-              w="500px"
-              onMouseDown={(e) => e.stopPropagation()}
-              onPointerDown={(e) => e.stopPropagation()}
-            >
-              <ImageUploadContent
-                uploadFileProps={{
-                  workspaceId: typebot.workspaceId,
-                  typebotId: typebot.id,
-                  fileName: "background",
-                }}
-                defaultUrl={background?.content}
-                onSubmit={handleContentChange}
-                additionalTabs={{
-                  unsplash: true,
-                }}
-              />
-            </PopoverContent>
-          </Portal>
-        </Popover>
+          </Popover.Trigger>
+          <Popover.Popup className="w-[500px]" side="top">
+            <ImageUploadContent
+              uploadFileProps={{
+                workspaceId: typebot.workspaceId,
+                typebotId: typebot.id,
+                fileName: "background",
+              }}
+              defaultUrl={background?.content}
+              onSubmit={handleContentChange}
+              additionalTabs={{
+                unsplash: true,
+              }}
+            />
+          </Popover.Popup>
+        </Popover.Root>
       </Flex>
     );
   }

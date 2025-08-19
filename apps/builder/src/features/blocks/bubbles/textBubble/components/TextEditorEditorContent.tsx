@@ -1,21 +1,15 @@
 import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
+import { useOpenControls } from "@/hooks/useOpenControls";
 import { useOutsideClick } from "@/hooks/useOutsideClick";
 import { editorStyle } from "@/lib/plate";
-import {
-  Flex,
-  Popover,
-  PopoverAnchor,
-  PopoverContent,
-  Portal,
-  Stack,
-  useColorModeValue,
-} from "@chakra-ui/react";
+import { Stack, useColorModeValue } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { colors } from "@typebot.io/ui/chakraTheme";
+import { Popover } from "@typebot.io/ui/components/Popover";
 import type { Variable } from "@typebot.io/variables/schemas";
 import { focusEditor, insertText, selectEditor } from "@udecode/plate-common";
 import { PlateContent, useEditorRef } from "@udecode/plate-core";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { TextEditorToolBar } from "./TextEditorToolBar";
 
 type Props = {
@@ -24,17 +18,18 @@ type Props = {
 export const TextEditorEditorContent = ({ closeEditor }: Props) => {
   const { t } = useTranslate();
   const editor = useEditorRef();
-  const [isVariableDropdownOpen, setIsVariableDropdownOpen] = useState(false);
+  const variablesPopoverControls = useOpenControls();
   const [isFirstFocus, setIsFirstFocus] = useState(true);
+  const [variablePopoverAnchorCoords, setVariablePopoverAnchorCoords] =
+    useState<{ top: number; left: number } | null>({ top: 0, left: 0 });
 
-  const varDropdownRef = useRef<HTMLDivElement | null>(null);
   const rememberedSelection = useRef<typeof editor.selection | null>(null);
   const textEditorRef = useRef<HTMLDivElement>(null);
   const plateContentRef = useRef<HTMLDivElement>(null);
 
   const handleVariableSelected = (variable?: Variable) => {
-    setIsVariableDropdownOpen(false);
     if (!variable) return;
+    variablesPopoverControls.onClose();
     focusEditor(editor);
     insertText(editor, "{{" + variable.name + "}}");
   };
@@ -49,7 +44,7 @@ export const TextEditorEditorContent = ({ closeEditor }: Props) => {
     if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) closeEditor();
   };
 
-  const computeTargetCoord = useCallback(() => {
+  const openVariablePopover = () => {
     if (rememberedSelection.current) return { top: 0, left: 0 };
     const selection = window.getSelection();
     const relativeParent = textEditorRef.current;
@@ -57,21 +52,12 @@ export const TextEditorEditorContent = ({ closeEditor }: Props) => {
     const range = selection.getRangeAt(0);
     const selectionBoundingRect = range.getBoundingClientRect();
     const relativeRect = relativeParent.getBoundingClientRect();
-    return {
+    setVariablePopoverAnchorCoords({
       top: selectionBoundingRect.bottom - relativeRect.top,
       left: selectionBoundingRect.left - relativeRect.left,
-    };
-  }, []);
-
-  useEffect(() => {
-    if (!isVariableDropdownOpen) return;
-    const el = varDropdownRef.current;
-    if (!el) return;
-    const { top, left } = computeTargetCoord();
-    if (top === 0 && left === 0) return;
-    el.style.top = `${top}px`;
-    el.style.left = `${left}px`;
-  }, [computeTargetCoord, isVariableDropdownOpen]);
+    });
+    variablesPopoverControls.onOpen();
+  };
 
   return (
     <Stack
@@ -104,16 +90,14 @@ export const TextEditorEditorContent = ({ closeEditor }: Props) => {
         },
       }}
     >
-      <TextEditorToolBar
-        onVariablesButtonClick={() => setIsVariableDropdownOpen(true)}
-      />
+      <TextEditorToolBar onVariablesButtonClick={openVariablePopover} />
       <PlateContent
         ref={plateContentRef}
         onKeyDown={handleKeyDown}
         style={editorStyle(useColorModeValue("white", colors.gray[900]))}
         autoFocus
         onClick={() => {
-          setIsVariableDropdownOpen(false);
+          variablesPopoverControls.onClose();
         }}
         onFocus={() => {
           rememberedSelection.current = null;
@@ -130,23 +114,33 @@ export const TextEditorEditorContent = ({ closeEditor }: Props) => {
         }}
         aria-label="Text editor"
       />
-      <Popover isOpen={isVariableDropdownOpen} isLazy>
-        <PopoverAnchor>
-          <Flex pos="absolute" ref={varDropdownRef} />
-        </PopoverAnchor>
-        <Portal>
-          <PopoverContent>
-            <VariableSearchInput
-              initialVariableId={undefined}
-              onSelectVariable={handleVariableSelected}
-              placeholder={t(
-                "editor.blocks.bubbles.textEditor.searchVariable.placeholder",
-              )}
-              autoFocus
-            />
-          </PopoverContent>
-        </Portal>
-      </Popover>
+      <Popover.Root
+        isOpen={variablesPopoverControls.isOpen}
+        onClose={variablesPopoverControls.onClose}
+      >
+        <Popover.Trigger
+          className="absolute"
+          style={{
+            top: variablePopoverAnchorCoords?.top + "px",
+            left: variablePopoverAnchorCoords?.left + "px",
+          }}
+        />
+        <Popover.Popup
+          className="p-0"
+          offset={0}
+          // Prevent the editor from closing when clicking on the variable search input
+          onPointerDown={(e) => e.stopPropagation()}
+        >
+          <VariableSearchInput
+            initialVariableId={undefined}
+            onSelectVariable={handleVariableSelected}
+            placeholder={t(
+              "editor.blocks.bubbles.textEditor.searchVariable.placeholder",
+            )}
+            autoFocus
+          />
+        </Popover.Popup>
+      </Popover.Root>
     </Stack>
   );
 };

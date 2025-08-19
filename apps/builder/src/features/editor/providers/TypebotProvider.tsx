@@ -135,11 +135,12 @@ export const TypebotProvider = ({
         onError: (error) => {
           if (error.data?.code === "CONFLICT") {
             toast({
-              context: "Could not update the typebot",
+              title: "Could not update the typebot",
               description:
                 "We detected that the typebot was updated since you last saved it so we couldn't save your current changes. If it is not expected, we suggest you overwrite the changes.",
-              action: {
-                label: "Overwrite",
+              actionProps: {
+                disabled: updateTypebotStatus === "pending",
+                children: "Overwrite",
                 onClick: async () => {
                   await saveTypebot(undefined, true);
                 },
@@ -148,7 +149,7 @@ export const TypebotProvider = ({
             return;
           }
           toast({
-            context: "Error while updating typebot",
+            title: "Error while updating typebot",
             description: error.message,
           });
         },

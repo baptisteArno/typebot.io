@@ -1,7 +1,8 @@
 import { CopyIcon, TrashIcon } from "@/components/icons";
 import { isMac } from "@/helpers/isMac";
-import { MenuItem, MenuList } from "@chakra-ui/react";
-export const EventNodeContextMenu = () => {
+import { ContextMenu } from "@typebot.io/ui/components/ContextMenu";
+
+export const EventNodeContextMenuPopup = () => {
   const handleDeleteClick = () =>
     dispatchEvent(new KeyboardEvent("keydown", { key: "Backspace" }));
 
@@ -14,13 +15,15 @@ export const EventNodeContextMenu = () => {
     );
 
   return (
-    <MenuList>
-      <MenuItem icon={<CopyIcon />} onClick={handleDuplicateClick}>
+    <ContextMenu.Popup>
+      <ContextMenu.Item onClick={handleDuplicateClick}>
+        <CopyIcon />
         Duplicate
-      </MenuItem>
-      <MenuItem icon={<TrashIcon />} onClick={handleDeleteClick}>
+      </ContextMenu.Item>
+      <ContextMenu.Item onClick={handleDeleteClick} className="text-red-10">
+        <TrashIcon />
         Delete
-      </MenuItem>
-    </MenuList>
+      </ContextMenu.Item>
+    </ContextMenu.Popup>
   );
 };

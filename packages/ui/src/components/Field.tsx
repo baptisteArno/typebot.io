@@ -4,7 +4,7 @@ import { cn } from "../lib/cn";
 const Root = ({ className, ...props }: PrimitiveField.Root.Props) => (
   <PrimitiveField.Root
     {...props}
-    className={cn(className, "flex flex-col gap-1")}
+    className={cn("flex flex-col gap-1", className)}
   />
 );
 

@@ -1,5 +1,5 @@
 import { AlignLeftTextIcon } from "@/components/icons";
-import { TimeFilterDropdown } from "@/features/analytics/components/TimeFilterDropdown";
+import { TimeFilterSelect } from "@/features/analytics/components/TimeFilterSelect";
 import type { timeFilterValues } from "@/features/analytics/constants";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import {
@@ -227,10 +227,10 @@ export const ResultsTable = ({
             onClearSelection={() => setRowSelection({})}
           />
         )}
-        <TimeFilterDropdown
+        <TimeFilterSelect
+          size="sm"
           timeFilter={timeFilter}
           onTimeFilterChange={onTimeFilterChange}
-          size="sm"
         />
         <TableSettingsButton
           resultHeader={resultHeader}

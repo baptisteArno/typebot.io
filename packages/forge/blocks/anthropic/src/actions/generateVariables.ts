@@ -24,7 +24,10 @@ export const generateVariables = createAction({
     },
   ],
   aiGenerate: {
-    fetcherId: "anthropicModels",
+    models: {
+      type: "static",
+      items: anthropicModels,
+    },
     getModel: ({ credentials, model }) =>
       createAnthropic({
         apiKey: credentials.apiKey,

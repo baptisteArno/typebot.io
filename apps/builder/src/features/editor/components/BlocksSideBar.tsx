@@ -1,3 +1,4 @@
+import { Portal } from "@/components/Portal";
 import { LockedIcon, UnlockedIcon } from "@/components/icons";
 import { useBlockDnd } from "@/features/graph/providers/GraphDndProvider";
 import {
@@ -6,10 +7,8 @@ import {
   Heading,
   IconButton,
   Input,
-  Portal,
   SimpleGrid,
   Stack,
-  Tooltip,
   useColorModeValue,
   useEventListener,
 } from "@chakra-ui/react";
@@ -24,6 +23,7 @@ import { EventType } from "@typebot.io/events/constants";
 import type { TDraggableEvent } from "@typebot.io/events/schemas";
 import { forgedBlocks } from "@typebot.io/forge-repository/definitions";
 import { isDefined } from "@typebot.io/lib/utils";
+import { Tooltip } from "@typebot.io/ui/components/Tooltip";
 import type React from "react";
 import { useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
@@ -228,24 +228,25 @@ export const BlocksSideBar = () => {
             value={searchInput}
             onChange={handleSearchInputChange}
           />
-          <Tooltip
-            label={
-              isLocked
+          <Tooltip.Root>
+            <Tooltip.Trigger>
+              <IconButton
+                icon={isLocked ? <LockedIcon /> : <UnlockedIcon />}
+                aria-label={
+                  isLocked
+                    ? t("editor.sidebarBlocks.sidebar.icon.unlock.label")
+                    : t("editor.sidebarBlocks.sidebar.icon.lock.label")
+                }
+                size="sm"
+                onClick={handleLockClick}
+              />
+            </Tooltip.Trigger>
+            <Tooltip.Popup>
+              {isLocked
                 ? t("editor.sidebarBlocks.sidebar.unlock.label")
-                : t("editor.sidebarBlocks.sidebar.lock.label")
-            }
-          >
-            <IconButton
-              icon={isLocked ? <LockedIcon /> : <UnlockedIcon />}
-              aria-label={
-                isLocked
-                  ? t("editor.sidebarBlocks.sidebar.icon.unlock.label")
-                  : t("editor.sidebarBlocks.sidebar.icon.lock.label")
-              }
-              size="sm"
-              onClick={handleLockClick}
-            />
-          </Tooltip>
+                : t("editor.sidebarBlocks.sidebar.lock.label")}
+            </Tooltip.Popup>
+          </Tooltip.Root>
         </Flex>
 
         <Stack>

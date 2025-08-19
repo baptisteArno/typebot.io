@@ -77,17 +77,18 @@ const Popup = ({
 }: PrimitiveSelect.Popup.Props & VariantProps<typeof popupVariants>) => (
   <PrimitiveSelect.Portal>
     <PrimitiveSelect.Positioner
-      className="outline-none select-none"
+      // Not sure why there is a subtle 1px shift that I need to compensate
+      className="outline-none select-none translate-y-[1px]"
       sideOffset={8}
     >
-      <PrimitiveSelect.ScrollUpArrow className="top-0 z-[1] flex h-4 w-full cursor-default items-center justify-center rounded-t-md bg-gray-1 border-t border-x text-center text-xs before:absolute before:top-[-100%] before:left-0 before:h-full before:w-full before:content-[''] data-[direction=down]:bottom-0 data-[direction=down]:before:bottom-[-100%]" />
+      <PrimitiveSelect.ScrollUpArrow className="top-0 z-[1] flex h-4 w-full cursor-default items-center justify-center rounded-t-md bg-gray-1 dark:bg-gray-2 border-t border-x text-center text-xs before:absolute before:top-[-100%] before:left-0 before:h-full before:w-full before:content-[''] data-[direction=down]:bottom-0 data-[direction=down]:before:bottom-[-100%]" />
       <PrimitiveSelect.Popup
         className={cn(popupVariants({ size }), className)}
         {...props}
       />
       <PrimitiveSelect.ScrollDownArrow
         className={cx(
-          "bottom-0 z-[1] flex h-4 w-full cursor-default items-center justify-center rounded-b-md bg-gray-1 border-b border-x text-center text-xs before:absolute before:top-[-100%] before:left-0 before:h-full before:w-full before:content-[''] data-[direction=down]:bottom-0 data-[direction=down]:before:bottom-[-100%]",
+          "bottom-0 z-[1] flex h-4 w-full cursor-default items-center justify-center rounded-b-md bg-gray-1 dark:bg-gray-2 border-b border-x text-center text-xs before:absolute before:top-[-100%] before:left-0 before:h-full before:w-full before:content-[''] data-[direction=down]:bottom-0 data-[direction=down]:before:bottom-[-100%]",
         )}
       />
     </PrimitiveSelect.Positioner>

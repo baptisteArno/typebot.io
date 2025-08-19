@@ -145,14 +145,7 @@ export const AutocompleteInput = ({
   return (
     <FormControl isRequired={isRequired}>
       <HStack ref={dropdownRef} spacing={0} w="full">
-        <Popover.Root
-          isOpen={controls.isOpen}
-          onClose={(event) => {
-            if (event?.type === "click" && event.target === inputRef.current)
-              return;
-            controls.onClose();
-          }}
-        >
+        <Popover.Root isOpen={controls.isOpen} onClose={controls.onClose}>
           <Popover.Trigger>
             <Input
               autoComplete="off"

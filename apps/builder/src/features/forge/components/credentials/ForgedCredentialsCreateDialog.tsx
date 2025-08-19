@@ -88,7 +88,6 @@ export const ForgedCredentialsCreateDialogBody = ({
   );
 
   const createForgedCredentials = async (e: React.FormEvent) => {
-    console.log("SUBMIT", workspace, blockDef);
     e.preventDefault();
     if (!workspace || !blockDef.auth) return;
     mutate(

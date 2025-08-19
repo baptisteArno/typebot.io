@@ -1,24 +1,23 @@
+import { Portal } from "@/components/Portal";
+import { FileCurlyIcon, MinusIcon, PlusIcon } from "@/components/icons";
 import type {
   EdgeWithTotalVisits,
   TotalAnswers,
 } from "@/features/analytics/schemas";
+import { BoardMenuButton } from "@/features/editor/components/BoardMenuButton";
 import { headerHeight } from "@/features/editor/constants";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { useUser } from "@/features/user/hooks/useUser";
-import {
-  Box,
-  Fade,
-  Flex,
-  type FlexProps,
-  Portal,
-  useEventListener,
-} from "@chakra-ui/react";
+import { useRightPanel } from "@/hooks/useRightPanel";
+import { Flex, type FlexProps, useEventListener } from "@chakra-ui/react";
 import { createId } from "@paralleldrive/cuid2";
 import { shouldOpenBlockSettingsOnCreation } from "@typebot.io/blocks-core/helpers";
 import type { BlockV6 } from "@typebot.io/blocks-core/schemas/schema";
 import { GraphNavigation } from "@typebot.io/prisma/enum";
 import type { PublicTypebotV6 } from "@typebot.io/typebot/schemas/publicTypebot";
 import type { TypebotV6 } from "@typebot.io/typebot/schemas/typebot";
+import { Tooltip } from "@typebot.io/ui/components/Tooltip";
+import { cx } from "@typebot.io/ui/lib/cva";
 import { useGesture } from "@use-gesture/react";
 import type React from "react";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -35,7 +34,6 @@ import type { Coordinates } from "../types";
 import { ElementsSelectionMenu } from "./ElementsSelectionMenu";
 import GraphElements from "./GraphElements";
 import { SelectBox } from "./SelectBox";
-import { ZoomButtons } from "./ZoomButtons";
 
 const maxScale = 2;
 const minScale = 0.2;
@@ -92,6 +90,8 @@ export const Graph = ({
       setFocusedElements: state.setFocusedElements,
     })),
   );
+
+  const [, setRightPanel] = useRightPanel();
 
   const [graphPosition, setGraphPosition] = useState(
     graphPositionDefaultValue(
@@ -181,7 +181,10 @@ export const Graph = ({
       setDraggedBlock(undefined);
       setDraggedBlockType(undefined);
       if (newBlockId && shouldOpenBlockSettingsOnCreation(draggedBlockType)) {
-        setOpenedNodeId(newBlockId);
+        setTimeout(() => {
+          setOpenedNodeId(newBlockId);
+          // To avoid race condition with Graph mouse up event that can close the popover
+        }, 1);
       }
     }
   };
@@ -202,7 +205,6 @@ export const Graph = ({
       blurElements();
     }
     setSelectBoxCoordinates(undefined);
-    setOpenedNodeId(undefined);
     setPreviewingEdge(undefined);
   };
 
@@ -415,28 +417,63 @@ export const Graph = ({
           onUnlockProPlanClick={onUnlockProPlanClick}
         />
       </Flex>
-      {!isReadOnly && (
-        <Portal>
-          {selectBoxCoordinates && <SelectBox {...selectBoxCoordinates} />}
-          <Fade in={!isReadOnly && focusedElementsId.length > 1}>
-            <Box
-              pos="absolute"
-              top={`calc(${headerHeight}px + 20px)`}
-              right="140px"
-            >
-              <ElementsSelectionMenu
-                graphPosition={graphPosition}
-                focusedElementIds={focusedElementsId}
-                blurElements={blurElements}
-                isReadOnly={isReadOnly}
-              />
-            </Box>
-          </Fade>
-        </Portal>
+      {!isReadOnly && selectBoxCoordinates && (
+        <SelectBox {...selectBoxCoordinates} />
       )}
-      <Box pos="absolute" top="70px" right="40px">
-        <ZoomButtons onZoomInClick={zoomIn} onZoomOutClick={zoomOut} />
-      </Box>
+      <div
+        className={cx(
+          "absolute top-4 right-10 flex items-stretch bg-gray-1 p-1.5 rounded-lg gap-1 border",
+        )}
+      >
+        <ElementsSelectionMenu
+          graphPosition={graphPosition}
+          focusedElementIds={focusedElementsId}
+          blurElements={blurElements}
+          isReadOnly={isReadOnly}
+        />
+        {focusedElementsId.length > 0 && (
+          <div className="flex-1 border-[.5px] border-gray-4 -my-1.5 mx-1.5" />
+        )}
+        <Tooltip.Root>
+          <Tooltip.TriggerButton
+            aria-label="Open variables drawer"
+            size="icon"
+            onClick={() => setRightPanel("variables")}
+            variant="secondary"
+            className="size-8"
+          >
+            <FileCurlyIcon />
+          </Tooltip.TriggerButton>
+          <Tooltip.Popup>Open variables drawer</Tooltip.Popup>
+        </Tooltip.Root>
+        <div className="flex-1 border-[.5px] border-gray-4 -my-1.5 mx-1.5" />
+        <Tooltip.Root>
+          <Tooltip.TriggerButton
+            aria-label={"Zoom out"}
+            onClick={zoomOut}
+            size="icon"
+            variant="secondary"
+            className="size-8"
+          >
+            <MinusIcon />
+          </Tooltip.TriggerButton>
+          <Tooltip.Popup>Zoom out</Tooltip.Popup>
+        </Tooltip.Root>
+        <Tooltip.Root>
+          <Tooltip.TriggerButton
+            aria-label={"Zoom in"}
+            onClick={zoomIn}
+            size="icon"
+            variant="secondary"
+            className="size-8"
+          >
+            <PlusIcon />
+          </Tooltip.TriggerButton>
+          <Tooltip.Popup>Zoom in</Tooltip.Popup>
+        </Tooltip.Root>
+        <div className="flex-1 border-[.5px] border-gray-4 -my-1.5 mx-1.5" />
+        <BoardMenuButton />
+      </div>
     </Flex>
   );
 };

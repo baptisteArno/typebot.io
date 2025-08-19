@@ -1,4 +1,3 @@
-import { AlertIcon } from "@/components/icons";
 import type { WorkspaceInApp } from "@/features/workspace/WorkspaceProvider";
 import { trpc } from "@/lib/queryClient";
 import {
@@ -9,7 +8,6 @@ import {
   Skeleton,
   Stack,
   Text,
-  Tooltip,
 } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";

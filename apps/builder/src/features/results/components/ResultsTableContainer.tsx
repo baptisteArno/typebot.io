@@ -4,8 +4,8 @@ import { Stack } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useResults } from "../ResultsProvider";
-import { LogsModal } from "./LogsModal";
-import { ResultModal } from "./ResultModal";
+import { LogsDialog } from "./LogsDialog";
+import { ResultDialog } from "./ResultDialog";
 import { ResultsTable } from "./table/ResultsTable";
 
 type Props = {
@@ -30,9 +30,9 @@ export const ResultsTableContainer = ({
   >(null);
   const [expandedResultId, setExpandedResultId] = useState<string | null>(null);
 
-  const handleLogsModalClose = () => setInspectingLogsResultId(null);
+  const handleLogsDialogClose = () => setInspectingLogsResultId(null);
 
-  const handleResultModalClose = () => setExpandedResultId(null);
+  const handleResultDialogClose = () => setExpandedResultId(null);
 
   const handleLogOpenIndex = (index: number) => () => {
     if (!results[index]) return;
@@ -51,15 +51,15 @@ export const ResultsTableContainer = ({
   return (
     <Stack pb="28" px={["4", "0"]} spacing="4" maxW="1600px" w="full">
       {publishedTypebot && (
-        <LogsModal
+        <LogsDialog
           typebotId={publishedTypebot?.typebotId}
           resultId={inspectingLogsResultId}
-          onClose={handleLogsModalClose}
+          onClose={handleLogsDialogClose}
         />
       )}
-      <ResultModal
+      <ResultDialog
         resultId={expandedResultId}
-        onClose={handleResultModalClose}
+        onClose={handleResultDialogClose}
       />
 
       {typebot && (

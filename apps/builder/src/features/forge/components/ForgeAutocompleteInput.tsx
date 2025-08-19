@@ -1,4 +1,5 @@
 import { MoreInfoTooltip } from "@/components/MoreInfoTooltip";
+import { Portal } from "@/components/Portal";
 import {
   type Item,
   getItemLabel,
@@ -6,21 +7,22 @@ import {
 } from "@/components/collections";
 import { Combobox } from "@/components/combobox";
 import { Field } from "@/components/field";
-import { useParentModal } from "@/features/graph/providers/ParentModalProvider";
 import { VariablesButton } from "@/features/variables/components/VariablesButton";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useInjectableInputValue } from "@/hooks/useInjectableInputValue";
-import { Portal } from "@ark-ui/react";
 import type { ForgedBlockDefinition } from "@typebot.io/forge-repository/definitions";
 import type { ForgedBlock } from "@typebot.io/forge-repository/schemas";
-import {
-  selectContentClassNames,
-  selectItemClassNames,
-} from "@typebot.io/ui/components/Select";
 import { cx } from "@typebot.io/ui/lib/cva";
 import { type ReactNode, useEffect, useRef } from "react";
 import { useFilteredCollection } from "../hooks/useFilteredCollection";
 import { useSelectItemsQuery } from "../hooks/useSelectItemsQuery";
+
+const selectContentClassNames = cx(
+  "bg-gray-1 dark:bg-gray-2 p-2 rounded-lg shadow-lg border overflow-auto max-h-[300px] data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[placement=bottom-start]:slide-in-from-top-2 data-[placement=top-start]:slide-in-from-bottom-2",
+);
+
+const selectItemClassNames =
+  "data-[highlighted]:bg-gray-2 dark:data-[highlighted]:bg-gray-3 p-2 rounded-md cursor-default";
 
 type Props = {
   blockDef: ForgedBlockDefinition;
@@ -38,6 +40,8 @@ type Props = {
   credentialsScope: "workspace" | "user";
   onChange: (value: string | undefined) => void;
 };
+
+// TODO: Change to Base UI Combobox when available
 export const ForgeAutocompleteInput = ({
   credentialsScope,
   fetcherId,

@@ -1,9 +1,9 @@
 import { CopyIcon, TrashIcon } from "@/components/icons";
 import { isMac } from "@/helpers/isMac";
-import { MenuItem, MenuList } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
+import { ContextMenu } from "@typebot.io/ui/components/ContextMenu";
 
-export const GroupNodeContextMenu = () => {
+export const GroupNodeContextMenuPopup = () => {
   const { t } = useTranslate();
 
   const handleDeleteClick = () =>
@@ -18,13 +18,15 @@ export const GroupNodeContextMenu = () => {
     );
 
   return (
-    <MenuList>
-      <MenuItem icon={<CopyIcon />} onClick={handleDuplicateClick}>
+    <ContextMenu.Popup>
+      <ContextMenu.Item onClick={handleDuplicateClick}>
+        <CopyIcon />
         {t("copy")}
-      </MenuItem>
-      <MenuItem icon={<TrashIcon />} onClick={handleDeleteClick}>
+      </ContextMenu.Item>
+      <ContextMenu.Item onClick={handleDeleteClick} className="text-red-10">
+        <TrashIcon />
         {t("delete")}
-      </MenuItem>
-    </MenuList>
+      </ContextMenu.Item>
+    </ContextMenu.Popup>
   );
 };

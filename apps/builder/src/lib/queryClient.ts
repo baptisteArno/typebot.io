@@ -16,7 +16,7 @@ export const queryClient = new QueryClient({
         }
         if (error.data?.httpStatus === 404) return;
         toast({
-          context:
+          title:
             (query.meta?.errorContext as string | undefined) ??
             parseDefaultErrorContext(query),
           description: error.data?.zodError ?? error.message,

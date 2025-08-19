@@ -11,7 +11,7 @@ type Props = {
 
 export const SelectBox = ({ origin, dimension }: Props) => (
   <Box
-    pos="absolute"
+    pos="fixed"
     rounded="md"
     borderWidth={1}
     borderColor="orange.200"

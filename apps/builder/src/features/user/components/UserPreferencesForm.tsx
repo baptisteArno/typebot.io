@@ -114,11 +114,10 @@ export const UserPreferencesForm = () => {
         />
       </Stack>
 
-      <VideoOnboardingPopover.Root
+      <VideoOnboardingPopover
         type="groupTitlesAutoGeneration"
         isEnabled={user?.groupTitlesAutoGeneration?.isEnabled ?? false}
         side="top"
-        align="end"
       >
         <SwitchWithRelatedSettings
           label={t("account.preferences.groupTitlesAutoGeneration.label")}
@@ -135,7 +134,7 @@ export const UserPreferencesForm = () => {
             />
           )}
         </SwitchWithRelatedSettings>
-      </VideoOnboardingPopover.Root>
+      </VideoOnboardingPopover>
     </Stack>
   );
 };

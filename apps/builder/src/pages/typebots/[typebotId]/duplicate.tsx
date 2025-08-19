@@ -59,7 +59,7 @@ const Page = () => {
               <HStack w="full">
                 <EmojiOrImageIcon
                   icon={workspace.icon}
-                  boxSize="16px"
+                  size="sm"
                   defaultIcon={HardDriveIcon}
                 />
                 <Text>{workspace.name}</Text>

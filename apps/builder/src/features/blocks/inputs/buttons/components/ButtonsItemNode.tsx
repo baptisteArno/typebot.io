@@ -7,12 +7,6 @@ import {
   EditableTextarea,
   Flex,
   IconButton,
-  Popover,
-  PopoverAnchor,
-  PopoverArrow,
-  PopoverBody,
-  PopoverContent,
-  Portal,
   SlideFade,
   useColorModeValue,
 } from "@chakra-ui/react";
@@ -24,6 +18,7 @@ import type {
 import type { ButtonItem } from "@typebot.io/blocks-inputs/choice/schema";
 import { convertStrToList } from "@typebot.io/lib/convertStrToList";
 import { isEmpty } from "@typebot.io/lib/utils";
+import { Popover } from "@typebot.io/ui/components/Popover";
 import { useRef, useState } from "react";
 import { ButtonsItemSettings } from "./ButtonsItemSettings";
 
@@ -44,10 +39,6 @@ export const ButtonsItemNode = ({ item, indices, isMouseOver }: Props) => {
         : ""),
   );
   const editableRef = useRef<HTMLDivElement | null>(null);
-  const ref = useRef<HTMLDivElement | null>(null);
-  const arrowColor = useColorModeValue("white", "gray.900");
-
-  const handleMouseDown = (e: React.MouseEvent) => e.stopPropagation();
 
   const handleInputSubmit = () => {
     if (itemValue === "") deleteItem(indices);
@@ -102,84 +93,80 @@ export const ButtonsItemNode = ({ item, indices, isMouseOver }: Props) => {
   };
 
   return (
-    <Popover
-      placement="right"
-      isLazy
+    <Popover.Root
       isOpen={openedNodeId === item.id}
-      closeOnBlur={false}
+      onClose={() => {
+        setOpenedNodeId(undefined);
+      }}
     >
-      <PopoverAnchor>
-        <Flex px={4} py={2} justify="center" w="full">
-          <Editable
-            ref={editableRef}
-            flex="1"
-            startWithEditView={
-              isEmpty(item.content) ||
-              item.content === t("blocks.inputs.button.clickToEdit.label")
-            }
-            value={itemValue}
-            onChange={handleEditableChange}
-            onSubmit={handleInputSubmit}
-            onKeyDownCapture={handleKeyPress}
-            maxW="180px"
-          >
-            <EditablePreview
-              w="full"
-              color={
-                item.content !== t("blocks.inputs.button.clickToEdit.label")
-                  ? "inherit"
-                  : "gray.500"
+      <Popover.Trigger
+        render={(props) => (
+          <Flex {...props} px={4} py={2} justify="center" w="full">
+            <Editable
+              ref={editableRef}
+              flex="1"
+              startWithEditView={
+                isEmpty(item.content) ||
+                item.content === t("blocks.inputs.button.clickToEdit.label")
               }
-              cursor="pointer"
-            />
-            <EditableTextarea
-              onMouseDownCapture={(e) => e.stopPropagation()}
-              resize="none"
-              onWheelCapture={(e) => e.stopPropagation()}
-            />
-          </Editable>
-          <SlideFade
-            offsetY="5px"
-            offsetX="-5px"
-            in={isMouseOver}
-            style={{
-              position: "absolute",
-              right: "-0.25rem",
-              top: "-0.25rem",
-              zIndex: 3,
-            }}
-            unmountOnExit
-          >
-            <Flex bgColor={useColorModeValue("white", "gray.900")} rounded="md">
-              <IconButton
-                aria-label={t("blocks.inputs.button.openSettings.ariaLabel")}
-                icon={<SettingsIcon />}
-                variant="ghost"
-                size="xs"
-                shadow="md"
-                onClick={() => setOpenedNodeId(item.id)}
+              value={itemValue}
+              onChange={handleEditableChange}
+              onSubmit={handleInputSubmit}
+              onKeyDownCapture={handleKeyPress}
+              maxW="180px"
+            >
+              <EditablePreview
+                w="full"
+                color={
+                  item.content !== t("blocks.inputs.button.clickToEdit.label")
+                    ? "inherit"
+                    : "gray.500"
+                }
+                cursor="pointer"
               />
-            </Flex>
-          </SlideFade>
-        </Flex>
-      </PopoverAnchor>
-      <Portal>
-        <PopoverContent pos="relative" onMouseDown={handleMouseDown}>
-          <PopoverArrow bgColor={arrowColor} />
-          <PopoverBody
-            py="6"
-            overflowY="auto"
-            maxH="400px"
-            shadow="md"
-            ref={ref}
-          >
-            <ButtonsItemSettings
-              item={item}
-              onSettingsChange={updateItemSettings}
-            />
-          </PopoverBody>
-        </PopoverContent>
-      </Portal>
-    </Popover>
+              <EditableTextarea
+                onMouseDownCapture={(e) => e.stopPropagation()}
+                resize="none"
+                onWheelCapture={(e) => e.stopPropagation()}
+              />
+            </Editable>
+            <SlideFade
+              offsetY="5px"
+              offsetX="-5px"
+              in={isMouseOver}
+              style={{
+                position: "absolute",
+                right: "-0.25rem",
+                top: "-0.25rem",
+                zIndex: 3,
+              }}
+              unmountOnExit
+            >
+              <Flex
+                bgColor={useColorModeValue("white", "gray.900")}
+                rounded="md"
+              >
+                <IconButton
+                  aria-label={t("blocks.inputs.button.openSettings.ariaLabel")}
+                  icon={<SettingsIcon />}
+                  variant="ghost"
+                  size="xs"
+                  shadow="md"
+                  onClick={() => {
+                    setOpenedNodeId(item.id);
+                  }}
+                />
+              </Flex>
+            </SlideFade>
+          </Flex>
+        )}
+      />
+      <Popover.Popup side="right" className="p-4">
+        <ButtonsItemSettings
+          item={item}
+          onSettingsChange={updateItemSettings}
+        />
+      </Popover.Popup>
+    </Popover.Root>
   );
 };

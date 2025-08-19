@@ -8,10 +8,10 @@ import {
   EditablePreview,
   HStack,
   Text,
-  Tooltip,
   useEditableControls,
 } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
+import { Tooltip } from "@typebot.io/ui/components/Tooltip";
 import React, { useState } from "react";
 
 type EditableUrlProps = {
@@ -46,17 +46,23 @@ export const EditableUrl = ({
     >
       <HStack spacing={1}>
         <Text flexShrink={0}>{hostname}/</Text>
-        <Tooltip label={t("edit")}>
-          <EditablePreview
-            mx={1}
-            borderWidth="1px"
-            px={3}
-            rounded="md"
-            cursor="text"
-            display="flex"
-            fontWeight="medium"
+        <Tooltip.Root>
+          <Tooltip.Trigger
+            render={
+              <EditablePreview
+                mx={1}
+                borderWidth="1px"
+                px={3}
+                rounded="md"
+                cursor="text"
+                display="flex"
+                fontWeight="medium"
+              />
+            }
           />
-        </Tooltip>
+          <Tooltip.Popup>{t("edit")}</Tooltip.Popup>
+        </Tooltip.Root>
+
         <EditableInput px={2} />
       </HStack>
 

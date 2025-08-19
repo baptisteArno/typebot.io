@@ -51,11 +51,7 @@ export const EditorPage = () => {
                 }
               >
                 <Graph flex="1" typebot={typebot} key={typebot.id} />
-                <BoardMenuButton
-                  pos="absolute"
-                  right="40px"
-                  top={`calc(20px + ${isSuspicious ? "70px" : "0px"})`}
-                />
+
                 <RightPanel />
               </GraphProvider>
               {currentUserMode === "write" && <BlocksSideBar />}

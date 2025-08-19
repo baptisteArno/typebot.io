@@ -3,20 +3,13 @@ import { MoreInfoTooltip } from "@/components/MoreInfoTooltip";
 import { TextInput, Textarea } from "@/components/inputs";
 import { CodeEditor } from "@/components/inputs/CodeEditor";
 import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
-import {
-  FormLabel,
-  HStack,
-  Image,
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-  Stack,
-  Text,
-} from "@chakra-ui/react";
+import { useOpenControls } from "@/hooks/useOpenControls";
+import { FormLabel, HStack, Image, Stack, Text } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { env } from "@typebot.io/env";
 import { defaultSettings } from "@typebot.io/settings/constants";
 import type { Settings } from "@typebot.io/settings/schemas";
+import { Popover } from "@typebot.io/ui/components/Popover";
 import React from "react";
 
 type Props = {
@@ -35,6 +28,8 @@ export const MetadataForm = ({
   onMetadataChange,
 }: Props) => {
   const { t } = useTranslate();
+  const favIconPopoverControls = useOpenControls();
+  const imagePopoverControls = useOpenControls();
   const handleTitleChange = (title: string) =>
     onMetadataChange({ ...metadata, title });
   const handleDescriptionChange = (description: string) =>
@@ -64,19 +59,22 @@ export const MetadataForm = ({
         <FormLabel mb="0" htmlFor="icon">
           {t("settings.sideMenu.metadata.icon.label")}
         </FormLabel>
-        <Popover isLazy placement="top">
-          <PopoverTrigger>
-            <Image
-              src={favIconUrl}
-              w="20px"
-              alt="Fav icon"
-              cursor="pointer"
-              _hover={{ filter: "brightness(.9)" }}
-              transition="filter 200ms"
-              rounded="md"
-            />
-          </PopoverTrigger>
-          <PopoverContent p="4" w="400px">
+        <Popover.Root {...favIconPopoverControls}>
+          <Popover.Trigger
+            render={(props) => (
+              <Image
+                {...props}
+                src={favIconUrl}
+                w="20px"
+                alt="Fav icon"
+                cursor="pointer"
+                _hover={{ filter: "brightness(.9)" }}
+                transition="filter 200ms"
+                rounded="md"
+              />
+            )}
+          />
+          <Popover.Popup className="w-[400px]" side="right">
             <ImageUploadContent
               uploadFileProps={{
                 workspaceId,
@@ -90,15 +88,15 @@ export const MetadataForm = ({
               }}
               imageSize="thumb"
             />
-          </PopoverContent>
-        </Popover>
+          </Popover.Popup>
+        </Popover.Root>
       </Stack>
       <Stack>
         <FormLabel mb="0" htmlFor="image">
           {t("settings.sideMenu.metadata.image.label")}
         </FormLabel>
-        <Popover isLazy placement="top">
-          <PopoverTrigger>
+        <Popover.Root {...imagePopoverControls}>
+          <Popover.Trigger>
             <Image
               src={imageUrl}
               alt="Website image"
@@ -107,8 +105,8 @@ export const MetadataForm = ({
               transition="filter 200ms"
               rounded="md"
             />
-          </PopoverTrigger>
-          <PopoverContent p="4" w="500px">
+          </Popover.Trigger>
+          <Popover.Popup className="w-[500px]" side="right">
             <ImageUploadContent
               uploadFileProps={{
                 workspaceId,
@@ -121,8 +119,8 @@ export const MetadataForm = ({
                 unsplash: true,
               }}
             />
-          </PopoverContent>
-        </Popover>
+          </Popover.Popup>
+        </Popover.Root>
       </Stack>
       <TextInput
         label={t("settings.sideMenu.metadata.title.label")}

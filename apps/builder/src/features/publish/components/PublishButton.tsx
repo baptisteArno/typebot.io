@@ -1,11 +1,6 @@
 import { ConfirmDialog } from "@/components/ConfirmDialog";
 import { TextLink } from "@/components/TextLink";
-import {
-  ChevronLeftIcon,
-  CloudOffIcon,
-  LockedIcon,
-  UnlockedIcon,
-} from "@/components/icons";
+import { CloudOffIcon, LockedIcon, UnlockedIcon } from "@/components/icons";
 import { ChangePlanDialog } from "@/features/billing/components/ChangePlanDialog";
 import { isFreePlan } from "@/features/billing/helpers/isFreePlan";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
@@ -50,6 +45,11 @@ export const PublishButton = ({
     onOpen: onNewEngineWarningOpen,
     onClose: onNewEngineWarningClose,
   } = useDisclosure();
+  const {
+    isOpen: isTrademarkInfringementOpen,
+    onOpen: onTrademarkInfringementOpen,
+    onClose: onTrademarkInfringementClose,
+  } = useDisclosure();
   const [trademarkPotentialInfringement, setTrademarkPotentialInfringement] =
     useState<string | undefined>(undefined);
   const {
@@ -83,12 +83,13 @@ export const PublishButton = ({
         },
         onSuccess: (data) => {
           if (!typebot?.id || currentUserMode === "guest") return;
-          if (data.warnings)
-            setTrademarkPotentialInfringement(data.warnings[0].trademark);
           queryClient.invalidateQueries({
             queryKey: trpc.typebot.getPublishedTypebot.queryKey(),
           });
-          if (!publishedTypebot && !pathname.endsWith("share"))
+          if (data.warnings) {
+            setTrademarkPotentialInfringement(data.warnings[0].trademark);
+            onTrademarkInfringementOpen();
+          } else if (!publishedTypebot && !pathname.endsWith("share"))
             push(`/typebots/${query.typebotId}/share`);
         },
       }),
@@ -152,38 +153,37 @@ export const PublishButton = ({
         onClose={onClose}
         type={t("billing.limitMessage.fileInput")}
       />
-      <ConfirmModal
-        isOpen={trademarkPotentialInfringement !== undefined}
-        onConfirm={() => {
-          setTrademarkPotentialInfringement(undefined);
-        }}
+      <ConfirmDialog
+        isOpen={isTrademarkInfringementOpen}
+        onConfirm={onTrademarkInfringementClose}
         onClose={() => {
-          setTrademarkPotentialInfringement(undefined);
+          setTimeout(() => {
+            setTrademarkPotentialInfringement(undefined);
+          }, 200);
+          onTrademarkInfringementClose();
         }}
         title="Potential trademark infringement detected"
-        message={
-          <div className="flex flex-col gap-4">
-            <span>
-              We noticed you’re using{" "}
-              <span className="font-bold">
-                {trademarkPotentialInfringement}
-              </span>{" "}
-              brand or logo in your bot’s metadata. Please be careful: using{" "}
-              {trademarkPotentialInfringement}’s brand assets in your bot
-              misleads visitors and most likely violates{" "}
-              {trademarkPotentialInfringement}’s trademark guidelines.
-              <br />
-              Consider rephrasing with your own branding.
-            </span>
-            <Alert status="warning">
-              <AlertIcon />
-              Your workspace is at risk of being suspended if we detect a
-              trademark infringement down the line.
-            </Alert>
-          </div>
-        }
         confirmButtonLabel="Publish anyway"
-      />
+      >
+        <div className="flex flex-col gap-4">
+          <span>
+            We noticed you’re using{" "}
+            <span className="font-bold">{trademarkPotentialInfringement}</span>{" "}
+            brand or logo in your bot’s metadata. Please be careful: using{" "}
+            {trademarkPotentialInfringement}’s brand assets in your bot misleads
+            visitors and most likely violates {trademarkPotentialInfringement}’s
+            trademark guidelines.
+            <br />
+            Consider rephrasing with your own branding.
+          </span>
+          <Alert status="warning">
+            <AlertIcon />
+            Your workspace is at risk of being suspended if we detect a
+            trademark infringement down the line.
+          </Alert>
+        </div>
+      </ConfirmDialog>
+
       {publishedTypebot && publishedTypebotVersion !== typebot?.version && (
         <ConfirmDialog
           isOpen={isNewEngineWarningOpen}

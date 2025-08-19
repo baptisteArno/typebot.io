@@ -10,6 +10,7 @@ import { BillingSettingsLayout } from "@/features/billing/components/BillingSett
 import { CredentialsSettingsForm } from "@/features/credentials/components/CredentialsSettingsForm";
 import { MyAccountForm } from "@/features/user/components/MyAccountForm";
 import { UserPreferencesForm } from "@/features/user/components/UserPreferencesForm";
+import { toast } from "@/lib/toast";
 import { Avatar, Button, Flex, Stack, Text } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { Dialog } from "@typebot.io/ui/components/Dialog";

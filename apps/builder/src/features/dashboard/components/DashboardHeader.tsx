@@ -1,10 +1,9 @@
 import { EmojiOrImageIcon } from "@/components/EmojiOrImageIcon";
 import { HardDriveIcon, SettingsIcon } from "@/components/icons";
-import { ParentModalProvider } from "@/features/graph/providers/ParentModalProvider";
 import { useUser } from "@/features/user/hooks/useUser";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { WorkspaceDropdown } from "@/features/workspace/components/WorkspaceDropdown";
-import { WorkspaceSettingsModal } from "@/features/workspace/components/WorkspaceSettingsModal";
+import { WorkspaceSettingsDialog } from "@/features/workspace/components/WorkspaceSettingsDialog";
 import {
   Button,
   Flex,
@@ -55,24 +54,21 @@ export const DashboardHeader = () => {
       >
         <Link href="/typebots" data-testid="typebot-logo">
           <EmojiOrImageIcon
-            boxSize="30px"
             icon={workspace?.icon}
             defaultIcon={HardDriveIcon}
           />
         </Link>
         <HStack>
           {user && workspace && !workspace.isPastDue && (
-            <ParentModalProvider>
-              <WorkspaceSettingsModal
-                isOpen={isOpen}
-                onClose={onClose}
-                user={user}
-                workspace={workspace}
-                defaultTab={
-                  isRedirectFromCredentialsCreation ? "credentials" : undefined
-                }
-              />
-            </ParentModalProvider>
+            <WorkspaceSettingsDialog
+              isOpen={isOpen}
+              onClose={onClose}
+              user={user}
+              workspace={workspace}
+              defaultTab={
+                isRedirectFromCredentialsCreation ? "credentials" : undefined
+              }
+            />
           )}
           {!workspace?.isPastDue && (
             <Button

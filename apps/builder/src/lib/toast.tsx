@@ -1,23 +1,34 @@
-import { Toast, type ToastProps } from "@/components/Toast";
-import { toast as sonnerToast } from "sonner";
+import {
+  type AddToastOptions,
+  Toast,
+  type ToastType,
+} from "@typebot.io/ui/components/Toast";
 
-export const toast = ({
-  details,
-  ...props
-}: Omit<ToastProps, "id" | "details"> & { details?: string | null }) => {
-  const parsedDetails = details ? parseStrDetails(details) : undefined;
-  return sonnerToast.custom(
-    (id) => <Toast id={id} {...props} details={parsedDetails} />,
-    {
-      duration: props.action
-        ? 60000
-        : details
-          ? 30000
-          : (props.status ?? "error") === "error"
-            ? 8000
-            : undefined,
+export const toastManager = Toast.createToastManager();
+
+export const toast = (
+  props: Omit<AddToastOptions, "type"> & {
+    details?: string;
+    type?: ToastType;
+  },
+) => {
+  const parsedDetails = props.details
+    ? parseStrDetails(props.details)
+    : undefined;
+  return toastManager.add({
+    ...props,
+    timeout: props.actionProps
+      ? 60000
+      : props.details
+        ? 30000
+        : (props.type ?? "error") === "error"
+          ? 8000
+          : 5000,
+    priority: (props.type ?? "error") === "error" ? "high" : "low",
+    data: {
+      details: parsedDetails,
     },
-  );
+  });
 };
 
 const parseStrDetails = (

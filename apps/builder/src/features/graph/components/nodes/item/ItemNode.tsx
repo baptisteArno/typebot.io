@@ -1,4 +1,3 @@
-import { ContextMenu } from "@/components/ContextMenu";
 import { ConditionContent } from "@/features/blocks/logic/condition/components/ConditionContent";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import {
@@ -8,7 +7,6 @@ import {
 } from "@/features/graph/providers/GraphDndProvider";
 import { useGraph } from "@/features/graph/providers/GraphProvider";
 import type { Coordinates } from "@/features/graph/types";
-import { setMultipleRefs } from "@/helpers/setMultipleRefs";
 import { Flex, Stack, useColorModeValue } from "@chakra-ui/react";
 import type {
   Item,
@@ -18,11 +16,12 @@ import type { BlockWithItems } from "@typebot.io/blocks-core/schemas/schema";
 import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
 import { LogicBlockType } from "@typebot.io/blocks-logic/constants";
 import { isDefined } from "@typebot.io/lib/utils";
+import { ContextMenu } from "@typebot.io/ui/components/ContextMenu";
 import { useRouter } from "next/router";
 import React, { useRef, useState } from "react";
 import { BlockSourceEndpoint } from "../../endpoints/BlockSourceEndpoint";
 import { ItemNodeContent } from "./ItemNodeContent";
-import { ItemNodeContextMenu } from "./ItemNodeContextMenu";
+import { ItemNodeContextMenuPopup } from "./ItemNodeContextMenuPopup";
 
 type Props = {
   item: Item;
@@ -49,6 +48,7 @@ export const ItemNode = ({
   const { previewingEdge } = useGraph();
   const { pathname } = useRouter();
   const [isMouseOver, setIsMouseOver] = useState(false);
+  const [isContextMenuOpened, setIsContextMenuOpened] = useState(false);
   const itemRef = useRef<HTMLDivElement | null>(null);
   const isPreviewing =
     previewingEdge &&
@@ -81,14 +81,12 @@ export const ItemNode = ({
   const displayCondition = getDisplayCondition(item);
 
   return (
-    <ContextMenu<HTMLDivElement>
-      renderMenu={() => <ItemNodeContextMenu indices={indices} />}
-    >
-      {(ref, isContextMenuOpened) => (
+    <ContextMenu.Root onOpenChange={setIsContextMenuOpened}>
+      <ContextMenu.Trigger>
         <Stack
           data-testid="item"
           pos="relative"
-          ref={setMultipleRefs([ref, itemRef])}
+          ref={itemRef}
           w="full"
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
@@ -142,8 +140,9 @@ export const ItemNode = ({
               )}
           </Flex>
         </Stack>
-      )}
-    </ContextMenu>
+      </ContextMenu.Trigger>
+      <ItemNodeContextMenuPopup indices={indices} />
+    </ContextMenu.Root>
   );
 };
 

@@ -1,33 +1,19 @@
 import { UploadButton } from "@/components/ImageUploadContent/UploadButton";
 import { UploadIcon } from "@/components/icons";
 import { TextInput } from "@/components/inputs/TextInput";
-import { refreshSessionUser } from "@/features/auth/helpers/refreshSessionUser";
-import { trpc } from "@/lib/queryClient";
-import { toast } from "@/lib/toast";
-import {
-  Avatar,
-  Button,
-  HStack,
-  Input,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalOverlay,
-  Stack,
-  Text,
-} from "@chakra-ui/react";
-import { useMutation } from "@tanstack/react-query";
+import { Avatar, Button, HStack, Stack, Text } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import type React from "react";
 import { useState } from "react";
 import { useUser } from "../hooks/useUser";
 import { ApiTokensList } from "./ApiTokensList";
+import { ChangeEmailDialog } from "./ChangeEmailDialog";
 
 export const MyAccountForm = () => {
   const { t } = useTranslate();
   const { user, updateUser, updateLocalUserEmail } = useUser();
   const [name, setName] = useState(user?.name ?? "");
-  const [isChangeEmailModalOpen, setIsChangeEmailModalOpen] = useState(false);
+  const [isChangeEmailDialogOpen, setIsChangeEmailDialogOpen] = useState(false);
 
   const handleFileUploaded = async (url: string) => {
     updateUser({ image: url });
@@ -82,13 +68,13 @@ export const MyAccountForm = () => {
               {user?.email}
             </Text>
           </Stack>
-          <Button onClick={() => setIsChangeEmailModalOpen(true)}>
+          <Button onClick={() => setIsChangeEmailDialogOpen(true)}>
             Change email
           </Button>
-          <ChangeEmailModal
-            isOpen={isChangeEmailModalOpen}
+          <ChangeEmailDialog
+            isOpen={isChangeEmailDialogOpen}
             onClose={(newEmail) => {
-              setIsChangeEmailModalOpen(false);
+              setIsChangeEmailDialogOpen(false);
               if (newEmail) updateLocalUserEmail(newEmail);
             }}
             userEmail={user?.email ?? ""}
@@ -97,140 +83,5 @@ export const MyAccountForm = () => {
       )}
       {user && <ApiTokensList user={user} />}
     </Stack>
-  );
-};
-
-const ChangeEmailModal = ({
-  isOpen,
-  onClose,
-  userEmail,
-}: {
-  isOpen: boolean;
-  onClose: (newEmail?: string) => void;
-  userEmail: string;
-}) => {
-  const { mutate: sendUpdateEmailVerifCodeEmail } = useMutation(
-    trpc.auth.sendUpdateEmailVerifCodeEmail.mutationOptions({
-      onError: (error) => {
-        toast({
-          description: error.message,
-        });
-        setVerificationCodeStatus(undefined);
-      },
-      onSuccess: () => {
-        setVerificationCodeStatus("sent");
-      },
-    }),
-  );
-  const { mutate: updateUserEmail } = useMutation(
-    trpc.auth.updateUserEmail.mutationOptions({
-      onSettled: () => {
-        setIsUpdatingEmail(false);
-      },
-      onError: (error) => {
-        toast({
-          description: error.message,
-        });
-      },
-      onSuccess: () => {
-        refreshSessionUser();
-        onClose(newEmail);
-      },
-    }),
-  );
-  const [newEmail, setNewEmail] = useState("");
-  const [verificationCode, setVerificationCode] = useState("");
-  const [verificationCodeStatus, setVerificationCodeStatus] = useState<
-    "sending" | "sent"
-  >();
-  const [isUpdatingEmail, setIsUpdatingEmail] = useState(false);
-
-  const sendVerificationCode = (e: React.FormEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    setVerificationCodeStatus("sending");
-    sendUpdateEmailVerifCodeEmail({
-      newEmail,
-    });
-  };
-
-  const updateEmailAndClose = (e: React.FormEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    setIsUpdatingEmail(true);
-    updateUserEmail({
-      token: verificationCode,
-    });
-  };
-
-  return (
-    <Modal
-      isOpen={isOpen}
-      onClose={() => {
-        setNewEmail("");
-        setVerificationCode("");
-        setVerificationCodeStatus(undefined);
-        setIsUpdatingEmail(false);
-        onClose();
-      }}
-      isCentered
-      size="xl"
-    >
-      <ModalOverlay />
-      <ModalContent>
-        <ModalBody py={6} gap={4} as={Stack}>
-          <Text>
-            Your current email is:{" "}
-            <Text as="span" fontWeight="bold">
-              {userEmail}
-            </Text>
-          </Text>
-          <Stack as="form" onSubmit={sendVerificationCode}>
-            <Text>
-              Please enter a new email and we will send you a verification code.
-            </Text>
-            <Input
-              type="email"
-              isDisabled={verificationCodeStatus === "sent"}
-              value={newEmail}
-              onChange={(e) => setNewEmail(e.target.value)}
-              placeholder="Enter new email"
-            />
-            {verificationCodeStatus !== "sent" && (
-              <Button
-                type="submit"
-                colorScheme="orange"
-                isDisabled={newEmail.length === 0}
-                isLoading={verificationCodeStatus === "sending"}
-              >
-                Send verification code
-              </Button>
-            )}
-          </Stack>
-          {verificationCodeStatus === "sent" && (
-            <Stack as="form" onSubmit={updateEmailAndClose}>
-              <Text>
-                We just sent a temporary verification code to{" "}
-                <Text as="span" fontWeight="bold">
-                  {newEmail}
-                </Text>
-                .
-              </Text>
-              <Input
-                value={verificationCode}
-                onChange={(e) => setVerificationCode(e.target.value)}
-                placeholder="Enter verification code"
-              />
-              <Button
-                type="submit"
-                colorScheme="orange"
-                isDisabled={verificationCode.length === 0}
-                isLoading={isUpdatingEmail}
-              >
-                Change email
-              </Button>
-            </Stack>
-          )}
-        </ModalBody>
-      </ModalContent>
-    </Modal>
   );
 };

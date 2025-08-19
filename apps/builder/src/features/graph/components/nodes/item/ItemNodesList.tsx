@@ -1,3 +1,4 @@
+import { Portal } from "@/components/Portal";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import {
   type DraggableItem,
@@ -7,7 +8,6 @@ import {
 import { useGraph } from "@/features/graph/providers/GraphProvider";
 import {
   Flex,
-  Portal,
   Stack,
   Text,
   useColorModeValue,

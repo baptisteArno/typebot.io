@@ -1,4 +1,4 @@
-import { ChangePlanModal } from "@/features/billing/components/ChangePlanModal";
+import { ChangePlanDialog } from "@/features/billing/components/ChangePlanDialog";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { Graph } from "@/features/graph/components/Graph";
 import { GraphProvider } from "@/features/graph/providers/GraphProvider";
@@ -111,7 +111,7 @@ export const AnalyticsGraphContainer = ({
           <Spinner color="gray" />
         </Flex>
       )}
-      <ChangePlanModal
+      <ChangePlanDialog
         onClose={onClose}
         isOpen={isOpen}
         type={t("billing.limitMessage.analytics")}

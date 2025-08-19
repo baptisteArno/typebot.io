@@ -7,7 +7,6 @@ import {
   Stack,
   Tag,
   Text,
-  Tooltip,
   chakra,
   useColorModeValue,
   useDisclosure,
@@ -16,7 +15,8 @@ import { T, useTranslate } from "@tolgee/react";
 import { prices } from "@typebot.io/billing/constants";
 import { formatPrice } from "@typebot.io/billing/helpers/formatPrice";
 import { Plan } from "@typebot.io/prisma/enum";
-import { ChatsProTiersModal } from "./ChatsProTiersModal";
+import { Tooltip } from "@typebot.io/ui/components/Tooltip";
+import { ChatsProTiersDialog } from "./ChatsProTiersDialog";
 import { FeaturesList } from "./FeaturesList";
 
 type Props = {
@@ -43,7 +43,7 @@ export const ProPlanPricingCard = ({
 
   return (
     <>
-      <ChatsProTiersModal isOpen={isOpen} onClose={onClose} />{" "}
+      <ChatsProTiersDialog isOpen={isOpen} onClose={onClose} />{" "}
       <Flex
         p="6"
         pos="relative"
@@ -95,8 +95,13 @@ export const ProPlanPricingCard = ({
                 </chakra.span>
               </Heading>
               <Text fontWeight="bold">
-                <Tooltip
-                  label={
+                <Tooltip.Root>
+                  <Tooltip.Trigger>
+                    <chakra.span textDecoration="underline" cursor="pointer">
+                      {t("billing.pricingCard.pro.everythingFromStarter")}
+                    </chakra.span>
+                  </Tooltip.Trigger>
+                  <Tooltip.Popup>
                     <FeaturesList
                       features={[
                         t("billing.pricingCard.starter.brandingRemoved"),
@@ -105,14 +110,9 @@ export const ProPlanPricingCard = ({
                       ]}
                       spacing="0"
                     />
-                  }
-                  hasArrow
-                  placement="top"
-                >
-                  <chakra.span textDecoration="underline" cursor="pointer">
-                    {t("billing.pricingCard.pro.everythingFromStarter")}
-                  </chakra.span>
-                </Tooltip>
+                  </Tooltip.Popup>
+                </Tooltip.Root>
+
                 {t("billing.pricingCard.plus")}
               </Text>
               <FeaturesList

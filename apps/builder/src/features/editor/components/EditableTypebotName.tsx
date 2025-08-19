@@ -2,10 +2,10 @@ import {
   Editable,
   EditableInput,
   EditablePreview,
-  Tooltip,
   useColorModeValue,
 } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
+import { Tooltip } from "@typebot.io/ui/components/Tooltip";
 import React, { useState } from "react";
 
 type EditableProps = {
@@ -27,24 +27,29 @@ export const EditableTypebotName = ({
   };
 
   return (
-    <Tooltip label={t("rename")}>
-      <Editable
-        value={currentName}
-        onChange={setCurrentName}
-        onSubmit={submitNewName}
-      >
-        <EditablePreview
-          noOfLines={2}
-          cursor="pointer"
-          maxW="150px"
-          overflow="hidden"
-          fontSize="14px"
-          minW="30px"
-          minH="20px"
-          bgColor={currentName === "" ? emptyNameBg : "inherit"}
-        />
-        <EditableInput fontSize="14px" />
-      </Editable>
-    </Tooltip>
+    <Tooltip.Root>
+      <Tooltip.Trigger
+        render={
+          <Editable
+            value={currentName}
+            onChange={setCurrentName}
+            onSubmit={submitNewName}
+          >
+            <EditablePreview
+              noOfLines={2}
+              cursor="pointer"
+              maxW="150px"
+              overflow="hidden"
+              fontSize="14px"
+              minW="30px"
+              minH="20px"
+              bgColor={currentName === "" ? emptyNameBg : "inherit"}
+            />
+            <EditableInput fontSize="14px" />
+          </Editable>
+        }
+      />
+      <Tooltip.Popup>{t("rename")}</Tooltip.Popup>
+    </Tooltip.Root>
   );
 };

@@ -1,11 +1,10 @@
 import { Seo } from "@/components/Seo";
 import {
-  PreCheckoutModal,
-  type PreCheckoutModalProps,
-} from "@/features/billing/components/PreCheckoutModal";
+  PreCheckoutDialog,
+  type PreCheckoutDialogProps,
+} from "@/features/billing/components/PreCheckoutDialog";
 import { TypebotDndProvider } from "@/features/folders/TypebotDndProvider";
 import { FolderContent } from "@/features/folders/components/FolderContent";
-import { ParentModalProvider } from "@/features/graph/providers/ParentModalProvider";
 import { useUser } from "@/features/user/hooks/useUser";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { trpc } from "@/lib/queryClient";
@@ -24,7 +23,7 @@ export const DashboardPage = () => {
   const { user } = useUser();
   const { workspace } = useWorkspace();
   const [preCheckoutPlan, setPreCheckoutPlan] =
-    useState<PreCheckoutModalProps["selectedSubscription"]>();
+    useState<PreCheckoutDialogProps["selectedSubscription"]>();
   const { mutate: createCustomCheckoutSession } = useMutation(
     trpc.billing.createCustomCheckoutSession.mutationOptions({
       onSuccess: (data) => {
@@ -61,14 +60,12 @@ export const DashboardPage = () => {
       <Seo title={workspace?.name ?? t("dashboard.title")} />
       <DashboardHeader />
       {!workspace?.stripeId && (
-        <ParentModalProvider>
-          <PreCheckoutModal
-            selectedSubscription={preCheckoutPlan}
-            existingEmail={user?.email ?? undefined}
-            existingCompany={workspace?.name ?? undefined}
-            onClose={() => setPreCheckoutPlan(undefined)}
-          />
-        </ParentModalProvider>
+        <PreCheckoutDialog
+          selectedSubscription={preCheckoutPlan}
+          existingEmail={user?.email ?? undefined}
+          existingCompany={workspace?.name ?? undefined}
+          onClose={() => setPreCheckoutPlan(undefined)}
+        />
       )}
       <TypebotDndProvider>
         {isLoading ? (
