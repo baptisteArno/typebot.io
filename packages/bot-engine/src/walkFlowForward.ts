@@ -102,6 +102,7 @@ export const walkFlowForward = async (
       sessionStore,
       currentLastBubbleId: lastBubbleBlockId,
     });
+    skipFirstMessageBubble = false;
     if (executionResponse.logs) logs.push(...executionResponse.logs);
     newSessionState = executionResponse.newSessionState;
     if (executionResponse.newSetVariableHistoryItems)
