@@ -9,4 +9,5 @@ export enum LogicBlockType {
   WEBHOOK = "webhook",
   JUMP = "Jump",
   RETURN = "Return",
+  LOOP = "Loop",
 }
