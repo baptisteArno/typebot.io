@@ -1,17 +1,19 @@
 import type { Variable } from "./schemas";
 
 export const injectVariablesFromExistingResult = (
-  variables: Variable[],
+  prefilledVariables: Variable[],
   resultVariables: any[],
 ): Variable[] =>
-  variables.map((variable) => {
+  prefilledVariables.map((prefilledVariable) => {
+    if (prefilledVariable.value) return prefilledVariable;
     const resultVariable = resultVariables.find(
       (resultVariable) =>
-        resultVariable.name === variable.name && !variable.value,
+        resultVariable.name === prefilledVariable.name &&
+        !prefilledVariable.value,
     );
-    if (!resultVariable) return variable;
+    if (!resultVariable) return prefilledVariable;
     return {
-      ...variable,
+      ...prefilledVariable,
       value: resultVariable.value,
     };
   });

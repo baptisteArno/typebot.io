@@ -29,7 +29,6 @@ import {
   defaultSystemMessages,
 } from "@typebot.io/settings/constants";
 import {
-  defaultContainerBackgroundColor,
   defaultFontFamily,
   defaultFontType,
   defaultProgressBarPosition,
@@ -38,13 +37,7 @@ import type { Font } from "@typebot.io/theme/schemas";
 import { cn } from "@typebot.io/ui/lib/cn";
 import { cx } from "@typebot.io/ui/lib/cva";
 import { HTTPError } from "ky";
-import {
-  Show,
-  createEffect,
-  createMemo,
-  createSignal,
-  onCleanup,
-} from "solid-js";
+import { Show, createEffect, createSignal, onCleanup } from "solid-js";
 import { Portal } from "solid-js/web";
 import { buttonVariants } from "./Button";
 import { ChatContainer } from "./ConversationContainer/ChatContainer";
@@ -176,7 +169,10 @@ export const Bot = (props: BotProps & { class?: string }) => {
           new Date(initialChatInStorage.typebot.publishedAt).getTime() ===
           new Date(data.typebot.publishedAt).getTime()
         ) {
-          setInitialChatReply(initialChatInStorage);
+          setInitialChatReply({
+            ...initialChatInStorage,
+            sessionId: data.sessionId,
+          });
         } else {
           // Restart chat by resetting remembered state
           wipeExistingChatStateInStorage(data.typebot.id);
