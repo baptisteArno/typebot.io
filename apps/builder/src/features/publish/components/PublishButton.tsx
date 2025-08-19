@@ -14,6 +14,8 @@ import { useTimeSince } from "@/hooks/useTimeSince";
 import { queryClient, trpc } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
 import {
+  Alert,
+  AlertIcon,
   Button,
   type ButtonProps,
   HStack,
@@ -32,6 +34,7 @@ import { T, useTranslate } from "@tolgee/react";
 import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
 import { isNotDefined } from "@typebot.io/lib/utils";
 import { useRouter } from "next/router";
+import { useState } from "react";
 import { parseDefaultPublicId } from "../helpers/parseDefaultPublicId";
 
 type Props = ButtonProps & {
@@ -50,6 +53,8 @@ export const PublishButton = ({
     onOpen: onNewEngineWarningOpen,
     onClose: onNewEngineWarningClose,
   } = useDisclosure();
+  const [trademarkPotentialInfringement, setTrademarkPotentialInfringement] =
+    useState<string | undefined>(undefined);
   const {
     isPublished,
     publishedTypebot,
@@ -79,8 +84,10 @@ export const PublishButton = ({
             }, 3000);
           }
         },
-        onSuccess: () => {
+        onSuccess: (data) => {
           if (!typebot?.id || currentUserMode === "guest") return;
+          if (data.warnings)
+            setTrademarkPotentialInfringement(data.warnings[0].trademark);
           queryClient.invalidateQueries({
             queryKey: trpc.typebot.getPublishedTypebot.queryKey(),
           });
@@ -147,6 +154,38 @@ export const PublishButton = ({
         isOpen={isOpen}
         onClose={onClose}
         type={t("billing.limitMessage.fileInput")}
+      />
+      <ConfirmModal
+        isOpen={trademarkPotentialInfringement !== undefined}
+        onConfirm={() => {
+          setTrademarkPotentialInfringement(undefined);
+        }}
+        onClose={() => {
+          setTrademarkPotentialInfringement(undefined);
+        }}
+        title="Potential trademark infringement detected"
+        message={
+          <div className="flex flex-col gap-4">
+            <span>
+              We noticed you’re using{" "}
+              <span className="font-bold">
+                {trademarkPotentialInfringement}
+              </span>{" "}
+              brand or logo in your bot’s metadata. Please be careful: using{" "}
+              {trademarkPotentialInfringement}’s brand assets in your bot
+              misleads visitors and most likely violates{" "}
+              {trademarkPotentialInfringement}’s trademark guidelines.
+              <br />
+              Consider rephrasing with your own branding.
+            </span>
+            <Alert status="warning">
+              <AlertIcon />
+              Your workspace is at risk of being suspended if we detect a
+              trademark infringement down the line.
+            </Alert>
+          </div>
+        }
+        confirmButtonLabel="Publish anyway"
       />
       {publishedTypebot && publishedTypebotVersion !== typebot?.version && (
         <ConfirmModal

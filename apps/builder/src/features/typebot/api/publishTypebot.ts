@@ -6,7 +6,8 @@ import { env } from "@typebot.io/env";
 import { parseGroups } from "@typebot.io/groups/helpers/parseGroups";
 import prisma from "@typebot.io/prisma";
 import { Plan } from "@typebot.io/prisma/enum";
-import { computeRiskLevel } from "@typebot.io/radar";
+import { computeRiskLevel } from "@typebot.io/radar/computeRiskLevel";
+import { detectTrademarkInfrigement } from "@typebot.io/radar/detectTrademarkInfrigement";
 import {
   deleteSessionStore,
   getSessionStore,
@@ -24,6 +25,11 @@ import { variableSchema } from "@typebot.io/variables/schemas";
 import { z } from "@typebot.io/zod";
 import { isWriteTypebotForbidden } from "../helpers/isWriteTypebotForbidden";
 
+const warningSchema = z.object({
+  type: z.enum(["trademarkInfringement"]),
+  trademark: z.string(),
+});
+type Warning = z.infer<typeof warningSchema>;
 export const publishTypebot = authenticatedProcedure
   .meta({
     openapi: {
@@ -46,9 +52,12 @@ export const publishTypebot = authenticatedProcedure
   .output(
     z.object({
       message: z.literal("success"),
+      warnings: z.array(warningSchema).optional(),
     }),
   )
   .mutation(async ({ input: { typebotId }, ctx: { user } }) => {
+    const warnings: Warning[] = [];
+
     const existingTypebot = await prisma.typebot.findFirst({
       where: {
         id: typebotId,
@@ -142,6 +151,29 @@ export const publishTypebot = authenticatedProcedure
       }
     }
 
+    if (!typebotWasVerified) {
+      const newMetadata = existingTypebot.settings
+        ? settingsSchema.parse(existingTypebot.settings).metadata
+        : undefined;
+      const publishedMetadata = existingTypebot.publishedTypebot
+        ? settingsSchema.parse(existingTypebot.publishedTypebot.settings)
+            .metadata
+        : undefined;
+
+      if (
+        newMetadata?.title !== publishedMetadata?.title ||
+        newMetadata?.description !== publishedMetadata?.description
+      ) {
+        const detectedTrademark = detectTrademarkInfrigement(newMetadata);
+        if (detectedTrademark) {
+          warnings.push({
+            type: "trademarkInfringement",
+            trademark: detectedTrademark,
+          });
+        }
+      }
+    }
+
     const publishEvents: TelemetryEvent[] = await parseTypebotPublishEvents({
       existingTypebot,
       userId: user.id,
@@ -201,5 +233,8 @@ export const publishTypebot = authenticatedProcedure
 
     await trackEvents(publishEvents);
 
-    return { message: "success" };
+    return {
+      message: "success",
+      warnings: warnings.length > 0 ? warnings : undefined,
+    };
   });

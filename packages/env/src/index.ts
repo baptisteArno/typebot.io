@@ -101,6 +101,11 @@ const baseEnv = {
         val.split("/").map((s) => s.split(",").map((s) => s.split("|"))),
       )
       .optional(),
+    TRADEMARK_VIOLATION_KEYWORDS: z
+      .string()
+      .min(1)
+      .transform((val) => val.split(","))
+      .optional(),
     LANDING_PAGE_URL: z.preprocess(
       guessLandingUrlForVercelPreview,
       z.string().url().optional(),
