@@ -16,7 +16,7 @@ import type { Variable } from "@typebot.io/variables/schemas";
 import type { TElement } from "@udecode/plate-common";
 import { focusEditor, insertText, selectEditor } from "@udecode/plate-common";
 import { Plate, PlateContent, useEditorRef } from "@udecode/plate-core";
-import { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { TextEditorToolBar } from "../../blocks/bubbles/textBubble/components/TextEditorToolBar";
 
 // Component to capture the editor ref from Plate context
@@ -50,6 +50,15 @@ export const TranslationRichTextEditor = ({
   height = "120px",
 }: TranslationRichTextEditorProps) => {
   const { t } = useTranslate();
+
+  // Debug what we receive as initialValue (only when needed)
+  if (process.env.NODE_ENV === "development") {
+    console.log(`🔍 TranslationRichTextEditor ${id} received:`, {
+      initialValue,
+      initialValueType: typeof initialValue,
+      initialValueIsArray: Array.isArray(initialValue),
+    });
+  }
   const [isVariableDropdownOpen, setIsVariableDropdownOpen] = useState(false);
   const [isFirstFocus, setIsFirstFocus] = useState(true);
   const editorRef = useRef<any>(null);
@@ -128,6 +137,7 @@ export const TranslationRichTextEditor = ({
             : initialValue
         }
         onChange={onChange}
+        key={`${id}-${initialValue.length}`}
       >
         <EditorRefCapture
           onEditorRef={(editor) => {

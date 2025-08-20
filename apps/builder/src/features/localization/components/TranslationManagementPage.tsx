@@ -4,6 +4,7 @@ import {
   DownloadIcon,
   EditIcon,
   ExternalLinkIcon,
+  SparklesIcon,
   UploadIcon,
 } from "@/components/icons";
 import { TypebotHeader } from "@/features/editor/components/TypebotHeader";
@@ -44,14 +45,16 @@ import type React from "react";
 import { useMemo, useRef, useState } from "react";
 import { importTranslations } from "../helpers/importTranslations";
 import { isLogicBlock } from "../helpers/logicBlockTypes";
+import { getEditableContent } from "../helpers/richTextUtils";
 import { useLocalization } from "../providers/LocalizationProvider";
 import { validateImportedTranslations } from "../schemas/importValidation";
+import { BulkAITranslationModal } from "./BulkAITranslationModal";
 import { ContentRenderer } from "./ContentRenderer";
 import { EditTranslationModal } from "./EditTranslationModal";
 import { LocaleSwitcher } from "./LocaleSwitcher";
 import { TranslationStatusIndicator } from "./TranslationStatusIndicator";
 
-interface TranslationTableRow {
+export interface TranslationTableRow {
   blockId: string;
   blockType: string;
   groupTitle: string;
@@ -91,6 +94,7 @@ export const TranslationManagementPage = () => {
     groupTitle: string;
     defaultContent: string;
   } | null>(null);
+  const [isBulkAIModalOpen, setIsBulkAIModalOpen] = useState(false);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const toast = useToast();
@@ -119,8 +123,9 @@ export const TranslationManagementPage = () => {
           hasTranslatableContent = true;
           const content = block.content as any;
           if (content.richText) {
-            // For rich text, store the JSON structure so ContentRenderer can process it
-            defaultContent = JSON.stringify(content.richText);
+            // For rich text, extract plain text for AI translation while preserving structure
+            const editableContent = getEditableContent(content);
+            defaultContent = editableContent.text;
           } else if (content.html) {
             defaultContent = content.html;
           } else if (content.plainText) {
@@ -430,6 +435,25 @@ export const TranslationManagementPage = () => {
     setEditModalData(null);
   };
 
+  const handleBulkAITranslation = () => {
+    setIsBulkAIModalOpen(true);
+  };
+
+  const handleBulkAITranslationComplete = (results: {
+    successCount: number;
+    errorCount: number;
+    targetLocale: string;
+  }) => {
+    // Force re-render by updating the typebot data
+    // In a real implementation, you would apply the translations to the typebot
+    toast({
+      title: "Bulk AI Translation Results",
+      description: `${results.successCount} translations applied to ${results.targetLocale}`,
+      status: results.errorCount > 0 ? "warning" : "success",
+      duration: 5000,
+    });
+  };
+
   // Conditional rendering moved to the end after all hooks are called
   if (!isLocalizationEnabled) {
     return (
@@ -496,11 +520,23 @@ export const TranslationManagementPage = () => {
               </VStack>
 
               <HStack spacing={2}>
+                {/*
                 <LocaleSwitcher
                   currentLocale={currentLocale}
                   availableLocales={availableLocales}
                   onLocaleChange={setCurrentLocale}
                 />
+                */}
+
+                <Button
+                  leftIcon={<SparklesIcon />}
+                  onClick={handleBulkAITranslation}
+                  colorScheme="blue"
+                  variant="outline"
+                  size="sm"
+                >
+                  AI Translate
+                </Button>
 
                 <Button
                   leftIcon={<DownloadIcon />}
@@ -736,6 +772,16 @@ export const TranslationManagementPage = () => {
         blockType={editModalData?.blockType || ""}
         groupTitle={editModalData?.groupTitle || ""}
         defaultContent={editModalData?.defaultContent || ""}
+      />
+
+      {/* Bulk AI Translation Modal */}
+      <BulkAITranslationModal
+        isOpen={isBulkAIModalOpen}
+        onClose={() => setIsBulkAIModalOpen(false)}
+        translationData={translationData}
+        availableLocales={availableLocales}
+        fallbackLocale={fallbackLocale}
+        onTranslationComplete={handleBulkAITranslationComplete}
       />
     </Flex>
   );

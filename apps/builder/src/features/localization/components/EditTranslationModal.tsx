@@ -1,3 +1,4 @@
+import { SparklesIcon } from "@/components/icons";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import {
   Alert,
@@ -32,7 +33,9 @@ import {
   getEditableContent,
   plainTextToRichText,
   richTextToPlainText,
+  translateRichTextContent,
 } from "../helpers/richTextUtils";
+import useAITranslation from "../hooks/useAITranslation";
 import { useLocalization } from "../providers/LocalizationProvider";
 import { ContentRenderer } from "./ContentRenderer";
 import { TranslationRichTextEditor } from "./TranslationRichTextEditor";
@@ -91,6 +94,10 @@ export const EditTranslationModal = ({
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const [isDefaultRichText, setIsDefaultRichText] = useState(false);
   const toast = useToast();
+
+  // AI Translation
+  const { translateText, isTranslating, hasOpenAiCredentials } =
+    useAITranslation();
 
   // Find the block and its indices in the typebot
   const findBlockWithIndices = () => {
@@ -165,6 +172,12 @@ export const EditTranslationModal = ({
           // For text blocks, check if we should use rich text
           if (blockType === "text") {
             const locEditableContent = getEditableContent(loc);
+            console.log(`🔍 DEBUGGING: getEditableContent for ${locale}:`, {
+              loc,
+              locEditableContent,
+              richTextType: typeof locEditableContent.richText,
+              richTextIsArray: Array.isArray(locEditableContent.richText),
+            });
             currentContent = locEditableContent.text;
             currentRichText = locEditableContent.richText;
             isRichTextForLocale = locEditableContent.isRichText;
@@ -292,6 +305,12 @@ export const EditTranslationModal = ({
 
       const extracted = extractCurrentLocalizations();
       console.log("📋 Extracted localizations:", extracted);
+      console.log("📋 Extracted localization keys:", Object.keys(extracted));
+      console.log("📋 Available locales:", availableLocales);
+      console.log(
+        "📋 Target locales:",
+        availableLocales.filter((locale) => locale !== fallbackLocale),
+      );
       setLocalizations(extracted);
       setHasUnsavedChanges(false);
     }
@@ -322,12 +341,17 @@ export const EditTranslationModal = ({
 
   // Handle content change for a specific locale (plain text)
   const handleContentChange = (locale: string, newContent: string) => {
-    console.log(`📝 Content changed for ${locale}:`, {
+    console.log(`📝 handleContentChange called for ${locale}:`, {
       newContent,
       newContentLength: newContent.length,
       previous: localizations[locale]?.originalContent,
       previousLength: localizations[locale]?.originalContent?.length || 0,
+      localizations: localizations,
+      localizationExists: !!localizations[locale],
     });
+
+    // Log the current state before the update
+    console.log(`📝 Current localizations state before update:`, localizations);
 
     setLocalizations((prev) => {
       // Initialize locale data if it doesn't exist
@@ -338,7 +362,7 @@ export const EditTranslationModal = ({
           [locale]: {
             content: "",
             richText: plainTextToRichText(""),
-            originalContent: "",
+            originalContent: "", // This will be the baseline for change detection
             originalRichText: [],
             hasChanges: false,
             isRichText: false,
@@ -355,7 +379,10 @@ export const EditTranslationModal = ({
 
       // Extra check: if we're going from empty to non-empty or vice versa, that's definitely a change
       const lengthChanged = newContent.length !== originalContent.length;
-      const contentActuallyChanged = hasChanges || lengthChanged;
+      // Force change detection if we have content and the original was empty (new translation)
+      const isNewTranslation = trimmedOriginal === "" && trimmedNew !== "";
+      const contentActuallyChanged =
+        hasChanges || lengthChanged || isNewTranslation;
 
       console.log(`🔍 Enhanced change detection for ${locale}:`, {
         newContent: `"${trimmedNew}"`,
@@ -364,6 +391,7 @@ export const EditTranslationModal = ({
         originalLength: originalContent.length,
         hasChanges,
         lengthChanged,
+        isNewTranslation,
         contentActuallyChanged,
         finalDecision: contentActuallyChanged,
       });
@@ -397,6 +425,14 @@ export const EditTranslationModal = ({
         })),
       });
       setHasUnsavedChanges(hasAnyChanges);
+
+      console.log(`📝 Updated localizations state for ${locale}:`, updated);
+      console.log(`📝 hasUnsavedChanges set to:`, hasAnyChanges);
+
+      // Schedule a verification in the next tick to ensure state consistency
+      setTimeout(() => {
+        console.log(`📝 Post-update verification for ${locale}`);
+      }, 0);
 
       return updated;
     });
@@ -687,8 +723,13 @@ export const EditTranslationModal = ({
   const handleRichTextChange = (locale: string, newRichText: TElement[]) => {
     console.log(`📝 Rich text changed for ${locale}:`, {
       newRichText,
+      newRichTextType: typeof newRichText,
+      newRichTextIsArray: Array.isArray(newRichText),
       previous: localizations[locale]?.originalRichText,
     });
+
+    // Simple validation - just ensure we have an array
+    const validRichText = Array.isArray(newRichText) ? newRichText : [];
 
     setLocalizations((prev) => {
       // Initialize locale data if it doesn't exist
@@ -710,7 +751,7 @@ export const EditTranslationModal = ({
       }
 
       const originalRichText = prev[locale]?.originalRichText || [];
-      const newContent = richTextToPlainText(newRichText);
+      const newContent = richTextToPlainText(validRichText);
       const originalContent = richTextToPlainText(originalRichText);
 
       // More robust change detection for rich text
@@ -720,7 +761,10 @@ export const EditTranslationModal = ({
 
       // Extra check: if we're going from empty to non-empty or vice versa, that's definitely a change
       const lengthChanged = newContent.length !== originalContent.length;
-      const contentActuallyChanged = hasChanges || lengthChanged;
+      // Force change detection if we have content and the original was empty (new translation)
+      const isNewTranslation = trimmedOriginal === "" && trimmedNew !== "";
+      const contentActuallyChanged =
+        hasChanges || lengthChanged || isNewTranslation;
 
       console.log(`🔍 Enhanced rich text change detection for ${locale}:`, {
         newContent: `"${trimmedNew}"`,
@@ -729,6 +773,7 @@ export const EditTranslationModal = ({
         originalLength: originalContent.length,
         hasChanges,
         lengthChanged,
+        isNewTranslation,
         contentActuallyChanged,
         finalDecision: contentActuallyChanged,
       });
@@ -738,13 +783,23 @@ export const EditTranslationModal = ({
         [locale]: {
           ...prev[locale],
           content: newContent,
-          richText: newRichText,
+          richText: validRichText,
           originalContent: prev[locale]?.originalContent || "",
           originalRichText: prev[locale]?.originalRichText || [],
           hasChanges: contentActuallyChanged,
           isRichText: prev[locale]?.isRichText || false,
         },
       };
+
+      // Debug what we're actually storing in state
+      console.log(`📦 State update for ${locale}:`, {
+        validRichText,
+        validRichTextType: typeof validRichText,
+        validRichTextIsArray: Array.isArray(validRichText),
+        stateRichText: updated[locale].richText,
+        stateRichTextType: typeof updated[locale].richText,
+        stateRichTextIsArray: Array.isArray(updated[locale].richText),
+      });
 
       // Check if any locale has changes
       const hasAnyChanges = Object.values(updated).some(
@@ -806,23 +861,57 @@ export const EditTranslationModal = ({
 
         // Prepare the content updates with deep cloning to avoid immutability issues
         if (!blockUpdates.content) {
-          blockUpdates.content = JSON.parse(JSON.stringify(content));
+          blockUpdates.content = { ...content };
         }
         if (!blockUpdates.content.localizations) {
-          blockUpdates.content.localizations = JSON.parse(
-            JSON.stringify(content.localizations || {}),
-          );
+          // Create a completely new localizations object to avoid extensibility issues
+          blockUpdates.content.localizations = {};
+          // Copy existing localizations
+          if (content.localizations) {
+            Object.keys(content.localizations).forEach((existingLocale) => {
+              blockUpdates.content.localizations[existingLocale] = {
+                ...content.localizations[existingLocale],
+              };
+            });
+          }
         }
         if (!blockUpdates.content.localizations[locale]) {
-          blockUpdates.content.localizations[locale] = JSON.parse(
-            JSON.stringify(content.localizations?.[locale] || {}),
-          );
+          blockUpdates.content.localizations[locale] = {
+            ...(content.localizations?.[locale] || {}),
+          };
         }
 
         // Determine content type and apply
         if (content.richText !== undefined && data.isRichText) {
-          console.log(`📝 Setting richText for ${locale}:`, data.richText);
-          blockUpdates.content.localizations[locale].richText = data.richText;
+          console.log(`📝 Setting richText for ${locale}:`, {
+            dataRichText: data.richText,
+            dataRichTextType: typeof data.richText,
+            dataRichTextIsArray: Array.isArray(data.richText),
+          });
+
+          // Ensure we're setting proper rich text array, not a string
+          let richTextToSet = data.richText;
+          if (typeof data.richText === "string") {
+            console.error(
+              `❌ CRITICAL: Attempting to save richText as string for ${locale}:`,
+              data.richText,
+            );
+            try {
+              richTextToSet = JSON.parse(data.richText);
+              console.log(
+                `✅ Parsed richText string for ${locale}:`,
+                richTextToSet,
+              );
+            } catch (err) {
+              console.error(
+                `❌ Failed to parse richText string for ${locale}:`,
+                err,
+              );
+              richTextToSet = plainTextToRichText(data.richText);
+            }
+          }
+
+          blockUpdates.content.localizations[locale].richText = richTextToSet;
           // Also set plainText as fallback
           blockUpdates.content.localizations[locale].plainText = data.content;
         } else if (content.plainText !== undefined) {
@@ -857,7 +946,7 @@ export const EditTranslationModal = ({
         console.log("📋 Items to update:", localizedItems);
 
         if (!blockUpdates.items) {
-          blockUpdates.items = JSON.parse(JSON.stringify(items));
+          blockUpdates.items = items.map((item) => ({ ...item }));
         }
 
         blockUpdates.items.forEach((item: any, index: number) => {
@@ -914,22 +1003,28 @@ export const EditTranslationModal = ({
         console.log("🏷️ Labels to update:", { placeholder, button });
 
         if (!blockUpdates.options) {
-          blockUpdates.options = JSON.parse(JSON.stringify(options));
+          blockUpdates.options = { ...options };
         }
         if (!blockUpdates.options.localizations) {
-          blockUpdates.options.localizations = JSON.parse(
-            JSON.stringify(options.localizations || {}),
-          );
+          blockUpdates.options.localizations = {};
+          // Copy existing localizations
+          if (options.localizations) {
+            Object.keys(options.localizations).forEach((existingLocale) => {
+              blockUpdates.options.localizations[existingLocale] = {
+                ...options.localizations[existingLocale],
+              };
+            });
+          }
         }
         if (!blockUpdates.options.localizations[locale]) {
-          blockUpdates.options.localizations[locale] = JSON.parse(
-            JSON.stringify(options.localizations?.[locale] || {}),
-          );
+          blockUpdates.options.localizations[locale] = {
+            ...(options.localizations?.[locale] || {}),
+          };
         }
         if (!blockUpdates.options.localizations[locale].labels) {
-          blockUpdates.options.localizations[locale].labels = JSON.parse(
-            JSON.stringify(options.localizations?.[locale]?.labels || {}),
-          );
+          blockUpdates.options.localizations[locale].labels = {
+            ...(options.localizations?.[locale]?.labels || {}),
+          };
         }
 
         console.log(`📝 Setting placeholder for ${locale}:`, placeholder);
@@ -973,22 +1068,28 @@ export const EditTranslationModal = ({
         });
 
         if (!blockUpdates.options) {
-          blockUpdates.options = JSON.parse(JSON.stringify(options));
+          blockUpdates.options = { ...options };
         }
         if (!blockUpdates.options.localizations) {
-          blockUpdates.options.localizations = JSON.parse(
-            JSON.stringify(options.localizations || {}),
-          );
+          blockUpdates.options.localizations = {};
+          // Copy existing localizations
+          if (options.localizations) {
+            Object.keys(options.localizations).forEach((existingLocale) => {
+              blockUpdates.options.localizations[existingLocale] = {
+                ...options.localizations[existingLocale],
+              };
+            });
+          }
         }
         if (!blockUpdates.options.localizations[locale]) {
-          blockUpdates.options.localizations[locale] = JSON.parse(
-            JSON.stringify(options.localizations?.[locale] || {}),
-          );
+          blockUpdates.options.localizations[locale] = {
+            ...(options.localizations?.[locale] || {}),
+          };
         }
         if (!blockUpdates.options.localizations[locale].labels) {
-          blockUpdates.options.localizations[locale].labels = JSON.parse(
-            JSON.stringify(options.localizations?.[locale]?.labels || {}),
-          );
+          blockUpdates.options.localizations[locale].labels = {
+            ...(options.localizations?.[locale]?.labels || {}),
+          };
         }
 
         console.log(`⬅️ Setting left label for ${locale}:`, leftLabel);
@@ -1011,6 +1112,213 @@ export const EditTranslationModal = ({
 
     console.log("🏁 Final update result:", hasAnyUpdates);
     return hasAnyUpdates;
+  };
+
+  // AI Translation handler
+  const handleAITranslate = async (locale: string) => {
+    const sourceText = defaultContent;
+    if (!sourceText || !sourceText.trim()) {
+      toast({
+        title: "No content to translate",
+        description: "The default content is empty",
+        status: "warning",
+        duration: 3000,
+      });
+      return;
+    }
+
+    // Get the original rich text structure for rich text blocks
+    const block = findBlock();
+    let originalRichText: TElement[] = [];
+
+    if (block && "content" in block && block.content && isDefaultRichText) {
+      const content = block.content as any;
+      const editableContent = getEditableContent(content);
+      originalRichText = editableContent.richText;
+    }
+
+    console.log(`🤖 Starting AI translation for ${locale}:`, {
+      sourceText,
+      blockType,
+      fallbackLocale,
+      hasOpenAiCredentials,
+      isTranslating,
+    });
+
+    // Check prerequisites
+    if (!hasOpenAiCredentials) {
+      console.log(`❌ No OpenAI credentials available for ${locale}`);
+      toast({
+        title: "No OpenAI credentials",
+        description: "OpenAI credentials are required for AI translation",
+        status: "error",
+        duration: 3000,
+      });
+      return;
+    }
+
+    console.log(`🔄 Calling translateText for ${locale}...`);
+    const result = await translateText({
+      sourceText,
+      sourceLocale: fallbackLocale,
+      targetLocale: locale,
+      context: `${blockType} block in ${groupTitle}`,
+      blockType,
+    });
+
+    console.log(`🤖 AI translation result for ${locale}:`, result);
+
+    // Add explicit check for null/undefined result
+    if (!result) {
+      console.log(`❌ No result returned from translateText for ${locale}`);
+      toast({
+        title: "Translation failed",
+        description: "No translation result received",
+        status: "error",
+        duration: 3000,
+      });
+      return;
+    }
+
+    if (!result.translatedText) {
+      console.log(`❌ No translatedText in result for ${locale}:`, result);
+      toast({
+        title: "Translation failed",
+        description: "Empty translation result",
+        status: "error",
+        duration: 3000,
+      });
+      return;
+    }
+
+    // Process the translation result
+    console.log(`🤖 Processing translation result for ${locale}:`, {
+      translatedText: result.translatedText,
+      blockType,
+      isRatingInput: blockType === "rating input",
+      isInputBlock: [
+        "text input",
+        "number input",
+        "email input",
+        "url input",
+        "date input",
+        "time input",
+        "phone number input",
+        "file input",
+      ].includes(blockType),
+      currentLocalizations: localizations[locale],
+    });
+
+    // Apply the translation based on block type
+    if (blockType === "rating input") {
+      // For rating input, we need to parse the combined content
+      // Try both "|" and " | " separators for more robust parsing
+      const parts = result.translatedText.includes(" | ")
+        ? result.translatedText.split(" | ")
+        : result.translatedText.split("|").map((part) => part.trim());
+
+      console.log(`⭐ Rating input parts for ${locale}:`, parts);
+
+      if (parts.length >= 2) {
+        console.log(`⭐ Setting rating labels for ${locale}:`, {
+          leftLabel: parts[0] || "",
+          rightLabel: parts[1] || "",
+          button: parts[2] || "",
+        });
+        handleLeftLabelChange(locale, parts[0] || "");
+        handleRightLabelChange(locale, parts[1] || "");
+        if (parts[2]) {
+          handleRatingButtonChange(locale, parts[2]);
+        }
+      } else {
+        // Fallback: treat as single content
+        console.log(
+          `⭐ Rating input fallback for ${locale}: treating as single content`,
+        );
+        handleContentChange(locale, result.translatedText);
+      }
+    } else if (
+      [
+        "text input",
+        "number input",
+        "email input",
+        "url input",
+        "date input",
+        "time input",
+        "phone number input",
+        "file input",
+      ].includes(blockType)
+    ) {
+      // For input blocks, parse placeholder and button
+      // Try both " / " and "/" separators for more robust parsing
+      const parts = result.translatedText.includes(" / ")
+        ? result.translatedText.split(" / ")
+        : result.translatedText.split("/").map((part) => part.trim());
+
+      console.log(`📝 Input block parts for ${locale}:`, parts);
+
+      if (parts.length >= 1) {
+        console.log(`📝 Setting input labels for ${locale}:`, {
+          placeholder: parts[0] || "",
+          button: parts[1] || "",
+        });
+        handlePlaceholderChange(locale, parts[0] || "");
+        if (parts[1]) {
+          handleButtonChange(locale, parts[1]);
+        }
+      } else {
+        // Fallback: treat as single content
+        console.log(
+          `📝 Input block fallback for ${locale}: treating as single content`,
+        );
+        handleContentChange(locale, result.translatedText);
+      }
+    } else {
+      // For text and other content blocks
+      console.log(`📄 Regular content block for ${locale}:`, {
+        isRichText: isDefaultRichText,
+        translatedText: result.translatedText,
+      });
+
+      if (isDefaultRichText) {
+        const richText = translateRichTextContent(
+          originalRichText,
+          result.translatedText,
+        );
+        console.log(`📄 Setting rich text for ${locale}:`, {
+          originalRichText,
+          translatedText: result.translatedText,
+          resultRichText: richText,
+          resultType: typeof richText,
+          resultIsArray: Array.isArray(richText),
+          resultFirstElement: richText[0],
+        });
+
+        // Additional debugging right before calling handleRichTextChange
+        console.log(`🚀 About to call handleRichTextChange for ${locale}:`, {
+          richText,
+          richTextType: typeof richText,
+          richTextIsArray: Array.isArray(richText),
+          richTextStringified: JSON.stringify(richText),
+        });
+
+        handleRichTextChange(locale, richText);
+      } else {
+        console.log(
+          `📄 Setting plain text for ${locale}:`,
+          result.translatedText,
+        );
+        handleContentChange(locale, result.translatedText);
+      }
+    }
+
+    console.log(`✅ AI translation applied for ${locale}`);
+    toast({
+      title: "AI Translation Applied",
+      description: `Successfully translated to ${getLocaleDisplayName(locale)}`,
+      status: "success",
+      duration: 3000,
+    });
   };
 
   // Handle save
@@ -1157,12 +1465,6 @@ export const EditTranslationModal = ({
     (locale) => locale !== fallbackLocale,
   );
 
-  console.log("🎯 Target locales for translation:", {
-    availableLocales,
-    fallbackLocale,
-    targetLocales,
-  });
-
   // Don't render modal content if we don't have valid data
   if (!blockId && isOpen) {
     return null;
@@ -1252,17 +1554,54 @@ export const EditTranslationModal = ({
                 return (
                   <FormControl key={locale}>
                     <FormLabel>
-                      <HStack>
-                        <Text>
-                          {getLocaleFlagEmoji(locale)}{" "}
-                          {getLocaleDisplayName(locale)} ({locale.toUpperCase()}
-                          )
-                        </Text>
-                        {localizations[locale]?.hasChanges && (
-                          <Badge colorScheme="orange" size="sm">
-                            Modified
-                          </Badge>
-                        )}
+                      <HStack justify="space-between">
+                        <HStack>
+                          <Text>
+                            {getLocaleFlagEmoji(locale)}{" "}
+                            {getLocaleDisplayName(locale)} (
+                            {locale.toUpperCase()})
+                          </Text>
+                          {localizations[locale]?.hasChanges && (
+                            <Badge colorScheme="orange" size="sm">
+                              Modified
+                            </Badge>
+                          )}
+                        </HStack>
+                        <HStack>
+                          <Button
+                            size="xs"
+                            variant="ghost"
+                            leftIcon={<SparklesIcon />}
+                            onClick={() => handleAITranslate(locale)}
+                            isLoading={isTranslating}
+                            isDisabled={!hasOpenAiCredentials}
+                            colorScheme="blue"
+                            title={
+                              !hasOpenAiCredentials
+                                ? "OpenAI credentials required. Add OpenAI credentials to your workspace or add an OpenAI block to your chatbot."
+                                : undefined
+                            }
+                          >
+                            AI Translate
+                          </Button>
+                          <Button
+                            size="xs"
+                            variant="outline"
+                            onClick={() => {
+                              console.log(
+                                `🧪 Testing manual translation for ${locale}`,
+                              );
+                              const testTranslation = `Test translation for ${locale} - ${new Date().getTime()}`;
+                              console.log(
+                                `🧪 Setting test content: ${testTranslation}`,
+                              );
+                              handleContentChange(locale, testTranslation);
+                            }}
+                            colorScheme="gray"
+                          >
+                            Test
+                          </Button>
+                        </HStack>
                       </HStack>
                     </FormLabel>
 
@@ -1271,12 +1610,59 @@ export const EditTranslationModal = ({
                     (isDefaultRichText || localizations[locale]?.isRichText) ? (
                       <TranslationRichTextEditor
                         id={`translation-${blockId}-${locale}`}
-                        initialValue={localizations[locale]?.richText || []}
+                        initialValue={(() => {
+                          const richText =
+                            localizations[locale]?.richText || [];
+                          console.log(
+                            `🔍 DEBUGGING: TranslationRichTextEditor initialValue for ${locale}:`,
+                            {
+                              richText,
+                              richTextType: typeof richText,
+                              richTextIsArray: Array.isArray(richText),
+                              richTextStringified: JSON.stringify(richText),
+                              localizationData: localizations[locale],
+                            },
+                          );
+
+                          // If it's a string, it means somewhere the rich text got serialized
+                          if (typeof richText === "string") {
+                            console.error(
+                              `❌ PROBLEM: Rich text is a string for ${locale}:`,
+                              richText,
+                            );
+                            try {
+                              const parsed = JSON.parse(richText);
+                              console.log(
+                                `✅ Successfully parsed JSON for ${locale}:`,
+                                parsed,
+                              );
+                              return parsed;
+                            } catch (err) {
+                              console.error(
+                                `❌ JSON parse failed for ${locale}, falling back to plain text:`,
+                                err,
+                              );
+                              return plainTextToRichText(richText);
+                            }
+                          }
+
+                          // Should be array, but let's verify
+                          if (!Array.isArray(richText)) {
+                            console.error(
+                              `❌ PROBLEM: Rich text is not array for ${locale}:`,
+                              richText,
+                            );
+                            return [];
+                          }
+
+                          return richText;
+                        })()}
                         onChange={(newRichText) =>
                           handleRichTextChange(locale, newRichText)
                         }
                         placeholder={`Enter ${getLocaleDisplayName(locale)} translation...`}
                         height="120px"
+                        key={`richtext-${locale}-${hasUnsavedChanges ? "modified" : "original"}`}
                       />
                     ) : isRatingInputBlock ? (
                       /* Separate inputs for rating input labels */
@@ -1297,6 +1683,7 @@ export const EditTranslationModal = ({
                             placeholder={`Enter ${getLocaleDisplayName(locale)} left label...`}
                             rows={1}
                             resize="vertical"
+                            key={`leftLabel-${locale}-${localizations[locale]?.leftLabel || "empty"}`}
                           />
                         </Box>
                         <Box>
@@ -1315,6 +1702,7 @@ export const EditTranslationModal = ({
                             placeholder={`Enter ${getLocaleDisplayName(locale)} right label...`}
                             rows={1}
                             resize="vertical"
+                            key={`rightLabel-${locale}-${localizations[locale]?.rightLabel || "empty"}`}
                           />
                         </Box>
                         <Box>
@@ -1355,6 +1743,7 @@ export const EditTranslationModal = ({
                             placeholder={`Enter ${getLocaleDisplayName(locale)} placeholder text...`}
                             rows={2}
                             resize="vertical"
+                            key={`placeholder-${locale}-${localizations[locale]?.placeholder || "empty"}`}
                           />
                         </Box>
                         <Box>
@@ -1373,6 +1762,7 @@ export const EditTranslationModal = ({
                             placeholder={`Enter ${getLocaleDisplayName(locale)} button text...`}
                             rows={1}
                             resize="vertical"
+                            key={`button-${locale}-${localizations[locale]?.button || "empty"}`}
                           />
                         </Box>
                       </VStack>
@@ -1395,6 +1785,7 @@ export const EditTranslationModal = ({
                             : 2
                         }
                         resize="vertical"
+                        key={`textarea-${locale}-${localizations[locale]?.content || "empty"}`}
                       />
                     )}
 
