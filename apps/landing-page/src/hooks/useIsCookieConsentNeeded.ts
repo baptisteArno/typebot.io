@@ -1,4 +1,5 @@
 import { isEU } from "@/features/telemetry/server/isEU";
+import { setCookie } from "@/helpers/setCookie";
 import { getTypebotCookie } from "@typebot.io/telemetry/cookies/helpers";
 import { useEffect, useState } from "react";
 
@@ -17,7 +18,12 @@ export const useCookieConsentStatus = () => {
     }
 
     isEU().then((response) => {
-      setCookieConsentStatus(response.isEU ? "need-consent" : "not-needed");
+      if (response.isEU) {
+        setCookieConsentStatus("need-consent");
+      } else {
+        setCookie("accepted");
+        setCookieConsentStatus("not-needed");
+      }
     });
   }, []);
 

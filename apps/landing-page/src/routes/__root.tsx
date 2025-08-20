@@ -3,6 +3,7 @@ import { CookieConsentBot } from "@/components/CookieConsentBot";
 import { Header } from "@/components/Header";
 import { NotFound } from "@/components/NotFound";
 import { Footer } from "@/components/footer/Footer";
+import { setCookie } from "@/helpers/setCookie";
 import { useCookieConsentStatus } from "@/hooks/useIsCookieConsentNeeded";
 import { useTrackPageViewQuery } from "@/hooks/useTrackPageViewQuery";
 import {
@@ -12,7 +13,6 @@ import {
   createRootRoute,
   useNavigate,
 } from "@tanstack/react-router";
-import { serializeTypebotCookie } from "@typebot.io/telemetry/cookies/helpers";
 import { z } from "@typebot.io/zod";
 
 const HERO_ANIMATION_DELAY = 1800;
@@ -102,9 +102,3 @@ function RootComponent() {
     </html>
   );
 }
-
-const setCookie = (consent: "declined" | "accepted") => {
-  document.cookie = serializeTypebotCookie({
-    consent,
-  });
-};
