@@ -100,15 +100,7 @@ export const HttpRequestAdvancedConfigForm = ({
     );
     if (error) return toast({ description: error.message });
     setTestResponse(JSON.stringify(data, undefined, 2));
-    setResponseKeys(
-      computeDeepKeysMappingSuggestionList({
-        test: "yo",
-        test2: "yo2",
-        test3: "yo3",
-        test4: "yo4",
-        test5: "yo5",
-      }),
-    );
+    setResponseKeys(computeDeepKeysMappingSuggestionList(data));
     setIsTestResponseLoading(false);
     onNewTestResponse?.();
   };
