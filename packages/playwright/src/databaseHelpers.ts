@@ -29,6 +29,9 @@ export const parseTestTypebot = (
   resultsTablePreferences: null,
   whatsAppCredentialsId: null,
   riskLevel: null,
+  defaultLocale: "en",
+  supportedLocales: ["en"],
+  localeDetectionConfig: { enabled: false, methods: [], fallbackLocale: "en" },
   events: [
     {
       id: "event1",
@@ -62,6 +65,9 @@ export const parseTypebotToPublicTypebot = (
   variables: typebot.variables,
   edges: typebot.edges,
   events: typebot.events,
+  defaultLocale: typebot.defaultLocale,
+  supportedLocales: typebot.supportedLocales,
+  localeDetectionConfig: typebot.localeDetectionConfig,
 });
 
 type Options = {

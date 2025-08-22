@@ -1,4 +1,5 @@
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
+import type { LocalizedTypebotV6 } from "@/features/editor/providers/TypebotProvider";
 import { Code, Stack, Text } from "@chakra-ui/react";
 import type { BubbleProps } from "@typebot.io/js";
 import {
@@ -13,7 +14,7 @@ import { BubbleSettings } from "../../../settings/BubbleSettings/BubbleSettings"
 import { JavascriptBubbleSnippet } from "../JavascriptBubbleSnippet";
 
 export const getInitialBubbleTheme = (
-  typebot?: Typebot,
+  typebot?: Typebot, //| LocalizedTypebotV6,
 ): BubbleProps["theme"] => {
   return {
     chatWindow: {

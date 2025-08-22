@@ -1879,6 +1879,20 @@
                         ]
                       }
                     ]
+                  },
+                  "locale": {
+                    "type": "string",
+                    "description": "Preferred locale for the chat session"
+                  },
+                  "availableLocales": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "List of available locales for the typebot"
+                  },
+                  "localeDetectionMeta": {
+                    "description": "Additional metadata for locale detection"
                   }
                 }
               }
@@ -2035,6 +2049,20 @@
                         "theme",
                         "settings"
                       ]
+                    },
+                    "locale": {
+                      "type": "string",
+                      "description": "The locale used for this chat session"
+                    },
+                    "availableLocales": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "List of available locales for the typebot"
+                    },
+                    "localeDetectionMeta": {
+                      "description": "Metadata about how the locale was detected"
                     },
                     "lastMessageNewFormat": {
                       "type": "string",
@@ -3219,6 +3247,20 @@
                         ]
                       }
                     ]
+                  },
+                  "locale": {
+                    "type": "string",
+                    "description": "Preferred locale for the chat session"
+                  },
+                  "availableLocales": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "List of available locales for the typebot"
+                  },
+                  "localeDetectionMeta": {
+                    "description": "Additional metadata for locale detection"
                   }
                 }
               }
@@ -3372,6 +3414,20 @@
                         "theme",
                         "settings"
                       ]
+                    },
+                    "locale": {
+                      "type": "string",
+                      "description": "The locale used for this chat session"
+                    },
+                    "availableLocales": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "List of available locales for the typebot"
+                    },
+                    "localeDetectionMeta": {
+                      "description": "Metadata about how the locale was detected"
                     },
                     "lastMessageNewFormat": {
                       "type": "string",
@@ -6931,6 +6987,24 @@
               },
               "plainText": {
                 "type": "string"
+              },
+              "localizations": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "object",
+                  "properties": {
+                    "html": {
+                      "type": "string"
+                    },
+                    "richText": {
+                      "type": "array",
+                      "items": {}
+                    },
+                    "plainText": {
+                      "type": "string"
+                    }
+                  }
+                }
               }
             }
           }
@@ -6970,6 +7044,28 @@
                   },
                   "alt": {
                     "type": "string"
+                  }
+                }
+              },
+              "localizations": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "object",
+                  "properties": {
+                    "url": {
+                      "type": "string"
+                    },
+                    "clickLink": {
+                      "type": "object",
+                      "properties": {
+                        "url": {
+                          "type": "string"
+                        },
+                        "alt": {
+                          "type": "string"
+                        }
+                      }
+                    }
                   }
                 }
               }
@@ -7166,6 +7262,25 @@
                   }
                 }
               },
+              "localizations": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "object",
+                  "properties": {
+                    "labels": {
+                      "type": "object",
+                      "properties": {
+                        "placeholder": {
+                          "type": "string"
+                        },
+                        "button": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
               "variableId": {
                 "type": "string"
               },
@@ -7263,6 +7378,25 @@
                   }
                 }
               },
+              "localizations": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "object",
+                  "properties": {
+                    "labels": {
+                      "type": "object",
+                      "properties": {
+                        "placeholder": {
+                          "type": "string"
+                        },
+                        "button": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
               "retryMessageContent": {
                 "type": "string"
               }
@@ -7304,6 +7438,25 @@
                   },
                   "button": {
                     "type": "string"
+                  }
+                }
+              },
+              "localizations": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "object",
+                  "properties": {
+                    "labels": {
+                      "type": "object",
+                      "properties": {
+                        "placeholder": {
+                          "type": "string"
+                        },
+                        "button": {
+                          "type": "string"
+                        }
+                      }
+                    }
                   }
                 }
               },
@@ -7444,6 +7597,25 @@
                   }
                 }
               },
+              "localizations": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "object",
+                  "properties": {
+                    "labels": {
+                      "type": "object",
+                      "properties": {
+                        "placeholder": {
+                          "type": "string"
+                        },
+                        "button": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
               "retryMessageContent": {
                 "type": "string"
               }
@@ -7485,6 +7657,25 @@
                   },
                   "button": {
                     "type": "string"
+                  }
+                }
+              },
+              "localizations": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "object",
+                  "properties": {
+                    "labels": {
+                      "type": "object",
+                      "properties": {
+                        "placeholder": {
+                          "type": "string"
+                        },
+                        "button": {
+                          "type": "string"
+                        }
+                      }
+                    }
                   }
                 }
               },
@@ -7878,6 +8069,17 @@
                             ]
                           }
                         }
+                      }
+                    }
+                  }
+                },
+                "localizations": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object",
+                    "properties": {
+                      "content": {
+                        "type": "string"
                       }
                     }
                   }
@@ -17163,6 +17365,17 @@
                       }
                     }
                   }
+                },
+                "localizations": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object",
+                    "properties": {
+                      "content": {
+                        "type": "string"
+                      }
+                    }
+                  }
                 }
               },
               "required": [
@@ -17520,6 +17733,28 @@
                   },
                   "alt": {
                     "type": "string"
+                  }
+                }
+              },
+              "localizations": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "object",
+                  "properties": {
+                    "url": {
+                      "type": "string"
+                    },
+                    "clickLink": {
+                      "type": "object",
+                      "properties": {
+                        "url": {
+                          "type": "string"
+                        },
+                        "alt": {
+                          "type": "string"
+                        }
+                      }
+                    }
                   }
                 }
               }

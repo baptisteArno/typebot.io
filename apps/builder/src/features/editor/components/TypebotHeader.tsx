@@ -369,6 +369,17 @@ const TypebotNav = ({
       </Button>
       <Button
         as={Link}
+        href={`/typebots/${typebotId}/translations`}
+        colorScheme={
+          router.pathname.endsWith("translations") ? "orange" : "gray"
+        }
+        variant={router.pathname.endsWith("translations") ? "outline" : "ghost"}
+        size="sm"
+      >
+        Translations
+      </Button>
+      <Button
+        as={Link}
         href={`/typebots/${typebotId}/share`}
         colorScheme={router.pathname.endsWith("share") ? "orange" : "gray"}
         variant={router.pathname.endsWith("share") ? "outline" : "ghost"}

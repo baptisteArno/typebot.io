@@ -6,6 +6,7 @@ import {
 } from "@udecode/plate-basic-marks";
 import { createPlugins } from "@udecode/plate-core";
 import { ELEMENT_LINK, createLinkPlugin } from "@udecode/plate-link";
+import type React from "react";
 
 export const editorStyle = (backgroundColor: string): React.CSSProperties => ({
   flex: 1,
@@ -14,6 +15,29 @@ export const editorStyle = (backgroundColor: string): React.CSSProperties => ({
   borderRadius: "0.25rem",
   outline: "none",
 });
+
+// Custom leaf component that filters out Plate.js internal props
+const FilteredLeaf = ({
+  children,
+  leafPosition,
+  pressed,
+  leaf,
+  text,
+  attributes,
+  ...props
+}: any) => {
+  // Filter out Plate-specific props that shouldn't be passed to DOM
+  const {
+    // Plate internal props that should not reach the DOM
+    editor,
+    element,
+    path,
+    // Add other problematic props here if they appear in future
+    ...cleanProps
+  } = props;
+
+  return <span {...cleanProps}>{children}</span>;
+};
 
 export const platePlugins = createPlugins(
   [
@@ -46,6 +70,8 @@ export const platePlugins = createPlugins(
           {props.children}
         </a>
       ),
+      // Add custom leaf component to filter out problematic props
+      leaf: FilteredLeaf,
     },
   },
 );

@@ -142,6 +142,13 @@ const sessionStateSchemaV3 = sessionStateSchemaV2
     setVariableIdsForHistory: z.array(z.string()).optional(),
     currentSetVariableHistoryIndex: z.number().optional(),
     workspaceId: z.string(),
+    localization: z
+      .object({
+        locale: z.string(),
+        availableLocales: z.array(z.string()),
+        fallbackLocale: z.string(),
+      })
+      .optional(),
     previewMetadata: z
       .object({
         answers: z.array(answerSchema).optional(),
