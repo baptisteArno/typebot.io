@@ -12,8 +12,8 @@ import { chatsLimits, seatsLimits } from "@typebot.io/billing/constants";
 import { formatPrice } from "@typebot.io/billing/helpers/formatPrice";
 import { parseNumberWithCommas } from "@typebot.io/lib/utils";
 import { Button } from "@typebot.io/ui/components/Button";
-import { CheckIcon } from "@typebot.io/ui/icons/CheckIcon";
 import { InfinityIcon } from "@typebot.io/ui/icons/InfinityIcon";
+import { TickIcon } from "@typebot.io/ui/icons/TickIcon";
 import { cn } from "@typebot.io/ui/lib/cn";
 import { chatsTooltip } from "./constants";
 
@@ -244,7 +244,7 @@ export const PlanComparisonTables = ({ onChatsTiersClick }: Props) => (
 
 const CheckedTableCell = () => (
   <TableCell>
-    <CheckIcon className="size-4" />
+    <TickIcon className="size-4" />
   </TableCell>
 );
 

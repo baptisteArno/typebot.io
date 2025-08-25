@@ -1,5 +1,5 @@
 import { MoreInfoTooltip } from "@/components/MoreInfoTooltip";
-import { ButtonLink } from "@/components/link";
+import { CtaButtonLink } from "@/components/link";
 import { registerUrl } from "@/constants";
 import {
   chatsLimits,
@@ -30,13 +30,13 @@ export const ProPlanCard = ({ children }: { children?: React.ReactNode }) => (
       {children}
     </div>
     <PricingCardFooter>
-      <ButtonLink
-        variant="ctaSecondary"
+      <CtaButtonLink
+        variant="secondary"
         size="lg"
         href={`${registerUrl}?subscribePlan=${Plan.PRO}`}
       >
         Subscribe now
-      </ButtonLink>
+      </CtaButtonLink>
     </PricingCardFooter>
   </PricingCardRoot>
 );

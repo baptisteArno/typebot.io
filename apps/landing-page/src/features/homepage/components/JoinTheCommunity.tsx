@@ -1,4 +1,4 @@
-import { ButtonLink } from "@/components/link";
+import { CtaButtonLink } from "@/components/link";
 import { cx } from "@typebot.io/ui/lib/cva";
 import { discordUrl } from "../../../constants";
 import abhaySrc from "../testimonials/assets/abhay.jpeg";
@@ -86,9 +86,9 @@ export const JoinTheCommunity = () => (
             of a network that's shaping the future of conversational apps.
           </p>
         </div>
-        <ButtonLink variant="cta" size="lg" href={discordUrl} target="_blank">
+        <CtaButtonLink size="lg" href={discordUrl} target="_blank">
           Join the community
-        </ButtonLink>
+        </CtaButtonLink>
       </div>
     </div>
     <div className="flex flex-col md:flex-row justify-evenly gap-6 p-6 md:p-8">

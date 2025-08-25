@@ -1,6 +1,6 @@
 import { Portal } from "@ark-ui/react/portal";
 import { Tooltip } from "@ark-ui/react/tooltip";
-import { CircleHelpIcon } from "@typebot.io/ui/icons/CircleHelpIcon";
+import { HelpCircleIcon } from "@typebot.io/ui/icons/CircleHelpIcon";
 
 type Props = {
   children: React.ReactNode;
@@ -9,7 +9,7 @@ export const MoreInfoTooltip = ({ children }: Props) => {
   return (
     <Tooltip.Root openDelay={0} closeDelay={0}>
       <Tooltip.Trigger>
-        <CircleHelpIcon className="size-4 inline-flex" />
+        <HelpCircleIcon className="size-4 inline-flex" />
       </Tooltip.Trigger>
       <Portal>
         <Tooltip.Positioner>

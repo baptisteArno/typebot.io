@@ -1,6 +1,6 @@
 import { Progress } from "@/components/Progress";
 import { TypebotLogoFull } from "@/components/TypebotLogo";
-import { ButtonLink } from "@/components/link";
+import { CtaButtonLink } from "@/components/link";
 import { enterpriseLeadTypebotUrl, registerUrl } from "@/constants";
 import { cn } from "@typebot.io/ui/lib/cn";
 import { useInView } from "motion/react";
@@ -202,9 +202,9 @@ export const Cta = () => (
       .
     </p>
     <div className="w-full md:w-auto flex flex-col md:flex-row gap-4">
-      <ButtonLink variant="cta" size="lg" href={registerUrl}>
+      <CtaButtonLink size="lg" href={registerUrl}>
         Get started free
-      </ButtonLink>
+      </CtaButtonLink>
     </div>
   </div>
 );

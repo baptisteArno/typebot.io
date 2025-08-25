@@ -12,8 +12,8 @@ import {
   TableRow,
 } from "@/components/table";
 import { useMDXComponent } from "@content-collections/mdx/react";
-import { CheckIcon } from "@typebot.io/ui/icons/CheckIcon";
 import { InfoIcon } from "@typebot.io/ui/icons/InfoIcon";
+import { TickIcon } from "@typebot.io/ui/icons/TickIcon";
 import { TriangleAlertIcon } from "@typebot.io/ui/icons/TriangleAlertIcon";
 import { cn } from "@typebot.io/ui/lib/cn";
 import type * as React from "react";
@@ -89,7 +89,7 @@ const components = {
       )}
       {...props}
     >
-      <CheckIcon className="size-5 flex-shrink-0 mt-7 stroke-purple-11" />
+      <TickIcon className="size-5 flex-shrink-0 mt-7 stroke-purple-11" />
       <div>{children}</div>
     </div>
   ),

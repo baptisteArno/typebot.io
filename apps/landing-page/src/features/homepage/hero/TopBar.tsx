@@ -1,5 +1,5 @@
 import { TypebotLogoFull } from "@/components/TypebotLogo";
-import { ButtonLink } from "@/components/link";
+import { ButtonLink, CtaButtonLink } from "@/components/link";
 import { dashboardUrl } from "@/constants";
 import { useIsAuthenticated } from "@/hooks/useIsAuthenticated";
 import { Link, useLocation } from "@tanstack/react-router";
