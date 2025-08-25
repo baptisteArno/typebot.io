@@ -213,6 +213,7 @@ export const webhookHandler = async (
               },
               data: {
                 isPastDue: false,
+                isQuarantined: false,
               },
             });
 
@@ -227,6 +228,73 @@ export const webhookHandler = async (
           }
 
           return res.send({ message: "Nothing to do" });
+        }
+
+        case "invoice.payment_failed": {
+          const invoice = event.data.object;
+          if (invoice.collection_method === "charge_automatically")
+            return res.send({
+              message: "Manual payment required",
+            });
+
+          const stripeId =
+            typeof invoice.customer === "string"
+              ? invoice.customer
+              : invoice.customer?.id;
+          if (!stripeId) {
+            throw new Error("Stripe ID not found");
+          }
+
+          const existingWorkspace = await prisma.workspace.findFirst({
+            where: {
+              stripeId,
+            },
+            select: {
+              id: true,
+              plan: true,
+              isPastDue: true,
+              isQuarantined: true,
+              members: {
+                select: { userId: true, role: true },
+                where: { role: WorkspaceRole.ADMIN },
+              },
+            },
+          });
+
+          if (!existingWorkspace) {
+            return res.send({
+              message: "Workspace not found for failed invoice",
+            });
+          }
+
+          if (existingWorkspace.isQuarantined) {
+            return res.send({
+              message: "Workspace is already quarantined",
+            });
+          }
+
+          if (invoice.next_payment_attempt === null) {
+            if (!existingWorkspace.isQuarantined) {
+              await prisma.workspace.updateMany({
+                where: {
+                  id: existingWorkspace.id,
+                },
+                data: {
+                  isQuarantined: true,
+                  isPastDue: true,
+                },
+              });
+            }
+
+            return res.send({
+              message:
+                "Invoice payment permanently failed - workspace marked as past due",
+            });
+          }
+
+          return res.send({
+            message: `Invoice payment failed (attempt ${invoice.attempt_count}) - retries may continue`,
+          });
         }
 
         case "customer.subscription.deleted": {
