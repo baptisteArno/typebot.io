@@ -1,7 +1,8 @@
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { Button, type ButtonProps, useDisclosure } from "@chakra-ui/react";
+import { useDisclosure } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { isNotDefined } from "@typebot.io/lib/utils";
+import { Button, type ButtonProps } from "@typebot.io/ui/components/Button";
 import React from "react";
 import { ChangePlanDialog } from "./ChangePlanDialog";
 
@@ -21,9 +22,9 @@ export const UpgradeButton = ({
   return (
     <>
       <Button
-        colorScheme="orange"
+        variant="secondary"
         {...props}
-        isLoading={isNotDefined(workspace)}
+        disabled={isNotDefined(workspace)}
         onClick={onOpen}
       >
         {props.children ?? t("upgrade")}

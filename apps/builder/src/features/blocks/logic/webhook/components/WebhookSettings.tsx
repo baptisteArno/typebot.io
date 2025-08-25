@@ -13,7 +13,6 @@ import {
   AccordionIcon,
   AccordionItem,
   AccordionPanel,
-  Button,
   FormControl,
   FormHelperText,
   Input,
@@ -33,6 +32,7 @@ import type { ResponseVariableMapping } from "@typebot.io/blocks-integrations/ht
 import type { WebhookBlock } from "@typebot.io/blocks-logic/webhook/schema";
 import { env } from "@typebot.io/env";
 import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
+import { Button } from "@typebot.io/ui/components/Button";
 import usePartySocket from "partysocket/react";
 import { useMemo, useState } from "react";
 
@@ -122,7 +122,6 @@ export const WebhookSettings = ({
                   />
                   <InputRightElement width="60px">
                     <CopyButton
-                      size="sm"
                       textToCopy={`${urlBase}/web/executeTestWebhook`}
                     />
                   </InputRightElement>
@@ -131,8 +130,7 @@ export const WebhookSettings = ({
             )}
             <Button
               onClick={listenForTestEvent}
-              colorScheme="orange"
-              isLoading={websocketStatus === "opened"}
+              disabled={websocketStatus === "opened"}
             >
               Listen for test event
             </Button>
@@ -188,7 +186,6 @@ export const WebhookSettings = ({
                 />
                 <InputRightElement width="60px">
                   <CopyButton
-                    size="sm"
                     textToCopy={`${urlBase}/results/{resultId}/executeWebhook`}
                   />
                 </InputRightElement>

@@ -1,7 +1,7 @@
 import { Select as PrimitiveSelect } from "@base-ui-components/react/select";
 import * as React from "react";
-import { CheckIcon } from "../icons/CheckIcon";
 import { ChevronDownIcon } from "../icons/ChevronDownIcon";
+import { TickIcon } from "../icons/TickIcon";
 import { cn } from "../lib/cn";
 import { type VariantProps, cva, cx } from "../lib/cva";
 
@@ -108,7 +108,7 @@ const Item = ({
     )}
   >
     <PrimitiveSelect.ItemIndicator>
-      <CheckIcon className="size-3" />
+      <TickIcon className="size-3" />
     </PrimitiveSelect.ItemIndicator>
     <PrimitiveSelect.ItemText>{children}</PrimitiveSelect.ItemText>
   </PrimitiveSelect.Item>

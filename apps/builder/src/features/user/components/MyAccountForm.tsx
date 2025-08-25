@@ -1,8 +1,8 @@
 import { UploadButton } from "@/components/ImageUploadContent/UploadButton";
-import { UploadIcon } from "@/components/icons";
 import { TextInput } from "@/components/inputs/TextInput";
-import { Avatar, Button, HStack, Stack, Text } from "@chakra-ui/react";
+import { Avatar, HStack, Stack, Text } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
+import { Button } from "@typebot.io/ui/components/Button";
 import type React from "react";
 import { useState } from "react";
 import { useUser } from "../hooks/useUser";
@@ -35,13 +35,12 @@ export const MyAccountForm = () => {
         <Stack>
           {user?.id && (
             <UploadButton
-              size="sm"
               fileType="image"
+              variant="secondary"
               filePathProps={{
                 userId: user.id,
                 fileName: "avatar",
               }}
-              leftIcon={<UploadIcon />}
               onFileUploaded={handleFileUploaded}
             >
               {t("account.myAccount.changePhotoButton.label")}
@@ -68,7 +67,10 @@ export const MyAccountForm = () => {
               {user?.email}
             </Text>
           </Stack>
-          <Button onClick={() => setIsChangeEmailDialogOpen(true)}>
+          <Button
+            variant="secondary"
+            onClick={() => setIsChangeEmailDialogOpen(true)}
+          >
             Change email
           </Button>
           <ChangeEmailDialog

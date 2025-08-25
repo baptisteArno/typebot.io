@@ -8,7 +8,7 @@ type Props = {
   children: React.ReactNode;
   title?: string;
   confirmButtonLabel: string;
-  confirmButtonColor?: "blue" | "red";
+  actionType?: "informative" | "destructive";
   onConfirm: () => Promise<unknown> | unknown;
   onClose: () => void;
 };
@@ -17,7 +17,7 @@ export const ConfirmDialog = ({
   title,
   isOpen,
   confirmButtonLabel,
-  confirmButtonColor = "red",
+  actionType = "destructive",
   children,
   onClose,
   onConfirm,
@@ -50,7 +50,7 @@ export const ConfirmDialog = ({
             {t("cancel")}
           </AlertDialog.CloseButton>
           <Button
-            variant={confirmButtonColor === "red" ? "destructive" : undefined}
+            variant={actionType === "informative" ? "default" : "destructive"}
             onClick={onConfirmClick}
             disabled={confirmLoading}
           >

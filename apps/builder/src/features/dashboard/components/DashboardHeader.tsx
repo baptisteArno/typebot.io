@@ -5,7 +5,6 @@ import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { WorkspaceDropdown } from "@/features/workspace/components/WorkspaceDropdown";
 import { WorkspaceSettingsDialog } from "@/features/workspace/components/WorkspaceSettingsDialog";
 import {
-  Button,
   Flex,
   HStack,
   useColorModeValue,
@@ -13,6 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { isNotDefined } from "@typebot.io/lib/utils";
+import { Button } from "@typebot.io/ui/components/Button";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
@@ -72,10 +72,11 @@ export const DashboardHeader = () => {
           )}
           {!workspace?.isPastDue && (
             <Button
-              leftIcon={<SettingsIcon />}
+              variant="secondary"
               onClick={onOpen}
-              isLoading={isNotDefined(workspace) || isLoggingOut}
+              disabled={isNotDefined(workspace) || isLoggingOut}
             >
+              <SettingsIcon />
               {t("dashboard.header.settingsButton.label")}
             </Button>
           )}

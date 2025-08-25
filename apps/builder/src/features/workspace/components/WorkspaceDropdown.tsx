@@ -1,7 +1,6 @@
 import { EmojiOrImageIcon } from "@/components/EmojiOrImageIcon";
 import {
   CheckIcon,
-  ChevronLeftIcon,
   HardDriveIcon,
   LogOutIcon,
   PlusIcon,
@@ -12,7 +11,7 @@ import { HStack, Text } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
 import { Menu } from "@typebot.io/ui/components/Menu";
-import { cx } from "@typebot.io/ui/lib/cva";
+import { ChevronDownIcon } from "@typebot.io/ui/icons/ChevronDownIcon";
 import type { WorkspaceInApp } from "../WorkspaceProvider";
 
 type Props = {
@@ -37,7 +36,7 @@ export const WorkspaceDropdown = ({
 
   return (
     <Menu.Root>
-      <Menu.TriggerButton variant="outline-secondary" size="lg">
+      <Menu.TriggerButton variant="outline-secondary">
         <HStack>
           {!isLoggingOut && currentWorkspace && (
             <>
@@ -47,7 +46,7 @@ export const WorkspaceDropdown = ({
               <PlanTag plan={currentWorkspace.plan} />
             </>
           )}
-          <ChevronLeftIcon transform="rotate(-90deg)" />
+          <ChevronDownIcon />
         </HStack>
       </Menu.TriggerButton>
       <Menu.Popup align="end">

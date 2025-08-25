@@ -1,8 +1,7 @@
 import { ImageUploadContent } from "@/components/ImageUploadContent";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { useOpenControls } from "@/hooks/useOpenControls";
-import { useOutsideClick } from "@/hooks/useOutsideClick";
-import { Button, Flex, Image, Text, useDisclosure } from "@chakra-ui/react";
+import { Flex, Image, Text } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { isNotEmpty } from "@typebot.io/lib/utils";
 import {
@@ -11,6 +10,7 @@ import {
   defaultBackgroundType,
 } from "@typebot.io/theme/constants";
 import type { Background } from "@typebot.io/theme/schemas";
+import { Button } from "@typebot.io/ui/components/Button";
 import { Popover } from "@typebot.io/ui/components/Popover";
 import React from "react";
 import { ColorPicker } from "../../../../components/ColorPicker";
@@ -50,7 +50,7 @@ export const BackgroundContent = ({
                 objectFit="cover"
               />
             ) : (
-              <Button w="full">
+              <Button variant="secondary" className="w-full">
                 {t("theme.sideMenu.global.background.image.button")}
               </Button>
             )}

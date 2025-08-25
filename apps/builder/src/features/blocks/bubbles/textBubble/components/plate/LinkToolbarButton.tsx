@@ -1,23 +1,24 @@
-import { IconButton, type IconButtonProps } from "@chakra-ui/react";
+import { Button, type ButtonProps } from "@typebot.io/ui/components/Button";
 import {
   useLinkToolbarButton,
   useLinkToolbarButtonState,
 } from "@udecode/plate-link";
 import React from "react";
 
-type Props = IconButtonProps;
+type Props = ButtonProps;
 
-export const LinkToolbarButton = ({ ...rest }: Props) => {
+export const LinkToolbarButton = (compProps: Props) => {
   const state = useLinkToolbarButtonState();
   const { props } = useLinkToolbarButton(state);
 
   return (
-    <IconButton
-      size="sm"
+    <Button
+      size="icon"
       variant={props.pressed ? "outline" : "ghost"}
-      colorScheme={props.pressed ? "blue" : undefined}
       {...props}
-      {...rest}
-    />
+      {...compProps}
+    >
+      {compProps.children}
+    </Button>
   );
 };

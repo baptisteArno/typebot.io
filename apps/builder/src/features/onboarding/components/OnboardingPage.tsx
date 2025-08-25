@@ -1,10 +1,11 @@
 import { ChevronLastIcon } from "@/components/icons";
 import { useAcceptTermsMutation } from "@/features/user/hooks/useAcceptTermsMutation";
 import { useUser } from "@/features/user/hooks/useUser";
-import { Button, Flex, HStack, VStack, chakra } from "@chakra-ui/react";
+import { Flex, HStack, VStack, chakra } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { env } from "@typebot.io/env";
 import { Standard } from "@typebot.io/react";
+import { Button } from "@typebot.io/ui/components/Button";
 import confetti from "canvas-confetti";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
@@ -104,12 +105,13 @@ export const OnboardingPage = () => {
         px="10"
       >
         <Button
-          rightIcon={<ChevronLastIcon />}
+          variant="secondary"
           size="sm"
           onClick={skipOnboarding}
-          isDisabled={!canSkipOnboarding}
+          disabled={!canSkipOnboarding}
         >
           {t("skip")}
+          <ChevronLastIcon />
         </Button>
       </HStack>
 

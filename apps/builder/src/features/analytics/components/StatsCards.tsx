@@ -72,6 +72,7 @@ export const StatsCards = ({
       <TimeFilterSelect
         timeFilter={timeFilter}
         onTimeFilterChange={onTimeFilterChange}
+        className="shadow-md"
       />
     </SimpleGrid>
   );

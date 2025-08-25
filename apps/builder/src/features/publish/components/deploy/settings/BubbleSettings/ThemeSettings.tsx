@@ -1,4 +1,3 @@
-import { ChevronDownIcon } from "@/components/icons";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
 import {
   Accordion,
@@ -6,7 +5,6 @@ import {
   AccordionIcon,
   AccordionItem,
   AccordionPanel,
-  Button,
   HStack,
   Stack,
   Text,

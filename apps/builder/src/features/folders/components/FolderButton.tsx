@@ -1,16 +1,14 @@
 import { ConfirmDialog } from "@/components/ConfirmDialog";
-import { FolderIcon, MoreVerticalIcon } from "@/components/icons";
+import { MoreVerticalIcon } from "@/components/icons";
 import { useOpenControls } from "@/hooks/useOpenControls";
 import { trpc } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
 import {
   Alert,
   AlertIcon,
-  Button,
   Editable,
   EditableInput,
   EditablePreview,
-  IconButton,
   SkeletonCircle,
   SkeletonText,
   Stack,
@@ -22,7 +20,10 @@ import {
 import { useMutation } from "@tanstack/react-query";
 import { T, useTranslate } from "@tolgee/react";
 import type { Prisma } from "@typebot.io/prisma/types";
+import { Button } from "@typebot.io/ui/components/Button";
 import { Menu } from "@typebot.io/ui/components/Menu";
+import { FolderSolidIcon } from "@typebot.io/ui/icons/FolderSolidIcon";
+import { cx } from "@typebot.io/ui/lib/cva";
 import { useRouter } from "next/router";
 import React, { memo, useMemo } from "react";
 import { useTypebotDnd } from "../TypebotDndProvider";
@@ -87,21 +88,16 @@ const FolderButton = ({
   return (
     <>
       <Button
-        as={WrapItem}
-        style={{ width: "225px", height: "270px" }}
-        paddingX={6}
-        whiteSpace={"normal"}
-        pos="relative"
-        cursor="pointer"
-        variant="outline"
-        bg={useColorModeValue("white", "gray.900")}
-        colorScheme={isTypebotOver || draggedTypebot ? "orange" : "gray"}
-        borderWidth={isTypebotOver ? "2px" : "1px"}
-        transition={"border-width 0.1s ease"}
-        justifyContent="center"
+        className={cx(
+          "w-[225px] h-[270px] relative px-6 whitespace-normal transition-all duration-100 justify-center bg-gray-1",
+          isTypebotOver && "border-2 border-orange-8",
+        )}
+        variant="outline-secondary"
         onClick={handleClick}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
+        iconStyle="none"
+        size="lg"
       >
         <Menu.Root>
           <Menu.TriggerButton
@@ -126,10 +122,7 @@ const FolderButton = ({
           </Menu.Popup>
         </Menu.Root>
         <VStack spacing="4">
-          <FolderIcon
-            fontSize={50}
-            color={useColorModeValue("blue.500", "blue.400")}
-          />
+          <FolderSolidIcon className="size-10 text-blue-10" />
           <Editable
             defaultValue={folder.name === "" ? "New folder" : folder.name}
             fontSize="18"
@@ -157,7 +150,7 @@ const FolderButton = ({
             folderId: folder.id,
           })
         }
-        confirmButtonColor="red"
+        actionType="destructive"
         isOpen={deleteDialogControls.isOpen}
         onClose={deleteDialogControls.onClose}
       >
@@ -182,17 +175,14 @@ const FolderButton = ({
 
 export const ButtonSkeleton = () => (
   <Button
-    as={VStack}
-    style={{ width: "225px", height: "270px" }}
-    paddingX={6}
-    whiteSpace={"normal"}
-    pos="relative"
-    cursor="pointer"
-    variant="outline"
+    className="w-[225px] h-[270px] relative px-6 whitespace-normal"
+    variant="outline-secondary"
   >
-    <VStack spacing="6" w="full">
-      <SkeletonCircle boxSize="45px" />
-      <SkeletonText noOfLines={2} w="full" />
+    <VStack>
+      <VStack spacing="6" w="full">
+        <SkeletonCircle boxSize="45px" />
+        <SkeletonText noOfLines={2} w="full" />
+      </VStack>
     </VStack>
   </Button>
 );

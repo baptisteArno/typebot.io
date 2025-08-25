@@ -1,6 +1,8 @@
 import { PlusIcon } from "@/components/icons";
-import { Button, type ButtonProps, Text, VStack } from "@chakra-ui/react";
+import { Text, VStack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
+import { Button, type ButtonProps } from "@typebot.io/ui/components/Button";
+import { cn } from "@typebot.io/ui/lib/cn";
 import { useRouter } from "next/router";
 import { stringify } from "qs";
 import React from "react";
@@ -23,16 +25,15 @@ export const CreateBotButton = ({
 
   return (
     <Button
-      style={{ width: "225px", height: "270px" }}
       onClick={handleClick}
-      paddingX={6}
-      whiteSpace={"normal"}
-      colorScheme="orange"
-      opacity={draggedTypebot ? 0.3 : 1}
+      className={cn(
+        "px-6 whitespace-normal w-[225px] h-[270px] [&_svg]:size-10",
+        draggedTypebot && "opacity-30",
+      )}
       {...props}
     >
       <VStack spacing="6">
-        <PlusIcon fontSize="40px" />
+        <PlusIcon />
         <Text
           fontSize={18}
           fontWeight="medium"

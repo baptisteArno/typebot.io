@@ -4,7 +4,6 @@ import { sanitizeUrl } from "@braintree/sanitize-url";
 import {
   Alert,
   AlertIcon,
-  Button,
   FormControl,
   FormLabel,
   HStack,
@@ -19,6 +18,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
+import { Button } from "@typebot.io/ui/components/Button";
 import { getProviders, signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useQueryState } from "nuqs";
@@ -159,10 +159,11 @@ export const SignInForm = ({
                 />
                 <Button
                   type="submit"
-                  isLoading={
-                    ["loading", "authenticated"].includes(status) || authLoading
+                  disabled={
+                    ["loading", "authenticated"].includes(status) ||
+                    authLoading ||
+                    isMagicCodeSent
                   }
-                  isDisabled={isMagicCodeSent}
                 >
                   {t("auth.emailSubmitButton.label")}
                 </Button>

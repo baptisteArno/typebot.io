@@ -1,4 +1,3 @@
-import { EditIcon, PlusIcon, TrashIcon } from "@/components/icons";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { StripeLogo } from "@/components/logos/StripeLogo";
 import { WhatsAppLogo } from "@/components/logos/WhatsAppLogo";
@@ -9,12 +8,10 @@ import { useOpenControls } from "@/hooks/useOpenControls";
 import { trpc } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
 import {
-  Button,
   Divider,
   Flex,
   HStack,
   Heading,
-  IconButton,
   type IconProps,
   Skeleton,
   SkeletonCircle,
@@ -30,9 +27,12 @@ import {
   type Credentials,
   credentialsTypes,
 } from "@typebot.io/credentials/schemas";
+import { Button } from "@typebot.io/ui/components/Button";
 import { Menu } from "@typebot.io/ui/components/Menu";
 import { Popover } from "@typebot.io/ui/components/Popover";
 import { ChevronDownIcon } from "@typebot.io/ui/icons/ChevronDownIcon";
+import { EditIcon } from "@typebot.io/ui/icons/EditIcon";
+import { TrashIcon } from "@typebot.io/ui/icons/TrashIcon";
 import React, { useMemo, useRef, useState } from "react";
 import { CredentialsCreateDialog } from "./CredentialsCreateDialog";
 import { CredentialsUpdateDialog } from "./CredentialsUpdateDialog";
@@ -316,17 +316,25 @@ const CredentialsItem = ({
       <Text fontSize="sm">{cred.name}</Text>
       <HStack>
         {onEditClick && (
-          <IconButton
+          <Button
             aria-label="Edit"
-            icon={<EditIcon />}
-            size="xs"
+            className="size-7"
+            size="icon"
+            variant="secondary"
             onClick={onEditClick}
-          />
+          >
+            <EditIcon />
+          </Button>
         )}
         <Popover.Root {...deletePopoverControls}>
-          <Popover.Trigger>
-            <IconButton aria-label="Delete" icon={<TrashIcon />} size="xs" />
-          </Popover.Trigger>
+          <Popover.TriggerButton
+            aria-label="Delete"
+            variant="secondary"
+            size="icon"
+            className="size-7"
+          >
+            <TrashIcon />
+          </Popover.TriggerButton>
           <Popover.Popup initialFocus={initialFocusRef}>
             <Stack spacing="2">
               <Text fontSize="sm" fontWeight="medium">
@@ -344,13 +352,14 @@ const CredentialsItem = ({
                   ref={initialFocusRef}
                   onClick={deletePopoverControls.onClose}
                   size="sm"
+                  variant="secondary"
                 >
                   {t("cancel")}
                 </Button>
                 <Button
-                  colorScheme="red"
+                  variant="destructive"
                   onClick={onDeleteClick}
-                  isLoading={isDeleting}
+                  disabled={isDeleting}
                   size="sm"
                 >
                   {t("delete")}

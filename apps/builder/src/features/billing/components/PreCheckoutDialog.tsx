@@ -2,17 +2,12 @@ import { TextInput } from "@/components/inputs";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { trpc } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
-import {
-  Button,
-  FormControl,
-  FormLabel,
-  HStack,
-  Stack,
-} from "@chakra-ui/react";
+import { FormControl, FormLabel, HStack, Stack } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
 import { taxIdTypes } from "@typebot.io/billing/taxIdTypes";
 import { isDefined } from "@typebot.io/lib/utils";
+import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
 import { useRouter } from "next/router";
 import type { FormEvent } from "react";
@@ -165,8 +160,11 @@ export const PreCheckoutDialog = ({
 
           <Button
             type="submit"
-            isLoading={createCheckoutSessionStatus === "pending"}
-            isDisabled={customer.company === "" || customer.email === ""}
+            disabled={
+              customer.company === "" ||
+              customer.email === "" ||
+              createCheckoutSessionStatus === "pending"
+            }
           >
             {t("billing.preCheckoutModal.submitButton.label")}
           </Button>

@@ -26,10 +26,13 @@ const TriggerButton = ({
   className,
   ...props
 }: AlertDialogPrimitive.Trigger.Props &
-  VariantProps<typeof buttonVariants>) => (
+  VariantProps<typeof buttonVariants> & {
+    disabled?: boolean;
+  }) => (
   <AlertDialogPrimitive.Trigger
     {...props}
     className={cn(buttonVariants({ variant, size }), className)}
+    data-disabled={props.disabled}
   >
     {children}
   </AlertDialogPrimitive.Trigger>

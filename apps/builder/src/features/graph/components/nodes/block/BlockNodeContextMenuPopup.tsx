@@ -1,9 +1,4 @@
-import {
-  ChevronRightIcon,
-  CopyIcon,
-  RepeatIcon,
-  TrashIcon,
-} from "@/components/icons";
+import { ChevronRightIcon, CopyIcon, RepeatIcon } from "@/components/icons";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { ForgedBlockTurnIntoContextMenuPopup } from "@/features/forge/components/ForgedBlockTurnIntoMenu";
 import { useForgedBlock } from "@/features/forge/hooks/useForgedBlock";
@@ -14,6 +9,7 @@ import type {
 } from "@typebot.io/blocks-core/schemas/schema";
 import type { TurnableIntoParam } from "@typebot.io/forge/types";
 import { ContextMenu } from "@typebot.io/ui/components/ContextMenu";
+import { TrashIcon } from "@typebot.io/ui/icons/TrashIcon";
 import type { ZodObject } from "zod";
 
 type Props = {

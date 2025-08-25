@@ -1,15 +1,7 @@
-import { ExternalLinkIcon } from "@/components/icons";
+import { TextLink } from "@/components/TextLink";
 import { CodeEditor } from "@/components/inputs/CodeEditor";
 import { isCloudProdInstance } from "@/helpers/isCloudProdInstance";
-import {
-  Code,
-  Link,
-  ListItem,
-  OrderedList,
-  Stack,
-  Text,
-  useColorModeValue,
-} from "@chakra-ui/react";
+import { Code, ListItem, OrderedList, Stack, Text } from "@chakra-ui/react";
 import { env } from "@typebot.io/env";
 import { useState } from "react";
 import packageJson from "../../../../../../../../../../packages/embeds/js/package.json";
@@ -34,14 +26,9 @@ export const WordpressStandardInstructions = ({ publicId }: Props) => {
     <OrderedList spacing={4} pl={5}>
       <ListItem>
         Install{" "}
-        <Link
-          href="https://wordpress.org/plugins/typebot/"
-          isExternal
-          color={useColorModeValue("blue.500", "blue.300")}
-        >
+        <TextLink href="https://wordpress.org/plugins/typebot/" isExternal>
           the official Typebot WordPress plugin
-          <ExternalLinkIcon mx="2px" />
-        </Link>
+        </TextLink>
       </ListItem>
       <ListItem>
         <Stack spacing={4}>

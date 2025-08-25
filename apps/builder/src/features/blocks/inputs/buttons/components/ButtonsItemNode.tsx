@@ -6,7 +6,6 @@ import {
   EditablePreview,
   EditableTextarea,
   Flex,
-  IconButton,
   SlideFade,
   useColorModeValue,
 } from "@chakra-ui/react";
@@ -18,6 +17,7 @@ import type {
 import type { ButtonItem } from "@typebot.io/blocks-inputs/choice/schema";
 import { convertStrToList } from "@typebot.io/lib/convertStrToList";
 import { isEmpty } from "@typebot.io/lib/utils";
+import { Button } from "@typebot.io/ui/components/Button";
 import { Popover } from "@typebot.io/ui/components/Popover";
 import { useRef, useState } from "react";
 import { ButtonsItemSettings } from "./ButtonsItemSettings";
@@ -146,16 +146,15 @@ export const ButtonsItemNode = ({ item, indices, isMouseOver }: Props) => {
                 bgColor={useColorModeValue("white", "gray.900")}
                 rounded="md"
               >
-                <IconButton
+                <Button
                   aria-label={t("blocks.inputs.button.openSettings.ariaLabel")}
-                  icon={<SettingsIcon />}
                   variant="ghost"
-                  size="xs"
-                  shadow="md"
-                  onClick={() => {
-                    setOpenedNodeId(item.id);
-                  }}
-                />
+                  size="icon"
+                  className="shadow-md"
+                  onClick={() => setOpenedNodeId(item.id)}
+                >
+                  <SettingsIcon />
+                </Button>
               </Flex>
             </SlideFade>
           </Flex>

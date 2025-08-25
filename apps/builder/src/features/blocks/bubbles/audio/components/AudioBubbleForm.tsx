@@ -2,10 +2,11 @@ import { UploadButton } from "@/components/ImageUploadContent/UploadButton";
 import { TextInput } from "@/components/inputs";
 import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
 import type { FilePathUploadProps } from "@/features/upload/api/generateUploadUrl";
-import { Button, Flex, HStack, Stack, Text } from "@chakra-ui/react";
+import { Flex, HStack, Stack, Text } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { defaultAudioBubbleContent } from "@typebot.io/blocks-bubbles/audio/constants";
 import type { AudioBubbleBlock } from "@typebot.io/blocks-bubbles/audio/schema";
+import { Button } from "@typebot.io/ui/components/Button";
 import { useState } from "react";
 
 type Props = {
@@ -31,14 +32,14 @@ export const AudioBubbleForm = ({
     <Stack>
       <HStack>
         <Button
-          variant={currentTab === "upload" ? "solid" : "ghost"}
+          variant={currentTab === "upload" ? "outline" : "ghost"}
           onClick={() => setCurrentTab("upload")}
           size="sm"
         >
           {t("editor.blocks.bubbles.audio.settings.upload.label")}
         </Button>
         <Button
-          variant={currentTab === "link" ? "solid" : "ghost"}
+          variant={currentTab === "link" ? "outline" : "ghost"}
           onClick={() => setCurrentTab("link")}
           size="sm"
         >
@@ -53,7 +54,6 @@ export const AudioBubbleForm = ({
                 fileType="audio"
                 filePathProps={uploadFileProps}
                 onFileUploaded={updateUrl}
-                colorScheme="orange"
               >
                 {t("editor.blocks.bubbles.audio.settings.chooseFile.label")}
               </UploadButton>

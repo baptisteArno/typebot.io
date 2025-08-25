@@ -1,7 +1,7 @@
-import { EditIcon } from "@/components/icons";
-import type { IconProps } from "@chakra-ui/react";
-import React from "react";
+import { svgBaseClassName } from "@/components/icons";
+import { EditIcon } from "@typebot.io/ui/icons/EditIcon";
+import { cn } from "@typebot.io/ui/lib/cn";
 
-export const SetVariableIcon = (props: IconProps) => (
-  <EditIcon color="purple.500" {...props} />
+export const SetVariableIcon = ({ className }: { className?: string }) => (
+  <EditIcon className={cn(svgBaseClassName, className)} />
 );

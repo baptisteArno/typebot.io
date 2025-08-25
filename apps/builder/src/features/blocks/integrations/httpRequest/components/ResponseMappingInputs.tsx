@@ -20,7 +20,7 @@ export const DataVariableInputs = ({
       <FormControl>
         <FormLabel htmlFor="name">Data:</FormLabel>
         <AutocompleteInput
-          items={dataItems}
+          items={["item1", "item2", "item3"]}
           defaultValue={item.bodyPath}
           onChange={handleBodyPathChange}
           placeholder="Select the data"

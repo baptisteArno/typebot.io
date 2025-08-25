@@ -1,6 +1,5 @@
 import { MoreInfoTooltip } from "@/components/MoreInfoTooltip";
 import {
-  Button,
   Flex,
   HStack,
   Heading,
@@ -15,6 +14,7 @@ import { T, useTranslate } from "@tolgee/react";
 import { prices } from "@typebot.io/billing/constants";
 import { formatPrice } from "@typebot.io/billing/helpers/formatPrice";
 import { Plan } from "@typebot.io/prisma/enum";
+import { Button } from "@typebot.io/ui/components/Button";
 import { Tooltip } from "@typebot.io/ui/components/Tooltip";
 import { ChatsProTiersDialog } from "./ChatsProTiersDialog";
 import { FeaturesList } from "./FeaturesList";
@@ -145,11 +145,9 @@ export const ProPlanPricingCard = ({
             </Stack>
 
             <Button
-              colorScheme="orange"
-              variant="outline"
+              variant="secondary"
               onClick={onPayClick}
-              isLoading={isLoading}
-              isDisabled={currentPlan === Plan.PRO}
+              disabled={isLoading || currentPlan === Plan.PRO}
             >
               {getButtonLabel()}
             </Button>

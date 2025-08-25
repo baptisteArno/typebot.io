@@ -1,16 +1,15 @@
 import { LinkIcon, UnlinkIcon } from "@/components/icons";
 import { TextInputIcon } from "@/features/blocks/inputs/textInput/components/TextInputIcon";
 import {
-  Button,
   Divider,
   HStack,
-  IconButton,
   Input,
   InputGroup,
   InputLeftElement,
   Stack,
   useColorModeValue,
 } from "@chakra-ui/react";
+import { Button } from "@typebot.io/ui/components/Button";
 import {
   type UseVirtualFloatingOptions,
   flip,
@@ -104,7 +103,7 @@ export function LinkFloatingToolbar({ state }: LinkFloatingToolbarProps) {
 
       <InputGroup>
         <InputLeftElement pointerEvents="none">
-          <TextInputIcon color="gray.300" />
+          <TextInputIcon className="text-gray-7" />
         </InputLeftElement>
         <Input placeholder="Text to display" {...textInputProps} />
       </InputGroup>
@@ -122,18 +121,20 @@ export function LinkFloatingToolbar({ state }: LinkFloatingToolbarProps) {
       shadow="md"
       align="center"
     >
-      <Button {...editButtonProps} size="sm">
+      <Button {...editButtonProps} size="sm" variant="secondary">
         Edit link
       </Button>
 
       <Divider orientation="vertical" h="20px" />
 
-      <IconButton
-        icon={<UnlinkIcon />}
+      <Button
         aria-label="Unlink"
-        size="sm"
+        variant="secondary"
+        size="icon"
         {...unlinkButtonProps}
-      />
+      >
+        <UnlinkIcon />
+      </Button>
     </HStack>
   );
 

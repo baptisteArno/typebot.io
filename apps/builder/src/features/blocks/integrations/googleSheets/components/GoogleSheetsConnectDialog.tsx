@@ -1,9 +1,9 @@
 import { AlertInfo } from "@/components/AlertInfo";
+import { ButtonLink } from "@/components/ButtonLink";
 import { GoogleLogo } from "@/components/GoogleLogo";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { Button, Image, Text } from "@chakra-ui/react";
+import { Image, Text } from "@chakra-ui/react";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
-import Link from "next/link";
 import React from "react";
 import { getGoogleSheetsConsentScreenUrlQuery } from "../queries/getGoogleSheetsConsentScreenUrlQuery";
 
@@ -55,21 +55,21 @@ export const GoogleSheetConnectDialogBody = ({
       </AlertInfo>
       <Dialog.Footer>
         {workspace?.id && (
-          <Button
-            as={Link}
-            leftIcon={<GoogleLogo />}
+          <ButtonLink
             data-testid="google"
-            isLoading={["loading", "authenticated"].includes(status)}
-            variant="outline"
+            disabled={["loading", "authenticated"].includes(status)}
+            variant="outline-secondary"
             href={getGoogleSheetsConsentScreenUrlQuery(
               window.location.href,
               workspace.id,
               blockId,
               typebotId,
             )}
+            className="mx-auto"
           >
+            <GoogleLogo />
             Continue with Google
-          </Button>
+          </ButtonLink>
         )}
       </Dialog.Footer>
     </Dialog.Popup>

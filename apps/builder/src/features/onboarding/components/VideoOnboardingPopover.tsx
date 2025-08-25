@@ -1,7 +1,7 @@
 import { CloseIcon } from "@/components/icons";
 import { useUser } from "@/features/user/hooks/useUser";
-import { IconButton } from "@chakra-ui/react";
 import type { ForgedBlockDefinition } from "@typebot.io/forge-repository/definitions";
+import { Button } from "@typebot.io/ui/components/Button";
 import { Popover } from "@typebot.io/ui/components/Popover";
 import type { ReactNode } from "react";
 import { onboardingVideos } from "../data";
@@ -64,17 +64,14 @@ export const VideoOnboardingPopover = ({
         className="w-[640px] shadow-md aspect-[1.5]"
       >
         <YoutubeIframe id={youtubeId} />
-        <IconButton
-          icon={<CloseIcon />}
+        <Button
           aria-label={"Close"}
-          pos="absolute"
-          top="-3"
-          right="-3"
-          colorScheme="blackAlpha"
-          size="sm"
-          rounded="full"
+          className="size-8 rounded-full -right-3 -top-3 absolute"
+          variant="secondary"
           onClick={onClose}
-        />
+        >
+          <CloseIcon />
+        </Button>
       </Popover.Popup>
     </Popover.Root>
   );

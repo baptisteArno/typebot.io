@@ -5,7 +5,6 @@ import {
   Fade,
   Flex,
   Heading,
-  IconButton,
   Input,
   SimpleGrid,
   Stack,
@@ -23,6 +22,7 @@ import { EventType } from "@typebot.io/events/constants";
 import type { TDraggableEvent } from "@typebot.io/events/schemas";
 import { forgedBlocks } from "@typebot.io/forge-repository/definitions";
 import { isDefined } from "@typebot.io/lib/utils";
+import { Button } from "@typebot.io/ui/components/Button";
 import { Tooltip } from "@typebot.io/ui/components/Tooltip";
 import type React from "react";
 import { useState } from "react";
@@ -229,18 +229,19 @@ export const BlocksSideBar = () => {
             onChange={handleSearchInputChange}
           />
           <Tooltip.Root>
-            <Tooltip.Trigger>
-              <IconButton
-                icon={isLocked ? <LockedIcon /> : <UnlockedIcon />}
-                aria-label={
-                  isLocked
-                    ? t("editor.sidebarBlocks.sidebar.icon.unlock.label")
-                    : t("editor.sidebarBlocks.sidebar.icon.lock.label")
-                }
-                size="sm"
-                onClick={handleLockClick}
-              />
-            </Tooltip.Trigger>
+            <Tooltip.TriggerButton
+              aria-label={
+                isLocked
+                  ? t("editor.sidebarBlocks.sidebar.icon.unlock.label")
+                  : t("editor.sidebarBlocks.sidebar.icon.lock.label")
+              }
+              size="icon"
+              variant="secondary"
+              className="size-8"
+              onClick={handleLockClick}
+            >
+              {isLocked ? <LockedIcon /> : <UnlockedIcon />}
+            </Tooltip.TriggerButton>
             <Tooltip.Popup>
               {isLocked
                 ? t("editor.sidebarBlocks.sidebar.unlock.label")

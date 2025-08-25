@@ -4,9 +4,10 @@ import { AzureAdLogo } from "@/components/logos/AzureAdLogo";
 import { FacebookLogo } from "@/components/logos/FacebookLogo";
 import { GitlabLogo } from "@/components/logos/GitlabLogo";
 import { KeycloackLogo } from "@/components/logos/KeycloakLogo";
-import { Button, Stack } from "@chakra-ui/react";
+import { Stack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { omit } from "@typebot.io/lib/utils";
+import { Button } from "@typebot.io/ui/components/Button";
 import { type getProviders, signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { stringify } from "qs";
@@ -50,57 +51,53 @@ export const SocialLoginButtons = ({ providers }: Props) => {
     <Stack>
       {providers?.github && (
         <Button
-          leftIcon={<GithubIcon />}
           onClick={handleGitHubClick}
-          data-testid="github"
-          isLoading={
+          disabled={
             ["loading", "authenticated"].includes(status) ||
             authLoading === "github"
           }
-          variant="outline"
+          variant="outline-secondary"
         >
+          <GithubIcon />
           {t("auth.socialLogin.githubButton.label")}
         </Button>
       )}
       {providers?.google && (
         <Button
-          leftIcon={<GoogleLogo />}
           onClick={handleGoogleClick}
-          data-testid="google"
-          isLoading={
+          disabled={
             ["loading", "authenticated"].includes(status) ||
             authLoading === "google"
           }
-          variant="outline"
+          variant="outline-secondary"
         >
+          <GoogleLogo />
           {t("auth.socialLogin.googleButton.label")}
         </Button>
       )}
       {providers?.facebook && (
         <Button
-          leftIcon={<FacebookLogo />}
           onClick={handleFacebookClick}
-          data-testid="facebook"
-          isLoading={
+          disabled={
             ["loading", "authenticated"].includes(status) ||
             authLoading === "facebook"
           }
-          variant="outline"
+          variant="outline-secondary"
         >
+          <FacebookLogo />
           {t("auth.socialLogin.facebookButton.label")}
         </Button>
       )}
       {providers?.gitlab && (
         <Button
-          leftIcon={<GitlabLogo />}
           onClick={handleGitlabClick}
-          data-testid="gitlab"
-          isLoading={
+          disabled={
             ["loading", "authenticated"].includes(status) ||
             authLoading === "gitlab"
           }
-          variant="outline"
+          variant="outline-secondary"
         >
+          <GitlabLogo />
           {t("auth.socialLogin.gitlabButton.label", {
             gitlabProviderName: providers.gitlab.name,
           })}
@@ -108,15 +105,14 @@ export const SocialLoginButtons = ({ providers }: Props) => {
       )}
       {providers?.["microsoft-entra-id"] && (
         <Button
-          leftIcon={<AzureAdLogo />}
           onClick={handleMicrosoftEntraIdClick}
-          data-testid="microsoft-entra-id"
-          isLoading={
+          disabled={
             ["loading", "authenticated"].includes(status) ||
             authLoading === "microsoft-entra-id"
           }
           variant="outline"
         >
+          <AzureAdLogo />
           {t("auth.socialLogin.azureButton.label", {
             azureProviderName: providers["microsoft-entra-id"].name,
           })}
@@ -125,11 +121,11 @@ export const SocialLoginButtons = ({ providers }: Props) => {
       {providers?.["custom-oauth"] && (
         <Button
           onClick={handleCustomOAuthClick}
-          isLoading={
+          disabled={
             ["loading", "authenticated"].includes(status) ||
             authLoading === "custom-oauth"
           }
-          variant="outline"
+          variant="outline-secondary"
         >
           {t("auth.socialLogin.customButton.label", {
             customProviderName: providers["custom-oauth"].name,
@@ -138,15 +134,14 @@ export const SocialLoginButtons = ({ providers }: Props) => {
       )}
       {providers?.keycloak && (
         <Button
-          leftIcon={<KeycloackLogo />}
           onClick={handleKeyCloackClick}
-          data-testid="keycloak"
-          isLoading={
+          disabled={
             ["loading", "authenticated"].includes(status) ||
             authLoading === "keycloak"
           }
-          variant="outline"
+          variant="outline-secondary"
         >
+          <KeycloackLogo />
           {t("auth.socialLogin.keycloakButton.label")}
         </Button>
       )}

@@ -1,3 +1,4 @@
+import { ButtonLink } from "@/components/ButtonLink";
 import { CopyButton } from "@/components/CopyButton";
 import { TextLink } from "@/components/TextLink";
 import { ChevronLeftIcon, ExternalLinkIcon } from "@/components/icons";
@@ -11,18 +12,15 @@ import { queryClient, trpc, trpcClient } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
 import {
   Box,
-  Button,
   Card,
   CardBody,
   Code,
   HStack,
   Heading,
-  IconButton,
   Image,
   Input,
   InputGroup,
   InputRightElement,
-  Link,
   ListItem,
   OrderedList,
   Stack,
@@ -47,6 +45,7 @@ import { TRPCClientError } from "@trpc/client";
 import { env } from "@typebot.io/env";
 import { parseUnknownClientError } from "@typebot.io/lib/parseUnknownClientError";
 import { isEmpty, isNotEmpty } from "@typebot.io/lib/utils";
+import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
 import React, { useState } from "react";
 
@@ -290,18 +289,14 @@ export const WhatsAppCreateDialogBody = ({
     <Dialog.Popup className="max-w-3xl">
       <HStack h="40px">
         {(activeStep > 0 || provider) && (
-          <IconButton
-            icon={<ChevronLeftIcon />}
+          <Button
+            size="icon"
             aria-label={"Go back"}
             variant="ghost"
-            onClick={() => {
-              if (activeStep === 0 && provider && is360DialogEnabled) {
-                setProvider(null);
-              } else {
-                goToPrevious();
-              }
-            }}
-          />
+            onClick={goToPrevious}
+          >
+            <ChevronLeftIcon />
+          </Button>
         )}
         <Heading size="md">
           {!provider
@@ -380,8 +375,9 @@ export const WhatsAppCreateDialogBody = ({
         {provider && (
           <Button
             onClick={goToNextStep}
-            colorScheme="orange"
-            isDisabled={
+            disabled={
+              isVerifying ||
+              isCreating ||
               (provider === "meta" &&
                 activeStep === 1 &&
                 isEmpty(systemUserAccessToken)) ||
@@ -390,7 +386,6 @@ export const WhatsAppCreateDialogBody = ({
                 isEmpty(phoneNumberId)) ||
               (provider === "360dialog" && activeStep === 0 && isEmpty(apiKey))
             }
-            isLoading={isVerifying || isCreating}
           >
             {activeStep === steps.length - 1 ? "Submit" : "Continue"}
           </Button>
@@ -430,15 +425,15 @@ const SystemUserToken = ({
   <OrderedList spacing={4}>
     <ListItem>
       Go to your{" "}
-      <Button
-        as={Link}
+      <ButtonLink
         href="https://business.facebook.com/settings/system-users"
-        isExternal
-        rightIcon={<ExternalLinkIcon />}
+        target="_blank"
+        variant="secondary"
         size="sm"
       >
         System users page
-      </Button>
+        <ExternalLinkIcon />
+      </ButtonLink>
     </ListItem>
     <ListItem>
       Create a new user by clicking on <Code>Add</Code>
@@ -503,15 +498,14 @@ const PhoneNumber = ({
       <HStack>
         <Text>
           Go to your{" "}
-          <Button
-            as={Link}
+          <ButtonLink
             href={`https://developers.facebook.com/apps/${appId}/whatsapp-business/wa-dev-console`}
-            isExternal
-            rightIcon={<ExternalLinkIcon />}
+            target="_blank"
+            variant="secondary"
             size="sm"
           >
-            WhatsApp Dev Console{" "}
-          </Button>
+            WhatsApp Dev Console <ExternalLinkIcon />
+          </ButtonLink>
         </Text>
       </HStack>
     </ListItem>
@@ -562,15 +556,15 @@ const Webhook = ({
     <Stack spacing={6}>
       <Text>
         In your{" "}
-        <Button
-          as={Link}
+        <ButtonLink
           href={`https://developers.facebook.com/apps/${appId}/whatsapp-business/wa-settings`}
-          rightIcon={<ExternalLinkIcon />}
-          isExternal
+          target="_blank"
+          variant="secondary"
           size="sm"
         >
           WhatsApp Settings page
-        </Button>
+          <ExternalLinkIcon />
+        </ButtonLink>
         , click on the Edit button and insert the following values:
       </Text>
       <UnorderedList spacing={6}>
@@ -580,7 +574,7 @@ const Webhook = ({
             <InputGroup size="sm">
               <Input type={"text"} defaultValue={webhookUrl} />
               <InputRightElement width="60px">
-                <CopyButton size="sm" textToCopy={webhookUrl} />
+                <CopyButton textToCopy={webhookUrl} />
               </InputRightElement>
             </InputGroup>
           </HStack>
@@ -591,7 +585,7 @@ const Webhook = ({
             <InputGroup size="sm">
               <Input type={"text"} defaultValue={verificationToken} />
               <InputRightElement width="60px">
-                <CopyButton size="sm" textToCopy={verificationToken} />
+                <CopyButton textToCopy={verificationToken} />
               </InputRightElement>
             </InputGroup>
           </HStack>

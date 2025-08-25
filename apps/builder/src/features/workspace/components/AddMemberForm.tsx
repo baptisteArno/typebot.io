@@ -1,11 +1,10 @@
-import { ChevronLeftIcon } from "@/components/icons";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { toast } from "@/lib/toast";
-import { Button, HStack, Input, Stack } from "@chakra-ui/react";
+import { HStack, Input } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { WorkspaceRole } from "@typebot.io/prisma/enum";
 import type { Prisma } from "@typebot.io/prisma/types";
-import { Menu } from "@typebot.io/ui/components/Menu";
+import { Button } from "@typebot.io/ui/components/Button";
 import { type FormEvent, useState } from "react";
 import { sendInvitationQuery } from "../queries/sendInvitationQuery";
 import type { Member } from "../types";
@@ -70,11 +69,10 @@ export const AddMemberForm = ({
         />
       )}
       <Button
-        colorScheme="orange"
-        isLoading={isSendingInvitation}
-        flexShrink={0}
         type="submit"
-        isDisabled={isLoading || isLocked || invitationEmail === ""}
+        disabled={
+          isLoading || isLocked || invitationEmail === "" || isSendingInvitation
+        }
       >
         {t("workspace.membersList.inviteButton.label")}
       </Button>

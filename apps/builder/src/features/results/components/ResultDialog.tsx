@@ -1,7 +1,6 @@
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import {
   Box,
-  Button,
   HStack,
   Heading,
   Spinner,
@@ -17,6 +16,7 @@ import type {
   TableData,
 } from "@typebot.io/results/schemas/results";
 import type { TypebotV6 } from "@typebot.io/typebot/schemas/typebot";
+import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
 import React, { useState } from "react";
 import { useResults } from "../ResultsProvider";
@@ -46,7 +46,6 @@ export const ResultDialog = ({ resultId, onClose }: Props) => {
           <Button
             variant={tab === "transcript" ? "outline" : "ghost"}
             onClick={() => setTab("transcript")}
-            colorScheme={tab === "transcript" ? "orange" : "gray"}
             size="sm"
           >
             Transcript
@@ -57,7 +56,6 @@ export const ResultDialog = ({ resultId, onClose }: Props) => {
           <Button
             variant={tab === "answers" ? "outline" : "ghost"}
             onClick={() => setTab("answers")}
-            colorScheme={tab === "answers" ? "orange" : "gray"}
             size="sm"
           >
             Answers

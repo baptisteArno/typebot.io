@@ -1,7 +1,7 @@
+import { ButtonLink } from "@/components/ButtonLink";
 import { ChevronLeftIcon } from "@/components/icons";
-import { Button } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
-import Link from "next/link";
+import { cn } from "@typebot.io/ui/lib/cn";
 import React, { useMemo } from "react";
 import { useTypebotDnd } from "../TypebotDndProvider";
 
@@ -18,17 +18,19 @@ export const BackButton = ({ id }: { id: string | null }) => {
   const handleMouseEnter = () => setMouseOverFolderId(id);
   const handleMouseLeave = () => setMouseOverFolderId(undefined);
   return (
-    <Button
-      as={Link}
+    <ButtonLink
       href={id ? `/typebots/folders/${id}` : "/typebots"}
-      leftIcon={<ChevronLeftIcon />}
-      variant={"outline"}
-      colorScheme={isTypebotOver || draggedTypebot ? "orange" : "gray"}
-      borderWidth={isTypebotOver ? "2px" : "1px"}
+      variant={
+        isTypebotOver || draggedTypebot ? "outline" : "outline-secondary"
+      }
+      className={cn(
+        (isTypebotOver || draggedTypebot) && "border-2 border-orange-8",
+      )}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
+      <ChevronLeftIcon />
       {t("back")}
-    </Button>
+    </ButtonLink>
   );
 };

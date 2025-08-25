@@ -5,18 +5,12 @@ import { useUser } from "@/features/user/hooks/useUser";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { queryClient, trpc } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
-import {
-  Button,
-  FormControl,
-  FormLabel,
-  HStack,
-  Stack,
-  Text,
-} from "@chakra-ui/react";
+import { FormControl, FormLabel, HStack, Stack, Text } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
 import type { StripeCredentials } from "@typebot.io/credentials/schemas";
 import { isNotEmpty } from "@typebot.io/lib/utils";
+import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
 import type React from "react";
 import { useState } from "react";
@@ -208,13 +202,12 @@ export const CreateStripeCredentialsDialogBody = ({
       <Dialog.Footer>
         <Button
           type="submit"
-          colorScheme="orange"
-          isDisabled={
+          disabled={
             stripeConfig.live.publicKey === "" ||
             stripeConfig.name === "" ||
-            stripeConfig.live.secretKey === ""
+            stripeConfig.live.secretKey === "" ||
+            isCreating
           }
-          isLoading={isCreating}
         >
           {t("connect")}
         </Button>

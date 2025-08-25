@@ -277,7 +277,7 @@ export const WhatsAppDeployDialog = ({
               <ListItem>
                 <HStack>
                   <Text>Publish your bot:</Text>
-                  <PublishButton size="sm" isMoreMenuDisabled />
+                  <PublishButton className="size-8" isMoreMenuDisabled />
                 </HStack>
               </ListItem>
               {phoneNumberData && (

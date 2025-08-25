@@ -1,8 +1,6 @@
 import { useGraph } from "@/features/graph/providers/GraphProvider";
 import { useRightPanel } from "@/hooks/useRightPanel";
 import {
-  Button,
-  CloseButton,
   Fade,
   Flex,
   HStack,
@@ -10,6 +8,8 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
+import { Button } from "@typebot.io/ui/components/Button";
+import { CloseIcon } from "@typebot.io/ui/icons/CloseIcon";
 import { useDrag } from "@use-gesture/react";
 import React, { useState } from "react";
 import { headerHeight } from "../../editor/constants";
@@ -102,7 +102,7 @@ export const PreviewDrawer = () => {
             {selectedRuntime.name === "Web" ? (
               <Button
                 onClick={handleRestartClick}
-                isLoading={isSavingLoading}
+                disabled={isSavingLoading}
                 variant="ghost"
               >
                 {t("preview.restartButton.label")}
@@ -110,7 +110,9 @@ export const PreviewDrawer = () => {
             ) : null}
           </HStack>
 
-          <CloseButton onClick={handleCloseClick} />
+          <Button onClick={handleCloseClick} variant="secondary" size="icon">
+            <CloseIcon />
+          </Button>
         </HStack>
         <PreviewDrawerBody key={restartKey} runtime={selectedRuntime.name} />
       </VStack>

@@ -1,12 +1,7 @@
 import { CopyButton } from "@/components/CopyButton";
-import {
-  Button,
-  Input,
-  InputGroup,
-  InputRightElement,
-  Text,
-} from "@chakra-ui/react";
+import { Input, InputGroup, InputRightElement, Text } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
+import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
 import type { FormEvent } from "react";
 import React, { useRef, useState } from "react";
@@ -76,7 +71,7 @@ export const CreateApiTokenDialog = ({
             <InputGroup size="md">
               <Input readOnly pr="4.5rem" value={newTokenValue} />
               <InputRightElement width="4.5rem">
-                <CopyButton h="1.75rem" size="sm" textToCopy={newTokenValue} />
+                <CopyButton textToCopy={newTokenValue} />
               </InputRightElement>
             </InputGroup>
           </>
@@ -96,9 +91,7 @@ export const CreateApiTokenDialog = ({
         <Dialog.Footer>
           {newTokenValue ? null : (
             <Button
-              colorScheme="orange"
-              isDisabled={name.length === 0}
-              isLoading={isSubmitting}
+              disabled={name.length === 0 || isSubmitting}
               onClick={createToken}
               type="submit"
             >

@@ -81,6 +81,7 @@ export const OpenAICreateSpeechSettings = ({
               onChange={updateVoice}
               items={openAIVoices}
               placeholder="Select a voice"
+              className="w-full"
             />
           </FormControl>
           <FormControl>

@@ -1,6 +1,7 @@
 import type { FilePathUploadProps } from "@/features/upload/api/generateUploadUrl";
-import { Button, Flex, HStack, Stack } from "@chakra-ui/react";
+import { Flex, HStack, Stack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
+import { Button } from "@typebot.io/ui/components/Button";
 import { useState } from "react";
 import { TextInput } from "../inputs/TextInput";
 import { GiphyPicker } from "./GiphyPicker";
@@ -58,7 +59,7 @@ export const ImageUploadContent = ({
       <HStack>
         {displayedTabs.includes("link") && (
           <Button
-            variant={currentTab === "link" ? "solid" : "ghost"}
+            variant={currentTab === "link" ? "outline" : "ghost"}
             onClick={() => setCurrentTab("link")}
             size="sm"
           >
@@ -67,7 +68,7 @@ export const ImageUploadContent = ({
         )}
         {displayedTabs.includes("upload") && (
           <Button
-            variant={currentTab === "upload" ? "solid" : "ghost"}
+            variant={currentTab === "upload" ? "outline" : "ghost"}
             onClick={() => setCurrentTab("upload")}
             size="sm"
           >
@@ -76,7 +77,7 @@ export const ImageUploadContent = ({
         )}
         {displayedTabs.includes("emoji") && (
           <Button
-            variant={currentTab === "emoji" ? "solid" : "ghost"}
+            variant={currentTab === "emoji" ? "outline" : "ghost"}
             onClick={() => setCurrentTab("emoji")}
             size="sm"
           >
@@ -85,7 +86,7 @@ export const ImageUploadContent = ({
         )}
         {displayedTabs.includes("giphy") && (
           <Button
-            variant={currentTab === "giphy" ? "solid" : "ghost"}
+            variant={currentTab === "giphy" ? "outline" : "ghost"}
             onClick={() => setCurrentTab("giphy")}
             size="sm"
           >
@@ -94,7 +95,7 @@ export const ImageUploadContent = ({
         )}
         {displayedTabs.includes("unsplash") && (
           <Button
-            variant={currentTab === "unsplash" ? "solid" : "ghost"}
+            variant={currentTab === "unsplash" ? "outline" : "ghost"}
             onClick={() => setCurrentTab("unsplash")}
             size="sm"
           >
@@ -103,7 +104,7 @@ export const ImageUploadContent = ({
         )}
         {displayedTabs.includes("icon") && (
           <Button
-            variant={currentTab === "icon" ? "solid" : "ghost"}
+            variant={currentTab === "icon" ? "outline" : "ghost"}
             onClick={() => setCurrentTab("icon")}
             size="sm"
           >
@@ -186,7 +187,6 @@ const UploadFileContent = ({
         fileType="image"
         filePathProps={uploadFileProps}
         onFileUploaded={onNewUrl}
-        colorScheme="orange"
       >
         {t("editor.header.uploadTab.uploadButton.label")}
       </UploadButton>

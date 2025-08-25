@@ -1,6 +1,5 @@
 import { MoreInfoTooltip } from "@/components/MoreInfoTooltip";
 import {
-  Button,
   HStack,
   Heading,
   Stack,
@@ -12,6 +11,7 @@ import { T, useTranslate } from "@tolgee/react";
 import { prices } from "@typebot.io/billing/constants";
 import { formatPrice } from "@typebot.io/billing/helpers/formatPrice";
 import { Plan } from "@typebot.io/prisma/enum";
+import { Button } from "@typebot.io/ui/components/Button";
 import { FeaturesList } from "./FeaturesList";
 
 type Props = {
@@ -93,11 +93,9 @@ export const StarterPlanPricingCard = ({
         />
       </Stack>
       <Button
-        colorScheme="orange"
-        variant="outline"
+        variant="secondary"
         onClick={onPayClick}
-        isLoading={isLoading}
-        isDisabled={currentPlan === Plan.STARTER}
+        disabled={isLoading || currentPlan === Plan.STARTER}
       >
         {getButtonLabel()}
       </Button>

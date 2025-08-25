@@ -1,7 +1,8 @@
 import { UsersIcon } from "@/components/icons";
 import { useOpenControls } from "@/hooks/useOpenControls";
-import { Button, chakra } from "@chakra-ui/react";
+import { chakra } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
+import { Button } from "@typebot.io/ui/components/Button";
 import { Popover } from "@typebot.io/ui/components/Popover";
 import React from "react";
 import { SharePopoverContent } from "./SharePopoverContent";
@@ -14,12 +15,12 @@ export const ShareTypebotButton = ({ isLoading }: { isLoading: boolean }) => {
     <Popover.Root {...controls}>
       <Popover.Trigger>
         <Button
-          isLoading={isLoading}
-          leftIcon={<UsersIcon fontSize="md" />}
+          disabled={isLoading}
           aria-label={t("share.button.popover.ariaLabel")}
+          variant="secondary"
           size="sm"
-          iconSpacing={{ base: 0, xl: 2 }}
         >
+          <UsersIcon fontSize="md" />
           <chakra.span display={{ base: "none", xl: "inline" }}>
             {t("share.button.label")}
           </chakra.span>

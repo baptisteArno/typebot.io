@@ -80,7 +80,7 @@
 }
 
 .dark,
-/* Remove once we don't use Chakra for dark mode */
+/* Chakra UI dark mode, to delete once fully migrated to Tailwind */
   .chakra-ui-dark {
   --blue-1: 7 13 26;
   --blue-2: 15 22 39;

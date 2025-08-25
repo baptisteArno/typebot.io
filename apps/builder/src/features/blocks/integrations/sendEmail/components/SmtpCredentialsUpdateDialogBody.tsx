@@ -2,11 +2,11 @@ import { useUser } from "@/features/user/hooks/useUser";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { trpc } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
-import { Button } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import { useMutation } from "@tanstack/react-query";
 import type { SmtpCredentials } from "@typebot.io/credentials/schemas";
 import { isNotDefined } from "@typebot.io/lib/utils";
+import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
 import type React from "react";
 import { useEffect, useState } from "react";
@@ -91,15 +91,14 @@ export const SmtpCredentialsUpdateDialogBody = ({
       <Dialog.Footer>
         <Button
           type="submit"
-          colorScheme="orange"
-          isDisabled={
+          disabled={
             isNotDefined(smtpConfig?.from.email) ||
             isNotDefined(smtpConfig?.host) ||
             isNotDefined(smtpConfig?.username) ||
             isNotDefined(smtpConfig?.password) ||
-            isNotDefined(smtpConfig?.port)
+            isNotDefined(smtpConfig?.port) ||
+            isCreating
           }
-          isLoading={isCreating}
         >
           Update
         </Button>

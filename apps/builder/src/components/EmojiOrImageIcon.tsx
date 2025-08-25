@@ -39,10 +39,10 @@ export const EmojiOrImageIcon = ({ icon, size = "md", defaultIcon }: Props) => {
         )
       ) : (
         defaultIcon({
-          boxSize: cx(
-            size === "sm" && "18px",
-            size === "md" && "25px",
-            size === "lg" && "36px",
+          className: cx(
+            size === "sm" && "!size-4",
+            size === "md" && "!size-6",
+            size === "lg" && "!size-9",
           ),
         })
       )}

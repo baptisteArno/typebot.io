@@ -1,9 +1,9 @@
+import { ButtonLink } from "@/components/ButtonLink";
 import { DownloadIcon, FileIcon } from "@/components/icons";
 import { trpc } from "@/lib/queryClient";
 import {
   Checkbox,
   Heading,
-  IconButton,
   Skeleton,
   Stack,
   Table,
@@ -64,15 +64,15 @@ export const InvoicesList = ({ workspaceId }: Props) => {
                   <Td>{getFormattedPrice(invoice.amount, invoice.currency)}</Td>
                   <Td>
                     {invoice.url && (
-                      <IconButton
-                        as={Link}
-                        size="xs"
-                        icon={<DownloadIcon />}
+                      <ButtonLink
+                        size="icon"
                         variant="outline"
                         href={invoice.url}
                         target="_blank"
                         aria-label={"Download invoice"}
-                      />
+                      >
+                        <DownloadIcon />
+                      </ButtonLink>
                     )}
                   </Td>
                 </Tr>

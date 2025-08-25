@@ -1,5 +1,4 @@
 import { Seo } from "@/components/Seo";
-import { TrashIcon } from "@/components/icons";
 import { LockTag } from "@/features/billing/components/LockTag";
 import { UpgradeButton } from "@/features/billing/components/UpgradeButton";
 import { hasProPerks } from "@/features/billing/helpers/hasProPerks";
@@ -14,9 +13,7 @@ import {
   Flex,
   HStack,
   Heading,
-  IconButton,
   Stack,
-  Text,
   Wrap,
   useColorModeValue,
 } from "@chakra-ui/react";
@@ -24,6 +21,8 @@ import { useTranslate } from "@tolgee/react";
 import { env } from "@typebot.io/env";
 import { isDefined, isNotDefined } from "@typebot.io/lib/utils";
 import { Plan } from "@typebot.io/prisma/enum";
+import { Button } from "@typebot.io/ui/components/Button";
+import { TrashIcon } from "@typebot.io/ui/icons/TrashIcon";
 import { parseDefaultPublicId } from "../helpers/parseDefaultPublicId";
 import { isPublicDomainAvailableQuery } from "../queries/isPublicDomainAvailableQuery";
 import { EditableUrl } from "./EditableUrl";
@@ -122,12 +121,14 @@ export const SharePage = () => {
                     isValid={checkIfPathnameIsValid}
                     onPathnameChange={handlePathnameChange}
                   />
-                  <IconButton
-                    icon={<TrashIcon />}
+                  <Button
+                    className="size-7 [&_svg]:size-3"
                     aria-label="Remove custom URL"
-                    size="xs"
+                    size="icon"
                     onClick={() => handleCustomDomainChange(null)}
-                  />
+                  >
+                    <TrashIcon />
+                  </Button>
                   {workspace?.id && (
                     <DomainStatusIcon
                       domain={typebot.customDomain.split("/")[0]}
@@ -146,11 +147,10 @@ export const SharePage = () => {
                     />
                   ) : (
                     <UpgradeButton
-                      colorScheme="gray"
                       limitReachedType={t("billing.limitMessage.customDomain")}
                       excludedPlans={[Plan.STARTER]}
                     >
-                      <Text mr="2">{t("customDomain.add")}</Text>{" "}
+                      {t("customDomain.add")}
                       <LockTag plan={Plan.PRO} />
                     </UpgradeButton>
                   )}

@@ -10,23 +10,17 @@ import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { BlockSourceEndpoint } from "@/features/graph/components/endpoints/BlockSourceEndpoint";
 import { PlaceholderNode } from "@/features/graph/components/nodes/PlaceholderNode";
 import { useGraph } from "@/features/graph/providers/GraphProvider";
-import { useOpenControls } from "@/hooks/useOpenControls";
-import {
-  Flex,
-  IconButton,
-  SlideFade,
-  Stack,
-  useColorModeValue,
-} from "@chakra-ui/react";
+import { Flex, SlideFade, Stack, useColorModeValue } from "@chakra-ui/react";
 import { createId } from "@paralleldrive/cuid2";
 import { useTranslate } from "@tolgee/react";
 import type { Item } from "@typebot.io/blocks-core/schemas/items/schema";
 import type { ItemIndices } from "@typebot.io/blocks-core/schemas/items/schema";
 import type { CardsItem } from "@typebot.io/blocks-inputs/cards/schema";
+import { Button } from "@typebot.io/ui/components/Button";
 import { Popover } from "@typebot.io/ui/components/Popover";
 import { cn } from "@typebot.io/ui/lib/cn";
 import { cx } from "@typebot.io/ui/lib/cva";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { CardsItemSettings } from "./CardsItemSettings";
 
 type Props = {
@@ -271,14 +265,15 @@ export const CardsItemNode = ({
                 bgColor={useColorModeValue("white", "gray.900")}
                 rounded="md"
               >
-                <IconButton
+                <Button
                   aria-label={t("blocks.inputs.button.openSettings.ariaLabel")}
-                  icon={<SettingsIcon />}
                   variant="ghost"
-                  size="xs"
-                  shadow="md"
+                  size="icon"
+                  className="shadow-md"
                   onClick={() => setOpenedNodeId(item.id)}
-                />
+                >
+                  <SettingsIcon />
+                </Button>
               </Flex>
             </SlideFade>
           </Stack>

@@ -1,6 +1,7 @@
+import { ButtonLink } from "@/components/ButtonLink";
 import { ExternalLinkIcon } from "@/components/icons";
 import { TextInput } from "@/components/inputs";
-import { Alert, AlertIcon, Button, Link, Stack, Text } from "@chakra-ui/react";
+import { Alert, AlertIcon, Stack, Text } from "@chakra-ui/react";
 import type { HttpRequest } from "@typebot.io/blocks-integrations/httpRequest/schema";
 import type { PabblyConnectBlock } from "@typebot.io/blocks-integrations/pabblyConnect/schema";
 import React, { useRef } from "react";
@@ -49,14 +50,12 @@ export const PabblyConnectSettings = ({
           ) : (
             <Stack>
               <Text>Head up to Pabbly Connect to get the webhook URL:</Text>
-              <Button
-                as={Link}
+              <ButtonLink
                 href="https://www.pabbly.com/connect/integrations/typebot/"
-                isExternal
-                colorScheme="orange"
+                target="_blank"
               >
-                <Text mr="2">Pabbly.com</Text> <ExternalLinkIcon />
-              </Button>
+                Pabbly.com <ExternalLinkIcon />
+              </ButtonLink>
             </Stack>
           )}
         </Alert>

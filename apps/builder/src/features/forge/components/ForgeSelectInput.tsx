@@ -51,6 +51,8 @@ export const ForgeSelectInput = ({
     fetcherId,
   });
 
+  console.log(credentialsScope, blockDef, options, fetcherId);
+
   return (
     <FormControl
       isRequired={isRequired}

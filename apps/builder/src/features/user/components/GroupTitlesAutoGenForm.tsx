@@ -62,7 +62,7 @@ export const GroupTitlesAutoGenForm = ({
                   value: block.id,
                   label: (
                     <div className="flex items-center gap-2">
-                      <BlockIcon type={block.id} boxSize="16px" />
+                      <BlockIcon type={block.id} className="size-4" />
                       <BlockLabel type={block.id} />
                     </div>
                   ),
@@ -83,7 +83,6 @@ export const GroupTitlesAutoGenForm = ({
               setIsCredsDialogOpen(true);
             }}
             credentialsName="account"
-            flexShrink={0}
           />
         )}
         {blockDef && credentialsId && actionDef?.aiGenerate && (

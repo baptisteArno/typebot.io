@@ -1,7 +1,8 @@
 import { AlertInfo } from "@/components/AlertInfo";
 import { ChevronLeftIcon } from "@/components/icons";
-import { HStack, Heading, IconButton } from "@chakra-ui/react";
+import { HStack, Heading } from "@chakra-ui/react";
 import { capitalize } from "@typebot.io/lib/utils";
+import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
 import { EmbedTypeMenu } from "./EmbedTypeMenu/EmbedTypeMenu";
 
@@ -31,14 +32,14 @@ export const DeployDialog = ({
       <Dialog.Title>
         <HStack>
           {selectedEmbedType && (
-            <IconButton
-              icon={<ChevronLeftIcon />}
+            <Button
               aria-label="back"
               variant="ghost"
-              colorScheme="gray"
               onClick={() => onSelectEmbedType(undefined)}
-              size="sm"
-            />
+              size="icon"
+            >
+              <ChevronLeftIcon />
+            </Button>
           )}
           <Heading size="md">
             {titlePrefix}{" "}

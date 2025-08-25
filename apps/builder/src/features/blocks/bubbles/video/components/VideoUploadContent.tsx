@@ -1,8 +1,9 @@
 import { PexelsPicker } from "@/components/VideoUploadContent/PexelsPicker";
 import { VideoLinkEmbedContent } from "@/components/VideoUploadContent/VideoLinkEmbedContent";
-import { Button, HStack, Stack } from "@chakra-ui/react";
+import { HStack, Stack } from "@chakra-ui/react";
 import { parseVideoUrl } from "@typebot.io/blocks-bubbles/video/helpers";
 import type { VideoBubbleBlock } from "@typebot.io/blocks-bubbles/video/schema";
+import { Button } from "@typebot.io/ui/components/Button";
 import { useState } from "react";
 
 type Tabs = "link" | "pexels";
@@ -69,7 +70,7 @@ export const VideoUploadContent = ({
       <HStack>
         {displayedTabs.includes("link") && (
           <Button
-            variant={currentTab === "link" ? "solid" : "ghost"}
+            variant={currentTab === "link" ? "outline" : "ghost"}
             onClick={() => setCurrentTab("link")}
             size="sm"
           >
@@ -78,7 +79,7 @@ export const VideoUploadContent = ({
         )}
         {displayedTabs.includes("pexels") && (
           <Button
-            variant={currentTab === "pexels" ? "solid" : "ghost"}
+            variant={currentTab === "pexels" ? "outline" : "ghost"}
             onClick={() => setCurrentTab("pexels")}
             size="sm"
           >

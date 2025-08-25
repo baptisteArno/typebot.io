@@ -1,14 +1,12 @@
-import { EditIcon, PlusIcon, TrashIcon } from "@/components/icons";
+import { PlusIcon } from "@/components/icons";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { useOpenControls } from "@/hooks/useOpenControls";
 import {
-  Button,
   Flex,
   FormControl,
   FormHelperText,
   FormLabel,
   HStack,
-  IconButton,
   Input,
   type InputProps,
   Stack,
@@ -19,7 +17,10 @@ import {
 import { createId } from "@paralleldrive/cuid2";
 import { useTranslate } from "@tolgee/react";
 import { byId, isDefined, isNotDefined } from "@typebot.io/lib/utils";
+import { Button } from "@typebot.io/ui/components/Button";
 import { Popover } from "@typebot.io/ui/components/Popover";
+import { EditIcon } from "@typebot.io/ui/icons/EditIcon";
+import { TrashIcon } from "@typebot.io/ui/icons/TrashIcon";
 import { cn } from "@typebot.io/ui/lib/cn";
 import type { Variable } from "@typebot.io/variables/schemas";
 import type { ChangeEvent, ReactNode } from "react";
@@ -222,22 +223,16 @@ export const VariableSearchInput = ({
           >
             {isCreateVariableButtonDisplayed && (
               <Button
-                as="li"
                 ref={createVariableItemRef}
                 role="menuitem"
-                minH="40px"
+                className={cn(
+                  "min-h-[40px] flex items-center font-normal rounded-none justify-start",
+                  keyboardFocusIndex === 0 ? "bg-gray-3" : "bg-transparent",
+                )}
                 onClick={handleCreateNewVariableClick}
-                fontSize="16px"
-                fontWeight="normal"
-                rounded="none"
-                colorScheme="gray"
                 variant="ghost"
-                justifyContent="flex-start"
-                leftIcon={<PlusIcon />}
-                bgColor={
-                  keyboardFocusIndex === 0 ? focusedItemBgColor : "transparent"
-                }
               >
+                <PlusIcon />
                 {t("create")}
                 <Tag colorScheme="orange" ml="1">
                   <Text noOfLines={0} display="block">
@@ -253,45 +248,43 @@ export const VariableSearchInput = ({
                   : idx;
                 return (
                   <Button
-                    as="li"
-                    cursor="pointer"
                     ref={(el: HTMLButtonElement | null) => {
                       if (el) itemsRef.current[idx] = el;
                     }}
                     role="menuitem"
-                    minH="40px"
+                    className={cn(
+                      "min-h-[40px] flex items-center font-normal rounded-none justify-between",
+                      keyboardFocusIndex === indexInList
+                        ? "bg-gray-3"
+                        : "bg-transparent",
+                    )}
                     key={idx}
                     onClick={handleVariableNameClick(item)}
-                    fontSize="16px"
-                    fontWeight="normal"
-                    rounded="none"
-                    colorScheme="gray"
                     variant="ghost"
-                    justifyContent="space-between"
-                    bgColor={
-                      keyboardFocusIndex === indexInList
-                        ? focusedItemBgColor
-                        : "transparent"
-                    }
-                    transition="none"
                   >
                     <Text noOfLines={0} display="block" pr="2">
                       {item.name}
                     </Text>
 
                     <HStack>
-                      <IconButton
-                        icon={<EditIcon />}
+                      <Button
                         aria-label={t("variables.rename")}
-                        size="xs"
+                        size="icon"
                         onClick={handleRenameVariableClick(item)}
-                      />
-                      <IconButton
-                        icon={<TrashIcon />}
+                        className="size-6"
+                        variant="secondary"
+                      >
+                        <EditIcon />
+                      </Button>
+                      <Button
                         aria-label={t("variables.remove")}
-                        size="xs"
+                        size="icon"
                         onClick={handleDeleteVariableClick(item)}
-                      />
+                        className="size-6"
+                        variant="secondary"
+                      >
+                        <TrashIcon />
+                      </Button>
                     </HStack>
                   </Button>
                 );

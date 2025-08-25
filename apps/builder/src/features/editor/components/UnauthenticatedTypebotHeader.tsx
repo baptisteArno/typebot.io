@@ -1,10 +1,10 @@
+import { ButtonLink } from "@/components/ButtonLink";
 import { EmojiOrImageIcon } from "@/components/EmojiOrImageIcon";
 import { TypebotLogo } from "@/components/TypebotLogo";
-import { CopyIcon, PlayIcon, ToolIcon } from "@/components/icons";
+import { CopyIcon, PlayIcon } from "@/components/icons";
 import { useUser } from "@/features/user/hooks/useUser";
 import { useRightPanel } from "@/hooks/useRightPanel";
 import {
-  Button,
   Divider,
   Flex,
   HStack,
@@ -13,7 +13,8 @@ import {
 } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { isNotDefined } from "@typebot.io/lib/utils";
-import Link from "next/link";
+import { Button } from "@typebot.io/ui/components/Button";
+import { LayoutBottomIcon } from "@typebot.io/ui/icons/LayoutBottomIcon";
 import { useRouter } from "next/router";
 import React from "react";
 import { headerHeight } from "../constants";
@@ -51,33 +52,27 @@ export const GuestTypebotHeader = () => {
         pos={{ base: "absolute", xl: "static" }}
         right={{ base: 280, xl: 0 }}
       >
-        <Button
-          as={Link}
+        <ButtonLink
           href={`/typebots/${typebot?.id}/edit`}
-          colorScheme={router.pathname.includes("/edit") ? "orange" : "gray"}
           variant={router.pathname.includes("/edit") ? "outline" : "ghost"}
           size="sm"
         >
           {t("editor.header.flowButton.label")}
-        </Button>
-        <Button
-          as={Link}
+        </ButtonLink>
+        <ButtonLink
           href={`/typebots/${typebot?.id}/theme`}
-          colorScheme={router.pathname.endsWith("theme") ? "orange" : "gray"}
           variant={router.pathname.endsWith("theme") ? "outline" : "ghost"}
           size="sm"
         >
           {t("editor.header.themeButton.label")}
-        </Button>
-        <Button
-          as={Link}
+        </ButtonLink>
+        <ButtonLink
           href={`/typebots/${typebot?.id}/settings`}
-          colorScheme={router.pathname.endsWith("settings") ? "orange" : "gray"}
           variant={router.pathname.endsWith("settings") ? "outline" : "ghost"}
           size="sm"
         >
           {t("editor.header.settingsButton.label")}
-        </Button>
+        </ButtonLink>
       </HStack>
       <HStack
         pos="absolute"
@@ -88,7 +83,10 @@ export const GuestTypebotHeader = () => {
       >
         <HStack alignItems="center" spacing={3}>
           {typebot && (
-            <EmojiOrImageIcon icon={typebot.icon} defaultIcon={ToolIcon} />
+            <EmojiOrImageIcon
+              icon={typebot.icon}
+              defaultIcon={LayoutBottomIcon}
+            />
           )}
           <Text
             noOfLines={2}
@@ -111,8 +109,7 @@ export const GuestTypebotHeader = () => {
       >
         <HStack>
           {typebot?.id && (
-            <Button
-              as={Link}
+            <ButtonLink
               href={
                 !user
                   ? {
@@ -123,21 +120,21 @@ export const GuestTypebotHeader = () => {
                     }
                   : `/typebots/${typebot.id}/duplicate`
               }
-              leftIcon={<CopyIcon />}
-              isLoading={isNotDefined(typebot)}
+              variant="secondary"
+              disabled={isNotDefined(typebot)}
               size="sm"
             >
+              <CopyIcon />
               Duplicate
-            </Button>
+            </ButtonLink>
           )}
           {router.pathname.includes("/edit") && isNotDefined(rightPanel) && (
             <Button
-              colorScheme="orange"
               onClick={handlePreviewClick}
-              isLoading={isNotDefined(typebot)}
-              leftIcon={<PlayIcon />}
+              disabled={isNotDefined(typebot)}
               size="sm"
             >
+              <PlayIcon />
               Play bot
             </Button>
           )}
@@ -146,15 +143,14 @@ export const GuestTypebotHeader = () => {
         {!user && (
           <>
             <Divider orientation="vertical" h="25px" borderColor="gray.400" />
-            <Button
-              as={Link}
+            <ButtonLink
               href={`/register`}
-              leftIcon={<TypebotLogo />}
-              variant="outline"
+              variant="outline-secondary"
               size="sm"
             >
+              <TypebotLogo />
               Try Typebot
-            </Button>
+            </ButtonLink>
           </>
         )}
       </HStack>

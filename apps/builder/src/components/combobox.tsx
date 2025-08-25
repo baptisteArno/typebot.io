@@ -2,32 +2,24 @@ import {
   Combobox as ArkCombobox,
   type CollectionItem,
 } from "@ark-ui/react/combobox";
-import { useColorMode } from "@chakra-ui/react";
 import { inputVariants } from "@typebot.io/ui/components/Input";
 import { cn } from "@typebot.io/ui/lib/cn";
 import type { VariantProps } from "@typebot.io/ui/lib/cva";
 import { forwardRef } from "react";
 
 const Root = forwardRef<HTMLDivElement, ArkCombobox.RootProps<CollectionItem>>(
-  (props, ref) => {
-    const { colorMode } = useColorMode();
-    return (
-      <ArkCombobox.Root
-        ref={ref}
-        {...props}
-        openOnClick
-        positioning={{
-          gutter: 4,
-          placement: "bottom-start",
-        }}
-        className={cn(
-          "items-start",
-          props.className,
-          colorMode === "dark" && "dark",
-        )}
-      />
-    );
-  },
+  (props, ref) => (
+    <ArkCombobox.Root
+      ref={ref}
+      {...props}
+      openOnClick
+      positioning={{
+        gutter: 4,
+        placement: "bottom-start",
+      }}
+      className={cn("items-start", props.className)}
+    />
+  ),
 );
 
 const Label = forwardRef<HTMLLabelElement, ArkCombobox.LabelProps>(
@@ -72,16 +64,9 @@ const Positioner = forwardRef<HTMLDivElement, ArkCombobox.PositionerProps>(
 Positioner.displayName = ArkCombobox.Positioner.displayName;
 
 const Content = forwardRef<HTMLDivElement, ArkCombobox.ContentProps>(
-  (props, ref) => {
-    const { colorMode } = useColorMode();
-    return (
-      <ArkCombobox.Content
-        ref={ref}
-        {...props}
-        className={cn(props.className, colorMode === "dark" && "dark")}
-      />
-    );
-  },
+  (props, ref) => (
+    <ArkCombobox.Content ref={ref} {...props} className={cn(props.className)} />
+  ),
 );
 Content.displayName = ArkCombobox.Content.displayName;
 

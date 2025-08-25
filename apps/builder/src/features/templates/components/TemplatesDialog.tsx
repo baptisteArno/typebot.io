@@ -1,7 +1,6 @@
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { toast } from "@/lib/toast";
 import {
-  Button,
   HStack,
   Heading,
   Stack,
@@ -14,6 +13,7 @@ import { useTranslate } from "@tolgee/react";
 import { sendRequest } from "@typebot.io/lib/utils";
 import { Standard } from "@typebot.io/react";
 import type { Typebot } from "@typebot.io/typebot/schemas/typebot";
+import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
 import React, { useCallback, useEffect, useState } from "react";
 import { useTemplates } from "../hooks/useTemplates";
@@ -98,13 +98,13 @@ export const TemplatesDialog = ({
                     size="sm"
                     key={template.name}
                     onClick={() => fetchTemplate(template)}
-                    w="full"
+                    className="w-full"
                     variant={
                       selectedTemplate.name === template.name
-                        ? "solid"
+                        ? "outline"
                         : "ghost"
                     }
-                    isDisabled={template.isComingSoon}
+                    disabled={template.isComingSoon}
                   >
                     <HStack overflow="hidden" fontSize="sm" w="full">
                       <Text>{template.emoji}</Text>
@@ -129,13 +129,13 @@ export const TemplatesDialog = ({
                     size="sm"
                     key={template.name}
                     onClick={() => fetchTemplate(template)}
-                    w="full"
+                    className="w-full"
                     variant={
                       selectedTemplate.name === template.name
-                        ? "solid"
+                        ? "outline"
                         : "ghost"
                     }
-                    isDisabled={template.isComingSoon}
+                    disabled={template.isComingSoon}
                   >
                     <HStack overflow="hidden" fontSize="sm" w="full">
                       <Text>{template.emoji}</Text>
@@ -160,13 +160,13 @@ export const TemplatesDialog = ({
                     size="sm"
                     key={template.name}
                     onClick={() => fetchTemplate(template)}
-                    w="full"
+                    className="w-full"
                     variant={
                       selectedTemplate.name === template.name
-                        ? "solid"
+                        ? "outline"
                         : "ghost"
                     }
-                    isDisabled={template.isComingSoon}
+                    disabled={template.isComingSoon}
                   >
                     <HStack overflow="hidden" fontSize="sm" w="full">
                       <Text>{template.emoji}</Text>
@@ -214,11 +214,7 @@ export const TemplatesDialog = ({
               </Heading>
               <Text>{selectedTemplate.description}</Text>
             </Stack>
-            <Button
-              colorScheme="orange"
-              onClick={onUseThisTemplateClick}
-              isLoading={isLoading}
-            >
+            <Button onClick={onUseThisTemplateClick} disabled={isLoading}>
               {t("templates.modal.useTemplateButton.label")}
             </Button>
           </HStack>

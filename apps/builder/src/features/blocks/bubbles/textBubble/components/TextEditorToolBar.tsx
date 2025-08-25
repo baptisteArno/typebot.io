@@ -5,12 +5,8 @@ import {
   LinkIcon,
   UnderlineIcon,
 } from "@/components/icons";
-import {
-  HStack,
-  IconButton,
-  type StackProps,
-  useColorModeValue,
-} from "@chakra-ui/react";
+import { HStack, type StackProps, useColorModeValue } from "@chakra-ui/react";
+import { Button } from "@typebot.io/ui/components/Button";
 import {
   MARK_BOLD,
   MARK_ITALIC,
@@ -45,36 +41,43 @@ export const TextEditorToolBar = ({
       borderBottomWidth={1}
       {...props}
     >
-      <IconButton
+      <Button
         aria-label="Insert variable"
-        size="sm"
+        size="icon"
         onMouseDown={handleVariablesButtonMouseDown}
-        icon={<BracesIcon />}
+        variant="secondary"
         data-base-ui-click-trigger
-      />
+      >
+        <BracesIcon />
+      </Button>
       <span data-testid="bold-button">
         <MarkToolbarButton
           nodeType={getPluginType(editor, MARK_BOLD)}
-          icon={<BoldIcon />}
           aria-label="Toggle bold"
-        />
+        >
+          <BoldIcon />
+        </MarkToolbarButton>
       </span>
       <span data-testid="italic-button">
         <MarkToolbarButton
           nodeType={getPluginType(editor, MARK_ITALIC)}
-          icon={<ItalicIcon />}
           aria-label="Toggle italic"
-        />
+        >
+          <ItalicIcon />
+        </MarkToolbarButton>
       </span>
       <span data-testid="underline-button">
         <MarkToolbarButton
           nodeType={getPluginType(editor, MARK_UNDERLINE)}
-          icon={<UnderlineIcon />}
           aria-label="Toggle underline"
-        />
+        >
+          <UnderlineIcon />
+        </MarkToolbarButton>
       </span>
       <span data-testid="link-button">
-        <LinkToolbarButton icon={<LinkIcon />} aria-label="Add link" />
+        <LinkToolbarButton aria-label="Add link">
+          <LinkIcon />
+        </LinkToolbarButton>
       </span>
     </HStack>
   );

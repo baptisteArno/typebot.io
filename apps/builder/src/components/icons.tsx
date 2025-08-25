@@ -1,4 +1,5 @@
 import { Icon, type IconProps, useColorModeValue } from "@chakra-ui/react";
+import { cn } from "@typebot.io/ui/lib/cn";
 
 export const featherIconsBaseProps: IconProps = {
   fill: "none",
@@ -8,13 +9,16 @@ export const featherIconsBaseProps: IconProps = {
   strokeLinejoin: "round",
 };
 
+export const svgBaseClassName =
+  "stroke-[currentColor] size-4 stroke-2 fill-none";
+
 // 99% of these icons are from Feather icons (https://feathericons.com/)
 
-export const ClockIcon = (props: IconProps) => (
-  <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
+export const ClockIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" className={cn(svgBaseClassName, className)}>
     <circle cx="12" cy="12" r="10"></circle>
     <polyline points="12 6 12 12 16 14"></polyline>
-  </Icon>
+  </svg>
 );
 
 export const SettingsIcon = (props: IconProps) => (
@@ -57,17 +61,6 @@ export const PlusIcon = (props: IconProps) => (
   </Icon>
 );
 
-export const FolderIcon = (props: IconProps) => (
-  <Icon
-    viewBox="0 0 24 24"
-    {...featherIconsBaseProps}
-    fill="currentColor"
-    {...props}
-  >
-    <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
-  </Icon>
-);
-
 export const MoreVerticalIcon = (props: IconProps) => (
   <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
     <circle cx="12" cy="12" r="1"></circle>
@@ -84,51 +77,37 @@ export const MoreHorizontalIcon = (props: IconProps) => (
   </Icon>
 );
 
-export const GlobeIcon = (props: IconProps) => (
-  <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
+export const GlobeIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" className={cn(svgBaseClassName, className)}>
     <circle cx="12" cy="12" r="10"></circle>
     <line x1="2" y1="12" x2="22" y2="12"></line>
     <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
-  </Icon>
+  </svg>
 );
 
-export const ToolIcon = (props: IconProps) => (
-  <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
-    <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>
-  </Icon>
-);
-
-export const FolderPlusIcon = (props: IconProps) => (
-  <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
-    <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
-    <line x1="12" y1="11" x2="12" y2="17"></line>
-    <line x1="9" y1="14" x2="15" y2="14"></line>
-  </Icon>
-);
-
-export const TextIcon = (props: IconProps) => (
-  <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
+export const TextIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" className={cn(svgBaseClassName, className)}>
     <polyline points="4 7 4 4 20 4 20 7"></polyline>
     <line x1="9" y1="20" x2="15" y2="20"></line>
     <line x1="12" y1="4" x2="12" y2="20"></line>
-  </Icon>
+  </svg>
 );
 
-export const ImageIcon = (props: IconProps) => (
-  <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
+export const ImageIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" className={cn(svgBaseClassName, className)}>
     <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
     <circle cx="8.5" cy="8.5" r="1.5"></circle>
     <polyline points="21 15 16 10 5 21"></polyline>
-  </Icon>
+  </svg>
 );
 
-export const CalendarIcon = (props: IconProps) => (
-  <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
+export const CalendarIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" className={cn(svgBaseClassName, className)}>
     <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
     <line x1="16" y1="2" x2="16" y2="6"></line>
     <line x1="8" y1="2" x2="8" y2="6"></line>
     <line x1="3" y1="10" x2="21" y2="10"></line>
-  </Icon>
+  </svg>
 );
 
 export const FlagIcon = (props: IconProps) => (
@@ -181,25 +160,18 @@ export const CheckIcon = (props: IconProps) => (
   </Icon>
 );
 
-export const ChatIcon = (props: IconProps) => (
-  <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
+export const ChatIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" className={cn(svgBaseClassName, className)}>
     <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-  </Icon>
+  </svg>
 );
 
-export const TrashIcon = (props: IconProps) => (
-  <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
-    <polyline points="3 6 5 6 21 6"></polyline>
-    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-  </Icon>
-);
-
-export const LayoutIcon = (props: IconProps) => (
-  <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
+export const LayoutIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" className={cn(svgBaseClassName, className)}>
     <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
     <line x1="3" y1="9" x2="21" y2="9"></line>
     <line x1="9" y1="21" x2="9" y2="9"></line>
-  </Icon>
+  </svg>
 );
 
 export const CodeIcon = (props: IconProps) => (
@@ -209,19 +181,13 @@ export const CodeIcon = (props: IconProps) => (
   </Icon>
 );
 
-export const EditIcon = (props: IconProps) => (
-  <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
-    <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
-  </Icon>
-);
-
-export const UploadIcon = (props: IconProps) => (
-  <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
+export const UploadIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" className={cn(svgBaseClassName, className)}>
     <polyline points="16 16 12 12 8 16"></polyline>
     <line x1="12" y1="12" x2="12" y2="21"></line>
     <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"></path>
     <polyline points="16 16 12 12 8 16"></polyline>
-  </Icon>
+  </svg>
 );
 
 export const DownloadIcon = (props: IconProps) => (
@@ -232,39 +198,39 @@ export const DownloadIcon = (props: IconProps) => (
   </Icon>
 );
 
-export const NumberIcon = (props: IconProps) => (
-  <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
+export const NumberIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" className={cn(svgBaseClassName, className)}>
     <line x1="4" y1="9" x2="20" y2="9"></line>
     <line x1="4" y1="15" x2="20" y2="15"></line>
     <line x1="10" y1="3" x2="8" y2="21"></line>
     <line x1="16" y1="3" x2="14" y2="21"></line>
-  </Icon>
+  </svg>
 );
 
-export const EmailIcon = (props: IconProps) => (
-  <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
+export const EmailIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" className={cn(svgBaseClassName, className)}>
     <circle cx="12" cy="12" r="4"></circle>
     <path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-3.92 7.94"></path>
-  </Icon>
+  </svg>
 );
 
-export const PhoneIcon = (props: IconProps) => (
-  <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
+export const PhoneIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" className={cn(svgBaseClassName, className)}>
     <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-  </Icon>
+  </svg>
 );
 
-export const CheckSquareIcon = (props: IconProps) => (
-  <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
+export const CheckSquareIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" className={cn(svgBaseClassName, className)}>
     <polyline points="9 11 12 14 22 4"></polyline>
     <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
-  </Icon>
+  </svg>
 );
 
-export const FilterIcon = (props: IconProps) => (
-  <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
+export const FilterIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" className={cn(svgBaseClassName, className)}>
     <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
-  </Icon>
+  </svg>
 );
 
 export const UserIcon = (props: IconProps) => (
@@ -283,16 +249,16 @@ export const ExpandIcon = (props: IconProps) => (
   </Icon>
 );
 
-export const ExternalLinkIcon = (props: IconProps) => (
-  <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
+export const ExternalLinkIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" className={cn(svgBaseClassName, className)}>
     <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
     <polyline points="15 3 21 3 21 9"></polyline>
     <line x1="10" y1="14" x2="21" y2="3"></line>
-  </Icon>
+  </svg>
 );
 
-export const FilmIcon = (props: IconProps) => (
-  <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
+export const FilmIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" className={cn(svgBaseClassName, className)}>
     <rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect>
     <line x1="7" y1="2" x2="7" y2="22"></line>
     <line x1="17" y1="2" x2="17" y2="22"></line>
@@ -301,7 +267,7 @@ export const FilmIcon = (props: IconProps) => (
     <line x1="2" y1="17" x2="7" y2="17"></line>
     <line x1="17" y1="17" x2="22" y2="17"></line>
     <line x1="17" y1="7" x2="22" y2="7"></line>
-  </Icon>
+  </svg>
 );
 
 export const ThunderIcon = (props: IconProps) => (
@@ -399,12 +365,12 @@ export const AlignLeftTextIcon = (props: IconProps) => (
   </Icon>
 );
 
-export const BoxIcon = (props: IconProps) => (
-  <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
+export const BoxIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" className={cn(svgBaseClassName, className)}>
     <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
     <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
     <line x1="12" y1="22.08" x2="12" y2="12"></line>
-  </Icon>
+  </svg>
 );
 
 export const HelpCircleIcon = (props: IconProps) => (
@@ -472,11 +438,11 @@ export const HardDriveIcon = (props: IconProps) => (
   </Icon>
 );
 
-export const CreditCardIcon = (props: IconProps) => (
-  <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
+export const CreditCardIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" className={cn(svgBaseClassName, className)}>
     <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
     <line x1="1" y1="10" x2="23" y2="10"></line>
-  </Icon>
+  </svg>
 );
 
 export const PlayIcon = (props: IconProps) => (
@@ -485,10 +451,10 @@ export const PlayIcon = (props: IconProps) => (
   </Icon>
 );
 
-export const StarIcon = (props: IconProps) => (
-  <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
+export const StarIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" className={cn(svgBaseClassName, className)}>
     <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-  </Icon>
+  </svg>
 );
 export const BuoyIcon = (props: IconProps) => (
   <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
@@ -602,14 +568,14 @@ export const TableIcon = (props: IconProps) => (
   </Icon>
 );
 
-export const ShuffleIcon = (props: IconProps) => (
-  <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
+export const ShuffleIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" className={cn(svgBaseClassName, className)}>
     <polyline points="16 3 21 3 21 8"></polyline>
     <line x1="4" y1="20" x2="21" y2="3"></line>
     <polyline points="21 16 21 21 16 21"></polyline>
     <line x1="15" y1="15" x2="21" y2="21"></line>
     <line x1="4" y1="4" x2="9" y2="9"></line>
-  </Icon>
+  </svg>
 );
 
 export const InfoIcon = (props: IconProps) => (
@@ -726,12 +692,12 @@ export const CommandIcon = (props: IconProps) => (
   </Icon>
 );
 
-export const GalleryIcon = (props: IconProps) => (
-  <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
+export const GalleryIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" className={cn(svgBaseClassName, className)}>
     <path d="M2 3v18" />
     <rect width="12" height="18" x="6" y="3" rx="2" />
     <path d="M22 3v18" />
-  </Icon>
+  </svg>
 );
 
 export const SendIcon = (props: IconProps) => (

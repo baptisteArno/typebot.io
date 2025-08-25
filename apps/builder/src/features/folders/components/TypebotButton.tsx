@@ -1,6 +1,6 @@
 import { ConfirmDialog } from "@/components/ConfirmDialog";
 import { EmojiOrImageIcon } from "@/components/EmojiOrImageIcon";
-import { GripIcon, MoreVerticalIcon, ToolIcon } from "@/components/icons";
+import { GripIcon, MoreVerticalIcon } from "@/components/icons";
 import type { TypebotInDashboard } from "@/features/dashboard/types";
 import {
   type NodePosition,
@@ -14,18 +14,17 @@ import { toast } from "@/lib/toast";
 import {
   Alert,
   AlertIcon,
-  Button,
-  Flex,
-  IconButton,
   Tag,
   Text,
   VStack,
   WrapItem,
-  useColorModeValue,
 } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
 import { T, useTranslate } from "@tolgee/react";
+import { Button } from "@typebot.io/ui/components/Button";
 import { Menu } from "@typebot.io/ui/components/Menu";
+import { LayoutBottomIcon } from "@typebot.io/ui/icons/LayoutBottomIcon";
+import { cx } from "@typebot.io/ui/lib/cva";
 import { useRouter } from "next/router";
 import React, { memo } from "react";
 import { useDebounce } from "use-debounce";
@@ -136,18 +135,14 @@ const TypebotButton = ({
   return (
     <>
       <Button
-        as={WrapItem}
         onClick={handleTypebotClick}
-        display="flex"
-        flexDir="column"
-        variant="outline"
-        w="225px"
-        h="270px"
-        rounded="lg"
-        whiteSpace="normal"
-        opacity={draggedTypebot ? 0.3 : 1}
-        cursor="pointer"
-        bgColor={useColorModeValue("white", "gray.900")}
+        className={cx(
+          "flex-col w-[225px] h-[270px] rounded-lg whitespace-normal bg-gray-1 relative",
+          draggedTypebot && "opacity-30",
+        )}
+        variant="outline-secondary"
+        iconStyle="none"
+        size="lg"
       >
         {typebot.publishedTypebotId && (
           <Tag
@@ -163,18 +158,15 @@ const TypebotButton = ({
         )}
         {!isReadOnly && (
           <>
-            <IconButton
+            <Button
               ref={buttonRef}
-              icon={<GripIcon />}
-              pos="absolute"
-              top="20px"
-              left="20px"
+              className="absolute top-5 left-5 size-8 cursor-grab"
               aria-label="Drag"
-              cursor="grab"
               variant="ghost"
-              colorScheme="orange"
-              size="sm"
-            />
+              size="icon"
+            >
+              <GripIcon />
+            </Button>
             <Menu.Root>
               <Menu.TriggerButton
                 aria-label={t("folders.typebotButton.showMoreOptions")}
@@ -203,18 +195,11 @@ const TypebotButton = ({
           </>
         )}
         <VStack spacing="4">
-          <Flex
-            rounded="full"
-            justifyContent="center"
-            alignItems="center"
-            fontSize={"4xl"}
-          >
-            <EmojiOrImageIcon
-              icon={typebot.icon}
-              size="lg"
-              defaultIcon={ToolIcon}
-            />
-          </Flex>
+          <EmojiOrImageIcon
+            icon={typebot.icon}
+            size="lg"
+            defaultIcon={LayoutBottomIcon}
+          />
           <Text textAlign="center" noOfLines={4} maxW="180px">
             {typebot.name}
           </Text>

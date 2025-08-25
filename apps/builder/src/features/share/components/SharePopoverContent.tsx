@@ -40,7 +40,7 @@ export const SharePopoverContent = () => {
             <InputGroup size="sm">
               <Input type={"text"} defaultValue={currentUrl} pr="16" />
               <InputRightElement width="60px">
-                <CopyButton size="sm" textToCopy={currentUrl} />
+                <CopyButton textToCopy={currentUrl} />
               </InputRightElement>
             </InputGroup>
           </Stack>
