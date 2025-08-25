@@ -97,15 +97,13 @@ export const resumeWhatsAppFlow = async ({
     isDefined(session.state.expiryTimeout) &&
     session?.updatedAt.getTime() + session.state.expiryTimeout < Date.now();
 
-  if (aggregationResponse.status === "treat as unique message") {
-    if (session?.isReplying && callFrom !== "webhook") {
-      if (!isSessionExpired) throw new WhatsAppError("Is in reply state");
-    } else {
-      await setIsReplyingInChatSession({
-        existingSessionId: session?.id,
-        newSessionId: sessionId,
-      });
-    }
+  if (!isSessionExpired && session?.isReplying && callFrom !== "webhook")
+    throw new WhatsAppError("Is in reply state");
+  else if (aggregationResponse.status === "treat as unique message") {
+    await setIsReplyingInChatSession({
+      existingSessionId: session?.id,
+      newSessionId: sessionId,
+    });
   }
 
   const currentTypebot = session?.state.typebotsQueue[0].typebot;

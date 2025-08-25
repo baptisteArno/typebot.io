@@ -11,7 +11,7 @@ export const getSession = async (sessionId: string) => {
   if (!session?.state) return null;
   if (Object.keys(session.state).length === 0) {
     if (!session.isReplying) await deleteSession(session.id);
-    return null;
+    throw new Error("Session is empty but isReplying is false");
   }
   const parsedState = sessionStateSchema.parse(session.state);
   Sentry.setUser({ id: parsedState.typebotsQueue[0].typebot.id });
