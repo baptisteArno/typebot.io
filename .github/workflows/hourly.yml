@@ -28,6 +28,7 @@ jobs:
       STRIPE_STARTER_CHATS_PRICE_ID: "${{ secrets.STRIPE_STARTER_CHATS_PRICE_ID }}"
       STRIPE_PRO_PRICE_ID: "${{ secrets.STRIPE_PRO_PRICE_ID }}"
       STRIPE_PRO_CHATS_PRICE_ID: "${{ secrets.STRIPE_PRO_CHATS_PRICE_ID }}"
+      HUGEICONS_LICENSE_KEY: "${{ secrets.HUGEICONS_LICENSE_KEY }}"
     steps:
       - uses: actions/checkout@v2
       - uses: oven-sh/setup-bun@v2
