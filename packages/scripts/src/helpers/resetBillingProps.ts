@@ -4,6 +4,7 @@ export const resetBillingProps = async () => {
   console.log("Resetting billing props...");
   const { count } = await prisma.workspace.updateMany({
     where: {
+      isPastDue: { not: true },
       OR: [
         {
           isQuarantined: true,
