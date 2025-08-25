@@ -232,7 +232,7 @@ export const webhookHandler = async (
 
         case "invoice.payment_failed": {
           const invoice = event.data.object;
-          if (invoice.collection_method === "charge_automatically")
+          if (invoice.collection_method !== "charge_automatically")
             return res.send({
               message: "Manual payment required",
             });
