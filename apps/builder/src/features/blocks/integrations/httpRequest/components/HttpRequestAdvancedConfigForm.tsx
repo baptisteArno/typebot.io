@@ -11,7 +11,6 @@ import {
   AccordionIcon,
   AccordionItem,
   AccordionPanel,
-  Button,
   HStack,
   Stack,
   Text,
@@ -30,6 +29,7 @@ import type {
   ResponseVariableMapping,
   VariableForTest,
 } from "@typebot.io/blocks-integrations/httpRequest/schema";
+import { Button } from "@typebot.io/ui/components/Button";
 import { useMemo, useState } from "react";
 import { computeDeepKeysMappingSuggestionList } from "../helpers/computeDeepKeysMappingSuggestionList";
 import { convertVariablesForTestToVariables } from "../helpers/convertVariablesForTestToVariables";
@@ -236,11 +236,7 @@ export const HttpRequestAdvancedConfigForm = ({
       </Accordion>
 
       {httpRequest?.url && (
-        <Button
-          onClick={executeTestRequest}
-          colorScheme="orange"
-          isLoading={isTestResponseLoading}
-        >
+        <Button onClick={executeTestRequest} disabled={isTestResponseLoading}>
           Test the request
         </Button>
       )}

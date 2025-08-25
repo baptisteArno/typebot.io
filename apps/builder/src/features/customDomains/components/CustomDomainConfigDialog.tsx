@@ -4,7 +4,6 @@ import {
   Alert,
   AlertIcon,
   Box,
-  Button,
   Code,
   HStack,
   Stack,
@@ -165,7 +164,7 @@ export const CustomDomainConfigDialog = ({
           </Stack>
         )}
         <Dialog.Footer>
-          <Button onClick={onClose}>Close</Button>
+          <Dialog.CloseButton>Close</Dialog.CloseButton>
         </Dialog.Footer>
       </Dialog.Popup>
     </Dialog.Root>

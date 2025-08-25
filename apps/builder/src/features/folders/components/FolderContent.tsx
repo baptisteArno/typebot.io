@@ -182,7 +182,7 @@ export const FolderContent = ({ folder }: Props) => {
             {currentUserMode !== "guest" && (
               <CreateBotButton
                 folderId={folder?.id}
-                isLoading={isTypebotLoading}
+                disabled={isTypebotLoading}
               />
             )}
             {isFolderLoading && <ButtonSkeleton />}

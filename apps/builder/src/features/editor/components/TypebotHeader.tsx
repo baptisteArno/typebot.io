@@ -1,3 +1,4 @@
+import { ButtonLink } from "@/components/ButtonLink";
 import { EditableEmojiOrImageIcon } from "@/components/EditableEmojiOrImageIcon";
 import { SupportBubble } from "@/components/SupportBubble";
 import {
@@ -6,7 +7,6 @@ import {
   CopyIcon,
   PlayIcon,
   RedoIcon,
-  ToolIcon,
   UndoIcon,
 } from "@/components/icons";
 import { PublishButton } from "@/features/publish/components/PublishButton";
@@ -17,10 +17,8 @@ import { useKeyboardShortcuts } from "@/hooks/useKeyboardShortcuts";
 import { useOpenControls } from "@/hooks/useOpenControls";
 import { useRightPanel } from "@/hooks/useRightPanel";
 import {
-  Button,
   Flex,
   HStack,
-  IconButton,
   Spinner,
   type StackProps,
   Text,
@@ -31,8 +29,9 @@ import {
 import { useTranslate } from "@tolgee/react";
 import { isDefined, isNotDefined } from "@typebot.io/lib/utils";
 import { Plan } from "@typebot.io/prisma/enum";
+import { Button } from "@typebot.io/ui/components/Button";
 import { Tooltip } from "@typebot.io/ui/components/Tooltip";
-import Link from "next/link";
+import { LayoutBottomIcon } from "@typebot.io/ui/icons/LayoutBottomIcon";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
@@ -161,10 +160,8 @@ const LeftElements = ({
   return (
     <HStack justify="center" align="center" spacing="6" {...props}>
       <HStack alignItems="center" spacing={3}>
-        <IconButton
-          as={Link}
+        <ButtonLink
           aria-label="Navigate back"
-          icon={<ChevronLeftIcon fontSize="md" />}
           href={{
             pathname: router.query.parentId
               ? "/typebots/[typebotId]/edit"
@@ -181,8 +178,12 @@ const LeftElements = ({
                 : (router.query.parentId ?? []),
             },
           }}
-          size="sm"
-        />
+          size="icon"
+          variant="secondary"
+          className="size-8"
+        >
+          <ChevronLeftIcon />
+        </ButtonLink>
         <HStack spacing={1}>
           {typebot && (
             <EditableEmojiOrImageIcon
@@ -193,7 +194,7 @@ const LeftElements = ({
               }}
               icon={typebot?.icon}
               onChangeIcon={handleChangeIcon}
-              defaultIcon={ToolIcon}
+              defaultIcon={LayoutBottomIcon}
             />
           )}
           (
@@ -208,18 +209,16 @@ const LeftElements = ({
         {currentUserMode === "write" && (
           <HStack>
             <Tooltip.Root {...undoOpenControls} keepOpenOnClick>
-              <Tooltip.Trigger
-                render={
-                  <IconButton
-                    display={["none", "flex"]}
-                    icon={<UndoIcon fontSize="16px" />}
-                    size="sm"
-                    aria-label={t("editor.header.undoButton.label")}
-                    onClick={handleUndoClick}
-                    isDisabled={!canUndo}
-                  />
-                }
-              />
+              <Tooltip.TriggerButton
+                size="icon"
+                variant="secondary"
+                className="size-8 hidden sm:flex"
+                aria-label={t("editor.header.undoButton.label")}
+                onClick={undo}
+                disabled={!canUndo}
+              >
+                <UndoIcon />
+              </Tooltip.TriggerButton>
               <Tooltip.Popup>
                 {isUndoExecuted
                   ? t("editor.header.undo.tooltip.label")
@@ -228,18 +227,16 @@ const LeftElements = ({
             </Tooltip.Root>
 
             <Tooltip.Root {...redoOpenControls} keepOpenOnClick>
-              <Tooltip.Trigger
-                render={
-                  <IconButton
-                    display={["none", "flex"]}
-                    icon={<RedoIcon fontSize="16px" />}
-                    size="sm"
-                    aria-label={t("editor.header.redoButton.label")}
-                    onClick={handleRedoClick}
-                    isDisabled={!canRedo}
-                  />
-                }
-              />
+              <Tooltip.TriggerButton
+                size="icon"
+                variant="secondary"
+                className="size-8 hidden sm:flex"
+                aria-label={t("editor.header.redoButton.label")}
+                onClick={redo}
+                disabled={!canRedo}
+              >
+                <RedoIcon />
+              </Tooltip.TriggerButton>
               <Tooltip.Popup>
                 {isRedoExecuted
                   ? t("editor.header.undo.tooltip.label")
@@ -248,12 +245,8 @@ const LeftElements = ({
             </Tooltip.Root>
           </HStack>
         )}
-        <Button
-          leftIcon={<BuoyIcon />}
-          onClick={onHelpClick}
-          size="sm"
-          iconSpacing={{ base: 0, xl: 2 }}
-        >
+        <Button onClick={onHelpClick} variant="secondary" size="sm">
+          <BuoyIcon />
           <chakra.span display={{ base: "none", xl: "inline" }}>
             {t("editor.header.helpButton.label")}
           </chakra.span>
@@ -299,28 +292,27 @@ const RightElements = ({
       </Flex>
       {router.pathname.includes("/edit") && rightPanel !== "preview" && (
         <Button
-          colorScheme="gray"
-          onClick={handlePreviewClick}
-          isLoading={isNotDefined(typebot) || isSavingLoading}
-          leftIcon={<PlayIcon />}
+          variant="secondary"
           size="sm"
-          iconSpacing={{ base: 0, xl: 2 }}
+          onClick={handlePreviewClick}
+          disabled={isNotDefined(typebot) || isSavingLoading}
         >
+          <PlayIcon />
           <chakra.span display={{ base: "none", xl: "inline" }}>
             {t("editor.header.previewButton.label")}
           </chakra.span>
         </Button>
       )}
       {currentUserMode === "guest" && (
-        <Button
-          as={Link}
+        <ButtonLink
           href={`/typebots/${typebot?.id}/duplicate`}
-          leftIcon={<CopyIcon />}
-          isLoading={isNotDefined(typebot)}
+          disabled={isNotDefined(typebot)}
+          variant="secondary"
           size="sm"
         >
+          <CopyIcon />
           Duplicate
-        </Button>
+        </ButtonLink>
       )}
       {currentUserMode === "write" && <PublishButton size="sm" />}
     </HStack>
@@ -340,52 +332,42 @@ const TypebotNav = ({
 
   return (
     <HStack {...stackProps}>
-      <Button
-        as={Link}
+      <ButtonLink
         href={`/typebots/${typebotId}/edit`}
-        colorScheme={router.pathname.includes("/edit") ? "orange" : "gray"}
         variant={router.pathname.includes("/edit") ? "outline" : "ghost"}
         size="sm"
       >
         {t("editor.header.flowButton.label")}
-      </Button>
-      <Button
-        as={Link}
+      </ButtonLink>
+      <ButtonLink
         href={`/typebots/${typebotId}/theme`}
-        colorScheme={router.pathname.endsWith("theme") ? "orange" : "gray"}
         variant={router.pathname.endsWith("theme") ? "outline" : "ghost"}
         size="sm"
       >
         {t("editor.header.themeButton.label")}
-      </Button>
-      <Button
-        as={Link}
+      </ButtonLink>
+      <ButtonLink
         href={`/typebots/${typebotId}/settings`}
-        colorScheme={router.pathname.endsWith("settings") ? "orange" : "gray"}
         variant={router.pathname.endsWith("settings") ? "outline" : "ghost"}
         size="sm"
       >
         {t("editor.header.settingsButton.label")}
-      </Button>
-      <Button
-        as={Link}
+      </ButtonLink>
+      <ButtonLink
         href={`/typebots/${typebotId}/share`}
-        colorScheme={router.pathname.endsWith("share") ? "orange" : "gray"}
         variant={router.pathname.endsWith("share") ? "outline" : "ghost"}
         size="sm"
       >
         {t("share.button.label")}
-      </Button>
+      </ButtonLink>
       {isResultsDisplayed && (
-        <Button
-          as={Link}
+        <ButtonLink
           href={`/typebots/${typebotId}/results`}
-          colorScheme={router.pathname.includes("results") ? "orange" : "gray"}
           variant={router.pathname.includes("results") ? "outline" : "ghost"}
           size="sm"
         >
           {t("editor.header.resultsButton.label")}
-        </Button>
+        </ButtonLink>
       )}
     </HStack>
   );

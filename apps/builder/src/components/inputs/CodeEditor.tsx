@@ -186,10 +186,7 @@ export const CodeEditor = ({
           <Fade in={isOpen}>
             <CopyButton
               textToCopy={props.value ?? value}
-              pos="absolute"
-              right={0.5}
-              top={0.5}
-              size="xs"
+              className="absolute right-0.5 top-0.5"
             />
           </Fade>
         )}

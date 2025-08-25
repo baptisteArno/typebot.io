@@ -1,16 +1,9 @@
 import { trpc } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
-import {
-  Alert,
-  Button,
-  HStack,
-  Heading,
-  Input,
-  Stack,
-  Text,
-} from "@chakra-ui/react";
+import { Alert, HStack, Heading, Input, Stack, Text } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
+import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
 import { useEffect, useRef, useState } from "react";
 
@@ -160,9 +153,7 @@ export const CreateCustomDomainDialog = ({
         <Dialog.Footer>
           <Button
             onClick={onAddDomainClick}
-            isDisabled={hostname.domain === ""}
-            isLoading={isLoading}
-            colorScheme="orange"
+            disabled={hostname.domain === "" || isLoading}
           >
             {t("save")}
           </Button>

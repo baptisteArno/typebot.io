@@ -1,11 +1,11 @@
 import { TextInput } from "@/components/inputs";
 import { queryClient, trpc } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
-import { Button } from "@chakra-ui/react";
 import { createId } from "@paralleldrive/cuid2";
 import { useMutation } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
 import type { ThemeTemplate } from "@typebot.io/theme/schemas";
+import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
 import { type FormEvent, useRef, useState } from "react";
 
@@ -91,11 +91,15 @@ export const SaveThemeDialog = ({
         />
         <Dialog.Footer>
           {selectedTemplate?.id && (
-            <Button isLoading={isSaving} onClick={saveNewTemplate}>
+            <Button
+              disabled={isSaving}
+              variant="secondary"
+              onClick={saveNewTemplate}
+            >
               {t("theme.sideMenu.template.myTemplates.saveTheme.saveAsNew")}
             </Button>
           )}
-          <Button type="submit" colorScheme="orange" isLoading={isSaving}>
+          <Button type="submit" disabled={isSaving}>
             {selectedTemplate?.id ? t("update") : t("save")}
           </Button>
         </Dialog.Footer>

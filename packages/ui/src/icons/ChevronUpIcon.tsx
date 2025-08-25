@@ -1,8 +1,6 @@
-import React, { type SVGProps } from "react";
-import { defaultLucideIconsProps } from "./constants";
+import { ArrowUp01Icon } from "@hugeicons-pro/core-stroke-rounded";
+import { Icon } from "../components/Icon";
 
-export const ChevronUpIcon = (props: SVGProps<SVGSVGElement>) => (
-  <svg {...defaultLucideIconsProps} {...props}>
-    <path d="m18 15-6-6-6 6" />
-  </svg>
+export const ChevronUpIcon = ({ className }: { className?: string }) => (
+  <Icon icon={ArrowUp01Icon} className={className} />
 );

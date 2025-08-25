@@ -1,5 +1,5 @@
 import { Card } from "@/components/Card";
-import { ButtonLink } from "@/components/link";
+import { CtaButtonLink } from "@/components/link";
 import { registerUrl } from "@/constants";
 import { BracesIcon } from "@typebot.io/ui/icons/BracesIcon";
 import { DatabaseIcon } from "@typebot.io/ui/icons/DatabaseIcon";
@@ -95,14 +95,13 @@ export const AllFeatures = () => {
           <h2 className="px-4 text-center">
             All the features you need to hack bots building
           </h2>
-          <ButtonLink
-            variant="cta"
+          <CtaButtonLink
             size="lg"
             className="hidden md:inline-flex"
             href={registerUrl}
           >
             Create a bot for free
-          </ButtonLink>
+          </CtaButtonLink>
         </div>
 
         <ul
@@ -138,9 +137,9 @@ export const AllFeatures = () => {
         </ul>
       </div>
       <div className="md:hidden px-4">
-        <ButtonLink variant="cta" size="lg" href={registerUrl}>
+        <CtaButtonLink size="lg" href={registerUrl}>
           Create a bot for free
-        </ButtonLink>
+        </CtaButtonLink>
       </div>
     </div>
   );

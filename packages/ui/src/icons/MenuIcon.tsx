@@ -1,10 +1,6 @@
-import React, { type SVGProps } from "react";
-import { defaultLucideIconsProps } from "./constants";
+import { Menu01Icon } from "@hugeicons-pro/core-stroke-rounded";
+import { Icon } from "../components/Icon";
 
-export const MenuIcon = (props: SVGProps<SVGSVGElement>) => (
-  <svg {...defaultLucideIconsProps} {...props}>
-    <line x1="4" x2="20" y1="12" y2="12" />
-    <line x1="4" x2="20" y1="6" y2="6" />
-    <line x1="4" x2="20" y1="18" y2="18" />
-  </svg>
+export const MenuIcon = ({ className }: { className?: string }) => (
+  <Icon icon={Menu01Icon} className={className} />
 );

@@ -11,8 +11,6 @@ import { toast } from "@/lib/toast";
 import {
   Alert,
   AlertIcon,
-  Button,
-  type ButtonProps,
   HStack,
   Stack,
   Text,
@@ -22,18 +20,22 @@ import { useMutation } from "@tanstack/react-query";
 import { T, useTranslate } from "@tolgee/react";
 import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
 import { isNotDefined } from "@typebot.io/lib/utils";
+import { Button, type ButtonProps } from "@typebot.io/ui/components/Button";
 import { Menu } from "@typebot.io/ui/components/Menu";
 import { Tooltip } from "@typebot.io/ui/components/Tooltip";
 import { ChevronDownIcon } from "@typebot.io/ui/icons/ChevronDownIcon";
+import { cn } from "@typebot.io/ui/lib/cn";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { parseDefaultPublicId } from "../helpers/parseDefaultPublicId";
 
-type Props = ButtonProps & {
+type Props = {
   isMoreMenuDisabled?: boolean;
-};
+} & ButtonProps;
+
 export const PublishButton = ({
   isMoreMenuDisabled = false,
+  className,
   ...props
 }: Props) => {
   const { t } = useTranslate();
@@ -189,7 +191,7 @@ export const PublishButton = ({
           isOpen={isNewEngineWarningOpen}
           onConfirm={handlePublishClick}
           onClose={onNewEngineWarningClose}
-          confirmButtonColor="blue"
+          actionType="informative"
           title={t("publish.versionWarning.title.label")}
           confirmButtonLabel={t("publishButton.label")}
         >
@@ -216,20 +218,21 @@ export const PublishButton = ({
         <Tooltip.Trigger
           render={
             <Button
-              colorScheme="orange"
-              isLoading={
+              disabled={
+                isPublished ||
+                isSavingLoading ||
                 publishTypebotStatus === "pending" ||
                 unpublishTypebotStatus === "pending"
               }
-              isDisabled={isPublished || isSavingLoading}
               onClick={() => {
                 publishedTypebot && publishedTypebotVersion !== typebot?.version
                   ? onNewEngineWarningOpen()
                   : handlePublishClick();
               }}
-              borderRightRadius={
-                publishedTypebot && !isMoreMenuDisabled ? 0 : undefined
-              }
+              className={cn(
+                publishedTypebot && !isMoreMenuDisabled && "rounded-r-none",
+                className,
+              )}
               {...props}
             >
               {isPublished
@@ -256,7 +259,6 @@ export const PublishButton = ({
           </Stack>
         </Tooltip.Popup>
       </Tooltip.Root>
-
       {!isMoreMenuDisabled && publishedTypebot && (
         <Menu.Root>
           <Menu.TriggerButton

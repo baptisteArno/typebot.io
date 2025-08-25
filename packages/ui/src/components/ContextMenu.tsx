@@ -18,12 +18,16 @@ Trigger.displayName = ContextMenuPrimitive.Trigger.displayName;
 
 const TriggerButton = React.forwardRef<
   React.ElementRef<typeof ContextMenuPrimitive.Trigger>,
-  ContextMenuPrimitive.Trigger.Props & VariantProps<typeof buttonVariants>
+  ContextMenuPrimitive.Trigger.Props &
+    VariantProps<typeof buttonVariants> & {
+      disabled?: boolean;
+    }
 >(({ children, className, variant, size, ...props }, ref) => (
   <ContextMenuPrimitive.Trigger
     {...props}
     className={cn(buttonVariants({ variant, size }), className)}
     ref={ref}
+    data-disabled={props.disabled}
   >
     {children}
   </ContextMenuPrimitive.Trigger>

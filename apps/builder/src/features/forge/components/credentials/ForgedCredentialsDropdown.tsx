@@ -1,20 +1,16 @@
-import { ChevronLeftIcon, PlusIcon, TrashIcon } from "@/components/icons";
+import { PlusIcon } from "@/components/icons";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { trpc } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
-import {
-  Button,
-  type ButtonProps,
-  IconButton,
-  Stack,
-  Text,
-} from "@chakra-ui/react";
+import { Stack, Text } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import { useMutation } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
 import type { ForgedBlockDefinition } from "@typebot.io/forge-repository/definitions";
+import { Button, type ButtonProps } from "@typebot.io/ui/components/Button";
 import { Menu } from "@typebot.io/ui/components/Menu";
 import { ChevronDownIcon } from "@typebot.io/ui/icons/ChevronDownIcon";
+import { TrashIcon } from "@typebot.io/ui/icons/TrashIcon";
 import { useRouter } from "next/router";
 import type React from "react";
 import { useCallback, useEffect, useState } from "react";
@@ -133,14 +129,13 @@ export const ForgedCredentialsDropdown = ({
   if (!data || data?.credentials.length === 0) {
     return (
       <Button
-        colorScheme="gray"
-        textAlign="left"
-        leftIcon={<PlusIcon />}
+        variant="secondary"
+        className="text-left"
         onClick={onAddClick}
-        isDisabled={currentUserMode === "guest"}
-        isLoading={isLoading}
+        disabled={currentUserMode === "guest" || isLoading}
         {...props}
       >
+        <PlusIcon />
         Add {blockDef.auth?.name}
       </Button>
     );
@@ -168,13 +163,16 @@ export const ForgedCredentialsDropdown = ({
               className="justify-between"
             >
               {credentials.name}
-              <IconButton
-                icon={<TrashIcon />}
+              <Button
+                size="icon"
+                className="size-7 [&_svg]:size-3"
                 aria-label="Remove credentials"
-                size="xs"
+                variant="secondary"
                 onClick={deleteCredentials(credentials.id)}
-                isLoading={isDeleting === credentials.id}
-              />
+                disabled={isDeleting === credentials.id}
+              >
+                <TrashIcon />
+              </Button>
             </Menu.Item>
           ))}
           {currentUserMode === "guest" ? null : (

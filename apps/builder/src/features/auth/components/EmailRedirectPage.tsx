@@ -1,7 +1,6 @@
 import { Seo } from "@/components/Seo";
 import { toast } from "@/lib/toast";
 import {
-  Button,
   Heading,
   Stack,
   Tag,
@@ -9,6 +8,7 @@ import {
   VStack,
   useColorModeValue,
 } from "@chakra-ui/react";
+import { Button } from "@typebot.io/ui/components/Button";
 import { useQueryState } from "nuqs";
 import { createEmailMagicLink } from "../helpers/createEmailMagicLink";
 
@@ -46,9 +46,7 @@ export const EmailRedirectPage = () => {
             You are about to login with <Tag>{email}</Tag>
           </Text>
         </Stack>
-        <Button onClick={redirectToMagicLink} colorScheme="orange">
-          Continue
-        </Button>
+        <Button onClick={redirectToMagicLink}>Continue</Button>
       </Stack>
     </VStack>
   );

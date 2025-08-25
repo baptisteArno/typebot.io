@@ -21,7 +21,7 @@ import { cx } from "@typebot.io/ui/lib/cva";
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import React from "react";
-import { ButtonLink, TextLink } from "./link";
+import { ButtonLink, CtaButtonLink, TextLink } from "./link";
 
 const links = [
   {
@@ -190,13 +190,12 @@ const Mobile = React.forwardRef<HTMLElement, Props>(function Mobile(
                 </TextLink>
               ))}
             </div>
-            <ButtonLink
-              variant="cta"
+            <CtaButtonLink
               href={signinUrl}
               className={buttonVariants({ size: "lg", variant: "outline" })}
             >
               Sign in
-            </ButtonLink>
+            </CtaButtonLink>
           </motion.nav>
         )}
       </AnimatePresence>
@@ -299,13 +298,13 @@ const Desktop = React.forwardRef<
           </ButtonLink>
         ))}
         {isAuthenticated ? (
-          <ButtonLink variant="cta" size="sm" href={dashboardUrl}>
+          <CtaButtonLink size="sm" href={dashboardUrl}>
             Go to dashboard
-          </ButtonLink>
+          </CtaButtonLink>
         ) : (
-          <ButtonLink variant="cta" size="sm" href={registerUrl}>
+          <CtaButtonLink size="sm" href={registerUrl}>
             Get started free
-          </ButtonLink>
+          </CtaButtonLink>
         )}
       </nav>
       {isChatBubbleMounted && pathname === "/" && (

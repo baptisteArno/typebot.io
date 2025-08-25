@@ -3,11 +3,12 @@ import { SwitchWithRelatedSettings } from "@/components/SwitchWithRelatedSetting
 import { TextInput, Textarea } from "@/components/inputs";
 import { ConditionForm } from "@/features/blocks/logic/condition/components/ConditionForm";
 import { useOpenControls } from "@/hooks/useOpenControls";
-import { Button, HStack, Stack, Text } from "@chakra-ui/react";
+import { HStack, Stack, Text } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import type { PictureChoiceItem } from "@typebot.io/blocks-inputs/pictureChoice/schema";
 import { LogicalOperator } from "@typebot.io/conditions/constants";
 import type { Condition } from "@typebot.io/conditions/schemas";
+import { Button } from "@typebot.io/ui/components/Button";
 import { Popover } from "@typebot.io/ui/components/Popover";
 import React from "react";
 
@@ -66,7 +67,7 @@ export const PictureChoiceItemSettings = ({
         </Text>
         <Popover.Root {...imageUploadPopoverControls}>
           <Popover.Trigger>
-            <Button size="sm">
+            <Button size="sm" variant="secondary">
               {item.pictureSrc
                 ? t("blocks.inputs.picture.itemSettings.image.change.label")
                 : t("blocks.inputs.picture.itemSettings.image.pick.label")}

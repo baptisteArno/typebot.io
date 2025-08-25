@@ -30,6 +30,7 @@ const TriggerButton = ({
   <DialogPrimitive.Trigger
     {...props}
     className={cn(buttonVariants({ variant, size }), className)}
+    data-disabled={props.disabled}
   />
 );
 

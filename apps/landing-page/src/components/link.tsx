@@ -4,20 +4,24 @@ import { ArrowUpRightIcon } from "@typebot.io/ui/icons/ArrowUpRightIcon";
 import { cn } from "@typebot.io/ui/lib/cn";
 import { type VariantProps, cva } from "@typebot.io/ui/lib/cva";
 import { type HTMLProps, forwardRef } from "react";
+import { ctaButtonVariants } from "./cta/CtaButton";
 
 type Optional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
 
-const textLinkVariants = cva("inline-flex gap-1 font-medium hover:underline", {
-  variants: {
-    size: {
-      default: "",
-      sm: "text-sm",
+const textLinkVariants = cva(
+  "inline-flex font-medium hover:underline items-center",
+  {
+    variants: {
+      size: {
+        default: "",
+        sm: "text-sm",
+      },
+    },
+    defaultVariants: {
+      size: "default",
     },
   },
-  defaultVariants: {
-    size: "default",
-  },
-});
+);
 
 const textLinkIconVariants = cva("mt-0.5", {
   variants: {
@@ -77,7 +81,55 @@ export const TextLink = (
   return <CreatedTextLinkComponent preload={"intent"} {...props} />;
 };
 
-interface CustomButtonLinkProps
+interface CtaButtonLinkProps
+  extends Pick<
+      HTMLProps<HTMLAnchorElement>,
+      "href" | "target" | "className" | "children"
+    >,
+    Omit<VariantProps<typeof buttonVariants>, "variant">,
+    VariantProps<typeof ctaButtonVariants> {}
+
+export const CtaButtonLinkComponent = forwardRef<
+  HTMLAnchorElement,
+  CtaButtonLinkProps
+>(({ variant, className, size, children, ...props }, ref) => {
+  return (
+    <div className="overflow-hidden rounded-lg relative">
+      <a
+        className={cn(
+          buttonVariants({ size, className }),
+          ctaButtonVariants({ variant }),
+          "w-full",
+        )}
+        ref={ref}
+        {...props}
+      >
+        {children}
+      </a>
+    </div>
+  );
+});
+const CreatedCtaButtonLinkComponent = createLink(CtaButtonLinkComponent);
+
+export const CtaButtonLink = (
+  props: Optional<LinkComponentProps<typeof CtaButtonLinkComponent>, "to">,
+) => {
+  if (props.href && typeof props.children !== "function")
+    return (
+      <CtaButtonLinkComponent
+        className={props.className}
+        href={props.href}
+        target={props.target}
+        size={props.size}
+        variant={props.variant}
+      >
+        {props.children}
+      </CtaButtonLinkComponent>
+    );
+  return <CreatedCtaButtonLinkComponent preload={"intent"} {...props} />;
+};
+
+interface ButtonLinkProps
   extends Pick<
       HTMLProps<HTMLAnchorElement>,
       "href" | "target" | "className" | "children"
@@ -86,27 +138,17 @@ interface CustomButtonLinkProps
 
 export const ButtonLinkComponent = forwardRef<
   HTMLAnchorElement,
-  CustomButtonLinkProps
+  ButtonLinkProps
 >(({ variant, className, size, children, ...props }, ref) => {
-  const anchorElement = (
+  return (
     <a
-      className={cn(
-        buttonVariants({ variant, size, className }),
-        variant?.includes("cta") && "w-full",
-      )}
+      className={cn(buttonVariants({ variant, size }), className)}
       ref={ref}
       {...props}
     >
       {children}
     </a>
   );
-
-  if (variant === "cta" || variant === "ctaSecondary")
-    return (
-      <div className="overflow-hidden rounded-lg relative">{anchorElement}</div>
-    );
-
-  return anchorElement;
 });
 const CreatedButtonLinkComponent = createLink(ButtonLinkComponent);
 

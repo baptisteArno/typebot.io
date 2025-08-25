@@ -1,7 +1,8 @@
-import { Button, HStack, Stack } from "@chakra-ui/react";
+import { HStack, Stack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import type { ThemeTemplate } from "@typebot.io/theme/schemas";
 import type { TypebotV6 } from "@typebot.io/typebot/schemas/typebot";
+import { Button } from "@typebot.io/ui/components/Button";
 import { useState } from "react";
 import { MyTemplates } from "./MyTemplates";
 import { TemplatesGallery } from "./TemplatesGallery";
@@ -33,17 +34,13 @@ export const ThemeTemplates = ({
     <Stack spacing={4}>
       <HStack>
         <Button
-          flex="1"
-          variant="outline"
-          colorScheme={selectedTab === "my-templates" ? "orange" : "gray"}
+          variant={selectedTab === "my-templates" ? "outline" : "ghost"}
           onClick={() => setSelectedTab("my-templates")}
         >
           {t("theme.sideMenu.template.myTemplates")}
         </Button>
         <Button
-          flex="1"
-          variant="outline"
-          colorScheme={selectedTab === "gallery" ? "orange" : "gray"}
+          variant={selectedTab === "gallery" ? "outline" : "ghost"}
           onClick={() => setSelectedTab("gallery")}
         >
           {t("theme.sideMenu.template.gallery")}

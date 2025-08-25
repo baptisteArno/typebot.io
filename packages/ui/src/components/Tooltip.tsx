@@ -55,6 +55,7 @@ const TriggerButton = ({
   <TooltipPrimitive.Trigger
     {...props}
     className={cn(buttonVariants({ variant, size }), className)}
+    data-disabled={props.disabled}
   >
     {children}
   </TooltipPrimitive.Trigger>

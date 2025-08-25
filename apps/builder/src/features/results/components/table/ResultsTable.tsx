@@ -4,7 +4,6 @@ import type { timeFilterValues } from "@/features/analytics/constants";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import {
   Box,
-  Button,
   HStack,
   Stack,
   Text,
@@ -25,6 +24,7 @@ import type {
 } from "@typebot.io/results/schemas/results";
 import type { ResultsTablePreferences } from "@typebot.io/typebot/schemas/typebot";
 import { colors } from "@typebot.io/ui/chakraTheme";
+import { Button } from "@typebot.io/ui/components/Button";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { HeaderIcon } from "../HeaderIcon";
 import { HeaderRow } from "./HeaderRow";
@@ -169,7 +169,11 @@ export const ResultsTable = ({
           </HStack>
         ),
         cell: ({ row }) => (
-          <Button size="sm" onClick={onLogOpenIndex(row.index)}>
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={onLogOpenIndex(row.index)}
+          >
             See logs
           </Button>
         ),

@@ -10,9 +10,9 @@ import { BillingSettingsLayout } from "@/features/billing/components/BillingSett
 import { CredentialsSettingsForm } from "@/features/credentials/components/CredentialsSettingsForm";
 import { MyAccountForm } from "@/features/user/components/MyAccountForm";
 import { UserPreferencesForm } from "@/features/user/components/UserPreferencesForm";
-import { toast } from "@/lib/toast";
-import { Avatar, Button, Flex, Stack, Text } from "@chakra-ui/react";
+import { Avatar, Flex, Stack, Text } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
+import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
 import type { ClientUser } from "@typebot.io/user/schemas";
 import { useState } from "react";
@@ -59,94 +59,83 @@ export const WorkspaceSettingsDialog = ({
           justifyContent="space-between"
         >
           <Stack spacing={8}>
-            <Stack>
+            <Stack px="2">
               <Text pl="4" color="gray.500" fontSize="sm">
                 {t("account")}
               </Text>
               <Button
-                variant={selectedTab === "my-account" ? "solid" : "ghost"}
+                variant={selectedTab === "my-account" ? "outline" : "ghost"}
                 onClick={() => setSelectedTab("my-account")}
-                leftIcon={
-                  <Avatar
-                    name={user.name ?? undefined}
-                    src={user.image ?? undefined}
-                    boxSize="15px"
-                  />
-                }
+                className="justify-start pl-4"
                 size="sm"
-                justifyContent="flex-start"
-                pl="4"
               >
+                <Avatar
+                  name={user.name ?? undefined}
+                  src={user.image ?? undefined}
+                  boxSize="15px"
+                />
                 {user.name ?? user.email}
               </Button>
               <Button
-                variant={selectedTab === "user-settings" ? "solid" : "ghost"}
+                variant={selectedTab === "user-settings" ? "outline" : "ghost"}
                 onClick={() => setSelectedTab("user-settings")}
-                leftIcon={<SettingsIcon />}
+                className="justify-start pl-4"
                 size="sm"
-                justifyContent="flex-start"
-                pl="4"
               >
+                <SettingsIcon />
                 {t("workspace.settings.modal.menu.preferences.label")}
               </Button>
               <Button
-                variant={selectedTab === "credentials" ? "solid" : "ghost"}
+                variant={selectedTab === "credentials" ? "outline" : "ghost"}
                 onClick={() => setSelectedTab("credentials")}
-                leftIcon={<WalletIcon />}
+                className="justify-start pl-4"
                 size="sm"
-                justifyContent="flex-start"
-                pl="4"
               >
+                <WalletIcon />
                 {t("credentials")}
               </Button>
             </Stack>
-            <Stack>
+            <Stack px="2">
               <Text pl="4" color="gray.500" fontSize="sm">
                 {t("workspace.settings.modal.menu.workspace.label")}
               </Text>
               {currentUserMode === "write" && (
                 <Button
                   variant={
-                    selectedTab === "workspace-settings" ? "solid" : "ghost"
+                    selectedTab === "workspace-settings" ? "outline" : "ghost"
                   }
                   onClick={() => setSelectedTab("workspace-settings")}
-                  leftIcon={
-                    <EmojiOrImageIcon
-                      icon={workspace.icon}
-                      defaultIcon={HardDriveIcon}
-                      size="sm"
-                    />
-                  }
+                  className="justify-start pl-4"
                   size="sm"
-                  justifyContent="flex-start"
-                  pl="4"
                 >
+                  <EmojiOrImageIcon
+                    icon={workspace.icon}
+                    size="sm"
+                    defaultIcon={HardDriveIcon}
+                  />
                   {t("workspace.settings.modal.menu.settings.label")}
                 </Button>
               )}
 
               {currentUserMode !== "guest" && (
                 <Button
-                  variant={selectedTab === "members" ? "solid" : "ghost"}
+                  variant={selectedTab === "members" ? "outline" : "ghost"}
                   onClick={() => setSelectedTab("members")}
-                  leftIcon={<UsersIcon />}
+                  className="justify-start pl-4"
                   size="sm"
-                  justifyContent="flex-start"
-                  pl="4"
                 >
+                  <UsersIcon />
                   {t("workspace.settings.modal.menu.members.label")}
                 </Button>
               )}
               {currentUserMode === "write" && (
                 <Button
-                  variant={selectedTab === "billing" ? "solid" : "ghost"}
+                  variant={selectedTab === "billing" ? "outline" : "ghost"}
                   onClick={() => setSelectedTab("billing")}
-                  leftIcon={<CreditCardIcon />}
+                  className="justify-start pl-4 overflow-auto"
                   size="sm"
-                  justifyContent="flex-start"
-                  pl="4"
-                  overflow="auto"
                 >
+                  <CreditCardIcon />
                   {t("workspace.settings.modal.menu.billingAndUsage.label")}
                 </Button>
               )}

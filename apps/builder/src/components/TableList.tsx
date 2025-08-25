@@ -1,14 +1,8 @@
-import { PlusIcon, TrashIcon } from "@/components/icons";
-import {
-  Box,
-  Button,
-  Fade,
-  Flex,
-  IconButton,
-  SlideFade,
-  Stack,
-} from "@chakra-ui/react";
+import { PlusIcon } from "@/components/icons";
+import { Box, Fade, Flex, SlideFade, Stack } from "@chakra-ui/react";
 import { createId } from "@paralleldrive/cuid2";
+import { Button } from "@typebot.io/ui/components/Button";
+import { TrashIcon } from "@typebot.io/ui/icons/TrashIcon";
 import React, { useEffect, useState } from "react";
 
 const defaultItem = {
@@ -116,13 +110,15 @@ export const TableList = <T extends object>({
               }}
               unmountOnExit
             >
-              <IconButton
-                icon={<TrashIcon />}
+              <Button
+                size="icon"
                 aria-label="Remove cell"
                 onClick={deleteItem(itemIndex)}
-                size="sm"
-                shadow="md"
-              />
+                variant="secondary"
+                className="shadow-md size-6"
+              >
+                <TrashIcon />
+              </Button>
             </Fade>
             {isOrdered && (
               <>
@@ -136,13 +132,15 @@ export const TableList = <T extends object>({
                     }}
                     unmountOnExit
                   >
-                    <IconButton
+                    <Button
+                      size="icon"
                       aria-label={addLabel}
-                      icon={<PlusIcon />}
-                      size="xs"
-                      shadow="md"
                       onClick={insertItem(itemIndex - 1)}
-                    />
+                      variant="secondary"
+                      className="shadow-md size-6"
+                    >
+                      <PlusIcon />
+                    </Button>
                   </SlideFade>
                 )}
                 <SlideFade
@@ -154,13 +152,15 @@ export const TableList = <T extends object>({
                   }}
                   unmountOnExit
                 >
-                  <IconButton
+                  <Button
+                    size="icon"
                     aria-label={addLabel}
-                    icon={<PlusIcon />}
-                    size="xs"
-                    shadow="md"
                     onClick={insertItem(itemIndex)}
-                  />
+                    variant="secondary"
+                    className="shadow-md size-6"
+                  >
+                    <PlusIcon />
+                  </Button>
                 </SlideFade>
               </>
             )}
@@ -168,7 +168,12 @@ export const TableList = <T extends object>({
         </Box>
       ))}
       {(!isOrdered || items.length === 0) && (
-        <Button leftIcon={<PlusIcon />} onClick={createItem} flexShrink={0}>
+        <Button
+          onClick={createItem}
+          className="flex-shrink-0"
+          variant="secondary"
+        >
+          <PlusIcon />
           {addLabel}
         </Button>
       )}

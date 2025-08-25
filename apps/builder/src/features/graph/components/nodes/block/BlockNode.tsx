@@ -254,7 +254,7 @@ export const BlockNode = ({
                   transition="border-color 0.2s"
                   textAlign="left"
                 >
-                  <BlockIcon type={block.type} mt=".25rem" />
+                  <BlockIcon type={block.type} className="mt-1" />
                   {typebot?.groups.at(indices.groupIndex)?.id && (
                     <BlockNodeContent
                       block={block}

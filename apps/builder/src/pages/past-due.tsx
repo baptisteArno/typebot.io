@@ -27,12 +27,7 @@ export default function Page() {
         <AlertIcon width="40px" />
         <Heading fontSize="2xl">Your workspace has unpaid invoice(s).</Heading>
         <Text>Head over to the billing portal to pay it.</Text>
-        {workspace?.id && (
-          <BillingPortalButton
-            workspaceId={workspace?.id}
-            colorScheme="orange"
-          />
-        )}
+        {workspace?.id && <BillingPortalButton workspaceId={workspace?.id} />}
       </VStack>
     </>
   );

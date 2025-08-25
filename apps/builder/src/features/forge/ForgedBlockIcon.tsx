@@ -15,12 +15,14 @@ export const ForgedBlockIcon = ({
     return (
       <blockDef.DarkLogo
         width="1rem"
+        className={props.className}
         style={{ marginTop: props.mt?.toString() }}
       />
     );
   return (
     <blockDef.LightLogo
       width="1rem"
+      className={props.className}
       style={{ marginTop: props.mt?.toString() }}
     />
   );

@@ -1,7 +1,8 @@
 import { AlertInfo } from "@/components/AlertInfo";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { Button, HStack } from "@chakra-ui/react";
+import { HStack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
+import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
 import { cx } from "@typebot.io/ui/lib/cva";
 import { ChangePlanForm } from "./ChangePlanForm";
@@ -45,7 +46,7 @@ export const ChangePlanDialog = ({
 
         <Dialog.Footer>
           <HStack>
-            <Button colorScheme="gray" onClick={onClose}>
+            <Button variant="secondary" onClick={onClose}>
               {t("cancel")}
             </Button>
           </HStack>

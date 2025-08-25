@@ -2,10 +2,15 @@ import type { FilePathUploadProps } from "@/features/upload/api/generateUploadUr
 import { compressFile } from "@/helpers/compressFile";
 import { trpc } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
-import { Button, type ButtonProps, chakra } from "@chakra-ui/react";
+import { chakra } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
+import {
+  type ButtonProps,
+  buttonVariants,
+} from "@typebot.io/ui/components/Button";
 import type { ChangeEvent } from "react";
 import { useId, useState } from "react";
+import { UploadIcon } from "../icons";
 
 type UploadButtonProps = {
   fileType: "image" | "audio";
@@ -17,7 +22,9 @@ export const UploadButton = ({
   fileType,
   filePathProps,
   onFileUploaded,
-  ...props
+  children,
+  variant,
+  size = "sm",
 }: UploadButtonProps) => {
   const id = useId();
   const [isUploading, setIsUploading] = useState(false);
@@ -77,16 +84,14 @@ export const UploadButton = ({
         onChange={handleInputChange}
         accept={fileType === "image" ? "image/avif, image/*" : "audio/*"}
       />
-      <Button
-        as="label"
-        size="sm"
+      <label
         htmlFor={`file-input-${id}`}
-        cursor="pointer"
-        isLoading={isUploading}
-        {...props}
+        className={buttonVariants({ variant, size })}
+        data-disabled={isUploading}
       >
-        {props.children}
-      </Button>
+        <UploadIcon />
+        {children}
+      </label>
     </>
   );
 };

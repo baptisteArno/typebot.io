@@ -1,14 +1,9 @@
-import { featherIconsBaseProps } from "@/components/icons";
-import { Icon, type IconProps, useColorModeValue } from "@chakra-ui/react";
+import { svgBaseClassName } from "@/components/icons";
+import { cn } from "@typebot.io/ui/lib/cn";
 
-export const WaitIcon = (props: IconProps) => (
-  <Icon
-    viewBox="0 0 24 24"
-    color={useColorModeValue("purple.500", "purple.300")}
-    {...featherIconsBaseProps}
-    {...props}
-  >
+export const WaitIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" className={cn(svgBaseClassName, className)}>
     <circle cx="12" cy="12" r="10"></circle>
     <polyline points="12 6 12 12 16 14"></polyline>
-  </Icon>
+  </svg>
 );

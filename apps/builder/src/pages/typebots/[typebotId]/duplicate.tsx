@@ -5,14 +5,9 @@ import { PlanTag } from "@/features/billing/components/PlanTag";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { trpc } from "@/lib/queryClient";
-import {
-  Button,
-  HStack,
-  Stack,
-  Text,
-  useColorModeValue,
-} from "@chakra-ui/react";
+import { HStack, Stack, Text, useColorModeValue } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
+import { Button } from "@typebot.io/ui/components/Button";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
@@ -71,10 +66,8 @@ const Page = () => {
           onSelect={updateSelectedWorkspaceId}
         />
         <Button
-          isDisabled={!selectedWorkspaceId}
+          disabled={!selectedWorkspaceId || status === "pending"}
           onClick={() => duplicateTypebot(selectedWorkspaceId as string)}
-          isLoading={status === "pending"}
-          colorScheme="orange"
           size="sm"
         >
           Duplicate

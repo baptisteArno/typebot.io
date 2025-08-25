@@ -4,7 +4,7 @@ import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { useOpenControls } from "@/hooks/useOpenControls";
-import { Button, HStack, Heading, Stack, Text } from "@chakra-ui/react";
+import { HStack, Heading, Stack, Text } from "@chakra-ui/react";
 import type { ButtonTheme } from "@typebot.io/js";
 import { Popover } from "@typebot.io/ui/components/Popover";
 
@@ -70,9 +70,9 @@ export const ButtonThemeSettings = ({ buttonTheme, onChange }: Props) => {
         <HStack justify="space-between">
           <Text>Custom icon</Text>
           <Popover.Root {...customIconPopoverControls}>
-            <Popover.Trigger>
-              <Button size="sm">Pick an image</Button>
-            </Popover.Trigger>
+            <Popover.TriggerButton size="sm" variant="secondary">
+              Pick an image
+            </Popover.TriggerButton>
             <Popover.Popup className="w-[500px]">
               {workspace?.id && typebot?.id && (
                 <ImageUploadContent

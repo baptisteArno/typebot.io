@@ -3,7 +3,6 @@ import { injectVariableInText } from "@/features/variables/helpers/injectVariabl
 import { focusInput } from "@/helpers/focusInput";
 import { useOpenControls } from "@/hooks/useOpenControls";
 import {
-  Button,
   FormControl,
   HStack,
   Input,
@@ -11,7 +10,9 @@ import {
 } from "@chakra-ui/react";
 import { env } from "@typebot.io/env";
 import { isDefined } from "@typebot.io/lib/utils";
+import { Button } from "@typebot.io/ui/components/Button";
 import { Popover } from "@typebot.io/ui/components/Popover";
+import { cn } from "@typebot.io/ui/lib/cn";
 import type { Variable } from "@typebot.io/variables/schemas";
 import { useEffect, useRef, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
@@ -170,21 +171,19 @@ export const AutocompleteInput = ({
               {filteredItems.map((item, idx) => {
                 return (
                   <Button
+                    variant="ghost"
                     ref={(el) => {
                       itemsRef.current[idx] = el;
                     }}
-                    minH="40px"
+                    className={cn(
+                      "min-h-[40px] flex items-center font-normal",
+                      keyboardFocusIndex === idx
+                        ? "bg-gray-3"
+                        : "bg-transparent",
+                    )}
                     key={idx}
                     onClick={handleItemClick(item)}
-                    fontSize="16px"
-                    fontWeight="normal"
-                    rounded="none"
-                    colorScheme="gray"
                     role="menuitem"
-                    variant="ghost"
-                    bg={keyboardFocusIndex === idx ? bg : "transparent"}
-                    justifyContent="flex-start"
-                    transition="none"
                   >
                     {item}
                   </Button>

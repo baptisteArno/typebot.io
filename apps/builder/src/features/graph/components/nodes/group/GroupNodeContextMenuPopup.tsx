@@ -1,7 +1,8 @@
-import { CopyIcon, TrashIcon } from "@/components/icons";
+import { CopyIcon } from "@/components/icons";
 import { isMac } from "@/helpers/isMac";
 import { useTranslate } from "@tolgee/react";
 import { ContextMenu } from "@typebot.io/ui/components/ContextMenu";
+import { TrashIcon } from "@typebot.io/ui/icons/TrashIcon";
 
 export const GroupNodeContextMenuPopup = () => {
   const { t } = useTranslate();

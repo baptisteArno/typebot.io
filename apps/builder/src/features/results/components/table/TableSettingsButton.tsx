@@ -5,8 +5,9 @@ import {
   MoreHorizontalIcon,
 } from "@/components/icons";
 import { useOpenControls } from "@/hooks/useOpenControls";
-import { Button, HStack, IconButton, Text } from "@chakra-ui/react";
+import { HStack, Text } from "@chakra-ui/react";
 import type { ResultHeaderCell } from "@typebot.io/results/schemas/results";
+import { Button } from "@typebot.io/ui/components/Button";
 import { Popover } from "@typebot.io/ui/components/Popover";
 import React, { useState } from "react";
 import { ColumnSettings } from "./ColumnSettings";
@@ -28,11 +29,14 @@ export const TableSettingsButton = (props: Props) => {
     <>
       <Popover.Root {...controls}>
         <Popover.Trigger>
-          <IconButton
-            size="sm"
+          <Button
+            variant="secondary"
+            size="icon"
             aria-label="Open table settings"
-            icon={<MoreHorizontalIcon />}
-          />
+            className="size-8"
+          >
+            <MoreHorizontalIcon />
+          </Button>
         </Popover.Trigger>
         <Popover.Popup className="w-[300px] p-0" side="bottom" align="end">
           <TableSettingsMenu
@@ -80,8 +84,7 @@ const TableSettingsMenu = ({
           <Button
             onClick={() => setSelectedMenu("columnSettings")}
             variant="ghost"
-            borderBottomRadius={0}
-            justifyContent="space-between"
+            className="rounded-b-none justify-between"
           >
             <HStack>
               <ListIcon />
@@ -93,8 +96,7 @@ const TableSettingsMenu = ({
           <Button
             onClick={onExportAllClick}
             variant="ghost"
-            borderTopRadius={0}
-            justifyContent="space-between"
+            className="rounded-t-none justify-between"
           >
             <HStack>
               <DownloadIcon />

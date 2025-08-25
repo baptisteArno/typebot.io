@@ -44,7 +44,6 @@ export const FlutterFlowDeployDialog = ({
                 />
                 <InputRightElement width="60px">
                   <CopyButton
-                    size="sm"
                     textToCopy={`${env.NEXT_PUBLIC_VIEWER_URL[0]}/${publicId}`}
                   />
                 </InputRightElement>

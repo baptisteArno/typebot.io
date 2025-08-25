@@ -1,8 +1,9 @@
 import { refreshSessionUser } from "@/features/auth/helpers/refreshSessionUser";
 import { trpc } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
-import { Button, Input, Text } from "@chakra-ui/react";
+import { Input, Text } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
+import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
 import { useRef, useState } from "react";
 
@@ -101,9 +102,9 @@ export const ChangeEmailDialog = ({ isOpen, onClose, userEmail }: Props) => {
             <Dialog.Footer>
               <Button
                 type="submit"
-                colorScheme="orange"
-                isDisabled={newEmail.length === 0}
-                isLoading={verificationCodeStatus === "sending"}
+                disabled={
+                  newEmail.length === 0 || verificationCodeStatus === "sending"
+                }
               >
                 Send verification code
               </Button>
@@ -127,9 +128,7 @@ export const ChangeEmailDialog = ({ isOpen, onClose, userEmail }: Props) => {
             <Dialog.Footer>
               <Button
                 type="submit"
-                colorScheme="orange"
-                isDisabled={verificationCode.length === 0}
-                isLoading={isUpdatingEmail}
+                disabled={verificationCode.length === 0 || isUpdatingEmail}
               >
                 Change email
               </Button>

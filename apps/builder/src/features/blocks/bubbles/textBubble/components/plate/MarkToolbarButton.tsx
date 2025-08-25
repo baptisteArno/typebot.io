@@ -1,4 +1,4 @@
-import { IconButton, type IconButtonProps } from "@chakra-ui/react";
+import { Button, type ButtonProps } from "@typebot.io/ui/components/Button";
 import {
   useMarkToolbarButton,
   useMarkToolbarButtonState,
@@ -8,19 +8,25 @@ import React from "react";
 type Props = {
   nodeType: string;
   clear?: string | string[];
-} & IconButtonProps;
+} & ButtonProps;
 
-export const MarkToolbarButton = ({ clear, nodeType, ...rest }: Props) => {
+export const MarkToolbarButton = ({
+  clear,
+  nodeType,
+  children,
+  ...rest
+}: Props) => {
   const state = useMarkToolbarButtonState({ clear, nodeType });
   const { props } = useMarkToolbarButton(state);
 
   return (
-    <IconButton
-      size="sm"
+    <Button
+      size="icon"
       variant={props.pressed ? "outline" : "ghost"}
-      colorScheme={props.pressed ? "blue" : undefined}
       {...props}
       {...rest}
-    />
+    >
+      {children}
+    </Button>
   );
 };

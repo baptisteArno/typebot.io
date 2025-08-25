@@ -1,9 +1,10 @@
+import { ButtonLink } from "@/components/ButtonLink";
 import { EmojiOrImageIcon } from "@/components/EmojiOrImageIcon";
-import { ExternalLinkIcon, ToolIcon } from "@/components/icons";
+import { ExternalLinkIcon } from "@/components/icons";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { useTypebots } from "@/features/dashboard/hooks/useTypebots";
-import { HStack, IconButton, Input } from "@chakra-ui/react";
-import Link from "next/link";
+import { HStack, Input } from "@chakra-ui/react";
+import { LayoutBottomIcon } from "@typebot.io/ui/icons/LayoutBottomIcon";
 import { useRouter } from "next/router";
 
 type Props = {
@@ -44,7 +45,7 @@ export const TypebotsDropdown = ({
                 <EmojiOrImageIcon
                   icon={typebot.icon}
                   size="sm"
-                  defaultIcon={ToolIcon}
+                  defaultIcon={LayoutBottomIcon}
                 />
               ),
               label: typebot.name,
@@ -55,10 +56,11 @@ export const TypebotsDropdown = ({
         placeholder={"Select a typebot"}
       />
       {typebotId && typebotId !== "current" && (
-        <IconButton
+        <ButtonLink
           aria-label="Navigate to typebot"
-          icon={<ExternalLinkIcon />}
-          as={Link}
+          variant="secondary"
+          className="flex-shrink-0"
+          size="icon"
           href={{
             pathname: "/typebots/[typebotId]/edit",
             query: {
@@ -70,7 +72,9 @@ export const TypebotsDropdown = ({
                 : (query.typebotId ?? []),
             },
           }}
-        />
+        >
+          <ExternalLinkIcon />
+        </ButtonLink>
       )}
     </HStack>
   );

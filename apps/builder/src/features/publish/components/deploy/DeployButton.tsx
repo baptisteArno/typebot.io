@@ -7,15 +7,9 @@ import { LockTag } from "@/features/billing/components/LockTag";
 import { hasProPerks } from "@/features/billing/helpers/hasProPerks";
 import { ScriptIcon } from "@/features/blocks/logic/script/components/ScriptIcon";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import {
-  Button,
-  Text,
-  VStack,
-  WrapItem,
-  useColorModeValue,
-  useDisclosure,
-} from "@chakra-ui/react";
+import { Text, VStack, useDisclosure } from "@chakra-ui/react";
 import type { Plan } from "@typebot.io/prisma/enum";
+import { Button } from "@typebot.io/ui/components/Button";
 import React from "react";
 import { ApiDeployDialog } from "./dialogs/ApiDeployDialog";
 import { BlinkDeployDialog } from "./dialogs/BlinkDeployDialog";
@@ -74,16 +68,12 @@ export const DeployButton = ({
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
-      <WrapItem
-        as={Button}
-        alignItems="center"
-        variant="outline"
-        style={{ width: "225px", height: "270px" }}
+      <Button
+        className="w-[225px] h-[270px] text-center whitespace-normal rounded-lg bg-gray-1"
+        variant="outline-secondary"
         onClick={onOpen}
-        whiteSpace={"normal"}
-        bg={useColorModeValue("white", "gray.900")}
-        borderWidth={1}
-        rounded="lg"
+        iconStyle="none"
+        size="lg"
       >
         <VStack>
           {logo}
@@ -97,7 +87,7 @@ export const DeployButton = ({
             )}
           </Text>
         </VStack>
-      </WrapItem>
+      </Button>
       {dialog({ isOpen, onClose, ...dialogProps })}
     </>
   );
@@ -247,13 +237,7 @@ export const integrationsList = [
   ),
   (props: Pick<DialogProps, "publicId" | "isPublished">) => (
     <DeployButton
-      logo={
-        <ScriptIcon
-          height={100}
-          width="70px"
-          color={useColorModeValue("gray.900", "gray.300")}
-        />
-      }
+      logo={<ScriptIcon className="w-[70px] h-[100px] text-gray-11" />}
       label="Script"
       dialog={(dialogProps) => (
         <ScriptDeployDialog {...dialogProps} {...props} />

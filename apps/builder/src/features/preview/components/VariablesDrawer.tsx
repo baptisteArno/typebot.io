@@ -1,9 +1,8 @@
-import { MoreHorizontalIcon, PlusIcon, TrashIcon } from "@/components/icons";
+import { MoreHorizontalIcon, PlusIcon } from "@/components/icons";
 import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
 import { useOpenControls } from "@/hooks/useOpenControls";
 import { toast } from "@/lib/toast";
 import {
-  CloseButton,
   Editable,
   EditableInput,
   EditablePreview,
@@ -11,7 +10,6 @@ import {
   Flex,
   HStack,
   Heading,
-  IconButton,
   Input,
   SlideFade,
   Stack,
@@ -24,7 +22,10 @@ import { LogicBlockType } from "@typebot.io/blocks-logic/constants";
 import { sessionOnlySetVariableOptions } from "@typebot.io/blocks-logic/setVariable/constants";
 import type { SetVariableBlock } from "@typebot.io/blocks-logic/setVariable/schema";
 import { isNotEmpty } from "@typebot.io/lib/utils";
+import { Button } from "@typebot.io/ui/components/Button";
 import { Popover } from "@typebot.io/ui/components/Popover";
+import { CloseIcon } from "@typebot.io/ui/icons/CloseIcon";
+import { TrashIcon } from "@typebot.io/ui/icons/TrashIcon";
 import type { Variable } from "@typebot.io/variables/schemas";
 import { useDrag } from "@use-gesture/react";
 import { type FormEvent, useState } from "react";
@@ -101,7 +102,14 @@ export const VariablesDrawer = ({ onClose }: Props) => {
       </Fade>
 
       <Stack w="full" spacing="4">
-        <CloseButton pos="absolute" right="1rem" top="1rem" onClick={onClose} />
+        <Button
+          className="absolute right-2 top-2"
+          onClick={onClose}
+          variant="secondary"
+          size="icon"
+        >
+          <CloseIcon />
+        </Button>
         <Heading fontSize="md">Variables</Heading>
         <HStack as="form" onSubmit={handleCreateSubmit}>
           <Input
@@ -120,13 +128,9 @@ export const VariablesDrawer = ({ onClose }: Props) => {
             offsetY={0}
             offsetX={10}
           >
-            <IconButton
-              icon={<PlusIcon />}
-              aria-label="Create"
-              type="submit"
-              colorScheme="orange"
-              flexShrink={0}
-            />
+            <Button aria-label="Create" type="submit" size="icon">
+              <PlusIcon />
+            </Button>
           </SlideFade>
         </HStack>
 
@@ -192,13 +196,14 @@ const VariableItem = ({
       <HStack>
         {!isSessionOnly && !isLinkedToAnswer && (
           <Popover.Root {...settingsPopoverControls}>
-            <Popover.Trigger>
-              <IconButton
-                icon={<MoreHorizontalIcon />}
-                aria-label={"Settings"}
-                size="sm"
-              />
-            </Popover.Trigger>
+            <Popover.TriggerButton
+              aria-label={"Settings"}
+              size="icon"
+              variant="secondary"
+              className="size-7"
+            >
+              <MoreHorizontalIcon />
+            </Popover.TriggerButton>
             <Popover.Popup>
               <SwitchWithLabel
                 label="Save in results"
@@ -214,12 +219,15 @@ const VariableItem = ({
             </Popover.Popup>
           </Popover.Root>
         )}
-        <IconButton
-          icon={<TrashIcon />}
-          onClick={onDelete}
+        <Button
           aria-label="Delete"
-          size="sm"
-        />
+          size="icon"
+          variant="secondary"
+          onClick={onDelete}
+          className="size-7"
+        >
+          <TrashIcon />
+        </Button>
       </HStack>
     </HStack>
   );

@@ -7,7 +7,7 @@ import {
   AccordionPanel,
 } from "@chakra-ui/react";
 import { z } from "@typebot.io/zod";
-import { CheckIcon } from "../icons/CheckIcon";
+import { CheckmarkSquareIcon } from "../icons/CheckmarkSquareIcon";
 import { CloseIcon } from "../icons/CloseIcon";
 import { InfoIcon } from "../icons/InfoIcon";
 import { TriangleAlertIcon } from "../icons/TriangleAlertIcon";
@@ -154,7 +154,7 @@ const ToastIcon = ({
     case "success":
       return (
         <div className="flex justify-center bg-green-5 p-1.5 rounded-full">
-          <CheckIcon
+          <CheckmarkSquareIcon
             {...props}
             className={cn("size-5 text-green-11", className)}
           />

@@ -1,6 +1,6 @@
 import { registerUrl } from "@/constants";
 import { cn } from "@typebot.io/ui/lib/cn";
-import { ButtonLink } from "../link";
+import { CtaButtonLink } from "../link";
 import magicWand from "./assets/magic-wand.png";
 
 export type CtaProps = {
@@ -35,9 +35,9 @@ export const Cta = ({
           children ? "items-center w-full" : undefined,
         )}
       >
-        <ButtonLink variant="cta" size="lg" href={registerUrl}>
+        <CtaButtonLink size="lg" href={registerUrl}>
           {buttonLabel}
-        </ButtonLink>
+        </CtaButtonLink>
         <p className="text-gray-11 text-center">
           No trial. Generous free plan.
         </p>

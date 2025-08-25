@@ -1,10 +1,10 @@
-import { TrashIcon } from "@/components/icons";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { useKeyboardShortcuts } from "@/hooks/useKeyboardShortcuts";
 import { useColorMode } from "@chakra-ui/react";
 import type { Edge as EdgeProps } from "@typebot.io/typebot/schemas/edge";
 import { colors } from "@typebot.io/ui/chakraTheme";
 import { ContextMenu } from "@typebot.io/ui/components/ContextMenu";
+import { TrashIcon } from "@typebot.io/ui/icons/TrashIcon";
 import type React from "react";
 import { useMemo, useState } from "react";
 import { useShallow } from "zustand/react/shallow";

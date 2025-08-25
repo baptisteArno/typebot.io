@@ -1,11 +1,10 @@
 import { EmojiOrImageIcon } from "@/components/EmojiOrImageIcon";
-import { ChevronLeftIcon, HardDriveIcon } from "@/components/icons";
+import { HardDriveIcon } from "@/components/icons";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { toast } from "@/lib/toast";
 import {
-  Button,
   Flex,
   HStack,
   Input,
@@ -17,8 +16,7 @@ import {
 } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { CollaborationType } from "@typebot.io/prisma/enum";
-import { Menu } from "@typebot.io/ui/components/Menu";
-import { Select } from "@typebot.io/ui/components/Select";
+import { Button } from "@typebot.io/ui/components/Button";
 import type { FormEvent } from "react";
 import React, { useState } from "react";
 import { useCollaborators } from "../hooks/useCollaborators";
@@ -182,11 +180,8 @@ export const CollaborationList = () => {
         )}
         <Button
           size="sm"
-          colorScheme="orange"
-          isLoading={isSendingInvitation}
-          flexShrink={0}
+          disabled={currentUserMode === "guest" || isSendingInvitation}
           type="submit"
-          isDisabled={currentUserMode === "guest"}
         >
           {t("share.button.popover.inviteButton.label")}
         </Button>

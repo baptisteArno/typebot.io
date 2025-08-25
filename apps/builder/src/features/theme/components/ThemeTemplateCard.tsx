@@ -1,4 +1,4 @@
-import { EditIcon, MoreHorizontalIcon, TrashIcon } from "@/components/icons";
+import { MoreHorizontalIcon } from "@/components/icons";
 import { queryClient, trpc } from "@/lib/queryClient";
 import {
   Box,
@@ -24,6 +24,8 @@ import type { Theme, ThemeTemplate } from "@typebot.io/theme/schemas";
 import type { TypebotV6 } from "@typebot.io/typebot/schemas/typebot";
 import { colors } from "@typebot.io/ui/chakraTheme";
 import { Menu } from "@typebot.io/ui/components/Menu";
+import { EditIcon } from "@typebot.io/ui/icons/EditIcon";
+import { TrashIcon } from "@typebot.io/ui/icons/TrashIcon";
 import { useState } from "react";
 import { DefaultAvatar } from "./DefaultAvatar";
 

@@ -1,12 +1,10 @@
 import { ConfirmDialog } from "@/components/ConfirmDialog";
-import { DownloadIcon, TrashIcon } from "@/components/icons";
+import { DownloadIcon } from "@/components/icons";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { trpc } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
 import {
-  Button,
   HStack,
-  IconButton,
   Text,
   useColorModeValue,
   useDisclosure,
@@ -16,6 +14,8 @@ import { useQueryClient } from "@tanstack/react-query";
 import { parseUniqueKey } from "@typebot.io/lib/parseUniqueKey";
 import { byId } from "@typebot.io/lib/utils";
 import { parseColumnsOrder } from "@typebot.io/results/parseColumnsOrder";
+import { Button } from "@typebot.io/ui/components/Button";
+import { TrashIcon } from "@typebot.io/ui/icons/TrashIcon";
 import { unparse } from "papaparse";
 import React, { useState } from "react";
 import { useResults } from "../../ResultsProvider";
@@ -133,39 +133,41 @@ export const SelectionToolbar = ({
   return (
     <HStack rounded="md" spacing={0}>
       <Button
+        variant="secondary"
         color={selectLabelColor}
-        borderRightWidth="1px"
-        borderRightRadius="none"
+        className="border-r rounded-r-none"
         onClick={onClearSelection}
         size="sm"
       >
         {totalSelected} selected
       </Button>
-      <IconButton
-        borderRightWidth="1px"
-        borderRightRadius="none"
-        borderLeftRadius="none"
+      <Button
+        variant="secondary"
+        className="border-r rounded-r-none rounded-l-none size-8"
         aria-label="Export"
-        icon={<DownloadIcon />}
         onClick={exportResultsToCSV}
-        isLoading={isExportLoading}
-        size="sm"
-      />
-
-      <IconButton
+        disabled={isExportLoading}
+        size="icon"
+      >
+        <DownloadIcon />
+      </Button>
+      <Button
+        variant="secondary"
         aria-label="Delete"
-        borderLeftRadius="none"
-        icon={<TrashIcon />}
+        className="rounded-l-none size-8"
         onClick={onOpen}
-        isLoading={isDeleteLoading}
-        size="sm"
-      />
+        disabled={isDeleteLoading}
+        size="icon"
+      >
+        <TrashIcon />
+      </Button>
 
       <ConfirmDialog
         isOpen={isOpen}
         onConfirm={deleteResults}
         onClose={onClose}
-        confirmButtonLabel={"Delete"}
+        actionType="destructive"
+        confirmButtonLabel="Delete"
       >
         <Text>
           You are about to delete{" "}

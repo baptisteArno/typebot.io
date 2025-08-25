@@ -1,14 +1,8 @@
-import {
-  HStack,
-  IconButton,
-  Input,
-  Text,
-  Wrap,
-  WrapItem,
-} from "@chakra-ui/react";
+import { HStack, Input, Text, Wrap, WrapItem } from "@chakra-ui/react";
 import { convertStrToList } from "@typebot.io/lib/convertStrToList";
 import { isEmpty, isNotEmpty } from "@typebot.io/lib/utils";
 import { colors } from "@typebot.io/ui/chakraTheme";
+import { Button } from "@typebot.io/ui/components/Button";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRef, useState } from "react";
 import { CloseIcon } from "./icons";
@@ -170,12 +164,14 @@ const Tag = ({
     <Text fontSize="sm" noOfLines={1}>
       {content}
     </Text>
-    <IconButton
-      size="xs"
-      icon={<CloseIcon />}
+    <Button
+      size="icon"
       aria-label="Remove tag"
       variant="ghost"
+      className="size-6"
       onClick={onDeleteClick}
-    />
+    >
+      <CloseIcon />
+    </Button>
   </HStack>
 );

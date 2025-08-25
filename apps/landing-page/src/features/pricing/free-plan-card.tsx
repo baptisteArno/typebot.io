@@ -1,4 +1,4 @@
-import { ButtonLink } from "@/components/link";
+import { CtaButtonLink } from "@/components/link";
 import { registerUrl } from "@/constants";
 import { chatsLimits } from "@typebot.io/billing/constants";
 import {
@@ -17,9 +17,9 @@ export const FreePlanCard = ({ children }: { children?: React.ReactNode }) => (
     </div>
 
     <PricingCardFooter>
-      <ButtonLink href={registerUrl} variant="ctaSecondary" size="lg">
+      <CtaButtonLink href={registerUrl} variant="secondary" size="lg">
         Get started
-      </ButtonLink>
+      </CtaButtonLink>
     </PricingCardFooter>
   </PricingCardRoot>
 );

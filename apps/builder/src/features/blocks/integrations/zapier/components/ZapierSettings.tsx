@@ -1,5 +1,6 @@
+import { ButtonLink } from "@/components/ButtonLink";
 import { ExternalLinkIcon } from "@/components/icons";
-import { Alert, AlertIcon, Button, Link, Stack, Text } from "@chakra-ui/react";
+import { Alert, AlertIcon, Stack, Text } from "@chakra-ui/react";
 import type {
   HttpRequest,
   HttpRequestBlock,
@@ -48,14 +49,12 @@ export const ZapierSettings = ({
           ) : (
             <Stack>
               <Text>Head up to Zapier to configure this block:</Text>
-              <Button
-                as={Link}
+              <ButtonLink
                 href="https://zapier.com/apps/typebot/integrations"
-                isExternal
-                colorScheme="orange"
+                target="_blank"
               >
-                <Text mr="2">Zapier</Text> <ExternalLinkIcon />
-              </Button>
+                Zapier <ExternalLinkIcon />
+              </ButtonLink>
             </Stack>
           )}
         </Alert>

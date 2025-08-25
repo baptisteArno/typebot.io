@@ -1,9 +1,6 @@
-import React, { type SVGProps } from "react";
-import { defaultLucideIconsProps } from "./constants";
+import { PlusSignIcon } from "@hugeicons-pro/core-stroke-rounded";
+import { Icon } from "../components/Icon";
 
-export const PlusIcon = (props: SVGProps<SVGSVGElement>) => (
-  <svg {...defaultLucideIconsProps} {...props}>
-    <path d="M5 12h14" />
-    <path d="M12 5v14" />
-  </svg>
+export const PlusIcon = ({ className }: { className?: string }) => (
+  <Icon icon={PlusSignIcon} className={className} />
 );

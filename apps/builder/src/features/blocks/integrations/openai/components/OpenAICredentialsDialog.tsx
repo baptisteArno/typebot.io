@@ -3,9 +3,10 @@ import { TextInput } from "@/components/inputs/TextInput";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { queryClient, trpc } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
-import { Alert, AlertIcon, Button } from "@chakra-ui/react";
+import { Alert, AlertIcon } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
 import type { Credentials } from "@typebot.io/credentials/schemas";
+import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
 import type React from "react";
 import { useState } from "react";
@@ -104,9 +105,7 @@ export const OpenAICredentialsDialog = ({
         <Dialog.Footer>
           <Button
             type="submit"
-            isLoading={isCreating}
-            isDisabled={apiKey === "" || name === ""}
-            colorScheme="orange"
+            disabled={apiKey === "" || name === "" || isCreating}
           >
             Create
           </Button>

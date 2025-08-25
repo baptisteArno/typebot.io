@@ -1,9 +1,6 @@
-import React, { type SVGProps } from "react";
-import { defaultLucideIconsProps } from "./constants";
+import { CancelIcon } from "@hugeicons-pro/core-stroke-rounded";
+import { Icon } from "../components/Icon";
 
-export const CloseIcon = (props: SVGProps<SVGSVGElement>) => (
-  <svg {...defaultLucideIconsProps} {...props}>
-    <path d="M18 6 6 18" />
-    <path d="m6 6 12 12" />
-  </svg>
+export const CloseIcon = ({ className }: { className?: string }) => (
+  <Icon icon={CancelIcon} className={className} />
 );

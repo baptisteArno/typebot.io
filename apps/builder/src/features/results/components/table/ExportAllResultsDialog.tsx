@@ -4,7 +4,7 @@ import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { trpc, trpcClient } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
-import { Button, Progress, Stack, Text } from "@chakra-ui/react";
+import { Progress, Stack, Text } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import { useQueryClient } from "@tanstack/react-query";
 import type { TRPCError } from "@trpc/server";
@@ -15,6 +15,7 @@ import { parseBlockIdVariableIdMap } from "@typebot.io/results/parseBlockIdVaria
 import { parseColumnsOrder } from "@typebot.io/results/parseColumnsOrder";
 import { parseResultHeader } from "@typebot.io/results/parseResultHeader";
 import type { Typebot } from "@typebot.io/typebot/schemas/typebot";
+import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
 import { unparse } from "papaparse";
 import { useState } from "react";
@@ -177,12 +178,11 @@ export const ExportAllResultsDialog = ({ isOpen, onClose }: Props) => {
             Cancel
           </Button>
           <Button
-            colorScheme="orange"
             onClick={exportAllResultsToCSV}
-            leftIcon={<DownloadIcon />}
             size="sm"
-            isLoading={isExportLoading}
+            disabled={isExportLoading}
           >
+            <DownloadIcon />
             Export
           </Button>
         </Dialog.Footer>

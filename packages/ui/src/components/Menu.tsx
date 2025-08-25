@@ -29,6 +29,7 @@ const TriggerButton = React.forwardRef<
     {...props}
     className={cn(buttonVariants({ variant, size }), className)}
     ref={ref}
+    data-disabled={props.disabled}
   >
     {children}
   </MenuPrimitive.Trigger>

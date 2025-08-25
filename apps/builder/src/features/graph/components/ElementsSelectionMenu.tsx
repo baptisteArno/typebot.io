@@ -1,4 +1,4 @@
-import { CopyIcon, TrashIcon } from "@/components/icons";
+import { CopyIcon } from "@/components/icons";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { useKeyboardShortcuts } from "@/hooks/useKeyboardShortcuts";
 import { toast } from "@/lib/toast";
@@ -8,6 +8,7 @@ import type { TDraggableEvent } from "@typebot.io/events/schemas";
 import type { GroupV6 } from "@typebot.io/groups/schemas";
 import type { Edge } from "@typebot.io/typebot/schemas/edge";
 import { Button } from "@typebot.io/ui/components/Button";
+import { TrashIcon } from "@typebot.io/ui/icons/TrashIcon";
 import {
   extractVariableIdReferencesInObject,
   extractVariableIdsFromObject,
