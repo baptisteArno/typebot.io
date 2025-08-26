@@ -49,14 +49,15 @@ export const runChatCompletionStream = async ({
   headers,
 }: Props) => {
   try {
+    const parsedMessages = await parseChatCompletionMessages({
+      messages,
+      variables,
+      isVisionEnabled,
+      shouldDownloadImages: false,
+    });
     const response = streamText({
       model,
-      messages: await parseChatCompletionMessages({
-        messages: messages,
-        isVisionEnabled,
-        shouldDownloadImages: false,
-        variables,
-      }),
+      messages: parsedMessages,
       temperature,
       tools: parseTools({ tools, variables, sessionStore }),
       maxSteps,

@@ -21,6 +21,7 @@ export const chatModels = [
 export const reasoningModels = ["o3-mini", "o1", "o1-mini"];
 
 export const modelsWithImageUrlSupport = [
+  "gpt-5*",
   "gpt-4-turbo*",
   "gpt-4o*",
   "gpt-4*vision-preview",

@@ -39,15 +39,16 @@ export const runChatCompletion = async ({
   headers,
 }: Props) => {
   try {
+    const parsedMessages = await parseChatCompletionMessages({
+      messages,
+      variables,
+      isVisionEnabled,
+      shouldDownloadImages: false,
+    });
     const response = await generateText({
       model,
       temperature,
-      messages: await parseChatCompletionMessages({
-        messages,
-        variables,
-        isVisionEnabled,
-        shouldDownloadImages: false,
-      }),
+      messages: parsedMessages,
       tools: parseTools({ tools, variables, sessionStore }),
       maxSteps,
       headers,
