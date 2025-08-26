@@ -15,7 +15,7 @@ export const Icon = forwardRef<SVGSVGElement, IconProps>(
         icon={icon}
         size={16}
         strokeWidth={1.5}
-        className={cn("inline-flex", className)}
+        className={cn("inline-flex flex-shrink-0", className)}
         {...props}
       />
     );
