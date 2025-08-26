@@ -9,7 +9,6 @@ import type {
   BubbleBlockContent,
 } from "@typebot.io/blocks-bubbles/schema";
 import type { TextBubbleBlock } from "@typebot.io/blocks-bubbles/text/schema";
-import { Menu } from "@typebot.io/ui/components/Menu";
 import { Popover } from "@typebot.io/ui/components/Popover";
 import { cx } from "@typebot.io/ui/lib/cva";
 
@@ -29,12 +28,6 @@ export const MediaBubblePopoverContent = (props: Props) => {
       )}
       side={props.side}
     >
-      <Menu.Root>
-        <Menu.Trigger>Connect Spreadsheets</Menu.Trigger>
-        <Menu.Popup>
-          <Menu.Item>Yo</Menu.Item>
-        </Menu.Popup>
-      </Menu.Root>
       <MediaBubbleContent {...props} />
     </Popover.Popup>
   );
