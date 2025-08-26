@@ -1,5 +1,6 @@
 import type { ChoiceInputBlock } from "@typebot.io/blocks-inputs/choice/schema";
-import { sortByContentLengthDesc } from "../../../helpers/choiceMatchers";
+import type { PictureChoiceBlock } from "@typebot.io/blocks-inputs/pictureChoice/schema";
+import { parseItemContent } from "../../../helpers/parseItemContent";
 import type { ParsedReply } from "../../../types";
 
 /**
@@ -8,10 +9,14 @@ import type { ParsedReply } from "../../../types";
  */
 export const parseMultipleChoiceReply = (
   reply: string,
-  { items }: { items: ChoiceInputBlock["items"] },
+  { items }: { items: ChoiceInputBlock["items"] | PictureChoiceBlock["items"] },
 ): ParsedReply => {
   let remainingInput = reply;
-  const remainingItems = sortByContentLengthDesc(items);
+  const remainingItems = [...items].sort((a, b) => {
+    const aContent = parseItemContent(a);
+    const bContent = parseItemContent(b);
+    return (bContent?.length ?? 0) - (aContent?.length ?? 0);
+  });
   // We match the IDs first and then filter through the items to have an order independent result
   const matchedItemIds: string[] = [];
 
@@ -36,8 +41,9 @@ export const parseMultipleChoiceReply = (
   for (const item of remainingItems.filter(
     (item) => !matchedItemIds.includes(item.id),
   )) {
-    if (item.content && includesWholePhrase(remainingInput, item.content)) {
-      remainingInput = remainingInput.replace(item.content, "").trim();
+    const content = parseItemContent(item);
+    if (content && includesWholePhrase(remainingInput, content)) {
+      remainingInput = remainingInput.replace(content, "").trim();
       matchedItemIds.push(item.id);
       remainingItems.splice(remainingItems.indexOf(item), 1);
     }
@@ -61,7 +67,7 @@ export const parseMultipleChoiceReply = (
     status: "success",
     content: items
       .filter((item) => matchedItemIds.includes(item.id))
-      .map((item) => (item.value ?? item.content)?.trim())
+      .map((item) => item.value ?? parseItemContent(item)?.trim())
       .join(", "),
   };
 };

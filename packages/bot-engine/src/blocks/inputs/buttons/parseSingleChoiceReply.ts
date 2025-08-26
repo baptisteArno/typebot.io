@@ -1,26 +1,35 @@
 import type { ChoiceInputBlock } from "@typebot.io/blocks-inputs/choice/schema";
-import {
-  getItemContent,
-  sortByContentLengthDesc,
-} from "../../../helpers/choiceMatchers";
+import type { PictureChoiceBlock } from "@typebot.io/blocks-inputs/pictureChoice/schema";
+import { parseItemContent } from "../../../helpers/parseItemContent";
 import type { ParsedReply } from "../../../types";
 
 export const parseSingleChoiceReply = (
-  displayedItems: ChoiceInputBlock["items"],
   inputValue: string,
+  {
+    items,
+  }: {
+    items: ChoiceInputBlock["items"] | PictureChoiceBlock["items"];
+  },
 ): ParsedReply => {
-  const matchedItem = sortByContentLengthDesc(displayedItems).find(
-    (item) =>
-      item.id === inputValue ||
-      (item.value && inputValue.trim() === item.value.trim()) ||
-      (item.content && inputValue.trim() === item.content.trim()),
-  );
+  const matchedItem = [...items]
+    .sort((a, b) => {
+      const aContent = parseItemContent(a);
+      const bContent = parseItemContent(b);
+      return (bContent?.length ?? 0) - (aContent?.length ?? 0);
+    })
+    .find((item) => {
+      if (item.id === inputValue) return true;
+      if (item.value && inputValue.trim() === item.value.trim()) return true;
+      const itemContent = parseItemContent(item);
+      if (itemContent && inputValue.trim() === itemContent.trim()) return true;
+      return false;
+    });
 
   if (!matchedItem) return { status: "fail" };
 
   return {
     status: "success",
-    content: getItemContent(matchedItem, ["value", "content"]),
+    content: matchedItem.value ?? parseItemContent(matchedItem) ?? "",
     outgoingEdgeId: matchedItem.outgoingEdgeId,
   };
 };

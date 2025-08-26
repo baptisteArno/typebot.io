@@ -50,7 +50,7 @@ import { parseDateReply } from "./blocks/inputs/date/parseDateReply";
 import { formatEmail } from "./blocks/inputs/email/formatEmail";
 import { parseNumber } from "./blocks/inputs/number/parseNumber";
 import { formatPhoneNumber } from "./blocks/inputs/phone/formatPhoneNumber";
-import { parsePictureChoicesReply } from "./blocks/inputs/pictureChoice/parsePictureChoicesReply";
+import { injectVariableValuesInPictureChoiceBlock } from "./blocks/inputs/pictureChoice/injectVariableValuesInPictureChoiceBlock";
 import { validateRatingReply } from "./blocks/inputs/rating/validateRatingReply";
 import { parseTime } from "./blocks/inputs/time/parseTime";
 import { saveDataInResponseVariableMapping } from "./blocks/integrations/httpRequest/saveDataInResponseVariableMapping";
@@ -850,7 +850,7 @@ const parseReply = async (
       }).items;
       if (block.options?.isMultipleChoice)
         return parseMultipleChoiceReply(reply.text, { items: displayedItems });
-      return parseSingleChoiceReply(displayedItems, reply.text);
+      return parseSingleChoiceReply(reply.text, { items: displayedItems });
     }
     case InputBlockType.NUMBER: {
       if (!reply || reply.type !== "text") return { status: "fail" };
@@ -915,11 +915,13 @@ const parseReply = async (
     }
     case InputBlockType.PICTURE_CHOICE: {
       if (!reply || reply.type !== "text") return { status: "fail" };
-      return parsePictureChoicesReply(reply.text, {
-        block,
-        state,
+      const displayedItems = injectVariableValuesInPictureChoiceBlock(block, {
+        variables: state.typebotsQueue[0].typebot.variables,
         sessionStore,
-      });
+      }).items;
+      if (block.options?.isMultipleChoice)
+        return parseMultipleChoiceReply(reply.text, { items: displayedItems });
+      return parseSingleChoiceReply(reply.text, { items: displayedItems });
     }
     case InputBlockType.TEXT: {
       if (!reply) return { status: "fail" };

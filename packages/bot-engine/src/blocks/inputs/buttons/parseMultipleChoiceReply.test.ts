@@ -1,4 +1,5 @@
 import type { ChoiceInputBlock } from "@typebot.io/blocks-inputs/choice/schema";
+import type { PictureChoiceBlock } from "@typebot.io/blocks-inputs/pictureChoice/schema";
 import { describe, expect, it } from "vitest";
 import { parseMultipleChoiceReply } from "./parseMultipleChoiceReply";
 
@@ -8,6 +9,15 @@ const createMockItem = (
 ): ChoiceInputBlock["items"][number] => ({
   id,
   content,
+  outgoingEdgeId: "edge1",
+});
+
+const createMockPictureItem = (
+  id: string,
+  title: string,
+): PictureChoiceBlock["items"][number] => ({
+  id,
+  title,
   outgoingEdgeId: "edge1",
 });
 
@@ -41,6 +51,20 @@ describe("parseMultipleChoiceReply", () => {
       ],
     });
     expect(result).toEqual({ status: "success", content: "item, second item" });
+  });
+
+  it("should work with number titles", () => {
+    const result = parseMultipleChoiceReply("4, 2, 1", {
+      items: [
+        createMockPictureItem("id1", "6"),
+        createMockPictureItem("id2", "5"),
+        createMockPictureItem("id3", "4"),
+        createMockPictureItem("id4", "3"),
+        createMockPictureItem("id5", "2"),
+        createMockPictureItem("id6", "1"),
+      ],
+    });
+    expect(result).toEqual({ status: "success", content: "4, 2, 1" });
   });
 
   it("should work when the choices are overlapping", () => {
