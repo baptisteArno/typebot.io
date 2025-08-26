@@ -77,7 +77,7 @@ export const SettingsPopoverContent = (props: Props) => {
       ref={ref}
       onMouseDown={handleMouseDown}
       className={cn(
-        "p-4 min-w-[300px]",
+        "p-4 min-w-[400px]",
         props.isExpanded
           ? "w-[calc(var(--available-width)-42px)]"
           : "max-w-[400px]",
@@ -97,8 +97,8 @@ export const SettingsPopoverContent = (props: Props) => {
             <Flex
               w="full"
               pos="absolute"
-              top="-56px"
-              height="64px"
+              top="-50px"
+              height="50px"
               right={0}
               justifyContent="flex-end"
               align="center"

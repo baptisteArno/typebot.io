@@ -11,6 +11,7 @@ export type ButtonLinkProps = {
   children: React.ReactNode;
   variant?: ButtonProps["variant"];
   size?: ButtonProps["size"];
+  iconStyle?: ButtonProps["iconStyle"];
   disabled?: boolean;
   className?: string;
   onMouseEnter?: () => void;
@@ -25,6 +26,7 @@ export const ButtonLink = ({
   size,
   disabled,
   className,
+  iconStyle,
   onMouseEnter,
   onMouseLeave,
 }: ButtonLinkProps) => {
@@ -33,7 +35,7 @@ export const ButtonLink = ({
     <Link
       href={href}
       target={target}
-      className={cn(buttonVariants({ variant, size }), className)}
+      className={cn(buttonVariants({ variant, size, iconStyle }), className)}
       data-disabled={disabled}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}

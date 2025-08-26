@@ -42,7 +42,7 @@ export const SettingsHoverBar = ({
       shadow="md"
     >
       <Button
-        className="size-8 [&_svg]:size-4 border-r border-l-0 rounded-r-none"
+        className="size-6 border-r border-l-0 rounded-r-none [&_svg]:size-3"
         aria-label={"Duplicate group"}
         onClick={onExpandClick}
         size="icon"
@@ -53,13 +53,14 @@ export const SettingsHoverBar = ({
       {helpDocUrl && (
         <ButtonLink
           className={cn(
-            "rounded-l-none",
+            "rounded-l-none h-6",
             isVideoOnboardingItemDisplayed && "rounded-r-none",
           )}
-          size="sm"
+          size="xs"
           variant="ghost"
           href={helpDocUrl}
           target="_blank"
+          iconStyle="none"
         >
           <BuoyIcon />
           {t("help")}
@@ -70,7 +71,7 @@ export const SettingsHoverBar = ({
           aria-label={"Open Bubbles help video"}
           variant="ghost"
           onClick={onVideoOnboardingClick}
-          className="rounded-l-none size-8 [&_svg]:size-4"
+          className="rounded-l-none size-6 [&_svg]:size-3"
           size="icon"
         >
           <VideoPopoverIcon />
