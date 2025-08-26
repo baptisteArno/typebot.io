@@ -369,7 +369,7 @@ export const webhookHandler = async (
           return res.send({ message: "workspace downgraded in DB" });
         }
         default: {
-          return res.status(304).send({ message: "event not handled" });
+          return res.status(204).send({ message: "Event not handled" });
         }
       }
     } catch (err) {
