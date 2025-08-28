@@ -24,6 +24,7 @@ import type {
 import { env } from "@typebot.io/env";
 import { isDefined, isNotEmpty, omit } from "@typebot.io/lib/utils";
 import type { Prisma } from "@typebot.io/prisma/types";
+import { resultSchema } from "@typebot.io/results/schemas/results";
 import type { SessionStore } from "@typebot.io/runtime-session-store";
 import {
   defaultSettings,
@@ -36,20 +37,18 @@ import {
 } from "@typebot.io/theme/constants";
 import type { Theme } from "@typebot.io/theme/schemas";
 import { deepParseVariables } from "@typebot.io/variables/deepParseVariables";
-import { injectVariablesFromExistingResult } from "@typebot.io/variables/injectVariablesFromExistingResult";
+import { injectVariableValues } from "@typebot.io/variables/injectVariableValues";
 import {
   getVariablesToParseInfoInText,
   parseVariables,
 } from "@typebot.io/variables/parseVariables";
-import { prefillVariables } from "@typebot.io/variables/prefillVariables";
-import {
-  type SetVariableHistoryItem,
-  type Variable,
-  type VariableWithValue,
-  variableWithValueSchema,
+import type {
+  SetVariableHistoryItem,
+  Variable,
 } from "@typebot.io/variables/schemas";
-import { z } from "@typebot.io/zod";
+import { transformPrefilledVariablesToVariables } from "@typebot.io/variables/transformPrefilledVariablesToVariables";
 import { NodeType, parse } from "node-html-parser";
+import { getFirstEdgeId } from "./getFirstEdgeId";
 import { isTypebotInSessionAtLeastV6 } from "./helpers/isTypebotInSessionAtLeastV6";
 import { parseVariablesInRichText } from "./parseBubbleBlock";
 import { parseDynamicTheme } from "./parseDynamicTheme";
@@ -57,6 +56,7 @@ import { findPublicTypebot } from "./queries/findPublicTypebot";
 import { findResult } from "./queries/findResult";
 import { findTypebot } from "./queries/findTypebot";
 import { startBotFlow } from "./startBotFlow";
+import { updateVariablesInSession } from "./updateVariablesInSession";
 
 type StartParams =
   | ({
@@ -90,15 +90,9 @@ export const startSession = async ({
   const typebot = await getTypebot(startParams);
   Sentry.setUser({ id: typebot.id });
 
-  const prefilledVariables = startParams.prefilledVariables
-    ? prefillVariables(typebot.variables, startParams.prefilledVariables)
-    : typebot.variables;
-
-  const result = await getResult({
+  const result = await getOrInitResult({
     resultId: startParams.type === "live" ? startParams.resultId : undefined,
     isPreview: startParams.type === "preview",
-    typebotId: typebot.id,
-    prefilledVariables,
     isRememberUserEnabled:
       typebot.settings.general?.rememberUser?.isEnabled ??
       (isDefined(typebot.settings.general?.isNewResultOnRefreshEnabled)
@@ -106,17 +100,19 @@ export const startSession = async ({
         : defaultSettings.general.rememberUser.isEnabled),
   });
 
-  const startVariables =
-    result && result.variables.length > 0
-      ? injectVariablesFromExistingResult(prefilledVariables, result.variables)
-      : prefilledVariables;
+  const startVariables = result
+    ? injectVariableValues({
+        variables: typebot.variables,
+        variablesWithValue: result.variables,
+      })
+    : typebot.variables;
 
   const typebotInSession = convertStartTypebotToTypebotInSession(
     typebot,
     startVariables,
   );
 
-  const initialState: SessionState = {
+  let initialState: SessionState = {
     version: "3",
     workspaceId: typebot.workspaceId,
     publicTypebotId: typebot.publicTypebotId,
@@ -171,6 +167,25 @@ export const startSession = async ({
     ...initialSessionState,
   };
 
+  const setVariableHistory: SetVariableHistoryItem[] = [];
+
+  if (startParams.prefilledVariables) {
+    const firstBlockId = getFirstBlockId(typebotInSession);
+
+    const { updatedState, newSetVariableHistory } = updateVariablesInSession({
+      state: initialState,
+      newVariables: transformPrefilledVariablesToVariables(
+        startParams.prefilledVariables,
+        {
+          existingVariables: typebotInSession.variables,
+        },
+      ),
+      currentBlockId: firstBlockId,
+    });
+    initialState = updatedState;
+    setVariableHistory.push(...newSetVariableHistory);
+  }
+
   if (startParams.isOnlyRegistering) {
     return {
       newSessionState: initialState,
@@ -189,7 +204,7 @@ export const startSession = async ({
       dynamicTheme: parseDynamicTheme({ state: initialState, sessionStore }),
       messages: [],
       visitedEdges: [],
-      setVariableHistory: [],
+      setVariableHistory,
     };
   }
 
@@ -200,7 +215,7 @@ export const startSession = async ({
     newSessionState,
     logs,
     visitedEdges,
-    setVariableHistory,
+    setVariableHistory: newSetVariableHistory,
   } = await startBotFlow({
     version,
     sessionStore,
@@ -209,6 +224,7 @@ export const startSession = async ({
     startFrom: startParams.startFrom,
     textBubbleContentFormat: startParams.textBubbleContentFormat,
   });
+  setVariableHistory.push(...newSetVariableHistory);
 
   const clientSideActions = startFlowClientActions ?? [];
 
@@ -356,16 +372,13 @@ const getTypebot = async (startParams: StartParams) => {
   return startTypebotSchema.parse(parsedTypebot);
 };
 
-const getResult = async ({
+const getOrInitResult = async ({
   isPreview,
   resultId,
-  prefilledVariables,
   isRememberUserEnabled,
 }: {
   resultId: string | undefined;
   isPreview: boolean;
-  typebotId: string;
-  prefilledVariables: Variable[];
   isRememberUserEnabled: boolean;
 }) => {
   if (isPreview) return;
@@ -374,30 +387,11 @@ const getResult = async ({
       ? await findResult({ id: resultId })
       : undefined;
 
-  const prefilledVariableWithValue = prefilledVariables.filter(
-    (prefilledVariable) => isDefined(prefilledVariable.value),
-  );
-
-  const existingVariables = z
-    .array(variableWithValueSchema)
-    .or(z.undefined())
-    .parse(existingResult?.variables);
-
-  const updatedResult = {
-    variables: prefilledVariableWithValue.concat(
-      existingVariables?.filter(
-        (resultVariable) =>
-          isDefined(resultVariable.value) &&
-          !prefilledVariableWithValue.some(
-            (prefilledVariable) =>
-              prefilledVariable.name === resultVariable.name,
-          ),
-      ) ?? [],
-    ) as VariableWithValue[],
-  };
   return {
     id: existingResult?.id ?? createId(),
-    variables: updatedResult.variables,
+    variables: existingResult?.variables
+      ? resultSchema.shape.variables.parse(existingResult.variables)
+      : undefined,
     answers: existingResult?.answers ?? [],
   };
 };
@@ -606,4 +600,19 @@ const extractVariableIdsUsedForTranscript = (
     });
   });
   return [...variableIds];
+};
+
+const getFirstBlockId = (typebot: TypebotInSession) => {
+  const firstEdgeId = getFirstEdgeId({
+    typebot,
+    startEventId: undefined,
+  });
+  const edge = typebot.edges.find((edge) => edge.id === firstEdgeId);
+  if (!edge) throw new Error("Edge not found");
+  const firstBlockId =
+    edge.to.blockId ??
+    typebot.groups.find((group) => group.id === edge.to.groupId)?.blocks.at(0)
+      ?.id;
+  if (!firstBlockId) throw new Error("First block not found");
+  return firstBlockId;
 };
