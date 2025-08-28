@@ -134,7 +134,16 @@ export const ForgedOAuthCredentialsCreateDialogBody = ({
 
   if (!blockDef.auth) return null;
   return (
-    <Dialog.Popup render={<form onSubmit={openOAuthPopup} />}>
+    <Dialog.Popup
+      render={
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            openOAuthPopup();
+          }}
+        />
+      }
+    >
       <TextInput
         label="Label"
         moreInfoTooltip={`Choose a name to identify this ${blockDef.auth.name}`}
