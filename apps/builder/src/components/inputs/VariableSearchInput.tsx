@@ -262,7 +262,7 @@ export const VariableSearchInput = ({
                     onClick={handleVariableNameClick(item)}
                     variant="ghost"
                   >
-                    <Text noOfLines={0} display="block" pr="2">
+                    <Text noOfLines={0} display="block" pr="2" fontSize="md">
                       {item.name}
                     </Text>
 
