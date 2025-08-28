@@ -27,9 +27,12 @@ export const parseSingleChoiceReply = (
 
   if (!matchedItem) return { status: "fail" };
 
+  const content = matchedItem.value || parseItemContent(matchedItem);
+  if (!content) return { status: "fail" };
+
   return {
     status: "success",
-    content: matchedItem.value ?? parseItemContent(matchedItem) ?? "",
+    content: matchedItem.value ?? parseItemContent(matchedItem),
     outgoingEdgeId: matchedItem.outgoingEdgeId,
   };
 };

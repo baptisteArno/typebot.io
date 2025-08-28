@@ -92,11 +92,12 @@ export const parseCardsReply = (
       newSetVariableHistory = updatedSetVariableHistory;
   }
 
+  const content = matchedItem.title || matchedItem.imageUrl;
+  if (!content) return { status: "fail" };
+
   return {
     status: "success",
-    content: isNotEmpty(matchedItem.title)
-      ? matchedItem.title
-      : (matchedItem.imageUrl ?? ""),
+    content,
     outgoingEdgeId: matchedPath?.outgoingEdgeId,
     newSessionState,
     newSetVariableHistory,

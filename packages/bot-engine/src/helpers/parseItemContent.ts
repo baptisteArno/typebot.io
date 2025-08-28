@@ -7,5 +7,5 @@ export const parseItemContent = (
   // Buttons
   if ("content" in item) return item.content;
   // Picture choice
-  if ("title" in item) return item.title ?? item.pictureSrc;
+  if ("title" in item) return item.title || item.pictureSrc;
 };

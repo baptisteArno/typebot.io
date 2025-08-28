@@ -16,7 +16,7 @@ export const parseTime = (
     status: "success",
     content: format(
       parsedDate,
-      options?.format ?? defaultTimeInputOptions.format,
+      options?.format || defaultTimeInputOptions.format,
     ),
   };
 };

@@ -14,13 +14,13 @@ export const parseDateReply = (
   block: DateInputBlock,
 ): ParsedReply => {
   const parsedDate = (
-    block.options?.format ?? defaultDateInputOptions.format
+    block.options?.format || defaultDateInputOptions.format
   ).startsWith("dd")
     ? chronoParser.GB.parse(reply)
     : chronoParser.parse(reply);
   if (parsedDate.length === 0) return { status: "fail" };
   const formatString =
-    block.options?.format ??
+    block.options?.format ||
     (block.options?.hasTime
       ? defaultDateInputOptions.formatWithTime
       : defaultDateInputOptions.format);

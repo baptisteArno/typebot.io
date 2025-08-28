@@ -2,4 +2,4 @@ import { defaultRatingInputOptions } from "@typebot.io/blocks-inputs/rating/cons
 import type { RatingInputBlock } from "@typebot.io/blocks-inputs/rating/schema";
 
 export const validateRatingReply = (reply: string, block: RatingInputBlock) =>
-  Number(reply) <= (block.options?.length ?? defaultRatingInputOptions.length);
+  Number(reply) <= (block.options?.length || defaultRatingInputOptions.length);

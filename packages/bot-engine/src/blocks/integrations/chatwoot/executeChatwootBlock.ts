@@ -15,7 +15,7 @@ const parseSetUserCode = (
 ) =>
   user?.email || user?.id
     ? `
-window.$chatwoot.setUser(${user?.id ?? user.email ?? `"${resultId}"`}, {
+window.$chatwoot.setUser(${user?.id || user.email || `"${resultId}"`}, {
   email: ${user?.email ? user.email : "undefined"},
   name: ${user?.name ? user.name : "undefined"},
   avatar_url: ${user?.avatarUrl ? user.avatarUrl : "undefined"},

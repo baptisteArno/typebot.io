@@ -46,7 +46,7 @@ const createStripePaymentIntent = async (
       : stripeKeys.live.secretKey,
     { apiVersion: "2024-09-30.acacia" },
   );
-  const currency = options?.currency ?? defaultPaymentInputOptions.currency;
+  const currency = options?.currency || defaultPaymentInputOptions.currency;
   const amount = Math.round(
     Number(parseVariables(options.amount, { variables, sessionStore })) *
       (isZeroDecimalCurrency(currency) ? 1 : 100),
