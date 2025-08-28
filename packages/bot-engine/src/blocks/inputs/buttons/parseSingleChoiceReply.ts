@@ -32,7 +32,7 @@ export const parseSingleChoiceReply = (
 
   return {
     status: "success",
-    content: matchedItem.value ?? parseItemContent(matchedItem),
+    content,
     outgoingEdgeId: matchedItem.outgoingEdgeId,
   };
 };
