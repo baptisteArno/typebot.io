@@ -35,6 +35,7 @@ const textMessageSchema = z
   .object({
     type: z.literal("text"),
     text: z.string(),
+    metadata: z.object({ replyId: z.string().optional() }).optional(),
     attachedFileUrls: z
       .array(z.string())
       .optional()

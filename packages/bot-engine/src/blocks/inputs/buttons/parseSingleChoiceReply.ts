@@ -7,8 +7,10 @@ export const parseSingleChoiceReply = (
   inputValue: string,
   {
     items,
+    replyId,
   }: {
     items: ChoiceInputBlock["items"] | PictureChoiceBlock["items"];
+    replyId: string | undefined;
   },
 ): ParsedReply => {
   const matchedItem = [...items]
@@ -18,6 +20,7 @@ export const parseSingleChoiceReply = (
       return (bContent?.length ?? 0) - (aContent?.length ?? 0);
     })
     .find((item) => {
+      if (replyId && item.id === replyId) return true;
       if (item.id === inputValue) return true;
       if (item.value && inputValue.trim() === item.value.trim()) return true;
       const itemContent = parseItemContent(item);

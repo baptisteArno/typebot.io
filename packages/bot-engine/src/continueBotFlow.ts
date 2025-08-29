@@ -850,7 +850,10 @@ const parseReply = async (
       }).items;
       if (block.options?.isMultipleChoice)
         return parseMultipleChoiceReply(reply.text, { items: displayedItems });
-      return parseSingleChoiceReply(reply.text, { items: displayedItems });
+      return parseSingleChoiceReply(reply.text, {
+        replyId: reply.metadata?.replyId,
+        items: displayedItems,
+      });
     }
     case InputBlockType.NUMBER: {
       if (!reply || reply.type !== "text") return { status: "fail" };
@@ -921,7 +924,10 @@ const parseReply = async (
       }).items;
       if (block.options?.isMultipleChoice)
         return parseMultipleChoiceReply(reply.text, { items: displayedItems });
-      return parseSingleChoiceReply(reply.text, { items: displayedItems });
+      return parseSingleChoiceReply(reply.text, {
+        items: displayedItems,
+        replyId: reply.metadata?.replyId,
+      });
     }
     case InputBlockType.TEXT: {
       if (!reply) return { status: "fail" };

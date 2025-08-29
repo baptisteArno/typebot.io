@@ -181,6 +181,7 @@ const convertWhatsAppMessageToTypebotMessage = async ({
   block?: Block;
 }): Promise<Message | undefined> => {
   let text = "";
+  let replyId: string | undefined;
   const attachedFileUrls: string[] = [];
   for (const message of messages) {
     switch (message.type) {
@@ -196,15 +197,20 @@ const convertWhatsAppMessageToTypebotMessage = async ({
       }
       case "interactive": {
         switch (message.interactive.type) {
-          case "button_reply":
+          case "button_reply": {
+            replyId = message.interactive.button_reply.id;
             if (text !== "")
-              text += `\n\n${message.interactive.button_reply.id}`;
-            else text = message.interactive.button_reply.id;
+              text += `\n\n${message.interactive.button_reply.title}`;
+            else text = message.interactive.button_reply.title;
             break;
-          case "list_reply":
-            if (text !== "") text += `\n\n${message.interactive.list_reply.id}`;
-            else text = message.interactive.list_reply.id;
+          }
+          case "list_reply": {
+            replyId = message.interactive.list_reply.id;
+            if (text !== "")
+              text += `\n\n${message.interactive.list_reply.title}`;
+            else text = message.interactive.list_reply.title;
             break;
+          }
         }
         break;
       }
@@ -312,6 +318,7 @@ const convertWhatsAppMessageToTypebotMessage = async ({
     type: "text",
     text,
     attachedFileUrls,
+    metadata: { replyId },
   };
 };
 
