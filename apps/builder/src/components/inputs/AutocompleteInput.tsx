@@ -167,6 +167,7 @@ export const AutocompleteInput = ({
               align="start"
               side="bottom"
               offset={1}
+              matchWidth
             >
               {filteredItems.map((item, idx) => {
                 return (
@@ -176,7 +177,7 @@ export const AutocompleteInput = ({
                       itemsRef.current[idx] = el;
                     }}
                     className={cn(
-                      "min-h-[40px] flex items-center font-normal",
+                      "min-h-[40px] flex items-center font-normal text-md justify-start",
                       keyboardFocusIndex === idx
                         ? "bg-gray-3"
                         : "bg-transparent",
