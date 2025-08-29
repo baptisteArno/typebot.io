@@ -14,16 +14,16 @@ import {
   Stack,
   Text,
   VStack,
-  WrapItem,
   useColorModeValue,
 } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
 import { T, useTranslate } from "@tolgee/react";
 import type { Prisma } from "@typebot.io/prisma/types";
 import { Button } from "@typebot.io/ui/components/Button";
+import { buttonVariants } from "@typebot.io/ui/components/Button";
 import { Menu } from "@typebot.io/ui/components/Menu";
 import { FolderSolidIcon } from "@typebot.io/ui/icons/FolderSolidIcon";
-import { cx } from "@typebot.io/ui/lib/cva";
+import { cn } from "@typebot.io/ui/lib/cn";
 import { useRouter } from "next/router";
 import React, { memo, useMemo } from "react";
 import { useTypebotDnd } from "../TypebotDndProvider";
@@ -87,17 +87,20 @@ const FolderButton = ({
   const handleMouseLeave = () => setMouseOverFolderId(undefined);
   return (
     <>
-      <Button
-        className={cx(
+      <div
+        role="button"
+        className={cn(
+          buttonVariants({
+            variant: "outline-secondary",
+            iconStyle: "none",
+            size: "lg",
+          }),
           "w-[225px] h-[270px] relative px-6 whitespace-normal transition-all duration-100 justify-center bg-gray-1",
           isTypebotOver && "border-2 border-orange-8",
         )}
-        variant="outline-secondary"
         onClick={handleClick}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
-        iconStyle="none"
-        size="lg"
       >
         <Menu.Root>
           <Menu.TriggerButton
@@ -140,7 +143,7 @@ const FolderButton = ({
             <EditableInput textAlign="center" />
           </Editable>
         </VStack>
-      </Button>
+      </div>
       <ConfirmDialog
         confirmButtonLabel={t("delete")}
         title={`${t("delete")} ${folder.name}?`}

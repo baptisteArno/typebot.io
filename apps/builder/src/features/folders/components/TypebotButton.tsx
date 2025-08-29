@@ -11,20 +11,14 @@ import { isMobile } from "@/helpers/isMobile";
 import { useOpenControls } from "@/hooks/useOpenControls";
 import { trpc, trpcClient } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
-import {
-  Alert,
-  AlertIcon,
-  Tag,
-  Text,
-  VStack,
-  WrapItem,
-} from "@chakra-ui/react";
+import { Alert, AlertIcon, Tag, Text, VStack } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
 import { T, useTranslate } from "@tolgee/react";
 import { Button } from "@typebot.io/ui/components/Button";
+import { buttonVariants } from "@typebot.io/ui/components/Button";
 import { Menu } from "@typebot.io/ui/components/Menu";
 import { LayoutBottomIcon } from "@typebot.io/ui/icons/LayoutBottomIcon";
-import { cx } from "@typebot.io/ui/lib/cva";
+import { cn } from "@typebot.io/ui/lib/cn";
 import { useRouter } from "next/router";
 import React, { memo } from "react";
 import { useDebounce } from "use-debounce";
@@ -134,15 +128,18 @@ const TypebotButton = ({
 
   return (
     <>
-      <Button
+      <div
+        role="button"
         onClick={handleTypebotClick}
-        className={cx(
+        className={cn(
+          buttonVariants({
+            variant: "outline-secondary",
+            iconStyle: "none",
+            size: "lg",
+          }),
           "flex-col w-[225px] h-[270px] rounded-lg whitespace-normal bg-gray-1 relative",
           draggedTypebot && "opacity-30",
         )}
-        variant="outline-secondary"
-        iconStyle="none"
-        size="lg"
       >
         {typebot.publishedTypebotId && (
           <Tag
@@ -204,7 +201,7 @@ const TypebotButton = ({
             {typebot.name}
           </Text>
         </VStack>
-      </Button>
+      </div>
       {!isReadOnly && (
         <ConfirmDialog
           confirmButtonLabel={t("delete")}

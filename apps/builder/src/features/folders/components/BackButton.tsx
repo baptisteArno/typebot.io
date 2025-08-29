@@ -24,7 +24,8 @@ export const BackButton = ({ id }: { id: string | null }) => {
         isTypebotOver || draggedTypebot ? "outline" : "outline-secondary"
       }
       className={cn(
-        (isTypebotOver || draggedTypebot) && "border-2 border-orange-8",
+        "bg-gray-1",
+        (isTypebotOver || draggedTypebot) && "border-2 border-orange-8 ",
       )}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
