@@ -18663,6 +18663,14 @@
           "text": {
             "type": "string"
           },
+          "metadata": {
+            "type": "object",
+            "properties": {
+              "replyId": {
+                "type": "string"
+              }
+            }
+          },
           "attachedFileUrls": {
             "type": "array",
             "items": {
