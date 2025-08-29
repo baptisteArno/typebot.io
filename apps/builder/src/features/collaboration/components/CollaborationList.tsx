@@ -29,13 +29,13 @@ import { updateInvitationQuery } from "../queries/updateInvitationQuery";
 import { CollaboratorItem } from "./CollaboratorButton";
 import { ReadableCollaborationType } from "./ReadableCollaborationType";
 
+type InvitationType = "READ" | "WRITE";
+
 export const CollaborationList = () => {
   const { currentUserMode, workspace } = useWorkspace();
   const { t } = useTranslate();
   const { typebot } = useTypebot();
-  const [invitationType, setInvitationType] = useState<CollaborationType>(
-    CollaborationType.READ,
-  );
+  const [invitationType, setInvitationType] = useState<InvitationType>("READ");
   const [invitationEmail, setInvitationEmail] = useState("");
   const [isSendingInvitation, setIsSendingInvitation] = useState(false);
 
@@ -150,7 +150,7 @@ export const CollaborationList = () => {
     setInvitationEmail("");
   };
 
-  const updateInvitationType = (type: CollaborationType) => {
+  const updateInvitationType = (type: InvitationType) => {
     setInvitationType(type);
   };
 

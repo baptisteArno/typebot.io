@@ -73,7 +73,7 @@ export const FileInputSettings = ({ options, onOptionsChange }: Props) => {
     onOptionsChange({ ...options, labels: { ...options?.labels, skip } });
 
   const updateVisibility = (
-    visibility: (typeof fileVisibilityOptions)[number],
+    visibility: (typeof fileVisibilityOptions)[number] | undefined,
   ) => onOptionsChange({ ...options, visibility });
 
   const updateSingleFileSuccessLabel = (single: string) =>

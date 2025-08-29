@@ -49,7 +49,7 @@ const CardSaveResponseItem = ({
   field?: (typeof cardMappableFields)[number] | undefined;
 }>) => {
   const changeValueToExtract = (
-    valueToExtract: (typeof cardMappableFields)[number],
+    valueToExtract: (typeof cardMappableFields)[number] | undefined,
   ) => {
     onItemChange({ ...item, field: valueToExtract });
   };

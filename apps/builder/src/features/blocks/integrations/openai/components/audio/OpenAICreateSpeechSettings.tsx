@@ -34,7 +34,7 @@ export const OpenAICreateSpeechSettings = ({
     });
   };
 
-  const updateVoice = (voice: (typeof openAIVoices)[number]) => {
+  const updateVoice = (voice: (typeof openAIVoices)[number] | undefined) => {
     onOptionsChange({
       ...options,
       voice,

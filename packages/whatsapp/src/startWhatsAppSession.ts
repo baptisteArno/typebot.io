@@ -127,7 +127,8 @@ export const messageMatchStartCondition = (
 ) => {
   if (!startCondition) return true;
   if (message?.type !== "text" || !message.text) return false;
-  return startCondition.logicalOperator === LogicalOperator.AND
+  return (startCondition.logicalOperator ?? LogicalOperator.AND) ===
+    LogicalOperator.AND
     ? startCondition.comparisons.every((comparison) =>
         matchComparison(
           message.text,

@@ -57,7 +57,7 @@ const metadataSchema = z.object({
 });
 
 const startConditionSchema = z.object({
-  logicalOperator: z.nativeEnum(LogicalOperator),
+  logicalOperator: z.nativeEnum(LogicalOperator).optional(),
   comparisons: z.array(
     z.object({
       id: z.string(),

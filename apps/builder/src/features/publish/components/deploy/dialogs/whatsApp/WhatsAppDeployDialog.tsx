@@ -107,7 +107,7 @@ export const WhatsAppDeployDialog = ({
   };
 
   const updateStartConditionLogicalOperator = (
-    logicalOperator: LogicalOperator,
+    logicalOperator: LogicalOperator | undefined,
   ) => {
     if (!typebot) return;
     updateTypebot({

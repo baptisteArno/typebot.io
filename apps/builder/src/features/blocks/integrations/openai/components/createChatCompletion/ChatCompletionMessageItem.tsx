@@ -21,7 +21,7 @@ const roles = [
 ];
 
 export const ChatCompletionMessageItem = ({ item, onItemChange }: Props) => {
-  const changeRole = (role: (typeof roles)[number]) => {
+  const changeRole = (role: (typeof roles)[number] | undefined) => {
     onItemChange({
       ...item,
       role,

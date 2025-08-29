@@ -34,9 +34,11 @@ export const GroupTitlesAutoGenForm = ({
   });
   const [credsCreatingType, setCredsCreatingType] = useState<typeof provider>();
 
-  const updateProvider = (provider: string) => {
+  const updateProvider = (
+    provider: GroupTitlesAutoGeneration["provider"] | undefined,
+  ) => {
     onChange({
-      provider: provider as GroupTitlesAutoGeneration["provider"],
+      provider,
     });
   };
 
@@ -59,7 +61,7 @@ export const GroupTitlesAutoGenForm = ({
               items={Object.values(forgedBlocks)
                 .filter((block) => block.actions.some((a) => a.aiGenerate))
                 .map((block) => ({
-                  value: block.id,
+                  value: block.id as GroupTitlesAutoGeneration["provider"],
                   label: (
                     <div className="flex items-center gap-2">
                       <BlockIcon type={block.id} className="size-4" />
@@ -67,7 +69,7 @@ export const GroupTitlesAutoGenForm = ({
                     </div>
                   ),
                 }))}
-              value={provider}
+              value={provider as GroupTitlesAutoGeneration["provider"]}
               onChange={updateProvider}
             />
           </Field.Root>

@@ -55,7 +55,7 @@ export const NumberInputSettings = ({ options, onOptionsChange }: Props) => {
     });
   const handleButtonLabelChange = (button: string) =>
     onOptionsChange({ ...options, labels: { ...options?.labels, button } });
-  const handleCurrencyChange = (currency: string) =>
+  const updateCurrency = (currency: string | undefined) =>
     onOptionsChange({
       ...options,
       currency,
@@ -69,12 +69,12 @@ export const NumberInputSettings = ({ options, onOptionsChange }: Props) => {
   const handleStepChange = (
     step?: NonNullable<NumberInputBlock["options"]>["step"],
   ) => onOptionsChange({ ...options, step });
-  const handleStyleChange = (style: NumberInputStyle) =>
+  const handleStyleChange = (style: NumberInputStyle | undefined) =>
     onOptionsChange({
       ...options,
       style,
     });
-  const handleUnitChange = (unit: NumberInputUnit) =>
+  const updateUnit = (unit: NumberInputUnit | undefined) =>
     onOptionsChange({ ...options, unit });
   const handleLocaleChange = (locale: string) => {
     const savableLocale = numberInputOptionsSchema.shape.locale.safeParse(
@@ -145,7 +145,7 @@ export const NumberInputSettings = ({ options, onOptionsChange }: Props) => {
                     label: description,
                     value: code,
                   }))}
-                  onChange={(value) => handleCurrencyChange(value as string)}
+                  onChange={updateCurrency}
                   value={options?.currency}
                 />
               </FormControl>
@@ -160,9 +160,7 @@ export const NumberInputSettings = ({ options, onOptionsChange }: Props) => {
                     label: t(unitTranslationKeys[unit]),
                     value: unit,
                   }))}
-                  onChange={(value) =>
-                    handleUnitChange(value as NumberInputUnit)
-                  }
+                  onChange={updateUnit}
                   value={options?.unit}
                 />
               </FormControl>

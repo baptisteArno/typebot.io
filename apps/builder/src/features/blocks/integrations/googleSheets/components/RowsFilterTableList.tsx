@@ -27,8 +27,9 @@ export const RowsFilterTableList = ({
       comparisons,
     });
 
-  const updateLogicalOperator = (logicalOperator: LogicalOperator) =>
-    filter && onFilterChange({ ...filter, logicalOperator });
+  const updateLogicalOperator = (
+    logicalOperator: LogicalOperator | undefined,
+  ) => filter && onFilterChange({ ...filter, logicalOperator });
 
   return (
     <TableList<RowsFilterComparison>

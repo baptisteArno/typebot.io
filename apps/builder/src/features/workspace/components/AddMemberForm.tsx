@@ -9,6 +9,7 @@ import { type FormEvent, useState } from "react";
 import { sendInvitationQuery } from "../queries/sendInvitationQuery";
 import type { Member } from "../types";
 
+type InvitationRole = "ADMIN" | "MEMBER";
 type Props = {
   workspaceId: string;
   onNewMember: (member: Member) => void;
@@ -25,7 +26,7 @@ export const AddMemberForm = ({
 }: Props) => {
   const { t } = useTranslate();
   const [invitationEmail, setInvitationEmail] = useState("");
-  const [invitationRole, setInvitationRole] = useState<WorkspaceRole>(
+  const [invitationRole, setInvitationRole] = useState<InvitationRole>(
     WorkspaceRole.MEMBER,
   );
 
@@ -84,8 +85,8 @@ const WorkspaceRoleMenuButton = ({
   role,
   onChange,
 }: {
-  role: WorkspaceRole;
-  onChange: (role: WorkspaceRole) => void;
+  role: InvitationRole;
+  onChange: (role: InvitationRole) => void;
 }) => {
   return (
     <BasicSelect

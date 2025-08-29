@@ -14685,7 +14685,6 @@
                   }
                 },
                 "required": [
-                  "logicalOperator",
                   "comparisons"
                 ]
               },

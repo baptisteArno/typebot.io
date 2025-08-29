@@ -37,7 +37,7 @@ export const PaymentSettings = ({ options, onOptionsChange }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { t } = useTranslate();
 
-  const updateProvider = (provider: PaymentProvider) => {
+  const updateProvider = (provider: PaymentProvider | undefined) => {
     onOptionsChange({
       ...options,
       provider,
@@ -57,7 +57,7 @@ export const PaymentSettings = ({ options, onOptionsChange }: Props) => {
       amount,
     });
 
-  const updateCurrency = (currency: string) =>
+  const updateCurrency = (currency: string | undefined) =>
     onOptionsChange({
       ...options,
       currency,

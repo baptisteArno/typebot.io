@@ -73,7 +73,7 @@ export const GoogleSheetsSettings = ({
   const handleSheetIdChange = (sheetId: string | undefined) =>
     onOptionsChange({ ...options, sheetId });
 
-  const handleActionChange = (action: GoogleSheetsAction) =>
+  const handleActionChange = (action: GoogleSheetsAction | undefined) =>
     onOptionsChange({
       credentialsId: options?.credentialsId,
       spreadsheetId: options?.spreadsheetId,

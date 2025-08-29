@@ -48,7 +48,7 @@ export const OpenAISettings = ({
     });
   };
 
-  const updateTask = (task: OpenAITask) => {
+  const updateTask = (task: OpenAITask | undefined) => {
     onOptionsChange({
       credentialsId: options?.credentialsId,
       task,

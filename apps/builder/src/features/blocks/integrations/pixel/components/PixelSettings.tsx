@@ -45,7 +45,7 @@ export const PixelSettings = ({ options, onOptionsChange }: Props) => {
     });
 
   const updateEventType = (
-    eventType: (typeof pixelEventTypes)[number] | "Custom",
+    eventType: (typeof pixelEventTypes)[number] | "Custom" | undefined,
   ) =>
     onOptionsChange({
       ...options,
@@ -144,7 +144,7 @@ const ParamItem = ({ item, eventType, onItemChange }: ParamItemProps) => {
     (prop) => prop.key === item.key,
   );
 
-  const updateKey = (key: string) =>
+  const updateKey = (key: string | undefined) =>
     onItemChange({
       ...item,
       key,

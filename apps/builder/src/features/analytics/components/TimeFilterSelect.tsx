@@ -18,12 +18,10 @@ export const TimeFilterSelect = ({
   <BasicSelect
     items={Object.entries(timeFilterLabels).map(([value, label]) => ({
       label,
-      value,
+      value: value as (typeof timeFilterValues)[number],
     }))}
     value={timeFilter}
-    onChange={(val) =>
-      onTimeFilterChange(val as (typeof timeFilterValues)[number])
-    }
+    onChange={onTimeFilterChange}
     className={className}
     size={size}
   />

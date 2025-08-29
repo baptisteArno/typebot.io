@@ -15,8 +15,9 @@ type Props = TableListItemProps<
 
 export const ChatCompletionResponseItem = ({ item, onItemChange }: Props) => {
   const changeValueToExtract = (
-    valueToExtract: (typeof chatCompletionResponseValues)[number],
+    valueToExtract: (typeof chatCompletionResponseValues)[number] | undefined,
   ) => {
+    if (!valueToExtract) return;
     onItemChange({ ...item, valueToExtract });
   };
 

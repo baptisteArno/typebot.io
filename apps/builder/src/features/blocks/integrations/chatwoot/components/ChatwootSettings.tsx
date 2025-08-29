@@ -21,7 +21,7 @@ type Props = {
 };
 
 export const ChatwootSettings = ({ options, onOptionsChange }: Props) => {
-  const updateTask = (task: (typeof chatwootTasks)[number]) => {
+  const updateTask = (task: (typeof chatwootTasks)[number] | undefined) => {
     onOptionsChange({ ...options, task });
   };
 

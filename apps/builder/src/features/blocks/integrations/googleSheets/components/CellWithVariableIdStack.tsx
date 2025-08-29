@@ -10,7 +10,7 @@ export const CellWithVariableIdStack = ({
   onItemChange,
   columns,
 }: TableListItemProps<ExtractingCell> & { columns: string[] }) => {
-  const handleColumnSelect = (column: string) => {
+  const handleColumnSelect = (column: string | undefined) => {
     if (item.column === column) return;
     onItemChange({ ...item, column });
   };

@@ -49,7 +49,7 @@ export const TextInputSettings = ({ options, onOptionsChange }: Props) => {
     });
 
   const updateVisibility = (
-    visibility: (typeof fileVisibilityOptions)[number],
+    visibility: (typeof fileVisibilityOptions)[number] | undefined,
   ) =>
     onOptionsChange({
       ...options,
@@ -69,7 +69,7 @@ export const TextInputSettings = ({ options, onOptionsChange }: Props) => {
     });
 
   const updateAudioClipVisibility = (
-    visibility: (typeof fileVisibilityOptions)[number],
+    visibility: (typeof fileVisibilityOptions)[number] | undefined,
   ) =>
     onOptionsChange({
       ...options,

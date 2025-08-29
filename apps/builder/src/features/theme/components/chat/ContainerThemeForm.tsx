@@ -202,7 +202,9 @@ const BorderThemeForm = ({
   defaultBorder: ContainerBorderTheme | undefined;
   onBorderChange: (border: ContainerBorderTheme) => void;
 }) => {
-  const updateRoundness = (roundeness: (typeof borderRoundness)[number]) => {
+  const updateRoundness = (
+    roundeness: (typeof borderRoundness)[number] | undefined,
+  ) => {
     onBorderChange({ ...border, roundeness });
   };
 

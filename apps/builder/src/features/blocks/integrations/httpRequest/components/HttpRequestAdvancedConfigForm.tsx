@@ -60,7 +60,7 @@ export const HttpRequestAdvancedConfigForm = ({
   const [testResponse, setTestResponse] = useState<string>();
   const [responseKeys, setResponseKeys] = useState<string[]>([]);
 
-  const updateMethod = (method: HttpMethod) =>
+  const updateMethod = (method: HttpMethod | undefined) =>
     onHttpRequestChange({ ...httpRequest, method });
 
   const updateQueryParams = (queryParams: KeyValue[]) =>

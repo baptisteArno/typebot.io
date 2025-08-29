@@ -35,11 +35,13 @@ export const ProgressBarForm = ({
   const updateColor = (color: string) =>
     onProgressBarChange({ ...progressBar, color });
 
-  const updatePlacement = (placement: (typeof progressBarPlacements)[number]) =>
-    onProgressBarChange({ ...progressBar, placement });
+  const updatePlacement = (
+    placement: (typeof progressBarPlacements)[number] | undefined,
+  ) => onProgressBarChange({ ...progressBar, placement });
 
-  const updatePosition = (position: (typeof progressBarPositions)[number]) =>
-    onProgressBarChange({ ...progressBar, position });
+  const updatePosition = (
+    position: (typeof progressBarPositions)[number] | undefined,
+  ) => onProgressBarChange({ ...progressBar, position });
 
   const updateThickness = (thickness?: number) =>
     onProgressBarChange({ ...progressBar, thickness });

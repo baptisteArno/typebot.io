@@ -24106,7 +24106,6 @@
                   }
                 },
                 "required": [
-                  "logicalOperator",
                   "comparisons"
                 ]
               },

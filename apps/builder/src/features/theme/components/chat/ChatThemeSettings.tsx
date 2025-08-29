@@ -82,7 +82,7 @@ export const ChatThemeSettings = ({
   const updateGuestAvatar = (guestAvatar: AvatarProps) =>
     onChatThemeChange({ ...chatTheme, guestAvatar });
 
-  const updateButtonsInputLayout = (layout: "wrap" | "vertical") =>
+  const updateButtonsInputLayout = (layout: "wrap" | "vertical" | undefined) =>
     onChatThemeChange({ ...chatTheme, buttonsInput: { layout } });
 
   return (

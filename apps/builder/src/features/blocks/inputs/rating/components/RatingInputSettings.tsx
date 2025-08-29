@@ -17,8 +17,11 @@ type Props = {
 export const RatingInputSettings = ({ options, onOptionsChange }: Props) => {
   const { t } = useTranslate();
 
-  const handleLengthChange = (length: string) =>
-    onOptionsChange({ ...options, length: Number(length) });
+  const handleLengthChange = (length: string | undefined) =>
+    onOptionsChange({
+      ...options,
+      length: length ? Number(length) : undefined,
+    });
 
   const handleTypeChange = (buttonType: "Icons" | "Numbers") =>
     onOptionsChange({ ...options, buttonType });

@@ -11,13 +11,13 @@ export const RowsFilterComparisonItem = ({
   columns,
   onItemChange,
 }: TableListItemProps<RowsFilterComparison> & { columns: string[] }) => {
-  const handleColumnSelect = (column: string) => {
+  const handleColumnSelect = (column: string | undefined) => {
     if (column === item.column) return;
     onItemChange({ ...item, column });
   };
 
   const handleSelectComparisonOperator = (
-    comparisonOperator: ComparisonOperators,
+    comparisonOperator: ComparisonOperators | undefined,
   ) => {
     if (comparisonOperator === item.comparisonOperator) return;
     onItemChange({ ...item, comparisonOperator });

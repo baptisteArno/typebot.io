@@ -20,7 +20,7 @@ export const ComparisonItem = ({
   };
 
   const handleSelectComparisonOperator = (
-    comparisonOperator: ComparisonOperators,
+    comparisonOperator: ComparisonOperators | undefined,
   ) => {
     if (comparisonOperator === item.comparisonOperator) return;
     onItemChange({ ...item, comparisonOperator });
