@@ -1,5 +1,11 @@
 {
+  "$schema": "https://openapi.vercel.sh/vercel.json",
   "github": {
     "silent": true
+  },
+  "functions": {
+    "src/api/*.js": {
+      "maxDuration": 10
+    }
   }
 }
