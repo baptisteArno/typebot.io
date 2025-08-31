@@ -9,8 +9,6 @@ export type IconProps = {
 
 export const Icon = forwardRef<SVGSVGElement, IconProps>(
   ({ icon, className, ...props }, ref) => {
-    return (
-      <></>
-    );
+    return <></>;
   },
 );
