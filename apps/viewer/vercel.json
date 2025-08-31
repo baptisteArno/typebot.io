@@ -4,7 +4,7 @@
     "silent": true
   },
   "functions": {
-    "src/api/*.js": {
+    "src/app/api/*.js": {
       "maxDuration": 10
     }
   }
