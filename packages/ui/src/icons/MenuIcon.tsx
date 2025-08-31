@@ -1,6 +1,6 @@
-import { Menu01Icon } from "@hugeicons-pro/core-stroke-rounded";
+import { Menu } from "lucide-react";
 import { Icon } from "../components/Icon";
 
 export const MenuIcon = ({ className }: { className?: string }) => (
-  <Icon icon={Menu01Icon} className={className} />
+  <Menu className={className} />
 );

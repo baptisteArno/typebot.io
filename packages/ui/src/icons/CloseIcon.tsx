@@ -1,6 +1,5 @@
-import { CancelIcon } from "@hugeicons-pro/core-stroke-rounded";
-import { Icon } from "../components/Icon";
+import { X } from "lucide-react";
 
 export const CloseIcon = ({ className }: { className?: string }) => (
-  <Icon icon={CancelIcon} className={className} />
+  <X className={className} />
 );

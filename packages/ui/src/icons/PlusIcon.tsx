@@ -1,6 +1,5 @@
-import { PlusSignIcon } from "@hugeicons-pro/core-stroke-rounded";
-import { Icon } from "../components/Icon";
+import { Plus } from "lucide-react";
 
 export const PlusIcon = ({ className }: { className?: string }) => (
-  <Icon icon={PlusSignIcon} className={className} />
+  <Plus className={className} />
 );

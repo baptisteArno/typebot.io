@@ -1,6 +1,5 @@
-import { Edit03Icon } from "@hugeicons-pro/core-stroke-rounded";
-import { Icon } from "../components/Icon";
+import { Edit } from "lucide-react";
 
 export const EditIcon = ({ className }: { className?: string }) => (
-  <Icon icon={Edit03Icon} className={className} />
+  <Edit className={className} />
 );

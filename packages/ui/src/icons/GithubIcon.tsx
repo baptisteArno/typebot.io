@@ -1,6 +1,5 @@
-import { GithubIcon as GithubIconHugeicons } from "@hugeicons-pro/core-stroke-rounded";
-import { Icon } from "../components/Icon";
+import { Github } from "lucide-react";
 
 export const GithubIcon = ({ className }: { className?: string }) => (
-  <Icon icon={GithubIconHugeicons} className={className} />
+  <Github className={className} />
 );

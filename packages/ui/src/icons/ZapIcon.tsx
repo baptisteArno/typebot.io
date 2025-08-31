@@ -1,6 +1,5 @@
-import { ZapIcon as ZapIconHugeicons } from "@hugeicons-pro/core-stroke-rounded";
-import { Icon } from "../components/Icon";
+import { Zap } from "lucide-react";
 
 export const ZapIcon = ({ className }: { className?: string }) => (
-  <Icon icon={ZapIconHugeicons} className={className} />
+  <Zap className={className} />
 );

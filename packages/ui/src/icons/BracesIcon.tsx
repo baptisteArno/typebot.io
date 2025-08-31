@@ -1,6 +1,5 @@
-import { CodeIcon as CodeIconHugeicons } from "@hugeicons-pro/core-stroke-rounded";
-import { Icon } from "../components/Icon";
+import { CodeIcon } from "lucide-react";
 
 export const BracesIcon = ({ className }: { className?: string }) => (
-  <Icon icon={CodeIconHugeicons} className={className} />
+  <CodeIcon className={className} />
 );

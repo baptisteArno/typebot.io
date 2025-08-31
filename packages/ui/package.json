@@ -24,8 +24,6 @@
     "tailwind-merge": "3.0.2",
     "tailwindcss": "3.4.17",
     "tailwindcss-animate": "1.0.7",
-    "@hugeicons/react": "1.0.5",
-    "@hugeicons-pro/core-solid-rounded": "1.0.14",
-    "@hugeicons-pro/core-stroke-rounded": "1.0.14"
+    "lucide-react": "0.542.0"
   }
 }

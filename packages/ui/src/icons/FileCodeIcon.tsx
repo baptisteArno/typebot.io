@@ -1,6 +1,5 @@
-import { DocumentCodeIcon } from "@hugeicons-pro/core-stroke-rounded";
-import { Icon } from "../components/Icon";
+import { FileCode } from "lucide-react";
 
 export const FileCodeIcon = ({ className }: { className?: string }) => (
-  <Icon icon={DocumentCodeIcon} className={className} />
+  <FileCode  className={className} />
 );

@@ -1,6 +1,5 @@
-import { SourceCodeIcon } from "@hugeicons-pro/core-stroke-rounded";
-import { Icon } from "../components/Icon";
+import { Code } from "lucide-react";
 
 export const CodeIcon = ({ className }: { className?: string }) => (
-  <Icon icon={SourceCodeIcon} className={className} />
+  <Code className={className} />
 );

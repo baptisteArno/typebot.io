@@ -1,6 +1,5 @@
-import { FolderAddIcon as FolderAddHugeIcon } from "@hugeicons-pro/core-stroke-rounded";
-import { Icon } from "../components/Icon";
+import { FolderPlus } from "lucide-react";
 
 export const FolderAddIcon = ({ className }: { className?: string }) => (
-  <Icon icon={FolderAddHugeIcon} className={className} />
+  <FolderPlus className={className} />
 );

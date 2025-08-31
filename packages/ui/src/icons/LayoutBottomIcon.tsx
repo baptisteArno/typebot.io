@@ -1,6 +1,5 @@
-import { LayoutBottomIcon as HugeIconsLayoutBottomIcon } from "@hugeicons-pro/core-stroke-rounded";
-import { Icon } from "../components/Icon";
+import { LayoutPanelTop } from "lucide-react";
 
 export const LayoutBottomIcon = ({ className }: { className?: string }) => (
-  <Icon icon={HugeIconsLayoutBottomIcon} className={className} />
+  <LayoutPanelTop className={className} />
 );

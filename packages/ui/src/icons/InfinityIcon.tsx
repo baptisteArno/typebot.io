@@ -1,6 +1,5 @@
-import { InfinityIcon as InfinityIconHugeicons } from "@hugeicons-pro/core-stroke-rounded";
-import { Icon } from "../components/Icon";
+import { Infinity } from "lucide-react";
 
 export const InfinityIcon = ({ className }: { className?: string }) => (
-  <Icon icon={InfinityIconHugeicons} className={className} />
+  <Infinity className={className} />
 );

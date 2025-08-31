@@ -1,6 +1,5 @@
-import { Tick02Icon } from "@hugeicons-pro/core-stroke-rounded";
-import { Icon } from "../components/Icon";
+import { Check } from "lucide-react";
 
 export const TickIcon = ({ className }: { className?: string }) => (
-  <Icon icon={Tick02Icon} className={className} />
+  <Check className={className} />
 );

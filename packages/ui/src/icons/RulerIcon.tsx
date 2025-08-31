@@ -1,6 +1,5 @@
-import { RulerIcon as RulerIconHugeicons } from "@hugeicons-pro/core-stroke-rounded";
-import { Icon } from "../components/Icon";
+import { Ruler } from "lucide-react";
 
 export const RulerIcon = ({ className }: { className?: string }) => (
-  <Icon icon={RulerIconHugeicons} className={className} />
+  <Ruler className={className} />
 );

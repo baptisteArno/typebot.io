@@ -1,6 +1,5 @@
-import { SparklesIcon as SparklesIconHugeicons } from "@hugeicons-pro/core-stroke-rounded";
-import { Icon } from "../components/Icon";
+import { Sparkles } from "lucide-react";
 
 export const SparklesIcon = ({ className }: { className?: string }) => (
-  <Icon icon={SparklesIconHugeicons} className={className} />
+  <Sparkles className={className} />
 );

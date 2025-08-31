@@ -1,6 +1,5 @@
-import { Alert01Icon } from "@hugeicons-pro/core-stroke-rounded";
-import { Icon } from "../components/Icon";
+import { TriangleAlert } from "lucide-react";
 
 export const TriangleAlertIcon = ({ className }: { className?: string }) => (
-  <Icon icon={Alert01Icon} className={className} />
+  <TriangleAlert className={className} />
 );

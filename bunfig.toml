@@ -2,4 +2,4 @@
 registry = { url = "https://registry.npmjs.org", token = "$NPM_TOKEN" }
 
 [install.scopes]
-@hugeicons-pro = { token = "$HUGEICONS_LICENSE_KEY", url = "https://npm.hugeicons.com/" }
+@hugeicons-pro = { token = "$HUGEICONS_TOKEN", url = "https://npm.hugeicons.com/" }

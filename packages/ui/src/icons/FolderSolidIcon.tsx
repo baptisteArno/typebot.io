@@ -1,6 +1,5 @@
-import { Folder01Icon } from "@hugeicons-pro/core-solid-rounded";
-import { Icon } from "../components/Icon";
+import { Folder } from "lucide-react";
 
 export const FolderSolidIcon = ({ className }: { className?: string }) => (
-  <Icon icon={Folder01Icon} className={className} />
+  <Folder  className={className} />
 );

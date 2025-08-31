@@ -1,6 +1,5 @@
-import { ArrowDown01Icon } from "@hugeicons-pro/core-stroke-rounded";
-import { Icon } from "../components/Icon";
+import { ArrowDown } from "lucide-react";
 
 export const ChevronDownIcon = ({ className }: { className?: string }) => (
-  <Icon icon={ArrowDown01Icon} className={className} />
+  <ArrowDown className={className} />
 );
