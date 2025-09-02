@@ -4,6 +4,7 @@ import {
   hidePreviewMessage,
   open,
   reload,
+  reset,
   sendCommand,
   setInputValue,
   setPrefilledVariables,
@@ -27,6 +28,7 @@ export const Default = () => {
         </button>
         <button onClick={() => setInputValue("YOOOO!")}>Set input value</button>
         <button onClick={hidePreviewMessage}>Close Preview Message</button>
+        <button onClick={() => reset()}>Reset chat</button>
         <button onClick={() => sendCommand("wizz")}>Send command</button>
         <div>
           <p>Predefined name:</p>
@@ -36,11 +38,11 @@ export const Default = () => {
           </button>
         </div>
         <Bubble
-          typebot="lead-generation-hdb7t54"
+          typebot="lead-generation-ybslz4j"
           apiHost="http://localhost:3001"
           wsHost="localhost:1999"
           prefilledVariables={{
-            Name: ["John"],
+            Name: "John",
           }}
           previewMessage={{
             avatarUrl: "https://avatars.githubusercontent.com/u/16015833?v=4",

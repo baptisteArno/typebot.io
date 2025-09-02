@@ -1,5 +1,6 @@
 import { Bot, type BotProps } from "@/components/Bot";
 import type { CommandData } from "@/features/commands/types";
+import { wipeExistingChatStateInStorage } from "@/utils/storage";
 import { EnvironmentProvider } from "@ark-ui/solid";
 import typebotColors from "@typebot.io/ui/colors.css";
 import { Show, createEffect, createSignal, onCleanup, onMount } from "solid-js";
@@ -19,6 +20,7 @@ export const Standard = (props: BotProps, { element }: { element: any }) => {
   const [prefilledVariables, setPrefilledVariables] = createSignal(
     props.prefilledVariables,
   );
+  const [currentTypebotId, setCurrentTypebotId] = createSignal<string>();
 
   const launchBot = () => {
     setIsBotDisplayed(true);
@@ -62,7 +64,21 @@ export const Standard = (props: BotProps, { element }: { element: any }) => {
       case "reload":
         reloadBot();
         break;
+      case "reset": {
+        const typebotId = currentTypebotId();
+        if (!typebotId) return;
+        wipeExistingChatStateInStorage(typebotId);
+        break;
+      }
     }
+  };
+
+  const handleOnChatStatePersisted = (
+    isEnabled: boolean,
+    { typebotId }: { typebotId: string },
+  ) => {
+    setCurrentTypebotId(typebotId);
+    props.onChatStatePersisted?.(isEnabled, { typebotId });
   };
 
   onCleanup(() => {
@@ -79,7 +95,11 @@ export const Standard = (props: BotProps, { element }: { element: any }) => {
         {hostElementCss}
       </style>
       <Show when={isBotDisplayed()}>
-        <Bot {...props} prefilledVariables={prefilledVariables()} />
+        <Bot
+          {...props}
+          prefilledVariables={prefilledVariables()}
+          onChatStatePersisted={handleOnChatStatePersisted}
+        />
       </Show>
     </EnvironmentProvider>
   );

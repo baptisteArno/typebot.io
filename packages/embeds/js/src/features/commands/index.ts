@@ -9,3 +9,4 @@ export * from "./utils/hidePreviewMessage";
 export * from "./utils/sendCommand";
 export * from "./types";
 export * from "./utils/reload";
+export * from "./utils/reset";

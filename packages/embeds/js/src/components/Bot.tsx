@@ -63,7 +63,10 @@ export type BotProps = {
   onInit?: () => void;
   onEnd?: () => void;
   onNewLogs?: (logs: LogInSession[]) => void;
-  onChatStatePersisted?: (isEnabled: boolean) => void;
+  onChatStatePersisted?: (
+    isEnabled: boolean,
+    { typebotId }: { typebotId: string },
+  ) => void;
   onScriptExecutionSuccess?: (message: string) => void;
 };
 
@@ -189,14 +192,14 @@ export const Bot = (props: BotProps & { class?: string }) => {
           storage,
         });
       }
-      props.onChatStatePersisted?.(true);
+      props.onChatStatePersisted?.(true, { typebotId: data.typebot.id });
     } else {
       wipeExistingChatStateInStorage(data.typebot.id);
       setInitialChatReply(data);
       if (data.input?.id && props.onNewInputBlock)
         props.onNewInputBlock(data.input);
       if (data.logs) props.onNewLogs?.(data.logs);
-      props.onChatStatePersisted?.(false);
+      props.onChatStatePersisted?.(false, { typebotId: data.typebot.id });
     }
 
     setCustomCss(data.typebot.theme.customCss ?? "");

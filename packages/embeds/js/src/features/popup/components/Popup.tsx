@@ -5,6 +5,7 @@ import {
   getBotOpenedStateFromStorage,
   removeBotOpenedStateInStorage,
   setBotOpenedStateInStorage,
+  wipeExistingChatStateInStorage,
 } from "@/utils/storage";
 import { EnvironmentProvider } from "@ark-ui/solid";
 import { isDefined, isNotDefined } from "@typebot.io/lib/utils";
@@ -40,6 +41,7 @@ export const Popup = (props: PopupProps) => {
     "defaultOpen",
   ]);
 
+  const [currentTypebotId, setCurrentTypebotId] = createSignal<string>();
   const [prefilledVariables, setPrefilledVariables] = createSignal(
     botProps.prefilledVariables,
   );
@@ -107,6 +109,13 @@ export const Popup = (props: PopupProps) => {
       case "reload":
         reloadBot();
         break;
+      case "reset": {
+        const typebotId = currentTypebotId();
+        if (!typebotId) return;
+        wipeExistingChatStateInStorage(typebotId);
+        removeBotOpenedStateInStorage();
+        break;
+      }
     }
   };
 
@@ -134,9 +143,13 @@ export const Popup = (props: PopupProps) => {
     setIsBotOpened(true);
   };
 
-  const handleOnChatStatePersisted = (isPersisted: boolean) => {
-    botProps.onChatStatePersisted?.(isPersisted);
-    if (isPersisted) setBotOpenedStateInStorage();
+  const handleOnChatStatePersisted = (
+    isEnabled: boolean,
+    { typebotId }: { typebotId: string },
+  ) => {
+    botProps.onChatStatePersisted?.(isEnabled, { typebotId });
+    setCurrentTypebotId(typebotId);
+    if (isEnabled) setBotOpenedStateInStorage();
   };
 
   const handleScriptExecutionSuccessMessage = (message: string) => {
