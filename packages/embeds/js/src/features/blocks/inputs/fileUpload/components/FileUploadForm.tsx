@@ -9,6 +9,7 @@ import type { FileInputBlock } from "@typebot.io/blocks-inputs/file/schema";
 import { isDefined } from "@typebot.io/lib/utils";
 import { defaultSystemMessages } from "@typebot.io/settings/constants";
 import { For, Match, Show, Switch, createSignal } from "solid-js";
+import { injectAndroidCameraCaptureToMimeTypes } from "../helpers/injectAndroidCameraCaptureToMimeTypes";
 import { sanitizeNewFile } from "../helpers/sanitizeSelectedFiles";
 import { uploadFiles } from "../helpers/uploadFiles";
 import { SelectedFile } from "./SelectedFile";
@@ -99,6 +100,7 @@ export const FileUploadForm = (props: Props) => {
       });
     if (result.type === "error")
       toaster.create({
+        title: fileUploadErrorMessage,
         description: result.error,
       });
   };
@@ -122,6 +124,7 @@ export const FileUploadForm = (props: Props) => {
     setUploadProgressPercent(0);
     if (result.type === "error")
       return toaster.create({
+        title: fileUploadErrorMessage,
         description: result.error,
       });
     props.onSubmit({
@@ -241,7 +244,9 @@ export const FileUploadForm = (props: Props) => {
                 class="hidden"
                 accept={
                   props.block.options?.allowedFileTypes?.isEnabled
-                    ? props.block.options?.allowedFileTypes?.types?.join(", ")
+                    ? injectAndroidCameraCaptureToMimeTypes(
+                        props.block.options.allowedFileTypes.types,
+                      )
                     : undefined
                 }
                 multiple={
