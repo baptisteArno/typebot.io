@@ -34,7 +34,7 @@
     "@typebot.io/tsconfig": "workspace:*",
     "unist-util-visit": "5.0.0",
     "@types/react": "18.3.18",
-    "@types/react-dom": "18.3.5",
+    "@types/react-dom": "18.3.7",
     "autoprefixer": "10.4.20",
     "dotenv-cli": "8.0.0",
     "mdx-local-link-checker": "2.1.1",

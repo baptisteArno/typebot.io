@@ -46,6 +46,10 @@ Sentry.init({
     }
     return event;
   },
+  integrations: [
+    Sentry.consoleLoggingIntegration({ levels: ["log", "warn", "error"] }),
+  ],
+  enableLogs: true,
 });
 
 const isTrpcError = (err: unknown): err is TRPCError => {
