@@ -99,20 +99,24 @@ export const CustomDomainsDropdown = ({
               className="justify-between"
             >
               {customDomain.name}
-              <Button
-                aria-label={t("customDomain.remove")}
-                size="icon"
-                onClick={handleDeleteDomainClick(customDomain.name)}
-                disabled={isDeleting === customDomain.name}
-              >
-                <TrashIcon />
-              </Button>
+              {currentUserMode === "write" && (
+                <Button
+                  aria-label={t("customDomain.remove")}
+                  size="icon"
+                  onClick={handleDeleteDomainClick(customDomain.name)}
+                  disabled={isDeleting === customDomain.name}
+                >
+                  <TrashIcon />
+                </Button>
+              )}
             </Menu.Item>
           ))}
-          <Menu.Item onClick={onOpen}>
-            <PlusIcon />
-            {t("connectNew")}
-          </Menu.Item>
+          {currentUserMode === "write" && (
+            <Menu.Item onClick={onOpen}>
+              <PlusIcon />
+              {t("connectNew")}
+            </Menu.Item>
+          )}
         </Stack>
       </Menu.Popup>
     </Menu.Root>
