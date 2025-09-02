@@ -19,6 +19,7 @@ import { isWriteTypebotForbidden } from '../helpers/isWriteTypebotForbidden'
 import { isCloudProdInstance } from '@/helpers/isCloudProdInstance'
 import { Prisma } from '@typebot.io/prisma'
 import { migrateTypebot } from '@typebot.io/migrations/migrateTypebot'
+import { checkGroupLimits, shouldUnpublishTypebot } from '@typebot.io/lib'
 
 const typebotUpdateSchemaPick = {
   version: true,
@@ -161,6 +162,17 @@ export const updateTypebot = authenticatedProcedure
       ? await sanitizeGroups(existingTypebot.workspace.id)(typebot.groups)
       : undefined
 
+    // Check group limits if groups are being updated
+    if (groups) {
+      const limits = await checkGroupLimits(typebotId)
+      if (groups.length > limits.maxGroups) {
+        throw new TRPCError({
+          code: 'FORBIDDEN',
+          message: `Maximum group limit (${limits.maxGroups}) exceeded. Cannot update typebot with ${groups.length} groups.`,
+        })
+      }
+    }
+
     const newTypebot = await prisma.typebot.update({
       where: {
         id: existingTypebot.id,
@@ -211,6 +223,24 @@ export const updateTypebot = authenticatedProcedure
     const migratedTypebot = await migrateTypebot(
       typebotSchema.parse(newTypebot)
     )
+
+    // Check if we need to unpublish due to group limits after update
+    if (migratedTypebot.publicId && groups) {
+      const shouldUnpublish = await shouldUnpublishTypebot(
+        typebotId,
+        groups.length
+      )
+      if (shouldUnpublish) {
+        await prisma.typebot.update({
+          where: { id: typebotId },
+          data: { publicId: null },
+        })
+        await prisma.publicTypebot.deleteMany({
+          where: { typebotId },
+        })
+        migratedTypebot.publicId = null
+      }
+    }
 
     return { typebot: migratedTypebot }
   })

@@ -97,6 +97,38 @@ export const TypebotProvider = ({
     (state) => state.setGroupsCoordinates
   )
 
+  // Function to check if a typebot exceeds group limits and unpublish if needed
+  const checkAndUnpublishIfNeeded = useCallback(
+    async (typebotId: string, groupCount: number) => {
+      try {
+        const { shouldUnpublishTypebot } = await import('@typebot.io/lib')
+        const shouldUnpublish = await shouldUnpublishTypebot(
+          typebotId,
+          groupCount
+        )
+
+        if (shouldUnpublish) {
+          // Update local state to remove publicId
+          setLocalTypebot((currentTypebot) => {
+            if (currentTypebot && currentTypebot.id === typebotId) {
+              return { ...currentTypebot, publicId: undefined }
+            }
+            return currentTypebot
+          })
+
+          showToast({
+            title: 'Typebot Auto-Unpublished',
+            description:
+              'Typebot has been automatically unpublished due to exceeding group limits.',
+          })
+        }
+      } catch (error) {
+        console.error('Failed to check group limits for auto-unpublish:', error)
+      }
+    },
+    [setLocalTypebot, showToast]
+  )
+
   const {
     data: typebotData,
     isLoading: isFetchingTypebot,
@@ -207,6 +239,11 @@ export const TypebotProvider = ({
       setLocalTypebot({ ...typebot })
       setGroupsCoordinates(typebot.groups)
       flush()
+
+      // Check if the loaded typebot exceeds group limits and should be unpublished
+      if (typebot.publicId) {
+        checkAndUnpublishIfNeeded(typebot.id, typebot.groups.length)
+      }
     }
   }, [
     flush,
@@ -216,6 +253,7 @@ export const TypebotProvider = ({
     setLocalTypebot,
     showToast,
     typebot,
+    checkAndUnpublishIfNeeded,
   ])
 
   const saveTypebot = useCallback(
@@ -297,6 +335,26 @@ export const TypebotProvider = ({
     }
   }, [localTypebot, typebot, isReadOnly])
 
+  // Periodic check for published typebots that might exceed group limits
+  useEffect(() => {
+    if (!localTypebot?.publicId || isReadOnly) return
+
+    const checkInterval = setInterval(async () => {
+      await checkAndUnpublishIfNeeded(
+        localTypebot.id,
+        localTypebot.groups.length
+      )
+    }, 30000) // Check every 30 seconds
+
+    return () => clearInterval(checkInterval)
+  }, [
+    localTypebot?.id,
+    localTypebot?.publicId,
+    localTypebot?.groups.length,
+    isReadOnly,
+    checkAndUnpublishIfNeeded,
+  ])
+
   const updateLocalTypebot = async ({
     updates,
     save,
@@ -335,7 +393,7 @@ export const TypebotProvider = ({
         isPublished,
         updateTypebot: updateLocalTypebot,
         restorePublishedTypebot,
-        ...groupsActions(setLocalTypebot as SetTypebot),
+        ...groupsActions(setLocalTypebot as SetTypebot, showToast),
         ...blocksAction(setLocalTypebot as SetTypebot),
         ...variablesAction(setLocalTypebot as SetTypebot),
         ...edgesAction(setLocalTypebot as SetTypebot),

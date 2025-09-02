@@ -20,6 +20,7 @@ import {
 import { preprocessTypebot } from '@typebot.io/schemas/features/typebot/helpers/preprocessTypebot'
 import { migrateTypebot } from '@typebot.io/migrations/migrateTypebot'
 import { trackEvents } from '@typebot.io/telemetry/trackEvents'
+import { checkGroupLimits } from '@typebot.io/lib'
 
 const omittedProps = {
   id: true,
@@ -145,18 +146,18 @@ export const importTypebot = authenticatedProcedure
     ) as TypebotV6['groups']
 
     // Check group limits for the imported typebot
-    // if (groups.length > 0) {
-    //   // Create a temporary typebot to check limits
-    //   const tempTypebotId = `temp-${Date.now()}`
-    //   const limits = await checkGroupLimits(tempTypebotId)
+    if (groups.length > 0) {
+      // Create a temporary typebot to check limits
+      const tempTypebotId = `temp-${Date.now()}`
+      const limits = await checkGroupLimits(tempTypebotId)
 
-    //   if (limits.maxGroups > 0 && groups.length > limits.maxGroups) {
-    //     throw new TRPCError({
-    //       code: 'FORBIDDEN',
-    //       message: `Imported typebot has ${groups.length} groups, but the maximum allowed is ${limits.maxGroups}. Please reduce the number of groups before importing.`,
-    //     })
-    //   }
-    // }
+      if (limits.maxGroups > 0 && groups.length > limits.maxGroups) {
+        throw new TRPCError({
+          code: 'FORBIDDEN',
+          message: `Imported typebot has ${groups.length} groups, but the maximum allowed is ${limits.maxGroups}. Please reduce the number of groups before importing.`,
+        })
+      }
+    }
 
     const newTypebot = await prisma.typebot.create({
       data: {
@@ -191,27 +192,27 @@ export const importTypebot = authenticatedProcedure
     })
 
     const parsedNewTypebot = typebotV6Schema.parse(newTypebot)
-    //  COMMENT GROUPS LIMITS UNTIL BACKEND FEATURE IS DONE
+
     // Check if the imported typebot should be automatically unpublished due to group limits
-    // if (groups.length > 0) {
-    //   const limits = await checkGroupLimits(parsedNewTypebot.id)
+    if (groups.length > 0) {
+      const limits = await checkGroupLimits(parsedNewTypebot.id)
 
-    //   if (limits.maxGroups > 0 && groups.length > limits.maxGroups) {
-    //     // Update the typebot to remove publicId (unpublish it)
-    //     await prisma.typebot.update({
-    //       where: { id: parsedNewTypebot.id },
-    //       data: { publicId: null },
-    //     })
+      if (limits.maxGroups > 0 && groups.length > limits.maxGroups) {
+        // Update the typebot to remove publicId (unpublish it)
+        await prisma.typebot.update({
+          where: { id: parsedNewTypebot.id },
+          data: { publicId: null },
+        })
 
-    //     // Also remove from publicTypebot table if it exists
-    //     await prisma.publicTypebot.deleteMany({
-    //       where: { typebotId: parsedNewTypebot.id },
-    //     })
+        // Also remove from publicTypebot table if it exists
+        await prisma.publicTypebot.deleteMany({
+          where: { typebotId: parsedNewTypebot.id },
+        })
 
-    //     // Update the parsed typebot to reflect the unpublished state
-    //     parsedNewTypebot.publicId = null
-    //   }
-    // }
+        // Update the parsed typebot to reflect the unpublished state
+        parsedNewTypebot.publicId = null
+      }
+    }
 
     await trackEvents([
       {

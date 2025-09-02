@@ -20,6 +20,11 @@ import { blockHasItems, blockHasOptions } from '@typebot.io/schemas/helpers'
 import { Coordinates, CoordinatesMap } from '@/features/graph/types'
 import { parseUniqueKey } from '@typebot.io/lib/parseUniqueKey'
 import { extractVariableIdsFromObject } from '@typebot.io/variables/extractVariablesFromObject'
+import {
+  checkGroupLimits,
+  shouldUnpublishTypebot,
+  canAddMoreGroups,
+} from '@typebot.io/lib'
 
 export type GroupsActions = {
   createGroup: (
@@ -28,7 +33,7 @@ export type GroupsActions = {
       block: BlockV6 | BlockV6['type']
       indices: BlockIndices
     }
-  ) => string | void
+  ) => Promise<string | void>
   updateGroup: (
     groupIndex: number,
     updates: Partial<Omit<GroupV6, 'id'>>
@@ -38,15 +43,18 @@ export type GroupsActions = {
     edges: Edge[],
     variables: Pick<Variable, 'id' | 'name'>[],
     oldToNewIdsMapping: Map<string, string>
-  ) => void
+  ) => Promise<void>
   updateGroupsCoordinates: (newCoord: CoordinatesMap) => void
-  duplicateGroup: (groupIndex: number) => void
+  duplicateGroup: (groupIndex: number) => Promise<void>
   deleteGroup: (groupIndex: number) => void
   deleteGroups: (groupIds: string[]) => void
 }
 
-const groupsActions = (setTypebot: SetTypebot): GroupsActions => ({
-  createGroup: ({
+const groupsActions = (
+  setTypebot: SetTypebot,
+  showToast: (props: { title: string; description: string }) => void
+): GroupsActions => ({
+  createGroup: async ({
     id,
     block,
     indices,
@@ -59,6 +67,33 @@ const groupsActions = (setTypebot: SetTypebot): GroupsActions => ({
     indices: BlockIndices
   }) => {
     let newBlockId
+
+    // Check group limits before creating
+    const typebot = await new Promise<TypebotV6>((resolve) => {
+      setTypebot((currentTypebot) => {
+        resolve(currentTypebot)
+        return currentTypebot
+      })
+    })
+
+    const canAdd = await canAddMoreGroups(typebot.id, typebot.groups.length)
+    if (!canAdd) {
+      const limits = await checkGroupLimits(typebot.id)
+      if (limits.maxGroups === 0) {
+        showToast({
+          title: 'Group Limits Unavailable',
+          description:
+            'Unable to fetch group limits. No additional groups can be created at this time.',
+        })
+      } else {
+        showToast({
+          title: 'Group Limit Reached',
+          description: `Maximum group limit (${limits.maxGroups}) reached for this typebot. Cannot create additional groups.`,
+        })
+      }
+      return
+    }
+
     setTypebot((typebot) =>
       produce(typebot, (typebot) => {
         const newGroup: GroupV6 = {
@@ -71,6 +106,35 @@ const groupsActions = (setTypebot: SetTypebot): GroupsActions => ({
         newBlockId = createBlockDraft(typebot, block, indices)
       })
     )
+
+    // Check if we need to unpublish due to group limit after creation
+    // Get the updated typebot state to check current group count
+    const updatedTypebot = await new Promise<TypebotV6>((resolve) => {
+      setTypebot((currentTypebot) => {
+        resolve(currentTypebot)
+        return currentTypebot
+      })
+    })
+
+    if (updatedTypebot.publicId) {
+      const shouldUnpublish = await shouldUnpublishTypebot(
+        updatedTypebot.id,
+        updatedTypebot.groups.length
+      )
+      if (shouldUnpublish) {
+        setTypebot((typebot) =>
+          produce(typebot, (typebot) => {
+            typebot.publicId = undefined
+          })
+        )
+        showToast({
+          title: 'Typebot Unpublished',
+          description:
+            'Typebot has been automatically unpublished due to exceeding group limits.',
+        })
+      }
+    }
+
     return newBlockId
   },
   updateGroup: (groupIndex: number, updates: Partial<Omit<GroupV6, 'id'>>) =>
@@ -91,7 +155,33 @@ const groupsActions = (setTypebot: SetTypebot): GroupsActions => ({
       })
     )
   },
-  duplicateGroup: (groupIndex: number) =>
+  duplicateGroup: async (groupIndex: number) => {
+    // Check group limits before duplicating
+    const typebot = await new Promise<TypebotV6>((resolve) => {
+      setTypebot((currentTypebot) => {
+        resolve(currentTypebot)
+        return currentTypebot
+      })
+    })
+
+    const canAdd = await canAddMoreGroups(typebot.id, typebot.groups.length)
+    if (!canAdd) {
+      const limits = await checkGroupLimits(typebot.id)
+      if (limits.maxGroups === 0) {
+        showToast({
+          title: 'Group Limits Unavailable',
+          description:
+            'Unable to fetch group limits. No additional groups can be duplicated at this time.',
+        })
+      } else {
+        showToast({
+          title: 'Group Limit Reached',
+          description: `Maximum group limit (${limits.maxGroups}) reached for this typebot. Cannot duplicate additional groups.`,
+        })
+      }
+      return
+    }
+
     setTypebot((typebot) =>
       produce(typebot, (typebot) => {
         const group = typebot.groups[groupIndex]
@@ -116,7 +206,36 @@ const groupsActions = (setTypebot: SetTypebot): GroupsActions => ({
         }
         typebot.groups.splice(groupIndex + 1, 0, newGroup)
       })
-    ),
+    )
+
+    // Check if we need to unpublish due to group limit after duplication
+    // Get the updated typebot state to check current group count
+    const updatedTypebot = await new Promise<TypebotV6>((resolve) => {
+      setTypebot((currentTypebot) => {
+        resolve(currentTypebot)
+        return currentTypebot
+      })
+    })
+
+    if (updatedTypebot.publicId) {
+      const shouldUnpublish = await shouldUnpublishTypebot(
+        updatedTypebot.id,
+        updatedTypebot.groups.length
+      )
+      if (shouldUnpublish) {
+        setTypebot((typebot) =>
+          produce(typebot, (typebot) => {
+            typebot.publicId = undefined
+          })
+        )
+        showToast({
+          title: 'Typebot Unpublished',
+          description:
+            'Typebot has been automatically unpublished due to exceeding group limits.',
+        })
+      }
+    }
+  },
   deleteGroup: (groupIndex: number) =>
     setTypebot((typebot) =>
       produce(typebot, (typebot) => {
@@ -131,12 +250,40 @@ const groupsActions = (setTypebot: SetTypebot): GroupsActions => ({
         })
       })
     ),
-  pasteGroups: (
+  pasteGroups: async (
     groups: GroupV6[],
     edges: Edge[],
     variables: Omit<Variable, 'value'>[],
     oldToNewIdsMapping: Map<string, string>
   ) => {
+    // Check group limits before pasting
+    const typebot = await new Promise<TypebotV6>((resolve) => {
+      setTypebot((currentTypebot) => {
+        resolve(currentTypebot)
+        return currentTypebot
+      })
+    })
+
+    const canAdd = await canAddMoreGroups(
+      typebot.id,
+      typebot.groups.length + groups.length
+    )
+    if (!canAdd) {
+      const limits = await checkGroupLimits(typebot.id)
+      if (limits.maxGroups === 0) {
+        showToast({
+          title: 'Group Limits Unavailable',
+          description:
+            'Unable to fetch group limits. No additional groups can be pasted at this time.',
+        })
+      } else {
+        showToast({
+          title: 'Group Limit Exceeded',
+          description: `Cannot paste ${groups.length} groups. Maximum group limit (${limits.maxGroups}) would be exceeded.`,
+        })
+      }
+      return
+    }
     const createdGroups: GroupV6[] = []
     setTypebot((typebot) =>
       produce(typebot, (typebot) => {
@@ -264,6 +411,34 @@ const groupsActions = (setTypebot: SetTypebot): GroupsActions => ({
         })
       })
     )
+
+    // Check if we need to unpublish due to group limit after pasting
+    // Get the updated typebot state to check current group count
+    const updatedTypebot = await new Promise<TypebotV6>((resolve) => {
+      setTypebot((currentTypebot) => {
+        resolve(currentTypebot)
+        return currentTypebot
+      })
+    })
+
+    if (updatedTypebot.publicId) {
+      const shouldUnpublish = await shouldUnpublishTypebot(
+        updatedTypebot.id,
+        updatedTypebot.groups.length
+      )
+      if (shouldUnpublish) {
+        setTypebot((typebot) =>
+          produce(typebot, (typebot) => {
+            typebot.publicId = undefined
+          })
+        )
+        showToast({
+          title: 'Typebot Unpublished',
+          description:
+            'Typebot has been automatically unpublished due to exceeding group limits.',
+        })
+      }
+    }
   },
 })
 
