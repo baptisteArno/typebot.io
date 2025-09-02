@@ -49,9 +49,6 @@ export const ResultsProvider = ({
   const { data, fetchNextPage, hasNextPage, refetch } = useResultsQuery({
     timeFilter,
     typebotId,
-    onError: (error) => {
-      toast({ description: error });
-    },
   });
 
   const linkedTypebotIds =

@@ -61,9 +61,6 @@ export const FolderContent = ({ folder }: Props) => {
 
   const { mutate: createFolder } = useMutation(
     trpc.folders.createFolder.mutationOptions({
-      onError: (error) => {
-        toast({ description: error.message });
-      },
       onSuccess: () => {
         refetchFolders();
       },
@@ -72,9 +69,6 @@ export const FolderContent = ({ folder }: Props) => {
 
   const { mutate: updateTypebot } = useMutation(
     trpc.typebot.updateTypebot.mutationOptions({
-      onError: (error) => {
-        toast({ description: error.message });
-      },
       onSuccess: () => {
         refetchTypebots();
       },

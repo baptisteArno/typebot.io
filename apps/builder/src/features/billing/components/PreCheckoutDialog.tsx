@@ -46,11 +46,6 @@ export const PreCheckoutDialog = ({
   const { mutate: createCheckoutSession, status: createCheckoutSessionStatus } =
     useMutation(
       trpc.billing.createCheckoutSession.mutationOptions({
-        onError: (error) => {
-          toast({
-            description: error.message,
-          });
-        },
         onSuccess: ({ checkoutUrl }) => {
           router.push(checkoutUrl);
         },

@@ -6,7 +6,11 @@ import { isFreePlan } from "@/features/billing/helpers/isFreePlan";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { useTimeSince } from "@/hooks/useTimeSince";
-import { queryClient, trpc } from "@/lib/queryClient";
+import {
+  queryClient,
+  showHttpRequestErrorToast,
+  trpc,
+} from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
 import {
   Alert,
@@ -73,9 +77,8 @@ export const PublishButton = ({
     useMutation(
       trpc.typebot.publishTypebot.mutationOptions({
         onError: (error) => {
-          toast({
-            title: t("publish.error.label"),
-            description: error.message,
+          showHttpRequestErrorToast(error, {
+            context: t("publish.error.label"),
           });
           if (error.data?.httpStatus === 403) {
             setTimeout(() => {

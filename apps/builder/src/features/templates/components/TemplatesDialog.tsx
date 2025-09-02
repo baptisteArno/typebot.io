@@ -39,7 +39,6 @@ export const TemplatesDialog = ({
   const [selectedTemplate, setSelectedTemplate] = useState<TemplateProps>(
     templates[0],
   );
-  const [isFirstTemplateLoaded, setIsFirstTemplateLoaded] = useState(false);
   const { workspace } = useWorkspace();
 
   const fetchTemplate = useCallback(
@@ -64,10 +63,9 @@ export const TemplatesDialog = ({
   );
 
   useEffect(() => {
-    if (isFirstTemplateLoaded) return;
-    setIsFirstTemplateLoaded(true);
-    fetchTemplate(templates[0]);
-  }, [fetchTemplate, templates, isFirstTemplateLoaded]);
+    if (typebot?.id) return;
+    fetchTemplate(selectedTemplate);
+  }, [fetchTemplate, typebot?.id, selectedTemplate.fileName]);
 
   const onUseThisTemplateClick = async () => {
     if (!typebot) return;

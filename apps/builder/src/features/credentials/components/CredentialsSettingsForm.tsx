@@ -6,7 +6,6 @@ import { BlockLabel } from "@/features/editor/components/BlockLabel";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { useOpenControls } from "@/hooks/useOpenControls";
 import { trpc } from "@/lib/queryClient";
-import { toast } from "@/lib/toast";
 import {
   Divider,
   Flex,
@@ -77,12 +76,6 @@ export const CredentialsSettingsForm = () => {
         setDeletingCredentialsId(credentialsId as string),
       onSettled: () => {
         setDeletingCredentialsId(undefined);
-      },
-      onError: (error) => {
-        toast({
-          description: error.message,
-          title: "While deleting credentials",
-        });
       },
       onSuccess: () => {
         refetch();

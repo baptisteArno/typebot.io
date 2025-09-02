@@ -11,9 +11,6 @@ export const useAcceptTermsMutation = ({
 }) =>
   useMutation(
     trpc.userInternal.acceptTerms.mutationOptions({
-      onError: (error) => {
-        toast({ description: error.message });
-      },
       onSettled: () => {
         refreshSessionUser();
       },

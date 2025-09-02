@@ -42,12 +42,6 @@ export const CustomDomainsDropdown = ({
       onMutate: ({ name }) => {
         setIsDeleting(name);
       },
-      onError: (error) => {
-        toast({
-          title: "Error while deleting custom domain",
-          description: error.message,
-        });
-      },
       onSettled: () => {
         setIsDeleting("");
       },

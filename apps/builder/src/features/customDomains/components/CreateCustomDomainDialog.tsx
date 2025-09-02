@@ -1,5 +1,4 @@
 import { trpc } from "@/lib/queryClient";
-import { toast } from "@/lib/toast";
 import { Alert, HStack, Heading, Input, Stack, Text } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
@@ -38,12 +37,6 @@ export const CreateCustomDomainDialog = ({
     trpc.customDomains.createCustomDomain.mutationOptions({
       onMutate: () => {
         setIsLoading(true);
-      },
-      onError: (error) => {
-        toast({
-          title: "Error while creating custom domain",
-          description: error.message,
-        });
       },
       onSettled: () => {
         setIsLoading(false);

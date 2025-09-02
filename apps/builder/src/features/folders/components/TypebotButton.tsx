@@ -52,9 +52,6 @@ const TypebotButton = ({
 
   const { mutate: importTypebot } = useMutation(
     trpc.typebot.importTypebot.mutationOptions({
-      onError: (error) => {
-        toast({ description: error.message });
-      },
       onSuccess: ({ typebot }) => {
         router.push(`/typebots/${typebot.id}/edit`);
       },
@@ -63,9 +60,6 @@ const TypebotButton = ({
 
   const { mutate: deleteTypebot } = useMutation(
     trpc.typebot.deleteTypebot.mutationOptions({
-      onError: (error) => {
-        toast({ description: error.message });
-      },
       onSuccess: () => {
         onTypebotUpdated();
       },
@@ -74,9 +68,6 @@ const TypebotButton = ({
 
   const { mutate: unpublishTypebot } = useMutation(
     trpc.typebot.unpublishTypebot.mutationOptions({
-      onError: (error) => {
-        toast({ description: error.message });
-      },
       onSuccess: () => {
         onTypebotUpdated();
       },

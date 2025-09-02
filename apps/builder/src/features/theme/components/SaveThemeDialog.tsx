@@ -1,6 +1,5 @@
 import { TextInput } from "@/components/inputs";
 import { queryClient, trpc } from "@/lib/queryClient";
-import { toast } from "@/lib/toast";
 import { createId } from "@paralleldrive/cuid2";
 import { useMutation } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
@@ -36,11 +35,6 @@ export const SaveThemeDialog = ({
           queryKey: trpc.theme.listThemeTemplates.queryKey(),
         });
         onClose(themeTemplate);
-      },
-      onError: (error) => {
-        toast({
-          description: error.message,
-        });
       },
     }),
   );

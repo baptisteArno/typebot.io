@@ -7,9 +7,6 @@ import { useMutation } from "@tanstack/react-query";
 export const useUpdateUserMutation = () =>
   useMutation(
     trpc.user.update.mutationOptions({
-      onError: (error) => {
-        toast({ description: error.message });
-      },
       onSettled: () => {
         refreshSessionUser();
       },

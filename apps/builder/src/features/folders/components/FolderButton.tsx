@@ -52,18 +52,12 @@ const FolderButton = ({
   const deleteDialogControls = useOpenControls();
   const { mutate: deleteFolder } = useMutation(
     trpc.folders.deleteFolder.mutationOptions({
-      onError: (error) => {
-        toast({ description: error.message });
-      },
       onSuccess: onFolderDeleted,
     }),
   );
 
   const { mutate: updateFolder } = useMutation(
     trpc.folders.updateFolder.mutationOptions({
-      onError: (error) => {
-        toast({ description: error.message });
-      },
       onSuccess: onFolderRenamed,
     }),
   );

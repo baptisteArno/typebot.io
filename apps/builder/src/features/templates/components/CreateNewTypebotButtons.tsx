@@ -34,11 +34,6 @@ export const CreateNewTypebotButtons = () => {
       onMutate: () => {
         setIsLoading(true);
       },
-      onError: (error) => {
-        toast({
-          description: error.message,
-        });
-      },
       onSuccess: (data) => {
         router.push({
           pathname: `/typebots/${data.typebot.id}/edit`,
@@ -54,11 +49,6 @@ export const CreateNewTypebotButtons = () => {
     trpc.typebot.importTypebot.mutationOptions({
       onMutate: () => {
         setIsLoading(true);
-      },
-      onError: (error) => {
-        toast({
-          description: error.data?.zodError ?? error.message,
-        });
       },
       onSuccess: (data) => {
         router.push({

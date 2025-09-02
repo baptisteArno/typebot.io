@@ -40,11 +40,6 @@ export const ChangePlanForm = ({
   const { mutate: updateSubscription, status: updateSubscriptionStatus } =
     useMutation(
       trpc.billing.updateSubscription.mutationOptions({
-        onError: (error) => {
-          toast({
-            description: error.message,
-          });
-        },
         onSuccess: ({ workspace, checkoutUrl }) => {
           if (checkoutUrl) {
             window.location.href = checkoutUrl;

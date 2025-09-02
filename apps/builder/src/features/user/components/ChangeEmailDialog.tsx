@@ -1,5 +1,5 @@
 import { refreshSessionUser } from "@/features/auth/helpers/refreshSessionUser";
-import { trpc } from "@/lib/queryClient";
+import { showHttpRequestErrorToast, trpc } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
 import { Input, Text } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
@@ -18,8 +18,8 @@ export const ChangeEmailDialog = ({ isOpen, onClose, userEmail }: Props) => {
   const { mutate: sendUpdateEmailVerifCodeEmail } = useMutation(
     trpc.auth.sendUpdateEmailVerifCodeEmail.mutationOptions({
       onError: (error) => {
-        toast({
-          description: error.message,
+        showHttpRequestErrorToast(error, {
+          context: "While sending verification code",
         });
         setVerificationCodeStatus(undefined);
       },
@@ -32,11 +32,6 @@ export const ChangeEmailDialog = ({ isOpen, onClose, userEmail }: Props) => {
     trpc.auth.updateUserEmail.mutationOptions({
       onSettled: () => {
         setIsUpdatingEmail(false);
-      },
-      onError: (error) => {
-        toast({
-          description: error.message,
-        });
       },
       onSuccess: () => {
         refreshSessionUser();

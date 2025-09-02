@@ -1,7 +1,6 @@
 import { ChevronLeftIcon, PlusIcon } from "@/components/icons";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { trpc } from "@/lib/queryClient";
-import { toast } from "@/lib/toast";
 import { useQuery } from "@tanstack/react-query";
 import { useMutation } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
@@ -60,11 +59,6 @@ export const CredentialsDropdown = ({
     trpc.credentials.deleteCredentials.mutationOptions({
       onMutate: ({ credentialsId }) => {
         setIsDeleting(credentialsId);
-      },
-      onError: (error) => {
-        toast({
-          description: error.message,
-        });
       },
       onSuccess: ({ credentialsId }) => {
         if (credentialsId === currentCredentialsId)

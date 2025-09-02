@@ -62,11 +62,6 @@ export const ForgedCredentialsDropdown = ({
       onMutate: ({ credentialsId }) => {
         setIsDeleting(credentialsId);
       },
-      onError: (error) => {
-        toast({
-          description: error.message,
-        });
-      },
       onSuccess: ({ credentialsId }) => {
         if (credentialsId === currentCredentialsId)
           onCredentialsSelect(undefined);
