@@ -1,6 +1,7 @@
-import { CancelIcon } from "@hugeicons-pro/core-stroke-rounded";
 import { Icon } from "../components/Icon";
 
 export const CloseIcon = ({ className }: { className?: string }) => (
-  <Icon icon={CancelIcon} className={className} />
+  <Icon className={className}>
+    <path d="M18 6L6.00081 17.9992M17.9992 18L6 6.00085" />
+  </Icon>
 );

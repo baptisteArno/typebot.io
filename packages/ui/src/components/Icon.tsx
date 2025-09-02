@@ -1,23 +1,29 @@
-import { HugeiconsIcon, type IconSvgElement } from "@hugeicons/react";
 import { forwardRef } from "react";
 import { cn } from "../lib/cn";
 
 export type IconProps = {
-  icon: IconSvgElement;
+  children: React.ReactNode;
   className?: string;
 };
 
 export const Icon = forwardRef<SVGSVGElement, IconProps>(
-  ({ icon, className, ...props }, ref) => {
+  ({ children, className, ...props }, ref) => {
     return (
-      <HugeiconsIcon
+      <svg
         ref={ref}
-        icon={icon}
-        size={16}
-        strokeWidth={1.5}
-        className={cn("inline-flex flex-shrink-0", className)}
+        viewBox="0 0 24 24"
+        fill="none"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        stroke="currentColor"
+        className={cn(
+          "size-4 stroke-[1.5px] inline-flex flex-shrink-0",
+          className,
+        )}
         {...props}
-      />
+      >
+        {children}
+      </svg>
     );
   },
 );

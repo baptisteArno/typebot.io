@@ -1,6 +1,7 @@
-import { PlusSignIcon } from "@hugeicons-pro/core-stroke-rounded";
 import { Icon } from "../components/Icon";
 
 export const PlusIcon = ({ className }: { className?: string }) => (
-  <Icon icon={PlusSignIcon} className={className} />
+  <Icon className={className}>
+    <path d="M12 4V20M20 12H4" />
+  </Icon>
 );

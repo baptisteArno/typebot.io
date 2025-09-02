@@ -1,6 +1,8 @@
-import { LayoutBottomIcon as HugeIconsLayoutBottomIcon } from "@hugeicons-pro/core-stroke-rounded";
 import { Icon } from "../components/Icon";
 
 export const LayoutBottomIcon = ({ className }: { className?: string }) => (
-  <Icon icon={HugeIconsLayoutBottomIcon} className={className} />
+  <Icon className={className}>
+    <path d="M20.1088 3.89124C21.5 5.28249 21.5 7.52166 21.5 12C21.5 16.4783 21.5 18.7175 20.1088 20.1088C18.7175 21.5 16.4783 21.5 12 21.5C7.52166 21.5 5.28248 21.5 3.89124 20.1088C2.5 18.7175 2.5 16.4783 2.5 12C2.5 7.52166 2.5 5.28248 3.89124 3.89124C5.28249 2.5 7.52166 2.5 12 2.5C16.4783 2.5 18.7175 2.5 20.1088 3.89124Z" />
+    <path d="M21.5 15L2.5 15" />
+  </Icon>
 );
