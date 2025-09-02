@@ -157,7 +157,7 @@ export const GuestTypebotHeader = () => {
               variant="outline"
               size="sm"
             >
-              Try Typebot
+              Try Mottasl Bot
             </Button>
           </>
         )}
