@@ -66,6 +66,21 @@ export const createTypebot = authenticatedProcedure
     )
       throw new TRPCError({ code: 'NOT_FOUND', message: 'Workspace not found' })
 
+    // Check if workspace already has 5 typebots
+    const existingTypebotCount = await prisma.typebot.count({
+      where: {
+        workspaceId,
+        isArchived: { not: true },
+      },
+    })
+
+    if (existingTypebotCount >= 5) {
+      throw new TRPCError({
+        code: 'FORBIDDEN',
+        message: 'Maximum limit of 5 typebots reached for this workspace',
+      })
+    }
+
     if (
       typebot.customDomain &&
       (await isCustomDomainNotAvailable({

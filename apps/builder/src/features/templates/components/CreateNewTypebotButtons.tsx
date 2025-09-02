@@ -17,6 +17,7 @@ import { trpc } from '@/lib/trpc'
 import { useTranslate } from '@tolgee/react'
 import { Typebot } from '@typebot.io/schemas'
 import { TemplatesModal } from './TemplatesModal'
+import { Alert, AlertIcon, AlertDescription } from '@chakra-ui/react'
 
 export const CreateNewTypebotButtons = () => {
   const { t } = useTranslate()
@@ -28,6 +29,12 @@ export const CreateNewTypebotButtons = () => {
   const [isLoading, setIsLoading] = useState(false)
 
   const { showToast } = useToast()
+
+  // Get current typebot count to show warnings
+  const { data: typebotCount } = trpc.typebot.listTypebots.useQuery(
+    { workspaceId: workspace?.id ?? '' },
+    { enabled: !!workspace?.id }
+  )
 
   const { mutate: createTypebot } = trpc.typebot.createTypebot.useMutation({
     onMutate: () => {
@@ -93,6 +100,23 @@ export const CreateNewTypebotButtons = () => {
   return (
     <VStack maxW="600px" w="full" flex="1" pt="20" spacing={10}>
       <Heading>{t('templates.buttons.heading')}</Heading>
+
+      {/* Show warning when approaching typebot limit */}
+      {typebotCount && typebotCount.typebots.length >= 4 && (
+        <Alert status="warning" borderRadius="md">
+          <AlertIcon />
+          <AlertDescription>
+            {typebotCount.typebots.length === 5
+              ? 'You have reached the maximum limit of 5 typebots for this workspace.'
+              : `You have ${
+                  typebotCount.typebots.length
+                } typebots. You can create ${
+                  5 - typebotCount.typebots.length
+                } more.`}
+          </AlertDescription>
+        </Alert>
+      )}
+
       <Stack w="full" spacing={6}>
         <Button
           variant="outline"

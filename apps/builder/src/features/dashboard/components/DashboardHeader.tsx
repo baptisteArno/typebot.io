@@ -1,23 +1,26 @@
 import React from 'react'
-import { HStack, Flex, Button, useDisclosure, IconButton } from '@chakra-ui/react'
+import {
+  HStack,
+  Flex,
+  Button,
+  useDisclosure,
+  IconButton,
+} from '@chakra-ui/react'
 import { SettingsIcon } from '@/components/icons'
 import { useUser } from '@/features/account/hooks/useUser'
 import { isNotDefined } from '@typebot.io/lib'
-import Link from 'next/link'
 import { useTranslate } from '@tolgee/react'
 import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import { WorkspaceSettingsModal } from '@/features/workspace/components/WorkspaceSettingsModal'
 import { ParentModalProvider } from '@/features/graph/providers/ParentModalProvider'
 import { useRouter } from 'next/router'
-import { env } from '@typebot.io/env'
 import { ChevronLeftIcon } from './../../../components/icons'
 
 export const DashboardHeader = () => {
   const { t } = useTranslate()
   const { user } = useUser()
   const { workspace } = useWorkspace()
-  const { asPath } = useRouter()
-  const dashboardUrl = env.NEXT_PUBLIC_E2E_TEST?"https://test.app.avocad0.dev/apps": "https://app.mottasl.ai/apps"
+  const { asPath, back, push } = useRouter()
 
   const isRedirectFromCredentialsCreation = asPath.includes('preferences')
 
@@ -25,6 +28,15 @@ export const DashboardHeader = () => {
     defaultIsOpen: isRedirectFromCredentialsCreation,
   })
 
+  const handleBackNavigation = () => {
+    // Check if we can go back in browser history
+    if (window.history.length > 1) {
+      back()
+    } else {
+      // If no history, navigate to homepage
+      push('/')
+    }
+  }
 
   return (
     <Flex w="full" borderBottomWidth="1px" justify="center">
@@ -35,18 +47,12 @@ export const DashboardHeader = () => {
         maxW="1000px"
         flex="1"
       >
-    <IconButton
-           as={Link}
-           aria-label="Navigate back"
-           icon={<ChevronLeftIcon fontSize={25} />}
-           href={{
-             pathname: dashboardUrl
-               ,
-             query: {
-             },
-           }}
-           size="sm"
-         />
+        <IconButton
+          aria-label="Navigate back"
+          icon={<ChevronLeftIcon fontSize={25} />}
+          onClick={handleBackNavigation}
+          size="sm"
+        />
         <HStack>
           {user && workspace && !workspace.isPastDue && (
             <ParentModalProvider>
