@@ -74,6 +74,8 @@ const baseEnv = {
       .min(1)
       .optional()
       .transform((val) => val?.split(',')),
+    HUB_URL: z.string(),
+    HUB_API_SIGNATURE: z.string(),
     DEFAULT_WORKSPACE_PLAN: z
       .enum(['FREE', 'STARTER', 'PRO', 'LIFETIME', 'UNLIMITED'])
       .refine((str) =>
