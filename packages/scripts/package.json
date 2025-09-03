@@ -30,6 +30,7 @@
     "checkDependencies": "tsx src/checkDependencies.ts",
     "readCsvAndDoSomething": "SKIP_ENV_CHECK=true dotenv -e ./.env.production -- tsx src/readCsvAndDoSomething.ts",
     "recurringCheckInactiveUsers": "SKIP_ENV_CHECK=true dotenv -e ./.env.production -- tsx src/recurringCheckInactiveUsers.ts",
+    "addHttpProxyCredentials": "dotenv -e ./.env.production -- tsx src/addHttpProxyCredentials.ts",
     "cron:hourly": "SKIP_ENV_CHECK=true tsx src/cronJobs/hourly.tsx",
     "cron:daily": "SKIP_ENV_CHECK=true tsx src/cronJobs/daily.tsx",
     "cron:monthly": "SKIP_ENV_CHECK=true tsx src/cronJobs/monthly.tsx"
