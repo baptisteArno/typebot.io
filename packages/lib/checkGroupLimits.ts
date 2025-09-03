@@ -1,3 +1,5 @@
+import { env } from '@typebot.io/env'
+
 export interface GroupLimitResponse {
   maxGroups: number
   error?: string
@@ -8,15 +10,14 @@ export const checkGroupLimits = async (
 ): Promise<GroupLimitResponse> => {
   try {
     const response = await fetch(
-      `${process.env.HUB_URL}/api/v1/item/${workspaceId}/typebot`,
+      `${env.HUB_URL}/api/v1/item/${workspaceId}/typebot`,
       {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          ...(process.env.HUB_API_SIGNATURE
+          ...(env.HUB_API_SIGNATURE
             ? {
-                'X-API-SIGNATURE':
-                  process.env.HUB_API_SIGNATURE || 'test-signature',
+                'X-API-SIGNATURE': env.HUB_API_SIGNATURE || 'test-signature',
               }
             : {}),
         },
