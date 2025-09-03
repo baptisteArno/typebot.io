@@ -137,7 +137,7 @@ export const Graph = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const handleMouseUp = (e: MouseEvent) => {
+  const handleMouseUp = async (e: MouseEvent) => {
     if (!typebot) return
     if (draggedItem) setDraggedItem(undefined)
     if (!draggedBlock && !draggedBlockType) return
@@ -148,7 +148,7 @@ export const Graph = ({
     )
     const id = createId()
     updateGroupCoordinates(id, coordinates)
-    const newBlockId = createGroup({
+    const newBlockId = await createGroup({
       id,
       ...coordinates,
       block: draggedBlock ?? (draggedBlockType as BlockV6['type']),
