@@ -52,7 +52,10 @@ export type GroupsActions = {
 
 const groupsActions = (
   setTypebot: SetTypebot,
-  showToast: (props: { title: string; description: string }) => void
+  showToast: (props: { title: string; description: string }) => void,
+  unpublishTypebot?: (params: {
+    typebotId: string
+  }) => Promise<{ message: string }>
 ): GroupsActions => ({
   createGroup: async ({
     id,
@@ -76,9 +79,12 @@ const groupsActions = (
       })
     })
 
-    const canAdd = await canAddMoreGroups(typebot.id, typebot.groups.length)
+    const canAdd = await canAddMoreGroups(
+      typebot.workspaceId,
+      typebot.groups.length
+    )
     if (!canAdd) {
-      const limits = await checkGroupLimits(typebot.id)
+      const limits = await checkGroupLimits(typebot.workspaceId)
       if (limits.maxGroups === 0) {
         showToast({
           title: 'Group Limits Unavailable',
@@ -118,10 +124,19 @@ const groupsActions = (
 
     if (updatedTypebot.publicId) {
       const shouldUnpublish = await shouldUnpublishTypebot(
-        updatedTypebot.id,
+        updatedTypebot.workspaceId,
         updatedTypebot.groups.length
       )
       if (shouldUnpublish) {
+        // Call the unpublish API endpoint using tRPC
+        if (unpublishTypebot) {
+          try {
+            await unpublishTypebot({ typebotId: updatedTypebot.id })
+          } catch (error) {
+            console.error('Failed to call unpublish API:', error)
+          }
+        }
+
         setTypebot((typebot) =>
           produce(typebot, (typebot) => {
             typebot.publicId = null
@@ -164,9 +179,12 @@ const groupsActions = (
       })
     })
 
-    const canAdd = await canAddMoreGroups(typebot.id, typebot.groups.length)
+    const canAdd = await canAddMoreGroups(
+      typebot.workspaceId,
+      typebot.groups.length
+    )
     if (!canAdd) {
-      const limits = await checkGroupLimits(typebot.id)
+      const limits = await checkGroupLimits(typebot.workspaceId)
       if (limits.maxGroups === 0) {
         showToast({
           title: 'Group Limits Unavailable',
@@ -219,10 +237,19 @@ const groupsActions = (
 
     if (updatedTypebot.publicId) {
       const shouldUnpublish = await shouldUnpublishTypebot(
-        updatedTypebot.id,
+        updatedTypebot.workspaceId,
         updatedTypebot.groups.length
       )
       if (shouldUnpublish) {
+        // Call the unpublish API endpoint using tRPC
+        if (unpublishTypebot) {
+          try {
+            await unpublishTypebot({ typebotId: updatedTypebot.id })
+          } catch (error) {
+            console.error('Failed to call unpublish API:', error)
+          }
+        }
+
         setTypebot((typebot) =>
           produce(typebot, (typebot) => {
             typebot.publicId = null
@@ -265,11 +292,11 @@ const groupsActions = (
     })
 
     const canAdd = await canAddMoreGroups(
-      typebot.id,
+      typebot.workspaceId,
       typebot.groups.length + groups.length
     )
     if (!canAdd) {
-      const limits = await checkGroupLimits(typebot.id)
+      const limits = await checkGroupLimits(typebot.workspaceId)
       if (limits.maxGroups === 0) {
         showToast({
           title: 'Group Limits Unavailable',
@@ -413,7 +440,7 @@ const groupsActions = (
     )
 
     // Check if we need to unpublish due to group limit after pasting
-    // Get the updated typebot state to check current group count
+    // Get the updated typebotState to check current group count
     const updatedTypebot = await new Promise<TypebotV6>((resolve) => {
       setTypebot((currentTypebot) => {
         resolve(currentTypebot)
@@ -423,10 +450,19 @@ const groupsActions = (
 
     if (updatedTypebot.publicId) {
       const shouldUnpublish = await shouldUnpublishTypebot(
-        updatedTypebot.id,
+        updatedTypebot.workspaceId,
         updatedTypebot.groups.length
       )
       if (shouldUnpublish) {
+        // Call the unpublish API endpoint using tRPC
+        if (unpublishTypebot) {
+          try {
+            await unpublishTypebot({ typebotId: updatedTypebot.id })
+          } catch (error) {
+            console.error('Failed to call unpublish API:', error)
+          }
+        }
+
         setTypebot((typebot) =>
           produce(typebot, (typebot) => {
             typebot.publicId = null

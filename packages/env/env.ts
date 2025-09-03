@@ -74,8 +74,6 @@ const baseEnv = {
       .min(1)
       .optional()
       .transform((val) => val?.split(',')),
-    HUB_URL: z.string(),
-    HUB_API_SIGNATURE: z.string(),
     DEFAULT_WORKSPACE_PLAN: z
       .enum(['FREE', 'STARTER', 'PRO', 'LIFETIME', 'UNLIMITED'])
       .refine((str) =>
@@ -425,6 +423,18 @@ const keycloakEnv = {
   },
 }
 
+const hubEnv = {
+  client: {
+    NEXT_PUBLIC_HUB_URL: z.string().optional(),
+    NEXT_PUBLIC_HUB_API_SIGNATURE: z.string().optional(),
+  },
+  runtimeEnv: {
+    NEXT_PUBLIC_HUB_URL: getRuntimeVariable('NEXT_PUBLIC_HUB_URL'),
+    NEXT_PUBLIC_HUB_API_SIGNATURE: getRuntimeVariable(
+      'NEXT_PUBLIC_HUB_API_SIGNATURE'
+    ),
+  },
+}
 export const env = createEnv({
   server: {
     ...baseEnv.server,
@@ -448,6 +458,7 @@ export const env = createEnv({
   client: {
     ...baseEnv.client,
     ...smtpEnv.client,
+    ...hubEnv.client,
     ...googleEnv.client,
     ...stripeEnv.client,
     ...giphyEnv.client,
@@ -461,6 +472,7 @@ export const env = createEnv({
   experimental__runtimeEnv: {
     ...baseEnv.runtimeEnv,
     ...smtpEnv.runtimeEnv,
+    ...hubEnv.runtimeEnv,
     ...googleEnv.runtimeEnv,
     ...stripeEnv.runtimeEnv,
     ...giphyEnv.runtimeEnv,
