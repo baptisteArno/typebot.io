@@ -165,6 +165,15 @@ export const TypebotProvider = ({
       },
     })
 
+  const { mutateAsync: unpublishTypebot } =
+    trpc.typebot.unpublishTypebot.useMutation({
+      onError: (error) =>
+        showToast({
+          title: 'Error while unpublishing typebot',
+          description: error.message,
+        }),
+    })
+
   const typebot = typebotData?.typebot as TypebotV6
   const publishedTypebot = (publishedTypebotData?.publishedTypebot ??
     undefined) as PublicTypebotV6 | undefined
@@ -195,7 +204,7 @@ export const TypebotProvider = ({
 
   // Function to check if a typebot exceeds group limits and unpublish if needed
   const checkAndUnpublishIfNeeded = useCallback(
-    async (workspaceId: string, groupCount: number) => {
+    async (workspaceId: string, groupCount: number, typebotId: string) => {
       try {
         const { shouldUnpublishTypebot } = await import('@typebot.io/lib')
         const shouldUnpublish = await shouldUnpublishTypebot(
@@ -204,9 +213,16 @@ export const TypebotProvider = ({
         )
 
         if (shouldUnpublish) {
-          // Update local state to remove publicId for all typebots in the workspace
+          // Call the unpublish API endpoint using tRPC
+          try {
+            await unpublishTypebot({ typebotId: typebotId })
+          } catch (error) {
+            console.error('Failed to call unpublish API:', error)
+          }
+
+          // Update local state to remove publicId
           setLocalTypebot((currentTypebot) => {
-            if (currentTypebot && currentTypebot.workspaceId === workspaceId) {
+            if (currentTypebot && currentTypebot.id === typebotId) {
               return { ...currentTypebot, publicId: null }
             }
             return currentTypebot
@@ -242,7 +258,11 @@ export const TypebotProvider = ({
 
       // Check if the loaded typebot exceeds group limits and should be unpublished
       if (typebot.publicId) {
-        checkAndUnpublishIfNeeded(typebot.id, typebot.groups.length)
+        checkAndUnpublishIfNeeded(
+          typebot.workspaceId,
+          typebot.groups.length,
+          typebot.id
+        )
       }
     }
   }, [
@@ -341,8 +361,9 @@ export const TypebotProvider = ({
 
     const checkInterval = setInterval(async () => {
       await checkAndUnpublishIfNeeded(
-        localTypebot.id,
-        localTypebot.groups.length
+        localTypebot.workspaceId,
+        localTypebot.groups.length,
+        localTypebot.id
       )
     }, 30000) // Check every 30 seconds
 
@@ -351,6 +372,7 @@ export const TypebotProvider = ({
     localTypebot?.id,
     localTypebot?.publicId,
     localTypebot?.groups.length,
+    localTypebot?.workspaceId,
     isReadOnly,
     checkAndUnpublishIfNeeded,
   ])
@@ -393,7 +415,11 @@ export const TypebotProvider = ({
         isPublished,
         updateTypebot: updateLocalTypebot,
         restorePublishedTypebot,
-        ...groupsActions(setLocalTypebot as SetTypebot, showToast),
+        ...groupsActions(
+          setLocalTypebot as SetTypebot,
+          showToast,
+          unpublishTypebot
+        ),
         ...blocksAction(setLocalTypebot as SetTypebot),
         ...variablesAction(setLocalTypebot as SetTypebot),
         ...edgesAction(setLocalTypebot as SetTypebot),

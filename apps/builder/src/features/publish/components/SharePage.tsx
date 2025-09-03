@@ -92,6 +92,17 @@ export const SharePage = () => {
     }
   }, [typebot, workspace])
 
+  // Continuous monitoring for group limit changes
+  useEffect(() => {
+    if (!typebot || !workspace || !typebot.publicId) return
+
+    const checkInterval = setInterval(() => {
+      checkAndAutoUnpublish()
+    }, 30000) // Check every 30 seconds
+
+    return () => clearInterval(checkInterval)
+  }, [typebot, workspace])
+
   const handlePublicIdChange = async (publicId: string) => {
     updateTypebot({ updates: { publicId }, save: true })
   }
