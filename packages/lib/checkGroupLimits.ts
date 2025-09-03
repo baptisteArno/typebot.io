@@ -13,13 +13,22 @@ export const checkGroupLimits = async (
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          'X-API-SIGNATURE': process.env.HUB_API_SIGNATURE,
+          ...(process.env.HUB_API_SIGNATURE
+            ? {
+                'X-API-SIGNATURE':
+                  process.env.HUB_API_SIGNATURE || 'test-signature',
+              }
+            : {}),
         },
       }
     )
 
     if (!response.ok) {
-      throw new Error(`API returned ${response.status}`)
+      console.error('Failed to fetch group limits: Cannot Call API')
+      return {
+        maxGroups: 0,
+        error: 'cannot call the api',
+      }
     }
 
     const data = await response.json()
@@ -28,7 +37,6 @@ export const checkGroupLimits = async (
     }
   } catch (error) {
     console.error('Failed to fetch group limits:', error)
-    // Default to no additional groups if API fails
     return {
       maxGroups: 0,
       error: error instanceof Error ? error.message : 'Unknown error',
@@ -42,13 +50,14 @@ export const shouldUnpublishTypebot = async (
 ): Promise<boolean> => {
   try {
     const limits = await checkGroupLimits(workspaceId)
-    
+
     // Safety checks
     if (limits.maxGroups <= 0) {
+      console.error('Failed to fetch group limits: Cannot Call API')
       // If no groups allowed or API failed, don't unpublish (conservative approach)
       return false
     }
-    
+
     return currentGroupCount > limits.maxGroups
   } catch {
     // If API fails, don't unpublish (conservative approach)
@@ -63,13 +72,13 @@ export const canAddMoreGroups = async (
 ): Promise<boolean> => {
   try {
     const limits = await checkGroupLimits(workspaceId)
-    
+
     // Safety checks
     if (limits.maxGroups <= 0) {
       // If no groups allowed or API failed, don't allow adding groups
       return false
     }
-    
+
     return currentGroupCount < limits.maxGroups
   } catch {
     // If API fails, don't allow adding groups (conservative approach)

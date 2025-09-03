@@ -124,7 +124,7 @@ const groupsActions = (
       if (shouldUnpublish) {
         setTypebot((typebot) =>
           produce(typebot, (typebot) => {
-            typebot.publicId = undefined
+            typebot.publicId = null
           })
         )
         showToast({
@@ -225,7 +225,7 @@ const groupsActions = (
       if (shouldUnpublish) {
         setTypebot((typebot) =>
           produce(typebot, (typebot) => {
-            typebot.publicId = undefined
+            typebot.publicId = null
           })
         )
         showToast({
@@ -429,7 +429,7 @@ const groupsActions = (
       if (shouldUnpublish) {
         setTypebot((typebot) =>
           produce(typebot, (typebot) => {
-            typebot.publicId = undefined
+            typebot.publicId = null
           })
         )
         showToast({

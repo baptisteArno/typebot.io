@@ -97,38 +97,6 @@ export const TypebotProvider = ({
     (state) => state.setGroupsCoordinates
   )
 
-  // Function to check if a typebot exceeds group limits and unpublish if needed
-  const checkAndUnpublishIfNeeded = useCallback(
-    async (typebotId: string, groupCount: number) => {
-      try {
-        const { shouldUnpublishTypebot } = await import('@typebot.io/lib')
-        const shouldUnpublish = await shouldUnpublishTypebot(
-          typebotId,
-          groupCount
-        )
-
-        if (shouldUnpublish) {
-          // Update local state to remove publicId
-          setLocalTypebot((currentTypebot) => {
-            if (currentTypebot && currentTypebot.id === typebotId) {
-              return { ...currentTypebot, publicId: undefined }
-            }
-            return currentTypebot
-          })
-
-          showToast({
-            title: 'Typebot Auto-Unpublished',
-            description:
-              'Typebot has been automatically unpublished due to exceeding group limits.',
-          })
-        }
-      } catch (error) {
-        console.error('Failed to check group limits for auto-unpublish:', error)
-      }
-    },
-    [setLocalTypebot, showToast]
-  )
-
   const {
     data: typebotData,
     isLoading: isFetchingTypebot,
@@ -224,6 +192,38 @@ export const TypebotProvider = ({
       setGroupsCoordinates(t.groups)
     },
   })
+
+  // Function to check if a typebot exceeds group limits and unpublish if needed
+  const checkAndUnpublishIfNeeded = useCallback(
+    async (workspaceId: string, groupCount: number) => {
+      try {
+        const { shouldUnpublishTypebot } = await import('@typebot.io/lib')
+        const shouldUnpublish = await shouldUnpublishTypebot(
+          workspaceId,
+          groupCount
+        )
+
+        if (shouldUnpublish) {
+          // Update local state to remove publicId for all typebots in the workspace
+          setLocalTypebot((currentTypebot) => {
+            if (currentTypebot && currentTypebot.workspaceId === workspaceId) {
+              return { ...currentTypebot, publicId: null }
+            }
+            return currentTypebot
+          })
+
+          showToast({
+            title: 'Typebot Auto-Unpublished',
+            description:
+              'Typebot has been automatically unpublished due to exceeding group limits.',
+          })
+        }
+      } catch (error) {
+        console.error('Failed to check group limits for auto-unpublish:', error)
+      }
+    },
+    [setLocalTypebot, showToast]
+  )
 
   useEffect(() => {
     if (!typebot && isDefined(localTypebot)) {
