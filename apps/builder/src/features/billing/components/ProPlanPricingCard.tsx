@@ -96,10 +96,8 @@ export const ProPlanPricingCard = ({
               </Heading>
               <Text fontWeight="bold">
                 <Tooltip.Root>
-                  <Tooltip.Trigger>
-                    <chakra.span textDecoration="underline" cursor="pointer">
-                      {t("billing.pricingCard.pro.everythingFromStarter")}
-                    </chakra.span>
+                  <Tooltip.Trigger className="underline cursor-pointer">
+                    {t("billing.pricingCard.pro.everythingFromStarter")}
                   </Tooltip.Trigger>
                   <Tooltip.Popup>
                     <FeaturesList

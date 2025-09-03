@@ -1,13 +1,13 @@
 import { PlusIcon } from "@/components/icons";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { trpc } from "@/lib/queryClient";
-import { toast } from "@/lib/toast";
-import { Stack, Text, useDisclosure } from "@chakra-ui/react";
+import { Stack, useDisclosure } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import { useMutation } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Menu } from "@typebot.io/ui/components/Menu";
+import { Tooltip } from "@typebot.io/ui/components/Tooltip";
 import { ChevronDownIcon } from "@typebot.io/ui/icons/ChevronDownIcon";
 import { TrashIcon } from "@typebot.io/ui/icons/TrashIcon";
 import type React from "react";
@@ -68,6 +68,8 @@ export const CustomDomainsDropdown = ({
     onCustomDomainSelect(name);
   };
 
+  const isDisabled = currentUserMode !== "write" && !data?.customDomains.length;
+
   return (
     <Menu.Root>
       {workspace?.id && (
@@ -78,12 +80,21 @@ export const CustomDomainsDropdown = ({
           onNewDomain={handleNewDomain}
         />
       )}
-      <Menu.TriggerButton variant="secondary" className="justify-between">
-        <Text noOfLines={1} overflowY="visible" h="20px">
-          {currentCustomDomain ?? t("customDomain.add")}
-        </Text>
-        <ChevronDownIcon />
-      </Menu.TriggerButton>
+      <Tooltip.Root disabled={!isDisabled}>
+        <Tooltip.Trigger>
+          <Menu.TriggerButton
+            variant="secondary"
+            className="justify-between"
+            disabled={isDisabled}
+          >
+            {currentCustomDomain ?? t("customDomain.add")}
+            <ChevronDownIcon />
+          </Menu.TriggerButton>
+        </Tooltip.Trigger>
+        <Tooltip.Popup>
+          Only workspace owners can add custom domains
+        </Tooltip.Popup>
+      </Tooltip.Root>
       <Menu.Popup>
         <Stack maxH={"35vh"} overflowY="auto" spacing="0">
           {(data?.customDomains ?? []).map((customDomain) => (

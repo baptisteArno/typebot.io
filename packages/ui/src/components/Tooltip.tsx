@@ -39,9 +39,10 @@ const Root = ({
 };
 
 const Trigger = ({
+  render = <span />,
   ...props
 }: React.ComponentProps<typeof TooltipPrimitive.Trigger>) => (
-  <TooltipPrimitive.Trigger {...props} />
+  <TooltipPrimitive.Trigger {...props} render={render} />
 );
 
 const TriggerButton = ({
