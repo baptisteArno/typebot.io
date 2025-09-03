@@ -5,7 +5,7 @@ import { queryClient, trpc } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
 import { Alert, AlertIcon } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
-import type { Credentials } from "@typebot.io/credentials/schemas";
+import type { CreatableCredentials } from "@typebot.io/credentials/schemas";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
 import type React from "react";
@@ -61,7 +61,7 @@ export const OpenAICredentialsDialog = ({
         data: {
           apiKey,
         },
-      } as Credentials,
+      } as CreatableCredentials,
     });
   };
 

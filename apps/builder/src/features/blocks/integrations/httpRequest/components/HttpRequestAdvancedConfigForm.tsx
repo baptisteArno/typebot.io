@@ -3,6 +3,7 @@ import { NumberInput } from "@/components/inputs";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { CodeEditor } from "@/components/inputs/CodeEditor";
 import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
+import { CredentialsDropdown } from "@/features/credentials/components/CredentialsDropdown";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { toast } from "@/lib/toast";
 import {
@@ -116,6 +117,9 @@ export const HttpRequestAdvancedConfigForm = ({
     [responseKeys],
   );
 
+  const updateProxyCredentialsId = (proxyCredentialsId: string | undefined) =>
+    onOptionsChange({ ...options, proxyCredentialsId });
+
   const isCustomBody =
     options?.isCustomBody ?? defaultHttpRequestBlockOptions.isCustomBody;
 
@@ -204,8 +208,23 @@ export const HttpRequestAdvancedConfigForm = ({
                   Advanced parameters
                   <AccordionIcon />
                 </AccordionButton>
-                <AccordionPanel pt="4">
+                <AccordionPanel pt="4" as={Stack}>
+                  {typebot && (
+                    <CredentialsDropdown
+                      type="http proxy"
+                      hideIfNoCredentials
+                      scope={{
+                        type: "workspace",
+                        workspaceId: typebot.workspaceId,
+                      }}
+                      currentCredentialsId={options?.proxyCredentialsId}
+                      onCredentialsSelect={updateProxyCredentialsId}
+                      onCreateNewClick={undefined}
+                      credentialsName="HTTP proxy"
+                    />
+                  )}
                   <NumberInput
+                    direction="row"
                     label="Timeout (s)"
                     defaultValue={options?.timeout ?? defaultTimeout}
                     min={1}

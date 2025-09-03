@@ -66,6 +66,7 @@ const CredentialsCreateDialogPopup = ({
         onClose={onClose}
       />
     );
+  if (type === "http proxy") return null;
 
   if (forgedBlocks[type].auth?.type === "oauth")
     return (

@@ -4,7 +4,7 @@ import type { Block } from "@typebot.io/blocks-core/schemas/schema";
 import type { HttpRequest } from "@typebot.io/blocks-integrations/httpRequest/schema";
 import {
   executeHttpRequest,
-  parseWebhookAttributes,
+  parseHttpRequestAttributes,
 } from "@typebot.io/bot-engine/blocks/integrations/httpRequest/executeHttpRequestBlock";
 import { parseSampleResult } from "@typebot.io/bot-engine/blocks/integrations/httpRequest/parseSampleResult";
 import { fetchLinkedChildTypebots } from "@typebot.io/bot-engine/blocks/logic/typebotLink/fetchLinkedChildTypebots";
@@ -100,8 +100,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           await parseSampleResult(typebot, linkedTypebots)(group.id, variables),
         );
 
-    const parsedWebhook = await parseWebhookAttributes({
-      webhook,
+    const parsedWebhook = await parseHttpRequestAttributes({
+      httpRequest: webhook,
       isCustomBody: block.options?.isCustomBody,
       typebot: {
         ...typebot,

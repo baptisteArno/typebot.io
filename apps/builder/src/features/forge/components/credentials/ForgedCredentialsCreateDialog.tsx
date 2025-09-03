@@ -3,7 +3,7 @@ import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { queryClient, trpc } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
 import { useMutation } from "@tanstack/react-query";
-import type { Credentials } from "@typebot.io/credentials/schemas";
+import type { CreatableCredentials } from "@typebot.io/credentials/schemas";
 import type { ForgedBlockDefinition } from "@typebot.io/forge-repository/definitions";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
@@ -97,7 +97,7 @@ export const ForgedCredentialsCreateDialogBody = ({
               type: blockDef.id,
               name: name ?? "My account",
               data,
-            } as Credentials,
+            } as CreatableCredentials,
             scope: "workspace",
             workspaceId: workspace.id,
           }
@@ -106,7 +106,7 @@ export const ForgedCredentialsCreateDialogBody = ({
               type: blockDef.id,
               name: name ?? "My account",
               data,
-            } as Credentials,
+            } as CreatableCredentials,
             scope: "user",
           },
     );

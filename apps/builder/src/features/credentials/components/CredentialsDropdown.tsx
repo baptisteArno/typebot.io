@@ -23,8 +23,9 @@ type Props = Omit<ButtonProps, "type"> & {
         userId: string;
       };
   currentCredentialsId: string | undefined;
+  hideIfNoCredentials?: boolean;
   onCredentialsSelect: (credentialId?: string) => void;
-  onCreateNewClick: () => void;
+  onCreateNewClick: (() => void) | undefined;
   defaultCredentialLabel?: string;
   credentialsName: string;
 };
@@ -37,6 +38,7 @@ export const CredentialsDropdown = ({
   credentialsName,
   type,
   scope,
+  hideIfNoCredentials,
 }: Props) => {
   const { t } = useTranslate();
   const { currentUserMode } = useWorkspace();
@@ -97,7 +99,12 @@ export const CredentialsDropdown = ({
       else mutate({ scope: "user", credentialsId });
     };
 
-  if (data?.credentials.length === 0 && !defaultCredentialLabel) {
+  if (hideIfNoCredentials && data?.credentials.length === 0) return null;
+  if (
+    data?.credentials.length === 0 &&
+    !defaultCredentialLabel &&
+    onCreateNewClick
+  ) {
     return (
       <Button
         variant="secondary"
@@ -145,7 +152,7 @@ export const CredentialsDropdown = ({
             </Button>
           </Menu.Item>
         ))}
-        {currentUserMode === "guest" ? null : (
+        {currentUserMode === "guest" || !onCreateNewClick ? null : (
           <Menu.Item onClick={onCreateNewClick}>
             <PlusIcon />
             {t("blocks.inputs.payment.settings.credentials.connectNew.label")}

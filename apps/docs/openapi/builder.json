@@ -1327,6 +1327,9 @@
                                                         "type": "number",
                                                         "minimum": 1,
                                                         "maximum": 120
+                                                      },
+                                                      "proxyCredentialsId": {
+                                                        "type": "string"
                                                       }
                                                     }
                                                   },
@@ -1478,6 +1481,9 @@
                                                         "type": "number",
                                                         "minimum": 1,
                                                         "maximum": 120
+                                                      },
+                                                      "proxyCredentialsId": {
+                                                        "type": "string"
                                                       }
                                                     }
                                                   },
@@ -1630,6 +1636,9 @@
                                                         "type": "number",
                                                         "minimum": 1,
                                                         "maximum": 120
+                                                      },
+                                                      "proxyCredentialsId": {
+                                                        "type": "string"
                                                       }
                                                     }
                                                   },
@@ -1781,6 +1790,9 @@
                                                         "type": "number",
                                                         "minimum": 1,
                                                         "maximum": 120
+                                                      },
+                                                      "proxyCredentialsId": {
+                                                        "type": "string"
                                                       }
                                                     }
                                                   },
@@ -5416,6 +5428,9 @@
                                                     "type": "number",
                                                     "minimum": 1,
                                                     "maximum": 120
+                                                  },
+                                                  "proxyCredentialsId": {
+                                                    "type": "string"
                                                   }
                                                 }
                                               },
@@ -5567,6 +5582,9 @@
                                                     "type": "number",
                                                     "minimum": 1,
                                                     "maximum": 120
+                                                  },
+                                                  "proxyCredentialsId": {
+                                                    "type": "string"
                                                   }
                                                 }
                                               },
@@ -5719,6 +5737,9 @@
                                                     "type": "number",
                                                     "minimum": 1,
                                                     "maximum": 120
+                                                  },
+                                                  "proxyCredentialsId": {
+                                                    "type": "string"
                                                   }
                                                 }
                                               },
@@ -5870,6 +5891,9 @@
                                                     "type": "number",
                                                     "minimum": 1,
                                                     "maximum": 120
+                                                  },
+                                                  "proxyCredentialsId": {
+                                                    "type": "string"
                                                   }
                                                 }
                                               },
@@ -8411,6 +8435,9 @@
                                                     "type": "number",
                                                     "minimum": 1,
                                                     "maximum": 120
+                                                  },
+                                                  "proxyCredentialsId": {
+                                                    "type": "string"
                                                   }
                                                 }
                                               },
@@ -8562,6 +8589,9 @@
                                                     "type": "number",
                                                     "minimum": 1,
                                                     "maximum": 120
+                                                  },
+                                                  "proxyCredentialsId": {
+                                                    "type": "string"
                                                   }
                                                 }
                                               },
@@ -8714,6 +8744,9 @@
                                                     "type": "number",
                                                     "minimum": 1,
                                                     "maximum": 120
+                                                  },
+                                                  "proxyCredentialsId": {
+                                                    "type": "string"
                                                   }
                                                 }
                                               },
@@ -8865,6 +8898,9 @@
                                                     "type": "number",
                                                     "minimum": 1,
                                                     "maximum": 120
+                                                  },
+                                                  "proxyCredentialsId": {
+                                                    "type": "string"
                                                   }
                                                 }
                                               },
@@ -17174,6 +17210,9 @@
                               "type": "number",
                               "minimum": 1,
                               "maximum": 120
+                            },
+                            "proxyCredentialsId": {
+                              "type": "string"
                             }
                           }
                         }
@@ -18223,6 +18262,9 @@
                 "type": "number",
                 "minimum": 1,
                 "maximum": 120
+              },
+              "proxyCredentialsId": {
+                "type": "string"
               }
             }
           }
@@ -18370,6 +18412,9 @@
                 "type": "number",
                 "minimum": 1,
                 "maximum": 120
+              },
+              "proxyCredentialsId": {
+                "type": "string"
               }
             }
           }
@@ -18451,6 +18496,9 @@
                 "type": "number",
                 "minimum": 1,
                 "maximum": 120
+              },
+              "proxyCredentialsId": {
+                "type": "string"
               }
             }
           }
@@ -25851,6 +25899,9 @@
                                     "type": "number",
                                     "minimum": 1,
                                     "maximum": 120
+                                  },
+                                  "proxyCredentialsId": {
+                                    "type": "string"
                                   }
                                 }
                               },
@@ -26002,6 +26053,9 @@
                                     "type": "number",
                                     "minimum": 1,
                                     "maximum": 120
+                                  },
+                                  "proxyCredentialsId": {
+                                    "type": "string"
                                   }
                                 }
                               },
@@ -26154,6 +26208,9 @@
                                     "type": "number",
                                     "minimum": 1,
                                     "maximum": 120
+                                  },
+                                  "proxyCredentialsId": {
+                                    "type": "string"
                                   }
                                 }
                               },
@@ -26305,6 +26362,9 @@
                                     "type": "number",
                                     "minimum": 1,
                                     "maximum": 120
+                                  },
+                                  "proxyCredentialsId": {
+                                    "type": "string"
                                   }
                                 }
                               },
@@ -28172,6 +28232,9 @@
                                     "type": "number",
                                     "minimum": 1,
                                     "maximum": 120
+                                  },
+                                  "proxyCredentialsId": {
+                                    "type": "string"
                                   }
                                 }
                               },
@@ -28323,6 +28386,9 @@
                                     "type": "number",
                                     "minimum": 1,
                                     "maximum": 120
+                                  },
+                                  "proxyCredentialsId": {
+                                    "type": "string"
                                   }
                                 }
                               },
@@ -28475,6 +28541,9 @@
                                     "type": "number",
                                     "minimum": 1,
                                     "maximum": 120
+                                  },
+                                  "proxyCredentialsId": {
+                                    "type": "string"
                                   }
                                 }
                               },
@@ -28626,6 +28695,9 @@
                                     "type": "number",
                                     "minimum": 1,
                                     "maximum": 120
+                                  },
+                                  "proxyCredentialsId": {
+                                    "type": "string"
                                   }
                                 }
                               },

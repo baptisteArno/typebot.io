@@ -3,7 +3,7 @@ import { createId } from "@paralleldrive/cuid2";
 import test, { expect } from "@playwright/test";
 import { importTypebotInDatabase } from "@typebot.io/playwright/databaseActions";
 
-test("should execute webhooks properly", async ({ page }) => {
+test("should execute http requests properly", async ({ page }) => {
   const typebotId = createId();
   await importTypebotInDatabase(getTestAsset("typebots/webhook.json"), {
     id: typebotId,

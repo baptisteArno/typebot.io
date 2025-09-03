@@ -18,6 +18,9 @@ import type {
   SessionState,
   TypebotInSession,
 } from "@typebot.io/chat-session/schemas";
+import { decrypt } from "@typebot.io/credentials/decrypt";
+import { getCredentials } from "@typebot.io/credentials/getCredentials";
+import { httpProxyCredentialsSchema } from "@typebot.io/credentials/schemas";
 import { env } from "@typebot.io/env";
 import { JSONParse } from "@typebot.io/lib/JSONParse";
 import { isDefined, isEmpty, isNotDefined, omit } from "@typebot.io/lib/utils";
@@ -30,12 +33,14 @@ import { parseVariables } from "@typebot.io/variables/parseVariables";
 import type { Variable } from "@typebot.io/variables/schemas";
 import ky, { HTTPError, TimeoutError, type Options } from "ky";
 import { stringify } from "qs";
+import { ProxyAgent } from "undici";
 import type { ExecuteIntegrationResponse } from "../../../types";
 import { saveDataInResponseVariableMapping } from "./saveDataInResponseVariableMapping";
 
-type ParsedWebhook = ExecutableHttpRequest & {
+type ParsedHttpRequest = ExecutableHttpRequest & {
   basicAuth: { username?: string; password?: string };
   isJson: boolean;
+  proxyUrl?: string;
 };
 
 export const longReqTimeoutWhitelist = [
@@ -63,20 +68,26 @@ export const executeHttpRequestBlock = async (
   } & Params,
 ): Promise<ExecuteIntegrationResponse> => {
   const logs: LogInSession[] = [];
-  const webhook =
+  const httpRequest =
     block.options?.webhook ??
     ("webhookId" in block
       ? ((await prisma.webhook.findUnique({
           where: { id: block.webhookId },
         })) as HttpRequest | null)
       : null);
-  if (!webhook) return { outgoingEdgeId: block.outgoingEdgeId };
-  const parsedHttpRequest = await parseWebhookAttributes({
-    webhook,
+  if (!httpRequest) return { outgoingEdgeId: block.outgoingEdgeId };
+  const parsedHttpRequest = await parseHttpRequestAttributes({
+    httpRequest,
     isCustomBody: block.options?.isCustomBody,
     typebot: state.typebotsQueue[0].typebot,
     answers: state.typebotsQueue[0].answers,
     sessionStore,
+    proxy: block.options?.proxyCredentialsId
+      ? {
+          credentialsId: block.options.proxyCredentialsId,
+          workspaceId: state.workspaceId,
+        }
+      : undefined,
   });
   if (!parsedHttpRequest) {
     logs.push({
@@ -96,6 +107,7 @@ export const executeHttpRequestBlock = async (
         },
       ],
     };
+
   const {
     response: httpRequestResponse,
     logs: httpRequestLogs,
@@ -122,22 +134,27 @@ export const executeHttpRequestBlock = async (
 
 const checkIfBodyIsAVariable = (body: string) => /^{{.+}}$/.test(body);
 
-export const parseWebhookAttributes = async ({
-  webhook,
+export const parseHttpRequestAttributes = async ({
+  httpRequest,
   isCustomBody,
   typebot,
   answers,
   sessionStore,
+  proxy,
 }: {
-  webhook: HttpRequest;
+  httpRequest: HttpRequest;
   isCustomBody?: boolean;
   typebot: TypebotInSession;
   answers: AnswerInSessionState[];
   sessionStore: SessionStore;
-}): Promise<ParsedWebhook | undefined> => {
-  if (!webhook.url) return;
+  proxy?: {
+    credentialsId: string;
+    workspaceId: string;
+  };
+}): Promise<ParsedHttpRequest | undefined> => {
+  if (!httpRequest.url) return;
   const basicAuth: { username?: string; password?: string } = {};
-  const basicAuthHeaderIdx = webhook.headers?.findIndex(
+  const basicAuthHeaderIdx = httpRequest.headers?.findIndex(
     (h) =>
       h.key?.toLowerCase() === "authorization" &&
       h.value?.toLowerCase()?.includes("basic"),
@@ -145,22 +162,23 @@ export const parseWebhookAttributes = async ({
   const isUsernamePasswordBasicAuth =
     basicAuthHeaderIdx !== -1 &&
     isDefined(basicAuthHeaderIdx) &&
-    webhook.headers?.at(basicAuthHeaderIdx)?.value?.includes(":");
+    httpRequest.headers?.at(basicAuthHeaderIdx)?.value?.includes(":");
   if (isUsernamePasswordBasicAuth) {
     const [username, password] =
-      webhook.headers?.at(basicAuthHeaderIdx)?.value?.slice(6).split(":") ?? [];
+      httpRequest.headers?.at(basicAuthHeaderIdx)?.value?.slice(6).split(":") ??
+      [];
     basicAuth.username = username;
     basicAuth.password = password;
-    webhook.headers?.splice(basicAuthHeaderIdx, 1);
+    httpRequest.headers?.splice(basicAuthHeaderIdx, 1);
   }
   const headers = convertKeyValueTableToObject({
-    keyValues: webhook.headers,
+    keyValues: httpRequest.headers,
     variables: typebot.variables,
     sessionStore,
   }) as ExecutableHttpRequest["headers"] | undefined;
   const queryParams = stringify(
     convertKeyValueTableToObject({
-      keyValues: webhook.queryParams,
+      keyValues: httpRequest.queryParams,
       variables: typebot.variables,
       concatDuplicateInArray: true,
       sessionStore,
@@ -168,12 +186,12 @@ export const parseWebhookAttributes = async ({
     { indices: false },
   );
   const bodyContent = await getBodyContent({
-    body: webhook.body,
+    body: httpRequest.body,
     answers,
     variables: typebot.variables,
     isCustomBody,
   });
-  const method = webhook.method ?? defaultHttpRequestAttributes.method;
+  const method = httpRequest.method ?? defaultHttpRequestAttributes.method;
   const { data: body, isJson } =
     bodyContent && method !== HttpMethod.GET
       ? safeJsonParse(
@@ -185,9 +203,17 @@ export const parseWebhookAttributes = async ({
         )
       : { data: undefined, isJson: false };
 
+  const proxyCredentials = proxy
+    ? await getCredentials(proxy.credentialsId, proxy.workspaceId)
+    : undefined;
+  const proxyUrl = proxyCredentials
+    ? httpProxyCredentialsSchema.shape.data.parse(
+        await decrypt(proxyCredentials.data, proxyCredentials.iv),
+      ).url
+    : undefined;
   return {
     url: parseVariables(
-      webhook.url + (queryParams !== "" ? `?${queryParams}` : ""),
+      httpRequest.url + (queryParams !== "" ? `?${queryParams}` : ""),
       { variables: typebot.variables, sessionStore },
     ),
     basicAuth,
@@ -195,11 +221,12 @@ export const parseWebhookAttributes = async ({
     headers,
     body,
     isJson,
+    proxyUrl,
   };
 };
 
 export const executeHttpRequest = async (
-  webhook: ParsedWebhook,
+  httpRequest: ParsedHttpRequest,
   params: Params = {},
 ): Promise<{
   response: HttpResponse;
@@ -208,7 +235,7 @@ export const executeHttpRequest = async (
 }> => {
   const logs: LogInSession[] = [];
 
-  const { headers, url, method, basicAuth, isJson } = webhook;
+  const { headers, url, method, basicAuth, isJson } = httpRequest;
   const contentType = headers ? headers["Content-Type"] : undefined;
 
   const isLongRequest = params.disableRequestTimeout
@@ -219,7 +246,7 @@ export const executeHttpRequest = async (
 
   const isFormData = contentType?.includes("x-www-form-urlencoded");
 
-  let body = webhook.body;
+  let body = httpRequest.body;
 
   if (isFormData && isJson) body = parseFormDataBody(body as object);
 
@@ -228,6 +255,14 @@ export const executeHttpRequest = async (
     method,
     headers: headers ?? {},
     ...(basicAuth ?? {}),
+    fetch: httpRequest.proxyUrl
+      ? (url, options) =>
+          fetch(url, {
+            ...options,
+            // @ts-expect-error: undici init type excluded to make it compatible with browser fetch
+            dispatcher: new ProxyAgent(httpRequest.proxyUrl!),
+          })
+      : undefined,
     timeout: isNotDefined(env.CHAT_API_TIMEOUT)
       ? false
       : params.timeout && params.timeout !== defaultTimeout

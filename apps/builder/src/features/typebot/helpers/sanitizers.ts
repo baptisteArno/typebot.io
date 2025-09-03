@@ -71,6 +71,9 @@ const sanitizeBlock =
           ...block,
           options: {
             ...block.options,
+            proxyCredentialsId: await sanitizeCredentialsId(workspace.id)(
+              block.options?.proxyCredentialsId,
+            ),
             credentialsId: await sanitizeCredentialsId(workspace.id)(
               block.options?.credentialsId,
             ),

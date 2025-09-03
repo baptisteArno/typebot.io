@@ -36,6 +36,7 @@ import React, { useMemo, useRef, useState } from "react";
 import { CredentialsCreateDialog } from "./CredentialsCreateDialog";
 import { CredentialsUpdateDialog } from "./CredentialsUpdateDialog";
 
+const hiddenTypes = ["http proxy"] as const;
 const nonEditableTypes = ["whatsApp", "google sheets"] as const;
 
 type CredentialsInfo = Pick<Credentials, "id" | "type" | "name">;
@@ -112,18 +113,23 @@ export const CredentialsSettingsForm = () => {
             <ChevronDownIcon />
           </Menu.TriggerButton>
           <Menu.Popup>
-            {credentialsTypes.map((type) => (
-              <Menu.Item
-                key={type}
-                onClick={() => {
-                  setCreatingType(type);
-                  setIsCreateDialogOpened(true);
-                }}
-              >
-                <CredentialsIcon type={type} boxSize="16px" />
-                <CredentialsLabel type={type} />
-              </Menu.Item>
-            ))}
+            {credentialsTypes
+              .filter(
+                (type) =>
+                  !hiddenTypes.includes(type as (typeof hiddenTypes)[number]),
+              )
+              .map((type) => (
+                <Menu.Item
+                  key={type}
+                  onClick={() => {
+                    setCreatingType(type);
+                    setIsCreateDialogOpened(true);
+                  }}
+                >
+                  <CredentialsIcon type={type} boxSize="16px" />
+                  <CredentialsLabel type={type} />
+                </Menu.Item>
+              ))}
           </Menu.Popup>
         </Menu.Root>
       </HStack>
@@ -152,6 +158,9 @@ export const CredentialsSettingsForm = () => {
                     onEditClick={
                       nonEditableTypes.includes(
                         cred.type as (typeof nonEditableTypes)[number],
+                      ) ||
+                      hiddenTypes.includes(
+                        cred.type as (typeof hiddenTypes)[number],
                       )
                         ? undefined
                         : () => {
@@ -251,6 +260,8 @@ const CredentialsIcon = ({
       return <StripeLogo rounded="sm" {...props} />;
     case "whatsApp":
       return <WhatsAppLogo {...props} />;
+    case "http proxy":
+      return null;
     default:
       return <BlockIcon type={type} {...props} />;
   }
@@ -285,6 +296,8 @@ const CredentialsLabel = ({
           WhatsApp
         </Text>
       );
+    case "http proxy":
+      return null;
     default:
       return <BlockLabel type={type} {...props} />;
   }

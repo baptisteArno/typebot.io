@@ -65,7 +65,11 @@ const CredentialsUpdateDialogPopup = ({
       />
     );
 
-  if (editingCredentials.type === "whatsApp") return null;
+  if (
+    editingCredentials.type === "whatsApp" ||
+    editingCredentials.type === "http proxy"
+  )
+    return null;
 
   if (forgedBlocks[editingCredentials.type].auth?.type === "oauth")
     return (

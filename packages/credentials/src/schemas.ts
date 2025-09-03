@@ -78,20 +78,42 @@ export const smtpCredentialsSchema = z
   .merge(credentialsBaseSchema);
 export type SmtpCredentials = z.infer<typeof smtpCredentialsSchema>;
 
-const credentialsSchema = z.discriminatedUnion("type", [
+export const httpProxyCredentialsSchema = z
+  .object({
+    type: z.literal("http proxy"),
+    data: z.object({
+      url: z.string(),
+    }),
+  })
+  .merge(credentialsBaseSchema);
+export type HttpProxyCredentials = z.infer<typeof httpProxyCredentialsSchema>;
+
+export const creatableCredentialsSchemas = [
   smtpCredentialsSchema,
   googleSheetsCredentialsSchema,
   stripeCredentialsSchema,
   whatsAppCredentialsSchema,
+] as const;
+
+const credentialsSchema = z.discriminatedUnion("type", [
+  ...creatableCredentialsSchemas,
+  httpProxyCredentialsSchema,
   ...Object.values(forgedCredentialsSchemas),
 ]);
 export type Credentials = z.infer<typeof credentialsSchema>;
+
+const creatableCredentials = z.discriminatedUnion("type", [
+  ...creatableCredentialsSchemas,
+  ...Object.values(forgedCredentialsSchemas),
+]);
+export type CreatableCredentials = z.infer<typeof creatableCredentials>;
 
 export const credentialsTypes = [
   "smtp",
   "google sheets",
   "stripe",
   "whatsApp",
+  "http proxy",
   ...(Object.keys(forgedCredentialsSchemas) as Array<
     keyof typeof forgedCredentialsSchemas
   >),

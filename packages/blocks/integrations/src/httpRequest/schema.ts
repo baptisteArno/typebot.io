@@ -54,6 +54,7 @@ export const httpRequestOptionsV5Schema = z.object({
   isExecutedOnClient: z.boolean().optional(),
   webhook: httpRequestSchemas.v5.optional(),
   timeout: z.number().min(1).max(maxTimeout).optional(),
+  proxyCredentialsId: z.string().optional(),
 });
 
 const httpRequestOptionsSchemas = {
