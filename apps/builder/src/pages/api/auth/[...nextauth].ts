@@ -152,7 +152,6 @@ providers.push(
       token: { label: 'Token', type: 'text' },
     },
     async authorize(credentials) {
-      console.log('🚀 Cognito authorize called')
       if (!credentials?.token) return null
 
       try {
@@ -181,7 +180,6 @@ providers.push(
         }
 
         const userInfo = await cognitoResponse.json()
-        console.log('✅ Cognito user info received')
 
         const email = userInfo.UserAttributes?.find(
           (attr: { Name: string; Value: string }) => attr.Name === 'email'
@@ -193,14 +191,11 @@ providers.push(
 
         if (!email) return null
 
-        console.log('🔍 Looking for user with email:', email)
-
         // Use the adapter to find or create user
         const adapter = customAdapter(prisma)
         let user = await adapter.getUserByEmail(email)
 
         if (!user) {
-          console.log('👤 Creating new user')
           user = await adapter.createUser({
             email,
             name,
@@ -209,7 +204,6 @@ providers.push(
           })
         }
 
-        console.log('✅ Returning user for credentials auth')
         return {
           id: user.id,
           email: user.email,
@@ -254,10 +248,6 @@ export const getAuthOptions = ({
     jwt: async ({ token, user, account }) => {
       // If user is provided (first sign in), add user info to token
       if (user && account) {
-        console.log(
-          '🔑 JWT callback - adding user to token for provider:',
-          account.provider
-        )
         token.userId = user.id
         token.email = user.email
         token.name = user.name
@@ -283,8 +273,6 @@ export const getAuthOptions = ({
       return session
     },
     signIn: async ({ account, user }) => {
-      console.log('🚪 signIn callback called for provider:', account?.provider)
-
       if (restricted === 'rate-limited') throw new Error('rate-limited')
       if (!account) return false
       const isNewUser = !('createdAt' in user && isDefined(user.createdAt))

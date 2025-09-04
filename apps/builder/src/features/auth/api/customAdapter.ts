@@ -126,42 +126,24 @@ export function customAdapter(p: PrismaClient): Adapter {
       await p.account.delete({ where: { provider_providerAccountId } })
     },
     async getSessionAndUser(sessionToken) {
-      console.log(
-        '🔍 getSessionAndUser called with sessionToken:',
-        sessionToken
-      )
       const userAndSession = await p.session.findUnique({
         where: { sessionToken },
         include: { user: true },
       })
-      console.log(
-        '🔍 getSessionAndUser result:',
-        userAndSession ? 'Found session' : 'No session found'
-      )
       if (!userAndSession) return null
       const { user, ...session } = userAndSession
       return { user, session } as { user: AdapterUser; session: Session }
     },
     createSession: (data) => {
-      console.log(
-        '🔥 createSession called with data:',
-        JSON.stringify(data, null, 2)
-      )
-      console.trace('createSession call stack')
       return p.session.create({ data })
     },
     updateSession: (data) => {
-      console.log(
-        '🔄 updateSession called with data:',
-        JSON.stringify(data, null, 2)
-      )
       return p.session.update({
         data,
         where: { sessionToken: data.sessionToken },
       })
     },
     deleteSession: (sessionToken) => {
-      console.log('🗑️ deleteSession called with sessionToken:', sessionToken)
       return p.session.delete({ where: { sessionToken } })
     },
     createVerificationToken: (data) => p.verificationToken.create({ data }),

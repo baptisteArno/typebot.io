@@ -31,14 +31,11 @@ const verifyAuthenticationStatus =
   }
 
 export const handleIframeAuthentication = async (): Promise<boolean> => {
-  console.log('Starting iframe authentication')
   try {
     // Check if already authenticated via direct API call (works better with JWT in iframes)
     const session = await verifyAuthenticationStatus()
-    console.log('Session from API call:', session)
 
     if (session?.user) {
-      console.log('Already authenticated')
       return true
     }
 
@@ -46,7 +43,6 @@ export const handleIframeAuthentication = async (): Promise<boolean> => {
     const isInIframe = window !== window.parent
 
     if (isInIframe) {
-      console.log('In iframe, requesting auth token from parent')
       // Request token from parent
       window.parent.postMessage({ type: 'REQUEST_AUTH_TOKEN' }, '*')
 
@@ -62,7 +58,6 @@ export const handleIframeAuthentication = async (): Promise<boolean> => {
             window.removeEventListener('message', handleMessage)
 
             if (event.data.token) {
-              console.log('Auth token received from parent')
               resolve(event.data.token)
             } else {
               reject(new Error('No auth token received'))
@@ -73,28 +68,20 @@ export const handleIframeAuthentication = async (): Promise<boolean> => {
         window.addEventListener('message', handleMessage)
       })
 
-      console.log('Calling signIn with cognito-iframe provider')
-
       // Use NextAuth signIn with the Cognito credentials provider
       const result = await signIn('cognito-iframe', {
         token,
         redirect: false,
       })
 
-      console.log('SignIn result:', result)
-
       if (result?.ok) {
-        console.log('SignIn successful, verifying authentication...')
-
         // Give NextAuth a moment to process the JWT and set cookies
         await new Promise((resolve) => setTimeout(resolve, 1500))
 
         // Verify session via direct API call (works better with JWT in iframes)
         const updatedSession = await verifyAuthenticationStatus()
-        console.log('Final session verification:', updatedSession)
 
         if (updatedSession?.user) {
-          console.log('Authentication successful, notifying parent')
           // Notify parent of success
           window.parent.postMessage(
             {
