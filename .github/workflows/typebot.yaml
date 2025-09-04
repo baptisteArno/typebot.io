@@ -34,7 +34,8 @@ jobs:
       - name: Compute version
         uses: cloudhumans/actions/app-version@v1
         with:
-          format: '{sha7}'
+          version_file: version
+          format: '{base}-{sha7}'
 
       - name: Build, tag, and push BUILDER image to Amazon ECR
         if: ${{ github.ref == 'refs/heads/main' }}
