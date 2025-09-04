@@ -31,7 +31,7 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
-      - name: Conpute version
+      - name: Compute version
         uses: cloudhumans/actions/app-version@v1
         with:
           format: '{sha7}'
