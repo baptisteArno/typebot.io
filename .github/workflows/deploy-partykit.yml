@@ -8,8 +8,6 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    env:
-      HUGEICONS_LICENSE_KEY: "${{ secrets.HUGEICONS_LICENSE_KEY }}"
     steps:
       - uses: actions/checkout@v4
         with:

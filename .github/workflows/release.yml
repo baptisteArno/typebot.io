@@ -12,7 +12,6 @@ jobs:
   build-amd:
     env:
       DATABASE_URL: "postgresql://"
-      HUGEICONS_LICENSE_KEY: "${{ secrets.HUGEICONS_LICENSE_KEY }}"
     strategy:
       matrix:
         app: ["builder", "viewer"]
@@ -66,7 +65,6 @@ jobs:
   build-arm:
     env:
       DATABASE_URL: "postgresql://"
-      HUGEICONS_LICENSE_KEY: "${{ secrets.HUGEICONS_LICENSE_KEY }}"
     strategy:
       matrix:
         app: ["builder", "viewer"]

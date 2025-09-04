@@ -22,7 +22,6 @@ jobs:
       NEXT_PUBLIC_POSTHOG_KEY: "${{ secrets.NEXT_PUBLIC_POSTHOG_KEY }}"
       POSTHOG_API_HOST: "${{ secrets.POSTHOG_API_HOST }}"
       POSTHOG_PERSONAL_API_KEY: "${{ secrets.POSTHOG_PERSONAL_API_KEY }}"
-      HUGEICONS_LICENSE_KEY: "${{ secrets.HUGEICONS_LICENSE_KEY }}"
     steps:
       - uses: actions/checkout@v2
       - uses: oven-sh/setup-bun@v2
