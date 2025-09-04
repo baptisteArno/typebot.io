@@ -1,4 +1,5 @@
 import NextAuth, { Account, AuthOptions } from 'next-auth'
+import CredentialsProvider from 'next-auth/providers/credentials'
 import EmailProvider from 'next-auth/providers/email'
 import GitHubProvider from 'next-auth/providers/github'
 import GitlabProvider from 'next-auth/providers/gitlab'
@@ -10,7 +11,6 @@ import prisma from '@typebot.io/lib/prisma'
 import { Provider } from 'next-auth/providers'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { customAdapter } from '../../../features/auth/api/customAdapter'
-import { User } from '@typebot.io/prisma'
 import { getAtPath, isDefined } from '@typebot.io/lib'
 import { mockedUser } from '@typebot.io/lib/mockedUser'
 import { getNewUserInvitations } from '@/features/auth/helpers/getNewUserInvitations'
@@ -22,6 +22,7 @@ import { env } from '@typebot.io/env'
 import * as Sentry from '@sentry/nextjs'
 import { getIp } from '@typebot.io/lib/getIp'
 import { trackEvents } from '@typebot.io/telemetry/trackEvents'
+import { createId } from '@typebot.io/lib/createId'
 
 const providers: Provider[] = []
 
@@ -133,14 +134,107 @@ if (env.CUSTOM_OAUTH_WELL_KNOWN_URL) {
     wellKnown: env.CUSTOM_OAUTH_WELL_KNOWN_URL,
     profile(profile) {
       return {
-        id: getAtPath(profile, env.CUSTOM_OAUTH_USER_ID_PATH),
-        name: getAtPath(profile, env.CUSTOM_OAUTH_USER_NAME_PATH),
-        email: getAtPath(profile, env.CUSTOM_OAUTH_USER_EMAIL_PATH),
-        image: getAtPath(profile, env.CUSTOM_OAUTH_USER_IMAGE_PATH),
-      } as User
+        id: getAtPath(profile, env.CUSTOM_OAUTH_USER_ID_PATH) as string,
+        name: getAtPath(profile, env.CUSTOM_OAUTH_USER_NAME_PATH) as string,
+        email: getAtPath(profile, env.CUSTOM_OAUTH_USER_EMAIL_PATH) as string,
+        image: getAtPath(profile, env.CUSTOM_OAUTH_USER_IMAGE_PATH) as string,
+      }
     },
   })
 }
+
+// Add Cognito iframe provider
+providers.push(
+  CredentialsProvider({
+    id: 'cognito-iframe',
+    name: 'Cognito Iframe',
+    credentials: {
+      token: { label: 'Token', type: 'text' },
+    },
+    async authorize(credentials) {
+      if (!credentials?.token) return null
+
+      try {
+        // Verify token using AWS Cognito GetUser API
+        const cognitoResponse = await fetch(
+          `https://cognito-idp.${
+            env.AWS_COGNITO_REGION || 'us-east-1'
+          }.amazonaws.com/`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/x-amz-json-1.1',
+              'X-Amz-Target': 'AWSCognitoIdentityProviderService.GetUser',
+              Authorization: `Bearer ${credentials.token}`,
+            },
+            body: JSON.stringify({
+              AccessToken: credentials.token,
+            }),
+          }
+        )
+
+        if (!cognitoResponse.ok) {
+          console.error('Cognito verification failed:', cognitoResponse.status)
+          return null
+        }
+
+        const userInfo = await cognitoResponse.json()
+        const email = userInfo.UserAttributes?.find(
+          (attr: { Name: string; Value: string }) => attr.Name === 'email'
+        )?.Value
+        const name =
+          userInfo.UserAttributes?.find(
+            (attr: { Name: string; Value: string }) => attr.Name === 'name'
+          )?.Value || userInfo.Username
+
+        if (!email) return null
+
+        // Find existing user
+        let user = await prisma.user.findUnique({
+          where: { email },
+        })
+
+        // Create user if doesn't exist
+        if (!user) {
+          user = await prisma.user.create({
+            data: {
+              id: createId(),
+              email,
+              name,
+              emailVerified: new Date(),
+              onboardingCategories: [],
+            },
+          })
+
+          // Create default workspace
+          await prisma.workspace.create({
+            data: {
+              id: createId(),
+              name: `${name}'s workspace`,
+              members: {
+                create: {
+                  userId: user.id,
+                  role: 'ADMIN',
+                },
+              },
+            },
+          })
+        }
+
+        return {
+          id: user.id,
+          email: user.email,
+          name: user.name,
+          image: user.image,
+          emailVerified: user.emailVerified,
+        }
+      } catch (error) {
+        console.error('Cognito authentication failed:', error)
+        return null
+      }
+    },
+  })
+)
 
 export const getAuthOptions = ({
   restricted,
@@ -151,7 +245,7 @@ export const getAuthOptions = ({
   secret: env.ENCRYPTION_SECRET,
   providers,
   session: {
-    strategy: 'database',
+    strategy: 'jwt', // Use JWT for credentials providers
   },
   pages: {
     signIn: '/signin',
@@ -159,21 +253,33 @@ export const getAuthOptions = ({
     error: '/signin',
   },
   events: {
-    signIn({ user }) {
+    signIn({ user, isNewUser }) {
       Sentry.setUser({ id: user.id })
+      if (isNewUser && env.NODE_ENV === 'development') {
+        console.log('New user signed in:', user.email)
+      }
     },
     signOut() {
       Sentry.setUser(null)
     },
   },
   callbacks: {
-    session: async ({ session, user }) => {
-      const userFromDb = user as User
-      await updateLastActivityDate(userFromDb)
+    session: async ({ session, user, token }) => {
+      // With JWT sessions, user data comes from token
+      const userFromToken = (token?.user as any) || user // eslint-disable-line @typescript-eslint/no-explicit-any
+      if (userFromToken?.id) {
+        await updateLastActivityDate(userFromToken)
+      }
       return {
         ...session,
-        user: userFromDb,
+        user: userFromToken,
       }
+    },
+    jwt: async ({ token, user }) => {
+      if (user) {
+        token.user = user
+      }
+      return token
     },
     signIn: async ({ account, user }) => {
       if (restricted === 'rate-limited') throw new Error('rate-limited')
@@ -205,6 +311,7 @@ export const getAuthOptions = ({
         const userGroups = await getUserGroups(account)
         return checkHasGroups(userGroups, requiredGroups)
       }
+      console.log('SignIn callback returning true for user:', user?.email)
       return true
     },
   },
@@ -236,13 +343,19 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   return await NextAuth(req, res, getAuthOptions({ restricted }))
 }
 
-const updateLastActivityDate = async (user: User) => {
+const updateLastActivityDate = async (user: {
+  id: string
+  lastActivityAt?: Date
+}) => {
   const datesAreOnSameDay = (first: Date, second: Date) =>
     first.getFullYear() === second.getFullYear() &&
     first.getMonth() === second.getMonth() &&
     first.getDate() === second.getDate()
 
-  if (!datesAreOnSameDay(user.lastActivityAt, new Date())) {
+  if (
+    user.lastActivityAt &&
+    !datesAreOnSameDay(user.lastActivityAt, new Date())
+  ) {
     await prisma.user.updateMany({
       where: { id: user.id },
       data: { lastActivityAt: new Date() },

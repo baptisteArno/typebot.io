@@ -124,28 +124,30 @@ const LeftElements = ({ ...props }: StackProps) => {
   return (
     <HStack justify="center" align="center" spacing="6" {...props}>
       <HStack alignItems="center" spacing={3}>
-        <IconButton
-          as={Link}
-          aria-label="Navigate back"
-          icon={<ChevronLeftIcon fontSize={25} />}
-          href={{
-            pathname: router.query.parentId
-              ? '/typebots/[typebotId]/edit'
-              : typebot?.folderId
-              ? '/typebots/folders/[id]'
-              : '/typebots',
-            query: {
-              id: typebot?.folderId ?? [],
-              parentId: Array.isArray(router.query.parentId)
-                ? router.query.parentId.slice(0, -1)
-                : [],
-              typebotId: Array.isArray(router.query.parentId)
-                ? [...router.query.parentId].pop()
-                : router.query.parentId ?? [],
-            },
-          }}
-          size="sm"
-        />
+        {router.query.embedded !== 'true' && (
+          <IconButton
+            as={Link}
+            aria-label="Navigate back"
+            icon={<ChevronLeftIcon fontSize={25} />}
+            href={{
+              pathname: router.query.parentId
+                ? '/typebots/[typebotId]/edit'
+                : typebot?.folderId
+                ? '/typebots/folders/[id]'
+                : '/typebots',
+              query: {
+                id: typebot?.folderId ?? [],
+                parentId: Array.isArray(router.query.parentId)
+                  ? router.query.parentId.slice(0, -1)
+                  : [],
+                typebotId: Array.isArray(router.query.parentId)
+                  ? [...router.query.parentId].pop()
+                  : router.query.parentId ?? [],
+              },
+            }}
+            size="sm"
+          />
+        )}
         <HStack spacing={1}>
           {typebot && (
             <EditableEmojiOrImageIcon
@@ -306,15 +308,17 @@ const TypebotNav = ({
 
   return (
     <HStack {...stackProps}>
-      <Button
-        as={Link}
-        href={`/typebots/${typebotId}/edit`}
-        colorScheme={router.pathname.includes('/edit') ? 'blue' : 'gray'}
-        variant={router.pathname.includes('/edit') ? 'outline' : 'ghost'}
-        size="sm"
-      >
-        {t('editor.header.flowButton.label')}
-      </Button>
+      {router.query.embedded !== 'true' && (
+        <Button
+          as={Link}
+          href={`/typebots/${typebotId}/edit`}
+          colorScheme={router.pathname.includes('/edit') ? 'blue' : 'gray'}
+          variant={router.pathname.includes('/edit') ? 'outline' : 'ghost'}
+          size="sm"
+        >
+          {t('editor.header.flowButton.label')}
+        </Button>
+      )}
       {/* <Button
         as={Link}
         href={`/typebots/${typebotId}/theme`}
@@ -333,16 +337,18 @@ const TypebotNav = ({
       >
         {t('editor.header.settingsButton.label')}
       </Button> */}
-      <Button
-        as={Link}
-        href={`/typebots/${typebotId}/share`}
-        colorScheme={router.pathname.endsWith('share') ? 'blue' : 'gray'}
-        variant={router.pathname.endsWith('share') ? 'outline' : 'ghost'}
-        size="sm"
-      >
-        {t('share.button.label')}
-      </Button>
-      {isResultsDisplayed && (
+      {router.query.embedded !== 'true' && (
+        <Button
+          as={Link}
+          href={`/typebots/${typebotId}/share`}
+          colorScheme={router.pathname.endsWith('share') ? 'blue' : 'gray'}
+          variant={router.pathname.endsWith('share') ? 'outline' : 'ghost'}
+          size="sm"
+        >
+          {t('share.button.label')}
+        </Button>
+      )}
+      {isResultsDisplayed && router.query.embedded !== 'true' && (
         <Button
           as={Link}
           href={`/typebots/${typebotId}/results`}
