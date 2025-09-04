@@ -6,10 +6,12 @@ import {
   useContext,
   useState,
 } from 'react'
+import { ValidationError, useValidation } from '../hooks/useValidation'
 
 export enum RightPanel {
   PREVIEW,
   VARIABLES,
+  VALIDATION_ERRORS,
 }
 
 const editorContext = createContext<{
@@ -19,6 +21,10 @@ const editorContext = createContext<{
   setStartPreviewAtGroup: Dispatch<SetStateAction<string | undefined>>
   startPreviewAtEvent: string | undefined
   setStartPreviewAtEvent: Dispatch<SetStateAction<string | undefined>>
+  validationErrors: ValidationError | null
+  setValidationErrors: Dispatch<SetStateAction<ValidationError | null>>
+  validateTypebot: (typebotId: string) => Promise<ValidationError | null>
+  clearValidationErrors: () => void
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   //@ts-ignore
 }>({})
@@ -27,6 +33,13 @@ export const EditorProvider = ({ children }: { children: ReactNode }) => {
   const [rightPanel, setRightPanel] = useState<RightPanel>()
   const [startPreviewAtGroup, setStartPreviewAtGroup] = useState<string>()
   const [startPreviewAtEvent, setStartPreviewAtEvent] = useState<string>()
+
+  const {
+    validationErrors,
+    setValidationErrors,
+    validateTypebot,
+    clearValidationErrors,
+  } = useValidation()
 
   return (
     <editorContext.Provider
@@ -37,6 +50,10 @@ export const EditorProvider = ({ children }: { children: ReactNode }) => {
         setStartPreviewAtGroup,
         startPreviewAtEvent,
         setStartPreviewAtEvent,
+        validationErrors,
+        setValidationErrors,
+        validateTypebot,
+        clearValidationErrors,
       }}
     >
       {children}

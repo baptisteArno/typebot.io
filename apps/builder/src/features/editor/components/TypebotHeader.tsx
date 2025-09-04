@@ -10,6 +10,7 @@ import {
   useDisclosure,
   StackProps,
   chakra,
+  Badge,
 } from '@chakra-ui/react'
 import {
   ChevronLeftIcon,
@@ -277,6 +278,8 @@ const RightElements = ({
             </chakra.span>
           </Button>
         )}
+
+      {router.pathname.includes('/edit') && <ValidateButton />}
       {currentUserMode === 'guest' && (
         <Button
           as={Link}
@@ -290,6 +293,59 @@ const RightElements = ({
       )}
       {currentUserMode === 'write' && <PublishButton size="sm" />}
     </HStack>
+  )
+}
+
+const ValidateButton = () => {
+  const { typebot, save } = useTypebot()
+  const { validateTypebot, validationErrors, setRightPanel } = useEditor()
+  const [isValidating, setIsValidating] = useState(false)
+
+  const handleValidateClick = async () => {
+    if (!typebot?.id) return
+
+    setIsValidating(true)
+    try {
+      await save()
+      const validation = await validateTypebot(typebot.id)
+
+      if (validation && !validation.isValid) {
+        setRightPanel(RightPanel.VALIDATION_ERRORS)
+      }
+    } finally {
+      setIsValidating(false)
+    }
+  }
+
+  const getTotalErrorCount = () => {
+    if (!validationErrors) return 0
+    return (
+      validationErrors.invalidGroups.length +
+      validationErrors.brokenLinks.length +
+      validationErrors.invalidTextBeforeClaudia.length
+    )
+  }
+
+  const totalErrors = getTotalErrorCount()
+  const hasErrors = validationErrors && !validationErrors.isValid
+
+  return (
+    <Button
+      size="sm"
+      variant="outline"
+      onClick={handleValidateClick}
+      isLoading={isValidating}
+      colorScheme={hasErrors ? 'red' : 'gray'}
+      rightIcon={
+        hasErrors ? (
+          <Badge colorScheme="red" borderRadius="full" fontSize="xs">
+            {totalErrors}
+          </Badge>
+        ) : undefined
+      }
+    >
+      Validar
+    </Button>
   )
 }
 

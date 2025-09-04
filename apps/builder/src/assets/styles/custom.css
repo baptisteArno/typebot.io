@@ -12,6 +12,26 @@
   visibility: visible !important;
 } */
 
+/* Validation error highlighting */
+.highlight-error {
+  animation: highlight-error 3s ease-in-out;
+}
+
+@keyframes highlight-error {
+  0% {
+    box-shadow: 0 0 0 0 rgba(245, 101, 101, 0.7);
+  }
+  25% {
+    box-shadow: 0 0 0 10px rgba(245, 101, 101, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 5px rgba(245, 101, 101, 0.6);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(245, 101, 101, 0);
+  }
+}
+
 /*Hide track timeline in audio tag in Windows*/
 audio::-webkit-media-controls-timeline {
   display: none;
