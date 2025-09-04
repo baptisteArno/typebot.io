@@ -57,9 +57,12 @@ const nextConfig = {
     if (isServer) {
       // TODO: Remove once https://github.com/getsentry/sentry-javascript/issues/8105 is merged and sentry is upgraded
       config.ignoreWarnings = [
+        ...(config.ignoreWarnings ?? []),
         {
+          module:
+            /@opentelemetry\/instrumentation\/build\/esm\/platform\/node\/instrumentation\.js/,
           message:
-            /require function is used in a way in which dependencies cannot be statically extracted/,
+            /Critical dependency: the request of a dependency is an expression/,
         },
       ];
       return config;
