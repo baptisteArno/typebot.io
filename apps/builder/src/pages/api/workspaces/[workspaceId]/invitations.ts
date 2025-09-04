@@ -1,6 +1,6 @@
 import { getAuthenticatedUser } from "@/features/auth/helpers/getAuthenticatedUser";
 import { getSeatsLimit } from "@typebot.io/billing/helpers/getSeatsLimit";
-import { sendWorkspaceMemberInvitationEmail } from "@typebot.io/emails/emails/WorkspaceMemberInvitationEmail";
+import { sendWorkspaceMemberInvitationEmail } from "@typebot.io/emails/transactional/WorkspaceMemberInvitationEmail";
 import { env } from "@typebot.io/env";
 import {
   forbidden,

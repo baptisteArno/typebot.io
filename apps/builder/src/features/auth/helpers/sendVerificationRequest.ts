@@ -1,4 +1,4 @@
-import { sendLoginCodeEmail } from "@typebot.io/transactional/emails/LoginCodeEmail";
+import { sendLoginCodeEmail } from "@typebot.io/emails/transactional/LoginCodeEmail";
 
 type Props = {
   identifier: string;

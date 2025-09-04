@@ -4,7 +4,7 @@ import { saveErrorLog } from "@typebot.io/bot-engine/logs/saveErrorLog";
 import { saveSuccessLog } from "@typebot.io/bot-engine/logs/saveSuccessLog";
 import { decrypt } from "@typebot.io/credentials/decrypt";
 import type { SmtpCredentials } from "@typebot.io/credentials/schemas";
-import { DefaultBotNotificationEmail } from "@typebot.io/emails/emails/DefaultBotNotificationEmail";
+import { DefaultBotNotificationEmail } from "@typebot.io/emails/transactional/DefaultBotNotificationEmail";
 import { env } from "@typebot.io/env";
 import { initMiddleware, methodNotAllowed } from "@typebot.io/lib/api/utils";
 import { isDefined, isEmpty, isNotDefined, omit } from "@typebot.io/lib/utils";

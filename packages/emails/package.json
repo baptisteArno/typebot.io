@@ -1,29 +1,25 @@
 {
   "name": "@typebot.io/emails",
-  "version": "0.0.1",
-  "private": true,
   "type": "module",
-  "exports": {
-    ".": "./src/index.ts",
-    "./emails/*": "./src/emails/*.tsx"
-  },
   "scripts": {
-    "watch": "tsx watch ./src/preview.tsx --clear-screen=false",
-    "serve": "http-server dist -a localhost -p 3223 -o -c-1"
+    "preview": "SKIP_ENV_CHECK=true dotenv -e ./.env -e ../../.env -- email dev --port=3005",
+    "preview-marketing": "SKIP_ENV_CHECK=true dotenv -e ./.env -e ../../.env -- email dev --port=3005 --dir=marketing"
+  },
+  "exports": {
+    "./*": "./*.tsx"
   },
   "dependencies": {
-    "@faire/mjml-react": "3.3.0",
-    "nodemailer": "6.9.15",
-    "react": "18.3.1",
+    "@react-email/components": "0.5.1",
+    "@typebot.io/env": "workspace:*",
+    "nodemailer": "7.0.6",
+    "react-email": "4.2.8",
+    "@react-email/render": "1.2.1",
     "@typebot.io/lib": "workspace:*",
-    "@typebot.io/env": "workspace:*"
+    "react": "18.3.1"
   },
   "devDependencies": {
-    "@types/node": "20.4.2",
-    "@types/nodemailer": "6.4.14",
-    "@types/react": "18.3.18",
-    "http-server": "14.1.1",
-    "tsx": "4.19.1",
-    "@typebot.io/tsconfig": "workspace:*"
+    "@react-email/preview-server": "4.2.8",
+    "@typebot.io/tsconfig": "workspace:*",
+    "dotenv-cli": "8.0.0"
   }
 }

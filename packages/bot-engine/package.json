@@ -47,7 +47,7 @@
     "ky": "1.2.4",
     "libphonenumber-js": "1.10.37",
     "node-html-parser": "6.1.5",
-    "nodemailer": "6.9.15",
+    "nodemailer": "7.0.6",
     "openai": "4.81.0",
     "qs": "6.11.2",
     "stripe": "17.1.0"
@@ -55,7 +55,6 @@
   "devDependencies": {
     "@typebot.io/forge": "workspace:*",
     "@typebot.io/forge-repository": "workspace:*",
-    "@types/nodemailer": "6.4.14",
     "@types/qs": "6.9.7",
     "@typebot.io/tsconfig": "workspace:*",
     "vitest": "3.2.4",

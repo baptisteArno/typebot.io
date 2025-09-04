@@ -1,7 +1,7 @@
 import { createId } from "@paralleldrive/cuid2";
 import { getChatsLimit } from "@typebot.io/billing/helpers/getChatsLimit";
-import { sendAlmostReachedChatsLimitEmail } from "@typebot.io/emails/emails/AlmostReachedChatsLimitEmail";
-import { sendReachedChatsLimitEmail } from "@typebot.io/emails/emails/ReachedChatsLimitEmail";
+import { sendAlmostReachedChatsLimitEmail } from "@typebot.io/emails/transactional/AlmostReachedChatsLimitEmail";
+import { sendReachedChatsLimitEmail } from "@typebot.io/emails/transactional/ReachedChatsLimitEmail";
 import { isDefined, isEmpty } from "@typebot.io/lib/utils";
 import { Plan, WorkspaceRole } from "@typebot.io/prisma/enum";
 import type { Prisma } from "@typebot.io/prisma/types";

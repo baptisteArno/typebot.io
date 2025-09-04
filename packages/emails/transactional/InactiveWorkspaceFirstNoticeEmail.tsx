@@ -85,6 +85,6 @@ export const sendInactiveWorkspaceFirstNoticeEmail = async ({
   ComponentProps<typeof InactiveWorkspaceFirstNoticeEmail>) =>
   sendEmail({
     to,
-    subject: `Your '${props.workspaceName}' workspace in Attio is inactive and will be deleted soon`,
+    subject: `Your '${props.workspaceName}' workspace in Typebot is inactive and will be deleted soon`,
     html: await render(<InactiveWorkspaceFirstNoticeEmail {...props} />),
   });

@@ -19,11 +19,15 @@ export const heading = {
   padding: "17px 0 0",
 };
 
-export const paragraph = {
-  margin: "15px 0 15px",
+export const bodyText = {
   fontSize: "15px",
   lineHeight: "1.4",
   color: "#3c4149",
+};
+
+export const paragraph = {
+  margin: "15px 0 15px",
+  ...bodyText,
 };
 
 export const footerText = {
@@ -45,4 +49,14 @@ export const codeStyle = {
   fontSize: "21px",
   borderRadius: "4px",
   color: "#3c4149",
+};
+
+export const primaryButton = {
+  rounded: "8px",
+  borderRadius: "8px",
+  backgroundColor: "#ff5924",
+  padding: "12px",
+  fontSize: "15px",
+  fontWeight: "600",
+  color: "#FFFFFF",
 };

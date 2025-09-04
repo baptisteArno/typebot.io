@@ -1,8 +1,8 @@
 import { authenticatedProcedure } from "@/helpers/server/trpc";
 import { TRPCError } from "@trpc/server";
 import { formatEmail } from "@typebot.io/bot-engine/blocks/inputs/email/formatEmail";
+import { sendVerificationCodeEmail as sendEmail } from "@typebot.io/emails/transactional/VerificationCodeEmail";
 import prisma from "@typebot.io/prisma";
-import { sendVerificationCodeEmail as sendEmail } from "@typebot.io/transactional/emails/VerificationCodeEmail";
 import { z } from "@typebot.io/zod";
 import { customAlphabet } from "nanoid";
 import { isEmailLegit } from "../helpers/emailValidation";

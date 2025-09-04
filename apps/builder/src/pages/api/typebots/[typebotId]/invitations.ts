@@ -4,7 +4,7 @@ import {
   canWriteTypebots,
   isUniqueConstraintError,
 } from "@/helpers/databaseRules";
-import { sendGuestInvitationEmail } from "@typebot.io/emails/emails/GuestInvitationEmail";
+import { sendGuestInvitationEmail } from "@typebot.io/emails/transactional/GuestInvitationEmail";
 import { env } from "@typebot.io/env";
 import {
   badRequest,

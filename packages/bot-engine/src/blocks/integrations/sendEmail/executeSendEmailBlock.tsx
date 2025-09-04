@@ -7,8 +7,7 @@ import type {
 import { decrypt } from "@typebot.io/credentials/decrypt";
 import { getCredentials } from "@typebot.io/credentials/getCredentials";
 import type { SmtpCredentials } from "@typebot.io/credentials/schemas";
-import { render } from "@typebot.io/emails";
-import { DefaultBotNotificationEmail } from "@typebot.io/emails/emails/DefaultBotNotificationEmail";
+import { renderDefaultBotNotificationEmail } from "@typebot.io/emails/transactional/DefaultBotNotificationEmail";
 import { env } from "@typebot.io/env";
 import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
 import { getFileTempUrl } from "@typebot.io/lib/s3/getFileTempUrl";
@@ -303,12 +302,10 @@ const getEmailBody = async ({
     answers: answersInSession,
   });
   return {
-    html: render(
-      <DefaultBotNotificationEmail
-        resultsUrl={`${env.NEXTAUTH_URL}/typebots/${typebot.id}/results`}
-        answers={omit(answers, "submittedAt")}
-      />,
-    ).html,
+    html: await renderDefaultBotNotificationEmail({
+      resultsUrl: `${env.NEXTAUTH_URL}/typebots/${typebot.id}/results`,
+      answers: omit(answers, "submittedAt"),
+    }),
   };
 };
 
