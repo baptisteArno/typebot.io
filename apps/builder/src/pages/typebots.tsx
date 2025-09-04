@@ -17,6 +17,7 @@ export default function Page() {
     const isInIframe = window !== window.parent
     const isEmbedded = router.query.embedded === 'true'
 
+    // Only handle iframe authentication for embedded/iframe scenarios
     if ((isInIframe || isEmbedded) && status === 'unauthenticated') {
       setIsAuthenticating(true)
       handleIframeAuthentication()
@@ -33,6 +34,11 @@ export default function Page() {
         })
     }
   }, [status, router.query.embedded])
+
+  // For normal (non-embedded) access, show loading while NextAuth is loading
+  if (!router.query.embedded && status === 'loading') {
+    return <DashboardPage />
+  }
 
   // Show loading state during iframe authentication
   if (isAuthenticating) {

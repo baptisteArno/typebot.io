@@ -11,6 +11,7 @@ import prisma from '@typebot.io/lib/prisma'
 import { Provider } from 'next-auth/providers'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { customAdapter } from '../../../features/auth/api/customAdapter'
+import { User } from '@typebot.io/prisma'
 import { getAtPath, isDefined } from '@typebot.io/lib'
 import { mockedUser } from '@typebot.io/lib/mockedUser'
 import { getNewUserInvitations } from '@/features/auth/helpers/getNewUserInvitations'
@@ -22,7 +23,6 @@ import { env } from '@typebot.io/env'
 import * as Sentry from '@sentry/nextjs'
 import { getIp } from '@typebot.io/lib/getIp'
 import { trackEvents } from '@typebot.io/telemetry/trackEvents'
-import { createId } from '@typebot.io/lib/createId'
 
 const providers: Provider[] = []
 
@@ -134,16 +134,16 @@ if (env.CUSTOM_OAUTH_WELL_KNOWN_URL) {
     wellKnown: env.CUSTOM_OAUTH_WELL_KNOWN_URL,
     profile(profile) {
       return {
-        id: getAtPath(profile, env.CUSTOM_OAUTH_USER_ID_PATH) as string,
-        name: getAtPath(profile, env.CUSTOM_OAUTH_USER_NAME_PATH) as string,
-        email: getAtPath(profile, env.CUSTOM_OAUTH_USER_EMAIL_PATH) as string,
-        image: getAtPath(profile, env.CUSTOM_OAUTH_USER_IMAGE_PATH) as string,
-      }
+        id: getAtPath(profile, env.CUSTOM_OAUTH_USER_ID_PATH),
+        name: getAtPath(profile, env.CUSTOM_OAUTH_USER_NAME_PATH),
+        email: getAtPath(profile, env.CUSTOM_OAUTH_USER_EMAIL_PATH),
+        image: getAtPath(profile, env.CUSTOM_OAUTH_USER_IMAGE_PATH),
+      } as User
     },
   })
 }
 
-// Add Cognito iframe provider
+// Add Cognito iframe provider (using credentials provider)
 providers.push(
   CredentialsProvider({
     id: 'cognito-iframe',
@@ -152,14 +152,13 @@ providers.push(
       token: { label: 'Token', type: 'text' },
     },
     async authorize(credentials) {
+      console.log('🚀 Cognito authorize called')
       if (!credentials?.token) return null
 
       try {
         // Verify token using AWS Cognito GetUser API
         const cognitoResponse = await fetch(
-          `https://cognito-idp.${
-            env.AWS_COGNITO_REGION || 'us-east-1'
-          }.amazonaws.com/`,
+          `https://cognito-idp.us-east-1.amazonaws.com/`,
           {
             method: 'POST',
             headers: {
@@ -174,11 +173,16 @@ providers.push(
         )
 
         if (!cognitoResponse.ok) {
-          console.error('Cognito verification failed:', cognitoResponse.status)
+          console.error(
+            '❌ Cognito verification failed:',
+            cognitoResponse.status
+          )
           return null
         }
 
         const userInfo = await cognitoResponse.json()
+        console.log('✅ Cognito user info received')
+
         const email = userInfo.UserAttributes?.find(
           (attr: { Name: string; Value: string }) => attr.Name === 'email'
         )?.Value
@@ -189,38 +193,23 @@ providers.push(
 
         if (!email) return null
 
-        // Find existing user
-        let user = await prisma.user.findUnique({
-          where: { email },
-        })
+        console.log('🔍 Looking for user with email:', email)
 
-        // Create user if doesn't exist
+        // Use the adapter to find or create user
+        const adapter = customAdapter(prisma)
+        let user = await adapter.getUserByEmail(email)
+
         if (!user) {
-          user = await prisma.user.create({
-            data: {
-              id: createId(),
-              email,
-              name,
-              emailVerified: new Date(),
-              onboardingCategories: [],
-            },
-          })
-
-          // Create default workspace
-          await prisma.workspace.create({
-            data: {
-              id: createId(),
-              name: `${name}'s workspace`,
-              members: {
-                create: {
-                  userId: user.id,
-                  role: 'ADMIN',
-                },
-              },
-            },
+          console.log('👤 Creating new user')
+          user = await adapter.createUser({
+            email,
+            name,
+            emailVerified: new Date(),
+            image: null,
           })
         }
 
+        console.log('✅ Returning user for credentials auth')
         return {
           id: user.id,
           email: user.email,
@@ -229,7 +218,7 @@ providers.push(
           emailVerified: user.emailVerified,
         }
       } catch (error) {
-        console.error('Cognito authentication failed:', error)
+        console.error('❌ Cognito authentication failed:', error)
         return null
       }
     },
@@ -245,7 +234,8 @@ export const getAuthOptions = ({
   secret: env.ENCRYPTION_SECRET,
   providers,
   session: {
-    strategy: 'jwt', // Use JWT for credentials providers
+    strategy: 'jwt',
+    maxAge: 30 * 24 * 60 * 60, // 30 days
   },
   pages: {
     signIn: '/signin',
@@ -253,35 +243,48 @@ export const getAuthOptions = ({
     error: '/signin',
   },
   events: {
-    signIn({ user, isNewUser }) {
+    signIn({ user }) {
       Sentry.setUser({ id: user.id })
-      if (isNewUser && env.NODE_ENV === 'development') {
-        console.log('New user signed in:', user.email)
-      }
     },
     signOut() {
       Sentry.setUser(null)
     },
   },
   callbacks: {
-    session: async ({ session, user, token }) => {
-      // With JWT sessions, user data comes from token
-      const userFromToken = (token?.user as any) || user // eslint-disable-line @typescript-eslint/no-explicit-any
-      if (userFromToken?.id) {
-        await updateLastActivityDate(userFromToken)
-      }
-      return {
-        ...session,
-        user: userFromToken,
-      }
-    },
-    jwt: async ({ token, user }) => {
-      if (user) {
-        token.user = user
+    jwt: async ({ token, user, account }) => {
+      // If user is provided (first sign in), add user info to token
+      if (user && account) {
+        console.log(
+          '🔑 JWT callback - adding user to token for provider:',
+          account.provider
+        )
+        token.userId = user.id
+        token.email = user.email
+        token.name = user.name
+        token.image = user.image
+        token.provider = account.provider
       }
       return token
     },
+    session: async ({ session, token }) => {
+      // Get user from database using token info
+      if (token?.userId) {
+        const userFromDb = await prisma.user.findUnique({
+          where: { id: token.userId as string },
+        })
+        if (userFromDb) {
+          await updateLastActivityDate(userFromDb)
+          return {
+            ...session,
+            user: userFromDb,
+          }
+        }
+      }
+      return session
+    },
     signIn: async ({ account, user }) => {
+      console.log('🚪 signIn callback called for provider:', account?.provider)
+
       if (restricted === 'rate-limited') throw new Error('rate-limited')
       if (!account) return false
       const isNewUser = !('createdAt' in user && isDefined(user.createdAt))
@@ -311,7 +314,6 @@ export const getAuthOptions = ({
         const userGroups = await getUserGroups(account)
         return checkHasGroups(userGroups, requiredGroups)
       }
-      console.log('SignIn callback returning true for user:', user?.email)
       return true
     },
   },
@@ -340,22 +342,34 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
   }
 
-  return await NextAuth(req, res, getAuthOptions({ restricted }))
+  // Detect if this is a Cognito iframe authentication request
+  const isCognitoRequest =
+    req.url?.includes('cognito-iframe') ||
+    (req.method === 'POST' && req.body?.providerId === 'cognito-iframe')
+
+  console.log('🔍 Request analysis:', {
+    url: req.url,
+    method: req.method,
+    isCognitoRequest,
+    body: req.method === 'POST' ? Object.keys(req.body || {}) : undefined,
+  })
+
+  return await NextAuth(
+    req,
+    res,
+    getAuthOptions({
+      restricted,
+    })
+  )
 }
 
-const updateLastActivityDate = async (user: {
-  id: string
-  lastActivityAt?: Date
-}) => {
+const updateLastActivityDate = async (user: User) => {
   const datesAreOnSameDay = (first: Date, second: Date) =>
     first.getFullYear() === second.getFullYear() &&
     first.getMonth() === second.getMonth() &&
     first.getDate() === second.getDate()
 
-  if (
-    user.lastActivityAt &&
-    !datesAreOnSameDay(user.lastActivityAt, new Date())
-  ) {
+  if (!datesAreOnSameDay(user.lastActivityAt, new Date())) {
     await prisma.user.updateMany({
       where: { id: user.id },
       data: { lastActivityAt: new Date() },

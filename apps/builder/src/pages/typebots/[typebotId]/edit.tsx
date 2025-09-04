@@ -11,9 +11,23 @@ export default function Page() {
   const isEmbedded = router.query.embedded === 'true'
   const [iframeAuthComplete, setIframeAuthComplete] = useState(false)
 
+  console.log('Router state:', {
+    isReady: router.isReady,
+    query: router.query,
+    embedded: router.query.embedded,
+    isEmbedded,
+  })
+
   useEffect(() => {
+    // Wait for router to be ready before making decisions
+    if (!router.isReady) return
+
+    console.log('Router ready, isEmbedded:', isEmbedded)
     if (isEmbedded && status !== 'loading') {
+      console.log("isEmbedded && status !== 'loading'")
+      console.log({ session, iframeAuthComplete })
       if (!session && !iframeAuthComplete) {
+        console.log('!session && !iframeAuthComplete')
         // Listen for auth success from iframe-auth
         const handleMessage = (event: MessageEvent) => {
           if (event.data.type === 'AUTH_SUCCESS' && event.data.user) {
@@ -40,49 +54,30 @@ export default function Page() {
           '*'
         )
       }
+    } else if (!isEmbedded) {
+      console.log('nao era pra entrar aqui')
+      // For non-embedded mode, don't interfere with normal auth
+      setIframeAuthComplete(true)
     }
-  }, [isEmbedded, session, status, iframeAuthComplete])
+  }, [router.isReady, isEmbedded, session, status, iframeAuthComplete])
 
-  // Show loading while authenticating in iframe mode
-  if (isEmbedded && !iframeAuthComplete && status === 'loading') {
+  // Wait for router to be ready
+  if (!router.isReady) {
     return (
-      <Flex
-        h="100vh"
-        justify="center"
-        align="center"
-        flexDirection="column"
-        gap={4}
-      >
-        <Spinner size="lg" />
-        <Text>Initializing...</Text>
+      <Flex height="100vh" justifyContent="center" alignItems="center">
+        <Spinner />
+        <Text ml={3}>Loading...</Text>
       </Flex>
     )
   }
 
-  // Show loading while authenticating in iframe mode without session
-  if (isEmbedded && !iframeAuthComplete && !session && status !== 'loading') {
-    return (
-      <Flex
-        h="100vh"
-        justify="center"
-        align="center"
-        flexDirection="column"
-        gap={4}
-      >
-        <Spinner size="lg" />
-        <Text>Authenticating with Cognito...</Text>
-      </Flex>
-    )
-  }
-
-  // For iframe mode, render the editor regardless of NextAuth session status
-  // since we have our own authentication via Cognito
-  if (isEmbedded && iframeAuthComplete) {
+  // For normal (non-embedded) access, let NextAuth handle loading state
+  if (!isEmbedded) {
     return <EditorPage />
   }
 
-  // For non-iframe mode, use normal NextAuth session check
-  if (!isEmbedded && !session && status === 'loading') {
+  // Show loading while authenticating in iframe mode
+  if (isEmbedded && !iframeAuthComplete) {
     return (
       <Flex
         h="100vh"
@@ -92,10 +87,15 @@ export default function Page() {
         gap={4}
       >
         <Spinner size="lg" />
-        <Text>Loading...</Text>
+        <Text>
+          {status === 'loading'
+            ? 'Initializing...'
+            : 'Authenticating with Cognito...'}
+        </Text>
       </Flex>
     )
   }
 
+  // Render the editor page (works for both embedded and non-embedded modes)
   return <EditorPage />
 }

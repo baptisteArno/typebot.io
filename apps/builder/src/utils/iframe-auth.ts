@@ -1,10 +1,44 @@
-import { signIn, getSession } from 'next-auth/react'
+import { signIn } from 'next-auth/react'
+
+interface SessionResponse {
+  user?: {
+    id: string
+    email: string
+    name?: string
+    image?: string
+    [key: string]: unknown
+  }
+  expires?: string
+}
+
+// Helper function to verify authentication via API call
+const verifyAuthenticationStatus =
+  async (): Promise<SessionResponse | null> => {
+    try {
+      const response = await fetch('/api/auth/session', {
+        credentials: 'same-origin',
+      })
+
+      if (response.ok) {
+        const session = await response.json()
+        return session?.user ? session : null
+      }
+      return null
+    } catch (error) {
+      console.error('Failed to verify authentication:', error)
+      return null
+    }
+  }
 
 export const handleIframeAuthentication = async (): Promise<boolean> => {
+  console.log('Starting iframe authentication')
   try {
-    // Check if already authenticated
-    const session = await getSession()
+    // Check if already authenticated via direct API call (works better with JWT in iframes)
+    const session = await verifyAuthenticationStatus()
+    console.log('Session from API call:', session)
+
     if (session?.user) {
+      console.log('Already authenticated')
       return true
     }
 
@@ -12,6 +46,7 @@ export const handleIframeAuthentication = async (): Promise<boolean> => {
     const isInIframe = window !== window.parent
 
     if (isInIframe) {
+      console.log('In iframe, requesting auth token from parent')
       // Request token from parent
       window.parent.postMessage({ type: 'REQUEST_AUTH_TOKEN' }, '*')
 
@@ -27,6 +62,7 @@ export const handleIframeAuthentication = async (): Promise<boolean> => {
             window.removeEventListener('message', handleMessage)
 
             if (event.data.token) {
+              console.log('Auth token received from parent')
               resolve(event.data.token)
             } else {
               reject(new Error('No auth token received'))
@@ -37,27 +73,29 @@ export const handleIframeAuthentication = async (): Promise<boolean> => {
         window.addEventListener('message', handleMessage)
       })
 
-      // Use NextAuth signIn with the Cognito provider
+      console.log('Calling signIn with cognito-iframe provider')
+
+      // Use NextAuth signIn with the Cognito credentials provider
       const result = await signIn('cognito-iframe', {
         token,
         redirect: false,
       })
 
-      if (result?.ok) {
-        // Try to get session multiple times with increasing delays
-        let sessionAttempts = 0
-        let updatedSession = null
+      console.log('SignIn result:', result)
 
-        while (sessionAttempts < 5 && !updatedSession?.user) {
-          await new Promise((resolve) =>
-            setTimeout(resolve, 200 * (sessionAttempts + 1))
-          )
-          updatedSession = await getSession()
-          sessionAttempts++
-        }
+      if (result?.ok) {
+        console.log('SignIn successful, verifying authentication...')
+
+        // Give NextAuth a moment to process the JWT and set cookies
+        await new Promise((resolve) => setTimeout(resolve, 1500))
+
+        // Verify session via direct API call (works better with JWT in iframes)
+        const updatedSession = await verifyAuthenticationStatus()
+        console.log('Final session verification:', updatedSession)
 
         if (updatedSession?.user) {
-          // Notify parent of success with actual user data
+          console.log('Authentication successful, notifying parent')
+          // Notify parent of success
           window.parent.postMessage(
             {
               type: 'AUTH_SUCCESS',
@@ -65,29 +103,33 @@ export const handleIframeAuthentication = async (): Promise<boolean> => {
             },
             '*'
           )
+          return true
         } else {
-          // Notify parent of success with basic confirmation
+          console.warn(
+            'Authentication appeared successful but session not available'
+          )
+          // This might happen in iframe context with cookie restrictions
+          // We'll trust the signIn result and notify with minimal info
           window.parent.postMessage(
             {
               type: 'AUTH_SUCCESS',
-              user: { authenticated: true },
+              user: { authenticated: true, provider: 'cognito-iframe' },
             },
             '*'
           )
+          return true
         }
-        return true
-      } else {
-        console.error('Authentication failed:', result?.error)
-        // Notify parent of error
-        window.parent.postMessage(
-          {
-            type: 'AUTH_ERROR',
-            error: result?.error || 'Authentication failed',
-          },
-          '*'
-        )
-        return false
       }
+
+      console.error('Authentication failed:', result?.error)
+      window.parent.postMessage(
+        {
+          type: 'AUTH_ERROR',
+          error: result?.error || 'Authentication failed',
+        },
+        '*'
+      )
+      return false
     }
 
     return false
