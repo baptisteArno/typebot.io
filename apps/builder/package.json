@@ -61,7 +61,7 @@
     "browser-image-compression": "2.0.2",
     "canvas-confetti": "1.6.0",
     "codemirror": "6.0.1",
-    "dd-trace": "^5.65.0",
+    "dd-trace": "^5.53.0",
     "deep-object-diff": "1.1.9",
     "dequal": "2.0.3",
     "emojilib": "3.0.10",

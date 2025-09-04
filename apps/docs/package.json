@@ -8,8 +8,8 @@
     "api:generate": "dotenv -e ./.env -e ../../.env -- tsx --tsconfig ../builder/tsconfig.json ../builder/src/helpers/server/generateOpenApi.ts && dotenv -e ./.env -e ../../.env -- tsx --tsconfig ../viewer/openapi.tsconfig.json ../viewer/src/helpers/server/generateOpenApi.ts"
   },
   "devDependencies": {
-    "dotenv-cli": "7.4.1",
     "mintlify": "4.0.75",
-    "tsx": "^4.20.5"
+    "tsx": "^4.6.2",
+    "dotenv-cli": "7.4.1"
   }
 }
