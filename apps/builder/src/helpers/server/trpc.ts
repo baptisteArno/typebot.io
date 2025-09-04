@@ -25,9 +25,21 @@ const t = initTRPC
 
 const datadogLoggerMiddleware = t.middleware(async ({ ctx, next }) => {
   const span = tracer.scope().active()
-  const traceId = span?.context()?.toTraceId?.() || null
-  const spanId = span?.context()?.toSpanId?.() || null
-
+  let traceId = null
+  let spanId = null
+  const context = span?.context()
+  if (context) {
+    if (typeof context.toTraceId === 'function') {
+      traceId = context.toTraceId()
+    } else {
+      console.warn('dd-trace: context.toTraceId is not a function')
+    }
+    if (typeof context.toSpanId === 'function') {
+      spanId = context.toSpanId()
+    } else {
+      console.warn('dd-trace: context.toSpanId is not a function')
+    }
+  }
   return next({
     ctx: {
       ...ctx,
