@@ -104,8 +104,6 @@ const baseEnv = {
       z.string().url().optional()
     ),
     AWS_COGNITO_REGION: z.string().min(1).optional(),
-    AWS_COGNITO_POOL_CLIENT_ID: z.string().min(1).optional(),
-    AWS_COGNITO_USER_POOL_ID: z.string().min(1).optional(),
   },
   client: {
     NEXT_PUBLIC_E2E_TEST: boolean.optional(),
