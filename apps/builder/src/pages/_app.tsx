@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, startTransition } from 'react'
 import { AppProps } from 'next/app'
 import { SessionProvider, useSession } from 'next-auth/react'
 import {
@@ -37,18 +37,26 @@ const IframeAuthWrapper = ({ children }: { children: React.ReactNode }) => {
   const { data: session, status } = useSession()
   const router = useRouter()
   const [isAuthReady, setIsAuthReady] = useState(false)
+  const [isHydrated, setIsHydrated] = useState(false)
 
   const isEmbedded = router.query.embedded === 'true'
 
+  // Ensure we're hydrated before making any decisions
   useEffect(() => {
-    if (!router.isReady) return
+    setIsHydrated(true)
+  }, [])
+
+  useEffect(() => {
+    if (!router.isReady || !isHydrated) return
 
     if (isEmbedded && status !== 'loading') {
       if (!session && !isAuthReady) {
         // Listen for auth success
         const handleMessage = (event: MessageEvent) => {
           if (event.data.type === 'AUTH_SUCCESS' && event.data.user) {
-            setIsAuthReady(true)
+            startTransition(() => {
+              setIsAuthReady(true)
+            })
             window.removeEventListener('message', handleMessage)
           }
         }
@@ -61,7 +69,9 @@ const IframeAuthWrapper = ({ children }: { children: React.ReactNode }) => {
         }
       } else if (session) {
         // Already authenticated
-        setIsAuthReady(true)
+        startTransition(() => {
+          setIsAuthReady(true)
+        })
         window.parent.postMessage(
           {
             type: 'AUTH_SUCCESS',
@@ -72,9 +82,16 @@ const IframeAuthWrapper = ({ children }: { children: React.ReactNode }) => {
       }
     } else if (!isEmbedded) {
       // Non-embedded mode, proceed immediately
-      setIsAuthReady(true)
+      startTransition(() => {
+        setIsAuthReady(true)
+      })
     }
-  }, [router.isReady, isEmbedded, session, status, isAuthReady])
+  }, [router.isReady, isEmbedded, session, status, isAuthReady, isHydrated])
+
+  // Don't render anything until hydration is complete
+  if (!isHydrated) {
+    return null
+  }
 
   // Show loading while authenticating in iframe mode
   if (isEmbedded && !isAuthReady) {
