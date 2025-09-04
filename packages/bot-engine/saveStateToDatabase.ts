@@ -9,6 +9,7 @@ import { createSession } from './queries/createSession'
 import { deleteSession } from './queries/deleteSession'
 import { Prisma, VisitedEdge } from '@typebot.io/prisma'
 import prisma from '@typebot.io/lib/prisma'
+import logger from '@typebot.io/lib/logger'
 
 type Props = {
   session: Pick<ChatSession, 'state'> & { id?: string }
@@ -31,6 +32,19 @@ export const saveStateToDatabase = async ({
   hasCustomEmbedBubble,
   initialSessionId,
 }: Props) => {
+  logger.info('saveStateToDatabase called', {
+    sessionId: id,
+    hasExistingSessionId: !!id,
+    existingSessionId: id,
+    initialSessionId,
+    resultId: state.typebotsQueue[0]?.resultId,
+    typebotId: state.typebotsQueue[0]?.typebot?.id,
+    hasInput: !!input,
+    inputId: input?.id,
+    hasCustomEmbedBubble,
+    answersCount: state.typebotsQueue[0]?.answers?.length || 0,
+  })
+
   const containsSetVariableClientSideAction = clientSideActions?.some(
     (action) => action.expectsDedicatedReply
   )
@@ -43,6 +57,28 @@ export const saveStateToDatabase = async ({
 
   const resultId = state.typebotsQueue[0].resultId
 
+  logger.info('saveStateToDatabase session handling', {
+    sessionId: id,
+    hasExistingSessionId: !!id,
+    existingSessionId: id,
+    initialSessionId,
+    resultId,
+    isCompleted,
+    isCompletedConditions: {
+      hasNoInput: !input,
+      hasNoSetVariableClientSideAction: !containsSetVariableClientSideAction,
+      hasNoCustomEmbedBubble: !hasCustomEmbedBubble,
+    },
+    willDeleteSession: !!(id && isCompleted && resultId),
+    willDeleteSessionConditions: {
+      hasSessionId: !!id,
+      isCompleted,
+      hasResultId: !!resultId,
+    },
+    willUpdateSession: !!(id && !(isCompleted && resultId)),
+    willCreateSession: !id,
+  })
+
   if (id) {
     if (isCompleted && resultId) queries.push(deleteSession(id))
     else queries.push(updateSession({ id, state, isReplying: false }))
@@ -51,6 +87,14 @@ export const saveStateToDatabase = async ({
   const session = id
     ? { state, id }
     : await createSession({ id: initialSessionId, state, isReplying: false })
+
+  logger.info('saveStateToDatabase session result', {
+    sessionId: session.id,
+    resultId,
+    isCompleted,
+    hasQueries: queries.length > 0,
+    sessionIdMatches: initialSessionId ? session.id === initialSessionId : 'N/A',
+  })
 
   if (!resultId) {
     if (queries.length > 0) await prisma.$transaction(queries)
@@ -75,6 +119,17 @@ export const saveStateToDatabase = async ({
   )
 
   await prisma.$transaction(queries)
+
+  logger.info('saveStateToDatabase completed successfully', {
+    sessionId: session.id,
+    resultId,
+    typebotId: state.typebotsQueue[0]?.typebot?.id,
+    isCompleted: Boolean(
+      !input && !containsSetVariableClientSideAction && answers.length > 0
+    ),
+    hasStarted: answers.length > 0,
+    queriesExecuted: queries.length,
+  })
 
   return session
 }

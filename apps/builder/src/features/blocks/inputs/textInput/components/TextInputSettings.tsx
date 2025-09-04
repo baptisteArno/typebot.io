@@ -16,8 +16,8 @@ export const TextInputSettings = ({ options, onOptionsChange }: Props) => {
   const { t } = useTranslate()
   const handlePlaceholderChange = (placeholder: string) =>
     onOptionsChange({ ...options, labels: { ...options?.labels, placeholder } })
-  const handleButtonLabelChange = (button: string) =>
-    onOptionsChange({ ...options, labels: { ...options?.labels, button } })
+  // const handleButtonLabelChange = (button: string) =>
+  //   onOptionsChange({ ...options, labels: { ...options?.labels, button } })
   const handleLongChange = (isLong: boolean) =>
     onOptionsChange({ ...options, isLong })
   const handleVariableChange = (variable?: Variable) =>
@@ -37,14 +37,16 @@ export const TextInputSettings = ({ options, onOptionsChange }: Props) => {
           defaultTextInputOptions.labels.placeholder
         }
         onChange={handlePlaceholderChange}
+        moreInfoTooltip={t('blocks.inputs.settings.placeholder.tooltip')}
       />
-      <TextInput
+
+      {/* <TextInput
         label={t('blocks.inputs.settings.button.label')}
         defaultValue={
           options?.labels?.button ?? defaultTextInputOptions.labels.button
         }
         onChange={handleButtonLabelChange}
-      />
+      /> */}
       <Stack>
         <FormLabel mb="0" htmlFor="variable">
           {t('blocks.inputs.settings.saveAnswer.label')}

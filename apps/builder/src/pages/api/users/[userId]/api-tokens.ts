@@ -14,6 +14,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         id: true,
         name: true,
         createdAt: true,
+        token: true,
       },
       orderBy: { createdAt: 'desc' },
     })

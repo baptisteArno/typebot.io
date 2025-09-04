@@ -9,6 +9,7 @@ import {
 } from '@typebot.io/lib/api'
 import { setUser } from '@sentry/nextjs'
 import { getAuthenticatedUser } from '@/features/auth/helpers/getAuthenticatedUser'
+import logger from '@/helpers/logger'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req, res)
@@ -35,7 +36,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
               await sheet.loadHeaderRow()
             } catch (err) {
               if (err && typeof err === 'object' && 'message' in err)
-                console.log(err.message)
+                logger.error(err.message)
               return
             }
             return {

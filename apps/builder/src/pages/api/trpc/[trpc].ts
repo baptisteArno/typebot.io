@@ -2,6 +2,7 @@ import { createContext } from '@/helpers/server/context'
 import { appRouter } from '@/helpers/server/routers/appRouter'
 import * as Sentry from '@sentry/nextjs'
 import { createNextApiHandler } from '@trpc/server/adapters/next'
+import logger from '@/helpers/logger'
 
 export default createNextApiHandler({
   router: appRouter,
@@ -9,7 +10,7 @@ export default createNextApiHandler({
   onError({ error }) {
     if (error.code === 'INTERNAL_SERVER_ERROR') {
       Sentry.captureException(error)
-      console.error('Something went wrong', error)
+      logger.error('Something went wrong', error)
     }
     return error
   },

@@ -12,12 +12,14 @@ import { useGraph } from '@/features/graph/providers/GraphProvider'
 import { useTypebot } from '../../editor/providers/TypebotProvider'
 import React, { useState } from 'react'
 import { headerHeight } from '../../editor/constants'
-import { RuntimeMenu } from './RuntimeMenu'
 import { runtimes } from '../data'
 import { PreviewDrawerBody } from './PreviewDrawerBody'
 import { useDrag } from '@use-gesture/react'
 import { ResizeHandle } from './ResizeHandle'
 import { useTranslate } from '@tolgee/react'
+import { RuntimeMenu } from './RuntimeMenu'
+import { emailIsCloudhumans } from '@typebot.io/lib'
+import { useUser } from '@/features/account/hooks/useUser'
 
 const preferredRuntimeKey = 'preferredRuntime'
 
@@ -30,6 +32,7 @@ const getDefaultRuntime = (typebotId?: string) => {
 }
 
 export const PreviewDrawer = () => {
+  const { user } = useUser()
   const { typebot, save, isSavingLoading } = useTypebot()
   const { t } = useTranslate()
   const { setRightPanel } = useEditor()
@@ -95,10 +98,12 @@ export const PreviewDrawer = () => {
       <VStack w="full" spacing={4}>
         <HStack justifyContent={'space-between'} w="full">
           <HStack>
-            <RuntimeMenu
-              selectedRuntime={selectedRuntime}
-              onSelectRuntime={setPreviewRuntimeAndSaveIntoLocalStorage}
-            />
+            {emailIsCloudhumans(user?.email) && (
+              <RuntimeMenu
+                selectedRuntime={selectedRuntime}
+                onSelectRuntime={setPreviewRuntimeAndSaveIntoLocalStorage}
+              />
+            )}
             {selectedRuntime.name === 'Web' ? (
               <Button
                 onClick={handleRestartClick}

@@ -6,6 +6,7 @@ import {
 } from '@typebot.io/playwright/databaseActions'
 import { getTestAsset } from '@/test/utils/playwright'
 import { HttpMethod } from '@typebot.io/schemas/features/blocks/integrations/webhook/constants'
+import logger from '@/helpers/logger'
 
 const typebotId = createId()
 
@@ -40,7 +41,7 @@ test.beforeEach(async () => {
       body: `{{Full body}}`,
     })
   } catch (err) {
-    console.log(err)
+    logger.error(err)
   }
 })
 

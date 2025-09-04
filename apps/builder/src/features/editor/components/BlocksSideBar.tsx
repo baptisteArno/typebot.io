@@ -58,10 +58,10 @@ const hiddenIntegrationTypes = [
   IntegrationBlockType.CHATWOOT,
   IntegrationBlockType.PIXEL,
   IntegrationBlockType.ZEMANTIC_AI,
+  IntegrationBlockType.OPEN_AI,
 ]
 
 const hiddenForgedBlocks = [
-  'openai',
   'zemantic-ai',
   'chat-node',
   'qr-code',

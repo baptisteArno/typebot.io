@@ -45,6 +45,14 @@ const sentryMiddleware = t.middleware(
   })
 )
 
+const injectUser = t.middleware(({ next, ctx }) => {
+  return next({
+    ctx: {
+      user: ctx.user,
+    },
+  })
+})
+
 const isAuthed = t.middleware(({ next, ctx }) => {
   if (!ctx.user?.id) {
     throw new TRPCError({
@@ -60,6 +68,10 @@ const isAuthed = t.middleware(({ next, ctx }) => {
 
 const finalMiddleware = datadogLoggerMiddleware
   .unstable_pipe(sentryMiddleware)
+  .unstable_pipe(injectUser)
+
+const authenticatedMiddleware = datadogLoggerMiddleware
+  .unstable_pipe(sentryMiddleware)
   .unstable_pipe(isAuthed)
 
 export const middleware = t.middleware
@@ -67,6 +79,6 @@ export const middleware = t.middleware
 export const router = t.router
 export const mergeRouters = t.mergeRouters
 
-export const publicProcedure = t.procedure.use(sentryMiddleware)
+export const publicProcedure = t.procedure.use(finalMiddleware)
 
-export const authenticatedProcedure = t.procedure.use(finalMiddleware)
+export const authenticatedProcedure = t.procedure.use(authenticatedMiddleware)

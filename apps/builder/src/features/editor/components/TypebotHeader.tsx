@@ -12,7 +12,6 @@ import {
   chakra,
 } from '@chakra-ui/react'
 import {
-  BuoyIcon,
   ChevronLeftIcon,
   CopyIcon,
   PlayIcon,
@@ -26,31 +25,19 @@ import { EditableTypebotName } from './EditableTypebotName'
 import Link from 'next/link'
 import { EditableEmojiOrImageIcon } from '@/components/EditableEmojiOrImageIcon'
 import { useDebouncedCallback } from 'use-debounce'
-import { ShareTypebotButton } from '@/features/share/components/ShareTypebotButton'
 import { PublishButton } from '@/features/publish/components/PublishButton'
 import { headerHeight } from '../constants'
 import { RightPanel, useEditor } from '../providers/EditorProvider'
 import { useTypebot } from '../providers/TypebotProvider'
 import { SupportBubble } from '@/components/SupportBubble'
-import { isCloudProdInstance } from '@/helpers/isCloudProdInstance'
 import { useTranslate } from '@tolgee/react'
 import { GuestTypebotHeader } from './UnauthenticatedTypebotHeader'
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts'
-import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
-import { Plan } from '@typebot.io/prisma'
 
 export const TypebotHeader = () => {
   const { typebot, publishedTypebot, currentUserMode } = useTypebot()
-  const { workspace } = useWorkspace()
-
-  const { isOpen, onOpen } = useDisclosure()
+  const { isOpen } = useDisclosure()
   const headerBgColor = useColorModeValue('white', 'gray.900')
-
-  const handleHelpClick = () => {
-    isCloudProdInstance() && workspace?.plan && workspace.plan !== Plan.FREE
-      ? onOpen()
-      : window.open('https://docs.typebot.io/guides/how-to-get-help', '_blank')
-  }
 
   if (currentUserMode === 'guest') return <GuestTypebotHeader />
   return (
@@ -66,7 +53,7 @@ export const TypebotHeader = () => {
       flexShrink={0}
     >
       {isOpen && <SupportBubble autoShowDelay={0} />}
-      <LeftElements pos="absolute" left="1rem" onHelpClick={handleHelpClick} />
+      <LeftElements pos="absolute" left="1rem" />
       <TypebotNav
         display={{ base: 'none', xl: 'flex' }}
         pos={{ base: 'absolute' }}
@@ -83,10 +70,7 @@ export const TypebotHeader = () => {
   )
 }
 
-const LeftElements = ({
-  onHelpClick,
-  ...props
-}: StackProps & { onHelpClick: () => void }) => {
+const LeftElements = ({ ...props }: StackProps) => {
   const { t } = useTranslate()
   const router = useRouter()
   const {
@@ -224,7 +208,7 @@ const LeftElements = ({
             </Tooltip>
           </HStack>
         )}
-        <Button
+        {/* <Button
           leftIcon={<BuoyIcon />}
           onClick={onHelpClick}
           size="sm"
@@ -233,7 +217,7 @@ const LeftElements = ({
           <chakra.span display={{ base: 'none', xl: 'inline' }}>
             {t('editor.header.helpButton.label')}
           </chakra.span>
-        </Button>
+        </Button> */}
       </HStack>
       {isSavingLoading && (
         <HStack>
@@ -275,9 +259,9 @@ const RightElements = ({
         typebotId={typebot?.id}
         isResultsDisplayed={isResultsDisplayed}
       />
-      <Flex pos="relative">
+      {/* <Flex pos="relative">
         <ShareTypebotButton isLoading={isNotDefined(typebot)} />
-      </Flex>
+      </Flex> */}
       {router.pathname.includes('/edit') &&
         rightPanel !== RightPanel.PREVIEW && (
           <Button
@@ -331,7 +315,7 @@ const TypebotNav = ({
       >
         {t('editor.header.flowButton.label')}
       </Button>
-      <Button
+      {/* <Button
         as={Link}
         href={`/typebots/${typebotId}/theme`}
         colorScheme={router.pathname.endsWith('theme') ? 'blue' : 'gray'}
@@ -339,8 +323,8 @@ const TypebotNav = ({
         size="sm"
       >
         {t('editor.header.themeButton.label')}
-      </Button>
-      <Button
+      </Button> */}
+      {/* <Button
         as={Link}
         href={`/typebots/${typebotId}/settings`}
         colorScheme={router.pathname.endsWith('settings') ? 'blue' : 'gray'}
@@ -348,7 +332,7 @@ const TypebotNav = ({
         size="sm"
       >
         {t('editor.header.settingsButton.label')}
-      </Button>
+      </Button> */}
       <Button
         as={Link}
         href={`/typebots/${typebotId}/share`}

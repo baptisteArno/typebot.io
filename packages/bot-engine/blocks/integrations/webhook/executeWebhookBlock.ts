@@ -29,6 +29,7 @@ import {
 import { env } from '@typebot.io/env'
 import { parseAnswers } from '@typebot.io/results/parseAnswers'
 import { JSONParse } from '@typebot.io/lib/JSONParse'
+import logger from '@typebot.io/lib/logger'
 
 type ParsedWebhook = ExecutableHttpRequest & {
   basicAuth: { username?: string; password?: string }
@@ -285,7 +286,7 @@ export const executeWebhook = async (
       statusCode: 500,
       data: { message: `Error from Typebot server: ${error}` },
     }
-    console.error(error)
+    logger.error(error)
     logs.push({
       status: 'error',
       description: `Webhook failed to execute.`,

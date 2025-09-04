@@ -11,6 +11,7 @@ import { z } from 'zod'
 import { isReadTypebotForbidden } from '../helpers/isReadTypebotForbidden'
 import { migratePublicTypebot } from '@typebot.io/migrations/migrateTypebot'
 import NodeCache from 'node-cache'
+import logger from '@/helpers/logger'
 
 export const getPublishedTypebot = authenticatedProcedure
   .meta({
@@ -78,7 +79,7 @@ export const getPublishedTypebot = authenticatedProcedure
         !existingTypebot?.id ||
         (await isReadTypebotForbidden(existingTypebot, user))
       ) {
-        console.log(
+        logger.info(
           `Typebot not found or access forbidden for ID: ${typebotId}`
         )
         throw new TRPCError({
@@ -107,7 +108,7 @@ export const getPublishedTypebot = authenticatedProcedure
             : undefined,
         }
       } catch (err) {
-        console.error('Error parsing published typebot:', err)
+        logger.error('Error parsing published typebot:', err)
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: `Failed to parse published typebot: ${typebotId}`,
@@ -194,7 +195,7 @@ export const getPublishedTypebotCached = authenticatedProcedure
           !existingTypebot ||
           (await isReadTypebotForbidden(existingTypebot, user))
         ) {
-          console.log(
+          logger.info(
             'Typebot not found or access forbidden for ID:',
             typebotId
           )
@@ -236,7 +237,7 @@ export const getPublishedTypebotCached = authenticatedProcedure
 
         return result
       } catch (err) {
-        console.error('Error in getPublishedTypebotCached:', err)
+        logger.error('Error in getPublishedTypebotCached:', err)
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to parse published typebot',

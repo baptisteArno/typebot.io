@@ -4,6 +4,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { createOpenApiNextHandler } from '@lilyrose2798/trpc-openapi'
 import cors from 'nextjs-cors'
 import { publicRouter } from '@/helpers/server/routers/publicRouter'
+import logger from '@/helpers/logger'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   await cors(req, res, {
@@ -16,7 +17,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     onError({ error }) {
       if (error.code === 'INTERNAL_SERVER_ERROR') {
         Sentry.captureException(error)
-        console.error('Something went wrong', error)
+        logger.error('Something went wrong', error)
       }
     },
   })(req, res)

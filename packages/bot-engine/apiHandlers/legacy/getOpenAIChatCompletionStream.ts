@@ -10,6 +10,7 @@ import { parseVariableNumber } from '@typebot.io/variables/parseVariableNumber'
 import { ClientOptions, OpenAI } from 'openai'
 import { defaultOpenAIOptions } from '@typebot.io/schemas/features/blocks/integrations/openai/constants'
 import { getCredentials } from '../../queries/getCredentials'
+import logger from '@typebot.io/lib/logger'
 
 export const getOpenAIChatCompletionStream = async (
   state: SessionState,
@@ -19,7 +20,7 @@ export const getOpenAIChatCompletionStream = async (
   if (!options.credentialsId) return
   const credentials = await getCredentials(options.credentialsId)
   if (!credentials) {
-    console.error('Could not find credentials in database')
+    logger.error('Could not find credentials in database')
     return
   }
   const { apiKey } = (await decryptV2(

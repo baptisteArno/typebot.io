@@ -5,6 +5,7 @@ import { SmtpCredentials } from '@typebot.io/schemas'
 import { env } from '@typebot.io/env'
 import { createSmtpCredentials } from './utils/databaseActions'
 import { getTestAsset } from './utils/playwright'
+import logger from '@/helpers/logger'
 
 export const mockSmtpCredentials: SmtpCredentials['data'] = {
   from: {
@@ -22,7 +23,7 @@ test.beforeAll(async () => {
     const credentialsId = 'send-email-credentials'
     await createSmtpCredentials(credentialsId, mockSmtpCredentials)
   } catch (err) {
-    console.error(err)
+    logger.error(err)
   }
 })
 

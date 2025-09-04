@@ -8,6 +8,7 @@ import { getAuthenticatedGoogleDoc } from './helpers/getAuthenticatedGoogleDoc'
 import { ExecuteIntegrationResponse } from '../../../types'
 import { matchFilter } from './helpers/matchFilter'
 import { deepParseVariables } from '@typebot.io/variables/deepParseVariables'
+import logger from '@typebot.io/lib/logger'
 
 export const updateRow = async (
   state: SessionState,
@@ -69,7 +70,7 @@ export const updateRow = async (
       description: `Succesfully updated matching rows`,
     })
   } catch (err) {
-    console.log(err)
+    logger.error(err)
     logs.push({
       status: 'error',
       description: `An error occured while updating the row`,

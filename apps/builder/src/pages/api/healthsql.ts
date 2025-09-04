@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { Pool } from 'pg'
+import logger from '@/helpers/logger'
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
@@ -12,7 +13,7 @@ async function checkDatabaseConnection(): Promise<boolean> {
     client.release()
     return true
   } catch (error) {
-    console.error('Error accessing the database:', error)
+    logger.error('Error accessing the database:', error)
     return false
   }
 }
