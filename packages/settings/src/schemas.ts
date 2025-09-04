@@ -19,12 +19,22 @@ export const systemMessagesSchema = z.object({
 });
 export type SystemMessages = z.infer<typeof systemMessagesSchema>;
 
+// Chat limits configuration schema
+export const chatLimitsSchema = z.object({
+  isEnabled: z.boolean().optional(),
+  limit: z.number().min(0).optional(),
+  limitType: z.enum(["daily", "weekly", "monthly", "total"]).optional(),
+});
+
+export type ChatLimits = z.infer<typeof chatLimitsSchema>;
+
 const generalSettings = z.object({
   isBrandingEnabled: z.boolean().optional(),
   isTypingEmulationEnabled: z.boolean().optional(),
   isInputPrefillEnabled: z.boolean().optional(),
   isHideQueryParamsEnabled: z.boolean().optional(),
   isNewResultOnRefreshEnabled: z.boolean().optional(),
+  chatLimits: chatLimitsSchema.optional(),
   rememberUser: z
     .object({
       isEnabled: z.boolean().optional(),
