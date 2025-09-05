@@ -15,6 +15,7 @@ type Props = {
   message: ContinueChatResponse["messages"][number];
   mediaCache?: UploadMediaCache;
 };
+
 export const convertMessageToWhatsAppMessage = async ({
   message,
   mediaCache,
@@ -39,13 +40,11 @@ export const convertMessageToWhatsAppMessage = async ({
     case BubbleBlockType.IMAGE: {
       if (!message.content.url || isImageUrlNotCompatible(message.content.url))
         return null;
-
       if (mediaCache) {
         const mediaId = await getOrUploadMedia({
           url: message.content.url,
           cache: mediaCache,
         });
-
         if (mediaId) {
           return {
             type: "image",
@@ -55,7 +54,6 @@ export const convertMessageToWhatsAppMessage = async ({
           };
         }
       }
-
       return {
         type: "image",
         image: {
@@ -65,13 +63,11 @@ export const convertMessageToWhatsAppMessage = async ({
     }
     case BubbleBlockType.AUDIO:
       if (!message.content.url) return null;
-
       if (mediaCache) {
         const mediaId = await getOrUploadMedia({
           url: message.content.url,
           cache: mediaCache,
         });
-
         if (mediaId) {
           return {
             type: "audio",
@@ -81,7 +77,6 @@ export const convertMessageToWhatsAppMessage = async ({
           };
         }
       }
-
       return {
         type: "audio",
         audio: {
@@ -97,7 +92,6 @@ export const convertMessageToWhatsAppMessage = async ({
             url: message.content.url,
             cache: mediaCache,
           });
-
           if (mediaId) {
             return {
               type: "video",
@@ -107,7 +101,6 @@ export const convertMessageToWhatsAppMessage = async ({
             };
           }
         }
-
         // Fall back to using the URL if pre-upload fails or credentials not provided
         return {
           type: "video",
@@ -129,6 +122,19 @@ export const convertMessageToWhatsAppMessage = async ({
           },
         };
       return null;
+    case BubbleBlockType.LOCATION: {
+      // Handle location messages
+      if (!message.content.latitude || !message.content.longitude) return null;
+      return {
+        type: "location",
+        location: {
+          latitude: message.content.latitude,
+          longitude: message.content.longitude,
+          name: message.content.name,
+          address: message.content.address,
+        },
+      };
+    }
     case BubbleBlockType.EMBED:
       if (!message.content.url) return null;
       return {
