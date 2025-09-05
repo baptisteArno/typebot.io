@@ -156,8 +156,9 @@ providers.push(
 
       try {
         // Verify token using AWS Cognito GetUser API
+        const cognitoRegion = env.AWS_COGNITO_REGION || 'us-east-1';
         const cognitoResponse = await fetch(
-          `https://cognito-idp.us-east-1.amazonaws.com/`,
+          `https://cognito-idp.${cognitoRegion}.amazonaws.com/`,
           {
             method: 'POST',
             headers: {
