@@ -34,6 +34,19 @@ To function properly, your S3 bucket must have the following configuration:
   }
   ```
 
+If you are using the amazon console online you should paste it like this : 
+
+  ```json
+   [
+      {
+        "AllowedHeaders": ["*"],
+        "AllowedMethods": ["PUT", "POST"],
+        "AllowedOrigins": ["*"],
+        "ExposeHeaders": ["ETag"]
+      }
+    ]
+  ```
+
 - Access policy (replace `<bucket-name>` with the name of your S3 bucket):
   ```json
   {
