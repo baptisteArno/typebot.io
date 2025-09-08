@@ -2,77 +2,37 @@ import { publicProcedure } from '@/helpers/server/trpc'
 import prisma from '@typebot.io/lib/prisma'
 import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
-import { errorTypeEnum } from '../constants/errorTypes'
-
-type Block = {
-  id: string
-  type: string
-  outgoingEdgeId?: string | null
-  options?: { typebotId?: string }
-}
-type Group = {
-  title: string
-  blocks: Block[]
-}
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type Edge = {
-  id: string
-  to: {
-    blockId: string
-    groupId: string
-  }
-  from: {
-    blockId: string
-  }
-}
+import {
+  ValidationErrorItem,
+  validationErrorSchema,
+} from '../constants/errorTypes'
+import { Group, Block, TypebotLinkBlock } from '@typebot.io/schemas'
+import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
+import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
 
 const typebotValidationSchema = z.object({
   typebotId: z.string().describe('Typebot id to be validated'),
 })
 
-const responseSchema = z.object({
-  isValid: z.boolean(),
-  outgoingEdgeIds: z.array(z.string().nullable()),
-  invalidGroups: z.array(z.string()),
-  brokenLinks: z.array(
-    z.object({
-      groupName: z.string(),
-      typebotName: z.string(),
-    })
-  ),
-  invalidTextBeforeClaudia: z.array(z.string()),
-  errors: z
-    .array(
-      z.object({
-        message: z.string(),
-        type: z
-          .object({
-            name: errorTypeEnum,
-          })
-          .optional(),
-      })
-    )
-    .optional(),
-})
+const responseSchema = validationErrorSchema
 
 const isGroupArray = (groups: unknown): groups is Group[] =>
   Array.isArray(groups)
 const hasBlocks = (group: Group): boolean =>
   'blocks' in group && Array.isArray(group.blocks)
 const isConditionBlock = (block: Block): boolean =>
-  block.type.toLowerCase() === 'condition'
+  block.type === LogicBlockType.CONDITION
 
-const isTypebotLinkBlock = (block: Block): boolean =>
-  block.type.toLowerCase() === 'typebot link' &&
-  block.options?.typebotId !== undefined
+const isTypebotLinkBlock = (block: Block): block is TypebotLinkBlock =>
+  block.type === LogicBlockType.TYPEBOT_LINK
 
 const isClaudiaBlock = (block: Block): boolean =>
   block.type.toLowerCase() === 'claudia'
 
 const isTextBlock = (block: Block): boolean =>
-  block.type.toLowerCase() === 'text'
+  block.type === InputBlockType.TEXT
 
-const validateOutgoingEdges = (groups: Group[]) => {
+const validateConditionalBlocks = (groups: Group[]) => {
   const outgoingEdgeIds: (string | null)[] = []
   const invalidGroups: string[] = []
 
@@ -85,7 +45,7 @@ const validateOutgoingEdges = (groups: Group[]) => {
       outgoingEdgeIds.push(...groupOutgoingEdgeIds)
 
       if (groupOutgoingEdgeIds.includes(null)) {
-        invalidGroups.push(group.title)
+        invalidGroups.push(group.id)
       }
     }
   })
@@ -94,7 +54,7 @@ const validateOutgoingEdges = (groups: Group[]) => {
 }
 
 const validateTypebotLinks = async (groups: Group[]) => {
-  const brokenLinks: { groupName: string; typebotName: string }[] = []
+  const brokenLinks: { groupId: string; typebotName: string }[] = []
 
   for (const group of groups) {
     if (hasBlocks(group)) {
@@ -113,7 +73,7 @@ const validateTypebotLinks = async (groups: Group[]) => {
 
             if (typebotRecord?.name) {
               brokenLinks.push({
-                groupName: group.title,
+                groupId: group.id,
                 typebotName: typebotRecord.name,
               })
             }
@@ -144,7 +104,7 @@ const validateTextBeforeClaudia = (groups: Group[]) => {
       }
 
       if (foundClaudiaBlock && !foundTextBlock) {
-        invalidGroups.push(group.title)
+        invalidGroups.push(group.id)
       }
     }
   })
@@ -180,38 +140,48 @@ export const getTypebotValidation = publicProcedure
     }
 
     if (!isGroupArray(typebot.groups)) {
-      return {
-        isValid: false,
-        outgoingEdgeIds: [],
-        invalidGroups: [],
-        brokenLinks: [],
-        invalidTextBeforeClaudia: [],
-        errors: [
-          {
-            message: 'Invalid groups structure',
-            type: { name: 'invalidGroups' },
-          },
-        ],
-      }
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: 'Invalid groups structure',
+      })
     }
 
-    const { outgoingEdgeIds, invalidGroups } = validateOutgoingEdges(
-      typebot.groups
+    const { invalidGroups } = validateConditionalBlocks(typebot.groups)
+
+    const invalidGroupsErrors: ValidationErrorItem[] = invalidGroups.map(
+      (groupId) => ({
+        type: 'conditionalBlocks',
+        groupId,
+      })
     )
+
     const brokenLinks = await validateTypebotLinks(typebot.groups)
+    const brokenLinksErrors: ValidationErrorItem[] = brokenLinks.map((b) => ({
+      type: 'brokenLinks',
+      groupId: b.groupId,
+      typebotName: b.typebotName,
+    }))
+
     const invalidTextBeforeClaudia = validateTextBeforeClaudia(typebot.groups)
+    const invalidTextBeforeClaudiaErrors: ValidationErrorItem[] =
+      invalidTextBeforeClaudia.map((groupId) => ({
+        type: 'invalidTextBeforeClaudia',
+        groupId,
+      }))
 
     const isValid =
       invalidGroups.length === 0 &&
       brokenLinks.length === 0 &&
       invalidTextBeforeClaudia.length === 0
 
+    const errors = [
+      ...invalidGroupsErrors,
+      ...brokenLinksErrors,
+      ...invalidTextBeforeClaudiaErrors,
+    ]
+
     return {
       isValid,
-      outgoingEdgeIds,
-      invalidGroups,
-      brokenLinks,
-      invalidTextBeforeClaudia,
-      errors: [],
+      errors: errors,
     }
   })

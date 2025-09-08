@@ -1,57 +1,53 @@
 import { z } from 'zod'
 
 export const errorTypeEnum = z.enum([
-  'invalidGroups',
+  'conditionalBlocks',
   'invalidTextBeforeClaudia',
   'brokenLinks',
   'outgoingEdgeIds',
 ])
+export type ErrorType = z.infer<typeof errorTypeEnum>
 
-export type ErrorTypeName = z.infer<typeof errorTypeEnum>
+const BaseError = z.object({
+  groupId: z.string().optional(),
+})
 
-export class InvalidGroupsError {
-  name: string = 'invalidGroups'
-  message: string
-  constructor(message: string) {
-    this.message = message
-  }
-}
+export const conditionalBlocksErrorSchema = BaseError.extend({
+  type: z.literal('conditionalBlocks'),
+})
 
-export class OutgoingEdgeIdsError {
-  name: string = 'outgoingEdgeIds'
-  message: string
-  constructor(message: string) {
-    this.message = message
-  }
-}
+export const outgoingEdgeIdsErrorSchema = BaseError.extend({
+  type: z.literal('outgoingEdgeIds'),
+})
 
-export class InvalidTextBeforeClaudiaError {
-  name: string = 'invalidTextBeforeClaudia'
-  message: string
-  constructor(message: string) {
-    this.message = message
-  }
-}
+export const invalidTextBeforeClaudiaErrorSchema = BaseError.extend({
+  type: z.literal('invalidTextBeforeClaudia'),
+})
 
-export class BrokenLinksError {
-  name: string = 'brokenLinks'
-  message: string
-  groupName: string
-  typebotName: string
-  constructor(message: string, groupName: string, typebotName: string) {
-    this.message = message
-    this.groupName = groupName
-    this.typebotName = typebotName
-  }
-}
+export const brokenLinksErrorSchema = BaseError.extend({
+  type: z.literal('brokenLinks'),
+  typebotName: z.string(),
+})
 
-export type ValidationErrorItem =
-  | InvalidGroupsError
-  | BrokenLinksError
-  | InvalidTextBeforeClaudiaError
-  | OutgoingEdgeIdsError
+export const validationErrorItemSchema = z.discriminatedUnion('type', [
+  conditionalBlocksErrorSchema,
+  outgoingEdgeIdsErrorSchema,
+  invalidTextBeforeClaudiaErrorSchema,
+  brokenLinksErrorSchema,
+])
 
-export type ValidationError = {
-  isValid: boolean
-  errors: ValidationErrorItem[]
-}
+export const validationErrorSchema = z.object({
+  isValid: z.boolean(),
+  errors: z.array(validationErrorItemSchema),
+})
+
+export type ConditionalGroupsError = z.infer<
+  typeof conditionalBlocksErrorSchema
+>
+export type OutgoingEdgeIdsError = z.infer<typeof outgoingEdgeIdsErrorSchema>
+export type InvalidTextBeforeClaudiaError = z.infer<
+  typeof invalidTextBeforeClaudiaErrorSchema
+>
+export type BrokenLinksError = z.infer<typeof brokenLinksErrorSchema>
+export type ValidationErrorItem = z.infer<typeof validationErrorItemSchema>
+export type ValidationError = z.infer<typeof validationErrorSchema>

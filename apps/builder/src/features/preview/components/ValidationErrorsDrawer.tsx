@@ -26,16 +26,35 @@ import { useShallow } from 'zustand/react/shallow'
 import { groupWidth } from '../../graph/constants'
 import {
   BrokenLinksError,
-  InvalidGroupsError,
-  InvalidTextBeforeClaudiaError,
   ValidationErrorItem,
+  ErrorType,
 } from '@/features/typebot/constants/errorTypes'
+
 import { useTranslate } from '@tolgee/react'
 
-// helper para extrair nome de grupo de mensagens padronizadas
-const extractGroupNameFromMessage = (msg: string): string | undefined => {
-  const m = msg.match(/group '(.+?)'/i)
-  return m ? m[1] : undefined
+const ERROR_CONFIGS: Record<
+  ErrorType,
+  {
+    titleKey: string
+    descriptionKey: string
+  }
+> = {
+  conditionalBlocks: {
+    titleKey: 'validationErrors.conditionalBlocks.title',
+    descriptionKey: 'validationErrors.conditionalBlocks.description',
+  },
+  brokenLinks: {
+    titleKey: 'validationErrors.brokenLinks.title',
+    descriptionKey: 'validationErrors.brokenLinks.description',
+  },
+  invalidTextBeforeClaudia: {
+    titleKey: 'validationErrors.invalidTextBeforeClaudia.title',
+    descriptionKey: 'validationErrors.invalidTextBeforeClaudia.description',
+  },
+  outgoingEdgeIds: {
+    titleKey: 'validationErrors.outgoingEdgeIds.title',
+    descriptionKey: 'validationErrors.outgoingEdgeIds.description',
+  },
 }
 
 type Props = {
@@ -57,6 +76,10 @@ export const ValidationErrorsDrawer = ({ onClose }: Props) => {
   const [width, setWidth] = useState(500)
   const [isResizeHandleVisible, setIsResizeHandleVisible] = useState(false)
 
+  const getGroupNameById = (id: string): string | undefined => {
+    return typebot?.groups.find((g) => g.id === id)?.title
+  }
+
   const useResizeHandleDrag = useDrag(
     (state) => {
       setWidth(-state.offset[0])
@@ -73,13 +96,13 @@ export const ValidationErrorsDrawer = ({ onClose }: Props) => {
     return validationErrors.errors.length
   }
 
-  const navigateToGroup = (groupName: string) => {
+  const navigateToGroup = (groupId: string) => {
     if (!typebot || !navigateToPosition) return
 
-    const group = typebot.groups.find((g) => g.title === groupName)
+    const group = typebot.groups.find((g) => g.id === groupId)
     if (!group) return
 
-    focusGroup(group.id)
+    focusGroup(groupId)
 
     const leftSidebarWidth = 360
     const leftOffset =
@@ -183,48 +206,37 @@ export const ValidationErrorsDrawer = ({ onClose }: Props) => {
             </VStack>
           ) : (
             <>
-              <ValidationErrorSection
-                errorClass={InvalidGroupsError}
-                title={t('validationErrors.invalidGroupsTitle')}
-                allErrors={allErrors}
-                description={t('validationErrors.invalidGroupsDescription')}
-                getLabel={(e) =>
-                  extractGroupNameFromMessage(e.message) || e.message
-                }
-                onGroupClick={(e) => {
-                  const groupName =
-                    extractGroupNameFromMessage(e.message) || e.message
-                  navigateToGroup(groupName)
-                }}
-              />
+              {Object.entries(ERROR_CONFIGS).map(([errorType, config]) => {
+                const filteredErrors = allErrors.filter(
+                  (error) => error.type === errorType
+                )
+                if (filteredErrors.length === 0) return null
 
-              <ValidationErrorSection
-                errorClass={BrokenLinksError}
-                title={t('validationErrors.brokenLinksTitle')}
-                allErrors={allErrors}
-                description={t('validationErrors.brokenLinksDescription')}
-                getLabel={(e) => `${e.groupName} → ${e.typebotName}`}
-                onGroupClick={(e) => {
-                  navigateToGroup(e.groupName)
-                }}
-              />
-
-              <ValidationErrorSection
-                errorClass={InvalidTextBeforeClaudiaError}
-                title={t('validationErrors.invalidTextBeforeClaudiaTitle')}
-                allErrors={allErrors}
-                description={t(
-                  'validationErrors.invalidTextBeforeClaudiaDescription'
-                )}
-                getLabel={(e) =>
-                  extractGroupNameFromMessage(e.message) || e.message
-                }
-                onGroupClick={(e) => {
-                  const groupName =
-                    extractGroupNameFromMessage(e.message) || e.message
-                  navigateToGroup(groupName)
-                }}
-              />
+                return (
+                  <ValidationErrorSection
+                    key={errorType}
+                    errorType={errorType as ErrorType}
+                    title={t(config.titleKey)}
+                    allErrors={filteredErrors}
+                    description={t(config.descriptionKey)}
+                    getLabel={(e) => {
+                      const groupName =
+                        (e.groupId && getGroupNameById(e.groupId)) || ''
+                      switch (e.type) {
+                        case 'brokenLinks':
+                          return `${groupName} → ${
+                            (e as BrokenLinksError).typebotName
+                          }`
+                        default:
+                          return groupName
+                      }
+                    }}
+                    onGroupClick={(e) => {
+                      e.groupId && navigateToGroup(e.groupId)
+                    }}
+                  />
+                )
+              })}
             </>
           )}
         </Stack>
@@ -233,33 +245,29 @@ export const ValidationErrorsDrawer = ({ onClose }: Props) => {
   )
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type Constructor<T> = new (...args: any[]) => T
-
-type ValidationErrorSectionProps<T extends ValidationErrorItem> = {
-  errorClass: Constructor<T>
+type ValidationErrorSectionProps = {
+  errorType: ErrorType
   title: string
   allErrors: ValidationErrorItem[]
   description: string
-  onGroupClick?: (item: T) => void
-  getLabel?: (item: T) => string
+  color?: string
+  onGroupClick?: (item: ValidationErrorItem) => void
+  getLabel?: (item: ValidationErrorItem) => string
 }
 
-const ValidationErrorSection = <T extends ValidationErrorItem>({
-  errorClass,
+const ValidationErrorSection = ({
   title,
   allErrors,
   description,
+  color = 'orange',
   onGroupClick,
   getLabel,
-}: ValidationErrorSectionProps<T>) => {
-  const color = 'orange'
+}: ValidationErrorSectionProps) => {
   const itemBgColor = useColorModeValue('white', 'gray.800')
   const hoverBgColor = useColorModeValue(`${color}.100`, `${color}.800`)
   const containerBg = useColorModeValue(`${color}.50`, `${color}.900`)
 
-  const errors = allErrors.filter((e): e is T => e instanceof errorClass)
-  if (!errors.length) return null
+  if (!allErrors.length) return null
 
   return (
     <Box
@@ -285,14 +293,14 @@ const ValidationErrorSection = <T extends ValidationErrorItem>({
             alignItems="center"
             justifyContent="center"
           >
-            {errors.length}
+            {allErrors.length}
           </Badge>
         </HStack>
         <Text fontSize="sm" color="gray.400">
           {description}
         </Text>
         <Stack spacing={2}>
-          {errors.map((error, idx) => {
+          {allErrors.map((error, idx) => {
             const label = getLabel ? getLabel(error) : String(error)
             return (
               <Box

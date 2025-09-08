@@ -158,7 +158,9 @@ export const GroupNode = ({ group, groupIndex }: Props) => {
   )
 
   const isFocused = focusedGroups.includes(group.id)
-  const hasError = !validationErrors
+  const hasError = !!validationErrors?.errors.find(
+    (e) => e.groupId === group.id
+  )
 
   return (
     <ContextMenu<HTMLDivElement>
