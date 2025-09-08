@@ -4,10 +4,11 @@ import type { WorkspaceInApp } from "@/features/workspace/WorkspaceProvider";
 import { queryClient, trpc } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
 import { HStack, Stack, Text } from "@chakra-ui/react";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
 import { Plan } from "@typebot.io/prisma/enum";
 import { useState } from "react";
+import { useSubscriptionQuery } from "../hooks/useSubscriptionQuery";
 import type { PreCheckoutDialogProps } from "./PreCheckoutDialog";
 import { PreCheckoutDialog } from "./PreCheckoutDialog";
 import { ProPlanPricingCard } from "./ProPlanPricingCard";
@@ -31,11 +32,7 @@ export const ChangePlanForm = ({
   const [preCheckoutPlan, setPreCheckoutPlan] =
     useState<PreCheckoutDialogProps["selectedSubscription"]>();
 
-  const { data, refetch } = useQuery(
-    trpc.billing.getSubscription.queryOptions({
-      workspaceId: workspace.id,
-    }),
-  );
+  const { data, refetch } = useSubscriptionQuery(workspace.id);
 
   const { mutate: updateSubscription, status: updateSubscriptionStatus } =
     useMutation(

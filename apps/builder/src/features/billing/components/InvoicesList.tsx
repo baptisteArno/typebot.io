@@ -1,6 +1,5 @@
 import { ButtonLink } from "@/components/ButtonLink";
 import { DownloadIcon, FileIcon } from "@/components/icons";
-import { trpc } from "@/lib/queryClient";
 import {
   Checkbox,
   Heading,
@@ -15,10 +14,9 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
-import { useQuery } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
-import Link from "next/link";
 import React from "react";
+import { useInvoicesQuery } from "../hooks/useInvoicesQuery";
 
 type Props = {
   workspaceId: string;
@@ -26,11 +24,7 @@ type Props = {
 
 export const InvoicesList = ({ workspaceId }: Props) => {
   const { t } = useTranslate();
-  const { data, status } = useQuery(
-    trpc.billing.listInvoices.queryOptions({
-      workspaceId,
-    }),
-  );
+  const { data, status } = useInvoicesQuery(workspaceId);
 
   return (
     <Stack spacing={6}>
