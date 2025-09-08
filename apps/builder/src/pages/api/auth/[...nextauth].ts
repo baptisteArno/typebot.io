@@ -143,11 +143,11 @@ if (env.CUSTOM_OAUTH_WELL_KNOWN_URL) {
   })
 }
 
-// Add Cognito iframe provider (using credentials provider)
+// Add CloudChat embedded provider (using credentials provider)
 providers.push(
   CredentialsProvider({
-    id: 'cognito-iframe',
-    name: 'Cognito Iframe',
+    id: 'cloudchat-embedded',
+    name: 'CloudChat Embedded',
     credentials: {
       token: { label: 'Token', type: 'text' },
     },
@@ -156,7 +156,7 @@ providers.push(
 
       try {
         // Verify token using AWS Cognito GetUser API
-        const cognitoRegion = env.AWS_COGNITO_REGION || 'us-east-1';
+        const cognitoRegion = env.AWS_COGNITO_REGION || 'us-east-1'
         const cognitoResponse = await fetch(
           `https://cognito-idp.${cognitoRegion}.amazonaws.com/`,
           {
@@ -230,7 +230,7 @@ export const getAuthOptions = ({
   providers,
   session: {
     strategy: 'jwt',
-    maxAge: 30 * 24 * 60 * 60, // 30 days
+    maxAge: 30 * 24 * 60 * 60,
   },
   pages: {
     signIn: '/signin',
@@ -331,25 +331,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
   }
 
-  // Detect if this is a Cognito iframe authentication request
-  const isCognitoRequest =
-    req.url?.includes('cognito-iframe') ||
-    (req.method === 'POST' && req.body?.providerId === 'cognito-iframe')
-
-  console.log('🔍 Request analysis:', {
-    url: req.url,
-    method: req.method,
-    isCognitoRequest,
-    body: req.method === 'POST' ? Object.keys(req.body || {}) : undefined,
-  })
-
-  return await NextAuth(
-    req,
-    res,
-    getAuthOptions({
-      restricted,
-    })
-  )
+  return await NextAuth(req, res, getAuthOptions({ restricted }))
 }
 
 const updateLastActivityDate = async (user: User) => {

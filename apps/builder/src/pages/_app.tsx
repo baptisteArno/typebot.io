@@ -1,13 +1,7 @@
-import { useEffect, useState, startTransition } from 'react'
+import { useEffect } from 'react'
 import { AppProps } from 'next/app'
-import { SessionProvider, useSession } from 'next-auth/react'
-import {
-  ChakraProvider,
-  createStandaloneToast,
-  Flex,
-  Spinner,
-  Text,
-} from '@chakra-ui/react'
+import { SessionProvider } from 'next-auth/react'
+import { ChakraProvider, createStandaloneToast } from '@chakra-ui/react'
 import { customTheme } from '@/lib/theme'
 import { useRouterProgressBar } from '@/lib/routerProgressBar'
 import '@/assets/styles/routerProgressBar.css'
@@ -28,94 +22,9 @@ import { isCloudProdInstance } from '@/helpers/isCloudProdInstance'
 import { TolgeeProvider, useTolgeeSSR } from '@tolgee/react'
 import { tolgee } from '@/lib/tolgee'
 import { Toaster } from '@/components/Toaster'
-import { handleIframeAuthentication } from '@/utils/iframe-auth'
+import { EmbeddedAuthWrapper } from '@/features/embedded-auth'
 
 const { ToastContainer, toast } = createStandaloneToast(customTheme)
-
-// Component to handle iframe authentication before main app loads
-const IframeAuthWrapper = ({ children }: { children: React.ReactNode }) => {
-  const { data: session, status } = useSession()
-  const router = useRouter()
-  const [isAuthReady, setIsAuthReady] = useState(false)
-  const [isHydrated, setIsHydrated] = useState(false)
-
-  const isEmbedded = router.query.embedded === 'true'
-
-  // Ensure we're hydrated before making any decisions
-  useEffect(() => {
-    setIsHydrated(true)
-  }, [])
-
-  useEffect(() => {
-    if (!router.isReady || !isHydrated) return
-
-    if (isEmbedded && status !== 'loading') {
-      if (!session && !isAuthReady) {
-        // Listen for auth success
-        const handleMessage = (event: MessageEvent) => {
-          if (event.data.type === 'AUTH_SUCCESS' && event.data.user) {
-            startTransition(() => {
-              setIsAuthReady(true)
-            })
-            window.removeEventListener('message', handleMessage)
-          }
-        }
-
-        window.addEventListener('message', handleMessage)
-        handleIframeAuthentication()
-
-        return () => {
-          window.removeEventListener('message', handleMessage)
-        }
-      } else if (session) {
-        // Already authenticated
-        startTransition(() => {
-          setIsAuthReady(true)
-        })
-        window.parent.postMessage(
-          {
-            type: 'AUTH_SUCCESS',
-            user: session.user,
-          },
-          '*'
-        )
-      }
-    } else if (!isEmbedded) {
-      // Non-embedded mode, proceed immediately
-      startTransition(() => {
-        setIsAuthReady(true)
-      })
-    }
-  }, [router.isReady, isEmbedded, session, status, isAuthReady, isHydrated])
-
-  // Don't render anything until hydration is complete
-  if (!isHydrated) {
-    return null
-  }
-
-  // Show loading while authenticating in iframe mode
-  if (isEmbedded && !isAuthReady) {
-    return (
-      <Flex
-        h="100vh"
-        justify="center"
-        align="center"
-        flexDirection="column"
-        gap={4}
-      >
-        <Spinner size="lg" />
-        <Text>
-          {status === 'loading'
-            ? 'Initializing...'
-            : 'Authenticating with Cognito...'}
-        </Text>
-      </Flex>
-    )
-  }
-
-  // Auth ready or non-embedded, render children
-  return <>{children}</>
-}
 
 const App = ({ Component, pageProps }: AppProps) => {
   const router = useRouter()
@@ -155,7 +64,7 @@ const App = ({ Component, pageProps }: AppProps) => {
       <ChakraProvider theme={customTheme}>
         <Toaster />
         <SessionProvider session={pageProps.session}>
-          <IframeAuthWrapper>
+          <EmbeddedAuthWrapper>
             <UserProvider>
               <TypebotProvider typebotId={typebotId}>
                 <WorkspaceProvider typebotId={typebotId}>
@@ -166,7 +75,7 @@ const App = ({ Component, pageProps }: AppProps) => {
                 </WorkspaceProvider>
               </TypebotProvider>
             </UserProvider>
-          </IframeAuthWrapper>
+          </EmbeddedAuthWrapper>
         </SessionProvider>
       </ChakraProvider>
     </TolgeeProvider>

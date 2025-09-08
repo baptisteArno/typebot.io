@@ -66,11 +66,17 @@ const nextConfig = {
         headers: [
           {
             key: 'X-Frame-Options',
-            value: 'ALLOWALL',
+            value: 'SAMEORIGIN',
+          },
+          {
+            key: 'Content-Security-Policy',
+            value: process.env.NEXT_PUBLIC_EMBEDDED_AUTH_ALLOWED_ORIGIN 
+              ? `frame-ancestors 'self' ${process.env.NEXT_PUBLIC_EMBEDDED_AUTH_ALLOWED_ORIGIN}` 
+              : `frame-ancestors 'self' http://localhost:3000`,
           },
           {
             key: 'Access-Control-Allow-Origin',
-            value: '*', // In production, specify your host domain
+            value: process.env.NEXT_PUBLIC_EMBEDDED_AUTH_ALLOWED_ORIGIN || 'http://localhost:3000',
           },
           {
             key: 'Access-Control-Allow-Methods',
