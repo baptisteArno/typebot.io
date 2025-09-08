@@ -14,8 +14,6 @@ Provide precise constraints so that Copilot suggestions, reviews, commit message
 DO:
 
 - Reuse existing utility / extension functions when present.
-- Favor immutable data structures (`val`) and pure functions.
-- Include minimal KDoc for public APIs (what + why, not how) — English.
 - Provide tests (unit) for new logic: happy path + at least one edge case.
 
 DON'T:
