@@ -467,8 +467,6 @@
   "validationErrors.title": "Erros de Validação",
   "validationErrors.typebotIsValid": "✅ Typebot válido!",
   "validationErrors.useValidateButton": "Use o botão &quot;Validar&quot; no cabeçalho para verificar seu                 typebot.",
-  "validationErrors.outgoingEdgeIdsTitle": "Conexões Perdidas",
-  "validationErrors.outgoingEdgeIdsDescription": "Os seguintes grupos possuem conexões quebradas:",
   "variables.button.searchInput.placeholder": "Procure por uma variável",
   "variables.button.tooltip": "Insira uma variável",
   "variables.remove": "Remova a variável",
