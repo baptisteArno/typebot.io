@@ -4,6 +4,7 @@ import { OpenApiMeta } from '@lilyrose2798/trpc-openapi'
 import superjson from 'superjson'
 import * as Sentry from '@sentry/nextjs'
 import { ZodError } from 'zod'
+import tracer from 'dd-trace'
 
 const t = initTRPC
   .context<Context>()
@@ -21,6 +22,34 @@ const t = initTRPC
       }
     },
   })
+
+const datadogLoggerMiddleware = t.middleware(async ({ ctx, next }) => {
+  const span = tracer.scope().active()
+  let traceId = null
+  let spanId = null
+  const context = span?.context()
+  if (context) {
+    if (typeof context.toTraceId === 'function') {
+      traceId = context.toTraceId()
+    } else {
+      console.warn('dd-trace: context.toTraceId is not a function')
+    }
+    if (typeof context.toSpanId === 'function') {
+      spanId = context.toSpanId()
+    } else {
+      console.warn('dd-trace: context.toSpanId is not a function')
+    }
+  }
+  return next({
+    ctx: {
+      ...ctx,
+      datadog: {
+        traceId,
+        spanId,
+      },
+    },
+  })
+})
 
 const sentryMiddleware = t.middleware(
   Sentry.Handlers.trpcMiddleware({
@@ -49,8 +78,13 @@ const isAuthed = t.middleware(({ next, ctx }) => {
   })
 })
 
-const finalMiddleware = sentryMiddleware.unstable_pipe(injectUser)
-const authenticatedMiddleware = sentryMiddleware.unstable_pipe(isAuthed)
+const finalMiddleware = datadogLoggerMiddleware
+  .unstable_pipe(sentryMiddleware)
+  .unstable_pipe(injectUser)
+
+const authenticatedMiddleware = datadogLoggerMiddleware
+  .unstable_pipe(sentryMiddleware)
+  .unstable_pipe(isAuthed)
 
 export const middleware = t.middleware
 
