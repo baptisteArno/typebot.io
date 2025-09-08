@@ -6,7 +6,7 @@ metadata:
     app: typebot-builder
     tags.datadoghq.com/env: production
     tags.datadoghq.com/service: typebot-builder
-    tags.datadoghq.com/version: '${DD_VERSION_SHA}'
+    tags.datadoghq.com/version: '${APP_VERSION}'
 spec:
   replicas: 1
   revisionHistoryLimit: 10
@@ -24,10 +24,11 @@ spec:
         app: typebot-builder
         tags.datadoghq.com/env: production
         tags.datadoghq.com/service: typebot-builder
-        tags.datadoghq.com/version: '${DD_VERSION_SHA}'
+        tags.datadoghq.com/version: '${APP_VERSION}'
         admission.datadoghq.com/enabled: 'true'
       annotations:
         admission.datadoghq.com/js-lib.version: v5.24.0
+        admission.datadoghq.com/typebot-builder.logs: '[{"source":"nodejs","service":"typebot-builder","log_processing_rules":[{"type":"multi_line","name":"no_multiline","pattern":".*"}]}]'
     spec:
       containers:
         - name: typebot-builder
@@ -49,7 +50,7 @@ spec:
             - name: DD_SERVICE
               value: 'typebot-builder'
             - name: DD_VERSION
-              value: '${DD_VERSION_SHA}'
+              value: '${APP_VERSION}'
           envFrom:
             - configMapRef:
                 name: typebot-builder
