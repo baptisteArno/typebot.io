@@ -336,11 +336,7 @@ const ValidateButton = () => {
 
   const getTotalErrorCount = () => {
     if (!validationErrors) return 0
-    return (
-      validationErrors.invalidGroups.length +
-      validationErrors.brokenLinks.length +
-      validationErrors.invalidTextBeforeClaudia.length
-    )
+    return validationErrors.errors.length
   }
 
   const totalErrors = getTotalErrorCount()

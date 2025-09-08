@@ -2,6 +2,7 @@ import { publicProcedure } from '@/helpers/server/trpc'
 import prisma from '@typebot.io/lib/prisma'
 import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
+import { errorTypeEnum } from '../constants/errorTypes'
 
 type Block = {
   id: string
@@ -40,6 +41,18 @@ const responseSchema = z.object({
     })
   ),
   invalidTextBeforeClaudia: z.array(z.string()),
+  errors: z
+    .array(
+      z.object({
+        message: z.string(),
+        type: z
+          .object({
+            name: errorTypeEnum,
+          })
+          .optional(),
+      })
+    )
+    .optional(),
 })
 
 const isGroupArray = (groups: unknown): groups is Group[] =>
@@ -173,6 +186,12 @@ export const getTypebotValidation = publicProcedure
         invalidGroups: [],
         brokenLinks: [],
         invalidTextBeforeClaudia: [],
+        errors: [
+          {
+            message: 'Invalid groups structure',
+            type: { name: 'invalidGroups' },
+          },
+        ],
       }
     }
 
@@ -193,5 +212,6 @@ export const getTypebotValidation = publicProcedure
       invalidGroups,
       brokenLinks,
       invalidTextBeforeClaudia,
+      errors: [],
     }
   })

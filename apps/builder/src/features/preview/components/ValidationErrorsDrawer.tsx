@@ -24,6 +24,18 @@ import { useGraph } from '../../graph/providers/GraphProvider'
 import { useGroupsStore } from '../../graph/hooks/useGroupsStore'
 import { useShallow } from 'zustand/react/shallow'
 import { groupWidth } from '../../graph/constants'
+import {
+  BrokenLinksError,
+  InvalidGroupsError,
+  InvalidTextBeforeClaudiaError,
+  ValidationErrorItem,
+} from '@/features/typebot/constants/errorTypes'
+
+// helper para extrair nome de grupo de mensagens padronizadas
+const extractGroupNameFromMessage = (msg: string): string | undefined => {
+  const m = msg.match(/group '(.+?)'/i)
+  return m ? m[1] : undefined
+}
 
 type Props = {
   onClose: () => void
@@ -51,13 +63,11 @@ export const ValidationErrorsDrawer = ({ onClose }: Props) => {
     }
   )
 
-  const getTotalErrorCount = (errors: ValidationError | null): number => {
-    if (!errors) return 0
-    return (
-      errors.invalidGroups.length +
-      errors.brokenLinks.length +
-      errors.invalidTextBeforeClaudia.length
-    )
+  const getTotalErrorCount = (
+    validationErrors: ValidationError | null
+  ): number => {
+    if (!validationErrors) return 0
+    return validationErrors.errors.length
   }
 
   const navigateToGroup = (groupName: string) => {
@@ -97,6 +107,9 @@ export const ValidationErrorsDrawer = ({ onClose }: Props) => {
   }
 
   const totalErrors = getTotalErrorCount(validationErrors)
+
+  // Remover arrays filtrados individualmente e usar filtragem interna no componente
+  const allErrors = validationErrors ? validationErrors.errors : []
 
   return (
     <Flex
@@ -168,40 +181,46 @@ export const ValidationErrorsDrawer = ({ onClose }: Props) => {
             </VStack>
           ) : (
             <>
-              {validationErrors.invalidGroups.length > 0 && (
-                <ValidationErrorSection
-                  title="Condições Incompletas"
-                  errors={validationErrors.invalidGroups}
-                  errorType="condition"
-                  description="Os seguintes grupos possuem blocos de condição sem conexões definidas:"
-                  onGroupClick={navigateToGroup}
-                />
-              )}
+              <ValidationErrorSection
+                errorClass={InvalidGroupsError}
+                title="Condições Incompletas"
+                allErrors={allErrors}
+                description="Os seguintes grupos possuem blocos de condição sem conexões definidas:"
+                getLabel={(e) =>
+                  extractGroupNameFromMessage(e.message) || e.message
+                }
+                onGroupClick={(e) => {
+                  const groupName =
+                    extractGroupNameFromMessage(e.message) || e.message
+                  navigateToGroup(groupName)
+                }}
+              />
 
-              {validationErrors.brokenLinks.length > 0 && (
-                <ValidationErrorSection
-                  title="Links Quebrados"
-                  errors={validationErrors.brokenLinks.map(
-                    (link) => `${link.groupName} → ${link.typebotName}`
-                  )}
-                  errorType="link"
-                  description="Os seguintes links apontam para typebots que não existem ou não estão publicados:"
-                  onGroupClick={(errorText: string) => {
-                    const groupName = errorText.split(' → ')[0]
-                    navigateToGroup(groupName)
-                  }}
-                />
-              )}
+              <ValidationErrorSection
+                errorClass={BrokenLinksError}
+                title="Links Quebrados"
+                allErrors={allErrors}
+                description="Os seguintes links apontam para typebots que não existem ou não estão publicados:"
+                getLabel={(e) => `${e.groupName} → ${e.typebotName}`}
+                onGroupClick={(e) => {
+                  navigateToGroup(e.groupName)
+                }}
+              />
 
-              {validationErrors.invalidTextBeforeClaudia.length > 0 && (
-                <ValidationErrorSection
-                  title="Texto Obrigatório Antes de Claudia"
-                  errors={validationErrors.invalidTextBeforeClaudia}
-                  errorType="claudia"
-                  description="Os seguintes grupos possuem blocos Claudia sem blocos de texto precedentes:"
-                  onGroupClick={navigateToGroup}
-                />
-              )}
+              <ValidationErrorSection
+                errorClass={InvalidTextBeforeClaudiaError}
+                title="Texto Obrigatório Antes de Claudia"
+                allErrors={allErrors}
+                description="Os seguintes grupos possuem blocos Claudia sem blocos de texto precedentes:"
+                getLabel={(e) =>
+                  extractGroupNameFromMessage(e.message) || e.message
+                }
+                onGroupClick={(e) => {
+                  const groupName =
+                    extractGroupNameFromMessage(e.message) || e.message
+                  navigateToGroup(groupName)
+                }}
+              />
             </>
           )}
         </Stack>
@@ -210,58 +229,54 @@ export const ValidationErrorsDrawer = ({ onClose }: Props) => {
   )
 }
 
-type ValidationErrorSectionProps = {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type Constructor<T> = new (...args: any[]) => T
+
+type ValidationErrorSectionProps<T extends ValidationErrorItem> = {
+  errorClass: Constructor<T>
   title: string
-  errors: string[]
-  errorType: 'condition' | 'link' | 'claudia'
+  allErrors: ValidationErrorItem[]
   description: string
-  onGroupClick?: (groupName: string) => void
+  onGroupClick?: (item: T) => void
+  getLabel?: (item: T) => string
 }
 
-const ValidationErrorSection = ({
+const ValidationErrorSection = <T extends ValidationErrorItem>({
+  errorClass,
   title,
-  errors,
-  errorType,
+  allErrors,
   description,
   onGroupClick,
-}: ValidationErrorSectionProps) => {
-  const getErrorColor = () => 'orange'
-
-  if (errorType === null) {
-    console.log(errorType)
-  }
-
-  const getErrorIcon = () => {
-    return AlertIcon
-  }
-
+  getLabel,
+}: ValidationErrorSectionProps<T>) => {
+  const color = 'orange'
   const itemBgColor = useColorModeValue('white', 'gray.800')
-  const hoverBgColor = useColorModeValue(
-    `${getErrorColor()}.100`,
-    `${getErrorColor()}.800`
-  )
+  const hoverBgColor = useColorModeValue(`${color}.100`, `${color}.800`)
+  const containerBg = useColorModeValue(`${color}.50`, `${color}.900`)
+
+  const errors = allErrors.filter((e): e is T => e instanceof errorClass)
+  if (!errors.length) return null
 
   return (
     <Box
       borderWidth="1px"
-      borderColor={`${getErrorColor()}.800`}
+      borderColor={`${color}.800`}
       borderRadius="md"
       p={4}
-      bg={useColorModeValue(`${getErrorColor()}.50`, `${getErrorColor()}.900`)}
+      bg={containerBg}
     >
       <VStack align="stretch" spacing={3}>
         <HStack spacing={2}>
-          <Icon as={getErrorIcon()} color={`${getErrorColor()}.500`} />
-          <Text fontWeight="medium" color={`${getErrorColor()}.400`}>
+          <Icon as={AlertIcon} color={`${color}.500`} />
+          <Text fontWeight="medium" color={`${color}.400`}>
             {title}
           </Text>
           <Badge
-            colorScheme={getErrorColor()}
+            colorScheme={color}
             borderRadius="full"
             fontSize="xs"
             w="5"
             h="5"
-            paddingEnd={1.5}
             display="flex"
             alignItems="center"
             justifyContent="center"
@@ -269,49 +284,47 @@ const ValidationErrorSection = ({
             {errors.length}
           </Badge>
         </HStack>
-
         <Text fontSize="sm" color="gray.400">
           {description}
         </Text>
-
         <Stack spacing={2}>
-          {errors.map((error, index) => (
-            <Box
-              key={index}
-              p={2}
-              bg={itemBgColor}
-              borderRadius="sm"
-              borderLeftWidth="3px"
-              borderLeftColor={`${getErrorColor()}.400`}
-              cursor={onGroupClick ? 'pointer' : 'default'}
-              _hover={
-                onGroupClick
-                  ? {
-                      bg: hoverBgColor,
-                      transform: 'translateX(2px)',
-                    }
-                  : undefined
-              }
-              transition="all 0.2s"
-              onClick={() => onGroupClick?.(error)}
-              role={onGroupClick ? 'button' : undefined}
-              tabIndex={onGroupClick ? 0 : undefined}
-              onKeyDown={
-                onGroupClick
-                  ? (e) => {
-                      if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault()
-                        onGroupClick(error)
+          {errors.map((error, idx) => {
+            const label = getLabel ? getLabel(error) : String(error)
+            return (
+              <Box
+                key={idx}
+                p={2}
+                bg={itemBgColor}
+                borderRadius="sm"
+                borderLeftWidth="3px"
+                borderLeftColor={`${color}.400`}
+                cursor={onGroupClick ? 'pointer' : 'default'}
+                _hover={
+                  onGroupClick
+                    ? { bg: hoverBgColor, transform: 'translateX(2px)' }
+                    : undefined
+                }
+                transition="all 0.2s"
+                onClick={() => onGroupClick?.(error)}
+                role={onGroupClick ? 'button' : undefined}
+                tabIndex={onGroupClick ? 0 : undefined}
+                onKeyDown={
+                  onGroupClick
+                    ? (e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault()
+                          onGroupClick(error)
+                        }
                       }
-                    }
-                  : undefined
-              }
-            >
-              <Text fontSize="sm" fontWeight="medium">
-                {error}
-              </Text>
-            </Box>
-          ))}
+                    : undefined
+                }
+              >
+                <Text fontSize="sm" fontWeight="medium">
+                  {label}
+                </Text>
+              </Box>
+            )
+          })}
         </Stack>
       </VStack>
     </Box>

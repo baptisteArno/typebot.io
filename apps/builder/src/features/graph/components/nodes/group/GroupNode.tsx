@@ -158,9 +158,7 @@ export const GroupNode = ({ group, groupIndex }: Props) => {
   )
 
   const isFocused = focusedGroups.includes(group.id)
-  const hasError = validationErrors?.invalidTextBeforeClaudia.includes(
-    group.title
-  )
+  const hasError = !validationErrors
 
   return (
     <ContextMenu<HTMLDivElement>
