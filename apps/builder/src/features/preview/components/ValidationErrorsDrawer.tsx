@@ -227,7 +227,9 @@ const ValidationErrorSection = ({
 }: ValidationErrorSectionProps) => {
   const getErrorColor = () => 'orange'
 
-  console.log(errorType)
+  if (errorType === null) {
+    console.log(errorType)
+  }
 
   const getErrorIcon = () => {
     return AlertIcon

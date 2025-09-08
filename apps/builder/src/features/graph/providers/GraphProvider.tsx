@@ -5,6 +5,7 @@ import {
   Dispatch,
   ReactNode,
   SetStateAction,
+  useCallback,
   useContext,
   useState,
 } from 'react'
@@ -72,11 +73,12 @@ export const GraphProvider = ({
     }
   }
 
-  const registerNavigationCallback = (
-    callback: (position: Position) => void
-  ) => {
-    setNavigationCallback(() => callback)
-  }
+  const registerNavigationCallback = useCallback(
+    (callback: (position: Position) => void) => {
+      setNavigationCallback(() => callback)
+    },
+    [setNavigationCallback]
+  )
 
   return (
     <graphContext.Provider
