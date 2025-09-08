@@ -2,6 +2,7 @@ import {
   Editable,
   EditableInput,
   EditablePreview,
+  IconButton,
   SlideFade,
   Stack,
   useColorModeValue,
@@ -25,6 +26,7 @@ import { setMultipleRefs } from '@/helpers/setMultipleRefs'
 import { groupWidth } from '@/features/graph/constants'
 import { useGroupsStore } from '@/features/graph/hooks/useGroupsStore'
 import { useShallow } from 'zustand/react/shallow'
+import { AlertIcon } from '@/components/icons'
 
 type Props = {
   group: GroupV6
@@ -46,7 +48,8 @@ export const GroupNode = ({ group, groupIndex }: Props) => {
   } = useGraph()
   const { typebot, updateGroup, updateGroupsCoordinates } = useTypebot()
   const { setMouseOverGroup, mouseOverGroup } = useBlockDnd()
-  const { setRightPanel, setStartPreviewAtGroup } = useEditor()
+  const { setRightPanel, setStartPreviewAtGroup, validationErrors } =
+    useEditor()
 
   const [isMouseDown, setIsMouseDown] = useState(false)
   const [isConnecting, setIsConnecting] = useState(false)
@@ -110,6 +113,11 @@ export const GroupNode = ({ group, groupIndex }: Props) => {
     setRightPanel(RightPanel.PREVIEW)
   }
 
+  const handleAlertClick = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    setRightPanel(RightPanel.VALIDATION_ERRORS)
+  }
+
   useDrag(
     ({ first, last, delta, event, target }) => {
       event.stopPropagation()
@@ -150,6 +158,9 @@ export const GroupNode = ({ group, groupIndex }: Props) => {
   )
 
   const isFocused = focusedGroups.includes(group.id)
+  const hasError = validationErrors?.invalidTextBeforeClaudia.includes(
+    group.title
+  )
 
   return (
     <ContextMenu<HTMLDivElement>
@@ -190,6 +201,18 @@ export const GroupNode = ({ group, groupIndex }: Props) => {
           spacing={isEmpty(group.title) ? '0' : '2'}
           pointerEvents={isDraggingGraph ? 'none' : 'auto'}
         >
+          {hasError && (
+            <IconButton
+              onClick={handleAlertClick}
+              position="absolute"
+              top="4"
+              right="4"
+              size="sm"
+              variant={'ghost'}
+              icon={<AlertIcon color="orange.500" />}
+              aria-label="Show validation errors"
+            />
+          )}
           <Editable
             value={groupTitle}
             onChange={setGroupTitle}

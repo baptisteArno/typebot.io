@@ -18,6 +18,7 @@ import { LockedIcon, UnlockedIcon } from '@/components/icons'
 import { BlockCardOverlay } from './BlockCardOverlay'
 import { headerHeight } from '../constants'
 import { useTranslate } from '@tolgee/react'
+import { useEditor } from '../providers/EditorProvider'
 import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/constants'
 import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
 import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integrations/constants'
@@ -98,15 +99,18 @@ const allBlocks = [...Object.values(IntegrationBlockType), ...forgedBlockIds]
 export const BlocksSideBar = () => {
   const { t } = useTranslate()
   const { setDraggedBlockType, draggedBlockType } = useBlockDnd()
+  const { isSidebarExtended, setIsSidebarExtended } = useEditor()
   const [position, setPosition] = useState({
     x: 0,
     y: 0,
   })
   const [relativeCoordinates, setRelativeCoordinates] = useState({ x: 0, y: 0 })
   const [isLocked, setIsLocked] = useState(true)
-  const [isExtended, setIsExtended] = useState(true)
 
-  const closeSideBar = useDebouncedCallback(() => setIsExtended(false), 200)
+  const closeSideBar = useDebouncedCallback(
+    () => setIsSidebarExtended(false),
+    200
+  )
 
   const handleMouseMove = (event: MouseEvent) => {
     if (!draggedBlockType) return
@@ -143,7 +147,7 @@ export const BlocksSideBar = () => {
 
   const handleDockBarEnter = () => {
     closeSideBar.flush()
-    setIsExtended(true)
+    setIsSidebarExtended(true)
   }
 
   const handleMouseLeave = () => {
@@ -161,7 +165,7 @@ export const BlocksSideBar = () => {
       pl="4"
       py="4"
       onMouseLeave={handleMouseLeave}
-      transform={isExtended ? 'translateX(0)' : 'translateX(-350px)'}
+      transform={isSidebarExtended ? 'translateX(0)' : 'translateX(-350px)'}
       transition="transform 350ms cubic-bezier(0.075, 0.82, 0.165, 1) 0s"
     >
       <Stack

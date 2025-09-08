@@ -20,7 +20,7 @@ import {
   UndoIcon,
 } from '@/components/icons'
 import { useRouter } from 'next/router'
-import React, { useState } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { isDefined, isNotDefined } from '@typebot.io/lib'
 import { EditableTypebotName } from './EditableTypebotName'
 import Link from 'next/link'
@@ -301,13 +301,30 @@ const ValidateButton = () => {
   const { validateTypebot, validationErrors, setRightPanel } = useEditor()
   const [isValidating, setIsValidating] = useState(false)
 
+  const typebotId = typebot?.id
+
+  const handleInitialValidate = useCallback(async () => {
+    if (!typebotId) return
+
+    setIsValidating(true)
+    try {
+      await validateTypebot(typebotId)
+    } finally {
+      setIsValidating(false)
+    }
+  }, [typebotId, validateTypebot])
+
+  useEffect(() => {
+    handleInitialValidate()
+  }, [handleInitialValidate])
+
   const handleValidateClick = async () => {
-    if (!typebot?.id) return
+    if (!typebotId) return
 
     setIsValidating(true)
     try {
       await save()
-      const validation = await validateTypebot(typebot.id)
+      const validation = await validateTypebot(typebotId)
 
       if (validation && !validation.isValid) {
         setRightPanel(RightPanel.VALIDATION_ERRORS)

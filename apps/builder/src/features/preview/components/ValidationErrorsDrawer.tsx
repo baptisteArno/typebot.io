@@ -31,6 +31,7 @@ type Props = {
 
 export const ValidationErrorsDrawer = ({ onClose }: Props) => {
   const { validationErrors } = useEditor()
+  const { isSidebarExtended } = useEditor()
   const { typebot } = useTypebot()
   const { navigateToPosition } = useGraph()
   const { focusGroup } = useGroupsStore(
@@ -62,28 +63,27 @@ export const ValidationErrorsDrawer = ({ onClose }: Props) => {
   const navigateToGroup = (groupName: string) => {
     if (!typebot || !navigateToPosition) return
 
-    // Encontrar o grupo pelo nome
     const group = typebot.groups.find((g) => g.title === groupName)
     if (!group) return
 
-    // Focar no grupo
     focusGroup(group.id)
 
-    // Calcular o centro da viewport (considerando o drawer à direita e o header)
-    const viewportWidth = window.innerWidth - width // Subtraindo a largura do drawer
-    const viewportHeight = window.innerHeight - headerHeight // Subtraindo a altura do header
-    const centerX = viewportWidth / 2
-    const centerY = viewportHeight / 2 + headerHeight // Adicionando o header de volta
+    const leftSidebarWidth = 360
+    const leftOffset =
+      validationErrors && isSidebarExtended ? leftSidebarWidth : 0
 
-    // Centralizar o grafo na posição do grupo
+    const viewportWidth = window.innerWidth - width - leftOffset
+    const viewportHeight = window.innerHeight - headerHeight
+    const centerX = viewportWidth / 2 + leftOffset
+    const centerY = viewportHeight / 2 + headerHeight
+
     const groupCoordinates = group.graphCoordinates
     navigateToPosition({
-      x: centerX - groupCoordinates.x - groupWidth / 2, // Centralizar usando a largura real do grupo
-      y: centerY - groupCoordinates.y - 75, // Offset para centralizar melhor
+      x: centerX - groupCoordinates.x - groupWidth / 2,
+      y: centerY - groupCoordinates.y - 150,
       scale: 1,
     })
 
-    // Adicionar classe de highlight para animação
     setTimeout(() => {
       const groupElement = document.getElementById(`group-${group.id}`)
       if (groupElement) {
@@ -93,7 +93,7 @@ export const ValidationErrorsDrawer = ({ onClose }: Props) => {
           groupElement.classList.remove('highlight-error')
         }, 3000)
       }
-    }, 300) // Delay um pouco mais para que o drawer feche primeiro
+    }, 100)
   }
 
   const totalErrors = getTotalErrorCount(validationErrors)

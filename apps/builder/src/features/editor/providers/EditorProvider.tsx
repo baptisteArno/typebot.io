@@ -25,6 +25,8 @@ const editorContext = createContext<{
   setValidationErrors: Dispatch<SetStateAction<ValidationError | null>>
   validateTypebot: (typebotId: string) => Promise<ValidationError | null>
   clearValidationErrors: () => void
+  isSidebarExtended: boolean
+  setIsSidebarExtended: Dispatch<SetStateAction<boolean>>
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   //@ts-ignore
 }>({})
@@ -33,6 +35,7 @@ export const EditorProvider = ({ children }: { children: ReactNode }) => {
   const [rightPanel, setRightPanel] = useState<RightPanel>()
   const [startPreviewAtGroup, setStartPreviewAtGroup] = useState<string>()
   const [startPreviewAtEvent, setStartPreviewAtEvent] = useState<string>()
+  const [isSidebarExtended, setIsSidebarExtended] = useState(true)
 
   const {
     validationErrors,
@@ -54,6 +57,8 @@ export const EditorProvider = ({ children }: { children: ReactNode }) => {
         setValidationErrors,
         validateTypebot,
         clearValidationErrors,
+        isSidebarExtended,
+        setIsSidebarExtended,
       }}
     >
       {children}

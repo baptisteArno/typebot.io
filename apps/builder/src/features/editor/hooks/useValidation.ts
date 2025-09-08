@@ -14,15 +14,13 @@ export const useValidation = () => {
     useState<ValidationError | null>(null)
 
   const utils = trpc.useContext()
-
-  console.log('Validation errors', validationErrors)
-
   const validateTypebot = useCallback(
     async (typebotId: string): Promise<ValidationError | null> => {
       try {
         const validation = await utils.typebot.getTypebotValidation.fetch({
           typebotId,
         })
+        console.log('Validation result:', validation)
         setValidationErrors(validation)
         return validation
       } catch (error) {

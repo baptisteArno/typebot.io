@@ -12,9 +12,8 @@
   visibility: visible !important;
 } */
 
-/* Validation error highlighting */
 .highlight-error {
-  animation: highlight-error 3s ease-in-out;
+  animation: highlight-error 600ms ease-in-out;
 }
 
 @keyframes highlight-error {
