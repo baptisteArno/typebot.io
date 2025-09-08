@@ -29,7 +29,8 @@ export const useKeyboardShortcuts = ({
     cmdPlusKey("z", { event }) && !event.shiftKey;
 
   const isRedoShortcut = (event: KeyboardEvent) =>
-    cmdPlusKey("z", { event }) && event.shiftKey;
+    (cmdPlusKey("z", { event }) && event.shiftKey) ||
+    (event.ctrlKey && event.key.toLowerCase() === "y");
 
   const isCopyShortcut = (event: KeyboardEvent) => cmdPlusKey("c", { event });
 
@@ -52,16 +53,7 @@ export const useKeyboardShortcuts = ({
       const textSelection = window.getSelection()?.toString();
       if (isNotEmpty(textSelection)) return;
       const target = event.target as HTMLElement | null;
-      const isTyping =
-        target?.role === "textbox" ||
-        target instanceof HTMLTextAreaElement ||
-        target instanceof HTMLInputElement;
-      if (
-        isTyping ||
-        target?.tagName === typebotBotPreviewTagName ||
-        target?.tagName === typebotSupportBotTagName
-      )
-        return;
+      if (isTypingTarget(target) || isInsideExcludedTag(target)) return;
       if (undo && isUndoShortcut(event)) {
         event.preventDefault();
         undo();
@@ -116,5 +108,32 @@ export const useKeyboardShortcuts = ({
 
 const cmdPlusKey = (key: string, { event }: { event: KeyboardEvent }) => {
   const modifierPressed = event.metaKey || event.ctrlKey;
-  return modifierPressed && event.key === key;
+  return modifierPressed && event.key.toLowerCase() === key;
+};
+
+const isTypingTarget = (el: EventTarget | null): boolean => {
+  const node = el as HTMLElement | null;
+  if (!node) return false;
+
+  if (node instanceof HTMLTextAreaElement) return true;
+  if (
+    node instanceof HTMLInputElement &&
+    !["button", "checkbox", "radio", "submit", "reset", "file"].includes(
+      node.type,
+    )
+  ) {
+    return true;
+  }
+
+  if (node.closest?.('[contenteditable="true"]')) return true;
+
+  if ((node as HTMLElement).getAttribute?.("role") === "textbox") return true;
+
+  return false;
+};
+
+const isInsideExcludedTag = (el: EventTarget | null): boolean => {
+  const node = el as HTMLElement | null;
+  const tag = node?.tagName;
+  return tag === typebotBotPreviewTagName || tag === typebotSupportBotTagName;
 };
