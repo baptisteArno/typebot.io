@@ -37,7 +37,7 @@ export const checkGroupLimits = async (
         `Failed to fetch group limits: HTTP ${response.status} - ${response.statusText}`
       )
       return {
-        maxGroups: 0,
+        maxGroups: Number(env.NEXT_PUBLIC_HUB_MAX_GROUPS) || 0,
         error: 'cannot call the api',
       }
     }
@@ -46,12 +46,13 @@ export const checkGroupLimits = async (
     console.log(`Group limits API response:`, data)
 
     return {
-      maxGroups: data.data?.limit || 0,
+      maxGroups:
+        data.data?.limit || Number(env.NEXT_PUBLIC_HUB_MAX_GROUPS) || 0,
     }
   } catch (error) {
     console.error('Failed to fetch group limits: from error', error)
     return {
-      maxGroups: 0,
+      maxGroups: Number(env.NEXT_PUBLIC_HUB_MAX_GROUPS) || 0,
       error: error instanceof Error ? error.message : 'Unknown error',
     }
   }
