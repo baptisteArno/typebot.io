@@ -30,6 +30,7 @@ import {
   InvalidTextBeforeClaudiaError,
   ValidationErrorItem,
 } from '@/features/typebot/constants/errorTypes'
+import { useTranslate } from '@tolgee/react'
 
 // helper para extrair nome de grupo de mensagens padronizadas
 const extractGroupNameFromMessage = (msg: string): string | undefined => {
@@ -42,6 +43,8 @@ type Props = {
 }
 
 export const ValidationErrorsDrawer = ({ onClose }: Props) => {
+  const { t } = useTranslate()
+
   const { validationErrors } = useEditor()
   const { isSidebarExtended } = useEditor()
   const { typebot } = useTypebot()
@@ -140,7 +143,7 @@ export const ValidationErrorsDrawer = ({ onClose }: Props) => {
         <CloseButton pos="absolute" right="1rem" top="1rem" onClick={onClose} />
 
         <HStack spacing={3} alignItems="center">
-          <Heading fontSize="md">Erros de Validação</Heading>
+          <Heading fontSize="md">{t('validationErrors.title')}</Heading>
           <Badge
             colorScheme={totalErrors > 0 ? 'red' : 'green'}
             variant="solid"
@@ -162,30 +165,29 @@ export const ValidationErrorsDrawer = ({ onClose }: Props) => {
             <VStack spacing={4} py={8}>
               <Icon as={AlertIcon} color="gray.400" boxSize={12} />
               <Text color="gray.500" textAlign="center">
-                Nenhuma validação executada ainda.
+                {t('validationErrors.noValidationYet')}
               </Text>
               <Text color="gray.400" fontSize="sm" textAlign="center">
-                Use o botão &quot;Validar&quot; no cabeçalho para verificar seu
-                typebot.
+                {t('validationErrors.useValidateButton')}
               </Text>
             </VStack>
           ) : validationErrors.isValid ? (
             <VStack spacing={4} py={8}>
               <Icon as={AlertIcon} color="green.400" boxSize={12} />
               <Text color="green.500" textAlign="center" fontWeight="medium">
-                ✅ Typebot válido!
+                {t('validationErrors.typebotIsValid')}
               </Text>
               <Text color="gray.500" fontSize="sm" textAlign="center">
-                Nenhum erro de validação encontrado.
+                {t('validationErrors.noValidationErrors')}
               </Text>
             </VStack>
           ) : (
             <>
               <ValidationErrorSection
                 errorClass={InvalidGroupsError}
-                title="Condições Incompletas"
+                title={t('validationErrors.invalidGroupsTitle')}
                 allErrors={allErrors}
-                description="Os seguintes grupos possuem blocos de condição sem conexões definidas:"
+                description={t('validationErrors.invalidGroupsDescription')}
                 getLabel={(e) =>
                   extractGroupNameFromMessage(e.message) || e.message
                 }
@@ -198,9 +200,9 @@ export const ValidationErrorsDrawer = ({ onClose }: Props) => {
 
               <ValidationErrorSection
                 errorClass={BrokenLinksError}
-                title="Links Quebrados"
+                title={t('validationErrors.brokenLinksTitle')}
                 allErrors={allErrors}
-                description="Os seguintes links apontam para typebots que não existem ou não estão publicados:"
+                description={t('validationErrors.brokenLinksDescription')}
                 getLabel={(e) => `${e.groupName} → ${e.typebotName}`}
                 onGroupClick={(e) => {
                   navigateToGroup(e.groupName)
@@ -209,9 +211,11 @@ export const ValidationErrorsDrawer = ({ onClose }: Props) => {
 
               <ValidationErrorSection
                 errorClass={InvalidTextBeforeClaudiaError}
-                title="Texto Obrigatório Antes de Claudia"
+                title={t('validationErrors.invalidTextBeforeClaudiaTitle')}
                 allErrors={allErrors}
-                description="Os seguintes grupos possuem blocos Claudia sem blocos de texto precedentes:"
+                description={t(
+                  'validationErrors.invalidTextBeforeClaudiaDescription'
+                )}
                 getLabel={(e) =>
                   extractGroupNameFromMessage(e.message) || e.message
                 }
