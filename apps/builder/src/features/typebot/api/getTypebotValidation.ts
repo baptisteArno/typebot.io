@@ -114,34 +114,26 @@ const validateTextBeforeClaudia = (groups: Group[]) => {
 
 const collectDataAfterClaudia = (groups: Group[]): ValidationErrorItem[] => {
   // Rule: after any "ClaudIA" block there must NOT be any data collection block (any InputBlock) afterwards
-  const invalidGroupIds = new Set<string>()
   const inputBlockTypes = new Set<string>(Object.values(InputBlockType))
 
-  groups.forEach((group) => {
-    if (!hasBlocks(group)) return
-    const { blocks } = group
-
-    let foundClaudia = false
-    for (let i = 0; i < blocks.length; i++) {
-      const block = blocks[i]
-      if (!foundClaudia) {
-        if (isClaudiaBlock(block)) {
-          foundClaudia = true
-        }
-        continue
-      }
-      // We already passed a ClaudIA: any subsequent InputBlock invalidates the group
-      if (inputBlockTypes.has(block.type)) {
-        invalidGroupIds.add(group.id)
-        break // No need to continue within this group
-      }
-    }
-  })
-
-  return Array.from(invalidGroupIds).map<ValidationErrorItem>((groupId) => ({
-    type: 'collectDataAfterClaudia',
-    groupId,
-  }))
+  return groups
+    .filter(hasBlocks)
+    .filter((group) => {
+      const { blocks } = group
+      // Collect indices where ClaudIA appears
+      const claudiaIndexes = blocks
+        .map((b, idx) => (isClaudiaBlock(b) ? idx : -1))
+        .filter((idx) => idx !== -1)
+      if (claudiaIndexes.length === 0) return false
+      // For each ClaudIA occurrence, check if any subsequent block is an InputBlock
+      return claudiaIndexes.some((idx) =>
+        blocks.slice(idx + 1).some((b) => inputBlockTypes.has(b.type))
+      )
+    })
+    .map<ValidationErrorItem>((group) => ({
+      type: 'collectDataAfterClaudia',
+      groupId: group.id,
+    }))
 }
 
 export const getTypebotValidation = publicProcedure
