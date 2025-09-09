@@ -32,6 +32,7 @@ import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/const
 import { ConfirmModal } from '@/components/ConfirmModal'
 import { TextLink } from '@/components/TextLink'
 import { useTimeSince } from '@/hooks/useTimeSince'
+import { useValidation } from '@/features/editor/hooks/useValidation'
 
 type Props = ButtonProps & {
   isMoreMenuDisabled?: boolean
@@ -63,6 +64,8 @@ export const PublishButton = ({
     publishedTypebot?.updatedAt.toString()
   )
   const { showToast } = useToast()
+
+  const { validateTypebot } = useValidation()
 
   const {
     typebot: {
@@ -122,6 +125,7 @@ export const PublishButton = ({
     publishTypebotMutate({
       typebotId: typebot.id,
     })
+    await validateTypebot(typebot.id)
   }
 
   const unpublishTypebot = async () => {

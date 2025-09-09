@@ -26,11 +26,12 @@ import { useShallow } from 'zustand/react/shallow'
 import { groupWidth } from '../../graph/constants'
 import {
   BrokenLinksError,
-  ValidationErrorItem,
   ErrorType,
+  ValidationErrorItemWithGroupName,
 } from '@/features/typebot/constants/errorTypes'
 
 import { useTranslate } from '@tolgee/react'
+import { isNull } from '@udecode/plate-common'
 
 const ERROR_CONFIGS: Record<
   ErrorType,
@@ -47,9 +48,9 @@ const ERROR_CONFIGS: Record<
     titleKey: 'validationErrors.brokenLinks.title',
     descriptionKey: 'validationErrors.brokenLinks.description',
   },
-  invalidTextBeforeClaudia: {
-    titleKey: 'validationErrors.invalidTextBeforeClaudia.title',
-    descriptionKey: 'validationErrors.invalidTextBeforeClaudia.description',
+  missingTextBeforeClaudia: {
+    titleKey: 'validationErrors.missingTextBeforeClaudia.title',
+    descriptionKey: 'validationErrors.missingTextBeforeClaudia.description',
   },
   outgoingEdgeIds: {
     titleKey: 'validationErrors.outgoingEdgeIds.title',
@@ -134,8 +135,17 @@ export const ValidationErrorsDrawer = ({ onClose }: Props) => {
 
   const totalErrors = getTotalErrorCount(validationErrors)
 
-  // Remover arrays filtrados individualmente e usar filtragem interna no componente
   const allErrors = validationErrors ? validationErrors.errors : []
+  const errorsWithGroup = allErrors
+    .map((error) => {
+      if (!error.groupId) return null
+      const groupName = getGroupNameById(error.groupId)
+
+      if (!groupName) return null
+
+      return { ...error, groupName }
+    })
+    .filter((e) => !isNull(e)) as ValidationErrorItemWithGroupName[]
 
   return (
     <Flex
@@ -207,9 +217,10 @@ export const ValidationErrorsDrawer = ({ onClose }: Props) => {
           ) : (
             <>
               {Object.entries(ERROR_CONFIGS).map(([errorType, config]) => {
-                const filteredErrors = allErrors.filter(
+                const filteredErrors = errorsWithGroup.filter(
                   (error) => error.type === errorType
                 )
+
                 if (filteredErrors.length === 0) return null
 
                 return (
@@ -220,15 +231,13 @@ export const ValidationErrorsDrawer = ({ onClose }: Props) => {
                     allErrors={filteredErrors}
                     description={t(config.descriptionKey)}
                     getLabel={(e) => {
-                      const groupName =
-                        (e.groupId && getGroupNameById(e.groupId)) || ''
                       switch (e.type) {
                         case 'brokenLinks':
-                          return `${groupName} → ${
+                          return `${e.groupName} → ${
                             (e as BrokenLinksError).typebotName
                           }`
                         default:
-                          return groupName
+                          return e.groupName
                       }
                     }}
                     onGroupClick={(e) => {
@@ -248,11 +257,11 @@ export const ValidationErrorsDrawer = ({ onClose }: Props) => {
 type ValidationErrorSectionProps = {
   errorType: ErrorType
   title: string
-  allErrors: ValidationErrorItem[]
+  allErrors: ValidationErrorItemWithGroupName[]
   description: string
   color?: string
-  onGroupClick?: (item: ValidationErrorItem) => void
-  getLabel?: (item: ValidationErrorItem) => string
+  onGroupClick?: (item: ValidationErrorItemWithGroupName) => void
+  getLabel?: (item: ValidationErrorItemWithGroupName) => string
 }
 
 const ValidationErrorSection = ({

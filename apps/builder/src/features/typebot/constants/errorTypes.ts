@@ -2,7 +2,7 @@ import { z } from 'zod'
 
 export const errorTypeEnum = z.enum([
   'conditionalBlocks',
-  'invalidTextBeforeClaudia',
+  'missingTextBeforeClaudia',
   'brokenLinks',
   'outgoingEdgeIds',
 ])
@@ -20,8 +20,8 @@ export const outgoingEdgeIdsErrorSchema = BaseError.extend({
   type: z.literal('outgoingEdgeIds'),
 })
 
-export const invalidTextBeforeClaudiaErrorSchema = BaseError.extend({
-  type: z.literal('invalidTextBeforeClaudia'),
+export const missingTextBeforeClaudiaErrorSchema = BaseError.extend({
+  type: z.literal('missingTextBeforeClaudia'),
 })
 
 export const brokenLinksErrorSchema = BaseError.extend({
@@ -32,7 +32,7 @@ export const brokenLinksErrorSchema = BaseError.extend({
 export const validationErrorItemSchema = z.discriminatedUnion('type', [
   conditionalBlocksErrorSchema,
   outgoingEdgeIdsErrorSchema,
-  invalidTextBeforeClaudiaErrorSchema,
+  missingTextBeforeClaudiaErrorSchema,
   brokenLinksErrorSchema,
 ])
 
@@ -45,9 +45,12 @@ export type ConditionalGroupsError = z.infer<
   typeof conditionalBlocksErrorSchema
 >
 export type OutgoingEdgeIdsError = z.infer<typeof outgoingEdgeIdsErrorSchema>
-export type InvalidTextBeforeClaudiaError = z.infer<
-  typeof invalidTextBeforeClaudiaErrorSchema
+export type missingTextBeforeClaudiaError = z.infer<
+  typeof missingTextBeforeClaudiaErrorSchema
 >
 export type BrokenLinksError = z.infer<typeof brokenLinksErrorSchema>
 export type ValidationErrorItem = z.infer<typeof validationErrorItemSchema>
+export type ValidationErrorItemWithGroupName = ValidationErrorItem & {
+  groupName: string
+}
 export type ValidationError = z.infer<typeof validationErrorSchema>

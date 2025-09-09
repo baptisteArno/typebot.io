@@ -5,8 +5,10 @@ import {
   SetStateAction,
   useContext,
   useState,
+  useEffect,
 } from 'react'
 import { ValidationError, useValidation } from '../hooks/useValidation'
+import { useTypebot } from './TypebotProvider'
 
 export enum RightPanel {
   PREVIEW,
@@ -32,6 +34,7 @@ const editorContext = createContext<{
 }>({})
 
 export const EditorProvider = ({ children }: { children: ReactNode }) => {
+  const { typebot, isSavingLoading } = useTypebot()
   const [rightPanel, setRightPanel] = useState<RightPanel>()
   const [startPreviewAtGroup, setStartPreviewAtGroup] = useState<string>()
   const [startPreviewAtEvent, setStartPreviewAtEvent] = useState<string>()
@@ -43,6 +46,21 @@ export const EditorProvider = ({ children }: { children: ReactNode }) => {
     validateTypebot,
     clearValidationErrors,
   } = useValidation()
+
+  const [lastValidatedVersion, setLastValidatedVersion] = useState<Date>()
+
+  useEffect(() => {
+    if (
+      typebot?.id &&
+      typebot.updatedAt &&
+      !isSavingLoading &&
+      lastValidatedVersion !== typebot.updatedAt
+    ) {
+      validateTypebot(typebot.id).then(() => {
+        setLastValidatedVersion(typebot.updatedAt)
+      })
+    }
+  }, [typebot, isSavingLoading, lastValidatedVersion, validateTypebot])
 
   return (
     <editorContext.Provider

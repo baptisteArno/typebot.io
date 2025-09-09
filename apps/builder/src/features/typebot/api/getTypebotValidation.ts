@@ -162,22 +162,22 @@ export const getTypebotValidation = publicProcedure
       typebotName: b.typebotName,
     }))
 
-    const invalidTextBeforeClaudia = validateTextBeforeClaudia(typebot.groups)
-    const invalidTextBeforeClaudiaErrors: ValidationErrorItem[] =
-      invalidTextBeforeClaudia.map((groupId) => ({
-        type: 'invalidTextBeforeClaudia',
+    const missingTextBeforeClaudia = validateTextBeforeClaudia(typebot.groups)
+    const missingTextBeforeClaudiaErrors: ValidationErrorItem[] =
+      missingTextBeforeClaudia.map((groupId) => ({
+        type: 'missingTextBeforeClaudia',
         groupId,
       }))
 
     const isValid =
       invalidGroups.length === 0 &&
       brokenLinks.length === 0 &&
-      invalidTextBeforeClaudia.length === 0
+      missingTextBeforeClaudia.length === 0
 
     const errors = [
       ...invalidGroupsErrors,
       ...brokenLinksErrors,
-      ...invalidTextBeforeClaudiaErrors,
+      ...missingTextBeforeClaudiaErrors,
     ]
 
     return {
