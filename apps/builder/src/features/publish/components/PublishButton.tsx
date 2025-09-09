@@ -125,7 +125,7 @@ export const PublishButton = ({
     publishTypebotMutate({
       typebotId: typebot.id,
     })
-    await validateTypebot(typebot.id)
+    await validateTypebot(typebot)
   }
 
   const unpublishTypebot = async () => {

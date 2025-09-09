@@ -9,6 +9,7 @@ import {
 } from 'react'
 import { ValidationError, useValidation } from '../hooks/useValidation'
 import { useTypebot } from './TypebotProvider'
+import { Typebot } from '@typebot.io/schemas'
 
 export enum RightPanel {
   PREVIEW,
@@ -25,7 +26,7 @@ const editorContext = createContext<{
   setStartPreviewAtEvent: Dispatch<SetStateAction<string | undefined>>
   validationErrors: ValidationError | null
   setValidationErrors: Dispatch<SetStateAction<ValidationError | null>>
-  validateTypebot: (typebotId: string) => Promise<ValidationError | null>
+  validateTypebot: (typebot: Typebot) => Promise<ValidationError | null>
   clearValidationErrors: () => void
   isSidebarExtended: boolean
   setIsSidebarExtended: Dispatch<SetStateAction<boolean>>
@@ -34,7 +35,7 @@ const editorContext = createContext<{
 }>({})
 
 export const EditorProvider = ({ children }: { children: ReactNode }) => {
-  const { typebot, isSavingLoading } = useTypebot()
+  const { typebot } = useTypebot()
   const [rightPanel, setRightPanel] = useState<RightPanel>()
   const [startPreviewAtGroup, setStartPreviewAtGroup] = useState<string>()
   const [startPreviewAtEvent, setStartPreviewAtEvent] = useState<string>()
@@ -47,20 +48,9 @@ export const EditorProvider = ({ children }: { children: ReactNode }) => {
     clearValidationErrors,
   } = useValidation()
 
-  const [lastValidatedVersion, setLastValidatedVersion] = useState<Date>()
-
   useEffect(() => {
-    if (
-      typebot?.id &&
-      typebot.updatedAt &&
-      !isSavingLoading &&
-      lastValidatedVersion !== typebot.updatedAt
-    ) {
-      validateTypebot(typebot.id).then(() => {
-        setLastValidatedVersion(typebot.updatedAt)
-      })
-    }
-  }, [typebot, isSavingLoading, lastValidatedVersion, validateTypebot])
+    typebot && validateTypebot(typebot)
+  }, [typebot, validateTypebot])
 
   return (
     <editorContext.Provider

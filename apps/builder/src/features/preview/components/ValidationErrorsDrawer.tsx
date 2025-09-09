@@ -179,7 +179,7 @@ export const ValidationErrorsDrawer = ({ onClose }: Props) => {
       <Stack w="full" spacing="4">
         <CloseButton pos="absolute" right="1rem" top="1rem" onClick={onClose} />
 
-        <HStack spacing={3} alignItems="center">
+        <HStack spacing={3} alignItems="center" paddingRight={6}>
           <Heading fontSize="md">{t('validationErrors.title')}</Heading>
           <Badge
             colorScheme={totalErrors > 0 ? 'red' : 'green'}

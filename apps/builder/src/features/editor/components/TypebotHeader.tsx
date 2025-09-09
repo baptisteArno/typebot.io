@@ -10,7 +10,6 @@ import {
   useDisclosure,
   StackProps,
   chakra,
-  Badge,
 } from '@chakra-ui/react'
 import {
   ChevronLeftIcon,
@@ -20,7 +19,7 @@ import {
   UndoIcon,
 } from '@/components/icons'
 import { useRouter } from 'next/router'
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState } from 'react'
 import { isDefined, isNotDefined } from '@typebot.io/lib'
 import { EditableTypebotName } from './EditableTypebotName'
 import Link from 'next/link'
@@ -278,8 +277,6 @@ const RightElements = ({
             </chakra.span>
           </Button>
         )}
-
-      {router.pathname.includes('/edit') && <ValidateButton />}
       {currentUserMode === 'guest' && (
         <Button
           as={Link}
@@ -293,72 +290,6 @@ const RightElements = ({
       )}
       {currentUserMode === 'write' && <PublishButton size="sm" />}
     </HStack>
-  )
-}
-
-const ValidateButton = () => {
-  const { typebot, save } = useTypebot()
-  const { validateTypebot, validationErrors, setRightPanel } = useEditor()
-  const [isValidating, setIsValidating] = useState(false)
-
-  const typebotId = typebot?.id
-
-  const handleInitialValidate = useCallback(async () => {
-    if (!typebotId) return
-
-    setIsValidating(true)
-    try {
-      await validateTypebot(typebotId)
-    } finally {
-      setIsValidating(false)
-    }
-  }, [typebotId, validateTypebot])
-
-  useEffect(() => {
-    handleInitialValidate()
-  }, [handleInitialValidate])
-
-  const handleValidateClick = async () => {
-    if (!typebotId) return
-
-    setIsValidating(true)
-    try {
-      await save()
-      const validation = await validateTypebot(typebotId)
-
-      if (validation && !validation.isValid) {
-        setRightPanel(RightPanel.VALIDATION_ERRORS)
-      }
-    } finally {
-      setIsValidating(false)
-    }
-  }
-
-  const getTotalErrorCount = () => {
-    if (!validationErrors) return 0
-    return validationErrors.errors.length
-  }
-
-  const totalErrors = getTotalErrorCount()
-  const hasErrors = validationErrors && !validationErrors.isValid
-
-  return (
-    <Button
-      size="sm"
-      variant="outline"
-      onClick={handleValidateClick}
-      isLoading={isValidating}
-      colorScheme={hasErrors ? 'red' : 'gray'}
-      rightIcon={
-        hasErrors ? (
-          <Badge colorScheme="red" borderRadius="full" fontSize="xs">
-            {totalErrors}
-          </Badge>
-        ) : undefined
-      }
-    >
-      Validar
-    </Button>
   )
 }
 

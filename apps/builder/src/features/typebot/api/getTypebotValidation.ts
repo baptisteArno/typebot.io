@@ -6,14 +6,26 @@ import {
   ValidationErrorItem,
   validationErrorSchema,
 } from '../constants/errorTypes'
-import { Group, Block, TypebotLinkBlock } from '@typebot.io/schemas'
+import {
+  Group,
+  Block,
+  TypebotLinkBlock,
+  typebotSchema,
+} from '@typebot.io/schemas'
 import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
 import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
 import type { ConditionBlock } from '@typebot.io/schemas/features/blocks/logic/condition'
 
-const typebotValidationSchema = z.object({
-  typebotId: z.string().describe('Typebot id to be validated'),
-})
+const typebotValidationSchema = z.union([
+  z.object({
+    typebotId: z.string().describe('Typebot id to be validated'),
+    typebot: z.undefined().optional(),
+  }),
+  z.object({
+    typebotId: z.undefined().optional(),
+    typebot: typebotSchema.describe('Typebot object to be validated directly'),
+  }),
+])
 
 const responseSchema = validationErrorSchema
 
@@ -153,24 +165,40 @@ export const getTypebotValidation = publicProcedure
       path: '/v1/typebots/{typebotId}/validate',
       protect: true,
       summary: 'Validate a typebot',
+      description:
+        'Validate a typebot by ID or by providing the typebot object directly. Either typebotId or typebot must be provided.',
       tags: ['Typebot'],
     },
   })
   .input(typebotValidationSchema)
   .output(responseSchema)
-  .query(async ({ input: { typebotId } }) => {
-    const typebot = await prisma.typebot.findFirst({
-      where: {
-        id: typebotId,
-      },
-      select: {
-        groups: true,
-        edges: true,
-      },
-    })
+  .query(async ({ input }) => {
+    let typebot: { groups: unknown; edges: unknown } | null = null
 
-    if (!typebot) {
-      throw new TRPCError({ code: 'NOT_FOUND', message: 'Typebot not found' })
+    if (input.typebot) {
+      typebot = {
+        groups: input.typebot.groups,
+        edges: input.typebot.edges,
+      }
+    } else if (input.typebotId) {
+      typebot = await prisma.typebot.findFirst({
+        where: {
+          id: input.typebotId,
+        },
+        select: {
+          groups: true,
+          edges: true,
+        },
+      })
+
+      if (!typebot) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Typebot not found' })
+      }
+    } else {
+      throw new TRPCError({
+        code: 'BAD_REQUEST',
+        message: 'Either typebotId or typebot must be provided',
+      })
     }
 
     if (!isGroupArray(typebot.groups)) {
