@@ -20,16 +20,12 @@ import {
   isTextBubbleBlock,
 } from '@typebot.io/schemas/helpers'
 
-const typebotValidationSchema = z.union([
-  z.object({
-    typebotId: z.string().describe('Typebot id to be validated'),
-    typebot: z.undefined().optional(),
-  }),
-  z.object({
-    typebotId: z.undefined().optional(),
-    typebot: typebotSchema.describe('Typebot object to be validated directly'),
-  }),
-])
+const typebotValidationSchema = z.object({
+  typebotId: z.string().describe('Typebot id to be validated'),
+  typebot: typebotSchema
+    .optional()
+    .describe('Typebot object to be validated directly (optional override)'),
+})
 
 const responseSchema = validationErrorSchema
 
@@ -452,7 +448,11 @@ const validateTextBeforeClaudia = (groups: Group[], edges: Edge[]) => {
   return invalidGroups
 }
 
-const missingTextBetweenInputBlocks = (groups: Group[], edges: Edge[]) => {
+const missingTextBetweenInputBlocks = (
+  groups: Group[],
+  edges: Edge[],
+  groupTitleMap?: Map<string, string>
+) => {
   // Rule: From any start event, along every possible execution path, between 2 input (data collection) blocks there must be at least one text block.
   // We traverse the whole graph (including branching via Condition items) until paths are exhausted.
   const inputBlockTypes = new Set<string>(Object.values(InputBlockType))
@@ -574,7 +574,29 @@ const missingTextBetweenInputBlocks = (groups: Group[], edges: Edge[]) => {
   return Array.from(invalidGroupIds).map<ValidationErrorItem>((groupId) => ({
     type: 'missingTextBetweenInputBlocks',
     groupId,
+    message: getErrorMessage(
+      'missingTextBetweenInputBlocks',
+      groupTitleMap?.get(groupId)
+    ),
   }))
+}
+
+const getErrorMessage = (type: string, groupTitle?: string): string => {
+  const errorMessages = {
+    conditionalBlocks: 'Incomplete Conditions',
+    brokenLinks: 'Broken Links',
+    missingTextBeforeClaudia: 'Missing text alongside ClaudIA block',
+    missingTextBetweenInputBlocks: 'Missing text between input blocks',
+    missingClaudiaInFlowBranches: 'Missing ClaudIA block in flow branches',
+  }
+
+  const baseMessage =
+    errorMessages[type as keyof typeof errorMessages] || 'Validation Error'
+  return groupTitle ? `${groupTitle} - ${baseMessage}` : baseMessage
+}
+
+const createGroupTitleMap = (groups: Group[]): Map<string, string> => {
+  return new Map(groups.map((group) => [group.id, group.title]))
 }
 
 export const getTypebotValidation = publicProcedure
@@ -585,7 +607,7 @@ export const getTypebotValidation = publicProcedure
       protect: true,
       summary: 'Validate a typebot',
       description:
-        'Validate a typebot by ID or by providing the typebot object directly. Either typebotId or typebot must be provided.',
+        'Validate a typebot by ID. Optionally provide the typebot object directly to override database lookup.',
       tags: ['Typebot'],
     },
   })
@@ -595,11 +617,13 @@ export const getTypebotValidation = publicProcedure
     let typebot: { groups: unknown; edges: unknown } | null = null
 
     if (input.typebot) {
+      // Use the provided typebot object directly
       typebot = {
         groups: input.typebot.groups,
         edges: input.typebot.edges,
       }
-    } else if (input.typebotId) {
+    } else {
+      // Fetch the typebot using the provided typebotId
       typebot = await prisma.typebot.findFirst({
         where: {
           id: input.typebotId,
@@ -613,11 +637,6 @@ export const getTypebotValidation = publicProcedure
       if (!typebot) {
         throw new TRPCError({ code: 'NOT_FOUND', message: 'Typebot not found' })
       }
-    } else {
-      throw new TRPCError({
-        code: 'BAD_REQUEST',
-        message: 'Either typebotId or typebot must be provided',
-      })
     }
 
     if (!isGroupArray(typebot.groups)) {
@@ -626,6 +645,8 @@ export const getTypebotValidation = publicProcedure
         message: 'Invalid groups structure',
       })
     }
+
+    const groupTitleMap = createGroupTitleMap(typebot.groups)
 
     const { invalidGroups } = validateConditionalBlocks(
       typebot.groups,
@@ -636,6 +657,10 @@ export const getTypebotValidation = publicProcedure
       (groupId) => ({
         type: 'conditionalBlocks',
         groupId,
+        message: getErrorMessage(
+          'conditionalBlocks',
+          groupTitleMap.get(groupId)
+        ),
       })
     )
 
@@ -643,7 +668,7 @@ export const getTypebotValidation = publicProcedure
     const brokenLinksErrors: ValidationErrorItem[] = brokenLinks.map((b) => ({
       type: 'brokenLinks',
       groupId: b.groupId,
-      typebotName: b.typebotName,
+      message: getErrorMessage('brokenLinks', groupTitleMap.get(b.groupId)),
     }))
 
     const missingTextBeforeClaudia = validateTextBeforeClaudia(
@@ -654,6 +679,10 @@ export const getTypebotValidation = publicProcedure
       missingTextBeforeClaudia.map((groupId) => ({
         type: 'missingTextBeforeClaudia',
         groupId,
+        message: getErrorMessage(
+          'missingTextBeforeClaudia',
+          groupTitleMap.get(groupId)
+        ),
       }))
 
     const missingClaudiaInFlowBranches = validateFlowBranchesHaveClaudia(
@@ -664,6 +693,10 @@ export const getTypebotValidation = publicProcedure
       missingClaudiaInFlowBranches.map((groupId) => ({
         type: 'missingClaudiaInFlowBranches',
         groupId,
+        message: getErrorMessage(
+          'missingClaudiaInFlowBranches',
+          groupTitleMap.get(groupId)
+        ),
       }))
 
     const errors = [
@@ -673,7 +706,8 @@ export const getTypebotValidation = publicProcedure
       ...missingClaudiaInFlowBranchesErrors,
       ...missingTextBetweenInputBlocks(
         typebot.groups as Group[],
-        (typebot.edges as Edge[]) || []
+        (typebot.edges as Edge[]) || [],
+        groupTitleMap
       ),
     ]
 

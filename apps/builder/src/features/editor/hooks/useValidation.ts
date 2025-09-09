@@ -17,6 +17,7 @@ export const useValidation = () => {
       setIsValidating(true)
       try {
         const validation = await utils.typebot.getTypebotValidation.fetch({
+          typebotId: typebot.id,
           typebot,
         })
         console.log('Validation result:', validation)

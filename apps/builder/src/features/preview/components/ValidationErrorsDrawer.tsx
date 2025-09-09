@@ -26,7 +26,6 @@ import { useGroupsStore } from '../../graph/hooks/useGroupsStore'
 import { useShallow } from 'zustand/react/shallow'
 import { groupWidth } from '../../graph/constants'
 import {
-  BrokenLinksError,
   ErrorType,
   ValidationErrorItemWithGroupName,
 } from '@/features/typebot/constants/errorTypes'
@@ -258,16 +257,7 @@ export const ValidationErrorsDrawer = ({ onClose }: Props) => {
                     title={t(config.titleKey)}
                     allErrors={filteredErrors}
                     description={t(config.descriptionKey)}
-                    getLabel={(e) => {
-                      switch (e.type) {
-                        case 'brokenLinks':
-                          return `${e.groupName} → ${
-                            (e as BrokenLinksError).typebotName
-                          }`
-                        default:
-                          return e.groupName
-                      }
-                    }}
+                    getLabel={(e) => e.groupName}
                     onGroupClick={(e) => {
                       e.groupId && navigateToGroup(e.groupId)
                     }}
