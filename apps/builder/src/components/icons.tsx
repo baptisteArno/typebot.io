@@ -10,7 +10,7 @@ export const featherIconsBaseProps: IconProps = {
 };
 
 export const svgBaseClassName =
-  "stroke-[currentColor] size-4 stroke-2 fill-none";
+  "stroke-[currentColor] size-4 stroke-2 fill-none flex-shrink-0";
 
 // 99% of these icons are from Feather icons (https://feathericons.com/)
 

@@ -20,7 +20,11 @@ export const TextInputNodeContent = ({ options }: Props) => {
     options?.audioClip.saveVariableId;
   return (
     <Stack>
-      <Text color={"gray.500"} h={options?.isLong ? "100px" : "auto"}>
+      <Text
+        color={"gray.500"}
+        h={options?.isLong ? "100px" : undefined}
+        overflowY="hidden"
+      >
         {options?.labels?.placeholder ??
           defaultTextInputOptions.labels.placeholder}
       </Text>
