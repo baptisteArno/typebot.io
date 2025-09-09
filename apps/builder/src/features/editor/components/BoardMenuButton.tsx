@@ -21,7 +21,7 @@ import {
   SettingsIcon,
 } from '@/components/icons'
 import { useTypebot } from '../providers/TypebotProvider'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { EditorSettingsModal } from './EditorSettingsModal'
 import { parseDefaultPublicId } from '@/features/publish/helpers/parseDefaultPublicId'
 import { useTranslate } from '@tolgee/react'
@@ -102,7 +102,21 @@ export const BoardMenuButton = (props: StackProps) => {
 }
 
 const ValidationErrorsButton = () => {
-  const { setRightPanel, validationErrors } = useEditor()
+  const { setRightPanel, validationErrors, isValidating } = useEditor()
+  const [showSpinner, setShowSpinner] = useState(false)
+  const timeoutRef = useRef<NodeJS.Timeout>()
+
+  useEffect(() => {
+    clearTimeout(timeoutRef.current)
+
+    if (isValidating) {
+      setShowSpinner(true)
+    } else {
+      timeoutRef.current = setTimeout(() => setShowSpinner(false), 150)
+    }
+
+    return () => clearTimeout(timeoutRef.current)
+  }, [isValidating])
 
   const getTotalErrorCount = () => {
     if (!validationErrors) return 0
@@ -121,9 +135,10 @@ const ValidationErrorsButton = () => {
         shadow="lg"
         bgColor={useColorModeValue('white', undefined)}
         colorScheme={hasErrors ? 'red' : 'gray'}
+        isLoading={showSpinner}
         onClick={() => setRightPanel(RightPanel.VALIDATION_ERRORS)}
       />
-      {hasErrors && totalErrors > 0 && (
+      {hasErrors && totalErrors > 0 && !showSpinner && (
         <Badge
           colorScheme="red"
           variant={'solid'}

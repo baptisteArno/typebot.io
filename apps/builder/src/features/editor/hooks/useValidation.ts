@@ -8,11 +8,13 @@ export type { ValidationError }
 export const useValidation = () => {
   const [validationErrors, setValidationErrors] =
     useState<ValidationError | null>(null)
+  const [isValidating, setIsValidating] = useState(false)
 
   const utils = trpc.useContext()
 
   const validateTypebot = useCallback(
     async (typebot: Typebot): Promise<ValidationError | null> => {
+      setIsValidating(true)
       try {
         const validation = await utils.typebot.getTypebotValidation.fetch({
           typebot,
@@ -24,6 +26,8 @@ export const useValidation = () => {
         console.error('Validation error:', error)
         setValidationErrors(null)
         return null
+      } finally {
+        setIsValidating(false)
       }
     },
     [utils]
@@ -38,5 +42,6 @@ export const useValidation = () => {
     setValidationErrors,
     validateTypebot,
     clearValidationErrors,
+    isValidating,
   }
 }

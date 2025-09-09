@@ -11,9 +11,10 @@ import {
   VStack,
   Box,
   Icon,
+  Spinner,
 } from '@chakra-ui/react'
 import { useEditor } from '../../editor/providers/EditorProvider'
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { headerHeight } from '../../editor/constants'
 import { useDrag } from '@use-gesture/react'
 import { ResizeHandle } from './ResizeHandle'
@@ -74,7 +75,7 @@ type Props = {
 export const ValidationErrorsDrawer = ({ onClose }: Props) => {
   const { t } = useTranslate()
 
-  const { validationErrors } = useEditor()
+  const { validationErrors, isValidating } = useEditor()
   const { isSidebarExtended } = useEditor()
   const { typebot } = useTypebot()
   const { navigateToPosition } = useGraph()
@@ -85,6 +86,20 @@ export const ValidationErrorsDrawer = ({ onClose }: Props) => {
   )
   const [width, setWidth] = useState(500)
   const [isResizeHandleVisible, setIsResizeHandleVisible] = useState(false)
+  const [showSpinner, setShowSpinner] = useState(false)
+  const timeoutRef = useRef<NodeJS.Timeout>()
+
+  useEffect(() => {
+    clearTimeout(timeoutRef.current)
+
+    if (isValidating) {
+      setShowSpinner(true)
+    } else {
+      timeoutRef.current = setTimeout(() => setShowSpinner(false), 150)
+    }
+
+    return () => clearTimeout(timeoutRef.current)
+  }, [isValidating])
 
   const getGroupNameById = (id: string): string | undefined => {
     return typebot?.groups.find((g) => g.id === id)?.title
@@ -200,6 +215,14 @@ export const ValidationErrorsDrawer = ({ onClose }: Props) => {
           >
             {totalErrors}
           </Badge>
+          {showSpinner && (
+            <HStack spacing={2}>
+              <Spinner size="xs" />
+              <Text fontSize="xs" color="gray.400">
+                {t('validationErrors.validating')}
+              </Text>
+            </HStack>
+          )}
         </HStack>
 
         <Stack overflowY="auto" py="1" spacing={4}>
