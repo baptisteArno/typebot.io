@@ -298,30 +298,33 @@ export const BlockNode = ({
           </ContextMenu.Root>
         )}
       />
-      {hasSettingsPopover(block) && (
-        <SettingsPopoverContent
-          node={block}
-          groupId={groupId}
-          onNodeChange={handleBlockUpdate}
-          side="left"
-          isExpanded={isSettingsPopoverExpanded}
-          onExpandClick={() =>
-            setIsSettingsPopoverExpanded(!isSettingsPopoverExpanded)
-          }
-        />
-      )}
-      {typebot && isMediaBubbleBlock(block) && (
-        <MediaBubblePopoverContent
-          uploadFileProps={{
-            workspaceId: typebot.workspaceId,
-            typebotId: typebot.id,
-            blockId: block.id,
-          }}
-          block={block}
-          side="left"
-          onContentChange={handleContentChange}
-        />
-      )}
+      {/* Prevent triggering parent group context menu */}
+      <div onContextMenu={(e) => e.stopPropagation()}>
+        {hasSettingsPopover(block) && (
+          <SettingsPopoverContent
+            node={block}
+            groupId={groupId}
+            onNodeChange={handleBlockUpdate}
+            side="left"
+            isExpanded={isSettingsPopoverExpanded}
+            onExpandClick={() =>
+              setIsSettingsPopoverExpanded(!isSettingsPopoverExpanded)
+            }
+          />
+        )}
+        {typebot && isMediaBubbleBlock(block) && (
+          <MediaBubblePopoverContent
+            uploadFileProps={{
+              workspaceId: typebot.workspaceId,
+              typebotId: typebot.id,
+              blockId: block.id,
+            }}
+            block={block}
+            side="left"
+            onContentChange={handleContentChange}
+          />
+        )}
+      </div>
     </Popover.Root>
   );
 };
