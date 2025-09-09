@@ -9,6 +9,7 @@ import {
 import { Group, Block, TypebotLinkBlock } from '@typebot.io/schemas'
 import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
 import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
+import type { ConditionBlock } from '@typebot.io/schemas/features/blocks/logic/condition'
 
 const typebotValidationSchema = z.object({
   typebotId: z.string().describe('Typebot id to be validated'),
@@ -20,7 +21,7 @@ const isGroupArray = (groups: unknown): groups is Group[] =>
   Array.isArray(groups)
 const hasBlocks = (group: Group): boolean =>
   'blocks' in group && Array.isArray(group.blocks)
-const isConditionBlock = (block: Block): boolean =>
+const isConditionBlock = (block: Block): block is ConditionBlock =>
   block.type === LogicBlockType.CONDITION
 
 const isTypebotLinkBlock = (block: Block): block is TypebotLinkBlock =>
@@ -38,15 +39,24 @@ const validateConditionalBlocks = (groups: Group[]) => {
 
   groups.forEach((group) => {
     if (hasBlocks(group)) {
-      const groupOutgoingEdgeIds = group.blocks
-        .filter(isConditionBlock)
-        .map((block) => block.outgoingEdgeId ?? null)
+      const conditionalBlocks = group.blocks.filter(isConditionBlock)
 
-      outgoingEdgeIds.push(...groupOutgoingEdgeIds)
+      conditionalBlocks.forEach((block) => {
+        const blockOutgoingEdgeId = block.outgoingEdgeId ?? null
+        outgoingEdgeIds.push(blockOutgoingEdgeId)
 
-      if (groupOutgoingEdgeIds.includes(null)) {
-        invalidGroups.push(group.id)
-      }
+        const itemOutgoingEdgeIds = block.items.map(
+          (item) => item.outgoingEdgeId ?? null
+        )
+        outgoingEdgeIds.push(...itemOutgoingEdgeIds)
+
+        if (
+          itemOutgoingEdgeIds.includes(null) ||
+          blockOutgoingEdgeId === null
+        ) {
+          invalidGroups.push(group.id)
+        }
+      })
     }
   })
 
