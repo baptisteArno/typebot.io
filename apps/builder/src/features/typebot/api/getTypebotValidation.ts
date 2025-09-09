@@ -112,7 +112,7 @@ const validateTextBeforeClaudia = (groups: Group[]) => {
   return invalidGroups
 }
 
-const collectDataAfterClaudia = (groups: Group[]) => {
+const collectDataAfterClaudia = (groups: Group[]): ValidationErrorItem[] => {
   // Rule: after any "ClaudIA" block there must NOT be any data collection block (any InputBlock) afterwards
   const invalidGroupIds = new Set<string>()
   const inputBlockTypes = new Set<string>(Object.values(InputBlockType))
@@ -138,7 +138,7 @@ const collectDataAfterClaudia = (groups: Group[]) => {
     }
   })
 
-  return Array.from(invalidGroupIds).map((groupId) => ({
+  return Array.from(invalidGroupIds).map<ValidationErrorItem>((groupId) => ({
     type: 'collectDataAfterClaudia',
     groupId,
   }))
