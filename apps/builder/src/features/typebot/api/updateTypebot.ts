@@ -164,7 +164,7 @@ export const updateTypebot = authenticatedProcedure
 
     // Check group limits if groups are being updated
     if (groups) {
-      const limits = await checkGroupLimits(typebotId)
+      const limits = await checkGroupLimits(existingTypebot.workspace.id)
       if (groups.length > limits.maxGroups) {
         throw new TRPCError({
           code: 'FORBIDDEN',

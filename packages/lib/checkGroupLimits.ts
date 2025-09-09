@@ -12,10 +12,6 @@ export const checkGroupLimits = async (
     // Use environment variable for hub URL, fallback to hardcoded URL if not set
     const hubUrl = env.NEXT_PUBLIC_HUB_URL || 'https://bot.avocad0.dev'
 
-    console.log(
-      `Checking group limits for workspace ${workspaceId} using hub URL: ${hubUrl}`
-    )
-
     const response = await fetch(
       `${hubUrl}/api/v1/item/${workspaceId}/typbot`,
       {
@@ -33,9 +29,6 @@ export const checkGroupLimits = async (
     )
 
     if (!response.ok) {
-      console.error(
-        `Failed to fetch group limits: HTTP ${response.status} - ${response.statusText}`
-      )
       return {
         maxGroups: Number(env.NEXT_PUBLIC_HUB_MAX_GROUPS) || 0,
         error: 'cannot call the api',
@@ -43,14 +36,12 @@ export const checkGroupLimits = async (
     }
 
     const data = await response.json()
-    console.log(`Group limits API response:`, data)
 
     return {
       maxGroups:
         data.data?.limit || Number(env.NEXT_PUBLIC_HUB_MAX_GROUPS) || 0,
     }
   } catch (error) {
-    console.error('Failed to fetch group limits: from error', error)
     return {
       maxGroups: Number(env.NEXT_PUBLIC_HUB_MAX_GROUPS) || 0,
       error: error instanceof Error ? error.message : 'Unknown error',
