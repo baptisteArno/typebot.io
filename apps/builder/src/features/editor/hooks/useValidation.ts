@@ -20,7 +20,6 @@ export const useValidation = () => {
           typebotId: typebot.id,
           typebot,
         })
-        console.log('Validation result:', validation)
         setValidationErrors(validation)
         return validation
       } catch (error) {
