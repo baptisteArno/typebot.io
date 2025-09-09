@@ -45,9 +45,134 @@ const isTypebotLinkBlock = (block: Block): block is TypebotLinkBlock =>
 const isClaudiaBlock = (block: Block): boolean =>
   block.type.toLowerCase() === 'claudia'
 
-const validateConditionalBlocks = (groups: Group[]) => {
+const validateFlowBranchesHaveClaudia = (groups: Group[], edges: Edge[]) => {
+  const invalidGroupIds = new Set<string>()
+  const groupMap = new Map<string, Group>(groups.map((g) => [g.id, g]))
+
+  // Pre-index edges by from.blockId for quick lookup
+  const edgesByFromBlock = new Map<string, Edge[]>()
+  edges.forEach((e) => {
+    if ('blockId' in e.from && typeof e.from.blockId === 'string') {
+      const bid = e.from.blockId
+      const list = edgesByFromBlock.get(bid) || []
+      list.push(e)
+      edgesByFromBlock.set(bid, list)
+    }
+  })
+
+  // Find start groups (groups targeted by edges from start events)
+  const startGroupIds = edges
+    .filter(
+      (e): e is Edge & { from: { eventId: string }; to: { groupId: string } } =>
+        'eventId' in e.from &&
+        typeof e.from.eventId === 'string' &&
+        'groupId' in e.to &&
+        typeof e.to.groupId === 'string'
+    )
+    .map((e) => e.to.groupId)
+
+  const findBlockInGroup = (
+    group: Group,
+    blockId?: string
+  ): Block | undefined => {
+    if (!blockId) return group.blocks.length > 0 ? group.blocks[0] : undefined
+    return (
+      group.blocks.find((b) => b.id === blockId) ||
+      (group.blocks.length > 0 ? group.blocks[0] : undefined)
+    )
+  }
+
+  const getNextBlocks = (
+    group: Group,
+    blockIndex: number
+  ): { block: Block; group: Group }[] => {
+    const results: { block: Block; group: Group }[] = []
+
+    // Sequential next block within same group
+    if (blockIndex + 1 < group.blocks.length) {
+      results.push({ block: group.blocks[blockIndex + 1], group })
+    }
+
+    // Outgoing edges from current block
+    const current = group.blocks[blockIndex]
+    const relatedEdges = edgesByFromBlock.get(current.id) || []
+    relatedEdges.forEach((edge) => {
+      if ('groupId' in edge.to && typeof edge.to.groupId === 'string') {
+        const targetGroupId = edge.to.groupId
+        const targetGroup = groupMap.get(targetGroupId)
+        if (!targetGroup) return
+        const targetBlockId =
+          'blockId' in edge.to && typeof edge.to.blockId === 'string'
+            ? edge.to.blockId
+            : undefined
+        const targetBlock = findBlockInGroup(targetGroup, targetBlockId)
+        if (targetBlock)
+          results.push({ block: targetBlock, group: targetGroup })
+      }
+    })
+    return results
+  }
+
+  // Check each start group for flow branches that lack Claudia blocks
+  startGroupIds.forEach((startGroupId) => {
+    const startGroup = groupMap.get(startGroupId)
+    if (!startGroup || !hasBlocks(startGroup)) return
+
+    const visited = new Set<string>()
+    const pathsToCheck: { block: Block; group: Group; hasClaudia: boolean }[] =
+      []
+
+    // Initialize with the first block of the start group
+    const firstBlock = startGroup.blocks[0]
+    pathsToCheck.push({
+      block: firstBlock,
+      group: startGroup,
+      hasClaudia: false,
+    })
+
+    while (pathsToCheck.length > 0) {
+      const { block, group, hasClaudia } = pathsToCheck.shift()!
+      const visitKey = `${group.id}-${block.id}`
+
+      if (visited.has(visitKey)) continue
+      visited.add(visitKey)
+
+      let currentHasClaudia = hasClaudia
+      if (isClaudiaBlock(block)) {
+        currentHasClaudia = true
+      }
+
+      const blockIndex = group.blocks.findIndex((b) => b.id === block.id)
+      if (blockIndex === -1) continue
+
+      const nextBlocks = getNextBlocks(group, blockIndex)
+
+      if (nextBlocks.length === 0) {
+        // This is a terminal block (end of flow branch)
+        if (!currentHasClaudia) {
+          invalidGroupIds.add(group.id)
+        }
+      } else {
+        // Continue traversing
+        nextBlocks.forEach(({ block: nextBlock, group: nextGroup }) => {
+          pathsToCheck.push({
+            block: nextBlock,
+            group: nextGroup,
+            hasClaudia: currentHasClaudia,
+          })
+        })
+      }
+    }
+  })
+
+  return Array.from(invalidGroupIds)
+}
+
+const validateConditionalBlocks = (groups: Group[], edges: Edge[]) => {
   const outgoingEdgeIds: (string | null)[] = []
   const invalidGroups: string[] = []
+
+  const existingEdgeIds = new Set(edges.map((edge) => edge.id))
 
   groups.forEach((group) => {
     if (hasBlocks(group)) {
@@ -62,9 +187,26 @@ const validateConditionalBlocks = (groups: Group[]) => {
         )
         outgoingEdgeIds.push(...itemOutgoingEdgeIds)
 
+        const actualBlockIndex = group.blocks.findIndex(
+          (b) => b.id === block.id
+        )
+        const isLastBlock = actualBlockIndex === group.blocks.length - 1
+
+        const shouldValidateBlockEdge =
+          isLastBlock && blockOutgoingEdgeId === null
+
+        const hasInvalidBlockEdge =
+          blockOutgoingEdgeId !== null &&
+          !existingEdgeIds.has(blockOutgoingEdgeId)
+        const hasInvalidItemEdges = itemOutgoingEdgeIds.some(
+          (edgeId) => edgeId !== null && !existingEdgeIds.has(edgeId)
+        )
+
         if (
           itemOutgoingEdgeIds.includes(null) ||
-          blockOutgoingEdgeId === null
+          shouldValidateBlockEdge ||
+          hasInvalidBlockEdge ||
+          hasInvalidItemEdges
         ) {
           invalidGroups.push(group.id)
         }
@@ -485,7 +627,10 @@ export const getTypebotValidation = publicProcedure
       })
     }
 
-    const { invalidGroups } = validateConditionalBlocks(typebot.groups)
+    const { invalidGroups } = validateConditionalBlocks(
+      typebot.groups,
+      (typebot.edges as Edge[]) || []
+    )
 
     const invalidGroupsErrors: ValidationErrorItem[] = invalidGroups.map(
       (groupId) => ({
@@ -511,10 +656,21 @@ export const getTypebotValidation = publicProcedure
         groupId,
       }))
 
+    const missingClaudiaInFlowBranches = validateFlowBranchesHaveClaudia(
+      typebot.groups,
+      (typebot.edges as Edge[]) || []
+    )
+    const missingClaudiaInFlowBranchesErrors: ValidationErrorItem[] =
+      missingClaudiaInFlowBranches.map((groupId) => ({
+        type: 'missingClaudiaInFlowBranches',
+        groupId,
+      }))
+
     const errors = [
       ...invalidGroupsErrors,
       ...brokenLinksErrors,
       ...missingTextBeforeClaudiaErrors,
+      ...missingClaudiaInFlowBranchesErrors,
       ...missingTextBetweenInputBlocks(
         typebot.groups as Group[],
         (typebot.edges as Edge[]) || []

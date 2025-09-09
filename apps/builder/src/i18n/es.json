@@ -464,6 +464,8 @@
   "validationErrors.missingTextBeforeClaudia.title": "Texto faltante junto al bloque ClaudIA",
   "validationErrors.missingTextBetweenInputBlocks.description": "Debe haber un bloque de mensaje de texto entre cada bloque de recolección de datos conectado desde Start.",
   "validationErrors.missingTextBetweenInputBlocks.title": "Falta texto entre bloques de entrada",
+  "validationErrors.missingClaudiaInFlowBranches.description": "Todas las ramas del flujo deben pasar por al menos un bloque ClaudIA antes de terminar.",
+  "validationErrors.missingClaudiaInFlowBranches.title": "Falta bloque ClaudIA en las ramas del flujo",
   "validationErrors.noValidationErrors": "No se encontraron errores de validación.",
   "validationErrors.noValidationYet": "Aún no se ha ejecutado ninguna validación.",
   "validationErrors.title": "Errores de Validación",

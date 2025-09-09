@@ -4,8 +4,8 @@ export const errorTypeEnum = z.enum([
   'conditionalBlocks',
   'missingTextBeforeClaudia',
   'brokenLinks',
-  'outgoingEdgeIds',
   'missingTextBetweenInputBlocks',
+  'missingClaudiaInFlowBranches',
 ])
 export type ErrorType = z.infer<typeof errorTypeEnum>
 
@@ -17,16 +17,16 @@ export const conditionalBlocksErrorSchema = BaseError.extend({
   type: z.literal('conditionalBlocks'),
 })
 
-export const outgoingEdgeIdsErrorSchema = BaseError.extend({
-  type: z.literal('outgoingEdgeIds'),
-})
-
 export const missingTextBeforeClaudiaErrorSchema = BaseError.extend({
   type: z.literal('missingTextBeforeClaudia'),
 })
 
 export const missingTextBetweenInputBlocksErrorSchema = BaseError.extend({
   type: z.literal('missingTextBetweenInputBlocks'),
+})
+
+export const missingClaudiaInFlowBranchesErrorSchema = BaseError.extend({
+  type: z.literal('missingClaudiaInFlowBranches'),
 })
 
 export const brokenLinksErrorSchema = BaseError.extend({
@@ -36,10 +36,10 @@ export const brokenLinksErrorSchema = BaseError.extend({
 
 export const validationErrorItemSchema = z.discriminatedUnion('type', [
   conditionalBlocksErrorSchema,
-  outgoingEdgeIdsErrorSchema,
   missingTextBeforeClaudiaErrorSchema,
   brokenLinksErrorSchema,
   missingTextBetweenInputBlocksErrorSchema,
+  missingClaudiaInFlowBranchesErrorSchema,
 ])
 
 export const validationErrorSchema = z.object({
@@ -50,11 +50,13 @@ export const validationErrorSchema = z.object({
 export type ConditionalGroupsError = z.infer<
   typeof conditionalBlocksErrorSchema
 >
-export type OutgoingEdgeIdsError = z.infer<typeof outgoingEdgeIdsErrorSchema>
 export type missingTextBeforeClaudiaError = z.infer<
   typeof missingTextBeforeClaudiaErrorSchema
 >
 export type BrokenLinksError = z.infer<typeof brokenLinksErrorSchema>
+export type MissingClaudiaInFlowBranchesError = z.infer<
+  typeof missingClaudiaInFlowBranchesErrorSchema
+>
 export type ValidationErrorItem = z.infer<typeof validationErrorItemSchema>
 export type ValidationErrorItemWithGroupName = ValidationErrorItem & {
   groupName: string

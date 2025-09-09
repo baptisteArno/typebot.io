@@ -464,6 +464,8 @@
   "validationErrors.missingTextBeforeClaudia.title": "Missing text alongside ClaudIA block",
   "validationErrors.missingTextBetweenInputBlocks.description": "There must be a text message block between each data collection block connected from Start.",
   "validationErrors.missingTextBetweenInputBlocks.title": "Missing text between input blocks",
+  "validationErrors.missingClaudiaInFlowBranches.description": "All flow branches must pass through at least one ClaudIA block before ending.",
+  "validationErrors.missingClaudiaInFlowBranches.title": "Missing ClaudIA block in flow branches",
   "validationErrors.noValidationErrors": "No validation errors found.",
   "validationErrors.noValidationYet": "No validation has been run yet.",
   "validationErrors.title": "Validation Errors",

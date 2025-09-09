@@ -53,14 +53,14 @@ const ERROR_CONFIGS: Record<
     titleKey: 'validationErrors.missingTextBeforeClaudia.title',
     descriptionKey: 'validationErrors.missingTextBeforeClaudia.description',
   },
-  outgoingEdgeIds: {
-    titleKey: 'validationErrors.outgoingEdgeIds.title',
-    descriptionKey: 'validationErrors.outgoingEdgeIds.description',
-  },
   missingTextBetweenInputBlocks: {
     titleKey: 'validationErrors.missingTextBetweenInputBlocks.title',
     descriptionKey:
       'validationErrors.missingTextBetweenInputBlocks.description',
+  },
+  missingClaudiaInFlowBranches: {
+    titleKey: 'validationErrors.missingClaudiaInFlowBranches.title',
+    descriptionKey: 'validationErrors.missingClaudiaInFlowBranches.description',
   },
 }
 

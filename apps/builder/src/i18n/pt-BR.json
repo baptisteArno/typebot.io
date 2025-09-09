@@ -464,6 +464,8 @@
   "validationErrors.missingTextBeforeClaudia.title": "Texto faltando junto ao bloco ClaudIA",
   "validationErrors.missingTextBetweenInputBlocks.description": "Deve haver um bloco de mensagem de texto entre cada bloco de input de texto conectado a partir do Inicio.",
   "validationErrors.missingTextBetweenInputBlocks.title": "Texto ausente entre blocos de input",
+  "validationErrors.missingClaudiaInFlowBranches.description": "Todas as ramificações do fluxo devem passar por pelo menos um bloco ClaudIA antes de terminar.",
+  "validationErrors.missingClaudiaInFlowBranches.title": "Bloco ClaudIA ausente nas ramificações",
   "validationErrors.noValidationErrors": "Nenhum erro de validação encontrado.",
   "validationErrors.noValidationYet": "Nenhuma validação executada ainda.",
   "validationErrors.title": "Erros de Validação",
