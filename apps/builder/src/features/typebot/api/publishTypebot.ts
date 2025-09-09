@@ -163,8 +163,8 @@ export const publishTypebot = authenticatedProcedure
           theme: themeSchema.parse(existingTypebot.theme),
         },
       })
-    else
-      await prisma.publicTypebot.createMany({
+    else {
+      const createdPublicTypebot = await prisma.publicTypebot.create({
         data: {
           version: existingTypebot.version,
           typebotId: existingTypebot.id,
@@ -182,6 +182,14 @@ export const publishTypebot = authenticatedProcedure
           theme: themeSchema.parse(existingTypebot.theme),
         },
       })
+
+      if (!createdPublicTypebot?.id) {
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Failed to create public typebot - no ID generated',
+        })
+      }
+    }
 
     await trackEvents([
       ...publishEvents,
