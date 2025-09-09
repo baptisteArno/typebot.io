@@ -24,6 +24,8 @@ Regras:
 4. Preserve placeholders (ex: {count}, {plan}, <strong>...</strong>, etc.).
 5. Mantenha consistência de tom e estilo já usado no arquivo alvo.
 6. Não traduza nomes próprios ou termos de marca (Typebot, Zapier, WhatsApp, etc.).
+7. As chaves devem ser inseridas em ordem alfabética (use comparação lexical completa da chave inteira).
+8. A ortografia correta para o bloco "claudia" é "ClaudIA" e deve ser preservada exatamente assim (não traduzir nem alterar capitalização interna).
 
 Para identificar as chaves faltantes ou divergentes, execute (a partir da raiz do repositório):
 
