@@ -464,6 +464,8 @@
   "validationErrors.conditionalBlocks.title": "Condições Incompletas",
   "validationErrors.missingTextBeforeClaudia.description": "É necessário adicionar texto antes do bloco ClaudIA.",
   "validationErrors.missingTextBeforeClaudia.title": "Texto faltando antes do bloco ClaudIA",
+  "validationErrors.missingTextBetweenInputBlocks.description": "Deve haver um bloco de mensagem de texto entre cada bloco de input de texto conectado a partir do Inicio.",
+  "validationErrors.missingTextBetweenInputBlocks.title": "Texto ausente entre blocos de input",
   "validationErrors.noValidationErrors": "Nenhum erro de validação encontrado.",
   "validationErrors.noValidationYet": "Nenhuma validação executada ainda.",
   "validationErrors.title": "Erros de Validação",

@@ -60,6 +60,11 @@ const ERROR_CONFIGS: Record<
     titleKey: 'validationErrors.collectDataAfterClaudia.title',
     descriptionKey: 'validationErrors.collectDataAfterClaudia.description',
   },
+  missingTextBetweenInputBlocks: {
+    titleKey: 'validationErrors.missingTextBetweenInputBlocks.title',
+    descriptionKey:
+      'validationErrors.missingTextBetweenInputBlocks.description',
+  },
 }
 
 type Props = {

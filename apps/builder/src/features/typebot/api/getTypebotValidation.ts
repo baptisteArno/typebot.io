@@ -11,6 +11,7 @@ import {
   Block,
   TypebotLinkBlock,
   typebotSchema,
+  Edge,
 } from '@typebot.io/schemas'
 import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
 import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
@@ -31,8 +32,10 @@ const responseSchema = validationErrorSchema
 
 const isGroupArray = (groups: unknown): groups is Group[] =>
   Array.isArray(groups)
+
 const hasBlocks = (group: Group): boolean =>
   'blocks' in group && Array.isArray(group.blocks)
+
 const isConditionBlock = (block: Block): block is ConditionBlock =>
   block.type === LogicBlockType.CONDITION
 
@@ -158,6 +161,125 @@ const collectDataAfterClaudia = (groups: Group[]): ValidationErrorItem[] => {
     }))
 }
 
+const missingTextBetweenInputBlocks = (groups: Group[], edges: Edge[]) => {
+  // Rule: Along any path starting from a start event, between 2 data collection InputBlocks there must be at least one text display block (type === 'text').
+  // If 2 InputBlocks appear consecutively (possibly across groups) without an intervening text block, flag the group containing the second InputBlock.
+  const inputBlockTypes = new Set<string>(Object.values(InputBlockType))
+  const groupMap = new Map<string, Group>(groups.map((g) => [g.id, g]))
+
+  const blockIdToTargetGroup = new Map<string, string>()
+  edges.forEach((e) => {
+    if (
+      'blockId' in e.from &&
+      e.from.blockId &&
+      'groupId' in e.to &&
+      e.to.groupId
+    ) {
+      blockIdToTargetGroup.set(e.from.blockId, e.to.groupId)
+    }
+  })
+
+  const startGroupIds = edges
+    .filter(
+      (e) =>
+        'eventId' in e.from &&
+        e.from.eventId &&
+        'groupId' in e.to &&
+        e.to.groupId
+    )
+    .map((e) => ('groupId' in e.to ? e.to.groupId : undefined))
+    .filter((g): g is string => typeof g === 'string')
+
+  // Helper: get first block of a group
+  const firstBlockOf = (groupId: string): Block | undefined => {
+    const g = groupMap.get(groupId)
+    if (!g || !hasBlocks(g) || g.blocks.length === 0) return undefined
+    return g.blocks[0]
+  }
+
+  // Helper: next blocks from current block (sequential + outgoing edge)
+  const nextBlocks = (
+    group: Group,
+    blockIndex: number
+  ): { block: Block; group: Group }[] => {
+    const results: { block: Block; group: Group }[] = []
+    // Sequential next in same group
+    if (blockIndex + 1 < group.blocks.length) {
+      results.push({ block: group.blocks[blockIndex + 1], group })
+    }
+    // Edge-based transition
+    const current = group.blocks[blockIndex]
+    if (current.outgoingEdgeId) {
+      const edge = edges.find((e) => e.id === current.outgoingEdgeId)
+      if (edge?.to.groupId) {
+        const fb = firstBlockOf(edge.to.groupId)
+        const targetGroup = groupMap.get(edge.to.groupId)
+        if (fb && targetGroup) results.push({ block: fb, group: targetGroup })
+      }
+    }
+    return results
+  }
+
+  const invalidGroupIds = new Set<string>()
+
+  type QueueItem = {
+    block: Block
+    group: Group
+    needTextBeforeNextInput: boolean // true if last encountered input lacked an intervening text
+  }
+
+  const enqueueStarts = (): QueueItem[] => {
+    const items: QueueItem[] = []
+    startGroupIds.forEach((gid) => {
+      const fb = firstBlockOf(gid)
+      const g = groupMap.get(gid)
+      if (fb && g)
+        items.push({ block: fb, group: g, needTextBeforeNextInput: false })
+    })
+    return items
+  }
+
+  const visited = new Set<string>() // key = block.id + '|' + (needTextBeforeNextInput?1:0)
+  const queue: QueueItem[] = enqueueStarts()
+
+  while (queue.length) {
+    const { block, group, needTextBeforeNextInput } = queue.shift() as QueueItem
+    const stateKey = `${block.id}|${needTextBeforeNextInput ? 1 : 0}`
+    if (visited.has(stateKey)) continue
+    visited.add(stateKey)
+
+    let nextNeedText = needTextBeforeNextInput
+
+    if (block.type === 'text') {
+      nextNeedText = false
+    } else if (inputBlockTypes.has(block.type)) {
+      if (needTextBeforeNextInput) {
+        invalidGroupIds.add(group.id)
+        // We still continue traversal to discover additional violations
+      }
+      nextNeedText = true
+    }
+
+    const groupBlocks = group.blocks
+    const idx = groupBlocks.findIndex((b) => b.id === block.id)
+    if (idx !== -1) {
+      const successors = nextBlocks(group, idx)
+      successors.forEach(({ block: nb, group: ng }) => {
+        queue.push({
+          block: nb,
+          group: ng,
+          needTextBeforeNextInput: nextNeedText,
+        })
+      })
+    }
+  }
+
+  return Array.from(invalidGroupIds).map<ValidationErrorItem>((groupId) => ({
+    type: 'missingTextBetweenInputBlocks',
+    groupId,
+  }))
+}
+
 export const getTypebotValidation = publicProcedure
   .meta({
     openapi: {
@@ -240,6 +362,10 @@ export const getTypebotValidation = publicProcedure
       ...brokenLinksErrors,
       ...missingTextBeforeClaudiaErrors,
       ...collectDataAfterClaudiaErrors,
+      ...missingTextBetweenInputBlocks(
+        typebot.groups as Group[],
+        (typebot.edges as Edge[]) || []
+      ),
     ]
 
     const isValid = errors.length === 0
