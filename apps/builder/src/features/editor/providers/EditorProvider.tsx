@@ -28,6 +28,7 @@ const editorContext = createContext<{
   setValidationErrors: Dispatch<SetStateAction<ValidationError | null>>
   validateTypebot: (typebot: Typebot) => Promise<ValidationError | null>
   clearValidationErrors: () => void
+  isValidating: boolean
   isSidebarExtended: boolean
   setIsSidebarExtended: Dispatch<SetStateAction<boolean>>
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -46,6 +47,7 @@ export const EditorProvider = ({ children }: { children: ReactNode }) => {
     setValidationErrors,
     validateTypebot,
     clearValidationErrors,
+    isValidating,
   } = useValidation()
 
   useEffect(() => {
@@ -65,6 +67,7 @@ export const EditorProvider = ({ children }: { children: ReactNode }) => {
         setValidationErrors,
         validateTypebot,
         clearValidationErrors,
+        isValidating,
         isSidebarExtended,
         setIsSidebarExtended,
       }}
