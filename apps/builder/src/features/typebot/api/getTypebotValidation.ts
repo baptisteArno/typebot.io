@@ -15,7 +15,10 @@ import {
 } from '@typebot.io/schemas'
 import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
 import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
-import type { ConditionBlock } from '@typebot.io/schemas/features/blocks/logic/condition'
+import {
+  isConditionBlock,
+  isTextBubbleBlock,
+} from '@typebot.io/schemas/helpers'
 
 const typebotValidationSchema = z.union([
   z.object({
@@ -36,17 +39,11 @@ const isGroupArray = (groups: unknown): groups is Group[] =>
 const hasBlocks = (group: Group): boolean =>
   'blocks' in group && Array.isArray(group.blocks)
 
-const isConditionBlock = (block: Block): block is ConditionBlock =>
-  block.type === LogicBlockType.CONDITION
-
 const isTypebotLinkBlock = (block: Block): block is TypebotLinkBlock =>
   block.type === LogicBlockType.TYPEBOT_LINK
 
 const isClaudiaBlock = (block: Block): boolean =>
   block.type.toLowerCase() === 'claudia'
-
-const isTextBlock = (block: Block): boolean =>
-  block.type === InputBlockType.TEXT
 
 const validateConditionalBlocks = (groups: Group[]) => {
   const outgoingEdgeIds: (string | null)[] = []
@@ -111,27 +108,203 @@ const validateTypebotLinks = async (groups: Group[]) => {
   return brokenLinks
 }
 
-const validateTextBeforeClaudia = (groups: Group[]) => {
+const validateTextBeforeClaudia = (groups: Group[], edges: Edge[]) => {
   const invalidGroups: string[] = []
+  const inputBlockTypes = new Set<string>(Object.values(InputBlockType))
+  const groupMap = new Map<string, Group>(groups.map((g) => [g.id, g]))
 
-  groups.forEach((group) => {
-    if (hasBlocks(group)) {
-      let foundTextBlock = false
-      let foundClaudiaBlock = false
+  // Pre-index edges by from.blockId for quick lookup
+  const edgesByFromBlock = new Map<string, Edge[]>()
+  edges.forEach((e) => {
+    if ('blockId' in e.from && typeof e.from.blockId === 'string') {
+      const bid = e.from.blockId
+      const list = edgesByFromBlock.get(bid) || []
+      list.push(e)
+      edgesByFromBlock.set(bid, list)
+    }
+  })
 
-      for (const block of group.blocks) {
-        if (isClaudiaBlock(block)) {
-          foundClaudiaBlock = true
-        }
-        if (isTextBlock(block)) {
-          foundTextBlock = true
+  const findBlockInGroup = (
+    group: Group,
+    blockId?: string
+  ): Block | undefined => {
+    if (!blockId) return group.blocks.length > 0 ? group.blocks[0] : undefined
+    return (
+      group.blocks.find((b) => b.id === blockId) ||
+      (group.blocks.length > 0 ? group.blocks[0] : undefined)
+    )
+  }
+
+  const getNextBlocks = (
+    group: Group,
+    blockIndex: number
+  ): { block: Block; group: Group }[] => {
+    const results: { block: Block; group: Group }[] = []
+    // Sequential next
+    if (blockIndex + 1 < group.blocks.length) {
+      results.push({ block: group.blocks[blockIndex + 1], group })
+    }
+    // Outgoing edges
+    const current = group.blocks[blockIndex]
+    const relatedEdges = edgesByFromBlock.get(current.id) || []
+    relatedEdges.forEach((edge) => {
+      if ('groupId' in edge.to && typeof edge.to.groupId === 'string') {
+        const targetGroupId = edge.to.groupId
+        const targetGroup = groupMap.get(targetGroupId)
+        if (!targetGroup) return
+        const targetBlockId =
+          'blockId' in edge.to && typeof edge.to.blockId === 'string'
+            ? edge.to.blockId
+            : undefined
+        const targetBlock = findBlockInGroup(targetGroup, targetBlockId)
+        if (targetBlock)
+          results.push({ block: targetBlock, group: targetGroup })
+      }
+    })
+    return results
+  }
+
+  const getPreviousBlocks = (
+    targetGroup: Group,
+    targetBlockIndex: number
+  ): { block: Block; group: Group }[] => {
+    const results: { block: Block; group: Group }[] = []
+
+    // Sequential previous
+    if (targetBlockIndex > 0) {
+      results.push({
+        block: targetGroup.blocks[targetBlockIndex - 1],
+        group: targetGroup,
+      })
+    }
+
+    // Incoming edges
+    const targetBlock = targetGroup.blocks[targetBlockIndex]
+    edges.forEach((edge) => {
+      if (
+        'groupId' in edge.to &&
+        typeof edge.to.groupId === 'string' &&
+        edge.to.groupId === targetGroup.id
+      ) {
+        // Check if this edge targets our specific block or the group start
+        const edgeTargetsThisBlock =
+          ('blockId' in edge.to && edge.to.blockId === targetBlock.id) ||
+          (!('blockId' in edge.to) && targetBlockIndex === 0)
+
+        if (
+          edgeTargetsThisBlock &&
+          'blockId' in edge.from &&
+          typeof edge.from.blockId === 'string'
+        ) {
+          // Find the source block
+          const sourceBlockId = edge.from.blockId
+          groups.forEach((sourceGroup) => {
+            const sourceBlockIndex = sourceGroup.blocks.findIndex(
+              (b) => b.id === sourceBlockId
+            )
+            if (sourceBlockIndex !== -1) {
+              results.push({
+                block: sourceGroup.blocks[sourceBlockIndex],
+                group: sourceGroup,
+              })
+            }
+          })
         }
       }
+    })
 
-      if (foundClaudiaBlock && !foundTextBlock) {
+    return results
+  }
+
+  // Find all Claudia blocks and validate each one
+  groups.forEach((group) => {
+    if (!hasBlocks(group)) return
+
+    group.blocks.forEach((block, blockIndex) => {
+      if (!isClaudiaBlock(block)) return
+
+      let hasValidText = false
+      const visited = new Set<string>()
+
+      // Check forward path (blocks after Claudia)
+      const checkForwardPath = (
+        currentBlock: Block,
+        currentGroup: Group,
+        currentIndex: number
+      ) => {
+        const nextBlocks = getNextBlocks(currentGroup, currentIndex)
+
+        for (const { block: nextBlock, group: nextGroup } of nextBlocks) {
+          const visitKey = `${nextGroup.id}-${nextBlock.id}`
+          if (visited.has(visitKey)) continue
+          visited.add(visitKey)
+
+          if (isTextBubbleBlock(nextBlock)) {
+            return true
+          }
+
+          if (inputBlockTypes.has(nextBlock.type)) {
+            // Stop searching this path when we hit an input block
+            continue
+          }
+
+          const nextIndex = nextGroup.blocks.findIndex(
+            (b) => b.id === nextBlock.id
+          )
+          if (
+            nextIndex !== -1 &&
+            checkForwardPath(nextBlock, nextGroup, nextIndex)
+          ) {
+            return true
+          }
+        }
+        return false
+      }
+
+      // Check backward path (blocks before Claudia)
+      const checkBackwardPath = (
+        currentBlock: Block,
+        currentGroup: Group,
+        currentIndex: number
+      ) => {
+        const prevBlocks = getPreviousBlocks(currentGroup, currentIndex)
+
+        for (const { block: prevBlock, group: prevGroup } of prevBlocks) {
+          const visitKey = `${prevGroup.id}-${prevBlock.id}-back`
+          if (visited.has(visitKey)) continue
+          visited.add(visitKey)
+
+          if (isTextBubbleBlock(prevBlock)) {
+            return true
+          }
+
+          if (inputBlockTypes.has(prevBlock.type)) {
+            // Stop searching this path when we hit an input block
+            continue
+          }
+
+          const prevIndex = prevGroup.blocks.findIndex(
+            (b) => b.id === prevBlock.id
+          )
+          if (
+            prevIndex !== -1 &&
+            checkBackwardPath(prevBlock, prevGroup, prevIndex)
+          ) {
+            return true
+          }
+        }
+        return false
+      }
+
+      // Check both directions
+      hasValidText =
+        checkForwardPath(block, group, blockIndex) ||
+        checkBackwardPath(block, group, blockIndex)
+
+      if (!hasValidText) {
         invalidGroups.push(group.id)
       }
-    }
+    })
   })
 
   return invalidGroups
@@ -328,7 +501,10 @@ export const getTypebotValidation = publicProcedure
       typebotName: b.typebotName,
     }))
 
-    const missingTextBeforeClaudia = validateTextBeforeClaudia(typebot.groups)
+    const missingTextBeforeClaudia = validateTextBeforeClaudia(
+      typebot.groups,
+      (typebot.edges as Edge[]) || []
+    )
     const missingTextBeforeClaudiaErrors: ValidationErrorItem[] =
       missingTextBeforeClaudia.map((groupId) => ({
         type: 'missingTextBeforeClaudia',
