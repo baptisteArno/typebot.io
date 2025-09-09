@@ -8,9 +8,12 @@ import {
   StackProps,
   useColorModeValue,
   useDisclosure,
+  Box,
+  Badge,
 } from '@chakra-ui/react'
 import assert from 'assert'
 import {
+  AlertIcon,
   BookIcon,
   BracesIcon,
   DownloadIcon,
@@ -18,7 +21,7 @@ import {
   SettingsIcon,
 } from '@/components/icons'
 import { useTypebot } from '../providers/TypebotProvider'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { EditorSettingsModal } from './EditorSettingsModal'
 import { parseDefaultPublicId } from '@/features/publish/helpers/parseDefaultPublicId'
 import { useTranslate } from '@tolgee/react'
@@ -69,6 +72,7 @@ export const BoardMenuButton = (props: StackProps) => {
         bgColor={useColorModeValue('white', undefined)}
         onClick={() => setRightPanel(RightPanel.VARIABLES)}
       />
+      <ValidationErrorsButton />
       <Menu>
         <MenuButton
           as={IconButton}
@@ -94,5 +98,64 @@ export const BoardMenuButton = (props: StackProps) => {
         <EditorSettingsModal isOpen={isOpen} onClose={onClose} />
       </Menu>
     </HStack>
+  )
+}
+
+const ValidationErrorsButton = () => {
+  const { setRightPanel, validationErrors, isValidating } = useEditor()
+  const [showSpinner, setShowSpinner] = useState(false)
+  const timeoutRef = useRef<NodeJS.Timeout>()
+
+  useEffect(() => {
+    clearTimeout(timeoutRef.current)
+
+    if (isValidating) {
+      setShowSpinner(true)
+    } else {
+      timeoutRef.current = setTimeout(() => setShowSpinner(false), 150)
+    }
+
+    return () => clearTimeout(timeoutRef.current)
+  }, [isValidating])
+
+  const getTotalErrorCount = () => {
+    if (!validationErrors) return 0
+    return validationErrors.errors.length
+  }
+
+  const totalErrors = getTotalErrorCount()
+  const hasErrors = validationErrors && !validationErrors.isValid
+
+  return (
+    <Box position="relative">
+      <IconButton
+        icon={<AlertIcon />}
+        aria-label="Open validation errors drawer"
+        size="sm"
+        shadow="lg"
+        bgColor={useColorModeValue('white', undefined)}
+        colorScheme={hasErrors ? 'red' : 'gray'}
+        isLoading={showSpinner}
+        onClick={() => setRightPanel(RightPanel.VALIDATION_ERRORS)}
+      />
+      {hasErrors && totalErrors > 0 && !showSpinner && (
+        <Badge
+          colorScheme="red"
+          variant={'solid'}
+          borderRadius="full"
+          fontSize="xs"
+          position="absolute"
+          top="-2"
+          right="-2"
+          minW="5"
+          h="5"
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+          {totalErrors}
+        </Badge>
+      )}
+    </Box>
   )
 }

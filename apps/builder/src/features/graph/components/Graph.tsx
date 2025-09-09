@@ -59,6 +59,7 @@ export const Graph = ({
     setOpenedItemId,
     setPreviewingEdge,
     connectingIds,
+    registerNavigationCallback,
   } = useGraph()
   const isDraggingGraph = useGroupsStore((state) => state.isDraggingGraph)
   const setIsDraggingGraph = useGroupsStore((state) => state.setIsDraggingGraph)
@@ -136,6 +137,15 @@ export const Graph = ({
     setGroupsCoordinates(typebot.groups)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  useEffect(() => {
+    // Registrar callback para permitir navegação externa
+    if (registerNavigationCallback) {
+      registerNavigationCallback((position) => {
+        setGraphPosition(position)
+      })
+    }
+  }, [registerNavigationCallback])
 
   const handleMouseUp = (e: MouseEvent) => {
     if (!typebot) return

@@ -41,6 +41,7 @@ Exact trigger rule: "When performing a code review, respond in Portugês." (keep
 
 - Follow `.github/commit-message.instructions.md`.
 - In PR descriptions: WHAT changed, WHY, and any RISK / MIGRATION notes.
+- Use English only.
 
 ## Validation Checklist (Auto‑Mental Pass Before Suggesting)
 

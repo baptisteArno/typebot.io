@@ -1,0 +1,145 @@
+{
+    "version": "6",
+    "id": "cmfckvf2r00039cjb09x30p83",
+    "name": "fluxos específicos sem apontar pra lugar algum",
+    "events": [
+        {
+            "id": "n4s48po5f0x0q92s8lh1oy7o",
+            "outgoingEdgeId": "bteiuokjgotaa9mxde368l44",
+            "graphCoordinates": {
+                "x": 0,
+                "y": 0
+            },
+            "type": "start"
+        }
+    ],
+    "groups": [
+        {
+            "id": "viclz2en630773nce2bigdiq",
+            "title": "Group #1",
+            "graphCoordinates": {
+                "x": 296,
+                "y": 281
+            },
+            "blocks": [
+                {
+                    "id": "obei21mlzaili2kqh4po1kix",
+                    "type": "claudia",
+                    "options": {
+                        "action": "End Flow [N1]"
+                    }
+                },
+                {
+                    "id": "ik4fgevbaps3e7j2w3sjxb29",
+                    "type": "text input",
+                    "options": {
+                        "labels": {
+                            "placeholder": "qual sua idade?"
+                        },
+                        "variableId": "vbzfe88zfhe8hzq6y1lvpu2gv"
+                    }
+                },
+                {
+                    "id": "q5vee3b0bn1ww3s77f3t5eg1",
+                    "type": "text",
+                    "content": {
+                        "richText": [
+                            {
+                                "type": "p",
+                                "children": [
+                                    {
+                                        "text": "sua idade é {{idade}}?"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "id": "qf9d0g4uni7hjfdgd3b1nvj0",
+            "title": "Group #2",
+            "graphCoordinates": {
+                "x": 384,
+                "y": -4
+            },
+            "blocks": [
+                {
+                    "id": "yc4dkar6kj81aihouwezrx1o",
+                    "type": "text",
+                    "content": {
+                        "richText": [
+                            {
+                                "type": "p",
+                                "children": [
+                                    {
+                                        "text": "bom dia"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                },
+                {
+                    "id": "mw1r49nb7iyb3sa29t0v0d81",
+                    "outgoingEdgeId": "y7u3dqjxnl4gqmtc7f2n3ktr",
+                    "type": "text input",
+                    "options": {
+                        "labels": {
+                            "placeholder": "qual seu nome?"
+                        },
+                        "variableId": "vldmptbzliwd4kt0u02jwmgh2"
+                    }
+                }
+            ]
+        }
+    ],
+    "edges": [
+        {
+            "id": "bteiuokjgotaa9mxde368l44",
+            "from": {
+                "eventId": "n4s48po5f0x0q92s8lh1oy7o"
+            },
+            "to": {
+                "groupId": "qf9d0g4uni7hjfdgd3b1nvj0"
+            }
+        },
+        {
+            "id": "y7u3dqjxnl4gqmtc7f2n3ktr",
+            "from": {
+                "blockId": "mw1r49nb7iyb3sa29t0v0d81"
+            },
+            "to": {
+                "groupId": "viclz2en630773nce2bigdiq"
+            }
+        }
+    ],
+    "variables": [
+        {
+            "id": "vbzfe88zfhe8hzq6y1lvpu2gv",
+            "name": "idade",
+            "isSessionVariable": true
+        },
+        {
+            "id": "vldmptbzliwd4kt0u02jwmgh2",
+            "name": "name",
+            "isSessionVariable": true
+        }
+    ],
+    "theme": {},
+    "selectedThemeTemplateId": null,
+    "settings": {},
+    "createdAt": "2025-09-09T13:19:57.459Z",
+    "updatedAt": "2025-09-09T14:00:16.386Z",
+    "icon": null,
+    "folderId": "cmfckv0aw0003gdbzplwp65av",
+    "publicId": "my-typebot-9x30p83",
+    "customDomain": null,
+    "workspaceId": "cm22gh7lp0004s6k37lkufua1",
+    "resultsTablePreferences": null,
+    "isArchived": false,
+    "isClosed": false,
+    "whatsAppCredentialsId": null,
+    "riskLevel": null
+}

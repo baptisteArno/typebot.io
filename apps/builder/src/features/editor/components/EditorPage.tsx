@@ -19,6 +19,7 @@ import { TypebotNotFoundPage } from './TypebotNotFoundPage'
 import { SuspectedTypebotBanner } from './SuspectedTypebotBanner'
 import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import { VariablesDrawer } from '@/features/preview/components/VariablesDrawer'
+import { ValidationErrorsDrawer } from '@/features/preview/components/ValidationErrorsDrawer'
 
 export const EditorPage = () => {
   const { typebot, currentUserMode, is404 } = useTypebot()
@@ -86,6 +87,8 @@ const RightPanel = () => {
       return <PreviewDrawer />
     case RightPanelEnum.VARIABLES:
       return <VariablesDrawer onClose={() => setRightPanel(undefined)} />
+    case RightPanelEnum.VALIDATION_ERRORS:
+      return <ValidationErrorsDrawer onClose={() => setRightPanel(undefined)} />
     case undefined:
       return null
   }

@@ -1,0 +1,251 @@
+{
+  "version": "6",
+  "id": "cmfckvf2r00039cjb09x30p83",
+  "name": "coleta de dados sem mensagem",
+  "events": [
+    {
+      "id": "n4s48po5f0x0q92s8lh1oy7o",
+      "outgoingEdgeId": "aw61prvyd5okeytyybja63xn",
+      "graphCoordinates": {
+        "x": 0,
+        "y": 0
+      },
+      "type": "start"
+    }
+  ],
+  "groups": [
+    {
+      "id": "viclz2en630773nce2bigdiq",
+      "title": "Group #2",
+      "graphCoordinates": {
+        "x": 100,
+        "y": 251
+      },
+      "blocks": [
+        {
+          "id": "ik4fgevbaps3e7j2w3sjxb29",
+          "outgoingEdgeId": "h9fnmw8d0ew8tkmz6g1b0atj",
+          "type": "text input",
+          "options": {
+            "labels": {
+              "placeholder": "qual sua idade?"
+            },
+            "variableId": "vbzfe88zfhe8hzq6y1lvpu2gv"
+          }
+        }
+      ]
+    },
+    {
+      "id": "qf9d0g4uni7hjfdgd3b1nvj0",
+      "title": "Group #1",
+      "graphCoordinates": {
+        "x": 320,
+        "y": -58
+      },
+      "blocks": [
+        {
+          "id": "yc4dkar6kj81aihouwezrx1o",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "bom dia"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "iii0uhih4o0ygb87sn9zj8pk",
+          "outgoingEdgeId": "nbwlh1usjydfemwmyi37xfkk",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "tudo bem?"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "gir9e37ic5zj12ywzaout4mq",
+      "title": "rascunho",
+      "graphCoordinates": {
+        "x": 1078,
+        "y": 77
+      },
+      "blocks": [
+        {
+          "id": "dps3d6s0w8jctprtez8yatbw",
+          "type": "Set variable",
+          "options": {
+            "variableId": "vbzfe88zfhe8hzq6y1lvpu2gv",
+            "expressionToEvaluate": "18"
+          }
+        },
+        {
+          "id": "jyez7dxzcue6rtakumcx4i7s",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": ""
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "zz4dai2ik5016ri0z3o55lnf",
+      "title": "Group #4",
+      "graphCoordinates": {
+        "x": 354,
+        "y": 433
+      },
+      "blocks": [
+        {
+          "id": "obei21mlzaili2kqh4po1kix",
+          "type": "claudia",
+          "options": {
+            "action": "End Flow [N1]"
+          }
+        },
+        {
+          "id": "q5vee3b0bn1ww3s77f3t5eg1",
+          "outgoingEdgeId": "v6ihqrd1smennkf9pw627cod",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "sua idade é {{idade}}?"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "s3a37t1cen0gqll4srqm3wli",
+      "title": "Group #5",
+      "graphCoordinates": {
+        "x": 764,
+        "y": 463
+      },
+      "blocks": [
+        {
+          "id": "zdbw79m41jm1t7a8usr5c0pa",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "segue aqui"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "mw1r49nb7iyb3sa29t0v0d81",
+          "type": "text input",
+          "options": {
+            "labels": {
+              "placeholder": "qual seu nome?"
+            },
+            "variableId": "vldmptbzliwd4kt0u02jwmgh2"
+          }
+        }
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "nbwlh1usjydfemwmyi37xfkk",
+      "from": {
+        "blockId": "iii0uhih4o0ygb87sn9zj8pk"
+      },
+      "to": {
+        "groupId": "viclz2en630773nce2bigdiq"
+      }
+    },
+    {
+      "id": "h9fnmw8d0ew8tkmz6g1b0atj",
+      "from": {
+        "blockId": "ik4fgevbaps3e7j2w3sjxb29"
+      },
+      "to": {
+        "groupId": "zz4dai2ik5016ri0z3o55lnf"
+      }
+    },
+    {
+      "id": "v6ihqrd1smennkf9pw627cod",
+      "from": {
+        "blockId": "q5vee3b0bn1ww3s77f3t5eg1"
+      },
+      "to": {
+        "groupId": "s3a37t1cen0gqll4srqm3wli"
+      }
+    },
+    {
+      "id": "aw61prvyd5okeytyybja63xn",
+      "from": {
+        "eventId": "n4s48po5f0x0q92s8lh1oy7o"
+      },
+      "to": {
+        "groupId": "qf9d0g4uni7hjfdgd3b1nvj0"
+      }
+    }
+  ],
+  "variables": [
+    {
+      "id": "vbzfe88zfhe8hzq6y1lvpu2gv",
+      "name": "idade",
+      "isSessionVariable": true
+    },
+    {
+      "id": "vldmptbzliwd4kt0u02jwmgh2",
+      "name": "name",
+      "isSessionVariable": true
+    }
+  ],
+  "theme": {},
+  "selectedThemeTemplateId": null,
+  "settings": {},
+  "createdAt": "2025-09-09T13:19:57.459Z",
+  "updatedAt": "2025-09-09T18:25:19.517Z",
+  "icon": null,
+  "folderId": "cmfckv0aw0003gdbzplwp65av",
+  "publicId": "my-typebot-9x30p83",
+  "customDomain": null,
+  "workspaceId": "cm22gh7lp0004s6k37lkufua1",
+  "resultsTablePreferences": null,
+  "isArchived": false,
+  "isClosed": false,
+  "whatsAppCredentialsId": null,
+  "riskLevel": null
+}
