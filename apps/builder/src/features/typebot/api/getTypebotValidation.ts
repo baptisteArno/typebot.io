@@ -112,6 +112,38 @@ const validateTextBeforeClaudia = (groups: Group[]) => {
   return invalidGroups
 }
 
+const collectDataAfterClaudia = (groups: Group[]) => {
+  // Regra: Após qualquer bloco "claudia" não pode existir nenhum bloco de coleta de dados (InputBlock)
+  const invalidGroups: string[] = []
+
+  const inputBlockTypes = new Set<string>(Object.values(InputBlockType))
+
+  groups.forEach((group) => {
+    if (!hasBlocks(group)) return
+    const { blocks } = group
+
+    // Procura cada ocorrência de claudia e verifica blocos subsequentes
+    for (let i = 0; i < blocks.length; i++) {
+      const block = blocks[i]
+      if (!isClaudiaBlock(block)) continue
+      for (let j = i + 1; j < blocks.length; j++) {
+        const nextBlock = blocks[j]
+        if (inputBlockTypes.has(nextBlock.type)) {
+          invalidGroups.push(group.id)
+          // Basta marcar o grupo uma vez
+          i = blocks.length // força saída do laço externo deste grupo
+          break
+        }
+      }
+    }
+  })
+
+  return invalidGroups.map((groupId) => ({
+    type: 'collectDataAfterClaudia',
+    groupId,
+  }))
+}
+
 export const getTypebotValidation = publicProcedure
   .meta({
     openapi: {
@@ -169,16 +201,18 @@ export const getTypebotValidation = publicProcedure
         groupId,
       }))
 
-    const isValid =
-      invalidGroups.length === 0 &&
-      brokenLinks.length === 0 &&
-      missingTextBeforeClaudia.length === 0
+    const collectDataAfterClaudiaErrors = collectDataAfterClaudia(
+      typebot.groups
+    )
 
     const errors = [
       ...invalidGroupsErrors,
       ...brokenLinksErrors,
       ...missingTextBeforeClaudiaErrors,
+      ...collectDataAfterClaudiaErrors,
     ]
+
+    const isValid = errors.length === 0
 
     return {
       isValid,

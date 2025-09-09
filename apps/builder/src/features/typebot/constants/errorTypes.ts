@@ -5,6 +5,7 @@ export const errorTypeEnum = z.enum([
   'missingTextBeforeClaudia',
   'brokenLinks',
   'outgoingEdgeIds',
+  'collectDataAfterClaudia',
 ])
 export type ErrorType = z.infer<typeof errorTypeEnum>
 
@@ -24,6 +25,10 @@ export const missingTextBeforeClaudiaErrorSchema = BaseError.extend({
   type: z.literal('missingTextBeforeClaudia'),
 })
 
+export const collectDataAfterClaudiaErrorSchema = BaseError.extend({
+  type: z.literal('collectDataAfterClaudia'),
+})
+
 export const brokenLinksErrorSchema = BaseError.extend({
   type: z.literal('brokenLinks'),
   typebotName: z.string(),
@@ -34,6 +39,7 @@ export const validationErrorItemSchema = z.discriminatedUnion('type', [
   outgoingEdgeIdsErrorSchema,
   missingTextBeforeClaudiaErrorSchema,
   brokenLinksErrorSchema,
+  collectDataAfterClaudiaErrorSchema,
 ])
 
 export const validationErrorSchema = z.object({

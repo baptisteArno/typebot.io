@@ -459,6 +459,8 @@
   "validationErrors.brokenLinks.description": "The following links point to typebots that do not exist or are not published:",
   "validationErrors.brokenLinks.title": "Broken Links",
   "validationErrors.conditionalBlocks.description": "The following groups contain incomplete conditions:",
+  "validationErrors.collectDataAfterClaudia.description": "No data collection input blocks are allowed after a Claudia block in the same group.",
+  "validationErrors.collectDataAfterClaudia.title": "Input blocks after Claudia",
   "validationErrors.conditionalBlocks.title": "Incomplete Conditions",
   "validationErrors.missingTextBeforeClaudia.description": "Text is required before the Claudia block.",
   "validationErrors.missingTextBeforeClaudia.title": "Missing text before Claudia block",

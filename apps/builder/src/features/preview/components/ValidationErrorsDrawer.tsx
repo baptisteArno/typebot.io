@@ -56,6 +56,10 @@ const ERROR_CONFIGS: Record<
     titleKey: 'validationErrors.outgoingEdgeIds.title',
     descriptionKey: 'validationErrors.outgoingEdgeIds.description',
   },
+  collectDataAfterClaudia: {
+    titleKey: 'validationErrors.collectDataAfterClaudia.title',
+    descriptionKey: 'validationErrors.collectDataAfterClaudia.description',
+  },
 }
 
 type Props = {

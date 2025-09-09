@@ -459,6 +459,8 @@
   "validationErrors.brokenLinks.description": "Les liens suivants pointent vers des typebots qui n'existent pas ou ne sont pas publiés :",
   "validationErrors.brokenLinks.title": "Liens cassés",
   "validationErrors.conditionalBlocks.description": "Les groupes suivants contiennent des conditions incomplètes :",
+  "validationErrors.collectDataAfterClaudia.description": "Aucun bloc de saisie de collecte de données n'est autorisé après un bloc Claudia dans le même groupe.",
+  "validationErrors.collectDataAfterClaudia.title": "Blocs de saisie après Claudia",
   "validationErrors.conditionalBlocks.title": "Conditions incomplètes",
   "validationErrors.missingTextBeforeClaudia.description": "Du texte est requis avant le bloc Claudia.",
   "validationErrors.missingTextBeforeClaudia.title": "Texte manquant avant le bloc Claudia",
