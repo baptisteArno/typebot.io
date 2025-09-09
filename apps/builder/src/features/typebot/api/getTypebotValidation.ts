@@ -113,32 +113,32 @@ const validateTextBeforeClaudia = (groups: Group[]) => {
 }
 
 const collectDataAfterClaudia = (groups: Group[]) => {
-  // Regra: Após qualquer bloco "claudia" não pode existir nenhum bloco de coleta de dados (InputBlock)
-  const invalidGroups: string[] = []
-
+  // Rule: after any "ClaudIA" block there must NOT be any data collection block (any InputBlock) afterwards
+  const invalidGroupIds = new Set<string>()
   const inputBlockTypes = new Set<string>(Object.values(InputBlockType))
 
   groups.forEach((group) => {
     if (!hasBlocks(group)) return
     const { blocks } = group
 
-    // Procura cada ocorrência de claudia e verifica blocos subsequentes
+    let foundClaudia = false
     for (let i = 0; i < blocks.length; i++) {
       const block = blocks[i]
-      if (!isClaudiaBlock(block)) continue
-      for (let j = i + 1; j < blocks.length; j++) {
-        const nextBlock = blocks[j]
-        if (inputBlockTypes.has(nextBlock.type)) {
-          invalidGroups.push(group.id)
-          // Basta marcar o grupo uma vez
-          i = blocks.length // força saída do laço externo deste grupo
-          break
+      if (!foundClaudia) {
+        if (isClaudiaBlock(block)) {
+          foundClaudia = true
         }
+        continue
+      }
+      // We already passed a ClaudIA: any subsequent InputBlock invalidates the group
+      if (inputBlockTypes.has(block.type)) {
+        invalidGroupIds.add(group.id)
+        break // No need to continue within this group
       }
     }
   })
 
-  return invalidGroups.map((groupId) => ({
+  return Array.from(invalidGroupIds).map((groupId) => ({
     type: 'collectDataAfterClaudia',
     groupId,
   }))
