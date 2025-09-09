@@ -13,7 +13,8 @@
       "!**/.claude",
       "!**/emojiList.json",
       "!**/iconNames.ts",
-      "!**/.last-run.json"
+      "!**/.last-run.json",
+      "!**/test/assets/**/*.json"
     ]
   },
   "linter": {

@@ -172,10 +172,7 @@ export const Bot = (props: BotProps & { class?: string }) => {
           new Date(initialChatInStorage.typebot.publishedAt).getTime() ===
           new Date(data.typebot.publishedAt).getTime()
         ) {
-          setInitialChatReply({
-            ...initialChatInStorage,
-            sessionId: data.sessionId,
-          });
+          setInitialChatReply(initialChatInStorage);
         } else {
           // Restart chat by resetting remembered state
           wipeExistingChatStateInStorage(data.typebot.id);
