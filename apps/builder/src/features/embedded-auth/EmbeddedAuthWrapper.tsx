@@ -3,7 +3,7 @@ import { useSession } from 'next-auth/react'
 import { Flex, Spinner, Text } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import { handleEmbeddedAuthentication } from './embedded-auth'
-import { getAllowedOrigin } from './utils'
+import { getAllowedOrigin, isOriginAllowed } from './utils'
 
 interface EmbeddedAuthWrapperProps {
   children: React.ReactNode
@@ -30,6 +30,12 @@ export const EmbeddedAuthWrapper = ({ children }: EmbeddedAuthWrapperProps) => {
       if (!session && !isAuthReady) {
         // Listen for auth success
         const handleMessage = (event: MessageEvent) => {
+          // Validate origin for security
+          if (!isOriginAllowed(event.origin)) {
+            console.warn('Ignored message from unauthorized origin:', event.origin)
+            return
+          }
+
           if (event.data.type === 'AUTH_SUCCESS' && event.data.user) {
             startTransition(() => {
               setIsAuthReady(true)

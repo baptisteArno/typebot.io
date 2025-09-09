@@ -60,6 +60,10 @@ const nextConfig = {
     return config
   },
   headers: async () => {
+    const allowedOrigins = process.env.NEXT_PUBLIC_EMBEDDED_AUTH_ALLOWED_ORIGIN 
+      ? process.env.NEXT_PUBLIC_EMBEDDED_AUTH_ALLOWED_ORIGIN.split(',').map(origin => origin.trim()).join(' ')
+      : 'http://localhost:3000'
+    
     return [
       {
         source: '/(.*)?',
@@ -70,13 +74,7 @@ const nextConfig = {
           },
           {
             key: 'Content-Security-Policy',
-            value: process.env.NEXT_PUBLIC_EMBEDDED_AUTH_ALLOWED_ORIGIN 
-              ? `frame-ancestors 'self' ${process.env.NEXT_PUBLIC_EMBEDDED_AUTH_ALLOWED_ORIGIN}` 
-              : `frame-ancestors 'self' http://localhost:3000`,
-          },
-          {
-            key: 'Access-Control-Allow-Origin',
-            value: process.env.NEXT_PUBLIC_EMBEDDED_AUTH_ALLOWED_ORIGIN || 'http://localhost:3000',
+            value: `frame-ancestors 'self' ${allowedOrigins}`,
           },
           {
             key: 'Access-Control-Allow-Methods',

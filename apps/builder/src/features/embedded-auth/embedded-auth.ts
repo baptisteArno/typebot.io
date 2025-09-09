@@ -1,5 +1,5 @@
 import { signIn } from 'next-auth/react'
-import { getAllowedOrigin } from './utils'
+import { getAllowedOrigin, isOriginAllowed } from './utils'
 
 interface SessionResponse {
   user?: {
@@ -66,6 +66,12 @@ export const handleEmbeddedAuthentication = async (): Promise<boolean> => {
       }, 10000) // 10 second timeout
 
       const handleMessage = (event: MessageEvent) => {
+        // Validate origin for security
+        if (!isOriginAllowed(event.origin)) {
+          console.warn('Ignored message from unauthorized origin:', event.origin)
+          return
+        }
+
         if (event.data.type === 'AUTH_TOKEN_RESPONSE') {
           clearTimeout(timeout)
           window.removeEventListener('message', handleMessage)

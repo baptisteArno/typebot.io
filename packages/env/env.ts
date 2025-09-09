@@ -130,7 +130,14 @@ const baseEnv = {
       .string()
       .optional()
       .default("The bot you're looking for doesn't exist"),
-    NEXT_PUBLIC_EMBEDDED_AUTH_ALLOWED_ORIGIN: z.string().url().optional(),
+    NEXT_PUBLIC_EMBEDDED_AUTH_ALLOWED_ORIGIN: z
+      .string()
+      .transform((val) => val.split(',').map((url) => url.trim()))
+      .refine(
+        (urls) => urls.every((url) => z.string().url().safeParse(url).success),
+        { message: 'All origins must be valid URLs' }
+      )
+      .optional(),
   },
   runtimeEnv: {
     NEXT_PUBLIC_E2E_TEST: getRuntimeVariable('NEXT_PUBLIC_E2E_TEST'),
