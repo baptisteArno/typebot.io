@@ -458,8 +458,6 @@
   "upgrade": "Upgrade",
   "validationErrors.brokenLinks.description": "Les liens suivants pointent vers des typebots qui n'existent pas ou ne sont pas publiés :",
   "validationErrors.brokenLinks.title": "Liens cassés",
-  "validationErrors.collectDataAfterClaudia.description": "Aucun bloc de saisie de collecte de données n'est autorisé après un bloc ClaudIA dans le même groupe.",
-  "validationErrors.collectDataAfterClaudia.title": "Blocs de saisie après ClaudIA",
   "validationErrors.conditionalBlocks.description": "Les groupes suivants contiennent des conditions incomplètes :",
   "validationErrors.conditionalBlocks.title": "Conditions incomplètes",
   "validationErrors.missingTextBeforeClaudia.description": "Du texte est requis avant le bloc ClaudIA.",

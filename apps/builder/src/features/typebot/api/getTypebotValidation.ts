@@ -137,30 +137,6 @@ const validateTextBeforeClaudia = (groups: Group[]) => {
   return invalidGroups
 }
 
-const collectDataAfterClaudia = (groups: Group[]): ValidationErrorItem[] => {
-  // Rule: after any "ClaudIA" block there must NOT be any data collection block (any InputBlock) afterwards
-  const inputBlockTypes = new Set<string>(Object.values(InputBlockType))
-
-  return groups
-    .filter(hasBlocks)
-    .filter((group) => {
-      const { blocks } = group
-      // Collect indices where ClaudIA appears
-      const claudiaIndexes = blocks
-        .map((b, idx) => (isClaudiaBlock(b) ? idx : -1))
-        .filter((idx) => idx !== -1)
-      if (claudiaIndexes.length === 0) return false
-      // For each ClaudIA occurrence, check if any subsequent block is an InputBlock
-      return claudiaIndexes.some((idx) =>
-        blocks.slice(idx + 1).some((b) => inputBlockTypes.has(b.type))
-      )
-    })
-    .map<ValidationErrorItem>((group) => ({
-      type: 'collectDataAfterClaudia',
-      groupId: group.id,
-    }))
-}
-
 const missingTextBetweenInputBlocks = (groups: Group[], edges: Edge[]) => {
   // Rule: Along any path starting from a start event, between 2 data collection InputBlocks there must be at least one text display block (type === 'text').
   // If 2 InputBlocks appear consecutively (possibly across groups) without an intervening text block, flag the group containing the second InputBlock.
@@ -353,15 +329,10 @@ export const getTypebotValidation = publicProcedure
         groupId,
       }))
 
-    const collectDataAfterClaudiaErrors = collectDataAfterClaudia(
-      typebot.groups
-    )
-
     const errors = [
       ...invalidGroupsErrors,
       ...brokenLinksErrors,
       ...missingTextBeforeClaudiaErrors,
-      ...collectDataAfterClaudiaErrors,
       ...missingTextBetweenInputBlocks(
         typebot.groups as Group[],
         (typebot.edges as Edge[]) || []
