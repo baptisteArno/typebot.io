@@ -1,5 +1,5 @@
-import { CtaButtonLink } from "@/components/link";
 import { cx } from "@typebot.io/ui/lib/cva";
+import { CtaButtonLink } from "@/components/link";
 import { discordUrl } from "../../../constants";
 import abhaySrc from "../testimonials/assets/abhay.jpeg";
 import annaFilouSrc from "../testimonials/assets/annaFilou.jpeg";

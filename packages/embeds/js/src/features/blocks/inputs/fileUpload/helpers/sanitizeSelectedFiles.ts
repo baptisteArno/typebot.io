@@ -1,6 +1,6 @@
-import type { BotContext } from "@/types";
 import { getRuntimeVariable } from "@typebot.io/env/getRuntimeVariable";
 import { defaultSystemMessages } from "@typebot.io/settings/constants";
+import type { BotContext } from "@/types";
 
 type Props = {
   newFile: File;

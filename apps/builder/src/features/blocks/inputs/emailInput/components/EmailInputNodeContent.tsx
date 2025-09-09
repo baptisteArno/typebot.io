@@ -1,9 +1,8 @@
-import { SetVariableLabel } from "@/components/SetVariableLabel";
-import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { Stack, Text } from "@chakra-ui/react";
 import { defaultEmailInputOptions } from "@typebot.io/blocks-inputs/email/constants";
 import type { EmailInputBlock } from "@typebot.io/blocks-inputs/email/schema";
-import React from "react";
+import { SetVariableLabel } from "@/components/SetVariableLabel";
+import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 
 type Props = {
   options: EmailInputBlock["options"];

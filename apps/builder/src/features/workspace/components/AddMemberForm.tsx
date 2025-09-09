@@ -1,11 +1,11 @@
-import { BasicSelect } from "@/components/inputs/BasicSelect";
-import { toast } from "@/lib/toast";
 import { HStack, Input } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { WorkspaceRole } from "@typebot.io/prisma/enum";
 import type { Prisma } from "@typebot.io/prisma/types";
 import { Button } from "@typebot.io/ui/components/Button";
 import { type FormEvent, useState } from "react";
+import { BasicSelect } from "@/components/inputs/BasicSelect";
+import { toast } from "@/lib/toast";
 import { sendInvitationQuery } from "../queries/sendInvitationQuery";
 import type { Member } from "../types";
 

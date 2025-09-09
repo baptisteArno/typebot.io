@@ -1,4 +1,3 @@
-import { BasicSelect } from "@/components/inputs/BasicSelect";
 import {
   Accordion,
   AccordionButton,
@@ -9,12 +8,13 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
-import type { BubbleProps } from "@typebot.io/js";
 import type {
+  BubbleProps,
   BubbleTheme,
   ButtonTheme,
   PreviewMessageTheme,
 } from "@typebot.io/js";
+import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { ButtonThemeSettings } from "./ButtonThemeSettings";
 import { PreviewMessageThemeSettings } from "./PreviewMessageThemeSettings";
 

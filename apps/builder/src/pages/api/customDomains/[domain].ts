@@ -1,4 +1,3 @@
-import { getAuthenticatedUser } from "@/features/auth/helpers/getAuthenticatedUser";
 import { env } from "@typebot.io/env";
 import {
   badRequest,
@@ -8,6 +7,7 @@ import {
 import prisma from "@typebot.io/prisma";
 import ky from "ky";
 import type { NextApiRequest, NextApiResponse } from "next";
+import { getAuthenticatedUser } from "@/features/auth/helpers/getAuthenticatedUser";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req, res);

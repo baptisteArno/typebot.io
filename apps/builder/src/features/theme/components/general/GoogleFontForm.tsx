@@ -1,8 +1,8 @@
-import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { env } from "@typebot.io/env";
 import { defaultFontFamily } from "@typebot.io/theme/constants";
 import type { GoogleFont } from "@typebot.io/theme/schemas";
 import { useEffect, useState } from "react";
+import { BasicSelect } from "@/components/inputs/BasicSelect";
 
 type Props = {
   font: GoogleFont | string | undefined;

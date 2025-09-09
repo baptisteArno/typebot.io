@@ -1,14 +1,14 @@
-import { isWriteWorkspaceForbidden } from "@/features/workspace/helpers/isWriteWorkspaceForbidden";
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 import { TRPCError } from "@trpc/server";
 import { encrypt } from "@typebot.io/credentials/encrypt";
 import { env } from "@typebot.io/env";
-import { forgedBlocks } from "@typebot.io/forge-repository/definitions";
 import type { OAuthDefinition } from "@typebot.io/forge/types";
+import { forgedBlocks } from "@typebot.io/forge-repository/definitions";
 import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
 import prisma from "@typebot.io/prisma";
 import { z } from "@typebot.io/zod";
 import ky from "ky";
+import { isWriteWorkspaceForbidden } from "@/features/workspace/helpers/isWriteWorkspaceForbidden";
+import { authenticatedProcedure } from "@/helpers/server/trpc";
 
 export const updateOAuthCredentials = authenticatedProcedure
   .input(
@@ -63,7 +63,6 @@ export const updateOAuthCredentials = authenticatedProcedure
       tokenUrl: blockDef.auth.tokenUrl,
       client,
       code: input.code,
-      blockType: input.blockType,
     });
 
     const { encryptedData, iv } = await encrypt({
@@ -93,12 +92,10 @@ const exchangeCodeForTokens = async ({
   tokenUrl,
   client,
   code,
-  blockType,
 }: {
   tokenUrl: string;
   client: { id: string; secret: string };
   code: string;
-  blockType: string;
 }) => {
   try {
     const tokens = await ky

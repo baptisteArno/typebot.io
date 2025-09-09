@@ -1,6 +1,6 @@
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 import { getBillingPortalUrl as getBillingPortalUrlHandler } from "@typebot.io/billing/api/getBillingPortalUrl";
 import { z } from "@typebot.io/zod";
+import { authenticatedProcedure } from "@/helpers/server/trpc";
 
 export const getBillingPortalUrl = authenticatedProcedure
   .meta({

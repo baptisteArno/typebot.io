@@ -1,10 +1,10 @@
-import { publicProcedure } from "@/helpers/server/trpc";
 import { continueChat as continueChatFn } from "@typebot.io/bot-engine/apiHandlers/continueChat";
 import {
   continueChatResponseSchema,
   messageSchema,
 } from "@typebot.io/chat-api/schemas";
 import { z } from "@typebot.io/zod";
+import { publicProcedure } from "@/helpers/server/trpc";
 
 export const continueChat = publicProcedure
   .meta({

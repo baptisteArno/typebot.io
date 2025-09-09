@@ -1,7 +1,7 @@
-import { AlertInfo } from "@/components/AlertInfo";
 import { Text } from "@chakra-ui/react";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
 import { useState } from "react";
+import { AlertInfo } from "@/components/AlertInfo";
 import type { DialogProps } from "../../DeployButton";
 import { StandardSettings } from "../../settings/StandardSettings";
 import { IframeSnippet } from "./IframeSnippet";

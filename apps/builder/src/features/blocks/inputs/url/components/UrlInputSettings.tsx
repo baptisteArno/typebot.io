@@ -1,11 +1,10 @@
-import { TextInput } from "@/components/inputs";
-import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
 import { FormLabel, Stack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { defaultUrlInputOptions } from "@typebot.io/blocks-inputs/url/constants";
 import type { UrlInputBlock } from "@typebot.io/blocks-inputs/url/schema";
 import type { Variable } from "@typebot.io/variables/schemas";
-import React from "react";
+import { TextInput } from "@/components/inputs";
+import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
 
 type Props = {
   options: UrlInputBlock["options"];

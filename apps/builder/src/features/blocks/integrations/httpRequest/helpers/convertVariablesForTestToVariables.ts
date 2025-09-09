@@ -31,7 +31,7 @@ const parseVariableValue = (value: string | undefined): string | string[] => {
     if (Array.isArray(parsedValue))
       return parsedValue.map(safeStringify).filter(isDefined);
     return safeStringify(parsedValue) ?? value;
-  } catch (error) {
+  } catch (_error) {
     return value;
   }
 };

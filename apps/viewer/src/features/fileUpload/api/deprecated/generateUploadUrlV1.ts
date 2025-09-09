@@ -1,4 +1,3 @@
-import { publicProcedure } from "@/helpers/server/trpc";
 import { TRPCError } from "@trpc/server";
 import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
 import { getSession } from "@typebot.io/chat-session/queries/getSession";
@@ -8,6 +7,7 @@ import { parseGroups } from "@typebot.io/groups/helpers/parseGroups";
 import { generatePresignedPostPolicy } from "@typebot.io/lib/s3/generatePresignedPostPolicy";
 import prisma from "@typebot.io/prisma";
 import { z } from "@typebot.io/zod";
+import { publicProcedure } from "@/helpers/server/trpc";
 
 export const generateUploadUrlV1 = publicProcedure
   .meta({

@@ -1,8 +1,3 @@
-import { ConfirmDialog } from "@/components/ConfirmDialog";
-import { MoreVerticalIcon } from "@/components/icons";
-import { useOpenControls } from "@/hooks/useOpenControls";
-import { trpc } from "@/lib/queryClient";
-import { toast } from "@/lib/toast";
 import {
   Alert,
   AlertIcon,
@@ -13,19 +8,22 @@ import {
   SkeletonText,
   Stack,
   Text,
-  VStack,
   useColorModeValue,
+  VStack,
 } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
 import { T, useTranslate } from "@tolgee/react";
 import type { Prisma } from "@typebot.io/prisma/types";
-import { Button } from "@typebot.io/ui/components/Button";
-import { buttonVariants } from "@typebot.io/ui/components/Button";
+import { Button, buttonVariants } from "@typebot.io/ui/components/Button";
 import { Menu } from "@typebot.io/ui/components/Menu";
 import { FolderSolidIcon } from "@typebot.io/ui/icons/FolderSolidIcon";
 import { cn } from "@typebot.io/ui/lib/cn";
 import { useRouter } from "next/router";
-import React, { memo, useMemo } from "react";
+import { memo, useMemo } from "react";
+import { ConfirmDialog } from "@/components/ConfirmDialog";
+import { MoreVerticalIcon } from "@/components/icons";
+import { useOpenControls } from "@/hooks/useOpenControls";
+import { trpc } from "@/lib/queryClient";
 import { useTypebotDnd } from "../TypebotDndProvider";
 
 type Props = {

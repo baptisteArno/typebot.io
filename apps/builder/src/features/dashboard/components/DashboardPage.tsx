@@ -1,19 +1,19 @@
-import { Seo } from "@/components/Seo";
-import {
-  PreCheckoutDialog,
-  type PreCheckoutDialogProps,
-} from "@/features/billing/components/PreCheckoutDialog";
-import { TypebotDndProvider } from "@/features/folders/TypebotDndProvider";
-import { FolderContent } from "@/features/folders/components/FolderContent";
-import { useUser } from "@/features/user/hooks/useUser";
-import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { trpc } from "@/lib/queryClient";
 import { Spinner, Stack, Text, VStack } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
 import type { Plan } from "@typebot.io/prisma/enum";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { Seo } from "@/components/Seo";
+import {
+  PreCheckoutDialog,
+  type PreCheckoutDialogProps,
+} from "@/features/billing/components/PreCheckoutDialog";
+import { FolderContent } from "@/features/folders/components/FolderContent";
+import { TypebotDndProvider } from "@/features/folders/TypebotDndProvider";
+import { useUser } from "@/features/user/hooks/useUser";
+import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
+import { trpc } from "@/lib/queryClient";
 import { DashboardHeader } from "./DashboardHeader";
 
 export const DashboardPage = () => {

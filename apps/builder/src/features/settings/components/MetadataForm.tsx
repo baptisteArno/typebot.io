@@ -1,16 +1,15 @@
-import { ImageUploadContent } from "@/components/ImageUploadContent";
-import { MoreInfoTooltip } from "@/components/MoreInfoTooltip";
-import { TextInput, Textarea } from "@/components/inputs";
-import { CodeEditor } from "@/components/inputs/CodeEditor";
-import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
-import { useOpenControls } from "@/hooks/useOpenControls";
 import { FormLabel, HStack, Image, Stack, Text } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { env } from "@typebot.io/env";
 import { defaultSettings } from "@typebot.io/settings/constants";
 import type { Settings } from "@typebot.io/settings/schemas";
 import { Popover } from "@typebot.io/ui/components/Popover";
-import React from "react";
+import { ImageUploadContent } from "@/components/ImageUploadContent";
+import { Textarea, TextInput } from "@/components/inputs";
+import { CodeEditor } from "@/components/inputs/CodeEditor";
+import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
+import { MoreInfoTooltip } from "@/components/MoreInfoTooltip";
+import { useOpenControls } from "@/hooks/useOpenControls";
 
 type Props = {
   workspaceId: string;

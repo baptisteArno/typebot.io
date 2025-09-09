@@ -1,17 +1,17 @@
-import { useGraph } from "@/features/graph/providers/GraphProvider";
-import { useRightPanel } from "@/hooks/useRightPanel";
 import {
   Fade,
   Flex,
   HStack,
-  VStack,
   useColorModeValue,
+  VStack,
 } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { Button } from "@typebot.io/ui/components/Button";
 import { CloseIcon } from "@typebot.io/ui/icons/CloseIcon";
 import { useDrag } from "@use-gesture/react";
-import React, { useState } from "react";
+import { useState } from "react";
+import { useGraph } from "@/features/graph/providers/GraphProvider";
+import { useRightPanel } from "@/hooks/useRightPanel";
 import { headerHeight } from "../../editor/constants";
 import { useTypebot } from "../../editor/providers/TypebotProvider";
 import { runtimes } from "../data";

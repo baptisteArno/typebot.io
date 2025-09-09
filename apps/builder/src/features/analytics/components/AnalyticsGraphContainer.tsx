@@ -1,8 +1,3 @@
-import { ChangePlanDialog } from "@/features/billing/components/ChangePlanDialog";
-import { useTypebot } from "@/features/editor/providers/TypebotProvider";
-import { Graph } from "@/features/graph/components/Graph";
-import { GraphProvider } from "@/features/graph/providers/GraphProvider";
-import { trpc } from "@/lib/queryClient";
 import {
   Flex,
   Spinner,
@@ -13,7 +8,12 @@ import { useQuery } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
 import { isDefined } from "@typebot.io/lib/utils";
 import type { Stats } from "@typebot.io/results/schemas/answers";
-import React, { useMemo } from "react";
+import { useMemo } from "react";
+import { ChangePlanDialog } from "@/features/billing/components/ChangePlanDialog";
+import { useTypebot } from "@/features/editor/providers/TypebotProvider";
+import { Graph } from "@/features/graph/components/Graph";
+import { GraphProvider } from "@/features/graph/providers/GraphProvider";
+import { trpc } from "@/lib/queryClient";
 import type { timeFilterValues } from "../constants";
 import { populateEdgesWithTotalVisits } from "../helpers/populateEdgesWithTotalVisits";
 import { StatsCards } from "./StatsCards";

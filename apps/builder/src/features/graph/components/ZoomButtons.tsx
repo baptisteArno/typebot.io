@@ -1,6 +1,6 @@
-import { MinusIcon, PlusIcon } from "@/components/icons";
-import { Stack, useColorModeValue } from "@chakra-ui/react";
+import { Stack } from "@chakra-ui/react";
 import { Button } from "@typebot.io/ui/components/Button";
+import { MinusIcon, PlusIcon } from "@/components/icons";
 
 type Props = {
   onZoomInClick: () => void;

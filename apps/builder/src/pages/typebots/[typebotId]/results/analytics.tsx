@@ -1,6 +1,6 @@
-import { trackAnalyticsPageView } from "@/features/telemetry/helpers/trackAnalyticsPageView";
 import { env } from "@typebot.io/env";
 import type { GetServerSidePropsContext } from "next";
+import { trackAnalyticsPageView } from "@/features/telemetry/helpers/trackAnalyticsPageView";
 import ResultsPage from "../results";
 
 const AnalyticsPage = ResultsPage;

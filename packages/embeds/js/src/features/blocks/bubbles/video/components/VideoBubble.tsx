@@ -1,9 +1,8 @@
-import { TypingBubble } from "@/components/TypingBubble";
 import {
-  VideoBubbleContentType,
   defaultVideoBubbleContent,
   embedBaseUrls,
   embeddableVideoTypes,
+  VideoBubbleContentType,
 } from "@typebot.io/blocks-bubbles/video/constants";
 import { parseQueryParams } from "@typebot.io/blocks-bubbles/video/helpers";
 import type {
@@ -11,7 +10,8 @@ import type {
   VideoBubbleBlock,
 } from "@typebot.io/blocks-bubbles/video/schema";
 import { cx } from "@typebot.io/ui/lib/cva";
-import { Match, Switch, createSignal, onCleanup, onMount } from "solid-js";
+import { createSignal, Match, onCleanup, onMount, Switch } from "solid-js";
+import { TypingBubble } from "@/components/TypingBubble";
 
 type Props = {
   content: VideoBubbleBlock["content"];

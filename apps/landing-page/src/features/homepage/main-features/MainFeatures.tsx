@@ -1,9 +1,9 @@
-import { Card } from "@/components/Card";
-import { TextLink } from "@/components/link";
 import { cn } from "@typebot.io/ui/lib/cn";
 import { cx } from "@typebot.io/ui/lib/cva";
 import { AnimatePresence, motion } from "motion/react";
 import { type SVGProps, useEffect, useRef, useState } from "react";
+import { Card } from "@/components/Card";
+import { TextLink } from "@/components/link";
 import { breakpoints } from "../../../constants";
 import { useWindowSize } from "../hooks/useWindowSize";
 import deployVideoSrc from "./assets/deploy.mp4";

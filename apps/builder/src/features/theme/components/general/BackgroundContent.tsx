@@ -1,6 +1,3 @@
-import { ImageUploadContent } from "@/components/ImageUploadContent";
-import { useTypebot } from "@/features/editor/providers/TypebotProvider";
-import { useOpenControls } from "@/hooks/useOpenControls";
 import { Flex, Image, Text } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { isNotEmpty } from "@typebot.io/lib/utils";
@@ -13,6 +10,9 @@ import type { Background } from "@typebot.io/theme/schemas";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Popover } from "@typebot.io/ui/components/Popover";
 import React from "react";
+import { ImageUploadContent } from "@/components/ImageUploadContent";
+import { useTypebot } from "@/features/editor/providers/TypebotProvider";
+import { useOpenControls } from "@/hooks/useOpenControls";
 import { ColorPicker } from "../../../../components/ColorPicker";
 
 type BackgroundContentProps = {

@@ -1,5 +1,3 @@
-import type { ChangePlanDialogProps } from "@/features/billing/components/ChangePlanDialog";
-import { ChangePlanDialog } from "@/features/billing/components/ChangePlanDialog";
 import {
   Alert,
   AlertIcon,
@@ -8,7 +6,8 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
-import React from "react";
+import type { ChangePlanDialogProps } from "@/features/billing/components/ChangePlanDialog";
+import { ChangePlanDialog } from "@/features/billing/components/ChangePlanDialog";
 
 type Props = AlertProps & Pick<ChangePlanDialogProps, "type" | "excludedPlans">;
 

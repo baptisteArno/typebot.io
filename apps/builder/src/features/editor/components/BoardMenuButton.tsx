@@ -1,4 +1,8 @@
+import { useDisclosure } from "@chakra-ui/react";
+import { useTranslate } from "@tolgee/react";
+import { Menu } from "@typebot.io/ui/components/Menu";
 import assert from "assert";
+import { useState } from "react";
 import {
   BookIcon,
   DownloadIcon,
@@ -6,10 +10,6 @@ import {
   SettingsIcon,
 } from "@/components/icons";
 import { parseDefaultPublicId } from "@/features/publish/helpers/parseDefaultPublicId";
-import { useDisclosure } from "@chakra-ui/react";
-import { useTranslate } from "@tolgee/react";
-import { Menu } from "@typebot.io/ui/components/Menu";
-import React, { useState } from "react";
 import { useTypebot } from "../providers/TypebotProvider";
 import { EditorSettingsDialog } from "./EditorSettingsDialog";
 

@@ -1,12 +1,11 @@
-import { queryClient, trpc } from "@/lib/queryClient";
-import { toast } from "@/lib/toast";
-import { useQuery } from "@tanstack/react-query";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { byId } from "@typebot.io/lib/utils";
 import type { Workspace } from "@typebot.io/workspaces/schemas";
 import { useRouter } from "next/router";
 import type { ReactNode } from "react";
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { queryClient, trpc } from "@/lib/queryClient";
+import { toast } from "@/lib/toast";
 import { useTypebot } from "../editor/providers/TypebotProvider";
 import { useUser } from "../user/hooks/useUser";
 import { parseNewName } from "./helpers/parseNewName";
@@ -37,7 +36,7 @@ const workspaceContext = createContext<{
   createWorkspace: (name?: string) => Promise<void>;
   updateWorkspace: (updates: WorkspaceUpdateProps) => void;
   deleteCurrentWorkspace: () => Promise<void>;
-  //@ts-ignore
+  //@ts-expect-error
 }>({});
 
 type WorkspaceContextProps = {

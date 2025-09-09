@@ -1,6 +1,6 @@
 import { env } from "@typebot.io/env";
 import { forbidden } from "@typebot.io/lib/api/utils";
-import prisma, {} from "@typebot.io/prisma";
+import prisma from "@typebot.io/prisma";
 import {
   CollaborationType,
   Plan,

@@ -1,4 +1,3 @@
-import { VariablesButton } from "@/features/variables/components/VariablesButton";
 import {
   type BoxProps,
   Fade,
@@ -21,8 +20,9 @@ import { githubLight } from "@uiw/codemirror-theme-github";
 import { tokyoNight } from "@uiw/codemirror-theme-tokyo-night";
 import CodeMirror, { type ReactCodeMirrorRef } from "@uiw/react-codemirror";
 import type { ReactNode } from "react";
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
+import { VariablesButton } from "@/features/variables/components/VariablesButton";
 import { CopyButton } from "../CopyButton";
 import { MoreInfoTooltip } from "../MoreInfoTooltip";
 

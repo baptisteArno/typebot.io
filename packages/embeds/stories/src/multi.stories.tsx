@@ -1,4 +1,4 @@
-import { Bubble, Popup, close, open } from "@typebot.io/react";
+import { Bubble, close, open, Popup } from "@typebot.io/react";
 
 export const Default = () => {
   return (

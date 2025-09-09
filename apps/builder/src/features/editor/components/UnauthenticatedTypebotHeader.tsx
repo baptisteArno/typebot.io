@@ -1,9 +1,3 @@
-import { ButtonLink } from "@/components/ButtonLink";
-import { EmojiOrImageIcon } from "@/components/EmojiOrImageIcon";
-import { TypebotLogo } from "@/components/TypebotLogo";
-import { CopyIcon, PlayIcon } from "@/components/icons";
-import { useUser } from "@/features/user/hooks/useUser";
-import { useRightPanel } from "@/hooks/useRightPanel";
 import {
   Divider,
   Flex,
@@ -16,7 +10,12 @@ import { isNotDefined } from "@typebot.io/lib/utils";
 import { Button } from "@typebot.io/ui/components/Button";
 import { LayoutBottomIcon } from "@typebot.io/ui/icons/LayoutBottomIcon";
 import { useRouter } from "next/router";
-import React from "react";
+import { ButtonLink } from "@/components/ButtonLink";
+import { EmojiOrImageIcon } from "@/components/EmojiOrImageIcon";
+import { CopyIcon, PlayIcon } from "@/components/icons";
+import { TypebotLogo } from "@/components/TypebotLogo";
+import { useUser } from "@/features/user/hooks/useUser";
+import { useRightPanel } from "@/hooks/useRightPanel";
 import { headerHeight } from "../constants";
 import { useEditor } from "../providers/EditorProvider";
 import { useTypebot } from "../providers/TypebotProvider";

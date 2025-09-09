@@ -1,10 +1,9 @@
-import { render } from "@faire/mjml-react/utils/render";
 import type { SendEmailBlock } from "@typebot.io/blocks-integrations/sendEmail/schema";
 import { saveErrorLog } from "@typebot.io/bot-engine/logs/saveErrorLog";
 import { saveSuccessLog } from "@typebot.io/bot-engine/logs/saveSuccessLog";
 import { decrypt } from "@typebot.io/credentials/decrypt";
 import type { SmtpCredentials } from "@typebot.io/credentials/schemas";
-import { DefaultBotNotificationEmail } from "@typebot.io/emails/transactional/DefaultBotNotificationEmail";
+import { renderDefaultBotNotificationEmail } from "@typebot.io/emails/transactional/DefaultBotNotificationEmail";
 import { env } from "@typebot.io/env";
 import { initMiddleware, methodNotAllowed } from "@typebot.io/lib/api/utils";
 import { isDefined, isEmpty, isNotDefined, omit } from "@typebot.io/lib/utils";
@@ -215,12 +214,10 @@ const getEmailBody = async ({
     variables: resultValues.variables,
   });
   return {
-    html: render(
-      <DefaultBotNotificationEmail
-        resultsUrl={`${env.NEXTAUTH_URL}/typebots/${typebot.id}/results`}
-        answers={omit(answers, "submittedAt")}
-      />,
-    ).html,
+    html: await renderDefaultBotNotificationEmail({
+      resultsUrl: `${env.NEXTAUTH_URL}/typebots/${typebot.id}/results`,
+      answers: omit(answers, "submittedAt"),
+    }),
   };
 };
 

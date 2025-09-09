@@ -1,6 +1,6 @@
 import { env } from "@typebot.io/env";
-import { forgedBlocks } from "@typebot.io/forge-repository/definitions";
 import type { AuthDefinition, OAuthDefinition } from "@typebot.io/forge/types";
+import { forgedBlocks } from "@typebot.io/forge-repository/definitions";
 import { z } from "@typebot.io/zod";
 import { type NextRequest, NextResponse } from "next/server";
 
@@ -39,7 +39,9 @@ export const GET = async (
     scope: authConfig.scopes.join(" "),
     ...authConfig.extraAuthParams,
   };
-  Object.entries(urlParams).forEach(([k, v]) => url.searchParams.append(k, v));
+  Object.entries(urlParams).forEach(([k, v]) => {
+    url.searchParams.append(k, v);
+  });
   return NextResponse.redirect(url);
 };
 

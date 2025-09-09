@@ -1,5 +1,3 @@
-import { TextLink } from "@/components/TextLink";
-import { toast } from "@/lib/toast";
 import { sanitizeUrl } from "@braintree/sanitize-url";
 import {
   Alert,
@@ -19,11 +17,13 @@ import {
 } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { Button } from "@typebot.io/ui/components/Button";
-import { getProviders, signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { getProviders, signIn, useSession } from "next-auth/react";
 import { useQueryState } from "nuqs";
 import type { ChangeEvent, FormEvent } from "react";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { TextLink } from "@/components/TextLink";
+import { toast } from "@/lib/toast";
 import { createEmailMagicLink } from "../helpers/createEmailMagicLink";
 import { DividerWithText } from "./DividerWithText";
 import { SignInError } from "./SignInError";
@@ -111,7 +111,7 @@ export const SignInForm = ({
       } else {
         setIsMagicCodeSent(true);
       }
-    } catch (e) {
+    } catch (_e) {
       toast({
         type: "info",
         description: "An error occured while signing in",

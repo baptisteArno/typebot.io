@@ -25,9 +25,7 @@ export const parseNewCellValuesObject = (
               variables,
               sessionStore,
             }),
-            columnIndex: headerValues?.findIndex(
-              (headerValue) => headerValue === cell.column,
-            ),
+            columnIndex: headerValues?.indexOf(cell.column),
           },
         };
   }, {});

@@ -1,11 +1,3 @@
-import { Portal } from "@/components/Portal";
-import { useTypebot } from "@/features/editor/providers/TypebotProvider";
-import {
-  type DraggableItem,
-  computeNearestPlaceholderIndex,
-  useBlockDnd,
-} from "@/features/graph/providers/GraphDndProvider";
-import { useGraph } from "@/features/graph/providers/GraphProvider";
 import {
   Flex,
   Stack,
@@ -25,10 +17,18 @@ import { LogicBlockType } from "@typebot.io/blocks-logic/constants";
 import { isDefined } from "@typebot.io/lib/utils";
 import type React from "react";
 import { useEffect, useRef, useState } from "react";
+import { Portal } from "@/components/Portal";
+import { useTypebot } from "@/features/editor/providers/TypebotProvider";
+import {
+  computeNearestPlaceholderIndex,
+  type DraggableItem,
+  useBlockDnd,
+} from "@/features/graph/providers/GraphDndProvider";
+import { useGraph } from "@/features/graph/providers/GraphProvider";
 import { BlockSourceEndpoint } from "../../endpoints/BlockSourceEndpoint";
 import { PlaceholderNode } from "../PlaceholderNode";
-import { ItemNode } from "./ItemNode";
 import { getItemName } from "./getItemName";
+import { ItemNode } from "./ItemNode";
 
 type Props = {
   block: BlockWithItems;

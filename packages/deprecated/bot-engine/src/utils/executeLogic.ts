@@ -1,3 +1,5 @@
+import { LogicBlockType } from "@typebot.io/blocks-logic/constants";
+import type { LogicBlock } from "@typebot.io/blocks-logic/schema";
 import type { TypebotViewerProps } from "@/components/TypebotViewer";
 import { executeCondition } from "@/features/blocks/logic/condition";
 import { executeRedirect } from "@/features/blocks/logic/redirect";
@@ -7,8 +9,6 @@ import { executeTypebotLink } from "@/features/blocks/logic/typebotLink";
 import { executeWait } from "@/features/blocks/logic/wait";
 import type { LinkedTypebot } from "@/providers/TypebotProvider";
 import type { EdgeId, LogicState } from "@/types";
-import { LogicBlockType } from "@typebot.io/blocks-logic/constants";
-import type { LogicBlock } from "@typebot.io/blocks-logic/schema";
 
 export const executeLogic = async (
   block: LogicBlock,

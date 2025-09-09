@@ -1,8 +1,8 @@
-import { getAuthenticatedUser } from "@/features/auth/helpers/getAuthenticatedUser";
 import { methodNotAllowed, notAuthenticated } from "@typebot.io/lib/api/utils";
 import prisma from "@typebot.io/prisma";
 import { updateUserSchema } from "@typebot.io/user/schemas";
 import type { NextApiRequest, NextApiResponse } from "next";
+import { getAuthenticatedUser } from "@/features/auth/helpers/getAuthenticatedUser";
 
 // TODO: Delete in favor of updateUser mutation
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {

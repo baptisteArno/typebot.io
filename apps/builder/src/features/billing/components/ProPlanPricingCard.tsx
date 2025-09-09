@@ -1,12 +1,11 @@
-import { MoreInfoTooltip } from "@/components/MoreInfoTooltip";
 import {
+  chakra,
   Flex,
-  HStack,
   Heading,
+  HStack,
   Stack,
   Tag,
   Text,
-  chakra,
   useColorModeValue,
   useDisclosure,
 } from "@chakra-ui/react";
@@ -16,6 +15,7 @@ import { formatPrice } from "@typebot.io/billing/helpers/formatPrice";
 import { Plan } from "@typebot.io/prisma/enum";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Tooltip } from "@typebot.io/ui/components/Tooltip";
+import { MoreInfoTooltip } from "@/components/MoreInfoTooltip";
 import { ChatsProTiersDialog } from "./ChatsProTiersDialog";
 import { FeaturesList } from "./FeaturesList";
 

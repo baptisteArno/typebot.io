@@ -1,9 +1,3 @@
-import { getAuthenticatedUser } from "@/features/auth/helpers/getAuthenticatedUser";
-import {
-  canReadTypebots,
-  canWriteTypebots,
-  isUniqueConstraintError,
-} from "@/helpers/databaseRules";
 import { sendGuestInvitationEmail } from "@typebot.io/emails/transactional/GuestInvitationEmail";
 import { env } from "@typebot.io/env";
 import {
@@ -15,6 +9,12 @@ import {
 import prisma from "@typebot.io/prisma";
 import { type CollaborationType, WorkspaceRole } from "@typebot.io/prisma/enum";
 import type { NextApiRequest, NextApiResponse } from "next";
+import { getAuthenticatedUser } from "@/features/auth/helpers/getAuthenticatedUser";
+import {
+  canReadTypebots,
+  canWriteTypebots,
+  isUniqueConstraintError,
+} from "@/helpers/databaseRules";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req, res);

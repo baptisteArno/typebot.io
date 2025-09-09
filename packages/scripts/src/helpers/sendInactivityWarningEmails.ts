@@ -108,5 +108,5 @@ export const deleteOrWarnInactiveWorkspaces = async () => {
   };
 };
 
-const sendFirstInactivityWarningEmail = async (workspace: any) => {};
-const sendSecondInactivityWarningEmail = async (workspace: any) => {};
+const sendFirstInactivityWarningEmail = async (_workspace: any) => {};
+const sendSecondInactivityWarningEmail = async (_workspace: any) => {};

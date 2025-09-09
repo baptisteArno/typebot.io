@@ -1,14 +1,14 @@
-import { CloseIcon } from "@/components/icons/CloseIcon";
 import { Progress } from "@ark-ui/solid";
 import { isDefined } from "@typebot.io/lib/utils";
 import {
-  Match,
-  Show,
-  Switch,
   createEffect,
   createSignal,
+  Match,
   onCleanup,
+  Show,
+  Switch,
 } from "solid-js";
+import { CloseIcon } from "@/components/icons/CloseIcon";
 import { FilePreview } from "./FilePreview";
 
 export const SelectedFile = (props: {

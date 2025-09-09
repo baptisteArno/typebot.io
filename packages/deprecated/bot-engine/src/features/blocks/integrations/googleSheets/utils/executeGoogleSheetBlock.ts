@@ -1,6 +1,3 @@
-import { parseVariables } from "@/features/variables";
-import type { IntegrationState } from "@/types";
-import { parseLog } from "@/utils/helpers";
 import { GoogleSheetsAction } from "@typebot.io/blocks-integrations/googleSheets/constants";
 import type {
   Cell,
@@ -14,6 +11,9 @@ import type {
   Variable,
   VariableWithValue,
 } from "@typebot.io/variables/schemas";
+import { parseVariables } from "@/features/variables";
+import type { IntegrationState } from "@/types";
+import { parseLog } from "@/utils/helpers";
 
 export const executeGoogleSheetBlock = async (
   block: GoogleSheetsBlock,

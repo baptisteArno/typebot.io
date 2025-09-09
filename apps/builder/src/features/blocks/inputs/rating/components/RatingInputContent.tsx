@@ -1,8 +1,8 @@
-import { WithVariableContent } from "@/features/graph/components/nodes/block/WithVariableContent";
 import { Text } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { defaultRatingInputOptions } from "@typebot.io/blocks-inputs/rating/constants";
 import type { RatingInputBlock } from "@typebot.io/blocks-inputs/rating/schema";
+import { WithVariableContent } from "@/features/graph/components/nodes/block/WithVariableContent";
 
 type Props = {
   variableId?: string;

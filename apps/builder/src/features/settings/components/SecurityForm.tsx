@@ -1,11 +1,10 @@
-import { MoreInfoTooltip } from "@/components/MoreInfoTooltip";
-import { TagsInput } from "@/components/TagsInput";
 import { FormControl, FormLabel, Stack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { env } from "@typebot.io/env";
 import { isDefined } from "@typebot.io/lib/utils";
 import type { Settings } from "@typebot.io/settings/schemas";
-import React from "react";
+import { MoreInfoTooltip } from "@/components/MoreInfoTooltip";
+import { TagsInput } from "@/components/TagsInput";
 
 type Props = {
   security: Settings["security"];

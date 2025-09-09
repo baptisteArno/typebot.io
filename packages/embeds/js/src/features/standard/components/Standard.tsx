@@ -1,9 +1,9 @@
+import { EnvironmentProvider } from "@ark-ui/solid";
+import typebotColors from "@typebot.io/ui/colors.css";
+import { createEffect, createSignal, onCleanup, onMount, Show } from "solid-js";
 import { Bot, type BotProps } from "@/components/Bot";
 import type { CommandData } from "@/features/commands/types";
 import { wipeExistingChatStateInStorage } from "@/utils/storage";
-import { EnvironmentProvider } from "@ark-ui/solid";
-import typebotColors from "@typebot.io/ui/colors.css";
-import { Show, createEffect, createSignal, onCleanup, onMount } from "solid-js";
 import styles from "../../../assets/index.css";
 
 const hostElementCss = `

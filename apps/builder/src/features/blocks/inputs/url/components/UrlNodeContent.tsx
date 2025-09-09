@@ -1,8 +1,7 @@
-import { WithVariableContent } from "@/features/graph/components/nodes/block/WithVariableContent";
 import { Text } from "@chakra-ui/react";
 import { defaultUrlInputOptions } from "@typebot.io/blocks-inputs/url/constants";
 import type { UrlInputBlock } from "@typebot.io/blocks-inputs/url/schema";
-import React from "react";
+import { WithVariableContent } from "@/features/graph/components/nodes/block/WithVariableContent";
 
 type Props = {
   options: UrlInputBlock["options"];

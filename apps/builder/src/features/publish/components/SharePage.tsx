@@ -1,3 +1,17 @@
+import {
+  Flex,
+  Heading,
+  HStack,
+  Stack,
+  useColorModeValue,
+  Wrap,
+} from "@chakra-ui/react";
+import { useTranslate } from "@tolgee/react";
+import { env } from "@typebot.io/env";
+import { isDefined, isNotDefined } from "@typebot.io/lib/utils";
+import { Plan } from "@typebot.io/prisma/enum";
+import { Button } from "@typebot.io/ui/components/Button";
+import { TrashIcon } from "@typebot.io/ui/icons/TrashIcon";
 import { Seo } from "@/components/Seo";
 import { LockTag } from "@/features/billing/components/LockTag";
 import { UpgradeButton } from "@/features/billing/components/UpgradeButton";
@@ -9,24 +23,10 @@ import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { isCloudProdInstance } from "@/helpers/isCloudProdInstance";
 import { toast } from "@/lib/toast";
-import {
-  Flex,
-  HStack,
-  Heading,
-  Stack,
-  Wrap,
-  useColorModeValue,
-} from "@chakra-ui/react";
-import { useTranslate } from "@tolgee/react";
-import { env } from "@typebot.io/env";
-import { isDefined, isNotDefined } from "@typebot.io/lib/utils";
-import { Plan } from "@typebot.io/prisma/enum";
-import { Button } from "@typebot.io/ui/components/Button";
-import { TrashIcon } from "@typebot.io/ui/icons/TrashIcon";
 import { parseDefaultPublicId } from "../helpers/parseDefaultPublicId";
 import { isPublicDomainAvailableQuery } from "../queries/isPublicDomainAvailableQuery";
-import { EditableUrl } from "./EditableUrl";
 import { integrationsList } from "./deploy/DeployButton";
+import { EditableUrl } from "./EditableUrl";
 
 export const SharePage = () => {
   const { t } = useTranslate();
@@ -140,21 +140,19 @@ export const SharePage = () => {
               {currentUserMode === "write" &&
               isNotDefined(typebot?.customDomain) &&
               env.NEXT_PUBLIC_VERCEL_VIEWER_PROJECT_NAME ? (
-                <>
-                  {hasProPerks(workspace) ? (
-                    <CustomDomainsDropdown
-                      onCustomDomainSelect={handleCustomDomainChange}
-                    />
-                  ) : (
-                    <UpgradeButton
-                      limitReachedType={t("billing.limitMessage.customDomain")}
-                      excludedPlans={[Plan.STARTER]}
-                    >
-                      {t("customDomain.add")}
-                      <LockTag plan={Plan.PRO} />
-                    </UpgradeButton>
-                  )}
-                </>
+                hasProPerks(workspace) ? (
+                  <CustomDomainsDropdown
+                    onCustomDomainSelect={handleCustomDomainChange}
+                  />
+                ) : (
+                  <UpgradeButton
+                    limitReachedType={t("billing.limitMessage.customDomain")}
+                    excludedPlans={[Plan.STARTER]}
+                  >
+                    {t("customDomain.add")}
+                    <LockTag plan={Plan.PRO} />
+                  </UpgradeButton>
+                )
               ) : null}
             </Stack>
           </Stack>

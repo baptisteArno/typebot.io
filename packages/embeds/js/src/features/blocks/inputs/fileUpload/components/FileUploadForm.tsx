@@ -1,14 +1,14 @@
+import { defaultFileInputOptions } from "@typebot.io/blocks-inputs/file/constants";
+import type { FileInputBlock } from "@typebot.io/blocks-inputs/file/schema";
+import { isDefined } from "@typebot.io/lib/utils";
+import { defaultSystemMessages } from "@typebot.io/settings/constants";
+import { createSignal, For, Match, Show, Switch } from "solid-js";
 import { Button } from "@/components/Button";
 import { SendButton } from "@/components/SendButton";
 import { Spinner } from "@/components/Spinner";
 import type { BotContext, InputSubmitContent } from "@/types";
 import { guessApiHost } from "@/utils/guessApiHost";
 import { toaster } from "@/utils/toaster";
-import { defaultFileInputOptions } from "@typebot.io/blocks-inputs/file/constants";
-import type { FileInputBlock } from "@typebot.io/blocks-inputs/file/schema";
-import { isDefined } from "@typebot.io/lib/utils";
-import { defaultSystemMessages } from "@typebot.io/settings/constants";
-import { For, Match, Show, Switch, createSignal } from "solid-js";
 import { injectAndroidCameraCaptureToMimeTypes } from "../helpers/injectAndroidCameraCaptureToMimeTypes";
 import { sanitizeNewFile } from "../helpers/sanitizeSelectedFiles";
 import { uploadFiles } from "../helpers/uploadFiles";
@@ -210,56 +210,54 @@ export const FileUploadForm = (props: Props) => {
             </Show>
           </Match>
           <Match when={!isUploading()}>
-            <>
-              <div class="flex flex-col justify-center items-center gap-4 max-w-[90%]">
-                <Show when={selectedFiles().length} fallback={<UploadIcon />}>
-                  <div
-                    class="p-4 flex gap-2 border-gray-200 border overflow-auto bg-white rounded-md w-full"
-                    on:click={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                    }}
-                  >
-                    <For each={selectedFiles()}>
-                      {(file, index) => (
-                        <SelectedFile
-                          file={file}
-                          onRemoveClick={() => removeSelectedFile(index())}
-                        />
-                      )}
-                    </For>
-                  </div>
-                </Show>
-                <p
-                  class="text-sm text-gray-500 text-center"
-                  innerHTML={
-                    props.block.options?.labels?.placeholder ??
-                    defaultFileInputOptions.labels.placeholder
-                  }
-                />
-              </div>
-              <input
-                id="dropzone-file"
-                type="file"
-                class="hidden"
-                accept={
-                  props.block.options?.allowedFileTypes?.isEnabled
-                    ? injectAndroidCameraCaptureToMimeTypes(
-                        props.block.options.allowedFileTypes.types,
-                      )
-                    : undefined
+            <div class="flex flex-col justify-center items-center gap-4 max-w-[90%]">
+              <Show when={selectedFiles().length} fallback={<UploadIcon />}>
+                <div
+                  class="p-4 flex gap-2 border-gray-200 border overflow-auto bg-white rounded-md w-full"
+                  on:click={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                  }}
+                >
+                  <For each={selectedFiles()}>
+                    {(file, index) => (
+                      <SelectedFile
+                        file={file}
+                        onRemoveClick={() => removeSelectedFile(index())}
+                      />
+                    )}
+                  </For>
+                </div>
+              </Show>
+              <p
+                class="text-sm text-gray-500 text-center"
+                innerHTML={
+                  props.block.options?.labels?.placeholder ??
+                  defaultFileInputOptions.labels.placeholder
                 }
-                multiple={
-                  props.block.options?.isMultipleAllowed ??
-                  defaultFileInputOptions.isMultipleAllowed
-                }
-                onChange={(e) => {
-                  if (!e.currentTarget.files) return;
-                  onNewFiles(e.currentTarget.files);
-                  e.currentTarget.value = "";
-                }}
               />
-            </>
+            </div>
+            <input
+              id="dropzone-file"
+              type="file"
+              class="hidden"
+              accept={
+                props.block.options?.allowedFileTypes?.isEnabled
+                  ? injectAndroidCameraCaptureToMimeTypes(
+                      props.block.options.allowedFileTypes.types,
+                    )
+                  : undefined
+              }
+              multiple={
+                props.block.options?.isMultipleAllowed ??
+                defaultFileInputOptions.isMultipleAllowed
+              }
+              onChange={(e) => {
+                if (!e.currentTarget.files) return;
+                onNewFiles(e.currentTarget.files);
+                e.currentTarget.value = "";
+              }}
+            />
           </Match>
         </Switch>
       </label>

@@ -1,6 +1,3 @@
-import { Portal } from "@/components/Portal";
-import { LockedIcon, UnlockedIcon } from "@/components/icons";
-import { useBlockDnd } from "@/features/graph/providers/GraphDndProvider";
 import {
   Fade,
   Flex,
@@ -22,11 +19,13 @@ import { EventType } from "@typebot.io/events/constants";
 import type { TDraggableEvent } from "@typebot.io/events/schemas";
 import { forgedBlocks } from "@typebot.io/forge-repository/definitions";
 import { isDefined } from "@typebot.io/lib/utils";
-import { Button } from "@typebot.io/ui/components/Button";
 import { Tooltip } from "@typebot.io/ui/components/Tooltip";
 import type React from "react";
 import { useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
+import { LockedIcon, UnlockedIcon } from "@/components/icons";
+import { Portal } from "@/components/Portal";
+import { useBlockDnd } from "@/features/graph/providers/GraphDndProvider";
 import { EventCard } from "../../events/components/EventCard";
 import { EventCardOverlay } from "../../events/components/EventCardOverlay";
 import { getEventBlockLabel } from "../../events/components/EventLabel";

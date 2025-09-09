@@ -1,4 +1,3 @@
-import type { Coordinates, CoordinatesMap } from "@/features/graph/types";
 import { EventType } from "@typebot.io/events/constants";
 import type { TDraggableEvent, TEvent } from "@typebot.io/events/schemas";
 import { createId } from "@typebot.io/lib/createId";
@@ -6,6 +5,7 @@ import { byId, isDefined } from "@typebot.io/lib/utils";
 import type { Edge } from "@typebot.io/typebot/schemas/edge";
 import type { TypebotV6 } from "@typebot.io/typebot/schemas/typebot";
 import { produce } from "immer";
+import type { Coordinates, CoordinatesMap } from "@/features/graph/types";
 import type { SetTypebot } from "../TypebotProvider";
 import { deleteConnectedEdgesDraft } from "./edges";
 

@@ -1,5 +1,3 @@
-import { isWriteWorkspaceForbidden } from "@/features/workspace/helpers/isWriteWorkspaceForbidden";
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 import { TRPCError } from "@trpc/server";
 import { env } from "@typebot.io/env";
 import prisma from "@typebot.io/prisma";
@@ -10,6 +8,8 @@ import {
   domainVerificationStatusSchema,
 } from "@typebot.io/schemas/features/customDomains";
 import { z } from "@typebot.io/zod";
+import { isWriteWorkspaceForbidden } from "@/features/workspace/helpers/isWriteWorkspaceForbidden";
+import { authenticatedProcedure } from "@/helpers/server/trpc";
 import type {
   DomainConfigResponse,
   DomainVerificationResponse,

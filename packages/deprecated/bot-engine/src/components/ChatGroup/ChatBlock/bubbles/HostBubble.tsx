@@ -1,10 +1,10 @@
+import { BubbleBlockType } from "@typebot.io/blocks-bubbles/constants";
+import type { BubbleBlock } from "@typebot.io/blocks-bubbles/schema";
 import { AudioBubble } from "@/features/blocks/bubbles/audio";
 import { EmbedBubble } from "@/features/blocks/bubbles/embed";
 import { ImageBubble } from "@/features/blocks/bubbles/image";
 import { TextBubble } from "@/features/blocks/bubbles/textBubble";
 import { VideoBubble } from "@/features/blocks/bubbles/video";
-import { BubbleBlockType } from "@typebot.io/blocks-bubbles/constants";
-import type { BubbleBlock } from "@typebot.io/blocks-bubbles/schema";
 
 type Props = {
   block: BubbleBlock;

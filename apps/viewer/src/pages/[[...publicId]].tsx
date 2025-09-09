@@ -1,15 +1,3 @@
-import type { IncomingMessage } from "http";
-import { ErrorPage } from "@/components/ErrorPage";
-import { NotFoundPage } from "@/components/NotFoundPage";
-import { RootPage } from "@/components/RootPage";
-import {
-  type TypebotPageProps,
-  TypebotPageV2,
-} from "@/components/TypebotPageV2";
-import {
-  TypebotPageV3,
-  type TypebotV3PageProps,
-} from "@/components/TypebotPageV3";
 import { env } from "@typebot.io/env";
 import { isNotDefined } from "@typebot.io/lib/utils";
 import prisma from "@typebot.io/prisma";
@@ -22,7 +10,19 @@ import {
 } from "@typebot.io/theme/constants";
 import { themeSchema } from "@typebot.io/theme/schemas";
 import type { PublicTypebot } from "@typebot.io/typebot/schemas/publicTypebot";
+import type { IncomingMessage } from "http";
 import type { GetServerSideProps, GetServerSidePropsContext } from "next";
+import { ErrorPage } from "@/components/ErrorPage";
+import { NotFoundPage } from "@/components/NotFoundPage";
+import { RootPage } from "@/components/RootPage";
+import {
+  type TypebotPageProps,
+  TypebotPageV2,
+} from "@/components/TypebotPageV2";
+import {
+  TypebotPageV3,
+  type TypebotV3PageProps,
+} from "@/components/TypebotPageV3";
 
 // Browsers that doesn't support ES modules and/or web components
 const incompatibleBrowsers = [

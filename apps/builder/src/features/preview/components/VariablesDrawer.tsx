@@ -1,15 +1,11 @@
-import { MoreHorizontalIcon, PlusIcon } from "@/components/icons";
-import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
-import { useOpenControls } from "@/hooks/useOpenControls";
-import { toast } from "@/lib/toast";
 import {
   Editable,
   EditableInput,
   EditablePreview,
   Fade,
   Flex,
-  HStack,
   Heading,
+  HStack,
   Input,
   SlideFade,
   Stack,
@@ -29,6 +25,10 @@ import { TrashIcon } from "@typebot.io/ui/icons/TrashIcon";
 import type { Variable } from "@typebot.io/variables/schemas";
 import { useDrag } from "@use-gesture/react";
 import { type FormEvent, useState } from "react";
+import { MoreHorizontalIcon, PlusIcon } from "@/components/icons";
+import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
+import { useOpenControls } from "@/hooks/useOpenControls";
+import { toast } from "@/lib/toast";
 import { headerHeight } from "../../editor/constants";
 import { useTypebot } from "../../editor/providers/TypebotProvider";
 import { ResizeHandle } from "./ResizeHandle";

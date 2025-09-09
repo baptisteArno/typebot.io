@@ -1,8 +1,8 @@
-import { getTestAsset } from "@/test/utils/playwright";
 import test, { expect } from "@playwright/test";
 import { env } from "@typebot.io/env";
 import { importTypebotInDatabase } from "@typebot.io/playwright/databaseActions";
 import type { Prisma } from "@typebot.io/prisma/types";
+import { getTestAsset } from "@/test/utils/playwright";
 
 let publicTypebot1: Prisma.PublicTypebot;
 let publicTypebot2: Prisma.PublicTypebot;

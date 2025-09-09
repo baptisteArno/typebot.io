@@ -1,3 +1,15 @@
+import { EnvironmentProvider } from "@ark-ui/solid";
+import { isDefined, isNotDefined } from "@typebot.io/lib/utils";
+import typebotColors from "@typebot.io/ui/colors.css";
+import { zendeskWebWidgetOpenedMessage } from "@typebot.io/zendesk-block/constants";
+import {
+  createEffect,
+  createSignal,
+  onCleanup,
+  onMount,
+  Show,
+  splitProps,
+} from "solid-js";
 import { Bot, type BotProps } from "@/components/Bot";
 import { getPaymentInProgressInStorage } from "@/features/blocks/inputs/payment/helpers/paymentInProgressStorage";
 import { chatwootWebWidgetOpenedMessage } from "@/features/blocks/integrations/chatwoot/constants";
@@ -7,18 +19,6 @@ import {
   setBotOpenedStateInStorage,
   wipeExistingChatStateInStorage,
 } from "@/utils/storage";
-import { EnvironmentProvider } from "@ark-ui/solid";
-import { isDefined, isNotDefined } from "@typebot.io/lib/utils";
-import typebotColors from "@typebot.io/ui/colors.css";
-import { zendeskWebWidgetOpenedMessage } from "@typebot.io/zendesk-block/constants";
-import {
-  Show,
-  createEffect,
-  createSignal,
-  onCleanup,
-  onMount,
-  splitProps,
-} from "solid-js";
 import styles from "../../../assets/index.css";
 import type { CommandData } from "../../commands/types";
 import type { PopupParams } from "../types";

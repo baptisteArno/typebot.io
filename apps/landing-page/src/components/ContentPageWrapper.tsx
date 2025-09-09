@@ -3,7 +3,10 @@ import { cn } from "@typebot.io/ui/lib/cn";
 export const ContentPageWrapper = ({
   children,
   className,
-}: { children: React.ReactNode; className?: string }) => {
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) => {
   return (
     <section
       className={cn(

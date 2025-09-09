@@ -1,10 +1,10 @@
-import { isCloudProdInstance } from "@/helpers/isCloudProdInstance";
 import { env } from "@typebot.io/env";
 import type { BotProps } from "@typebot.io/js";
 import { isDefined } from "@typebot.io/lib/utils";
 import type { Typebot } from "@typebot.io/typebot/schemas/typebot";
 import parserBabel from "prettier/parser-babel";
 import prettier from "prettier/standalone";
+import { isCloudProdInstance } from "@/helpers/isCloudProdInstance";
 import packageJson from "../../../../../../../../packages/embeds/js/package.json";
 
 export const parseStringParam = (

@@ -1,5 +1,5 @@
-import { join } from "path";
 import { isEmpty } from "@typebot.io/lib/utils";
+import { join } from "path";
 import prompts from "prompts";
 
 export const promptAndSetEnvironment = async (

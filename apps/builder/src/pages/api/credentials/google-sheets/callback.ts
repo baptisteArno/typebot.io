@@ -1,4 +1,3 @@
-import { getAuthenticatedUser } from "@/features/auth/helpers/getAuthenticatedUser";
 import { encrypt } from "@typebot.io/credentials/encrypt";
 import { env } from "@typebot.io/env";
 import { parseGroups } from "@typebot.io/groups/helpers/parseGroups";
@@ -7,6 +6,7 @@ import prisma from "@typebot.io/prisma";
 import type { Prisma } from "@typebot.io/prisma/types";
 import { OAuth2Client } from "google-auth-library";
 import type { NextApiRequest, NextApiResponse } from "next";
+import { getAuthenticatedUser } from "@/features/auth/helpers/getAuthenticatedUser";
 import { googleSheetsScopes } from "./consent-url";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {

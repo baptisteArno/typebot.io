@@ -1,8 +1,8 @@
-import { CodeEditor } from "@/components/inputs/CodeEditor";
-import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { Stack, Text } from "@chakra-ui/react";
 import type { BubbleProps } from "@typebot.io/js";
 import { useState } from "react";
+import { CodeEditor } from "@/components/inputs/CodeEditor";
+import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { BubbleSettings } from "../../../settings/BubbleSettings/BubbleSettings";
 import { parseInitBubbleCode } from "../../../snippetParsers/bubble";
 import {

@@ -1,9 +1,9 @@
-import { publicProcedure } from "@/helpers/server/trpc";
 import { startChatPreview as startChatPreviewFn } from "@typebot.io/bot-engine/apiHandlers/startChatPreview";
 import {
   startPreviewChatInputSchema,
   startPreviewChatResponseSchema,
 } from "@typebot.io/chat-api/schemas";
+import { publicProcedure } from "@/helpers/server/trpc";
 
 export const startChatPreview = publicProcedure
   .meta({

@@ -1,7 +1,6 @@
-import { ExternalLinkIcon } from "@/components/icons";
-import { HStack, type TextProps, chakra } from "@chakra-ui/react";
+import { chakra, HStack, type TextProps } from "@chakra-ui/react";
 import Link, { type LinkProps } from "next/link";
-import React from "react";
+import { ExternalLinkIcon } from "@/components/icons";
 
 type TextLinkProps = LinkProps & TextProps & { isExternal?: boolean };
 

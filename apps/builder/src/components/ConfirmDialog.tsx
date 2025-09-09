@@ -30,7 +30,7 @@ export const ConfirmDialog = ({
     setConfirmLoading(true);
     try {
       await onConfirm();
-    } catch (e) {
+    } catch (_e) {
       setConfirmLoading(false);
       return setConfirmLoading(false);
     }

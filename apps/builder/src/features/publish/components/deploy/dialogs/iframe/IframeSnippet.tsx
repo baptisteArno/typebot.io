@@ -1,9 +1,9 @@
-import { CodeEditor } from "@/components/inputs/CodeEditor";
-import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import type { FlexProps } from "@chakra-ui/react";
 import { env } from "@typebot.io/env";
 import parserHtml from "prettier/parser-html";
 import prettier from "prettier/standalone";
+import { CodeEditor } from "@/components/inputs/CodeEditor";
+import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 
 type Props = {
   widthLabel: string;

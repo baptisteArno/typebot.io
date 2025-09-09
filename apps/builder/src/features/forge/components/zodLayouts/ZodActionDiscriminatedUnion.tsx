@@ -1,9 +1,9 @@
-import { BasicSelect } from "@/components/inputs/BasicSelect";
 import type { ForgedBlockDefinition } from "@typebot.io/forge-repository/definitions";
 import type { ForgedBlock } from "@typebot.io/forge-repository/schemas";
 import { isDefined } from "@typebot.io/lib/utils";
 import type { z } from "@typebot.io/zod";
 import { useMemo } from "react";
+import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { ZodObjectLayout } from "./ZodObjectLayout";
 
 type Props = {
@@ -27,8 +27,7 @@ export const ZodActionDiscriminatedUnion = ({
     if (!currentOptions) return [];
     return Object.keys(currentOptions.shape).slice(
       0,
-      Object.keys(currentOptions.shape).findIndex((key) => key === "action") +
-        1,
+      Object.keys(currentOptions.shape).indexOf("action") + 1,
     );
   }, [currentOptions]);
   return (

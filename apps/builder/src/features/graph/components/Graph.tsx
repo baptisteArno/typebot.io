@@ -1,14 +1,3 @@
-import { Portal } from "@/components/Portal";
-import { FileCurlyIcon, MinusIcon, PlusIcon } from "@/components/icons";
-import type {
-  EdgeWithTotalVisits,
-  TotalAnswers,
-} from "@/features/analytics/schemas";
-import { BoardMenuButton } from "@/features/editor/components/BoardMenuButton";
-import { headerHeight } from "@/features/editor/constants";
-import { useTypebot } from "@/features/editor/providers/TypebotProvider";
-import { useUser } from "@/features/user/hooks/useUser";
-import { useRightPanel } from "@/hooks/useRightPanel";
 import { Flex, type FlexProps, useEventListener } from "@chakra-ui/react";
 import { createId } from "@paralleldrive/cuid2";
 import { shouldOpenBlockSettingsOnCreation } from "@typebot.io/blocks-core/helpers";
@@ -23,6 +12,16 @@ import type React from "react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useDebounce } from "use-debounce";
 import { useShallow } from "zustand/react/shallow";
+import { FileCurlyIcon, MinusIcon, PlusIcon } from "@/components/icons";
+import type {
+  EdgeWithTotalVisits,
+  TotalAnswers,
+} from "@/features/analytics/schemas";
+import { BoardMenuButton } from "@/features/editor/components/BoardMenuButton";
+import { headerHeight } from "@/features/editor/constants";
+import { useTypebot } from "@/features/editor/providers/TypebotProvider";
+import { useUser } from "@/features/user/hooks/useUser";
+import { useRightPanel } from "@/hooks/useRightPanel";
 import { graphPositionDefaultValue } from "../constants";
 import { computeSelectBoxDimensions } from "../helpers/computeSelectBoxDimensions";
 import { isSelectBoxIntersectingWithElement } from "../helpers/isSelectBoxIntersectingWithElement";

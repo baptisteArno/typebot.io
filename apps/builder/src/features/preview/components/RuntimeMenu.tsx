@@ -1,6 +1,6 @@
-import { ChevronDownIcon } from "@/components/icons";
 import { HStack, Tag, Text } from "@chakra-ui/react";
 import { Menu } from "@typebot.io/ui/components/Menu";
+import { ChevronDownIcon } from "@/components/icons";
 import { runtimes } from "../data";
 
 type Runtime = (typeof runtimes)[number];

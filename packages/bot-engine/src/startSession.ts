@@ -558,7 +558,9 @@ const extractVariableIdsUsedForTranscript = (
             sessionStore,
           },
         );
-        parsedVariableIds.forEach((variableId) => variableIds.add(variableId));
+        parsedVariableIds.forEach((variableId) => {
+          variableIds.add(variableId);
+        });
       }
       if (
         block.type === BubbleBlockType.IMAGE ||
@@ -570,14 +572,14 @@ const extractVariableIdsUsedForTranscript = (
           ...parseVarParams,
           sessionStore,
         });
-        variablesInfo.forEach((variableInfo) =>
+        variablesInfo.forEach((variableInfo) => {
           variableInfo.variableId
             ? variableIds.add(variableInfo.variableId ?? "")
-            : undefined,
-        );
+            : undefined;
+        });
       }
       if (block.type === LogicBlockType.CONDITION) {
-        block.items.forEach((item) =>
+        block.items.forEach((item) => {
           item.content?.comparisons?.forEach((comparison) => {
             if (comparison.variableId) variableIds.add(comparison.variableId);
             if (comparison.value) {
@@ -594,8 +596,8 @@ const extractVariableIdsUsedForTranscript = (
                   : undefined;
               });
             }
-          }),
-        );
+          });
+        });
       }
     });
   });

@@ -1,6 +1,8 @@
 export const DefaultAvatar = ({
   backgroundColor,
-}: { backgroundColor: string }) => (
+}: {
+  backgroundColor: string;
+}) => (
   <svg
     viewBox="0 0 156 156"
     class="size-6 @xs:size-10"

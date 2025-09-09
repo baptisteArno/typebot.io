@@ -1,17 +1,17 @@
+import { Stack } from "@chakra-ui/react";
+import { useTranslate } from "@tolgee/react";
+import { omit } from "@typebot.io/lib/utils";
+import { Button } from "@typebot.io/ui/components/Button";
+import { useRouter } from "next/router";
+import { type getProviders, signIn, useSession } from "next-auth/react";
+import { stringify } from "qs";
+import { useState } from "react";
 import { GoogleLogo } from "@/components/GoogleLogo";
 import { GithubIcon } from "@/components/icons";
 import { AzureAdLogo } from "@/components/logos/AzureAdLogo";
 import { FacebookLogo } from "@/components/logos/FacebookLogo";
 import { GitlabLogo } from "@/components/logos/GitlabLogo";
 import { KeycloackLogo } from "@/components/logos/KeycloakLogo";
-import { Stack } from "@chakra-ui/react";
-import { useTranslate } from "@tolgee/react";
-import { omit } from "@typebot.io/lib/utils";
-import { Button } from "@typebot.io/ui/components/Button";
-import { type getProviders, signIn, useSession } from "next-auth/react";
-import { useRouter } from "next/router";
-import { stringify } from "qs";
-import React, { useState } from "react";
 
 type Props = {
   providers: Awaited<ReturnType<typeof getProviders>> | undefined;

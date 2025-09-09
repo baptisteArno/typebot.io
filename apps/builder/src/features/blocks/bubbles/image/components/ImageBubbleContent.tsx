@@ -1,9 +1,9 @@
-import { useTypebot } from "@/features/editor/providers/TypebotProvider";
-import { VariableTag } from "@/features/graph/components/nodes/block/VariableTag";
 import { Box, Image, Text } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import type { ImageBubbleBlock } from "@typebot.io/blocks-bubbles/image/schema";
 import { findUniqueVariable } from "@typebot.io/variables/findUniqueVariable";
+import { useTypebot } from "@/features/editor/providers/TypebotProvider";
+import { VariableTag } from "@/features/graph/components/nodes/block/VariableTag";
 
 type Props = {
   block: ImageBubbleBlock;

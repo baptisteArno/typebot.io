@@ -1,15 +1,15 @@
-import { Seo } from "@/components/Seo";
-import { toast } from "@/lib/toast";
 import {
   Heading,
   Stack,
   Tag,
   Text,
-  VStack,
   useColorModeValue,
+  VStack,
 } from "@chakra-ui/react";
 import { Button } from "@typebot.io/ui/components/Button";
 import { useQueryState } from "nuqs";
+import { Seo } from "@/components/Seo";
+import { toast } from "@/lib/toast";
 import { createEmailMagicLink } from "../helpers/createEmailMagicLink";
 
 export const EmailRedirectPage = () => {

@@ -21,7 +21,7 @@ export const transformVariablesToList =
                 },
               ];
           }
-        } catch (error) {
+        } catch (_error) {
           // Not an stringified array, skipping...
         }
         return [

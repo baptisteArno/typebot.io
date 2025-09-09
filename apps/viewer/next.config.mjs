@@ -1,8 +1,8 @@
-import { dirname, join } from "path";
 import { withSentryConfig } from "@sentry/nextjs";
+import { dirname, join } from "path";
 import "@typebot.io/env/compiled";
-import { fileURLToPath } from "url";
 import { configureRuntimeEnv } from "next-runtime-env/build/configure.js";
+import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
 

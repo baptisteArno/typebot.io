@@ -1,10 +1,10 @@
-import { AlertInfo } from "@/components/AlertInfo";
-import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { HStack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
 import { cx } from "@typebot.io/ui/lib/cva";
+import { AlertInfo } from "@/components/AlertInfo";
+import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { ChangePlanForm } from "./ChangePlanForm";
 
 export type ChangePlanDialogProps = {

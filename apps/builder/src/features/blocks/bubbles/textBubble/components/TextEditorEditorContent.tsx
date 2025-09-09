@@ -1,7 +1,3 @@
-import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
-import { useOpenControls } from "@/hooks/useOpenControls";
-import { useOutsideClick } from "@/hooks/useOutsideClick";
-import { editorStyle } from "@/lib/plate";
 import { Stack, useColorModeValue } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { colors } from "@typebot.io/ui/chakraTheme";
@@ -10,6 +6,10 @@ import type { Variable } from "@typebot.io/variables/schemas";
 import { focusEditor, insertText, selectEditor } from "@udecode/plate-common";
 import { PlateContent, useEditorRef } from "@udecode/plate-core";
 import { useRef, useState } from "react";
+import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
+import { useOpenControls } from "@/hooks/useOpenControls";
+import { useOutsideClick } from "@/hooks/useOutsideClick";
+import { editorStyle } from "@/lib/plate";
 import { TextEditorToolBar } from "./TextEditorToolBar";
 
 type Props = {

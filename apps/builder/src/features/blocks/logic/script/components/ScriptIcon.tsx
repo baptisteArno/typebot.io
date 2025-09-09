@@ -1,6 +1,5 @@
-import { svgBaseClassName } from "@/components/icons";
 import { cn } from "@typebot.io/ui/lib/cn";
-import React from "react";
+import { svgBaseClassName } from "@/components/icons";
 
 export const ScriptIcon = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 24 24" className={cn(svgBaseClassName, className)}>

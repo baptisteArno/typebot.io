@@ -7,7 +7,6 @@ import {
   proWorkspaceId,
   starterWorkspaceId,
 } from "@typebot.io/playwright/databaseSetup";
-import { mockWorkspaceResponse } from "@typebot.io/playwright/testHelpers";
 
 const proTypebotId = createId();
 const starterTypebotId = createId();

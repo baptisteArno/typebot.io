@@ -1,8 +1,7 @@
-import { WithVariableContent } from "@/features/graph/components/nodes/block/WithVariableContent";
 import { Text } from "@chakra-ui/react";
 import { defaultPhoneInputOptions } from "@typebot.io/blocks-inputs/phone/constants";
 import type { PhoneNumberInputBlock } from "@typebot.io/blocks-inputs/phone/schema";
-import React from "react";
+import { WithVariableContent } from "@/features/graph/components/nodes/block/WithVariableContent";
 
 type Props = {
   options: PhoneNumberInputBlock["options"];

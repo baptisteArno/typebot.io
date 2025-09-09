@@ -1,10 +1,9 @@
+import { isDefined, isNotDefined } from "@typebot.io/lib/utils";
 import prisma from "@typebot.io/prisma";
+import type { Result } from "@typebot.io/results/schemas/results";
 import { promptAndSetEnvironment } from "./utils";
 
-import { isDefined, isNotDefined } from "@typebot.io/lib/utils";
-import type { Result } from "@typebot.io/results/schemas/results";
-
-const progress = 0;
+const _progress = 0;
 
 const bulkUpdate = async () => {
   await promptAndSetEnvironment();
@@ -39,7 +38,7 @@ const bulkUpdate = async () => {
     })
     .filter(isDefined);
 
-  const total = queries.length;
+  const _total = queries.length;
 
   await prisma.$transaction(queries);
 };

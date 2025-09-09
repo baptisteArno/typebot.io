@@ -1,12 +1,10 @@
-import { Card } from "@/components/Card";
-import { IconButton } from "@/components/IconButton";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
 import { Input } from "@typebot.io/ui/components/Input";
 import { Select } from "@typebot.io/ui/components/Select";
-import { CloseIcon } from "@typebot.io/ui/icons/CloseIcon";
 import { cx } from "@typebot.io/ui/lib/cva";
 import { useState } from "react";
+import { Card } from "@/components/Card";
 
 // Types for our form elements
 interface FormElement {

@@ -1,8 +1,7 @@
-import { BlockSourceEndpoint } from "@/features/graph/components/endpoints/BlockSourceEndpoint";
 import { Flex, Stack, Tag, Text, useColorModeValue } from "@chakra-ui/react";
 import { defaultAbTestOptions } from "@typebot.io/blocks-logic/abTest/constants";
 import type { AbTestBlock } from "@typebot.io/blocks-logic/abTest/schema";
-import React from "react";
+import { BlockSourceEndpoint } from "@/features/graph/components/endpoints/BlockSourceEndpoint";
 
 type Props = {
   block: AbTestBlock;

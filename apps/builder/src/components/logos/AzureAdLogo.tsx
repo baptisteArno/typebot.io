@@ -3,20 +3,17 @@ import { Icon, type IconProps } from "@chakra-ui/react";
 export const AzureAdLogo = (props: IconProps) => {
   return (
     <Icon
-      id="svg1035"
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 374.5 377.3"
       {...props}
     >
-      <g id="layer1" transform="translate(-39.022 -78.115)">
-        <g id="g1016" transform="translate(-63.947 -88.179)">
+      <g transform="translate(-39.022 -78.115)">
+        <g transform="translate(-63.947 -88.179)">
           <path
-            id="path1008"
             fill="#00bef2"
             d="M290 166.3c.4 0 .8.5 1.4 1.4.5.8 42.6 51.3 93.6 112.2 51 60.9 92.6 111 92.4 111.3-.1.3-40.7 33.6-90.2 73.9s-91.6 74.6-93.5 76.2c-3.3 2.7-3.5 2.8-4.7 1.6-.7-.7-42.9-35.2-93.8-76.7S102.8 390.5 103 390c.2-.5 42-50.4 93.1-111s92.9-110.7 93.1-111.5c.2-.8.5-1.2.8-1.2z"
           />
           <path
-            id="path923"
             fill="#fff"
             stroke="#fff"
             strokeWidth="1.2357"

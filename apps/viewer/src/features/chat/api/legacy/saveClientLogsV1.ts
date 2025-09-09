@@ -1,8 +1,8 @@
-import { publicProcedure } from "@/helpers/server/trpc";
 import { saveClientLogs as saveClientLogsFn } from "@typebot.io/bot-engine/apiHandlers/saveClientLogs";
 import { safeStringify } from "@typebot.io/lib/safeStringify";
 import { logInSessionSchema } from "@typebot.io/logs/schemas";
 import { z } from "@typebot.io/zod";
+import { publicProcedure } from "@/helpers/server/trpc";
 
 export const saveClientLogsV1 = publicProcedure
   .meta({

@@ -1,10 +1,10 @@
-import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { Code, ListItem, OrderedList, Stack, Text } from "@chakra-ui/react";
 import type { BubbleProps } from "@typebot.io/js";
 import { useState } from "react";
+import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { BubbleSettings } from "../../../settings/BubbleSettings/BubbleSettings";
-import { JavascriptBubbleSnippet } from "../../javascript/JavascriptBubbleSnippet";
 import { getInitialBubbleTheme } from "../../javascript/instructions/JavascriptBubbleInstructions";
+import { JavascriptBubbleSnippet } from "../../javascript/JavascriptBubbleSnippet";
 
 export const ShopifyBubbleInstructions = () => {
   const { typebot } = useTypebot();

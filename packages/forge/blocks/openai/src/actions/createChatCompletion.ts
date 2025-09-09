@@ -7,8 +7,7 @@ import { runChatCompletionStream } from "@typebot.io/ai/runChatCompletionStream"
 import { createAction } from "@typebot.io/forge";
 import { auth } from "../auth";
 import { baseOptions } from "../baseOptions";
-import { reasoningModels } from "../constants";
-import { chatModels } from "../constants";
+import { chatModels, reasoningModels } from "../constants";
 import { isModelCompatibleWithVision } from "../helpers/isModelCompatibleWithVision";
 
 export const createChatCompletion = createAction({

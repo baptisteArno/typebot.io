@@ -1,5 +1,3 @@
-import { parseVariables } from "@/features/variables";
-import type { EdgeId, LogicState } from "@/types";
 import type { ConditionBlock } from "@typebot.io/blocks-logic/condition/schema";
 import {
   ComparisonOperators,
@@ -8,6 +6,8 @@ import {
 import type { Comparison } from "@typebot.io/conditions/schemas";
 import { isDefined, isNotDefined } from "@typebot.io/lib/utils";
 import type { Variable } from "@typebot.io/variables/schemas";
+import { parseVariables } from "@/features/variables";
+import type { EdgeId, LogicState } from "@/types";
 
 export const executeCondition = (
   block: ConditionBlock,

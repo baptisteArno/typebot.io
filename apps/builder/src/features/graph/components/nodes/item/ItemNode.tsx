@@ -1,12 +1,3 @@
-import { ConditionContent } from "@/features/blocks/logic/condition/components/ConditionContent";
-import { useTypebot } from "@/features/editor/providers/TypebotProvider";
-import {
-  type DraggableItem,
-  type NodePosition,
-  useDragDistance,
-} from "@/features/graph/providers/GraphDndProvider";
-import { useGraph } from "@/features/graph/providers/GraphProvider";
-import type { Coordinates } from "@/features/graph/types";
 import { Flex, Stack, useColorModeValue } from "@chakra-ui/react";
 import type {
   Item,
@@ -18,7 +9,16 @@ import { LogicBlockType } from "@typebot.io/blocks-logic/constants";
 import { isDefined } from "@typebot.io/lib/utils";
 import { ContextMenu } from "@typebot.io/ui/components/ContextMenu";
 import { useRouter } from "next/router";
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
+import { ConditionContent } from "@/features/blocks/logic/condition/components/ConditionContent";
+import { useTypebot } from "@/features/editor/providers/TypebotProvider";
+import {
+  type DraggableItem,
+  type NodePosition,
+  useDragDistance,
+} from "@/features/graph/providers/GraphDndProvider";
+import { useGraph } from "@/features/graph/providers/GraphProvider";
+import type { Coordinates } from "@/features/graph/types";
 import { BlockSourceEndpoint } from "../../endpoints/BlockSourceEndpoint";
 import { ItemNodeContent } from "./ItemNodeContent";
 import { ItemNodeContextMenuPopup } from "./ItemNodeContextMenuPopup";

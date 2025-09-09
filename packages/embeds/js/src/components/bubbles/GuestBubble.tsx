@@ -1,9 +1,3 @@
-import { FilePreview } from "@/features/blocks/inputs/fileUpload/components/FilePreview";
-import type {
-  InputSubmitContent,
-  RecordingInputSubmitContent,
-  TextInputSubmitContent,
-} from "@/types";
 import { isNotEmpty } from "@typebot.io/lib/utils";
 import {
   defaultGuestAvatarIsEnabled,
@@ -12,9 +6,15 @@ import {
 import { isChatContainerLight } from "@typebot.io/theme/helpers/isChatContainerLight";
 import type { Theme } from "@typebot.io/theme/schemas";
 import { cx } from "@typebot.io/ui/lib/cva";
-import { For, Match, Show, Switch, createSignal } from "solid-js";
-import { Modal } from "../Modal";
+import { createSignal, For, Match, Show, Switch } from "solid-js";
+import { FilePreview } from "@/features/blocks/inputs/fileUpload/components/FilePreview";
+import type {
+  InputSubmitContent,
+  RecordingInputSubmitContent,
+  TextInputSubmitContent,
+} from "@/types";
 import { Avatar } from "../avatars/Avatar";
+import { Modal } from "../Modal";
 
 type Props = {
   answer?: InputSubmitContent;

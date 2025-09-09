@@ -1,3 +1,13 @@
+import { Flex, SlideFade, Stack, useEventListener } from "@chakra-ui/react";
+import type { BlockWithOptions } from "@typebot.io/blocks-core/schemas/schema";
+import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
+import { IntegrationBlockType } from "@typebot.io/blocks-integrations/constants";
+import { LogicBlockType } from "@typebot.io/blocks-logic/constants";
+import { EventType } from "@typebot.io/events/constants";
+import type { TEventWithOptions } from "@typebot.io/events/schemas";
+import { Popover } from "@typebot.io/ui/components/Popover";
+import { cn } from "@typebot.io/ui/lib/cn";
+import { useRef, useState } from "react";
 import { ButtonsBlockSettings } from "@/features/blocks/inputs/buttons/components/ButtonsBlockSettings";
 import { CardsBlockSettings } from "@/features/blocks/inputs/cards/components/CardsBlockSettings";
 import { DateInputSettings } from "@/features/blocks/inputs/date/components/DateInputSettings";
@@ -35,16 +45,6 @@ import { ReplyEventSettings } from "@/features/events/components/ReplyEventSetti
 import { useForgedBlock } from "@/features/forge/hooks/useForgedBlock";
 import { VideoOnboardingPopover } from "@/features/onboarding/components/VideoOnboardingPopover";
 import { hasOnboardingVideo } from "@/features/onboarding/helpers/hasOnboardingVideo";
-import { Flex, SlideFade, Stack, useEventListener } from "@chakra-ui/react";
-import type { BlockWithOptions } from "@typebot.io/blocks-core/schemas/schema";
-import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
-import { IntegrationBlockType } from "@typebot.io/blocks-integrations/constants";
-import { LogicBlockType } from "@typebot.io/blocks-logic/constants";
-import { EventType } from "@typebot.io/events/constants";
-import type { TEventWithOptions } from "@typebot.io/events/schemas";
-import { Popover } from "@typebot.io/ui/components/Popover";
-import { cn } from "@typebot.io/ui/lib/cn";
-import { useRef, useState } from "react";
 import { ForgedBlockSettings } from "../../../../forge/components/ForgedBlockSettings";
 import { SettingsHoverBar } from "./SettingsHoverBar";
 

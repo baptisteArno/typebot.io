@@ -1,11 +1,10 @@
-import { TableList } from "@/components/TableList";
-import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { Flex } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { defaultConditionItemContent } from "@typebot.io/blocks-logic/condition/constants";
 import { LogicalOperator } from "@typebot.io/conditions/constants";
 import type { Comparison, Condition } from "@typebot.io/conditions/schemas";
-import React from "react";
+import { BasicSelect } from "@/components/inputs/BasicSelect";
+import { TableList } from "@/components/TableList";
 import { ComparisonItem } from "./ComparisonItem";
 
 type Props = {

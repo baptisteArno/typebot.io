@@ -1,5 +1,5 @@
-import { writeFileSync } from "fs";
 import prisma from "@typebot.io/prisma";
+import { writeFileSync } from "fs";
 import Stripe from "stripe";
 import { promptAndSetEnvironment } from "./utils";
 

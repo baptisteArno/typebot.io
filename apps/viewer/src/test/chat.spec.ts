@@ -1,4 +1,3 @@
-import { getTestAsset } from "@/test/utils/playwright";
 import { createId } from "@paralleldrive/cuid2";
 import test, { expect } from "@playwright/test";
 import type {
@@ -7,6 +6,7 @@ import type {
 } from "@typebot.io/chat-api/schemas";
 import { importTypebotInDatabase } from "@typebot.io/playwright/databaseActions";
 import prisma from "@typebot.io/prisma";
+import { getTestAsset } from "@/test/utils/playwright";
 
 test.describe.configure({ mode: "parallel" });
 

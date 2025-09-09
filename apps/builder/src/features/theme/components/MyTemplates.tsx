@@ -1,12 +1,12 @@
-import { SaveIcon } from "@/components/icons";
-import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { trpc } from "@/lib/queryClient";
 import { SimpleGrid, Stack, useDisclosure } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
 import type { ThemeTemplate } from "@typebot.io/theme/schemas";
 import type { TypebotV6 } from "@typebot.io/typebot/schemas/typebot";
 import { Button } from "@typebot.io/ui/components/Button";
+import { SaveIcon } from "@/components/icons";
+import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
+import { trpc } from "@/lib/queryClient";
 import { areThemesEqual } from "../helpers/areThemesEqual";
 import { SaveThemeDialog } from "./SaveThemeDialog";
 import { ThemeTemplateCard } from "./ThemeTemplateCard";

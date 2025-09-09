@@ -1,9 +1,9 @@
-import type { TableListItemProps } from "@/components/TableList";
-import { BasicSelect } from "@/components/inputs/BasicSelect";
-import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
 import { Stack } from "@chakra-ui/react";
 import type { ExtractingCell } from "@typebot.io/blocks-integrations/googleSheets/schema";
 import type { Variable } from "@typebot.io/variables/schemas";
+import { BasicSelect } from "@/components/inputs/BasicSelect";
+import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
+import type { TableListItemProps } from "@/components/TableList";
 
 export const CellWithVariableIdStack = ({
   item,

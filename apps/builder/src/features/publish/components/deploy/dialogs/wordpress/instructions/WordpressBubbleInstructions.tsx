@@ -1,10 +1,10 @@
-import { TextLink } from "@/components/TextLink";
-import { CodeEditor } from "@/components/inputs/CodeEditor";
-import { useTypebot } from "@/features/editor/providers/TypebotProvider";
-import { isCloudProdInstance } from "@/helpers/isCloudProdInstance";
 import { Code, ListItem, OrderedList, Stack, Text } from "@chakra-ui/react";
 import type { BubbleProps } from "@typebot.io/js";
 import { useState } from "react";
+import { CodeEditor } from "@/components/inputs/CodeEditor";
+import { TextLink } from "@/components/TextLink";
+import { useTypebot } from "@/features/editor/providers/TypebotProvider";
+import { isCloudProdInstance } from "@/helpers/isCloudProdInstance";
 import packageJson from "../../../../../../../../../../packages/embeds/js/package.json";
 import { BubbleSettings } from "../../../settings/BubbleSettings/BubbleSettings";
 import { parseInitBubbleCode } from "../../../snippetParsers/bubble";

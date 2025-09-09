@@ -1,6 +1,6 @@
-import { writeFileSync } from "fs";
 import { createId } from "@paralleldrive/cuid2";
 import prisma from "@typebot.io/prisma";
+import { writeFileSync } from "fs";
 import { Stripe } from "stripe";
 import { promptAndSetEnvironment } from "./utils";
 

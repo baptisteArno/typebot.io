@@ -1,19 +1,19 @@
-import { MoreInfoTooltip } from "@/components/MoreInfoTooltip";
-import { Portal } from "@/components/Portal";
-import {
-  type Item,
-  getItemLabel,
-  getItemValue,
-} from "@/components/collections";
-import { Combobox } from "@/components/combobox";
-import { Field } from "@/components/field";
-import { VariablesButton } from "@/features/variables/components/VariablesButton";
-import { useDebounce } from "@/hooks/useDebounce";
-import { useInjectableInputValue } from "@/hooks/useInjectableInputValue";
 import type { ForgedBlockDefinition } from "@typebot.io/forge-repository/definitions";
 import type { ForgedBlock } from "@typebot.io/forge-repository/schemas";
 import { cx } from "@typebot.io/ui/lib/cva";
 import { type ReactNode, useEffect, useRef } from "react";
+import {
+  getItemLabel,
+  getItemValue,
+  type Item,
+} from "@/components/collections";
+import { Combobox } from "@/components/combobox";
+import { Field } from "@/components/field";
+import { MoreInfoTooltip } from "@/components/MoreInfoTooltip";
+import { Portal } from "@/components/Portal";
+import { VariablesButton } from "@/features/variables/components/VariablesButton";
+import { useDebounce } from "@/hooks/useDebounce";
+import { useInjectableInputValue } from "@/hooks/useInjectableInputValue";
 import { useFilteredCollection } from "../hooks/useFilteredCollection";
 import { useSelectItemsQuery } from "../hooks/useSelectItemsQuery";
 

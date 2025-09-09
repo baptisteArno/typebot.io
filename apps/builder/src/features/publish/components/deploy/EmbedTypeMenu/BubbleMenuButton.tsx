@@ -1,6 +1,6 @@
-import { MotionButton } from "@/components/MotionButton";
 import { type StackProps, Text } from "@chakra-ui/react";
 import type { ButtonProps } from "@typebot.io/ui/components/Button";
+import { MotionButton } from "@/components/MotionButton";
 import { BubbleIllustration } from "./illustrations/BubbleIllustration";
 
 type Props = StackProps & Pick<ButtonProps, "disabled">;

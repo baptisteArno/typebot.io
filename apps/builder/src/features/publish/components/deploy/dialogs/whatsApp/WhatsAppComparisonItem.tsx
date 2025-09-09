@@ -1,9 +1,9 @@
-import type { TableListItemProps } from "@/components/TableList";
-import { TextInput } from "@/components/inputs";
-import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { HStack, Text } from "@chakra-ui/react";
 import { ComparisonOperators } from "@typebot.io/conditions/constants";
 import type { WhatsAppComparison } from "@typebot.io/whatsapp/schemas";
+import { TextInput } from "@/components/inputs";
+import { BasicSelect } from "@/components/inputs/BasicSelect";
+import type { TableListItemProps } from "@/components/TableList";
 
 export const WhatsAppComparisonItem = ({
   item,

@@ -1,5 +1,5 @@
 import * as Sentry from "@sentry/nextjs";
-import { TRPCError, initTRPC } from "@trpc/server";
+import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
 import type { OpenApiMeta } from "trpc-to-openapi";
 import { ZodError } from "zod";

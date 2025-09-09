@@ -1,3 +1,13 @@
+import { Alert, AlertIcon, Tag, Text, VStack } from "@chakra-ui/react";
+import { useMutation } from "@tanstack/react-query";
+import { T, useTranslate } from "@tolgee/react";
+import { Button, buttonVariants } from "@typebot.io/ui/components/Button";
+import { Menu } from "@typebot.io/ui/components/Menu";
+import { LayoutBottomIcon } from "@typebot.io/ui/icons/LayoutBottomIcon";
+import { cn } from "@typebot.io/ui/lib/cn";
+import { useRouter } from "next/router";
+import React, { memo } from "react";
+import { useDebounce } from "use-debounce";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
 import { EmojiOrImageIcon } from "@/components/EmojiOrImageIcon";
 import { GripIcon, MoreVerticalIcon } from "@/components/icons";
@@ -10,18 +20,6 @@ import { duplicateName } from "@/features/typebot/helpers/duplicateName";
 import { isMobile } from "@/helpers/isMobile";
 import { useOpenControls } from "@/hooks/useOpenControls";
 import { trpc, trpcClient } from "@/lib/queryClient";
-import { toast } from "@/lib/toast";
-import { Alert, AlertIcon, Tag, Text, VStack } from "@chakra-ui/react";
-import { useMutation } from "@tanstack/react-query";
-import { T, useTranslate } from "@tolgee/react";
-import { Button } from "@typebot.io/ui/components/Button";
-import { buttonVariants } from "@typebot.io/ui/components/Button";
-import { Menu } from "@typebot.io/ui/components/Menu";
-import { LayoutBottomIcon } from "@typebot.io/ui/icons/LayoutBottomIcon";
-import { cn } from "@typebot.io/ui/lib/cn";
-import { useRouter } from "next/router";
-import React, { memo } from "react";
-import { useDebounce } from "use-debounce";
 
 type Props = {
   typebot: TypebotInDashboard;

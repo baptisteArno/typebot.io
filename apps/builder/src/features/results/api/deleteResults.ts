@@ -1,10 +1,10 @@
-import { isWriteTypebotForbidden } from "@/features/typebot/helpers/isWriteTypebotForbidden";
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 import { TRPCError } from "@trpc/server";
 import prisma from "@typebot.io/prisma";
 import { archiveResults } from "@typebot.io/results/archiveResults";
 import type { Typebot } from "@typebot.io/typebot/schemas/typebot";
 import { z } from "@typebot.io/zod";
+import { isWriteTypebotForbidden } from "@/features/typebot/helpers/isWriteTypebotForbidden";
+import { authenticatedProcedure } from "@/helpers/server/trpc";
 
 export const deleteResults = authenticatedProcedure
   .meta({

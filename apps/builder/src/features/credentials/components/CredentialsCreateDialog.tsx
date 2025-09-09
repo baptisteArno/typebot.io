@@ -1,3 +1,6 @@
+import type { Credentials } from "@typebot.io/credentials/schemas";
+import { forgedBlocks } from "@typebot.io/forge-repository/definitions";
+import { Dialog } from "@typebot.io/ui/components/Dialog";
 import { CreateStripeCredentialsDialogBody } from "@/features/blocks/inputs/payment/components/CreateStripeCredentialsDialog";
 import { GoogleSheetConnectDialogBody } from "@/features/blocks/integrations/googleSheets/components/GoogleSheetsConnectDialog";
 import { SmtpCredentialsCreateDialogBody } from "@/features/blocks/integrations/sendEmail/components/SmtpCredentialsCreateDialog";
@@ -5,9 +8,6 @@ import { useFeatureFlagsQuery } from "@/features/featureFlags/useFeatureFlagsQue
 import { ForgedCredentialsCreateDialogBody } from "@/features/forge/components/credentials/ForgedCredentialsCreateDialog";
 import { ForgedOAuthCredentialsCreateDialogBody } from "@/features/forge/components/credentials/ForgedOAuthCredentialsCreateDialog";
 import { WhatsAppCreateDialogBody } from "@/features/publish/components/deploy/dialogs/whatsApp/WhatsAppCredentialsDialog";
-import type { Credentials } from "@typebot.io/credentials/schemas";
-import { forgedBlocks } from "@typebot.io/forge-repository/definitions";
-import { Dialog } from "@typebot.io/ui/components/Dialog";
 
 export const CredentialsCreateDialog = ({
   isOpen,

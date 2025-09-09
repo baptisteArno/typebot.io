@@ -1,7 +1,6 @@
 import { Flex, Stack, Text } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import type { Theme } from "@typebot.io/theme/schemas";
-import React from "react";
 import { ColorPicker } from "../../../../components/ColorPicker";
 
 type Props = {

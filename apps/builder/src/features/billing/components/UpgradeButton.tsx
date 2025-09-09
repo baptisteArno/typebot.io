@@ -1,9 +1,8 @@
-import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { useDisclosure } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { isNotDefined } from "@typebot.io/lib/utils";
 import { Button, type ButtonProps } from "@typebot.io/ui/components/Button";
-import React from "react";
+import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { ChangePlanDialog } from "./ChangePlanDialog";
 
 type Props = {

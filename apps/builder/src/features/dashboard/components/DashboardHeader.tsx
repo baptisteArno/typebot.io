@@ -1,9 +1,3 @@
-import { EmojiOrImageIcon } from "@/components/EmojiOrImageIcon";
-import { HardDriveIcon, SettingsIcon } from "@/components/icons";
-import { useUser } from "@/features/user/hooks/useUser";
-import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { WorkspaceDropdown } from "@/features/workspace/components/WorkspaceDropdown";
-import { WorkspaceSettingsDialog } from "@/features/workspace/components/WorkspaceSettingsDialog";
 import {
   Flex,
   HStack,
@@ -15,7 +9,13 @@ import { isNotDefined } from "@typebot.io/lib/utils";
 import { Button } from "@typebot.io/ui/components/Button";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import { useState } from "react";
+import { EmojiOrImageIcon } from "@/components/EmojiOrImageIcon";
+import { HardDriveIcon, SettingsIcon } from "@/components/icons";
+import { useUser } from "@/features/user/hooks/useUser";
+import { WorkspaceDropdown } from "@/features/workspace/components/WorkspaceDropdown";
+import { WorkspaceSettingsDialog } from "@/features/workspace/components/WorkspaceSettingsDialog";
+import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 
 export const DashboardHeader = () => {
   const { t } = useTranslate();

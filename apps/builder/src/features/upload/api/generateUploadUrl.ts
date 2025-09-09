@@ -1,11 +1,11 @@
-import { isWriteTypebotForbidden } from "@/features/typebot/helpers/isWriteTypebotForbidden";
-import { isWriteWorkspaceForbidden } from "@/features/workspace/helpers/isWriteWorkspaceForbidden";
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 import { TRPCError } from "@trpc/server";
 import { env } from "@typebot.io/env";
 import { generatePresignedPostPolicy } from "@typebot.io/lib/s3/generatePresignedPostPolicy";
 import prisma from "@typebot.io/prisma";
 import { z } from "@typebot.io/zod";
+import { isWriteTypebotForbidden } from "@/features/typebot/helpers/isWriteTypebotForbidden";
+import { isWriteWorkspaceForbidden } from "@/features/workspace/helpers/isWriteWorkspaceForbidden";
+import { authenticatedProcedure } from "@/helpers/server/trpc";
 
 const inputSchema = z.object({
   filePathProps: z

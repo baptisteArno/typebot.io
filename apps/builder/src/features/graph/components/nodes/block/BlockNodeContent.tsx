@@ -1,3 +1,11 @@
+import { BubbleBlockType } from "@typebot.io/blocks-bubbles/constants";
+import type {
+  BlockIndices,
+  BlockV6,
+} from "@typebot.io/blocks-core/schemas/schema";
+import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
+import { IntegrationBlockType } from "@typebot.io/blocks-integrations/constants";
+import { LogicBlockType } from "@typebot.io/blocks-logic/constants";
 import { AudioBubbleNode } from "@/features/blocks/bubbles/audio/components/AudioBubbleNode";
 import { EmbedBubbleContent } from "@/features/blocks/bubbles/embed/components/EmbedBubbleContent";
 import { ImageBubbleContent } from "@/features/blocks/bubbles/image/components/ImageBubbleContent";
@@ -37,14 +45,6 @@ import { TypebotLinkNode } from "@/features/blocks/logic/typebotLink/components/
 import { WaitNodeContent } from "@/features/blocks/logic/wait/components/WaitNodeContent";
 import { WebhookNodeContent } from "@/features/blocks/logic/webhook/components/WebhookNodeContent";
 import { ForgedBlockNodeContent } from "@/features/forge/components/ForgedBlockNodeContent";
-import { BubbleBlockType } from "@typebot.io/blocks-bubbles/constants";
-import type {
-  BlockIndices,
-  BlockV6,
-} from "@typebot.io/blocks-core/schemas/schema";
-import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
-import { IntegrationBlockType } from "@typebot.io/blocks-integrations/constants";
-import { LogicBlockType } from "@typebot.io/blocks-logic/constants";
 
 type Props = {
   block: BlockV6;

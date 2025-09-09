@@ -8,7 +8,6 @@ export const HeartGradientIcon = (props: SVGProps<SVGSVGElement>) => (
     />
     <defs>
       <linearGradient
-        id="gradient"
         x1="12"
         y1="-0.132879"
         x2="-4.12826"

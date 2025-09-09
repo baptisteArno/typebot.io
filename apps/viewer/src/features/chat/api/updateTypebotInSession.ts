@@ -1,6 +1,6 @@
-import { publicProcedure } from "@/helpers/server/trpc";
 import { updateTypebotInSession as updateTypebotInSessionFn } from "@typebot.io/bot-engine/apiHandlers/updateTypebotInSession";
 import { z } from "@typebot.io/zod";
+import { publicProcedure } from "@/helpers/server/trpc";
 
 export const updateTypebotInSession = publicProcedure
   .meta({

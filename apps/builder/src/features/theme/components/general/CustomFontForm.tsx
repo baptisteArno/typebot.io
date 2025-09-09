@@ -1,7 +1,7 @@
-import { TextInput } from "@/components/inputs";
-import { CodeEditor } from "@/components/inputs/CodeEditor";
 import { Stack } from "@chakra-ui/react";
 import type { CustomFont } from "@typebot.io/theme/schemas";
+import { TextInput } from "@/components/inputs";
+import { CodeEditor } from "@/components/inputs/CodeEditor";
 
 type Props = {
   font: CustomFont;

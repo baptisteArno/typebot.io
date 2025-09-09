@@ -1,7 +1,6 @@
 import { Text } from "@chakra-ui/react";
 import { defaultScriptOptions } from "@typebot.io/blocks-logic/script/constants";
 import type { ScriptBlock } from "@typebot.io/blocks-logic/script/schema";
-import React from "react";
 
 type Props = {
   options: ScriptBlock["options"];

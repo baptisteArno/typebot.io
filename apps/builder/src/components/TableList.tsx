@@ -1,9 +1,9 @@
-import { PlusIcon } from "@/components/icons";
 import { Box, Fade, Flex, SlideFade, Stack } from "@chakra-ui/react";
 import { createId } from "@paralleldrive/cuid2";
 import { Button } from "@typebot.io/ui/components/Button";
 import { TrashIcon } from "@typebot.io/ui/icons/TrashIcon";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { PlusIcon } from "@/components/icons";
 
 const defaultItem = {
   id: createId(),

@@ -16,11 +16,10 @@ import redis from "@typebot.io/lib/redis";
 import { uploadFileToBucket } from "@typebot.io/lib/s3/uploadFileToBucket";
 import { isDefined } from "@typebot.io/lib/utils";
 import {
-  type SessionStore,
   deleteSessionStore,
   getSessionStore,
+  type SessionStore,
 } from "@typebot.io/runtime-session-store";
-import { WhatsAppError } from "./WhatsAppError";
 import { downloadMedia } from "./downloadMedia";
 import type {
   WhatsAppIncomingMessage,
@@ -28,6 +27,7 @@ import type {
 } from "./schemas";
 import { sendChatReplyToWhatsApp } from "./sendChatReplyToWhatsApp";
 import { startWhatsAppSession } from "./startWhatsAppSession";
+import { WhatsAppError } from "./WhatsAppError";
 
 const incomingMessageDebounce = 3000;
 

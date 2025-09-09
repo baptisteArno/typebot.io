@@ -1,7 +1,7 @@
-import { CodeEditor } from "@/components/inputs/CodeEditor";
 import { Code, ListItem, OrderedList, Stack, Text } from "@chakra-ui/react";
 import type { Typebot } from "@typebot.io/typebot/schemas/typebot";
 import { useState } from "react";
+import { CodeEditor } from "@/components/inputs/CodeEditor";
 import { StandardSettings } from "../../../settings/StandardSettings";
 import {
   parseStandardElementCode,

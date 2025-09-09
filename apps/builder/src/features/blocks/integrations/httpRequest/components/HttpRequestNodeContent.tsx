@@ -1,7 +1,7 @@
-import { SetVariableLabel } from "@/components/SetVariableLabel";
-import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { Stack, Text } from "@chakra-ui/react";
 import type { HttpRequestBlock } from "@typebot.io/blocks-integrations/httpRequest/schema";
+import { SetVariableLabel } from "@/components/SetVariableLabel";
+import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 
 type Props = {
   block: HttpRequestBlock;

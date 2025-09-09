@@ -1,10 +1,10 @@
-import { TypingBubble } from "@/components/TypingBubble";
-import { parseVariables } from "@/features/variables";
-import { useTypebot } from "@/providers/TypebotProvider";
 import { VideoBubbleContentType } from "@typebot.io/blocks-bubbles/video/constants";
 import type { VideoBubbleBlock } from "@typebot.io/blocks-bubbles/video/schema";
 import type { Variable } from "@typebot.io/variables/schemas";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { TypingBubble } from "@/components/TypingBubble";
+import { parseVariables } from "@/features/variables";
+import { useTypebot } from "@/providers/TypebotProvider";
 
 type Props = {
   block: VideoBubbleBlock;
@@ -50,7 +50,7 @@ export const VideoBubble = ({ block, onTransitionEnd }: Props) => {
               height: isTyping ? "2rem" : "100%",
             }}
           >
-            {isTyping ? <TypingBubble /> : <></>}
+            {isTyping ? <TypingBubble /> : null}
           </div>
           <VideoContent
             content={block.content}
@@ -74,7 +74,7 @@ const VideoContent = ({
 }) => {
   const [url] = useState(parseVariables(variables)(content?.url));
 
-  if (!content?.type) return <></>;
+  if (!content?.type) return null;
 
   switch (content.type) {
     case VideoBubbleContentType.URL: {

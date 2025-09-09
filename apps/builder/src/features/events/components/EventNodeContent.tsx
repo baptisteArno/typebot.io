@@ -1,6 +1,6 @@
-import { StartEventNode } from "@/features/events/components/StartEventNode";
 import { EventType } from "@typebot.io/events/constants";
 import type { TEvent } from "@typebot.io/events/schemas";
+import { StartEventNode } from "@/features/events/components/StartEventNode";
 import { CommandEventNode } from "./CommandEventNode";
 import { InvalidReplyEventNode } from "./InvalidReplyEventNode";
 import { ReplyEventNode } from "./ReplyEventNode";

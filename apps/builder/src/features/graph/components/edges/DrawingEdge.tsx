@@ -1,13 +1,13 @@
-import assert from "assert";
-import { useTypebot } from "@/features/editor/providers/TypebotProvider";
-import { useUser } from "@/features/user/hooks/useUser";
-import { trpcClient } from "@/lib/queryClient";
-import { toast } from "@/lib/toast";
 import { useEventListener } from "@chakra-ui/react";
 import type { Coordinates } from "@dnd-kit/utilities";
 import { omit } from "@typebot.io/lib/utils";
 import { colors } from "@typebot.io/ui/chakraTheme";
-import React, { useMemo, useState } from "react";
+import assert from "assert";
+import { useMemo, useState } from "react";
+import { useTypebot } from "@/features/editor/providers/TypebotProvider";
+import { useUser } from "@/features/user/hooks/useUser";
+import { trpcClient } from "@/lib/queryClient";
+import { toast } from "@/lib/toast";
 import { eventWidth, groupWidth } from "../../constants";
 import { computeConnectingEdgePath } from "../../helpers/computeConnectingEdgePath";
 import { computeEdgePathToMouse } from "../../helpers/computeEdgePathToMouth";
@@ -161,7 +161,7 @@ export const DrawingEdge = ({ connectingIds }: Props) => {
   };
 
   if (mousePosition && mousePosition.x === 0 && mousePosition.y === 0)
-    return <></>;
+    return null;
   return (
     <path
       d={path}

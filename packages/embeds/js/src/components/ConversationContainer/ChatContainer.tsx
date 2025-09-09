@@ -1,3 +1,28 @@
+import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
+import type { InputBlock } from "@typebot.io/blocks-inputs/schema";
+import type {
+  ContinueChatResponse,
+  Message,
+  StartChatResponse,
+} from "@typebot.io/chat-api/schemas";
+import { parseUnknownClientError } from "@typebot.io/lib/parseUnknownClientError";
+import { isNotDefined } from "@typebot.io/lib/utils";
+import type { LogInSession } from "@typebot.io/logs/schemas";
+import { latestTypebotVersion } from "@typebot.io/schemas/versions";
+import { defaultSystemMessages } from "@typebot.io/settings/constants";
+import {
+  BackgroundType,
+  defaultContainerBackgroundColor,
+} from "@typebot.io/theme/constants";
+import { cx } from "@typebot.io/ui/lib/cva";
+import {
+  createMemo,
+  createSignal,
+  Index,
+  onCleanup,
+  onMount,
+  Show,
+} from "solid-js";
 import { useBotContainer } from "@/contexts/BotContainerContext";
 import {
   ChatContainerSizeContext,
@@ -20,31 +45,6 @@ import { migrateLegacyChatChunks } from "@/utils/migrateLegacyChatChunks";
 import { persist } from "@/utils/persist";
 import { setGeneralBackground } from "@/utils/setCssVariablesValue";
 import { toaster } from "@/utils/toaster";
-import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
-import type { InputBlock } from "@typebot.io/blocks-inputs/schema";
-import type {
-  ContinueChatResponse,
-  Message,
-  StartChatResponse,
-} from "@typebot.io/chat-api/schemas";
-import { parseUnknownClientError } from "@typebot.io/lib/parseUnknownClientError";
-import { isNotDefined } from "@typebot.io/lib/utils";
-import type { LogInSession } from "@typebot.io/logs/schemas";
-import { latestTypebotVersion } from "@typebot.io/schemas/versions";
-import { defaultSystemMessages } from "@typebot.io/settings/constants";
-import {
-  BackgroundType,
-  defaultContainerBackgroundColor,
-} from "@typebot.io/theme/constants";
-import { cx } from "@typebot.io/ui/lib/cva";
-import {
-  Index,
-  Show,
-  createMemo,
-  createSignal,
-  onCleanup,
-  onMount,
-} from "solid-js";
 import { ChatChunk } from "./ChatChunk";
 import { LoadingChunk } from "./LoadingChunk";
 
@@ -222,7 +222,10 @@ export const ChatContainer = (props: Props) => {
   const processContinueChatResponse = async ({
     data,
     error,
-  }: { data: ContinueChatResponse | undefined; error: unknown }) => {
+  }: {
+    data: ContinueChatResponse | undefined;
+    error: unknown;
+  }) => {
     if (error) {
       if (isNetworkError(error)) showOfflineErrorToast();
       const errorLogs = [
@@ -256,7 +259,10 @@ export const ChatContainer = (props: Props) => {
   const autoScrollToBottom = ({
     lastElement,
     offset = 0,
-  }: { lastElement?: HTMLDivElement; offset?: number } = {}) => {
+  }: {
+    lastElement?: HTMLDivElement;
+    offset?: number;
+  } = {}) => {
     const scrollContainer = getScrollContainer();
     if (!scrollContainer) return;
 

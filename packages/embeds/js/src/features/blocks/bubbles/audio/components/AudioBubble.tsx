@@ -1,8 +1,8 @@
-import { TypingBubble } from "@/components/TypingBubble";
 import { defaultAudioBubbleContent } from "@typebot.io/blocks-bubbles/audio/constants";
 import type { AudioBubbleBlock } from "@typebot.io/blocks-bubbles/audio/schema";
 import { cx } from "@typebot.io/ui/lib/cva";
 import { createSignal, onCleanup, onMount } from "solid-js";
+import { TypingBubble } from "@/components/TypingBubble";
 
 type Props = {
   content: AudioBubbleBlock["content"];

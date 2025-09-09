@@ -1,5 +1,3 @@
-import { getUserModeInWorkspace } from "@/features/workspace/helpers/getUserRoleInWorkspace";
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 import { TRPCError } from "@trpc/server";
 import prisma from "@typebot.io/prisma";
 import { Plan } from "@typebot.io/prisma/enum";
@@ -7,6 +5,8 @@ import type { Prisma } from "@typebot.io/prisma/types";
 import { folderSchema } from "@typebot.io/schemas/features/folder";
 import { trackEvents } from "@typebot.io/telemetry/trackEvents";
 import { z } from "@typebot.io/zod";
+import { getUserModeInWorkspace } from "@/features/workspace/helpers/getUserRoleInWorkspace";
+import { authenticatedProcedure } from "@/helpers/server/trpc";
 
 export const createFolder = authenticatedProcedure
   .meta({

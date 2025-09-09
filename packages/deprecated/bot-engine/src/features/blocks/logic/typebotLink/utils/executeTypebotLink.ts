@@ -1,8 +1,8 @@
-import type { LinkedTypebot } from "@/providers/TypebotProvider";
-import type { EdgeId, LogicState } from "@/types";
 import type { TypebotLinkBlock } from "@typebot.io/blocks-logic/typebotLink/schema";
 import type { Edge } from "@typebot.io/typebot/schemas/edge";
 import type { PublicTypebot } from "@typebot.io/typebot/schemas/publicTypebot";
+import type { LinkedTypebot } from "@/providers/TypebotProvider";
+import type { EdgeId, LogicState } from "@/types";
 import { fetchAndInjectTypebot } from "../queries/fetchAndInjectTypebotQuery";
 
 export const executeTypebotLink = async (

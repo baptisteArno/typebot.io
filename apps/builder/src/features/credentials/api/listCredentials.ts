@@ -1,10 +1,10 @@
-import { isReadWorkspaceFobidden } from "@/features/workspace/helpers/isReadWorkspaceFobidden";
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 import { TRPCError } from "@trpc/server";
 import { credentialsTypeSchema } from "@typebot.io/credentials/schemas";
 import prisma from "@typebot.io/prisma";
 import { z } from "@typebot.io/zod";
 import { isDefined } from "@udecode/plate-common";
+import { isReadWorkspaceFobidden } from "@/features/workspace/helpers/isReadWorkspaceFobidden";
+import { authenticatedProcedure } from "@/helpers/server/trpc";
 
 const deletedCredentialsTypes = ["zemanticAi", "zemantic-ai"];
 

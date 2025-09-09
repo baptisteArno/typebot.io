@@ -1,5 +1,3 @@
-import { NumberInput } from "@/components/inputs";
-import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { FormLabel, HStack, Stack } from "@chakra-ui/react";
 import {
   defaultBlur,
@@ -12,7 +10,8 @@ import {
 import { isChatContainerLight } from "@typebot.io/theme/helpers/isChatContainerLight";
 import type { ChatTheme, GeneralTheme } from "@typebot.io/theme/schemas";
 import { colors } from "@typebot.io/ui/colors";
-import React from "react";
+import { NumberInput } from "@/components/inputs";
+import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { ContainerThemeForm } from "./ContainerThemeForm";
 
 type Props = {

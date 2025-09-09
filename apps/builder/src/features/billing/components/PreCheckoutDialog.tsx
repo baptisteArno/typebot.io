@@ -1,7 +1,3 @@
-import { TextInput } from "@/components/inputs";
-import { BasicSelect } from "@/components/inputs/BasicSelect";
-import { trpc } from "@/lib/queryClient";
-import { toast } from "@/lib/toast";
 import { FormControl, FormLabel, HStack, Stack } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
@@ -12,6 +8,9 @@ import { Dialog } from "@typebot.io/ui/components/Dialog";
 import { useRouter } from "next/router";
 import type { FormEvent } from "react";
 import React, { useState } from "react";
+import { TextInput } from "@/components/inputs";
+import { BasicSelect } from "@/components/inputs/BasicSelect";
+import { trpc } from "@/lib/queryClient";
 
 export type PreCheckoutDialogProps = {
   selectedSubscription:

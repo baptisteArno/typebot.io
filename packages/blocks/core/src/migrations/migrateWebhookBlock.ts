@@ -1,6 +1,6 @@
 import {
-  HttpMethod,
   defaultHttpRequestAttributes,
+  HttpMethod,
 } from "@typebot.io/blocks-integrations/httpRequest/constants";
 import type { HttpRequest } from "@typebot.io/blocks-integrations/httpRequest/schema";
 import type { Prisma } from "@typebot.io/prisma/types";

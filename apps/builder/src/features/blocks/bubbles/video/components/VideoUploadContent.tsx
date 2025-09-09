@@ -1,10 +1,10 @@
-import { PexelsPicker } from "@/components/VideoUploadContent/PexelsPicker";
-import { VideoLinkEmbedContent } from "@/components/VideoUploadContent/VideoLinkEmbedContent";
 import { HStack, Stack } from "@chakra-ui/react";
 import { parseVideoUrl } from "@typebot.io/blocks-bubbles/video/helpers";
 import type { VideoBubbleBlock } from "@typebot.io/blocks-bubbles/video/schema";
 import { Button } from "@typebot.io/ui/components/Button";
 import { useState } from "react";
+import { PexelsPicker } from "@/components/VideoUploadContent/PexelsPicker";
+import { VideoLinkEmbedContent } from "@/components/VideoUploadContent/VideoLinkEmbedContent";
 
 type Tabs = "link" | "pexels";
 

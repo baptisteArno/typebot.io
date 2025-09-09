@@ -1,10 +1,10 @@
+import type { ChoiceInputBlock } from "@typebot.io/blocks-inputs/choice/schema";
+import type React from "react";
+import { useState } from "react";
 import { parseVariables } from "@/features/variables";
 import { useAnswers } from "@/providers/AnswersProvider";
 import { useTypebot } from "@/providers/TypebotProvider";
 import type { InputSubmitContent } from "@/types";
-import type { ChoiceInputBlock } from "@typebot.io/blocks-inputs/choice/schema";
-import type React from "react";
-import { useState } from "react";
 import { SendButton } from "../../../../../components/SendButton";
 
 type ChoiceFormProps = {

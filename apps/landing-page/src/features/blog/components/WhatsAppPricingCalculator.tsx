@@ -1,9 +1,9 @@
-import { Card } from "@/components/Card";
-import { NumberInput } from "@/components/NumberInput";
 import { isNotDefined } from "@typebot.io/lib/utils";
 import { Field } from "@typebot.io/ui/components/Field";
 import { Select } from "@typebot.io/ui/components/Select";
 import { useMemo, useState } from "react";
+import { Card } from "@/components/Card";
+import { NumberInput } from "@/components/NumberInput";
 import { whatsAppPricingData } from "../data/whatsAppPricingData";
 
 const countries = [

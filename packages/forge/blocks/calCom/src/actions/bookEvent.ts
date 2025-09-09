@@ -85,7 +85,7 @@ export const bookEvent = createAction({
           if (!options.link) throw new Error("Missing link");
           const baseUrl = options.baseUrl ?? defaultBaseUrl;
           const link = options.link?.startsWith("http")
-            ? options.link.replace(/http.+:\/\/[^\/]+\//, "")
+            ? options.link.replace(/http.+:\/\/[^/]+\//, "")
             : options.link;
           return {
             args: {

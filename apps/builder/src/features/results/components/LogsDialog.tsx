@@ -4,13 +4,13 @@ import {
   AccordionIcon,
   AccordionItem,
   AccordionPanel,
+  chakra,
   HStack,
   Spinner,
   Stack,
   Tag,
   type TagProps,
   Text,
-  chakra,
 } from "@chakra-ui/react";
 import { isDefined } from "@typebot.io/lib/utils";
 import type { Log } from "@typebot.io/logs/schemas";

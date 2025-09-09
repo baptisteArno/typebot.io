@@ -1,20 +1,20 @@
-import { ImageUploadContent } from "@/components/ImageUploadContent";
-import type { FilePathUploadProps } from "@/features/upload/api/generateUploadUrl";
-import { useOpenControls } from "@/hooks/useOpenControls";
 import {
   Box,
+  chakra,
   Flex,
-  HStack,
   Heading,
+  HStack,
   Image,
   Stack,
   Switch,
-  chakra,
 } from "@chakra-ui/react";
 import { isSvgSrc } from "@typebot.io/lib/utils";
 import type { AvatarProps } from "@typebot.io/theme/schemas";
 import { Popover } from "@typebot.io/ui/components/Popover";
 import React from "react";
+import { ImageUploadContent } from "@/components/ImageUploadContent";
+import type { FilePathUploadProps } from "@/features/upload/api/generateUploadUrl";
+import { useOpenControls } from "@/hooks/useOpenControls";
 import { DefaultAvatar } from "../DefaultAvatar";
 
 type Props = {

@@ -1,5 +1,5 @@
-import { setRememberCloseInStorage } from ".";
 import type { ProactiveMessageParams } from "../../types";
+import { setRememberCloseInStorage } from ".";
 import { closeSvgPath } from "./button";
 
 const createProactiveMessage = (

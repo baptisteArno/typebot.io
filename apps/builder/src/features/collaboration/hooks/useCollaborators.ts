@@ -1,5 +1,5 @@
-import { fetcher } from "@/helpers/fetcher";
 import useSWR from "swr";
+import { fetcher } from "@/helpers/fetcher";
 import type { Collaborator } from "../types";
 
 export const useCollaborators = ({

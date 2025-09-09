@@ -1,5 +1,3 @@
-import { canReadTypebots } from "@/helpers/databaseRules";
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 import { TRPCError } from "@trpc/server";
 import { isHttpRequestBlock } from "@typebot.io/blocks-core/helpers";
 import type { Block } from "@typebot.io/blocks-core/schemas/schema";
@@ -8,6 +6,8 @@ import { parseGroups } from "@typebot.io/groups/helpers/parseGroups";
 import { byId } from "@typebot.io/lib/utils";
 import prisma from "@typebot.io/prisma";
 import { z } from "@typebot.io/zod";
+import { canReadTypebots } from "@/helpers/databaseRules";
+import { authenticatedProcedure } from "@/helpers/server/trpc";
 
 export const listHttpRequestBlocks = authenticatedProcedure
   .meta({

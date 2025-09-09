@@ -1,6 +1,5 @@
-import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { Stack } from "@chakra-ui/react";
-import React from "react";
+import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { ChangePlanForm } from "./ChangePlanForm";
 import { CurrentSubscriptionSummary } from "./CurrentSubscriptionSummary";
 import { InvoicesList } from "./InvoicesList";

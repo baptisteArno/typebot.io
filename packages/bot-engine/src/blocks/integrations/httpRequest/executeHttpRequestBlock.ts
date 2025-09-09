@@ -1,7 +1,7 @@
 import {
-  HttpMethod,
   defaultHttpRequestAttributes,
   defaultTimeout,
+  HttpMethod,
   maxTimeout,
 } from "@typebot.io/blocks-integrations/httpRequest/constants";
 import type {
@@ -31,7 +31,7 @@ import type { AnswerInSessionState } from "@typebot.io/results/schemas/answers";
 import type { SessionStore } from "@typebot.io/runtime-session-store";
 import { parseVariables } from "@typebot.io/variables/parseVariables";
 import type { Variable } from "@typebot.io/variables/schemas";
-import ky, { HTTPError, TimeoutError, type Options } from "ky";
+import ky, { HTTPError, type Options, TimeoutError } from "ky";
 import { stringify } from "qs";
 import { ProxyAgent } from "undici";
 import type { ExecuteIntegrationResponse } from "../../../types";
@@ -401,7 +401,7 @@ export const convertKeyValueTableToObject = ({
 const safeJsonParse = (json: unknown): { data: any; isJson: boolean } => {
   try {
     return { data: JSONParse(json as string), isJson: true };
-  } catch (err) {
+  } catch (_err) {
     return { data: json, isJson: false };
   }
 };

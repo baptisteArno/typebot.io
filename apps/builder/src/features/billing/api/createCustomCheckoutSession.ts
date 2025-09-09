@@ -1,6 +1,6 @@
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 import { createCustomCheckoutSession as createCustomCheckoutSessionHandler } from "@typebot.io/billing/api/createCustomCheckoutSession";
 import { z } from "@typebot.io/zod";
+import { authenticatedProcedure } from "@/helpers/server/trpc";
 
 export const createCustomCheckoutSession = authenticatedProcedure
   .meta({

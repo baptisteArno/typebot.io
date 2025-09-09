@@ -1,11 +1,3 @@
-import { MoreInfoTooltip } from "@/components/MoreInfoTooltip";
-import { TextInput, Textarea } from "@/components/inputs";
-import { CodeEditor } from "@/components/inputs/CodeEditor";
-import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
-import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
-import { isFreePlan } from "@/features/billing/helpers/isFreePlan";
-import { CredentialsDropdown } from "@/features/credentials/components/CredentialsDropdown";
-import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import {
   Accordion,
   AccordionButton,
@@ -26,7 +18,14 @@ import { env } from "@typebot.io/env";
 import { isNotEmpty } from "@typebot.io/lib/utils";
 import type { Variable } from "@typebot.io/variables/schemas";
 import type { Workspace } from "@typebot.io/workspaces/schemas";
-import React from "react";
+import { Textarea, TextInput } from "@/components/inputs";
+import { CodeEditor } from "@/components/inputs/CodeEditor";
+import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
+import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
+import { MoreInfoTooltip } from "@/components/MoreInfoTooltip";
+import { isFreePlan } from "@/features/billing/helpers/isFreePlan";
+import { CredentialsDropdown } from "@/features/credentials/components/CredentialsDropdown";
+import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { SmtpCredentialsCreateDialog } from "./SmtpCredentialsCreateDialog";
 
 type Props = {

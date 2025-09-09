@@ -1,5 +1,5 @@
-import { ChevronLeftIcon } from "@/components/icons";
 import { Flex, Heading, Text, VStack } from "@chakra-ui/react";
+import { ChevronLeftIcon } from "@/components/icons";
 import { ButtonLink } from "./ButtonLink";
 
 type Props = {

@@ -1,3 +1,10 @@
+import { useColorModeValue } from "@chakra-ui/react";
+import { BubbleBlockType } from "@typebot.io/blocks-bubbles/constants";
+import type { Block } from "@typebot.io/blocks-core/schemas/schema";
+import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
+import { IntegrationBlockType } from "@typebot.io/blocks-integrations/constants";
+import { LogicBlockType } from "@typebot.io/blocks-logic/constants";
+import { cn } from "@typebot.io/ui/lib/cn";
 import { FlagIcon, GalleryIcon, ThunderIcon } from "@/components/icons";
 import { AudioBubbleIcon } from "@/features/blocks/bubbles/audio/components/AudioBubbleIcon";
 import { EmbedBubbleIcon } from "@/features/blocks/bubbles/embed/components/EmbedBubbleIcon";
@@ -36,14 +43,6 @@ import { TypebotLinkIcon } from "@/features/blocks/logic/typebotLink/components/
 import { WaitIcon } from "@/features/blocks/logic/wait/components/WaitIcon";
 import { WebhookIcon } from "@/features/blocks/logic/webhook/components/WebhookIcon";
 import { ForgedBlockIcon } from "@/features/forge/ForgedBlockIcon";
-import { useColorModeValue } from "@chakra-ui/react";
-import { BubbleBlockType } from "@typebot.io/blocks-bubbles/constants";
-import type { Block } from "@typebot.io/blocks-core/schemas/schema";
-import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
-import { IntegrationBlockType } from "@typebot.io/blocks-integrations/constants";
-import { LogicBlockType } from "@typebot.io/blocks-logic/constants";
-import { cn } from "@typebot.io/ui/lib/cn";
-import React from "react";
 
 type BlockIconProps = { type: Block["type"]; className?: string };
 

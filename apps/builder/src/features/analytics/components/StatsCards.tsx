@@ -9,7 +9,6 @@ import {
 } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import type { Stats } from "@typebot.io/results/schemas/answers";
-import React from "react";
 import type { timeFilterValues } from "../constants";
 import { TimeFilterSelect } from "./TimeFilterSelect";
 

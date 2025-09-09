@@ -1,5 +1,4 @@
-import { NumberIcon } from "@/components/icons";
 import type { IconProps } from "@chakra-ui/react";
-import React from "react";
+import { NumberIcon } from "@/components/icons";
 
 export const NumberInputIcon = (props: IconProps) => <NumberIcon {...props} />;

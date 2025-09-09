@@ -1,8 +1,8 @@
-import { TextLink } from "@/components/TextLink";
-import { CodeEditor } from "@/components/inputs/CodeEditor";
-import { isCloudProdInstance } from "@/helpers/isCloudProdInstance";
 import { Code, ListItem, OrderedList, Stack, Text } from "@chakra-ui/react";
 import { useState } from "react";
+import { CodeEditor } from "@/components/inputs/CodeEditor";
+import { TextLink } from "@/components/TextLink";
+import { isCloudProdInstance } from "@/helpers/isCloudProdInstance";
 import packageJson from "../../../../../../../../../../packages/embeds/js/package.json";
 import { PopupSettings } from "../../../settings/PopupSettings";
 import { parseInitPopupCode } from "../../../snippetParsers/popup";

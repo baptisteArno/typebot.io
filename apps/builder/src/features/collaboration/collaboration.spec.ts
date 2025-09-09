@@ -1,4 +1,3 @@
-import { createFolder } from "@/test/utils/databaseActions";
 import { createId } from "@paralleldrive/cuid2";
 import test, { expect } from "@playwright/test";
 import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
@@ -14,6 +13,7 @@ import {
   Plan,
   WorkspaceRole,
 } from "@typebot.io/prisma/enum";
+import { createFolder } from "@/test/utils/databaseActions";
 
 test.describe("Typebot owner", () => {
   test("Can invite collaborators", async ({ page }) => {

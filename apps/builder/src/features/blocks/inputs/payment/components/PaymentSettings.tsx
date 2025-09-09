@@ -1,7 +1,3 @@
-import { TextInput } from "@/components/inputs";
-import { BasicSelect } from "@/components/inputs/BasicSelect";
-import { CredentialsDropdown } from "@/features/credentials/components/CredentialsDropdown";
-import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import {
   Accordion,
   AccordionButton,
@@ -15,14 +11,18 @@ import {
 } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import {
-  PaymentProvider,
   defaultPaymentInputOptions,
+  PaymentProvider,
 } from "@typebot.io/blocks-inputs/payment/constants";
 import type {
   PaymentAddress,
   PaymentInputBlock,
 } from "@typebot.io/blocks-inputs/payment/schema";
-import React, { useMemo } from "react";
+import { useMemo } from "react";
+import { TextInput } from "@/components/inputs";
+import { BasicSelect } from "@/components/inputs/BasicSelect";
+import { CredentialsDropdown } from "@/features/credentials/components/CredentialsDropdown";
+import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { currencies } from "../currencies";
 import { CreateStripeCredentialsDialog } from "./CreateStripeCredentialsDialog";
 import { PaymentAddressSettings } from "./PaymentAddressSettings";

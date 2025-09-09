@@ -1,8 +1,8 @@
-import { BasicSelect } from "@/components/inputs/BasicSelect";
 import type { ForgedBlockDefinition } from "@typebot.io/forge-repository/definitions";
 import type { ForgedBlock } from "@typebot.io/forge-repository/schemas";
 import { isDefined } from "@typebot.io/lib/utils";
 import type { z } from "@typebot.io/zod";
+import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { ZodObjectLayout } from "./ZodObjectLayout";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */

@@ -1,13 +1,11 @@
-import { ChatIcon, CodeIcon, DropletIcon, TableIcon } from "@/components/icons";
-import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import {
   Accordion,
   AccordionButton,
   AccordionIcon,
   AccordionItem,
   AccordionPanel,
-  HStack,
   Heading,
+  HStack,
   Stack,
   useColorModeValue,
 } from "@chakra-ui/react";
@@ -18,11 +16,12 @@ import type {
   GeneralTheme,
   ThemeTemplate,
 } from "@typebot.io/theme/schemas";
-import React from "react";
+import { ChatIcon, CodeIcon, DropletIcon, TableIcon } from "@/components/icons";
+import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { CustomCssSettings } from "./CustomCssSettings";
-import { ThemeTemplates } from "./ThemeTemplates";
 import { ChatThemeSettings } from "./chat/ChatThemeSettings";
 import { GeneralSettings } from "./general/GeneralSettings";
+import { ThemeTemplates } from "./ThemeTemplates";
 
 export const ThemeSideMenu = () => {
   const { t } = useTranslate();

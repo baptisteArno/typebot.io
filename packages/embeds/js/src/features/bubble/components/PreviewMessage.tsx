@@ -5,7 +5,7 @@ import {
   defaultPreviewMessageTextColor,
 } from "@typebot.io/theme/constants";
 import { cx } from "@typebot.io/ui/lib/cva";
-import { Show, createSignal } from "solid-js";
+import { createSignal, Show } from "solid-js";
 import type {
   BubbleTheme,
   PreviewMessageParams,

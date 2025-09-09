@@ -1,5 +1,4 @@
 import { CodeEditor } from "@/components/inputs/CodeEditor";
-import React from "react";
 
 type Props = {
   customCss?: string;

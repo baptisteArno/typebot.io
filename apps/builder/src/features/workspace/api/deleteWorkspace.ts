@@ -1,4 +1,3 @@
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 import { TRPCError } from "@trpc/server";
 import { env } from "@typebot.io/env";
 import { removeObjectsFromWorkspace } from "@typebot.io/lib/s3/removeObjectsRecursively";
@@ -6,6 +5,7 @@ import { isNotEmpty } from "@typebot.io/lib/utils";
 import prisma from "@typebot.io/prisma";
 import { z } from "@typebot.io/zod";
 import Stripe from "stripe";
+import { authenticatedProcedure } from "@/helpers/server/trpc";
 import { isAdminWriteWorkspaceForbidden } from "../helpers/isAdminWriteWorkspaceForbidden";
 
 export const deleteWorkspace = authenticatedProcedure

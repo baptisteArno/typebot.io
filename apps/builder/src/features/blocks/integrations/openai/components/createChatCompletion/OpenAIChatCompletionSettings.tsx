@@ -1,6 +1,3 @@
-import { TableList } from "@/components/TableList";
-import { TextLink } from "@/components/TextLink";
-import { NumberInput } from "@/components/inputs";
 import {
   Accordion,
   AccordionButton,
@@ -11,6 +8,9 @@ import {
   Text,
 } from "@chakra-ui/react";
 import type { ChatCompletionOpenAIOptions } from "@typebot.io/blocks-integrations/openai/schema";
+import { NumberInput } from "@/components/inputs";
+import { TableList } from "@/components/TableList";
+import { TextLink } from "@/components/TextLink";
 import { ModelsDropdown } from "../ModelsDropdown";
 import { ChatCompletionMessageItem } from "./ChatCompletionMessageItem";
 import { ChatCompletionResponseItem } from "./ChatCompletionResponseItem";

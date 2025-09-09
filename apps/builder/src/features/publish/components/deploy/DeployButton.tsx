@@ -1,3 +1,6 @@
+import { Text, useDisclosure, VStack } from "@chakra-ui/react";
+import type { Plan } from "@typebot.io/prisma/enum";
+import { Button } from "@typebot.io/ui/components/Button";
 import { CodeIcon } from "@/components/icons";
 import {
   WhatsAppLogo,
@@ -7,18 +10,14 @@ import { LockTag } from "@/features/billing/components/LockTag";
 import { hasProPerks } from "@/features/billing/helpers/hasProPerks";
 import { ScriptIcon } from "@/features/blocks/logic/script/components/ScriptIcon";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { Text, VStack, useDisclosure } from "@chakra-ui/react";
-import type { Plan } from "@typebot.io/prisma/enum";
-import { Button } from "@typebot.io/ui/components/Button";
-import React from "react";
 import { ApiDeployDialog } from "./dialogs/ApiDeployDialog";
 import { BlinkDeployDialog } from "./dialogs/BlinkDeployDialog";
 import { FlutterFlowDeployDialog } from "./dialogs/FlutterFlowDeployDialog";
-import { NotionDeployDialog } from "./dialogs/NotionDeployDialog";
 import { FramerDeployDialog } from "./dialogs/framer/FramerDeployDialog";
 import { GtmDeployDialog } from "./dialogs/gtm/GtmDeployDialog";
 import { IframeDeployDialog } from "./dialogs/iframe/IframeDeployDialog";
 import { JavascriptDeployDialog } from "./dialogs/javascript/JavascriptDeployDialog";
+import { NotionDeployDialog } from "./dialogs/NotionDeployDialog";
 import { NextjsDeployDialog } from "./dialogs/nextjs/NextjsDeployDialog";
 import { ReactDeployDialog } from "./dialogs/react/ReactDeployDialog";
 import { ScriptDeployDialog } from "./dialogs/script/ScriptDeployDialog";

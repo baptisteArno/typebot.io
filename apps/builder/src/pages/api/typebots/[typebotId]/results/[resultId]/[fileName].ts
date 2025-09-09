@@ -1,4 +1,3 @@
-import { getAuthenticatedUser } from "@/features/auth/helpers/getAuthenticatedUser";
 import {
   badRequest,
   methodNotAllowed,
@@ -9,6 +8,7 @@ import { getFileTempUrl } from "@typebot.io/lib/s3/getFileTempUrl";
 import prisma from "@typebot.io/prisma";
 import { isReadTypebotForbidden } from "@typebot.io/typebot/helpers/isReadTypebotForbidden";
 import type { NextApiRequest, NextApiResponse } from "next";
+import { getAuthenticatedUser } from "@/features/auth/helpers/getAuthenticatedUser";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "GET") {

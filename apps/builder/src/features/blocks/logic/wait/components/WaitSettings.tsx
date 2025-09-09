@@ -1,5 +1,3 @@
-import { TextInput } from "@/components/inputs";
-import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
 import {
   Accordion,
   AccordionButton,
@@ -10,7 +8,8 @@ import {
 } from "@chakra-ui/react";
 import { defaultWaitOptions } from "@typebot.io/blocks-logic/wait/constants";
 import type { WaitBlock } from "@typebot.io/blocks-logic/wait/schema";
-import React from "react";
+import { TextInput } from "@/components/inputs";
+import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
 
 type Props = {
   options: WaitBlock["options"];

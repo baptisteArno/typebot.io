@@ -1,6 +1,5 @@
 import { Flex } from "@chakra-ui/react";
 import type { TextBubbleBlock } from "@typebot.io/blocks-bubbles/text/schema";
-import React from "react";
 import { PlateBlock } from "./plate/PlateBlock";
 
 type Props = {

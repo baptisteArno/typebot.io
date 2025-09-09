@@ -1,8 +1,8 @@
+import type { ChatwootBlock } from "@typebot.io/blocks-integrations/chatwoot/schema";
 import { parseVariables } from "@/features/variables";
 import type { IntegrationState } from "@/types";
 import { sendEventToParent } from "@/utils/chat";
 import { isEmbedded } from "@/utils/helpers";
-import type { ChatwootBlock } from "@typebot.io/blocks-integrations/chatwoot/schema";
 
 const parseSetUserCode = (
   user: NonNullable<ChatwootBlock["options"]>["user"],

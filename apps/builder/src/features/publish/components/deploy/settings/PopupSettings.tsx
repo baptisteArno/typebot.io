@@ -1,7 +1,6 @@
-import { NumberInput } from "@/components/inputs";
 import {
-  HStack,
   Heading,
+  HStack,
   Stack,
   type StackProps,
   Switch,
@@ -10,6 +9,7 @@ import {
 import type { PopupProps } from "@typebot.io/js";
 import { isDefined } from "@typebot.io/lib/utils";
 import { useEffect, useState } from "react";
+import { NumberInput } from "@/components/inputs";
 
 type Props = {
   onUpdateSettings: (windowSettings: Pick<PopupProps, "autoShowDelay">) => void;

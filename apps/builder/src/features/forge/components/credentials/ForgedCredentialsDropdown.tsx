@@ -1,10 +1,5 @@
-import { PlusIcon } from "@/components/icons";
-import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { trpc } from "@/lib/queryClient";
-import { toast } from "@/lib/toast";
 import { Stack, Text } from "@chakra-ui/react";
-import { useQuery } from "@tanstack/react-query";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
 import type { ForgedBlockDefinition } from "@typebot.io/forge-repository/definitions";
 import { Button, type ButtonProps } from "@typebot.io/ui/components/Button";
@@ -14,6 +9,9 @@ import { TrashIcon } from "@typebot.io/ui/icons/TrashIcon";
 import { useRouter } from "next/router";
 import type React from "react";
 import { useCallback, useEffect, useState } from "react";
+import { PlusIcon } from "@/components/icons";
+import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
+import { trpc } from "@/lib/queryClient";
 
 type Props = Omit<ButtonProps, "type"> & {
   blockDef: ForgedBlockDefinition;

@@ -10,7 +10,6 @@ export const StripeClimateLogo = (props: IconProps) => (
     {...props}
   >
     <linearGradient
-      id="StripeClimate-gradient-a"
       gradientUnits="userSpaceOnUse"
       x1="16"
       y1="20.6293"
@@ -26,7 +25,6 @@ export const StripeClimateLogo = (props: IconProps) => (
       fill="url(#StripeClimate-gradient-a)"
     />
     <linearGradient
-      id="StripeClimate-gradient-b"
       gradientUnits="userSpaceOnUse"
       x1="24"
       y1="28.6289"
@@ -42,7 +40,6 @@ export const StripeClimateLogo = (props: IconProps) => (
       fill="url(#StripeClimate-gradient-b)"
     />
     <linearGradient
-      id="StripeClimate-gradient-c"
       gradientUnits="userSpaceOnUse"
       x1="8"
       y1="16.7494"

@@ -1,8 +1,8 @@
 import {
   type BlockType,
+  defaultNodeTypes,
   type LeafType,
   type NodeTypes,
-  defaultNodeTypes,
 } from "./ast-types";
 
 interface Options {

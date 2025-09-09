@@ -2,7 +2,6 @@ import { Avatar, HStack, Stack, Tag, Text } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { CollaborationType } from "@typebot.io/prisma/enum";
 import { Menu } from "@typebot.io/ui/components/Menu";
-import React from "react";
 import { ReadableCollaborationType } from "./ReadableCollaborationType";
 
 type Props = {

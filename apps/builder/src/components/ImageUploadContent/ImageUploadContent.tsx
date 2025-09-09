@@ -1,14 +1,14 @@
-import type { FilePathUploadProps } from "@/features/upload/api/generateUploadUrl";
 import { Flex, HStack, Stack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { Button } from "@typebot.io/ui/components/Button";
 import { useState } from "react";
+import type { FilePathUploadProps } from "@/features/upload/api/generateUploadUrl";
 import { TextInput } from "../inputs/TextInput";
+import { EmojiSearchableList } from "./emoji/EmojiSearchableList";
 import { GiphyPicker } from "./GiphyPicker";
 import { IconPicker } from "./IconPicker";
 import { UnsplashPicker } from "./UnsplashPicker";
 import { UploadButton } from "./UploadButton";
-import { EmojiSearchableList } from "./emoji/EmojiSearchableList";
 
 type PermanentTabs = "link" | "upload";
 type AdditionalTabs = "giphy" | "emoji" | "unsplash" | "icon";

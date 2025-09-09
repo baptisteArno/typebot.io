@@ -1,7 +1,7 @@
-import { publicProcedure } from "@/helpers/server/trpc";
 import { TRPCError } from "@trpc/server";
 import { env } from "@typebot.io/env";
 import { z } from "@typebot.io/zod";
+import { publicProcedure } from "@/helpers/server/trpc";
 
 export const subscribePreviewWebhook = publicProcedure
   .meta({

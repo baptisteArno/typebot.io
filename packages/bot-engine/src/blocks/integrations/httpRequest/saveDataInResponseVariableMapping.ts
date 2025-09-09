@@ -90,7 +90,7 @@ export const saveDataInResponseVariableMapping = ({
         }),
       );
       return [...newVariables, { ...existingVariable, value }];
-    } catch (err) {
+    } catch (_err) {
       return newVariables;
     }
   }, []);

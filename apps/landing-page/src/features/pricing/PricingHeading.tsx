@@ -1,6 +1,6 @@
+import { LeafIcon } from "@typebot.io/ui/icons/LeafIcon";
 import { TextLink } from "@/components/link";
 import { stripeClimateUrl } from "@/constants";
-import { LeafIcon } from "@typebot.io/ui/icons/LeafIcon";
 
 export const PricingHeading = () => (
   <div className="flex flex-col gap-8 items-start">

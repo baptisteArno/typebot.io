@@ -1,7 +1,3 @@
-import { CopyIcon } from "@/components/icons";
-import { useTypebot } from "@/features/editor/providers/TypebotProvider";
-import { useKeyboardShortcuts } from "@/hooks/useKeyboardShortcuts";
-import { toast } from "@/lib/toast";
 import { useEventListener } from "@chakra-ui/react";
 import { EventType } from "@typebot.io/events/constants";
 import type { TDraggableEvent } from "@typebot.io/events/schemas";
@@ -16,6 +12,10 @@ import {
 import type { Variable } from "@typebot.io/variables/schemas";
 import { useRef, useState } from "react";
 import { useShallow } from "zustand/react/shallow";
+import { CopyIcon } from "@/components/icons";
+import { useTypebot } from "@/features/editor/providers/TypebotProvider";
+import { useKeyboardShortcuts } from "@/hooks/useKeyboardShortcuts";
+import { toast } from "@/lib/toast";
 import { projectMouse } from "../helpers/projectMouse";
 import { useSelectionStore } from "../hooks/useSelectionStore";
 import type { Coordinates } from "../types";

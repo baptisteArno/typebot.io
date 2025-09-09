@@ -1,8 +1,8 @@
-import { parseCorrectValueType, parseVariables } from "@/features/variables";
-import type { EdgeId, LogicState } from "@/types";
 import type { SetVariableBlock } from "@typebot.io/blocks-logic/setVariable/schema";
 import { byId } from "@typebot.io/lib/utils";
 import type { Variable } from "@typebot.io/variables/schemas";
+import { parseCorrectValueType, parseVariables } from "@/features/variables";
+import type { EdgeId, LogicState } from "@/types";
 
 export const executeSetVariable = (
   block: SetVariableBlock,
@@ -32,7 +32,7 @@ const evaluateSetVariableExpression =
     try {
       const func = Function(...variables.map((v) => v.id), evaluating);
       return func(...variables.map((v) => parseCorrectValueType(v.value)));
-    } catch (err) {
+    } catch (_err) {
       return parseVariables(variables)(str);
     }
   };

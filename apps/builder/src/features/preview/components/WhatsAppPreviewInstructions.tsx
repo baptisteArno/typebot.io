@@ -1,15 +1,7 @@
-import { ButtonLink } from "@/components/ButtonLink";
-import { BuoyIcon, ExternalLinkIcon } from "@/components/icons";
-import { TextInput } from "@/components/inputs";
-import { useEditor } from "@/features/editor/providers/EditorProvider";
-import { useTypebot } from "@/features/editor/providers/TypebotProvider";
-import { trpc } from "@/lib/queryClient";
-import { toast } from "@/lib/toast";
 import {
   Alert,
   AlertIcon,
   HStack,
-  Link,
   SlideFade,
   Stack,
   type StackProps,
@@ -19,6 +11,12 @@ import { useMutation } from "@tanstack/react-query";
 import { isEmpty } from "@typebot.io/lib/utils";
 import { Button } from "@typebot.io/ui/components/Button";
 import { type FormEvent, useState } from "react";
+import { ButtonLink } from "@/components/ButtonLink";
+import { BuoyIcon, ExternalLinkIcon } from "@/components/icons";
+import { TextInput } from "@/components/inputs";
+import { useEditor } from "@/features/editor/providers/EditorProvider";
+import { useTypebot } from "@/features/editor/providers/TypebotProvider";
+import { trpc } from "@/lib/queryClient";
 import {
   getPhoneNumberFromLocalStorage,
   setPhoneNumberInLocalStorage,

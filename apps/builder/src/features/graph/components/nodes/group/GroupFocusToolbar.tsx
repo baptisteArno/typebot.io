@@ -1,9 +1,9 @@
-import { CopyIcon, PlayIcon } from "@/components/icons";
-import { useIsAnalyzing } from "@/features/graph/hooks/useIsAnalyzing";
-import { isMac } from "@/helpers/isMac";
 import { HStack, useColorModeValue } from "@chakra-ui/react";
 import { Button } from "@typebot.io/ui/components/Button";
 import { TrashIcon } from "@typebot.io/ui/icons/TrashIcon";
+import { CopyIcon, PlayIcon } from "@/components/icons";
+import { useIsAnalyzing } from "@/features/graph/hooks/useIsAnalyzing";
+import { isMac } from "@/helpers/isMac";
 
 type Props = {
   groupId: string;

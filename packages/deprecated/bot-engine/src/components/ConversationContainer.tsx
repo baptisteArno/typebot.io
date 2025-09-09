@@ -1,6 +1,3 @@
-import { setCssVariablesValue } from "@/features/theme";
-import { ChatProvider } from "@/providers/ChatProvider";
-import { type LinkedTypebot, useTypebot } from "@/providers/TypebotProvider";
 import { isInputBlock } from "@typebot.io/blocks-core/helpers";
 import type { Group } from "@typebot.io/groups/schemas";
 import { byId, isDefined, isNotDefined } from "@typebot.io/lib/utils";
@@ -8,8 +5,11 @@ import type { Theme } from "@typebot.io/theme/schemas";
 import type { Edge } from "@typebot.io/typebot/schemas/edge";
 import type { PublicTypebot } from "@typebot.io/typebot/schemas/publicTypebot";
 import type { VariableWithValue } from "@typebot.io/variables/schemas";
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { animateScroll as scroll } from "react-scroll";
+import { setCssVariablesValue } from "@/features/theme";
+import { ChatProvider } from "@/providers/ChatProvider";
+import { type LinkedTypebot, useTypebot } from "@/providers/TypebotProvider";
 import { useAnswers } from "../providers/AnswersProvider";
 import { ChatGroup } from "./ChatGroup";
 

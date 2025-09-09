@@ -1,10 +1,10 @@
-import { Button } from "@/components/Button";
-import { SendButton } from "@/components/SendButton";
-import type { InputSubmitContent } from "@/types";
 import { defaultRatingInputOptions } from "@typebot.io/blocks-inputs/rating/constants";
 import type { RatingInputBlock } from "@typebot.io/blocks-inputs/rating/schema";
 import { isDefined, isEmpty, isNotDefined } from "@typebot.io/lib/utils";
-import { For, Match, Show, Switch, createSignal } from "solid-js";
+import { createSignal, For, Match, Show, Switch } from "solid-js";
+import { Button } from "@/components/Button";
+import { SendButton } from "@/components/SendButton";
+import type { InputSubmitContent } from "@/types";
 
 type Props = {
   block: RatingInputBlock;

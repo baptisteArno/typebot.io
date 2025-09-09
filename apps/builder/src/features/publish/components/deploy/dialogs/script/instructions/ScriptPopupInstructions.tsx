@@ -1,7 +1,7 @@
-import { CodeEditor } from "@/components/inputs/CodeEditor";
-import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { Stack, Text } from "@chakra-ui/react";
 import { useState } from "react";
+import { CodeEditor } from "@/components/inputs/CodeEditor";
+import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { PopupSettings } from "../../../settings/PopupSettings";
 import { parseInitPopupCode } from "../../../snippetParsers/popup";
 import {

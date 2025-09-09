@@ -1,10 +1,10 @@
+import { Heading, Text, VStack } from "@chakra-ui/react";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 import { AlertIcon } from "@/components/icons";
 import { BillingPortalButton } from "@/features/billing/components/BillingPortalButton";
 import { DashboardHeader } from "@/features/dashboard/components/DashboardHeader";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { Heading, Text, VStack } from "@chakra-ui/react";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
 
 export default function Page() {
   const { replace } = useRouter();

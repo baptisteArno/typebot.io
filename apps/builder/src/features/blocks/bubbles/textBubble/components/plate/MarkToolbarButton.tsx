@@ -3,7 +3,6 @@ import {
   useMarkToolbarButton,
   useMarkToolbarButtonState,
 } from "@udecode/plate-common";
-import React from "react";
 
 type Props = {
   nodeType: string;

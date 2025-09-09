@@ -1,5 +1,3 @@
-import { isWriteWorkspaceForbidden } from "@/features/workspace/helpers/isWriteWorkspaceForbidden";
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 import { TRPCError } from "@trpc/server";
 import { encrypt } from "@typebot.io/credentials/encrypt";
 import {
@@ -11,6 +9,8 @@ import {
 import { forgedCredentialsSchemas } from "@typebot.io/forge-repository/credentials";
 import prisma from "@typebot.io/prisma";
 import { z } from "@typebot.io/zod";
+import { isWriteWorkspaceForbidden } from "@/features/workspace/helpers/isWriteWorkspaceForbidden";
+import { authenticatedProcedure } from "@/helpers/server/trpc";
 
 const inputShape = {
   name: true,

@@ -1,5 +1,3 @@
-import { canWriteTypebots } from "@/helpers/databaseRules";
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 import { TRPCError } from "@trpc/server";
 import { isHttpRequestBlock } from "@typebot.io/blocks-core/helpers";
 import type { Block } from "@typebot.io/blocks-core/schemas/schema";
@@ -9,6 +7,8 @@ import { byId } from "@typebot.io/lib/utils";
 import prisma from "@typebot.io/prisma";
 import { isTypebotVersionAtLeastV6 } from "@typebot.io/schemas/helpers/isTypebotVersionAtLeastV6";
 import { z } from "@typebot.io/zod";
+import { canWriteTypebots } from "@/helpers/databaseRules";
+import { authenticatedProcedure } from "@/helpers/server/trpc";
 
 export const subscribeHttpRequest = authenticatedProcedure
   .meta({

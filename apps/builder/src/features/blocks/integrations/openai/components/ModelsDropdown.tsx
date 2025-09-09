@@ -1,8 +1,8 @@
+import { useQuery } from "@tanstack/react-query";
+import { defaultOpenAIOptions } from "@typebot.io/blocks-integrations/openai/constants";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { trpc } from "@/lib/queryClient";
-import { useQuery } from "@tanstack/react-query";
-import { defaultOpenAIOptions } from "@typebot.io/blocks-integrations/openai/constants";
 
 type Props = {
   baseUrl?: string;

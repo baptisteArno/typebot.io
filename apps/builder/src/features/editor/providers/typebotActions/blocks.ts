@@ -1,4 +1,3 @@
-import { parseNewBlock } from "@/features/typebot/helpers/parseNewBlock";
 import { createId } from "@paralleldrive/cuid2";
 import { blockHasItems } from "@typebot.io/blocks-core/helpers";
 import type {
@@ -12,6 +11,7 @@ import { byId } from "@typebot.io/lib/utils";
 import type { Edge } from "@typebot.io/typebot/schemas/edge";
 import type { Typebot, TypebotV6 } from "@typebot.io/typebot/schemas/typebot";
 import { type Draft, produce } from "immer";
+import { parseNewBlock } from "@/features/typebot/helpers/parseNewBlock";
 import type { SetTypebot } from "../TypebotProvider";
 import { deleteConnectedEdgesDraft, deleteEdgeDraft } from "./edges";
 import { duplicateItemDraft } from "./items";

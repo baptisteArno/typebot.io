@@ -1,8 +1,3 @@
-import { TextLink } from "@/components/TextLink";
-import { TextInput } from "@/components/inputs/TextInput";
-import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { queryClient, trpc } from "@/lib/queryClient";
-import { toast } from "@/lib/toast";
 import { Alert, AlertIcon } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
 import type { CreatableCredentials } from "@typebot.io/credentials/schemas";
@@ -10,6 +5,11 @@ import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
 import type React from "react";
 import { useState } from "react";
+import { TextInput } from "@/components/inputs/TextInput";
+import { TextLink } from "@/components/TextLink";
+import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
+import { queryClient, trpc } from "@/lib/queryClient";
+import { toast } from "@/lib/toast";
 
 const openAITokensPage = "https://platform.openai.com/account/api-keys";
 

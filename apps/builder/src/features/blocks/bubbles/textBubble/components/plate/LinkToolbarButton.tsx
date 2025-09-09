@@ -3,7 +3,6 @@ import {
   useLinkToolbarButton,
   useLinkToolbarButtonState,
 } from "@udecode/plate-link";
-import React from "react";
 
 type Props = ButtonProps;
 

@@ -1,4 +1,3 @@
-import type { Coordinates, CoordinatesMap } from "@/features/graph/types";
 import { createId } from "@paralleldrive/cuid2";
 import type {
   BlockIndices,
@@ -10,6 +9,7 @@ import type { Edge } from "@typebot.io/typebot/schemas/edge";
 import type { TypebotV6 } from "@typebot.io/typebot/schemas/typebot";
 import type { Variable } from "@typebot.io/variables/schemas";
 import { type Draft, produce } from "immer";
+import type { Coordinates, CoordinatesMap } from "@/features/graph/types";
 import type { SetTypebot } from "../TypebotProvider";
 import {
   createBlockDraft,

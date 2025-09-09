@@ -1,10 +1,8 @@
-import { SetVariableLabel } from "@/components/SetVariableLabel";
-import { useTypebot } from "@/features/editor/providers/TypebotProvider";
-import { WithVariableContent } from "@/features/graph/components/nodes/block/WithVariableContent";
 import { Stack, Text } from "@chakra-ui/react";
 import { defaultTextInputOptions } from "@typebot.io/blocks-inputs/text/constants";
 import type { TextInputBlock } from "@typebot.io/blocks-inputs/text/schema";
-import React from "react";
+import { SetVariableLabel } from "@/components/SetVariableLabel";
+import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 
 type Props = {
   options: TextInputBlock["options"];

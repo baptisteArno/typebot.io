@@ -1,8 +1,8 @@
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 import { TRPCError } from "@trpc/server";
 import prisma from "@typebot.io/prisma";
 import { workspaceInvitationSchema } from "@typebot.io/workspaces/schemas";
 import { z } from "@typebot.io/zod";
+import { authenticatedProcedure } from "@/helpers/server/trpc";
 import { isReadWorkspaceFobidden } from "../helpers/isReadWorkspaceFobidden";
 
 export const listInvitationsInWorkspace = authenticatedProcedure

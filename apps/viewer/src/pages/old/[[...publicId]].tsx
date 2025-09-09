@@ -1,13 +1,13 @@
+import { isDefined, isNotDefined, omit } from "@typebot.io/lib/utils";
+import prisma from "@typebot.io/prisma";
 import type { IncomingMessage } from "http";
+import type { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { ErrorPage } from "@/components/ErrorPage";
 import { NotFoundPage } from "@/components/NotFoundPage";
 import {
   type TypebotPageProps,
   TypebotPageV2,
 } from "@/components/TypebotPageV2";
-import { isDefined, isNotDefined, omit } from "@typebot.io/lib/utils";
-import prisma from "@typebot.io/prisma";
-import type { GetServerSideProps, GetServerSidePropsContext } from "next";
 
 export const getServerSideProps: GetServerSideProps = async (
   context: GetServerSidePropsContext,

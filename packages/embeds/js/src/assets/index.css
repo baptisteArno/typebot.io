@@ -19,7 +19,9 @@
 }
 
 .bubble-typing {
-  transition: width 400ms ease-out, height 400ms ease-out;
+  transition:
+    width 400ms ease-out,
+    height 400ms ease-out;
 }
 
 .bubble1,
@@ -106,16 +108,16 @@ pre {
 }
 
 .text-input::-webkit-input-placeholder {
-  color: var(--typebot-input-placeholder-color) !important;
-  opacity: 1 !important;
+  color: var(--typebot-input-placeholder-color);
+  opacity: 1;
 }
 .text-input::-moz-placeholder {
-  color: var(--typebot-input-placeholder-color) !important;
-  opacity: 1 !important;
+  color: var(--typebot-input-placeholder-color);
+  opacity: 1;
 }
 .text-input::placeholder {
-  color: var(--typebot-input-placeholder-color) !important;
-  opacity: 1 !important;
+  color: var(--typebot-input-placeholder-color);
+  opacity: 1;
 }
 
 .typebot-container {
@@ -123,9 +125,10 @@ pre {
   background-color: var(--typebot-container-bg-color);
   background-position: center;
   background-size: cover;
-  font-family: var(--typebot-container-font-family), -apple-system,
-    BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif,
-    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-family:
+    var(--typebot-container-font-family), -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol";
   container-type: size;
 }
 
@@ -200,7 +203,6 @@ pre {
   background-color: rgba(var(--typebot-checkbox-bg-rgb));
   color: var(--typebot-button-color);
   padding: 1px;
-  border-radius: 2px;
   transition: all 0.3s ease;
 }
 

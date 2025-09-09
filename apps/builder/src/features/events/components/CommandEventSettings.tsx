@@ -1,8 +1,7 @@
-import { TextInput } from "@/components/inputs";
-import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
 import { Stack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import type { CommandEvent } from "@typebot.io/events/schemas";
+import { TextInput } from "@/components/inputs";
 
 export const CommandEventSettings = ({
   options,

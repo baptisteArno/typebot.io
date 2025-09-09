@@ -1,8 +1,8 @@
+import type { ScriptBlock } from "@typebot.io/blocks-logic/script/schema";
 import { parseCorrectValueType, parseVariables } from "@/features/variables";
 import type { LogicState } from "@/types";
 import { sendEventToParent } from "@/utils/chat";
 import { isEmbedded } from "@/utils/helpers";
-import type { ScriptBlock } from "@typebot.io/blocks-logic/script/schema";
 
 export const executeScript = async (
   block: ScriptBlock,

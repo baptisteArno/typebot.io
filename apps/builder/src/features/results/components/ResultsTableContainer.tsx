@@ -1,8 +1,8 @@
-import type { timeFilterValues } from "@/features/analytics/constants";
-import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { Stack } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import type { timeFilterValues } from "@/features/analytics/constants";
+import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { useResults } from "../ResultsProvider";
 import { LogsDialog } from "./LogsDialog";
 import { ResultDialog } from "./ResultDialog";

@@ -1,6 +1,6 @@
-import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { Input } from "@chakra-ui/react";
 import type { Group } from "@typebot.io/groups/schemas";
+import { BasicSelect } from "@/components/inputs/BasicSelect";
 
 type Props = {
   groups: Group[];

@@ -1,5 +1,3 @@
-import { TextInput } from "@/components/inputs";
-import { BasicSelect } from "@/components/inputs/BasicSelect";
 import {
   Accordion,
   AccordionButton,
@@ -13,7 +11,8 @@ import {
   defaultChatwootOptions,
 } from "@typebot.io/blocks-integrations/chatwoot/constants";
 import type { ChatwootBlock } from "@typebot.io/blocks-integrations/chatwoot/schema";
-import React from "react";
+import { TextInput } from "@/components/inputs";
+import { BasicSelect } from "@/components/inputs/BasicSelect";
 
 type Props = {
   options: ChatwootBlock["options"];

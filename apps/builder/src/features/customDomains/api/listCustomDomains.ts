@@ -1,9 +1,9 @@
-import { isReadWorkspaceFobidden } from "@/features/workspace/helpers/isReadWorkspaceFobidden";
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 import { TRPCError } from "@trpc/server";
 import prisma from "@typebot.io/prisma";
 import { customDomainSchema } from "@typebot.io/schemas/features/customDomains";
 import { z } from "@typebot.io/zod";
+import { isReadWorkspaceFobidden } from "@/features/workspace/helpers/isReadWorkspaceFobidden";
+import { authenticatedProcedure } from "@/helpers/server/trpc";
 
 export const listCustomDomains = authenticatedProcedure
   .meta({

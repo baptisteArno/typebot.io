@@ -1,10 +1,10 @@
-import { CopyButton } from "@/components/CopyButton";
 import { Input, InputGroup, InputRightElement, Text } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
 import type { FormEvent } from "react";
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
+import { CopyButton } from "@/components/CopyButton";
 import { createApiTokenQuery } from "../queries/createApiTokenQuery";
 import type { ApiTokenFromServer } from "../types";
 

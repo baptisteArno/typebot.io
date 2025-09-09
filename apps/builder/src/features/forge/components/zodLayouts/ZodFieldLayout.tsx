@@ -1,20 +1,20 @@
-import { MoreInfoTooltip } from "@/components/MoreInfoTooltip";
-import { PrimitiveList } from "@/components/PrimitiveList";
-import { TableList } from "@/components/TableList";
-import { TagsInput } from "@/components/TagsInput";
-import { NumberInput, TextInput, Textarea } from "@/components/inputs";
-import { BasicSelect } from "@/components/inputs/BasicSelect";
-import { CodeEditor } from "@/components/inputs/CodeEditor";
-import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
-import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
 import { FormLabel, Stack } from "@chakra-ui/react";
+import { evaluateIsHidden } from "@typebot.io/forge/helpers/evaluateIsHidden";
 import type { ForgedBlockDefinition } from "@typebot.io/forge-repository/definitions";
 import type { ForgedBlock } from "@typebot.io/forge-repository/schemas";
-import { evaluateIsHidden } from "@typebot.io/forge/helpers/evaluateIsHidden";
 import { Field } from "@typebot.io/ui/components/Field";
 import type { ZodLayoutMetadata } from "@typebot.io/zod";
 import Markdown, { type Components } from "react-markdown";
 import type { ZodTypeAny, z } from "zod";
+import { NumberInput, Textarea, TextInput } from "@/components/inputs";
+import { BasicSelect } from "@/components/inputs/BasicSelect";
+import { CodeEditor } from "@/components/inputs/CodeEditor";
+import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
+import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
+import { MoreInfoTooltip } from "@/components/MoreInfoTooltip";
+import { PrimitiveList } from "@/components/PrimitiveList";
+import { TableList } from "@/components/TableList";
+import { TagsInput } from "@/components/TagsInput";
 import { getZodInnerSchema } from "../../helpers/getZodInnerSchema";
 import {
   AutocompleteInput,

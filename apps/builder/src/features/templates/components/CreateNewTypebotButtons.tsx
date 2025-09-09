@@ -1,14 +1,9 @@
-import { DownloadIcon, TemplateIcon } from "@/components/icons";
-import { useUser } from "@/features/user/hooks/useUser";
-import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { trpc } from "@/lib/queryClient";
-import { toast } from "@/lib/toast";
 import {
   Heading,
   Stack,
-  VStack,
   useColorModeValue,
   useDisclosure,
+  VStack,
 } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
@@ -16,7 +11,11 @@ import type { Typebot } from "@typebot.io/typebot/schemas/typebot";
 import { Button } from "@typebot.io/ui/components/Button";
 import { LayoutBottomIcon } from "@typebot.io/ui/icons/LayoutBottomIcon";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import { useState } from "react";
+import { DownloadIcon, TemplateIcon } from "@/components/icons";
+import { useUser } from "@/features/user/hooks/useUser";
+import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
+import { trpc } from "@/lib/queryClient";
 import { ImportTypebotFromFileButton } from "./ImportTypebotFromFileButton";
 import { TemplatesDialog } from "./TemplatesDialog";
 

@@ -1,4 +1,3 @@
-import { getAuthenticatedUser } from "@/features/auth/helpers/getAuthenticatedUser";
 import { isHttpRequestBlock } from "@typebot.io/blocks-core/helpers";
 import type { Block } from "@typebot.io/blocks-core/schemas/schema";
 import type { HttpRequest } from "@typebot.io/blocks-integrations/httpRequest/schema";
@@ -10,8 +9,7 @@ import { parseSampleResult } from "@typebot.io/bot-engine/blocks/integrations/ht
 import { fetchLinkedChildTypebots } from "@typebot.io/bot-engine/blocks/logic/typebotLink/fetchLinkedChildTypebots";
 import { saveLog } from "@typebot.io/bot-engine/logs/saveLog";
 import { getBlockById } from "@typebot.io/groups/helpers/getBlockById";
-import { methodNotAllowed } from "@typebot.io/lib/api/utils";
-import { notFound } from "@typebot.io/lib/api/utils";
+import { methodNotAllowed, notFound } from "@typebot.io/lib/api/utils";
 import { byId } from "@typebot.io/lib/utils";
 import prisma from "@typebot.io/prisma";
 import type { AnswerInSessionState } from "@typebot.io/results/schemas/answers";
@@ -22,6 +20,7 @@ import {
 import type { Typebot } from "@typebot.io/typebot/schemas/typebot";
 import type { Variable } from "@typebot.io/variables/schemas";
 import type { NextApiRequest, NextApiResponse } from "next";
+import { getAuthenticatedUser } from "@/features/auth/helpers/getAuthenticatedUser";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "POST") {

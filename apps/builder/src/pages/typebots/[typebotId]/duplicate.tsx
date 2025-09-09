@@ -1,3 +1,8 @@
+import { HStack, Stack, Text, useColorModeValue } from "@chakra-ui/react";
+import { useMutation } from "@tanstack/react-query";
+import { Button } from "@typebot.io/ui/components/Button";
+import { useRouter } from "next/router";
+import { useState } from "react";
 import { EmojiOrImageIcon } from "@/components/EmojiOrImageIcon";
 import { HardDriveIcon } from "@/components/icons";
 import { RadioButtons } from "@/components/inputs/RadioButtons";
@@ -5,11 +10,6 @@ import { PlanTag } from "@/features/billing/components/PlanTag";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { trpc } from "@/lib/queryClient";
-import { HStack, Stack, Text, useColorModeValue } from "@chakra-ui/react";
-import { useMutation } from "@tanstack/react-query";
-import { Button } from "@typebot.io/ui/components/Button";
-import { useRouter } from "next/router";
-import { useState } from "react";
 
 const Page = () => {
   const { push } = useRouter();

@@ -1,13 +1,13 @@
-import { UploadButton } from "@/components/ImageUploadContent/UploadButton";
-import { TextInput } from "@/components/inputs";
-import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
-import type { FilePathUploadProps } from "@/features/upload/api/generateUploadUrl";
 import { Flex, HStack, Stack, Text } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { defaultAudioBubbleContent } from "@typebot.io/blocks-bubbles/audio/constants";
 import type { AudioBubbleBlock } from "@typebot.io/blocks-bubbles/audio/schema";
 import { Button } from "@typebot.io/ui/components/Button";
 import { useState } from "react";
+import { UploadButton } from "@/components/ImageUploadContent/UploadButton";
+import { TextInput } from "@/components/inputs";
+import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
+import type { FilePathUploadProps } from "@/features/upload/api/generateUploadUrl";
 
 type Props = {
   uploadFileProps: FilePathUploadProps;

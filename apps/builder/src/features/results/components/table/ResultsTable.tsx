@@ -1,19 +1,15 @@
-import { AlignLeftTextIcon } from "@/components/icons";
-import { TimeFilterSelect } from "@/features/analytics/components/TimeFilterSelect";
-import type { timeFilterValues } from "@/features/analytics/constants";
-import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import {
   Box,
+  chakra,
   HStack,
   Stack,
   Text,
-  chakra,
   useColorModeValue,
 } from "@chakra-ui/react";
 import {
   type ColumnDef,
-  type Updater,
   getCoreRowModel,
+  type Updater,
   useReactTable,
 } from "@tanstack/react-table";
 import { parseColumnsOrder } from "@typebot.io/results/parseColumnsOrder";
@@ -26,6 +22,10 @@ import type { ResultsTablePreferences } from "@typebot.io/typebot/schemas/typebo
 import { colors } from "@typebot.io/ui/chakraTheme";
 import { Button } from "@typebot.io/ui/components/Button";
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import { AlignLeftTextIcon } from "@/components/icons";
+import { TimeFilterSelect } from "@/features/analytics/components/TimeFilterSelect";
+import type { timeFilterValues } from "@/features/analytics/constants";
+import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { HeaderIcon } from "../HeaderIcon";
 import { HeaderRow } from "./HeaderRow";
 import { IndeterminateCheckbox } from "./IndeterminateCheckbox";

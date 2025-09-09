@@ -1,4 +1,3 @@
-import { safeStringify } from "@/features/variables";
 import { isDefined } from "@typebot.io/lib/utils";
 import type { AnswerInput } from "@typebot.io/results/schemas/answers";
 import type { ResultValuesInput } from "@typebot.io/results/schemas/results";
@@ -7,7 +6,8 @@ import type {
   VariableWithUnknowValue,
   VariableWithValue,
 } from "@typebot.io/variables/schemas";
-import { type ReactNode, createContext, useContext, useState } from "react";
+import { createContext, type ReactNode, useContext, useState } from "react";
+import { safeStringify } from "@/features/variables";
 
 const answersContext = createContext<{
   resultId?: string;
@@ -19,7 +19,7 @@ const answersContext = createContext<{
   ) => Promise<void> | undefined;
   updateVariables: (variables: VariableWithUnknowValue[]) => void;
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  //@ts-ignore
+  //@ts-expect-error
 }>({});
 
 export const AnswersProvider = ({

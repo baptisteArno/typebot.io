@@ -11,7 +11,10 @@ export const PricingCardFooter = ({ children }: { children: ReactNode }) => (
 export const PricingCardRoot = ({
   children,
   className,
-}: { children: ReactNode; className?: string }) => (
+}: {
+  children: ReactNode;
+  className?: string;
+}) => (
   <div
     className={cn(
       "rounded-2xl border bg-gray-1 dark:bg-gray-2 text-gray-12 flex flex-col relative isolate items-center justify-between w-full pt-20 gap-10",
@@ -25,7 +28,10 @@ export const PricingCardRoot = ({
 export const PlanNamePill = ({
   children,
   className,
-}: { children: React.ReactNode; className?: string }) => (
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) => (
   <div
     className={cn(
       "rounded-b-lg text-gray-1 p-1.5 uppercase font-bold text-xs px-4",

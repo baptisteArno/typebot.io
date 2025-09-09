@@ -1,5 +1,5 @@
-import { resolve } from "path";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
+import { resolve } from "path";
 import { defineConfig } from "vite";
 import viteTsConfigPaths from "vite-tsconfig-paths";
 import contentCollections from "./content-collection-vite-plugin";

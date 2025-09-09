@@ -1,16 +1,8 @@
-import { BasicSelect } from "@/components/inputs/BasicSelect";
-import { StripeLogo } from "@/components/logos/StripeLogo";
-import { WhatsAppLogo } from "@/components/logos/WhatsAppLogo";
-import { BlockIcon } from "@/features/editor/components/BlockIcon";
-import { BlockLabel } from "@/features/editor/components/BlockLabel";
-import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { useOpenControls } from "@/hooks/useOpenControls";
-import { trpc } from "@/lib/queryClient";
 import {
   Divider,
   Flex,
-  HStack,
   Heading,
+  HStack,
   type IconProps,
   Skeleton,
   SkeletonCircle,
@@ -18,8 +10,7 @@ import {
   Text,
   type TextProps,
 } from "@chakra-ui/react";
-import { useQuery } from "@tanstack/react-query";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
 import { IntegrationBlockType } from "@typebot.io/blocks-integrations/constants";
 import {
@@ -32,7 +23,15 @@ import { Popover } from "@typebot.io/ui/components/Popover";
 import { ChevronDownIcon } from "@typebot.io/ui/icons/ChevronDownIcon";
 import { EditIcon } from "@typebot.io/ui/icons/EditIcon";
 import { TrashIcon } from "@typebot.io/ui/icons/TrashIcon";
-import React, { useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
+import { BasicSelect } from "@/components/inputs/BasicSelect";
+import { StripeLogo } from "@/components/logos/StripeLogo";
+import { WhatsAppLogo } from "@/components/logos/WhatsAppLogo";
+import { BlockIcon } from "@/features/editor/components/BlockIcon";
+import { BlockLabel } from "@/features/editor/components/BlockLabel";
+import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
+import { useOpenControls } from "@/hooks/useOpenControls";
+import { trpc } from "@/lib/queryClient";
 import { CredentialsCreateDialog } from "./CredentialsCreateDialog";
 import { CredentialsUpdateDialog } from "./CredentialsUpdateDialog";
 

@@ -1,14 +1,14 @@
-import { CopyButton } from "@/components/CopyButton";
-import { TextInput } from "@/components/inputs/TextInput";
-import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { queryClient, trpc } from "@/lib/queryClient";
-import { toast } from "@/lib/toast";
-import { Input, InputGroup, InputRightElement, Stack } from "@chakra-ui/react";
+import { Input, InputGroup, InputRightElement } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
 import type { ForgedBlockDefinition } from "@typebot.io/forge-repository/definitions";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
 import { useState } from "react";
+import { CopyButton } from "@/components/CopyButton";
+import { TextInput } from "@/components/inputs/TextInput";
+import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
+import { queryClient, trpc } from "@/lib/queryClient";
+import { toast } from "@/lib/toast";
 import { useOAuthPopup } from "./useOAuthPopup";
 
 type Props = {

@@ -15,8 +15,10 @@ import { createId } from "@typebot.io/lib/createId";
 import type { Answer } from "@typebot.io/results/schemas/answers";
 import type { SessionStore } from "@typebot.io/runtime-session-store";
 import type { Edge } from "@typebot.io/typebot/schemas/edge";
-import type { Variable } from "@typebot.io/variables/schemas";
-import type { SetVariableHistoryItem } from "@typebot.io/variables/schemas";
+import type {
+  SetVariableHistoryItem,
+  Variable,
+} from "@typebot.io/variables/schemas";
 import { isTypebotInSessionAtLeastV6 } from "./helpers/isTypebotInSessionAtLeastV6";
 import {
   type BubbleBlockWithDefinedContent,

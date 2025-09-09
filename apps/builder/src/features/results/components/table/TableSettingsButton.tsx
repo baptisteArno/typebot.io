@@ -1,3 +1,8 @@
+import { HStack, Text } from "@chakra-ui/react";
+import type { ResultHeaderCell } from "@typebot.io/results/schemas/results";
+import { Button } from "@typebot.io/ui/components/Button";
+import { Popover } from "@typebot.io/ui/components/Popover";
+import { useState } from "react";
 import {
   ChevronRightIcon,
   DownloadIcon,
@@ -5,11 +10,6 @@ import {
   MoreHorizontalIcon,
 } from "@/components/icons";
 import { useOpenControls } from "@/hooks/useOpenControls";
-import { HStack, Text } from "@chakra-ui/react";
-import type { ResultHeaderCell } from "@typebot.io/results/schemas/results";
-import { Button } from "@typebot.io/ui/components/Button";
-import { Popover } from "@typebot.io/ui/components/Popover";
-import React, { useState } from "react";
 import { ColumnSettings } from "./ColumnSettings";
 import { ExportAllResultsDialog } from "./ExportAllResultsDialog";
 

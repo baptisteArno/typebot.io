@@ -1,4 +1,3 @@
-import { Marquee } from "./Marquee";
 import {
   Cora,
   IbanFirst,
@@ -9,8 +8,8 @@ import {
   PinpointInteractive,
   Shadow,
   SocialHackrs,
-  Webisharp,
 } from "./logos";
+import { Marquee } from "./Marquee";
 
 export const Companies = () => (
   <div className="flex w-full flex-col gap-6 md:gap-12 items-center">

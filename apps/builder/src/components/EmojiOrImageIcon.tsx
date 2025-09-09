@@ -1,7 +1,6 @@
-import { type IconProps, Image, chakra } from "@chakra-ui/react";
+import { chakra, type IconProps, Image } from "@chakra-ui/react";
 import { isSvgSrc } from "@typebot.io/lib/utils";
 import { cx } from "@typebot.io/ui/lib/cva";
-import React from "react";
 
 type Props = {
   icon?: string | null;

@@ -1,15 +1,14 @@
 import {
   Alert,
   AlertIcon,
-  HStack,
   Heading,
+  HStack,
   Stack,
   Text,
 } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { Plan } from "@typebot.io/prisma/enum";
 import type { Workspace } from "@typebot.io/workspaces/schemas";
-import React from "react";
 import { useSubscriptionQuery } from "../hooks/useSubscriptionQuery";
 import { BillingPortalButton } from "./BillingPortalButton";
 import { PlanTag } from "./PlanTag";

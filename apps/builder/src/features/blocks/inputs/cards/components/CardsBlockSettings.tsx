@@ -1,11 +1,10 @@
-import { TableList, type TableListItemProps } from "@/components/TableList";
-import { BasicSelect } from "@/components/inputs/BasicSelect";
-import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
 import { Stack } from "@chakra-ui/react";
 import { cardMappableFields } from "@typebot.io/blocks-inputs/cards/constants";
 import type { CardsBlock } from "@typebot.io/blocks-inputs/cards/schema";
 import type { Variable } from "@typebot.io/variables/schemas";
-import React from "react";
+import { BasicSelect } from "@/components/inputs/BasicSelect";
+import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
+import { TableList, type TableListItemProps } from "@/components/TableList";
 
 type Props = {
   options?: CardsBlock["options"];

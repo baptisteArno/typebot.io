@@ -1,11 +1,11 @@
-import { isWriteTypebotForbidden } from "@/features/typebot/helpers/isWriteTypebotForbidden";
-import { getUserModeInWorkspace } from "@/features/workspace/helpers/getUserRoleInWorkspace";
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 import { TRPCError } from "@trpc/server";
 import prisma from "@typebot.io/prisma";
 import { clientSideCreateEventSchema } from "@typebot.io/telemetry/schemas";
 import { trackEvents } from "@typebot.io/telemetry/trackEvents";
 import { z } from "@typebot.io/zod";
+import { isWriteTypebotForbidden } from "@/features/typebot/helpers/isWriteTypebotForbidden";
+import { getUserModeInWorkspace } from "@/features/workspace/helpers/getUserRoleInWorkspace";
+import { authenticatedProcedure } from "@/helpers/server/trpc";
 
 export const trackClientEvents = authenticatedProcedure
   .input(

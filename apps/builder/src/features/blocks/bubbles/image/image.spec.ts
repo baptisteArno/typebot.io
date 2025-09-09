@@ -1,10 +1,10 @@
-import { getTestAsset } from "@/test/utils/playwright";
 import { createId } from "@paralleldrive/cuid2";
 import test, { expect } from "@playwright/test";
 import { BubbleBlockType } from "@typebot.io/blocks-bubbles/constants";
 import { createTypebots } from "@typebot.io/playwright/databaseActions";
 import { parseDefaultGroupWithBlock } from "@typebot.io/playwright/databaseHelpers";
 import { proWorkspaceId } from "@typebot.io/playwright/databaseSetup";
+import { getTestAsset } from "@/test/utils/playwright";
 
 const unsplashImageSrc =
   "https://images.unsplash.com/photo-1504297050568-910d24c426d3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1287&q=80";

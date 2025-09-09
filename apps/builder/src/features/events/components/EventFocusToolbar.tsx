@@ -1,9 +1,9 @@
-import { CopyIcon, PlayIcon, SettingsIcon } from "@/components/icons";
-import { isMac } from "@/helpers/isMac";
 import { HStack, useColorModeValue } from "@chakra-ui/react";
 import { EventType } from "@typebot.io/events/constants";
 import { Button } from "@typebot.io/ui/components/Button";
 import { TrashIcon } from "@typebot.io/ui/icons/TrashIcon";
+import { CopyIcon, PlayIcon, SettingsIcon } from "@/components/icons";
+import { isMac } from "@/helpers/isMac";
 
 type Props = {
   eventId: string;
@@ -13,7 +13,6 @@ type Props = {
 };
 
 export const EventFocusToolbar = ({
-  eventId,
   type,
   onPlayClick,
   onSettingsClick,

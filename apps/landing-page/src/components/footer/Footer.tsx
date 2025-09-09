@@ -1,5 +1,5 @@
-import { TypebotLogoFull } from "@/components/TypebotLogo";
 import { TextLink } from "@/components/link";
+import { TypebotLogoFull } from "@/components/TypebotLogo";
 import {
   blueskyUrl,
   discordUrl,

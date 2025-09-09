@@ -1,5 +1,3 @@
-import { IconButton } from "@/components/IconButton";
-import { MotionCard } from "@/components/motion-wrappers";
 import { isDefined, isNotDefined } from "@typebot.io/lib/utils";
 import { CloseIcon } from "@typebot.io/ui/icons/CloseIcon";
 import { PlusIcon } from "@typebot.io/ui/icons/PlusIcon";
@@ -7,6 +5,8 @@ import { cn } from "@typebot.io/ui/lib/cn";
 import { cx } from "@typebot.io/ui/lib/cva";
 import { motion } from "motion/react";
 import { useState } from "react";
+import { IconButton } from "@/components/IconButton";
+import { MotionCard } from "@/components/motion-wrappers";
 import marketingSrc from "./assets/marketing.png";
 import productSrc from "./assets/product.png";
 import salesSrc from "./assets/sales.png";

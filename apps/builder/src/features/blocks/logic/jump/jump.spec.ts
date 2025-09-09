@@ -1,7 +1,7 @@
-import { getTestAsset } from "@/test/utils/playwright";
 import { createId } from "@paralleldrive/cuid2";
 import test, { expect } from "@playwright/test";
 import { importTypebotInDatabase } from "@typebot.io/playwright/databaseActions";
+import { getTestAsset } from "@/test/utils/playwright";
 
 test("should work as expected", async ({ page }) => {
   const typebotId = createId();

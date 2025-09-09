@@ -1,6 +1,3 @@
-import { ImageIcon } from "@/components/icons";
-import { useTypebot } from "@/features/editor/providers/TypebotProvider";
-import { useGraph } from "@/features/graph/providers/GraphProvider";
 import {
   Flex,
   Image,
@@ -11,8 +8,10 @@ import type { ItemIndices } from "@typebot.io/blocks-core/schemas/items/schema";
 import type { PictureChoiceItem } from "@typebot.io/blocks-inputs/pictureChoice/schema";
 import { isSvgSrc } from "@typebot.io/lib/utils";
 import { Popover } from "@typebot.io/ui/components/Popover";
-import type React from "react";
 import { useRef } from "react";
+import { ImageIcon } from "@/components/icons";
+import { useTypebot } from "@/features/editor/providers/TypebotProvider";
+import { useGraph } from "@/features/graph/providers/GraphProvider";
 import { PictureChoiceItemSettings } from "./PictureChoiceItemSettings";
 
 type Props = {

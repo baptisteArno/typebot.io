@@ -1,11 +1,11 @@
-import { LinkFloatingToolbar } from "@/features/blocks/bubbles/textBubble/components/plate/LinkFloatingInput";
 import {
   createBoldPlugin,
   createItalicPlugin,
   createUnderlinePlugin,
 } from "@udecode/plate-basic-marks";
 import { createPlugins } from "@udecode/plate-core";
-import { ELEMENT_LINK, createLinkPlugin } from "@udecode/plate-link";
+import { createLinkPlugin, ELEMENT_LINK } from "@udecode/plate-link";
+import { LinkFloatingToolbar } from "@/features/blocks/bubbles/textBubble/components/plate/LinkFloatingInput";
 
 export const editorStyle = (backgroundColor: string): React.CSSProperties => ({
   flex: 1,

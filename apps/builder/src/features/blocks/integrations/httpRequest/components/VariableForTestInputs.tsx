@@ -1,9 +1,9 @@
-import type { TableListItemProps } from "@/components/TableList";
-import { TextInput } from "@/components/inputs";
-import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
 import { FormControl, FormLabel, Stack } from "@chakra-ui/react";
 import type { VariableForTest } from "@typebot.io/blocks-integrations/httpRequest/schema";
 import type { Variable } from "@typebot.io/variables/schemas";
+import { TextInput } from "@/components/inputs";
+import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
+import type { TableListItemProps } from "@/components/TableList";
 
 export const VariableForTestInputs = ({
   item,

@@ -2,7 +2,7 @@ import { Flex, Stack, Text } from "@chakra-ui/react";
 import { GiphyFetch } from "@giphy/js-fetch-api";
 import { Grid } from "@giphy/react-components";
 import { env } from "@typebot.io/env";
-import React, { useState } from "react";
+import { useState } from "react";
 import { TextInput } from "../inputs";
 import { GiphyLogo } from "../logos/GiphyLogo";
 

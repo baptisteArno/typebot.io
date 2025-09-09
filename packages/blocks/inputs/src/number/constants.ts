@@ -1,5 +1,4 @@
 import { defaultButtonLabel } from "../constants";
-import type { NumberInputBlock } from "./schema";
 
 export enum NumberInputStyle {
   DECIMAL = "decimal",

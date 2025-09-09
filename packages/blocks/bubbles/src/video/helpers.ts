@@ -1,10 +1,10 @@
 import {
-  VideoBubbleContentType,
   defaultVideoBubbleContent,
   gumletRegex,
   horizontalVideoSuggestionSize,
   oneDriveRegex,
   tiktokRegex,
+  VideoBubbleContentType,
   verticalVideoSuggestionSize,
   vimeoRegex,
   youtubeEmbedParamsMap,

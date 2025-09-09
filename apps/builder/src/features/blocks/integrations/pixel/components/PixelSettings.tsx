@@ -1,10 +1,3 @@
-import { SwitchWithRelatedSettings } from "@/components/SwitchWithRelatedSettings";
-import { TableList } from "@/components/TableList";
-import { TextLink } from "@/components/TextLink";
-import { TextInput } from "@/components/inputs";
-import { BasicSelect } from "@/components/inputs/BasicSelect";
-import { CodeEditor } from "@/components/inputs/CodeEditor";
-import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
 import { Stack, Text } from "@chakra-ui/react";
 import {
   defaultPixelOptions,
@@ -13,7 +6,13 @@ import {
 } from "@typebot.io/blocks-integrations/pixel/constants";
 import type { PixelBlock } from "@typebot.io/blocks-integrations/pixel/schema";
 import { isDefined, isEmpty } from "@typebot.io/lib/utils";
-import React from "react";
+import { TextInput } from "@/components/inputs";
+import { BasicSelect } from "@/components/inputs/BasicSelect";
+import { CodeEditor } from "@/components/inputs/CodeEditor";
+import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
+import { SwitchWithRelatedSettings } from "@/components/SwitchWithRelatedSettings";
+import { TableList } from "@/components/TableList";
+import { TextLink } from "@/components/TextLink";
 
 const pixelReferenceUrl =
   "https://developers.facebook.com/docs/meta-pixel/reference#standard-events";

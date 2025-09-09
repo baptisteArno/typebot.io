@@ -1,19 +1,3 @@
-import { BotContainerContext } from "@/contexts/BotContainerContext";
-import { startChatQuery } from "@/queries/startChatQuery";
-import type { BotContext } from "@/types";
-import { CorsError } from "@/utils/CorsError";
-import { mergeThemes } from "@/utils/dynamicTheme";
-import { injectFont } from "@/utils/injectFont";
-import { persist } from "@/utils/persist";
-import { setCssVariablesValue } from "@/utils/setCssVariablesValue";
-import {
-  getExistingResultIdFromStorage,
-  getInitialChatReplyFromStorage,
-  setInitialChatReplyInStorage,
-  setResultInStorage,
-  wipeExistingChatStateInStorage,
-} from "@/utils/storage";
-import { toaster } from "@/utils/toaster";
 import { Toast, Toaster } from "@ark-ui/solid";
 import type { InputBlock } from "@typebot.io/blocks-inputs/schema";
 import type {
@@ -37,14 +21,30 @@ import type { Font } from "@typebot.io/theme/schemas";
 import { cn } from "@typebot.io/ui/lib/cn";
 import { cx } from "@typebot.io/ui/lib/cva";
 import { HTTPError } from "ky";
-import { Show, createEffect, createSignal, onCleanup } from "solid-js";
+import { createEffect, createSignal, onCleanup, Show } from "solid-js";
 import { Portal } from "solid-js/web";
+import { BotContainerContext } from "@/contexts/BotContainerContext";
+import { startChatQuery } from "@/queries/startChatQuery";
+import type { BotContext } from "@/types";
+import { CorsError } from "@/utils/CorsError";
+import { mergeThemes } from "@/utils/dynamicTheme";
+import { injectFont } from "@/utils/injectFont";
+import { persist } from "@/utils/persist";
+import { setCssVariablesValue } from "@/utils/setCssVariablesValue";
+import {
+  getExistingResultIdFromStorage,
+  getInitialChatReplyFromStorage,
+  setInitialChatReplyInStorage,
+  setResultInStorage,
+  wipeExistingChatStateInStorage,
+} from "@/utils/storage";
+import { toaster } from "@/utils/toaster";
 import { buttonVariants } from "./Button";
 import { ChatContainer } from "./ConversationContainer/ChatContainer";
 import { ErrorMessage } from "./ErrorMessage";
+import { CloseIcon } from "./icons/CloseIcon";
 import { LiteBadge } from "./LiteBadge";
 import { ProgressBar } from "./ProgressBar";
-import { CloseIcon } from "./icons/CloseIcon";
 
 export type BotProps = {
   id?: string;

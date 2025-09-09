@@ -160,7 +160,11 @@ export function populateEdgesWithTotalVisits({
     edgeId,
     usersRemaining,
     isOffDefaultPath,
-  }: { edgeId: string; usersRemaining: number; isOffDefaultPath: boolean }) {
+  }: {
+    edgeId: string;
+    usersRemaining: number;
+    isOffDefaultPath: boolean;
+  }) {
     if (usersRemaining <= 0) return;
     depthFirstFrames.push({ edgeId, usersRemaining, isOffDefaultPath });
   }

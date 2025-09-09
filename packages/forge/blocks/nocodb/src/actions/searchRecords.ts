@@ -1,7 +1,7 @@
 import { createAction, option } from "@typebot.io/forge";
 import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
 import { isDefined, isNotDefined } from "@typebot.io/lib/utils";
-import ky, { HTTPError } from "ky";
+import ky from "ky";
 import { auth } from "../auth";
 import {
   defaultBaseUrl,
@@ -82,7 +82,7 @@ export const searchRecords = createAction({
           )
           .json<ListTableRecordsResponse>();
 
-        let filterIndex: number | undefined = undefined;
+        let filterIndex: number | undefined;
 
         if (returnType && returnType !== "All") {
           const total = data.pageInfo.totalRows;

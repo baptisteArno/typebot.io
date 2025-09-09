@@ -1,11 +1,3 @@
-import { parseVariables } from "@/features/variables";
-import { useAnswers } from "@/providers/AnswersProvider";
-import { useChat } from "@/providers/ChatProvider";
-import type { InputSubmitContent } from "@/types";
-import { getLastChatBlockType } from "@/utils/chat";
-import { executeIntegration } from "@/utils/executeIntegration";
-import { executeLogic } from "@/utils/executeLogic";
-import { blockCanBeRetried, parseRetryBlock } from "@/utils/inputs";
 import type { BubbleBlock } from "@typebot.io/blocks-bubbles/schema";
 import {
   isBubbleBlock,
@@ -23,14 +15,22 @@ import { byId, isDefined } from "@typebot.io/lib/utils";
 import type { PublicTypebot } from "@typebot.io/typebot/schemas/publicTypebot";
 import { useEffect, useRef, useState } from "react";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
+import { parseVariables } from "@/features/variables";
+import { useAnswers } from "@/providers/AnswersProvider";
+import { useChat } from "@/providers/ChatProvider";
+import type { InputSubmitContent } from "@/types";
+import { getLastChatBlockType } from "@/utils/chat";
+import { executeIntegration } from "@/utils/executeIntegration";
+import { executeLogic } from "@/utils/executeLogic";
+import { blockCanBeRetried, parseRetryBlock } from "@/utils/inputs";
 import {
   type LinkedTypebot,
   useTypebot,
 } from "../../providers/TypebotProvider";
 import { PopupBlockedToast } from "../PopupBlockedToast";
 import { AvatarSideContainer } from "./AvatarSideContainer";
-import { InputChatBlock } from "./ChatBlock/InputChatBlock";
 import { HostBubble } from "./ChatBlock/bubbles/HostBubble";
+import { InputChatBlock } from "./ChatBlock/InputChatBlock";
 
 type ChatGroupProps = {
   blocks: Block[];

@@ -1,10 +1,10 @@
 import type { Coordinates } from "@dnd-kit/utilities";
 import type { Edge } from "@typebot.io/typebot/schemas/edge";
 import {
+  createContext,
   type Dispatch,
   type ReactNode,
   type SetStateAction,
-  createContext,
   useContext,
   useState,
 } from "react";
@@ -33,7 +33,7 @@ const graphContext = createContext<{
   isAnalytics: boolean;
   focusedGroupId?: string;
   setFocusedGroupId: Dispatch<SetStateAction<string | undefined>>;
-  //@ts-ignore
+  //@ts-expect-error
 }>({
   graphPosition: graphPositionDefaultValue({ x: 0, y: 0 }),
   connectingIds: null,

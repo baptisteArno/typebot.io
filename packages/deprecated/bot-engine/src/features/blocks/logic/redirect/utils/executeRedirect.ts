@@ -1,8 +1,8 @@
+import type { RedirectBlock } from "@typebot.io/blocks-logic/redirect/schema";
+import { sanitizeUrl } from "@typebot.io/lib/utils";
 import { parseVariables } from "@/features/variables";
 import type { EdgeId, LogicState } from "@/types";
 import { sendEventToParent } from "@/utils/chat";
-import type { RedirectBlock } from "@typebot.io/blocks-logic/redirect/schema";
-import { sanitizeUrl } from "@typebot.io/lib/utils";
 
 export const executeRedirect = (
   block: RedirectBlock,
@@ -25,7 +25,7 @@ export const executeRedirect = (
 
     try {
       newWindow = window.open(formattedUrl);
-    } catch (err) {
+    } catch (_err) {
       sendEventToParent({ redirectUrl: formattedUrl });
     }
   } else {

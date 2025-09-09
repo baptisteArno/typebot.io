@@ -1,6 +1,5 @@
-import * as React from "react";
-
 import { cn } from "@typebot.io/ui/lib/cn";
+import * as React from "react";
 
 const TableRoot = React.forwardRef<
   HTMLDivElement,

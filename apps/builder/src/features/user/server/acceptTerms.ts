@@ -1,6 +1,6 @@
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 import prisma from "@typebot.io/prisma";
 import { clientUserSchema, userSchema } from "@typebot.io/user/schemas";
+import { authenticatedProcedure } from "@/helpers/server/trpc";
 
 const outputSchema = clientUserSchema.merge(
   userSchema.pick({ termsAcceptedAt: true }),

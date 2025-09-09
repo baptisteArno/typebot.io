@@ -1,3 +1,8 @@
+import { Flex, HStack, Tag, Text, useColorModeValue } from "@chakra-ui/react";
+import { useQuery } from "@tanstack/react-query";
+import { useRouter } from "next/router";
+import { useQueryState } from "nuqs";
+import { useMemo } from "react";
 import { ButtonLink } from "@/components/ButtonLink";
 import { Seo } from "@/components/Seo";
 import { AnalyticsGraphContainer } from "@/features/analytics/components/AnalyticsGraphContainer";
@@ -9,11 +14,6 @@ import { TypebotHeader } from "@/features/editor/components/TypebotHeader";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { trpc } from "@/lib/queryClient";
-import { Flex, HStack, Tag, Text, useColorModeValue } from "@chakra-ui/react";
-import { useQuery } from "@tanstack/react-query";
-import { useRouter } from "next/router";
-import { useQueryState } from "nuqs";
-import { useMemo } from "react";
 import { ResultsProvider } from "../ResultsProvider";
 import { ResultsTableContainer } from "./ResultsTableContainer";
 
@@ -39,10 +39,7 @@ export const ResultsPage = () => {
     },
   });
 
-  const {
-    data: { stats } = {},
-    refetch,
-  } = useQuery(
+  const { data: { stats } = {}, refetch } = useQuery(
     trpc.analytics.getStats.queryOptions(
       {
         typebotId: publishedTypebot?.typebotId as string,

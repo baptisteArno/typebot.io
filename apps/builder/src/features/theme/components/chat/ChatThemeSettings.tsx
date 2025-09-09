@@ -1,5 +1,4 @@
-import { BasicSelect } from "@/components/inputs/BasicSelect";
-import { FormLabel, HStack, Heading, Stack } from "@chakra-ui/react";
+import { FormLabel, Heading, HStack, Stack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import {
   defaultBlur,
@@ -30,7 +29,7 @@ import type {
   Theme,
 } from "@typebot.io/theme/schemas";
 import type { TypebotV6 } from "@typebot.io/typebot/schemas/typebot";
-import React from "react";
+import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { AvatarForm } from "./AvatarForm";
 import { ChatContainerForm } from "./ChatContainerForm";
 import { ContainerThemeForm } from "./ContainerThemeForm";

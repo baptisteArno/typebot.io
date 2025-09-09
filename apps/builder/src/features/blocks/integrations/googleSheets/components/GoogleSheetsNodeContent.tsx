@@ -1,9 +1,8 @@
-import { SetVariableLabel } from "@/components/SetVariableLabel";
-import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { Stack, Text } from "@chakra-ui/react";
 import { GoogleSheetsAction } from "@typebot.io/blocks-integrations/googleSheets/constants";
 import type { GoogleSheetsBlock } from "@typebot.io/blocks-integrations/googleSheets/schema";
-import React from "react";
+import { SetVariableLabel } from "@/components/SetVariableLabel";
+import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 
 type Props = {
   options?: GoogleSheetsBlock["options"];

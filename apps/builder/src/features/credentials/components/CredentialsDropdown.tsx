@@ -1,8 +1,4 @@
-import { ChevronLeftIcon, PlusIcon } from "@/components/icons";
-import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { trpc } from "@/lib/queryClient";
-import { useQuery } from "@tanstack/react-query";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
 import type { Credentials } from "@typebot.io/credentials/schemas";
 import { Button, type ButtonProps } from "@typebot.io/ui/components/Button";
@@ -10,6 +6,9 @@ import { Menu } from "@typebot.io/ui/components/Menu";
 import { TrashIcon } from "@typebot.io/ui/icons/TrashIcon";
 import type React from "react";
 import { useCallback, useState } from "react";
+import { ChevronLeftIcon, PlusIcon } from "@/components/icons";
+import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
+import { trpc } from "@/lib/queryClient";
 
 type Props = Omit<ButtonProps, "type"> & {
   type: Credentials["type"];

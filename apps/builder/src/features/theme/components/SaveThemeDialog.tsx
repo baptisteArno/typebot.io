@@ -1,5 +1,3 @@
-import { TextInput } from "@/components/inputs";
-import { queryClient, trpc } from "@/lib/queryClient";
 import { createId } from "@paralleldrive/cuid2";
 import { useMutation } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
@@ -7,6 +5,8 @@ import type { ThemeTemplate } from "@typebot.io/theme/schemas";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
 import { type FormEvent, useRef, useState } from "react";
+import { TextInput } from "@/components/inputs";
+import { queryClient, trpc } from "@/lib/queryClient";
 
 type Props = {
   workspaceId: string;

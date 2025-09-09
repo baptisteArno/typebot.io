@@ -1,12 +1,11 @@
-import { SwitchWithRelatedSettings } from "@/components/SwitchWithRelatedSettings";
-import { TextInput } from "@/components/inputs/TextInput";
-import { ConditionForm } from "@/features/blocks/logic/condition/components/ConditionForm";
 import { Stack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import type { CardsItem } from "@typebot.io/blocks-inputs/cards/schema";
 import { LogicalOperator } from "@typebot.io/conditions/constants";
 import type { Condition } from "@typebot.io/conditions/schemas";
-import React from "react";
+import { TextInput } from "@/components/inputs/TextInput";
+import { SwitchWithRelatedSettings } from "@/components/SwitchWithRelatedSettings";
+import { ConditionForm } from "@/features/blocks/logic/condition/components/ConditionForm";
 
 type Props = {
   options: CardsItem["options"];

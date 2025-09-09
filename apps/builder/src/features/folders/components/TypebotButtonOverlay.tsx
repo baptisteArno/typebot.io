@@ -1,13 +1,13 @@
-import { EmojiOrImageIcon } from "@/components/EmojiOrImageIcon";
-import type { TypebotInDashboard } from "@/features/dashboard/types";
 import {
   Box,
   type BoxProps,
   Flex,
-  VStack,
   useColorModeValue,
+  VStack,
 } from "@chakra-ui/react";
 import { LayoutBottomIcon } from "@typebot.io/ui/icons/LayoutBottomIcon";
+import { EmojiOrImageIcon } from "@/components/EmojiOrImageIcon";
+import type { TypebotInDashboard } from "@/features/dashboard/types";
 
 type Props = {
   typebot: TypebotInDashboard;

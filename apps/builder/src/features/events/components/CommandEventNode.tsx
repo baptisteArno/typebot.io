@@ -1,8 +1,8 @@
-import { EventIcon } from "@/features/events/components/EventIcon";
 import { HStack, Tag, Text } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { EventType } from "@typebot.io/events/constants";
 import type { CommandEvent } from "@typebot.io/events/schemas";
+import { EventIcon } from "@/features/events/components/EventIcon";
 
 type Props = {
   options: CommandEvent["options"];

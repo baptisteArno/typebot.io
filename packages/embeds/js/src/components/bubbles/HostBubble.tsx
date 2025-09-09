@@ -1,3 +1,15 @@
+import type { AudioBubbleBlock } from "@typebot.io/blocks-bubbles/audio/schema";
+import { BubbleBlockType } from "@typebot.io/blocks-bubbles/constants";
+import type { EmbedBubbleBlock } from "@typebot.io/blocks-bubbles/embed/schema";
+import type { ImageBubbleBlock } from "@typebot.io/blocks-bubbles/image/schema";
+import type { TextBubbleBlock } from "@typebot.io/blocks-bubbles/text/schema";
+import type { VideoBubbleBlock } from "@typebot.io/blocks-bubbles/video/schema";
+import type {
+  ChatBubble,
+  CustomEmbedBubble as CustomEmbedBubbleProps,
+} from "@typebot.io/chat-api/schemas";
+import type { Settings } from "@typebot.io/settings/schemas";
+import { Match, Switch } from "solid-js";
 import { AudioBubble } from "@/features/blocks/bubbles/audio/components/AudioBubble";
 import { CustomEmbedBubble } from "@/features/blocks/bubbles/embed/components/CustomEmbedBubble";
 import { EmbedBubble } from "@/features/blocks/bubbles/embed/components/EmbedBubble";
@@ -5,16 +17,6 @@ import { ImageBubble } from "@/features/blocks/bubbles/image/components/ImageBub
 import { TextBubble } from "@/features/blocks/bubbles/textBubble/components/TextBubble";
 import { VideoBubble } from "@/features/blocks/bubbles/video/components/VideoBubble";
 import type { InputSubmitContent } from "@/types";
-import type { AudioBubbleBlock } from "@typebot.io/blocks-bubbles/audio/schema";
-import { BubbleBlockType } from "@typebot.io/blocks-bubbles/constants";
-import type { EmbedBubbleBlock } from "@typebot.io/blocks-bubbles/embed/schema";
-import type { ImageBubbleBlock } from "@typebot.io/blocks-bubbles/image/schema";
-import type { TextBubbleBlock } from "@typebot.io/blocks-bubbles/text/schema";
-import type { VideoBubbleBlock } from "@typebot.io/blocks-bubbles/video/schema";
-import type { ChatBubble } from "@typebot.io/chat-api/schemas";
-import type { CustomEmbedBubble as CustomEmbedBubbleProps } from "@typebot.io/chat-api/schemas";
-import type { Settings } from "@typebot.io/settings/schemas";
-import { Match, Switch } from "solid-js";
 
 type Props = {
   message: ChatBubble;

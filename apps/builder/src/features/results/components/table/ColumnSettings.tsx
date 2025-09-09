@@ -1,20 +1,18 @@
-import { Portal } from "@/components/Portal";
-import { EyeIcon, EyeOffIcon, GripIcon } from "@/components/icons";
 import { Flex, HStack, Stack, Text } from "@chakra-ui/react";
 import {
+  closestCenter,
   DndContext,
   type DragEndEvent,
   DragOverlay,
   type DragStartEvent,
   KeyboardSensor,
   PointerSensor,
-  closestCenter,
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
 import {
-  SortableContext,
   arrayMove,
+  SortableContext,
   sortableKeyboardCoordinates,
   useSortable,
   verticalListSortingStrategy,
@@ -23,6 +21,8 @@ import { CSS } from "@dnd-kit/utilities";
 import type { ResultHeaderCell } from "@typebot.io/results/schemas/results";
 import { Button } from "@typebot.io/ui/components/Button";
 import { useState } from "react";
+import { EyeIcon, EyeOffIcon, GripIcon } from "@/components/icons";
+import { Portal } from "@/components/Portal";
 import { HeaderIcon } from "../HeaderIcon";
 
 type Props = {

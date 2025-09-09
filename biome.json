@@ -1,25 +1,22 @@
 {
   "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
-  "organizeImports": {
-    "ignore": [
-      "emojiList.json",
-      "iconNames.ts",
-      ".last-run.json",
-      "openapi/*.json",
-      "routeTree.gen.ts"
-    ],
-    "enabled": true
+  "assist": { "actions": { "source": { "organizeImports": "on" } } },
+  "files": {
+    "includes": [
+      "**",
+      "!**/node_modules",
+      "!**/.next",
+      "!**/dist",
+      "!**/openapi/**/*.json",
+      "!**/routeTree.gen.ts",
+      "!**/i18n-ally-custom-framework.yml",
+      "!**/.claude",
+      "!**/emojiList.json",
+      "!**/iconNames.ts",
+      "!**/.last-run.json"
+    ]
   },
   "linter": {
-    "ignore": [
-      "node_modules",
-      ".next",
-      "dist",
-      "openapi/*.json",
-      "routeTree.gen.ts",
-      "i18n-ally-custom-framework.yml",
-      ".claude"
-    ],
     "enabled": true,
     "rules": {
       "recommended": true,
@@ -36,7 +33,8 @@
         "noRedundantAlt": "off",
         "noAutofocus": "off",
         "useSemanticElements": "off",
-        "useFocusableInteractive": "off"
+        "useFocusableInteractive": "off",
+        "noStaticElementInteractions": "off"
       },
       "performance": {
         "noAccumulatingSpread": "off"
@@ -51,14 +49,17 @@
         "noParameterAssign": "off",
         "useShorthandFunctionType": "off",
         "useExponentiationOperator": "off",
-        "useSingleVarDeclarator": "off"
+        "useSingleVarDeclarator": "off",
+        "noDescendingSpecificity": "off"
       },
       "correctness": {
         "useExhaustiveDependencies": "off",
         "noSwitchDeclarations": "off",
         "noEmptyPattern": "off",
         "noUnsafeOptionalChaining": "off",
-        "useJsxKeyInIterable": "off"
+        "useJsxKeyInIterable": "off",
+        "useUniqueElementIds": "off",
+        "useHookAtTopLevel": "off"
       },
       "complexity": {
         "noForEach": "off",
@@ -78,20 +79,14 @@
         "useIsArray": "off",
         "noThenProperty": "off",
         "noAsyncPromiseExecutor": "off",
-        "noMisleadingCharacterClass": "off"
+        "noMisleadingCharacterClass": "off",
+        "noUnknownAtRules": "off",
+        "useIterableCallbackReturn": "off",
+        "noDocumentCookie": "off"
       }
     }
   },
   "formatter": {
-    "ignore": [
-      "emojiList.json",
-      "iconNames.ts",
-      ".last-run.json",
-      "openapi/*.json",
-      "routeTree.gen.ts",
-      "i18n-ally-custom-framework.yml",
-      ".claude"
-    ],
     "indentStyle": "space"
   },
   "vcs": {

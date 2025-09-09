@@ -1,9 +1,8 @@
-import { SetVariableLabel } from "@/components/SetVariableLabel";
-import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { Stack, Text } from "@chakra-ui/react";
 import type { WebhookBlock } from "@typebot.io/blocks-logic/webhook/schema";
 import { isDefined } from "@typebot.io/lib/utils";
-import React from "react";
+import { SetVariableLabel } from "@/components/SetVariableLabel";
+import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 
 type Props = {
   options: WebhookBlock["options"];

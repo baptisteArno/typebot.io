@@ -1,6 +1,6 @@
 import { stringify } from "querystring";
-import { toast } from "@/lib/toast";
 import { useEffect, useRef, useState } from "react";
+import { toast } from "@/lib/toast";
 
 interface UseOAuthPopupOptions {
   /** The block definition ID for the OAuth provider */

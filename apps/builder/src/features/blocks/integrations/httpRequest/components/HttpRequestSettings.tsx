@@ -1,10 +1,10 @@
-import { TextInput } from "@/components/inputs";
 import { Stack } from "@chakra-ui/react";
 import type {
   HttpRequest,
   HttpRequestBlock,
 } from "@typebot.io/blocks-integrations/httpRequest/schema";
-import React, { useRef } from "react";
+import { useRef } from "react";
+import { TextInput } from "@/components/inputs";
 import { HttpRequestAdvancedConfigForm } from "./HttpRequestAdvancedConfigForm";
 
 type Props = {

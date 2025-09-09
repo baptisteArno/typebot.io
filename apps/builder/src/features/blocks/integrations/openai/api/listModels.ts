@@ -1,5 +1,3 @@
-import { isReadWorkspaceFobidden } from "@/features/workspace/helpers/isReadWorkspaceFobidden";
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 import { TRPCError } from "@trpc/server";
 import { defaultOpenAIOptions } from "@typebot.io/blocks-integrations/openai/constants";
 import type { OpenAICredentials } from "@typebot.io/blocks-integrations/openai/schema";
@@ -8,6 +6,8 @@ import { isNotEmpty } from "@typebot.io/lib/utils";
 import prisma from "@typebot.io/prisma";
 import { z } from "@typebot.io/zod";
 import { type ClientOptions, OpenAI } from "openai";
+import { isReadWorkspaceFobidden } from "@/features/workspace/helpers/isReadWorkspaceFobidden";
+import { authenticatedProcedure } from "@/helpers/server/trpc";
 
 export const listModels = authenticatedProcedure
   .input(

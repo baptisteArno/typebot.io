@@ -1,11 +1,11 @@
-import { CloseIcon } from "@/components/icons/CloseIcon";
-import type { BotContext } from "@/types";
 import { hexToRgb } from "@typebot.io/lib/hexToRgb";
 import { isTypebotVersionAtLeastV6 } from "@typebot.io/schemas/helpers/isTypebotVersionAtLeastV6";
 import { defaultButtonsBackgroundColor } from "@typebot.io/theme/constants";
 import type { Theme } from "@typebot.io/theme/schemas";
 import { cx } from "@typebot.io/ui/lib/cva";
 import { createEffect, createSignal, onCleanup } from "solid-js";
+import { CloseIcon } from "@/components/icons/CloseIcon";
+import type { BotContext } from "@/types";
 import { volumeProcessorCode } from "./VolumeProcessor";
 
 const barWidth = 3;
@@ -34,7 +34,7 @@ export const VoiceRecorder = (props: Props) => {
   let stream: MediaStream | undefined;
   let bars: number[] = [];
   let recordTimeInterval: NodeJS.Timer | undefined;
-  let lastFrameTime: DOMHighResTimeStamp | undefined = undefined;
+  let lastFrameTime: DOMHighResTimeStamp | undefined;
   let offset = 0;
 
   const fillRgb = hexToRgb(

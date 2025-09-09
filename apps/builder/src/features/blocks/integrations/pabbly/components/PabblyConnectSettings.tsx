@@ -1,10 +1,10 @@
-import { ButtonLink } from "@/components/ButtonLink";
-import { ExternalLinkIcon } from "@/components/icons";
-import { TextInput } from "@/components/inputs";
 import { Alert, AlertIcon, Stack, Text } from "@chakra-ui/react";
 import type { HttpRequest } from "@typebot.io/blocks-integrations/httpRequest/schema";
 import type { PabblyConnectBlock } from "@typebot.io/blocks-integrations/pabblyConnect/schema";
-import React, { useRef } from "react";
+import { useRef } from "react";
+import { ButtonLink } from "@/components/ButtonLink";
+import { ExternalLinkIcon } from "@/components/icons";
+import { TextInput } from "@/components/inputs";
 import { HttpRequestAdvancedConfigForm } from "../../httpRequest/components/HttpRequestAdvancedConfigForm";
 
 type Props = {
@@ -46,7 +46,7 @@ export const PabblyConnectSettings = ({
         <Alert status={url ? "success" : "info"} rounded="md">
           <AlertIcon />
           {url ? (
-            <>Your scenario is correctly configured 🚀</>
+            "Your scenario is correctly configured 🚀"
           ) : (
             <Stack>
               <Text>Head up to Pabbly Connect to get the webhook URL:</Text>

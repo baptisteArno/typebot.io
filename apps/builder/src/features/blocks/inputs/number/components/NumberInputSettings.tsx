@@ -1,6 +1,3 @@
-import { NumberInput, TextInput } from "@/components/inputs";
-import { BasicSelect } from "@/components/inputs/BasicSelect";
-import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
 import {
   Accordion,
   AccordionButton,
@@ -14,12 +11,12 @@ import {
 } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import {
-  NumberInputStyle,
-  NumberInputUnit,
   defaultNumberInputButtonLabel,
   defaultNumberInputPlaceholder,
   defaultNumberInputStyle,
   localeRegex,
+  NumberInputStyle,
+  NumberInputUnit,
   numberStyleTranslationKeys,
   unitTranslationKeys,
 } from "@typebot.io/blocks-inputs/number/constants";
@@ -28,7 +25,10 @@ import {
   numberInputOptionsSchema,
 } from "@typebot.io/blocks-inputs/number/schema";
 import type { Variable } from "@typebot.io/variables/schemas";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
+import { NumberInput, TextInput } from "@/components/inputs";
+import { BasicSelect } from "@/components/inputs/BasicSelect";
+import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
 import { currencies } from "../../payment/currencies";
 
 type Props = {

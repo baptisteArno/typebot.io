@@ -1,5 +1,3 @@
-import { MoreHorizontalIcon } from "@/components/icons";
-import { queryClient, trpc } from "@/lib/queryClient";
 import {
   Box,
   Flex,
@@ -27,6 +25,8 @@ import { Menu } from "@typebot.io/ui/components/Menu";
 import { EditIcon } from "@typebot.io/ui/icons/EditIcon";
 import { TrashIcon } from "@typebot.io/ui/icons/TrashIcon";
 import { useState } from "react";
+import { MoreHorizontalIcon } from "@/components/icons";
+import { queryClient, trpc } from "@/lib/queryClient";
 import { DefaultAvatar } from "./DefaultAvatar";
 
 export const ThemeTemplateCard = ({

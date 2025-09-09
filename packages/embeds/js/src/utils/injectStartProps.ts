@@ -1,12 +1,12 @@
-import { initGoogleAnalytics } from "@/lib/gtag";
-import { gtmBodyElement } from "@/lib/gtm";
-import { initPixel } from "@/lib/pixel";
 import type { StartPropsToInject } from "@typebot.io/chat-api/clientSideAction";
 import {
   injectCustomHeadCode,
   isDefined,
   isNotEmpty,
 } from "@typebot.io/lib/utils";
+import { initGoogleAnalytics } from "@/lib/gtag";
+import { gtmBodyElement } from "@/lib/gtm";
+import { initPixel } from "@/lib/pixel";
 
 export const injectStartProps = async (
   startPropsToInject: StartPropsToInject,

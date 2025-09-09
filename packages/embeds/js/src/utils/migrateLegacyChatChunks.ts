@@ -1,6 +1,6 @@
-import type { ChatChunk, InputSubmitContent } from "@/types";
 import type { ClientSideAction } from "@typebot.io/chat-api/clientSideAction";
 import type { ContinueChatResponse } from "@typebot.io/chat-api/schemas";
+import type { ChatChunk, InputSubmitContent } from "@/types";
 import { getStorage } from "./storage";
 
 export type ChatChunkV1 = Pick<ContinueChatResponse, "messages" | "input"> & {

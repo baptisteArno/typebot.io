@@ -1,7 +1,7 @@
-import { injectVariableInText } from "@/features/variables/helpers/injectVariableInTextInput";
-import { focusInput } from "@/helpers/focusInput";
 import type { Variable } from "@typebot.io/variables/schemas";
 import { useCallback, useEffect, useState } from "react";
+import { injectVariableInText } from "@/features/variables/helpers/injectVariableInTextInput";
+import { focusInput } from "@/helpers/focusInput";
 
 export const useInjectableInputValue = ({
   ref,

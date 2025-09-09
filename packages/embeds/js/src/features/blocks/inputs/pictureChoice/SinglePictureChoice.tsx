@@ -1,9 +1,9 @@
-import { SearchInput } from "@/components/inputs/SearchInput";
-import type { InputSubmitContent } from "@/types";
 import type { PictureChoiceBlock } from "@typebot.io/blocks-inputs/pictureChoice/schema";
 import { guessDeviceIsMobile } from "@typebot.io/lib/guessDeviceIsMobile";
 import { isDefined, isNotEmpty, isSvgSrc } from "@typebot.io/lib/utils";
-import { For, Show, createEffect, createSignal, onMount } from "solid-js";
+import { createEffect, createSignal, For, onMount, Show } from "solid-js";
+import { SearchInput } from "@/components/inputs/SearchInput";
+import type { InputSubmitContent } from "@/types";
 
 type Props = {
   defaultItems: PictureChoiceBlock["items"];

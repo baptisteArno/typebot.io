@@ -1,8 +1,8 @@
-import type { ForgedBlockDefinition } from "@typebot.io/forge-repository/definitions";
 import type {
   AuthDefinition,
   FetcherDefinition,
 } from "@typebot.io/forge/types";
+import type { ForgedBlockDefinition } from "@typebot.io/forge-repository/definitions";
 
 export const getFetchers = (blockDef: ForgedBlockDefinition) =>
   (blockDef.fetchers ?? []).concat(

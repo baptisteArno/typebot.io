@@ -1,13 +1,3 @@
-import { Button } from "@/components/Button";
-import { SendButton } from "@/components/SendButton";
-import { TextInputAddFileButton } from "@/components/TextInputAddFileButton";
-import { MicrophoneIcon } from "@/components/icons/MicrophoneIcon";
-import { ShortTextInput } from "@/components/inputs/ShortTextInput";
-import { Textarea } from "@/components/inputs/Textarea";
-import type { CommandData } from "@/features/commands/types";
-import type { Attachment, BotContext, InputSubmitContent } from "@/types";
-import { guessApiHost } from "@/utils/guessApiHost";
-import { toaster } from "@/utils/toaster";
 import { fixWebmDuration } from "@fix-webm-duration/fix";
 import { defaultTextInputOptions } from "@typebot.io/blocks-inputs/text/constants";
 import type { TextInputBlock } from "@typebot.io/blocks-inputs/text/schema";
@@ -16,14 +6,24 @@ import { guessDeviceIsMobile } from "@typebot.io/lib/guessDeviceIsMobile";
 import { isDefined } from "@typebot.io/lib/utils";
 import { cx } from "@typebot.io/ui/lib/cva";
 import {
+  createSignal,
   For,
   Match,
-  Show,
-  Switch,
-  createSignal,
   onCleanup,
   onMount,
+  Show,
+  Switch,
 } from "solid-js";
+import { Button } from "@/components/Button";
+import { MicrophoneIcon } from "@/components/icons/MicrophoneIcon";
+import { ShortTextInput } from "@/components/inputs/ShortTextInput";
+import { Textarea } from "@/components/inputs/Textarea";
+import { SendButton } from "@/components/SendButton";
+import { TextInputAddFileButton } from "@/components/TextInputAddFileButton";
+import type { CommandData } from "@/features/commands/types";
+import type { Attachment, BotContext, InputSubmitContent } from "@/types";
+import { guessApiHost } from "@/utils/guessApiHost";
+import { toaster } from "@/utils/toaster";
 import { SelectedFile } from "../../fileUpload/components/SelectedFile";
 import { sanitizeNewFile } from "../../fileUpload/helpers/sanitizeSelectedFiles";
 import { uploadFiles } from "../../fileUpload/helpers/uploadFiles";

@@ -1,14 +1,14 @@
+import * as p from "@clack/prompts";
+import { isCancel, spinner } from "@clack/prompts";
 import { spawn } from "child_process";
 import {
   existsSync,
   mkdirSync,
-  readFileSync,
   readdirSync,
+  readFileSync,
   writeFileSync,
 } from "fs";
 import { join } from "path";
-import * as p from "@clack/prompts";
-import { isCancel, spinner } from "@clack/prompts";
 
 type CliArgs = {
   name?: string;
@@ -274,7 +274,7 @@ const main = async () => {
         resolve();
       });
     });
-  } catch (err) {
+  } catch (_err) {
     console.log("An error occured while installing packages:");
   }
   s.stop("Installing dependencies...");
@@ -309,8 +309,8 @@ const slugify = (str: string): string => {
     .replace(/[\u0300-\u036f]/g, "") // remove all the accents, which happen to be all in the \u03xx UNICODE block.
     .trim() // trim leading or trailing whitespace
     .toLowerCase() // convert to lowercase
-    .replace(/[^a-z0-9\. -]/g, "") // remove non-alphanumeric characters
-    .replace(/[\s\.]+/g, "-") // replace spaces and dots with hyphens
+    .replace(/[^a-z0-9. -]/g, "") // remove non-alphanumeric characters
+    .replace(/[\s.]+/g, "-") // replace spaces and dots with hyphens
     .replace(/-+/g, "-"); // remove consecutive hyphens
 };
 

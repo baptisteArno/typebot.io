@@ -1,11 +1,11 @@
-import { TextLink } from "@/components/TextLink";
-import { Textarea } from "@/components/inputs";
-import { BasicSelect } from "@/components/inputs/BasicSelect";
-import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
 import { FormControl, FormLabel, Stack, Text } from "@chakra-ui/react";
 import { openAIVoices } from "@typebot.io/blocks-integrations/openai/constants";
 import type { CreateSpeechOpenAIOptions } from "@typebot.io/blocks-integrations/openai/schema";
 import type { Variable } from "@typebot.io/variables/schemas";
+import { Textarea } from "@/components/inputs";
+import { BasicSelect } from "@/components/inputs/BasicSelect";
+import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
+import { TextLink } from "@/components/TextLink";
 import { ModelsDropdown } from "../ModelsDropdown";
 
 const apiReferenceUrl =

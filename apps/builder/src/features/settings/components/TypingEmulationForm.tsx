@@ -1,6 +1,3 @@
-import { SwitchWithRelatedSettings } from "@/components/SwitchWithRelatedSettings";
-import { NumberInput } from "@/components/inputs";
-import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
 import { HStack, Stack, Text } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { isDefined } from "@typebot.io/lib/utils";
@@ -9,7 +6,9 @@ import {
   maxTypingEmulationMaxDelay,
 } from "@typebot.io/settings/constants";
 import type { Settings } from "@typebot.io/settings/schemas";
-import React from "react";
+import { NumberInput } from "@/components/inputs";
+import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
+import { SwitchWithRelatedSettings } from "@/components/SwitchWithRelatedSettings";
 
 type Props = {
   typingEmulation: Settings["typingEmulation"];

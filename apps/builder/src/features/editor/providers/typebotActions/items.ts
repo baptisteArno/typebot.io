@@ -1,7 +1,3 @@
-import type {
-  BlockWithCreatableItems,
-  DraggableItem,
-} from "@/features/graph/providers/GraphDndProvider";
 import { createId } from "@paralleldrive/cuid2";
 import { blockHasItems, itemHasPaths } from "@typebot.io/blocks-core/helpers";
 import type {
@@ -23,6 +19,10 @@ import { LogicBlockType } from "@typebot.io/blocks-logic/constants";
 import { byId } from "@typebot.io/lib/utils";
 import type { Edge } from "@typebot.io/typebot/schemas/edge";
 import { type Draft, produce } from "immer";
+import type {
+  BlockWithCreatableItems,
+  DraggableItem,
+} from "@/features/graph/providers/GraphDndProvider";
 import type { SetTypebot } from "../TypebotProvider";
 import { deleteConnectedEdgesDraft } from "./edges";
 

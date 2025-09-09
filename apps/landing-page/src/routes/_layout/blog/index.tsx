@@ -1,10 +1,10 @@
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { isDefined } from "@typebot.io/lib/utils";
 import { Card } from "@/components/Card";
 import { ContentPageWrapper } from "@/components/ContentPageWrapper";
 import { allPosts } from "@/content-collections";
 import { formatDate } from "@/features/blog/helpers";
 import { createMetaTags } from "@/lib/createMetaTags";
-import { Link, createFileRoute } from "@tanstack/react-router";
-import { isDefined } from "@typebot.io/lib/utils";
 
 export const Route = createFileRoute("/_layout/blog/")({
   head: () => ({

@@ -1,11 +1,11 @@
-import { getIframeReferrerOrigin } from "@/utils/getIframeReferrerOrigin";
-import { guessApiHost } from "@/utils/guessApiHost";
 import type {
   ContinueChatResponse,
   Message,
 } from "@typebot.io/chat-api/schemas";
 import { isNotEmpty } from "@typebot.io/lib/utils";
 import ky from "ky";
+import { getIframeReferrerOrigin } from "@/utils/getIframeReferrerOrigin";
+import { guessApiHost } from "@/utils/guessApiHost";
 
 export const continueChatQuery = async ({
   apiHost,

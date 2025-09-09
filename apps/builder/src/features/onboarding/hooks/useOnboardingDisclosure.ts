@@ -22,7 +22,7 @@ export const useOnboardingDisclosure = ({
   isEnabled = true,
 }: Props) => {
   const [isInitialized, setIsInitialized] = useState(false);
-  const { isOpen, onOpen, onClose, onToggle } = useDisclosure({
+  const { isOpen, onOpen, onClose } = useDisclosure({
     onOpen: () => {
       if (!user || !key || user.displayedInAppNotifications?.[key]) return;
       updateUser({

@@ -1,7 +1,7 @@
 import {
+  chakra,
   Flex,
   type FlexProps,
-  chakra,
   useColorModeValue,
 } from "@chakra-ui/react";
 import { isDefined } from "@typebot.io/lib/utils";

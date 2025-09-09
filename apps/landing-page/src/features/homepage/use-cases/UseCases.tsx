@@ -1,10 +1,10 @@
-import { Progress } from "@/components/Progress";
-import { TypebotLogoFull } from "@/components/TypebotLogo";
-import { CtaButtonLink } from "@/components/link";
-import { enterpriseLeadTypebotUrl, registerUrl } from "@/constants";
 import { cn } from "@typebot.io/ui/lib/cn";
 import { useInView } from "motion/react";
 import { useEffect, useRef, useState } from "react";
+import { CtaButtonLink } from "@/components/link";
+import { Progress } from "@/components/Progress";
+import { TypebotLogoFull } from "@/components/TypebotLogo";
+import { registerUrl } from "@/constants";
 import marketingBotSrc from "./assets/marketing-bot.png";
 import marketingBuilderSrc from "./assets/marketing-builder.png";
 import salesBotSrc from "./assets/sales-bot.png";

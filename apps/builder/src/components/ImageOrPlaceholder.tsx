@@ -1,14 +1,13 @@
-import { useTypebot } from "@/features/editor/providers/TypebotProvider";
-import { VariableTag } from "@/features/graph/components/nodes/block/VariableTag";
 import {
   type BoxProps,
   Flex,
   Image,
-  Tag,
   useColorModeValue,
 } from "@chakra-ui/react";
 import { findUniqueVariable } from "@typebot.io/variables/findUniqueVariable";
 import { forwardRef } from "react";
+import { useTypebot } from "@/features/editor/providers/TypebotProvider";
+import { VariableTag } from "@/features/graph/components/nodes/block/VariableTag";
 import { ImageIcon } from "./icons";
 
 export const ImageOrPlaceholder = forwardRef<

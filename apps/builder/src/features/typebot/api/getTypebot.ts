@@ -1,4 +1,3 @@
-import { publicProcedure } from "@/helpers/server/trpc";
 import { TRPCError } from "@trpc/server";
 import prisma from "@typebot.io/prisma";
 import { getTypebotAccessRight } from "@typebot.io/typebot/helpers/getTypebotAccessRight";
@@ -6,6 +5,7 @@ import { isReadTypebotForbidden } from "@typebot.io/typebot/helpers/isReadTypebo
 import { migrateTypebot } from "@typebot.io/typebot/migrations/migrateTypebot";
 import { typebotSchema } from "@typebot.io/typebot/schemas/typebot";
 import { z } from "@typebot.io/zod";
+import { publicProcedure } from "@/helpers/server/trpc";
 
 export const getTypebot = publicProcedure
   .meta({

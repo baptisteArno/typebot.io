@@ -1,10 +1,9 @@
+import { Image, Text } from "@chakra-ui/react";
+import { Dialog } from "@typebot.io/ui/components/Dialog";
 import { AlertInfo } from "@/components/AlertInfo";
 import { ButtonLink } from "@/components/ButtonLink";
 import { GoogleLogo } from "@/components/GoogleLogo";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { Image, Text } from "@chakra-ui/react";
-import { Dialog } from "@typebot.io/ui/components/Dialog";
-import React from "react";
 import { getGoogleSheetsConsentScreenUrlQuery } from "../queries/getGoogleSheetsConsentScreenUrlQuery";
 
 type Props = {

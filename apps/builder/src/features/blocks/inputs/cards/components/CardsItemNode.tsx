@@ -1,26 +1,28 @@
-import { ImageOrPlaceholder } from "@/components/ImageOrPlaceholder";
-import { ImageUploadContent } from "@/components/ImageUploadContent/ImageUploadContent";
-import {
-  GhostableItem,
-  StacksWithGhostableItems,
-} from "@/components/StackWithGhostableItems";
-import { Editable } from "@/components/editable";
-import { SettingsIcon } from "@/components/icons";
-import { useTypebot } from "@/features/editor/providers/TypebotProvider";
-import { BlockSourceEndpoint } from "@/features/graph/components/endpoints/BlockSourceEndpoint";
-import { PlaceholderNode } from "@/features/graph/components/nodes/PlaceholderNode";
-import { useGraph } from "@/features/graph/providers/GraphProvider";
 import { Flex, SlideFade, Stack, useColorModeValue } from "@chakra-ui/react";
 import { createId } from "@paralleldrive/cuid2";
 import { useTranslate } from "@tolgee/react";
-import type { Item } from "@typebot.io/blocks-core/schemas/items/schema";
-import type { ItemIndices } from "@typebot.io/blocks-core/schemas/items/schema";
+import type {
+  Item,
+  ItemIndices,
+} from "@typebot.io/blocks-core/schemas/items/schema";
 import type { CardsItem } from "@typebot.io/blocks-inputs/cards/schema";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Popover } from "@typebot.io/ui/components/Popover";
 import { cn } from "@typebot.io/ui/lib/cn";
 import { cx } from "@typebot.io/ui/lib/cva";
 import { useState } from "react";
+import { Editable } from "@/components/editable";
+import { ImageOrPlaceholder } from "@/components/ImageOrPlaceholder";
+import { ImageUploadContent } from "@/components/ImageUploadContent/ImageUploadContent";
+import { SettingsIcon } from "@/components/icons";
+import {
+  GhostableItem,
+  StacksWithGhostableItems,
+} from "@/components/StackWithGhostableItems";
+import { useTypebot } from "@/features/editor/providers/TypebotProvider";
+import { BlockSourceEndpoint } from "@/features/graph/components/endpoints/BlockSourceEndpoint";
+import { PlaceholderNode } from "@/features/graph/components/nodes/PlaceholderNode";
+import { useGraph } from "@/features/graph/providers/GraphProvider";
 import { CardsItemSettings } from "./CardsItemSettings";
 
 type Props = {

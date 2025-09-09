@@ -58,7 +58,7 @@ export const executeFunction = async ({
     "globalThis.fetch = (...args) => $0.apply(undefined, args, { arguments: { copy: true }, promise: true, result: { copy: true, promise: true } })",
     [
       new Reference(async (...args: any[]) => {
-        // @ts-ignore
+        // @ts-expect-error
         const response = await fetch(...args);
         return response.text();
       }),

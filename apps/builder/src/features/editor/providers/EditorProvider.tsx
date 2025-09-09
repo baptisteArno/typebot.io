@@ -1,8 +1,8 @@
 import {
+  createContext,
   type Dispatch,
   type ReactNode,
   type SetStateAction,
-  createContext,
   useContext,
   useState,
 } from "react";
@@ -23,7 +23,7 @@ const editorContext = createContext<{
       | undefined
     >
   >;
-  //@ts-ignore
+  //@ts-expect-error
 }>({});
 
 export const EditorProvider = ({ children }: { children: ReactNode }) => {

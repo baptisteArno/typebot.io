@@ -6,7 +6,7 @@ import {
 } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { Tooltip } from "@typebot.io/ui/components/Tooltip";
-import React, { useState } from "react";
+import { useState } from "react";
 
 type EditableProps = {
   defaultName: string;

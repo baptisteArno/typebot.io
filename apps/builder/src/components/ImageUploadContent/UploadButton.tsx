@@ -1,7 +1,3 @@
-import type { FilePathUploadProps } from "@/features/upload/api/generateUploadUrl";
-import { compressFile } from "@/helpers/compressFile";
-import { trpc } from "@/lib/queryClient";
-import { toast } from "@/lib/toast";
 import { chakra } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
 import {
@@ -10,6 +6,10 @@ import {
 } from "@typebot.io/ui/components/Button";
 import type { ChangeEvent } from "react";
 import { useId, useState } from "react";
+import type { FilePathUploadProps } from "@/features/upload/api/generateUploadUrl";
+import { compressFile } from "@/helpers/compressFile";
+import { trpc } from "@/lib/queryClient";
+import { toast } from "@/lib/toast";
 import { UploadIcon } from "../icons";
 
 type UploadButtonProps = {

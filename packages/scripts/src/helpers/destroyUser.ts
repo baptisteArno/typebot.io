@@ -1,10 +1,10 @@
-import { writeFileSync } from "fs";
 import { confirm, isCancel, text } from "@clack/prompts";
 import {
   removeObjectsFromUser,
   removeObjectsFromWorkspace,
 } from "@typebot.io/lib/s3/removeObjectsRecursively";
 import prisma from "@typebot.io/prisma";
+import { writeFileSync } from "fs";
 
 export const destroyUser = async (userEmail?: string) => {
   const email =

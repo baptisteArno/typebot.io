@@ -1,9 +1,9 @@
-import { ForgedBlockIcon } from "@/features/forge/ForgedBlockIcon";
-import { useForgedBlock } from "@/features/forge/hooks/useForgedBlock";
-import type { ForgedBlock } from "@typebot.io/forge-repository/schemas";
 import type { TurnableIntoParam } from "@typebot.io/forge/types";
+import type { ForgedBlock } from "@typebot.io/forge-repository/schemas";
 import { ContextMenu } from "@typebot.io/ui/components/ContextMenu";
 import type { ZodObject } from "zod";
+import { ForgedBlockIcon } from "@/features/forge/ForgedBlockIcon";
+import { useForgedBlock } from "@/features/forge/hooks/useForgedBlock";
 
 type Props = {
   turnableInto: TurnableIntoParam[];

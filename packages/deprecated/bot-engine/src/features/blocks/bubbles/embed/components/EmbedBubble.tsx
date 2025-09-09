@@ -1,7 +1,7 @@
-import { parseVariables } from "@/features/variables";
-import { useTypebot } from "@/providers/TypebotProvider";
 import type { EmbedBubbleBlock } from "@typebot.io/blocks-bubbles/embed/schema";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { parseVariables } from "@/features/variables";
+import { useTypebot } from "@/providers/TypebotProvider";
 import { TypingBubble } from "../../../../../components/TypingBubble";
 
 type Props = {
@@ -57,7 +57,7 @@ export const EmbedBubble = ({ block, onTransitionEnd }: Props) => {
               height: isTyping ? "2rem" : "100%",
             }}
           >
-            {isTyping ? <TypingBubble /> : <></>}
+            {isTyping ? <TypingBubble /> : null}
           </div>
           <iframe
             id="embed-bubble-content"

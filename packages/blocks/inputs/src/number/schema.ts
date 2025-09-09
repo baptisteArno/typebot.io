@@ -6,7 +6,7 @@ import { singleVariableOrNumberSchema } from "@typebot.io/variables/schemas";
 import { z } from "@typebot.io/zod";
 import { InputBlockType } from "../constants";
 import { textInputOptionsBaseSchema } from "../text/schema";
-import { NumberInputStyle, NumberInputUnit, localeRegex } from "./constants";
+import { localeRegex, NumberInputStyle, NumberInputUnit } from "./constants";
 
 export const numberInputOptionsSchema = optionBaseSchema
   .merge(textInputOptionsBaseSchema)

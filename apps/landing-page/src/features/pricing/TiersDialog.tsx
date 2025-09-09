@@ -1,3 +1,6 @@
+import { proChatTiers } from "@typebot.io/billing/constants";
+import { formatPrice } from "@typebot.io/billing/helpers/formatPrice";
+import { Dialog } from "@typebot.io/ui/components/Dialog";
 import {
   Table,
   TableBody,
@@ -7,9 +10,6 @@ import {
   TableRoot,
   TableRow,
 } from "@/components/table";
-import { proChatTiers } from "@typebot.io/billing/constants";
-import { formatPrice } from "@typebot.io/billing/helpers/formatPrice";
-import { Dialog } from "@typebot.io/ui/components/Dialog";
 
 export const TiersDialog = ({
   open,

@@ -1,12 +1,12 @@
-import { SetVariableLabel } from "@/components/SetVariableLabel";
-import { ThunderIcon } from "@/components/icons";
-import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { Stack, Text } from "@chakra-ui/react";
 import { BubbleBlockType } from "@typebot.io/blocks-bubbles/constants";
 import type { BlockIndices } from "@typebot.io/blocks-core/schemas/schema";
 import type { ForgedBlock } from "@typebot.io/forge-repository/schemas";
 import { Tooltip } from "@typebot.io/ui/components/Tooltip";
 import { useMemo } from "react";
+import { ThunderIcon } from "@/components/icons";
+import { SetVariableLabel } from "@/components/SetVariableLabel";
+import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { useForgedBlock } from "../hooks/useForgedBlock";
 
 type Props = {

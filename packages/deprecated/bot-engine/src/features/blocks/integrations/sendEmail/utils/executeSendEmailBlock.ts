@@ -1,9 +1,8 @@
+import type { SendEmailBlock } from "@typebot.io/blocks-integrations/sendEmail/schema";
+import { byId, sendRequest } from "@typebot.io/lib/utils";
 import { parseVariables } from "@/features/variables";
 import type { IntegrationState } from "@/types";
 import { parseLog } from "@/utils/helpers";
-import type { SendEmailBlock } from "@typebot.io/blocks-integrations/sendEmail/schema";
-
-import { byId, sendRequest } from "@typebot.io/lib/utils";
 
 export const executeSendEmailBlock = (
   block: SendEmailBlock,

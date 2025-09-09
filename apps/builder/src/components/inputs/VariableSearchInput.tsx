@@ -1,6 +1,3 @@
-import { PlusIcon } from "@/components/icons";
-import { useTypebot } from "@/features/editor/providers/TypebotProvider";
-import { useOpenControls } from "@/hooks/useOpenControls";
 import {
   Flex,
   FormControl,
@@ -23,9 +20,12 @@ import { EditIcon } from "@typebot.io/ui/icons/EditIcon";
 import { TrashIcon } from "@typebot.io/ui/icons/TrashIcon";
 import { cn } from "@typebot.io/ui/lib/cn";
 import type { Variable } from "@typebot.io/variables/schemas";
-import type { ChangeEvent, ReactNode } from "react";
 import type React from "react";
+import type { ChangeEvent, ReactNode } from "react";
 import { useRef, useState } from "react";
+import { PlusIcon } from "@/components/icons";
+import { useTypebot } from "@/features/editor/providers/TypebotProvider";
+import { useOpenControls } from "@/hooks/useOpenControls";
 import { MoreInfoTooltip } from "../MoreInfoTooltip";
 
 type Props = {
@@ -56,7 +56,7 @@ export const VariableSearchInput = ({
   className,
   ...inputProps
 }: Props) => {
-  const focusedItemBgColor = useColorModeValue("gray.200", "gray.700");
+  const _focusedItemBgColor = useColorModeValue("gray.200", "gray.700");
   const { onOpen, onClose, isOpen } = useOpenControls({
     defaultIsOpen: autoFocus,
   });

@@ -1,6 +1,5 @@
 import { Text } from "@chakra-ui/react";
 import type { WaitBlock } from "@typebot.io/blocks-logic/wait/schema";
-import React from "react";
 
 type Props = {
   options: WaitBlock["options"];

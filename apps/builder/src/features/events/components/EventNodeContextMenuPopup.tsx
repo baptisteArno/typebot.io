@@ -1,7 +1,7 @@
-import { CopyIcon } from "@/components/icons";
-import { isMac } from "@/helpers/isMac";
 import { ContextMenu } from "@typebot.io/ui/components/ContextMenu";
 import { TrashIcon } from "@typebot.io/ui/icons/TrashIcon";
+import { CopyIcon } from "@/components/icons";
+import { isMac } from "@/helpers/isMac";
 
 export const EventNodeContextMenuPopup = () => {
   const handleDeleteClick = () =>

@@ -1,12 +1,11 @@
-import { SwitchWithRelatedSettings } from "@/components/SwitchWithRelatedSettings";
-import { TextInput } from "@/components/inputs";
-import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
 import { FormLabel, Stack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { defaultPictureChoiceOptions } from "@typebot.io/blocks-inputs/pictureChoice/constants";
 import type { PictureChoiceBlock } from "@typebot.io/blocks-inputs/pictureChoice/schema";
 import type { Variable } from "@typebot.io/variables/schemas";
-import React from "react";
+import { TextInput } from "@/components/inputs";
+import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
+import { SwitchWithRelatedSettings } from "@/components/SwitchWithRelatedSettings";
 
 type Props = {
   options?: PictureChoiceBlock["options"];

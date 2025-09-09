@@ -1,7 +1,7 @@
-import { CodeEditor } from "@/components/inputs/CodeEditor";
-import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import parserBabel from "prettier/parser-babel";
 import prettier from "prettier/standalone";
+import { CodeEditor } from "@/components/inputs/CodeEditor";
+import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { parseReactBotProps } from "../../snippetParsers/shared";
 
 type Props = { widthLabel?: string; heightLabel: string };

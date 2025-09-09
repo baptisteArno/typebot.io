@@ -1,1 +1,1 @@
-export type { TElement, TDescendant, TText } from "@udecode/plate-common";
+export type { TDescendant, TElement, TText } from "@udecode/plate-common";

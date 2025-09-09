@@ -13,6 +13,6 @@ export function remarkPlugin<V extends Value>(options: RemarkPluginOptions<V>) {
     });
   };
 
-  // @ts-ignore
+  // @ts-expect-error
   this.Compiler = compiler;
 }

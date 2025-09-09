@@ -1,10 +1,9 @@
-import { TextInput } from "@/components/inputs";
-import { CodeEditor } from "@/components/inputs/CodeEditor";
-import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
 import { Stack } from "@chakra-ui/react";
 import { defaultScriptOptions } from "@typebot.io/blocks-logic/script/constants";
 import type { ScriptBlock } from "@typebot.io/blocks-logic/script/schema";
-import React from "react";
+import { TextInput } from "@/components/inputs";
+import { CodeEditor } from "@/components/inputs/CodeEditor";
+import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
 
 type Props = {
   options: ScriptBlock["options"];

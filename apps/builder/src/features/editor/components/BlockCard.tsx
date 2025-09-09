@@ -1,7 +1,3 @@
-import { LockTag } from "@/features/billing/components/LockTag";
-import { isFreePlan } from "@/features/billing/helpers/isFreePlan";
-import { ForgedBlockCard } from "@/features/forge/ForgedBlockCard";
-import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { HStack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { BubbleBlockType } from "@typebot.io/blocks-bubbles/constants";
@@ -12,6 +8,10 @@ import { IntegrationBlockType } from "@typebot.io/blocks-integrations/constants"
 import { LogicBlockType } from "@typebot.io/blocks-logic/constants";
 import { Plan } from "@typebot.io/prisma/enum";
 import type React from "react";
+import { LockTag } from "@/features/billing/components/LockTag";
+import { isFreePlan } from "@/features/billing/helpers/isFreePlan";
+import { ForgedBlockCard } from "@/features/forge/ForgedBlockCard";
+import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { BlockCardLayout } from "./BlockCardLayout";
 import { BlockIcon } from "./BlockIcon";
 import { BlockLabel } from "./BlockLabel";

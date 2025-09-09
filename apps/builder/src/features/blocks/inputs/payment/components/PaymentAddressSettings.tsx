@@ -1,4 +1,3 @@
-import { TextInput } from "@/components/inputs";
 import {
   Accordion,
   AccordionButton,
@@ -9,7 +8,7 @@ import {
 } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import type { PaymentAddress } from "@typebot.io/blocks-inputs/payment/schema";
-import React from "react";
+import { TextInput } from "@/components/inputs";
 
 type Props = {
   address: PaymentAddress;

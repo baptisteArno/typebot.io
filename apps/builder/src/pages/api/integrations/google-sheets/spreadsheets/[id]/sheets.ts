@@ -1,4 +1,3 @@
-import { getAuthenticatedUser } from "@/features/auth/helpers/getAuthenticatedUser";
 import { getGoogleSpreadsheet } from "@typebot.io/credentials/getGoogleSpreadsheet";
 import {
   badRequest,
@@ -7,6 +6,7 @@ import {
 } from "@typebot.io/lib/api/utils";
 import { isDefined } from "@typebot.io/lib/utils";
 import type { NextApiRequest, NextApiResponse } from "next";
+import { getAuthenticatedUser } from "@/features/auth/helpers/getAuthenticatedUser";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req, res);

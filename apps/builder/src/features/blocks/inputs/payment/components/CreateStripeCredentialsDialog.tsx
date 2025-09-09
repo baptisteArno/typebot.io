@@ -1,10 +1,3 @@
-import { MoreInfoTooltip } from "@/components/MoreInfoTooltip";
-import { TextLink } from "@/components/TextLink";
-import { TextInput } from "@/components/inputs";
-import { useUser } from "@/features/user/hooks/useUser";
-import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { queryClient, trpc } from "@/lib/queryClient";
-import { toast } from "@/lib/toast";
 import { FormControl, FormLabel, HStack, Stack, Text } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
@@ -14,6 +7,13 @@ import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
 import type React from "react";
 import { useState } from "react";
+import { TextInput } from "@/components/inputs";
+import { MoreInfoTooltip } from "@/components/MoreInfoTooltip";
+import { TextLink } from "@/components/TextLink";
+import { useUser } from "@/features/user/hooks/useUser";
+import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
+import { queryClient, trpc } from "@/lib/queryClient";
+import { toast } from "@/lib/toast";
 
 type Props = {
   isOpen: boolean;

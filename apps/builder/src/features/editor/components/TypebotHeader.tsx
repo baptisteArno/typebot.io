@@ -1,28 +1,10 @@
-import { ButtonLink } from "@/components/ButtonLink";
-import { EditableEmojiOrImageIcon } from "@/components/EditableEmojiOrImageIcon";
-import { SupportBubble } from "@/components/SupportBubble";
 import {
-  BuoyIcon,
-  ChevronLeftIcon,
-  CopyIcon,
-  PlayIcon,
-  RedoIcon,
-  UndoIcon,
-} from "@/components/icons";
-import { PublishButton } from "@/features/publish/components/PublishButton";
-import { ShareTypebotButton } from "@/features/share/components/ShareTypebotButton";
-import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { isCloudProdInstance } from "@/helpers/isCloudProdInstance";
-import { useKeyboardShortcuts } from "@/hooks/useKeyboardShortcuts";
-import { useOpenControls } from "@/hooks/useOpenControls";
-import { useRightPanel } from "@/hooks/useRightPanel";
-import {
+  chakra,
   Flex,
   HStack,
   Spinner,
   type StackProps,
   Text,
-  chakra,
   useColorModeValue,
   useDisclosure,
 } from "@chakra-ui/react";
@@ -33,8 +15,26 @@ import { Button } from "@typebot.io/ui/components/Button";
 import { Tooltip } from "@typebot.io/ui/components/Tooltip";
 import { LayoutBottomIcon } from "@typebot.io/ui/icons/LayoutBottomIcon";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
+import { ButtonLink } from "@/components/ButtonLink";
+import { EditableEmojiOrImageIcon } from "@/components/EditableEmojiOrImageIcon";
+import {
+  BuoyIcon,
+  ChevronLeftIcon,
+  CopyIcon,
+  PlayIcon,
+  RedoIcon,
+  UndoIcon,
+} from "@/components/icons";
+import { SupportBubble } from "@/components/SupportBubble";
+import { PublishButton } from "@/features/publish/components/PublishButton";
+import { ShareTypebotButton } from "@/features/share/components/ShareTypebotButton";
+import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
+import { isCloudProdInstance } from "@/helpers/isCloudProdInstance";
+import { useKeyboardShortcuts } from "@/hooks/useKeyboardShortcuts";
+import { useOpenControls } from "@/hooks/useOpenControls";
+import { useRightPanel } from "@/hooks/useRightPanel";
 import { headerHeight } from "../constants";
 import { useEditor } from "../providers/EditorProvider";
 import { useTypebot } from "../providers/TypebotProvider";

@@ -1,4 +1,3 @@
-import { getAuthenticatedUser } from "@/features/auth/helpers/getAuthenticatedUser";
 import { env } from "@typebot.io/env";
 import {
   badRequest,
@@ -7,6 +6,7 @@ import {
 } from "@typebot.io/lib/api/utils";
 import { generatePresignedPostPolicy } from "@typebot.io/lib/s3/generatePresignedPostPolicy";
 import type { NextApiRequest, NextApiResponse } from "next";
+import { getAuthenticatedUser } from "@/features/auth/helpers/getAuthenticatedUser";
 
 const handler = async (
   req: NextApiRequest,

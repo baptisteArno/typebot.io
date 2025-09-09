@@ -37,7 +37,7 @@ const getGitlabGroups = async (
     { headers: { Authorization: `Bearer ${accessToken}` } },
   );
   const groups: { full_path: string }[] = await res.json();
-  const nextPage = Number.parseInt(res.headers.get("X-Next-Page") || "");
+  const nextPage = Number.parseInt(res.headers.get("X-Next-Page") || "", 10);
   if (nextPage) groups.push(...(await getGitlabGroups(accessToken, nextPage)));
   return groups;
 };

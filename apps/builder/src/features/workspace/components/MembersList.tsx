@@ -1,8 +1,6 @@
-import { UnlockPlanAlertInfo } from "@/components/UnlockPlanAlertInfo";
-import { useUser } from "@/features/user/hooks/useUser";
 import {
-  HStack,
   Heading,
+  HStack,
   SkeletonCircle,
   SkeletonText,
   Stack,
@@ -12,14 +10,15 @@ import { getSeatsLimit } from "@typebot.io/billing/helpers/getSeatsLimit";
 import { isDefined } from "@typebot.io/lib/utils";
 import { WorkspaceRole } from "@typebot.io/prisma/enum";
 import type { Prisma } from "@typebot.io/prisma/types";
-import React from "react";
-import { useWorkspace } from "../WorkspaceProvider";
+import { UnlockPlanAlertInfo } from "@/components/UnlockPlanAlertInfo";
+import { useUser } from "@/features/user/hooks/useUser";
 import { useMembers } from "../hooks/useMembers";
 import { deleteInvitationQuery } from "../queries/deleteInvitationQuery";
 import { deleteMemberQuery } from "../queries/deleteMemberQuery";
 import { updateInvitationQuery } from "../queries/updateInvitationQuery";
 import { updateMemberQuery } from "../queries/updateMemberQuery";
 import type { Member } from "../types";
+import { useWorkspace } from "../WorkspaceProvider";
 import { AddMemberForm } from "./AddMemberForm";
 import { MemberItem } from "./MemberItem";
 

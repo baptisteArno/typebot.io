@@ -1,6 +1,3 @@
-import { SettingsIcon } from "@/components/icons";
-import { useTypebot } from "@/features/editor/providers/TypebotProvider";
-import { useGraph } from "@/features/graph/providers/GraphProvider";
 import {
   Editable,
   EditablePreview,
@@ -20,6 +17,9 @@ import { isEmpty } from "@typebot.io/lib/utils";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Popover } from "@typebot.io/ui/components/Popover";
 import { useRef, useState } from "react";
+import { SettingsIcon } from "@/components/icons";
+import { useTypebot } from "@/features/editor/providers/TypebotProvider";
+import { useGraph } from "@/features/graph/providers/GraphProvider";
 import { ButtonsItemSettings } from "./ButtonsItemSettings";
 
 type Props = {

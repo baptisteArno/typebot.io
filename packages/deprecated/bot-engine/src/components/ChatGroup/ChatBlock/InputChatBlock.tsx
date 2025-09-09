@@ -1,3 +1,9 @@
+import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
+import type { InputBlock } from "@typebot.io/blocks-inputs/schema";
+import { getBlockById } from "@typebot.io/groups/helpers/getBlockById";
+import { byId } from "@typebot.io/lib/utils";
+import { defaultSettings } from "@typebot.io/settings/constants";
+import { useState } from "react";
 import { ChoiceForm } from "@/features/blocks/inputs/buttons";
 import { DateForm } from "@/features/blocks/inputs/date";
 import { EmailInput } from "@/features/blocks/inputs/email";
@@ -12,12 +18,6 @@ import { parseVariables } from "@/features/variables";
 import { useTypebot } from "@/providers/TypebotProvider";
 import type { InputSubmitContent } from "@/types";
 import { isInputValid } from "@/utils/inputs";
-import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
-import type { InputBlock } from "@typebot.io/blocks-inputs/schema";
-import { getBlockById } from "@typebot.io/groups/helpers/getBlockById";
-import { byId } from "@typebot.io/lib/utils";
-import { defaultSettings } from "@typebot.io/settings/constants";
-import React, { useState } from "react";
 import { useAnswers } from "../../../providers/AnswersProvider";
 import { GuestBubble } from "./bubbles/GuestBubble";
 

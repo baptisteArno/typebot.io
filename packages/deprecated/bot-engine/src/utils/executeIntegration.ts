@@ -1,11 +1,11 @@
+import { IntegrationBlockType } from "@typebot.io/blocks-integrations/constants";
+import type { IntegrationBlock } from "@typebot.io/blocks-integrations/schema";
 import { executeChatwootBlock } from "@/features/blocks/integrations/chatwoot";
 import { executeGoogleAnalyticsBlock } from "@/features/blocks/integrations/googleAnalytics";
 import { executeGoogleSheetBlock } from "@/features/blocks/integrations/googleSheets";
 import { executeSendEmailBlock } from "@/features/blocks/integrations/sendEmail";
 import { executeWebhook } from "@/features/blocks/integrations/webhook";
 import type { IntegrationState } from "@/types";
-import { IntegrationBlockType } from "@typebot.io/blocks-integrations/constants";
-import type { IntegrationBlock } from "@typebot.io/blocks-integrations/schema";
 
 export const executeIntegration = ({
   block,

@@ -1,3 +1,10 @@
+import { HStack, useColorModeValue } from "@chakra-ui/react";
+import { useTranslate } from "@tolgee/react";
+import type { BlockWithOptions } from "@typebot.io/blocks-core/schemas/schema";
+import type { TEventWithOptions } from "@typebot.io/events/schemas";
+import type { forgedBlocks } from "@typebot.io/forge-repository/definitions";
+import { Button } from "@typebot.io/ui/components/Button";
+import { cn } from "@typebot.io/ui/lib/cn";
 import { ButtonLink } from "@/components/ButtonLink";
 import {
   BuoyIcon,
@@ -6,13 +13,6 @@ import {
   VideoPopoverIcon,
 } from "@/components/icons";
 import { getHelpDocUrl } from "@/features/graph/helpers/getHelpDocUrl";
-import { HStack, useColorModeValue } from "@chakra-ui/react";
-import { useTranslate } from "@tolgee/react";
-import type { BlockWithOptions } from "@typebot.io/blocks-core/schemas/schema";
-import type { TEventWithOptions } from "@typebot.io/events/schemas";
-import type { forgedBlocks } from "@typebot.io/forge-repository/definitions";
-import { Button } from "@typebot.io/ui/components/Button";
-import { cn } from "@typebot.io/ui/lib/cn";
 
 type Props = {
   nodeType: BlockWithOptions["type"] | TEventWithOptions["type"];

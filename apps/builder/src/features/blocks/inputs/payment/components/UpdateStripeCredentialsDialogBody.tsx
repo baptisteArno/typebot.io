@@ -1,18 +1,17 @@
-import { MoreInfoTooltip } from "@/components/MoreInfoTooltip";
-import { TextLink } from "@/components/TextLink";
-import { TextInput } from "@/components/inputs";
-import { useUser } from "@/features/user/hooks/useUser";
-import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { trpc } from "@/lib/queryClient";
 import { FormControl, FormLabel, HStack, Stack, Text } from "@chakra-ui/react";
-import { useQuery } from "@tanstack/react-query";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
 import type { StripeCredentials } from "@typebot.io/credentials/schemas";
 import { isNotEmpty } from "@typebot.io/lib/utils";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
 import { useEffect, useState } from "react";
+import { TextInput } from "@/components/inputs";
+import { MoreInfoTooltip } from "@/components/MoreInfoTooltip";
+import { TextLink } from "@/components/TextLink";
+import { useUser } from "@/features/user/hooks/useUser";
+import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
+import { trpc } from "@/lib/queryClient";
 
 type Props = {
   credentialsId: string;

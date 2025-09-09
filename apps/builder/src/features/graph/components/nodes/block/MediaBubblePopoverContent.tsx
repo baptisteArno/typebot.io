@@ -1,8 +1,3 @@
-import { AudioBubbleForm } from "@/features/blocks/bubbles/audio/components/AudioBubbleForm";
-import { EmbedBubbleSettings } from "@/features/blocks/bubbles/embed/components/EmbedBubbleSettings";
-import { ImageBubbleSettings } from "@/features/blocks/bubbles/image/components/ImageBubbleSettings";
-import { VideoUploadContent } from "@/features/blocks/bubbles/video/components/VideoUploadContent";
-import type { FilePathUploadProps } from "@/features/upload/api/generateUploadUrl";
 import { BubbleBlockType } from "@typebot.io/blocks-bubbles/constants";
 import type {
   BubbleBlock,
@@ -11,6 +6,11 @@ import type {
 import type { TextBubbleBlock } from "@typebot.io/blocks-bubbles/text/schema";
 import { Popover } from "@typebot.io/ui/components/Popover";
 import { cx } from "@typebot.io/ui/lib/cva";
+import { AudioBubbleForm } from "@/features/blocks/bubbles/audio/components/AudioBubbleForm";
+import { EmbedBubbleSettings } from "@/features/blocks/bubbles/embed/components/EmbedBubbleSettings";
+import { ImageBubbleSettings } from "@/features/blocks/bubbles/image/components/ImageBubbleSettings";
+import { VideoUploadContent } from "@/features/blocks/bubbles/video/components/VideoUploadContent";
+import type { FilePathUploadProps } from "@/features/upload/api/generateUploadUrl";
 
 type Props = {
   uploadFileProps: FilePathUploadProps;

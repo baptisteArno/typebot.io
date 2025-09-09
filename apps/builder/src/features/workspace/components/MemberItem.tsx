@@ -2,7 +2,6 @@ import { Avatar, HStack, Stack, Tag, Text } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { WorkspaceRole } from "@typebot.io/prisma/enum";
 import { Menu } from "@typebot.io/ui/components/Menu";
-import React from "react";
 import { convertWorkspaceRoleToReadable } from "./AddMemberForm";
 
 type Props = {

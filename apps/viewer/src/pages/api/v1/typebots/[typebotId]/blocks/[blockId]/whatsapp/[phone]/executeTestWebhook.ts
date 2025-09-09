@@ -1,4 +1,3 @@
-import { authenticateUser } from "@/helpers/authenticateUser";
 import { LogicBlockType } from "@typebot.io/blocks-logic/constants";
 import { getSession } from "@typebot.io/chat-session/queries/getSession";
 import { env } from "@typebot.io/env";
@@ -10,6 +9,7 @@ import { isTypebotVersionAtLeastV6 } from "@typebot.io/schemas/helpers/isTypebot
 import { isReadTypebotForbidden } from "@typebot.io/typebot/helpers/isReadTypebotForbidden";
 import { resumeWhatsAppFlow } from "@typebot.io/whatsapp/resumeWhatsAppFlow";
 import type { NextApiRequest, NextApiResponse } from "next";
+import { authenticateUser } from "@/helpers/authenticateUser";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "POST") {

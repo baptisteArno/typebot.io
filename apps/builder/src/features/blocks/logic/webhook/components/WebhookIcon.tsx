@@ -1,5 +1,5 @@
-import { featherIconsBaseProps } from "@/components/icons";
 import { Icon, type IconProps, useColorModeValue } from "@chakra-ui/react";
+import { featherIconsBaseProps } from "@/components/icons";
 
 export const WebhookIcon = (props: IconProps) => (
   <Icon

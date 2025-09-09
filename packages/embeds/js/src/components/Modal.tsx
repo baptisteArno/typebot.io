@@ -1,7 +1,7 @@
-import { useBotContainer } from "@/contexts/BotContainerContext";
 import { Dialog } from "@ark-ui/solid/dialog";
 import type { JSX } from "solid-js";
 import { Portal } from "solid-js/web";
+import { useBotContainer } from "@/contexts/BotContainerContext";
 import { CloseIcon } from "./icons/CloseIcon";
 
 type Props = {

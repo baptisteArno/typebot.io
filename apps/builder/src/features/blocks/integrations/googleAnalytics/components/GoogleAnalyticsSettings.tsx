@@ -1,4 +1,3 @@
-import { NumberInput, TextInput } from "@/components/inputs";
 import {
   Accordion,
   AccordionButton,
@@ -9,7 +8,7 @@ import {
   Stack,
 } from "@chakra-ui/react";
 import type { GoogleAnalyticsBlock } from "@typebot.io/blocks-integrations/googleAnalytics/schema";
-import React from "react";
+import { NumberInput, TextInput } from "@/components/inputs";
 
 type Props = {
   options?: GoogleAnalyticsBlock["options"];

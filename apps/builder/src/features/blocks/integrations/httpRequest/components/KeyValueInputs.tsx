@@ -1,7 +1,7 @@
-import type { TableListItemProps } from "@/components/TableList";
-import { TextInput } from "@/components/inputs";
 import { Stack } from "@chakra-ui/react";
 import type { KeyValue } from "@typebot.io/blocks-integrations/httpRequest/schema";
+import { TextInput } from "@/components/inputs";
+import type { TableListItemProps } from "@/components/TableList";
 
 export const QueryParamsInputs = (props: TableListItemProps<KeyValue>) => (
   <KeyValueInputs

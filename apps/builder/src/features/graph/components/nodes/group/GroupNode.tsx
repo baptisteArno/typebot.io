@@ -1,10 +1,3 @@
-import { useEditor } from "@/features/editor/providers/EditorProvider";
-import { useTypebot } from "@/features/editor/providers/TypebotProvider";
-import { groupWidth } from "@/features/graph/constants";
-import { useSelectionStore } from "@/features/graph/hooks/useSelectionStore";
-import { useBlockDnd } from "@/features/graph/providers/GraphDndProvider";
-import { useGraph } from "@/features/graph/providers/GraphProvider";
-import { useRightPanel } from "@/hooks/useRightPanel";
 import {
   Editable,
   EditableInput,
@@ -17,11 +10,19 @@ import type { GroupV6 } from "@typebot.io/groups/schemas";
 import { isEmpty, isNotDefined } from "@typebot.io/lib/utils";
 import { ContextMenu } from "@typebot.io/ui/components/ContextMenu";
 import { useDrag } from "@use-gesture/react";
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useShallow } from "zustand/react/shallow";
+import { useEditor } from "@/features/editor/providers/EditorProvider";
+import { useTypebot } from "@/features/editor/providers/TypebotProvider";
+import { groupWidth } from "@/features/graph/constants";
+import { useSelectionStore } from "@/features/graph/hooks/useSelectionStore";
+import { useBlockDnd } from "@/features/graph/providers/GraphDndProvider";
+import { useGraph } from "@/features/graph/providers/GraphProvider";
+import { useRightPanel } from "@/hooks/useRightPanel";
 import { BlockNodesList } from "../block/BlockNodesList";
 import { GroupFocusToolbar } from "./GroupFocusToolbar";
 import { GroupNodeContextMenuPopup } from "./GroupNodeContextMenuPopup";
+
 type Props = {
   group: GroupV6;
   groupIndex: number;

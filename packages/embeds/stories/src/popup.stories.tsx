@@ -1,4 +1,4 @@
-import { Popup, open, toggle } from "@typebot.io/react";
+import { open, Popup, toggle } from "@typebot.io/react";
 import { leadGenerationTypebot } from "./assets/leadGenerationTypebot";
 
 export const Default = () => {

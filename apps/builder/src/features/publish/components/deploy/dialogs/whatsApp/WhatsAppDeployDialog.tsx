@@ -1,17 +1,3 @@
-import { AlertInfo } from "@/components/AlertInfo";
-import { SwitchWithRelatedSettings } from "@/components/SwitchWithRelatedSettings";
-import { TableList } from "@/components/TableList";
-import { TextLink } from "@/components/TextLink";
-import { UnlockPlanAlertInfo } from "@/components/UnlockPlanAlertInfo";
-import { NumberInput } from "@/components/inputs";
-import { BasicSelect } from "@/components/inputs/BasicSelect";
-import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
-import { PlanTag } from "@/features/billing/components/PlanTag";
-import { hasProPerks } from "@/features/billing/helpers/hasProPerks";
-import { CredentialsDropdown } from "@/features/credentials/components/CredentialsDropdown";
-import { useTypebot } from "@/features/editor/providers/TypebotProvider";
-import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { trpc } from "@/lib/queryClient";
 import {
   Accordion,
   AccordionButton,
@@ -32,6 +18,20 @@ import type { Comparison } from "@typebot.io/conditions/schemas";
 import { isDefined } from "@typebot.io/lib/utils";
 import { defaultSessionExpiryTimeout } from "@typebot.io/settings/constants";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
+import { AlertInfo } from "@/components/AlertInfo";
+import { NumberInput } from "@/components/inputs";
+import { BasicSelect } from "@/components/inputs/BasicSelect";
+import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
+import { SwitchWithRelatedSettings } from "@/components/SwitchWithRelatedSettings";
+import { TableList } from "@/components/TableList";
+import { TextLink } from "@/components/TextLink";
+import { UnlockPlanAlertInfo } from "@/components/UnlockPlanAlertInfo";
+import { PlanTag } from "@/features/billing/components/PlanTag";
+import { hasProPerks } from "@/features/billing/helpers/hasProPerks";
+import { CredentialsDropdown } from "@/features/credentials/components/CredentialsDropdown";
+import { useTypebot } from "@/features/editor/providers/TypebotProvider";
+import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
+import { trpc } from "@/lib/queryClient";
 import { PublishButton } from "../../../PublishButton";
 import type { DialogProps } from "../../DeployButton";
 import { WhatsAppComparisonItem } from "./WhatsAppComparisonItem";

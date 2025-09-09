@@ -1,7 +1,3 @@
-import { SendButton, Spinner } from "@/components/SendButton";
-import { useAnswers } from "@/providers/AnswersProvider";
-import { useTypebot } from "@/providers/TypebotProvider";
-import type { InputSubmitContent } from "@/types";
 import { defaultFileInputOptions } from "@typebot.io/blocks-inputs/file/constants";
 import type { FileInputBlock } from "@typebot.io/blocks-inputs/file/schema";
 import {
@@ -10,6 +6,10 @@ import {
   type FormEvent,
   useState,
 } from "react";
+import { SendButton, Spinner } from "@/components/SendButton";
+import { useAnswers } from "@/providers/AnswersProvider";
+import { useTypebot } from "@/providers/TypebotProvider";
+import type { InputSubmitContent } from "@/types";
 import { uploadFiles } from "../helpers/uploadFiles";
 
 type Props = {
@@ -131,23 +131,21 @@ export const FileUploadForm = ({
         onDrop={handleDropFile}
       >
         {isUploading ? (
-          <>
-            {selectedFiles.length === 1 ? (
-              <Spinner />
-            ) : (
-              <div className="w-full bg-gray-200 rounded-full h-2.5">
-                <div
-                  className="upload-progress-bar h-2.5 rounded-full"
-                  style={{
-                    width: `${
-                      uploadProgressPercent > 0 ? uploadProgressPercent : 10
-                    }%`,
-                    transition: "width 150ms cubic-bezier(0.4, 0, 0.2, 1)",
-                  }}
-                />
-              </div>
-            )}
-          </>
+          selectedFiles.length === 1 ? (
+            <Spinner />
+          ) : (
+            <div className="w-full bg-gray-200 rounded-full h-2.5">
+              <div
+                className="upload-progress-bar h-2.5 rounded-full"
+                style={{
+                  width: `${
+                    uploadProgressPercent > 0 ? uploadProgressPercent : 10
+                  }%`,
+                  transition: "width 150ms cubic-bezier(0.4, 0, 0.2, 1)",
+                }}
+              />
+            </div>
+          )
         ) : (
           <>
             <div className="flex flex-col justify-center items-center">

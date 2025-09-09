@@ -1,11 +1,11 @@
 import {
+  chakra,
   Flex,
-  HStack,
   Heading,
+  HStack,
   Image,
   Stack,
   Text,
-  chakra,
 } from "@chakra-ui/react";
 import type { BubbleProps } from "@typebot.io/js";
 import { isLight } from "@typebot.io/lib/hexToRgb";

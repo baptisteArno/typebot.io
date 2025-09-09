@@ -1,8 +1,8 @@
-import { createFolders } from "@/test/utils/databaseActions";
-import { deleteButtonInConfirmDialog } from "@/test/utils/selectorUtils";
 import { createId } from "@paralleldrive/cuid2";
 import test, { expect } from "@playwright/test";
 import { createTypebots } from "@typebot.io/playwright/databaseActions";
+import { createFolders } from "@/test/utils/databaseActions";
+import { deleteButtonInConfirmDialog } from "@/test/utils/selectorUtils";
 
 test("folders navigation should work", async ({ page }) => {
   await page.goto("/typebots");

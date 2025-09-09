@@ -1,6 +1,6 @@
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 import prisma from "@typebot.io/prisma";
 import { z } from "@typebot.io/zod";
+import { authenticatedProcedure } from "@/helpers/server/trpc";
 
 export const verifyIfPhoneNumberAvailable = authenticatedProcedure
   .input(z.object({ phoneNumberDisplayName: z.string() }))

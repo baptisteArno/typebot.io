@@ -1,6 +1,3 @@
-import type { TypebotViewerProps } from "@/components/TypebotViewer";
-import { safeStringify } from "@/features/variables";
-import { sendEventToParent } from "@/utils/chat";
 import { isDefined } from "@typebot.io/lib/utils";
 import type { LogInSession } from "@typebot.io/logs/schemas";
 import type { Edge } from "@typebot.io/typebot/schemas/edge";
@@ -8,12 +5,15 @@ import type { PublicTypebot } from "@typebot.io/typebot/schemas/publicTypebot";
 import type { Typebot } from "@typebot.io/typebot/schemas/typebot";
 import type { Variable } from "@typebot.io/variables/schemas";
 import {
-  type ReactNode,
   createContext,
+  type ReactNode,
   useContext,
   useEffect,
   useState,
 } from "react";
+import type { TypebotViewerProps } from "@/components/TypebotViewer";
+import { safeStringify } from "@/features/variables";
+import { sendEventToParent } from "@/utils/chat";
 
 export type LinkedTypebot = Pick<
   PublicTypebot | Typebot,
@@ -45,7 +45,7 @@ const typebotContext = createContext<{
     edgeId: string;
   }) => void;
   onNewLog: (log: Omit<LogInSession, "id" | "createdAt" | "resultId">) => void;
-  //@ts-ignore
+  //@ts-expect-error
 }>({});
 
 export const TypebotProvider = ({

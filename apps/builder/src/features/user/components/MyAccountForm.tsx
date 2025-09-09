@@ -1,10 +1,9 @@
-import { UploadButton } from "@/components/ImageUploadContent/UploadButton";
-import { TextInput } from "@/components/inputs/TextInput";
 import { Avatar, HStack, Stack, Text } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { Button } from "@typebot.io/ui/components/Button";
-import type React from "react";
 import { useState } from "react";
+import { UploadButton } from "@/components/ImageUploadContent/UploadButton";
+import { TextInput } from "@/components/inputs/TextInput";
 import { useUser } from "../hooks/useUser";
 import { ApiTokensList } from "./ApiTokensList";
 import { ChangeEmailDialog } from "./ChangeEmailDialog";

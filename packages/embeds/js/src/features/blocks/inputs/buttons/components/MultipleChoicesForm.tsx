@@ -1,10 +1,10 @@
-import { SendButton } from "@/components/SendButton";
-import { SearchInput } from "@/components/inputs/SearchInput";
-import type { InputSubmitContent } from "@/types";
 import { defaultChoiceInputOptions } from "@typebot.io/blocks-inputs/choice/constants";
 import type { ChoiceInputBlock } from "@typebot.io/blocks-inputs/choice/schema";
 import { guessDeviceIsMobile } from "@typebot.io/lib/guessDeviceIsMobile";
-import { For, Show, createSignal, onMount } from "solid-js";
+import { createSignal, For, onMount, Show } from "solid-js";
+import { SearchInput } from "@/components/inputs/SearchInput";
+import { SendButton } from "@/components/SendButton";
+import type { InputSubmitContent } from "@/types";
 import { Checkbox } from "./Checkbox";
 
 type Props = {

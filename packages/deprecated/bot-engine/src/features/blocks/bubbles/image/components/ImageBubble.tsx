@@ -1,8 +1,8 @@
+import type { ImageBubbleBlock } from "@typebot.io/blocks-bubbles/image/schema";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { TypingBubble } from "@/components/TypingBubble";
 import { parseVariables } from "@/features/variables";
 import { useTypebot } from "@/providers/TypebotProvider";
-import type { ImageBubbleBlock } from "@typebot.io/blocks-bubbles/image/schema";
-import { useCallback, useEffect, useRef, useState } from "react";
 
 type Props = {
   block: ImageBubbleBlock;

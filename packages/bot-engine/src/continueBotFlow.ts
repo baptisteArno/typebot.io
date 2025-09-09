@@ -33,7 +33,7 @@ import type { Group } from "@typebot.io/groups/schemas";
 import { parseAllowedFileTypesMetadata } from "@typebot.io/lib/extensionFromMimeType";
 import { isURL } from "@typebot.io/lib/isURL";
 import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
-import { byId, isDefined, isNotEmpty } from "@typebot.io/lib/utils";
+import { byId, isDefined } from "@typebot.io/lib/utils";
 import type { AnswerInSessionState } from "@typebot.io/results/schemas/answers";
 import type { SessionStore } from "@typebot.io/runtime-session-store";
 import { defaultSystemMessages } from "@typebot.io/settings/constants";

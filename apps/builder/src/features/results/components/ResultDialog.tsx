@@ -1,8 +1,7 @@
-import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import {
   Box,
-  HStack,
   Heading,
+  HStack,
   Spinner,
   Stack,
   Tag,
@@ -18,9 +17,10 @@ import type {
 import type { TypebotV6 } from "@typebot.io/typebot/schemas/typebot";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
-import React, { useState } from "react";
-import { useResults } from "../ResultsProvider";
+import { useState } from "react";
+import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { useResultTranscriptQuery } from "../hooks/useResultTranscriptQuery";
+import { useResults } from "../ResultsProvider";
 import { HeaderIcon } from "./HeaderIcon";
 
 type Props = {

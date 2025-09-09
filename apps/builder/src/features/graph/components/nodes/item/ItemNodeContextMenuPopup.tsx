@@ -1,8 +1,8 @@
-import { CopyIcon } from "@/components/icons";
-import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import type { ItemIndices } from "@typebot.io/blocks-core/schemas/items/schema";
 import { ContextMenu } from "@typebot.io/ui/components/ContextMenu";
 import { TrashIcon } from "@typebot.io/ui/icons/TrashIcon";
+import { CopyIcon } from "@/components/icons";
+import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 
 type Props = {
   indices: ItemIndices;

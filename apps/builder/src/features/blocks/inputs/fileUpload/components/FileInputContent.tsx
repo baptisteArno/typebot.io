@@ -1,7 +1,7 @@
-import { WithVariableContent } from "@/features/graph/components/nodes/block/WithVariableContent";
 import { Text } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import type { FileInputBlock } from "@typebot.io/blocks-inputs/file/schema";
+import { WithVariableContent } from "@/features/graph/components/nodes/block/WithVariableContent";
 
 type Props = {
   options: FileInputBlock["options"];

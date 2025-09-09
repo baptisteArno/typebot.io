@@ -1,5 +1,3 @@
-import { getAuthenticatedUser } from "@/features/auth/helpers/getAuthenticatedUser";
-import { isReadWorkspaceFobidden } from "@/features/workspace/helpers/isReadWorkspaceFobidden";
 import { env } from "@typebot.io/env";
 import {
   methodNotAllowed,
@@ -9,6 +7,8 @@ import {
 import prisma from "@typebot.io/prisma";
 import { downloadMedia } from "@typebot.io/whatsapp/downloadMedia";
 import type { NextApiRequest, NextApiResponse } from "next";
+import { getAuthenticatedUser } from "@/features/auth/helpers/getAuthenticatedUser";
+import { isReadWorkspaceFobidden } from "@/features/workspace/helpers/isReadWorkspaceFobidden";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "GET") {

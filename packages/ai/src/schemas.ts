@@ -1,6 +1,5 @@
 import { option } from "@typebot.io/forge";
 import type { z } from "@typebot.io/zod";
-import { chatCompletionResponseValues } from "./constants";
 
 const parameterBase = {
   name: option.string.layout({

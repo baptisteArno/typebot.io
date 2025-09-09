@@ -50,7 +50,6 @@ export const GoogleAnalyticsLogo = (props: IconProps) => (
     </g>
     <defs>
       <linearGradient
-        id="paint0_linear_1458_69"
         x1="0.0253906"
         y1="176.5"
         x2="352.975"
@@ -61,7 +60,6 @@ export const GoogleAnalyticsLogo = (props: IconProps) => (
         <stop offset="1" stopColor="white" stopOpacity="0" />
       </linearGradient>
       <linearGradient
-        id="paint1_linear_1458_69"
         x1="0.0253906"
         y1="176.5"
         x2="352.975"
@@ -72,7 +70,6 @@ export const GoogleAnalyticsLogo = (props: IconProps) => (
         <stop offset="1" stopColor="white" stopOpacity="0" />
       </linearGradient>
       <linearGradient
-        id="paint2_linear_1458_69"
         x1="172.323"
         y1="172.436"
         x2="344.434"
@@ -83,7 +80,6 @@ export const GoogleAnalyticsLogo = (props: IconProps) => (
         <stop offset="1" stopColor="#BF360C" stopOpacity="0.02" />
       </linearGradient>
       <linearGradient
-        id="paint3_linear_1458_69"
         x1="118.3"
         y1="118.513"
         x2="346.649"
@@ -93,7 +89,7 @@ export const GoogleAnalyticsLogo = (props: IconProps) => (
         <stop stopColor="white" stopOpacity="0.1" />
         <stop offset="1" stopColor="white" stopOpacity="0" />
       </linearGradient>
-      <clipPath id="clip0_1458_69">
+      <clipPath>
         <rect width="353" height="353" fill="white" />
       </clipPath>
     </defs>

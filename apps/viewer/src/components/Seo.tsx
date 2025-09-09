@@ -1,11 +1,10 @@
-import { gtmHeadSnippet } from "@/lib/google-tag-manager";
 import { env } from "@typebot.io/env";
 import { isNotEmpty } from "@typebot.io/lib/utils";
 import { defaultSettings } from "@typebot.io/settings/constants";
 import type { Settings } from "@typebot.io/settings/schemas";
 import Head from "next/head";
 import Script from "next/script";
-import React from "react";
+import { gtmHeadSnippet } from "@/lib/google-tag-manager";
 
 type SEOProps = {
   url: string;

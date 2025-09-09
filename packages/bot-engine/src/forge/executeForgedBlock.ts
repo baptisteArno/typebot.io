@@ -7,9 +7,9 @@ import type {
 import { decryptAndRefreshCredentialsData } from "@typebot.io/credentials/decryptAndRefreshCredentials";
 import { getCredentials } from "@typebot.io/credentials/getCredentials";
 import type { Credentials } from "@typebot.io/credentials/schemas";
+import type { LogsStore, VariableStore } from "@typebot.io/forge/types";
 import { forgedBlocks } from "@typebot.io/forge-repository/definitions";
 import type { ForgedBlock } from "@typebot.io/forge-repository/schemas";
-import type { LogsStore, VariableStore } from "@typebot.io/forge/types";
 import { isDefined } from "@typebot.io/lib/utils";
 import type { SessionStore } from "@typebot.io/runtime-session-store";
 import { deepParseVariables } from "@typebot.io/variables/deepParseVariables";

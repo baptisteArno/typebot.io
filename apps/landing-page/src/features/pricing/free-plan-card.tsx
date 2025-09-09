@@ -1,6 +1,6 @@
+import { chatsLimits } from "@typebot.io/billing/constants";
 import { CtaButtonLink } from "@/components/link";
 import { registerUrl } from "@/constants";
-import { chatsLimits } from "@typebot.io/billing/constants";
 import {
   PerkListItem,
   PlanNamePill,

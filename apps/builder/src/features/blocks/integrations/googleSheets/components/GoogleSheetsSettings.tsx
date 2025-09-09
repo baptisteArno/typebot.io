@@ -1,8 +1,3 @@
-import { TableList } from "@/components/TableList";
-import { BasicSelect } from "@/components/inputs/BasicSelect";
-import { CredentialsDropdown } from "@/features/credentials/components/CredentialsDropdown";
-import { useTypebot } from "@/features/editor/providers/TypebotProvider";
-import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import {
   Accordion,
   AccordionButton,
@@ -14,8 +9,8 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import {
-  GoogleSheetsAction,
   defaultGoogleSheetsOptions,
+  GoogleSheetsAction,
   totalRowsToExtractOptions,
 } from "@typebot.io/blocks-integrations/googleSheets/constants";
 import type {
@@ -28,8 +23,12 @@ import type {
   GoogleSheetsUpdateRowOptionsV6,
 } from "@typebot.io/blocks-integrations/googleSheets/schema";
 import { isDefined } from "@typebot.io/lib/utils";
-import { Menu } from "@typebot.io/ui/components/Menu";
-import React, { useMemo } from "react";
+import { useMemo } from "react";
+import { BasicSelect } from "@/components/inputs/BasicSelect";
+import { TableList } from "@/components/TableList";
+import { CredentialsDropdown } from "@/features/credentials/components/CredentialsDropdown";
+import { useTypebot } from "@/features/editor/providers/TypebotProvider";
+import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { useSheets } from "../hooks/useSheets";
 import type { Sheet } from "../types";
 import { CellWithValueStack } from "./CellWithValueStack";
@@ -304,6 +303,6 @@ const ActionOptions = ({
         </Accordion>
       );
     default:
-      return <></>;
+      return null;
   }
 };

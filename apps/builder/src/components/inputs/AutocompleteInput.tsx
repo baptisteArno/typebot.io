@@ -1,7 +1,3 @@
-import { VariablesButton } from "@/features/variables/components/VariablesButton";
-import { injectVariableInText } from "@/features/variables/helpers/injectVariableInTextInput";
-import { focusInput } from "@/helpers/focusInput";
-import { useOpenControls } from "@/hooks/useOpenControls";
 import {
   FormControl,
   HStack,
@@ -16,6 +12,10 @@ import { cn } from "@typebot.io/ui/lib/cn";
 import type { Variable } from "@typebot.io/variables/schemas";
 import { useEffect, useRef, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
+import { VariablesButton } from "@/features/variables/components/VariablesButton";
+import { injectVariableInText } from "@/features/variables/helpers/injectVariableInTextInput";
+import { focusInput } from "@/helpers/focusInput";
+import { useOpenControls } from "@/hooks/useOpenControls";
 
 type Props = {
   items: string[] | undefined;
@@ -39,7 +39,7 @@ export const AutocompleteInput = ({
   defaultValue,
   isRequired,
 }: Props) => {
-  const bg = useColorModeValue("gray.200", "gray.700");
+  const _bg = useColorModeValue("gray.200", "gray.700");
   const controls = useOpenControls();
   const [isTouched, setIsTouched] = useState(false);
   const [inputValue, setInputValue] = useState(defaultValue ?? "");

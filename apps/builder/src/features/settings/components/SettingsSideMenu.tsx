@@ -1,24 +1,23 @@
 import {
+  Accordion,
+  AccordionButton,
+  AccordionIcon,
+  AccordionItem,
+  AccordionPanel,
+  Heading,
+  HStack,
+  Stack,
+  useColorModeValue,
+} from "@chakra-ui/react";
+import { useTranslate } from "@tolgee/react";
+import type { Settings } from "@typebot.io/settings/schemas";
+import {
   ChatIcon,
   CodeIcon,
   LockedIcon,
   MoreVerticalIcon,
 } from "@/components/icons";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
-import {
-  Accordion,
-  AccordionButton,
-  AccordionIcon,
-  AccordionItem,
-  AccordionPanel,
-  HStack,
-  Heading,
-  Stack,
-  useColorModeValue,
-} from "@chakra-ui/react";
-import { useTranslate } from "@tolgee/react";
-import type { Settings } from "@typebot.io/settings/schemas";
-import React from "react";
 import { GeneralSettingsForm } from "./GeneralSettingsForm";
 import { MetadataForm } from "./MetadataForm";
 import { SecurityForm } from "./SecurityForm";

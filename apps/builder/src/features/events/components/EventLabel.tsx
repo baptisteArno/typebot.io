@@ -2,7 +2,6 @@ import { Text, type TextProps } from "@chakra-ui/react";
 import { type TFnType, useTranslate } from "@tolgee/react";
 import { EventType } from "@typebot.io/events/constants";
 import type { TEvent } from "@typebot.io/events/schemas";
-import React from "react";
 
 type Props = { type: TEvent["type"] } & TextProps;
 

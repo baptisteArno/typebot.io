@@ -1,10 +1,10 @@
-import { authenticateUser } from "@/helpers/authenticateUser";
 import { isHttpRequestBlock } from "@typebot.io/blocks-core/helpers";
 import type { HttpRequestBlock } from "@typebot.io/blocks-integrations/httpRequest/schema";
 import type { Group } from "@typebot.io/groups/schemas";
 import { methodNotAllowed } from "@typebot.io/lib/api/utils";
 import prisma from "@typebot.io/prisma";
 import type { NextApiRequest, NextApiResponse } from "next";
+import { authenticateUser } from "@/helpers/authenticateUser";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "GET") {

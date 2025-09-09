@@ -1,10 +1,9 @@
-import { UsersIcon } from "@/components/icons";
-import { useOpenControls } from "@/hooks/useOpenControls";
 import { chakra } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Popover } from "@typebot.io/ui/components/Popover";
-import React from "react";
+import { UsersIcon } from "@/components/icons";
+import { useOpenControls } from "@/hooks/useOpenControls";
 import { SharePopoverContent } from "./SharePopoverContent";
 
 export const ShareTypebotButton = ({ isLoading }: { isLoading: boolean }) => {

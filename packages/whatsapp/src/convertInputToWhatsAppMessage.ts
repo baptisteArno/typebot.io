@@ -9,7 +9,7 @@ import { isDefined, isEmpty } from "@typebot.io/lib/utils";
 import { convertRichTextToMarkdown } from "@typebot.io/rich-text/convertRichTextToMarkdown";
 import { defaultSystemMessages } from "@typebot.io/settings/constants";
 import type { SystemMessages } from "@typebot.io/settings/schemas";
-import { type UploadMediaCache, getOrUploadMedia } from "./getOrUploadMedia";
+import { getOrUploadMedia, type UploadMediaCache } from "./getOrUploadMedia";
 import type { WhatsAppSendingMessage } from "./schemas";
 
 type Props = {

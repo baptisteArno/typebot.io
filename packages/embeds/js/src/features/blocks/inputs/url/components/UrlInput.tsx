@@ -1,11 +1,11 @@
-import { SendButton } from "@/components/SendButton";
-import { ShortTextInput } from "@/components/inputs/ShortTextInput";
-import type { CommandData } from "@/features/commands/types";
-import type { InputSubmitContent } from "@/types";
 import { defaultUrlInputOptions } from "@typebot.io/blocks-inputs/url/constants";
 import type { UrlInputBlock } from "@typebot.io/blocks-inputs/url/schema";
 import { guessDeviceIsMobile } from "@typebot.io/lib/guessDeviceIsMobile";
 import { createSignal, onCleanup, onMount } from "solid-js";
+import { ShortTextInput } from "@/components/inputs/ShortTextInput";
+import { SendButton } from "@/components/SendButton";
+import type { CommandData } from "@/features/commands/types";
+import type { InputSubmitContent } from "@/types";
 
 type Props = {
   block: UrlInputBlock;

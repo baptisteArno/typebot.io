@@ -1,7 +1,7 @@
-import { SendButton } from "@/components/SendButton";
-import type { InputSubmitContent } from "@/types";
 import type { DateInputBlock } from "@typebot.io/blocks-inputs/date/schema";
 import { useState } from "react";
+import { SendButton } from "@/components/SendButton";
+import type { InputSubmitContent } from "@/types";
 import { parseReadableDate } from "../utils/parseReadableDate";
 
 type DateInputProps = {

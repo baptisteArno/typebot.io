@@ -1,9 +1,9 @@
-import { TypingBubble } from "@/components/TypingBubble";
-import { executeCode } from "@/features/blocks/logic/script/executeScript";
-import type { InputSubmitContent } from "@/types";
 import type { CustomEmbedBubble as CustomEmbedBubbleProps } from "@typebot.io/chat-api/schemas";
 import { cx } from "@typebot.io/ui/lib/cva";
 import { createSignal, onCleanup, onMount } from "solid-js";
+import { TypingBubble } from "@/components/TypingBubble";
+import { executeCode } from "@/features/blocks/logic/script/executeScript";
+import type { InputSubmitContent } from "@/types";
 
 type Props = {
   content: CustomEmbedBubbleProps["content"];

@@ -1,7 +1,7 @@
-import { CodeEditor } from "@/components/inputs/CodeEditor";
-import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import parserHtml from "prettier/parser-html";
 import prettier from "prettier/standalone";
+import { CodeEditor } from "@/components/inputs/CodeEditor";
+import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { typebotImportCode } from "../../snippetParsers/shared";
 import { parseInitStandardCode } from "../../snippetParsers/standard";
 

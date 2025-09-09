@@ -1,7 +1,7 @@
 import type { LogsStore, VariableStore } from "@typebot.io/forge/types";
 import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
 import type { SessionStore } from "@typebot.io/runtime-session-store";
-import { type LanguageModel, generateText } from "ai";
+import { generateText, type LanguageModel } from "ai";
 import { maxSteps } from "./constants";
 import { parseChatCompletionMessages } from "./parseChatCompletionMessages";
 import { parseTools } from "./parseTools";

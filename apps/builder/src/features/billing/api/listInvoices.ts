@@ -1,7 +1,7 @@
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 import { listInvoices as listInvoicesHandler } from "@typebot.io/billing/api/listInvoices";
 import { invoiceSchema } from "@typebot.io/billing/schemas/invoice";
 import { z } from "@typebot.io/zod";
+import { authenticatedProcedure } from "@/helpers/server/trpc";
 
 export const listInvoices = authenticatedProcedure
   .meta({

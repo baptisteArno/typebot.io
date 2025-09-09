@@ -1,9 +1,9 @@
-import { TypingBubble } from "@/components/TypingBubble";
 import type { TextBubbleBlock } from "@typebot.io/blocks-bubbles/text/schema";
 import { computeTypingDuration } from "@typebot.io/settings/computeTypingDuration";
 import type { Settings } from "@typebot.io/settings/schemas";
 import { cx } from "@typebot.io/ui/lib/cva";
-import { For, createSignal, onCleanup, onMount } from "solid-js";
+import { createSignal, For, onCleanup, onMount } from "solid-js";
+import { TypingBubble } from "@/components/TypingBubble";
 import { computePlainText } from "../helpers/convertRichTextToPlainText";
 import { PlateElement } from "./plate/PlateBlock";
 

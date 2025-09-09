@@ -1,10 +1,10 @@
-import { getUserModeInWorkspace } from "@/features/workspace/helpers/getUserRoleInWorkspace";
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 import { TRPCError } from "@trpc/server";
 import prisma from "@typebot.io/prisma";
-import { Plan, WorkspaceRole } from "@typebot.io/prisma/enum";
+import { Plan } from "@typebot.io/prisma/enum";
 import { folderSchema } from "@typebot.io/schemas/features/folder";
 import { z } from "@typebot.io/zod";
+import { getUserModeInWorkspace } from "@/features/workspace/helpers/getUserRoleInWorkspace";
+import { authenticatedProcedure } from "@/helpers/server/trpc";
 
 export const updateFolder = authenticatedProcedure
   .meta({

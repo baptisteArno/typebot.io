@@ -409,7 +409,9 @@ const createAssistantStream = async ({
 const createAssistantFoundationalStream = (
   process: ({
     forwardStream,
-  }: { forwardStream: (stream: any) => Promise<any> }) => Promise<void>,
+  }: {
+    forwardStream: (stream: any) => Promise<any>;
+  }) => Promise<void>,
 ) =>
   new ReadableStream({
     async start(controller) {
@@ -422,7 +424,7 @@ const createAssistantFoundationalStream = (
       };
 
       const forwardStream = async (stream: any) => {
-        let result: any | undefined = undefined;
+        let result: any | undefined;
 
         for await (const value of stream) {
           switch (value.event) {

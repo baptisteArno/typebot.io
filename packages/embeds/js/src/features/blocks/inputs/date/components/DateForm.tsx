@@ -1,9 +1,9 @@
-import { SendButton } from "@/components/SendButton";
-import type { InputSubmitContent } from "@/types";
 import { defaultDateInputOptions } from "@typebot.io/blocks-inputs/date/constants";
 import type { DateInputBlock } from "@typebot.io/blocks-inputs/date/schema";
 import { cx } from "@typebot.io/ui/lib/cva";
 import { createSignal } from "solid-js";
+import { SendButton } from "@/components/SendButton";
+import type { InputSubmitContent } from "@/types";
 
 type Props = {
   onSubmit: (inputValue: InputSubmitContent) => void;

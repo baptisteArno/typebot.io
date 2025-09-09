@@ -1,7 +1,7 @@
-import { fetcher } from "@/helpers/fetcher";
 import { env } from "@typebot.io/env";
 import type { Prisma } from "@typebot.io/prisma/types";
 import useSWR from "swr";
+import { fetcher } from "@/helpers/fetcher";
 
 export const useInvitations = ({
   typebotId,

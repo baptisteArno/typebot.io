@@ -1,9 +1,5 @@
-import { PlusIcon } from "@/components/icons";
-import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { trpc } from "@/lib/queryClient";
 import { Stack, useDisclosure } from "@chakra-ui/react";
-import { useQuery } from "@tanstack/react-query";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Menu } from "@typebot.io/ui/components/Menu";
@@ -12,6 +8,9 @@ import { ChevronDownIcon } from "@typebot.io/ui/icons/ChevronDownIcon";
 import { TrashIcon } from "@typebot.io/ui/icons/TrashIcon";
 import type React from "react";
 import { useState } from "react";
+import { PlusIcon } from "@/components/icons";
+import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
+import { trpc } from "@/lib/queryClient";
 import { CreateCustomDomainDialog } from "./CreateCustomDomainDialog";
 
 type Props = {

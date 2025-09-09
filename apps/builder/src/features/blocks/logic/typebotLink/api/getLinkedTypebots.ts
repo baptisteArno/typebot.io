@@ -1,4 +1,3 @@
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 import { TRPCError } from "@trpc/server";
 import { LogicBlockType } from "@typebot.io/blocks-logic/constants";
 import { parseGroups } from "@typebot.io/groups/helpers/parseGroups";
@@ -11,6 +10,7 @@ import {
   typebotV6Schema,
 } from "@typebot.io/typebot/schemas/typebot";
 import { z } from "@typebot.io/zod";
+import { authenticatedProcedure } from "@/helpers/server/trpc";
 
 const pick = {
   version: true,

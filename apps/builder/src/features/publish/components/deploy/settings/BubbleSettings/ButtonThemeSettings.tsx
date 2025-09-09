@@ -1,14 +1,12 @@
+import { Heading, HStack, Stack, Text } from "@chakra-ui/react";
+import type { ButtonTheme } from "@typebot.io/js";
+import { Popover } from "@typebot.io/ui/components/Popover";
 import { ColorPicker } from "@/components/ColorPicker";
 import { ImageUploadContent } from "@/components/ImageUploadContent";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { useOpenControls } from "@/hooks/useOpenControls";
-import { HStack, Heading, Stack, Text } from "@chakra-ui/react";
-import type { ButtonTheme } from "@typebot.io/js";
-import { Popover } from "@typebot.io/ui/components/Popover";
-
-import React from "react";
 
 type Props = {
   buttonTheme: ButtonTheme | undefined;

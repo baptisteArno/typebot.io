@@ -1,11 +1,10 @@
-import { refreshSessionUser } from "@/features/auth/helpers/refreshSessionUser";
-import { showHttpRequestErrorToast, trpc } from "@/lib/queryClient";
-import { toast } from "@/lib/toast";
 import { Input, Text } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
 import { useRef, useState } from "react";
+import { refreshSessionUser } from "@/features/auth/helpers/refreshSessionUser";
+import { showHttpRequestErrorToast, trpc } from "@/lib/queryClient";
 
 type Props = {
   isOpen: boolean;

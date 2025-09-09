@@ -1,21 +1,21 @@
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { z } from "@typebot.io/zod";
 import { ContentPageWrapper } from "@/components/ContentPageWrapper";
 import { EnterprisePlanCard } from "@/features/pricing/EnterprisePlanCard";
 import { Faq } from "@/features/pricing/Faq";
-import { PlanComparisonTables } from "@/features/pricing/PlanComparisonsTables";
-import { PricingHeading } from "@/features/pricing/PricingHeading";
-import { TiersDialog } from "@/features/pricing/TiersDialog";
 import {
   FreePlanCard,
   FreePlanPerksList,
 } from "@/features/pricing/free-plan-card";
+import { PlanComparisonTables } from "@/features/pricing/PlanComparisonsTables";
+import { PricingHeading } from "@/features/pricing/PricingHeading";
 import { ProPerksList, ProPlanCard } from "@/features/pricing/pro-plan-card";
 import {
   StarterPlanCard,
   StarterPlanPerksList,
 } from "@/features/pricing/starter-plan-card";
+import { TiersDialog } from "@/features/pricing/TiersDialog";
 import { createMetaTags } from "@/lib/createMetaTags";
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { z } from "@typebot.io/zod";
 
 export const Route = createFileRoute("/_layout/pricing")({
   head: () => ({

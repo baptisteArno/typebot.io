@@ -6,7 +6,6 @@ import {
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
-import React from "react";
 
 export const DividerWithText = (props: FlexProps) => {
   const { children, ...flexProps } = props;

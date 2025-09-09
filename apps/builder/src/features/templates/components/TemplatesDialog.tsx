@@ -1,12 +1,10 @@
-import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { toast } from "@/lib/toast";
 import {
-  HStack,
+  chakra,
   Heading,
+  HStack,
   Stack,
   Tag,
   Text,
-  chakra,
   useColorModeValue,
 } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
@@ -15,7 +13,9 @@ import { Standard } from "@typebot.io/react";
 import type { Typebot } from "@typebot.io/typebot/schemas/typebot";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
-import React, { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
+import { toast } from "@/lib/toast";
 import { useTemplates } from "../hooks/useTemplates";
 import type { TemplateProps } from "../types";
 

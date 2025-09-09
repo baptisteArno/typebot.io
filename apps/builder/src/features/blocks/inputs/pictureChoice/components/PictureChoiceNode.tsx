@@ -1,11 +1,10 @@
-import { SetVariableLabel } from "@/components/SetVariableLabel";
-import { useTypebot } from "@/features/editor/providers/TypebotProvider";
-import { ItemNodesList } from "@/features/graph/components/nodes/item/ItemNodesList";
 import { Stack, Tag, Text, Wrap } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import type { BlockIndices } from "@typebot.io/blocks-core/schemas/schema";
 import type { PictureChoiceBlock } from "@typebot.io/blocks-inputs/pictureChoice/schema";
-import React from "react";
+import { SetVariableLabel } from "@/components/SetVariableLabel";
+import { useTypebot } from "@/features/editor/providers/TypebotProvider";
+import { ItemNodesList } from "@/features/graph/components/nodes/item/ItemNodesList";
 
 type Props = {
   block: PictureChoiceBlock;

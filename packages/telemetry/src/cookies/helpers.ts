@@ -8,7 +8,7 @@ import {
   TYPEBOT_COOKIE_NAME,
   VISITOR_ID_PREFIX,
 } from "./constants";
-import { type TypebotCookieValue, cookieValueSchema } from "./schema";
+import { cookieValueSchema, type TypebotCookieValue } from "./schema";
 
 export const getTypebotCookie = (
   cookies: Record<string, string | undefined> | string,

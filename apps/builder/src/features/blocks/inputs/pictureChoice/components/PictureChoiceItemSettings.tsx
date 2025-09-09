@@ -1,8 +1,3 @@
-import { ImageUploadContent } from "@/components/ImageUploadContent";
-import { SwitchWithRelatedSettings } from "@/components/SwitchWithRelatedSettings";
-import { TextInput, Textarea } from "@/components/inputs";
-import { ConditionForm } from "@/features/blocks/logic/condition/components/ConditionForm";
-import { useOpenControls } from "@/hooks/useOpenControls";
 import { HStack, Stack, Text } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import type { PictureChoiceItem } from "@typebot.io/blocks-inputs/pictureChoice/schema";
@@ -10,7 +5,11 @@ import { LogicalOperator } from "@typebot.io/conditions/constants";
 import type { Condition } from "@typebot.io/conditions/schemas";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Popover } from "@typebot.io/ui/components/Popover";
-import React from "react";
+import { ImageUploadContent } from "@/components/ImageUploadContent";
+import { Textarea, TextInput } from "@/components/inputs";
+import { SwitchWithRelatedSettings } from "@/components/SwitchWithRelatedSettings";
+import { ConditionForm } from "@/features/blocks/logic/condition/components/ConditionForm";
+import { useOpenControls } from "@/hooks/useOpenControls";
 
 type Props = {
   workspaceId: string;

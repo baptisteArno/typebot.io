@@ -1,4 +1,3 @@
-import { useOpenControls } from "@/hooks/useOpenControls";
 import { Box, Center, Input, SimpleGrid, Stack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import {
@@ -7,9 +6,10 @@ import {
 } from "@typebot.io/ui/components/Button";
 import { Popover } from "@typebot.io/ui/components/Popover";
 import type React from "react";
-import { useState } from "react";
+import { useId, useState } from "react";
 import tinyColor from "tinycolor2";
 import { useDebouncedCallback } from "use-debounce";
+import { useOpenControls } from "@/hooks/useOpenControls";
 
 const colorsSelection: `#${string}`[] = [
   "#666460",
@@ -124,22 +124,20 @@ const NativeColorPicker = ({
   color: string;
   onColorChange: (color: string) => void;
 } & ButtonProps) => {
+  const inputId = useId();
   const debouncedOnColorChange = useDebouncedCallback((color: string) => {
     onColorChange(color);
   }, 200);
 
   return (
     <>
-      <label
-        htmlFor="native-picker"
-        className={buttonVariants({ variant, size })}
-      >
+      <label htmlFor={inputId} className={buttonVariants({ variant, size })}>
         {props.children}
       </label>
       <Input
         type="color"
         display="none"
-        id="native-picker"
+        id={inputId}
         value={color}
         onChange={(e) => debouncedOnColorChange(e.target.value)}
       />

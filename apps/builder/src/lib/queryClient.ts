@@ -1,4 +1,3 @@
-import type { AppRouter } from "@/helpers/server/routers/appRouter";
 import {
   type Mutation,
   MutationCache,
@@ -6,10 +5,11 @@ import {
   QueryCache,
   QueryClient,
 } from "@tanstack/react-query";
-import { TRPCClientError, createTRPCClient, httpLink } from "@trpc/client";
+import { createTRPCClient, httpLink, TRPCClientError } from "@trpc/client";
 import { createTRPCOptionsProxy } from "@trpc/tanstack-react-query";
 import { env } from "@typebot.io/env";
 import superjson from "superjson";
+import type { AppRouter } from "@/helpers/server/routers/appRouter";
 import { toast } from "./toast";
 
 export const showHttpRequestErrorToast = (

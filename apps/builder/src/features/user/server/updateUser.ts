@@ -1,7 +1,7 @@
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 import prisma from "@typebot.io/prisma";
 import { clientUserSchema, updateUserSchema } from "@typebot.io/user/schemas";
 import { z } from "@typebot.io/zod";
+import { authenticatedProcedure } from "@/helpers/server/trpc";
 
 export const updateUser = authenticatedProcedure
   .input(

@@ -1,13 +1,13 @@
-import { readFileSync } from "fs";
-import { getTestAsset } from "@/test/utils/playwright";
-import { deleteButtonInConfirmDialog } from "@/test/utils/selectorUtils";
 import { createId } from "@paralleldrive/cuid2";
 import test, { expect, type Page } from "@playwright/test";
 import {
   importTypebotInDatabase,
   injectFakeResults,
 } from "@typebot.io/playwright/databaseActions";
+import { readFileSync } from "fs";
 import { parse } from "papaparse";
+import { getTestAsset } from "@/test/utils/playwright";
+import { deleteButtonInConfirmDialog } from "@/test/utils/selectorUtils";
 
 const typebotId = createId();
 

@@ -1,10 +1,10 @@
-import { canReadTypebots } from "@/helpers/databaseRules";
 import type { Block } from "@typebot.io/blocks-core/schemas/schema";
 import { LogicBlockType } from "@typebot.io/blocks-logic/constants";
 import prisma from "@typebot.io/prisma";
 import type { PublicTypebot } from "@typebot.io/typebot/schemas/publicTypebot";
 import type { Typebot } from "@typebot.io/typebot/schemas/typebot";
 import type { User } from "@typebot.io/user/schemas";
+import { canReadTypebots } from "@/helpers/databaseRules";
 
 export const fetchLinkedTypebots = async (
   typebot: Pick<PublicTypebot, "groups">,

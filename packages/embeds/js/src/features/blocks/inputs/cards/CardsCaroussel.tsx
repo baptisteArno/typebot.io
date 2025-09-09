@@ -1,3 +1,6 @@
+import type { CardsBlock } from "@typebot.io/blocks-inputs/cards/schema";
+import { cn } from "@typebot.io/ui/lib/cn";
+import { createMemo, For, Index, type JSX, Show } from "solid-js";
 import { Button } from "@/components/Button";
 import { Carousel } from "@/components/carousel";
 import { ArrowLeftIcon } from "@/components/icons/ArrowLeftIcon";
@@ -5,9 +8,6 @@ import { ArrowRightIcon } from "@/components/icons/ArrowRightIcon";
 import type { ChatContainerSize } from "@/constants";
 import { useChatContainerSize } from "@/contexts/ChatContainerSizeContext";
 import type { InputSubmitContent } from "@/types";
-import type { CardsBlock } from "@typebot.io/blocks-inputs/cards/schema";
-import { cn } from "@typebot.io/ui/lib/cn";
-import { For, Index, type JSX, Show, createMemo } from "solid-js";
 
 type Props = {
   block: CardsBlock;

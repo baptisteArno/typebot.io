@@ -1,8 +1,8 @@
+import type { AudioBubbleBlock } from "@typebot.io/blocks-bubbles/audio/schema";
+import { useEffect, useRef, useState } from "react";
 import { TypingBubble } from "@/components/TypingBubble";
 import { parseVariables } from "@/features/variables";
 import { useTypebot } from "@/providers/TypebotProvider";
-import type { AudioBubbleBlock } from "@typebot.io/blocks-bubbles/audio/schema";
-import { useEffect, useRef, useState } from "react";
 
 type Props = {
   url: NonNullable<AudioBubbleBlock["content"]>["url"];

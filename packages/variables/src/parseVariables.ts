@@ -92,7 +92,7 @@ const evaluateInlineCode = (
     return createInlineSyncCodeRunner({ variables, sessionStore })(
       body.includes("return ") ? body : `return ${body}`,
     );
-  } catch (err) {
+  } catch (_err) {
     return parseVariables(code, { variables, sessionStore });
   }
 };

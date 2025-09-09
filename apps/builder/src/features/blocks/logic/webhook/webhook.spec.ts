@@ -1,9 +1,9 @@
-import { getTestAsset } from "@/test/utils/playwright";
 import { createId } from "@paralleldrive/cuid2";
 import test, { expect } from "@playwright/test";
 import { env } from "@typebot.io/env";
 import { importTypebotInDatabase } from "@typebot.io/playwright/databaseActions";
 import { apiToken } from "@typebot.io/playwright/databaseSetup";
+import { getTestAsset } from "@/test/utils/playwright";
 
 const typebotId = createId();
 

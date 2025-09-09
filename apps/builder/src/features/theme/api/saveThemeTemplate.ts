@@ -1,13 +1,12 @@
-import { getUserModeInWorkspace } from "@/features/workspace/helpers/getUserRoleInWorkspace";
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 import { TRPCError } from "@trpc/server";
 import prisma from "@typebot.io/prisma";
-import { WorkspaceRole } from "@typebot.io/prisma/enum";
 import {
   type ThemeTemplate,
   themeTemplateSchema,
 } from "@typebot.io/theme/schemas";
 import { z } from "@typebot.io/zod";
+import { getUserModeInWorkspace } from "@/features/workspace/helpers/getUserRoleInWorkspace";
+import { authenticatedProcedure } from "@/helpers/server/trpc";
 
 export const saveThemeTemplate = authenticatedProcedure
   .meta({

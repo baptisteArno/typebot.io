@@ -16,7 +16,7 @@
     "prepare": "husky",
     "pre-commit": "turbo run format-and-lint lint-repo check-broken-links test",
     "format-and-lint": "biome check .",
-    "format-and-lint:fix": "biome check . --write",
+    "format-and-lint:fix": "biome check . --write --unsafe",
     "lint-repo": "sherif -r unordered-dependencies -r packages-without-package-json --ignore-package @typebot.io/legacy --ignore-package bot-engine",
     "lint-repo:fix": "bun lint-repo --fix",
     "patch-embed-libs": "bun packages/scripts/src/patchEmbedLibs.ts && bun install",
@@ -32,14 +32,14 @@
     "check-unused-dependencies": "bun packages/scripts/src/checkDependencies.ts"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.9.4",
-    "@tolgee/cli": "2.8.2",
+    "@biomejs/biome": "2.2.3",
+    "@tolgee/cli": "2.14.0",
     "husky": "9.1.7",
-    "sherif": "1.4.0",
-    "turbo": "2.5.3",
-    "typescript": "5.8.2"
+    "sherif": "1.6.1",
+    "turbo": "2.5.6",
+    "typescript": "5.9.2"
   },
-  "packageManager": "bun@1.2.8",
+  "packageManager": "bun@1.2.21",
   "engines": {
     "node": "^22"
   },

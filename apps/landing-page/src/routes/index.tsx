@@ -1,5 +1,6 @@
-import { Section } from "@/components/Section";
+import { createFileRoute } from "@tanstack/react-router";
 import { Cta } from "@/components/cta/Cta";
+import { Section } from "@/components/Section";
 import { AllFeatures } from "@/features/homepage/all-features/AllFeatures";
 import { Companies } from "@/features/homepage/companies/components/Companies";
 import { Faq } from "@/features/homepage/components/Faq";
@@ -13,7 +14,6 @@ import { ProductPrinciples } from "@/features/homepage/product-principles/Produc
 import { Testimonials } from "@/features/homepage/testimonials/Testimonials";
 import { UseCases } from "@/features/homepage/use-cases/UseCases";
 import { createMetaTags } from "@/lib/createMetaTags";
-import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/")({
   head: () => ({

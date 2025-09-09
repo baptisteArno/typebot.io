@@ -1,8 +1,8 @@
-import { SetVariableLabel } from "@/components/SetVariableLabel";
-import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { Stack, Text } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import type { EmbedBubbleBlock } from "@typebot.io/blocks-bubbles/embed/schema";
+import { SetVariableLabel } from "@/components/SetVariableLabel";
+import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 
 type Props = {
   block: EmbedBubbleBlock;

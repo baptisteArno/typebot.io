@@ -1,18 +1,18 @@
+import {
+  Elements,
+  PaymentElement,
+  useElements,
+  useStripe,
+} from "@stripe/react-stripe-js";
+import type { Stripe } from "@stripe/stripe-js";
+import type { PaymentInputBlock } from "@typebot.io/blocks-inputs/payment/schema";
+import type { Variable } from "@typebot.io/variables/schemas";
+import { type FormEvent, useEffect, useState } from "react";
 import { SendButton, Spinner } from "@/components/SendButton";
 import { parseVariables } from "@/features/variables";
 import { initStripe } from "@/lib/stripe";
 import { useChat } from "@/providers/ChatProvider";
 import { useTypebot } from "@/providers/TypebotProvider";
-import {
-  PaymentElement,
-  useElements,
-  useStripe,
-} from "@stripe/react-stripe-js";
-import { Elements } from "@stripe/react-stripe-js";
-import type { Stripe } from "@stripe/stripe-js";
-import type { PaymentInputBlock } from "@typebot.io/blocks-inputs/payment/schema";
-import type { Variable } from "@typebot.io/variables/schemas";
-import React, { type FormEvent, useEffect, useState } from "react";
 import { createPaymentIntentQuery } from "../../queries/createPaymentIntentQuery";
 
 type Props = {

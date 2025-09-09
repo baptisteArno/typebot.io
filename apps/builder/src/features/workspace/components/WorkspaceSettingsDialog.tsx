@@ -1,3 +1,9 @@
+import { Avatar, Flex, Stack, Text } from "@chakra-ui/react";
+import { useTranslate } from "@tolgee/react";
+import { Button } from "@typebot.io/ui/components/Button";
+import { Dialog } from "@typebot.io/ui/components/Dialog";
+import type { ClientUser } from "@typebot.io/user/schemas";
+import { useState } from "react";
 import { EmojiOrImageIcon } from "@/components/EmojiOrImageIcon";
 import {
   CreditCardIcon,
@@ -10,14 +16,8 @@ import { BillingSettingsLayout } from "@/features/billing/components/BillingSett
 import { CredentialsSettingsForm } from "@/features/credentials/components/CredentialsSettingsForm";
 import { MyAccountForm } from "@/features/user/components/MyAccountForm";
 import { UserPreferencesForm } from "@/features/user/components/UserPreferencesForm";
-import { Avatar, Flex, Stack, Text } from "@chakra-ui/react";
-import { useTranslate } from "@tolgee/react";
-import { Button } from "@typebot.io/ui/components/Button";
-import { Dialog } from "@typebot.io/ui/components/Dialog";
-import type { ClientUser } from "@typebot.io/user/schemas";
-import { useState } from "react";
 import packageJson from "../../../../../../package.json";
-import { type WorkspaceInApp, useWorkspace } from "../WorkspaceProvider";
+import { useWorkspace, type WorkspaceInApp } from "../WorkspaceProvider";
 import { MembersList } from "./MembersList";
 import { WorkspaceSettingsForm } from "./WorkspaceSettingsForm";
 

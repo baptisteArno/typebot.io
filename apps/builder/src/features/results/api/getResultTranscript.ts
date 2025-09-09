@@ -1,4 +1,3 @@
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 import { TRPCError } from "@trpc/server";
 import { computeResultTranscript } from "@typebot.io/bot-engine/computeResultTranscript";
 import { typebotInSessionStateSchema } from "@typebot.io/chat-session/schemas";
@@ -7,6 +6,7 @@ import type { Answer } from "@typebot.io/results/schemas/answers";
 import { SessionStore } from "@typebot.io/runtime-session-store";
 import { isReadTypebotForbidden } from "@typebot.io/typebot/helpers/isReadTypebotForbidden";
 import { z } from "@typebot.io/zod";
+import { authenticatedProcedure } from "@/helpers/server/trpc";
 
 export const getResultTranscript = authenticatedProcedure
   .meta({

@@ -1,8 +1,8 @@
-import { getIframeReferrerOrigin } from "@/utils/getIframeReferrerOrigin";
-import { guessApiHost } from "@/utils/guessApiHost";
 import { isNotEmpty } from "@typebot.io/lib/utils";
 import type { LogInSession } from "@typebot.io/logs/schemas";
 import ky from "ky";
+import { getIframeReferrerOrigin } from "@/utils/getIframeReferrerOrigin";
+import { guessApiHost } from "@/utils/guessApiHost";
 
 export const saveClientLogsQuery = async ({
   apiHost,

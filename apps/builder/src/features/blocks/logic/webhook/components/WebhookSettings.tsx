@@ -1,12 +1,3 @@
-import { CopyButton } from "@/components/CopyButton";
-import { TableList, type TableListItemProps } from "@/components/TableList";
-import { TextLink } from "@/components/TextLink";
-import { CodeEditor } from "@/components/inputs/CodeEditor";
-import { DataVariableInputs } from "@/features/blocks/integrations/httpRequest/components/ResponseMappingInputs";
-import { computeDeepKeysMappingSuggestionList } from "@/features/blocks/integrations/httpRequest/helpers/computeDeepKeysMappingSuggestionList";
-import { useTypebot } from "@/features/editor/providers/TypebotProvider";
-import { useUser } from "@/features/user/hooks/useUser";
-import { toast } from "@/lib/toast";
 import {
   Accordion,
   AccordionButton,
@@ -35,6 +26,15 @@ import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
 import { Button } from "@typebot.io/ui/components/Button";
 import usePartySocket from "partysocket/react";
 import { useMemo, useState } from "react";
+import { CopyButton } from "@/components/CopyButton";
+import { CodeEditor } from "@/components/inputs/CodeEditor";
+import { TableList, type TableListItemProps } from "@/components/TableList";
+import { TextLink } from "@/components/TextLink";
+import { DataVariableInputs } from "@/features/blocks/integrations/httpRequest/components/ResponseMappingInputs";
+import { computeDeepKeysMappingSuggestionList } from "@/features/blocks/integrations/httpRequest/helpers/computeDeepKeysMappingSuggestionList";
+import { useTypebot } from "@/features/editor/providers/TypebotProvider";
+import { useUser } from "@/features/user/hooks/useUser";
+import { toast } from "@/lib/toast";
 
 type Props = {
   blockId: string;

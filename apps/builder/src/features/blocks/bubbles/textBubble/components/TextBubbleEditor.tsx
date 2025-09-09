@@ -1,7 +1,7 @@
-import { platePlugins } from "@/lib/plate";
 import type { TElement } from "@udecode/plate-common";
 import { Plate } from "@udecode/plate-core";
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
+import { platePlugins } from "@/lib/plate";
 import { TextEditorEditorContent } from "./TextEditorEditorContent";
 
 type TextBubbleEditorContentProps = {

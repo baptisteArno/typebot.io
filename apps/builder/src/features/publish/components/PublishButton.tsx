@@ -1,17 +1,3 @@
-import { ConfirmDialog } from "@/components/ConfirmDialog";
-import { TextLink } from "@/components/TextLink";
-import { CloudOffIcon, LockedIcon, UnlockedIcon } from "@/components/icons";
-import { ChangePlanDialog } from "@/features/billing/components/ChangePlanDialog";
-import { isFreePlan } from "@/features/billing/helpers/isFreePlan";
-import { useTypebot } from "@/features/editor/providers/TypebotProvider";
-import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { useTimeSince } from "@/hooks/useTimeSince";
-import {
-  queryClient,
-  showHttpRequestErrorToast,
-  trpc,
-} from "@/lib/queryClient";
-import { toast } from "@/lib/toast";
 import {
   Alert,
   AlertIcon,
@@ -31,6 +17,20 @@ import { ChevronDownIcon } from "@typebot.io/ui/icons/ChevronDownIcon";
 import { cn } from "@typebot.io/ui/lib/cn";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { ConfirmDialog } from "@/components/ConfirmDialog";
+import { CloudOffIcon, LockedIcon, UnlockedIcon } from "@/components/icons";
+import { TextLink } from "@/components/TextLink";
+import { ChangePlanDialog } from "@/features/billing/components/ChangePlanDialog";
+import { isFreePlan } from "@/features/billing/helpers/isFreePlan";
+import { useTypebot } from "@/features/editor/providers/TypebotProvider";
+import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
+import { useTimeSince } from "@/hooks/useTimeSince";
+import {
+  queryClient,
+  showHttpRequestErrorToast,
+  trpc,
+} from "@/lib/queryClient";
+import { toast } from "@/lib/toast";
 import { parseDefaultPublicId } from "../helpers/parseDefaultPublicId";
 
 type Props = {

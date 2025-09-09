@@ -3,7 +3,7 @@ import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
 import { isNotEmpty } from "@typebot.io/lib/utils";
 import type { Variable } from "@typebot.io/variables/schemas";
 import { z } from "@typebot.io/zod";
-import { type LanguageModel, generateObject } from "ai";
+import { generateObject, type LanguageModel } from "ai";
 import type {
   GenerateVariablesOptions,
   variablesToExtractSchema,

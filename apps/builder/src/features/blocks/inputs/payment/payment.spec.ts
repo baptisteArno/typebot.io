@@ -1,10 +1,10 @@
-import { stripePaymentForm } from "@/test/utils/selectorUtils";
 import { createId } from "@paralleldrive/cuid2";
 import test, { expect } from "@playwright/test";
 import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
 import { env } from "@typebot.io/env";
 import { createTypebots } from "@typebot.io/playwright/databaseActions";
 import { parseDefaultGroupWithBlock } from "@typebot.io/playwright/databaseHelpers";
+import { stripePaymentForm } from "@/test/utils/selectorUtils";
 
 test.describe("Payment input block", () => {
   test("Can configure Stripe account", async ({ page }) => {

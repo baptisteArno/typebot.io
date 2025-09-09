@@ -1,8 +1,8 @@
-import { auth } from "@/features/auth/lib/nextAuth";
 import prisma from "@typebot.io/prisma";
 import { trackEvents } from "@typebot.io/telemetry/trackEvents";
 import type { User } from "@typebot.io/user/schemas";
 import type { GetServerSidePropsContext } from "next";
+import { auth } from "@/features/auth/lib/nextAuth";
 
 export const trackAnalyticsPageView = async (
   context: GetServerSidePropsContext,

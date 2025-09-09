@@ -1,9 +1,9 @@
-import { ExpandIcon } from "@/components/icons";
-import { Fade, chakra, useColorModeValue } from "@chakra-ui/react";
+import { chakra, Fade, useColorModeValue } from "@chakra-ui/react";
 import { type Cell as CellProps, flexRender } from "@tanstack/react-table";
 import type { TableData } from "@typebot.io/results/schemas/results";
 import { Button } from "@typebot.io/ui/components/Button";
 import { memo } from "react";
+import { ExpandIcon } from "@/components/icons";
 
 type Props = {
   cell: CellProps<TableData, unknown>;

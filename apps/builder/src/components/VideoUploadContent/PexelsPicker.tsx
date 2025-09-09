@@ -15,16 +15,16 @@ import {
 import { env } from "@typebot.io/env";
 import { isDefined } from "@typebot.io/lib/utils";
 import {
+  createClient,
   type ErrorResponse,
   type Video,
   type Videos,
-  createClient,
 } from "pexels";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { TextLink } from "../TextLink";
 import { TextInput } from "../inputs";
 import { BasicSelect } from "../inputs/BasicSelect";
 import { PexelsLogo } from "../logos/PexelsLogo";
+import { TextLink } from "../TextLink";
 
 const client = createClient(env.NEXT_PUBLIC_PEXELS_API_KEY ?? "dummy");
 

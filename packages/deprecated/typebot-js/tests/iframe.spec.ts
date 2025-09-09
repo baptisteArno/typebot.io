@@ -1,5 +1,5 @@
-import * as Typebot from "../src";
 import type { TypebotPostMessageData } from "../src";
+import * as Typebot from "../src";
 import { createIframe } from "../src/iframe";
 
 describe("createIframe", () => {

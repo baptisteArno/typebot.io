@@ -99,7 +99,7 @@ const deleteResultsFromArchivedTypebotsIfAny = async (
     `Found ${archivedTypebotsWithResults.length} archived typebots with non-archived results.`,
   );
   for (const archivedTypebot of archivedTypebotsWithResults) {
-    // @ts-ignore
+    // @ts-expect-error
     await archiveResults(prisma)({
       typebot: archivedTypebot,
       resultsFilter: {

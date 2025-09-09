@@ -1,11 +1,11 @@
-import { FileIcon } from "@/components/icons";
-import { trpc } from "@/lib/queryClient";
 import { Flex, HStack, Text } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import { env } from "@typebot.io/env";
 import { isDefined } from "@typebot.io/lib/utils";
 import { Button } from "@typebot.io/ui/components/Button";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { FileIcon } from "@/components/icons";
+import { trpc } from "@/lib/queryClient";
 import { GoogleSheetsLogo } from "./GoogleSheetsLogo";
 
 declare const window: any;

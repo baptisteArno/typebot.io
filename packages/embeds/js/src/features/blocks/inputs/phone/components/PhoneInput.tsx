@@ -1,14 +1,14 @@
-import { SendButton } from "@/components/SendButton";
-import { ChevronDownIcon } from "@/components/icons/ChevronDownIcon";
-import { ShortTextInput } from "@/components/inputs/ShortTextInput";
-import type { CommandData } from "@/features/commands/types";
-import type { InputSubmitContent } from "@/types";
 import { defaultPhoneInputOptions } from "@typebot.io/blocks-inputs/phone/constants";
 import type { PhoneNumberInputBlock } from "@typebot.io/blocks-inputs/phone/schema";
 import { guessDeviceIsMobile } from "@typebot.io/lib/guessDeviceIsMobile";
 import { phoneCountries } from "@typebot.io/lib/phoneCountries";
 import { isEmpty } from "@typebot.io/lib/utils";
-import { For, createSignal, onCleanup, onMount } from "solid-js";
+import { createSignal, For, onCleanup, onMount } from "solid-js";
+import { ChevronDownIcon } from "@/components/icons/ChevronDownIcon";
+import { ShortTextInput } from "@/components/inputs/ShortTextInput";
+import { SendButton } from "@/components/SendButton";
+import type { CommandData } from "@/features/commands/types";
+import type { InputSubmitContent } from "@/types";
 
 type PhoneInputProps = Pick<
   NonNullable<PhoneNumberInputBlock["options"]>,

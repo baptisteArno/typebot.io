@@ -1,23 +1,21 @@
+import {
+  Flex,
+  Heading,
+  HStack,
+  Skeleton,
+  Stack,
+  useEventListener,
+  Wrap,
+} from "@chakra-ui/react";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import type { Prisma } from "@typebot.io/prisma/types";
+import { useEffect, useState } from "react";
 import { Portal } from "@/components/Portal";
 import { useTypebots } from "@/features/dashboard/hooks/useTypebots";
 import type { TypebotInDashboard } from "@/features/dashboard/types";
 import type { NodePosition } from "@/features/graph/providers/GraphDndProvider";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { trpc } from "@/lib/queryClient";
-import { toast } from "@/lib/toast";
-import {
-  Flex,
-  HStack,
-  Heading,
-  Skeleton,
-  Stack,
-  Wrap,
-  useEventListener,
-} from "@chakra-ui/react";
-import { useQuery } from "@tanstack/react-query";
-import { useMutation } from "@tanstack/react-query";
-import type { Prisma } from "@typebot.io/prisma/types";
-import React, { useEffect, useState } from "react";
 import { useTypebotDnd } from "../TypebotDndProvider";
 import { BackButton } from "./BackButton";
 import { CreateBotButton } from "./CreateBotButton";

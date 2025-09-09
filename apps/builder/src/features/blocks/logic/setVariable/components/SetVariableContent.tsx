@@ -1,9 +1,9 @@
-import { SetVariableLabel } from "@/components/SetVariableLabel";
-import { useTypebot } from "@/features/editor/providers/TypebotProvider";
-import { Stack, Tag, Text, chakra } from "@chakra-ui/react";
+import { chakra, Stack, Tag, Text } from "@chakra-ui/react";
 import type { SetVariableBlock } from "@typebot.io/blocks-logic/setVariable/schema";
 import { byId } from "@typebot.io/lib/utils";
 import type { Variable } from "@typebot.io/variables/schemas";
+import { SetVariableLabel } from "@/components/SetVariableLabel";
+import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 
 export const SetVariableContent = ({ block }: { block: SetVariableBlock }) => {
   const { typebot } = useTypebot();

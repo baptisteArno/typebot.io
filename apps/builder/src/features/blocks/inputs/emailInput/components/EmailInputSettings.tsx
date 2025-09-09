@@ -1,11 +1,10 @@
-import { TextInput } from "@/components/inputs";
-import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
 import { FormLabel, Stack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { defaultEmailInputOptions } from "@typebot.io/blocks-inputs/email/constants";
 import type { EmailInputBlock } from "@typebot.io/blocks-inputs/email/schema";
 import type { Variable } from "@typebot.io/variables/schemas";
-import React from "react";
+import { TextInput } from "@/components/inputs";
+import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
 
 type Props = {
   options: EmailInputBlock["options"];

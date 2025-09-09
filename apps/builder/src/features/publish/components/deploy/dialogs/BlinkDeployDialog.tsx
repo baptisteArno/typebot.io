@@ -1,5 +1,3 @@
-import { AlertInfo } from "@/components/AlertInfo";
-import { CopyButton } from "@/components/CopyButton";
 import {
   Code,
   Input,
@@ -12,6 +10,8 @@ import {
 } from "@chakra-ui/react";
 import { env } from "@typebot.io/env";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
+import { AlertInfo } from "@/components/AlertInfo";
+import { CopyButton } from "@/components/CopyButton";
 import type { DialogProps } from "../DeployButton";
 
 export const BlinkDeployDialog = ({

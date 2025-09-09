@@ -1,6 +1,13 @@
-import { Typebot } from "@/components/Typebot";
+import { useMDXComponent } from "@content-collections/mdx/react";
+import { InfoIcon } from "@typebot.io/ui/icons/InfoIcon";
+import { TickIcon } from "@typebot.io/ui/icons/TickIcon";
+import { TriangleAlertIcon } from "@typebot.io/ui/icons/TriangleAlertIcon";
+import { cn } from "@typebot.io/ui/lib/cn";
+import type * as React from "react";
+import { Suspense } from "react";
 import { Cta } from "@/components/cta/Cta";
 import { TextLink } from "@/components/link";
+import { Typebot } from "@/components/Typebot";
 import {
   Table,
   TableBody,
@@ -11,13 +18,6 @@ import {
   TableRoot,
   TableRow,
 } from "@/components/table";
-import { useMDXComponent } from "@content-collections/mdx/react";
-import { InfoIcon } from "@typebot.io/ui/icons/InfoIcon";
-import { TickIcon } from "@typebot.io/ui/icons/TickIcon";
-import { TriangleAlertIcon } from "@typebot.io/ui/icons/TriangleAlertIcon";
-import { cn } from "@typebot.io/ui/lib/cn";
-import type * as React from "react";
-import { Suspense } from "react";
 import { HtmlFormGenerator } from "./HtmlFormGenerator";
 import { WhatsAppPricingCalculator } from "./WhatsAppPricingCalculator";
 

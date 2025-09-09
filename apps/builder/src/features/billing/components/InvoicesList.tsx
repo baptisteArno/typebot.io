@@ -1,5 +1,3 @@
-import { ButtonLink } from "@/components/ButtonLink";
-import { DownloadIcon, FileIcon } from "@/components/icons";
 import {
   Checkbox,
   Heading,
@@ -15,7 +13,8 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
-import React from "react";
+import { ButtonLink } from "@/components/ButtonLink";
+import { DownloadIcon, FileIcon } from "@/components/icons";
 import { useInvoicesQuery } from "../hooks/useInvoicesQuery";
 
 type Props = {

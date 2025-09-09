@@ -1,6 +1,6 @@
 import { singleVariableOrNumberSchema } from "@typebot.io/variables/schemas";
-import { z } from "@typebot.io/zod";
 import type { ZodLayoutMetadata } from "@typebot.io/zod";
+import { z } from "@typebot.io/zod";
 import type {
   ActionDefinition,
   AuthDefinition,

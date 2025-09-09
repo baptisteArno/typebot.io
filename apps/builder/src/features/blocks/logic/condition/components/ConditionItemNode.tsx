@@ -1,13 +1,12 @@
-import { useTypebot } from "@/features/editor/providers/TypebotProvider";
-import { useGraph } from "@/features/graph/providers/GraphProvider";
 import { Flex, Text, useEventListener } from "@chakra-ui/react";
 import type { ItemIndices } from "@typebot.io/blocks-core/schemas/items/schema";
 import type { ConditionItem } from "@typebot.io/blocks-logic/condition/schema";
 import type { Comparison, Condition } from "@typebot.io/conditions/schemas";
 import { isNotDefined } from "@typebot.io/lib/utils";
 import { Popover } from "@typebot.io/ui/components/Popover";
-import type React from "react";
 import { useRef } from "react";
+import { useTypebot } from "@/features/editor/providers/TypebotProvider";
+import { useGraph } from "@/features/graph/providers/GraphProvider";
 import { ConditionContent } from "./ConditionContent";
 import { ConditionForm } from "./ConditionForm";
 

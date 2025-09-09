@@ -1,5 +1,8 @@
-import { defineCollection, defineConfig } from "@content-collections/core";
-import { suppressDeprecatedWarnings } from "@content-collections/core";
+import {
+  defineCollection,
+  defineConfig,
+  suppressDeprecatedWarnings,
+} from "@content-collections/core";
 import { compileMDX } from "@content-collections/mdx";
 import {
   transformerMetaHighlight,

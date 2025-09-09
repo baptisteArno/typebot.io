@@ -1,9 +1,9 @@
-import { TextLink } from "@/components/TextLink";
-import { DashboardHeader } from "@/features/dashboard/components/DashboardHeader";
-import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { Heading, Text, VStack } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
+import { TextLink } from "@/components/TextLink";
+import { DashboardHeader } from "@/features/dashboard/components/DashboardHeader";
+import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 
 export default function Page() {
   const { replace } = useRouter();

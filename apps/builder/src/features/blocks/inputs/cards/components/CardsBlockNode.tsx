@@ -1,11 +1,10 @@
-import { SetVariableLabel } from "@/components/SetVariableLabel";
-import { useTypebot } from "@/features/editor/providers/TypebotProvider";
-import { ItemNodesList } from "@/features/graph/components/nodes/item/ItemNodesList";
 import { Stack } from "@chakra-ui/react";
 import type { BlockIndices } from "@typebot.io/blocks-core/schemas/schema";
 import type { CardsBlock } from "@typebot.io/blocks-inputs/cards/schema";
 import { isDefined } from "@typebot.io/lib/utils";
-import React from "react";
+import { SetVariableLabel } from "@/components/SetVariableLabel";
+import { useTypebot } from "@/features/editor/providers/TypebotProvider";
+import { ItemNodesList } from "@/features/graph/components/nodes/item/ItemNodesList";
 
 type Props = {
   block: CardsBlock;

@@ -1,3 +1,9 @@
+import { Tag, Text, theme, VStack } from "@chakra-ui/react";
+import { blockHasItems } from "@typebot.io/blocks-core/helpers";
+import { byId, isNotDefined } from "@typebot.io/lib/utils";
+import { Tooltip } from "@typebot.io/ui/components/Tooltip";
+import { useMemo } from "react";
+import { useShallow } from "zustand/react/shallow";
 import { computeTotalUsersAtBlock } from "@/features/analytics/helpers/computeTotalUsersAtBlock";
 import { getTotalAnswersAtBlock } from "@/features/analytics/helpers/getTotalAnswersAtBlock";
 import type {
@@ -7,12 +13,6 @@ import type {
 import { hasProPerks } from "@/features/billing/helpers/hasProPerks";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { Tag, Text, VStack, theme } from "@chakra-ui/react";
-import { blockHasItems } from "@typebot.io/blocks-core/helpers";
-import { byId, isNotDefined } from "@typebot.io/lib/utils";
-import { Tooltip } from "@typebot.io/ui/components/Tooltip";
-import React, { useMemo } from "react";
-import { useShallow } from "zustand/react/shallow";
 import { groupWidth } from "../../constants";
 import { computeDropOffPath } from "../../helpers/computeDropOffPath";
 import { computeSourceCoordinates } from "../../helpers/computeSourceCoordinates";

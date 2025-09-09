@@ -7,7 +7,7 @@ import {
   type SwitchProps,
 } from "@chakra-ui/react";
 import { isDefined } from "@typebot.io/lib/utils";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { MoreInfoTooltip } from "../MoreInfoTooltip";
 
 export type SwitchWithLabelProps = {

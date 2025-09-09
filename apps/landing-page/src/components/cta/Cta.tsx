@@ -1,5 +1,5 @@
-import { registerUrl } from "@/constants";
 import { cn } from "@typebot.io/ui/lib/cn";
+import { registerUrl } from "@/constants";
 import { CtaButtonLink } from "../link";
 import magicWand from "./assets/magic-wand.png";
 

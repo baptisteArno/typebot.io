@@ -1,5 +1,5 @@
 import { MARK_BOLD, MARK_CODE, MARK_ITALIC } from "@udecode/plate-basic-marks";
-import { type Value, getPluginType } from "@udecode/plate-common";
+import { getPluginType, type Value } from "@udecode/plate-common";
 
 import type { RemarkTextRules } from "./types";
 

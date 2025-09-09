@@ -2,8 +2,8 @@ import type { Block } from "@typebot.io/blocks-core/schemas/schema";
 import type { Group } from "@typebot.io/groups/schemas";
 import type {
   BlockSource,
-  TEventSource,
   Target,
+  TEventSource,
 } from "@typebot.io/typebot/schemas/edge";
 import type { IdMap } from "@typebot.io/typebot/schemas/types";
 

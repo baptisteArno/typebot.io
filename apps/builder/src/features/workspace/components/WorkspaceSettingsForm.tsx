@@ -1,8 +1,3 @@
-import { ConfirmDialog } from "@/components/ConfirmDialog";
-import { CopyButton } from "@/components/CopyButton";
-import { EditableEmojiOrImageIcon } from "@/components/EditableEmojiOrImageIcon";
-import { HardDriveIcon } from "@/components/icons";
-import { TextInput } from "@/components/inputs";
 import {
   Flex,
   FormControl,
@@ -17,7 +12,11 @@ import {
 } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { Button } from "@typebot.io/ui/components/Button";
-import React from "react";
+import { ConfirmDialog } from "@/components/ConfirmDialog";
+import { CopyButton } from "@/components/CopyButton";
+import { EditableEmojiOrImageIcon } from "@/components/EditableEmojiOrImageIcon";
+import { HardDriveIcon } from "@/components/icons";
+import { TextInput } from "@/components/inputs";
 import { useWorkspace } from "../WorkspaceProvider";
 
 export const WorkspaceSettingsForm = ({ onClose }: { onClose: () => void }) => {

@@ -1,6 +1,3 @@
-import { MoreInfoTooltip } from "@/components/MoreInfoTooltip";
-import { CtaButtonLink } from "@/components/link";
-import { registerUrl } from "@/constants";
 import {
   chatsLimits,
   prices,
@@ -9,6 +6,9 @@ import {
 import { formatPrice } from "@typebot.io/billing/helpers/formatPrice";
 import { Plan } from "@typebot.io/prisma/enum";
 import { Button } from "@typebot.io/ui/components/Button";
+import { CtaButtonLink } from "@/components/link";
+import { MoreInfoTooltip } from "@/components/MoreInfoTooltip";
+import { registerUrl } from "@/constants";
 import {
   PerkListItem,
   PlanNamePill,

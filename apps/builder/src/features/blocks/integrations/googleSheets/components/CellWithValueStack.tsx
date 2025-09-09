@@ -1,8 +1,8 @@
-import type { TableListItemProps } from "@/components/TableList";
-import { TextInput } from "@/components/inputs";
-import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { Stack } from "@chakra-ui/react";
 import type { Cell } from "@typebot.io/blocks-integrations/googleSheets/schema";
+import { TextInput } from "@/components/inputs";
+import { BasicSelect } from "@/components/inputs/BasicSelect";
+import type { TableListItemProps } from "@/components/TableList";
 
 export const CellWithValueStack = ({
   item,

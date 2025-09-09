@@ -1,14 +1,14 @@
 import { BubbleBlockType } from "@typebot.io/blocks-bubbles/constants";
 import {
-  VideoBubbleContentType,
   embedBaseUrls,
   embeddableVideoTypes,
+  VideoBubbleContentType,
 } from "@typebot.io/blocks-bubbles/video/constants";
 import type { EmbeddableVideoBubbleContentType } from "@typebot.io/blocks-bubbles/video/schema";
 import type { ContinueChatResponse } from "@typebot.io/chat-api/schemas";
 import { isSvgSrc } from "@typebot.io/lib/utils";
 import { convertRichTextToMarkdown } from "@typebot.io/rich-text/convertRichTextToMarkdown";
-import { type UploadMediaCache, getOrUploadMedia } from "./getOrUploadMedia";
+import { getOrUploadMedia, type UploadMediaCache } from "./getOrUploadMedia";
 import type { WhatsAppSendingMessage } from "./schemas";
 
 type Props = {

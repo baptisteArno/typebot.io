@@ -1,6 +1,3 @@
-import { Card } from "@/components/Card";
-import { CtaButtonLink } from "@/components/link";
-import { registerUrl } from "@/constants";
 import { BracesIcon } from "@typebot.io/ui/icons/BracesIcon";
 import { DatabaseIcon } from "@typebot.io/ui/icons/DatabaseIcon";
 import { FileCodeIcon } from "@typebot.io/ui/icons/FileCodeIcon";
@@ -8,6 +5,9 @@ import { LinkIcon } from "@typebot.io/ui/icons/LinkIcon";
 import { UsersIcon } from "@typebot.io/ui/icons/UsersIcon";
 import { ZapIcon } from "@typebot.io/ui/icons/ZapIcon";
 import { cn } from "@typebot.io/ui/lib/cn";
+import { Card } from "@/components/Card";
+import { CtaButtonLink } from "@/components/link";
+import { registerUrl } from "@/constants";
 import bgImage0 from "./assets/0.png";
 import bgImage1 from "./assets/1.png";
 import bgImage2 from "./assets/2.png";

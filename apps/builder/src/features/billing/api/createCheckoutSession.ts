@@ -1,7 +1,7 @@
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 import { createCheckoutSession as createCheckoutSessionHandler } from "@typebot.io/billing/api/createCheckoutSession";
 import { Plan } from "@typebot.io/prisma/enum";
 import { z } from "@typebot.io/zod";
+import { authenticatedProcedure } from "@/helpers/server/trpc";
 
 export const createCheckoutSession = authenticatedProcedure
   .meta({

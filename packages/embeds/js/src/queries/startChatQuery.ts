@@ -1,10 +1,3 @@
-import {
-  getPaymentInProgressInStorage,
-  removePaymentInProgressFromStorage,
-} from "@/features/blocks/inputs/payment/helpers/paymentInProgressStorage";
-import type { BotContext } from "@/types";
-import { getIframeReferrerOrigin } from "@/utils/getIframeReferrerOrigin";
-import { guessApiHost } from "@/utils/guessApiHost";
 import type {
   ContinueChatResponse,
   StartChatInput,
@@ -14,6 +7,13 @@ import type {
 } from "@typebot.io/chat-api/schemas";
 import { isNotDefined, isNotEmpty } from "@typebot.io/lib/utils";
 import ky from "ky";
+import {
+  getPaymentInProgressInStorage,
+  removePaymentInProgressFromStorage,
+} from "@/features/blocks/inputs/payment/helpers/paymentInProgressStorage";
+import type { BotContext } from "@/types";
+import { getIframeReferrerOrigin } from "@/utils/getIframeReferrerOrigin";
+import { guessApiHost } from "@/utils/guessApiHost";
 
 type Props = {
   typebot: string | any;

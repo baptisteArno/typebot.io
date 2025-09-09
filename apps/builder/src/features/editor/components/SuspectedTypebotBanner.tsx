@@ -1,8 +1,8 @@
+import { HStack, Text } from "@chakra-ui/react";
+import { Plan } from "@typebot.io/prisma/enum";
 import { TextLink } from "@/components/TextLink";
 import { useUser } from "@/features/user/hooks/useUser";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { HStack, Text } from "@chakra-ui/react";
-import { Plan } from "@typebot.io/prisma/enum";
 
 type Props = {
   typebotId: string;

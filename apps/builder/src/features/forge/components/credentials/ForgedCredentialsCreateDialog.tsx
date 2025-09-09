@@ -1,7 +1,3 @@
-import { TextInput } from "@/components/inputs/TextInput";
-import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { queryClient, trpc } from "@/lib/queryClient";
-import { toast } from "@/lib/toast";
 import { useMutation } from "@tanstack/react-query";
 import type { CreatableCredentials } from "@typebot.io/credentials/schemas";
 import type { ForgedBlockDefinition } from "@typebot.io/forge-repository/definitions";
@@ -9,6 +5,10 @@ import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
 import { z } from "@typebot.io/zod";
 import { useState } from "react";
+import { TextInput } from "@/components/inputs/TextInput";
+import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
+import { queryClient, trpc } from "@/lib/queryClient";
+import { toast } from "@/lib/toast";
 import { ZodObjectLayout } from "../zodLayouts/ZodObjectLayout";
 
 type Props = {

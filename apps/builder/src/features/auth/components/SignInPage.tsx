@@ -1,15 +1,14 @@
-import { Seo } from "@/components/Seo";
-import { TextLink } from "@/components/TextLink";
 import {
   Heading,
   Stack,
   Text,
-  VStack,
   useColorModeValue,
+  VStack,
 } from "@chakra-ui/react";
-import { T, useTranslate } from "@tolgee/react";
-import { env } from "@typebot.io/env";
+import { useTranslate } from "@tolgee/react";
 import { useRouter } from "next/router";
+import { Seo } from "@/components/Seo";
+import { TextLink } from "@/components/TextLink";
 import { SignInForm } from "./SignInForm";
 
 type Props = {

@@ -1,8 +1,8 @@
-import type { InputSubmitContent } from "@/types";
 import { defaultRatingInputOptions } from "@typebot.io/blocks-inputs/rating/constants";
 import type { RatingInputBlock } from "@typebot.io/blocks-inputs/rating/schema";
 import { isDefined, isEmpty, isNotDefined } from "@typebot.io/lib/utils";
-import React, { type FormEvent, useState } from "react";
+import { type FormEvent, useState } from "react";
+import type { InputSubmitContent } from "@/types";
 import { SendButton } from "../../../../../components/SendButton";
 
 type Props = {

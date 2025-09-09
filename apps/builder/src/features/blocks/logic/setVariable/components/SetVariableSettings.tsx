@@ -1,11 +1,3 @@
-import { TextInput, Textarea } from "@/components/inputs";
-import { BasicSelect } from "@/components/inputs/BasicSelect";
-import { CodeEditor } from "@/components/inputs/CodeEditor";
-import { RadioButtons } from "@/components/inputs/RadioButtons";
-import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
-import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
-import { WhatsAppLogo } from "@/components/logos/WhatsAppLogo";
-import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import {
   Alert,
   AlertIcon,
@@ -26,6 +18,14 @@ import type { SetVariableBlock } from "@typebot.io/blocks-logic/setVariable/sche
 import { timeZones } from "@typebot.io/lib/timeZones";
 import { isDefined } from "@typebot.io/lib/utils";
 import type { Variable } from "@typebot.io/variables/schemas";
+import { Textarea, TextInput } from "@/components/inputs";
+import { BasicSelect } from "@/components/inputs/BasicSelect";
+import { CodeEditor } from "@/components/inputs/CodeEditor";
+import { RadioButtons } from "@/components/inputs/RadioButtons";
+import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
+import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
+import { WhatsAppLogo } from "@/components/logos/WhatsAppLogo";
+import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 
 type Props = {
   options: SetVariableBlock["options"];

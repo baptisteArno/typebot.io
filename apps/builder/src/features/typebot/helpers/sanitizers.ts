@@ -1,4 +1,3 @@
-import { hasProPerks } from "@/features/billing/helpers/hasProPerks";
 import { isInputBlock } from "@typebot.io/blocks-core/helpers";
 import type { Block } from "@typebot.io/blocks-core/schemas/schema";
 import { IntegrationBlockType } from "@typebot.io/blocks-integrations/constants";
@@ -8,6 +7,7 @@ import prisma from "@typebot.io/prisma";
 import { Plan } from "@typebot.io/prisma/enum";
 import type { Typebot } from "@typebot.io/typebot/schemas/typebot";
 import type { Workspace } from "@typebot.io/workspaces/schemas";
+import { hasProPerks } from "@/features/billing/helpers/hasProPerks";
 
 export const sanitizeSettings = (
   settings: Typebot["settings"],

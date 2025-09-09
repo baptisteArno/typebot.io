@@ -1,13 +1,13 @@
-import { useTypebot } from "@/features/editor/providers/TypebotProvider";
-import { VariableTag } from "@/features/graph/components/nodes/block/VariableTag";
 import { Box, Text } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import {
-  VideoBubbleContentType,
   embedBaseUrls,
+  VideoBubbleContentType,
 } from "@typebot.io/blocks-bubbles/video/constants";
 import type { VideoBubbleBlock } from "@typebot.io/blocks-bubbles/video/schema";
 import { findUniqueVariable } from "@typebot.io/variables/findUniqueVariable";
+import { useTypebot } from "@/features/editor/providers/TypebotProvider";
+import { VariableTag } from "@/features/graph/components/nodes/block/VariableTag";
 
 type Props = {
   block: VideoBubbleBlock;

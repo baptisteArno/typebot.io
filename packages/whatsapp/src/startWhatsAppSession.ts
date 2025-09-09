@@ -18,8 +18,8 @@ import type { Settings } from "@typebot.io/settings/schemas";
 import type { PublicTypebot } from "@typebot.io/typebot/schemas/publicTypebot";
 import type { Typebot } from "@typebot.io/typebot/schemas/typebot";
 import type { SetVariableHistoryItem } from "@typebot.io/variables/schemas";
-import { WhatsAppError } from "./WhatsAppError";
 import type { WhatsAppMessageReferral } from "./schemas";
+import { WhatsAppError } from "./WhatsAppError";
 
 type Props = {
   incomingMessage?: Message;

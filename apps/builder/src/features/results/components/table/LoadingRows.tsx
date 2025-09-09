@@ -1,11 +1,10 @@
 import {
   Checkbox,
+  chakra,
   Flex,
   Skeleton,
-  chakra,
   useColorModeValue,
 } from "@chakra-ui/react";
-import React from "react";
 
 type LoadingRowsProps = {
   totalColumns: number;

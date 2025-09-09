@@ -6,9 +6,9 @@ import { isDefined } from "@typebot.io/lib/utils";
 import { createDifyProvider } from "dify-ai-provider";
 import { auth } from "../auth";
 import {
-  LEGACY_RESPONSE_MAPPING,
   defaultAppId,
   defaultUserId,
+  LEGACY_RESPONSE_MAPPING,
 } from "../constants";
 import { transformKeyValueListToObject } from "../helpers/transformKeyValueListToObject";
 import { transformLegacyResponseMapping } from "../helpers/transformLegacyResponseMapping";

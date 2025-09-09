@@ -1,4 +1,3 @@
-import { authenticateUser } from "@/helpers/authenticateUser";
 import { isHttpRequestBlock } from "@typebot.io/blocks-core/helpers";
 import type { Block } from "@typebot.io/blocks-core/schemas/schema";
 import type { HttpRequest } from "@typebot.io/blocks-integrations/httpRequest/schema";
@@ -29,6 +28,7 @@ import type { Typebot } from "@typebot.io/typebot/schemas/typebot";
 import type { Variable } from "@typebot.io/variables/schemas";
 import Cors from "cors";
 import type { NextApiRequest, NextApiResponse } from "next";
+import { authenticateUser } from "@/helpers/authenticateUser";
 
 const cors = initMiddleware(Cors());
 

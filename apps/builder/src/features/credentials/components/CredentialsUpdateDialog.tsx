@@ -1,10 +1,10 @@
+import type { Credentials } from "@typebot.io/credentials/schemas";
+import { forgedBlocks } from "@typebot.io/forge-repository/definitions";
+import { Dialog } from "@typebot.io/ui/components/Dialog";
 import { UpdateStripeCredentialsDialogBody } from "@/features/blocks/inputs/payment/components/UpdateStripeCredentialsDialogBody";
 import { SmtpCredentialsUpdateDialogBody } from "@/features/blocks/integrations/sendEmail/components/SmtpCredentialsUpdateDialogBody";
 import { ForgedCredentialsUpdateDialogContent } from "@/features/forge/components/credentials/ForgedCredentialsUpdateDialogContent";
 import { ForgedOAuthCredentialsUpdateDialogBody } from "@/features/forge/components/credentials/ForgedOAuthCredentialsUpdateDialogBody";
-import type { Credentials } from "@typebot.io/credentials/schemas";
-import { forgedBlocks } from "@typebot.io/forge-repository/definitions";
-import { Dialog } from "@typebot.io/ui/components/Dialog";
 
 export const CredentialsUpdateDialog = ({
   editingCredentials,

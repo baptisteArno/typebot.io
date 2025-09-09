@@ -1,5 +1,3 @@
-import { parseTypebotPublishEvents } from "@/features/telemetry/helpers/parseTypebotPublishEvents";
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 import { TRPCError } from "@trpc/server";
 import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
 import { env } from "@typebot.io/env";
@@ -23,6 +21,8 @@ import { publicTypebotSchemaV6 } from "@typebot.io/typebot/schemas/publicTypebot
 import { typebotV6Schema } from "@typebot.io/typebot/schemas/typebot";
 import { variableSchema } from "@typebot.io/variables/schemas";
 import { z } from "@typebot.io/zod";
+import { parseTypebotPublishEvents } from "@/features/telemetry/helpers/parseTypebotPublishEvents";
+import { authenticatedProcedure } from "@/helpers/server/trpc";
 import { isWriteTypebotForbidden } from "../helpers/isWriteTypebotForbidden";
 
 const warningSchema = z.object({

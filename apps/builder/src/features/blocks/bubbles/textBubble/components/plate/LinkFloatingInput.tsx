@@ -1,5 +1,3 @@
-import { LinkIcon, UnlinkIcon } from "@/components/icons";
-import { TextInputIcon } from "@/features/blocks/inputs/textInput/components/TextInputIcon";
 import {
   Divider,
   HStack,
@@ -11,9 +9,9 @@ import {
 } from "@chakra-ui/react";
 import { Button } from "@typebot.io/ui/components/Button";
 import {
-  type UseVirtualFloatingOptions,
   flip,
   offset,
+  type UseVirtualFloatingOptions,
 } from "@udecode/plate-floating";
 import {
   type LinkFloatingToolbarState,
@@ -23,7 +21,9 @@ import {
   useFloatingLinkInsertState,
   useFloatingLinkUrlInput,
 } from "@udecode/plate-link";
-import React, { useRef } from "react";
+import { useRef } from "react";
+import { LinkIcon, UnlinkIcon } from "@/components/icons";
+import { TextInputIcon } from "@/features/blocks/inputs/textInput/components/TextInputIcon";
 
 const floatingOptions: UseVirtualFloatingOptions = {
   placement: "bottom-start",

@@ -1,8 +1,8 @@
-import { useBlockDnd } from "@/features/graph/providers/GraphDndProvider";
 import { Flex, HStack, useColorModeValue } from "@chakra-ui/react";
 import type { BlockV6 } from "@typebot.io/blocks-core/schemas/schema";
 import { Tooltip } from "@typebot.io/ui/components/Tooltip";
 import { useEffect, useState } from "react";
+import { useBlockDnd } from "@/features/graph/providers/GraphDndProvider";
 
 type Props = {
   type: BlockV6["type"];

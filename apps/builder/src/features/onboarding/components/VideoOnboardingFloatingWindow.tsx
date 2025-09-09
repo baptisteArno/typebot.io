@@ -1,7 +1,7 @@
-import { CloseIcon } from "@/components/icons";
-import { useUser } from "@/features/user/hooks/useUser";
 import { Flex, SlideFade, useColorModeValue } from "@chakra-ui/react";
 import { Button } from "@typebot.io/ui/components/Button";
+import { CloseIcon } from "@/components/icons";
+import { useUser } from "@/features/user/hooks/useUser";
 import { onboardingVideos } from "../data";
 import { useOnboardingDisclosure } from "../hooks/useOnboardingDisclosure";
 import { YoutubeIframe } from "./YoutubeIframe";

@@ -1,8 +1,3 @@
-import { TextLink } from "@/components/TextLink";
-import { CodeEditor } from "@/components/inputs/CodeEditor";
-import { useEditor } from "@/features/editor/providers/EditorProvider";
-import { useTypebot } from "@/features/editor/providers/TypebotProvider";
-import { parseApiHost } from "@/features/publish/components/deploy/snippetParsers/shared";
 import {
   Code,
   ListItem,
@@ -11,6 +6,11 @@ import {
   type StackProps,
   Text,
 } from "@chakra-ui/react";
+import { CodeEditor } from "@/components/inputs/CodeEditor";
+import { TextLink } from "@/components/TextLink";
+import { useEditor } from "@/features/editor/providers/EditorProvider";
+import { useTypebot } from "@/features/editor/providers/TypebotProvider";
+import { parseApiHost } from "@/features/publish/components/deploy/snippetParsers/shared";
 
 export const ApiPreviewInstructions = (props: StackProps) => {
   const { typebot } = useTypebot();

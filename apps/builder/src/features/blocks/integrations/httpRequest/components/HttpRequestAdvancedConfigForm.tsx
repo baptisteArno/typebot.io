@@ -1,11 +1,3 @@
-import { TableList, type TableListItemProps } from "@/components/TableList";
-import { NumberInput } from "@/components/inputs";
-import { BasicSelect } from "@/components/inputs/BasicSelect";
-import { CodeEditor } from "@/components/inputs/CodeEditor";
-import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
-import { CredentialsDropdown } from "@/features/credentials/components/CredentialsDropdown";
-import { useTypebot } from "@/features/editor/providers/TypebotProvider";
-import { toast } from "@/lib/toast";
 import {
   Accordion,
   AccordionButton,
@@ -17,10 +9,10 @@ import {
   Text,
 } from "@chakra-ui/react";
 import {
-  HttpMethod,
   defaultHttpRequestAttributes,
   defaultHttpRequestBlockOptions,
   defaultTimeout,
+  HttpMethod,
   maxTimeout,
 } from "@typebot.io/blocks-integrations/httpRequest/constants";
 import type {
@@ -32,6 +24,14 @@ import type {
 } from "@typebot.io/blocks-integrations/httpRequest/schema";
 import { Button } from "@typebot.io/ui/components/Button";
 import { useMemo, useState } from "react";
+import { NumberInput } from "@/components/inputs";
+import { BasicSelect } from "@/components/inputs/BasicSelect";
+import { CodeEditor } from "@/components/inputs/CodeEditor";
+import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
+import { TableList, type TableListItemProps } from "@/components/TableList";
+import { CredentialsDropdown } from "@/features/credentials/components/CredentialsDropdown";
+import { useTypebot } from "@/features/editor/providers/TypebotProvider";
+import { toast } from "@/lib/toast";
 import { computeDeepKeysMappingSuggestionList } from "../helpers/computeDeepKeysMappingSuggestionList";
 import { convertVariablesForTestToVariables } from "../helpers/convertVariablesForTestToVariables";
 import { executeHttpRequest } from "../queries/executeHttpRequestQuery";

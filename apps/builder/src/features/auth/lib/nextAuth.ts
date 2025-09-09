@@ -1,4 +1,3 @@
-import { datesAreOnSameDay } from "@/helpers/datesAreOnSameDate";
 import { env } from "@typebot.io/env";
 import { getIp } from "@typebot.io/lib/getIp";
 import { isDefined } from "@typebot.io/lib/utils";
@@ -11,8 +10,9 @@ import type { TypebotCookieValue } from "@typebot.io/telemetry/cookies/schema";
 import { mergeIds } from "@typebot.io/telemetry/mergeIds";
 import { trackEvents } from "@typebot.io/telemetry/trackEvents";
 import { clientUserSchema } from "@typebot.io/user/schemas";
-import NextAuth from "next-auth";
 import type { NextRequest } from "next/server";
+import NextAuth from "next-auth";
+import { datesAreOnSameDay } from "@/helpers/datesAreOnSameDate";
 import { accountHasRequiredOAuthGroups } from "../helpers/accountHasRequiredOAuthGroups";
 import { createAuthPrismaAdapter } from "../helpers/createAuthPrismaAdapter";
 import { isEmailLegit } from "../helpers/emailValidation";
@@ -124,7 +124,10 @@ export const {
 const updateCookieIsMerged = ({
   req,
   typebotCookie,
-}: { req: NextRequest | undefined; typebotCookie: TypebotCookieValue }) => {
+}: {
+  req: NextRequest | undefined;
+  typebotCookie: TypebotCookieValue;
+}) => {
   if (!isValidNextRequest(req) || !typebotCookie.landingPage) return;
   req.headers.set(
     SET_TYPEBOT_COOKIE_HEADER,
@@ -158,7 +161,10 @@ const updateCookieLastProvider = (
 const resetLandingPageCookie = ({
   req,
   typebotCookie,
-}: { req: NextRequest | undefined; typebotCookie: TypebotCookieValue }) => {
+}: {
+  req: NextRequest | undefined;
+  typebotCookie: TypebotCookieValue;
+}) => {
   if (!isValidNextRequest(req)) return;
   req.headers.set(
     SET_TYPEBOT_COOKIE_HEADER,

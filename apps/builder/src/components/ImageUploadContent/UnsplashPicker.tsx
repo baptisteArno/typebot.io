@@ -18,9 +18,9 @@ import { isDefined } from "@typebot.io/lib/utils";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createApi } from "unsplash-js";
 import type { Basic as UnsplashPhoto } from "unsplash-js/dist/methods/photos/types";
-import { TextLink } from "../TextLink";
 import { TextInput } from "../inputs";
 import { UnsplashLogo } from "../logos/UnsplashLogo";
+import { TextLink } from "../TextLink";
 
 /* eslint-disable @next/next/no-img-element */
 const api = createApi({

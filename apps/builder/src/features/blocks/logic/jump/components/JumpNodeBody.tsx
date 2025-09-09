@@ -1,9 +1,9 @@
-import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { Tag, Text } from "@chakra-ui/react";
 import type { JumpBlock } from "@typebot.io/blocks-logic/jump/schema";
 import { byId, isDefined } from "@typebot.io/lib/utils";
 import { isSingleVariable } from "@typebot.io/variables/isSingleVariable";
-import React, { useMemo } from "react";
+import { useMemo } from "react";
+import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 
 type Props = {
   options: JumpBlock["options"];

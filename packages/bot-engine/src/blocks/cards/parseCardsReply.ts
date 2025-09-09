@@ -3,7 +3,6 @@ import type {
   CardsItem,
 } from "@typebot.io/blocks-inputs/cards/schema";
 import type { SessionState } from "@typebot.io/chat-session/schemas";
-import { isNotEmpty } from "@typebot.io/lib/utils";
 import type { SessionStore } from "@typebot.io/runtime-session-store";
 import type {
   SetVariableHistoryItem,

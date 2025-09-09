@@ -1,4 +1,3 @@
-import { readFileSync } from "fs";
 import { createId } from "@typebot.io/lib/createId";
 import prisma from "@typebot.io/prisma";
 import { DbNull, Plan, WorkspaceRole } from "@typebot.io/prisma/enum";
@@ -6,6 +5,7 @@ import type { Prisma } from "@typebot.io/prisma/types";
 import type { Typebot, TypebotV6 } from "@typebot.io/typebot/schemas/typebot";
 import type { User } from "@typebot.io/user/schemas";
 import type { Workspace } from "@typebot.io/workspaces/schemas";
+import { readFileSync } from "fs";
 import {
   parseTestTypebot,
   parseTypebotToPublicTypebot,
@@ -186,7 +186,7 @@ export const updateTypebot = async (
 };
 
 export const updateWorkspace = async (
-  id: string,
+  _id: string,
   data: Prisma.Prisma.WorkspaceUncheckedUpdateManyInput,
 ) => {
   await prisma.workspace.updateMany({

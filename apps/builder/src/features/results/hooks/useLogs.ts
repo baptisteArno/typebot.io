@@ -1,6 +1,6 @@
-import { trpc } from "@/lib/queryClient";
 import { useQuery } from "@tanstack/react-query";
 import { isDefined } from "@typebot.io/lib/utils";
+import { trpc } from "@/lib/queryClient";
 
 export const useLogs = (
   typebotId: string,

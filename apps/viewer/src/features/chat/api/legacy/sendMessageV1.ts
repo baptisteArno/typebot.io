@@ -1,4 +1,3 @@
-import { publicProcedure } from "@/helpers/server/trpc";
 import { TRPCError } from "@trpc/server";
 import { BubbleBlockType } from "@typebot.io/blocks-bubbles/constants";
 import { continueBotFlow } from "@typebot.io/bot-engine/continueBotFlow";
@@ -18,6 +17,7 @@ import {
   deleteSessionStore,
   getSessionStore,
 } from "@typebot.io/runtime-session-store";
+import { publicProcedure } from "@/helpers/server/trpc";
 
 export const sendMessageV1 = publicProcedure
   .meta({

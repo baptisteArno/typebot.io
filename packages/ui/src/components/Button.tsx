@@ -1,6 +1,6 @@
 import * as React from "react";
 import { cn } from "../lib/cn";
-import { type VariantProps, cva, cx } from "../lib/cva";
+import { cva, cx, type VariantProps } from "../lib/cva";
 
 const buttonVariants = cva(
   cx(

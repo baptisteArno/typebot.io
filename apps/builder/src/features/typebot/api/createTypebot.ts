@@ -1,5 +1,3 @@
-import { getUserModeInWorkspace } from "@/features/workspace/helpers/getUserRoleInWorkspace";
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 import { createId } from "@paralleldrive/cuid2";
 import { TRPCError } from "@trpc/server";
 import { EventType } from "@typebot.io/events/constants";
@@ -12,6 +10,8 @@ import {
   typebotV6Schema,
 } from "@typebot.io/typebot/schemas/typebot";
 import { z } from "@typebot.io/zod";
+import { getUserModeInWorkspace } from "@/features/workspace/helpers/getUserRoleInWorkspace";
+import { authenticatedProcedure } from "@/helpers/server/trpc";
 import {
   isCustomDomainNotAvailable,
   isPublicIdNotAvailable,

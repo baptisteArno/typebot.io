@@ -1,13 +1,12 @@
-import { NumberInput, TextInput } from "@/components/inputs";
-import { BasicSelect } from "@/components/inputs/BasicSelect";
-import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
-import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
 import { FormLabel, Stack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { defaultRatingInputOptions } from "@typebot.io/blocks-inputs/rating/constants";
 import type { RatingInputBlock } from "@typebot.io/blocks-inputs/rating/schema";
 import type { Variable } from "@typebot.io/variables/schemas";
-import React from "react";
+import { NumberInput, TextInput } from "@/components/inputs";
+import { BasicSelect } from "@/components/inputs/BasicSelect";
+import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
+import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
 
 type Props = {
   options: RatingInputBlock["options"];

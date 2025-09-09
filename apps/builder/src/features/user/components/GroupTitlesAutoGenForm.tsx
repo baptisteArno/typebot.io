@@ -1,13 +1,3 @@
-import { MoreInfoTooltip } from "@/components/MoreInfoTooltip";
-import { Textarea } from "@/components/inputs";
-import { BasicSelect } from "@/components/inputs/BasicSelect";
-import { CredentialsCreateDialog } from "@/features/credentials/components/CredentialsCreateDialog";
-import { CredentialsDropdown } from "@/features/credentials/components/CredentialsDropdown";
-import { BlockIcon } from "@/features/editor/components/BlockIcon";
-import { BlockLabel } from "@/features/editor/components/BlockLabel";
-import { AutocompleteInput } from "@/features/forge/components/ForgeAutocompleteInput";
-import { ForgeSelectInput } from "@/features/forge/components/ForgeSelectInput";
-import { useForgedBlock } from "@/features/forge/hooks/useForgedBlock";
 import { HStack, Stack } from "@chakra-ui/react";
 import type { BlockV6 } from "@typebot.io/blocks-core/schemas/schema";
 import type { Credentials } from "@typebot.io/credentials/schemas";
@@ -16,6 +6,16 @@ import { Field } from "@typebot.io/ui/components/Field";
 import { defaultGroupTitleGenPrompt } from "@typebot.io/user/constants";
 import type { GroupTitlesAutoGeneration } from "@typebot.io/user/schemas";
 import { useState } from "react";
+import { Textarea } from "@/components/inputs";
+import { BasicSelect } from "@/components/inputs/BasicSelect";
+import { MoreInfoTooltip } from "@/components/MoreInfoTooltip";
+import { CredentialsCreateDialog } from "@/features/credentials/components/CredentialsCreateDialog";
+import { CredentialsDropdown } from "@/features/credentials/components/CredentialsDropdown";
+import { BlockIcon } from "@/features/editor/components/BlockIcon";
+import { BlockLabel } from "@/features/editor/components/BlockLabel";
+import { AutocompleteInput } from "@/features/forge/components/ForgeAutocompleteInput";
+import { ForgeSelectInput } from "@/features/forge/components/ForgeSelectInput";
+import { useForgedBlock } from "@/features/forge/hooks/useForgedBlock";
 
 type Props = {
   userId: string;

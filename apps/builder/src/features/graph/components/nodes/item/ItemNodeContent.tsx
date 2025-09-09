@@ -1,7 +1,3 @@
-import { ButtonsItemNode } from "@/features/blocks/inputs/buttons/components/ButtonsItemNode";
-import { CardsItemNode } from "@/features/blocks/inputs/cards/components/CardsItemNode";
-import { PictureChoiceItemNode } from "@/features/blocks/inputs/pictureChoice/components/PictureChoiceItemNode";
-import { ConditionItemNode } from "@/features/blocks/logic/condition/components/ConditionItemNode";
 import type {
   Item,
   ItemIndices,
@@ -13,7 +9,10 @@ import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
 import type { PictureChoiceItem } from "@typebot.io/blocks-inputs/pictureChoice/schema";
 import type { ConditionItem } from "@typebot.io/blocks-logic/condition/schema";
 import { LogicBlockType } from "@typebot.io/blocks-logic/constants";
-import React from "react";
+import { ButtonsItemNode } from "@/features/blocks/inputs/buttons/components/ButtonsItemNode";
+import { CardsItemNode } from "@/features/blocks/inputs/cards/components/CardsItemNode";
+import { PictureChoiceItemNode } from "@/features/blocks/inputs/pictureChoice/components/PictureChoiceItemNode";
+import { ConditionItemNode } from "@/features/blocks/logic/condition/components/ConditionItemNode";
 
 type Props = {
   item: Item;
@@ -31,7 +30,7 @@ export const ItemNodeContent = ({
   isMouseOver,
   blockId,
   groupId,
-}: Props): JSX.Element => {
+}: Props): JSX.Element | null => {
   switch (blockType) {
     case InputBlockType.CHOICE:
       return (
@@ -55,7 +54,7 @@ export const ItemNodeContent = ({
         <ConditionItemNode item={item as ConditionItem} indices={indices} />
       );
     case LogicBlockType.AB_TEST:
-      return <></>;
+      return null;
     case InputBlockType.CARDS:
       return (
         <CardsItemNode

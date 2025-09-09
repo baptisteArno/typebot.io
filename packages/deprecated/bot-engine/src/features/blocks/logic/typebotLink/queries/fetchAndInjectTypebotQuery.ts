@@ -1,9 +1,9 @@
-import type { LinkedTypebot } from "@/providers/TypebotProvider";
-import type { LogicState } from "@/types";
 import type { TypebotLinkBlock } from "@typebot.io/blocks-logic/typebotLink/schema";
 import { sendRequest } from "@typebot.io/lib/utils";
 import type { PublicTypebot } from "@typebot.io/typebot/schemas/publicTypebot";
 import type { Typebot } from "@typebot.io/typebot/schemas/typebot";
+import type { LinkedTypebot } from "@/providers/TypebotProvider";
+import type { LogicState } from "@/types";
 
 export const fetchAndInjectTypebot = async (
   block: TypebotLinkBlock,

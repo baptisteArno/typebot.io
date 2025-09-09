@@ -1,5 +1,5 @@
-import { isMobile } from "@/utils/helpers";
 import React from "react";
+import { isMobile } from "@/utils/helpers";
 
 type ShortTextInputProps = {
   onChange: (value: string) => void;

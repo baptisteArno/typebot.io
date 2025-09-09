@@ -1,7 +1,7 @@
-import { useChatContainerSize } from "@/contexts/ChatContainerSizeContext";
 import { isEmpty } from "@typebot.io/lib/utils";
 import { cx } from "@typebot.io/ui/lib/cva";
 import { Match, Switch, splitProps } from "solid-js";
+import { useChatContainerSize } from "@/contexts/ChatContainerSizeContext";
 import { Button, type ButtonProps } from "./Button";
 import { SendIcon } from "./icons/SendIcon";
 

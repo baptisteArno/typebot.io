@@ -43,7 +43,7 @@ export const parseUnknownClientError = async ({
       context,
       description: JSON.stringify(err),
     };
-  } catch (err) {
+  } catch (_err) {
     return {
       context,
       description: "Unknown error (failed to parse)",

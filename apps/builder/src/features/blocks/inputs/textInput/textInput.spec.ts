@@ -1,10 +1,10 @@
-import { getTestAsset } from "@/test/utils/playwright";
 import { createId } from "@paralleldrive/cuid2";
 import test, { expect } from "@playwright/test";
 import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
 import { defaultTextInputOptions } from "@typebot.io/blocks-inputs/text/constants";
 import { createTypebots } from "@typebot.io/playwright/databaseActions";
 import { parseDefaultGroupWithBlock } from "@typebot.io/playwright/databaseHelpers";
+import { getTestAsset } from "@/test/utils/playwright";
 
 test.describe
   .parallel("Text input block", () => {

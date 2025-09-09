@@ -1,4 +1,3 @@
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 import { TRPCError } from "@trpc/server";
 import { env } from "@typebot.io/env";
 import { removeObjectsFromTypebot } from "@typebot.io/lib/s3/removeObjectsRecursively";
@@ -6,6 +5,7 @@ import prisma from "@typebot.io/prisma";
 import { archiveResults } from "@typebot.io/results/archiveResults";
 import type { Typebot } from "@typebot.io/typebot/schemas/typebot";
 import { z } from "@typebot.io/zod";
+import { authenticatedProcedure } from "@/helpers/server/trpc";
 import { isWriteTypebotForbidden } from "../helpers/isWriteTypebotForbidden";
 
 export const deleteTypebot = authenticatedProcedure

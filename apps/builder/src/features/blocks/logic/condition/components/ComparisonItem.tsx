@@ -1,12 +1,12 @@
-import type { TableListItemProps } from "@/components/TableList";
-import { TextInput } from "@/components/inputs";
-import { BasicSelect } from "@/components/inputs/BasicSelect";
-import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
 import { Stack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { ComparisonOperators } from "@typebot.io/conditions/constants";
 import type { Comparison } from "@typebot.io/conditions/schemas";
 import type { Variable } from "@typebot.io/variables/schemas";
+import { TextInput } from "@/components/inputs";
+import { BasicSelect } from "@/components/inputs/BasicSelect";
+import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
+import type { TableListItemProps } from "@/components/TableList";
 
 export const ComparisonItem = ({
   item,

@@ -26,7 +26,10 @@ export type UploadMediaCache = {
 export const getOrUploadMedia = async ({
   url,
   cache,
-}: { url: string; cache: UploadMediaCache }): Promise<string | null> => {
+}: {
+  url: string;
+  cache: UploadMediaCache;
+}): Promise<string | null> => {
   try {
     const urlWithoutQueryParams = url.split("?")[0];
     if (cache) {
@@ -44,7 +47,6 @@ export const getOrUploadMedia = async ({
     // Download the media file from the URL
     const response = await ky.get(url);
     const arrayBuffer = await response.arrayBuffer();
-    const file = Buffer.from(arrayBuffer);
 
     // Get the MIME type from the response headers
     const mimeType =
@@ -52,7 +54,8 @@ export const getOrUploadMedia = async ({
 
     // Upload to WhatsApp
     const formData = new FormData();
-    formData.append("file", new Blob([file], { type: mimeType }));
+    const fileBlob = new Blob([arrayBuffer], { type: mimeType });
+    formData.append("file", fileBlob);
     formData.append("type", mimeType);
     formData.append("messaging_product", "whatsapp");
 

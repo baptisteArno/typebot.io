@@ -1,9 +1,9 @@
-import { SendButton } from "@/components/SendButton";
-import { ShortTextInput } from "@/components/inputs/ShortTextInput";
-import type { InputSubmitContent } from "@/types";
 import type { UrlInputBlock } from "@typebot.io/blocks-inputs/url/schema";
 import type React from "react";
 import { type MutableRefObject, useRef, useState } from "react";
+import { ShortTextInput } from "@/components/inputs/ShortTextInput";
+import { SendButton } from "@/components/SendButton";
+import type { InputSubmitContent } from "@/types";
 
 type UrlInputProps = {
   block: UrlInputBlock;

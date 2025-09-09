@@ -1,5 +1,5 @@
-import { BasicSelect } from "@/components/inputs/BasicSelect";
 import type { TriggerProps } from "@typebot.io/ui/components/Select";
+import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { timeFilterLabels, type timeFilterValues } from "../constants";
 
 type Props = {

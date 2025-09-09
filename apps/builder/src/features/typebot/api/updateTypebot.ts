@@ -1,5 +1,3 @@
-import { isCloudProdInstance } from "@/helpers/isCloudProdInstance";
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 import { TRPCError } from "@trpc/server";
 import prisma from "@typebot.io/prisma";
 import { DbNull } from "@typebot.io/prisma/enum";
@@ -10,6 +8,8 @@ import {
   typebotV6Schema,
 } from "@typebot.io/typebot/schemas/typebot";
 import { z } from "@typebot.io/zod";
+import { isCloudProdInstance } from "@/helpers/isCloudProdInstance";
+import { authenticatedProcedure } from "@/helpers/server/trpc";
 import { isWriteTypebotForbidden } from "../helpers/isWriteTypebotForbidden";
 import {
   isCustomDomainNotAvailable,

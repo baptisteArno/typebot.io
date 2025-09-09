@@ -1,9 +1,9 @@
-import { ButtonLink } from "@/components/ButtonLink";
-import { ExternalLinkIcon } from "@/components/icons";
-import { Alert, AlertIcon, Link, Stack, Text } from "@chakra-ui/react";
+import { Alert, AlertIcon, Stack, Text } from "@chakra-ui/react";
 import type { HttpRequest } from "@typebot.io/blocks-integrations/httpRequest/schema";
 import type { MakeComBlock } from "@typebot.io/blocks-integrations/makeCom/schema";
-import React, { useRef } from "react";
+import { useRef } from "react";
+import { ButtonLink } from "@/components/ButtonLink";
+import { ExternalLinkIcon } from "@/components/icons";
 import { HttpRequestAdvancedConfigForm } from "../../httpRequest/components/HttpRequestAdvancedConfigForm";
 
 type Props = {
@@ -41,7 +41,7 @@ export const MakeComSettings = ({
         <Alert status={url ? "success" : "info"} rounded="md">
           <AlertIcon />
           {url ? (
-            <>Your scenario is correctly configured 🚀</>
+            "Your scenario is correctly configured 🚀"
           ) : (
             <Stack>
               <Text>Head up to Make.com to configure this block:</Text>

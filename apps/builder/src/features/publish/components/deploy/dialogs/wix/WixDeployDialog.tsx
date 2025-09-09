@@ -1,5 +1,5 @@
 import { isDefined } from "@udecode/plate-common";
-import React, { useState } from "react";
+import { useState } from "react";
 import type { DialogProps } from "../../DeployButton";
 import { DeployDialog } from "../../DeployDialog";
 import { WixInstructions } from "./instructions/WixInstructions";

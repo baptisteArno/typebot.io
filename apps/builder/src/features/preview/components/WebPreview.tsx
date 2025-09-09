@@ -1,11 +1,11 @@
+import type { ContinueChatResponse } from "@typebot.io/chat-api/schemas";
+import { Standard } from "@typebot.io/react";
+import { defaultBackgroundColor } from "@typebot.io/theme/constants";
 import { useEditor } from "@/features/editor/providers/EditorProvider";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { useGraph } from "@/features/graph/providers/GraphProvider";
 import { useUser } from "@/features/user/hooks/useUser";
 import { toast } from "@/lib/toast";
-import type { ContinueChatResponse } from "@typebot.io/chat-api/schemas";
-import { Standard } from "@typebot.io/react";
-import { defaultBackgroundColor } from "@typebot.io/theme/constants";
 
 export const WebPreview = () => {
   const { user } = useUser();

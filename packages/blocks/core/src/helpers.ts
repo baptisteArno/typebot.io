@@ -19,7 +19,7 @@ import type { LogicBlock } from "@typebot.io/blocks-logic/schema";
 import { forgedBlockIds } from "@typebot.io/forge-repository/constants";
 import { forgedBlocks } from "@typebot.io/forge-repository/definitions";
 import type { ForgedBlock } from "@typebot.io/forge-repository/schemas";
-import type { Item, ItemV6, ItemWithPaths } from "./schemas/items/schema";
+import type { Item, ItemWithPaths } from "./schemas/items/schema";
 import type { Block, BlockWithItems, BlockWithOptions } from "./schemas/schema";
 
 export const isInputBlock = (block: Block): block is InputBlock =>

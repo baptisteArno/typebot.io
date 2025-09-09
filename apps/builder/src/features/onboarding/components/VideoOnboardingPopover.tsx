@@ -1,9 +1,9 @@
-import { CloseIcon } from "@/components/icons";
-import { useUser } from "@/features/user/hooks/useUser";
 import type { ForgedBlockDefinition } from "@typebot.io/forge-repository/definitions";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Popover } from "@typebot.io/ui/components/Popover";
 import type { ReactNode } from "react";
+import { CloseIcon } from "@/components/icons";
+import { useUser } from "@/features/user/hooks/useUser";
 import { onboardingVideos } from "../data";
 import { useOnboardingDisclosure } from "../hooks/useOnboardingDisclosure";
 import { YoutubeIframe } from "./YoutubeIframe";

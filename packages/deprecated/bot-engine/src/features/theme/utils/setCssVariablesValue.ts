@@ -49,7 +49,7 @@ const setGeneralTheme = (
   documentStyle: CSSStyleDeclaration,
 ) => {
   const { background, font } = generalTheme;
-  if (background) setTypebotBackground;
+  if (background) _setTypebotBackground;
   if (font && typeof font === "string")
     documentStyle.setProperty(cssVariableNames.general.fontFamily, font);
 };
@@ -128,7 +128,7 @@ const setInputs = (inputs: InputTheme, documentStyle: CSSStyleDeclaration) => {
     );
 };
 
-const setTypebotBackground = (
+const _setTypebotBackground = (
   background: Background,
   documentStyle: CSSStyleDeclaration,
 ) => {

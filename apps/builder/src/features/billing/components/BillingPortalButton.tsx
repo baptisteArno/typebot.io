@@ -1,7 +1,7 @@
-import { ButtonLink, type ButtonLinkProps } from "@/components/ButtonLink";
-import { trpc } from "@/lib/queryClient";
 import { useQuery } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
+import { ButtonLink, type ButtonLinkProps } from "@/components/ButtonLink";
+import { trpc } from "@/lib/queryClient";
 
 type Props = {
   workspaceId: string;

@@ -1,6 +1,6 @@
-import { TextLink } from "@/components/TextLink";
 import { Code, ListItem, OrderedList, Stack, Text } from "@chakra-ui/react";
 import { useState } from "react";
+import { TextLink } from "@/components/TextLink";
 import { PopupSettings } from "../../../settings/PopupSettings";
 import { JavascriptPopupSnippet } from "../../javascript/JavascriptPopupSnippet";
 

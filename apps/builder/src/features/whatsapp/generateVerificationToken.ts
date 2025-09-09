@@ -1,6 +1,6 @@
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 import { createId } from "@paralleldrive/cuid2";
 import prisma from "@typebot.io/prisma";
+import { authenticatedProcedure } from "@/helpers/server/trpc";
 
 export const generateVerificationToken = authenticatedProcedure.mutation(
   async () => {

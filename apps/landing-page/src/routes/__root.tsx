@@ -1,19 +1,19 @@
-import css from "@/assets/globals.css?url";
-import { CookieConsentBot } from "@/components/CookieConsentBot";
-import { Header } from "@/components/Header";
-import { NotFound } from "@/components/NotFound";
-import { Footer } from "@/components/footer/Footer";
-import { setCookie } from "@/helpers/setCookie";
-import { useCookieConsentStatus } from "@/hooks/useIsCookieConsentNeeded";
-import { useTrackPageViewQuery } from "@/hooks/useTrackPageViewQuery";
 import {
+  createRootRoute,
   HeadContent,
   Outlet,
   Scripts,
-  createRootRoute,
   useNavigate,
 } from "@tanstack/react-router";
 import { z } from "@typebot.io/zod";
+import css from "@/assets/globals.css?url";
+import { CookieConsentBot } from "@/components/CookieConsentBot";
+import { Footer } from "@/components/footer/Footer";
+import { Header } from "@/components/Header";
+import { NotFound } from "@/components/NotFound";
+import { setCookie } from "@/helpers/setCookie";
+import { useCookieConsentStatus } from "@/hooks/useIsCookieConsentNeeded";
+import { useTrackPageViewQuery } from "@/hooks/useTrackPageViewQuery";
 
 const HERO_ANIMATION_DELAY = 1800;
 

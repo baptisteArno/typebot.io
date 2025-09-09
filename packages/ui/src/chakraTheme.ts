@@ -8,11 +8,11 @@ import {
   tabsAnatomy,
 } from "@chakra-ui/anatomy";
 import {
-  type StyleFunctionProps,
-  type ThemeConfig,
   createMultiStyleConfigHelpers,
   defineStyleConfig,
   extendTheme,
+  type StyleFunctionProps,
+  type ThemeConfig,
 } from "@chakra-ui/react";
 import { mode } from "@chakra-ui/theme-tools";
 import localFont from "next/font/local";

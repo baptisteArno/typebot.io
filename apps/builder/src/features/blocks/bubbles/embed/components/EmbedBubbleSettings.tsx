@@ -1,12 +1,12 @@
-import { SwitchWithRelatedSettings } from "@/components/SwitchWithRelatedSettings";
-import { NumberInput, TextInput } from "@/components/inputs";
-import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
 import { Stack, Text } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { defaultEmbedBubbleContent } from "@typebot.io/blocks-bubbles/embed/constants";
 import type { EmbedBubbleBlock } from "@typebot.io/blocks-bubbles/embed/schema";
 import { sanitizeUrl } from "@typebot.io/lib/utils";
 import type { Variable } from "@typebot.io/variables/schemas";
+import { NumberInput, TextInput } from "@/components/inputs";
+import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
+import { SwitchWithRelatedSettings } from "@/components/SwitchWithRelatedSettings";
 
 type Props = {
   content: EmbedBubbleBlock["content"];

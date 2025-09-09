@@ -1,5 +1,3 @@
-import { XCircleIcon } from "@/components/icons";
-import { trpc } from "@/lib/queryClient";
 import {
   Alert,
   AlertIcon,
@@ -11,6 +9,8 @@ import {
 } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
+import { XCircleIcon } from "@/components/icons";
+import { trpc } from "@/lib/queryClient";
 
 type Props = {
   workspaceId: string;

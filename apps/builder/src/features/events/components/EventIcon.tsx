@@ -1,13 +1,12 @@
+import { type IconProps, useColorModeValue } from "@chakra-ui/react";
+import { EventType } from "@typebot.io/events/constants";
+import type { TEvent } from "@typebot.io/events/schemas";
 import {
   CircleXIcon,
   CommandIcon,
   FlagIcon,
   SendIcon,
 } from "@/components/icons";
-import { type IconProps, useColorModeValue } from "@chakra-ui/react";
-import { EventType } from "@typebot.io/events/constants";
-import type { TEvent } from "@typebot.io/events/schemas";
-import React from "react";
 
 type Props = { type: TEvent["type"] } & IconProps;
 

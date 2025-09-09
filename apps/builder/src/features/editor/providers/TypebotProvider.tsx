@@ -1,14 +1,4 @@
-import { NotFoundPage } from "@/components/NotFoundPage";
-import { useSelectionStore } from "@/features/graph/hooks/useSelectionStore";
-import { areTypebotsEqual } from "@/features/publish/helpers/areTypebotsEqual";
-import { convertPublicTypebotToTypebot } from "@/features/publish/helpers/convertPublicTypebotToTypebot";
-import { isPublished as isPublishedHelper } from "@/features/publish/helpers/isPublished";
-import { preventUserFromRefreshing } from "@/helpers/preventUserFromRefreshing";
-import { useAutoSave } from "@/hooks/useAutoSave";
-import { trpc } from "@/lib/queryClient";
-import { toast } from "@/lib/toast";
-import { useQuery } from "@tanstack/react-query";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { isDefined, omit } from "@typebot.io/lib/utils";
 import type {
   PublicTypebot,
@@ -21,13 +11,22 @@ import {
 import { dequal } from "dequal";
 import { Router } from "next/router";
 import {
-  type ReactNode,
   createContext,
+  type ReactNode,
   useCallback,
   useContext,
   useEffect,
   useMemo,
 } from "react";
+import { NotFoundPage } from "@/components/NotFoundPage";
+import { useSelectionStore } from "@/features/graph/hooks/useSelectionStore";
+import { areTypebotsEqual } from "@/features/publish/helpers/areTypebotsEqual";
+import { convertPublicTypebotToTypebot } from "@/features/publish/helpers/convertPublicTypebotToTypebot";
+import { isPublished as isPublishedHelper } from "@/features/publish/helpers/isPublished";
+import { preventUserFromRefreshing } from "@/helpers/preventUserFromRefreshing";
+import { useAutoSave } from "@/hooks/useAutoSave";
+import { trpc } from "@/lib/queryClient";
+import { toast } from "@/lib/toast";
 import { useUndo } from "../hooks/useUndo";
 import { type BlocksActions, blocksAction } from "./typebotActions/blocks";
 import { type EdgesActions, edgesAction } from "./typebotActions/edges";
@@ -88,7 +87,7 @@ const typebotContext = createContext<
     EdgesActions &
     EventsActions
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  //@ts-ignore
+  //@ts-expect-error
 >({});
 
 export const TypebotProvider = ({

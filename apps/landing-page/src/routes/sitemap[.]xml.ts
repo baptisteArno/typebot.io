@@ -1,6 +1,6 @@
+import { createServerFileRoute } from "@tanstack/react-start/server";
 import { currentBaseUrl } from "@/constants";
 import { allPosts } from "@/content-collections";
-import { createServerFileRoute } from "@tanstack/react-start/server";
 
 type SitemapUrlEntry = {
   loc: string;

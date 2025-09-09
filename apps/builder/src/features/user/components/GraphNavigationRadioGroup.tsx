@@ -1,4 +1,3 @@
-import { LaptopIcon, MouseIcon } from "@/components/icons";
 import {
   HStack,
   Radio,
@@ -9,6 +8,7 @@ import {
 } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { GraphNavigation } from "@typebot.io/prisma/enum";
+import { LaptopIcon, MouseIcon } from "@/components/icons";
 
 type Props = {
   defaultValue: string;

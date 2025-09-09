@@ -1,5 +1,3 @@
-import { isWriteWorkspaceForbidden } from "@/features/workspace/helpers/isWriteWorkspaceForbidden";
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 import { TRPCError } from "@trpc/server";
 import { env } from "@typebot.io/env";
 import prisma from "@typebot.io/prisma";
@@ -7,6 +5,8 @@ import { customDomainSchema } from "@typebot.io/schemas/features/customDomains";
 import { trackEvents } from "@typebot.io/telemetry/trackEvents";
 import { z } from "@typebot.io/zod";
 import ky, { HTTPError } from "ky";
+import { isWriteWorkspaceForbidden } from "@/features/workspace/helpers/isWriteWorkspaceForbidden";
+import { authenticatedProcedure } from "@/helpers/server/trpc";
 
 export const createCustomDomain = authenticatedProcedure
   .meta({

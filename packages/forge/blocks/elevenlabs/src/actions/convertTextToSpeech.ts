@@ -2,7 +2,7 @@ import { createAction, option } from "@typebot.io/forge";
 import { createId } from "@typebot.io/lib/createId";
 import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
 import { uploadFileToBucket } from "@typebot.io/lib/s3/uploadFileToBucket";
-import got, { HTTPError } from "ky";
+import got from "ky";
 import { auth } from "../auth";
 import { baseUrl } from "../constants";
 import type { ModelsResponse, VoicesResponse } from "../type";

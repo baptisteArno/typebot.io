@@ -1,8 +1,8 @@
-import { CodeEditor } from "@/components/inputs/CodeEditor";
-import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import type { PopupProps } from "@typebot.io/js";
 import parserHtml from "prettier/parser-html";
 import prettier from "prettier/standalone";
+import { CodeEditor } from "@/components/inputs/CodeEditor";
+import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { parseInitPopupCode } from "../../snippetParsers/popup";
 import { typebotImportCode } from "../../snippetParsers/shared";
 

@@ -1,10 +1,10 @@
-import { getTestAsset } from "@/test/utils/playwright";
 import { createId } from "@paralleldrive/cuid2";
 import test, { expect } from "@playwright/test";
 import { BubbleBlockType } from "@typebot.io/blocks-bubbles/constants";
 import { createTypebots } from "@typebot.io/playwright/databaseActions";
 import { parseDefaultGroupWithBlock } from "@typebot.io/playwright/databaseHelpers";
 import { proWorkspaceId } from "@typebot.io/playwright/databaseSetup";
+import { getTestAsset } from "@/test/utils/playwright";
 
 const audioSampleUrl =
   "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3";

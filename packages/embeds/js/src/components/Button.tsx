@@ -1,6 +1,6 @@
 import { cn } from "@typebot.io/ui/lib/cn";
 import { cva } from "@typebot.io/ui/lib/cva";
-import { type JSX, Show, children, splitProps } from "solid-js";
+import { children, type JSX, Show, splitProps } from "solid-js";
 import { Spinner } from "./Spinner";
 
 export type ButtonProps = {

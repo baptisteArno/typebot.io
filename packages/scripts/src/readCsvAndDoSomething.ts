@@ -1,9 +1,9 @@
-import { readFileSync } from "fs";
 import { IntegrationBlockType } from "@typebot.io/blocks-integrations/constants";
 import { parseGroups } from "@typebot.io/groups/helpers/parseGroups";
 import prisma from "@typebot.io/prisma";
 import { Plan } from "@typebot.io/prisma/enum";
 import { SingleBar } from "cli-progress";
+import { readFileSync } from "fs";
 import { parse } from "papaparse";
 
 const main = async () => {

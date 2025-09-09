@@ -1,5 +1,5 @@
 import { Stack } from "@chakra-ui/react";
-import React, { forwardRef } from "react";
+import { forwardRef } from "react";
 import type { SwitchWithLabelProps } from "./inputs/SwitchWithLabel";
 import { SwitchWithLabel } from "./inputs/SwitchWithLabel";
 

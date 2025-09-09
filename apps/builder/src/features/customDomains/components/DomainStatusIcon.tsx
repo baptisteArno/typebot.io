@@ -1,8 +1,8 @@
-import { MoreInfoTooltip } from "@/components/MoreInfoTooltip";
-import { XCircleIcon } from "@/components/icons";
-import { trpc } from "@/lib/queryClient";
 import { useDisclosure } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
+import { XCircleIcon } from "@/components/icons";
+import { MoreInfoTooltip } from "@/components/MoreInfoTooltip";
+import { trpc } from "@/lib/queryClient";
 import { CustomDomainConfigDialog } from "./CustomDomainConfigDialog";
 
 type Props = {

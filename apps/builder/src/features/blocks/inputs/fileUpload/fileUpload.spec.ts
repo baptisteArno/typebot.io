@@ -1,4 +1,3 @@
-import { getTestAsset } from "@/test/utils/playwright";
 import { createId } from "@paralleldrive/cuid2";
 import test, { expect } from "@playwright/test";
 import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
@@ -6,6 +5,7 @@ import { createTypebots } from "@typebot.io/playwright/databaseActions";
 import { parseDefaultGroupWithBlock } from "@typebot.io/playwright/databaseHelpers";
 import { freeWorkspaceId } from "@typebot.io/playwright/databaseSetup";
 import { latestTypebotVersion } from "@typebot.io/schemas/versions";
+import { getTestAsset } from "@/test/utils/playwright";
 
 test.describe.configure({ mode: "parallel" });
 

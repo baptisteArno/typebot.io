@@ -1,12 +1,11 @@
-import { TableList } from "@/components/TableList";
-import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { Flex } from "@chakra-ui/react";
 import type {
   GoogleSheetsGetOptions,
   RowsFilterComparison,
 } from "@typebot.io/blocks-integrations/googleSheets/schema";
 import { LogicalOperator } from "@typebot.io/conditions/constants";
-import React from "react";
+import { BasicSelect } from "@/components/inputs/BasicSelect";
+import { TableList } from "@/components/TableList";
 import { RowsFilterComparisonItem } from "./RowsFilterComparisonItem";
 
 type Props = {

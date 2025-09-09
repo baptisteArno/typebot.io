@@ -1,6 +1,5 @@
 import { Text } from "@chakra-ui/react";
 import type { PixelBlock } from "@typebot.io/blocks-integrations/pixel/schema";
-import React from "react";
 
 type Props = {
   options: PixelBlock["options"];

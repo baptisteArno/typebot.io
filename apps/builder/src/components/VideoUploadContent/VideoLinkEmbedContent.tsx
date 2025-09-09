@@ -1,8 +1,8 @@
-import { TextInput } from "@/components/inputs";
 import { Stack, Text } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { defaultVideoBubbleContent } from "@typebot.io/blocks-bubbles/video/constants";
 import type { VideoBubbleBlock } from "@typebot.io/blocks-bubbles/video/schema";
+import { TextInput } from "@/components/inputs";
 import { SwitchWithLabel } from "../inputs/SwitchWithLabel";
 
 export const VideoLinkEmbedContent = ({

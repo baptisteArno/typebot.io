@@ -4,7 +4,7 @@ import {
   parseUnknownErrorSync,
 } from "@typebot.io/lib/parseUnknownError";
 import type { SessionStore } from "@typebot.io/runtime-session-store";
-import { type LanguageModel, type StepResult, type Tool, streamText } from "ai";
+import { type LanguageModel, type StepResult, streamText, type Tool } from "ai";
 import { maxSteps } from "./constants";
 import { parseChatCompletionMessages } from "./parseChatCompletionMessages";
 import { parseTools } from "./parseTools";

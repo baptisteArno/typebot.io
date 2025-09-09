@@ -1,11 +1,5 @@
 import { Box, type BoxProps } from "@chakra-ui/react";
-import React, {
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { useEndpoints } from "../../providers/EndpointsProvider";
 import { useGraph } from "../../providers/GraphProvider";
 

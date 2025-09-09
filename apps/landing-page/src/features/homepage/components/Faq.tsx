@@ -1,10 +1,10 @@
-import { iconButtonVariants } from "@/components/IconButton";
-import { TextLink } from "@/components/link";
 import { ChevronDownIcon } from "@typebot.io/ui/icons/ChevronDownIcon";
 import { ChevronUpIcon } from "@typebot.io/ui/icons/ChevronUpIcon";
 import { cn } from "@typebot.io/ui/lib/cn";
 import { motion } from "motion/react";
 import { type ReactNode, useState } from "react";
+import { iconButtonVariants } from "@/components/IconButton";
+import { TextLink } from "@/components/link";
 import { discordUrl, docsUrl } from "../../../constants";
 
 const data = [
@@ -122,7 +122,10 @@ export const Faq = () => {
 const Question = ({
   title,
   children,
-}: { title: string; children: ReactNode }) => {
+}: {
+  title: string;
+  children: ReactNode;
+}) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (

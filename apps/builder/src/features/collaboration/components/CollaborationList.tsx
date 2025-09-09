@@ -1,9 +1,3 @@
-import { EmojiOrImageIcon } from "@/components/EmojiOrImageIcon";
-import { HardDriveIcon } from "@/components/icons";
-import { BasicSelect } from "@/components/inputs/BasicSelect";
-import { useTypebot } from "@/features/editor/providers/TypebotProvider";
-import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { toast } from "@/lib/toast";
 import {
   Flex,
   HStack,
@@ -18,7 +12,13 @@ import { useTranslate } from "@tolgee/react";
 import { CollaborationType } from "@typebot.io/prisma/enum";
 import { Button } from "@typebot.io/ui/components/Button";
 import type { FormEvent } from "react";
-import React, { useState } from "react";
+import { useState } from "react";
+import { EmojiOrImageIcon } from "@/components/EmojiOrImageIcon";
+import { HardDriveIcon } from "@/components/icons";
+import { BasicSelect } from "@/components/inputs/BasicSelect";
+import { useTypebot } from "@/features/editor/providers/TypebotProvider";
+import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
+import { toast } from "@/lib/toast";
 import { useCollaborators } from "../hooks/useCollaborators";
 import { useInvitations } from "../hooks/useInvitations";
 import { deleteCollaboratorQuery } from "../queries/deleteCollaboratorQuery";

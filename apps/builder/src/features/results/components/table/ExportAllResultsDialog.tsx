@@ -1,12 +1,5 @@
-import { AlertInfo } from "@/components/AlertInfo";
-import { DownloadIcon } from "@/components/icons";
-import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
-import { useTypebot } from "@/features/editor/providers/TypebotProvider";
-import { trpc, trpcClient } from "@/lib/queryClient";
-import { toast } from "@/lib/toast";
 import { Progress, Stack, Text } from "@chakra-ui/react";
-import { useQuery } from "@tanstack/react-query";
-import { useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import type { TRPCError } from "@trpc/server";
 import { parseUniqueKey } from "@typebot.io/lib/parseUniqueKey";
 import { byId, isDefined } from "@typebot.io/lib/utils";
@@ -19,6 +12,12 @@ import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
 import { unparse } from "papaparse";
 import { useState } from "react";
+import { AlertInfo } from "@/components/AlertInfo";
+import { DownloadIcon } from "@/components/icons";
+import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
+import { useTypebot } from "@/features/editor/providers/TypebotProvider";
+import { trpc, trpcClient } from "@/lib/queryClient";
+import { toast } from "@/lib/toast";
 import { useResults } from "../../ResultsProvider";
 
 type Props = {

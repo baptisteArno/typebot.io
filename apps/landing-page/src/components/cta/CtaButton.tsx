@@ -1,6 +1,6 @@
 import { buttonVariants } from "@typebot.io/ui/components/Button";
 import { cn } from "@typebot.io/ui/lib/cn";
-import { type VariantProps, cva } from "@typebot.io/ui/lib/cva";
+import { cva, type VariantProps } from "@typebot.io/ui/lib/cva";
 import * as React from "react";
 
 export const ctaButtonVariants = cva("", {

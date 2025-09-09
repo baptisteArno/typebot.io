@@ -1,7 +1,7 @@
-import { CodeEditor } from "@/components/inputs/CodeEditor";
-import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { Code, Stack, Text } from "@chakra-ui/react";
 import { useState } from "react";
+import { CodeEditor } from "@/components/inputs/CodeEditor";
+import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { StandardSettings } from "../../../settings/StandardSettings";
 import {
   parseInlineScript,

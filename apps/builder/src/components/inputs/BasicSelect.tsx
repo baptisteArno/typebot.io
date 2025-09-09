@@ -1,9 +1,9 @@
-import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import type { Select as PrimitiveSelect } from "@base-ui-components/react/select";
 import { Tag } from "@chakra-ui/react";
 import { Select, type TriggerProps } from "@typebot.io/ui/components/Select";
 import type { Variable } from "@typebot.io/variables/schemas";
 import { useMemo } from "react";
+import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 
 type NoInfer<T> = [T][T extends any ? 0 : never];
 

@@ -1,3 +1,5 @@
+import type { ContinueChatResponse } from "@typebot.io/chat-api/schemas";
+import type { LogInSession } from "@typebot.io/logs/schemas";
 import { executeChatwoot } from "@/features/blocks/integrations/chatwoot/utils/executeChatwoot";
 import { executeGoogleAnalyticsBlock } from "@/features/blocks/integrations/googleAnalytics/utils/executeGoogleAnalytics";
 import { executeHttpRequest } from "@/features/blocks/integrations/httpRequest/executeHttpRequest";
@@ -12,8 +14,6 @@ import { executeSetVariable } from "@/features/blocks/logic/setVariable/executeS
 import { executeWait } from "@/features/blocks/logic/wait/utils/executeWait";
 import { listenForWebhook } from "@/features/blocks/logic/webhook/listenForWebhook";
 import type { ClientSideActionContext } from "@/types";
-import type { ContinueChatResponse } from "@typebot.io/chat-api/schemas";
-import type { LogInSession } from "@typebot.io/logs/schemas";
 import { injectStartProps } from "./injectStartProps";
 
 type ClientSideActionResponse =

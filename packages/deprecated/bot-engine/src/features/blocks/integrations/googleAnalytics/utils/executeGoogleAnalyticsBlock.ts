@@ -1,7 +1,7 @@
+import type { GoogleAnalyticsBlock } from "@typebot.io/blocks-integrations/googleAnalytics/schema";
 import { parseVariablesInObject } from "@/features/variables";
 import { sendGaEvent } from "@/lib/gtag";
 import type { IntegrationState } from "@/types";
-import type { GoogleAnalyticsBlock } from "@typebot.io/blocks-integrations/googleAnalytics/schema";
 
 export const executeGoogleAnalyticsBlock = async (
   block: GoogleAnalyticsBlock,

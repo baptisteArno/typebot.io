@@ -1,6 +1,6 @@
+import type { WaitBlock } from "@typebot.io/blocks-logic/wait/schema";
 import { parseVariables } from "@/features/variables";
 import type { LogicState } from "@/types";
-import type { WaitBlock } from "@typebot.io/blocks-logic/wait/schema";
 
 export const executeWait = async (
   block: WaitBlock,
@@ -13,7 +13,7 @@ export const executeWait = async (
   // @ts-expect-error isNaN can be used with strings
   if (isNaN(parsedSecondsToWaitFor)) return block.outgoingEdgeId;
   await new Promise((resolve) =>
-    setTimeout(resolve, Number.parseInt(parsedSecondsToWaitFor) * 1000),
+    setTimeout(resolve, Number.parseInt(parsedSecondsToWaitFor, 10) * 1000),
   );
   return block.outgoingEdgeId;
 };

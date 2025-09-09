@@ -1,7 +1,3 @@
-import { validateEmail } from "@/features/blocks/inputs/email";
-import { validatePhoneNumber } from "@/features/blocks/inputs/phone";
-import { validateUrl } from "@/features/blocks/inputs/url";
-import { parseVariables } from "@/features/variables";
 import { BubbleBlockType } from "@typebot.io/blocks-bubbles/constants";
 import type { BubbleBlock } from "@typebot.io/blocks-bubbles/schema";
 import { isInputBlock } from "@typebot.io/blocks-core/helpers";
@@ -12,6 +8,10 @@ import type { PhoneNumberInputBlock } from "@typebot.io/blocks-inputs/phone/sche
 import type { UrlInputBlock } from "@typebot.io/blocks-inputs/url/schema";
 import { isDefined } from "@typebot.io/lib/utils";
 import type { Variable } from "@typebot.io/variables/schemas";
+import { validateEmail } from "@/features/blocks/inputs/email";
+import { validatePhoneNumber } from "@/features/blocks/inputs/phone";
+import { validateUrl } from "@/features/blocks/inputs/url";
+import { parseVariables } from "@/features/variables";
 import type { Edge } from "../../../../typebot/src/schemas/edge";
 
 export const isInputValid = (

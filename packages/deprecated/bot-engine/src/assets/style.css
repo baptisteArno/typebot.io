@@ -54,14 +54,16 @@
 }
 .bubble-exit-active {
   opacity: 0;
-  transition-delay: 0ms !important;
+  transition-delay: 0ms;
   transition-property: opacity;
   transition-duration: 400ms;
   transition-timing-function: ease-out;
 }
 
 .bubble-typing {
-  transition: width 400ms ease-out, height 400ms ease-out;
+  transition:
+    width 400ms ease-out,
+    height 400ms ease-out;
 }
 
 .content-opacity {
@@ -128,16 +130,16 @@ textarea {
 }
 
 .text-input::-webkit-input-placeholder {
-  color: var(--typebot-input-placeholder-color) !important;
-  opacity: 1 !important;
+  color: var(--typebot-input-placeholder-color);
+  opacity: 1;
 }
 .text-input::-moz-placeholder {
-  color: var(--typebot-input-placeholder-color) !important;
-  opacity: 1 !important;
+  color: var(--typebot-input-placeholder-color);
+  opacity: 1;
 }
 .text-input::placeholder {
-  color: var(--typebot-input-placeholder-color) !important;
-  opacity: 1 !important;
+  color: var(--typebot-input-placeholder-color);
+  opacity: 1;
 }
 
 .typebot-container {

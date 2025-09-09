@@ -1,11 +1,3 @@
-import { upsertAnswerQuery } from "@/features/answers/queries/upsertAnswerQuery";
-import { createResultQuery } from "@/features/results/queries/createResultQuery";
-import { updateResultQuery } from "@/features/results/queries/updateResultQuery";
-import {
-  getExistingResultFromSession,
-  setResultInSession,
-} from "@/helpers/sessionStorage";
-import { gtmBodyElement } from "@/lib/google-tag-manager";
 import {
   injectCustomHeadCode,
   isDefined,
@@ -19,7 +11,15 @@ import type { Typebot } from "@typebot.io/typebot/schemas/typebot";
 import type { VariableWithValue } from "@typebot.io/variables/schemas";
 import { TypebotViewer } from "bot-engine";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { upsertAnswerQuery } from "@/features/answers/queries/upsertAnswerQuery";
+import { createResultQuery } from "@/features/results/queries/createResultQuery";
+import { updateResultQuery } from "@/features/results/queries/updateResultQuery";
+import {
+  getExistingResultFromSession,
+  setResultInSession,
+} from "@/helpers/sessionStorage";
+import { gtmBodyElement } from "@/lib/google-tag-manager";
 import { ErrorPage } from "./ErrorPage";
 import { SEO } from "./Seo";
 

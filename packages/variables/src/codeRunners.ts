@@ -6,7 +6,10 @@ import type { Variable } from "./schemas";
 export const createInlineSyncCodeRunner = ({
   variables,
   sessionStore,
-}: { variables: Variable[]; sessionStore: SessionStore }) => {
+}: {
+  variables: Variable[];
+  sessionStore: SessionStore;
+}) => {
   const isolate = sessionStore.getOrCreateIsolate();
   const context = isolate.createContextSync();
   const jail = context.global;
@@ -27,7 +30,10 @@ export const createInlineSyncCodeRunner = ({
 export const createHttpReqResponseMappingRunner = ({
   response,
   sessionStore,
-}: { response: unknown; sessionStore: SessionStore }) => {
+}: {
+  response: unknown;
+  sessionStore: SessionStore;
+}) => {
   if (
     response === null ||
     typeof response !== "object" ||

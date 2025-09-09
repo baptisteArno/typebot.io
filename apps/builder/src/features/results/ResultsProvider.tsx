@@ -1,5 +1,3 @@
-import { trpc } from "@/lib/queryClient";
-import { toast } from "@/lib/toast";
 import { useQuery } from "@tanstack/react-query";
 import { LogicBlockType } from "@typebot.io/blocks-logic/constants";
 import { isDefined } from "@typebot.io/lib/utils";
@@ -14,6 +12,7 @@ import type {
 import type { Typebot } from "@typebot.io/typebot/schemas/typebot";
 import type { ReactNode } from "react";
 import { createContext, useContext, useMemo } from "react";
+import { trpc } from "@/lib/queryClient";
 import type { timeFilterValues } from "../analytics/constants";
 import { useTypebot } from "../editor/providers/TypebotProvider";
 import { parseCellContent } from "./helpers/parseCellContent";
@@ -29,7 +28,7 @@ const resultsContext = createContext<{
   onDeleteResults: (totalResultsDeleted: number) => void;
   fetchNextPage: () => void;
   refetchResults: () => void;
-  //@ts-ignore
+  //@ts-expect-error
 }>({});
 
 export const ResultsProvider = ({

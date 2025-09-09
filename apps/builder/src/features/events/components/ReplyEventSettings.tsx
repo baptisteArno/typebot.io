@@ -1,5 +1,3 @@
-import { MoreInfoTooltip } from "@/components/MoreInfoTooltip";
-import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
 import {
   Accordion,
   AccordionButton,
@@ -12,6 +10,8 @@ import {
 import { useTranslate } from "@tolgee/react";
 import type { ReplyEvent } from "@typebot.io/events/schemas";
 import type { Variable } from "@typebot.io/variables/schemas";
+import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
+import { MoreInfoTooltip } from "@/components/MoreInfoTooltip";
 
 export const ReplyEventSettings = ({
   options,

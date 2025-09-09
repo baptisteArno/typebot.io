@@ -1,10 +1,3 @@
-import {
-  BoldIcon,
-  BracesIcon,
-  ItalicIcon,
-  LinkIcon,
-  UnderlineIcon,
-} from "@/components/icons";
 import { HStack, type StackProps, useColorModeValue } from "@chakra-ui/react";
 import { Button } from "@typebot.io/ui/components/Button";
 import {
@@ -13,6 +6,13 @@ import {
   MARK_UNDERLINE,
 } from "@udecode/plate-basic-marks";
 import { getPluginType, useEditorRef } from "@udecode/plate-core";
+import {
+  BoldIcon,
+  BracesIcon,
+  ItalicIcon,
+  LinkIcon,
+  UnderlineIcon,
+} from "@/components/icons";
 import { LinkToolbarButton } from "./plate/LinkToolbarButton";
 import { MarkToolbarButton } from "./plate/MarkToolbarButton";
 

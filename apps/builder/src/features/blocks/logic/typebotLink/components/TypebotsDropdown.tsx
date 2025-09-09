@@ -1,11 +1,11 @@
+import { HStack, Input } from "@chakra-ui/react";
+import { LayoutBottomIcon } from "@typebot.io/ui/icons/LayoutBottomIcon";
+import { useRouter } from "next/router";
 import { ButtonLink } from "@/components/ButtonLink";
 import { EmojiOrImageIcon } from "@/components/EmojiOrImageIcon";
 import { ExternalLinkIcon } from "@/components/icons";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { useTypebots } from "@/features/dashboard/hooks/useTypebots";
-import { HStack, Input } from "@chakra-ui/react";
-import { LayoutBottomIcon } from "@typebot.io/ui/icons/LayoutBottomIcon";
-import { useRouter } from "next/router";
 
 type Props = {
   idsToExclude: string[];

@@ -1,7 +1,3 @@
-import { TextInput } from "@/components/inputs";
-import { BasicSelect } from "@/components/inputs/BasicSelect";
-import { CredentialsDropdown } from "@/features/credentials/components/CredentialsDropdown";
-import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import {
   Accordion,
   AccordionButton,
@@ -22,10 +18,13 @@ import type {
   CreateSpeechOpenAIOptions,
   OpenAIBlock,
 } from "@typebot.io/blocks-integrations/openai/schema";
-import React from "react";
-import { OpenAICredentialsDialog } from "./OpenAICredentialsDialog";
+import { TextInput } from "@/components/inputs";
+import { BasicSelect } from "@/components/inputs/BasicSelect";
+import { CredentialsDropdown } from "@/features/credentials/components/CredentialsDropdown";
+import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { OpenAICreateSpeechSettings } from "./audio/OpenAICreateSpeechSettings";
 import { OpenAIChatCompletionSettings } from "./createChatCompletion/OpenAIChatCompletionSettings";
+import { OpenAICredentialsDialog } from "./OpenAICredentialsDialog";
 
 type OpenAITask = (typeof openAITasks)[number];
 

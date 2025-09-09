@@ -57,9 +57,10 @@
   /* For some reason the `<img/>` is not stretched to 100% width and height
 	   and sometime there can be seen white pixels of the background at top and bottom,
 	   so an additional "inset" border is added. */
-  box-shadow: 0 0 0 var(--PhoneInputCountryFlag-borderWidth)
-    var(--PhoneInputCountryFlag-borderColor), inset 0 0 0
-    var(--PhoneInputCountryFlag-borderWidth)
+  box-shadow:
+    0 0 0 var(--PhoneInputCountryFlag-borderWidth)
+    var(--PhoneInputCountryFlag-borderColor),
+    inset 0 0 0 var(--PhoneInputCountryFlag-borderWidth)
     var(--PhoneInputCountryFlag-borderColor);
 }
 
@@ -132,9 +133,10 @@
 }
 
 .PhoneInputCountrySelect:focus + .PhoneInputCountryIcon--border {
-  box-shadow: 0 0 0 var(--PhoneInputCountryFlag-borderWidth)
-    var(--PhoneInputCountryFlag-borderColor--focus), inset 0 0 0
-    var(--PhoneInputCountryFlag-borderWidth)
+  box-shadow:
+    0 0 0 var(--PhoneInputCountryFlag-borderWidth)
+    var(--PhoneInputCountryFlag-borderColor--focus),
+    inset 0 0 0 var(--PhoneInputCountryFlag-borderWidth)
     var(--PhoneInputCountryFlag-borderColor--focus);
 }
 
@@ -147,7 +149,7 @@
 
 .PhoneInputInput {
   padding: 1rem 0.5rem;
-  outline: none !important;
+  outline: none;
   background: transparent;
   flex: 1 1 0%;
   width: 100%;

@@ -1,9 +1,9 @@
-import React, { createContext, type ReactNode, useContext } from "react";
+import { createContext, type ReactNode, useContext } from "react";
 
 const chatContext = createContext<{
   scroll: () => void;
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  //@ts-ignore
+  //@ts-expect-error
 }>({});
 
 export const ChatProvider = ({

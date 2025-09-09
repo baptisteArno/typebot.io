@@ -38,7 +38,7 @@ export interface ZodLayoutMetadata<
 }
 
 declare module "zod" {
-  interface ZodType<Output, Def extends ZodTypeDef, Input = Output> {
+  interface ZodType {
     layout<T extends ZodTypeAny>(this: T, metadata: ZodLayoutMetadata<T>): T;
   }
 

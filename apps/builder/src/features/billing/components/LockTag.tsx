@@ -1,6 +1,6 @@
-import { LockedIcon } from "@/components/icons";
 import { Tag, type TagProps } from "@chakra-ui/react";
 import type { Plan } from "@typebot.io/prisma/enum";
+import { LockedIcon } from "@/components/icons";
 import { planColorSchemes } from "./PlanTag";
 
 export const LockTag = ({ plan, ...props }: { plan?: Plan } & TagProps) => (

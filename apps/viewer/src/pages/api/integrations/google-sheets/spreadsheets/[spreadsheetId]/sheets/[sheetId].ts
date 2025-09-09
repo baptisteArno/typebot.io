@@ -6,8 +6,10 @@ import type {
 } from "@typebot.io/blocks-integrations/googleSheets/schema";
 import { saveErrorLog } from "@typebot.io/bot-engine/logs/saveErrorLog";
 import { saveSuccessLog } from "@typebot.io/bot-engine/logs/saveSuccessLog";
-import { LogicalOperator } from "@typebot.io/conditions/constants";
-import { ComparisonOperators } from "@typebot.io/conditions/constants";
+import {
+  ComparisonOperators,
+  LogicalOperator,
+} from "@typebot.io/conditions/constants";
 import { getGoogleSpreadsheet } from "@typebot.io/credentials/getGoogleSpreadsheet";
 import {
   badRequest,

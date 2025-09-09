@@ -1,3 +1,8 @@
+import { HStack, Text } from "@chakra-ui/react";
+import { useQuery } from "@tanstack/react-query";
+import { useTranslate } from "@tolgee/react";
+import { Menu } from "@typebot.io/ui/components/Menu";
+import { ChevronDownIcon } from "@typebot.io/ui/icons/ChevronDownIcon";
 import { EmojiOrImageIcon } from "@/components/EmojiOrImageIcon";
 import {
   CheckIcon,
@@ -7,11 +12,6 @@ import {
 } from "@/components/icons";
 import { PlanTag } from "@/features/billing/components/PlanTag";
 import { trpc } from "@/lib/queryClient";
-import { HStack, Text } from "@chakra-ui/react";
-import { useQuery } from "@tanstack/react-query";
-import { useTranslate } from "@tolgee/react";
-import { Menu } from "@typebot.io/ui/components/Menu";
-import { ChevronDownIcon } from "@typebot.io/ui/icons/ChevronDownIcon";
 import type { WorkspaceInApp } from "../WorkspaceProvider";
 
 type Props = {

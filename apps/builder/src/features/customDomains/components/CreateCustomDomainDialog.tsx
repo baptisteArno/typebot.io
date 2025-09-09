@@ -1,10 +1,10 @@
-import { trpc } from "@/lib/queryClient";
-import { Alert, HStack, Heading, Input, Stack, Text } from "@chakra-ui/react";
+import { Alert, Heading, HStack, Input, Stack, Text } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
 import { useEffect, useRef, useState } from "react";
+import { trpc } from "@/lib/queryClient";
 
 const hostnameRegex =
   /^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9-]*[A-Za-z0-9])$/;

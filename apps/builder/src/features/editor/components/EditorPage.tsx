@@ -1,3 +1,4 @@
+import { Flex, Spinner, useColorModeValue } from "@chakra-ui/react";
 import { Seo } from "@/components/Seo";
 import { Graph } from "@/features/graph/components/Graph";
 import { GraphDndProvider } from "@/features/graph/providers/GraphDndProvider";
@@ -7,11 +8,9 @@ import { PreviewDrawer } from "@/features/preview/components/PreviewDrawer";
 import { VariablesDrawer } from "@/features/preview/components/VariablesDrawer";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { useRightPanel } from "@/hooks/useRightPanel";
-import { Flex, Spinner, useColorModeValue } from "@chakra-ui/react";
 import { EditorProvider } from "../providers/EditorProvider";
 import { useTypebot } from "../providers/TypebotProvider";
 import { BlocksSideBar } from "./BlocksSideBar";
-import { BoardMenuButton } from "./BoardMenuButton";
 import { SuspectedTypebotBanner } from "./SuspectedTypebotBanner";
 import { TypebotHeader } from "./TypebotHeader";
 

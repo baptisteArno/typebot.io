@@ -1,4 +1,3 @@
-import { getTestAsset } from "@/test/utils/playwright";
 import { createId } from "@paralleldrive/cuid2";
 import test, { expect } from "@playwright/test";
 import {
@@ -6,6 +5,7 @@ import {
   injectFakeResults,
 } from "@typebot.io/playwright/databaseActions";
 import { starterWorkspaceId } from "@typebot.io/playwright/databaseSetup";
+import { getTestAsset } from "@/test/utils/playwright";
 
 test("analytics are not available for non-pro workspaces", async ({ page }) => {
   const typebotId = createId();

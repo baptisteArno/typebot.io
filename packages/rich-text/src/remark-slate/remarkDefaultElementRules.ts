@@ -4,11 +4,11 @@ import {
   ELEMENT_CODE_LINE,
 } from "@udecode/plate-code-block";
 import {
+  getPluginType,
   type TDescendant,
   type TElement,
   type TText,
   type Value,
-  getPluginType,
 } from "@udecode/plate-common";
 import {
   ELEMENT_H1,

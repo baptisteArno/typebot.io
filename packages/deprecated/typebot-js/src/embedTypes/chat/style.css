@@ -17,8 +17,9 @@
   height: 60px;
   border-radius: 100%;
   background-color: rgb(230, 114, 0);
-  box-shadow: rgba(0, 0, 0, 0.06) 0px 1px 6px 0px, rgba(0, 0, 0, 0.16) 0px 2px
-    32px 0px;
+  box-shadow:
+    rgba(0, 0, 0, 0.06) 0px 1px 6px 0px,
+    rgba(0, 0, 0, 0.16) 0px 2px 32px 0px;
   border: medium none;
 }
 
@@ -35,7 +36,9 @@
 }
 
 #typebot-bubble > button > .icon {
-  transition: opacity 500ms ease-out 0s, transform 500ms ease-out 0s;
+  transition:
+    opacity 500ms ease-out 0s,
+    transform 500ms ease-out 0s;
 }
 
 #typebot-bubble > button > svg.icon {
@@ -62,7 +65,9 @@
   position: absolute;
   transform: rotate(-90deg) scale(0);
   opacity: 0;
-  transition: opacity 500ms ease-out 0s, transform 500ms ease-out 0s;
+  transition:
+    opacity 500ms ease-out 0s,
+    transform 500ms ease-out 0s;
   width: 55%;
   stroke-width: 2px;
   stroke: white;
@@ -81,10 +86,11 @@
   justify-content: center;
   align-items: center;
   z-index: 99999;
-  border-radius: 10px;
   position: fixed;
   transform: translate(0, 100px);
-  transition: opacity 500ms ease-out 0s, transform 500ms ease-out 0s;
+  transition:
+    opacity 500ms ease-out 0s,
+    transform 500ms ease-out 0s;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 5px 40px;
   width: 400px;
   max-height: 680px;
@@ -124,7 +130,9 @@
   opacity: 0;
   visibility: hidden;
   transform: translate(0, 10px);
-  transition: opacity 500ms ease-out, transform 500ms ease-out;
+  transition:
+    opacity 500ms ease-out,
+    transform 500ms ease-out;
   cursor: pointer;
   font-weight: 300;
   bottom: 90px;
@@ -133,8 +141,9 @@
   position: fixed;
   max-width: 280px;
   background-color: white;
-  box-shadow: 0 3px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px
-    rgba(0, 0, 0, 0.05);
+  box-shadow:
+    0 3px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
   padding: 16px;
   display: flex;
   align-items: center;
@@ -158,7 +167,6 @@
   border: medium none;
   outline: currentcolor none medium;
   fill: #4a5568;
-  padding: 0px;
   cursor: pointer;
   padding: 2px;
 }
@@ -185,10 +193,10 @@
   }
 
   #typebot-bubble > button {
-    width: 50px !important;
-    height: 50px !important;
-    bottom: 10px !important;
-    right: 10px !important;
+    width: 50px;
+    height: 50px;
+    bottom: 10px;
+    right: 10px;
   }
 
   #typebot-bubble > iframe {

@@ -1,5 +1,5 @@
-import { getTestAsset } from "@/test/utils/playwright";
 import test, { expect } from "@playwright/test";
+import { getTestAsset } from "@/test/utils/playwright";
 
 test.describe
   .parallel("Templates page", () => {

@@ -1,4 +1,4 @@
-import { Stack, Tag, Text, Wrap, useColorModeValue } from "@chakra-ui/react";
+import { Stack, Tag, Text, useColorModeValue, Wrap } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { defaultConditionItemContent } from "@typebot.io/blocks-logic/condition/constants";
 import { ComparisonOperators } from "@typebot.io/conditions/constants";

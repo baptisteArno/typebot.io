@@ -1,10 +1,9 @@
+import { Input, InputGroup, InputRightElement, Stack } from "@chakra-ui/react";
+import { useTranslate } from "@tolgee/react";
 import { CopyButton } from "@/components/CopyButton";
 import { SwitchWithRelatedSettings } from "@/components/SwitchWithRelatedSettings";
 import { CollaborationList } from "@/features/collaboration/components/CollaborationList";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
-import { Input, InputGroup, InputRightElement, Stack } from "@chakra-ui/react";
-import { useTranslate } from "@tolgee/react";
-import React from "react";
 
 export const SharePopoverContent = () => {
   const { t } = useTranslate();

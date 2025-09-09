@@ -1,8 +1,8 @@
-import type { ChatChunk } from "@/types";
 import { isNotEmpty } from "@typebot.io/lib/utils";
 import domPurify from "dompurify";
 import { marked } from "marked";
-import { For, createMemo } from "solid-js";
+import { createMemo, For } from "solid-js";
+import type { ChatChunk } from "@/types";
 
 type Props = {
   content: NonNullable<ChatChunk["streamingMessage"]>;

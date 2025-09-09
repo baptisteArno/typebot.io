@@ -1,6 +1,3 @@
-import { ConfirmDialog } from "@/components/ConfirmDialog";
-import { TimeSince } from "@/components/TimeSince";
-import { toast } from "@/lib/toast";
 import {
   Checkbox,
   Flex,
@@ -21,7 +18,10 @@ import { T, useTranslate } from "@tolgee/react";
 import { byId, isDefined } from "@typebot.io/lib/utils";
 import { Button } from "@typebot.io/ui/components/Button";
 import type { ClientUser } from "@typebot.io/user/schemas";
-import React, { useState } from "react";
+import { useState } from "react";
+import { ConfirmDialog } from "@/components/ConfirmDialog";
+import { TimeSince } from "@/components/TimeSince";
+import { toast } from "@/lib/toast";
 import { useApiTokens } from "../hooks/useApiTokens";
 import { deleteApiTokenQuery } from "../queries/deleteApiTokenQuery";
 import type { ApiTokenFromServer } from "../types";

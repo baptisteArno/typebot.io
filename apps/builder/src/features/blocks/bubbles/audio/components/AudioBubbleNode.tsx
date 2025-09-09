@@ -1,10 +1,10 @@
-import { useTypebot } from "@/features/editor/providers/TypebotProvider";
-import { VariableTag } from "@/features/graph/components/nodes/block/VariableTag";
-import { Text, chakra } from "@chakra-ui/react";
+import { chakra, Text } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import type { AudioBubbleBlock } from "@typebot.io/blocks-bubbles/audio/schema";
 import { isDefined } from "@typebot.io/lib/utils";
 import { findUniqueVariable } from "@typebot.io/variables/findUniqueVariable";
+import { useTypebot } from "@/features/editor/providers/TypebotProvider";
+import { VariableTag } from "@/features/graph/components/nodes/block/VariableTag";
 
 type Props = {
   url: NonNullable<AudioBubbleBlock["content"]>["url"];

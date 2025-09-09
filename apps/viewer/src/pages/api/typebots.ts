@@ -1,7 +1,7 @@
-import { authenticateUser } from "@/helpers/authenticateUser";
 import { methodNotAllowed } from "@typebot.io/lib/api/utils";
 import prisma from "@typebot.io/prisma";
 import type { NextApiRequest, NextApiResponse } from "next";
+import { authenticateUser } from "@/helpers/authenticateUser";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "GET") {

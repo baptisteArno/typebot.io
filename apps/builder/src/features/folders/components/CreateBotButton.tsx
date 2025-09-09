@@ -1,11 +1,10 @@
-import { PlusIcon } from "@/components/icons";
 import { Text, VStack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { Button, type ButtonProps } from "@typebot.io/ui/components/Button";
 import { cn } from "@typebot.io/ui/lib/cn";
 import { useRouter } from "next/router";
 import { stringify } from "qs";
-import React from "react";
+import { PlusIcon } from "@/components/icons";
 import { useTypebotDnd } from "../TypebotDndProvider";
 
 export const CreateBotButton = ({

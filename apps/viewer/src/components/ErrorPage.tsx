@@ -1,5 +1,4 @@
 import { env } from "@typebot.io/env";
-import React from "react";
 
 export const ErrorPage = ({ error }: { error: Error }) => {
   return (

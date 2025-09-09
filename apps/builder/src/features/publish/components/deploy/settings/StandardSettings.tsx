@@ -1,15 +1,15 @@
-import { BasicSelect } from "@/components/inputs/BasicSelect";
-import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
 import {
   Flex,
-  HStack,
   Heading,
+  HStack,
   Input,
   Stack,
   type StackProps,
   Text,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import { BasicSelect } from "@/components/inputs/BasicSelect";
+import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
 
 type Props = {
   onUpdateWindowSettings: (windowSettings: {

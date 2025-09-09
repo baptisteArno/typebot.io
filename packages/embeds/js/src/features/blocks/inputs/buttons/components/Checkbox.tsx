@@ -1,5 +1,5 @@
-import { CheckIcon } from "@/components/icons/CheckIcon";
 import { Show } from "solid-js";
+import { CheckIcon } from "@/components/icons/CheckIcon";
 
 type Props = {
   isChecked: boolean;

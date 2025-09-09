@@ -1,5 +1,5 @@
-import { svgBaseClassName } from "@/components/icons";
 import { cn } from "@typebot.io/ui/lib/cn";
+import { svgBaseClassName } from "@/components/icons";
 
 export const WaitIcon = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 24 24" className={cn(svgBaseClassName, className)}>

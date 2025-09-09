@@ -1,23 +1,22 @@
-import { ConfirmDialog } from "@/components/ConfirmDialog";
-import { DownloadIcon } from "@/components/icons";
-import { useTypebot } from "@/features/editor/providers/TypebotProvider";
-import { trpc } from "@/lib/queryClient";
-import { toast } from "@/lib/toast";
 import {
   HStack,
   Text,
   useColorModeValue,
   useDisclosure,
 } from "@chakra-ui/react";
-import { useMutation } from "@tanstack/react-query";
-import { useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { parseUniqueKey } from "@typebot.io/lib/parseUniqueKey";
 import { byId } from "@typebot.io/lib/utils";
 import { parseColumnsOrder } from "@typebot.io/results/parseColumnsOrder";
 import { Button } from "@typebot.io/ui/components/Button";
 import { TrashIcon } from "@typebot.io/ui/icons/TrashIcon";
 import { unparse } from "papaparse";
-import React, { useState } from "react";
+import { useState } from "react";
+import { ConfirmDialog } from "@/components/ConfirmDialog";
+import { DownloadIcon } from "@/components/icons";
+import { useTypebot } from "@/features/editor/providers/TypebotProvider";
+import { trpc } from "@/lib/queryClient";
+import { toast } from "@/lib/toast";
 import { useResults } from "../../ResultsProvider";
 
 type Props = {

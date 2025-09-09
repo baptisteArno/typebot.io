@@ -1,5 +1,3 @@
-import { getUserModeInWorkspace } from "@/features/workspace/helpers/getUserRoleInWorkspace";
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 import { createId } from "@paralleldrive/cuid2";
 import { TRPCError } from "@trpc/server";
 import { copyObjects } from "@typebot.io/lib/s3/copyObjects";
@@ -10,13 +8,15 @@ import { trackEvents } from "@typebot.io/telemetry/trackEvents";
 import { migrateTypebot } from "@typebot.io/typebot/migrations/migrateTypebot";
 import { preprocessTypebot } from "@typebot.io/typebot/preprocessTypebot";
 import {
+  resultsTablePreferencesSchema,
   type Typebot,
   type TypebotV6,
-  resultsTablePreferencesSchema,
   typebotV5Schema,
   typebotV6Schema,
 } from "@typebot.io/typebot/schemas/typebot";
 import { z } from "@typebot.io/zod";
+import { getUserModeInWorkspace } from "@/features/workspace/helpers/getUserRoleInWorkspace";
+import { authenticatedProcedure } from "@/helpers/server/trpc";
 import {
   sanitizeFolderId,
   sanitizeGroups,

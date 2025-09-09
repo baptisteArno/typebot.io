@@ -1,5 +1,5 @@
-import { isMobile } from "@/utils/helpers";
 import React from "react";
+import { isMobile } from "@/utils/helpers";
 
 type TextareaProps = {
   onChange: (value: string) => void;

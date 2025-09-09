@@ -1,8 +1,3 @@
-import { CopyButton } from "@/components/CopyButton";
-import { TextInput } from "@/components/inputs/TextInput";
-import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { queryClient, trpc } from "@/lib/queryClient";
-import { toast } from "@/lib/toast";
 import {
   Input,
   InputGroup,
@@ -18,6 +13,11 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import type { ForgedBlockDefinition } from "@typebot.io/forge-repository/definitions";
 import { Button } from "@typebot.io/ui/components/Button";
 import { useEffect, useState } from "react";
+import { CopyButton } from "@/components/CopyButton";
+import { TextInput } from "@/components/inputs/TextInput";
+import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
+import { queryClient, trpc } from "@/lib/queryClient";
+import { toast } from "@/lib/toast";
 import { useOAuthPopup } from "./useOAuthPopup";
 
 type Props = {
@@ -44,7 +44,7 @@ export const ForgedOAuthCredentialsUpdateDialogBody = ({
   const [clientId, setClientId] = useState("");
   const [clientSecret, setClientSecret] = useState("");
 
-  const { data: existingCredentials, refetch: refetchCredentials } = useQuery(
+  const { data: existingCredentials } = useQuery(
     trpc.credentials.getCredentials.queryOptions(
       scope === "workspace"
         ? {
@@ -87,7 +87,7 @@ export const ForgedOAuthCredentialsUpdateDialogBody = ({
           description: err.message,
         });
       },
-      onSuccess: (data) => {
+      onSuccess: (_data) => {
         queryClient.invalidateQueries({
           queryKey: trpc.credentials.listCredentials.queryKey(),
         });

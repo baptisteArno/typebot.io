@@ -1,8 +1,3 @@
-import type {
-  BotContext,
-  ChatChunk as ChatChunkType,
-  InputSubmitContent,
-} from "@/types";
 import { defaultSettings } from "@typebot.io/settings/constants";
 import type { Settings } from "@typebot.io/settings/schemas";
 import {
@@ -11,10 +6,15 @@ import {
 } from "@typebot.io/theme/constants";
 import type { Theme } from "@typebot.io/theme/schemas";
 import { cx } from "@typebot.io/ui/lib/cva";
-import { For, Show, createSignal, onMount } from "solid-js";
-import { InputChatBlock } from "../InputChatBlock";
+import { createSignal, For, onMount, Show } from "solid-js";
+import type {
+  BotContext,
+  ChatChunk as ChatChunkType,
+  InputSubmitContent,
+} from "@/types";
 import { HostBubble } from "../bubbles/HostBubble";
 import { StreamingBubble } from "../bubbles/StreamingBubble";
+import { InputChatBlock } from "../InputChatBlock";
 import { AvatarSideContainer } from "./AvatarSideContainer";
 
 type Props = Pick<ChatChunkType, "messages" | "input" | "streamingMessage"> & {

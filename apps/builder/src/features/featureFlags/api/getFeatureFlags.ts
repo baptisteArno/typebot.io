@@ -1,7 +1,7 @@
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 import { env } from "@typebot.io/env";
 import { z } from "@typebot.io/zod";
 import { PostHog } from "posthog-node";
+import { authenticatedProcedure } from "@/helpers/server/trpc";
 
 const flagsSchema = z.object({
   flags: z.record(z.enum(["cards", "360dialog"]), z.boolean()),

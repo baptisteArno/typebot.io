@@ -1,10 +1,10 @@
+import { useRouter } from "@tanstack/react-router";
+import type { z } from "@typebot.io/zod";
+import { useEffect } from "react";
 import {
   trackPageView,
   type trackPageViewBodySchema,
 } from "@/features/telemetry/server/trackPageView";
-import { useRouter } from "@tanstack/react-router";
-import type { z } from "@typebot.io/zod";
-import { useEffect } from "react";
 
 type Props = {
   enabled?: boolean;

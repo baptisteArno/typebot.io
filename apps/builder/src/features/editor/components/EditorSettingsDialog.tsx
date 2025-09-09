@@ -1,6 +1,5 @@
-import { UserPreferencesForm } from "@/features/user/components/UserPreferencesForm";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
-import React from "react";
+import { UserPreferencesForm } from "@/features/user/components/UserPreferencesForm";
 
 type Props = {
   isOpen: boolean;

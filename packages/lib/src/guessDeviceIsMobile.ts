@@ -6,9 +6,7 @@ const notMobileRE = /CrOS/;
 
 const tabletRE = /android|ipad|playbook|silk/i;
 
-export const guessDeviceIsMobile = (opts?: {
-  includeTablet?: boolean;
-}) => {
+export const guessDeviceIsMobile = (opts?: { includeTablet?: boolean }) => {
   const ua = navigator.userAgent;
 
   let result =

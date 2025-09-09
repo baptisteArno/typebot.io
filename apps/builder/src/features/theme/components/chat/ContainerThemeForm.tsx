@@ -1,5 +1,3 @@
-import { NumberInput } from "@/components/inputs";
-import { BasicSelect } from "@/components/inputs/BasicSelect";
 import {
   Accordion,
   AccordionButton,
@@ -22,7 +20,8 @@ import type {
   ContainerTheme,
   InputTheme,
 } from "@typebot.io/theme/schemas";
-import React from "react";
+import { NumberInput } from "@/components/inputs";
+import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { ColorPicker } from "../../../../components/ColorPicker";
 
 type Props<T extends ((placeholder: string) => void) | undefined> = {

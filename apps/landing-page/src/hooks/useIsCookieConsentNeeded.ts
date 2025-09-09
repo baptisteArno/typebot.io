@@ -1,7 +1,7 @@
-import { isEU } from "@/features/telemetry/server/isEU";
-import { setCookie } from "@/helpers/setCookie";
 import { getTypebotCookie } from "@typebot.io/telemetry/cookies/helpers";
 import { useEffect, useState } from "react";
+import { isEU } from "@/features/telemetry/server/isEU";
+import { setCookie } from "@/helpers/setCookie";
 
 export const useCookieConsentStatus = () => {
   const [cookieConsentStatus, setCookieConsentStatus] = useState<

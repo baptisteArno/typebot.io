@@ -1,8 +1,8 @@
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 import { TRPCError } from "@trpc/server";
 import prisma from "@typebot.io/prisma";
 import { workspaceSchema } from "@typebot.io/workspaces/schemas";
 import { z } from "@typebot.io/zod";
+import { authenticatedProcedure } from "@/helpers/server/trpc";
 
 export const listWorkspaces = authenticatedProcedure
   .meta({

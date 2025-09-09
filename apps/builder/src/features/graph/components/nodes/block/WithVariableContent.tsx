@@ -1,7 +1,6 @@
-import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { Text, type TextProps } from "@chakra-ui/react";
 import { byId } from "@typebot.io/lib/utils";
-import React from "react";
+import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { VariableTag } from "./VariableTag";
 
 type Props = {

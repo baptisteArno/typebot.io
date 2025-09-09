@@ -1,8 +1,8 @@
-import { ButtonLink } from "@/components/ButtonLink";
-import { ChevronLeftIcon } from "@/components/icons";
 import { useTranslate } from "@tolgee/react";
 import { cn } from "@typebot.io/ui/lib/cn";
-import React, { useMemo } from "react";
+import { useMemo } from "react";
+import { ButtonLink } from "@/components/ButtonLink";
+import { ChevronLeftIcon } from "@/components/icons";
 import { useTypebotDnd } from "../TypebotDndProvider";
 
 export const BackButton = ({ id }: { id: string | null }) => {

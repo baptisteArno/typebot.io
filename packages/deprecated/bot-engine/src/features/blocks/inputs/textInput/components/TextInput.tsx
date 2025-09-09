@@ -1,10 +1,10 @@
-import { SendButton } from "@/components/SendButton";
-import { ShortTextInput } from "@/components/inputs/ShortTextInput";
-import { Textarea } from "@/components/inputs/Textarea";
-import type { InputSubmitContent } from "@/types";
 import type { TextInputBlock } from "@typebot.io/blocks-inputs/text/schema";
 import type React from "react";
 import { type MutableRefObject, useRef, useState } from "react";
+import { ShortTextInput } from "@/components/inputs/ShortTextInput";
+import { Textarea } from "@/components/inputs/Textarea";
+import { SendButton } from "@/components/SendButton";
+import type { InputSubmitContent } from "@/types";
 
 type TextInputProps = {
   block: TextInputBlock;

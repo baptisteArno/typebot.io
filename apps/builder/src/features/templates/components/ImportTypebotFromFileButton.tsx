@@ -1,4 +1,3 @@
-import { toast } from "@/lib/toast";
 import { chakra } from "@chakra-ui/react";
 import { parseUnknownClientError } from "@typebot.io/lib/parseUnknownClientError";
 import type { Typebot } from "@typebot.io/typebot/schemas/typebot";
@@ -7,7 +6,8 @@ import {
   buttonVariants,
 } from "@typebot.io/ui/components/Button";
 import { cn } from "@typebot.io/ui/lib/cn";
-import React, { type ChangeEvent } from "react";
+import type { ChangeEvent } from "react";
+import { toast } from "@/lib/toast";
 
 type Props = {
   onNewTypebot: (typebot: Typebot) => void;

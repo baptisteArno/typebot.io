@@ -1,4 +1,3 @@
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 import { TRPCError } from "@trpc/server";
 import prisma from "@typebot.io/prisma";
 import { trackEvents } from "@typebot.io/telemetry/trackEvents";
@@ -7,6 +6,7 @@ import {
   workspaceSchema,
 } from "@typebot.io/workspaces/schemas";
 import { z } from "@typebot.io/zod";
+import { authenticatedProcedure } from "@/helpers/server/trpc";
 import { parseWorkspaceDefaultPlan } from "../helpers/parseWorkspaceDefaultPlan";
 
 export const createWorkspace = authenticatedProcedure

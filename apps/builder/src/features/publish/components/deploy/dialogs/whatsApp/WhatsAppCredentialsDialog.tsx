@@ -1,22 +1,10 @@
-import { ButtonLink } from "@/components/ButtonLink";
-import { CopyButton } from "@/components/CopyButton";
-import { TextLink } from "@/components/TextLink";
-import { ChevronLeftIcon, ExternalLinkIcon } from "@/components/icons";
-import { TextInput } from "@/components/inputs/TextInput";
-import { Dialog360Logo } from "@/components/logos/Dialog360Logo";
-import { MetaLogo } from "@/components/logos/MetaLogo";
-import { useFeatureFlagsQuery } from "@/features/featureFlags/useFeatureFlagsQuery";
-import { formatPhoneNumberDisplayName } from "@/features/whatsapp/formatPhoneNumberDisplayName";
-import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { queryClient, trpc, trpcClient } from "@/lib/queryClient";
-import { toast } from "@/lib/toast";
 import {
   Box,
   Card,
   CardBody,
   Code,
-  HStack,
   Heading,
+  HStack,
   Image,
   Input,
   InputGroup,
@@ -28,26 +16,37 @@ import {
   StepIcon,
   StepIndicator,
   StepNumber,
+  Stepper,
   StepSeparator,
   StepStatus,
   StepTitle,
-  Stepper,
   Tag,
   Text,
   UnorderedList,
-  VStack,
   useSteps,
+  VStack,
 } from "@chakra-ui/react";
 import { createId } from "@paralleldrive/cuid2";
-import { useQuery } from "@tanstack/react-query";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { TRPCClientError } from "@trpc/client";
 import { env } from "@typebot.io/env";
 import { parseUnknownClientError } from "@typebot.io/lib/parseUnknownClientError";
 import { isEmpty, isNotEmpty } from "@typebot.io/lib/utils";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
-import React, { useState } from "react";
+import { useState } from "react";
+import { ButtonLink } from "@/components/ButtonLink";
+import { CopyButton } from "@/components/CopyButton";
+import { ChevronLeftIcon, ExternalLinkIcon } from "@/components/icons";
+import { TextInput } from "@/components/inputs/TextInput";
+import { Dialog360Logo } from "@/components/logos/Dialog360Logo";
+import { MetaLogo } from "@/components/logos/MetaLogo";
+import { TextLink } from "@/components/TextLink";
+import { useFeatureFlagsQuery } from "@/features/featureFlags/useFeatureFlagsQuery";
+import { formatPhoneNumberDisplayName } from "@/features/whatsapp/formatPhoneNumberDisplayName";
+import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
+import { queryClient, trpc, trpcClient } from "@/lib/queryClient";
+import { toast } from "@/lib/toast";
 
 const metaSteps = [
   { title: "Requirements" },
@@ -699,11 +698,7 @@ const Dialog360PhoneNumber = ({
   </Stack>
 );
 
-const Dialog360Webhook = ({
-  credentialsId,
-}: {
-  credentialsId: string;
-}) => {
+const Dialog360Webhook = ({ credentialsId }: { credentialsId: string }) => {
   const { workspace } = useWorkspace();
   const webhookUrl = `${
     env.NEXT_PUBLIC_VIEWER_URL.at(1) ?? env.NEXT_PUBLIC_VIEWER_URL[0]

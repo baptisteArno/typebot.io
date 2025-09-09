@@ -1,4 +1,4 @@
-import { Bubble, Standard } from "@typebot.io/react";
+import { Standard } from "@typebot.io/react";
 import { defaultSettings } from "@typebot.io/settings/constants";
 import { BackgroundType } from "@typebot.io/theme/constants";
 import type { Font } from "@typebot.io/theme/schemas";

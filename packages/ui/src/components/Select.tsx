@@ -3,7 +3,7 @@ import * as React from "react";
 import { ChevronDownIcon } from "../icons/ChevronDownIcon";
 import { TickIcon } from "../icons/TickIcon";
 import { cn } from "../lib/cn";
-import { type VariantProps, cva, cx } from "../lib/cva";
+import { cva, cx, type VariantProps } from "../lib/cva";
 
 const Root = <Value,>(props: PrimitiveSelect.Root.Props<Value>) => (
   <PrimitiveSelect.Root {...props} />

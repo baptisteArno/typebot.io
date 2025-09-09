@@ -1,3 +1,4 @@
+import { createFileRoute } from "@tanstack/react-router";
 import { ContentPageWrapper } from "@/components/ContentPageWrapper";
 import { WhyTypebotCta } from "@/components/cta/WhyTypebotCta";
 import { BuildingsGradientIcon } from "@/features/about/BuildingsGradientIcon";
@@ -5,7 +6,6 @@ import { HeartGradientIcon } from "@/features/about/HeartGradientIcon";
 import { MessageSquareGradientIcon } from "@/features/about/MessageSquareGradientIcon";
 import { ZapGradientIcon } from "@/features/about/ZapGradientIcon";
 import { createMetaTags } from "@/lib/createMetaTags";
-import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_layout/about")({
   head: () => ({

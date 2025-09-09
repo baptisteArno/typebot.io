@@ -1,6 +1,6 @@
-import { TextLink } from "@/components/TextLink";
-import { FileIcon } from "@/components/icons";
 import { HStack, Wrap, WrapItem } from "@chakra-ui/react";
+import { FileIcon } from "@/components/icons";
+import { TextLink } from "@/components/TextLink";
 
 export const FileLinks = ({ fileNamesStr }: { fileNamesStr: string }) => {
   const fileNames = fileNamesStr.split(", ");

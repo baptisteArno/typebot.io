@@ -1,6 +1,3 @@
-import { SendButton } from "@/components/SendButton";
-import { SearchInput } from "@/components/inputs/SearchInput";
-import type { InputSubmitContent } from "@/types";
 import { defaultPictureChoiceOptions } from "@typebot.io/blocks-inputs/pictureChoice/constants";
 import type { PictureChoiceBlock } from "@typebot.io/blocks-inputs/pictureChoice/schema";
 import { guessDeviceIsMobile } from "@typebot.io/lib/guessDeviceIsMobile";
@@ -10,7 +7,10 @@ import {
   isNotEmpty,
   isSvgSrc,
 } from "@typebot.io/lib/utils";
-import { For, Show, createEffect, createSignal, onMount } from "solid-js";
+import { createEffect, createSignal, For, onMount, Show } from "solid-js";
+import { SearchInput } from "@/components/inputs/SearchInput";
+import { SendButton } from "@/components/SendButton";
+import type { InputSubmitContent } from "@/types";
 import { Checkbox } from "../buttons/components/Checkbox";
 
 type Props = {

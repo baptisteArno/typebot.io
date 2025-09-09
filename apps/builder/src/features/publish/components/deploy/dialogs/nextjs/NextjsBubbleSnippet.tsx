@@ -1,8 +1,8 @@
-import { CodeEditor } from "@/components/inputs/CodeEditor";
-import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import type { BubbleProps } from "@typebot.io/js";
 import parserBabel from "prettier/parser-babel";
 import prettier from "prettier/standalone";
+import { CodeEditor } from "@/components/inputs/CodeEditor";
+import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { parseReactBubbleProps } from "../../snippetParsers/bubble";
 
 export const NextjsBubbleSnippet = ({

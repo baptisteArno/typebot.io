@@ -1,9 +1,9 @@
-import { AlertInfo } from "@/components/AlertInfo";
-import { ChevronLeftIcon } from "@/components/icons";
-import { HStack, Heading } from "@chakra-ui/react";
+import { Heading, HStack } from "@chakra-ui/react";
 import { capitalize } from "@typebot.io/lib/utils";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
+import { AlertInfo } from "@/components/AlertInfo";
+import { ChevronLeftIcon } from "@/components/icons";
 import { EmbedTypeMenu } from "./EmbedTypeMenu/EmbedTypeMenu";
 
 type Props = {

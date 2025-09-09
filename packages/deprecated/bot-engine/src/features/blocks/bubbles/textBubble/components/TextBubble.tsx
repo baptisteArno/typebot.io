@@ -1,9 +1,9 @@
-import { TypingBubble } from "@/components/TypingBubble";
-import { parseVariables } from "@/features/variables";
-import { useTypebot } from "@/providers/TypebotProvider";
 import { BubbleBlockType } from "@typebot.io/blocks-bubbles/constants";
 import type { TextBubbleBlock } from "@typebot.io/blocks-bubbles/text/schema";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { TypingBubble } from "@/components/TypingBubble";
+import { parseVariables } from "@/features/variables";
+import { useTypebot } from "@/providers/TypebotProvider";
 import { computeTypingDuration } from "../utils/computeTypingDuration";
 
 type Props = {

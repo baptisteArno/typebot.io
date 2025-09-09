@@ -2,8 +2,8 @@
 import {
   type BubbleActions,
   type BubbleParams,
-  type ProactiveMessageParams,
   localStorageKeys,
+  type ProactiveMessageParams,
 } from "../../types";
 import { createButton } from "./button";
 import { closeIframe, createIframeContainer, openIframe } from "./iframe";

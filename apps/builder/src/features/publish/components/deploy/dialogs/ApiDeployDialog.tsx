@@ -1,9 +1,9 @@
-import { AlertInfo } from "@/components/AlertInfo";
-import { TextLink } from "@/components/TextLink";
-import { CodeEditor } from "@/components/inputs/CodeEditor";
-import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { Code, ListItem, OrderedList, Stack, Text } from "@chakra-ui/react";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
+import { AlertInfo } from "@/components/AlertInfo";
+import { CodeEditor } from "@/components/inputs/CodeEditor";
+import { TextLink } from "@/components/TextLink";
+import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import type { DialogProps } from "../DeployButton";
 import { parseApiHost } from "../snippetParsers/shared";
 

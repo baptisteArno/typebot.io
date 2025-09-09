@@ -1,8 +1,7 @@
-import { WithVariableContent } from "@/features/graph/components/nodes/block/WithVariableContent";
 import { Text } from "@chakra-ui/react";
 import { defaultNumberInputPlaceholder } from "@typebot.io/blocks-inputs/number/constants";
 import type { NumberInputBlock } from "@typebot.io/blocks-inputs/number/schema";
-import React from "react";
+import { WithVariableContent } from "@/features/graph/components/nodes/block/WithVariableContent";
 
 type Props = {
   options: NumberInputBlock["options"];

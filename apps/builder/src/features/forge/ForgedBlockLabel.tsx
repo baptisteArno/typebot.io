@@ -1,6 +1,6 @@
 import { Tag, type TagProps, Text, type TextProps } from "@chakra-ui/react";
-import type { ForgedBlock } from "@typebot.io/forge-repository/schemas";
 import type { BlockDefinition } from "@typebot.io/forge/types";
+import type { ForgedBlock } from "@typebot.io/forge-repository/schemas";
 import { useForgedBlock } from "./hooks/useForgedBlock";
 
 export const ForgedBlockLabel = ({

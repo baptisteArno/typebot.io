@@ -12,7 +12,7 @@ export default class Server implements Party.Server {
       let payload: unknown;
       try {
         payload = await request.json<unknown>();
-      } catch (err) {
+      } catch (_err) {
         this.room.broadcast(JSON.stringify({ data: payload }));
         return new Response("Non json payload, empty data sent");
       }

@@ -1,13 +1,12 @@
-import { useTypebot } from "@/features/editor/providers/TypebotProvider";
-import { useKeyboardShortcuts } from "@/hooks/useKeyboardShortcuts";
 import { useColorMode } from "@chakra-ui/react";
 import type { Edge as EdgeProps } from "@typebot.io/typebot/schemas/edge";
 import { colors } from "@typebot.io/ui/chakraTheme";
 import { ContextMenu } from "@typebot.io/ui/components/ContextMenu";
 import { TrashIcon } from "@typebot.io/ui/icons/TrashIcon";
-import type React from "react";
 import { useMemo, useState } from "react";
 import { useShallow } from "zustand/react/shallow";
+import { useTypebot } from "@/features/editor/providers/TypebotProvider";
+import { useKeyboardShortcuts } from "@/hooks/useKeyboardShortcuts";
 import { eventWidth, groupWidth } from "../../constants";
 import { computeEdgePath } from "../../helpers/computeEdgePath";
 import { getAnchorsPosition } from "../../helpers/getAnchorsPosition";
@@ -107,49 +106,48 @@ export const Edge = ({ edge, fromElementId }: Props) => {
   });
 
   return (
-    <>
-      <ContextMenu.Root onOpenChange={setIsContextMenuOpen}>
-        <ContextMenu.Trigger
-          render={(props) => (
-            <>
-              <path
-                {...props}
-                data-testid="clickable-edge"
-                d={path}
-                strokeWidth="18px"
-                stroke="white"
-                fill="none"
-                pointerEvents="stroke"
-                style={{ cursor: "pointer", visibility: "hidden" }}
-                onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
-                onClick={handleEdgeClick}
-              />
-              <path
-                data-testid="edge"
-                d={path}
-                stroke={
-                  isPreviewing || isContextMenuOpen
-                    ? "var(--chakra-colors-orange-400)"
-                    : isDark
-                      ? colors.gray[700]
-                      : colors.gray[400]
-                }
-                strokeWidth="2px"
-                markerEnd={isPreviewing ? "url(#orange-arrow)" : "url(#arrow)"}
-                fill="none"
-                pointerEvents="none"
-              />
-            </>
-          )}
-        />
-        <ContextMenu.Popup>
-          <ContextMenu.Item className="text-red-10" onClick={handleDeleteEdge}>
-            <TrashIcon />
-            Delete
-          </ContextMenu.Item>
-        </ContextMenu.Popup>
-      </ContextMenu.Root>
-    </>
+    <ContextMenu.Root onOpenChange={setIsContextMenuOpen}>
+      <ContextMenu.Trigger
+        render={(props) => (
+          <>
+            <path
+              {...props}
+              role="button"
+              data-testid="clickable-edge"
+              d={path}
+              strokeWidth="18px"
+              stroke="white"
+              fill="none"
+              pointerEvents="stroke"
+              style={{ cursor: "pointer", visibility: "hidden" }}
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
+              onClick={handleEdgeClick}
+            />
+            <path
+              data-testid="edge"
+              d={path}
+              stroke={
+                isPreviewing || isContextMenuOpen
+                  ? "var(--chakra-colors-orange-400)"
+                  : isDark
+                    ? colors.gray[700]
+                    : colors.gray[400]
+              }
+              strokeWidth="2px"
+              markerEnd={isPreviewing ? "url(#orange-arrow)" : "url(#arrow)"}
+              fill="none"
+              pointerEvents="none"
+            />
+          </>
+        )}
+      />
+      <ContextMenu.Popup>
+        <ContextMenu.Item className="text-red-10" onClick={handleDeleteEdge}>
+          <TrashIcon />
+          Delete
+        </ContextMenu.Item>
+      </ContextMenu.Popup>
+    </ContextMenu.Root>
   );
 };

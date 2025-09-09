@@ -1,9 +1,9 @@
-import { getAuthenticatedUser } from "@/features/auth/helpers/getAuthenticatedUser";
-import { canEditGuests } from "@/helpers/databaseRules";
 import { methodNotAllowed, notAuthenticated } from "@typebot.io/lib/api/utils";
 import prisma from "@typebot.io/prisma";
 import type { Prisma } from "@typebot.io/prisma/types";
 import type { NextApiRequest, NextApiResponse } from "next";
+import { getAuthenticatedUser } from "@/features/auth/helpers/getAuthenticatedUser";
+import { canEditGuests } from "@/helpers/databaseRules";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req, res);

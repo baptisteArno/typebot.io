@@ -1,8 +1,3 @@
-import {
-  addSubscriptionToWorkspace,
-  cancelSubscription,
-  createClaimableCustomPlan,
-} from "@/test/utils/databaseActions";
 import { createId } from "@paralleldrive/cuid2";
 import test, { expect } from "@playwright/test";
 import { env } from "@typebot.io/env";
@@ -13,6 +8,11 @@ import {
   injectFakeResults,
 } from "@typebot.io/playwright/databaseActions";
 import { Plan } from "@typebot.io/prisma/enum";
+import {
+  addSubscriptionToWorkspace,
+  cancelSubscription,
+  createClaimableCustomPlan,
+} from "@/test/utils/databaseActions";
 
 const usageWorkspaceId = createId();
 const usageTypebotId = createId();
