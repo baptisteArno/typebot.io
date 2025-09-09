@@ -1,0 +1,436 @@
+{
+  "version": "6",
+  "id": "cmfcw9y750001pubmars31w6f",
+  "name": "coleta de dados sem mensagem",
+  "events": [
+    {
+      "id": "n4s48po5f0x0q92s8lh1oy7o",
+      "outgoingEdgeId": "aw61prvyd5okeytyybja63xn",
+      "graphCoordinates": {
+        "x": 0,
+        "y": 0
+      },
+      "type": "start"
+    }
+  ],
+  "groups": [
+    {
+      "id": "viclz2en630773nce2bigdiq",
+      "title": "Group #2",
+      "graphCoordinates": {
+        "x": 52.5,
+        "y": 216
+      },
+      "blocks": [
+        {
+          "id": "ik4fgevbaps3e7j2w3sjxb29",
+          "outgoingEdgeId": "e0sy2nwsc89cpozx8r9f6oyb",
+          "type": "text input",
+          "options": {
+            "labels": {
+              "placeholder": "qual sua idade?"
+            },
+            "variableId": "vbzfe88zfhe8hzq6y1lvpu2gv"
+          }
+        }
+      ]
+    },
+    {
+      "id": "qf9d0g4uni7hjfdgd3b1nvj0",
+      "title": "Group #1",
+      "graphCoordinates": {
+        "x": 297.5,
+        "y": -168
+      },
+      "blocks": [
+        {
+          "id": "yc4dkar6kj81aihouwezrx1o",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "bom dia"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "iii0uhih4o0ygb87sn9zj8pk",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "tudo bem?"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "wp7mruh7wb7xnjegdnv9749u",
+          "outgoingEdgeId": "wcpthkpxu8jlvu9i49afv7ef",
+          "type": "Condition",
+          "items": [
+            {
+              "id": "qwyr7vyn0its6d83sh3jmn1p",
+              "outgoingEdgeId": "esvuin2uarotv82z84s9xcy0",
+              "content": {
+                "comparisons": [
+                  {
+                    "id": "cc4mh2p75gecznxr6u592nat",
+                    "variableId": "vldmptbzliwd4kt0u02jwmgh2",
+                    "comparisonOperator": "Is empty"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "gir9e37ic5zj12ywzaout4mq",
+      "title": "rascunho",
+      "graphCoordinates": {
+        "x": 726,
+        "y": -53
+      },
+      "blocks": [
+        {
+          "id": "dps3d6s0w8jctprtez8yatbw",
+          "type": "Set variable",
+          "options": {
+            "variableId": "vbzfe88zfhe8hzq6y1lvpu2gv",
+            "expressionToEvaluate": "18"
+          }
+        },
+        {
+          "id": "jyez7dxzcue6rtakumcx4i7s",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": ""
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "zz4dai2ik5016ri0z3o55lnf",
+      "title": "Group #3",
+      "graphCoordinates": {
+        "x": 267.46,
+        "y": 458.99
+      },
+      "blocks": [
+        {
+          "id": "obei21mlzaili2kqh4po1kix",
+          "outgoingEdgeId": "at7p027e8jxyujiq0cclluv7",
+          "type": "claudia",
+          "options": {
+            "action": "End Flow [N1]"
+          }
+        }
+      ]
+    },
+    {
+      "id": "s3a37t1cen0gqll4srqm3wli",
+      "title": "Group #4",
+      "graphCoordinates": {
+        "x": 764,
+        "y": 463
+      },
+      "blocks": [
+        {
+          "id": "mw1r49nb7iyb3sa29t0v0d81",
+          "outgoingEdgeId": "ci694ols4oydcjvg2h1o2bjl",
+          "type": "text input",
+          "options": {
+            "labels": {
+              "placeholder": "qual seu nome?"
+            },
+            "variableId": "vldmptbzliwd4kt0u02jwmgh2"
+          }
+        }
+      ]
+    },
+    {
+      "id": "saujjfe1cc5f8z3pqc2lusfd",
+      "title": "Group #6",
+      "graphCoordinates": {
+        "x": 712.25,
+        "y": 194.5
+      },
+      "blocks": [
+        {
+          "id": "q5vee3b0bn1ww3s77f3t5eg1",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "sua idade é {{idade}}?"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "gfbqh8z2l28lz70bt8tq1avb",
+          "outgoingEdgeId": "g7up8gg73pup0cbef0kurq6q",
+          "type": "text input",
+          "options": {
+            "variableId": "vey1g7iw6m711cjk6vlq2zkux"
+          }
+        }
+      ]
+    },
+    {
+      "id": "j1n2mfvyot2jrwg44v5d49xo",
+      "title": "Group #7",
+      "graphCoordinates": {
+        "x": 1240.558441558441,
+        "y": 688.3091630591632
+      },
+      "blocks": [
+        {
+          "id": "oc3l0zpvy5qp6zj6pwebpudi",
+          "type": "text input",
+          "options": {
+            "labels": {
+              "placeholder": "qual seu peso?"
+            },
+            "variableId": "vey1g7iw6m711cjk6vlq2zkux"
+          }
+        }
+      ]
+    },
+    {
+      "id": "imig06q4y9t0se4qttip79zk",
+      "title": "Group #8",
+      "graphCoordinates": {
+        "x": 890.5218115218117,
+        "y": 758.9751637251638
+      },
+      "blocks": [
+        {
+          "id": "jihk8okz3p8574qj5gvx6se1",
+          "outgoingEdgeId": "jjyb6dtn16zfi54o3zldeaj5",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "vai"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "ep2prwem458fzqdmtg3eb9ol",
+      "title": "Group #9",
+      "graphCoordinates": {
+        "x": 282,
+        "y": 667
+      },
+      "blocks": [
+        {
+          "id": "zdbw79m41jm1t7a8usr5c0pa",
+          "outgoingEdgeId": "ih5kp923o9bd8oe60q1a3ktr",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "segue aqui"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "j4bdm7t2nk583jiew9fjvtgw",
+      "title": "Group #11",
+      "graphCoordinates": {
+        "x": 1226.8418803418804,
+        "y": 199.41033966033956
+      },
+      "blocks": [
+        {
+          "id": "o1z5weooju7ryu9adcsag27q",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "aaaa"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "nj18us4pkpamdudrcz410eru",
+          "type": "text input",
+          "options": {
+            "variableId": "vbzfe88zfhe8hzq6y1lvpu2gv"
+          }
+        }
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "aw61prvyd5okeytyybja63xn",
+      "from": {
+        "eventId": "n4s48po5f0x0q92s8lh1oy7o"
+      },
+      "to": {
+        "groupId": "qf9d0g4uni7hjfdgd3b1nvj0"
+      }
+    },
+    {
+      "id": "ih5kp923o9bd8oe60q1a3ktr",
+      "from": {
+        "blockId": "zdbw79m41jm1t7a8usr5c0pa"
+      },
+      "to": {
+        "groupId": "s3a37t1cen0gqll4srqm3wli"
+      }
+    },
+    {
+      "id": "jjyb6dtn16zfi54o3zldeaj5",
+      "from": {
+        "blockId": "jihk8okz3p8574qj5gvx6se1"
+      },
+      "to": {
+        "groupId": "j1n2mfvyot2jrwg44v5d49xo"
+      }
+    },
+    {
+      "id": "ci694ols4oydcjvg2h1o2bjl",
+      "from": {
+        "blockId": "mw1r49nb7iyb3sa29t0v0d81"
+      },
+      "to": {
+        "groupId": "imig06q4y9t0se4qttip79zk"
+      }
+    },
+    {
+      "id": "esvuin2uarotv82z84s9xcy0",
+      "from": {
+        "blockId": "wp7mruh7wb7xnjegdnv9749u",
+        "itemId": "qwyr7vyn0its6d83sh3jmn1p"
+      },
+      "to": {
+        "groupId": "saujjfe1cc5f8z3pqc2lusfd"
+      }
+    },
+    {
+      "id": "wcpthkpxu8jlvu9i49afv7ef",
+      "from": {
+        "blockId": "wp7mruh7wb7xnjegdnv9749u"
+      },
+      "to": {
+        "groupId": "viclz2en630773nce2bigdiq"
+      }
+    },
+    {
+      "id": "g7up8gg73pup0cbef0kurq6q",
+      "from": {
+        "blockId": "gfbqh8z2l28lz70bt8tq1avb"
+      },
+      "to": {
+        "groupId": "j4bdm7t2nk583jiew9fjvtgw",
+        "blockId": "nj18us4pkpamdudrcz410eru"
+      }
+    },
+    {
+      "from": {
+        "blockId": "ik4fgevbaps3e7j2w3sjxb29"
+      },
+      "to": {
+        "groupId": "zz4dai2ik5016ri0z3o55lnf"
+      },
+      "id": "e0sy2nwsc89cpozx8r9f6oyb"
+    },
+    {
+      "from": {
+        "blockId": "obei21mlzaili2kqh4po1kix"
+      },
+      "to": {
+        "groupId": "ep2prwem458fzqdmtg3eb9ol"
+      },
+      "id": "at7p027e8jxyujiq0cclluv7"
+    }
+  ],
+  "variables": [
+    {
+      "id": "vey1g7iw6m711cjk6vlq2zkux",
+      "name": "peso",
+      "isSessionVariable": true
+    },
+    {
+      "id": "vbzfe88zfhe8hzq6y1lvpu2gv",
+      "name": "idade",
+      "isSessionVariable": true
+    },
+    {
+      "id": "vldmptbzliwd4kt0u02jwmgh2",
+      "name": "name",
+      "isSessionVariable": true
+    }
+  ],
+  "theme": {},
+  "selectedThemeTemplateId": null,
+  "settings": {
+    "general": {
+      "isBrandingEnabled": true
+    }
+  },
+  "createdAt": "2025-09-09T18:39:11.201Z",
+  "updatedAt": "2025-09-09T19:54:03.865Z",
+  "icon": null,
+  "folderId": null,
+  "publicId": null,
+  "customDomain": null,
+  "workspaceId": "cmf5fj0dd0001d543z8g16hg6",
+  "resultsTablePreferences": null,
+  "isArchived": false,
+  "isClosed": false,
+  "whatsAppCredentialsId": null,
+  "riskLevel": null
+}

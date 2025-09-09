@@ -138,61 +138,73 @@ const validateTextBeforeClaudia = (groups: Group[]) => {
 }
 
 const missingTextBetweenInputBlocks = (groups: Group[], edges: Edge[]) => {
-  // Rule: Along any path starting from a start event, between 2 data collection InputBlocks there must be at least one text display block (type === 'text').
-  // If 2 InputBlocks appear consecutively (possibly across groups) without an intervening text block, flag the group containing the second InputBlock.
+  // Rule: From any start event, along every possible execution path, between 2 input (data collection) blocks there must be at least one text block.
+  // We traverse the whole graph (including branching via Condition items) until paths are exhausted.
   const inputBlockTypes = new Set<string>(Object.values(InputBlockType))
   const groupMap = new Map<string, Group>(groups.map((g) => [g.id, g]))
 
-  const blockIdToTargetGroup = new Map<string, string>()
-  edges.forEach((e) => {
-    if (
-      'blockId' in e.from &&
-      e.from.blockId &&
-      'groupId' in e.to &&
-      e.to.groupId
-    ) {
-      blockIdToTargetGroup.set(e.from.blockId, e.to.groupId)
-    }
-  })
-
+  // Start groups are those targeted by an edge whose origin is a start event
   const startGroupIds = edges
     .filter(
-      (e) =>
+      (e): e is Edge & { from: { eventId: string }; to: { groupId: string } } =>
         'eventId' in e.from &&
-        e.from.eventId &&
+        typeof e.from.eventId === 'string' &&
         'groupId' in e.to &&
-        e.to.groupId
+        typeof e.to.groupId === 'string'
     )
-    .map((e) => ('groupId' in e.to ? e.to.groupId : undefined))
-    .filter((g): g is string => typeof g === 'string')
+    .map((e) => e.to.groupId)
 
-  // Helper: get first block of a group
   const firstBlockOf = (groupId: string): Block | undefined => {
     const g = groupMap.get(groupId)
     if (!g || !hasBlocks(g) || g.blocks.length === 0) return undefined
     return g.blocks[0]
   }
 
-  // Helper: next blocks from current block (sequential + outgoing edge)
+  const findBlockInGroup = (
+    group: Group,
+    blockId?: string
+  ): Block | undefined => {
+    if (!blockId) return firstBlockOf(group.id)
+    return group.blocks.find((b) => b.id === blockId) || firstBlockOf(group.id)
+  }
+
+  // Pre-index edges by from.blockId for quick lookup (includes item edges)
+  const edgesByFromBlock = new Map<string, Edge[]>()
+  edges.forEach((e) => {
+    if ('blockId' in e.from && typeof e.from.blockId === 'string') {
+      const bid = e.from.blockId
+      const list = edgesByFromBlock.get(bid) || []
+      list.push(e)
+      edgesByFromBlock.set(bid, list)
+    }
+  })
+
   const nextBlocks = (
     group: Group,
     blockIndex: number
   ): { block: Block; group: Group }[] => {
     const results: { block: Block; group: Group }[] = []
-    // Sequential next in same group
+    // Sequential next
     if (blockIndex + 1 < group.blocks.length) {
       results.push({ block: group.blocks[blockIndex + 1], group })
     }
-    // Edge-based transition
+    // Outgoing edges (including condition item edges)
     const current = group.blocks[blockIndex]
-    if (current.outgoingEdgeId) {
-      const edge = edges.find((e) => e.id === current.outgoingEdgeId)
-      if (edge?.to.groupId) {
-        const fb = firstBlockOf(edge.to.groupId)
-        const targetGroup = groupMap.get(edge.to.groupId)
-        if (fb && targetGroup) results.push({ block: fb, group: targetGroup })
+    const relatedEdges = edgesByFromBlock.get(current.id) || []
+    relatedEdges.forEach((edge) => {
+      if ('groupId' in edge.to && typeof edge.to.groupId === 'string') {
+        const targetGroupId = edge.to.groupId
+        const targetGroup = groupMap.get(targetGroupId)
+        if (!targetGroup) return
+        const targetBlockId =
+          'blockId' in edge.to && typeof edge.to.blockId === 'string'
+            ? edge.to.blockId
+            : undefined
+        const targetBlock = findBlockInGroup(targetGroup, targetBlockId)
+        if (targetBlock)
+          results.push({ block: targetBlock, group: targetGroup })
       }
-    }
+    })
     return results
   }
 
@@ -201,22 +213,19 @@ const missingTextBetweenInputBlocks = (groups: Group[], edges: Edge[]) => {
   type QueueItem = {
     block: Block
     group: Group
-    needTextBeforeNextInput: boolean // true if last encountered input lacked an intervening text
+    needTextBeforeNextInput: boolean
   }
 
-  const enqueueStarts = (): QueueItem[] => {
-    const items: QueueItem[] = []
-    startGroupIds.forEach((gid) => {
-      const fb = firstBlockOf(gid)
-      const g = groupMap.get(gid)
-      if (fb && g)
-        items.push({ block: fb, group: g, needTextBeforeNextInput: false })
-    })
-    return items
-  }
+  const initialQueue: QueueItem[] = []
+  startGroupIds.forEach((gid) => {
+    const fb = firstBlockOf(gid)
+    const g = groupMap.get(gid)
+    if (fb && g)
+      initialQueue.push({ block: fb, group: g, needTextBeforeNextInput: false })
+  })
 
-  const visited = new Set<string>() // key = block.id + '|' + (needTextBeforeNextInput?1:0)
-  const queue: QueueItem[] = enqueueStarts()
+  const visited = new Set<string>() // block.id|stateFlag
+  const queue: QueueItem[] = initialQueue
 
   while (queue.length) {
     const { block, group, needTextBeforeNextInput } = queue.shift() as QueueItem
@@ -231,16 +240,13 @@ const missingTextBetweenInputBlocks = (groups: Group[], edges: Edge[]) => {
     } else if (inputBlockTypes.has(block.type)) {
       if (needTextBeforeNextInput) {
         invalidGroupIds.add(group.id)
-        // We still continue traversal to discover additional violations
       }
       nextNeedText = true
     }
 
-    const groupBlocks = group.blocks
-    const idx = groupBlocks.findIndex((b) => b.id === block.id)
+    const idx = group.blocks.findIndex((b) => b.id === block.id)
     if (idx !== -1) {
-      const successors = nextBlocks(group, idx)
-      successors.forEach(({ block: nb, group: ng }) => {
+      nextBlocks(group, idx).forEach(({ block: nb, group: ng }) => {
         queue.push({
           block: nb,
           group: ng,
