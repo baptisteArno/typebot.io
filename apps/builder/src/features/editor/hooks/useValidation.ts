@@ -1,5 +1,5 @@
-import { useState, useCallback } from 'react'
-// import { trpc } from '@/lib/trpc'
+import { useState, useCallback, useRef } from 'react'
+import { trpc } from '@/lib/trpc'
 import { ValidationError } from '../../typebot/constants/errorTypes'
 import { Typebot } from '@typebot.io/schemas'
 
@@ -10,20 +10,20 @@ export const useValidation = () => {
     useState<ValidationError | null>(null)
   const [isValidating, setIsValidating] = useState(false)
 
-  // const utils = trpc.useContext()
+  const mutation = trpc.typebot.postTypebotValidation.useMutation()
+  const mutateAsyncRef = useRef(mutation.mutateAsync)
+  mutateAsyncRef.current = mutation.mutateAsync
 
   const validateTypebot = useCallback(
     async (typebot: Typebot): Promise<ValidationError | null> => {
       setIsValidating(true)
       try {
-        // const validation = await utils.typebot.getTypebotValidation.fetch({
-        //   typebotId: typebot.id,
-        //   typebot,
-        // })
-        // setValidationErrors(validation)
-        // return validation
-        console.log('Validation disabled', typebot.id)
-        return null
+        const validation = await mutateAsyncRef.current({
+          typebotId: typebot.id,
+          typebot,
+        })
+        setValidationErrors(validation)
+        return validation
       } catch (error) {
         console.error('Validation error:', error)
         setValidationErrors(null)

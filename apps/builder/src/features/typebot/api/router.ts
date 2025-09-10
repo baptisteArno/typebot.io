@@ -13,7 +13,10 @@ import { unpublishTypebot } from './unpublishTypebot'
 import { deleteTypebot } from './deleteTypebot'
 import { importTypebot } from './importTypebot'
 import { listTypebotsClaudia } from './listTypebotsClaudia'
-import { getTypebotValidation } from './getTypebotValidation'
+import {
+  getTypebotValidation,
+  postTypebotValidation,
+} from './typebotValidation'
 
 export const typebotRouter = router({
   listTypebotsClaudia,
@@ -28,4 +31,5 @@ export const typebotRouter = router({
   deleteTypebot,
   importTypebot,
   getTypebotValidation,
+  postTypebotValidation,
 })

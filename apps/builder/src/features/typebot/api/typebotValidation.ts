@@ -613,7 +613,37 @@ export const getTypebotValidation = publicProcedure
   })
   .input(typebotValidationSchema)
   .output(responseSchema)
-  .query(async ({ input }) => {
+  .query(async () => {
+    return {
+      isValid: true,
+      errors: [],
+    }
+  })
+
+export const postTypebotValidation = publicProcedure
+  .meta({
+    openapi: {
+      method: 'POST',
+      path: '/v1/typebots/{typebotId}/validate',
+      protect: true,
+      summary: 'Validate a typebot',
+      description:
+        'Validate a typebot by ID. Optionally provide the typebot object directly to override database lookup.',
+      tags: ['Typebot'],
+    },
+  })
+  .input(
+    z.object({
+      typebotId: z.string().describe('Typebot id to be validated'),
+      typebot: typebotSchema
+        .optional()
+        .describe(
+          'Typebot object to be validated directly (optional override)'
+        ),
+    })
+  )
+  .output(responseSchema)
+  .mutation(async ({ input }) => {
     let typebot: { groups: unknown; edges: unknown } | null = null
 
     if (input.typebot) {
