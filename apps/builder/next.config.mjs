@@ -72,6 +72,7 @@ const nextConfig = {
     config.resolve.alias["@googleapis/gmail"] = false;
     config.resolve.alias["nodemailer"] = false;
     config.resolve.alias["google-auth-library"] = false;
+    config.resolve.alias["posthog-node"] = false;
     return config;
   },
   headers: async () => {

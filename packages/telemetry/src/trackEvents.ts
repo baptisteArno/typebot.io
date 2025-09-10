@@ -6,16 +6,19 @@ export const trackEvents = async (events: TelemetryEvent[]) => {
   if (!env.NEXT_PUBLIC_POSTHOG_KEY) return;
   const client = new PostHog(env.NEXT_PUBLIC_POSTHOG_KEY, {
     host: env.POSTHOG_API_HOST,
+    // Large thresholds since we explicitly shutdown right after.
+    flushAt: 100_000,
+    flushInterval: 120_000,
   });
 
-  events.forEach(async (event) => {
+  for (const event of events) {
     if (event.name === "Workspace created") {
       client.groupIdentify({
         distinctId: event.userId,
         groupType: "workspace",
         groupKey: event.workspaceId,
       });
-      return;
+      continue;
     }
     if (event.name === "Typebot created") {
       client.groupIdentify({
@@ -23,7 +26,7 @@ export const trackEvents = async (events: TelemetryEvent[]) => {
         groupType: "typebot",
         groupKey: event.typebotId,
       });
-      return;
+      continue;
     }
     const groups: { workspace?: string; typebot?: string } = {};
     if ("workspaceId" in event) groups["workspace"] = event.workspaceId;
@@ -32,13 +35,13 @@ export const trackEvents = async (events: TelemetryEvent[]) => {
       distinctId: "userId" in event ? event.userId : event.visitorId,
       event: event.name,
       properties: "data" in event ? event.data : undefined,
-      groups,
+      ...(Object.keys(groups).length ? { groups } : {}),
     });
-  });
+  }
 
   try {
     await client.shutdown();
   } catch (err) {
-    console.error("ERROR while tracking events", err);
+    console.error("ERROR while shutting down PostHog client", err);
   }
 };

@@ -100,7 +100,7 @@
         "papaparse": "5.4.1",
         "partysocket": "1.0.2",
         "pexels": "^1.4.0",
-        "posthog-node": "4.3.2",
+        "posthog-node": "5.8.2",
         "prettier": "2.8.8",
         "qs": "6.11.2",
         "react": "18.3.1",
@@ -600,7 +600,7 @@
     },
     "packages/embeds/js": {
       "name": "@typebot.io/js",
-      "version": "0.8.20",
+      "version": "0.8.21",
       "devDependencies": {
         "@ai-sdk/ui-utils": "1.2.11",
         "@ark-ui/solid": "5.19.0",
@@ -638,7 +638,7 @@
     },
     "packages/embeds/react": {
       "name": "@typebot.io/react",
-      "version": "0.8.20",
+      "version": "0.8.21",
       "dependencies": {
         "@typebot.io/js": "workspace:*",
         "react": "18.3.1",
@@ -885,7 +885,7 @@
       "version": "1.0.0",
       "dependencies": {
         "@typebot.io/lib": "workspace:*",
-        "posthog-node": "4.3.2",
+        "posthog-node": "5.8.2",
       },
       "devDependencies": {
         "@typebot.io/forge": "workspace:*",
@@ -1163,7 +1163,7 @@
         "cli-progress": "3.12.0",
         "ky": "1.2.4",
         "papaparse": "5.4.1",
-        "posthog-node": "4.3.2",
+        "posthog-node": "5.8.2",
         "prompts": "2.4.2",
         "stripe": "17.1.0",
       },
@@ -1199,7 +1199,7 @@
         "@typebot.io/zod": "workspace:*",
         "cookie": "1.0.2",
         "ky": "1.2.4",
-        "posthog-node": "4.3.2",
+        "posthog-node": "5.8.2",
       },
       "devDependencies": {
         "@typebot.io/tsconfig": "workspace:*",
@@ -2357,6 +2357,8 @@
     "@poppinss/dumper": ["@poppinss/dumper@0.6.4", "", { "dependencies": { "@poppinss/colors": "^4.1.5", "@sindresorhus/is": "^7.0.2", "supports-color": "^10.0.0" } }, "sha512-iG0TIdqv8xJ3Lt9O8DrPRxw1MRLjNpoqiSGU03P/wNLP/s0ra0udPJ1J2Tx5M0J3H/cVyEgpbn8xUKRY9j59kQ=="],
 
     "@poppinss/exception": ["@poppinss/exception@1.2.2", "", {}, "sha512-m7bpKCD4QMlFCjA/nKTs23fuvoVFoA83brRKmObCUNmi/9tVu8Ve3w4YQAnJu4q3Tjf5fr685HYIC/IA2zHRSg=="],
+
+    "@posthog/core": ["@posthog/core@1.0.2", "", {}, "sha512-hWk3rUtJl2crQK0WNmwg13n82hnTwB99BT99/XI5gZSvIlYZ1TPmMZE8H2dhJJ98J/rm9vYJ/UXNzw3RV5HTpQ=="],
 
     "@prisma/client": ["@prisma/client@6.9.0", "", { "peerDependencies": { "prisma": "*", "typescript": ">=5.1.0" }, "optionalPeers": ["prisma", "typescript"] }, "sha512-Gg7j1hwy3SgF1KHrh0PZsYvAaykeR0PaxusnLXydehS96voYCGt1U5zVR31NIouYc63hWzidcrir1a7AIyCsNQ=="],
 
@@ -5164,7 +5166,7 @@
 
     "postgres-interval": ["postgres-interval@1.2.0", "", { "dependencies": { "xtend": "^4.0.0" } }, "sha512-9ZhXKM/rw350N1ovuWHbGxnGh/SNJ4cnxHiM0rxE4VN41wsg8P8zWn9hv/buK00RP4WvlOyr/RBDiptyxVbkZQ=="],
 
-    "posthog-node": ["posthog-node@4.3.2", "", { "dependencies": { "axios": "^1.7.4", "rusha": "^0.8.14" } }, "sha512-vy8Mt9IEfniUgqQ1rOCQ31CBO1VNqDGd3ZtHlWR9/YfU6RiuK+9pUXPb4h6HTGzQmjL8NFnjd8K8NMXSX8S6MQ=="],
+    "posthog-node": ["posthog-node@5.8.2", "", { "dependencies": { "@posthog/core": "1.0.2" } }, "sha512-z3XRvYwnc3T/1999FKzv16YTpxERQqLunULl2vkOPfgbCXUGNyJWLgcbTcED2ZIDE11jjZhrSph4De6OSMLphw=="],
 
     "preact": ["preact@10.24.3", "", {}, "sha512-Z2dPnBnMUfyQfSQ+GBdsGa16hz35YmLmtTLhM169uW944hYL6xzTYkJjC07j+Wosz733pMWx0fgON3JNw1jJQA=="],
 
@@ -5415,8 +5417,6 @@
     "run-applescript": ["run-applescript@7.0.0", "", {}, "sha512-9by4Ij99JUr/MCFBUkDKLWK3G9HVXmabKz9U5MlIAIuvuzkiOicRYs8XJLxX+xahD+mLiiCYDqF9dKAgtzKP1A=="],
 
     "run-parallel": ["run-parallel@1.2.0", "", { "dependencies": { "queue-microtask": "^1.2.2" } }, "sha512-5l4VyZR86LZ/lDxZTR6jqL8AFE2S0IFLMP26AbjsLVADxHdhB/c0GUsH+y39UfCi3dzz8OlQuPmnaJOMoDHQBA=="],
-
-    "rusha": ["rusha@0.8.14", "", {}, "sha512-cLgakCUf6PedEu15t8kbsjnwIFFR2D4RfL+W3iWFJ4iac7z4B0ZI8fxy4R3J956kAI68HclCFGL8MPoUVC3qVA=="],
 
     "sade": ["sade@1.8.1", "", { "dependencies": { "mri": "^1.1.0" } }, "sha512-xal3CZX1Xlo/k4ApwCFrHVACi9fBqJ7V+mwhBsuf/1IOKbBy098Fex+Wa/5QMubw09pSZ/u8EY8PWgevJsXp1A=="],
 
