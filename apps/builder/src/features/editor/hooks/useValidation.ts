@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react'
-import { trpc } from '@/lib/trpc'
+// import { trpc } from '@/lib/trpc'
 import { ValidationError } from '../../typebot/constants/errorTypes'
 import { Typebot } from '@typebot.io/schemas'
 
@@ -10,18 +10,20 @@ export const useValidation = () => {
     useState<ValidationError | null>(null)
   const [isValidating, setIsValidating] = useState(false)
 
-  const utils = trpc.useContext()
+  // const utils = trpc.useContext()
 
   const validateTypebot = useCallback(
     async (typebot: Typebot): Promise<ValidationError | null> => {
       setIsValidating(true)
       try {
-        const validation = await utils.typebot.getTypebotValidation.fetch({
-          typebotId: typebot.id,
-          typebot,
-        })
-        setValidationErrors(validation)
-        return validation
+        // const validation = await utils.typebot.getTypebotValidation.fetch({
+        //   typebotId: typebot.id,
+        //   typebot,
+        // })
+        // setValidationErrors(validation)
+        // return validation
+        console.log('Validation disabled', typebot.id)
+        return null
       } catch (error) {
         console.error('Validation error:', error)
         setValidationErrors(null)
@@ -30,7 +32,7 @@ export const useValidation = () => {
         setIsValidating(false)
       }
     },
-    [utils]
+    []
   )
 
   const clearValidationErrors = useCallback(() => {
