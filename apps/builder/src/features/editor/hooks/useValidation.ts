@@ -32,7 +32,7 @@ export const useValidation = () => {
         setIsValidating(false)
       }
     },
-    []
+    [mutateAsyncRef]
   )
 
   const clearValidationErrors = useCallback(() => {
