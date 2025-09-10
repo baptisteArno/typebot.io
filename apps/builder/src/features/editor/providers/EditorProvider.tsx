@@ -51,7 +51,7 @@ export const EditorProvider = ({ children }: { children: ReactNode }) => {
   } = useValidation()
 
   useEffect(() => {
-    typebot && validateTypebot(typebot)
+    // typebot && validateTypebot(typebot)
   }, [typebot, validateTypebot])
 
   return (
