@@ -6,6 +6,8 @@ import {
   useContext,
   useState,
   useEffect,
+  useRef,
+  useCallback,
 } from 'react'
 import { ValidationError, useValidation } from '../hooks/useValidation'
 import { useTypebot } from './TypebotProvider'
@@ -45,14 +47,39 @@ export const EditorProvider = ({ children }: { children: ReactNode }) => {
   const {
     validationErrors,
     setValidationErrors,
-    validateTypebot,
+    validateTypebot: baseValidateTypebot,
     clearValidationErrors,
     isValidating,
   } = useValidation()
 
+  // Prevent overlapping validations; keep only the latest pending request.
+  const isRunningRef = useRef(false)
+  const pendingTypebotRef = useRef<Typebot | null>(null)
+
+  const queuedValidateTypebot = useCallback(
+    async (tb: Typebot) => {
+      if (isRunningRef.current) {
+        pendingTypebotRef.current = tb
+        return null
+      }
+      isRunningRef.current = true
+      try {
+        return await baseValidateTypebot(tb)
+      } finally {
+        isRunningRef.current = false
+        if (pendingTypebotRef.current) {
+          const next = pendingTypebotRef.current
+          pendingTypebotRef.current = null
+          queuedValidateTypebot(next)
+        }
+      }
+    },
+    [baseValidateTypebot]
+  )
+
   useEffect(() => {
-    typebot && validateTypebot(typebot)
-  }, [typebot, validateTypebot])
+    if (typebot) queuedValidateTypebot(typebot)
+  }, [typebot, queuedValidateTypebot])
 
   return (
     <editorContext.Provider
@@ -65,7 +92,7 @@ export const EditorProvider = ({ children }: { children: ReactNode }) => {
         setStartPreviewAtEvent,
         validationErrors,
         setValidationErrors,
-        validateTypebot,
+        validateTypebot: queuedValidateTypebot,
         clearValidationErrors,
         isValidating,
         isSidebarExtended,
