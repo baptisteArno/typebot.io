@@ -13,6 +13,9 @@ import { ValidationError, useValidation } from '../hooks/useValidation'
 import { useTypebot } from './TypebotProvider'
 import { Typebot } from '@typebot.io/schemas'
 
+// Minimal shape needed for validation trigger
+type MinimalTypebot = Pick<Typebot, 'groups' | 'edges'>
+
 export enum RightPanel {
   PREVIEW,
   VARIABLES,
@@ -28,7 +31,7 @@ const editorContext = createContext<{
   setStartPreviewAtEvent: Dispatch<SetStateAction<string | undefined>>
   validationErrors: ValidationError | null
   setValidationErrors: Dispatch<SetStateAction<ValidationError | null>>
-  validateTypebot: (typebot: Typebot) => Promise<ValidationError | null>
+  validateTypebot: (typebot: MinimalTypebot) => Promise<ValidationError | null>
   clearValidationErrors: () => void
   isValidating: boolean
   isSidebarExtended: boolean
@@ -54,17 +57,18 @@ export const EditorProvider = ({ children }: { children: ReactNode }) => {
 
   // Prevent overlapping validations; keep only the latest pending request.
   const isRunningRef = useRef(false)
-  const pendingTypebotRef = useRef<Typebot | null>(null)
+  const pendingTypebotRef = useRef<MinimalTypebot | null>(null)
 
   const queuedValidateTypebot = useCallback(
-    async (tb: Typebot) => {
+    async (tb: MinimalTypebot) => {
       if (isRunningRef.current) {
         pendingTypebotRef.current = tb
         return null
       }
       isRunningRef.current = true
       try {
-        return await baseValidateTypebot(tb)
+        // Cast to Typebot for base validation (assumption: validator only reads groups/edges)
+        return await baseValidateTypebot(tb as unknown as Typebot)
       } finally {
         isRunningRef.current = false
         if (pendingTypebotRef.current) {
@@ -78,8 +82,13 @@ export const EditorProvider = ({ children }: { children: ReactNode }) => {
   )
 
   useEffect(() => {
-    if (typebot) queuedValidateTypebot(typebot)
-  }, [typebot, queuedValidateTypebot])
+    if (!typebot?.groups || !typebot?.edges) return
+    const minimal: MinimalTypebot = {
+      groups: typebot.groups,
+      edges: typebot.edges,
+    }
+    queuedValidateTypebot(minimal)
+  }, [typebot?.groups, typebot?.edges, queuedValidateTypebot])
 
   return (
     <editorContext.Provider

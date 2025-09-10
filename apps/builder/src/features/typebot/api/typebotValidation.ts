@@ -10,8 +10,10 @@ import {
   Group,
   Block,
   TypebotLinkBlock,
-  typebotSchema,
   Edge,
+  edgeSchema,
+  groupV5Schema,
+  groupV6Schema,
 } from '@typebot.io/schemas'
 import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
 import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
@@ -19,11 +21,9 @@ import {
   isConditionBlock,
   isTextBubbleBlock,
 } from '@typebot.io/schemas/helpers'
+import { JumpBlock } from '@typebot.io/schemas/features/blocks/logic/jump'
 
 const responseSchema = validationErrorSchema
-
-const isGroupArray = (groups: unknown): groups is Group[] =>
-  Array.isArray(groups)
 
 const hasBlocks = (group: Group): boolean =>
   'blocks' in group && Array.isArray(group.blocks)
@@ -33,6 +33,9 @@ const isTypebotLinkBlock = (block: Block): block is TypebotLinkBlock =>
 
 const isClaudiaBlock = (block: Block): boolean =>
   block.type.toLowerCase() === 'claudia'
+
+const isJumpBlock = (block: Block): block is JumpBlock =>
+  block.type === LogicBlockType.JUMP
 
 // Helpers restaurados
 const validateFlowBranchesHaveClaudia = (groups: Group[], edges: Edge[]) => {
@@ -122,7 +125,11 @@ const validateFlowBranchesHaveClaudia = (groups: Group[], edges: Edge[]) => {
       visited.add(visitKey)
 
       let currentHasClaudia = hasClaudia
-      if (isClaudiaBlock(block)) {
+      if (
+        isClaudiaBlock(block) ||
+        isJumpBlock(block) ||
+        isTypebotLinkBlock(block)
+      ) {
         currentHasClaudia = true
       }
 
@@ -520,10 +527,13 @@ const createGroupTitleMap = (groups: Group[]): Map<string, string> => {
   return new Map(groups.map((group) => [group.id, group.title]))
 }
 
-const buildValidationResult = async (
-  groups: Group[],
-  edges: Edge[] | undefined
-): Promise<{ isValid: boolean; errors: ValidationErrorItem[] }> => {
+const validateTypebot = async ({
+  groups,
+  edges,
+}: {
+  groups: Group[]
+  edges: Edge[]
+}) => {
   const safeEdges = (edges as Edge[]) || []
   const groupTitleMap = createGroupTitleMap(groups)
   const { invalidGroups } = validateConditionalBlocks(groups, safeEdges)
@@ -573,43 +583,6 @@ const buildValidationResult = async (
   return { isValid: errors.length === 0, errors }
 }
 
-// Função reutilizável para buscar e validar
-const fetchTypebotData = async (params: {
-  typebotId: string
-  typebot?: z.infer<typeof typebotSchema>
-}): Promise<{ groups: Group[]; edges: Edge[] }> => {
-  let typebot: { groups: unknown; edges: unknown } | null = null
-  if (params.typebot) {
-    typebot = { groups: params.typebot.groups, edges: params.typebot.edges }
-  } else {
-    typebot = await prisma.typebot.findFirst({
-      where: { id: params.typebotId },
-      select: { groups: true, edges: true },
-    })
-    if (!typebot) {
-      throw new TRPCError({ code: 'NOT_FOUND', message: 'Typebot not found' })
-    }
-  }
-  if (!isGroupArray(typebot.groups)) {
-    throw new TRPCError({
-      code: 'INTERNAL_SERVER_ERROR',
-      message: 'Invalid groups structure',
-    })
-  }
-  return {
-    groups: typebot.groups as Group[],
-    edges: ((typebot.edges as Edge[]) || []) as Edge[],
-  }
-}
-
-const validateTypebotInput = async (params: {
-  typebotId: string
-  typebot?: z.infer<typeof typebotSchema>
-}) => {
-  const { groups, edges } = await fetchTypebotData(params)
-  return buildValidationResult(groups, edges)
-}
-
 export const getTypebotValidation = publicProcedure
   .meta({
     openapi: {
@@ -628,7 +601,16 @@ export const getTypebotValidation = publicProcedure
   )
   .output(responseSchema)
   .query(async ({ input }) => {
-    const { isValid, errors } = await validateTypebotInput(input)
+    const typebot = (await prisma.typebot.findFirst({
+      where: { id: input.typebotId },
+      select: { groups: true, edges: true },
+    })) as { groups: Group[]; edges: Edge[] } | null
+
+    if (!typebot) {
+      throw new TRPCError({ code: 'NOT_FOUND', message: 'Typebot not found' })
+    }
+
+    const { isValid, errors } = await validateTypebot(typebot)
     return { isValid, errors }
   })
 
@@ -646,9 +628,11 @@ export const postTypebotValidation = publicProcedure
   })
   .input(
     z.object({
-      typebotId: z.string().describe('Typebot id to be validated'),
-      typebot: typebotSchema
-        .optional()
+      typebot: z
+        .object({
+          edges: z.array(edgeSchema),
+          groups: z.array(groupV6Schema.or(groupV5Schema)),
+        })
         .describe(
           'Typebot object to be validated directly (optional override)'
         ),
@@ -656,6 +640,6 @@ export const postTypebotValidation = publicProcedure
   )
   .output(responseSchema)
   .mutation(async ({ input }) => {
-    const { isValid, errors } = await validateTypebotInput(input)
-    return { isValid, errors }
+    const { groups, edges } = input.typebot
+    return await validateTypebot({ groups, edges })
   })
