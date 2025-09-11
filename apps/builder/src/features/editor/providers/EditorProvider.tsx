@@ -14,7 +14,6 @@ import { useTypebot } from './TypebotProvider'
 import { Typebot } from '@typebot.io/schemas'
 import { env } from '@typebot.io/env'
 
-// Minimal shape needed for validation trigger
 type MinimalTypebot = Pick<Typebot, 'groups' | 'edges'>
 
 export enum RightPanel {
@@ -51,25 +50,24 @@ export const EditorProvider = ({ children }: { children: ReactNode }) => {
   const {
     validationErrors,
     setValidationErrors,
-    validateTypebot: baseValidateTypebot,
+    validateTypebot,
     clearValidationErrors,
     isValidating,
   } = useValidation()
 
-  // Prevent overlapping validations; keep only the latest pending request.
   const isRunningRef = useRef(false)
   const pendingTypebotRef = useRef<MinimalTypebot | null>(null)
+  const [validationKey, setValidationKey] = useState<string | null>(null)
 
   const queuedValidateTypebot = useCallback(
-    async (tb: MinimalTypebot) => {
+    async (currentTypebot: MinimalTypebot) => {
       if (isRunningRef.current) {
-        pendingTypebotRef.current = tb
+        pendingTypebotRef.current = currentTypebot
         return null
       }
       isRunningRef.current = true
       try {
-        // Cast to Typebot for base validation (assumption: validator only reads groups/edges)
-        return await baseValidateTypebot(tb as unknown as Typebot)
+        return await validateTypebot(currentTypebot)
       } finally {
         isRunningRef.current = false
         if (pendingTypebotRef.current) {
@@ -79,18 +77,38 @@ export const EditorProvider = ({ children }: { children: ReactNode }) => {
         }
       }
     },
-    [baseValidateTypebot]
+    [validateTypebot]
   )
 
   useEffect(() => {
-    if (!typebot?.groups || !typebot?.edges) return
-    if (env.NEXT_PUBLIC_DISABLE_VALIDATION) return
-    const minimal: MinimalTypebot = {
+    if (
+      env.NEXT_PUBLIC_DISABLE_VALIDATION ||
+      !typebot?.groups ||
+      !typebot?.edges
+    )
+      return
+
+    const newGroupsValidationKey = JSON.stringify(
+      typebot.groups.map((group) => ({
+        id: group.id,
+        title: group.title,
+        blocks: group.blocks,
+      }))
+    )
+
+    const newEdgesValidationKey = JSON.stringify(typebot.edges)
+    const newValidationKey = `${newGroupsValidationKey}-${newEdgesValidationKey}`
+
+    if (newValidationKey === validationKey) return
+
+    setValidationKey(newValidationKey)
+
+    const minimalTypebot: MinimalTypebot = {
       groups: typebot.groups,
       edges: typebot.edges,
     }
-    queuedValidateTypebot(minimal)
-  }, [typebot?.groups, typebot?.edges, queuedValidateTypebot])
+    queuedValidateTypebot(minimalTypebot)
+  }, [validationKey, typebot?.edges, typebot?.groups, queuedValidateTypebot])
 
   return (
     <editorContext.Provider
