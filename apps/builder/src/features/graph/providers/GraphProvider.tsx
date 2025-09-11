@@ -5,6 +5,7 @@ import {
   Dispatch,
   ReactNode,
   SetStateAction,
+  useCallback,
   useContext,
   useState,
 } from 'react'
@@ -35,6 +36,8 @@ const graphContext = createContext<{
   isAnalytics: boolean
   focusedGroupId?: string
   setFocusedGroupId: Dispatch<SetStateAction<string | undefined>>
+  navigateToPosition?: (position: Position) => void
+  registerNavigationCallback?: (callback: (position: Position) => void) => void
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   //@ts-ignore
 }>({
@@ -60,6 +63,22 @@ export const GraphProvider = ({
   const [openedBlockId, setOpenedBlockId] = useState<string>()
   const [openedItemId, setOpenedItemId] = useState<string>()
   const [focusedGroupId, setFocusedGroupId] = useState<string>()
+  const [navigationCallback, setNavigationCallback] = useState<
+    ((position: Position) => void) | undefined
+  >()
+
+  const navigateToPosition = (position: Position) => {
+    if (navigationCallback) {
+      navigationCallback(position)
+    }
+  }
+
+  const registerNavigationCallback = useCallback(
+    (callback: (position: Position) => void) => {
+      setNavigationCallback(() => callback)
+    },
+    [setNavigationCallback]
+  )
 
   return (
     <graphContext.Provider
@@ -80,6 +99,8 @@ export const GraphProvider = ({
         setPreviewingBlock,
         previewingBlock,
         isAnalytics,
+        navigateToPosition,
+        registerNavigationCallback,
       }}
     >
       {children}

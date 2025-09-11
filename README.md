@@ -99,6 +99,12 @@ supabase stop
 pnpm install --force
 ```
 
+- Build app
+
+```bash
+pnpm install --force && pnpm build:apps
+```
+
 ---
 
 ## Contributing

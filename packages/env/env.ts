@@ -138,6 +138,7 @@ const baseEnv = {
         { message: 'All origins must be valid URLs' }
       )
       .optional(),
+    NEXT_PUBLIC_DISABLE_VALIDATION: boolean.optional().default('false'),
   },
   runtimeEnv: {
     NEXT_PUBLIC_E2E_TEST: getRuntimeVariable('NEXT_PUBLIC_E2E_TEST'),
@@ -160,6 +161,9 @@ const baseEnv = {
     ),
     NEXT_PUBLIC_EMBEDDED_AUTH_ALLOWED_ORIGIN: getRuntimeVariable(
       'NEXT_PUBLIC_EMBEDDED_AUTH_ALLOWED_ORIGIN'
+    ),
+    NEXT_PUBLIC_DISABLE_VALIDATION: getRuntimeVariable(
+      'NEXT_PUBLIC_DISABLE_VALIDATION'
     ),
   },
 }
@@ -443,7 +447,7 @@ export const env = createEnv({
     ...customOAuthEnv.server,
     ...sentryEnv.server,
     ...telemetryEnv.server,
-    ...keycloakEnv.server
+    ...keycloakEnv.server,
   },
   client: {
     ...baseEnv.client,

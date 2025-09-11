@@ -68,7 +68,10 @@ export const handleEmbeddedAuthentication = async (): Promise<boolean> => {
       const handleMessage = (event: MessageEvent) => {
         // Validate origin for security
         if (!isOriginAllowed(event.origin)) {
-          console.warn('Ignored message from unauthorized origin:', event.origin)
+          console.warn(
+            'Ignored message from unauthorized origin:',
+            event.origin
+          )
           return
         }
 

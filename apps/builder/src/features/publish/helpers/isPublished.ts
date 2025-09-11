@@ -38,12 +38,5 @@ export const isPublished = (
       JSON.parse(JSON.stringify(publicTypebot.events))
     )
 
-  if (!published) {
-    logger.info('Typebot is not published', {
-      typebotId: typebot.id,
-      workspaceId: typebot.workspaceId,
-    })
-  }
-
   return published
 }
