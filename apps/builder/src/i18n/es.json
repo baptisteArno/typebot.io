@@ -470,7 +470,6 @@
   "validationErrors.noValidationYet": "Aún no se ha ejecutado ninguna validación.",
   "validationErrors.title": "Errores de Validación",
   "validationErrors.typebotIsValid": "✅ ¡Typebot válido!",
-  "validationErrors.useValidateButton": "Usa el botón \"Validar\" en el encabezado para comprobar tu typebot.",
   "validationErrors.validating": "Validación ...",
   "validationErrors.validatingDescription": "Por favor espera mientras verificamos la estructura de tu typebot.",
   "variables.button.searchInput.placeholder": "Buscar variable",

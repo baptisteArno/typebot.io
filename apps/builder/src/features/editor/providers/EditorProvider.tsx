@@ -6,10 +6,15 @@ import {
   useContext,
   useState,
   useEffect,
+  useRef,
+  useCallback,
 } from 'react'
 import { ValidationError, useValidation } from '../hooks/useValidation'
 import { useTypebot } from './TypebotProvider'
 import { Typebot } from '@typebot.io/schemas'
+import { env } from '@typebot.io/env'
+
+type MinimalTypebot = Pick<Typebot, 'groups' | 'edges'>
 
 export enum RightPanel {
   PREVIEW,
@@ -26,7 +31,7 @@ const editorContext = createContext<{
   setStartPreviewAtEvent: Dispatch<SetStateAction<string | undefined>>
   validationErrors: ValidationError | null
   setValidationErrors: Dispatch<SetStateAction<ValidationError | null>>
-  validateTypebot: (typebot: Typebot) => Promise<ValidationError | null>
+  validateTypebot: (typebot: MinimalTypebot) => Promise<ValidationError | null>
   clearValidationErrors: () => void
   isValidating: boolean
   isSidebarExtended: boolean
@@ -50,9 +55,60 @@ export const EditorProvider = ({ children }: { children: ReactNode }) => {
     isValidating,
   } = useValidation()
 
+  const isRunningRef = useRef(false)
+  const pendingTypebotRef = useRef<MinimalTypebot | null>(null)
+  const [validationKey, setValidationKey] = useState<string | null>(null)
+
+  const queuedValidateTypebot = useCallback(
+    async (currentTypebot: MinimalTypebot) => {
+      if (isRunningRef.current) {
+        pendingTypebotRef.current = currentTypebot
+        return null
+      }
+      isRunningRef.current = true
+      try {
+        return await validateTypebot(currentTypebot)
+      } finally {
+        isRunningRef.current = false
+        if (pendingTypebotRef.current) {
+          const next = pendingTypebotRef.current
+          pendingTypebotRef.current = null
+          queuedValidateTypebot(next)
+        }
+      }
+    },
+    [validateTypebot]
+  )
+
   useEffect(() => {
-    // typebot && validateTypebot(typebot)
-  }, [typebot, validateTypebot])
+    if (
+      env.NEXT_PUBLIC_DISABLE_VALIDATION ||
+      !typebot?.groups ||
+      !typebot?.edges
+    )
+      return
+
+    const newGroupsValidationKey = JSON.stringify(
+      typebot.groups.map((group) => ({
+        id: group.id,
+        title: group.title,
+        blocks: group.blocks,
+      }))
+    )
+
+    const newEdgesValidationKey = JSON.stringify(typebot.edges)
+    const newValidationKey = `${newGroupsValidationKey}-${newEdgesValidationKey}`
+
+    if (newValidationKey === validationKey) return
+
+    setValidationKey(newValidationKey)
+
+    const minimalTypebot: MinimalTypebot = {
+      groups: typebot.groups,
+      edges: typebot.edges,
+    }
+    queuedValidateTypebot(minimalTypebot)
+  }, [validationKey, typebot?.edges, typebot?.groups, queuedValidateTypebot])
 
   return (
     <editorContext.Provider
@@ -65,7 +121,7 @@ export const EditorProvider = ({ children }: { children: ReactNode }) => {
         setStartPreviewAtEvent,
         validationErrors,
         setValidationErrors,
-        validateTypebot,
+        validateTypebot: queuedValidateTypebot,
         clearValidationErrors,
         isValidating,
         isSidebarExtended,

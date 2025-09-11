@@ -227,9 +227,6 @@ export const ValidationErrorsDrawer = ({ onClose }: Props) => {
               <Text color="gray.500" textAlign="center">
                 {t('validationErrors.noValidationYet')}
               </Text>
-              <Text color="gray.400" fontSize="sm" textAlign="center">
-                {t('validationErrors.useValidateButton')}
-              </Text>
             </VStack>
           ) : validationErrors.isValid ? (
             <VStack spacing={4} py={8}>
