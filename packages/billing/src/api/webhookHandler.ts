@@ -208,6 +208,10 @@ export const webhookHandler = async (
             previous.status !== "unpaid" &&
             !existingWorkspace.isQuarantined
           ) {
+            if (!subscription.cancel_at_period_end)
+              await stripe.subscriptions.update(subscription.id, {
+                cancel_at_period_end: true,
+              });
             await prisma.workspace.updateMany({
               where: {
                 id: existingWorkspace.id,
