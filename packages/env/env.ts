@@ -129,6 +129,7 @@ const baseEnv = {
       .string()
       .optional()
       .default("The bot you're looking for doesn't exist"),
+    NEXT_PUBLIC_DISABLE_VALIDATION: boolean.optional().default('false'),
   },
   runtimeEnv: {
     NEXT_PUBLIC_E2E_TEST: getRuntimeVariable('NEXT_PUBLIC_E2E_TEST'),
@@ -148,6 +149,9 @@ const baseEnv = {
     ),
     NEXT_PUBLIC_VIEWER_404_SUBTITLE: getRuntimeVariable(
       'NEXT_PUBLIC_VIEWER_404_SUBTITLE'
+    ),
+    NEXT_PUBLIC_DISABLE_VALIDATION: getRuntimeVariable(
+      'NEXT_PUBLIC_DISABLE_VALIDATION'
     ),
   },
 }
@@ -431,7 +435,7 @@ export const env = createEnv({
     ...customOAuthEnv.server,
     ...sentryEnv.server,
     ...telemetryEnv.server,
-    ...keycloakEnv.server
+    ...keycloakEnv.server,
   },
   client: {
     ...baseEnv.client,

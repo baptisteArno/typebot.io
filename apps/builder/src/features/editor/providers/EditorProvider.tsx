@@ -12,6 +12,7 @@ import {
 import { ValidationError, useValidation } from '../hooks/useValidation'
 import { useTypebot } from './TypebotProvider'
 import { Typebot } from '@typebot.io/schemas'
+import { env } from '@typebot.io/env'
 
 // Minimal shape needed for validation trigger
 type MinimalTypebot = Pick<Typebot, 'groups' | 'edges'>
@@ -83,6 +84,7 @@ export const EditorProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     if (!typebot?.groups || !typebot?.edges) return
+    if (env.NEXT_PUBLIC_DISABLE_VALIDATION) return
     const minimal: MinimalTypebot = {
       groups: typebot.groups,
       edges: typebot.edges,
