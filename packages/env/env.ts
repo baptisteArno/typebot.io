@@ -103,7 +103,6 @@ const baseEnv = {
       guessLandingUrlForVercelPreview,
       z.string().url().optional()
     ),
-    AWS_COGNITO_REGION: z.string().min(1).optional(),
   },
   client: {
     NEXT_PUBLIC_E2E_TEST: boolean.optional(),
@@ -130,14 +129,6 @@ const baseEnv = {
       .string()
       .optional()
       .default("The bot you're looking for doesn't exist"),
-    NEXT_PUBLIC_EMBEDDED_AUTH_ALLOWED_ORIGIN: z
-      .string()
-      .transform((val) => val.split(',').map((url) => url.trim()))
-      .refine(
-        (urls) => urls.every((url) => z.string().url().safeParse(url).success),
-        { message: 'All origins must be valid URLs' }
-      )
-      .optional(),
     NEXT_PUBLIC_DISABLE_VALIDATION: boolean.optional().default('false'),
   },
   runtimeEnv: {
@@ -158,9 +149,6 @@ const baseEnv = {
     ),
     NEXT_PUBLIC_VIEWER_404_SUBTITLE: getRuntimeVariable(
       'NEXT_PUBLIC_VIEWER_404_SUBTITLE'
-    ),
-    NEXT_PUBLIC_EMBEDDED_AUTH_ALLOWED_ORIGIN: getRuntimeVariable(
-      'NEXT_PUBLIC_EMBEDDED_AUTH_ALLOWED_ORIGIN'
     ),
     NEXT_PUBLIC_DISABLE_VALIDATION: getRuntimeVariable(
       'NEXT_PUBLIC_DISABLE_VALIDATION'

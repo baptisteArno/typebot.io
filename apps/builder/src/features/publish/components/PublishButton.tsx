@@ -90,8 +90,7 @@ export const PublishButton = ({
         refetchPublishedTypebot({
           typebotId: typebot?.id as string,
         })
-        // Only redirect if not in embedded mode
-        if (!publishedTypebot && !pathname.endsWith('share') && !query.embedded)
+        if (!publishedTypebot && !pathname.endsWith('share'))
           push(`/typebots/${query.typebotId}/share`)
       },
     })
