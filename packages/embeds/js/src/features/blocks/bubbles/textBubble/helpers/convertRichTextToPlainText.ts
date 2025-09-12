@@ -1,9 +1,9 @@
-import type { TDescendant } from "@typebot.io/rich-text/types";
+import type { Descendant } from "@typebot.io/rich-text/plate";
 
-export const computePlainText = (elements: TDescendant[]): string =>
+export const computePlainText = (elements: Descendant[]): string =>
   elements
     .map(
       (element) =>
-        element.text ?? computePlainText(element.children as TDescendant[]),
+        element.text ?? computePlainText(element.children as Descendant[]),
     )
     .join("");

@@ -2,19 +2,12 @@ import { BubbleBlockType } from "@typebot.io/blocks-bubbles/constants";
 import type { BubbleBlock } from "@typebot.io/blocks-bubbles/schema";
 import { parseVideoUrl } from "@typebot.io/blocks-bubbles/video/helpers";
 import type { ContinueChatResponse } from "@typebot.io/chat-api/schemas";
-import { isDefined, isEmpty, isNotEmpty } from "@typebot.io/lib/utils";
-import { convertMarkdownToRichText } from "@typebot.io/rich-text/convertMarkdownToRichText";
 import { convertRichTextToMarkdown } from "@typebot.io/rich-text/convertRichTextToMarkdown";
-import type { TDescendant, TElement } from "@typebot.io/rich-text/types";
+import { parseVariablesInRichText } from "@typebot.io/rich-text/parseVariablesInRichText";
 import type { SessionStore } from "@typebot.io/runtime-session-store";
 import { isTypebotVersionAtLeastV6 } from "@typebot.io/schemas/helpers/isTypebotVersionAtLeastV6";
 import type { Typebot } from "@typebot.io/typebot/schemas/typebot";
 import { deepParseVariables } from "@typebot.io/variables/deepParseVariables";
-import { isSingleVariable } from "@typebot.io/variables/isSingleVariable";
-import {
-  getVariablesToParseInfoInText,
-  parseVariables,
-} from "@typebot.io/variables/parseVariables";
 import type { Variable } from "@typebot.io/variables/schemas";
 
 type Params = {
@@ -54,12 +47,22 @@ export const parseBubbleBlock = (
             ),
           },
         };
+      if (!block.content.richText) {
+        return {
+          ...block,
+          content: {
+            type: "richText",
+            richText: [],
+          },
+        };
+      }
 
-      const richText = parseVariablesInRichText(block.content?.richText ?? [], {
+      const richText = parseVariablesInRichText(block.content.richText, {
         variables,
         sessionStore,
         takeLatestIfList: !isTypebotVersionAtLeastV6(typebotVersion),
       }).parsedElements;
+
       return {
         ...block,
         content:
@@ -70,17 +73,16 @@ export const parseBubbleBlock = (
               }
             : {
                 type: "markdown",
-                markdown: convertRichTextToMarkdown(richText as TElement[]),
+                markdown: convertRichTextToMarkdown(richText),
               },
       };
     }
 
-    case BubbleBlockType.EMBED: {
+    case BubbleBlockType.EMBED:
       return deepParseVariables(block, {
         variables,
         sessionStore,
       });
-    }
     case BubbleBlockType.VIDEO: {
       const parsedContent = block.content
         ? deepParseVariables(block.content, {
@@ -104,150 +106,3 @@ export const parseBubbleBlock = (
       });
   }
 };
-
-export const parseVariablesInRichText = (
-  elements: TDescendant[],
-  {
-    variables,
-    sessionStore,
-    takeLatestIfList,
-  }: {
-    variables: Variable[];
-    sessionStore: SessionStore;
-    takeLatestIfList?: boolean;
-  },
-): { parsedElements: TDescendant[]; parsedVariableIds: string[] } => {
-  const parsedElements: TDescendant[] = [];
-  const parsedVariableIds: string[] = [];
-  for (const element of elements) {
-    if ("text" in element) {
-      const text = element.text as string;
-      if (isEmpty(text)) {
-        parsedElements.push(element);
-        continue;
-      }
-      const variablesInText = getVariablesToParseInfoInText(text, {
-        variables,
-        sessionStore,
-        takeLatestIfList,
-      });
-      parsedVariableIds.push(
-        ...variablesInText.map((v) => v.variableId).filter(isDefined),
-      );
-      if (variablesInText.length === 0) {
-        parsedElements.push(element);
-        continue;
-      }
-      let lastTextEndIndex = 0;
-      let index = -1;
-      for (const variableInText of variablesInText) {
-        index += 1;
-        const textBeforeVariable = text.substring(
-          lastTextEndIndex,
-          variableInText.startIndex,
-        );
-        const textAfterVariable =
-          index === variablesInText.length - 1
-            ? text.substring(variableInText.endIndex)
-            : undefined;
-        lastTextEndIndex = variableInText.endIndex;
-        const isStandaloneElement =
-          isEmpty(textBeforeVariable) &&
-          isEmpty(textAfterVariable) &&
-          variablesInText.length === 1;
-        const variableElements = convertMarkdownToRichText(
-          isStandaloneElement
-            ? variableInText.value
-            : variableInText.value.replace(/[\n]+/g, " "),
-        );
-
-        const variableElementsWithStyling = applyElementStyleToDescendants(
-          variableElements,
-          {
-            bold: element.bold,
-            italic: element.italic,
-            underline: element.underline,
-          },
-        );
-
-        if (
-          isStandaloneElement &&
-          !element.bold &&
-          !element.italic &&
-          !element.underline
-        ) {
-          parsedElements.push(...variableElementsWithStyling);
-          continue;
-        }
-        const children: TDescendant[] = [];
-        if (isNotEmpty(textBeforeVariable))
-          children.push({
-            ...element,
-            text: textBeforeVariable,
-          });
-        children.push({
-          type: "inline-variable",
-          children: variableElementsWithStyling,
-        });
-        if (isNotEmpty(textAfterVariable))
-          children.push({
-            ...element,
-            text: textAfterVariable,
-          });
-        parsedElements.push(...children);
-      }
-
-      continue;
-    }
-
-    const type =
-      element.children.length === 1 &&
-      element.children[0] &&
-      "text" in element.children[0] &&
-      isSingleVariable(element.children[0].text as string) &&
-      element.type !== "a"
-        ? "variable"
-        : element.type;
-
-    const {
-      parsedElements: parsedChildren,
-      parsedVariableIds: parsedChildrenVariableIds,
-    } = parseVariablesInRichText(element.children as TDescendant[], {
-      variables,
-      sessionStore,
-      takeLatestIfList,
-    });
-
-    parsedVariableIds.push(...parsedChildrenVariableIds);
-    parsedElements.push({
-      ...element,
-      url: element.url
-        ? parseVariables(element.url as string, {
-            variables,
-            sessionStore,
-          })
-        : undefined,
-      type,
-      children: parsedChildren,
-    });
-  }
-  return {
-    parsedElements,
-    parsedVariableIds,
-  };
-};
-
-const applyElementStyleToDescendants = (
-  variableElements: TDescendant[],
-  styles: { bold: unknown; italic: unknown; underline: unknown },
-): TDescendant[] =>
-  variableElements.map((variableElement) => {
-    if ("text" in variableElement) return { ...styles, ...variableElement };
-    return {
-      ...variableElement,
-      children: applyElementStyleToDescendants(
-        variableElement.children,
-        styles,
-      ),
-    };
-  });

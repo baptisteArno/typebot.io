@@ -1,4 +1,4 @@
-import { isDefined } from "@udecode/plate-common";
+import { isDefined } from "@typebot.io/lib/utils";
 import { useState } from "react";
 import type { DialogProps } from "../../DeployButton";
 import { DeployDialog } from "../../DeployDialog";

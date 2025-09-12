@@ -1,127 +1,81 @@
-import { isDefined } from "@typebot.io/lib/utils";
-import type { TDescendant, TElement, TText } from "@typebot.io/rich-text/types";
-import { For, type JSXElement, Match, Switch } from "solid-js";
-import { PlateText, type PlateTextProps } from "./PlateText";
+import { isEmpty } from "@typebot.io/lib/utils";
+import { isElementDescendant } from "@typebot.io/rich-text/helpers/isElementDescendant";
+import { isTextDescendant } from "@typebot.io/rich-text/helpers/isTextDescendant";
+import type { Descendant } from "@typebot.io/rich-text/plate";
+import { createMemo, For, Match, Switch } from "solid-js";
+import { PlateText } from "./PlateText";
 
 type Props = {
-  element: TElement | TText;
-  isUniqueChild?: boolean;
-  insideInlineVariable?: boolean;
+  element: Descendant;
 };
 
-export const PlateElement = (props: Props) => (
-  <Switch>
-    <Match when={isDefined(props.element.text)}>
-      <PlateText
-        {...(props.element as PlateTextProps)}
-        isUniqueChild={props.isUniqueChild ?? false}
-      />
-    </Match>
-    <Match when={true}>
-      <Switch>
-        <Match when={props.element.type === "a"}>
-          <a
-            href={props.element.url as string}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <For each={props.element.children as TDescendant[]}>
-              {(child) => (
-                <PlateElement
-                  element={child}
-                  isUniqueChild={
-                    (props.element.children as TDescendant[])?.length === 1
-                  }
-                />
-              )}
-            </For>
-          </a>
-        </Match>
-        <Match when={props.element.type === "ol"}>
-          <ol>
-            <For each={props.element.children as TDescendant[]}>
-              {(child) => (
-                <PlateElement
-                  element={child}
-                  isUniqueChild={
-                    (props.element.children as TDescendant[])?.length === 1
-                  }
-                />
-              )}
-            </For>
-          </ol>
-        </Match>
-        <Match when={props.element.type === "ul"}>
-          <ul>
-            <For each={props.element.children as TDescendant[]}>
-              {(child) => (
-                <PlateElement
-                  element={child}
-                  isUniqueChild={
-                    (props.element.children as TDescendant[])?.length === 1
-                  }
-                />
-              )}
-            </For>
-          </ul>
-        </Match>
-        <Match when={props.element.type === "li"}>
-          <li>
-            <For each={props.element.children as TDescendant[]}>
-              {(child) => (
-                <PlateElement
-                  element={child}
-                  isUniqueChild={
-                    (props.element.children as TDescendant[])?.length === 1
-                  }
-                />
-              )}
-            </For>
-          </li>
-        </Match>
-        <Match when={true}>
-          <ElementRoot
-            element={props.element as TElement}
-            insideInlineVariable={props.insideInlineVariable ?? false}
-          >
-            <For each={props.element.children as TDescendant[]}>
-              {(child) => (
-                <PlateElement
-                  element={child}
-                  isUniqueChild={
-                    (props.element.children as TDescendant[])?.length === 1
-                  }
-                  insideInlineVariable={
-                    props.element.type === "inline-variable"
-                  }
-                />
-              )}
-            </For>
-          </ElementRoot>
-        </Match>
-      </Switch>
-    </Match>
-  </Switch>
-);
-
-type ElementRootProps = {
-  element: TElement;
-  children: JSXElement;
-  insideInlineVariable?: boolean;
-};
-
-const ElementRoot = (props: ElementRootProps) => {
+export const PlateElement = (props: Props) => {
+  const textDescendant = createMemo(() => {
+    const element = props.element;
+    return isTextDescendant(element) ? element : undefined;
+  });
+  const elementDescendant = createMemo(() => {
+    const element = props.element;
+    return isElementDescendant(element) ? element : undefined;
+  });
   return (
     <Switch>
-      <Match
-        when={
-          props.element.type === "inline-variable" || props.insideInlineVariable
-        }
-      >
-        <span data-element-type={props.element.type}>{props.children}</span>
+      <Match when={textDescendant()} keyed>
+        {(textDescendant) => <PlateText {...textDescendant} />}
       </Match>
-      <Match when={true}>
-        <div data-element-type={props.element.type}>{props.children}</div>
+      <Match when={elementDescendant()} keyed>
+        {(elementDescendant) => (
+          <Switch>
+            <Match when={elementDescendant.type === "a"}>
+              <a
+                href={elementDescendant.url as string}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <For each={elementDescendant.children}>
+                  {(child) => <PlateElement element={child} />}
+                </For>
+              </a>
+            </Match>
+            <Match when={elementDescendant.type === "ol"}>
+              <ol>
+                <For each={elementDescendant.children}>
+                  {(child) => <PlateElement element={child} />}
+                </For>
+              </ol>
+            </Match>
+            <Match when={props.element.type === "ul"}>
+              <ul>
+                <For each={elementDescendant.children}>
+                  {(child) => <PlateElement element={child} />}
+                </For>
+              </ul>
+            </Match>
+            <Match when={props.element.type === "li"}>
+              <li>
+                <For each={elementDescendant.children}>
+                  {(child) => <PlateElement element={child} />}
+                </For>
+              </li>
+            </Match>
+            <Match
+              when={
+                elementDescendant.type === "p" &&
+                elementDescendant.children.length === 1 &&
+                isEmpty(elementDescendant.children[0].text as string)
+              }
+            >
+              <br />
+            </Match>
+            <Match when={true}>
+              <div data-element-type={props.element.type}>
+                <For each={elementDescendant.children}>
+                  {(child) => <PlateElement element={child} />}
+                </For>
+              </div>
+            </Match>
+          </Switch>
+        )}
       </Match>
     </Switch>
   );

@@ -10,8 +10,8 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { env } from "@typebot.io/env";
+import { isDefined } from "@typebot.io/lib/utils";
 import type { Variable } from "@typebot.io/variables/schemas";
-import { isDefined } from "@udecode/plate-common";
 import {
   type LanguageName,
   loadLanguage,

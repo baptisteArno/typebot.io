@@ -45,11 +45,11 @@ Control.displayName = ArkCombobox.Control.displayName;
 const Input = forwardRef<
   HTMLInputElement,
   ArkCombobox.InputProps & VariantProps<typeof inputVariants>
->(({ className, variant, ...props }, ref) => {
+>(({ className, size, ...props }, ref) => {
   return (
     <ArkCombobox.Input
       ref={ref}
-      className={cn(inputVariants({ variant }), className)}
+      className={cn(inputVariants({ size }), className)}
       {...props}
     />
   );

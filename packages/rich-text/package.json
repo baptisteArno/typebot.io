@@ -4,21 +4,22 @@
   "type": "module",
   "private": true,
   "exports": {
-    "./*": "./src/*.ts"
+    "./*": "./src/*.ts",
+    "./plate": "./src/plate/index.ts"
+  },
+  "scripts": {
+    "test": "dotenv -e ./.env -e ../../.env -- vitest run"
   },
   "dependencies": {
-    "@udecode/plate-basic-marks": "30.5.3",
-    "@udecode/plate-block-quote": "30.5.3",
-    "@udecode/plate-code-block": "30.7.0",
-    "@udecode/plate-common": "30.4.5",
-    "@udecode/plate-heading": "30.5.3",
-    "@udecode/plate-horizontal-rule": "30.5.3",
-    "@udecode/plate-link": "30.5.3",
-    "@udecode/plate-list": "30.5.3",
-    "@udecode/plate-media": "30.5.3",
-    "@udecode/plate-paragraph": "30.5.3",
-    "remark-parse": "11.0.0",
-    "unified": "11.0.5"
+    "platejs": "49.2.21",
+    "@platejs/markdown": "50.1.2",
+    "@platejs/basic-nodes": "49.0.0",
+    "@platejs/floating": "49.0.0",
+    "@platejs/link": "49.1.1",
+    "@typebot.io/variables": "workspace:*",
+    "@typebot.io/runtime-session-store": "workspace:*",
+    "react": "18.3.1",
+    "@typebot.io/ui": "workspace:*"
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*"

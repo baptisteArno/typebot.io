@@ -1,5 +1,5 @@
 import { blockBaseSchema } from "@typebot.io/blocks-base/schemas";
-import type { TElement } from "@typebot.io/rich-text/types";
+import type { Element } from "@typebot.io/rich-text/plate";
 import { z } from "@typebot.io/zod";
 import { BubbleBlockType } from "../constants";
 
@@ -25,5 +25,5 @@ export type TextBubbleBlock = Omit<
   z.infer<typeof textBubbleBlockSchema>,
   "content"
 > & {
-  content?: { richText?: TElement[]; html?: string; plainText?: string };
+  content?: { richText?: Element[]; html?: string; plainText?: string };
 };

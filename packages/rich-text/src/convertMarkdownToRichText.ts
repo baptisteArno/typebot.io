@@ -1,69 +1,46 @@
-import {
-  createPlateEditor,
-  createPluginFactory,
-  getPluginOptions,
-  isUrl,
-  type Value,
-} from "@udecode/plate-common";
-import markdown from "remark-parse";
-import { unified } from "unified";
+import type { Paragraph, Root, Text } from "mdast";
+import { createPlateEditor } from "platejs/react";
+import type { Plugin } from "unified";
+import { plateCorePlugins } from "./plateCorePlugins";
 
-import { deserialize } from "./deserializer/deserialize";
-import type { DeserializeMdPlugin } from "./deserializer/types";
-import { remarkDefaultElementRules } from "./remark-slate/remarkDefaultElementRules";
-import { remarkDefaultTextRules } from "./remark-slate/remarkDefaultTextRules";
-import { remarkPlugin } from "./remark-slate/remarkPlugin";
-import type { RemarkPluginOptions } from "./remark-slate/types";
+export const convertMarkdownToRichText = (data: string) => {
+  const editor = createPlateEditor({
+    plugins: plateCorePlugins,
+  });
 
-export const convertMarkdownToRichText = <V extends Value>(data: string) => {
-  const plugins = [createDeserializeMdPlugin()];
-  const editor = createPlateEditor({ plugins }) as unknown as any;
-  const { elementRules, textRules, indentList } = getPluginOptions<
-    DeserializeMdPlugin,
-    V
-  >(editor, KEY_DESERIALIZE_MD);
-
-  const tree: any = unified()
-    .use(markdown)
-    .use(remarkPlugin, {
-      editor,
-      elementRules,
-      textRules,
-      indentList,
-    } as unknown as RemarkPluginOptions<V>)
-    .processSync(data);
-
-  return tree.result;
+  return editor.api.markdown.deserialize(data, {
+    remarkPlugins: [remarkPreserveEmptyLines],
+  });
 };
 
-export const KEY_DESERIALIZE_MD = "deserializeMd";
+const remarkPreserveEmptyLines: Plugin = () => (tree) => {
+  const children = (tree as Root).children;
+  let i = 0;
 
-const createDeserializeMdPlugin = createPluginFactory<DeserializeMdPlugin>({
-  key: KEY_DESERIALIZE_MD,
-  then: (editor) => ({
-    editor: {
-      insertData: {
-        format: "text/plain",
-        query: ({ data, dataTransfer }) => {
-          const htmlData = dataTransfer.getData("text/html");
-          if (htmlData) return false;
+  while (i < children.length - 1) {
+    const a: any = children[i];
+    const b: any = children[i + 1];
 
-          const { files } = dataTransfer;
-          if (
-            !files?.length && // if content is simply a URL pass through to not break LinkPlugin
-            isUrl(data)
-          ) {
-            return false;
-          }
-          return true;
-        },
-        getFragment: ({ data }) => deserialize<Value>(editor, data),
-      },
-    },
-  }),
-  options: {
-    elementRules: remarkDefaultElementRules,
-    textRules: remarkDefaultTextRules,
-    indentList: false,
-  },
-});
+    // Need line-based positions from remark-parse
+    const aPos = a?.position;
+    const bPos = b?.position;
+
+    if (aPos?.end?.line != null && bPos?.start?.line != null) {
+      // number of completely blank lines between a and b
+      const gap = bPos.start.line - aPos.end.line - 1;
+
+      // Insert one empty paragraph per blank line
+      for (let k = 0; k < gap; k++) {
+        const emptyPara: Paragraph = {
+          type: "paragraph",
+          children: [{ type: "text", value: "" } as Text],
+        };
+
+        children.splice(i + 1, 0, emptyPara);
+        i++; // skip over what we just inserted
+      }
+    }
+
+    i++;
+  }
+};

@@ -1,8 +1,9 @@
 import { Stack } from "@chakra-ui/react";
 import type { SmtpCredentials } from "@typebot.io/credentials/schemas";
-import { isDefined } from "@udecode/plate-common";
-import { NumberInput, TextInput } from "@/components/inputs";
+import { isDefined } from "@typebot.io/lib/utils";
+import { NumberInput } from "@/components/inputs/NumberInput";
 import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
+import { TextInput } from "@/components/inputs/TextInput";
 
 type Props = {
   config: SmtpCredentials["data"] | undefined;

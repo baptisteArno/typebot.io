@@ -1,8 +1,7 @@
-import type { TDescendant, TElement, TText } from "@udecode/plate-common";
+import type { Descendant, TElement, TText } from "@typebot.io/rich-text/plate";
 import { PlateText } from "./PlateText";
 
 export const PlateBlock = ({ element }: { element: TElement | TText }) => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   if (element.text) return <PlateText {...(element as any)} />;
   switch (element.type) {
     case "a": {
@@ -13,7 +12,7 @@ export const PlateBlock = ({ element }: { element: TElement | TText }) => {
           className="slate-a"
           rel="noreferrer"
         >
-          {(element.children as TDescendant[])?.map((child, idx) => (
+          {(element.children as Descendant[])?.map((child, idx) => (
             <PlateBlock key={idx} element={child} />
           ))}
         </a>
@@ -22,7 +21,7 @@ export const PlateBlock = ({ element }: { element: TElement | TText }) => {
     default: {
       return (
         <div>
-          {(element.children as TDescendant[])?.map((child, idx) => (
+          {(element.children as Descendant[])?.map((child, idx) => (
             <PlateBlock key={idx} element={child} />
           ))}
         </div>

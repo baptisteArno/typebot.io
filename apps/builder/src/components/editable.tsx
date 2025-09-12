@@ -33,7 +33,7 @@ const Input = forwardRef<HTMLInputElement, ArkEditable.InputProps>(
     <ArkEditable.Input
       ref={ref}
       className={cn(
-        inputVariants({ variant: "noSize" }),
+        inputVariants({ size: "none" }),
         "px-[3px] py-[3px] font-inherit text-align-inherit",
         className,
       )}
@@ -63,7 +63,7 @@ const Textarea = forwardRef<HTMLInputElement, ArkEditable.InputProps>(
         <textarea
           ref={textareaRef}
           className={cn(
-            inputVariants({ variant: "noSize" }),
+            inputVariants({ size: "none" }),
             "px-[3px] py-[3px] font-inherit text-align-inherit",
             className,
           )}

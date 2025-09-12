@@ -6,6 +6,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
+import { reload } from "@typebot.io/react";
 import { Button } from "@typebot.io/ui/components/Button";
 import { CloseIcon } from "@typebot.io/ui/icons/CloseIcon";
 import { useDrag } from "@use-gesture/react";
@@ -35,7 +36,6 @@ export const PreviewDrawer = () => {
   const { setPreviewingBlock } = useGraph();
   const [width, setWidth] = useState(500);
   const [isResizeHandleVisible, setIsResizeHandleVisible] = useState(false);
-  const [restartKey, setRestartKey] = useState(0);
   const [selectedRuntime, setSelectedRuntime] = useState<
     (typeof runtimes)[number]
   >(getDefaultRuntime(typebot?.id));
@@ -43,7 +43,7 @@ export const PreviewDrawer = () => {
 
   const handleRestartClick = async () => {
     await save();
-    setRestartKey((key) => key + 1);
+    reload();
   };
 
   const handleCloseClick = () => {
@@ -114,7 +114,7 @@ export const PreviewDrawer = () => {
             <CloseIcon />
           </Button>
         </HStack>
-        <PreviewDrawerBody key={restartKey} runtime={selectedRuntime.name} />
+        <PreviewDrawerBody runtime={selectedRuntime.name} />
       </VStack>
     </Flex>
   );
