@@ -17,7 +17,7 @@ services:
     depends_on:
       - typebot-db
     ports:
-      - '8080:3000'
+      - '3002:3000'
     extra_hosts:
       - 'host.docker.internal:host-gateway'
     env_file: .env
@@ -26,7 +26,7 @@ services:
     image: baptistearno/typebot-viewer:latest
     restart: always
     ports:
-      - '8081:3000'
+      - '3003:3000'
     env_file: .env
     environment:
       - DD_LOGS_ENABLED=true

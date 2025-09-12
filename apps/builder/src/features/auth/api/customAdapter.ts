@@ -134,11 +134,18 @@ export function customAdapter(p: PrismaClient): Adapter {
       const { user, ...session } = userAndSession
       return { user, session } as { user: AdapterUser; session: Session }
     },
-    createSession: (data) => p.session.create({ data }),
-    updateSession: (data) =>
-      p.session.update({ data, where: { sessionToken: data.sessionToken } }),
-    deleteSession: (sessionToken) =>
-      p.session.delete({ where: { sessionToken } }),
+    createSession: (data) => {
+      return p.session.create({ data })
+    },
+    updateSession: (data) => {
+      return p.session.update({
+        data,
+        where: { sessionToken: data.sessionToken },
+      })
+    },
+    deleteSession: (sessionToken) => {
+      return p.session.delete({ where: { sessionToken } })
+    },
     createVerificationToken: (data) => p.verificationToken.create({ data }),
     async useVerificationToken(identifier_token) {
       try {
