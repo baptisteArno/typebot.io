@@ -22,6 +22,10 @@ import {
   isTextBubbleBlock,
 } from '@typebot.io/schemas/helpers'
 import { JumpBlock } from '@typebot.io/schemas/features/blocks/logic/jump'
+import {
+  isClaudiaBlock,
+  isClaudiaAnswerTicketBlock,
+} from '@typebot.io/schemas/features/blocks/forged/helpers'
 
 const responseSchema = validationErrorSchema
 
@@ -30,9 +34,6 @@ const hasBlocks = (group: Group): boolean =>
 
 const isTypebotLinkBlock = (block: Block): block is TypebotLinkBlock =>
   block.type === LogicBlockType.TYPEBOT_LINK
-
-const isClaudiaBlock = (block: Block): boolean =>
-  block.type.toLowerCase() === 'claudia'
 
 const isJumpBlock = (block: Block): block is JumpBlock =>
   block.type === LogicBlockType.JUMP
@@ -327,7 +328,7 @@ const validateTextBeforeClaudia = (groups: Group[], edges: Edge[]) => {
   groups.forEach((group) => {
     if (!hasBlocks(group)) return
     group.blocks.forEach((block, blockIndex) => {
-      if (!isClaudiaBlock(block)) return
+      if (!isClaudiaBlock(block) || isClaudiaAnswerTicketBlock(block)) return
       let hasValidText = false
       const visited = new Set<string>()
       const checkForwardPath = (

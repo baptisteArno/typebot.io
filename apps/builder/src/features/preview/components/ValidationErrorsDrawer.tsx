@@ -166,6 +166,13 @@ export const ValidationErrorsDrawer = ({ onClose }: Props) => {
     })
     .filter((e) => !isNull(e)) as ValidationErrorItemWithGroupName[]
 
+  const validatingTextColor = useColorModeValue('gray.500', 'gray.400')
+  const noValidationIconColor = useColorModeValue('gray.400', 'gray.500')
+  const noValidationTextColor = useColorModeValue('gray.600', 'gray.400')
+  const validIconColor = useColorModeValue('green.400', 'green.300')
+  const validTitleColor = useColorModeValue('green.500', 'green.300')
+  const validSubtitleColor = useColorModeValue('gray.600', 'gray.400')
+
   return (
     <Flex
       pos="absolute"
@@ -213,7 +220,7 @@ export const ValidationErrorsDrawer = ({ onClose }: Props) => {
           {showSpinner && (
             <HStack spacing={2}>
               <Spinner size="xs" />
-              <Text fontSize="xs" color="gray.400">
+              <Text fontSize="xs" color={validatingTextColor}>
                 {t('validationErrors.validating')}
               </Text>
             </HStack>
@@ -223,18 +230,22 @@ export const ValidationErrorsDrawer = ({ onClose }: Props) => {
         <Stack overflowY="auto" py="1" spacing={4}>
           {!validationErrors ? (
             <VStack spacing={4} py={8}>
-              <Icon as={AlertIcon} color="gray.400" boxSize={12} />
-              <Text color="gray.500" textAlign="center">
+              <Icon as={AlertIcon} color={noValidationIconColor} boxSize={12} />
+              <Text color={noValidationTextColor} textAlign="center">
                 {t('validationErrors.noValidationYet')}
               </Text>
             </VStack>
           ) : validationErrors.isValid ? (
             <VStack spacing={4} py={8}>
-              <Icon as={AlertIcon} color="green.400" boxSize={12} />
-              <Text color="green.500" textAlign="center" fontWeight="medium">
+              <Icon as={AlertIcon} color={validIconColor} boxSize={12} />
+              <Text
+                color={validTitleColor}
+                textAlign="center"
+                fontWeight="medium"
+              >
                 {t('validationErrors.typebotIsValid')}
               </Text>
-              <Text color="gray.500" fontSize="sm" textAlign="center">
+              <Text color={validSubtitleColor} fontSize="sm" textAlign="center">
                 {t('validationErrors.noValidationErrors')}
               </Text>
             </VStack>
@@ -290,37 +301,44 @@ const ValidationErrorSection = ({
   const itemBgColor = useColorModeValue('white', 'gray.800')
   const hoverBgColor = useColorModeValue(`${color}.100`, `${color}.800`)
   const containerBg = useColorModeValue(`${color}.50`, `${color}.900`)
+  const borderColor = useColorModeValue(`${color}.200`, `${color}.700`)
+  const titleColor = useColorModeValue(`${color}.700`, `${color}.300`)
+  const iconColor = useColorModeValue(`${color}.500`, `${color}.300`)
+  const descriptionColor = useColorModeValue('gray.600', 'gray.400')
+  const leftBorderColor = useColorModeValue(`${color}.400`, `${color}.500`)
 
   if (!allErrors.length) return null
 
   return (
     <Box
       borderWidth="1px"
-      borderColor={`${color}.800`}
+      borderColor={borderColor}
       borderRadius="md"
       p={4}
       bg={containerBg}
     >
       <VStack align="stretch" spacing={3}>
         <HStack spacing={2}>
-          <Icon as={AlertIcon} color={`${color}.500`} />
-          <Text fontWeight="medium" color={`${color}.400`}>
+          <Icon as={AlertIcon} color={iconColor} />
+          <Text fontWeight="medium" color={titleColor}>
             {title}
           </Text>
           <Badge
             colorScheme={color}
             borderRadius="full"
+            variant={'solid'}
             fontSize="xs"
             w="5"
             h="5"
             display="flex"
             alignItems="center"
             justifyContent="center"
+            pl={0.5}
           >
             {allErrors.length}
           </Badge>
         </HStack>
-        <Text fontSize="sm" color="gray.400">
+        <Text fontSize="sm" color={descriptionColor}>
           {description}
         </Text>
         <Stack spacing={2}>
@@ -333,7 +351,7 @@ const ValidationErrorSection = ({
                 bg={itemBgColor}
                 borderRadius="sm"
                 borderLeftWidth="3px"
-                borderLeftColor={`${color}.400`}
+                borderLeftColor={leftBorderColor}
                 cursor={onGroupClick ? 'pointer' : 'default'}
                 _hover={
                   onGroupClick

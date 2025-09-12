@@ -135,17 +135,31 @@ const Button = defineStyleConfig({
   }),
   variants: {
     solid: ({ colorMode, colorScheme }) => {
-      if (colorScheme !== 'blue') return {}
-      return {
-        bg: colorMode === 'dark' ? 'blue.400' : 'blue.500',
-        color: 'white',
-        _hover: {
-          bg: colorMode === 'dark' ? 'blue.500' : 'blue.600',
-        },
-        _active: {
-          bg: colorMode === 'dark' ? 'blue.600' : 'blue.700',
-        },
+      if (colorScheme === 'blue') {
+        return {
+          bg: colorMode === 'dark' ? 'blue.400' : 'blue.500',
+          color: 'white',
+          _hover: {
+            bg: colorMode === 'dark' ? 'blue.500' : 'blue.600',
+          },
+          _active: {
+            bg: colorMode === 'dark' ? 'blue.600' : 'blue.700',
+          },
+        }
       }
+      if (colorScheme === 'orange') {
+        return {
+          bg: 'orange.500',
+          color: 'white',
+          _hover: {
+            bg: 'orange.400',
+          },
+          _active: {
+            bg: 'orange.600',
+          },
+        }
+      }
+      return {}
     },
     outline: {
       bg: 'transparent',

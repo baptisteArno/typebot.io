@@ -206,7 +206,7 @@ export const PublishButton = ({
         isDisabled={isNotDefined(publishedTypebot) || isPublished}
       >
         <Button
-          colorScheme="blue"
+          colorScheme="orange"
           isLoading={isPublishing || isUnpublishing}
           isDisabled={isPublished || isSavingLoading}
           onClick={() => {
@@ -231,7 +231,7 @@ export const PublishButton = ({
         <Menu>
           <MenuButton
             as={IconButton}
-            colorScheme={'blue'}
+            colorScheme={'orange'}
             borderLeftRadius={0}
             icon={<ChevronLeftIcon transform="rotate(-90deg)" />}
             aria-label={t('publishButton.dropdown.showMenu.label')}

@@ -140,7 +140,6 @@ const ValidationErrorsButton = () => {
         size="sm"
         shadow="lg"
         bgColor={useColorModeValue('white', undefined)}
-        colorScheme={hasErrors ? 'red' : 'gray'}
         isLoading={showSpinner}
         onClick={() => setRightPanel(RightPanel.VALIDATION_ERRORS)}
       />
