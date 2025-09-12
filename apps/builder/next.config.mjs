@@ -60,10 +60,6 @@ const nextConfig = {
     return config
   },
   headers: async () => {
-    const allowedOrigins = process.env.NEXT_PUBLIC_EMBEDDED_AUTH_ALLOWED_ORIGIN 
-      ? process.env.NEXT_PUBLIC_EMBEDDED_AUTH_ALLOWED_ORIGIN.split(',').map(origin => origin.trim()).join(' ')
-      : 'http://localhost:3000'
-    
     return [
       {
         source: '/(.*)?',
@@ -71,22 +67,6 @@ const nextConfig = {
           {
             key: 'X-Frame-Options',
             value: 'SAMEORIGIN',
-          },
-          {
-            key: 'Content-Security-Policy',
-            value: `frame-ancestors 'self' ${allowedOrigins}`,
-          },
-          {
-            key: 'Access-Control-Allow-Methods',
-            value: 'GET, POST, PUT, DELETE, OPTIONS',
-          },
-          {
-            key: 'Access-Control-Allow-Headers',
-            value: 'Content-Type, Authorization',
-          },
-          {
-            key: 'Access-Control-Allow-Credentials',
-            value: 'true',
           },
         ],
       },

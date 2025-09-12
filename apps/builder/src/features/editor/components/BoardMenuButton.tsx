@@ -37,12 +37,10 @@ export const BoardMenuButton = (props: StackProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const { t } = useTranslate()
   const { setRightPanel } = useEditor()
-  const isEmbedded = query.embedded === 'true'
 
   useEffect(() => {
-    if (user && !user.graphNavigation && !query.isFirstBot && !isEmbedded)
-      onOpen()
-  }, [onOpen, query.isFirstBot, user, user?.graphNavigation, isEmbedded])
+    if (user && !user.graphNavigation && !query.isFirstBot) onOpen()
+  }, [onOpen, query.isFirstBot, user, user?.graphNavigation])
 
   const downloadFlow = () => {
     assert(typebot)
@@ -88,20 +86,16 @@ export const BoardMenuButton = (props: StackProps) => {
           <MenuItem icon={<BookIcon />} onClick={redirectToDocumentation}>
             {t('editor.graph.menu.documentationItem.label')}
           </MenuItem>
-          {!isEmbedded && (
-            <MenuItem icon={<SettingsIcon />} onClick={onOpen}>
-              {t('editor.graph.menu.editorSettingsItem.label')}
-            </MenuItem>
-          )}
+          <MenuItem icon={<SettingsIcon />} onClick={onOpen}>
+            {t('editor.graph.menu.editorSettingsItem.label')}
+          </MenuItem>
           {currentUserMode !== 'guest' ? (
             <MenuItem icon={<DownloadIcon />} onClick={downloadFlow}>
               {t('editor.graph.menu.exportFlowItem.label')}
             </MenuItem>
           ) : null}
         </MenuList>
-        {!isEmbedded && (
-          <EditorSettingsModal isOpen={isOpen} onClose={onClose} />
-        )}
+        <EditorSettingsModal isOpen={isOpen} onClose={onClose} />
       </Menu>
     </HStack>
   )
