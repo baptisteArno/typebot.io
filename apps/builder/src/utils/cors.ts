@@ -4,53 +4,29 @@ export function corsMiddleware(request: NextRequest, response: NextResponse) {
   // Get the origin from the request
   const origin = request.headers.get('origin')
 
-  // Get allowed origins from environment variable for external origins
+  // Get allowed origins from environment variable
   const allowedOriginsEnv = process.env.NEXT_PUBLIC_EMBEDDED_AUTH_ALLOWED_ORIGIN
-  const externalOrigins = allowedOriginsEnv
+  const allowedOrigins = allowedOriginsEnv
     ? allowedOriginsEnv.split(',').map((origin) => origin.trim())
-    : []
-
-  // Only include localhost in non-production environments
-  const isProduction = process.env.NODE_ENV === 'production'
-  const developmentOrigins = !isProduction ? ['http://localhost:3000'] : []
-
-  // Get the app's own origin from NEXTAUTH_URL
-  const appOwnOrigin = process.env.NEXTAUTH_URL
-  const appOrigins = appOwnOrigin ? [appOwnOrigin] : []
-
-  // Combine all allowed origins for CORS
-  const allAllowedOrigins = [
-    ...developmentOrigins,
-    ...appOrigins,
-    ...externalOrigins,
-  ]
+    : ['http://localhost:3000']
 
   console.log(
-    `🌐 CORS: Request from origin: ${origin}, environment: ${
-      process.env.NODE_ENV
-    }, allowed: ${allAllowedOrigins.join(', ')}`
+    `🌐 CORS: Request from origin: ${origin}, allowed: ${allowedOrigins.join(
+      ', '
+    )}`
   )
 
-  // For CSP frame-ancestors, we want to allow the app's own origin plus external origins
-  // 'self' covers same-origin, but we also explicitly add the app's own URL and external origins
-  // In development, also include localhost
-  const frameAncestorOrigins = [
-    ...developmentOrigins,
-    ...appOrigins,
-    ...externalOrigins,
-  ]
-  const allowedOriginsForCSP =
-    frameAncestorOrigins.length > 0 ? frameAncestorOrigins.join(' ') : ''
-
+  // Set CSP headers with allowed origins for frame-ancestors
+  const allowedOriginsForCSP = allowedOrigins.join(' ')
   response.headers.set('X-Frame-Options', 'SAMEORIGIN')
   response.headers.set(
     'Content-Security-Policy',
-    `frame-ancestors 'self' ${allowedOriginsForCSP}`.trim()
+    `frame-ancestors 'self' ${allowedOriginsForCSP}`
   )
   console.log(`🔒 CSP: Set frame-ancestors to 'self' ${allowedOriginsForCSP}`)
 
-  // Check if the origin is allowed for CORS
-  if (origin && allAllowedOrigins.includes(origin)) {
+  // Check if the origin is allowed
+  if (origin && allowedOrigins.includes(origin)) {
     response.headers.set('Access-Control-Allow-Origin', origin)
     console.log(`✅ CORS: Allowed origin ${origin}`)
   } else {
