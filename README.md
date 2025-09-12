@@ -65,7 +65,7 @@ This will start all the necessary packages (admin, builder, embed, etc.).
 
 Once started, access the following:
 
-- Builder UI: [http://localhost:3000](http://localhost:3000)
+- Builder UI: [http://localhost:3002](http://localhost:3002)
 - Admin UI: [http://localhost:4000](http://localhost:4000)
 - Embed UI: [http://localhost:5000](http://localhost:5000)
 

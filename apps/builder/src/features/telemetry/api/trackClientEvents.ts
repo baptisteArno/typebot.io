@@ -44,6 +44,10 @@ export const trackClientEvents = authenticatedProcedure
       select: {
         id: true,
         workspaceId: true,
+        isBeingEdited: true,
+        editingUserEmail: true,
+        editingUserName: true,
+        editingStartedAt: true,
         workspace: {
           select: {
             isSuspended: true,

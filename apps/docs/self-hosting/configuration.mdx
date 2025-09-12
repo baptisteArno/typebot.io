@@ -22,7 +22,7 @@ Parameters marked with <span style={{color: '#ef5151'}}>\*</span> are required.
 | NEXTAUTH_URL <span style={{color: '#ef5151'}}>\*</span>           |         | The builder base URL. Should be the publicly accessible URL (i.e. `https://typebot.domain.com`)                                                                                                               |
 | NEXT_PUBLIC_VIEWER_URL <span style={{color: '#ef5151'}}>\*</span> |         | The viewer base URL. Should be the publicly accessible URL (i.e. `https://bot.domain.com`)                                                                                                                    |
 | ADMIN_EMAIL                                                       |         | The email that will get an `UNLIMITED` plan on user creation. The associated user will be able to bypass database rules. You can provide multiple emails separated by a comma without spaces.                 |
-| NEXTAUTH_URL_INTERNAL                                             |         | The internal builder base URL. You have to set it only when `NEXTAUTH_URL` can't be reached by your builder container / server. For a docker deployment, you should set it to `http://localhost:3000`.        |
+| NEXTAUTH_URL_INTERNAL                                             |         | The internal builder base URL. You have to set it only when `NEXTAUTH_URL` can't be reached by your builder container / server. For a docker deployment, you should set it to `http://localhost:3002`.        |
 | DEFAULT_WORKSPACE_PLAN                                            | FREE    | Default workspace plan on user creation or when a user creates a new workspace. Possible values are `FREE`, `STARTER`, `PRO`, `LIFETIME`, `UNLIMITED`. The default plan for admin user is `UNLIMITED`         |
 | DISABLE_SIGNUP                                                    | false   | Disable new user sign ups. Invited users are still able to sign up.                                                                                                                                           |
 | NEXT_PUBLIC_ONBOARDING_TYPEBOT_ID                                 |         | Typebot ID used for the onboarding. Onboarding page is skipped if not provided.                                                                                                                               |
@@ -61,8 +61,8 @@ Used for sending email notifications and authentication
      - https://\<YOUR_DOMAIN\>/api/auth/callback/google
      - https://\<YOUR_DOMAIN\>/api/credentials/google-sheets/callback
    - For development:
-     - http://localhost:3000/api/auth/callback/google
-     - http://localhost:3000/api/credentials/google-sheets/callback
+     - http://localhost:3002/api/auth/callback/google
+     - http://localhost:3002/api/credentials/google-sheets/callback
 
 </Accordion>
 
@@ -92,8 +92,8 @@ Used for sending email notifications and authentication
      - https://\<YOUR_DOMAIN\>/api/auth/callback/google
      - https://\<YOUR_DOMAIN\>/api/credentials/google-sheets/callback
    - For development:
-     - http://localhost:3000/api/auth/callback/google
-     - http://localhost:3000/api/credentials/google-sheets/callback
+     - http://localhost:3002/api/auth/callback/google
+     - http://localhost:3002/api/credentials/google-sheets/callback
 
 5. To avoid having to always reconnect a Google Sheets credentials every 7 days, you need to promote your OAuth client to production (https://developers.google.com/nest/device-access/reference/errors/authorization#refresh_token_keeps_expiring)
 
@@ -174,14 +174,12 @@ The Authorization callback URL should be `$NEXTAUTH_URL/api/auth/callback/azure-
 Used for authenticating with Keycloak.
 Follow the official Keycloak guide for creating OAuth2 applications [here](https://www.keycloak.org/).
 
-| Parameter                | Default            | Description                                                                          |
-| ------------------------ | ------------------ | ------------------------------------------------------------------------------------ |
-| KEYCLOAK_CLIENT_ID       |                    | Application client ID.                                                               |
-| KEYCLOAK_CLIENT_SECRET   |                    | Application secret                                                                   |
-| KEYCLOAK_REALM           |                    | Your Keycloak Realm                                                                  |
-| KEYCLOAK_BASE_URL        |                    | Base URL of the Keycloak instance                                                    |
-
-
+| Parameter              | Default | Description                       |
+| ---------------------- | ------- | --------------------------------- |
+| KEYCLOAK_CLIENT_ID     |         | Application client ID.            |
+| KEYCLOAK_CLIENT_SECRET |         | Application secret                |
+| KEYCLOAK_REALM         |         | Your Keycloak Realm               |
+| KEYCLOAK_BASE_URL      |         | Base URL of the Keycloak instance |
 
 ## Custom OAuth Provider (Auth)
 

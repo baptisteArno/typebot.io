@@ -8,13 +8,13 @@ export function corsMiddleware(request: NextRequest, response: NextResponse) {
   const allowedOriginsEnv = process.env.NEXT_PUBLIC_EMBEDDED_AUTH_ALLOWED_ORIGIN
   const allowedOrigins = allowedOriginsEnv
     ? allowedOriginsEnv.split(',').map((origin) => origin.trim())
-    : ['http://localhost:3000']
+    : ['http://localhost:3002']
 
-  console.log(
-    `🌐 CORS: Request from origin: ${origin}, allowed: ${allowedOrigins.join(
-      ', '
-    )}`
-  )
+  // console.log(
+  //   `🌐 CORS: Request from origin: ${origin}, allowed: ${allowedOrigins.join(
+  //     ', '
+  //   )}`
+  // )
 
   // Set CSP headers with allowed origins for frame-ancestors
   const allowedOriginsForCSP = allowedOrigins.join(' ')
@@ -23,18 +23,18 @@ export function corsMiddleware(request: NextRequest, response: NextResponse) {
     'Content-Security-Policy',
     `frame-ancestors 'self' ${allowedOriginsForCSP}`
   )
-  console.log(`🔒 CSP: Set frame-ancestors to 'self' ${allowedOriginsForCSP}`)
+  // console.log(`🔒 CSP: Set frame-ancestors to 'self' ${allowedOriginsForCSP}`)
 
   // Check if the origin is allowed
   if (origin && allowedOrigins.includes(origin)) {
     response.headers.set('Access-Control-Allow-Origin', origin)
-    console.log(`✅ CORS: Allowed origin ${origin}`)
+    // console.log(`✅ CORS: Allowed origin ${origin}`)
   } else {
     // For same-origin requests (no origin) or unauthorized origins, don't set CORS headers
     if (!origin) {
-      console.log(
-        `🏠 CORS: Same-origin request (direct access) - no CORS headers needed`
-      )
+      // console.log(
+      //   `🏠 CORS: Same-origin request (direct access) - no CORS headers needed`
+      // )
     } else {
       console.warn(
         `❌ CORS: Blocked request from unauthorized origin: ${origin}`

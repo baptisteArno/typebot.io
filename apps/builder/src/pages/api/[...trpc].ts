@@ -8,7 +8,7 @@ import logger from '@/helpers/logger'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   await cors(req, res, {
-    origin: ['https://docs.typebot.io', 'http://localhost:3000'],
+    origin: ['https://docs.typebot.io', 'http://localhost:3002'],
   })
 
   return createOpenApiNextHandler({

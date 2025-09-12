@@ -25,7 +25,7 @@ test.beforeEach(async () => {
 
     await createWebhook(typebotId, {
       id: 'partial-body-webhook',
-      url: 'http://localhost:3000/api/mock/webhook-easy-config',
+      url: 'http://localhost:3002/api/mock/webhook-easy-config',
       method: HttpMethod.POST,
       body: `{
           "name": "{{Name}}",
@@ -36,7 +36,7 @@ test.beforeEach(async () => {
 
     await createWebhook(typebotId, {
       id: 'full-body-webhook',
-      url: 'http://localhost:3000/api/mock/webhook-easy-config',
+      url: 'http://localhost:3002/api/mock/webhook-easy-config',
       method: HttpMethod.POST,
       body: `{{Full body}}`,
     })
@@ -59,7 +59,7 @@ test('should execute webhooks properly', async ({ page }) => {
   await expect(
     page.getByText('{"name":"John","age":30,"gender":"Male"}')
   ).toBeVisible()
-  await page.goto(`http://localhost:3000/typebots/${typebotId}/results`)
+  await page.goto(`http://localhost:3002/typebots/${typebotId}/results`)
   await page.click('text="See logs"')
   await expect(
     page.locator('text="Webhook successfuly executed." >> nth=1')
