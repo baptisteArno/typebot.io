@@ -65,8 +65,16 @@ const nextConfig = {
         source: '/(.*)?',
         headers: [
           {
-            key: 'X-Frame-Options',
-            value: 'SAMEORIGIN',
+            key: 'Access-Control-Allow-Methods',
+            value: 'GET, POST, PUT, DELETE, OPTIONS',
+          },
+          {
+            key: 'Access-Control-Allow-Headers',
+            value: 'Content-Type, Authorization',
+          },
+          {
+            key: 'Access-Control-Allow-Credentials',
+            value: 'true',
           },
         ],
       },

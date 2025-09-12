@@ -22,6 +22,7 @@ import { isCloudProdInstance } from '@/helpers/isCloudProdInstance'
 import { TolgeeProvider, useTolgeeSSR } from '@tolgee/react'
 import { tolgee } from '@/lib/tolgee'
 import { Toaster } from '@/components/Toaster'
+import { EmbeddedAuthWrapper } from '@/features/embedded-auth'
 
 const { ToastContainer, toast } = createStandaloneToast(customTheme)
 
@@ -63,17 +64,18 @@ const App = ({ Component, pageProps }: AppProps) => {
       <ChakraProvider theme={customTheme}>
         <Toaster />
         <SessionProvider session={pageProps.session}>
-          <UserProvider>
-            <TypebotProvider typebotId={typebotId}>
-              <WorkspaceProvider typebotId={typebotId}>
-                <Component {...pageProps} />
-                {!router.pathname.endsWith('edit') && isCloudProdInstance() && (
-                  <SupportBubble />
-                )}
-                <NewVersionPopup />
-              </WorkspaceProvider>
-            </TypebotProvider>
-          </UserProvider>
+          <EmbeddedAuthWrapper>
+            <UserProvider>
+              <TypebotProvider typebotId={typebotId}>
+                <WorkspaceProvider typebotId={typebotId}>
+                  <Component {...pageProps} />
+                  {!router.pathname.endsWith('edit') &&
+                    isCloudProdInstance() && <SupportBubble />}
+                  <NewVersionPopup />
+                </WorkspaceProvider>
+              </TypebotProvider>
+            </UserProvider>
+          </EmbeddedAuthWrapper>
         </SessionProvider>
       </ChakraProvider>
     </TolgeeProvider>
