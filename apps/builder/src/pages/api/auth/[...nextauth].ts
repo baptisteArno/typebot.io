@@ -1,4 +1,5 @@
 import NextAuth, { Account, AuthOptions } from 'next-auth'
+import CredentialsProvider from 'next-auth/providers/credentials'
 import EmailProvider from 'next-auth/providers/email'
 import GitHubProvider from 'next-auth/providers/github'
 import GitlabProvider from 'next-auth/providers/gitlab'
@@ -142,6 +143,83 @@ if (env.CUSTOM_OAUTH_WELL_KNOWN_URL) {
   })
 }
 
+// Add CloudChat embedded provider (using credentials provider)
+providers.push(
+  CredentialsProvider({
+    id: 'cloudchat-embedded',
+    name: 'CloudChat Embedded',
+    credentials: {
+      token: { label: 'Token', type: 'text' },
+    },
+    async authorize(credentials) {
+      if (!credentials?.token) return null
+
+      try {
+        // Verify token using AWS Cognito GetUser API
+        const cognitoRegion = env.AWS_COGNITO_REGION || 'us-east-1'
+        const cognitoResponse = await fetch(
+          `https://cognito-idp.${cognitoRegion}.amazonaws.com/`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/x-amz-json-1.1',
+              'X-Amz-Target': 'AWSCognitoIdentityProviderService.GetUser',
+              Authorization: `Bearer ${credentials.token}`,
+            },
+            body: JSON.stringify({
+              AccessToken: credentials.token,
+            }),
+          }
+        )
+
+        if (!cognitoResponse.ok) {
+          console.error(
+            '❌ Cognito verification failed:',
+            cognitoResponse.status
+          )
+          return null
+        }
+
+        const userInfo = await cognitoResponse.json()
+
+        const email = userInfo.UserAttributes?.find(
+          (attr: { Name: string; Value: string }) => attr.Name === 'email'
+        )?.Value
+        const name =
+          userInfo.UserAttributes?.find(
+            (attr: { Name: string; Value: string }) => attr.Name === 'name'
+          )?.Value || userInfo.Username
+
+        if (!email) return null
+
+        // Use the adapter to find or create user
+        const adapter = customAdapter(prisma)
+        let user = await adapter.getUserByEmail(email)
+
+        if (!user) {
+          user = await adapter.createUser({
+            email,
+            name,
+            emailVerified: new Date(),
+            image: null,
+          })
+        }
+
+        return {
+          id: user.id,
+          email: user.email,
+          name: user.name,
+          image: user.image,
+          emailVerified: user.emailVerified,
+        }
+      } catch (error) {
+        console.error('❌ Cognito authentication failed:', error)
+        return null
+      }
+    },
+  })
+)
+
 export const getAuthOptions = ({
   restricted,
 }: {
@@ -151,7 +229,8 @@ export const getAuthOptions = ({
   secret: env.ENCRYPTION_SECRET,
   providers,
   session: {
-    strategy: 'database',
+    strategy: 'jwt',
+    maxAge: 30 * 24 * 60 * 60,
   },
   pages: {
     signIn: '/signin',
@@ -167,13 +246,32 @@ export const getAuthOptions = ({
     },
   },
   callbacks: {
-    session: async ({ session, user }) => {
-      const userFromDb = user as User
-      await updateLastActivityDate(userFromDb)
-      return {
-        ...session,
-        user: userFromDb,
+    jwt: async ({ token, user, account }) => {
+      // If user is provided (first sign in), add user info to token
+      if (user && account) {
+        token.userId = user.id
+        token.email = user.email
+        token.name = user.name
+        token.image = user.image
+        token.provider = account.provider
       }
+      return token
+    },
+    session: async ({ session, token }) => {
+      // Get user from database using token info
+      if (token?.userId) {
+        const userFromDb = await prisma.user.findUnique({
+          where: { id: token.userId as string },
+        })
+        if (userFromDb) {
+          await updateLastActivityDate(userFromDb)
+          return {
+            ...session,
+            user: userFromDb,
+          }
+        }
+      }
+      return session
     },
     signIn: async ({ account, user }) => {
       if (restricted === 'rate-limited') throw new Error('rate-limited')
