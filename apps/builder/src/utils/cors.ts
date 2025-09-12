@@ -16,6 +16,15 @@ export function corsMiddleware(request: NextRequest, response: NextResponse) {
     )}`
   )
 
+  // Set CSP headers with allowed origins for frame-ancestors
+  const allowedOriginsForCSP = allowedOrigins.join(' ')
+  response.headers.set('X-Frame-Options', 'SAMEORIGIN')
+  response.headers.set(
+    'Content-Security-Policy',
+    `frame-ancestors 'self' ${allowedOriginsForCSP}`
+  )
+  console.log(`🔒 CSP: Set frame-ancestors to 'self' ${allowedOriginsForCSP}`)
+
   // Check if the origin is allowed
   if (origin && allowedOrigins.includes(origin)) {
     response.headers.set('Access-Control-Allow-Origin', origin)

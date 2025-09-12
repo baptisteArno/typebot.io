@@ -19,3 +19,4 @@ data:
   SMTP_HOST: email-smtp.us-east-1.amazonaws.com
   SMTP_PORT: '465'
   SMTP_SECURE: 'true'
+  NEXT_PUBLIC_EMBEDDED_AUTH_ALLOWED_ORIGIN: https://cloudchat.cloudhumans.com,https://cloudchat2.cloudhumans.com,https://cloudchat3.cloudhumans.com
