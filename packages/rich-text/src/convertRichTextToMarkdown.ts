@@ -1,5 +1,6 @@
 import type { Descendant, Element } from "platejs";
 import { createPlateEditor } from "platejs/react";
+import { renderMarkdownForApi } from "./helpers/renderMarkdownForApi";
 import { plateCorePlugins } from "./plateCorePlugins";
 
 type Options = {
@@ -18,8 +19,8 @@ export const convertRichTextToMarkdown = (
     plugins: plateCorePlugins,
   });
 
-  return editor.api.markdown
-    .serialize({
+  return renderMarkdownForApi(
+    editor.api.markdown.serialize({
       value: richText,
       preserveEmptyParagraphs: false,
       remarkStringifyOptions: {
@@ -37,11 +38,11 @@ export const convertRichTextToMarkdown = (
         ...(flavour === "whatsapp"
           ? {
               handlers: {
-                delete(node, _parent, state, info) {
+                delete: (node, _parent, state, info) => {
                   const value = state.containerPhrasing(node, info);
                   return `~${value}~`;
                 },
-                strong(node, _parent, state, info) {
+                strong: (node, _parent, state, info) => {
                   const value = state.containerPhrasing(node, info);
                   return `*${value}*`;
                 },
@@ -49,6 +50,6 @@ export const convertRichTextToMarkdown = (
             }
           : {}),
       },
-    })
-    .slice(0, -1);
+    }),
+  );
 };

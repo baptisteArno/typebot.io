@@ -11,33 +11,21 @@ describe("convertRichTextToMarkdown", () => {
         type: "p",
         children: [
           {
+            text: "1) ",
+          },
+          {
             bold: true,
-            text: "Did You Know?",
-            underline: true,
+            text: "Hello world <3",
           },
         ],
       },
       {
         type: "p",
-        children: [
-          {
-            text: "HarbourFront sits along Keppel Harbour, historically known as New Harbour, which was a vital maritime entry point for traders and naval fleets in the 19th century.\n",
-          },
-        ],
-      },
-      {
-        type: "p",
-        children: [
-          {
-            text: "Just like how the MRT brings people into HarbourFront today, Keppel Harbour once welcomed explorers, merchants, and sailors arriving by sea.",
-          },
-        ],
+        children: [{ text: "Text with [ and &amp; &#x3C;" }],
       },
     ];
     const markdown = convertRichTextToMarkdown(richText);
-    expect(markdown).toBe(
-      "**<u>Did You Know?</u>**\nHarbourFront sits along Keppel Harbour, historically known as New Harbour, which was a vital maritime entry point for traders and naval fleets in the 19th century.\n\nJust like how the MRT brings people into HarbourFront today, Keppel Harbour once welcomed explorers, merchants, and sailors arriving by sea.",
-    );
+    expect(markdown).toBe("1) **Hello world <3**\nText with [ and & <");
   });
 
   it("should convert new lines correctly", () => {
