@@ -78,7 +78,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const chatSession = await getSession(result.lastChatSessionId);
 
-    if (chatSession?.state.whatsApp) {
+    if (chatSession?.state?.whatsApp) {
       if (!typebot.whatsAppCredentialsId)
         return internalServerError(
           res,
@@ -91,14 +91,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           "Expected session ID to be in format: wa-{phoneNumberId}-{receivedMessage.from}",
         );
       await resumeWhatsAppFlow({
-        receivedMessage: {
-          from,
-          timestamp: new Date().toISOString(),
-          type: "webhook",
-          webhook: {
-            data: parseBodyForWhatsApp(req),
+        receivedMessages: [
+          {
+            from,
+            timestamp: new Date().toISOString(),
+            type: "webhook",
+            webhook: {
+              data: parseBodyForWhatsApp(req),
+            },
           },
-        },
+        ],
         workspaceId: typebot.workspace.id,
         sessionId: chatSession.id,
         credentialsId: typebot.whatsAppCredentialsId,

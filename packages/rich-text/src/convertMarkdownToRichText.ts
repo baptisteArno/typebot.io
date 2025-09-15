@@ -1,10 +1,10 @@
 import type { Paragraph, Root, Text } from "mdast";
-import { createPlateEditor } from "platejs/react";
 import type { Plugin } from "unified";
+import { createSlateEditor } from "./plate";
 import { plateCorePlugins } from "./plateCorePlugins";
 
 export const convertMarkdownToRichText = (data: string) => {
-  const editor = createPlateEditor({
+  const editor = createSlateEditor({
     plugins: plateCorePlugins,
   });
 

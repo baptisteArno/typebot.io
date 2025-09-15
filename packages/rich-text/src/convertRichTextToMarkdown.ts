@@ -1,5 +1,4 @@
-import type { Descendant, Element } from "platejs";
-import { createPlateEditor } from "platejs/react";
+import { createSlateEditor, type Descendant, type Element } from "./plate";
 import { plateCorePlugins } from "./plateCorePlugins";
 
 type Options = {
@@ -14,7 +13,7 @@ export const convertRichTextToMarkdown = (
   richText: Element[] | Descendant[],
   { flavour = defaultOptions.flavour }: Options = defaultOptions,
 ) => {
-  const editor = createPlateEditor({
+  const editor = createSlateEditor({
     plugins: plateCorePlugins,
   });
 

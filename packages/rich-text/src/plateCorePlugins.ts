@@ -1,15 +1,7 @@
-import {
-  BoldPlugin,
-  ItalicPlugin,
-  UnderlinePlugin,
-} from "@platejs/basic-nodes/react";
 import { MarkdownPlugin, remarkMdx } from "@platejs/markdown";
 import { ExitBreakPlugin } from "platejs";
 
 export const plateCorePlugins = [
-  BoldPlugin,
-  ItalicPlugin,
-  UnderlinePlugin,
   MarkdownPlugin.configure({
     options: {
       remarkPlugins: [remarkMdx],

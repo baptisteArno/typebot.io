@@ -15,7 +15,7 @@ export const updateTypebotInSession = async ({ user, sessionId }: Props) => {
   if (!user)
     throw new TRPCError({ code: "UNAUTHORIZED", message: "Unauthorized" });
   const session = await getSession(sessionId);
-  if (!session)
+  if (!session?.state)
     throw new TRPCError({ code: "NOT_FOUND", message: "Session not found" });
 
   const publicTypebot = (await prisma.publicTypebot.findFirst({
