@@ -37,6 +37,10 @@ export const convertRichTextToMarkdown = (
           ? {
               handlers: {
                 text: textHandler,
+                link: (node, _parent, state, info) => {
+                  const text = state.containerPhrasing(node, info);
+                  return text ? `${text} (${node.url})` : node.url;
+                },
                 delete: (node, _parent, state, info) => {
                   const value = state.containerPhrasing(node, info);
                   return `~${value}~`;
@@ -50,6 +54,10 @@ export const convertRichTextToMarkdown = (
           : {
               handlers: {
                 text: textHandler,
+                link: (node, _parent, state, info) => {
+                  const text = state.containerPhrasing(node, info);
+                  return text ? `[${text}](${node.url})` : node.url;
+                },
               },
             }),
       },
