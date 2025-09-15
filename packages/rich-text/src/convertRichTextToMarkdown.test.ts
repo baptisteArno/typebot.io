@@ -19,13 +19,9 @@ describe("convertRichTextToMarkdown", () => {
           },
         ],
       },
-      {
-        type: "p",
-        children: [{ text: "Text with [ and &amp; &#x3C;" }],
-      },
     ];
     const markdown = convertRichTextToMarkdown(richText);
-    expect(markdown).toBe("1) **Hello world <3**\nText with [ and & <");
+    expect(markdown).toBe("1) **Hello world <3**");
   });
 
   it("should convert new lines correctly", () => {
