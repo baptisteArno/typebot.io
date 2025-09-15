@@ -9,11 +9,35 @@ describe("convertRichTextToMarkdown", () => {
     const richText: TElement[] = [
       {
         type: "p",
-        children: [{ text: "Hello, world!" }],
+        children: [
+          {
+            bold: true,
+            text: "Did You Know?",
+            underline: true,
+          },
+        ],
+      },
+      {
+        type: "p",
+        children: [
+          {
+            text: "HarbourFront sits along Keppel Harbour, historically known as New Harbour, which was a vital maritime entry point for traders and naval fleets in the 19th century.\n",
+          },
+        ],
+      },
+      {
+        type: "p",
+        children: [
+          {
+            text: "Just like how the MRT brings people into HarbourFront today, Keppel Harbour once welcomed explorers, merchants, and sailors arriving by sea.",
+          },
+        ],
       },
     ];
     const markdown = convertRichTextToMarkdown(richText);
-    expect(markdown).toBe("Hello, world!");
+    expect(markdown).toBe(
+      "**<u>Did You Know?</u>**\nHarbourFront sits along Keppel Harbour, historically known as New Harbour, which was a vital maritime entry point for traders and naval fleets in the 19th century.\n\nJust like how the MRT brings people into HarbourFront today, Keppel Harbour once welcomed explorers, merchants, and sailors arriving by sea.",
+    );
   });
 
   it("should convert new lines correctly", () => {
