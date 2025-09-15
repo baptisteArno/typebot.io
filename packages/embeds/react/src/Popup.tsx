@@ -42,7 +42,9 @@ export const Popup = (props: Props) => {
   }, [attachPopupToContainer, props]);
 
   useEffect(() => {
-    import("./web");
+    if (!customElements.get("typebot-popup")) {
+      import("./web");
+    }
     return () => {
       popupRef.current?.remove();
       popupRef.current = null;

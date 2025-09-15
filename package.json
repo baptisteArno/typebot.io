@@ -29,7 +29,8 @@
     "pull-locales": "dotenv -e .env -- tolgee pull && bun format-and-lint:fix",
     "push-locales": "dotenv -e .env -- tolgee push",
     "create-new-block": "cd packages/forge/cli && bun start",
-    "check-unused-dependencies": "bun packages/scripts/src/checkDependencies.ts"
+    "check-unused-dependencies": "bun packages/scripts/src/checkDependencies.ts",
+    "restore": "echo 'Cleaning...' && rimraf node_modules **/node_modules bun.lock **/dist **/.next && bun i"
   },
   "devDependencies": {
     "@biomejs/biome": "2.2.3",
@@ -37,7 +38,8 @@
     "husky": "9.1.7",
     "sherif": "1.6.1",
     "turbo": "2.5.6",
-    "typescript": "5.9.2"
+    "typescript": "5.9.2",
+    "rimraf": "6.0.1"
   },
   "packageManager": "bun@1.2.21",
   "engines": {
