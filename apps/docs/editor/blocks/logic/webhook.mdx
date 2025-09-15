@@ -3,6 +3,15 @@ title: Webhook
 icon: webhook
 ---
 
+<Warning>
+
+The **Webhook block** is often confused with the [HTTP Request block](/editor/blocks/integrations/http-request).
+
+- Use the **Webhook block** when you want Typebot to **pause and wait** until an external service calls back Typebot.
+- Use the **HTTP Request block** if you want Typebot to **immediately call an API** or trigger a N8N scenario, etc. and get a response back.
+
+</Warning>
+
 The Webhook block allows you to pause the conversation until a provided webhook URL is called.
 
 This can be useful if you want to execute a long-running action that can take several minutes to complete.
