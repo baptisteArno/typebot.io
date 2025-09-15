@@ -36,6 +36,21 @@ export const destroyUser = async (userEmail?: string) => {
 
   if (workspaces.length === 0) {
     console.log("No workspaces found");
+    const user = await prisma.user.findUnique({
+      where: { email },
+      select: { id: true },
+    });
+    if (user) {
+      console.log(`User found: ${user.id}`);
+      const proceed = await confirm({ message: "Remove user?" });
+      if (!proceed || typeof proceed !== "boolean") {
+        console.log("Aborting");
+        return;
+      }
+      await prisma.user.delete({ where: { id: user.id } });
+      await removeObjectsFromUser(user.id);
+      console.log(`User deleted.`, JSON.stringify(user, null, 2));
+    }
     return;
   }
 
