@@ -14,6 +14,7 @@ export const getSession = async (sessionId: string) => {
       // Retrocompatibility with old sessions
       if (val && typeof val === "object" && Object.keys(val).length === 0)
         return null;
+      return val;
     }, sessionStateSchema.nullable())
     .parse(session.state);
   Sentry.setUser({ id: parsedState?.typebotsQueue[0].typebot.id });
