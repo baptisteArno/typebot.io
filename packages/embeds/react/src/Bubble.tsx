@@ -25,23 +25,18 @@ export const Bubble = (props: Props) => {
   const ref = useRef<BubbleElement | null>(null);
 
   useEffect(() => {
-    if (!customElements.get("typebot-bubble")) {
-      import("./web");
-    }
+    import("./web");
   }, []);
 
   useEffect(() => {
-    (async () => {
-      if (props.theme?.position === "static" && !ref.current) return;
-      if (!ref.current) {
-        ref.current = document.createElement("typebot-bubble") as BubbleElement;
-        document.body.prepend(ref.current);
-      }
-      const { typebot, ...rest } = props;
-      await customElements.whenDefined("typebot-bubble");
-      // We assign typebot last to ensure initializeBubble is triggered with all the initial values
-      Object.assign(ref.current, rest, { typebot });
-    })();
+    if (props.theme?.position === "static" && !ref.current) return;
+    if (!ref.current) {
+      ref.current = document.createElement("typebot-bubble") as BubbleElement;
+      document.body.prepend(ref.current);
+    }
+    const { typebot, ...rest } = props;
+    // We assign typebot last to ensure initializeBubble is triggered with all the initial values
+    Object.assign(ref.current, rest, { typebot });
   }, [props]);
 
   useEffect(() => {
