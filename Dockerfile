@@ -29,6 +29,11 @@ COPY turbo.json turbo.json
 
 RUN SKIP_ENV_CHECK=true pnpm turbo run build --filter=${SCOPE}...
 
+# Garantir que o diretório de origem do dist-wss exista mesmo quando o SCOPE não for "builder"
+# (o COPY não pode ser condicional; se o caminho não existir o build falha).
+# Assim, quando SCOPE != builder copiamos apenas um diretório vazio.
+RUN if [ "${SCOPE}" != "builder" ]; then mkdir -p /app/apps/${SCOPE}/dist-wss; fi
+
 FROM base AS runner
 WORKDIR /app
 
