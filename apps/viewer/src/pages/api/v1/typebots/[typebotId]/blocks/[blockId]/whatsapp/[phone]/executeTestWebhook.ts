@@ -55,21 +55,23 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const chatSession = await getSession(`wa-preview-${phone}`);
 
-    if (!chatSession?.state.whatsApp)
+    if (!chatSession?.state?.whatsApp)
       return badRequest(res, "Expected whatsapp chat session");
 
     await resumeWhatsAppFlow({
-      receivedMessage: {
-        from: chatSession.id.split("-").at(-1)!,
-        timestamp: new Date().toISOString(),
-        type: "webhook",
-        webhook: {
-          data:
-            typeof req.body === "string"
-              ? JSON.stringify({ data: JSON.parse(req.body) })
-              : JSON.stringify({ data: req.body }, null, 2),
+      receivedMessages: [
+        {
+          from: chatSession.id.split("-").at(-1)!,
+          timestamp: new Date().toISOString(),
+          type: "webhook",
+          webhook: {
+            data:
+              typeof req.body === "string"
+                ? JSON.stringify({ data: JSON.parse(req.body) })
+                : JSON.stringify({ data: req.body }, null, 2),
+          },
         },
-      },
+      ],
       sessionId: chatSession.id,
       callFrom: "webhook",
     });

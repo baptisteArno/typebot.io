@@ -30,7 +30,7 @@ export const continueChat = async ({
 }: Props) => {
   const session = await getSession(sessionId);
 
-  if (!session) {
+  if (!session?.state) {
     throw new TRPCError({
       code: "NOT_FOUND",
       message: "Session not found.",

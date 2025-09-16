@@ -1,5 +1,4 @@
-import type { Descendant, Element } from "platejs";
-import { createPlateEditor } from "platejs/react";
+import { createSlateEditor, type Descendant, type Element } from "./plate";
 import { plateCorePlugins } from "./plateCorePlugins";
 
 type Options = {
@@ -14,7 +13,7 @@ export const convertRichTextToMarkdown = (
   richText: Element[] | Descendant[],
   { flavour = defaultOptions.flavour }: Options = defaultOptions,
 ) => {
-  const editor = createPlateEditor({
+  const editor = createSlateEditor({
     plugins: plateCorePlugins,
   });
 
@@ -38,6 +37,10 @@ export const convertRichTextToMarkdown = (
           ? {
               handlers: {
                 text: textHandler,
+                link: (node, _parent, state, info) => {
+                  const text = state.containerPhrasing(node, info);
+                  return text ? `${text} (${node.url})` : node.url;
+                },
                 delete: (node, _parent, state, info) => {
                   const value = state.containerPhrasing(node, info);
                   return `~${value}~`;
@@ -51,6 +54,10 @@ export const convertRichTextToMarkdown = (
           : {
               handlers: {
                 text: textHandler,
+                link: (node, _parent, state, info) => {
+                  const text = state.containerPhrasing(node, info);
+                  return text ? `[${text}](${node.url})` : node.url;
+                },
               },
             }),
       },

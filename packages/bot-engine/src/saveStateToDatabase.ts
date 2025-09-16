@@ -9,7 +9,7 @@ import type { SetVariableHistoryItem } from "@typebot.io/variables/schemas";
 import { upsertResult } from "./queries/upsertResult";
 
 type Props = {
-  session: Pick<ChatSession, "state"> & { id?: string; isReplying?: boolean };
+  session: Pick<ChatSession, "state"> & { id?: string };
   input: ContinueChatResponse["input"];
   logs: ContinueChatResponse["logs"];
   clientSideActions: ContinueChatResponse["clientSideActions"];
@@ -25,7 +25,7 @@ type Props = {
 
 export const saveStateToDatabase = async ({
   sessionId,
-  session: { state, isReplying },
+  session: { state },
   input,
   logs,
   clientSideActions,
@@ -54,7 +54,7 @@ export const saveStateToDatabase = async ({
         updateSession({
           id: sessionId.id,
           state,
-          isReplying: isReplying ?? false,
+          isReplying: isWaitingForExternalEvent ?? false,
         }),
       );
   }
@@ -65,7 +65,7 @@ export const saveStateToDatabase = async ({
       : await createSession({
           id: sessionId.id,
           state,
-          isReplying: isReplying ?? false,
+          isReplying: isWaitingForExternalEvent,
         });
 
   if (!resultId) {

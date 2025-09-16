@@ -148,13 +148,19 @@ describe("convertRichTextToMarkdown", () => {
       },
     ];
     const parsedRichText = parseVariablesInRichText(richText, {
-      variables: [{ id: "1", name: "URL", value: "https://example.com" }],
+      variables: [
+        {
+          id: "1",
+          name: "URL",
+          value: "https://example.com?test=test&val=val",
+        },
+      ],
       sessionStore: new SessionStore(),
       takeLatestIfList: false,
     });
     const markdown = convertRichTextToMarkdown(parsedRichText.parsedElements);
     expect(markdown).toBe(
-      "Welcome to **AA** (Awesome Agency)\n\nhttps://example.com\n\n[Yo](https://example.com)",
+      "Welcome to **AA** (Awesome Agency)\n\nhttps://example.com?test=test&val=val\n\n[Yo](https://example.com?test=test&val=val)",
     );
   });
 });

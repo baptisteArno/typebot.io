@@ -12,11 +12,12 @@ export const updateSession = ({
   id,
   state,
   isReplying,
-}: Props): Prisma.PrismaPromise<any> =>
-  prisma.chatSession.updateMany({
+}: Props): Prisma.PrismaPromise<any> => {
+  return prisma.chatSession.updateMany({
     where: { id },
     data: {
       state,
       isReplying,
     },
   });
+};

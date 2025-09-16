@@ -4,7 +4,7 @@ import { continueBotFlow } from "@typebot.io/bot-engine/continueBotFlow";
 import { saveStateToDatabase } from "@typebot.io/bot-engine/saveStateToDatabase";
 import type { Message } from "@typebot.io/chat-api/schemas";
 import { getSession } from "@typebot.io/chat-session/queries/getSession";
-import { setIsReplyingInChatSession } from "@typebot.io/chat-session/queries/setIsReplyingInChatSession";
+import { upsertSession } from "@typebot.io/chat-session/queries/upsertSession";
 import type { SessionState } from "@typebot.io/chat-session/schemas";
 import { decrypt } from "@typebot.io/credentials/decrypt";
 import { getCredentials } from "@typebot.io/credentials/getCredentials";
@@ -29,10 +29,11 @@ import { sendChatReplyToWhatsApp } from "./sendChatReplyToWhatsApp";
 import { startWhatsAppSession } from "./startWhatsAppSession";
 import { WhatsAppError } from "./WhatsAppError";
 
-const incomingMessageDebounce = 3000;
+const MESSAGE_TOO_OLD_ELAPSED_MS = 3 * 60 * 1000; // 3 minutes
+const INCOMING_MEDIA_MESSAGE_DEBOUNCE = 3_000;
 
 type Props = {
-  receivedMessage: WhatsAppIncomingMessage;
+  receivedMessages: WhatsAppIncomingMessage[];
   sessionId: string;
   credentialsId?: string;
   phoneNumberId?: string;
@@ -42,13 +43,17 @@ type Props = {
   callFrom?: "webhook";
 };
 
-const isMessageTooOld = (receivedMessage: WhatsAppIncomingMessage) => {
-  const messageSendDate = new Date(Number(receivedMessage.timestamp) * 1000);
-  return messageSendDate.getTime() < Date.now() - 180000;
+const areMessagesTooOld = (receivedMessages: WhatsAppIncomingMessage[]) => {
+  return receivedMessages.every(
+    (message) =>
+      new Date(Number(message.timestamp) * 1000).getTime() <
+      Date.now() - MESSAGE_TOO_OLD_ELAPSED_MS,
+  );
 };
 
 export const resumeWhatsAppFlow = async ({
-  receivedMessage,
+  receivedMessages,
+  referral,
   sessionId,
   workspaceId,
   credentialsId,
@@ -56,9 +61,11 @@ export const resumeWhatsAppFlow = async ({
   contact,
   callFrom,
 }: Props) => {
-  if (isMessageTooOld(receivedMessage))
+  if (receivedMessages.length === 0)
+    throw new WhatsAppError("Received messages is empty");
+  if (areMessagesTooOld(receivedMessages))
     throw new WhatsAppError("Message is too old", {
-      timestamp: receivedMessage.timestamp,
+      timestamps: receivedMessages.map((message) => message.timestamp),
     });
 
   const isPreview = workspaceId === undefined || credentialsId === undefined;
@@ -81,34 +88,34 @@ export const resumeWhatsAppFlow = async ({
     });
 
   const session = await getSession(sessionId);
+  if (session && !session.state)
+    throw new WhatsAppError("Session is empty. Most likely in reply state.");
 
   const aggregationResponse =
     await aggregateParallelMediaMessagesIfRedisEnabled({
-      receivedMessage,
-      existingSessionId: session?.id,
-      newSessionId: sessionId,
+      receivedMessages,
+      sessionId,
     });
 
   if (aggregationResponse.status === "found newer message")
     throw new WhatsAppError("Found newer message, skipping this one");
 
   const isSessionExpired =
-    session &&
+    isDefined(session?.state) &&
     isDefined(session.state.expiryTimeout) &&
     session?.updatedAt.getTime() + session.state.expiryTimeout < Date.now();
 
   if (!isSessionExpired && session?.isReplying && callFrom !== "webhook")
     throw new WhatsAppError("Is in reply state");
   else if (aggregationResponse.status === "treat as unique message") {
-    await setIsReplyingInChatSession({
-      existingSessionId: session?.id,
-      newSessionId: sessionId,
+    await upsertSession(sessionId, {
+      isReplying: true,
     });
   }
 
-  const currentTypebot = session?.state.typebotsQueue[0].typebot;
+  const currentTypebot = session?.state?.typebotsQueue[0].typebot;
   const { block } =
-    (currentTypebot && session?.state.currentBlockId
+    (currentTypebot && session?.state?.currentBlockId
       ? getBlockById(session.state.currentBlockId, currentTypebot.groups)
       : undefined) ?? {};
   const reply = await convertWhatsAppMessageToTypebotMessage({
@@ -116,7 +123,7 @@ export const resumeWhatsAppFlow = async ({
     workspaceId,
     credentials,
     typebotId: currentTypebot?.id,
-    resultId: session?.state.typebotsQueue[0].resultId,
+    resultId: session?.state?.typebotsQueue[0].resultId,
     block,
   });
 
@@ -129,7 +136,7 @@ export const resumeWhatsAppFlow = async ({
     newSessionState,
     isWaitingForWebhook,
   } = await resumeFlowAndSendWhatsAppMessages({
-    to: receivedMessage.from,
+    to: receivedMessages[0].from,
     credentials,
     isSessionExpired,
     reply,
@@ -138,6 +145,7 @@ export const resumeWhatsAppFlow = async ({
     contact,
     workspaceId,
     credentialsId,
+    referral,
   });
   deleteSessionStore(sessionId);
 
@@ -150,7 +158,6 @@ export const resumeWhatsAppFlow = async ({
       id: sessionId,
     },
     session: {
-      isReplying: isWaitingForWebhook,
       state: {
         ...newSessionState,
         currentBlockId:
@@ -181,34 +188,29 @@ const convertWhatsAppMessageToTypebotMessage = async ({
   block?: Block;
 }): Promise<Message | undefined> => {
   let text = "";
+  const append = (s: string) => (text = text !== "" ? `${text}\n\n${s}` : s);
   let replyId: string | undefined;
   const attachedFileUrls: string[] = [];
   for (const message of messages) {
     switch (message.type) {
       case "text": {
-        if (text !== "") text += `\n\n${message.text.body}`;
-        else text = message.text.body;
+        append(message.text.body);
         break;
       }
       case "button": {
-        if (text !== "") text += `\n\n${message.button.text}`;
-        else text = message.button.text;
+        append(message.button.text);
         break;
       }
       case "interactive": {
         switch (message.interactive.type) {
           case "button_reply": {
             replyId = message.interactive.button_reply.id;
-            if (text !== "")
-              text += `\n\n${message.interactive.button_reply.title}`;
-            else text = message.interactive.button_reply.title;
+            append(message.interactive.button_reply.title);
             break;
           }
           case "list_reply": {
             replyId = message.interactive.list_reply.id;
-            if (text !== "")
-              text += `\n\n${message.interactive.list_reply.title}`;
-            else text = message.interactive.list_reply.title;
+            append(message.interactive.list_reply.title);
             break;
           }
         }
@@ -241,7 +243,7 @@ const convertWhatsAppMessageToTypebotMessage = async ({
           mediaId = message.sticker.id;
           mimeType = message.sticker.mime_type;
         }
-        if (!mediaId) return;
+        if (!mediaId) continue;
 
         const fileVisibility =
           block?.type === InputBlockType.TEXT &&
@@ -285,12 +287,12 @@ const convertWhatsAppMessageToTypebotMessage = async ({
             url: fileUrl,
           };
         if (block?.type === InputBlockType.FILE) {
-          if (text !== "") text += `, ${fileUrl}`;
-          else text = fileUrl;
+          append(fileUrl);
         } else if (block?.type === InputBlockType.TEXT) {
           let caption: string | undefined;
           if (message.type === "document" && message.document.caption) {
-            if (!/^[\w,\s-]+\.[A-Za-z]{3}$/.test(message.document.caption))
+            const looksLikeFilename = /^[\w,\s-]+\.[A-Za-z0-9]{1,10}$/;
+            if (!looksLikeFilename.test(message.document.caption))
               caption = message.document.caption;
           } else if (message.type === "image" && message.image.caption)
             caption = message.image.caption;
@@ -303,8 +305,7 @@ const convertWhatsAppMessageToTypebotMessage = async ({
       }
       case "location": {
         const location = `${message.location.latitude}, ${message.location.longitude}`;
-        if (text !== "") text += `\n\n${location}`;
-        else text = location;
+        append(location);
         break;
       }
       case "webhook": {
@@ -355,18 +356,20 @@ const getWhatsAppCredentials = async ({
   return data;
 };
 
+/**
+ * Leverages Redis to aggregate incoming media messages.
+ * For now, only used for media messages because they are by default sent as multiple sequential messages by WhatsApp.
+ */
 const aggregateParallelMediaMessagesIfRedisEnabled = async ({
-  receivedMessage,
-  existingSessionId,
-  newSessionId,
+  receivedMessages,
+  sessionId,
 }: {
-  receivedMessage: WhatsAppIncomingMessage;
-  existingSessionId?: string;
-  newSessionId: string;
+  receivedMessages: WhatsAppIncomingMessage[];
+  sessionId: string;
 }): Promise<
   | {
       status: "treat as unique message";
-      incomingMessages: [WhatsAppIncomingMessage];
+      incomingMessages: WhatsAppIncomingMessage[];
     }
   | {
       status: "found newer message";
@@ -376,20 +379,25 @@ const aggregateParallelMediaMessagesIfRedisEnabled = async ({
       incomingMessages: WhatsAppIncomingMessage[];
     }
 > => {
-  if (redis && ["document", "video", "image"].includes(receivedMessage.type)) {
-    const redisKey = `wasession:${newSessionId}`;
+  if (
+    redis &&
+    ["document", "video", "image"].includes(receivedMessages[0].type)
+  ) {
+    const redisKey = `wasession:${sessionId}`;
     try {
-      const len = await redis.rpush(redisKey, JSON.stringify(receivedMessage));
+      const len = await redis.rpush(
+        redisKey,
+        JSON.stringify(receivedMessages[0]),
+      );
 
       if (len === 1) {
-        await setIsReplyingInChatSession({
-          existingSessionId,
-          newSessionId,
+        await upsertSession(sessionId, {
+          isReplying: true,
         });
       }
 
       await new Promise((resolve) =>
-        setTimeout(resolve, incomingMessageDebounce),
+        setTimeout(resolve, INCOMING_MEDIA_MESSAGE_DEBOUNCE),
       );
 
       const newMessagesResponse = await redis.lrange(redisKey, 0, -1);
@@ -406,19 +414,23 @@ const aggregateParallelMediaMessagesIfRedisEnabled = async ({
         ),
       };
     } catch (error) {
-      console.error("Failed to process webhook event:", error, receivedMessage);
+      console.error(
+        "Failed to process webhook event:",
+        error,
+        receivedMessages,
+      );
     }
   }
 
   return {
     status: "treat as unique message",
-    incomingMessages: [receivedMessage],
+    incomingMessages: receivedMessages,
   };
 };
 
 const resumeFlowAndSendWhatsAppMessages = async (props: {
   to: string;
-  state: SessionState | undefined;
+  state: SessionState | null | undefined;
   sessionStore: SessionStore;
   reply: Message | undefined;
   contact?: NonNullable<SessionState["whatsApp"]>["contact"];
@@ -486,7 +498,7 @@ const resumeFlow = ({
   reply: Message | undefined;
   contact?: NonNullable<SessionState["whatsApp"]>["contact"];
   referral?: WhatsAppMessageReferral;
-  state: SessionState | undefined;
+  state: SessionState | null | undefined;
   credentials: WhatsAppCredentials["data"];
   isSessionExpired: boolean | null;
   credentialsId?: string;

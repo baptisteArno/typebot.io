@@ -1,20 +1,23 @@
 import * as Sentry from "@sentry/nextjs";
 import prisma from "@typebot.io/prisma";
+import { z } from "@typebot.io/zod";
 import { sessionStateSchema } from "../schemas";
-import { deleteSession } from "./deleteSession";
 
 export const getSession = async (sessionId: string) => {
   const session = await prisma.chatSession.findUnique({
     where: { id: sessionId },
     select: { id: true, state: true, updatedAt: true, isReplying: true },
   });
-  if (!session?.state) return null;
-  if (Object.keys(session.state).length === 0) {
-    if (!session.isReplying) await deleteSession(session.id);
-    throw new Error("Session is empty but isReplying is false");
-  }
-  const parsedState = sessionStateSchema.parse(session.state);
-  Sentry.setUser({ id: parsedState.typebotsQueue[0].typebot.id });
+  if (!session) return null;
+  const parsedState = z
+    .preprocess((val) => {
+      // Retrocompatibility with old sessions
+      if (val && typeof val === "object" && Object.keys(val).length === 0)
+        return null;
+      return val;
+    }, sessionStateSchema.nullable())
+    .parse(session.state);
+  Sentry.setUser({ id: parsedState?.typebotsQueue[0].typebot.id });
   return {
     ...session,
     state: parsedState,

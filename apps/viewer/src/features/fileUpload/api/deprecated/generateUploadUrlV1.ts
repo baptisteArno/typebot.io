@@ -108,7 +108,7 @@ export const generateUploadUrlV1 = publicProcedure
 
     const session = await getSession(filePathProps.sessionId);
 
-    if (!session)
+    if (!session?.state)
       throw new TRPCError({
         code: "BAD_REQUEST",
         message: "Can't find session",

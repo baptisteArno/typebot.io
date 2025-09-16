@@ -42,7 +42,7 @@ export const sendMessageV1 = publicProcedure
       const newSessionId = sessionId ?? createId();
 
       const isSessionExpired =
-        session &&
+        session?.state &&
         isDefined(session.state.expiryTimeout) &&
         session.updatedAt.getTime() + session.state.expiryTimeout < Date.now();
 
@@ -53,7 +53,7 @@ export const sendMessageV1 = publicProcedure
         });
 
       const sessionStore = getSessionStore(newSessionId);
-      if (!session) {
+      if (!session?.state) {
         if (!startParams)
           throw new TRPCError({
             code: "BAD_REQUEST",
