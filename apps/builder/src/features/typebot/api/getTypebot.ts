@@ -46,33 +46,7 @@ export const getTypebot = publicProcedure
         where: {
           id: typebotId,
         },
-        select: {
-          id: true,
-          name: true,
-          icon: true,
-          groups: true,
-          events: true,
-          variables: true,
-          edges: true,
-          theme: true,
-          settings: true,
-          publicId: true,
-          customDomain: true,
-          createdAt: true,
-          updatedAt: true,
-          version: true,
-          folderId: true,
-          workspaceId: true,
-          resultsTablePreferences: true,
-          selectedThemeTemplateId: true,
-          isArchived: true,
-          isClosed: true,
-          whatsAppCredentialsId: true,
-          riskLevel: true,
-          isBeingEdited: true,
-          editingUserEmail: true,
-          editingUserName: true,
-          editingStartedAt: true,
+        include: {
           collaborators: true,
           workspace: {
             select: {
@@ -120,29 +94,10 @@ export const getTypebot = publicProcedure
 
 const getCurrentUserMode = (
   user: { email: string | null; id: string } | undefined,
-  typebot: {
-    collaborators: { userId: string; type: CollaborationType }[]
-    isBeingEdited?: boolean | null
-    editingUserEmail?: string | null
-    editingUserName?: string | null
-    editingStartedAt?: Date | null
-  } & {
+  typebot: { collaborators: { userId: string; type: CollaborationType }[] } & {
     workspace: { members: { userId: string }[] }
   }
 ) => {
-  if (
-    typebot.isBeingEdited &&
-    typebot.editingUserEmail &&
-    typebot.editingUserEmail !== user?.email
-  ) {
-    const fifteenSecondsAgo = new Date(Date.now() - 15000)
-    const editingStartedAt = typebot.editingStartedAt
-
-    if (editingStartedAt && editingStartedAt >= fifteenSecondsAgo) {
-      return 'read'
-    }
-  }
-
   const collaborator = typebot.collaborators.find((c) => c.userId === user?.id)
   const isMemberOfWorkspace = typebot.workspace.members.some(
     (m) => m.userId === user?.id

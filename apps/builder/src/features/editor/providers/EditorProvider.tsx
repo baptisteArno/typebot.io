@@ -1,21 +1,18 @@
-import { env } from '@typebot.io/env'
-import { Typebot } from '@typebot.io/schemas'
 import {
   createContext,
   Dispatch,
   ReactNode,
   SetStateAction,
-  useCallback,
   useContext,
+  useState,
   useEffect,
   useRef,
-  useState,
+  useCallback,
 } from 'react'
-import { useValidation, ValidationError } from '../hooks/useValidation'
+import { ValidationError, useValidation } from '../hooks/useValidation'
 import { useTypebot } from './TypebotProvider'
-
-import { useUser } from '@/features/account/hooks/useUser'
-import { trpc } from '@/lib/trpc'
+import { Typebot } from '@typebot.io/schemas'
+import { env } from '@typebot.io/env'
 
 type MinimalTypebot = Pick<Typebot, 'groups' | 'edges'>
 
@@ -23,17 +20,6 @@ export enum RightPanel {
   PREVIEW,
   VARIABLES,
   VALIDATION_ERRORS,
-}
-
-export type SocketUser = {
-  id: string
-  name?: string
-  email?: string
-}
-
-export type SocketOnlineData = {
-  count: number
-  users: Array<SocketUser>
 }
 
 const editorContext = createContext<{
@@ -50,45 +36,16 @@ const editorContext = createContext<{
   isValidating: boolean
   isSidebarExtended: boolean
   setIsSidebarExtended: Dispatch<SetStateAction<boolean>>
-  isUserEditing: boolean
-  onlineData: SocketOnlineData | null
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   //@ts-ignore
 }>({})
 
 export const EditorProvider = ({ children }: { children: ReactNode }) => {
-  const { typebot, setIsSocketEditor } = useTypebot()
+  const { typebot } = useTypebot()
   const [rightPanel, setRightPanel] = useState<RightPanel>()
   const [startPreviewAtGroup, setStartPreviewAtGroup] = useState<string>()
   const [startPreviewAtEvent, setStartPreviewAtEvent] = useState<string>()
   const [isSidebarExtended, setIsSidebarExtended] = useState(true)
-
-  const [onlineData, setOnlineData] = useState<SocketOnlineData | null>(null)
-
-  const { user: currentUser } = useUser()
-
-  trpc.onlineUsers.subscribe.useSubscription(
-    {
-      typebotId: typebot?.id ?? '',
-      user: {
-        id: currentUser?.id ?? '',
-        name: currentUser?.name ?? undefined,
-        email: currentUser?.email ?? undefined,
-      },
-    },
-    {
-      enabled: !!typebot?.id,
-      onData: (data) => {
-        setOnlineData(data)
-      },
-      onError: (error) => {
-        console.error('Error in online users subscription:', error)
-      },
-    }
-  )
-
-  const userWithEditingRights = onlineData?.users[0]
-  const isUserEditing = userWithEditingRights?.id === currentUser?.id
 
   const {
     validationErrors,
@@ -122,10 +79,6 @@ export const EditorProvider = ({ children }: { children: ReactNode }) => {
     },
     [validateTypebot]
   )
-
-  useEffect(() => {
-    setIsSocketEditor(isUserEditing)
-  }, [isUserEditing, setIsSocketEditor])
 
   useEffect(() => {
     if (
@@ -173,8 +126,6 @@ export const EditorProvider = ({ children }: { children: ReactNode }) => {
         isValidating,
         isSidebarExtended,
         setIsSidebarExtended,
-        isUserEditing,
-        onlineData,
       }}
     >
       {children}

@@ -191,10 +191,6 @@ model Typebot {
   isClosed                Boolean                   @default(false)
   whatsAppCredentialsId   String?
   riskLevel               Int?
-  isBeingEdited           Boolean                   @default(false)
-  editingUserEmail        String?
-  editingUserName         String?
-  editingStartedAt        DateTime?
   bannedIps               BannedIp[]
 
   @@index([workspaceId])

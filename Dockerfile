@@ -29,19 +29,12 @@ COPY turbo.json turbo.json
 
 RUN SKIP_ENV_CHECK=true pnpm turbo run build --filter=${SCOPE}...
 
-# Garantir que o diretório de origem do dist-wss exista mesmo quando o SCOPE não for "builder"
-# (o COPY não pode ser condicional; se o caminho não existir o build falha).
-# Assim, quando SCOPE != builder copiamos apenas um diretório vazio.
-RUN if [ "${SCOPE}" != "builder" ]; then mkdir -p /app/apps/${SCOPE}/dist-wss; fi
-
 FROM base AS runner
 WORKDIR /app
 
 COPY --from=builder --chown=node:node /app/apps/${SCOPE}/.next/standalone ./
 COPY --from=builder --chown=node:node /app/apps/${SCOPE}/.next/static ./apps/${SCOPE}/.next/static
 COPY --from=builder --chown=nextjs:nodejs /app/apps/${SCOPE}/public ./apps/${SCOPE}/public
-## Copy compiled wss server (must exist)
-COPY --from=builder --chown=node:node /app/apps/${SCOPE}/dist-wss ./apps/${SCOPE}/dist-wss
 
 ## Copy next-runtime-env and its dependencies for runtime public variable injection
 COPY --from=builder /app/node_modules/.pnpm/chalk@4.1.2/node_modules/chalk ./node_modules/chalk

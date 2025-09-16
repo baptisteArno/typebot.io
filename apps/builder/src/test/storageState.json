@@ -8,10 +8,7 @@
           "name": "typebot-20-modal",
           "value": "hide"
         },
-        {
-          "name": "workspaceId",
-          "value": "proWorkspace"
-        }
+        { "name": "workspaceId", "value": "proWorkspace" }
       ]
     }
   ]

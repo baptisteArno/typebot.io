@@ -6,7 +6,7 @@ export const Default = () => {
     <div style={{ height: '500px' }}>
       <Standard
         typebot={leadGenerationTypebot}
-        apiHost="http://localhost:3001"
+        apiHost="http://localhost:3003"
         isPreview
       />
     </div>
@@ -19,7 +19,7 @@ export const StartWhenIntoView = () => {
       <div style={{ height: '300vh' }} />
       <Standard
         typebot={leadGenerationTypebot}
-        apiHost="http://localhost:3001"
+        apiHost="http://localhost:3003"
         isPreview
         style={{ height: '300px' }}
       />

@@ -52,7 +52,6 @@ export const Toast = ({
       fontSize="sm"
       pos="relative"
       maxW={details ? '450px' : '300px'}
-      marginTop={'60px'}
     >
       <HStack alignItems="flex-start" pr="7" spacing="3" w="full">
         <Icon customIcon={icon} status={status} />{' '}

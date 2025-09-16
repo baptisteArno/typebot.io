@@ -47,28 +47,8 @@ export const publishTypebot = authenticatedProcedure
       where: {
         id: typebotId,
       },
-      select: {
-        id: true,
-        name: true,
-        groups: true,
-        edges: true,
-        events: true,
-        variables: true,
-        theme: true,
-        settings: true,
-        version: true,
-        riskLevel: true,
-        isBeingEdited: true,
-        editingUserEmail: true,
-        editingUserName: true,
-        editingStartedAt: true,
-        workspaceId: true,
-        collaborators: {
-          select: {
-            userId: true,
-            type: true,
-          },
-        },
+      include: {
+        collaborators: true,
         publishedTypebot: true,
         workspace: {
           select: {

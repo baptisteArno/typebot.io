@@ -1,4 +1,16 @@
-import { EditableEmojiOrImageIcon } from '@/components/EditableEmojiOrImageIcon'
+import {
+  Flex,
+  HStack,
+  Button,
+  IconButton,
+  Tooltip,
+  Spinner,
+  Text,
+  useColorModeValue,
+  useDisclosure,
+  StackProps,
+  chakra,
+} from '@chakra-ui/react'
 import {
   ChevronLeftIcon,
   CopyIcon,
@@ -6,35 +18,21 @@ import {
   RedoIcon,
   UndoIcon,
 } from '@/components/icons'
-import { SupportBubble } from '@/components/SupportBubble'
-import { PublishButton } from '@/features/publish/components/PublishButton'
-import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts'
-import { trpc } from '@/lib/trpc'
-import {
-  Button,
-  Flex,
-  HStack,
-  IconButton,
-  Spinner,
-  StackProps,
-  Text,
-  Tooltip,
-  chakra,
-  useColorModeValue,
-  useDisclosure,
-} from '@chakra-ui/react'
-import { useTranslate } from '@tolgee/react'
-import { isDefined, isNotDefined } from '@typebot.io/lib'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import React, { useState } from 'react'
+import { isDefined, isNotDefined } from '@typebot.io/lib'
+import { EditableTypebotName } from './EditableTypebotName'
+import Link from 'next/link'
+import { EditableEmojiOrImageIcon } from '@/components/EditableEmojiOrImageIcon'
 import { useDebouncedCallback } from 'use-debounce'
+import { PublishButton } from '@/features/publish/components/PublishButton'
 import { headerHeight } from '../constants'
 import { RightPanel, useEditor } from '../providers/EditorProvider'
 import { useTypebot } from '../providers/TypebotProvider'
-import { EditableTypebotName } from './EditableTypebotName'
-import { OnlineUsersIndicator } from './OnlineUsersIndicator'
+import { SupportBubble } from '@/components/SupportBubble'
+import { useTranslate } from '@tolgee/react'
 import { GuestTypebotHeader } from './UnauthenticatedTypebotHeader'
+import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts'
 
 export const TypebotHeader = () => {
   const { typebot, publishedTypebot, currentUserMode } = useTypebot()
@@ -56,7 +54,6 @@ export const TypebotHeader = () => {
     >
       {isOpen && <SupportBubble autoShowDelay={0} />}
       <LeftElements pos="absolute" left="1rem" />
-
       <TypebotNav
         display={{ base: 'none', xl: 'flex' }}
         pos={{ base: 'absolute' }}
@@ -130,7 +127,7 @@ const LeftElements = ({ ...props }: StackProps) => {
         {router.query.embedded !== 'true' && (
           <IconButton
             as={Link}
-            aria-label={t('editor.header.navigateBack.ariaLabel')}
+            aria-label="Navigate back"
             icon={<ChevronLeftIcon fontSize={25} />}
             href={{
               pathname: router.query.parentId
@@ -257,28 +254,6 @@ const RightElements = ({
     setRightPanel(RightPanel.PREVIEW)
   }
 
-  const { isUserEditing } = useEditor()
-
-  const selectedUserMode = isUserEditing ? currentUserMode : 'guest'
-
-  const { mutate: duplicateTypebot, isLoading: isDuplicating } =
-    trpc.typebot.importTypebot.useMutation({
-      onSuccess: (data) => {
-        router.push(`/typebots/${data.typebot.id}/edit`)
-      },
-    })
-
-  const handleDuplicate = () => {
-    if (!typebot?.workspaceId || !typebot) return
-    duplicateTypebot({
-      workspaceId: typebot.workspaceId,
-      typebot: {
-        ...typebot,
-        name: `${typebot.name} ${t('editor.header.user.duplicateSuffix')}`,
-      },
-    })
-  }
-
   return (
     <HStack {...props}>
       <TypebotNav
@@ -286,32 +261,9 @@ const RightElements = ({
         typebotId={typebot?.id}
         isResultsDisplayed={isResultsDisplayed}
       />
-
-      <OnlineUsersIndicator />
-
       {/* <Flex pos="relative">
         <ShareTypebotButton isLoading={isNotDefined(typebot)} />
       </Flex> */}
-
-      {selectedUserMode === 'guest' && (
-        <Tooltip label={t('editor.header.user.duplicate.tooltip')} hasArrow>
-          <Button
-            size="sm"
-            colorScheme="blue"
-            variant="solid"
-            leftIcon={<CopyIcon />}
-            onClick={handleDuplicate}
-            isLoading={isDuplicating}
-            loadingText={t('editor.header.user.duplicating.loadingText')}
-            fontSize="xs"
-            px={3}
-            py={1}
-          >
-            {t('editor.header.user.duplicateButton.label')}
-          </Button>
-        </Tooltip>
-      )}
-
       {router.pathname.includes('/edit') &&
         rightPanel !== RightPanel.PREVIEW && (
           <Button
@@ -327,8 +279,18 @@ const RightElements = ({
             </chakra.span>
           </Button>
         )}
-
-      {selectedUserMode === 'write' && <PublishButton size="sm" />}
+      {currentUserMode === 'guest' && (
+        <Button
+          as={Link}
+          href={`/typebots/${typebot?.id}/duplicate`}
+          leftIcon={<CopyIcon />}
+          isLoading={isNotDefined(typebot)}
+          size="sm"
+        >
+          Duplicate
+        </Button>
+      )}
+      {currentUserMode === 'write' && <PublishButton size="sm" />}
     </HStack>
   )
 }

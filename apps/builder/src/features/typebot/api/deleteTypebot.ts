@@ -38,10 +38,6 @@ export const deleteTypebot = authenticatedProcedure
       select: {
         id: true,
         groups: true,
-        isBeingEdited: true,
-        editingUserEmail: true,
-        editingUserName: true,
-        editingStartedAt: true,
         workspace: {
           select: {
             isSuspended: true,

@@ -22,7 +22,6 @@
         ".next/**",
         "!.next/cache/**",
         "dist/**",
-        "dist-wss/**",
         "build/**",
         "public/__ENV.js"
       ],

@@ -8,7 +8,6 @@ workspace.code-workspace
 authenticatedState.json
 playwright-report
 dist
-dist-wss
 test-results
 **/src/test/results
 **/src/test/reporters

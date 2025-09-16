@@ -28,9 +28,5 @@ export const convertPublicTypebotToTypebot = (
     whatsAppCredentialsId: existingTypebot.whatsAppCredentialsId,
     riskLevel: existingTypebot.riskLevel,
     events: typebot.events,
-    editingStartedAt: existingTypebot.editingStartedAt,
-    isBeingEdited: existingTypebot.isBeingEdited,
-    editingUserEmail: existingTypebot.editingUserEmail,
-    editingUserName: existingTypebot.editingUserName,
   }
 }

@@ -9,7 +9,6 @@ import { workspaceRouter } from '@/features/workspace/api/router'
 import { router } from '../trpc'
 import { analyticsRouter } from '@/features/analytics/api/router'
 import { collaboratorsRouter } from '@/features/collaboration/api/router'
-import { onlineUsersRouter } from '@/features/collaboration/api/onlineUsersRouter'
 import { customDomainsRouter } from '@/features/customDomains/api/router'
 import { publicWhatsAppRouter } from '@/features/whatsapp/router'
 import { folderRouter } from '@/features/folders/api/router'
@@ -28,7 +27,6 @@ export const publicRouter = router({
   customDomains: customDomainsRouter,
   whatsApp: publicWhatsAppRouter,
   folders: folderRouter,
-  onlineUsers: onlineUsersRouter,
 })
 
 export type PublicRouter = typeof publicRouter

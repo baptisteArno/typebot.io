@@ -58,7 +58,7 @@ export const generateUploadUrl = authenticatedProcedure
       })
 
     const filePath = await parseFilePath({
-      authenticatedUser: user,
+      authenticatedUserId: user?.id,
       uploadProps: filePathProps,
     })
 
@@ -77,21 +77,21 @@ export const generateUploadUrl = authenticatedProcedure
   })
 
 type Props = {
-  authenticatedUser?: { id: string; email: string | null }
+  authenticatedUserId?: string
   uploadProps: FilePathUploadProps
 }
 
 const parseFilePath = async ({
-  authenticatedUser,
+  authenticatedUserId,
   uploadProps: input,
 }: Props): Promise<string> => {
-  if (!authenticatedUser)
+  if (!authenticatedUserId)
     throw new TRPCError({
       code: 'UNAUTHORIZED',
       message: 'You must be logged in to upload this type of file',
     })
   if ('userId' in input) {
-    if (input.userId !== authenticatedUser.id)
+    if (input.userId !== authenticatedUserId)
       throw new TRPCError({
         code: 'UNAUTHORIZED',
         message: 'You are not authorized to upload a file for this user',
@@ -119,7 +119,7 @@ const parseFilePath = async ({
     })
     if (
       !workspace ||
-      isWriteWorkspaceForbidden(workspace, { id: authenticatedUser.id })
+      isWriteWorkspaceForbidden(workspace, { id: authenticatedUserId })
     )
       throw new TRPCError({
         code: 'NOT_FOUND',
@@ -132,9 +132,6 @@ const parseFilePath = async ({
       id: input.typebotId,
     },
     select: {
-      isBeingEdited: true,
-      editingUserEmail: true,
-      editingStartedAt: true,
       workspace: {
         select: {
           plan: true,
@@ -159,8 +156,7 @@ const parseFilePath = async ({
   if (
     !typebot ||
     (await isWriteTypebotForbidden(typebot, {
-      id: authenticatedUser.id,
-      email: authenticatedUser.email,
+      id: authenticatedUserId,
     }))
   )
     throw new TRPCError({

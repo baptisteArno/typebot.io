@@ -1,24 +1,12 @@
 import { getAuthenticatedUser } from '@/features/auth/helpers/getAuthenticatedUser'
 import { inferAsyncReturnType } from '@trpc/server'
-import type { CreateNextContextOptions } from '@trpc/server/adapters/next'
-import type { CreateWSSContextFnOptions } from '@trpc/server/adapters/ws'
+import * as trpcNext from '@trpc/server/adapters/next'
 
-function isNextContext(
-  opts: CreateNextContextOptions | CreateWSSContextFnOptions
-): opts is CreateNextContextOptions {
-  return !!opts.res && 'query' in opts.req
-}
-
-export async function createContext(
-  opts: CreateNextContextOptions | CreateWSSContextFnOptions
-) {
-  if (isNextContext(opts)) {
-    const user = await getAuthenticatedUser(opts.req, opts.res)
-    return { user }
-  }
+export async function createContext(opts: trpcNext.CreateNextContextOptions) {
+  const user = await getAuthenticatedUser(opts.req, opts.res)
 
   return {
-    user: undefined,
+    user,
   }
 }
 

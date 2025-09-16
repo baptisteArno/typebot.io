@@ -41,10 +41,6 @@ export const deleteResults = authenticatedProcedure
       },
       select: {
         groups: true,
-        isBeingEdited: true,
-        editingUserEmail: true,
-        editingUserName: true,
-        editingStartedAt: true,
         workspace: {
           select: {
             isSuspended: true,

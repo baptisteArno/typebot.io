@@ -33,18 +33,8 @@ export const unpublishTypebot = authenticatedProcedure
       where: {
         id: typebotId,
       },
-      select: {
-        id: true,
-        isBeingEdited: true,
-        editingUserEmail: true,
-        editingUserName: true,
-        editingStartedAt: true,
-        collaborators: {
-          select: {
-            userId: true,
-            type: true,
-          },
-        },
+      include: {
+        collaborators: true,
         publishedTypebot: true,
         workspace: {
           select: {

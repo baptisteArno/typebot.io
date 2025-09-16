@@ -4,7 +4,7 @@ import { env } from '@typebot.io/env'
 export const getAllowedOrigins = (): string[] => {
   const allowedOrigins = env.NEXT_PUBLIC_EMBEDDED_AUTH_ALLOWED_ORIGIN
   if (!allowedOrigins) {
-    return ['http://localhost:3002']
+    return ['http://localhost:3000']
   }
   return Array.isArray(allowedOrigins) ? allowedOrigins : [allowedOrigins]
 }

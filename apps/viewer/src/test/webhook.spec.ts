@@ -19,13 +19,13 @@ test.beforeEach(async () => {
   try {
     await createWebhook(typebotId, {
       id: 'failing-webhook',
-      url: 'http://localhost:3001/api/mock/fail',
+      url: 'http://localhost:3003/api/mock/fail',
       method: HttpMethod.POST,
     })
 
     await createWebhook(typebotId, {
       id: 'partial-body-webhook',
-      url: 'http://localhost:3002/api/mock/webhook-easy-config',
+      url: 'http://localhost:3003/api/mock/webhook-easy-config',
       method: HttpMethod.POST,
       body: `{
           "name": "{{Name}}",

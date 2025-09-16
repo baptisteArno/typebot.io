@@ -71,7 +71,7 @@ export const MagicLink = ({ magicLinkUrl }: Props) => (
 )
 
 MagicLink.PreviewProps = {
-  magicLinkUrl: 'http://localhost:3002',
+  magicLinkUrl: 'http://localhost:3000',
 } as Props
 
 export default MagicLink

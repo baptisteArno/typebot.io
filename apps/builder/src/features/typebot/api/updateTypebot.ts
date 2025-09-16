@@ -39,10 +39,6 @@ const typebotUpdateSchemaPick = {
   riskLevel: true,
   events: true,
   updatedAt: true,
-  isBeingEdited: true,
-  editingUserEmail: true,
-  editingUserName: true,
-  editingStartedAt: true,
 } as const
 
 export const updateTypebot = authenticatedProcedure
@@ -90,10 +86,6 @@ export const updateTypebot = authenticatedProcedure
         id: true,
         customDomain: true,
         publicId: true,
-        isBeingEdited: true,
-        editingUserEmail: true,
-        editingUserName: true,
-        editingStartedAt: true,
         collaborators: {
           select: {
             userId: true,
@@ -135,52 +127,6 @@ export const updateTypebot = authenticatedProcedure
         code: 'CONFLICT',
         message: 'Found newer version of the typebot in database',
       })
-
-    // Validação do status de edição
-    if (
-      typebot.isBeingEdited !== undefined ||
-      typebot.editingUserEmail !== undefined
-    ) {
-      // Se está tentando reivindicar o editing status
-      if (
-        typebot.isBeingEdited === true &&
-        typebot.editingUserEmail === user.email
-      ) {
-        // Verificar se há alguém editando há mais de 30 segundos
-        if (
-          existingTypebot.isBeingEdited &&
-          existingTypebot.editingUserEmail !== user.email
-        ) {
-          const fifteenSecondsAgo = new Date(Date.now() - 15000)
-          const editingStartedAt = existingTypebot.editingStartedAt
-
-          if (editingStartedAt && editingStartedAt < fifteenSecondsAgo) {
-            console.warn(
-              `Auto-releasing editing status from ${existingTypebot.editingUserEmail} due to timeout`
-            )
-            // Continua com a claim, não bloqueia
-          } else {
-            throw new TRPCError({
-              code: 'CONFLICT',
-              message: `Typebot is currently being edited by ${existingTypebot.editingUserEmail}`,
-            })
-          }
-        }
-      }
-      // Se está tentando liberar o editing status
-      else if (typebot.isBeingEdited === false) {
-        // Permitir se o usuário atual está editando ou se está forçando a liberação
-        if (
-          existingTypebot.isBeingEdited &&
-          existingTypebot.editingUserEmail !== user.email
-        ) {
-          // Opcional: log para auditoria
-          console.warn(
-            `User ${user.email} is releasing editing status from ${existingTypebot.editingUserEmail}`
-          )
-        }
-      }
-    }
 
     if (
       typebot.customDomain &&
@@ -259,10 +205,6 @@ export const updateTypebot = authenticatedProcedure
         }),
         isClosed: typebot.isClosed,
         whatsAppCredentialsId: typebot.whatsAppCredentialsId ?? undefined,
-        isBeingEdited: typebot.isBeingEdited,
-        editingUserEmail: typebot.editingUserEmail,
-        editingUserName: typebot.editingUserName,
-        editingStartedAt: typebot.editingStartedAt,
       },
     })
 
