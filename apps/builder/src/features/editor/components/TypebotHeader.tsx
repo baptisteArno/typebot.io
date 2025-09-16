@@ -1,19 +1,4 @@
-import {
-  Flex,
-  HStack,
-  Button,
-  IconButton,
-  Tooltip,
-  Spinner,
-  Text,
-  useColorModeValue,
-  useDisclosure,
-  StackProps,
-  chakra,
-  Badge,
-  Avatar,
-  Box,
-} from '@chakra-ui/react'
+import { EditableEmojiOrImageIcon } from '@/components/EditableEmojiOrImageIcon'
 import {
   ChevronLeftIcon,
   CopyIcon,
@@ -21,34 +6,38 @@ import {
   RedoIcon,
   UndoIcon,
 } from '@/components/icons'
-import { useRouter } from 'next/router'
-import React, { useState } from 'react'
-import { isDefined, isNotDefined } from '@typebot.io/lib'
-import { EditableTypebotName } from './EditableTypebotName'
-import Link from 'next/link'
-import { EditableEmojiOrImageIcon } from '@/components/EditableEmojiOrImageIcon'
-import { useDebouncedCallback } from 'use-debounce'
+import { SupportBubble } from '@/components/SupportBubble'
 import { PublishButton } from '@/features/publish/components/PublishButton'
+import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts'
+import { trpc } from '@/lib/trpc'
+import {
+  Button,
+  Flex,
+  HStack,
+  IconButton,
+  Spinner,
+  StackProps,
+  Text,
+  Tooltip,
+  chakra,
+  useColorModeValue,
+  useDisclosure,
+} from '@chakra-ui/react'
+import { useTranslate } from '@tolgee/react'
+import { isDefined, isNotDefined } from '@typebot.io/lib'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { useState } from 'react'
+import { useDebouncedCallback } from 'use-debounce'
 import { headerHeight } from '../constants'
 import { RightPanel, useEditor } from '../providers/EditorProvider'
 import { useTypebot } from '../providers/TypebotProvider'
-import { SupportBubble } from '@/components/SupportBubble'
-import { useTranslate } from '@tolgee/react'
+import { EditableTypebotName } from './EditableTypebotName'
+import { OnlineUsersIndicator } from './OnlineUsersIndicator'
 import { GuestTypebotHeader } from './UnauthenticatedTypebotHeader'
-import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts'
-import { trpc } from '@/lib/trpc'
 
 export const TypebotHeader = () => {
-  const {
-    typebot,
-    publishedTypebot,
-    currentUserMode,
-    canEditNow,
-    dismissEditNotification,
-    editingUserEmail,
-    editingUserName,
-    isReadOnlyDueToEditing,
-  } = useTypebot()
+  const { typebot, publishedTypebot, currentUserMode } = useTypebot()
   const { isOpen } = useDisclosure()
   const headerBgColor = useColorModeValue('white', 'gray.900')
 
@@ -68,16 +57,6 @@ export const TypebotHeader = () => {
       {isOpen && <SupportBubble autoShowDelay={0} />}
       <LeftElements pos="absolute" left="1rem" />
 
-      {canEditNow && (
-        <CanEditNowNotification onDismiss={dismissEditNotification} />
-      )}
-
-      {isReadOnlyDueToEditing && (
-        <EditingIndicator
-          editingUserEmail={editingUserEmail}
-          editingUserName={editingUserName}
-        />
-      )}
       <TypebotNav
         display={{ base: 'none', xl: 'flex' }}
         pos={{ base: 'absolute' }}
@@ -278,6 +257,28 @@ const RightElements = ({
     setRightPanel(RightPanel.PREVIEW)
   }
 
+  const { isUserEditing } = useEditor()
+
+  const selectedUserMode = isUserEditing ? currentUserMode : 'guest'
+
+  const { mutate: duplicateTypebot, isLoading: isDuplicating } =
+    trpc.typebot.importTypebot.useMutation({
+      onSuccess: (data) => {
+        router.push(`/typebots/${data.typebot.id}/edit`)
+      },
+    })
+
+  const handleDuplicate = () => {
+    if (!typebot?.workspaceId || !typebot) return
+    duplicateTypebot({
+      workspaceId: typebot.workspaceId,
+      typebot: {
+        ...typebot,
+        name: `${typebot.name} ${t('editor.header.user.duplicateSuffix')}`,
+      },
+    })
+  }
+
   return (
     <HStack {...props}>
       <TypebotNav
@@ -285,9 +286,32 @@ const RightElements = ({
         typebotId={typebot?.id}
         isResultsDisplayed={isResultsDisplayed}
       />
+
+      <OnlineUsersIndicator />
+
       {/* <Flex pos="relative">
         <ShareTypebotButton isLoading={isNotDefined(typebot)} />
       </Flex> */}
+
+      {selectedUserMode === 'guest' && (
+        <Tooltip label={t('editor.header.user.duplicate.tooltip')} hasArrow>
+          <Button
+            size="sm"
+            colorScheme="blue"
+            variant="solid"
+            leftIcon={<CopyIcon />}
+            onClick={handleDuplicate}
+            isLoading={isDuplicating}
+            loadingText={t('editor.header.user.duplicating.loadingText')}
+            fontSize="xs"
+            px={3}
+            py={1}
+          >
+            {t('editor.header.user.duplicateButton.label')}
+          </Button>
+        </Tooltip>
+      )}
+
       {router.pathname.includes('/edit') &&
         rightPanel !== RightPanel.PREVIEW && (
           <Button
@@ -303,18 +327,8 @@ const RightElements = ({
             </chakra.span>
           </Button>
         )}
-      {currentUserMode === 'guest' && (
-        <Button
-          as={Link}
-          href={`/typebots/${typebot?.id}/duplicate`}
-          leftIcon={<CopyIcon />}
-          isLoading={isNotDefined(typebot)}
-          size="sm"
-        >
-          {t('duplicate')}
-        </Button>
-      )}
-      {currentUserMode === 'write' && <PublishButton size="sm" />}
+
+      {selectedUserMode === 'write' && <PublishButton size="sm" />}
     </HStack>
   )
 }
@@ -384,158 +398,5 @@ const TypebotNav = ({
         </Button>
       )}
     </HStack>
-  )
-}
-
-const EditingIndicator = ({
-  editingUserEmail,
-  editingUserName,
-}: {
-  editingUserEmail?: string | null
-  editingUserName?: string | null
-}) => {
-  const { t } = useTranslate()
-  const router = useRouter()
-  const { typebot } = useTypebot()
-  const { mutate: duplicateTypebot, isLoading: isDuplicating } =
-    trpc.typebot.importTypebot.useMutation({
-      onSuccess: (data) => {
-        router.push(`/typebots/${data.typebot.id}/edit`)
-      },
-    })
-
-  const handleDuplicate = () => {
-    if (!typebot?.workspaceId || !typebot) return
-    duplicateTypebot({
-      workspaceId: typebot.workspaceId,
-      typebot: {
-        ...typebot,
-        name: `${typebot.name} ${t('editor.header.user.duplicateSuffix')}`,
-      },
-    })
-  }
-
-  const getAvatarColor = (email: string) => {
-    const colors = [
-      'red',
-      'orange',
-      'yellow',
-      'green',
-      'teal',
-      'blue',
-      'cyan',
-      'purple',
-      'pink',
-    ]
-    const index = email.length % colors.length
-    return colors[index]
-  }
-
-  return (
-    <Box
-      pos="absolute"
-      top="12px"
-      right="120px"
-      zIndex={1000}
-      display={{ base: 'none', md: 'flex' }}
-      alignItems="center"
-      gap={2}
-    >
-      <Tooltip
-        label={`${editingUserName} ${t('editor.header.user.editing')}`}
-        hasArrow
-      >
-        <Avatar
-          size="sm"
-          name={editingUserName || editingUserEmail || ''}
-          bg={
-            editingUserEmail
-              ? `${getAvatarColor(editingUserEmail)}.500`
-              : 'gray.500'
-          }
-          color="white"
-          fontSize="xs"
-          border="2px solid"
-          borderColor="orange.400"
-          _hover={{
-            transform: 'scale(1.1)',
-            transition: 'transform 0.2s',
-          }}
-        />
-      </Tooltip>
-
-      <Tooltip label={t('editor.header.user.readonly.tooltip')} hasArrow>
-        <Badge
-          colorScheme="orange"
-          variant="solid"
-          fontSize="xs"
-          px={3}
-          py={1}
-          borderRadius="full"
-        >
-          {t('editor.header.user.readonly.badge.label')}
-        </Badge>
-      </Tooltip>
-
-      <Tooltip label={t('editor.header.user.duplicate.tooltip')} hasArrow>
-        <Button
-          size="sm"
-          colorScheme="blue"
-          variant="solid"
-          leftIcon={<CopyIcon />}
-          onClick={handleDuplicate}
-          isLoading={isDuplicating}
-          loadingText={t('editor.header.user.duplicating.loadingText')}
-          fontSize="xs"
-          px={3}
-          py={1}
-        >
-          {t('editor.header.user.duplicateButton.label')}
-        </Button>
-      </Tooltip>
-    </Box>
-  )
-}
-
-const CanEditNowNotification = ({ onDismiss }: { onDismiss: () => void }) => {
-  const { t } = useTranslate()
-  return (
-    <Box
-      pos="absolute"
-      top="12px"
-      right="120px"
-      zIndex={1000}
-      display={{ base: 'none', md: 'flex' }}
-      alignItems="center"
-      gap={3}
-      bg="green.500"
-      color="white"
-      px={4}
-      py={2}
-      borderRadius="md"
-      boxShadow="lg"
-      animation="slideIn 0.3s ease-out"
-    >
-      <Text fontSize="sm" fontWeight="medium">
-        ✅ {t('editor.header.user.canEditNow')}
-      </Text>
-      <Button
-        size="sm"
-        colorScheme="whiteAlpha"
-        variant="solid"
-        onClick={onDismiss}
-        fontSize="xs"
-      >
-        {t('editor.header.user.canEditNow.dismissButton')}
-      </Button>
-      <IconButton
-        aria-label={t('editor.header.user.readonly.dismissButton.ariaLabel')}
-        icon={<Text fontSize="sm">×</Text>}
-        size="xs"
-        variant="ghost"
-        colorScheme="whiteAlpha"
-        onClick={onDismiss}
-      />
-    </Box>
   )
 }

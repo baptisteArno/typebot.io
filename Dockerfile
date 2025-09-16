@@ -35,6 +35,8 @@ WORKDIR /app
 COPY --from=builder --chown=node:node /app/apps/${SCOPE}/.next/standalone ./
 COPY --from=builder --chown=node:node /app/apps/${SCOPE}/.next/static ./apps/${SCOPE}/.next/static
 COPY --from=builder --chown=nextjs:nodejs /app/apps/${SCOPE}/public ./apps/${SCOPE}/public
+## Copy compiled wss server (if exists)
+COPY --from=builder --chown=node:node /app/apps/${SCOPE}/dist-wss ./apps/${SCOPE}/dist-wss
 
 ## Copy next-runtime-env and its dependencies for runtime public variable injection
 COPY --from=builder /app/node_modules/.pnpm/chalk@4.1.2/node_modules/chalk ./node_modules/chalk

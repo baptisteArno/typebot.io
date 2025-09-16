@@ -4,7 +4,10 @@
   "license": "AGPL-3.0-or-later",
   "scripts": {
     "dev": "dotenv -e ./.env -e ../../.env -- next dev -p 3002",
+    "wss": "dotenv -e ./.env -e ../../.env -- tsx src/helpers/server/wssDevServer.ts",
     "build": "dotenv -e ./.env -e ../../.env -- next build",
+    "build:wss": "tsc --project tsconfig.json --outDir dist-wss --pretty false --skipLibCheck && if [ -f src/helpers/server/prodServer.ts ]; then cp src/helpers/server/prodServer.ts dist-wss/; else echo 'Error: prodServer.ts not found' >&2; exit 1; fi",
+    "postbuild": "pnpm run build:wss",
     "start": "dotenv -e ./.env -e ../../.env -- next start",
     "lint": "dotenv -e ./.env -e ../../.env -- next lint",
     "test": "dotenv -e ./.env -e ../../.env -- pnpm playwright test",
@@ -96,6 +99,7 @@
     "tinycolor2": "1.6.0",
     "unsplash-js": "7.0.18",
     "use-debounce": "9.0.4",
+    "ws": "^8.18.3",
     "zod-validation-error": "3.0.3",
     "zustand": "4.5.0"
   },
@@ -125,6 +129,7 @@
     "@types/qs": "6.9.7",
     "@types/react": "18.2.15",
     "@types/tinycolor2": "1.4.3",
+    "@types/ws": "^8.18.1",
     "dotenv": "16.4.5",
     "dotenv-cli": "7.4.1",
     "eslint": "8.44.0",

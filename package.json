@@ -17,7 +17,8 @@
     "docker:up": "docker compose -f docker-compose.dev.yml up -d && node -e \"setTimeout(() => {}, 5000)\"",
     "docker:nuke": "docker compose -f docker-compose.dev.yml down --volumes --remove-orphans",
     "lint": "turbo run lint",
-    "dev": "pnpm docker:up && turbo build --filter=@typebot.io/nextjs... && turbo run dev --filter=builder... --filter=viewer... --parallel --no-cache",
+    "dev:wss": "pnpm --filter builder run wss",
+    "dev": "pnpm docker:up && pnpm --filter builder run wss & turbo build --filter=@typebot.io/nextjs... && turbo run dev --filter=builder... --filter=viewer... --parallel --no-cache",
     "build": "pnpm docker:up && turbo run build",
     "build:apps": "turbo run build --filter=builder... --filter=viewer...",
     "db:migrate": "cd packages/prisma && pnpm run db:migrate",
@@ -36,7 +37,8 @@
     "cz-emoji": "1.3.2-canary.2",
     "husky": "8.0.3",
     "prettier": "2.8.8",
-    "turbo": "1.11.3"
+    "turbo": "1.11.3",
+    "tsx": "4.15.0"
   },
   "config": {
     "commitizen": {
