@@ -1,18 +1,23 @@
+import { env } from '@typebot.io/env'
+import { Typebot } from '@typebot.io/schemas'
 import {
   createContext,
   Dispatch,
   ReactNode,
   SetStateAction,
+  useCallback,
   useContext,
-  useState,
   useEffect,
   useRef,
-  useCallback,
+  useState,
 } from 'react'
-import { ValidationError, useValidation } from '../hooks/useValidation'
+import { useValidation, ValidationError } from '../hooks/useValidation'
 import { useTypebot } from './TypebotProvider'
-import { Typebot } from '@typebot.io/schemas'
-import { env } from '@typebot.io/env'
+
+import { useUser } from '@/features/account/hooks/useUser'
+import { TypebotEditQueueItem, useEditQueue } from '../hooks/useEditQueue'
+import { useToast } from '@/hooks/useToast'
+import { useTranslate } from '@tolgee/react'
 
 type MinimalTypebot = Pick<Typebot, 'groups' | 'edges'>
 
@@ -20,6 +25,12 @@ export enum RightPanel {
   PREVIEW,
   VARIABLES,
   VALIDATION_ERRORS,
+}
+
+export type SocketUser = {
+  id: string
+  name?: string
+  email?: string
 }
 
 const editorContext = createContext<{
@@ -36,16 +47,56 @@ const editorContext = createContext<{
   isValidating: boolean
   isSidebarExtended: boolean
   setIsSidebarExtended: Dispatch<SetStateAction<boolean>>
+  isUserEditing: boolean
+  queueItems: TypebotEditQueueItem[] | undefined
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   //@ts-ignore
 }>({})
 
 export const EditorProvider = ({ children }: { children: ReactNode }) => {
-  const { typebot } = useTypebot()
+  const { typebot, setIsFlowEditor } = useTypebot()
   const [rightPanel, setRightPanel] = useState<RightPanel>()
   const [startPreviewAtGroup, setStartPreviewAtGroup] = useState<string>()
   const [startPreviewAtEvent, setStartPreviewAtEvent] = useState<string>()
   const [isSidebarExtended, setIsSidebarExtended] = useState(true)
+  const { showToast } = useToast()
+  const { t } = useTranslate()
+
+  const { user: currentUser } = useUser()
+
+  const { queueItems, isLoading, joinQueue, getFirstInQueue, leaveQueue } =
+    useEditQueue(typebot?.id)
+
+  const userWithEditingRights = getFirstInQueue()
+  const isUserEditing = userWithEditingRights?.userId === currentUser?.id
+
+  useEffect(() => {
+    setIsFlowEditor((prev) => {
+      if (isUserEditing && !prev) {
+        showToast({
+          title: t('editor.header.user.canEditNow.toast'),
+          status: 'info',
+        })
+      }
+      return isUserEditing
+    })
+  }, [isUserEditing, setIsFlowEditor, showToast, t])
+
+  useEffect(() => {
+    if (!typebot?.id || !currentUser?.id) return
+
+    const handleBeforeUnload = () => {
+      leaveQueue(currentUser.id)
+    }
+
+    window.addEventListener('beforeunload', handleBeforeUnload)
+    window.addEventListener('pagehide', handleBeforeUnload)
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload)
+      window.removeEventListener('pagehide', handleBeforeUnload)
+    }
+  }, [typebot?.id, currentUser?.id, leaveQueue])
 
   const {
     validationErrors,
@@ -79,6 +130,13 @@ export const EditorProvider = ({ children }: { children: ReactNode }) => {
     },
     [validateTypebot]
   )
+
+  useEffect(() => {
+    if (!typebot?.id || isLoading) return
+
+    joinQueue(currentUser?.id ?? '')
+    //eslint-disable-next-line
+  }, [typebot?.id, currentUser?.id, isLoading])
 
   useEffect(() => {
     if (
@@ -126,6 +184,8 @@ export const EditorProvider = ({ children }: { children: ReactNode }) => {
         isValidating,
         isSidebarExtended,
         setIsSidebarExtended,
+        isUserEditing,
+        queueItems,
       }}
     >
       {children}

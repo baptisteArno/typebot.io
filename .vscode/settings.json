@@ -4,9 +4,11 @@
   "i18n-ally.displayLanguage": "en",
   "i18n-ally.enabledFrameworks": ["custom"],
   "i18n-ally.sortKeys": true,
+  "eslint.run": "onSave",
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "explicit"
+    "source.fixAll.eslint": true
   },
+  "eslint.validate": ["javascript", "typescript", "typescriptreact"],
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
   "editor.tabSize": 2,

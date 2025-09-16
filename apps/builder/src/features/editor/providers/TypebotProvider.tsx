@@ -7,7 +7,9 @@ import {
 import { Router } from 'next/router'
 import {
   createContext,
+  Dispatch,
   ReactNode,
+  SetStateAction,
   useCallback,
   useContext,
   useEffect,
@@ -73,6 +75,8 @@ const typebotContext = createContext<
       updates: UpdateTypebotPayload
       save?: boolean
     }) => Promise<TypebotV6 | undefined>
+    isFlowEditor: boolean
+    setIsFlowEditor: Dispatch<SetStateAction<boolean>>
     restorePublishedTypebot: () => void
   } & GroupsActions &
     BlocksActions &
@@ -127,6 +131,12 @@ export const TypebotProvider = ({
     }
   )
 
+  const [isFlowEditor, setIsFlowEditor] = useState(false)
+
+  const isReadOnly =
+    typebotData &&
+    ['read', 'guest'].includes(typebotData?.currentUserMode ?? 'guest')
+
   const { data: publishedTypebotData } =
     trpc.typebot.getPublishedTypebot.useQuery(
       { typebotId: typebotId as string, migrateToLatestVersion: true },
@@ -168,9 +178,6 @@ export const TypebotProvider = ({
   const typebot = typebotData?.typebot as TypebotV6
   const publishedTypebot = (publishedTypebotData?.publishedTypebot ??
     undefined) as PublicTypebotV6 | undefined
-  const isReadOnly =
-    typebotData &&
-    ['read', 'guest'].includes(typebotData?.currentUserMode ?? 'guest')
 
   const [
     localTypebot,
@@ -198,7 +205,9 @@ export const TypebotProvider = ({
       setLocalTypebot(undefined)
       setGroupsCoordinates(undefined)
     }
-    if (isFetchingTypebot || !typebot) return
+    if (isFetchingTypebot || !typebot) {
+      return
+    }
     if (
       typebot.id !== localTypebot?.id ||
       new Date(typebot.updatedAt).getTime() >
@@ -220,7 +229,7 @@ export const TypebotProvider = ({
 
   const saveTypebot = useCallback(
     async (updates?: Partial<TypebotV6>) => {
-      if (!localTypebot || !typebot || isReadOnly) return
+      if (!localTypebot || !typebot || isReadOnly || !isFlowEditor) return
       const typebotToSave = {
         ...localTypebot,
         ...updates,
@@ -250,6 +259,7 @@ export const TypebotProvider = ({
       setUpdateDate,
       typebot,
       updateTypebot,
+      isFlowEditor,
     ]
   )
 
@@ -282,7 +292,7 @@ export const TypebotProvider = ({
   )
 
   useEffect(() => {
-    if (!localTypebot || !typebot || isReadOnly) return
+    if (!localTypebot || !typebot || isReadOnly || !isFlowEditor) return
     if (!areTypebotsEqual(localTypebot, typebot)) {
       window.addEventListener('beforeunload', preventUserFromRefreshing)
     }
@@ -290,7 +300,7 @@ export const TypebotProvider = ({
     return () => {
       window.removeEventListener('beforeunload', preventUserFromRefreshing)
     }
-  }, [localTypebot, typebot, isReadOnly])
+  }, [localTypebot, typebot, isReadOnly, isFlowEditor])
 
   const updateLocalTypebot = async ({
     updates,
@@ -299,7 +309,7 @@ export const TypebotProvider = ({
     updates: UpdateTypebotPayload
     save?: boolean
   }) => {
-    if (!localTypebot || isReadOnly) return
+    if (!localTypebot || isReadOnly || !isFlowEditor) return
     const newTypebot = { ...localTypebot, ...updates }
     setLocalTypebot(newTypebot)
     if (save) await saveTypebot(newTypebot)
@@ -329,6 +339,8 @@ export const TypebotProvider = ({
         canRedo,
         isPublished,
         updateTypebot: updateLocalTypebot,
+        isFlowEditor: isFlowEditor,
+        setIsFlowEditor: setIsFlowEditor,
         restorePublishedTypebot,
         ...groupsActions(setLocalTypebot as SetTypebot),
         ...blocksAction(setLocalTypebot as SetTypebot),

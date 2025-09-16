@@ -1,1 +1,9 @@
 node_modules
+.next
+out
+dist
+build
+coverage
+.turbo
+pnpm-store
+**/*.min.js

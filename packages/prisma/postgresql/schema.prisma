@@ -58,6 +58,7 @@ model User {
   sessions                    Session[]
   bannedIps                   BannedIp[]
   displayedInAppNotifications Json?
+  TypebotEditQueue            TypebotEditQueue[]
 }
 
 model ApiToken {
@@ -192,9 +193,23 @@ model Typebot {
   whatsAppCredentialsId   String?
   riskLevel               Int?
   bannedIps               BannedIp[]
+  TypebotEditQueue        TypebotEditQueue[]
 
   @@index([workspaceId])
   @@index([isArchived, createdAt(sort: Desc)])
+}
+
+model TypebotEditQueue {
+  id             String   @id @default(cuid())
+  userId         String
+  typebotId      String
+  joinedAt       DateTime @default(now())
+  lastActivityAt DateTime @default(now()) @updatedAt
+  user           User     @relation(fields: [userId], references: [id], onDelete: Restrict)
+  typebot        Typebot  @relation(fields: [typebotId], references: [id], onDelete: Restrict)
+
+  @@unique([userId, typebotId])
+  @@index([typebotId])
 }
 
 model Invitation {

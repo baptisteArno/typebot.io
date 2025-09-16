@@ -2,6 +2,7 @@ import { billingRouter } from '@/features/billing/api/router'
 import { webhookRouter } from '@/features/blocks/integrations/webhook/api/router'
 import { getLinkedTypebots } from '@/features/blocks/logic/typebotLink/api/getLinkedTypebots'
 import { credentialsRouter } from '@/features/credentials/api/router'
+import { typebotEditQueueRouter } from '@/features/editor/api/typebotEditQueueRouter'
 import { resultsRouter } from '@/features/results/api/router'
 import { themeRouter } from '@/features/theme/api/router'
 import { typebotRouter } from '@/features/typebot/api/router'
@@ -27,6 +28,7 @@ export const publicRouter = router({
   customDomains: customDomainsRouter,
   whatsApp: publicWhatsAppRouter,
   folders: folderRouter,
+  typebotEditQueue: typebotEditQueueRouter,
 })
 
 export type PublicRouter = typeof publicRouter
