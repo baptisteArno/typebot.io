@@ -5,12 +5,14 @@ import type { ChatSession } from "../schemas";
 export const upsertSession = (
   id: string,
   data: Partial<Omit<ChatSession, "id" | "createdAt" | "updatedAt">>,
-) =>
-  prisma.chatSession.upsert({
+) => {
+  return prisma.chatSession.upsert({
     where: { id },
     update: data,
     create: {
       ...data,
+      id,
       state: data.state ?? JsonNull,
     },
   });
+};
