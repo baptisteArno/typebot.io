@@ -5,8 +5,8 @@
   "scripts": {
     "dev": "dotenv -e ./.env -e ../../.env -- next dev -p 3002",
     "wss": "dotenv -e ./.env -e ../../.env -- tsx src/helpers/server/wssDevServer.ts",
-    "build": "dotenv -e ./.env -e ../../.env -- next build",
-    "build:wss": "tsc --project tsconfig.json --outDir dist-wss --pretty false --skipLibCheck && if [ -f src/helpers/server/prodServer.ts ]; then cp src/helpers/server/prodServer.ts dist-wss/; else echo 'Error: prodServer.ts not found' >&2; exit 1; fi",
+    "build": "dotenv -e ./.env -e ../../.env -- next build && pnpm run build:wss",
+    "build:wss": "mkdir -p dist-wss/helpers/server && cp -r src/helpers/server/* dist-wss/helpers/server/",
     "postbuild": "pnpm run build:wss",
     "start": "dotenv -e ./.env -e ../../.env -- next start",
     "lint": "dotenv -e ./.env -e ../../.env -- next lint",
@@ -16,6 +16,7 @@
     "format:check": "prettier --check ./src --ignore-path ../../.prettierignore"
   },
   "dependencies": {
+    "tsx": "4.15.0",
     "@braintree/sanitize-url": "7.0.1",
     "@chakra-ui/anatomy": "2.1.1",
     "@chakra-ui/react": "2.7.1",

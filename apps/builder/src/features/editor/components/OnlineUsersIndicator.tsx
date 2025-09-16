@@ -11,7 +11,7 @@ import { useTypebot } from '../providers/TypebotProvider'
 export const OnlineUsersIndicator = () => {
   const { t } = useTranslate()
   const { typebot } = useTypebot()
-  const { onlineData } = useEditor()
+  const { onlineData, isUserEditing } = useEditor()
 
   if (!typebot?.id || !onlineData || onlineData.count <= 1) {
     return null
@@ -54,16 +54,18 @@ export const OnlineUsersIndicator = () => {
   }
   return (
     <Box alignItems="center" display="flex" gap={3}>
-      <Badge
-        colorScheme="orange"
-        variant="solid"
-        fontSize="xs"
-        px={3}
-        py={1}
-        borderRadius="full"
-      >
-        {t('editor.header.user.readonly.badge.label')}
-      </Badge>
+      {!isUserEditing && (
+        <Badge
+          colorScheme="orange"
+          variant="solid"
+          fontSize="xs"
+          px={3}
+          py={1}
+          borderRadius="full"
+        >
+          {t('editor.header.user.readonly.badge.label')}
+        </Badge>
+      )}
 
       <Tooltip
         label={getTooltipLabel(onlineData)}

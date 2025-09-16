@@ -9,8 +9,8 @@ sleep 15;
 
 ./node_modules/.bin/prisma migrate deploy --schema=packages/prisma/postgresql/schema.prisma;
 
-# Inicia o servidor WebSocket compilado (porta 3004) em background
-node ./apps/builder/dist-wss/helpers/server/prodServer.js &
+echo "Starting WebSocket server..."
+cd apps/builder && npx tsx dist-wss/helpers/server/prodServer.ts &
+cd ../..
 
-# Inicia o servidor Next (porta 3000)
 HOSTNAME=0.0.0.0 PORT=3000 node apps/builder/server.js;
