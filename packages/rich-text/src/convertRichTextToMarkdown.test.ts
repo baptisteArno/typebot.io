@@ -106,6 +106,10 @@ describe("convertRichTextToMarkdown", () => {
         type: "p",
         children: [{ text: "italic", italic: true }],
       },
+      {
+        type: "p",
+        children: [{ text: "underlined", underline: true }],
+      },
     ];
     const parsedRichText = parseVariablesInRichText(richText, {
       variables: [],
@@ -115,7 +119,7 @@ describe("convertRichTextToMarkdown", () => {
     const markdown = convertRichTextToMarkdown(parsedRichText.parsedElements, {
       flavour: "whatsapp",
     });
-    expect(markdown).toBe("*bold*\n\n_italic_");
+    expect(markdown).toBe("*bold*\n\n_italic_\nunderlined");
   });
 
   it("should convert variable link correctly", () => {

@@ -49,6 +49,9 @@ export const convertRichTextToMarkdown = (
                   const value = state.containerPhrasing(node, info);
                   return `*${value}*`;
                 },
+                mdxJsxTextElement: (node, _parent, state, info) => {
+                  return state.containerPhrasing(node, info);
+                },
               },
             }
           : {
