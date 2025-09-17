@@ -27,21 +27,12 @@ export const useEditQueue = (typebotId?: string) => {
       { typebotId: typebotId ?? '' },
       {
         enabled: Boolean(typebotId),
+        refetchInterval: 5000,
         onError: (error) => {
           console.error('Error fetching edit queue:', error)
         },
       }
     )
-
-  const getFirstInQueueQuery = trpc.typebotEditQueue.getFirstInQueue.useQuery(
-    { typebotId: typebotId ?? '' },
-    {
-      enabled: Boolean(typebotId),
-      onError: (error) => {
-        console.error('Error fetching first user in the queue:', error)
-      },
-    }
-  )
 
   const joinQueueMutation = trpc.typebotEditQueue.join.useMutation({
     onSuccess: () => {
@@ -167,9 +158,7 @@ export const useEditQueue = (typebotId?: string) => {
     [queueItems]
   )
 
-  const getFirstInQueue = useCallback(() => {
-    return getFirstInQueueQuery.data || null
-  }, [getFirstInQueueQuery.data])
+  const currentEditor = queueItems ? queueItems[0] : null
 
   useEffect(() => {
     if (!typebotId) return
@@ -214,6 +203,6 @@ export const useEditQueue = (typebotId?: string) => {
     isFirstInQueue,
     isInQueue,
     getPositionInQueue,
-    getFirstInQueue,
+    currentEditor: currentEditor,
   }
 }

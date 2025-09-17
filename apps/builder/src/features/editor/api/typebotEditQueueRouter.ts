@@ -40,33 +40,6 @@ export const typebotEditQueueRouter = router({
       }
     }),
 
-  getFirstInQueue: authenticatedProcedure
-    .input(
-      z.object({
-        typebotId: z.string(),
-      })
-    )
-    .query(async ({ input: { typebotId } }) => {
-      try {
-        const firstInQueue = await prisma.typebotEditQueue.findFirst({
-          where: {
-            typebotId,
-          },
-          orderBy: {
-            joinedAt: 'asc',
-          },
-        })
-
-        return firstInQueue
-      } catch (error) {
-        console.error('❌ API: Failed to get first user in edit queue:', error)
-        throw new TRPCError({
-          code: 'INTERNAL_SERVER_ERROR',
-          message: 'Failed to get first user in edit queue',
-        })
-      }
-    }),
-
   join: authenticatedProcedure
     .input(
       z.object({
@@ -174,25 +147,22 @@ export const typebotEditQueueRouter = router({
       }
 
       try {
-        const existingQueueItem = await prisma.typebotEditQueue.findFirst({
+        await prisma.typebotEditQueue.upsert({
           where: {
+            userId_typebotId: {
+              userId: user.id,
+              typebotId,
+            },
+          },
+          update: {
+            lastActivityAt: new Date(),
+          },
+          create: {
             userId: user.id,
             typebotId,
+            joinedAt: new Date(),
+            lastActivityAt: new Date(),
           },
-        })
-
-        if (!existingQueueItem) {
-          throw new TRPCError({
-            code: 'NOT_FOUND',
-            message: 'User not found in edit queue',
-          })
-        }
-
-        await prisma.typebotEditQueue.update({
-          where: {
-            id: existingQueueItem.id,
-          },
-          data: { lastActivityAt: new Date() },
         })
 
         return {

@@ -64,11 +64,10 @@ export const EditorProvider = ({ children }: { children: ReactNode }) => {
 
   const { user: currentUser } = useUser()
 
-  const { queueItems, isLoading, joinQueue, getFirstInQueue, leaveQueue } =
+  const { queueItems, isLoading, joinQueue, currentEditor, leaveQueue } =
     useEditQueue(typebot?.id)
 
-  const userWithEditingRights = getFirstInQueue()
-  const isUserEditing = userWithEditingRights?.userId === currentUser?.id
+  const isUserEditing = currentEditor?.userId === currentUser?.id
 
   useEffect(() => {
     setIsFlowEditor((prev) => {
