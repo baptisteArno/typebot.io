@@ -176,7 +176,7 @@ const executeGroup = ({
     const typebot = typebotsQueue[0]?.typebot;
     if (!typebot) throw new Error("Typebot not found in session");
 
-    if (setVariableHistory.peek()?.blockId === block.id) {
+    while (setVariableHistory.peek()?.blockId === block.id) {
       typebot.variables = applySetVariable(setVariableHistory.next(), typebot);
     }
 
