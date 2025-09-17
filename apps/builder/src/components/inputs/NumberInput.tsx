@@ -13,12 +13,12 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { env } from "@typebot.io/env";
+import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
 import type { Variable, VariableString } from "@typebot.io/variables/schemas";
 import type { ReactNode } from "react";
 import { useEffect, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import { VariablesButton } from "@/features/variables/components/VariablesButton";
-import { MoreInfoTooltip } from "../MoreInfoTooltip";
 
 type Value<HasVariable> = HasVariable extends true | undefined
   ? number | VariableString

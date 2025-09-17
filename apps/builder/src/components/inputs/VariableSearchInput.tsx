@@ -15,6 +15,7 @@ import { createId } from "@paralleldrive/cuid2";
 import { useTranslate } from "@tolgee/react";
 import { byId, isDefined, isNotDefined } from "@typebot.io/lib/utils";
 import { Button } from "@typebot.io/ui/components/Button";
+import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
 import { Popover } from "@typebot.io/ui/components/Popover";
 import { EditIcon } from "@typebot.io/ui/icons/EditIcon";
 import { TrashIcon } from "@typebot.io/ui/icons/TrashIcon";
@@ -26,7 +27,6 @@ import { useRef, useState } from "react";
 import { PlusIcon } from "@/components/icons";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { useOpenControls } from "@/hooks/useOpenControls";
-import { MoreInfoTooltip } from "../MoreInfoTooltip";
 
 type Props = {
   initialVariableId: string | undefined;

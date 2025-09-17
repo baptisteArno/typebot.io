@@ -11,7 +11,7 @@ import { prices } from "@typebot.io/billing/constants";
 import { formatPrice } from "@typebot.io/billing/helpers/formatPrice";
 import { Plan } from "@typebot.io/prisma/enum";
 import { Button } from "@typebot.io/ui/components/Button";
-import { MoreInfoTooltip } from "@/components/MoreInfoTooltip";
+import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
 import { FeaturesList } from "./FeaturesList";
 
 type Props = {

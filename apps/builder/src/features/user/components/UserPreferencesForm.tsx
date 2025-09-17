@@ -1,11 +1,11 @@
 import { Heading, HStack, Stack } from "@chakra-ui/react";
 import { useTolgee, useTranslate } from "@tolgee/react";
 import { GraphNavigation } from "@typebot.io/prisma/enum";
+import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
 import type { GroupTitlesAutoGeneration } from "@typebot.io/user/schemas";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
-import { MoreInfoTooltip } from "@/components/MoreInfoTooltip";
 import { SwitchWithRelatedSettings } from "@/components/SwitchWithRelatedSettings";
 import { VideoOnboardingPopover } from "@/features/onboarding/components/VideoOnboardingPopover";
 import { setLocaleInCookies } from "../helpers/setLocaleInCookies";

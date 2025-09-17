@@ -7,9 +7,9 @@ import {
 } from "@chakra-ui/react";
 import type { ForgedBlockDefinition } from "@typebot.io/forge-repository/definitions";
 import type { ForgedBlock } from "@typebot.io/forge-repository/schemas";
+import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
 import type { ReactNode } from "react";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
-import { MoreInfoTooltip } from "@/components/MoreInfoTooltip";
 import { useSelectItemsQuery } from "../hooks/useSelectItemsQuery";
 
 type Props = {

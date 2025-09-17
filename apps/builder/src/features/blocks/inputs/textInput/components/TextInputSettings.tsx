@@ -5,12 +5,12 @@ import { defaultTextInputOptions } from "@typebot.io/blocks-inputs/text/constant
 import type { TextInputBlock } from "@typebot.io/blocks-inputs/text/schema";
 import { inputModeOptions } from "@typebot.io/blocks-inputs/text/schema";
 import { Field } from "@typebot.io/ui/components/Field";
+import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
 import type { Variable } from "@typebot.io/variables/schemas";
 import { TextInput } from "@/components/inputs";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
 import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
-import { MoreInfoTooltip } from "@/components/MoreInfoTooltip";
 import { SwitchWithRelatedSettings } from "@/components/SwitchWithRelatedSettings";
 
 type Props = {

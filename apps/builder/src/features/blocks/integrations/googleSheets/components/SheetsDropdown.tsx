@@ -1,6 +1,6 @@
 import { HStack, Input } from "@chakra-ui/react";
+import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
-import { MoreInfoTooltip } from "@/components/MoreInfoTooltip";
 import type { Sheet } from "../types";
 
 type Props = {

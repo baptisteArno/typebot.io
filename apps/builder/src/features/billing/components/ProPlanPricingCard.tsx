@@ -14,8 +14,8 @@ import { prices } from "@typebot.io/billing/constants";
 import { formatPrice } from "@typebot.io/billing/helpers/formatPrice";
 import { Plan } from "@typebot.io/prisma/enum";
 import { Button } from "@typebot.io/ui/components/Button";
+import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
 import { Tooltip } from "@typebot.io/ui/components/Tooltip";
-import { MoreInfoTooltip } from "@/components/MoreInfoTooltip";
 import { ChatsProTiersDialog } from "./ChatsProTiersDialog";
 import { FeaturesList } from "./FeaturesList";
 

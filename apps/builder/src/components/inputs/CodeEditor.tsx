@@ -11,6 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { env } from "@typebot.io/env";
 import { isDefined } from "@typebot.io/lib/utils";
+import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
 import type { Variable } from "@typebot.io/variables/schemas";
 import {
   type LanguageName,
@@ -24,7 +25,6 @@ import { useEffect, useRef, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import { VariablesButton } from "@/features/variables/components/VariablesButton";
 import { CopyButton } from "../CopyButton";
-import { MoreInfoTooltip } from "../MoreInfoTooltip";
 
 type Props = {
   label?: string;

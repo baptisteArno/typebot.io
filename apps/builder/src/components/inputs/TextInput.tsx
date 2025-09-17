@@ -8,6 +8,7 @@ import {
   Stack,
 } from "@chakra-ui/react";
 import { env } from "@typebot.io/env";
+import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
 import type { Variable } from "@typebot.io/variables/schemas";
 import type React from "react";
 import type { ReactNode } from "react";
@@ -22,7 +23,6 @@ import { useDebouncedCallback } from "use-debounce";
 import { VariablesButton } from "@/features/variables/components/VariablesButton";
 import { injectVariableInText } from "@/features/variables/helpers/injectVariableInTextInput";
 import { focusInput } from "@/helpers/focusInput";
-import { MoreInfoTooltip } from "../MoreInfoTooltip";
 
 export type TextInputProps = {
   forceDebounce?: boolean;

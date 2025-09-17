@@ -5,8 +5,8 @@ import {
 } from "@typebot.io/billing/constants";
 import { formatPrice } from "@typebot.io/billing/helpers/formatPrice";
 import { Plan } from "@typebot.io/prisma/enum";
+import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
 import { CtaButtonLink } from "@/components/link";
-import { MoreInfoTooltip } from "@/components/MoreInfoTooltip";
 import { registerUrl } from "@/constants";
 import {
   PerkListItem,

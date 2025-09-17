@@ -12,10 +12,10 @@ import {
 import type { ProgressBar } from "@typebot.io/theme/schemas";
 import type { TypebotV6 } from "@typebot.io/typebot/schemas/typebot";
 import { Field } from "@typebot.io/ui/components/Field";
+import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
 import { ColorPicker } from "@/components/ColorPicker";
 import { NumberInput } from "@/components/inputs";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
-import { MoreInfoTooltip } from "@/components/MoreInfoTooltip";
 import { SwitchWithRelatedSettings } from "@/components/SwitchWithRelatedSettings";
 
 type Props = {

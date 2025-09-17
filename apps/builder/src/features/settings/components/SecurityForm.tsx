@@ -3,7 +3,7 @@ import { useTranslate } from "@tolgee/react";
 import { env } from "@typebot.io/env";
 import { isDefined } from "@typebot.io/lib/utils";
 import type { Settings } from "@typebot.io/settings/schemas";
-import { MoreInfoTooltip } from "@/components/MoreInfoTooltip";
+import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
 import { TagsInput } from "@/components/TagsInput";
 
 type Props = {

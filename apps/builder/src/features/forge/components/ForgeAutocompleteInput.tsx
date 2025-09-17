@@ -1,5 +1,6 @@
 import type { ForgedBlockDefinition } from "@typebot.io/forge-repository/definitions";
 import type { ForgedBlock } from "@typebot.io/forge-repository/schemas";
+import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
 import { cx } from "@typebot.io/ui/lib/cva";
 import { type ReactNode, useEffect, useRef } from "react";
 import {
@@ -9,7 +10,6 @@ import {
 } from "@/components/collections";
 import { Combobox } from "@/components/combobox";
 import { Field } from "@/components/field";
-import { MoreInfoTooltip } from "@/components/MoreInfoTooltip";
 import { Portal } from "@/components/Portal";
 import { VariablesButton } from "@/features/variables/components/VariablesButton";
 import { useDebounce } from "@/hooks/useDebounce";

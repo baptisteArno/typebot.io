@@ -19,9 +19,9 @@ import {
   rememberUserStorages,
 } from "@typebot.io/settings/constants";
 import type { Settings, SystemMessages } from "@typebot.io/settings/schemas";
+import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
-import { MoreInfoTooltip } from "@/components/MoreInfoTooltip";
 import { SwitchWithRelatedSettings } from "@/components/SwitchWithRelatedSettings";
 import { SystemMessagesForm } from "./SystemMessagesForm";
 

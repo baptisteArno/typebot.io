@@ -1,7 +1,7 @@
 import { useDisclosure } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
+import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
 import { XCircleIcon } from "@/components/icons";
-import { MoreInfoTooltip } from "@/components/MoreInfoTooltip";
 import { trpc } from "@/lib/queryClient";
 import { CustomDomainConfigDialog } from "./CustomDomainConfigDialog";
 

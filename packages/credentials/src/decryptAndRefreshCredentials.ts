@@ -1,4 +1,3 @@
-import { env } from "@typebot.io/env";
 import { forgedBlocks } from "@typebot.io/forge-repository/definitions";
 import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
 import prisma from "@typebot.io/prisma";
