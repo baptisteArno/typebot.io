@@ -12,7 +12,8 @@ test("Payment redirection should work", async ({ page }) => {
   await page.goto(`/${typebotId}-public`);
   const paypalButton = page
     .frameLocator('iframe[title="Secure payment input frame"]')
-    .getByTestId("paypal");
+    .getByTestId("paypal")
+    .first();
   await page.waitForTimeout(3000);
   await paypalButton.click();
   await page.getByRole("button", { name: "Pay $" }).click();

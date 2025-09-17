@@ -221,7 +221,7 @@ export const startSession = async ({
     sessionStore,
     message: startParams.message,
     state: initialState,
-    startFrom: startParams.startFrom,
+    startFrom: "startFrom" in startParams ? startParams.startFrom : undefined,
     textBubbleContentFormat: startParams.textBubbleContentFormat,
   });
   setVariableHistory.push(...newSetVariableHistory);

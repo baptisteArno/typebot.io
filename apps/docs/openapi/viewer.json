@@ -1839,46 +1839,6 @@
                       "markdown"
                     ],
                     "default": "richText"
-                  },
-                  "startFrom": {
-                    "oneOf": [
-                      {
-                        "type": "object",
-                        "properties": {
-                          "type": {
-                            "type": "string",
-                            "enum": [
-                              "group"
-                            ]
-                          },
-                          "groupId": {
-                            "type": "string"
-                          }
-                        },
-                        "required": [
-                          "type",
-                          "groupId"
-                        ]
-                      },
-                      {
-                        "type": "object",
-                        "properties": {
-                          "type": {
-                            "type": "string",
-                            "enum": [
-                              "event"
-                            ]
-                          },
-                          "eventId": {
-                            "type": "string"
-                          }
-                        },
-                        "required": [
-                          "type",
-                          "eventId"
-                        ]
-                      }
-                    ]
                   }
                 }
               }
@@ -3131,6 +3091,46 @@
                     "type": "string",
                     "description": "If provided, will be used as the session ID and will overwrite any existing session with the same ID."
                   },
+                  "startFrom": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "group"
+                            ]
+                          },
+                          "groupId": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "type",
+                          "groupId"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "event"
+                            ]
+                          },
+                          "eventId": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "type",
+                          "eventId"
+                        ]
+                      }
+                    ]
+                  },
                   "message": {
                     "oneOf": [
                       {
@@ -3179,46 +3179,6 @@
                       "markdown"
                     ],
                     "default": "richText"
-                  },
-                  "startFrom": {
-                    "oneOf": [
-                      {
-                        "type": "object",
-                        "properties": {
-                          "type": {
-                            "type": "string",
-                            "enum": [
-                              "group"
-                            ]
-                          },
-                          "groupId": {
-                            "type": "string"
-                          }
-                        },
-                        "required": [
-                          "type",
-                          "groupId"
-                        ]
-                      },
-                      {
-                        "type": "object",
-                        "properties": {
-                          "type": {
-                            "type": "string",
-                            "enum": [
-                              "event"
-                            ]
-                          },
-                          "eventId": {
-                            "type": "string"
-                          }
-                        },
-                        "required": [
-                          "type",
-                          "eventId"
-                        ]
-                      }
-                    ]
                   }
                 }
               }

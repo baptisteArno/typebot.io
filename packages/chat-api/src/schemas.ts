@@ -265,7 +265,6 @@ const commonStartChatInputSchema = z.object({
       },
     }),
   textBubbleContentFormat: z.enum(["richText", "markdown"]).default("richText"),
-  startFrom: startFromSchema.optional(),
 });
 export const startChatInputSchema = z
   .object({
@@ -300,6 +299,7 @@ export const startPreviewChatInputSchema = z
       .describe(
         "If provided, will be used as the session ID and will overwrite any existing session with the same ID.",
       ),
+    startFrom: startFromSchema.optional(),
   })
   .merge(commonStartChatInputSchema);
 export type StartPreviewChatInput = z.infer<typeof startPreviewChatInputSchema>;
