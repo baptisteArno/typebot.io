@@ -122,6 +122,7 @@ export const GoogleSpreadsheetPicker = ({
         (isDefined(spreadsheetId) && status === "pending")
       }
       variant="secondary"
+      data-base-ui-click-trigger
     >
       Pick a spreadsheet
     </Button>
