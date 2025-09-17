@@ -1,9 +1,9 @@
 import { isNotDefined } from "@typebot.io/lib/utils";
 import { Field } from "@typebot.io/ui/components/Field";
+import { NumberField } from "@typebot.io/ui/components/NumberField";
 import { Select } from "@typebot.io/ui/components/Select";
-import { useMemo, useState } from "react";
+import { useId, useMemo, useState } from "react";
 import { Card } from "@/components/Card";
-import { NumberInput } from "@/components/NumberInput";
 import { whatsAppPricingData } from "../data/whatsAppPricingData";
 
 const countries = [
@@ -31,7 +31,8 @@ export const WhatsAppPricingCalculator = () => {
     useState<(typeof countries)[number]["value"]>(null);
   const [selectedMessageType, setSelectedMessageType] =
     useState<(typeof messageTypes)[number]["value"]>(null);
-  const [totalMessages, setTotalMessages] = useState<number | undefined>();
+  const [totalMessages, setTotalMessages] = useState<number | undefined>(0);
+  const numberFieldId = useId();
 
   const priceResult = useMemo(() => {
     if (!selectedCountry || !selectedMessageType || isNotDefined(totalMessages))
@@ -92,16 +93,20 @@ export const WhatsAppPricingCalculator = () => {
         </Select.Root>
       </Field.Root>
 
-      <NumberInput
-        label="Total messages"
+      <NumberField.Root
+        id={numberFieldId}
         min={0}
         max={50000}
         step={100}
-        placeholder="0"
-        onValueChange={(e) => {
-          setTotalMessages(e.valueAsNumber);
-        }}
-      />
+        onValueChange={(value) => setTotalMessages(value ?? undefined)}
+      >
+        <label htmlFor={numberFieldId}>Total messages</label>
+        <NumberField.Group>
+          <NumberField.Decrement variant="secondary" />
+          <NumberField.Input placeholder="0" />
+          <NumberField.Increment variant="secondary" />
+        </NumberField.Group>
+      </NumberField.Root>
       {priceResult && (
         <p className="font-medium">
           Estimated Price: <span className="text-orange-10">{priceResult}</span>
