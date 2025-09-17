@@ -51,7 +51,6 @@ export const getGoogleSpreadsheet = async ({
           refresh_token: refresh_token,
           client_id: client.id,
           client_secret: client.secret,
-          redirect_uri: `${env.NEXTAUTH_URL}/oauth/redirect`,
         },
       })
       .json();

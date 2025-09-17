@@ -56,7 +56,7 @@ export const handleProductionWebhookRequest = async (
           });
         } catch (err) {
           if (err instanceof WhatsAppError) {
-            Sentry.captureMessage(err.message, err.details);
+            console.log("Known WA error", err.message, err.details);
           } else {
             console.log("Sending unknown error to Sentry");
             const parsedError = await parseUnknownError({ err });
