@@ -46,6 +46,7 @@ export const EmailInput = (props: Props) => {
     const { data } = event;
     if (!data.isFromTypebot) return;
     if (data.command === "setInputValue") setInputValue(data.value);
+    if (data.command === "submitInput") submit();
   };
 
   return (

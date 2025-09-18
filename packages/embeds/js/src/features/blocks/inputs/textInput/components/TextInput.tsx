@@ -128,6 +128,7 @@ export const TextInput = (props: Props) => {
     const { data } = event;
     if (!data.isFromTypebot) return;
     if (data.command === "setInputValue") setInputValue(data.value);
+    if (data.command === "submitInput") submit();
   };
 
   const handleDragOver = (e: DragEvent) => {

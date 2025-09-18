@@ -9,6 +9,7 @@ import {
   setInputValue,
   setPrefilledVariables,
   showPreviewMessage,
+  submitInput,
   toggle,
 } from "@typebot.io/react";
 import { useState } from "react";
@@ -27,6 +28,7 @@ export const Default = () => {
           Show Preview Message
         </button>
         <button onClick={() => setInputValue("YOOOO!")}>Set input value</button>
+        <button onClick={() => submitInput()}>Submit input</button>
         <button onClick={hidePreviewMessage}>Close Preview Message</button>
         <button onClick={() => reset()}>Reset chat</button>
         <button onClick={() => sendCommand("wizz")}>Send command</button>
@@ -38,7 +40,7 @@ export const Default = () => {
           </button>
         </div>
         <Bubble
-          typebot="lead-generation-ybslz4j"
+          typebot="lead-generation-2jo5mke"
           apiHost="http://localhost:3001"
           wsHost="localhost:1999"
           prefilledVariables={{

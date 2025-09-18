@@ -8,5 +8,6 @@ export * from "./utils/sendCommand";
 export * from "./utils/setInputValue";
 export * from "./utils/setPrefilledVariables";
 export * from "./utils/showPreviewMessage";
+export * from "./utils/submitInput";
 export * from "./utils/toggle";
 export * from "./utils/unmount";
