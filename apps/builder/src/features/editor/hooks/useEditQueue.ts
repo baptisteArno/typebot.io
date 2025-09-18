@@ -1,6 +1,7 @@
 import { ValidationError } from '../../typebot/constants/errorTypes'
 import { useState, useCallback, useEffect } from 'react'
 import { trpc } from '@/lib/trpc'
+import { useInterval } from './useInterval'
 
 export type { ValidationError }
 
@@ -19,7 +20,7 @@ export interface TypebotEditQueueItem {
 export const useEditQueue = (typebotId?: string) => {
   const [isLoading, setIsLoading] = useState(false)
   const [joinQueuePending, setJoinQueuePending] = useState(false)
-
+  const [cleanUpDelay, setCleanUpDelay] = useState(1000)
   const utils = trpc.useContext()
 
   const { data: queueItems, refetch: refetchQueueItems } =
@@ -160,22 +161,19 @@ export const useEditQueue = (typebotId?: string) => {
 
   const currentEditor = queueItems ? queueItems[0] : null
 
+  useInterval(() => {
+    updateActivity().catch(console.error)
+  }, 10000)
+
+  useInterval(() => {
+    cleanupInactiveUsers(5).catch(console.error)
+  }, cleanUpDelay)
+
   useEffect(() => {
-    if (!typebotId) return
-
-    const heartbeatInterval = setInterval(() => {
-      updateActivity().catch(console.error)
-    }, 10000)
-
-    const cleanupInterval = setInterval(() => {
-      cleanupInactiveUsers(10).catch(console.error)
-    }, 120000)
-
-    return () => {
-      clearInterval(heartbeatInterval)
-      clearInterval(cleanupInterval)
-    }
-  }, [typebotId, cleanupInactiveUsers, updateActivity])
+    setTimeout(() => {
+      setCleanUpDelay(5 * 60 * 1000)
+    }, 2000)
+  }, [typebotId])
 
   const leaveQueue = useCallback(
     async (userId: string) => {
