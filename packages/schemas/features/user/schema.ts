@@ -18,6 +18,7 @@ export const userSchema = z.object({
   graphNavigation: z.nativeEnum(GraphNavigation),
   preferredAppAppearance: z.string().nullable(),
   displayedInAppNotifications: displayedInAppNotificationsSchema.nullable(),
-}) satisfies z.ZodType<PrismaUser>
+  isAdmin: z.boolean().optional(),
+}) satisfies z.ZodType<PrismaUser & { isAdmin?: boolean }>
 
 export type User = z.infer<typeof userSchema>

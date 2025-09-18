@@ -2,6 +2,8 @@ import prisma from '@typebot.io/lib/prisma'
 import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { TRPCError } from '@trpc/server'
 import { workspaceMemberSchema } from '@typebot.io/schemas'
+import { WorkspaceRole } from '@typebot.io/prisma'
+import { env } from '@typebot.io/env'
 import { z } from 'zod'
 import { isReadWorkspaceFobidden } from '../helpers/isReadWorkspaceFobidden'
 
@@ -44,11 +46,28 @@ export const listMembersInWorkspace = authenticatedProcedure
     if (!workspace || isReadWorkspaceFobidden(workspace, user))
       throw new TRPCError({ code: 'NOT_FOUND', message: 'No workspaces found' })
 
-    return {
-      members: workspace.members.map((member) => ({
-        role: member.role,
-        user: member.user,
+    const members = workspace.members.map((member) => ({
+      role: member.role,
+      user: member.user,
+      workspaceId,
+    }))
+
+    // Check if current user is super admin (can access any workspace)
+    const isSuperAdmin = env.ADMIN_EMAIL?.some((email) => email === user.email)
+    const isAlreadyMember = workspace.members.some(
+      (member) => member.userId === user.id
+    )
+
+    if (isSuperAdmin && !isAlreadyMember) {
+      // Super admin accessing workspace they're not a member of: add as virtual ADMIN member
+      members.push({
+        role: WorkspaceRole.ADMIN,
+        user,
         workspaceId,
-      })),
+      })
+    }
+
+    return {
+      members,
     }
   })

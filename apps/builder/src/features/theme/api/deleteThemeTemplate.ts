@@ -35,7 +35,11 @@ export const deleteThemeTemplate = authenticatedProcedure
           members: true,
         },
       })
-      const userRole = getUserRoleInWorkspace(user.id, workspace?.members)
+      const userRole = getUserRoleInWorkspace(
+        user.id,
+        workspace?.members,
+        user.email ?? undefined
+      )
       if (userRole === undefined || userRole === WorkspaceRole.GUEST)
         throw new TRPCError({
           code: 'NOT_FOUND',

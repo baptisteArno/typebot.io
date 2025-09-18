@@ -189,9 +189,19 @@ export const getAuthOptions = ({
     session: async ({ session, user }) => {
       const userFromDb = user as User
       await updateLastActivityDate(userFromDb)
+
+      // Add isAdmin flag based on ADMIN_EMAIL configuration
+      const isAdmin =
+        (userFromDb.email &&
+          env.ADMIN_EMAIL?.some((email) => email === userFromDb.email)) ||
+        false
+
       return {
         ...session,
-        user: userFromDb,
+        user: {
+          ...userFromDb,
+          isAdmin,
+        },
       }
     },
     signIn: async ({ account, user }) => {

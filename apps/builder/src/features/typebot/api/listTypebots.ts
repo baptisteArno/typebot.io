@@ -45,7 +45,11 @@ export const listTypebots = authenticatedProcedure
       where: { id: workspaceId },
       select: { members: true },
     })
-    const userRole = getUserRoleInWorkspace(user.id, workspace?.members)
+    const userRole = getUserRoleInWorkspace(
+      user.id,
+      workspace?.members,
+      user.email ?? undefined
+    )
     if (userRole === undefined)
       throw new TRPCError({ code: 'NOT_FOUND', message: 'Workspace not found' })
     const typebots = (await prisma.typebot.findMany({
