@@ -32,7 +32,11 @@ export const listFolders = authenticatedProcedure
       where: { id: workspaceId },
       select: { id: true, members: true, plan: true },
     })
-    const userRole = getUserRoleInWorkspace(user.id, workspace?.members)
+    const userRole = getUserRoleInWorkspace(
+      user.id,
+      workspace?.members,
+      user.email ?? undefined
+    )
     if (
       userRole === undefined ||
       userRole === WorkspaceRole.GUEST ||

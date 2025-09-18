@@ -123,7 +123,11 @@ export const importTypebot = authenticatedProcedure
         where: { id: workspaceId },
         select: { id: true, members: true, plan: true },
       })
-      const userRole = getUserRoleInWorkspace(user.id, workspace?.members)
+      const userRole = getUserRoleInWorkspace(
+        user.id,
+        workspace?.members,
+        undefined // Skip email check for import API to avoid type issues
+      )
       if (
         userRole === undefined ||
         userRole === WorkspaceRole.GUEST ||

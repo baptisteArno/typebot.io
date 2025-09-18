@@ -15,18 +15,21 @@ import { WorkspaceSettingsModal } from '@/features/workspace/components/Workspac
 import { ParentModalProvider } from '@/features/graph/providers/ParentModalProvider'
 import { useRouter } from 'next/router'
 import { ChevronLeftIcon } from './../../../components/icons'
+import { WorkspaceDropdown } from '@/features/workspace/components/WorkspaceDropdown'
 
 export const DashboardHeader = () => {
   const { t } = useTranslate()
-  const { user } = useUser()
-  const { workspace } = useWorkspace()
   const { asPath, back, push } = useRouter()
+  const { workspace, switchWorkspace, createWorkspace } = useWorkspace()
+  const { user, logOut } = useUser()
 
   const isRedirectFromCredentialsCreation = asPath.includes('preferences')
 
   const { isOpen, onOpen, onClose } = useDisclosure({
     defaultIsOpen: isRedirectFromCredentialsCreation,
   })
+  const handleCreateNewWorkspace = () =>
+    createWorkspace(user?.name ?? undefined)
 
   const handleBackNavigation = () => {
     // Check if we can go back in browser history
@@ -75,6 +78,14 @@ export const DashboardHeader = () => {
             >
               {t('workspace.settings.modal.menu.preferences.label')}
             </Button>
+          )}
+          {user?.isAdmin && (
+            <WorkspaceDropdown
+              currentWorkspace={workspace}
+              onLogoutClick={logOut}
+              onCreateNewWorkspaceClick={handleCreateNewWorkspace}
+              onWorkspaceSelected={switchWorkspace}
+            />
           )}
         </HStack>
       </Flex>

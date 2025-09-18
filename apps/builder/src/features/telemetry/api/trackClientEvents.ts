@@ -67,7 +67,11 @@ export const trackClientEvents = authenticatedProcedure
     for (const event of events) {
       if ('workspaceId' in event) {
         const workspace = workspaces.find((w) => w.id === event.workspaceId)
-        const userRole = getUserRoleInWorkspace(user.id, workspace?.members)
+        const userRole = getUserRoleInWorkspace(
+          user.id,
+          workspace?.members,
+          user.email ?? undefined
+        )
         if (
           userRole === undefined ||
           userRole === WorkspaceRole.GUEST ||

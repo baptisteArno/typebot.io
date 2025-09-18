@@ -35,7 +35,11 @@ export const listThemeTemplates = authenticatedProcedure
         members: true,
       },
     })
-    const userRole = getUserRoleInWorkspace(user.id, workspace?.members)
+    const userRole = getUserRoleInWorkspace(
+      user.id,
+      workspace?.members,
+      user.email ?? undefined
+    )
     if (userRole === undefined || userRole === WorkspaceRole.GUEST)
       throw new TRPCError({ code: 'NOT_FOUND', message: 'Workspace not found' })
     const themeTemplates = (await prisma.themeTemplate.findMany({
