@@ -230,10 +230,11 @@ const validateTypebotLinks = async (groups: Group[]) => {
 
 const validateTextBeforeClaudia = (groups: Group[], edges: Edge[]) => {
   const invalidGroups: string[] = []
-  const inputBlockTypes = new Set<string>(Object.values(InputBlockType))
   const groupMap = new Map<string, Group>(groups.map((g) => [g.id, g]))
 
   const edgesByFromBlock = new Map<string, Edge[]>()
+  const edgesByToGroup = new Map<string, Edge[]>()
+
   edges.forEach((e) => {
     if ('blockId' in e.from && typeof e.from.blockId === 'string') {
       const bid = e.from.blockId
@@ -241,160 +242,218 @@ const validateTextBeforeClaudia = (groups: Group[], edges: Edge[]) => {
       list.push(e)
       edgesByFromBlock.set(bid, list)
     }
+
+    if ('groupId' in e.to && typeof e.to.groupId === 'string') {
+      const gid = e.to.groupId
+      const list = edgesByToGroup.get(gid) || []
+      list.push(e)
+      edgesByToGroup.set(gid, list)
+    }
   })
 
-  const findBlockInGroup = (
-    group: Group,
-    blockId?: string
-  ): Block | undefined => {
-    if (!blockId) return group.blocks.length > 0 ? group.blocks[0] : undefined
-    return (
-      group.blocks.find((b) => b.id === blockId) ||
-      (group.blocks.length > 0 ? group.blocks[0] : undefined)
-    )
+  const hasTextInGroup = (group: Group): boolean => {
+    return group.blocks.some((block) => isTextBubbleBlock(block))
   }
 
-  const getNextBlocks = (
-    group: Group,
-    blockIndex: number
-  ): { block: Block; group: Group }[] => {
-    const results: { block: Block; group: Group }[] = []
-    if (blockIndex + 1 < group.blocks.length) {
-      results.push({ block: group.blocks[blockIndex + 1], group })
+  const isInputBlock = (block: Block): boolean => {
+    return (Object.values(InputBlockType) as string[]).includes(block.type)
+  }
+
+  const hasAccessibleTextInGroup = (group: Group): boolean => {
+    const textBlocks = group.blocks.filter((block) => isTextBubbleBlock(block))
+    const claudiaBlocks = group.blocks.filter(
+      (block) => isClaudiaBlock(block) && !isClaudiaAnswerTicketBlock(block)
+    )
+
+    if (textBlocks.length === 0 || claudiaBlocks.length === 0) {
+      return false
     }
-    const current = group.blocks[blockIndex]
-    const relatedEdges = edgesByFromBlock.get(current.id) || []
-    relatedEdges.forEach((edge) => {
-      if ('groupId' in edge.to && typeof edge.to.groupId === 'string') {
-        const targetGroupId = edge.to.groupId
-        const targetGroup = groupMap.get(targetGroupId)
-        if (!targetGroup) return
-        const targetBlockId =
-          'blockId' in edge.to && typeof edge.to.blockId === 'string'
-            ? edge.to.blockId
-            : undefined
-        const targetBlock = findBlockInGroup(targetGroup, targetBlockId)
-        if (targetBlock)
-          results.push({ block: targetBlock, group: targetGroup })
+
+    return claudiaBlocks.some((claudiaBlock) => {
+      const claudiaIndex = group.blocks.findIndex(
+        (b) => b.id === claudiaBlock.id
+      )
+
+      for (let i = 0; i < claudiaIndex; i++) {
+        const block = group.blocks[i]
+        if (isTextBubbleBlock(block)) {
+          const hasBlockingInput = group.blocks
+            .slice(i + 1, claudiaIndex)
+            .some((b) => isInputBlock(b))
+          if (!hasBlockingInput) {
+            return true
+          }
+        }
       }
+
+      for (let i = claudiaIndex + 1; i < group.blocks.length; i++) {
+        const block = group.blocks[i]
+        if (isTextBubbleBlock(block)) {
+          return true
+        }
+      }
+
+      return false
     })
+  }
+
+  const edgeSkipsTextInGroup = (group: Group): boolean => {
+    const incomingEdges = edgesByToGroup.get(group.id) || []
+
+    return incomingEdges.some((edge) => {
+      if ('blockId' in edge.to && typeof edge.to.blockId === 'string') {
+        const targetBlock = group.blocks.find((b) => b.id === edge.to.blockId)
+        if (targetBlock) {
+          const targetIndex = group.blocks.findIndex(
+            (b) => b.id === edge.to.blockId
+          )
+
+          if (targetIndex > 0) {
+            const skippedBlocks = group.blocks.slice(0, targetIndex)
+            const hasSkippedText = skippedBlocks.some((b) =>
+              isTextBubbleBlock(b)
+            )
+
+            if (hasSkippedText) {
+              const remainingBlocks = group.blocks.slice(targetIndex)
+              const hasClaudiaAfter = remainingBlocks.some(
+                (b) => isClaudiaBlock(b) && !isClaudiaAnswerTicketBlock(b)
+              )
+
+              if (hasClaudiaAfter) {
+                const hasAccessibleTextAfterTarget = remainingBlocks.some((b) =>
+                  isTextBubbleBlock(b)
+                )
+                return !hasAccessibleTextAfterTarget
+              }
+            }
+          }
+        }
+      }
+      return false
+    })
+  }
+
+  const getNextGroups = (group: Group, blockIndex?: number): Group[] => {
+    const results: Group[] = []
+
+    const blocksToCheck =
+      blockIndex !== undefined ? [group.blocks[blockIndex]] : group.blocks
+
+    blocksToCheck.forEach((block) => {
+      if (!block) return
+
+      const relatedEdges = edgesByFromBlock.get(block.id) || []
+      relatedEdges.forEach((edge) => {
+        if ('groupId' in edge.to && typeof edge.to.groupId === 'string') {
+          const targetGroup = groupMap.get(edge.to.groupId)
+          if (targetGroup && !results.includes(targetGroup)) {
+            results.push(targetGroup)
+          }
+        }
+      })
+    })
+
     return results
   }
 
-  const getPreviousBlocks = (
-    targetGroup: Group,
-    targetBlockIndex: number
-  ): { block: Block; group: Group }[] => {
-    const results: { block: Block; group: Group }[] = []
-    if (targetBlockIndex > 0) {
-      results.push({
-        block: targetGroup.blocks[targetBlockIndex - 1],
-        group: targetGroup,
-      })
-    }
-    const targetBlock = targetGroup.blocks[targetBlockIndex]
-    edges.forEach((edge) => {
-      if (
-        'groupId' in edge.to &&
-        typeof edge.to.groupId === 'string' &&
-        edge.to.groupId === targetGroup.id
-      ) {
-        const edgeTargetsThisBlock =
-          ('blockId' in edge.to && edge.to.blockId === targetBlock.id) ||
-          (!('blockId' in edge.to) && targetBlockIndex === 0)
-        if (
-          edgeTargetsThisBlock &&
-          'blockId' in edge.from &&
-          typeof edge.from.blockId === 'string'
-        ) {
-          const sourceBlockId = edge.from.blockId
-          groups.forEach((sourceGroup) => {
-            const sourceBlockIndex = sourceGroup.blocks.findIndex(
-              (b) => b.id === sourceBlockId
-            )
-            if (sourceBlockIndex !== -1) {
-              results.push({
-                block: sourceGroup.blocks[sourceBlockIndex],
-                group: sourceGroup,
-              })
+  const getPreviousGroups = (group: Group): Group[] => {
+    const results: Group[] = []
+    const incomingEdges = edgesByToGroup.get(group.id) || []
+
+    incomingEdges.forEach((edge) => {
+      if ('blockId' in edge.from && typeof edge.from.blockId === 'string') {
+        const blockId = edge.from.blockId
+        for (const [, g] of groupMap) {
+          if (g.blocks.some((b) => b.id === blockId)) {
+            if (!results.includes(g)) {
+              results.push(g)
             }
-          })
+            break
+          }
         }
       }
     })
+
     return results
+  }
+
+  const hasTextInPath = (
+    startGroup: Group,
+    direction: 'forward' | 'backward',
+    visited: Set<string> = new Set(),
+    depth: number = 0,
+    maxDepth: number = 3
+  ): boolean => {
+    if (depth > maxDepth || visited.has(startGroup.id)) {
+      return false
+    }
+
+    visited.add(startGroup.id)
+
+    if (
+      depth === 0
+        ? hasAccessibleTextInGroup(startGroup)
+        : hasTextInGroup(startGroup)
+    ) {
+      return true
+    }
+
+    const hasBlockingInput = startGroup.blocks.some((block) =>
+      isInputBlock(block)
+    )
+    if (hasBlockingInput && depth > 0) {
+      return false
+    }
+
+    const connectedGroups =
+      direction === 'forward'
+        ? getNextGroups(startGroup)
+        : getPreviousGroups(startGroup)
+
+    return connectedGroups.some((group) =>
+      hasTextInPath(group, direction, new Set(visited), depth + 1, maxDepth)
+    )
   }
 
   groups.forEach((group) => {
     if (!hasBlocks(group)) return
-    group.blocks.forEach((block, blockIndex) => {
-      if (!isClaudiaBlock(block) || isClaudiaAnswerTicketBlock(block)) return
-      let hasValidText = false
-      const visited = new Set<string>()
-      const checkForwardPath = (
-        currentBlock: Block,
-        currentGroup: Group,
-        currentIndex: number
-      ) => {
-        const nextBlocks = getNextBlocks(currentGroup, currentIndex)
-        for (const { block: nextBlock, group: nextGroup } of nextBlocks) {
-          const visitKey = `${nextGroup.id}-${nextBlock.id}`
-          if (visited.has(visitKey)) continue
-          visited.add(visitKey)
-          if (isTextBubbleBlock(nextBlock)) {
-            return true
-          }
-          if (inputBlockTypes.has(nextBlock.type)) {
-            continue
-          }
-          const nextIndex = nextGroup.blocks.findIndex(
-            (b) => b.id === nextBlock.id
-          )
-          if (
-            nextIndex !== -1 &&
-            checkForwardPath(nextBlock, nextGroup, nextIndex)
-          ) {
-            return true
-          }
-        }
-        return false
-      }
-      const checkBackwardPath = (
-        currentBlock: Block,
-        currentGroup: Group,
-        currentIndex: number
-      ) => {
-        const prevBlocks = getPreviousBlocks(currentGroup, currentIndex)
-        for (const { block: prevBlock, group: prevGroup } of prevBlocks) {
-          const visitKey = `${prevGroup.id}-${prevBlock.id}-back`
-          if (visited.has(visitKey)) continue
-          visited.add(visitKey)
-          if (isTextBubbleBlock(prevBlock)) {
-            return true
-          }
-          if (inputBlockTypes.has(prevBlock.type)) {
-            continue
-          }
-          const prevIndex = prevGroup.blocks.findIndex(
-            (b) => b.id === prevBlock.id
-          )
-          if (
-            prevIndex !== -1 &&
-            checkBackwardPath(prevBlock, prevGroup, prevIndex)
-          ) {
-            return true
-          }
-        }
-        return false
-      }
-      hasValidText =
-        checkForwardPath(block, group, blockIndex) ||
-        checkBackwardPath(block, group, blockIndex)
-      if (!hasValidText) {
-        invalidGroups.push(group.id)
-      }
-    })
+
+    const hasClaudia = group.blocks.some(
+      (block) => isClaudiaBlock(block) && !isClaudiaAnswerTicketBlock(block)
+    )
+    if (!hasClaudia) return
+
+    if (edgeSkipsTextInGroup(group)) {
+      invalidGroups.push(group.id)
+      return
+    }
+
+    if (hasAccessibleTextInGroup(group)) {
+      return
+    }
+
+    const nextGroups = getNextGroups(group)
+    const prevGroups = getPreviousGroups(group)
+
+    const hasTextInAdjacentGroups =
+      nextGroups.some((g) => hasTextInGroup(g)) ||
+      prevGroups.some((g) => hasTextInGroup(g))
+
+    if (hasTextInAdjacentGroups) {
+      return
+    }
+
+    const hasTextForward = hasTextInPath(group, 'forward')
+    const hasTextBackward = hasTextInPath(group, 'backward')
+
+    if (hasTextForward || hasTextBackward) {
+      return
+    }
+
+    invalidGroups.push(group.id)
   })
+
   return invalidGroups
 }
 
