@@ -18,6 +18,7 @@ export const PlateElement = (props: Props) => {
     const element = props.element;
     return isElementDescendant(element) ? element : undefined;
   });
+
   return (
     <Switch>
       <Match when={textDescendant()} keyed>
@@ -62,6 +63,7 @@ export const PlateElement = (props: Props) => {
               when={
                 elementDescendant.type === "p" &&
                 elementDescendant.children.length === 1 &&
+                "text" in elementDescendant.children[0] &&
                 isEmpty(elementDescendant.children[0].text as string)
               }
             >
