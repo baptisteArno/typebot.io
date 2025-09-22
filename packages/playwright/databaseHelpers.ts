@@ -71,6 +71,7 @@ export const parseTestTypebot = (partialTypebot: Partial<Typebot>): Typebot => {
           },
           ...(partialTypebot.groups ?? []),
         ]) as any[],
+    isSecondaryFlow: partialTypebot.isSecondaryFlow ?? false,
   }
 }
 
@@ -87,6 +88,7 @@ export const parseTypebotToPublicTypebot = (
   variables: typebot.variables,
   edges: typebot.edges,
   events: typebot.events,
+  isSecondaryFlow: typebot.isSecondaryFlow,
 })
 
 type Options = {
