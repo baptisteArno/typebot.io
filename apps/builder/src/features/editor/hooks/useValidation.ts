@@ -1,7 +1,7 @@
 import { useState, useCallback, useRef } from 'react'
 import { trpc } from '@/lib/trpc'
 import { ValidationError } from '../../typebot/constants/errorTypes'
-import { Edge, Group } from '@typebot.io/schemas'
+import { Edge, Group, Variable } from '@typebot.io/schemas'
 
 export type { ValidationError }
 
@@ -16,6 +16,7 @@ export const useValidation = () => {
 
   const validateTypebot = useCallback(
     async (typebot: {
+      variables: Variable[]
       groups: Group[]
       edges: Edge[]
     }): Promise<ValidationError | null> => {

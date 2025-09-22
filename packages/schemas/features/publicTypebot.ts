@@ -27,6 +27,7 @@ export const publicTypebotSchemaV5 = z.preprocess(
     variables: z.array(variableSchema),
     theme: themeSchema,
     settings: settingsSchema,
+    isSecondaryFlow: z.boolean().optional().default(false),
   })
 ) satisfies z.ZodType<Partial<PrismaPublicTypebot>, z.ZodTypeDef, unknown>
 export type PublicTypebotV5 = z.infer<typeof publicTypebotSchemaV5>

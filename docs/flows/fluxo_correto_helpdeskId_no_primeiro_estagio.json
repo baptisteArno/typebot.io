@@ -1,0 +1,202 @@
+{
+  "version": "6",
+  "id": "cmfvny6s8008p5qhpl5szg3ac",
+  "name": "fluxo_correto_helpdeskId_no_primeiro_estagio",
+  "events": [
+    {
+      "id": "umfly6m200lob7pprik8575h",
+      "outgoingEdgeId": "h6db19rezqlb7123y2h7ti0a",
+      "graphCoordinates": {
+        "x": 0,
+        "y": 0
+      },
+      "type": "start"
+    }
+  ],
+  "groups": [
+    {
+      "id": "z1tlil19mwsmxiyi0e94mcs7",
+      "title": "Group #1",
+      "graphCoordinates": {
+        "x": 367,
+        "y": 238
+      },
+      "blocks": [
+        {
+          "id": "fvvpuj7bdqm04aelcir0q53e",
+          "type": "Condition",
+          "items": [
+            {
+              "id": "iddr38i6hiwp1n54qtwrlzua",
+              "outgoingEdgeId": "r05hwckvurm02lwltzqcabui",
+              "content": {
+                "comparisons": [
+                  {
+                    "id": "keb44x2codrixd9i1oxpjk3n",
+                    "variableId": "vrl2z9ihgunx1olel8fhqds7x",
+                    "comparisonOperator": "Is set"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "nu6b3429ermki1biafgu1hm6",
+          "outgoingEdgeId": "aafxv0v9uj8pdla4nv1dflyd",
+          "type": "text input",
+          "options": {
+            "variableId": "vrl2z9ihgunx1olel8fhqds7x"
+          }
+        }
+      ]
+    },
+    {
+      "id": "sjzh2xaij8kml55hbw4z4ssy",
+      "title": "Group #2",
+      "graphCoordinates": {
+        "x": 1006.05,
+        "y": 202.27
+      },
+      "blocks": [
+        {
+          "id": "k8w75z6mcwu9s57kk7jvmv5e",
+          "type": "Condition",
+          "items": [
+            {
+              "id": "xcka5oanua16u81l31tno7s0",
+              "outgoingEdgeId": "lmngi02nhupefufse386io55",
+              "content": {
+                "comparisons": [
+                  {
+                    "id": "jfln9ombukv96dizy2ejx7w9",
+                    "variableId": "vvkv8kb40vr2dygy1h8xb9qpw",
+                    "comparisonOperator": "Is set"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "vmq9rt5x7aemllbx5wdz5xzy",
+          "outgoingEdgeId": "p2dt7j5y6w4pqp4ya7hgfjne",
+          "type": "text input",
+          "options": {
+            "variableId": "vvkv8kb40vr2dygy1h8xb9qpw"
+          }
+        }
+      ]
+    },
+    {
+      "id": "enppvxilwfqkp7ajhxpdjnqe",
+      "title": "Group #3",
+      "graphCoordinates": {
+        "x": 1224.9406127929688,
+        "y": 549.875
+      },
+      "blocks": [
+        {
+          "id": "hkeddh670yak7xspwfejqk0h",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "Valeu"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "i2i8fau1jwl51d3fn6r5jdfg",
+          "type": "claudia",
+          "options": {
+            "action": "End Flow [N1]"
+          }
+        }
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "h6db19rezqlb7123y2h7ti0a",
+      "from": {
+        "eventId": "umfly6m200lob7pprik8575h"
+      },
+      "to": {
+        "groupId": "z1tlil19mwsmxiyi0e94mcs7"
+      }
+    },
+    {
+      "id": "r05hwckvurm02lwltzqcabui",
+      "from": {
+        "blockId": "fvvpuj7bdqm04aelcir0q53e",
+        "itemId": "iddr38i6hiwp1n54qtwrlzua"
+      },
+      "to": {
+        "groupId": "sjzh2xaij8kml55hbw4z4ssy"
+      }
+    },
+    {
+      "id": "aafxv0v9uj8pdla4nv1dflyd",
+      "from": {
+        "blockId": "nu6b3429ermki1biafgu1hm6"
+      },
+      "to": {
+        "groupId": "sjzh2xaij8kml55hbw4z4ssy"
+      }
+    },
+    {
+      "id": "lmngi02nhupefufse386io55",
+      "from": {
+        "blockId": "k8w75z6mcwu9s57kk7jvmv5e",
+        "itemId": "xcka5oanua16u81l31tno7s0"
+      },
+      "to": {
+        "groupId": "enppvxilwfqkp7ajhxpdjnqe"
+      }
+    },
+    {
+      "id": "p2dt7j5y6w4pqp4ya7hgfjne",
+      "from": {
+        "blockId": "vmq9rt5x7aemllbx5wdz5xzy"
+      },
+      "to": {
+        "groupId": "enppvxilwfqkp7ajhxpdjnqe"
+      }
+    }
+  ],
+  "variables": [
+    {
+      "id": "vvkv8kb40vr2dygy1h8xb9qpw",
+      "name": "teste",
+      "isSessionVariable": true
+    },
+    {
+      "id": "vrl2z9ihgunx1olel8fhqds7x",
+      "name": "helpdeskId",
+      "isSessionVariable": true
+    }
+  ],
+  "theme": {},
+  "selectedThemeTemplateId": null,
+  "settings": {},
+  "createdAt": "2025-09-22T21:53:42.872Z",
+  "updatedAt": "2025-09-22T21:54:33.764Z",
+  "icon": null,
+  "folderId": null,
+  "publicId": "fluxo-correto-helpdesk-id-no-primeiro-estagio-5szg3ac",
+  "customDomain": null,
+  "workspaceId": "cmfkk0ay60001rgf0okyy256u",
+  "resultsTablePreferences": null,
+  "isArchived": false,
+  "isClosed": false,
+  "isSecondaryFlow": false,
+  "whatsAppCredentialsId": null,
+  "riskLevel": null
+}

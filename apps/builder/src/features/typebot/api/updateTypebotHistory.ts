@@ -128,7 +128,7 @@ export const updateTypebotHistory = authenticatedProcedure
           isClosed: existingTypebot?.isClosed || false,
           riskLevel: existingTypebot?.riskLevel || null,
           whatsAppCredentialsId: existingTypebot?.whatsAppCredentialsId || null,
-
+          isSecondaryFlow: existingTypebot?.isSecondaryFlow || false,
           snapshotChecksum,
         },
       })

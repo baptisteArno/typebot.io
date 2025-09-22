@@ -490,6 +490,8 @@
   "validationErrors.typebotIsValid": "✅ ¡Flujo válido!",
   "validationErrors.validating": "Validación ...",
   "validationErrors.validatingDescription": "Por favor espera mientras verificamos la estructura de tu typebot.",
+  "validationErrors.secondaryFlowTooltip": "Flujo usado solo como flujo secundario, se llamará solo desde otros flujos, en este caso las validaciones de ClaudIA no se ejecutarán.",
+  "validationErrors.secondaryFlowName": "Este es un flujo secundario",
   "variables.button.searchInput.placeholder": "Buscar variable",
   "variables.button.tooltip": "Insertar variable",
   "variables.remove": "Eliminar variable",

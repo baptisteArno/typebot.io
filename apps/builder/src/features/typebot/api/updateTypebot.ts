@@ -35,6 +35,7 @@ const typebotUpdateSchemaPick = {
   publicId: true,
   customDomain: true,
   isClosed: true,
+  isSecondaryFlow: true,
   whatsAppCredentialsId: true,
   riskLevel: true,
   events: true,
@@ -227,6 +228,7 @@ export const updateTypebot = authenticatedProcedure
           workspaceId: existingTypebot.workspace.id,
         }),
         isClosed: typebot.isClosed,
+        isSecondaryFlow: typebot.isSecondaryFlow ?? false,
         whatsAppCredentialsId: typebot.whatsAppCredentialsId ?? undefined,
       },
     })

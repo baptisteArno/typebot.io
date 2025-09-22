@@ -12,6 +12,10 @@ import {
   Box,
   Icon,
   Spinner,
+  Switch,
+  FormControl,
+  FormLabel,
+  Tooltip,
 } from '@chakra-ui/react'
 import { useEditor } from '../../editor/providers/EditorProvider'
 import { useState, useEffect, useRef } from 'react'
@@ -72,7 +76,7 @@ export const ValidationErrorsDrawer = ({ onClose }: Props) => {
 
   const { validationErrors, isValidating } = useEditor()
   const { isSidebarExtended } = useEditor()
-  const { typebot } = useTypebot()
+  const { typebot, updateTypebot } = useTypebot()
   const { navigateToPosition } = useGraph()
   const { focusGroup } = useGroupsStore(
     useShallow((state) => ({
@@ -82,6 +86,9 @@ export const ValidationErrorsDrawer = ({ onClose }: Props) => {
   const [width, setWidth] = useState(500)
   const [isResizeHandleVisible, setIsResizeHandleVisible] = useState(false)
   const [showSpinner, setShowSpinner] = useState(false)
+  const [isSecondaryFlow, setIsSecondaryFlow] = useState(
+    typebot?.isSecondaryFlow ?? false
+  )
   const timeoutRef = useRef<NodeJS.Timeout>()
 
   useEffect(() => {
@@ -95,6 +102,26 @@ export const ValidationErrorsDrawer = ({ onClose }: Props) => {
 
     return () => clearTimeout(timeoutRef.current)
   }, [isValidating])
+
+  useEffect(() => {
+    if (typebot) {
+      setIsSecondaryFlow(typebot.isSecondaryFlow ?? false)
+    }
+  }, [typebot])
+
+  const handleSecondaryFlowToggle = async () => {
+    if (!typebot || !updateTypebot) return
+
+    const newIsSecondaryFlow = !isSecondaryFlow
+    setIsSecondaryFlow(newIsSecondaryFlow)
+
+    await updateTypebot({
+      updates: {
+        isSecondaryFlow: newIsSecondaryFlow,
+      },
+      save: true,
+    })
+  }
 
   const getGroupNameById = (id: string): string | undefined => {
     return typebot?.groups.find((g) => g.id === id)?.title
@@ -113,6 +140,15 @@ export const ValidationErrorsDrawer = ({ onClose }: Props) => {
     validationErrors: ValidationError | null
   ): number => {
     if (!validationErrors) return 0
+
+    if (isSecondaryFlow) {
+      return validationErrors.errors.filter(
+        (error) =>
+          error.type !== 'missingTextBeforeClaudia' &&
+          error.type !== 'missingClaudiaInFlowBranches'
+      ).length
+    }
+
     return validationErrors.errors.length
   }
 
@@ -201,31 +237,57 @@ export const ValidationErrorsDrawer = ({ onClose }: Props) => {
       <Stack w="full" spacing="4">
         <CloseButton pos="absolute" right="1rem" top="1rem" onClick={onClose} />
 
-        <HStack spacing={3} alignItems="center" paddingRight={6}>
-          <Heading fontSize="md">{t('validationErrors.title')}</Heading>
-          <Badge
-            colorScheme={totalErrors > 0 ? 'red' : 'green'}
-            variant="solid"
-            borderRadius="full"
-            fontSize="xs"
-            w="5"
-            h="5"
-            paddingEnd={1.5}
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
+        <VStack spacing={3} alignItems="stretch">
+          <HStack spacing={3} alignItems="center" paddingRight={6}>
+            <Heading fontSize="md">{t('validationErrors.title')}</Heading>
+            <Badge
+              colorScheme={totalErrors > 0 ? 'red' : 'green'}
+              variant="solid"
+              borderRadius="full"
+              fontSize="xs"
+              w="5"
+              h="5"
+              paddingEnd={1.5}
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+            >
+              {totalErrors}
+            </Badge>
+            {showSpinner && (
+              <HStack spacing={2}>
+                <Spinner size="xs" />
+                <Text fontSize="xs" color={validatingTextColor}>
+                  {t('validationErrors.validating')}
+                </Text>
+              </HStack>
+            )}
+          </HStack>
+
+          <Tooltip
+            label={t('validationErrors.secondaryFlowTooltip')}
+            placement="top"
           >
-            {totalErrors}
-          </Badge>
-          {showSpinner && (
-            <HStack spacing={2}>
-              <Spinner size="xs" />
-              <Text fontSize="xs" color={validatingTextColor}>
-                {t('validationErrors.validating')}
-              </Text>
-            </HStack>
-          )}
-        </HStack>
+            <FormControl
+              display="flex"
+              alignItems="center"
+              justifyContent="space-between"
+              bg={useColorModeValue('gray.50', 'gray.800')}
+              p={2}
+              borderRadius="md"
+            >
+              <FormLabel htmlFor="is-secondary-flow" mb="0" fontSize="sm">
+                {t('validationErrors.secondaryFlowName')}
+              </FormLabel>
+              <Switch
+                id="is-secondary-flow"
+                isChecked={isSecondaryFlow}
+                onChange={handleSecondaryFlowToggle}
+                colorScheme="blue"
+              />
+            </FormControl>
+          </Tooltip>
+        </VStack>
 
         <Stack overflowY="auto" py="1" spacing={4}>
           {!validationErrors ? (
@@ -252,6 +314,14 @@ export const ValidationErrorsDrawer = ({ onClose }: Props) => {
           ) : (
             <>
               {Object.entries(ERROR_CONFIGS).map(([errorType, config]) => {
+                if (
+                  isSecondaryFlow &&
+                  (errorType === 'missingTextBeforeClaudia' ||
+                    errorType === 'missingClaudiaInFlowBranches')
+                ) {
+                  return null
+                }
+
                 const filteredErrors = errorsWithGroup.filter(
                   (error) => error.type === errorType
                 )

@@ -1,31 +1,35 @@
 import { publicProcedure } from '@/helpers/server/trpc'
-import prisma from '@typebot.io/lib/prisma'
 import { TRPCError } from '@trpc/server'
+import prisma from '@typebot.io/lib/prisma'
+import {
+  Block,
+  Edge,
+  edgeSchema,
+  Group,
+  groupV5Schema,
+  groupV6Schema,
+  TypebotLinkBlock,
+  Variable,
+  variableSchema,
+} from '@typebot.io/schemas'
+import {
+  isClaudiaAnswerTicketBlock,
+  isClaudiaBlock,
+} from '@typebot.io/schemas/features/blocks/forged/helpers'
+import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
+import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
+import { JumpBlock } from '@typebot.io/schemas/features/blocks/logic/jump'
+import {
+  isConditionBlock,
+  isTextBubbleBlock,
+} from '@typebot.io/schemas/helpers'
 import { z } from 'zod'
 import {
   ValidationErrorItem,
   validationErrorSchema,
 } from '../constants/errorTypes'
-import {
-  Group,
-  Block,
-  TypebotLinkBlock,
-  Edge,
-  edgeSchema,
-  groupV5Schema,
-  groupV6Schema,
-} from '@typebot.io/schemas'
-import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
-import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
-import {
-  isConditionBlock,
-  isTextBubbleBlock,
-} from '@typebot.io/schemas/helpers'
-import { JumpBlock } from '@typebot.io/schemas/features/blocks/logic/jump'
-import {
-  isClaudiaBlock,
-  isClaudiaAnswerTicketBlock,
-} from '@typebot.io/schemas/features/blocks/forged/helpers'
+
+const PREFILLED_VARIABLES = ['helpdeskId']
 
 const responseSchema = validationErrorSchema
 
@@ -458,12 +462,22 @@ const validateTextBeforeClaudia = (groups: Group[], edges: Edge[]) => {
 }
 
 const missingTextBetweenInputBlocks = (
+  variables: Variable[],
   groups: Group[],
   edges: Edge[],
   groupTitleMap?: Map<string, string>
 ) => {
   const inputBlockTypes = new Set<string>(Object.values(InputBlockType))
   const groupMap = new Map<string, Group>(groups.map((g) => [g.id, g]))
+
+  const allVariables = new Map<string, string>()
+
+  variables.forEach((variable: Variable) => {
+    if (variable.id && variable.name) {
+      allVariables.set(variable.id, variable.name)
+    }
+  })
+
   const startGroupIds = edges
     .filter(
       (e): e is Edge & { from: { eventId: string }; to: { groupId: string } } =>
@@ -543,7 +557,10 @@ const missingTextBetweenInputBlocks = (
     let nextNeedText = needTextBeforeNextInput
     if (block.type === 'text') {
       nextNeedText = false
-    } else if (inputBlockTypes.has(block.type)) {
+    } else if (
+      inputBlockTypes.has(block.type) &&
+      !isPrefilledVariable(block, allVariables)
+    ) {
       if (needTextBeforeNextInput) {
         invalidGroupIds.add(group.id)
       }
@@ -570,6 +587,21 @@ const missingTextBetweenInputBlocks = (
   }))
 }
 
+const isPrefilledVariable = (
+  block: Block,
+  allVariables: Map<string, string>
+): boolean => {
+  if (block.type === 'text input') {
+    const variableId = block?.options?.variableId
+    const variableName = variableId && allVariables.get(variableId)
+
+    return variableName && PREFILLED_VARIABLES.includes(variableName)
+      ? true
+      : false
+  }
+  return false
+}
+
 const getErrorMessage = (type: string, groupTitle?: string): string => {
   const errorMessages = {
     conditionalBlocks: 'Incomplete Conditions',
@@ -588,11 +620,15 @@ const createGroupTitleMap = (groups: Group[]): Map<string, string> => {
 }
 
 const validateTypebot = async ({
+  variables,
   groups,
   edges,
+  isSecondaryFlow = false,
 }: {
+  variables: Variable[]
   groups: Group[]
   edges: Edge[]
+  isSecondaryFlow?: boolean
 }) => {
   const safeEdges = (edges as Edge[]) || []
   const groupTitleMap = createGroupTitleMap(groups)
@@ -610,35 +646,56 @@ const validateTypebot = async ({
     groupId: b.groupId,
     message: getErrorMessage('brokenLinks', groupTitleMap.get(b.groupId)),
   }))
-  const missingTextBeforeClaudia = validateTextBeforeClaudia(groups, safeEdges)
-  const missingTextBeforeClaudiaErrors: ValidationErrorItem[] =
-    missingTextBeforeClaudia.map((groupId) => ({
-      type: 'missingTextBeforeClaudia',
-      groupId,
-      message: getErrorMessage(
-        'missingTextBeforeClaudia',
-        groupTitleMap.get(groupId)
-      ),
-    }))
-  const missingClaudiaInFlowBranches = validateFlowBranchesHaveClaudia(
-    groups,
-    safeEdges
-  )
-  const missingClaudiaInFlowBranchesErrors: ValidationErrorItem[] =
-    missingClaudiaInFlowBranches.map((groupId) => ({
-      type: 'missingClaudiaInFlowBranches',
-      groupId,
-      message: getErrorMessage(
-        'missingClaudiaInFlowBranches',
-        groupTitleMap.get(groupId)
-      ),
-    }))
+
+  let missingTextBeforeClaudiaErrors: ValidationErrorItem[] = []
+  let missingClaudiaInFlowBranchesErrors: ValidationErrorItem[] = []
+  let missingTextBetweenInputBlocksErrors: ValidationErrorItem[] = []
+
+  if (!isSecondaryFlow) {
+    const missingTextBeforeClaudia = validateTextBeforeClaudia(
+      groups,
+      safeEdges
+    )
+    missingTextBeforeClaudiaErrors = missingTextBeforeClaudia.map(
+      (groupId) => ({
+        type: 'missingTextBeforeClaudia',
+        groupId,
+        message: getErrorMessage(
+          'missingTextBeforeClaudia',
+          groupTitleMap.get(groupId)
+        ),
+      })
+    )
+
+    const missingClaudiaInFlowBranches = validateFlowBranchesHaveClaudia(
+      groups,
+      safeEdges
+    )
+    missingClaudiaInFlowBranchesErrors = missingClaudiaInFlowBranches.map(
+      (groupId) => ({
+        type: 'missingClaudiaInFlowBranches',
+        groupId,
+        message: getErrorMessage(
+          'missingClaudiaInFlowBranches',
+          groupTitleMap.get(groupId)
+        ),
+      })
+    )
+
+    missingTextBetweenInputBlocksErrors = missingTextBetweenInputBlocks(
+      variables,
+      groups,
+      safeEdges,
+      groupTitleMap
+    )
+  }
+
   const errors = [
     ...invalidGroupsErrors,
     ...brokenLinksErrors,
     ...missingTextBeforeClaudiaErrors,
     ...missingClaudiaInFlowBranchesErrors,
-    ...missingTextBetweenInputBlocks(groups, safeEdges, groupTitleMap),
+    ...missingTextBetweenInputBlocksErrors,
   ]
   return { isValid: errors.length === 0, errors }
 }
@@ -663,14 +720,27 @@ export const getTypebotValidation = publicProcedure
   .query(async ({ input }) => {
     const typebot = (await prisma.typebot.findFirst({
       where: { id: input.typebotId },
-      select: { groups: true, edges: true },
-    })) as { groups: Group[]; edges: Edge[] } | null
+      select: {
+        variables: true,
+        groups: true,
+        edges: true,
+        isSecondaryFlow: true,
+      },
+    })) as {
+      variables: Variable[]
+      groups: Group[]
+      edges: Edge[]
+      isSecondaryFlow: boolean
+    } | null
 
     if (!typebot) {
       throw new TRPCError({ code: 'NOT_FOUND', message: 'Typebot not found' })
     }
 
-    const { isValid, errors } = await validateTypebot(typebot)
+    const { isValid, errors } = await validateTypebot({
+      ...typebot,
+      isSecondaryFlow: typebot.isSecondaryFlow,
+    })
     return { isValid, errors }
   })
 
@@ -690,8 +760,10 @@ export const postTypebotValidation = publicProcedure
     z.object({
       typebot: z
         .object({
+          variables: z.array(variableSchema),
           edges: z.array(edgeSchema),
           groups: z.array(groupV6Schema.or(groupV5Schema)),
+          isSecondaryFlow: z.boolean().optional().default(false),
         })
         .describe(
           'Typebot object to be validated directly (optional override)'
@@ -700,6 +772,6 @@ export const postTypebotValidation = publicProcedure
   )
   .output(responseSchema)
   .mutation(async ({ input }) => {
-    const { groups, edges } = input.typebot
-    return await validateTypebot({ groups, edges })
+    const { variables, groups, edges, isSecondaryFlow } = input.typebot
+    return await validateTypebot({ variables, groups, edges, isSecondaryFlow })
   })

@@ -19,7 +19,7 @@ import { TypebotEditQueueItem, useEditQueue } from '../hooks/useEditQueue'
 import { useToast } from '@/hooks/useToast'
 import { useTranslate } from '@tolgee/react'
 
-type MinimalTypebot = Pick<Typebot, 'groups' | 'edges'>
+type MinimalTypebot = Pick<Typebot, 'variables' | 'groups' | 'edges'>
 
 export enum RightPanel {
   PREVIEW,
@@ -158,7 +158,8 @@ export const EditorProvider = ({ children }: { children: ReactNode }) => {
     if (
       env.NEXT_PUBLIC_DISABLE_VALIDATION ||
       !typebot?.groups ||
-      !typebot?.edges
+      !typebot?.edges ||
+      !typebot?.variables
     )
       return
 
@@ -178,11 +179,18 @@ export const EditorProvider = ({ children }: { children: ReactNode }) => {
     setValidationKey(newValidationKey)
 
     const minimalTypebot: MinimalTypebot = {
+      variables: typebot.variables,
       groups: typebot.groups,
       edges: typebot.edges,
     }
     queuedValidateTypebot(minimalTypebot)
-  }, [validationKey, typebot?.edges, typebot?.groups, queuedValidateTypebot])
+  }, [
+    validationKey,
+    typebot?.edges,
+    typebot?.groups,
+    typebot?.variables,
+    queuedValidateTypebot,
+  ])
 
   return (
     <editorContext.Provider

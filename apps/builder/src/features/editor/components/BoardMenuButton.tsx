@@ -126,8 +126,21 @@ const ValidationErrorsButton = () => {
     return () => clearTimeout(timeoutRef.current)
   }, [isValidating])
 
+  const { typebot } = useTypebot()
+
   const getTotalErrorCount = () => {
     if (!validationErrors) return 0
+
+    const isSecondaryFlow = typebot?.isSecondaryFlow ?? false
+
+    if (isSecondaryFlow) {
+      return validationErrors.errors.filter(
+        (error) =>
+          error.type !== 'missingTextBeforeClaudia' &&
+          error.type !== 'missingClaudiaInFlowBranches'
+      ).length
+    }
+
     return validationErrors.errors.length
   }
 

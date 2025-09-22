@@ -49,6 +49,7 @@ type UpdateTypebotPayload = Partial<
     | 'customDomain'
     | 'resultsTablePreferences'
     | 'isClosed'
+    | 'isSecondaryFlow'
     | 'whatsAppCredentialsId'
     | 'riskLevel'
   >

@@ -191,6 +191,7 @@ model Typebot {
   webhooks                Webhook[]
   isArchived              Boolean                   @default(false)
   isClosed                Boolean                   @default(false)
+  isSecondaryFlow         Boolean                   @default(false)
   whatsAppCredentialsId   String?
   riskLevel               Int?
   bannedIps               BannedIp[]
@@ -241,6 +242,7 @@ model TypebotHistory {
   workspaceId             String
   isArchived              Boolean
   isClosed                Boolean
+  isSecondaryFlow         Boolean
   riskLevel               Int?
   whatsAppCredentialsId   String?
 
@@ -294,6 +296,7 @@ model PublicTypebot {
   edges     Json
   theme     Json
   settings  Json
+  isSecondaryFlow  Boolean  @default(false)
   typebot   Typebot  @relation(fields: [typebotId], references: [id], onDelete: Cascade)
 }
 

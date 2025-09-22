@@ -256,6 +256,7 @@ export const publishTypebot = authenticatedProcedure
         isClosed: existingTypebot.isClosed,
         riskLevel: existingTypebot.riskLevel,
         whatsAppCredentialsId: existingTypebot.whatsAppCredentialsId,
+        isSecondaryFlow: existingTypebot.isSecondaryFlow,
 
         snapshotChecksum,
       },
