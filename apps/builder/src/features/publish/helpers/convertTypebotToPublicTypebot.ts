@@ -13,6 +13,7 @@ export const convertTypebotToPublicTypebot = (
   settings: typebot.settings,
   theme: typebot.theme,
   variables: typebot.variables,
+  isSecondaryFlow: typebot.isSecondaryFlow,
   createdAt: new Date(),
   updatedAt: new Date(),
 })
