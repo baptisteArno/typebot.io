@@ -6,7 +6,7 @@
   "i18n-ally.sortKeys": true,
   "eslint.run": "onSave",
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
+    "source.fixAll.eslint": "explicit"
   },
   "eslint.validate": ["javascript", "typescript", "typescriptreact"],
   "editor.defaultFormatter": "esbenp.prettier-vscode",

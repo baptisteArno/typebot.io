@@ -1,9 +1,20 @@
+import { useGroupsStore } from '@/features/graph/hooks/useGroupsStore'
+import { areTypebotsEqual } from '@/features/publish/helpers/areTypebotsEqual'
+import { convertPublicTypebotToTypebot } from '@/features/publish/helpers/convertPublicTypebotToTypebot'
+import { isPublished as isPublishedHelper } from '@/features/publish/helpers/isPublished'
+import { preventUserFromRefreshing } from '@/helpers/preventUserFromRefreshing'
+import { useAutoSave } from '@/hooks/useAutoSave'
+import { useToast } from '@/hooks/useToast'
+import { trpc } from '@/lib/trpc'
+import { isDefined, omit } from '@typebot.io/lib'
 import {
   PublicTypebot,
   PublicTypebotV6,
   TypebotV6,
   typebotV6Schema,
 } from '@typebot.io/schemas'
+import { useTranslate } from '@tolgee/react'
+import { dequal } from 'dequal'
 import { Router } from 'next/router'
 import {
   createContext,
@@ -16,23 +27,13 @@ import {
   useMemo,
   useState,
 } from 'react'
-import { isDefined, omit } from '@typebot.io/lib'
-import { edgesAction, EdgesActions } from './typebotActions/edges'
-import { itemsAction, ItemsActions } from './typebotActions/items'
-import { GroupsActions, groupsActions } from './typebotActions/groups'
-import { blocksAction, BlocksActions } from './typebotActions/blocks'
-import { variablesAction, VariablesActions } from './typebotActions/variables'
-import { dequal } from 'dequal'
-import { useToast } from '@/hooks/useToast'
 import { useUndo } from '../hooks/useUndo'
-import { useAutoSave } from '@/hooks/useAutoSave'
-import { preventUserFromRefreshing } from '@/helpers/preventUserFromRefreshing'
-import { areTypebotsEqual } from '@/features/publish/helpers/areTypebotsEqual'
-import { isPublished as isPublishedHelper } from '@/features/publish/helpers/isPublished'
-import { convertPublicTypebotToTypebot } from '@/features/publish/helpers/convertPublicTypebotToTypebot'
-import { trpc } from '@/lib/trpc'
+import { blocksAction, BlocksActions } from './typebotActions/blocks'
+import { edgesAction, EdgesActions } from './typebotActions/edges'
 import { EventsActions, eventsActions } from './typebotActions/events'
-import { useGroupsStore } from '@/features/graph/hooks/useGroupsStore'
+import { GroupsActions, groupsActions } from './typebotActions/groups'
+import { itemsAction, ItemsActions } from './typebotActions/items'
+import { variablesAction, VariablesActions } from './typebotActions/variables'
 
 const autoSaveTimeout = 10000
 
@@ -78,6 +79,9 @@ const typebotContext = createContext<
     isFlowEditor: boolean
     setIsFlowEditor: Dispatch<SetStateAction<boolean>>
     restorePublishedTypebot: () => void
+    rollbackTypebot: (
+      historyId: string
+    ) => Promise<{ historyId: string; message: string }>
   } & GroupsActions &
     BlocksActions &
     ItemsActions &
@@ -96,6 +100,7 @@ export const TypebotProvider = ({
   typebotId?: string
 }) => {
   const { showToast } = useToast()
+  const { t } = useTranslate()
   const [is404, setIs404] = useState(false)
   const setGroupsCoordinates = useGroupsStore(
     (state) => state.setGroupsCoordinates
@@ -174,6 +179,32 @@ export const TypebotProvider = ({
         refetchTypebot()
       },
     })
+
+  const rollbackErrorTitle = t('editor.header.rollbackTypebot.error.label')
+
+  const { mutateAsync: rollbackTypebotMutation } =
+    trpc.typebot.rollbackTypebot.useMutation({
+      onError: (error) =>
+        showToast({
+          title: rollbackErrorTitle,
+          description: error.message,
+        }),
+      onSuccess: () => {
+        if (!typebotId) return
+        refetchTypebot()
+      },
+    })
+
+  const rollbackTypebot = async (
+    historyId: string
+  ): Promise<{ historyId: string; message: string }> => {
+    if (!typebotId) throw new Error('Typebot ID is not defined')
+    const result = await rollbackTypebotMutation({
+      typebotId,
+      historyId,
+    })
+    return result
+  }
 
   const typebot = typebotData?.typebot as TypebotV6
   const publishedTypebot = (publishedTypebotData?.publishedTypebot ??
@@ -342,6 +373,7 @@ export const TypebotProvider = ({
         isFlowEditor: isFlowEditor,
         setIsFlowEditor: setIsFlowEditor,
         restorePublishedTypebot,
+        rollbackTypebot,
         ...groupsActions(setLocalTypebot as SetTypebot),
         ...blocksAction(setLocalTypebot as SetTypebot),
         ...variablesAction(setLocalTypebot as SetTypebot),

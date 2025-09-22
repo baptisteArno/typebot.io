@@ -1,22 +1,24 @@
-import prisma from '@typebot.io/lib/prisma'
+import { parseTypebotPublishEvents } from '@/features/telemetry/helpers/parseTypebotPublishEvents'
+
+import { generateHistoryChecksum } from '@/helpers/generateHistoryChecksum'
 import { authenticatedProcedure } from '@/helpers/server/trpc'
 import { TRPCError } from '@trpc/server'
+import { env } from '@typebot.io/env'
+import prisma from '@typebot.io/lib/prisma'
+import { Plan, Prisma } from '@typebot.io/prisma'
+import { computeRiskLevel } from '@typebot.io/radar'
 import {
   edgeSchema,
+  parseGroups,
   settingsSchema,
+  startEventSchema,
   themeSchema,
   variableSchema,
-  parseGroups,
-  startEventSchema,
 } from '@typebot.io/schemas'
+import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
+import { trackEvents } from '@typebot.io/telemetry/trackEvents'
 import { z } from 'zod'
 import { isWriteTypebotForbidden } from '../helpers/isWriteTypebotForbidden'
-import { Plan } from '@typebot.io/prisma'
-import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
-import { computeRiskLevel } from '@typebot.io/radar'
-import { env } from '@typebot.io/env'
-import { trackEvents } from '@typebot.io/telemetry/trackEvents'
-import { parseTypebotPublishEvents } from '@/features/telemetry/helpers/parseTypebotPublishEvents'
 
 export const publishTypebot = authenticatedProcedure
   .meta({
@@ -182,6 +184,82 @@ export const publishTypebot = authenticatedProcedure
           theme: themeSchema.parse(existingTypebot.theme),
         },
       })
+
+    const settings = (existingTypebot.settings as Record<string, unknown>) || {}
+    const restoreInfo = settings._restore as
+      | {
+          restoredFromId?: string
+          restoredAt?: string
+          isUnmodified?: boolean
+        }
+      | undefined
+
+    let origin: 'PUBLISH' | 'RESTORE' = 'PUBLISH'
+    let isRestored = false
+    let restoredFromId: string | undefined
+
+    if (
+      restoreInfo &&
+      restoreInfo.isUnmodified === true &&
+      restoreInfo.restoredFromId
+    ) {
+      origin = 'RESTORE'
+      isRestored = true
+      restoredFromId = restoreInfo.restoredFromId
+    }
+
+    const cleanedSettings = { ...settings }
+    if (cleanedSettings._restore) {
+      delete cleanedSettings._restore
+      await prisma.typebot.update({
+        where: { id: existingTypebot.id },
+        data: {
+          settings:
+            Object.keys(cleanedSettings).length > 0
+              ? JSON.parse(JSON.stringify(cleanedSettings))
+              : {},
+        },
+      })
+    }
+
+    const snapshotChecksum = generateHistoryChecksum(existingTypebot)
+
+    await prisma.typebotHistory.create({
+      data: {
+        typebotId: existingTypebot.id,
+        version: existingTypebot.version,
+        authorId: user?.id,
+        origin,
+        publishedAt: new Date(),
+        isRestored,
+        restoredFromId,
+        name: existingTypebot.name,
+        icon: existingTypebot.icon,
+        folderId: existingTypebot.folderId,
+        groups: existingTypebot.groups || {},
+        events: existingTypebot.events || {},
+        variables: existingTypebot.variables || {},
+        edges: existingTypebot.edges || {},
+        theme: existingTypebot.theme || {},
+        selectedThemeTemplateId: existingTypebot.selectedThemeTemplateId,
+        settings:
+          Object.keys(cleanedSettings).length > 0
+            ? JSON.parse(JSON.stringify(cleanedSettings))
+            : {},
+        resultsTablePreferences: existingTypebot.resultsTablePreferences
+          ? existingTypebot.resultsTablePreferences
+          : Prisma.JsonNull,
+        publicId: existingTypebot.publicId,
+        customDomain: existingTypebot.customDomain,
+        workspaceId: existingTypebot.workspaceId,
+        isArchived: existingTypebot.isArchived,
+        isClosed: existingTypebot.isClosed,
+        riskLevel: existingTypebot.riskLevel,
+        whatsAppCredentialsId: existingTypebot.whatsAppCredentialsId,
+
+        snapshotChecksum,
+      },
+    })
 
     await trackEvents([
       ...publishEvents,

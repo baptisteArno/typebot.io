@@ -70,6 +70,7 @@ export const PublishButton = ({
   const {
     typebot: {
       getPublishedTypebot: { refetch: refetchPublishedTypebot },
+      getTypebotHistory: { invalidate: invalidateTypebotHistory },
     },
   } = trpc.useContext()
 
@@ -90,6 +91,10 @@ export const PublishButton = ({
         refetchPublishedTypebot({
           typebotId: typebot?.id as string,
         })
+        // Invalidate history to refresh the flow history drawer
+        invalidateTypebotHistory({
+          typebotId: typebot?.id as string,
+        })
         // Only redirect if not in embedded mode
         if (!publishedTypebot && !pathname.endsWith('share') && !query.embedded)
           push(`/typebots/${query.typebotId}/share`)
@@ -105,6 +110,10 @@ export const PublishButton = ({
         }),
       onSuccess: () => {
         refetchPublishedTypebot()
+        // Invalidate history to refresh the flow history drawer
+        invalidateTypebotHistory({
+          typebotId: typebot?.id as string,
+        })
       },
     })
 

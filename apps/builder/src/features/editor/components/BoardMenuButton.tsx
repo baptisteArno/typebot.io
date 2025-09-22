@@ -17,6 +17,7 @@ import {
   BookIcon,
   BracesIcon,
   DownloadIcon,
+  HistoryIcon,
   MoreVerticalIcon,
   SettingsIcon,
 } from '@/components/icons'
@@ -66,6 +67,7 @@ export const BoardMenuButton = (props: StackProps) => {
 
   return (
     <HStack rounded="md" spacing="4" {...props}>
+      <FlowHistoryButton />
       <IconButton
         icon={<BracesIcon />}
         aria-label="Open variables drawer"
@@ -161,6 +163,24 @@ const ValidationErrorsButton = () => {
           {totalErrors}
         </Badge>
       )}
+    </Box>
+  )
+}
+
+const FlowHistoryButton = () => {
+  const { setRightPanel } = useEditor()
+  const { t } = useTranslate()
+
+  return (
+    <Box position="relative">
+      <IconButton
+        icon={<HistoryIcon />}
+        aria-label={t('editor.graph.menu.flowHistoryButton.ariaLabel')}
+        size="sm"
+        shadow="lg"
+        bgColor={useColorModeValue('white', undefined)}
+        onClick={() => setRightPanel(RightPanel.FLOW_HISTORY)}
+      />
     </Box>
   )
 }

@@ -59,6 +59,7 @@ model User {
   bannedIps                   BannedIp[]
   displayedInAppNotifications Json?
   TypebotEditQueue            TypebotEditQueue[]
+  TypebotHistory              TypebotHistory[]
 }
 
 model ApiToken {
@@ -194,6 +195,7 @@ model Typebot {
   riskLevel               Int?
   bannedIps               BannedIp[]
   TypebotEditQueue        TypebotEditQueue[]
+  TypebotHistory          TypebotHistory[]
 
   @@index([workspaceId])
   @@index([isArchived, createdAt(sort: Desc)])
@@ -210,6 +212,51 @@ model TypebotEditQueue {
 
   @@unique([userId, typebotId])
   @@index([typebotId])
+}
+
+model TypebotHistory {
+  id             String               @id @default(cuid())
+  createdAt      DateTime             @default(now())
+  typebotId      String
+  version        String?
+  authorId       String?
+  publishedAt    DateTime?            @default(now()) @updatedAt
+  origin         TypebotHistoryOrigin
+  isRestored     Boolean              @default(false)
+  restoredFromId String?
+
+  name                    String
+  icon                    String?
+  folderId                String?
+  groups                  Json    @db.JsonB
+  events                  Json?   @db.JsonB
+  variables               Json    @db.JsonB
+  edges                   Json    @db.JsonB
+  theme                   Json    @db.JsonB
+  selectedThemeTemplateId String?
+  settings                Json    @db.JsonB
+  resultsTablePreferences Json?   @db.JsonB
+  publicId                String?
+  customDomain            String?
+  workspaceId             String
+  isArchived              Boolean
+  isClosed                Boolean
+  riskLevel               Int?
+  whatsAppCredentialsId   String?
+
+  snapshotChecksum String @db.VarChar(64)
+
+  typebot Typebot @relation(fields: [typebotId], references: [id], onDelete: Cascade)
+  author  User?   @relation(fields: [authorId], references: [id], onDelete: SetNull)
+
+  restoredFrom TypebotHistory?  @relation("RestoreLink", fields: [restoredFromId], references: [id])
+  restores     TypebotHistory[] @relation("RestoreLink")
+
+  @@unique([typebotId, snapshotChecksum])
+  @@index([typebotId, createdAt(sort: Desc)])
+  @@index([origin, createdAt(sort: Desc)])
+  @@index([authorId, createdAt(sort: Desc)])
+  @@index([restoredFromId])
 }
 
 model Invitation {
@@ -416,4 +463,12 @@ enum CollaborationType {
   READ
   WRITE
   FULL_ACCESS
+}
+
+enum TypebotHistoryOrigin {
+  PUBLISH
+  DUPLICATION
+  MANUAL
+  IMPORT
+  RESTORE
 }

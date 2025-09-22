@@ -308,7 +308,6 @@ const RightElements = ({
             onClick={handleDuplicate}
             isLoading={isDuplicating}
             loadingText={t('editor.header.user.duplicating.loadingText')}
-            fontSize="xs"
             px={3}
             py={1}
           >

@@ -684,3 +684,11 @@ export const BracesIcon = (props: IconProps) => (
     <path d="M16 21h1a2 2 0 0 0 2-2v-5c0-1.1.9-2 2-2a2 2 0 0 1-2-2V5a2 2 0 0 0-2-2h-1" />
   </Icon>
 )
+
+export const HistoryIcon = (props: IconProps) => (
+  <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
+    <polyline points="1 4 1 10 7 10"></polyline>
+    <path d="M3.51 15a9 9 0 1 0 1.49-9"></path>
+    <path d="M12 8v4l3 3"></path>
+  </Icon>
+)

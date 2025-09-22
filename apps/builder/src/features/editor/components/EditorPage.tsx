@@ -21,6 +21,7 @@ import { GettingStartedModal } from './GettingStartedModal'
 import { SuspectedTypebotBanner } from './SuspectedTypebotBanner'
 import { TypebotHeader } from './TypebotHeader'
 import { TypebotNotFoundPage } from './TypebotNotFoundPage'
+import { FlowHistoryDrawer } from '@/features/preview/components/FlowHistoryDrawer'
 
 export const EditorPage = () => {
   const { typebot, currentUserMode, is404 } = useTypebot()
@@ -77,6 +78,8 @@ const RightPanel = () => {
       return <VariablesDrawer onClose={() => setRightPanel(undefined)} />
     case RightPanelEnum.VALIDATION_ERRORS:
       return <ValidationErrorsDrawer onClose={() => setRightPanel(undefined)} />
+    case RightPanelEnum.FLOW_HISTORY:
+      return <FlowHistoryDrawer onClose={() => setRightPanel(undefined)} />
     case undefined:
       return null
   }

@@ -86,6 +86,7 @@ export const updateTypebot = authenticatedProcedure
         id: true,
         customDomain: true,
         publicId: true,
+        settings: true,
         collaborators: {
           select: {
             userId: true,
@@ -161,6 +162,34 @@ export const updateTypebot = authenticatedProcedure
       ? await sanitizeGroups(existingTypebot.workspace.id)(typebot.groups)
       : undefined
 
+    let updatedSettings = typebot.settings
+      ? sanitizeSettings(
+          typebot.settings,
+          existingTypebot.workspace.plan,
+          'update'
+        )
+      : undefined
+
+    const currentSettings =
+      (existingTypebot.settings as Record<string, unknown>) || {}
+    const restoreInfo = currentSettings._restore as
+      | {
+          restoredFromId?: string
+          restoredAt?: string
+          isUnmodified?: boolean
+        }
+      | undefined
+
+    if (restoreInfo && restoreInfo.isUnmodified === true) {
+      const settingsToUpdate =
+        (updatedSettings as Record<string, unknown>) || {}
+      settingsToUpdate._restore = {
+        ...restoreInfo,
+        isUnmodified: false,
+      }
+      updatedSettings = settingsToUpdate
+    }
+
     const newTypebot = await prisma.typebot.update({
       where: {
         id: existingTypebot.id,
@@ -173,13 +202,7 @@ export const updateTypebot = authenticatedProcedure
         events: typebot.events ?? undefined,
         groups,
         theme: typebot.theme ? typebot.theme : undefined,
-        settings: typebot.settings
-          ? sanitizeSettings(
-              typebot.settings,
-              existingTypebot.workspace.plan,
-              'update'
-            )
-          : undefined,
+        settings: updatedSettings,
         folderId: typebot.folderId,
         variables:
           typebot.variables && groups

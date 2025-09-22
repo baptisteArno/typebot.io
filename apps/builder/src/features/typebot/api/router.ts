@@ -3,6 +3,10 @@ import { listTypebots } from './listTypebots'
 
 import { createTypebot } from './createTypebot'
 import { updateTypebot } from './updateTypebot'
+import { updateTypebotHistory } from './updateTypebotHistory'
+import { getTypebotHistory } from './getTypebotHistory'
+import { rollbackTypebot } from './rollbackTypebot'
+
 import { getTypebot } from './getTypebot'
 import {
   getPublishedTypebot,
@@ -32,4 +36,7 @@ export const typebotRouter = router({
   importTypebot,
   getTypebotValidation,
   postTypebotValidation,
+  updateTypebotHistory,
+  getTypebotHistory,
+  rollbackTypebot,
 })

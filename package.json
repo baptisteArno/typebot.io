@@ -45,6 +45,7 @@
   },
   "packageManager": "pnpm@8.15.4",
   "dependencies": {
+    "json-canonicalize": "^2.0.0",
     "node-cache": "^5.1.2",
     "pg": "^8.13.1",
     "winston": "^3.17.0"

@@ -25,6 +25,7 @@ export enum RightPanel {
   PREVIEW,
   VARIABLES,
   VALIDATION_ERRORS,
+  FLOW_HISTORY,
 }
 
 export type SocketUser = {
@@ -61,25 +62,41 @@ export const EditorProvider = ({ children }: { children: ReactNode }) => {
   const [isSidebarExtended, setIsSidebarExtended] = useState(true)
   const { showToast } = useToast()
   const { t } = useTranslate()
+  const hasShownEditToastRef = useRef(false)
 
   const { user: currentUser } = useUser()
 
   const { queueItems, isLoading, joinQueue, currentEditor, leaveQueue } =
     useEditQueue(typebot?.id)
 
-  const isUserEditing = currentEditor?.userId === currentUser?.id
+  const isUserEditing = currentEditor?.userId
+    ? currentEditor.userId === currentUser?.id
+    : false
 
   useEffect(() => {
-    setIsFlowEditor((prev) => {
-      if (isUserEditing && !prev) {
-        showToast({
-          title: t('editor.header.user.canEditNow.toast'),
-          status: 'info',
-        })
-      }
-      return isUserEditing
-    })
-  }, [isUserEditing, setIsFlowEditor, showToast, t])
+    setIsFlowEditor(isUserEditing)
+  }, [isUserEditing, setIsFlowEditor])
+
+  const prevIsUserEditingRef = useRef(isUserEditing)
+  useEffect(() => {
+    if (
+      isUserEditing &&
+      !prevIsUserEditingRef.current &&
+      !hasShownEditToastRef.current
+    ) {
+      showToast({
+        title: t('editor.header.user.canEditNow.toast'),
+        status: 'info',
+      })
+      hasShownEditToastRef.current = true
+    }
+
+    if (!isUserEditing) {
+      hasShownEditToastRef.current = false
+    }
+
+    prevIsUserEditingRef.current = isUserEditing
+  }, [isUserEditing, showToast, t])
 
   useEffect(() => {
     if (!typebot?.id || !currentUser?.id) return
