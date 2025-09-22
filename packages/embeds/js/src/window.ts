@@ -1,15 +1,7 @@
 import type { BubbleProps } from "./features/bubble/components/Bubble";
-import { close } from "./features/commands/utils/close";
-import { hidePreviewMessage } from "./features/commands/utils/hidePreviewMessage";
-import { open } from "./features/commands/utils/open";
-import { sendCommand } from "./features/commands/utils/sendCommand";
-import { setInputValue } from "./features/commands/utils/setInputValue";
-import { setPrefilledVariables } from "./features/commands/utils/setPrefilledVariables";
-import { showPreviewMessage } from "./features/commands/utils/showPreviewMessage";
-import { toggle } from "./features/commands/utils/toggle";
-import { unmount } from "./features/commands/utils/unmount";
+import * as commands from "./features/commands";
 import type { PopupProps } from "./features/popup/components/Popup";
-import { type BotProps, reload } from "./index";
+import type { BotProps } from "./index";
 
 export const initStandard = (props: BotProps & { id?: string }) => {
   const standardElement = props.id
@@ -36,16 +28,7 @@ export const parseTypebot = () => ({
   initStandard,
   initPopup,
   initBubble,
-  close,
-  hidePreviewMessage,
-  open,
-  setPrefilledVariables,
-  showPreviewMessage,
-  toggle,
-  setInputValue,
-  unmount,
-  sendCommand,
-  reload,
+  ...commands,
 });
 
 type Typebot = ReturnType<typeof parseTypebot>;
