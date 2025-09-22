@@ -27,10 +27,10 @@ export type PreCheckoutDialogProps = {
 const vatCodeLabels = taxIdTypes.map((taxIdType) => ({
   label: (
     <span className="flex items-center gap-2">
-      <span>{taxIdType.emoji}</span> {taxIdType.name} ({taxIdType.code})
+      {taxIdType.name} ({taxIdType.code}) <span>{taxIdType.emoji}</span>
     </span>
   ),
-  value: taxIdType.type,
+  value: taxIdType.code,
 }));
 
 export const PreCheckoutDialog = ({
@@ -78,7 +78,7 @@ export const PreCheckoutDialog = ({
       },
     }));
     const vatPlaceholder = taxIdTypes.find(
-      (taxIdType) => taxIdType.type === vatCode,
+      (taxIdType) => taxIdType.code === vatCode,
     )?.placeholder;
     if (vatPlaceholder) setVatValuePlaceholder(vatPlaceholder ?? "");
     vatValueInputRef.current?.focus();
