@@ -29,7 +29,18 @@ import {
   validationErrorSchema,
 } from '../constants/errorTypes'
 
-const PREFILLED_VARIABLES = ['helpdeskId']
+const PREFILLED_VARIABLES = [
+  'helpdeskId',
+  'cloudChatId',
+  'activeIntent',
+  'channelType',
+  'language',
+  'createdAt',
+  'frustrationScore',
+  'abKey',
+  'lastUserMessages',
+  'messages',
+]
 
 const responseSchema = validationErrorSchema
 
