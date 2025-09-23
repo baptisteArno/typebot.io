@@ -20,4 +20,4 @@ data:
   SMTP_PORT: '465'
   SMTP_SECURE: 'true'
   AWS_COGNITO_REGION: us-east-1
-  NEXT_PUBLIC_EMBEDDED_AUTH_ALLOWED_ORIGIN: https://eddie2.us-east-1.prd.cloudhumans.io,https://cloudchat.cloudhumans.com,https://cloudchat2.cloudhumans.com,https://cloudchat3.cloudhumans.com
+  NEXT_PUBLIC_EMBEDDED_AUTH_ALLOWED_ORIGIN: https://eddie2.us-east-1.prd.cloudhumans.io,https://cloudchat.cloudhumans.com,https://cloudchat2.cloudhumans.com,https://cloudchat3.cloudhumans.com,https://*.app.cloudhumans.com

@@ -1,4 +1,5 @@
 import { env } from '@typebot.io/env'
+import { isOriginAllowed as checkOriginAllowed } from '@typebot.io/lib/origin'
 
 // Helper function to get the allowed origins for postMessage
 export const getAllowedOrigins = (): string[] => {
@@ -18,5 +19,5 @@ export const getAllowedOrigin = (): string => {
 // Helper function to check if an origin is allowed
 export const isOriginAllowed = (origin: string): boolean => {
   const allowedOrigins = getAllowedOrigins()
-  return allowedOrigins.includes(origin)
+  return checkOriginAllowed(origin, allowedOrigins)
 }

@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { matchesOriginPattern } from '@typebot.io/lib/origin'
 
 export function corsMiddleware(request: NextRequest, response: NextResponse) {
   // Get the origin from the request
@@ -17,18 +18,28 @@ export function corsMiddleware(request: NextRequest, response: NextResponse) {
   // )
 
   // Set CSP headers with allowed origins for frame-ancestors
-  const allowedOriginsForCSP = allowedOrigins.join(' ')
+  const allowedOriginsForCSP = allowedOrigins
+    .map((origin) => {
+      // Convert URL to CSP format: remove protocol, keep wildcard patterns
+      if (origin.startsWith('https://') || origin.startsWith('http://')) {
+        return origin.replace(/^https?:\/\//, '')
+      }
+      return origin
+    })
+    .join(' ')
+
   response.headers.set('X-Frame-Options', 'SAMEORIGIN')
   response.headers.set(
     'Content-Security-Policy',
     `frame-ancestors 'self' ${allowedOriginsForCSP}`
   )
-  // console.log(`🔒 CSP: Set frame-ancestors to 'self' ${allowedOriginsForCSP}`)
 
-  // Check if the origin is allowed
-  if (origin && allowedOrigins.includes(origin)) {
+  // Check if the origin is allowed (including wildcard matching)
+  if (
+    origin &&
+    allowedOrigins.some((pattern) => matchesOriginPattern(origin, pattern))
+  ) {
     response.headers.set('Access-Control-Allow-Origin', origin)
-    // console.log(`✅ CORS: Allowed origin ${origin}`)
   } else {
     // For same-origin requests (no origin) or unauthorized origins, don't set CORS headers
     if (!origin) {
