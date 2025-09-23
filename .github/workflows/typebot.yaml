@@ -1,9 +1,10 @@
 name: Typebot CI
 
-'on':
+on:
   push:
     branches:
       - main
+      - fix/migrations
 
 env:
   AWS_REGION: us-east-1
