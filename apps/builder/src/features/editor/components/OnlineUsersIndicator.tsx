@@ -1,5 +1,13 @@
 import { UsersIcon } from '@/components/icons'
-import { Badge, Box, HStack, Text, Tooltip, VStack } from '@chakra-ui/react'
+import {
+  Badge,
+  Box,
+  HStack,
+  Text,
+  Tooltip,
+  VStack,
+  useColorModeValue,
+} from '@chakra-ui/react'
 import { useTranslate } from '@tolgee/react'
 import { useEditor } from '../providers/EditorProvider'
 import { useTypebot } from '../providers/TypebotProvider'
@@ -9,6 +17,7 @@ export const OnlineUsersIndicator = () => {
   const { t } = useTranslate()
   const { typebot } = useTypebot()
   const { queueItems, isUserEditing } = useEditor()
+  const tooltipTextColor = useColorModeValue('white', 'black')
 
   if (!typebot?.id || !queueItems || queueItems.length <= 1) {
     return null
@@ -29,7 +38,7 @@ export const OnlineUsersIndicator = () => {
           const isEditor = index === 0
 
           return (
-            <Text key={userId} fontSize="xs" color="black">
+            <Text key={userId} fontSize="xs" color={tooltipTextColor}>
               •{' '}
               {isEditor ? (
                 <Text as="span" fontWeight="bold">
