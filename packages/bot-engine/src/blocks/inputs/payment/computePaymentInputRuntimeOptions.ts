@@ -4,37 +4,55 @@ import type {
   PaymentInputBlock,
   PaymentInputRuntimeOptions,
 } from "@typebot.io/blocks-inputs/payment/schema";
-import type { SessionState } from "@typebot.io/chat-session/schemas";
 import { decrypt } from "@typebot.io/credentials/decrypt";
 import { getCredentials } from "@typebot.io/credentials/getCredentials";
 import type { StripeCredentials } from "@typebot.io/credentials/schemas";
 import type { SessionStore } from "@typebot.io/runtime-session-store";
 import { parseVariables } from "@typebot.io/variables/parseVariables";
+import type { Variable } from "@typebot.io/variables/schemas";
 import Stripe from "stripe";
 
 export const computePaymentInputRuntimeOptions = (
   options: PaymentInputBlock["options"],
-  { sessionStore, state }: { sessionStore: SessionStore; state: SessionState },
-) => createStripePaymentIntent(options, { sessionStore, state });
+  {
+    sessionStore,
+    variables,
+    isPreview,
+    workspaceId,
+  }: {
+    sessionStore: SessionStore;
+    variables: Variable[];
+    isPreview: boolean;
+    workspaceId: string;
+  },
+) =>
+  createStripePaymentIntent(options, {
+    sessionStore,
+    variables,
+    isPreview,
+    workspaceId,
+  });
 
 const createStripePaymentIntent = async (
   options: PaymentInputBlock["options"],
-  { sessionStore, state }: { sessionStore: SessionStore; state: SessionState },
+  {
+    sessionStore,
+    variables,
+    isPreview,
+    workspaceId,
+  }: {
+    sessionStore: SessionStore;
+    variables: Variable[];
+    isPreview: boolean;
+    workspaceId: string;
+  },
 ): Promise<PaymentInputRuntimeOptions> => {
-  const {
-    resultId,
-    typebot: { variables },
-  } = state.typebotsQueue[0];
-  const isPreview = !resultId;
   if (!options?.credentialsId)
     throw new TRPCError({
       code: "BAD_REQUEST",
       message: "Missing credentialsId",
     });
-  const stripeKeys = await getStripeInfo(
-    options.credentialsId,
-    state.workspaceId,
-  );
+  const stripeKeys = await getStripeInfo(options.credentialsId, workspaceId);
   if (!stripeKeys)
     throw new TRPCError({
       code: "NOT_FOUND",

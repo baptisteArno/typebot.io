@@ -27,7 +27,7 @@ import type { ForgedBlock } from "@typebot.io/forge-repository/schemas";
 import { getBlockById } from "@typebot.io/groups/helpers/getBlockById";
 import type { Group } from "@typebot.io/groups/schemas";
 import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
-import { byId, isDefined } from "@typebot.io/lib/utils";
+import { byId, isDefined, isNotDefined } from "@typebot.io/lib/utils";
 import type { AnswerInSessionState } from "@typebot.io/results/schemas/answers";
 import type { SessionStore } from "@typebot.io/runtime-session-store";
 import { defaultSystemMessages } from "@typebot.io/settings/constants";
@@ -624,7 +624,12 @@ const parseRetryMessage = async (
               },
       },
     ],
-    input: await formatInputForChatResponse(block, { state, sessionStore }),
+    input: await formatInputForChatResponse(block, {
+      variables: state.typebotsQueue[0].typebot.variables,
+      isPreview: isNotDefined(state.typebotsQueue[0].resultId),
+      workspaceId: state.workspaceId,
+      sessionStore,
+    }),
   };
 };
 

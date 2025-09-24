@@ -246,7 +246,9 @@ const executeGroup = async (
       return {
         messages,
         input: await formatInputForChatResponse(block, {
-          state: newSessionState,
+          variables: newSessionState.typebotsQueue[0].typebot.variables,
+          isPreview: isNotDefined(newSessionState.typebotsQueue[0].resultId),
+          workspaceId: newSessionState.workspaceId,
           sessionStore,
         }),
         newSessionState: {

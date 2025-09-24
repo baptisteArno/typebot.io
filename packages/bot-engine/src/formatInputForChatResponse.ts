@@ -4,9 +4,9 @@ import type {
   ContinueChatResponse,
   RuntimeOptions,
 } from "@typebot.io/chat-api/schemas";
-import type { SessionState } from "@typebot.io/chat-session/schemas";
 import type { SessionStore } from "@typebot.io/runtime-session-store";
 import { deepParseVariables } from "@typebot.io/variables/deepParseVariables";
+import type { Variable } from "@typebot.io/variables/schemas";
 import { injectVariableValuesInCardsBlock } from "./blocks/cards/injectVariableValuesInCardsBlock";
 import { injectVariableValuesInButtonsInputBlock } from "./blocks/inputs/buttons/injectVariableValuesInButtonsInputBlock";
 import { parseDateInput } from "./blocks/inputs/date/parseDateInput";
@@ -16,18 +16,28 @@ import { getPrefilledInputValue } from "./getPrefilledValue";
 
 export const formatInputForChatResponse = async (
   block: InputBlock,
-  { state, sessionStore }: { state: SessionState; sessionStore: SessionStore },
+  {
+    variables,
+    sessionStore,
+    isPreview,
+    workspaceId,
+  }: {
+    variables: Variable[];
+    sessionStore: SessionStore;
+    isPreview: boolean;
+    workspaceId: string;
+  },
 ): Promise<ContinueChatResponse["input"]> => {
   switch (block.type) {
     case InputBlockType.CHOICE: {
       return injectVariableValuesInButtonsInputBlock(block, {
-        state,
+        variables,
         sessionStore,
       });
     }
     case InputBlockType.PICTURE_CHOICE: {
       return injectVariableValuesInPictureChoiceBlock(block, {
-        variables: state.typebotsQueue[0].typebot.variables,
+        variables,
         sessionStore,
       });
     }
@@ -35,19 +45,17 @@ export const formatInputForChatResponse = async (
       return deepParseVariables(
         {
           ...block,
-          prefilledValue: getPrefilledInputValue(
-            state.typebotsQueue[0].typebot.variables,
-          )(block),
+          prefilledValue: getPrefilledInputValue(variables)(block),
         },
         {
-          variables: state.typebotsQueue[0].typebot.variables,
+          variables,
           sessionStore,
         },
       );
     }
     case InputBlockType.DATE: {
       return parseDateInput(block, {
-        variables: state.typebotsQueue[0].typebot.variables,
+        variables,
         sessionStore,
       });
     }
@@ -55,19 +63,17 @@ export const formatInputForChatResponse = async (
       return deepParseVariables(
         {
           ...block,
-          prefilledValue: getPrefilledInputValue(
-            state.typebotsQueue[0].typebot.variables,
-          )(block),
+          prefilledValue: getPrefilledInputValue(variables)(block),
         },
         {
-          variables: state.typebotsQueue[0].typebot.variables,
+          variables,
           sessionStore,
         },
       );
     }
     case InputBlockType.CARDS: {
       return injectVariableValuesInCardsBlock(block, {
-        variables: state.typebotsQueue[0].typebot.variables,
+        variables,
         sessionStore,
       });
     }
@@ -77,14 +83,14 @@ export const formatInputForChatResponse = async (
           ...block,
           runtimeOptions: await computeRuntimeOptions(block, {
             sessionStore,
-            state,
+            variables,
+            isPreview,
+            workspaceId,
           }),
-          prefilledValue: getPrefilledInputValue(
-            state.typebotsQueue[0].typebot.variables,
-          )(block),
+          prefilledValue: getPrefilledInputValue(variables)(block),
         },
         {
-          variables: state.typebotsQueue[0].typebot.variables,
+          variables,
           sessionStore,
         },
       );
@@ -94,13 +100,25 @@ export const formatInputForChatResponse = async (
 
 const computeRuntimeOptions = (
   block: InputBlock,
-  { sessionStore, state }: { sessionStore: SessionStore; state: SessionState },
+  {
+    sessionStore,
+    variables,
+    isPreview,
+    workspaceId,
+  }: {
+    sessionStore: SessionStore;
+    variables: Variable[];
+    isPreview: boolean;
+    workspaceId: string;
+  },
 ): Promise<RuntimeOptions> | undefined => {
   switch (block.type) {
     case InputBlockType.PAYMENT: {
       return computePaymentInputRuntimeOptions(block.options, {
         sessionStore,
-        state,
+        variables,
+        isPreview,
+        workspaceId,
       });
     }
   }
