@@ -1,6 +1,6 @@
-import { CodeIcon } from "@typebot.io/ui/icons/CodeIcon";
 import { GithubIcon } from "@typebot.io/ui/icons/GithubIcon";
 import { RulerIcon } from "@typebot.io/ui/icons/RulerIcon";
+import { SourceCodeIcon } from "@typebot.io/ui/icons/SourceCodeIcon";
 import { SparklesIcon } from "@typebot.io/ui/icons/SparklesIcon";
 import { ZapIcon } from "@typebot.io/ui/icons/ZapIcon";
 import { cn } from "@typebot.io/ui/lib/cn";
@@ -13,7 +13,7 @@ const data = [
     text: "100% open source. No vendor-locking",
   },
   {
-    Icon: CodeIcon,
+    Icon: SourceCodeIcon,
     text: "Easy-to-use APIs for quick implementation",
   },
   {

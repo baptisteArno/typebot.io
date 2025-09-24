@@ -1,5 +1,5 @@
 import { useMDXComponent } from "@content-collections/mdx/react";
-import { InfoIcon } from "@typebot.io/ui/icons/InfoIcon";
+import { InformationSquareIcon } from "@typebot.io/ui/icons/InformationSquareIcon";
 import { TickIcon } from "@typebot.io/ui/icons/TickIcon";
 import { TriangleAlertIcon } from "@typebot.io/ui/icons/TriangleAlertIcon";
 import { cn } from "@typebot.io/ui/lib/cn";
@@ -78,7 +78,7 @@ const components = {
       className={cn("flex gap-4 rounded-xl border px-6 bg-gray-1 text-gray-12")}
       {...props}
     >
-      <InfoIcon className="size-5 flex-shrink-0 mt-7 stroke-gray-11" />
+      <InformationSquareIcon className="size-5 flex-shrink-0 mt-7 stroke-gray-11" />
       <div>{children}</div>
     </div>
   ),

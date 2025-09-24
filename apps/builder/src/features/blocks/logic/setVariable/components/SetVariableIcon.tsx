@@ -1,7 +1,7 @@
-import { EditIcon } from "@typebot.io/ui/icons/EditIcon";
+import { Edit03Icon } from "@typebot.io/ui/icons/Edit03Icon";
 import { cn } from "@typebot.io/ui/lib/cn";
 import { svgBaseClassName } from "@/components/icons";
 
 export const SetVariableIcon = ({ className }: { className?: string }) => (
-  <EditIcon className={cn(svgBaseClassName, className)} />
+  <Edit03Icon className={cn(svgBaseClassName, className)} />
 );

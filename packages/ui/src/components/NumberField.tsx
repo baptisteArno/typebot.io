@@ -1,6 +1,6 @@
 import { NumberField as NumberFieldPrimitive } from "@base-ui-components/react/number-field";
-import { MinusIcon } from "../icons/MinusIcon";
-import { PlusIcon } from "../icons/PlusIcon";
+import { MinusSignIcon } from "../icons/MinusSignIcon";
+import { PlusSignIcon } from "../icons/PlusSignIcon";
 import { cn } from "../lib/cn";
 import type { VariantProps } from "../lib/cva";
 import { buttonVariants } from "./Button";
@@ -34,7 +34,7 @@ const Decrement = ({
       className,
     )}
   >
-    <MinusIcon />
+    <MinusSignIcon />
   </NumberFieldPrimitive.Decrement>
 );
 
@@ -52,7 +52,7 @@ const Increment = ({
       className,
     )}
   >
-    <PlusIcon />
+    <PlusSignIcon />
   </NumberFieldPrimitive.Increment>
 );
 

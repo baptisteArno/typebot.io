@@ -1,6 +1,6 @@
 import { Icon } from "../components/Icon";
 
-export const FileCodeIcon = ({ className }: { className?: string }) => (
+export const DocumentCodeIcon = ({ className }: { className?: string }) => (
   <Icon className={className}>
     <path d="M18 16L19.8398 17.5858C20.6133 18.2525 21 18.5858 21 19C21 19.4142 20.6133 19.7475 19.8398 20.4142L18 22" />
     <path d="M14 16L12.1602 17.5858C11.3867 18.2525 11 18.5858 11 19C11 19.4142 11.3867 19.7475 12.1602 20.4142L14 22" />

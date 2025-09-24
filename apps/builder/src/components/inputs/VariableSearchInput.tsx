@@ -17,7 +17,7 @@ import { byId, isDefined, isNotDefined } from "@typebot.io/lib/utils";
 import { Button } from "@typebot.io/ui/components/Button";
 import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
 import { Popover } from "@typebot.io/ui/components/Popover";
-import { EditIcon } from "@typebot.io/ui/icons/EditIcon";
+import { Edit03Icon } from "@typebot.io/ui/icons/Edit03Icon";
 import { TrashIcon } from "@typebot.io/ui/icons/TrashIcon";
 import { cn } from "@typebot.io/ui/lib/cn";
 import type { Variable } from "@typebot.io/variables/schemas";
@@ -274,7 +274,7 @@ export const VariableSearchInput = ({
                         className="size-6"
                         variant="secondary"
                       >
-                        <EditIcon />
+                        <Edit03Icon />
                       </Button>
                       <Button
                         aria-label={t("variables.remove")}

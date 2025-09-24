@@ -1,6 +1,6 @@
 import { HStack, Tag, Text } from "@chakra-ui/react";
 import { Menu } from "@typebot.io/ui/components/Menu";
-import { ChevronDownIcon } from "@/components/icons";
+import { ArrowDown01Icon } from "@typebot.io/ui/icons/ArrowDown01Icon";
 import { runtimes } from "../data";
 
 type Runtime = (typeof runtimes)[number];
@@ -21,7 +21,7 @@ export const RuntimeMenu = ({ selectedRuntime, onSelectRuntime }: Props) => {
           typeof selectedRuntime.status === "string" ? (
             <Tag colorScheme="orange">{selectedRuntime.status}</Tag>
           ) : null}
-          <ChevronDownIcon />
+          <ArrowDown01Icon />
         </HStack>
       </Menu.TriggerButton>
       <Menu.Popup>

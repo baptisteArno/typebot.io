@@ -10,7 +10,7 @@ import { plateCorePlugins } from "@typebot.io/rich-text/plateCorePlugins";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Popover } from "@typebot.io/ui/components/Popover";
 import { Separator } from "@typebot.io/ui/components/Separator";
-import { BracesIcon } from "@typebot.io/ui/icons/BracesIcon";
+import { CodeIcon } from "@typebot.io/ui/icons/CodeIcon";
 import type { Variable } from "@typebot.io/variables/schemas";
 import type React from "react";
 import { useEffect, useRef, useState } from "react";
@@ -122,7 +122,7 @@ export const TextBubbleEditor = ({
             variant="secondary"
             className="size-8"
           >
-            <BracesIcon />
+            <CodeIcon />
           </Button>
         </div>
         <Separator className="-mb-0.5" />

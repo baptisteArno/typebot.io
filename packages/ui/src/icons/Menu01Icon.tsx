@@ -1,6 +1,6 @@
 import { Icon } from "../components/Icon";
 
-export const MenuIcon = ({ className }: { className?: string }) => (
+export const Menu01Icon = ({ className }: { className?: string }) => (
   <Icon className={className}>
     <path d="M4 5L20 5" />
     <path d="M4 12L20 12" />

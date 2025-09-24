@@ -1,5 +1,5 @@
 import { Popover } from "@typebot.io/ui/components/Popover";
-import { InfoIcon } from "@typebot.io/ui/icons/InfoIcon";
+import { InformationSquareIcon } from "../icons/InformationSquareIcon";
 
 type Props = {
   children: React.ReactNode;
@@ -14,7 +14,7 @@ export const MoreInfoTooltip = ({ children, icon, onClick }: Props) => {
         className="p-1 pl-0 inline-flex align-middle [&>svg]:size-4 [&>svg]:text-gray-11"
         onClick={onClick}
       >
-        {icon || <InfoIcon />}
+        {icon || <InformationSquareIcon />}
       </Popover.Trigger>
       <Popover.Popup
         side="top"

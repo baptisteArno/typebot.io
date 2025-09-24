@@ -22,7 +22,7 @@ import type { Theme, ThemeTemplate } from "@typebot.io/theme/schemas";
 import type { TypebotV6 } from "@typebot.io/typebot/schemas/typebot";
 import { colors } from "@typebot.io/ui/chakraTheme";
 import { Menu } from "@typebot.io/ui/components/Menu";
-import { EditIcon } from "@typebot.io/ui/icons/EditIcon";
+import { Edit03Icon } from "@typebot.io/ui/icons/Edit03Icon";
 import { TrashIcon } from "@typebot.io/ui/icons/TrashIcon";
 import { useState } from "react";
 import { MoreHorizontalIcon } from "@/components/icons";
@@ -179,7 +179,7 @@ export const ThemeTemplateCard = ({
             <Menu.Popup align="end">
               {isSelected && (
                 <Menu.Item onClick={onRenameClick}>
-                  <EditIcon />
+                  <Edit03Icon />
                   {t("rename")}
                 </Menu.Item>
               )}

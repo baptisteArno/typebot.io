@@ -13,7 +13,7 @@ import { isNotDefined } from "@typebot.io/lib/utils";
 import { Button, type ButtonProps } from "@typebot.io/ui/components/Button";
 import { Menu } from "@typebot.io/ui/components/Menu";
 import { Tooltip } from "@typebot.io/ui/components/Tooltip";
-import { ChevronDownIcon } from "@typebot.io/ui/icons/ChevronDownIcon";
+import { ArrowDown01Icon } from "@typebot.io/ui/icons/ArrowDown01Icon";
 import { cn } from "@typebot.io/ui/lib/cn";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -270,7 +270,7 @@ export const PublishButton = ({
             aria-label={t("publishButton.dropdown.showMenu.label")}
             disabled={publishTypebotStatus === "pending" || isSavingLoading}
           >
-            <ChevronDownIcon />
+            <ArrowDown01Icon />
           </Menu.TriggerButton>
           <Menu.Popup align="end">
             {!isPublished && (

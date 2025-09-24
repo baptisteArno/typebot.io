@@ -4,7 +4,7 @@ import { useTranslate } from "@tolgee/react";
 import type { ForgedBlockDefinition } from "@typebot.io/forge-repository/definitions";
 import { Button, type ButtonProps } from "@typebot.io/ui/components/Button";
 import { Menu } from "@typebot.io/ui/components/Menu";
-import { ChevronDownIcon } from "@typebot.io/ui/icons/ChevronDownIcon";
+import { ArrowDown01Icon } from "@typebot.io/ui/icons/ArrowDown01Icon";
 import { TrashIcon } from "@typebot.io/ui/icons/TrashIcon";
 import { useRouter } from "next/router";
 import type React from "react";
@@ -145,7 +145,7 @@ export const ForgedCredentialsDropdown = ({
             ? currentCredential.name
             : `Select ${blockDef.auth?.name}`}
         </Text>
-        <ChevronDownIcon />
+        <ArrowDown01Icon />
       </Menu.TriggerButton>
       <Menu.Popup>
         <Stack maxH={"35vh"} overflowY="auto" spacing="0">

@@ -20,8 +20,8 @@ import {
 import { Button } from "@typebot.io/ui/components/Button";
 import { Menu } from "@typebot.io/ui/components/Menu";
 import { Popover } from "@typebot.io/ui/components/Popover";
-import { ChevronDownIcon } from "@typebot.io/ui/icons/ChevronDownIcon";
-import { EditIcon } from "@typebot.io/ui/icons/EditIcon";
+import { ArrowDown01Icon } from "@typebot.io/ui/icons/ArrowDown01Icon";
+import { Edit03Icon } from "@typebot.io/ui/icons/Edit03Icon";
 import { TrashIcon } from "@typebot.io/ui/icons/TrashIcon";
 import { useMemo, useRef, useState } from "react";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
@@ -109,7 +109,7 @@ export const CredentialsSettingsForm = () => {
         <Menu.Root>
           <Menu.TriggerButton variant="secondary">
             {t("account.preferences.credentials.addButton.label")}
-            <ChevronDownIcon />
+            <ArrowDown01Icon />
           </Menu.TriggerButton>
           <Menu.Popup>
             {credentialsTypes
@@ -328,7 +328,7 @@ const CredentialsItem = ({
             variant="secondary"
             onClick={onEditClick}
           >
-            <EditIcon />
+            <Edit03Icon />
           </Button>
         )}
         <Popover.Root {...deletePopoverControls}>

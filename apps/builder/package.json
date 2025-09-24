@@ -2,6 +2,7 @@
   "name": "builder",
   "private": true,
   "scripts": {
+    "lint": "tsc --noEmit",
     "dev": "dotenv -e ./.env -e ../../.env -- next dev -p 3000",
     "build": "dotenv -e ./.env -e ../../.env -- next build",
     "start": "dotenv -e ./.env -e ../../.env -- next start",

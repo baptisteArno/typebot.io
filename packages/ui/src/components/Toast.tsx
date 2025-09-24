@@ -7,9 +7,9 @@ import {
   AccordionPanel,
 } from "@chakra-ui/react";
 import { z } from "@typebot.io/zod";
-import { CheckmarkSquareIcon } from "../icons/CheckmarkSquareIcon";
-import { CloseIcon } from "../icons/CloseIcon";
-import { InfoIcon } from "../icons/InfoIcon";
+import { Cancel01Icon } from "../icons/Cancel01Icon";
+import { CheckmarkSquare02Icon } from "../icons/CheckmarkSquare02Icon";
+import { InformationSquareIcon } from "../icons/InformationSquareIcon";
 import { TriangleAlertIcon } from "../icons/TriangleAlertIcon";
 import { cn } from "../lib/cn";
 import { Button, buttonVariants } from "./Button";
@@ -123,7 +123,7 @@ const List = ({
                 )}
                 aria-label="Close"
               >
-                <CloseIcon />
+                <Cancel01Icon />
               </ToastPrimitive.Close>
             </ToastPrimitive.Root>
           );
@@ -154,7 +154,7 @@ const ToastIcon = ({
     case "success":
       return (
         <div className="flex justify-center bg-green-5 p-1.5 rounded-full">
-          <CheckmarkSquareIcon
+          <CheckmarkSquare02Icon
             {...props}
             className={cn("size-5 text-green-11", className)}
           />
@@ -163,7 +163,7 @@ const ToastIcon = ({
     case "info":
       return (
         <div className="flex items-center justify-center bg-blue-5 p-1.5 rounded-full">
-          <InfoIcon
+          <InformationSquareIcon
             {...props}
             className={cn("size-5 text-blue-11", className)}
           />

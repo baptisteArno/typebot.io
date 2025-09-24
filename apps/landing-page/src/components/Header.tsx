@@ -1,8 +1,8 @@
 import { Link, useLocation, useRouter } from "@tanstack/react-router";
 import { Bubble } from "@typebot.io/react";
 import { buttonVariants } from "@typebot.io/ui/components/Button";
-import { CloseIcon } from "@typebot.io/ui/icons/CloseIcon";
-import { MenuIcon } from "@typebot.io/ui/icons/MenuIcon";
+import { Cancel01Icon } from "@typebot.io/ui/icons/Cancel01Icon";
+import { Menu01Icon } from "@typebot.io/ui/icons/Menu01Icon";
 import { cn } from "@typebot.io/ui/lib/cn";
 import { cx } from "@typebot.io/ui/lib/cva";
 import { AnimatePresence, motion } from "motion/react";
@@ -165,7 +165,7 @@ const Mobile = React.forwardRef<HTMLElement, Props>(function Mobile(
           onClick={toggleHeaderExpansion}
           className="transition-none"
         >
-          {isOpened ? <CloseIcon /> : <MenuIcon />}
+          {isOpened ? <Cancel01Icon /> : <Menu01Icon />}
         </IconButton>
       </div>
       <AnimatePresence mode="popLayout">

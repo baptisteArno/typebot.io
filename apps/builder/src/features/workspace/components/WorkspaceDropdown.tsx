@@ -2,7 +2,7 @@ import { HStack, Text } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
 import { Menu } from "@typebot.io/ui/components/Menu";
-import { ChevronDownIcon } from "@typebot.io/ui/icons/ChevronDownIcon";
+import { ArrowDown01Icon } from "@typebot.io/ui/icons/ArrowDown01Icon";
 import { EmojiOrImageIcon } from "@/components/EmojiOrImageIcon";
 import {
   CheckIcon,
@@ -46,7 +46,7 @@ export const WorkspaceDropdown = ({
               <PlanTag plan={currentWorkspace.plan} />
             </>
           )}
-          <ChevronDownIcon />
+          <ArrowDown01Icon />
         </HStack>
       </Menu.TriggerButton>
       <Menu.Popup align="end">

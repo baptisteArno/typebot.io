@@ -1,6 +1,6 @@
 import { Select as PrimitiveSelect } from "@base-ui-components/react/select";
 import * as React from "react";
-import { ChevronDownIcon } from "../icons/ChevronDownIcon";
+import { ArrowDown01Icon } from "../icons/ArrowDown01Icon";
 import { TickIcon } from "../icons/TickIcon";
 import { cn } from "../lib/cn";
 import { cva, cx, type VariantProps } from "../lib/cva";
@@ -41,7 +41,7 @@ const Trigger = React.forwardRef<
   >
     <PrimitiveSelect.Value />
     <PrimitiveSelect.Icon className="flex">
-      <ChevronDownIcon className="size-4" />
+      <ArrowDown01Icon className="size-4" />
     </PrimitiveSelect.Icon>
   </PrimitiveSelect.Trigger>
 ));

@@ -20,7 +20,7 @@ import type { SetVariableBlock } from "@typebot.io/blocks-logic/setVariable/sche
 import { isNotEmpty } from "@typebot.io/lib/utils";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Popover } from "@typebot.io/ui/components/Popover";
-import { CloseIcon } from "@typebot.io/ui/icons/CloseIcon";
+import { Cancel01Icon } from "@typebot.io/ui/icons/Cancel01Icon";
 import { TrashIcon } from "@typebot.io/ui/icons/TrashIcon";
 import type { Variable } from "@typebot.io/variables/schemas";
 import { useDrag } from "@use-gesture/react";
@@ -108,7 +108,7 @@ export const VariablesDrawer = ({ onClose }: Props) => {
           variant="secondary"
           size="icon"
         >
-          <CloseIcon />
+          <Cancel01Icon />
         </Button>
         <Heading fontSize="md">Variables</Heading>
         <HStack as="form" onSubmit={handleCreateSubmit}>

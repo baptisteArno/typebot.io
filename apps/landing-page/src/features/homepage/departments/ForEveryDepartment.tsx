@@ -1,6 +1,6 @@
 import { isDefined, isNotDefined } from "@typebot.io/lib/utils";
-import { CloseIcon } from "@typebot.io/ui/icons/CloseIcon";
-import { PlusIcon } from "@typebot.io/ui/icons/PlusIcon";
+import { Cancel01Icon } from "@typebot.io/ui/icons/Cancel01Icon";
+import { PlusSignIcon } from "@typebot.io/ui/icons/PlusSignIcon";
 import { cn } from "@typebot.io/ui/lib/cn";
 import { cx } from "@typebot.io/ui/lib/cva";
 import { motion } from "motion/react";
@@ -196,7 +196,7 @@ const DepartmentCard = ({
         variant="outline"
         className="rounded-full p-0 w-6 h-6 absolute bottom-4 right-4 motion-preset-slide-up-sm motion-delay-500"
       >
-        <PlusIcon />
+        <PlusSignIcon />
       </IconButton>
     )}
   </MotionCard>
@@ -224,7 +224,7 @@ const OpenedDepartmentCard = ({
         className="absolute top-4 right-4 motion-preset-slide-up-sm motion-delay-500"
         onClick={onClose}
       >
-        <CloseIcon />
+        <Cancel01Icon />
       </IconButton>
       <motion.figure layoutId={`dep-${index}-img`}>
         <img

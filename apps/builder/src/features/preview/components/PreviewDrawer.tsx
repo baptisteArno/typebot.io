@@ -8,7 +8,7 @@ import {
 import { useTranslate } from "@tolgee/react";
 import { reload } from "@typebot.io/react";
 import { Button } from "@typebot.io/ui/components/Button";
-import { CloseIcon } from "@typebot.io/ui/icons/CloseIcon";
+import { Cancel01Icon } from "@typebot.io/ui/icons/Cancel01Icon";
 import { useDrag } from "@use-gesture/react";
 import { useState } from "react";
 import { useGraph } from "@/features/graph/providers/GraphProvider";
@@ -111,7 +111,7 @@ export const PreviewDrawer = () => {
           </HStack>
 
           <Button onClick={handleCloseClick} variant="secondary" size="icon">
-            <CloseIcon />
+            <Cancel01Icon />
           </Button>
         </HStack>
         <PreviewDrawerBody runtime={selectedRuntime.name} />

@@ -25,8 +25,8 @@ import {
 } from "@typebot.io/ui/components/Button";
 import { Input } from "@typebot.io/ui/components/Input";
 import { Separator } from "@typebot.io/ui/components/Separator";
-import { LinkIcon } from "@typebot.io/ui/icons/LinkIcon";
-import { LinkSquareIcon } from "@typebot.io/ui/icons/LinkSquareIcon";
+import { Link02Icon } from "@typebot.io/ui/icons/Link02Icon";
+import { LinkSquare02Icon } from "@typebot.io/ui/icons/LinkSquare02Icon";
 import { TextIcon } from "@typebot.io/ui/icons/TextIcon";
 import { UnlinkIcon } from "@typebot.io/ui/icons/UnlinkIcon";
 import { type InputHTMLAttributes, useCallback, useMemo } from "react";
@@ -162,7 +162,7 @@ const LinkForm = ({
       </div>
       <Separator className="mx-4" />
       <div className="flex items-center gap-2">
-        <LinkIcon className="size-4" />
+        <Link02Icon className="size-4" />
         <FloatingLinkUrlInput />
       </div>
     </div>
@@ -218,7 +218,7 @@ const OpenLinkButton = () => {
       target="_blank"
       rel="noreferrer"
     >
-      <LinkSquareIcon />
+      <LinkSquare02Icon />
     </a>
   );
 };

@@ -4,7 +4,7 @@ import { useTranslate } from "@tolgee/react";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Menu } from "@typebot.io/ui/components/Menu";
 import { Tooltip } from "@typebot.io/ui/components/Tooltip";
-import { ChevronDownIcon } from "@typebot.io/ui/icons/ChevronDownIcon";
+import { ArrowDown01Icon } from "@typebot.io/ui/icons/ArrowDown01Icon";
 import { TrashIcon } from "@typebot.io/ui/icons/TrashIcon";
 import type React from "react";
 import { useState } from "react";
@@ -87,7 +87,7 @@ export const CustomDomainsDropdown = ({
             disabled={isDisabled}
           >
             {currentCustomDomain ?? t("customDomain.add")}
-            <ChevronDownIcon />
+            <ArrowDown01Icon />
           </Menu.TriggerButton>
         </Tooltip.Trigger>
         <Tooltip.Popup>

@@ -4,7 +4,7 @@ import {
 } from "@typebot.io/rich-text/plate/link/react";
 import { Toolbar } from "@typebot.io/ui/components/Toolbar";
 import { Tooltip } from "@typebot.io/ui/components/Tooltip";
-import { LinkIcon } from "@typebot.io/ui/icons/LinkIcon";
+import { Link02Icon } from "@typebot.io/ui/icons/Link02Icon";
 
 export const LinkToolbarButton = () => {
   const state = useLinkToolbarButtonState();
@@ -15,7 +15,7 @@ export const LinkToolbarButton = () => {
       <Tooltip.Trigger
         render={(props) => (
           <Toolbar.Button {...props} {...buttonProps} data-plate-focus>
-            <LinkIcon />
+            <Link02Icon />
           </Toolbar.Button>
         )}
       />

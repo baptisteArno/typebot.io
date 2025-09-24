@@ -16,7 +16,7 @@ import { T, useTranslate } from "@tolgee/react";
 import type { Prisma } from "@typebot.io/prisma/types";
 import { Button, buttonVariants } from "@typebot.io/ui/components/Button";
 import { Menu } from "@typebot.io/ui/components/Menu";
-import { FolderSolidIcon } from "@typebot.io/ui/icons/FolderSolidIcon";
+import { Folder01SolidIcon } from "@typebot.io/ui/icons/Folder01SolidIcon";
 import { cn } from "@typebot.io/ui/lib/cn";
 import { useRouter } from "next/router";
 import { memo, useMemo } from "react";
@@ -117,7 +117,7 @@ const FolderButton = ({
           </Menu.Popup>
         </Menu.Root>
         <VStack spacing="4">
-          <FolderSolidIcon className="size-10 text-blue-10" />
+          <Folder01SolidIcon className="size-10 text-blue-10" />
           <Editable
             defaultValue={folder.name === "" ? "New folder" : folder.name}
             fontSize="18"

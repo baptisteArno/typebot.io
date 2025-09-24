@@ -1,6 +1,6 @@
 import { Dialog as DialogPrimitive } from "@base-ui-components/react/dialog";
 import * as React from "react";
-import { CloseIcon } from "../icons/CloseIcon";
+import { Cancel01Icon } from "../icons/Cancel01Icon";
 import { cn } from "../lib/cn";
 import type { VariantProps } from "../lib/cva";
 import { buttonVariants } from "./Button";
@@ -97,7 +97,7 @@ const CloseButton = ({
       className,
     )}
   >
-    {children || <CloseIcon />}
+    {children || <Cancel01Icon />}
   </DialogPrimitive.Close>
 );
 

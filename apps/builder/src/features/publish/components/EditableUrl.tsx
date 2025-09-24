@@ -9,7 +9,7 @@ import {
 import { useTranslate } from "@tolgee/react";
 import { Button, type ButtonProps } from "@typebot.io/ui/components/Button";
 import { Tooltip } from "@typebot.io/ui/components/Tooltip";
-import { EditIcon } from "@typebot.io/ui/icons/EditIcon";
+import { Edit03Icon } from "@typebot.io/ui/icons/Edit03Icon";
 import { useState } from "react";
 import { CopyButton } from "@/components/CopyButton";
 
@@ -79,7 +79,7 @@ const EditButton = (props: ButtonProps) => {
 
   return isEditing ? null : (
     <Button {...props} {...getEditButtonProps()} variant="secondary">
-      <EditIcon />
+      <Edit03Icon />
       {t("edit")}
     </Button>
   );
