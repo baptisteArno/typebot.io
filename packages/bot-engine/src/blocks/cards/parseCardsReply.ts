@@ -2,33 +2,25 @@ import type {
   CardsBlock,
   CardsItem,
 } from "@typebot.io/blocks-inputs/cards/schema";
-import type { SessionState } from "@typebot.io/chat-session/schemas";
 import type { SessionStore } from "@typebot.io/runtime-session-store";
-import type {
-  SetVariableHistoryItem,
-  Variable,
-} from "@typebot.io/variables/schemas";
+import type { Variable } from "@typebot.io/variables/schemas";
 import type { ParsedReply } from "../../types";
-import { updateVariablesInSession } from "../../updateVariablesInSession";
 import { injectVariableValuesInCardsBlock } from "./injectVariableValuesInCardsBlock";
 
 export const parseCardsReply = (
   inputValue: string,
   {
     block,
-    state,
+    variables,
     sessionStore,
   }: {
     block: CardsBlock;
-    state: SessionState;
+    variables: Variable[];
     sessionStore: SessionStore;
   },
-): ParsedReply & {
-  newSessionState?: SessionState;
-  newSetVariableHistory?: SetVariableHistoryItem[];
-} => {
+): ParsedReply => {
   const displayedItems = injectVariableValuesInCardsBlock(block, {
-    variables: state.typebotsQueue[0].typebot.variables,
+    variables,
     sessionStore,
   }).items;
   let matchedPath: NonNullable<CardsItem["paths"]>[number] | undefined;
@@ -47,7 +39,7 @@ export const parseCardsReply = (
     Variable[]
   >((acc, mapping) => {
     if (!mapping.variableId || !mapping.field) return acc;
-    const existingVariable = state.typebotsQueue[0].typebot.variables.find(
+    const existingVariable = variables.find(
       (variable) => variable.id === mapping.variableId,
     );
     if (!existingVariable) return acc;
@@ -77,20 +69,6 @@ export const parseCardsReply = (
     return acc;
   }, []);
 
-  let newSetVariableHistory: SetVariableHistoryItem[] = [];
-  let newSessionState: SessionState = state;
-  if (variablesToUpdate && variablesToUpdate.length > 0) {
-    const { updatedState, newSetVariableHistory: updatedSetVariableHistory } =
-      updateVariablesInSession({
-        state,
-        newVariables: variablesToUpdate,
-        currentBlockId: block.id,
-      });
-    newSessionState = updatedState;
-    if (updatedSetVariableHistory.length > 0)
-      newSetVariableHistory = updatedSetVariableHistory;
-  }
-
   const content = matchedItem.title || matchedItem.imageUrl;
   if (!content) return { status: "fail" };
 
@@ -98,7 +76,6 @@ export const parseCardsReply = (
     status: "success",
     content,
     outgoingEdgeId: matchedPath?.outgoingEdgeId,
-    newSessionState,
-    newSetVariableHistory,
+    variablesToUpdate,
   };
 };

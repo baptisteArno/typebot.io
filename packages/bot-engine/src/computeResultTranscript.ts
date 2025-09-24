@@ -1,10 +1,5 @@
 import { BubbleBlockType } from "@typebot.io/blocks-bubbles/constants";
-import {
-  blockHasItems,
-  isBubbleBlock,
-  isCardsInput,
-  isInputBlock,
-} from "@typebot.io/blocks-core/helpers";
+import { isBubbleBlock, isInputBlock } from "@typebot.io/blocks-core/helpers";
 import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
 import { LogicBlockType } from "@typebot.io/blocks-logic/constants";
 import type { ContinueChatResponse } from "@typebot.io/chat-api/schemas";
@@ -19,11 +14,13 @@ import type {
   SetVariableHistoryItem,
   Variable,
 } from "@typebot.io/variables/schemas";
+import { getReplyOutgoingEdge } from "./getReplyOutgoingEdge";
 import { isTypebotInSessionAtLeastV6 } from "./helpers/isTypebotInSessionAtLeastV6";
 import {
   type BubbleBlockWithDefinedContent,
   parseBubbleBlock,
 } from "./parseBubbleBlock";
+import { validateAndParseInputMessage } from "./validateAndParseInputMessage";
 
 // -----------------------------------------------------------------------------
 // 🛠️  Queue helpers ────────────────────────────────────────────────────────────
@@ -105,6 +102,7 @@ export const computeResultTranscript = ({
   return executeGroup({
     typebotsQueue: [{ typebot }],
     nextGroup: firstGroup,
+    isFirstGroup: true,
     currentTranscript: [],
     queues,
     currentBlockId,
@@ -145,6 +143,7 @@ const executeGroup = ({
   nextGroup,
   typebotsQueue,
   queues,
+  isFirstGroup,
   currentBlockId,
   sessionStore,
 }: {
@@ -156,6 +155,7 @@ const executeGroup = ({
     setVariableHistory: QueueIterator<SetVarSnapshot>;
     visitedEdges: QueueIterator<string>;
   };
+  isFirstGroup?: boolean;
   currentBlockId?: string;
   sessionStore: SessionStore;
 }): TranscriptMessage[] => {
@@ -176,7 +176,15 @@ const executeGroup = ({
     const typebot = typebotsQueue[0]?.typebot;
     if (!typebot) throw new Error("Typebot not found in session");
 
-    while (setVariableHistory.peek()?.blockId === block.id) {
+    // The first block of the flow can have prefilled variables attached so we loop through it all
+    if (isFirstGroup && block.id === nextGroup.group.blocks[0].id) {
+      while (setVariableHistory.peek()?.blockId === block.id) {
+        typebot.variables = applySetVariable(
+          setVariableHistory.next(),
+          typebot,
+        );
+      }
+    } else if (setVariableHistory.peek()?.blockId === block.id) {
       typebot.variables = applySetVariable(setVariableHistory.next(), typebot);
     }
 
@@ -252,33 +260,34 @@ const executeGroup = ({
             : answer.content,
       });
 
-      const nextVisitedEdge = visitedEdges.peek();
-      // Check if the next visited edge matches an non default outgoing edge
-      if (nextVisitedEdge) {
-        if (isCardsInput(block)) {
-          for (const item of block.items) {
-            if (!item.paths) continue;
-            for (const path of item.paths) {
-              if (path.outgoingEdgeId === nextVisitedEdge) {
-                nextEdgeId = path.outgoingEdgeId;
-                visitedEdges.next();
-                break;
-              }
-            }
-          }
-        }
-        if (blockHasItems(block)) {
-          for (const item of block.items) {
-            if (item.outgoingEdgeId !== nextVisitedEdge) continue;
-            nextEdgeId = item.outgoingEdgeId;
-            visitedEdges.next();
-            break;
-          }
-        }
+      const parsedReply = validateAndParseInputMessage(
+        {
+          type: "text",
+          text: answer.content,
+        },
+        {
+          block,
+          variables: typebot.variables,
+          sessionStore,
+        },
+      );
+
+      if (parsedReply.status === "fail") {
+        throw new Error(
+          "Parsed reply is in fail status when computing result transcript",
+        );
       }
 
-      if (!nextEdgeId && block.outgoingEdgeId)
-        nextEdgeId = block.outgoingEdgeId;
+      const replyOutgoingEdge = getReplyOutgoingEdge(parsedReply, {
+        block,
+        variables: typebot.variables,
+        sessionStore,
+      });
+
+      if (!replyOutgoingEdge) continue;
+
+      if (replyOutgoingEdge.isOffDefaultPath) visitedEdges.next();
+      nextEdgeId = replyOutgoingEdge.id;
     }
     // ──────────────────────────────────────────────────────────── Condition
     else if (block.type === LogicBlockType.CONDITION) {

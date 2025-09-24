@@ -169,7 +169,7 @@ export const startSession = async ({
 
   const setVariableHistory: SetVariableHistoryItem[] = [];
 
-  if (startParams.prefilledVariables) {
+  if (startParams.prefilledVariables && startParams.type === "live") {
     const firstBlockId = getFirstBlockId(typebotInSession);
 
     const { updatedState, newSetVariableHistory } = updateVariablesInSession({

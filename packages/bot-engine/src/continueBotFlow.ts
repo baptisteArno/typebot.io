@@ -5,12 +5,9 @@ import {
   isInputBlock,
 } from "@typebot.io/blocks-core/helpers";
 import type { Block } from "@typebot.io/blocks-core/schemas/schema";
-import { defaultChoiceInputOptions } from "@typebot.io/blocks-inputs/choice/constants";
 import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
 import { defaultEmailInputOptions } from "@typebot.io/blocks-inputs/email/constants";
-import { defaultFileInputOptions } from "@typebot.io/blocks-inputs/file/constants";
 import { defaultPaymentInputOptions } from "@typebot.io/blocks-inputs/payment/constants";
-import { defaultPictureChoiceOptions } from "@typebot.io/blocks-inputs/pictureChoice/constants";
 import type { InputBlock } from "@typebot.io/blocks-inputs/schema";
 import { IntegrationBlockType } from "@typebot.io/blocks-integrations/constants";
 import { LogicBlockType } from "@typebot.io/blocks-logic/constants";
@@ -23,15 +20,12 @@ import type {
   SessionState,
   TypebotInSession,
 } from "@typebot.io/chat-session/schemas";
-import { env } from "@typebot.io/env";
 import { EventType } from "@typebot.io/events/constants";
 import type { InvalidReplyEvent, ReplyEvent } from "@typebot.io/events/schemas";
 import { forgedBlocks } from "@typebot.io/forge-repository/definitions";
 import type { ForgedBlock } from "@typebot.io/forge-repository/schemas";
 import { getBlockById } from "@typebot.io/groups/helpers/getBlockById";
 import type { Group } from "@typebot.io/groups/schemas";
-import { parseAllowedFileTypesMetadata } from "@typebot.io/lib/extensionFromMimeType";
-import { isURL } from "@typebot.io/lib/isURL";
 import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
 import { byId, isDefined } from "@typebot.io/lib/utils";
 import type { AnswerInSessionState } from "@typebot.io/results/schemas/answers";
@@ -42,33 +36,19 @@ import type {
   SetVariableHistoryItem,
   Variable,
 } from "@typebot.io/variables/schemas";
-import { parseCardsReply } from "./blocks/cards/parseCardsReply";
-import { injectVariableValuesInButtonsInputBlock } from "./blocks/inputs/buttons/injectVariableValuesInButtonsInputBlock";
-import { parseMultipleChoiceReply } from "./blocks/inputs/buttons/parseMultipleChoiceReply";
-import { parseSingleChoiceReply } from "./blocks/inputs/buttons/parseSingleChoiceReply";
-import { parseDateReply } from "./blocks/inputs/date/parseDateReply";
-import { formatEmail } from "./blocks/inputs/email/formatEmail";
-import { parseNumber } from "./blocks/inputs/number/parseNumber";
-import { formatPhoneNumber } from "./blocks/inputs/phone/formatPhoneNumber";
-import { injectVariableValuesInPictureChoiceBlock } from "./blocks/inputs/pictureChoice/injectVariableValuesInPictureChoiceBlock";
-import { validateRatingReply } from "./blocks/inputs/rating/validateRatingReply";
-import { parseTime } from "./blocks/inputs/time/parseTime";
 import { saveDataInResponseVariableMapping } from "./blocks/integrations/httpRequest/saveDataInResponseVariableMapping";
 import { resumeChatCompletion } from "./blocks/integrations/legacy/openai/resumeChatCompletion";
 import { executeCommandEvent } from "./events/executeCommandEvent";
 import { executeInvalidReplyEvent } from "./events/executeInvalidReplyEvent";
 import { executeReplyEvent } from "./events/executeReplyEvent";
 import { formatInputForChatResponse } from "./formatInputForChatResponse";
+import { getReplyOutgoingEdge } from "./getReplyOutgoingEdge";
 import { saveAnswer } from "./queries/saveAnswer";
 import { resetSessionState } from "./resetSessionState";
 import { startBotFlow } from "./startBotFlow";
-import type {
-  ContinueBotFlowResponse,
-  ParsedReply,
-  SkipReply,
-  SuccessReply,
-} from "./types";
+import type { ContinueBotFlowResponse, SkipReply, SuccessReply } from "./types";
 import { updateVariablesInSession } from "./updateVariablesInSession";
+import { validateAndParseInputMessage } from "./validateAndParseInputMessage";
 import { walkFlowForward } from "./walkFlowForward";
 
 type Params = {
@@ -139,15 +119,24 @@ export const continueBotFlow = async (
   let continueReply: SuccessReply | SkipReply | undefined;
 
   if (isInputBlock(block) && isInputMessage(reply)) {
-    const parsedReplyResult = await parseReply(reply, {
+    const parsedReplyResult = validateAndParseInputMessage(reply, {
       block,
-      state: newSessionState,
+      variables: newSessionState.typebotsQueue[0].typebot.variables,
       sessionStore,
     });
-    if (parsedReplyResult.newSessionState)
-      newSessionState = parsedReplyResult.newSessionState;
-    if (parsedReplyResult.newSetVariableHistory)
-      setVariableHistory.push(...parsedReplyResult.newSetVariableHistory);
+
+    if (
+      parsedReplyResult.status === "success" &&
+      parsedReplyResult.variablesToUpdate
+    ) {
+      const { updatedState, newSetVariableHistory } = updateVariablesInSession({
+        state: newSessionState,
+        newVariables: parsedReplyResult.variablesToUpdate,
+        currentBlockId: block.id,
+      });
+      newSessionState = updatedState;
+      setVariableHistory.push(...newSetVariableHistory);
+    }
 
     const invalidReplyEvent =
       parsedReplyResult.status === "fail"
@@ -220,7 +209,7 @@ export const continueBotFlow = async (
 
   const nextEdge = getReplyOutgoingEdge(continueReply, {
     block,
-    state: newSessionState,
+    variables: newSessionState.typebotsQueue[0].typebot.variables,
     sessionStore,
   });
 
@@ -746,206 +735,6 @@ const setNewAnswerInState =
       ),
     } satisfies SessionState;
   };
-
-const getReplyOutgoingEdge = (
-  reply: SuccessReply | SkipReply | undefined,
-  {
-    block,
-    state,
-    sessionStore,
-  }: {
-    block: Block;
-    state: SessionState;
-    sessionStore: SessionStore;
-  },
-): { id: string; isOffDefaultPath: boolean } | undefined => {
-  if (!reply || reply.status === "skip")
-    return block.outgoingEdgeId
-      ? { id: block.outgoingEdgeId, isOffDefaultPath: false }
-      : undefined;
-  if (reply.outgoingEdgeId)
-    return reply.outgoingEdgeId
-      ? { id: reply.outgoingEdgeId, isOffDefaultPath: true }
-      : undefined;
-  const variables = state.typebotsQueue[0].typebot.variables;
-  if (
-    block.type === InputBlockType.CHOICE &&
-    !(
-      block.options?.isMultipleChoice ??
-      defaultChoiceInputOptions.isMultipleChoice
-    ) &&
-    reply
-  ) {
-    const matchedItem = block.items.find(
-      (item) =>
-        parseVariables(item.content, {
-          variables,
-          sessionStore,
-        }).normalize() === reply.content.normalize(),
-    );
-    if (matchedItem?.outgoingEdgeId)
-      return { id: matchedItem.outgoingEdgeId, isOffDefaultPath: true };
-  }
-  if (
-    block.type === InputBlockType.PICTURE_CHOICE &&
-    !(
-      block.options?.isMultipleChoice ??
-      defaultPictureChoiceOptions.isMultipleChoice
-    ) &&
-    reply
-  ) {
-    const matchedItem = block.items.find(
-      (item) =>
-        parseVariables(item.title, { variables, sessionStore }).normalize() ===
-        reply.content.normalize(),
-    );
-    if (matchedItem?.outgoingEdgeId)
-      return { id: matchedItem.outgoingEdgeId, isOffDefaultPath: true };
-  }
-  return block.outgoingEdgeId
-    ? { id: block.outgoingEdgeId, isOffDefaultPath: false }
-    : undefined;
-};
-
-const parseReply = async (
-  reply: InputMessage | undefined,
-  {
-    sessionStore,
-    state,
-    block,
-  }: { sessionStore: SessionStore; state: SessionState; block: InputBlock },
-): Promise<
-  ParsedReply & {
-    newSessionState?: SessionState;
-    newSetVariableHistory?: SetVariableHistoryItem[];
-  }
-> => {
-  switch (block.type) {
-    case InputBlockType.EMAIL: {
-      if (!reply || reply.type !== "text") return { status: "fail" };
-      const formattedEmail = formatEmail(reply.text);
-      if (!formattedEmail) return { status: "fail" };
-      return { status: "success", content: formattedEmail };
-    }
-    case InputBlockType.PHONE: {
-      if (!reply || reply.type !== "text") return { status: "fail" };
-      const formattedPhone = formatPhoneNumber(
-        reply.text,
-        block.options?.defaultCountryCode,
-      );
-      if (!formattedPhone) return { status: "fail" };
-      return { status: "success", content: formattedPhone };
-    }
-    case InputBlockType.URL: {
-      if (!reply || reply.type !== "text") return { status: "fail" };
-      const isValid = isURL(reply.text, { require_protocol: false });
-      if (!isValid) return { status: "fail" };
-      return { status: "success", content: reply.text };
-    }
-    case InputBlockType.CHOICE: {
-      if (!reply || reply.type !== "text") return { status: "fail" };
-      const displayedItems = injectVariableValuesInButtonsInputBlock(block, {
-        state,
-        sessionStore,
-      }).items;
-      if (block.options?.isMultipleChoice)
-        return parseMultipleChoiceReply(reply.text, { items: displayedItems });
-      return parseSingleChoiceReply(reply.text, {
-        replyId: reply.metadata?.replyId,
-        items: displayedItems,
-      });
-    }
-    case InputBlockType.NUMBER: {
-      if (!reply || reply.type !== "text") return { status: "fail" };
-      return parseNumber(reply.text, {
-        options: block.options,
-        variables: state.typebotsQueue[0].typebot.variables,
-        sessionStore,
-      });
-    }
-    case InputBlockType.DATE: {
-      if (!reply || reply.type !== "text") return { status: "fail" };
-      return parseDateReply(reply.text, block);
-    }
-    case InputBlockType.TIME: {
-      if (!reply || reply.type !== "text") return { status: "fail" };
-      return parseTime(reply.text, block.options);
-    }
-    case InputBlockType.FILE: {
-      if (!reply)
-        return (block.options?.isRequired ?? defaultFileInputOptions.isRequired)
-          ? { status: "fail" }
-          : { status: "skip" };
-
-      const replyValue = reply.type === "audio" ? reply.url : reply.text;
-      const urls = replyValue.split(", ");
-      const hasValidUrls = urls.some((url) =>
-        isURL(url, { require_tld: env.S3_ENDPOINT !== "localhost" }),
-      );
-
-      const allowedFileTypesMetadata =
-        block.options?.allowedFileTypes?.types &&
-        block.options?.allowedFileTypes?.types?.length > 0 &&
-        block.options?.allowedFileTypes?.isEnabled
-          ? parseAllowedFileTypesMetadata(block.options.allowedFileTypes.types)
-          : undefined;
-      const allFilesAreAllowed = allowedFileTypesMetadata
-        ? urls.every((url) => {
-            const extension = url.split(".").pop();
-            if (!extension) return false;
-            return allowedFileTypesMetadata.some(
-              (metadata) =>
-                metadata.extension.toLowerCase() === extension.toLowerCase(),
-            );
-          })
-        : true;
-
-      const status = hasValidUrls && allFilesAreAllowed ? "success" : "fail";
-      if (!block.options?.isMultipleAllowed && urls.length > 1)
-        return { status, content: replyValue.split(",")[0] };
-      return { status, content: replyValue };
-    }
-    case InputBlockType.PAYMENT: {
-      if (!reply || reply.type !== "text") return { status: "fail" };
-      if (reply.text === "fail") return { status: "fail" };
-      return { status: "success", content: reply.text };
-    }
-    case InputBlockType.RATING: {
-      if (!reply || reply.type !== "text") return { status: "fail" };
-      const isValid = validateRatingReply(reply.text, block);
-      if (!isValid) return { status: "fail" };
-      return { status: "success", content: reply.text };
-    }
-    case InputBlockType.PICTURE_CHOICE: {
-      if (!reply || reply.type !== "text") return { status: "fail" };
-      const displayedItems = injectVariableValuesInPictureChoiceBlock(block, {
-        variables: state.typebotsQueue[0].typebot.variables,
-        sessionStore,
-      }).items;
-      if (block.options?.isMultipleChoice)
-        return parseMultipleChoiceReply(reply.text, { items: displayedItems });
-      return parseSingleChoiceReply(reply.text, {
-        items: displayedItems,
-        replyId: reply.metadata?.replyId,
-      });
-    }
-    case InputBlockType.TEXT: {
-      if (!reply) return { status: "fail" };
-      return {
-        status: "success",
-        content: reply.type === "audio" ? reply.url : reply.text,
-      };
-    }
-    case InputBlockType.CARDS: {
-      if (!reply || reply.type !== "text") return { status: "fail" };
-      return parseCardsReply(reply.text, {
-        block,
-        state,
-        sessionStore,
-      });
-    }
-  }
-};
 
 export const safeJsonParse = (value: string): unknown => {
   try {
