@@ -1,13 +1,12 @@
-import { TRPCError } from "@trpc/server";
 import type { Message, StartFrom } from "@typebot.io/chat-api/schemas";
 import type { SessionState } from "@typebot.io/chat-session/schemas";
 import type { SessionStore } from "@typebot.io/runtime-session-store";
 import type { SetVariableHistoryItem } from "@typebot.io/variables/schemas";
 import { continueBotFlow } from "./continueBotFlow";
-import { getFirstEdgeId } from "./getFirstEdgeId";
+import { getStartingPoint } from "./getStartingPoint";
 import { upsertResult } from "./queries/upsertResult";
 import type { ContinueBotFlowResponse } from "./types";
-import { type WalkFlowStartingPoint, walkFlowForward } from "./walkFlowForward";
+import { walkFlowForward } from "./walkFlowForward";
 
 type Props = {
   version: 1 | 2;
@@ -29,7 +28,7 @@ export const startBotFlow = async ({
   const newSessionState = state;
   const setVariableHistory: SetVariableHistoryItem[] = [];
   const startingPoint = getStartingPoint({
-    state: newSessionState,
+    typebot: newSessionState.typebotsQueue[0]?.typebot,
     startFrom,
   });
   if (!startingPoint)
@@ -56,41 +55,6 @@ export const startBotFlow = async ({
     version,
     sessionStore,
   });
-};
-
-const getStartingPoint = ({
-  state,
-  startFrom,
-}: {
-  state: SessionState;
-  startFrom?: StartFrom;
-}): WalkFlowStartingPoint | undefined => {
-  if (startFrom?.type === "group") {
-    const group = state.typebotsQueue[0]?.typebot.groups.find(
-      (group) => group.id === startFrom.groupId,
-    );
-    if (!group)
-      throw new TRPCError({
-        code: "BAD_REQUEST",
-        message: "Start group doesn't exist",
-      });
-    return {
-      type: "group",
-      group,
-    };
-  }
-  const firstEdgeId = getFirstEdgeId({
-    typebot: state.typebotsQueue[0]?.typebot,
-    startEventId: startFrom?.type === "event" ? startFrom.eventId : undefined,
-  });
-  if (!firstEdgeId) return;
-  return {
-    type: "nextEdge",
-    nextEdge: {
-      id: firstEdgeId,
-      isOffDefaultPath: false,
-    },
-  };
 };
 
 const autoContinueChatIfStartingWithInput = async ({

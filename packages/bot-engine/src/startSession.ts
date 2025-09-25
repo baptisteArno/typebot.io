@@ -22,7 +22,7 @@ import type {
   TypebotInSessionV5,
 } from "@typebot.io/chat-session/schemas";
 import { env } from "@typebot.io/env";
-import { isDefined, isNotEmpty, omit } from "@typebot.io/lib/utils";
+import { byId, isDefined, isNotEmpty, omit } from "@typebot.io/lib/utils";
 import type { Prisma } from "@typebot.io/prisma/types";
 import { resultSchema } from "@typebot.io/results/schemas/results";
 import { parseVariablesInRichText } from "@typebot.io/rich-text/parseVariablesInRichText";
@@ -49,7 +49,7 @@ import type {
 } from "@typebot.io/variables/schemas";
 import { transformPrefilledVariablesToVariables } from "@typebot.io/variables/transformPrefilledVariablesToVariables";
 import { NodeType, parse } from "node-html-parser";
-import { getFirstEdgeId } from "./getFirstEdgeId";
+import { getStartingPoint } from "./getStartingPoint";
 import { isTypebotInSessionAtLeastV6 } from "./helpers/isTypebotInSessionAtLeastV6";
 import { parseDynamicTheme } from "./parseDynamicTheme";
 import { findPublicTypebot } from "./queries/findPublicTypebot";
@@ -57,6 +57,7 @@ import { findResult } from "./queries/findResult";
 import { findTypebot } from "./queries/findTypebot";
 import { startBotFlow } from "./startBotFlow";
 import { updateVariablesInSession } from "./updateVariablesInSession";
+import type { WalkFlowStartingPoint } from "./walkFlowForward";
 
 type StartParams =
   | ({
@@ -169,21 +170,32 @@ export const startSession = async ({
 
   const setVariableHistory: SetVariableHistoryItem[] = [];
 
-  if (startParams.prefilledVariables && startParams.type === "live") {
-    const firstBlockId = getFirstBlockId(typebotInSession);
-
-    const { updatedState, newSetVariableHistory } = updateVariablesInSession({
-      state: initialState,
-      newVariables: transformPrefilledVariablesToVariables(
-        startParams.prefilledVariables,
-        {
-          existingVariables: typebotInSession.variables,
-        },
-      ),
-      currentBlockId: firstBlockId,
+  if (startParams.prefilledVariables) {
+    const startingPoint = getStartingPoint({
+      typebot: typebotInSession,
+      startFrom: "startFrom" in startParams ? startParams.startFrom : undefined,
     });
-    initialState = updatedState;
-    setVariableHistory.push(...newSetVariableHistory);
+
+    const firstBlockId = startingPoint
+      ? getStartingPointFirstBlockId(startingPoint, {
+          typebot: typebotInSession,
+        })
+      : undefined;
+
+    if (firstBlockId) {
+      const { updatedState, newSetVariableHistory } = updateVariablesInSession({
+        state: initialState,
+        newVariables: transformPrefilledVariablesToVariables(
+          startParams.prefilledVariables,
+          {
+            existingVariables: typebotInSession.variables,
+          },
+        ),
+        currentBlockId: firstBlockId,
+      });
+      initialState = updatedState;
+      setVariableHistory.push(...newSetVariableHistory);
+    }
   }
 
   if (startParams.isOnlyRegistering) {
@@ -604,17 +616,21 @@ const extractVariableIdsUsedForTranscript = (
   return [...variableIds];
 };
 
-const getFirstBlockId = (typebot: TypebotInSession) => {
-  const firstEdgeId = getFirstEdgeId({
+const getStartingPointFirstBlockId = (
+  startingPoint: WalkFlowStartingPoint,
+  {
     typebot,
-    startEventId: undefined,
-  });
-  const edge = typebot.edges.find((edge) => edge.id === firstEdgeId);
-  if (!edge) throw new Error("Edge not found");
-  const firstBlockId =
-    edge.to.blockId ??
-    typebot.groups.find((group) => group.id === edge.to.groupId)?.blocks.at(0)
-      ?.id;
-  if (!firstBlockId) throw new Error("First block not found");
-  return firstBlockId;
+  }: {
+    typebot: TypebotInSession;
+  },
+): string | undefined => {
+  if (startingPoint.type === "group") {
+    return startingPoint.group.blocks.at(0)?.id;
+  }
+  const nextEdge = typebot.edges.find(byId(startingPoint.nextEdge?.id));
+  if (!nextEdge) throw new Error("Next edge not found");
+  if (nextEdge.to.blockId) return nextEdge.to.blockId;
+  const nextGroup = typebot.groups.find(byId(nextEdge.to.groupId));
+  if (!nextGroup) throw new Error("Next group not found");
+  return nextGroup.blocks.at(0)?.id;
 };
