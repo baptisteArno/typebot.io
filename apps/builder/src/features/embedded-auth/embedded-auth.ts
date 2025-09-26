@@ -57,8 +57,20 @@ const handleAuthError = (
       targetOrigin
     )
   } else {
-    // Fallback: try all allowed origins
-    getAllowedOrigins().forEach((origin) => {
+    // Fallback: try all allowed origins, but filter out wildcard patterns since postMessage doesn't support them
+    const allowedOrigins = getAllowedOrigins()
+    const nonWildcardOrigins = allowedOrigins.filter(
+      (origin) => !origin.includes('*')
+    )
+
+    if (nonWildcardOrigins.length === 0) {
+      console.error(
+        '❌ No valid target origins for AUTH_ERROR (all contain wildcards)'
+      )
+      return false
+    }
+
+    nonWildcardOrigins.forEach((origin) => {
       window.parent.postMessage(
         {
           type: 'AUTH_ERROR',
@@ -90,11 +102,50 @@ export const handleEmbeddedAuthentication = async (): Promise<boolean> => {
 
     console.log('❌ Not authenticated, requesting token from parent...')
 
-    // Request token from parent - send to all allowed origins
+    // Request token from parent - try to use referrer first, then fallback to allowed origins
     console.log('🔍 Requesting auth token from parent window...')
 
-    const allowedOrigins = getAllowedOrigins()
-    allowedOrigins.forEach((origin, index) => {
+    // Try to get the parent origin from document.referrer first
+    let targetOrigins: string[] = []
+
+    if (document.referrer) {
+      try {
+        const referrerOrigin = new URL(document.referrer).origin
+        if (isOriginAllowed(referrerOrigin)) {
+          console.log(
+            '✅ Using document.referrer as target origin:',
+            referrerOrigin
+          )
+          targetOrigins = [referrerOrigin]
+        } else {
+          console.warn(
+            '⚠️ Document referrer not in allowed origins:',
+            referrerOrigin
+          )
+        }
+      } catch (error) {
+        console.warn('⚠️ Failed to parse document.referrer:', document.referrer)
+      }
+    }
+
+    // Fallback to allowed origins, but filter out wildcard patterns since postMessage doesn't support them
+    if (targetOrigins.length === 0) {
+      const allowedOrigins = getAllowedOrigins()
+      targetOrigins = allowedOrigins.filter((origin) => !origin.includes('*'))
+      console.log(
+        '📡 Fallback: broadcasting to non-wildcard allowed origins:',
+        targetOrigins
+      )
+
+      if (targetOrigins.length === 0) {
+        console.error(
+          '❌ No valid target origins found (all contain wildcards)'
+        )
+        return handleAuthError('No valid target origins for postMessage')
+      }
+    }
+
+    targetOrigins.forEach((origin, index) => {
       console.log(
         `📤 Sending REQUEST_AUTH_TOKEN to origin ${index + 1}:`,
         origin
