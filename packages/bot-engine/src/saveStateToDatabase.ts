@@ -1,7 +1,7 @@
 import type { ContinueChatResponse } from "@typebot.io/chat-api/schemas";
-import { createSession } from "@typebot.io/chat-session/queries/createSession";
 import { deleteSession } from "@typebot.io/chat-session/queries/deleteSession";
 import { updateSession } from "@typebot.io/chat-session/queries/updateSession";
+import { upsertSession } from "@typebot.io/chat-session/queries/upsertSession";
 import type { ChatSession } from "@typebot.io/chat-session/schemas";
 import prisma from "@typebot.io/prisma";
 import type { Prisma } from "@typebot.io/prisma/types";
@@ -62,10 +62,9 @@ export const saveStateToDatabase = async ({
   const session =
     sessionId.type === "existing"
       ? { state, id: sessionId.id }
-      : await createSession({
-          id: sessionId.id,
+      : await upsertSession(sessionId.id, {
           state,
-          isReplying: isWaitingForExternalEvent,
+          isReplying: isWaitingForExternalEvent ?? false,
         });
 
   if (!resultId) {
