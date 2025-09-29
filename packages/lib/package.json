@@ -21,7 +21,8 @@
   },
   "peerDependencies": {
     "next": "14.0.0",
-    "nodemailer": "6.7.8"
+    "nodemailer": "6.7.8",
+    "dd-trace": "^5.53.0"
   },
   "dependencies": {
     "@sentry/nextjs": "7.77.0",

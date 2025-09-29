@@ -22,6 +22,7 @@
     "@typebot.io/nextjs": "workspace:*",
     "@typebot.io/prisma": "workspace:*",
     "@typebot.io/telemetry": "workspace:^",
+    "dd-trace": "^5.53.0",
     "ai": "3.1.12",
     "bot-engine": "workspace:*",
     "cors": "2.8.5",

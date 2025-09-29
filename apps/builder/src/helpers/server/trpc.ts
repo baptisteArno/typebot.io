@@ -4,7 +4,8 @@ import { OpenApiMeta } from '@lilyrose2798/trpc-openapi'
 import superjson from 'superjson'
 import * as Sentry from '@sentry/nextjs'
 import { ZodError } from 'zod'
-import tracer from 'dd-trace'
+import { createDatadogLoggerMiddleware } from '@typebot.io/lib/trpc/createDatadogLoggerMiddleware'
+import { User } from '@typebot.io/prisma'
 
 const t = initTRPC
   .context<Context>()
@@ -23,32 +24,8 @@ const t = initTRPC
     },
   })
 
-const datadogLoggerMiddleware = t.middleware(async ({ ctx, next }) => {
-  const span = tracer.scope().active()
-  let traceId = null
-  let spanId = null
-  const context = span?.context()
-  if (context) {
-    if (typeof context.toTraceId === 'function') {
-      traceId = context.toTraceId()
-    } else {
-      console.warn('dd-trace: context.toTraceId is not a function')
-    }
-    if (typeof context.toSpanId === 'function') {
-      spanId = context.toSpanId()
-    } else {
-      console.warn('dd-trace: context.toSpanId is not a function')
-    }
-  }
-  return next({
-    ctx: {
-      ...ctx,
-      datadog: {
-        traceId,
-        spanId,
-      },
-    },
-  })
+const datadogLoggerMiddleware = createDatadogLoggerMiddleware(t, {
+  service: 'typebot-builder',
 })
 
 const sentryMiddleware = t.middleware(
@@ -67,14 +44,10 @@ const injectUser = t.middleware(({ next, ctx }) => {
 
 const isAuthed = t.middleware(({ next, ctx }) => {
   if (!ctx.user?.id) {
-    throw new TRPCError({
-      code: 'UNAUTHORIZED',
-    })
+    throw new TRPCError({ code: 'UNAUTHORIZED' })
   }
   return next({
-    ctx: {
-      user: ctx.user,
-    },
+    ctx: { user: ctx.user as User },
   })
 })
 
@@ -93,4 +66,10 @@ export const mergeRouters = t.mergeRouters
 
 export const publicProcedure = t.procedure.use(finalMiddleware)
 
-export const authenticatedProcedure = t.procedure.use(authenticatedMiddleware)
+export const authenticatedProcedure = t.procedure
+  .use(authenticatedMiddleware)
+  .use(
+    t.middleware(({ next, ctx }) =>
+      next({ ctx: ctx as Context & { user: User } })
+    )
+  )

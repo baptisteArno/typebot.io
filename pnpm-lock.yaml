@@ -451,6 +451,9 @@ importers:
       cors:
         specifier: 2.8.5
         version: 2.8.5
+      dd-trace:
+        specifier: ^5.53.0
+        version: 5.53.0
       google-spreadsheet:
         specifier: 4.1.1
         version: 4.1.1(google-auth-library@8.9.0)
@@ -1725,6 +1728,9 @@ importers:
       '@udecode/plate-paragraph':
         specifier: 30.5.3
         version: 30.5.3(@udecode/plate-common@30.4.5)(react-dom@18.2.0)(react@18.2.0)(slate-history@0.100.0)(slate-hyperscript@0.100.0)(slate-react@0.102.0)(slate@0.102.0)
+      dd-trace:
+        specifier: ^5.53.0
+        version: 5.53.0
       escape-html:
         specifier: 1.0.3
         version: 1.0.3
