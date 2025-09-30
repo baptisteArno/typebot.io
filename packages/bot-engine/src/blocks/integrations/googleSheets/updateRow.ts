@@ -48,27 +48,21 @@ export const updateRow = async (
 
   const logs: LogInSession[] = [];
 
-  const doc = await getGoogleSpreadsheet({
+  const docResponse = await getGoogleSpreadsheet({
     credentialsId: options.credentialsId,
     spreadsheetId: options.spreadsheetId,
     workspaceId: state.workspaceId,
   });
 
-  if (!doc)
+  if (docResponse.type === "error")
     return {
       outgoingEdgeId,
-      logs: [
-        {
-          status: "error",
-          description: "Couldn't find credentials in database",
-          context: "While updating row in spreadsheet",
-        },
-      ],
+      logs: [docResponse.log],
     };
 
   try {
-    await doc.loadInfo();
-    const sheet = doc.sheetsById[Number(sheetId)];
+    await docResponse.spreadsheet.loadInfo();
+    const sheet = docResponse.spreadsheet.sheetsById[Number(sheetId)];
     const rows = await sheet.getRows();
     const filteredRows = rows.filter((row) =>
       referenceCell

@@ -65,17 +65,17 @@ const getRows = async (req: NextApiRequest, res: NextApiResponse) => {
     return;
   }
 
-  const doc = await getGoogleSpreadsheet({
+  const docResponse = await getGoogleSpreadsheet({
     credentialsId,
     spreadsheetId,
     workspaceId: undefined,
   });
-  if (!doc) {
+  if (docResponse.type === "error") {
     notFound(res);
     return;
   }
-  await doc.loadInfo();
-  const sheet = doc.sheetsById[Number(sheetId)];
+  await docResponse.spreadsheet.loadInfo();
+  const sheet = docResponse.spreadsheet.sheetsById[Number(sheetId)];
   try {
     const rows = await sheet.getRows();
     const filteredRows = rows.filter((row) =>
@@ -125,18 +125,18 @@ const insertRow = async (req: NextApiRequest, res: NextApiResponse) => {
       values: { [key: string]: string };
     };
   if (!hasValue(credentialsId)) return badRequest(res);
-  const doc = await getGoogleSpreadsheet({
+  const docResponse = await getGoogleSpreadsheet({
     credentialsId,
     spreadsheetId,
     workspaceId: undefined,
   });
-  if (!doc) {
+  if (docResponse.type === "error") {
     notFound(res);
     return;
   }
   try {
-    await doc.loadInfo();
-    const sheet = doc.sheetsById[Number(sheetId)];
+    await docResponse.spreadsheet.loadInfo();
+    const sheet = docResponse.spreadsheet.sheetsById[Number(sheetId)];
     await sheet.addRow(values);
     await saveSuccessLog({ resultId, message: "Succesfully inserted row" });
     return res.send({ message: "Success" });
@@ -162,18 +162,18 @@ const updateRow = async (req: NextApiRequest, res: NextApiResponse) => {
   const { resultId, credentialsId, values } = body;
 
   if (!hasValue(credentialsId) || !referenceCell) return badRequest(res);
-  const doc = await getGoogleSpreadsheet({
+  const docResponse = await getGoogleSpreadsheet({
     credentialsId,
     spreadsheetId,
     workspaceId: undefined,
   });
-  if (!doc) {
+  if (docResponse.type === "error") {
     notFound(res);
     return;
   }
   try {
-    await doc.loadInfo();
-    const sheet = doc.sheetsById[Number(sheetId)];
+    await docResponse.spreadsheet.loadInfo();
+    const sheet = docResponse.spreadsheet.sheetsById[Number(sheetId)];
     const rows = await sheet.getRows();
     const updatingRowIndex = rows.findIndex(
       (row) => row.get(referenceCell.column as string) === referenceCell.value,

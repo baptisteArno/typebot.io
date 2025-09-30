@@ -17,36 +17,36 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const workspaceId = req.query.workspaceId as string | undefined;
     if (!credentialsId || workspaceId) return badRequest(res);
     const spreadsheetId = req.query.id as string;
-    const doc = await getGoogleSpreadsheet({
+    const docResponse = await getGoogleSpreadsheet({
       credentialsId,
       spreadsheetId,
       workspaceId,
     });
-    if (!doc)
-      return res
-        .status(404)
-        .send({ message: "Couldn't find credentials in database" });
+    if (docResponse.type === "error")
+      return res.status(404).send({ message: docResponse.log.description });
 
     try {
-      await doc.loadInfo();
+      await docResponse.spreadsheet.loadInfo();
       return res.send({
         sheets: (
           await Promise.all(
-            Array.from(Array(doc.sheetCount)).map(async (_, idx) => {
-              const sheet = doc.sheetsByIndex[idx];
-              try {
-                await sheet.loadHeaderRow();
-              } catch (err) {
-                if (err && typeof err === "object" && "message" in err)
-                  console.log(err.message);
-                return;
-              }
-              return {
-                id: sheet.sheetId.toString(),
-                name: sheet.title,
-                columns: sheet.headerValues,
-              };
-            }),
+            Array.from(Array(docResponse.spreadsheet.sheetCount)).map(
+              async (_, idx) => {
+                const sheet = docResponse.spreadsheet.sheetsByIndex[idx];
+                try {
+                  await sheet.loadHeaderRow();
+                } catch (err) {
+                  if (err && typeof err === "object" && "message" in err)
+                    console.log(err.message);
+                  return;
+                }
+                return {
+                  id: sheet.sheetId.toString(),
+                  name: sheet.title,
+                  columns: sheet.headerValues,
+                };
+              },
+            ),
           )
         ).filter(isDefined),
       });

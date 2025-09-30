@@ -1,5 +1,6 @@
 import { env } from "@typebot.io/env";
 import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
+import type { LogInSession } from "@typebot.io/logs/schemas";
 import prisma from "@typebot.io/prisma";
 import { GoogleSpreadsheet } from "google-spreadsheet";
 import ky from "ky";
@@ -20,15 +21,31 @@ export const getGoogleSpreadsheet = async ({
   spreadsheetId,
   credentialsId,
   workspaceId,
-}: Params): Promise<GoogleSpreadsheet | undefined> => {
+}: Params): Promise<
+  | { type: "success"; spreadsheet: GoogleSpreadsheet }
+  | { type: "error"; log: LogInSession }
+> => {
   const credentials = await getCredentials(credentialsId, workspaceId);
-  if (!credentials) return;
+  if (!credentials)
+    return {
+      type: "error",
+      log: {
+        description: "Credentials not found",
+        context: "While getting Google Spreadsheet",
+      },
+    };
   const decryptedData = await decrypt(credentials.data, credentials.iv);
   const { refresh_token, expiry_date, access_token } =
     decryptedData as GoogleSheetsCredentials["data"];
 
   if (!access_token)
-    throw new Error("No access token found in Sheets credentials");
+    return {
+      type: "error",
+      log: {
+        description: "No access token found in Sheets credentials",
+        context: "While getting Google Spreadsheet",
+      },
+    };
 
   const client = {
     id: env.GOOGLE_SHEETS_CLIENT_ID,
@@ -36,13 +53,22 @@ export const getGoogleSpreadsheet = async ({
   };
 
   if (expiry_date && expiry_date > Date.now())
-    return new GoogleSpreadsheet(spreadsheetId, {
-      token: access_token,
-    });
+    return {
+      type: "success",
+      spreadsheet: new GoogleSpreadsheet(spreadsheetId, {
+        token: access_token,
+      }),
+    };
 
   try {
     if (!refresh_token)
-      throw new Error("No refresh token found in Sheets credentials");
+      return {
+        type: "error",
+        log: {
+          description: "No refresh token found in Sheets credentials",
+          context: "While getting Google Spreadsheet",
+        },
+      };
 
     const tokens = await ky
       .post(TOKEN_URL, {
@@ -81,15 +107,18 @@ export const getGoogleSpreadsheet = async ({
       },
     });
 
-    return new GoogleSpreadsheet(spreadsheetId, {
-      token: newTokens.access_token,
-    });
+    return {
+      type: "success",
+      spreadsheet: new GoogleSpreadsheet(spreadsheetId, {
+        token: newTokens.access_token,
+      }),
+    };
   } catch (err) {
     const parsedError = await parseUnknownError({
       err,
       context: "token exchange",
     });
     console.error(parsedError);
-    throw new Error(parsedError.description);
+    return { type: "error", log: parsedError };
   }
 };

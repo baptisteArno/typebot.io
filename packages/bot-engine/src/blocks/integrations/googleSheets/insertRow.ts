@@ -34,22 +34,16 @@ export const insertRow = async (
 
   const logs: LogInSession[] = [];
 
-  const doc = await getGoogleSpreadsheet({
+  const docResponse = await getGoogleSpreadsheet({
     credentialsId: options.credentialsId,
     spreadsheetId: options.spreadsheetId,
     workspaceId: state.workspaceId,
   });
 
-  if (!doc)
+  if (docResponse.type === "error")
     return {
       outgoingEdgeId,
-      logs: [
-        {
-          status: "error",
-          description: "Couldn't find credentials in database",
-          context: "While inserting row in spreadsheet",
-        },
-      ],
+      logs: [docResponse.log],
     };
 
   const parsedValues = parseNewRowObject(options.cellsToInsert, {
@@ -58,12 +52,12 @@ export const insertRow = async (
   });
 
   try {
-    await doc.loadInfo();
-    const sheet = doc.sheetsById[Number(options.sheetId)];
+    await docResponse.spreadsheet.loadInfo();
+    const sheet = docResponse.spreadsheet.sheetsById[Number(options.sheetId)];
     await sheet.addRow(parsedValues);
     logs.push({
       status: "success",
-      description: `Succesfully inserted row in ${doc.title} > ${sheet.title}`,
+      description: `Succesfully inserted row in ${docResponse.spreadsheet.title} > ${sheet.title}`,
     });
   } catch (err) {
     logs.push(

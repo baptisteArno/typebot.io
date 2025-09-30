@@ -16,7 +16,7 @@ export type ExecuteLogicResponse = {
 } & Pick<ContinueChatResponse, "clientSideActions" | "logs">;
 
 export type ExecuteIntegrationResponse = {
-  outgoingEdgeId: string | undefined;
+  outgoingEdgeId: string | undefined | null;
   newSessionState?: SessionState;
   startTimeShouldBeUpdated?: boolean;
   customEmbedBubble?: CustomEmbedBubble;

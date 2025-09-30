@@ -51,21 +51,21 @@ export const getSpreadsheetName = authenticatedProcedure
         });
 
       try {
-        const googleSheet = await getGoogleSpreadsheet({
+        const googleSheetResponse = await getGoogleSpreadsheet({
           credentialsId: credentials.id,
           spreadsheetId,
           workspaceId,
         });
 
-        if (!googleSheet)
+        if (googleSheetResponse.type === "error")
           throw new TRPCError({
-            code: "NOT_FOUND",
-            message: "Google sheet not found",
+            code: "BAD_REQUEST",
+            message: googleSheetResponse.log.description,
           });
 
-        await googleSheet.loadInfo();
+        await googleSheetResponse.spreadsheet.loadInfo();
 
-        return { name: googleSheet.title };
+        return { name: googleSheetResponse.spreadsheet.title };
       } catch (_e) {
         return { name: "" };
       }
