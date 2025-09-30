@@ -11,4 +11,4 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: typebot-viewer
-  targetCPUUtilizationPercentage: 300
+  targetCPUUtilizationPercentage: 125
