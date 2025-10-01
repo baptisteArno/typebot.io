@@ -1,7 +1,4 @@
 import {
-  Editable,
-  EditableInput,
-  EditablePreview,
   Fade,
   Flex,
   Heading,
@@ -27,6 +24,7 @@ import { useDrag } from "@use-gesture/react";
 import { type FormEvent, useState } from "react";
 import { MoreHorizontalIcon, PlusIcon } from "@/components/icons";
 import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
+import { SingleLineEditable } from "@/components/SingleLineEditable";
 import { useOpenControls } from "@/hooks/useOpenControls";
 import { toast } from "@/lib/toast";
 import { headerHeight } from "../../editor/constants";
@@ -176,22 +174,11 @@ const VariableItem = ({
   );
 
   return (
-    <HStack justifyContent="space-between">
-      <Editable
+    <HStack justifyContent="space-between" pl={1}>
+      <SingleLineEditable
         defaultValue={variable.name}
-        onSubmit={(name) => onChange({ name })}
-        minWidth={0}
-      >
-        <EditablePreview
-          px="2"
-          noOfLines={1}
-          cursor="text"
-          _hover={{
-            bg: useColorModeValue("gray.100", "gray.700"),
-          }}
-        />
-        <EditableInput ml="1" pl="1" />
-      </Editable>
+        onValueCommit={(name) => onChange({ name })}
+      />
 
       <HStack>
         {!isSessionOnly && !isLinkedToAnswer && (

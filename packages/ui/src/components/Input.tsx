@@ -1,4 +1,5 @@
-import * as React from "react";
+import { Input as InputPrimitive } from "@base-ui-components/react/input";
+import { forwardRef } from "react";
 import { cn } from "../lib/cn";
 import { cva, type VariantProps } from "../lib/cva";
 
@@ -18,13 +19,15 @@ export const inputVariants = cva(
   },
 );
 
-const Input = React.forwardRef<
+export type InputProps = Omit<InputPrimitive.Props, "size"> &
+  VariantProps<typeof inputVariants>;
+
+const Input = forwardRef<
   HTMLInputElement,
-  Omit<React.ComponentProps<"input">, "size"> &
-    VariantProps<typeof inputVariants>
+  Omit<InputPrimitive.Props, "size"> & VariantProps<typeof inputVariants>
 >(({ className, type, size, ...props }, ref) => {
   return (
-    <input
+    <InputPrimitive
       type={type}
       className={cn(inputVariants({ size }), className)}
       ref={ref}

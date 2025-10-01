@@ -1,14 +1,10 @@
 import {
   Alert,
   AlertIcon,
-  Editable,
-  EditableInput,
-  EditablePreview,
   SkeletonCircle,
   SkeletonText,
   Stack,
   Text,
-  useColorModeValue,
   VStack,
 } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
@@ -22,6 +18,7 @@ import { useRouter } from "next/router";
 import { memo, useMemo } from "react";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
 import { MoreVerticalIcon } from "@/components/icons";
+import { SingleLineEditable } from "@/components/SingleLineEditable";
 import { useOpenControls } from "@/hooks/useOpenControls";
 import { trpc } from "@/lib/queryClient";
 import { useTypebotDnd } from "../TypebotDndProvider";
@@ -118,22 +115,19 @@ const FolderButton = ({
         </Menu.Root>
         <VStack spacing="4">
           <Folder01SolidIcon className="size-10 text-blue-10" />
-          <Editable
+          <SingleLineEditable
+            className="text-lg"
             defaultValue={folder.name === "" ? "New folder" : folder.name}
-            fontSize="18"
+            onValueCommit={onRenameSubmit}
+            defaultEdit={index === 0 && folder.name === ""}
             onClick={(e) => e.stopPropagation()}
-            onSubmit={onRenameSubmit}
-            startWithEditView={index === 0 && folder.name === ""}
-          >
-            <EditablePreview
-              _hover={{
-                bg: useColorModeValue("gray.100", "gray.700"),
-              }}
-              px="2"
-              textAlign="center"
-            />
-            <EditableInput textAlign="center" />
-          </Editable>
+            input={{
+              className: "text-center",
+            }}
+            preview={{
+              className: "cursor-text",
+            }}
+          />
         </VStack>
       </div>
       <ConfirmDialog

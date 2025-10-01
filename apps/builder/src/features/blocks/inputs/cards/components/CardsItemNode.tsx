@@ -11,10 +11,17 @@ import { Popover } from "@typebot.io/ui/components/Popover";
 import { cn } from "@typebot.io/ui/lib/cn";
 import { cx } from "@typebot.io/ui/lib/cva";
 import { useState } from "react";
-import { Editable } from "@/components/editable";
 import { ImageOrPlaceholder } from "@/components/ImageOrPlaceholder";
 import { ImageUploadContent } from "@/components/ImageUploadContent/ImageUploadContent";
 import { SettingsIcon } from "@/components/icons";
+import {
+  MultiLineEditable,
+  type MultiLineEditableProps,
+} from "@/components/MultiLineEditable";
+import {
+  SingleLineEditable,
+  type SingleLineEditableProps,
+} from "@/components/SingleLineEditable";
 import {
   GhostableItem,
   StacksWithGhostableItems,
@@ -159,9 +166,10 @@ export const CardsItemNode = ({
                 onGhostClick={() => {
                   updateTitle(undefined);
                 }}
+                className="mx-2"
               >
                 {item.title !== null ? (
-                  <DeletableEditable
+                  <SingleLineDeletableEditable
                     className={cx(
                       "flex-1 text-sm font-semibold px-2",
                       item.description !== null && "-mb-2",
@@ -170,12 +178,7 @@ export const CardsItemNode = ({
                     defaultEdit={item.title === undefined}
                     onValueCommit={updateTitle}
                     onDelete={() => updateTitle(null)}
-                  >
-                    <Editable.Area>
-                      <Editable.Preview />
-                      <Editable.Input />
-                    </Editable.Area>
-                  </DeletableEditable>
+                  />
                 ) : null}
               </GhostableItem>
               <GhostableItem
@@ -183,46 +186,39 @@ export const CardsItemNode = ({
                 onGhostClick={() => {
                   updateDescription(undefined);
                 }}
+                className="mx-2"
               >
                 {item.description !== null ? (
-                  <DeletableEditable
+                  <MultiLineDeletableEditable
                     className={cx("flex-1 text-xs mb-2 px-2")}
                     defaultValue={item.description ?? "Description"}
                     defaultEdit={item.description === undefined}
                     onValueCommit={updateDescription}
                     onDelete={() => updateDescription(null)}
-                  >
-                    <Editable.Area>
-                      <Editable.Preview />
-                      <Editable.Textarea />
-                    </Editable.Area>
-                  </DeletableEditable>
+                  />
                 ) : null}
               </GhostableItem>
             </StacksWithGhostableItems>
 
             <Stack gap={0} px="2">
               {item.paths?.map((path, idx) => (
-                <DeletableEditable
+                <SingleLineDeletableEditable
                   onDelete={() => deletePath(idx)}
                   key={path.id}
                   onValueCommit={(value) => updatePathText(idx, value)}
                   defaultValue={path.text ?? "Button"}
                   defaultEdit={path.text === undefined}
-                  className="relative"
-                >
-                  <Editable.Area
-                    className={cn(
-                      "text-center text-sm",
-                      idx === 0 && "rounded-t-md border border-b-0",
+                  className={cn("relative")}
+                  common={{
+                    className: cn(
+                      "justify-center text-center text-sm relative border-gray-6 rounded-none",
+                      idx === 0 && "rounded-t-md border-b-0",
                       idx !== 0 && "border border-b-0",
                       idx === (item.paths?.length ?? 1) - 1 &&
                         "rounded-b-md border-b",
-                    )}
-                  >
-                    <Editable.Preview className="w-full" />
-                    <Editable.Input className="border-white" />
-                  </Editable.Area>
+                    ),
+                  }}
+                >
                   <BlockSourceEndpoint
                     source={{
                       blockId,
@@ -235,7 +231,7 @@ export const CardsItemNode = ({
                     bottom="-2px"
                     pointerEvents="all"
                   />
-                </DeletableEditable>
+                </SingleLineDeletableEditable>
               ))}
               <PlaceholderNode
                 hitboxYExtensionPixels={5}
@@ -291,20 +287,19 @@ export const CardsItemNode = ({
   );
 };
 
-const DeletableEditable = ({
+const SingleLineDeletableEditable = ({
   defaultValue,
-  children,
   className,
   defaultEdit,
+  children,
+  preview,
+  input,
+  common,
   onValueCommit,
   onDelete,
-}: {
+}: Omit<SingleLineEditableProps, "value"> & {
   defaultValue: string;
-  children: React.ReactNode;
-  className?: string;
-  defaultEdit: boolean;
   onDelete: () => void;
-  onValueCommit: (value: string) => void;
 }) => {
   const [value, setValue] = useState(defaultValue);
 
@@ -313,15 +308,50 @@ const DeletableEditable = ({
   };
 
   return (
-    <Editable.Root
+    <SingleLineEditable
       className={className}
       value={value}
       defaultEdit={defaultEdit}
-      onValueChange={({ value }) => setValue(value)}
+      input={{
+        ...input,
+        onValueChange: setValue,
+        onKeyDownCapture: handleKeyPress,
+      }}
+      common={common}
+      preview={preview}
       onValueCommit={() => onValueCommit(value)}
-      onKeyDownCapture={handleKeyPress}
     >
       {children}
-    </Editable.Root>
+    </SingleLineEditable>
+  );
+};
+
+const MultiLineDeletableEditable = ({
+  defaultValue,
+  className,
+  defaultEdit,
+  onValueCommit,
+  onDelete,
+}: Omit<MultiLineEditableProps, "value"> & {
+  defaultValue: string;
+  onDelete: () => void;
+}) => {
+  const [value, setValue] = useState(defaultValue);
+
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Backspace" && value === "") onDelete();
+  };
+
+  return (
+    <MultiLineEditable
+      className={className}
+      value={value}
+      defaultEdit={defaultEdit}
+      input={{
+        onValueChange: setValue,
+        onKeyDownCapture: handleKeyPress,
+      }}
+      onValueCommit={() => onValueCommit(value)}
+    />
   );
 };

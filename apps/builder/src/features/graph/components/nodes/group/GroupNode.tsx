@@ -1,17 +1,12 @@
-import {
-  Editable,
-  EditableInput,
-  EditablePreview,
-  SlideFade,
-  Stack,
-  useColorModeValue,
-} from "@chakra-ui/react";
+import { SlideFade, Stack, useColorModeValue } from "@chakra-ui/react";
 import type { GroupV6 } from "@typebot.io/groups/schemas";
 import { isEmpty, isNotDefined } from "@typebot.io/lib/utils";
 import { ContextMenu } from "@typebot.io/ui/components/ContextMenu";
+import { cx } from "@typebot.io/ui/lib/cva";
 import { useDrag } from "@use-gesture/react";
 import { useEffect, useRef, useState } from "react";
 import { useShallow } from "zustand/react/shallow";
+import { SingleLineEditable } from "@/components/SingleLineEditable";
 import { useEditor } from "@/features/editor/providers/EditorProvider";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { groupWidth } from "@/features/graph/constants";
@@ -31,7 +26,6 @@ type Props = {
 export const GroupNode = ({ group, groupIndex }: Props) => {
   const bg = useColorModeValue("white", "gray.950");
   const previewingBorderColor = useColorModeValue("orange.400", "orange.300");
-  const editableHoverBg = useColorModeValue("gray.200", "gray.700");
   const {
     connectingIds,
     setConnectingIds,
@@ -198,31 +192,21 @@ export const GroupNode = ({ group, groupIndex }: Props) => {
           spacing={0}
           pointerEvents={isDraggingGraph ? "none" : "auto"}
         >
-          <Editable
+          <SingleLineEditable
             value={groupTitle}
-            onChange={setGroupTitle}
-            onSubmit={handleTitleSubmit}
-            fontWeight="medium"
-            pr="8"
-          >
-            <EditablePreview
-              _hover={{
-                bg: editableHoverBg,
-              }}
-              px="1"
-              style={
-                isEmpty(groupTitle)
-                  ? {
-                      display: "block",
-                      position: "absolute",
-                      top: "10px",
-                      width: "50px",
-                    }
-                  : undefined
-              }
-            />
-            <EditableInput minW="0" px="1" className="prevent-group-drag" />
-          </Editable>
+            input={{
+              className: "prevent-group-drag",
+              onValueChange: setGroupTitle,
+            }}
+            preview={{
+              className: cx(
+                isEmpty(groupTitle) &&
+                  "absolute block left-4 top-2.5 w-[calc(100%-2rem)]  h-2",
+              ),
+            }}
+            onValueCommit={handleTitleSubmit}
+            className="font-medium pr-8"
+          />
           {typebot && (
             <BlockNodesList
               blocks={group.blocks}
