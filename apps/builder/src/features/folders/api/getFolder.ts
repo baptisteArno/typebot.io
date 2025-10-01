@@ -30,9 +30,14 @@ export const getFolder = authenticatedProcedure
   .query(async ({ input: { workspaceId, folderId }, ctx: { user } }) => {
     const workspace = await prisma.workspace.findUnique({
       where: { id: workspaceId },
-      select: { id: true, members: true, plan: true },
+      select: { id: true, name: true, members: true, plan: true },
     })
-    const userRole = getUserRoleInWorkspace(user.id, workspace?.members)
+    const userRole = getUserRoleInWorkspace(
+      user.id,
+      workspace?.members,
+      workspace?.name,
+      user
+    )
     if (
       userRole === undefined ||
       userRole === WorkspaceRole.GUEST ||

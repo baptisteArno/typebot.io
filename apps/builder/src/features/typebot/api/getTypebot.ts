@@ -3,10 +3,11 @@ import { publicProcedure } from '@/helpers/server/trpc'
 import { TRPCError } from '@trpc/server'
 import { typebotSchema } from '@typebot.io/schemas'
 import { z } from 'zod'
-import { isReadTypebotForbidden } from '../helpers/isReadTypebotForbidden'
+import { isReadTypebotForbidden } from '@/features/typebot/helpers/isReadTypebotForbidden'
 import { migrateTypebot } from '@typebot.io/migrations/migrateTypebot'
 import { CollaborationType } from '@typebot.io/prisma'
 import { env } from '@typebot.io/env'
+import { checkCognitoWorkspaceAccess } from '@/features/workspace/helpers/cognitoUtils'
 
 export const getTypebot = publicProcedure
   .meta({
@@ -50,6 +51,7 @@ export const getTypebot = publicProcedure
           collaborators: true,
           workspace: {
             select: {
+              name: true,
               isSuspended: true,
               isPastDue: true,
               members: {
@@ -93,15 +95,19 @@ export const getTypebot = publicProcedure
   )
 
 const getCurrentUserMode = (
-  user: { email: string | null; id: string } | undefined,
+  user:
+    | { email: string | null; id: string; cognitoClaims?: unknown }
+    | undefined,
   typebot: { collaborators: { userId: string; type: CollaborationType }[] } & {
-    workspace: { members: { userId: string }[] }
+    workspace: { members: { userId: string }[]; name?: string | null }
   }
 ) => {
   const collaborator = typebot.collaborators.find((c) => c.userId === user?.id)
   const isMemberOfWorkspace = typebot.workspace.members.some(
     (m) => m.userId === user?.id
   )
+
+  // Check if user has access via database membership or collaborator status
   if (
     collaborator?.type === 'WRITE' ||
     collaborator?.type === 'FULL_ACCESS' ||
@@ -111,5 +117,23 @@ const getCurrentUserMode = (
 
   if (collaborator) return 'read'
   if (user?.email && env.ADMIN_EMAIL?.includes(user.email)) return 'read'
+
+  // Check for Cognito-based workspace access
+  if (user?.cognitoClaims && typebot.workspace.name) {
+    const cognitoAccess = checkCognitoWorkspaceAccess(
+      user,
+      typebot.workspace.name
+    )
+
+    if (cognitoAccess.hasAccess) {
+      // User has Cognito-based access to this workspace
+      // Map workspace role to user mode
+      if (cognitoAccess.role === 'ADMIN' || cognitoAccess.role === 'MEMBER') {
+        return 'write'
+      }
+      return 'read'
+    }
+  }
+
   return 'guest'
 }

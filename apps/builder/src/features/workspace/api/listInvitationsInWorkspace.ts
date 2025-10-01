@@ -32,7 +32,16 @@ export const listInvitationsInWorkspace = authenticatedProcedure
   .query(async ({ input: { workspaceId }, ctx: { user } }) => {
     const workspace = await prisma.workspace.findFirst({
       where: { id: workspaceId },
-      include: { members: true, invitations: true },
+      select: {
+        id: true,
+        name: true,
+        members: {
+          select: {
+            userId: true,
+          },
+        },
+        invitations: true,
+      },
     })
 
     if (!workspace || isReadWorkspaceFobidden(workspace, user))

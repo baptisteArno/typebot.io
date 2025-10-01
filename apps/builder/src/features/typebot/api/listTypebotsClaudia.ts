@@ -46,10 +46,15 @@ export const listTypebotsClaudia = authenticatedProcedure
           },
         },
       },
-      select: { members: true, id: true },
+      select: { members: true, id: true, name: true },
     })
 
-    const userRole = getUserRoleInWorkspace(user.id, workspace?.members)
+    const userRole = getUserRoleInWorkspace(
+      user.id,
+      workspace?.members,
+      workspace?.name,
+      user
+    )
     if (userRole === undefined)
       throw new TRPCError({ code: 'NOT_FOUND', message: 'Workspace not found' })
 

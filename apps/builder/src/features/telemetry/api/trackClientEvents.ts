@@ -30,6 +30,7 @@ export const trackClientEvents = authenticatedProcedure
       },
       select: {
         id: true,
+        name: true,
         members: true,
       },
     })
@@ -46,6 +47,7 @@ export const trackClientEvents = authenticatedProcedure
         workspaceId: true,
         workspace: {
           select: {
+            name: true,
             isSuspended: true,
             isPastDue: true,
             members: {
@@ -67,7 +69,12 @@ export const trackClientEvents = authenticatedProcedure
     for (const event of events) {
       if ('workspaceId' in event) {
         const workspace = workspaces.find((w) => w.id === event.workspaceId)
-        const userRole = getUserRoleInWorkspace(user.id, workspace?.members)
+        const userRole = getUserRoleInWorkspace(
+          user.id,
+          workspace?.members,
+          workspace?.name,
+          user
+        )
         if (
           userRole === undefined ||
           userRole === WorkspaceRole.GUEST ||

@@ -30,18 +30,31 @@ export const listFolders = authenticatedProcedure
   .query(async ({ input: { workspaceId, parentFolderId }, ctx: { user } }) => {
     const workspace = await prisma.workspace.findUnique({
       where: { id: workspaceId },
-      select: { id: true, members: true, plan: true },
+      select: { id: true, name: true, members: true, plan: true },
     })
-    const userRole = getUserRoleInWorkspace(user.id, workspace?.members)
-    if (
-      userRole === undefined ||
-      userRole === WorkspaceRole.GUEST ||
-      !workspace
-    )
+
+    if (!workspace) {
       throw new TRPCError({
         code: 'NOT_FOUND',
         message: 'Workspace not found',
       })
+    }
+
+    const userRole = getUserRoleInWorkspace(
+      user.id,
+      workspace.members,
+      workspace.name,
+      user
+    )
+
+    const hasAccess = userRole !== undefined && userRole !== WorkspaceRole.GUEST
+
+    if (!hasAccess) {
+      throw new TRPCError({
+        code: 'NOT_FOUND',
+        message: 'Workspace not found',
+      })
+    }
 
     const folders = await prisma.dashboardFolder.findMany({
       where: {

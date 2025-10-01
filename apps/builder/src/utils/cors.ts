@@ -9,7 +9,7 @@ export function corsMiddleware(request: NextRequest, response: NextResponse) {
   const allowedOriginsEnv = process.env.NEXT_PUBLIC_EMBEDDED_AUTH_ALLOWED_ORIGIN
   const allowedOrigins = allowedOriginsEnv
     ? allowedOriginsEnv.split(',').map((origin) => origin.trim())
-    : ['http://localhost:3002']
+    : ['http://localhost:3002', 'http://localhost:3000']
 
   // console.log(
   //   `🌐 CORS: Request from origin: ${origin}, allowed: ${allowedOrigins.join(

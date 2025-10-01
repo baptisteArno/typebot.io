@@ -1,4 +1,5 @@
 import NextAuth, { Account, AuthOptions } from 'next-auth'
+import { JWT } from 'next-auth/jwt'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import EmailProvider from 'next-auth/providers/email'
 import GitHubProvider from 'next-auth/providers/github'
@@ -23,6 +24,11 @@ import { env } from '@typebot.io/env'
 import * as Sentry from '@sentry/nextjs'
 import { getIp } from '@typebot.io/lib/getIp'
 import { trackEvents } from '@typebot.io/telemetry/trackEvents'
+import {
+  NextAuthJWTWithCognito,
+  DatabaseUserWithCognito,
+} from '@/features/auth/types/cognito'
+import logger from '@/helpers/logger'
 
 const providers: Provider[] = []
 
@@ -152,19 +158,64 @@ providers.push(
       token: { label: 'Token', type: 'text' },
     },
     async authorize(credentials) {
-      if (!credentials?.token) return null
+      logger.info('Cognito authorize called', {
+        hasToken: !!credentials?.token,
+      })
+      if (!credentials?.token) {
+        return null
+      }
 
       try {
-        // Verify token using AWS Cognito GetUser API
-        const cognitoRegion = env.AWS_COGNITO_REGION || 'us-east-1'
+        logger.debug('Processing Cognito token', {
+          tokenLength: credentials.token.length,
+        })
+
+        // First, decode the access token to extract custom claims
+        const tokenParts = credentials.token.split('.')
+        if (tokenParts.length !== 3) {
+          logger.error('Invalid JWT token format', {
+            tokenParts: tokenParts.length,
+          })
+          return null
+        }
+
+        const payload = JSON.parse(
+          Buffer.from(tokenParts[1], 'base64url').toString('utf8')
+        )
+
+        logger.debug('CloudChat access token payload decoded', {
+          sub: payload.sub,
+          exp: payload.exp,
+          hasCustomClaims: !!(
+            payload['custom:hub_role'] || payload['custom:tenant_id']
+          ),
+        })
+
+        // Verify token hasn't expired
+        if (payload.exp && Date.now() >= payload.exp * 1000) {
+          logger.error('Access token has expired', {
+            exp: payload.exp,
+            now: Date.now(),
+          })
+          return null
+        }
+
+        // Extract the region from the token issuer
+        const issuer = payload.iss
+        const region =
+          issuer.match(/cognito-idp\.([^.]+)\.amazonaws\.com/)?.[1] ||
+          'us-east-1'
+
+        // Also call GetUser API to get hub_role which is stored as user attribute
+        logger.info('Fetching hub_role from Cognito GetUser API')
+
         const cognitoResponse = await fetch(
-          `https://cognito-idp.${cognitoRegion}.amazonaws.com/`,
+          `https://cognito-idp.${region}.amazonaws.com/`,
           {
             method: 'POST',
             headers: {
               'Content-Type': 'application/x-amz-json-1.1',
               'X-Amz-Target': 'AWSCognitoIdentityProviderService.GetUser',
-              Authorization: `Bearer ${credentials.token}`,
             },
             body: JSON.stringify({
               AccessToken: credentials.token,
@@ -173,22 +224,60 @@ providers.push(
         )
 
         if (!cognitoResponse.ok) {
-          console.error(
-            '❌ Cognito verification failed:',
-            cognitoResponse.status
-          )
+          logger.error('Failed to get user from Cognito', {
+            status: cognitoResponse.status,
+            statusText: cognitoResponse.statusText,
+          })
           return null
         }
 
         const userInfo = await cognitoResponse.json()
 
-        const email = userInfo.UserAttributes?.find(
-          (attr: { Name: string; Value: string }) => attr.Name === 'email'
-        )?.Value
+        logger.debug('Cognito GetUser response received', {
+          attributeCount: userInfo.UserAttributes?.length || 0,
+          hasEmail: userInfo.UserAttributes?.some(
+            (attr: { Name: string; Value: string }) => attr.Name === 'email'
+          ),
+        })
+
+        // Get basic info - prefer from GetUser response, fallback to token
+        const email =
+          userInfo.UserAttributes?.find(
+            (attr: { Name: string; Value: string }) => attr.Name === 'email'
+          )?.Value || payload.email
+
         const name =
           userInfo.UserAttributes?.find(
             (attr: { Name: string; Value: string }) => attr.Name === 'name'
-          )?.Value || userInfo.Username
+          )?.Value ||
+          userInfo.Username ||
+          payload.username
+
+        // Get hub_role from user attributes (not in token)
+        const hubRole = userInfo.UserAttributes?.find(
+          (attr: { Name: string; Value: string }) =>
+            attr.Name === 'custom:hub_role'
+        )?.Value
+
+        // Get other custom claims from token payload (these are available there)
+        const tenantId = payload['custom:tenant_id']
+        const claudiaProjects = payload['custom:claudia_projects']
+        const tenantVersion = payload['custom:tenant_version']
+        const cloudchatInstance = payload['custom:cloudchat_instance']
+        const connectorProjects = payload['custom:connector_projects']
+        const projects = payload['custom:projects']
+
+        logger.debug('Extracted Cognito values', {
+          hasEmail: !!email,
+          hasName: !!name,
+          hubRole,
+          hasTenantId: !!tenantId,
+          hasClaudiaProjects: !!claudiaProjects,
+          tenantVersion,
+          cloudchatInstance,
+          hasConnectorProjects: !!connectorProjects,
+          hasProjects: !!projects,
+        })
 
         if (!email) return null
 
@@ -205,15 +294,28 @@ providers.push(
           })
         }
 
-        return {
+        const userResult = {
           id: user.id,
           email: user.email,
           name: user.name,
           image: user.image,
           emailVerified: user.emailVerified,
+          cognitoClaims: {
+            'custom:hub_role': hubRole as 'ADMIN' | 'CLIENT' | 'MANAGER',
+            'custom:tenant_id': tenantId,
+            'custom:claudia_projects': claudiaProjects,
+          },
         }
+
+        logger.debug('Final user object created', {
+          userId: userResult.id,
+          email: userResult.email,
+          hasName: !!userResult.name,
+        })
+        return userResult
       } catch (error) {
-        console.error('❌ Cognito authentication failed:', error)
+        logger.error('Error in cloudchat-embedded authorize', { error })
+        Sentry.captureException(error)
         return null
       }
     },
@@ -276,31 +378,92 @@ export const getAuthOptions = ({
   },
   callbacks: {
     jwt: async ({ token, user, account }) => {
+      const nextAuthJWT = token as NextAuthJWTWithCognito
+
       // If user is provided (first sign in), add user info to token
       if (user && account) {
-        token.userId = user.id
-        token.email = user.email
-        token.name = user.name
-        token.image = user.image
-        token.provider = account.provider
-      }
-      return token
-    },
-    session: async ({ session, token }) => {
-      // Get user from database using token info
-      if (token?.userId) {
-        const userFromDb = await prisma.user.findUnique({
-          where: { id: token.userId as string },
-        })
-        if (userFromDb) {
-          await updateLastActivityDate(userFromDb)
-          return {
-            ...session,
-            user: userFromDb,
+        nextAuthJWT.userId = user.id
+        nextAuthJWT.email = user.email || undefined
+        nextAuthJWT.name = user.name || undefined
+        nextAuthJWT.image = user.image || undefined
+        nextAuthJWT.provider = account.provider
+
+        // Extract Cognito claims from cloudchat-embedded provider
+        if (account.provider === 'cloudchat-embedded') {
+          const userFromCognitoAuth = user as DatabaseUserWithCognito
+          const claimsFromCognitoToken = userFromCognitoAuth.cognitoClaims
+
+          if (claimsFromCognitoToken) {
+            logger.debug(
+              'Transferring claims from Cognito auth to NextAuth JWT',
+              {
+                hasClaudiaProjects:
+                  !!claimsFromCognitoToken['custom:claudia_projects'],
+                claudiaProjectsCount:
+                  typeof claimsFromCognitoToken['custom:claudia_projects'] ===
+                  'string'
+                    ? claimsFromCognitoToken['custom:claudia_projects'].split(
+                        ','
+                      ).length
+                    : 0,
+              }
+            )
+
+            nextAuthJWT.cognitoClaims = claimsFromCognitoToken
+            logger.debug('Final cognitoClaims set', {
+              hasHubRole: !!claimsFromCognitoToken['custom:hub_role'],
+              hasTenantId: !!claimsFromCognitoToken['custom:tenant_id'],
+              hasClaudiaProjects:
+                !!claimsFromCognitoToken['custom:claudia_projects'],
+            })
+
+            logger.info('User authenticated via Cognito token', {
+              hubRole: claimsFromCognitoToken['custom:hub_role'],
+              hasTenantId: !!claimsFromCognitoToken['custom:tenant_id'],
+              provider: 'cognito',
+            })
           }
+        } else {
+          logger.info('User authenticated via OAuth provider', {
+            provider: account.provider,
+          })
         }
       }
-      return session
+      return nextAuthJWT as JWT & NextAuthJWTWithCognito
+    },
+    session: async ({ session, token }) => {
+      const nextAuthJWT = token as NextAuthJWTWithCognito
+
+      // Check if we have a valid userId in the token
+      if (!nextAuthJWT?.userId) {
+        logger.info(
+          'Session callback: No userId in token - returning empty session'
+        )
+        return { ...session, user: undefined }
+      }
+
+      // Get user from database using token info
+      const userFromDb = await prisma.user.findUnique({
+        where: { id: nextAuthJWT.userId },
+      })
+
+      if (!userFromDb) {
+        logger.warn('Session callback: User not found in database', {
+          userId: nextAuthJWT.userId,
+        })
+        return { ...session, user: undefined }
+      }
+
+      await updateLastActivityDate(userFromDb)
+      const finalSession = {
+        ...session,
+        user: {
+          ...userFromDb,
+          cognitoClaims: nextAuthJWT.cognitoClaims, // Pass Cognito claims from NextAuth JWT to session user
+        },
+      }
+
+      return finalSession
     },
     signIn: async ({ account, user }) => {
       if (restricted === 'rate-limited') throw new Error('rate-limited')

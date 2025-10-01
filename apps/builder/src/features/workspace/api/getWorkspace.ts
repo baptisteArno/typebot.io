@@ -41,7 +41,25 @@ export const getWorkspace = authenticatedProcedure
   .query(async ({ input: { workspaceId }, ctx: { user } }) => {
     const workspace = await prisma.workspace.findFirst({
       where: { id: workspaceId },
-      include: { members: true },
+      select: {
+        id: true,
+        name: true,
+        icon: true,
+        plan: true,
+        stripeId: true,
+        createdAt: true,
+        updatedAt: true,
+        customChatsLimit: true,
+        customSeatsLimit: true,
+        isSuspended: true,
+        isPastDue: true,
+        isVerified: true,
+        members: {
+          include: {
+            user: true,
+          },
+        },
+      },
     })
 
     if (!workspace || isReadWorkspaceFobidden(workspace, user))

@@ -38,6 +38,7 @@ export const unpublishTypebot = authenticatedProcedure
         publishedTypebot: true,
         workspace: {
           select: {
+            name: true,
             isSuspended: true,
             isPastDue: true,
             members: {

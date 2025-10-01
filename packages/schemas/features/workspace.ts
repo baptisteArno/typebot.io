@@ -10,6 +10,7 @@ import {
 
 export const workspaceMemberSchema = z.object({
   workspaceId: z.string(),
+  userId: z.string(),
   user: z.object({
     name: z.string().nullable(),
     email: z.string().nullable(),
@@ -17,7 +18,7 @@ export const workspaceMemberSchema = z.object({
   }),
   role: z.nativeEnum(WorkspaceRole),
 }) satisfies z.ZodType<
-  Omit<MemberInWorkspacePrisma, 'userId' | 'createdAt' | 'updatedAt'> & {
+  Omit<MemberInWorkspacePrisma, 'createdAt' | 'updatedAt'> & {
     user: Pick<UserPrisma, 'name' | 'email' | 'image'>
   }
 >

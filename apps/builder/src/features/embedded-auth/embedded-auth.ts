@@ -1,4 +1,5 @@
 import { signIn } from 'next-auth/react'
+import logger from '@/helpers/logger'
 import { getAllowedOrigins, isOriginAllowed } from './utils'
 
 interface SessionResponse {
@@ -234,11 +235,22 @@ export const handleEmbeddedAuthentication = async (): Promise<boolean> => {
       const updatedSession = await verifyAuthenticationStatus()
 
       if (updatedSession?.user) {
-        console.log('✅ Session verified successfully:', updatedSession.user)
-
+        logger.info('Session verified successfully', {
+          userId: updatedSession.user.id,
+          email: updatedSession.user.email,
+        })
+        logger.info(
+          'User successfully authenticated via embedded Cognito token',
+          {
+            authMethod: 'embedded-cognito',
+          }
+        )
         // Notify parent of success using the confirmed origin
         const targetOrigin = parentOrigin || getAllowedOrigins()[0]
-        console.log('📤 Sending AUTH_SUCCESS to:', targetOrigin)
+        logger.info('Sending AUTH_SUCCESS message to parent', {
+          targetOrigin,
+          hasParentOrigin: !!parentOrigin,
+        })
 
         window.parent.postMessage(
           {

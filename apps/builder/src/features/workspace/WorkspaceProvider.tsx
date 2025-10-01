@@ -16,6 +16,7 @@ import { useUser } from '../account/hooks/useUser'
 import { useTypebot } from '../editor/providers/TypebotProvider'
 import { setWorkspaceIdInLocalStorage } from './helpers/setWorkspaceIdInLocalStorage'
 import { parseNewName } from './helpers/parseNewName'
+import { getUserRoleInWorkspace } from './helpers/getUserRoleInWorkspace'
 
 export type WorkspaceInApp = Omit<
   Workspace,
@@ -107,10 +108,12 @@ export const WorkspaceProvider = ({
     },
   })
 
-  const currentRole = members?.find(
-    (member) =>
-      member.user.email === user?.email && member.workspaceId === workspaceId
-  )?.role
+  const currentRole = useMemo(() => {
+    if (!user || !workspace || !members) return undefined
+
+    // Use hybrid approach: Cognito claims first, then database fallback
+    return getUserRoleInWorkspace(user.id, members, workspace.name, user)
+  }, [user, workspace, members])
 
   useEffect(() => {
     if (

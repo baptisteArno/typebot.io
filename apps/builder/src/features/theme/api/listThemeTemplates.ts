@@ -32,10 +32,16 @@ export const listThemeTemplates = authenticatedProcedure
     const workspace = await prisma.workspace.findUnique({
       where: { id: workspaceId },
       select: {
+        name: true,
         members: true,
       },
     })
-    const userRole = getUserRoleInWorkspace(user.id, workspace?.members)
+    const userRole = getUserRoleInWorkspace(
+      user.id,
+      workspace?.members,
+      workspace?.name,
+      user
+    )
     if (userRole === undefined || userRole === WorkspaceRole.GUEST)
       throw new TRPCError({ code: 'NOT_FOUND', message: 'Workspace not found' })
     const themeTemplates = (await prisma.themeTemplate.findMany({

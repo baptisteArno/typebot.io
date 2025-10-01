@@ -64,6 +64,7 @@ export const getPublishedTypebot = authenticatedProcedure
           publishedTypebot: true,
           workspace: {
             select: {
+              name: true,
               isSuspended: true,
               isPastDue: true,
               members: {

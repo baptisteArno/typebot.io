@@ -1,7 +1,7 @@
 import { signOut, useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { createContext, ReactNode, useEffect, useState } from 'react'
-import { isDefined, isNotDefined } from '@typebot.io/lib'
+import { isNotDefined } from '@typebot.io/lib'
 import { User } from '@typebot.io/schemas'
 import { setUser as setSentryUser } from '@sentry/nextjs'
 import { useToast } from '@/hooks/useToast'
@@ -52,17 +52,18 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   }, [setColorMode, user?.preferredAppAppearance])
 
   useEffect(() => {
-    if (isDefined(user) || isNotDefined(session)) return
-    setCurrentWorkspaceId(
-      localStorage.getItem('currentWorkspaceId') ?? undefined
-    )
-    const parsedUser = session.user as User
-    setUser(parsedUser)
+    if (session && !user) {
+      setCurrentWorkspaceId(
+        localStorage.getItem('currentWorkspaceId') ?? undefined
+      )
+      const parsedUser = session.user as User
+      setUser(parsedUser)
 
-    if (parsedUser?.id) {
-      setSentryUser({ id: parsedUser.id })
+      if (parsedUser?.id) {
+        setSentryUser({ id: parsedUser.id })
+      }
     }
-  }, [session, user])
+  }, [session, user, status])
 
   useEffect(() => {
     if (!router.isReady) return
@@ -72,14 +73,16 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
       router.pathname
     )
     if (isSignInPath || isPathPublicFriendly) return
-    if (!user && status === 'unauthenticated')
+
+    if (!user && status === 'unauthenticated') {
       router.replace({
         pathname: '/signin',
         query: {
           redirectPath: router.asPath,
         },
       })
-  }, [router, status, user])
+    }
+  }, [router, status, user, session])
 
   const updateUser = (updates: Partial<User>) => {
     if (isNotDefined(user)) return
@@ -98,8 +101,8 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     env.NEXT_PUBLIC_E2E_TEST ? 0 : debounceTimeout
   )
 
-  const logOut = () => {
-    signOut()
+  const logOut = async () => {
+    await signOut({ redirect: false })
     setUser(undefined)
   }
 

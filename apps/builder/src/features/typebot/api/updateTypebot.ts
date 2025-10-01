@@ -97,6 +97,7 @@ export const updateTypebot = authenticatedProcedure
         workspace: {
           select: {
             id: true,
+            name: true,
             plan: true,
             isSuspended: true,
             isPastDue: true,
