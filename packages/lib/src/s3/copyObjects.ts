@@ -5,6 +5,7 @@ import { initClient } from "./initClient";
 export const copyObjects = async (
   filesToCopy: { oldName: string; newName: string }[],
 ) => {
+  if (filesToCopy.length === 0) return;
   const minioClient = initClient();
 
   const conds = new CopyConditions();
