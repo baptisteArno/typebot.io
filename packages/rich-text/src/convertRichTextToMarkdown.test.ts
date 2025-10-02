@@ -103,6 +103,55 @@ describe("convertRichTextToMarkdown", () => {
         children: [{ text: "" }],
       },
       {
+        children: [
+          {
+            children: [
+              {
+                children: [
+                  {
+                    text: "One",
+                  },
+                ],
+                type: "lic",
+              },
+            ],
+            type: "li",
+          },
+          {
+            children: [
+              {
+                children: [
+                  {
+                    text: "Two",
+                  },
+                ],
+                type: "lic",
+              },
+            ],
+            type: "li",
+          },
+        ],
+        type: "ol",
+      },
+      {
+        children: [
+          {
+            children: [
+              {
+                children: [
+                  {
+                    text: "One",
+                  },
+                ],
+                type: "lic",
+              },
+            ],
+            type: "li",
+          },
+        ],
+        type: "ul",
+      },
+      {
         type: "p",
         children: [{ text: "italic", italic: true }],
       },
@@ -119,7 +168,9 @@ describe("convertRichTextToMarkdown", () => {
     const markdown = convertRichTextToMarkdown(parsedRichText.parsedElements, {
       flavour: "whatsapp",
     });
-    expect(markdown).toBe("*bold*\n\n_italic_\nunderlined");
+    expect(markdown).toBe(
+      "*bold*\n\n1. One\n2. Two\n\n* One\n_italic_\nunderlined",
+    );
   });
 
   it("should convert variable link correctly", () => {

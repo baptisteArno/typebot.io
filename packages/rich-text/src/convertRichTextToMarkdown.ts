@@ -1,3 +1,4 @@
+import { BaseListPlugin } from "@platejs/list-classic";
 import { createSlateEditor, type Descendant, type Element } from "./plate";
 import { plateCorePlugins } from "./plateCorePlugins";
 
@@ -14,7 +15,7 @@ export const convertRichTextToMarkdown = (
   { flavour = defaultOptions.flavour }: Options = defaultOptions,
 ) => {
   const editor = createSlateEditor({
-    plugins: plateCorePlugins,
+    plugins: [...plateCorePlugins, BaseListPlugin],
   });
 
   return editor.api.markdown
@@ -27,7 +28,9 @@ export const convertRichTextToMarkdown = (
             // This is because currently every new line in a text bubble is represented by an empty paragraph node.
             if (
               (left.type as string) === "paragraph" ||
-              (right.type as string) === "paragraph"
+              (right.type as string) === "paragraph" ||
+              (left.type as string) === "listItem" ||
+              (right.type as string) === "listItem"
             )
               return 0;
             return 1;

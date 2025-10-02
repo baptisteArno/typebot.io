@@ -1108,6 +1108,7 @@
         "@platejs/basic-nodes": "49.0.0",
         "@platejs/floating": "49.0.0",
         "@platejs/link": "49.1.1",
+        "@platejs/list-classic": "^49.1.0",
         "@platejs/markdown": "50.1.2",
         "@typebot.io/runtime-session-store": "workspace:*",
         "@typebot.io/ui": "workspace:*",
@@ -2349,6 +2350,8 @@
     "@platejs/floating": ["@platejs/floating@49.0.0", "", { "dependencies": { "@floating-ui/core": "^1.7.1", "@floating-ui/react": "^0.27.12" }, "peerDependencies": { "platejs": ">=49.0.0", "react": ">=18.0.0", "react-dom": ">=18.0.0" } }, "sha512-7DEp+GzhpW+lRJeAAIc3Hu6e8TawzaVG3ontlrUCTxPrtIm4J4RwCh1SnuLDC6jcXgTecb2xwsKWvQNKWd6REg=="],
 
     "@platejs/link": ["@platejs/link@49.1.1", "", { "dependencies": { "@platejs/floating": "49.0.0" }, "peerDependencies": { "platejs": ">=49.0.19", "react": ">=18.0.0", "react-dom": ">=18.0.0" } }, "sha512-YumaA/KfAFt8/vt+By6ADZFdDSZhTnaayQbagPPJWSe69or3RNPJRjNYxecYRUx7PmGCp3xYwxYRozGsEdu3hA=="],
+
+    "@platejs/list-classic": ["@platejs/list-classic@49.1.0", "", { "dependencies": { "lodash": "^4.17.21" }, "peerDependencies": { "platejs": ">=49.0.19", "react": ">=18.0.0", "react-dom": ">=18.0.0" } }, "sha512-ktN518ecE7oHUWBtHzX4TSmfXPKw1fYMOWinmVwv/uAYqnfwqWjrpO/FvnPENtN/WkLiisHO1aBe6KlXGlqadw=="],
 
     "@platejs/markdown": ["@platejs/markdown@50.1.2", "", { "dependencies": { "marked": "^15.0.12", "mdast-util-math": "3.0.0", "mdast-util-mdx": "3.0.0", "remark-mdx": "^3.1.0", "remark-parse": "^11.0.0", "remark-stringify": "^11.0.0", "ts-essentials": "10.1.0", "unified": "^11.0.5" }, "peerDependencies": { "platejs": ">=49.2.21", "react": ">=18.0.0", "react-dom": ">=18.0.0" } }, "sha512-EsqZxFtCgYzq4K0jcqknLJCm0UhPoM/hsh6eAyqLXummDijwDiwdLOh+89lX6zoH1wOhsq43wT/fVHLbqkZRqw=="],
 

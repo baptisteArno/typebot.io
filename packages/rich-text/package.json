@@ -11,15 +11,16 @@
     "test": "dotenv -e ./.env -e ../../.env -- vitest run"
   },
   "dependencies": {
-    "platejs": "49.2.21",
-    "@platejs/markdown": "50.1.2",
     "@platejs/basic-nodes": "49.0.0",
     "@platejs/floating": "49.0.0",
     "@platejs/link": "49.1.1",
-    "@typebot.io/variables": "workspace:*",
+    "@platejs/list-classic": "49.1.0",
+    "@platejs/markdown": "50.1.2",
     "@typebot.io/runtime-session-store": "workspace:*",
-    "react": "18.3.1",
-    "@typebot.io/ui": "workspace:*"
+    "@typebot.io/ui": "workspace:*",
+    "@typebot.io/variables": "workspace:*",
+    "platejs": "49.2.21",
+    "react": "18.3.1"
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*"
