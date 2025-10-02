@@ -21,6 +21,7 @@ export const MakeComLogo = (props: IconProps) => (
     />
     <defs>
       <linearGradient
+        id="paint0_linear_132_18"
         x1="110.22"
         y1="92.6901"
         x2="201.65"
@@ -31,6 +32,7 @@ export const MakeComLogo = (props: IconProps) => (
         <stop offset="0.8" stopColor="#6D00CC" />
       </linearGradient>
       <linearGradient
+        id="paint1_linear_132_18"
         x1="29.9698"
         y1="77.31"
         x2="128.26"
@@ -43,6 +45,7 @@ export const MakeComLogo = (props: IconProps) => (
         <stop offset="0.73" stopColor="#B02DE9" />
       </linearGradient>
       <linearGradient
+        id="paint2_linear_132_18"
         x1="7.03968"
         y1="108.59"
         x2="208.52"

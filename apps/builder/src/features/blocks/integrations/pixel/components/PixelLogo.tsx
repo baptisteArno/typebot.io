@@ -16,6 +16,7 @@ export const PixelLogo = (props: IconProps) => (
     />
     <defs>
       <linearGradient
+        id="paint0_linear_1302_7"
         x1="61.0002"
         y1="117"
         x2="259"
@@ -28,6 +29,7 @@ export const PixelLogo = (props: IconProps) => (
         <stop offset="1" stopColor="#0082FB" />
       </linearGradient>
       <linearGradient
+        id="paint1_linear_1302_7"
         x1="45"
         y1="139"
         x2="45"
