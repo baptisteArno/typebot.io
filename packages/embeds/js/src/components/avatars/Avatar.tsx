@@ -50,5 +50,7 @@ export const Avatar = (props: {
 };
 
 const isEmoji = (src: string) => {
-  return /^\p{Emoji}$/u.test(src);
+  return /^(?:\p{Extended_Pictographic}(?:\uFE0F)?(?:\p{Emoji_Modifier})?(?:\u200D\p{Extended_Pictographic}(?:\uFE0F)?(?:\p{Emoji_Modifier})?)*)|(?:\p{Regional_Indicator}{2})|(?:[0-9#*]\uFE0F?\u20E3)$/u.test(
+    src,
+  );
 };
