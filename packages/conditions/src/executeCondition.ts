@@ -109,7 +109,10 @@ const executeComparison = (
       if (isNotDefined(inputValue) || isNotDefined(value)) return false;
       if (typeof inputValue === "string") {
         if (typeof value === "string")
-          return parseDateOrNumber(inputValue) > parseDateOrNumber(value);
+          return (
+            parseDateOrNumberOrStringLength(inputValue) >
+            parseDateOrNumberOrStringLength(value)
+          );
         return Number(inputValue) > value.length;
       }
       if (typeof value === "string") return inputValue.length > Number(value);
@@ -119,7 +122,10 @@ const executeComparison = (
       if (isNotDefined(inputValue) || isNotDefined(value)) return false;
       if (typeof inputValue === "string") {
         if (typeof value === "string")
-          return parseDateOrNumber(inputValue) < parseDateOrNumber(value);
+          return (
+            parseDateOrNumberOrStringLength(inputValue) <
+            parseDateOrNumberOrStringLength(value)
+          );
         return Number(inputValue) < value.length;
       }
       if (typeof value === "string") return inputValue.length < Number(value);
@@ -129,7 +135,10 @@ const executeComparison = (
       if (isNotDefined(inputValue) || isNotDefined(value)) return false;
       if (typeof inputValue === "string") {
         if (typeof value === "string")
-          return parseDateOrNumber(inputValue) >= parseDateOrNumber(value);
+          return (
+            parseDateOrNumberOrStringLength(inputValue) >=
+            parseDateOrNumberOrStringLength(value)
+          );
         return Number(inputValue) >= value.length;
       }
       if (typeof value === "string") return inputValue.length >= Number(value);
@@ -139,7 +148,10 @@ const executeComparison = (
       if (isNotDefined(inputValue) || isNotDefined(value)) return false;
       if (typeof inputValue === "string") {
         if (typeof value === "string")
-          return parseDateOrNumber(inputValue) <= parseDateOrNumber(value);
+          return (
+            parseDateOrNumberOrStringLength(inputValue) <=
+            parseDateOrNumberOrStringLength(value)
+          );
         return Number(inputValue) <= value.length;
       }
       if (typeof value === "string") return inputValue.length <= Number(value);
@@ -221,10 +233,11 @@ const compare = (
   return a.some((a) => b.some((b) => compareStrings(a, b)));
 };
 
-const parseDateOrNumber = (value: string): number => {
-  const parsed = Number(value);
+const parseDateOrNumberOrStringLength = (value: string): number => {
+  const parsed = value.startsWith("+") ? NaN : Number(value);
   if (isNaN(parsed)) {
     const time = Date.parse(value);
+    if (isNaN(time)) return value.length;
     return time;
   }
   return parsed;
