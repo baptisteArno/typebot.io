@@ -4,7 +4,7 @@ import type { PabblyConnectBlock } from "@typebot.io/blocks-integrations/pabblyC
 import { useRef } from "react";
 import { ButtonLink } from "@/components/ButtonLink";
 import { ExternalLinkIcon } from "@/components/icons";
-import { TextInput } from "@/components/inputs";
+import { TextInput } from "@/components/inputs/TextInput";
 import { HttpRequestAdvancedConfigForm } from "../../httpRequest/components/HttpRequestAdvancedConfigForm";
 
 type Props = {

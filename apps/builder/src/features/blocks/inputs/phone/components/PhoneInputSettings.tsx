@@ -3,7 +3,7 @@ import { useTranslate } from "@tolgee/react";
 import { defaultPhoneInputOptions } from "@typebot.io/blocks-inputs/phone/constants";
 import type { PhoneNumberInputBlock } from "@typebot.io/blocks-inputs/phone/schema";
 import type { Variable } from "@typebot.io/variables/schemas";
-import { TextInput } from "@/components/inputs";
+import { TextInput } from "@/components/inputs/TextInput";
 import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
 import { CountryCodeSelect } from "./CountryCodeSelect";
 

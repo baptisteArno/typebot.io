@@ -4,8 +4,8 @@ import { defaultChoiceInputOptions } from "@typebot.io/blocks-inputs/choice/cons
 import type { ChoiceInputBlock } from "@typebot.io/blocks-inputs/choice/schema";
 import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
 import type { Variable } from "@typebot.io/variables/schemas";
-import { TextInput } from "@/components/inputs";
 import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
+import { TextInput } from "@/components/inputs/TextInput";
 import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
 import { SwitchWithRelatedSettings } from "@/components/SwitchWithRelatedSettings";
 

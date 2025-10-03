@@ -6,8 +6,8 @@ import {
 } from "@typebot.io/blocks-integrations/openai/constants";
 import type { ChatCompletionOpenAIOptions } from "@typebot.io/blocks-integrations/openai/schema";
 import type { Variable } from "@typebot.io/variables/schemas";
-import { Textarea } from "@/components/inputs";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
+import { Textarea } from "@/components/inputs/Textarea";
 import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
 import type { TableListItemProps } from "@/components/TableList";
 

@@ -10,7 +10,7 @@ import { useTranslate } from "@tolgee/react";
 import { Button } from "@typebot.io/ui/components/Button";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { ColorPicker } from "../ColorPicker";
-import { TextInput } from "../inputs";
+import { TextInput } from "../inputs/TextInput";
 import { iconNames } from "./iconNames";
 
 const batchSize = 200;

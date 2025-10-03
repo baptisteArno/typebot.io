@@ -5,8 +5,8 @@ import type { ImageBubbleBlock } from "@typebot.io/blocks-bubbles/image/schema";
 import { isDefined, isNotEmpty } from "@typebot.io/lib/utils";
 import { useState } from "react";
 import { ImageUploadContent } from "@/components/ImageUploadContent";
-import { TextInput } from "@/components/inputs";
 import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
+import { TextInput } from "@/components/inputs/TextInput";
 import type { FilePathUploadProps } from "@/features/upload/api/generateUploadUrl";
 
 type Props = {

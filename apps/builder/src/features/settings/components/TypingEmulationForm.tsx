@@ -6,7 +6,7 @@ import {
   maxTypingEmulationMaxDelay,
 } from "@typebot.io/settings/constants";
 import type { Settings } from "@typebot.io/settings/schemas";
-import { NumberInput } from "@/components/inputs";
+import { NumberInput } from "@/components/inputs/NumberInput";
 import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
 import { SwitchWithRelatedSettings } from "@/components/SwitchWithRelatedSettings";
 

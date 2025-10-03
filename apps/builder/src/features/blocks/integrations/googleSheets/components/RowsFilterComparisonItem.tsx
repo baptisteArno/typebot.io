@@ -1,8 +1,8 @@
 import { Stack } from "@chakra-ui/react";
 import type { RowsFilterComparison } from "@typebot.io/blocks-integrations/googleSheets/schema";
 import { ComparisonOperators } from "@typebot.io/conditions/constants";
-import { TextInput } from "@/components/inputs";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
+import { TextInput } from "@/components/inputs/TextInput";
 import type { TableListItemProps } from "@/components/TableList";
 
 export const RowsFilterComparisonItem = ({

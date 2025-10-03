@@ -10,8 +10,8 @@ import {
 import { isChatContainerLight } from "@typebot.io/theme/helpers/isChatContainerLight";
 import type { ChatTheme, GeneralTheme } from "@typebot.io/theme/schemas";
 import { colors } from "@typebot.io/ui/colors";
-import { NumberInput } from "@/components/inputs";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
+import { NumberInput } from "@/components/inputs/NumberInput";
 import { ContainerThemeForm } from "./ContainerThemeForm";
 
 type Props = {

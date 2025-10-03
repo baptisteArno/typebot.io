@@ -3,9 +3,10 @@ import { useTranslate } from "@tolgee/react";
 import { defaultRatingInputOptions } from "@typebot.io/blocks-inputs/rating/constants";
 import type { RatingInputBlock } from "@typebot.io/blocks-inputs/rating/schema";
 import type { Variable } from "@typebot.io/variables/schemas";
-import { NumberInput, TextInput } from "@/components/inputs";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
+import { NumberInput } from "@/components/inputs/NumberInput";
 import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
+import { TextInput } from "@/components/inputs/TextInput";
 import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
 
 type Props = {

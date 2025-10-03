@@ -5,8 +5,8 @@ import type { AudioBubbleBlock } from "@typebot.io/blocks-bubbles/audio/schema";
 import { Button } from "@typebot.io/ui/components/Button";
 import { useState } from "react";
 import { UploadButton } from "@/components/ImageUploadContent/UploadButton";
-import { TextInput } from "@/components/inputs";
 import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
+import { TextInput } from "@/components/inputs/TextInput";
 import type { FilePathUploadProps } from "@/features/upload/api/generateUploadUrl";
 
 type Props = {

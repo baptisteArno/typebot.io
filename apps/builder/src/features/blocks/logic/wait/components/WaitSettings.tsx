@@ -8,8 +8,8 @@ import {
 } from "@chakra-ui/react";
 import { defaultWaitOptions } from "@typebot.io/blocks-logic/wait/constants";
 import type { WaitBlock } from "@typebot.io/blocks-logic/wait/schema";
-import { TextInput } from "@/components/inputs";
 import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
+import { TextInput } from "@/components/inputs/TextInput";
 
 type Props = {
   options: WaitBlock["options"];

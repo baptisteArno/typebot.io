@@ -16,7 +16,7 @@ import { ConfirmDialog } from "@/components/ConfirmDialog";
 import { CopyButton } from "@/components/CopyButton";
 import { EditableEmojiOrImageIcon } from "@/components/EditableEmojiOrImageIcon";
 import { HardDriveIcon } from "@/components/icons";
-import { TextInput } from "@/components/inputs";
+import { TextInput } from "@/components/inputs/TextInput";
 import { useWorkspace } from "../WorkspaceProvider";
 
 export const WorkspaceSettingsForm = ({ onClose }: { onClose: () => void }) => {

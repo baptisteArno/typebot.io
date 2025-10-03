@@ -9,7 +9,7 @@ import {
 import type { PreviewMessageParams } from "@typebot.io/js";
 import { isDefined } from "@typebot.io/lib/utils";
 import { useState } from "react";
-import { NumberInput } from "@/components/inputs";
+import { NumberInput } from "@/components/inputs/NumberInput";
 
 type Props = {
   defaultAvatar: string;

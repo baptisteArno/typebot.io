@@ -3,8 +3,8 @@ import { useTranslate } from "@tolgee/react";
 import { defaultDateInputOptions } from "@typebot.io/blocks-inputs/date/constants";
 import type { DateInputBlock } from "@typebot.io/blocks-inputs/date/schema";
 import type { Variable } from "@typebot.io/variables/schemas";
-import { TextInput } from "@/components/inputs";
 import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
+import { TextInput } from "@/components/inputs/TextInput";
 import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
 import { SwitchWithRelatedSettings } from "@/components/SwitchWithRelatedSettings";
 

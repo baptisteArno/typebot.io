@@ -21,8 +21,8 @@ import {
   type Videos,
 } from "pexels";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { TextInput } from "../inputs";
 import { BasicSelect } from "../inputs/BasicSelect";
+import { TextInput } from "../inputs/TextInput";
 import { PexelsLogo } from "../logos/PexelsLogo";
 import { TextLink } from "../TextLink";
 

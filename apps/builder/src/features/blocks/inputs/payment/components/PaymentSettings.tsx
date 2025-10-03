@@ -19,8 +19,8 @@ import type {
   PaymentInputBlock,
 } from "@typebot.io/blocks-inputs/payment/schema";
 import { useMemo } from "react";
-import { TextInput } from "@/components/inputs";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
+import { TextInput } from "@/components/inputs/TextInput";
 import { CredentialsDropdown } from "@/features/credentials/components/CredentialsDropdown";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { currencies } from "../currencies";

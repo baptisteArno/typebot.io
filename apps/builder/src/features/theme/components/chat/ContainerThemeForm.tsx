@@ -20,8 +20,8 @@ import type {
   ContainerTheme,
   InputTheme,
 } from "@typebot.io/theme/schemas";
-import { NumberInput } from "@/components/inputs";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
+import { NumberInput } from "@/components/inputs/NumberInput";
 import { ColorPicker } from "../../../../components/ColorPicker";
 
 type Props<T extends ((placeholder: string) => void) | undefined> = {

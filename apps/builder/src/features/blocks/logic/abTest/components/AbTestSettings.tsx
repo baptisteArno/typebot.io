@@ -2,7 +2,7 @@ import { Stack } from "@chakra-ui/react";
 import { defaultAbTestOptions } from "@typebot.io/blocks-logic/abTest/constants";
 import type { AbTestBlock } from "@typebot.io/blocks-logic/abTest/schema";
 import { isDefined } from "@typebot.io/lib/utils";
-import { NumberInput } from "@/components/inputs";
+import { NumberInput } from "@/components/inputs/NumberInput";
 
 type Props = {
   options: AbTestBlock["options"];

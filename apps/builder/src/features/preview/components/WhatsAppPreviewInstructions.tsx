@@ -13,7 +13,7 @@ import { Button } from "@typebot.io/ui/components/Button";
 import { type FormEvent, useState } from "react";
 import { ButtonLink } from "@/components/ButtonLink";
 import { BuoyIcon, ExternalLinkIcon } from "@/components/icons";
-import { TextInput } from "@/components/inputs";
+import { TextInput } from "@/components/inputs/TextInput";
 import { useEditor } from "@/features/editor/providers/EditorProvider";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { trpc } from "@/lib/queryClient";

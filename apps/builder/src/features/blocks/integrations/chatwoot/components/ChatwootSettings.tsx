@@ -11,8 +11,8 @@ import {
   defaultChatwootOptions,
 } from "@typebot.io/blocks-integrations/chatwoot/constants";
 import type { ChatwootBlock } from "@typebot.io/blocks-integrations/chatwoot/schema";
-import { TextInput } from "@/components/inputs";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
+import { TextInput } from "@/components/inputs/TextInput";
 
 type Props = {
   options: ChatwootBlock["options"];

@@ -8,7 +8,7 @@ import { Dialog } from "@typebot.io/ui/components/Dialog";
 import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
 import type React from "react";
 import { useState } from "react";
-import { TextInput } from "@/components/inputs";
+import { TextInput } from "@/components/inputs/TextInput";
 import { TextLink } from "@/components/TextLink";
 import { useUser } from "@/features/user/hooks/useUser";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";

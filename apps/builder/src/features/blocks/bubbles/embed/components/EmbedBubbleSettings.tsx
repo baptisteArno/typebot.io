@@ -4,7 +4,8 @@ import { defaultEmbedBubbleContent } from "@typebot.io/blocks-bubbles/embed/cons
 import type { EmbedBubbleBlock } from "@typebot.io/blocks-bubbles/embed/schema";
 import { sanitizeUrl } from "@typebot.io/lib/utils";
 import type { Variable } from "@typebot.io/variables/schemas";
-import { NumberInput, TextInput } from "@/components/inputs";
+import { NumberInput } from "@/components/inputs/NumberInput";
+import { TextInput } from "@/components/inputs/TextInput";
 import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
 import { SwitchWithRelatedSettings } from "@/components/SwitchWithRelatedSettings";
 

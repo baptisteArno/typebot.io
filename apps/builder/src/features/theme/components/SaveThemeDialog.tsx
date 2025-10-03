@@ -5,7 +5,7 @@ import type { ThemeTemplate } from "@typebot.io/theme/schemas";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
 import { type FormEvent, useRef, useState } from "react";
-import { TextInput } from "@/components/inputs";
+import { TextInput } from "@/components/inputs/TextInput";
 import { queryClient, trpc } from "@/lib/queryClient";
 
 type Props = {

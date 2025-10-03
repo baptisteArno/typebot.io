@@ -1,7 +1,7 @@
 import { Stack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import type { CommandEvent } from "@typebot.io/events/schemas";
-import { TextInput } from "@/components/inputs";
+import { TextInput } from "@/components/inputs/TextInput";
 
 export const CommandEventSettings = ({
   options,

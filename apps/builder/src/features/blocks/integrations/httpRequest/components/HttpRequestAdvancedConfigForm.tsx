@@ -24,9 +24,9 @@ import type {
 } from "@typebot.io/blocks-integrations/httpRequest/schema";
 import { Button } from "@typebot.io/ui/components/Button";
 import { useMemo, useState } from "react";
-import { NumberInput } from "@/components/inputs";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { CodeEditor } from "@/components/inputs/CodeEditor";
+import { NumberInput } from "@/components/inputs/NumberInput";
 import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
 import { TableList, type TableListItemProps } from "@/components/TableList";
 import { CredentialsDropdown } from "@/features/credentials/components/CredentialsDropdown";

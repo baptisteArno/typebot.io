@@ -8,7 +8,7 @@ import {
 } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import type { PaymentAddress } from "@typebot.io/blocks-inputs/payment/schema";
-import { TextInput } from "@/components/inputs";
+import { TextInput } from "@/components/inputs/TextInput";
 
 type Props = {
   address: PaymentAddress;

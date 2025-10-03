@@ -4,7 +4,7 @@ import type {
   HttpRequestBlock,
 } from "@typebot.io/blocks-integrations/httpRequest/schema";
 import { useRef } from "react";
-import { TextInput } from "@/components/inputs";
+import { TextInput } from "@/components/inputs/TextInput";
 import { HttpRequestAdvancedConfigForm } from "./HttpRequestAdvancedConfigForm";
 
 type Props = {

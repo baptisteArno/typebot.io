@@ -8,8 +8,8 @@ import { Dialog } from "@typebot.io/ui/components/Dialog";
 import { useRouter } from "next/router";
 import type { FormEvent } from "react";
 import React, { useState } from "react";
-import { TextInput } from "@/components/inputs";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
+import { TextInput } from "@/components/inputs/TextInput";
 import { trpc } from "@/lib/queryClient";
 
 export type PreCheckoutDialogProps = {

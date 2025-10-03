@@ -9,7 +9,7 @@ import {
 import type { PopupProps } from "@typebot.io/js";
 import { isDefined } from "@typebot.io/lib/utils";
 import { useEffect, useState } from "react";
-import { NumberInput } from "@/components/inputs";
+import { NumberInput } from "@/components/inputs/NumberInput";
 
 type Props = {
   onUpdateSettings: (windowSettings: Pick<PopupProps, "autoShowDelay">) => void;

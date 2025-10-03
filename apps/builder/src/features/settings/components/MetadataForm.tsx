@@ -6,9 +6,10 @@ import type { Settings } from "@typebot.io/settings/schemas";
 import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
 import { Popover } from "@typebot.io/ui/components/Popover";
 import { ImageUploadContent } from "@/components/ImageUploadContent";
-import { Textarea, TextInput } from "@/components/inputs";
 import { CodeEditor } from "@/components/inputs/CodeEditor";
 import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
+import { Textarea } from "@/components/inputs/Textarea";
+import { TextInput } from "@/components/inputs/TextInput";
 import { useOpenControls } from "@/hooks/useOpenControls";
 
 type Props = {

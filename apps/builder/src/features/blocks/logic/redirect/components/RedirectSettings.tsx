@@ -1,8 +1,8 @@
 import { Stack } from "@chakra-ui/react";
 import { defaultRedirectOptions } from "@typebot.io/blocks-logic/redirect/constants";
 import type { RedirectBlock } from "@typebot.io/blocks-logic/redirect/schema";
-import { TextInput } from "@/components/inputs";
 import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
+import { TextInput } from "@/components/inputs/TextInput";
 
 type Props = {
   options: RedirectBlock["options"];

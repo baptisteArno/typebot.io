@@ -1,7 +1,7 @@
 import { Stack } from "@chakra-ui/react";
 import type { Cell } from "@typebot.io/blocks-integrations/googleSheets/schema";
-import { TextInput } from "@/components/inputs";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
+import { TextInput } from "@/components/inputs/TextInput";
 import type { TableListItemProps } from "@/components/TableList";
 
 export const CellWithValueStack = ({

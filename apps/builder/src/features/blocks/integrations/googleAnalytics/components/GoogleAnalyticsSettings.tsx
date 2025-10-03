@@ -8,7 +8,8 @@ import {
   Stack,
 } from "@chakra-ui/react";
 import type { GoogleAnalyticsBlock } from "@typebot.io/blocks-integrations/googleAnalytics/schema";
-import { NumberInput, TextInput } from "@/components/inputs";
+import { NumberInput } from "@/components/inputs/NumberInput";
+import { TextInput } from "@/components/inputs/TextInput";
 
 type Props = {
   options?: GoogleAnalyticsBlock["options"];

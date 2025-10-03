@@ -26,8 +26,9 @@ import {
 } from "@typebot.io/blocks-inputs/number/schema";
 import type { Variable } from "@typebot.io/variables/schemas";
 import { useEffect } from "react";
-import { NumberInput, TextInput } from "@/components/inputs";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
+import { NumberInput } from "@/components/inputs/NumberInput";
+import { TextInput } from "@/components/inputs/TextInput";
 import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
 import { currencies } from "../../payment/currencies";
 

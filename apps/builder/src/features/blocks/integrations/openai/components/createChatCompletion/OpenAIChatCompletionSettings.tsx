@@ -8,7 +8,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import type { ChatCompletionOpenAIOptions } from "@typebot.io/blocks-integrations/openai/schema";
-import { NumberInput } from "@/components/inputs";
+import { NumberInput } from "@/components/inputs/NumberInput";
 import { TableList } from "@/components/TableList";
 import { TextLink } from "@/components/TextLink";
 import { ModelsDropdown } from "../ModelsDropdown";

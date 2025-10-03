@@ -18,8 +18,8 @@ import type {
   CreateSpeechOpenAIOptions,
   OpenAIBlock,
 } from "@typebot.io/blocks-integrations/openai/schema";
-import { TextInput } from "@/components/inputs";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
+import { TextInput } from "@/components/inputs/TextInput";
 import { CredentialsDropdown } from "@/features/credentials/components/CredentialsDropdown";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { OpenAICreateSpeechSettings } from "./audio/OpenAICreateSpeechSettings";
