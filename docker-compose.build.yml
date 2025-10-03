@@ -1,6 +1,5 @@
-version: '3.9'
 services:
-  typebot-db:
+  typebot-db-docker:
     image: postgres:16
     restart: always
     volumes:
@@ -19,13 +18,13 @@ services:
       args:
         - SCOPE=builder
     depends_on:
-      typebot-db:
+      typebot-db-docker:
         condition: service_healthy
     restart: always
     ports:
-      - '8080:3000'
+      - "8080:3000"
     extra_hosts:
-      - 'host.docker.internal:host-gateway'
+      - "host.docker.internal:host-gateway"
     env_file: .env.docker
   typebot-viewer:
     build:
@@ -33,9 +32,9 @@ services:
       args:
         - SCOPE=viewer
     depends_on:
-      typebot-db:
+      typebot-db-docker:
         condition: service_healthy
     restart: always
     ports:
-      - '8081:3000'
+      - "8081:3000"
     env_file: .env.docker

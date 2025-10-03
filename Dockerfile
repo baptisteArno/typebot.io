@@ -1,5 +1,5 @@
 # ================= INSTALL BUN ===================
-ARG BUN_VERSION=1.2.8
+ARG BUN_VERSION=1.2.23
 FROM debian:bullseye-slim AS build-bun
 ARG BUN_VERSION
 RUN apt-get update -qq \
@@ -81,7 +81,7 @@ WORKDIR /app
 FROM base AS pruned
 ARG SCOPE
 COPY . .
-RUN bunx turbo@2.4.5-canary.7 prune "${SCOPE}" --docker
+RUN bunx turbo prune "${SCOPE}" --docker
 
 # =============== INSTALL & BUILD =================
 
@@ -89,6 +89,7 @@ FROM base AS builder
 ARG BUN_PKG_MANAGER
 ARG SCOPE
 COPY --from=pruned /app/out/full/ .
+COPY bun.lock .
 RUN SENTRYCLI_SKIP_DOWNLOAD=1 bun install
 RUN SKIP_ENV_CHECK=true bunx turbo build --filter="${SCOPE}"
 

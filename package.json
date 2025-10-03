@@ -41,7 +41,7 @@
     "typescript": "^5.9.3",
     "rimraf": "^6.0.1"
   },
-  "packageManager": "bun@1.2.21",
+  "packageManager": "bun@1.2.23",
   "engines": {
     "node": "^22"
   },

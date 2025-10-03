@@ -50,7 +50,8 @@
     "nodemailer": "^7.0.6",
     "openai": "^4.81.0",
     "qs": "^6.11.2",
-    "stripe": "^17.1.0"
+    "stripe": "^17.1.0",
+    "undici": "^7.16.0"
   },
   "devDependencies": {
     "@typebot.io/forge": "workspace:*",
