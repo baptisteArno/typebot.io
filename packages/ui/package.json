@@ -13,7 +13,7 @@
     "@typebot.io/tsconfig": "workspace:*"
   },
   "dependencies": {
-    "@base-ui-components/react": "https://pkg.pr.new/@base-ui-components/react@2508",
+    "@base-ui-components/react": "^1.0.0-beta.4",
     "@chakra-ui/anatomy": "^2.3.4",
     "@chakra-ui/react": "^2.8.2",
     "@chakra-ui/theme-tools": "^2.2.6",

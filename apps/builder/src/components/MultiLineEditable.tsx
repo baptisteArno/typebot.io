@@ -75,7 +75,7 @@ export const MultiLineEditable = ({
                 e.currentTarget.select();
               }}
               onChange={(e) => {
-                input?.onValueChange?.(e.target.value, e as unknown as Event);
+                input?.onValueChange?.(e.target.value, { event: e } as any);
               }}
               autoFocus
             />

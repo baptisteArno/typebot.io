@@ -5,8 +5,9 @@ const defaultDebounceTimeout = 1000;
 
 export const useDebounce = <Args extends unknown[], Return>(
   fn: (...args: Args) => Return,
+  debounceTimeout = defaultDebounceTimeout,
 ) => {
-  const debouncedFn = useDebouncedCallback(fn, defaultDebounceTimeout);
+  const debouncedFn = useDebouncedCallback(fn, debounceTimeout);
 
   useEffect(
     () => () => {

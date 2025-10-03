@@ -1,6 +1,6 @@
-import { useClipboard } from "@ark-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { Button, type ButtonProps } from "@typebot.io/ui/components/Button";
+import { useCopyToClipboard } from "@typebot.io/ui/hooks/useCopyToClipboard";
 
 interface CopyButtonProps extends ButtonProps {
   textToCopy: string;
@@ -17,16 +17,14 @@ export const CopyButton = ({
   text,
   ...buttonProps
 }: CopyButtonProps) => {
-  const { copied, copy } = useClipboard({
-    value: textToCopy,
-  });
+  const { copied, copy } = useCopyToClipboard();
   const { t } = useTranslate();
 
   return (
     <Button
       disabled={copied}
       onClick={() => {
-        copy();
+        copy(textToCopy);
         if (onCopied) onCopied();
       }}
       variant="secondary"

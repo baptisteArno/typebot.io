@@ -8,6 +8,7 @@ import type { ZodLayoutMetadata } from "@typebot.io/zod";
 import Markdown, { type Components } from "react-markdown";
 import type { ZodTypeAny, z } from "zod";
 import { NumberInput, Textarea, TextInput } from "@/components/inputs";
+import { BasicAutocompleteInputWithVariableButton } from "@/components/inputs/BasicAutocompleteInput";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { CodeEditor } from "@/components/inputs/CodeEditor";
 import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
@@ -16,10 +17,6 @@ import { PrimitiveList } from "@/components/PrimitiveList";
 import { TableList } from "@/components/TableList";
 import { TagsInput } from "@/components/TagsInput";
 import { getZodInnerSchema } from "../../helpers/getZodInnerSchema";
-import {
-  AutocompleteInput,
-  ForgeAutocompleteInput,
-} from "../ForgeAutocompleteInput";
 import { ForgeSelectInput } from "../ForgeSelectInput";
 import { ZodDiscriminatedUnionLayout } from "./ZodDiscriminatedUnionLayout";
 import { ZodObjectLayout } from "./ZodObjectLayout";
@@ -193,50 +190,33 @@ export const ZodFieldLayout = ({
     case "ZodString": {
       if (layout?.autoCompleteItems) {
         return (
-          <AutocompleteInput
-            items={layout.autoCompleteItems}
-            defaultValue={data ?? layout.defaultValue}
-            placeholder={layout.placeholder}
-            label={layout.label}
-            helperText={
-              layout?.helperText ? (
+          <Field.Root>
+            {layout.label && (
+              <Field.Label>
+                {layout.label}{" "}
+                {layout.moreInfoTooltip && (
+                  <MoreInfoTooltip>{layout.moreInfoTooltip}</MoreInfoTooltip>
+                )}
+              </Field.Label>
+            )}
+            <BasicAutocompleteInputWithVariableButton
+              items={layout.autoCompleteItems}
+              defaultValue={data ?? layout.defaultValue}
+              placeholder={layout.placeholder}
+              onChange={onDataChange}
+            />
+            {layout?.helperText && (
+              <Field.Description>
                 <Markdown components={mdComponents}>
                   {layout.helperText}
                 </Markdown>
-              ) : undefined
-            }
-            moreInfoTooltip={layout?.moreInfoTooltip}
-            onChange={onDataChange}
-            width={width}
-            withVariableButton={layout.withVariableButton ?? true}
-          />
+              </Field.Description>
+            )}
+          </Field.Root>
         );
       }
       if (layout?.fetcher) {
         if (!blockDef) return null;
-        if (layout.allowCustomText)
-          return (
-            <ForgeAutocompleteInput
-              defaultValue={data ?? layout.defaultValue}
-              placeholder={layout.placeholder}
-              fetcherId={layout.fetcher}
-              options={blockOptions}
-              blockDef={blockDef}
-              label={layout.label}
-              credentialsScope="workspace"
-              helperText={
-                layout?.helperText ? (
-                  <Markdown components={mdComponents}>
-                    {layout.helperText}
-                  </Markdown>
-                ) : undefined
-              }
-              moreInfoTooltip={layout?.moreInfoTooltip}
-              onChange={onDataChange}
-              width={width}
-              withVariableButton={layout.withVariableButton ?? true}
-            />
-          );
         return (
           <ForgeSelectInput
             defaultValue={data ?? layout.defaultValue}

@@ -1,5 +1,5 @@
 import type { Variable } from "@typebot.io/variables/schemas";
-import { useCallback, useEffect, useState } from "react";
+import { useState } from "react";
 import { injectVariableInText } from "@/features/variables/helpers/injectVariableInTextInput";
 import { focusInput } from "@/helpers/focusInput";
 
@@ -10,51 +10,22 @@ export const useInjectableInputValue = ({
   ref: React.RefObject<HTMLInputElement>;
   defaultValue?: string;
 }) => {
-  const [isTouched, setIsTouched] = useState(false);
-  const [carretPosition, setCarretPosition] = useState<number>(
-    defaultValue?.length ?? 0,
-  );
-  const [value, _setValue] = useState<string>(defaultValue ?? "");
-
-  const onInputBlur = useCallback(() => {
-    if (!ref.current) return;
-    setCarretPosition(ref.current.selectionStart ?? 0);
-  }, []);
-
-  useEffect(() => {
-    ref.current?.addEventListener("blur", onInputBlur);
-    return () => {
-      ref.current?.removeEventListener("blur", onInputBlur);
-    };
-  }, [onInputBlur]);
-
-  const setValue = (text: string) => {
-    if (!isTouched) setIsTouched(true);
-    _setValue(text);
-  };
+  const [value, setValue] = useState<string>(defaultValue ?? "");
 
   const injectVariable = (variable: Variable) => {
-    if (!variable) return;
-    if (!isTouched) {
-      const newValue = `{{${variable.name}}}`;
-      _setValue(newValue);
-      return newValue;
-    }
+    if (!variable || !ref.current) return;
+    const start = ref.current.selectionStart ?? ref.current.value.length ?? 0;
+    const end = ref.current.selectionEnd ?? ref.current.value.length ?? 0;
     const { text, carretPosition: newCarretPosition } = injectVariableInText({
       variable,
       text: value,
-      at: carretPosition,
+      start,
+      end,
     });
     setValue(text);
     if (ref.current) focusInput({ at: newCarretPosition, input: ref.current });
     return text;
   };
 
-  const replaceDefaultValue = (value: string) => {
-    _setValue(value);
-    if (!ref.current) return;
-    setCarretPosition(ref.current.selectionStart ?? 0);
-  };
-
-  return { value, setValue, injectVariable, isTouched, replaceDefaultValue };
+  return { value, setValue, injectVariable };
 };

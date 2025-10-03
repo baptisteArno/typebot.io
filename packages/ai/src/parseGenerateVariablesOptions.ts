@@ -74,7 +74,6 @@ export const parseGenerateVariablesOptions = ({ models }: Props) =>
     model: option.string.layout({
       placeholder: "Select a model",
       label: "Model",
-      allowCustomValue: true,
       helperText: models.helperText,
       autoCompleteItems: models.type === "static" ? models.models : undefined,
       fetcher: models.type === "fetcher" ? models.id : undefined,

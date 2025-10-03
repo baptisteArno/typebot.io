@@ -21,17 +21,19 @@ const Root = ({
 }) => (
   <PopoverPrimitive.Root
     open={isOpen}
-    onOpenChange={(open, event) => {
+    onOpenChange={(open, details) => {
       if (!open) {
-        if (!onClose || !event) return;
+        if (!onClose || !details) return;
         if (
           isOpen !== undefined &&
-          (event.target as HTMLElement)?.closest("[data-base-ui-click-trigger]")
+          (details.event.target as HTMLElement)?.closest(
+            "[data-base-ui-click-trigger]",
+          )
         )
           return;
-        onClose(event);
+        onClose(details.event);
       } else {
-        onOpen?.(event);
+        onOpen?.(details.event);
       }
     }}
     onOpenChangeComplete={(open) => (open ? undefined : onCloseComplete?.())}

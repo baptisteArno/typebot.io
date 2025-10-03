@@ -11,7 +11,6 @@
     "test:e2e:show-report": "playwright show-report src/test/reporters"
   },
   "dependencies": {
-    "@ark-ui/react": "^5.19.0",
     "@auth/core": "^0.39.1",
     "@braintree/sanitize-url": "^7.0.1",
     "@chakra-ui/react": "^2.8.2",

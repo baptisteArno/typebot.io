@@ -45,7 +45,6 @@ const dialogueMessageItemSchema = option.object({
 export const options = option.object({
   model: option.string.layout({
     placeholder: "Select a model",
-    allowCustomValue: true,
     autoCompleteItems: anthropicModels,
     label: "Model",
   }),

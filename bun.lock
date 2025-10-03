@@ -16,7 +16,6 @@
     "apps/builder": {
       "name": "builder",
       "dependencies": {
-        "@ark-ui/react": "^5.19.0",
         "@auth/core": "^0.39.1",
         "@braintree/sanitize-url": "^7.0.1",
         "@chakra-ui/react": "^2.8.2",
@@ -1243,7 +1242,7 @@
       "name": "@typebot.io/ui",
       "version": "0.0.1",
       "dependencies": {
-        "@base-ui-components/react": "https://pkg.pr.new/@base-ui-components/react@2508",
+        "@base-ui-components/react": "^1.0.0-beta.4",
         "@chakra-ui/anatomy": "^2.3.4",
         "@chakra-ui/react": "^2.8.2",
         "@chakra-ui/theme-tools": "^2.2.6",
@@ -1393,8 +1392,6 @@
     "@apidevtools/swagger-methods": ["@apidevtools/swagger-methods@3.0.2", "", {}, "sha512-QAkD5kK2b1WfjDS/UQn/qQkbwF31uqRjPTrsCs5ZG9BQGAkjwvqGFjjPqAuzac/IYzpPtRzjCP1WrTuAIjMrXg=="],
 
     "@apidevtools/swagger-parser": ["@apidevtools/swagger-parser@10.1.1", "", { "dependencies": { "@apidevtools/json-schema-ref-parser": "11.7.2", "@apidevtools/openapi-schemas": "^2.1.0", "@apidevtools/swagger-methods": "^3.0.2", "@jsdevtools/ono": "^7.1.3", "ajv": "^8.17.1", "ajv-draft-04": "^1.0.0", "call-me-maybe": "^1.0.2" }, "peerDependencies": { "openapi-types": ">=7" } }, "sha512-u/kozRnsPO/x8QtKYJOqoGtC4kH6yg1lfYkB9Au0WhYB0FNLpyFusttQtvhlwjtG3rOwiRz4D8DnnXa8iEpIKA=="],
-
-    "@ark-ui/react": ["@ark-ui/react@5.19.0", "", { "dependencies": { "@internationalized/date": "3.8.2", "@zag-js/accordion": "1.21.6", "@zag-js/anatomy": "1.21.6", "@zag-js/angle-slider": "1.21.6", "@zag-js/auto-resize": "1.21.6", "@zag-js/avatar": "1.21.6", "@zag-js/carousel": "1.21.6", "@zag-js/checkbox": "1.21.6", "@zag-js/clipboard": "1.21.6", "@zag-js/collapsible": "1.21.6", "@zag-js/collection": "1.21.6", "@zag-js/color-picker": "1.21.6", "@zag-js/color-utils": "1.21.6", "@zag-js/combobox": "1.21.6", "@zag-js/core": "1.21.6", "@zag-js/date-picker": "1.21.6", "@zag-js/date-utils": "1.21.6", "@zag-js/dialog": "1.21.6", "@zag-js/dom-query": "1.21.6", "@zag-js/editable": "1.21.6", "@zag-js/file-upload": "1.21.6", "@zag-js/file-utils": "1.21.6", "@zag-js/floating-panel": "1.21.6", "@zag-js/focus-trap": "1.21.6", "@zag-js/highlight-word": "1.21.6", "@zag-js/hover-card": "1.21.6", "@zag-js/i18n-utils": "1.21.6", "@zag-js/json-tree-utils": "1.21.6", "@zag-js/listbox": "1.21.6", "@zag-js/menu": "1.21.6", "@zag-js/number-input": "1.21.6", "@zag-js/pagination": "1.21.6", "@zag-js/password-input": "1.21.6", "@zag-js/pin-input": "1.21.6", "@zag-js/popover": "1.21.6", "@zag-js/presence": "1.21.6", "@zag-js/progress": "1.21.6", "@zag-js/qr-code": "1.21.6", "@zag-js/radio-group": "1.21.6", "@zag-js/rating-group": "1.21.6", "@zag-js/react": "1.21.6", "@zag-js/scroll-area": "1.21.6", "@zag-js/select": "1.21.6", "@zag-js/signature-pad": "1.21.6", "@zag-js/slider": "1.21.6", "@zag-js/splitter": "1.21.6", "@zag-js/steps": "1.21.6", "@zag-js/switch": "1.21.6", "@zag-js/tabs": "1.21.6", "@zag-js/tags-input": "1.21.6", "@zag-js/time-picker": "1.21.6", "@zag-js/timer": "1.21.6", "@zag-js/toast": "1.21.6", "@zag-js/toggle": "1.21.6", "@zag-js/toggle-group": "1.21.6", "@zag-js/tooltip": "1.21.6", "@zag-js/tour": "1.21.6", "@zag-js/tree-view": "1.21.6", "@zag-js/types": "1.21.6", "@zag-js/utils": "1.21.6" }, "peerDependencies": { "react": ">=18.0.0", "react-dom": ">=18.0.0" } }, "sha512-ZJ66MCGLNUW6plkjxm5MHOwbXB66+E4r4R2pxdGD/ssIx1s2HfCNljpoavNZj9OEMaRkxYsyGiepdflEoxWosQ=="],
 
     "@ark-ui/solid": ["@ark-ui/solid@5.19.0", "", { "dependencies": { "@internationalized/date": "3.8.2", "@zag-js/accordion": "1.21.6", "@zag-js/anatomy": "1.21.6", "@zag-js/angle-slider": "1.21.6", "@zag-js/auto-resize": "1.21.6", "@zag-js/avatar": "1.21.6", "@zag-js/carousel": "1.21.6", "@zag-js/checkbox": "1.21.6", "@zag-js/clipboard": "1.21.6", "@zag-js/collapsible": "1.21.6", "@zag-js/collection": "1.21.6", "@zag-js/color-picker": "1.21.6", "@zag-js/color-utils": "1.21.6", "@zag-js/combobox": "1.21.6", "@zag-js/core": "1.21.6", "@zag-js/date-picker": "1.21.6", "@zag-js/date-utils": "1.21.6", "@zag-js/dialog": "1.21.6", "@zag-js/dom-query": "1.21.6", "@zag-js/editable": "1.21.6", "@zag-js/file-upload": "1.21.6", "@zag-js/file-utils": "1.21.6", "@zag-js/floating-panel": "1.21.6", "@zag-js/focus-trap": "1.21.6", "@zag-js/highlight-word": "1.21.6", "@zag-js/hover-card": "1.21.6", "@zag-js/i18n-utils": "1.21.6", "@zag-js/json-tree-utils": "1.21.6", "@zag-js/listbox": "1.21.6", "@zag-js/menu": "1.21.6", "@zag-js/number-input": "1.21.6", "@zag-js/pagination": "1.21.6", "@zag-js/password-input": "1.21.6", "@zag-js/pin-input": "1.21.6", "@zag-js/popover": "1.21.6", "@zag-js/presence": "1.21.6", "@zag-js/progress": "1.21.6", "@zag-js/qr-code": "1.21.6", "@zag-js/radio-group": "1.21.6", "@zag-js/rating-group": "1.21.6", "@zag-js/scroll-area": "1.21.6", "@zag-js/select": "1.21.6", "@zag-js/signature-pad": "1.21.6", "@zag-js/slider": "1.21.6", "@zag-js/solid": "1.21.6", "@zag-js/splitter": "1.21.6", "@zag-js/steps": "1.21.6", "@zag-js/switch": "1.21.6", "@zag-js/tabs": "1.21.6", "@zag-js/tags-input": "1.21.6", "@zag-js/time-picker": "1.21.6", "@zag-js/timer": "1.21.6", "@zag-js/toast": "1.21.6", "@zag-js/toggle": "1.21.6", "@zag-js/toggle-group": "1.21.6", "@zag-js/tooltip": "1.21.6", "@zag-js/tour": "1.21.6", "@zag-js/tree-view": "1.21.6", "@zag-js/types": "1.21.6", "@zag-js/utils": "1.21.6" }, "peerDependencies": { "solid-js": ">=1.6.0" } }, "sha512-k/fHhcm/+qA9/v67zZraovAtIrZeuh6gLbhwBSCmHruJltkUsWnuvZQHnSgs7kaiQ+6o5n+QGlnBLyeNNYlymA=="],
 
@@ -1556,9 +1553,9 @@
 
     "@babel/types": ["@babel/types@7.28.2", "", { "dependencies": { "@babel/helper-string-parser": "^7.27.1", "@babel/helper-validator-identifier": "^7.27.1" } }, "sha512-ruv7Ae4J5dUYULmeXw1gmb7rYRz57OWCPM57pHojnLq/3Z1CK2lNSLTCVjxVk1F/TZHwOZZrOWi0ur95BbLxNQ=="],
 
-    "@base-ui-components/react": ["@base-ui-components/react@https://pkg.pr.new/@base-ui-components/react@2508", { "dependencies": { "@babel/runtime": "^7.28.3", "@base-ui-components/utils": "https://pkg.pr.new/mui/base-ui/@base-ui-components/utils@2d225a187232b2770eaa34d4c7218a275bdfaa64", "@floating-ui/react-dom": "^2.1.5", "@floating-ui/utils": "^0.2.10", "reselect": "^5.1.1", "tabbable": "^6.2.0", "use-sync-external-store": "^1.5.0" }, "peerDependencies": { "@types/react": "^17 || ^18 || ^19", "react": "^17 || ^18 || ^19", "react-dom": "^17 || ^18 || ^19" }, "optionalPeers": ["@types/react"] }],
+    "@base-ui-components/react": ["@base-ui-components/react@1.0.0-beta.4", "", { "dependencies": { "@babel/runtime": "^7.28.4", "@base-ui-components/utils": "0.1.2", "@floating-ui/react-dom": "^2.1.6", "@floating-ui/utils": "^0.2.10", "reselect": "^5.1.1", "tabbable": "^6.2.0", "use-sync-external-store": "^1.5.0" }, "peerDependencies": { "@types/react": "^17 || ^18 || ^19", "react": "^17 || ^18 || ^19", "react-dom": "^17 || ^18 || ^19" }, "optionalPeers": ["@types/react"] }, "sha512-sPYKj26gbFHD2ZsrMYqQshXnMuomBodzPn+d0dDxWieTj232XCQ9QGt9fU9l5SDGC9hi8s24lDlg9FXPSI7T8A=="],
 
-    "@base-ui-components/utils": ["@base-ui-components/utils@https://pkg.pr.new/mui/base-ui/@base-ui-components/utils@2d225a187232b2770eaa34d4c7218a275bdfaa64", { "dependencies": { "@babel/runtime": "^7.28.3", "@floating-ui/utils": "^0.2.10", "reselect": "^5.1.1", "use-sync-external-store": "^1.5.0" }, "peerDependencies": { "@types/react": "^17 || ^18 || ^19", "react": "^17 || ^18 || ^19", "react-dom": "^17 || ^18 || ^19" }, "optionalPeers": ["@types/react"] }],
+    "@base-ui-components/utils": ["@base-ui-components/utils@0.1.2", "", { "dependencies": { "@babel/runtime": "^7.28.4", "@floating-ui/utils": "^0.2.10", "reselect": "^5.1.1", "use-sync-external-store": "^1.5.0" }, "peerDependencies": { "@types/react": "^17 || ^18 || ^19", "react": "^17 || ^18 || ^19", "react-dom": "^17 || ^18 || ^19" }, "optionalPeers": ["@types/react"] }, "sha512-aEitDGpMsYO2qnSpYOwZNykn9Rzn2ioyEVk2fyDRH7t+TIHVKpp9CeV7SPTq43M9mMSDxQ+7UeZJVkrj2dCVIQ=="],
 
     "@bcoe/v8-coverage": ["@bcoe/v8-coverage@0.2.3", "", {}, "sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw=="],
 
@@ -3351,8 +3348,6 @@
     "@zag-js/radio-group": ["@zag-js/radio-group@1.21.6", "", { "dependencies": { "@zag-js/anatomy": "1.21.6", "@zag-js/core": "1.21.6", "@zag-js/dom-query": "1.21.6", "@zag-js/focus-visible": "1.21.6", "@zag-js/types": "1.21.6", "@zag-js/utils": "1.21.6" } }, "sha512-ZmL4TKSAwaMu7Cp+JQNhuugg0WrncH/+UExe7X7P+QP6bV7cnUhkTgoXmP4SXleMkIuYVkcvWP6C1NnGEc0wFw=="],
 
     "@zag-js/rating-group": ["@zag-js/rating-group@1.21.6", "", { "dependencies": { "@zag-js/anatomy": "1.21.6", "@zag-js/core": "1.21.6", "@zag-js/dom-query": "1.21.6", "@zag-js/types": "1.21.6", "@zag-js/utils": "1.21.6" } }, "sha512-rGZdunAMUKJ31CLu6MKCngx+cmixgi/cdm131LSPfB++5G6AR6rFU5UvZ+9Smu0rXtK9UvJZXMwLoq6sr1GZRQ=="],
-
-    "@zag-js/react": ["@zag-js/react@1.21.6", "", { "dependencies": { "@zag-js/core": "1.21.6", "@zag-js/store": "1.21.6", "@zag-js/types": "1.21.6", "@zag-js/utils": "1.21.6" }, "peerDependencies": { "react": ">=18.0.0", "react-dom": ">=18.0.0" } }, "sha512-QuXK2nTIlns84XJCE3KRUdF+mwD9NHjw/pJwMHlzCW8Fhyz9XpHBfv47IORgQgGHC3FoKteApKtgt9XcYnzghA=="],
 
     "@zag-js/rect-utils": ["@zag-js/rect-utils@1.21.6", "", {}, "sha512-OSz+jfcAJyjC24ZUG8ylMd2S9BtlKK6wXsi7M69mXVp9dpclX4RtoRp8Z0wK2/QS4/5GbKSgdQUfcuNt9fsveQ=="],
 
@@ -6131,6 +6126,10 @@
     "@babel/template/@babel/parser": ["@babel/parser@7.28.3", "", { "dependencies": { "@babel/types": "^7.28.2" }, "bin": "./bin/babel-parser.js" }, "sha512-7+Ey1mAgYqFAx2h0RuoxcQT5+MlG3GTV0TQrgr7/ZliKsm/MNDxVVutlWaziMq7wJNAz8MTqz55XLpWvva6StA=="],
 
     "@babel/traverse/@babel/parser": ["@babel/parser@7.28.3", "", { "dependencies": { "@babel/types": "^7.28.2" }, "bin": "./bin/babel-parser.js" }, "sha512-7+Ey1mAgYqFAx2h0RuoxcQT5+MlG3GTV0TQrgr7/ZliKsm/MNDxVVutlWaziMq7wJNAz8MTqz55XLpWvva6StA=="],
+
+    "@base-ui-components/react/@babel/runtime": ["@babel/runtime@7.28.4", "", {}, "sha512-Q/N6JNWvIvPnLDvjlE1OUBLPQHH6l3CltCEsHIujp45zQUSSh8K+gHnaEX45yAT1nyngnINhvWtzN+Nb9D8RAQ=="],
+
+    "@base-ui-components/utils/@babel/runtime": ["@babel/runtime@7.28.4", "", {}, "sha512-Q/N6JNWvIvPnLDvjlE1OUBLPQHH6l3CltCEsHIujp45zQUSSh8K+gHnaEX45yAT1nyngnINhvWtzN+Nb9D8RAQ=="],
 
     "@bundled-es-modules/cookie/cookie": ["cookie@0.7.2", "", {}, "sha512-yki5XnKuf750l50uGTllt6kKILY4nQ1eNIQatoXEByZ5dWgnKqbnqmTrBE5B4N7lrMJKQ2ytWMiTO2o0v6Ew/w=="],
 

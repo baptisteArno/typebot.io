@@ -82,7 +82,8 @@ export const Textarea = ({
     const { text, carretPosition: newCarretPosition } = injectVariableInText({
       variable,
       text: localValue,
-      at: carretPosition,
+      start: carretPosition,
+      end: carretPosition,
     });
     changeValue(text);
     focusInput({ at: newCarretPosition, input: inputRef.current });

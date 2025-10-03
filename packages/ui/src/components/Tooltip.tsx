@@ -20,11 +20,11 @@ const Root = ({
   return (
     <TooltipPrimitive.Root
       open={isOpen}
-      onOpenChange={(open, event) => {
+      onOpenChange={(open, details) => {
         if (
           open ||
           (keepOpenOnClick &&
-            ["click", "pointerdown"].includes(event?.type ?? ""))
+            ["click", "pointerdown"].includes(details.event.type ?? ""))
         ) {
           onOpen?.();
         } else {
