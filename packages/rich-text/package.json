@@ -20,7 +20,7 @@
     "@typebot.io/ui": "workspace:*",
     "@typebot.io/variables": "workspace:*",
     "platejs": "49.2.21",
-    "react": "18.3.1"
+    "react": "^18.3.1"
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*"

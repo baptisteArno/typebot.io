@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "@typebot.io/lib": "workspace:*",
-    "isolated-vm": "5.0.1",
+    "isolated-vm": "^5.0.1",
     "@typebot.io/zod": "workspace:*",
     "@typebot.io/prisma": "workspace:*",
     "@typebot.io/env": "workspace:*",

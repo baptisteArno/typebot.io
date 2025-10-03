@@ -9,17 +9,17 @@
   "dependencies": {
     "@typebot.io/prisma": "workspace:*",
     "@typebot.io/schemas": "workspace:*",
-    "stripe": "17.1.0",
+    "stripe": "^17.1.0",
     "@typebot.io/lib": "workspace:*",
-    "@trpc/server": "11.3.1",
+    "@trpc/server": "^11.3.1",
     "@typebot.io/env": "workspace:*",
     "@typebot.io/telemetry": "workspace:*",
     "@typebot.io/workspaces": "workspace:*",
     "@typebot.io/zod": "workspace:*",
     "@typebot.io/settings": "workspace:*",
     "@typebot.io/user": "workspace:*",
-    "next": "15.3.0",
-    "micro": "10.0.1"
+    "next": "^15.3.0",
+    "micro": "^10.0.1"
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*"

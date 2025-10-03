@@ -10,7 +10,7 @@
   "dependencies": {
     "@typebot.io/forge": "workspace:*",
     "@typebot.io/lib": "workspace:*",
-    "ky": "1.2.4"
+    "ky": "^1.2.4"
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*"

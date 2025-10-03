@@ -39,19 +39,19 @@
     "./*": "./src/*.ts"
   },
   "dependencies": {
-    "ky": "1.2.4",
-    "@clack/prompts": "0.11.0",
-    "@paralleldrive/cuid2": "2.2.1",
+    "ky": "^1.2.4",
+    "@clack/prompts": "^0.11.0",
+    "@paralleldrive/cuid2": "^2.2.1",
     "@typebot.io/billing": "workspace:*",
     "@typebot.io/results": "workspace:*",
     "@typebot.io/telemetry": "workspace:*",
-    "cli-progress": "3.12.0",
-    "papaparse": "5.4.1",
+    "cli-progress": "^3.12.0",
+    "papaparse": "^5.4.1",
     "@typebot.io/lib": "workspace:*",
     "@typebot.io/prisma": "workspace:*",
-    "posthog-node": "5.8.2",
-    "prompts": "2.4.2",
-    "stripe": "17.1.0",
+    "posthog-node": "^5.8.2",
+    "prompts": "^2.4.2",
+    "stripe": "^17.1.0",
     "@typebot.io/workspaces": "workspace:*",
     "@typebot.io/typebot": "workspace:*",
     "@typebot.io/zod": "workspace:*",
@@ -61,11 +61,11 @@
     "@typebot.io/tsconfig": "workspace:*",
     "@types/bun": "^1.1.9",
     "@types/cli-progress": "^3.11.5",
-    "@types/papaparse": "5.3.7",
-    "@types/prompts": "2.4.4",
-    "tsx": "4.19.1",
+    "@types/papaparse": "^5.3.7",
+    "@types/prompts": "^2.4.4",
+    "tsx": "^4.19.1",
     "@typebot.io/blocks-integrations": "workspace:*",
     "@typebot.io/groups": "workspace:*",
-    "dotenv": "16.4.5"
+    "dotenv": "^16.4.5"
   }
 }

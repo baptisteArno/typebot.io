@@ -10,9 +10,9 @@
     "@typebot.io/env": "workspace:*",
     "@typebot.io/prisma": "workspace:*",
     "@typebot.io/zod": "workspace:*",
-    "posthog-node": "5.8.2",
-    "ky": "1.2.4",
-    "cookie": "1.0.2"
+    "posthog-node": "^5.8.2",
+    "ky": "^1.2.4",
+    "cookie": "^1.0.2"
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*"

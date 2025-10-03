@@ -16,7 +16,7 @@
     "@typebot.io/typebot": "workspace:*",
     "@typebot.io/variables": "workspace:*",
     "@typebot.io/chat-api": "workspace:*",
-    "@sentry/nextjs": "10.8.0"
+    "@sentry/nextjs": "^10.8.0"
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*"

@@ -27,13 +27,13 @@
     "@typebot.io/chat-session": "workspace:*",
     "@typebot.io/credentials": "workspace:*",
     "@typebot.io/chat-api": "workspace:*",
-    "@sentry/nextjs": "10.8.0",
-    "ky": "1.2.4",
+    "@sentry/nextjs": "^10.8.0",
+    "ky": "^1.2.4",
     "@typebot.io/runtime-session-store": "workspace:*"
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*",
-    "vitest": "3.2.4",
-    "vite-tsconfig-paths": "5.1.4"
+    "vitest": "^3.2.4",
+    "vite-tsconfig-paths": "^5.1.4"
   }
 }

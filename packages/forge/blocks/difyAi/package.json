@@ -8,11 +8,11 @@
     "./schemas": "./src/schemas.ts"
   },
   "dependencies": {
-    "@ai-sdk/ui-utils": "1.2.11",
+    "@ai-sdk/ui-utils": "^1.2.11",
     "@typebot.io/forge": "workspace:*",
     "@typebot.io/lib": "workspace:*",
-    "dify-ai-provider": "0.1.6",
-    "ky": "1.2.4"
+    "dify-ai-provider": "^0.1.6",
+    "ky": "^1.2.4"
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*"

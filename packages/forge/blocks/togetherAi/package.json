@@ -11,6 +11,6 @@
     "@typebot.io/forge": "workspace:*",
     "@typebot.io/ai": "workspace:*",
     "@typebot.io/tsconfig": "workspace:*",
-    "@ai-sdk/togetherai": "0.2.16"
+    "@ai-sdk/togetherai": "^0.2.16"
   }
 }

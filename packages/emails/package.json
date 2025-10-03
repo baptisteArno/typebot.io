@@ -9,17 +9,17 @@
     "./*": "./*.tsx"
   },
   "dependencies": {
-    "@react-email/components": "0.5.1",
+    "@react-email/components": "^0.5.1",
     "@typebot.io/env": "workspace:*",
-    "nodemailer": "7.0.6",
-    "react-email": "4.2.8",
-    "@react-email/render": "1.2.1",
+    "nodemailer": "^7.0.6",
+    "react-email": "^4.2.8",
+    "@react-email/render": "^1.2.1",
     "@typebot.io/lib": "workspace:*",
-    "react": "18.3.1"
+    "react": "^18.3.1"
   },
   "devDependencies": {
-    "@react-email/preview-server": "4.2.8",
+    "@react-email/preview-server": "^4.2.8",
     "@typebot.io/tsconfig": "workspace:*",
-    "dotenv-cli": "8.0.0"
+    "dotenv-cli": "^8.0.0"
   }
 }

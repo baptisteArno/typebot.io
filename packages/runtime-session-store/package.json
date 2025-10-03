@@ -7,7 +7,7 @@
     ".": "./src/index.ts"
   },
   "dependencies": {
-    "isolated-vm": "5.0.1"
+    "isolated-vm": "^5.0.1"
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*"

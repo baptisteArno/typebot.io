@@ -6,7 +6,7 @@
     "build": "ladle build"
   },
   "dependencies": {
-    "@ladle/react": "5.0.1",
+    "@ladle/react": "^5.0.1",
     "@typebot.io/conditions": "workspace:*",
     "@typebot.io/react": "workspace:*",
     "@typebot.io/theme": "workspace:*",
@@ -14,11 +14,11 @@
     "@typebot.io/blocks-inputs": "workspace:*",
     "@typebot.io/blocks-logic": "workspace:*",
     "@typebot.io/chat-api": "workspace:*",
-    "react": "18.3.1",
-    "react-dom": "18.3.1"
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*",
-    "@types/react": "18.3.18"
+    "@types/react": "^18.3.18"
   }
 }

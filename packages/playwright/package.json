@@ -7,7 +7,7 @@
     "./*": "./src/*.ts"
   },
   "dependencies": {
-    "@playwright/test": "1.51.0",
+    "@playwright/test": "^1.51.0",
     "@typebot.io/blocks-core": "workspace:*",
     "@typebot.io/blocks-inputs": "workspace:*",
     "@typebot.io/env": "workspace:*",
@@ -21,7 +21,7 @@
     "@typebot.io/user": "workspace:*"
   },
   "devDependencies": {
-    "@types/node": "20.4.2",
+    "@types/node": "^20.4.2",
     "@typebot.io/tsconfig": "workspace:*"
   }
 }
