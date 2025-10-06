@@ -2,7 +2,7 @@ import { env } from "@typebot.io/env";
 import ky from "ky";
 
 export interface PostHogHogQLResponse {
-  results: number[][];
+  results: (string | number)[][];
   columns: string[];
 }
 

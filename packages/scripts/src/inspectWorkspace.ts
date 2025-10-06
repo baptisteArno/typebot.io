@@ -32,6 +32,7 @@ const inspectWorkspace = async () => {
       members: {
         select: {
           user: { select: { id: true, email: true } },
+          createdAt: true,
           role: true,
         },
       },
