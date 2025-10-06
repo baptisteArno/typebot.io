@@ -683,8 +683,8 @@ const sanitizeMessages = (messages: ContinueChatResponse["messages"]) => {
       message.type !== "text" ||
       message.content.type !== "richText" ||
       message.content.richText.length > 1 ||
-      message.content.richText[0].type !== "variable" ||
-      message.content.richText[0].children.length > 0
+      message.content.richText[0]?.type !== "variable" ||
+      (message.content.richText[0]?.children?.length ?? 0) > 0
     );
   });
 };
