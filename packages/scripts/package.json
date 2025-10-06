@@ -22,7 +22,7 @@
     "inspectWorkspace": "tsx src/inspectWorkspace.ts",
     "getCoupon": "tsx src/getCoupon.ts",
     "redeemCoupon": "tsx src/redeemCoupon.ts",
-    "exportResults": "tsx src/exportResults.ts",
+    "exportResults": "SKIP_ENV_CHECK=true dotenv -e ./.env.production -- tsx src/exportResults.ts",
     "updateUserEmail": "SKIP_ENV_CHECK=true dotenv -e ./.env.production -- tsx src/updateUserEmail.ts",
     "inspectChatSession": "tsx src/inspectChatSession.ts",
     "inspectCredentials": "tsx src/inspectCredentials.ts",
