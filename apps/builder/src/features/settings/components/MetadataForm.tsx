@@ -1,8 +1,9 @@
-import { FormLabel, HStack, Image, Stack, Text } from "@chakra-ui/react";
+import { FormLabel, Image, Stack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { env } from "@typebot.io/env";
 import { defaultSettings } from "@typebot.io/settings/constants";
 import type { Settings } from "@typebot.io/settings/schemas";
+import { Field } from "@typebot.io/ui/components/Field";
 import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
 import { Popover } from "@typebot.io/ui/components/Popover";
 import { ImageUploadContent } from "@/components/ImageUploadContent";
@@ -141,21 +142,20 @@ export const MetadataForm = ({
         label="Google Tag Manager ID:"
         moreInfoTooltip={t("settings.sideMenu.metadata.gtm.tooltip")}
       />
-      <Stack>
-        <HStack as={FormLabel} mb="0" htmlFor="head" gap={0}>
-          <Text>{t("settings.sideMenu.metadata.headCode.label")}</Text>
+      <Field.Root>
+        <Field.Label>
+          {t("settings.sideMenu.metadata.headCode.label")}
           <MoreInfoTooltip>
             {t("settings.sideMenu.metadata.headCode.tooltip")}
           </MoreInfoTooltip>
-        </HStack>
+        </Field.Label>
         <CodeEditor
-          id="head"
           defaultValue={metadata?.customHeadCode}
           onChange={handleHeadCodeChange}
           lang="html"
           withVariableButton={false}
         />
-      </Stack>
+      </Field.Root>
       <SwitchWithLabel
         label={t("settings.sideMenu.metadata.allowIndexing.label")}
         initialValue={metadata?.allowIndexing}

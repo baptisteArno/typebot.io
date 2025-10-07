@@ -26,6 +26,15 @@ export default {
       fontFamily: {
         heading: ["Uxum Grotesque", "sans-serif"],
         body: ["Untitled Sans", "sans-serif"],
+        mono: [
+          "JetBrainsMono",
+          "SFMono-Regular",
+          "SF Mono",
+          "Menlo",
+          "Consolas",
+          "Liberation Mono",
+          "monospace",
+        ],
       },
       fontWeight: {
         inherit: "inherit",

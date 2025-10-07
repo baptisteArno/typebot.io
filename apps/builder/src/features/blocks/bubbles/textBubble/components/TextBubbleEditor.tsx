@@ -27,6 +27,7 @@ type TextBubbleEditorContentProps = {
 };
 
 const VARIABLE_POPOVER_OFFSET_Y = 5;
+const VARIABLE_POPOVER_OFFSET_X = 50;
 
 export const TextBubbleEditor = ({
   id,
@@ -84,7 +85,11 @@ export const TextBubbleEditor = ({
           relativeRect.top +
           VARIABLE_POPOVER_OFFSET_Y) /
         scale,
-      left: (selectionBoundingRect.left - relativeRect.left) / scale,
+      left:
+        (selectionBoundingRect.left -
+          relativeRect.left +
+          VARIABLE_POPOVER_OFFSET_X) /
+        scale,
     });
     variablesPopoverControls.onOpen();
   };

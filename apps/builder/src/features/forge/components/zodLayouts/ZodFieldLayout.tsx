@@ -274,26 +274,32 @@ export const ZodFieldLayout = ({
 
       if (layout?.inputType === "code")
         return (
-          <CodeEditor
-            defaultValue={data ?? layout?.defaultValue}
-            lang={layout.lang ?? "javascript"}
-            label={layout?.label}
-            placeholder={layout?.placeholder}
-            helperText={
-              layout?.helperText ? (
+          <Field.Root>
+            {layout.label && (
+              <Field.Label>
+                {layout.label}
+                {layout.moreInfoTooltip && (
+                  <MoreInfoTooltip>{layout.moreInfoTooltip}</MoreInfoTooltip>
+                )}
+              </Field.Label>
+            )}
+            <CodeEditor
+              defaultValue={data ?? layout?.defaultValue}
+              lang={layout.lang ?? "javascript"}
+              placeholder={layout?.placeholder}
+              withVariableButton={layout?.withVariableButton}
+              onChange={onDataChange}
+              debounceTimeout={layout?.isDebounceDisabled ? 0 : undefined}
+              withLineNumbers={true}
+            />
+            {layout?.helperText && (
+              <Field.Description>
                 <Markdown components={mdComponents}>
                   {layout.helperText}
                 </Markdown>
-              ) : undefined
-            }
-            isRequired={layout?.isRequired}
-            withVariableButton={layout?.withVariableButton}
-            moreInfoTooltip={layout.moreInfoTooltip}
-            onChange={onDataChange}
-            width={width}
-            debounceTimeout={layout?.isDebounceDisabled ? 0 : undefined}
-            withLineNumbers={true}
-          />
+              </Field.Description>
+            )}
+          </Field.Root>
         );
       return (
         <TextInput

@@ -23,16 +23,10 @@ const List = ({
     isReadOnly,
     value,
     lang,
-    minWidth,
-    maxHeight,
-    maxWidth,
   }: {
     isReadOnly: boolean;
     value: string;
     lang: "shell" | "json";
-    minWidth: string;
-    maxHeight: string;
-    maxWidth: string;
   }) => JSX.Element;
 }) => {
   const { toasts } = ToastPrimitive.useToastManager();
@@ -106,9 +100,6 @@ const List = ({
                           isReadOnly
                           value={toast.data.details.content}
                           lang={toast.data.details.lang}
-                          minWidth="300px"
-                          maxHeight="200px"
-                          maxWidth="calc(450px - 100px)"
                         />
                       </AccordionPanel>
                     </AccordionItem>

@@ -4,7 +4,6 @@ import {
   AccordionIcon,
   AccordionItem,
   AccordionPanel,
-  FormLabel,
   Stack,
 } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
@@ -159,10 +158,10 @@ export const FileInputSettings = ({ options, onOptionsChange }: Props) => {
             <AccordionIcon />
           </AccordionButton>
           <AccordionPanel as={Stack} spacing={4}>
-            <Stack>
-              <FormLabel mb="0">
+            <Field.Root>
+              <Field.Label>
                 {t("blocks.inputs.settings.placeholder.label")}
-              </FormLabel>
+              </Field.Label>
               <CodeEditor
                 lang="html"
                 onChange={handlePlaceholderLabelChange}
@@ -170,10 +169,9 @@ export const FileInputSettings = ({ options, onOptionsChange }: Props) => {
                   options?.labels?.placeholder ??
                   defaultFileInputOptions.labels.placeholder
                 }
-                height={"100px"}
                 withVariableButton={false}
               />
-            </Stack>
+            </Field.Root>
             <TextInput
               label={t("blocks.inputs.settings.button.label")}
               defaultValue={
