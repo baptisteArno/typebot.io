@@ -4,12 +4,12 @@ import { cn } from "../lib/cn";
 const Root = ({ className, ...props }: PrimitiveField.Root.Props) => (
   <PrimitiveField.Root
     {...props}
-    className={cn("flex flex-col gap-1", className)}
+    className={cn("flex flex-col gap-2", className)}
   />
 );
 
 const Label = ({ ...props }: PrimitiveField.Label.Props) => (
-  <PrimitiveField.Label {...props} />
+  <PrimitiveField.Label {...props} className="inline-flex items-center" />
 );
 
 const Description = ({ ...props }: PrimitiveField.Description.Props) => (

@@ -43,9 +43,7 @@ export const SwitchWithLabel = ({
       <FormLabel mb="0">
         {label}
         {moreInfoContent && (
-          <>
-            &nbsp;<MoreInfoTooltip>{moreInfoContent}</MoreInfoTooltip>
-          </>
+          <MoreInfoTooltip>{moreInfoContent}</MoreInfoTooltip>
         )}
       </FormLabel>
       <Switch isChecked={isChecked} onChange={handleChange} {...switchProps} />

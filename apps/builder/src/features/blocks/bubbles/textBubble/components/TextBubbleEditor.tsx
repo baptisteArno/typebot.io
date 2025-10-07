@@ -1,4 +1,3 @@
-import { useTranslate } from "@tolgee/react";
 import type { TElement, Value } from "@typebot.io/rich-text/plate";
 import {
   Plate,
@@ -14,7 +13,7 @@ import { CodeIcon } from "@typebot.io/ui/icons/CodeIcon";
 import type { Variable } from "@typebot.io/variables/schemas";
 import type React from "react";
 import { useEffect, useRef, useState } from "react";
-import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
+import { VariablesCombobox } from "@/components/inputs/VariablesCombobox";
 import { useGraph } from "@/features/graph/providers/GraphProvider";
 import { useOpenControls } from "@/hooks/useOpenControls";
 import { useOutsideClick } from "@/hooks/useOutsideClick";
@@ -35,7 +34,6 @@ export const TextBubbleEditor = ({
   onChange,
   onClose,
 }: TextBubbleEditorContentProps) => {
-  const { t } = useTranslate();
   const { graphPosition } = useGraph();
   const editor = usePlateEditor({
     id,
@@ -160,18 +158,15 @@ export const TextBubbleEditor = ({
             }}
           />
           <Popover.Popup
-            className="p-0"
+            className="p-0 data-[open]:duration-0"
             offset={0}
             // Prevent the editor from closing when clicking on the variable search input
             onPointerDown={(e) => e.stopPropagation()}
           >
-            <VariableSearchInput
+            <VariablesCombobox
               initialVariableId={undefined}
               onSelectVariable={handleVariableSelected}
-              placeholder={t(
-                "editor.blocks.bubbles.textEditor.searchVariable.placeholder",
-              )}
-              autoFocus
+              defaultOpen
             />
           </Popover.Popup>
         </Popover.Root>

@@ -1,8 +1,9 @@
-import { FormControl, FormLabel, Stack } from "@chakra-ui/react";
+import { Stack } from "@chakra-ui/react";
 import type { ResponseVariableMapping } from "@typebot.io/blocks-integrations/httpRequest/schema";
+import { Field } from "@typebot.io/ui/components/Field";
 import type { Variable } from "@typebot.io/variables/schemas";
 import { BasicAutocompleteInputWithVariableButton } from "@/components/inputs/BasicAutocompleteInput";
-import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
+import { VariablesCombobox } from "@/components/inputs/VariablesCombobox";
 import type { TableListItemProps } from "@/components/TableList";
 
 export const DataVariableInputs = ({
@@ -17,23 +18,23 @@ export const DataVariableInputs = ({
 
   return (
     <Stack p="4" rounded="md" flex="1" borderWidth="1px">
-      <FormControl>
-        <FormLabel htmlFor="name">Data:</FormLabel>
+      <Field.Root>
+        <Field.Label>Data:</Field.Label>
         <BasicAutocompleteInputWithVariableButton
           items={dataItems}
           defaultValue={item.bodyPath}
           onChange={handleBodyPathChange}
           placeholder="Select the data"
         />
-      </FormControl>
-      <FormControl>
-        <FormLabel htmlFor="value">Set variable:</FormLabel>
-        <VariableSearchInput
+      </Field.Root>
+      <Field.Root>
+        <Field.Label>Set variable:</Field.Label>
+        <VariablesCombobox
           onSelectVariable={handleVariableChange}
           placeholder="Search for a variable"
           initialVariableId={item.variableId}
         />
-      </FormControl>
+      </Field.Root>
     </Stack>
   );
 };

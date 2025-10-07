@@ -14,7 +14,7 @@ import { NumberInput } from "@/components/inputs/NumberInput";
 import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
 import { Textarea } from "@/components/inputs/Textarea";
 import { TextInput } from "@/components/inputs/TextInput";
-import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
+import { VariablesCombobox } from "@/components/inputs/VariablesCombobox";
 import { PrimitiveList } from "@/components/PrimitiveList";
 import { TableList } from "@/components/TableList";
 import { TagsInput } from "@/components/TagsInput";
@@ -77,19 +77,26 @@ export const ZodFieldLayout = ({
 
   if (layout?.inputType === "variableDropdown") {
     return (
-      <VariableSearchInput
-        initialVariableId={data}
-        onSelectVariable={(variable) => onDataChange(variable?.id)}
-        placeholder={layout?.placeholder}
-        label={layout?.label}
-        moreInfoTooltip={layout.moreInfoTooltip}
-        helperText={
-          layout?.helperText ? (
+      <Field.Root>
+        {layout.label && (
+          <Field.Label>
+            {layout.label}
+            {layout.moreInfoTooltip && (
+              <MoreInfoTooltip>{layout.moreInfoTooltip}</MoreInfoTooltip>
+            )}
+          </Field.Label>
+        )}
+        <VariablesCombobox
+          initialVariableId={data}
+          onSelectVariable={(variable) => onDataChange(variable?.id)}
+          placeholder={layout?.placeholder}
+        />
+        {layout?.helperText && (
+          <Field.Description>
             <Markdown components={mdComponents}>{layout.helperText}</Markdown>
-          ) : undefined
-        }
-        width="full"
-      />
+          </Field.Description>
+        )}
+      </Field.Root>
     );
   }
 
@@ -195,7 +202,7 @@ export const ZodFieldLayout = ({
           <Field.Root>
             {layout.label && (
               <Field.Label>
-                {layout.label}{" "}
+                {layout.label}
                 {layout.moreInfoTooltip && (
                   <MoreInfoTooltip>{layout.moreInfoTooltip}</MoreInfoTooltip>
                 )}

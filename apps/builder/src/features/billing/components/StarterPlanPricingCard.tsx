@@ -72,7 +72,7 @@ export const StarterPlanPricingCard = ({
           features={[
             t("billing.pricingCard.starter.includedSeats"),
             <Stack key="starter-chats" spacing={0}>
-              <HStack>
+              <HStack gap={0}>
                 <Text>2,000 {t("billing.pricingCard.chatsPerMonth")}</Text>
                 <MoreInfoTooltip>
                   {t("billing.pricingCard.chatsTooltip")}

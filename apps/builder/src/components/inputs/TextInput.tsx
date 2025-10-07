@@ -160,8 +160,15 @@ export const TextInput = forwardRef(function TextInput(
       className={className}
     >
       {label && (
-        <FormLabel display="flex" flexShrink={0} gap="1" mb="0" mr="0">
-          {label}{" "}
+        <FormLabel
+          display="flex"
+          flexShrink={0}
+          gap="0"
+          mb="0"
+          mr="0"
+          alignItems={direction === "row" ? "center" : undefined}
+        >
+          {label}
           {moreInfoTooltip && (
             <MoreInfoTooltip>{moreInfoTooltip}</MoreInfoTooltip>
           )}

@@ -1,12 +1,13 @@
-import { FormControl, FormLabel, Stack } from "@chakra-ui/react";
+import { Stack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { defaultChoiceInputOptions } from "@typebot.io/blocks-inputs/choice/constants";
 import type { ChoiceInputBlock } from "@typebot.io/blocks-inputs/choice/schema";
+import { Field } from "@typebot.io/ui/components/Field";
 import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
 import type { Variable } from "@typebot.io/variables/schemas";
 import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
 import { TextInput } from "@/components/inputs/TextInput";
-import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
+import { VariablesCombobox } from "@/components/inputs/VariablesCombobox";
 import { SwitchWithRelatedSettings } from "@/components/SwitchWithRelatedSettings";
 
 type Props = {
@@ -74,27 +75,27 @@ export const ButtonsBlockSettings = ({ options, onOptionsChange }: Props) => {
           onChange={updateSearchInputPlaceholder}
         />
       </SwitchWithRelatedSettings>
-      <FormControl>
-        <FormLabel>
-          {t("blocks.inputs.button.settings.dynamicData.label")}{" "}
+      <Field.Root>
+        <Field.Label>
+          {t("blocks.inputs.button.settings.dynamicData.label")}
           <MoreInfoTooltip>
             {t("blocks.inputs.button.settings.dynamicData.infoText.label")}
           </MoreInfoTooltip>
-        </FormLabel>
-        <VariableSearchInput
+        </Field.Label>
+        <VariablesCombobox
           initialVariableId={options?.dynamicVariableId}
           onSelectVariable={updateDynamicDataVariable}
         />
-      </FormControl>
-      <Stack>
-        <FormLabel mb="0" htmlFor="variable">
+      </Field.Root>
+      <Field.Root>
+        <Field.Label>
           {t("blocks.inputs.settings.saveAnswer.label")}
-        </FormLabel>
-        <VariableSearchInput
+        </Field.Label>
+        <VariablesCombobox
           initialVariableId={options?.variableId}
           onSelectVariable={updateSaveVariable}
         />
-      </Stack>
+      </Field.Root>
     </Stack>
   );
 };

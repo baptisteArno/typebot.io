@@ -110,7 +110,7 @@ export const GeneralSettingsForm = ({
       >
         <FormControl as={HStack} justifyContent="space-between">
           <FormLabel mb="0">
-            {t("settings.sideMenu.general.rememberUser.storage")}{" "}
+            {t("settings.sideMenu.general.rememberUser.storage")}
             <MoreInfoTooltip>
               <Stack>
                 <Text>

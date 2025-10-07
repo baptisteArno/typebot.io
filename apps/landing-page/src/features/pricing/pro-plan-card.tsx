@@ -55,7 +55,7 @@ export const ProPerksList = ({ onChatsTiersClick }: ProPerksListProps) => (
     </PerkListItem>
     <PerkListItem>
       <div className="flex flex-col gap-1">
-        <span className="inline-flex gap-1">
+        <span className="inline-flex">
           <span className="font-bold">
             {new Intl.NumberFormat().format(chatsLimits.PRO)} chats
           </span>

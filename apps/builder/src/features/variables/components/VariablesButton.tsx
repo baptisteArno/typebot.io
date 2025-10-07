@@ -5,7 +5,7 @@ import { Tooltip } from "@typebot.io/ui/components/Tooltip";
 import { cn } from "@typebot.io/ui/lib/cn";
 import type { Variable } from "@typebot.io/variables/schemas";
 import { BracesIcon } from "@/components/icons";
-import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
+import { VariablesCombobox } from "@/components/inputs/VariablesCombobox";
 import { useOpenControls } from "@/hooks/useOpenControls";
 
 type Props = {
@@ -37,8 +37,8 @@ export const VariablesButton = ({
           <Tooltip.Popup>{t("variables.button.tooltip")}</Tooltip.Popup>
         </Tooltip.Root>
       </Popover.Trigger>
-      <Popover.Popup className="w-full p-0">
-        <VariableSearchInput
+      <Popover.Popup className="p-0 data-[open]:duration-0">
+        <VariablesCombobox
           initialVariableId={undefined}
           onSelectVariable={(variable) => {
             if (variable) {
@@ -46,9 +46,7 @@ export const VariablesButton = ({
               controls.onClose();
             }
           }}
-          placeholder={t("variables.button.searchInput.placeholder")}
-          shadow="md"
-          autoFocus
+          defaultOpen
         />
       </Popover.Popup>
     </Popover.Root>

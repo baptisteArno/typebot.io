@@ -20,7 +20,7 @@ import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { CodeEditor } from "@/components/inputs/CodeEditor";
 import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
 import { TextInput } from "@/components/inputs/TextInput";
-import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
+import { VariablesCombobox } from "@/components/inputs/VariablesCombobox";
 import { SwitchWithRelatedSettings } from "@/components/SwitchWithRelatedSettings";
 import { TagsInput } from "@/components/TagsInput";
 
@@ -122,21 +122,21 @@ export const FileInputSettings = ({ options, onOptionsChange }: Props) => {
         onCheckChange={handleMultipleFilesChange}
       />
 
-      <Stack>
-        <FormLabel mb="0" htmlFor="variable">
+      <Field.Root>
+        <Field.Label>
           {options?.isMultipleAllowed
             ? t("blocks.inputs.file.settings.saveMultipleUpload.label")
             : t("blocks.inputs.file.settings.saveSingleUpload.label")}
-        </FormLabel>
-        <VariableSearchInput
+        </Field.Label>
+        <VariablesCombobox
           initialVariableId={options?.variableId}
           onSelectVariable={handleVariableChange}
         />
-      </Stack>
+      </Field.Root>
 
       <Field.Root>
         <Field.Label>
-          Visibility:{" "}
+          Visibility:
           <MoreInfoTooltip>
             This setting determines who can see the uploaded files. "Public"
             means that anyone who has the link can see the files. "Private"

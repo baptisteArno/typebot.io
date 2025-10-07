@@ -88,7 +88,7 @@ export const GroupTitlesAutoGenForm = ({
           />
         )}
         {blockDef && credentialsId && actionDef?.aiGenerate && (
-          <HStack>
+          <HStack gap={0}>
             {actionDef.aiGenerate.models.type === "dynamic" ? (
               <ForgeSelectInput
                 defaultValue={model}

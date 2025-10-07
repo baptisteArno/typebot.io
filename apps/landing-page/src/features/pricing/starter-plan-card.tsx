@@ -54,7 +54,7 @@ export const StarterPlanPerksList = () => (
     </PerkListItem>
     <PerkListItem>
       <div className="flex flex-col gap-1">
-        <span className="inline-flex gap-1">
+        <span className="inline-flex">
           <span className="font-bold">
             {new Intl.NumberFormat().format(chatsLimits.STARTER)} chats
           </span>

@@ -3,10 +3,11 @@ import { useTranslate } from "@tolgee/react";
 import { defaultEmbedBubbleContent } from "@typebot.io/blocks-bubbles/embed/constants";
 import type { EmbedBubbleBlock } from "@typebot.io/blocks-bubbles/embed/schema";
 import { sanitizeUrl } from "@typebot.io/lib/utils";
+import { Field } from "@typebot.io/ui/components/Field";
 import type { Variable } from "@typebot.io/variables/schemas";
 import { NumberInput } from "@/components/inputs/NumberInput";
 import { TextInput } from "@/components/inputs/TextInput";
-import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
+import { VariablesCombobox } from "@/components/inputs/VariablesCombobox";
 import { SwitchWithRelatedSettings } from "@/components/SwitchWithRelatedSettings";
 
 type Props = {
@@ -36,7 +37,7 @@ export const EmbedBubbleSettings = ({ content, onSubmit }: Props) => {
       waitForEvent: { ...content?.waitForEvent, isEnabled },
     });
 
-  const updateSaveDataInVariableId = (variable?: Pick<Variable, "id">) =>
+  const updateSaveDataInVariableId = (variable?: Pick<Variable, "id">) => {
     onSubmit({
       ...content,
       waitForEvent: {
@@ -44,6 +45,7 @@ export const EmbedBubbleSettings = ({ content, onSubmit }: Props) => {
         saveDataInVariableId: variable?.id,
       },
     });
+  };
 
   return (
     <Stack p="2" spacing={6}>
@@ -78,11 +80,13 @@ export const EmbedBubbleSettings = ({ content, onSubmit }: Props) => {
           defaultValue={content?.waitForEvent?.name}
           onChange={updateWaitEventName}
         />
-        <VariableSearchInput
-          onSelectVariable={updateSaveDataInVariableId}
-          initialVariableId={content?.waitForEvent?.saveDataInVariableId}
-          label="Save data in variable"
-        />
+        <Field.Root>
+          <Field.Label>Save data in variable</Field.Label>
+          <VariablesCombobox
+            onSelectVariable={updateSaveDataInVariableId}
+            initialVariableId={content?.waitForEvent?.saveDataInVariableId}
+          />
+        </Field.Root>
       </SwitchWithRelatedSettings>
     </Stack>
   );

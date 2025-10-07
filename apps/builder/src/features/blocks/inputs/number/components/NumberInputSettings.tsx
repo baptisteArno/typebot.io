@@ -24,12 +24,13 @@ import {
   type NumberInputBlock,
   numberInputOptionsSchema,
 } from "@typebot.io/blocks-inputs/number/schema";
+import { Field } from "@typebot.io/ui/components/Field";
 import type { Variable } from "@typebot.io/variables/schemas";
 import { useEffect } from "react";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { NumberInput } from "@/components/inputs/NumberInput";
 import { TextInput } from "@/components/inputs/TextInput";
-import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
+import { VariablesCombobox } from "@/components/inputs/VariablesCombobox";
 import { currencies } from "../../payment/currencies";
 
 type Props = {
@@ -180,15 +181,15 @@ export const NumberInputSettings = ({ options, onOptionsChange }: Props) => {
           </AccordionPanel>
         </AccordionItem>
       </Accordion>
-      <Stack>
-        <FormLabel mb="0" htmlFor="variable">
+      <Field.Root>
+        <Field.Label>
           {t("blocks.inputs.settings.saveAnswer.label")}
-        </FormLabel>
-        <VariableSearchInput
+        </Field.Label>
+        <VariablesCombobox
           initialVariableId={options?.variableId}
           onSelectVariable={handleVariableChange}
         />
-      </Stack>
+      </Field.Root>
     </Stack>
   );
 };

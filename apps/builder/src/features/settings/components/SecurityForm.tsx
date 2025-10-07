@@ -1,8 +1,9 @@
-import { FormControl, FormLabel, Stack } from "@chakra-ui/react";
+import { Stack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { env } from "@typebot.io/env";
 import { isDefined } from "@typebot.io/lib/utils";
 import type { Settings } from "@typebot.io/settings/schemas";
+import { Field } from "@typebot.io/ui/components/Field";
 import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
 import { TagsInput } from "@/components/TagsInput";
 
@@ -22,19 +23,19 @@ export const SecurityForm = ({ security, onUpdate }: Props) => {
 
   return (
     <Stack spacing={6}>
-      <FormControl>
-        <FormLabel display="flex" flexShrink={0} gap="1" mr="0" mb="4">
+      <Field.Root>
+        <Field.Label>
           {t("settings.sideMenu.security.allowedOrigins")}
           <MoreInfoTooltip>
             {t("settings.sideMenu.security.allowedOrigins.tooltip")}
           </MoreInfoTooltip>
-        </FormLabel>
+        </Field.Label>
         <TagsInput
           items={security?.allowedOrigins}
           onChange={updateItems}
           placeholder={env.NEXT_PUBLIC_VIEWER_URL[0]}
         />
-      </FormControl>
+      </Field.Root>
     </Stack>
   );
 };

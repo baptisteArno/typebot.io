@@ -1,11 +1,4 @@
-import {
-  Alert,
-  AlertIcon,
-  FormLabel,
-  Stack,
-  Tag,
-  Text,
-} from "@chakra-ui/react";
+import { Alert, AlertIcon, Stack, Tag, Text } from "@chakra-ui/react";
 import { isInputBlock } from "@typebot.io/blocks-core/helpers";
 import {
   defaultSetVariableOptions,
@@ -17,6 +10,7 @@ import {
 import type { SetVariableBlock } from "@typebot.io/blocks-logic/setVariable/schema";
 import { timeZones } from "@typebot.io/lib/timeZones";
 import { isDefined } from "@typebot.io/lib/utils";
+import { Field } from "@typebot.io/ui/components/Field";
 import type { Variable } from "@typebot.io/variables/schemas";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { CodeEditor } from "@/components/inputs/CodeEditor";
@@ -24,7 +18,7 @@ import { RadioButtons } from "@/components/inputs/RadioButtons";
 import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
 import { Textarea } from "@/components/inputs/Textarea";
 import { TextInput } from "@/components/inputs/TextInput";
-import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
+import { VariablesCombobox } from "@/components/inputs/VariablesCombobox";
 import { WhatsAppLogo } from "@/components/logos/WhatsAppLogo";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 
@@ -78,16 +72,13 @@ export const SetVariableSettings = ({ options, onOptionsChange }: Props) => {
 
   return (
     <Stack spacing={4}>
-      <Stack>
-        <FormLabel mb="0" htmlFor="variable-search">
-          Search or create variable:
-        </FormLabel>
-        <VariableSearchInput
+      <Field.Root>
+        <Field.Label>Search or create variable:</Field.Label>
+        <VariablesCombobox
           onSelectVariable={updateVariableId}
           initialVariableId={options?.variableId}
-          id="variable-search"
         />
-      </Stack>
+      </Field.Root>
 
       <Stack spacing="4">
         <Stack>
@@ -257,11 +248,13 @@ const SetVariableValue = ({
                   lang="javascript"
                   withLineNumbers={true}
                 />
-                <VariableSearchInput
-                  label="Save error"
-                  initialVariableId={options.saveErrorInVariableId}
-                  onSelectVariable={updateSaveErrorInVariableId}
-                />
+                <Field.Root>
+                  <Field.Label>Save error</Field.Label>
+                  <VariablesCombobox
+                    initialVariableId={options.saveErrorInVariableId}
+                    onSelectVariable={updateSaveErrorInVariableId}
+                  />
+                </Field.Root>
               </Stack>
             ) : (
               <Textarea
@@ -276,7 +269,7 @@ const SetVariableValue = ({
     case "Pop":
     case "Shift":
       return (
-        <VariableSearchInput
+        <VariablesCombobox
           initialVariableId={options.saveItemInVariableId}
           onSelectVariable={updateListVariableId}
           placeholder={
@@ -287,17 +280,17 @@ const SetVariableValue = ({
     case "Map item with same index": {
       return (
         <Stack p="2" rounded="md" borderWidth={1}>
-          <VariableSearchInput
+          <VariablesCombobox
             initialVariableId={options.mapListItemParams?.baseItemVariableId}
             onSelectVariable={updateItemVariableId}
             placeholder="Base item"
           />
-          <VariableSearchInput
+          <VariablesCombobox
             initialVariableId={options.mapListItemParams?.baseListVariableId}
             onSelectVariable={updateBaseListVariableId}
             placeholder="Base list"
           />
-          <VariableSearchInput
+          <VariablesCombobox
             initialVariableId={options.mapListItemParams?.targetListVariableId}
             onSelectVariable={updateTargetListVariableId}
             placeholder="Target list"

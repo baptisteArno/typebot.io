@@ -3,7 +3,7 @@ import { cardMappableFields } from "@typebot.io/blocks-inputs/cards/constants";
 import type { CardsBlock } from "@typebot.io/blocks-inputs/cards/schema";
 import type { Variable } from "@typebot.io/variables/schemas";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
-import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
+import { VariablesCombobox } from "@/components/inputs/VariablesCombobox";
 import { TableList, type TableListItemProps } from "@/components/TableList";
 
 type Props = {
@@ -65,7 +65,7 @@ const CardSaveResponseItem = ({
         items={cardMappableFields}
         onChange={changeValueToExtract}
       />
-      <VariableSearchInput
+      <VariablesCombobox
         initialVariableId={item.variableId}
         onSelectVariable={changeVariableId}
       />

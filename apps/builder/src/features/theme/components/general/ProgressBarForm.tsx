@@ -99,7 +99,7 @@ export const ProgressBarForm = ({
       />
       <Field.Root className="flex-row">
         <Field.Label>
-          Position when embedded:{" "}
+          Position when embedded:
           <MoreInfoTooltip>
             Select "fixed" to always position the progress bar at the top of the
             window even though your bot is embedded. Select "absolute" to

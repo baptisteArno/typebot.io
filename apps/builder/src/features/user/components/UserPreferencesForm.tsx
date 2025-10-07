@@ -76,19 +76,21 @@ export const UserPreferencesForm = () => {
     <Stack spacing={12}>
       <HStack spacing={4}>
         <Heading size="md">{t("account.preferences.language.heading")}</Heading>
-        <BasicSelect
-          items={Object.entries(localeHumanReadable).map(([key, value]) => ({
-            label: value,
-            value: key as keyof typeof localeHumanReadable,
-          }))}
-          value={currentLanguage as keyof typeof localeHumanReadable}
-          onChange={updateLocale}
-        />
-        {currentLanguage !== "en" && (
-          <MoreInfoTooltip>
-            {t("account.preferences.language.tooltip")}
-          </MoreInfoTooltip>
-        )}
+        <div className="flex items-center">
+          <BasicSelect
+            items={Object.entries(localeHumanReadable).map(([key, value]) => ({
+              label: value,
+              value: key as keyof typeof localeHumanReadable,
+            }))}
+            value={currentLanguage as keyof typeof localeHumanReadable}
+            onChange={updateLocale}
+          />
+          {currentLanguage !== "en" && (
+            <MoreInfoTooltip>
+              {t("account.preferences.language.tooltip")}
+            </MoreInfoTooltip>
+          )}
+        </div>
       </HStack>
       <Stack spacing={6}>
         <Heading size="md">

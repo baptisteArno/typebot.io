@@ -116,7 +116,7 @@ export const CodeEditor = ({
     >
       {label && (
         <FormLabel display="flex" flexShrink={0} gap="1" mb="0" mr="0">
-          {label}{" "}
+          {label}
           {moreInfoTooltip && (
             <MoreInfoTooltip>{moreInfoTooltip}</MoreInfoTooltip>
           )}

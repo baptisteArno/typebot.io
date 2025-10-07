@@ -138,7 +138,7 @@ export const UpdateStripeCredentialsDialogBody = ({
         />
         <Stack>
           <FormLabel>
-            {t("blocks.inputs.payment.settings.stripeConfig.testKeys.label")}{" "}
+            {t("blocks.inputs.payment.settings.stripeConfig.testKeys.label")}
             <MoreInfoTooltip>
               {t(
                 "blocks.inputs.payment.settings.stripeConfig.testKeys.infoText.label",

@@ -3,7 +3,7 @@ import { InformationSquareIcon } from "../icons/InformationSquareIcon";
 
 type Props = {
   children: React.ReactNode;
-  icon?: React.ReactNode;
+  icon?: React.ReactElement;
   onClick?: () => void;
 };
 
@@ -11,7 +11,7 @@ export const MoreInfoTooltip = ({ children, icon, onClick }: Props) => {
   return (
     <Popover.Root openOnHover delay={0} closeDelay={100}>
       <Popover.Trigger
-        className="p-1 pl-0 inline-flex align-middle [&>svg]:size-4 [&>svg]:text-gray-11"
+        className="p-1 pb-0.5 align-bottom inline-flex [&>svg]:size-4 [&>svg]:text-gray-11"
         onClick={onClick}
       >
         {icon || <InformationSquareIcon />}

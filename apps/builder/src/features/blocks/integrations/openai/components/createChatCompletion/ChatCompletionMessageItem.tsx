@@ -8,7 +8,7 @@ import type { ChatCompletionOpenAIOptions } from "@typebot.io/blocks-integration
 import type { Variable } from "@typebot.io/variables/schemas";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { Textarea } from "@/components/inputs/Textarea";
-import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
+import { VariablesCombobox } from "@/components/inputs/VariablesCombobox";
 import type { TableListItemProps } from "@/components/TableList";
 
 type Props = TableListItemProps<
@@ -97,7 +97,7 @@ const ChatCompletionMessageItemContent = ({
     case "Dialogue":
       return (
         <Stack alignItems="flex-end">
-          <VariableSearchInput
+          <VariablesCombobox
             initialVariableId={item.dialogueVariableId}
             onSelectVariable={onChangeDialogueVariableId}
             placeholder="Dialogue variable"

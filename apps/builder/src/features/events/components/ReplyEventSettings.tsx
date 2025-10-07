@@ -4,14 +4,14 @@ import {
   AccordionIcon,
   AccordionItem,
   AccordionPanel,
-  FormLabel,
   Stack,
 } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import type { ReplyEvent } from "@typebot.io/events/schemas";
+import { Field } from "@typebot.io/ui/components/Field";
 import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
 import type { Variable } from "@typebot.io/variables/schemas";
-import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
+import { VariablesCombobox } from "@/components/inputs/VariablesCombobox";
 
 export const ReplyEventSettings = ({
   options,
@@ -49,39 +49,39 @@ export const ReplyEventSettings = ({
             <AccordionIcon />
           </AccordionButton>
           <AccordionPanel as={Stack} spacing={4}>
-            <Stack>
-              <FormLabel mb="0" htmlFor="variable">
+            <Field.Root>
+              <Field.Label>
                 {t("blocks.events.reply.settings.contentVariable.label")}
-              </FormLabel>
-              <VariableSearchInput
+              </Field.Label>
+              <VariablesCombobox
                 initialVariableId={options?.contentVariableId}
                 onSelectVariable={updateContentVariableId}
               />
-            </Stack>
-            <Stack>
-              <FormLabel mb="0" htmlFor="variable">
-                {t("blocks.events.reply.settings.inputTypeVariable.label")}{" "}
+            </Field.Root>
+            <Field.Root>
+              <Field.Label>
+                {t("blocks.events.reply.settings.inputTypeVariable.label")}
                 <MoreInfoTooltip>
                   {t("blocks.events.reply.settings.inputTypeVariable.infoText")}
                 </MoreInfoTooltip>
-              </FormLabel>
-              <VariableSearchInput
+              </Field.Label>
+              <VariablesCombobox
                 initialVariableId={options?.inputTypeVariableId}
                 onSelectVariable={updateInputTypeVariableId}
               />
-            </Stack>
-            <Stack>
-              <FormLabel mb="0" htmlFor="variable">
-                {t("blocks.events.reply.settings.inputNameVariable.label")}{" "}
+            </Field.Root>
+            <Field.Root>
+              <Field.Label>
+                {t("blocks.events.reply.settings.inputNameVariable.label")}
                 <MoreInfoTooltip>
                   {t("blocks.events.reply.settings.inputNameVariable.infoText")}
                 </MoreInfoTooltip>
-              </FormLabel>
-              <VariableSearchInput
+              </Field.Label>
+              <VariablesCombobox
                 initialVariableId={options?.inputNameVariableId}
                 onSelectVariable={updateInputNameVariableId}
               />
-            </Stack>
+            </Field.Root>
           </AccordionPanel>
         </AccordionItem>
       </Accordion>

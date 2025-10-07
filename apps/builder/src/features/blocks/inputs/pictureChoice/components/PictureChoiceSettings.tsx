@@ -1,10 +1,11 @@
-import { FormLabel, Stack } from "@chakra-ui/react";
+import { Stack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { defaultPictureChoiceOptions } from "@typebot.io/blocks-inputs/pictureChoice/constants";
 import type { PictureChoiceBlock } from "@typebot.io/blocks-inputs/pictureChoice/schema";
+import { Field } from "@typebot.io/ui/components/Field";
 import type { Variable } from "@typebot.io/variables/schemas";
 import { TextInput } from "@/components/inputs/TextInput";
-import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
+import { VariablesCombobox } from "@/components/inputs/VariablesCombobox";
 import { SwitchWithRelatedSettings } from "@/components/SwitchWithRelatedSettings";
 
 type Props = {
@@ -105,46 +106,46 @@ export const PictureChoiceSettings = ({ options, onOptionsChange }: Props) => {
         }
         onCheckChange={updateIsDynamicItemsEnabled}
       >
-        <Stack>
-          <FormLabel mb="0" htmlFor="variable">
+        <Field.Root>
+          <Field.Label>
             {t("blocks.inputs.picture.settings.dynamicItems.images.label")}
-          </FormLabel>
-          <VariableSearchInput
+          </Field.Label>
+          <VariablesCombobox
             initialVariableId={options?.dynamicItems?.pictureSrcsVariableId}
             onSelectVariable={updateDynamicItemsPictureSrcsVariable}
           />
-        </Stack>
-        <Stack>
-          <FormLabel mb="0" htmlFor="variable">
+        </Field.Root>
+        <Field.Root>
+          <Field.Label>
             {t("blocks.inputs.picture.settings.dynamicItems.titles.label")}
-          </FormLabel>
-          <VariableSearchInput
+          </Field.Label>
+          <VariablesCombobox
             initialVariableId={options?.dynamicItems?.titlesVariableId}
             onSelectVariable={updateDynamicItemsTitlesVariable}
           />
-        </Stack>
-        <Stack>
-          <FormLabel mb="0" htmlFor="variable">
+        </Field.Root>
+        <Field.Root>
+          <Field.Label>
             {t(
               "blocks.inputs.picture.settings.dynamicItems.descriptions.label",
             )}
-          </FormLabel>
-          <VariableSearchInput
+          </Field.Label>
+          <VariablesCombobox
             initialVariableId={options?.dynamicItems?.descriptionsVariableId}
             onSelectVariable={updateDynamicItemsDescriptionsVariable}
           />
-        </Stack>
+        </Field.Root>
       </SwitchWithRelatedSettings>
 
-      <Stack>
-        <FormLabel mb="0" htmlFor="variable">
+      <Field.Root>
+        <Field.Label>
           {t("blocks.inputs.settings.saveAnswer.label")}
-        </FormLabel>
-        <VariableSearchInput
+        </Field.Label>
+        <VariablesCombobox
           initialVariableId={options?.variableId}
           onSelectVariable={updateSaveVariable}
         />
-      </Stack>
+      </Field.Root>
     </Stack>
   );
 };

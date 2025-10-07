@@ -1,10 +1,11 @@
-import { FormLabel, Stack } from "@chakra-ui/react";
+import { Stack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { defaultUrlInputOptions } from "@typebot.io/blocks-inputs/url/constants";
 import type { UrlInputBlock } from "@typebot.io/blocks-inputs/url/schema";
+import { Field } from "@typebot.io/ui/components/Field";
 import type { Variable } from "@typebot.io/variables/schemas";
 import { TextInput } from "@/components/inputs/TextInput";
-import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
+import { VariablesCombobox } from "@/components/inputs/VariablesCombobox";
 
 type Props = {
   options: UrlInputBlock["options"];
@@ -50,15 +51,15 @@ export const UrlInputSettings = ({ options, onOptionsChange }: Props) => {
         }
         onChange={handleRetryMessageChange}
       />
-      <Stack>
-        <FormLabel mb="0" htmlFor="variable">
+      <Field.Root>
+        <Field.Label>
           {t("blocks.inputs.settings.saveAnswer.label")}
-        </FormLabel>
-        <VariableSearchInput
+        </Field.Label>
+        <VariablesCombobox
           initialVariableId={options?.variableId}
           onSelectVariable={handleVariableChange}
         />
-      </Stack>
+      </Field.Root>
     </Stack>
   );
 };

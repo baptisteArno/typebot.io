@@ -61,7 +61,7 @@ export const ForgeSelectInput = ({
     >
       {label && (
         <FormLabel mb="0" mr="0" flexShrink={0}>
-          {label}{" "}
+          {label}
           {moreInfoTooltip && (
             <MoreInfoTooltip>{moreInfoTooltip}</MoreInfoTooltip>
           )}

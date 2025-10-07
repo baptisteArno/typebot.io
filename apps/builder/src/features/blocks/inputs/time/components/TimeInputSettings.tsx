@@ -1,10 +1,11 @@
-import { FormLabel, Stack } from "@chakra-ui/react";
+import { Stack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { defaultTimeInputOptions } from "@typebot.io/blocks-inputs/time/constants";
 import type { TimeInputBlock } from "@typebot.io/blocks-inputs/time/schema";
+import { Field } from "@typebot.io/ui/components/Field";
 import type { Variable } from "@typebot.io/variables/schemas";
 import { TextInput } from "@/components/inputs/TextInput";
-import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
+import { VariablesCombobox } from "@/components/inputs/VariablesCombobox";
 
 type Props = {
   options: TimeInputBlock["options"];
@@ -43,15 +44,15 @@ export const TimeInputSettings = ({ options, onOptionsChange }: Props) => {
         }
         onChange={updateButtonLabel}
       />
-      <Stack>
-        <FormLabel mb="0" htmlFor="variable">
+      <Field.Root>
+        <Field.Label>
           {t("blocks.inputs.settings.saveAnswer.label")}
-        </FormLabel>
-        <VariableSearchInput
+        </Field.Label>
+        <VariablesCombobox
           initialVariableId={options?.variableId}
           onSelectVariable={handleVariableChange}
         />
-      </Stack>
+      </Field.Root>
     </Stack>
   );
 };

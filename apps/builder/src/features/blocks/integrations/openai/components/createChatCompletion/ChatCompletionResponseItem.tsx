@@ -6,7 +6,7 @@ import {
 import type { ChatCompletionOpenAIOptions } from "@typebot.io/blocks-integrations/openai/schema";
 import type { Variable } from "@typebot.io/variables/schemas";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
-import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
+import { VariablesCombobox } from "@/components/inputs/VariablesCombobox";
 import type { TableListItemProps } from "@/components/TableList";
 
 type Props = TableListItemProps<
@@ -33,7 +33,7 @@ export const ChatCompletionResponseItem = ({ item, onItemChange }: Props) => {
         items={chatCompletionResponseValues}
         onChange={changeValueToExtract}
       />
-      <VariableSearchInput
+      <VariablesCombobox
         onSelectVariable={changeVariableId}
         initialVariableId={item.variableId}
       />

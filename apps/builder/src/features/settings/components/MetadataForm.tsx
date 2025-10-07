@@ -142,7 +142,7 @@ export const MetadataForm = ({
         moreInfoTooltip={t("settings.sideMenu.metadata.gtm.tooltip")}
       />
       <Stack>
-        <HStack as={FormLabel} mb="0" htmlFor="head">
+        <HStack as={FormLabel} mb="0" htmlFor="head" gap={0}>
           <Text>{t("settings.sideMenu.metadata.headCode.label")}</Text>
           <MoreInfoTooltip>
             {t("settings.sideMenu.metadata.headCode.tooltip")}

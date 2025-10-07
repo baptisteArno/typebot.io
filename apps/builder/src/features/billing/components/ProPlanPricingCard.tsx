@@ -117,7 +117,7 @@ export const ProPlanPricingCard = ({
                 features={[
                   t("billing.pricingCard.pro.includedSeats"),
                   <Stack key="starter-chats" spacing={1}>
-                    <HStack key="test">
+                    <HStack key="test" gap={0}>
                       <Text>
                         10,000 {t("billing.pricingCard.chatsPerMonth")}
                       </Text>

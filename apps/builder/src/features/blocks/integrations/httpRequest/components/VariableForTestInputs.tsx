@@ -1,8 +1,9 @@
-import { FormControl, FormLabel, Stack } from "@chakra-ui/react";
+import { Stack } from "@chakra-ui/react";
 import type { VariableForTest } from "@typebot.io/blocks-integrations/httpRequest/schema";
+import { Field } from "@typebot.io/ui/components/Field";
 import type { Variable } from "@typebot.io/variables/schemas";
 import { TextInput } from "@/components/inputs/TextInput";
-import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
+import { VariablesCombobox } from "@/components/inputs/VariablesCombobox";
 import type { TableListItemProps } from "@/components/TableList";
 
 export const VariableForTestInputs = ({
@@ -17,14 +18,13 @@ export const VariableForTestInputs = ({
   };
   return (
     <Stack p="4" rounded="md" flex="1" borderWidth="1px">
-      <FormControl>
-        <FormLabel htmlFor={"name" + item.id}>Variable name:</FormLabel>
-        <VariableSearchInput
-          id={"name" + item.id}
+      <Field.Root>
+        <Field.Label>Variable name:</Field.Label>
+        <VariablesCombobox
           initialVariableId={item.variableId}
           onSelectVariable={handleVariableSelect}
         />
-      </FormControl>
+      </Field.Root>
       <TextInput
         label="Test value:"
         defaultValue={item.value ?? ""}

@@ -10,7 +10,7 @@ import type { Variable } from "@typebot.io/variables/schemas";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
 import { TextInput } from "@/components/inputs/TextInput";
-import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
+import { VariablesCombobox } from "@/components/inputs/VariablesCombobox";
 import { SwitchWithRelatedSettings } from "@/components/SwitchWithRelatedSettings";
 
 type Props = {
@@ -123,18 +123,16 @@ export const TextInputSettings = ({ options, onOptionsChange }: Props) => {
         }
         onCheckChange={updateAudioClipEnabled}
       >
-        <Stack>
-          <FormLabel mb="0" htmlFor="variable">
-            Save the URL in a variable:
-          </FormLabel>
-          <VariableSearchInput
+        <Field.Root>
+          <Field.Label>Save the URL in a variable:</Field.Label>
+          <VariablesCombobox
             initialVariableId={options?.audioClip?.saveVariableId}
             onSelectVariable={updateAudioClipSaveVariableId}
           />
-        </Stack>
+        </Field.Root>
         <Field.Root>
           <Field.Label>
-            Visibility:{" "}
+            Visibility:
             <MoreInfoTooltip>
               This setting determines who can see the uploaded files. "Public"
               means that anyone who has the link can see the files. "Private"
@@ -157,18 +155,16 @@ export const TextInputSettings = ({ options, onOptionsChange }: Props) => {
         }
         onCheckChange={updateAttachmentsEnabled}
       >
-        <Stack>
-          <FormLabel mb="0" htmlFor="variable">
-            Save the URLs in a variable:
-          </FormLabel>
-          <VariableSearchInput
+        <Field.Root>
+          <Field.Label>Save the URLs in a variable:</Field.Label>
+          <VariablesCombobox
             initialVariableId={options?.attachments?.saveVariableId}
             onSelectVariable={updateAttachmentsSaveVariableId}
           />
-        </Stack>
+        </Field.Root>
         <Field.Root>
           <Field.Label>
-            Visibility:{" "}
+            Visibility:
             <MoreInfoTooltip>
               This setting determines who can see the uploaded files. "Public"
               means that anyone who has the link can see the files. "Private"
@@ -183,15 +179,15 @@ export const TextInputSettings = ({ options, onOptionsChange }: Props) => {
           />
         </Field.Root>
       </SwitchWithRelatedSettings>
-      <Stack>
-        <FormLabel mb="0" htmlFor="variable">
+      <Field.Root>
+        <Field.Label>
           {t("blocks.inputs.settings.saveAnswer.label")}
-        </FormLabel>
-        <VariableSearchInput
+        </Field.Label>
+        <VariablesCombobox
           initialVariableId={options?.variableId}
           onSelectVariable={updateVariableId}
         />
-      </Stack>
+      </Field.Root>
     </Stack>
   );
 };

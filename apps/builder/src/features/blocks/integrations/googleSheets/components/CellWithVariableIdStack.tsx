@@ -2,7 +2,7 @@ import { Stack } from "@chakra-ui/react";
 import type { ExtractingCell } from "@typebot.io/blocks-integrations/googleSheets/schema";
 import type { Variable } from "@typebot.io/variables/schemas";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
-import { VariableSearchInput } from "@/components/inputs/VariableSearchInput";
+import { VariablesCombobox } from "@/components/inputs/VariablesCombobox";
 import type { TableListItemProps } from "@/components/TableList";
 
 export const CellWithVariableIdStack = ({
@@ -28,10 +28,9 @@ export const CellWithVariableIdStack = ({
         items={columns}
         placeholder="Select a column"
       />
-      <VariableSearchInput
+      <VariablesCombobox
         initialVariableId={item.variableId}
         onSelectVariable={handleVariableIdChange}
-        placeholder="Select a variable"
       />
     </Stack>
   );
