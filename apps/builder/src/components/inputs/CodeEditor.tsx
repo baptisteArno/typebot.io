@@ -175,6 +175,7 @@ export const CodeEditor = ({
                 initialVariableId={undefined}
                 onSelectVariable={handleVariableSelected}
                 defaultOpen
+                className="w-72"
               />
             </Popover.Popup>
           </Popover.Root>

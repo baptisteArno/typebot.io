@@ -1,12 +1,15 @@
 import { Tag } from "@chakra-ui/react";
 import { createId } from "@typebot.io/lib/createId";
 import { byId } from "@typebot.io/lib/utils";
+import { Button } from "@typebot.io/ui/components/Button";
 import { Combobox } from "@typebot.io/ui/components/Combobox";
 import type { InputProps } from "@typebot.io/ui/components/Input";
 import { PlusSignIcon } from "@typebot.io/ui/icons/PlusSignIcon";
+import { Settings01Icon } from "@typebot.io/ui/icons/Settings01Icon";
 import type { Variable } from "@typebot.io/variables/schemas";
 import { useState } from "react";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
+import { useRightPanel } from "@/hooks/useRightPanel";
 
 type Props = {
   onSelectVariable: (variable: Variable | undefined) => void;
@@ -25,6 +28,7 @@ export const VariablesCombobox = ({
   placeholder = "Select a variable",
   defaultOpen,
 }: Props) => {
+  const [, setRightPanel] = useRightPanel();
   const { typebot, createVariable } = useTypebot();
   const selectedVariable =
     typebot?.variables.find(byId(initialVariableId)) ?? null;
@@ -75,11 +79,21 @@ export const VariablesCombobox = ({
       defaultOpen={defaultOpen}
       itemToStringLabel={(item: VariableItem) => item.name}
     >
-      <Combobox.Input
-        className={className}
-        size={size}
-        placeholder={placeholder}
-      />
+      <div className="relative">
+        <Combobox.Input
+          className={className}
+          size={size}
+          placeholder={placeholder}
+        />
+        <Button
+          size="icon"
+          variant="ghost"
+          className="absolute top-1/2 -translate-y-1/2 right-1 size-7"
+          onClick={() => setRightPanel("variables")}
+        >
+          <Settings01Icon className="opacity-50" />
+        </Button>
+      </div>
       <Combobox.Popup>
         <Combobox.List>
           {(item: VariableItem) => (
