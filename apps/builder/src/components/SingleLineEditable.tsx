@@ -33,7 +33,7 @@ export const SingleLineEditable = ({
 
   const commitValue = () => {
     setIsEditing(false);
-    onValueCommit(currentValue);
+    onValueCommit(value ?? currentValue);
   };
 
   useOutsideClick({
