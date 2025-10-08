@@ -8,9 +8,9 @@ import type { ZodLayoutMetadata } from "@typebot.io/zod";
 import Markdown, { type Components } from "react-markdown";
 import type { ZodTypeAny, z } from "zod";
 import { BasicAutocompleteInputWithVariableButton } from "@/components/inputs/BasicAutocompleteInput";
+import { BasicNumberInput } from "@/components/inputs/BasicNumberInput";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { CodeEditor } from "@/components/inputs/CodeEditor";
-import { NumberInput } from "@/components/inputs/NumberInput";
 import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
 import { Textarea } from "@/components/inputs/Textarea";
 import { TextInput } from "@/components/inputs/TextInput";
@@ -168,22 +168,26 @@ export const ZodFieldLayout = ({
     case "ZodNumber":
     case "ZodUnion": {
       return (
-        <NumberInput
-          defaultValue={data ?? layout?.defaultValue}
-          label={layout?.label}
-          placeholder={layout?.placeholder}
-          helperText={
-            layout?.helperText ? (
+        <Field.Root>
+          {layout?.label && (
+            <Field.Label>
+              {layout.label}
+              {layout.moreInfoTooltip && (
+                <MoreInfoTooltip>{layout.moreInfoTooltip}</MoreInfoTooltip>
+              )}
+            </Field.Label>
+          )}
+          <BasicNumberInput
+            defaultValue={data ?? layout?.defaultValue}
+            onValueChange={onDataChange}
+            placeholder={layout?.placeholder}
+          />
+          {layout?.helperText && (
+            <Field.Description>
               <Markdown components={mdComponents}>{layout.helperText}</Markdown>
-            ) : undefined
-          }
-          isRequired={layout?.isRequired}
-          moreInfoTooltip={layout?.moreInfoTooltip}
-          onValueChange={onDataChange}
-          direction={layout?.direction}
-          width={width}
-          debounceTimeout={layout?.isDebounceDisabled ? 0 : undefined}
-        />
+            </Field.Description>
+          )}
+        </Field.Root>
       );
     }
     case "ZodBoolean": {

@@ -10,7 +10,7 @@ import {
   extractVariableIdsFromObject,
 } from "@typebot.io/variables/extractVariablesFromObject";
 import type { Variable } from "@typebot.io/variables/schemas";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { useShallow } from "zustand/react/shallow";
 import { CopyIcon } from "@/components/icons";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
@@ -36,7 +36,6 @@ export const ElementsSelectionMenu = ({
   const [mousePosition, setMousePosition] = useState<Coordinates>();
   const { typebot, deleteGroups, pasteGroups, pasteEvents, deleteEvents } =
     useTypebot();
-  const ref = useRef<HTMLDivElement>(null);
 
   const groupsInClipboard = useSelectionStore(
     useShallow((state) => state.elementsInClipboard),
@@ -49,8 +48,6 @@ export const ElementsSelectionMenu = ({
         setFocusedElements: state.setFocusedElements,
       })),
     );
-
-  useEventListener("pointerup", (e) => e.stopPropagation(), ref.current);
 
   useEventListener("mousemove", (e) => {
     setMousePosition({
@@ -160,7 +157,7 @@ export const ElementsSelectionMenu = ({
 
   if (focusedElementIds.length === 0 || isReadOnly) return null;
   return (
-    <div ref={ref} className="flex items-stretch gap-1">
+    <div className="flex items-stretch gap-1">
       <span className="text-sm text-orange-10 font-medium px-2 inline-flex items-center select-none">
         {focusedElementIds.length} selected
       </span>

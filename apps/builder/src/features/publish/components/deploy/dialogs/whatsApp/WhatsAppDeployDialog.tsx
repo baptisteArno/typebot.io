@@ -18,9 +18,11 @@ import type { Comparison } from "@typebot.io/conditions/schemas";
 import { isDefined } from "@typebot.io/lib/utils";
 import { defaultSessionExpiryTimeout } from "@typebot.io/settings/constants";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
+import { Field } from "@typebot.io/ui/components/Field";
+import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
 import { AlertInfo } from "@/components/AlertInfo";
+import { BasicNumberInput } from "@/components/inputs/BasicNumberInput";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
-import { NumberInput } from "@/components/inputs/NumberInput";
 import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
 import { SwitchWithRelatedSettings } from "@/components/SwitchWithRelatedSettings";
 import { TableList } from "@/components/TableList";
@@ -217,20 +219,28 @@ export const WhatsAppDeployDialog = ({
                       <AccordionIcon />
                     </AccordionButton>
                     <AccordionPanel as={Stack} spacing="4" pt="4">
-                      <HStack>
-                        <NumberInput
+                      <Field.Root className="inline-flex flex-row items-center">
+                        <Field.Label>
+                          Session expire timeout
+                          <MoreInfoTooltip>
+                            A number between 0 and 48 that represents the time
+                            in hours after which the session will expire if the
+                            user does not interact with the bot. The
+                            conversation restarts if the user sends a message
+                            after that expiration time.
+                          </MoreInfoTooltip>
+                        </Field.Label>
+                        <BasicNumberInput
                           max={48}
                           min={0}
-                          width="100px"
-                          label="Session expire timeout:"
+                          className="w-24"
                           defaultValue={whatsAppSettings?.sessionExpiryTimeout}
                           placeholder={defaultSessionExpiryTimeout.toString()}
-                          moreInfoTooltip="A number between 0 and 48 that represents the time in hours after which the session will expire if the user does not interact with the bot. The conversation restarts if the user sends a message after that expiration time."
                           onValueChange={updateSessionExpiryTimeout}
                           withVariableButton={false}
-                          suffix="hours"
                         />
-                      </HStack>
+                        hours
+                      </Field.Root>
                       <SwitchWithRelatedSettings
                         label={"Start bot condition"}
                         initialValue={isDefined(

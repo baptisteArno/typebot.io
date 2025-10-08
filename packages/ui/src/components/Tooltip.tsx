@@ -1,5 +1,5 @@
 import { Tooltip as TooltipPrimitive } from "@base-ui-components/react/tooltip";
-import type * as React from "react";
+import * as React from "react";
 import { cn } from "../lib/cn";
 import type { VariantProps } from "../lib/cva";
 import { buttonVariants } from "./Button";
@@ -45,22 +45,21 @@ const Trigger = ({
   <TooltipPrimitive.Trigger {...props} render={render} />
 );
 
-const TriggerButton = ({
-  children,
-  variant,
-  size,
-  className,
-  ...props
-}: React.ComponentProps<typeof TooltipPrimitive.Trigger> &
-  VariantProps<typeof buttonVariants>) => (
+const TriggerButton = React.forwardRef<
+  React.ElementRef<typeof TooltipPrimitive.Trigger>,
+  React.ComponentProps<typeof TooltipPrimitive.Trigger> &
+    VariantProps<typeof buttonVariants>
+>(({ children, variant, size, className, ...props }, ref) => (
   <TooltipPrimitive.Trigger
     {...props}
+    ref={ref}
     className={cn(buttonVariants({ variant, size }), className)}
     data-disabled={props.disabled}
   >
     {children}
   </TooltipPrimitive.Trigger>
-);
+));
+TriggerButton.displayName = TooltipPrimitive.Trigger.displayName;
 
 const Popup = ({
   className,

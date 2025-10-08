@@ -20,8 +20,9 @@ import type {
   ContainerTheme,
   InputTheme,
 } from "@typebot.io/theme/schemas";
+import { Field } from "@typebot.io/ui/components/Field";
+import { BasicNumberInput } from "@/components/inputs/BasicNumberInput";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
-import { NumberInput } from "@/components/inputs/NumberInput";
 import { ColorPicker } from "../../../../components/ColorPicker";
 
 type Props<T extends ((placeholder: string) => void) | undefined> = {
@@ -145,30 +146,27 @@ export const ContainerThemeForm = <
           <AccordionPanel as={Stack}>
             {backgroundColor !== "transparent" && (
               <>
-                <NumberInput
-                  size="sm"
-                  direction="row"
-                  label="Opacity:"
-                  width="100px"
-                  min={0}
-                  max={1}
-                  step={0.1}
-                  defaultValue={theme?.opacity ?? defaultTheme?.opacity}
-                  onValueChange={updateOpacity}
-                  withVariableButton={false}
-                />
-                {(theme?.opacity ?? defaultTheme?.opacity) !== 1 && (
-                  <NumberInput
-                    size="sm"
-                    direction="row"
-                    label="Blur:"
-                    suffix="px"
-                    width="100px"
+                <Field.Root className="flex-row">
+                  <Field.Label>Opacity:</Field.Label>
+                  <BasicNumberInput
                     min={0}
-                    defaultValue={theme?.blur ?? defaultTheme?.blur}
-                    onValueChange={updateBlur}
+                    max={1}
+                    step={0.1}
+                    defaultValue={theme?.opacity ?? defaultTheme?.opacity}
+                    onValueChange={updateOpacity}
                     withVariableButton={false}
                   />
+                </Field.Root>
+                {(theme?.opacity ?? defaultTheme?.opacity) !== 1 && (
+                  <Field.Root className="flex-row">
+                    <Field.Label>Blur:</Field.Label>
+                    <BasicNumberInput
+                      min={0}
+                      defaultValue={theme?.blur ?? defaultTheme?.blur}
+                      onValueChange={updateBlur}
+                      withVariableButton={false}
+                    />
+                  </Field.Root>
                 )}
               </>
             )}
@@ -240,15 +238,16 @@ const BorderThemeForm = ({
             items={borderRoundness}
           />
           {(border?.roundeness ?? defaultBorder?.roundeness) === "custom" && (
-            <NumberInput
-              size="sm"
-              suffix="px"
-              width="60px"
-              min={0}
-              defaultValue={border?.customRoundeness}
-              onValueChange={updateCustomRoundeness}
-              withVariableButton={false}
-            />
+            <Field.Root className="flex-row inline-flex items-center">
+              <BasicNumberInput
+                className="max-w-40"
+                min={0}
+                defaultValue={border?.customRoundeness}
+                onValueChange={updateCustomRoundeness}
+                withVariableButton={false}
+              />
+              px
+            </Field.Root>
           )}
         </HStack>
       </HStack>
@@ -257,15 +256,13 @@ const BorderThemeForm = ({
         <FormLabel mb="0" mr="0">
           Thickness:
         </FormLabel>
-        <NumberInput
-          size="sm"
-          suffix="px"
-          width="60px"
+        <BasicNumberInput
           min={0}
           defaultValue={thickness}
           onValueChange={updateThickness}
           withVariableButton={false}
         />
+        <p>px</p>
       </HStack>
 
       {thickness > 0 && (
@@ -279,18 +276,17 @@ const BorderThemeForm = ({
               onColorChange={updateColor}
             />
           </HStack>
-          <NumberInput
-            size="sm"
-            direction="row"
-            label="Opacity:"
-            width="100px"
-            min={0}
-            max={1}
-            step={0.1}
-            defaultValue={border?.opacity ?? defaultOpacity}
-            onValueChange={updateOpacity}
-            withVariableButton={false}
-          />
+          <Field.Root className="flex-row">
+            <Field.Label>Opacity:</Field.Label>
+            <BasicNumberInput
+              min={0}
+              max={1}
+              step={0.1}
+              defaultValue={border?.opacity ?? defaultOpacity}
+              onValueChange={updateOpacity}
+              withVariableButton={false}
+            />
+          </Field.Root>
         </>
       )}
     </Stack>

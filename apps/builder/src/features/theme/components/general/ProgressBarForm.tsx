@@ -14,8 +14,8 @@ import type { TypebotV6 } from "@typebot.io/typebot/schemas/typebot";
 import { Field } from "@typebot.io/ui/components/Field";
 import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
 import { ColorPicker } from "@/components/ColorPicker";
+import { BasicNumberInput } from "@/components/inputs/BasicNumberInput";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
-import { NumberInput } from "@/components/inputs/NumberInput";
 import { SwitchWithRelatedSettings } from "@/components/SwitchWithRelatedSettings";
 
 type Props = {
@@ -88,18 +88,17 @@ export const ProgressBarForm = ({
           onColorChange={updateColor}
         />
       </HStack>
-      <NumberInput
-        label="Thickness:"
-        direction="row"
-        withVariableButton={false}
-        maxW="100px"
-        defaultValue={progressBar?.thickness ?? defaultProgressBarThickness}
-        onValueChange={updateThickness}
-        size="sm"
-      />
       <Field.Root className="flex-row">
+        <Field.Label>Thickness:</Field.Label>
+        <BasicNumberInput
+          withVariableButton={false}
+          defaultValue={progressBar?.thickness ?? defaultProgressBarThickness}
+          onValueChange={updateThickness}
+        />
+      </Field.Root>
+      <Field.Root>
         <Field.Label>
-          Position when embedded:
+          Position when embedded
           <MoreInfoTooltip>
             Select "fixed" to always position the progress bar at the top of the
             window even though your bot is embedded. Select "absolute" to

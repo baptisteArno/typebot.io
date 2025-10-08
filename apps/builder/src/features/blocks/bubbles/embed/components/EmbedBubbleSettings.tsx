@@ -5,7 +5,7 @@ import type { EmbedBubbleBlock } from "@typebot.io/blocks-bubbles/embed/schema";
 import { sanitizeUrl } from "@typebot.io/lib/utils";
 import { Field } from "@typebot.io/ui/components/Field";
 import type { Variable } from "@typebot.io/variables/schemas";
-import { NumberInput } from "@/components/inputs/NumberInput";
+import { BasicNumberInput } from "@/components/inputs/BasicNumberInput";
 import { TextInput } from "@/components/inputs/TextInput";
 import { VariablesCombobox } from "@/components/inputs/VariablesCombobox";
 import { SwitchWithRelatedSettings } from "@/components/SwitchWithRelatedSettings";
@@ -26,7 +26,7 @@ export const EmbedBubbleSettings = ({ content, onSubmit }: Props) => {
 
   const handleHeightChange = (
     height?: NonNullable<EmbedBubbleBlock["content"]>["height"],
-  ) => height && onSubmit({ ...content, height });
+  ) => onSubmit({ ...content, height });
 
   const updateWaitEventName = (name: string) =>
     onSubmit({ ...content, waitForEvent: { ...content?.waitForEvent, name } });
@@ -62,13 +62,17 @@ export const EmbedBubbleSettings = ({ content, onSubmit }: Props) => {
         </Text>
       </Stack>
 
-      <NumberInput
-        label="Height:"
-        defaultValue={content?.height ?? defaultEmbedBubbleContent.height}
-        onValueChange={handleHeightChange}
-        suffix={t("editor.blocks.bubbles.embed.settings.numberInput.unit")}
-        direction="row"
-      />
+      <Field.Root className="inline-flex flex-row items-center">
+        <Field.Label>Height</Field.Label>
+        <BasicNumberInput
+          min={0}
+          step={30}
+          defaultValue={content?.height ?? defaultEmbedBubbleContent.height}
+          onValueChange={handleHeightChange}
+        />
+        {t("editor.blocks.bubbles.embed.settings.numberInput.unit")}
+      </Field.Root>
+
       <SwitchWithRelatedSettings
         label="Wait for event?"
         initialValue={content?.waitForEvent?.isEnabled ?? false}

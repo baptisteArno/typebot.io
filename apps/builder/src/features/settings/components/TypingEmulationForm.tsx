@@ -1,4 +1,4 @@
-import { HStack, Stack, Text } from "@chakra-ui/react";
+import { Stack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { isDefined } from "@typebot.io/lib/utils";
 import {
@@ -6,7 +6,8 @@ import {
   maxTypingEmulationMaxDelay,
 } from "@typebot.io/settings/constants";
 import type { Settings } from "@typebot.io/settings/schemas";
-import { NumberInput } from "@/components/inputs/NumberInput";
+import { Field } from "@typebot.io/ui/components/Field";
+import { BasicNumberInput } from "@/components/inputs/BasicNumberInput";
 import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
 import { SwitchWithRelatedSettings } from "@/components/SwitchWithRelatedSettings";
 
@@ -52,37 +53,39 @@ export const TypingEmulationForm = ({ typingEmulation, onUpdate }: Props) => {
         }
         onCheckChange={updateIsEnabled}
       >
-        <NumberInput
-          label={t("settings.sideMenu.typing.emulation.speed.label")}
-          data-testid="speed"
-          defaultValue={
-            typingEmulation?.speed ?? defaultSettings.typingEmulation.speed
-          }
-          onValueChange={updateSpeed}
-          withVariableButton={false}
-          maxW="100px"
-          step={30}
-          direction="row"
-        />
-        <HStack>
-          <NumberInput
-            label={t("settings.sideMenu.typing.emulation.maxDelay.label")}
-            data-testid="max-delay"
+        <Field.Root className="flex-row">
+          <Field.Label>
+            {t("settings.sideMenu.typing.emulation.speed.label")}
+          </Field.Label>
+          <BasicNumberInput
+            defaultValue={
+              typingEmulation?.speed ?? defaultSettings.typingEmulation.speed
+            }
+            onValueChange={updateSpeed}
+            withVariableButton={false}
+            className="max-w-40"
+            step={30}
+          />
+        </Field.Root>
+
+        <Field.Root className="flex-row inline-flex items-center">
+          <Field.Label>
+            {t("settings.sideMenu.typing.emulation.maxDelay.label")}
+          </Field.Label>
+          <BasicNumberInput
             defaultValue={
               typingEmulation?.maxDelay ??
               defaultSettings.typingEmulation.maxDelay
             }
+            className="max-w-40"
             onValueChange={updateMaxDelay}
             withVariableButton={false}
-            maxW="100px"
             min={0}
             max={maxTypingEmulationMaxDelay}
             step={0.1}
-            direction="row"
-            size="sm"
           />
-          <Text>{t("seconds")}</Text>
-        </HStack>
+          {t("seconds")}
+        </Field.Root>
 
         <SwitchWithLabel
           label={t(
@@ -98,23 +101,25 @@ export const TypingEmulationForm = ({ typingEmulation, onUpdate }: Props) => {
           }
         />
       </SwitchWithRelatedSettings>
-      <HStack>
-        <NumberInput
-          label={t("settings.sideMenu.typing.emulation.delayBetweenBubbles")}
-          defaultValue={
-            typingEmulation?.delayBetweenBubbles ??
-            defaultSettings.typingEmulation.delayBetweenBubbles
-          }
-          withVariableButton={false}
-          onValueChange={updateDelayBetweenBubbles}
-          direction="row"
-          maxW={"100px"}
-          min={0}
-          max={5}
-          size="sm"
-        />
-        <Text>{t("seconds")}</Text>
-      </HStack>
+      <Field.Root>
+        <Field.Label>
+          {t("settings.sideMenu.typing.emulation.delayBetweenBubbles")}
+        </Field.Label>
+        <div className="inline-flex items-center gap-1">
+          <BasicNumberInput
+            defaultValue={
+              typingEmulation?.delayBetweenBubbles ??
+              defaultSettings.typingEmulation.delayBetweenBubbles
+            }
+            className="max-w-40"
+            withVariableButton={false}
+            onValueChange={updateDelayBetweenBubbles}
+            min={0}
+            max={5}
+          />
+          <span>{t("seconds")}</span>
+        </div>
+      </Field.Root>
     </Stack>
   );
 };

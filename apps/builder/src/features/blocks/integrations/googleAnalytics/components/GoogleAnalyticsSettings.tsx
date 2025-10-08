@@ -8,7 +8,8 @@ import {
   Stack,
 } from "@chakra-ui/react";
 import type { GoogleAnalyticsBlock } from "@typebot.io/blocks-integrations/googleAnalytics/schema";
-import { NumberInput } from "@/components/inputs/NumberInput";
+import { Field } from "@typebot.io/ui/components/Field";
+import { BasicNumberInput } from "@/components/inputs/BasicNumberInput";
 import { TextInput } from "@/components/inputs/TextInput";
 
 type Props = {
@@ -81,13 +82,14 @@ export const GoogleAnalyticsSettings = ({
               placeholder="Example: Campaign Z"
               onChange={updateLabel}
             />
-            <NumberInput
-              direction="column"
-              label="Event value:"
-              defaultValue={options?.value}
-              placeholder="Example: 0"
-              onValueChange={updateValue}
-            />
+            <Field.Root>
+              <Field.Label>Event value:</Field.Label>
+              <BasicNumberInput
+                defaultValue={options?.value}
+                onValueChange={updateValue}
+                placeholder="Example: 0"
+              />
+            </Field.Root>
             <TextInput
               label="Send to:"
               moreInfoTooltip="Useful to send a conversion event to Google Ads"

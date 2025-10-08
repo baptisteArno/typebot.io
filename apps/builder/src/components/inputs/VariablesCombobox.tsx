@@ -79,7 +79,7 @@ export const VariablesCombobox = ({
       defaultOpen={defaultOpen}
       itemToStringLabel={(item: VariableItem) => item.name}
     >
-      <div className="relative">
+      <div className="relative flex-1">
         <Combobox.Input
           className={className}
           size={size}

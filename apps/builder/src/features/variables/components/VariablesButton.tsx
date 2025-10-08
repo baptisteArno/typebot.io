@@ -10,11 +10,13 @@ import { useOpenControls } from "@/hooks/useOpenControls";
 
 type Props = {
   onSelectVariable: (variable: Pick<Variable, "name" | "id">) => void;
+  offset?: number;
 } & ButtonProps;
 
 export const VariablesButton = ({
   onSelectVariable,
   className,
+  offset,
   variant = "secondary",
   ...props
 }: Props) => {
@@ -23,20 +25,23 @@ export const VariablesButton = ({
 
   return (
     <Popover.Root {...controls}>
-      <Popover.Trigger>
-        <Tooltip.Root>
-          <Tooltip.TriggerButton
-            aria-label={t("variables.button.tooltip")}
-            variant={variant}
-            size="icon"
-            className={cn("size-10", className)}
-            {...props}
-          >
-            <BracesIcon />
-          </Tooltip.TriggerButton>
-          <Tooltip.Popup>{t("variables.button.tooltip")}</Tooltip.Popup>
-        </Tooltip.Root>
-      </Popover.Trigger>
+      <Popover.Trigger
+        render={(popoverProps) => (
+          <Tooltip.Root>
+            <Tooltip.TriggerButton
+              {...popoverProps}
+              aria-label={t("variables.button.tooltip")}
+              variant={variant}
+              size="icon"
+              className={cn("size-10", className)}
+              {...props}
+            >
+              <BracesIcon />
+            </Tooltip.TriggerButton>
+            <Tooltip.Popup>{t("variables.button.tooltip")}</Tooltip.Popup>
+          </Tooltip.Root>
+        )}
+      />
       <Popover.Popup className="p-0 data-[open]:duration-0">
         <VariablesCombobox
           initialVariableId={undefined}

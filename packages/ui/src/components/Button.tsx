@@ -15,7 +15,7 @@ const buttonVariants = cva(
         default:
           "bg-orange-9 hover:bg-orange-10 active:bg-orange-11 text-gray-1 dark:text-gray-12",
         secondary: "bg-gray-3 hover:bg-gray-4 active:bg-gray-5",
-        outline: "bg-transparent border border-orange-8 text-orange-11",
+        outline: "bg-transparent border hover:bg-gray-2 active:bg-gray-3",
         "outline-secondary":
           "bg-transparent border border-gray-7 text-gray-12 hover:bg-gray-2 active:bg-gray-4",
         ghost:

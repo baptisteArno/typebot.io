@@ -1,7 +1,8 @@
 import { Stack } from "@chakra-ui/react";
 import type { SmtpCredentials } from "@typebot.io/credentials/schemas";
 import { isDefined } from "@typebot.io/lib/utils";
-import { NumberInput } from "@/components/inputs/NumberInput";
+import { Field } from "@typebot.io/ui/components/Field";
+import { BasicNumberInput } from "@/components/inputs/BasicNumberInput";
 import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
 import { TextInput } from "@/components/inputs/TextInput";
 
@@ -84,15 +85,15 @@ export const SmtpConfigForm = ({ config, onConfigChange }: Props) => {
         moreInfoContent="If enabled, the connection will use TLS when connecting to server. If disabled then TLS is used if server supports the STARTTLS extension. In most cases enable it if you are connecting to port 465. For port 587 or 25 keep it disabled."
         isDisabled={!config}
       />
-      <NumberInput
-        isRequired
-        label="Port number:"
-        placeholder="25"
-        defaultValue={config?.port}
-        onValueChange={handlePortNumberChange}
-        withVariableButton={false}
-        isDisabled={!config}
-      />
+      <Field.Root className="flex-row">
+        <Field.Label>Port number:</Field.Label>
+        <BasicNumberInput
+          defaultValue={config?.port}
+          onValueChange={handlePortNumberChange}
+          withVariableButton={false}
+          disabled={!config}
+        />
+      </Field.Root>
     </Stack>
   );
 };

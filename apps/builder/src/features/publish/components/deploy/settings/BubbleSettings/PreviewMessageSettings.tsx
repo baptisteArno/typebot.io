@@ -9,7 +9,7 @@ import {
 import type { PreviewMessageParams } from "@typebot.io/js";
 import { isDefined } from "@typebot.io/lib/utils";
 import { useState } from "react";
-import { NumberInput } from "@/components/inputs/NumberInput";
+import { BasicNumberInput } from "@/components/inputs/BasicNumberInput";
 
 type Props = {
   defaultAvatar: string;
@@ -108,9 +108,8 @@ export const PreviewMessageSettings = ({ defaultAvatar, onChange }: Props) => {
             {isAutoShowEnabled && (
               <>
                 <Text>After</Text>
-                <NumberInput
-                  size="sm"
-                  w="70px"
+                <BasicNumberInput
+                  className="max-w-40"
                   defaultValue={autoShowDelay}
                   onValueChange={(val) =>
                     isDefined(val) && updateAutoShowDelay(val)

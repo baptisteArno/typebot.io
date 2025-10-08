@@ -9,7 +9,7 @@ import {
 import type { PopupProps } from "@typebot.io/js";
 import { isDefined } from "@typebot.io/lib/utils";
 import { useEffect, useState } from "react";
-import { NumberInput } from "@/components/inputs/NumberInput";
+import { BasicNumberInput } from "@/components/inputs/BasicNumberInput";
 
 type Props = {
   onUpdateSettings: (windowSettings: Pick<PopupProps, "autoShowDelay">) => void;
@@ -38,9 +38,8 @@ export const PopupSettings = ({ onUpdateSettings, ...props }: Props) => {
         {isEnabled && (
           <>
             <Text>after</Text>
-            <NumberInput
-              size="sm"
-              w="70px"
+            <BasicNumberInput
+              className="max-w-40"
               defaultValue={inputValue}
               onValueChange={(val) => isDefined(val) && setInputValue(val)}
               withVariableButton={false}

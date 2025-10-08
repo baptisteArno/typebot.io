@@ -9,7 +9,10 @@ const Root = ({ className, ...props }: PrimitiveField.Root.Props) => (
 );
 
 const Label = ({ ...props }: PrimitiveField.Label.Props) => (
-  <PrimitiveField.Label {...props} className="inline-flex items-center" />
+  <PrimitiveField.Label
+    {...props}
+    className="inline-flex items-center flex-shrink-0"
+  />
 );
 
 const Description = ({ ...props }: PrimitiveField.Description.Props) => (

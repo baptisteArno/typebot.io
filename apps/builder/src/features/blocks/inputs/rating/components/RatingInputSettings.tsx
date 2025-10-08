@@ -4,8 +4,8 @@ import { defaultRatingInputOptions } from "@typebot.io/blocks-inputs/rating/cons
 import type { RatingInputBlock } from "@typebot.io/blocks-inputs/rating/schema";
 import { Field } from "@typebot.io/ui/components/Field";
 import type { Variable } from "@typebot.io/variables/schemas";
+import { BasicNumberInput } from "@/components/inputs/BasicNumberInput";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
-import { NumberInput } from "@/components/inputs/NumberInput";
 import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
 import { TextInput } from "@/components/inputs/TextInput";
 import { VariablesCombobox } from "@/components/inputs/VariablesCombobox";
@@ -89,12 +89,15 @@ export const RatingInputSettings = ({ options, onOptionsChange }: Props) => {
       </Stack>
 
       {buttonType === "Numbers" && (
-        <NumberInput
-          defaultValue={options?.startsAt ?? defaultRatingInputOptions.startsAt}
-          onValueChange={updateStartsAt}
-          label="Starts at"
-          direction="row"
-        />
+        <Field.Root className="flex-row">
+          <Field.Label>Starts at</Field.Label>
+          <BasicNumberInput
+            defaultValue={
+              options?.startsAt ?? defaultRatingInputOptions.startsAt
+            }
+            onValueChange={updateStartsAt}
+          />
+        </Field.Root>
       )}
 
       {buttonType === "Icons" && (
