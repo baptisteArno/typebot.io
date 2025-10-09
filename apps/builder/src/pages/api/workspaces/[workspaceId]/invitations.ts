@@ -59,7 +59,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       });
       if (!env.NEXT_PUBLIC_E2E_TEST)
         await sendWorkspaceMemberInvitationEmail({
-          to: data.email,
           workspaceName: workspace.name,
           guestEmail: data.email,
           url: `${env.NEXTAUTH_URL}/typebots?workspaceId=${workspace.id}`,
@@ -78,7 +77,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       const invitation = await prisma.workspaceInvitation.create({ data });
       if (!env.NEXT_PUBLIC_E2E_TEST)
         await sendWorkspaceMemberInvitationEmail({
-          to: data.email,
           workspaceName: workspace.name,
           guestEmail: data.email,
           url: `${env.NEXTAUTH_URL}/typebots?workspaceId=${workspace.id}`,

@@ -82,7 +82,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       });
     if (!env.NEXT_PUBLIC_E2E_TEST)
       await sendGuestInvitationEmail({
-        to: email,
         hostEmail: user.email ?? "",
         url: `${env.NEXTAUTH_URL}/typebots?workspaceId=${typebot.workspaceId}`,
         guestEmail: email.toLowerCase(),

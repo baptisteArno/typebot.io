@@ -8,7 +8,6 @@ import {
   Text,
 } from "@react-email/components";
 import { render } from "@react-email/render";
-import type { SendMailOptions } from "nodemailer";
 import type { ComponentProps } from "react";
 import { sendEmail } from "../helpers/sendEmail";
 import { Logo } from "./components/Logo";
@@ -76,12 +75,12 @@ GuestInvitationEmail.PreviewProps = {
 
 export default GuestInvitationEmail;
 
-export const sendGuestInvitationEmail = async ({
-  to,
-  ...props
-}: Pick<SendMailOptions, "to"> & ComponentProps<typeof GuestInvitationEmail>) =>
+export const sendGuestInvitationEmail = async (
+  props: ComponentProps<typeof GuestInvitationEmail>,
+) =>
   sendEmail({
-    to,
+    to: props.guestEmail,
     subject: `You've been invited to collaborate`,
     html: await render(<GuestInvitationEmail {...props} />),
+    replyTo: props.hostEmail,
   });
