@@ -6,16 +6,16 @@ import { convertResultsToTableData } from "@typebot.io/results/convertResultsToT
 import { parseBlockIdVariableIdMap } from "@typebot.io/results/parseBlockIdVariableIdMap";
 import { parseColumnsOrder } from "@typebot.io/results/parseColumnsOrder";
 import { parseResultHeader } from "@typebot.io/results/parseResultHeader";
-import {
-  type ResultWithAnswers,
-  resultWithAnswersSchema,
-} from "@typebot.io/results/schemas/results";
+import { resultWithAnswersSchema } from "@typebot.io/results/schemas/results";
 import type { TypebotV6 } from "@typebot.io/typebot/schemas/typebot";
 import { z } from "@typebot.io/zod";
 import cliProgress from "cli-progress";
-import { writeFileSync } from "fs";
+import { createWriteStream } from "fs";
 import { unparse } from "papaparse";
 
+/**
+ * Exports results from a typebot to a CSV file using optimized cursor-based pagination.
+ */
 const exportResults = async () => {
   const typebotId = (await p.text({
     message: "Typebot ID?",
@@ -52,55 +52,8 @@ const exportResults = async () => {
 
   progressBar.start(totalResultsToExport, 0);
 
-  const results: ResultWithAnswers[] = [];
-
-  for (let skip = 0; skip < totalResultsToExport; skip += 50) {
-    results.push(
-      ...z.array(resultWithAnswersSchema).parse(
-        (
-          await prisma.result.findMany({
-            take: 50,
-            skip,
-            where: {
-              typebotId,
-              hasStarted: true,
-              isArchived: false,
-            },
-            orderBy: {
-              createdAt: "desc",
-            },
-            include: {
-              answers: {
-                select: {
-                  content: true,
-                  blockId: true,
-                },
-              },
-              answersV2: {
-                select: {
-                  content: true,
-                  blockId: true,
-                },
-              },
-            },
-          })
-        ).map((r) => ({ ...r, answers: r.answersV2.concat(r.answers) })),
-      ),
-    );
-    progressBar.increment(50);
-  }
-
-  progressBar.stop();
-
-  writeFileSync("logs/results.json", JSON.stringify(results));
-
   const resultHeader = parseResultHeader(typebot, []);
-
-  const dataToUnparse = convertResultsToTableData({
-    results,
-    headerCells: resultHeader,
-    blockIdVariableIdMap: parseBlockIdVariableIdMap(typebot?.groups),
-  });
+  const blockIdVariableIdMap = parseBlockIdVariableIdMap(typebot?.groups);
 
   const headerIds = parseColumnsOrder(
     typebot?.resultsTablePreferences?.columnsOrder,
@@ -115,20 +68,86 @@ const exportResults = async () => {
     return [...currentHeaderIds, columnLabel];
   }, []);
 
-  const data = dataToUnparse.map<{ [key: string]: string }>((data) => {
-    const newObject: { [key: string]: string } = {};
-    headerIds?.forEach((headerId) => {
-      const headerLabel = resultHeader.find(byId(headerId))?.label;
-      if (!headerLabel) return;
-      const newKey = parseUniqueKey(headerLabel, Object.keys(newObject));
-      newObject[newKey] = data[headerId]?.plainText;
-    });
-    return newObject;
+  const csvHeaders = headerIds.map((headerId) => {
+    const headerLabel = resultHeader.find(byId(headerId))?.label;
+    return headerLabel ?? headerId;
   });
 
-  const csv = unparse(data);
+  const csvStream = createWriteStream("logs/results.csv");
+  csvStream.write(unparse([csvHeaders]) + "\n");
 
-  writeFileSync("logs/results.csv", csv);
+  const batchSize = 500;
+  let lastCreatedAt: Date | null = null;
+  const processedIds = new Set<string>();
+  let processedCount = 0;
+
+  while (processedCount < totalResultsToExport) {
+    const rawBatch = z.array(resultWithAnswersSchema).parse(
+      (
+        await prisma.result.findMany({
+          take: batchSize,
+          where: {
+            typebotId,
+            hasStarted: true,
+            isArchived: false,
+            ...(lastCreatedAt ? { createdAt: { lte: lastCreatedAt } } : {}),
+          },
+          orderBy: {
+            createdAt: "desc",
+          },
+          include: {
+            answers: {
+              select: {
+                content: true,
+                blockId: true,
+              },
+            },
+            answersV2: {
+              select: {
+                content: true,
+                blockId: true,
+              },
+            },
+          },
+        })
+      ).map((r) => ({ ...r, answers: r.answersV2.concat(r.answers) })),
+    );
+
+    const batch = rawBatch.filter((r) => !processedIds.has(r.id));
+
+    if (batch.length === 0) break;
+
+    batch.forEach((r) => processedIds.add(r.id));
+
+    const dataToUnparse = convertResultsToTableData({
+      results: batch,
+      headerCells: resultHeader,
+      blockIdVariableIdMap,
+    });
+
+    const csvRows = dataToUnparse.map<{ [key: string]: string }>((data) => {
+      const newObject: { [key: string]: string } = {};
+      headerIds?.forEach((headerId) => {
+        const headerLabel = resultHeader.find(byId(headerId))?.label;
+        if (!headerLabel) return;
+        const newKey = parseUniqueKey(headerLabel, Object.keys(newObject));
+        newObject[newKey] = data[headerId]?.plainText;
+      });
+      return newObject;
+    });
+
+    if (csvRows.length > 0) {
+      const csvContent = unparse(csvRows, { header: false });
+      csvStream.write(csvContent + "\n");
+    }
+
+    lastCreatedAt = batch[batch.length - 1].createdAt;
+    processedCount += batch.length;
+    progressBar.update(processedCount);
+  }
+
+  csvStream.end();
+  progressBar.stop();
 };
 
 exportResults();
