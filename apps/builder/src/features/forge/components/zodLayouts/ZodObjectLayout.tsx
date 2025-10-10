@@ -1,15 +1,7 @@
-import {
-  Accordion,
-  AccordionButton,
-  AccordionIcon,
-  AccordionItem,
-  AccordionPanel,
-  Stack,
-  Text,
-} from "@chakra-ui/react";
 import { evaluateIsHidden } from "@typebot.io/forge/helpers/evaluateIsHidden";
 import type { ForgedBlockDefinition } from "@typebot.io/forge-repository/definitions";
 import type { ForgedBlock } from "@typebot.io/forge-repository/schemas";
+import { Accordion } from "@typebot.io/ui/components/Accordion";
 import type { ZodLayoutMetadata } from "@typebot.io/zod";
 import type { ReactNode } from "react";
 import type { ZodTypeAny, z } from "zod";
@@ -59,15 +51,10 @@ export const ZodObjectLayout = ({
         return {
           nodes: [
             ...nodes.nodes,
-            <Accordion allowToggle key={layout.accordion}>
-              <AccordionItem>
-                <AccordionButton>
-                  <Text w="full" textAlign="left">
-                    {layout.accordion}
-                  </Text>
-                  <AccordionIcon />
-                </AccordionButton>
-                <AccordionPanel as={Stack} spacing={4}>
+            <Accordion.Root key={layout.accordion}>
+              <Accordion.Item>
+                <Accordion.Trigger>{layout.accordion}</Accordion.Trigger>
+                <Accordion.Panel>
                   {accordionKeys.map((accordionKey, idx) => (
                     <ZodFieldLayout
                       key={accordionKey + idx}
@@ -81,9 +68,9 @@ export const ZodObjectLayout = ({
                       isInAccordion
                     />
                   ))}
-                </AccordionPanel>
-              </AccordionItem>
-            </Accordion>,
+                </Accordion.Panel>
+              </Accordion.Item>
+            </Accordion.Root>,
           ],
           accordionsCreated: [
             ...nodes.accordionsCreated,

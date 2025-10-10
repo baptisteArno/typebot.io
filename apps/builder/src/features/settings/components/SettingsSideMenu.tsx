@@ -1,21 +1,12 @@
-import {
-  Accordion,
-  AccordionButton,
-  AccordionIcon,
-  AccordionItem,
-  AccordionPanel,
-  Heading,
-  HStack,
-  Stack,
-  useColorModeValue,
-} from "@chakra-ui/react";
+import { Heading, Stack, useColorModeValue } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import type { Settings } from "@typebot.io/settings/schemas";
+import { Accordion } from "@typebot.io/ui/components/Accordion";
 import {
   ChatIcon,
   CodeIcon,
   LockedIcon,
-  MoreVerticalIcon,
+  MoreHorizontalIcon,
 } from "@/components/icons";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { GeneralSettingsForm } from "./GeneralSettingsForm";
@@ -62,67 +53,63 @@ export const SettingsSideMenu = () => {
       rounded="xl"
       bg={useColorModeValue("white", "gray.900")}
     >
-      <Accordion allowMultiple borderBottomWidth={0} defaultIndex={[0]}>
-        <AccordionItem borderTopWidth={0}>
-          <AccordionButton py={4}>
-            <HStack flex="1" pl={2}>
-              <MoreVerticalIcon transform={"rotate(90deg)"} />
+      <Accordion.Root>
+        <Accordion.Item className="border-0">
+          <Accordion.Trigger className="py-5">
+            <div className="flex items-center gap-3 pl-2">
+              <MoreHorizontalIcon />
               <Heading fontSize="md">{t("settings.sideMenu.general")}</Heading>
-            </HStack>
-            <AccordionIcon />
-          </AccordionButton>
-          <AccordionPanel>
+            </div>
+          </Accordion.Trigger>
+          <Accordion.Panel>
             {typebot && (
               <GeneralSettingsForm
                 generalSettings={typebot.settings.general}
                 onGeneralSettingsChange={handleGeneralSettingsChange}
               />
             )}
-          </AccordionPanel>
-        </AccordionItem>
-        <AccordionItem>
-          <AccordionButton py={4}>
-            <HStack flex="1" pl={2}>
+          </Accordion.Panel>
+        </Accordion.Item>
+        <Accordion.Item className="border-0 border-t-[1px]">
+          <Accordion.Trigger className="py-5">
+            <div className="flex items-center gap-3 pl-2">
               <ChatIcon />
               <Heading fontSize="md">{t("settings.sideMenu.typing")}</Heading>
-            </HStack>
-            <AccordionIcon />
-          </AccordionButton>
-          <AccordionPanel>
+            </div>
+          </Accordion.Trigger>
+          <Accordion.Panel>
             {typebot && (
               <TypingEmulationForm
                 typingEmulation={typebot.settings.typingEmulation}
                 onUpdate={updateTypingEmulation}
               />
             )}
-          </AccordionPanel>
-        </AccordionItem>
-        <AccordionItem>
-          <AccordionButton py={4}>
-            <HStack flex="1" pl={2}>
+          </Accordion.Panel>
+        </Accordion.Item>
+        <Accordion.Item className="border-0 border-t-[1px]">
+          <Accordion.Trigger className="py-5">
+            <div className="flex items-center gap-3 pl-2">
               <LockedIcon />
               <Heading fontSize="md">{t("settings.sideMenu.security")}</Heading>
-            </HStack>
-            <AccordionIcon />
-          </AccordionButton>
-          <AccordionPanel>
+            </div>
+          </Accordion.Trigger>
+          <Accordion.Panel>
             {typebot && (
               <SecurityForm
                 security={typebot.settings.security}
                 onUpdate={updateSecurity}
               />
             )}
-          </AccordionPanel>
-        </AccordionItem>
-        <AccordionItem>
-          <AccordionButton py={4}>
-            <HStack flex="1" pl={2}>
+          </Accordion.Panel>
+        </Accordion.Item>
+        <Accordion.Item className="border-0 border-t-[1px] last:rounded-b-none">
+          <Accordion.Trigger className="py-5">
+            <div className="flex items-center gap-3 pl-2">
               <CodeIcon />
               <Heading fontSize="md">{t("settings.sideMenu.metadata")}</Heading>
-            </HStack>
-            <AccordionIcon />
-          </AccordionButton>
-          <AccordionPanel>
+            </div>
+          </Accordion.Trigger>
+          <Accordion.Panel>
             {typebot && (
               <MetadataForm
                 workspaceId={typebot.workspaceId}
@@ -132,9 +119,9 @@ export const SettingsSideMenu = () => {
                 onMetadataChange={handleMetadataChange}
               />
             )}
-          </AccordionPanel>
-        </AccordionItem>
-      </Accordion>
+          </Accordion.Panel>
+        </Accordion.Item>
+      </Accordion.Root>
     </Stack>
   );
 };

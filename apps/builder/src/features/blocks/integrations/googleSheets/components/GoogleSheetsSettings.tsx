@@ -1,13 +1,4 @@
-import {
-  Accordion,
-  AccordionButton,
-  AccordionIcon,
-  AccordionItem,
-  AccordionPanel,
-  Stack,
-  Text,
-  useDisclosure,
-} from "@chakra-ui/react";
+import { Stack, Text, useDisclosure } from "@chakra-ui/react";
 import {
   defaultGoogleSheetsOptions,
   GoogleSheetsAction,
@@ -23,6 +14,7 @@ import type {
   GoogleSheetsUpdateRowOptionsV6,
 } from "@typebot.io/blocks-integrations/googleSheets/schema";
 import { isDefined } from "@typebot.io/lib/utils";
+import { Accordion } from "@typebot.io/ui/components/Accordion";
 import { useMemo } from "react";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { TableList } from "@/components/TableList";
@@ -202,32 +194,30 @@ const ActionOptions = ({
       );
     case GoogleSheetsAction.UPDATE_ROW:
       return (
-        <Accordion allowMultiple>
-          <AccordionItem>
-            <AccordionButton>
+        <Accordion.Root>
+          <Accordion.Item>
+            <Accordion.Trigger>
               <Text w="full" textAlign="left">
                 Row(s) to update
               </Text>
-              <AccordionIcon />
-            </AccordionButton>
+            </Accordion.Trigger>
 
-            <AccordionPanel pt="4">
+            <Accordion.Panel>
               <RowsFilterTableList
                 columns={sheet?.columns ?? []}
                 filter={options.filter}
                 onFilterChange={handleFilterChange}
               />
-            </AccordionPanel>
-          </AccordionItem>
-          <AccordionItem>
-            <AccordionButton>
+            </Accordion.Panel>
+          </Accordion.Item>
+          <Accordion.Item>
+            <Accordion.Trigger>
               <Text w="full" textAlign="left">
                 Cells to update
               </Text>
-              <AccordionIcon />
-            </AccordionButton>
+            </Accordion.Trigger>
 
-            <AccordionPanel pt="4">
+            <Accordion.Panel>
               <TableList<Cell>
                 initialItems={options.cellsToUpsert}
                 onItemsChange={handleUpsertColumnsChange}
@@ -241,66 +231,57 @@ const ActionOptions = ({
                   />
                 )}
               </TableList>
-            </AccordionPanel>
-          </AccordionItem>
-        </Accordion>
+            </Accordion.Panel>
+          </Accordion.Item>
+        </Accordion.Root>
       );
     case GoogleSheetsAction.GET:
       return (
-        <Accordion allowMultiple>
-          <Stack>
-            <AccordionItem>
-              <AccordionButton>
-                <Text w="full" textAlign="left">
-                  Select row(s)
-                </Text>
-                <AccordionIcon />
-              </AccordionButton>
+        <Accordion.Root>
+          <Accordion.Item>
+            <Accordion.Trigger>
+              <Text w="full" textAlign="left">
+                Select row(s)
+              </Text>
+            </Accordion.Trigger>
 
-              <AccordionPanel pt="4" as={Stack}>
-                <BasicSelect
-                  items={totalRowsToExtractOptions}
-                  value={
-                    options.totalRowsToExtract ??
-                    defaultGoogleSheetsOptions.totalRowsToExtract
-                  }
-                  onChange={updateTotalRowsToExtract}
-                />
-                <RowsFilterTableList
-                  columns={sheet?.columns ?? []}
-                  filter={options.filter}
-                  onFilterChange={handleFilterChange}
-                />
-              </AccordionPanel>
-            </AccordionItem>
+            <Accordion.Panel>
+              <BasicSelect
+                items={totalRowsToExtractOptions}
+                value={
+                  options.totalRowsToExtract ??
+                  defaultGoogleSheetsOptions.totalRowsToExtract
+                }
+                onChange={updateTotalRowsToExtract}
+              />
+              <RowsFilterTableList
+                columns={sheet?.columns ?? []}
+                filter={options.filter}
+                onFilterChange={handleFilterChange}
+              />
+            </Accordion.Panel>
+          </Accordion.Item>
 
-            <AccordionItem>
-              <AccordionButton>
-                <Text w="full" textAlign="left">
-                  Columns to extract
-                </Text>
-                <AccordionIcon />
-              </AccordionButton>
-
-              <AccordionPanel pt="4">
-                <TableList<ExtractingCell>
-                  initialItems={options.cellsToExtract}
-                  onItemsChange={handleExtractingCellsChange}
-                  addLabel="Add a value"
-                  hasDefaultItem
-                >
-                  {({ item, onItemChange }) => (
-                    <CellWithVariableIdStack
-                      item={item}
-                      onItemChange={onItemChange}
-                      columns={sheet?.columns ?? []}
-                    />
-                  )}
-                </TableList>
-              </AccordionPanel>
-            </AccordionItem>
-          </Stack>
-        </Accordion>
+          <Accordion.Item>
+            <Accordion.Trigger>Columns to extract</Accordion.Trigger>
+            <Accordion.Panel>
+              <TableList<ExtractingCell>
+                initialItems={options.cellsToExtract}
+                onItemsChange={handleExtractingCellsChange}
+                addLabel="Add a value"
+                hasDefaultItem
+              >
+                {({ item, onItemChange }) => (
+                  <CellWithVariableIdStack
+                    item={item}
+                    onItemChange={onItemChange}
+                    columns={sheet?.columns ?? []}
+                  />
+                )}
+              </TableList>
+            </Accordion.Panel>
+          </Accordion.Item>
+        </Accordion.Root>
       );
     default:
       return null;

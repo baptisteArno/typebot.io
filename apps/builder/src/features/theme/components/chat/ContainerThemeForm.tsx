@@ -1,14 +1,4 @@
-import {
-  Accordion,
-  AccordionButton,
-  AccordionIcon,
-  AccordionItem,
-  AccordionPanel,
-  FormLabel,
-  HStack,
-  Stack,
-  Switch,
-} from "@chakra-ui/react";
+import { FormLabel, HStack, Stack, Switch } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import {
   borderRoundness,
@@ -20,6 +10,7 @@ import type {
   ContainerTheme,
   InputTheme,
 } from "@typebot.io/theme/schemas";
+import { Accordion } from "@typebot.io/ui/components/Accordion";
 import { Field } from "@typebot.io/ui/components/Field";
 import { BasicNumberInput } from "@/components/inputs/BasicNumberInput";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
@@ -124,26 +115,20 @@ export const ContainerThemeForm = <
         </HStack>
       )}
 
-      <Accordion allowToggle>
-        <AccordionItem>
-          <AccordionButton justifyContent="space-between">
-            Border
-            <AccordionIcon />
-          </AccordionButton>
-          <AccordionPanel>
+      <Accordion.Root>
+        <Accordion.Item>
+          <Accordion.Trigger>Border</Accordion.Trigger>
+          <Accordion.Panel>
             <BorderThemeForm
               border={theme?.border}
               defaultBorder={defaultTheme.border}
               onBorderChange={updateBorder}
             />
-          </AccordionPanel>
-        </AccordionItem>
-        <AccordionItem>
-          <AccordionButton justifyContent="space-between">
-            Advanced
-            <AccordionIcon />
-          </AccordionButton>
-          <AccordionPanel as={Stack}>
+          </Accordion.Panel>
+        </Accordion.Item>
+        <Accordion.Item>
+          <Accordion.Trigger>Advanced</Accordion.Trigger>
+          <Accordion.Panel>
             {backgroundColor !== "transparent" && (
               <>
                 <Field.Root className="flex-row">
@@ -183,9 +168,9 @@ export const ContainerThemeForm = <
                 />
               </HStack>
             </HStack>
-          </AccordionPanel>
-        </AccordionItem>
-      </Accordion>
+          </Accordion.Panel>
+        </Accordion.Item>
+      </Accordion.Root>
     </Stack>
   );
 };

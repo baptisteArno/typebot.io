@@ -1,14 +1,8 @@
 import {
-  Accordion,
-  AccordionButton,
-  AccordionIcon,
-  AccordionItem,
-  AccordionPanel,
   Flex,
   HStack,
   ListItem,
   OrderedList,
-  Stack,
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
@@ -17,6 +11,7 @@ import { LogicalOperator } from "@typebot.io/conditions/constants";
 import type { Comparison } from "@typebot.io/conditions/schemas";
 import { isDefined } from "@typebot.io/lib/utils";
 import { defaultSessionExpiryTimeout } from "@typebot.io/settings/constants";
+import { Accordion } from "@typebot.io/ui/components/Accordion";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
 import { Field } from "@typebot.io/ui/components/Field";
 import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
@@ -212,13 +207,10 @@ export const WhatsAppDeployDialog = ({
           {typebot?.whatsAppCredentialsId && (
             <>
               <ListItem>
-                <Accordion allowToggle>
-                  <AccordionItem>
-                    <AccordionButton justifyContent="space-between">
-                      Configure integration
-                      <AccordionIcon />
-                    </AccordionButton>
-                    <AccordionPanel as={Stack} spacing="4" pt="4">
+                <Accordion.Root>
+                  <Accordion.Item>
+                    <Accordion.Trigger>Configure integration</Accordion.Trigger>
+                    <Accordion.Panel>
                       <Field.Root className="inline-flex flex-row items-center">
                         <Field.Label>
                           Session expire timeout
@@ -270,9 +262,9 @@ export const WhatsAppDeployDialog = ({
                           {(props) => <WhatsAppComparisonItem {...props} />}
                         </TableList>
                       </SwitchWithRelatedSettings>
-                    </AccordionPanel>
-                  </AccordionItem>
-                </Accordion>
+                    </Accordion.Panel>
+                  </Accordion.Item>
+                </Accordion.Root>
               </ListItem>
 
               <ListItem>

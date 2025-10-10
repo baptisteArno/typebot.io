@@ -1,13 +1,6 @@
-import {
-  Accordion,
-  AccordionButton,
-  AccordionIcon,
-  AccordionItem,
-  AccordionPanel,
-  Stack,
-} from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import type { PaymentAddress } from "@typebot.io/blocks-inputs/payment/schema";
+import { Accordion } from "@typebot.io/ui/components/Accordion";
 import { TextInput } from "@/components/inputs/TextInput";
 
 type Props = {
@@ -55,13 +48,12 @@ export const PaymentAddressSettings = ({ address, onAddressChange }: Props) => {
     });
 
   return (
-    <Accordion allowToggle>
-      <AccordionItem>
-        <AccordionButton justifyContent="space-between">
+    <Accordion.Root>
+      <Accordion.Item>
+        <Accordion.Trigger>
           {t("blocks.inputs.payment.settings.address.label")}
-          <AccordionIcon />
-        </AccordionButton>
-        <AccordionPanel py={4} as={Stack} spacing="4">
+        </Accordion.Trigger>
+        <Accordion.Panel>
           <TextInput
             label={t("blocks.inputs.payment.settings.address.country.label")}
             defaultValue={address?.country ?? ""}
@@ -96,8 +88,8 @@ export const PaymentAddressSettings = ({ address, onAddressChange }: Props) => {
             defaultValue={address?.postalCode ?? ""}
             onChange={updatePostalCode}
           />
-        </AccordionPanel>
-      </AccordionItem>
-    </Accordion>
+        </Accordion.Panel>
+      </Accordion.Item>
+    </Accordion.Root>
   );
 };

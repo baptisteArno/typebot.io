@@ -1,17 +1,11 @@
-import {
-  Accordion,
-  AccordionButton,
-  AccordionIcon,
-  AccordionItem,
-  AccordionPanel,
-  Stack,
-} from "@chakra-ui/react";
+import { Stack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import {
   defaultFileInputOptions,
   fileVisibilityOptions,
 } from "@typebot.io/blocks-inputs/file/constants";
 import type { FileInputBlock } from "@typebot.io/blocks-inputs/file/schema";
+import { Accordion } from "@typebot.io/ui/components/Accordion";
 import { Field } from "@typebot.io/ui/components/Field";
 import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
 import type { Variable } from "@typebot.io/variables/schemas";
@@ -151,13 +145,12 @@ export const FileInputSettings = ({ options, onOptionsChange }: Props) => {
         />
       </Field.Root>
 
-      <Accordion allowToggle>
-        <AccordionItem>
-          <AccordionButton justifyContent="space-between">
+      <Accordion.Root>
+        <Accordion.Item>
+          <Accordion.Trigger>
             {t("blocks.inputs.file.settings.labels")}
-            <AccordionIcon />
-          </AccordionButton>
-          <AccordionPanel as={Stack} spacing={4}>
+          </Accordion.Trigger>
+          <Accordion.Panel>
             <Field.Root>
               <Field.Label>
                 {t("blocks.inputs.settings.placeholder.label")}
@@ -221,9 +214,9 @@ export const FileInputSettings = ({ options, onOptionsChange }: Props) => {
                 withVariableButton={false}
               />
             )}
-          </AccordionPanel>
-        </AccordionItem>
-      </Accordion>
+          </Accordion.Panel>
+        </Accordion.Item>
+      </Accordion.Root>
     </Stack>
   );
 };

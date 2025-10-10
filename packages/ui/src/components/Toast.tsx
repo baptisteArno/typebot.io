@@ -1,17 +1,11 @@
 import { Toast as ToastPrimitive } from "@base-ui-components/react/toast";
-import {
-  Accordion,
-  AccordionButton,
-  AccordionIcon,
-  AccordionItem,
-  AccordionPanel,
-} from "@chakra-ui/react";
 import { z } from "@typebot.io/zod";
 import { Cancel01Icon } from "../icons/Cancel01Icon";
 import { CheckmarkSquare02Icon } from "../icons/CheckmarkSquare02Icon";
 import { InformationSquareIcon } from "../icons/InformationSquareIcon";
 import { TriangleAlertIcon } from "../icons/TriangleAlertIcon";
 import { cn } from "../lib/cn";
+import { Accordion } from "./Accordion";
 import { Button, buttonVariants } from "./Button";
 
 const List = ({
@@ -85,25 +79,20 @@ const List = ({
                   </div>
                 </div>
                 {toast.data.details && (
-                  <Accordion allowToggle>
-                    <AccordionItem onPointerDown={(e) => e.stopPropagation()}>
-                      <AccordionButton
-                        justifyContent="space-between"
-                        fontSize="sm"
-                        py="1"
-                      >
+                  <Accordion.Root>
+                    <Accordion.Item onPointerDown={(e) => e.stopPropagation()}>
+                      <Accordion.Trigger className="font-sm py-1">
                         Details
-                        <AccordionIcon />
-                      </AccordionButton>
-                      <AccordionPanel>
+                      </Accordion.Trigger>
+                      <Accordion.Panel>
                         <CodeEditor
                           isReadOnly
                           value={toast.data.details.content}
                           lang={toast.data.details.lang}
                         />
-                      </AccordionPanel>
-                    </AccordionItem>
-                  </Accordion>
+                      </Accordion.Panel>
+                    </Accordion.Item>
+                  </Accordion.Root>
                 )}
               </div>
 

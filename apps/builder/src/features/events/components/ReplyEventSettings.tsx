@@ -1,13 +1,7 @@
-import {
-  Accordion,
-  AccordionButton,
-  AccordionIcon,
-  AccordionItem,
-  AccordionPanel,
-  Stack,
-} from "@chakra-ui/react";
+import { Stack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import type { ReplyEvent } from "@typebot.io/events/schemas";
+import { Accordion } from "@typebot.io/ui/components/Accordion";
 import { Field } from "@typebot.io/ui/components/Field";
 import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
 import type { Variable } from "@typebot.io/variables/schemas";
@@ -42,13 +36,12 @@ export const ReplyEventSettings = ({
 
   return (
     <Stack p="2" spacing={4}>
-      <Accordion allowToggle>
-        <AccordionItem>
-          <AccordionButton justifyContent="space-between">
+      <Accordion.Root>
+        <Accordion.Item>
+          <Accordion.Trigger>
             {t("blocks.events.reply.settings.variableMappingAccordion.title")}
-            <AccordionIcon />
-          </AccordionButton>
-          <AccordionPanel as={Stack} spacing={4}>
+          </Accordion.Trigger>
+          <Accordion.Panel>
             <Field.Root>
               <Field.Label>
                 {t("blocks.events.reply.settings.contentVariable.label")}
@@ -82,9 +75,9 @@ export const ReplyEventSettings = ({
                 onSelectVariable={updateInputNameVariableId}
               />
             </Field.Root>
-          </AccordionPanel>
-        </AccordionItem>
-      </Accordion>
+          </Accordion.Panel>
+        </Accordion.Item>
+      </Accordion.Root>
     </Stack>
   );
 };

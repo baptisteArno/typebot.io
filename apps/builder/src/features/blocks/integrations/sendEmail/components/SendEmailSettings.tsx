@@ -1,9 +1,4 @@
 import {
-  Accordion,
-  AccordionButton,
-  AccordionIcon,
-  AccordionItem,
-  AccordionPanel,
   Flex,
   HStack,
   Stack,
@@ -15,6 +10,7 @@ import { defaultSendEmailOptions } from "@typebot.io/blocks-integrations/sendEma
 import type { SendEmailBlock } from "@typebot.io/blocks-integrations/sendEmail/schema";
 import { env } from "@typebot.io/env";
 import { isNotEmpty } from "@typebot.io/lib/utils";
+import { Accordion } from "@typebot.io/ui/components/Accordion";
 import { Field } from "@typebot.io/ui/components/Field";
 import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
 import type { Variable } from "@typebot.io/variables/schemas";
@@ -145,15 +141,10 @@ export const SendEmailSettings = ({ options, onOptionsChange }: Props) => {
         defaultValue={options?.recipients?.join(", ")}
         placeholder="email1@gmail.com, email2@gmail.com"
       />
-      <Accordion allowToggle>
-        <AccordionItem>
-          <AccordionButton>
-            <HStack justifyContent="space-between" w="full">
-              <Text>Advanced</Text>
-              <AccordionIcon />
-            </HStack>
-          </AccordionButton>
-          <AccordionPanel as={Stack}>
+      <Accordion.Root>
+        <Accordion.Item>
+          <Accordion.Trigger>Advanced</Accordion.Trigger>
+          <Accordion.Panel>
             <TextInput
               label="Reply to:"
               onChange={handleReplyToChange}
@@ -172,9 +163,9 @@ export const SendEmailSettings = ({ options, onOptionsChange }: Props) => {
               defaultValue={options?.bcc?.join(", ") ?? ""}
               placeholder="email1@gmail.com, email2@gmail.com"
             />
-          </AccordionPanel>
-        </AccordionItem>
-      </Accordion>
+          </Accordion.Panel>
+        </Accordion.Item>
+      </Accordion.Root>
 
       <TextInput
         label="Subject:"

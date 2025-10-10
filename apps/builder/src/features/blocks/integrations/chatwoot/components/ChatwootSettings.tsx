@@ -1,16 +1,10 @@
-import {
-  Accordion,
-  AccordionButton,
-  AccordionIcon,
-  AccordionItem,
-  AccordionPanel,
-  Stack,
-} from "@chakra-ui/react";
+import { Stack } from "@chakra-ui/react";
 import {
   chatwootTasks,
   defaultChatwootOptions,
 } from "@typebot.io/blocks-integrations/chatwoot/constants";
 import type { ChatwootBlock } from "@typebot.io/blocks-integrations/chatwoot/schema";
+import { Accordion } from "@typebot.io/ui/components/Accordion";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { TextInput } from "@/components/inputs/TextInput";
 
@@ -54,13 +48,10 @@ export const ChatwootSettings = ({ options, onOptionsChange }: Props) => {
             }
             moreInfoTooltip="Can be found in Chatwoot under Settings > Inboxes > Settings > Configuration, in the code snippet."
           />
-          <Accordion allowMultiple>
-            <AccordionItem>
-              <AccordionButton justifyContent="space-between">
-                Set user details
-                <AccordionIcon />
-              </AccordionButton>
-              <AccordionPanel pb={4} as={Stack} spacing="4">
+          <Accordion.Root>
+            <Accordion.Item>
+              <Accordion.Trigger>Set user details</Accordion.Trigger>
+              <Accordion.Panel>
                 <TextInput
                   label="ID"
                   defaultValue={options?.user?.id}
@@ -111,9 +102,9 @@ export const ChatwootSettings = ({ options, onOptionsChange }: Props) => {
                     });
                   }}
                 />
-              </AccordionPanel>
-            </AccordionItem>
-          </Accordion>
+              </Accordion.Panel>
+            </Accordion.Item>
+          </Accordion.Root>
         </>
       )}
     </Stack>

@@ -1,9 +1,4 @@
 import {
-  Accordion,
-  AccordionButton,
-  AccordionIcon,
-  AccordionItem,
-  AccordionPanel,
   FormControl,
   FormHelperText,
   Input,
@@ -23,6 +18,7 @@ import type { ResponseVariableMapping } from "@typebot.io/blocks-integrations/ht
 import type { WebhookBlock } from "@typebot.io/blocks-logic/webhook/schema";
 import { env } from "@typebot.io/env";
 import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
+import { Accordion } from "@typebot.io/ui/components/Accordion";
 import { Button } from "@typebot.io/ui/components/Button";
 import usePartySocket from "partysocket/react";
 import { useMemo, useState } from "react";
@@ -156,13 +152,10 @@ export const WebhookSettings = ({
             {(receivedData ||
               (options?.responseVariableMapping &&
                 options.responseVariableMapping.length > 0)) && (
-              <Accordion allowMultiple>
-                <AccordionItem>
-                  <AccordionButton justifyContent="space-between">
-                    Save in variables
-                    <AccordionIcon />
-                  </AccordionButton>
-                  <AccordionPanel pt="4">
+              <Accordion.Root>
+                <Accordion.Item>
+                  <Accordion.Trigger>Save in variables</Accordion.Trigger>
+                  <Accordion.Panel>
                     <TableList<ResponseVariableMapping>
                       initialItems={options?.responseVariableMapping}
                       onItemsChange={updateResponseVariableMapping}
@@ -170,9 +163,9 @@ export const WebhookSettings = ({
                     >
                       {(props) => <ResponseMappingInputs {...props} />}
                     </TableList>
-                  </AccordionPanel>
-                </AccordionItem>
-              </Accordion>
+                  </Accordion.Panel>
+                </Accordion.Item>
+              </Accordion.Root>
             )}
           </Stack>
         </TabPanel>

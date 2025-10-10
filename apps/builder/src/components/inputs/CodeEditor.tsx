@@ -12,7 +12,7 @@ import {
 import { githubLight } from "@uiw/codemirror-theme-github";
 import { tokyoNight } from "@uiw/codemirror-theme-tokyo-night";
 import CodeMirror, { type ReactCodeMirrorRef } from "@uiw/react-codemirror";
-import { useEffect, useRef, useState } from "react";
+import { type CSSProperties, useEffect, useRef, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import { useOpenControls } from "@/hooks/useOpenControls";
 import { CopyButton } from "../CopyButton";
@@ -120,17 +120,24 @@ export const CodeEditor = ({
 
   return (
     <div
+      style={
+        {
+          "--editor-min-height": minHeight,
+          "--editor-max-height": maxHeight,
+        } as CSSProperties
+      }
       className={cn(
-        "group relative isolate border rounded-md [&_.cm-editor]:font-mono [&_.cm-editor]:text-sm",
+        "group relative isolate border rounded-md [&_.cm-editor]:font-mono [&_.cm-editor]:text-sm min-h-[var(--editor-min-height)]",
         !withLineNumbers && "[&_.cm-gutters]:hidden",
         "[&_.cm-editor]:rounded-md [&_.cm-editor]:outline-none has-[.cm-focused]:ring-2 transition-[box-shadow,border-color] has-[.cm-focused]:border-transparent ring-orange-7 [&_.cm-scroller]:rounded-md [&_.cm-scroller]:overflow-auto",
+        isReadOnly
+          ? undefined
+          : "[&_.cm-editor]:max-h-[var(--editor-max-height)]",
         className,
       )}
     >
       <CodeMirror
         data-testid="code-editor"
-        minHeight={isReadOnly ? undefined : minHeight}
-        maxHeight={isReadOnly ? undefined : maxHeight}
         ref={codeEditor}
         value={props.value ?? value}
         onChange={handleChange}

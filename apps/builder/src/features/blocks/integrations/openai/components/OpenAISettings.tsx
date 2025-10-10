@@ -1,13 +1,4 @@
-import {
-  Accordion,
-  AccordionButton,
-  AccordionIcon,
-  AccordionItem,
-  AccordionPanel,
-  Stack,
-  Text,
-  useDisclosure,
-} from "@chakra-ui/react";
+import { Stack, useDisclosure } from "@chakra-ui/react";
 import {
   defaultOpenAIOptions,
   openAITasks,
@@ -18,6 +9,7 @@ import type {
   CreateSpeechOpenAIOptions,
   OpenAIBlock,
 } from "@typebot.io/blocks-integrations/openai/schema";
+import { Accordion } from "@typebot.io/ui/components/Accordion";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { TextInput } from "@/components/inputs/TextInput";
 import { CredentialsDropdown } from "@/features/credentials/components/CredentialsDropdown";
@@ -91,15 +83,10 @@ export const OpenAISettings = ({
       )}
       {options?.credentialsId && (
         <>
-          <Accordion allowToggle>
-            <AccordionItem>
-              <AccordionButton>
-                <Text w="full" textAlign="left">
-                  Customize provider
-                </Text>
-                <AccordionIcon />
-              </AccordionButton>
-              <AccordionPanel as={Stack} spacing={4}>
+          <Accordion.Root>
+            <Accordion.Item>
+              <Accordion.Trigger>Customize provider</Accordion.Trigger>
+              <Accordion.Panel>
                 <TextInput
                   label="Base URL"
                   defaultValue={baseUrl}
@@ -112,9 +99,9 @@ export const OpenAISettings = ({
                     onChange={updateApiVersion}
                   />
                 )}
-              </AccordionPanel>
-            </AccordionItem>
-          </Accordion>
+              </Accordion.Panel>
+            </Accordion.Item>
+          </Accordion.Root>
 
           <BasicSelect
             value={options.task}

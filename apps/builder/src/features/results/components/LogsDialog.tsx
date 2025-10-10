@@ -1,9 +1,4 @@
 import {
-  Accordion,
-  AccordionButton,
-  AccordionIcon,
-  AccordionItem,
-  AccordionPanel,
   chakra,
   HStack,
   Spinner,
@@ -14,6 +9,7 @@ import {
 } from "@chakra-ui/react";
 import { isDefined } from "@typebot.io/lib/utils";
 import type { Log } from "@typebot.io/logs/schemas";
+import { Accordion } from "@typebot.io/ui/components/Accordion";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
 import { useLogs } from "../hooks/useLogs";
 
@@ -43,15 +39,9 @@ export const LogsDialog = ({ typebotId, resultId, onClose }: Props) => {
 const LogCard = ({ log }: { log: Log }) => {
   if (log.details)
     return (
-      <Accordion allowToggle>
-        <AccordionItem style={{ borderBottomWidth: 0, borderWidth: 0 }}>
-          <AccordionButton
-            as={HStack}
-            p="4"
-            cursor="pointer"
-            justifyContent="space-between"
-            borderRadius="md"
-          >
+      <Accordion.Root>
+        <Accordion.Item>
+          <Accordion.Trigger>
             <HStack gap={3} alignItems="flex-start">
               <StatusTag status={log.status} flexShrink={0} mt={0.5} />
               <Stack>
@@ -65,18 +55,10 @@ const LogCard = ({ log }: { log: Log }) => {
                 </Text>
               </Stack>
             </HStack>
-            <AccordionIcon />
-          </AccordionButton>
-          <AccordionPanel
-            as="pre"
-            overflow="auto"
-            borderWidth="1px"
-            borderRadius="md"
-          >
-            {log.details}
-          </AccordionPanel>
-        </AccordionItem>
-      </Accordion>
+          </Accordion.Trigger>
+          <Accordion.Panel>{log.details}</Accordion.Panel>
+        </Accordion.Item>
+      </Accordion.Root>
     );
   return (
     <HStack p="4" gap={3} alignItems="flex-start">

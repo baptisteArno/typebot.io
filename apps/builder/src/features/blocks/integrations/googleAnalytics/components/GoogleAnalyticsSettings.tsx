@@ -1,13 +1,6 @@
-import {
-  Accordion,
-  AccordionButton,
-  AccordionIcon,
-  AccordionItem,
-  AccordionPanel,
-  Box,
-  Stack,
-} from "@chakra-ui/react";
+import { Box, Stack } from "@chakra-ui/react";
 import type { GoogleAnalyticsBlock } from "@typebot.io/blocks-integrations/googleAnalytics/schema";
+import { Accordion } from "@typebot.io/ui/components/Accordion";
 import { Field } from "@typebot.io/ui/components/Field";
 import { BasicNumberInput } from "@/components/inputs/BasicNumberInput";
 import { TextInput } from "@/components/inputs/TextInput";
@@ -59,17 +52,14 @@ export const GoogleAnalyticsSettings = ({
         placeholder="Example: conversion"
         onChange={updateAction}
       />
-      <Accordion allowToggle>
-        <AccordionItem>
-          <h2>
-            <AccordionButton>
-              <Box flex="1" textAlign="left">
-                Advanced
-              </Box>
-              <AccordionIcon />
-            </AccordionButton>
-          </h2>
-          <AccordionPanel pb={4} as={Stack} spacing="6">
+      <Accordion.Root>
+        <Accordion.Item>
+          <Accordion.Trigger>
+            <Box flex="1" textAlign="left">
+              Advanced
+            </Box>
+          </Accordion.Trigger>
+          <Accordion.Panel>
             <TextInput
               label="Event category:"
               defaultValue={options?.category}
@@ -97,9 +87,9 @@ export const GoogleAnalyticsSettings = ({
               placeholder="Example: AW-123456789"
               onChange={updateSendTo}
             />
-          </AccordionPanel>
-        </AccordionItem>
-      </Accordion>
+          </Accordion.Panel>
+        </Accordion.Item>
+      </Accordion.Root>
     </Stack>
   );
 };

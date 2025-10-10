@@ -1,14 +1,4 @@
-import {
-  Accordion,
-  AccordionButton,
-  AccordionIcon,
-  AccordionItem,
-  AccordionPanel,
-  FormControl,
-  FormLabel,
-  Stack,
-  Text,
-} from "@chakra-ui/react";
+import { FormControl, FormLabel, Stack, Text } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import {
   defaultNumberInputButtonLabel,
@@ -24,6 +14,7 @@ import {
   type NumberInputBlock,
   numberInputOptionsSchema,
 } from "@typebot.io/blocks-inputs/number/schema";
+import { Accordion } from "@typebot.io/ui/components/Accordion";
 import { Field } from "@typebot.io/ui/components/Field";
 import type { Variable } from "@typebot.io/variables/schemas";
 import { useEffect } from "react";
@@ -127,15 +118,14 @@ export const NumberInputSettings = ({ options, onOptionsChange }: Props) => {
           onValueChange={handleStepChange}
         />
       </Field.Root>
-      <Accordion allowToggle>
-        <AccordionItem>
-          <AccordionButton>
+      <Accordion.Root>
+        <Accordion.Item>
+          <Accordion.Trigger>
             <Text w="full" textAlign="left">
               {t("blocks.inputs.number.settings.format.label")}
             </Text>
-            <AccordionIcon />
-          </AccordionButton>
-          <AccordionPanel>
+          </Accordion.Trigger>
+          <Accordion.Panel>
             <BasicSelect
               items={Object.values(NumberInputStyle).map((style) => ({
                 label: t(numberStyleTranslationKeys[style]),
@@ -186,9 +176,9 @@ export const NumberInputSettings = ({ options, onOptionsChange }: Props) => {
                 onChange={handleLocaleChange}
               />
             </FormControl>
-          </AccordionPanel>
-        </AccordionItem>
-      </Accordion>
+          </Accordion.Panel>
+        </Accordion.Item>
+      </Accordion.Root>
       <Field.Root>
         <Field.Label>
           {t("blocks.inputs.settings.saveAnswer.label")}

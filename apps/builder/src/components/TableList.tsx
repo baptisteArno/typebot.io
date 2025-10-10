@@ -105,8 +105,8 @@ export const TableList = <T extends object>({
               in={showDeleteIndex === itemIndex}
               style={{
                 position: "absolute",
-                left: "-15px",
-                top: "-15px",
+                left: "-8px",
+                top: "-8px",
               }}
               unmountOnExit
             >

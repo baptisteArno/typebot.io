@@ -1,9 +1,4 @@
 import {
-  Accordion,
-  AccordionButton,
-  AccordionIcon,
-  AccordionItem,
-  AccordionPanel,
   FormControl,
   FormLabel,
   HStack,
@@ -19,6 +14,7 @@ import {
   rememberUserStorages,
 } from "@typebot.io/settings/constants";
 import type { Settings, SystemMessages } from "@typebot.io/settings/schemas";
+import { Accordion } from "@typebot.io/ui/components/Accordion";
 import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
@@ -140,20 +136,19 @@ export const GeneralSettingsForm = ({
           />
         </FormControl>
       </SwitchWithRelatedSettings>
-      <Accordion allowToggle>
-        <AccordionItem>
-          <AccordionButton justifyContent="space-between">
+      <Accordion.Root>
+        <Accordion.Item>
+          <Accordion.Trigger>
             {t("settings.sideMenu.general.systemMessages")}
-            <AccordionIcon />
-          </AccordionButton>
-          <AccordionPanel>
+          </Accordion.Trigger>
+          <Accordion.Panel>
             <SystemMessagesForm
               systemMessages={generalSettings?.systemMessages}
               onSystemMessagesChange={updateSystemMessages}
             />
-          </AccordionPanel>
-        </AccordionItem>
-      </Accordion>
+          </Accordion.Panel>
+        </Accordion.Item>
+      </Accordion.Root>
     </Stack>
   );
 };

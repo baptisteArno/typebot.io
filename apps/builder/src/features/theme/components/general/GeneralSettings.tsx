@@ -1,9 +1,4 @@
 import {
-  Accordion,
-  AccordionButton,
-  AccordionIcon,
-  AccordionItem,
-  AccordionPanel,
   Flex,
   FormLabel,
   Stack,
@@ -21,6 +16,7 @@ import type {
   ProgressBar,
   Theme,
 } from "@typebot.io/theme/schemas";
+import { Accordion } from "@typebot.io/ui/components/Accordion";
 import { RadioButtons } from "@/components/inputs/RadioButtons";
 import { ChangePlanDialog } from "@/features/billing/components/ChangePlanDialog";
 import { LockTag } from "@/features/billing/components/LockTag";
@@ -122,13 +118,10 @@ export const GeneralSettings = ({
           onChange={updateBranding}
         />
       </Flex>
-      <Accordion allowToggle>
-        <AccordionItem>
-          <AccordionButton justifyContent="space-between">
-            Progress Bar
-            <AccordionIcon />
-          </AccordionButton>
-          <AccordionPanel>
+      <Accordion.Root>
+        <Accordion.Item>
+          <Accordion.Trigger>Progress Bar</Accordion.Trigger>
+          <Accordion.Panel>
             {typebot && (
               <ProgressBarForm
                 progressBar={generalTheme?.progressBar}
@@ -136,35 +129,33 @@ export const GeneralSettings = ({
                 typebotVersion={typebot.version}
               />
             )}
-          </AccordionPanel>
-        </AccordionItem>
-        <AccordionItem>
-          <AccordionButton justifyContent="space-between">
+          </Accordion.Panel>
+        </Accordion.Item>
+        <Accordion.Item>
+          <Accordion.Trigger>
             {t("theme.sideMenu.global.font")}
-            <AccordionIcon />
-          </AccordionButton>
-          <AccordionPanel as={Stack}>
+          </Accordion.Trigger>
+          <Accordion.Panel>
             <RadioButtons
               options={fontTypes}
               defaultValue={fontType}
               onSelect={updateFontType}
             />
             <FontForm font={generalTheme?.font} onFontChange={updateFont} />
-          </AccordionPanel>
-        </AccordionItem>
-        <AccordionItem>
-          <AccordionButton justifyContent="space-between">
+          </Accordion.Panel>
+        </Accordion.Item>
+        <Accordion.Item>
+          <Accordion.Trigger>
             {t("theme.sideMenu.global.background")}
-            <AccordionIcon />
-          </AccordionButton>
-          <AccordionPanel>
+          </Accordion.Trigger>
+          <Accordion.Panel>
             <BackgroundSelector
               background={generalTheme?.background}
               onBackgroundChange={handleBackgroundChange}
             />
-          </AccordionPanel>
-        </AccordionItem>
-      </Accordion>
+          </Accordion.Panel>
+        </Accordion.Item>
+      </Accordion.Root>
     </Stack>
   );
 };
