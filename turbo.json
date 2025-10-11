@@ -50,17 +50,17 @@
     },
     "cron:hourly": {
       "env": ["STRIPE_*", "NEXTAUTH_URL", "SMTP_*"],
-      "dependsOn": ["@typebot.io/prisma#db:generate"],
+      "dependsOn": ["^build", "@typebot.io/prisma#db:generate"],
       "cache": false
     },
     "cron:daily": {
       "env": ["NEXTAUTH_URL"],
-      "dependsOn": ["@typebot.io/prisma#db:generate"],
+      "dependsOn": ["^build", "@typebot.io/prisma#db:generate"],
       "cache": false
     },
     "cron:monthly": {
       "env": ["NEXTAUTH_URL"],
-      "dependsOn": ["@typebot.io/prisma#db:generate"],
+      "dependsOn": ["^build", "@typebot.io/prisma#db:generate"],
       "cache": false
     },
     "test": {
