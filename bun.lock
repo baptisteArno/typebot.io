@@ -1149,6 +1149,7 @@
         "@paralleldrive/cuid2": "^2.2.1",
         "@typebot.io/billing": "workspace:*",
         "@typebot.io/emails": "workspace:*",
+        "@typebot.io/env": "workspace:*",
         "@typebot.io/lib": "workspace:*",
         "@typebot.io/prisma": "workspace:*",
         "@typebot.io/results": "workspace:*",
