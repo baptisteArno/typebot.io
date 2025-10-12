@@ -138,6 +138,17 @@ export const convertMessageToWhatsAppMessage = async ({
           preview_url: true,
         },
       };
+    case BubbleBlockType.LOCATION:
+      if (!message.content || !message.content.latitude || !message.content.longitude) return null;
+      return {
+        type: "location",
+        location: {
+          latitude: message.content.latitude,
+          longitude: message.content.longitude,
+          name: message.content.name,
+          address: message.content.address,
+        },
+      };
     case "custom-embed":
       if (!message.content.url) return null;
       return {
