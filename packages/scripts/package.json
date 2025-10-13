@@ -57,7 +57,12 @@
     "@typebot.io/typebot": "workspace:*",
     "@typebot.io/zod": "workspace:*",
     "@typebot.io/emails": "workspace:*",
-    "@typebot.io/env": "workspace:*"
+    "@typebot.io/env": "workspace:*",
+    "@typebot.io/blocks-bubbles": "workspace:*",
+    "@typebot.io/blocks-core": "workspace:*",
+    "@typebot.io/groups": "workspace:*",
+    "@typebot.io/rich-text": "workspace:*",
+    "ai": "^4.0.42"
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*",
@@ -67,7 +72,6 @@
     "@types/prompts": "^2.4.4",
     "tsx": "^4.19.1",
     "@typebot.io/blocks-integrations": "workspace:*",
-    "@typebot.io/groups": "workspace:*",
     "dotenv": "^16.4.5"
   }
 }
