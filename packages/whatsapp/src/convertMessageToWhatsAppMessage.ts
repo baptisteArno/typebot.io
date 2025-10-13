@@ -129,8 +129,45 @@ export const convertMessageToWhatsAppMessage = async ({
           },
         };
       return null;
-    case BubbleBlockType.EMBED:
+    case BubbleBlockType.EMBED: {
       if (!message.content.url) return null;
+      
+      // Check if this is a location embed by looking for location parameters in the URL
+      const url = new URL(message.content.url);
+      
+      // Check for explicit lat/lng parameters
+      let latitude = url.searchParams.get('lat') || url.searchParams.get('latitude');
+      let longitude = url.searchParams.get('lng') || url.searchParams.get('longitude') || url.searchParams.get('lon');
+      
+      // Check for coordinates in q parameter (format: ?q=37.7749,-122.4194)
+      if (!latitude && !longitude) {
+        const qParam = url.searchParams.get('q');
+        if (qParam) {
+          const coordsMatch = qParam.match(/^(-?\d+(\.\d+)?),(-?\d+(\.\d+)?)$/);
+          if (coordsMatch) {
+            latitude = coordsMatch[1];
+            longitude = coordsMatch[3];
+          }
+        }
+      }
+      
+      const name = url.searchParams.get('name') || url.searchParams.get('q');
+      const address = url.searchParams.get('address');
+      
+      // If URL contains location parameters, send as a location message
+      if (latitude && longitude && !isNaN(Number(latitude)) && !isNaN(Number(longitude))) {
+        return {
+          type: "location",
+          location: {
+            latitude: Number(latitude),
+            longitude: Number(longitude),
+            name: name || undefined,
+            address: address || undefined,
+          },
+        };
+      }
+      
+      // Default to sending the embed URL as a text message with preview
       return {
         type: "text",
         text: {
@@ -138,17 +175,8 @@ export const convertMessageToWhatsAppMessage = async ({
           preview_url: true,
         },
       };
-    case BubbleBlockType.LOCATION:
-      if (!message.content || !message.content.latitude || !message.content.longitude) return null;
-      return {
-        type: "location",
-        location: {
-          latitude: message.content.latitude,
-          longitude: message.content.longitude,
-          name: message.content.name,
-          address: message.content.address,
-        },
-      };
+    }
+    // Location bubble type has been removed in favor of using Embed bubble with Google Maps URL
     case "custom-embed":
       if (!message.content.url) return null;
       return {

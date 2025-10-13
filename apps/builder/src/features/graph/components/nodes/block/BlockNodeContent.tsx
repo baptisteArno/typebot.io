@@ -9,7 +9,7 @@ import { LogicBlockType } from "@typebot.io/blocks-logic/constants";
 import { AudioBubbleNode } from "@/features/blocks/bubbles/audio/components/AudioBubbleNode";
 import { EmbedBubbleContent } from "@/features/blocks/bubbles/embed/components/EmbedBubbleContent";
 import { ImageBubbleContent } from "@/features/blocks/bubbles/image/components/ImageBubbleContent";
-import { LocationBubbleContent } from "@/features/blocks/bubbles/location/components/LocationBubbleContent";
+// Location bubble type has been removed in favor of using Embed bubble
 import { TextBubbleContent } from "@/features/blocks/bubbles/textBubble/components/TextBubbleContent";
 import { VideoBubbleContent } from "@/features/blocks/bubbles/video/components/VideoBubbleContent";
 import { ButtonsBlockNode } from "@/features/blocks/inputs/buttons/components/ButtonsBlockNode";
@@ -72,9 +72,6 @@ export const BlockNodeContent = ({
     }
     case BubbleBlockType.AUDIO: {
       return <AudioBubbleNode url={block.content?.url} />;
-    }
-    case BubbleBlockType.LOCATION: {
-      return <LocationBubbleContent block={block} />;
     }
     case InputBlockType.TEXT: {
       return <TextInputNodeContent options={block.options} />;
