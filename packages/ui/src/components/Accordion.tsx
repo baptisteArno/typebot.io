@@ -17,7 +17,7 @@ function Item({ className, ...props }: AccordionPrimitive.Item.Props) {
     <AccordionPrimitive.Item
       data-slot="accordion-item"
       className={cn(
-        "border-b bg-white has-focus-visible:border-orange-9 has-focus-visible:ring-orange-9/50 relative border outline-none first:rounded-t-md last:rounded-b-md last:border-b has-focus-visible:ring-[3px]",
+        "border-b bg-gray-1 has-focus-visible:border-orange-9 has-focus-visible:ring-orange-9/50 relative border outline-none first:rounded-t-md last:rounded-b-md last:border-b has-focus-visible:ring-[3px]",
         className,
       )}
       {...props}
