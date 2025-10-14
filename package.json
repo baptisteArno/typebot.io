@@ -30,7 +30,7 @@
     "push-locales": "dotenv -e .env -- tolgee push",
     "create-new-block": "cd packages/forge/cli && bun start",
     "check-unused-dependencies": "bun packages/scripts/src/checkDependencies.ts",
-    "restore": "echo 'Cleaning...' && rimraf node_modules **/node_modules bun.lock **/dist **/.next && bun i"
+    "restore": "echo 'Cleaning...' && bunx rimraf node_modules **/node_modules **/dist **/.next .turbo **/.turbo"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.2.5",

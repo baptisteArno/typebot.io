@@ -6,7 +6,11 @@
   "envMode": "loose",
   "tasks": {
     "typecheck": {
-      "cache": false
+      "cache": false,
+      "dependsOn": ["@typebot.io/react#build"]
+    },
+    "@typebot.io/react#build": {
+      "dependsOn": ["^build"]
     },
     "dev": {
       "cache": false,
