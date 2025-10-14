@@ -14,6 +14,7 @@ export const useResultsQuery = ({ timeFilter, typebotId, onError }: Params) => {
   const { data, error, fetchNextPage, hasNextPage, refetch } = useInfiniteQuery(
     trpc.results.getResults.infiniteQueryOptions(
       {
+        cursor: 0,
         timeZone,
         timeFilter,
         typebotId,

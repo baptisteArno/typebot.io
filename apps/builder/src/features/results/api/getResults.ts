@@ -1,4 +1,5 @@
 import { TRPCError } from "@trpc/server";
+import { isDefined } from "@typebot.io/lib/utils";
 import prisma from "@typebot.io/prisma";
 import { resultWithAnswersSchema } from "@typebot.io/results/schemas/results";
 import { isReadTypebotForbidden } from "@typebot.io/typebot/helpers/isReadTypebotForbidden";
@@ -13,7 +14,7 @@ import {
 } from "@/features/analytics/helpers/parseDateFromTimeFilter";
 import { authenticatedProcedure } from "@/helpers/server/trpc";
 
-const maxLimit = 100;
+const MAX_LIMIT = 500;
 
 export const getResults = authenticatedProcedure
   .meta({
@@ -32,8 +33,8 @@ export const getResults = authenticatedProcedure
         .describe(
           "[Where to find my bot's ID?](../how-to#how-to-find-my-typebotid)",
         ),
-      limit: z.coerce.number().min(1).max(maxLimit).default(50),
-      cursor: z.string().optional(),
+      limit: z.coerce.number().min(1).max(MAX_LIMIT).default(50),
+      cursor: z.coerce.number().optional(),
       timeFilter: z.enum(timeFilterValues).default(defaultTimeFilter),
       timeZone: z.string().optional(),
     }),
@@ -41,15 +42,15 @@ export const getResults = authenticatedProcedure
   .output(
     z.object({
       results: z.array(resultWithAnswersSchema),
-      nextCursor: z.string().nullish(),
+      nextCursor: z.number().nullish(),
     }),
   )
   .query(async ({ input, ctx: { user } }) => {
     const limit = Number(input.limit);
-    if (limit < 1 || limit > maxLimit)
+    if (limit < 1 || limit > MAX_LIMIT)
       throw new TRPCError({
         code: "BAD_REQUEST",
-        message: `limit must be between 1 and ${maxLimit}`,
+        message: `limit must be between 1 and ${MAX_LIMIT}`,
       });
     const { cursor } = input;
     const typebot = await prisma.typebot.findUnique({
@@ -89,7 +90,7 @@ export const getResults = authenticatedProcedure
 
     const results = await prisma.result.findMany({
       take: limit + 1,
-      cursor: cursor ? { id: cursor } : undefined,
+      skip: cursor,
       where: {
         typebotId: typebot.id,
         hasStarted: true,
@@ -122,10 +123,9 @@ export const getResults = authenticatedProcedure
       },
     });
 
-    let nextCursor: typeof cursor | undefined;
-    if (results.length > limit) {
-      const nextResult = results.pop();
-      nextCursor = nextResult?.id;
+    let nextCursor: number | undefined;
+    if (results.length > limit && isDefined(cursor)) {
+      nextCursor = cursor + limit;
     }
 
     return {

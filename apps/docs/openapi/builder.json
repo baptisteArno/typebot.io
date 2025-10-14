@@ -9638,7 +9638,7 @@
             "schema": {
               "type": "number",
               "minimum": 1,
-              "maximum": 100,
+              "maximum": 500,
               "default": 50
             }
           },
@@ -9646,7 +9646,7 @@
             "in": "query",
             "name": "cursor",
             "schema": {
-              "type": "string"
+              "type": "number"
             }
           },
           {
@@ -9786,7 +9786,7 @@
                       }
                     },
                     "nextCursor": {
-                      "type": "string",
+                      "type": "number",
                       "nullable": true
                     }
                   },

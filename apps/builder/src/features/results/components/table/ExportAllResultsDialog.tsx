@@ -57,14 +57,14 @@ export const ExportAllResultsDialog = ({ isOpen, onClose }: Props) => {
       timeFilter: "allTime",
     });
     const allResults = [];
-    let cursor: string | undefined;
+    let cursor: any = 0;
     setExportProgressValue(0);
     do {
       try {
         const { results, nextCursor } = await queryClient.fetchQuery(
           trpc.results.getResults.queryOptions({
             typebotId,
-            limit: 100,
+            limit: 500,
             cursor,
             timeFilter: "allTime",
           }),
