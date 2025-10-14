@@ -13,6 +13,8 @@ jobs:
         with:
           fetch-depth: 2
       - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: "package.json"
       # https://github.com/vercel/turborepo/issues/6348
       - name: Run Turbo ignore
         id: check_changes

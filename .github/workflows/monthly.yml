@@ -19,5 +19,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: "package.json"
       - run: bun install
       - run: bunx turbo run cron:monthly

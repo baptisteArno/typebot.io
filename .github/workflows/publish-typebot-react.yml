@@ -13,6 +13,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: "package.json"
       - run: bun install
       - run: bunx turbo build --filter=@typebot.io/react...
       - run: cd packages/embeds/react && bun publish --access public
