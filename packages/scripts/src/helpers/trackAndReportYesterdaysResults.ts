@@ -58,14 +58,6 @@ export const trackAndReportYesterdaysResults = async () => {
     const olderAdmin = workspace.members
       .sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime())
       .at(0);
-    console.log(
-      "Found",
-      results.reduce((acc, result) => acc + result._count._all, 0),
-      "results in",
-      results.length,
-      "typebots. Saving for admin",
-      olderAdmin?.user.id,
-    );
     if (!olderAdmin) continue;
     for (const result of results) {
       if (result._count._all === 0) continue;
