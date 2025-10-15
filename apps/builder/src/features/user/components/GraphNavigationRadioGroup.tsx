@@ -1,13 +1,7 @@
-import {
-  HStack,
-  Radio,
-  RadioGroup,
-  Stack,
-  Text,
-  VStack,
-} from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { GraphNavigation } from "@typebot.io/prisma/enum";
+import { Label } from "@typebot.io/ui/components/Label";
+import { Radio, RadioGroup } from "@typebot.io/ui/components/RadioGroup";
 import { LaptopIcon, MouseIcon } from "@/components/icons";
 
 type Props = {
@@ -36,33 +30,27 @@ export const GraphNavigationRadioGroup = ({
     },
   ];
   return (
-    <RadioGroup onChange={onChange} defaultValue={defaultValue}>
-      <HStack spacing={4} w="full" align="stretch">
-        {graphNavigationData.map((option) => (
-          <VStack
-            key={option.value}
-            as="label"
-            htmlFor={option.label}
-            cursor="pointer"
-            borderWidth="1px"
-            borderRadius="md"
-            w="full"
-            p="6"
-            spacing={6}
-            justifyContent="space-between"
-          >
-            <VStack spacing={6}>
-              {option.icon}
-              <Stack>
-                <Text fontWeight="bold">{option.label}</Text>
-                <Text>{option.description}</Text>
-              </Stack>
-            </VStack>
+    <RadioGroup
+      onValueChange={(value) => onChange(value as string)}
+      defaultValue={defaultValue}
+      className="gap-2"
+    >
+      {graphNavigationData.map((option) => (
+        <Label
+          key={option.value}
+          className="border rounded-md p-6 gap-6 justify-between items-center flex-col flex hover:bg-gray-2/50"
+        >
+          <div className="flex flex-col gap-6 justify-center items-center">
+            {option.icon}
+            <div className="flex flex-col gap-2">
+              <span>{option.label}</span>
+              <span className="font-normal">{option.description}</span>
+            </div>
+          </div>
 
-            <Radio value={option.value} id={option.label} />
-          </VStack>
-        ))}
-      </HStack>
+          <Radio value={option.value} id={option.label} />
+        </Label>
+      ))}
     </RadioGroup>
   );
 };

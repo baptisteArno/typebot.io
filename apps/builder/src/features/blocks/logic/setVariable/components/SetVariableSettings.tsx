@@ -12,13 +12,14 @@ import { timeZones } from "@typebot.io/lib/timeZones";
 import { isDefined } from "@typebot.io/lib/utils";
 import { Alert } from "@typebot.io/ui/components/Alert";
 import { Field } from "@typebot.io/ui/components/Field";
+import { Label } from "@typebot.io/ui/components/Label";
 import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
+import { Radio, RadioGroup } from "@typebot.io/ui/components/RadioGroup";
 import { Switch } from "@typebot.io/ui/components/Switch";
 import { InformationSquareIcon } from "@typebot.io/ui/icons/InformationSquareIcon";
 import type { Variable } from "@typebot.io/variables/schemas";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { CodeEditor } from "@/components/inputs/CodeEditor";
-import { RadioButtons } from "@/components/inputs/RadioButtons";
 import { Textarea } from "@/components/inputs/Textarea";
 import { TextInput } from "@/components/inputs/TextInput";
 import { VariablesCombobox } from "@/components/inputs/VariablesCombobox";
@@ -241,16 +242,23 @@ const SetVariableValue = ({
             </Field.Label>
           </Field.Root>
           <Stack>
-            <RadioButtons
-              size="sm"
-              options={["Text", "Code"]}
+            <RadioGroup
+              onValueChange={(value) => updateIsCode(value as "Text" | "Code")}
               defaultValue={
                 (options?.isCode ?? defaultSetVariableOptions.isCode)
                   ? "Code"
                   : "Text"
               }
-              onSelect={updateIsCode}
-            />
+            >
+              <Label className="hover:bg-gray-2/50 rounded-md p-2 border flex-1 flex justify-center">
+                <Radio value="Text" className="hidden" />
+                Text
+              </Label>
+              <Label className="hover:bg-gray-2/50 rounded-md p-2 border flex-1 flex justify-center">
+                <Radio value="Code" className="hidden" />
+                Code
+              </Label>
+            </RadioGroup>
             {options?.isCode ? (
               <Stack>
                 <TextInput

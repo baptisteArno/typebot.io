@@ -1,11 +1,12 @@
-import { HStack, Stack, Text, useColorModeValue } from "@chakra-ui/react";
+import { Text } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
 import { Button } from "@typebot.io/ui/components/Button";
+import { Label } from "@typebot.io/ui/components/Label";
+import { Radio, RadioGroup } from "@typebot.io/ui/components/RadioGroup";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { EmojiOrImageIcon } from "@/components/EmojiOrImageIcon";
 import { HardDriveIcon } from "@/components/icons";
-import { RadioButtons } from "@/components/inputs/RadioButtons";
 import { PlanTag } from "@/features/billing/components/PlanTag";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
@@ -33,47 +34,40 @@ const Page = () => {
   };
 
   return (
-    <Stack w="full" justifyContent="center" pt="10" h="100vh">
-      <Stack
-        bgColor={useColorModeValue("white", "gray.900")}
-        spacing={4}
-        maxW="400px"
-        mx="auto"
-        p="6"
-        rounded="lg"
-        borderWidth={1}
-      >
+    <div className="flex w-full justify-center items-center pt-10 h-screen">
+      <div className="bg-gray-1 gap-4 max-w-400px mx-auto p-6 rounded-lg border flex flex-col">
         <Text>
           Choose a workspace to duplicate <strong>{typebot?.name}</strong> in:
         </Text>
-        <RadioButtons
-          direction="column"
-          options={workspaces?.map((workspace) => ({
-            value: workspace.id,
-            label: (
-              <HStack w="full">
-                <EmojiOrImageIcon
-                  icon={workspace.icon}
-                  size="sm"
-                  defaultIcon={HardDriveIcon}
-                />
-                <Text>{workspace.name}</Text>
-                <PlanTag plan={workspace.plan} />
-              </HStack>
-            ),
-          }))}
+        <RadioGroup
+          className="flex-col"
           value={selectedWorkspaceId}
-          onSelect={updateSelectedWorkspaceId}
-        />
+          onValueChange={(value) => updateSelectedWorkspaceId(value as string)}
+        >
+          {workspaces?.map((workspace) => (
+            <Label
+              key={workspace.id}
+              className="hover:bg-gray-2/50 rounded-md p-2 border flex-1 flex justify-center"
+            >
+              <Radio value={workspace.id} className="hidden" />
+              <EmojiOrImageIcon
+                icon={workspace.icon}
+                size="sm"
+                defaultIcon={HardDriveIcon}
+              />
+              {workspace.name}
+              <PlanTag plan={workspace.plan} />
+            </Label>
+          ))}
+        </RadioGroup>
         <Button
           disabled={!selectedWorkspaceId || status === "pending"}
           onClick={() => duplicateTypebot(selectedWorkspaceId as string)}
-          size="sm"
         >
           Duplicate
         </Button>
-      </Stack>
-    </Stack>
+      </div>
+    </div>
   );
 };
 

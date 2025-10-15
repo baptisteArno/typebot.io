@@ -1,13 +1,7 @@
-import {
-  HStack,
-  Image,
-  Radio,
-  RadioGroup,
-  Stack,
-  Text,
-  VStack,
-} from "@chakra-ui/react";
+import { Image } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
+import { Label } from "@typebot.io/ui/components/Label";
+import { Radio, RadioGroup } from "@typebot.io/ui/components/RadioGroup";
 
 type Props = {
   defaultValue: string;
@@ -35,36 +29,27 @@ export const AppearanceRadioGroup = ({ defaultValue, onChange }: Props) => {
     },
   ];
   return (
-    <RadioGroup onChange={onChange} defaultValue={defaultValue}>
-      <HStack spacing={4} w="full" align="stretch">
-        {appearanceData.map((option) => (
-          <VStack
-            key={option.value}
-            as="label"
-            htmlFor={option.label}
-            cursor="pointer"
-            borderWidth="1px"
-            borderRadius="md"
-            w="full"
-            spacing={2}
-            justifyContent="space-between"
-            pb={6}
-          >
-            <VStack spacing={4}>
-              <Image
-                src={option.image}
-                alt="Theme preview"
-                style={{ borderRadius: "0.250rem" }}
-              />
-              <Stack>
-                <Text fontWeight="bold">{option.label}</Text>
-              </Stack>
-            </VStack>
-
+    <RadioGroup
+      onValueChange={(value) => onChange(value as string)}
+      defaultValue={defaultValue}
+      className="gap-2"
+    >
+      {appearanceData.map((option) => (
+        <Label
+          key={option.value}
+          className="flex flex-col gap-5 w-full justify-between border rounded-md pb-6 hover:bg-gray-2/50"
+        >
+          <Image
+            src={option.image}
+            alt="Theme preview"
+            style={{ borderRadius: "0.250rem" }}
+          />
+          <div className="flex gap-2 items-center">
             <Radio value={option.value} id={option.label} />
-          </VStack>
-        ))}
-      </HStack>
+            <div className="flex flex-col gap-2">{option.label}</div>
+          </div>
+        </Label>
+      ))}
     </RadioGroup>
   );
 };

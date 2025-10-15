@@ -12,8 +12,9 @@ import type {
 } from "@typebot.io/theme/schemas";
 import { Accordion } from "@typebot.io/ui/components/Accordion";
 import { Field } from "@typebot.io/ui/components/Field";
+import { Label } from "@typebot.io/ui/components/Label";
+import { Radio, RadioGroup } from "@typebot.io/ui/components/RadioGroup";
 import { Switch } from "@typebot.io/ui/components/Switch";
-import { RadioButtons } from "@/components/inputs/RadioButtons";
 import { ChangePlanDialog } from "@/features/billing/components/ChangePlanDialog";
 import { LockTag } from "@/features/billing/components/LockTag";
 import { isFreePlan } from "@/features/billing/helpers/isFreePlan";
@@ -122,11 +123,22 @@ export const GeneralSettings = ({
             {t("theme.sideMenu.global.font")}
           </Accordion.Trigger>
           <Accordion.Panel>
-            <RadioButtons
-              options={fontTypes}
+            <RadioGroup
               defaultValue={fontType}
-              onSelect={updateFontType}
-            />
+              onValueChange={(value) =>
+                updateFontType(value as (typeof fontTypes)[number])
+              }
+            >
+              {fontTypes.map((type) => (
+                <Label
+                  key={type}
+                  className="hover:bg-gray-2/50 rounded-md p-2 border flex-1 flex justify-center"
+                >
+                  <Radio value={type} className="hidden" />
+                  {type}
+                </Label>
+              ))}
+            </RadioGroup>
             <FontForm font={generalTheme?.font} onFontChange={updateFont} />
           </Accordion.Panel>
         </Accordion.Item>
