@@ -63,7 +63,7 @@
     "@typebot.io/blocks-core": "workspace:*",
     "@typebot.io/groups": "workspace:*",
     "@typebot.io/rich-text": "workspace:*",
-    "ai": "^4.0.42"
+    "ai": "^4.3.19"
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*",

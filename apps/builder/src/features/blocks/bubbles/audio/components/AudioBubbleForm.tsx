@@ -3,9 +3,10 @@ import { useTranslate } from "@tolgee/react";
 import { defaultAudioBubbleContent } from "@typebot.io/blocks-bubbles/audio/constants";
 import type { AudioBubbleBlock } from "@typebot.io/blocks-bubbles/audio/schema";
 import { Button } from "@typebot.io/ui/components/Button";
+import { Field } from "@typebot.io/ui/components/Field";
+import { Switch } from "@typebot.io/ui/components/Switch";
 import { useState } from "react";
 import { UploadButton } from "@/components/ImageUploadContent/UploadButton";
-import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
 import { TextInput } from "@/components/inputs/TextInput";
 import type { FilePathUploadProps } from "@/features/upload/api/generateUploadUrl";
 
@@ -74,14 +75,18 @@ export const AudioBubbleForm = ({
             </>
           )}
         </Stack>
-        <SwitchWithLabel
-          label={t("editor.blocks.bubbles.audio.settings.autoplay.label")}
-          initialValue={
-            content?.isAutoplayEnabled ??
-            defaultAudioBubbleContent.isAutoplayEnabled
-          }
-          onCheckChange={updateAutoPlay}
-        />
+        <Field.Root>
+          <Field.Label>
+            {t("editor.blocks.bubbles.audio.settings.autoplay.label")}
+          </Field.Label>
+          <Switch
+            checked={
+              content?.isAutoplayEnabled ??
+              defaultAudioBubbleContent.isAutoplayEnabled
+            }
+            onCheckedChange={updateAutoPlay}
+          />
+        </Field.Root>
       </Stack>
     </Stack>
   );

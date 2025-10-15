@@ -7,9 +7,9 @@ import {
 } from "@typebot.io/settings/constants";
 import type { Settings } from "@typebot.io/settings/schemas";
 import { Field } from "@typebot.io/ui/components/Field";
+import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
+import { Switch } from "@typebot.io/ui/components/Switch";
 import { BasicNumberInput } from "@/components/inputs/BasicNumberInput";
-import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
-import { SwitchWithRelatedSettings } from "@/components/SwitchWithRelatedSettings";
 
 type Props = {
   typingEmulation: Settings["typingEmulation"];
@@ -46,61 +46,77 @@ export const TypingEmulationForm = ({ typingEmulation, onUpdate }: Props) => {
 
   return (
     <Stack spacing={6}>
-      <SwitchWithRelatedSettings
-        label={t("settings.sideMenu.typing.emulation")}
-        initialValue={
-          typingEmulation?.enabled ?? defaultSettings.typingEmulation.enabled
-        }
-        onCheckChange={updateIsEnabled}
-      >
-        <Field.Root className="flex-row">
-          <Field.Label>
-            {t("settings.sideMenu.typing.emulation.speed.label")}
-          </Field.Label>
-          <BasicNumberInput
-            defaultValue={
-              typingEmulation?.speed ?? defaultSettings.typingEmulation.speed
+      <Field.Container>
+        <Field.Root className="flex-row items-center">
+          <Switch
+            checked={
+              typingEmulation?.enabled ??
+              defaultSettings.typingEmulation.enabled
             }
-            onValueChange={updateSpeed}
-            withVariableButton={false}
-            className="max-w-40"
-            step={30}
+            onCheckedChange={updateIsEnabled}
           />
+          <Field.Label>{t("settings.sideMenu.typing.emulation")}</Field.Label>
         </Field.Root>
+        {typingEmulation?.enabled ??
+          (defaultSettings.typingEmulation.enabled && (
+            <>
+              <Field.Root className="flex-row">
+                <Field.Label>
+                  {t("settings.sideMenu.typing.emulation.speed.label")}
+                </Field.Label>
+                <BasicNumberInput
+                  defaultValue={
+                    typingEmulation?.speed ??
+                    defaultSettings.typingEmulation.speed
+                  }
+                  onValueChange={updateSpeed}
+                  withVariableButton={false}
+                  className="max-w-40"
+                  step={30}
+                />
+              </Field.Root>
 
-        <Field.Root className="flex-row inline-flex items-center">
-          <Field.Label>
-            {t("settings.sideMenu.typing.emulation.maxDelay.label")}
-          </Field.Label>
-          <BasicNumberInput
-            defaultValue={
-              typingEmulation?.maxDelay ??
-              defaultSettings.typingEmulation.maxDelay
-            }
-            className="max-w-40"
-            onValueChange={updateMaxDelay}
-            withVariableButton={false}
-            min={0}
-            max={maxTypingEmulationMaxDelay}
-            step={0.1}
-          />
-          {t("seconds")}
-        </Field.Root>
+              <Field.Root className="flex-row inline-flex items-center">
+                <Field.Label>
+                  {t("settings.sideMenu.typing.emulation.maxDelay.label")}
+                </Field.Label>
+                <BasicNumberInput
+                  defaultValue={
+                    typingEmulation?.maxDelay ??
+                    defaultSettings.typingEmulation.maxDelay
+                  }
+                  className="max-w-40"
+                  onValueChange={updateMaxDelay}
+                  withVariableButton={false}
+                  min={0}
+                  max={maxTypingEmulationMaxDelay}
+                  step={0.1}
+                />
+                {t("seconds")}
+              </Field.Root>
 
-        <SwitchWithLabel
-          label={t(
-            "settings.sideMenu.typing.emulation.disabledOnFirstMessage.label",
-          )}
-          moreInfoContent={t(
-            "settings.sideMenu.typing.emulation.disabledOnFirstMessage.tooltip",
-          )}
-          onCheckChange={updateIsDisabledOnFirstMessage}
-          initialValue={
-            typingEmulation?.isDisabledOnFirstMessage ??
-            defaultSettings.typingEmulation.isDisabledOnFirstMessage
-          }
-        />
-      </SwitchWithRelatedSettings>
+              <Field.Root className="flex-row items-center">
+                <Switch
+                  checked={
+                    typingEmulation?.isDisabledOnFirstMessage ??
+                    defaultSettings.typingEmulation.isDisabledOnFirstMessage
+                  }
+                  onCheckedChange={updateIsDisabledOnFirstMessage}
+                />
+                <Field.Label>
+                  {t(
+                    "settings.sideMenu.typing.emulation.disabledOnFirstMessage.label",
+                  )}{" "}
+                  <MoreInfoTooltip>
+                    {t(
+                      "settings.sideMenu.typing.emulation.disabledOnFirstMessage.tooltip",
+                    )}
+                  </MoreInfoTooltip>
+                </Field.Label>
+              </Field.Root>
+            </>
+          ))}
+      </Field.Container>
       <Field.Root>
         <Field.Label>
           {t("settings.sideMenu.typing.emulation.delayBetweenBubbles")}

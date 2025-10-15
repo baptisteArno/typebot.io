@@ -1,8 +1,10 @@
 import { Stack } from "@chakra-ui/react";
 import { defaultScriptOptions } from "@typebot.io/blocks-logic/script/constants";
 import type { ScriptBlock } from "@typebot.io/blocks-logic/script/schema";
+import { Field } from "@typebot.io/ui/components/Field";
+import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
+import { Switch } from "@typebot.io/ui/components/Switch";
 import { CodeEditor } from "@/components/inputs/CodeEditor";
-import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
 import { TextInput } from "@/components/inputs/TextInput";
 
 type Props = {
@@ -28,14 +30,22 @@ export const ScriptSettings = ({ options, onOptionsChange }: Props) => {
         onChange={handleNameChange}
         withVariableButton={false}
       />
-      <SwitchWithLabel
-        label="Execute on client"
-        moreInfoContent="Check this if you need access to client variables like `window` or `document`."
-        initialValue={
-          options?.isExecutedOnClient ?? defaultScriptOptions.isExecutedOnClient
-        }
-        onCheckChange={updateClientExecution}
-      />
+      <Field.Root className="flex-row items-center">
+        <Switch
+          checked={
+            options?.isExecutedOnClient ??
+            defaultScriptOptions.isExecutedOnClient
+          }
+          onCheckedChange={updateClientExecution}
+        />
+        <Field.Label>
+          Execute on client{" "}
+          <MoreInfoTooltip>
+            Check this if you need access to client variables like `window` or
+            `document`."
+          </MoreInfoTooltip>
+        </Field.Label>
+      </Field.Root>
       <CodeEditor
         defaultValue={options?.content}
         lang="javascript"

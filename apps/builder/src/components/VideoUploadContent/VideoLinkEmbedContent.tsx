@@ -2,8 +2,9 @@ import { Stack, Text } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { defaultVideoBubbleContent } from "@typebot.io/blocks-bubbles/video/constants";
 import type { VideoBubbleBlock } from "@typebot.io/blocks-bubbles/video/schema";
+import { Field } from "@typebot.io/ui/components/Field";
+import { Switch } from "@typebot.io/ui/components/Switch";
 import { TextInput } from "@/components/inputs/TextInput";
-import { SwitchWithLabel } from "../inputs/SwitchWithLabel";
 
 export const VideoLinkEmbedContent = ({
   content,
@@ -47,7 +48,7 @@ export const VideoLinkEmbedContent = ({
   };
 
   return (
-    <>
+    <div className="flex flex-col gap-4">
       <Stack py="2">
         <TextInput
           placeholder={t("video.urlInput.placeholder")}
@@ -81,35 +82,30 @@ export const VideoLinkEmbedContent = ({
         </Stack>
       )}
       {content?.url && content?.type === "url" && (
-        <SwitchWithLabel
-          label={"Display controls"}
-          initialValue={
-            content?.areControlsDisplayed ??
-            defaultVideoBubbleContent.areControlsDisplayed
-          }
-          onCheckChange={updateControlsDisplay}
-        />
+        <Field.Root className="flex-row">
+          <Switch
+            checked={
+              content?.areControlsDisplayed ??
+              defaultVideoBubbleContent.areControlsDisplayed
+            }
+            onCheckedChange={updateControlsDisplay}
+          />
+          <Field.Label>Display controls</Field.Label>
+        </Field.Root>
       )}
-      <SwitchWithLabel
-        label={t("editor.blocks.bubbles.audio.settings.autoplay.label")}
-        initialValue={
-          content?.isAutoplayEnabled ??
-          defaultVideoBubbleContent.isAutoplayEnabled
-        }
-        isChecked={
-          content?.isAutoplayEnabled ??
-          defaultVideoBubbleContent.isAutoplayEnabled
-        }
-        isDisabled={content?.areControlsDisplayed === false}
-        onCheckChange={() =>
-          updateAutoPlay(
-            !(
-              content?.isAutoplayEnabled ??
-              defaultVideoBubbleContent.isAutoplayEnabled
-            ),
-          )
-        }
-      />
-    </>
+      <Field.Root className="flex-row items-center">
+        <Switch
+          checked={
+            content?.isAutoplayEnabled ??
+            defaultVideoBubbleContent.isAutoplayEnabled
+          }
+          disabled={content?.areControlsDisplayed === false}
+          onCheckedChange={updateAutoPlay}
+        />
+        <Field.Label>
+          {t("editor.blocks.bubbles.audio.settings.autoplay.label")}
+        </Field.Label>
+      </Field.Root>
+    </div>
   );
 };

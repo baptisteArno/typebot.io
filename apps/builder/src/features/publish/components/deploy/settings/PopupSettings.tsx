@@ -3,11 +3,11 @@ import {
   HStack,
   Stack,
   type StackProps,
-  Switch,
   Text,
 } from "@chakra-ui/react";
 import type { PopupProps } from "@typebot.io/js";
 import { isDefined } from "@typebot.io/lib/utils";
+import { Switch } from "@typebot.io/ui/components/Switch";
 import { useEffect, useState } from "react";
 import { BasicNumberInput } from "@/components/inputs/BasicNumberInput";
 
@@ -31,10 +31,7 @@ export const PopupSettings = ({ onUpdateSettings, ...props }: Props) => {
 
       <HStack pl={4}>
         <Text flexShrink={0}>Auto show</Text>
-        <Switch
-          isChecked={isEnabled}
-          onChange={(e) => setIsEnabled(e.target.checked)}
-        />
+        <Switch checked={isEnabled} onCheckedChange={setIsEnabled} />
         {isEnabled && (
           <>
             <Text>after</Text>

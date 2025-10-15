@@ -4,11 +4,10 @@ import { defaultChoiceInputOptions } from "@typebot.io/blocks-inputs/choice/cons
 import type { ChoiceInputBlock } from "@typebot.io/blocks-inputs/choice/schema";
 import { Field } from "@typebot.io/ui/components/Field";
 import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
+import { Switch } from "@typebot.io/ui/components/Switch";
 import type { Variable } from "@typebot.io/variables/schemas";
-import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
 import { TextInput } from "@/components/inputs/TextInput";
 import { VariablesCombobox } from "@/components/inputs/VariablesCombobox";
-import { SwitchWithRelatedSettings } from "@/components/SwitchWithRelatedSettings";
 
 type Props = {
   options?: ChoiceInputBlock["options"];
@@ -35,46 +34,63 @@ export const ButtonsBlockSettings = ({ options, onOptionsChange }: Props) => {
 
   return (
     <Stack spacing={4}>
-      <SwitchWithRelatedSettings
-        label={t("blocks.inputs.settings.multipleChoice.label")}
-        initialValue={
-          options?.isMultipleChoice ??
-          defaultChoiceInputOptions.isMultipleChoice
-        }
-        onCheckChange={updateIsMultiple}
-      >
-        <TextInput
-          label={t("blocks.inputs.settings.submitButton.label")}
-          defaultValue={
-            options?.buttonLabel ?? t("blocks.inputs.settings.buttonText.label")
-          }
-          onChange={updateButtonLabel}
-        />
-      </SwitchWithRelatedSettings>
-      <SwitchWithRelatedSettings
-        label={t("blocks.inputs.settings.isSearchable.label")}
-        initialValue={
-          options?.isSearchable ?? defaultChoiceInputOptions.isSearchable
-        }
-        onCheckChange={updateIsSearchable}
-      >
-        <SwitchWithLabel
-          label="Default display buttons"
-          initialValue={
-            options?.areInitialSearchButtonsVisible ??
-            defaultChoiceInputOptions.areInitialSearchButtonsVisible
-          }
-          onCheckChange={updateAreInitialSearchButtonsVisible}
-        />
-        <TextInput
-          label={t("blocks.inputs.settings.input.placeholder.label")}
-          defaultValue={
-            options?.searchInputPlaceholder ??
-            t("blocks.inputs.settings.input.filterOptions.label")
-          }
-          onChange={updateSearchInputPlaceholder}
-        />
-      </SwitchWithRelatedSettings>
+      <Field.Container>
+        <Field.Root className="flex-row items-center">
+          <Switch
+            checked={
+              options?.isMultipleChoice ??
+              defaultChoiceInputOptions.isMultipleChoice
+            }
+            onCheckedChange={updateIsMultiple}
+          />
+          <Field.Label className="font-medium">
+            {t("blocks.inputs.settings.multipleChoice.label")}
+          </Field.Label>
+        </Field.Root>
+        {(options?.isMultipleChoice ??
+          defaultChoiceInputOptions.isMultipleChoice) && (
+          <TextInput
+            label={t("blocks.inputs.settings.submitButton.label")}
+            defaultValue={
+              options?.buttonLabel ??
+              t("blocks.inputs.settings.buttonText.label")
+            }
+            onChange={updateButtonLabel}
+          />
+        )}
+      </Field.Container>
+      <Field.Container>
+        <Field.Root className="flex-row items-center">
+          <Switch
+            checked={
+              options?.isSearchable ?? defaultChoiceInputOptions.isSearchable
+            }
+            onCheckedChange={updateIsSearchable}
+          />
+          <Field.Label className="font-medium">
+            {t("blocks.inputs.settings.isSearchable.label")}
+          </Field.Label>
+        </Field.Root>
+        {(options?.isSearchable ?? defaultChoiceInputOptions.isSearchable) && (
+          <>
+            <Field.Root className="flex-row items-center">
+              <Switch
+                checked={options?.areInitialSearchButtonsVisible ?? false}
+                onCheckedChange={updateAreInitialSearchButtonsVisible}
+              />
+              <Field.Label>Default display buttons</Field.Label>
+            </Field.Root>
+            <TextInput
+              label={t("blocks.inputs.settings.input.placeholder.label")}
+              defaultValue={
+                options?.searchInputPlaceholder ??
+                t("blocks.inputs.settings.input.filterOptions.label")
+              }
+              onChange={updateSearchInputPlaceholder}
+            />
+          </>
+        )}
+      </Field.Container>
       <Field.Root>
         <Field.Label>
           {t("blocks.inputs.button.settings.dynamicData.label")}

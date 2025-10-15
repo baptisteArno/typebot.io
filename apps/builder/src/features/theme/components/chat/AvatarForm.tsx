@@ -1,20 +1,13 @@
-import {
-  Box,
-  chakra,
-  Flex,
-  Heading,
-  HStack,
-  Image,
-  Stack,
-  Switch,
-} from "@chakra-ui/react";
+import { Box, chakra, Flex, Image, Stack } from "@chakra-ui/react";
 import { isSvgSrc } from "@typebot.io/lib/utils";
 import type { AvatarProps } from "@typebot.io/theme/schemas";
+import { Field } from "@typebot.io/ui/components/Field";
 import { Popover } from "@typebot.io/ui/components/Popover";
+import { Switch } from "@typebot.io/ui/components/Switch";
+import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
 import React from "react";
 import { ImageUploadContent } from "@/components/ImageUploadContent";
 import type { FilePathUploadProps } from "@/features/upload/api/generateUploadUrl";
-import { useOpenControls } from "@/hooks/useOpenControls";
 import { DefaultAvatar } from "../DefaultAvatar";
 
 type Props = {
@@ -44,12 +37,16 @@ export const AvatarForm = ({
   return (
     <Stack borderWidth={1} rounded="md" p="4" spacing={4}>
       <Flex justifyContent="space-between">
-        <HStack>
-          <Heading as="label" fontSize="lg" htmlFor={title} mb="1">
+        <Field.Root className="flex-row items-center">
+          <Field.Label className="font-medium font-heading text-lg">
             {title}
-          </Heading>
-          <Switch isChecked={isChecked} id={title} onChange={handleOnCheck} />
-        </HStack>
+          </Field.Label>
+          <Switch
+            checked={isChecked}
+            id={title}
+            onCheckedChange={handleOnCheck}
+          />
+        </Field.Root>
         {isChecked && (
           <Flex ref={popoverContainerRef}>
             <Popover.Root {...controls}>

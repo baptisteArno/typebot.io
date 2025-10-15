@@ -3,6 +3,7 @@ import { env } from "@typebot.io/env";
 import { isDefined } from "@typebot.io/lib/utils";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Popover } from "@typebot.io/ui/components/Popover";
+import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
 import { cn } from "@typebot.io/ui/lib/cn";
 import type { Variable } from "@typebot.io/variables/schemas";
 import {
@@ -14,7 +15,6 @@ import { tokyoNight } from "@uiw/codemirror-theme-tokyo-night";
 import CodeMirror, { type ReactCodeMirrorRef } from "@uiw/react-codemirror";
 import { type CSSProperties, useEffect, useRef, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
-import { useOpenControls } from "@/hooks/useOpenControls";
 import { CopyButton } from "../CopyButton";
 import { BracesIcon } from "../icons";
 import { VariablesCombobox } from "./VariablesCombobox";

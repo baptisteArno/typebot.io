@@ -7,9 +7,10 @@ import {
   type StackProps,
   Text,
 } from "@chakra-ui/react";
+import { Field } from "@typebot.io/ui/components/Field";
+import { Switch } from "@typebot.io/ui/components/Switch";
 import { useEffect, useState } from "react";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
-import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
 
 type Props = {
   onUpdateWindowSettings: (windowSettings: {
@@ -52,11 +53,13 @@ export const StandardSettings = ({
       <Heading size="sm">Window settings</Heading>
 
       <Stack pl="4" spacing={4}>
-        <SwitchWithLabel
-          label="Set to fullscreen"
-          initialValue={isFullscreenChecked}
-          onCheckChange={() => setIsFullscreenChecked(!isFullscreenChecked)}
-        />
+        <Field.Root className="flex-row items-center">
+          <Switch
+            checked={isFullscreenChecked}
+            onCheckedChange={() => setIsFullscreenChecked(!isFullscreenChecked)}
+          />
+          <Field.Label>Set to fullscreen</Field.Label>
+        </Field.Root>
         {!isFullscreenChecked && (
           <>
             <Flex justify="space-between" align="center">

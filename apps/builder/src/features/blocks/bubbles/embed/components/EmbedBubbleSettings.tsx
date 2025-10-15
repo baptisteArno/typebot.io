@@ -4,11 +4,11 @@ import { defaultEmbedBubbleContent } from "@typebot.io/blocks-bubbles/embed/cons
 import type { EmbedBubbleBlock } from "@typebot.io/blocks-bubbles/embed/schema";
 import { sanitizeUrl } from "@typebot.io/lib/utils";
 import { Field } from "@typebot.io/ui/components/Field";
+import { Switch } from "@typebot.io/ui/components/Switch";
 import type { Variable } from "@typebot.io/variables/schemas";
 import { BasicNumberInput } from "@/components/inputs/BasicNumberInput";
 import { TextInput } from "@/components/inputs/TextInput";
 import { VariablesCombobox } from "@/components/inputs/VariablesCombobox";
-import { SwitchWithRelatedSettings } from "@/components/SwitchWithRelatedSettings";
 
 type Props = {
   content: EmbedBubbleBlock["content"];
@@ -73,25 +73,35 @@ export const EmbedBubbleSettings = ({ content, onSubmit }: Props) => {
         {t("editor.blocks.bubbles.embed.settings.numberInput.unit")}
       </Field.Root>
 
-      <SwitchWithRelatedSettings
-        label="Wait for event?"
-        initialValue={content?.waitForEvent?.isEnabled ?? false}
-        onCheckChange={updateWaitForEventEnabled}
-      >
-        <TextInput
-          direction="row"
-          label="Name:"
-          defaultValue={content?.waitForEvent?.name}
-          onChange={updateWaitEventName}
-        />
-        <Field.Root>
-          <Field.Label>Save data in variable</Field.Label>
-          <VariablesCombobox
-            onSelectVariable={updateSaveDataInVariableId}
-            initialVariableId={content?.waitForEvent?.saveDataInVariableId}
+      <Field.Container>
+        <Field.Root className="flex-row items-center">
+          <Switch
+            checked={content?.waitForEvent?.isEnabled ?? false}
+            onCheckedChange={updateWaitForEventEnabled}
           />
+          <Field.Label>Wait for event?</Field.Label>
         </Field.Root>
-      </SwitchWithRelatedSettings>
+        {content?.waitForEvent?.isEnabled ??
+          (false && (
+            <>
+              <TextInput
+                direction="row"
+                label="Name:"
+                defaultValue={content?.waitForEvent?.name}
+                onChange={updateWaitEventName}
+              />
+              <Field.Root>
+                <Field.Label>Save data in variable</Field.Label>
+                <VariablesCombobox
+                  onSelectVariable={updateSaveDataInVariableId}
+                  initialVariableId={
+                    content?.waitForEvent?.saveDataInVariableId
+                  }
+                />
+              </Field.Root>
+            </>
+          ))}
+      </Field.Container>
     </Stack>
   );
 };

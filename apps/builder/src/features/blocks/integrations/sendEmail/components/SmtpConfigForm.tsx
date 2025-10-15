@@ -2,8 +2,9 @@ import { Stack } from "@chakra-ui/react";
 import type { SmtpCredentials } from "@typebot.io/credentials/schemas";
 import { isDefined } from "@typebot.io/lib/utils";
 import { Field } from "@typebot.io/ui/components/Field";
+import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
+import { Switch } from "@typebot.io/ui/components/Switch";
 import { BasicNumberInput } from "@/components/inputs/BasicNumberInput";
-import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
 import { TextInput } from "@/components/inputs/TextInput";
 
 type Props = {
@@ -78,13 +79,21 @@ export const SmtpConfigForm = ({ config, onConfigChange }: Props) => {
         withVariableButton={false}
         isDisabled={!config}
       />
-      <SwitchWithLabel
-        label="Secure"
-        initialValue={config?.isTlsEnabled}
-        onCheckChange={handleTlsCheck}
-        moreInfoContent="If enabled, the connection will use TLS when connecting to server. If disabled then TLS is used if server supports the STARTTLS extension. In most cases enable it if you are connecting to port 465. For port 587 or 25 keep it disabled."
-        isDisabled={!config}
-      />
+      <Field.Root className="flex-row items-center">
+        <Switch
+          checked={config?.isTlsEnabled}
+          onCheckedChange={handleTlsCheck}
+        />
+        <Field.Label>
+          Secure{" "}
+          <MoreInfoTooltip>
+            If enabled, the connection will use TLS when connecting to server.
+            If disabled then TLS is used if server supports the STARTTLS
+            extension. In most cases enable it if you are connecting to port
+            465. For port 587 or 25 keep it disabled.
+          </MoreInfoTooltip>
+        </Field.Label>
+      </Field.Root>
       <Field.Root className="flex-row">
         <Field.Label>Port number:</Field.Label>
         <BasicNumberInput

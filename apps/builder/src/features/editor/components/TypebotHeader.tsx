@@ -13,6 +13,7 @@ import { isDefined, isNotDefined } from "@typebot.io/lib/utils";
 import { Plan } from "@typebot.io/prisma/enum";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Tooltip } from "@typebot.io/ui/components/Tooltip";
+import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
 import { LayoutBottomIcon } from "@typebot.io/ui/icons/LayoutBottomIcon";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -33,7 +34,6 @@ import { ShareTypebotButton } from "@/features/share/components/ShareTypebotButt
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { isCloudProdInstance } from "@/helpers/isCloudProdInstance";
 import { useKeyboardShortcuts } from "@/hooks/useKeyboardShortcuts";
-import { useOpenControls } from "@/hooks/useOpenControls";
 import { useRightPanel } from "@/hooks/useRightPanel";
 import { headerHeight } from "../constants";
 import { useEditor } from "../providers/EditorProvider";

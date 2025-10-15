@@ -2,11 +2,11 @@ import { useTranslate } from "@tolgee/react";
 import type { ButtonProps } from "@typebot.io/ui/components/Button";
 import { Popover } from "@typebot.io/ui/components/Popover";
 import { Tooltip } from "@typebot.io/ui/components/Tooltip";
+import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
 import { cn } from "@typebot.io/ui/lib/cn";
 import type { Variable } from "@typebot.io/variables/schemas";
 import { BracesIcon } from "@/components/icons";
 import { VariablesCombobox } from "@/components/inputs/VariablesCombobox";
-import { useOpenControls } from "@/hooks/useOpenControls";
 
 type Props = {
   onSelectVariable: (variable: Pick<Variable, "name" | "id">) => void;

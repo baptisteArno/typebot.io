@@ -2,9 +2,9 @@ import type { IconProps } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { Popover } from "@typebot.io/ui/components/Popover";
 import { Tooltip } from "@typebot.io/ui/components/Tooltip";
+import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
 import { cx } from "@typebot.io/ui/lib/cva";
 import type { FilePathUploadProps } from "@/features/upload/api/generateUploadUrl";
-import { useOpenControls } from "@/hooks/useOpenControls";
 import { EmojiOrImageIcon } from "./EmojiOrImageIcon";
 import { ImageUploadContent } from "./ImageUploadContent";
 

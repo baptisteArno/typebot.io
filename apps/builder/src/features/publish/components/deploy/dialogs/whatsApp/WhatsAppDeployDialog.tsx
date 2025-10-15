@@ -15,11 +15,10 @@ import { Accordion } from "@typebot.io/ui/components/Accordion";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
 import { Field } from "@typebot.io/ui/components/Field";
 import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
+import { Switch } from "@typebot.io/ui/components/Switch";
 import { AlertInfo } from "@/components/AlertInfo";
 import { BasicNumberInput } from "@/components/inputs/BasicNumberInput";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
-import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
-import { SwitchWithRelatedSettings } from "@/components/SwitchWithRelatedSettings";
 import { TableList } from "@/components/TableList";
 import { TextLink } from "@/components/TextLink";
 import { UnlockPlanAlertInfo } from "@/components/UnlockPlanAlertInfo";
@@ -233,48 +232,55 @@ export const WhatsAppDeployDialog = ({
                         />
                         hours
                       </Field.Root>
-                      <SwitchWithRelatedSettings
-                        label={"Start bot condition"}
-                        initialValue={isDefined(
-                          whatsAppSettings?.startCondition,
+                      <Field.Container>
+                        <Field.Root className="flex-row items-center">
+                          <Switch
+                            checked={isDefined(
+                              whatsAppSettings?.startCondition,
+                            )}
+                            onCheckedChange={updateIsStartConditionEnabled}
+                          />
+                          <Field.Label>Start bot condition</Field.Label>
+                        </Field.Root>
+                        {isDefined(whatsAppSettings?.startCondition) && (
+                          <TableList<Comparison>
+                            initialItems={
+                              whatsAppSettings?.startCondition?.comparisons ??
+                              []
+                            }
+                            onItemsChange={updateStartConditionComparisons}
+                            ComponentBetweenItems={() => (
+                              <Flex justify="center">
+                                <BasicSelect
+                                  value={
+                                    whatsAppSettings?.startCondition
+                                      ?.logicalOperator
+                                  }
+                                  onChange={updateStartConditionLogicalOperator}
+                                  items={Object.values(LogicalOperator)}
+                                />
+                              </Flex>
+                            )}
+                            addLabel="Add a comparison"
+                          >
+                            {(props) => <WhatsAppComparisonItem {...props} />}
+                          </TableList>
                         )}
-                        onCheckChange={updateIsStartConditionEnabled}
-                      >
-                        <TableList<Comparison>
-                          initialItems={
-                            whatsAppSettings?.startCondition?.comparisons ?? []
-                          }
-                          onItemsChange={updateStartConditionComparisons}
-                          ComponentBetweenItems={() => (
-                            <Flex justify="center">
-                              <BasicSelect
-                                value={
-                                  whatsAppSettings?.startCondition
-                                    ?.logicalOperator
-                                }
-                                onChange={updateStartConditionLogicalOperator}
-                                items={Object.values(LogicalOperator)}
-                              />
-                            </Flex>
-                          )}
-                          addLabel="Add a comparison"
-                        >
-                          {(props) => <WhatsAppComparisonItem {...props} />}
-                        </TableList>
-                      </SwitchWithRelatedSettings>
+                      </Field.Container>
                     </Accordion.Panel>
                   </Accordion.Item>
                 </Accordion.Root>
               </ListItem>
 
               <ListItem>
-                <SwitchWithLabel
-                  isDisabled={!hasProPerks(workspace)}
-                  label="Enable WhatsApp integration"
-                  initialValue={typebot?.settings.whatsApp?.isEnabled ?? false}
-                  onCheckChange={toggleEnableWhatsApp}
-                  justifyContent="flex-start"
-                />
+                <Field.Root className="flex-row items-center">
+                  <Switch
+                    checked={typebot?.settings.whatsApp?.isEnabled ?? false}
+                    disabled={!hasProPerks(workspace)}
+                    onCheckedChange={toggleEnableWhatsApp}
+                  />
+                  <Field.Label>Enable WhatsApp integration</Field.Label>
+                </Field.Root>
               </ListItem>
               <ListItem>
                 <HStack>

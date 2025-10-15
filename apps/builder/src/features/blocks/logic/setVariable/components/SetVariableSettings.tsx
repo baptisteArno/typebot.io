@@ -11,11 +11,12 @@ import type { SetVariableBlock } from "@typebot.io/blocks-logic/setVariable/sche
 import { timeZones } from "@typebot.io/lib/timeZones";
 import { isDefined } from "@typebot.io/lib/utils";
 import { Field } from "@typebot.io/ui/components/Field";
+import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
+import { Switch } from "@typebot.io/ui/components/Switch";
 import type { Variable } from "@typebot.io/variables/schemas";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { CodeEditor } from "@/components/inputs/CodeEditor";
 import { RadioButtons } from "@/components/inputs/RadioButtons";
-import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
 import { Textarea } from "@/components/inputs/Textarea";
 import { TextInput } from "@/components/inputs/TextInput";
 import { VariablesCombobox } from "@/components/inputs/VariablesCombobox";
@@ -99,13 +100,20 @@ export const SetVariableSettings = ({ options, onOptionsChange }: Props) => {
         </Stack>
 
         {selectedVariable && !isSessionOnly && !isLinkedToAnswer && (
-          <SwitchWithLabel
-            key={selectedVariable.id}
-            label="Save in results"
-            moreInfoContent="By default, the variable is saved only for the user chat session. Check this option if you want to also store the variable in the typebot Results table."
-            initialValue={!selectedVariable.isSessionVariable}
-            onCheckChange={updateIsSessionVariable}
-          />
+          <Field.Root className="flex-row items-center">
+            <Switch
+              checked={!selectedVariable.isSessionVariable}
+              onCheckedChange={updateIsSessionVariable}
+            />
+            <Field.Label>
+              Save in results{" "}
+              <MoreInfoTooltip>
+                By default, the variable is saved only for the user chat
+                session. Check this option if you want to also store the
+                variable in the typebot Results table.
+              </MoreInfoTooltip>
+            </Field.Label>
+          </Field.Root>
         )}
         <SetVariableValue options={options} onOptionsChange={onOptionsChange} />
       </Stack>
@@ -214,15 +222,22 @@ const SetVariableValue = ({
     case undefined:
       return (
         <>
-          <SwitchWithLabel
-            label="Execute on client"
-            moreInfoContent="Check this if you need access to client-only variables like `window` or `document`."
-            initialValue={
-              options?.isExecutedOnClient ??
-              defaultSetVariableOptions.isExecutedOnClient
-            }
-            onCheckChange={updateClientExecution}
-          />
+          <Field.Root className="flex-row items-center">
+            <Switch
+              checked={
+                options?.isExecutedOnClient ??
+                defaultSetVariableOptions.isExecutedOnClient
+              }
+              onCheckedChange={updateClientExecution}
+            />
+            <Field.Label>
+              Execute on client{" "}
+              <MoreInfoTooltip>
+                Check this if you need access to client-only variables like
+                `window` or `document`.
+              </MoreInfoTooltip>
+            </Field.Label>
+          </Field.Root>
           <Stack>
             <RadioButtons
               size="sm"

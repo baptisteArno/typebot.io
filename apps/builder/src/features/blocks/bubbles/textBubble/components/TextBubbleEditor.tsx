@@ -9,13 +9,13 @@ import { plateCorePlugins } from "@typebot.io/rich-text/plateCorePlugins";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Popover } from "@typebot.io/ui/components/Popover";
 import { Separator } from "@typebot.io/ui/components/Separator";
+import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
 import { CodeIcon } from "@typebot.io/ui/icons/CodeIcon";
 import type { Variable } from "@typebot.io/variables/schemas";
 import type React from "react";
 import { useEffect, useRef, useState } from "react";
 import { VariablesCombobox } from "@/components/inputs/VariablesCombobox";
 import { useGraph } from "@/features/graph/providers/GraphProvider";
-import { useOpenControls } from "@/hooks/useOpenControls";
 import { useOutsideClick } from "@/hooks/useOutsideClick";
 import { plateUIPlugins } from "../plateUIPlugins";
 

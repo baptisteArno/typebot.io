@@ -4,6 +4,7 @@ import type { ForgedBlockDefinition } from "@typebot.io/forge-repository/definit
 import type { ForgedBlock } from "@typebot.io/forge-repository/schemas";
 import { Field } from "@typebot.io/ui/components/Field";
 import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
+import { Switch } from "@typebot.io/ui/components/Switch";
 import type { ZodLayoutMetadata } from "@typebot.io/zod";
 import Markdown, { type Components } from "react-markdown";
 import type { ZodTypeAny, z } from "zod";
@@ -11,7 +12,6 @@ import { BasicAutocompleteInputWithVariableButton } from "@/components/inputs/Ba
 import { BasicNumberInput } from "@/components/inputs/BasicNumberInput";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { CodeEditor } from "@/components/inputs/CodeEditor";
-import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
 import { Textarea } from "@/components/inputs/Textarea";
 import { TextInput } from "@/components/inputs/TextInput";
 import { VariablesCombobox } from "@/components/inputs/VariablesCombobox";
@@ -192,12 +192,18 @@ export const ZodFieldLayout = ({
     }
     case "ZodBoolean": {
       return (
-        <SwitchWithLabel
-          label={layout?.label ?? propName ?? ""}
-          initialValue={data ?? layout?.defaultValue}
-          onCheckChange={onDataChange}
-          moreInfoContent={layout?.moreInfoTooltip}
-        />
+        <Field.Root className="flex-row items-center">
+          <Switch
+            checked={data ?? layout?.defaultValue}
+            onCheckedChange={onDataChange}
+          />
+          <Field.Label>
+            {layout?.label ?? propName ?? ""}{" "}
+            {layout.moreInfoTooltip && (
+              <MoreInfoTooltip>{layout.moreInfoTooltip}</MoreInfoTooltip>
+            )}
+          </Field.Label>
+        </Field.Root>
       );
     }
     case "ZodString": {

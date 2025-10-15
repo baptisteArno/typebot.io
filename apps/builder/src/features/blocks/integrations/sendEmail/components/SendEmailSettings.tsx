@@ -1,11 +1,4 @@
-import {
-  Flex,
-  HStack,
-  Stack,
-  Switch,
-  Text,
-  useDisclosure,
-} from "@chakra-ui/react";
+import { Flex, HStack, Stack, Text, useDisclosure } from "@chakra-ui/react";
 import { defaultSendEmailOptions } from "@typebot.io/blocks-integrations/sendEmail/constants";
 import type { SendEmailBlock } from "@typebot.io/blocks-integrations/sendEmail/schema";
 import { env } from "@typebot.io/env";
@@ -13,10 +6,10 @@ import { isNotEmpty } from "@typebot.io/lib/utils";
 import { Accordion } from "@typebot.io/ui/components/Accordion";
 import { Field } from "@typebot.io/ui/components/Field";
 import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
+import { Switch } from "@typebot.io/ui/components/Switch";
 import type { Variable } from "@typebot.io/variables/schemas";
 import type { Workspace } from "@typebot.io/workspaces/schemas";
 import { CodeEditor } from "@/components/inputs/CodeEditor";
-import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
 import { Textarea } from "@/components/inputs/Textarea";
 import { TextInput } from "@/components/inputs/TextInput";
 import { VariablesCombobox } from "@/components/inputs/VariablesCombobox";
@@ -172,14 +165,21 @@ export const SendEmailSettings = ({ options, onOptionsChange }: Props) => {
         onChange={handleSubjectChange}
         defaultValue={options?.subject ?? ""}
       />
-      <SwitchWithLabel
-        label={"Custom content"}
-        moreInfoContent="By default, the email body will be a recap of what has been collected so far. You can override it with this option."
-        initialValue={
-          options?.isCustomBody ?? defaultSendEmailOptions.isCustomBody
-        }
-        onCheckChange={handleIsCustomBodyChange}
-      />
+      <Field.Root className="flex-row items-center">
+        <Switch
+          checked={
+            options?.isCustomBody ?? defaultSendEmailOptions.isCustomBody
+          }
+          onCheckedChange={handleIsCustomBodyChange}
+        />
+        <Field.Label>
+          Custom content{" "}
+          <MoreInfoTooltip>
+            By default, the email body will be a recap of what has been
+            collected so far. You can override it with this option.
+          </MoreInfoTooltip>
+        </Field.Label>
+      </Field.Root>
       {options?.isCustomBody && (
         <Stack>
           <Flex justifyContent="space-between">
@@ -187,11 +187,10 @@ export const SendEmailSettings = ({ options, onOptionsChange }: Props) => {
             <HStack>
               <Text fontSize="sm">Text</Text>
               <Switch
-                size="sm"
-                isChecked={
+                checked={
                   options.isBodyCode ?? defaultSendEmailOptions.isBodyCode
                 }
-                onChange={handleIsBodyCodeChange}
+                onCheckedChange={handleIsBodyCodeChange}
               />
               <Text fontSize="sm">Code</Text>
             </HStack>

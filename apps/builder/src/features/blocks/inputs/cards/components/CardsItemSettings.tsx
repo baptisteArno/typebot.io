@@ -3,8 +3,9 @@ import { useTranslate } from "@tolgee/react";
 import type { CardsItem } from "@typebot.io/blocks-inputs/cards/schema";
 import { LogicalOperator } from "@typebot.io/conditions/constants";
 import type { Condition } from "@typebot.io/conditions/schemas";
+import { Field } from "@typebot.io/ui/components/Field";
+import { Switch } from "@typebot.io/ui/components/Switch";
 import { TextInput } from "@/components/inputs/TextInput";
-import { SwitchWithRelatedSettings } from "@/components/SwitchWithRelatedSettings";
 import { ConditionForm } from "@/features/blocks/logic/condition/components/ConditionForm";
 
 type Props = {
@@ -41,24 +42,28 @@ export const CardsItemSettings = ({ options, onSettingsChange }: Props) => {
 
   return (
     <Stack spacing={4}>
-      <SwitchWithRelatedSettings
-        label={t("blocks.inputs.settings.displayCondition.label")}
-        moreInfoContent={t(
-          "blocks.inputs.button.buttonSettings.displayCondition.infoText.label",
-        )}
-        initialValue={options?.displayCondition?.isEnabled ?? false}
-        onCheckChange={updateIsDisplayConditionEnabled}
-      >
-        <ConditionForm
-          condition={
-            options?.displayCondition?.condition ?? {
-              comparisons: [],
-              logicalOperator: LogicalOperator.AND,
+      <Field.Container>
+        <Field.Root className="flex-row items-center">
+          <Switch
+            checked={options?.displayCondition?.isEnabled ?? false}
+            onCheckedChange={updateIsDisplayConditionEnabled}
+          />
+          <Field.Label className="font-medium">
+            {t("blocks.inputs.settings.displayCondition.label")}
+          </Field.Label>
+        </Field.Root>
+        {(options?.displayCondition?.isEnabled ?? false) && (
+          <ConditionForm
+            condition={
+              options?.displayCondition?.condition ?? {
+                comparisons: [],
+                logicalOperator: LogicalOperator.AND,
+              }
             }
-          }
-          onConditionChange={updateDisplayCondition}
-        />
-      </SwitchWithRelatedSettings>
+            onConditionChange={updateDisplayCondition}
+          />
+        )}
+      </Field.Container>
       <TextInput
         label={t("blocks.inputs.internalValue.label")}
         moreInfoTooltip={t(

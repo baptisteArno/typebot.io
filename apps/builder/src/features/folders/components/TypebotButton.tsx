@@ -3,6 +3,7 @@ import { useMutation } from "@tanstack/react-query";
 import { T, useTranslate } from "@tolgee/react";
 import { Button, buttonVariants } from "@typebot.io/ui/components/Button";
 import { Menu } from "@typebot.io/ui/components/Menu";
+import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
 import { LayoutBottomIcon } from "@typebot.io/ui/icons/LayoutBottomIcon";
 import { cn } from "@typebot.io/ui/lib/cn";
 import { useRouter } from "next/router";
@@ -18,7 +19,6 @@ import {
 } from "@/features/graph/providers/GraphDndProvider";
 import { duplicateName } from "@/features/typebot/helpers/duplicateName";
 import { isMobile } from "@/helpers/isMobile";
-import { useOpenControls } from "@/hooks/useOpenControls";
 import { trpc, trpcClient } from "@/lib/queryClient";
 
 type Props = {

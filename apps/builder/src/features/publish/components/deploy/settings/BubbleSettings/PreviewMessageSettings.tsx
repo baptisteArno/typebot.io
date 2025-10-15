@@ -1,13 +1,8 @@
-import {
-  FormLabel,
-  HStack,
-  Input,
-  Stack,
-  Switch,
-  Text,
-} from "@chakra-ui/react";
+import { HStack, Input, Stack, Text } from "@chakra-ui/react";
 import type { PreviewMessageParams } from "@typebot.io/js";
 import { isDefined } from "@typebot.io/lib/utils";
+import { Field } from "@typebot.io/ui/components/Field";
+import { Switch } from "@typebot.io/ui/components/Switch";
 import { useState } from "react";
 import { BasicNumberInput } from "@/components/inputs/BasicNumberInput";
 
@@ -72,16 +67,13 @@ export const PreviewMessageSettings = ({ defaultAvatar, onChange }: Props) => {
 
   return (
     <Stack spacing={4}>
-      <HStack justifyContent="space-between">
-        <FormLabel htmlFor="preview" mb="0">
-          Preview message
-        </FormLabel>
+      <Field.Root className="flex-row justify-between">
+        <Field.Label>Preview message</Field.Label>
         <Switch
-          id="preview"
-          isChecked={isPreviewMessageEnabled}
-          onChange={(e) => updatePreviewMessageCheck(e.target.checked)}
+          checked={isPreviewMessageEnabled}
+          onCheckedChange={updatePreviewMessageCheck}
         />
-      </HStack>
+      </Field.Root>
       {isPreviewMessageEnabled && (
         <Stack pl="4" spacing={4}>
           <HStack justify="space-between">
@@ -102,8 +94,8 @@ export const PreviewMessageSettings = ({ defaultAvatar, onChange }: Props) => {
           <HStack>
             <Text>Auto show</Text>
             <Switch
-              isChecked={isAutoShowEnabled}
-              onChange={(e) => updateAutoShowDelayCheck(e.target.checked)}
+              checked={isAutoShowEnabled}
+              onCheckedChange={updateAutoShowDelayCheck}
             />
             {isAutoShowEnabled && (
               <>

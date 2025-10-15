@@ -16,11 +16,12 @@ import type {
 import { Accordion } from "@typebot.io/ui/components/Accordion";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Field } from "@typebot.io/ui/components/Field";
+import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
+import { Switch } from "@typebot.io/ui/components/Switch";
 import { useMemo, useState } from "react";
 import { BasicNumberInput } from "@/components/inputs/BasicNumberInput";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { CodeEditor } from "@/components/inputs/CodeEditor";
-import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
 import { TableList, type TableListItemProps } from "@/components/TableList";
 import { CredentialsDropdown } from "@/features/credentials/components/CredentialsDropdown";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
@@ -122,15 +123,23 @@ export const HttpRequestAdvancedConfigForm = ({
         <Accordion.Item>
           <Accordion.Trigger>Advanced configuration</Accordion.Trigger>
           <Accordion.Panel>
-            <SwitchWithLabel
-              label="Execute on client"
-              moreInfoContent="If enabled, the httpRequest will be executed on the client. It means it will be executed in the browser of your visitor. Make sure to enable CORS and do not expose sensitive data."
-              initialValue={
-                options?.isExecutedOnClient ??
-                defaultHttpRequestBlockOptions.isExecutedOnClient
-              }
-              onCheckChange={updateIsExecutedOnClient}
-            />
+            <Field.Root className="flex-row items-center">
+              <Switch
+                checked={
+                  options?.isExecutedOnClient ??
+                  defaultHttpRequestBlockOptions.isExecutedOnClient
+                }
+                onCheckedChange={updateIsExecutedOnClient}
+              />
+              <Field.Label>
+                Execute on client{" "}
+                <MoreInfoTooltip>
+                  If enabled, the httpRequest will be executed on the client. It
+                  means it will be executed in the browser of your visitor. Make
+                  sure to enable CORS and do not expose sensitive data.
+                </MoreInfoTooltip>
+              </Field.Label>
+            </Field.Root>
             <HStack justify="space-between">
               <Text>Method:</Text>
               <BasicSelect
@@ -168,11 +177,13 @@ export const HttpRequestAdvancedConfigForm = ({
               <Accordion.Item>
                 <Accordion.Trigger>Body</Accordion.Trigger>
                 <Accordion.Panel>
-                  <SwitchWithLabel
-                    label="Custom body"
-                    initialValue={isCustomBody}
-                    onCheckChange={updateIsCustomBody}
-                  />
+                  <Field.Root className="flex-row items-center">
+                    <Switch
+                      checked={isCustomBody}
+                      onCheckedChange={updateIsCustomBody}
+                    />
+                    <Field.Label>Custom body</Field.Label>
+                  </Field.Root>
                   {isCustomBody && (
                     <CodeEditor
                       defaultValue={httpRequest?.body}

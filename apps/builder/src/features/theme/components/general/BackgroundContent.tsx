@@ -9,10 +9,10 @@ import {
 import type { Background } from "@typebot.io/theme/schemas";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Popover } from "@typebot.io/ui/components/Popover";
+import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
 import React from "react";
 import { ImageUploadContent } from "@/components/ImageUploadContent";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
-import { useOpenControls } from "@/hooks/useOpenControls";
 import { ColorPicker } from "../../../../components/ColorPicker";
 
 type BackgroundContentProps = {

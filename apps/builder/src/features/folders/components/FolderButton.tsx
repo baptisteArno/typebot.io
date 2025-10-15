@@ -12,6 +12,7 @@ import { T, useTranslate } from "@tolgee/react";
 import type { Prisma } from "@typebot.io/prisma/types";
 import { Button, buttonVariants } from "@typebot.io/ui/components/Button";
 import { Menu } from "@typebot.io/ui/components/Menu";
+import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
 import { Folder01SolidIcon } from "@typebot.io/ui/icons/Folder01SolidIcon";
 import { cn } from "@typebot.io/ui/lib/cn";
 import { useRouter } from "next/router";
@@ -19,7 +20,6 @@ import { memo, useMemo } from "react";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
 import { MoreVerticalIcon } from "@/components/icons";
 import { SingleLineEditable } from "@/components/SingleLineEditable";
-import { useOpenControls } from "@/hooks/useOpenControls";
 import { trpc } from "@/lib/queryClient";
 import { useTypebotDnd } from "../TypebotDndProvider";
 

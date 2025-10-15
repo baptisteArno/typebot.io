@@ -3,11 +3,10 @@ import { useTranslate } from "@tolgee/react";
 import { defaultDateInputOptions } from "@typebot.io/blocks-inputs/date/constants";
 import type { DateInputBlock } from "@typebot.io/blocks-inputs/date/schema";
 import { Field } from "@typebot.io/ui/components/Field";
+import { Switch } from "@typebot.io/ui/components/Switch";
 import type { Variable } from "@typebot.io/variables/schemas";
-import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
 import { TextInput } from "@/components/inputs/TextInput";
 import { VariablesCombobox } from "@/components/inputs/VariablesCombobox";
-import { SwitchWithRelatedSettings } from "@/components/SwitchWithRelatedSettings";
 
 type Props = {
   options: DateInputBlock["options"];
@@ -44,32 +43,44 @@ export const DateInputSettings = ({ options, onOptionsChange }: Props) => {
 
   return (
     <Stack spacing={4}>
-      <SwitchWithRelatedSettings
-        label={t("blocks.inputs.date.settings.isRange.label")}
-        initialValue={options?.isRange ?? defaultDateInputOptions.isRange}
-        onCheckChange={updateIsRange}
-      >
-        <TextInput
-          label={t("blocks.inputs.date.settings.from.label")}
-          defaultValue={
-            options?.labels?.from ?? defaultDateInputOptions.labels.from
-          }
-          onChange={updateFromLabel}
+      <Field.Container>
+        <Field.Root className="flex-row items-center">
+          <Switch
+            checked={options?.isRange ?? defaultDateInputOptions.isRange}
+            onCheckedChange={updateIsRange}
+          />
+          <Field.Label className="font-medium">
+            {t("blocks.inputs.date.settings.isRange.label")}
+          </Field.Label>
+        </Field.Root>
+        {(options?.isRange ?? defaultDateInputOptions.isRange) && (
+          <>
+            <TextInput
+              label={t("blocks.inputs.date.settings.from.label")}
+              defaultValue={
+                options?.labels?.from ?? defaultDateInputOptions.labels.from
+              }
+              onChange={updateFromLabel}
+            />
+            <TextInput
+              label={t("blocks.inputs.date.settings.to.label")}
+              defaultValue={
+                options?.labels?.to ?? defaultDateInputOptions.labels.to
+              }
+              onChange={updateToLabel}
+            />
+          </>
+        )}
+      </Field.Container>
+      <Field.Root className="flex-row items-center">
+        <Switch
+          checked={options?.hasTime ?? defaultDateInputOptions.hasTime}
+          onCheckedChange={updateHasTime}
         />
-        <TextInput
-          label={t("blocks.inputs.date.settings.to.label")}
-          defaultValue={
-            options?.labels?.to ??
-            t("blocks.inputs.date.settings.toInputValue.label")
-          }
-          onChange={updateToLabel}
-        />
-      </SwitchWithRelatedSettings>
-      <SwitchWithLabel
-        label={t("blocks.inputs.date.settings.withTime.label")}
-        initialValue={options?.hasTime ?? defaultDateInputOptions.hasTime}
-        onCheckChange={updateHasTime}
-      />
+        <Field.Label>
+          {t("blocks.inputs.date.settings.withTime.label")}
+        </Field.Label>
+      </Field.Root>
       <TextInput
         label={t("blocks.inputs.settings.button.label")}
         defaultValue={

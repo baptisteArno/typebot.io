@@ -6,12 +6,12 @@ import type { Settings } from "@typebot.io/settings/schemas";
 import { Field } from "@typebot.io/ui/components/Field";
 import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
 import { Popover } from "@typebot.io/ui/components/Popover";
+import { Switch } from "@typebot.io/ui/components/Switch";
+import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
 import { ImageUploadContent } from "@/components/ImageUploadContent";
 import { CodeEditor } from "@/components/inputs/CodeEditor";
-import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
 import { Textarea } from "@/components/inputs/Textarea";
 import { TextInput } from "@/components/inputs/TextInput";
-import { useOpenControls } from "@/hooks/useOpenControls";
 
 type Props = {
   workspaceId: string;
@@ -156,12 +156,18 @@ export const MetadataForm = ({
           withVariableButton={false}
         />
       </Field.Root>
-      <SwitchWithLabel
-        label={t("settings.sideMenu.metadata.allowIndexing.label")}
-        initialValue={metadata?.allowIndexing}
-        onCheckChange={handleAllowIndexingChange}
-        moreInfoContent={t("settings.sideMenu.metadata.allowIndexing.tooltip")}
-      />
+      <Field.Root className="flex-row items-center">
+        <Switch
+          checked={metadata?.allowIndexing}
+          onCheckedChange={handleAllowIndexingChange}
+        />
+        <Field.Label>
+          {t("settings.sideMenu.metadata.allowIndexing.label")}{" "}
+          <MoreInfoTooltip>
+            {t("settings.sideMenu.metadata.allowIndexing.tooltip")}
+          </MoreInfoTooltip>
+        </Field.Label>
+      </Field.Root>
     </Stack>
   );
 };

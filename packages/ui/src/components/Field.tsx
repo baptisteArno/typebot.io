@@ -8,10 +8,11 @@ const Root = ({ className, ...props }: PrimitiveField.Root.Props) => (
   />
 );
 
-const Label = ({ ...props }: PrimitiveField.Label.Props) => (
+export type LabelProps = PrimitiveField.Label.Props;
+const Label = ({ className, ...props }: LabelProps) => (
   <PrimitiveField.Label
     {...props}
-    className="inline-flex items-center flex-shrink-0"
+    className={cn("inline-flex items-center flex-shrink-0 gap-1", className)}
   />
 );
 
@@ -19,8 +20,23 @@ const Description = ({ ...props }: PrimitiveField.Description.Props) => (
   <PrimitiveField.Description {...props} />
 );
 
+const Container = ({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) => (
+  <div
+    className={cn("border px-4 py-3 rounded-md gap-4 flex flex-col", className)}
+  >
+    {children}
+  </div>
+);
+
 export const Field = {
   Root,
   Label,
   Description,
+  Container,
 };

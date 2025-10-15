@@ -10,11 +10,13 @@ import { parseResultHeader } from "@typebot.io/results/parseResultHeader";
 import type { Typebot } from "@typebot.io/typebot/schemas/typebot";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
+import { Field } from "@typebot.io/ui/components/Field";
+import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
+import { Switch } from "@typebot.io/ui/components/Switch";
 import { unparse } from "papaparse";
 import { useState } from "react";
 import { AlertInfo } from "@/components/AlertInfo";
 import { DownloadIcon } from "@/components/icons";
-import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { trpc, trpcClient } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
@@ -151,12 +153,18 @@ export const ExportAllResultsDialog = ({ isOpen, onClose }: Props) => {
       <Dialog.Popup className="max-w-md">
         <Dialog.Title>Export all results</Dialog.Title>
         <Dialog.CloseButton />
-        <SwitchWithLabel
-          label="Include deleted blocks"
-          moreInfoContent="Blocks from previous bot version that have been deleted"
-          initialValue={false}
-          onCheckChange={setAreDeletedBlocksIncluded}
-        />
+        <Field.Root className="flex-row items-center">
+          <Switch
+            checked={areDeletedBlocksIncluded}
+            onCheckedChange={setAreDeletedBlocksIncluded}
+          />
+          <Field.Label>
+            Include deleted blocks{" "}
+            <MoreInfoTooltip>
+              Blocks from previous bot version that have been deleted
+            </MoreInfoTooltip>
+          </Field.Label>
+        </Field.Root>
         {totalResults > 2000 ? (
           <AlertInfo>The export may take a while.</AlertInfo>
         ) : (

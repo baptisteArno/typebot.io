@@ -2,6 +2,7 @@ import { HStack, Text } from "@chakra-ui/react";
 import type { ResultHeaderCell } from "@typebot.io/results/schemas/results";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Popover } from "@typebot.io/ui/components/Popover";
+import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
 import { useState } from "react";
 import {
   ChevronRightIcon,
@@ -9,7 +10,6 @@ import {
   ListIcon,
   MoreHorizontalIcon,
 } from "@/components/icons";
-import { useOpenControls } from "@/hooks/useOpenControls";
 import { ColumnSettings } from "./ColumnSettings";
 import { ExportAllResultsDialog } from "./ExportAllResultsDialog";
 

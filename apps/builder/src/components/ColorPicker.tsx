@@ -5,11 +5,11 @@ import {
   buttonVariants,
 } from "@typebot.io/ui/components/Button";
 import { Popover } from "@typebot.io/ui/components/Popover";
+import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
 import type React from "react";
 import { useId, useState } from "react";
 import tinyColor from "tinycolor2";
 import { useDebouncedCallback } from "use-debounce";
-import { useOpenControls } from "@/hooks/useOpenControls";
 
 const colorsSelection: `#${string}`[] = [
   "#666460",

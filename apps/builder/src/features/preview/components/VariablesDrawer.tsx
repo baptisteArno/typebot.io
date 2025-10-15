@@ -16,16 +16,18 @@ import { sessionOnlySetVariableOptions } from "@typebot.io/blocks-logic/setVaria
 import type { SetVariableBlock } from "@typebot.io/blocks-logic/setVariable/schema";
 import { isNotEmpty } from "@typebot.io/lib/utils";
 import { Button } from "@typebot.io/ui/components/Button";
+import { Field } from "@typebot.io/ui/components/Field";
+import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
 import { Popover } from "@typebot.io/ui/components/Popover";
+import { Switch } from "@typebot.io/ui/components/Switch";
+import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
 import { Cancel01Icon } from "@typebot.io/ui/icons/Cancel01Icon";
 import { TrashIcon } from "@typebot.io/ui/icons/TrashIcon";
 import type { Variable } from "@typebot.io/variables/schemas";
 import { useDrag } from "@use-gesture/react";
 import { type FormEvent, useState } from "react";
 import { MoreHorizontalIcon, PlusIcon } from "@/components/icons";
-import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
 import { SingleLineEditable } from "@/components/SingleLineEditable";
-import { useOpenControls } from "@/hooks/useOpenControls";
 import { toast } from "@/lib/toast";
 import { headerHeight } from "../../editor/constants";
 import { useTypebot } from "../../editor/providers/TypebotProvider";
@@ -192,17 +194,24 @@ const VariableItem = ({
               <MoreHorizontalIcon />
             </Popover.TriggerButton>
             <Popover.Popup>
-              <SwitchWithLabel
-                label="Save in results"
-                moreInfoContent="Check this option if you want to save the variable value in the typebot Results table."
-                initialValue={!variable.isSessionVariable}
-                onCheckChange={() =>
-                  onChange({
-                    ...variable,
-                    isSessionVariable: !variable.isSessionVariable,
-                  })
-                }
-              />
+              <Field.Root className="flex-row items-center">
+                <Switch
+                  checked={!variable.isSessionVariable}
+                  onCheckedChange={() =>
+                    onChange({
+                      ...variable,
+                      isSessionVariable: !variable.isSessionVariable,
+                    })
+                  }
+                />
+                <Field.Label>
+                  Save in results{" "}
+                  <MoreInfoTooltip>
+                    Check this option if you want to save the variable value in
+                    the typebot Results table.
+                  </MoreInfoTooltip>
+                </Field.Label>
+              </Field.Root>
             </Popover.Popup>
           </Popover.Root>
         )}

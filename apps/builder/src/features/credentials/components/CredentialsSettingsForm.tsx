@@ -20,6 +20,7 @@ import {
 import { Button } from "@typebot.io/ui/components/Button";
 import { Menu } from "@typebot.io/ui/components/Menu";
 import { Popover } from "@typebot.io/ui/components/Popover";
+import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
 import { ArrowDown01Icon } from "@typebot.io/ui/icons/ArrowDown01Icon";
 import { Edit03Icon } from "@typebot.io/ui/icons/Edit03Icon";
 import { TrashIcon } from "@typebot.io/ui/icons/TrashIcon";
@@ -30,7 +31,6 @@ import { WhatsAppLogo } from "@/components/logos/WhatsAppLogo";
 import { BlockIcon } from "@/features/editor/components/BlockIcon";
 import { BlockLabel } from "@/features/editor/components/BlockLabel";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { useOpenControls } from "@/hooks/useOpenControls";
 import { trpc } from "@/lib/queryClient";
 import { CredentialsCreateDialog } from "./CredentialsCreateDialog";
 import { CredentialsUpdateDialog } from "./CredentialsUpdateDialog";

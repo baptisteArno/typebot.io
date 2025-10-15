@@ -1,4 +1,4 @@
-import { FormLabel, HStack, Stack, Switch } from "@chakra-ui/react";
+import { FormLabel, HStack, Stack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import {
   borderRoundness,
@@ -12,6 +12,7 @@ import type {
 } from "@typebot.io/theme/schemas";
 import { Accordion } from "@typebot.io/ui/components/Accordion";
 import { Field } from "@typebot.io/ui/components/Field";
+import { Switch } from "@typebot.io/ui/components/Switch";
 import { BasicNumberInput } from "@/components/inputs/BasicNumberInput";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { ColorPicker } from "../../../../components/ColorPicker";
@@ -78,7 +79,7 @@ export const ContainerThemeForm = <
         <HStack>
           <Switch
             defaultChecked={backgroundColor !== "transparent"}
-            onChange={toggleBackgroundColor}
+            onCheckedChange={toggleBackgroundColor}
           />
           <ColorPicker
             isDisabled={backgroundColor === "transparent"}

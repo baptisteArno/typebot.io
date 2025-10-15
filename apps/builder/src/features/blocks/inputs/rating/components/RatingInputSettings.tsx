@@ -3,10 +3,10 @@ import { useTranslate } from "@tolgee/react";
 import { defaultRatingInputOptions } from "@typebot.io/blocks-inputs/rating/constants";
 import type { RatingInputBlock } from "@typebot.io/blocks-inputs/rating/schema";
 import { Field } from "@typebot.io/ui/components/Field";
+import { Switch } from "@typebot.io/ui/components/Switch";
 import type { Variable } from "@typebot.io/variables/schemas";
 import { BasicNumberInput } from "@/components/inputs/BasicNumberInput";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
-import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
 import { TextInput } from "@/components/inputs/TextInput";
 import { VariablesCombobox } from "@/components/inputs/VariablesCombobox";
 
@@ -101,14 +101,18 @@ export const RatingInputSettings = ({ options, onOptionsChange }: Props) => {
       )}
 
       {buttonType === "Icons" && (
-        <SwitchWithLabel
-          label={t("blocks.inputs.rating.settings.customIcon.label")}
-          initialValue={
-            options?.customIcon?.isEnabled ??
-            defaultRatingInputOptions.customIcon.isEnabled
-          }
-          onCheckChange={handleCustomIconCheck}
-        />
+        <Field.Root className="flex-row items-center">
+          <Switch
+            checked={
+              options?.customIcon?.isEnabled ??
+              defaultRatingInputOptions.customIcon.isEnabled
+            }
+            onCheckedChange={handleCustomIconCheck}
+          />
+          <Field.Label>
+            {t("blocks.inputs.rating.settings.customIcon.label")}
+          </Field.Label>
+        </Field.Root>
       )}
       {buttonType === "Icons" && options?.customIcon?.isEnabled && (
         <TextInput
@@ -141,14 +145,15 @@ export const RatingInputSettings = ({ options, onOptionsChange }: Props) => {
           "blocks.inputs.rating.settings.extremelyLikely.placeholder.label",
         )}
       />
-      <SwitchWithLabel
-        label={t("blocks.inputs.rating.settings.oneClickSubmit.label")}
-        moreInfoContent={t(
-          "blocks.inputs.rating.settings.oneClickSubmit.infoText.label",
-        )}
-        initialValue={isOneClickSubmitEnabled}
-        onCheckChange={handleOneClickSubmitChange}
-      />
+      <Field.Root className="flex-row items-center">
+        <Switch
+          checked={isOneClickSubmitEnabled}
+          onCheckedChange={handleOneClickSubmitChange}
+        />
+        <Field.Label>
+          {t("blocks.inputs.rating.settings.oneClickSubmit.label")}
+        </Field.Label>
+      </Field.Root>
       {!isOneClickSubmitEnabled && (
         <TextInput
           label={t("blocks.inputs.settings.button.label")}

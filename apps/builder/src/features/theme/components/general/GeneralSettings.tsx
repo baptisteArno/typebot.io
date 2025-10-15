@@ -1,10 +1,4 @@
-import {
-  Flex,
-  FormLabel,
-  Stack,
-  Switch,
-  useDisclosure,
-} from "@chakra-ui/react";
+import { Stack, useDisclosure } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
 import { env } from "@typebot.io/env";
@@ -17,6 +11,8 @@ import type {
   Theme,
 } from "@typebot.io/theme/schemas";
 import { Accordion } from "@typebot.io/ui/components/Accordion";
+import { Field } from "@typebot.io/ui/components/Field";
+import { Switch } from "@typebot.io/ui/components/Switch";
 import { RadioButtons } from "@/components/inputs/RadioButtons";
 import { ChangePlanDialog } from "@/features/billing/components/ChangePlanDialog";
 import { LockTag } from "@/features/billing/components/LockTag";
@@ -103,34 +99,24 @@ export const GeneralSettings = ({
         onClose={onClose}
         type={t("billing.limitMessage.brand")}
       />
-      <Flex
-        justifyContent="space-between"
-        align="center"
+      <Field.Root
+        className="flex-row items-center justify-between"
         onClick={isWorkspaceFreePlan ? onOpen : undefined}
       >
-        <FormLabel htmlFor="branding" mb="0" cursor="pointer">
+        <Field.Label>
           {t("theme.sideMenu.global.typebotBrand")}{" "}
           {isWorkspaceFreePlan && <LockTag plan={Plan.STARTER} />}
-        </FormLabel>
-        <Switch
-          id="branding"
-          isChecked={isBrandingEnabled}
-          onChange={updateBranding}
+        </Field.Label>
+        <Switch checked={isBrandingEnabled} onCheckedChange={updateBranding} />
+      </Field.Root>
+      {typebot && (
+        <ProgressBarForm
+          progressBar={generalTheme?.progressBar}
+          onProgressBarChange={updateProgressBar}
+          typebotVersion={typebot.version}
         />
-      </Flex>
+      )}
       <Accordion.Root>
-        <Accordion.Item>
-          <Accordion.Trigger>Progress Bar</Accordion.Trigger>
-          <Accordion.Panel>
-            {typebot && (
-              <ProgressBarForm
-                progressBar={generalTheme?.progressBar}
-                onProgressBarChange={updateProgressBar}
-                typebotVersion={typebot.version}
-              />
-            )}
-          </Accordion.Panel>
-        </Accordion.Item>
         <Accordion.Item>
           <Accordion.Trigger>
             {t("theme.sideMenu.global.font")}

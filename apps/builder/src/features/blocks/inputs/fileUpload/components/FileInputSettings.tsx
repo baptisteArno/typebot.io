@@ -8,13 +8,12 @@ import type { FileInputBlock } from "@typebot.io/blocks-inputs/file/schema";
 import { Accordion } from "@typebot.io/ui/components/Accordion";
 import { Field } from "@typebot.io/ui/components/Field";
 import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
+import { Switch } from "@typebot.io/ui/components/Switch";
 import type { Variable } from "@typebot.io/variables/schemas";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { CodeEditor } from "@/components/inputs/CodeEditor";
-import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
 import { TextInput } from "@/components/inputs/TextInput";
 import { VariablesCombobox } from "@/components/inputs/VariablesCombobox";
-import { SwitchWithRelatedSettings } from "@/components/SwitchWithRelatedSettings";
 import { TagsInput } from "@/components/TagsInput";
 
 type Props = {
@@ -88,33 +87,47 @@ export const FileInputSettings = ({ options, onOptionsChange }: Props) => {
 
   return (
     <Stack spacing={4}>
-      <SwitchWithLabel
-        label={t("blocks.inputs.file.settings.required.label")}
-        initialValue={options?.isRequired ?? defaultFileInputOptions.isRequired}
-        onCheckChange={handleRequiredChange}
-      />
-      <SwitchWithRelatedSettings
-        label={t("blocks.inputs.file.settings.allowedFileTypes.label")}
-        initialValue={options?.allowedFileTypes?.isEnabled}
-        onCheckChange={updateAllowedFileTypesIsEnabled}
-      >
-        <TagsInput
-          items={options?.allowedFileTypes?.types}
-          onChange={updateAllowedFileTypes}
-          placeholder={t(
-            "blocks.inputs.file.settings.allowedFileTypes.placeholder",
-          )}
+      <Field.Root className="flex-row items-center">
+        <Switch
+          checked={options?.isRequired ?? defaultFileInputOptions.isRequired}
+          onCheckedChange={handleRequiredChange}
         />
-      </SwitchWithRelatedSettings>
-      <SwitchWithLabel
-        label={t("blocks.inputs.file.settings.allowMultiple.label")}
-        initialValue={
-          options?.isMultipleAllowed ??
-          defaultFileInputOptions.isMultipleAllowed
-        }
-        onCheckChange={handleMultipleFilesChange}
-      />
-
+        <Field.Label>
+          {t("blocks.inputs.file.settings.required.label")}
+        </Field.Label>
+      </Field.Root>
+      <Field.Container>
+        <Field.Root className="flex-row items-center">
+          <Switch
+            checked={options?.allowedFileTypes?.isEnabled}
+            onCheckedChange={updateAllowedFileTypesIsEnabled}
+          />
+          <Field.Label className="font-medium">
+            {t("blocks.inputs.file.settings.allowedFileTypes.label")}
+          </Field.Label>
+        </Field.Root>
+        {options?.allowedFileTypes?.isEnabled && (
+          <TagsInput
+            items={options?.allowedFileTypes?.types}
+            onChange={updateAllowedFileTypes}
+            placeholder={t(
+              "blocks.inputs.file.settings.allowedFileTypes.placeholder",
+            )}
+          />
+        )}
+      </Field.Container>
+      <Field.Root className="flex-row items-center">
+        <Switch
+          checked={
+            options?.isMultipleAllowed ??
+            defaultFileInputOptions.isMultipleAllowed
+          }
+          onCheckedChange={handleMultipleFilesChange}
+        />
+        <Field.Label>
+          {t("blocks.inputs.file.settings.allowMultiple.label")}
+        </Field.Label>
+      </Field.Root>
       <Field.Root>
         <Field.Label>
           {options?.isMultipleAllowed

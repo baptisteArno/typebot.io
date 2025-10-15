@@ -3,9 +3,10 @@ import { useTranslate } from "@tolgee/react";
 import { defaultImageBubbleContent } from "@typebot.io/blocks-bubbles/image/constants";
 import type { ImageBubbleBlock } from "@typebot.io/blocks-bubbles/image/schema";
 import { isDefined, isNotEmpty } from "@typebot.io/lib/utils";
+import { Field } from "@typebot.io/ui/components/Field";
+import { Switch } from "@typebot.io/ui/components/Switch";
 import { useState } from "react";
 import { ImageUploadContent } from "@/components/ImageUploadContent";
-import { SwitchWithLabel } from "@/components/inputs/SwitchWithLabel";
 import { TextInput } from "@/components/inputs/TextInput";
 import type { FilePathUploadProps } from "@/features/upload/api/generateUploadUrl";
 
@@ -63,11 +64,15 @@ export const ImageBubbleSettings = ({
         }}
       />
       <Stack>
-        <SwitchWithLabel
-          label={t("editor.blocks.bubbles.image.switchWithLabel.onClick.label")}
-          initialValue={showClickLinkInput}
-          onCheckChange={toggleClickLink}
-        />
+        <Field.Root className="flex-row items-center">
+          <Switch
+            checked={showClickLinkInput}
+            onCheckedChange={toggleClickLink}
+          />
+          <Field.Label>
+            {t("editor.blocks.bubbles.image.switchWithLabel.onClick.label")}
+          </Field.Label>
+        </Field.Root>
         {showClickLinkInput && (
           <>
             <TextInput

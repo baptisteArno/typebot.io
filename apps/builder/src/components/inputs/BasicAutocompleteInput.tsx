@@ -1,9 +1,9 @@
 import { Autocomplete } from "@typebot.io/ui/components/Autocomplete";
+import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
 import { forwardRef, useRef, useState } from "react";
 import { VariablesButton } from "@/features/variables/components/VariablesButton";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useInjectableInputValue } from "@/hooks/useInjectableInputValue";
-import { useOpenControls } from "@/hooks/useOpenControls";
 
 type Props = {
   items: string[];

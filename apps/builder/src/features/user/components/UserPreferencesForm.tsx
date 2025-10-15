@@ -1,12 +1,13 @@
 import { Heading, HStack, Stack } from "@chakra-ui/react";
 import { useTolgee, useTranslate } from "@tolgee/react";
 import { GraphNavigation } from "@typebot.io/prisma/enum";
+import { Field } from "@typebot.io/ui/components/Field";
 import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
+import { Switch } from "@typebot.io/ui/components/Switch";
 import type { GroupTitlesAutoGeneration } from "@typebot.io/user/schemas";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
-import { SwitchWithRelatedSettings } from "@/components/SwitchWithRelatedSettings";
 import { VideoOnboardingPopover } from "@/features/onboarding/components/VideoOnboardingPopover";
 import { setLocaleInCookies } from "../helpers/setLocaleInCookies";
 import { useUser } from "../hooks/useUser";
@@ -121,13 +122,18 @@ export const UserPreferencesForm = () => {
         isEnabled={user?.groupTitlesAutoGeneration?.isEnabled ?? false}
         side="top"
       >
-        <SwitchWithRelatedSettings
-          label={t("account.preferences.groupTitlesAutoGeneration.label")}
-          initialValue={user?.groupTitlesAutoGeneration?.isEnabled}
-          onCheckChange={(isEnabled) => {
-            updateGroupTitlesGenParams({ isEnabled });
-          }}
-        >
+        <Field.Container>
+          <Field.Root className="flex-row items-center">
+            <Switch
+              checked={user?.groupTitlesAutoGeneration?.isEnabled}
+              onCheckedChange={(isEnabled) => {
+                updateGroupTitlesGenParams({ isEnabled });
+              }}
+            />
+            <Field.Label>
+              {t("account.preferences.groupTitlesAutoGeneration.label")}
+            </Field.Label>
+          </Field.Root>
           {user?.groupTitlesAutoGeneration && (
             <GroupTitlesAutoGenForm
               userId={user.id}
@@ -135,7 +141,7 @@ export const UserPreferencesForm = () => {
               onChange={updateGroupTitlesGenParams}
             />
           )}
-        </SwitchWithRelatedSettings>
+        </Field.Container>
       </VideoOnboardingPopover>
     </Stack>
   );

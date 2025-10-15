@@ -1161,7 +1161,7 @@
         "@typebot.io/typebot": "workspace:*",
         "@typebot.io/workspaces": "workspace:*",
         "@typebot.io/zod": "workspace:*",
-        "ai": "^4.0.42",
+        "ai": "^4.3.19",
         "cli-progress": "^3.12.0",
         "ky": "^1.2.4",
         "papaparse": "^5.4.1",
