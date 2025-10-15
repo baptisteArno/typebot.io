@@ -6,7 +6,6 @@ import {
   HStack,
   Image,
   Link,
-  Spinner,
   Stack,
   Text,
   useColorModeValue,
@@ -14,6 +13,7 @@ import {
 import { env } from "@typebot.io/env";
 import { isDefined } from "@typebot.io/lib/utils";
 import { Alert } from "@typebot.io/ui/components/Alert";
+import { LoaderCircleIcon } from "@typebot.io/ui/icons/LoaderCircleIcon";
 import { TriangleAlertIcon } from "@typebot.io/ui/icons/TriangleAlertIcon";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createApi } from "unsplash-js";
@@ -22,7 +22,6 @@ import { TextInput } from "../inputs/TextInput";
 import { UnsplashLogo } from "../logos/UnsplashLogo";
 import { TextLink } from "../TextLink";
 
-/* eslint-disable @next/next/no-img-element */
 const api = createApi({
   accessKey: env.NEXT_PUBLIC_UNSPLASH_ACCESS_KEY ?? "",
 });
@@ -179,7 +178,7 @@ export const UnsplashPicker = ({ imageSize, onImageSelect }: Props) => {
         )}
         {isFetching && (
           <Flex justifyContent="center" py="4">
-            <Spinner />
+            <LoaderCircleIcon className="animate-spin" />
           </Flex>
         )}
       </Stack>

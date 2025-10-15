@@ -2,7 +2,6 @@ import {
   chakra,
   Flex,
   HStack,
-  Spinner,
   type StackProps,
   Text,
   useColorModeValue,
@@ -15,6 +14,7 @@ import { Button } from "@typebot.io/ui/components/Button";
 import { Tooltip } from "@typebot.io/ui/components/Tooltip";
 import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
 import { LayoutBottomIcon } from "@typebot.io/ui/icons/LayoutBottomIcon";
+import { LoaderCircleIcon } from "@typebot.io/ui/icons/LoaderCircleIcon";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
@@ -254,7 +254,7 @@ const LeftElements = ({
       </HStack>
       {isSavingLoading && (
         <HStack>
-          <Spinner speed="0.7s" size="sm" color="gray.400" />
+          <LoaderCircleIcon className="animate-spin" />
           <Text fontSize="sm" color="gray.400">
             {t("editor.header.savingSpinner.label")}
           </Text>

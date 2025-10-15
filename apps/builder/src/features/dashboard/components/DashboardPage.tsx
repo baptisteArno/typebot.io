@@ -1,7 +1,8 @@
-import { Spinner, Stack, Text, VStack } from "@chakra-ui/react";
+import { Stack, Text, VStack } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
 import type { Plan } from "@typebot.io/prisma/enum";
+import { LoaderCircleIcon } from "@typebot.io/ui/icons/LoaderCircleIcon";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { Seo } from "@/components/Seo";
@@ -71,7 +72,7 @@ export const DashboardPage = () => {
         {isLoading ? (
           <VStack w="full" justifyContent="center" pt="10" spacing={6}>
             <Text>{t("dashboard.redirectionMessage")}</Text>
-            <Spinner />
+            <LoaderCircleIcon className="animate-spin" />
           </VStack>
         ) : (
           <FolderContent folder={null} />

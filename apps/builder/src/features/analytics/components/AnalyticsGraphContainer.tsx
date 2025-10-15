@@ -1,13 +1,9 @@
-import {
-  Flex,
-  Spinner,
-  useColorModeValue,
-  useDisclosure,
-} from "@chakra-ui/react";
+import { Flex, useColorModeValue, useDisclosure } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
 import { isDefined } from "@typebot.io/lib/utils";
 import type { Stats } from "@typebot.io/results/schemas/answers";
+import { LoaderCircleIcon } from "@typebot.io/ui/icons/LoaderCircleIcon";
 import { useMemo } from "react";
 import { ChangePlanDialog } from "@/features/billing/components/ChangePlanDialog";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
@@ -108,7 +104,7 @@ export const AnalyticsGraphContainer = ({
           boxSize="full"
           bgColor="rgba(255, 255, 255, 0.5)"
         >
-          <Spinner color="gray" />
+          <LoaderCircleIcon className="animate-spin" />
         </Flex>
       )}
       <ChangePlanDialog

@@ -1,7 +1,6 @@
 import {
   chakra,
   HStack,
-  Spinner,
   Stack,
   Tag,
   type TagProps,
@@ -11,6 +10,7 @@ import { isDefined } from "@typebot.io/lib/utils";
 import type { Log } from "@typebot.io/logs/schemas";
 import { Accordion } from "@typebot.io/ui/components/Accordion";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
+import { LoaderCircleIcon } from "@typebot.io/ui/icons/LoaderCircleIcon";
 import { useLogs } from "../hooks/useLogs";
 
 type Props = {
@@ -29,7 +29,7 @@ export const LogsDialog = ({ typebotId, resultId, onClose }: Props) => {
         {logs?.map((log, idx) => (
           <LogCard key={idx} log={log} />
         ))}
-        {isLoading && <Spinner />}
+        {isLoading && <LoaderCircleIcon className="animate-spin" />}
         {!isLoading && (logs ?? []).length === 0 && <Text>No logs found.</Text>}
       </Dialog.Popup>
     </Dialog.Root>

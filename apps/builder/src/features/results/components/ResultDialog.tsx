@@ -2,7 +2,6 @@ import {
   Box,
   Heading,
   HStack,
-  Spinner,
   Stack,
   Tag,
   Text,
@@ -17,6 +16,7 @@ import type {
 import type { TypebotV6 } from "@typebot.io/typebot/schemas/typebot";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
+import { LoaderCircleIcon } from "@typebot.io/ui/icons/LoaderCircleIcon";
 import { useState } from "react";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { useResultTranscriptQuery } from "../hooks/useResultTranscriptQuery";
@@ -96,7 +96,7 @@ const Transcript = ({
   if (isTranscriptLoading)
     return (
       <Stack align="center" py={8}>
-        <Spinner />
+        <LoaderCircleIcon className="animate-spin" />
         <Text>Loading transcript...</Text>
       </Stack>
     );

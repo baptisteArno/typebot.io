@@ -8,7 +8,6 @@ import {
   PinInput,
   PinInputField,
   SlideFade,
-  Spinner,
   Stack,
   Text,
   VStack,
@@ -17,6 +16,7 @@ import { useTranslate } from "@tolgee/react";
 import { Alert } from "@typebot.io/ui/components/Alert";
 import { Button } from "@typebot.io/ui/components/Button";
 import { CheckmarkSquare02Icon } from "@typebot.io/ui/icons/CheckmarkSquare02Icon";
+import { LoaderCircleIcon } from "@typebot.io/ui/icons/LoaderCircleIcon";
 import { useRouter } from "next/navigation";
 import { getProviders, signIn, useSession } from "next-auth/react";
 import { useQueryState } from "nuqs";
@@ -126,7 +126,7 @@ export const SignInForm = ({
     );
   };
 
-  if (isLoadingProviders) return <Spinner />;
+  if (isLoadingProviders) return <LoaderCircleIcon className="animate-spin" />;
   if (hasNoAuthProvider)
     return (
       <Text>

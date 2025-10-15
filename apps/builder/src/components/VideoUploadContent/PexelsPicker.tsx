@@ -6,13 +6,13 @@ import {
   HStack,
   Image,
   Link,
-  Spinner,
   Stack,
   Text,
 } from "@chakra-ui/react";
 import { env } from "@typebot.io/env";
 import { isDefined } from "@typebot.io/lib/utils";
 import { Alert } from "@typebot.io/ui/components/Alert";
+import { LoaderCircleIcon } from "@typebot.io/ui/icons/LoaderCircleIcon";
 import { TriangleAlertIcon } from "@typebot.io/ui/icons/TriangleAlertIcon";
 import {
   createClient,
@@ -194,7 +194,7 @@ export const PexelsPicker = ({ onVideoSelect }: Props) => {
         )}
         {isFetching && (
           <Flex justifyContent="center" py="4">
-            <Spinner />
+            <LoaderCircleIcon className="animate-spin" />
           </Flex>
         )}
       </Stack>

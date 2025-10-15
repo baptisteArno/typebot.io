@@ -1,4 +1,5 @@
-import { Flex, Spinner, useColorModeValue } from "@chakra-ui/react";
+import { Flex, useColorModeValue } from "@chakra-ui/react";
+import { LoaderCircleIcon } from "@typebot.io/ui/icons/LoaderCircleIcon";
 import { Seo } from "@/components/Seo";
 import { Graph } from "@/features/graph/components/Graph";
 import { GraphDndProvider } from "@/features/graph/providers/GraphDndProvider";
@@ -57,7 +58,7 @@ export const EditorPage = () => {
             </GraphDndProvider>
           ) : (
             <Flex justify="center" align="center" boxSize="full">
-              <Spinner color="gray" />
+              <LoaderCircleIcon className="animate-spin" />
             </Flex>
           )}
         </Flex>

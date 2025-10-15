@@ -1,6 +1,7 @@
-import { Flex, Spinner, Stack } from "@chakra-ui/react";
+import { Flex, Stack } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
+import { LoaderCircleIcon } from "@typebot.io/ui/icons/LoaderCircleIcon";
 import { useRouter } from "next/router";
 import { NotFoundPage } from "@/components/NotFoundPage";
 import { Seo } from "@/components/Seo";
@@ -39,7 +40,7 @@ export const FolderPage = () => {
       <TypebotDndProvider>
         {!folder ? (
           <Flex flex="1">
-            <Spinner mx="auto" />
+            <LoaderCircleIcon className="animate-spin mx-auto" />
           </Flex>
         ) : (
           <FolderContent folder={folder} />
