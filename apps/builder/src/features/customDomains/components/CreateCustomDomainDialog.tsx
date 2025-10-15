@@ -1,8 +1,10 @@
-import { Alert, Heading, HStack, Input, Stack, Text } from "@chakra-ui/react";
+import { Heading, HStack, Input, Stack, Text } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
+import { Alert } from "@typebot.io/ui/components/Alert";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
+import { InformationSquareIcon } from "@typebot.io/ui/icons/InformationSquareIcon";
 import { useEffect, useRef, useState } from "react";
 import { trpc } from "@/lib/queryClient";
 
@@ -58,7 +60,6 @@ export const CreateCustomDomainDialog = ({
       domain: hostnameDetails.domain,
       subdomain: hostnameDetails.subdomain,
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inputValue]);
 
   const onAddDomainClick = async () => {
@@ -137,9 +138,12 @@ export const CreateCustomDomainDialog = ({
                   </Stack>
                 </HStack>
               )}
-              <Alert rounded="md">
-                {t("customDomain.modal.warningMessage")}
-              </Alert>
+              <Alert.Root>
+                <InformationSquareIcon />
+                <Alert.Description>
+                  {t("customDomain.modal.warningMessage")}
+                </Alert.Description>
+              </Alert.Root>
             </>
           )}
         </Stack>

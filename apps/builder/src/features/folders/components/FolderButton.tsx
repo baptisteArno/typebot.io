@@ -1,6 +1,4 @@
 import {
-  Alert,
-  AlertIcon,
   SkeletonCircle,
   SkeletonText,
   Stack,
@@ -10,10 +8,12 @@ import {
 import { useMutation } from "@tanstack/react-query";
 import { T, useTranslate } from "@tolgee/react";
 import type { Prisma } from "@typebot.io/prisma/types";
+import { Alert } from "@typebot.io/ui/components/Alert";
 import { Button, buttonVariants } from "@typebot.io/ui/components/Button";
 import { Menu } from "@typebot.io/ui/components/Menu";
 import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
 import { Folder01SolidIcon } from "@typebot.io/ui/icons/Folder01SolidIcon";
+import { TriangleAlertIcon } from "@typebot.io/ui/icons/TriangleAlertIcon";
 import { cn } from "@typebot.io/ui/lib/cn";
 import { useRouter } from "next/router";
 import { memo, useMemo } from "react";
@@ -152,10 +152,12 @@ const FolderButton = ({
               }}
             />
           </Text>
-          <Alert status="warning">
-            <AlertIcon />
-            {t("folders.folderButton.deleteConfirmationMessageWarning")}
-          </Alert>
+          <Alert.Root variant="warning">
+            <TriangleAlertIcon />
+            <Alert.Description>
+              {t("folders.folderButton.deleteConfirmationMessageWarning")}
+            </Alert.Description>
+          </Alert.Root>
         </Stack>
       </ConfirmDialog>
     </>

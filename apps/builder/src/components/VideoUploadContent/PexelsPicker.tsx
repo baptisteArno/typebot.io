@@ -1,6 +1,4 @@
 import {
-  Alert,
-  AlertIcon,
   Box,
   Flex,
   Grid,
@@ -14,6 +12,8 @@ import {
 } from "@chakra-ui/react";
 import { env } from "@typebot.io/env";
 import { isDefined } from "@typebot.io/lib/utils";
+import { Alert } from "@typebot.io/ui/components/Alert";
+import { TriangleAlertIcon } from "@typebot.io/ui/icons/TriangleAlertIcon";
 import {
   createClient,
   type ErrorResponse,
@@ -171,10 +171,10 @@ export const PexelsPicker = ({ onVideoSelect }: Props) => {
         </HStack>
       </Stack>
       {isDefined(error) && (
-        <Alert status="error">
-          <AlertIcon />
-          {error}
-        </Alert>
+        <Alert.Root variant="error">
+          <TriangleAlertIcon />
+          <Alert.Description>{error}</Alert.Description>
+        </Alert.Root>
       )}
       <Stack overflowY="auto" maxH="400px" ref={scrollContainer}>
         {videos.length > 0 && (

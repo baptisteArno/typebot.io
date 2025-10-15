@@ -1,4 +1,4 @@
-import { Alert, AlertIcon, Stack, Tag, Text } from "@chakra-ui/react";
+import { Stack, Tag, Text } from "@chakra-ui/react";
 import { isInputBlock } from "@typebot.io/blocks-core/helpers";
 import {
   defaultSetVariableOptions,
@@ -10,9 +10,11 @@ import {
 import type { SetVariableBlock } from "@typebot.io/blocks-logic/setVariable/schema";
 import { timeZones } from "@typebot.io/lib/timeZones";
 import { isDefined } from "@typebot.io/lib/utils";
+import { Alert } from "@typebot.io/ui/components/Alert";
 import { Field } from "@typebot.io/ui/components/Field";
 import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
 import { Switch } from "@typebot.io/ui/components/Switch";
+import { InformationSquareIcon } from "@typebot.io/ui/icons/InformationSquareIcon";
 import type { Variable } from "@typebot.io/variables/schemas";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { CodeEditor } from "@/components/inputs/CodeEditor";
@@ -318,37 +320,37 @@ const SetVariableValue = ({
     }
     case "Moment of the day": {
       return (
-        <Alert fontSize="sm">
-          <AlertIcon />
-          <Text>
+        <Alert.Root>
+          <InformationSquareIcon />
+          <Alert.Description>
             Will return either <Tag size="sm">morning</Tag>,{" "}
             <Tag size="sm">afternoon</Tag>,<Tag size="sm">evening</Tag> or{" "}
             <Tag size="sm">night</Tag> based on the current user time.
-          </Text>
-        </Alert>
+          </Alert.Description>
+        </Alert.Root>
       );
     }
 
     case "Environment name": {
       return (
-        <Alert fontSize="sm">
-          <AlertIcon />
-          <Text>
+        <Alert.Root>
+          <InformationSquareIcon />
+          <Alert.Description>
             Will return either <Tag size="sm">web</Tag> or{" "}
             <Tag size="sm">whatsapp</Tag>.
-          </Text>
-        </Alert>
+          </Alert.Description>
+        </Alert.Root>
       );
     }
     case "Device type": {
       return (
-        <Alert fontSize="sm">
-          <AlertIcon />
-          <Text>
+        <Alert.Root>
+          <InformationSquareIcon />
+          <Alert.Description>
             Will return either <Tag size="sm">desktop</Tag>,{" "}
             <Tag size="sm">tablet</Tag> or <Tag size="sm">mobile</Tag>.
-          </Text>
-        </Alert>
+          </Alert.Description>
+        </Alert.Root>
       );
     }
     case "Now":

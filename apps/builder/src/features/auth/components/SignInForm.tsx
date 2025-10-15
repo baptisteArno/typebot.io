@@ -1,7 +1,5 @@
 import { sanitizeUrl } from "@braintree/sanitize-url";
 import {
-  Alert,
-  AlertIcon,
   FormControl,
   FormLabel,
   HStack,
@@ -16,7 +14,9 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
+import { Alert } from "@typebot.io/ui/components/Alert";
 import { Button } from "@typebot.io/ui/components/Button";
+import { CheckmarkSquare02Icon } from "@typebot.io/ui/icons/CheckmarkSquare02Icon";
 import { useRouter } from "next/navigation";
 import { getProviders, signIn, useSession } from "next-auth/react";
 import { useQueryState } from "nuqs";
@@ -174,15 +174,15 @@ export const SignInForm = ({
       )}
       <SlideFade offsetY="20px" in={isMagicCodeSent} unmountOnExit>
         <Stack spacing={3}>
-          <Alert status="success" w="100%">
-            <HStack>
-              <AlertIcon />
-              <Stack spacing={1}>
-                <Text fontWeight="medium">{t("auth.magicLink.title")}</Text>
-                <Text fontSize="sm">{t("auth.magicLink.description")}</Text>
-              </Stack>
-            </HStack>
-          </Alert>
+          <Alert.Root variant="success">
+            <CheckmarkSquare02Icon />
+            <div className="flex flex-col gap-2">
+              <Alert.Title>{t("auth.magicLink.title")}</Alert.Title>
+              <Alert.Description>
+                {t("auth.magicLink.description")}
+              </Alert.Description>
+            </div>
+          </Alert.Root>
           <FormControl as={VStack} spacing={0}>
             <FormLabel>Login code:</FormLabel>
             <HStack>

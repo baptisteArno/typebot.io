@@ -1,8 +1,9 @@
 import { Heading, HStack } from "@chakra-ui/react";
 import { capitalize } from "@typebot.io/lib/utils";
+import { Alert } from "@typebot.io/ui/components/Alert";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
-import { AlertInfo } from "@/components/AlertInfo";
+import { InformationSquareIcon } from "@typebot.io/ui/icons/InformationSquareIcon";
 import { ChevronLeftIcon } from "@/components/icons";
 import { EmbedTypeMenu } from "./EmbedTypeMenu/EmbedTypeMenu";
 
@@ -49,7 +50,12 @@ export const DeployDialog = ({
       </Dialog.Title>
       <Dialog.CloseButton />
       {!isPublished && (
-        <AlertInfo>You need to publish your bot first.</AlertInfo>
+        <Alert.Root>
+          <InformationSquareIcon />
+          <Alert.Description>
+            You need to publish your bot first.
+          </Alert.Description>
+        </Alert.Root>
       )}
       {!selectedEmbedType ? (
         <EmbedTypeMenu onSelectEmbedType={onSelectEmbedType} />

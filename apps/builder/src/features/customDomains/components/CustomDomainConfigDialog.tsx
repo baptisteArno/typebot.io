@@ -1,14 +1,8 @@
-import {
-  Alert,
-  AlertIcon,
-  Box,
-  Code,
-  HStack,
-  Stack,
-  Text,
-} from "@chakra-ui/react";
+import { Box, Code, HStack, Stack, Text } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
+import { Alert } from "@typebot.io/ui/components/Alert";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
+import { TriangleAlertIcon } from "@typebot.io/ui/icons/TriangleAlertIcon";
 import { XCircleIcon } from "@/components/icons";
 import { trpc } from "@/lib/queryClient";
 
@@ -103,14 +97,14 @@ export const CustomDomainConfigDialog = ({
                 </Text>
               </Stack>
             </HStack>
-            <Alert status="warning">
-              <AlertIcon />
-              <Text>
+            <Alert.Root variant="warning">
+              <TriangleAlertIcon />
+              <Alert.Description>
                 If you are using this domain for another site, setting this TXT
                 record will transfer domain ownership away from that site and
                 break it. Please exercise caution when setting this record.
-              </Text>
-            </Alert>
+              </Alert.Description>
+            </Alert.Root>
           </Stack>
         ) : status === "Unknown Error" ? (
           <Text mb="5" fontSize="sm">
@@ -153,14 +147,14 @@ export const CustomDomainConfigDialog = ({
                 </Text>
               </Stack>
             </HStack>
-            <Alert fontSize="sm">
-              <AlertIcon />
-              <Text>
+            <Alert.Root>
+              <TriangleAlertIcon />
+              <Alert.Description>
                 Note: for TTL, if <Code>86400</Code> is not available, set the
                 highest value possible. Also, domain propagation can take up to
                 an hour.
-              </Text>
-            </Alert>
+              </Alert.Description>
+            </Alert.Root>
           </Stack>
         )}
         <Dialog.Footer>

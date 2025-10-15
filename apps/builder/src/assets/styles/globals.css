@@ -4,6 +4,10 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --spacing: 0.25rem;
+}
+
 h1 {
   @apply text-4xl md:text-6xl;
 }

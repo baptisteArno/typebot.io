@@ -1,10 +1,12 @@
-import { Alert, AlertIcon, Tag, Text, VStack } from "@chakra-ui/react";
+import { Tag, Text, VStack } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
 import { T, useTranslate } from "@tolgee/react";
+import { Alert } from "@typebot.io/ui/components/Alert";
 import { Button, buttonVariants } from "@typebot.io/ui/components/Button";
 import { Menu } from "@typebot.io/ui/components/Menu";
 import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
 import { LayoutBottomIcon } from "@typebot.io/ui/icons/LayoutBottomIcon";
+import { TriangleAlertIcon } from "@typebot.io/ui/icons/TriangleAlertIcon";
 import { cn } from "@typebot.io/ui/lib/cn";
 import { useRouter } from "next/router";
 import React, { memo } from "react";
@@ -206,10 +208,12 @@ const TypebotButton = ({
               }}
             />
           </Text>
-          <Alert status="warning">
-            <AlertIcon />
-            {t("folders.typebotButton.deleteConfirmationMessageWarning")}
-          </Alert>
+          <Alert.Root variant="warning">
+            <TriangleAlertIcon />
+            <Alert.Description>
+              {t("folders.typebotButton.deleteConfirmationMessageWarning")}
+            </Alert.Description>
+          </Alert.Root>
         </ConfirmDialog>
       )}
     </>

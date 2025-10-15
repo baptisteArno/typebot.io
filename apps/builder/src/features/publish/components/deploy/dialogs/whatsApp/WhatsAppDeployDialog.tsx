@@ -1,27 +1,23 @@
-import {
-  Flex,
-  HStack,
-  ListItem,
-  OrderedList,
-  Text,
-  useDisclosure,
-} from "@chakra-ui/react";
+import { Flex, HStack, ListItem, OrderedList, Text } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import { LogicalOperator } from "@typebot.io/conditions/constants";
 import type { Comparison } from "@typebot.io/conditions/schemas";
 import { isDefined } from "@typebot.io/lib/utils";
 import { defaultSessionExpiryTimeout } from "@typebot.io/settings/constants";
 import { Accordion } from "@typebot.io/ui/components/Accordion";
+import { Alert } from "@typebot.io/ui/components/Alert";
+import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
 import { Field } from "@typebot.io/ui/components/Field";
 import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
 import { Switch } from "@typebot.io/ui/components/Switch";
-import { AlertInfo } from "@/components/AlertInfo";
+import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
+import { InformationSquareIcon } from "@typebot.io/ui/icons/InformationSquareIcon";
 import { BasicNumberInput } from "@/components/inputs/BasicNumberInput";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { TableList } from "@/components/TableList";
 import { TextLink } from "@/components/TextLink";
-import { UnlockPlanAlertInfo } from "@/components/UnlockPlanAlertInfo";
+import { ChangePlanDialog } from "@/features/billing/components/ChangePlanDialog";
 import { PlanTag } from "@/features/billing/components/PlanTag";
 import { hasProPerks } from "@/features/billing/helpers/hasProPerks";
 import { CredentialsDropdown } from "@/features/credentials/components/CredentialsDropdown";
@@ -43,7 +39,12 @@ export const WhatsAppDeployDialog = ({
     isOpen: isCredentialsDialogOpen,
     onOpen,
     onClose: onCredentialsDialogClose,
-  } = useDisclosure();
+  } = useOpenControls();
+  const {
+    isOpen: isChangePlanDialogOpen,
+    onOpen: onChangePlanDialogOpen,
+    onClose: onChangePlanDialogClose,
+  } = useOpenControls();
 
   const whatsAppSettings = typebot?.settings.whatsApp;
 
@@ -169,13 +170,31 @@ export const WhatsAppDeployDialog = ({
         <Dialog.Title>WhatsApp</Dialog.Title>
         <Dialog.CloseButton />
         {!hasProPerks(workspace) && (
-          <UnlockPlanAlertInfo excludedPlans={["STARTER"]}>
-            Upgrade your workspace to <PlanTag plan="PRO" /> to be able to
-            enable WhatsApp integration.
-          </UnlockPlanAlertInfo>
+          <Alert.Root>
+            <InformationSquareIcon />
+            <Alert.Description>
+              Upgrade your workspace to <PlanTag plan="PRO" /> to be able to
+              enable WhatsApp integration.
+            </Alert.Description>
+            <Alert.Action>
+              <Button variant="secondary" onClick={onChangePlanDialogOpen}>
+                Upgrade
+              </Button>
+              <ChangePlanDialog
+                isOpen={isChangePlanDialogOpen}
+                onClose={onChangePlanDialogClose}
+                excludedPlans={["STARTER"]}
+              />
+            </Alert.Action>
+          </Alert.Root>
         )}
         {!isPublished && phoneNumberData && (
-          <AlertInfo>You have modifications that can be published.</AlertInfo>
+          <Alert.Root>
+            <InformationSquareIcon />
+            <Alert.Description>
+              You have modifications that can be published.
+            </Alert.Description>
+          </Alert.Root>
         )}
         <OrderedList spacing={4} pl="4">
           <ListItem>

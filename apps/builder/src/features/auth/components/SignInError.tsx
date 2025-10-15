@@ -1,5 +1,6 @@
-import { Alert } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
+import { Alert } from "@typebot.io/ui/components/Alert";
+import { TriangleAlertIcon } from "@typebot.io/ui/icons/TriangleAlertIcon";
 
 type Props = {
   error: string;
@@ -22,8 +23,9 @@ export const SignInError = ({ error }: Props) => {
 
   if (!errors[error]) return null;
   return (
-    <Alert status="error" variant="solid" rounded="md">
-      {errors[error]}
-    </Alert>
+    <Alert.Root variant="error">
+      <TriangleAlertIcon />
+      <Alert.Description>{errors[error]}</Alert.Description>
+    </Alert.Root>
   );
 };

@@ -9,8 +9,9 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { env } from "@typebot.io/env";
+import { Alert } from "@typebot.io/ui/components/Alert";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
-import { AlertInfo } from "@/components/AlertInfo";
+import { InformationSquareIcon } from "@typebot.io/ui/icons/InformationSquareIcon";
 import { CopyButton } from "@/components/CopyButton";
 import type { DialogProps } from "../DeployButton";
 
@@ -26,7 +27,12 @@ export const FlutterFlowDeployDialog = ({
         <Dialog.Title>FlutterFlow</Dialog.Title>
         <Dialog.CloseButton />
         {!isPublished && (
-          <AlertInfo mb="4">You need to publish your bot first.</AlertInfo>
+          <Alert.Root>
+            <InformationSquareIcon />
+            <Alert.Description>
+              You need to publish your bot first.
+            </Alert.Description>
+          </Alert.Root>
         )}
         <OrderedList spacing={4}>
           <ListItem>

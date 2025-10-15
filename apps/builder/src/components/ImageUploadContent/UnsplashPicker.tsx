@@ -1,6 +1,4 @@
 import {
-  Alert,
-  AlertIcon,
   Box,
   Flex,
   Grid,
@@ -15,6 +13,8 @@ import {
 } from "@chakra-ui/react";
 import { env } from "@typebot.io/env";
 import { isDefined } from "@typebot.io/lib/utils";
+import { Alert } from "@typebot.io/ui/components/Alert";
+import { TriangleAlertIcon } from "@typebot.io/ui/icons/TriangleAlertIcon";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createApi } from "unsplash-js";
 import type { Basic as UnsplashPhoto } from "unsplash-js/dist/methods/photos/types";
@@ -153,10 +153,10 @@ export const UnsplashPicker = ({ imageSize, onImageSelect }: Props) => {
         </Link>
       </HStack>
       {isDefined(error) && (
-        <Alert status="error">
-          <AlertIcon />
-          {error}
-        </Alert>
+        <Alert.Root variant="error">
+          <TriangleAlertIcon />
+          <Alert.Description>{error}</Alert.Description>
+        </Alert.Root>
       )}
       <Stack overflowY="auto" maxH="400px" ref={scrollContainer}>
         {images.length > 0 && (

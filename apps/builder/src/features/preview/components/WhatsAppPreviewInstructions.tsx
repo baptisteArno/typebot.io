@@ -1,6 +1,4 @@
 import {
-  Alert,
-  AlertIcon,
   HStack,
   SlideFade,
   Stack,
@@ -9,7 +7,9 @@ import {
 } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
 import { isEmpty } from "@typebot.io/lib/utils";
+import { Alert } from "@typebot.io/ui/components/Alert";
 import { Button } from "@typebot.io/ui/components/Button";
+import { CheckmarkSquare02Icon } from "@typebot.io/ui/icons/CheckmarkSquare02Icon";
 import { type FormEvent, useState } from "react";
 import { ButtonLink } from "@/components/ButtonLink";
 import { BuoyIcon, ExternalLinkIcon } from "@/components/icons";
@@ -109,17 +109,13 @@ export const WhatsAppPreviewInstructions = (props: StackProps) => {
             Open WhatsApp Web
             <ExternalLinkIcon />
           </ButtonLink>
-          <Alert status="success" w="100%">
-            <HStack>
-              <AlertIcon />
-              <Stack spacing={1}>
-                <Text fontWeight="medium">Chat started!</Text>
-                <Text fontSize="sm">
-                  The first message can take up to 2 min to be delivered.
-                </Text>
-              </Stack>
-            </HStack>
-          </Alert>
+          <Alert.Root variant="success">
+            <CheckmarkSquare02Icon />
+            <Alert.Title>Chat started!</Alert.Title>
+            <Alert.Description>
+              The first message can take up to 2 min to be delivered.
+            </Alert.Description>
+          </Alert.Root>
         </Stack>
       </SlideFade>
     </Stack>

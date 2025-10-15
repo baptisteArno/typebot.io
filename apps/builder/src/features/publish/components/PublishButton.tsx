@@ -1,19 +1,14 @@
-import {
-  Alert,
-  AlertIcon,
-  HStack,
-  Stack,
-  Text,
-  useDisclosure,
-} from "@chakra-ui/react";
+import { HStack, Stack, Text, useDisclosure } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
 import { T, useTranslate } from "@tolgee/react";
 import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
 import { isNotDefined } from "@typebot.io/lib/utils";
+import { Alert } from "@typebot.io/ui/components/Alert";
 import { Button, type ButtonProps } from "@typebot.io/ui/components/Button";
 import { Menu } from "@typebot.io/ui/components/Menu";
 import { Tooltip } from "@typebot.io/ui/components/Tooltip";
 import { ArrowDown01Icon } from "@typebot.io/ui/icons/ArrowDown01Icon";
+import { TriangleAlertIcon } from "@typebot.io/ui/icons/TriangleAlertIcon";
 import { cn } from "@typebot.io/ui/lib/cn";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -181,11 +176,13 @@ export const PublishButton = ({
             <br />
             Consider rephrasing with your own branding.
           </span>
-          <Alert status="warning">
-            <AlertIcon />
-            Your workspace is at risk of being suspended if we detect a
-            trademark infringement down the line.
-          </Alert>
+          <Alert.Root variant="warning">
+            <TriangleAlertIcon />
+            <Alert.Description>
+              Your workspace is at risk of being suspended if we detect a
+              trademark infringement down the line.
+            </Alert.Description>
+          </Alert.Root>
         </div>
       </ConfirmDialog>
 

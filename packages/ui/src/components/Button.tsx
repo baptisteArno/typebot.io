@@ -40,6 +40,13 @@ const buttonVariants = cva(
       size: "default",
       iconStyle: "auto",
     },
+    compoundVariants: [
+      {
+        size: "xs",
+        iconStyle: "auto",
+        class: "[&_svg]:size-3",
+      },
+    ],
   },
 );
 

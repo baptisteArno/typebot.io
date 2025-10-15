@@ -1,6 +1,7 @@
 import { Code, ListItem, OrderedList, Stack, Text } from "@chakra-ui/react";
+import { Alert } from "@typebot.io/ui/components/Alert";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
-import { AlertInfo } from "@/components/AlertInfo";
+import { InformationSquareIcon } from "@typebot.io/ui/icons/InformationSquareIcon";
 import { CodeEditor } from "@/components/inputs/CodeEditor";
 import { TextLink } from "@/components/TextLink";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
@@ -25,7 +26,12 @@ export const ApiDeployDialog = ({
         <Dialog.Title>API</Dialog.Title>
         <Dialog.CloseButton />
         {!isPublished && (
-          <AlertInfo>You need to publish your bot first.</AlertInfo>
+          <Alert.Root>
+            <InformationSquareIcon />
+            <Alert.Description>
+              You need to publish your bot first.
+            </Alert.Description>
+          </Alert.Root>
         )}
         <OrderedList spacing={4} pl="4">
           <ListItem>

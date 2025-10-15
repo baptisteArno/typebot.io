@@ -1,8 +1,9 @@
-import { Alert, AlertIcon } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
 import type { CreatableCredentials } from "@typebot.io/credentials/schemas";
+import { Alert } from "@typebot.io/ui/components/Alert";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
+import { TriangleAlertIcon } from "@typebot.io/ui/icons/TriangleAlertIcon";
 import type React from "react";
 import { useState } from "react";
 import { TextInput } from "@/components/inputs/TextInput";
@@ -96,11 +97,13 @@ export const OpenAICredentialsDialog = ({
           withVariableButton={false}
           debounceTimeout={0}
         />
-        <Alert status="warning">
-          <AlertIcon />
-          Make sure to add a payment method to your OpenAI account. Otherwise,
-          it will not work after a few messages.
-        </Alert>
+        <Alert.Root variant="warning">
+          <TriangleAlertIcon />
+          <Alert.Description>
+            Make sure to add a payment method to your OpenAI account. Otherwise,
+            it will not work after a few messages.
+          </Alert.Description>
+        </Alert.Root>
 
         <Dialog.Footer>
           <Button

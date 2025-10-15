@@ -1,7 +1,8 @@
 import { Text } from "@chakra-ui/react";
+import { Alert } from "@typebot.io/ui/components/Alert";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
+import { InformationSquareIcon } from "@typebot.io/ui/icons/InformationSquareIcon";
 import { useState } from "react";
-import { AlertInfo } from "@/components/AlertInfo";
 import type { DialogProps } from "../../DeployButton";
 import { StandardSettings } from "../../settings/StandardSettings";
 import { IframeSnippet } from "./IframeSnippet";
@@ -25,7 +26,12 @@ export const IframeDeployDialog = ({
         <Dialog.Title>Iframe</Dialog.Title>
         <Dialog.CloseButton />
         {!isPublished && (
-          <AlertInfo>You need to publish your bot first.</AlertInfo>
+          <Alert.Root>
+            <InformationSquareIcon />
+            <Alert.Description>
+              You need to publish your bot first.
+            </Alert.Description>
+          </Alert.Root>
         )}
         <StandardSettings
           onUpdateWindowSettings={(settings) => setInputValues({ ...settings })}

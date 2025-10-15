@@ -1,13 +1,8 @@
-import {
-  Alert,
-  AlertIcon,
-  Heading,
-  HStack,
-  Stack,
-  Text,
-} from "@chakra-ui/react";
+import { Heading, HStack, Stack, Text } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { Plan } from "@typebot.io/prisma/enum";
+import { Alert } from "@typebot.io/ui/components/Alert";
+import { TriangleAlertIcon } from "@typebot.io/ui/icons/TriangleAlertIcon";
 import type { Workspace } from "@typebot.io/workspaces/schemas";
 import { useSubscriptionQuery } from "../hooks/useSubscriptionQuery";
 import { BillingPortalButton } from "./BillingPortalButton";
@@ -42,10 +37,12 @@ export const CurrentSubscriptionSummary = ({ workspace }: Props) => {
         )}
       </HStack>
       {data?.subscription?.status === "past_due" && (
-        <Alert fontSize="sm" status="error">
-          <AlertIcon />
-          {t("billing.currentSubscription.pastDueAlert")}
-        </Alert>
+        <Alert.Root variant="error">
+          <TriangleAlertIcon />
+          <Alert.Description>
+            {t("billing.currentSubscription.pastDueAlert")}
+          </Alert.Description>
+        </Alert.Root>
       )}
 
       {isSubscribed && (

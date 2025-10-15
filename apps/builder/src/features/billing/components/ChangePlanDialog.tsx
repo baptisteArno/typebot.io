@@ -1,9 +1,10 @@
 import { HStack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
+import { Alert } from "@typebot.io/ui/components/Alert";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
+import { InformationSquareIcon } from "@typebot.io/ui/icons/InformationSquareIcon";
 import { cx } from "@typebot.io/ui/lib/cva";
-import { AlertInfo } from "@/components/AlertInfo";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { ChangePlanForm } from "./ChangePlanForm";
 
@@ -32,9 +33,12 @@ export const ChangePlanDialog = ({
         <Dialog.CloseButton />
 
         {type && (
-          <AlertInfo>
-            {t("billing.upgradeLimitLabel", { type: type })}
-          </AlertInfo>
+          <Alert.Root>
+            <InformationSquareIcon />
+            <Alert.Description>
+              {t("billing.upgradeLimitLabel", { type: type })}
+            </Alert.Description>
+          </Alert.Root>
         )}
         {workspace && (
           <ChangePlanForm
