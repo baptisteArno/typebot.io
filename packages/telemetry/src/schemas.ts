@@ -146,6 +146,12 @@ const workspaceAutoQuarantinedEventSchema = workspaceEvent.merge(
   }),
 );
 
+const workspaceUnpaidEventSchema = workspaceEvent.merge(
+  z.object({
+    name: z.literal("Workspace unpaid"),
+  }),
+);
+
 export const workspacePastDueEventSchema = workspaceEvent.merge(
   z.object({
     name: z.literal("Workspace past due"),
@@ -207,6 +213,7 @@ const builderEvents = [
   workspaceAutoQuarantinedEventSchema,
   subscriptionAutoUpdatedEventSchema,
   workspacePastDueEventSchema,
+  workspaceUnpaidEventSchema,
   workspaceNotPastDueEventSchema,
   userUpdatedEventSchema,
   customDomainAddedEventSchema,
