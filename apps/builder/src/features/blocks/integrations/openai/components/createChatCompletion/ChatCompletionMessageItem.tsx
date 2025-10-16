@@ -7,7 +7,7 @@ import {
 import type { ChatCompletionOpenAIOptions } from "@typebot.io/blocks-integrations/openai/schema";
 import type { Variable } from "@typebot.io/variables/schemas";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
-import { Textarea } from "@/components/inputs/Textarea";
+import { DebouncedTextareaWithVariablesButton } from "@/components/inputs/DebouncedTextarea";
 import { VariablesCombobox } from "@/components/inputs/VariablesCombobox";
 import type { TableListItemProps } from "@/components/TableList";
 
@@ -87,11 +87,10 @@ const ChatCompletionMessageItemContent = ({
     case "user":
     case "system":
       return (
-        <Textarea
+        <DebouncedTextareaWithVariablesButton
           defaultValue={item.content}
-          onChange={onChangeSingleMessageContent}
+          onValueChange={onChangeSingleMessageContent}
           placeholder="Content"
-          minH="150px"
         />
       );
     case "Dialogue":

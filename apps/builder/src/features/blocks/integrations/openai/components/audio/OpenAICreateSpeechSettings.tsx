@@ -4,7 +4,7 @@ import type { CreateSpeechOpenAIOptions } from "@typebot.io/blocks-integrations/
 import { Field } from "@typebot.io/ui/components/Field";
 import type { Variable } from "@typebot.io/variables/schemas";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
-import { Textarea } from "@/components/inputs/Textarea";
+import { DebouncedTextareaWithVariablesButton } from "@/components/inputs/DebouncedTextarea";
 import { VariablesCombobox } from "@/components/inputs/VariablesCombobox";
 import { TextLink } from "@/components/TextLink";
 import { ModelsDropdown } from "../ModelsDropdown";
@@ -70,11 +70,18 @@ export const OpenAICreateSpeechSettings = ({
             type="tts"
             onChange={updateModel}
           />
-          <Textarea
-            defaultValue={options.input}
-            onChange={updateInput}
-            label="Input:"
-          />
+          <Field.Root>
+            <Field.Label>Input:</Field.Label>
+            <Field.Control
+              render={(props) => (
+                <DebouncedTextareaWithVariablesButton
+                  {...props}
+                  defaultValue={options.input}
+                  onValueChange={updateInput}
+                />
+              )}
+            />
+          </Field.Root>
           <Field.Root>
             <Field.Label>Voice:</Field.Label>
             <BasicSelect

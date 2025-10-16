@@ -9,7 +9,7 @@ import { Popover } from "@typebot.io/ui/components/Popover";
 import { Switch } from "@typebot.io/ui/components/Switch";
 import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
 import { ImageUploadContent } from "@/components/ImageUploadContent";
-import { Textarea } from "@/components/inputs/Textarea";
+import { DebouncedTextareaWithVariablesButton } from "@/components/inputs/DebouncedTextarea";
 import { TextInput } from "@/components/inputs/TextInput";
 import { ConditionForm } from "@/features/blocks/logic/condition/components/ConditionForm";
 
@@ -101,11 +101,20 @@ export const PictureChoiceItemSettings = ({
         defaultValue={item.title}
         onChange={updateTitle}
       />
-      <Textarea
-        label={t("blocks.inputs.settings.description.label")}
-        defaultValue={item.description}
-        onChange={updateDescription}
-      />
+      <Field.Root>
+        <Field.Label>
+          {t("blocks.inputs.settings.description.label")}
+        </Field.Label>
+        <Field.Control
+          render={(props) => (
+            <DebouncedTextareaWithVariablesButton
+              {...props}
+              defaultValue={item.description}
+              onValueChange={updateDescription}
+            />
+          )}
+        />
+      </Field.Root>
       <TextInput
         label={t("blocks.inputs.internalValue.label")}
         moreInfoTooltip={t(

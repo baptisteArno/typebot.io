@@ -12,7 +12,10 @@ import { BasicAutocompleteInputWithVariableButton } from "@/components/inputs/Ba
 import { BasicNumberInput } from "@/components/inputs/BasicNumberInput";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { CodeEditor } from "@/components/inputs/CodeEditor";
-import { Textarea } from "@/components/inputs/Textarea";
+import {
+  DebouncedTextarea,
+  DebouncedTextareaWithVariablesButton,
+} from "@/components/inputs/DebouncedTextarea";
 import { TextInput } from "@/components/inputs/TextInput";
 import { VariablesCombobox } from "@/components/inputs/VariablesCombobox";
 import { PrimitiveList } from "@/components/PrimitiveList";
@@ -261,24 +264,50 @@ export const ZodFieldLayout = ({
       }
       if (layout?.inputType === "textarea") {
         return (
-          <Textarea
-            defaultValue={data ?? layout?.defaultValue}
-            label={layout?.label}
-            placeholder={layout?.placeholder}
-            helperText={
-              layout?.helperText ? (
+          <Field.Root>
+            {layout.label && (
+              <Field.Label>
+                {layout.label}
+                {layout.moreInfoTooltip && (
+                  <MoreInfoTooltip>{layout.moreInfoTooltip}</MoreInfoTooltip>
+                )}
+              </Field.Label>
+            )}
+            <Field.Control
+              render={
+                (layout.withVariableButton ?? true)
+                  ? (props) => (
+                      <DebouncedTextareaWithVariablesButton
+                        {...props}
+                        defaultValue={data ?? layout?.defaultValue}
+                        onValueChange={onDataChange}
+                        placeholder={layout?.placeholder}
+                        debounceTimeout={
+                          layout?.isDebounceDisabled ? 0 : undefined
+                        }
+                      />
+                    )
+                  : (props) => (
+                      <DebouncedTextarea
+                        {...props}
+                        defaultValue={data ?? layout?.defaultValue}
+                        onValueChange={onDataChange}
+                        placeholder={layout?.placeholder}
+                        debounceTimeout={
+                          layout?.isDebounceDisabled ? 0 : undefined
+                        }
+                      />
+                    )
+              }
+            />
+            {layout?.helperText && (
+              <Field.Description>
                 <Markdown components={mdComponents}>
                   {layout.helperText}
                 </Markdown>
-              ) : undefined
-            }
-            isRequired={layout?.isRequired}
-            withVariableButton={layout?.withVariableButton}
-            moreInfoTooltip={layout.moreInfoTooltip}
-            onChange={onDataChange}
-            width={width}
-            debounceTimeout={layout?.isDebounceDisabled ? 0 : undefined}
-          />
+              </Field.Description>
+            )}
+          </Field.Root>
         );
       }
 

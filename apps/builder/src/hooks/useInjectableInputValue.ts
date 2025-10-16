@@ -7,13 +7,13 @@ export const useInjectableInputValue = ({
   ref,
   defaultValue,
 }: {
-  ref: React.RefObject<HTMLInputElement>;
+  ref: React.RefObject<HTMLInputElement | HTMLTextAreaElement>;
   defaultValue?: string;
 }) => {
   const [value, setValue] = useState<string>(defaultValue ?? "");
 
   const injectVariable = (variable: Variable) => {
-    if (!variable || !ref.current) return;
+    if (!variable || !ref.current) return value;
     const start = ref.current.selectionStart ?? ref.current.value.length ?? 0;
     const end = ref.current.selectionEnd ?? ref.current.value.length ?? 0;
     const { text, carretPosition: newCarretPosition } = injectVariableInText({

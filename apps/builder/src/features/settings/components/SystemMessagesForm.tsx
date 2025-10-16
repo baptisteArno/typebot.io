@@ -2,7 +2,12 @@ import { Stack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { defaultSystemMessages } from "@typebot.io/settings/constants";
 import type { SystemMessages } from "@typebot.io/settings/schemas";
-import { Textarea } from "@/components/inputs/Textarea";
+import { Field } from "@typebot.io/ui/components/Field";
+import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
+import {
+  DebouncedTextarea,
+  DebouncedTextareaWithVariablesButton,
+} from "@/components/inputs/DebouncedTextarea";
 import { TextInput } from "@/components/inputs/TextInput";
 
 type Props = {
@@ -104,14 +109,21 @@ export const SystemMessagesForm = ({
 
   return (
     <Stack spacing="4">
-      <Textarea
-        label={t(
-          "settings.sideMenu.general.systemMessages.invalidMessage.label",
-        )}
-        defaultValue={systemMessages?.invalidMessage}
-        placeholder={defaultSystemMessages.invalidMessage}
-        onChange={updateInvalidMessage}
-      />
+      <Field.Root>
+        <Field.Label>
+          {t("settings.sideMenu.general.systemMessages.invalidMessage.label")}
+        </Field.Label>
+        <Field.Control
+          render={(props) => (
+            <DebouncedTextareaWithVariablesButton
+              {...props}
+              placeholder={defaultSystemMessages.invalidMessage}
+              defaultValue={systemMessages?.invalidMessage}
+              onValueChange={updateInvalidMessage}
+            />
+          )}
+        />
+      </Field.Root>
       <TextInput
         label={t(
           "settings.sideMenu.general.systemMessages.networkErrorTitle.label",
@@ -120,14 +132,23 @@ export const SystemMessagesForm = ({
         placeholder={defaultSystemMessages.networkErrorTitle}
         onChange={updateOfflineErrorTitle}
       />
-      <Textarea
-        label={t(
-          "settings.sideMenu.general.systemMessages.networkErrorMessage.label",
-        )}
-        defaultValue={systemMessages?.networkErrorMessage}
-        placeholder={defaultSystemMessages.networkErrorMessage}
-        onChange={updateOfflineErrorMessage}
-      />
+      <Field.Root>
+        <Field.Label>
+          {t(
+            "settings.sideMenu.general.systemMessages.networkErrorMessage.label",
+          )}
+        </Field.Label>
+        <Field.Control
+          render={(props) => (
+            <DebouncedTextareaWithVariablesButton
+              {...props}
+              placeholder={defaultSystemMessages.networkErrorMessage}
+              defaultValue={systemMessages?.networkErrorMessage}
+              onValueChange={updateOfflineErrorMessage}
+            />
+          )}
+        />
+      </Field.Root>
       <TextInput
         label={t(
           "settings.sideMenu.general.systemMessages.popupBlockedTitle.label",
@@ -136,15 +157,23 @@ export const SystemMessagesForm = ({
         placeholder={defaultSystemMessages.popupBlockedTitle}
         onChange={updatePopupBlockedTitle}
       />
-      <Textarea
-        label={t(
-          "settings.sideMenu.general.systemMessages.popupBlockedDescription.label",
-        )}
-        defaultValue={systemMessages?.popupBlockedDescription}
-        placeholder={defaultSystemMessages.popupBlockedDescription}
-        onChange={updatePopupBlockedDescription}
-        withVariableButton={false}
-      />
+      <Field.Root>
+        <Field.Label>
+          {t(
+            "settings.sideMenu.general.systemMessages.popupBlockedDescription.label",
+          )}
+        </Field.Label>
+        <Field.Control
+          render={(props) => (
+            <DebouncedTextarea
+              {...props}
+              placeholder={defaultSystemMessages.popupBlockedDescription}
+              defaultValue={systemMessages?.popupBlockedDescription}
+              onValueChange={updatePopupBlockedDescription}
+            />
+          )}
+        />
+      </Field.Root>
       <TextInput
         label={t(
           "settings.sideMenu.general.systemMessages.popupBlockedButton.label",
@@ -154,34 +183,58 @@ export const SystemMessagesForm = ({
         onChange={updatePopupBlockedButtonLabel}
         withVariableButton={false}
       />
-      <Textarea
-        label={t("settings.sideMenu.general.systemMessages.botClosed.label")}
-        defaultValue={systemMessages?.botClosed}
-        placeholder={defaultSystemMessages.botClosed}
-        onChange={updateBotClosed}
-        withVariableButton={false}
-      />
-      <Textarea
-        label={t(
-          "settings.sideMenu.general.systemMessages.fileUploadError.label",
-        )}
-        defaultValue={systemMessages?.fileUploadError}
-        placeholder={defaultSystemMessages.fileUploadError}
-        onChange={updateFileUploadError}
-        withVariableButton={false}
-      />
-      <Textarea
-        label={t(
-          "settings.sideMenu.general.systemMessages.fileUploadSizeError.label",
-        )}
-        moreInfoTooltip={t(
-          "settings.sideMenu.general.systemMessages.fileUploadSizeError.tooltip",
-        )}
-        defaultValue={systemMessages?.fileUploadSizeError}
-        placeholder={defaultSystemMessages.fileUploadSizeError}
-        onChange={updateFileUploadSizeError}
-        withVariableButton={false}
-      />
+      <Field.Root>
+        <Field.Label>
+          {t("settings.sideMenu.general.systemMessages.botClosed.label")}
+        </Field.Label>
+        <Field.Control
+          render={(props) => (
+            <DebouncedTextarea
+              {...props}
+              placeholder={defaultSystemMessages.botClosed}
+              defaultValue={systemMessages?.botClosed}
+              onValueChange={updateBotClosed}
+            />
+          )}
+        />
+      </Field.Root>
+      <Field.Root>
+        <Field.Label>
+          {t("settings.sideMenu.general.systemMessages.fileUploadError.label")}
+        </Field.Label>
+        <Field.Control
+          render={(props) => (
+            <DebouncedTextarea
+              {...props}
+              placeholder={defaultSystemMessages.fileUploadError}
+              defaultValue={systemMessages?.fileUploadError}
+              onValueChange={updateFileUploadError}
+            />
+          )}
+        />
+      </Field.Root>
+      <Field.Root>
+        <Field.Label>
+          {t(
+            "settings.sideMenu.general.systemMessages.fileUploadSizeError.label",
+          )}{" "}
+          <MoreInfoTooltip>
+            {t(
+              "settings.sideMenu.general.systemMessages.fileUploadSizeError.tooltip",
+            )}
+          </MoreInfoTooltip>
+        </Field.Label>
+        <Field.Control
+          render={(props) => (
+            <DebouncedTextarea
+              {...props}
+              placeholder={defaultSystemMessages.fileUploadSizeError}
+              defaultValue={systemMessages?.fileUploadSizeError}
+              onValueChange={updateFileUploadSizeError}
+            />
+          )}
+        />
+      </Field.Root>
       <TextInput
         label={t(
           "settings.sideMenu.general.systemMessages.whatsAppPictureChoiceSelectLabel.label",

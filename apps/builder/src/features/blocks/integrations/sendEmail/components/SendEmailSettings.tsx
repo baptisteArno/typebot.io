@@ -10,7 +10,7 @@ import { Switch } from "@typebot.io/ui/components/Switch";
 import type { Variable } from "@typebot.io/variables/schemas";
 import type { Workspace } from "@typebot.io/workspaces/schemas";
 import { CodeEditor } from "@/components/inputs/CodeEditor";
-import { Textarea } from "@/components/inputs/Textarea";
+import { DebouncedTextareaWithVariablesButton } from "@/components/inputs/DebouncedTextarea";
 import { TextInput } from "@/components/inputs/TextInput";
 import { VariablesCombobox } from "@/components/inputs/VariablesCombobox";
 import { isFreePlan } from "@/features/billing/helpers/isFreePlan";
@@ -203,10 +203,8 @@ export const SendEmailSettings = ({ options, onOptionsChange }: Props) => {
               withLineNumbers={true}
             />
           ) : (
-            <Textarea
-              data-testid="body-input"
-              minH="300px"
-              onChange={handleBodyChange}
+            <DebouncedTextareaWithVariablesButton
+              onValueChange={handleBodyChange}
               defaultValue={options.body ?? ""}
             />
           )}

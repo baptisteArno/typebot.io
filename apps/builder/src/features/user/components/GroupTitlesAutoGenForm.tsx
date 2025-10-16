@@ -9,7 +9,7 @@ import type { GroupTitlesAutoGeneration } from "@typebot.io/user/schemas";
 import { useState } from "react";
 import { BasicAutocompleteInput } from "@/components/inputs/BasicAutocompleteInput";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
-import { Textarea } from "@/components/inputs/Textarea";
+import { DebouncedTextarea } from "@/components/inputs/DebouncedTextarea";
 import { CredentialsCreateDialog } from "@/features/credentials/components/CredentialsCreateDialog";
 import { CredentialsDropdown } from "@/features/credentials/components/CredentialsDropdown";
 import { BlockIcon } from "@/features/editor/components/BlockIcon";
@@ -121,16 +121,22 @@ export const GroupTitlesAutoGenForm = ({
           </HStack>
         )}
       </HStack>
-      <Textarea
-        label="Prompt:"
-        withVariableButton={false}
-        defaultValue={prompt ?? defaultGroupTitleGenPrompt}
-        onChange={(value) => {
-          onChange({
-            prompt: value,
-          });
-        }}
-      />
+      <Field.Root>
+        <Field.Label>Prompt:</Field.Label>
+        <Field.Control
+          render={(props) => (
+            <DebouncedTextarea
+              {...props}
+              defaultValue={prompt ?? defaultGroupTitleGenPrompt}
+              onValueChange={(value) => {
+                onChange({
+                  prompt: value,
+                });
+              }}
+            />
+          )}
+        />
+      </Field.Root>
       <CredentialsCreateDialog
         type={credsCreatingType as Credentials["type"]}
         scope="user"

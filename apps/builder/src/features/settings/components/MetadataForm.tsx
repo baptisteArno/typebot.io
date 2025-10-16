@@ -10,7 +10,7 @@ import { Switch } from "@typebot.io/ui/components/Switch";
 import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
 import { ImageUploadContent } from "@/components/ImageUploadContent";
 import { CodeEditor } from "@/components/inputs/CodeEditor";
-import { Textarea } from "@/components/inputs/Textarea";
+import { DebouncedTextareaWithVariablesButton } from "@/components/inputs/DebouncedTextarea";
 import { TextInput } from "@/components/inputs/TextInput";
 
 type Props = {
@@ -128,13 +128,22 @@ export const MetadataForm = ({
         defaultValue={metadata?.title ?? typebotName}
         onChange={handleTitleChange}
       />
-      <Textarea
-        defaultValue={
-          metadata?.description ?? defaultSettings.metadata.description
-        }
-        onChange={handleDescriptionChange}
-        label={t("settings.sideMenu.metadata.description.label")}
-      />
+      <Field.Root>
+        <Field.Label>
+          {t("settings.sideMenu.metadata.description.label")}
+        </Field.Label>
+        <Field.Control
+          render={(props) => (
+            <DebouncedTextareaWithVariablesButton
+              {...props}
+              defaultValue={
+                metadata?.description ?? defaultSettings.metadata.description
+              }
+              onValueChange={handleDescriptionChange}
+            />
+          )}
+        />
+      </Field.Root>
       <TextInput
         defaultValue={metadata?.googleTagManagerId}
         placeholder="GTM-XXXXXX"

@@ -1,11 +1,16 @@
-import { Input, type InputProps } from "@typebot.io/ui/components/Input";
+import { Textarea } from "@typebot.io/ui/components/Textarea";
 import { cn } from "@typebot.io/ui/lib/cn";
 import { type HTMLAttributes, useEffect, useRef, useState } from "react";
 import { useOutsideClick } from "@/hooks/useOutsideClick";
 
 export type MultiLineEditableProps = {
   className?: string;
-  input?: Omit<InputProps, "value">;
+  input?: Omit<
+    React.TextareaHTMLAttributes<HTMLTextAreaElement>,
+    "value" | "onChange"
+  > & {
+    onValueChange?: (value: string) => void;
+  };
   preview?: HTMLAttributes<HTMLSpanElement>;
   defaultEdit: boolean;
   value: string;
@@ -56,30 +61,23 @@ export const MultiLineEditable = ({
   return (
     <div {...props}>
       {isEditing ? (
-        <Input
+        <Textarea
           {...input}
           onKeyDownCapture={(e) => {
             input?.onKeyDownCapture?.(e);
             if (e.key === "Enter" && e.metaKey) commitValue();
             if (e.key === "Escape") setIsEditing(false);
           }}
+          ref={textareaRef}
           size="none"
-          className={cn("p-1 rounded-md border w-full", input?.className)}
-          render={(props) => (
-            <textarea
-              {...props}
-              value={value}
-              ref={textareaRef}
-              onFocus={(e) => {
-                autoResize(e.currentTarget);
-                e.currentTarget.select();
-              }}
-              onChange={(e) => {
-                input?.onValueChange?.(e.target.value, { event: e } as any);
-              }}
-              autoFocus
-            />
-          )}
+          value={value}
+          className={cn("px-1 py-1 rounded-md border w-full", input?.className)}
+          onFocus={(e) => {
+            autoResize(e.currentTarget);
+            e.currentTarget.select();
+          }}
+          onValueChange={input?.onValueChange}
+          autoFocus
         />
       ) : (
         <span

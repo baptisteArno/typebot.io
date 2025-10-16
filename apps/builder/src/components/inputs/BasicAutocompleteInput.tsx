@@ -24,7 +24,7 @@ export const BasicAutocompleteInput = forwardRef<HTMLInputElement, Props>(
       onChange,
       defaultValue,
       openOnFocus = true,
-      debounceTimeout,
+      debounceTimeout = 1000,
     },
     inputRef,
   ) => {
@@ -90,7 +90,7 @@ export const BasicAutocompleteInputWithVariableButton = (props: Props) => {
 
   const commitValue = useDebounce((value: string | undefined) => {
     props.onChange?.(value);
-  });
+  }, props.debounceTimeout ?? 1000);
 
   return (
     <div className="flex items-center gap-0">
@@ -103,8 +103,7 @@ export const BasicAutocompleteInputWithVariableButton = (props: Props) => {
       />
       <VariablesButton
         onSelectVariable={(variable) => {
-          injectVariable(variable);
-          props.onChange?.(value);
+          props.onChange?.(injectVariable(variable));
         }}
       />
     </div>

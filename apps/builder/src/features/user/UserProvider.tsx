@@ -123,7 +123,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   const saveUser = useDebounce(async (updates: Partial<User>) => {
     if (!localUser) return;
     updateUserMutation.mutate({ updates });
-  });
+  }, 1000);
 
   const updateLocalUserEmail = (newEmail: string) => {
     if (!localUser) return;

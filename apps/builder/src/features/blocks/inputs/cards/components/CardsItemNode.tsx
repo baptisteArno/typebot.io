@@ -338,7 +338,7 @@ const MultiLineDeletableEditable = ({
 }) => {
   const [value, setValue] = useState(defaultValue);
 
-  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Backspace" && value === "") onDelete();
   };
 

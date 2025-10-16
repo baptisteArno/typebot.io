@@ -20,7 +20,7 @@ import { InformationSquareIcon } from "@typebot.io/ui/icons/InformationSquareIco
 import type { Variable } from "@typebot.io/variables/schemas";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { CodeEditor } from "@/components/inputs/CodeEditor";
-import { Textarea } from "@/components/inputs/Textarea";
+import { DebouncedTextareaWithVariablesButton } from "@/components/inputs/DebouncedTextarea";
 import { TextInput } from "@/components/inputs/TextInput";
 import { VariablesCombobox } from "@/components/inputs/VariablesCombobox";
 import { WhatsAppLogo } from "@/components/logos/WhatsAppLogo";
@@ -282,10 +282,9 @@ const SetVariableValue = ({
                 </Field.Root>
               </Stack>
             ) : (
-              <Textarea
+              <DebouncedTextareaWithVariablesButton
                 defaultValue={options?.expressionToEvaluate ?? ""}
-                onChange={updateExpression}
-                width="full"
+                onValueChange={updateExpression}
               />
             )}
           </Stack>
@@ -324,7 +323,12 @@ const SetVariableValue = ({
       );
     }
     case "Append value(s)": {
-      return <Textarea defaultValue={options.item} onChange={updateItem} />;
+      return (
+        <DebouncedTextareaWithVariablesButton
+          defaultValue={options.item}
+          onValueChange={updateItem}
+        />
+      );
     }
     case "Moment of the day": {
       return (

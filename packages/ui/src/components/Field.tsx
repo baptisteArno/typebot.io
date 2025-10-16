@@ -39,4 +39,5 @@ export const Field = {
   Label,
   Description,
   Container,
+  Control: PrimitiveField.Control,
 };
