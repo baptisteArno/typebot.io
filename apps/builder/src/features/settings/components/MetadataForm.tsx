@@ -1,4 +1,4 @@
-import { FormLabel, Image, Stack } from "@chakra-ui/react";
+import { FormLabel, Stack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { env } from "@typebot.io/env";
 import { defaultSettings } from "@typebot.io/settings/constants";
@@ -63,15 +63,11 @@ export const MetadataForm = ({
         <Popover.Root {...favIconPopoverControls}>
           <Popover.Trigger
             render={(props) => (
-              <Image
+              <img
                 {...props}
+                className="w-5 cursor-pointer transition-filter duration-200 rounded-md hover:brightness-90"
                 src={favIconUrl}
-                w="20px"
                 alt="Fav icon"
-                cursor="pointer"
-                _hover={{ filter: "brightness(.9)" }}
-                transition="filter 200ms"
-                rounded="md"
               />
             )}
           />
@@ -98,13 +94,10 @@ export const MetadataForm = ({
         </FormLabel>
         <Popover.Root {...imagePopoverControls}>
           <Popover.Trigger>
-            <Image
+            <img
+              className="cursor-pointer transition-filter duration-200 rounded-md hover:brightness-90"
               src={imageUrl}
               alt="Website image"
-              cursor="pointer"
-              _hover={{ filter: "brightness(.9)" }}
-              transition="filter 200ms"
-              rounded="md"
             />
           </Popover.Trigger>
           <Popover.Popup className="w-[500px]" side="right">

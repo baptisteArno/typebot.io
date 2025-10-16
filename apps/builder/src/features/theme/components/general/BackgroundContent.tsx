@@ -1,4 +1,4 @@
-import { Flex, Image, Text } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { isNotEmpty } from "@typebot.io/lib/utils";
 import {
@@ -38,16 +38,10 @@ export const BackgroundContent = ({
         <Popover.Root {...controls}>
           <Popover.Trigger>
             {isNotEmpty(background?.content) ? (
-              <Image
+              <img
+                className="cursor-pointer transition-filter duration-200 rounded-md hover:brightness-90 w-full max-h-[200px] object-cover"
                 src={background?.content}
                 alt={t("theme.sideMenu.global.background.image.alt")}
-                cursor="pointer"
-                _hover={{ filter: "brightness(.9)" }}
-                transition="filter 200ms"
-                rounded="md"
-                w="full"
-                maxH="200px"
-                objectFit="cover"
               />
             ) : (
               <Button variant="secondary" className="w-full">

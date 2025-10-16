@@ -124,18 +124,11 @@ export const CardsItemNode = ({
                   >
                     <Popover.Trigger>
                       <ImageOrPlaceholder
-                        w="full"
-                        h="110px"
-                        flexShrink={0}
-                        _hover={{
-                          filter: "brightness(0.95)",
-                        }}
-                        transition="filter 0.2s ease"
+                        className="w-full h-[110px] flex-shrink-0 transition-filter rounded-md hover:brightness-95 rounded-b-none"
                         src={item.imageUrl ?? undefined}
-                        roundedBottom={0}
                       />
                     </Popover.Trigger>
-                    <Popover.Popup side="right">
+                    <Popover.Popup side="right" className="max-w-[400px]">
                       {typebot && (
                         <ImageUploadContent
                           uploadFileProps={{

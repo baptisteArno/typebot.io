@@ -4,7 +4,6 @@ import {
   Grid,
   GridItem,
   HStack,
-  Image,
   Link,
   Stack,
   Text,
@@ -14,6 +13,7 @@ import { isDefined } from "@typebot.io/lib/utils";
 import { Alert } from "@typebot.io/ui/components/Alert";
 import { LoaderCircleIcon } from "@typebot.io/ui/icons/LoaderCircleIcon";
 import { TriangleAlertIcon } from "@typebot.io/ui/icons/TriangleAlertIcon";
+import { cx } from "@typebot.io/ui/lib/cva";
 import {
   createClient,
   type ErrorResponse,
@@ -242,16 +242,14 @@ const PexelsVideo = ({ video, onClick }: PexelsVideoProps) => {
       onMouseLeave={() => setIsImageHovered(false)}
     >
       {
-        <Image
-          objectFit="cover"
+        <img
+          className={cx(
+            "object-cover size-full cursor-pointer rounded-md aspect-[4/3]",
+            video.height < video.width ? "size-full" : undefined,
+          )}
           src={thumbnailImage}
           alt={`Pexels Video ${video.id}`}
           onClick={onClick}
-          rounded="md"
-          h={video.height < video.width ? "100%" : undefined}
-          w={video.height < video.width ? "100%" : undefined}
-          aspectRatio={4 / 3}
-          cursor="pointer"
         />
       }
       <Box

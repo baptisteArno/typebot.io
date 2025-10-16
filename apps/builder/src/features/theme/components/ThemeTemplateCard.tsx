@@ -2,7 +2,6 @@ import {
   Box,
   Flex,
   HStack,
-  Image,
   Stack,
   Text,
   useColorModeValue,
@@ -219,11 +218,10 @@ const AvatarPreview = ({
   const { t } = useTranslate();
   if (!avatar?.isEnabled) return null;
   return avatar?.url ? (
-    <Image
+    <img
+      className="size-3 rounded-full"
       src={avatar.url}
       alt={t("theme.sideMenu.template.gallery.avatarPreview.alt")}
-      boxSize="12px"
-      rounded="full"
     />
   ) : (
     <DefaultAvatar boxSize="12px" />

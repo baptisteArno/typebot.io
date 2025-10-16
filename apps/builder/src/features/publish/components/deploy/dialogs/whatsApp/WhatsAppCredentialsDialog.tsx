@@ -5,7 +5,6 @@ import {
   Code,
   Heading,
   HStack,
-  Image,
   Input,
   InputGroup,
   InputRightElement,
@@ -406,10 +405,10 @@ const Requirements = () => (
       </TextLink>
       . You should be able to get to this page:
     </Text>
-    <Image
+    <img
+      className="rounded-md"
       src="/images/whatsapp-quickstart-page.png"
       alt="WhatsApp quickstart page"
-      rounded="md"
     />
   </Stack>
 );
@@ -447,10 +446,10 @@ const SystemUserToken = ({
           your previously created app, select it and check{" "}
           <Code>Manage app</Code>
         </Text>
-        <Image
+        <img
+          className="rounded-md"
           src="/images/meta-system-user-assets.png"
           alt="Meta system user assets"
-          rounded="md"
         />
       </Stack>
     </ListItem>
@@ -528,7 +527,7 @@ const PhoneNumber = ({
             onChange={setPhoneNumberId}
           />
         </HStack>
-        <Image
+        <img
           src="/images/whatsapp-phone-selection.png"
           alt="WA phone selection"
         />

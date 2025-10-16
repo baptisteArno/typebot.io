@@ -1,4 +1,3 @@
-import { Image } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { Label } from "@typebot.io/ui/components/Label";
 import { Radio, RadioGroup } from "@typebot.io/ui/components/RadioGroup";
@@ -39,11 +38,7 @@ export const AppearanceRadioGroup = ({ defaultValue, onChange }: Props) => {
           key={option.value}
           className="flex flex-col gap-5 w-full justify-between border rounded-md pb-6 hover:bg-gray-2/50"
         >
-          <Image
-            src={option.image}
-            alt="Theme preview"
-            style={{ borderRadius: "0.250rem" }}
-          />
+          <img className="rounded-sm" src={option.image} alt="Theme preview" />
           <div className="flex gap-2 items-center">
             <Radio value={option.value} id={option.label} />
             <div className="flex flex-col gap-2">{option.label}</div>

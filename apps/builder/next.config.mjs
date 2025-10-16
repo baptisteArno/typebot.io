@@ -99,7 +99,7 @@ const nextConfig = {
                 isDev ? " http://localhost:*" : ""
               }`,
               "frame-src 'self' https:",
-              "img-src 'self' data: blob: https:",
+              `img-src 'self' data: blob: https:${isDev ? " http://localhost:*" : ""}`,
               "font-src 'self' https: data:",
               "media-src 'self' https:",
               "worker-src 'self' blob:",

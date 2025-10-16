@@ -1,6 +1,5 @@
 import {
   HStack,
-  Image,
   SimpleGrid,
   Stack,
   Text,
@@ -200,5 +199,5 @@ const Icon = ({ name, color }: { name: string; color: string }) => {
 
   if (!svg) return null;
 
-  return <Image src={dataUri} alt={name} w="full" h="full" />;
+  return <img src={dataUri} alt={name} className="size-full" />;
 };

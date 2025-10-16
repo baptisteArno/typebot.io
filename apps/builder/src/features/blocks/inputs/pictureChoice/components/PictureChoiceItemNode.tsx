@@ -1,13 +1,9 @@
-import {
-  Flex,
-  Image,
-  useColorModeValue,
-  useEventListener,
-} from "@chakra-ui/react";
+import { Flex, useColorModeValue, useEventListener } from "@chakra-ui/react";
 import type { ItemIndices } from "@typebot.io/blocks-core/schemas/items/schema";
 import type { PictureChoiceItem } from "@typebot.io/blocks-inputs/pictureChoice/schema";
 import { isSvgSrc } from "@typebot.io/lib/utils";
 import { Popover } from "@typebot.io/ui/components/Popover";
+import { cx } from "@typebot.io/ui/lib/cva";
 import { useRef } from "react";
 import { ImageIcon } from "@/components/icons";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
@@ -58,16 +54,15 @@ export const PictureChoiceItemNode = ({ item, indices }: Props) => {
             userSelect="none"
           >
             {item.pictureSrc ? (
-              <Image
+              <img
+                className={cx(
+                  "rounded-md w-full select-none",
+                  isSvgSrc(item.pictureSrc)
+                    ? "max-h-[64px] object-contain p-2"
+                    : "max-h-[128px] object-cover",
+                )}
                 src={item.pictureSrc}
                 alt="Picture choice image"
-                rounded="md"
-                maxH={isSvgSrc(item.pictureSrc) ? "64px" : "128px"}
-                w="full"
-                objectFit={isSvgSrc(item.pictureSrc) ? "contain" : "cover"}
-                p={isSvgSrc(item.pictureSrc) ? "2" : undefined}
-                userSelect="none"
-                draggable={false}
               />
             ) : (
               <Flex

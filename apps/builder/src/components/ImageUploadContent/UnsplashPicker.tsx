@@ -4,7 +4,6 @@ import {
   Grid,
   GridItem,
   HStack,
-  Image,
   Link,
   Stack,
   Text,
@@ -203,14 +202,11 @@ const UnsplashImage = ({ image, onClick }: UnsplashImageProps) => {
       onMouseLeave={() => setIsImageHovered(false)}
       h="full"
     >
-      <Image
-        objectFit="cover"
+      <img
         src={urls.thumb}
         alt={alt_description ?? "Unsplash image"}
+        className="object-cover h-full cursor-pointer rounded-md"
         onClick={onClick}
-        rounded="md"
-        h="100%"
-        cursor="pointer"
       />
       <Box
         pos="absolute"

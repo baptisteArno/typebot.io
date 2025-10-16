@@ -1,4 +1,4 @@
-import { chakra, type IconProps, Image } from "@chakra-ui/react";
+import { chakra, type IconProps } from "@chakra-ui/react";
 import { isSvgSrc } from "@typebot.io/lib/utils";
 import { cx } from "@typebot.io/ui/lib/cva";
 
@@ -13,16 +13,16 @@ export const EmojiOrImageIcon = ({ icon, size = "md", defaultIcon }: Props) => {
     <>
       {icon ? (
         icon.startsWith("http") || isSvgSrc(icon) ? (
-          <Image
-            src={icon}
-            boxSize={cx(
-              size === "sm" && "18px",
-              size === "md" && "25px",
-              size === "lg" && "36px",
+          <img
+            className={cx(
+              "rounded-[10%]",
+              size === "sm" && "size-[18px]",
+              size === "md" && "size-[25px]",
+              size === "lg" && "size-[36px]",
+              isSvgSrc(icon) ? undefined : "object-cover",
             )}
-            objectFit={isSvgSrc(icon) ? undefined : "cover"}
+            src={icon}
             alt="typebot icon"
-            rounded="10%"
           />
         ) : (
           <chakra.span

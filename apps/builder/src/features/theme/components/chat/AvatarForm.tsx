@@ -1,4 +1,4 @@
-import { Box, chakra, Flex, Image, Stack } from "@chakra-ui/react";
+import { Box, chakra, Flex, Stack } from "@chakra-ui/react";
 import { isSvgSrc } from "@typebot.io/lib/utils";
 import type { AvatarProps } from "@typebot.io/theme/schemas";
 import { Field } from "@typebot.io/ui/components/Field";
@@ -59,24 +59,16 @@ export const AvatarForm = ({
                     />
                   </Box>
                 ) : isSvgSrc(avatarProps?.url) ? (
-                  <Image
+                  <img
                     src={avatarProps.url}
                     alt="Website image"
-                    cursor="pointer"
-                    _hover={{ filter: "brightness(.9)" }}
-                    transition="filter 200ms"
-                    boxSize="40px"
+                    className="cursor-pointer transition-filter duration-200 rounded-md hover:brightness-90 size-10"
                   />
                 ) : avatarProps?.url?.startsWith("http") ? (
-                  <Image
+                  <img
                     src={avatarProps.url}
                     alt="Website image"
-                    cursor="pointer"
-                    _hover={{ filter: "brightness(.9)" }}
-                    transition="filter 200ms"
-                    rounded="full"
-                    boxSize="40px"
-                    objectFit="cover"
+                    className="cursor-pointer transition-filter duration-200 rounded-md hover:brightness-90 size-10 object-cover"
                   />
                 ) : (
                   <chakra.span

@@ -38,7 +38,8 @@
         "noStaticElementInteractions": "off"
       },
       "performance": {
-        "noAccumulatingSpread": "off"
+        "noAccumulatingSpread": "off",
+        "noImgElement": "off"
       },
       "style": {
         "noNonNullAssertion": "off",

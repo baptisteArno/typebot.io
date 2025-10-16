@@ -1,15 +1,8 @@
-import {
-  chakra,
-  Flex,
-  Heading,
-  HStack,
-  Image,
-  Stack,
-  Text,
-} from "@chakra-ui/react";
+import { chakra, Flex, Heading, HStack, Stack, Text } from "@chakra-ui/react";
 import type { BubbleProps } from "@typebot.io/js";
 import { isLight } from "@typebot.io/lib/hexToRgb";
 import { isDefined, isSvgSrc } from "@typebot.io/lib/utils";
+import { cx } from "@typebot.io/ui/lib/cva";
 import { PreviewMessageSettings } from "./PreviewMessageSettings";
 import { ThemeSettings } from "./ThemeSettings";
 
@@ -71,13 +64,10 @@ export const BubbleSettings = ({
               spacing={4}
             >
               {previewMessage.avatarUrl && (
-                <Image
+                <img
+                  className="rounded-full size-10 object-cover"
                   src={previewMessage.avatarUrl}
-                  w="40px"
-                  h="40px"
-                  rounded="full"
                   alt="Preview message avatar"
-                  objectFit="cover"
                 />
               )}
               <Text color={theme?.previewMessage?.textColor}>
@@ -132,19 +122,17 @@ const BubbleIcon = ({
     buttonTheme.customIconSrc.startsWith("data:image/svg+xml")
   )
     return (
-      <Image
+      <img
         src={buttonTheme.customIconSrc}
-        transition="all 0.2s ease-in-out"
-        boxSize={
+        className={cx(
+          "transition-all",
           isSvgSrc(buttonTheme.customIconSrc)
             ? buttonTheme?.size === "large"
-              ? "36px"
-              : "28px"
-            : "100%"
-        }
-        rounded={isSvgSrc(buttonTheme.customIconSrc) ? undefined : "full"}
+              ? "size-[36px]"
+              : "size-[28px]"
+            : "size-full object-cover rounded-full",
+        )}
         alt="Bubble button icon"
-        objectFit={isSvgSrc(buttonTheme.customIconSrc) ? undefined : "cover"}
       />
     );
   return (
