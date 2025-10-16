@@ -4,7 +4,6 @@ import {
   Grid,
   GridItem,
   HStack,
-  Link,
   Stack,
   Text,
   useColorModeValue,
@@ -143,12 +142,13 @@ export const UnsplashPicker = ({ imageSize, onImageSelect }: Props) => {
           forceDebounce
           width="full"
         />
-        <Link
-          isExternal
+        <a
+          target="_blank"
           href={`https://unsplash.com/?utm_source=${env.NEXT_PUBLIC_UNSPLASH_APP_NAME}&utm_medium=referral`}
+          rel="noopener"
         >
           <UnsplashLogo width="80px" fill={unsplashLogoFillColor} />
-        </Link>
+        </a>
       </HStack>
       {isDefined(error) && (
         <Alert.Root variant="error">

@@ -4,7 +4,6 @@ import {
   Grid,
   GridItem,
   HStack,
-  Link,
   Stack,
   Text,
 } from "@chakra-ui/react";
@@ -145,9 +144,9 @@ export const PexelsPicker = ({ onVideoSelect }: Props) => {
               width="full"
             />
           </Stack>
-          <Link isExternal href={`https://www.pexels.com`}>
+          <a target="_blank" href={`https://www.pexels.com`} rel="noopener">
             <PexelsLogo width="100px" height="40px" />
-          </Link>
+          </a>
         </HStack>
         <HStack w="full">
           <BasicSelect
