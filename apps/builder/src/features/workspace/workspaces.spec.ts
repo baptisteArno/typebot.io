@@ -139,8 +139,6 @@ test("can manage members", async ({ page }) => {
   await page.click('button >> text="Remove"');
   await expect(page.locator('text="guest@email.com"')).toBeHidden();
 
-  // TODO: Fix user session mocking
-
   // await mockWorkspaceResponse(page);
   // await page.goto("/typebots");
   // await page.click("text=Settings & Members");

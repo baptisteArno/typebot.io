@@ -19,7 +19,6 @@ type SelectionStore = {
       }
     | undefined;
   isDraggingGraph: boolean;
-  // TODO: remove once Typebot provider is migrated to a Zustand store. We will be able to get it internally in the store (if mutualized).
   getElementsCoordinates: () => CoordinatesMap | undefined;
   focusElement: (id: string, isAppending?: boolean) => void;
   blurElements: () => void;
