@@ -77,6 +77,15 @@ const sendingMessageSchema = z.discriminatedUnion("type", [
     video: mediaSchema,
   }),
   z.object({
+    type: z.literal("location"),
+    location: z.object({
+      latitude: z.number(),
+      longitude: z.number(),
+      name: z.string().optional(),
+      address: z.string().optional(),
+    }),
+  }),
+  z.object({
     type: z.literal("interactive"),
     interactive: interactiveSchema,
   }),
@@ -90,6 +99,7 @@ const incomingMessageReferral = z.object({
   ctwa_clid: z.string().optional(),
   source_id: z.string().optional(),
 });
+
 export type WhatsAppMessageReferral = z.infer<typeof incomingMessageReferral>;
 
 const sharedIncomingMessageFieldsSchema = z.object({
@@ -279,7 +289,7 @@ const whatsAppComparisonSchema = z.object({
   comparisonOperator: z.nativeEnum(ComparisonOperators).optional(),
   value: z.string().optional(),
 });
-export type WhatsAppComparison = z.infer<typeof whatsAppComparisonSchema>;
 
+export type WhatsAppComparison = z.infer<typeof whatsAppComparisonSchema>;
 export type WhatsAppIncomingMessage = z.infer<typeof incomingMessageSchema>;
 export type WhatsAppSendingMessage = z.infer<typeof sendingMessageSchema>;
