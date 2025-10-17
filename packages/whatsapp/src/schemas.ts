@@ -84,6 +84,15 @@ const sendingMessageSchema = z.discriminatedUnion("type", [
     type: z.literal("template"),
     template: templateSchema,
   }),
+  z.object({
+    type: z.literal("location"),
+    location: z.object({
+      latitude: z.number(),
+      longitude: z.number(),
+      name: z.string().optional(),
+      address: z.string().optional(),
+    }),
+  }),
 ]);
 
 const incomingMessageReferral = z.object({

@@ -47,6 +47,7 @@ export const getBubbleBlockLabel = (
   [BubbleBlockType.VIDEO]: t("editor.sidebarBlock.video.label"),
   [BubbleBlockType.EMBED]: t("editor.sidebarBlock.embed.label"),
   [BubbleBlockType.AUDIO]: t("editor.sidebarBlock.audio.label"),
+  [BubbleBlockType.LOCATION]: t("editor.sidebarBlock.location.label") || "Location",
 });
 
 export const getInputBlockLabel = (

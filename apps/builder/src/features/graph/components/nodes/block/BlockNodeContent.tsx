@@ -9,6 +9,7 @@ import { LogicBlockType } from "@typebot.io/blocks-logic/constants";
 import { AudioBubbleNode } from "@/features/blocks/bubbles/audio/components/AudioBubbleNode";
 import { EmbedBubbleContent } from "@/features/blocks/bubbles/embed/components/EmbedBubbleContent";
 import { ImageBubbleContent } from "@/features/blocks/bubbles/image/components/ImageBubbleContent";
+// Location bubble type has been removed in favor of using Embed bubble
 import { TextBubbleContent } from "@/features/blocks/bubbles/textBubble/components/TextBubbleContent";
 import { VideoBubbleContent } from "@/features/blocks/bubbles/video/components/VideoBubbleContent";
 import { ButtonsBlockNode } from "@/features/blocks/inputs/buttons/components/ButtonsBlockNode";
