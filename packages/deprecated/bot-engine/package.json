@@ -39,8 +39,7 @@
     "react-phone-number-input": "3.2.16",
     "react-scroll": "1.8.9",
     "react-transition-group": "4.4.5",
-    "resize-observer": "1.0.4",
-    "typebot-js": "workspace:*"
+    "resize-observer": "1.0.4"
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*",
