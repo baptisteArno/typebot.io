@@ -55,7 +55,7 @@ export const PreCheckoutDialog = ({
     company: existingCompany ?? "",
     email: existingEmail ?? "",
     vat: {
-      type: undefined as (typeof vatCodeLabels)[number]["value"] | undefined,
+      code: undefined as (typeof vatCodeLabels)[number]["value"] | undefined,
       value: "",
     },
   });
@@ -69,12 +69,12 @@ export const PreCheckoutDialog = ({
     setCustomer((customer) => ({ ...customer, email }));
   };
 
-  const updateVatType = (vatCode?: (typeof vatCodeLabels)[number]["value"]) => {
+  const updateVatCode = (vatCode?: (typeof vatCodeLabels)[number]["value"]) => {
     setCustomer((customer) => ({
       ...customer,
       vat: {
         ...customer.vat,
-        type: vatCode,
+        code: vatCode,
       },
     }));
     const vatPlaceholder = taxIdTypes.find(
@@ -98,15 +98,17 @@ export const PreCheckoutDialog = ({
     e.preventDefault();
     if (!selectedSubscription) return;
     const { email, company, vat } = customer;
+    const vatType = taxIdTypes.find(
+      (taxIdType) => taxIdType.code === vat.code,
+    )?.type;
+    if (!vatType) throw new Error("Could not find VAT type");
     createCheckoutSession({
       ...selectedSubscription,
       email,
       company,
       returnUrl: window.location.href,
       vat:
-        vat.value && vat.type
-          ? { type: vat.type, value: vat.value }
-          : undefined,
+        vat.value && vat.code ? { type: vatType, value: vat.value } : undefined,
     });
   };
 
@@ -136,9 +138,9 @@ export const PreCheckoutDialog = ({
             <HStack>
               <BasicSelect
                 placeholder={t("billing.preCheckoutModal.taxId.placeholder")}
-                value={customer.vat.type}
+                value={customer.vat.code}
                 items={vatCodeLabels}
-                onChange={updateVatType}
+                onChange={updateVatCode}
               />
               <TextInput
                 ref={vatValueInputRef}
