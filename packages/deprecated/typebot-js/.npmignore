@@ -1,9 +1,0 @@
-.github
-src
-tests
-.eslintignore
-.eslintrc.js
-jest.config.js
-tsconfig.json
-examples
-__mocks__
