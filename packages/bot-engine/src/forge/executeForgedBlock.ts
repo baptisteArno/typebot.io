@@ -181,15 +181,17 @@ export const executeForgedBlock = async (
   const clientSideActions: ExecuteIntegrationResponse["clientSideActions"] = [];
 
   if (action?.run?.web?.parseFunction) {
-    clientSideActions.push({
-      type: "codeToExecute",
-      codeToExecute: action?.run?.web?.parseFunction({
-        credentials: credentialsData ?? {},
-        options: parsedOptions,
-        variables,
-        logs: logsStore,
-      }),
+    const codeToExecute = action?.run?.web?.parseFunction({
+      credentials: credentialsData ?? {},
+      options: parsedOptions,
+      variables,
+      logs: logsStore,
     });
+    if (codeToExecute?.content)
+      clientSideActions.push({
+        type: "codeToExecute",
+        codeToExecute,
+      });
   }
 
   return {

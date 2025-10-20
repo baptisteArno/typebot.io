@@ -138,7 +138,7 @@ export type ActionDefinition<
         options: WithoutVariables<z.infer<BaseOptions> & z.infer<Options>>;
         variables: VariableStore;
         logs: LogsStore;
-      }) => FunctionToExecute;
+      }) => FunctionToExecute | undefined;
     };
   };
 };
