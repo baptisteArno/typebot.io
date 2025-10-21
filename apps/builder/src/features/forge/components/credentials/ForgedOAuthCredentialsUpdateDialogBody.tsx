@@ -10,10 +10,10 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import type { ForgedBlockDefinition } from "@typebot.io/forge-repository/definitions";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Field } from "@typebot.io/ui/components/Field";
+import { Input } from "@typebot.io/ui/components/Input";
 import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
 import { useEffect, useState } from "react";
 import { CopyInput } from "@/components/inputs/CopyInput";
-import { DebouncedTextInput } from "@/components/inputs/DebouncedTextInput";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { queryClient, trpc } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
@@ -131,11 +131,10 @@ export const ForgedOAuthCredentialsUpdateDialogBody = ({
             Label
             <MoreInfoTooltip>{`Choose a name to identify this ${blockDef.auth.name}`}</MoreInfoTooltip>
           </Field.Label>
-          <DebouncedTextInput
+          <Input
             onValueChange={setName}
             defaultValue={name}
             placeholder="My account"
-            debounceTimeout={0}
           />
         </Field.Root>
         {"defaultClientEnvKeys" in blockDef.auth ? (
@@ -163,14 +162,11 @@ export const ForgedOAuthCredentialsUpdateDialogBody = ({
             <CopyInput value={`${document.location.origin}/oauth/redirect`} />
             <Field.Root>
               <Field.Label>Client ID</Field.Label>
-              <DebouncedTextInput
-                onValueChange={setClientId}
-                defaultValue={clientId}
-              />
+              <Input onValueChange={setClientId} defaultValue={clientId} />
             </Field.Root>
             <Field.Root>
               <Field.Label>Client secret</Field.Label>
-              <DebouncedTextInput
+              <Input
                 type="password"
                 onValueChange={setClientSecret}
                 defaultValue={clientSecret}

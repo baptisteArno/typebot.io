@@ -10,12 +10,12 @@ import { isEmpty } from "@typebot.io/lib/utils";
 import { Alert } from "@typebot.io/ui/components/Alert";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Field } from "@typebot.io/ui/components/Field";
+import { Input } from "@typebot.io/ui/components/Input";
 import { ArrowUpRight01Icon } from "@typebot.io/ui/icons/ArrowUpRight01Icon";
 import { Book02Icon } from "@typebot.io/ui/icons/Book02Icon";
 import { CheckmarkSquare02Icon } from "@typebot.io/ui/icons/CheckmarkSquare02Icon";
 import { type FormEvent, useState } from "react";
 import { ButtonLink } from "@/components/ButtonLink";
-import { DebouncedTextInput } from "@/components/inputs/DebouncedTextInput";
 import { useEditor } from "@/features/editor/providers/EditorProvider";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { trpc } from "@/lib/queryClient";
@@ -90,10 +90,9 @@ export const WhatsAppPreviewInstructions = (props: StackProps) => {
       </HStack>
       <Field.Root>
         <Field.Label>Your phone number</Field.Label>
-        <DebouncedTextInput
+        <Input
           placeholder="+XXXXXXXXXXXX"
           type="tel"
-          debounceTimeout={0}
           defaultValue={phoneNumber}
           onValueChange={setPhoneNumber}
         />

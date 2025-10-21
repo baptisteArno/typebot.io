@@ -4,10 +4,10 @@ import type { ForgedBlockDefinition } from "@typebot.io/forge-repository/definit
 import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
 import { Field } from "@typebot.io/ui/components/Field";
+import { Input } from "@typebot.io/ui/components/Input";
 import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
 import { z } from "@typebot.io/zod";
 import { useState } from "react";
-import { DebouncedTextInput } from "@/components/inputs/DebouncedTextInput";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { queryClient, trpc } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
@@ -123,11 +123,7 @@ export const ForgedCredentialsCreateDialogBody = ({
           Label
           <MoreInfoTooltip>{`Choose a name to identify this ${blockDef.auth.name}`}</MoreInfoTooltip>
         </Field.Label>
-        <DebouncedTextInput
-          onValueChange={setName}
-          placeholder="My account"
-          debounceTimeout={0}
-        />
+        <Input onValueChange={setName} placeholder="My account" />
       </Field.Root>
       <ZodObjectLayout
         schema={

@@ -6,10 +6,10 @@ import { isNotEmpty } from "@typebot.io/lib/utils";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
 import { Field } from "@typebot.io/ui/components/Field";
+import { Input } from "@typebot.io/ui/components/Input";
 import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
 import type React from "react";
 import { useState } from "react";
-import { DebouncedTextInput } from "@/components/inputs/DebouncedTextInput";
 import { TextLink } from "@/components/TextLink";
 import { useUser } from "@/features/user/hooks/useUser";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
@@ -136,11 +136,7 @@ export const CreateStripeCredentialsDialogBody = ({
         <Field.Label>
           {t("blocks.inputs.payment.settings.stripeConfig.accountName.label")}
         </Field.Label>
-        <DebouncedTextInput
-          onValueChange={handleNameChange}
-          placeholder="Typebot"
-          debounceTimeout={0}
-        />
+        <Input onValueChange={handleNameChange} placeholder="Typebot" />
       </Field.Root>
       <Stack>
         <FormLabel>
@@ -152,15 +148,13 @@ export const CreateStripeCredentialsDialogBody = ({
           </MoreInfoTooltip>
         </FormLabel>
         <HStack>
-          <DebouncedTextInput
+          <Input
             onValueChange={handleTestPublicKeyChange}
             placeholder="pk_test_..."
-            debounceTimeout={0}
           />
-          <DebouncedTextInput
+          <Input
             onValueChange={handleTestSecretKeyChange}
             placeholder="sk_test_..."
-            debounceTimeout={0}
             type="password"
           />
         </HStack>
@@ -171,17 +165,15 @@ export const CreateStripeCredentialsDialogBody = ({
         </FormLabel>
         <HStack>
           <FormControl>
-            <DebouncedTextInput
+            <Input
               onValueChange={handlePublicKeyChange}
               placeholder="pk_live_..."
-              debounceTimeout={0}
             />
           </FormControl>
           <FormControl>
-            <DebouncedTextInput
+            <Input
               onValueChange={handleSecretKeyChange}
               placeholder="sk_live_..."
-              debounceTimeout={0}
               type="password"
             />
           </FormControl>

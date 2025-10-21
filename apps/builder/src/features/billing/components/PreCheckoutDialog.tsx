@@ -6,11 +6,11 @@ import { isDefined } from "@typebot.io/lib/utils";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
 import { Field } from "@typebot.io/ui/components/Field";
+import { Input } from "@typebot.io/ui/components/Input";
 import { useRouter } from "next/router";
 import type { FormEvent } from "react";
 import React, { useState } from "react";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
-import { DebouncedTextInput } from "@/components/inputs/DebouncedTextInput";
 import { trpc } from "@/lib/queryClient";
 
 export type PreCheckoutDialogProps = {
@@ -121,21 +121,19 @@ export const PreCheckoutDialog = ({
             <Field.Label>
               {t("billing.preCheckoutModal.companyInput.label")}
             </Field.Label>
-            <DebouncedTextInput
+            <Input
               defaultValue={customer.company}
               onValueChange={updateCustomerCompany}
-              debounceTimeout={0}
             />
           </Field.Root>
           <Field.Root>
             <Field.Label>
               {t("billing.preCheckoutModal.emailInput.label")}
             </Field.Label>
-            <DebouncedTextInput
+            <Input
               type="email"
               defaultValue={customer.email}
               onValueChange={updateCustomerEmail}
-              debounceTimeout={0}
             />
           </Field.Root>
           <FormControl>
@@ -147,10 +145,9 @@ export const PreCheckoutDialog = ({
                 items={vatCodeLabels}
                 onChange={updateVatCode}
               />
-              <DebouncedTextInput
+              <Input
                 ref={vatValueInputRef}
                 onValueChange={updateVatValue}
-                debounceTimeout={0}
                 placeholder={vatValuePlaceholder}
                 className="flex-1 flex-shrink-0"
               />

@@ -3,10 +3,10 @@ import type { ForgedBlockDefinition } from "@typebot.io/forge-repository/definit
 import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
 import { Field } from "@typebot.io/ui/components/Field";
+import { Input } from "@typebot.io/ui/components/Input";
 import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
 import { useState } from "react";
 import { CopyInput } from "@/components/inputs/CopyInput";
-import { DebouncedTextInput } from "@/components/inputs/DebouncedTextInput";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { queryClient, trpc } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
@@ -150,11 +150,7 @@ export const ForgedOAuthCredentialsCreateDialogBody = ({
           Label
           <MoreInfoTooltip>{`Choose a name to identify this ${blockDef.auth.name}`}</MoreInfoTooltip>
         </Field.Label>
-        <DebouncedTextInput
-          onValueChange={setName}
-          placeholder="My account"
-          debounceTimeout={0}
-        />
+        <Input onValueChange={setName} placeholder="My account" />
       </Field.Root>
       {"defaultClientEnvKeys" in blockDef.auth ? (
         <div className="flex gap-4 w-full items-center">
@@ -181,14 +177,11 @@ export const ForgedOAuthCredentialsCreateDialogBody = ({
           <CopyInput value={`${document.location.origin}/oauth/redirect`} />
           <Field.Root>
             <Field.Label>Client ID</Field.Label>
-            <DebouncedTextInput onValueChange={setClientId} />
+            <Input onValueChange={setClientId} />
           </Field.Root>
           <Field.Root>
             <Field.Label>Client secret</Field.Label>
-            <DebouncedTextInput
-              type="password"
-              onValueChange={setClientSecret}
-            />
+            <Input type="password" onValueChange={setClientSecret} />
           </Field.Root>
         </div>
       ) : null}

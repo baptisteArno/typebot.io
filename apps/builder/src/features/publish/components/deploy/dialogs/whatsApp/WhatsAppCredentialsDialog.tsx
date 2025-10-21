@@ -31,12 +31,12 @@ import { isEmpty, isNotEmpty } from "@typebot.io/lib/utils";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
 import { Field } from "@typebot.io/ui/components/Field";
+import { Input } from "@typebot.io/ui/components/Input";
 import { ArrowLeft01Icon } from "@typebot.io/ui/icons/ArrowLeft01Icon";
 import { ArrowUpRight01Icon } from "@typebot.io/ui/icons/ArrowUpRight01Icon";
 import { useState } from "react";
 import { ButtonLink } from "@/components/ButtonLink";
 import { CopyInput } from "@/components/inputs/CopyInput";
-import { DebouncedTextInput } from "@/components/inputs/DebouncedTextInput";
 import { Dialog360Logo } from "@/components/logos/Dialog360Logo";
 import { MetaLogo } from "@/components/logos/MetaLogo";
 import { TextLink } from "@/components/TextLink";
@@ -134,7 +134,7 @@ export const WhatsAppCreateDialogBody = ({
       {
         token: systemUserAccessToken,
       },
-      { enabled: isNotEmpty(systemUserAccessToken) },
+      { enabled: isNotEmpty(systemUserAccessToken) && activeStep > 1 },
     ),
   );
 
@@ -471,11 +471,10 @@ const SystemUserToken = ({
     <ListItem>Copy and paste the generated token:</ListItem>
     <Field.Root>
       <Field.Label>System User Token</Field.Label>
-      <DebouncedTextInput
+      <Input
         type="password"
         defaultValue={initialToken}
         onValueChange={(val) => setToken(val.trim())}
-        debounceTimeout={0}
       />
     </Field.Root>
   </OrderedList>
@@ -519,9 +518,8 @@ const PhoneNumber = ({
         <HStack>
           <Field.Root>
             <Field.Label>Phone number ID</Field.Label>
-            <DebouncedTextInput
+            <Input
               defaultValue={initialPhoneNumberId}
-              debounceTimeout={0}
               onValueChange={setPhoneNumberId}
             />
           </Field.Root>
@@ -658,20 +656,18 @@ const Dialog360PhoneNumber = ({
   <Stack spacing={4}>
     <Field.Root>
       <Field.Label>Phone number</Field.Label>
-      <DebouncedTextInput
+      <Input
         defaultValue={initialPhoneNumber}
         onValueChange={(val) => setPhoneNumber(val.trim())}
-        debounceTimeout={0}
         placeholder="+1234567890"
       />
     </Field.Root>
     <Field.Root>
       <Field.Label>API Key</Field.Label>
-      <DebouncedTextInput
+      <Input
         type="password"
         defaultValue={initialApiKey}
         onValueChange={(val) => setApiKey(val.trim())}
-        debounceTimeout={0}
       />
       <Field.Description>
         <Text>
