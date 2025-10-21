@@ -2,12 +2,9 @@ import { encrypt } from "@typebot.io/credentials/encrypt";
 import type { StripeCredentials } from "@typebot.io/credentials/schemas";
 import { env } from "@typebot.io/env";
 import prisma from "@typebot.io/prisma";
-import { GraphNavigation, Plan, WorkspaceRole } from "@typebot.io/prisma/enum";
+import { Plan, WorkspaceRole } from "@typebot.io/prisma/enum";
 
 export const apiToken = "jirowjgrwGREHE";
-
-export const userId = "userId";
-export const otherUserId = "otherUserId";
 
 export const proWorkspaceId = "proWorkspace";
 export const freeWorkspaceId = "freeWorkspace";
@@ -52,69 +49,61 @@ const setupWorkspaces = async () => {
 };
 
 export const setupUsers = async () => {
-  await prisma.user.create({
-    data: {
-      id: userId,
-      email: "user@email.com",
-      name: "John Doe",
-      graphNavigation: GraphNavigation.TRACKPAD,
-      onboardingCategories: [],
-      apiTokens: {
-        createMany: {
-          data: [
-            {
-              name: "Token 1",
-              token: apiToken,
-              createdAt: new Date(2022, 1, 1),
-            },
-            {
-              name: "Github",
-              token: "jirowjgrwGREHEgdrgithub",
-              createdAt: new Date(2022, 1, 2),
-            },
-            {
-              name: "N8n",
-              token: "jirowjgrwGREHrgwhrwn8n",
-              createdAt: new Date(2022, 1, 3),
-            },
-          ],
-        },
-      },
+  const authenticatedUser = await prisma.user.findFirst({
+    where: {
+      email: "baptiste@typebot.io",
     },
   });
-  await prisma.user.create({
-    data: {
-      id: otherUserId,
-      email: "other-user@email.com",
-      name: "James Doe",
-      onboardingCategories: [],
-    },
+  if (!authenticatedUser) {
+    throw new Error("Authenticated user not found");
+  }
+  await prisma.apiToken.createMany({
+    data: [
+      {
+        ownerId: authenticatedUser.id,
+        name: "Token 1",
+        token: apiToken,
+        createdAt: new Date(2022, 1, 1),
+      },
+      {
+        ownerId: authenticatedUser.id,
+        name: "Github",
+        token: "jirowjgrwGREHEgdrgithub",
+        createdAt: new Date(2022, 1, 2),
+      },
+      {
+        ownerId: authenticatedUser.id,
+        name: "N8n",
+        token: "jirowjgrwGREHrgwhrwn8n",
+        createdAt: new Date(2022, 1, 3),
+      },
+    ],
   });
   return prisma.memberInWorkspace.createMany({
     data: [
       {
         role: WorkspaceRole.ADMIN,
-        userId,
+        userId: authenticatedUser.id,
         workspaceId: freeWorkspaceId,
       },
       {
         role: WorkspaceRole.ADMIN,
-        userId,
+        userId: authenticatedUser.id,
         workspaceId: starterWorkspaceId,
       },
       {
         role: WorkspaceRole.ADMIN,
-        userId,
+        userId: authenticatedUser.id,
         workspaceId: proWorkspaceId,
       },
       {
         role: WorkspaceRole.ADMIN,
-        userId,
+        userId: authenticatedUser.id,
         workspaceId: lifetimeWorkspaceId,
       },
       {
         role: WorkspaceRole.ADMIN,
-        userId,
+        userId: authenticatedUser.id,
         workspaceId: customWorkspaceId,
       },
     ],
@@ -179,12 +168,26 @@ export const setupDatabase = async () => {
 };
 
 export const teardownDatabase = async () => {
+  const existingUser = await prisma.user.findFirst({
+    where: {
+      email: "baptiste@typebot.io",
+    },
+  });
+  if (!existingUser) {
+    console.warn("Authenticated user not found");
+    return;
+  }
+  await prisma.apiToken.deleteMany({
+    where: {
+      ownerId: existingUser.id,
+    },
+  });
   await prisma.webhook.deleteMany({
     where: {
       typebot: {
         workspace: {
           members: {
-            some: { userId: { in: [userId, otherUserId] } },
+            some: { userId: { in: [existingUser.id] } },
           },
         },
       },
@@ -193,7 +196,7 @@ export const teardownDatabase = async () => {
   await prisma.workspace.deleteMany({
     where: {
       members: {
-        some: { userId: { in: [userId, otherUserId] } },
+        some: { userId: { in: [existingUser.id] } },
       },
     },
   });
@@ -209,8 +212,5 @@ export const teardownDatabase = async () => {
         ],
       },
     },
-  });
-  await prisma.user.deleteMany({
-    where: { id: { in: [userId, otherUserId] } },
   });
 };

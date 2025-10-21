@@ -21,7 +21,6 @@ import type {
   TypebotInSession,
   TypebotInSessionV5,
 } from "@typebot.io/chat-session/schemas";
-import { env } from "@typebot.io/env";
 import { byId, isDefined, isNotEmpty, omit } from "@typebot.io/lib/utils";
 import type { Prisma } from "@typebot.io/prisma/types";
 import { resultSchema } from "@typebot.io/results/schemas/results";
@@ -327,11 +326,7 @@ const getTypebot = async (startParams: StartParams) => {
   if (startParams.type === "preview" && startParams.typebot)
     return startParams.typebot;
 
-  if (
-    startParams.type === "preview" &&
-    !startParams.userId &&
-    !env.NEXT_PUBLIC_E2E_TEST
-  )
+  if (startParams.type === "preview" && !startParams.userId)
     throw new TRPCError({
       code: "UNAUTHORIZED",
       message: "You need to be authenticated to perform this action",

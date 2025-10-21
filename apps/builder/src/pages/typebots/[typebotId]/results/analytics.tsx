@@ -8,7 +8,7 @@ const AnalyticsPage = ResultsPage;
 export const getServerSideProps = async (
   context: GetServerSidePropsContext,
 ) => {
-  if (!env.NEXT_PUBLIC_POSTHOG_KEY || env.NEXT_PUBLIC_E2E_TEST)
+  if (!env.NEXT_PUBLIC_POSTHOG_KEY)
     return {
       props: {},
     };

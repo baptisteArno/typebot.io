@@ -5,6 +5,7 @@ import type {
   StartPreviewChatInput,
 } from "@typebot.io/chat-api/schemas";
 import { importTypebotInDatabase } from "@typebot.io/playwright/databaseActions";
+import { apiToken } from "@typebot.io/playwright/databaseSetup";
 import prisma from "@typebot.io/prisma";
 import { getTestAsset } from "@/test/utils/playwright";
 
@@ -49,6 +50,9 @@ test("API chat execution should work on preview bot", async ({ request }) => {
           isStreamEnabled: false,
           textBubbleContentFormat: "richText",
         } satisfies Omit<StartPreviewChatInput, "typebotId">,
+        headers: {
+          Authorization: `Bearer ${apiToken}`,
+        },
       })
     ).json();
     chatSessionId = sessionId;
@@ -285,6 +289,9 @@ test("API chat execution should work on published bot", async ({ request }) => {
           isStreamEnabled: false,
           textBubbleContentFormat: "markdown",
         } satisfies Omit<StartPreviewChatInput, "typebotId">,
+        headers: {
+          Authorization: `Bearer ${apiToken}`,
+        },
       })
     ).json();
     expect(messages[0].content.markdown).toStrictEqual("Hi there! 👋");

@@ -4,26 +4,13 @@ import { resolve } from "path";
 require("dotenv").config({ path: resolve(__dirname, "../../.env") });
 
 export default defineConfig({
-  timeout: process.env.CI ? 50 * 1000 : 40 * 1000,
+  timeout: 40 * 1000,
   expect: {
-    timeout: process.env.CI ? 10 * 1000 : 5 * 1000,
+    timeout: 5 * 1000,
   },
-  forbidOnly: !!process.env.CI,
-  workers: process.env.CI ? 1 : 6,
-  retries: process.env.CI ? 2 : 1,
-  reporter: [
-    [process.env.CI ? "github" : "list"],
-    ["html", { outputFolder: "src/test/reporters" }],
-  ],
+  workers: 6,
+  reporter: [["list"], ["html", { outputFolder: "src/test/reporters" }]],
   maxFailures: 10,
-  webServer: process.env.CI
-    ? {
-        command: "bun run start",
-        timeout: 60_000,
-        reuseExistingServer: true,
-        port: 3001,
-      }
-    : undefined,
   outputDir: "./src/test/results",
   use: {
     trace: "on-first-retry",
@@ -37,7 +24,10 @@ export default defineConfig({
     },
     {
       name: "chromium",
-      use: { ...devices["Desktop Chrome"] },
+      use: {
+        ...devices["Desktop Chrome"],
+        storageState: resolve(__dirname, "src/test/.auth/user.json"),
+      },
       dependencies: ["setup db"],
     },
   ],

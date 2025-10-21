@@ -57,13 +57,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           userId: existingUser.id,
         },
       });
-      if (!env.NEXT_PUBLIC_E2E_TEST)
-        await sendWorkspaceMemberInvitationEmail({
-          workspaceName: workspace.name,
-          guestEmail: data.email,
-          url: `${env.NEXTAUTH_URL}/typebots?workspaceId=${workspace.id}`,
-          hostEmail: user.email ?? "",
-        });
+      await sendWorkspaceMemberInvitationEmail({
+        workspaceName: workspace.name,
+        guestEmail: data.email,
+        url: `${env.NEXTAUTH_URL}/typebots?workspaceId=${workspace.id}`,
+        hostEmail: user.email ?? "",
+      });
       return res.send({
         member: {
           userId: existingUser.id,
@@ -75,13 +74,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       });
     } else {
       const invitation = await prisma.workspaceInvitation.create({ data });
-      if (!env.NEXT_PUBLIC_E2E_TEST)
-        await sendWorkspaceMemberInvitationEmail({
-          workspaceName: workspace.name,
-          guestEmail: data.email,
-          url: `${env.NEXTAUTH_URL}/typebots?workspaceId=${workspace.id}`,
-          hostEmail: user.email ?? "",
-        });
+      await sendWorkspaceMemberInvitationEmail({
+        workspaceName: workspace.name,
+        guestEmail: data.email,
+        url: `${env.NEXTAUTH_URL}/typebots?workspaceId=${workspace.id}`,
+        hostEmail: user.email ?? "",
+      });
       return res.send({ invitation });
     }
   }

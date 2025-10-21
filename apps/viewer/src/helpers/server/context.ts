@@ -1,9 +1,7 @@
 import type { inferAsyncReturnType } from "@trpc/server";
 import type * as trpcNext from "@trpc/server/adapters/next";
-import { env } from "@typebot.io/env";
 import prisma from "@typebot.io/prisma";
 import type { Prisma } from "@typebot.io/prisma/types";
-import { mockedUser } from "@typebot.io/user/mockedUser";
 import type { NextApiRequest } from "next";
 
 export async function createContext(opts: trpcNext.CreateNextContextOptions) {
@@ -21,7 +19,6 @@ export async function createContext(opts: trpcNext.CreateNextContextOptions) {
 const getAuthenticatedUser = async (
   req: NextApiRequest,
 ): Promise<Prisma.User | undefined> => {
-  if (env.NEXT_PUBLIC_E2E_TEST) return mockedUser;
   const bearerToken = extractBearerToken(req);
   if (!bearerToken) return;
   return authenticateByToken(bearerToken);

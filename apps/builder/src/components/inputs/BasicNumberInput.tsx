@@ -1,4 +1,3 @@
-import { env } from "@typebot.io/env";
 import { NumberField } from "@typebot.io/ui/components/NumberField";
 import { cx } from "@typebot.io/ui/lib/cva";
 import type { Variable, VariableString } from "@typebot.io/variables/schemas";
@@ -40,7 +39,7 @@ export const BasicNumberInput = <HasVariable extends boolean>({
   const { typebot } = useTypebot();
   const onValueChangeDebounced = useDebouncedCallback(
     onValueChange,
-    env.NEXT_PUBLIC_E2E_TEST ? 0 : debounceTimeout,
+    debounceTimeout,
   );
 
   const [isFocused, setIsFocused] = useState(false);

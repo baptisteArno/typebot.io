@@ -68,16 +68,14 @@ export const getServerSideProps: GetServerSideProps = async (
     if (!host) return { props: {} };
     const viewerUrls = env.NEXT_PUBLIC_VIEWER_URL;
     log(`viewerUrls: ${viewerUrls}`);
-    const isMatchingViewerUrl = env.NEXT_PUBLIC_E2E_TEST
-      ? true
-      : viewerUrls.some(
-          (url) =>
-            host.split(":")[0].includes(url.split("//")[1].split(":")[0]) ||
-            (forwardedHost &&
-              forwardedHost
-                .split(":")[0]
-                .includes(url.split("//")[1].split(":")[0])),
-        );
+    const isMatchingViewerUrl = viewerUrls.some(
+      (url) =>
+        host.split(":")[0].includes(url.split("//")[1].split(":")[0]) ||
+        (forwardedHost &&
+          forwardedHost
+            .split(":")[0]
+            .includes(url.split("//")[1].split(":")[0])),
+    );
     log(`isMatchingViewerUrl: ${isMatchingViewerUrl}`);
     if (isMatchingViewerUrl && pathname === "/") {
       // Early return, will just show a root page

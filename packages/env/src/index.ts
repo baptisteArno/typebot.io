@@ -112,7 +112,6 @@ const baseEnv = {
     ),
   },
   client: {
-    NEXT_PUBLIC_E2E_TEST: boolean.optional(),
     NEXT_PUBLIC_VIEWER_URL: z.preprocess(
       guessViewerUrlForVercelPreview,
       z
@@ -130,7 +129,6 @@ const baseEnv = {
       .default("The bot you're looking for doesn't exist"),
   },
   runtimeEnv: {
-    NEXT_PUBLIC_E2E_TEST: getRuntimeVariable("NEXT_PUBLIC_E2E_TEST"),
     NEXT_PUBLIC_VIEWER_URL: getRuntimeVariable("NEXT_PUBLIC_VIEWER_URL"),
     NEXT_PUBLIC_ONBOARDING_TYPEBOT_ID: getRuntimeVariable(
       "NEXT_PUBLIC_ONBOARDING_TYPEBOT_ID",

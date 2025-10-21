@@ -6,9 +6,7 @@
     "dev": "dotenv -e ./.env -e ../../.env -- next dev -p 3000",
     "build": "dotenv -e ./.env -e ../../.env -- next build",
     "start": "dotenv -e ./.env -e ../../.env -- next start",
-    "test": "dotenv -e ./.env -e ../../.env -- vitest run",
-    "test:e2e": "dotenv -e ./.env -e ../../.env -- playwright test",
-    "test:e2e:show-report": "playwright show-report src/test/reporters"
+    "test": "dotenv -e ./.env -e ../../.env -- vitest run"
   },
   "dependencies": {
     "@auth/core": "^0.39.1",
@@ -109,12 +107,10 @@
     "zustand": "^4.5.0"
   },
   "devDependencies": {
-    "@playwright/test": "^1.51.0",
     "@typebot.io/billing": "workspace:*",
     "@typebot.io/forge": "workspace:*",
     "@typebot.io/forge-repository": "workspace:*",
     "@typebot.io/lib": "workspace:*",
-    "@typebot.io/playwright": "workspace:*",
     "@typebot.io/prisma": "workspace:*",
     "@typebot.io/radar": "workspace:*",
     "@typebot.io/results": "workspace:*",

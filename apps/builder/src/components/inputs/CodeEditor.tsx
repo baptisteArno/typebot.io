@@ -1,5 +1,4 @@
 import { useColorModeValue } from "@chakra-ui/react";
-import { env } from "@typebot.io/env";
 import { isDefined } from "@typebot.io/lib/utils";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Popover } from "@typebot.io/ui/components/Popover";
@@ -59,13 +58,10 @@ export const CodeEditor = ({
     useState<{ top: number; left: number } | null>({ top: 0, left: 0 });
   const [value, _setValue] = useState(defaultValue ?? "");
 
-  const setValue = useDebouncedCallback(
-    (value) => {
-      _setValue(value);
-      onChange && onChange(value);
-    },
-    env.NEXT_PUBLIC_E2E_TEST ? 0 : debounceTimeout,
-  );
+  const setValue = useDebouncedCallback((value) => {
+    _setValue(value);
+    onChange && onChange(value);
+  }, debounceTimeout);
 
   const handleVariableSelected = (variable?: Pick<Variable, "id" | "name">) => {
     codeEditor.current?.view?.focus();

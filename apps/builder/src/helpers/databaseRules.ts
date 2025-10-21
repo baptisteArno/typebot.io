@@ -13,41 +13,36 @@ import type { NextApiResponse } from "next";
 export const canWriteTypebots = (
   typebotIds: string[] | string,
   user: Pick<Prisma.User, "email" | "id">,
-): Prisma.Prisma.TypebotWhereInput =>
-  env.NEXT_PUBLIC_E2E_TEST
-    ? { id: typeof typebotIds === "string" ? typebotIds : { in: typebotIds } }
-    : {
-        id: typeof typebotIds === "string" ? typebotIds : { in: typebotIds },
-        OR: [
-          {
-            workspace: {
-              members: {
-                some: { userId: user.id, role: { not: WorkspaceRole.GUEST } },
-              },
-            },
-          },
-          {
-            collaborators: {
-              some: { userId: user.id, type: { not: CollaborationType.READ } },
-            },
-          },
-        ],
-      };
+): Prisma.Prisma.TypebotWhereInput => ({
+  id: typeof typebotIds === "string" ? typebotIds : { in: typebotIds },
+  OR: [
+    {
+      workspace: {
+        members: {
+          some: { userId: user.id, role: { not: WorkspaceRole.GUEST } },
+        },
+      },
+    },
+    {
+      collaborators: {
+        some: { userId: user.id, type: { not: CollaborationType.READ } },
+      },
+    },
+  ],
+});
 
 export const canReadTypebots = (
   typebotIds: string | string[],
   user: Pick<Prisma.User, "email" | "id">,
 ) => ({
   id: typeof typebotIds === "string" ? typebotIds : { in: typebotIds },
-  workspace:
-    env.ADMIN_EMAIL?.some((email) => email === user.email) ||
-    env.NEXT_PUBLIC_E2E_TEST
-      ? undefined
-      : {
-          members: {
-            some: { userId: user.id },
-          },
+  workspace: env.ADMIN_EMAIL?.some((email) => email === user.email)
+    ? undefined
+    : {
+        members: {
+          some: { userId: user.id },
         },
+      },
 });
 
 export const canEditGuests = (user: Pick<User, "id">, typebotId: string) => ({

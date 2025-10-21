@@ -1,7 +1,5 @@
 import * as Sentry from "@sentry/nextjs";
-import { env } from "@typebot.io/env";
 import prisma from "@typebot.io/prisma";
-import { mockedUser } from "@typebot.io/user/mockedUser";
 import { type ClientUser, clientUserSchema } from "@typebot.io/user/schemas";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { auth } from "../lib/nextAuth";
@@ -12,7 +10,7 @@ export const getAuthenticatedUser = async (
 ): Promise<ClientUser | undefined> => {
   const bearerToken = extractBearerToken(req);
   if (bearerToken) return authenticateByToken(bearerToken);
-  return env.NEXT_PUBLIC_E2E_TEST ? mockedUser : (await auth(req, res))?.user;
+  return (await auth(req, res))?.user;
 };
 
 const authenticateByToken = async (
