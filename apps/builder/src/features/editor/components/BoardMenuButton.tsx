@@ -1,14 +1,12 @@
 import { useDisclosure } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { Menu } from "@typebot.io/ui/components/Menu";
+import { Book02Icon } from "@typebot.io/ui/icons/Book02Icon";
+import { Download01Icon } from "@typebot.io/ui/icons/Download01Icon";
+import { MoreHorizontalIcon } from "@typebot.io/ui/icons/MoreHorizontalIcon";
+import { Settings01Icon } from "@typebot.io/ui/icons/Settings01Icon";
 import assert from "assert";
 import { useState } from "react";
-import {
-  BookIcon,
-  DownloadIcon,
-  MoreVerticalIcon,
-  SettingsIcon,
-} from "@/components/icons";
 import { parseDefaultPublicId } from "@/features/publish/helpers/parseDefaultPublicId";
 import { useTypebot } from "../providers/TypebotProvider";
 import { EditorSettingsDialog } from "./EditorSettingsDialog";
@@ -47,20 +45,20 @@ export const BoardMenuButton = () => {
         className="size-8"
         variant="secondary"
       >
-        <MoreVerticalIcon transform={"rotate(90deg)"} />
+        <MoreHorizontalIcon />
       </Menu.TriggerButton>
       <Menu.Popup align="end">
         <Menu.Item onClick={redirectToDocumentation}>
-          <BookIcon />
+          <Book02Icon />
           {t("editor.graph.menu.documentationItem.label")}
         </Menu.Item>
         <Menu.Item onClick={onOpen}>
-          <SettingsIcon />
+          <Settings01Icon />
           {t("editor.graph.menu.editorSettingsItem.label")}
         </Menu.Item>
         {currentUserMode !== "guest" ? (
           <Menu.Item onClick={downloadFlow}>
-            <DownloadIcon />
+            <Download01Icon />
             {t("editor.graph.menu.exportFlowItem.label")}
           </Menu.Item>
         ) : null}

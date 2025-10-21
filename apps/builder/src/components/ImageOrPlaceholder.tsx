@@ -1,9 +1,9 @@
+import { Image02Icon } from "@typebot.io/ui/icons/Image02Icon";
 import { cn } from "@typebot.io/ui/lib/cn";
 import { findUniqueVariable } from "@typebot.io/variables/findUniqueVariable";
 import { forwardRef } from "react";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { VariableTag } from "@/features/graph/components/nodes/block/VariableTag";
-import { ImageIcon } from "./icons";
 
 export const ImageOrPlaceholder = forwardRef<
   HTMLDivElement | HTMLImageElement,
@@ -47,7 +47,7 @@ export const ImageOrPlaceholder = forwardRef<
         className,
       )}
     >
-      <ImageIcon className="size-4" />
+      <Image02Icon className="size-4" />
     </div>
   );
 });

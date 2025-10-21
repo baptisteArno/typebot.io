@@ -20,8 +20,10 @@ import {
 import { CSS } from "@dnd-kit/utilities";
 import type { ResultHeaderCell } from "@typebot.io/results/schemas/results";
 import { Button } from "@typebot.io/ui/components/Button";
+import { DragDropVerticalIcon } from "@typebot.io/ui/icons/DragDropVerticalIcon";
+import { ViewIcon } from "@typebot.io/ui/icons/ViewIcon";
+import { ViewOffSlashIcon } from "@typebot.io/ui/icons/ViewOffSlashIcon";
 import { useState } from "react";
-import { EyeIcon, EyeOffIcon, GripIcon } from "@/components/icons";
 import { Portal } from "@/components/Portal";
 import { HeaderIcon } from "../HeaderIcon";
 
@@ -154,7 +156,7 @@ const SortableColumns = ({
           variant="ghost"
           {...listeners}
         >
-          <GripIcon transform="rotate(90deg)" />
+          <DragDropVerticalIcon />
         </Button>
         <HeaderIcon header={header} />
         <Text noOfLines={1}>{header.label}</Text>
@@ -166,7 +168,7 @@ const SortableColumns = ({
         className="size-7"
         variant="secondary"
       >
-        {isHidden ? <EyeOffIcon /> : <EyeIcon />}
+        {isHidden ? <ViewOffSlashIcon /> : <ViewIcon />}
       </Button>
     </Flex>
   );

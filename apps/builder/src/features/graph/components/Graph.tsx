@@ -6,13 +6,15 @@ import { GraphNavigation } from "@typebot.io/prisma/enum";
 import type { PublicTypebotV6 } from "@typebot.io/typebot/schemas/publicTypebot";
 import type { TypebotV6 } from "@typebot.io/typebot/schemas/typebot";
 import { Tooltip } from "@typebot.io/ui/components/Tooltip";
+import { CodeIcon } from "@typebot.io/ui/icons/CodeIcon";
+import { MinusSignIcon } from "@typebot.io/ui/icons/MinusSignIcon";
+import { PlusSignIcon } from "@typebot.io/ui/icons/PlusSignIcon";
 import { cx } from "@typebot.io/ui/lib/cva";
 import { useGesture } from "@use-gesture/react";
 import type React from "react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useDebounce } from "use-debounce";
 import { useShallow } from "zustand/react/shallow";
-import { FileCurlyIcon, MinusIcon, PlusIcon } from "@/components/icons";
 import type {
   EdgeWithTotalVisits,
   TotalAnswers,
@@ -441,7 +443,7 @@ export const Graph = ({
             variant="secondary"
             className="size-8"
           >
-            <FileCurlyIcon />
+            <CodeIcon />
           </Tooltip.TriggerButton>
           <Tooltip.Popup>Open variables drawer</Tooltip.Popup>
         </Tooltip.Root>
@@ -454,7 +456,7 @@ export const Graph = ({
             variant="secondary"
             className="size-8"
           >
-            <MinusIcon />
+            <MinusSignIcon />
           </Tooltip.TriggerButton>
           <Tooltip.Popup>Zoom out</Tooltip.Popup>
         </Tooltip.Root>
@@ -466,7 +468,7 @@ export const Graph = ({
             variant="secondary"
             className="size-8"
           >
-            <PlusIcon />
+            <PlusSignIcon />
           </Tooltip.TriggerButton>
           <Tooltip.Popup>Zoom in</Tooltip.Popup>
         </Tooltip.Root>

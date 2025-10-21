@@ -13,8 +13,9 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
+import { Download01Icon } from "@typebot.io/ui/icons/Download01Icon";
+import { FileEmpty02Icon } from "@typebot.io/ui/icons/FileEmpty02Icon";
 import { ButtonLink } from "@/components/ButtonLink";
-import { DownloadIcon, FileIcon } from "@/components/icons";
 import { useInvoicesQuery } from "../hooks/useInvoicesQuery";
 
 type Props = {
@@ -46,7 +47,7 @@ export const InvoicesList = ({ workspaceId }: Props) => {
               {data?.invoices.map((invoice) => (
                 <Tr key={invoice.id}>
                   <Td>
-                    <FileIcon />
+                    <FileEmpty02Icon />
                   </Td>
                   <Td>{invoice.id}</Td>
                   <Td>
@@ -64,7 +65,7 @@ export const InvoicesList = ({ workspaceId }: Props) => {
                         target="_blank"
                         aria-label={"Download invoice"}
                       >
-                        <DownloadIcon />
+                        <Download01Icon />
                       </ButtonLink>
                     )}
                   </Td>

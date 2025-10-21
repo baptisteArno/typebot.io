@@ -10,10 +10,11 @@ import { isEmpty } from "@typebot.io/lib/utils";
 import { Alert } from "@typebot.io/ui/components/Alert";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Field } from "@typebot.io/ui/components/Field";
+import { ArrowUpRight01Icon } from "@typebot.io/ui/icons/ArrowUpRight01Icon";
+import { Book02Icon } from "@typebot.io/ui/icons/Book02Icon";
 import { CheckmarkSquare02Icon } from "@typebot.io/ui/icons/CheckmarkSquare02Icon";
 import { type FormEvent, useState } from "react";
 import { ButtonLink } from "@/components/ButtonLink";
-import { BuoyIcon, ExternalLinkIcon } from "@/components/icons";
 import { DebouncedTextInput } from "@/components/inputs/DebouncedTextInput";
 import { useEditor } from "@/features/editor/providers/EditorProvider";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
@@ -83,7 +84,7 @@ export const WhatsAppPreviewInstructions = (props: StackProps) => {
           size="sm"
           variant="secondary"
         >
-          <BuoyIcon />
+          <Book02Icon />
           Check the docs
         </ButtonLink>
       </HStack>
@@ -109,7 +110,7 @@ export const WhatsAppPreviewInstructions = (props: StackProps) => {
         <Stack>
           <ButtonLink href={`https://web.whatsapp.com/`} target="_blank">
             Open WhatsApp Web
-            <ExternalLinkIcon />
+            <ArrowUpRight01Icon />
           </ButtonLink>
           <Alert.Root variant="success">
             <CheckmarkSquare02Icon />

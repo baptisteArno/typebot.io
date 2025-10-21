@@ -1,5 +1,5 @@
-import { PhoneIcon } from "@/components/icons";
+import { TelephoneIcon } from "@typebot.io/ui/icons/TelephoneIcon";
 
 export const PhoneInputIcon = ({ className }: { className?: string }) => (
-  <PhoneIcon className={className} />
+  <TelephoneIcon className={className} />
 );

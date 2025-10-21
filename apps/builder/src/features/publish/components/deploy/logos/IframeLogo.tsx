@@ -1,8 +1,6 @@
-import { Icon, type IconProps } from "@chakra-ui/react";
-
-export const IframeLogo = (props: IconProps) => {
+export const IframeLogo = (props: React.SVGProps<SVGSVGElement>) => {
   return (
-    <Icon
+    <svg
       id="Capa_1"
       enableBackground="new 0 0 512 512"
       height="512"
@@ -45,6 +43,6 @@ export const IframeLogo = (props: IconProps) => {
           fill="#dfe7f4"
         />
       </g>
-    </Icon>
+    </svg>
   );
 };

@@ -1,7 +1,7 @@
-import { Icon, type IconProps, useColorModeValue } from "@chakra-ui/react";
+import { useColorModeValue } from "@chakra-ui/react";
 
-export const PexelsLogo = (props: IconProps) => (
-  <Icon viewBox="0 0 130.318 50" {...props}>
+export const PexelsLogo = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 0 130.318 50" {...props}>
     <g transform="translate(-3894 2762)">
       <rect
         width="50"
@@ -21,5 +21,5 @@ export const PexelsLogo = (props: IconProps) => (
         fill={useColorModeValue("#000", "#fff")}
       />
     </g>
-  </Icon>
+  </svg>
 );

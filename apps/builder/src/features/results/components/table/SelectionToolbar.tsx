@@ -9,11 +9,11 @@ import { parseUniqueKey } from "@typebot.io/lib/parseUniqueKey";
 import { byId } from "@typebot.io/lib/utils";
 import { parseColumnsOrder } from "@typebot.io/results/parseColumnsOrder";
 import { Button } from "@typebot.io/ui/components/Button";
+import { Download01Icon } from "@typebot.io/ui/icons/Download01Icon";
 import { TrashIcon } from "@typebot.io/ui/icons/TrashIcon";
 import { unparse } from "papaparse";
 import { useState } from "react";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
-import { DownloadIcon } from "@/components/icons";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { trpc } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
@@ -148,7 +148,7 @@ export const SelectionToolbar = ({
         disabled={isExportLoading}
         size="icon"
       >
-        <DownloadIcon />
+        <Download01Icon />
       </Button>
       <Button
         variant="secondary"

@@ -22,9 +22,9 @@ import type { TypebotV6 } from "@typebot.io/typebot/schemas/typebot";
 import { colors } from "@typebot.io/ui/chakraTheme";
 import { Menu } from "@typebot.io/ui/components/Menu";
 import { Edit03Icon } from "@typebot.io/ui/icons/Edit03Icon";
+import { MoreHorizontalIcon } from "@typebot.io/ui/icons/MoreHorizontalIcon";
 import { TrashIcon } from "@typebot.io/ui/icons/TrashIcon";
 import { useState } from "react";
-import { MoreHorizontalIcon } from "@/components/icons";
 import { queryClient, trpc } from "@/lib/queryClient";
 import { DefaultAvatar } from "./DefaultAvatar";
 
@@ -224,6 +224,6 @@ const AvatarPreview = ({
       alt={t("theme.sideMenu.template.gallery.avatarPreview.alt")}
     />
   ) : (
-    <DefaultAvatar boxSize="12px" />
+    <DefaultAvatar className="size-3" />
   );
 };

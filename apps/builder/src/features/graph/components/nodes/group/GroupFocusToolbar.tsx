@@ -1,7 +1,8 @@
 import { HStack, useColorModeValue } from "@chakra-ui/react";
 import { Button } from "@typebot.io/ui/components/Button";
+import { Copy01Icon } from "@typebot.io/ui/icons/Copy01Icon";
+import { PlayIcon } from "@typebot.io/ui/icons/PlayIcon";
 import { TrashIcon } from "@typebot.io/ui/icons/TrashIcon";
-import { CopyIcon, PlayIcon } from "@/components/icons";
 import { useIsAnalyzing } from "@/features/graph/hooks/useIsAnalyzing";
 import { isMac } from "@/helpers/isMac";
 
@@ -57,7 +58,7 @@ export const GroupFocusToolbar = ({ isReadOnly, onPlayClick }: Props) => {
           }}
           size="icon"
         >
-          <CopyIcon />
+          <Copy01Icon />
         </Button>
       )}
       {!isReadOnly && (

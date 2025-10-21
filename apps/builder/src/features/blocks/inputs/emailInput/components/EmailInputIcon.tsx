@@ -1,5 +1,5 @@
-import { EmailIcon } from "@/components/icons";
+import { Mail01Icon } from "@typebot.io/ui/icons/Mail01Icon";
 
 export const EmailInputIcon = ({ className }: { className?: string }) => (
-  <EmailIcon className={className} />
+  <Mail01Icon className={className} />
 );

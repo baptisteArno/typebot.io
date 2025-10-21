@@ -1,5 +1,5 @@
-import { ClockIcon } from "@/components/icons";
+import { AlarmClockIcon } from "@typebot.io/ui/icons/AlarmClockIcon";
 
 export const TimeInputIcon = ({ className }: { className?: string }) => (
-  <ClockIcon className={className} />
+  <AlarmClockIcon className={className} />
 );

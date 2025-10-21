@@ -1,8 +1,8 @@
 import type { ForgedBlockDefinition } from "@typebot.io/forge-repository/definitions";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Popover } from "@typebot.io/ui/components/Popover";
+import { Cancel01Icon } from "@typebot.io/ui/icons/Cancel01Icon";
 import type { ReactNode } from "react";
-import { CloseIcon } from "@/components/icons";
 import { useUser } from "@/features/user/hooks/useUser";
 import { onboardingVideos } from "../data";
 import { useOnboardingDisclosure } from "../hooks/useOnboardingDisclosure";
@@ -70,7 +70,7 @@ export const VideoOnboardingPopover = ({
           variant="secondary"
           onClick={onClose}
         >
-          <CloseIcon />
+          <Cancel01Icon />
         </Button>
       </Popover.Popup>
     </Popover.Root>

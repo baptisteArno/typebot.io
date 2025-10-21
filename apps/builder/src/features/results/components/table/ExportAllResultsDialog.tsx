@@ -14,10 +14,10 @@ import { Dialog } from "@typebot.io/ui/components/Dialog";
 import { Field } from "@typebot.io/ui/components/Field";
 import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
 import { Switch } from "@typebot.io/ui/components/Switch";
+import { Download01Icon } from "@typebot.io/ui/icons/Download01Icon";
 import { InformationSquareIcon } from "@typebot.io/ui/icons/InformationSquareIcon";
 import { unparse } from "papaparse";
 import { useState } from "react";
-import { DownloadIcon } from "@/components/icons";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { trpc, trpcClient } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
@@ -193,7 +193,7 @@ export const ExportAllResultsDialog = ({ isOpen, onClose }: Props) => {
             size="sm"
             disabled={isExportLoading}
           >
-            <DownloadIcon />
+            <Download01Icon />
             Export
           </Button>
         </Dialog.Footer>

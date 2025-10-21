@@ -1,9 +1,9 @@
 import { Box, Fade, Flex, SlideFade, Stack } from "@chakra-ui/react";
 import { createId } from "@paralleldrive/cuid2";
 import { Button } from "@typebot.io/ui/components/Button";
+import { PlusSignIcon } from "@typebot.io/ui/icons/PlusSignIcon";
 import { TrashIcon } from "@typebot.io/ui/icons/TrashIcon";
 import { useEffect, useState } from "react";
-import { PlusIcon } from "@/components/icons";
 
 const defaultItem = {
   id: createId(),
@@ -139,7 +139,7 @@ export const TableList = <T extends object>({
                       variant="secondary"
                       className="shadow-md size-6"
                     >
-                      <PlusIcon />
+                      <PlusSignIcon />
                     </Button>
                   </SlideFade>
                 )}
@@ -159,7 +159,7 @@ export const TableList = <T extends object>({
                     variant="secondary"
                     className="shadow-md size-6"
                   >
-                    <PlusIcon />
+                    <PlusSignIcon />
                   </Button>
                 </SlideFade>
               </>
@@ -173,7 +173,7 @@ export const TableList = <T extends object>({
           className="flex-shrink-0"
           variant="secondary"
         >
-          <PlusIcon />
+          <PlusSignIcon />
           {addLabel}
         </Button>
       )}

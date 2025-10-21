@@ -3,10 +3,10 @@ import { useTranslate } from "@tolgee/react";
 import { env } from "@typebot.io/env";
 import { Standard } from "@typebot.io/react";
 import { Button } from "@typebot.io/ui/components/Button";
+import { ArrowRight01Icon } from "@typebot.io/ui/icons/ArrowRight01Icon";
 import confetti from "canvas-confetti";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
-import { ChevronLastIcon } from "@/components/icons";
 import { useAcceptTermsMutation } from "@/features/user/hooks/useAcceptTermsMutation";
 import { useUser } from "@/features/user/hooks/useUser";
 
@@ -111,7 +111,7 @@ export const OnboardingPage = () => {
           disabled={!canSkipOnboarding}
         >
           {t("skip")}
-          <ChevronLastIcon />
+          <ArrowRight01Icon />
         </Button>
       </HStack>
 

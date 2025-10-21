@@ -9,10 +9,11 @@ import { useMutation } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
 import type { Typebot } from "@typebot.io/typebot/schemas/typebot";
 import { Button } from "@typebot.io/ui/components/Button";
+import { Download01Icon } from "@typebot.io/ui/icons/Download01Icon";
+import { GridViewIcon } from "@typebot.io/ui/icons/GridViewIcon";
 import { LayoutBottomIcon } from "@typebot.io/ui/icons/LayoutBottomIcon";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { DownloadIcon, TemplateIcon } from "@/components/icons";
 import { useUser } from "@/features/user/hooks/useUser";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { trpc } from "@/lib/queryClient";
@@ -115,7 +116,7 @@ export const CreateNewTypebotButtons = () => {
             disabled={isLoading}
             size="lg"
           >
-            <TemplateIcon />
+            <GridViewIcon />
             {t("templates.buttons.fromTemplateButton.label")}
           </Button>
           <ImportTypebotFromFileButton
@@ -125,7 +126,7 @@ export const CreateNewTypebotButtons = () => {
             onNewTypebot={handleCreateSubmit}
             size="lg"
           >
-            <DownloadIcon />
+            <Download01Icon />
             {t("templates.buttons.importFileButton.label")}
           </ImportTypebotFromFileButton>
         </Stack>

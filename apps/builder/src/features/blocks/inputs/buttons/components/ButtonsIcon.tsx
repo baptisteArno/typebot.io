@@ -1,5 +1,5 @@
-import { CheckSquareIcon } from "@/components/icons";
+import { CheckmarkSquare02Icon } from "@typebot.io/ui/icons/CheckmarkSquare02Icon";
 
 export const ButtonsInputIcon = ({ className }: { className?: string }) => (
-  <CheckSquareIcon className={className} />
+  <CheckmarkSquare02Icon className={className} />
 );

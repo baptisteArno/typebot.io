@@ -55,7 +55,7 @@ export const AvatarForm = ({
                   <Box>
                     <DefaultAvatar
                       cursor="pointer"
-                      _hover={{ filter: "brightness(.9)" }}
+                      className="hover:brightness-90"
                     />
                   </Box>
                 ) : isSvgSrc(avatarProps?.url) ? (

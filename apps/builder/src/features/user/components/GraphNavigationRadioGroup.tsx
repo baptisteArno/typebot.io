@@ -2,7 +2,8 @@ import { useTranslate } from "@tolgee/react";
 import { GraphNavigation } from "@typebot.io/prisma/enum";
 import { Label } from "@typebot.io/ui/components/Label";
 import { Radio, RadioGroup } from "@typebot.io/ui/components/RadioGroup";
-import { LaptopIcon, MouseIcon } from "@/components/icons";
+import { LaptopIcon } from "@typebot.io/ui/icons/LaptopIcon";
+import { Mouse01Icon } from "@typebot.io/ui/icons/Mouse01Icon";
 
 type Props = {
   defaultValue: string;
@@ -18,7 +19,7 @@ export const GraphNavigationRadioGroup = ({
       value: GraphNavigation.MOUSE,
       label: t("account.preferences.graphNavigation.mouse.label"),
       description: t("account.preferences.graphNavigation.mouse.description"),
-      icon: <MouseIcon boxSize="35px" />,
+      icon: <Mouse01Icon className="size-9" />,
     },
     {
       value: GraphNavigation.TRACKPAD,
@@ -26,7 +27,7 @@ export const GraphNavigationRadioGroup = ({
       description: t(
         "account.preferences.graphNavigation.trackpad.description",
       ),
-      icon: <LaptopIcon boxSize="35px" />,
+      icon: <LaptopIcon className="size-9" />,
     },
   ];
   return (

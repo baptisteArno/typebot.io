@@ -9,9 +9,9 @@ import { convertStrToList } from "@typebot.io/lib/convertStrToList";
 import { isEmpty } from "@typebot.io/lib/utils";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Popover } from "@typebot.io/ui/components/Popover";
+import { Settings01Icon } from "@typebot.io/ui/icons/Settings01Icon";
 import { cx } from "@typebot.io/ui/lib/cva";
 import { useState } from "react";
-import { SettingsIcon } from "@/components/icons";
 import { SingleLineEditable } from "@/components/SingleLineEditable";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { useGraph } from "@/features/graph/providers/GraphProvider";
@@ -142,7 +142,7 @@ export const ButtonsItemNode = ({ item, indices, isMouseOver }: Props) => {
                   className="shadow-md"
                   onClick={() => setOpenedNodeId(item.id)}
                 >
-                  <SettingsIcon />
+                  <Settings01Icon />
                 </Button>
               </Flex>
             </SlideFade>

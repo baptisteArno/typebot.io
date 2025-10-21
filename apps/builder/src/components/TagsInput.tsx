@@ -3,9 +3,9 @@ import { convertStrToList } from "@typebot.io/lib/convertStrToList";
 import { isEmpty, isNotEmpty } from "@typebot.io/lib/utils";
 import { colors } from "@typebot.io/ui/chakraTheme";
 import { Button } from "@typebot.io/ui/components/Button";
+import { Cancel01Icon } from "@typebot.io/ui/icons/Cancel01Icon";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRef, useState } from "react";
-import { CloseIcon } from "./icons";
 
 type Props = {
   items?: string[];
@@ -171,7 +171,7 @@ const Tag = ({
       className="size-6"
       onClick={onDeleteClick}
     >
-      <CloseIcon />
+      <Cancel01Icon />
     </Button>
   </HStack>
 );

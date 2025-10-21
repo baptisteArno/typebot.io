@@ -1,5 +1,5 @@
-import { CalendarIcon } from "@/components/icons";
+import { Calendar01Icon } from "@typebot.io/ui/icons/Calendar01Icon";
 
 export const DateInputIcon = ({ className }: { className?: string }) => (
-  <CalendarIcon className={className} />
+  <Calendar01Icon className={className} />
 );

@@ -1,7 +1,7 @@
-import { Icon, type IconProps, useColorModeValue } from "@chakra-ui/react";
+import { useColorModeValue } from "@chakra-ui/react";
 
-export const GiphyLogo = (props: IconProps) => (
-  <Icon viewBox="0 0 163.79999999999998 35" {...props}>
+export const GiphyLogo = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 0 163.79999999999998 35" {...props}>
     <g fill="none" fillRule="evenodd">
       <path d="M4 4h20v27H4z" fill="#000" />
       <g fillRule="nonzero">
@@ -19,5 +19,5 @@ export const GiphyLogo = (props: IconProps) => (
         fillRule="nonzero"
       />
     </g>
-  </Icon>
+  </svg>
 );

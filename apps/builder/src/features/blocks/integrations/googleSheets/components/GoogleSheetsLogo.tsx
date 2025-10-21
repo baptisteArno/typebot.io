@@ -1,7 +1,10 @@
-import { Icon, type IconProps } from "@chakra-ui/react";
+import { cn } from "@typebot.io/ui/lib/cn";
 
-export const GoogleSheetsLogo = (props: IconProps) => (
-  <Icon viewBox="0 0 49 67" {...props}>
+export const GoogleSheetsLogo = ({
+  className,
+  ...props
+}: React.SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 0 49 67" {...props} className={cn("size-4", className)}>
     <title>Sheets-icon</title>
     <desc>Created with Sketch.</desc>
     <defs>
@@ -140,5 +143,5 @@ export const GoogleSheetsLogo = (props: IconProps) => (
         </g>
       </g>
     </g>
-  </Icon>
+  </svg>
 );

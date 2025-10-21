@@ -2,8 +2,8 @@ import { chakra, Fade, useColorModeValue } from "@chakra-ui/react";
 import { type Cell as CellProps, flexRender } from "@tanstack/react-table";
 import type { TableData } from "@typebot.io/results/schemas/results";
 import { Button } from "@typebot.io/ui/components/Button";
+import { ArrowExpand01Icon } from "@typebot.io/ui/icons/ArrowExpand01Icon";
 import { memo } from "react";
-import { ExpandIcon } from "@/components/icons";
 
 type Props = {
   cell: CellProps<TableData, unknown>;
@@ -53,7 +53,7 @@ const Cell = ({
             size="xs"
             onClick={onExpandButtonClick}
           >
-            <ExpandIcon />
+            <ArrowExpand01Icon />
             Open
           </Button>
         </Fade>

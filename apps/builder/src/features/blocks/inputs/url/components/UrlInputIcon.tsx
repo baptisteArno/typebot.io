@@ -1,5 +1,5 @@
-import { GlobeIcon } from "@/components/icons";
+import { Link02Icon } from "@typebot.io/ui/icons/Link02Icon";
 
 export const UrlInputIcon = ({ className }: { className?: string }) => (
-  <GlobeIcon className={className} />
+  <Link02Icon className={className} />
 );

@@ -8,12 +8,14 @@ import { Button, type ButtonProps } from "@typebot.io/ui/components/Button";
 import { Menu } from "@typebot.io/ui/components/Menu";
 import { Tooltip } from "@typebot.io/ui/components/Tooltip";
 import { ArrowDown01Icon } from "@typebot.io/ui/icons/ArrowDown01Icon";
+import { HotspotOfflineIcon } from "@typebot.io/ui/icons/HotspotOfflineIcon";
+import { SquareLock01Icon } from "@typebot.io/ui/icons/SquareLock01Icon";
+import { SquareUnlock01Icon } from "@typebot.io/ui/icons/SquareUnlock01Icon";
 import { TriangleAlertIcon } from "@typebot.io/ui/icons/TriangleAlertIcon";
 import { cn } from "@typebot.io/ui/lib/cn";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
-import { CloudOffIcon, LockedIcon, UnlockedIcon } from "@/components/icons";
 import { TextLink } from "@/components/TextLink";
 import { ChangePlanDialog } from "@/features/billing/components/ChangePlanDialog";
 import { isFreePlan } from "@/features/billing/helpers/isFreePlan";
@@ -277,17 +279,17 @@ export const PublishButton = ({
             )}
             {!typebot?.isClosed ? (
               <Menu.Item onClick={closeTypebot}>
-                <LockedIcon />
+                <SquareLock01Icon />
                 {t("publishButton.dropdown.close.label")}
               </Menu.Item>
             ) : (
               <Menu.Item onClick={openTypebot}>
-                <UnlockedIcon />
+                <SquareUnlock01Icon />
                 {t("publishButton.dropdown.reopen.label")}
               </Menu.Item>
             )}
             <Menu.Item onClick={unpublishTypebot}>
-              <CloudOffIcon />
+              <HotspotOfflineIcon />
               {t("publishButton.dropdown.unpublish.label")}
             </Menu.Item>
           </Menu.Popup>

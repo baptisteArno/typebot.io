@@ -1,11 +1,15 @@
-import { Icon, type IconProps } from "@chakra-ui/react";
+import { cn } from "@typebot.io/ui/lib/cn";
 
-export const PabblyConnectLogo = (props: IconProps) => (
-  <Icon
+export const PabblyConnectLogo = ({
+  className,
+  ...props
+}: React.SVGProps<SVGSVGElement>) => (
+  <svg
     viewBox="0 0 258.753 258.753"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
     {...props}
+    className={cn("size-4", className)}
   >
     <switch>
       <g>
@@ -23,5 +27,5 @@ export const PabblyConnectLogo = (props: IconProps) => (
         ></path>
       </g>
     </switch>
-  </Icon>
+  </svg>
 );

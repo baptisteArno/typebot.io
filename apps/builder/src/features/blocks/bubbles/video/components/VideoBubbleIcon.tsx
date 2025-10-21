@@ -1,5 +1,5 @@
-import { FilmIcon } from "@/components/icons";
+import { ComputerVideoIcon } from "@typebot.io/ui/icons/ComputerVideoIcon";
 
 export const VideoBubbleIcon = ({ className }: { className?: string }) => (
-  <FilmIcon className={className} />
+  <ComputerVideoIcon className={className} />
 );

@@ -1,13 +1,15 @@
-import { Icon, type IconProps } from "@chakra-ui/react";
+import { cn } from "@typebot.io/ui/lib/cn";
 
-export const DefaultAvatar = (props: IconProps) => {
+export const DefaultAvatar = ({
+  className,
+  ...props
+}: React.SVGProps<SVGSVGElement>) => {
   return (
-    <Icon
+    <svg
       viewBox="0 0 156 156"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      boxSize="40px"
-      borderRadius="full"
+      className={cn("size-10 rounded-full", className)}
       data-testid="default-avatar"
       {...props}
     >
@@ -20,6 +22,6 @@ export const DefaultAvatar = (props: IconProps) => {
         d="M74.1477 54.4219L71.2273 54.9369C70.4362 55.0764 69.908 55.8308 70.0475 56.6219L77.6623 99.8073C77.8017 100.598 78.5561 101.127 79.3472 100.987L82.2676 100.472C83.0587 100.333 83.587 99.5783 83.4475 98.7872L75.8327 55.6018C75.6932 54.8107 74.9388 54.2824 74.1477 54.4219Z"
         fill="white"
       />
-    </Icon>
+    </svg>
   );
 };

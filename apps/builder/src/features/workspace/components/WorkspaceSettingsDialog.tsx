@@ -2,16 +2,14 @@ import { Avatar, Flex, Stack, Text } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
+import { CreditCardIcon } from "@typebot.io/ui/icons/CreditCardIcon";
+import { HardDriveIcon } from "@typebot.io/ui/icons/HardDriveIcon";
+import { Settings01Icon } from "@typebot.io/ui/icons/Settings01Icon";
+import { UsersIcon } from "@typebot.io/ui/icons/UsersIcon";
+import { Wallet01Icon } from "@typebot.io/ui/icons/Wallet01Icon";
 import type { ClientUser } from "@typebot.io/user/schemas";
 import { useState } from "react";
 import { EmojiOrImageIcon } from "@/components/EmojiOrImageIcon";
-import {
-  CreditCardIcon,
-  HardDriveIcon,
-  SettingsIcon,
-  UsersIcon,
-  WalletIcon,
-} from "@/components/icons";
 import { BillingSettingsLayout } from "@/features/billing/components/BillingSettingsLayout";
 import { CredentialsSettingsForm } from "@/features/credentials/components/CredentialsSettingsForm";
 import { MyAccountForm } from "@/features/user/components/MyAccountForm";
@@ -82,7 +80,7 @@ export const WorkspaceSettingsDialog = ({
                 className="justify-start pl-4"
                 size="sm"
               >
-                <SettingsIcon />
+                <Settings01Icon />
                 {t("workspace.settings.modal.menu.preferences.label")}
               </Button>
               <Button
@@ -91,7 +89,7 @@ export const WorkspaceSettingsDialog = ({
                 className="justify-start pl-4"
                 size="sm"
               >
-                <WalletIcon />
+                <Wallet01Icon />
                 {t("credentials")}
               </Button>
             </Stack>

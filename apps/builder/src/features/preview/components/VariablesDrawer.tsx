@@ -22,11 +22,12 @@ import { Popover } from "@typebot.io/ui/components/Popover";
 import { Switch } from "@typebot.io/ui/components/Switch";
 import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
 import { Cancel01Icon } from "@typebot.io/ui/icons/Cancel01Icon";
+import { MoreHorizontalIcon } from "@typebot.io/ui/icons/MoreHorizontalIcon";
+import { PlusSignIcon } from "@typebot.io/ui/icons/PlusSignIcon";
 import { TrashIcon } from "@typebot.io/ui/icons/TrashIcon";
 import type { Variable } from "@typebot.io/variables/schemas";
 import { useDrag } from "@use-gesture/react";
 import { type FormEvent, useState } from "react";
-import { MoreHorizontalIcon, PlusIcon } from "@/components/icons";
 import { SingleLineEditable } from "@/components/SingleLineEditable";
 import { toast } from "@/lib/toast";
 import { headerHeight } from "../../editor/constants";
@@ -128,7 +129,7 @@ export const VariablesDrawer = ({ onClose }: Props) => {
             offsetX={10}
           >
             <Button aria-label="Create" type="submit" size="icon">
-              <PlusIcon />
+              <PlusSignIcon />
             </Button>
           </SlideFade>
         </HStack>

@@ -1,14 +1,15 @@
-import { CodeIcon, GlobeIcon } from "@/components/icons";
+import { Globe02Icon } from "@typebot.io/ui/icons/Globe02Icon";
+import { SourceCodeIcon } from "@typebot.io/ui/icons/SourceCodeIcon";
 import { WhatsAppLogo } from "@/components/logos/WhatsAppLogo";
 
 export const runtimes = [
   {
     name: "Web",
-    icon: <GlobeIcon />,
+    icon: <Globe02Icon />,
   },
   {
     name: "WhatsApp",
     icon: <WhatsAppLogo />,
   },
-  { name: "API", icon: <CodeIcon /> },
+  { name: "API", icon: <SourceCodeIcon /> },
 ] as const;

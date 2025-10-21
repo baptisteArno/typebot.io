@@ -13,21 +13,19 @@ import { Plan } from "@typebot.io/prisma/enum";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Tooltip } from "@typebot.io/ui/components/Tooltip";
 import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
+import { ArrowLeft01Icon } from "@typebot.io/ui/icons/ArrowLeft01Icon";
+import { Copy01Icon } from "@typebot.io/ui/icons/Copy01Icon";
+import { CustomerSupportIcon } from "@typebot.io/ui/icons/CustomerSupportIcon";
 import { LayoutBottomIcon } from "@typebot.io/ui/icons/LayoutBottomIcon";
 import { LoaderCircleIcon } from "@typebot.io/ui/icons/LoaderCircleIcon";
+import { PlayIcon } from "@typebot.io/ui/icons/PlayIcon";
+import { Redo03Icon } from "@typebot.io/ui/icons/Redo03Icon";
+import { Undo03Icon } from "@typebot.io/ui/icons/Undo03Icon";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import { ButtonLink } from "@/components/ButtonLink";
 import { EditableEmojiOrImageIcon } from "@/components/EditableEmojiOrImageIcon";
-import {
-  BuoyIcon,
-  ChevronLeftIcon,
-  CopyIcon,
-  PlayIcon,
-  RedoIcon,
-  UndoIcon,
-} from "@/components/icons";
 import { SupportBubble } from "@/components/SupportBubble";
 import { PublishButton } from "@/features/publish/components/PublishButton";
 import { ShareTypebotButton } from "@/features/share/components/ShareTypebotButton";
@@ -182,7 +180,7 @@ const LeftElements = ({
           variant="secondary"
           className="size-8"
         >
-          <ChevronLeftIcon />
+          <ArrowLeft01Icon />
         </ButtonLink>
         <HStack spacing={1}>
           {typebot && (
@@ -217,7 +215,7 @@ const LeftElements = ({
                 onClick={undo}
                 disabled={!canUndo}
               >
-                <UndoIcon />
+                <Undo03Icon />
               </Tooltip.TriggerButton>
               <Tooltip.Popup>
                 {isUndoExecuted
@@ -235,7 +233,7 @@ const LeftElements = ({
                 onClick={redo}
                 disabled={!canRedo}
               >
-                <RedoIcon />
+                <Redo03Icon />
               </Tooltip.TriggerButton>
               <Tooltip.Popup>
                 {isRedoExecuted
@@ -246,7 +244,7 @@ const LeftElements = ({
           </HStack>
         )}
         <Button onClick={onHelpClick} variant="secondary" size="sm">
-          <BuoyIcon />
+          <CustomerSupportIcon />
           <chakra.span display={{ base: "none", xl: "inline" }}>
             {t("editor.header.helpButton.label")}
           </chakra.span>
@@ -310,7 +308,7 @@ const RightElements = ({
           variant="secondary"
           size="sm"
         >
-          <CopyIcon />
+          <Copy01Icon />
           Duplicate
         </ButtonLink>
       )}

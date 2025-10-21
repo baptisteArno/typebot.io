@@ -1,5 +1,5 @@
-import { BoxIcon } from "@/components/icons";
+import { AlignBoxTopLeftIcon } from "@typebot.io/ui/icons/AlignBoxTopLeftIcon";
 
 export const TypebotLinkIcon = ({ className }: { className?: string }) => (
-  <BoxIcon className={className} />
+  <AlignBoxTopLeftIcon className={className} />
 );

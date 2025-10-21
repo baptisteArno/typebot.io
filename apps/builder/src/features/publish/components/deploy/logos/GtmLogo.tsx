@@ -1,7 +1,5 @@
-import { Icon, type IconProps } from "@chakra-ui/react";
-
-export const GtmLogo = (props: IconProps) => (
-  <Icon
+export const GtmLogo = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg
     width="314"
     height="315"
     viewBox="0 0 314 315"
@@ -25,5 +23,5 @@ export const GtmLogo = (props: IconProps) => (
       d="M156.546 314.049C178.034 314.049 195.453 296.63 195.453 275.142C195.453 253.654 178.034 236.234 156.546 236.234C135.058 236.234 117.639 253.654 117.639 275.142C117.639 296.63 135.058 314.049 156.546 314.049Z"
       fill="#246FDB"
     />
-  </Icon>
+  </svg>
 );

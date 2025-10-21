@@ -2,12 +2,10 @@ import { Heading, Stack, useColorModeValue } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import type { Settings } from "@typebot.io/settings/schemas";
 import { Accordion } from "@typebot.io/ui/components/Accordion";
-import {
-  ChatIcon,
-  CodeIcon,
-  LockedIcon,
-  MoreHorizontalIcon,
-} from "@/components/icons";
+import { ChatIcon } from "@typebot.io/ui/icons/ChatIcon";
+import { MoreHorizontalIcon } from "@typebot.io/ui/icons/MoreHorizontalIcon";
+import { SourceCodeIcon } from "@typebot.io/ui/icons/SourceCodeIcon";
+import { SquareLock01Icon } from "@typebot.io/ui/icons/SquareLock01Icon";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { GeneralSettingsForm } from "./GeneralSettingsForm";
 import { MetadataForm } from "./MetadataForm";
@@ -89,7 +87,7 @@ export const SettingsSideMenu = () => {
         <Accordion.Item className="border-0 border-t-[1px]">
           <Accordion.Trigger className="py-5">
             <div className="flex items-center gap-3 pl-2">
-              <LockedIcon />
+              <SquareLock01Icon />
               <Heading fontSize="md">{t("settings.sideMenu.security")}</Heading>
             </div>
           </Accordion.Trigger>
@@ -105,7 +103,7 @@ export const SettingsSideMenu = () => {
         <Accordion.Item className="border-0 border-t-[1px] last:rounded-b-none">
           <Accordion.Trigger className="py-5">
             <div className="flex items-center gap-3 pl-2">
-              <CodeIcon />
+              <SourceCodeIcon />
               <Heading fontSize="md">{t("settings.sideMenu.metadata")}</Heading>
             </div>
           </Accordion.Trigger>

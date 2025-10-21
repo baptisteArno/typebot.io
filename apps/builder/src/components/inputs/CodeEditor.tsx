@@ -4,6 +4,7 @@ import { isDefined } from "@typebot.io/lib/utils";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Popover } from "@typebot.io/ui/components/Popover";
 import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
+import { ThirdBracketIcon } from "@typebot.io/ui/icons/ThirdBracketIcon";
 import { cn } from "@typebot.io/ui/lib/cn";
 import type { Variable } from "@typebot.io/variables/schemas";
 import {
@@ -16,7 +17,6 @@ import CodeMirror, { type ReactCodeMirrorRef } from "@uiw/react-codemirror";
 import { type CSSProperties, useEffect, useRef, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import { CopyButton } from "../CopyButton";
-import { BracesIcon } from "../icons";
 import { VariablesCombobox } from "./VariablesCombobox";
 
 const VARIABLE_POPOVER_OFFSET_Y = 5;
@@ -159,7 +159,7 @@ export const CodeEditor = ({
             className="absolute right-1 bottom-1 size-7"
             onClick={openVariablePopover}
           >
-            <BracesIcon className="opacity-75" />
+            <ThirdBracketIcon className="opacity-75" />
           </Button>
           <Popover.Root
             isOpen={variablesPopoverControls.isOpen}

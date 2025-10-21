@@ -5,10 +5,10 @@ import { Button } from "@typebot.io/ui/components/Button";
 import { Menu } from "@typebot.io/ui/components/Menu";
 import { Tooltip } from "@typebot.io/ui/components/Tooltip";
 import { ArrowDown01Icon } from "@typebot.io/ui/icons/ArrowDown01Icon";
+import { PlusSignIcon } from "@typebot.io/ui/icons/PlusSignIcon";
 import { TrashIcon } from "@typebot.io/ui/icons/TrashIcon";
 import type React from "react";
 import { useState } from "react";
-import { PlusIcon } from "@/components/icons";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { trpc } from "@/lib/queryClient";
 import { CreateCustomDomainDialog } from "./CreateCustomDomainDialog";
@@ -117,7 +117,7 @@ export const CustomDomainsDropdown = ({
           ))}
           {currentUserMode === "write" && (
             <Menu.Item onClick={onOpen}>
-              <PlusIcon />
+              <PlusSignIcon />
               {t("connectNew")}
             </Menu.Item>
           )}

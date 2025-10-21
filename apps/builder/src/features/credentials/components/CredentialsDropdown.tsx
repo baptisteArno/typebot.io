@@ -3,10 +3,11 @@ import { useTranslate } from "@tolgee/react";
 import type { Credentials } from "@typebot.io/credentials/schemas";
 import { Button, type ButtonProps } from "@typebot.io/ui/components/Button";
 import { Menu } from "@typebot.io/ui/components/Menu";
+import { ArrowDown01Icon } from "@typebot.io/ui/icons/ArrowDown01Icon";
+import { PlusSignIcon } from "@typebot.io/ui/icons/PlusSignIcon";
 import { TrashIcon } from "@typebot.io/ui/icons/TrashIcon";
 import type React from "react";
 import { useCallback, useState } from "react";
-import { ChevronLeftIcon, PlusIcon } from "@/components/icons";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { trpc } from "@/lib/queryClient";
 
@@ -111,7 +112,7 @@ export const CredentialsDropdown = ({
         onClick={onCreateNewClick}
         disabled={currentUserMode === "guest"}
       >
-        <PlusIcon />
+        <PlusSignIcon />
         {t("add")} {credentialsName}
       </Button>
     );
@@ -123,7 +124,7 @@ export const CredentialsDropdown = ({
         className="justify-between"
       >
         {currentCredential ? currentCredential.name : defaultCredentialsLabel}
-        <ChevronLeftIcon transform={"rotate(-90deg)"} />
+        <ArrowDown01Icon />
       </Menu.TriggerButton>
       <Menu.Popup>
         {defaultCredentialLabel && (
@@ -153,7 +154,7 @@ export const CredentialsDropdown = ({
         ))}
         {currentUserMode === "guest" || !onCreateNewClick ? null : (
           <Menu.Item onClick={onCreateNewClick}>
-            <PlusIcon />
+            <PlusSignIcon />
             {t("blocks.inputs.payment.settings.credentials.connectNew.label")}
           </Menu.Item>
         )}

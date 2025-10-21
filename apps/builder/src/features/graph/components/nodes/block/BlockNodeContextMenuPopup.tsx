@@ -5,9 +5,11 @@ import type {
 } from "@typebot.io/blocks-core/schemas/schema";
 import type { TurnableIntoParam } from "@typebot.io/forge/types";
 import { ContextMenu } from "@typebot.io/ui/components/ContextMenu";
+import { ArrowRight01Icon } from "@typebot.io/ui/icons/ArrowRight01Icon";
+import { Copy01Icon } from "@typebot.io/ui/icons/Copy01Icon";
+import { RepeatIcon } from "@typebot.io/ui/icons/RepeatIcon";
 import { TrashIcon } from "@typebot.io/ui/icons/TrashIcon";
 import type { ZodObject } from "zod";
-import { ChevronRightIcon, CopyIcon, RepeatIcon } from "@/components/icons";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { ForgedBlockTurnIntoContextMenuPopup } from "@/features/forge/components/ForgedBlockTurnIntoMenu";
 import { useForgedBlock } from "@/features/forge/hooks/useForgedBlock";
@@ -42,7 +44,7 @@ export const BlockNodeContextMenuPopup = ({
         actionDef?.turnableInto.length > 0 && (
           <ContextMenu.SubmenuRoot>
             <ContextMenu.SubmenuTrigger>
-              <RepeatIcon /> Turn into <ChevronRightIcon />
+              <RepeatIcon /> Turn into <ArrowRight01Icon />
             </ContextMenu.SubmenuTrigger>
             <ForgedBlockTurnIntoContextMenuPopup
               turnableInto={actionDef.turnableInto}
@@ -51,7 +53,7 @@ export const BlockNodeContextMenuPopup = ({
           </ContextMenu.SubmenuRoot>
         )}
       <ContextMenu.Item onClick={handleDuplicateClick}>
-        <CopyIcon />
+        <Copy01Icon />
         {t("duplicate")}
       </ContextMenu.Item>
       <ContextMenu.Item onClick={handleDeleteClick} className="text-red-10">

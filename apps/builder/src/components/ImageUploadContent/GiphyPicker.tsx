@@ -31,7 +31,7 @@ export const GiphyPicker = ({ onSubmit }: GiphySearchFormProps) => {
           placeholder="Search..."
           onValueChange={setInputValue}
         />
-        <GiphyLogo w="100px" />
+        <GiphyLogo className="w-24" />
       </Flex>
       <Flex overflowY="auto" maxH="400px">
         <Grid

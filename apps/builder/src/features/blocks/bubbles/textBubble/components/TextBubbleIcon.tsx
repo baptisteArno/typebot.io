@@ -1,4 +1,5 @@
-import type { IconProps } from "@chakra-ui/react";
-import { ChatIcon } from "@/components/icons";
+import { ChatIcon } from "@typebot.io/ui/icons/ChatIcon";
 
-export const TextBubbleIcon = (props: IconProps) => <ChatIcon {...props} />;
+export const TextBubbleIcon = ({ className }: { className: string }) => (
+  <ChatIcon className={className} />
+);

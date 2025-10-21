@@ -1,7 +1,5 @@
-import { Icon, type IconProps } from "@chakra-ui/react";
-
-export const ReactLogo = (props: IconProps) => (
-  <Icon
+export const ReactLogo = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg
     width="492"
     height="437"
     viewBox="0 0 492 437"
@@ -17,5 +15,5 @@ export const ReactLogo = (props: IconProps) => (
       d="M245.9 264.2C271.14 264.2 291.6 243.739 291.6 218.5C291.6 193.26 271.14 172.8 245.9 172.8C220.661 172.8 200.2 193.26 200.2 218.5C200.2 243.739 220.661 264.2 245.9 264.2Z"
       fill="#61DAFB"
     />
-  </Icon>
+  </svg>
 );

@@ -1,10 +1,10 @@
 import { Text, VStack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { Button, type ButtonProps } from "@typebot.io/ui/components/Button";
+import { PlusSignIcon } from "@typebot.io/ui/icons/PlusSignIcon";
 import { cn } from "@typebot.io/ui/lib/cn";
 import { useRouter } from "next/router";
 import { stringify } from "qs";
-import { PlusIcon } from "@/components/icons";
 import { useTypebotDnd } from "../TypebotDndProvider";
 
 export const CreateBotButton = ({
@@ -32,7 +32,7 @@ export const CreateBotButton = ({
       {...props}
     >
       <VStack spacing="6">
-        <PlusIcon />
+        <PlusSignIcon />
         <Text
           fontSize={18}
           fontWeight="medium"

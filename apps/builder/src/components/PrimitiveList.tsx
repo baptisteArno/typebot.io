@@ -1,9 +1,9 @@
 import { Box, Fade, Flex, Stack } from "@chakra-ui/react";
 import { createId } from "@paralleldrive/cuid2";
 import { Button } from "@typebot.io/ui/components/Button";
+import { PlusSignIcon } from "@typebot.io/ui/icons/PlusSignIcon";
 import { TrashIcon } from "@typebot.io/ui/icons/TrashIcon";
 import { useEffect, useState } from "react";
-import { PlusIcon } from "@/components/icons";
 
 type ItemWithId<T extends number | string | boolean> = {
   id: string;
@@ -130,7 +130,7 @@ export const PrimitiveList = <T extends number | string | boolean>({
         </Box>
       ))}
       <Button onClick={createItem} className="flex-shrink-0">
-        <PlusIcon />
+        <PlusSignIcon />
         {addLabel}
       </Button>
     </Stack>

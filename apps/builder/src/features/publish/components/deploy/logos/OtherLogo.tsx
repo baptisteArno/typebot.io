@@ -1,10 +1,10 @@
-import { Icon, type IconProps, useColorModeValue } from "@chakra-ui/react";
+import { useColorModeValue } from "@chakra-ui/react";
 import { colors } from "@typebot.io/ui/chakraTheme";
 
-export const OtherLogo = (props: IconProps) => {
+export const OtherLogo = (props: React.SVGProps<SVGSVGElement>) => {
   const stroke = useColorModeValue("black", colors.gray[200]);
   return (
-    <Icon
+    <svg
       width="512"
       height="512"
       viewBox="0 0 512 512"
@@ -30,6 +30,6 @@ export const OtherLogo = (props: IconProps) => {
         strokeWidth="32"
         strokeMiterlimit="10"
       />
-    </Icon>
+    </svg>
   );
 };

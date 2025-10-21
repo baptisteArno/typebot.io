@@ -1,8 +1,8 @@
 import { useTranslate } from "@tolgee/react";
+import { ArrowLeft01Icon } from "@typebot.io/ui/icons/ArrowLeft01Icon";
 import { cn } from "@typebot.io/ui/lib/cn";
 import { useMemo } from "react";
 import { ButtonLink } from "@/components/ButtonLink";
-import { ChevronLeftIcon } from "@/components/icons";
 import { useTypebotDnd } from "../TypebotDndProvider";
 
 export const BackButton = ({ id }: { id: string | null }) => {
@@ -30,7 +30,7 @@ export const BackButton = ({ id }: { id: string | null }) => {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <ChevronLeftIcon />
+      <ArrowLeft01Icon />
       {t("back")}
     </ButtonLink>
   );

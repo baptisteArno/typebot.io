@@ -1,11 +1,15 @@
-import { Icon, type IconProps } from "@chakra-ui/react";
+import { cn } from "@typebot.io/ui/lib/cn";
 
-export const MakeComLogo = (props: IconProps) => (
-  <Icon
+export const MakeComLogo = ({
+  className,
+  ...props
+}: React.SVGProps<SVGSVGElement>) => (
+  <svg
     viewBox="0 0 195 139"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
     {...props}
+    className={cn("size-4", className)}
   >
     <path
       d="M189.89 136.77H156C154.759 136.77 153.569 136.277 152.691 135.399C151.813 134.522 151.32 133.331 151.32 132.09V7.0001C151.328 5.76317 151.824 4.57945 152.701 3.70666C153.578 2.83388 154.763 2.34271 156 2.3401H189.88C191.12 2.33744 192.31 2.82659 193.189 3.70023C194.068 4.57386 194.565 5.76062 194.57 7.0001V132.09C194.572 132.705 194.451 133.314 194.217 133.883C193.982 134.451 193.637 134.967 193.202 135.402C192.768 135.837 192.251 136.182 191.683 136.417C191.114 136.651 190.505 136.771 189.89 136.77V136.77Z"
@@ -61,5 +65,5 @@ export const MakeComLogo = (props: IconProps) => (
         <stop offset="0.85" stopColor="#6021C3" />
       </linearGradient>
     </defs>
-  </Icon>
+  </svg>
 );

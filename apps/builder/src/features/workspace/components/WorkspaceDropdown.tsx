@@ -3,13 +3,11 @@ import { useQuery } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
 import { Menu } from "@typebot.io/ui/components/Menu";
 import { ArrowDown01Icon } from "@typebot.io/ui/icons/ArrowDown01Icon";
+import { HardDriveIcon } from "@typebot.io/ui/icons/HardDriveIcon";
+import { LogoutSquare02Icon } from "@typebot.io/ui/icons/LogoutSquare02Icon";
+import { PlusSignIcon } from "@typebot.io/ui/icons/PlusSignIcon";
+import { TickIcon } from "@typebot.io/ui/icons/TickIcon";
 import { EmojiOrImageIcon } from "@/components/EmojiOrImageIcon";
-import {
-  CheckIcon,
-  HardDriveIcon,
-  LogOutIcon,
-  PlusIcon,
-} from "@/components/icons";
 import { PlanTag } from "@/features/billing/components/PlanTag";
 import { trpc } from "@/lib/queryClient";
 import type { WorkspaceInApp } from "../WorkspaceProvider";
@@ -68,16 +66,16 @@ export const WorkspaceDropdown = ({
                 <PlanTag plan={workspace.plan} />
               </HStack>
 
-              {workspace.id === currentWorkspace?.id && <CheckIcon />}
+              {workspace.id === currentWorkspace?.id && <TickIcon />}
             </HStack>
           </Menu.Item>
         ))}
         <Menu.Item onClick={onCreateNewWorkspaceClick}>
-          <PlusIcon />
+          <PlusSignIcon />
           {t("workspace.dropdown.newButton.label")}
         </Menu.Item>
         <Menu.Item onClick={onLogoutClick} className="text-orange-9">
-          <LogOutIcon />
+          <LogoutSquare02Icon />
           {t("workspace.dropdown.logoutButton.label")}
         </Menu.Item>
       </Menu.Popup>

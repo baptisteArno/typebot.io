@@ -1,5 +1,5 @@
-import { ExternalLinkIcon } from "@/components/icons";
+import { ArrowUpRight01Icon } from "@typebot.io/ui/icons/ArrowUpRight01Icon";
 
 export const RedirectIcon = ({ className }: { className?: string }) => (
-  <ExternalLinkIcon className={className} />
+  <ArrowUpRight01Icon className={className} />
 );

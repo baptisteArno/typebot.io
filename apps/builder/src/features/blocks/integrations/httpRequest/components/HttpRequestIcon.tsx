@@ -1,4 +1,4 @@
 import type { IconProps } from "@chakra-ui/react";
-import { ThunderIcon } from "@/components/icons";
+import { ZapIcon } from "@typebot.io/ui/icons/ZapIcon";
 
-export const HttpRequestIcon = (props: IconProps) => <ThunderIcon {...props} />;
+export const HttpRequestIcon = (props: IconProps) => <ZapIcon {...props} />;

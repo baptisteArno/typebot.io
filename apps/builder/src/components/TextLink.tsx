@@ -1,6 +1,6 @@
 import { chakra, HStack, type TextProps } from "@chakra-ui/react";
+import { ArrowUpRight01Icon } from "@typebot.io/ui/icons/ArrowUpRight01Icon";
 import Link, { type LinkProps } from "next/link";
-import { ExternalLinkIcon } from "@/components/icons";
 
 type TextLinkProps = LinkProps & TextProps & { isExternal?: boolean };
 
@@ -29,7 +29,7 @@ export const TextLink = ({
           <chakra.span noOfLines={noOfLines} maxW="100%">
             {children}
           </chakra.span>
-          <ExternalLinkIcon />
+          <ArrowUpRight01Icon />
         </HStack>
       ) : (
         children

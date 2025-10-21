@@ -1,9 +1,9 @@
-import { Icon, type IconProps, useColorModeValue } from "@chakra-ui/react";
+import { useColorModeValue } from "@chakra-ui/react";
 
-export const WixLogo = (props: IconProps) => {
+export const WixLogo = (props: React.SVGProps<SVGSVGElement>) => {
   const fill = useColorModeValue("black", "white");
   return (
-    <Icon
+    <svg
       width="311"
       height="121"
       viewBox="0 0 311 121"
@@ -27,6 +27,6 @@ export const WixLogo = (props: IconProps) => {
         d="M270.4 60.7003L311 0.600311C311 0.600311 294.2 -2.39969 285.5 5.40031C279.9 10.2003 274.3 19.2003 274.3 19.2003L259.6 40.8003C258.7 42.1003 257.9 43.0003 256.6 43.0003C255.3 43.0003 254 41.7003 253.6 40.8003L238.9 19.2003C238.9 19.2003 232.9 10.6003 227.7 5.40031C219.1 -2.39969 202.2 0.600311 202.2 0.600311L241.5 60.6003L201.3 120.6C201.3 120.6 219 122.8 227.7 115C233.3 110.2 238.5 102 238.5 102L253.2 80.4003C254.1 79.1003 254.9 78.2003 256.2 78.2003C257.5 78.2003 258.8 79.5003 259.2 80.4003L273.9 102C273.9 102 279.5 110.2 284.7 115C293.3 122.8 310.6 120.6 310.6 120.6L270.4 60.7003Z"
         fill={fill}
       />
-    </Icon>
+    </svg>
   );
 };

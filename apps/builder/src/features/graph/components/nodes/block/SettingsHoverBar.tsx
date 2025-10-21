@@ -4,14 +4,12 @@ import type { BlockWithOptions } from "@typebot.io/blocks-core/schemas/schema";
 import type { TEventWithOptions } from "@typebot.io/events/schemas";
 import type { forgedBlocks } from "@typebot.io/forge-repository/definitions";
 import { Button } from "@typebot.io/ui/components/Button";
+import { ArrowExpand01Icon } from "@typebot.io/ui/icons/ArrowExpand01Icon";
+import { ArrowShrink02Icon } from "@typebot.io/ui/icons/ArrowShrink02Icon";
+import { CustomerSupportIcon } from "@typebot.io/ui/icons/CustomerSupportIcon";
+import { VideoAiIcon } from "@typebot.io/ui/icons/VideoAiIcon";
 import { cn } from "@typebot.io/ui/lib/cn";
 import { ButtonLink } from "@/components/ButtonLink";
-import {
-  BuoyIcon,
-  ExpandIcon,
-  MinimizeIcon,
-  VideoPopoverIcon,
-} from "@/components/icons";
 import { getHelpDocUrl } from "@/features/graph/helpers/getHelpDocUrl";
 
 type Props = {
@@ -48,7 +46,7 @@ export const SettingsHoverBar = ({
         size="icon"
         variant="ghost"
       >
-        {isExpanded ? <MinimizeIcon /> : <ExpandIcon />}
+        {isExpanded ? <ArrowShrink02Icon /> : <ArrowExpand01Icon />}
       </Button>
       {helpDocUrl && (
         <ButtonLink
@@ -62,7 +60,7 @@ export const SettingsHoverBar = ({
           target="_blank"
           iconStyle="none"
         >
-          <BuoyIcon />
+          <CustomerSupportIcon />
           {t("help")}
         </ButtonLink>
       )}
@@ -74,7 +72,7 @@ export const SettingsHoverBar = ({
           className="rounded-l-none size-6 [&_svg]:size-3"
           size="icon"
         >
-          <VideoPopoverIcon />
+          <VideoAiIcon />
         </Button>
       )}
     </HStack>

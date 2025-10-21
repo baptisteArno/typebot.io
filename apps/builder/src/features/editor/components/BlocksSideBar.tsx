@@ -20,10 +20,11 @@ import { forgedBlocks } from "@typebot.io/forge-repository/definitions";
 import { isDefined } from "@typebot.io/lib/utils";
 import { Input } from "@typebot.io/ui/components/Input";
 import { Tooltip } from "@typebot.io/ui/components/Tooltip";
+import { SquareLock01Icon } from "@typebot.io/ui/icons/SquareLock01Icon";
+import { SquareUnlock01Icon } from "@typebot.io/ui/icons/SquareUnlock01Icon";
 import type React from "react";
 import { useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
-import { LockedIcon, UnlockedIcon } from "@/components/icons";
 import { Portal } from "@/components/Portal";
 import { useBlockDnd } from "@/features/graph/providers/GraphDndProvider";
 import { EventCard } from "../../events/components/EventCard";
@@ -239,7 +240,7 @@ export const BlocksSideBar = () => {
               className="size-8"
               onClick={handleLockClick}
             >
-              {isLocked ? <LockedIcon /> : <UnlockedIcon />}
+              {isLocked ? <SquareLock01Icon /> : <SquareUnlock01Icon />}
             </Tooltip.TriggerButton>
             <Tooltip.Popup>
               {isLocked

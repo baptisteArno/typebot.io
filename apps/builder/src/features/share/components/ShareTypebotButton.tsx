@@ -3,7 +3,7 @@ import { useTranslate } from "@tolgee/react";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Popover } from "@typebot.io/ui/components/Popover";
 import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
-import { UsersIcon } from "@/components/icons";
+import { UsersIcon } from "@typebot.io/ui/icons/UsersIcon";
 import { SharePopoverContent } from "./SharePopoverContent";
 
 export const ShareTypebotButton = ({ isLoading }: { isLoading: boolean }) => {
@@ -19,7 +19,7 @@ export const ShareTypebotButton = ({ isLoading }: { isLoading: boolean }) => {
           variant="secondary"
           size="sm"
         >
-          <UsersIcon fontSize="md" />
+          <UsersIcon />
           <chakra.span display={{ base: "none", xl: "inline" }}>
             {t("share.button.label")}
           </chakra.span>

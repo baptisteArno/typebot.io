@@ -3,8 +3,8 @@ import { BubbleBlockType } from "@typebot.io/blocks-bubbles/constants";
 import type { BlockIndices } from "@typebot.io/blocks-core/schemas/schema";
 import type { ForgedBlock } from "@typebot.io/forge-repository/schemas";
 import { Tooltip } from "@typebot.io/ui/components/Tooltip";
+import { ZapIcon } from "@typebot.io/ui/icons/ZapIcon";
 import { useMemo } from "react";
-import { ThunderIcon } from "@/components/icons";
 import { SetVariableLabel } from "@/components/SetVariableLabel";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { useForgedBlock } from "../hooks/useForgedBlock";
@@ -71,7 +71,7 @@ export const ForgedBlockNodeContent = ({ block, indices }: Props) => {
       {isStreamingNextBlock && (
         <Tooltip.Root>
           <Tooltip.Trigger className="rounded-full size-6 p-1 bg-gray-3 text-purple-11 border absolute bottom-[-15px] left-[118px] z-10 flex items-center justify-center">
-            <ThunderIcon />
+            <ZapIcon />
           </Tooltip.Trigger>
           <Tooltip.Popup>Text bubble content will be streamed</Tooltip.Popup>
         </Tooltip.Root>

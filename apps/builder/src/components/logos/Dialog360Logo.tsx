@@ -1,7 +1,5 @@
-import { Icon, type IconProps } from "@chakra-ui/react";
-
-export const Dialog360Logo = (props: IconProps) => (
-  <Icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" {...props}>
+export const Dialog360Logo = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" {...props}>
     <g>
       <path d="M64,0h192v192c0,35.32-28.68,64-64,64H0V64C0,28.68,28.68,0,64,0Z" />
       <path
@@ -21,5 +19,5 @@ export const Dialog360Logo = (props: IconProps) => (
         d="M224.61,102.47c-5.01-2.55-10.88-3.88-17.59-3.88h-20.62v62.9h20.62c6.72,0,12.58-1.23,17.59-3.69,5.11-2.55,8.99-6.15,11.73-10.88,2.74-4.73,4.16-10.22,4.16-16.65s-1.42-12.01-4.16-16.74c-2.74-4.82-6.62-8.51-11.73-11.07ZM223.64,147.78c-3.9,4-9.61,6-17.04,6l-10.28.1v-46.44h10.28c7.42,0,13.04,2.09,17.04,6.19,3.9,4.09,5.9,9.9,5.9,17.23s-1.9,12.94-5.9,16.94Z"
       />
     </g>
-  </Icon>
+  </svg>
 );

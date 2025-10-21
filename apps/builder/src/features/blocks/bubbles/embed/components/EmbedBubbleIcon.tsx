@@ -1,5 +1,5 @@
-import { LayoutIcon } from "@/components/icons";
+import { LayoutBottomIcon } from "@typebot.io/ui/icons/LayoutBottomIcon";
 
 export const EmbedBubbleIcon = ({ className }: { className?: string }) => (
-  <LayoutIcon className={className} />
+  <LayoutBottomIcon className={className} />
 );

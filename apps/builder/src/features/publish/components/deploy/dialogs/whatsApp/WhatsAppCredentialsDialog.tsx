@@ -31,9 +31,10 @@ import { isEmpty, isNotEmpty } from "@typebot.io/lib/utils";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
 import { Field } from "@typebot.io/ui/components/Field";
+import { ArrowLeft01Icon } from "@typebot.io/ui/icons/ArrowLeft01Icon";
+import { ArrowUpRight01Icon } from "@typebot.io/ui/icons/ArrowUpRight01Icon";
 import { useState } from "react";
 import { ButtonLink } from "@/components/ButtonLink";
-import { ChevronLeftIcon, ExternalLinkIcon } from "@/components/icons";
 import { CopyInput } from "@/components/inputs/CopyInput";
 import { DebouncedTextInput } from "@/components/inputs/DebouncedTextInput";
 import { Dialog360Logo } from "@/components/logos/Dialog360Logo";
@@ -291,7 +292,7 @@ export const WhatsAppCreateDialogBody = ({
             variant="ghost"
             onClick={goToPrevious}
           >
-            <ChevronLeftIcon />
+            <ArrowLeft01Icon />
           </Button>
         )}
         <Heading size="md">
@@ -428,7 +429,7 @@ const SystemUserToken = ({
         size="sm"
       >
         System users page
-        <ExternalLinkIcon />
+        <ArrowUpRight01Icon />
       </ButtonLink>
     </ListItem>
     <ListItem>
@@ -500,7 +501,7 @@ const PhoneNumber = ({
             variant="secondary"
             size="sm"
           >
-            WhatsApp Dev Console <ExternalLinkIcon />
+            WhatsApp Dev Console <ArrowUpRight01Icon />
           </ButtonLink>
         </Text>
       </HStack>
@@ -559,7 +560,7 @@ const Webhook = ({
           size="sm"
         >
           WhatsApp Settings page
-          <ExternalLinkIcon />
+          <ArrowUpRight01Icon />
         </ButtonLink>
         , click on the Edit button and insert the following values:
       </Text>
@@ -603,7 +604,7 @@ const ProviderSelection = ({
     >
       <CardBody textAlign="center">
         <VStack spacing={3}>
-          <MetaLogo boxSize={10} />
+          <MetaLogo className="size-10" />
           <Stack>
             <Text fontWeight="bold">Meta (Facebook)</Text>
             <Text fontSize="sm" color="gray.600">
@@ -625,7 +626,7 @@ const ProviderSelection = ({
     >
       <CardBody textAlign="center">
         <VStack spacing={3}>
-          <Dialog360Logo boxSize={10} />
+          <Dialog360Logo className="size-10" />
           <Stack>
             <Text fontWeight="bold">
               360Dialog <Tag colorScheme="orange">Beta</Tag>

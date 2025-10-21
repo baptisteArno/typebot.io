@@ -4,8 +4,10 @@ import type { Block } from "@typebot.io/blocks-core/schemas/schema";
 import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
 import { IntegrationBlockType } from "@typebot.io/blocks-integrations/constants";
 import { LogicBlockType } from "@typebot.io/blocks-logic/constants";
+import { CarouselHorizontal02Icon } from "@typebot.io/ui/icons/CarouselHorizontal02Icon";
+import { Flag02Icon } from "@typebot.io/ui/icons/Flag02Icon";
+import { ZapIcon } from "@typebot.io/ui/icons/ZapIcon";
 import { cn } from "@typebot.io/ui/lib/cn";
-import { FlagIcon, GalleryIcon, ThunderIcon } from "@/components/icons";
 import { AudioBubbleIcon } from "@/features/blocks/bubbles/audio/components/AudioBubbleIcon";
 import { EmbedBubbleIcon } from "@/features/blocks/bubbles/embed/components/EmbedBubbleIcon";
 import { ImageBubbleIcon } from "@/features/blocks/bubbles/image/components/ImageBubbleIcon";
@@ -122,7 +124,9 @@ export const BlockIcon = ({ type, className }: BlockIconProps): JSX.Element => {
       );
     case InputBlockType.CARDS:
       return (
-        <GalleryIcon className={cn("text-orange-9 stroke-2", className)} />
+        <CarouselHorizontal02Icon
+          className={cn("text-orange-9 stroke-2", className)}
+        />
       );
     case LogicBlockType.SET_VARIABLE:
       return (
@@ -153,13 +157,15 @@ export const BlockIcon = ({ type, className }: BlockIconProps): JSX.Element => {
         <ReturnBlockIcon className={cn("text-purple-9 stroke-2", className)} />
       );
     case LogicBlockType.WEBHOOK:
-      return <WebhookIcon className={className} />;
+      return (
+        <WebhookIcon className={cn("text-purple-9 stroke-2", className)} />
+      );
     case IntegrationBlockType.GOOGLE_SHEETS:
       return <GoogleSheetsLogo className={className} />;
     case IntegrationBlockType.GOOGLE_ANALYTICS:
       return <GoogleAnalyticsLogo className={className} />;
     case IntegrationBlockType.HTTP_REQUEST:
-      return <ThunderIcon className={className} />;
+      return <ZapIcon className={className} />;
     case IntegrationBlockType.ZAPIER:
       return <ZapierLogo className={className} />;
     case IntegrationBlockType.MAKE_COM:
@@ -173,7 +179,7 @@ export const BlockIcon = ({ type, className }: BlockIconProps): JSX.Element => {
     case IntegrationBlockType.PIXEL:
       return <PixelLogo className={className} />;
     case "start":
-      return <FlagIcon className={className} />;
+      return <Flag02Icon className={className} />;
     case IntegrationBlockType.OPEN_AI:
       return <OpenAILogo className={className} fill={openAIColor} />;
 

@@ -3,8 +3,8 @@ import { capitalize } from "@typebot.io/lib/utils";
 import { Alert } from "@typebot.io/ui/components/Alert";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
+import { ArrowLeft01Icon } from "@typebot.io/ui/icons/ArrowLeft01Icon";
 import { InformationSquareIcon } from "@typebot.io/ui/icons/InformationSquareIcon";
-import { ChevronLeftIcon } from "@/components/icons";
 import { EmbedTypeMenu } from "./EmbedTypeMenu/EmbedTypeMenu";
 
 type Props = {
@@ -39,7 +39,7 @@ export const DeployDialog = ({
               onClick={() => onSelectEmbedType(undefined)}
               size="icon"
             >
-              <ChevronLeftIcon />
+              <ArrowLeft01Icon />
             </Button>
           )}
           <Heading size="md">

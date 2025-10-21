@@ -1,7 +1,7 @@
 import { Stack } from "@chakra-ui/react";
 import type { Cell } from "@typebot.io/blocks-integrations/googleSheets/schema";
 import { Button } from "@typebot.io/ui/components/Button";
-import { MoreVerticalIcon } from "@/components/icons";
+import { MoreVerticalIcon } from "@typebot.io/ui/icons/MoreVerticalIcon";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { DebouncedTextInputWithVariablesButton } from "@/components/inputs/DebouncedTextInput";
 import type { TableListItemProps } from "@/components/TableList";

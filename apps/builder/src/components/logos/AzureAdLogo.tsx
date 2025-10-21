@@ -1,8 +1,6 @@
-import { Icon, type IconProps } from "@chakra-ui/react";
-
-export const AzureAdLogo = (props: IconProps) => {
+export const AzureAdLogo = (props: React.SVGProps<SVGSVGElement>) => {
   return (
-    <Icon
+    <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 374.5 377.3"
       {...props}
@@ -23,6 +21,6 @@ export const AzureAdLogo = (props: IconProps) => {
           />
         </g>
       </g>
-    </Icon>
+    </svg>
   );
 };

@@ -2,8 +2,8 @@ import { Box, Code, HStack, Stack, Text } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import { Alert } from "@typebot.io/ui/components/Alert";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
+import { CancelCircleIcon } from "@typebot.io/ui/icons/CancelCircleIcon";
 import { TriangleAlertIcon } from "@typebot.io/ui/icons/TriangleAlertIcon";
-import { XCircleIcon } from "@/components/icons";
 import { trpc } from "@/lib/queryClient";
 
 type Props = {
@@ -46,7 +46,7 @@ export const CustomDomainConfigDialog = ({
       <Dialog.Popup className="max-w-xl">
         <Dialog.Title>
           <HStack>
-            <XCircleIcon stroke="red.500" />
+            <CancelCircleIcon className="text-red-9" />
             <Text fontSize="lg" fontWeight="medium">
               {status}
             </Text>

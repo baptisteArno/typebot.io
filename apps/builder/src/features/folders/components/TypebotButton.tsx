@@ -5,7 +5,9 @@ import { Alert } from "@typebot.io/ui/components/Alert";
 import { Button, buttonVariants } from "@typebot.io/ui/components/Button";
 import { Menu } from "@typebot.io/ui/components/Menu";
 import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
+import { DragDropHorizontalIcon } from "@typebot.io/ui/icons/DragDropHorizontalIcon";
 import { LayoutBottomIcon } from "@typebot.io/ui/icons/LayoutBottomIcon";
+import { MoreVerticalIcon } from "@typebot.io/ui/icons/MoreVerticalIcon";
 import { TriangleAlertIcon } from "@typebot.io/ui/icons/TriangleAlertIcon";
 import { cn } from "@typebot.io/ui/lib/cn";
 import { useRouter } from "next/router";
@@ -13,7 +15,6 @@ import React, { memo } from "react";
 import { useDebounce } from "use-debounce";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
 import { EmojiOrImageIcon } from "@/components/EmojiOrImageIcon";
-import { GripIcon, MoreVerticalIcon } from "@/components/icons";
 import type { TypebotInDashboard } from "@/features/dashboard/types";
 import {
   type NodePosition,
@@ -153,7 +154,7 @@ const TypebotButton = ({
               variant="ghost"
               size="icon"
             >
-              <GripIcon />
+              <DragDropHorizontalIcon />
             </Button>
             <Menu.Root>
               <Menu.TriggerButton

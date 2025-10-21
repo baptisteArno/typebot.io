@@ -1,5 +1,5 @@
-import { ImageIcon } from "@/components/icons";
+import { Image02Icon } from "@typebot.io/ui/icons/Image02Icon";
 
 export const ImageBubbleIcon = ({ className }: { className?: string }) => (
-  <ImageIcon className={className} />
+  <Image02Icon className={className} />
 );

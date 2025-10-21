@@ -7,11 +7,12 @@ import {
 import { useTranslate } from "@tolgee/react";
 import { isNotDefined } from "@typebot.io/lib/utils";
 import { Button } from "@typebot.io/ui/components/Button";
+import { HardDriveIcon } from "@typebot.io/ui/icons/HardDriveIcon";
+import { Settings01Icon } from "@typebot.io/ui/icons/Settings01Icon";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { EmojiOrImageIcon } from "@/components/EmojiOrImageIcon";
-import { HardDriveIcon, SettingsIcon } from "@/components/icons";
 import { useUser } from "@/features/user/hooks/useUser";
 import { WorkspaceDropdown } from "@/features/workspace/components/WorkspaceDropdown";
 import { WorkspaceSettingsDialog } from "@/features/workspace/components/WorkspaceSettingsDialog";
@@ -76,7 +77,7 @@ export const DashboardHeader = () => {
               onClick={onOpen}
               disabled={isNotDefined(workspace) || isLoggingOut}
             >
-              <SettingsIcon />
+              <Settings01Icon />
               {t("dashboard.header.settingsButton.label")}
             </Button>
           )}

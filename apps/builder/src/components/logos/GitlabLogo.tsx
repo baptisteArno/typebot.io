@@ -1,7 +1,5 @@
-import { Icon, type IconProps } from "@chakra-ui/react";
-
-export const GitlabLogo = (props: IconProps) => (
-  <Icon viewBox="0 0 256 236" {...props}>
+export const GitlabLogo = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 0 256 236" {...props}>
     <path
       d="M128.075 236.075l47.104-144.97H80.97l47.104 144.97z"
       fill="#E24329"
@@ -30,5 +28,5 @@ export const GitlabLogo = (props: IconProps) => (
       d="M241.194 91.105h-66.015l28.37-87.315c1.46-4.493 7.816-4.492 9.275 0l28.37 87.315z"
       fill="#E24329"
     />
-  </Icon>
+  </svg>
 );

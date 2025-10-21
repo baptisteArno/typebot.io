@@ -1,8 +1,10 @@
 import { HStack, useColorModeValue } from "@chakra-ui/react";
 import { EventType } from "@typebot.io/events/constants";
 import { Button } from "@typebot.io/ui/components/Button";
+import { Copy01Icon } from "@typebot.io/ui/icons/Copy01Icon";
+import { PlayIcon } from "@typebot.io/ui/icons/PlayIcon";
+import { Settings01Icon } from "@typebot.io/ui/icons/Settings01Icon";
 import { TrashIcon } from "@typebot.io/ui/icons/TrashIcon";
-import { CopyIcon, PlayIcon, SettingsIcon } from "@/components/icons";
 import { isMac } from "@/helpers/isMac";
 
 type Props = {
@@ -55,7 +57,7 @@ export const EventFocusToolbar = ({
         size="icon"
         onClick={onSettingsClick}
       >
-        <SettingsIcon />
+        <Settings01Icon />
       </Button>
       {type !== EventType.START && (
         <Button
@@ -68,7 +70,7 @@ export const EventFocusToolbar = ({
           }}
           size="icon"
         >
-          <CopyIcon />
+          <Copy01Icon />
         </Button>
       )}
       {type !== EventType.START && (

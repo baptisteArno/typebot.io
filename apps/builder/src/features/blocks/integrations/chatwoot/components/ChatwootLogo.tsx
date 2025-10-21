@@ -1,10 +1,14 @@
-import { Icon, type IconProps } from "@chakra-ui/react";
+import { cn } from "@typebot.io/ui/lib/cn";
 
-export const ChatwootLogo = (props: IconProps) => (
-  <Icon
+export const ChatwootLogo = ({
+  className,
+  ...props
+}: React.SVGProps<SVGSVGElement>) => (
+  <svg
     viewBox="0 0 512 512"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
+    className={cn("size-4", className)}
     {...props}
   >
     <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
@@ -18,5 +22,5 @@ export const ChatwootLogo = (props: IconProps) => (
         ></path>
       </g>
     </g>
-  </Icon>
+  </svg>
 );

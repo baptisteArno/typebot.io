@@ -2,6 +2,7 @@ import { HStack, Stack, Text } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
 import { Plan } from "@typebot.io/prisma/enum";
+import { Leaf01Icon } from "@typebot.io/ui/icons/Leaf01Icon";
 import { useState } from "react";
 import { TextLink } from "@/components/TextLink";
 import { useUser } from "@/features/user/hooks/useUser";
@@ -13,7 +14,6 @@ import type { PreCheckoutDialogProps } from "./PreCheckoutDialog";
 import { PreCheckoutDialog } from "./PreCheckoutDialog";
 import { ProPlanPricingCard } from "./ProPlanPricingCard";
 import { StarterPlanPricingCard } from "./StarterPlanPricingCard";
-import { StripeClimateLogo } from "./StripeClimateLogo";
 
 type Props = {
   workspace: WorkspaceInApp;
@@ -97,15 +97,15 @@ export const ChangePlanForm = ({
 
   return (
     <Stack spacing={6}>
-      <HStack maxW="500px">
-        <StripeClimateLogo />
+      <div className="flex items-center gap-3 max-w-[500px]">
+        <Leaf01Icon className="size-7" />
         <Text fontSize="xs" color="gray.500">
           {t("billing.contribution.preLink")}{" "}
           <TextLink href="https://climate.stripe.com/5VCRAq" isExternal>
             {t("billing.contribution.link")}
           </TextLink>
         </Text>
-      </HStack>
+      </div>
       {!workspace.stripeId && (
         <PreCheckoutDialog
           selectedSubscription={preCheckoutPlan}

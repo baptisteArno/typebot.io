@@ -3,13 +3,11 @@ import type { ResultHeaderCell } from "@typebot.io/results/schemas/results";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Popover } from "@typebot.io/ui/components/Popover";
 import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
+import { ArrowRight01Icon } from "@typebot.io/ui/icons/ArrowRight01Icon";
+import { Download01Icon } from "@typebot.io/ui/icons/Download01Icon";
+import { LeftToRightListBulletIcon } from "@typebot.io/ui/icons/LeftToRightListBulletIcon";
+import { MoreHorizontalIcon } from "@typebot.io/ui/icons/MoreHorizontalIcon";
 import { useState } from "react";
-import {
-  ChevronRightIcon,
-  DownloadIcon,
-  ListIcon,
-  MoreHorizontalIcon,
-} from "@/components/icons";
 import { ColumnSettings } from "./ColumnSettings";
 import { ExportAllResultsDialog } from "./ExportAllResultsDialog";
 
@@ -87,11 +85,10 @@ const TableSettingsMenu = ({
             className="rounded-b-none justify-between"
           >
             <HStack>
-              <ListIcon />
+              <LeftToRightListBulletIcon />
               <Text>Column settings</Text>
             </HStack>
-
-            <ChevronRightIcon color="gray.400" />
+            <ArrowRight01Icon />
           </Button>
           <Button
             onClick={onExportAllClick}
@@ -99,7 +96,7 @@ const TableSettingsMenu = ({
             className="rounded-t-none justify-between"
           >
             <HStack>
-              <DownloadIcon />
+              <Download01Icon />
               <Text>Export all</Text>
             </HStack>
           </Button>

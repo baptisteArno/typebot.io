@@ -1,10 +1,10 @@
 import { HStack } from "@chakra-ui/react";
 import { Input } from "@typebot.io/ui/components/Input";
+import { ArrowUpRight01Icon } from "@typebot.io/ui/icons/ArrowUpRight01Icon";
 import { LayoutBottomIcon } from "@typebot.io/ui/icons/LayoutBottomIcon";
 import { useRouter } from "next/router";
 import { ButtonLink } from "@/components/ButtonLink";
 import { EmojiOrImageIcon } from "@/components/EmojiOrImageIcon";
-import { ExternalLinkIcon } from "@/components/icons";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { useTypebots } from "@/features/dashboard/hooks/useTypebots";
 
@@ -74,7 +74,7 @@ export const TypebotsDropdown = ({
             },
           }}
         >
-          <ExternalLinkIcon />
+          <ArrowUpRight01Icon />
         </ButtonLink>
       )}
     </HStack>

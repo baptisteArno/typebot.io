@@ -7,7 +7,10 @@ import type {
   ThemeTemplate,
 } from "@typebot.io/theme/schemas";
 import { Accordion } from "@typebot.io/ui/components/Accordion";
-import { ChatIcon, CodeIcon, DropletIcon, TableIcon } from "@/components/icons";
+import { ChatIcon } from "@typebot.io/ui/icons/ChatIcon";
+import { GridViewIcon } from "@typebot.io/ui/icons/GridViewIcon";
+import { RainDropIcon } from "@typebot.io/ui/icons/RainDropIcon";
+import { SourceCodeIcon } from "@typebot.io/ui/icons/SourceCodeIcon";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { CustomCssSettings } from "./CustomCssSettings";
 import { ChatThemeSettings } from "./chat/ChatThemeSettings";
@@ -72,7 +75,7 @@ export const ThemeSideMenu = () => {
           <Accordion.Item className="border-0">
             <Accordion.Trigger className="py-5">
               <div className="flex items-center gap-3 pl-2">
-                <TableIcon />
+                <GridViewIcon />
                 <Heading fontSize="md">{t("theme.sideMenu.template")}</Heading>
               </div>
             </Accordion.Trigger>
@@ -92,7 +95,7 @@ export const ThemeSideMenu = () => {
         <Accordion.Item className="border-0 border-t-[1px]">
           <Accordion.Trigger className="py-5">
             <div className="flex items-center gap-3 pl-2">
-              <DropletIcon />
+              <RainDropIcon />
               <Heading fontSize="md">{t("theme.sideMenu.global")}</Heading>
             </div>
           </Accordion.Trigger>
@@ -134,7 +137,7 @@ export const ThemeSideMenu = () => {
         <Accordion.Item className="border-0 border-t-[1px] last:rounded-b-none">
           <Accordion.Trigger className="py-5">
             <div className="flex items-center gap-3 pl-2">
-              <CodeIcon />
+              <SourceCodeIcon />
               <Heading fontSize="md">{t("theme.sideMenu.customCSS")}</Heading>
             </div>
           </Accordion.Trigger>

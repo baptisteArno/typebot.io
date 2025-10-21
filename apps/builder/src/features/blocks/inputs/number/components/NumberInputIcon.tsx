@@ -1,4 +1,5 @@
-import type { IconProps } from "@chakra-ui/react";
-import { NumberIcon } from "@/components/icons";
+import { SevenSquareIcon } from "@typebot.io/ui/icons/SevenSquareIcon";
 
-export const NumberInputIcon = (props: IconProps) => <NumberIcon {...props} />;
+export const NumberInputIcon = ({ className }: { className?: string }) => (
+  <SevenSquareIcon className={className} />
+);

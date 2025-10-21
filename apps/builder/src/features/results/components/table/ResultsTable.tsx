@@ -21,8 +21,8 @@ import type {
 import type { ResultsTablePreferences } from "@typebot.io/typebot/schemas/typebot";
 import { colors } from "@typebot.io/ui/chakraTheme";
 import { Button } from "@typebot.io/ui/components/Button";
+import { TextAlignLeftIcon } from "@typebot.io/ui/icons/TextAlignLeftIcon";
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { AlignLeftTextIcon } from "@/components/icons";
 import { TimeFilterSelect } from "@/features/analytics/components/TimeFilterSelect";
 import type { timeFilterValues } from "@/features/analytics/constants";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
@@ -164,7 +164,7 @@ export const ResultsTable = ({
         maxSize: 110,
         header: () => (
           <HStack>
-            <AlignLeftTextIcon />
+            <TextAlignLeftIcon />
             <Text>Logs</Text>
           </HStack>
         ),

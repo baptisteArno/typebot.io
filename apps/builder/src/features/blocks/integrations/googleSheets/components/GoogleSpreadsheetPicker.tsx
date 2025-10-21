@@ -3,8 +3,8 @@ import { useQuery } from "@tanstack/react-query";
 import { env } from "@typebot.io/env";
 import { isDefined } from "@typebot.io/lib/utils";
 import { Button } from "@typebot.io/ui/components/Button";
+import { FileEmpty02Icon } from "@typebot.io/ui/icons/FileEmpty02Icon";
 import { useEffect, useState } from "react";
-import { FileIcon } from "@/components/icons";
 import { trpc } from "@/lib/queryClient";
 import { GoogleSheetsLogo } from "./GoogleSheetsLogo";
 
@@ -110,7 +110,7 @@ export const GoogleSpreadsheetPicker = ({
           aria-label={"Pick another spreadsheet"}
           variant="secondary"
         >
-          <FileIcon />
+          <FileEmpty02Icon />
         </Button>
       </Flex>
     );

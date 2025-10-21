@@ -4,7 +4,7 @@ import { useTranslate } from "@tolgee/react";
 import type { ThemeTemplate } from "@typebot.io/theme/schemas";
 import type { TypebotV6 } from "@typebot.io/typebot/schemas/typebot";
 import { Button } from "@typebot.io/ui/components/Button";
-import { SaveIcon } from "@/components/icons";
+import { Bookmark02Icon } from "@typebot.io/ui/icons/Bookmark02Icon";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { trpc } from "@/lib/queryClient";
 import { areThemesEqual } from "../helpers/areThemesEqual";
@@ -57,7 +57,7 @@ export const MyTemplates = ({
       {(!selectedTemplate ||
         !areThemesEqual(selectedTemplate?.theme, currentTheme)) && (
         <Button onClick={onOpen}>
-          <SaveIcon />
+          <Bookmark02Icon />
           {t("theme.sideMenu.template.myTemplates.saveTheme")}
         </Button>
       )}

@@ -1,7 +1,5 @@
-import { Icon, type IconProps } from "@chakra-ui/react";
-
-export const NextjsLogo = (props: IconProps) => (
-  <Icon
+export const NextjsLogo = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg
     aria-label="Next.js logomark"
     height="80"
     role="img"
@@ -58,5 +56,5 @@ export const NextjsLogo = (props: IconProps) => (
         <stop offset="1" stopColor="white" stopOpacity="0"></stop>
       </linearGradient>
     </defs>
-  </Icon>
+  </svg>
 );

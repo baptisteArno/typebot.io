@@ -16,7 +16,7 @@ export const InvalidReplyEventNode = ({ options }: Props) => {
 
   return (
     <HStack flex="1" align="flex-start" spacing={3} fontWeight="normal">
-      <EventIcon type={EventType.INVALID_REPLY} mt="5px" />
+      <EventIcon type={EventType.INVALID_REPLY} className="mt-1" />
       <Stack>
         <Text>{t("blocks.events.invalidReply.node.prefix")}</Text>
         {options?.contentVariableId ? (

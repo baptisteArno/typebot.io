@@ -1,6 +1,6 @@
 import { Flex, SlideFade, useColorModeValue } from "@chakra-ui/react";
 import { Button } from "@typebot.io/ui/components/Button";
-import { CloseIcon } from "@/components/icons";
+import { Cancel01Icon } from "@typebot.io/ui/icons/Cancel01Icon";
 import { useUser } from "@/features/user/hooks/useUser";
 import { onboardingVideos } from "../data";
 import { useOnboardingDisclosure } from "../hooks/useOnboardingDisclosure";
@@ -52,7 +52,7 @@ export const VideoOnboardingFloatingWindow = ({ type }: Props) => {
           className="size-8 rounded-full -right-3 -top-3 absolute"
           onClick={onClose}
         >
-          <CloseIcon />
+          <Cancel01Icon />
         </Button>
       </Flex>
     </SlideFade>

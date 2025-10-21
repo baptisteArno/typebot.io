@@ -1,11 +1,11 @@
-import { chakra, type IconProps } from "@chakra-ui/react";
+import { chakra } from "@chakra-ui/react";
 import { isSvgSrc } from "@typebot.io/lib/utils";
 import { cx } from "@typebot.io/ui/lib/cva";
 
 type Props = {
   icon?: string | null;
   size?: "sm" | "md" | "lg";
-  defaultIcon: (props: IconProps) => JSX.Element;
+  defaultIcon: (props: React.SVGProps<SVGSVGElement>) => JSX.Element;
 };
 
 export const EmojiOrImageIcon = ({ icon, size = "md", defaultIcon }: Props) => {

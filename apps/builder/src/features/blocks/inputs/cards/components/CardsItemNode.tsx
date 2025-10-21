@@ -8,12 +8,12 @@ import type {
 import type { CardsItem } from "@typebot.io/blocks-inputs/cards/schema";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Popover } from "@typebot.io/ui/components/Popover";
+import { Settings01Icon } from "@typebot.io/ui/icons/Settings01Icon";
 import { cn } from "@typebot.io/ui/lib/cn";
 import { cx } from "@typebot.io/ui/lib/cva";
 import { useState } from "react";
 import { ImageOrPlaceholder } from "@/components/ImageOrPlaceholder";
 import { ImageUploadContent } from "@/components/ImageUploadContent/ImageUploadContent";
-import { SettingsIcon } from "@/components/icons";
 import {
   MultiLineEditable,
   type MultiLineEditableProps,
@@ -263,7 +263,7 @@ export const CardsItemNode = ({
                   className="shadow-md"
                   onClick={() => setOpenedNodeId(item.id)}
                 >
-                  <SettingsIcon />
+                  <Settings01Icon />
                 </Button>
               </Flex>
             </SlideFade>

@@ -1,4 +1,3 @@
-import type { IconProps } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { Popover } from "@typebot.io/ui/components/Popover";
 import { Tooltip } from "@typebot.io/ui/components/Tooltip";
@@ -13,7 +12,7 @@ type Props = {
   icon?: string | null;
   onChangeIcon: (icon: string) => void;
   size?: "sm" | "md" | "lg";
-  defaultIcon: (props: IconProps) => JSX.Element;
+  defaultIcon: (props: React.SVGProps<SVGSVGElement>) => JSX.Element;
 };
 
 export const EditableEmojiOrImageIcon = ({

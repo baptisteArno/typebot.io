@@ -1,14 +1,13 @@
 import { Text, useDisclosure, VStack } from "@chakra-ui/react";
 import type { Plan } from "@typebot.io/prisma/enum";
 import { Button } from "@typebot.io/ui/components/Button";
-import { CodeIcon } from "@/components/icons";
+import { SourceCodeIcon } from "@typebot.io/ui/icons/SourceCodeIcon";
 import {
   WhatsAppLogo,
   whatsAppBrandColor,
 } from "@/components/logos/WhatsAppLogo";
 import { LockTag } from "@/features/billing/components/LockTag";
 import { hasProPerks } from "@/features/billing/helpers/hasProPerks";
-import { ScriptIcon } from "@/features/blocks/logic/script/components/ScriptIcon";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { ApiDeployDialog } from "./dialogs/ApiDeployDialog";
 import { BlinkDeployDialog } from "./dialogs/BlinkDeployDialog";
@@ -99,7 +98,10 @@ export const integrationsList = [
     return (
       <DeployButton
         logo={
-          <WhatsAppLogo height={100} width="60px" color={whatsAppBrandColor} />
+          <WhatsAppLogo
+            className="w-[60px] h-[100px]"
+            color={whatsAppBrandColor}
+          />
         }
         label="WhatsApp"
         lockTagPlan={hasProPerks(workspace) ? undefined : "PRO"}
@@ -112,7 +114,7 @@ export const integrationsList = [
   },
   (props: Pick<DialogProps, "publicId" | "isPublished">) => (
     <DeployButton
-      logo={<WordpressLogo height={100} width="70px" />}
+      logo={<WordpressLogo className="w-[70px] h-[100px]" />}
       label="Wordpress"
       dialog={({ onClose, isOpen }) => (
         <WordpressDeployDialog isOpen={isOpen} onClose={onClose} {...props} />
@@ -122,7 +124,7 @@ export const integrationsList = [
   ),
   (props: Pick<DialogProps, "publicId" | "isPublished">) => (
     <DeployButton
-      logo={<ShopifyLogo height={100} width="65px" />}
+      logo={<ShopifyLogo className="w-[65px] h-[100px]" />}
       label="Shopify"
       dialog={(dialogProps) => (
         <ShopifyDeployDialog {...dialogProps} {...props} />
@@ -132,7 +134,7 @@ export const integrationsList = [
   ),
   (props: Pick<DialogProps, "publicId" | "isPublished">) => (
     <DeployButton
-      logo={<WixLogo height={100} width="90px" />}
+      logo={<WixLogo className="w-[90px] h-[100px]" />}
       label="Wix"
       dialog={(dialogProps) => <WixDeployDialog {...dialogProps} {...props} />}
       {...props}
@@ -140,7 +142,7 @@ export const integrationsList = [
   ),
   (props: Pick<DialogProps, "publicId" | "isPublished">) => (
     <DeployButton
-      logo={<GtmLogo height={100} width="70px" />}
+      logo={<GtmLogo className="w-[70px] h-[100px]" />}
       label="Google Tag Manager"
       dialog={(dialogProps) => <GtmDeployDialog {...dialogProps} {...props} />}
       {...props}
@@ -148,7 +150,7 @@ export const integrationsList = [
   ),
   (props: Pick<DialogProps, "publicId" | "isPublished">) => (
     <DeployButton
-      logo={<JavascriptLogo height={100} width="70px" />}
+      logo={<JavascriptLogo className="w-[70px] h-[100px]" />}
       label="HTML & Javascript"
       dialog={(dialogProps) => (
         <JavascriptDeployDialog {...dialogProps} {...props} />
@@ -158,7 +160,7 @@ export const integrationsList = [
   ),
   (props: Pick<DialogProps, "publicId" | "isPublished">) => (
     <DeployButton
-      logo={<ReactLogo height={100} width="70px" />}
+      logo={<ReactLogo className="w-[70px] h-[100px]" />}
       label="React"
       dialog={(dialogProps) => (
         <ReactDeployDialog {...dialogProps} {...props} />
@@ -168,7 +170,7 @@ export const integrationsList = [
   ),
   (props: Pick<DialogProps, "publicId" | "isPublished">) => (
     <DeployButton
-      logo={<NextjsLogo height={100} width="70px" />}
+      logo={<NextjsLogo className="w-[70px] h-[100px]" />}
       label="Nextjs"
       dialog={(dialogProps) => (
         <NextjsDeployDialog {...dialogProps} {...props} />
@@ -178,7 +180,7 @@ export const integrationsList = [
   ),
   (props: Pick<DialogProps, "publicId" | "isPublished">) => (
     <DeployButton
-      logo={<CodeIcon height={100} width="60px" />}
+      logo={<SourceCodeIcon className="w-[60px] h-[100px]" />}
       label="API"
       dialog={(dialogProps) => <ApiDeployDialog {...dialogProps} {...props} />}
       {...props}
@@ -186,7 +188,7 @@ export const integrationsList = [
   ),
   (props: Pick<DialogProps, "publicId" | "isPublished">) => (
     <DeployButton
-      logo={<NotionLogo height={100} width="60px" />}
+      logo={<NotionLogo className="w-[60px] h-[100px]" />}
       label="Notion"
       dialog={(dialogProps) => (
         <NotionDeployDialog {...dialogProps} {...props} />
@@ -196,7 +198,7 @@ export const integrationsList = [
   ),
   (props: Pick<DialogProps, "publicId" | "isPublished">) => (
     <DeployButton
-      logo={<WebflowLogo height={100} width="70px" />}
+      logo={<WebflowLogo className="w-[70px] h-[100px]" />}
       label="Webflow"
       dialog={(dialogProps) => (
         <WebflowDeployDialog {...dialogProps} {...props} />
@@ -206,7 +208,7 @@ export const integrationsList = [
   ),
   (props: Pick<DialogProps, "publicId" | "isPublished">) => (
     <DeployButton
-      logo={<FlutterFlowLogo height={100} width="60px" />}
+      logo={<FlutterFlowLogo className="w-[60px] h-[100px]" />}
       label="FlutterFlow"
       dialog={(dialogProps) => (
         <FlutterFlowDeployDialog {...dialogProps} {...props} />
@@ -216,7 +218,7 @@ export const integrationsList = [
   ),
   (props: Pick<DialogProps, "publicId" | "isPublished">) => (
     <DeployButton
-      logo={<BlinkLogo height={100} width="100px" />}
+      logo={<BlinkLogo className="w-[100px] h-[100px]" />}
       label="Blink"
       dialog={(dialogProps) => (
         <BlinkDeployDialog {...dialogProps} {...props} />
@@ -226,7 +228,7 @@ export const integrationsList = [
   ),
   (props: Pick<DialogProps, "publicId" | "isPublished">) => (
     <DeployButton
-      logo={<FramerLogo height={100} width="60px" />}
+      logo={<FramerLogo className="w-[60px] h-[100px]" />}
       label="Framer"
       dialog={(dialogProps) => (
         <FramerDeployDialog {...dialogProps} {...props} />
@@ -236,7 +238,7 @@ export const integrationsList = [
   ),
   (props: Pick<DialogProps, "publicId" | "isPublished">) => (
     <DeployButton
-      logo={<ScriptIcon className="w-[70px] h-[100px] text-gray-11" />}
+      logo={<SourceCodeIcon className="w-[70px] h-[100px] text-gray-11" />}
       label="Script"
       dialog={(dialogProps) => (
         <ScriptDeployDialog {...dialogProps} {...props} />
@@ -246,7 +248,7 @@ export const integrationsList = [
   ),
   (props: Pick<DialogProps, "publicId" | "isPublished">) => (
     <DeployButton
-      logo={<IframeLogo height={100} width="70px" />}
+      logo={<IframeLogo className="w-[70px] h-[100px]" />}
       label="Iframe"
       dialog={(dialogProps) => (
         <IframeDeployDialog {...dialogProps} {...props} />

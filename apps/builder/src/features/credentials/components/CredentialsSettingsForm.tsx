@@ -3,7 +3,6 @@ import {
   Flex,
   Heading,
   HStack,
-  type IconProps,
   Skeleton,
   SkeletonCircle,
   Stack,
@@ -24,7 +23,7 @@ import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
 import { ArrowDown01Icon } from "@typebot.io/ui/icons/ArrowDown01Icon";
 import { Edit03Icon } from "@typebot.io/ui/icons/Edit03Icon";
 import { TrashIcon } from "@typebot.io/ui/icons/TrashIcon";
-import { useMemo, useRef, useState } from "react";
+import { type SVGProps, useMemo, useRef, useState } from "react";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { StripeLogo } from "@/components/logos/StripeLogo";
 import { WhatsAppLogo } from "@/components/logos/WhatsAppLogo";
@@ -125,7 +124,7 @@ export const CredentialsSettingsForm = () => {
                     setIsCreateDialogOpened(true);
                   }}
                 >
-                  <CredentialsIcon type={type} boxSize="16px" />
+                  <CredentialsIcon type={type} className="size-4" />
                   <CredentialsLabel type={type} />
                 </Menu.Item>
               ))}
@@ -144,7 +143,7 @@ export const CredentialsSettingsForm = () => {
             data-testid={type}
           >
             <HStack spacing="3">
-              <CredentialsIcon type={type} boxSize="24px" />
+              <CredentialsIcon type={type} className="size-6" />
               <CredentialsLabel type={type} fontWeight="medium" />
             </HStack>
             <Stack>
@@ -249,14 +248,14 @@ export const CredentialsSettingsForm = () => {
 const CredentialsIcon = ({
   type,
   ...props
-}: { type: Credentials["type"] } & IconProps) => {
+}: { type: Credentials["type"] } & SVGProps<SVGSVGElement>) => {
   switch (type) {
     case "google sheets":
       return <BlockIcon type={IntegrationBlockType.GOOGLE_SHEETS} {...props} />;
     case "smtp":
       return <BlockIcon type={IntegrationBlockType.EMAIL} {...props} />;
     case "stripe":
-      return <StripeLogo rounded="sm" {...props} />;
+      return <StripeLogo {...props} />;
     case "whatsApp":
       return <WhatsAppLogo {...props} />;
     case "http proxy":
