@@ -1,4 +1,4 @@
-import { chakra, useColorMode } from "@chakra-ui/react";
+import { useColorMode } from "@chakra-ui/react";
 import type { GroupV6 } from "@typebot.io/groups/schemas";
 import type {
   BlockSource,
@@ -34,15 +34,7 @@ export const Edges = ({
   const { connectingIds } = useGraph();
   const isDark = useColorMode().colorMode === "dark";
   return (
-    <chakra.svg
-      width="full"
-      height="full"
-      overflow="visible"
-      pos="absolute"
-      left="0"
-      top="0"
-      shapeRendering="geometricPrecision"
-    >
+    <svg className="absolute left-0 top-0 overflow-visible shape-geometric-precision size-full">
       {connectingIds && <DrawingEdge connectingIds={connectingIds} />}
       {edges.map((edge) => (
         <Edge
@@ -100,6 +92,6 @@ export const Edges = ({
           fill="var(--chakra-colors-orange-400)"
         />
       </marker>
-    </chakra.svg>
+    </svg>
   );
 };

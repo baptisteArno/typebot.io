@@ -1,11 +1,4 @@
-import {
-  chakra,
-  HStack,
-  Stack,
-  Tag,
-  type TagProps,
-  Text,
-} from "@chakra-ui/react";
+import { HStack, Stack, Tag, type TagProps, Text } from "@chakra-ui/react";
 import { isDefined } from "@typebot.io/lib/utils";
 import type { Log } from "@typebot.io/logs/schemas";
 import { Accordion } from "@typebot.io/ui/components/Accordion";
@@ -47,9 +40,7 @@ const LogCard = ({ log }: { log: Log }) => {
               <Stack>
                 <Text>
                   {log.context && (
-                    <chakra.span fontWeight="medium">
-                      {log.context}:
-                    </chakra.span>
+                    <span className="font-medium">{log.context}:</span>
                   )}{" "}
                   {log.description}
                 </Text>
@@ -64,9 +55,7 @@ const LogCard = ({ log }: { log: Log }) => {
     <HStack p="4" gap={3} alignItems="flex-start">
       <StatusTag status={log.status} flexShrink={0} mt={0.5} />
       <Text>
-        {log.context && (
-          <chakra.span fontWeight="medium">{log.context}:</chakra.span>
-        )}{" "}
+        {log.context && <span className="font-medium">{log.context}:</span>}{" "}
         {log.description}
       </Text>
     </HStack>

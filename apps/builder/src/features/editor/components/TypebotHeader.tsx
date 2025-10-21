@@ -1,5 +1,4 @@
 import {
-  chakra,
   Flex,
   HStack,
   type StackProps,
@@ -245,9 +244,9 @@ const LeftElements = ({
         )}
         <Button onClick={onHelpClick} variant="secondary" size="sm">
           <CustomerSupportIcon />
-          <chakra.span display={{ base: "none", xl: "inline" }}>
+          <span className="hidden xl:inline">
             {t("editor.header.helpButton.label")}
-          </chakra.span>
+          </span>
         </Button>
       </HStack>
       {isSavingLoading && (
@@ -296,9 +295,9 @@ const RightElements = ({
           disabled={isNotDefined(typebot) || isSavingLoading}
         >
           <PlayIcon />
-          <chakra.span display={{ base: "none", xl: "inline" }}>
+          <span className="hidden xl:inline">
             {t("editor.header.previewButton.label")}
-          </chakra.span>
+          </span>
         </Button>
       )}
       {currentUserMode === "guest" && (

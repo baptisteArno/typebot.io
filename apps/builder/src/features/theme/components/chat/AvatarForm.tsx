@@ -1,4 +1,4 @@
-import { Box, chakra, Flex, Stack } from "@chakra-ui/react";
+import { Box, Flex, Stack } from "@chakra-ui/react";
 import { isSvgSrc } from "@typebot.io/lib/utils";
 import type { AvatarProps } from "@typebot.io/theme/schemas";
 import { Field } from "@typebot.io/ui/components/Field";
@@ -71,15 +71,9 @@ export const AvatarForm = ({
                     className="cursor-pointer transition-filter duration-200 rounded-md hover:brightness-90 size-10 object-cover"
                   />
                 ) : (
-                  <chakra.span
-                    fontSize="40px"
-                    lineHeight="1"
-                    cursor="pointer"
-                    _hover={{ filter: "brightness(.9)" }}
-                    transition="filter 200ms"
-                  >
+                  <span className="text-4xl leading-none cursor-pointer transition-filter hover:brightness-90">
                     {avatarProps?.url}
-                  </chakra.span>
+                  </span>
                 )}
               </Popover.Trigger>
               <Popover.Popup className="w-[500px]">

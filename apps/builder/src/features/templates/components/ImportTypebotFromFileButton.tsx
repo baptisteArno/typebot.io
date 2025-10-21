@@ -1,4 +1,3 @@
-import { chakra } from "@chakra-ui/react";
 import { parseUnknownClientError } from "@typebot.io/lib/parseUnknownClientError";
 import type { Typebot } from "@typebot.io/typebot/schemas/typebot";
 import {
@@ -39,10 +38,10 @@ export const ImportTypebotFromFileButton = ({
 
   return (
     <>
-      <chakra.input
+      <input
         type="file"
         id="file-input"
-        display="none"
+        className="hidden"
         onChange={handleInputChange}
         accept=".json"
       />

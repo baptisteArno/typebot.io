@@ -1,4 +1,3 @@
-import { chakra } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
 import {
   type ButtonProps,
@@ -76,11 +75,11 @@ export const UploadButton = ({
 
   return (
     <>
-      <chakra.input
+      <input
         data-testid="file-upload-input"
         type="file"
         id={`file-input-${id}`}
-        display="none"
+        className="hidden"
         onChange={handleInputChange}
         accept={fileType === "image" ? "image/avif, image/*" : "audio/*"}
       />

@@ -1,4 +1,3 @@
-import { chakra } from "@chakra-ui/react";
 import { useCallback, useEffect } from "react";
 
 declare const window: {
@@ -40,13 +39,12 @@ export const YoutubeIframe = ({ id }: Props) => {
   }, [initPlayer]);
 
   return (
-    <chakra.iframe
+    <iframe
       id={id}
       src={`https://www.youtube.com/embed/${id}?autoplay=1&enablejsapi=1`}
       allowFullScreen
       allow="autoplay; fullscreen; picture-in-picture"
-      boxSize="full"
-      rounded="md"
+      className="size-full rounded-md"
     />
   );
 };

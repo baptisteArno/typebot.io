@@ -216,11 +216,9 @@ const UnsplashImage = ({ image, onClick }: UnsplashImageProps) => {
         transition="opacity .2s ease-in-out"
       >
         <TextLink
-          fontSize="xs"
+          className="text-xs text-white"
           isExternal
           href={`https://unsplash.com/@${user.username}?utm_source=${env.NEXT_PUBLIC_UNSPLASH_APP_NAME}&utm_medium=referral`}
-          noOfLines={1}
-          color="white"
         >
           {user.name}
         </TextLink>

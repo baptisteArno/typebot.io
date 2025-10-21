@@ -1,5 +1,4 @@
 import {
-  chakra,
   Heading,
   HStack,
   Stack,
@@ -208,7 +207,7 @@ export const TemplatesDialog = ({
             <Stack flex="1" spacing={4}>
               <Heading fontSize="2xl">
                 {selectedTemplate.emoji}{" "}
-                <chakra.span ml="2">{selectedTemplate.name}</chakra.span>
+                <span className="ml-2">{selectedTemplate.name}</span>
               </Heading>
               <Text>{selectedTemplate.description}</Text>
             </Stack>

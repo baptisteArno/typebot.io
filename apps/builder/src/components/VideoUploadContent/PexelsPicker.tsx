@@ -258,13 +258,7 @@ const PexelsVideo = ({ video, onClick }: PexelsVideoProps) => {
         opacity={isImageHovered ? 1 : 0}
         transition="opacity .2s ease-in-out"
       >
-        <TextLink
-          fontSize="xs"
-          isExternal
-          href={url}
-          noOfLines={1}
-          color="white"
-        >
+        <TextLink className="text-xs text-white" isExternal href={url}>
           {user.name}
         </TextLink>
       </Box>

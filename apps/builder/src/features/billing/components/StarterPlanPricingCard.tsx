@@ -1,5 +1,4 @@
 import {
-  chakra,
   Heading,
   HStack,
   Stack,
@@ -54,7 +53,7 @@ export const StarterPlanPricingCard = ({
               <T
                 keyName="billing.pricingCard.heading"
                 params={{
-                  strong: <chakra.span color="orange.400">Starter</chakra.span>,
+                  strong: <span className="text-orange-9">Starter</span>,
                 }}
               />
             </Heading>
@@ -62,9 +61,9 @@ export const StarterPlanPricingCard = ({
           </Stack>
           <Heading>
             {formatPrice(prices.STARTER, { currency })}
-            <chakra.span fontSize="md">
+            <span className="text-base">
               {t("billing.pricingCard.perMonth")}
-            </chakra.span>
+            </span>
           </Heading>
         </Stack>
 

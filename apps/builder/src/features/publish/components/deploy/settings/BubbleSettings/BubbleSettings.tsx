@@ -1,4 +1,4 @@
-import { chakra, Flex, Heading, HStack, Stack, Text } from "@chakra-ui/react";
+import { Flex, Heading, HStack, Stack, Text } from "@chakra-ui/react";
 import type { BubbleProps } from "@typebot.io/js";
 import { isLight } from "@typebot.io/lib/hexToRgb";
 import { isDefined, isSvgSrc } from "@typebot.io/lib/utils";
@@ -136,12 +136,13 @@ const BubbleIcon = ({
       />
     );
   return (
-    <chakra.span
-      transition="all 0.2s ease-in-out"
-      fontSize={buttonTheme.size === "large" ? "36px" : "24px"}
-      lineHeight={buttonTheme.size === "large" ? "40px" : "32px"}
+    <span
+      className={cx(
+        "transition-all ease-in-out",
+        buttonTheme.size === "large" ? "text-3xl" : "text-2xl",
+      )}
     >
       {buttonTheme.customIconSrc}
-    </chakra.span>
+    </span>
   );
 };

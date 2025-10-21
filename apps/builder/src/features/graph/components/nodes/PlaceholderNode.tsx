@@ -1,9 +1,4 @@
-import {
-  chakra,
-  Flex,
-  type FlexProps,
-  useColorModeValue,
-} from "@chakra-ui/react";
+import { Flex, type FlexProps, useColorModeValue } from "@chakra-ui/react";
 import { isDefined } from "@typebot.io/lib/utils";
 import type React from "react";
 import { forwardRef } from "react";
@@ -66,7 +61,7 @@ export const PlaceholderNode = forwardRef<HTMLDivElement, Props>(
         }
         {...props}
       >
-        {onClick && <chakra.span pos="absolute" w="full" left="0" zIndex={1} />}
+        {onClick && <span className="absolute left-0 z-1 w-full" />}
         <Flex
           bgColor={useColorModeValue("gray.200", "gray.800")}
           w="full"

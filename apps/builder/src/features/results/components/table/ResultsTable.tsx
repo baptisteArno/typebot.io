@@ -1,11 +1,4 @@
-import {
-  Box,
-  chakra,
-  HStack,
-  Stack,
-  Text,
-  useColorModeValue,
-} from "@chakra-ui/react";
+import { Box, HStack, Stack, Text } from "@chakra-ui/react";
 import {
   type ColumnDef,
   getCoreRowModel,
@@ -19,7 +12,6 @@ import type {
   TableData,
 } from "@typebot.io/results/schemas/results";
 import type { ResultsTablePreferences } from "@typebot.io/typebot/schemas/typebot";
-import { colors } from "@typebot.io/ui/chakraTheme";
 import { Button } from "@typebot.io/ui/components/Button";
 import { TextAlignLeftIcon } from "@typebot.io/ui/icons/TextAlignLeftIcon";
 import React, { useCallback, useEffect, useRef, useState } from "react";
@@ -57,7 +49,6 @@ export const ResultsTable = ({
   onLogOpenIndex,
   onResultExpandIndex,
 }: ResultsTableProps) => {
-  const background = useColorModeValue("white", colors.gray[900]);
   const { updateTypebot, currentUserMode } = useTypebot();
   const [rowSelection, setRowSelection] = useState<Record<string, boolean>>({});
   const bottomElement = useRef<HTMLDivElement | null>(null);
@@ -245,7 +236,7 @@ export const ResultsTable = ({
         />
       </HStack>
       <Box ref={tableWrapper} overflow="auto" data-testid="results-table">
-        <chakra.table background={background}>
+        <table className="bg-gray-1 border-separate border-spacing-0">
           <thead>
             {instance.getHeaderGroups().map((headerGroup) => (
               <HeaderRow key={headerGroup.id} headerGroup={headerGroup} />
@@ -274,7 +265,7 @@ export const ResultsTable = ({
               />
             )}
           </tbody>
-        </chakra.table>
+        </table>
       </Box>
     </Stack>
   );

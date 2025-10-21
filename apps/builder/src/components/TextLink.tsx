@@ -1,10 +1,20 @@
-import { chakra, HStack, type TextProps } from "@chakra-ui/react";
 import { ArrowUpRight01Icon } from "@typebot.io/ui/icons/ArrowUpRight01Icon";
-import Link, { type LinkProps } from "next/link";
+import { cx } from "@typebot.io/ui/lib/cva";
+import Link from "next/link";
 
-type TextLinkProps = LinkProps & TextProps & { isExternal?: boolean };
+type TextLinkProps = {
+  className?: string;
+  href: string;
+  shallow?: boolean;
+  replace?: boolean;
+  scroll?: boolean;
+  prefetch?: boolean;
+  isExternal?: boolean;
+  children?: React.ReactNode;
+};
 
 export const TextLink = ({
+  className,
   children,
   href,
   shallow,
@@ -12,8 +22,6 @@ export const TextLink = ({
   scroll,
   prefetch,
   isExternal,
-  noOfLines,
-  ...textProps
 }: TextLinkProps) => (
   <Link
     href={href}
@@ -23,17 +31,15 @@ export const TextLink = ({
     prefetch={prefetch}
     target={isExternal ? "_blank" : undefined}
   >
-    <chakra.span textDecor="underline" display="inline-block" {...textProps}>
+    <span className={cx("underline inline-block", className)}>
       {isExternal ? (
-        <HStack as="span" spacing={1}>
-          <chakra.span noOfLines={noOfLines} maxW="100%">
-            {children}
-          </chakra.span>
+        <span className="flex items-center gap-1">
+          <span className="line-clamp-1 max-w-full">{children}</span>
           <ArrowUpRight01Icon />
-        </HStack>
+        </span>
       ) : (
         children
       )}
-    </chakra.span>
+    </span>
   </Link>
 );

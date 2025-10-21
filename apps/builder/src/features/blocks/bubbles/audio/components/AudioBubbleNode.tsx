@@ -1,4 +1,4 @@
-import { chakra, Text } from "@chakra-ui/react";
+import { Text } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import type { AudioBubbleBlock } from "@typebot.io/blocks-bubbles/audio/schema";
 import { isDefined } from "@typebot.io/lib/utils";
@@ -20,7 +20,11 @@ export const AudioBubbleNode = ({ url }: Props) => {
         Play <VariableTag variableName={variable.name} />
       </Text>
     ) : (
-      <chakra.audio src={url} controls maxW="calc(100% - 25px)" rounded="md" />
+      <audio
+        src={url}
+        controls
+        className="rounded-md max-w-[calc(100% - 25px)]"
+      />
     )
   ) : (
     <Text color={"gray.500"}>{t("clickToEdit")}</Text>

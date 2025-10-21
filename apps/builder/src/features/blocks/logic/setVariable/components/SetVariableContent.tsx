@@ -1,4 +1,4 @@
-import { chakra, Stack, Tag, Text } from "@chakra-ui/react";
+import { Stack, Tag, Text } from "@chakra-ui/react";
 import type { SetVariableBlock } from "@typebot.io/blocks-logic/setVariable/schema";
 import { byId } from "@typebot.io/lib/utils";
 import type { Variable } from "@typebot.io/variables/schemas";
@@ -142,9 +142,9 @@ const CustomExpression = ({
     return (
       <Stack spacing={1}>
         <Text>{variableName} =</Text>
-        <chakra.pre bgColor="gray.100" rounded="md" p="2" noOfLines={6}>
+        <pre className="bg-gray-3 rounded-md p-2 line-clamp-6">
           {expression}
-        </chakra.pre>
+        </pre>
       </Stack>
     );
   return (

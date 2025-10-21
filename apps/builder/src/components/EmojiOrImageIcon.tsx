@@ -1,4 +1,3 @@
-import { chakra } from "@chakra-ui/react";
 import { isSvgSrc } from "@typebot.io/lib/utils";
 import { cx } from "@typebot.io/ui/lib/cva";
 
@@ -25,7 +24,7 @@ export const EmojiOrImageIcon = ({ icon, size = "md", defaultIcon }: Props) => {
             alt="typebot icon"
           />
         ) : (
-          <chakra.span
+          <span
             role="img"
             className={cx(
               size === "sm" && "text-xl",
@@ -34,7 +33,7 @@ export const EmojiOrImageIcon = ({ icon, size = "md", defaultIcon }: Props) => {
             )}
           >
             {icon}
-          </chakra.span>
+          </span>
         )
       ) : (
         defaultIcon({

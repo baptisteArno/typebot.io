@@ -1,5 +1,4 @@
 import {
-  chakra,
   Flex,
   Heading,
   HStack,
@@ -74,13 +73,7 @@ export const ProPlanPricingCard = ({
               <T
                 keyName="billing.pricingCard.heading"
                 params={{
-                  strong: (
-                    <chakra.span
-                      color={useColorModeValue("purple.400", "purple.300")}
-                    >
-                      Pro
-                    </chakra.span>
-                  ),
+                  strong: <span className="text-purple-900">Pro</span>,
                 }}
               />
             </Heading>
@@ -90,9 +83,9 @@ export const ProPlanPricingCard = ({
             <Stack spacing="4">
               <Heading>
                 {formatPrice(prices.PRO, { currency })}
-                <chakra.span fontSize="md">
+                <span className="text-base">
                   {t("billing.pricingCard.perMonth")}
-                </chakra.span>
+                </span>
               </Heading>
               <Text fontWeight="bold">
                 <Tooltip.Root>
