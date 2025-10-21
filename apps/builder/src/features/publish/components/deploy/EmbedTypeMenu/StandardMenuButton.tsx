@@ -1,20 +1,26 @@
-import { type StackProps, Text } from "@chakra-ui/react";
+import { Text } from "@chakra-ui/react";
 import type { ButtonProps } from "@typebot.io/ui/components/Button";
-import { MotionButton } from "@/components/MotionButton";
+import { Button } from "@typebot.io/ui/components/Button";
+import { motion } from "framer-motion";
 import { StandardIllustration } from "./illustrations/StandardIllustration";
 
-type Props = StackProps & Pick<ButtonProps, "disabled">;
-
-export const StandardMenuButton = (props: Props) => {
+export const StandardMenuButton = ({
+  className,
+  ...props
+}: Omit<ButtonProps, "render" | "size" | "variant" | "iconStyle">) => {
   return (
-    <MotionButton
+    <Button
       className="flex flex-col font-normal whitespace-normal gap-6 flex-1 h-60 items-center"
       variant="outline-secondary"
-      animate="default"
       size="lg"
       iconStyle="none"
-      whileHover="animateBubbles"
-      transition={{ staggerChildren: 0.1 }}
+      render={
+        <motion.button
+          animate="default"
+          whileHover="animateBubbles"
+          transition={{ staggerChildren: 0.1 }}
+        />
+      }
       {...props}
     >
       <StandardIllustration />
@@ -26,6 +32,6 @@ export const StandardMenuButton = (props: Props) => {
           Embed in a container on your site
         </Text>
       </div>
-    </MotionButton>
+    </Button>
   );
 };

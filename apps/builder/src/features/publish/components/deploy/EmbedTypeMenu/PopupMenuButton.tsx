@@ -1,20 +1,30 @@
-import { type StackProps, Text } from "@chakra-ui/react";
+import { Text } from "@chakra-ui/react";
 import type { ButtonProps } from "@typebot.io/ui/components/Button";
-import { MotionButton } from "@/components/MotionButton";
+import { Button } from "@typebot.io/ui/components/Button";
+import { cn } from "@typebot.io/ui/lib/cn";
+import { motion } from "framer-motion";
 import { PopupIllustration } from "./illustrations/PopupIllustration";
 
-type Props = StackProps & Pick<ButtonProps, "disabled">;
-
-export const PopupMenuButton = (props: Props) => {
+export const PopupMenuButton = ({
+  className,
+  ...props
+}: Omit<ButtonProps, "render" | "size" | "variant" | "iconStyle">) => {
   return (
-    <MotionButton
-      className="flex flex-col font-normal whitespace-normal gap-6 flex-1 h-60 items-center"
+    <Button
+      className={cn(
+        "flex flex-col font-normal whitespace-normal gap-6 flex-1 h-60 items-center",
+        className,
+      )}
       variant="outline-secondary"
       size="lg"
       iconStyle="none"
-      animate="default"
-      whileHover="animateBubbles"
-      transition={{ staggerChildren: 0.1 }}
+      render={
+        <motion.button
+          animate="default"
+          whileHover="animateBubbles"
+          transition={{ staggerChildren: 0.1 }}
+        />
+      }
       {...props}
     >
       <PopupIllustration />
@@ -26,6 +36,6 @@ export const PopupMenuButton = (props: Props) => {
           Embed in a popup on top of your website
         </Text>
       </div>
-    </MotionButton>
+    </Button>
   );
 };

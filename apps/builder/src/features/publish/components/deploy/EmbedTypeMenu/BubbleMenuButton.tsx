@@ -1,20 +1,29 @@
-import { type StackProps, Text } from "@chakra-ui/react";
-import type { ButtonProps } from "@typebot.io/ui/components/Button";
-import { MotionButton } from "@/components/MotionButton";
+import { Text } from "@chakra-ui/react";
+import { Button, type ButtonProps } from "@typebot.io/ui/components/Button";
+import { cn } from "@typebot.io/ui/lib/cn";
+import { motion } from "framer-motion";
 import { BubbleIllustration } from "./illustrations/BubbleIllustration";
 
-type Props = StackProps & Pick<ButtonProps, "disabled">;
-
-export const BubbleMenuButton = (props: Props) => {
+export const BubbleMenuButton = ({
+  className,
+  ...props
+}: Omit<ButtonProps, "render" | "size" | "variant" | "iconStyle">) => {
   return (
-    <MotionButton
-      className="flex flex-col font-normal whitespace-normal gap-6 flex-1 h-60 items-center"
+    <Button
+      className={cn(
+        "flex flex-col font-normal whitespace-normal gap-6 flex-1 h-60 items-center",
+        className,
+      )}
       variant="outline-secondary"
       size="lg"
       iconStyle="none"
-      animate="default"
-      whileHover="animateBubbles"
-      transition={{ staggerChildren: 0.1 }}
+      render={
+        <motion.button
+          animate="default"
+          whileHover="animateBubbles"
+          transition={{ staggerChildren: 0.1 }}
+        />
+      }
       {...props}
     >
       <BubbleIllustration />
@@ -26,6 +35,6 @@ export const BubbleMenuButton = (props: Props) => {
           Embed in a chat bubble
         </Text>
       </div>
-    </MotionButton>
+    </Button>
   );
 };
