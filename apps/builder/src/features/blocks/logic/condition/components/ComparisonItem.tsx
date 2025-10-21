@@ -4,7 +4,7 @@ import { ComparisonOperators } from "@typebot.io/conditions/constants";
 import type { Comparison } from "@typebot.io/conditions/schemas";
 import type { Variable } from "@typebot.io/variables/schemas";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
-import { TextInput } from "@/components/inputs/TextInput";
+import { DebouncedTextInputWithVariablesButton } from "@/components/inputs/DebouncedTextInput";
 import { VariablesCombobox } from "@/components/inputs/VariablesCombobox";
 import type { TableListItemProps } from "@/components/TableList";
 
@@ -46,9 +46,9 @@ export const ComparisonItem = ({
       />
       {item.comparisonOperator !== ComparisonOperators.IS_SET &&
         item.comparisonOperator !== ComparisonOperators.IS_EMPTY && (
-          <TextInput
+          <DebouncedTextInputWithVariablesButton
             defaultValue={item.value ?? ""}
-            onChange={handleChangeValue}
+            onValueChange={handleChangeValue}
             placeholder={parseValuePlaceholder(item.comparisonOperator)}
           />
         )}

@@ -2,7 +2,7 @@ import { Stack } from "@chakra-ui/react";
 import type { RowsFilterComparison } from "@typebot.io/blocks-integrations/googleSheets/schema";
 import { ComparisonOperators } from "@typebot.io/conditions/constants";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
-import { TextInput } from "@/components/inputs/TextInput";
+import { DebouncedTextInputWithVariablesButton } from "@/components/inputs/DebouncedTextInput";
 import type { TableListItemProps } from "@/components/TableList";
 
 export const RowsFilterComparisonItem = ({
@@ -43,9 +43,9 @@ export const RowsFilterComparisonItem = ({
       />
       {item.comparisonOperator !== ComparisonOperators.IS_SET &&
         item.comparisonOperator !== ComparisonOperators.IS_EMPTY && (
-          <TextInput
+          <DebouncedTextInputWithVariablesButton
             defaultValue={item.value ?? ""}
-            onChange={handleChangeValue}
+            onValueChange={handleChangeValue}
             placeholder="Type a value..."
           />
         )}

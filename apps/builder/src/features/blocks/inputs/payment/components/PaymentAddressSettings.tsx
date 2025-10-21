@@ -1,7 +1,8 @@
 import { useTranslate } from "@tolgee/react";
 import type { PaymentAddress } from "@typebot.io/blocks-inputs/payment/schema";
 import { Accordion } from "@typebot.io/ui/components/Accordion";
-import { TextInput } from "@/components/inputs/TextInput";
+import { Field } from "@typebot.io/ui/components/Field";
+import { DebouncedTextInputWithVariablesButton } from "@/components/inputs/DebouncedTextInput";
 
 type Props = {
   address: PaymentAddress;
@@ -54,40 +55,64 @@ export const PaymentAddressSettings = ({ address, onAddressChange }: Props) => {
           {t("blocks.inputs.payment.settings.address.label")}
         </Accordion.Trigger>
         <Accordion.Panel>
-          <TextInput
-            label={t("blocks.inputs.payment.settings.address.country.label")}
-            defaultValue={address?.country ?? ""}
-            onChange={updateCountry}
-          />
-          <TextInput
-            label={t("blocks.inputs.payment.settings.address.line.label", {
-              line: "1",
-            })}
-            defaultValue={address?.line1 ?? ""}
-            onChange={updateLine1}
-          />
-          <TextInput
-            label={t("blocks.inputs.payment.settings.address.line.label", {
-              line: "2",
-            })}
-            defaultValue={address?.line2 ?? ""}
-            onChange={updateLine2}
-          />
-          <TextInput
-            label={t("blocks.inputs.payment.settings.address.city.label")}
-            defaultValue={address?.city ?? ""}
-            onChange={updateCity}
-          />
-          <TextInput
-            label={t("blocks.inputs.payment.settings.address.state.label")}
-            defaultValue={address?.state ?? ""}
-            onChange={updateState}
-          />
-          <TextInput
-            label={t("blocks.inputs.payment.settings.address.postalCode.label")}
-            defaultValue={address?.postalCode ?? ""}
-            onChange={updatePostalCode}
-          />
+          <Field.Root>
+            <Field.Label>
+              {t("blocks.inputs.payment.settings.address.country.label")}
+            </Field.Label>
+            <DebouncedTextInputWithVariablesButton
+              defaultValue={address?.country ?? ""}
+              onValueChange={updateCountry}
+            />
+          </Field.Root>
+          <Field.Root>
+            <Field.Label>
+              {t("blocks.inputs.payment.settings.address.line.label", {
+                line: "1",
+              })}
+            </Field.Label>
+            <DebouncedTextInputWithVariablesButton
+              defaultValue={address?.line1 ?? ""}
+              onValueChange={updateLine1}
+            />
+          </Field.Root>
+          <Field.Root>
+            <Field.Label>
+              {t("blocks.inputs.payment.settings.address.line.label", {
+                line: "2",
+              })}
+            </Field.Label>
+            <DebouncedTextInputWithVariablesButton
+              defaultValue={address?.line2 ?? ""}
+              onValueChange={updateLine2}
+            />
+          </Field.Root>
+          <Field.Root>
+            <Field.Label>
+              {t("blocks.inputs.payment.settings.address.city.label")}
+            </Field.Label>
+            <DebouncedTextInputWithVariablesButton
+              defaultValue={address?.city ?? ""}
+              onValueChange={updateCity}
+            />
+          </Field.Root>
+          <Field.Root>
+            <Field.Label>
+              {t("blocks.inputs.payment.settings.address.state.label")}
+            </Field.Label>
+            <DebouncedTextInputWithVariablesButton
+              defaultValue={address?.state ?? ""}
+              onValueChange={updateState}
+            />
+          </Field.Root>
+          <Field.Root>
+            <Field.Label>
+              {t("blocks.inputs.payment.settings.address.postalCode.label")}
+            </Field.Label>
+            <DebouncedTextInputWithVariablesButton
+              defaultValue={address?.postalCode ?? ""}
+              onValueChange={updatePostalCode}
+            />
+          </Field.Root>
         </Accordion.Panel>
       </Accordion.Item>
     </Accordion.Root>

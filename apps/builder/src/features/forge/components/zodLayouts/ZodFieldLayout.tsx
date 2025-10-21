@@ -16,7 +16,10 @@ import {
   DebouncedTextarea,
   DebouncedTextareaWithVariablesButton,
 } from "@/components/inputs/DebouncedTextarea";
-import { TextInput } from "@/components/inputs/TextInput";
+import {
+  DebouncedTextInput,
+  DebouncedTextInputWithVariablesButton,
+} from "@/components/inputs/DebouncedTextInput";
 import { VariablesCombobox } from "@/components/inputs/VariablesCombobox";
 import { PrimitiveList } from "@/components/PrimitiveList";
 import { TableList } from "@/components/TableList";
@@ -340,22 +343,62 @@ export const ZodFieldLayout = ({
             )}
           </Field.Root>
         );
-      return (
-        <TextInput
+      if (layout?.label || layout?.moreInfoTooltip || layout?.helperText) {
+        return (
+          <Field.Root>
+            {layout?.label && (
+              <Field.Label>
+                {layout.label}
+                {layout.moreInfoTooltip && (
+                  <MoreInfoTooltip>{layout.moreInfoTooltip}</MoreInfoTooltip>
+                )}
+              </Field.Label>
+            )}
+            {layout?.withVariableButton !== false ? (
+              <DebouncedTextInputWithVariablesButton
+                defaultValue={data ?? layout?.defaultValue}
+                placeholder={layout?.placeholder}
+                type={layout?.inputType === "password" ? "password" : undefined}
+                onValueChange={onDataChange}
+                className={width === "full" ? "w-full" : undefined}
+                debounceTimeout={layout?.isDebounceDisabled ? 0 : undefined}
+              />
+            ) : (
+              <DebouncedTextInput
+                defaultValue={data ?? layout?.defaultValue}
+                placeholder={layout?.placeholder}
+                type={layout?.inputType === "password" ? "password" : undefined}
+                onValueChange={onDataChange}
+                className={width === "full" ? "w-full" : undefined}
+                debounceTimeout={layout?.isDebounceDisabled ? 0 : undefined}
+              />
+            )}
+            {layout?.helperText && (
+              <Field.Description>
+                <Markdown components={mdComponents}>
+                  {layout.helperText}
+                </Markdown>
+              </Field.Description>
+            )}
+          </Field.Root>
+        );
+      }
+      return layout?.withVariableButton !== false ? (
+        <DebouncedTextInputWithVariablesButton
           defaultValue={data ?? layout?.defaultValue}
-          label={layout?.label}
           placeholder={layout?.placeholder}
-          helperText={
-            layout?.helperText ? (
-              <Markdown components={mdComponents}>{layout.helperText}</Markdown>
-            ) : undefined
-          }
           type={layout?.inputType === "password" ? "password" : undefined}
-          isRequired={layout?.isRequired}
-          withVariableButton={layout?.withVariableButton}
-          moreInfoTooltip={layout?.moreInfoTooltip}
-          onChange={onDataChange}
-          width={width}
+          onValueChange={onDataChange}
+          className={width === "full" ? "w-full" : undefined}
+          debounceTimeout={layout?.isDebounceDisabled ? 0 : undefined}
+        />
+      ) : (
+        <DebouncedTextInput
+          defaultValue={data ?? layout?.defaultValue}
+          placeholder={layout?.placeholder}
+          type={layout?.inputType === "password" ? "password" : undefined}
+          onValueChange={onDataChange}
+          className={width === "full" ? "w-full" : undefined}
           debounceTimeout={layout?.isDebounceDisabled ? 0 : undefined}
         />
       );

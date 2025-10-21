@@ -20,7 +20,7 @@ import type { Variable } from "@typebot.io/variables/schemas";
 import { useEffect } from "react";
 import { BasicNumberInput } from "@/components/inputs/BasicNumberInput";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
-import { TextInput } from "@/components/inputs/TextInput";
+import { DebouncedTextInputWithVariablesButton } from "@/components/inputs/DebouncedTextInput";
 import { VariablesCombobox } from "@/components/inputs/VariablesCombobox";
 import { currencies } from "../../payment/currencies";
 
@@ -83,18 +83,26 @@ export const NumberInputSettings = ({ options, onOptionsChange }: Props) => {
 
   return (
     <Stack spacing={4}>
-      <TextInput
-        label={t("blocks.inputs.settings.placeholder.label")}
-        defaultValue={
-          options?.labels?.placeholder ?? defaultNumberInputPlaceholder
-        }
-        onChange={handlePlaceholderChange}
-      />
-      <TextInput
-        label={t("blocks.inputs.settings.button.label")}
-        defaultValue={options?.labels?.button ?? defaultNumberInputButtonLabel}
-        onChange={handleButtonLabelChange}
-      />
+      <Field.Root>
+        <Field.Label>
+          {t("blocks.inputs.settings.placeholder.label")}
+        </Field.Label>
+        <DebouncedTextInputWithVariablesButton
+          defaultValue={
+            options?.labels?.placeholder ?? defaultNumberInputPlaceholder
+          }
+          onValueChange={handlePlaceholderChange}
+        />
+      </Field.Root>
+      <Field.Root>
+        <Field.Label>{t("blocks.inputs.settings.button.label")}</Field.Label>
+        <DebouncedTextInputWithVariablesButton
+          defaultValue={
+            options?.labels?.button ?? defaultNumberInputButtonLabel
+          }
+          onValueChange={handleButtonLabelChange}
+        />
+      </Field.Root>
       <Field.Root>
         <Field.Label>{t("blocks.inputs.settings.min.label")}</Field.Label>
         <BasicNumberInput
@@ -169,12 +177,16 @@ export const NumberInputSettings = ({ options, onOptionsChange }: Props) => {
               <FormLabel>
                 {t("blocks.inputs.number.settings.locale.label")}
               </FormLabel>
-              <TextInput
-                defaultValue={options?.locale}
-                helperText={t("blocks.inputs.number.settings.locale.helper")}
-                placeholder="en-US"
-                onChange={handleLocaleChange}
-              />
+              <Field.Root>
+                <DebouncedTextInputWithVariablesButton
+                  defaultValue={options?.locale}
+                  placeholder="en-US"
+                  onValueChange={handleLocaleChange}
+                />
+                <Field.Description>
+                  {t("blocks.inputs.number.settings.locale.helper")}
+                </Field.Description>
+              </Field.Root>
             </FormControl>
           </Accordion.Panel>
         </Accordion.Item>

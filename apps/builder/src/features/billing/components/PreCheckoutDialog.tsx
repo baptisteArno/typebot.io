@@ -5,11 +5,12 @@ import { taxIdTypes } from "@typebot.io/billing/taxIdTypes";
 import { isDefined } from "@typebot.io/lib/utils";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
+import { Field } from "@typebot.io/ui/components/Field";
 import { useRouter } from "next/router";
 import type { FormEvent } from "react";
 import React, { useState } from "react";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
-import { TextInput } from "@/components/inputs/TextInput";
+import { DebouncedTextInput } from "@/components/inputs/DebouncedTextInput";
 import { trpc } from "@/lib/queryClient";
 
 export type PreCheckoutDialogProps = {
@@ -116,23 +117,27 @@ export const PreCheckoutDialog = ({
     <Dialog.Root isOpen={isDefined(selectedSubscription)} onClose={onClose}>
       <Dialog.Popup render={<form onSubmit={goToCheckout} />}>
         <Stack spacing="4">
-          <TextInput
-            isRequired
-            label={t("billing.preCheckoutModal.companyInput.label")}
-            defaultValue={customer.company}
-            onChange={updateCustomerCompany}
-            withVariableButton={false}
-            debounceTimeout={0}
-          />
-          <TextInput
-            isRequired
-            type="email"
-            label={t("billing.preCheckoutModal.emailInput.label")}
-            defaultValue={customer.email}
-            onChange={updateCustomerEmail}
-            withVariableButton={false}
-            debounceTimeout={0}
-          />
+          <Field.Root>
+            <Field.Label>
+              {t("billing.preCheckoutModal.companyInput.label")}
+            </Field.Label>
+            <DebouncedTextInput
+              defaultValue={customer.company}
+              onValueChange={updateCustomerCompany}
+              debounceTimeout={0}
+            />
+          </Field.Root>
+          <Field.Root>
+            <Field.Label>
+              {t("billing.preCheckoutModal.emailInput.label")}
+            </Field.Label>
+            <DebouncedTextInput
+              type="email"
+              defaultValue={customer.email}
+              onValueChange={updateCustomerEmail}
+              debounceTimeout={0}
+            />
+          </Field.Root>
           <FormControl>
             <FormLabel>{t("billing.preCheckoutModal.taxId.label")}</FormLabel>
             <HStack>
@@ -142,14 +147,12 @@ export const PreCheckoutDialog = ({
                 items={vatCodeLabels}
                 onChange={updateVatCode}
               />
-              <TextInput
+              <DebouncedTextInput
                 ref={vatValueInputRef}
-                onChange={updateVatValue}
-                withVariableButton={false}
+                onValueChange={updateVatValue}
                 debounceTimeout={0}
                 placeholder={vatValuePlaceholder}
-                flexShrink={0}
-                className="flex-1"
+                className="flex-1 flex-shrink-0"
               />
             </HStack>
           </FormControl>

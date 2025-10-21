@@ -3,10 +3,12 @@ import type { CreatableCredentials } from "@typebot.io/credentials/schemas";
 import type { ForgedBlockDefinition } from "@typebot.io/forge-repository/definitions";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
+import { Field } from "@typebot.io/ui/components/Field";
+import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
 import { z } from "@typebot.io/zod";
 import type React from "react";
 import { useEffect, useState } from "react";
-import { TextInput } from "@/components/inputs/TextInput";
+import { DebouncedTextInput } from "@/components/inputs/DebouncedTextInput";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { trpc } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
@@ -103,16 +105,18 @@ export const ForgedCredentialsUpdateDialogContent = ({
   return (
     <Dialog.Popup render={<form onSubmit={updateCredentials} />}>
       <Dialog.Title>Update {blockDef.auth.name}</Dialog.Title>
-      <TextInput
-        isRequired
-        label="Label"
-        moreInfoTooltip={`Choose a name to identify this ${blockDef.auth.name}`}
-        defaultValue={name}
-        onChange={setName}
-        placeholder="My account"
-        withVariableButton={false}
-        debounceTimeout={0}
-      />
+      <Field.Root>
+        <Field.Label>
+          Label
+          <MoreInfoTooltip>{`Choose a name to identify this ${blockDef.auth.name}`}</MoreInfoTooltip>
+        </Field.Label>
+        <DebouncedTextInput
+          defaultValue={name}
+          onValueChange={setName}
+          placeholder="My account"
+          debounceTimeout={0}
+        />
+      </Field.Root>
       {data && (
         <ZodObjectLayout
           schema={

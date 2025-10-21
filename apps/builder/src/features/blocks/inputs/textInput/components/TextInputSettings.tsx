@@ -9,7 +9,7 @@ import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
 import { Switch } from "@typebot.io/ui/components/Switch";
 import type { Variable } from "@typebot.io/variables/schemas";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
-import { TextInput } from "@/components/inputs/TextInput";
+import { DebouncedTextInputWithVariablesButton } from "@/components/inputs/DebouncedTextInput";
 import { VariablesCombobox } from "@/components/inputs/VariablesCombobox";
 
 type Props = {
@@ -91,21 +91,27 @@ export const TextInputSettings = ({ options, onOptionsChange }: Props) => {
           {t("blocks.inputs.text.settings.longText.label")}
         </Field.Label>
       </Field.Root>
-      <TextInput
-        label={t("blocks.inputs.settings.placeholder.label")}
-        defaultValue={
-          options?.labels?.placeholder ??
-          defaultTextInputOptions.labels.placeholder
-        }
-        onChange={updatePlaceholder}
-      />
-      <TextInput
-        label={t("blocks.inputs.settings.button.label")}
-        defaultValue={
-          options?.labels?.button ?? defaultTextInputOptions.labels.button
-        }
-        onChange={updateButtonLabel}
-      />
+      <Field.Root>
+        <Field.Label>
+          {t("blocks.inputs.settings.placeholder.label")}
+        </Field.Label>
+        <DebouncedTextInputWithVariablesButton
+          defaultValue={
+            options?.labels?.placeholder ??
+            defaultTextInputOptions.labels.placeholder
+          }
+          onValueChange={updatePlaceholder}
+        />
+      </Field.Root>
+      <Field.Root>
+        <Field.Label>{t("blocks.inputs.settings.button.label")}</Field.Label>
+        <DebouncedTextInputWithVariablesButton
+          defaultValue={
+            options?.labels?.button ?? defaultTextInputOptions.labels.button
+          }
+          onValueChange={updateButtonLabel}
+        />
+      </Field.Root>
       <Stack>
         <FormLabel mb="0" htmlFor="input-mode">
           Input mode

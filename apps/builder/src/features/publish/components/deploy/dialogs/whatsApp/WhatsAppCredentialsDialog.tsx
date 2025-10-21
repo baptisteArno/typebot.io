@@ -30,11 +30,12 @@ import { parseUnknownClientError } from "@typebot.io/lib/parseUnknownClientError
 import { isEmpty, isNotEmpty } from "@typebot.io/lib/utils";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
+import { Field } from "@typebot.io/ui/components/Field";
 import { useState } from "react";
 import { ButtonLink } from "@/components/ButtonLink";
 import { ChevronLeftIcon, ExternalLinkIcon } from "@/components/icons";
 import { CopyInput } from "@/components/inputs/CopyInput";
-import { TextInput } from "@/components/inputs/TextInput";
+import { DebouncedTextInput } from "@/components/inputs/DebouncedTextInput";
 import { Dialog360Logo } from "@/components/logos/Dialog360Logo";
 import { MetaLogo } from "@/components/logos/MetaLogo";
 import { TextLink } from "@/components/TextLink";
@@ -467,15 +468,15 @@ const SystemUserToken = ({
       </Stack>
     </ListItem>
     <ListItem>Copy and paste the generated token:</ListItem>
-    <TextInput
-      isRequired
-      type="password"
-      label="System User Token"
-      defaultValue={initialToken}
-      onChange={(val) => setToken(val.trim())}
-      withVariableButton={false}
-      debounceTimeout={0}
-    />
+    <Field.Root>
+      <Field.Label>System User Token</Field.Label>
+      <DebouncedTextInput
+        type="password"
+        defaultValue={initialToken}
+        onValueChange={(val) => setToken(val.trim())}
+        debounceTimeout={0}
+      />
+    </Field.Root>
   </OrderedList>
 );
 
@@ -515,14 +516,14 @@ const PhoneNumber = ({
           <Code>Phone number ID</Code>
         </Text>
         <HStack>
-          <TextInput
-            label="Phone number ID"
-            defaultValue={initialPhoneNumberId}
-            withVariableButton={false}
-            debounceTimeout={0}
-            isRequired
-            onChange={setPhoneNumberId}
-          />
+          <Field.Root>
+            <Field.Label>Phone number ID</Field.Label>
+            <DebouncedTextInput
+              defaultValue={initialPhoneNumberId}
+              debounceTimeout={0}
+              onValueChange={setPhoneNumberId}
+            />
+          </Field.Root>
         </HStack>
         <img
           src="/images/whatsapp-phone-selection.png"
@@ -654,22 +655,24 @@ const Dialog360PhoneNumber = ({
   setApiKey: (apiKey: string) => void;
 }) => (
   <Stack spacing={4}>
-    <TextInput
-      isRequired
-      label="Phone number"
-      defaultValue={initialPhoneNumber}
-      onChange={(val) => setPhoneNumber(val.trim())}
-      withVariableButton={false}
-      debounceTimeout={0}
-      placeholder="+1234567890"
-    />
-    <TextInput
-      isRequired
-      type="password"
-      label="API Key"
-      defaultValue={initialApiKey}
-      onChange={(val) => setApiKey(val.trim())}
-      helperText={
+    <Field.Root>
+      <Field.Label>Phone number</Field.Label>
+      <DebouncedTextInput
+        defaultValue={initialPhoneNumber}
+        onValueChange={(val) => setPhoneNumber(val.trim())}
+        debounceTimeout={0}
+        placeholder="+1234567890"
+      />
+    </Field.Root>
+    <Field.Root>
+      <Field.Label>API Key</Field.Label>
+      <DebouncedTextInput
+        type="password"
+        defaultValue={initialApiKey}
+        onValueChange={(val) => setApiKey(val.trim())}
+        debounceTimeout={0}
+      />
+      <Field.Description>
         <Text>
           You can find this in your{" "}
           <TextLink href="https://hub.360dialog.com/" isExternal>
@@ -677,10 +680,8 @@ const Dialog360PhoneNumber = ({
           </TextLink>
           .
         </Text>
-      }
-      withVariableButton={false}
-      debounceTimeout={0}
-    />
+      </Field.Description>
+    </Field.Root>
   </Stack>
 );
 

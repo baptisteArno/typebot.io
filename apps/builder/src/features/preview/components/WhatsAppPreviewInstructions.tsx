@@ -9,11 +9,12 @@ import { useMutation } from "@tanstack/react-query";
 import { isEmpty } from "@typebot.io/lib/utils";
 import { Alert } from "@typebot.io/ui/components/Alert";
 import { Button } from "@typebot.io/ui/components/Button";
+import { Field } from "@typebot.io/ui/components/Field";
 import { CheckmarkSquare02Icon } from "@typebot.io/ui/icons/CheckmarkSquare02Icon";
 import { type FormEvent, useState } from "react";
 import { ButtonLink } from "@/components/ButtonLink";
 import { BuoyIcon, ExternalLinkIcon } from "@/components/icons";
-import { TextInput } from "@/components/inputs/TextInput";
+import { DebouncedTextInput } from "@/components/inputs/DebouncedTextInput";
 import { useEditor } from "@/features/editor/providers/EditorProvider";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { trpc } from "@/lib/queryClient";
@@ -86,15 +87,16 @@ export const WhatsAppPreviewInstructions = (props: StackProps) => {
           Check the docs
         </ButtonLink>
       </HStack>
-      <TextInput
-        label="Your phone number"
-        placeholder="+XXXXXXXXXXXX"
-        type="tel"
-        withVariableButton={false}
-        debounceTimeout={0}
-        defaultValue={phoneNumber}
-        onChange={setPhoneNumber}
-      />
+      <Field.Root>
+        <Field.Label>Your phone number</Field.Label>
+        <DebouncedTextInput
+          placeholder="+XXXXXXXXXXXX"
+          type="tel"
+          debounceTimeout={0}
+          defaultValue={phoneNumber}
+          onValueChange={setPhoneNumber}
+        />
+      </Field.Root>
       {!isMessageSent && (
         <Button
           disabled={isEmpty(phoneNumber) || isMessageSent || isSendingMessage}

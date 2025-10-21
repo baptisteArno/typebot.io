@@ -2,8 +2,9 @@ import { Box, Stack } from "@chakra-ui/react";
 import type { GoogleAnalyticsBlock } from "@typebot.io/blocks-integrations/googleAnalytics/schema";
 import { Accordion } from "@typebot.io/ui/components/Accordion";
 import { Field } from "@typebot.io/ui/components/Field";
+import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
 import { BasicNumberInput } from "@/components/inputs/BasicNumberInput";
-import { TextInput } from "@/components/inputs/TextInput";
+import { DebouncedTextInputWithVariablesButton } from "@/components/inputs/DebouncedTextInput";
 
 type Props = {
   options?: GoogleAnalyticsBlock["options"];
@@ -39,19 +40,28 @@ export const GoogleAnalyticsSettings = ({
 
   return (
     <Stack spacing={4}>
-      <TextInput
-        label="Measurement ID:"
-        moreInfoTooltip="Can be found by clicking on your data stream in Google Analytics dashboard"
-        defaultValue={options?.trackingId}
-        placeholder="G-123456..."
-        onChange={updateTrackingId}
-      />
-      <TextInput
-        label="Event action:"
-        defaultValue={options?.action}
-        placeholder="Example: conversion"
-        onChange={updateAction}
-      />
+      <Field.Root>
+        <Field.Label>
+          Measurement ID:
+          <MoreInfoTooltip>
+            Can be found by clicking on your data stream in Google Analytics
+            dashboard
+          </MoreInfoTooltip>
+        </Field.Label>
+        <DebouncedTextInputWithVariablesButton
+          defaultValue={options?.trackingId}
+          placeholder="G-123456..."
+          onValueChange={updateTrackingId}
+        />
+      </Field.Root>
+      <Field.Root>
+        <Field.Label>Event action:</Field.Label>
+        <DebouncedTextInputWithVariablesButton
+          defaultValue={options?.action}
+          placeholder="Example: conversion"
+          onValueChange={updateAction}
+        />
+      </Field.Root>
       <Accordion.Root>
         <Accordion.Item>
           <Accordion.Trigger>
@@ -60,18 +70,22 @@ export const GoogleAnalyticsSettings = ({
             </Box>
           </Accordion.Trigger>
           <Accordion.Panel>
-            <TextInput
-              label="Event category:"
-              defaultValue={options?.category}
-              placeholder="Example: Typebot"
-              onChange={updateCategory}
-            />
-            <TextInput
-              label="Event label:"
-              defaultValue={options?.label}
-              placeholder="Example: Campaign Z"
-              onChange={updateLabel}
-            />
+            <Field.Root>
+              <Field.Label>Event category:</Field.Label>
+              <DebouncedTextInputWithVariablesButton
+                defaultValue={options?.category}
+                placeholder="Example: Typebot"
+                onValueChange={updateCategory}
+              />
+            </Field.Root>
+            <Field.Root>
+              <Field.Label>Event label:</Field.Label>
+              <DebouncedTextInputWithVariablesButton
+                defaultValue={options?.label}
+                placeholder="Example: Campaign Z"
+                onValueChange={updateLabel}
+              />
+            </Field.Root>
             <Field.Root>
               <Field.Label>Event value:</Field.Label>
               <BasicNumberInput
@@ -80,13 +94,19 @@ export const GoogleAnalyticsSettings = ({
                 placeholder="Example: 0"
               />
             </Field.Root>
-            <TextInput
-              label="Send to:"
-              moreInfoTooltip="Useful to send a conversion event to Google Ads"
-              defaultValue={options?.sendTo?.toString()}
-              placeholder="Example: AW-123456789"
-              onChange={updateSendTo}
-            />
+            <Field.Root>
+              <Field.Label>
+                Send to:
+                <MoreInfoTooltip>
+                  Useful to send a conversion event to Google Ads
+                </MoreInfoTooltip>
+              </Field.Label>
+              <DebouncedTextInputWithVariablesButton
+                defaultValue={options?.sendTo?.toString()}
+                placeholder="Example: AW-123456789"
+                onValueChange={updateSendTo}
+              />
+            </Field.Root>
           </Accordion.Panel>
         </Accordion.Item>
       </Accordion.Root>

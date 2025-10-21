@@ -13,7 +13,7 @@ import { ConfirmDialog } from "@/components/ConfirmDialog";
 import { EditableEmojiOrImageIcon } from "@/components/EditableEmojiOrImageIcon";
 import { HardDriveIcon } from "@/components/icons";
 import { CopyInput } from "@/components/inputs/CopyInput";
-import { TextInput } from "@/components/inputs/TextInput";
+import { DebouncedTextInput } from "@/components/inputs/DebouncedTextInput";
 import { useWorkspace } from "../WorkspaceProvider";
 
 export const WorkspaceSettingsForm = ({ onClose }: { onClose: () => void }) => {
@@ -54,12 +54,13 @@ export const WorkspaceSettingsForm = ({ onClose }: { onClose: () => void }) => {
       </FormControl>
       {workspace && (
         <>
-          <TextInput
-            label={t("workspace.settings.name.label")}
-            withVariableButton={false}
-            defaultValue={workspace?.name}
-            onChange={handleNameChange}
-          />
+          <Field.Root>
+            <Field.Label>{t("workspace.settings.name.label")}</Field.Label>
+            <DebouncedTextInput
+              defaultValue={workspace?.name}
+              onValueChange={handleNameChange}
+            />
+          </Field.Root>
           <Field.Root>
             <Field.Label>ID:</Field.Label>
             <CopyInput value={workspace.id} />

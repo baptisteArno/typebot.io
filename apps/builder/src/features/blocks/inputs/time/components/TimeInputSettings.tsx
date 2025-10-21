@@ -3,8 +3,9 @@ import { useTranslate } from "@tolgee/react";
 import { defaultTimeInputOptions } from "@typebot.io/blocks-inputs/time/constants";
 import type { TimeInputBlock } from "@typebot.io/blocks-inputs/time/schema";
 import { Field } from "@typebot.io/ui/components/Field";
+import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
 import type { Variable } from "@typebot.io/variables/schemas";
-import { TextInput } from "@/components/inputs/TextInput";
+import { DebouncedTextInputWithVariablesButton } from "@/components/inputs/DebouncedTextInput";
 import { VariablesCombobox } from "@/components/inputs/VariablesCombobox";
 
 type Props = {
@@ -28,22 +29,29 @@ export const TimeInputSettings = ({ options, onOptionsChange }: Props) => {
 
   return (
     <Stack spacing={4}>
-      <TextInput
-        label={t("blocks.inputs.date.settings.format.label")}
-        defaultValue={options?.format ?? defaultTimeInputOptions.format}
-        moreInfoTooltip={`
-					Unicode Technical Standard #35 (i.e. for 24h format: HH:mm, for AM/PM format: hh:mm a)
-				`}
-        placeholder={defaultTimeInputOptions.format}
-        onChange={updateFormat}
-      />
-      <TextInput
-        label={t("blocks.inputs.settings.button.label")}
-        defaultValue={
-          options?.labels?.button ?? defaultTimeInputOptions.labels.button
-        }
-        onChange={updateButtonLabel}
-      />
+      <Field.Root>
+        <Field.Label>
+          {t("blocks.inputs.date.settings.format.label")}
+          <MoreInfoTooltip>
+            Unicode Technical Standard #35 (i.e. for 24h format: HH:mm, for
+            AM/PM format: hh:mm a)
+          </MoreInfoTooltip>
+        </Field.Label>
+        <DebouncedTextInputWithVariablesButton
+          defaultValue={options?.format ?? defaultTimeInputOptions.format}
+          placeholder={defaultTimeInputOptions.format}
+          onValueChange={updateFormat}
+        />
+      </Field.Root>
+      <Field.Root>
+        <Field.Label>{t("blocks.inputs.settings.button.label")}</Field.Label>
+        <DebouncedTextInputWithVariablesButton
+          defaultValue={
+            options?.labels?.button ?? defaultTimeInputOptions.labels.button
+          }
+          onValueChange={updateButtonLabel}
+        />
+      </Field.Root>
       <Field.Root>
         <Field.Label>
           {t("blocks.inputs.settings.saveAnswer.label")}

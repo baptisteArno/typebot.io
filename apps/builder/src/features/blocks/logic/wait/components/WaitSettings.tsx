@@ -5,7 +5,7 @@ import { Accordion } from "@typebot.io/ui/components/Accordion";
 import { Field } from "@typebot.io/ui/components/Field";
 import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
 import { Switch } from "@typebot.io/ui/components/Switch";
-import { TextInput } from "@/components/inputs/TextInput";
+import { DebouncedTextInputWithVariablesButton } from "@/components/inputs/DebouncedTextInput";
 
 type Props = {
   options: WaitBlock["options"];
@@ -23,11 +23,13 @@ export const WaitSettings = ({ options, onOptionsChange }: Props) => {
 
   return (
     <Stack spacing={4}>
-      <TextInput
-        label="Seconds to wait for:"
-        defaultValue={options?.secondsToWaitFor}
-        onChange={handleSecondsChange}
-      />
+      <Field.Root>
+        <Field.Label>Seconds to wait for:</Field.Label>
+        <DebouncedTextInputWithVariablesButton
+          defaultValue={options?.secondsToWaitFor}
+          onValueChange={handleSecondsChange}
+        />
+      </Field.Root>
       <Accordion.Root>
         <Accordion.Item>
           <Accordion.Trigger>Advanced</Accordion.Trigger>

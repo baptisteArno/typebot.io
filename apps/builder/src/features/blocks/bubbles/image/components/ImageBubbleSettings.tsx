@@ -7,7 +7,7 @@ import { Field } from "@typebot.io/ui/components/Field";
 import { Switch } from "@typebot.io/ui/components/Switch";
 import { useState } from "react";
 import { ImageUploadContent } from "@/components/ImageUploadContent";
-import { TextInput } from "@/components/inputs/TextInput";
+import { DebouncedTextInputWithVariablesButton } from "@/components/inputs/DebouncedTextInput";
 import type { FilePathUploadProps } from "@/features/upload/api/generateUploadUrl";
 
 type Props = {
@@ -75,17 +75,17 @@ export const ImageBubbleSettings = ({
         </Field.Root>
         {showClickLinkInput && (
           <>
-            <TextInput
+            <DebouncedTextInputWithVariablesButton
               autoFocus
               placeholder="https://example.com"
-              onChange={updateClickLinkUrl}
+              onValueChange={updateClickLinkUrl}
               defaultValue={block.content?.clickLink?.url}
             />
-            <TextInput
+            <DebouncedTextInputWithVariablesButton
               placeholder={t(
                 "editor.blocks.bubbles.image.switchWithLabel.onClick.placeholder",
               )}
-              onChange={updateClickLinkAltText}
+              onValueChange={updateClickLinkAltText}
               defaultValue={
                 block.content?.clickLink?.alt ??
                 defaultImageBubbleContent.clickLink.alt

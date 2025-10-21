@@ -5,9 +5,10 @@ import type { StripeCredentials } from "@typebot.io/credentials/schemas";
 import { isNotEmpty } from "@typebot.io/lib/utils";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
+import { Field } from "@typebot.io/ui/components/Field";
 import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
 import { useEffect, useState } from "react";
-import { TextInput } from "@/components/inputs/TextInput";
+import { DebouncedTextInput } from "@/components/inputs/DebouncedTextInput";
 import { TextLink } from "@/components/TextLink";
 import { useUser } from "@/features/user/hooks/useUser";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
@@ -125,17 +126,17 @@ export const UpdateStripeCredentialsDialogBody = ({
   return (
     <Dialog.Popup render={<form onSubmit={updateCreds} />}>
       <Stack as="form" spacing={4}>
-        <TextInput
-          isRequired
-          label={t(
-            "blocks.inputs.payment.settings.stripeConfig.accountName.label",
-          )}
-          defaultValue={stripeConfig?.name}
-          onChange={handleNameChange}
-          placeholder="Typebot"
-          withVariableButton={false}
-          debounceTimeout={0}
-        />
+        <Field.Root>
+          <Field.Label>
+            {t("blocks.inputs.payment.settings.stripeConfig.accountName.label")}
+          </Field.Label>
+          <DebouncedTextInput
+            defaultValue={stripeConfig?.name}
+            onValueChange={handleNameChange}
+            placeholder="Typebot"
+            debounceTimeout={0}
+          />
+        </Field.Root>
         <Stack>
           <FormLabel>
             {t("blocks.inputs.payment.settings.stripeConfig.testKeys.label")}
@@ -146,17 +147,15 @@ export const UpdateStripeCredentialsDialogBody = ({
             </MoreInfoTooltip>
           </FormLabel>
           <HStack>
-            <TextInput
-              onChange={handleTestPublicKeyChange}
+            <DebouncedTextInput
+              onValueChange={handleTestPublicKeyChange}
               placeholder="pk_test_..."
-              withVariableButton={false}
               defaultValue={stripeConfig?.test?.publicKey}
               debounceTimeout={0}
             />
-            <TextInput
-              onChange={handleTestSecretKeyChange}
+            <DebouncedTextInput
+              onValueChange={handleTestSecretKeyChange}
               placeholder="sk_test_..."
-              withVariableButton={false}
               debounceTimeout={0}
               defaultValue={stripeConfig?.test?.secretKey}
               type="password"
@@ -169,19 +168,17 @@ export const UpdateStripeCredentialsDialogBody = ({
           </FormLabel>
           <HStack>
             <FormControl>
-              <TextInput
-                onChange={handlePublicKeyChange}
+              <DebouncedTextInput
+                onValueChange={handlePublicKeyChange}
                 placeholder="pk_live_..."
-                withVariableButton={false}
                 defaultValue={stripeConfig?.live?.publicKey}
                 debounceTimeout={0}
               />
             </FormControl>
             <FormControl>
-              <TextInput
-                onChange={handleSecretKeyChange}
+              <DebouncedTextInput
+                onValueChange={handleSecretKeyChange}
                 placeholder="sk_live_..."
-                withVariableButton={false}
                 defaultValue={stripeConfig?.live?.secretKey}
                 debounceTimeout={0}
                 type="password"

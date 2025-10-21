@@ -4,7 +4,7 @@ import { defaultUrlInputOptions } from "@typebot.io/blocks-inputs/url/constants"
 import type { UrlInputBlock } from "@typebot.io/blocks-inputs/url/schema";
 import { Field } from "@typebot.io/ui/components/Field";
 import type { Variable } from "@typebot.io/variables/schemas";
-import { TextInput } from "@/components/inputs/TextInput";
+import { DebouncedTextInputWithVariablesButton } from "@/components/inputs/DebouncedTextInput";
 import { VariablesCombobox } from "@/components/inputs/VariablesCombobox";
 
 type Props = {
@@ -28,29 +28,39 @@ export const UrlInputSettings = ({ options, onOptionsChange }: Props) => {
 
   return (
     <Stack spacing={4}>
-      <TextInput
-        label={t("blocks.inputs.settings.placeholder.label")}
-        defaultValue={
-          options?.labels?.placeholder ??
-          defaultUrlInputOptions.labels.placeholder
-        }
-        onChange={handlePlaceholderChange}
-      />
-      <TextInput
-        label={t("blocks.inputs.settings.button.label")}
-        defaultValue={
-          options?.labels?.button ?? defaultUrlInputOptions.labels.button
-        }
-        onChange={handleButtonLabelChange}
-      />
-      <TextInput
-        label={t("blocks.inputs.settings.retryMessage.label")}
-        defaultValue={
-          options?.retryMessageContent ??
-          defaultUrlInputOptions.retryMessageContent
-        }
-        onChange={handleRetryMessageChange}
-      />
+      <Field.Root>
+        <Field.Label>
+          {t("blocks.inputs.settings.placeholder.label")}
+        </Field.Label>
+        <DebouncedTextInputWithVariablesButton
+          defaultValue={
+            options?.labels?.placeholder ??
+            defaultUrlInputOptions.labels.placeholder
+          }
+          onValueChange={handlePlaceholderChange}
+        />
+      </Field.Root>
+      <Field.Root>
+        <Field.Label>{t("blocks.inputs.settings.button.label")}</Field.Label>
+        <DebouncedTextInputWithVariablesButton
+          defaultValue={
+            options?.labels?.button ?? defaultUrlInputOptions.labels.button
+          }
+          onValueChange={handleButtonLabelChange}
+        />
+      </Field.Root>
+      <Field.Root>
+        <Field.Label>
+          {t("blocks.inputs.settings.retryMessage.label")}
+        </Field.Label>
+        <DebouncedTextInputWithVariablesButton
+          defaultValue={
+            options?.retryMessageContent ??
+            defaultUrlInputOptions.retryMessageContent
+          }
+          onValueChange={handleRetryMessageChange}
+        />
+      </Field.Root>
       <Field.Root>
         <Field.Label>
           {t("blocks.inputs.settings.saveAnswer.label")}

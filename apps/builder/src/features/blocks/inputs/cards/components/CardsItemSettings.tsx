@@ -4,8 +4,9 @@ import type { CardsItem } from "@typebot.io/blocks-inputs/cards/schema";
 import { LogicalOperator } from "@typebot.io/conditions/constants";
 import type { Condition } from "@typebot.io/conditions/schemas";
 import { Field } from "@typebot.io/ui/components/Field";
+import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
 import { Switch } from "@typebot.io/ui/components/Switch";
-import { TextInput } from "@/components/inputs/TextInput";
+import { DebouncedTextInputWithVariablesButton } from "@/components/inputs/DebouncedTextInput";
 import { ConditionForm } from "@/features/blocks/logic/condition/components/ConditionForm";
 
 type Props = {
@@ -64,14 +65,18 @@ export const CardsItemSettings = ({ options, onSettingsChange }: Props) => {
           />
         )}
       </Field.Container>
-      <TextInput
-        label={t("blocks.inputs.internalValue.label")}
-        moreInfoTooltip={t(
-          "blocks.inputs.button.buttonSettings.internalValue.helperText",
-        )}
-        defaultValue={options?.internalValue ?? undefined}
-        onChange={updateButtonValue}
-      />
+      <Field.Root>
+        <Field.Label>
+          {t("blocks.inputs.internalValue.label")}
+          <MoreInfoTooltip>
+            {t("blocks.inputs.button.buttonSettings.internalValue.helperText")}
+          </MoreInfoTooltip>
+        </Field.Label>
+        <DebouncedTextInputWithVariablesButton
+          defaultValue={options?.internalValue ?? undefined}
+          onValueChange={updateButtonValue}
+        />
+      </Field.Root>
     </Stack>
   );
 };

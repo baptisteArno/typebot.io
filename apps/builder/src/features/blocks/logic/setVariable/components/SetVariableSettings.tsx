@@ -21,7 +21,7 @@ import type { Variable } from "@typebot.io/variables/schemas";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { CodeEditor } from "@/components/inputs/CodeEditor";
 import { DebouncedTextareaWithVariablesButton } from "@/components/inputs/DebouncedTextarea";
-import { TextInput } from "@/components/inputs/TextInput";
+import { DebouncedTextInput } from "@/components/inputs/DebouncedTextInput";
 import { VariablesCombobox } from "@/components/inputs/VariablesCombobox";
 import { WhatsAppLogo } from "@/components/logos/WhatsAppLogo";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
@@ -261,11 +261,10 @@ const SetVariableValue = ({
             </RadioGroup>
             {options?.isCode ? (
               <Stack>
-                <TextInput
+                <DebouncedTextInput
                   placeholder="Code description"
                   defaultValue={options?.expressionDescription}
-                  onChange={updateExpressionDescription}
-                  withVariableButton={false}
+                  onValueChange={updateExpressionDescription}
                 />
                 <CodeEditor
                   defaultValue={options?.expressionToEvaluate ?? ""}

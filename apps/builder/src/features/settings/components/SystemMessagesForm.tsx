@@ -8,7 +8,10 @@ import {
   DebouncedTextarea,
   DebouncedTextareaWithVariablesButton,
 } from "@/components/inputs/DebouncedTextarea";
-import { TextInput } from "@/components/inputs/TextInput";
+import {
+  DebouncedTextInput,
+  DebouncedTextInputWithVariablesButton,
+} from "@/components/inputs/DebouncedTextInput";
 
 type Props = {
   systemMessages?: SystemMessages;
@@ -124,14 +127,18 @@ export const SystemMessagesForm = ({
           )}
         />
       </Field.Root>
-      <TextInput
-        label={t(
-          "settings.sideMenu.general.systemMessages.networkErrorTitle.label",
-        )}
-        defaultValue={systemMessages?.networkErrorTitle}
-        placeholder={defaultSystemMessages.networkErrorTitle}
-        onChange={updateOfflineErrorTitle}
-      />
+      <Field.Root>
+        <Field.Label>
+          {t(
+            "settings.sideMenu.general.systemMessages.networkErrorTitle.label",
+          )}
+        </Field.Label>
+        <DebouncedTextInputWithVariablesButton
+          defaultValue={systemMessages?.networkErrorTitle}
+          placeholder={defaultSystemMessages.networkErrorTitle}
+          onValueChange={updateOfflineErrorTitle}
+        />
+      </Field.Root>
       <Field.Root>
         <Field.Label>
           {t(
@@ -149,14 +156,18 @@ export const SystemMessagesForm = ({
           )}
         />
       </Field.Root>
-      <TextInput
-        label={t(
-          "settings.sideMenu.general.systemMessages.popupBlockedTitle.label",
-        )}
-        defaultValue={systemMessages?.popupBlockedTitle}
-        placeholder={defaultSystemMessages.popupBlockedTitle}
-        onChange={updatePopupBlockedTitle}
-      />
+      <Field.Root>
+        <Field.Label>
+          {t(
+            "settings.sideMenu.general.systemMessages.popupBlockedTitle.label",
+          )}
+        </Field.Label>
+        <DebouncedTextInputWithVariablesButton
+          defaultValue={systemMessages?.popupBlockedTitle}
+          placeholder={defaultSystemMessages.popupBlockedTitle}
+          onValueChange={updatePopupBlockedTitle}
+        />
+      </Field.Root>
       <Field.Root>
         <Field.Label>
           {t(
@@ -174,15 +185,18 @@ export const SystemMessagesForm = ({
           )}
         />
       </Field.Root>
-      <TextInput
-        label={t(
-          "settings.sideMenu.general.systemMessages.popupBlockedButton.label",
-        )}
-        defaultValue={systemMessages?.popupBlockedButtonLabel}
-        placeholder={defaultSystemMessages.popupBlockedButtonLabel}
-        onChange={updatePopupBlockedButtonLabel}
-        withVariableButton={false}
-      />
+      <Field.Root>
+        <Field.Label>
+          {t(
+            "settings.sideMenu.general.systemMessages.popupBlockedButton.label",
+          )}
+        </Field.Label>
+        <DebouncedTextInput
+          defaultValue={systemMessages?.popupBlockedButtonLabel}
+          placeholder={defaultSystemMessages.popupBlockedButtonLabel}
+          onValueChange={updatePopupBlockedButtonLabel}
+        />
+      </Field.Root>
       <Field.Root>
         <Field.Label>
           {t("settings.sideMenu.general.systemMessages.botClosed.label")}
@@ -235,15 +249,18 @@ export const SystemMessagesForm = ({
           )}
         />
       </Field.Root>
-      <TextInput
-        label={t(
-          "settings.sideMenu.general.systemMessages.whatsAppPictureChoiceSelectLabel.label",
-        )}
-        defaultValue={systemMessages?.whatsAppPictureChoiceSelectLabel}
-        placeholder={defaultSystemMessages.whatsAppPictureChoiceSelectLabel}
-        onChange={updateWhatsAppPictureChoiceSelectLabel}
-        withVariableButton={false}
-      />
+      <Field.Root>
+        <Field.Label>
+          {t(
+            "settings.sideMenu.general.systemMessages.whatsAppPictureChoiceSelectLabel.label",
+          )}
+        </Field.Label>
+        <DebouncedTextInput
+          defaultValue={systemMessages?.whatsAppPictureChoiceSelectLabel}
+          placeholder={defaultSystemMessages.whatsAppPictureChoiceSelectLabel}
+          onValueChange={updateWhatsAppPictureChoiceSelectLabel}
+        />
+      </Field.Root>
     </Stack>
   );
 };

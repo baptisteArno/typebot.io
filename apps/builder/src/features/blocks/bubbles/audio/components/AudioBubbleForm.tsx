@@ -7,7 +7,7 @@ import { Field } from "@typebot.io/ui/components/Field";
 import { Switch } from "@typebot.io/ui/components/Switch";
 import { useState } from "react";
 import { UploadButton } from "@/components/ImageUploadContent/UploadButton";
-import { TextInput } from "@/components/inputs/TextInput";
+import { DebouncedTextInputWithVariablesButton } from "@/components/inputs/DebouncedTextInput";
 import type { FilePathUploadProps } from "@/features/upload/api/generateUploadUrl";
 
 type Props = {
@@ -62,12 +62,12 @@ export const AudioBubbleForm = ({
           )}
           {currentTab === "link" && (
             <>
-              <TextInput
+              <DebouncedTextInputWithVariablesButton
                 placeholder={t(
                   "editor.blocks.bubbles.audio.settings.worksWith.placeholder",
                 )}
                 defaultValue={content?.url ?? ""}
-                onChange={updateUrl}
+                onValueChange={updateUrl}
               />
               <Text fontSize="sm" color="gray.400" textAlign="center">
                 {t("editor.blocks.bubbles.audio.settings.worksWith.text")}

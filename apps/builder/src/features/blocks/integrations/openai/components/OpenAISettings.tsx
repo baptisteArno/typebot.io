@@ -10,8 +10,9 @@ import type {
   OpenAIBlock,
 } from "@typebot.io/blocks-integrations/openai/schema";
 import { Accordion } from "@typebot.io/ui/components/Accordion";
+import { Field } from "@typebot.io/ui/components/Field";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
-import { TextInput } from "@/components/inputs/TextInput";
+import { DebouncedTextInputWithVariablesButton } from "@/components/inputs/DebouncedTextInput";
 import { CredentialsDropdown } from "@/features/credentials/components/CredentialsDropdown";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { OpenAICreateSpeechSettings } from "./audio/OpenAICreateSpeechSettings";
@@ -87,17 +88,21 @@ export const OpenAISettings = ({
             <Accordion.Item>
               <Accordion.Trigger>Customize provider</Accordion.Trigger>
               <Accordion.Panel>
-                <TextInput
-                  label="Base URL"
-                  defaultValue={baseUrl}
-                  onChange={updateBaseUrl}
-                />
-                {baseUrl !== defaultOpenAIOptions.baseUrl && (
-                  <TextInput
-                    label="API version"
-                    defaultValue={options.apiVersion}
-                    onChange={updateApiVersion}
+                <Field.Root>
+                  <Field.Label>Base URL</Field.Label>
+                  <DebouncedTextInputWithVariablesButton
+                    defaultValue={baseUrl}
+                    onValueChange={updateBaseUrl}
                   />
+                </Field.Root>
+                {baseUrl !== defaultOpenAIOptions.baseUrl && (
+                  <Field.Root>
+                    <Field.Label>API version</Field.Label>
+                    <DebouncedTextInputWithVariablesButton
+                      defaultValue={options.apiVersion}
+                      onValueChange={updateApiVersion}
+                    />
+                  </Field.Root>
                 )}
               </Accordion.Panel>
             </Accordion.Item>

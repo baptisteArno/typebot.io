@@ -4,8 +4,9 @@ import { useTranslate } from "@tolgee/react";
 import type { ThemeTemplate } from "@typebot.io/theme/schemas";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
+import { Field } from "@typebot.io/ui/components/Field";
 import { type FormEvent, useRef, useState } from "react";
-import { TextInput } from "@/components/inputs/TextInput";
+import { DebouncedTextInput } from "@/components/inputs/DebouncedTextInput";
 import { queryClient, trpc } from "@/lib/queryClient";
 
 type Props = {
@@ -73,16 +74,18 @@ export const SaveThemeDialog = ({
         </Dialog.Title>
         <Dialog.CloseButton />
 
-        <TextInput
-          ref={inputRef}
-          label={t("theme.sideMenu.template.myTemplates.saveTheme.name")}
-          defaultValue={selectedTemplate?.name}
-          withVariableButton={false}
-          placeholder={t(
-            "theme.sideMenu.template.myTemplates.saveTheme.myTemplate",
-          )}
-          isRequired
-        />
+        <Field.Root>
+          <Field.Label>
+            {t("theme.sideMenu.template.myTemplates.saveTheme.name")}
+          </Field.Label>
+          <DebouncedTextInput
+            ref={inputRef}
+            defaultValue={selectedTemplate?.name}
+            placeholder={t(
+              "theme.sideMenu.template.myTemplates.saveTheme.myTemplate",
+            )}
+          />
+        </Field.Root>
         <Dialog.Footer>
           {selectedTemplate?.id && (
             <Button

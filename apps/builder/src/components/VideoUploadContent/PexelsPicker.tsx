@@ -21,7 +21,7 @@ import {
 } from "pexels";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { BasicSelect } from "../inputs/BasicSelect";
-import { TextInput } from "../inputs/TextInput";
+import { DebouncedTextInput } from "../inputs/DebouncedTextInput";
 import { PexelsLogo } from "../logos/PexelsLogo";
 import { TextLink } from "../TextLink";
 
@@ -131,17 +131,14 @@ export const PexelsPicker = ({ onVideoSelect }: Props) => {
       <Stack>
         <HStack align="flex-start">
           <Stack>
-            <TextInput
+            <DebouncedTextInput
               autoFocus
               placeholder="Search..."
-              onChange={(query) => {
+              onValueChange={(query) => {
                 setSearchQuery(query);
                 fetchNewVideos(query, 0, { orientation, size });
               }}
-              withVariableButton={false}
               debounceTimeout={500}
-              forceDebounce
-              width="full"
             />
           </Stack>
           <a target="_blank" href={`https://www.pexels.com`} rel="noopener">

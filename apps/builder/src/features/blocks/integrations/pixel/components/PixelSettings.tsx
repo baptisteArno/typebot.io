@@ -11,7 +11,10 @@ import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
 import { Switch } from "@typebot.io/ui/components/Switch";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { CodeEditor } from "@/components/inputs/CodeEditor";
-import { TextInput } from "@/components/inputs/TextInput";
+import {
+  DebouncedTextInput,
+  DebouncedTextInputWithVariablesButton,
+} from "@/components/inputs/DebouncedTextInput";
 import { TableList } from "@/components/TableList";
 import { TextLink } from "@/components/TextLink";
 
@@ -69,10 +72,9 @@ export const PixelSettings = ({ options, onOptionsChange }: Props) => {
 
   return (
     <Stack spacing={4}>
-      <TextInput
+      <DebouncedTextInput
         defaultValue={options?.pixelId ?? ""}
-        onChange={updatePixelId}
-        withVariableButton={false}
+        onValueChange={updatePixelId}
         placeholder='Pixel ID (e.g. "123456789")'
       />
       <Field.Root className="flex-row items-center">
@@ -112,9 +114,9 @@ export const PixelSettings = ({ options, onOptionsChange }: Props) => {
               onChange={updateEventType}
             />
             {options?.eventType === "Custom" && (
-              <TextInput
+              <DebouncedTextInputWithVariablesButton
                 defaultValue={options.name ?? ""}
-                onChange={updateEventName}
+                onValueChange={updateEventName}
                 placeholder="Event name"
               />
             )}
@@ -175,9 +177,9 @@ const ParamItem = ({ item, eventType, onItemChange }: ParamItemProps) => {
   return (
     <Stack p="4" rounded="md" flex="1" borderWidth="1px">
       {eventType === "Custom" ? (
-        <TextInput
+        <DebouncedTextInputWithVariablesButton
           defaultValue={item.key}
-          onChange={updateKey}
+          onValueChange={updateKey}
           placeholder="Key"
         />
       ) : (
@@ -195,9 +197,9 @@ const ParamItem = ({ item, eventType, onItemChange }: ParamItemProps) => {
           onChange={updateValue}
         />
       ) : (
-        <TextInput
+        <DebouncedTextInputWithVariablesButton
           defaultValue={item.value}
-          onChange={updateValue}
+          onValueChange={updateValue}
           placeholder="Value"
         />
       )}

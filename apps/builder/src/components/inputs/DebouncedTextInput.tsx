@@ -1,7 +1,7 @@
 import type { ChangeEventDetails } from "@typebot.io/ui/components/Field";
 import { Input, type InputProps } from "@typebot.io/ui/components/Input";
 import { cn } from "@typebot.io/ui/lib/cn";
-import { useRef } from "react";
+import { forwardRef, useRef } from "react";
 import { VariablesButton } from "@/features/variables/components/VariablesButton";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useInjectableInputValue } from "@/hooks/useInjectableInputValue";
@@ -11,26 +11,26 @@ type Props = Omit<InputProps, "defaultValue"> & {
   debounceTimeout?: number;
 };
 
-export const DebouncedTextInput = ({
-  debounceTimeout = 1000,
-  ...props
-}: Props) => {
-  const commitValue = useDebounce(
-    (value: string, eventDetails: ChangeEventDetails) => {
-      props.onValueChange?.(value, eventDetails);
-    },
-    debounceTimeout,
-  );
+export const DebouncedTextInput = forwardRef<HTMLInputElement, Props>(
+  ({ debounceTimeout = 1000, ...props }, ref) => {
+    const commitValue = useDebounce(
+      (value: string, eventDetails: ChangeEventDetails) => {
+        props.onValueChange?.(value, eventDetails);
+      },
+      debounceTimeout,
+    );
 
-  return (
-    <Input
-      {...props}
-      onValueChange={(value, eventDetails) => {
-        commitValue(value, eventDetails);
-      }}
-    />
-  );
-};
+    return (
+      <Input
+        {...props}
+        ref={ref}
+        onValueChange={(value, eventDetails) => {
+          commitValue(value, eventDetails);
+        }}
+      />
+    );
+  },
+);
 
 export const DebouncedTextInputWithVariablesButton = ({
   debounceTimeout = 1000,
@@ -58,7 +58,7 @@ export const DebouncedTextInputWithVariablesButton = ({
   );
 
   return (
-    <div className="relative">
+    <div className="relative w-full">
       <Input
         {...props}
         value={value}

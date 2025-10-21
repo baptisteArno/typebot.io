@@ -9,9 +9,11 @@ import {
 import { useMutation, useQuery } from "@tanstack/react-query";
 import type { ForgedBlockDefinition } from "@typebot.io/forge-repository/definitions";
 import { Button } from "@typebot.io/ui/components/Button";
+import { Field } from "@typebot.io/ui/components/Field";
+import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
 import { useEffect, useState } from "react";
 import { CopyInput } from "@/components/inputs/CopyInput";
-import { TextInput } from "@/components/inputs/TextInput";
+import { DebouncedTextInput } from "@/components/inputs/DebouncedTextInput";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { queryClient, trpc } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
@@ -124,15 +126,18 @@ export const ForgedOAuthCredentialsUpdateDialogBody = ({
       <ModalHeader>Add {blockDef.auth.name}</ModalHeader>
       <ModalCloseButton />
       <ModalBody as={Stack} spacing="4">
-        <TextInput
-          label="Label"
-          moreInfoTooltip={`Choose a name to identify this ${blockDef.auth.name}`}
-          onChange={setName}
-          defaultValue={name}
-          placeholder="My account"
-          withVariableButton={false}
-          debounceTimeout={0}
-        />
+        <Field.Root>
+          <Field.Label>
+            Label
+            <MoreInfoTooltip>{`Choose a name to identify this ${blockDef.auth.name}`}</MoreInfoTooltip>
+          </Field.Label>
+          <DebouncedTextInput
+            onValueChange={setName}
+            defaultValue={name}
+            placeholder="My account"
+            debounceTimeout={0}
+          />
+        </Field.Root>
         {"defaultClientEnvKeys" in blockDef.auth ? (
           <div className="flex gap-4 w-full items-center">
             <p>OAuth app</p>
@@ -156,19 +161,21 @@ export const ForgedOAuthCredentialsUpdateDialogBody = ({
           <div className="flex flex-col gap-2">
             <span>Redirect URL</span>
             <CopyInput value={`${document.location.origin}/oauth/redirect`} />
-            <TextInput
-              label="Client ID"
-              onChange={setClientId}
-              defaultValue={clientId}
-              withVariableButton={false}
-            />
-            <TextInput
-              type="password"
-              label="Client secret"
-              onChange={setClientSecret}
-              defaultValue={clientSecret}
-              withVariableButton={false}
-            />
+            <Field.Root>
+              <Field.Label>Client ID</Field.Label>
+              <DebouncedTextInput
+                onValueChange={setClientId}
+                defaultValue={clientId}
+              />
+            </Field.Root>
+            <Field.Root>
+              <Field.Label>Client secret</Field.Label>
+              <DebouncedTextInput
+                type="password"
+                onValueChange={setClientSecret}
+                defaultValue={clientSecret}
+              />
+            </Field.Root>
           </div>
         ) : null}
       </ModalBody>

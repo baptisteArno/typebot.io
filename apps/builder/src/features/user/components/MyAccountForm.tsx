@@ -1,9 +1,10 @@
 import { Avatar, HStack, Stack, Text } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { Button } from "@typebot.io/ui/components/Button";
+import { Field } from "@typebot.io/ui/components/Field";
+import { Input } from "@typebot.io/ui/components/Input";
 import { useState } from "react";
 import { UploadButton } from "@/components/ImageUploadContent/UploadButton";
-import { TextInput } from "@/components/inputs/TextInput";
 import { useUser } from "../hooks/useUser";
 import { ApiTokensList } from "./ApiTokensList";
 import { ChangeEmailDialog } from "./ChangeEmailDialog";
@@ -51,13 +52,10 @@ export const MyAccountForm = () => {
         </Stack>
       </HStack>
 
-      <TextInput
-        defaultValue={name}
-        onChange={handleNameChange}
-        label={t("account.myAccount.nameInput.label")}
-        withVariableButton={false}
-        debounceTimeout={0}
-      />
+      <Field.Root>
+        <Field.Label>{t("account.myAccount.nameInput.label")}</Field.Label>
+        <Input defaultValue={name} onValueChange={handleNameChange} />
+      </Field.Root>
       {user && (
         <HStack justifyContent="space-between">
           <Stack>

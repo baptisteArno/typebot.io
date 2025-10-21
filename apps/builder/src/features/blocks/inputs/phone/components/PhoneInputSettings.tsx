@@ -4,7 +4,7 @@ import { defaultPhoneInputOptions } from "@typebot.io/blocks-inputs/phone/consta
 import type { PhoneNumberInputBlock } from "@typebot.io/blocks-inputs/phone/schema";
 import { Field } from "@typebot.io/ui/components/Field";
 import type { Variable } from "@typebot.io/variables/schemas";
-import { TextInput } from "@/components/inputs/TextInput";
+import { DebouncedTextInputWithVariablesButton } from "@/components/inputs/DebouncedTextInput";
 import { VariablesCombobox } from "@/components/inputs/VariablesCombobox";
 import { CountryCodeSelect } from "./CountryCodeSelect";
 
@@ -31,21 +31,27 @@ export const PhoneInputSettings = ({ options, onOptionsChange }: Props) => {
 
   return (
     <Stack spacing={4}>
-      <TextInput
-        label={t("blocks.inputs.settings.placeholder.label")}
-        defaultValue={
-          options?.labels?.placeholder ??
-          defaultPhoneInputOptions.labels.placeholder
-        }
-        onChange={handlePlaceholderChange}
-      />
-      <TextInput
-        label={t("blocks.inputs.settings.button.label")}
-        defaultValue={
-          options?.labels?.button ?? defaultPhoneInputOptions.labels.button
-        }
-        onChange={handleButtonLabelChange}
-      />
+      <Field.Root>
+        <Field.Label>
+          {t("blocks.inputs.settings.placeholder.label")}
+        </Field.Label>
+        <DebouncedTextInputWithVariablesButton
+          defaultValue={
+            options?.labels?.placeholder ??
+            defaultPhoneInputOptions.labels.placeholder
+          }
+          onValueChange={handlePlaceholderChange}
+        />
+      </Field.Root>
+      <Field.Root>
+        <Field.Label>{t("blocks.inputs.settings.button.label")}</Field.Label>
+        <DebouncedTextInputWithVariablesButton
+          defaultValue={
+            options?.labels?.button ?? defaultPhoneInputOptions.labels.button
+          }
+          onValueChange={handleButtonLabelChange}
+        />
+      </Field.Root>
       <Stack>
         <FormLabel mb="0" htmlFor="button">
           {t("blocks.inputs.phone.settings.defaultCountry.label")}
@@ -55,14 +61,18 @@ export const PhoneInputSettings = ({ options, onOptionsChange }: Props) => {
           countryCode={options?.defaultCountryCode}
         />
       </Stack>
-      <TextInput
-        label={t("blocks.inputs.settings.retryMessage.label")}
-        defaultValue={
-          options?.retryMessageContent ??
-          defaultPhoneInputOptions.retryMessageContent
-        }
-        onChange={handleRetryMessageChange}
-      />
+      <Field.Root>
+        <Field.Label>
+          {t("blocks.inputs.settings.retryMessage.label")}
+        </Field.Label>
+        <DebouncedTextInputWithVariablesButton
+          defaultValue={
+            options?.retryMessageContent ??
+            defaultPhoneInputOptions.retryMessageContent
+          }
+          onValueChange={handleRetryMessageChange}
+        />
+      </Field.Root>
       <Field.Root>
         <Field.Label>
           {t("blocks.inputs.settings.saveAnswer.label")}

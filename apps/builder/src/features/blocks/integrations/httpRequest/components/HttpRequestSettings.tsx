@@ -4,7 +4,7 @@ import type {
   HttpRequestBlock,
 } from "@typebot.io/blocks-integrations/httpRequest/schema";
 import { useRef } from "react";
-import { TextInput } from "@/components/inputs/TextInput";
+import { DebouncedTextInputWithVariablesButton } from "@/components/inputs/DebouncedTextInput";
 import { HttpRequestAdvancedConfigForm } from "./HttpRequestAdvancedConfigForm";
 
 type Props = {
@@ -38,10 +38,10 @@ export const HttpRequestSettings = ({
   return (
     <Stack spacing={0}>
       <Stack spacing={4}>
-        <TextInput
+        <DebouncedTextInputWithVariablesButton
           placeholder="Paste URL..."
           defaultValue={options?.webhook?.url}
-          onChange={updateUrl}
+          onValueChange={updateUrl}
         />
         <HttpRequestAdvancedConfigForm
           blockId={blockId}

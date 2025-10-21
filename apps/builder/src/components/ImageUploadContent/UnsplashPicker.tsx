@@ -16,7 +16,7 @@ import { TriangleAlertIcon } from "@typebot.io/ui/icons/TriangleAlertIcon";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createApi } from "unsplash-js";
 import type { Basic as UnsplashPhoto } from "unsplash-js/dist/methods/photos/types";
-import { TextInput } from "../inputs/TextInput";
+import { DebouncedTextInput } from "../inputs/DebouncedTextInput";
 import { UnsplashLogo } from "../logos/UnsplashLogo";
 import { TextLink } from "../TextLink";
 
@@ -130,17 +130,14 @@ export const UnsplashPicker = ({ imageSize, onImageSelect }: Props) => {
   return (
     <Stack spacing={4} pt="2">
       <HStack align="center">
-        <TextInput
+        <DebouncedTextInput
           autoFocus
           placeholder="Search..."
-          onChange={(query) => {
+          onValueChange={(query) => {
             setSearchQuery(query);
             fetchNewImages(query, 0);
           }}
-          withVariableButton={false}
           debounceTimeout={500}
-          forceDebounce
-          width="full"
         />
         <a
           target="_blank"

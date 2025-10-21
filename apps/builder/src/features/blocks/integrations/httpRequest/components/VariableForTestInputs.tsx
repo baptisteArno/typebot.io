@@ -2,7 +2,7 @@ import { Stack } from "@chakra-ui/react";
 import type { VariableForTest } from "@typebot.io/blocks-integrations/httpRequest/schema";
 import { Field } from "@typebot.io/ui/components/Field";
 import type { Variable } from "@typebot.io/variables/schemas";
-import { TextInput } from "@/components/inputs/TextInput";
+import { DebouncedTextInputWithVariablesButton } from "@/components/inputs/DebouncedTextInput";
 import { VariablesCombobox } from "@/components/inputs/VariablesCombobox";
 import type { TableListItemProps } from "@/components/TableList";
 
@@ -25,11 +25,13 @@ export const VariableForTestInputs = ({
           onSelectVariable={handleVariableSelect}
         />
       </Field.Root>
-      <TextInput
-        label="Test value:"
-        defaultValue={item.value ?? ""}
-        onChange={handleValueChange}
-      />
+      <Field.Root>
+        <Field.Label>Test value:</Field.Label>
+        <DebouncedTextInputWithVariablesButton
+          defaultValue={item.value ?? ""}
+          onValueChange={handleValueChange}
+        />
+      </Field.Root>
     </Stack>
   );
 };

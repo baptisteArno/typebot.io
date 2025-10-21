@@ -3,7 +3,7 @@ import type { Cell } from "@typebot.io/blocks-integrations/googleSheets/schema";
 import { Button } from "@typebot.io/ui/components/Button";
 import { MoreVerticalIcon } from "@/components/icons";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
-import { TextInput } from "@/components/inputs/TextInput";
+import { DebouncedTextInputWithVariablesButton } from "@/components/inputs/DebouncedTextInput";
 import type { TableListItemProps } from "@/components/TableList";
 
 export const CellWithValueStack = ({
@@ -41,9 +41,9 @@ export const CellWithValueStack = ({
         items={columns}
         placeholder="Select a column"
       />
-      <TextInput
+      <DebouncedTextInputWithVariablesButton
         defaultValue={item.value ?? ""}
-        onChange={handleValueChange}
+        onValueChange={handleValueChange}
         placeholder="Type a value..."
       />
     </Stack>

@@ -9,9 +9,10 @@ import type {
   PaymentInputBlock,
 } from "@typebot.io/blocks-inputs/payment/schema";
 import { Accordion } from "@typebot.io/ui/components/Accordion";
+import { Field } from "@typebot.io/ui/components/Field";
 import { useMemo } from "react";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
-import { TextInput } from "@/components/inputs/TextInput";
+import { DebouncedTextInputWithVariablesButton } from "@/components/inputs/DebouncedTextInput";
 import { CredentialsDropdown } from "@/features/credentials/components/CredentialsDropdown";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { currencies } from "../currencies";
@@ -135,12 +136,16 @@ export const PaymentSettings = ({ options, onOptionsChange }: Props) => {
         )}
       </Stack>
       <HStack>
-        <TextInput
-          label={t("blocks.inputs.payment.settings.priceAmount.label")}
-          onChange={updateAmount}
-          defaultValue={options?.amount}
-          placeholder="30.00"
-        />
+        <Field.Root>
+          <Field.Label>
+            {t("blocks.inputs.payment.settings.priceAmount.label")}
+          </Field.Label>
+          <DebouncedTextInputWithVariablesButton
+            onValueChange={updateAmount}
+            defaultValue={options?.amount}
+            placeholder="30.00"
+          />
+        </Field.Root>
         <Stack>
           <Text>{t("blocks.inputs.payment.settings.currency.label")}</Text>
           <BasicSelect
@@ -151,58 +156,81 @@ export const PaymentSettings = ({ options, onOptionsChange }: Props) => {
           />
         </Stack>
       </HStack>
-      <TextInput
-        label={t("blocks.inputs.settings.button.label")}
-        onChange={updateButtonLabel}
-        defaultValue={
-          options?.labels?.button ?? defaultPaymentInputOptions.labels.button
-        }
-      />
-      <TextInput
-        label={t("blocks.inputs.payment.settings.successMessage.label")}
-        onChange={updateSuccessLabel}
-        defaultValue={
-          options?.labels?.success ?? defaultPaymentInputOptions.labels.success
-        }
-      />
+      <Field.Root>
+        <Field.Label>{t("blocks.inputs.settings.button.label")}</Field.Label>
+        <DebouncedTextInputWithVariablesButton
+          onValueChange={updateButtonLabel}
+          defaultValue={
+            options?.labels?.button ?? defaultPaymentInputOptions.labels.button
+          }
+        />
+      </Field.Root>
+      <Field.Root>
+        <Field.Label>
+          {t("blocks.inputs.payment.settings.successMessage.label")}
+        </Field.Label>
+        <DebouncedTextInputWithVariablesButton
+          onValueChange={updateSuccessLabel}
+          defaultValue={
+            options?.labels?.success ??
+            defaultPaymentInputOptions.labels.success
+          }
+        />
+      </Field.Root>
       <Accordion.Root>
         <Accordion.Item>
           <Accordion.Trigger>
             {t("blocks.inputs.payment.settings.additionalInformation.label")}
           </Accordion.Trigger>
           <Accordion.Panel>
-            <TextInput
-              label={t("blocks.inputs.settings.description.label")}
-              defaultValue={options?.additionalInformation?.description}
-              onChange={updateDescription}
-              placeholder={t(
-                "blocks.inputs.payment.settings.additionalInformation.description.placeholder.label",
-              )}
-            />
-            <TextInput
-              label={t(
-                "blocks.inputs.payment.settings.additionalInformation.name.label",
-              )}
-              defaultValue={options?.additionalInformation?.name}
-              onChange={updateName}
-              placeholder="John Smith"
-            />
-            <TextInput
-              label={t(
-                "blocks.inputs.payment.settings.additionalInformation.email.label",
-              )}
-              defaultValue={options?.additionalInformation?.email}
-              onChange={updateEmail}
-              placeholder="john@gmail.com"
-            />
-            <TextInput
-              label={t(
-                "blocks.inputs.payment.settings.additionalInformation.phone.label",
-              )}
-              defaultValue={options?.additionalInformation?.phoneNumber}
-              onChange={updatePhoneNumber}
-              placeholder="+33XXXXXXXXX"
-            />
+            <Field.Root>
+              <Field.Label>
+                {t("blocks.inputs.settings.description.label")}
+              </Field.Label>
+              <DebouncedTextInputWithVariablesButton
+                defaultValue={options?.additionalInformation?.description}
+                onValueChange={updateDescription}
+                placeholder={t(
+                  "blocks.inputs.payment.settings.additionalInformation.description.placeholder.label",
+                )}
+              />
+            </Field.Root>
+            <Field.Root>
+              <Field.Label>
+                {t(
+                  "blocks.inputs.payment.settings.additionalInformation.name.label",
+                )}
+              </Field.Label>
+              <DebouncedTextInputWithVariablesButton
+                defaultValue={options?.additionalInformation?.name}
+                onValueChange={updateName}
+                placeholder="John Smith"
+              />
+            </Field.Root>
+            <Field.Root>
+              <Field.Label>
+                {t(
+                  "blocks.inputs.payment.settings.additionalInformation.email.label",
+                )}
+              </Field.Label>
+              <DebouncedTextInputWithVariablesButton
+                defaultValue={options?.additionalInformation?.email}
+                onValueChange={updateEmail}
+                placeholder="john@gmail.com"
+              />
+            </Field.Root>
+            <Field.Root>
+              <Field.Label>
+                {t(
+                  "blocks.inputs.payment.settings.additionalInformation.phone.label",
+                )}
+              </Field.Label>
+              <DebouncedTextInputWithVariablesButton
+                defaultValue={options?.additionalInformation?.phoneNumber}
+                onValueChange={updatePhoneNumber}
+                placeholder="+33XXXXXXXXX"
+              />
+            </Field.Root>
             <PaymentAddressSettings
               address={options?.additionalInformation?.address}
               onAddressChange={updateAddress}

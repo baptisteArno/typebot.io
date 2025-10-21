@@ -7,7 +7,7 @@ import { Switch } from "@typebot.io/ui/components/Switch";
 import type { Variable } from "@typebot.io/variables/schemas";
 import { BasicNumberInput } from "@/components/inputs/BasicNumberInput";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
-import { TextInput } from "@/components/inputs/TextInput";
+import { DebouncedTextInputWithVariablesButton } from "@/components/inputs/DebouncedTextInput";
 import { VariablesCombobox } from "@/components/inputs/VariablesCombobox";
 
 type Props = {
@@ -115,36 +115,48 @@ export const RatingInputSettings = ({ options, onOptionsChange }: Props) => {
         </Field.Root>
       )}
       {buttonType === "Icons" && options?.customIcon?.isEnabled && (
-        <TextInput
-          label={t("blocks.inputs.rating.settings.iconSVG.label")}
-          defaultValue={options.customIcon.svg}
-          onChange={handleIconSvgChange}
-          placeholder="<svg>...</svg>"
-        />
+        <Field.Root>
+          <Field.Label>
+            {t("blocks.inputs.rating.settings.iconSVG.label")}
+          </Field.Label>
+          <DebouncedTextInputWithVariablesButton
+            defaultValue={options.customIcon.svg}
+            onValueChange={handleIconSvgChange}
+            placeholder="<svg>...</svg>"
+          />
+        </Field.Root>
       )}
-      <TextInput
-        label={t("blocks.inputs.rating.settings.rateLabel.label", {
-          rate:
-            buttonType === "Icons"
-              ? "1"
-              : (options?.startsAt ?? defaultRatingInputOptions.startsAt),
-        })}
-        defaultValue={options?.labels?.left}
-        onChange={handleLeftLabelChange}
-        placeholder={t(
-          "blocks.inputs.rating.settings.notLikely.placeholder.label",
-        )}
-      />
-      <TextInput
-        label={t("blocks.inputs.rating.settings.rateLabel.label", {
-          rate: options?.length ?? defaultRatingInputOptions.length,
-        })}
-        defaultValue={options?.labels?.right}
-        onChange={handleRightLabelChange}
-        placeholder={t(
-          "blocks.inputs.rating.settings.extremelyLikely.placeholder.label",
-        )}
-      />
+      <Field.Root>
+        <Field.Label>
+          {t("blocks.inputs.rating.settings.rateLabel.label", {
+            rate:
+              buttonType === "Icons"
+                ? "1"
+                : (options?.startsAt ?? defaultRatingInputOptions.startsAt),
+          })}
+        </Field.Label>
+        <DebouncedTextInputWithVariablesButton
+          defaultValue={options?.labels?.left}
+          onValueChange={handleLeftLabelChange}
+          placeholder={t(
+            "blocks.inputs.rating.settings.notLikely.placeholder.label",
+          )}
+        />
+      </Field.Root>
+      <Field.Root>
+        <Field.Label>
+          {t("blocks.inputs.rating.settings.rateLabel.label", {
+            rate: options?.length ?? defaultRatingInputOptions.length,
+          })}
+        </Field.Label>
+        <DebouncedTextInputWithVariablesButton
+          defaultValue={options?.labels?.right}
+          onValueChange={handleRightLabelChange}
+          placeholder={t(
+            "blocks.inputs.rating.settings.extremelyLikely.placeholder.label",
+          )}
+        />
+      </Field.Root>
       <Field.Root className="flex-row items-center">
         <Switch
           checked={isOneClickSubmitEnabled}
@@ -155,13 +167,15 @@ export const RatingInputSettings = ({ options, onOptionsChange }: Props) => {
         </Field.Label>
       </Field.Root>
       {!isOneClickSubmitEnabled && (
-        <TextInput
-          label={t("blocks.inputs.settings.button.label")}
-          defaultValue={
-            options?.labels?.button ?? defaultRatingInputOptions.labels.button
-          }
-          onChange={handleButtonLabelChange}
-        />
+        <Field.Root>
+          <Field.Label>{t("blocks.inputs.settings.button.label")}</Field.Label>
+          <DebouncedTextInputWithVariablesButton
+            defaultValue={
+              options?.labels?.button ?? defaultRatingInputOptions.labels.button
+            }
+            onValueChange={handleButtonLabelChange}
+          />
+        </Field.Root>
       )}
       <Field.Root>
         <Field.Label>

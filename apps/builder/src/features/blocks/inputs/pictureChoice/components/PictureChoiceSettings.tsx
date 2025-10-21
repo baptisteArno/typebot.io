@@ -5,7 +5,7 @@ import type { PictureChoiceBlock } from "@typebot.io/blocks-inputs/pictureChoice
 import { Field } from "@typebot.io/ui/components/Field";
 import { Switch } from "@typebot.io/ui/components/Switch";
 import type { Variable } from "@typebot.io/variables/schemas";
-import { TextInput } from "@/components/inputs/TextInput";
+import { DebouncedTextInputWithVariablesButton } from "@/components/inputs/DebouncedTextInput";
 import { VariablesCombobox } from "@/components/inputs/VariablesCombobox";
 
 type Props = {
@@ -79,14 +79,18 @@ export const PictureChoiceSettings = ({ options, onOptionsChange }: Props) => {
         </Field.Root>
         {(options?.isSearchable ??
           defaultPictureChoiceOptions.isSearchable) && (
-          <TextInput
-            label={t("blocks.inputs.settings.input.placeholder.label")}
-            defaultValue={
-              options?.searchInputPlaceholder ??
-              defaultPictureChoiceOptions.searchInputPlaceholder
-            }
-            onChange={updateSearchInputPlaceholder}
-          />
+          <Field.Root>
+            <Field.Label>
+              {t("blocks.inputs.settings.input.placeholder.label")}
+            </Field.Label>
+            <DebouncedTextInputWithVariablesButton
+              defaultValue={
+                options?.searchInputPlaceholder ??
+                defaultPictureChoiceOptions.searchInputPlaceholder
+              }
+              onValueChange={updateSearchInputPlaceholder}
+            />
+          </Field.Root>
         )}
       </Field.Container>
       <Field.Container>
@@ -104,13 +108,17 @@ export const PictureChoiceSettings = ({ options, onOptionsChange }: Props) => {
         </Field.Root>
         {(options?.isMultipleChoice ??
           defaultPictureChoiceOptions.isMultipleChoice) && (
-          <TextInput
-            label={t("blocks.inputs.settings.submitButton.label")}
-            defaultValue={
-              options?.buttonLabel ?? defaultPictureChoiceOptions.buttonLabel
-            }
-            onChange={updateButtonLabel}
-          />
+          <Field.Root>
+            <Field.Label>
+              {t("blocks.inputs.settings.submitButton.label")}
+            </Field.Label>
+            <DebouncedTextInputWithVariablesButton
+              defaultValue={
+                options?.buttonLabel ?? defaultPictureChoiceOptions.buttonLabel
+              }
+              onValueChange={updateButtonLabel}
+            />
+          </Field.Root>
         )}
       </Field.Container>
       <Field.Container>

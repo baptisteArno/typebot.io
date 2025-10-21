@@ -2,9 +2,11 @@ import { useMutation } from "@tanstack/react-query";
 import type { ForgedBlockDefinition } from "@typebot.io/forge-repository/definitions";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
+import { Field } from "@typebot.io/ui/components/Field";
+import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
 import { useState } from "react";
 import { CopyInput } from "@/components/inputs/CopyInput";
-import { TextInput } from "@/components/inputs/TextInput";
+import { DebouncedTextInput } from "@/components/inputs/DebouncedTextInput";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { queryClient, trpc } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
@@ -143,14 +145,17 @@ export const ForgedOAuthCredentialsCreateDialogBody = ({
         />
       }
     >
-      <TextInput
-        label="Label"
-        moreInfoTooltip={`Choose a name to identify this ${blockDef.auth.name}`}
-        onChange={setName}
-        placeholder="My account"
-        withVariableButton={false}
-        debounceTimeout={0}
-      />
+      <Field.Root>
+        <Field.Label>
+          Label
+          <MoreInfoTooltip>{`Choose a name to identify this ${blockDef.auth.name}`}</MoreInfoTooltip>
+        </Field.Label>
+        <DebouncedTextInput
+          onValueChange={setName}
+          placeholder="My account"
+          debounceTimeout={0}
+        />
+      </Field.Root>
       {"defaultClientEnvKeys" in blockDef.auth ? (
         <div className="flex gap-4 w-full items-center">
           <p>OAuth app</p>
@@ -174,17 +179,17 @@ export const ForgedOAuthCredentialsCreateDialogBody = ({
         <div className="flex flex-col gap-2">
           <span>Redirect URL</span>
           <CopyInput value={`${document.location.origin}/oauth/redirect`} />
-          <TextInput
-            label="Client ID"
-            onChange={setClientId}
-            withVariableButton={false}
-          />
-          <TextInput
-            type="password"
-            label="Client secret"
-            onChange={setClientSecret}
-            withVariableButton={false}
-          />
+          <Field.Root>
+            <Field.Label>Client ID</Field.Label>
+            <DebouncedTextInput onValueChange={setClientId} />
+          </Field.Root>
+          <Field.Root>
+            <Field.Label>Client secret</Field.Label>
+            <DebouncedTextInput
+              type="password"
+              onValueChange={setClientSecret}
+            />
+          </Field.Root>
         </div>
       ) : null}
 
