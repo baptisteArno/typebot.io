@@ -6,7 +6,8 @@
     "preview-marketing": "SKIP_ENV_CHECK=true dotenv -e ./.env -e ../../.env -- email dev --port=3005 --dir=marketing"
   },
   "exports": {
-    "./*": "./*.tsx"
+    "./*": "./*.tsx",
+    "./helpers/*": "./helpers/*.ts"
   },
   "dependencies": {
     "@react-email/components": "^0.5.1",

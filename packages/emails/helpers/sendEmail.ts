@@ -2,7 +2,7 @@ import { env } from "@typebot.io/env";
 import { createTransport, type SendMailOptions } from "nodemailer";
 
 export const sendEmail = (
-  props: Pick<SendMailOptions, "to" | "html" | "subject" | "replyTo">,
+  props: Pick<SendMailOptions, "to" | "html" | "subject" | "replyTo" | "text">,
 ) => {
   const transporter = createTransport({
     host: env.SMTP_HOST,

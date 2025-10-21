@@ -32,6 +32,7 @@
     "recurringCheckInactiveUsers": "SKIP_ENV_CHECK=true dotenv -e ./.env.production -- tsx src/recurringCheckInactiveUsers.ts",
     "addHttpProxyCredentials": "dotenv -e ./.env.production -- tsx src/addHttpProxyCredentials.ts",
     "deleteS3Object": "SKIP_ENV_CHECK=true dotenv -e ./.env.production -- tsx src/deleteS3Object.ts",
+    "sendEmailCampaign": "SKIP_ENV_CHECK=true dotenv -e ./.env.production -- tsx src/sendEmailCampaign.ts",
     "cron:hourly": "SKIP_ENV_CHECK=true tsx src/cronJobs/hourly.tsx",
     "cron:daily": "SKIP_ENV_CHECK=true tsx src/cronJobs/daily.tsx",
     "cron:monthly": "SKIP_ENV_CHECK=true tsx src/cronJobs/monthly.tsx"
@@ -63,7 +64,8 @@
     "@typebot.io/blocks-core": "workspace:*",
     "@typebot.io/groups": "workspace:*",
     "@typebot.io/rich-text": "workspace:*",
-    "ai": "^4.3.19"
+    "ai": "^4.3.19",
+    "p-limit": "^7.2.0"
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*",
