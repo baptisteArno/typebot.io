@@ -1,7 +1,8 @@
-import { Input, Text } from "@chakra-ui/react";
+import { Text } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
+import { Input } from "@typebot.io/ui/components/Input";
 import { useRef, useState } from "react";
 import { refreshSessionUser } from "@/features/auth/helpers/refreshSessionUser";
 import { showHttpRequestErrorToast, trpc } from "@/lib/queryClient";
@@ -86,9 +87,9 @@ export const ChangeEmailDialog = ({ isOpen, onClose, userEmail }: Props) => {
           </Text>
           <Input
             type="email"
-            isDisabled={verificationCodeStatus === "sent"}
+            disabled={verificationCodeStatus === "sent"}
             value={newEmail}
-            onChange={(e) => setNewEmail(e.target.value)}
+            onValueChange={setNewEmail}
             placeholder="Enter new email"
             ref={initialFocusRef}
           />
@@ -116,7 +117,7 @@ export const ChangeEmailDialog = ({ isOpen, onClose, userEmail }: Props) => {
             </Text>
             <Input
               value={verificationCode}
-              onChange={(e) => setVerificationCode(e.target.value)}
+              onValueChange={setVerificationCode}
               placeholder="Enter verification code"
             />
             <Dialog.Footer>

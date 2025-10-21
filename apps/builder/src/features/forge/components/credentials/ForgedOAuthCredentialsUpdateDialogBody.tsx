@@ -1,7 +1,4 @@
 import {
-  Input,
-  InputGroup,
-  InputRightElement,
   ModalBody,
   ModalCloseButton,
   ModalContent,
@@ -13,7 +10,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import type { ForgedBlockDefinition } from "@typebot.io/forge-repository/definitions";
 import { Button } from "@typebot.io/ui/components/Button";
 import { useEffect, useState } from "react";
-import { CopyButton } from "@/components/CopyButton";
+import { CopyInput } from "@/components/inputs/CopyInput";
 import { TextInput } from "@/components/inputs/TextInput";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { queryClient, trpc } from "@/lib/queryClient";
@@ -158,9 +155,7 @@ export const ForgedOAuthCredentialsUpdateDialogBody = ({
         {tab === "your-app" ? (
           <div className="flex flex-col gap-2">
             <span>Redirect URL</span>
-            <ReadOnlyInput
-              value={`${document.location.origin}/oauth/redirect`}
-            />
+            <CopyInput value={`${document.location.origin}/oauth/redirect`} />
             <TextInput
               label="Client ID"
               onChange={setClientId}
@@ -196,12 +191,3 @@ export const ForgedOAuthCredentialsUpdateDialogBody = ({
     </ModalContent>
   );
 };
-
-const ReadOnlyInput = ({ value }: { value: string }) => (
-  <InputGroup>
-    <Input type={"text"} value={value} />
-    <InputRightElement width="60px">
-      <CopyButton size="sm" textToCopy={value} />
-    </InputRightElement>
-  </InputGroup>
-);

@@ -1,9 +1,10 @@
-import { Box, Center, Input, SimpleGrid, Stack } from "@chakra-ui/react";
+import { Box, Center, SimpleGrid, Stack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import {
   type ButtonProps,
   buttonVariants,
 } from "@typebot.io/ui/components/Button";
+import { Input } from "@typebot.io/ui/components/Input";
 import { Popover } from "@typebot.io/ui/components/Popover";
 import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
 import type React from "react";
@@ -93,13 +94,12 @@ export const ColorPicker = ({
             ))}
           </SimpleGrid>
           <Input
-            borderRadius={3}
-            marginTop={3}
+            className="rounded-sm mt-3"
             placeholder="#2a9d8f"
             aria-label={t("colorPicker.colorValue.ariaLabel")}
             size="sm"
             value={displayedValue}
-            onChange={(e) => handleColorChange(e.target.value)}
+            onValueChange={handleColorChange}
           />
           <NativeColorPicker
             size="sm"
@@ -134,9 +134,9 @@ const NativeColorPicker = ({
       <label htmlFor={inputId} className={buttonVariants({ variant, size })}>
         {props.children}
       </label>
-      <Input
+      <input
         type="color"
-        display="none"
+        className="hidden"
         id={inputId}
         value={color}
         onChange={(e) => debouncedOnColorChange(e.target.value)}

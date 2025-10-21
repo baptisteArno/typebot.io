@@ -1,9 +1,6 @@
 import {
   FormControl,
   FormHelperText,
-  Input,
-  InputGroup,
-  InputRightElement,
   Stack,
   Tab,
   TabList,
@@ -22,8 +19,8 @@ import { Accordion } from "@typebot.io/ui/components/Accordion";
 import { Button } from "@typebot.io/ui/components/Button";
 import usePartySocket from "partysocket/react";
 import { useMemo, useState } from "react";
-import { CopyButton } from "@/components/CopyButton";
 import { CodeEditor } from "@/components/inputs/CodeEditor";
+import { CopyInput } from "@/components/inputs/CopyInput";
 import { TableList, type TableListItemProps } from "@/components/TableList";
 import { TextLink } from "@/components/TextLink";
 import { DataVariableInputs } from "@/features/blocks/integrations/httpRequest/components/ResponseMappingInputs";
@@ -110,19 +107,7 @@ export const WebhookSettings = ({
         <TabPanel pb="0">
           <Stack spacing="4">
             {typebot && (
-              <FormControl as={Stack}>
-                <InputGroup size="sm">
-                  <Input
-                    type={"text"}
-                    defaultValue={`${urlBase}/web/executeTestWebhook`}
-                  />
-                  <InputRightElement width="60px">
-                    <CopyButton
-                      textToCopy={`${urlBase}/web/executeTestWebhook`}
-                    />
-                  </InputRightElement>
-                </InputGroup>
-              </FormControl>
+              <CopyInput value={`${urlBase}/web/executeTestWebhook`} />
             )}
             <Button
               onClick={listenForTestEvent}
@@ -172,17 +157,9 @@ export const WebhookSettings = ({
         <TabPanel pb="0">
           {typebot && (
             <FormControl as={Stack}>
-              <InputGroup size="sm">
-                <Input
-                  type={"text"}
-                  defaultValue={`${urlBase}/results/{resultId}/executeWebhook`}
-                />
-                <InputRightElement width="60px">
-                  <CopyButton
-                    textToCopy={`${urlBase}/results/{resultId}/executeWebhook`}
-                  />
-                </InputRightElement>
-              </InputGroup>
+              <CopyInput
+                value={`${urlBase}/results/{resultId}/executeWebhook`}
+              />
               <FormHelperText mt="0">
                 You can easily get the Result ID{" "}
                 <TextLink

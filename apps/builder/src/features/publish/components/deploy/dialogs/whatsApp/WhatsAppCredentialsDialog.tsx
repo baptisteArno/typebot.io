@@ -5,9 +5,6 @@ import {
   Code,
   Heading,
   HStack,
-  Input,
-  InputGroup,
-  InputRightElement,
   ListItem,
   OrderedList,
   Stack,
@@ -35,8 +32,8 @@ import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
 import { useState } from "react";
 import { ButtonLink } from "@/components/ButtonLink";
-import { CopyButton } from "@/components/CopyButton";
 import { ChevronLeftIcon, ExternalLinkIcon } from "@/components/icons";
+import { CopyInput } from "@/components/inputs/CopyInput";
 import { TextInput } from "@/components/inputs/TextInput";
 import { Dialog360Logo } from "@/components/logos/Dialog360Logo";
 import { MetaLogo } from "@/components/logos/MetaLogo";
@@ -569,23 +566,13 @@ const Webhook = ({
         <ListItem>
           <HStack>
             <Text flexShrink={0}>Callback URL:</Text>
-            <InputGroup size="sm">
-              <Input type={"text"} defaultValue={webhookUrl} />
-              <InputRightElement width="60px">
-                <CopyButton textToCopy={webhookUrl} />
-              </InputRightElement>
-            </InputGroup>
+            <CopyInput value={webhookUrl} />
           </HStack>
         </ListItem>
         <ListItem>
           <HStack>
             <Text flexShrink={0}>Verify Token:</Text>
-            <InputGroup size="sm">
-              <Input type={"text"} defaultValue={verificationToken} />
-              <InputRightElement width="60px">
-                <CopyButton textToCopy={verificationToken} />
-              </InputRightElement>
-            </InputGroup>
+            <CopyInput value={verificationToken} />
           </HStack>
         </ListItem>
         <ListItem>
@@ -714,14 +701,7 @@ const Dialog360Webhook = ({ credentialsId }: { credentialsId: string }) => {
         following webhook URL:
       </Text>
       <Stack>
-        <HStack>
-          <InputGroup size="sm">
-            <Input type={"text"} defaultValue={webhookUrl} />
-            <InputRightElement width="60px">
-              <CopyButton size="sm" textToCopy={webhookUrl} />
-            </InputRightElement>
-          </InputGroup>
-        </HStack>
+        <CopyInput value={webhookUrl} />
         <Text fontSize="sm" color="gray.600">
           Make sure to enable webhooks for message events in your 360Dialog
           configuration.

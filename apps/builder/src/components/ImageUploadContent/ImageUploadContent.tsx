@@ -3,7 +3,10 @@ import { useTranslate } from "@tolgee/react";
 import { Button } from "@typebot.io/ui/components/Button";
 import { useState } from "react";
 import type { FilePathUploadProps } from "@/features/upload/api/generateUploadUrl";
-import { TextInput } from "../inputs/TextInput";
+import {
+  DebouncedTextInput,
+  DebouncedTextInputWithVariablesButton,
+} from "../inputs/DebouncedTextInput";
 import { EmojiSearchableList } from "./emoji/EmojiSearchableList";
 import { GiphyPicker } from "./GiphyPicker";
 import { IconPicker } from "./IconPicker";
@@ -206,20 +209,26 @@ const EmbedLinkContent = ({
 }) => {
   const { t } = useTranslate();
 
-  return (
-    <Stack py="2">
-      <TextInput
+  if (withVariableButton) {
+    return (
+      <DebouncedTextInputWithVariablesButton
         placeholder={t("editor.header.linkTab.searchInputPlaceholder.label")}
-        onChange={onNewUrl}
+        onValueChange={onNewUrl}
         defaultValue={defaultUrl ?? ""}
-        withVariableButton={withVariableButton}
-        onKeyDown={(e) => {
-          if (e.key === "Backspace" && e.currentTarget.value === "") {
-            onDelete?.();
-          }
-        }}
       />
-    </Stack>
+    );
+  }
+  return (
+    <DebouncedTextInput
+      placeholder={t("editor.header.linkTab.searchInputPlaceholder.label")}
+      onValueChange={onNewUrl}
+      defaultValue={defaultUrl ?? ""}
+      onKeyDown={(e) => {
+        if (e.key === "Backspace" && e.currentTarget.value === "") {
+          onDelete?.();
+        }
+      }}
+    />
   );
 };
 

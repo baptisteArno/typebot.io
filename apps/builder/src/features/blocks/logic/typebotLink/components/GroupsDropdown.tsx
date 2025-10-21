@@ -1,5 +1,5 @@
-import { Input } from "@chakra-ui/react";
 import type { Group } from "@typebot.io/groups/schemas";
+import { Input } from "@typebot.io/ui/components/Input";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
 
 type Props = {
@@ -15,9 +15,9 @@ export const GroupsDropdown = ({
   onChange,
   isLoading,
 }: Props) => {
-  if (isLoading) return <Input value="Loading..." isDisabled />;
+  if (isLoading) return <Input value="Loading..." disabled />;
   if (!groups || groups.length === 0)
-    return <Input value="No groups found" isDisabled />;
+    return <Input value="No groups found" disabled />;
 
   return (
     <BasicSelect

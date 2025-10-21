@@ -1,9 +1,10 @@
-import { Heading, HStack, Input, Stack, Text } from "@chakra-ui/react";
+import { Heading, HStack, Stack, Text } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
 import { Alert } from "@typebot.io/ui/components/Alert";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
+import { Input } from "@typebot.io/ui/components/Input";
 import { InformationSquareIcon } from "@typebot.io/ui/icons/InformationSquareIcon";
 import { useEffect, useRef, useState } from "react";
 import { trpc } from "@/lib/queryClient";
@@ -77,7 +78,7 @@ export const CreateCustomDomainDialog = ({
           <Input
             ref={inputRef}
             value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
+            onValueChange={setInputValue}
             placeholder="bot.my-domain.com"
           />
           {hostname.domain !== "" && (

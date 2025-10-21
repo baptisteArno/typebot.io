@@ -1,7 +1,8 @@
-import { HStack, Input, Stack, Text } from "@chakra-ui/react";
+import { HStack, Stack, Text } from "@chakra-ui/react";
 import type { PreviewMessageParams } from "@typebot.io/js";
 import { isDefined } from "@typebot.io/lib/utils";
 import { Field } from "@typebot.io/ui/components/Field";
+import { Input } from "@typebot.io/ui/components/Input";
 import { Switch } from "@typebot.io/ui/components/Switch";
 import { useState } from "react";
 import { BasicNumberInput } from "@/components/inputs/BasicNumberInput";
@@ -79,7 +80,7 @@ export const PreviewMessageSettings = ({ defaultAvatar, onChange }: Props) => {
           <HStack justify="space-between">
             <Text>Avatar URL</Text>
             <Input
-              onChange={(e) => updateAvatarUrl(e.target.value)}
+              onValueChange={updateAvatarUrl}
               value={previewMessage?.avatarUrl}
               placeholder={"Paste image link (.png, .jpg)"}
             />
@@ -87,7 +88,7 @@ export const PreviewMessageSettings = ({ defaultAvatar, onChange }: Props) => {
           <HStack justify="space-between">
             <Text>Message</Text>
             <Input
-              onChange={(e) => updateMessage(e.target.value)}
+              onValueChange={updateMessage}
               value={previewMessage?.message}
             />
           </HStack>

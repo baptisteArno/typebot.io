@@ -2,12 +2,12 @@ import {
   Flex,
   Heading,
   HStack,
-  Input,
   Stack,
   type StackProps,
   Text,
 } from "@chakra-ui/react";
 import { Field } from "@typebot.io/ui/components/Field";
+import { Input } from "@typebot.io/ui/components/Input";
 import { Switch } from "@typebot.io/ui/components/Switch";
 import { useEffect, useState } from "react";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
@@ -66,13 +66,13 @@ export const StandardSettings = ({
               <Text>Width</Text>
               <HStack>
                 <Input
-                  onChange={(e) =>
+                  onValueChange={(value) =>
                     setInputValues({
                       ...inputValues,
-                      widthValue: e.target.value,
+                      widthValue: value,
                     })
                   }
-                  w="70px"
+                  className="w-[70px]"
                   value={inputValues.widthValue}
                 />
                 <BasicSelect
@@ -86,13 +86,13 @@ export const StandardSettings = ({
               <Text>Height</Text>
               <HStack>
                 <Input
-                  onChange={(e) =>
+                  onValueChange={(value) =>
                     setInputValues({
                       ...inputValues,
-                      heightValue: e.target.value,
+                      heightValue: value,
                     })
                   }
-                  w="70px"
+                  className="w-[70px]"
                   value={inputValues.heightValue}
                 />
                 <BasicSelect

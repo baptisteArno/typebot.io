@@ -1,18 +1,9 @@
-import {
-  Code,
-  Input,
-  InputGroup,
-  InputRightElement,
-  ListItem,
-  OrderedList,
-  Stack,
-  Text,
-} from "@chakra-ui/react";
+import { Code, ListItem, OrderedList, Stack, Text } from "@chakra-ui/react";
 import { env } from "@typebot.io/env";
 import { Alert } from "@typebot.io/ui/components/Alert";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
 import { InformationSquareIcon } from "@typebot.io/ui/icons/InformationSquareIcon";
-import { CopyButton } from "@/components/CopyButton";
+import { CopyInput } from "@/components/inputs/CopyInput";
 import type { DialogProps } from "../DeployButton";
 
 export const FlutterFlowDeployDialog = ({
@@ -43,17 +34,9 @@ export const FlutterFlowDeployDialog = ({
               <Text>
                 As the <Code>Webview URL</Code>, paste your typebot URL
               </Text>
-              <InputGroup size="sm">
-                <Input
-                  type={"text"}
-                  defaultValue={`${env.NEXT_PUBLIC_VIEWER_URL[0]}/${publicId}`}
-                />
-                <InputRightElement width="60px">
-                  <CopyButton
-                    textToCopy={`${env.NEXT_PUBLIC_VIEWER_URL[0]}/${publicId}`}
-                  />
-                </InputRightElement>
-              </InputGroup>
+              <CopyInput
+                value={`${env.NEXT_PUBLIC_VIEWER_URL[0]}/${publicId}`}
+              />
             </Stack>
           </ListItem>
         </OrderedList>

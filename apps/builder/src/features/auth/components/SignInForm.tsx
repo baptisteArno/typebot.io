@@ -4,7 +4,6 @@ import {
   FormLabel,
   HStack,
   type HTMLChakraProps,
-  Input,
   PinInput,
   PinInputField,
   SlideFade,
@@ -15,6 +14,7 @@ import {
 import { useTranslate } from "@tolgee/react";
 import { Alert } from "@typebot.io/ui/components/Alert";
 import { Button } from "@typebot.io/ui/components/Button";
+import { Input } from "@typebot.io/ui/components/Input";
 import { CheckmarkSquare02Icon } from "@typebot.io/ui/icons/CheckmarkSquare02Icon";
 import { LoaderCircleIcon } from "@typebot.io/ui/icons/LoaderCircleIcon";
 import { useRouter } from "next/navigation";
@@ -74,9 +74,6 @@ export const SignInForm = ({
       });
     }
   }, [authError]);
-
-  const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) =>
-    setEmailValue(e.target.value);
 
   const handleEmailSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -155,7 +152,7 @@ export const SignInForm = ({
                   placeholder="email@company.com"
                   required
                   value={emailValue}
-                  onChange={handleEmailChange}
+                  onValueChange={setEmailValue}
                 />
                 <Button
                   type="submit"

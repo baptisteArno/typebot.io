@@ -1,4 +1,5 @@
-import { HStack, Input } from "@chakra-ui/react";
+import { HStack } from "@chakra-ui/react";
+import { Input } from "@typebot.io/ui/components/Input";
 import { LayoutBottomIcon } from "@typebot.io/ui/icons/LayoutBottomIcon";
 import { useRouter } from "next/router";
 import { ButtonLink } from "@/components/ButtonLink";
@@ -25,9 +26,9 @@ export const TypebotsDropdown = ({
     workspaceId: currentWorkspaceId,
   });
 
-  if (isLoading) return <Input value="Loading..." isDisabled />;
+  if (isLoading) return <Input value="Loading..." disabled />;
   if (!typebots || typebots.length === 0)
-    return <Input value="No typebots found" isDisabled />;
+    return <Input value="No typebots found" disabled />;
   return (
     <HStack flex={1}>
       <BasicSelect

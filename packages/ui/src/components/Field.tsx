@@ -34,6 +34,8 @@ const Container = ({
   </div>
 );
 
+export type ChangeEventDetails = PrimitiveField.Control.ChangeEventDetails;
+
 export const Field = {
   Root,
   Label,

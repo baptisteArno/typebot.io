@@ -9,7 +9,7 @@ import { useTranslate } from "@tolgee/react";
 import { Button } from "@typebot.io/ui/components/Button";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { ColorPicker } from "../ColorPicker";
-import { TextInput } from "../inputs/TextInput";
+import { DebouncedTextInput } from "../inputs/DebouncedTextInput";
 import { iconNames } from "./iconNames";
 
 const batchSize = 200;
@@ -107,12 +107,10 @@ export const IconPicker = ({ onIconSelected }: Props) => {
   return (
     <Stack>
       <HStack>
-        <TextInput
+        <DebouncedTextInput
           placeholder={t("emojiList.searchInput.placeholder")}
-          onChange={searchIcon}
-          withVariableButton={false}
+          onValueChange={searchIcon}
           debounceTimeout={300}
-          width="full"
         />
         <ColorPicker
           value={selectedColor}

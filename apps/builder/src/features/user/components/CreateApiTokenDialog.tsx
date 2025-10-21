@@ -1,10 +1,11 @@
-import { Input, InputGroup, InputRightElement, Text } from "@chakra-ui/react";
+import { Text } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
+import { Input } from "@typebot.io/ui/components/Input";
 import type { FormEvent } from "react";
 import { useRef, useState } from "react";
-import { CopyButton } from "@/components/CopyButton";
+import { CopyInput } from "@/components/inputs/CopyInput";
 import { createApiTokenQuery } from "../queries/createApiTokenQuery";
 import type { ApiTokenFromServer } from "../types";
 
@@ -68,12 +69,7 @@ export const CreateApiTokenDialog = ({
                 {t("account.apiTokens.createModal.securityWarning")}
               </strong>
             </Text>
-            <InputGroup size="md">
-              <Input readOnly pr="4.5rem" value={newTokenValue} />
-              <InputRightElement width="4.5rem">
-                <CopyButton textToCopy={newTokenValue} />
-              </InputRightElement>
-            </InputGroup>
+            <CopyInput value={newTokenValue} />
           </>
         ) : (
           <div className="flex flex-col gap-2">
@@ -83,7 +79,7 @@ export const CreateApiTokenDialog = ({
               placeholder={t(
                 "account.apiTokens.createModal.nameInput.placeholder",
               )}
-              onChange={(e) => setName(e.target.value)}
+              onValueChange={setName}
             />
           </div>
         )}

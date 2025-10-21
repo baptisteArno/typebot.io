@@ -2,7 +2,6 @@ import {
   Fade,
   Flex,
   Heading,
-  Input,
   SimpleGrid,
   Stack,
   useColorModeValue,
@@ -19,6 +18,7 @@ import { EventType } from "@typebot.io/events/constants";
 import type { TDraggableEvent } from "@typebot.io/events/schemas";
 import { forgedBlocks } from "@typebot.io/forge-repository/definitions";
 import { isDefined } from "@typebot.io/lib/utils";
+import { Input } from "@typebot.io/ui/components/Input";
 import { Tooltip } from "@typebot.io/ui/components/Tooltip";
 import type React from "react";
 import { useState } from "react";

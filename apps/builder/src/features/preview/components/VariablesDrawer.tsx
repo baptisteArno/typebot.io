@@ -3,7 +3,6 @@ import {
   Flex,
   Heading,
   HStack,
-  Input,
   SlideFade,
   Stack,
   useColorModeValue,
@@ -17,6 +16,7 @@ import type { SetVariableBlock } from "@typebot.io/blocks-logic/setVariable/sche
 import { isNotEmpty } from "@typebot.io/lib/utils";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Field } from "@typebot.io/ui/components/Field";
+import { Input } from "@typebot.io/ui/components/Input";
 import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
 import { Popover } from "@typebot.io/ui/components/Popover";
 import { Switch } from "@typebot.io/ui/components/Switch";
@@ -113,10 +113,9 @@ export const VariablesDrawer = ({ onClose }: Props) => {
         <Heading fontSize="md">Variables</Heading>
         <HStack as="form" onSubmit={handleCreateSubmit}>
           <Input
-            width="full"
             placeholder="Search or create..."
             value={searchValue}
-            onChange={(e) => setSearchValue(e.target.value)}
+            onValueChange={setSearchValue}
           />
           <SlideFade
             in={

@@ -1,21 +1,18 @@
 import {
   Flex,
   FormControl,
-  FormHelperText,
   FormLabel,
-  Input,
-  InputGroup,
-  InputRightElement,
   Stack,
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { Button } from "@typebot.io/ui/components/Button";
+import { Field } from "@typebot.io/ui/components/Field";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
-import { CopyButton } from "@/components/CopyButton";
 import { EditableEmojiOrImageIcon } from "@/components/EditableEmojiOrImageIcon";
 import { HardDriveIcon } from "@/components/icons";
+import { CopyInput } from "@/components/inputs/CopyInput";
 import { TextInput } from "@/components/inputs/TextInput";
 import { useWorkspace } from "../WorkspaceProvider";
 
@@ -63,23 +60,13 @@ export const WorkspaceSettingsForm = ({ onClose }: { onClose: () => void }) => {
             defaultValue={workspace?.name}
             onChange={handleNameChange}
           />
-          <FormControl>
-            <FormLabel>ID:</FormLabel>
-            <InputGroup>
-              <Input
-                type={"text"}
-                defaultValue={workspace.id}
-                pr="16"
-                readOnly
-              />
-              <InputRightElement width="72px">
-                <CopyButton textToCopy={workspace.id} />
-              </InputRightElement>
-            </InputGroup>
-            <FormHelperText>
+          <Field.Root>
+            <Field.Label>ID:</Field.Label>
+            <CopyInput value={workspace.id} />
+            <Field.Description>
               {t("workspace.settings.id.helperText")}
-            </FormHelperText>
-          </FormControl>
+            </Field.Description>
+          </Field.Root>
         </>
       )}
       {workspace && workspaces && workspaces.length > 1 && (

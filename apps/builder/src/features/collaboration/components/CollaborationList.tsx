@@ -1,7 +1,6 @@
 import {
   Flex,
   HStack,
-  Input,
   Skeleton,
   SkeletonCircle,
   Stack,
@@ -11,6 +10,7 @@ import {
 import { useTranslate } from "@tolgee/react";
 import { CollaborationType } from "@typebot.io/prisma/enum";
 import { Button } from "@typebot.io/ui/components/Button";
+import { Input } from "@typebot.io/ui/components/Input";
 import type { FormEvent } from "react";
 import { useState } from "react";
 import { EmojiOrImageIcon } from "@/components/EmojiOrImageIcon";
@@ -162,9 +162,8 @@ export const CollaborationList = () => {
           placeholder={t("share.button.popover.inviteInput.placeholder")}
           name="inviteEmail"
           value={invitationEmail}
-          onChange={(e) => setInvitationEmail(e.target.value)}
-          rounded="md"
-          isDisabled={currentUserMode === "guest"}
+          onValueChange={setInvitationEmail}
+          disabled={currentUserMode === "guest"}
         />
 
         {currentUserMode !== "guest" && (

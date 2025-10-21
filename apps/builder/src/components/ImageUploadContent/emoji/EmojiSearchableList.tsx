@@ -1,6 +1,7 @@
-import { GridItem, Input, SimpleGrid, Stack, Text } from "@chakra-ui/react";
+import { GridItem, SimpleGrid, Stack, Text } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { Button } from "@typebot.io/ui/components/Button";
+import { Input } from "@typebot.io/ui/components/Input";
 import emojiTagsData from "emojilib";
 import type { ChangeEvent } from "react";
 import { useEffect, useRef, useState } from "react";
