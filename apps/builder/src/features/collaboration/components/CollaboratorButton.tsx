@@ -1,6 +1,7 @@
-import { Avatar, HStack, Stack, Tag, Text } from "@chakra-ui/react";
+import { Avatar, HStack, Stack, Text } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { CollaborationType } from "@typebot.io/prisma/enum";
+import { Badge } from "@typebot.io/ui/components/Badge";
 import { Menu } from "@typebot.io/ui/components/Menu";
 import { ReadableCollaborationType } from "./ReadableCollaborationType";
 
@@ -93,10 +94,10 @@ export const CollaboratorIdentityContent = ({
         </Stack>
       </HStack>
       <HStack flexShrink={0}>
-        {isGuest && <Tag color="gray.400">{t("pending")}</Tag>}
-        <Tag>
+        {isGuest && <Badge>{t("pending")}</Badge>}
+        <Badge>
           <ReadableCollaborationType type={type} />
-        </Tag>
+        </Badge>
       </HStack>
     </HStack>
   );

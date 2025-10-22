@@ -7,7 +7,7 @@ import { HardDriveIcon } from "@typebot.io/ui/icons/HardDriveIcon";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { EmojiOrImageIcon } from "@/components/EmojiOrImageIcon";
-import { PlanTag } from "@/features/billing/components/PlanTag";
+import { PlanBadge } from "@/features/billing/components/PlanTag";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { trpc } from "@/lib/queryClient";
@@ -56,7 +56,7 @@ const Page = () => {
                 defaultIcon={HardDriveIcon}
               />
               {workspace.name}
-              <PlanTag plan={workspace.plan} />
+              <PlanBadge plan={workspace.plan} />
             </Label>
           ))}
         </RadioGroup>

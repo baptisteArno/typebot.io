@@ -1,4 +1,4 @@
-import { Stack, Tag, Text, useColorModeValue } from "@chakra-ui/react";
+import { Stack, Text } from "@chakra-ui/react";
 import { T, useTranslate } from "@tolgee/react";
 import { isDefined } from "@typebot.io/lib/utils";
 import {
@@ -7,6 +7,7 @@ import {
 } from "@typebot.io/settings/constants";
 import type { Settings, SystemMessages } from "@typebot.io/settings/schemas";
 import { Accordion } from "@typebot.io/ui/components/Accordion";
+import { Badge } from "@typebot.io/ui/components/Badge";
 import { Field } from "@typebot.io/ui/components/Field";
 import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
 import { Switch } from "@typebot.io/ui/components/Switch";
@@ -23,7 +24,6 @@ export const GeneralSettingsForm = ({
   onGeneralSettingsChange,
 }: Props) => {
   const { t } = useTranslate();
-  const keyBg = useColorModeValue(undefined, "gray.600");
   const toggleRememberUser = (isEnabled: boolean) =>
     onGeneralSettingsChange({
       ...generalSettings,
@@ -128,7 +128,7 @@ export const GeneralSettingsForm = ({
                     <T
                       keyName="settings.sideMenu.general.rememberUser.storage.session.tooltip"
                       params={{
-                        tag: <Tag size="sm" bgColor={keyBg} />,
+                        tag: <Badge />,
                       }}
                     />
                   </Text>
@@ -136,7 +136,7 @@ export const GeneralSettingsForm = ({
                     <T
                       keyName="settings.sideMenu.general.rememberUser.storage.local.tooltip"
                       params={{
-                        tag: <Tag size="sm" bgColor={keyBg} />,
+                        tag: <Badge />,
                       }}
                     />
                   </Text>

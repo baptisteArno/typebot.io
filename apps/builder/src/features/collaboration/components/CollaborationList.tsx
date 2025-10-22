@@ -4,11 +4,11 @@ import {
   Skeleton,
   SkeletonCircle,
   Stack,
-  Tag,
   Text,
 } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { CollaborationType } from "@typebot.io/prisma/enum";
+import { Badge } from "@typebot.io/ui/components/Badge";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Input } from "@typebot.io/ui/components/Input";
 import { HardDriveIcon } from "@typebot.io/ui/icons/HardDriveIcon";
@@ -196,9 +196,9 @@ export const CollaborationList = () => {
               Everyone at {workspace.name}
             </Text>
           </HStack>
-          <Tag flexShrink={0}>
+          <Badge className="flex-shrink-0">
             <ReadableCollaborationType type={CollaborationType.FULL_ACCESS} />
-          </Tag>
+          </Badge>
         </Flex>
       )}
       {invitations?.map(({ email, type }) => (

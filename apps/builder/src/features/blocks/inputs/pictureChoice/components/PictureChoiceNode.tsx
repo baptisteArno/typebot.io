@@ -1,7 +1,8 @@
-import { Stack, Tag, Text, Wrap } from "@chakra-ui/react";
+import { Stack, Text, Wrap } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import type { BlockIndices } from "@typebot.io/blocks-core/schemas/schema";
 import type { PictureChoiceBlock } from "@typebot.io/blocks-inputs/pictureChoice/schema";
+import { Badge } from "@typebot.io/ui/components/Badge";
 import { SetVariableLabel } from "@/components/SetVariableLabel";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { ItemNodesList } from "@/features/graph/components/nodes/item/ItemNodesList";
@@ -26,9 +27,7 @@ export const PictureChoiceNode = ({ block, indices }: Props) => {
           <Text>
             {t("blocks.inputs.picture.settings.dynamicVariables.display.label")}
           </Text>
-          <Tag bg="orange.400" color="white">
-            {dynamicVariableName}
-          </Tag>
+          <Badge colorScheme="purple">{dynamicVariableName}</Badge>
           <Text>
             {t(
               "blocks.inputs.picture.settings.dynamicVariables.pictures.label",

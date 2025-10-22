@@ -8,7 +8,7 @@ import { LogoutSquare02Icon } from "@typebot.io/ui/icons/LogoutSquare02Icon";
 import { PlusSignIcon } from "@typebot.io/ui/icons/PlusSignIcon";
 import { TickIcon } from "@typebot.io/ui/icons/TickIcon";
 import { EmojiOrImageIcon } from "@/components/EmojiOrImageIcon";
-import { PlanTag } from "@/features/billing/components/PlanTag";
+import { PlanBadge } from "@/features/billing/components/PlanTag";
 import { trpc } from "@/lib/queryClient";
 import type { WorkspaceInApp } from "../WorkspaceProvider";
 
@@ -41,7 +41,7 @@ export const WorkspaceDropdown = ({
               <Text isTruncated maxW="300px">
                 {currentWorkspace.name}
               </Text>
-              <PlanTag plan={currentWorkspace.plan} />
+              <PlanBadge plan={currentWorkspace.plan} />
             </>
           )}
           <ArrowDown01Icon />
@@ -63,7 +63,7 @@ export const WorkspaceDropdown = ({
                 <Text isTruncated maxW="250px">
                   {workspace.name}
                 </Text>
-                <PlanTag plan={workspace.plan} />
+                <PlanBadge plan={workspace.plan} />
               </HStack>
 
               {workspace.id === currentWorkspace?.id && <TickIcon />}

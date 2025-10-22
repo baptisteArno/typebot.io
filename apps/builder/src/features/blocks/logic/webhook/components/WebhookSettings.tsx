@@ -5,7 +5,6 @@ import {
   TabPanel,
   TabPanels,
   Tabs,
-  Tag,
   Text,
 } from "@chakra-ui/react";
 import * as Sentry from "@sentry/nextjs";
@@ -14,6 +13,7 @@ import type { WebhookBlock } from "@typebot.io/blocks-logic/webhook/schema";
 import { env } from "@typebot.io/env";
 import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
 import { Accordion } from "@typebot.io/ui/components/Accordion";
+import { Badge } from "@typebot.io/ui/components/Badge";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Field } from "@typebot.io/ui/components/Field";
 import usePartySocket from "partysocket/react";
@@ -126,7 +126,7 @@ export const WebhookSettings = ({
                   >
                     authenticated
                   </TextLink>{" "}
-                  <Tag>POST</Tag> request to the Test URL...
+                  <Badge>POST</Badge> request to the Test URL...
                 </Text>
               </Stack>
             )}

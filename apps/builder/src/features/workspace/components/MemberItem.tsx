@@ -1,6 +1,7 @@
-import { Avatar, HStack, Stack, Tag, Text } from "@chakra-ui/react";
+import { Avatar, HStack, Stack, Text } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { WorkspaceRole } from "@typebot.io/prisma/enum";
+import { Badge } from "@typebot.io/ui/components/Badge";
 import { Menu } from "@typebot.io/ui/components/Menu";
 import { convertWorkspaceRoleToReadable } from "./AddMemberForm";
 
@@ -94,12 +95,8 @@ export const MemberIdentityContent = ({
         </Stack>
       </HStack>
       <HStack flexShrink={0}>
-        {isGuest && (
-          <Tag color="gray.400" data-testid="tag">
-            {t("pending")}
-          </Tag>
-        )}
-        <Tag data-testid="tag">{tag}</Tag>
+        {isGuest && <Badge className="text-gray-8">{t("pending")}</Badge>}
+        <Badge>{tag}</Badge>
       </HStack>
     </HStack>
   );

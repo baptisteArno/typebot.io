@@ -1,5 +1,6 @@
-import { HStack, Tag, Text, useColorModeValue } from "@chakra-ui/react";
+import { HStack, Text, useColorModeValue } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
+import { Badge } from "@typebot.io/ui/components/Badge";
 import type { Variable } from "@typebot.io/variables/schemas";
 
 export const SetVariableLabel = ({
@@ -21,14 +22,9 @@ export const SetVariableLabel = ({
       <Text fontSize="sm" color={textColor}>
         {t("variables.set")}
       </Text>
-      <Tag
-        size="sm"
-        variant="outline"
-        colorScheme="purple"
-        wordBreak="break-all"
-      >
+      <Badge colorScheme="purple" className="break-all">
         {variableName}
-      </Tag>
+      </Badge>
     </HStack>
   );
 };

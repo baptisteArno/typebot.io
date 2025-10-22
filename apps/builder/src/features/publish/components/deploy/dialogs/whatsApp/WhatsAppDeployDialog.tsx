@@ -18,7 +18,7 @@ import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { TableList } from "@/components/TableList";
 import { TextLink } from "@/components/TextLink";
 import { ChangePlanDialog } from "@/features/billing/components/ChangePlanDialog";
-import { PlanTag } from "@/features/billing/components/PlanTag";
+import { PlanBadge } from "@/features/billing/components/PlanTag";
 import { hasProPerks } from "@/features/billing/helpers/hasProPerks";
 import { CredentialsDropdown } from "@/features/credentials/components/CredentialsDropdown";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
@@ -173,7 +173,7 @@ export const WhatsAppDeployDialog = ({
           <Alert.Root>
             <InformationSquareIcon />
             <Alert.Description>
-              Upgrade your workspace to <PlanTag plan="PRO" /> to be able to
+              Upgrade your workspace to <PlanBadge plan="PRO" /> to be able to
               enable WhatsApp integration.
             </Alert.Description>
             <Alert.Action>

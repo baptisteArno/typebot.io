@@ -10,10 +10,11 @@ import { useTranslate } from "@tolgee/react";
 import { env } from "@typebot.io/env";
 import { isDefined, isNotDefined } from "@typebot.io/lib/utils";
 import { Plan } from "@typebot.io/prisma/enum";
+import { Badge } from "@typebot.io/ui/components/Badge";
 import { Button } from "@typebot.io/ui/components/Button";
+import { SquareLock01Icon } from "@typebot.io/ui/icons/SquareLock01Icon";
 import { TrashIcon } from "@typebot.io/ui/icons/TrashIcon";
 import { Seo } from "@/components/Seo";
-import { LockTag } from "@/features/billing/components/LockTag";
 import { UpgradeButton } from "@/features/billing/components/UpgradeButton";
 import { hasProPerks } from "@/features/billing/helpers/hasProPerks";
 import { CustomDomainsDropdown } from "@/features/customDomains/components/CustomDomainsDropdown";
@@ -150,7 +151,9 @@ export const SharePage = () => {
                     excludedPlans={[Plan.STARTER]}
                   >
                     {t("customDomain.add")}
-                    <LockTag plan={Plan.PRO} />
+                    <Badge colorScheme="purple">
+                      <SquareLock01Icon />
+                    </Badge>
                   </UpgradeButton>
                 )
               ) : null}

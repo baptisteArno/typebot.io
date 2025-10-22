@@ -1,5 +1,6 @@
-import { Flex, HStack, Tag, Text, useColorModeValue } from "@chakra-ui/react";
+import { Flex, HStack, Text, useColorModeValue } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
+import { Badge } from "@typebot.io/ui/components/Badge";
 import { useRouter } from "next/router";
 import { useQueryState } from "nuqs";
 import { useMemo } from "react";
@@ -96,9 +97,9 @@ export const ResultsPage = () => {
             >
               <Text>Submissions</Text>
               {(stats?.totalStarts ?? 0) > 0 && (
-                <Tag size="sm" colorScheme="orange" ml="1">
+                <Badge colorScheme="orange" className="ml-1">
                   {stats?.totalStarts}
-                </Tag>
+                </Badge>
               )}
             </ButtonLink>
             <ButtonLink

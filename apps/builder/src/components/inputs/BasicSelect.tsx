@@ -1,5 +1,5 @@
 import type { Select as PrimitiveSelect } from "@base-ui-components/react/select";
-import { Tag } from "@chakra-ui/react";
+import { Badge } from "@typebot.io/ui/components/Badge";
 import { Select, type TriggerProps } from "@typebot.io/ui/components/Select";
 import type { Variable } from "@typebot.io/variables/schemas";
 import { useMemo } from "react";
@@ -113,7 +113,11 @@ const useEnrichedItems = <ItemValue, Value extends ItemValue | undefined>({
     if (variables)
       enrichedItems.push(
         ...variables.map((variable) => ({
-          label: <Tag colorScheme="purple">{variable.name}</Tag>,
+          label: (
+            <Badge colorScheme="purple" variant="solid">
+              {variable.name}
+            </Badge>
+          ),
           isHidden: true,
           value: `{{${variable.name}}}` as ItemValue,
         })),

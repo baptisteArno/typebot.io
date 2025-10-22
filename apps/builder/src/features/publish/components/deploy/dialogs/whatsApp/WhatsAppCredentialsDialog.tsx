@@ -16,7 +16,6 @@ import {
   StepSeparator,
   StepStatus,
   StepTitle,
-  Tag,
   Text,
   UnorderedList,
   useSteps,
@@ -28,6 +27,7 @@ import { TRPCClientError } from "@trpc/client";
 import { env } from "@typebot.io/env";
 import { parseUnknownClientError } from "@typebot.io/lib/parseUnknownClientError";
 import { isEmpty, isNotEmpty } from "@typebot.io/lib/utils";
+import { Badge } from "@typebot.io/ui/components/Badge";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
 import { Field } from "@typebot.io/ui/components/Field";
@@ -627,7 +627,7 @@ const ProviderSelection = ({
           <Dialog360Logo className="size-10" />
           <Stack>
             <Text fontWeight="bold">
-              360Dialog <Tag colorScheme="orange">Beta</Tag>
+              360Dialog <Badge colorScheme="orange">Beta</Badge>
             </Text>
             <Text fontSize="sm" color="gray.600">
               Third-party WhatsApp Business Solution Provider

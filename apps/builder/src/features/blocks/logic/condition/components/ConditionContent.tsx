@@ -1,9 +1,10 @@
-import { Stack, Tag, Text, useColorModeValue, Wrap } from "@chakra-ui/react";
+import { Stack, Text, Wrap } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { defaultConditionItemContent } from "@typebot.io/blocks-logic/condition/constants";
 import { ComparisonOperators } from "@typebot.io/conditions/constants";
 import type { Condition } from "@typebot.io/conditions/schemas";
 import { byId } from "@typebot.io/lib/utils";
+import { Badge } from "@typebot.io/ui/components/Badge";
 import type { Variable } from "@typebot.io/variables/schemas";
 
 type Props = {
@@ -19,7 +20,6 @@ export const ConditionContent = ({
   displaySemicolon,
 }: Props) => {
   const { t } = useTranslate();
-  const comparisonValueBg = useColorModeValue("gray.200", "gray.700");
   return (
     <Stack>
       {condition?.comparisons?.map((comparison, idx) => {
@@ -38,14 +38,9 @@ export const ConditionContent = ({
               </Text>
             )}
             {variable?.name && (
-              <Tag
-                bgColor="purple.400"
-                color="white"
-                size="sm"
-                wordBreak="break-all"
-              >
+              <Badge colorScheme="purple" className="break-all">
                 {variable.name}
-              </Tag>
+              </Badge>
             )}
             {comparison.comparisonOperator && (
               <Text fontSize={size}>
@@ -56,9 +51,7 @@ export const ConditionContent = ({
               comparison.comparisonOperator !== ComparisonOperators.IS_SET &&
               comparison.comparisonOperator !==
                 ComparisonOperators.IS_EMPTY && (
-                <Tag bgColor={comparisonValueBg} size="sm">
-                  {comparison.value}
-                </Tag>
+                <Badge>{comparison.value}</Badge>
               )}
             {idx === (condition.comparisons?.length ?? 0) - 1 &&
               displaySemicolon && <Text fontSize={size}>:</Text>}

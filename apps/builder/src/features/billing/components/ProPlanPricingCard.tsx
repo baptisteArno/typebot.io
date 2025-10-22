@@ -3,7 +3,6 @@ import {
   Heading,
   HStack,
   Stack,
-  Tag,
   Text,
   useColorModeValue,
   useDisclosure,
@@ -55,17 +54,9 @@ export const ProPlanPricingCard = ({
         rounded="lg"
       >
         <Flex justifyContent="center">
-          <Tag
-            pos="absolute"
-            top="-10px"
-            colorScheme="orange"
-            bg={useColorModeValue("purple.500", "purple.400")}
-            variant="solid"
-            fontWeight="medium"
-            style={{ marginTop: 0 }}
-          >
+          <div className="absolute top-[-10px] bg-purple-9 font-medium text-white text-xs px-2 py-1 rounded-md">
             {t("billing.pricingCard.pro.mostPopularLabel")}
-          </Tag>
+          </div>
         </Flex>
         <Stack justifyContent="space-between" h="full">
           <Stack spacing="4" mt={2}>

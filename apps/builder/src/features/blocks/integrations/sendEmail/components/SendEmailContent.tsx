@@ -1,5 +1,6 @@
-import { Tag, Text, Wrap, WrapItem } from "@chakra-ui/react";
+import { Text, Wrap, WrapItem } from "@chakra-ui/react";
 import type { SendEmailBlock } from "@typebot.io/blocks-integrations/sendEmail/schema";
+import { Badge } from "@typebot.io/ui/components/Badge";
 
 type Props = {
   block: SendEmailBlock;
@@ -15,7 +16,7 @@ export const SendEmailContent = ({ block }: Props) => {
       </WrapItem>
       {block.options?.recipients?.map((to) => (
         <WrapItem key={to}>
-          <Tag>{to}</Tag>
+          <Badge>{to}</Badge>
         </WrapItem>
       ))}
     </Wrap>

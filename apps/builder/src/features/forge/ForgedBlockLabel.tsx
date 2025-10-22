@@ -1,33 +1,35 @@
-import { Tag, type TagProps, Text, type TextProps } from "@chakra-ui/react";
+import { Text, type TextProps } from "@chakra-ui/react";
 import type { BlockDefinition } from "@typebot.io/forge/types";
 import type { ForgedBlock } from "@typebot.io/forge-repository/schemas";
+import { Badge } from "@typebot.io/ui/components/Badge";
 import { useForgedBlock } from "./hooks/useForgedBlock";
 
 export const ForgedBlockLabel = ({
   type,
-  ...props
+  className,
 }: { type: ForgedBlock["type"] } & TextProps) => {
   const { blockDef } = useForgedBlock({ nodeType: type });
 
   return (
-    <Text fontSize="sm" {...props}>
+    <Text fontSize="sm" className={className}>
       {blockDef?.name}
-      <ForgeBlockBadge badge={blockDef?.badge} ml={1} />
+      <ForgeBlockBadge badge={blockDef?.badge} className="ml-1" />
     </Text>
   );
 };
 
 const ForgeBlockBadge = ({
   badge,
-  ...props
+  className,
 }: {
   badge: BlockDefinition<any, any, any>["badge"];
-} & TagProps) => {
+  className?: string;
+}) => {
   if (badge === "beta") {
     return (
-      <Tag colorScheme="orange" size="sm" {...props}>
+      <Badge colorScheme="orange" className={className}>
         Beta
-      </Tag>
+      </Badge>
     );
   }
   return null;

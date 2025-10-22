@@ -1,4 +1,4 @@
-import { Stack, Tag, Text } from "@chakra-ui/react";
+import { Stack, Text } from "@chakra-ui/react";
 import { isInputBlock } from "@typebot.io/blocks-core/helpers";
 import {
   defaultSetVariableOptions,
@@ -11,6 +11,7 @@ import type { SetVariableBlock } from "@typebot.io/blocks-logic/setVariable/sche
 import { timeZones } from "@typebot.io/lib/timeZones";
 import { isDefined } from "@typebot.io/lib/utils";
 import { Alert } from "@typebot.io/ui/components/Alert";
+import { Badge } from "@typebot.io/ui/components/Badge";
 import { Field } from "@typebot.io/ui/components/Field";
 import { Label } from "@typebot.io/ui/components/Label";
 import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
@@ -334,9 +335,9 @@ const SetVariableValue = ({
         <Alert.Root>
           <InformationSquareIcon />
           <Alert.Description>
-            Will return either <Tag size="sm">morning</Tag>,{" "}
-            <Tag size="sm">afternoon</Tag>,<Tag size="sm">evening</Tag> or{" "}
-            <Tag size="sm">night</Tag> based on the current user time.
+            Will return either <Badge>morning</Badge>, <Badge>afternoon</Badge>,
+            <Badge>evening</Badge> or <Badge>night</Badge> based on the current
+            user time.
           </Alert.Description>
         </Alert.Root>
       );
@@ -347,8 +348,7 @@ const SetVariableValue = ({
         <Alert.Root>
           <InformationSquareIcon />
           <Alert.Description>
-            Will return either <Tag size="sm">web</Tag> or{" "}
-            <Tag size="sm">whatsapp</Tag>.
+            Will return either <Badge>web</Badge> or <Badge>whatsapp</Badge>.
           </Alert.Description>
         </Alert.Root>
       );
@@ -358,8 +358,8 @@ const SetVariableValue = ({
         <Alert.Root>
           <InformationSquareIcon />
           <Alert.Description>
-            Will return either <Tag size="sm">desktop</Tag>,{" "}
-            <Tag size="sm">tablet</Tag> or <Tag size="sm">mobile</Tag>.
+            Will return either <Badge>desktop</Badge>, <Badge>tablet</Badge> or{" "}
+            <Badge>mobile</Badge>.
           </Alert.Description>
         </Alert.Root>
       );

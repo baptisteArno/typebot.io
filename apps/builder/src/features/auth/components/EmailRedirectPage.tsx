@@ -1,11 +1,11 @@
 import {
   Heading,
   Stack,
-  Tag,
   Text,
   useColorModeValue,
   VStack,
 } from "@chakra-ui/react";
+import { Badge } from "@typebot.io/ui/components/Badge";
 import { Button } from "@typebot.io/ui/components/Button";
 import { useQueryState } from "nuqs";
 import { Seo } from "@/components/Seo";
@@ -43,7 +43,7 @@ export const EmailRedirectPage = () => {
             Email authentication
           </Heading>
           <Text>
-            You are about to login with <Tag>{email}</Tag>
+            You are about to login with <Badge>{email}</Badge>
           </Text>
         </Stack>
         <Button onClick={redirectToMagicLink}>Continue</Button>

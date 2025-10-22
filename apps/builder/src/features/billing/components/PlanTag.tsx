@@ -1,94 +1,58 @@
-import { Tag, type TagProps, type ThemeTypings } from "@chakra-ui/react";
 import { Plan } from "@typebot.io/prisma/enum";
+import { Badge } from "@typebot.io/ui/components/Badge";
 
-export const planColorSchemes: Record<Plan, ThemeTypings["colorSchemes"]> = {
-  [Plan.LIFETIME]: "purple",
-  [Plan.PRO]: "purple",
-  [Plan.OFFERED]: "orange",
-  [Plan.STARTER]: "orange",
-  [Plan.FREE]: "gray",
-  [Plan.CUSTOM]: "yellow",
-  [Plan.UNLIMITED]: "yellow",
-  [Plan.ENTERPRISE]: "yellow",
-};
-
-export const PlanTag = ({
+export const PlanBadge = ({
   plan,
-  ...props
-}: { plan: Plan } & TagProps): JSX.Element => {
+  className,
+}: {
+  plan: Plan;
+  className?: string;
+}): JSX.Element => {
   switch (plan) {
     case Plan.LIFETIME: {
       return (
-        <Tag
-          colorScheme={planColorSchemes[plan]}
-          data-testid="lifetime-plan-tag"
-          {...props}
-        >
+        <Badge colorScheme="purple" className={className}>
           Lifetime
-        </Tag>
+        </Badge>
       );
     }
     case Plan.PRO: {
       return (
-        <Tag
-          colorScheme={planColorSchemes[plan]}
-          data-testid="pro-plan-tag"
-          {...props}
-        >
+        <Badge colorScheme="purple" className={className}>
           Pro
-        </Tag>
+        </Badge>
       );
     }
     case Plan.OFFERED:
     case Plan.STARTER: {
       return (
-        <Tag
-          colorScheme={planColorSchemes[plan]}
-          data-testid="starter-plan-tag"
-          {...props}
-        >
+        <Badge colorScheme="orange" className={className}>
           Starter
-        </Tag>
+        </Badge>
       );
     }
     case Plan.FREE: {
-      return (
-        <Tag
-          colorScheme={planColorSchemes[Plan.FREE]}
-          data-testid="free-plan-tag"
-          {...props}
-        >
-          Free
-        </Tag>
-      );
+      return <Badge className={className}>Free</Badge>;
     }
     case Plan.CUSTOM: {
       return (
-        <Tag
-          colorScheme={planColorSchemes[Plan.CUSTOM]}
-          data-testid="custom-plan-tag"
-          {...props}
-        >
+        <Badge colorScheme="yellow" className={className}>
           Custom
-        </Tag>
+        </Badge>
       );
     }
     case Plan.UNLIMITED: {
       return (
-        <Tag
-          colorScheme={planColorSchemes[Plan.UNLIMITED]}
-          data-testid="custom-unlimite-tag"
-          {...props}
-        >
+        <Badge colorScheme="yellow" className={className}>
           Unlimited
-        </Tag>
+        </Badge>
       );
     }
     case Plan.ENTERPRISE: {
       return (
-        <Tag colorScheme={planColorSchemes[Plan.ENTERPRISE]} {...props}>
+        <Badge colorScheme="yellow" className={className}>
           Enterprise
-        </Tag>
+        </Badge>
       );
     }
   }

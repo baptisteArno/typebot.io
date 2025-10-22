@@ -1,7 +1,8 @@
-import { HStack, Tag, Text } from "@chakra-ui/react";
+import { HStack, Text } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { EventType } from "@typebot.io/events/constants";
 import type { CommandEvent } from "@typebot.io/events/schemas";
+import { Badge } from "@typebot.io/ui/components/Badge";
 import { EventIcon } from "@/features/events/components/EventIcon";
 
 type Props = {
@@ -15,7 +16,7 @@ export const CommandEventNode = ({ options }: Props) => {
     <HStack spacing={3} fontWeight="normal">
       <EventIcon type={EventType.COMMAND} />
       {options?.command ? (
-        <Tag p="2">{options?.command}</Tag>
+        <Badge className="p-2">{options?.command}</Badge>
       ) : (
         <Text color="gray.500" fontWeight="normal">
           {t("configure")}

@@ -1,6 +1,7 @@
-import { Tag, Text, theme, VStack } from "@chakra-ui/react";
+import { Text, theme, VStack } from "@chakra-ui/react";
 import { blockHasItems } from "@typebot.io/blocks-core/helpers";
 import { byId, isNotDefined } from "@typebot.io/lib/utils";
+import { Badge } from "@typebot.io/ui/components/Badge";
 import { Tooltip } from "@typebot.io/ui/components/Tooltip";
 import { useMemo } from "react";
 import { useShallow } from "zustand/react/shallow";
@@ -180,7 +181,7 @@ export const DropOffEdge = ({
                   )}
                   %
                 </Text>
-                <Tag colorScheme="red" size="sm">
+                <Badge colorScheme="red">
                   {isWorkspaceProPlan ? (
                     totalDroppedUser
                   ) : (
@@ -189,7 +190,7 @@ export const DropOffEdge = ({
                     </Text>
                   )}{" "}
                   user{(totalDroppedUser ?? 2) > 1 ? "s" : ""}
-                </Tag>
+                </Badge>
               </VStack>
             }
           ></Tooltip.Trigger>

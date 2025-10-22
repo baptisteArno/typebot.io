@@ -5,7 +5,7 @@
 @tailwind utilities;
 
 :root {
-  --spacing: 0.25rem;
+  --spacing: 0.5rem;
 }
 
 h1 {

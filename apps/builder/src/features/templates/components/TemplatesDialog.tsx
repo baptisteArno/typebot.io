@@ -2,7 +2,6 @@ import {
   Heading,
   HStack,
   Stack,
-  Tag,
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
@@ -10,6 +9,7 @@ import { useTranslate } from "@tolgee/react";
 import { sendRequest } from "@typebot.io/lib/utils";
 import { Standard } from "@typebot.io/react";
 import type { Typebot } from "@typebot.io/typebot/schemas/typebot";
+import { Badge } from "@typebot.io/ui/components/Badge";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
 import { useCallback, useEffect, useState } from "react";
@@ -107,9 +107,9 @@ export const TemplatesDialog = ({
                       <Text>{template.emoji}</Text>
                       <Text>{template.name}</Text>
                       {template.isNew && (
-                        <Tag colorScheme="orange" size="sm" flexShrink={0}>
+                        <Badge colorScheme="orange" className="flex-shrink-0">
                           {t("templates.modal.menuHeading.new.tag")}
-                        </Tag>
+                        </Badge>
                       )}
                     </HStack>
                   </Button>
@@ -138,9 +138,9 @@ export const TemplatesDialog = ({
                       <Text>{template.emoji}</Text>
                       <Text>{template.name}</Text>
                       {template.isNew && (
-                        <Tag colorScheme="orange" size="sm" flexShrink={0}>
+                        <Badge colorScheme="orange" className="flex-shrink-0">
                           {t("templates.modal.menuHeading.new.tag")}
-                        </Tag>
+                        </Badge>
                       )}
                     </HStack>
                   </Button>
@@ -169,9 +169,9 @@ export const TemplatesDialog = ({
                       <Text>{template.emoji}</Text>
                       <Text>{template.name}</Text>
                       {template.isNew && (
-                        <Tag colorScheme="orange" size="sm" flexShrink={0}>
+                        <Badge colorScheme="orange" className="flex-shrink-0">
                           {t("templates.modal.menuHeading.new.tag")}
-                        </Tag>
+                        </Badge>
                       )}
                     </HStack>
                   </Button>

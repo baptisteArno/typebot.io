@@ -1,4 +1,5 @@
-import { HStack, Tag, Text } from "@chakra-ui/react";
+import { HStack, Text } from "@chakra-ui/react";
+import { Badge } from "@typebot.io/ui/components/Badge";
 import { Menu } from "@typebot.io/ui/components/Menu";
 import { ArrowDown01Icon } from "@typebot.io/ui/icons/ArrowDown01Icon";
 import { runtimes } from "../data";
@@ -19,7 +20,7 @@ export const RuntimeMenu = ({ selectedRuntime, onSelectRuntime }: Props) => {
           <Text>{selectedRuntime.name}</Text>
           {"status" in selectedRuntime &&
           typeof selectedRuntime.status === "string" ? (
-            <Tag colorScheme="orange">{selectedRuntime.status}</Tag>
+            <Badge colorScheme="orange">{selectedRuntime.status}</Badge>
           ) : null}
           <ArrowDown01Icon />
         </HStack>
@@ -36,7 +37,7 @@ export const RuntimeMenu = ({ selectedRuntime, onSelectRuntime }: Props) => {
                 {runtime.icon}
                 <Text>{runtime.name}</Text>
                 {"status" in runtime && typeof runtime.status === "string" ? (
-                  <Tag colorScheme="orange">{runtime.status}</Tag>
+                  <Badge colorScheme="orange">{runtime.status}</Badge>
                 ) : null}
               </HStack>
             </Menu.Item>

@@ -1,7 +1,8 @@
-import { Tag, Text, VStack } from "@chakra-ui/react";
+import { Text, VStack } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
 import { T, useTranslate } from "@tolgee/react";
 import { Alert } from "@typebot.io/ui/components/Alert";
+import { Badge } from "@typebot.io/ui/components/Badge";
 import { Button, buttonVariants } from "@typebot.io/ui/components/Button";
 import { Menu } from "@typebot.io/ui/components/Menu";
 import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
@@ -134,16 +135,9 @@ const TypebotButton = ({
         )}
       >
         {typebot.publishedTypebotId && (
-          <Tag
-            colorScheme="orange"
-            variant="solid"
-            rounded="full"
-            pos="absolute"
-            top="27px"
-            size="sm"
-          >
+          <Badge colorScheme="orange" className="absolute top-[27px]">
             {t("folders.typebotButton.live")}
-          </Tag>
+          </Badge>
         )}
         {!isReadOnly && (
           <>

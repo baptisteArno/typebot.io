@@ -1,6 +1,6 @@
-import { Tag } from "@chakra-ui/react";
 import { createId } from "@typebot.io/lib/createId";
 import { byId } from "@typebot.io/lib/utils";
+import { Badge } from "@typebot.io/ui/components/Badge";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Combobox } from "@typebot.io/ui/components/Combobox";
 import type { InputProps } from "@typebot.io/ui/components/Input";
@@ -101,10 +101,15 @@ export const VariablesCombobox = ({
               {item.isCreating ? (
                 <div className="flex items-center gap-2">
                   <PlusSignIcon className="size-3" />
-                  Create <Tag colorScheme="purple">{item.name}</Tag>
+                  Create{" "}
+                  <Badge colorScheme="purple" variant="solid">
+                    {item.name}
+                  </Badge>
                 </div>
               ) : (
-                <Tag colorScheme="purple">{item.name}</Tag>
+                <Badge colorScheme="purple" variant="solid">
+                  {item.name}
+                </Badge>
               )}
             </Combobox.Item>
           )}

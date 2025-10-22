@@ -1,12 +1,13 @@
 import { Text, useDisclosure, VStack } from "@chakra-ui/react";
-import type { Plan } from "@typebot.io/prisma/enum";
+import { Plan } from "@typebot.io/prisma/enum";
+import { Badge } from "@typebot.io/ui/components/Badge";
 import { Button } from "@typebot.io/ui/components/Button";
 import { SourceCodeIcon } from "@typebot.io/ui/icons/SourceCodeIcon";
+import { SquareLock01Icon } from "@typebot.io/ui/icons/SquareLock01Icon";
 import {
   WhatsAppLogo,
   whatsAppBrandColor,
 } from "@/components/logos/WhatsAppLogo";
-import { LockTag } from "@/features/billing/components/LockTag";
 import { hasProPerks } from "@/features/billing/helpers/hasProPerks";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { ApiDeployDialog } from "./dialogs/ApiDeployDialog";
@@ -78,10 +79,11 @@ export const DeployButton = ({
           <Text>
             {label}
             {lockTagPlan && (
-              <>
-                {" "}
-                <LockTag plan={lockTagPlan} />
-              </>
+              <Badge
+                colorScheme={lockTagPlan === Plan.PRO ? "purple" : "orange"}
+              >
+                <SquareLock01Icon />
+              </Badge>
             )}
           </Text>
         </VStack>

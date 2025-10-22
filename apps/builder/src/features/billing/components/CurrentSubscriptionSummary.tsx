@@ -6,7 +6,7 @@ import { TriangleAlertIcon } from "@typebot.io/ui/icons/TriangleAlertIcon";
 import type { Workspace } from "@typebot.io/workspaces/schemas";
 import { useSubscriptionQuery } from "../hooks/useSubscriptionQuery";
 import { BillingPortalButton } from "./BillingPortalButton";
-import { PlanTag } from "./PlanTag";
+import { PlanBadge } from "./PlanTag";
 
 type Props = {
   workspace: Pick<Workspace, "id" | "plan" | "stripeId">;
@@ -28,7 +28,7 @@ export const CurrentSubscriptionSummary = ({ workspace }: Props) => {
       </Heading>
       <HStack data-testid="current-subscription">
         <Text>{t("billing.currentSubscription.subheading")} </Text>
-        <PlanTag plan={workspace.plan} />
+        <PlanBadge plan={workspace.plan} />
         {data?.subscription?.cancelDate && (
           <Text fontSize="sm">
             ({t("billing.currentSubscription.cancelDate")}{" "}

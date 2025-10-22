@@ -1,6 +1,7 @@
-import { Flex, Stack, Tag, Text, useColorModeValue } from "@chakra-ui/react";
+import { Flex, Stack, Text, useColorModeValue } from "@chakra-ui/react";
 import { defaultAbTestOptions } from "@typebot.io/blocks-logic/abTest/constants";
 import type { AbTestBlock } from "@typebot.io/blocks-logic/abTest/schema";
+import { Badge } from "@typebot.io/ui/components/Badge";
 import { BlockSourceEndpoint } from "@/features/graph/components/endpoints/BlockSourceEndpoint";
 
 type Props = {
@@ -26,7 +27,9 @@ export const AbTestNodeBody = ({ block, groupId }: Props) => {
       >
         <Text p="3">
           A{" "}
-          <Tag>{block.options?.aPercent ?? defaultAbTestOptions.aPercent}%</Tag>
+          <Badge>
+            {block.options?.aPercent ?? defaultAbTestOptions.aPercent}%
+          </Badge>
         </Text>
         <BlockSourceEndpoint
           source={{
@@ -51,9 +54,9 @@ export const AbTestNodeBody = ({ block, groupId }: Props) => {
       >
         <Text p="3">
           B{" "}
-          <Tag>
+          <Badge>
             {100 - (block.options?.aPercent ?? defaultAbTestOptions.aPercent)}%
-          </Tag>
+          </Badge>
         </Text>
         <BlockSourceEndpoint
           source={{

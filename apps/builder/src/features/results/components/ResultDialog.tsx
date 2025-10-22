@@ -3,7 +3,6 @@ import {
   Heading,
   HStack,
   Stack,
-  Tag,
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
@@ -14,6 +13,7 @@ import type {
   TableData,
 } from "@typebot.io/results/schemas/results";
 import type { TypebotV6 } from "@typebot.io/typebot/schemas/typebot";
+import { Badge } from "@typebot.io/ui/components/Badge";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
 import { LoaderCircleIcon } from "@typebot.io/ui/icons/LoaderCircleIcon";
@@ -49,9 +49,9 @@ export const ResultDialog = ({ resultId, onClose }: Props) => {
             size="sm"
           >
             Transcript
-            <Tag size="sm" colorScheme="orange" ml={1}>
+            <Badge colorScheme="orange" className="ml-1">
               Beta
-            </Tag>
+            </Badge>
           </Button>
           <Button
             variant={tab === "answers" ? "outline" : "ghost"}

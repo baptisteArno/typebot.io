@@ -1,7 +1,8 @@
-import { Tag, Text } from "@chakra-ui/react";
+import { Text } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import type { TypebotLinkBlock } from "@typebot.io/blocks-logic/typebotLink/schema";
 import { byId, isNotEmpty } from "@typebot.io/lib/utils";
+import { Badge } from "@typebot.io/ui/components/Badge";
 import { isSingleVariable } from "@typebot.io/variables/isSingleVariable";
 import { useMemo } from "react";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
@@ -39,19 +40,18 @@ export const TypebotLinkNode = ({ block }: Props) => {
     return linkedTypebot?.groups.find(byId(block.options.groupId))?.title;
   }, [block.options?.groupId, linkedTypebot?.groups]);
 
-  if (!block.options?.typebotId)
-    return <Text color="gray.500">Configure...</Text>;
+  if (!block.options?.typebotId) return <Badge>Configure...</Badge>;
   return (
     <Text>
       Jump{" "}
       {groupTitle ? (
         <>
-          to <Tag colorScheme="purple">{groupTitle}</Tag>
+          to <Badge colorScheme="purple">{groupTitle}</Badge>
         </>
       ) : null}{" "}
       {!isCurrentTypebot ? (
         <>
-          in <Tag>{linkedTypebot?.name}</Tag>
+          in <Badge>{linkedTypebot?.name}</Badge>
         </>
       ) : null}
     </Text>
