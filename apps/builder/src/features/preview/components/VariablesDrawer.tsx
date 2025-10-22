@@ -1,9 +1,7 @@
 import {
-  Fade,
   Flex,
   Heading,
   HStack,
-  SlideFade,
   Stack,
   useColorModeValue,
 } from "@chakra-ui/react";
@@ -93,14 +91,15 @@ export const VariablesDrawer = ({ onClose }: Props) => {
       p="6"
       style={{ width: `${width}px` }}
     >
-      <Fade in={isResizeHandleVisible}>
+      {isResizeHandleVisible && (
         <ResizeHandle
           {...useResizeHandleDrag()}
+          className="animate-in fade-in-0"
           pos="absolute"
           left="-7.5px"
           top={`calc(50% - ${headerHeight}px)`}
         />
-      </Fade>
+      )}
 
       <Stack w="full" spacing="4">
         <Button
@@ -118,20 +117,18 @@ export const VariablesDrawer = ({ onClose }: Props) => {
             value={searchValue}
             onValueChange={setSearchValue}
           />
-          <SlideFade
-            in={
-              filteredVariables &&
-              searchValue.length > 0 &&
-              !filteredVariables.some((v) => v.name === searchValue)
-            }
-            unmountOnExit
-            offsetY={0}
-            offsetX={10}
-          >
-            <Button aria-label="Create" type="submit" size="icon">
-              <PlusSignIcon />
-            </Button>
-          </SlideFade>
+          {filteredVariables &&
+            searchValue.length > 0 &&
+            !filteredVariables.some((v) => v.name === searchValue) && (
+              <Button
+                aria-label="Create"
+                type="submit"
+                size="icon"
+                className="animate-in fade-in-0"
+              >
+                <PlusSignIcon />
+              </Button>
+            )}
         </HStack>
 
         <Stack overflowY="auto" py="1">

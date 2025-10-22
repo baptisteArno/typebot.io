@@ -1,4 +1,3 @@
-import { Fade } from "@chakra-ui/react";
 import { type Cell as CellProps, flexRender } from "@tanstack/react-table";
 import type { TableData } from "@typebot.io/results/schemas/results";
 import { Button } from "@typebot.io/ui/components/Button";
@@ -36,9 +35,9 @@ const Cell = ({
     >
       {flexRender(cell.column.columnDef.cell, cell.getContext())}
       <span className="absolute top-0 right-2 h-full inline-flex items-center">
-        <Fade unmountOnExit in={isExpandButtonVisible && cellIndex === 1}>
+        {isExpandButtonVisible && cellIndex === 1 && (
           <Button
-            className="shadow-md"
+            className="shadow-md animate-in fade-in-0"
             variant="secondary"
             size="xs"
             onClick={onExpandButtonClick}
@@ -46,7 +45,7 @@ const Cell = ({
             <ArrowExpand01Icon />
             Open
           </Button>
-        </Fade>
+        )}
       </span>
     </td>
   );

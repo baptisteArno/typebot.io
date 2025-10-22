@@ -1,5 +1,4 @@
 import {
-  Fade,
   Flex,
   Heading,
   SimpleGrid,
@@ -356,8 +355,9 @@ export const BlocksSideBar = () => {
           </Portal>
         )}
       </Stack>
-      <Fade in={!isLocked} unmountOnExit>
+      {!isLocked && (
         <Flex
+          className="animate-in fade-in-0"
           pos="absolute"
           h="100%"
           right="-70px"
@@ -371,7 +371,7 @@ export const BlocksSideBar = () => {
         >
           <Flex w="5px" h="20px" bgColor="gray.400" rounded="md" />
         </Flex>
-      </Fade>
+      )}
     </Flex>
   );
 };

@@ -1,4 +1,4 @@
-import { Box, Fade, Flex, SlideFade, Stack } from "@chakra-ui/react";
+import { Box, Flex, Stack } from "@chakra-ui/react";
 import { createId } from "@paralleldrive/cuid2";
 import { Button } from "@typebot.io/ui/components/Button";
 import { PlusSignIcon } from "@typebot.io/ui/icons/PlusSignIcon";
@@ -101,67 +101,37 @@ export const TableList = <T extends object>({
             pb="4"
           >
             {children({ item, onItemChange: handleCellChange(itemIndex) })}
-            <Fade
-              in={showDeleteIndex === itemIndex}
-              style={{
-                position: "absolute",
-                left: "-8px",
-                top: "-8px",
-              }}
-              unmountOnExit
-            >
+            {showDeleteIndex === itemIndex && (
               <Button
                 size="icon"
                 aria-label="Remove cell"
                 onClick={deleteItem(itemIndex)}
                 variant="secondary"
-                className="shadow-md size-6"
+                className="shadow-md size-6 animate-in fade-in-0 absolute left-[-8px] top-[-8px]"
               >
                 <TrashIcon />
               </Button>
-            </Fade>
-            {isOrdered && (
+            )}
+            {true && itemIndex === 0 && showDeleteIndex === itemIndex && (
               <>
-                {itemIndex === 0 && (
-                  <SlideFade
-                    offsetY="-5px"
-                    in={showDeleteIndex === itemIndex}
-                    style={{
-                      position: "absolute",
-                      top: "-15px",
-                    }}
-                    unmountOnExit
-                  >
-                    <Button
-                      size="icon"
-                      aria-label={addLabel}
-                      onClick={insertItem(itemIndex - 1)}
-                      variant="secondary"
-                      className="shadow-md size-6"
-                    >
-                      <PlusSignIcon />
-                    </Button>
-                  </SlideFade>
-                )}
-                <SlideFade
-                  offsetY="5px"
-                  in={showDeleteIndex === itemIndex}
-                  style={{
-                    position: "absolute",
-                    bottom: "5px",
-                  }}
-                  unmountOnExit
+                <Button
+                  size="icon"
+                  aria-label={addLabel}
+                  onClick={insertItem(itemIndex - 1)}
+                  variant="secondary"
+                  className="shadow-md size-6 animate-in fade-in-0 slide-in-from-bottom-1 absolute top-[-10px]"
                 >
-                  <Button
-                    size="icon"
-                    aria-label={addLabel}
-                    onClick={insertItem(itemIndex)}
-                    variant="secondary"
-                    className="shadow-md size-6"
-                  >
-                    <PlusSignIcon />
-                  </Button>
-                </SlideFade>
+                  <PlusSignIcon />
+                </Button>
+                <Button
+                  size="icon"
+                  aria-label={addLabel}
+                  onClick={insertItem(itemIndex)}
+                  variant="secondary"
+                  className="shadow-md size-6 animate-in fade-in-0 slide-in-from-top-1 absolute bottom-2"
+                >
+                  <PlusSignIcon />
+                </Button>
               </>
             )}
           </Flex>

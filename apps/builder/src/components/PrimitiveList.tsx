@@ -1,4 +1,4 @@
-import { Box, Fade, Flex, Stack } from "@chakra-ui/react";
+import { Box, Flex, Stack } from "@chakra-ui/react";
 import { createId } from "@paralleldrive/cuid2";
 import { Button } from "@typebot.io/ui/components/Button";
 import { PlusSignIcon } from "@typebot.io/ui/icons/PlusSignIcon";
@@ -106,26 +106,17 @@ export const PrimitiveList = <T extends number | string | boolean>({
               item: item.value as T,
               onItemChange: handleCellChange(itemIndex),
             })}
-            <Fade
-              in={showDeleteIndex === itemIndex}
-              style={{
-                position: "absolute",
-                left: "-15px",
-                top: "-15px",
-                zIndex: 1,
-              }}
-              unmountOnExit
-            >
+            {showDeleteIndex === itemIndex && (
               <Button
                 variant="secondary"
-                className="size-6"
+                className="size-6 animate-in fade-in-0 absolute left-[-15px] top-[-15px] z-10"
                 size="icon"
                 aria-label="Remove item"
                 onClick={deleteItem(itemIndex)}
               >
                 <TrashIcon />
               </Button>
-            </Fade>
+            )}
           </Flex>
         </Box>
       ))}

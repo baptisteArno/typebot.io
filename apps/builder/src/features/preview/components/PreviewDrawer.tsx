@@ -1,10 +1,4 @@
-import {
-  Fade,
-  Flex,
-  HStack,
-  useColorModeValue,
-  VStack,
-} from "@chakra-ui/react";
+import { Flex, HStack, useColorModeValue, VStack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { reload } from "@typebot.io/react";
 import { Button } from "@typebot.io/ui/components/Button";
@@ -83,14 +77,15 @@ export const PreviewDrawer = () => {
       zIndex={10}
       style={{ width: `${width}px` }}
     >
-      <Fade in={isResizeHandleVisible}>
+      {isResizeHandleVisible && (
         <ResizeHandle
           {...useResizeHandleDrag()}
+          className="animate-in fade-in-0"
           pos="absolute"
           left="-7.5px"
           top={`calc(50% - ${headerHeight}px)`}
         />
-      </Fade>
+      )}
 
       <VStack w="full" spacing={4}>
         <HStack justifyContent={"space-between"} w="full">
