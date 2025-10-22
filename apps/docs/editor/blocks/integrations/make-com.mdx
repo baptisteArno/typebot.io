@@ -20,18 +20,31 @@ The Make.com integration block allows you to trigger a scenario at a given momen
 
 ## Return data from Make.com
 
-You can return data from Make.com by adding a "Webhook response" module at the end of your scenario.
+You can return data from Make.com by adding a "Webhook response" module at the end of your scenario, on this node you can set the body of the response with whatever Make.com values you want.
+
+Once you are ready to try out the webhook, hit the `Run once` button. This will make the scenario to wait for a request to be made to the webhook URL.
 
 <Frame>
   <img
-    src="/images/blocks/integrations/make-com-return.png"
+    src="/images/blocks/integrations/make-com-webhook-response.avif"
     alt="Make.com block webhook response module"
+  />
+</Frame>
+
+At this point, head over to Typebot and hit the `Test the request` button. It will execute the Make.com scenario and you should see the response from Make.com.
+
+Now you can map this data to variables in Typebot.
+
+<Frame>
+  <img
+    src="/images/blocks/integrations/make-com-save-in-variables.avif"
+    alt="Make.com block save in variables"
   />
 </Frame>
 
 ## Video tutorial
 
-<div className="relative" style={{ paddingBottom: '64.5933014354067%' }}>
+<div className="relative" style={{ paddingBottom: "64.5933014354067%" }}>
   <iframe
     src="https://www.youtube.com/embed/V-y1Orys_kY"
     allowFullScreen
