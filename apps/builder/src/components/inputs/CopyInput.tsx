@@ -2,7 +2,7 @@ import { Input } from "@typebot.io/ui/components/Input";
 import { CopyButton } from "../CopyButton";
 
 export const CopyInput = ({ value }: { value: string }) => (
-  <div className="relative">
+  <div className="relative w-full">
     <Input type={"text"} value={value} className="pr-14" />
     <CopyButton
       size="xs"

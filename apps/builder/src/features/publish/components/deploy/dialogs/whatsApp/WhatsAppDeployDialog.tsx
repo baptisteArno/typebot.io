@@ -222,7 +222,7 @@ export const WhatsAppDeployDialog = ({
               )}
             </HStack>
           </ListItem>
-          {typebot?.whatsAppCredentialsId && (
+          {typebot?.whatsAppCredentialsId && phoneNumberData && (
             <>
               <ListItem>
                 <Accordion.Root>
@@ -243,7 +243,6 @@ export const WhatsAppDeployDialog = ({
                         <BasicNumberInput
                           max={48}
                           min={0}
-                          className="w-24"
                           defaultValue={whatsAppSettings?.sessionExpiryTimeout}
                           placeholder={defaultSessionExpiryTimeout.toString()}
                           onValueChange={updateSessionExpiryTimeout}
