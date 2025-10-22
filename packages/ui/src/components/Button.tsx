@@ -68,6 +68,7 @@ const Button = ({
 
   const defaultProps = {
     "data-slot": "button",
+    "data-disabled": props.disabled,
     className: cn(buttonVariants({ variant, size, iconStyle, className })),
     type: typeValue,
   };
