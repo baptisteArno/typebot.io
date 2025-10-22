@@ -1,12 +1,4 @@
-import {
-  FormControl,
-  FormLabel,
-  HStack,
-  Stack,
-  Tag,
-  Text,
-  useColorModeValue,
-} from "@chakra-ui/react";
+import { Stack, Tag, Text, useColorModeValue } from "@chakra-ui/react";
 import { T, useTranslate } from "@tolgee/react";
 import { isDefined } from "@typebot.io/lib/utils";
 import {
@@ -127,11 +119,11 @@ export const GeneralSettingsForm = ({
           (isDefined(generalSettings?.isNewResultOnRefreshEnabled)
             ? !generalSettings?.isNewResultOnRefreshEnabled
             : false)) && (
-          <FormControl as={HStack} justifyContent="space-between">
-            <FormLabel mb="0">
+          <Field.Root>
+            <Field.Label>
               {t("settings.sideMenu.general.rememberUser.storage")}
               <MoreInfoTooltip>
-                <Stack>
+                <div className="flex flex-col gap-2">
                   <Text>
                     <T
                       keyName="settings.sideMenu.general.rememberUser.storage.session.tooltip"
@@ -148,16 +140,16 @@ export const GeneralSettingsForm = ({
                       }}
                     />
                   </Text>
-                </Stack>
+                </div>
               </MoreInfoTooltip>
-            </FormLabel>
+            </Field.Label>
             <BasicSelect
               value={generalSettings?.rememberUser?.storage}
               defaultValue={defaultSettings.general.rememberUser.storage}
               onChange={updateRememberUserStorage}
               items={rememberUserStorages}
             />
-          </FormControl>
+          </Field.Root>
         )}
       </Field.Container>
       <Accordion.Root>

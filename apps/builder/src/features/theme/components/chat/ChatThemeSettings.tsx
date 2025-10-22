@@ -1,4 +1,4 @@
-import { FormLabel, Heading, HStack, Stack } from "@chakra-ui/react";
+import { Heading, Stack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import {
   defaultBlur,
@@ -29,6 +29,7 @@ import type {
   Theme,
 } from "@typebot.io/theme/schemas";
 import type { TypebotV6 } from "@typebot.io/typebot/schemas/typebot";
+import { Field } from "@typebot.io/ui/components/Field";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { AvatarForm } from "./AvatarForm";
 import { ChatContainerForm } from "./ChatContainerForm";
@@ -199,11 +200,9 @@ export const ChatThemeSettings = ({
       </Stack>
       <Stack borderWidth={1} rounded="md" p="4" spacing={4}>
         <Heading fontSize="lg">Buttons input</Heading>
-        <HStack justify="space-between">
-          <FormLabel mb="0" mr="0">
-            Layout:
-          </FormLabel>
-          <HStack>
+        <Field.Root className="flex-row">
+          <Field.Label>Layout:</Field.Label>
+          <div className="flex items-center gap-2">
             <BasicSelect
               size="sm"
               value={chatTheme?.buttonsInput?.layout}
@@ -211,8 +210,8 @@ export const ChatThemeSettings = ({
               onChange={updateButtonsInputLayout}
               items={["wrap", "vertical"]}
             />
-          </HStack>
-        </HStack>
+          </div>
+        </Field.Root>
       </Stack>
     </Stack>
   );

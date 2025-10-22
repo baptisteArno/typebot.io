@@ -1,4 +1,4 @@
-import { FormLabel, Stack } from "@chakra-ui/react";
+import { Stack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { env } from "@typebot.io/env";
 import { defaultSettings } from "@typebot.io/settings/constants";
@@ -56,10 +56,8 @@ export const MetadataForm = ({
 
   return (
     <Stack spacing="6">
-      <Stack>
-        <FormLabel mb="0" htmlFor="icon">
-          {t("settings.sideMenu.metadata.icon.label")}
-        </FormLabel>
+      <Field.Root>
+        <Field.Label>{t("settings.sideMenu.metadata.icon.label")}</Field.Label>
         <Popover.Root {...favIconPopoverControls}>
           <Popover.Trigger
             render={(props) => (
@@ -87,11 +85,9 @@ export const MetadataForm = ({
             />
           </Popover.Popup>
         </Popover.Root>
-      </Stack>
-      <Stack>
-        <FormLabel mb="0" htmlFor="image">
-          {t("settings.sideMenu.metadata.image.label")}
-        </FormLabel>
+      </Field.Root>
+      <Field.Root>
+        <Field.Label>{t("settings.sideMenu.metadata.image.label")}</Field.Label>
         <Popover.Root {...imagePopoverControls}>
           <Popover.Trigger>
             <img
@@ -115,7 +111,7 @@ export const MetadataForm = ({
             />
           </Popover.Popup>
         </Popover.Root>
-      </Stack>
+      </Field.Root>
       <Field.Root>
         <Field.Label>{t("settings.sideMenu.metadata.title.label")}</Field.Label>
         <DebouncedTextInputWithVariablesButton

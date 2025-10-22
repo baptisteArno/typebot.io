@@ -1,4 +1,4 @@
-import { FormLabel, Stack } from "@chakra-ui/react";
+import { Stack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { fileVisibilityOptions } from "@typebot.io/blocks-inputs/file/constants";
 import { defaultTextInputOptions } from "@typebot.io/blocks-inputs/text/constants";
@@ -112,10 +112,8 @@ export const TextInputSettings = ({ options, onOptionsChange }: Props) => {
           onValueChange={updateButtonLabel}
         />
       </Field.Root>
-      <Stack>
-        <FormLabel mb="0" htmlFor="input-mode">
-          Input mode
-        </FormLabel>
+      <Field.Root>
+        <Field.Label>Input mode</Field.Label>
         <BasicSelect
           value={options?.inputMode}
           defaultValue="text"
@@ -123,7 +121,7 @@ export const TextInputSettings = ({ options, onOptionsChange }: Props) => {
           onChange={updateInputMode}
           placeholder="Select input mode..."
         />
-      </Stack>
+      </Field.Root>
       <Field.Container>
         <Field.Root className="flex-row items-center">
           <Switch

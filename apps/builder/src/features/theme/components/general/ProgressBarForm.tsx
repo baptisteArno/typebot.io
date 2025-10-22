@@ -1,4 +1,3 @@
-import { FormLabel, HStack } from "@chakra-ui/react";
 import {
   defaultProgressBarBackgroundColor,
   defaultProgressBarColor,
@@ -70,10 +69,8 @@ export const ProgressBarForm = ({
             />
           </Field.Root>
 
-          <HStack justifyContent="space-between">
-            <FormLabel mb="0" mr="0">
-              Background color:
-            </FormLabel>
+          <Field.Root className="flex-row">
+            <Field.Label>Background color:</Field.Label>
             <ColorPicker
               defaultValue={
                 progressBar?.backgroundColor ??
@@ -81,18 +78,16 @@ export const ProgressBarForm = ({
               }
               onColorChange={updateBackgroundColor}
             />
-          </HStack>
-          <HStack justifyContent="space-between">
-            <FormLabel mb="0" mr="0">
-              Color:
-            </FormLabel>
+          </Field.Root>
+          <Field.Root className="flex-row">
+            <Field.Label>Color:</Field.Label>
             <ColorPicker
               defaultValue={
                 progressBar?.color ?? defaultProgressBarColor[typebotVersion]
               }
               onColorChange={updateColor}
             />
-          </HStack>
+          </Field.Root>
           <Field.Root className="flex-row">
             <Field.Label>Thickness:</Field.Label>
             <BasicNumberInput

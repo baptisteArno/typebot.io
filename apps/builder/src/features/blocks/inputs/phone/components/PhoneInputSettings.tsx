@@ -1,4 +1,4 @@
-import { FormLabel, Stack } from "@chakra-ui/react";
+import { Stack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { defaultPhoneInputOptions } from "@typebot.io/blocks-inputs/phone/constants";
 import type { PhoneNumberInputBlock } from "@typebot.io/blocks-inputs/phone/schema";
@@ -52,15 +52,15 @@ export const PhoneInputSettings = ({ options, onOptionsChange }: Props) => {
           onValueChange={handleButtonLabelChange}
         />
       </Field.Root>
-      <Stack>
-        <FormLabel mb="0" htmlFor="button">
+      <Field.Root>
+        <Field.Label>
           {t("blocks.inputs.phone.settings.defaultCountry.label")}
-        </FormLabel>
+        </Field.Label>
         <CountryCodeSelect
           onSelect={handleDefaultCountryChange}
           countryCode={options?.defaultCountryCode}
         />
-      </Stack>
+      </Field.Root>
       <Field.Root>
         <Field.Label>
           {t("blocks.inputs.settings.retryMessage.label")}

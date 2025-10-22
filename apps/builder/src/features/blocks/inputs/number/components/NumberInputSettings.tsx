@@ -1,4 +1,4 @@
-import { FormControl, FormLabel, Stack, Text } from "@chakra-ui/react";
+import { Stack, Text } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import {
   defaultNumberInputButtonLabel,
@@ -144,10 +144,10 @@ export const NumberInputSettings = ({ options, onOptionsChange }: Props) => {
               onChange={handleStyleChange}
             />
             {options?.style === NumberInputStyle.CURRENCY && (
-              <FormControl mt={4}>
-                <FormLabel>
+              <Field.Root>
+                <Field.Label>
                   {t("blocks.inputs.number.settings.currency.label")}
-                </FormLabel>
+                </Field.Label>
                 <BasicSelect
                   items={currencies.map(({ code, description }) => ({
                     label: description,
@@ -156,13 +156,13 @@ export const NumberInputSettings = ({ options, onOptionsChange }: Props) => {
                   onChange={updateCurrency}
                   value={options?.currency}
                 />
-              </FormControl>
+              </Field.Root>
             )}
             {options?.style === NumberInputStyle.UNIT && (
-              <FormControl mt={4}>
-                <FormLabel>
+              <Field.Root>
+                <Field.Label>
                   {t("blocks.inputs.number.settings.unit.label")}
-                </FormLabel>
+                </Field.Label>
                 <BasicSelect
                   items={Object.values(NumberInputUnit).map((unit) => ({
                     label: t(unitTranslationKeys[unit]),
@@ -171,12 +171,12 @@ export const NumberInputSettings = ({ options, onOptionsChange }: Props) => {
                   onChange={updateUnit}
                   value={options?.unit}
                 />
-              </FormControl>
+              </Field.Root>
             )}
-            <FormControl mt={4}>
-              <FormLabel>
+            <Field.Root>
+              <Field.Label>
                 {t("blocks.inputs.number.settings.locale.label")}
-              </FormLabel>
+              </Field.Label>
               <Field.Root>
                 <DebouncedTextInputWithVariablesButton
                   defaultValue={options?.locale}
@@ -187,7 +187,7 @@ export const NumberInputSettings = ({ options, onOptionsChange }: Props) => {
                   {t("blocks.inputs.number.settings.locale.helper")}
                 </Field.Description>
               </Field.Root>
-            </FormControl>
+            </Field.Root>
           </Accordion.Panel>
         </Accordion.Item>
       </Accordion.Root>

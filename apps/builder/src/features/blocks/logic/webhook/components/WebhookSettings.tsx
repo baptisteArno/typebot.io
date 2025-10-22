@@ -1,6 +1,4 @@
 import {
-  FormControl,
-  FormHelperText,
   Stack,
   Tab,
   TabList,
@@ -17,6 +15,7 @@ import { env } from "@typebot.io/env";
 import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
 import { Accordion } from "@typebot.io/ui/components/Accordion";
 import { Button } from "@typebot.io/ui/components/Button";
+import { Field } from "@typebot.io/ui/components/Field";
 import usePartySocket from "partysocket/react";
 import { useMemo, useState } from "react";
 import { CodeEditor } from "@/components/inputs/CodeEditor";
@@ -156,11 +155,11 @@ export const WebhookSettings = ({
         </TabPanel>
         <TabPanel pb="0">
           {typebot && (
-            <FormControl as={Stack}>
+            <Field.Root>
               <CopyInput
                 value={`${urlBase}/results/{resultId}/executeWebhook`}
               />
-              <FormHelperText mt="0">
+              <Field.Description>
                 You can easily get the Result ID{" "}
                 <TextLink
                   isExternal
@@ -169,8 +168,8 @@ export const WebhookSettings = ({
                   with a Set variable block
                 </TextLink>
                 .
-              </FormHelperText>
-            </FormControl>
+              </Field.Description>
+            </Field.Root>
           )}
         </TabPanel>
       </TabPanels>

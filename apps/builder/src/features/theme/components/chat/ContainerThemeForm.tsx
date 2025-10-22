@@ -1,4 +1,4 @@
-import { FormLabel, HStack, Stack } from "@chakra-ui/react";
+import { Stack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import {
   borderRoundness,
@@ -72,11 +72,9 @@ export const ContainerThemeForm = <
 
   return (
     <Stack spacing={4} data-testid={testId}>
-      <HStack justify="space-between">
-        <FormLabel mb="0" mr="0">
-          {t("theme.sideMenu.chat.theme.background")}
-        </FormLabel>
-        <HStack>
+      <Field.Root className="flex-row">
+        <Field.Label>{t("theme.sideMenu.chat.theme.background")}</Field.Label>
+        <div className="flex items-center gap-2">
           <Switch
             defaultChecked={backgroundColor !== "transparent"}
             onCheckedChange={toggleBackgroundColor}
@@ -86,23 +84,21 @@ export const ContainerThemeForm = <
             value={backgroundColor}
             onColorChange={updateBackgroundColor}
           />
-        </HStack>
-      </HStack>
+        </div>
+      </Field.Root>
 
-      <HStack justify="space-between">
-        <FormLabel mb="0" mr="0">
-          {t("theme.sideMenu.chat.theme.text")}
-        </FormLabel>
+      <Field.Root className="flex-row">
+        <Field.Label>{t("theme.sideMenu.chat.theme.text")}</Field.Label>
         <ColorPicker
           value={theme?.color ?? defaultTheme?.color}
           onColorChange={updateTextColor}
         />
-      </HStack>
+      </Field.Root>
       {onPlaceholderColorChange && (
-        <HStack justify="space-between">
-          <FormLabel mb="0" mr="0">
+        <Field.Root className="flex-row">
+          <Field.Label>
             {t("theme.sideMenu.chat.theme.placeholder")}
-          </FormLabel>
+          </Field.Label>
           <ColorPicker
             value={
               theme && "placeholderColor" in theme
@@ -113,7 +109,7 @@ export const ContainerThemeForm = <
             }
             onColorChange={updatePlaceholderColor}
           />
-        </HStack>
+        </Field.Root>
       )}
 
       <Accordion.Root>
@@ -156,19 +152,15 @@ export const ContainerThemeForm = <
                 )}
               </>
             )}
-            <HStack justify="space-between">
-              <FormLabel mb="0" mr="0">
-                Shadow:
-              </FormLabel>
-              <HStack>
-                <BasicSelect
-                  size="sm"
-                  value={shadow}
-                  onChange={updateShadow}
-                  items={shadows}
-                />
-              </HStack>
-            </HStack>
+            <Field.Root className="flex-row">
+              <Field.Label>Shadow:</Field.Label>
+              <BasicSelect
+                size="sm"
+                value={shadow}
+                onChange={updateShadow}
+                items={shadows}
+              />
+            </Field.Root>
           </Accordion.Panel>
         </Accordion.Item>
       </Accordion.Root>
@@ -211,11 +203,9 @@ const BorderThemeForm = ({
 
   return (
     <Stack>
-      <HStack justifyContent="space-between">
-        <FormLabel mb="0" mr="0">
-          Roundness:
-        </FormLabel>
-        <HStack>
+      <Field.Root className="flex-row">
+        <Field.Label>Roundness:</Field.Label>
+        <div className="flex items-center gap-2">
           <BasicSelect
             size="sm"
             value={border?.roundeness}
@@ -235,13 +225,11 @@ const BorderThemeForm = ({
               px
             </Field.Root>
           )}
-        </HStack>
-      </HStack>
+        </div>
+      </Field.Root>
 
-      <HStack justifyContent="space-between">
-        <FormLabel mb="0" mr="0">
-          Thickness:
-        </FormLabel>
+      <Field.Root className="flex-row">
+        <Field.Label>Thickness:</Field.Label>
         <BasicNumberInput
           min={0}
           defaultValue={thickness}
@@ -249,19 +237,17 @@ const BorderThemeForm = ({
           withVariableButton={false}
         />
         <p>px</p>
-      </HStack>
+      </Field.Root>
 
       {thickness > 0 && (
         <>
-          <HStack justifyContent="space-between">
-            <FormLabel mb="0" mr="0">
-              Color:
-            </FormLabel>
+          <Field.Root className="flex-row">
+            <Field.Label>Color:</Field.Label>
             <ColorPicker
               value={border?.color ?? defaultBorder?.color}
               onColorChange={updateColor}
             />
-          </HStack>
+          </Field.Root>
           <Field.Root className="flex-row">
             <Field.Label>Opacity:</Field.Label>
             <BasicNumberInput

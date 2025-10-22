@@ -1,11 +1,4 @@
-import {
-  Flex,
-  FormControl,
-  FormLabel,
-  Stack,
-  Text,
-  useDisclosure,
-} from "@chakra-ui/react";
+import { Stack, Text, useDisclosure } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Field } from "@typebot.io/ui/components/Field";
@@ -35,23 +28,21 @@ export const WorkspaceSettingsForm = ({ onClose }: { onClose: () => void }) => {
 
   return (
     <Stack spacing="6" w="full">
-      <FormControl>
-        <FormLabel>{t("workspace.settings.icon.title")}</FormLabel>
-        <Flex>
-          {workspace && (
-            <EditableEmojiOrImageIcon
-              uploadFileProps={{
-                workspaceId: workspace.id,
-                fileName: "icon",
-              }}
-              icon={workspace.icon}
-              onChangeIcon={handleChangeIcon}
-              size="lg"
-              defaultIcon={HardDriveIcon}
-            />
-          )}
-        </Flex>
-      </FormControl>
+      <Field.Root>
+        <Field.Label>{t("workspace.settings.icon.title")}</Field.Label>
+        {workspace && (
+          <EditableEmojiOrImageIcon
+            uploadFileProps={{
+              workspaceId: workspace.id,
+              fileName: "icon",
+            }}
+            icon={workspace.icon}
+            onChangeIcon={handleChangeIcon}
+            size="lg"
+            defaultIcon={HardDriveIcon}
+          />
+        )}
+      </Field.Root>
       {workspace && (
         <>
           <Field.Root>

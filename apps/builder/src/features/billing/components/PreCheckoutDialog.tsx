@@ -1,4 +1,4 @@
-import { FormControl, FormLabel, HStack, Stack } from "@chakra-ui/react";
+import { Stack } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
 import { taxIdTypes } from "@typebot.io/billing/taxIdTypes";
@@ -136,9 +136,11 @@ export const PreCheckoutDialog = ({
               onValueChange={updateCustomerEmail}
             />
           </Field.Root>
-          <FormControl>
-            <FormLabel>{t("billing.preCheckoutModal.taxId.label")}</FormLabel>
-            <HStack>
+          <Field.Root>
+            <Field.Label>
+              {t("billing.preCheckoutModal.taxId.label")}
+            </Field.Label>
+            <div className="flex items-center gap-2">
               <BasicSelect
                 placeholder={t("billing.preCheckoutModal.taxId.placeholder")}
                 value={customer.vat.code}
@@ -151,8 +153,8 @@ export const PreCheckoutDialog = ({
                 placeholder={vatValuePlaceholder}
                 className="flex-1 flex-shrink-0"
               />
-            </HStack>
-          </FormControl>
+            </div>
+          </Field.Root>
 
           <Button
             type="submit"

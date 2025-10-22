@@ -1,4 +1,4 @@
-import { FormLabel, Stack } from "@chakra-ui/react";
+import { Stack } from "@chakra-ui/react";
 import { evaluateIsHidden } from "@typebot.io/forge/helpers/evaluateIsHidden";
 import type { ForgedBlockDefinition } from "@typebot.io/forge-repository/definitions";
 import type { ForgedBlock } from "@typebot.io/forge-repository/schemas";
@@ -243,26 +243,33 @@ export const ZodFieldLayout = ({
       if (layout?.fetcher) {
         if (!blockDef) return null;
         return (
-          <ForgeSelectInput
-            defaultValue={data ?? layout.defaultValue}
-            placeholder={layout.placeholder}
-            fetcherId={layout.fetcher}
-            options={blockOptions}
-            blockDef={blockDef}
-            label={layout.label}
-            credentialsScope="workspace"
-            helperText={
-              layout?.helperText ? (
+          <Field.Root>
+            {layout.label && (
+              <Field.Label>
+                {layout.label}
+                {layout.moreInfoTooltip && (
+                  <MoreInfoTooltip>{layout.moreInfoTooltip}</MoreInfoTooltip>
+                )}
+              </Field.Label>
+            )}
+            <ForgeSelectInput
+              defaultValue={data ?? layout.defaultValue}
+              placeholder={layout.placeholder}
+              fetcherId={layout.fetcher}
+              options={blockOptions}
+              blockDef={blockDef}
+              credentialsScope="workspace"
+              onChange={onDataChange}
+              withVariableButton={layout.withVariableButton ?? true}
+            />
+            {layout?.helperText && (
+              <Field.Description>
                 <Markdown components={mdComponents}>
                   {layout.helperText}
                 </Markdown>
-              ) : undefined
-            }
-            moreInfoTooltip={layout?.moreInfoTooltip}
-            onChange={onDataChange}
-            width={width}
-            withVariableButton={layout.withVariableButton ?? true}
-          />
+              </Field.Description>
+            )}
+          </Field.Root>
         );
       }
       if (layout?.inputType === "textarea") {
@@ -432,7 +439,7 @@ const ZodArrayContent = ({
         spacing={0}
         marginTop={layout?.mergeWithLastField ? "-3" : undefined}
       >
-        {layout?.label && <FormLabel>{layout.label}</FormLabel>}
+        {layout?.label && <Field.Label>{layout.label}</Field.Label>}
         <Stack
           p="4"
           rounded="md"

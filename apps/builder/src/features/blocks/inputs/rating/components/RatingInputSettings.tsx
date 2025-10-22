@@ -1,4 +1,4 @@
-import { FormLabel, Stack } from "@chakra-ui/react";
+import { Stack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { defaultRatingInputOptions } from "@typebot.io/blocks-inputs/rating/constants";
 import type { RatingInputBlock } from "@typebot.io/blocks-inputs/rating/schema";
@@ -65,28 +65,28 @@ export const RatingInputSettings = ({ options, onOptionsChange }: Props) => {
     options?.buttonType ?? defaultRatingInputOptions.buttonType;
   return (
     <Stack spacing={4}>
-      <Stack>
-        <FormLabel mb="0" htmlFor="button">
+      <Field.Root>
+        <Field.Label>
           {t("blocks.inputs.rating.settings.maximum.label")}
-        </FormLabel>
+        </Field.Label>
         <BasicSelect
           value={options?.length?.toString()}
           defaultValue={defaultRatingInputOptions.length.toString()}
           onChange={handleLengthChange}
           items={["3", "4", "5", "6", "7", "8", "9", "10"]}
         />
-      </Stack>
+      </Field.Root>
 
-      <Stack>
-        <FormLabel mb="0" htmlFor="button">
+      <Field.Root>
+        <Field.Label>
           {t("blocks.inputs.rating.settings.type.label")}
-        </FormLabel>
+        </Field.Label>
         <BasicSelect
           items={["Icons", "Numbers"]}
           value={buttonType}
           onChange={handleTypeChange}
         />
-      </Stack>
+      </Field.Root>
 
       {buttonType === "Numbers" && (
         <Field.Root className="flex-row">

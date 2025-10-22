@@ -1,26 +1,23 @@
 import { sanitizeUrl } from "@braintree/sanitize-url";
 import {
-  FormControl,
-  FormLabel,
   HStack,
   type HTMLChakraProps,
-  PinInput,
-  PinInputField,
   SlideFade,
   Stack,
   Text,
-  VStack,
 } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { Alert } from "@typebot.io/ui/components/Alert";
 import { Button } from "@typebot.io/ui/components/Button";
+import { Field } from "@typebot.io/ui/components/Field";
 import { Input } from "@typebot.io/ui/components/Input";
+import { Otp } from "@typebot.io/ui/components/Otp";
 import { CheckmarkSquare02Icon } from "@typebot.io/ui/icons/CheckmarkSquare02Icon";
 import { LoaderCircleIcon } from "@typebot.io/ui/icons/LoaderCircleIcon";
 import { useRouter } from "next/navigation";
 import { getProviders, signIn, useSession } from "next-auth/react";
 import { useQueryState } from "nuqs";
-import type { ChangeEvent, FormEvent } from "react";
+import type { FormEvent } from "react";
 import { useEffect, useState } from "react";
 import { TextLink } from "@/components/TextLink";
 import { toast } from "@/lib/toast";
@@ -180,19 +177,19 @@ export const SignInForm = ({
               </Alert.Description>
             </div>
           </Alert.Root>
-          <FormControl as={VStack} spacing={0}>
-            <FormLabel>Login code:</FormLabel>
-            <HStack>
-              <PinInput onComplete={redirectToMagicLink}>
-                <PinInputField />
-                <PinInputField />
-                <PinInputField />
-                <PinInputField />
-                <PinInputField />
-                <PinInputField />
-              </PinInput>
-            </HStack>
-          </FormControl>
+          <Field.Root>
+            <Field.Label>Login code:</Field.Label>
+            <Otp.Root maxLength={6} onComplete={redirectToMagicLink}>
+              <Otp.Group>
+                <Otp.Slot index={0} />
+                <Otp.Slot index={1} />
+                <Otp.Slot index={2} />
+                <Otp.Slot index={3} />
+                <Otp.Slot index={4} />
+                <Otp.Slot index={5} />
+              </Otp.Group>
+            </Otp.Root>
+          </Field.Root>
         </Stack>
       </SlideFade>
       {authError && <SignInError error={authError} />}
