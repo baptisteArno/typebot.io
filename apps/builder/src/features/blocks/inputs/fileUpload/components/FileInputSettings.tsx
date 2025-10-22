@@ -109,7 +109,7 @@ export const FileInputSettings = ({ options, onOptionsChange }: Props) => {
         {options?.allowedFileTypes?.isEnabled && (
           <TagsInput
             items={options?.allowedFileTypes?.types}
-            onChange={updateAllowedFileTypes}
+            onValueChange={updateAllowedFileTypes}
             placeholder={t(
               "blocks.inputs.file.settings.allowedFileTypes.placeholder",
             )}

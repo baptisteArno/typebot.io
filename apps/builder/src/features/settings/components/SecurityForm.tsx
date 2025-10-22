@@ -32,7 +32,7 @@ export const SecurityForm = ({ security, onUpdate }: Props) => {
         </Field.Label>
         <TagsInput
           items={security?.allowedOrigins}
-          onChange={updateItems}
+          onValueChange={updateItems}
           placeholder={env.NEXT_PUBLIC_VIEWER_URL[0]}
         />
       </Field.Root>

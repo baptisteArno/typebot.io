@@ -1,31 +1,29 @@
-import { HStack, Input, Text, Wrap, WrapItem } from "@chakra-ui/react";
 import { convertStrToList } from "@typebot.io/lib/convertStrToList";
 import { isEmpty, isNotEmpty } from "@typebot.io/lib/utils";
-import { colors } from "@typebot.io/ui/chakraTheme";
 import { Button } from "@typebot.io/ui/components/Button";
+import { Input } from "@typebot.io/ui/components/Input";
 import { Cancel01Icon } from "@typebot.io/ui/icons/Cancel01Icon";
-import { AnimatePresence, motion } from "framer-motion";
+import { cx } from "@typebot.io/ui/lib/cva";
 import { useRef, useState } from "react";
 
 type Props = {
   items?: string[];
   placeholder?: string;
-  onChange: (value: string[]) => void;
+  onValueChange: (value: string[]) => void;
 };
-export const TagsInput = ({ items, placeholder, onChange }: Props) => {
+export const TagsInput = ({ items, placeholder, onValueChange }: Props) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [inputValue, setInputValue] = useState("");
   const [isFocused, setIsFocused] = useState(false);
   const [focusedTagIndex, setFocusedTagIndex] = useState<number>();
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault();
+  const handleInputChange = (value: string) => {
     setFocusedTagIndex(undefined);
-    setInputValue(e.target.value);
-    if (e.target.value.length - inputValue.length > 0) {
-      const values = convertStrToList(e.target.value);
+    setInputValue(value);
+    if (value.length - inputValue.length > 0) {
+      const values = convertStrToList(value);
       if (values.length > 1) {
-        onChange([...(items ?? []), ...values.filter(isNotEmpty)]);
+        onValueChange([...(items ?? []), ...values.filter(isNotEmpty)]);
         setInputValue("");
       }
     }
@@ -71,75 +69,44 @@ export const TagsInput = ({ items, placeholder, onChange }: Props) => {
     if (!items) return;
     const newItems = [...items];
     newItems.splice(index, 1);
-    onChange(newItems);
+    onValueChange(newItems);
   };
 
   const addItem = () => {
     if (isEmpty(inputValue)) return;
     setInputValue("");
-    onChange(items ? [...items, inputValue.trim()] : [inputValue.trim()]);
-  };
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    addItem();
+    onValueChange(items ? [...items, inputValue.trim()] : [inputValue.trim()]);
   };
 
   return (
-    <Wrap
-      spacing={1}
-      borderWidth={1}
-      boxShadow={isFocused ? `0 0 0 1px ${colors["orange"][500]}` : undefined}
-      p="2"
-      rounded="md"
-      borderColor={isFocused ? "orange.500" : "gray.200"}
-      transitionProperty="box-shadow, border-color"
-      transitionDuration="150ms"
-      transitionTimingFunction="ease-in-out"
+    <div
+      className="flex flex-wrap gap-1 border py-1 px-2 rounded-md data-[focus=true]:outline-none data-[focus=true]:ring-orange-8 data-[focus=true]:ring-2 data-[focus=true]:border-transparent transition-[box-shadow,border-color]"
       onClick={() => inputRef.current?.focus()}
       onBlur={addItem}
       onKeyDown={handleKeyDown}
+      data-focus={isFocused}
     >
-      <AnimatePresence mode="popLayout">
-        {items?.map((item, index) => (
-          <motion.div
-            key={index}
-            initial={{ opacity: 0, transform: "translateY(5px)" }}
-            animate={{ opacity: 1, transform: "translateY(0)" }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.1 }}
-            style={{
-              maxWidth: "100%",
-            }}
-          >
-            <WrapItem>
-              <Tag
-                content={item}
-                onDeleteClick={() => removeItem(index)}
-                isFocused={focusedTagIndex === index}
-              />
-            </WrapItem>
-          </motion.div>
-        ))}
-      </AnimatePresence>
-      <WrapItem>
-        <form onSubmit={handleSubmit}>
-          <Input
-            ref={inputRef}
-            h="24px"
-            p="0"
-            borderWidth={0}
-            focusBorderColor="transparent"
-            size="sm"
-            value={inputValue}
-            onChange={handleInputChange}
-            onFocus={() => setIsFocused(true)}
-            onBlur={() => setIsFocused(false)}
-            placeholder={items && items.length === 0 ? placeholder : undefined}
-          />
-        </form>
-      </WrapItem>
-    </Wrap>
+      {items?.map((item, index) => (
+        <Tag
+          content={item}
+          onDeleteClick={() => removeItem(index)}
+          isFocused={focusedTagIndex === index}
+        />
+      ))}
+      <Input
+        ref={inputRef}
+        size="sm"
+        className="border-0 p-0 focus:ring-0 w-auto"
+        value={inputValue}
+        onValueChange={handleInputChange}
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") addItem();
+        }}
+        placeholder={items && items.length === 0 ? placeholder : undefined}
+      />
+    </div>
   );
 };
 
@@ -152,18 +119,13 @@ const Tag = ({
   content: string;
   onDeleteClick: () => void;
 }) => (
-  <HStack
-    spacing={0.5}
-    borderWidth="1px"
-    pl="1"
-    rounded="sm"
-    maxW="100%"
-    borderColor={isFocused ? "orange.500" : undefined}
-    boxShadow={isFocused ? `0 0 0 1px ${colors["orange"][500]}` : undefined}
+  <div
+    className={cx(
+      "flex items-center gap-0.5 border p-0.5 pl-2 rounded-sm max-w-full",
+      isFocused ? "border-orange-9" : undefined,
+    )}
   >
-    <Text fontSize="sm" noOfLines={1}>
-      {content}
-    </Text>
+    <span className="text-sm line-clamp-1">{content}</span>
     <Button
       size="icon"
       aria-label="Remove tag"
@@ -173,5 +135,5 @@ const Tag = ({
     >
       <Cancel01Icon />
     </Button>
-  </HStack>
+  </div>
 );

@@ -443,7 +443,7 @@ const ZodArrayContent = ({
           pt={layout?.mergeWithLastField ? "5" : undefined}
         >
           {type === "ZodString" ? (
-            <TagsInput items={data} onChange={onDataChange} />
+            <TagsInput items={data} onValueChange={onDataChange} />
           ) : (
             <PrimitiveList
               onItemsChange={(items) => {
