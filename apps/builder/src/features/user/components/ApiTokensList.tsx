@@ -2,7 +2,6 @@ import {
   Checkbox,
   Flex,
   Heading,
-  Skeleton,
   Stack,
   Table,
   TableContainer,
@@ -17,6 +16,7 @@ import {
 import { T, useTranslate } from "@tolgee/react";
 import { byId, isDefined } from "@typebot.io/lib/utils";
 import { Button } from "@typebot.io/ui/components/Button";
+import { Skeleton } from "@typebot.io/ui/components/Skeleton";
 import type { ClientUser } from "@typebot.io/user/schemas";
 import { useState } from "react";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
@@ -108,10 +108,10 @@ export const ApiTokensList = ({ user }: Props) => {
                     <Checkbox isDisabled />
                   </Td>
                   <Td>
-                    <Skeleton h="5px" />
+                    <Skeleton className="h-1" />
                   </Td>
                   <Td>
-                    <Skeleton h="5px" />
+                    <Skeleton className="h-1" />
                   </Td>
                 </Tr>
               ))}

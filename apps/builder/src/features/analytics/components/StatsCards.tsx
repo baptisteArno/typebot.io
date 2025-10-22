@@ -1,7 +1,6 @@
 import {
   type GridProps,
   SimpleGrid,
-  Skeleton,
   Stat,
   StatLabel,
   StatNumber,
@@ -9,6 +8,7 @@ import {
 } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import type { Stats } from "@typebot.io/results/schemas/answers";
+import { Skeleton } from "@typebot.io/ui/components/Skeleton";
 import type { timeFilterValues } from "../constants";
 import { TimeFilterSelect } from "./TimeFilterSelect";
 
@@ -44,7 +44,7 @@ export const StatsCards = ({
         {stats ? (
           <StatNumber>{stats.totalViews}</StatNumber>
         ) : (
-          <Skeleton w="50%" h="10px" mt="2" />
+          <div className="w-1/2 h-2 mt-2 bg-gray-1 animate-pulse" />
         )}
       </Stat>
       <Stat bgColor={bg} p="4" rounded="md" boxShadow="md" borderWidth={1}>
@@ -52,7 +52,7 @@ export const StatsCards = ({
         {stats ? (
           <StatNumber>{stats.totalStarts}</StatNumber>
         ) : (
-          <Skeleton w="50%" h="10px" mt="2" />
+          <Skeleton className="w-1/2 h-2 mt-2" />
         )}
       </Stat>
       <Stat bgColor={bg} p="4" rounded="md" boxShadow="md" borderWidth={1}>
@@ -65,7 +65,7 @@ export const StatsCards = ({
             )}
           </StatNumber>
         ) : (
-          <Skeleton w="50%" h="10px" mt="2" />
+          <Skeleton className="w-1/2 h-2 mt-2" />
         )}
       </Stat>
       <TimeFilterSelect

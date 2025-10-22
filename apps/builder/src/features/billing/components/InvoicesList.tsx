@@ -1,7 +1,6 @@
 import {
   Checkbox,
   Heading,
-  Skeleton,
   Stack,
   Table,
   TableContainer,
@@ -13,6 +12,7 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
+import { Skeleton } from "@typebot.io/ui/components/Skeleton";
 import { Download01Icon } from "@typebot.io/ui/icons/Download01Icon";
 import { FileEmpty02Icon } from "@typebot.io/ui/icons/FileEmpty02Icon";
 import { ButtonLink } from "@/components/ButtonLink";
@@ -78,10 +78,10 @@ export const InvoicesList = ({ workspaceId }: Props) => {
                       <Checkbox isDisabled />
                     </Td>
                     <Td>
-                      <Skeleton h="5px" />
+                      <Skeleton className="h-1" />
                     </Td>
                     <Td>
-                      <Skeleton h="5px" />
+                      <Skeleton className="h-1" />
                     </Td>
                   </Tr>
                 ))}

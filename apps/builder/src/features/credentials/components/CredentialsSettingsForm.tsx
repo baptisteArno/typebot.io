@@ -3,8 +3,6 @@ import {
   Flex,
   Heading,
   HStack,
-  Skeleton,
-  SkeletonCircle,
   Stack,
   Text,
   type TextProps,
@@ -19,6 +17,7 @@ import {
 import { Button } from "@typebot.io/ui/components/Button";
 import { Menu } from "@typebot.io/ui/components/Menu";
 import { Popover } from "@typebot.io/ui/components/Popover";
+import { Skeleton } from "@typebot.io/ui/components/Skeleton";
 import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
 import { ArrowDown01Icon } from "@typebot.io/ui/icons/ArrowDown01Icon";
 import { Edit03Icon } from "@typebot.io/ui/icons/Edit03Icon";
@@ -190,31 +189,31 @@ export const CredentialsSettingsForm = () => {
       ) : (
         <Stack borderRadius="md" spacing="6">
           <Stack spacing={4}>
-            <SkeletonCircle />
+            <Skeleton className="size-8 rounded-full" />
             <Stack>
-              <Skeleton height="20px" />
-              <Skeleton height="20px" />
+              <Skeleton className="h-5" />
+              <Skeleton className="h-5" />
             </Stack>
           </Stack>
           <Stack spacing={4}>
-            <SkeletonCircle />
+            <Skeleton className="size-8 rounded-full" />
             <Stack>
-              <Skeleton height="20px" />
-              <Skeleton height="20px" />
+              <Skeleton className="h-5" />
+              <Skeleton className="h-5" />
             </Stack>
           </Stack>
           <Stack spacing={4}>
-            <SkeletonCircle />
+            <Skeleton className="size-8 rounded-full" />
             <Stack>
-              <Skeleton height="20px" />
-              <Skeleton height="20px" />
+              <Skeleton className="h-5" />
+              <Skeleton className="h-5" />
             </Stack>
           </Stack>
           <Stack spacing={4}>
-            <SkeletonCircle />
+            <Skeleton className="size-8 rounded-full" />
             <Stack>
-              <Skeleton height="20px" />
-              <Skeleton height="20px" />
+              <Skeleton className="h-5" />
+              <Skeleton className="h-5" />
             </Stack>
           </Stack>
         </Stack>

@@ -1,16 +1,10 @@
-import {
-  Flex,
-  HStack,
-  Skeleton,
-  SkeletonCircle,
-  Stack,
-  Text,
-} from "@chakra-ui/react";
+import { Flex, HStack, Stack, Text } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { CollaborationType } from "@typebot.io/prisma/enum";
 import { Badge } from "@typebot.io/ui/components/Badge";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Input } from "@typebot.io/ui/components/Input";
+import { Skeleton } from "@typebot.io/ui/components/Skeleton";
 import { HardDriveIcon } from "@typebot.io/ui/icons/HardDriveIcon";
 import type { FormEvent } from "react";
 import { useState } from "react";
@@ -227,13 +221,13 @@ export const CollaborationList = () => {
       {(isCollaboratorsLoading || isInvitationsLoading) && (
         <HStack p="4" justifyContent="space-between">
           <HStack>
-            <SkeletonCircle boxSize="32px" />
+            <Skeleton className="size-8 rounded-full" />
             <Stack>
-              <Skeleton width="130px" h="6px" />
-              <Skeleton width="200px" h="6px" />
+              <Skeleton className="w-32 h-1" />
+              <Skeleton className="w-40 h-1" />
             </Stack>
           </HStack>
-          <Skeleton width="80px" h="10px" />
+          <Skeleton className="w-20 h-2" />
         </HStack>
       )}
     </Stack>

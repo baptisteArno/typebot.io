@@ -2,7 +2,6 @@ import {
   Flex,
   Heading,
   HStack,
-  Skeleton,
   Stack,
   useEventListener,
   Wrap,
@@ -157,9 +156,9 @@ export const FolderContent = ({ folder }: Props) => {
   return (
     <Flex w="full" flex="1" justify="center">
       <Stack w="1000px" spacing={6} pt="4">
-        <Skeleton isLoaded={folder?.name !== undefined}>
-          <Heading as="h1">{folder?.name}</Heading>
-        </Skeleton>
+        {folder?.name !== undefined ? (
+          <Heading as="h1">{folder.name}</Heading>
+        ) : null}
         <Stack>
           <HStack>
             {folder && <BackButton id={folder.parentFolderId} />}
