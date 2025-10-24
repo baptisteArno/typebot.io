@@ -66,9 +66,8 @@ const getCredentials = async (
       systemUserAccessToken: input.systemToken,
       phoneNumberId: input.phoneNumberId,
     };
-  console.log("Debug: input", input, env.ADMIN_EMAIL, user.email);
   if (!input.credentialsId) return;
-  const credentials = await prisma.credentials.findUnique({
+  const credentials = await prisma.credentials.findFirst({
     where: {
       id: input.credentialsId,
       workspace: env.ADMIN_EMAIL?.includes(user.email)
