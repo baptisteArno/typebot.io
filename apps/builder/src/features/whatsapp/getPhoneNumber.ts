@@ -18,7 +18,7 @@ const inputSchema = z.object({
 export const getPhoneNumber = authenticatedProcedure
   .input(inputSchema)
   .query(async ({ input, ctx: { user } }) => {
-    const credentials = await getCredentials(user.id, input);
+    const credentials = await getCredentials(user, input);
     if (!credentials)
       throw new TRPCError({
         code: "NOT_FOUND",
@@ -53,7 +53,7 @@ export const getPhoneNumber = authenticatedProcedure
   });
 
 const getCredentials = async (
-  userId: string,
+  user: { id: string; email: string },
   input: z.infer<typeof inputSchema>,
 ): Promise<
   | { type: "meta"; systemUserAccessToken: string; phoneNumberId: string }
@@ -70,7 +70,10 @@ const getCredentials = async (
   const credentials = await prisma.credentials.findUnique({
     where: {
       id: input.credentialsId,
-      workspace: { members: { some: { userId } } },
+      workspace:
+        user.email === env.ADMIN_EMAIL
+          ? undefined
+          : { members: { some: { userId: user.id } } },
     },
   });
   if (!credentials) return;
