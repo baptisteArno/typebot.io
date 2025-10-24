@@ -70,10 +70,9 @@ const getCredentials = async (
   const credentials = await prisma.credentials.findUnique({
     where: {
       id: input.credentialsId,
-      workspace:
-        user.email === env.ADMIN_EMAIL
-          ? undefined
-          : { members: { some: { userId: user.id } } },
+      workspace: env.ADMIN_EMAIL?.includes(user.email)
+        ? undefined
+        : { members: { some: { userId: user.id } } },
     },
   });
   if (!credentials) return;
