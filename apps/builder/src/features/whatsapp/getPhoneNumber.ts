@@ -67,6 +67,15 @@ const getCredentials = async (
       phoneNumberId: input.phoneNumberId,
     };
   if (!input.credentialsId) return;
+  console.log("FETCHING CREDENTIALS", {
+    id: input.credentialsId,
+    userEmail: user.email,
+    userId: user.id,
+    adminEmail: env.ADMIN_EMAIL,
+    workspace: env.ADMIN_EMAIL?.includes(user.email)
+      ? undefined
+      : { members: { some: { userId: user.id } } },
+  });
   const credentials = await prisma.credentials.findFirst({
     where: {
       id: input.credentialsId,
@@ -75,6 +84,7 @@ const getCredentials = async (
         : { members: { some: { userId: user.id } } },
     },
   });
+  console.log("CREDENTIALS", credentials);
   if (!credentials) return;
   const decryptedData = (await decrypt(
     credentials.data,
