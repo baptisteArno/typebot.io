@@ -11,6 +11,7 @@ import { cn } from "@typebot.io/ui/lib/cn";
 import { AudioBubbleIcon } from "@/features/blocks/bubbles/audio/components/AudioBubbleIcon";
 import { EmbedBubbleIcon } from "@/features/blocks/bubbles/embed/components/EmbedBubbleIcon";
 import { ImageBubbleIcon } from "@/features/blocks/bubbles/image/components/ImageBubbleIcon";
+// Location bubble type has been removed in favor of using Embed bubble
 import { TextBubbleIcon } from "@/features/blocks/bubbles/textBubble/components/TextBubbleIcon";
 import { VideoBubbleIcon } from "@/features/blocks/bubbles/video/components/VideoBubbleIcon";
 import { ButtonsInputIcon } from "@/features/blocks/inputs/buttons/components/ButtonsIcon";
