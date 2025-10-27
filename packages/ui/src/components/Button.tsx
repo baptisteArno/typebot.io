@@ -1,5 +1,5 @@
 import { mergeProps, useRender } from "@base-ui-components/react";
-import type * as React from "react";
+import * as React from "react";
 import { cn } from "../lib/cn";
 import { cva, cx, type VariantProps } from "../lib/cva";
 
@@ -55,29 +55,26 @@ export interface ButtonProps
   extends useRender.ComponentProps<"button">,
     VariantProps<typeof buttonVariants> {}
 
-const Button = ({
-  className,
-  variant,
-  size,
-  iconStyle,
-  render,
-  ...props
-}: ButtonProps) => {
-  const typeValue: React.ButtonHTMLAttributes<HTMLButtonElement>["type"] =
-    render ? undefined : "button";
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ className, variant, size, iconStyle, render, ...props }, ref) => {
+    const typeValue: React.ButtonHTMLAttributes<HTMLButtonElement>["type"] =
+      render ? undefined : "button";
 
-  const defaultProps = {
-    "data-slot": "button",
-    "data-disabled": props.disabled,
-    className: cn(buttonVariants({ variant, size, iconStyle, className })),
-    type: typeValue,
-  };
+    const defaultProps = {
+      "data-slot": "button",
+      "data-disabled": props.disabled,
+      className: cn(buttonVariants({ variant, size, iconStyle, className })),
+      type: typeValue,
+    };
 
-  return useRender({
-    defaultTagName: "button",
-    render,
-    props: mergeProps<"button">(defaultProps, props),
-  });
-};
+    return useRender({
+      ref,
+      defaultTagName: "button",
+      render,
+      props: mergeProps<"button">(defaultProps, props),
+    });
+  },
+);
+Button.displayName = "Button";
 
 export { Button, buttonVariants };
