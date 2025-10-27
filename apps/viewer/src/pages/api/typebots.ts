@@ -3,6 +3,7 @@ import prisma from "@typebot.io/prisma";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { authenticateUser } from "@/helpers/authenticateUser";
 
+// Used by Zapier, Make.com
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "GET") {
     const user = await authenticateUser(req);

@@ -3,6 +3,7 @@ import { isNotDefined } from "@typebot.io/lib/utils";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { authenticateUser } from "@/helpers/authenticateUser";
 
+// Used by Zapier and Make.com to make sure authentication is working
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "GET") {
     const user = await authenticateUser(req);
