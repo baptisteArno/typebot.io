@@ -33,7 +33,7 @@ export const FolderPage = () => {
     return <NotFoundPage resourceName="Folder" />;
 
   return (
-    <div className="flex flex-col gap-2 min-h-[100vh]">
+    <div className="flex flex-col gap-2 min-h-screen">
       <Seo title={t("dashboard.title")} />
       <DashboardHeader />
       <TypebotDndProvider>

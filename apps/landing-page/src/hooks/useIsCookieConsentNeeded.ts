@@ -9,6 +9,7 @@ export const useCookieConsentStatus = () => {
   >();
 
   useEffect(() => {
+    if (document.location.origin === "http://localhost:3003") return;
     const typebotCookie = getTypebotCookie(document.cookie);
     if (typebotCookie) {
       setCookieConsentStatus(

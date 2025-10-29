@@ -98,7 +98,7 @@ export const SinglePictureChoice = (props: Props) => {
               />
               <div
                 class={
-                  "flex flex-col gap-1 py-2 flex-shrink-0 px-4 w-full" +
+                  "flex flex-col gap-1 py-2 shrink-0 px-4 w-full" +
                   (item.description ? " items-start" : "")
                 }
               >

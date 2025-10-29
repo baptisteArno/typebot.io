@@ -1,3 +1,4 @@
+import tailwindcss from "@tailwindcss/vite";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import { resolve } from "path";
 import { defineConfig } from "vite";
@@ -14,6 +15,7 @@ export default defineConfig({
     },
   },
   plugins: [
+    tailwindcss(),
     viteTsConfigPaths(),
     contentCollections(),
     tanstackStart({

@@ -232,7 +232,7 @@ const PexelsVideo = ({ video, onClick }: PexelsVideoProps) => {
       {
         <img
           className={cx(
-            "object-cover size-full cursor-pointer rounded-md aspect-[4/3]",
+            "object-cover size-full cursor-pointer rounded-md aspect-4/3",
             video.height < video.width ? "size-full" : undefined,
           )}
           src={thumbnailImage}

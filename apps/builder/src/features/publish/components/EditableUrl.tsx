@@ -26,7 +26,7 @@ export const EditableUrl = ({
   return (
     <div className="flex items-center gap-2">
       <div className="flex items-center gap-1">
-        <p className="flex-shrink-0">{hostname}/</p>
+        <p className="shrink-0">{hostname}/</p>
         <SingleLineEditable
           value={value}
           className="font-medium"

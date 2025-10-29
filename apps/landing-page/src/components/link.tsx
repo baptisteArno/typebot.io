@@ -94,19 +94,16 @@ export const CtaButtonLinkComponent = forwardRef<
   CtaButtonLinkProps
 >(({ variant, className, size, children, ...props }, ref) => {
   return (
-    <div className="overflow-hidden rounded-lg relative">
-      <a
-        className={cn(
-          buttonVariants({ size, className }),
-          ctaButtonVariants({ variant }),
-          "w-full",
-        )}
-        ref={ref}
-        {...props}
-      >
-        {children}
-      </a>
-    </div>
+    <a
+      className={cn(
+        buttonVariants({ size, className }),
+        ctaButtonVariants({ variant }),
+      )}
+      ref={ref}
+      {...props}
+    >
+      {children}
+    </a>
   );
 });
 const CreatedCtaButtonLinkComponent = createLink(CtaButtonLinkComponent);

@@ -103,13 +103,14 @@ export const WhatsAppPricingCalculator = () => {
         <label htmlFor={numberFieldId}>Total messages</label>
         <NumberField.Group>
           <NumberField.Decrement variant="secondary" />
-          <NumberField.Input placeholder="0" />
+          <NumberField.Input placeholder="0" className="z-10" />
           <NumberField.Increment variant="secondary" />
         </NumberField.Group>
       </NumberField.Root>
       {priceResult && (
         <p className="font-medium">
-          Estimated Price: <span className="text-orange-10">{priceResult}</span>
+          Estimated Price:{" "}
+          <span className="text-orange-900">{priceResult}</span>
         </p>
       )}
     </Card>

@@ -3,9 +3,7 @@ import { cn } from "@typebot.io/ui/lib/cn";
 import type { ReactNode } from "react";
 
 export const PricingCardFooter = ({ children }: { children: ReactNode }) => (
-  <div className="border-t border-gray-3 w-full py-6 flex justify-center">
-    {children}
-  </div>
+  <div className="border-t w-full py-6 flex justify-center">{children}</div>
 );
 
 export const PricingCardRoot = ({
@@ -17,7 +15,7 @@ export const PricingCardRoot = ({
 }) => (
   <div
     className={cn(
-      "rounded-2xl border bg-gray-1 dark:bg-gray-2 text-gray-12 flex flex-col relative isolate items-center justify-between w-full pt-20 gap-10",
+      "rounded-2xl border bg-card text-card-foreground flex flex-col relative isolate items-center justify-between w-full pt-20 gap-10",
       className,
     )}
   >
@@ -34,7 +32,7 @@ export const PlanNamePill = ({
 }) => (
   <div
     className={cn(
-      "rounded-b-lg text-gray-1 p-1.5 uppercase font-bold text-xs px-4",
+      "rounded-b-lg text-white p-1.5 uppercase font-bold text-xs px-4",
       className,
     )}
   >
@@ -44,7 +42,7 @@ export const PlanNamePill = ({
 
 export const PerkListItem = ({ children }: { children: ReactNode }) => (
   <li className="flex gap-3">
-    <CheckTag className="mt-1 flex-shrink-0" />
+    <CheckTag className="mt-1 shrink-0" />
     {children}
   </li>
 );
@@ -52,10 +50,10 @@ export const PerkListItem = ({ children }: { children: ReactNode }) => (
 const CheckTag = ({ className }: { className?: string }) => (
   <div
     className={cn(
-      "rounded-full size-4 bg-gray-12 text-gray-1 p-0.5",
+      "rounded-full size-4 bg-stone-950 flex items-center justify-center",
       className,
     )}
   >
-    <TickIcon />
+    <TickIcon className="text-white p-0.5" />
   </div>
 );

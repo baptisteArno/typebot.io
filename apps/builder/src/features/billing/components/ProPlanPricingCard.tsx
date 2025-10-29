@@ -34,7 +34,7 @@ export const ProPlanPricingCard = ({
   return (
     <>
       <ChatsProTiersDialog isOpen={isOpen} onClose={onClose} />{" "}
-      <div className="flex p-6 relative h-full flex-col flex-1 border rounded-lg flex-shrink-0 border-purple-6">
+      <div className="flex p-6 relative h-full flex-col flex-1 border rounded-lg shrink-0 border-purple-6">
         <div className="flex justify-center">
           <div className="absolute top-[-10px] bg-purple-9 font-medium text-white text-xs px-2 py-1 rounded-md">
             {t("billing.pricingCard.pro.mostPopularLabel")}

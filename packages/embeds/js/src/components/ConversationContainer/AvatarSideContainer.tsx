@@ -33,7 +33,7 @@ export const AvatarSideContainer = (props: Props) => {
   return (
     <div
       ref={avatarContainer}
-      class="flex flex-shrink-0 items-center relative typebot-avatar-container w-6 @xs:w-10"
+      class="flex shrink-0 items-center relative typebot-avatar-container w-6 @xs:w-10"
       style={{
         "--top": `${top()}px`,
       }}

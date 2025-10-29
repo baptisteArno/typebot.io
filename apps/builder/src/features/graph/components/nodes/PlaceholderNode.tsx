@@ -54,7 +54,7 @@ export const PlaceholderNode = forwardRef<HTMLDivElement, Props>(
           } as React.CSSProperties
         }
         className={cn(
-          "flex font-semibold justify-center items-center relative py-[var(--py)] text-sm",
+          "flex font-semibold justify-center items-center relative py-(--py) text-sm",
           className,
         )}
         role="button"
@@ -75,7 +75,7 @@ export const PlaceholderNode = forwardRef<HTMLDivElement, Props>(
             } as React.CSSProperties
           }
           className={cx(
-            "flex w-full rounded-lg justify-center items-center bg-gray-3 h-[var(--h)] transition-[opacity,height]",
+            "flex w-full rounded-lg justify-center items-center bg-gray-3 h-(--h) transition-[opacity,height]",
             isVisible || isHovered ? "opacity-100" : "opacity-0",
           )}
         >

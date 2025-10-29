@@ -1,9 +1,9 @@
+import { buttonVariants } from "@typebot.io/ui/components/Button";
 import { ArrowDown01Icon } from "@typebot.io/ui/icons/ArrowDown01Icon";
 import { ArrowUp01Icon } from "@typebot.io/ui/icons/ArrowUp01Icon";
 import { cn } from "@typebot.io/ui/lib/cn";
 import { motion } from "motion/react";
 import { type ReactNode, useState } from "react";
-import { iconButtonVariants } from "@/components/IconButton";
 import { TextLink } from "@/components/link";
 import { discordUrl, docsUrl } from "../../../constants";
 
@@ -130,15 +130,15 @@ const Question = ({
 
   return (
     <details
-      className="p-4 rounded-xl bg-gray-1 border border-gray-6 cursor-pointer"
+      className="p-4 rounded-xl bg-card text-card-foreground cursor-pointer"
       onToggle={(e) => setIsOpen((e.target as HTMLDetailsElement).open)}
     >
-      <summary className="font-heading font-medium text-2xl flex justify-between list-none md:gap-12">
+      <summary className="font-display font-medium text-2xl flex justify-between list-none md:gap-12">
         {title}
         <span
           className={cn(
-            iconButtonVariants({ variant: "secondary" }),
-            "flex-shrink-0 [&_svg]:size-6",
+            buttonVariants({ variant: "secondary", size: "icon" }),
+            "shrink-0 [&_svg]:size-6",
           )}
         >
           {isOpen ? <ArrowUp01Icon className="size-8" /> : <ArrowDown01Icon />}

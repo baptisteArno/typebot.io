@@ -45,7 +45,7 @@ const Popup = ({
   ...props
 }: DialogPrimitive.Popup.Props) => (
   <DialogPrimitive.Portal>
-    <DialogPrimitive.Backdrop className="fixed inset-0 w-full bg-gray-12/50 dark:bg-gray-1/70 data-[open]:animate-in data-[open]:fade-in data-[closed]:animate-out data-[closed]:fade-out" />
+    <DialogPrimitive.Backdrop className="fixed inset-0 w-full bg-gray-12/50 dark:bg-gray-1/70 data-open:animate-in data-open:fade-in data-closed:animate-out data-closed:fade-out" />
     <div
       className={cn(
         "flex justify-center items-start fixed top-0 w-full py-12 h-full overflow-y-auto",
@@ -53,7 +53,7 @@ const Popup = ({
     >
       <DialogPrimitive.Popup
         className={cn(
-          "relative bg-gray-1 p-6 rounded-xl w-full max-w-xl data-[open]:animate-in data-[open]:slide-in-from-bottom-5 data-[open]:fade-in data-[closed]:animate-out data-[closed]:slide-out-to-bottom-5 data-[closed]:fade-out flex flex-col gap-4 shadow-md border data-[nested-dialog-open]:translate-y-4 [&[data-nested-dialog-open]_[data-scope=inside-backdrop]]:block transition-transform",
+          "relative bg-gray-1 p-6 rounded-xl w-full max-w-xl data-open:animate-in data-open:slide-in-from-bottom-5 data-open:fade-in data-closed:animate-out data-closed:slide-out-to-bottom-5 data-closed:fade-out flex flex-col gap-4 shadow-md border data-nested-dialog-open:translate-y-4 [&[data-nested-dialog-open]_[data-scope=inside-backdrop]]:block transition-transform",
           className,
         )}
         render={render}

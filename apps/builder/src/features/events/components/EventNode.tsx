@@ -149,7 +149,7 @@ export const EventNode = ({ event, eventIndex }: Props) => {
                   } as React.CSSProperties
                 }
                 className={cx(
-                  "flex flex-col gap-2 py-2 pl-3 pr-3 rounded-xl border font-medium absolute w-[var(--width)] bg-gray-1 select-none transition-[border-color,box-shadow] hover:shadow-md",
+                  "flex flex-col gap-2 py-2 pl-3 pr-3 rounded-xl border font-medium absolute w-(--width) bg-gray-1 select-none transition-[border-color,box-shadow] hover:shadow-md",
                   isContextMenuOpened || isPreviewing || isFocused
                     ? "border-orange-8"
                     : undefined,

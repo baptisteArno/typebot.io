@@ -25,10 +25,10 @@ function RouteComponent() {
     <ContentPageWrapper>
       <div className="max-w-3xl mx-auto gap-16 flex flex-col">
         <h1>Nice conversations makes good relations</h1>
-        <div className="flex flex-col gap-10 font-heading text-3xl md:text-justify">
+        <div className="flex flex-col gap-10 font-display text-3xl md:text-justify">
           <p>
             At Typebot, we believe that{" "}
-            <span className="group font-medium bg-clip-text text-transparent bg-gradient-to-r from-[#c13eaa] to-[#ff491f] to-30%">
+            <span className="group font-medium bg-clip-text text-transparent bg-linear-to-r from-[#c13eaa] to-[#ff491f] to-30%">
               <MessageSquareGradientIcon className="size-6 inline-flex group-hover:motion-preset-seesaw-lg" />{" "}
               great conversations
             </span>{" "}
@@ -38,7 +38,7 @@ function RouteComponent() {
             Every day, people chat with friends, colleagues, and family on
             messaging apps because it's natural, engaging, and familiar. <br />
             We think businesses should tap into this same dynamic because where{" "}
-            <span className="group font-medium bg-clip-text text-transparent bg-gradient-to-r from-[#c13eaa] to-[#ff491f] to-20%">
+            <span className="group font-medium bg-clip-text text-transparent bg-linear-to-r from-[#c13eaa] to-[#ff491f] to-20%">
               <HeartGradientIcon className="size-6 inline-flex group-hover:motion-preset-pulse-lg" />{" "}
               people love to chat
             </span>
@@ -47,7 +47,7 @@ function RouteComponent() {
           <p>
             Most chatbots today are limited to basic customer support, but we
             know they can be so much more. We see chatbots as tools for{" "}
-            <span className="group font-medium bg-clip-text text-transparent bg-gradient-to-r from-[#c13eaa] to-[#ff491f] to-50%">
+            <span className="group font-medium bg-clip-text text-transparent bg-linear-to-r from-[#c13eaa] to-[#ff491f] to-50%">
               <ZapGradientIcon className="size-6 inline-flex group-hover:motion-preset-oscillate-lg" />{" "}
               meaningful interactions
             </span>{" "}
@@ -57,7 +57,7 @@ function RouteComponent() {
           </p>
           <p>
             Typebot{" "}
-            <span className="group font-medium bg-clip-text text-transparent bg-gradient-to-r from-[#c13eaa] to-[#ff491f] to-70%">
+            <span className="group font-medium bg-clip-text text-transparent bg-linear-to-r from-[#c13eaa] to-[#ff491f] to-70%">
               <BuildingsGradientIcon className="size-6 inline-flex group-hover:motion-preset-bounce" />{" "}
               empowers businesses
             </span>{" "}

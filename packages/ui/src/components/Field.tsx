@@ -12,7 +12,7 @@ export type LabelProps = PrimitiveField.Label.Props;
 const Label = ({ className, ...props }: LabelProps) => (
   <PrimitiveField.Label
     {...props}
-    className={cn("inline-flex items-center flex-shrink-0 gap-1", className)}
+    className={cn("inline-flex items-center shrink-0 gap-1", className)}
   />
 );
 

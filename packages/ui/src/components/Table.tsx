@@ -41,7 +41,7 @@ const Footer = React.forwardRef<
   <tfoot
     ref={ref}
     className={cn(
-      "border-t bg-muted/50 font-medium [&>tr]:last:border-b-0",
+      "border-t bg-muted/50 font-medium last:[&>tr]:border-b-0",
       className,
     )}
     {...props}
@@ -71,7 +71,7 @@ const Head = React.forwardRef<
   <th
     ref={ref}
     className={cn(
-      "h-10 px-2 py-4 text-left first:pl-4 align-middle font-bold text-gray-11 [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
+      "h-10 px-2 py-4 text-left first:pl-4 align-middle font-bold text-gray-11 [&:has([role=checkbox])]:pr-0 *:[[role=checkbox]]:translate-y-[2px]",
       className,
     )}
     {...props}
@@ -86,7 +86,7 @@ const Cell = React.forwardRef<
   <td
     ref={ref}
     className={cn(
-      "px-2 py-4 align-middle first:pl-4 [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
+      "px-2 py-4 align-middle first:pl-4 [&:has([role=checkbox])]:pr-0 *:[[role=checkbox]]:translate-y-[2px]",
       className,
     )}
     {...props}

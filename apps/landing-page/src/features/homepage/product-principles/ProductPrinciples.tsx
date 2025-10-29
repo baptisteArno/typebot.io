@@ -1,9 +1,9 @@
+import { buttonVariants } from "@typebot.io/ui/components/Button";
 import { ArrowDown01Icon } from "@typebot.io/ui/icons/ArrowDown01Icon";
 import { ArrowUp01Icon } from "@typebot.io/ui/icons/ArrowUp01Icon";
 import { cn } from "@typebot.io/ui/lib/cn";
 import { motion } from "motion/react";
 import { useState } from "react";
-import { iconButtonVariants } from "@/components/IconButton";
 import threeDButton from "./assets/3d-button.png";
 
 const data = [
@@ -45,7 +45,7 @@ export const ProductPrinciples = () => {
   return (
     <div className="flex flex-col gap-8 max-w-7xl w-full">
       <h2>We strive to create great things</h2>
-      <div className="flex md:bg-gray-1 rounded-2xl gap-4 p-2 items-start">
+      <div className="flex md:bg-white rounded-2xl gap-4 p-2 items-start border">
         <div className="flex flex-col gap-2 md:gap-0 md:pl-4 w-full">
           {data.map(({ title, content }, index) => (
             <Principle
@@ -83,11 +83,11 @@ const Principle = ({
 }) => {
   return (
     <details
-      className="rounded-xl md:rounded-none md:px-0 bg-gray-1 border md:border-0 border-gray-6 cursor-pointer"
+      className="rounded-xl md:rounded-none md:px-0 bg-white border md:border-0 border-border cursor-pointer"
       open={isOpened}
     >
       <summary
-        className="px-4 py-4 md:py-2 font-heading font-medium text-2xl flex flex-col gap-3 list-none"
+        className="px-4 py-4 md:py-2 font-display font-medium text-2xl flex flex-col gap-3 list-none"
         onClick={(e) => {
           e.preventDefault();
           onClick();
@@ -97,8 +97,8 @@ const Principle = ({
           {title}
           <span
             className={cn(
-              iconButtonVariants({ variant: "secondary" }),
-              "flex-shrink-0 [&_svg]:size-6",
+              buttonVariants({ variant: "secondary", size: "icon" }),
+              "shrink-0 [&_svg]:size-6",
             )}
           >
             {isOpened ? (
@@ -109,7 +109,7 @@ const Principle = ({
           </span>
         </div>
 
-        {isLastItem ? null : <hr className="border-gray-3 hidden md:block" />}
+        {isLastItem ? null : <hr className="hidden md:block" />}
       </summary>
       <motion.div
         initial={{ height: 0, opacity: 0 }}
@@ -119,7 +119,7 @@ const Principle = ({
         }}
         transition={{ duration: 0.4, type: "spring", bounce: 0.15 }}
       >
-        <hr className="mb-4 md:hidden mx-4 border-gray-3" />
+        <hr className="mb-4 md:hidden mx-4 border-border" />
         <p className="pb-4 mx-4">{content}</p>
       </motion.div>
     </details>

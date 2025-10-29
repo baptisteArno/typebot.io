@@ -82,7 +82,7 @@ export const InputChatBlock = (props: Props) => {
               defaultHostAvatarIsEnabled
             }
           >
-            <div class="flex flex-shrink-0 items-center w-6 h-6 @xs:w-10 @xs:h-10" />
+            <div class="flex shrink-0 items-center w-6 h-6 @xs:w-10 @xs:h-10" />
           </Show>
           <Input
             context={props.context}

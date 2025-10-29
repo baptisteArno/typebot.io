@@ -56,7 +56,7 @@ export const DashboardPage = () => {
   }, [createCustomCheckoutSession, router.query, user, workspace]);
 
   return (
-    <div className="flex flex-col gap-2 min-h-[100vh]">
+    <div className="flex flex-col gap-2 min-h-screen">
       <Seo title={workspace?.name ?? t("dashboard.title")} />
       <DashboardHeader />
       {!workspace?.stripeId && (

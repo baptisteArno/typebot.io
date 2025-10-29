@@ -24,7 +24,7 @@ export const PopupSettings = ({ onUpdateSettings, className }: Props) => {
     <div className={cn("flex flex-col gap-4", className)}>
       <h3>Popup settings</h3>
       <div className="flex items-center gap-2 pl-4">
-        <p className="flex-shrink-0">Auto show</p>
+        <p className="shrink-0">Auto show</p>
         <Switch checked={isEnabled} onCheckedChange={setIsEnabled} />
         {isEnabled && (
           <>

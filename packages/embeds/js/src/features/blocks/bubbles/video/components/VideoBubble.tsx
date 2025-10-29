@@ -110,9 +110,9 @@ export const VideoBubble = (props: Props) => {
             >
               <div
                 class={cx(
-                  "p-4 z-10 text-fade-in w-full aspect-[var(--aspect-ratio)]",
+                  "p-4 z-10 text-fade-in w-full aspect-(--aspect-ratio)",
                   isTyping() ? "opacity-0 h-8 @xs:h-9" : "opacity-100",
-                  !props.content?.aspectRatio && "h-[var(--height)]",
+                  !props.content?.aspectRatio && "h-(--height)",
                 )}
                 style={{
                   "--aspect-ratio": props.content?.aspectRatio,

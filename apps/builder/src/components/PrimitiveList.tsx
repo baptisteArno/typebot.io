@@ -120,7 +120,7 @@ export const PrimitiveList = <T extends number | string | boolean>({
           </div>
         </div>
       ))}
-      <Button onClick={createItem} className="flex-shrink-0">
+      <Button onClick={createItem} className="shrink-0">
         <PlusSignIcon />
         {addLabel}
       </Button>

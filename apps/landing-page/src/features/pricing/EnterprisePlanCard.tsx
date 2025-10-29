@@ -16,7 +16,7 @@ export const EnterprisePlanCard = () => (
           customer support at scale
         </p>
       </div>
-      <ul className="flex flex-col gap-3 flex-shrink-0">
+      <ul className="flex flex-col gap-3 shrink-0">
         <PerkListItem>Custom chats limit & seats</PerkListItem>
         <PerkListItem>Contract with SLAs</PerkListItem>
         <PerkListItem>

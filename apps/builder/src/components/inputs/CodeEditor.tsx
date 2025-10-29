@@ -123,12 +123,10 @@ export const CodeEditor = ({
         } as CSSProperties
       }
       className={cn(
-        "group relative isolate border rounded-md [&_.cm-editor]:font-mono [&_.cm-editor]:text-sm min-h-[var(--editor-min-height)]",
+        "group relative isolate border rounded-md [&_.cm-editor]:font-mono [&_.cm-editor]:text-sm min-h-(--editor-min-height)",
         !withLineNumbers && "[&_.cm-gutters]:hidden",
         "[&_.cm-editor]:rounded-md [&_.cm-editor]:outline-none has-[.cm-focused]:ring-2 transition-[box-shadow,border-color] has-[.cm-focused]:border-transparent ring-orange-7 [&_.cm-scroller]:rounded-md [&_.cm-scroller]:overflow-auto",
-        isReadOnly
-          ? undefined
-          : "[&_.cm-editor]:max-h-[var(--editor-max-height)]",
+        isReadOnly ? undefined : "[&_.cm-editor]:max-h-(--editor-max-height)",
         className,
       )}
     >
@@ -169,7 +167,7 @@ export const CodeEditor = ({
               }}
             />
             <Popover.Popup
-              className="p-0 data-[open]:duration-0"
+              className="p-0 data-open:duration-0"
               offset={0}
               // Prevent the editor from closing when clicking on the variable search input
               onPointerDown={(e) => e.stopPropagation()}

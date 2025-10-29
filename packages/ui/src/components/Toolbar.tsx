@@ -39,9 +39,9 @@ const Button = forwardRef<HTMLButtonElement, ToolbarPrimitive.Button.Props>(
       <ToolbarPrimitive.Button
         {...props}
         className={cn(
-          "flex w-7 h-7 items-center justify-center rounded-md px-[0.75rem] font-[inherit] text-sm font-medium text-gray-11 select-none",
-          "focus-visible:ring-2 focus-visible:ring-orange-8 outline-none",
-          "hover:bg-gray-2 active:bg-gray-3 data-[pressed]:bg-gray-3 data-[pressed]:text-gray-12",
+          "flex w-7 h-7 items-center justify-center rounded-md px-3 font-[inherit] text-sm font-medium text-gray-11 select-none",
+          "focus-visible:ring-2 focus-visible:ring-orange-8 outline-hidden",
+          "hover:bg-gray-2 active:bg-gray-3 data-pressed:bg-gray-3 data-pressed:text-gray-12",
           className,
         )}
         ref={ref}

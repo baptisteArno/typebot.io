@@ -138,11 +138,7 @@ export const TableList = <T extends object>({
         </div>
       ))}
       {(!isOrdered || items.length === 0) && (
-        <Button
-          onClick={createItem}
-          className="flex-shrink-0"
-          variant="secondary"
-        >
+        <Button onClick={createItem} className="shrink-0" variant="secondary">
           <PlusSignIcon />
           {addLabel}
         </Button>

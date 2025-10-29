@@ -28,8 +28,8 @@ export const Companies = () => (
         <Mindeo width="100px" height="60px" />
         <Obole width="80px" height="60px" />
       </Marquee>
-      <div className="pointer-events-none absolute inset-y-0 right-0 w-[50px] bg-gradient-to-r from-gray-2/20 to-gray-2 " />
-      <div className="pointer-events-none absolute inset-y-0 left-0 w-[50px] bg-gradient-to-l from-gray-2/20 to-gray-2" />
+      <div className="pointer-events-none absolute inset-y-0 right-0 w-[50px] bg-linear-to-r from-gray-100/20 to-gray-100" />
+      <div className="pointer-events-none absolute inset-y-0 left-0 w-[50px] bg-linear-to-l from-gray-100/20 to-gray-100" />
     </div>
   </div>
 );

@@ -1,6 +1,65 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@source "../";
+@source "../../../../../packages/ui/src/";
+
+@theme inline {
+  --color-button-text: var(--typebot-button-color);
+  --color-button-bg: rgba(
+    var(--typebot-button-bg-rgb),
+    var(--typebot-button-opacity)
+  );
+  --color-button-border: rgba(
+    var(--typebot-button-border-rgb),
+    var(--typebot-button-border-opacity)
+  );
+  --color-host-bubble-text: var(--typebot-host-bubble-color);
+  --color-host-bubble-bg: rgba(
+    var(--typebot-host-bubble-bg-rgb),
+    var(--typebot-host-bubble-opacity)
+  );
+  --color-host-bubble-border: rgba(
+    var(--typebot-host-bubble-border-rgb),
+    var(--typebot-host-bubble-border-opacity)
+  );
+  --color-input-border: rgba(
+    var(--typebot-input-border-rgb),
+    var(--typebot-input-border-opacity)
+  );
+  --color-input-text: var(--typebot-input-color);
+  --color-input-bg: rgba(
+    var(--typebot-input-bg-rgb),
+    var(--typebot-input-opacity)
+  );
+
+  --spacing-chat-container-max-width: var(--typebot-chat-container-max-width);
+  --spacing-chat-container-max-height: var(--typebot-chat-container-max-height);
+  --spacing-chat-container-min-height: var(--typebot-chat-container-min-height);
+  --spacing-button-border-width: var(--typebot-button-border-width);
+  --spacing-host-bubble-border-width: var(--typebot-host-bubble-border-width);
+  --spacing-input-border-width: var(--typebot-input-border-width);
+
+  --blur-button: var(--typebot-button-blur);
+  --blur-host-bubble: var(--typebot-host-bubble-blur);
+  --shadow-button: var(--typebot-button-box-shadow);
+  --shadow-host-bubble: var(--typebot-host-bubble-box-shadow);
+  --shadow-input: var(--typebot-input-box-shadow);
+  --radius-button: var(--typebot-button-border-radius);
+  --radius-host-bubble: var(--typebot-host-bubble-border-radius);
+  --radius-chat-container: var(--typebot-chat-container-border-radius);
+}
+
+@theme {
+  --font-display: "Uxum Grotesque", sans-serif;
+  --font-sans: "Untitled Sans", sans-serif;
+
+  --text-4xl: 2.5rem;
+
+  --container-xs: 27.5rem;
+
+  --animate-fade-in: fade-in 0.3s ease-out;
+  --animate-fade-in-from-bottom: fadeInFromBottom 150ms ease-out forwards;
+  --animate-fade-out-from-bottom: fadeOutFromBottom 50ms ease-out forwards;
+}
 
 /* Hide scrollbar for Chrome, Safari and Opera */
 .scrollable-container::-webkit-scrollbar {
@@ -57,42 +116,38 @@
   }
 }
 
-button,
-input,
-textarea {
-  font-weight: 300;
-}
+@layer base {
+  a {
+    text-decoration: underline;
+  }
 
-a {
-  text-decoration: underline;
-}
+  ul,
+  ol {
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    padding-inline-start: 40px;
+  }
 
-ul,
-ol {
-  margin-inline-start: 0px;
-  margin-inline-end: 0px;
-  padding-inline-start: 40px;
-}
+  ol {
+    list-style-type: decimal;
+  }
 
-ol {
-  list-style-type: decimal;
-}
+  ul {
+    list-style-type: disc;
+  }
 
-ul {
-  list-style-type: disc;
-}
+  li:not(:last-child) {
+    margin-bottom: 8px;
+  }
 
-li:not(:last-child) {
-  margin-bottom: 8px;
-}
-
-pre {
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  max-height: 100%;
-  max-width: 100%;
-  overflow: auto;
+  pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-height: 100%;
+    max-width: 100%;
+    overflow: auto;
+  }
 }
 
 .slate-bold {
@@ -566,4 +621,13 @@ select option {
 
 .typebot-buttons-input > .typebot-input {
   max-width: 350px;
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }

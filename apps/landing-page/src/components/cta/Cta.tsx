@@ -38,7 +38,7 @@ export const Cta = ({
         <CtaButtonLink size="lg" href={registerUrl}>
           {buttonLabel}
         </CtaButtonLink>
-        <p className="text-gray-11 text-center">
+        <p className="text-muted-foreground text-center">
           No trial. Generous free plan.
         </p>
       </div>

@@ -5,13 +5,13 @@ import { cva, type VariantProps } from "../lib/cva";
 
 const switchVariants = cva(
   cn(
-    "peer data-[checked]:bg-orange-9 data-[unchecked]:bg-gray-6 focus-visible:ring-orange-9/50 inline-flex shrink-0 items-center rounded-full border-2 border-transparent transition-all outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50",
+    "peer data-checked:bg-orange-9 data-unchecked:bg-gray-6 focus-visible:ring-orange-9/50 inline-flex shrink-0 items-center rounded-full border-2 border-transparent transition-all outline-hidden focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50",
   ),
   {
     variants: {
       size: {
-        sm: "h-5 w-8 [&_span]:size-4 data-[checked]:[&_span]:translate-x-3 data-[checked]:[&_span]:rtl:-translate-x-3",
-        md: "h-6 w-10 [&_span]:size-5 data-[checked]:[&_span]:translate-x-4 data-[checked]:[&_span]:rtl:-translate-x-4",
+        sm: "h-5 w-8 [&_span]:size-4 [&_span]:data-checked:translate-x-3 rtl:[&_span]:data-checked:-translate-x-3",
+        md: "h-6 w-10 [&_span]:size-5 [&_span]:data-checked:translate-x-4 rtl:[&_span]:data-checked:-translate-x-4",
       },
     },
     defaultVariants: {
@@ -32,7 +32,7 @@ export const Switch = ({ className, size, ...props }: SwitchProps) => {
     >
       <SwitchPrimitive.Thumb
         data-slot="switch-thumb"
-        className="bg-white pointer-events-none block rounded-full shadow-xs ring-0 transition-transform data-[unchecked]:translate-x-0"
+        className="bg-white pointer-events-none block rounded-full shadow-2xs ring-0 transition-transform data-unchecked:translate-x-0"
       />
     </SwitchPrimitive.Root>
   );

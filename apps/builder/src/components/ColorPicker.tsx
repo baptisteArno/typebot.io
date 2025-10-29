@@ -60,7 +60,7 @@ export const ColorPicker = ({
         aria-label={t("colorPicker.pickColor.ariaLabel")}
         variant="secondary"
         size="icon"
-        className="min-w-0 rounded-md border-1"
+        className="min-w-0 rounded-md border"
         disabled={isDisabled}
       >
         <div
@@ -92,7 +92,7 @@ export const ColorPicker = ({
                     "--border-width": color === "#FFFFFF" ? "1px" : "0px",
                   } as React.CSSProperties
                 }
-                className="h-5 w-5 p-0 min-w-0 rounded-md border-[length:var(--border-width)] bg-[var(--bg)] hover:bg-[var(--bg)]"
+                className="h-5 w-5 p-0 min-w-0 rounded-md border-(length:--border-width) bg-(--bg) hover:bg-(--bg)"
                 onClick={handleClick(color)}
               />
             ))}

@@ -32,7 +32,7 @@ function List({
         "data-[orientation=vertical]:flex-col",
         variant === "default"
           ? "rounded-lg bg-gray-3 p-0.5 text-gray-12/64"
-          : "data-[orientation=horizontal]:py-1 data-[orientation=vertical]:px-1 *:data-[slot=tabs-trigger]:hover:bg-gray-2",
+          : "data-[orientation=horizontal]:py-1 data-[orientation=vertical]:px-1 hover:data-[slot=tabs-trigger]:*:bg-gray-2",
         className,
       )}
       {...props}
@@ -41,10 +41,10 @@ function List({
       <TabsPrimitive.Indicator
         data-slot="tab-indicator"
         className={cn(
-          "absolute bottom-0 left-0 h-[var(--active-tab-height)] w-[var(--active-tab-width)] translate-x-[var(--active-tab-left)] -translate-y-[var(--active-tab-bottom)] transition-[width,translate] duration-200 ease-in-out",
+          "absolute bottom-0 left-0 h-(--active-tab-height) w-(--active-tab-width) translate-x-(--active-tab-left) -translate-y-(--active-tab-bottom) transition-[width,translate] duration-200 ease-in-out",
           variant === "underline"
             ? "z-10 bg-orange-9 data-[orientation=horizontal]:h-0.5 data-[orientation=horizontal]:translate-y-px data-[orientation=vertical]:w-0.5 data-[orientation=vertical]:-translate-x-px"
-            : "-z-10 rounded-md bg-gray-1 shadow-sm dark:bg-gray-2",
+            : "-z-10 rounded-md bg-gray-1 shadow-xs dark:bg-gray-2",
         )}
       />
     </TabsPrimitive.List>
@@ -56,8 +56,8 @@ function Tab({ className, ...props }: TabsPrimitive.Tab.Props) {
     <TabsPrimitive.Tab
       data-slot="tabs-trigger"
       className={cn(
-        "flex flex-1 shrink-0 cursor-pointer items-center justify-center rounded-md border border-transparent text-sm font-medium whitespace-nowrap transition-[color,background-color,box-shadow] outline-none focus-visible:ring-2 focus-visible:ring-orange-8 data-disabled:pointer-events-none data-disabled:opacity-64 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
-        "hover:text-gray-12 data-[selected]:text-gray-12",
+        "flex flex-1 shrink-0 cursor-pointer items-center justify-center rounded-md border border-transparent text-sm font-medium whitespace-nowrap transition-[color,background-color,box-shadow] outline-hidden focus-visible:ring-2 focus-visible:ring-orange-8 data-disabled:pointer-events-none data-disabled:opacity-64 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        "hover:text-gray-12 data-selected:text-gray-12",
         "gap-1.5 px-3 py-1",
         "data-[orientation=vertical]:w-full data-[orientation=vertical]:justify-start",
         className,
@@ -71,7 +71,7 @@ function Panel({ className, ...props }: TabsPrimitive.Panel.Props) {
   return (
     <TabsPrimitive.Panel
       data-slot="tabs-content"
-      className={cn("flex-1 outline-none", className)}
+      className={cn("flex-1 outline-hidden", className)}
       {...props}
     />
   );

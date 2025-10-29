@@ -76,8 +76,8 @@ const Popup = ({
           {...props}
           className={cn(
             "bg-gray-1 px-2 py-1 text-sm rounded-lg border border-gray-4 shadow-md",
-            "data-[open]:animate-in data-[open]:fade-in-0",
-            "data-[closed]:animate-out data-[closed]:fade-out-0",
+            "data-open:animate-in data-open:fade-in-0",
+            "data-closed:animate-out data-closed:fade-out-0",
             "data-[side=bottom]:slide-in-from-top-2 data-[side=bottom]:slide-out-to-top-1",
             "data-[side=top]:slide-in-from-bottom-2 data-[side=top]:slide-out-to-bottom-1",
             "data-[side=right]:slide-in-from-left-2 data-[side=right]:slide-out-to-left-1",

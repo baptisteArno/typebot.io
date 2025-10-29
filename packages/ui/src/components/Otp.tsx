@@ -48,7 +48,7 @@ function Slot({
       data-slot="input-otp-slot"
       data-active={isActive}
       className={cn(
-        "data-[active=true]:ring-orange-8 data-[active=true]:aria-invalid:ring-red-8 border border-gray-7 relative flex size-14 text-lg items-center justify-center border-y border-r transition-all outline-none first:rounded-l-md first:border-l last:rounded-r-md data-[active=true]:z-10 data-[active=true]:ring-[3px]",
+        "data-[active=true]:ring-orange-8 data-[active=true]:aria-invalid:ring-red-8 border border-gray-7 relative flex size-14 text-lg items-center justify-center border-y border-r transition-all outline-hidden first:rounded-l-md first:border-l last:rounded-r-md data-[active=true]:z-10 data-[active=true]:ring-[3px]",
         className,
       )}
       {...props}

@@ -316,10 +316,7 @@ const FormElement = ({
           <path d="m6 6 12 12" />
         </svg>
       </Button>
-      <span
-        className="block text-sm font-medium"
-        style={{ color: "rgb(var(--gray-11))" }}
-      >
+      <span className="block text-sm font-medium text-foreground/90">
         {element.label}
       </span>
       {element.type === "radio" ? (
@@ -331,12 +328,7 @@ const FormElement = ({
                 name={`preview-${element.id}`}
                 className="h-4 w-4 pointer-events-none"
               />
-              <span
-                className="text-sm"
-                style={{ color: "rgb(var(--gray-11))" }}
-              >
-                {option}
-              </span>
+              <span className="text-sm text-foreground/90">{option}</span>
             </div>
           ))}
         </div>
@@ -345,12 +337,7 @@ const FormElement = ({
           {element.options?.map((option, index) => (
             <div key={index} className="flex items-center gap-2">
               <Input type="checkbox" className="h-4 w-4 pointer-events-none" />
-              <span
-                className="text-sm"
-                style={{ color: "rgb(var(--gray-11))" }}
-              >
-                {option}
-              </span>
+              <span className="text-sm text-foreground/90">{option}</span>
             </div>
           ))}
         </div>
@@ -376,7 +363,7 @@ const PropertiesPanel = ({
   if (!selectedElement) {
     return (
       <div className="w-full">
-        <p style={{ color: "rgb(var(--gray-9))" }}>
+        <p className="text-foreground/60">
           Select an element to edit its properties
         </p>
       </div>
@@ -413,8 +400,7 @@ const PropertiesPanel = ({
         <div>
           <label
             htmlFor="element-label"
-            className="block text-sm font-medium"
-            style={{ color: "rgb(var(--gray-11))" }}
+            className="block text-sm font-medium text-foreground/90"
           >
             Label
           </label>
@@ -432,8 +418,7 @@ const PropertiesPanel = ({
           <div>
             <label
               htmlFor="element-placeholder"
-              className="block text-sm font-medium"
-              style={{ color: "rgb(var(--gray-11))" }}
+              className="block text-sm font-medium text-foreground/90"
             >
               Placeholder
             </label>
@@ -458,8 +443,7 @@ const PropertiesPanel = ({
           />
           <label
             htmlFor="element-required"
-            className="text-sm font-medium"
-            style={{ color: "rgb(var(--gray-11))" }}
+            className="text-sm font-medium text-foreground/90"
           >
             Required
           </label>
@@ -467,10 +451,7 @@ const PropertiesPanel = ({
 
         {/* Width Selection */}
         <div>
-          <span
-            className="block text-sm font-medium mb-1"
-            style={{ color: "rgb(var(--gray-11))" }}
-          >
+          <span className="block text-sm font-medium mb-1 text-foreground/90">
             Width
           </span>
           <Select.Root
@@ -493,10 +474,7 @@ const PropertiesPanel = ({
           selectedElement.type === "radio" ||
           selectedElement.type === "multicheck") && (
           <div>
-            <span
-              className="block text-sm font-medium mb-1"
-              style={{ color: "rgb(var(--gray-11))" }}
-            >
+            <span className="block text-sm font-medium mb-1 text-foreground/90">
               Options
             </span>
             <div className="space-y-2">
@@ -559,8 +537,7 @@ const LivePreviewModal = ({
             >
               <label
                 htmlFor={element.id}
-                className="block text-sm font-medium mb-1"
-                style={{ color: "rgb(var(--gray-11))" }}
+                className="block text-sm font-medium mb-1 text-foreground/90"
               >
                 {element.label}
               </label>

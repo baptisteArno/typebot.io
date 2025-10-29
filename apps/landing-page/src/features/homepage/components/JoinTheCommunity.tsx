@@ -34,32 +34,32 @@ const avatars = [
   {
     src: laszloSrc,
     alt: "Community member 2 avatar",
-    position: "top-32 left-4 motion-delay-500",
+    position: "top-32 left-4 delay-500",
   },
   {
     src: joshuaSrc,
     alt: "Community member 3 avatar",
-    position: "bottom-8 left-24 motion-delay-300",
+    position: "bottom-8 left-24 delay-300",
   },
   {
     src: lucasSrc,
     alt: "Community member 4 avatar",
-    position: "-bottom-7 -left-7 motion-delay-700",
+    position: "-bottom-7 -left-7 delay-700",
   },
   {
     src: kurniaSrc,
     alt: "Community member 5 avatar",
-    position: "top-1 right-36 motion-delay-1000",
+    position: "top-1 right-36 delay-1000",
   },
   {
     src: nicolaiSrc,
     alt: "Community member 6 avatar",
-    position: "top-28 right-4 motion-delay-500",
+    position: "top-28 right-4 delay-500",
   },
   {
     src: barrettaSrc,
     alt: "Community member 7 avatar",
-    position: "bottom-12 right-32 motion-delay-300",
+    position: "bottom-12 right-32 delay-300",
   },
   {
     src: annaFilouSrc,
@@ -69,7 +69,7 @@ const avatars = [
 ];
 
 export const JoinTheCommunity = () => (
-  <div className="flex flex-col bg-gray-1 rounded-2xl w-full max-w-7xl">
+  <div className="flex flex-col rounded-2xl w-full max-w-7xl bg-card border">
     <div className="relative isolate flex dark rounded-2xl md:rounded-b-none p-6 pt-12 md:pb-12 justify-center overflow-hidden">
       <FloatingAvatars className="hidden md:block" />
       <div className="flex flex-col gap-12 md:items-center max-w-4xl">
@@ -94,7 +94,7 @@ export const JoinTheCommunity = () => (
     <div className="flex flex-col md:flex-row justify-evenly gap-6 p-6 md:p-8">
       {stats.map(({ stat, label }) => (
         <div key={label} className="flex flex-col items-center gap-2">
-          <span className="text-4xl font-heading font-medium">{stat}</span>
+          <span className="text-4xl font-display font-medium">{stat}</span>
           <span className="text-gray-11">{label}</span>
         </div>
       ))}
@@ -110,7 +110,7 @@ const FloatingAvatars = ({ className }: { className?: string }) => (
         src={src}
         alt={alt}
         className={cx(
-          `rounded-full w-16 h-16 border-4 absolute motion-preset-oscillate-sm motion-duration-[4000ms]`,
+          `rounded-full w-16 h-16 border-4 absolute animate-float`,
           position,
         )}
       />

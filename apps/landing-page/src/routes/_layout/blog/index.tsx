@@ -40,7 +40,7 @@ function RouteComponent() {
             <li key={post._meta.path}>
               <Link to={"/" + post._meta.path}>
                 <Card>
-                  <time className="text-gray-10">
+                  <time className="text-foreground/50">
                     {formatDate(post.postedAt!)}
                   </time>
                   <h3>{post.title}</h3>

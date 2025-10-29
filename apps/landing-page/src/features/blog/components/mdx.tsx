@@ -32,7 +32,7 @@ const components = {
     />
   ),
   table: (props: React.HTMLAttributes<HTMLTableElement>) => (
-    <TableRoot className="not-prose bg-gray-1 rounded-xl border">
+    <TableRoot className="not-prose bg-card rounded-xl border">
       <Table {...props} />
     </TableRoot>
   ),
@@ -66,7 +66,7 @@ const components = {
     caption?: string;
   }) =>
     caption ? (
-      <figure className="bg-gray-1 p-2 rounded-xl border items-start w-auto inline-block mx-auto">
+      <figure className="bg-card p-2 rounded-xl border items-start w-auto inline-block mx-auto">
         <img {...props} alt={alt} className="border" />
         <figcaption className="text-center py-1">{caption}</figcaption>
       </figure>
@@ -75,32 +75,34 @@ const components = {
     ),
   Info: ({ children, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
     <div
-      className={cn("flex gap-4 rounded-xl border px-6 bg-gray-1 text-gray-12")}
+      className={cn(
+        "flex gap-4 rounded-xl border px-6 bg-card text-card-foreground",
+      )}
       {...props}
     >
-      <InformationSquareIcon className="size-5 flex-shrink-0 mt-7 stroke-gray-11" />
+      <InformationSquareIcon className="size-5 shrink-0 mt-7 stroke-card-foreground" />
       <div>{children}</div>
     </div>
   ),
   Success: ({ children, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
     <div
       className={cn(
-        "flex gap-4 rounded-xl border px-6 bg-purple-3 text-purple-12",
+        "flex gap-4 rounded-xl border px-6 bg-violet-50 text-violet-900",
       )}
       {...props}
     >
-      <TickIcon className="size-5 flex-shrink-0 mt-7 stroke-purple-11" />
+      <TickIcon className="size-5 shrink-0 mt-7 stroke-violet-600" />
       <div>{children}</div>
     </div>
   ),
   Warning: ({ children, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
     <div
       className={cn(
-        "flex gap-4 rounded-xl border px-6 bg-orange-2 text-orange-12",
+        "flex gap-4 rounded-xl border px-6 bg-orange-50 text-orange-800",
       )}
       {...props}
     >
-      <TriangleAlertIcon className="size-5 flex-shrink-0 mt-7 stroke-orange-11" />
+      <TriangleAlertIcon className="size-5 shrink-0 mt-7 stroke-orange-600" />
       <div>{children}</div>
     </div>
   ),
@@ -151,7 +153,7 @@ const components = {
   WhatsAppPricingCalculator,
   HtmlFormGenerator,
   Variable: ({ children }: { children: string }) => (
-    <code className="bg-gray-3 px-1 py-0.5 rounded text-sm">
+    <code className="bg-gray-300 px-1 py-0.5 rounded-sm text-sm">
       {`{{${children}}}`}
     </code>
   ),

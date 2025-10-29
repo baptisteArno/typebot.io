@@ -42,7 +42,7 @@ export const VariablesButton = ({
           </Tooltip.Root>
         )}
       />
-      <Popover.Popup className="p-0 data-[open]:duration-0">
+      <Popover.Popup className="p-0 data-open:duration-0">
         <VariablesCombobox
           initialVariableId={undefined}
           onSelectVariable={(variable) => {

@@ -1,5 +1,6 @@
 import { cn } from "@typebot.io/ui/lib/cn";
-import { useInView } from "motion/react";
+import { cx } from "@typebot.io/ui/lib/cva";
+import { AnimatePresence, motion, useInView } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import { CtaButtonLink } from "@/components/link";
 import { Progress } from "@/components/Progress";
@@ -126,37 +127,51 @@ export const UseCases = ({ className }: { className?: string }) => {
           ))}
         </div>
         <div className="relative isolate">
-          {useCases.map((useCase, index) => (
-            <div
-              key={index}
-              className={cn(
-                currentUseCase.index === index
-                  ? previousIndex > index
-                    ? "motion-opacity-in-0 -motion-translate-x-in-[20px]"
-                    : "motion-opacity-in-0 motion-translate-x-in-[20px]"
-                  : "absolute pointer-events-none opacity-0",
-              )}
+          <AnimatePresence initial={false} mode="popLayout">
+            <motion.div
+              key={currentUseCase.index}
+              initial={{
+                opacity: 0,
+                x: previousIndex > currentUseCase.index ? -40 : 40,
+              }}
+              animate={{
+                opacity: 1,
+                x: 0,
+                transition: {
+                  duration: 0.25,
+                  ease: "easeInOut",
+                },
+              }}
+              exit={{
+                opacity: 0,
+                x: previousIndex > currentUseCase.index ? 40 : -40,
+                transition: {
+                  duration: 0.15,
+                  ease: "easeIn",
+                },
+              }}
             >
-              <figure className="border-2 border-gray-8 rounded-lg md:rounded-2xl overflow-hidden outline-4 md:outline-8 outline-gray-12 -outline-offset-[5px] md:-outline-offset-[10px] outline md:mr-24">
+              <figure className="border-2 border-border rounded-lg md:rounded-2xl overflow-hidden outline-4 md:outline-8 outline-gray-900 -outline-offset-[5px] md:-outline-offset-10 outline-solid md:mr-24">
                 <img
-                  src={useCase.images.builder.src}
-                  alt={useCase.images.builder.alt}
+                  src={useCases[currentUseCase.index].images.builder.src}
+                  alt={useCases[currentUseCase.index].images.builder.alt}
                   className="w-auto md:max-h-[85vh]"
                   width="3456px"
                   height="2158px"
                 />
               </figure>
-              <figure className="border-[0.5px] md:border-2 border-gray-8 rounded-xl md:rounded-[2rem] overflow-hidden outline-2 md:outline-8 outline-gray-12 -outline-offset-[2.5px] md:-outline-offset-[10px] outline absolute right-0 -bottom-4 md:-bottom-10">
+              <figure className="border-[0.5px] md:border-2 border-border rounded-xl md:rounded-4xl overflow-hidden outline-2 md:outline-8 outline-gray-900 -outline-offset-[2.5px] md:-outline-offset-10 outline-solid absolute right-0 -bottom-4 md:-bottom-10">
                 <img
-                  src={useCase.images.bot.src}
-                  alt={useCase.images.bot.alt}
+                  src={useCases[currentUseCase.index].images.bot.src}
+                  alt={useCases[currentUseCase.index].images.bot.alt}
                   className="w-auto max-h-none max-w-20 md:max-w-64 2xl:max-w-none 2xl:max-h-[65vh] p-[2px] md:p-2"
                   width="1179px"
                   height="2556px"
                 />
               </figure>
-            </div>
-          ))}
+            </motion.div>
+          </AnimatePresence>
+          <PreloadUseCaseImages />
         </div>
       </div>
     </div>
@@ -173,12 +188,14 @@ const UsecaseTitle = ({
   onClick?: () => void;
 }) => (
   <button
-    className="flex flex-col items-center gap-2 flex-shrink-0"
+    className="flex flex-col items-center gap-2 shrink-0 cursor-pointer hover:[&_h3]:opacity-100"
     onClick={onClick}
   >
     <h3
-      className="text-lg font-medium transition-opacity duration-200 ease-out text-center"
-      style={{ opacity: progressValue ? 1 : 0.5 }}
+      className={cx(
+        "text-lg font-medium transition-opacity duration-200 ease-out text-center",
+        progressValue ? "opacity-100" : "opacity-50",
+      )}
     >
       {children}
     </h3>
@@ -188,7 +205,7 @@ const UsecaseTitle = ({
 
 export const Cta = () => (
   <div className="flex flex-col gap-6 items-center">
-    <p className="text-gray-11 text-balance max-w-4xl md:text-center text-lg">
+    <p className="text-balance max-w-4xl md:text-center text-lg">
       Picture{" "}
       <span className="font-medium">
         a bot that goes beyond answering questions
@@ -207,4 +224,15 @@ export const Cta = () => (
       </CtaButtonLink>
     </div>
   </div>
+);
+
+const PreloadUseCaseImages = () => (
+  <>
+    {useCases.map((useCase, index) => (
+      <div key={index} className="sr-only" aria-hidden="true">
+        <img src={useCase.images.builder.src} alt="" />
+        <img src={useCase.images.bot.src} alt="" />
+      </div>
+    ))}
+  </>
 );

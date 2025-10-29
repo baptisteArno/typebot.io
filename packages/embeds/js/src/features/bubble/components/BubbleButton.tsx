@@ -21,7 +21,7 @@ export const BubbleButton = (props: Props) => (
     part="button"
     onClick={() => props.toggleBot()}
     class={cx(
-      "relative shadow-md rounded-2xl hover:scale-110 active:scale-95 transition-transform duration-200 flex justify-center items-center animate-fade-in size-[var(--button-size)]",
+      "relative shadow-md rounded-2xl hover:scale-110 active:scale-95 transition-transform duration-200 flex justify-center items-center animate-fade-in size-(--button-size)",
     )}
     style={{
       "background-color": props.backgroundColor ?? colors.gray.dark["2"],

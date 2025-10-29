@@ -17,7 +17,7 @@ export const SelectedFile = (props: {
   onRemoveClick: () => void;
 }) => {
   return (
-    <div class="relative group flex-shrink-0">
+    <div class="relative group shrink-0">
       <Switch>
         <Match when={props.file.type.startsWith("image")}>
           <img

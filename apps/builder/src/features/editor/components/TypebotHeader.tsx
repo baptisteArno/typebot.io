@@ -43,7 +43,7 @@ export const TypebotHeader = () => {
 
   if (currentUserMode === "guest") return <GuestTypebotHeader />;
   return (
-    <div className="flex w-full border-b justify-center items-center relative h-[var(--header-height)] bg-gray-1 flex-shrink-0">
+    <div className="flex w-full border-b justify-center items-center relative h-(--header-height) bg-gray-1 shrink-0">
       {isOpen && <SupportBubble autoShowDelay={0} />}
       <LeftElements className="absolute left-4" onHelpClick={handleHelpClick} />
       <TypebotNav

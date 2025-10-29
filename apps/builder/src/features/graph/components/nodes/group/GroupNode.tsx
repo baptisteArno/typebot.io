@@ -165,7 +165,7 @@ export const GroupNode = ({ group, groupIndex }: Props) => {
             } as React.CSSProperties
           }
           className={cx(
-            "flex flex-col group px-4 pt-4 pb-2 rounded-xl border absolute gap-0 select-none bg-gray-1 w-[var(--group-width)] transition-[border-color,box-shadow] hover:shadow-md",
+            "flex flex-col group px-4 pt-4 pb-2 rounded-xl border absolute gap-0 select-none bg-gray-1 w-(--group-width) transition-[border-color,box-shadow] hover:shadow-md",
             isConnecting || isContextMenuOpened || isPreviewing || isFocused
               ? "border-orange-8"
               : undefined,

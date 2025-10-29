@@ -106,7 +106,7 @@ const TextGuestBubble = (props: { answer: TextInputSubmitContent }) => {
         </div>
       </Show>
       <div
-        class="p-[1px] whitespace-pre-wrap max-w-full typebot-guest-bubble flex flex-col"
+        class="p-px whitespace-pre-wrap max-w-full typebot-guest-bubble flex flex-col"
         data-testid="guest-bubble"
       >
         <Show when={isNotEmpty(props.answer.label ?? props.answer.value)}>

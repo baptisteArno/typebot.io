@@ -549,7 +549,7 @@ export const ChatContainer = (props: Props) => {
 
 // Needed because we need to simulate a bottom padding relative to the chat view height
 const BottomSpacer = () => (
-  <div class="w-full flex-shrink-0 typebot-bottom-spacer h-5" />
+  <div class="w-full shrink-0 typebot-bottom-spacer h-5" />
 );
 
 const convertSubmitContentToMessage = (

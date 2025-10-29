@@ -486,7 +486,7 @@ const ZodArrayContent = ({
       isOrdered={layout?.isOrdered}
     >
       {({ item, onItemChange }) => (
-        <div className="flex flex-col gap-2 p-4 rounded-md flex-1 border max-w-[100%]">
+        <div className="flex flex-col gap-2 p-4 rounded-md flex-1 border max-w-full">
           <ZodFieldLayout
             schema={schema._def.type}
             blockDef={blockDef}

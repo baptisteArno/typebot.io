@@ -1,11 +1,11 @@
 import { isDefined, isNotDefined } from "@typebot.io/lib/utils";
+import { Button } from "@typebot.io/ui/components/Button";
 import { Cancel01Icon } from "@typebot.io/ui/icons/Cancel01Icon";
 import { PlusSignIcon } from "@typebot.io/ui/icons/PlusSignIcon";
 import { cn } from "@typebot.io/ui/lib/cn";
 import { cx } from "@typebot.io/ui/lib/cva";
 import { motion } from "motion/react";
 import { useState } from "react";
-import { IconButton } from "@/components/IconButton";
 import { MotionCard } from "@/components/motion-wrappers";
 import marketingSrc from "./assets/marketing.png";
 import productSrc from "./assets/product.png";
@@ -118,7 +118,7 @@ export const ForEveryDepartment = () => {
       {openedDepartment && (
         <div className="fixed size-full inset-0 flex justify-center items-center">
           <div
-            className="bg-gray-1/80 absolute inset-0 motion-preset-fade"
+            className="bg-background/80 absolute inset-0 animate-in fade-in duration-350"
             onClick={() => {
               setLastOpenedDepartmentIndex(openedDepartmentIndex);
               setOpenedDepartmentIndex(undefined);
@@ -156,7 +156,7 @@ const DepartmentCard = ({
   <MotionCard
     layoutId={`dep-${index}`}
     className={cx(
-      "p-2 relative isolate cursor-pointer",
+      "p-2 relative isolate cursor-pointer hover:brightness-110 transition-[filter] duration-350",
       lastOpenedDepartmentIndex === index &&
         isNotDefined(openedDepartmentIndex) &&
         "z-10",
@@ -191,13 +191,14 @@ const DepartmentCard = ({
       </motion.p>
     </div>
     {openedDepartmentIndex !== index && (
-      <IconButton
+      <Button
         aria-label="Expand department"
         variant="outline"
-        className="rounded-full p-0 w-6 h-6 absolute bottom-4 right-4 motion-preset-slide-up-sm motion-delay-500"
+        size="icon"
+        className="rounded-full p-0 w-6 h-6 absolute bottom-4 right-4"
       >
         <PlusSignIcon />
-      </IconButton>
+      </Button>
     )}
   </MotionCard>
 );
@@ -218,14 +219,15 @@ const OpenedDepartmentCard = ({
     layoutId={`dep-${index}`}
   >
     <div className="gap-4 flex flex-col">
-      <IconButton
+      <Button
         aria-label="Close department"
         variant="secondary"
-        className="absolute top-4 right-4 motion-preset-slide-up-sm motion-delay-500"
+        size="icon"
+        className="absolute top-4 right-4 animate-in slide-in-from-bottom-10 fade-in duration-350 delay-500 fill-mode-both"
         onClick={onClose}
       >
         <Cancel01Icon />
-      </IconButton>
+      </Button>
       <motion.figure layoutId={`dep-${index}-img`}>
         <img
           src={department.image.src}

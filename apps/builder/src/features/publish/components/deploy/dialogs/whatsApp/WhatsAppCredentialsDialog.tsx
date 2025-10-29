@@ -557,19 +557,19 @@ const Webhook = ({
       <ul>
         <li>
           <div className="flex items-center gap-2">
-            <p className="flex-shrink-0">Callback URL:</p>
+            <p className="shrink-0">Callback URL:</p>
             <CopyInput value={webhookUrl} />
           </div>
         </li>
         <li>
           <div className="flex items-center gap-2">
-            <p className="flex-shrink-0">Verify Token:</p>
+            <p className="shrink-0">Verify Token:</p>
             <CopyInput value={verificationToken} />
           </div>
         </li>
         <li>
           <div className="flex items-center gap-2">
-            <p className="flex-shrink-0">
+            <p className="shrink-0">
               Webhook fields: Next to <code>messages</code>, click on
               "Subscribe"
             </p>

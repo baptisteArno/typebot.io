@@ -1,13 +1,12 @@
 import { Link, useLocation, useRouter } from "@tanstack/react-router";
 import { Bubble } from "@typebot.io/react";
-import { buttonVariants } from "@typebot.io/ui/components/Button";
+import { Button, buttonVariants } from "@typebot.io/ui/components/Button";
 import { Cancel01Icon } from "@typebot.io/ui/icons/Cancel01Icon";
 import { Menu01Icon } from "@typebot.io/ui/icons/Menu01Icon";
 import { cn } from "@typebot.io/ui/lib/cn";
 import { cx } from "@typebot.io/ui/lib/cva";
 import { AnimatePresence, motion } from "motion/react";
 import React, { useEffect, useRef, useState } from "react";
-import { IconButton } from "@/components/IconButton";
 import { TypebotLogoFull } from "@/components/TypebotLogo";
 import {
   breakpoints,
@@ -148,8 +147,8 @@ const Mobile = React.forwardRef<HTMLElement, Props>(function Mobile(
         appearance === "light"
           ? "bg-white/50"
           : isOpened
-            ? "dark bg-gray-1/90 text-gray-12"
-            : "dark bg-gray-1/60 text-gray-12",
+            ? "dark bg-black/90 text-foreground"
+            : "dark bg-black/60 text-foreground",
         className,
       )}
       transition={{ duration: 0.4, type: "spring", bounce: 0.15 }}
@@ -159,14 +158,15 @@ const Mobile = React.forwardRef<HTMLElement, Props>(function Mobile(
         <Link to="/">
           <TypebotLogoFull />
         </Link>
-        <IconButton
+        <Button
           aria-label={isOpened ? "Close menu" : "Open menu"}
           variant="ghost"
+          size="icon"
           onClick={toggleHeaderExpansion}
           className="transition-none"
         >
           {isOpened ? <Cancel01Icon /> : <Menu01Icon />}
-        </IconButton>
+        </Button>
       </div>
       <AnimatePresence mode="popLayout">
         {isOpened && (
@@ -191,7 +191,10 @@ const Mobile = React.forwardRef<HTMLElement, Props>(function Mobile(
             </div>
             <CtaButtonLink
               href={signinUrl}
-              className={buttonVariants({ size: "lg", variant: "outline" })}
+              className={buttonVariants({
+                size: "lg",
+                variant: "outline",
+              })}
             >
               Sign in
             </CtaButtonLink>
@@ -275,10 +278,10 @@ const Desktop = React.forwardRef<
       <nav
         ref={ref}
         className={cx(
-          "flex rounded-2xl border border-gray-6 px-2 py-2 bg-gradient-to-b transition-colors gap-2 items-center",
+          "flex rounded-2xl border px-2 py-2 bg-linear-to-b transition-colors gap-2 items-center",
           appearance === "dark"
             ? "dark from-[#393939] to-[#121212]"
-            : "from-gray-1 to-[#DEDEDE]",
+            : "from-white to-[#DEDEDE]",
         )}
       >
         {desktopLinks.map((link) => (

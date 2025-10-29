@@ -8,7 +8,7 @@ const Progress = React.forwardRef<
   <div
     role="progressbar"
     className={cn(
-      "h-1 w-full overflow-hidden rounded-full bg-gray-11/10",
+      "h-1 w-full overflow-hidden rounded-full bg-gray-900/10",
       className,
     )}
     ref={ref}
@@ -18,7 +18,7 @@ const Progress = React.forwardRef<
     aria-valuetext={`${value}%`}
   >
     <div
-      className="h-full w-full flex-1 bg-primary transition-all bg-orange-9"
+      className="h-full w-full flex-1 bg-primary transition-all"
       style={{ transform: `translateX(-${100 - value}%)` }}
     />
   </div>

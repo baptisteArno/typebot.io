@@ -103,7 +103,7 @@ export const Footer = () => {
                         to={"to" in link ? link.to : undefined}
                         params={"params" in link ? link.params : undefined}
                         target={"href" in link ? "_blank" : undefined}
-                        className="text-gray-11 font-normal"
+                        className="text-muted-foreground font-normal"
                         size="sm"
                       >
                         {link.label}
@@ -115,7 +115,7 @@ export const Footer = () => {
             ))}
           </div>
         </div>
-        <p className="text-gray-11 text-sm">
+        <p className="text-foreground/70 text-sm">
           All rights reserved 2025 - Typebot
         </p>
       </div>

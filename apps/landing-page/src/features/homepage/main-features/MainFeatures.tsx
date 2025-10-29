@@ -182,11 +182,11 @@ export const MainFeatures = () => {
             >
               <div
                 className={cn(
-                  "size-4 bg-gray-4 border-white border rounded-full items-center justify-center flex",
+                  "size-4 bg-stone-200 border-white border rounded-full items-center justify-center flex",
                   index === features.length - 1 ? "-mb-[7px]" : "-mt-[7px]",
                 )}
               >
-                <div className="size-2 border-2 border-orange-9 rounded-full " />
+                <div className="size-2 border-2 border-primary rounded-full " />
               </div>
               <feature.Connector className="hidden md:flex -z-10" />
             </div>
@@ -200,7 +200,7 @@ export const MainFeatures = () => {
             src={currentFeature.video.src}
             width="476px"
             height="476px"
-            className="rounded-2xl border-8 border-gray-12"
+            className="rounded-2xl border-8 border-black"
             autoPlay
             muted
             loop

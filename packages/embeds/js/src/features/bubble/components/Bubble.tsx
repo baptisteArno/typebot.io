@@ -253,7 +253,7 @@ export const Bubble = (props: BubbleProps) => {
           class={cx(
             bubbleProps.theme?.position === "static"
               ? "relative"
-              : "z-[424242] fixed bottom-[var(--container-bottom)] right-5",
+              : "z-424242 fixed bottom-(--container-bottom) right-5",
             bubbleProps.theme?.placement === "left" && "left-5",
           )}
           style={{
@@ -301,7 +301,7 @@ export const Bubble = (props: BubbleProps) => {
               transform: isOpen() ? "scale3d(1, 1, 1)" : "scale3d(0, 0, 1)",
             }}
             class={cx(
-              "absolute rounded-lg max-h-[calc(100dvh-var(--container-bottom)-var(--button-gap)-var(--button-size))] shadow-lg bg-[var(--bot-bg-color)] h-[var(--bot-max-height)] max-w-[var(--bot-max-width)] overflow-hidden",
+              "absolute rounded-lg max-h-[calc(100dvh-var(--container-bottom)-var(--button-gap)-var(--button-size))] shadow-lg bg-(--bot-bg-color) h-(--bot-max-height) max-w-(--bot-max-width) overflow-hidden",
               isOpen() ? "opacity-1" : "opacity-0 pointer-events-none",
               bubbleProps.theme?.placement === "left"
                 ? "sm:left-0 -left-5"

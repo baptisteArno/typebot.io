@@ -16,10 +16,7 @@ export const Icon = forwardRef<SVGSVGElement, IconProps>(
         strokeLinecap="round"
         strokeLinejoin="round"
         stroke="currentColor"
-        className={cn(
-          "size-4 stroke-[1.5px] inline-flex flex-shrink-0",
-          className,
-        )}
+        className={cn("size-4 stroke-[1.5px] inline-flex shrink-0", className)}
         {...props}
       >
         {children}

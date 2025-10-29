@@ -1,4 +1,3 @@
-import { isDefined } from "@typebot.io/lib/utils";
 import { cn } from "@typebot.io/ui/lib/cn";
 import * as React from "react";
 
@@ -9,9 +8,8 @@ const Card = React.forwardRef<
   <div
     ref={ref}
     className={cn(
-      "rounded-2xl border bg-gray-1 dark:bg-gray-2 text-gray-12 flex flex-col gap-3 p-5",
+      "rounded-2xl border bg-card text-card-foreground flex flex-col gap-3 p-5",
       className,
-      isDefined(props.onClick ? "border-gray-7" : "border-gray-6"),
     )}
     {...props}
   />

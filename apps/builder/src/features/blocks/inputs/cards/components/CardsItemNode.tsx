@@ -123,7 +123,7 @@ export const CardsItemNode = ({
                   >
                     <Popover.Trigger>
                       <ImageOrPlaceholder
-                        className="w-full h-[110px] flex-shrink-0 transition-filter rounded-md hover:brightness-95 rounded-b-none"
+                        className="w-full h-[110px] shrink-0 transition-filter rounded-md hover:brightness-95 rounded-b-none"
                         src={item.imageUrl ?? undefined}
                       />
                     </Popover.Trigger>
@@ -235,7 +235,7 @@ export const CardsItemNode = ({
             </div>
 
             {isMouseOver && (
-              <div className="flex rounded-md bg-gray-1 absolute right-[-0.25rem] top-[-0.25rem] z-10 animate-in fade-in-0 slide-in-from-top-1 slide-in-from-right-1">
+              <div className="flex rounded-md bg-gray-1 absolute -right-1 -top-1 z-10 animate-in fade-in-0 slide-in-from-top-1 slide-in-from-right-1">
                 <Button
                   aria-label={t("blocks.inputs.button.openSettings.ariaLabel")}
                   variant="ghost"

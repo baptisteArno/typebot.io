@@ -59,7 +59,7 @@ export const TypebotsDropdown = ({
         <ButtonLink
           aria-label="Navigate to typebot"
           variant="secondary"
-          className="flex-shrink-0"
+          className="shrink-0"
           size="icon"
           href={{
             pathname: "/typebots/[typebotId]/edit",

@@ -189,13 +189,11 @@ export const Testimonials = () => {
     <div className="flex flex-col gap-8 max-w-3xl items-center w-full">
       <div className="flex flex-col gap-4 md:text-center">
         <h2>Oh my Bot!</h2>
-        <p className="text-gray-11">
-          The team likes it, customers enjoy it, and the brand stands out.
-        </p>
+        <p>The team likes it, customers enjoy it, and the brand stands out.</p>
       </div>
-      <div className="flex flex-col rounded-2xl overflow-y-auto max-h-[50vh] md:max-h-[70vh] bg-gray-1 border relative isolate w-full">
+      <div className="flex flex-col rounded-2xl overflow-y-auto max-h-[50vh] md:max-h-[70vh] bg-white border relative isolate w-full">
         <div
-          className="pointer-events-none top-0 h-10 w-full bg-gradient-to-t from-gray-2/10 to-gray-2/90 sticky flex-shrink-0 animate-fade-in"
+          className="pointer-events-none top-0 h-10 w-full bg-linear-to-t from-background/10 to-background/90 sticky shrink-0 animate-in fade-in"
           style={{
             animationTimeline: "scroll()",
             animationRange: "0% 10%",
@@ -207,7 +205,7 @@ export const Testimonials = () => {
           ))}
         </div>
         <div
-          className="pointer-events-none bottom-0 h-10 w-full bg-gradient-to-b from-gray-2/10 to-gray-2/90 sticky flex-shrink-0 animate-fade-out"
+          className="pointer-events-none bottom-0 h-10 w-full bg-linear-to-b from-background/10 to-background/90 sticky shrink-0 animate-out fade-out"
           style={{
             animationTimeline: "scroll()",
             animationRange: "90% 100%",
@@ -226,7 +224,7 @@ const Testimonial = ({
 }: (typeof testimonials)[number]) => {
   return (
     <div className="flex gap-2 max-w-lg">
-      <div className="rounded-full size-10 flex-shrink-0">
+      <div className="rounded-full size-10 shrink-0">
         {avatarSrc ? (
           <img
             src={avatarSrc}
@@ -239,10 +237,10 @@ const Testimonial = ({
           </div>
         )}
       </div>
-      <div className="flex flex-col bg-gray-2 p-4 rounded-xl gap-4 rounded-tl-md">
+      <div className="flex flex-col bg-secondary text-secondary-foreground border p-4 rounded-xl gap-4 rounded-tl-md">
         <p>{content}</p>
         <hr />
-        <span className="text-gray-11 italic text-sm">
+        <span className="text-sm">
           {name} - {role}
         </span>
       </div>

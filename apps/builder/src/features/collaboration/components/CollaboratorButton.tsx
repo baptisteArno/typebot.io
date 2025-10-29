@@ -89,7 +89,7 @@ export const CollaboratorIdentityContent = ({
           </p>
         </div>
       </div>
-      <div className="flex items-center gap-2 flex-shrink-0">
+      <div className="flex items-center gap-2 shrink-0">
         {isGuest && <Badge>{t("pending")}</Badge>}
         <Badge>
           <ReadableCollaborationType type={type} />

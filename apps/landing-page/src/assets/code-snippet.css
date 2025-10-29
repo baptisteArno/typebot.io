@@ -1,8 +1,22 @@
+@reference "./globals.css";
+
+:root {
+  --sh-class: #5395e5;
+  --sh-identifier: white;
+  --sh-sign: #8996a3;
+  --sh-property: #5395e5;
+  --sh-entity: #249a97;
+  --sh-jsxliterals: #6266d1;
+  --sh-string: #00a99a;
+  --sh-keyword: #f47067;
+  --sh-comment: #a19595;
+}
+
 [data-rehype-pretty-code-figure] {
   @apply mt-6 mb-4;
 }
 [data-rehype-pretty-code-figure] code {
-  @apply grid min-w-full break-words rounded-none border-0 bg-transparent p-0 text-sm text-gray-2 relative;
+  @apply grid min-w-full wrap-break-word rounded-none border-0 bg-transparent p-0 text-sm text-gray-2 relative;
   counter-reset: line;
   box-decoration-break: clone;
 }
@@ -19,16 +33,16 @@
   color: gray;
 }
 [data-rehype-pretty-code-figure] .highlighted {
-  @apply bg-opacity-10 border-l-4;
+  @apply border-l-4;
   border-color: rgb(56 189 248);
-  background-color: rgb(56 189 248 / var(--tw-bg-opacity));
+  background-color: rgb(56 189 248 / 0.1);
 }
 [data-rehype-pretty-code-figure] .highlighted span {
   @apply relative isolate;
 }
 [data-rehype-pretty-code-figure] [data-highlighted-chars] {
-  @apply rounded-md bg-opacity-10 p-1;
-  background-color: rgb(56 189 248 / var(--tw-bg-opacity));
+  @apply rounded-md p-1;
+  background-color: rgb(56 189 248 / 0.1);
 }
 [data-rehype-pretty-code-title] {
   @apply py-2 px-4 text-sm rounded-t-lg;
@@ -46,8 +60,7 @@ pre {
 }
 
 [data-rehype-pretty-code-figure] .diff.remove {
-  @apply bg-opacity-10 opacity-70;
-  background-color: rgb(244 63 94 / var(--tw-bg-opacity));
+  background-color: rgb(244 63 94 / 0.1);
   /* background-color: rgba(244, 63, 94, 0.16); */
 }
 .diff.remove:before {
@@ -60,8 +73,7 @@ pre {
   left: 4px;
 }
 [data-rehype-pretty-code-figure] .diff.add {
-  @apply bg-opacity-20;
-  background-color: rgb(16 185 129 / var(--tw-bg-opacity));
+  background-color: rgb(16 185 129 / 0.2);
 }
 .diff.add:before {
   content: "+";

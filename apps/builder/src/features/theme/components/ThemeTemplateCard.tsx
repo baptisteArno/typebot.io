@@ -133,15 +133,15 @@ export const ThemeTemplateCard = ({
         </div>
         <div className="flex mt-1 mb-4 pr-4 ml-auto w-full justify-end gap-1">
           <div
-            className="w-[20px] h-[10px] rounded-[var(--rounded)]"
+            className="w-[20px] h-[10px] rounded-(--rounded)"
             style={{ backgroundColor: buttonBgColor }}
           />
           <div
-            className="w-[20px] h-[10px] rounded-[var(--rounded)]"
+            className="w-[20px] h-[10px] rounded-(--rounded)"
             style={{ backgroundColor: buttonBgColor }}
           />
           <div
-            className="w-[20px] h-[10px] rounded-[var(--rounded)]"
+            className="w-[20px] h-[10px] rounded-(--rounded)"
             style={{ backgroundColor: buttonBgColor }}
           />
         </div>

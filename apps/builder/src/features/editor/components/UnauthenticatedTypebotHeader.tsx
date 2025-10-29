@@ -28,7 +28,7 @@ export const GuestTypebotHeader = () => {
   };
 
   return (
-    <div className="flex w-full border-b justify-center items-center relative h-[var(--header-height)] bg-gray-1 flex-shrink-0 z-10">
+    <div className="flex w-full border-b justify-center items-center relative h-(--header-height) bg-gray-1 shrink-0 z-10">
       <div className="items-center gap-2 absolute xl:static right-[280px] xl:right-0 hidden sm:flex">
         <ButtonLink
           href={`/typebots/${typebot?.id}/edit`}
@@ -101,7 +101,7 @@ export const GuestTypebotHeader = () => {
 
         {!user && (
           <>
-            <hr className="h-6 w-[1px] border-0 bg-gray-6" />
+            <hr className="h-6 w-px border-0 bg-gray-6" />
             <ButtonLink
               href={`/register`}
               variant="outline-secondary"

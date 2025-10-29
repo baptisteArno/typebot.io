@@ -38,13 +38,13 @@ export const SettingsSideMenu = () => {
     updateTypebot({ updates: { settings: { ...typebot.settings, metadata } } });
 
   return (
-    <div className="flex flex-col gap-2 flex-1 max-w-[400px] border ml-4 overflow-y-auto pb-20 relative rounded-xl h-[calc(100%-2rem)] bg-gray-1">
+    <div className="flex flex-col gap-2 flex-1 max-w-[400px] border ml-4 overflow-y-auto pb-20 relative rounded-xl h-[calc(100%-2rem)] bg-gray-1 dark:bg-gray-2">
       <Accordion.Root>
         <Accordion.Item className="border-0">
           <Accordion.Trigger className="py-5">
             <div className="flex items-center gap-3 pl-2">
               <MoreHorizontalIcon />
-              <h3>{t("settings.sideMenu.general")}</h3>
+              <h3 className="text-lg">{t("settings.sideMenu.general")}</h3>
             </div>
           </Accordion.Trigger>
           <Accordion.Panel>
@@ -56,11 +56,11 @@ export const SettingsSideMenu = () => {
             )}
           </Accordion.Panel>
         </Accordion.Item>
-        <Accordion.Item className="border-0 border-t-[1px]">
+        <Accordion.Item className="border-0 border-t">
           <Accordion.Trigger className="py-5">
             <div className="flex items-center gap-3 pl-2">
               <ChatIcon />
-              <h3>{t("settings.sideMenu.typing")}</h3>
+              <h3 className="text-lg">{t("settings.sideMenu.typing")}</h3>
             </div>
           </Accordion.Trigger>
           <Accordion.Panel>
@@ -72,11 +72,11 @@ export const SettingsSideMenu = () => {
             )}
           </Accordion.Panel>
         </Accordion.Item>
-        <Accordion.Item className="border-0 border-t-[1px]">
+        <Accordion.Item className="border-0 border-t">
           <Accordion.Trigger className="py-5">
             <div className="flex items-center gap-3 pl-2">
               <SquareLock01Icon />
-              <h3>{t("settings.sideMenu.security")}</h3>
+              <h3 className="text-lg">{t("settings.sideMenu.security")}</h3>
             </div>
           </Accordion.Trigger>
           <Accordion.Panel>
@@ -88,11 +88,11 @@ export const SettingsSideMenu = () => {
             )}
           </Accordion.Panel>
         </Accordion.Item>
-        <Accordion.Item className="border-0 border-t-[1px] last:rounded-b-none">
+        <Accordion.Item className="border-0 border-t last:rounded-b-none">
           <Accordion.Trigger className="py-5">
             <div className="flex items-center gap-3 pl-2">
               <SourceCodeIcon />
-              <h3>{t("settings.sideMenu.metadata")}</h3>
+              <h3 className="text-lg">{t("settings.sideMenu.metadata")}</h3>
             </div>
           </Accordion.Trigger>
           <Accordion.Panel>

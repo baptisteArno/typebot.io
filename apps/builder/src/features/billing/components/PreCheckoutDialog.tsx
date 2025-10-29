@@ -150,7 +150,7 @@ export const PreCheckoutDialog = ({
                 ref={vatValueInputRef}
                 onValueChange={updateVatValue}
                 placeholder={vatValuePlaceholder}
-                className="flex-1 flex-shrink-0"
+                className="flex-1 shrink-0"
               />
             </div>
           </Field.Root>

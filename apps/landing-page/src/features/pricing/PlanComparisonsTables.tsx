@@ -23,7 +23,7 @@ type Props = {
 
 export const PlanComparisonTables = ({ onChatsTiersClick }: Props) => (
   <div className="flex flex-col gap-4">
-    <TableRoot className="bg-gray-1 rounded-xl border">
+    <TableRoot className="bg-card rounded-xl border">
       <Table>
         <TableHeader>
           <TableRow>
@@ -69,11 +69,7 @@ export const PlanComparisonTables = ({ onChatsTiersClick }: Props) => (
             <TableCell />
             <TableCell>{formatPrice(10)} per 500 chats</TableCell>
             <TableCell>
-              <Button
-                variant="outline-secondary"
-                size="xs"
-                onClick={onChatsTiersClick}
-              >
+              <Button variant="outline" size="xs" onClick={onChatsTiersClick}>
                 See tiers
               </Button>
             </TableCell>
@@ -82,7 +78,7 @@ export const PlanComparisonTables = ({ onChatsTiersClick }: Props) => (
       </Table>
     </TableRoot>
 
-    <TableRoot className="bg-gray-1 rounded-xl border py-2">
+    <TableRoot className="bg-card rounded-xl border py-2">
       <Table>
         <TableHeader>
           <TableRow>
@@ -203,7 +199,7 @@ export const PlanComparisonTables = ({ onChatsTiersClick }: Props) => (
       </Table>
     </TableRoot>
 
-    <TableRoot className="bg-gray-1 rounded-xl border py-2">
+    <TableRoot className="bg-card rounded-xl border py-2">
       <Table>
         <TableHeader>
           <TableRow>
@@ -272,7 +268,7 @@ const TableCellWithTooltip = ({
 const PlanTableHeads = ({ className }: { className?: string }) => (
   <>
     <TableHead className={className}>FREE</TableHead>
-    <TableHead className={cn("text-orange-9", className)}>STARTER</TableHead>
-    <TableHead className={cn("text-purple-9", className)}>PRO</TableHead>
+    <TableHead className={cn("text-primary", className)}>STARTER</TableHead>
+    <TableHead className={cn("text-violet-500", className)}>PRO</TableHead>
   </>
 );

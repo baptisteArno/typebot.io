@@ -11,8 +11,8 @@ const Root = <Value,>(props: PrimitiveSelect.Root.Props<Value>) => (
 
 const triggerVariants = cva(
   cx(
-    "flex items-center justify-between gap-2 rounded-md transition-colors flex-shrink-0 bg-transparent border border-gray-7 text-gray-12 hover:bg-gray-2 active:bg-gray-4 cursor-pointer",
-    "focus-visible:ring-2 focus-visible:ring-orange-8 outline-none",
+    "flex items-center justify-between gap-2 rounded-md transition-colors shrink-0 bg-transparent border border-gray-7 text-gray-12 hover:bg-gray-2 active:bg-gray-4 cursor-pointer",
+    "focus-visible:ring-2 focus-visible:ring-orange-8 outline-hidden",
   ),
   {
     variants: {
@@ -50,8 +50,8 @@ Trigger.displayName = PrimitiveSelect.Trigger.displayName;
 const popupVariants = cva(
   cx(
     "group bg-gray-1 dark:bg-gray-2 p-1 rounded-lg shadow-lg border overflow-auto",
-    "origin-[var(--transform-origin)] max-h-[var(--available-height)] max-w-[var(--available-width)]",
-    "data-[open]:animate-in data-[open]:fade-in-0",
+    "origin-(--transform-origin) max-h-(--available-height) max-w-(--available-width)",
+    "data-open:animate-in data-open:fade-in-0",
     "data-[side=bottom]:slide-in-from-top-2 data-[side=bottom]:slide-out-to-top-1",
     "data-[side=top]:slide-in-from-bottom-2 data-[side=top]:slide-out-to-bottom-1",
     "data-[side=right]:slide-in-from-left-2 data-[side=right]:slide-out-to-left-1",
@@ -78,17 +78,17 @@ const Popup = ({
   <PrimitiveSelect.Portal>
     <PrimitiveSelect.Positioner
       // Not sure why there is a subtle 1px shift that I need to compensate
-      className="outline-none select-none translate-y-[1px]"
+      className="outline-hidden select-none translate-y-px"
       sideOffset={2}
     >
-      <PrimitiveSelect.ScrollUpArrow className="top-0 z-[1] flex h-4 w-full cursor-default items-center justify-center rounded-t-md bg-gray-1 dark:bg-gray-2 border-t border-x text-center text-xs before:absolute before:top-[-100%] before:left-0 before:h-full before:w-full before:content-[''] data-[direction=down]:bottom-0 data-[direction=down]:before:bottom-[-100%]" />
+      <PrimitiveSelect.ScrollUpArrow className="top-0 z-1 flex h-4 w-full cursor-default items-center justify-center rounded-t-md bg-gray-1 dark:bg-gray-2 border-t border-x text-center text-xs before:absolute before:-top-full before:left-0 before:h-full before:w-full before:content-[''] data-[direction=down]:bottom-0 data-[direction=down]:before:-bottom-full" />
       <PrimitiveSelect.Popup
         className={cn(popupVariants({ size }), className)}
         {...props}
       />
       <PrimitiveSelect.ScrollDownArrow
         className={cx(
-          "bottom-0 z-[1] flex h-4 w-full cursor-default items-center justify-center rounded-b-md bg-gray-1 dark:bg-gray-2 border-b border-x text-center text-xs before:absolute before:top-[-100%] before:left-0 before:h-full before:w-full before:content-[''] data-[direction=down]:bottom-0 data-[direction=down]:before:bottom-[-100%]",
+          "bottom-0 z-1 flex h-4 w-full cursor-default items-center justify-center rounded-b-md bg-gray-1 dark:bg-gray-2 border-b border-x text-center text-xs before:absolute before:-top-full before:left-0 before:h-full before:w-full before:content-[''] data-[direction=down]:bottom-0 data-[direction=down]:before:-bottom-full",
         )}
       />
     </PrimitiveSelect.Positioner>
@@ -102,8 +102,8 @@ const Item = ({
   <PrimitiveSelect.Item
     {...props}
     className={cx(
-      "min-w-[var(--anchor-width)] data-[highlighted]:bg-gray-2 dark:data-[highlighted]:bg-gray-3 p-2 rounded-md cursor-default flex items-center gap-2",
-      "focus-visible:ring-2 focus-visible:ring-orange-8 outline-none",
+      "min-w-(--anchor-width) data-highlighted:bg-gray-2 dark:data-highlighted:bg-gray-3 p-2 rounded-md cursor-default flex items-center gap-2",
+      "focus-visible:ring-2 focus-visible:ring-orange-8 outline-hidden",
       "group-data-[side=none]:min-w-[calc(var(--anchor-width)+10px)]",
     )}
   >

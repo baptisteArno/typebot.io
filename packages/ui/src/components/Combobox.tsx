@@ -40,10 +40,10 @@ function Popup({
       <ComboboxPrimitive.Positioner sideOffset={sideOffset} align="start">
         <ComboboxPrimitive.Popup
           className={cx(
-            "border border-gray-4 w-[var(--anchor-width)] max-h-[min(var(--available-height),23rem)] max-w-[var(--available-width)] overflow-y-auto scroll-pt-2 scroll-pb-2 overscroll-contain rounded-md bg-gray-1 py-2 shadow-lg",
-            "data-[empty]:hidden",
-            "data-[open]:animate-in data-[open]:fade-in-0",
-            "data-[closed]:animate-out data-[closed]:fade-out-0",
+            "border border-gray-4 w-(--anchor-width) max-h-[min(var(--available-height),23rem)] max-w-(--available-width) overflow-y-auto scroll-pt-2 scroll-pb-2 overscroll-contain rounded-md bg-gray-1 py-2 shadow-lg",
+            "data-empty:hidden",
+            "data-open:animate-in data-open:fade-in-0",
+            "data-closed:animate-out data-closed:fade-out-0",
             "data-[side=bottom]:slide-in-from-top-2 data-[side=bottom]:slide-out-to-top-1",
             "data-[side=top]:slide-in-from-bottom-2 data-[side=top]:slide-out-to-bottom-1",
             "data-[side=right]:slide-in-from-left-2 data-[side=right]:slide-out-to-left-1",
@@ -64,7 +64,7 @@ function Item({
 }: React.ComponentProps<typeof ComboboxPrimitive.Item>) {
   return (
     <ComboboxPrimitive.Item
-      className="flex cursor-default py-2 pr-8 pl-4 text-base leading-4 outline-none select-none data-[highlighted]:relative data-[highlighted]:z-0 data-[highlighted]:before:absolute data-[highlighted]:before:inset-x-2 data-[highlighted]:before:inset-y-0 data-[highlighted]:before:z-[-1] data-[highlighted]:before:rounded data-[highlighted]:before:bg-gray-3"
+      className="flex cursor-default py-2 pr-8 pl-4 text-base leading-4 outline-hidden select-none data-highlighted:relative data-highlighted:z-0 data-highlighted:before:absolute data-highlighted:before:inset-x-2 data-highlighted:before:inset-y-0 data-highlighted:before:z-[-1] data-highlighted:before:rounded-sm data-highlighted:before:bg-gray-3"
       {...props}
     />
   );

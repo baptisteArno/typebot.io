@@ -10,7 +10,9 @@ import {
 
 export const FreePlanCard = ({ children }: { children?: React.ReactNode }) => (
   <PricingCardRoot>
-    <PlanNamePill className="bg-gray-12 absolute top-0">Personal</PlanNamePill>
+    <PlanNamePill className="bg-stone-950 text-white absolute top-0">
+      Personal
+    </PlanNamePill>
     <div className="flex flex-col gap-10 items-center">
       <h2>Free</h2>
       {children}

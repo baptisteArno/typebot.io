@@ -21,7 +21,7 @@ export const WhatsAppComparisonItem = ({
 
   return (
     <div className="flex items-center gap-2 p-4 rounded-md flex-1 border">
-      <p className="flex-shrink-0">User message</p>
+      <p className="shrink-0">User message</p>
       <BasicSelect
         value={item.comparisonOperator}
         onChange={handleSelectComparisonOperator}

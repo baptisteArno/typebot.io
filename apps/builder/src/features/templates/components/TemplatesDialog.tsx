@@ -66,7 +66,7 @@ export const TemplatesDialog = ({
   return (
     <Dialog.Root isOpen={isOpen} onClose={onClose}>
       <Dialog.Popup className="p-0 flex flex-row max-w-6xl max-h-full gap-0">
-        <div className="flex flex-col gap-2 w-[300px] py-4 px-2 border-r justify-between overflow-y-auto flex-shrink-0">
+        <div className="flex flex-col gap-2 w-[300px] py-4 px-2 border-r justify-between overflow-y-auto shrink-0">
           <div className="flex flex-col gap-5">
             <div className="flex flex-col gap-2">
               <p className="text-xs font-medium pl-1" color="gray.500">
@@ -91,7 +91,7 @@ export const TemplatesDialog = ({
                       <p>{template.emoji}</p>
                       <p>{template.name}</p>
                       {template.isNew && (
-                        <Badge colorScheme="orange" className="flex-shrink-0">
+                        <Badge colorScheme="orange" className="shrink-0">
                           {t("templates.modal.menuHeading.new.tag")}
                         </Badge>
                       )}
@@ -122,7 +122,7 @@ export const TemplatesDialog = ({
                       <p>{template.emoji}</p>
                       <p>{template.name}</p>
                       {template.isNew && (
-                        <Badge colorScheme="orange" className="flex-shrink-0">
+                        <Badge colorScheme="orange" className="shrink-0">
                           {t("templates.modal.menuHeading.new.tag")}
                         </Badge>
                       )}
@@ -153,7 +153,7 @@ export const TemplatesDialog = ({
                       <p>{template.emoji}</p>
                       <p>{template.name}</p>
                       {template.isNew && (
-                        <Badge colorScheme="orange" className="flex-shrink-0">
+                        <Badge colorScheme="orange" className="shrink-0">
                           {t("templates.modal.menuHeading.new.tag")}
                         </Badge>
                       )}

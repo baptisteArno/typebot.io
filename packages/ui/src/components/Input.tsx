@@ -6,7 +6,7 @@ import { cva, type VariantProps } from "../lib/cva";
 export const inputVariants = cva(
   `
   bg-transparent flex relative w-full overflow-visible rounded-md border transition-[box-shadow,border-color] border-gray-6 hover:border-gray-7 
-  focus:outline-none focus:ring-orange-8 focus:ring-2 focus:border-transparent
+  focus:outline-hidden focus:ring-orange-8 focus:ring-2 focus:border-transparent
   disabled:cursor-not-allowed disabled:opacity-50
   placeholder:text-muted-foreground
   file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground

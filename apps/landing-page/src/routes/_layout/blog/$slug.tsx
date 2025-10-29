@@ -40,15 +40,37 @@ export const Route = createFileRoute("/_layout/blog/$slug")({
 function RouteComponent() {
   const { post, author } = Route.useLoaderData();
   return (
-    <ContentPageWrapper className="max-w-7xl">
-      <div className="flex gap-4 justify-center items-start">
-        <article
-          className={cx(
-            "prose prose-p:text-lg prose-strong:font-medium prose-video:rounded-xl prose-a:text-[currentColor] max-w-4xl bg-white p-12 rounded-xl border",
-            "prose-figure:my-0 prose-img:rounded-xl prose-img:max-h-[60vh] prose-img:w-auto",
-            "prose-code:bg-gray-4 prose-code:rounded-md prose-code:text-orange-10 prose-code:border prose-code:border-gray-6 prose-code:p-1 prose-code:py-0.5 prose-code:font-normal",
+    <ContentPageWrapper className="max-w-2xl">
+      <article
+        className={cx(
+          "prose prose-p:text-lg prose-strong:font-medium prose-video:rounded-xl prose-a:text-[currentColor] ",
+          "prose-figure:my-0 prose-img:rounded-xl prose-img:max-h-[60vh] prose-img:w-auto",
+          "prose-code:bg-secondary prose-code:rounded-md prose-code:text-orange-600 prose-code:border prose-code:border prose-code:p-1 prose-code:py-0.5 prose-code:font-normal",
+        )}
+      >
+        <div>
+          <span className="inline-flex gap-1 items-center not-prose text-sm">
+            {post.postedAt && (
+              <time dateTime={post.postedAt} className="block ">
+                Published on {formatDate(post.postedAt)}
+              </time>
+            )}
+            • Written by
+            <img
+              src={author.imageSrc}
+              alt={author.name}
+              className="size-6 rounded-full"
+            />
+            <TextLink href={author.url}>{author.name}</TextLink>
+          </span>
+          <h1 className="my-4 inline-block font-display text-4xl leading-tight lg:text-5xl">
+            {post.title}
+          </h1>
+          {post.updatedAt && (
+            <span className="inline-flex gap-1 items-center not-prose text-sm italic">
+              Updated on {formatDate(post.updatedAt)}
+            </span>
           )}
-        >
           <div className="flex flex-col gap-4">
             <TextLink
               href="/blog"
@@ -84,8 +106,8 @@ function RouteComponent() {
             )}
           </div>
           <Mdx code={post.mdx} />
-        </article>
-      </div>
+        </div>
+      </article>
     </ContentPageWrapper>
   );
 }

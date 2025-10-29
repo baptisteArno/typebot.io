@@ -54,9 +54,9 @@ const Popup = ({
         <MenuPrimitive.Popup
           {...props}
           className={cn(
-            "bg-gray-1 p-1 rounded-lg border overflow-auto border-gray-4 shadow-md max-h-[var(--available-height)] max-w-[var(--available-width)] flex flex-col",
-            "data-[open]:animate-in data-[open]:fade-in-0",
-            "data-[closed]:animate-out data-[closed]:fade-out-0",
+            "bg-gray-1 p-1 rounded-lg border overflow-auto border-gray-4 shadow-md max-h-(--available-height) max-w-(--available-width) flex flex-col",
+            "data-open:animate-in data-open:fade-in-0",
+            "data-closed:animate-out data-closed:fade-out-0",
             "data-[side=bottom]:slide-in-from-top-2 data-[side=bottom]:slide-out-to-top-1",
             "data-[side=top]:slide-in-from-bottom-2 data-[side=top]:slide-out-to-bottom-1",
             "data-[side=right]:slide-in-from-left-2 data-[side=right]:slide-out-to-left-1",
@@ -79,7 +79,7 @@ const Item = ({
   <MenuPrimitive.Item
     {...props}
     className={cn(
-      "min-w-[var(--anchor-width)] data-[highlighted]:bg-gray-2 dark:data-[highlighted]:bg-gray-3 p-2 rounded-md cursor-default flex items-center gap-2",
+      "min-w-(--anchor-width) data-highlighted:bg-gray-2 dark:data-highlighted:bg-gray-3 p-2 rounded-md cursor-default flex items-center gap-2",
       className,
     )}
   >

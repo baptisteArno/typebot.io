@@ -231,7 +231,7 @@ export const BlockNode = ({
                   className={cx(
                     "flex gap-2 flex-1 p-3 rounded-lg items-start w-full text-left select-none transition-[border-color] cursor-pointer bg-gray-2 dark:border-gray-3",
                     isContextMenuOpened || isPreviewing
-                      ? "border-2 border-orange-8 dark:border-orange-8 -m-[1px]"
+                      ? "border-2 border-orange-8 dark:border-orange-8 -m-px"
                       : "border",
                   )}
                 >

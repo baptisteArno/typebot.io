@@ -38,9 +38,9 @@ export const EmojiOrImageIcon = ({ icon, size = "md", defaultIcon }: Props) => {
       ) : (
         defaultIcon({
           className: cx(
-            size === "sm" && "!size-4",
-            size === "md" && "!size-6",
-            size === "lg" && "!size-9",
+            size === "sm" && "size-4!",
+            size === "md" && "size-6!",
+            size === "lg" && "size-9!",
           ),
         })
       )}

@@ -119,7 +119,7 @@ export const ButtonsItemNode = ({ item, indices, isMouseOver }: Props) => {
               }}
             />
             {isMouseOver && (
-              <div className="flex rounded-md bg-gray-1 absolute right-[-0.25rem] top-[-0.25rem] z-10 animate-in fade-in-0">
+              <div className="flex rounded-md bg-gray-1 absolute -right-1 -top-1 z-10 animate-in fade-in-0">
                 <Button
                   aria-label={t("blocks.inputs.button.openSettings.ariaLabel")}
                   variant="ghost"

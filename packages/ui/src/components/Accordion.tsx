@@ -17,7 +17,7 @@ function Item({ className, ...props }: AccordionPrimitive.Item.Props) {
     <AccordionPrimitive.Item
       data-slot="accordion-item"
       className={cn(
-        "bg-gray-1 has-focus-visible:border-orange-9 has-focus-visible:ring-orange-9/50 relative border outline-none first:rounded-t-md last:rounded-b-md last:border-b has-focus-visible:ring-[3px]",
+        "bg-gray-1 has-focus-visible:border-orange-9 has-focus-visible:ring-orange-9/50 relative border outline-hidden first:rounded-t-md last:rounded-b-md last:border-b has-focus-visible:ring-[3px]",
         className,
       )}
       {...props}
@@ -35,7 +35,7 @@ function Trigger({
       <AccordionPrimitive.Trigger
         data-slot="accordion-trigger"
         className={cn(
-          "focus-visible:ring-orange-9/50 flex flex-1 items-center justify-between gap-4 rounded-md text-left text-sm font-semibold transition-all outline-none disabled:pointer-events-none disabled:opacity-50 [&[data-panel-open]>svg]:rotate-180 text-[15px] leading-6 hover:no-underline focus-visible:ring-0 px-4 py-3",
+          "focus-visible:ring-orange-9/50 flex flex-1 items-center justify-between gap-4 rounded-md text-left text-sm font-semibold transition-all outline-hidden disabled:pointer-events-none disabled:opacity-50 [&[data-panel-open]>svg]:rotate-180 text-[15px] leading-6 hover:no-underline focus-visible:ring-0 px-4 py-3",
           className,
         )}
         {...props}
@@ -59,7 +59,7 @@ function Panel({
   return (
     <AccordionPrimitive.Panel
       data-slot="accordion-content"
-      className="h-[var(--accordion-panel-height)] transition-[height] data-[ending-style]:h-0 data-[starting-style]:h-0 overflow-y-clip"
+      className="h-(--accordion-panel-height) transition-[height] data-ending-style:h-0 data-starting-style:h-0 overflow-y-clip"
       {...props}
     >
       <div className={cn("py-2 pb-4 px-4 gap-2 flex flex-col", className)}>

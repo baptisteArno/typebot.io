@@ -36,7 +36,7 @@ const LogCard = ({ log }: { log: Log }) => {
         <Accordion.Item>
           <Accordion.Trigger>
             <div className="flex gap-3 items-start">
-              <StatusTag status={log.status} className="flex-shrink-0 mt-0.5" />
+              <StatusTag status={log.status} className="shrink-0 mt-0.5" />
               <div className="flex flex-col gap-2">
                 <p>
                   {log.context && (
@@ -53,7 +53,7 @@ const LogCard = ({ log }: { log: Log }) => {
     );
   return (
     <div className="flex p-4 gap-3 items-start">
-      <StatusTag status={log.status} className="flex-shrink-0 mt-0.5" />
+      <StatusTag status={log.status} className="shrink-0 mt-0.5" />
       <p>
         {log.context && <span className="font-medium">{log.context}:</span>}{" "}
         {log.description}

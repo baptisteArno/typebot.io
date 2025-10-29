@@ -163,7 +163,7 @@ export const TextBubbleEditor = ({
             }}
           />
           <Popover.Popup
-            className="p-0 data-[open]:duration-0"
+            className="p-0 data-open:duration-0"
             offset={0}
             // Prevent the editor from closing when clicking on the variable search input
             onPointerDown={(e) => e.stopPropagation()}

@@ -38,7 +38,7 @@ test("should work as expected", async ({ page, browser }) => {
     page.getByRole("link", { name: "hugeGroup.json" }),
   ).toHaveAttribute("href", /.+\/hugeGroup\.json/);
 
-  await page.click('[data-testid="checkbox"] >> nth=0');
+  await page.click('[data-slot="checkbox"] >> nth=0');
   const [download] = await Promise.all([
     page.waitForEvent("download"),
     page.getByRole("button", { name: "Export" }).click(),

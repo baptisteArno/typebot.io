@@ -190,7 +190,7 @@ export const CollaborationList = () => {
             />
             <p className="text-[15px] truncate">Everyone at {workspace.name}</p>
           </div>
-          <Badge className="flex-shrink-0">
+          <Badge className="shrink-0">
             <ReadableCollaborationType type={CollaborationType.FULL_ACCESS} />
           </Badge>
         </div>

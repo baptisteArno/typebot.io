@@ -139,10 +139,10 @@ const StackWithGhostableItems = ({
           } as React.CSSProperties
         }
         className={cx(
-          "flex flex-col gap-[var(--gap)] transition-opacity",
+          "flex flex-col gap-(--gap) transition-opacity",
           !isNullGroup || isHovered ? "opacity-100" : "opacity-0",
           isNullGroup && groups.at(index + 1)?.isNullGroup
-            ? "mb-[var(--mb)]"
+            ? "mb-(--mb)"
             : undefined,
         )}
         onMouseEnter={onHover}
@@ -185,7 +185,7 @@ export const GhostableItem = ({
             } as React.CSSProperties
           }
           className={cn(
-            "transition-all duration-200 h-[var(--available-height)] text-xs py-0",
+            "transition-all duration-200 h-(--available-height) text-xs py-0",
             className,
           )}
           onClick={() => {

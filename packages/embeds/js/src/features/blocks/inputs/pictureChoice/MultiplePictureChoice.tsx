@@ -148,7 +148,7 @@ export const MultiplePictureChoice = (props: Props) => {
               />
               <div
                 class={
-                  "flex gap-3 py-2 flex-shrink-0" +
+                  "flex gap-3 py-2 shrink-0" +
                   (isEmpty(item.title) && isEmpty(item.description)
                     ? " justify-center"
                     : " px-3")
@@ -159,7 +159,7 @@ export const MultiplePictureChoice = (props: Props) => {
                     (selectedItemId) => selectedItemId === item.id,
                   )}
                   class={
-                    "flex-shrink-0" +
+                    "shrink-0" +
                     (item.title || item.description ? " mt-1" : undefined)
                   }
                 />
@@ -210,7 +210,7 @@ export const MultiplePictureChoice = (props: Props) => {
               />
               <div
                 class={
-                  "flex gap-3 py-2 flex-shrink-0" +
+                  "flex gap-3 py-2 shrink-0" +
                   (isEmpty(selectedItem.title) &&
                   isEmpty(selectedItem.description)
                     ? " justify-center"
@@ -222,7 +222,7 @@ export const MultiplePictureChoice = (props: Props) => {
                     (selectedItemId) => selectedItemId === selectedItem.id,
                   )}
                   class={
-                    "flex-shrink-0" +
+                    "shrink-0" +
                     (selectedItem.title || selectedItem.description
                       ? " mt-1"
                       : undefined)

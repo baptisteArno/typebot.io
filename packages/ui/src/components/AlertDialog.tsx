@@ -52,7 +52,7 @@ const Popup = ({
   ...props
 }: AlertDialogPrimitive.Popup.Props) => (
   <AlertDialogPrimitive.Portal>
-    <AlertDialogPrimitive.Backdrop className="fixed inset-0 w-full bg-gray-12/50 data-[open]:animate-in data-[open]:fade-in data-[closed]:animate-out data-[closed]:fade-out" />
+    <AlertDialogPrimitive.Backdrop className="fixed inset-0 w-full bg-gray-12/50 data-open:animate-in data-open:fade-in data-closed:animate-out data-closed:fade-out" />
     <div
       className={cn(
         "flex justify-center items-start fixed top-0 w-full py-12 h-full overflow-y-auto",
@@ -60,7 +60,7 @@ const Popup = ({
     >
       <AlertDialogPrimitive.Popup
         className={cn(
-          "relative bg-gray-1 p-6 rounded-xl w-full max-w-xl data-[open]:animate-in data-[open]:slide-in-from-bottom-5 data-[open]:fade-in data-[closed]:animate-out data-[closed]:slide-out-to-bottom-5 data-[closed]:fade-out flex flex-col gap-4 shadow-md border data-[nested-dialog-open]:translate-y-2 data-[nested-dialog-open]:scale-[0.97] data-[nested-dialog-open]:blur-[1px] transition-transform",
+          "relative bg-gray-1 p-6 rounded-xl w-full max-w-xl data-open:animate-in data-open:slide-in-from-bottom-5 data-open:fade-in data-closed:animate-out data-closed:slide-out-to-bottom-5 data-closed:fade-out flex flex-col gap-4 shadow-md border data-nested-dialog-open:translate-y-2 data-nested-dialog-open:scale-[0.97] data-nested-dialog-open:blur-[1px] transition-transform",
           className,
         )}
         {...props}
