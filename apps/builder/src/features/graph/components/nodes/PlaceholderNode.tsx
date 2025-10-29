@@ -1,5 +1,6 @@
-import { Flex, type FlexProps, useColorModeValue } from "@chakra-ui/react";
 import { isDefined } from "@typebot.io/lib/utils";
+import { cn } from "@typebot.io/ui/lib/cn";
+import { cx } from "@typebot.io/ui/lib/cva";
 import type React from "react";
 import { forwardRef } from "react";
 import { useHoverExpandDebounce } from "../../hooks/useHoverExpandDebounce";
@@ -12,9 +13,10 @@ type Props = {
   expandedHeightPixels?: number;
   initialPaddingPixel?: number;
   expandedPaddingPixel?: number;
+  className?: string;
   children?: React.ReactNode;
   onClick?: () => void;
-} & FlexProps;
+};
 
 export const PlaceholderNode = forwardRef<HTMLDivElement, Props>(
   (
@@ -25,9 +27,9 @@ export const PlaceholderNode = forwardRef<HTMLDivElement, Props>(
       expandedHeightPixels = 36,
       initialPaddingPixel = 0,
       expandedPaddingPixel = 6,
+      className,
       children,
       onClick,
-      ...props
     },
     ref,
   ) => {
@@ -42,47 +44,44 @@ export const PlaceholderNode = forwardRef<HTMLDivElement, Props>(
     });
 
     return (
-      <Flex
+      <div
+        style={
+          {
+            "--py":
+              isExpanded || isHoverExpanded
+                ? expandedPaddingPixel + "px"
+                : initialPaddingPixel + "px",
+          } as React.CSSProperties
+        }
+        className={cn(
+          "flex font-semibold justify-center items-center relative py-[var(--py)] text-sm",
+          className,
+        )}
         role="button"
         ref={ref}
         onMouseEnter={onHover}
         onMouseLeave={onLeave}
-        fontWeight="semibold"
-        fontSize="small"
-        justify="center"
-        align="center"
         onMouseUpCapture={onAbort}
         onClick={onClick}
-        pos="relative"
-        py={
-          isExpanded || isHoverExpanded
-            ? expandedPaddingPixel + "px"
-            : initialPaddingPixel + "px"
-        }
-        {...props}
       >
         {onClick && <span className="absolute left-0 z-1 w-full" />}
-        <Flex
-          bgColor={useColorModeValue("gray.200", "gray.800")}
-          w="full"
-          rounded="lg"
-          justify="center"
-          align="center"
-          opacity={isVisible || isHovered ? 1 : 0}
-          h={
-            isExpanded || isHoverExpanded
-              ? expandedHeightPixels + "px"
-              : initialHeightPixels + "px"
+        <div
+          style={
+            {
+              "--h":
+                isExpanded || isHoverExpanded
+                  ? expandedHeightPixels + "px"
+                  : initialHeightPixels + "px",
+            } as React.CSSProperties
           }
-          transition={
-            isDefined(onClick) || isVisible
-              ? "opacity 200ms, height 200ms"
-              : "opacity 200ms"
-          }
+          className={cx(
+            "flex w-full rounded-lg justify-center items-center bg-gray-3 h-[var(--h)] transition-[opacity,height]",
+            isVisible || isHovered ? "opacity-100" : "opacity-0",
+          )}
         >
           {isHovered && isHoverExpanded ? children : null}
-        </Flex>
-      </Flex>
+        </div>
+      </div>
     );
   },
 );

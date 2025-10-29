@@ -1,4 +1,3 @@
-import { Text } from "@chakra-ui/react";
 import { defaultPhoneInputOptions } from "@typebot.io/blocks-inputs/phone/constants";
 import type { PhoneNumberInputBlock } from "@typebot.io/blocks-inputs/phone/schema";
 import { WithVariableContent } from "@/features/graph/components/nodes/block/WithVariableContent";
@@ -13,7 +12,7 @@ export const PhoneNodeContent = ({
   variableId ? (
     <WithVariableContent variableId={variableId} />
   ) : (
-    <Text color={"gray.500"}>
+    <p color={"gray.500"}>
       {labels?.placeholder ?? defaultPhoneInputOptions.labels.placeholder}
-    </Text>
+    </p>
   );

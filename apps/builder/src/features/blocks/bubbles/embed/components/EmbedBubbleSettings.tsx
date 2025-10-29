@@ -1,4 +1,3 @@
-import { Stack, Text } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { defaultEmbedBubbleContent } from "@typebot.io/blocks-bubbles/embed/constants";
 import type { EmbedBubbleBlock } from "@typebot.io/blocks-bubbles/embed/schema";
@@ -48,8 +47,8 @@ export const EmbedBubbleSettings = ({ content, onSubmit }: Props) => {
   };
 
   return (
-    <Stack p="2" spacing={6}>
-      <Stack>
+    <div className="flex flex-col p-2 gap-6">
+      <div className="flex flex-col gap-2">
         <DebouncedTextInputWithVariablesButton
           placeholder={t(
             "editor.blocks.bubbles.embed.settings.worksWith.placeholder",
@@ -57,11 +56,10 @@ export const EmbedBubbleSettings = ({ content, onSubmit }: Props) => {
           defaultValue={content?.url ?? ""}
           onValueChange={handleUrlChange}
         />
-        <Text fontSize="sm" color="gray.400" textAlign="center">
+        <p className="text-sm text-center" color="gray.400">
           {t("editor.blocks.bubbles.embed.settings.worksWith.text")}
-        </Text>
-      </Stack>
-
+        </p>
+      </div>
       <Field.Root className="inline-flex flex-row items-center">
         <Field.Label>Height</Field.Label>
         <BasicNumberInput
@@ -72,7 +70,6 @@ export const EmbedBubbleSettings = ({ content, onSubmit }: Props) => {
         />
         {t("editor.blocks.bubbles.embed.settings.numberInput.unit")}
       </Field.Root>
-
       <Field.Container>
         <Field.Root className="flex-row items-center">
           <Switch
@@ -100,7 +97,7 @@ export const EmbedBubbleSettings = ({ content, onSubmit }: Props) => {
           </>
         )}
       </Field.Container>
-    </Stack>
+    </div>
   );
 };
 

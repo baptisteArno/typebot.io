@@ -1,4 +1,3 @@
-import { Code, Stack, Text } from "@chakra-ui/react";
 import { useState } from "react";
 import { CodeEditor } from "@/components/inputs/CodeEditor";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
@@ -33,17 +32,17 @@ ${parseInitStandardCode({
 })}`);
 
   return (
-    <Stack spacing={4}>
+    <div className="flex flex-col gap-4">
       <StandardSettings
         onUpdateWindowSettings={(settings) => setInputValues({ ...settings })}
       />
-      <Text>
-        Make sure you have this <Code>typebot-standard</Code> element in your{" "}
-        <Code>{"<body>"}</Code>:
-      </Text>
+      <p>
+        Make sure you have this <code>typebot-standard</code> element in your{" "}
+        <code>{"<body>"}</code>:
+      </p>
       <CodeEditor isReadOnly value={standardElementSnippet} lang="html" />
-      <Text>Then, run this script to initialize the typebot:</Text>
+      <p>Then, run this script to initialize the typebot:</p>
       <CodeEditor isReadOnly value={scriptSnippet} lang="javascript" />
-    </Stack>
+    </div>
   );
 };

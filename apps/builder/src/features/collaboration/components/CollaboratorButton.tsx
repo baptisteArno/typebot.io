@@ -1,8 +1,9 @@
-import { Avatar, HStack, Stack, Text } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { CollaborationType } from "@typebot.io/prisma/enum";
+import { Avatar } from "@typebot.io/ui/components/Avatar";
 import { Badge } from "@typebot.io/ui/components/Badge";
 import { Menu } from "@typebot.io/ui/components/Menu";
+import { cx } from "@typebot.io/ui/lib/cva";
 import { ReadableCollaborationType } from "./ReadableCollaborationType";
 
 type Props = {
@@ -75,30 +76,25 @@ export const CollaboratorIdentityContent = ({
   const { t } = useTranslate();
 
   return (
-    <HStack justifyContent="space-between" maxW="full" py="2" px="4">
-      <HStack minW={0} spacing={3}>
-        <Avatar name={name} src={image} size="sm" />
-        <Stack spacing={0} minW="0">
-          {name && (
-            <Text textAlign="left" fontSize="15px">
-              {name}
-            </Text>
-          )}
-          <Text
-            color="gray.500"
-            fontSize={name ? "14px" : "inherit"}
-            noOfLines={1}
-          >
+    <div className="flex items-center gap-2 justify-between max-w-full py-2 px-4">
+      <div className="flex items-center min-w-0 gap-3">
+        <Avatar.Root className="size-12">
+          <Avatar.Image src={image} alt="User" />
+          <Avatar.Fallback>{name?.charAt(0)}</Avatar.Fallback>
+        </Avatar.Root>
+        <div className="flex flex-col gap-0 min-w-0">
+          {name && <p className="text-left text-[15px]">{name}</p>}
+          <p className={cx(name ? "text-sm" : undefined, "truncate")}>
             {email}
-          </Text>
-        </Stack>
-      </HStack>
-      <HStack flexShrink={0}>
+          </p>
+        </div>
+      </div>
+      <div className="flex items-center gap-2 flex-shrink-0">
         {isGuest && <Badge>{t("pending")}</Badge>}
         <Badge>
           <ReadableCollaborationType type={type} />
         </Badge>
-      </HStack>
-    </HStack>
+      </div>
+    </div>
   );
 };

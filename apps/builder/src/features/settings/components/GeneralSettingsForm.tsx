@@ -1,4 +1,3 @@
-import { Stack, Text } from "@chakra-ui/react";
 import { T, useTranslate } from "@tolgee/react";
 import { isDefined } from "@typebot.io/lib/utils";
 import {
@@ -66,7 +65,7 @@ export const GeneralSettingsForm = ({
   };
 
   return (
-    <Stack spacing={6}>
+    <div className="flex flex-col gap-6">
       <Field.Root className="flex-row items-center">
         <Switch
           checked={
@@ -124,22 +123,22 @@ export const GeneralSettingsForm = ({
               {t("settings.sideMenu.general.rememberUser.storage")}
               <MoreInfoTooltip>
                 <div className="flex flex-col gap-2">
-                  <Text>
+                  <p>
                     <T
                       keyName="settings.sideMenu.general.rememberUser.storage.session.tooltip"
                       params={{
                         tag: <Badge />,
                       }}
                     />
-                  </Text>
-                  <Text>
+                  </p>
+                  <p>
                     <T
                       keyName="settings.sideMenu.general.rememberUser.storage.local.tooltip"
                       params={{
                         tag: <Badge />,
                       }}
                     />
-                  </Text>
+                  </p>
                 </div>
               </MoreInfoTooltip>
             </Field.Label>
@@ -165,6 +164,6 @@ export const GeneralSettingsForm = ({
           </Accordion.Panel>
         </Accordion.Item>
       </Accordion.Root>
-    </Stack>
+    </div>
   );
 };

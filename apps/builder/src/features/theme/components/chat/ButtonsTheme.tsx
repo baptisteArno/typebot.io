@@ -1,4 +1,3 @@
-import { Flex, Stack, Text } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import type { Theme } from "@typebot.io/theme/schemas";
 import { ColorPicker } from "../../../../components/ColorPicker";
@@ -17,18 +16,18 @@ export const ButtonsTheme = ({ buttons, onButtonsChange }: Props) => {
     onButtonsChange({ ...buttons, color });
 
   return (
-    <Stack data-testid="buttons-theme">
-      <Flex justify="space-between" align="center">
-        <Text>{t("theme.sideMenu.chat.theme.background")}</Text>
+    <div className="flex flex-col gap-2" data-testid="buttons-theme">
+      <div className="flex justify-between items-center">
+        <p>{t("theme.sideMenu.chat.theme.background")}</p>
         <ColorPicker
           value={buttons?.backgroundColor}
           onColorChange={handleBackgroundChange}
         />
-      </Flex>
-      <Flex justify="space-between" align="center">
-        <Text>{t("theme.sideMenu.chat.theme.text")}</Text>
+      </div>
+      <div className="flex justify-between items-center">
+        <p>{t("theme.sideMenu.chat.theme.text")}</p>
         <ColorPicker value={buttons?.color} onColorChange={handleTextChange} />
-      </Flex>
-    </Stack>
+      </div>
+    </div>
   );
 };

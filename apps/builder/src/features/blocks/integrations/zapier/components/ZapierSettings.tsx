@@ -1,4 +1,3 @@
-import { Stack } from "@chakra-ui/react";
 import type {
   HttpRequest,
   HttpRequestBlock,
@@ -43,8 +42,8 @@ export const ZapierSettings = ({
   };
 
   return (
-    <Stack spacing={0}>
-      <Stack spacing={4}>
+    <div className="flex flex-col gap-0">
+      <div className="flex flex-col gap-4">
         {url ? (
           <Alert.Root variant="success">
             <CheckmarkSquare02Icon />
@@ -78,8 +77,8 @@ export const ZapierSettings = ({
           onOptionsChange={onOptionsChange}
           onNewTestResponse={handleNewTestResponse}
         />
-      </Stack>
+      </div>
       <div ref={bottomRef} />
-    </Stack>
+    </div>
   );
 };

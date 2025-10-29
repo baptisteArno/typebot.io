@@ -1,19 +1,20 @@
-import { Text, type TextProps } from "@chakra-ui/react";
 import { byId } from "@typebot.io/lib/utils";
+import { cn } from "@typebot.io/ui/lib/cn";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { VariableTag } from "./VariableTag";
 
 type Props = {
   variableId: string;
-} & TextProps;
+  className?: string;
+};
 
-export const WithVariableContent = ({ variableId, ...props }: Props) => {
+export const WithVariableContent = ({ variableId, className }: Props) => {
   const { typebot } = useTypebot();
   const variableName = typebot?.variables.find(byId(variableId))?.name;
 
   return (
-    <Text w="calc(100% - 25px)" {...props}>
+    <p className={cn("w-[calc(100% - 25px)]", className)}>
       Collect <VariableTag variableName={variableName ?? ""} />
-    </Text>
+    </p>
   );
 };

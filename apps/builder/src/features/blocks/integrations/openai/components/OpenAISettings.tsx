@@ -1,4 +1,3 @@
-import { Stack, useDisclosure } from "@chakra-ui/react";
 import {
   defaultOpenAIOptions,
   openAITasks,
@@ -11,6 +10,7 @@ import type {
 } from "@typebot.io/blocks-integrations/openai/schema";
 import { Accordion } from "@typebot.io/ui/components/Accordion";
 import { Field } from "@typebot.io/ui/components/Field";
+import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { DebouncedTextInputWithVariablesButton } from "@/components/inputs/DebouncedTextInput";
 import { CredentialsDropdown } from "@/features/credentials/components/CredentialsDropdown";
@@ -31,7 +31,7 @@ export const OpenAISettings = ({
   onOptionsChange,
 }: Props) => {
   const { workspace } = useWorkspace();
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onOpen, onClose } = useOpenControls();
 
   const updateCredentialsId = (credentialsId: string | undefined) => {
     onOptionsChange({
@@ -64,7 +64,7 @@ export const OpenAISettings = ({
   const baseUrl = options?.baseUrl ?? defaultOpenAIOptions.baseUrl;
 
   return (
-    <Stack>
+    <div className="flex flex-col gap-2">
       {workspace && (
         <>
           <CredentialsDropdown
@@ -122,7 +122,7 @@ export const OpenAISettings = ({
           )}
         </>
       )}
-    </Stack>
+    </div>
   );
 };
 

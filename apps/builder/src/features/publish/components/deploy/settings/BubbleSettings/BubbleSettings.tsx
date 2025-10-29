@@ -1,4 +1,3 @@
-import { Flex, Heading, HStack, Stack, Text } from "@chakra-ui/react";
 import type { BubbleProps } from "@typebot.io/js";
 import { isLight } from "@typebot.io/lib/hexToRgb";
 import { isDefined, isSvgSrc } from "@typebot.io/lib/utils";
@@ -40,9 +39,9 @@ export const BubbleSettings = ({
   };
 
   return (
-    <Stack spacing="4">
-      <Heading size="sm">Chat bubble settings</Heading>
-      <Stack pl="4" spacing={4}>
+    <div className="flex flex-col gap-4">
+      <h3>Chat bubble settings</h3>
+      <div className="flex flex-col pl-4 gap-4">
         <PreviewMessageSettings
           defaultAvatar={defaultPreviewMessageAvatar}
           onChange={updatePreviewMessage}
@@ -52,16 +51,14 @@ export const BubbleSettings = ({
           onChange={updateTheme}
           isPreviewMessageEnabled={isDefined(previewMessage)}
         />
-        <Heading size="sm">Preview:</Heading>
-        <Stack alignItems="flex-end">
+        <h4>Preview:</h4>
+        <div className="flex flex-col gap-2 items-end">
           {isDefined(previewMessage) && (
-            <HStack
-              bgColor={theme?.previewMessage?.backgroundColor}
-              shadow="md"
-              rounded="md"
-              p="3"
-              maxW="280px"
-              spacing={4}
+            <div
+              className="flex items-center shadow-md rounded-md p-3 max-w-[280px] gap-4"
+              style={{
+                backgroundColor: theme?.previewMessage?.backgroundColor,
+              }}
             >
               {previewMessage.avatarUrl && (
                 <img
@@ -70,25 +67,23 @@ export const BubbleSettings = ({
                   alt="Preview message avatar"
                 />
               )}
-              <Text color={theme?.previewMessage?.textColor}>
+              <p style={{ color: theme?.previewMessage?.textColor }}>
                 {previewMessage.message}
-              </Text>
-            </HStack>
+              </p>
+            </div>
           )}
-          <Flex
-            align="center"
-            justifyContent="center"
-            transition="all 0.2s ease-in-out"
-            boxSize={theme?.button?.size === "large" ? "64px" : "48px"}
-            bgColor={theme?.button?.backgroundColor}
-            rounded="full"
-            boxShadow="0 0 #0000,0 0 #0000,0 4px 6px -1px rgba(0,0,0,.1),0 2px 4px -2px rgba(0,0,0,.1)"
+          <div
+            className={cx(
+              "flex items-center justify-center rounded-full shadow transition-all",
+              theme?.button?.size === "large" ? "size-[64px]" : "size-[48px]",
+            )}
+            style={{ backgroundColor: theme?.button?.backgroundColor }}
           >
             <BubbleIcon buttonTheme={theme?.button} />
-          </Flex>
-        </Stack>
-      </Stack>
-    </Stack>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 

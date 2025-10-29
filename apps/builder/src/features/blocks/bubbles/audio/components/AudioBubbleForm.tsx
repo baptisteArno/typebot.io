@@ -1,4 +1,3 @@
-import { Flex, HStack, Stack, Text } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { defaultAudioBubbleContent } from "@typebot.io/blocks-bubbles/audio/constants";
 import type { AudioBubbleBlock } from "@typebot.io/blocks-bubbles/audio/schema";
@@ -30,8 +29,8 @@ export const AudioBubbleForm = ({
     onContentChange({ ...content, isAutoplayEnabled });
 
   return (
-    <Stack>
-      <HStack>
+    <div className="flex flex-col gap-2">
+      <div className="flex items-center gap-2">
         <Button
           variant={currentTab === "upload" ? "outline" : "ghost"}
           onClick={() => setCurrentTab("upload")}
@@ -46,11 +45,11 @@ export const AudioBubbleForm = ({
         >
           {t("editor.blocks.bubbles.audio.settings.embedLink.label")}
         </Button>
-      </HStack>
-      <Stack p="2" spacing={4}>
-        <Stack>
+      </div>
+      <div className="flex flex-col p-2 gap-4">
+        <div className="flex flex-col gap-2">
           {currentTab === "upload" && (
-            <Flex justify="center" py="2">
+            <div className="flex justify-center py-2">
               <UploadButton
                 fileType="audio"
                 filePathProps={uploadFileProps}
@@ -58,7 +57,7 @@ export const AudioBubbleForm = ({
               >
                 {t("editor.blocks.bubbles.audio.settings.chooseFile.label")}
               </UploadButton>
-            </Flex>
+            </div>
           )}
           {currentTab === "link" && (
             <>
@@ -69,12 +68,12 @@ export const AudioBubbleForm = ({
                 defaultValue={content?.url ?? ""}
                 onValueChange={updateUrl}
               />
-              <Text fontSize="sm" color="gray.400" textAlign="center">
+              <p className="text-sm text-center" color="gray.400">
                 {t("editor.blocks.bubbles.audio.settings.worksWith.text")}
-              </Text>
+              </p>
             </>
           )}
-        </Stack>
+        </div>
         <Field.Root>
           <Field.Label>
             {t("editor.blocks.bubbles.audio.settings.autoplay.label")}
@@ -87,7 +86,7 @@ export const AudioBubbleForm = ({
             onCheckedChange={updateAutoPlay}
           />
         </Field.Root>
-      </Stack>
-    </Stack>
+      </div>
+    </div>
   );
 };

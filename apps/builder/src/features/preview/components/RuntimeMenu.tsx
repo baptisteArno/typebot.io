@@ -1,4 +1,3 @@
-import { HStack, Text } from "@chakra-ui/react";
 import { Badge } from "@typebot.io/ui/components/Badge";
 import { Menu } from "@typebot.io/ui/components/Menu";
 import { ArrowDown01Icon } from "@typebot.io/ui/icons/ArrowDown01Icon";
@@ -15,15 +14,15 @@ export const RuntimeMenu = ({ selectedRuntime, onSelectRuntime }: Props) => {
   return (
     <Menu.Root>
       <Menu.TriggerButton variant="secondary">
-        <HStack justifyContent="space-between">
+        <div className="flex items-center gap-2 justify-between">
           {selectedRuntime.icon}
-          <Text>{selectedRuntime.name}</Text>
+          <p>{selectedRuntime.name}</p>
           {"status" in selectedRuntime &&
           typeof selectedRuntime.status === "string" ? (
             <Badge colorScheme="orange">{selectedRuntime.status}</Badge>
           ) : null}
           <ArrowDown01Icon />
-        </HStack>
+        </div>
       </Menu.TriggerButton>
       <Menu.Popup>
         {runtimes
@@ -33,13 +32,13 @@ export const RuntimeMenu = ({ selectedRuntime, onSelectRuntime }: Props) => {
               key={runtime.name}
               onClick={() => onSelectRuntime(runtime)}
             >
-              <HStack justifyContent="space-between">
+              <div className="flex items-center gap-2 justify-between">
                 {runtime.icon}
-                <Text>{runtime.name}</Text>
+                <p>{runtime.name}</p>
                 {"status" in runtime && typeof runtime.status === "string" ? (
                   <Badge colorScheme="orange">{runtime.status}</Badge>
                 ) : null}
-              </HStack>
+              </div>
             </Menu.Item>
           ))}
       </Menu.Popup>

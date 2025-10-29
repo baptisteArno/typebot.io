@@ -1,4 +1,3 @@
-import { Code, ListItem, OrderedList, Stack, Text } from "@chakra-ui/react";
 import type { BubbleProps } from "@typebot.io/js";
 import { useState } from "react";
 import { TextLink } from "@/components/TextLink";
@@ -18,13 +17,13 @@ export const FramerBubbleInstructions = () => {
 
   return (
     <>
-      <OrderedList spacing={4} pl={5}>
-        <ListItem>
-          Head over to the <Code>Site Settings</Code> {">"} <Code>General</Code>{" "}
-          {">"} <Code>Custom Code</Code> section
-        </ListItem>
-        <ListItem>
-          <Stack spacing={4}>
+      <ol className="flex flex-col gap-4 pl-5">
+        <li>
+          Head over to the <code>Site Settings</code> {">"} <code>General</code>{" "}
+          {">"} <code>Custom Code</code> section
+        </li>
+        <li>
+          <div className="flex flex-col gap-4">
             <BubbleSettings
               previewMessage={previewMessage}
               defaultPreviewMessageAvatar={
@@ -34,21 +33,21 @@ export const FramerBubbleInstructions = () => {
               onPreviewMessageChange={setPreviewMessage}
               onThemeChange={setTheme}
             />
-            <Text>
+            <p>
               Paste this in the{" "}
-              <Code>
+              <code>
                 End of {"<"}body{">"} tag
-              </Code>{" "}
+              </code>{" "}
               input:
-            </Text>
+            </p>
             <JavascriptBubbleSnippet
               theme={theme}
               previewMessage={previewMessage}
             />
-          </Stack>
-        </ListItem>
-      </OrderedList>
-      <Text fontSize="sm" colorScheme="gray" pl="5">
+          </div>
+        </li>
+      </ol>
+      <p className="text-sm pl-5">
         Check out the{" "}
         <TextLink
           href="https://www.framer.com/academy/lessons/custom-code"
@@ -57,7 +56,7 @@ export const FramerBubbleInstructions = () => {
           Custom Code Framer doc
         </TextLink>{" "}
         for more information.
-      </Text>
+      </p>
     </>
   );
 };

@@ -1,4 +1,3 @@
-import { Stack, Text } from "@chakra-ui/react";
 import type { ChatCompletionOpenAIOptions } from "@typebot.io/blocks-integrations/openai/schema";
 import { Accordion } from "@typebot.io/ui/components/Accordion";
 import { Field } from "@typebot.io/ui/components/Field";
@@ -58,14 +57,14 @@ export const OpenAIChatCompletionSettings = ({
   };
 
   return (
-    <Stack spacing={4} pt="2">
-      <Text fontSize="sm" color="gray.500">
+    <div className="flex flex-col gap-4 pt-2">
+      <p className="text-sm" color="gray.500">
         Read the{" "}
         <TextLink href={apiReferenceUrl} isExternal>
           API reference
         </TextLink>{" "}
         to better understand the available options.
-      </Text>
+      </p>
       {options.credentialsId && (
         <>
           <ModelsDropdown
@@ -79,9 +78,7 @@ export const OpenAIChatCompletionSettings = ({
           <Accordion.Root>
             <Accordion.Item>
               <Accordion.Trigger>
-                <Text w="full" textAlign="left">
-                  Messages
-                </Text>
+                <p className="w-full text-left">Messages</p>
               </Accordion.Trigger>
 
               <Accordion.Panel>
@@ -98,9 +95,7 @@ export const OpenAIChatCompletionSettings = ({
             </Accordion.Item>
             <Accordion.Item>
               <Accordion.Trigger>
-                <Text w="full" textAlign="left">
-                  Advanced settings
-                </Text>
+                <p className="w-full text-left">Advanced settings</p>
               </Accordion.Trigger>
               <Accordion.Panel>
                 <Field.Root>
@@ -118,9 +113,7 @@ export const OpenAIChatCompletionSettings = ({
             </Accordion.Item>
             <Accordion.Item>
               <Accordion.Trigger>
-                <Text w="full" textAlign="left">
-                  Save answer
-                </Text>
+                <p className="w-full text-left">Save answer</p>
               </Accordion.Trigger>
               <Accordion.Panel>
                 <TableList
@@ -136,6 +129,6 @@ export const OpenAIChatCompletionSettings = ({
           </Accordion.Root>
         </>
       )}
-    </Stack>
+    </div>
   );
 };

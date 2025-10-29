@@ -1,4 +1,3 @@
-import { Flex, HStack, useColorModeValue } from "@chakra-ui/react";
 import type {
   BubbleBlock,
   BubbleBlockContent,
@@ -21,6 +20,7 @@ import { isDefined } from "@typebot.io/lib/utils";
 import type { TElement } from "@typebot.io/rich-text/plate";
 import { ContextMenu } from "@typebot.io/ui/components/ContextMenu";
 import { Popover } from "@typebot.io/ui/components/Popover";
+import { cx } from "@typebot.io/ui/lib/cva";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import { ZodError, type ZodObject } from "zod";
@@ -56,9 +56,6 @@ export const BlockNode = ({
   indices: { blockIndex: number; groupIndex: number };
   onMouseDown?: (blockNodePosition: NodePosition, block: BlockV6) => void;
 }) => {
-  const bg = useColorModeValue("gray.50", "gray.900");
-  const previewingBorderColor = useColorModeValue("orange.400", "orange.300");
-  const borderColor = useColorModeValue("gray.200", "gray.900");
   const { pathname, query } = useRouter();
   const {
     setConnectingIds,
@@ -113,7 +110,7 @@ export const BlockNode = ({
   const handleMouseEnter = () => {
     if (isReadOnly) return;
     if (mouseOverBlock?.id !== block.id && blockRef.current)
-      setMouseOverBlock({ id: block.id, element: blockRef.current });
+      setMouseOverBlock({ id: block.id, ref: blockRef });
     if (connectingIds && groupId)
       setConnectingIds({
         ...connectingIds,
@@ -221,37 +218,22 @@ export const BlockNode = ({
         render={(props) => (
           <ContextMenu.Root onOpenChange={setIsContextMenuOpened}>
             <ContextMenu.Trigger>
-              <Flex
+              <div
+                className="flex relative w-full prevent-group-drag"
                 {...props}
-                pos="relative"
                 ref={setMultipleRefs([blockRef, props.ref!])}
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
                 data-testid={`block ${block.id}`}
-                w="full"
-                className="prevent-group-drag"
                 pointerEvents={isAnalytics || isDraggingGraph ? "none" : "auto"}
               >
-                <HStack
-                  flex="1"
-                  userSelect="none"
-                  p="3"
-                  borderWidth={
-                    isContextMenuOpened || isPreviewing ? "2px" : "1px"
-                  }
-                  borderColor={
+                <div
+                  className={cx(
+                    "flex gap-2 flex-1 p-3 rounded-lg items-start w-full text-left select-none transition-[border-color] cursor-pointer bg-gray-2 dark:border-gray-3",
                     isContextMenuOpened || isPreviewing
-                      ? previewingBorderColor
-                      : borderColor
-                  }
-                  margin={isContextMenuOpened || isPreviewing ? "-1px" : 0}
-                  rounded="lg"
-                  cursor={"pointer"}
-                  bg={bg}
-                  align="flex-start"
-                  w="full"
-                  transition="border-color 0.2s"
-                  textAlign="left"
+                      ? "border-2 border-orange-8 dark:border-orange-8 -m-[1px]"
+                      : "border",
+                  )}
                 >
                   <BlockIcon type={block.type} className="mt-1" />
                   {typebot?.groups.at(indices.groupIndex)?.id && (
@@ -265,9 +247,7 @@ export const BlockNode = ({
                   )}
                   {(hasIcomingEdge || isDefined(connectingIds)) && (
                     <TargetEndpoint
-                      pos="absolute"
-                      left="-34px"
-                      top="16px"
+                      className="absolute left-[-34px] top-[16px]"
                       blockId={block.id}
                       groupId={groupId}
                     />
@@ -281,14 +261,12 @@ export const BlockNode = ({
                           blockId: block.id,
                         }}
                         groupId={groupId}
-                        pos="absolute"
-                        right="-34px"
-                        bottom="10px"
+                        className="absolute right-[-34px] bottom-[10px]"
                         isHidden={!isConnectable}
                       />
                     )}
-                </HStack>
-              </Flex>
+                </div>
+              </div>
             </ContextMenu.Trigger>
             <BlockNodeContextMenuPopup
               indices={indices}

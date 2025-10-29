@@ -1,26 +1,3 @@
-import {
-  Box,
-  Card,
-  CardBody,
-  Code,
-  Heading,
-  HStack,
-  ListItem,
-  OrderedList,
-  Stack,
-  Step,
-  StepIcon,
-  StepIndicator,
-  StepNumber,
-  Stepper,
-  StepSeparator,
-  StepStatus,
-  StepTitle,
-  Text,
-  UnorderedList,
-  useSteps,
-  VStack,
-} from "@chakra-ui/react";
 import { createId } from "@paralleldrive/cuid2";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { TRPCClientError } from "@trpc/client";
@@ -34,6 +11,8 @@ import { Field } from "@typebot.io/ui/components/Field";
 import { Input } from "@typebot.io/ui/components/Input";
 import { ArrowLeft01Icon } from "@typebot.io/ui/icons/ArrowLeft01Icon";
 import { ArrowUpRight01Icon } from "@typebot.io/ui/icons/ArrowUpRight01Icon";
+import { TickIcon } from "@typebot.io/ui/icons/TickIcon";
+import { cx } from "@typebot.io/ui/lib/cva";
 import { useState } from "react";
 import { ButtonLink } from "@/components/ButtonLink";
 import { CopyInput } from "@/components/inputs/CopyInput";
@@ -81,6 +60,15 @@ export const WhatsAppCredentialsDialog = ({
   );
 };
 
+const useSteps = () => {
+  const [activeStep, setActiveStep] = useState(0);
+
+  const goToNext = () => setActiveStep(activeStep + 1);
+  const goToPrevious = () => setActiveStep(activeStep - 1);
+
+  return { activeStep, goToNext, goToPrevious, setActiveStep };
+};
+
 export const WhatsAppCreateDialogBody = ({
   is360DialogEnabled,
   onNewCredentials,
@@ -95,10 +83,7 @@ export const WhatsAppCreateDialogBody = ({
     is360DialogEnabled ? null : "meta",
   );
   const steps = provider === "meta" ? metaSteps : dialog360Steps;
-  const { activeStep, goToNext, goToPrevious, setActiveStep } = useSteps({
-    index: 0,
-    count: steps.length,
-  });
+  const { activeStep, goToNext, goToPrevious, setActiveStep } = useSteps();
   const [systemUserAccessToken, setSystemUserAccessToken] = useState("");
   const [apiKey, setApiKey] = useState("");
   const [phoneNumberId, setPhoneNumberId] = useState("");
@@ -284,7 +269,7 @@ export const WhatsAppCreateDialogBody = ({
 
   return (
     <Dialog.Popup className="max-w-3xl">
-      <HStack h="40px">
+      <div className="flex items-center gap-2 h-[40px]">
         {(activeStep > 0 || provider) && (
           <Button
             size="icon"
@@ -295,37 +280,44 @@ export const WhatsAppCreateDialogBody = ({
             <ArrowLeft01Icon />
           </Button>
         )}
-        <Heading size="md">
+        <h2 className="text-md">
           {!provider
             ? "Choose WhatsApp Provider"
             : provider === "meta"
               ? "Add Meta WhatsApp number"
               : "Add 360Dialog Integration"}
-        </Heading>
-      </HStack>
+        </h2>
+      </div>
       {!provider ? (
         <ProviderSelection onProviderSelect={setProvider} />
       ) : (
         <>
-          <Stepper index={activeStep} size="sm">
+          <div className="flex items-center gap-2 w-full">
             {steps.map((step, index) => (
-              <Step key={index}>
-                <StepIndicator>
-                  <StepStatus
-                    complete={<StepIcon />}
-                    incomplete={<StepNumber />}
-                    active={<StepNumber />}
-                  />
-                </StepIndicator>
-
-                <Box flexShrink="0">
-                  <StepTitle>{step.title}</StepTitle>
-                </Box>
-
-                <StepSeparator />
-              </Step>
+              <>
+                <div key={index} className="flex gap-2">
+                  <div className="flex items-center gap-2">
+                    <div
+                      className={cx(
+                        "size-6 rounded-full items-center flex justify-center text-center",
+                        index <= activeStep
+                          ? "text-white bg-orange-9"
+                          : "bg-gray-6",
+                      )}
+                    >
+                      {index < activeStep ? (
+                        <TickIcon />
+                      ) : (
+                        <p className="text-sm">{index + 1}</p>
+                      )}
+                    </div>
+                    <p className="text-sm">{step.title}</p>
+                  </div>
+                </div>
+                {index !== steps.length - 1 && <hr className="flex-1 w-full" />}
+              </>
             ))}
-          </Stepper>
+          </div>
           {provider === "meta" && (
             <>
               {activeStep === 0 && <Requirements />}
@@ -393,8 +385,8 @@ export const WhatsAppCreateDialogBody = ({
 };
 
 const Requirements = () => (
-  <Stack spacing={4}>
-    <Text>
+  <div className="flex flex-col gap-4">
+    <p>
       Make sure you have{" "}
       <TextLink
         href="https://docs.typebot.io/deploy/whatsapp/create-meta-app"
@@ -403,13 +395,13 @@ const Requirements = () => (
         created a WhatsApp Meta app
       </TextLink>
       . You should be able to get to this page:
-    </Text>
+    </p>
     <img
       className="rounded-md"
       src="/images/whatsapp-quickstart-page.png"
       alt="WhatsApp quickstart page"
     />
-  </Stack>
+  </div>
 );
 
 const SystemUserToken = ({
@@ -419,8 +411,8 @@ const SystemUserToken = ({
   initialToken: string;
   setToken: (id: string) => void;
 }) => (
-  <OrderedList spacing={4}>
-    <ListItem>
+  <ol>
+    <li>
       Go to your{" "}
       <ButtonLink
         href="https://business.facebook.com/settings/system-users"
@@ -431,44 +423,44 @@ const SystemUserToken = ({
         System users page
         <ArrowUpRight01Icon />
       </ButtonLink>
-    </ListItem>
-    <ListItem>
-      Create a new user by clicking on <Code>Add</Code>
-    </ListItem>
-    <ListItem>
-      Fill it with any name and give it the <Code>Admin</Code> role
-    </ListItem>
-    <ListItem>
-      <Stack>
-        <Text>
-          Click on <Code>Add assets</Code>. Under <Code>Apps</Code>, look for
+    </li>
+    <li>
+      Create a new user by clicking on <code>Add</code>
+    </li>
+    <li>
+      Fill it with any name and give it the <code>Admin</code> role
+    </li>
+    <li>
+      <div className="flex flex-col gap-2">
+        <p>
+          Click on <code>Add assets</code>. Under <code>Apps</code>, look for
           your previously created app, select it and check{" "}
-          <Code>Manage app</Code>
-        </Text>
+          <code>Manage app</code>
+        </p>
         <img
           className="rounded-md"
           src="/images/meta-system-user-assets.png"
           alt="Meta system user assets"
         />
-      </Stack>
-    </ListItem>
-    <ListItem>
-      <Stack spacing={4}>
-        <Text>
-          Now, click on <Code>Generate new token</Code>. Select your app.
-        </Text>
-        <UnorderedList spacing={4}>
-          <ListItem>
-            Token expiration: <Code>Never</Code>
-          </ListItem>
-          <ListItem>
-            Available Permissions: <Code>whatsapp_business_messaging</Code>,{" "}
-            <Code>whatsapp_business_management</Code>{" "}
-          </ListItem>
-        </UnorderedList>
-      </Stack>
-    </ListItem>
-    <ListItem>Copy and paste the generated token:</ListItem>
+      </div>
+    </li>
+    <li>
+      <div className="flex flex-col gap-4">
+        <p>
+          Now, click on <code>Generate new token</code>. Select your app.
+        </p>
+        <ul>
+          <li>
+            Token expiration: <code>Never</code>
+          </li>
+          <li>
+            Available Permissions: <code>whatsapp_business_messaging</code>,{" "}
+            <code>whatsapp_business_management</code>{" "}
+          </li>
+        </ul>
+      </div>
+    </li>
+    <li>Copy and paste the generated token:</li>
     <Field.Root>
       <Field.Label>System User Token</Field.Label>
       <Input
@@ -477,7 +469,7 @@ const SystemUserToken = ({
         onValueChange={(val) => setToken(val.trim())}
       />
     </Field.Root>
-  </OrderedList>
+  </ol>
 );
 
 const PhoneNumber = ({
@@ -489,10 +481,10 @@ const PhoneNumber = ({
   initialPhoneNumberId: string;
   setPhoneNumberId: (id: string) => void;
 }) => (
-  <OrderedList spacing={4}>
-    <ListItem>
-      <HStack>
-        <Text>
+  <ol>
+    <li>
+      <div className="flex items-center gap-2">
+        <p>
           Go to your{" "}
           <ButtonLink
             href={`https://developers.facebook.com/apps/${appId}/whatsapp-business/wa-dev-console`}
@@ -502,20 +494,20 @@ const PhoneNumber = ({
           >
             WhatsApp Dev Console <ArrowUpRight01Icon />
           </ButtonLink>
-        </Text>
-      </HStack>
-    </ListItem>
-    <ListItem>
-      Add your phone number by clicking on the <Code>Add phone number</Code>{" "}
+        </p>
+      </div>
+    </li>
+    <li>
+      Add your phone number by clicking on the <code>Add phone number</code>{" "}
       button.
-    </ListItem>
-    <ListItem>
-      <Stack>
-        <Text>
+    </li>
+    <li>
+      <div className="flex flex-col gap-2">
+        <p>
           Select a phone number and paste the associated{" "}
-          <Code>Phone number ID</Code>
-        </Text>
-        <HStack>
+          <code>Phone number ID</code>
+        </p>
+        <div className="flex items-center gap-2">
           <Field.Root>
             <Field.Label>Phone number ID</Field.Label>
             <Input
@@ -523,14 +515,14 @@ const PhoneNumber = ({
               onValueChange={setPhoneNumberId}
             />
           </Field.Root>
-        </HStack>
+        </div>
         <img
           src="/images/whatsapp-phone-selection.png"
           alt="WA phone selection"
         />
-      </Stack>
-    </ListItem>
-  </OrderedList>
+      </div>
+    </li>
+  </ol>
 );
 
 const Webhook = ({
@@ -548,8 +540,8 @@ const Webhook = ({
   }/api/v1/workspaces/${workspace?.id}/whatsapp/${credentialsId}/webhook`;
 
   return (
-    <Stack spacing={6}>
-      <Text>
+    <div className="flex flex-col gap-6">
+      <p>
         In your{" "}
         <ButtonLink
           href={`https://developers.facebook.com/apps/${appId}/whatsapp-business/wa-settings`}
@@ -561,30 +553,30 @@ const Webhook = ({
           <ArrowUpRight01Icon />
         </ButtonLink>
         , click on the Edit button and insert the following values:
-      </Text>
-      <UnorderedList spacing={6}>
-        <ListItem>
-          <HStack>
-            <Text flexShrink={0}>Callback URL:</Text>
+      </p>
+      <ul>
+        <li>
+          <div className="flex items-center gap-2">
+            <p className="flex-shrink-0">Callback URL:</p>
             <CopyInput value={webhookUrl} />
-          </HStack>
-        </ListItem>
-        <ListItem>
-          <HStack>
-            <Text flexShrink={0}>Verify Token:</Text>
+          </div>
+        </li>
+        <li>
+          <div className="flex items-center gap-2">
+            <p className="flex-shrink-0">Verify Token:</p>
             <CopyInput value={verificationToken} />
-          </HStack>
-        </ListItem>
-        <ListItem>
-          <HStack>
-            <Text flexShrink={0}>
-              Webhook fields: Next to <Code>messages</Code>, click on
+          </div>
+        </li>
+        <li>
+          <div className="flex items-center gap-2">
+            <p className="flex-shrink-0">
+              Webhook fields: Next to <code>messages</code>, click on
               "Subscribe"
-            </Text>
-          </HStack>
-        </ListItem>
-      </UnorderedList>
-    </Stack>
+            </p>
+          </div>
+        </li>
+      </ul>
+    </div>
   );
 };
 
@@ -593,53 +585,41 @@ const ProviderSelection = ({
 }: {
   onProviderSelect: (provider: "meta" | "360dialog") => void;
 }) => (
-  <HStack spacing={4} w="full">
-    <Card
-      w="full"
-      cursor="pointer"
+  <div className="flex items-center gap-4 w-full">
+    <div
+      className="cursor-pointer border p-8 rounded-md flex flex-col items-center text-center gap-3 hover:bg-gray-2 flex-1"
       onClick={() => onProviderSelect("meta")}
-      _hover={{ bg: "gray.50" }}
     >
-      <CardBody textAlign="center">
-        <VStack spacing={3}>
-          <MetaLogo className="size-10" />
-          <Stack>
-            <Text fontWeight="bold">Meta (Facebook)</Text>
-            <Text fontSize="sm" color="gray.600">
-              Official Meta WhatsApp Business API
-            </Text>
-          </Stack>
-          <Text fontSize="xs" color="gray.500">
-            Requires Meta Developer account, system user token, and phone number
-            setup
-          </Text>
-        </VStack>
-      </CardBody>
-    </Card>
-    <Card
-      w="full"
-      cursor="pointer"
+      <MetaLogo className="size-10" />
+      <div className="flex flex-col gap-2">
+        <p className="font-bold">Meta (Facebook)</p>
+        <p className="text-sm" color="gray.600">
+          Official Meta WhatsApp Business API
+        </p>
+      </div>
+      <p className="text-xs" color="gray.500">
+        Requires Meta Developer account, system user token, and phone number
+        setup
+      </p>
+    </div>
+    <div
+      className="cursor-pointer border p-8 rounded-md flex flex-col items-center text-center gap-3 hover:bg-gray-2 flex-1"
       onClick={() => onProviderSelect("360dialog")}
-      _hover={{ bg: "gray.50" }}
     >
-      <CardBody textAlign="center">
-        <VStack spacing={3}>
-          <Dialog360Logo className="size-10" />
-          <Stack>
-            <Text fontWeight="bold">
-              360Dialog <Badge colorScheme="orange">Beta</Badge>
-            </Text>
-            <Text fontSize="sm" color="gray.600">
-              Third-party WhatsApp Business Solution Provider
-            </Text>
-          </Stack>
-          <Text fontSize="xs" color="gray.500">
-            Simple setup with API key only
-          </Text>
-        </VStack>
-      </CardBody>
-    </Card>
-  </HStack>
+      <Dialog360Logo className="size-10" />
+      <div className="flex flex-col gap-2">
+        <p className="font-bold">
+          360Dialog <Badge colorScheme="orange">Beta</Badge>
+        </p>
+        <p className="text-sm" color="gray.600">
+          Third-party WhatsApp Business Solution Provider
+        </p>
+      </div>
+      <p className="text-xs" color="gray.500">
+        Simple setup with API key only
+      </p>
+    </div>
+  </div>
 );
 
 const Dialog360PhoneNumber = ({
@@ -653,7 +633,7 @@ const Dialog360PhoneNumber = ({
   setPhoneNumber: (phoneNumber: string) => void;
   setApiKey: (apiKey: string) => void;
 }) => (
-  <Stack spacing={4}>
+  <div className="flex flex-col gap-4">
     <Field.Root>
       <Field.Label>Phone number</Field.Label>
       <Input
@@ -670,16 +650,16 @@ const Dialog360PhoneNumber = ({
         onValueChange={(val) => setApiKey(val.trim())}
       />
       <Field.Description>
-        <Text>
+        <p>
           You can find this in your{" "}
           <TextLink href="https://hub.360dialog.com/" isExternal>
             360Dialog Hub dashboard
           </TextLink>
           .
-        </Text>
+        </p>
       </Field.Description>
     </Field.Root>
-  </Stack>
+  </div>
 );
 
 const Dialog360Webhook = ({ credentialsId }: { credentialsId: string }) => {
@@ -689,22 +669,22 @@ const Dialog360Webhook = ({ credentialsId }: { credentialsId: string }) => {
   }/api/v1/workspaces/${workspace?.id}/whatsapp/${credentialsId}/webhook`;
 
   return (
-    <Stack spacing={6}>
-      <Text>
+    <div className="flex flex-col gap-6">
+      <p>
         In your{" "}
         <TextLink href="https://hub.360dialog.com/" isExternal>
           360Dialog Hub dashboard
         </TextLink>
-        , go to <Code>Channels → WhatsApp → Webhooks</Code> and add the
+        , go to <code>Channels → WhatsApp → Webhooks</code> and add the
         following webhook URL:
-      </Text>
-      <Stack>
+      </p>
+      <div className="flex flex-col gap-2">
         <CopyInput value={webhookUrl} />
-        <Text fontSize="sm" color="gray.600">
+        <p className="text-sm" color="gray.600">
           Make sure to enable webhooks for message events in your 360Dialog
           configuration.
-        </Text>
-      </Stack>
-    </Stack>
+        </p>
+      </div>
+    </div>
   );
 };

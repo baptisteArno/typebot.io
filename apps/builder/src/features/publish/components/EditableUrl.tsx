@@ -1,4 +1,3 @@
-import { Text } from "@chakra-ui/react";
 import { useState } from "react";
 import { CopyButton } from "@/components/CopyButton";
 import { SingleLineEditable } from "@/components/SingleLineEditable";
@@ -27,7 +26,7 @@ export const EditableUrl = ({
   return (
     <div className="flex items-center gap-2">
       <div className="flex items-center gap-1">
-        <Text flexShrink={0}>{hostname}/</Text>
+        <p className="flex-shrink-0">{hostname}/</p>
         <SingleLineEditable
           value={value}
           className="font-medium"

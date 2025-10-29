@@ -1,11 +1,10 @@
-import { useEventListener } from "@chakra-ui/react";
 import type { Coordinates } from "@dnd-kit/utilities";
 import { omit } from "@typebot.io/lib/utils";
-import { colors } from "@typebot.io/ui/chakraTheme";
 import assert from "assert";
 import { useMemo, useState } from "react";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { useUser } from "@/features/user/hooks/useUser";
+import { useEventListener } from "@/hooks/useEventListener";
 import { trpcClient } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
 import { eventWidth, groupWidth } from "../../constants";
@@ -165,10 +164,10 @@ export const DrawingEdge = ({ connectingIds }: Props) => {
   return (
     <path
       d={path}
-      stroke={colors.orange[400]}
       strokeWidth="2px"
       markerEnd="url(#orange-arrow)"
       fill="none"
+      className="stroke-orange-8"
     />
   );
 };

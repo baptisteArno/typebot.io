@@ -1,4 +1,3 @@
-import { Stack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { isDefined } from "@typebot.io/lib/utils";
 import {
@@ -45,7 +44,7 @@ export const TypingEmulationForm = ({ typingEmulation, onUpdate }: Props) => {
     onUpdate({ ...typingEmulation, delayBetweenBubbles });
 
   return (
-    <Stack spacing={6}>
+    <div className="flex flex-col gap-6">
       <Field.Container>
         <Field.Root className="flex-row items-center">
           <Switch
@@ -136,6 +135,6 @@ export const TypingEmulationForm = ({ typingEmulation, onUpdate }: Props) => {
           <span>{t("seconds")}</span>
         </div>
       </Field.Root>
-    </Stack>
+    </div>
   );
 };

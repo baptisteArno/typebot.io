@@ -1,4 +1,3 @@
-import { Flex, HStack, Text } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import { env } from "@typebot.io/env";
 import { isDefined } from "@typebot.io/lib/utils";
@@ -98,11 +97,11 @@ export const GoogleSpreadsheetPicker = ({
 
   if (spreadsheetData && spreadsheetData.name !== "")
     return (
-      <Flex justifyContent="space-between">
-        <HStack spacing={2}>
+      <div className="flex justify-between">
+        <div className="flex items-center gap-2">
           <GoogleSheetsLogo />
-          <Text fontWeight="medium">{spreadsheetData.name}</Text>
-        </HStack>
+          <p className="font-medium">{spreadsheetData.name}</p>
+        </div>
         <Button
           size="icon"
           onClick={createPicker}
@@ -112,7 +111,7 @@ export const GoogleSpreadsheetPicker = ({
         >
           <FileEmpty02Icon />
         </Button>
-      </Flex>
+      </div>
     );
   return (
     <Button

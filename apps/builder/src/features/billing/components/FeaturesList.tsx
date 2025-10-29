@@ -1,21 +1,18 @@
-import {
-  Flex,
-  ListIcon,
-  ListItem,
-  type ListProps,
-  UnorderedList,
-} from "@chakra-ui/react";
 import { TickIcon } from "@typebot.io/ui/icons/TickIcon";
+import { cn } from "@typebot.io/ui/lib/cn";
 
-type FeaturesListProps = { features: (string | JSX.Element)[] } & ListProps;
+type FeaturesListProps = {
+  features: (string | JSX.Element)[];
+  className?: string;
+};
 
-export const FeaturesList = ({ features, ...props }: FeaturesListProps) => (
-  <UnorderedList listStyleType="none" spacing={2} {...props}>
+export const FeaturesList = ({ features, className }: FeaturesListProps) => (
+  <ul className={cn("list-none gap-2 flex flex-col", className)}>
     {features.map((feat, idx) => (
-      <Flex as={ListItem} key={idx}>
-        <ListIcon as={TickIcon} mt="1.5" />
+      <li className="flex" key={idx}>
+        <TickIcon className="size-6" />
         {feat}
-      </Flex>
+      </li>
     ))}
-  </UnorderedList>
+  </ul>
 );

@@ -1,4 +1,3 @@
-import { Code, ListItem, OrderedList, Stack, Text } from "@chakra-ui/react";
 import { useState } from "react";
 import { CodeEditor } from "@/components/inputs/CodeEditor";
 import { StandardSettings } from "../../../settings/StandardSettings";
@@ -28,23 +27,23 @@ export const ShopifyStandardInstructions = ({ publicId }: Props) => {
   );
 
   return (
-    <OrderedList spacing={4} pl={5}>
-      <ListItem>
-        On your shop dashboard in the <Code>Themes</Code> page, click on{" "}
-        <Code>Actions {">"} Edit code</Code>
-      </ListItem>
-      <ListItem>
-        <Stack spacing={4}>
-          <Text>
-            In <Code>Layout {">"} theme.liquid</Code> file, paste this code just
-            before the closing <Code>{"<head>"}</Code> tag:
-          </Text>
+    <ol>
+      <li>
+        On your shop dashboard in the <code>Themes</code> page, click on{" "}
+        <code>Actions {">"} Edit code</code>
+      </li>
+      <li>
+        <div className="flex flex-col gap-4">
+          <p>
+            In <code>Layout {">"} theme.liquid</code> file, paste this code just
+            before the closing <code>{"<head>"}</code> tag:
+          </p>
 
           <CodeEditor value={headCode} lang="html" isReadOnly />
-        </Stack>
-      </ListItem>
-      <ListItem>
-        <Stack spacing={4}>
+        </div>
+      </li>
+      <li>
+        <div className="flex flex-col gap-4">
           <StandardSettings
             onUpdateWindowSettings={(sizes) =>
               setWindowSizes({
@@ -53,13 +52,13 @@ export const ShopifyStandardInstructions = ({ publicId }: Props) => {
               })
             }
           />
-          <Text>
+          <p>
             Place an element on which the typebot will go in any file in the{" "}
-            <Code>{"<body>"}</Code>:
-          </Text>
+            <code>{"<body>"}</code>:
+          </p>
           <CodeEditor value={elementCode} lang="html" isReadOnly />
-        </Stack>
-      </ListItem>
-    </OrderedList>
+        </div>
+      </li>
+    </ol>
   );
 };

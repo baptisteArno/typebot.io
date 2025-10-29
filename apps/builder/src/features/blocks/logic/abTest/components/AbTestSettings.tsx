@@ -1,4 +1,3 @@
-import { Stack } from "@chakra-ui/react";
 import { defaultAbTestOptions } from "@typebot.io/blocks-logic/abTest/constants";
 import type { AbTestBlock } from "@typebot.io/blocks-logic/abTest/schema";
 import { isDefined } from "@typebot.io/lib/utils";
@@ -15,7 +14,7 @@ export const AbTestSettings = ({ options, onOptionsChange }: Props) => {
     isDefined(aPercent) ? onOptionsChange({ ...options, aPercent }) : null;
 
   return (
-    <Stack spacing={4}>
+    <div className="flex flex-col gap-4">
       <Field.Root>
         <Field.Label>Percent of users to follow A:</Field.Label>
         <BasicNumberInput
@@ -26,6 +25,6 @@ export const AbTestSettings = ({ options, onOptionsChange }: Props) => {
           min={0}
         />
       </Field.Root>
-    </Stack>
+    </div>
   );
 };

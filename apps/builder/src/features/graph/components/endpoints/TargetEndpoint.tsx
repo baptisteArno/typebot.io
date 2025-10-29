@@ -1,4 +1,4 @@
-import { Box, type BoxProps } from "@chakra-ui/react";
+import { cn } from "@typebot.io/ui/lib/cn";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { useEndpoints } from "../../providers/EndpointsProvider";
 import { useGraph } from "../../providers/GraphProvider";
@@ -8,10 +8,11 @@ const endpointHeight = 20;
 export const TargetEndpoint = ({
   groupId,
   blockId,
-  ...props
-}: BoxProps & {
+  className,
+}: {
   groupId?: string;
   blockId: string;
+  className?: string;
 }) => {
   const { setTargetEnpointYOffset: addTargetEndpoint } = useEndpoints();
   const { graphPosition } = useGraph();
@@ -73,14 +74,12 @@ export const TargetEndpoint = ({
   }, [addTargetEndpoint, blockId, endpointY]);
 
   return (
-    <Box
+    <div
+      className={cn(
+        "size-[20px] rounded-full invisible cursor-pointer",
+        className,
+      )}
       ref={ref}
-      boxSize="20px"
-      rounded="full"
-      bgColor="orange.500"
-      cursor="pointer"
-      visibility="hidden"
-      {...props}
     />
   );
 };

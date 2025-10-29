@@ -1,4 +1,3 @@
-import { Text, type TextProps } from "@chakra-ui/react";
 import { type TFnType, useTranslate } from "@tolgee/react";
 import { BubbleBlockType } from "@typebot.io/blocks-bubbles/constants";
 import {
@@ -12,15 +11,16 @@ import type { Block } from "@typebot.io/blocks-core/schemas/schema";
 import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
 import { IntegrationBlockType } from "@typebot.io/blocks-integrations/constants";
 import { LogicBlockType } from "@typebot.io/blocks-logic/constants";
+import { cn } from "@typebot.io/ui/lib/cn";
 import { ForgedBlockLabel } from "@/features/forge/ForgedBlockLabel";
 
-type Props = { type: Block["type"] } & TextProps;
+type Props = { type: Block["type"]; className?: string };
 
-export const BlockLabel = ({ type, ...props }: Props): JSX.Element => {
+export const BlockLabel = ({ type, className }: Props): JSX.Element => {
   const { t } = useTranslate();
 
   if (isForgedBlockType(type))
-    return <ForgedBlockLabel type={type} {...props} />;
+    return <ForgedBlockLabel type={type} className={className} />;
 
   const label = isBubbleBlockType(type)
     ? getBubbleBlockLabel(t)[type]
@@ -32,11 +32,7 @@ export const BlockLabel = ({ type, ...props }: Props): JSX.Element => {
           ? getIntegrationBlockLabel(t)[type]
           : t("editor.sidebarBlock.start.label");
 
-  return (
-    <Text fontSize="sm" {...props}>
-      {label}
-    </Text>
-  );
+  return <p className={cn("text-sm", className)}>{label}</p>;
 };
 
 export const getBubbleBlockLabel = (

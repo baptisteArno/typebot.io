@@ -1,9 +1,9 @@
-import { SlideFade, Stack, useColorModeValue } from "@chakra-ui/react";
 import type { BlockWithOptions } from "@typebot.io/blocks-core/schemas/schema";
 import { EventType } from "@typebot.io/events/constants";
 import type { TEvent, TEventWithOptions } from "@typebot.io/events/schemas";
 import { ContextMenu } from "@typebot.io/ui/components/ContextMenu";
 import { Popover } from "@typebot.io/ui/components/Popover";
+import { cx } from "@typebot.io/ui/lib/cva";
 import { useDrag } from "@use-gesture/react";
 import { useRef, useState } from "react";
 import { useShallow } from "zustand/react/shallow";
@@ -28,8 +28,6 @@ type Props = {
 };
 
 export const EventNode = ({ event, eventIndex }: Props) => {
-  const elementBgColor = useColorModeValue("white", "gray.950");
-  const previewingBorderColor = useColorModeValue("orange.400", "orange.300");
   const { previewingEdge, isReadOnly, graphPosition } = useGraph();
   const { updateEvent, updateEventsCoordinates } = useTypebot();
   const { setStartPreviewFrom } = useEditor();
@@ -140,71 +138,53 @@ export const EventNode = ({ event, eventIndex }: Props) => {
         >
           <Popover.Trigger
             render={(props) => (
-              <Stack
+              <div
+                style={
+                  {
+                    "--width": eventWidth + "px",
+                    transform: `translate(${eventCoordinates?.x ?? 0}px, ${
+                      eventCoordinates?.y ?? 0
+                    }px)`,
+                    touchAction: "none",
+                  } as React.CSSProperties
+                }
+                className={cx(
+                  "flex flex-col gap-2 py-2 pl-3 pr-3 rounded-xl border font-medium absolute w-[var(--width)] bg-gray-1 select-none transition-[border-color,box-shadow] hover:shadow-md",
+                  isContextMenuOpened || isPreviewing || isFocused
+                    ? "border-orange-8"
+                    : undefined,
+                  isMouseDown ? "cursor-grabbing" : "cursor-pointer",
+                  isFocused ? "z-10" : undefined,
+                  isDraggingGraph
+                    ? "pointer-events-none"
+                    : "pointer-events-auto",
+                )}
                 {...props}
                 ref={setMultipleRefs([eventRef, props.ref!])}
                 data-moving-element={`event-${event.id}`}
                 data-selectable={event.id}
-                userSelect="none"
-                data-testid="event"
-                py="2"
-                pl="3"
-                pr="3"
-                w={eventWidth}
-                rounded="xl"
-                bg={elementBgColor}
-                borderWidth="1px"
-                fontWeight="medium"
-                borderColor={
-                  isContextMenuOpened || isPreviewing || isFocused
-                    ? previewingBorderColor
-                    : undefined
-                }
-                transition="border 300ms, box-shadow 200ms"
-                pos="absolute"
-                style={{
-                  transform: `translate(${eventCoordinates?.x ?? 0}px, ${
-                    eventCoordinates?.y ?? 0
-                  }px)`,
-                  touchAction: "none",
-                }}
-                cursor={isMouseDown ? "grabbing" : "pointer"}
-                _hover={{ shadow: "md" }}
-                zIndex={isFocused ? 10 : 1}
-                pointerEvents={isDraggingGraph ? "none" : "auto"}
               >
                 <EventNodeContent event={event} />
                 <EventSourceEndpoint
                   source={{
                     eventId: event.id,
                   }}
-                  pos="absolute"
-                  right="-19px"
-                  bottom="4px"
+                  className="absolute right-[-19px] bottom-[3px]"
                   isHidden={false}
                 />
-                {!isReadOnly && (
-                  <SlideFade
-                    in={isFocused && focusedElements.length === 1}
-                    style={{
-                      position: "absolute",
-                      top: "-45px",
-                      right: 0,
+                {!isReadOnly && isFocused && focusedElements.length === 1 && (
+                  <EventFocusToolbar
+                    className="absolute top-[-45px] right-0 animate-in fade-in-0 slide-in-from-bottom-2"
+                    eventId={event.id}
+                    type={event.type}
+                    onPlayClick={startPreviewAtThisEvent}
+                    onSettingsClick={() => {
+                      blurElements();
+                      setOpenedNodeId(event.id);
                     }}
-                    unmountOnExit
-                  >
-                    <EventFocusToolbar
-                      eventId={event.id}
-                      type={event.type}
-                      onPlayClick={startPreviewAtThisEvent}
-                      onSettingsClick={() => {
-                        blurElements();
-                        setOpenedNodeId(event.id);
-                      }}
-                    />
-                  </SlideFade>
+                  />
                 )}
-              </Stack>
+              </div>
             )}
           />
 

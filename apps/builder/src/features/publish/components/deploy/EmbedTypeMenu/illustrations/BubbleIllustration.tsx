@@ -1,23 +1,16 @@
-import { useColorModeValue } from "@chakra-ui/react";
-import { colors } from "@typebot.io/ui/chakraTheme";
 import { motion } from "framer-motion";
 import { animationVariants } from "./animationVariants";
 
 export const BubbleIllustration = () => {
-  const bubbleColor = useColorModeValue("white", colors.blue[100]);
   return (
     <svg
       width="100"
       viewBox="0 0 500 500"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      className="light"
     >
-      <rect
-        width="500"
-        height="500"
-        rx="20"
-        fill={useColorModeValue(colors.gray["200"], colors.gray["900"])}
-      />
+      <rect width="500" height="500" rx="20" className="fill-gray-6" />
       <rect x="164" y="59" width="287" height="305" rx="10" fill="#0042DA" />
       <motion.rect
         x="227"
@@ -25,7 +18,7 @@ export const BubbleIllustration = () => {
         width="156"
         height="34"
         rx="10"
-        fill={bubbleColor}
+        className="fill-blue-1"
         variants={animationVariants}
       />
       <motion.rect
@@ -34,7 +27,7 @@ export const BubbleIllustration = () => {
         width="156"
         height="65"
         rx="10"
-        fill={bubbleColor}
+        className="fill-blue-1"
         variants={animationVariants}
       />
 
@@ -42,7 +35,7 @@ export const BubbleIllustration = () => {
         cx="198"
         cy="228"
         r="20"
-        fill={bubbleColor}
+        className="fill-blue-1"
         variants={animationVariants}
       />
       <motion.rect
@@ -51,14 +44,14 @@ export const BubbleIllustration = () => {
         width="156"
         height="40"
         rx="10"
-        fill={bubbleColor}
+        className="fill-blue-1"
         variants={animationVariants}
       />
       <motion.circle
         cx="412"
         cy="277"
         r="20"
-        fill={bubbleColor}
+        className="fill-blue-1"
         variants={animationVariants}
       />
       <motion.rect
@@ -67,7 +60,7 @@ export const BubbleIllustration = () => {
         width="130"
         height="40"
         rx="10"
-        fill={bubbleColor}
+        className="fill-blue-1"
         variants={animationVariants}
       />
 

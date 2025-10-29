@@ -1,11 +1,3 @@
-import {
-  Flex,
-  Heading,
-  SimpleGrid,
-  Stack,
-  useColorModeValue,
-  useEventListener,
-} from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { BubbleBlockType } from "@typebot.io/blocks-bubbles/constants";
 import type { BlockV6 } from "@typebot.io/blocks-core/schemas/schema";
@@ -21,15 +13,17 @@ import { Input } from "@typebot.io/ui/components/Input";
 import { Tooltip } from "@typebot.io/ui/components/Tooltip";
 import { SquareLock01Icon } from "@typebot.io/ui/icons/SquareLock01Icon";
 import { SquareUnlock01Icon } from "@typebot.io/ui/icons/SquareUnlock01Icon";
+import { cx } from "@typebot.io/ui/lib/cva";
 import type React from "react";
 import { useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import { Portal } from "@/components/Portal";
 import { useBlockDnd } from "@/features/graph/providers/GraphDndProvider";
+import { useEventListener } from "@/hooks/useEventListener";
 import { EventCard } from "../../events/components/EventCard";
 import { EventCardOverlay } from "../../events/components/EventCardOverlay";
 import { getEventBlockLabel } from "../../events/components/EventLabel";
-import { headerHeight, leftSidebarLockedStorageKey } from "../constants";
+import { leftSidebarLockedStorageKey } from "../constants";
 import { BlockCard } from "./BlockCard";
 import { BlockCardOverlay } from "./BlockCardOverlay";
 import {
@@ -193,35 +187,15 @@ export const BlocksSideBar = () => {
   );
 
   return (
-    <Flex
-      w="360px"
-      pos="absolute"
-      left="0"
-      h={`calc(100vh - ${headerHeight}px)`}
-      pl="4"
-      py="4"
+    <div
+      className={cx(
+        "flex w-[360px] absolute pl-4 py-4 left-0 transition-[transform] duration-350 ease-out h-[calc(100vh-var(--header-height))]",
+        isExtended ? "translate-x-0" : "translate-x-[-350px]",
+      )}
       onMouseLeave={handleMouseLeave}
-      transform={isExtended ? "translateX(0)" : "translateX(-350px)"}
-      transition="transform 350ms cubic-bezier(0.075, 0.82, 0.165, 1) 0s"
     >
-      <Stack
-        w="full"
-        rounded="lg"
-        borderWidth="1px"
-        pt="4"
-        pb="10"
-        px="4"
-        bgColor={useColorModeValue("white", "gray.950")}
-        spacing={6}
-        userSelect="none"
-        overflowY="auto"
-      >
-        <Flex
-          justifyContent="space-between"
-          w="full"
-          alignItems="center"
-          gap="3"
-        >
+      <div className="flex flex-col w-full rounded-lg border pt-4 pb-10 px-4 gap-6 overflow-y-auto bg-gray-1 select-none">
+        <div className="flex justify-between w-full items-center gap-3">
           <Input
             placeholder="Search"
             value={searchInput}
@@ -247,13 +221,13 @@ export const BlocksSideBar = () => {
                 : t("editor.sidebarBlocks.sidebar.lock.label")}
             </Tooltip.Popup>
           </Tooltip.Root>
-        </Flex>
+        </div>
 
-        <Stack>
-          <Heading as="h4" fontSize="sm">
+        <div className="flex flex-col gap-2">
+          <h4 className="text-sm">
             {t("editor.sidebarBlocks.blockType.bubbles.heading")}
-          </Heading>
-          <SimpleGrid columns={2} spacing="3">
+          </h4>
+          <div className="grid gap-3 grid-cols-2">
             {filteredBubbleBlockTypes.map((type) => (
               <BlockCard
                 key={type}
@@ -261,14 +235,14 @@ export const BlocksSideBar = () => {
                 onMouseDown={initBlockDragging}
               />
             ))}
-          </SimpleGrid>
-        </Stack>
+          </div>
+        </div>
 
-        <Stack>
-          <Heading fontSize="sm">
+        <div className="flex flex-col gap-2">
+          <h4 className="text-sm">
             {t("editor.sidebarBlocks.blockType.inputs.heading")}
-          </Heading>
-          <SimpleGrid columns={2} spacing="3">
+          </h4>
+          <div className="grid gap-3 grid-cols-2">
             {filteredInputBlockTypes.map((type) => (
               <BlockCard
                 key={type}
@@ -276,14 +250,14 @@ export const BlocksSideBar = () => {
                 onMouseDown={initBlockDragging}
               />
             ))}
-          </SimpleGrid>
-        </Stack>
+          </div>
+        </div>
 
-        <Stack>
-          <Heading fontSize="sm">
+        <div className="flex flex-col gap-2">
+          <h4 className="text-sm">
             {t("editor.sidebarBlocks.blockType.logic.heading")}
-          </Heading>
-          <SimpleGrid columns={2} spacing="3">
+          </h4>
+          <div className="grid gap-3 grid-cols-2">
             {filteredLogicBlockTypes.map((type) => (
               <BlockCard
                 key={type}
@@ -291,14 +265,14 @@ export const BlocksSideBar = () => {
                 onMouseDown={initBlockDragging}
               />
             ))}
-          </SimpleGrid>
-        </Stack>
+          </div>
+        </div>
 
-        <Stack>
-          <Heading fontSize="sm">
+        <div className="flex flex-col gap-2">
+          <h4 className="text-sm">
             {t("editor.sidebarBlocks.blockType.events.heading")}
-          </Heading>
-          <SimpleGrid columns={2} spacing="3">
+          </h4>
+          <div className="grid gap-3 grid-cols-2">
             {filteredEventBlockTypes.map((type) => (
               <EventCard
                 key={type}
@@ -306,14 +280,14 @@ export const BlocksSideBar = () => {
                 onMouseDown={initEventDragging}
               />
             ))}
-          </SimpleGrid>
-        </Stack>
+          </div>
+        </div>
 
-        <Stack>
-          <Heading fontSize="sm">
+        <div className="flex flex-col gap-2">
+          <h4 className="text-sm">
             {t("editor.sidebarBlocks.blockType.integrations.heading")}
-          </Heading>
-          <SimpleGrid columns={2} spacing="3">
+          </h4>
+          <div className="grid gap-3 grid-cols-2">
             {filteredIntegrationBlockTypes
               .concat(filteredForgedBlockIds as any)
               .map((type) => (
@@ -323,17 +297,15 @@ export const BlocksSideBar = () => {
                   onMouseDown={initBlockDragging}
                 />
               ))}
-          </SimpleGrid>
-        </Stack>
+          </div>
+        </div>
 
         {draggedBlockType && (
           <Portal>
             <BlockCardOverlay
               type={draggedBlockType}
               onMouseUp={handleMouseUp}
-              pos="fixed"
-              top="0"
-              left="0"
+              className="fixed top-0 left-0"
               style={{
                 transform: `translate(${position.x}px, ${position.y}px) rotate(-2deg)`,
               }}
@@ -345,33 +317,22 @@ export const BlocksSideBar = () => {
             <EventCardOverlay
               type={draggedEventType}
               onMouseUp={handleMouseUp}
-              pos="fixed"
-              top="0"
-              left="0"
+              className="fixed top-0 left-0"
               style={{
                 transform: `translate(${position.x}px, ${position.y}px) rotate(-2deg)`,
               }}
             />
           </Portal>
         )}
-      </Stack>
+      </div>
       {!isLocked && (
-        <Flex
-          className="animate-in fade-in-0"
-          pos="absolute"
-          h="100%"
-          right="-70px"
-          w="450px"
-          top="0"
-          justify="flex-end"
-          pr="10"
-          align="center"
+        <div
+          className="flex animate-in fade-in-0 absolute h-full w-[450px] justify-end pr-10 items-center -right-[70px] top-0 -z-10"
           onMouseEnter={handleDockBarEnter}
-          zIndex={-1}
         >
-          <Flex w="5px" h="20px" bgColor="gray.400" rounded="md" />
-        </Flex>
+          <div className="flex w-[5px] h-[20px] rounded-md bg-gray-7" />
+        </div>
       )}
-    </Flex>
+    </div>
   );
 };

@@ -1,4 +1,3 @@
-import { Text } from "@chakra-ui/react";
 import type { ZapierBlock } from "@typebot.io/blocks-integrations/zapier/schema";
 
 type Props = {
@@ -7,10 +6,6 @@ type Props = {
 
 export const ZapierContent = ({ block }: Props) => {
   if (!block.options?.webhook?.url)
-    return <Text color="gray.500">Configure...</Text>;
-  return (
-    <Text noOfLines={1} pr="6">
-      Trigger zap
-    </Text>
-  );
+    return <p className="text-gray-9">Configure...</p>;
+  return <p className="pr-6 truncate">Trigger zap</p>;
 };

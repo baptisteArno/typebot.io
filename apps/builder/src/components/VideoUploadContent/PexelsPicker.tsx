@@ -1,12 +1,3 @@
-import {
-  Box,
-  Flex,
-  Grid,
-  GridItem,
-  HStack,
-  Stack,
-  Text,
-} from "@chakra-ui/react";
 import { env } from "@typebot.io/env";
 import { isDefined } from "@typebot.io/lib/utils";
 import { Alert } from "@typebot.io/ui/components/Alert";
@@ -124,13 +115,13 @@ export const PexelsPicker = ({ onVideoSelect }: Props) => {
   };
 
   if (!env.NEXT_PUBLIC_PEXELS_API_KEY)
-    return <Text>NEXT_PUBLIC_PEXELS_API_KEY is missing in environment</Text>;
+    return <p>NEXT_PUBLIC_PEXELS_API_KEY is missing in environment</p>;
 
   return (
-    <Stack spacing={4} pt="2">
-      <Stack>
-        <HStack align="flex-start">
-          <Stack>
+    <div className="flex flex-col gap-4 pt-2">
+      <div className="flex flex-col gap-2">
+        <div className="flex gap-2 items-start">
+          <div className="flex flex-col gap-2">
             <DebouncedTextInput
               autoFocus
               placeholder="Search..."
@@ -140,12 +131,12 @@ export const PexelsPicker = ({ onVideoSelect }: Props) => {
               }}
               debounceTimeout={500}
             />
-          </Stack>
+          </div>
           <a target="_blank" href={`https://www.pexels.com`} rel="noopener">
             <PexelsLogo width="100px" height="40px" />
           </a>
-        </HStack>
-        <HStack w="full">
+        </div>
+        <div className="flex items-center gap-2 w-full">
           <BasicSelect
             value={orientation}
             onChange={updateOrientation}
@@ -164,37 +155,38 @@ export const PexelsPicker = ({ onVideoSelect }: Props) => {
               { label: "Large", value: "large" },
             ]}
           />
-        </HStack>
-      </Stack>
+        </div>
+      </div>
       {isDefined(error) && (
         <Alert.Root variant="error">
           <TriangleAlertIcon />
           <Alert.Description>{error}</Alert.Description>
         </Alert.Root>
       )}
-      <Stack overflowY="auto" maxH="400px" ref={scrollContainer}>
+      <div
+        className="flex flex-col gap-2 overflow-y-auto max-h-[400px]"
+        ref={scrollContainer}
+      >
         {videos.length > 0 && (
-          <Grid templateColumns="repeat(3, 1fr)" columnGap={2} rowGap={3}>
+          <div className="grid grid-cols-[repeat(3,1fr)] gap-2 gap-y-3">
             {videos.map((video, index) => (
-              <GridItem
-                as={Stack}
+              <div
+                className="flex flex-col size-full"
                 key={video.id}
-                boxSize="100%"
-                spacing="0"
                 ref={index === videos.length - 1 ? bottomAnchor : undefined}
               >
                 <PexelsVideo video={video} onClick={() => selectVideo(video)} />
-              </GridItem>
+              </div>
             ))}
-          </Grid>
+          </div>
         )}
         {isFetching && (
-          <Flex justifyContent="center" py="4">
+          <div className="flex justify-center py-4">
             <LoaderCircleIcon className="animate-spin" />
-          </Flex>
+          </div>
         )}
-      </Stack>
-    </Stack>
+      </div>
+    </div>
   );
 };
 
@@ -232,8 +224,8 @@ const PexelsVideo = ({ video, onClick }: PexelsVideoProps) => {
   }, [isImageHovered, imageIndex, video_pictures]);
 
   return (
-    <Box
-      pos="relative"
+    <div
+      className="relative"
       onMouseEnter={() => setIsImageHovered(true)}
       onMouseLeave={() => setIsImageHovered(false)}
     >
@@ -248,20 +240,16 @@ const PexelsVideo = ({ video, onClick }: PexelsVideoProps) => {
           onClick={onClick}
         />
       }
-      <Box
-        pos="absolute"
-        bottom={0}
-        left={0}
-        bgColor="rgba(0,0,0,.5)"
-        px="2"
-        rounded="md"
-        opacity={isImageHovered ? 1 : 0}
-        transition="opacity .2s ease-in-out"
+      <div
+        className={cx(
+          "absolute px-2 rounded-md bottom-0 left-0 bg-black/50 opacity-0 transition-opacity",
+          isImageHovered ? "opacity-100" : "opacity-0",
+        )}
       >
         <TextLink className="text-xs text-white" isExternal href={url}>
           {user.name}
         </TextLink>
-      </Box>
-    </Box>
+      </div>
+    </div>
   );
 };

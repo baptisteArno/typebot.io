@@ -1,22 +1,10 @@
-import {
-  Checkbox,
-  Flex,
-  Heading,
-  Stack,
-  Table,
-  TableContainer,
-  Tbody,
-  Td,
-  Text,
-  Th,
-  Thead,
-  Tr,
-  useDisclosure,
-} from "@chakra-ui/react";
 import { T, useTranslate } from "@tolgee/react";
 import { byId, isDefined } from "@typebot.io/lib/utils";
 import { Button } from "@typebot.io/ui/components/Button";
+import { Checkbox } from "@typebot.io/ui/components/Checkbox";
 import { Skeleton } from "@typebot.io/ui/components/Skeleton";
+import { Table } from "@typebot.io/ui/components/Table";
+import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
 import type { ClientUser } from "@typebot.io/user/schemas";
 import { useState } from "react";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
@@ -43,7 +31,7 @@ export const ApiTokensList = ({ user }: Props) => {
     isOpen: isCreateOpen,
     onOpen: onCreateOpen,
     onClose: onCreateClose,
-  } = useDisclosure();
+  } = useOpenControls();
   const [deletingId, setDeletingId] = useState<string>();
 
   const refreshListWithNewToken = (token: ApiTokenFromServer) => {
@@ -59,10 +47,10 @@ export const ApiTokensList = ({ user }: Props) => {
   };
 
   return (
-    <Stack spacing={4}>
-      <Heading fontSize="2xl">{t("account.apiTokens.heading")}</Heading>
-      <Text>{t("account.apiTokens.description")}</Text>
-      <Flex justifyContent="flex-end">
+    <div className="flex flex-col gap-4">
+      <h2>{t("account.apiTokens.heading")}</h2>
+      <p>{t("account.apiTokens.description")}</p>
+      <div className="flex justify-end">
         <Button onClick={onCreateOpen} variant="secondary">
           {t("account.apiTokens.createButton.label")}
         </Button>
@@ -72,52 +60,51 @@ export const ApiTokensList = ({ user }: Props) => {
           onNewToken={refreshListWithNewToken}
           onClose={onCreateClose}
         />
-      </Flex>
-
-      <TableContainer>
-        <Table>
-          <Thead>
-            <Tr>
-              <Th>{t("account.apiTokens.table.nameHeader")}</Th>
-              <Th w="130px">{t("account.apiTokens.table.createdHeader")}</Th>
-              <Th w="0" />
-            </Tr>
-          </Thead>
-          <Tbody>
-            {apiTokens?.map((token) => (
-              <Tr key={token.id}>
-                <Td>{token.name}</Td>
-                <Td>
-                  <TimeSince date={token.createdAt} />
-                </Td>
-                <Td>
-                  <Button
-                    size="xs"
-                    variant="destructive"
-                    onClick={() => setDeletingId(token.id)}
-                  >
-                    {t("account.apiTokens.deleteButton.label")}
-                  </Button>
-                </Td>
-              </Tr>
+      </div>
+      <Table.Root>
+        <Table.Header>
+          <Table.Row>
+            <Table.Head>{t("account.apiTokens.table.nameHeader")}</Table.Head>
+            <Table.Head className="w-32">
+              {t("account.apiTokens.table.createdHeader")}
+            </Table.Head>
+            <Table.Head className="w-0" />
+          </Table.Row>
+        </Table.Header>
+        <Table.Body>
+          {apiTokens?.map((token) => (
+            <Table.Row key={token.id}>
+              <Table.Cell>{token.name}</Table.Cell>
+              <Table.Cell>
+                <TimeSince date={token.createdAt} />
+              </Table.Cell>
+              <Table.Cell>
+                <Button
+                  size="xs"
+                  variant="destructive"
+                  onClick={() => setDeletingId(token.id)}
+                >
+                  {t("account.apiTokens.deleteButton.label")}
+                </Button>
+              </Table.Cell>
+            </Table.Row>
+          ))}
+          {isLoading &&
+            Array.from({ length: 3 }).map((_, idx) => (
+              <Table.Row key={idx}>
+                <Table.Cell>
+                  <Checkbox disabled />
+                </Table.Cell>
+                <Table.Cell>
+                  <Skeleton className="h-1" />
+                </Table.Cell>
+                <Table.Cell>
+                  <Skeleton className="h-1" />
+                </Table.Cell>
+              </Table.Row>
             ))}
-            {isLoading &&
-              Array.from({ length: 3 }).map((_, idx) => (
-                <Tr key={idx}>
-                  <Td>
-                    <Checkbox isDisabled />
-                  </Td>
-                  <Td>
-                    <Skeleton className="h-1" />
-                  </Td>
-                  <Td>
-                    <Skeleton className="h-1" />
-                  </Td>
-                </Tr>
-              ))}
-          </Tbody>
-        </Table>
-      </TableContainer>
+        </Table.Body>
+      </Table.Root>
       <ConfirmDialog
         isOpen={isDefined(deletingId)}
         onConfirm={() => deleteToken(deletingId)}
@@ -125,7 +112,7 @@ export const ApiTokensList = ({ user }: Props) => {
         actionType="destructive"
         confirmButtonLabel={t("account.apiTokens.deleteButton.label")}
       >
-        <Text>
+        <p>
           <T
             keyName="account.apiTokens.deleteConfirmationMessage"
             params={{
@@ -134,8 +121,8 @@ export const ApiTokensList = ({ user }: Props) => {
               ),
             }}
           />
-        </Text>
+        </p>
       </ConfirmDialog>
-    </Stack>
+    </div>
   );
 };

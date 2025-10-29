@@ -1,4 +1,3 @@
-import { Flex, useColorModeValue, useEventListener } from "@chakra-ui/react";
 import type { ItemIndices } from "@typebot.io/blocks-core/schemas/items/schema";
 import type { PictureChoiceItem } from "@typebot.io/blocks-inputs/pictureChoice/schema";
 import { isSvgSrc } from "@typebot.io/lib/utils";
@@ -8,6 +7,7 @@ import { cx } from "@typebot.io/ui/lib/cva";
 import { useRef } from "react";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { useGraph } from "@/features/graph/providers/GraphProvider";
+import { useEventListener } from "@/hooks/useEventListener";
 import { PictureChoiceItemSettings } from "./PictureChoiceItemSettings";
 
 type Props = {
@@ -17,7 +17,6 @@ type Props = {
 };
 
 export const PictureChoiceItemNode = ({ item, indices }: Props) => {
-  const emptyImageBgColor = useColorModeValue("gray.100", "gray.700");
   const { updateItem, typebot } = useTypebot();
   const ref = useRef<HTMLDivElement | null>(null);
   const { openedNodeId, setOpenedNodeId } = useGraph();
@@ -29,7 +28,7 @@ export const PictureChoiceItemNode = ({ item, indices }: Props) => {
   const handleMouseWheel = (e: WheelEvent) => {
     e.stopPropagation();
   };
-  useEventListener("wheel", handleMouseWheel, ref.current);
+  useEventListener("wheel", handleMouseWheel, ref);
 
   const blockId = typebot
     ? typebot.groups.at(indices.groupIndex)?.blocks?.at(indices.blockIndex)?.id
@@ -43,13 +42,9 @@ export const PictureChoiceItemNode = ({ item, indices }: Props) => {
     >
       <Popover.Trigger
         render={(props) => (
-          <Flex
+          <div
+            className="flex px-4 py-2 justify-center w-full relative"
             {...props}
-            px={4}
-            py={2}
-            justify="center"
-            w="full"
-            pos="relative"
             data-testid="item-node"
             userSelect="none"
           >
@@ -65,18 +60,11 @@ export const PictureChoiceItemNode = ({ item, indices }: Props) => {
                 alt="Picture choice image"
               />
             ) : (
-              <Flex
-                width="full"
-                height="100px"
-                bgColor={emptyImageBgColor}
-                rounded="md"
-                justify="center"
-                align="center"
-              >
+              <div className="flex w-full h-[100px] rounded-md justify-center items-center bg-gray-3">
                 <Image02Icon />
-              </Flex>
+              </div>
             )}
-          </Flex>
+          </div>
         )}
       ></Popover.Trigger>
       <Popover.Popup side="right" className="p-4">

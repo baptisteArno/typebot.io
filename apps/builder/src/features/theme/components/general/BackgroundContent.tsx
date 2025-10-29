@@ -1,4 +1,3 @@
-import { Flex, Text } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { isNotEmpty } from "@typebot.io/lib/utils";
 import {
@@ -34,7 +33,7 @@ export const BackgroundContent = ({
   if ((background?.type ?? defaultBackgroundType) === BackgroundType.IMAGE) {
     if (!typebot) return null;
     return (
-      <Flex ref={popoverContainerRef}>
+      <div className="flex" ref={popoverContainerRef}>
         <Popover.Root {...controls}>
           <Popover.Trigger>
             {isNotEmpty(background?.content) ? (
@@ -64,7 +63,7 @@ export const BackgroundContent = ({
             />
           </Popover.Popup>
         </Popover.Root>
-      </Flex>
+      </div>
     );
   }
   if (
@@ -72,13 +71,13 @@ export const BackgroundContent = ({
     (background?.type ?? defaultBackgroundType) === BackgroundType.COLOR
   ) {
     return (
-      <Flex justify="space-between" align="center">
-        <Text>{t("theme.sideMenu.global.background.color")}</Text>
+      <div className="flex justify-between items-center">
+        <p>{t("theme.sideMenu.global.background.color")}</p>
         <ColorPicker
           value={background?.content ?? defaultBackgroundColor[typebot.version]}
           onColorChange={handleContentChange}
         />
-      </Flex>
+      </div>
     );
   }
   return null;

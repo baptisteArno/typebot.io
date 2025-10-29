@@ -1,4 +1,3 @@
-import { Stack } from "@chakra-ui/react";
 import { defaultScriptOptions } from "@typebot.io/blocks-logic/script/constants";
 import type { ScriptBlock } from "@typebot.io/blocks-logic/script/schema";
 import { Field } from "@typebot.io/ui/components/Field";
@@ -23,7 +22,7 @@ export const ScriptSettings = ({ options, onOptionsChange }: Props) => {
     onOptionsChange({ ...options, isExecutedOnClient });
 
   return (
-    <Stack spacing={4}>
+    <div className="flex flex-col gap-4">
       <Field.Root>
         <Field.Label>Name:</Field.Label>
         <DebouncedTextInput
@@ -53,6 +52,6 @@ export const ScriptSettings = ({ options, onOptionsChange }: Props) => {
         onChange={handleCodeChange}
         withLineNumbers={true}
       />
-    </Stack>
+    </div>
   );
 };

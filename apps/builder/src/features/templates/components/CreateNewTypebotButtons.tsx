@@ -1,14 +1,8 @@
-import {
-  Heading,
-  Stack,
-  useColorModeValue,
-  useDisclosure,
-  VStack,
-} from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
 import type { Typebot } from "@typebot.io/typebot/schemas/typebot";
 import { Button } from "@typebot.io/ui/components/Button";
+import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
 import { Download01Icon } from "@typebot.io/ui/icons/Download01Icon";
 import { GridViewIcon } from "@typebot.io/ui/icons/GridViewIcon";
 import { LayoutBottomIcon } from "@typebot.io/ui/icons/LayoutBottomIcon";
@@ -25,7 +19,7 @@ export const CreateNewTypebotButtons = () => {
   const { workspace } = useWorkspace();
   const { user } = useUser();
   const router = useRouter();
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onOpen, onClose } = useOpenControls();
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -87,18 +81,10 @@ export const CreateNewTypebotButtons = () => {
   };
 
   return (
-    <VStack w="full" pt="20" spacing={10}>
-      <Stack
-        w="full"
-        maxW="650px"
-        p="10"
-        gap={10}
-        rounded="lg"
-        borderWidth={1}
-        bgColor={useColorModeValue("white", "gray.900")}
-      >
-        <Heading>{t("templates.buttons.heading")}</Heading>
-        <Stack w="full" spacing={6}>
+    <div className="flex flex-col items-center w-full pt-20 gap-10">
+      <div className="flex flex-col w-full max-w-[650px] p-10 gap-10 rounded-lg border bg-gray-1">
+        <h2>{t("templates.buttons.heading")}</h2>
+        <div className="flex flex-col w-full gap-6">
           <Button
             variant="outline-secondary"
             className="w-full py-8 text-lg [&_svg]:size-5 [&_svg]:text-blue-10"
@@ -129,15 +115,14 @@ export const CreateNewTypebotButtons = () => {
             <Download01Icon />
             {t("templates.buttons.importFileButton.label")}
           </ImportTypebotFromFileButton>
-        </Stack>
-      </Stack>
-
+        </div>
+      </div>
       <TemplatesDialog
         isOpen={isOpen}
         onClose={onClose}
         onTypebotChoose={handleCreateSubmit}
         isLoading={isLoading}
       />
-    </VStack>
+    </div>
   );
 };

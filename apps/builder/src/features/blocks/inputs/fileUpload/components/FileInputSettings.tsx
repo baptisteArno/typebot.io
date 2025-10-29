@@ -1,4 +1,3 @@
-import { Stack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import {
   defaultFileInputOptions,
@@ -86,7 +85,7 @@ export const FileInputSettings = ({ options, onOptionsChange }: Props) => {
     });
 
   return (
-    <Stack spacing={4}>
+    <div className="flex flex-col gap-4">
       <Field.Root className="flex-row items-center">
         <Switch
           checked={options?.isRequired ?? defaultFileInputOptions.isRequired}
@@ -139,7 +138,6 @@ export const FileInputSettings = ({ options, onOptionsChange }: Props) => {
           onSelectVariable={handleVariableChange}
         />
       </Field.Root>
-
       <Field.Root>
         <Field.Label>
           Visibility:
@@ -157,7 +155,6 @@ export const FileInputSettings = ({ options, onOptionsChange }: Props) => {
           items={fileVisibilityOptions}
         />
       </Field.Root>
-
       <Accordion.Root>
         <Accordion.Item>
           <Accordion.Trigger>
@@ -248,6 +245,6 @@ export const FileInputSettings = ({ options, onOptionsChange }: Props) => {
           </Accordion.Panel>
         </Accordion.Item>
       </Accordion.Root>
-    </Stack>
+    </div>
   );
 };

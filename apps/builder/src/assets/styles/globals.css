@@ -1,23 +1,29 @@
 @import "@typebot.io/ui/colors.css";
+@import "@typebot.io/ui/fonts.css";
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
+  --header-height: 56px;
   --spacing: 0.5rem;
 }
 
+* {
+  @apply border-gray-6;
+}
+
 h1 {
-  @apply text-4xl md:text-6xl;
+  @apply text-3xl;
 }
 
 h2 {
-  @apply text-4xl;
+  @apply text-2xl;
 }
 
 h3 {
-  @apply text-2xl;
+  @apply text-xl;
 }
 
 h1,
@@ -31,6 +37,14 @@ h6 {
 
 .text-align-inherit {
   text-align: inherit;
+}
+
+ol {
+  @apply list-decimal pl-4 flex flex-col gap-4 ms-4;
+}
+
+code {
+  @apply bg-gray-3 px-1 py-0.5 rounded-md text-sm text-gray-11;
 }
 
 /* Offset top position so that it is right below onboarding header */

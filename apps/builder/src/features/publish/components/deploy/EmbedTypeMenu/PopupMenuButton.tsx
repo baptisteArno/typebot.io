@@ -1,4 +1,3 @@
-import { Text } from "@chakra-ui/react";
 import type { ButtonProps } from "@typebot.io/ui/components/Button";
 import { Button } from "@typebot.io/ui/components/Button";
 import { cn } from "@typebot.io/ui/lib/cn";
@@ -29,12 +28,10 @@ export const PopupMenuButton = ({
     >
       <PopupIllustration />
       <div className="flex flex-col gap-1">
-        <Text fontSize="lg" fontWeight="medium">
-          Popup
-        </Text>
-        <Text textColor="gray.500" fontSize="sm" lineHeight={1.2}>
+        <p className="text-lg font-medium">Popup</p>
+        <p className="text-sm text-gray-500 leading-[1.2]">
           Embed in a popup on top of your website
-        </Text>
+        </p>
       </div>
     </Button>
   );

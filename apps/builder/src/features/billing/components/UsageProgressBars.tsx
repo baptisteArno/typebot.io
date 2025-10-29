@@ -1,8 +1,8 @@
-import { Flex, Heading, HStack, Progress, Stack, Text } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
 import { getChatsLimit } from "@typebot.io/billing/helpers/getChatsLimit";
 import { parseNumberWithCommas } from "@typebot.io/lib/utils";
+import { Progress } from "@typebot.io/ui/components/Progress";
 import { Skeleton } from "@typebot.io/ui/components/Skeleton";
 import type { WorkspaceInApp } from "@/features/workspace/WorkspaceProvider";
 import { trpc } from "@/lib/queryClient";
@@ -28,46 +28,38 @@ export const UsageProgressBars = ({ workspace }: Props) => {
       : Math.round((totalChatsUsed / workspaceChatsLimit) * 100);
 
   return (
-    <Stack spacing={6}>
-      <Heading fontSize="3xl">{t("billing.usage.heading")}</Heading>
-      <Stack spacing={3}>
-        <Flex justifyContent="space-between">
-          <HStack>
-            <Heading fontSize="xl" as="h3">
-              {t("billing.usage.chats.heading")}
-            </Heading>
-            <Text fontSize="sm" fontStyle="italic" color="gray.500">
+    <div className="flex flex-col gap-6">
+      <h2>{t("billing.usage.heading")}</h2>
+      <div className="flex flex-col gap-3">
+        <div className="flex justify-between">
+          <div className="flex items-center gap-2">
+            <h3 className="text-xl">{t("billing.usage.chats.heading")}</h3>
+            <p className="text-sm italic text-gray-9">
               {t("billing.usage.chats.resetsOn", {
                 date: data?.resetsAt.toLocaleDateString(),
               })}
-            </Text>
-          </HStack>
+            </p>
+          </div>
 
-          <HStack>
+          <div className="flex items-center gap-2">
             {isLoading ? (
               <Skeleton className="h-2 w-5" />
             ) : (
-              <Text fontWeight="bold">
+              <p className="font-bold">
                 {parseNumberWithCommas(totalChatsUsed)}
-              </Text>
+              </p>
             )}
-            <Text>
+            <p>
               /{" "}
               {workspaceChatsLimit === "inf"
                 ? t("billing.usage.unlimited")
                 : parseNumberWithCommas(workspaceChatsLimit)}
-            </Text>
-          </HStack>
-        </Flex>
+            </p>
+          </div>
+        </div>
 
-        <Progress
-          h="5px"
-          value={chatsPercentage}
-          rounded="full"
-          isIndeterminate={isLoading}
-          colorScheme="orange"
-        />
-      </Stack>
-    </Stack>
+        <Progress.Root value={chatsPercentage} />
+      </div>
+    </div>
   );
 };

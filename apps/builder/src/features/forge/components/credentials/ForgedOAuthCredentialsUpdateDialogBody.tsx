@@ -1,14 +1,7 @@
-import {
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  Stack,
-} from "@chakra-ui/react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import type { ForgedBlockDefinition } from "@typebot.io/forge-repository/definitions";
 import { Button } from "@typebot.io/ui/components/Button";
+import { Dialog } from "@typebot.io/ui/components/Dialog";
 import { Field } from "@typebot.io/ui/components/Field";
 import { Input } from "@typebot.io/ui/components/Input";
 import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
@@ -122,61 +115,59 @@ export const ForgedOAuthCredentialsUpdateDialogBody = ({
 
   if (!blockDef.auth) return null;
   return (
-    <ModalContent>
-      <ModalHeader>Add {blockDef.auth.name}</ModalHeader>
-      <ModalCloseButton />
-      <ModalBody as={Stack} spacing="4">
-        <Field.Root>
-          <Field.Label>
-            Label
-            <MoreInfoTooltip>{`Choose a name to identify this ${blockDef.auth.name}`}</MoreInfoTooltip>
-          </Field.Label>
-          <Input
-            onValueChange={setName}
-            defaultValue={name}
-            placeholder="My account"
-          />
-        </Field.Root>
-        {"defaultClientEnvKeys" in blockDef.auth ? (
-          <div className="flex gap-4 w-full items-center">
-            <p>OAuth app</p>
-            <div className="flex gap-2">
-              <Button
-                variant={tab === "default" ? "outline" : "ghost"}
-                onClick={() => setTab("default")}
-              >
-                Default
-              </Button>
-              <Button
-                variant={tab === "your-app" ? "outline" : "ghost"}
-                onClick={() => setTab("your-app")}
-              >
-                Yours
-              </Button>
-            </div>
+    <Dialog.Popup>
+      <Dialog.Title>Add {blockDef.auth.name}</Dialog.Title>
+      <Dialog.CloseButton />
+      <Field.Root>
+        <Field.Label>
+          Label
+          <MoreInfoTooltip>{`Choose a name to identify this ${blockDef.auth.name}`}</MoreInfoTooltip>
+        </Field.Label>
+        <Input
+          onValueChange={setName}
+          defaultValue={name}
+          placeholder="My account"
+        />
+      </Field.Root>
+      {"defaultClientEnvKeys" in blockDef.auth ? (
+        <div className="flex gap-4 w-full items-center">
+          <p>OAuth app</p>
+          <div className="flex gap-2">
+            <Button
+              variant={tab === "default" ? "outline" : "ghost"}
+              onClick={() => setTab("default")}
+            >
+              Default
+            </Button>
+            <Button
+              variant={tab === "your-app" ? "outline" : "ghost"}
+              onClick={() => setTab("your-app")}
+            >
+              Yours
+            </Button>
           </div>
-        ) : null}
-        {tab === "your-app" ? (
-          <div className="flex flex-col gap-2">
-            <span>Redirect URL</span>
-            <CopyInput value={`${document.location.origin}/oauth/redirect`} />
-            <Field.Root>
-              <Field.Label>Client ID</Field.Label>
-              <Input onValueChange={setClientId} defaultValue={clientId} />
-            </Field.Root>
-            <Field.Root>
-              <Field.Label>Client secret</Field.Label>
-              <Input
-                type="password"
-                onValueChange={setClientSecret}
-                defaultValue={clientSecret}
-              />
-            </Field.Root>
-          </div>
-        ) : null}
-      </ModalBody>
+        </div>
+      ) : null}
+      {tab === "your-app" ? (
+        <div className="flex flex-col gap-2">
+          <span>Redirect URL</span>
+          <CopyInput value={`${document.location.origin}/oauth/redirect`} />
+          <Field.Root>
+            <Field.Label>Client ID</Field.Label>
+            <Input onValueChange={setClientId} defaultValue={clientId} />
+          </Field.Root>
+          <Field.Root>
+            <Field.Label>Client secret</Field.Label>
+            <Input
+              type="password"
+              onValueChange={setClientSecret}
+              defaultValue={clientSecret}
+            />
+          </Field.Root>
+        </div>
+      ) : null}
 
-      <ModalFooter>
+      <Dialog.Footer>
         <Button
           variant="outline-secondary"
           onClick={openOAuthPopup}
@@ -190,7 +181,7 @@ export const ForgedOAuthCredentialsUpdateDialogBody = ({
           <blockDef.LightLogo />
           Connect
         </Button>
-      </ModalFooter>
-    </ModalContent>
+      </Dialog.Footer>
+    </Dialog.Popup>
   );
 };

@@ -1,4 +1,3 @@
-import { Text } from "@chakra-ui/react";
 import { Alert } from "@typebot.io/ui/components/Alert";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
 import { InformationSquareIcon } from "@typebot.io/ui/icons/InformationSquareIcon";
@@ -36,7 +35,7 @@ export const IframeDeployDialog = ({
         <StandardSettings
           onUpdateWindowSettings={(settings) => setInputValues({ ...settings })}
         />
-        <Text>Paste this anywhere in your HTML code:</Text>
+        <p>Paste this anywhere in your HTML code:</p>
 
         <IframeSnippet
           widthLabel={inputValues.widthLabel ?? "100%"}

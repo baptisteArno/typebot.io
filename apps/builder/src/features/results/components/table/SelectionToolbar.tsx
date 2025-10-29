@@ -1,14 +1,9 @@
-import {
-  HStack,
-  Text,
-  useColorModeValue,
-  useDisclosure,
-} from "@chakra-ui/react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { parseUniqueKey } from "@typebot.io/lib/parseUniqueKey";
 import { byId } from "@typebot.io/lib/utils";
 import { parseColumnsOrder } from "@typebot.io/results/parseColumnsOrder";
 import { Button } from "@typebot.io/ui/components/Button";
+import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
 import { Download01Icon } from "@typebot.io/ui/icons/Download01Icon";
 import { TrashIcon } from "@typebot.io/ui/icons/TrashIcon";
 import { unparse } from "papaparse";
@@ -28,10 +23,9 @@ export const SelectionToolbar = ({
   selectedResultsId,
   onClearSelection,
 }: Props) => {
-  const selectLabelColor = useColorModeValue("blue.500", "blue.200");
   const { typebot } = useTypebot();
   const { resultHeader, tableData, onDeleteResults } = useResults();
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onOpen, onClose } = useOpenControls();
   const [isDeleteLoading, setIsDeleteLoading] = useState(false);
   const [isExportLoading, setIsExportLoading] = useState(false);
   const queryClient = useQueryClient();
@@ -130,11 +124,10 @@ export const SelectionToolbar = ({
   if (totalSelected === 0) return null;
 
   return (
-    <HStack rounded="md" spacing={0}>
+    <div className="flex items-center rounded-md gap-0">
       <Button
         variant="secondary"
-        color={selectLabelColor}
-        className="border-r rounded-r-none"
+        className="border-r rounded-r-none text-orange-9"
         onClick={onClearSelection}
         size="sm"
       >
@@ -160,7 +153,6 @@ export const SelectionToolbar = ({
       >
         <TrashIcon />
       </Button>
-
       <ConfirmDialog
         isOpen={isOpen}
         onConfirm={deleteResults}
@@ -168,15 +160,15 @@ export const SelectionToolbar = ({
         actionType="destructive"
         confirmButtonLabel="Delete"
       >
-        <Text>
+        <p>
           You are about to delete{" "}
           <strong>
             {totalSelected} submission
             {totalSelected > 1 ? "s" : ""}
           </strong>
           . Are you sure you wish to continue?
-        </Text>
+        </p>
       </ConfirmDialog>
-    </HStack>
+    </div>
   );
 };

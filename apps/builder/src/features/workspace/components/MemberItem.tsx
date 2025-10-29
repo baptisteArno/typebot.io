@@ -1,8 +1,9 @@
-import { Avatar, HStack, Stack, Text } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { WorkspaceRole } from "@typebot.io/prisma/enum";
+import { Avatar } from "@typebot.io/ui/components/Avatar";
 import { Badge } from "@typebot.io/ui/components/Badge";
 import { Menu } from "@typebot.io/ui/components/Menu";
+import { cx } from "@typebot.io/ui/lib/cva";
 import { convertWorkspaceRoleToReadable } from "./AddMemberForm";
 
 type Props = {
@@ -76,28 +77,28 @@ export const MemberIdentityContent = ({
   const { t } = useTranslate();
 
   return (
-    <HStack justifyContent="space-between" maxW="full" p="2">
-      <HStack minW={0} spacing="4">
-        <Avatar name={name} src={image} size="sm" />
-        <Stack spacing={0} minW="0">
-          {name && (
-            <Text textAlign="left" fontSize="15px">
-              {name}
-            </Text>
-          )}
-          <Text
-            color="gray.500"
-            fontSize={name ? "14px" : "inherit"}
-            noOfLines={1}
+    <div className="flex items-center gap-2 justify-between max-w-full p-2">
+      <div className="flex items-center min-w-0 gap-4">
+        <Avatar.Root className="size-12">
+          <Avatar.Image src={image} alt="User" />
+          <Avatar.Fallback>{name?.charAt(0)}</Avatar.Fallback>
+        </Avatar.Root>
+        <div className="flex flex-col gap-0 min-w-0">
+          {name && <p className="text-left text-[15px]">{name}</p>}
+          <p
+            className={cx(
+              "truncate text-gray-9",
+              name ? "text-sm" : "text-base",
+            )}
           >
             {email}
-          </Text>
-        </Stack>
-      </HStack>
-      <HStack flexShrink={0}>
+          </p>
+        </div>
+      </div>
+      <div className="flex items-center gap-2 flex-shrink-0">
         {isGuest && <Badge className="text-gray-8">{t("pending")}</Badge>}
         <Badge>{tag}</Badge>
-      </HStack>
-    </HStack>
+      </div>
+    </div>
   );
 };

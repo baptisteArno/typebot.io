@@ -1,4 +1,3 @@
-import { Flex, useColorModeValue } from "@chakra-ui/react";
 import { LoaderCircleIcon } from "@typebot.io/ui/icons/LoaderCircleIcon";
 import { Seo } from "@/components/Seo";
 import { Graph } from "@/features/graph/components/Graph";
@@ -9,6 +8,7 @@ import { PreviewDrawer } from "@/features/preview/components/PreviewDrawer";
 import { VariablesDrawer } from "@/features/preview/components/VariablesDrawer";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { useRightPanel } from "@/hooks/useRightPanel";
+import { useThemeValue } from "@/hooks/useThemeValue";
 import { EditorProvider } from "../providers/EditorProvider";
 import { useTypebot } from "../providers/TypebotProvider";
 import { BlocksSideBar } from "./BlocksSideBar";
@@ -18,30 +18,30 @@ import { TypebotHeader } from "./TypebotHeader";
 export const EditorPage = () => {
   const { typebot, currentUserMode } = useTypebot();
   const { workspace } = useWorkspace();
-  const backgroundImage = useColorModeValue(
-    "radial-gradient(var(--chakra-colors-gray-300), 1px, transparent 0)",
-    "radial-gradient(#2f2f39 1px, transparent 0)",
+  const backgroundImage = useThemeValue(
+    "radial-gradient(rgb(var(--gray-7)) 1px, transparent 0)",
+    "radial-gradient(rgb(var(--gray-5)) 1px, transparent 0)",
   );
-  const bgColor = useColorModeValue("gray.100", "gray.900");
 
   const isSuspicious = typebot?.riskLevel === 100 && !workspace?.isVerified;
 
   return (
     <EditorProvider>
       <Seo title={typebot?.name ? `${typebot.name} | Editor` : "Editor"} />
-      <Flex overflow="clip" h="100vh" flexDir="column" id="editor-container">
+      <div
+        className="flex overflow-clip h-screen flex-col"
+        id="editor-container"
+      >
         <VideoOnboardingFloatingWindow type="editor" />
         {isSuspicious && <SuspectedTypebotBanner typebotId={typebot.id} />}
         <TypebotHeader />
-        <Flex
-          flex="1"
-          pos="relative"
-          overflow="clip"
-          h="full"
-          bgColor={bgColor}
-          backgroundImage={backgroundImage}
-          backgroundSize="40px 40px"
-          backgroundPosition="-19px -19px"
+        <div
+          className="flex flex-1 relative overflow-clip h-full bg-gray-3 dark:bg-gray-2"
+          style={{
+            backgroundImage: backgroundImage,
+            backgroundSize: "40px 40px",
+            backgroundPosition: "-19px -19px",
+          }}
         >
           {typebot ? (
             <GraphDndProvider>
@@ -50,19 +50,19 @@ export const EditorPage = () => {
                   currentUserMode === "read" || currentUserMode === "guest"
                 }
               >
-                <Graph flex="1" typebot={typebot} key={typebot.id} />
+                <Graph className="flex-1" typebot={typebot} key={typebot.id} />
 
                 <RightPanel />
               </GraphProvider>
               {currentUserMode === "write" && <BlocksSideBar />}
             </GraphDndProvider>
           ) : (
-            <Flex justify="center" align="center" boxSize="full">
+            <div className="flex justify-center items-center size-full">
               <LoaderCircleIcon className="animate-spin" />
-            </Flex>
+            </div>
           )}
-        </Flex>
-      </Flex>
+        </div>
+      </div>
     </EditorProvider>
   );
 };

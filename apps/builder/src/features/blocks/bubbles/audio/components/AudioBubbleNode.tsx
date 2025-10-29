@@ -1,4 +1,3 @@
-import { Text } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import type { AudioBubbleBlock } from "@typebot.io/blocks-bubbles/audio/schema";
 import { isDefined } from "@typebot.io/lib/utils";
@@ -16,9 +15,9 @@ export const AudioBubbleNode = ({ url }: Props) => {
   const variable = typebot ? findUniqueVariable(typebot?.variables)(url) : null;
   return isDefined(url) ? (
     variable ? (
-      <Text>
+      <p>
         Play <VariableTag variableName={variable.name} />
-      </Text>
+      </p>
     ) : (
       <audio
         src={url}
@@ -27,6 +26,6 @@ export const AudioBubbleNode = ({ url }: Props) => {
       />
     )
   ) : (
-    <Text color={"gray.500"}>{t("clickToEdit")}</Text>
+    <p color={"gray.500"}>{t("clickToEdit")}</p>
   );
 };

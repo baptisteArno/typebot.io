@@ -1,4 +1,3 @@
-import { Code, ListItem, OrderedList, Stack, Text } from "@chakra-ui/react";
 import type { BubbleProps } from "@typebot.io/js";
 import { useState } from "react";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
@@ -16,13 +15,13 @@ export const ShopifyBubbleInstructions = () => {
     useState<BubbleProps["previewMessage"]>();
 
   return (
-    <OrderedList spacing={4} pl={5}>
-      <ListItem>
-        On your shop dashboard in the <Code>Themes</Code> page, click on{" "}
-        <Code>Actions {">"} Edit code</Code>
-      </ListItem>
-      <ListItem>
-        <Stack spacing={4}>
+    <ol>
+      <li>
+        On your shop dashboard in the <code>Themes</code> page, click on{" "}
+        <code>Actions {">"} Edit code</code>
+      </li>
+      <li>
+        <div className="flex flex-col gap-4">
           <BubbleSettings
             previewMessage={previewMessage}
             defaultPreviewMessageAvatar={
@@ -32,16 +31,16 @@ export const ShopifyBubbleInstructions = () => {
             onPreviewMessageChange={setPreviewMessage}
             onThemeChange={setTheme}
           />
-          <Text>
-            In <Code>Layout {">"} theme.liquid</Code> file, paste this code just
-            before the closing <Code>{"<head>"}</Code> tag:
-          </Text>
+          <p>
+            In <code>Layout {">"} theme.liquid</code> file, paste this code just
+            before the closing <code>{"<head>"}</code> tag:
+          </p>
           <JavascriptBubbleSnippet
             theme={theme}
             previewMessage={previewMessage}
           />
-        </Stack>
-      </ListItem>
-    </OrderedList>
+        </div>
+      </li>
+    </ol>
   );
 };

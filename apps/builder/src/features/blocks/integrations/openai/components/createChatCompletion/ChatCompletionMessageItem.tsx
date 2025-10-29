@@ -1,4 +1,3 @@
-import { HStack, Stack, Text } from "@chakra-ui/react";
 import {
   chatCompletionMessageCustomRoles,
   chatCompletionMessageRoles,
@@ -48,7 +47,7 @@ export const ChatCompletionMessageItem = ({ item, onItemChange }: Props) => {
   };
 
   return (
-    <Stack p="4" rounded="md" flex="1" borderWidth="1px">
+    <div className="flex flex-col gap-2 p-4 rounded-md flex-1 border">
       <BasicSelect
         value={item.role}
         onChange={changeRole}
@@ -64,7 +63,7 @@ export const ChatCompletionMessageItem = ({ item, onItemChange }: Props) => {
         onChangeDialogueVariableId={updateDialogueVariableId}
         onStartsByChange={updateStartsBy}
       />
-    </Stack>
+    </div>
   );
 };
 
@@ -95,21 +94,21 @@ const ChatCompletionMessageItemContent = ({
       );
     case "Dialogue":
       return (
-        <Stack alignItems="flex-end">
+        <div className="flex flex-col gap-2 items-end">
           <VariablesCombobox
             initialVariableId={item.dialogueVariableId}
             onSelectVariable={onChangeDialogueVariableId}
             placeholder="Dialogue variable"
           />
-          <HStack>
-            <Text>starts by</Text>
+          <div className="flex items-center gap-2">
+            <p>starts by</p>
             <BasicSelect
               value={item.startsBy ?? "user"}
               onChange={onStartsByChange}
               items={["user", "assistant"]}
             />
-          </HStack>
-        </Stack>
+          </div>
+        </div>
       );
     case "Messages sequence ✨":
       return null;

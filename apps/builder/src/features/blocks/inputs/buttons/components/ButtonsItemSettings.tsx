@@ -1,4 +1,3 @@
-import { Stack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import type { ButtonItem } from "@typebot.io/blocks-inputs/choice/schema";
 import { LogicalOperator } from "@typebot.io/conditions/constants";
@@ -42,7 +41,7 @@ export const ButtonsItemSettings = ({ item, onSettingsChange }: Props) => {
     });
 
   return (
-    <Stack spacing={4}>
+    <div className="flex flex-col gap-4">
       <Field.Container>
         <Field.Root className="flex-row items-center">
           <Switch
@@ -82,6 +81,6 @@ export const ButtonsItemSettings = ({ item, onSettingsChange }: Props) => {
           onValueChange={updateButtonValue}
         />
       </Field.Root>
-    </Stack>
+    </div>
   );
 };

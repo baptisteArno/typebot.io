@@ -1,4 +1,3 @@
-import { Stack } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import type { timeFilterValues } from "@/features/analytics/constants";
@@ -49,7 +48,7 @@ export const ResultsTableContainer = ({
   }, [query.id]);
 
   return (
-    <Stack pb="28" px={["4", "0"]} spacing="4" maxW="1600px" w="full">
+    <div className="flex flex-col pb-28 gap-4 max-w-[1600px] w-full px-4 sm:px-0">
       {publishedTypebot && (
         <LogsDialog
           typebotId={publishedTypebot?.typebotId}
@@ -61,7 +60,6 @@ export const ResultsTableContainer = ({
         resultId={expandedResultId}
         onClose={handleResultDialogClose}
       />
-
       {typebot && (
         <ResultsTable
           preferences={typebot.resultsTablePreferences ?? undefined}
@@ -75,6 +73,6 @@ export const ResultsTableContainer = ({
           onTimeFilterChange={onTimeFilterChange}
         />
       )}
-    </Stack>
+    </div>
   );
 };

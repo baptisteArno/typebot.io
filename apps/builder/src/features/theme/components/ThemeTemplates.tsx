@@ -1,4 +1,3 @@
-import { HStack, Stack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import type { ThemeTemplate } from "@typebot.io/theme/schemas";
 import type { TypebotV6 } from "@typebot.io/typebot/schemas/typebot";
@@ -31,8 +30,8 @@ export const ThemeTemplates = ({
   const [selectedTab, setSelectedTab] = useState<Tab>("my-templates");
 
   return (
-    <Stack spacing={4}>
-      <HStack>
+    <div className="flex flex-col gap-4">
+      <div className="flex items-center gap-2">
         <Button
           variant={selectedTab === "my-templates" ? "outline" : "ghost"}
           onClick={() => setSelectedTab("my-templates")}
@@ -45,7 +44,7 @@ export const ThemeTemplates = ({
         >
           {t("theme.sideMenu.template.gallery")}
         </Button>
-      </HStack>
+      </div>
       <ThemeTemplatesBody
         tab={selectedTab}
         currentTheme={currentTheme}
@@ -54,7 +53,7 @@ export const ThemeTemplates = ({
         selectedTemplateId={selectedTemplateId}
         onTemplateSelect={onTemplateSelect}
       />
-    </Stack>
+    </div>
   );
 };
 

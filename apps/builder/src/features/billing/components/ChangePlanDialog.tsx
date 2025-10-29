@@ -1,4 +1,3 @@
-import { HStack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { Alert } from "@typebot.io/ui/components/Alert";
 import { Button } from "@typebot.io/ui/components/Button";
@@ -49,11 +48,11 @@ export const ChangePlanDialog = ({
         )}
 
         <Dialog.Footer>
-          <HStack>
+          <div className="flex items-center gap-2">
             <Button variant="secondary" onClick={onClose}>
               {t("cancel")}
             </Button>
-          </HStack>
+          </div>
         </Dialog.Footer>
       </Dialog.Popup>
     </Dialog.Root>

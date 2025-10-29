@@ -1,4 +1,3 @@
-import { HStack, Stack } from "@chakra-ui/react";
 import type { BlockV6 } from "@typebot.io/blocks-core/schemas/schema";
 import type { Credentials } from "@typebot.io/credentials/schemas";
 import { forgedBlocks } from "@typebot.io/forge-repository/definitions";
@@ -51,9 +50,9 @@ export const GroupTitlesAutoGenForm = ({
   };
 
   return (
-    <Stack>
-      <HStack>
-        <HStack>
+    <div className="flex flex-col gap-2">
+      <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2">
           <Field.Root className="flex-row items-center">
             <Field.Label>Provider:</Field.Label>
             <BasicSelect
@@ -73,7 +72,7 @@ export const GroupTitlesAutoGenForm = ({
               onChange={updateProvider}
             />
           </Field.Root>
-        </HStack>
+        </div>
         {provider && (
           <CredentialsDropdown
             scope={{ type: "user", userId }}
@@ -88,7 +87,7 @@ export const GroupTitlesAutoGenForm = ({
           />
         )}
         {blockDef && credentialsId && actionDef?.aiGenerate && (
-          <HStack gap={0}>
+          <div className="flex items-center gap-0">
             {actionDef.aiGenerate.models.type === "dynamic" ? (
               <ForgeSelectInput
                 defaultValue={model}
@@ -118,9 +117,9 @@ export const GroupTitlesAutoGenForm = ({
             <MoreInfoTooltip>
               We recommend choosing a small model for this feature
             </MoreInfoTooltip>
-          </HStack>
+          </div>
         )}
-      </HStack>
+      </div>
       <Field.Root>
         <Field.Label>Prompt:</Field.Label>
         <Field.Control
@@ -146,6 +145,6 @@ export const GroupTitlesAutoGenForm = ({
         }}
         onSubmit={updateCredentialsId}
       />
-    </Stack>
+    </div>
   );
 };

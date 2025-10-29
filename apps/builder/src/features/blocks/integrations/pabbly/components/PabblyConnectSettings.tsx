@@ -1,4 +1,3 @@
-import { Stack } from "@chakra-ui/react";
 import type { HttpRequest } from "@typebot.io/blocks-integrations/httpRequest/schema";
 import type { PabblyConnectBlock } from "@typebot.io/blocks-integrations/pabblyConnect/schema";
 import { Alert } from "@typebot.io/ui/components/Alert";
@@ -44,8 +43,8 @@ export const PabblyConnectSettings = ({
   };
 
   return (
-    <Stack spacing={0}>
-      <Stack spacing={4}>
+    <div className="flex flex-col gap-0">
+      <div className="flex flex-col gap-4">
         {url ? (
           <Alert.Root variant="success">
             <CheckmarkSquare02Icon />
@@ -84,8 +83,8 @@ export const PabblyConnectSettings = ({
           onOptionsChange={onOptionsChange}
           onNewTestResponse={handleNewTestResponse}
         />
-      </Stack>
+      </div>
       <div ref={bottomRef} />
-    </Stack>
+    </div>
   );
 };

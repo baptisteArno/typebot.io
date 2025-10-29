@@ -96,7 +96,7 @@ const nextConfig = {
               "script-src 'self' 'unsafe-inline' 'unsafe-eval' https:",
               "style-src 'self' 'unsafe-inline' https:",
               `connect-src 'self' https: wss:${
-                isDev ? " http://localhost:*" : ""
+                isDev ? " http://localhost:* ws://localhost:*" : ""
               }`,
               "frame-src 'self' https:",
               `img-src 'self' data: blob: https:${isDev ? " http://localhost:*" : ""}`,

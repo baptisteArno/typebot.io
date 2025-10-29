@@ -1,4 +1,3 @@
-import { Stack, Text } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { defaultVideoBubbleContent } from "@typebot.io/blocks-bubbles/video/constants";
 import type { VideoBubbleBlock } from "@typebot.io/blocks-bubbles/video/schema";
@@ -50,18 +49,18 @@ export const VideoLinkEmbedContent = ({
 
   return (
     <div className="flex flex-col gap-4">
-      <Stack py="2">
+      <div className="flex flex-col gap-2 py-2">
         <DebouncedTextInputWithVariablesButton
           placeholder={t("video.urlInput.placeholder")}
           defaultValue={content?.url ?? ""}
           onValueChange={updateUrl}
         />
-        <Text fontSize="xs" color="gray.400" textAlign="center">
+        <p className="text-xs text-center" color="gray.400">
           {t("video.urlInput.helperText")}
-        </Text>
-      </Stack>
+        </p>
+      </div>
       {content?.url && (
-        <Stack>
+        <div className="flex flex-col gap-2">
           <Field.Root className="flex-row items-center">
             <Field.Label>
               {t("video.aspectRatioInput.label")}
@@ -90,7 +89,7 @@ export const VideoLinkEmbedContent = ({
               onValueChange={updateMaxWidth}
             />
           </Field.Root>
-        </Stack>
+        </div>
       )}
       {content?.url && content?.type === "url" && (
         <Field.Root className="flex-row">

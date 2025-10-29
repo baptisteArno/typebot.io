@@ -1,4 +1,3 @@
-import { HStack, Text } from "@chakra-ui/react";
 import { Plan } from "@typebot.io/prisma/enum";
 import { TextLink } from "@/components/TextLink";
 import { useUser } from "@/features/user/hooks/useUser";
@@ -14,17 +13,8 @@ export const SuspectedTypebotBanner = ({ typebotId }: Props) => {
   if (!user?.email || !workspace) return null;
 
   return (
-    <HStack
-      bgColor="red.500"
-      w="full"
-      zIndex={1000}
-      color="white"
-      justifyContent="center"
-      fontSize="sm"
-      textAlign="center"
-      py="2"
-    >
-      <Text fontWeight="bold">
+    <div className="flex items-center gap-2 w-full justify-center text-sm text-center py-2 bg-red-9 z-50 text-white">
+      <p className="font-bold">
         Our anti-scam system flagged your typebot. It is currently being
         reviewed manually.
         {workspace?.plan !== Plan.FREE ? (
@@ -41,7 +31,7 @@ export const SuspectedTypebotBanner = ({ typebotId }: Props) => {
             .
           </>
         ) : null}
-      </Text>
-    </HStack>
+      </p>
+    </div>
   );
 };

@@ -1,4 +1,3 @@
-import { Code, ListItem, OrderedList, Stack, Text } from "@chakra-ui/react";
 import { useState } from "react";
 import { CodeEditor } from "@/components/inputs/CodeEditor";
 import { TextLink } from "@/components/TextLink";
@@ -25,35 +24,35 @@ export const WordpressPopupInstructions = ({
   });
 
   return (
-    <OrderedList spacing={4} pl={5}>
-      <ListItem>
+    <ol>
+      <li>
         Install{" "}
         <TextLink href="https://wordpress.org/plugins/typebot/" isExternal>
           the official Typebot WordPress plugin
         </TextLink>
-      </ListItem>
-      <ListItem>
-        Set <Code>Library version</Code> to{" "}
-        <Code>
+      </li>
+      <li>
+        Set <code>Library version</code> to{" "}
+        <code>
           {isCloudProdInstance()
             ? typebotCloudLibraryVersion
             : packageJson.version}
-        </Code>
-      </ListItem>
-      <ListItem>
-        <Stack spacing={4}>
+        </code>
+      </li>
+      <li>
+        <div className="flex flex-col gap-4">
           <PopupSettings
             onUpdateSettings={(settings) =>
               setAutoShowDelay(settings.autoShowDelay)
             }
           />
-          <Text>
+          <p>
             You can now place the following code snippet in the Typebot panel in
             your WordPress admin:
-          </Text>
+          </p>
           <CodeEditor value={initCode} lang="javascript" isReadOnly />
-        </Stack>
-      </ListItem>
-    </OrderedList>
+        </div>
+      </li>
+    </ol>
   );
 };

@@ -1,30 +1,30 @@
-import { HStack, type StackProps, useColorModeValue } from "@chakra-ui/react";
 import type { TDraggableEvent } from "@typebot.io/events/schemas";
+import { cn } from "@typebot.io/ui/lib/cn";
 import { EventIcon } from "./EventIcon";
 import { EventLabel } from "./EventLabel";
 
 export const EventCardOverlay = ({
   type,
-  ...props
-}: StackProps & { type: TDraggableEvent["type"] }) => {
+  className,
+  style,
+  onMouseUp,
+}: {
+  type: TDraggableEvent["type"];
+  className?: string;
+  style?: React.CSSProperties;
+  onMouseUp: () => void;
+}) => {
   return (
-    <HStack
-      borderWidth="1px"
-      rounded="lg"
-      cursor={"grabbing"}
-      w="147px"
-      transition="none"
-      pointerEvents="none"
-      px="4"
-      py="2"
-      borderColor={useColorModeValue("gray.200", "gray.900")}
-      bgColor={useColorModeValue("gray.50", "gray.900")}
-      shadow="xl"
-      zIndex={2}
-      {...props}
+    <div
+      className={cn(
+        "flex items-center gap-2 border rounded-lg w-[147px] px-4 py-2 shadow-xl cursor-grabbing transition-none pointer-events-none z-10 border-gray-9 bg-gray-1",
+        className,
+      )}
+      onMouseUp={onMouseUp}
+      style={style}
     >
       <EventIcon type={type} />
       <EventLabel type={type} />
-    </HStack>
+    </div>
   );
 };

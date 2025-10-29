@@ -1,4 +1,3 @@
-import { Code, ListItem, OrderedList, Stack, Text } from "@chakra-ui/react";
 import type { BubbleProps } from "@typebot.io/js";
 import { useState } from "react";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
@@ -15,18 +14,18 @@ export const GtmBubbleInstructions = () => {
     useState<BubbleProps["previewMessage"]>();
 
   return (
-    <OrderedList spacing={4} pl={5}>
-      <ListItem>
-        On your GTM account dashboard, click on <Code>Add a new tag</Code>
-      </ListItem>
-      <ListItem>
-        Choose <Code>Custom HTML</Code> tag type
-      </ListItem>
-      <ListItem>
-        Check <Code>Support document.write</Code>
-      </ListItem>
-      <ListItem>
-        <Stack spacing={4}>
+    <ol>
+      <li>
+        On your GTM account dashboard, click on <code>Add a new tag</code>
+      </li>
+      <li>
+        Choose <code>Custom HTML</code> tag type
+      </li>
+      <li>
+        Check <code>Support document.write</code>
+      </li>
+      <li>
+        <div className="flex flex-col gap-4">
           <BubbleSettings
             theme={theme}
             previewMessage={previewMessage}
@@ -36,13 +35,13 @@ export const GtmBubbleInstructions = () => {
             onThemeChange={setTheme}
             onPreviewMessageChange={setPreviewMessage}
           />
-          <Text>Paste the code below:</Text>
+          <p>Paste the code below:</p>
           <JavascriptBubbleSnippet
             theme={theme}
             previewMessage={previewMessage}
           />
-        </Stack>
-      </ListItem>
-    </OrderedList>
+        </div>
+      </li>
+    </ol>
   );
 };

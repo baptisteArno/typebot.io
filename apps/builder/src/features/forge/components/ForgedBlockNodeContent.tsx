@@ -1,9 +1,9 @@
-import { Stack, Text } from "@chakra-ui/react";
 import { BubbleBlockType } from "@typebot.io/blocks-bubbles/constants";
 import type { BlockIndices } from "@typebot.io/blocks-core/schemas/schema";
 import type { ForgedBlock } from "@typebot.io/forge-repository/schemas";
 import { Tooltip } from "@typebot.io/ui/components/Tooltip";
 import { ZapIcon } from "@typebot.io/ui/icons/ZapIcon";
+import { cn } from "@typebot.io/ui/lib/cn";
 import { useMemo } from "react";
 import { SetVariableLabel } from "@/components/SetVariableLabel";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
@@ -51,14 +51,19 @@ export const ForgedBlockNodeContent = ({ block, indices }: Props) => {
   const isConfigured =
     block.options?.action && (!blockDef?.auth || block.options.credentialsId);
   return (
-    <Stack>
-      <Text color={isConfigured ? "currentcolor" : "gray.500"} noOfLines={1}>
+    <div className="flex flex-col gap-2">
+      <p
+        className={cn(
+          "truncate",
+          isConfigured ? "text-gray-12" : "text-gray-9",
+        )}
+      >
         {isConfigured
           ? actionDef?.parseBlockNodeLabel
             ? actionDef.parseBlockNodeLabel(block.options)
             : block.options.action
           : "Configure..."}
-      </Text>
+      </p>
       {typebot &&
         isConfigured &&
         setVariableIds.map((variableId, idx) => (
@@ -76,6 +81,6 @@ export const ForgedBlockNodeContent = ({ block, indices }: Props) => {
           <Tooltip.Popup>Text bubble content will be streamed</Tooltip.Popup>
         </Tooltip.Root>
       )}
-    </Stack>
+    </div>
   );
 };

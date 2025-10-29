@@ -1,4 +1,3 @@
-import { Stack } from "@chakra-ui/react";
 import type {
   HttpRequest,
   HttpRequestBlock,
@@ -36,8 +35,8 @@ export const HttpRequestSettings = ({
   };
 
   return (
-    <Stack spacing={0}>
-      <Stack spacing={4}>
+    <div className="flex flex-col gap-0">
+      <div className="flex flex-col gap-4">
         <DebouncedTextInputWithVariablesButton
           placeholder="Paste URL..."
           defaultValue={options?.webhook?.url}
@@ -51,8 +50,8 @@ export const HttpRequestSettings = ({
           onOptionsChange={onOptionsChange}
           onNewTestResponse={handleNewTestResponse}
         />
-      </Stack>
+      </div>
       <div ref={bottomRef} />
-    </Stack>
+    </div>
   );
 };

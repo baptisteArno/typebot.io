@@ -1,4 +1,3 @@
-import { Stack } from "@chakra-ui/react";
 import { defaultWaitOptions } from "@typebot.io/blocks-logic/wait/constants";
 import type { WaitBlock } from "@typebot.io/blocks-logic/wait/schema";
 import { Accordion } from "@typebot.io/ui/components/Accordion";
@@ -22,7 +21,7 @@ export const WaitSettings = ({ options, onOptionsChange }: Props) => {
   };
 
   return (
-    <Stack spacing={4}>
+    <div className="flex flex-col gap-4">
       <Field.Root>
         <Field.Label>Seconds to wait for:</Field.Label>
         <DebouncedTextInputWithVariablesButton
@@ -50,6 +49,6 @@ export const WaitSettings = ({ options, onOptionsChange }: Props) => {
           </Accordion.Panel>
         </Accordion.Item>
       </Accordion.Root>
-    </Stack>
+    </div>
   );
 };

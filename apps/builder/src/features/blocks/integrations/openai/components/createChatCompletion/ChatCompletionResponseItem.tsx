@@ -1,4 +1,3 @@
-import { Stack } from "@chakra-ui/react";
 import {
   chatCompletionResponseValues,
   defaultOpenAIResponseMappingItem,
@@ -26,7 +25,7 @@ export const ChatCompletionResponseItem = ({ item, onItemChange }: Props) => {
   };
 
   return (
-    <Stack p="4" rounded="md" flex="1" borderWidth="1px">
+    <div className="flex flex-col gap-2 p-4 rounded-md flex-1 border">
       <BasicSelect
         value={item.valueToExtract}
         defaultValue={defaultOpenAIResponseMappingItem.valueToExtract}
@@ -37,6 +36,6 @@ export const ChatCompletionResponseItem = ({ item, onItemChange }: Props) => {
         onSelectVariable={changeVariableId}
         initialVariableId={item.variableId}
       />
-    </Stack>
+    </div>
   );
 };

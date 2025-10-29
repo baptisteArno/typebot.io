@@ -1,4 +1,3 @@
-import { HStack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { BubbleBlockType } from "@typebot.io/blocks-bubbles/constants";
 import { isForgedBlockType } from "@typebot.io/blocks-core/helpers";
@@ -53,14 +52,14 @@ export const BlockCard = (
           tooltip={t("blocks.inputs.fileUpload.blockCard.tooltip")}
         >
           <BlockIcon type={props.type} />
-          <HStack>
+          <div className="flex items-center gap-2">
             <BlockLabel type={props.type} />
             {isFreePlan(workspace) && (
               <Badge colorScheme="orange">
                 <SquareLock01Icon />
               </Badge>
             )}
-          </HStack>
+          </div>
         </BlockCardLayout>
       );
     case LogicBlockType.SCRIPT:

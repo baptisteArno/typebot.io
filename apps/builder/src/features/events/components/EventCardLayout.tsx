@@ -1,6 +1,6 @@
-import { Flex, HStack, useColorModeValue } from "@chakra-ui/react";
 import type { TDraggableEvent, TEvent } from "@typebot.io/events/schemas";
 import { Tooltip } from "@typebot.io/ui/components/Tooltip";
+import { cx } from "@typebot.io/ui/lib/cva";
 import { useEffect, useState } from "react";
 import { useBlockDnd } from "@/features/graph/providers/GraphDndProvider";
 
@@ -35,27 +35,21 @@ export const EventCardLayout = ({
     <Tooltip.Root disabled={!tooltip}>
       <Tooltip.Trigger
         render={
-          <Flex pos="relative">
-            <HStack
-              borderWidth="1px"
-              borderColor={useColorModeValue("gray.200", "gray.800")}
-              rounded="lg"
-              flex="1"
-              cursor={isDisabled ? "not-allowed" : "grab"}
-              minH={isMouseDown ? "42px" : undefined}
-              opacity={isMouseDown || isDisabled ? "0.4" : "1"}
-              onMouseDown={handleMouseDown}
-              px="4"
-              py="2"
-              _hover={useColorModeValue(
-                { shadow: isDisabled ? undefined : "md" },
-                { bgColor: "gray.900" },
+          <div className="flex relative">
+            <div
+              className={cx(
+                "flex items-center gap-2 border rounded-lg flex-1 px-4 py-2 bg-gray-1 transition-[box-shadow,background-color]",
+                isMouseDown ? "min-h-[42px]" : undefined,
+                isDisabled
+                  ? "cursor-not-allowed"
+                  : "cursor-grab hover:shadow-md",
+                isMouseDown || isDisabled ? "opacity-40" : "opacity-100",
               )}
-              transition="box-shadow 200ms, background-color 200ms"
+              onMouseDown={handleMouseDown}
             >
               {!isMouseDown ? children : null}
-            </HStack>
-          </Flex>
+            </div>
+          </div>
         }
       />
       <Tooltip.Popup>{tooltip}</Tooltip.Popup>

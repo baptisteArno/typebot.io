@@ -1,4 +1,3 @@
-import { Code, ListItem, OrderedList, Stack, Text } from "@chakra-ui/react";
 import { useState } from "react";
 import { PopupSettings } from "../../../settings/PopupSettings";
 import { JavascriptPopupSnippet } from "../../javascript/JavascriptPopupSnippet";
@@ -7,27 +6,27 @@ export const GtmPopupInstructions = () => {
   const [inputValue, setInputValue] = useState<number>();
 
   return (
-    <OrderedList spacing={4} pl={5}>
-      <ListItem>
-        On your GTM account dashboard, click on <Code>Add a new tag</Code>
-      </ListItem>
-      <ListItem>
-        Choose <Code>Custom HTML</Code> tag type
-      </ListItem>
-      <ListItem>
-        Check <Code>Support document.write</Code>
-      </ListItem>
-      <ListItem>
-        <Stack spacing={4}>
+    <ol>
+      <li>
+        On your GTM account dashboard, click on <code>Add a new tag</code>
+      </li>
+      <li>
+        Choose <code>Custom HTML</code> tag type
+      </li>
+      <li>
+        Check <code>Support document.write</code>
+      </li>
+      <li>
+        <div className="flex flex-col gap-4">
           <PopupSettings
             onUpdateSettings={(settings) =>
               setInputValue(settings.autoShowDelay)
             }
           />
-          <Text>Paste the code below:</Text>
+          <p>Paste the code below:</p>
           <JavascriptPopupSnippet autoShowDelay={inputValue} />
-        </Stack>
-      </ListItem>
-    </OrderedList>
+        </div>
+      </li>
+    </ol>
   );
 };

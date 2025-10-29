@@ -1,19 +1,21 @@
-import { Text } from "@chakra-ui/react";
 import type { PixelBlock } from "@typebot.io/blocks-integrations/pixel/schema";
+import { cx } from "@typebot.io/ui/lib/cva";
 
 type Props = {
   options: PixelBlock["options"];
 };
 
 export const PixelNodeBody = ({ options }: Props) => (
-  <Text
-    color={options?.eventType || options?.pixelId ? "currentcolor" : "gray.500"}
-    noOfLines={1}
+  <p
+    className={cx(
+      "truncate",
+      options?.eventType || options?.pixelId ? "text-gray-12" : "text-gray-9",
+    )}
   >
     {options?.eventType
       ? `Track "${options.eventType}"`
       : options?.pixelId
         ? "Init Pixel"
         : "Configure..."}
-  </Text>
+  </p>
 );

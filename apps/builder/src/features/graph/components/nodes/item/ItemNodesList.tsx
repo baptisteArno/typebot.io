@@ -1,10 +1,3 @@
-import {
-  Flex,
-  Stack,
-  Text,
-  useColorModeValue,
-  useEventListener,
-} from "@chakra-ui/react";
 import type { Coordinates } from "@dnd-kit/utilities";
 import { useTranslate } from "@tolgee/react";
 import { shouldOpenItemSettingsOnCreation } from "@typebot.io/blocks-core/helpers";
@@ -25,6 +18,7 @@ import {
   useBlockDnd,
 } from "@/features/graph/providers/GraphDndProvider";
 import { useGraph } from "@/features/graph/providers/GraphProvider";
+import { useEventListener } from "@/hooks/useEventListener";
 import { BlockSourceEndpoint } from "../../endpoints/BlockSourceEndpoint";
 import { PlaceholderNode } from "../PlaceholderNode";
 import { getItemName } from "./getItemName";
@@ -87,11 +81,7 @@ export const ItemNodesList = ({
     const index = computeNearestPlaceholderIndex(event.pageY, placeholderRefs);
     setExpandedPlaceholderIndex(index);
   };
-  useEventListener(
-    "mousemove",
-    handleMouseMoveOnBlock,
-    mouseOverBlock?.element,
-  );
+  useEventListener("mousemove", handleMouseMoveOnBlock, mouseOverBlock?.ref);
 
   const handleMouseUpOnGroup = (e: MouseEvent) => {
     if (
@@ -111,7 +101,7 @@ export const ItemNodesList = ({
       itemIndex,
     });
   };
-  useEventListener("mouseup", handleMouseUpOnGroup, mouseOverBlock?.element, {
+  useEventListener("mouseup", handleMouseUpOnGroup, mouseOverBlock?.ref, {
     capture: true,
   });
 
@@ -149,7 +139,10 @@ export const ItemNodesList = ({
   };
 
   return (
-    <Stack flex={1} spacing={0} maxW="full" onClick={stopPropagating}>
+    <div
+      className="flex flex-col gap-0 max-w-full flex-1"
+      onClick={stopPropagating}
+    >
       <PlaceholderNode
         isVisible={showPlaceholders}
         isExpanded={expandedPlaceholderIndex === 0}
@@ -160,7 +153,7 @@ export const ItemNodesList = ({
         Add {itemName}
       </PlaceholderNode>
       {block.items.map((item, idx) => (
-        <Stack key={item.id} spacing={0}>
+        <div className="flex flex-col gap-0" key={item.id}>
           <ItemNode
             item={item}
             block={block}
@@ -175,24 +168,18 @@ export const ItemNodesList = ({
           >
             Add {itemName}
           </PlaceholderNode>
-        </Stack>
+        </div>
       ))}
       {checkIfDefaultItemIsNeeded(block, isLastBlock) && groupId && (
         <DefaultItemNode block={block} groupId={groupId} />
       )}
-
       {draggedItem && draggedItem.blockId === block.id && (
         <Portal>
-          <Flex
-            pointerEvents="none"
-            pos="fixed"
-            top="0"
-            left="0"
+          <div
+            className="flex fixed w-[220px] pointer-events-none top-0 left-0 origin-[0_0_0]"
             style={{
               transform: `translate(${position.x}px, ${position.y}px) rotate(-2deg) scale(${graphPosition.scale})`,
             }}
-            w="220px"
-            transformOrigin="0 0 0"
           >
             <ItemNode
               item={draggedItem}
@@ -200,10 +187,10 @@ export const ItemNodesList = ({
               indices={{ groupIndex, blockIndex, itemIndex: 0 }}
               connectionDisabled
             />
-          </Flex>
+          </div>
         </Portal>
       )}
-    </Stack>
+    </div>
   );
 };
 
@@ -217,31 +204,20 @@ const DefaultItemNode = ({
   const { t } = useTranslate();
 
   return (
-    <Flex
-      px="4"
-      py="2"
-      borderWidth="1px"
-      borderColor={useColorModeValue("gray.300", undefined)}
-      bgColor={useColorModeValue("gray.50", "gray.900")}
-      rounded="md"
-      pos="relative"
-      align="center"
-      cursor="not-allowed"
-    >
-      <Text color="gray.500">
+    <div className="flex px-4 py-2 border rounded-md relative items-center bg-gray-1 cursor-not-allowed">
+      <p color="gray.500">
         {block.type === LogicBlockType.CONDITION
           ? t("blocks.inputs.button.else.label")
           : t("blocks.inputs.button.default.label")}
-      </Text>
+      </p>
       <BlockSourceEndpoint
         source={{
           blockId: block.id,
         }}
         groupId={groupId}
-        pos="absolute"
-        right="-49px"
+        className="absolute right-[-49px]"
       />
-    </Flex>
+    </div>
   );
 };
 

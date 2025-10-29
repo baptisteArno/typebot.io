@@ -1,8 +1,7 @@
-import { useColorMode } from "@chakra-ui/react";
 import type { Edge as EdgeProps } from "@typebot.io/typebot/schemas/edge";
-import { colors } from "@typebot.io/ui/chakraTheme";
 import { ContextMenu } from "@typebot.io/ui/components/ContextMenu";
 import { TrashIcon } from "@typebot.io/ui/icons/TrashIcon";
+import { cx } from "@typebot.io/ui/lib/cva";
 import { useMemo, useState } from "react";
 import { useShallow } from "zustand/react/shallow";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
@@ -20,7 +19,6 @@ type Props = {
 };
 
 export const Edge = ({ edge, fromElementId }: Props) => {
-  const isDark = useColorMode().colorMode === "dark";
   const { deleteEdge } = useTypebot();
   const { previewingEdge, graphPosition, isReadOnly, setPreviewingEdge } =
     useGraph();
@@ -127,13 +125,11 @@ export const Edge = ({ edge, fromElementId }: Props) => {
             <path
               data-testid="edge"
               d={path}
-              stroke={
+              className={cx(
                 isPreviewing || isContextMenuOpen
-                  ? "var(--chakra-colors-orange-400)"
-                  : isDark
-                    ? colors.gray[700]
-                    : colors.gray[400]
-              }
+                  ? "stroke-orange-8"
+                  : "stroke-gray-8",
+              )}
               strokeWidth="2px"
               markerEnd={isPreviewing ? "url(#orange-arrow)" : "url(#arrow)"}
               fill="none"

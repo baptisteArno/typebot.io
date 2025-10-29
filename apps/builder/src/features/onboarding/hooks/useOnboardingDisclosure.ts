@@ -1,5 +1,5 @@
-import { useDisclosure } from "@chakra-ui/react";
 import type { ForgedBlockDefinition } from "@typebot.io/forge-repository/definitions";
+import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
 import type { User } from "@typebot.io/user/schemas";
 import { useEffect, useState } from "react";
 import { onboardingVideos } from "../data";
@@ -22,7 +22,7 @@ export const useOnboardingDisclosure = ({
   isEnabled = true,
 }: Props) => {
   const [isInitialized, setIsInitialized] = useState(false);
-  const { isOpen, onOpen, onClose } = useDisclosure({
+  const { isOpen, onOpen, onClose } = useOpenControls({
     onOpen: () => {
       if (!user || !key || user.displayedInAppNotifications?.[key]) return;
       updateUser({

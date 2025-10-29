@@ -1,4 +1,3 @@
-import { Stack, Text, Wrap } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import type { BlockIndices } from "@typebot.io/blocks-core/schemas/schema";
 import type { ChoiceInputBlock } from "@typebot.io/blocks-inputs/choice/schema";
@@ -20,13 +19,13 @@ export const ButtonsBlockNode = ({ block, indices }: Props) => {
   )?.name;
 
   return (
-    <Stack w="90%">
+    <div className="flex flex-col gap-2 w-[90%]">
       {block.options?.dynamicVariableId ? (
-        <Wrap spacing={1}>
-          <Text>{t("blocks.inputs.button.variables.display.label")}</Text>
+        <div className="flex flex-wrap gap-1">
+          <p>{t("blocks.inputs.button.variables.display.label")}</p>
           <Badge colorScheme="purple">{dynamicVariableName}</Badge>
-          <Text>{t("blocks.inputs.button.variables.buttons.label")}</Text>
-        </Wrap>
+          <p>{t("blocks.inputs.button.variables.buttons.label")}</p>
+        </div>
       ) : (
         <ItemNodesList block={block} indices={indices} />
       )}
@@ -36,6 +35,6 @@ export const ButtonsBlockNode = ({ block, indices }: Props) => {
           variables={typebot?.variables}
         />
       ) : null}
-    </Stack>
+    </div>
   );
 };

@@ -1,4 +1,3 @@
-import { Stack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { defaultChoiceInputOptions } from "@typebot.io/blocks-inputs/choice/constants";
 import type { ChoiceInputBlock } from "@typebot.io/blocks-inputs/choice/schema";
@@ -33,7 +32,7 @@ export const ButtonsBlockSettings = ({ options, onOptionsChange }: Props) => {
   ) => onOptionsChange({ ...options, areInitialSearchButtonsVisible });
 
   return (
-    <Stack spacing={4}>
+    <div className="flex flex-col gap-4">
       <Field.Container>
         <Field.Root className="flex-row items-center">
           <Switch
@@ -120,6 +119,6 @@ export const ButtonsBlockSettings = ({ options, onOptionsChange }: Props) => {
           onSelectVariable={updateSaveVariable}
         />
       </Field.Root>
-    </Stack>
+    </div>
   );
 };

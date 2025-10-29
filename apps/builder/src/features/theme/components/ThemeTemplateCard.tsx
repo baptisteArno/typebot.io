@@ -1,11 +1,3 @@
-import {
-  Box,
-  Flex,
-  HStack,
-  Stack,
-  Text,
-  useColorModeValue,
-} from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
 import {
@@ -19,11 +11,11 @@ import {
 } from "@typebot.io/theme/constants";
 import type { Theme, ThemeTemplate } from "@typebot.io/theme/schemas";
 import type { TypebotV6 } from "@typebot.io/typebot/schemas/typebot";
-import { colors } from "@typebot.io/ui/chakraTheme";
 import { Menu } from "@typebot.io/ui/components/Menu";
 import { Edit03Icon } from "@typebot.io/ui/icons/Edit03Icon";
 import { MoreHorizontalIcon } from "@typebot.io/ui/icons/MoreHorizontalIcon";
 import { TrashIcon } from "@typebot.io/ui/icons/TrashIcon";
+import { cx } from "@typebot.io/ui/lib/cva";
 import { useState } from "react";
 import { queryClient, trpc } from "@/lib/queryClient";
 import { DefaultAvatar } from "./DefaultAvatar";
@@ -46,7 +38,6 @@ export const ThemeTemplateCard = ({
   onDeleteSuccess?: () => void;
 }) => {
   const { t } = useTranslate();
-  const borderWidth = useColorModeValue(undefined, "1px");
   const [isDeleting, setIsDeleting] = useState(false);
 
   const { mutate } = useMutation(
@@ -65,13 +56,6 @@ export const ThemeTemplateCard = ({
   const deleteThemeTemplate = () => {
     mutate({ themeTemplateId: themeTemplate.id, workspaceId });
   };
-
-  const rounded =
-    themeTemplate.theme.chat?.roundness === "large"
-      ? "md"
-      : themeTemplate.theme.chat?.roundness === "none"
-        ? "none"
-        : "sm";
 
   const hostAvatar = {
     isEnabled:
@@ -100,68 +84,70 @@ export const ThemeTemplateCard = ({
     defaultButtonsBackgroundColor[typebotVersion];
 
   return (
-    <Stack
-      borderWidth={borderWidth}
-      cursor="pointer"
-      onClick={onClick}
-      spacing={0}
-      opacity={isDeleting ? 0.5 : 1}
-      pointerEvents={isDeleting ? "none" : undefined}
-      rounded="md"
-      boxShadow={
-        isSelected
-          ? `${colors["orange"]["400"]} 0 0 0 2px`
-          : `rgba(0, 0, 0, 0.08) 0px 2px 2px`
+    <div
+      style={
+        {
+          "--tw-shadow": isSelected
+            ? `rgb(var(--orange-8)) 0 0 0 2px`
+            : `rgba(0, 0, 0, 0.08) 0px 2px 2px`,
+          "--rounded":
+            themeTemplate.theme.chat?.roundness === "large"
+              ? "md"
+              : themeTemplate.theme.chat?.roundness === "none"
+                ? "none"
+                : "sm",
+        } as React.CSSProperties
       }
-      style={{
-        willChange: "box-shadow",
-        transition: "box-shadow 0.2s ease 0s",
-      }}
+      className={cx(
+        "flex flex-col gap-0 rounded-md border cursor-pointer shadow-md transition-shadow",
+        isDeleting ? "opacity-50 pointer-events-none" : "opacity-100",
+      )}
+      onClick={onClick}
     >
-      <Box
-        borderTopRadius="md"
-        backgroundSize="cover"
-        {...parseBackground(themeTemplate.theme.general?.background)}
-        borderColor={isSelected ? "orange.400" : undefined}
+      <div
+        style={{ ...parseBackground(themeTemplate.theme.general?.background) }}
+        className="rounded-t-md bg-cover"
       >
-        <HStack mt="4" ml="4" spacing={0.5} alignItems="flex-end">
+        <div className="flex mt-4 ml-4 gap-0.5 items-end">
           <AvatarPreview avatar={hostAvatar} />
-          <Box rounded="sm" w="80px" h="16px" background={hostBubbleBgColor} />
-        </HStack>
+          <div
+            style={{ backgroundColor: hostBubbleBgColor }}
+            className="rounded-sm w-[80px] h-[16px]"
+          />
+        </div>
 
-        <HStack
-          mt="1"
-          mr="4"
-          ml="auto"
-          justifyContent="flex-end"
-          alignItems="flex-end"
-        >
-          <Box rounded="sm" w="80px" h="16px" background={guestBubbleBgColor} />
+        <div className="flex gap-2 mt-1 mr-4 ml-auto justify-end items-end">
+          <div
+            className="rounded-sm w-[80px] h-[16px]"
+            style={{ backgroundColor: guestBubbleBgColor }}
+          />
           <AvatarPreview avatar={guestAvatar} />
-        </HStack>
+        </div>
 
-        <HStack mt="1" ml="4" spacing={0.5} alignItems="flex-end">
+        <div className="flex mt-1 ml-4 gap-0.5 items-end">
           <AvatarPreview avatar={hostAvatar} />
-          <Box rounded="sm" w="80px" h="16px" background={hostBubbleBgColor} />
-        </HStack>
-        <Flex
-          mt="1"
-          mb="4"
-          pr="4"
-          ml="auto"
-          w="full"
-          justifyContent="flex-end"
-          gap="1"
-        >
-          <Box rounded={rounded} w="20px" h="10px" background={buttonBgColor} />
-          <Box rounded={rounded} w="20px" h="10px" background={buttonBgColor} />
-          <Box rounded={rounded} w="20px" h="10px" background={buttonBgColor} />
-        </Flex>
-      </Box>
-      <HStack p="2" justifyContent="space-between">
-        <Text fontSize="sm" noOfLines={1}>
-          {themeTemplate.name}
-        </Text>
+          <div
+            className="rounded-sm w-[80px] h-[16px]"
+            style={{ backgroundColor: hostBubbleBgColor }}
+          />
+        </div>
+        <div className="flex mt-1 mb-4 pr-4 ml-auto w-full justify-end gap-1">
+          <div
+            className="w-[20px] h-[10px] rounded-[var(--rounded)]"
+            style={{ backgroundColor: buttonBgColor }}
+          />
+          <div
+            className="w-[20px] h-[10px] rounded-[var(--rounded)]"
+            style={{ backgroundColor: buttonBgColor }}
+          />
+          <div
+            className="w-[20px] h-[10px] rounded-[var(--rounded)]"
+            style={{ backgroundColor: buttonBgColor }}
+          />
+        </div>
+      </div>
+      <div className="flex items-center gap-2 p-2 justify-between">
+        <p className="text-sm truncate">{themeTemplate.name}</p>
         {onDeleteSuccess && onRenameClick && (
           <Menu.Root>
             <Menu.TriggerButton
@@ -189,8 +175,8 @@ export const ThemeTemplateCard = ({
             </Menu.Popup>
           </Menu.Root>
         )}
-      </HStack>
-    </Stack>
+      </div>
+    </div>
   );
 };
 
@@ -201,7 +187,7 @@ const parseBackground = (
     case undefined:
     case BackgroundType.COLOR:
       return {
-        backgroundColor: background?.content ?? defaultBackgroundColor,
+        backgroundColor: background?.content ?? defaultBackgroundColor["6.1"],
       };
     case BackgroundType.IMAGE:
       return { backgroundImage: `url(${background.content})` };

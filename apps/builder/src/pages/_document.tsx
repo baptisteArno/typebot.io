@@ -1,5 +1,3 @@
-import { ColorModeScript } from "@chakra-ui/react";
-import { customTheme } from "@typebot.io/ui/chakraTheme";
 import { Head, Html, Main, NextScript } from "next/document";
 
 const Document = () => (
@@ -13,8 +11,7 @@ const Document = () => (
       <meta name="google" content="notranslate" />
       <script src="/__ENV.js" />
     </Head>
-    <body>
-      <ColorModeScript initialColorMode={customTheme.config.initialColorMode} />
+    <body className="font-body text-gray-12 bg-gray-2 dark:bg-gray-1 antialiased">
       <Main />
       <NextScript />
     </body>

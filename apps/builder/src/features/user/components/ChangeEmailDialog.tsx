@@ -1,4 +1,3 @@
-import { Text } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
@@ -75,16 +74,13 @@ export const ChangeEmailDialog = ({ isOpen, onClose, userEmail }: Props) => {
     >
       <Dialog.Popup initialFocus={initialFocusRef}>
         <Dialog.CloseButton />
-        <Text>
-          Your current email is:{" "}
-          <Text as="span" fontWeight="bold">
-            {userEmail}
-          </Text>
-        </Text>
+        <p>
+          Your current email is: <span className="font-bold">{userEmail}</span>
+        </p>
         <form className="flex flex-col gap-4" onSubmit={sendVerificationCode}>
-          <Text>
+          <p>
             Please enter a new email and we will send you a verification code.
-          </Text>
+          </p>
           <Input
             type="email"
             disabled={verificationCodeStatus === "sent"}
@@ -108,13 +104,10 @@ export const ChangeEmailDialog = ({ isOpen, onClose, userEmail }: Props) => {
         </form>
         {verificationCodeStatus === "sent" && (
           <form className="flex flex-col gap-4" onSubmit={updateEmailAndClose}>
-            <Text>
+            <p>
               We just sent a temporary verification code to{" "}
-              <Text as="span" fontWeight="bold">
-                {newEmail}
-              </Text>
-              .
-            </Text>
+              <span className="font-bold">{newEmail}</span>.
+            </p>
             <Input
               value={verificationCode}
               onValueChange={setVerificationCode}

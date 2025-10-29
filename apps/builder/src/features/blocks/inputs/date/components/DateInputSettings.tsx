@@ -1,4 +1,3 @@
-import { Stack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { defaultDateInputOptions } from "@typebot.io/blocks-inputs/date/constants";
 import type { DateInputBlock } from "@typebot.io/blocks-inputs/date/schema";
@@ -43,7 +42,7 @@ export const DateInputSettings = ({ options, onOptionsChange }: Props) => {
   };
 
   return (
-    <Stack spacing={4}>
+    <div className="flex flex-col gap-4">
       <Field.Container>
         <Field.Root className="flex-row items-center">
           <Switch
@@ -143,6 +142,6 @@ export const DateInputSettings = ({ options, onOptionsChange }: Props) => {
           onSelectVariable={updateVariable}
         />
       </Field.Root>
-    </Stack>
+    </div>
   );
 };

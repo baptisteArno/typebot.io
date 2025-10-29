@@ -1,7 +1,7 @@
-import { Stack, Text, useDisclosure } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Field } from "@typebot.io/ui/components/Field";
+import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
 import { HardDriveIcon } from "@typebot.io/ui/icons/HardDriveIcon";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
 import { EditableEmojiOrImageIcon } from "@/components/EditableEmojiOrImageIcon";
@@ -27,7 +27,7 @@ export const WorkspaceSettingsForm = ({ onClose }: { onClose: () => void }) => {
   };
 
   return (
-    <Stack spacing="6" w="full">
+    <div className="flex flex-col gap-6 w-full">
       <Field.Root>
         <Field.Label>{t("workspace.settings.icon.title")}</Field.Label>
         {workspace && (
@@ -67,7 +67,7 @@ export const WorkspaceSettingsForm = ({ onClose }: { onClose: () => void }) => {
           workspaceName={workspace?.name}
         />
       )}
-    </Stack>
+    </div>
   );
 };
 
@@ -79,7 +79,7 @@ const DeleteWorkspaceButton = ({
   onConfirm: () => Promise<void>;
 }) => {
   const { t } = useTranslate();
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onOpen, onClose } = useOpenControls();
   return (
     <>
       <Button variant="destructive" onClick={onOpen}>
@@ -91,11 +91,11 @@ const DeleteWorkspaceButton = ({
         onClose={onClose}
         confirmButtonLabel="Delete"
       >
-        <Text>
+        <p>
           {t("workspace.settings.deleteButton.confirmMessage", {
             workspaceName,
           })}
-        </Text>
+        </p>
       </ConfirmDialog>
     </>
   );

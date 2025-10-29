@@ -1,4 +1,3 @@
-import { Code, ListItem, OrderedList, Stack, Text } from "@chakra-ui/react";
 import { useState } from "react";
 import { PopupSettings } from "../../../settings/PopupSettings";
 import { JavascriptPopupSnippet } from "../../javascript/JavascriptPopupSnippet";
@@ -7,25 +6,25 @@ export const ShopifyPopupInstructions = () => {
   const [inputValue, setInputValue] = useState<number>();
 
   return (
-    <OrderedList spacing={4} pl={5}>
-      <ListItem>
-        On your shop dashboard in the <Code>Themes</Code> page, click on{" "}
-        <Code>Actions {">"} Edit code</Code>
-      </ListItem>
-      <ListItem>
-        <Stack spacing={4}>
+    <ol>
+      <li>
+        On your shop dashboard in the <code>Themes</code> page, click on{" "}
+        <code>Actions {">"} Edit code</code>
+      </li>
+      <li>
+        <div className="flex flex-col gap-4">
           <PopupSettings
             onUpdateSettings={(settings) =>
               setInputValue(settings.autoShowDelay)
             }
           />
-          <Text>
-            In <Code>Layout {">"} theme.liquid</Code> file, paste this code just
-            before the closing <Code>{"<head>"}</Code> tag:
-          </Text>
+          <p>
+            In <code>Layout {">"} theme.liquid</code> file, paste this code just
+            before the closing <code>{"<head>"}</code> tag:
+          </p>
           <JavascriptPopupSnippet autoShowDelay={inputValue} />
-        </Stack>
-      </ListItem>
-    </OrderedList>
+        </div>
+      </li>
+    </ol>
   );
 };

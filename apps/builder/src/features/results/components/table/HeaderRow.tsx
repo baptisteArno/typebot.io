@@ -1,6 +1,6 @@
-import { Box, type BoxProps } from "@chakra-ui/react";
 import { flexRender, type HeaderGroup } from "@tanstack/react-table";
 import type { TableData } from "@typebot.io/results/schemas/results";
+import { cn } from "@typebot.io/ui/lib/cn";
 
 type Props = {
   headerGroup: HeaderGroup<TableData>;
@@ -37,16 +37,16 @@ export const HeaderRow = ({ headerGroup }: Props) => {
   );
 };
 
-const ResizeHandle = (props: BoxProps) => {
+const ResizeHandle = ({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) => {
   return (
-    <Box
-      pos="absolute"
-      right="-5px"
-      w="10px"
-      h="full"
-      top="0"
-      cursor="col-resize"
-      userSelect="none"
+    <div
+      className={cn(
+        "absolute w-[10px] h-full right-[-5px] top-0 cursor-col-resize select-none",
+        className,
+      )}
       data-testid="resize-handle"
       {...props}
     />

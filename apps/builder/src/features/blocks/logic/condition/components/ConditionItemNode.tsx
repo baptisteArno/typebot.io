@@ -1,4 +1,3 @@
-import { Flex, Text, useEventListener } from "@chakra-ui/react";
 import type { ItemIndices } from "@typebot.io/blocks-core/schemas/items/schema";
 import type { ConditionItem } from "@typebot.io/blocks-logic/condition/schema";
 import type { Comparison, Condition } from "@typebot.io/conditions/schemas";
@@ -7,6 +6,7 @@ import { Popover } from "@typebot.io/ui/components/Popover";
 import { useRef } from "react";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { useGraph } from "@/features/graph/providers/GraphProvider";
+import { useEventListener } from "@/hooks/useEventListener";
 import { ConditionContent } from "./ConditionContent";
 import { ConditionForm } from "./ConditionForm";
 
@@ -27,7 +27,7 @@ export const ConditionItemNode = ({ item, indices }: Props) => {
   const handleMouseWheel = (e: WheelEvent) => {
     e.stopPropagation();
   };
-  useEventListener("wheel", handleMouseWheel, ref.current);
+  useEventListener("wheel", handleMouseWheel, ref);
 
   return (
     <Popover.Root
@@ -36,17 +36,17 @@ export const ConditionItemNode = ({ item, indices }: Props) => {
       onClose={() => setOpenedNodeId(undefined)}
     >
       <Popover.Trigger>
-        <Flex p={3} pos="relative" maxW="full" overflow="hidden">
+        <div className="flex p-3 relative max-w-full overflow-hidden">
           {item.content?.comparisons?.length === 0 ||
           comparisonIsEmpty(item.content?.comparisons?.at(0)) ? (
-            <Text color={"gray.500"}>Configure...</Text>
+            <p color={"gray.500"}>Configure...</p>
           ) : (
             <ConditionContent
               condition={item.content}
               variables={typebot?.variables ?? []}
             />
           )}
-        </Flex>
+        </div>
       </Popover.Trigger>
       <Popover.Popup side="right" className="p-4">
         <ConditionForm

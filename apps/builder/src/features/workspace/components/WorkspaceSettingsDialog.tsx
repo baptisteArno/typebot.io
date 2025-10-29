@@ -1,5 +1,5 @@
-import { Avatar, Flex, Stack, Text } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
+import { Avatar } from "@typebot.io/ui/components/Avatar";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
 import { CreditCardIcon } from "@typebot.io/ui/icons/CreditCardIcon";
@@ -49,29 +49,22 @@ export const WorkspaceSettingsDialog = ({
   return (
     <Dialog.Root isOpen={isOpen} onClose={onClose}>
       <Dialog.Popup className="p-0 flex flex-row max-w-6xl min-h-full gap-0">
-        <Stack
-          spacing={8}
-          w="250px"
-          py="6"
-          borderRightWidth={1}
-          justifyContent="space-between"
-        >
-          <Stack spacing={8}>
-            <Stack px="2">
-              <Text pl="4" color="gray.500" fontSize="sm">
+        <div className="flex flex-col gap-8 w-[250px] py-6 border-r justify-between">
+          <div className="flex flex-col gap-8">
+            <div className="flex flex-col gap-2 px-2">
+              <p className="pl-4 text-sm" color="gray.500">
                 {t("account")}
-              </Text>
+              </p>
               <Button
                 variant={selectedTab === "my-account" ? "outline" : "ghost"}
                 onClick={() => setSelectedTab("my-account")}
                 className="justify-start pl-4"
                 size="sm"
               >
-                <Avatar
-                  name={user.name ?? undefined}
-                  src={user.image ?? undefined}
-                  boxSize="15px"
-                />
+                <Avatar.Root className="size-4">
+                  <Avatar.Image src={user.image ?? undefined} alt="User" />
+                  <Avatar.Fallback>{user.name?.charAt(0)}</Avatar.Fallback>
+                </Avatar.Root>
                 {user.name ?? user.email}
               </Button>
               <Button
@@ -92,11 +85,11 @@ export const WorkspaceSettingsDialog = ({
                 <Wallet01Icon />
                 {t("credentials")}
               </Button>
-            </Stack>
-            <Stack px="2">
-              <Text pl="4" color="gray.500" fontSize="sm">
+            </div>
+            <div className="flex flex-col gap-2 px-2">
+              <p className="pl-4 text-sm" color="gray.500">
                 {t("workspace.settings.modal.menu.workspace.label")}
-              </Text>
+              </p>
               {currentUserMode === "write" && (
                 <Button
                   variant={
@@ -137,21 +130,21 @@ export const WorkspaceSettingsDialog = ({
                   {t("workspace.settings.modal.menu.billingAndUsage.label")}
                 </Button>
               )}
-            </Stack>
-          </Stack>
+            </div>
+          </div>
 
-          <Flex justify="center" pt="10">
-            <Text color="gray.500" fontSize="xs">
+          <div className="flex justify-center pt-10">
+            <p className="text-xs" color="gray.500">
               {t("workspace.settings.modal.menu.version.label", {
                 version: packageJson.version,
               })}
-            </Text>
-          </Flex>
-        </Stack>
+            </p>
+          </div>
+        </div>
 
-        <Flex flex="1" p="10">
+        <div className="flex flex-1 p-10">
           <SettingsContent tab={selectedTab} onClose={onClose} />
-        </Flex>
+        </div>
       </Dialog.Popup>
     </Dialog.Root>
   );

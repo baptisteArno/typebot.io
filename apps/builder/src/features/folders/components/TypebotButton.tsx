@@ -1,4 +1,3 @@
-import { Text, VStack } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
 import { T, useTranslate } from "@tolgee/react";
 import { Alert } from "@typebot.io/ui/components/Alert";
@@ -177,16 +176,16 @@ const TypebotButton = ({
             </Menu.Root>
           </>
         )}
-        <VStack spacing="4">
+        <div className="flex flex-col items-center gap-4">
           <EmojiOrImageIcon
             icon={typebot.icon}
             size="lg"
             defaultIcon={LayoutBottomIcon}
           />
-          <Text textAlign="center" noOfLines={4} maxW="180px">
+          <p className="text-center max-w-[180px] line-clamp-4">
             {typebot.name}
-          </Text>
-        </VStack>
+          </p>
+        </div>
       </div>
       {!isReadOnly && (
         <ConfirmDialog
@@ -195,14 +194,14 @@ const TypebotButton = ({
           isOpen={deleteDialogControls.isOpen}
           onClose={deleteDialogControls.onClose}
         >
-          <Text>
+          <p>
             <T
               keyName="folders.typebotButton.deleteConfirmationMessage"
               params={{
                 strong: <strong>{typebot.name}</strong>,
               }}
             />
-          </Text>
+          </p>
           <Alert.Root variant="warning">
             <TriangleAlertIcon />
             <Alert.Description>

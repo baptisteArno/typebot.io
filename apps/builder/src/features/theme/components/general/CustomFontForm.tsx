@@ -1,4 +1,3 @@
-import { Stack } from "@chakra-ui/react";
 import type { CustomFont } from "@typebot.io/theme/schemas";
 import { Field } from "@typebot.io/ui/components/Field";
 import { CodeEditor } from "@/components/inputs/CodeEditor";
@@ -13,7 +12,7 @@ export const CustomFontForm = ({ font, onFontChange }: Props) => {
   const updateFamily = (family: string) => onFontChange({ ...font, family });
   const updateCss = (css: string) => onFontChange({ ...font, css });
   return (
-    <Stack>
+    <div className="flex flex-col gap-2">
       <Field.Root className="flex-row items-center">
         <Field.Label>Family:</Field.Label>
         <DebouncedTextInput
@@ -33,6 +32,6 @@ export const CustomFontForm = ({ font, onFontChange }: Props) => {
 }`}
         maxHeight="200px"
       />
-    </Stack>
+    </div>
   );
 };

@@ -1,4 +1,3 @@
-import { Stack, Text } from "@chakra-ui/react";
 import type { BubbleProps } from "@typebot.io/js";
 import { useState } from "react";
 import { CodeEditor } from "@/components/inputs/CodeEditor";
@@ -31,7 +30,7 @@ ${parseInitBubbleCode({
   );
 
   return (
-    <Stack spacing={4}>
+    <div className="flex flex-col gap-4">
       <BubbleSettings
         theme={theme}
         previewMessage={previewMessage}
@@ -39,8 +38,8 @@ ${parseInitBubbleCode({
         onThemeChange={setTheme}
         onPreviewMessageChange={setPreviewMessage}
       />
-      <Text>Run this script to initialize the typebot:</Text>
+      <p>Run this script to initialize the typebot:</p>
       <CodeEditor isReadOnly value={scriptSnippet} lang="javascript" />
-    </Stack>
+    </div>
   );
 };

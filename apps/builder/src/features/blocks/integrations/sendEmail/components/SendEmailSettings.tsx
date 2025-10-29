@@ -1,4 +1,3 @@
-import { Flex, HStack, Stack, Text, useDisclosure } from "@chakra-ui/react";
 import { defaultSendEmailOptions } from "@typebot.io/blocks-integrations/sendEmail/constants";
 import type { SendEmailBlock } from "@typebot.io/blocks-integrations/sendEmail/schema";
 import { env } from "@typebot.io/env";
@@ -7,6 +6,7 @@ import { Accordion } from "@typebot.io/ui/components/Accordion";
 import { Field } from "@typebot.io/ui/components/Field";
 import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
 import { Switch } from "@typebot.io/ui/components/Switch";
+import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
 import type { Variable } from "@typebot.io/variables/schemas";
 import type { Workspace } from "@typebot.io/workspaces/schemas";
 import { CodeEditor } from "@/components/inputs/CodeEditor";
@@ -25,7 +25,7 @@ type Props = {
 
 export const SendEmailSettings = ({ options, onOptionsChange }: Props) => {
   const { workspace } = useWorkspace();
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onOpen, onClose } = useOpenControls();
 
   const updateCredentialsId = (credentialsId?: string) => {
     onOptionsChange({
@@ -106,9 +106,9 @@ export const SendEmailSettings = ({ options, onOptionsChange }: Props) => {
     });
 
   return (
-    <Stack spacing={4}>
-      <Stack>
-        <Text>From: </Text>
+    <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-2">
+        <p>From: </p>
         {workspace && (
           <CredentialsDropdown
             type="smtp"
@@ -127,7 +127,7 @@ export const SendEmailSettings = ({ options, onOptionsChange }: Props) => {
             credentialsName="SMTP account"
           />
         )}
-      </Stack>
+      </div>
       <Field.Root>
         <Field.Label>To:</Field.Label>
         <DebouncedTextInputWithVariablesButton
@@ -167,7 +167,6 @@ export const SendEmailSettings = ({ options, onOptionsChange }: Props) => {
           </Accordion.Panel>
         </Accordion.Item>
       </Accordion.Root>
-
       <Field.Root>
         <Field.Label>Subject:</Field.Label>
         <DebouncedTextInputWithVariablesButton
@@ -191,20 +190,20 @@ export const SendEmailSettings = ({ options, onOptionsChange }: Props) => {
         </Field.Label>
       </Field.Root>
       {options?.isCustomBody && (
-        <Stack>
-          <Flex justifyContent="space-between">
-            <Text>Content: </Text>
-            <HStack>
-              <Text fontSize="sm">Text</Text>
+        <div className="flex flex-col gap-2">
+          <div className="flex justify-between">
+            <p>Content: </p>
+            <div className="flex items-center gap-2">
+              <p className="text-sm">Text</p>
               <Switch
                 checked={
                   options.isBodyCode ?? defaultSendEmailOptions.isBodyCode
                 }
                 onCheckedChange={handleIsBodyCodeChange}
               />
-              <Text fontSize="sm">Code</Text>
-            </HStack>
-          </Flex>
+              <p className="text-sm">Code</p>
+            </div>
+          </div>
           {options.isBodyCode ? (
             <CodeEditor
               defaultValue={options.body ?? ""}
@@ -231,15 +230,14 @@ export const SendEmailSettings = ({ options, onOptionsChange }: Props) => {
               onSelectVariable={handleChangeAttachmentVariable}
             />
           </Field.Root>
-        </Stack>
+        </div>
       )}
-
       <SmtpCredentialsCreateDialog
         isOpen={isOpen}
         onClose={onClose}
         onNewCredentials={updateCredentialsId}
       />
-    </Stack>
+    </div>
   );
 };
 

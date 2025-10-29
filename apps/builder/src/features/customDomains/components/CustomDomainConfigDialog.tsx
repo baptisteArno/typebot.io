@@ -1,4 +1,3 @@
-import { Box, Code, HStack, Stack, Text } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import { Alert } from "@typebot.io/ui/components/Alert";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
@@ -45,58 +44,44 @@ export const CustomDomainConfigDialog = ({
     <Dialog.Root isOpen={isOpen} onClose={onClose}>
       <Dialog.Popup className="max-w-xl">
         <Dialog.Title>
-          <HStack>
+          <div className="flex items-center gap-2">
             <CancelCircleIcon className="text-red-9" />
-            <Text fontSize="lg" fontWeight="medium">
-              {status}
-            </Text>
-          </HStack>
+            <p className="text-lg font-medium">{status}</p>
+          </div>
         </Dialog.Title>
         <Dialog.CloseButton />
         {txtVerification ? (
-          <Stack spacing="4">
-            <Text>
-              Please set the following <Code>TXT</Code> record on{" "}
-              <Text as="span" fontWeight="bold">
-                {domainJson.apexName}
-              </Text>{" "}
-              to prove ownership of{" "}
-              <Text as="span" fontWeight="bold">
-                {domainJson.name}
-              </Text>
-              :
-            </Text>
-            <HStack
-              justifyContent="space-between"
-              alignItems="flex-start"
-              spacing="6"
-            >
-              <Stack>
-                <Text fontWeight="bold">Type</Text>
-                <Text fontSize="sm" fontFamily="mono">
-                  {txtVerification.type}
-                </Text>
-              </Stack>
-              <Stack>
-                <Text fontWeight="bold">Name</Text>
-                <Text fontSize="sm" fontFamily="mono">
+          <div className="flex flex-col gap-4">
+            <p>
+              Please set the following <code>TXT</code> record on{" "}
+              <span className="font-bold">{domainJson.apexName}</span> to prove
+              ownership of <span className="font-bold">{domainJson.name}</span>:
+            </p>
+            <div className="flex justify-between items-start gap-6">
+              <div className="flex flex-col gap-2">
+                <p className="font-bold">Type</p>
+                <p className="text-sm font-mono">{txtVerification.type}</p>
+              </div>
+              <div className="flex flex-col gap-2">
+                <p className="font-bold">Name</p>
+                <p className="text-sm font-mono">
                   {txtVerification.domain.slice(
                     0,
                     txtVerification.domain.length -
                       domainJson.apexName.length -
                       1,
                   )}
-                </Text>
-              </Stack>
-              <Stack>
-                <Text fontWeight="bold">Value</Text>
-                <Text fontSize="sm" fontFamily="mono">
-                  <Box text-overflow="ellipsis" white-space="nowrap">
+                </p>
+              </div>
+              <div className="flex flex-col gap-2">
+                <p className="font-bold">Value</p>
+                <p className="text-sm font-mono">
+                  <div className="text-overflow-ellipsis whitespace-nowrap">
                     {txtVerification.value}
-                  </Box>
-                </Text>
-              </Stack>
-            </HStack>
+                  </div>
+                </p>
+              </div>
+            </div>
             <Alert.Root variant="warning">
               <TriangleAlertIcon />
               <Alert.Description>
@@ -105,57 +90,51 @@ export const CustomDomainConfigDialog = ({
                 break it. Please exercise caution when setting this record.
               </Alert.Description>
             </Alert.Root>
-          </Stack>
+          </div>
         ) : status === "Unknown Error" ? (
-          <Text mb="5" fontSize="sm">
-            {error?.message}
-          </Text>
+          <p className="mb-5 text-sm">{error?.message}</p>
         ) : (
-          <Stack spacing={4}>
-            <Text>
+          <div className="flex flex-col gap-4">
+            <p>
               To configure your{" "}
               {recordType === "A" ? "apex domain" : "subdomain"} (
-              <Box as="span" fontWeight="bold">
+              <span className="font-bold">
                 {recordType === "A" ? domainJson.apexName : domainJson.name}
-              </Box>
+              </span>
               ), set the following {recordType} record on your DNS provider to
               continue:
-            </Text>
-            <HStack justifyContent="space-between">
-              <Stack>
-                <Text fontWeight="bold">Type</Text>
-                <Text fontFamily="mono" fontSize="sm">
-                  {recordType}
-                </Text>
-              </Stack>
-              <Stack>
-                <Text fontWeight="bold">Name</Text>
-                <Text fontFamily="mono" fontSize="sm">
+            </p>
+            <div className="flex items-center gap-2 justify-between">
+              <div className="flex flex-col gap-2">
+                <p className="font-bold">Type</p>
+                <p className="text-sm font-mono">{recordType}</p>
+              </div>
+              <div className="flex flex-col gap-2">
+                <p className="font-bold">Name</p>
+                <p className="text-sm font-mono">
                   {recordType === "A" ? "@" : (subdomain ?? "www")}
-                </Text>
-              </Stack>
-              <Stack>
-                <Text fontWeight="bold">Value</Text>
-                <Text fontFamily="mono" fontSize="sm">
+                </p>
+              </div>
+              <div className="flex flex-col gap-2">
+                <p className="font-bold">Value</p>
+                <p className="text-sm font-mono">
                   {recordType === "A" ? "76.76.21.21" : `cname.vercel-dns.com`}
-                </Text>
-              </Stack>
-              <Stack>
-                <Text fontWeight="bold">TTL</Text>
-                <Text fontFamily="mono" fontSize="sm">
-                  86400
-                </Text>
-              </Stack>
-            </HStack>
+                </p>
+              </div>
+              <div className="flex flex-col gap-2">
+                <p className="font-bold">TTL</p>
+                <p className="text-sm font-mono">86400</p>
+              </div>
+            </div>
             <Alert.Root>
               <TriangleAlertIcon />
               <Alert.Description>
-                Note: for TTL, if <Code>86400</Code> is not available, set the
+                Note: for TTL, if <code>86400</code> is not available, set the
                 highest value possible. Also, domain propagation can take up to
                 an hour.
               </Alert.Description>
             </Alert.Root>
-          </Stack>
+          </div>
         )}
         <Dialog.Footer>
           <Dialog.CloseButton>Close</Dialog.CloseButton>

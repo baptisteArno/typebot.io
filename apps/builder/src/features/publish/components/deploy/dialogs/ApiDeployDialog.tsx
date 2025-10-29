@@ -1,4 +1,3 @@
-import { Code, ListItem, OrderedList, Stack, Text } from "@chakra-ui/react";
 import { Alert } from "@typebot.io/ui/components/Alert";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
 import { InformationSquareIcon } from "@typebot.io/ui/icons/InformationSquareIcon";
@@ -33,12 +32,12 @@ export const ApiDeployDialog = ({
             </Alert.Description>
           </Alert.Root>
         )}
-        <OrderedList spacing={4} pl="4">
-          <ListItem>
-            <Stack>
-              <Text>
-                To start the chat, send a <Code>POST</Code> request to
-              </Text>
+        <ol>
+          <li>
+            <div className="flex flex-col gap-2">
+              <p>
+                To start the chat, send a <code>POST</code> request to
+              </p>
               <CodeEditor
                 isReadOnly
                 lang={"shell"}
@@ -46,17 +45,17 @@ export const ApiDeployDialog = ({
                   typebot?.customDomain,
                 )}/api/v1/typebots/${publicId}/startChat`}
               />
-            </Stack>
-          </ListItem>
-          <ListItem>
-            The first response will contain a <Code>sessionId</Code> that you
+            </div>
+          </li>
+          <li>
+            The first response will contain a <code>sessionId</code> that you
             will need for subsequent requests.
-          </ListItem>
-          <ListItem>
-            <Stack>
-              <Text>
-                To send replies, send <Code>POST</Code> requests to
-              </Text>
+          </li>
+          <li>
+            <div className="flex flex-col gap-2">
+              <p>
+                To send replies, send <code>POST</code> requests to
+              </p>
               <CodeEditor
                 isReadOnly
                 lang={"shell"}
@@ -64,16 +63,16 @@ export const ApiDeployDialog = ({
                   typebot?.customDomain,
                 )}/api/v1/sessions/<ID_FROM_FIRST_RESPONSE>/continueChat`}
               />
-              <Text>With the following JSON body:</Text>
+              <p>With the following JSON body:</p>
               <CodeEditor isReadOnly lang={"json"} value={replyBody} />
-              <Text>
-                Replace <Code>{"<ID_FROM_FIRST_RESPONSE>"}</Code> with{" "}
-                <Code>sessionId</Code>.
-              </Text>
-            </Stack>
-          </ListItem>
-        </OrderedList>
-        <Text fontSize="sm" colorScheme="gray">
+              <p>
+                Replace <code>{"<ID_FROM_FIRST_RESPONSE>"}</code> with{" "}
+                <code>sessionId</code>.
+              </p>
+            </div>
+          </li>
+        </ol>
+        <p className="text-sm">
           Check out the{" "}
           <TextLink
             href="https://docs.typebot.io/api-reference/chat/start-chat"
@@ -82,7 +81,7 @@ export const ApiDeployDialog = ({
             API reference
           </TextLink>{" "}
           for more information
-        </Text>
+        </p>
       </Dialog.Popup>
     </Dialog.Root>
   );

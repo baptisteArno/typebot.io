@@ -1,4 +1,3 @@
-import { Text } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Label } from "@typebot.io/ui/components/Label";
@@ -36,9 +35,9 @@ const Page = () => {
   return (
     <div className="flex w-full justify-center items-center pt-10 h-screen">
       <div className="bg-gray-1 gap-4 max-w-400px mx-auto p-6 rounded-lg border flex flex-col">
-        <Text>
+        <p>
           Choose a workspace to duplicate <strong>{typebot?.name}</strong> in:
-        </Text>
+        </p>
         <RadioGroup
           className="flex-col"
           value={selectedWorkspaceId}

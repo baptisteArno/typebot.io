@@ -1,11 +1,3 @@
-import {
-  Flex,
-  Heading,
-  HStack,
-  Stack,
-  useEventListener,
-  Wrap,
-} from "@chakra-ui/react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import type { Prisma } from "@typebot.io/prisma/types";
 import { useEffect, useState } from "react";
@@ -14,6 +6,7 @@ import { useTypebots } from "@/features/dashboard/hooks/useTypebots";
 import type { TypebotInDashboard } from "@/features/dashboard/types";
 import type { NodePosition } from "@/features/graph/providers/GraphDndProvider";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
+import { useEventListener } from "@/hooks/useEventListener";
 import { trpc } from "@/lib/queryClient";
 import { useTypebotDnd } from "../TypebotDndProvider";
 import { BackButton } from "./BackButton";
@@ -21,7 +14,7 @@ import { CreateBotButton } from "./CreateBotButton";
 import { CreateFolderButton } from "./CreateFolderButton";
 import FolderButton, { ButtonSkeleton } from "./FolderButton";
 import TypebotButton from "./TypebotButton";
-import { TypebotCardOverlay } from "./TypebotButtonOverlay";
+import { TypebotButtonOverlay } from "./TypebotButtonOverlay";
 
 type Props = { folder: Prisma.DashboardFolder | null };
 
@@ -154,13 +147,13 @@ export const FolderContent = ({ folder }: Props) => {
   }, [draggablePosition, draggedTypebot, mousePositionInElement]);
 
   return (
-    <Flex w="full" flex="1" justify="center">
-      <Stack w="1000px" spacing={6} pt="4">
+    <div className="flex w-full flex-1 justify-center">
+      <div className="flex flex-col w-[1000px] gap-6 pt-4">
         {folder?.name !== undefined ? (
-          <Heading as="h1">{folder.name}</Heading>
+          <h1 className="text-2xl font-medium">{folder.name}</h1>
         ) : null}
-        <Stack>
-          <HStack>
+        <div className="flex flex-col gap-2">
+          <div className="flex items-center gap-2">
             {folder && <BackButton id={folder.parentFolderId} />}
             {currentUserMode !== "guest" && (
               <CreateFolderButton
@@ -168,8 +161,8 @@ export const FolderContent = ({ folder }: Props) => {
                 isLoading={isCreatingFolder || isFolderLoading}
               />
             )}
-          </HStack>
-          <Wrap spacing={4}>
+          </div>
+          <div className="flex flex-wrap gap-4">
             {currentUserMode !== "guest" && (
               <CreateBotButton
                 folderId={folder?.id}
@@ -202,24 +195,21 @@ export const FolderContent = ({ folder }: Props) => {
                   }
                 />
               ))}
-          </Wrap>
-        </Stack>
-      </Stack>
+          </div>
+        </div>
+      </div>
       {draggedTypebot && (
         <Portal>
-          <TypebotCardOverlay
+          <TypebotButtonOverlay
             typebot={draggedTypebot}
             onMouseUp={handleMouseUp}
-            pos="fixed"
-            top="0"
-            left="0"
+            className="fixed top-0 left-0 origin-[0_0_0]"
             style={{
               transform: `translate(${draggablePosition.x}px, ${draggablePosition.y}px) rotate(-2deg)`,
             }}
-            transformOrigin="0 0 0"
           />
         </Portal>
       )}
-    </Flex>
+    </div>
   );
 };

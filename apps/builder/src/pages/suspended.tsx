@@ -1,4 +1,3 @@
-import { Heading, Text, VStack } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { TextLink } from "@/components/TextLink";
@@ -17,14 +16,9 @@ export default function Page() {
   return (
     <>
       <DashboardHeader />
-      <VStack
-        w="full"
-        h="calc(100vh - 64px)"
-        justifyContent="center"
-        spacing={4}
-      >
-        <Heading>Your workspace has been suspended.</Heading>
-        <Text>
+      <div className="flex flex-col items-center w-full h-[calc(100vh - 64px)] justify-center gap-4">
+        <h2>Your workspace has been suspended.</h2>
+        <p>
           We detected that one of your typebots does not comply with our{" "}
           <TextLink
             href="https://typebot.io/terms-of-service#scam-typebots"
@@ -32,8 +26,8 @@ export default function Page() {
           >
             terms of service
           </TextLink>
-        </Text>
-      </VStack>
+        </p>
+      </div>
     </>
   );
 }

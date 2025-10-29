@@ -1,7 +1,7 @@
-import { useDisclosure } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { isNotDefined } from "@typebot.io/lib/utils";
 import { Button, type ButtonProps } from "@typebot.io/ui/components/Button";
+import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { ChangePlanDialog } from "./ChangePlanDialog";
 
@@ -16,7 +16,7 @@ export const UpgradeButton = ({
   ...props
 }: Props) => {
   const { t } = useTranslate();
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onOpen, onClose } = useOpenControls();
   const { workspace } = useWorkspace();
   return (
     <>

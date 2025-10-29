@@ -1,8 +1,8 @@
-import { Box, Flex, Stack } from "@chakra-ui/react";
 import { createId } from "@paralleldrive/cuid2";
 import { Button } from "@typebot.io/ui/components/Button";
 import { PlusSignIcon } from "@typebot.io/ui/icons/PlusSignIcon";
 import { TrashIcon } from "@typebot.io/ui/icons/TrashIcon";
+import { cx } from "@typebot.io/ui/lib/cva";
 import { useEffect, useState } from "react";
 
 type ItemWithId<T extends number | string | boolean> = {
@@ -88,19 +88,19 @@ export const PrimitiveList = <T extends number | string | boolean>({
   const handleMouseLeave = () => setShowDeleteIndex(null);
 
   return (
-    <Stack spacing={0}>
+    <div className="flex flex-col gap-0">
       {items?.map((item, itemIndex) => (
-        <Box key={item.id}>
+        <div key={item.id}>
           {itemIndex !== 0 && ComponentBetweenItems && (
             <ComponentBetweenItems />
           )}
-          <Flex
-            pos="relative"
+          <div
+            className={cx(
+              "flex relative justify-center pb-4",
+              itemIndex !== 0 && ComponentBetweenItems ? "mt-4" : "mt-0",
+            )}
             onMouseEnter={handleMouseEnter(itemIndex)}
             onMouseLeave={handleMouseLeave}
-            mt={itemIndex !== 0 && ComponentBetweenItems ? 4 : 0}
-            justifyContent="center"
-            pb="4"
           >
             {children({
               item: item.value as T,
@@ -117,13 +117,13 @@ export const PrimitiveList = <T extends number | string | boolean>({
                 <TrashIcon />
               </Button>
             )}
-          </Flex>
-        </Box>
+          </div>
+        </div>
       ))}
       <Button onClick={createItem} className="flex-shrink-0">
         <PlusSignIcon />
         {addLabel}
       </Button>
-    </Stack>
+    </div>
   );
 };

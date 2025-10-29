@@ -1,4 +1,3 @@
-import { Text, VStack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { Button, type ButtonProps } from "@typebot.io/ui/components/Button";
 import { PlusSignIcon } from "@typebot.io/ui/icons/PlusSignIcon";
@@ -31,18 +30,12 @@ export const CreateBotButton = ({
       )}
       {...props}
     >
-      <VStack spacing="6">
+      <div className="flex flex-col items-center gap-6">
         <PlusSignIcon />
-        <Text
-          fontSize={18}
-          fontWeight="medium"
-          maxW={40}
-          textAlign="center"
-          mt="6"
-        >
+        <p className="font-medium max-w-40 text-center mt-6 text-lg">
           {t("folders.createTypebotButton.label")}
-        </Text>
-      </VStack>
+        </p>
+      </div>
     </Button>
   );
 };

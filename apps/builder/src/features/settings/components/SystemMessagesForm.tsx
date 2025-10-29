@@ -1,4 +1,3 @@
-import { Stack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { defaultSystemMessages } from "@typebot.io/settings/constants";
 import type { SystemMessages } from "@typebot.io/settings/schemas";
@@ -111,7 +110,7 @@ export const SystemMessagesForm = ({
   };
 
   return (
-    <Stack spacing="4">
+    <div className="flex flex-col gap-4">
       <Field.Root>
         <Field.Label>
           {t("settings.sideMenu.general.systemMessages.invalidMessage.label")}
@@ -261,6 +260,6 @@ export const SystemMessagesForm = ({
           onValueChange={updateWhatsAppPictureChoiceSelectLabel}
         />
       </Field.Root>
-    </Stack>
+    </div>
   );
 };

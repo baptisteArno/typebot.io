@@ -1,16 +1,10 @@
-import {
-  SkeletonCircle,
-  SkeletonText,
-  Stack,
-  Text,
-  VStack,
-} from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
 import { T, useTranslate } from "@tolgee/react";
 import type { Prisma } from "@typebot.io/prisma/types";
 import { Alert } from "@typebot.io/ui/components/Alert";
 import { Button, buttonVariants } from "@typebot.io/ui/components/Button";
 import { Menu } from "@typebot.io/ui/components/Menu";
+import { Skeleton } from "@typebot.io/ui/components/Skeleton";
 import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
 import { Folder01SolidIcon } from "@typebot.io/ui/icons/Folder01SolidIcon";
 import { MoreVerticalIcon } from "@typebot.io/ui/icons/MoreVerticalIcon";
@@ -113,7 +107,7 @@ const FolderButton = ({
             </Menu.Item>
           </Menu.Popup>
         </Menu.Root>
-        <VStack spacing="4">
+        <div className="flex flex-col items-center gap-4">
           <Folder01SolidIcon className="size-10 text-blue-10" />
           <SingleLineEditable
             className="text-lg"
@@ -128,7 +122,7 @@ const FolderButton = ({
               className: "cursor-text",
             }}
           />
-        </VStack>
+        </div>
       </div>
       <ConfirmDialog
         confirmButtonLabel={t("delete")}
@@ -143,22 +137,22 @@ const FolderButton = ({
         isOpen={deleteDialogControls.isOpen}
         onClose={deleteDialogControls.onClose}
       >
-        <Stack spacing="4">
-          <Text>
+        <div className="flex flex-col gap-4">
+          <p>
             <T
               keyName="folders.folderButton.deleteConfirmationMessage"
               params={{
                 strong: <strong>{folder.name}</strong>,
               }}
             />
-          </Text>
+          </p>
           <Alert.Root variant="warning">
             <TriangleAlertIcon />
             <Alert.Description>
               {t("folders.folderButton.deleteConfirmationMessageWarning")}
             </Alert.Description>
           </Alert.Root>
-        </Stack>
+        </div>
       </ConfirmDialog>
     </>
   );
@@ -169,12 +163,13 @@ export const ButtonSkeleton = () => (
     className="w-[225px] h-[270px] relative px-6 whitespace-normal"
     variant="outline-secondary"
   >
-    <VStack>
-      <VStack spacing="6" w="full">
-        <SkeletonCircle boxSize="45px" />
-        <SkeletonText noOfLines={2} w="full" />
-      </VStack>
-    </VStack>
+    <div className="flex flex-col items-center gap-2">
+      <div className="flex flex-col items-center gap-6 w-full">
+        <Skeleton className="size-10 rounded-full" />
+        <Skeleton className="w-full h-2" />
+        <Skeleton className="w-full h-2" />
+      </div>
+    </div>
   </Button>
 );
 

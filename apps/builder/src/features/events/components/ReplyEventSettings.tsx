@@ -1,4 +1,3 @@
-import { Stack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import type { ReplyEvent } from "@typebot.io/events/schemas";
 import { Accordion } from "@typebot.io/ui/components/Accordion";
@@ -35,7 +34,7 @@ export const ReplyEventSettings = ({
     });
 
   return (
-    <Stack p="2" spacing={4}>
+    <div className="flex flex-col p-2 gap-4">
       <Accordion.Root>
         <Accordion.Item>
           <Accordion.Trigger>
@@ -78,6 +77,6 @@ export const ReplyEventSettings = ({
           </Accordion.Panel>
         </Accordion.Item>
       </Accordion.Root>
-    </Stack>
+    </div>
   );
 };

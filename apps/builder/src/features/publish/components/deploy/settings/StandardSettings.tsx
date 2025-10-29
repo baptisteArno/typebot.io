@@ -1,14 +1,7 @@
-import {
-  Flex,
-  Heading,
-  HStack,
-  Stack,
-  type StackProps,
-  Text,
-} from "@chakra-ui/react";
 import { Field } from "@typebot.io/ui/components/Field";
 import { Input } from "@typebot.io/ui/components/Input";
 import { Switch } from "@typebot.io/ui/components/Switch";
+import { cn } from "@typebot.io/ui/lib/cn";
 import { useEffect, useState } from "react";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
 
@@ -17,11 +10,12 @@ type Props = {
     heightLabel: string;
     widthLabel?: string;
   }) => void;
-} & StackProps;
+  className?: string;
+};
 
 export const StandardSettings = ({
   onUpdateWindowSettings,
-  ...props
+  className,
 }: Props) => {
   const [isFullscreenChecked, setIsFullscreenChecked] = useState(false);
   const [inputValues, setInputValues] = useState({
@@ -49,10 +43,9 @@ export const StandardSettings = ({
     setInputValues({ ...inputValues, heightType });
 
   return (
-    <Stack {...props} spacing={4}>
-      <Heading size="sm">Window settings</Heading>
-
-      <Stack pl="4" spacing={4}>
+    <div className={cn("flex flex-col gap-4", className)}>
+      <h3>Window settings</h3>
+      <div className="flex flex-col pl-4 gap-4">
         <Field.Root className="flex-row items-center">
           <Switch
             checked={isFullscreenChecked}
@@ -62,9 +55,9 @@ export const StandardSettings = ({
         </Field.Root>
         {!isFullscreenChecked && (
           <>
-            <Flex justify="space-between" align="center">
-              <Text>Width</Text>
-              <HStack>
+            <div className="flex justify-between items-center">
+              <p>Width</p>
+              <div className="flex items-center gap-2">
                 <Input
                   onValueChange={(value) =>
                     setInputValues({
@@ -80,11 +73,11 @@ export const StandardSettings = ({
                   onChange={handleWidthTypeSelect}
                   value={inputValues.widthType}
                 />
-              </HStack>
-            </Flex>
-            <Flex justify="space-between" align="center">
-              <Text>Height</Text>
-              <HStack>
+              </div>
+            </div>
+            <div className="flex justify-between items-center">
+              <p>Height</p>
+              <div className="flex items-center gap-2">
                 <Input
                   onValueChange={(value) =>
                     setInputValues({
@@ -100,11 +93,11 @@ export const StandardSettings = ({
                   onChange={handleHeightTypeSelect}
                   value={inputValues.heightType}
                 />
-              </HStack>
-            </Flex>
+              </div>
+            </div>
           </>
         )}
-      </Stack>
-    </Stack>
+      </div>
+    </div>
   );
 };

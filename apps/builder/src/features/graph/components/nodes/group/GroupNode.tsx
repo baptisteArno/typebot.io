@@ -1,4 +1,3 @@
-import { SlideFade, Stack, useColorModeValue } from "@chakra-ui/react";
 import type { GroupV6 } from "@typebot.io/groups/schemas";
 import { isEmpty, isNotDefined } from "@typebot.io/lib/utils";
 import { ContextMenu } from "@typebot.io/ui/components/ContextMenu";
@@ -24,8 +23,6 @@ type Props = {
 };
 
 export const GroupNode = ({ group, groupIndex }: Props) => {
-  const bg = useColorModeValue("white", "gray.950");
-  const previewingBorderColor = useColorModeValue("orange.400", "orange.300");
   const {
     connectingIds,
     setConnectingIds,
@@ -90,7 +87,7 @@ export const GroupNode = ({ group, groupIndex }: Props) => {
   const handleMouseEnter = () => {
     if (isReadOnly) return;
     if (mouseOverGroup?.id !== group.id && groupRef.current)
-      setMouseOverGroup({ id: group.id, element: groupRef.current });
+      setMouseOverGroup({ id: group.id, ref: groupRef });
     if (connectingIds)
       setConnectingIds({ ...connectingIds, target: { groupId: group.id } });
   };
@@ -157,40 +154,31 @@ export const GroupNode = ({ group, groupIndex }: Props) => {
       disabled={isReadOnly}
     >
       <ContextMenu.Trigger>
-        <Stack
+        <div
+          style={
+            {
+              "--group-width": groupWidth + "px",
+              transform: `translate(${groupCoordinates?.x ?? 0}px, ${
+                groupCoordinates?.y ?? 0
+              }px)`,
+              touchAction: "none",
+            } as React.CSSProperties
+          }
+          className={cx(
+            "flex flex-col group px-4 pt-4 pb-2 rounded-xl border absolute gap-0 select-none bg-gray-1 w-[var(--group-width)] transition-[border-color,box-shadow] hover:shadow-md",
+            isConnecting || isContextMenuOpened || isPreviewing || isFocused
+              ? "border-orange-8"
+              : undefined,
+            isMouseDown ? "cursor-grabbing" : "cursor-pointer",
+            isFocused ? "z-10" : undefined,
+            isDraggingGraph ? "pointer-events-none" : "pointer-events-auto",
+          )}
           ref={groupRef}
           id={`group-${group.id}`}
           data-testid="group"
-          className="group"
           data-selectable={group.id}
-          userSelect="none"
-          px="4"
-          pt="4"
-          pb="2"
-          rounded="xl"
-          bg={bg}
-          borderWidth="1px"
-          borderColor={
-            isConnecting || isContextMenuOpened || isPreviewing || isFocused
-              ? previewingBorderColor
-              : undefined
-          }
-          w={groupWidth}
-          transition="border 300ms, box-shadow 200ms"
-          pos="absolute"
-          style={{
-            transform: `translate(${groupCoordinates?.x ?? 0}px, ${
-              groupCoordinates?.y ?? 0
-            }px)`,
-            touchAction: "none",
-          }}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
-          cursor={isMouseDown ? "grabbing" : "pointer"}
-          _hover={{ shadow: "md" }}
-          zIndex={isFocused ? 1 : undefined}
-          spacing={0}
-          pointerEvents={isDraggingGraph ? "none" : "auto"}
         >
           <SingleLineEditable
             value={groupTitle}
@@ -214,24 +202,15 @@ export const GroupNode = ({ group, groupIndex }: Props) => {
               groupRef={groupRef}
             />
           )}
-          {focusedGroups.length === 1 && (
-            <SlideFade
-              in={isFocused}
-              style={{
-                position: "absolute",
-                top: "-50px",
-                right: 0,
-              }}
-              unmountOnExit
-            >
-              <GroupFocusToolbar
-                groupId={group.id}
-                isReadOnly={isReadOnly}
-                onPlayClick={startPreviewAtThisGroup}
-              />
-            </SlideFade>
+          {focusedGroups.length === 1 && isFocused && (
+            <GroupFocusToolbar
+              className="absolute top-[-50px] right-0"
+              groupId={group.id}
+              isReadOnly={isReadOnly}
+              onPlayClick={startPreviewAtThisGroup}
+            />
           )}
-        </Stack>
+        </div>
       </ContextMenu.Trigger>
       <GroupNodeContextMenuPopup />
     </ContextMenu.Root>

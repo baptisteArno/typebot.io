@@ -1,4 +1,3 @@
-import { Stack } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
 import { taxIdTypes } from "@typebot.io/billing/taxIdTypes";
@@ -116,7 +115,7 @@ export const PreCheckoutDialog = ({
   return (
     <Dialog.Root isOpen={isDefined(selectedSubscription)} onClose={onClose}>
       <Dialog.Popup render={<form onSubmit={goToCheckout} />}>
-        <Stack spacing="4">
+        <div className="flex flex-col gap-4">
           <Field.Root>
             <Field.Label>
               {t("billing.preCheckoutModal.companyInput.label")}
@@ -166,7 +165,7 @@ export const PreCheckoutDialog = ({
           >
             {t("billing.preCheckoutModal.submitButton.label")}
           </Button>
-        </Stack>
+        </div>
       </Dialog.Popup>
     </Dialog.Root>
   );

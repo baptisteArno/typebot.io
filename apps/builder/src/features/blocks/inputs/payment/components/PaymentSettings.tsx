@@ -1,4 +1,3 @@
-import { HStack, Stack, Text, useDisclosure } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import {
   defaultPaymentInputOptions,
@@ -10,6 +9,7 @@ import type {
 } from "@typebot.io/blocks-inputs/payment/schema";
 import { Accordion } from "@typebot.io/ui/components/Accordion";
 import { Field } from "@typebot.io/ui/components/Field";
+import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
 import { useMemo } from "react";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { DebouncedTextInputWithVariablesButton } from "@/components/inputs/DebouncedTextInput";
@@ -26,7 +26,7 @@ type Props = {
 
 export const PaymentSettings = ({ options, onOptionsChange }: Props) => {
   const { workspace } = useWorkspace();
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onOpen, onClose } = useOpenControls();
   const { t } = useTranslate();
 
   const updateProvider = (provider: PaymentProvider | undefined) => {
@@ -107,18 +107,18 @@ export const PaymentSettings = ({ options, onOptionsChange }: Props) => {
   );
 
   return (
-    <Stack spacing={4}>
-      <Stack>
-        <Text>{t("blocks.inputs.payment.settings.provider.label")}</Text>
+    <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-2">
+        <p>{t("blocks.inputs.payment.settings.provider.label")}</p>
         <BasicSelect
           items={providers}
           onChange={updateProvider}
           value={options?.provider}
           defaultValue={defaultPaymentInputOptions.provider}
         />
-      </Stack>
-      <Stack>
-        <Text>{t("blocks.inputs.payment.settings.account.label")}</Text>
+      </div>
+      <div className="flex flex-col gap-2">
+        <p>{t("blocks.inputs.payment.settings.account.label")}</p>
         {workspace && (
           <CredentialsDropdown
             type="stripe"
@@ -134,8 +134,8 @@ export const PaymentSettings = ({ options, onOptionsChange }: Props) => {
             )}
           />
         )}
-      </Stack>
-      <HStack>
+      </div>
+      <div className="flex items-center gap-2">
         <Field.Root>
           <Field.Label>
             {t("blocks.inputs.payment.settings.priceAmount.label")}
@@ -146,16 +146,16 @@ export const PaymentSettings = ({ options, onOptionsChange }: Props) => {
             placeholder="30.00"
           />
         </Field.Root>
-        <Stack>
-          <Text>{t("blocks.inputs.payment.settings.currency.label")}</Text>
+        <div className="flex flex-col gap-2">
+          <p>{t("blocks.inputs.payment.settings.currency.label")}</p>
           <BasicSelect
             items={currencies.map((currency) => currency.code)}
             onChange={updateCurrency}
             value={options?.currency}
             defaultValue={defaultPaymentInputOptions.currency}
           />
-        </Stack>
-      </HStack>
+        </div>
+      </div>
       <Field.Root>
         <Field.Label>{t("blocks.inputs.settings.button.label")}</Field.Label>
         <DebouncedTextInputWithVariablesButton
@@ -238,12 +238,11 @@ export const PaymentSettings = ({ options, onOptionsChange }: Props) => {
           </Accordion.Panel>
         </Accordion.Item>
       </Accordion.Root>
-
       <CreateStripeCredentialsDialog
         isOpen={isOpen}
         onClose={onClose}
         onNewCredentials={updateCredentials}
       />
-    </Stack>
+    </div>
   );
 };

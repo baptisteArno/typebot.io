@@ -1,4 +1,3 @@
-import { Text } from "@chakra-ui/react";
 import { Button, type ButtonProps } from "@typebot.io/ui/components/Button";
 import { cn } from "@typebot.io/ui/lib/cn";
 import { motion } from "framer-motion";
@@ -28,12 +27,10 @@ export const BubbleMenuButton = ({
     >
       <BubbleIllustration />
       <div className="flex flex-col gap-1">
-        <Text fontSize="lg" fontWeight="medium">
-          Bubble
-        </Text>
-        <Text textColor="gray.500" fontSize="sm" lineHeight={1.2}>
+        <p className="text-lg font-medium">Bubble</p>
+        <p className="text-sm text-gray-500 leading-[1.2]">
           Embed in a chat bubble
-        </Text>
+        </p>
       </div>
     </Button>
   );

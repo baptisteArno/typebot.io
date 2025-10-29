@@ -1,5 +1,5 @@
-import { useColorMode } from "@chakra-ui/react";
 import type { ForgedBlock } from "@typebot.io/forge-repository/schemas";
+import { useTheme } from "next-themes";
 import { useForgedBlock } from "./hooks/useForgedBlock";
 
 export const ForgedBlockIcon = ({
@@ -9,10 +9,10 @@ export const ForgedBlockIcon = ({
   type: ForgedBlock["type"];
   className?: string;
 }): JSX.Element | null => {
-  const { colorMode } = useColorMode();
+  const { resolvedTheme } = useTheme();
   const { blockDef } = useForgedBlock({ nodeType: type });
   if (!blockDef) return null;
-  if (colorMode === "dark" && blockDef.DarkLogo)
+  if (resolvedTheme === "dark" && blockDef.DarkLogo)
     return <blockDef.DarkLogo width="1rem" className={className} />;
   return <blockDef.LightLogo width="1rem" className={className} />;
 };

@@ -1,10 +1,3 @@
-import {
-  Heading,
-  HStack,
-  Stack,
-  Text,
-  useColorModeValue,
-} from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { sendRequest } from "@typebot.io/lib/utils";
 import { Standard } from "@typebot.io/react";
@@ -32,7 +25,6 @@ export const TemplatesDialog = ({
   isLoading,
 }: Props) => {
   const { t } = useTranslate();
-  const templateCardBackgroundColor = useColorModeValue("white", "gray.900");
   const [typebot, setTypebot] = useState<Typebot>();
   const templates = useTemplates();
   const [selectedTemplate, setSelectedTemplate] = useState<TemplateProps>(
@@ -74,20 +66,12 @@ export const TemplatesDialog = ({
   return (
     <Dialog.Root isOpen={isOpen} onClose={onClose}>
       <Dialog.Popup className="p-0 flex flex-row max-w-6xl max-h-full gap-0">
-        <Stack
-          w="300px"
-          py="4"
-          px="2"
-          borderRightWidth={1}
-          justify="space-between"
-          flexShrink={0}
-          overflowY="auto"
-        >
-          <Stack spacing={5}>
-            <Stack spacing={2}>
-              <Text fontSize="xs" fontWeight="medium" pl="1" color="gray.500">
+        <div className="flex flex-col gap-2 w-[300px] py-4 px-2 border-r justify-between overflow-y-auto flex-shrink-0">
+          <div className="flex flex-col gap-5">
+            <div className="flex flex-col gap-2">
+              <p className="text-xs font-medium pl-1" color="gray.500">
                 {t("templates.modal.menuHeading.marketing")}
-              </Text>
+              </p>
               {templates
                 .filter((template) => template.category === "marketing")
                 .map((template) => (
@@ -103,22 +87,22 @@ export const TemplatesDialog = ({
                     }
                     disabled={template.isComingSoon}
                   >
-                    <HStack overflow="hidden" fontSize="sm" w="full">
-                      <Text>{template.emoji}</Text>
-                      <Text>{template.name}</Text>
+                    <div className="flex items-center gap-2 overflow-hidden text-sm w-full">
+                      <p>{template.emoji}</p>
+                      <p>{template.name}</p>
                       {template.isNew && (
                         <Badge colorScheme="orange" className="flex-shrink-0">
                           {t("templates.modal.menuHeading.new.tag")}
                         </Badge>
                       )}
-                    </HStack>
+                    </div>
                   </Button>
                 ))}
-            </Stack>
-            <Stack spacing={2}>
-              <Text fontSize="xs" fontWeight="medium" pl="1" color="gray.500">
+            </div>
+            <div className="flex flex-col gap-2">
+              <p className="text-xs font-medium pl-1" color="gray.500">
                 {t("templates.modal.menuHeading.product")}
-              </Text>
+              </p>
               {templates
                 .filter((template) => template.category === "product")
                 .map((template) => (
@@ -134,22 +118,22 @@ export const TemplatesDialog = ({
                     }
                     disabled={template.isComingSoon}
                   >
-                    <HStack overflow="hidden" fontSize="sm" w="full">
-                      <Text>{template.emoji}</Text>
-                      <Text>{template.name}</Text>
+                    <div className="flex items-center gap-2 overflow-hidden text-sm w-full">
+                      <p>{template.emoji}</p>
+                      <p>{template.name}</p>
                       {template.isNew && (
                         <Badge colorScheme="orange" className="flex-shrink-0">
                           {t("templates.modal.menuHeading.new.tag")}
                         </Badge>
                       )}
-                    </HStack>
+                    </div>
                   </Button>
                 ))}
-            </Stack>
-            <Stack spacing={2}>
-              <Text fontSize="xs" fontWeight="medium" pl="1" color="gray.500">
+            </div>
+            <div className="flex flex-col gap-2">
+              <p className="text-xs font-medium pl-1" color="gray.500">
                 {t("templates.modal.menuHeading.other")}
-              </Text>
+              </p>
               {templates
                 .filter((template) => template.category === undefined)
                 .map((template) => (
@@ -165,26 +149,25 @@ export const TemplatesDialog = ({
                     }
                     disabled={template.isComingSoon}
                   >
-                    <HStack overflow="hidden" fontSize="sm" w="full">
-                      <Text>{template.emoji}</Text>
-                      <Text>{template.name}</Text>
+                    <div className="flex items-center gap-2 overflow-hidden text-sm w-full">
+                      <p>{template.emoji}</p>
+                      <p>{template.name}</p>
                       {template.isNew && (
                         <Badge colorScheme="orange" className="flex-shrink-0">
                           {t("templates.modal.menuHeading.new.tag")}
                         </Badge>
                       )}
-                    </HStack>
+                    </div>
                   </Button>
                 ))}
-            </Stack>
-          </Stack>
-        </Stack>
-        <Stack
-          w="full"
-          spacing="4"
-          align="center"
-          pb="4"
-          bgColor={selectedTemplate.backgroundColor ?? "white"}
+            </div>
+          </div>
+        </div>
+        <div
+          style={{
+            backgroundColor: selectedTemplate.backgroundColor ?? "white",
+          }}
+          className="flex flex-col w-full gap-4 items-center pb-4"
         >
           {typebot && (
             <Standard
@@ -196,26 +179,19 @@ export const TemplatesDialog = ({
               }}
             />
           )}
-          <HStack
-            p="6"
-            borderWidth={1}
-            rounded="md"
-            w="95%"
-            spacing={4}
-            bgColor={templateCardBackgroundColor}
-          >
-            <Stack flex="1" spacing={4}>
-              <Heading fontSize="2xl">
+          <div className="flex items-center p-6 border rounded-md w-[95%] gap-4 bg-gray-1">
+            <div className="flex flex-col flex-1 gap-4">
+              <h2 className="text-2xl">
                 {selectedTemplate.emoji}{" "}
                 <span className="ml-2">{selectedTemplate.name}</span>
-              </Heading>
-              <Text>{selectedTemplate.description}</Text>
-            </Stack>
+              </h2>
+              <p>{selectedTemplate.description}</p>
+            </div>
             <Button onClick={onUseThisTemplateClick} disabled={isLoading}>
               {t("templates.modal.useTemplateButton.label")}
             </Button>
-          </HStack>
-        </Stack>
+          </div>
+        </div>
       </Dialog.Popup>
     </Dialog.Root>
   );

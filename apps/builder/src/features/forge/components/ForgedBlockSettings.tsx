@@ -1,6 +1,6 @@
-import { Stack, useDisclosure } from "@chakra-ui/react";
 import type { BlockOptions } from "@typebot.io/blocks-core/schemas/schema";
 import type { ForgedBlock } from "@typebot.io/forge-repository/schemas";
+import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
 import { useState } from "react";
 import { useForgedBlock } from "../hooks/useForgedBlock";
 import { ForgedCredentialsCreateDialog } from "./credentials/ForgedCredentialsCreateDialog";
@@ -19,7 +19,7 @@ export const ForgedBlockSettings = ({ block, onOptionsChange }: Props) => {
     nodeType: block.type,
     action: block.options?.action,
   });
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onOpen, onClose } = useOpenControls();
 
   const updateCredentialsId = (credentialsId?: string) => {
     onOptionsChange({
@@ -60,7 +60,7 @@ export const ForgedBlockSettings = ({ block, onOptionsChange }: Props) => {
 
   if (!blockDef || !blockSchema) return null;
   return (
-    <Stack spacing={4}>
+    <div className="flex flex-col gap-4">
       {blockDef.auth && (
         <>
           {blockDef.auth.type === "oauth" ? (
@@ -111,6 +111,6 @@ export const ForgedBlockSettings = ({ block, onOptionsChange }: Props) => {
           />
         </>
       )}
-    </Stack>
+    </div>
   );
 };

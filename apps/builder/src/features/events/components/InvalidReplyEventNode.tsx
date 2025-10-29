@@ -1,4 +1,3 @@
-import { HStack, Stack, Text } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { EventType } from "@typebot.io/events/constants";
 import type { InvalidReplyEvent } from "@typebot.io/events/schemas";
@@ -15,10 +14,10 @@ export const InvalidReplyEventNode = ({ options }: Props) => {
   const { typebot } = useTypebot();
 
   return (
-    <HStack flex="1" align="flex-start" spacing={3} fontWeight="normal">
+    <div className="flex items-center flex-1 items-start gap-3 font-normal">
       <EventIcon type={EventType.INVALID_REPLY} className="mt-1" />
-      <Stack>
-        <Text>{t("blocks.events.invalidReply.node.prefix")}</Text>
+      <div className="flex flex-col gap-2">
+        <p>{t("blocks.events.invalidReply.node.prefix")}</p>
         {options?.contentVariableId ? (
           <SetVariableLabel
             variables={typebot?.variables}
@@ -37,7 +36,7 @@ export const InvalidReplyEventNode = ({ options }: Props) => {
             variableId={options.inputNameVariableId}
           />
         ) : null}
-      </Stack>
-    </HStack>
+      </div>
+    </div>
   );
 };

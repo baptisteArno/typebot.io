@@ -1,9 +1,9 @@
-import { Stack, useDisclosure } from "@chakra-ui/react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Menu } from "@typebot.io/ui/components/Menu";
 import { Tooltip } from "@typebot.io/ui/components/Tooltip";
+import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
 import { ArrowDown01Icon } from "@typebot.io/ui/icons/ArrowDown01Icon";
 import { PlusSignIcon } from "@typebot.io/ui/icons/PlusSignIcon";
 import { TrashIcon } from "@typebot.io/ui/icons/TrashIcon";
@@ -24,7 +24,7 @@ export const CustomDomainsDropdown = ({
 }: Props) => {
   const { t } = useTranslate();
   const [isDeleting, setIsDeleting] = useState("");
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onOpen, onClose } = useOpenControls();
   const { workspace, currentUserMode } = useWorkspace();
   const { data, refetch } = useQuery(
     trpc.customDomains.listCustomDomains.queryOptions(
@@ -95,7 +95,7 @@ export const CustomDomainsDropdown = ({
         </Tooltip.Popup>
       </Tooltip.Root>
       <Menu.Popup>
-        <Stack maxH={"35vh"} overflowY="auto" spacing="0">
+        <div className="flex flex-col max-h-[35vh] overflow-y-auto gap-0">
           {(data?.customDomains ?? []).map((customDomain) => (
             <Menu.Item
               key={customDomain.name}
@@ -121,7 +121,7 @@ export const CustomDomainsDropdown = ({
               {t("connectNew")}
             </Menu.Item>
           )}
-        </Stack>
+        </div>
       </Menu.Popup>
     </Menu.Root>
   );

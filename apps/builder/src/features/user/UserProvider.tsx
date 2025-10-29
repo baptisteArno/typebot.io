@@ -1,9 +1,9 @@
-import { useColorMode } from "@chakra-ui/react";
 import { env } from "@typebot.io/env";
 import { isDefined } from "@typebot.io/lib/utils";
 import type { ClientUser, UpdateUser, User } from "@typebot.io/user/schemas";
 import { useRouter } from "next/router";
 import { signOut, useSession } from "next-auth/react";
+import { useTheme } from "next-themes";
 import type { ReactNode } from "react";
 import { createContext, useEffect, useState } from "react";
 import { datesAreOnSameDay } from "@/helpers/datesAreOnSameDate";
@@ -29,29 +29,14 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
   const { data: session, status } = useSession();
   const [currentWorkspaceId, setCurrentWorkspaceId] = useState<string>();
-  const { setColorMode } = useColorMode();
+  const { theme, setTheme } = useTheme();
   const [localUser, setLocalUser] = useState<ClientUser>();
 
   const updateUserMutation = useUpdateUserMutation();
 
   useEffect(() => {
-    const currentColorScheme = localStorage.getItem("chakra-ui-color-mode") as
-      | "light"
-      | "dark"
-      | null;
-    if (!currentColorScheme) return;
-    const systemColorScheme = window.matchMedia("(prefers-color-scheme: dark)")
-      .matches
-      ? "dark"
-      : "light";
-    const userPrefersSystemMode =
-      !localUser?.preferredAppAppearance ||
-      localUser.preferredAppAppearance === "system";
-    const computedColorMode = userPrefersSystemMode
-      ? systemColorScheme
-      : localUser?.preferredAppAppearance;
-    if (computedColorMode === currentColorScheme) return;
-    setColorMode(computedColorMode);
+    if (theme === (localUser?.preferredAppAppearance ?? "system")) return;
+    setTheme(localUser?.preferredAppAppearance ?? "system");
   }, [localUser?.preferredAppAppearance]);
 
   useEffect(() => {

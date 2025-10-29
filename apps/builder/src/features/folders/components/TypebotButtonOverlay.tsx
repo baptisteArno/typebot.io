@@ -1,52 +1,40 @@
-import {
-  Box,
-  type BoxProps,
-  Flex,
-  useColorModeValue,
-  VStack,
-} from "@chakra-ui/react";
 import { LayoutBottomIcon } from "@typebot.io/ui/icons/LayoutBottomIcon";
+import { cn } from "@typebot.io/ui/lib/cn";
 import { EmojiOrImageIcon } from "@/components/EmojiOrImageIcon";
 import type { TypebotInDashboard } from "@/features/dashboard/types";
 
 type Props = {
   typebot: TypebotInDashboard;
-} & BoxProps;
+  className?: string;
+  onMouseUp?: () => Promise<void>;
+  style?: React.CSSProperties;
+};
 
-export const TypebotCardOverlay = ({ typebot, ...props }: Props) => {
+export const TypebotButtonOverlay = ({
+  typebot,
+  className,
+  onMouseUp,
+  style,
+}: Props) => {
   return (
-    <Box
-      display="flex"
-      flexDir="column"
-      variant="outline"
-      justifyContent="center"
-      w="225px"
-      h="270px"
-      whiteSpace="normal"
-      transition="none"
-      pointerEvents="none"
-      borderWidth={1}
-      rounded="md"
-      bgColor={useColorModeValue("white", "gray.700")}
-      shadow="md"
-      opacity={0.7}
-      {...props}
+    <div
+      className={cn(
+        "flex flex-col justify-center w-[225px] h-[270px] border rounded-md shadow-md whitespace-normal transition-none pointer-events-none opacity-70 bg-gray-1",
+        className,
+      )}
+      onMouseUp={onMouseUp}
+      style={style}
     >
-      <VStack spacing={4}>
-        <Flex
-          rounded="full"
-          justifyContent="center"
-          alignItems="center"
-          fontSize={"4xl"}
-        >
+      <div className="flex flex-col items-center gap-4">
+        <div className="flex rounded-full justify-center items-center text-4xl">
           <EmojiOrImageIcon
             icon={typebot.icon}
             size="lg"
             defaultIcon={LayoutBottomIcon}
           />
-        </Flex>
+        </div>
         <p className="font-medium">{typebot.name}</p>
-      </VStack>
-    </Box>
+      </div>
+    </div>
   );
 };

@@ -1,10 +1,3 @@
-import {
-  Divider,
-  Flex,
-  HStack,
-  Text,
-  useColorModeValue,
-} from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { isNotDefined } from "@typebot.io/lib/utils";
 import { Button } from "@typebot.io/ui/components/Button";
@@ -17,7 +10,6 @@ import { EmojiOrImageIcon } from "@/components/EmojiOrImageIcon";
 import { TypebotLogo } from "@/components/TypebotLogo";
 import { useUser } from "@/features/user/hooks/useUser";
 import { useRightPanel } from "@/hooks/useRightPanel";
-import { headerHeight } from "../constants";
 import { useEditor } from "../providers/EditorProvider";
 import { useTypebot } from "../providers/TypebotProvider";
 
@@ -36,22 +28,8 @@ export const GuestTypebotHeader = () => {
   };
 
   return (
-    <Flex
-      w="full"
-      borderBottomWidth="1px"
-      justify="center"
-      align="center"
-      h={`${headerHeight}px`}
-      zIndex={1}
-      pos="relative"
-      bgColor={useColorModeValue("white", "gray.950")}
-      flexShrink={0}
-    >
-      <HStack
-        display={["none", "flex"]}
-        pos={{ base: "absolute", xl: "static" }}
-        right={{ base: 280, xl: 0 }}
-      >
+    <div className="flex w-full border-b justify-center items-center relative h-[var(--header-height)] bg-gray-1 flex-shrink-0 z-10">
+      <div className="items-center gap-2 absolute xl:static right-[280px] xl:right-0 hidden sm:flex">
         <ButtonLink
           href={`/typebots/${typebot?.id}/edit`}
           variant={router.pathname.includes("/edit") ? "outline" : "ghost"}
@@ -73,41 +51,22 @@ export const GuestTypebotHeader = () => {
         >
           {t("editor.header.settingsButton.label")}
         </ButtonLink>
-      </HStack>
-      <HStack
-        pos="absolute"
-        left="1rem"
-        justify="center"
-        align="center"
-        spacing="6"
-      >
-        <HStack alignItems="center" spacing={3}>
+      </div>
+      <div className="flex items-center absolute justify-center gap-6 left-4">
+        <div className="flex items-center gap-3">
           {typebot && (
             <EmojiOrImageIcon
               icon={typebot.icon}
               defaultIcon={LayoutBottomIcon}
             />
           )}
-          <Text
-            noOfLines={2}
-            maxW="150px"
-            overflow="hidden"
-            fontSize="14px"
-            minW="30px"
-            minH="20px"
-          >
+          <p className="max-w-[150px] overflow-hidden text-[14px] min-w-[30px] min-h-[20px] line-clamp-2">
             {typebot?.name}
-          </Text>
-        </HStack>
-      </HStack>
-
-      <HStack
-        right="1rem"
-        pos="absolute"
-        display={["none", "flex"]}
-        spacing={4}
-      >
-        <HStack>
+          </p>
+        </div>
+      </div>
+      <div className="items-center absolute gap-4 right-4 hidden sm:flex">
+        <div className="flex items-center gap-2">
           {typebot?.id && (
             <ButtonLink
               href={
@@ -138,11 +97,11 @@ export const GuestTypebotHeader = () => {
               Play bot
             </Button>
           )}
-        </HStack>
+        </div>
 
         {!user && (
           <>
-            <Divider orientation="vertical" h="25px" borderColor="gray.400" />
+            <hr className="h-6 w-[1px] border-0 bg-gray-6" />
             <ButtonLink
               href={`/register`}
               variant="outline-secondary"
@@ -153,7 +112,7 @@ export const GuestTypebotHeader = () => {
             </ButtonLink>
           </>
         )}
-      </HStack>
-    </Flex>
+      </div>
+    </div>
   );
 };

@@ -1,4 +1,3 @@
-import { Flex, SlideFade, useColorModeValue } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import type {
   Item,
@@ -95,7 +94,7 @@ export const ButtonsItemNode = ({ item, indices, isMouseOver }: Props) => {
     >
       <Popover.Trigger
         render={(props) => (
-          <Flex {...props} px={4} py={2} justify="center" w="full">
+          <div className="flex px-4 py-2 justify-center w-full" {...props}>
             <SingleLineEditable
               defaultEdit={
                 isEmpty(item.content) ||
@@ -119,22 +118,8 @@ export const ButtonsItemNode = ({ item, indices, isMouseOver }: Props) => {
                 ),
               }}
             />
-            <SlideFade
-              offsetY="5px"
-              offsetX="-5px"
-              in={isMouseOver}
-              style={{
-                position: "absolute",
-                right: "-0.25rem",
-                top: "-0.25rem",
-                zIndex: 3,
-              }}
-              unmountOnExit
-            >
-              <Flex
-                bgColor={useColorModeValue("white", "gray.900")}
-                rounded="md"
-              >
+            {isMouseOver && (
+              <div className="flex rounded-md bg-gray-1 absolute right-[-0.25rem] top-[-0.25rem] z-10 animate-in fade-in-0">
                 <Button
                   aria-label={t("blocks.inputs.button.openSettings.ariaLabel")}
                   variant="ghost"
@@ -144,9 +129,9 @@ export const ButtonsItemNode = ({ item, indices, isMouseOver }: Props) => {
                 >
                   <Settings01Icon />
                 </Button>
-              </Flex>
-            </SlideFade>
-          </Flex>
+              </div>
+            )}
+          </div>
         )}
       />
       <Popover.Popup side="right" className="p-4">

@@ -1,4 +1,3 @@
-import { Progress, Stack, Text } from "@chakra-ui/react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import type { TRPCError } from "@trpc/server";
 import { parseUniqueKey } from "@typebot.io/lib/parseUniqueKey";
@@ -13,6 +12,7 @@ import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
 import { Field } from "@typebot.io/ui/components/Field";
 import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
+import { Progress } from "@typebot.io/ui/components/Progress";
 import { Switch } from "@typebot.io/ui/components/Switch";
 import { Download01Icon } from "@typebot.io/ui/icons/Download01Icon";
 import { InformationSquareIcon } from "@typebot.io/ui/icons/InformationSquareIcon";
@@ -175,14 +175,10 @@ export const ExportAllResultsDialog = ({ isOpen, onClose }: Props) => {
           </Alert.Description>
         </Alert.Root>
         {isExportLoading && (
-          <Stack>
-            <Text>Fetching all results...</Text>
-            <Progress
-              value={exportProgressValue}
-              borderRadius="md"
-              colorScheme="orange"
-            />
-          </Stack>
+          <div className="flex flex-col gap-2">
+            <p>Fetching all results...</p>
+            <Progress.Root value={exportProgressValue} />
+          </div>
         )}
         <Dialog.Footer>
           <Button onClick={onClose} variant="ghost" size="sm">

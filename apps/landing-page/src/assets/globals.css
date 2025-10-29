@@ -1,5 +1,5 @@
 @import "@typebot.io/ui/colors.css";
-@import "font.css";
+@import "@typebot.io/ui/fonts.css";
 
 @tailwind base;
 @tailwind components;

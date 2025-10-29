@@ -1,4 +1,3 @@
-import { Stack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import {
   BackgroundType,
@@ -27,7 +26,7 @@ export const BackgroundSelector = ({
     onBackgroundChange({ ...background, content });
 
   return (
-    <Stack spacing={4}>
+    <div className="flex flex-col gap-4">
       <RadioGroup
         value={background?.type ?? defaultBackgroundType}
         onValueChange={(value) =>
@@ -51,6 +50,6 @@ export const BackgroundSelector = ({
         background={background}
         onBackgroundContentChange={handleBackgroundContentChange}
       />
-    </Stack>
+    </div>
   );
 };

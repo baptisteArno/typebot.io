@@ -1,12 +1,12 @@
-import { Text } from "@chakra-ui/react";
 import type { GoogleAnalyticsBlock } from "@typebot.io/blocks-integrations/googleAnalytics/schema";
+import { cx } from "@typebot.io/ui/lib/cva";
 
 type Props = {
   action: NonNullable<GoogleAnalyticsBlock["options"]>["action"];
 };
 
 export const GoogleAnalyticsNodeBody = ({ action }: Props) => (
-  <Text color={action ? "currentcolor" : "gray.500"} noOfLines={1}>
+  <p className={cx("truncate", action ? "text-gray-12" : "text-gray-9")}>
     {action ? `Track "${action}"` : "Configure..."}
-  </Text>
+  </p>
 );

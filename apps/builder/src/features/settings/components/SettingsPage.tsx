@@ -1,9 +1,7 @@
-import { Flex, HStack, useColorModeValue } from "@chakra-ui/react";
 import { Standard } from "@typebot.io/react";
 import { defaultBackgroundColor } from "@typebot.io/theme/constants";
 import { Seo } from "@/components/Seo";
 import { TypebotHeader } from "@/features/editor/components/TypebotHeader";
-import { headerHeight } from "@/features/editor/constants";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { SettingsSideMenu } from "./SettingsSideMenu";
 
@@ -11,20 +9,12 @@ export const SettingsPage = () => {
   const { typebot } = useTypebot();
 
   return (
-    <Flex overflow="hidden" h="100vh" flexDir="column">
+    <div className="flex overflow-hidden h-screen flex-col">
       <Seo title={typebot?.name ? `${typebot.name} | Settings` : "Settings"} />
       <TypebotHeader />
-      <HStack w="full" height={`calc(100vh - ${headerHeight}px)`} spacing={4}>
+      <div className="flex items-center w-full gap-4 h-[calc(100vh-var(--header-height))]">
         <SettingsSideMenu />
-        <Flex
-          flex="1"
-          bg={useColorModeValue("white", "gray.900")}
-          height="calc(100% - 2rem)"
-          w="full"
-          borderWidth={1}
-          rounded="xl"
-          mr={4}
-        >
+        <div className="flex flex-1 h-[calc(100%-2rem)] w-full border rounded-xl mr-4 bg-gray-1">
           {typebot && (
             <Standard
               typebot={typebot}
@@ -38,8 +28,8 @@ export const SettingsPage = () => {
               }}
             />
           )}
-        </Flex>
-      </HStack>
-    </Flex>
+        </div>
+      </div>
+    </div>
   );
 };

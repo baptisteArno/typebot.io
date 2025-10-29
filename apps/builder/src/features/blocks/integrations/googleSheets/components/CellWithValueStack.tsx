@@ -1,4 +1,3 @@
-import { Stack } from "@chakra-ui/react";
 import type { Cell } from "@typebot.io/blocks-integrations/googleSheets/schema";
 import { Button } from "@typebot.io/ui/components/Button";
 import { MoreVerticalIcon } from "@typebot.io/ui/icons/MoreVerticalIcon";
@@ -20,14 +19,7 @@ export const CellWithValueStack = ({
     onItemChange({ ...item, value });
   };
   return (
-    <Stack
-      p="4"
-      rounded="md"
-      flex="1"
-      borderWidth="1px"
-      w="full"
-      pos="relative"
-    >
+    <div className="flex flex-col gap-2 p-4 rounded-md flex-1 border w-full relative">
       <Button
         size="icon"
         variant="secondary"
@@ -46,6 +38,6 @@ export const CellWithValueStack = ({
         onValueChange={handleValueChange}
         placeholder="Type a value..."
       />
-    </Stack>
+    </div>
   );
 };

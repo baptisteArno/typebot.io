@@ -1,4 +1,3 @@
-import { Stack } from "@chakra-ui/react";
 import type { Coordinates } from "@dnd-kit/utilities";
 import { shouldOpenBlockSettingsOnCreation } from "@typebot.io/blocks-core/helpers";
 import type { BlockV6 } from "@typebot.io/blocks-core/schemas/schema";
@@ -152,7 +151,7 @@ export const BlockNodesList = ({ blocks, groupIndex, groupRef }: Props) => {
   }, [onGroupMouseUp]);
 
   return (
-    <Stack spacing={0} transition="none">
+    <div className="flex flex-col gap-0 transition-none">
       <PlaceholderNode
         isVisible={showSortPlaceholders}
         isExpanded={expandedPlaceholderIndex === 0}
@@ -164,7 +163,7 @@ export const BlockNodesList = ({ blocks, groupIndex, groupRef }: Props) => {
       />
       {typebot &&
         blocks.map((block, idx) => (
-          <Stack key={block.id} spacing={0}>
+          <div className="flex flex-col gap-0" key={block.id}>
             <BlockNode
               key={block.id}
               block={block}
@@ -181,23 +180,20 @@ export const BlockNodesList = ({ blocks, groupIndex, groupRef }: Props) => {
               initialPaddingPixel={2}
               initialHeightPixels={4}
             />
-          </Stack>
+          </div>
         ))}
       {draggedBlock && draggedBlock.groupId === groupId && (
         <Portal>
           <BlockNodeOverlay
             block={draggedBlock}
             indices={{ groupIndex, blockIndex: 0 }}
-            pos="fixed"
-            top="0"
-            left="0"
+            className="fixed top-0 left-0 origin-[0_0_0]"
             style={{
               transform: `translate(${position.x}px, ${position.y}px) rotate(-2deg) scale(${graphPosition.scale})`,
             }}
-            transformOrigin="0 0 0"
           />
         </Portal>
       )}
-    </Stack>
+    </div>
   );
 };

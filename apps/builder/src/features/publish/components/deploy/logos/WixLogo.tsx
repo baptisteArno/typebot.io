@@ -1,7 +1,7 @@
-import { useColorModeValue } from "@chakra-ui/react";
+import { useThemeValue } from "@/hooks/useThemeValue";
 
 export const WixLogo = (props: React.SVGProps<SVGSVGElement>) => {
-  const fill = useColorModeValue("black", "white");
+  const fill = useThemeValue("black", "white");
   return (
     <svg
       width="311"

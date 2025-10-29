@@ -1,4 +1,3 @@
-import { Code, ListItem, OrderedList, Stack, Text } from "@chakra-ui/react";
 import type { BubbleProps } from "@typebot.io/js";
 import { useState } from "react";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
@@ -16,18 +15,18 @@ export const WixBubbleInstructions = () => {
     useState<BubbleProps["previewMessage"]>();
 
   return (
-    <OrderedList spacing={4} pl={5}>
-      <ListItem>
-        Go to <Code>Settings</Code> in your dashboard on Wix
-      </ListItem>
-      <ListItem>
-        Click on <Code>Custom Code</Code> under <Code>Advanced</Code>
-      </ListItem>
-      <ListItem>
-        Click <Code>+ Add Custom Code</Code> at the top right.
-      </ListItem>
-      <ListItem>
-        <Stack spacing={4}>
+    <ol>
+      <li>
+        Go to <code>Settings</code> in your dashboard on Wix
+      </li>
+      <li>
+        Click on <code>Custom Code</code> under <code>Advanced</code>
+      </li>
+      <li>
+        Click <code>+ Add Custom Code</code> at the top right.
+      </li>
+      <li>
+        <div className="flex flex-col gap-4">
           <BubbleSettings
             previewMessage={previewMessage}
             defaultPreviewMessageAvatar={
@@ -37,17 +36,17 @@ export const WixBubbleInstructions = () => {
             onPreviewMessageChange={setPreviewMessage}
             onThemeChange={setTheme}
           />
-          <Text> Paste this snippet in the code box:</Text>
+          <p> Paste this snippet in the code box:</p>
           <JavascriptBubbleSnippet
             theme={theme}
             previewMessage={previewMessage}
           />
-        </Stack>
-      </ListItem>
-      <ListItem>
-        Select &quot;Body - start&quot; under <Code>Place Code in</Code>
-      </ListItem>
-      <ListItem>Click Apply</ListItem>
-    </OrderedList>
+        </div>
+      </li>
+      <li>
+        Select &quot;Body - start&quot; under <code>Place Code in</code>
+      </li>
+      <li>Click Apply</li>
+    </ol>
   );
 };

@@ -1,4 +1,3 @@
-import { HStack, Text } from "@chakra-ui/react";
 import {
   defaultHttpRequestAttributes,
   defaultHttpRequestBlockOptions,
@@ -140,15 +139,15 @@ export const HttpRequestAdvancedConfigForm = ({
                 </MoreInfoTooltip>
               </Field.Label>
             </Field.Root>
-            <HStack justify="space-between">
-              <Text>Method:</Text>
+            <div className="flex items-center gap-2 justify-between">
+              <p>Method:</p>
               <BasicSelect
                 value={httpRequest?.method}
                 defaultValue={defaultHttpRequestAttributes.method}
                 onChange={updateMethod}
                 items={Object.values(HttpMethod)}
               />
-            </HStack>
+            </div>
             <Accordion.Root>
               <Accordion.Item>
                 <Accordion.Trigger>Query params</Accordion.Trigger>
@@ -240,7 +239,6 @@ export const HttpRequestAdvancedConfigForm = ({
           </Accordion.Panel>
         </Accordion.Item>
       </Accordion.Root>
-
       {httpRequest?.url && (
         <Button onClick={executeTestRequest} disabled={isTestResponseLoading}>
           Test the request

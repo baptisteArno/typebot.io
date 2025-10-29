@@ -1,4 +1,3 @@
-import { Box } from "@chakra-ui/react";
 import type { Coordinates } from "../types";
 
 type Props = {
@@ -10,12 +9,8 @@ type Props = {
 };
 
 export const SelectBox = ({ origin, dimension }: Props) => (
-  <Box
-    pos="fixed"
-    rounded="md"
-    borderWidth={1}
-    borderColor="orange.200"
-    bgColor="rgba(255, 214, 199, 0.1)"
+  <div
+    className="fixed rounded-md border border-orange-6 bg-orange-6/10"
     style={{
       left: origin.x,
       top: origin.y,

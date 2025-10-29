@@ -1,4 +1,3 @@
-import { useEventListener } from "@chakra-ui/react";
 import { EventType } from "@typebot.io/events/constants";
 import type { TDraggableEvent } from "@typebot.io/events/schemas";
 import type { GroupV6 } from "@typebot.io/groups/schemas";
@@ -14,6 +13,7 @@ import type { Variable } from "@typebot.io/variables/schemas";
 import { useState } from "react";
 import { useShallow } from "zustand/react/shallow";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
+import { useEventListener } from "@/hooks/useEventListener";
 import { useKeyboardShortcuts } from "@/hooks/useKeyboardShortcuts";
 import { toast } from "@/lib/toast";
 import { projectMouse } from "../helpers/projectMouse";

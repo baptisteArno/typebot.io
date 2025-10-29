@@ -1,10 +1,3 @@
-import {
-  Heading,
-  Stack,
-  Text,
-  useColorModeValue,
-  VStack,
-} from "@chakra-ui/react";
 import { Badge } from "@typebot.io/ui/components/Badge";
 import { Button } from "@typebot.io/ui/components/Button";
 import { useQueryState } from "nuqs";
@@ -16,7 +9,6 @@ export const EmailRedirectPage = () => {
   const [redirectPath] = useQueryState("redirectPath");
   const [email] = useQueryState("email");
   const [token] = useQueryState("token");
-  const bgColor = useColorModeValue("gray.50", "gray.900");
 
   const redirectToMagicLink = () => {
     if (!token || !email) {
@@ -31,23 +23,23 @@ export const EmailRedirectPage = () => {
   if (!email || !token) return null;
 
   return (
-    <VStack h="100vh" justifyContent="center">
+    <div className="flex flex-col items-center gap-2 h-screen justify-center">
       <Seo title={"Email auth confirmation"} />
-      <Stack bg={bgColor} p={10} borderRadius={8} borderWidth={1} spacing={6}>
-        <Stack spacing={4}>
-          <Heading
+      <div className="flex flex-col p-10 rounded-8 border gap-6 bg-gray-1">
+        <div className="flex flex-col gap-4">
+          <h2
             onClick={() => {
               throw new Error("Sentry is working");
             }}
           >
             Email authentication
-          </Heading>
-          <Text>
+          </h2>
+          <p>
             You are about to login with <Badge>{email}</Badge>
-          </Text>
-        </Stack>
+          </p>
+        </div>
         <Button onClick={redirectToMagicLink}>Continue</Button>
-      </Stack>
-    </VStack>
+      </div>
+    </div>
   );
 };

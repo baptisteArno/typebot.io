@@ -33,6 +33,7 @@ export const parseNewBlock = (type: BlockV6["type"]) =>
   ({
     id: createId(),
     type,
+
     ...(blockTypeHasItems(type)
       ? { items: parseDefaultItems(type) }
       : undefined),

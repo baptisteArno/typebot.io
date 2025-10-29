@@ -1,4 +1,3 @@
-import { Stack, Text, Wrap } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { defaultConditionItemContent } from "@typebot.io/blocks-logic/condition/constants";
 import { ComparisonOperators } from "@typebot.io/conditions/constants";
@@ -21,21 +20,21 @@ export const ConditionContent = ({
 }: Props) => {
   const { t } = useTranslate();
   return (
-    <Stack>
+    <div className="flex flex-col gap-2">
       {condition?.comparisons?.map((comparison, idx) => {
         const variable = variables.find(byId(comparison.variableId));
         return (
-          <Wrap key={comparison.id} spacing={1} noOfLines={1}>
+          <div className="flex flex-wrap gap-1 truncate" key={comparison.id}>
             {idx === 0 && (
-              <Text fontSize={size}>
+              <p className={size === "xs" ? "text-xs" : "text-sm"}>
                 {t("blocks.inputs.button.conditionContent.if.label")}
-              </Text>
+              </p>
             )}
             {idx > 0 && (
-              <Text fontSize={size}>
+              <p className={size === "xs" ? "text-xs" : "text-sm"}>
                 {condition.logicalOperator ??
                   defaultConditionItemContent.logicalOperator}
-              </Text>
+              </p>
             )}
             {variable?.name && (
               <Badge colorScheme="purple" className="break-all">
@@ -43,9 +42,9 @@ export const ConditionContent = ({
               </Badge>
             )}
             {comparison.comparisonOperator && (
-              <Text fontSize={size}>
+              <p className={size === "xs" ? "text-xs" : "text-sm"}>
                 {parseComparisonOperatorSymbol(comparison.comparisonOperator)}
-              </Text>
+              </p>
             )}
             {comparison?.value &&
               comparison.comparisonOperator !== ComparisonOperators.IS_SET &&
@@ -54,11 +53,13 @@ export const ConditionContent = ({
                 <Badge>{comparison.value}</Badge>
               )}
             {idx === (condition.comparisons?.length ?? 0) - 1 &&
-              displaySemicolon && <Text fontSize={size}>:</Text>}
-          </Wrap>
+              displaySemicolon && (
+                <p className={size === "xs" ? "text-xs" : "text-sm"}>:</p>
+              )}
+          </div>
         );
       })}
-    </Stack>
+    </div>
   );
 };
 

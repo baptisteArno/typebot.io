@@ -1,4 +1,3 @@
-import { Heading, HStack, Stack } from "@chakra-ui/react";
 import { useTolgee, useTranslate } from "@tolgee/react";
 import { GraphNavigation } from "@typebot.io/prisma/enum";
 import { Field } from "@typebot.io/ui/components/Field";
@@ -6,6 +5,7 @@ import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
 import { Switch } from "@typebot.io/ui/components/Switch";
 import type { GroupTitlesAutoGeneration } from "@typebot.io/user/schemas";
 import { useRouter } from "next/router";
+import { useTheme } from "next-themes";
 import { useEffect } from "react";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { VideoOnboardingPopover } from "@/features/onboarding/components/VideoOnboardingPopover";
@@ -31,6 +31,7 @@ export const UserPreferencesForm = () => {
   const router = useRouter();
   const { t } = useTranslate();
   const { user, updateUser } = useUser();
+  const { setTheme } = useTheme();
 
   useEffect(() => {
     if (!user?.graphNavigation)
@@ -56,6 +57,7 @@ export const UserPreferencesForm = () => {
   };
 
   const changeGraphNavigation = async (value: string) => {
+    setTheme(value);
     updateUser({ graphNavigation: value as GraphNavigation });
   };
 
@@ -74,9 +76,9 @@ export const UserPreferencesForm = () => {
   };
 
   return (
-    <Stack spacing={12}>
-      <HStack spacing={4}>
-        <Heading size="md">{t("account.preferences.language.heading")}</Heading>
+    <div className="flex flex-col gap-12">
+      <div className="flex items-center gap-4">
+        <h3>{t("account.preferences.language.heading")}</h3>
         <div className="flex items-center">
           <BasicSelect
             items={Object.entries(localeHumanReadable).map(([key, value]) => ({
@@ -92,21 +94,16 @@ export const UserPreferencesForm = () => {
             </MoreInfoTooltip>
           )}
         </div>
-      </HStack>
-      <Stack spacing={6}>
-        <Heading size="md">
-          {t("account.preferences.graphNavigation.heading")}
-        </Heading>
+      </div>
+      <div className="flex flex-col gap-6">
+        <h3>{t("account.preferences.graphNavigation.heading")}</h3>
         <GraphNavigationRadioGroup
           defaultValue={user?.graphNavigation ?? GraphNavigation.MOUSE}
           onChange={changeGraphNavigation}
         />
-      </Stack>
-
-      <Stack spacing={6}>
-        <Heading size="md">
-          {t("account.preferences.appearance.heading")}
-        </Heading>
+      </div>
+      <div className="flex flex-col gap-6">
+        <h3>{t("account.preferences.appearance.heading")}</h3>
         <AppearanceRadioGroup
           defaultValue={
             user?.preferredAppAppearance
@@ -115,8 +112,7 @@ export const UserPreferencesForm = () => {
           }
           onChange={changeAppearance}
         />
-      </Stack>
-
+      </div>
       <VideoOnboardingPopover
         type="groupTitlesAutoGeneration"
         isEnabled={user?.groupTitlesAutoGeneration?.isEnabled ?? false}
@@ -143,6 +139,6 @@ export const UserPreferencesForm = () => {
           )}
         </Field.Container>
       </VideoOnboardingPopover>
-    </Stack>
+    </div>
   );
 };

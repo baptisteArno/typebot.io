@@ -1,4 +1,3 @@
-import { Box, Flex, Stack } from "@chakra-ui/react";
 import { isSvgSrc } from "@typebot.io/lib/utils";
 import type { AvatarProps } from "@typebot.io/theme/schemas";
 import { Field } from "@typebot.io/ui/components/Field";
@@ -35,8 +34,8 @@ export const AvatarForm = ({
 
   const isDefaultAvatar = !avatarProps?.url || avatarProps.url.includes("{{");
   return (
-    <Stack borderWidth={1} rounded="md" p="4" spacing={4}>
-      <Flex justifyContent="space-between">
+    <div className="flex flex-col border rounded-md p-4 gap-4">
+      <div className="flex justify-between">
         <Field.Root className="flex-row items-center">
           <Field.Label className="font-medium font-heading text-lg">
             {title}
@@ -48,16 +47,16 @@ export const AvatarForm = ({
           />
         </Field.Root>
         {isChecked && (
-          <Flex ref={popoverContainerRef}>
+          <div className="flex" ref={popoverContainerRef}>
             <Popover.Root {...controls}>
               <Popover.Trigger>
                 {isDefaultAvatar ? (
-                  <Box>
+                  <div>
                     <DefaultAvatar
                       cursor="pointer"
                       className="hover:brightness-90"
                     />
-                  </Box>
+                  </div>
                 ) : isSvgSrc(avatarProps?.url) ? (
                   <img
                     src={avatarProps.url}
@@ -91,9 +90,9 @@ export const AvatarForm = ({
                 />
               </Popover.Popup>
             </Popover.Root>
-          </Flex>
+          </div>
         )}
-      </Flex>
-    </Stack>
+      </div>
+    </div>
   );
 };

@@ -1,4 +1,3 @@
-import { Stack, Text } from "@chakra-ui/react";
 import { isInputBlock } from "@typebot.io/blocks-core/helpers";
 import {
   defaultSetVariableOptions,
@@ -76,7 +75,7 @@ export const SetVariableSettings = ({ options, onOptionsChange }: Props) => {
     );
 
   return (
-    <Stack spacing={4}>
+    <div className="flex flex-col gap-4">
       <Field.Root>
         <Field.Label>Search or create variable:</Field.Label>
         <VariablesCombobox
@@ -84,12 +83,9 @@ export const SetVariableSettings = ({ options, onOptionsChange }: Props) => {
           initialVariableId={options?.variableId}
         />
       </Field.Root>
-
-      <Stack spacing="4">
-        <Stack>
-          <Text mb="0" fontWeight="medium">
-            Value:
-          </Text>
+      <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-2">
+          <p className="mb-0 font-medium">Value:</p>
           <BasicSelect
             value={options?.type ?? defaultSetVariableOptions.type}
             items={setVarTypes.map((type) => ({
@@ -101,7 +97,7 @@ export const SetVariableSettings = ({ options, onOptionsChange }: Props) => {
             }))}
             onChange={updateValueType}
           />
-        </Stack>
+        </div>
 
         {selectedVariable && !isSessionOnly && !isLinkedToAnswer && (
           <Field.Root className="flex-row items-center">
@@ -120,8 +116,8 @@ export const SetVariableSettings = ({ options, onOptionsChange }: Props) => {
           </Field.Root>
         )}
         <SetVariableValue options={options} onOptionsChange={onOptionsChange} />
-      </Stack>
-    </Stack>
+      </div>
+    </div>
   );
 };
 
@@ -242,7 +238,7 @@ const SetVariableValue = ({
               </MoreInfoTooltip>
             </Field.Label>
           </Field.Root>
-          <Stack>
+          <div className="flex flex-col gap-2">
             <RadioGroup
               onValueChange={(value) => updateIsCode(value as "Text" | "Code")}
               defaultValue={
@@ -261,7 +257,7 @@ const SetVariableValue = ({
               </Label>
             </RadioGroup>
             {options?.isCode ? (
-              <Stack>
+              <div className="flex flex-col gap-2">
                 <DebouncedTextInput
                   placeholder="Code description"
                   defaultValue={options?.expressionDescription}
@@ -280,14 +276,14 @@ const SetVariableValue = ({
                     onSelectVariable={updateSaveErrorInVariableId}
                   />
                 </Field.Root>
-              </Stack>
+              </div>
             ) : (
               <DebouncedTextareaWithVariablesButton
                 defaultValue={options?.expressionToEvaluate ?? ""}
                 onValueChange={updateExpression}
               />
             )}
-          </Stack>
+          </div>
         </>
       );
     case "Pop":
@@ -303,7 +299,7 @@ const SetVariableValue = ({
       );
     case "Map item with same index": {
       return (
-        <Stack p="2" rounded="md" borderWidth={1}>
+        <div className="flex flex-col gap-2 p-2 rounded-md border">
           <VariablesCombobox
             initialVariableId={options.mapListItemParams?.baseItemVariableId}
             onSelectVariable={updateItemVariableId}
@@ -319,7 +315,7 @@ const SetVariableValue = ({
             onSelectVariable={updateTargetListVariableId}
             placeholder="Target list"
           />
-        </Stack>
+        </div>
       );
     }
     case "Append value(s)": {

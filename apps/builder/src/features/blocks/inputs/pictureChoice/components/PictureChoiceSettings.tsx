@@ -1,4 +1,3 @@
-import { Stack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { defaultPictureChoiceOptions } from "@typebot.io/blocks-inputs/pictureChoice/constants";
 import type { PictureChoiceBlock } from "@typebot.io/blocks-inputs/pictureChoice/schema";
@@ -64,7 +63,7 @@ export const PictureChoiceSettings = ({ options, onOptionsChange }: Props) => {
     });
 
   return (
-    <Stack spacing={4}>
+    <div className="flex flex-col gap-4">
       <Field.Container>
         <Field.Root className="flex-row items-center">
           <Switch
@@ -171,7 +170,6 @@ export const PictureChoiceSettings = ({ options, onOptionsChange }: Props) => {
           </>
         )}
       </Field.Container>
-
       <Field.Root>
         <Field.Label>
           {t("blocks.inputs.settings.saveAnswer.label")}
@@ -181,6 +179,6 @@ export const PictureChoiceSettings = ({ options, onOptionsChange }: Props) => {
           onSelectVariable={updateSaveVariable}
         />
       </Field.Root>
-    </Stack>
+    </div>
   );
 };

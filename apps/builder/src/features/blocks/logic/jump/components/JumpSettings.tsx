@@ -1,4 +1,3 @@
-import { Stack } from "@chakra-ui/react";
 import type { JumpBlock } from "@typebot.io/blocks-logic/jump/schema";
 import { byId } from "@typebot.io/lib/utils";
 import { isSingleVariable } from "@typebot.io/variables/isSingleVariable";
@@ -29,7 +28,7 @@ export const JumpSettings = ({ options, onOptionsChange }: Props) => {
 
   if (!typebot) return null;
   return (
-    <Stack spacing={4}>
+    <div className="flex flex-col gap-4">
       <GroupsDropdown
         groups={typebot.groups}
         groupId={options?.groupId}
@@ -48,6 +47,6 @@ export const JumpSettings = ({ options, onOptionsChange }: Props) => {
             placeholder="Select a block"
           />
         )}
-    </Stack>
+    </div>
   );
 };

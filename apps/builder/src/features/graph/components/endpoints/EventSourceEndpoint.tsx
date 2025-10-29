@@ -1,11 +1,8 @@
-import {
-  type BoxProps,
-  Flex,
-  useColorModeValue,
-  useEventListener,
-} from "@chakra-ui/react";
 import type { TEventSource } from "@typebot.io/typebot/schemas/edge";
+import { cn } from "@typebot.io/ui/lib/cn";
+import { cx } from "@typebot.io/ui/lib/cva";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { useEventListener } from "@/hooks/useEventListener";
 import { useEndpoints } from "../../providers/EndpointsProvider";
 import { useGraph } from "../../providers/GraphProvider";
 
@@ -14,14 +11,12 @@ const endpointHeight = 32;
 export const EventSourceEndpoint = ({
   source,
   isHidden,
-  ...props
-}: BoxProps & {
+  className,
+}: {
   source: TEventSource;
   isHidden?: boolean;
+  className?: string;
 }) => {
-  const color = useColorModeValue("orange.200", "orange.100");
-  const connectedColor = useColorModeValue("orange.300", "orange.200");
-  const bg = useColorModeValue("gray.100", "gray.700");
   const { setConnectingIds, previewingEdge, graphPosition } = useGraph();
   const { setSourceEndpointYOffset, deleteSourceEndpointYOffset } =
     useEndpoints();
@@ -97,7 +92,7 @@ export const EventSourceEndpoint = ({
       e.stopPropagation();
       setConnectingIds({ source });
     },
-    ref.current,
+    ref,
   );
 
   useEventListener(
@@ -105,43 +100,30 @@ export const EventSourceEndpoint = ({
     (e) => {
       e.stopPropagation();
     },
-    ref.current,
+    ref,
   );
 
   return (
-    <Flex
+    <div
+      className={cn(
+        "flex size-[32px] rounded-full justify-center items-center cursor-copy pointer-events-[all]",
+        isHidden ? "invisible" : "visible",
+        className,
+      )}
       ref={ref}
-      data-testid="endpoint"
-      boxSize="32px"
-      rounded="full"
-      cursor="copy"
-      justify="center"
-      align="center"
-      pointerEvents="all"
-      visibility={isHidden ? "hidden" : "visible"}
-      {...props}
     >
-      <Flex
-        boxSize="20px"
-        justify="center"
-        align="center"
-        bg={bg}
-        rounded="full"
-      >
-        <Flex
-          boxSize="13px"
-          rounded="full"
-          borderWidth="3.5px"
-          shadow={`sm`}
-          borderColor={
+      <div className="flex size-[20px] justify-center items-center rounded-full bg-gray-1 border border-gray-4">
+        <div
+          className={cx(
+            "flex size-[13px] rounded-full border-[3.5px] shadow-sm",
             previewingEdge &&
-            "eventId" in previewingEdge.from &&
-            previewingEdge.from.eventId === source.eventId
-              ? connectedColor
-              : color
-          }
+              "eventId" in previewingEdge.from &&
+              previewingEdge.from.eventId === source.eventId
+              ? "border-orange-8"
+              : "border-orange-6",
+          )}
         />
-      </Flex>
-    </Flex>
+      </div>
+    </div>
   );
 };

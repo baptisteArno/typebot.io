@@ -1,4 +1,3 @@
-import { Stack } from "@chakra-ui/react";
 import {
   chatwootTasks,
   defaultChatwootOptions,
@@ -26,7 +25,7 @@ export const ChatwootSettings = ({ options, onOptionsChange }: Props) => {
   const task = options?.task ?? defaultChatwootOptions.task;
 
   return (
-    <Stack spacing={4}>
+    <div className="flex flex-col gap-4">
       <BasicSelect
         value={options?.task}
         defaultValue={defaultChatwootOptions.task}
@@ -128,6 +127,6 @@ export const ChatwootSettings = ({ options, onOptionsChange }: Props) => {
           </Accordion.Root>
         </>
       )}
-    </Stack>
+    </div>
   );
 };

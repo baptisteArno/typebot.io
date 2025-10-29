@@ -1,4 +1,3 @@
-import { Text } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
@@ -63,17 +62,17 @@ export const CreateApiTokenDialog = ({
         <Dialog.CloseButton />
         {newTokenValue ? (
           <>
-            <Text>
+            <p>
               {t("account.apiTokens.createModal.copyInstruction")}{" "}
               <strong>
                 {t("account.apiTokens.createModal.securityWarning")}
               </strong>
-            </Text>
+            </p>
             <CopyInput value={newTokenValue} />
           </>
         ) : (
           <div className="flex flex-col gap-2">
-            <Text>{t("account.apiTokens.createModal.nameInput.label")}</Text>
+            <p>{t("account.apiTokens.createModal.nameInput.label")}</p>
             <Input
               ref={inputRef}
               placeholder={t(

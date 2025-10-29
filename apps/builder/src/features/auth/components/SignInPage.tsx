@@ -1,10 +1,3 @@
-import {
-  Heading,
-  Stack,
-  Text,
-  useColorModeValue,
-  VStack,
-} from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { useRouter } from "next/router";
 import { Seo } from "@/components/Seo";
@@ -21,7 +14,7 @@ export const SignInPage = ({ type }: Props) => {
   const { query } = useRouter();
 
   return (
-    <VStack spacing={4} h="100vh" justifyContent="center">
+    <div className="flex flex-col gap-4 h-screen justify-center items-center">
       <Seo
         title={
           type === "signin"
@@ -29,37 +22,32 @@ export const SignInPage = ({ type }: Props) => {
             : t("auth.register.heading")
         }
       />
-      <Stack
-        bgColor={useColorModeValue("white", "gray.900")}
-        p={8}
-        rounded="lg"
-        spacing={6}
-      >
-        <Stack gap={4}>
-          <Heading>
+      <div className="flex flex-col p-8 rounded-lg gap-6 bg-gray-1">
+        <div className="flex flex-col gap-4">
+          <h2>
             {type === "signin"
               ? t("auth.signin.heading")
               : t("auth.register.heading")}
-          </Heading>
+          </h2>
           {type === "signin" ? (
-            <Text>
+            <p>
               {t("auth.signin.noAccountLabel.preLink")}{" "}
               <TextLink href="/register">
                 {t("auth.signin.noAccountLabel.link")}
               </TextLink>
-            </Text>
+            </p>
           ) : (
-            <Text>
+            <p>
               {t("auth.register.alreadyHaveAccountLabel.preLink")}{" "}
               <TextLink href="/signin">
                 {t("auth.register.alreadyHaveAccountLabel.link")}
               </TextLink>
-            </Text>
+            </p>
           )}
-        </Stack>
+        </div>
 
         <SignInForm defaultEmail={query.g?.toString()} />
-      </Stack>
-    </VStack>
+      </div>
+    </div>
   );
 };

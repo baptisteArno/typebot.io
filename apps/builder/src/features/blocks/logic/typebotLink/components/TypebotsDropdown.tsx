@@ -1,4 +1,3 @@
-import { HStack } from "@chakra-ui/react";
 import { Input } from "@typebot.io/ui/components/Input";
 import { ArrowUpRight01Icon } from "@typebot.io/ui/icons/ArrowUpRight01Icon";
 import { LayoutBottomIcon } from "@typebot.io/ui/icons/LayoutBottomIcon";
@@ -30,7 +29,7 @@ export const TypebotsDropdown = ({
   if (!typebots || typebots.length === 0)
     return <Input value="No typebots found" disabled />;
   return (
-    <HStack flex={1}>
+    <div className="flex items-center gap-2 flex-1">
       <BasicSelect
         value={typebotId}
         className="w-full"
@@ -77,6 +76,6 @@ export const TypebotsDropdown = ({
           <ArrowUpRight01Icon />
         </ButtonLink>
       )}
-    </HStack>
+    </div>
   );
 };

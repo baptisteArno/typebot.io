@@ -1,6 +1,6 @@
-import { Flex, HStack, useColorModeValue } from "@chakra-ui/react";
 import type { BlockV6 } from "@typebot.io/blocks-core/schemas/schema";
 import { Tooltip } from "@typebot.io/ui/components/Tooltip";
+import { cx } from "@typebot.io/ui/lib/cva";
 import { useEffect, useState } from "react";
 import { useBlockDnd } from "@/features/graph/providers/GraphDndProvider";
 
@@ -31,28 +31,17 @@ export const BlockCardLayout = ({
     <Tooltip.Root disabled={!tooltip}>
       <Tooltip.Trigger
         render={
-          <Flex pos="relative">
-            <HStack
-              borderWidth="1px"
-              borderColor={useColorModeValue("gray.200", "gray.900")}
-              rounded="lg"
-              flex="1"
-              cursor={"grab"}
-              minH={isMouseDown ? "42px" : undefined}
-              opacity={isMouseDown ? "0.4" : "1"}
-              onMouseDown={handleMouseDown}
-              bgColor={useColorModeValue("gray.50", "gray.900")}
-              px="4"
-              py="2"
-              _hover={useColorModeValue(
-                { shadow: "md" },
-                { bgColor: "gray.900" },
+          <div className="flex relative">
+            <div
+              className={cx(
+                "flex items-center gap-2 border dark:border-gray-3 rounded-lg flex-1 px-4 py-2 cursor-grab bg-gray-2 hover:shadow-md dark:hover:bg-gray-3 dark:hover:shadow-none transition-[box-shadow,background-color]",
+                isMouseDown ? "opacity-40 min-h-[42px]" : "opacity-100",
               )}
-              transition="box-shadow 200ms, background-color 200ms"
+              onMouseDown={handleMouseDown}
             >
               {!isMouseDown ? children : null}
-            </HStack>
-          </Flex>
+            </div>
+          </div>
         }
       />
       <Tooltip.Popup>{tooltip}</Tooltip.Popup>

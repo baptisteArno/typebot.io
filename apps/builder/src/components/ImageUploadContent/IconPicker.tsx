@@ -1,13 +1,8 @@
-import {
-  HStack,
-  SimpleGrid,
-  Stack,
-  Text,
-  useColorModeValue,
-} from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { Button } from "@typebot.io/ui/components/Button";
+import { cx } from "@typebot.io/ui/lib/cva";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useThemeValue } from "@/hooks/useThemeValue";
 import { ColorPicker } from "../ColorPicker";
 import { DebouncedTextInput } from "../inputs/DebouncedTextInput";
 import { iconNames } from "./iconNames";
@@ -22,7 +17,7 @@ const localStorageRecentIconNamesKey = "recentIconNames";
 const localStorageDefaultIconColorKey = "defaultIconColor";
 
 export const IconPicker = ({ onIconSelected }: Props) => {
-  const initialIconColor = useColorModeValue("#222222", "#ffffff");
+  const initialIconColor = useThemeValue("#222222", "#ffffff");
   const scrollContainer = useRef<HTMLDivElement>(null);
   const bottomElement = useRef<HTMLDivElement>(null);
   const [displayedIconNames, setDisplayedIconNames] = useState(
@@ -105,8 +100,8 @@ export const IconPicker = ({ onIconSelected }: Props) => {
   };
 
   return (
-    <Stack>
-      <HStack>
+    <div className="flex flex-col gap-2">
+      <div className="flex items-center gap-2">
         <DebouncedTextInput
           placeholder={t("emojiList.searchInput.placeholder")}
           onValueChange={searchIcon}
@@ -117,19 +112,24 @@ export const IconPicker = ({ onIconSelected }: Props) => {
           onColorChange={updateColor}
           side="right"
         />
-      </HStack>
-
-      <Stack overflowY="auto" maxH="350px" ref={scrollContainer} spacing={4}>
+      </div>
+      <div
+        className="flex flex-col overflow-y-auto max-h-[350px] gap-4"
+        ref={scrollContainer}
+      >
         {recentIconNames.length > 0 && (
-          <Stack>
-            <Text fontSize="xs" color="gray.400" fontWeight="medium" pl="2">
+          <div className="flex flex-col gap-2">
+            <p
+              className="text-xs font-medium pl-2 text-gray-7"
+              color="gray.400"
+            >
               RECENT
-            </Text>
-            <SimpleGrid
-              spacing={0}
-              gridTemplateColumns={`repeat(auto-fill, minmax(38px, 1fr))`}
-              bgColor={isWhite ? "gray.400" : undefined}
-              rounded="md"
+            </p>
+            <div
+              className={cx(
+                "grid gap-0 rounded-md grid-cols-[repeat(auto-fill,minmax(38px,1fr))]",
+                isWhite ? "bg-gray-7" : undefined,
+              )}
             >
               {recentIconNames.map((iconName) => (
                 <Button
@@ -142,20 +142,20 @@ export const IconPicker = ({ onIconSelected }: Props) => {
                   <Icon name={iconName} color={selectedColor} />
                 </Button>
               ))}
-            </SimpleGrid>
-          </Stack>
+            </div>
+          </div>
         )}
-        <Stack>
+        <div className="flex flex-col gap-2">
           {recentIconNames.length > 0 && (
-            <Text fontSize="xs" color="gray.400" fontWeight="medium" pl="2">
+            <p className="text-xs font-medium pl-2" color="gray.400">
               ICONS
-            </Text>
+            </p>
           )}
-          <SimpleGrid
-            spacing={0}
-            gridTemplateColumns={`repeat(auto-fill, minmax(38px, 1fr))`}
-            bgColor={isWhite ? "gray.400" : undefined}
-            rounded="md"
+          <div
+            className={cx(
+              "grid gap-0 rounded-md grid-cols-[repeat(auto-fill,minmax(38px,1fr))]",
+              isWhite ? "bg-gray-7" : undefined,
+            )}
           >
             {displayedIconNames.map((iconName) => (
               <Button
@@ -168,12 +168,12 @@ export const IconPicker = ({ onIconSelected }: Props) => {
                 <Icon name={iconName} color={selectedColor} />
               </Button>
             ))}
-          </SimpleGrid>
-        </Stack>
+          </div>
+        </div>
 
         <div ref={bottomElement} />
-      </Stack>
-    </Stack>
+      </div>
+    </div>
   );
 };
 

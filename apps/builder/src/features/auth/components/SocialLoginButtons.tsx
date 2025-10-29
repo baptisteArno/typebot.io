@@ -1,4 +1,3 @@
-import { Stack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { omit } from "@typebot.io/lib/utils";
 import { Button } from "@typebot.io/ui/components/Button";
@@ -48,7 +47,7 @@ export const SocialLoginButtons = ({ providers }: Props) => {
   const handleKeyCloackClick = () => handleSignIn("keycloak");
 
   return (
-    <Stack>
+    <div className="flex flex-col gap-2">
       {providers?.github && (
         <Button
           onClick={handleGitHubClick}
@@ -145,6 +144,6 @@ export const SocialLoginButtons = ({ providers }: Props) => {
           {t("auth.socialLogin.keycloakButton.label")}
         </Button>
       )}
-    </Stack>
+    </div>
   );
 };

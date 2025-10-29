@@ -1,4 +1,3 @@
-import { Stack } from "@chakra-ui/react";
 import type { ResponseVariableMapping } from "@typebot.io/blocks-integrations/httpRequest/schema";
 import { Field } from "@typebot.io/ui/components/Field";
 import type { Variable } from "@typebot.io/variables/schemas";
@@ -17,7 +16,7 @@ export const DataVariableInputs = ({
     onItemChange({ ...item, variableId: variable?.id });
 
   return (
-    <Stack p="4" rounded="md" flex="1" borderWidth="1px">
+    <div className="flex flex-col gap-2 p-4 rounded-md flex-1 border">
       <Field.Root>
         <Field.Label>Data:</Field.Label>
         <BasicAutocompleteInputWithVariableButton
@@ -35,6 +34,6 @@ export const DataVariableInputs = ({
           initialVariableId={item.variableId}
         />
       </Field.Root>
-    </Stack>
+    </div>
   );
 };

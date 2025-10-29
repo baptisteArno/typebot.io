@@ -1,10 +1,10 @@
-import { Box, Text } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import {
   embedBaseUrls,
   VideoBubbleContentType,
 } from "@typebot.io/blocks-bubbles/video/constants";
 import type { VideoBubbleBlock } from "@typebot.io/blocks-bubbles/video/schema";
+import { cx } from "@typebot.io/ui/lib/cva";
 import { findUniqueVariable } from "@typebot.io/variables/findUniqueVariable";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { VariableTag } from "@/features/graph/components/nodes/block/VariableTag";
@@ -17,18 +17,20 @@ export const VideoBubbleContent = ({ block }: Props) => {
   const { typebot } = useTypebot();
   const { t } = useTranslate();
   if (!block.content?.url || !block.content.type)
-    return <Text color="gray.500">{t("clickToEdit")}</Text>;
+    return <p color="gray.500">{t("clickToEdit")}</p>;
   const variable = typebot
     ? findUniqueVariable(typebot?.variables)(block.content?.url)
     : null;
   switch (block.content.type) {
     case VideoBubbleContentType.URL:
       return (
-        <Box w="full" h={variable ? undefined : " 120px"} pos="relative">
+        <div
+          className={cx("w-full relative", variable ? undefined : "h-[120px]")}
+        >
           {variable ? (
-            <Text>
+            <p>
               Display <VariableTag variableName={variable.name} />
-            </Text>
+            </p>
           ) : (
             <video
               key={block.content.url}
@@ -45,14 +47,14 @@ export const VideoBubbleContent = ({ block }: Props) => {
               <source src={block.content.url} />
             </video>
           )}
-        </Box>
+        </div>
       );
     case VideoBubbleContentType.GUMLET:
     case VideoBubbleContentType.VIMEO:
     case VideoBubbleContentType.YOUTUBE: {
       const baseUrl = embedBaseUrls[block.content.type];
       return (
-        <Box w="full" h="120px" pos="relative">
+        <div className="w-full h-[120px] relative">
           <iframe
             src={`${baseUrl}/${block.content.id}`}
             style={{
@@ -65,12 +67,12 @@ export const VideoBubbleContent = ({ block }: Props) => {
               pointerEvents: "none",
             }}
           />
-        </Box>
+        </div>
       );
     }
     case VideoBubbleContentType.TIKTOK: {
       return (
-        <Box w="full" h="300px" pos="relative">
+        <div className="w-full h-[300px] relative">
           <iframe
             src={`https://www.tiktok.com/embed/v2/${block.content.id}`}
             style={{
@@ -83,7 +85,7 @@ export const VideoBubbleContent = ({ block }: Props) => {
               pointerEvents: "none",
             }}
           />
-        </Box>
+        </div>
       );
     }
   }

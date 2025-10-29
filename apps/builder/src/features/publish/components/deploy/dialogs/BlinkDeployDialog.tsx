@@ -1,4 +1,3 @@
-import { Code, ListItem, OrderedList, Stack, Text } from "@chakra-ui/react";
 import { env } from "@typebot.io/env";
 import { Alert } from "@typebot.io/ui/components/Alert";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
@@ -25,35 +24,35 @@ export const BlinkDeployDialog = ({
             </Alert.Description>
           </Alert.Root>
         )}
-        <OrderedList spacing={4}>
-          <ListItem>
+        <ol>
+          <li>
             In the Blink Admin window, head over to{" "}
-            <Code>Content Studio &gt; Hub</Code>
-          </ListItem>
-          <ListItem>
-            Click on the <Code>Add Content &gt; Form</Code> button
-          </ListItem>
-          <ListItem>
-            For the form provider, select <Code>Other</Code>
-          </ListItem>
-          <ListItem>
-            <Stack>
-              <Text>
+            <code>Content Studio &gt; Hub</code>
+          </li>
+          <li>
+            Click on the <code>Add Content &gt; Form</code> button
+          </li>
+          <li>
+            For the form provider, select <code>Other</code>
+          </li>
+          <li>
+            <div className="flex flex-col gap-2">
+              <p>
                 Paste your bot URL and customize the look and feel of this new
                 form
-              </Text>
+              </p>
               <CopyInput
                 value={`${env.NEXT_PUBLIC_VIEWER_URL[0]}/${publicId}`}
               />
-            </Stack>
-          </ListItem>
-          <ListItem>
-            <Text>
-              You can optionally add <Code>Custom Variables</Code> to prefill
+            </div>
+          </li>
+          <li>
+            <p>
+              You can optionally add <code>Custom Variables</code> to prefill
               your bot variables with the respondent's Blink data.
-            </Text>
-          </ListItem>
-        </OrderedList>
+            </p>
+          </li>
+        </ol>
       </Dialog.Popup>
     </Dialog.Root>
   );

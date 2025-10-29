@@ -1,9 +1,9 @@
-import { SimpleGrid, Stack, useDisclosure } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
 import type { ThemeTemplate } from "@typebot.io/theme/schemas";
 import type { TypebotV6 } from "@typebot.io/typebot/schemas/typebot";
 import { Button } from "@typebot.io/ui/components/Button";
+import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
 import { Bookmark02Icon } from "@typebot.io/ui/icons/Bookmark02Icon";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { trpc } from "@/lib/queryClient";
@@ -30,7 +30,7 @@ export const MyTemplates = ({
 }: Props) => {
   const { t } = useTranslate();
   const { currentUserMode } = useWorkspace();
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onOpen, onClose } = useOpenControls();
   const { data } = useQuery(
     trpc.theme.listThemeTemplates.queryOptions(
       {
@@ -53,7 +53,7 @@ export const MyTemplates = ({
   };
 
   return (
-    <Stack spacing={4}>
+    <div className="flex flex-col gap-4">
       {(!selectedTemplate ||
         !areThemesEqual(selectedTemplate?.theme, currentTheme)) && (
         <Button onClick={onOpen}>
@@ -68,7 +68,7 @@ export const MyTemplates = ({
         onClose={closeDialogAndSelectTemplate}
         theme={currentTheme}
       />
-      <SimpleGrid columns={2} spacing={4}>
+      <div className="grid gap-4 grid-cols-2">
         {data?.themeTemplates.map((themeTemplate) => (
           <ThemeTemplateCard
             key={themeTemplate.id}
@@ -81,7 +81,7 @@ export const MyTemplates = ({
             onDeleteSuccess={() => onTemplateSelect({ id: "" })}
           />
         ))}
-      </SimpleGrid>
-    </Stack>
+      </div>
+    </div>
   );
 };

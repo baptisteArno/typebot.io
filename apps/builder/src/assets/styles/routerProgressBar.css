@@ -5,7 +5,7 @@
 }
 
 #nprogress .bar {
-  background: var(--chakra-colors-orange-500);
+  background: rgb(var(--orange-9));
 
   position: fixed;
   z-index: 1031;
@@ -23,19 +23,11 @@
   width: 100px;
   height: 100%;
   box-shadow:
-    0 0 10px var(--chakra-colors-orange-500),
-    0 0 5px var(--chakra-colors-orange-500);
+    0 0 10px rgb(var(--orange-9)),
+    0 0 5px rgb(var(--orange-9));
   opacity: 1;
 
   -webkit-transform: rotate(3deg) translate(0px, -4px);
   -ms-transform: rotate(3deg) translate(0px, -4px);
   transform: rotate(3deg) translate(0px, -4px);
-}
-
-.chakra-ui-dark #nprogress .bar {
-  background: var(--chakra-colors-orange-300);
-}
-
-.chakra-ui-dark #nprogress .peg {
-  background: var(--chakra-colors-orange-300);
 }

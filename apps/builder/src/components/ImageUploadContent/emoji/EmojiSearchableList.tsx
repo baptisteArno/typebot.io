@@ -1,4 +1,3 @@
-import { GridItem, SimpleGrid, Stack, Text } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Input } from "@typebot.io/ui/components/Input";
@@ -101,87 +100,90 @@ export const EmojiSearchableList = ({
   };
 
   return (
-    <Stack>
+    <div className="flex flex-col gap-2">
       <Input
         placeholder={t("emojiList.searchInput.placeholder")}
         onChange={handleSearchChange}
       />
-      <Stack ref={scrollContainer} overflowY="auto" maxH="350px" spacing={4}>
+      <div
+        className="flex flex-col overflow-y-auto max-h-[350px] gap-4"
+        ref={scrollContainer}
+      >
         {recentEmojis.length > 0 && (
-          <Stack>
-            <Text fontSize="xs" color="gray.400" fontWeight="medium" pl="2">
+          <div className="flex flex-col gap-2">
+            <p className="text-xs font-medium pl-2" color="gray.400">
               {t("emojiList.categories.recent.label")}
-            </Text>
+            </p>
             <EmojiGrid emojis={recentEmojis} onEmojiClick={selectEmoji} />
-          </Stack>
+          </div>
         )}
         {filteredPeople.length > 0 && (
-          <Stack>
-            <Text fontSize="xs" color="gray.400" fontWeight="medium" pl="2">
+          <div className="flex flex-col gap-2">
+            <p className="text-xs font-medium pl-2" color="gray.400">
               {t("emojiList.categories.people.label")}
-            </Text>
+            </p>
             <EmojiGrid emojis={filteredPeople} onEmojiClick={selectEmoji} />
-          </Stack>
+          </div>
         )}
         {filteredAnimals.length > 0 && totalDisplayedCategories >= 2 && (
-          <Stack>
-            <Text fontSize="xs" color="gray.400" fontWeight="medium" pl="2">
+          <div className="flex flex-col gap-2">
+            <p className="text-xs font-medium pl-2" color="gray.400">
               {t("emojiList.categories.animalsAndNature.label")}
-            </Text>
+            </p>
             <EmojiGrid emojis={filteredAnimals} onEmojiClick={selectEmoji} />
-          </Stack>
+          </div>
         )}
         {filteredFood.length > 0 && totalDisplayedCategories >= 3 && (
-          <Stack>
-            <Text fontSize="xs" color="gray.400" fontWeight="medium" pl="2">
+          <div className="flex flex-col gap-2">
+            <p className="text-xs font-medium pl-2" color="gray.400">
               {t("emojiList.categories.foodAndDrink.label")}
-            </Text>
+            </p>
             <EmojiGrid emojis={filteredFood} onEmojiClick={selectEmoji} />
-          </Stack>
+          </div>
         )}
         {filteredTravel.length > 0 && totalDisplayedCategories >= 4 && (
-          <Stack>
-            <Text fontSize="xs" color="gray.400" fontWeight="medium" pl="2">
+          <div className="flex flex-col gap-2">
+            <p className="text-xs font-medium pl-2" color="gray.400">
               {t("emojiList.categories.travelAndPlaces.label")}
-            </Text>
+            </p>
             <EmojiGrid emojis={filteredTravel} onEmojiClick={selectEmoji} />
-          </Stack>
+          </div>
         )}
         {filteredActivities.length > 0 && totalDisplayedCategories >= 5 && (
-          <Stack>
-            <Text fontSize="xs" color="gray.400" fontWeight="medium" pl="2">
+          <div className="flex flex-col gap-2">
+            <p className="text-xs font-medium pl-2" color="gray.400">
               {t("emojiList.categories.activities.label")}
-            </Text>
+            </p>
             <EmojiGrid emojis={filteredActivities} onEmojiClick={selectEmoji} />
-          </Stack>
+          </div>
         )}
         {filteredObjects.length > 0 && totalDisplayedCategories >= 6 && (
-          <Stack>
-            <Text fontSize="xs" color="gray.400" fontWeight="medium" pl="2">
+          <div className="flex flex-col gap-2">
+            <p className="text-xs font-medium pl-2" color="gray.400">
               {t("emojiList.categories.objects.label")}
-            </Text>
+            </p>
             <EmojiGrid emojis={filteredObjects} onEmojiClick={selectEmoji} />
-          </Stack>
+          </div>
         )}
         {filteredSymbols.length > 0 && totalDisplayedCategories >= 7 && (
-          <Stack>
-            <Text fontSize="xs" color="gray.400" fontWeight="medium" pl="2">
+          <div className="flex flex-col gap-2">
+            <p className="text-xs font-medium pl-2" color="gray.400">
               {t("emojiList.categories.symbols.label")}
-            </Text>
+            </p>
             <EmojiGrid emojis={filteredSymbols} onEmojiClick={selectEmoji} />
-          </Stack>
+          </div>
         )}
         {filteredFlags.length > 0 && totalDisplayedCategories >= 8 && (
-          <Stack>
-            <Text fontSize="xs" color="gray.400" fontWeight="medium" pl="2">
+          <div className="flex flex-col gap-2">
+            <p className="text-xs font-medium pl-2" color="gray.400">
               {t("emojiList.categories.flags.label")}
-            </Text>
+            </p>
             <EmojiGrid emojis={filteredFlags} onEmojiClick={selectEmoji} />
-          </Stack>
+          </div>
         )}
         <div ref={bottomElement} />
-      </Stack>
-    </Stack>
+      </div>
+    </div>
   );
 };
 
@@ -194,14 +196,9 @@ const EmojiGrid = ({
 }) => {
   const handleClick = (emoji: string) => () => onEmojiClick(emoji);
   return (
-    <SimpleGrid
-      spacing={0}
-      gridTemplateColumns={`repeat(auto-fill, minmax(32px, 1fr))`}
-      rounded="md"
-    >
+    <div className="grid gap-0 rounded-md grid-cols-[repeat(auto-fill,minmax(32px,1fr))]">
       {emojis.map((emoji) => (
-        <GridItem
-          as={Button}
+        <Button
           onClick={handleClick(emoji)}
           variant="ghost"
           size="sm"
@@ -209,8 +206,8 @@ const EmojiGrid = ({
           key={emoji}
         >
           {emoji}
-        </GridItem>
+        </Button>
       ))}
-    </SimpleGrid>
+    </div>
   );
 };

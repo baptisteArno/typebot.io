@@ -1,4 +1,3 @@
-import { Code, Stack, Text } from "@chakra-ui/react";
 import type { BubbleProps } from "@typebot.io/js";
 import {
   BackgroundType,
@@ -42,7 +41,7 @@ export const JavascriptBubbleInstructions = () => {
     useState<BubbleProps["previewMessage"]>();
 
   return (
-    <Stack spacing={4}>
+    <div className="flex flex-col gap-4">
       <BubbleSettings
         theme={theme}
         previewMessage={previewMessage}
@@ -50,10 +49,10 @@ export const JavascriptBubbleInstructions = () => {
         onThemeChange={setTheme}
         onPreviewMessageChange={setPreviewMessage}
       />
-      <Text>
-        Paste this anywhere in the <Code>{"<body>"}</Code>:
-      </Text>
+      <p>
+        Paste this anywhere in the <code>{"<body>"}</code>:
+      </p>
       <JavascriptBubbleSnippet theme={theme} previewMessage={previewMessage} />
-    </Stack>
+    </div>
   );
 };

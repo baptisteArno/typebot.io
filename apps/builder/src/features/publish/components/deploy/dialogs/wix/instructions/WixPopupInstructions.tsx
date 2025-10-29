@@ -1,4 +1,3 @@
-import { Code, ListItem, OrderedList, Stack, Text } from "@chakra-ui/react";
 import { useState } from "react";
 import { PopupSettings } from "../../../settings/PopupSettings";
 import { JavascriptPopupSnippet } from "../../javascript/JavascriptPopupSnippet";
@@ -7,31 +6,31 @@ export const WixPopupInstructions = () => {
   const [inputValue, setInputValue] = useState<number>();
 
   return (
-    <OrderedList spacing={4} pl={5}>
-      <ListItem>
-        Go to <Code>Settings</Code> in your dashboard on Wix
-      </ListItem>
-      <ListItem>
-        Click on <Code>Custom Code</Code> in the <Code>Advanced</Code> section
-      </ListItem>
-      <ListItem>
-        Click <Code>+ Add Custom Code</Code> at the top right.
-      </ListItem>
-      <ListItem>
-        <Stack spacing={4}>
+    <ol>
+      <li>
+        Go to <code>Settings</code> in your dashboard on Wix
+      </li>
+      <li>
+        Click on <code>Custom Code</code> in the <code>Advanced</code> section
+      </li>
+      <li>
+        Click <code>+ Add Custom Code</code> at the top right.
+      </li>
+      <li>
+        <div className="flex flex-col gap-4">
           <PopupSettings
             onUpdateSettings={(settings) =>
               setInputValue(settings.autoShowDelay)
             }
           />
-          <Text>Paste this snippet in the code box:</Text>
+          <p>Paste this snippet in the code box:</p>
           <JavascriptPopupSnippet autoShowDelay={inputValue} />
-        </Stack>
-      </ListItem>
-      <ListItem>
-        Select &quot;Body - start&quot; under <Code>Place Code in</Code>
-      </ListItem>
-      <ListItem>Click Apply</ListItem>
-    </OrderedList>
+        </div>
+      </li>
+      <li>
+        Select &quot;Body - start&quot; under <code>Place Code in</code>
+      </li>
+      <li>Click Apply</li>
+    </ol>
   );
 };

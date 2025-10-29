@@ -1,4 +1,3 @@
-import { Stack, Text } from "@chakra-ui/react";
 import { defaultEmailInputOptions } from "@typebot.io/blocks-inputs/email/constants";
 import type { EmailInputBlock } from "@typebot.io/blocks-inputs/email/schema";
 import { SetVariableLabel } from "@/components/SetVariableLabel";
@@ -14,16 +13,16 @@ export const EmailInputNodeContent = ({
   const { typebot } = useTypebot();
 
   return (
-    <Stack>
-      <Text color={"gray.500"}>
+    <div className="flex flex-col gap-2">
+      <p color={"gray.500"}>
         {labels?.placeholder ?? defaultEmailInputOptions.labels.placeholder}
-      </Text>
+      </p>
       {variableId && (
         <SetVariableLabel
           variables={typebot?.variables}
           variableId={variableId}
         />
       )}
-    </Stack>
+    </div>
   );
 };

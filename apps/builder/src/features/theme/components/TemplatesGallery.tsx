@@ -1,4 +1,3 @@
-import { SimpleGrid, Stack } from "@chakra-ui/react";
 import type { ThemeTemplate } from "@typebot.io/theme/schemas";
 import type { TypebotV6 } from "@typebot.io/typebot/schemas/typebot";
 import { galleryTemplates } from "../galleryTemplates";
@@ -20,8 +19,8 @@ export const TemplatesGallery = ({
   workspaceId,
   onTemplateSelect,
 }: Props) => (
-  <Stack spacing={4}>
-    <SimpleGrid columns={2} spacing={4}>
+  <div className="flex flex-col gap-4">
+    <div className="grid gap-4 grid-cols-2">
       {galleryTemplates
         .filter((t) => !t.isVisible || t.isVisible(typebotVersion))
         .map((themeTemplate) => (
@@ -34,6 +33,6 @@ export const TemplatesGallery = ({
             onClick={() => onTemplateSelect(themeTemplate)}
           />
         ))}
-    </SimpleGrid>
-  </Stack>
+    </div>
+  </div>
 );

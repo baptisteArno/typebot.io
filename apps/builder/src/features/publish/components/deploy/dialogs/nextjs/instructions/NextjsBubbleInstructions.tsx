@@ -1,4 +1,3 @@
-import { ListItem, OrderedList, Stack, Text } from "@chakra-ui/react";
 import type { BubbleProps } from "@typebot.io/js";
 import { useState } from "react";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
@@ -16,15 +15,15 @@ export const NextjsBubbleInstructions = () => {
     useState<BubbleProps["previewMessage"]>();
 
   return (
-    <OrderedList spacing={4} pl={5}>
-      <ListItem>
-        <Stack spacing={4}>
-          <Text>Install the packages</Text>
+    <ol>
+      <li>
+        <div className="flex flex-col gap-4">
+          <p>Install the packages</p>
           <InstallNextjsPackageSnippet />
-        </Stack>
-      </ListItem>
-      <ListItem>
-        <Stack spacing={4}>
+        </div>
+      </li>
+      <li>
+        <div className="flex flex-col gap-4">
           <BubbleSettings
             theme={theme}
             previewMessage={previewMessage}
@@ -35,8 +34,8 @@ export const NextjsBubbleInstructions = () => {
             onPreviewMessageChange={setPreviewMessage}
           />
           <NextjsBubbleSnippet theme={theme} previewMessage={previewMessage} />
-        </Stack>
-      </ListItem>
-    </OrderedList>
+        </div>
+      </li>
+    </ol>
   );
 };

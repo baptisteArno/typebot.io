@@ -1,4 +1,3 @@
-import { Code, ListItem, OrderedList, Stack, Text } from "@chakra-ui/react";
 import { env } from "@typebot.io/env";
 import { useState } from "react";
 import { CodeEditor } from "@/components/inputs/CodeEditor";
@@ -23,15 +22,15 @@ export const WordpressStandardInstructions = ({ publicId }: Props) => {
   const elementCode = parseWordpressShortcode({ ...windowSizes, publicId });
 
   return (
-    <OrderedList spacing={4} pl={5}>
-      <ListItem>
+    <ol>
+      <li>
         Install{" "}
         <TextLink href="https://wordpress.org/plugins/typebot/" isExternal>
           the official Typebot WordPress plugin
         </TextLink>
-      </ListItem>
-      <ListItem>
-        <Stack spacing={4}>
+      </li>
+      <li>
+        <div className="flex flex-col gap-4">
           <StandardSettings
             onUpdateWindowSettings={(sizes) =>
               setWindowSizes({
@@ -40,17 +39,17 @@ export const WordpressStandardInstructions = ({ publicId }: Props) => {
               })
             }
           />
-          <Text>
+          <p>
             You can now place the following shortcode anywhere on your site:
-          </Text>
+          </p>
           <CodeEditor value={elementCode} lang="shell" isReadOnly />
-          <Text>
+          <p>
             Note: Your page templating system probably has a{" "}
-            <Code>Shortcode</Code> element (if not, use a text element).
-          </Text>
-        </Stack>
-      </ListItem>
-    </OrderedList>
+            <code>Shortcode</code> element (if not, use a text element).
+          </p>
+        </div>
+      </li>
+    </ol>
   );
 };
 

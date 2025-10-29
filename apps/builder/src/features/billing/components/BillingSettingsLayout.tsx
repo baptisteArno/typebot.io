@@ -1,4 +1,3 @@
-import { Stack } from "@chakra-ui/react";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { ChangePlanForm } from "./ChangePlanForm";
 import { CurrentSubscriptionSummary } from "./CurrentSubscriptionSummary";
@@ -10,17 +9,16 @@ export const BillingSettingsLayout = () => {
 
   if (!workspace) return null;
   return (
-    <Stack spacing="10" w="full">
+    <div className="flex flex-col gap-10 w-full">
       <UsageProgressBars workspace={workspace} />
-      <Stack spacing="4">
+      <div className="flex flex-col gap-4">
         <CurrentSubscriptionSummary workspace={workspace} />
         <ChangePlanForm
           workspace={workspace}
           currentUserMode={currentUserMode}
         />
-      </Stack>
-
+      </div>
       {workspace.stripeId && <InvoicesList workspaceId={workspace.id} />}
-    </Stack>
+    </div>
   );
 };

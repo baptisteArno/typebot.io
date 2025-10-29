@@ -1,14 +1,15 @@
-import { Flex, useColorModeValue, useDisclosure } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
 import { isDefined } from "@typebot.io/lib/utils";
 import type { Stats } from "@typebot.io/results/schemas/answers";
+import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
 import { LoaderCircleIcon } from "@typebot.io/ui/icons/LoaderCircleIcon";
 import { useMemo } from "react";
 import { ChangePlanDialog } from "@/features/billing/components/ChangePlanDialog";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { Graph } from "@/features/graph/components/Graph";
 import { GraphProvider } from "@/features/graph/providers/GraphProvider";
+import { useThemeValue } from "@/hooks/useThemeValue";
 import { trpc } from "@/lib/queryClient";
 import type { timeFilterValues } from "../constants";
 import { populateEdgesWithTotalVisits } from "../helpers/populateEdgesWithTotalVisits";
@@ -28,8 +29,12 @@ export const AnalyticsGraphContainer = ({
   stats,
 }: Props) => {
   const { t } = useTranslate();
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onOpen, onClose } = useOpenControls();
   const { typebot, publishedTypebot } = useTypebot();
+  const backgroundImage = useThemeValue(
+    "radial-gradient(rgb(var(--gray-7)) 1px, transparent 0)",
+    "radial-gradient(rgb(var(--gray-5)) 1px, transparent 0)",
+  );
   const { data } = useQuery(
     trpc.analytics.getInDepthAnalyticsData.queryOptions(
       {
@@ -73,24 +78,18 @@ export const AnalyticsGraphContainer = ({
   ]);
 
   return (
-    <Flex
-      w="full"
-      pos="relative"
-      overflow="clip"
-      bgColor={useColorModeValue("#f4f5f8", "gray.900")}
-      backgroundImage={useColorModeValue(
-        "radial-gradient(#c6d0e1 1px, transparent 0)",
-        "radial-gradient(#2f2f39 1px, transparent 0)",
-      )}
-      backgroundSize="40px 40px"
-      backgroundPosition="-19px -19px"
-      h="full"
-      justifyContent="center"
+    <div
+      className="flex w-full relative h-full justify-center overflow-clip bg-gray-3 dark:bg-gray-2"
+      style={{
+        backgroundImage: backgroundImage,
+        backgroundSize: "40px 40px",
+        backgroundPosition: "-19px -19px",
+      }}
     >
       {publishedTypebot && stats ? (
         <GraphProvider isReadOnly isAnalytics>
           <Graph
-            flex="1"
+            className="flex-1"
             typebot={publishedTypebot}
             onUnlockProPlanClick={onOpen}
             totalAnswers={data?.totalAnswers}
@@ -98,14 +97,9 @@ export const AnalyticsGraphContainer = ({
           />
         </GraphProvider>
       ) : (
-        <Flex
-          justify="center"
-          align="center"
-          boxSize="full"
-          bgColor="rgba(255, 255, 255, 0.5)"
-        >
+        <div className="flex justify-center items-center size-full bg-white/50">
           <LoaderCircleIcon className="animate-spin" />
-        </Flex>
+        </div>
       )}
       <ChangePlanDialog
         onClose={onClose}
@@ -115,11 +109,10 @@ export const AnalyticsGraphContainer = ({
       />
       <StatsCards
         stats={stats}
-        pos="absolute"
-        top="1rem"
+        className="absolute top-4"
         timeFilter={timeFilter}
         onTimeFilterChange={onTimeFilterChange}
       />
-    </Flex>
+    </div>
   );
 };

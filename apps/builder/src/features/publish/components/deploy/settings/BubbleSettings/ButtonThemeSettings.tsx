@@ -1,4 +1,3 @@
-import { Heading, HStack, Stack, Text } from "@chakra-ui/react";
 import type { ButtonTheme } from "@typebot.io/js";
 import { Popover } from "@typebot.io/ui/components/Popover";
 import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
@@ -39,11 +38,11 @@ export const ButtonThemeSettings = ({ buttonTheme, onChange }: Props) => {
     });
 
   return (
-    <Stack spacing={4} borderWidth="1px" rounded="md" p="4">
-      <Heading size="sm">Button</Heading>
-      <Stack spacing={4}>
-        <HStack justify="space-between">
-          <Text>Size</Text>
+    <div className="flex flex-col gap-4 border rounded-md p-4">
+      <h3>Button</h3>
+      <div className="flex flex-col gap-4">
+        <div className="flex items-center gap-2 justify-between">
+          <p>Size</p>
           <BasicSelect
             size="sm"
             items={[
@@ -57,16 +56,16 @@ export const ButtonThemeSettings = ({ buttonTheme, onChange }: Props) => {
             defaultValue="medium"
             onChange={updateSize}
           />
-        </HStack>
-        <HStack justify="space-between">
-          <Text>Color</Text>
+        </div>
+        <div className="flex items-center gap-2 justify-between">
+          <p>Color</p>
           <ColorPicker
             defaultValue={buttonTheme?.backgroundColor}
             onColorChange={updateBackgroundColor}
           />
-        </HStack>
-        <HStack justify="space-between">
-          <Text>Custom icon</Text>
+        </div>
+        <div className="flex items-center gap-2 justify-between">
+          <p>Custom icon</p>
           <Popover.Root {...customIconPopoverControls}>
             <Popover.TriggerButton size="sm" variant="secondary">
               Pick an image
@@ -87,8 +86,8 @@ export const ButtonThemeSettings = ({ buttonTheme, onChange }: Props) => {
               )}
             </Popover.Popup>
           </Popover.Root>
-        </HStack>
-      </Stack>
-    </Stack>
+        </div>
+      </div>
+    </div>
   );
 };

@@ -1,4 +1,3 @@
-import { HStack, Text } from "@chakra-ui/react";
 import { ComparisonOperators } from "@typebot.io/conditions/constants";
 import type { WhatsAppComparison } from "@typebot.io/whatsapp/schemas";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
@@ -21,8 +20,8 @@ export const WhatsAppComparisonItem = ({
   };
 
   return (
-    <HStack p="4" rounded="md" flex="1" borderWidth="1px">
-      <Text flexShrink={0}>User message</Text>
+    <div className="flex items-center gap-2 p-4 rounded-md flex-1 border">
+      <p className="flex-shrink-0">User message</p>
       <BasicSelect
         value={item.comparisonOperator}
         onChange={handleSelectComparisonOperator}
@@ -38,7 +37,7 @@ export const WhatsAppComparisonItem = ({
             size="sm"
           />
         )}
-    </HStack>
+    </div>
   );
 };
 

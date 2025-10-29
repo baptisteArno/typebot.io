@@ -1,4 +1,3 @@
-import { Stack, Text } from "@chakra-ui/react";
 import type { HttpRequestBlock } from "@typebot.io/blocks-integrations/httpRequest/schema";
 import { SetVariableLabel } from "@/components/SetVariableLabel";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
@@ -11,12 +10,12 @@ export const HttpRequestNodeContent = ({ block: { options } }: Props) => {
   const { typebot } = useTypebot();
   const webhook = options?.webhook;
 
-  if (!webhook?.url) return <Text color="gray.500">Configure...</Text>;
+  if (!webhook?.url) return <p className="text-gray-9">Configure...</p>;
   return (
-    <Stack w="full">
-      <Text noOfLines={2} pr="6">
+    <div className="flex flex-col gap-2 w-full">
+      <p className="pr-6 text-gray-9 truncate">
         {webhook.method} {webhook.url}
-      </Text>
+      </p>
       {options?.responseVariableMapping
         ?.filter((mapping) => mapping.variableId)
         .map((mapping) => (
@@ -26,6 +25,6 @@ export const HttpRequestNodeContent = ({ block: { options } }: Props) => {
             variables={typebot?.variables}
           />
         ))}
-    </Stack>
+    </div>
   );
 };

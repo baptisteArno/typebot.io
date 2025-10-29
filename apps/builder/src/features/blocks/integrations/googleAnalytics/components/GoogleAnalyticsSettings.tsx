@@ -1,4 +1,3 @@
-import { Box, Stack } from "@chakra-ui/react";
 import type { GoogleAnalyticsBlock } from "@typebot.io/blocks-integrations/googleAnalytics/schema";
 import { Accordion } from "@typebot.io/ui/components/Accordion";
 import { Field } from "@typebot.io/ui/components/Field";
@@ -39,7 +38,7 @@ export const GoogleAnalyticsSettings = ({
     });
 
   return (
-    <Stack spacing={4}>
+    <div className="flex flex-col gap-4">
       <Field.Root>
         <Field.Label>
           Measurement ID:
@@ -65,9 +64,7 @@ export const GoogleAnalyticsSettings = ({
       <Accordion.Root>
         <Accordion.Item>
           <Accordion.Trigger>
-            <Box flex="1" textAlign="left">
-              Advanced
-            </Box>
+            <div className="flex-1 text-left">Advanced</div>
           </Accordion.Trigger>
           <Accordion.Panel>
             <Field.Root>
@@ -110,6 +107,6 @@ export const GoogleAnalyticsSettings = ({
           </Accordion.Panel>
         </Accordion.Item>
       </Accordion.Root>
-    </Stack>
+    </div>
   );
 };

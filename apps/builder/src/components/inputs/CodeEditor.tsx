@@ -1,4 +1,3 @@
-import { useColorModeValue } from "@chakra-ui/react";
 import { isDefined } from "@typebot.io/lib/utils";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Popover } from "@typebot.io/ui/components/Popover";
@@ -15,6 +14,7 @@ import { tokyoNight } from "@uiw/codemirror-theme-tokyo-night";
 import CodeMirror, { type ReactCodeMirrorRef } from "@uiw/react-codemirror";
 import { type CSSProperties, useEffect, useRef, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
+import { useThemeValue } from "@/hooks/useThemeValue";
 import { CopyButton } from "../CopyButton";
 import { VariablesCombobox } from "./VariablesCombobox";
 
@@ -49,7 +49,7 @@ export const CodeEditor = ({
   className,
   ...props
 }: Props) => {
-  const theme = useColorModeValue(githubLight, tokyoNight);
+  const theme = useThemeValue(githubLight, tokyoNight);
   const variablesPopoverControls = useOpenControls();
   const codeEditor = useRef<ReactCodeMirrorRef | null>(null);
 

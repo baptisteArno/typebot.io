@@ -1,7 +1,7 @@
-import { Text, useDisclosure, VStack } from "@chakra-ui/react";
 import { Plan } from "@typebot.io/prisma/enum";
 import { Badge } from "@typebot.io/ui/components/Badge";
 import { Button } from "@typebot.io/ui/components/Button";
+import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
 import { SourceCodeIcon } from "@typebot.io/ui/icons/SourceCodeIcon";
 import { SquareLock01Icon } from "@typebot.io/ui/icons/SquareLock01Icon";
 import {
@@ -64,7 +64,7 @@ export const DeployButton = ({
   lockTagPlan,
   ...dialogProps
 }: EmbedButtonProps) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onOpen, onClose } = useOpenControls();
   return (
     <>
       <Button
@@ -74,9 +74,9 @@ export const DeployButton = ({
         iconStyle="none"
         size="lg"
       >
-        <VStack>
+        <div className="flex flex-col items-center gap-2">
           {logo}
-          <Text>
+          <p>
             {label}
             {lockTagPlan && (
               <Badge
@@ -85,8 +85,8 @@ export const DeployButton = ({
                 <SquareLock01Icon />
               </Badge>
             )}
-          </Text>
-        </VStack>
+          </p>
+        </div>
       </Button>
       {dialog({ isOpen, onClose, ...dialogProps })}
     </>

@@ -1,18 +1,7 @@
-import {
-  Checkbox,
-  Heading,
-  Stack,
-  Table,
-  TableContainer,
-  Tbody,
-  Td,
-  Text,
-  Th,
-  Thead,
-  Tr,
-} from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
+import { Checkbox } from "@typebot.io/ui/components/Checkbox";
 import { Skeleton } from "@typebot.io/ui/components/Skeleton";
+import { Table } from "@typebot.io/ui/components/Table";
 import { Download01Icon } from "@typebot.io/ui/icons/Download01Icon";
 import { FileEmpty02Icon } from "@typebot.io/ui/icons/FileEmpty02Icon";
 import { ButtonLink } from "@/components/ButtonLink";
@@ -27,69 +16,69 @@ export const InvoicesList = ({ workspaceId }: Props) => {
   const { data, status } = useInvoicesQuery(workspaceId);
 
   return (
-    <Stack spacing={6}>
-      <Heading fontSize="3xl">{t("billing.invoices.heading")}</Heading>
+    <div className="flex flex-col gap-6">
+      <h2 className="text-3xl">{t("billing.invoices.heading")}</h2>
       {data?.invoices.length === 0 && status !== "pending" ? (
-        <Text>{t("billing.invoices.empty")}</Text>
+        <p>{t("billing.invoices.empty")}</p>
       ) : (
-        <TableContainer>
-          <Table>
-            <Thead>
-              <Tr>
-                <Th w="0" />
-                <Th>#</Th>
-                <Th>{t("billing.invoices.paidAt")}</Th>
-                <Th>{t("billing.invoices.subtotal")}</Th>
-                <Th w="0" />
-              </Tr>
-            </Thead>
-            <Tbody>
-              {data?.invoices.map((invoice) => (
-                <Tr key={invoice.id}>
-                  <Td>
-                    <FileEmpty02Icon />
-                  </Td>
-                  <Td>{invoice.id}</Td>
-                  <Td>
-                    {invoice.date
-                      ? new Date(invoice.date * 1000).toDateString()
-                      : ""}
-                  </Td>
-                  <Td>{getFormattedPrice(invoice.amount, invoice.currency)}</Td>
-                  <Td>
-                    {invoice.url && (
-                      <ButtonLink
-                        size="icon"
-                        variant="outline"
-                        href={invoice.url}
-                        target="_blank"
-                        aria-label={"Download invoice"}
-                      >
-                        <Download01Icon />
-                      </ButtonLink>
-                    )}
-                  </Td>
-                </Tr>
+        <Table.Root>
+          <Table.Header>
+            <Table.Row>
+              <Table.Head className="w-0" />
+              <Table.Head>#</Table.Head>
+              <Table.Head>{t("billing.invoices.paidAt")}</Table.Head>
+              <Table.Head>{t("billing.invoices.subtotal")}</Table.Head>
+              <Table.Head className="w-0" />
+            </Table.Row>
+          </Table.Header>
+          <Table.Body>
+            {data?.invoices.map((invoice) => (
+              <Table.Row key={invoice.id}>
+                <Table.Cell>
+                  <FileEmpty02Icon />
+                </Table.Cell>
+                <Table.Cell>{invoice.id}</Table.Cell>
+                <Table.Cell>
+                  {invoice.date
+                    ? new Date(invoice.date * 1000).toDateString()
+                    : ""}
+                </Table.Cell>
+                <Table.Cell>
+                  {getFormattedPrice(invoice.amount, invoice.currency)}
+                </Table.Cell>
+                <Table.Cell>
+                  {invoice.url && (
+                    <ButtonLink
+                      size="icon"
+                      variant="outline"
+                      href={invoice.url}
+                      target="_blank"
+                      aria-label={"Download invoice"}
+                    >
+                      <Download01Icon />
+                    </ButtonLink>
+                  )}
+                </Table.Cell>
+              </Table.Row>
+            ))}
+            {status === "pending" &&
+              Array.from({ length: 3 }).map((_, idx) => (
+                <Table.Row key={idx}>
+                  <Table.Cell>
+                    <Checkbox disabled />
+                  </Table.Cell>
+                  <Table.Cell>
+                    <Skeleton className="h-1" />
+                  </Table.Cell>
+                  <Table.Cell>
+                    <Skeleton className="h-1" />
+                  </Table.Cell>
+                </Table.Row>
               ))}
-              {status === "pending" &&
-                Array.from({ length: 3 }).map((_, idx) => (
-                  <Tr key={idx}>
-                    <Td>
-                      <Checkbox isDisabled />
-                    </Td>
-                    <Td>
-                      <Skeleton className="h-1" />
-                    </Td>
-                    <Td>
-                      <Skeleton className="h-1" />
-                    </Td>
-                  </Tr>
-                ))}
-            </Tbody>
-          </Table>
-        </TableContainer>
+          </Table.Body>
+        </Table.Root>
       )}
-    </Stack>
+    </div>
   );
 };
 

@@ -1,21 +1,23 @@
-import { HStack, useColorModeValue } from "@chakra-ui/react";
 import { EventType } from "@typebot.io/events/constants";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Copy01Icon } from "@typebot.io/ui/icons/Copy01Icon";
 import { PlayIcon } from "@typebot.io/ui/icons/PlayIcon";
 import { Settings01Icon } from "@typebot.io/ui/icons/Settings01Icon";
 import { TrashIcon } from "@typebot.io/ui/icons/TrashIcon";
+import { cn } from "@typebot.io/ui/lib/cn";
 import { isMac } from "@/helpers/isMac";
 
 type Props = {
   eventId: string;
   type: EventType;
+  className?: string;
   onPlayClick: () => void;
   onSettingsClick: () => void;
 };
 
 export const EventFocusToolbar = ({
   type,
+  className,
   onPlayClick,
   onSettingsClick,
 }: Props) => {
@@ -35,12 +37,11 @@ export const EventFocusToolbar = ({
   };
 
   return (
-    <HStack
-      rounded="md"
-      spacing={0}
-      borderWidth="1px"
-      bgColor={useColorModeValue("white", "gray.900")}
-      shadow="md"
+    <div
+      className={cn(
+        "flex items-center rounded-md gap-0 border shadow-md bg-gray-1",
+        className,
+      )}
     >
       <Button
         className="border-r rounded-r-none"
@@ -84,6 +85,6 @@ export const EventFocusToolbar = ({
           <TrashIcon />
         </Button>
       )}
-    </HStack>
+    </div>
   );
 };

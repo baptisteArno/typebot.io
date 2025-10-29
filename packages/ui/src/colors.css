@@ -66,8 +66,8 @@
   --green-12: 28 59 42;
 
   --gray-1: 255 255 255;
-  --gray-2: 241 241 241;
-  --gray-3: 240 240 240;
+  --gray-2: 248 248 248;
+  --gray-3: 241 241 241;
   --gray-4: 232 232 232;
   --gray-5: 224 224 224;
   --gray-6: 223 223 223;
@@ -79,9 +79,7 @@
   --gray-12: 32 32 32;
 }
 
-.dark,
-/* Chakra UI dark mode, to delete once fully migrated to Tailwind */
-  .chakra-ui-dark {
+.dark {
   --blue-1: 7 13 26;
   --blue-2: 15 22 39;
   --blue-3: 18 35 78;

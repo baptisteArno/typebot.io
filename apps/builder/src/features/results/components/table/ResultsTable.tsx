@@ -1,4 +1,3 @@
-import { Box, HStack, Stack, Text } from "@chakra-ui/react";
 import {
   type ColumnDef,
   getCoreRowModel,
@@ -13,6 +12,7 @@ import type {
 } from "@typebot.io/results/schemas/results";
 import type { ResultsTablePreferences } from "@typebot.io/typebot/schemas/typebot";
 import { Button } from "@typebot.io/ui/components/Button";
+import { Checkbox } from "@typebot.io/ui/components/Checkbox";
 import { TextAlignLeftIcon } from "@typebot.io/ui/icons/TextAlignLeftIcon";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { TimeFilterSelect } from "@/features/analytics/components/TimeFilterSelect";
@@ -20,7 +20,6 @@ import type { timeFilterValues } from "@/features/analytics/constants";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { HeaderIcon } from "../HeaderIcon";
 import { HeaderRow } from "./HeaderRow";
-import { IndeterminateCheckbox } from "./IndeterminateCheckbox";
 import { LoadingRows } from "./LoadingRows";
 import { Row } from "./Row";
 import { SelectionToolbar } from "./SelectionToolbar";
@@ -113,22 +112,21 @@ export const ResultsTable = ({
         enableResizing: false,
         maxSize: 40,
         header: ({ table }) => (
-          <IndeterminateCheckbox
-            {...{
-              checked: table.getIsAllRowsSelected(),
-              indeterminate: table.getIsSomeRowsSelected(),
-              onChange: table.getToggleAllRowsSelectedHandler(),
-            }}
+          <Checkbox
+            checked={table.getIsAllRowsSelected()}
+            indeterminate={table.getIsSomeRowsSelected()}
+            onCheckedChange={(checked) =>
+              table.getToggleAllRowsSelectedHandler()({ target: { checked } })
+            }
           />
         ),
         cell: ({ row }) => (
           <div className="px-1">
-            <IndeterminateCheckbox
-              {...{
-                checked: row.getIsSelected(),
-                indeterminate: row.getIsSomeSelected(),
-                onChange: row.getToggleSelectedHandler(),
-              }}
+            <Checkbox
+              checked={row.getIsSelected()}
+              onCheckedChange={(checked) =>
+                row.getToggleSelectedHandler()({ target: { checked } })
+              }
             />
           </div>
         ),
@@ -138,10 +136,13 @@ export const ResultsTable = ({
         accessorKey: header.id,
         size: 200,
         header: () => (
-          <HStack overflow="hidden" data-testid={`${header.label} header`}>
+          <div
+            className="flex items-center gap-2 overflow-hidden"
+            data-testid={`${header.label} header`}
+          >
             <HeaderIcon header={header} />
-            <Text>{header.label}</Text>
-          </HStack>
+            <p>{header.label}</p>
+          </div>
         ),
         cell: (info) => {
           const value = info?.getValue() as CellValueType | undefined;
@@ -154,10 +155,10 @@ export const ResultsTable = ({
         enableResizing: false,
         maxSize: 110,
         header: () => (
-          <HStack>
+          <div className="flex items-center gap-2">
             <TextAlignLeftIcon />
-            <Text>Logs</Text>
-          </HStack>
+            <p>Logs</p>
+          </div>
         ),
         cell: ({ row }) => (
           <Button
@@ -214,8 +215,8 @@ export const ResultsTable = ({
   }, [handleObserver, bottomElement.current]);
 
   return (
-    <Stack maxW="1600px" px="4" overflowY="hidden" spacing={6}>
-      <HStack w="full" justifyContent="flex-end">
+    <div className="flex flex-col max-w-[1600px] px-4 overflow-y-hidden gap-6">
+      <div className="flex items-center gap-2 w-full justify-end">
         {currentUserMode === "write" && (
           <SelectionToolbar
             selectedResultsId={Object.keys(rowSelection)}
@@ -234,8 +235,12 @@ export const ResultsTable = ({
           columnOrder={columnsOrder}
           onColumnOrderChange={changeColumnOrder}
         />
-      </HStack>
-      <Box ref={tableWrapper} overflow="auto" data-testid="results-table">
+      </div>
+      <div
+        className="overflow-auto"
+        ref={tableWrapper}
+        data-testid="results-table"
+      >
         <table className="bg-gray-1 border-separate border-spacing-0">
           <thead>
             {instance.getHeaderGroups().map((headerGroup) => (
@@ -266,7 +271,7 @@ export const ResultsTable = ({
             )}
           </tbody>
         </table>
-      </Box>
-    </Stack>
+      </div>
+    </div>
   );
 };

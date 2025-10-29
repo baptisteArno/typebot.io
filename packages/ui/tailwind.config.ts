@@ -2,24 +2,24 @@ import type { Config } from "tailwindcss";
 import animate from "tailwindcss-animate";
 
 export default {
-  darkMode: ["selector", '[data-theme="dark"]'],
+  darkMode: ["selector"],
   content: ["src/**/*.{ts,tsx}"],
   future: {
     hoverOnlyWhenSupported: true,
   },
   theme: {
-    colors: {
-      gray: getColorScale("gray"),
-      blue: getColorScale("blue"),
-      orange: getColorScale("orange"),
-      purple: getColorScale("purple"),
-      red: getColorScale("red"),
-      green: getColorScale("green"),
-      white: "rgb(255, 255, 255)",
-      transparent: "transparent",
-      inherit: "inherit",
-    },
     extend: {
+      colors: {
+        gray: getColorScale("gray"),
+        blue: getColorScale("blue"),
+        orange: getColorScale("orange"),
+        purple: getColorScale("purple"),
+        red: getColorScale("red"),
+        green: getColorScale("green"),
+        white: "rgb(255, 255, 255)",
+        transparent: "transparent",
+        inherit: "inherit",
+      },
       fontSize: {
         "4xl": ["2.5rem", "2.75rem"],
       },

@@ -1,4 +1,3 @@
-import { Stack } from "@chakra-ui/react";
 import type { VariableForTest } from "@typebot.io/blocks-integrations/httpRequest/schema";
 import { Field } from "@typebot.io/ui/components/Field";
 import type { Variable } from "@typebot.io/variables/schemas";
@@ -17,7 +16,7 @@ export const VariableForTestInputs = ({
     onItemChange({ ...item, value });
   };
   return (
-    <Stack p="4" rounded="md" flex="1" borderWidth="1px">
+    <div className="flex flex-col gap-2 p-4 rounded-md flex-1 border">
       <Field.Root>
         <Field.Label>Variable name:</Field.Label>
         <VariablesCombobox
@@ -32,6 +31,6 @@ export const VariableForTestInputs = ({
           onValueChange={handleValueChange}
         />
       </Field.Root>
-    </Stack>
+    </div>
   );
 };

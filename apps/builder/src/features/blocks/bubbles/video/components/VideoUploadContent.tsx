@@ -1,4 +1,3 @@
-import { HStack, Stack } from "@chakra-ui/react";
 import { parseVideoUrl } from "@typebot.io/blocks-bubbles/video/helpers";
 import type { VideoBubbleBlock } from "@typebot.io/blocks-bubbles/video/schema";
 import { Button } from "@typebot.io/ui/components/Button";
@@ -66,8 +65,8 @@ export const VideoUploadContent = ({
   };
 
   return (
-    <Stack>
-      <HStack>
+    <div className="flex flex-col gap-2">
+      <div className="flex items-center gap-2">
         {displayedTabs.includes("link") && (
           <Button
             variant={currentTab === "link" ? "outline" : "ghost"}
@@ -86,8 +85,7 @@ export const VideoUploadContent = ({
             Pexels
           </Button>
         )}
-      </HStack>
-
+      </div>
       {/* Body content to be displayed below conditionally based on currentTab */}
       {currentTab === "link" && (
         <VideoLinkEmbedContent
@@ -97,6 +95,6 @@ export const VideoUploadContent = ({
         />
       )}
       {currentTab === "pexels" && <PexelsPicker onVideoSelect={updateUrl} />}
-    </Stack>
+    </div>
   );
 };

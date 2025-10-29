@@ -1,11 +1,3 @@
-import {
-  Flex,
-  HStack,
-  type StackProps,
-  Text,
-  useColorModeValue,
-  useDisclosure,
-} from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { isDefined, isNotDefined } from "@typebot.io/lib/utils";
 import { Plan } from "@typebot.io/prisma/enum";
@@ -20,6 +12,7 @@ import { LoaderCircleIcon } from "@typebot.io/ui/icons/LoaderCircleIcon";
 import { PlayIcon } from "@typebot.io/ui/icons/PlayIcon";
 import { Redo03Icon } from "@typebot.io/ui/icons/Redo03Icon";
 import { Undo03Icon } from "@typebot.io/ui/icons/Undo03Icon";
+import { cn } from "@typebot.io/ui/lib/cn";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
@@ -32,7 +25,6 @@ import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { isCloudProdInstance } from "@/helpers/isCloudProdInstance";
 import { useKeyboardShortcuts } from "@/hooks/useKeyboardShortcuts";
 import { useRightPanel } from "@/hooks/useRightPanel";
-import { headerHeight } from "../constants";
 import { useEditor } from "../providers/EditorProvider";
 import { useTypebot } from "../providers/TypebotProvider";
 import { EditableTypebotName } from "./EditableTypebotName";
@@ -41,8 +33,7 @@ import { GuestTypebotHeader } from "./UnauthenticatedTypebotHeader";
 export const TypebotHeader = () => {
   const { typebot, publishedTypebot, currentUserMode } = useTypebot();
   const { workspace } = useWorkspace();
-  const { isOpen, onOpen } = useDisclosure();
-  const headerBgColor = useColorModeValue("white", "gray.950");
+  const { isOpen, onOpen } = useOpenControls();
 
   const handleHelpClick = () => {
     isCloudProdInstance() && workspace?.plan && workspace.plan !== Plan.FREE
@@ -52,38 +43,29 @@ export const TypebotHeader = () => {
 
   if (currentUserMode === "guest") return <GuestTypebotHeader />;
   return (
-    <Flex
-      w="full"
-      borderBottomWidth="1px"
-      justify="center"
-      align="center"
-      h={`${headerHeight}px`}
-      pos="relative"
-      bgColor={headerBgColor}
-      flexShrink={0}
-    >
+    <div className="flex w-full border-b justify-center items-center relative h-[var(--header-height)] bg-gray-1 flex-shrink-0">
       {isOpen && <SupportBubble autoShowDelay={0} />}
-      <LeftElements pos="absolute" left="1rem" onHelpClick={handleHelpClick} />
+      <LeftElements className="absolute left-4" onHelpClick={handleHelpClick} />
       <TypebotNav
-        display={{ base: "none", xl: "flex" }}
-        pos={{ base: "absolute" }}
+        className="absolute hidden xl:flex"
         typebotId={typebot?.id}
         isResultsDisplayed={isDefined(publishedTypebot)}
       />
       <RightElements
-        right="40px"
-        pos="absolute"
-        display={["none", "flex"]}
+        className="absolute right-10 hidden sm:flex"
         isResultsDisplayed={isDefined(publishedTypebot)}
       />
-    </Flex>
+    </div>
   );
 };
 
 const LeftElements = ({
   onHelpClick,
-  ...props
-}: StackProps & { onHelpClick: () => void }) => {
+  className,
+}: {
+  onHelpClick: () => void;
+  className?: string;
+}) => {
   const { t } = useTranslate();
   const router = useRouter();
   const {
@@ -155,8 +137,8 @@ const LeftElements = ({
   });
 
   return (
-    <HStack justify="center" align="center" spacing="6" {...props}>
-      <HStack alignItems="center" spacing={3}>
+    <div className={cn("flex items-center justify-center gap-6", className)}>
+      <div className="flex items-center gap-3">
         <ButtonLink
           aria-label="Navigate back"
           href={{
@@ -181,7 +163,7 @@ const LeftElements = ({
         >
           <ArrowLeft01Icon />
         </ButtonLink>
-        <HStack spacing={1}>
+        <div className="flex items-center gap-1">
           {typebot && (
             <EditableEmojiOrImageIcon
               uploadFileProps={{
@@ -194,17 +176,15 @@ const LeftElements = ({
               defaultIcon={LayoutBottomIcon}
             />
           )}
-          (
           <EditableTypebotName
             key={`typebot-name-${typebot?.name ?? ""}`}
             defaultName={typebot?.name ?? ""}
             onNewName={handleNameSubmit}
           />
-          )
-        </HStack>
+        </div>
 
         {currentUserMode === "write" && (
-          <HStack>
+          <div className="flex items-center gap-2">
             <Tooltip.Root {...undoOpenControls} keepOpenOnClick>
               <Tooltip.TriggerButton
                 size="icon"
@@ -240,7 +220,7 @@ const LeftElements = ({
                   : t("editor.header.redoButton.label")}
               </Tooltip.Popup>
             </Tooltip.Root>
-          </HStack>
+          </div>
         )}
         <Button onClick={onHelpClick} variant="secondary" size="sm">
           <CustomerSupportIcon />
@@ -248,23 +228,26 @@ const LeftElements = ({
             {t("editor.header.helpButton.label")}
           </span>
         </Button>
-      </HStack>
+      </div>
       {isSavingLoading && (
-        <HStack>
+        <div className="flex items-center gap-2">
           <LoaderCircleIcon className="animate-spin" />
-          <Text fontSize="sm" color="gray.400">
+          <p className="text-sm" color="gray.400">
             {t("editor.header.savingSpinner.label")}
-          </Text>
-        </HStack>
+          </p>
+        </div>
       )}
-    </HStack>
+    </div>
   );
 };
 
 const RightElements = ({
   isResultsDisplayed,
-  ...props
-}: StackProps & { isResultsDisplayed: boolean }) => {
+  className,
+}: {
+  isResultsDisplayed: boolean;
+  className?: string;
+}) => {
   const router = useRouter();
   const { t } = useTranslate();
   const { typebot, currentUserMode, save, isSavingLoading } = useTypebot();
@@ -278,15 +261,15 @@ const RightElements = ({
   };
 
   return (
-    <HStack {...props}>
+    <div className={cn("flex items-center gap-2", className)}>
       <TypebotNav
-        display={{ base: "none", md: "flex", xl: "none" }}
+        className="hidden md:flex xl:hidden"
         typebotId={typebot?.id}
         isResultsDisplayed={isResultsDisplayed}
       />
-      <Flex pos="relative">
+      <div className="flex relative">
         <ShareTypebotButton isLoading={isNotDefined(typebot)} />
-      </Flex>
+      </div>
       {router.pathname.includes("/edit") && rightPanel !== "preview" && (
         <Button
           variant="secondary"
@@ -312,23 +295,24 @@ const RightElements = ({
         </ButtonLink>
       )}
       {currentUserMode === "write" && <PublishButton size="sm" />}
-    </HStack>
+    </div>
   );
 };
 
 const TypebotNav = ({
   typebotId,
   isResultsDisplayed,
-  ...stackProps
+  className,
 }: {
   typebotId?: string;
   isResultsDisplayed: boolean;
-} & StackProps) => {
+  className?: string;
+}) => {
   const { t } = useTranslate();
   const router = useRouter();
 
   return (
-    <HStack {...stackProps}>
+    <div className={cn("flex items-center gap-2", className)}>
       <ButtonLink
         href={`/typebots/${typebotId}/edit`}
         variant={router.pathname.includes("/edit") ? "outline" : "ghost"}
@@ -366,6 +350,6 @@ const TypebotNav = ({
           {t("editor.header.resultsButton.label")}
         </ButtonLink>
       )}
-    </HStack>
+    </div>
   );
 };

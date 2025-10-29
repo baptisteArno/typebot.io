@@ -1,10 +1,3 @@
-import {
-  Heading,
-  HStack,
-  Stack,
-  Text,
-  useColorModeValue,
-} from "@chakra-ui/react";
 import { T, useTranslate } from "@tolgee/react";
 import { prices } from "@typebot.io/billing/constants";
 import { formatPrice } from "@typebot.io/billing/helpers/formatPrice";
@@ -36,61 +29,47 @@ export const StarterPlanPricingCard = ({
   };
 
   return (
-    <Stack
-      spacing={6}
-      p="6"
-      rounded="lg"
-      borderWidth="1px"
-      flex="1"
-      h="full"
-      justifyContent="space-between"
-      pt="8"
-    >
-      <Stack spacing="4">
-        <Stack>
-          <Stack spacing="4">
-            <Heading fontSize="2xl">
+    <div className="flex flex-col gap-6 p-6 rounded-lg border flex-1 h-full justify-between pt-8">
+      <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-4">
+            <h2 className="text-2xl">
               <T
                 keyName="billing.pricingCard.heading"
                 params={{
                   strong: <span className="text-orange-9">Starter</span>,
                 }}
               />
-            </Heading>
-            <Text>{t("billing.pricingCard.starter.description")}</Text>
-          </Stack>
-          <Heading>
+            </h2>
+            <p>{t("billing.pricingCard.starter.description")}</p>
+          </div>
+          <h2>
             {formatPrice(prices.STARTER, { currency })}
             <span className="text-base">
               {t("billing.pricingCard.perMonth")}
             </span>
-          </Heading>
-        </Stack>
+          </h2>
+        </div>
 
         <FeaturesList
           features={[
             t("billing.pricingCard.starter.includedSeats"),
-            <Stack key="starter-chats" spacing={0}>
-              <HStack gap={0}>
-                <Text>2,000 {t("billing.pricingCard.chatsPerMonth")}</Text>
+            <div className="flex flex-col gap-0" key="starter-chats">
+              <div className="flex items-center gap-0">
+                <p>2,000 {t("billing.pricingCard.chatsPerMonth")}</p>
                 <MoreInfoTooltip>
                   {t("billing.pricingCard.chatsTooltip")}
                 </MoreInfoTooltip>
-              </HStack>
-              <Text
-                fontSize="sm"
-                color={useColorModeValue("gray.500", "gray.400")}
-              >
-                Extra chats: $10 per 500
-              </Text>
-            </Stack>,
+              </div>
+              <p className="text-sm text-gray-8">Extra chats: $10 per 500</p>
+            </div>,
             t("billing.pricingCard.starter.brandingRemoved"),
             t("billing.pricingCard.starter.fileUploadBlock"),
             t("billing.pricingCard.starter.createFolders"),
             "Direct priority support",
           ]}
         />
-      </Stack>
+      </div>
       <Button
         variant="secondary"
         onClick={onPayClick}
@@ -98,6 +77,6 @@ export const StarterPlanPricingCard = ({
       >
         {getButtonLabel()}
       </Button>
-    </Stack>
+    </div>
   );
 };

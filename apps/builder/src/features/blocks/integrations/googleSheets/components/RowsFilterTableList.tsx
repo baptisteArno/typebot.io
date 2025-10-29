@@ -1,4 +1,3 @@
-import { Flex } from "@chakra-ui/react";
 import type {
   GoogleSheetsGetOptions,
   RowsFilterComparison,
@@ -35,13 +34,13 @@ export const RowsFilterTableList = ({
       initialItems={filter?.comparisons ?? []}
       onItemsChange={updateComparisons}
       ComponentBetweenItems={() => (
-        <Flex justify="center">
+        <div className="flex justify-center">
           <BasicSelect
             value={filter?.logicalOperator}
             onChange={updateLogicalOperator}
             items={Object.values(LogicalOperator)}
           />
-        </Flex>
+        </div>
       )}
       addLabel="Add filter rule"
     >

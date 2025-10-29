@@ -1,4 +1,3 @@
-import { Flex } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { defaultConditionItemContent } from "@typebot.io/blocks-logic/condition/constants";
 import { LogicalOperator } from "@typebot.io/conditions/constants";
@@ -24,7 +23,7 @@ export const ConditionForm = ({ condition, onConditionChange }: Props) => {
       initialItems={condition?.comparisons}
       onItemsChange={handleComparisonsChange}
       ComponentBetweenItems={() => (
-        <Flex justify="center">
+        <div className="flex justify-center">
           <BasicSelect
             value={
               condition?.logicalOperator ??
@@ -33,7 +32,7 @@ export const ConditionForm = ({ condition, onConditionChange }: Props) => {
             onChange={handleLogicalOperatorChange}
             items={Object.values(LogicalOperator)}
           />
-        </Flex>
+        </div>
       )}
       addLabel={t(
         "blocks.inputs.button.buttonSettings.addComparisonButton.label",

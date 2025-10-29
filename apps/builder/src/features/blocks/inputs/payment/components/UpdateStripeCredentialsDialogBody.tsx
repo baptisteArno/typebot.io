@@ -1,4 +1,3 @@
-import { Stack, Text } from "@chakra-ui/react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
 import type { StripeCredentials } from "@typebot.io/credentials/schemas";
@@ -125,7 +124,7 @@ export const UpdateStripeCredentialsDialogBody = ({
 
   return (
     <Dialog.Popup render={<form onSubmit={updateCreds} />}>
-      <Stack as="form" spacing={4}>
+      <form className="flex flex-col gap-4">
         <Field.Root>
           <Field.Label>
             {t("blocks.inputs.payment.settings.stripeConfig.accountName.label")}
@@ -178,7 +177,7 @@ export const UpdateStripeCredentialsDialogBody = ({
           </div>
         </Field.Root>
 
-        <Text>
+        <p>
           ({t("blocks.inputs.payment.settings.stripeConfig.findKeys.label")}{" "}
           <TextLink href="https://dashboard.stripe.com/apikeys" isExternal>
             {t(
@@ -186,9 +185,8 @@ export const UpdateStripeCredentialsDialogBody = ({
             )}
           </TextLink>
           )
-        </Text>
-      </Stack>
-
+        </p>
+      </form>
       <Dialog.Footer>
         <Button
           type="submit"

@@ -1,4 +1,3 @@
-import { Stack } from "@chakra-ui/react";
 import type { HttpRequest } from "@typebot.io/blocks-integrations/httpRequest/schema";
 import type { MakeComBlock } from "@typebot.io/blocks-integrations/makeCom/schema";
 import { Alert } from "@typebot.io/ui/components/Alert";
@@ -39,8 +38,8 @@ export const MakeComSettings = ({
   };
 
   return (
-    <Stack spacing={0}>
-      <Stack spacing={4}>
+    <div className="flex flex-col gap-0">
+      <div className="flex flex-col gap-4">
         {url ? (
           <Alert.Root variant="success">
             <CheckmarkSquare02Icon />
@@ -74,8 +73,8 @@ export const MakeComSettings = ({
           onOptionsChange={onOptionsChange}
           onNewTestResponse={handleNewTestResponse}
         />
-      </Stack>
+      </div>
       <div ref={bottomRef} />
-    </Stack>
+    </div>
   );
 };

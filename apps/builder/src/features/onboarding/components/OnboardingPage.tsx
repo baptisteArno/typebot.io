@@ -1,4 +1,3 @@
-import { Flex, HStack, VStack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { env } from "@typebot.io/env";
 import { Standard } from "@typebot.io/react";
@@ -96,14 +95,8 @@ export const OnboardingPage = () => {
 
   if (!env.NEXT_PUBLIC_ONBOARDING_TYPEBOT_ID) return null;
   return (
-    <VStack h="100vh" flexDir="column" justifyContent="center" spacing={0}>
-      <HStack
-        bgColor="white"
-        h="60px"
-        w="full"
-        justifyContent="flex-end"
-        px="10"
-      >
+    <div className="flex flex-col items-center h-screen justify-center gap-0">
+      <div className="flex items-center gap-2 h-[60px] w-full justify-end px-10 bg-white">
         <Button
           variant="secondary"
           size="sm"
@@ -113,10 +106,9 @@ export const OnboardingPage = () => {
           {t("skip")}
           <ArrowRight01Icon />
         </Button>
-      </HStack>
-
-      <Flex w="full" h="full" justifyContent="center" alignItems="center">
-        <Flex w="full" maxW="800px" rounded="lg" h="full" maxH="70vh">
+      </div>
+      <div className="flex w-full h-full justify-center items-center">
+        <div className="flex w-full max-w-[800px] rounded-lg h-full max-h-[70vh]">
           <Standard
             id="onboarding"
             typebot={env.NEXT_PUBLIC_ONBOARDING_TYPEBOT_ID}
@@ -125,14 +117,13 @@ export const OnboardingPage = () => {
             onEnd={redirectToDashboard}
             onAnswer={setOnboardingAnswer}
           />
-        </Flex>
-      </Flex>
-
+        </div>
+      </div>
       <canvas
         ref={confettiCanvaContainer}
         className="fixed top-0 left-0 w-full h-full z-10 pointer-events-none"
       />
-    </VStack>
+    </div>
   );
 };
 

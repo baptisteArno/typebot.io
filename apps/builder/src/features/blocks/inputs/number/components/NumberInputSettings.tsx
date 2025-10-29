@@ -1,4 +1,3 @@
-import { Stack, Text } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import {
   defaultNumberInputButtonLabel,
@@ -82,7 +81,7 @@ export const NumberInputSettings = ({ options, onOptionsChange }: Props) => {
   };
 
   return (
-    <Stack spacing={4}>
+    <div className="flex flex-col gap-4">
       <Field.Root>
         <Field.Label>
           {t("blocks.inputs.settings.placeholder.label")}
@@ -129,9 +128,9 @@ export const NumberInputSettings = ({ options, onOptionsChange }: Props) => {
       <Accordion.Root>
         <Accordion.Item>
           <Accordion.Trigger>
-            <Text w="full" textAlign="left">
+            <p className="w-full text-left">
               {t("blocks.inputs.number.settings.format.label")}
-            </Text>
+            </p>
           </Accordion.Trigger>
           <Accordion.Panel>
             <BasicSelect
@@ -200,6 +199,6 @@ export const NumberInputSettings = ({ options, onOptionsChange }: Props) => {
           onSelectVariable={handleVariableChange}
         />
       </Field.Root>
-    </Stack>
+    </div>
   );
 };

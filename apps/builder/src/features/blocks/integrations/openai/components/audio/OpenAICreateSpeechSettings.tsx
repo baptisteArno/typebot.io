@@ -1,4 +1,3 @@
-import { Stack, Text } from "@chakra-ui/react";
 import { openAIVoices } from "@typebot.io/blocks-integrations/openai/constants";
 import type { CreateSpeechOpenAIOptions } from "@typebot.io/blocks-integrations/openai/schema";
 import { Field } from "@typebot.io/ui/components/Field";
@@ -52,14 +51,14 @@ export const OpenAICreateSpeechSettings = ({
   };
 
   return (
-    <Stack spacing={4} pt="2">
-      <Text fontSize="sm" color="gray.500">
+    <div className="flex flex-col gap-4 pt-2">
+      <p className="text-sm" color="gray.500">
         Read the{" "}
         <TextLink href={apiReferenceUrl} isExternal>
           API reference
         </TextLink>{" "}
         to better understand the available options.
-      </Text>
+      </p>
       {options.credentialsId && (
         <>
           <ModelsDropdown
@@ -101,6 +100,6 @@ export const OpenAICreateSpeechSettings = ({
           </Field.Root>
         </>
       )}
-    </Stack>
+    </div>
   );
 };

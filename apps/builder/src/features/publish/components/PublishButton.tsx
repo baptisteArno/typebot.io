@@ -1,4 +1,3 @@
-import { HStack, Stack, Text, useDisclosure } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
 import { T, useTranslate } from "@tolgee/react";
 import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
@@ -7,6 +6,7 @@ import { Alert } from "@typebot.io/ui/components/Alert";
 import { Button, type ButtonProps } from "@typebot.io/ui/components/Button";
 import { Menu } from "@typebot.io/ui/components/Menu";
 import { Tooltip } from "@typebot.io/ui/components/Tooltip";
+import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
 import { ArrowDown01Icon } from "@typebot.io/ui/icons/ArrowDown01Icon";
 import { HotspotOfflineIcon } from "@typebot.io/ui/icons/HotspotOfflineIcon";
 import { SquareLock01Icon } from "@typebot.io/ui/icons/SquareLock01Icon";
@@ -42,17 +42,17 @@ export const PublishButton = ({
   const { t } = useTranslate();
   const { workspace } = useWorkspace();
   const { push, query, pathname } = useRouter();
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onOpen, onClose } = useOpenControls();
   const {
     isOpen: isNewEngineWarningOpen,
     onOpen: onNewEngineWarningOpen,
     onClose: onNewEngineWarningClose,
-  } = useDisclosure();
+  } = useOpenControls();
   const {
     isOpen: isTrademarkInfringementOpen,
     onOpen: onTrademarkInfringementOpen,
     onClose: onTrademarkInfringementClose,
-  } = useDisclosure();
+  } = useOpenControls();
   const [trademarkPotentialInfringement, setTrademarkPotentialInfringement] =
     useState<string | undefined>(undefined);
   const {
@@ -149,7 +149,7 @@ export const PublishButton = ({
   };
 
   return (
-    <HStack spacing="1px">
+    <div className="flex items-center gap-1px">
       <ChangePlanDialog
         isOpen={isOpen}
         onClose={onClose}
@@ -187,7 +187,6 @@ export const PublishButton = ({
           </Alert.Root>
         </div>
       </ConfirmDialog>
-
       {publishedTypebot && publishedTypebotVersion !== typebot?.version && (
         <ConfirmDialog
           isOpen={isNewEngineWarningOpen}
@@ -197,8 +196,8 @@ export const PublishButton = ({
           title={t("publish.versionWarning.title.label")}
           confirmButtonLabel={t("publishButton.label")}
         >
-          <Text>{t("publish.versionWarning.message.aboutToDeploy.label")}</Text>
-          <Text fontWeight="bold">
+          <p>{t("publish.versionWarning.message.aboutToDeploy.label")}</p>
+          <p className="font-bold">
             <T
               keyName="publish.versionWarning.checkBreakingChanges"
               params={{
@@ -210,10 +209,8 @@ export const PublishButton = ({
                 ),
               }}
             />
-          </Text>
-          <Text>
-            {t("publish.versionWarning.message.testInPreviewMode.label")}
-          </Text>
+          </p>
+          <p>{t("publish.versionWarning.message.testInPreviewMode.label")}</p>
         </ConfirmDialog>
       )}
       <Tooltip.Root disabled={isNotDefined(publishedTypebot) || isPublished}>
@@ -246,19 +243,19 @@ export const PublishButton = ({
           }
         />
         <Tooltip.Popup>
-          <Stack>
-            <Text>{t("publishButton.tooltip.nonPublishedChanges.label")}</Text>
+          <div className="flex flex-col gap-2">
+            <p>{t("publishButton.tooltip.nonPublishedChanges.label")}</p>
             {timeSinceLastPublish ? (
-              <Text fontStyle="italic">
+              <p className="italic">
                 <T
                   keyName="publishButton.tooltip.publishedVersion.from.label"
                   params={{
                     timeSince: timeSinceLastPublish,
                   }}
                 />
-              </Text>
+              </p>
             ) : null}
-          </Stack>
+          </div>
         </Tooltip.Popup>
       </Tooltip.Root>
       {!isMoreMenuDisabled && publishedTypebot && (
@@ -295,6 +292,6 @@ export const PublishButton = ({
           </Menu.Popup>
         </Menu.Root>
       )}
-    </HStack>
+    </div>
   );
 };

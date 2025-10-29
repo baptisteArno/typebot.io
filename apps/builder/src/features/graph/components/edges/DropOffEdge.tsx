@@ -1,8 +1,8 @@
-import { Text, theme, VStack } from "@chakra-ui/react";
 import { blockHasItems } from "@typebot.io/blocks-core/helpers";
 import { byId, isNotDefined } from "@typebot.io/lib/utils";
 import { Badge } from "@typebot.io/ui/components/Badge";
 import { Tooltip } from "@typebot.io/ui/components/Tooltip";
+import { cx } from "@typebot.io/ui/lib/cva";
 import { useMemo } from "react";
 import { useShallow } from "zustand/react/shallow";
 import { computeTotalUsersAtBlock } from "@/features/analytics/helpers/computeTotalUsersAtBlock";
@@ -134,7 +134,7 @@ export const DropOffEdge = ({
           },
           isLastBlock,
         )}
-        stroke={theme.colors.red[500]}
+        className="stroke-red-9"
         strokeWidth={
           dropOffSegmentMinWidth * (1 - (dropOffRate ?? 0) / 100) +
           dropOffSegmentMaxWidth * ((dropOffRate ?? 0) / 100)
@@ -155,58 +155,51 @@ export const DropOffEdge = ({
         <Tooltip.Root>
           <Tooltip.Trigger
             render={
-              <VStack
+              <div
+                className={cx(
+                  "flex flex-col items-center rounded-md p-2 justify-center w-full h-full gap-0.5 bg-red-9 text-white",
+                  isWorkspaceProPlan ? "cursor-auto" : "cursor-pointer",
+                )}
                 data-testid={`dropoff-edge-${blockId}`}
-                bgColor={theme.colors.red[500]}
-                color="white"
-                rounded="md"
-                p="2"
-                justifyContent="center"
-                w="full"
-                h="full"
                 onClick={isWorkspaceProPlan ? undefined : onUnlockProPlanClick}
-                cursor={isWorkspaceProPlan ? "auto" : "pointer"}
-                spacing={0.5}
               >
-                <Text
-                  filter={isWorkspaceProPlan ? "" : "blur(2px)"}
-                  fontSize="sm"
+                <p
+                  className={cx(
+                    "text-sm",
+                    isWorkspaceProPlan ? undefined : "blur-[2px]",
+                  )}
                 >
                   {isWorkspaceProPlan ? (
                     dropOffRate
                   ) : (
-                    <Text as="span" filter="blur(2px)">
-                      X
-                    </Text>
+                    <span className="blur-[2px]">X</span>
                   )}
                   %
-                </Text>
+                </p>
                 <Badge colorScheme="red">
                   {isWorkspaceProPlan ? (
                     totalDroppedUser
                   ) : (
-                    <Text as="span" filter="blur(3px)" mr="1">
-                      NN
-                    </Text>
+                    <span className="mr-1 blur-[3px]">NN</span>
                   )}{" "}
                   user{(totalDroppedUser ?? 2) > 1 ? "s" : ""}
                 </Badge>
-              </VStack>
+              </div>
             }
           ></Tooltip.Trigger>
           <Tooltip.Popup>
             {isWorkspaceProPlan ? (
               <>
-                <Text>👀 Displayed {totalUsersAtBlock} times.</Text>
-                <Text>
+                <p>👀 Displayed {totalUsersAtBlock} times.</p>
+                <p>
                   {totalDroppedUser === 0 ? null : (
                     <>
                       🚶 {totalDroppedUser} user
                       {(totalDroppedUser ?? 0) > 1 ? "s" : ""} left.
                     </>
                   )}
-                </Text>
-                <Text>💥 Drop-off rate: {dropOffRate}%</Text>
+                </p>
+                <p>💥 Drop-off rate: {dropOffRate}%</p>
               </>
             ) : (
               "Upgrade your plan to PRO to reveal drop-off rate."

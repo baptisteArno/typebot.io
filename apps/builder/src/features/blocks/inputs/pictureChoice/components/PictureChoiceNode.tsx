@@ -1,4 +1,3 @@
-import { Stack, Text, Wrap } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import type { BlockIndices } from "@typebot.io/blocks-core/schemas/schema";
 import type { PictureChoiceBlock } from "@typebot.io/blocks-inputs/pictureChoice/schema";
@@ -21,19 +20,19 @@ export const PictureChoiceNode = ({ block, indices }: Props) => {
   )?.name;
 
   return (
-    <Stack w="90%">
+    <div className="flex flex-col gap-2 w-[90%]">
       {block.options?.dynamicItems?.isEnabled && dynamicVariableName ? (
-        <Wrap spacing={1}>
-          <Text>
+        <div className="flex flex-wrap gap-1">
+          <p>
             {t("blocks.inputs.picture.settings.dynamicVariables.display.label")}
-          </Text>
+          </p>
           <Badge colorScheme="purple">{dynamicVariableName}</Badge>
-          <Text>
+          <p>
             {t(
               "blocks.inputs.picture.settings.dynamicVariables.pictures.label",
             )}
-          </Text>
-        </Wrap>
+          </p>
+        </div>
       ) : (
         <ItemNodesList block={block} indices={indices} />
       )}
@@ -43,6 +42,6 @@ export const PictureChoiceNode = ({ block, indices }: Props) => {
           variables={typebot?.variables}
         />
       ) : null}
-    </Stack>
+    </div>
   );
 };

@@ -1,6 +1,6 @@
-import { useDisclosure } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { Menu } from "@typebot.io/ui/components/Menu";
+import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
 import { Book02Icon } from "@typebot.io/ui/icons/Book02Icon";
 import { Download01Icon } from "@typebot.io/ui/icons/Download01Icon";
 import { MoreHorizontalIcon } from "@typebot.io/ui/icons/MoreHorizontalIcon";
@@ -14,7 +14,7 @@ import { EditorSettingsDialog } from "./EditorSettingsDialog";
 export const BoardMenuButton = () => {
   const { typebot, currentUserMode } = useTypebot();
   const [isDownloading, setIsDownloading] = useState(false);
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onOpen, onClose } = useOpenControls();
   const { t } = useTranslate();
 
   const downloadFlow = () => {

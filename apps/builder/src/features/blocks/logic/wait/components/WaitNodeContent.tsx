@@ -1,5 +1,5 @@
-import { Text } from "@chakra-ui/react";
 import type { WaitBlock } from "@typebot.io/blocks-logic/wait/schema";
+import { cx } from "@typebot.io/ui/lib/cva";
 
 type Props = {
   options: WaitBlock["options"];
@@ -8,7 +8,12 @@ type Props = {
 export const WaitNodeContent = ({
   options: { secondsToWaitFor } = {},
 }: Props) => (
-  <Text color={secondsToWaitFor ? "currentcolor" : "gray.500"} noOfLines={1}>
+  <p
+    className={cx(
+      secondsToWaitFor ? "text-gray-12" : "text-gray-9",
+      "truncate",
+    )}
+  >
     {secondsToWaitFor ? `Wait for ${secondsToWaitFor}s` : "Configure..."}
-  </Text>
+  </p>
 );

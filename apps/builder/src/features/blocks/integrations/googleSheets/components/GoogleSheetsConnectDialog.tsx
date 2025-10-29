@@ -1,4 +1,3 @@
-import { Text } from "@chakra-ui/react";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
 import { ButtonLink } from "@/components/ButtonLink";
 import { GoogleLogo } from "@/components/GoogleLogo";
@@ -37,10 +36,10 @@ export const GoogleSheetConnectDialogBody = ({
   return (
     <Dialog.Popup>
       <Dialog.Title>Connect Spreadsheets</Dialog.Title>
-      <Text>
+      <p>
         Make sure to check all the permissions so that the integration works as
         expected:
-      </Text>
+      </p>
       <img
         className="rounded-md"
         src="/images/google-spreadsheets-scopes.png"

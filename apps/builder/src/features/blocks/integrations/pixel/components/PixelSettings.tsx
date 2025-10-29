@@ -1,4 +1,3 @@
-import { Stack, Text } from "@chakra-ui/react";
 import {
   defaultPixelOptions,
   pixelEventTypes,
@@ -71,7 +70,7 @@ export const PixelSettings = ({ options, onOptionsChange }: Props) => {
   };
 
   return (
-    <Stack spacing={4}>
+    <div className="flex flex-col gap-4">
       <DebouncedTextInput
         defaultValue={options?.pixelId ?? ""}
         onValueChange={updatePixelId}
@@ -100,13 +99,13 @@ export const PixelSettings = ({ options, onOptionsChange }: Props) => {
         </Field.Root>
         {isDefined(options?.params) && (
           <>
-            <Text fontSize="sm" color="gray.500">
+            <p className="text-sm" color="gray.500">
               Read the{" "}
               <TextLink href={pixelReferenceUrl} isExternal>
                 reference
               </TextLink>{" "}
               to better understand the available options.
-            </Text>
+            </p>
             <BasicSelect
               items={["Custom", ...pixelEventTypes]}
               value={options?.eventType}
@@ -138,7 +137,7 @@ export const PixelSettings = ({ options, onOptionsChange }: Props) => {
           </>
         )}
       </Field.Container>
-    </Stack>
+    </div>
   );
 };
 
@@ -175,7 +174,7 @@ const ParamItem = ({ item, eventType, onItemChange }: ParamItemProps) => {
   if (!eventType) return null;
 
   return (
-    <Stack p="4" rounded="md" flex="1" borderWidth="1px">
+    <div className="flex flex-col gap-2 p-4 rounded-md flex-1 border">
       {eventType === "Custom" ? (
         <DebouncedTextInputWithVariablesButton
           defaultValue={item.key}
@@ -203,6 +202,6 @@ const ParamItem = ({ item, eventType, onItemChange }: ParamItemProps) => {
           placeholder="Value"
         />
       )}
-    </Stack>
+    </div>
   );
 };

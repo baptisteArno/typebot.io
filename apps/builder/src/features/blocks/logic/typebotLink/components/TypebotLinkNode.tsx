@@ -1,4 +1,3 @@
-import { Text } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import type { TypebotLinkBlock } from "@typebot.io/blocks-logic/typebotLink/schema";
 import { byId, isNotEmpty } from "@typebot.io/lib/utils";
@@ -42,7 +41,7 @@ export const TypebotLinkNode = ({ block }: Props) => {
 
   if (!block.options?.typebotId) return <Badge>Configure...</Badge>;
   return (
-    <Text>
+    <p>
       Jump{" "}
       {groupTitle ? (
         <>
@@ -54,6 +53,6 @@ export const TypebotLinkNode = ({ block }: Props) => {
           in <Badge>{linkedTypebot?.name}</Badge>
         </>
       ) : null}
-    </Text>
+    </p>
   );
 };

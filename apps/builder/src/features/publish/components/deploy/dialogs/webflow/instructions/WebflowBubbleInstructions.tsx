@@ -1,4 +1,3 @@
-import { Code, ListItem, OrderedList, Stack, Text } from "@chakra-ui/react";
 import type { BubbleProps } from "@typebot.io/js";
 import { useState } from "react";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
@@ -16,12 +15,12 @@ export const WebflowBubbleInstructions = () => {
     useState<BubbleProps["previewMessage"]>();
 
   return (
-    <OrderedList spacing={4} pl={5}>
-      <ListItem>
-        Press <Code>A</Code> to open the <Code>Add elements</Code> panel
-      </ListItem>
-      <ListItem>
-        <Stack spacing={4}>
+    <ol>
+      <li>
+        Press <code>A</code> to open the <code>Add elements</code> panel
+      </li>
+      <li>
+        <div className="flex flex-col gap-4">
           <BubbleSettings
             previewMessage={previewMessage}
             defaultPreviewMessageAvatar={
@@ -31,16 +30,16 @@ export const WebflowBubbleInstructions = () => {
             onPreviewMessageChange={setPreviewMessage}
             onThemeChange={setTheme}
           />
-          <Text>
-            Add an <Code>Embed</Code> element from the <Code>components</Code>{" "}
+          <p>
+            Add an <code>Embed</code> element from the <code>components</code>{" "}
             section and paste this code:
-          </Text>
+          </p>
           <JavascriptBubbleSnippet
             theme={theme}
             previewMessage={previewMessage}
           />
-        </Stack>
-      </ListItem>
-    </OrderedList>
+        </div>
+      </li>
+    </ol>
   );
 };

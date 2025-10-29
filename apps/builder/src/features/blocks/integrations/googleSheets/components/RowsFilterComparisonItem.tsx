@@ -1,4 +1,3 @@
-import { Stack } from "@chakra-ui/react";
 import type { RowsFilterComparison } from "@typebot.io/blocks-integrations/googleSheets/schema";
 import { ComparisonOperators } from "@typebot.io/conditions/constants";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
@@ -28,7 +27,7 @@ export const RowsFilterComparisonItem = ({
   };
 
   return (
-    <Stack p="4" rounded="md" flex="1" borderWidth="1px">
+    <div className="flex flex-col gap-2 p-4 rounded-md flex-1 border">
       <BasicSelect
         value={item.column}
         onChange={handleColumnSelect}
@@ -49,6 +48,6 @@ export const RowsFilterComparisonItem = ({
             placeholder="Type a value..."
           />
         )}
-    </Stack>
+    </div>
   );
 };

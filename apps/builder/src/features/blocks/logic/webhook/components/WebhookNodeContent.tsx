@@ -1,4 +1,3 @@
-import { Stack, Text } from "@chakra-ui/react";
 import type { WebhookBlock } from "@typebot.io/blocks-logic/webhook/schema";
 import { isDefined } from "@typebot.io/lib/utils";
 import { SetVariableLabel } from "@/components/SetVariableLabel";
@@ -11,8 +10,8 @@ type Props = {
 export const WebhookNodeContent = ({ options }: Props) => {
   const { typebot } = useTypebot();
   return (
-    <Stack>
-      <Text noOfLines={1}>Listen for webhook</Text>
+    <div className="flex flex-col gap-2">
+      <p className="truncate">Listen for webhook</p>
       {typebot &&
         options?.responseVariableMapping
           ?.filter((mapping) => isDefined(mapping.variableId))
@@ -23,6 +22,6 @@ export const WebhookNodeContent = ({ options }: Props) => {
               variableId={mapping.variableId!}
             />
           ))}
-    </Stack>
+    </div>
   );
 };

@@ -16,7 +16,7 @@ export const PreviewDrawerBody = ({ runtime }: Props): JSX.Element => {
       return <WhatsAppPreviewInstructions />;
     }
     case "API": {
-      return <ApiPreviewInstructions pt="4" />;
+      return <ApiPreviewInstructions className="pt-4" />;
     }
   }
 };

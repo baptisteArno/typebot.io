@@ -1,4 +1,3 @@
-import { HStack, Text } from "@chakra-ui/react";
 import type {
   BubbleProps,
   BubbleTheme,
@@ -47,8 +46,8 @@ export const ThemeSettings = ({
       <Accordion.Item>
         <Accordion.Trigger>Theme</Accordion.Trigger>
         <Accordion.Panel>
-          <HStack justify="space-between">
-            <Text>Placement</Text>
+          <div className="flex items-center gap-2 justify-between">
+            <p>Placement</p>
             <BasicSelect
               size="sm"
               value={theme?.placement}
@@ -59,7 +58,7 @@ export const ThemeSettings = ({
               ]}
               onChange={updatePlacement}
             />
-          </HStack>
+          </div>
           <ButtonThemeSettings
             buttonTheme={theme?.button}
             onChange={updateButtonTheme}

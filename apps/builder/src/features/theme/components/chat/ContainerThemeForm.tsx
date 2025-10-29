@@ -1,4 +1,3 @@
-import { Stack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import {
   borderRoundness,
@@ -71,7 +70,7 @@ export const ContainerThemeForm = <
   const shadow = theme?.shadow ?? defaultTheme?.shadow ?? "none";
 
   return (
-    <Stack spacing={4} data-testid={testId}>
+    <div className="flex flex-col gap-4" data-testid={testId}>
       <Field.Root className="flex-row">
         <Field.Label>{t("theme.sideMenu.chat.theme.background")}</Field.Label>
         <div className="flex items-center gap-2">
@@ -86,7 +85,6 @@ export const ContainerThemeForm = <
           />
         </div>
       </Field.Root>
-
       <Field.Root className="flex-row">
         <Field.Label>{t("theme.sideMenu.chat.theme.text")}</Field.Label>
         <ColorPicker
@@ -111,7 +109,6 @@ export const ContainerThemeForm = <
           />
         </Field.Root>
       )}
-
       <Accordion.Root>
         <Accordion.Item>
           <Accordion.Trigger>Border</Accordion.Trigger>
@@ -164,7 +161,7 @@ export const ContainerThemeForm = <
           </Accordion.Panel>
         </Accordion.Item>
       </Accordion.Root>
-    </Stack>
+    </div>
   );
 };
 
@@ -202,7 +199,7 @@ const BorderThemeForm = ({
   const thickness = border?.thickness ?? defaultBorder?.thickness ?? 0;
 
   return (
-    <Stack>
+    <div className="flex flex-col gap-2">
       <Field.Root className="flex-row">
         <Field.Label>Roundness:</Field.Label>
         <div className="flex items-center gap-2">
@@ -227,7 +224,6 @@ const BorderThemeForm = ({
           )}
         </div>
       </Field.Root>
-
       <Field.Root className="flex-row">
         <Field.Label>Thickness:</Field.Label>
         <BasicNumberInput
@@ -238,7 +234,6 @@ const BorderThemeForm = ({
         />
         <p>px</p>
       </Field.Root>
-
       {thickness > 0 && (
         <>
           <Field.Root className="flex-row">
@@ -261,6 +256,6 @@ const BorderThemeForm = ({
           </Field.Root>
         </>
       )}
-    </Stack>
+    </div>
   );
 };

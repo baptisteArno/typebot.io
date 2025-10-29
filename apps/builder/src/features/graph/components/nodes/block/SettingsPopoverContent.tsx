@@ -1,4 +1,3 @@
-import { Flex, SlideFade, Stack, useEventListener } from "@chakra-ui/react";
 import type { BlockWithOptions } from "@typebot.io/blocks-core/schemas/schema";
 import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
 import { IntegrationBlockType } from "@typebot.io/blocks-integrations/constants";
@@ -45,6 +44,7 @@ import { ReplyEventSettings } from "@/features/events/components/ReplyEventSetti
 import { useForgedBlock } from "@/features/forge/hooks/useForgedBlock";
 import { VideoOnboardingPopover } from "@/features/onboarding/components/VideoOnboardingPopover";
 import { hasOnboardingVideo } from "@/features/onboarding/helpers/hasOnboardingVideo";
+import { useEventListener } from "@/hooks/useEventListener";
 import { ForgedBlockSettings } from "../../../../forge/components/ForgedBlockSettings";
 import { SettingsHoverBar } from "./SettingsHoverBar";
 
@@ -70,7 +70,7 @@ export const SettingsPopoverContent = (props: Props) => {
   const handleMouseWheel = (e: WheelEvent) => {
     e.stopPropagation();
   };
-  useEventListener("wheel", handleMouseWheel, ref.current);
+  useEventListener("wheel", handleMouseWheel, ref);
 
   return (
     <Popover.Popup
@@ -93,18 +93,11 @@ export const SettingsPopoverContent = (props: Props) => {
         offset={20}
       >
         {({ onToggle }) => (
-          <Stack spacing={3}>
-            <Flex
-              w="full"
-              pos="absolute"
-              top="-50px"
-              height="50px"
-              right={0}
-              justifyContent="flex-end"
-              align="center"
-            >
-              <SlideFade in={isHovering} unmountOnExit>
+          <div className="flex flex-col gap-3">
+            <div className="flex w-full absolute h-[50px] justify-end items-center top-[-50px] right-0">
+              {isHovering && (
                 <SettingsHoverBar
+                  className="animate-in fade-in-0 slide-in-from-bottom-2"
                   isExpanded={props.isExpanded}
                   onExpandClick={props.onExpandClick}
                   onVideoOnboardingClick={onToggle}
@@ -115,10 +108,10 @@ export const SettingsPopoverContent = (props: Props) => {
                     blockDef,
                   })}
                 />
-              </SlideFade>
-            </Flex>
+              )}
+            </div>
             <NodeSettings {...props} />
-          </Stack>
+          </div>
         )}
       </VideoOnboardingPopover>
     </Popover.Popup>

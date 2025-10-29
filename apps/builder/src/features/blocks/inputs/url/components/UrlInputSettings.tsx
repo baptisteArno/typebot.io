@@ -1,4 +1,3 @@
-import { Stack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { defaultUrlInputOptions } from "@typebot.io/blocks-inputs/url/constants";
 import type { UrlInputBlock } from "@typebot.io/blocks-inputs/url/schema";
@@ -27,7 +26,7 @@ export const UrlInputSettings = ({ options, onOptionsChange }: Props) => {
     onOptionsChange({ ...options, retryMessageContent });
 
   return (
-    <Stack spacing={4}>
+    <div className="flex flex-col gap-4">
       <Field.Root>
         <Field.Label>
           {t("blocks.inputs.settings.placeholder.label")}
@@ -70,6 +69,6 @@ export const UrlInputSettings = ({ options, onOptionsChange }: Props) => {
           onSelectVariable={handleVariableChange}
         />
       </Field.Root>
-    </Stack>
+    </div>
   );
 };

@@ -1,4 +1,3 @@
-import { HStack, Text } from "@chakra-ui/react";
 import type { ResultHeaderCell } from "@typebot.io/results/schemas/results";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Popover } from "@typebot.io/ui/components/Popover";
@@ -84,10 +83,10 @@ const TableSettingsMenu = ({
             variant="ghost"
             className="rounded-b-none justify-between"
           >
-            <HStack>
+            <div className="flex items-center gap-2">
               <LeftToRightListBulletIcon />
-              <Text>Column settings</Text>
-            </HStack>
+              <p>Column settings</p>
+            </div>
             <ArrowRight01Icon />
           </Button>
           <Button
@@ -95,10 +94,10 @@ const TableSettingsMenu = ({
             variant="ghost"
             className="rounded-t-none justify-between"
           >
-            <HStack>
+            <div className="flex items-center gap-2">
               <Download01Icon />
-              <Text>Export all</Text>
-            </HStack>
+              <p>Export all</p>
+            </div>
           </Button>
         </div>
       );

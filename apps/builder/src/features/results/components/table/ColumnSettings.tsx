@@ -1,4 +1,3 @@
-import { Flex, HStack, Stack, Text } from "@chakra-ui/react";
 import {
   closestCenter,
   DndContext,
@@ -23,6 +22,7 @@ import { Button } from "@typebot.io/ui/components/Button";
 import { DragDropVerticalIcon } from "@typebot.io/ui/icons/DragDropVerticalIcon";
 import { ViewIcon } from "@typebot.io/ui/icons/ViewIcon";
 import { ViewOffSlashIcon } from "@typebot.io/ui/icons/ViewOffSlashIcon";
+import { cx } from "@typebot.io/ui/lib/cva";
 import { useState } from "react";
 import { Portal } from "@/components/Portal";
 import { HeaderIcon } from "../HeaderIcon";
@@ -80,10 +80,8 @@ export const ColumnSettings = ({
   };
 
   return (
-    <Stack>
-      <Text fontWeight="medium" fontSize="sm">
-        Shown in table:
-      </Text>
+    <div className="flex flex-col gap-2">
+      <p className="font-medium text-sm">Shown in table:</p>
       <DndContext
         sensors={sensors}
         collisionDetection={closestCenter}
@@ -105,11 +103,11 @@ export const ColumnSettings = ({
         </SortableContext>
         <Portal>
           <DragOverlay dropAnimation={{ duration: 0 }}>
-            {draggingColumnId ? <Flex /> : null}
+            {draggingColumnId ? <div className="flex" /> : null}
           </DragOverlay>
         </Portal>
       </DndContext>
-    </Stack>
+    </div>
   );
 };
 
@@ -141,14 +139,16 @@ const SortableColumns = ({
   );
 
   return (
-    <Flex
-      justify="space-between"
+    <div
+      className={cx(
+        "flex justify-between",
+        isDragging || isHidden ? "opacity-50" : "opacity-100",
+      )}
       ref={setNodeRef}
       style={style}
-      opacity={isDragging || isHidden ? 0.5 : 1}
       {...attributes}
     >
-      <HStack overflow="hidden">
+      <div className="flex items-center gap-2 overflow-hidden">
         <Button
           size="icon"
           className="cursor-grab size-7"
@@ -159,8 +159,8 @@ const SortableColumns = ({
           <DragDropVerticalIcon />
         </Button>
         <HeaderIcon header={header} />
-        <Text noOfLines={1}>{header.label}</Text>
-      </HStack>
+        <p className="truncate">{header.label}</p>
+      </div>
       <Button
         size="icon"
         aria-label={"Hide column"}
@@ -170,6 +170,6 @@ const SortableColumns = ({
       >
         {isHidden ? <ViewOffSlashIcon /> : <ViewIcon />}
       </Button>
-    </Flex>
+    </div>
   );
 };

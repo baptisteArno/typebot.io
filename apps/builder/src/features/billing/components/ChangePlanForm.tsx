@@ -1,4 +1,3 @@
-import { HStack, Stack, Text } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
 import { Plan } from "@typebot.io/prisma/enum";
@@ -89,22 +88,22 @@ export const ChangePlanForm = ({
 
   if (currentUserMode !== "write")
     return (
-      <Text>
+      <p>
         Only workspace admins can change the subscription plan. Contact your
         workspace admin to change the plan.
-      </Text>
+      </p>
     );
 
   return (
-    <Stack spacing={6}>
+    <div className="flex flex-col gap-6">
       <div className="flex items-center gap-3 max-w-[500px]">
         <Leaf01Icon className="size-7" />
-        <Text fontSize="xs" color="gray.500">
+        <p className="text-xs" color="gray.500">
           {t("billing.contribution.preLink")}{" "}
           <TextLink href="https://climate.stripe.com/5VCRAq" isExternal>
             {t("billing.contribution.link")}
           </TextLink>
-        </Text>
+        </p>
       </div>
       {!workspace.stripeId && (
         <PreCheckoutDialog
@@ -115,8 +114,8 @@ export const ChangePlanForm = ({
         />
       )}
       {data && (
-        <Stack align="flex-end" spacing={6}>
-          <HStack alignItems="stretch" spacing="4" w="full">
+        <div className="flex flex-col items-end gap-6">
+          <div className="flex items-center items-stretch gap-4 w-full">
             {excludedPlans?.includes("STARTER") ? null : (
               <StarterPlanPricingCard
                 currentPlan={workspace.plan}
@@ -134,16 +133,15 @@ export const ChangePlanForm = ({
                 currency={data.subscription?.currency}
               />
             )}
-          </HStack>
-        </Stack>
+          </div>
+        </div>
       )}
-
-      <Text color="gray.500">
+      <p color="gray.500">
         {t("billing.customLimit.preLink")}{" "}
         <TextLink href={"https://typebot.io/enterprise-lead-form"} isExternal>
           {t("billing.customLimit.link")}
         </TextLink>
-      </Text>
-    </Stack>
+      </p>
+    </div>
   );
 };

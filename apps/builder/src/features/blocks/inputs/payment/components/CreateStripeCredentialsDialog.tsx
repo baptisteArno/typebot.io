@@ -1,4 +1,3 @@
-import { Text } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
 import type { StripeCredentials } from "@typebot.io/credentials/schemas";
@@ -175,15 +174,13 @@ export const CreateStripeCredentialsDialogBody = ({
           />
         </div>
       </Field.Root>
-
-      <Text>
+      <p>
         ({t("blocks.inputs.payment.settings.stripeConfig.findKeys.label")}{" "}
         <TextLink href="https://dashboard.stripe.com/apikeys" isExternal>
           {t("blocks.inputs.payment.settings.stripeConfig.findKeys.here.label")}
         </TextLink>
         )
-      </Text>
-
+      </p>
       <Dialog.Footer>
         <Button
           type="submit"

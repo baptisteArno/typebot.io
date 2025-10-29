@@ -1,4 +1,3 @@
-import { Flex, HStack, Text, useColorModeValue } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import { Badge } from "@typebot.io/ui/components/Badge";
 import { useRouter } from "next/router";
@@ -28,7 +27,6 @@ export const ResultsPage = () => {
     () => router.pathname.endsWith("analytics"),
     [router.pathname],
   );
-  const bgColor = useColorModeValue("white", "gray.950");
   const [timeFilter, setTimeFilter] = useQueryState<
     (typeof timeFilterValues)[number]
   >("timeFilter", {
@@ -59,7 +57,7 @@ export const ResultsPage = () => {
   };
 
   return (
-    <Flex overflow="hidden" h="100vh" flexDir="column">
+    <div className="flex overflow-hidden h-screen flex-col">
       <Seo
         title={
           router.pathname.endsWith("analytics")
@@ -72,15 +70,9 @@ export const ResultsPage = () => {
         }
       />
       <TypebotHeader />
-      <Flex h="full" w="full" bgColor={bgColor}>
-        <Flex
-          pos="absolute"
-          w="full"
-          justifyContent="center"
-          h="60px"
-          display={["none", "flex"]}
-        >
-          <HStack maxW="1600px" w="full" px="4">
+      <div className="flex h-full w-full bg-gray-1">
+        <div className="absolute w-full justify-center h-[60px] hidden sm:flex">
+          <div className="flex items-center gap-2 max-w-[1600px] w-full px-4">
             <ButtonLink
               variant={!isAnalytics ? "outline" : "ghost"}
               size="sm"
@@ -95,7 +87,7 @@ export const ResultsPage = () => {
                 },
               }}
             >
-              <Text>Submissions</Text>
+              <p>Submissions</p>
               {(stats?.totalStarts ?? 0) > 0 && (
                 <Badge colorScheme="orange" className="ml-1">
                   {stats?.totalStarts}
@@ -118,9 +110,9 @@ export const ResultsPage = () => {
             >
               Analytics
             </ButtonLink>
-          </HStack>
-        </Flex>
-        <Flex pt={["10px", "60px"]} w="full" justify="center">
+          </div>
+        </div>
+        <div className="flex w-full justify-center pt-[10px] sm:pt-[60px]">
           {workspace &&
             publishedTypebot &&
             (isAnalytics ? (
@@ -142,8 +134,8 @@ export const ResultsPage = () => {
                 />
               </ResultsProvider>
             ))}
-        </Flex>
-      </Flex>
-    </Flex>
+        </div>
+      </div>
+    </div>
   );
 };

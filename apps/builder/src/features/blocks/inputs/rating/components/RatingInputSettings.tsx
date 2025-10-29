@@ -1,4 +1,3 @@
-import { Stack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { defaultRatingInputOptions } from "@typebot.io/blocks-inputs/rating/constants";
 import type { RatingInputBlock } from "@typebot.io/blocks-inputs/rating/schema";
@@ -64,7 +63,7 @@ export const RatingInputSettings = ({ options, onOptionsChange }: Props) => {
   const buttonType =
     options?.buttonType ?? defaultRatingInputOptions.buttonType;
   return (
-    <Stack spacing={4}>
+    <div className="flex flex-col gap-4">
       <Field.Root>
         <Field.Label>
           {t("blocks.inputs.rating.settings.maximum.label")}
@@ -76,7 +75,6 @@ export const RatingInputSettings = ({ options, onOptionsChange }: Props) => {
           items={["3", "4", "5", "6", "7", "8", "9", "10"]}
         />
       </Field.Root>
-
       <Field.Root>
         <Field.Label>
           {t("blocks.inputs.rating.settings.type.label")}
@@ -87,7 +85,6 @@ export const RatingInputSettings = ({ options, onOptionsChange }: Props) => {
           onChange={handleTypeChange}
         />
       </Field.Root>
-
       {buttonType === "Numbers" && (
         <Field.Root className="flex-row">
           <Field.Label>Starts at</Field.Label>
@@ -99,7 +96,6 @@ export const RatingInputSettings = ({ options, onOptionsChange }: Props) => {
           />
         </Field.Root>
       )}
-
       {buttonType === "Icons" && (
         <Field.Root className="flex-row items-center">
           <Switch
@@ -186,6 +182,6 @@ export const RatingInputSettings = ({ options, onOptionsChange }: Props) => {
           onSelectVariable={handleVariableChange}
         />
       </Field.Root>
-    </Stack>
+    </div>
   );
 };

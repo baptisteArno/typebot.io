@@ -1,5 +1,5 @@
-import { Stack, Text } from "@chakra-ui/react";
 import type { OpenAIBlock } from "@typebot.io/blocks-integrations/openai/schema";
+import { cx } from "@typebot.io/ui/lib/cva";
 import { SetVariableLabel } from "@/components/SetVariableLabel";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 
@@ -11,10 +11,15 @@ export const OpenAINodeBody = ({ options }: Props) => {
   const { typebot } = useTypebot();
 
   return (
-    <Stack>
-      <Text color={options?.task ? "currentcolor" : "gray.500"} noOfLines={1}>
+    <div className="flex flex-col gap-2">
+      <p
+        className={cx(
+          "truncate",
+          options?.task ? "text-gray-12" : "text-gray-9",
+        )}
+      >
         {options?.task ?? "Configure..."}
-      </Text>
+      </p>
       {typebot &&
         options &&
         "responseMapping" in options &&
@@ -38,6 +43,6 @@ export const OpenAINodeBody = ({ options }: Props) => {
             variableId={options.saveUrlInVariableId}
           />
         )}
-    </Stack>
+    </div>
   );
 };

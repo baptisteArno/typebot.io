@@ -1,4 +1,3 @@
-import { HStack, useColorModeValue } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import type { BlockWithOptions } from "@typebot.io/blocks-core/schemas/schema";
 import type { TEventWithOptions } from "@typebot.io/events/schemas";
@@ -13,6 +12,7 @@ import { ButtonLink } from "@/components/ButtonLink";
 import { getHelpDocUrl } from "@/features/graph/helpers/getHelpDocUrl";
 
 type Props = {
+  className?: string;
   nodeType: BlockWithOptions["type"] | TEventWithOptions["type"];
   blockDef?: (typeof forgedBlocks)[keyof typeof forgedBlocks];
   isVideoOnboardingItemDisplayed: boolean;
@@ -22,6 +22,7 @@ type Props = {
 };
 
 export const SettingsHoverBar = ({
+  className,
   nodeType,
   blockDef,
   isVideoOnboardingItemDisplayed,
@@ -32,12 +33,11 @@ export const SettingsHoverBar = ({
   const { t } = useTranslate();
   const helpDocUrl = getHelpDocUrl(nodeType, blockDef);
   return (
-    <HStack
-      rounded="md"
-      spacing={0}
-      borderWidth="1px"
-      bgColor={useColorModeValue("white", "gray.900")}
-      shadow="md"
+    <div
+      className={cn(
+        "flex items-center rounded-md gap-0 border shadow-md bg-gray-1",
+        className,
+      )}
     >
       <Button
         className="size-6 border-r border-l-0 rounded-r-none [&_svg]:size-3"
@@ -75,6 +75,6 @@ export const SettingsHoverBar = ({
           <VideoAiIcon />
         </Button>
       )}
-    </HStack>
+    </div>
   );
 };

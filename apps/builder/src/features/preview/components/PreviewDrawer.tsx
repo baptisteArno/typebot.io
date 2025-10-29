@@ -1,4 +1,3 @@
-import { Flex, HStack, useColorModeValue, VStack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { reload } from "@typebot.io/react";
 import { Button } from "@typebot.io/ui/components/Button";
@@ -62,34 +61,24 @@ export const PreviewDrawer = () => {
   };
 
   return (
-    <Flex
-      pos="absolute"
-      right="0"
-      top={`0`}
-      h={`100%`}
-      bgColor={useColorModeValue("white", "gray.950")}
-      borderLeftWidth={"1px"}
-      shadow="md"
-      borderLeftRadius={"lg"}
+    <div
+      className="flex absolute border-l shadow-md p-6 right-0 top-0 h-full bg-gray-1 rounded-l-lg z-10"
       onMouseOver={() => setIsResizeHandleVisible(true)}
       onMouseLeave={() => setIsResizeHandleVisible(false)}
-      p="6"
-      zIndex={10}
+      onFocus={() => setIsResizeHandleVisible(true)}
+      onBlur={() => setIsResizeHandleVisible(false)}
       style={{ width: `${width}px` }}
     >
       {isResizeHandleVisible && (
         <ResizeHandle
           {...useResizeHandleDrag()}
-          className="animate-in fade-in-0"
-          pos="absolute"
-          left="-7.5px"
-          top={`calc(50% - ${headerHeight}px)`}
+          className="animate-in fade-in-0 absolute left-[-7.5px]"
+          style={{ top: `calc(50% - ${headerHeight}px)` }}
         />
       )}
-
-      <VStack w="full" spacing={4}>
-        <HStack justifyContent={"space-between"} w="full">
-          <HStack>
+      <div className="flex flex-col items-center w-full gap-4">
+        <div className="flex items-center gap-2 justify-between w-full">
+          <div className="flex items-center gap-2">
             <RuntimeMenu
               selectedRuntime={selectedRuntime}
               onSelectRuntime={setPreviewRuntimeAndSaveIntoLocalStorage}
@@ -103,14 +92,14 @@ export const PreviewDrawer = () => {
                 {t("preview.restartButton.label")}
               </Button>
             ) : null}
-          </HStack>
+          </div>
 
           <Button onClick={handleCloseClick} variant="secondary" size="icon">
             <Cancel01Icon />
           </Button>
-        </HStack>
+        </div>
         <PreviewDrawerBody runtime={selectedRuntime.name} />
-      </VStack>
-    </Flex>
+      </div>
+    </div>
   );
 };

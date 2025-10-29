@@ -1,4 +1,3 @@
-import type { FlexProps } from "@chakra-ui/react";
 import { env } from "@typebot.io/env";
 import parserHtml from "prettier/parser-html";
 import prettier from "prettier/standalone";
@@ -9,9 +8,14 @@ type Props = {
   widthLabel: string;
   heightLabel: string;
   onCopied?: () => void;
-} & FlexProps;
+  className?: string;
+};
 
-export const IframeSnippet = ({ widthLabel, heightLabel }: Props) => {
+export const IframeSnippet = ({
+  widthLabel,
+  heightLabel,
+  className,
+}: Props) => {
   const { typebot } = useTypebot();
   const src = `${env.NEXT_PUBLIC_VIEWER_URL[0]}/${typebot?.publicId}`;
   const code = prettier.format(
@@ -19,5 +23,7 @@ export const IframeSnippet = ({ widthLabel, heightLabel }: Props) => {
     { parser: "html", plugins: [parserHtml] },
   );
 
-  return <CodeEditor value={code} lang="html" isReadOnly />;
+  return (
+    <CodeEditor value={code} lang="html" isReadOnly className={className} />
+  );
 };

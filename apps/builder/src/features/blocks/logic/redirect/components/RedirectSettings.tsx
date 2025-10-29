@@ -1,4 +1,3 @@
-import { Stack } from "@chakra-ui/react";
 import { defaultRedirectOptions } from "@typebot.io/blocks-logic/redirect/constants";
 import type { RedirectBlock } from "@typebot.io/blocks-logic/redirect/schema";
 import { Field } from "@typebot.io/ui/components/Field";
@@ -18,7 +17,7 @@ export const RedirectSettings = ({ options, onOptionsChange }: Props) => {
     onOptionsChange({ ...options, isNewTab });
 
   return (
-    <Stack spacing={4}>
+    <div className="flex flex-col gap-4">
       <Field.Root>
         <Field.Label>Url:</Field.Label>
         <DebouncedTextInputWithVariablesButton
@@ -34,6 +33,6 @@ export const RedirectSettings = ({ options, onOptionsChange }: Props) => {
         />
         <Field.Label>Open in new tab</Field.Label>
       </Field.Root>
-    </Stack>
+    </div>
   );
 };

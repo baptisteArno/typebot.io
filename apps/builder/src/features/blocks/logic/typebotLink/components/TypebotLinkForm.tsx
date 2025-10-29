@@ -1,4 +1,3 @@
-import { Stack } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import { defaultTypebotLinkOptions } from "@typebot.io/blocks-logic/typebotLink/constants";
 import type { TypebotLinkBlock } from "@typebot.io/blocks-logic/typebotLink/schema";
@@ -46,7 +45,7 @@ export const TypebotLinkForm = ({ options, onOptionsChange }: Props) => {
     options?.typebotId === "current";
 
   return (
-    <Stack>
+    <div className="flex flex-col gap-2">
       {typebot && (
         <TypebotsDropdown
           idsToExclude={[typebot.id]}
@@ -90,6 +89,6 @@ export const TypebotLinkForm = ({ options, onOptionsChange }: Props) => {
           </Field.Label>
         </Field.Root>
       )}
-    </Stack>
+    </div>
   );
 };

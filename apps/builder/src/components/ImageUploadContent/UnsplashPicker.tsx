@@ -1,21 +1,13 @@
-import {
-  Box,
-  Flex,
-  Grid,
-  GridItem,
-  HStack,
-  Stack,
-  Text,
-  useColorModeValue,
-} from "@chakra-ui/react";
 import { env } from "@typebot.io/env";
 import { isDefined } from "@typebot.io/lib/utils";
 import { Alert } from "@typebot.io/ui/components/Alert";
 import { LoaderCircleIcon } from "@typebot.io/ui/icons/LoaderCircleIcon";
 import { TriangleAlertIcon } from "@typebot.io/ui/icons/TriangleAlertIcon";
+import { cx } from "@typebot.io/ui/lib/cva";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createApi } from "unsplash-js";
 import type { Basic as UnsplashPhoto } from "unsplash-js/dist/methods/photos/types";
+import { useThemeValue } from "@/hooks/useThemeValue";
 import { DebouncedTextInput } from "../inputs/DebouncedTextInput";
 import { UnsplashLogo } from "../logos/UnsplashLogo";
 import { TextLink } from "../TextLink";
@@ -30,7 +22,7 @@ type Props = {
 };
 
 export const UnsplashPicker = ({ imageSize, onImageSelect }: Props) => {
-  const unsplashLogoFillColor = useColorModeValue("black", "white");
+  const unsplashLogoFillColor = useThemeValue("black", "white");
   const [isFetching, setIsFetching] = useState(false);
   const [images, setImages] = useState<UnsplashPhoto[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -123,13 +115,11 @@ export const UnsplashPicker = ({ imageSize, onImageSelect }: Props) => {
   }, []);
 
   if (!env.NEXT_PUBLIC_UNSPLASH_ACCESS_KEY)
-    return (
-      <Text>NEXT_PUBLIC_UNSPLASH_ACCESS_KEY is missing in environment</Text>
-    );
+    return <p>NEXT_PUBLIC_UNSPLASH_ACCESS_KEY is missing in environment</p>;
 
   return (
-    <Stack spacing={4} pt="2">
-      <HStack align="center">
+    <div className="flex flex-col gap-4 pt-2">
+      <div className="flex items-center gap-2">
         <DebouncedTextInput
           autoFocus
           placeholder="Search..."
@@ -146,39 +136,40 @@ export const UnsplashPicker = ({ imageSize, onImageSelect }: Props) => {
         >
           <UnsplashLogo width="80px" fill={unsplashLogoFillColor} />
         </a>
-      </HStack>
+      </div>
       {isDefined(error) && (
         <Alert.Root variant="error">
           <TriangleAlertIcon />
           <Alert.Description>{error}</Alert.Description>
         </Alert.Root>
       )}
-      <Stack overflowY="auto" maxH="400px" ref={scrollContainer}>
+      <div
+        className="flex flex-col gap-2 overflow-y-auto max-h-[400px]"
+        ref={scrollContainer}
+      >
         {images.length > 0 && (
-          <Grid templateColumns="repeat(3, 1fr)" columnGap={2} rowGap={3}>
+          <div className="grid grid-cols-[repeat(3,1fr)] gap-2 gap-y-3">
             {images.map((image, index) => (
-              <GridItem
-                as={Stack}
+              <div
+                className="flex flex-col size-full"
                 key={image.id}
-                boxSize="100%"
-                spacing="0"
                 ref={index === images.length - 1 ? bottomAnchor : undefined}
               >
                 <UnsplashImage
                   image={image}
                   onClick={() => selectImage(image)}
                 />
-              </GridItem>
+              </div>
             ))}
-          </Grid>
+          </div>
         )}
         {isFetching && (
-          <Flex justifyContent="center" py="4">
+          <div className="flex justify-center py-4">
             <LoaderCircleIcon className="animate-spin" />
-          </Flex>
+          </div>
         )}
-      </Stack>
-    </Stack>
+      </div>
+    </div>
   );
 };
 
@@ -193,11 +184,10 @@ const UnsplashImage = ({ image, onClick }: UnsplashImageProps) => {
   const { user, urls, alt_description } = image;
 
   return (
-    <Box
-      pos="relative"
+    <div
+      className="relative h-full"
       onMouseEnter={() => setIsImageHovered(true)}
       onMouseLeave={() => setIsImageHovered(false)}
-      h="full"
     >
       <img
         src={urls.thumb}
@@ -205,15 +195,11 @@ const UnsplashImage = ({ image, onClick }: UnsplashImageProps) => {
         className="object-cover h-full cursor-pointer rounded-md"
         onClick={onClick}
       />
-      <Box
-        pos="absolute"
-        bottom={0}
-        left={0}
-        bgColor="rgba(0,0,0,.5)"
-        px="2"
-        rounded="md"
-        opacity={isImageHovered ? 1 : 0}
-        transition="opacity .2s ease-in-out"
+      <div
+        className={cx(
+          "absolute px-2 rounded-md bottom-0 left-0 bg-black/50 opacity-0 transition-opacity duration-200",
+          isImageHovered ? "opacity-100" : "opacity-0",
+        )}
       >
         <TextLink
           className="text-xs text-white"
@@ -222,7 +208,7 @@ const UnsplashImage = ({ image, onClick }: UnsplashImageProps) => {
         >
           {user.name}
         </TextLink>
-      </Box>
-    </Box>
+      </div>
+    </div>
   );
 };

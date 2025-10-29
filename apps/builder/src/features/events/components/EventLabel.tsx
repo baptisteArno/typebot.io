@@ -1,19 +1,15 @@
-import { Text, type TextProps } from "@chakra-ui/react";
 import { type TFnType, useTranslate } from "@tolgee/react";
 import { EventType } from "@typebot.io/events/constants";
 import type { TEvent } from "@typebot.io/events/schemas";
+import { cn } from "@typebot.io/ui/lib/cn";
 
-type Props = { type: TEvent["type"] } & TextProps;
+type Props = { type: TEvent["type"]; className?: string };
 
-export const EventLabel = ({ type, ...props }: Props): JSX.Element => {
+export const EventLabel = ({ type, className }: Props): JSX.Element => {
   const { t } = useTranslate();
   const label = getEventBlockLabel(t)[type];
 
-  return (
-    <Text fontSize="sm" {...props}>
-      {label}
-    </Text>
-  );
+  return <p className={cn("text-sm", className)}>{label}</p>;
 };
 
 export const getEventBlockLabel = (

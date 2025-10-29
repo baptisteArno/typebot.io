@@ -1,4 +1,3 @@
-import { Stack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { defaultImageBubbleContent } from "@typebot.io/blocks-bubbles/image/constants";
 import type { ImageBubbleBlock } from "@typebot.io/blocks-bubbles/image/schema";
@@ -52,7 +51,7 @@ export const ImageBubbleSettings = ({
   };
 
   return (
-    <Stack spacing={4}>
+    <div className="flex flex-col gap-4">
       <ImageUploadContent
         uploadFileProps={uploadFileProps}
         defaultUrl={block.content?.url}
@@ -63,7 +62,7 @@ export const ImageBubbleSettings = ({
           icon: true,
         }}
       />
-      <Stack>
+      <div className="flex flex-col gap-2">
         <Field.Root className="flex-row items-center">
           <Switch
             checked={showClickLinkInput}
@@ -93,7 +92,7 @@ export const ImageBubbleSettings = ({
             />
           </>
         )}
-      </Stack>
-    </Stack>
+      </div>
+    </div>
   );
 };

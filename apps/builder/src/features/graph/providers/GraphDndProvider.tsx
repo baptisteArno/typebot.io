@@ -21,7 +21,7 @@ import type { Coordinates } from "../types";
 
 type NodeElement = {
   id: string;
-  element: HTMLDivElement;
+  ref: React.RefObject<HTMLElement>;
 };
 
 export type BlockWithCreatableItems = Exclude<

@@ -1,4 +1,3 @@
-import { Flex, Stack, useColorModeValue } from "@chakra-ui/react";
 import type {
   Item,
   ItemIndices,
@@ -8,6 +7,7 @@ import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
 import { LogicBlockType } from "@typebot.io/blocks-logic/constants";
 import { isDefined } from "@typebot.io/lib/utils";
 import { ContextMenu } from "@typebot.io/ui/components/ContextMenu";
+import { cx } from "@typebot.io/ui/lib/cva";
 import { useRouter } from "next/router";
 import { useRef, useState } from "react";
 import { ConditionContent } from "@/features/blocks/logic/condition/components/ConditionContent";
@@ -41,9 +41,6 @@ export const ItemNode = ({
   onMouseDown,
   connectionDisabled,
 }: Props) => {
-  const previewingBorderColor = useColorModeValue("orange.400", "orange.300");
-  const borderColor = useColorModeValue("gray.200", "gray.700");
-  const bg = useColorModeValue("white", "gray.900");
   const { typebot } = useTypebot();
   const { previewingEdge } = useGraph();
   const { pathname } = useRouter();
@@ -83,11 +80,10 @@ export const ItemNode = ({
   return (
     <ContextMenu.Root onOpenChange={setIsContextMenuOpened}>
       <ContextMenu.Trigger>
-        <Stack
+        <div
+          className="flex flex-col gap-2 relative w-full"
           data-testid="item"
-          pos="relative"
           ref={itemRef}
-          w="full"
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
@@ -99,18 +95,13 @@ export const ItemNode = ({
               displaySemicolon
             />
           )}
-          <Flex
-            align="center"
-            transition="box-shadow 200ms, border-color 200ms"
-            rounded="md"
-            bg={bg}
-            borderWidth={1}
-            borderColor={
+          <div
+            className={cx(
+              "flex items-center rounded-md border w-full transition-all bg-gray-1",
               isContextMenuOpened || isPreviewing
-                ? previewingBorderColor
-                : borderColor
-            }
-            w="full"
+                ? "border-orange-8"
+                : undefined,
+            )}
           >
             {groupId && (
               <ItemNodeContent
@@ -131,15 +122,12 @@ export const ItemNode = ({
                     itemId: item.id,
                   }}
                   groupId={groupId}
-                  pos="absolute"
-                  right="-49px"
-                  bottom="9px"
-                  pointerEvents="all"
+                  className="absolute right-[-49px] bottom-[9px] pointer-events-[all]"
                   isHidden={!isConnectable}
                 />
               )}
-          </Flex>
-        </Stack>
+          </div>
+        </div>
       </ContextMenu.Trigger>
       <ItemNodeContextMenuPopup indices={indices} />
     </ContextMenu.Root>

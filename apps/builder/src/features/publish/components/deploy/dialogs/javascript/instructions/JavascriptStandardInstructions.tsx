@@ -1,4 +1,3 @@
-import { Code, Stack, Text } from "@chakra-ui/react";
 import { useState } from "react";
 import { StandardSettings } from "../../../settings/StandardSettings";
 import { JavascriptStandardSnippet } from "../JavascriptStandardSnippet";
@@ -13,14 +12,14 @@ export const JavascriptStandardInstructions = () => {
   });
 
   return (
-    <Stack spacing={4}>
+    <div className="flex flex-col gap-4">
       <StandardSettings
         onUpdateWindowSettings={(settings) => setInputValues({ ...settings })}
       />
-      <Text>
-        Paste this anywhere in the <Code>{"<body>"}</Code>:
-      </Text>
+      <p>
+        Paste this anywhere in the <code>{"<body>"}</code>:
+      </p>
       <JavascriptStandardSnippet {...inputValues} />
-    </Stack>
+    </div>
   );
 };

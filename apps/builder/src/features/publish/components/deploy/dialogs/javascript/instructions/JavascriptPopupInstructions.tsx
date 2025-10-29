@@ -1,4 +1,3 @@
-import { Code, Stack, Text } from "@chakra-ui/react";
 import { useState } from "react";
 import { PopupSettings } from "../../../settings/PopupSettings";
 import { JavascriptPopupSnippet } from "../JavascriptPopupSnippet";
@@ -7,14 +6,14 @@ export const JavascriptPopupInstructions = () => {
   const [inputValue, setInputValue] = useState<number>();
 
   return (
-    <Stack spacing={4}>
+    <div className="flex flex-col gap-4">
       <PopupSettings
         onUpdateSettings={(settings) => setInputValue(settings.autoShowDelay)}
       />
-      <Text>
-        Paste this anywhere in the <Code>{"<body>"}</Code>:
-      </Text>
+      <p>
+        Paste this anywhere in the <code>{"<body>"}</code>:
+      </p>
       <JavascriptPopupSnippet autoShowDelay={inputValue} />
-    </Stack>
+    </div>
   );
 };

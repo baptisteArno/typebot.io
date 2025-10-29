@@ -1,4 +1,3 @@
-import { Box, Center, SimpleGrid, Stack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import {
   type ButtonProps,
@@ -64,7 +63,10 @@ export const ColorPicker = ({
         className="min-w-0 rounded-md border-1"
         disabled={isDisabled}
       >
-        <Box rounded="full" boxSize="14px" bgColor={displayedValue} />
+        <div
+          className="rounded-full size-[14px]"
+          style={{ backgroundColor: displayedValue }}
+        />
       </Popover.TriggerButton>
       <Popover.Popup className="p-0 max-w-48" side={side}>
         <div
@@ -74,10 +76,12 @@ export const ColorPicker = ({
             color: tinyColor(displayedValue).isLight() ? "gray.900" : "white",
           }}
         >
-          <Center height="100%">{displayedValue}</Center>
+          <div className="flex items-center justify-center h-full">
+            {displayedValue}
+          </div>
         </div>
-        <Stack p="2">
-          <SimpleGrid columns={5} spacing={2}>
+        <div className="flex flex-col gap-2 p-2">
+          <div className="grid gap-2 grid-cols-[repeat(5,1fr)]">
             {colorsSelection.map((color) => (
               <button
                 key={color}
@@ -92,7 +96,7 @@ export const ColorPicker = ({
                 onClick={handleClick(color)}
               />
             ))}
-          </SimpleGrid>
+          </div>
           <Input
             className="rounded-sm mt-3"
             placeholder="#2a9d8f"
@@ -108,7 +112,7 @@ export const ColorPicker = ({
           >
             {t("colorPicker.advancedColors")}
           </NativeColorPicker>
-        </Stack>
+        </div>
       </Popover.Popup>
     </Popover.Root>
   );

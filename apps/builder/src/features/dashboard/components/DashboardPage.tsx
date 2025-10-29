@@ -1,4 +1,3 @@
-import { Stack, Text, VStack } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
 import type { Plan } from "@typebot.io/prisma/enum";
@@ -57,7 +56,7 @@ export const DashboardPage = () => {
   }, [createCustomCheckoutSession, router.query, user, workspace]);
 
   return (
-    <Stack minH="100vh">
+    <div className="flex flex-col gap-2 min-h-[100vh]">
       <Seo title={workspace?.name ?? t("dashboard.title")} />
       <DashboardHeader />
       {!workspace?.stripeId && (
@@ -70,14 +69,14 @@ export const DashboardPage = () => {
       )}
       <TypebotDndProvider>
         {isLoading ? (
-          <VStack w="full" justifyContent="center" pt="10" spacing={6}>
-            <Text>{t("dashboard.redirectionMessage")}</Text>
+          <div className="flex flex-col w-full justify-center pt-10 gap-6">
+            <p>{t("dashboard.redirectionMessage")}</p>
             <LoaderCircleIcon className="animate-spin" />
-          </VStack>
+          </div>
         ) : (
           <FolderContent folder={null} />
         )}
       </TypebotDndProvider>
-    </Stack>
+    </div>
   );
 };

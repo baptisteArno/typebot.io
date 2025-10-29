@@ -1,4 +1,3 @@
-import { HStack, Stack, Text } from "@chakra-ui/react";
 import type { PreviewMessageParams } from "@typebot.io/js";
 import { isDefined } from "@typebot.io/lib/utils";
 import { Field } from "@typebot.io/ui/components/Field";
@@ -67,7 +66,7 @@ export const PreviewMessageSettings = ({ defaultAvatar, onChange }: Props) => {
   };
 
   return (
-    <Stack spacing={4}>
+    <div className="flex flex-col gap-4">
       <Field.Root className="flex-row justify-between">
         <Field.Label>Preview message</Field.Label>
         <Switch
@@ -76,31 +75,31 @@ export const PreviewMessageSettings = ({ defaultAvatar, onChange }: Props) => {
         />
       </Field.Root>
       {isPreviewMessageEnabled && (
-        <Stack pl="4" spacing={4}>
-          <HStack justify="space-between">
-            <Text>Avatar URL</Text>
+        <div className="flex flex-col pl-4 gap-4">
+          <div className="flex items-center gap-2 justify-between">
+            <p>Avatar URL</p>
             <Input
               onValueChange={updateAvatarUrl}
               value={previewMessage?.avatarUrl}
               placeholder={"Paste image link (.png, .jpg)"}
             />
-          </HStack>
-          <HStack justify="space-between">
-            <Text>Message</Text>
+          </div>
+          <div className="flex items-center gap-2 justify-between">
+            <p>Message</p>
             <Input
               onValueChange={updateMessage}
               value={previewMessage?.message}
             />
-          </HStack>
-          <HStack>
-            <Text>Auto show</Text>
+          </div>
+          <div className="flex items-center gap-2">
+            <p>Auto show</p>
             <Switch
               checked={isAutoShowEnabled}
               onCheckedChange={updateAutoShowDelayCheck}
             />
             {isAutoShowEnabled && (
               <>
-                <Text>After</Text>
+                <p>After</p>
                 <BasicNumberInput
                   className="max-w-40"
                   defaultValue={autoShowDelay}
@@ -109,12 +108,12 @@ export const PreviewMessageSettings = ({ defaultAvatar, onChange }: Props) => {
                   }
                   withVariableButton={false}
                 />
-                <Text>seconds</Text>
+                <p>seconds</p>
               </>
             )}
-          </HStack>
-        </Stack>
+          </div>
+        </div>
       )}
-    </Stack>
+    </div>
   );
 };

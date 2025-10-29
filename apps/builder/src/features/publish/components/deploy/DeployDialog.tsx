@@ -1,4 +1,3 @@
-import { Heading, HStack } from "@chakra-ui/react";
 import { capitalize } from "@typebot.io/lib/utils";
 import { Alert } from "@typebot.io/ui/components/Alert";
 import { Button } from "@typebot.io/ui/components/Button";
@@ -31,7 +30,7 @@ export const DeployDialog = ({
   <Dialog.Root isOpen={isOpen} onClose={onClose}>
     <Dialog.Popup className="max-w-2xl">
       <Dialog.Title>
-        <HStack>
+        <div className="flex items-center gap-2">
           {selectedEmbedType && (
             <Button
               aria-label="back"
@@ -42,11 +41,9 @@ export const DeployDialog = ({
               <ArrowLeft01Icon />
             </Button>
           )}
-          <Heading size="md">
-            {titlePrefix}{" "}
-            {selectedEmbedType && `- ${capitalize(selectedEmbedType)}`}
-          </Heading>
-        </HStack>
+          {titlePrefix}{" "}
+          {selectedEmbedType && `- ${capitalize(selectedEmbedType)}`}
+        </div>
       </Dialog.Title>
       <Dialog.CloseButton />
       {!isPublished && (

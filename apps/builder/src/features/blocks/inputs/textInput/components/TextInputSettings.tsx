@@ -1,4 +1,3 @@
-import { Stack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { fileVisibilityOptions } from "@typebot.io/blocks-inputs/file/constants";
 import { defaultTextInputOptions } from "@typebot.io/blocks-inputs/text/constants";
@@ -81,7 +80,7 @@ export const TextInputSettings = ({ options, onOptionsChange }: Props) => {
     });
 
   return (
-    <Stack spacing={4}>
+    <div className="flex flex-col gap-4">
       <Field.Root className="flex-row items-center">
         <Switch
           checked={options?.isLong ?? defaultTextInputOptions.isLong}
@@ -213,6 +212,6 @@ export const TextInputSettings = ({ options, onOptionsChange }: Props) => {
           onSelectVariable={updateVariableId}
         />
       </Field.Root>
-    </Stack>
+    </div>
   );
 };

@@ -1,4 +1,3 @@
-import { Stack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { env } from "@typebot.io/env";
 import { defaultSettings } from "@typebot.io/settings/constants";
@@ -55,7 +54,7 @@ export const MetadataForm = ({
     defaultSettings.metadata.imageUrl(env.NEXT_PUBLIC_VIEWER_URL[0]);
 
   return (
-    <Stack spacing="6">
+    <div className="flex flex-col gap-6">
       <Field.Root>
         <Field.Label>{t("settings.sideMenu.metadata.icon.label")}</Field.Label>
         <Popover.Root {...favIconPopoverControls}>
@@ -174,6 +173,6 @@ export const MetadataForm = ({
           </MoreInfoTooltip>
         </Field.Label>
       </Field.Root>
-    </Stack>
+    </div>
   );
 };

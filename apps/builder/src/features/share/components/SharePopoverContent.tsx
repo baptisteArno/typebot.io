@@ -1,4 +1,3 @@
-import { Stack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { Field } from "@typebot.io/ui/components/Field";
 import { Switch } from "@typebot.io/ui/components/Switch";
@@ -28,9 +27,9 @@ export const SharePopoverContent = () => {
   };
 
   return (
-    <Stack spacing={4}>
+    <div className="flex flex-col gap-4">
       <CollaborationList />
-      <Stack p="4" borderTopWidth={1}>
+      <div className="flex flex-col gap-2 p-4 border-t">
         <Field.Container>
           <Field.Root className="flex-row items-center">
             <Switch
@@ -45,7 +44,7 @@ export const SharePopoverContent = () => {
             <CopyInput value={currentUrl} />
           )}
         </Field.Container>
-      </Stack>
-    </Stack>
+      </div>
+    </div>
   );
 };

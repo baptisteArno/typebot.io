@@ -1,4 +1,3 @@
-import { HStack, Stack, Text } from "@chakra-ui/react";
 import { isDefined } from "@typebot.io/lib/utils";
 import type { Log } from "@typebot.io/logs/schemas";
 import { Accordion } from "@typebot.io/ui/components/Accordion";
@@ -24,7 +23,7 @@ export const LogsDialog = ({ typebotId, resultId, onClose }: Props) => {
           <LogCard key={idx} log={log} />
         ))}
         {isLoading && <LoaderCircleIcon className="animate-spin" />}
-        {!isLoading && (logs ?? []).length === 0 && <Text>No logs found.</Text>}
+        {!isLoading && (logs ?? []).length === 0 && <p>No logs found.</p>}
       </Dialog.Popup>
     </Dialog.Root>
   );
@@ -36,30 +35,30 @@ const LogCard = ({ log }: { log: Log }) => {
       <Accordion.Root>
         <Accordion.Item>
           <Accordion.Trigger>
-            <HStack gap={3} alignItems="flex-start">
+            <div className="flex gap-3 items-start">
               <StatusTag status={log.status} className="flex-shrink-0 mt-0.5" />
-              <Stack>
-                <Text>
+              <div className="flex flex-col gap-2">
+                <p>
                   {log.context && (
                     <span className="font-medium">{log.context}:</span>
                   )}{" "}
                   {log.description}
-                </Text>
-              </Stack>
-            </HStack>
+                </p>
+              </div>
+            </div>
           </Accordion.Trigger>
           <Accordion.Panel>{log.details}</Accordion.Panel>
         </Accordion.Item>
       </Accordion.Root>
     );
   return (
-    <HStack p="4" gap={3} alignItems="flex-start">
+    <div className="flex p-4 gap-3 items-start">
       <StatusTag status={log.status} className="flex-shrink-0 mt-0.5" />
-      <Text>
+      <p>
         {log.context && <span className="font-medium">{log.context}:</span>}{" "}
         {log.description}
-      </Text>
-    </HStack>
+      </p>
+    </div>
   );
 };
 

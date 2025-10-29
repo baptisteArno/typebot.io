@@ -1,4 +1,3 @@
-import { Stack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { defaultPhoneInputOptions } from "@typebot.io/blocks-inputs/phone/constants";
 import type { PhoneNumberInputBlock } from "@typebot.io/blocks-inputs/phone/schema";
@@ -26,11 +25,11 @@ export const PhoneInputSettings = ({ options, onOptionsChange }: Props) => {
     onOptionsChange({ ...options, variableId: variable?.id });
   const handleRetryMessageChange = (retryMessageContent: string) =>
     onOptionsChange({ ...options, retryMessageContent });
-  const handleDefaultCountryChange = (defaultCountryCode: string) =>
+  const handleDefaultCountryChange = (defaultCountryCode: string | undefined) =>
     onOptionsChange({ ...options, defaultCountryCode });
 
   return (
-    <Stack spacing={4}>
+    <div className="flex flex-col gap-4">
       <Field.Root>
         <Field.Label>
           {t("blocks.inputs.settings.placeholder.label")}
@@ -82,6 +81,6 @@ export const PhoneInputSettings = ({ options, onOptionsChange }: Props) => {
           onSelectVariable={handleVariableChange}
         />
       </Field.Root>
-    </Stack>
+    </div>
   );
 };

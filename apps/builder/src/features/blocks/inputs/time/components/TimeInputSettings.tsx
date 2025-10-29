@@ -1,4 +1,3 @@
-import { Stack } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { defaultTimeInputOptions } from "@typebot.io/blocks-inputs/time/constants";
 import type { TimeInputBlock } from "@typebot.io/blocks-inputs/time/schema";
@@ -28,7 +27,7 @@ export const TimeInputSettings = ({ options, onOptionsChange }: Props) => {
   };
 
   return (
-    <Stack spacing={4}>
+    <div className="flex flex-col gap-4">
       <Field.Root>
         <Field.Label>
           {t("blocks.inputs.date.settings.format.label")}
@@ -61,6 +60,6 @@ export const TimeInputSettings = ({ options, onOptionsChange }: Props) => {
           onSelectVariable={handleVariableChange}
         />
       </Field.Root>
-    </Stack>
+    </div>
   );
 };

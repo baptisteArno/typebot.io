@@ -1,11 +1,8 @@
-import {
-  type BoxProps,
-  Flex,
-  useColorModeValue,
-  useEventListener,
-} from "@chakra-ui/react";
 import type { BlockSource } from "@typebot.io/typebot/schemas/edge";
+import { cn } from "@typebot.io/ui/lib/cn";
+import { cx } from "@typebot.io/ui/lib/cva";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { useEventListener } from "@/hooks/useEventListener";
 import { useEndpoints } from "../../providers/EndpointsProvider";
 import { useGraph } from "../../providers/GraphProvider";
 
@@ -15,16 +12,14 @@ export const BlockSourceEndpoint = ({
   source,
   groupId,
   isHidden,
-  ...props
-}: BoxProps & {
+  className,
+}: {
   source: BlockSource;
   groupId: string;
   isHidden?: boolean;
+  className?: string;
 }) => {
   const id = source.pathId ?? source.itemId ?? source.blockId;
-  const color = useColorModeValue("orange.200", "orange.100");
-  const connectedColor = useColorModeValue("orange.300", "orange.200");
-  const bg = useColorModeValue("white", "gray.700");
   const { setConnectingIds, previewingEdge, graphPosition } = useGraph();
   const { setSourceEndpointYOffset, deleteSourceEndpointYOffset } =
     useEndpoints();
@@ -97,7 +92,7 @@ export const BlockSourceEndpoint = ({
       e.stopPropagation();
       if (groupId) setConnectingIds({ source: { ...source, groupId } });
     },
-    ref.current,
+    ref,
   );
 
   useEventListener(
@@ -105,46 +100,33 @@ export const BlockSourceEndpoint = ({
     (e) => {
       e.stopPropagation();
     },
-    ref.current,
+    ref,
   );
 
   return (
-    <Flex
+    <div
+      className={cn(
+        "flex size-[32px] rounded-full justify-center items-center pointer-events-[all] cursor-copy",
+        isHidden ? "invisible" : "visible",
+        className,
+      )}
       ref={ref}
       data-testid="endpoint"
-      boxSize="32px"
-      rounded="full"
-      cursor="copy"
-      justify="center"
-      align="center"
-      pointerEvents="all"
-      visibility={isHidden ? "hidden" : "visible"}
-      {...props}
     >
-      <Flex
-        boxSize="20px"
-        justify="center"
-        align="center"
-        bg={bg}
-        borderWidth={1}
-        rounded="full"
-      >
-        <Flex
-          boxSize="13px"
-          rounded="full"
-          borderWidth="3.5px"
-          shadow={`sm`}
-          borderColor={
+      <div className="flex size-[20px] justify-center items-center border rounded-full bg-gray-1 border-gray-4">
+        <div
+          className={cx(
+            "flex size-[13px] rounded-full border-[3.5px] shadow-sm",
             previewingEdge &&
-            "blockId" in previewingEdge.from &&
-            previewingEdge.from.blockId === source.blockId &&
-            previewingEdge.from.itemId === source.itemId &&
-            previewingEdge.from.pathId === source.pathId
-              ? connectedColor
-              : color
-          }
+              "blockId" in previewingEdge.from &&
+              previewingEdge.from.blockId === source.blockId &&
+              previewingEdge.from.itemId === source.itemId &&
+              previewingEdge.from.pathId === source.pathId
+              ? "border-orange-8"
+              : "border-orange-5",
+          )}
         />
-      </Flex>
-    </Flex>
+      </div>
+    </div>
   );
 };

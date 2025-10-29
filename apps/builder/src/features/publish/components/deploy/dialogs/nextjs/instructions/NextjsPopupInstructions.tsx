@@ -1,4 +1,3 @@
-import { ListItem, OrderedList, Stack, Text } from "@chakra-ui/react";
 import { useState } from "react";
 import { PopupSettings } from "../../../settings/PopupSettings";
 import { InstallNextjsPackageSnippet } from "../InstallNextjsPackageSnippet";
@@ -8,23 +7,23 @@ export const NextjsPopupInstructions = () => {
   const [inputValue, setInputValue] = useState<number>();
 
   return (
-    <OrderedList spacing={4} pl={5}>
-      <ListItem>
-        <Stack spacing={4}>
-          <Text>Install the packages</Text>
+    <ol>
+      <li>
+        <div className="flex flex-col gap-4">
+          <p>Install the packages</p>
           <InstallNextjsPackageSnippet />
-        </Stack>
-      </ListItem>
-      <ListItem>
-        <Stack spacing={4}>
+        </div>
+      </li>
+      <li>
+        <div className="flex flex-col gap-4">
           <PopupSettings
             onUpdateSettings={(settings) =>
               setInputValue(settings.autoShowDelay)
             }
           />
           <NextjsPopupSnippet autoShowDelay={inputValue} />
-        </Stack>
-      </ListItem>
-    </OrderedList>
+        </div>
+      </li>
+    </ol>
   );
 };

@@ -1,4 +1,3 @@
-import { HStack, Stack, Text } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import type { PictureChoiceItem } from "@typebot.io/blocks-inputs/pictureChoice/schema";
 import { LogicalOperator } from "@typebot.io/conditions/constants";
@@ -62,11 +61,11 @@ export const PictureChoiceItemSettings = ({
     });
 
   return (
-    <Stack spacing={4}>
-      <HStack>
-        <Text fontWeight="medium">
+    <div className="flex flex-col gap-4">
+      <div className="flex items-center gap-2">
+        <p className="font-medium">
           {t("blocks.inputs.picture.itemSettings.image.label")}
-        </Text>
+        </p>
         <Popover.Root {...imageUploadPopoverControls}>
           <Popover.Trigger>
             <Button size="sm" variant="secondary">
@@ -96,7 +95,7 @@ export const PictureChoiceItemSettings = ({
             />
           </Popover.Popup>
         </Popover.Root>
-      </HStack>
+      </div>
       <Field.Root>
         <Field.Label>
           {t("blocks.inputs.picture.itemSettings.title.label")}
@@ -154,6 +153,6 @@ export const PictureChoiceItemSettings = ({
           />
         )}
       </Field.Container>
-    </Stack>
+    </div>
   );
 };

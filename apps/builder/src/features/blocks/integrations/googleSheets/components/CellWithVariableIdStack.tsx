@@ -1,4 +1,3 @@
-import { Stack } from "@chakra-ui/react";
 import type { ExtractingCell } from "@typebot.io/blocks-integrations/googleSheets/schema";
 import type { Variable } from "@typebot.io/variables/schemas";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
@@ -21,7 +20,7 @@ export const CellWithVariableIdStack = ({
   };
 
   return (
-    <Stack p="4" rounded="md" flex="1" borderWidth="1px">
+    <div className="flex flex-col gap-2 p-4 rounded-md flex-1 border">
       <BasicSelect
         value={item.column}
         onChange={handleColumnSelect}
@@ -32,6 +31,6 @@ export const CellWithVariableIdStack = ({
         initialVariableId={item.variableId}
         onSelectVariable={handleVariableIdChange}
       />
-    </Stack>
+    </div>
   );
 };

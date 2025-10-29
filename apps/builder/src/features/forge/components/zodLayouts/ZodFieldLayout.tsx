@@ -1,10 +1,10 @@
-import { Stack } from "@chakra-ui/react";
 import { evaluateIsHidden } from "@typebot.io/forge/helpers/evaluateIsHidden";
 import type { ForgedBlockDefinition } from "@typebot.io/forge-repository/definitions";
 import type { ForgedBlock } from "@typebot.io/forge-repository/schemas";
 import { Field } from "@typebot.io/ui/components/Field";
 import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
 import { Switch } from "@typebot.io/ui/components/Switch";
+import { cx } from "@typebot.io/ui/lib/cva";
 import type { ZodLayoutMetadata } from "@typebot.io/zod";
 import Markdown, { type Components } from "react-markdown";
 import type { ZodTypeAny, z } from "zod";
@@ -435,19 +435,20 @@ const ZodArrayContent = ({
   const type = schema._def.type._def.innerType?._def.typeName;
   if (type === "ZodString" || type === "ZodNumber" || type === "ZodEnum")
     return (
-      <Stack
-        spacing={0}
-        marginTop={layout?.mergeWithLastField ? "-3" : undefined}
+      <div
+        className={cx(
+          "flex flex-col gap-0",
+          layout?.mergeWithLastField ? "mt-[-3px]" : undefined,
+        )}
       >
         {layout?.label && <Field.Label>{layout.label}</Field.Label>}
-        <Stack
-          p="4"
-          rounded="md"
-          flex="1"
-          borderWidth="1px"
-          borderTopWidth={layout?.mergeWithLastField ? "0" : undefined}
-          borderTopRadius={layout?.mergeWithLastField ? "0" : undefined}
-          pt={layout?.mergeWithLastField ? "5" : undefined}
+        <div
+          className={cx(
+            "flex flex-col gap-2 p-4 rounded-md flex-1 border",
+            layout?.mergeWithLastField
+              ? "border-t-0 rounded-t-none pt-5"
+              : undefined,
+          )}
         >
           {type === "ZodString" ? (
             <TagsInput items={data} onValueChange={onDataChange} />
@@ -472,8 +473,8 @@ const ZodArrayContent = ({
               )}
             </PrimitiveList>
           )}
-        </Stack>
-      </Stack>
+        </div>
+      </div>
     );
   return (
     <TableList
@@ -485,7 +486,7 @@ const ZodArrayContent = ({
       isOrdered={layout?.isOrdered}
     >
       {({ item, onItemChange }) => (
-        <Stack p="4" rounded="md" flex="1" borderWidth="1px" maxW="100%">
+        <div className="flex flex-col gap-2 p-4 rounded-md flex-1 border max-w-[100%]">
           <ZodFieldLayout
             schema={schema._def.type}
             blockDef={blockDef}
@@ -494,7 +495,7 @@ const ZodArrayContent = ({
             isInAccordion={isInAccordion}
             onDataChange={onItemChange}
           />
-        </Stack>
+        </div>
       )}
     </TableList>
   );

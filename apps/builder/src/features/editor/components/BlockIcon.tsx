@@ -1,4 +1,3 @@
-import { useColorModeValue } from "@chakra-ui/react";
 import { BubbleBlockType } from "@typebot.io/blocks-bubbles/constants";
 import type { Block } from "@typebot.io/blocks-core/schemas/schema";
 import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
@@ -45,11 +44,12 @@ import { TypebotLinkIcon } from "@/features/blocks/logic/typebotLink/components/
 import { WaitIcon } from "@/features/blocks/logic/wait/components/WaitIcon";
 import { WebhookIcon } from "@/features/blocks/logic/webhook/components/WebhookIcon";
 import { ForgedBlockIcon } from "@/features/forge/ForgedBlockIcon";
+import { useThemeValue } from "@/hooks/useThemeValue";
 
 type BlockIconProps = { type: Block["type"]; className?: string };
 
 export const BlockIcon = ({ type, className }: BlockIconProps): JSX.Element => {
-  const openAIColor = useColorModeValue("black", "white");
+  const openAIColor = useThemeValue("black", "white");
 
   switch (type) {
     case BubbleBlockType.TEXT:

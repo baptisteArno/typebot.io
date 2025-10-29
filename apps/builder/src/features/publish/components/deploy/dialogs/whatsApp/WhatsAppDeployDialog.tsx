@@ -1,4 +1,3 @@
-import { Flex, HStack, ListItem, OrderedList, Text } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import { LogicalOperator } from "@typebot.io/conditions/constants";
 import type { Comparison } from "@typebot.io/conditions/schemas";
@@ -196,10 +195,10 @@ export const WhatsAppDeployDialog = ({
             </Alert.Description>
           </Alert.Root>
         )}
-        <OrderedList spacing={4} pl="4">
-          <ListItem>
-            <HStack>
-              <Text>Select a phone number:</Text>
+        <ol>
+          <li>
+            <div className="flex items-center gap-2">
+              <p>Select a phone number:</p>
               {workspace && (
                 <>
                   <WhatsAppCredentialsDialog
@@ -220,11 +219,11 @@ export const WhatsAppDeployDialog = ({
                   />
                 </>
               )}
-            </HStack>
-          </ListItem>
+            </div>
+          </li>
           {typebot?.whatsAppCredentialsId && phoneNumberData && (
             <>
-              <ListItem>
+              <li>
                 <Accordion.Root>
                   <Accordion.Item>
                     <Accordion.Trigger>Configure integration</Accordion.Trigger>
@@ -268,7 +267,7 @@ export const WhatsAppDeployDialog = ({
                             }
                             onItemsChange={updateStartConditionComparisons}
                             ComponentBetweenItems={() => (
-                              <Flex justify="center">
+                              <div className="flex justify-center">
                                 <BasicSelect
                                   value={
                                     whatsAppSettings?.startCondition
@@ -277,7 +276,7 @@ export const WhatsAppDeployDialog = ({
                                   onChange={updateStartConditionLogicalOperator}
                                   items={Object.values(LogicalOperator)}
                                 />
-                              </Flex>
+                              </div>
                             )}
                             addLabel="Add a comparison"
                           >
@@ -288,9 +287,9 @@ export const WhatsAppDeployDialog = ({
                     </Accordion.Panel>
                   </Accordion.Item>
                 </Accordion.Root>
-              </ListItem>
+              </li>
 
-              <ListItem>
+              <li>
                 <Field.Root className="flex-row items-center">
                   <Switch
                     checked={typebot?.settings.whatsApp?.isEnabled ?? false}
@@ -299,26 +298,26 @@ export const WhatsAppDeployDialog = ({
                   />
                   <Field.Label>Enable WhatsApp integration</Field.Label>
                 </Field.Root>
-              </ListItem>
-              <ListItem>
-                <HStack>
-                  <Text>Publish your bot:</Text>
+              </li>
+              <li>
+                <div className="flex items-center gap-2">
+                  <p>Publish your bot:</p>
                   <PublishButton size="sm" isMoreMenuDisabled />
-                </HStack>
-              </ListItem>
+                </div>
+              </li>
               {phoneNumberData && (
-                <ListItem>
+                <li>
                   <TextLink
                     href={`https://wa.me/${phoneNumberData.name}?text=Start`}
                     isExternal
                   >
                     Try it out
                   </TextLink>
-                </ListItem>
+                </li>
               )}
             </>
           )}
-        </OrderedList>
+        </ol>
       </Dialog.Popup>
     </Dialog.Root>
   );

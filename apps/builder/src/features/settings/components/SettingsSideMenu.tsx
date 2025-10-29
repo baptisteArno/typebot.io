@@ -1,4 +1,3 @@
-import { Heading, Stack, useColorModeValue } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import type { Settings } from "@typebot.io/settings/schemas";
 import { Accordion } from "@typebot.io/ui/components/Accordion";
@@ -39,24 +38,13 @@ export const SettingsSideMenu = () => {
     updateTypebot({ updates: { settings: { ...typebot.settings, metadata } } });
 
   return (
-    <Stack
-      flex="1"
-      maxW="400px"
-      h={`calc(100% - 2rem)`}
-      borderWidth={1}
-      ml={4}
-      overflowY="auto"
-      pb="20"
-      position="relative"
-      rounded="xl"
-      bg={useColorModeValue("white", "gray.900")}
-    >
+    <div className="flex flex-col gap-2 flex-1 max-w-[400px] border ml-4 overflow-y-auto pb-20 relative rounded-xl h-[calc(100%-2rem)] bg-gray-1">
       <Accordion.Root>
         <Accordion.Item className="border-0">
           <Accordion.Trigger className="py-5">
             <div className="flex items-center gap-3 pl-2">
               <MoreHorizontalIcon />
-              <Heading fontSize="md">{t("settings.sideMenu.general")}</Heading>
+              <h3>{t("settings.sideMenu.general")}</h3>
             </div>
           </Accordion.Trigger>
           <Accordion.Panel>
@@ -72,7 +60,7 @@ export const SettingsSideMenu = () => {
           <Accordion.Trigger className="py-5">
             <div className="flex items-center gap-3 pl-2">
               <ChatIcon />
-              <Heading fontSize="md">{t("settings.sideMenu.typing")}</Heading>
+              <h3>{t("settings.sideMenu.typing")}</h3>
             </div>
           </Accordion.Trigger>
           <Accordion.Panel>
@@ -88,7 +76,7 @@ export const SettingsSideMenu = () => {
           <Accordion.Trigger className="py-5">
             <div className="flex items-center gap-3 pl-2">
               <SquareLock01Icon />
-              <Heading fontSize="md">{t("settings.sideMenu.security")}</Heading>
+              <h3>{t("settings.sideMenu.security")}</h3>
             </div>
           </Accordion.Trigger>
           <Accordion.Panel>
@@ -104,7 +92,7 @@ export const SettingsSideMenu = () => {
           <Accordion.Trigger className="py-5">
             <div className="flex items-center gap-3 pl-2">
               <SourceCodeIcon />
-              <Heading fontSize="md">{t("settings.sideMenu.metadata")}</Heading>
+              <h3>{t("settings.sideMenu.metadata")}</h3>
             </div>
           </Accordion.Trigger>
           <Accordion.Panel>
@@ -120,6 +108,6 @@ export const SettingsSideMenu = () => {
           </Accordion.Panel>
         </Accordion.Item>
       </Accordion.Root>
-    </Stack>
+    </div>
   );
 };

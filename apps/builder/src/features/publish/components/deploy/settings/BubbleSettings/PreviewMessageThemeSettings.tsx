@@ -1,4 +1,3 @@
-import { Heading, HStack, Stack, Text } from "@chakra-ui/react";
 import type { PreviewMessageTheme } from "@typebot.io/js";
 import {
   defaultPreviewMessageBackgroundColor,
@@ -48,11 +47,11 @@ export const PreviewMessageThemeSettings = ({
   };
 
   return (
-    <Stack spacing={4} borderWidth="1px" rounded="md" p="4">
-      <Heading size="sm">Preview message</Heading>
-      <Stack spacing={4}>
-        <HStack justify="space-between">
-          <Text>Background color</Text>
+    <div className="flex flex-col gap-4 border rounded-md p-4">
+      <h3>Preview message</h3>
+      <div className="flex flex-col gap-4">
+        <div className="flex items-center gap-2 justify-between">
+          <p>Background color</p>
           <ColorPicker
             defaultValue={
               previewMessageTheme?.backgroundColor ??
@@ -60,18 +59,18 @@ export const PreviewMessageThemeSettings = ({
             }
             onColorChange={updateBackgroundColor}
           />
-        </HStack>
-        <HStack justify="space-between">
-          <Text>Text color</Text>
+        </div>
+        <div className="flex items-center gap-2 justify-between">
+          <p>Text color</p>
           <ColorPicker
             defaultValue={
               previewMessageTheme?.textColor ?? defaultPreviewMessageTextColor
             }
             onColorChange={updateTextColor}
           />
-        </HStack>
-        <HStack justify="space-between">
-          <Text>Close button background</Text>
+        </div>
+        <div className="flex items-center gap-2 justify-between">
+          <p>Close button background</p>
           <ColorPicker
             defaultValue={
               previewMessageTheme?.closeButtonBackgroundColor ??
@@ -79,9 +78,9 @@ export const PreviewMessageThemeSettings = ({
             }
             onColorChange={updateCloseButtonBackgroundColor}
           />
-        </HStack>
-        <HStack justify="space-between">
-          <Text>Close icon color</Text>
+        </div>
+        <div className="flex items-center gap-2 justify-between">
+          <p>Close icon color</p>
           <ColorPicker
             defaultValue={
               previewMessageTheme?.closeButtonIconColor ??
@@ -89,8 +88,8 @@ export const PreviewMessageThemeSettings = ({
             }
             onColorChange={updateCloseButtonIconColor}
           />
-        </HStack>
-      </Stack>
-    </Stack>
+        </div>
+      </div>
+    </div>
   );
 };

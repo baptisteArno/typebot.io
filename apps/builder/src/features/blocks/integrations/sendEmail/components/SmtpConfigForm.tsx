@@ -1,4 +1,3 @@
-import { Stack } from "@chakra-ui/react";
 import type { SmtpCredentials } from "@typebot.io/credentials/schemas";
 import { isDefined } from "@typebot.io/lib/utils";
 import { Field } from "@typebot.io/ui/components/Field";
@@ -35,7 +34,7 @@ export const SmtpConfigForm = ({ config, onConfigChange }: Props) => {
     config && isDefined(port) && onConfigChange({ ...config, port });
 
   return (
-    <Stack spacing={4}>
+    <div className="flex flex-col gap-4">
       <Field.Root>
         <Field.Label>From email</Field.Label>
         <DebouncedTextInput
@@ -104,6 +103,6 @@ export const SmtpConfigForm = ({ config, onConfigChange }: Props) => {
           disabled={!config}
         />
       </Field.Root>
-    </Stack>
+    </div>
   );
 };

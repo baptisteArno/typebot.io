@@ -1,4 +1,3 @@
-import { Flex, Stack } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
 import { LoaderCircleIcon } from "@typebot.io/ui/icons/LoaderCircleIcon";
@@ -34,18 +33,18 @@ export const FolderPage = () => {
     return <NotFoundPage resourceName="Folder" />;
 
   return (
-    <Stack minH="100vh">
+    <div className="flex flex-col gap-2 min-h-[100vh]">
       <Seo title={t("dashboard.title")} />
       <DashboardHeader />
       <TypebotDndProvider>
         {!folder ? (
-          <Flex flex="1">
+          <div className="flex flex-1">
             <LoaderCircleIcon className="animate-spin mx-auto" />
-          </Flex>
+          </div>
         ) : (
           <FolderContent folder={folder} />
         )}
       </TypebotDndProvider>
-    </Stack>
+    </div>
   );
 };

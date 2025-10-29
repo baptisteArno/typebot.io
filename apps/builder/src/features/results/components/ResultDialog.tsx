@@ -1,11 +1,3 @@
-import {
-  Box,
-  Heading,
-  HStack,
-  Stack,
-  Text,
-  useColorModeValue,
-} from "@chakra-ui/react";
 import { byId, isDefined } from "@typebot.io/lib/utils";
 import { parseColumnsOrder } from "@typebot.io/results/parseColumnsOrder";
 import type {
@@ -17,6 +9,7 @@ import { Badge } from "@typebot.io/ui/components/Badge";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
 import { LoaderCircleIcon } from "@typebot.io/ui/icons/LoaderCircleIcon";
+import { cx } from "@typebot.io/ui/lib/cva";
 import { useState } from "react";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { useResultTranscriptQuery } from "../hooks/useResultTranscriptQuery";
@@ -42,7 +35,7 @@ export const ResultDialog = ({ resultId, onClose }: Props) => {
         <Dialog.Title>Result</Dialog.Title>
         <Dialog.CloseButton />
 
-        <HStack>
+        <div className="flex items-center gap-2">
           <Button
             variant={tab === "transcript" ? "outline" : "ghost"}
             onClick={() => setTab("transcript")}
@@ -60,7 +53,7 @@ export const ResultDialog = ({ resultId, onClose }: Props) => {
           >
             Answers
           </Button>
-        </HStack>
+        </div>
         {tab === "transcript" && typebot?.id && resultId && (
           <Transcript typebotId={typebot?.id} resultId={resultId} />
         )}
@@ -83,10 +76,6 @@ const Transcript = ({
   typebotId: string;
   resultId: string;
 }) => {
-  const hostBubbleBgColor = useColorModeValue("gray.100", "gray.900");
-  const hostBubbleColor = useColorModeValue("gray.800", "gray.200");
-  const bgColor = useColorModeValue("white", "gray.950");
-
   const { data: transcriptData, isLoading: isTranscriptLoading } =
     useResultTranscriptQuery({
       typebotId,
@@ -95,47 +84,45 @@ const Transcript = ({
 
   if (isTranscriptLoading)
     return (
-      <Stack align="center" py={8}>
+      <div className="flex flex-col gap-2 items-center py-8">
         <LoaderCircleIcon className="animate-spin" />
-        <Text>Loading transcript...</Text>
-      </Stack>
+        <p>Loading transcript...</p>
+      </div>
     );
 
   return (
-    <Box borderWidth={1} borderRadius="md" p={4} bg={bgColor}>
+    <div className="border rounded-md p-4 bg-gray-1">
       {transcriptData?.transcript.map((message: any, index: number) => {
         const isBot = message.role === "bot";
         const content =
           message.text || message.image || message.video || message.audio || "";
 
         return (
-          <HStack
+          <div
+            className={cx(
+              "flex items-center gap-2 w-full mb-2",
+              isBot ? "justify-start" : "justify-end",
+            )}
             key={index}
-            justify={isBot ? "flex-start" : "flex-end"}
-            w="full"
-            mb={2}
           >
-            <Box
-              maxW="70%"
-              bg={isBot ? hostBubbleBgColor : "orange.500"}
-              color={isBot ? hostBubbleColor : "white"}
-              borderWidth={1}
-              px={3}
-              py={2}
-              borderRadius="lg"
-              borderBottomLeftRadius={isBot ? "sm" : "lg"}
-              borderBottomRightRadius={isBot ? "lg" : "sm"}
+            <div
+              className={cx(
+                "max-w-[70%] border px-3 py-2 rounded-lg",
+                isBot
+                  ? "bg-gray-3 text-gray-12 rounded-bl-sm rounded-br-lg"
+                  : "bg-orange-9 text-white rounded-bl-lg rounded-br-sm",
+              )}
             >
-              <Text whiteSpace="pre-wrap" fontSize="sm">
+              <p className="text-sm whitespace-pre-wrap">
                 {message.type === "text"
                   ? content
                   : `[${message.type.toUpperCase()}] ${content}`}
-              </Text>
-            </Box>
-          </HStack>
+              </p>
+            </div>
+          </div>
         );
       })}
-    </Box>
+    </div>
   );
 };
 
@@ -162,15 +149,15 @@ const Answers = ({
     const header = resultHeader.find(byId(headerId));
     if (!header) return null;
     return (
-      <Stack key={header.id} spacing="4">
-        <HStack>
+      <div className="flex flex-col gap-4" key={header.id}>
+        <div className="flex items-center gap-2">
           <HeaderIcon header={header} />
-          <Heading fontSize="md">{header.label}</Heading>
-        </HStack>
-        <Text whiteSpace="pre-wrap" textAlign="justify">
+          <h3 className="text-md">{header.label}</h3>
+        </div>
+        <p className="text-justify whitespace-pre-wrap">
           {getHeaderValue(tableData[header.id])}
-        </Text>
-      </Stack>
+        </p>
+      </div>
     );
   });
 };

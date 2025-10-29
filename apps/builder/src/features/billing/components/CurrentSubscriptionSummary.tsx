@@ -1,4 +1,3 @@
-import { Heading, HStack, Stack, Text } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { Plan } from "@typebot.io/prisma/enum";
 import { Alert } from "@typebot.io/ui/components/Alert";
@@ -22,20 +21,21 @@ export const CurrentSubscriptionSummary = ({ workspace }: Props) => {
     workspace.stripeId;
 
   return (
-    <Stack spacing="4">
-      <Heading fontSize="3xl">
-        {t("billing.currentSubscription.heading")}
-      </Heading>
-      <HStack data-testid="current-subscription">
-        <Text>{t("billing.currentSubscription.subheading")} </Text>
+    <div className="flex flex-col gap-4">
+      <h2 className="text-3xl">{t("billing.currentSubscription.heading")}</h2>
+      <div
+        className="flex items-center gap-2"
+        data-testid="current-subscription"
+      >
+        <p>{t("billing.currentSubscription.subheading")} </p>
         <PlanBadge plan={workspace.plan} />
         {data?.subscription?.cancelDate && (
-          <Text fontSize="sm">
+          <p className="text-sm">
             ({t("billing.currentSubscription.cancelDate")}{" "}
             {data.subscription.cancelDate.toDateString()})
-          </Text>
+          </p>
         )}
-      </HStack>
+      </div>
       {data?.subscription?.status === "past_due" && (
         <Alert.Root variant="error">
           <TriangleAlertIcon />
@@ -44,7 +44,6 @@ export const CurrentSubscriptionSummary = ({ workspace }: Props) => {
           </Alert.Description>
         </Alert.Root>
       )}
-
       {isSubscribed && (
         <BillingPortalButton
           workspaceId={workspace.id}
@@ -53,6 +52,6 @@ export const CurrentSubscriptionSummary = ({ workspace }: Props) => {
           }
         />
       )}
-    </Stack>
+    </div>
   );
 };

@@ -1,4 +1,3 @@
-import { Stack } from "@chakra-ui/react";
 import type { KeyValue } from "@typebot.io/blocks-integrations/httpRequest/schema";
 import { Field } from "@typebot.io/ui/components/Field";
 import { DebouncedTextInputWithVariablesButton } from "@/components/inputs/DebouncedTextInput";
@@ -38,7 +37,7 @@ export const KeyValueInputs = ({
     onItemChange({ ...item, value });
   };
   return (
-    <Stack p="4" rounded="md" flex="1" borderWidth="1px">
+    <div className="flex flex-col gap-2 p-4 rounded-md flex-1 border">
       <Field.Root>
         <Field.Label>Key:</Field.Label>
         <DebouncedTextInputWithVariablesButton
@@ -55,6 +54,6 @@ export const KeyValueInputs = ({
           placeholder={valuePlaceholder}
         />
       </Field.Root>
-    </Stack>
+    </div>
   );
 };

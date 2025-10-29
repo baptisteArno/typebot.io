@@ -1,4 +1,3 @@
-import { Text } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import { defaultRatingInputOptions } from "@typebot.io/blocks-inputs/rating/constants";
 import type { RatingInputBlock } from "@typebot.io/blocks-inputs/rating/schema";
@@ -15,13 +14,13 @@ export const RatingInputContent = ({ variableId, block }: Props) => {
   return variableId ? (
     <WithVariableContent variableId={variableId} />
   ) : (
-    <Text noOfLines={1} pr="6">
+    <p className="pr-6 truncate">
       {t("blocks.inputs.rating.from.label")}{" "}
       {block.options?.buttonType === "Icons"
         ? 1
         : (block.options?.startsAt ?? defaultRatingInputOptions.startsAt)}{" "}
       {t("blocks.inputs.rating.to.label")}{" "}
       {block.options?.length ?? defaultRatingInputOptions.length}
-    </Text>
+    </p>
   );
 };

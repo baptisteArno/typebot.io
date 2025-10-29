@@ -1,5 +1,5 @@
-import { Avatar, HStack, Stack, Text } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
+import { Avatar } from "@typebot.io/ui/components/Avatar";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Field } from "@typebot.io/ui/components/Field";
 import { Input } from "@typebot.io/ui/components/Input";
@@ -25,14 +25,13 @@ export const MyAccountForm = () => {
   };
 
   return (
-    <Stack spacing="6" w="full" overflowY="auto">
-      <HStack spacing={6}>
-        <Avatar
-          size="lg"
-          src={user?.image ?? undefined}
-          name={user?.name ?? undefined}
-        />
-        <Stack>
+    <div className="flex flex-col gap-6 w-full overflow-y-auto">
+      <div className="flex items-center gap-6">
+        <Avatar.Root className="size-12">
+          <Avatar.Image src={user?.image ?? undefined} alt="User" />
+          <Avatar.Fallback>{user?.name?.charAt(0)}</Avatar.Fallback>
+        </Avatar.Root>
+        <div className="flex flex-col gap-2">
           {user?.id && (
             <UploadButton
               fileType="image"
@@ -46,24 +45,21 @@ export const MyAccountForm = () => {
               {t("account.myAccount.changePhotoButton.label")}
             </UploadButton>
           )}
-          <Text color="gray.500" fontSize="sm">
+          <p className="text-sm" color="gray.500">
             {t("account.myAccount.changePhotoButton.specification")}
-          </Text>
-        </Stack>
-      </HStack>
-
+          </p>
+        </div>
+      </div>
       <Field.Root>
         <Field.Label>{t("account.myAccount.nameInput.label")}</Field.Label>
         <Input defaultValue={name} onValueChange={handleNameChange} />
       </Field.Root>
       {user && (
-        <HStack justifyContent="space-between">
-          <Stack>
-            <Text>{t("account.myAccount.emailInput.label")}</Text>
-            <Text size="sm" color="gray.500">
-              {user?.email}
-            </Text>
-          </Stack>
+        <div className="flex items-center gap-2 justify-between">
+          <div className="flex flex-col gap-2">
+            <p>{t("account.myAccount.emailInput.label")}</p>
+            <p className="text-sm text-gray-500">{user?.email}</p>
+          </div>
           <Button
             variant="secondary"
             onClick={() => setIsChangeEmailDialogOpen(true)}
@@ -78,9 +74,9 @@ export const MyAccountForm = () => {
             }}
             userEmail={user?.email ?? ""}
           />
-        </HStack>
+        </div>
       )}
       {user && <ApiTokensList user={user} />}
-    </Stack>
+    </div>
   );
 };

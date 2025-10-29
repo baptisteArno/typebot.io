@@ -1,4 +1,3 @@
-import { Text } from "@chakra-ui/react";
 import { useTranslate } from "@tolgee/react";
 import type { ImageBubbleBlock } from "@typebot.io/blocks-bubbles/image/schema";
 import { cx } from "@typebot.io/ui/lib/cva";
@@ -17,11 +16,11 @@ export const ImageBubbleContent = ({ block }: Props) => {
     ? findUniqueVariable(typebot?.variables)(block.content?.url)
     : null;
   return !block.content?.url ? (
-    <Text color={"gray.500"}>{t("clickToEdit")}</Text>
+    <p color={"gray.500"}>{t("clickToEdit")}</p>
   ) : variable ? (
-    <Text>
+    <p>
       Display <VariableTag variableName={variable.name} />
-    </Text>
+    </p>
   ) : (
     <div className="w-full">
       <img

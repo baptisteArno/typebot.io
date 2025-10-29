@@ -1,4 +1,3 @@
-import { Stack } from "@chakra-ui/react";
 import {
   defaultBlur,
   defaultContainerBackgroundColor,
@@ -57,7 +56,7 @@ export const ChatContainerForm = ({
   );
 
   return (
-    <Stack>
+    <div className="flex flex-col gap-2">
       <Field.Root className="flex-row">
         <Field.Label>Max width:</Field.Label>
         <div className="flex items-center gap-2">
@@ -77,7 +76,6 @@ export const ChatContainerForm = ({
           />
         </div>
       </Field.Root>
-
       <Field.Root className="flex-row">
         <Field.Label>Max height:</Field.Label>
         <div className="flex items-center gap-2">
@@ -97,7 +95,6 @@ export const ChatContainerForm = ({
           />
         </div>
       </Field.Root>
-
       <ContainerThemeForm
         theme={container}
         defaultTheme={{
@@ -116,7 +113,7 @@ export const ChatContainerForm = ({
         }}
         onThemeChange={onContainerChange}
       />
-    </Stack>
+    </div>
   );
 };
 

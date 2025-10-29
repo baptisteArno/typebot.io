@@ -1,4 +1,3 @@
-import { Code, ListItem, OrderedList, Stack, Text } from "@chakra-ui/react";
 import { env } from "@typebot.io/env";
 import { Alert } from "@typebot.io/ui/components/Alert";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
@@ -25,21 +24,21 @@ export const FlutterFlowDeployDialog = ({
             </Alert.Description>
           </Alert.Root>
         )}
-        <OrderedList spacing={4}>
-          <ListItem>
-            Insert a <Code>WebView</Code> element
-          </ListItem>
-          <ListItem>
-            <Stack>
-              <Text>
-                As the <Code>Webview URL</Code>, paste your typebot URL
-              </Text>
+        <ol>
+          <li>
+            Insert a <code>WebView</code> element
+          </li>
+          <li>
+            <div className="flex flex-col gap-2">
+              <p>
+                As the <code>Webview URL</code>, paste your typebot URL
+              </p>
               <CopyInput
                 value={`${env.NEXT_PUBLIC_VIEWER_URL[0]}/${publicId}`}
               />
-            </Stack>
-          </ListItem>
-        </OrderedList>
+            </div>
+          </li>
+        </ol>
       </Dialog.Popup>
     </Dialog.Root>
   );

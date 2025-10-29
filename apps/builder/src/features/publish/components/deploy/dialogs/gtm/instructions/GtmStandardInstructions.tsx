@@ -1,4 +1,3 @@
-import { Code, ListItem, OrderedList, Stack, Text } from "@chakra-ui/react";
 import type { Typebot } from "@typebot.io/typebot/schemas/typebot";
 import { useState } from "react";
 import { CodeEditor } from "@/components/inputs/CodeEditor";
@@ -27,24 +26,24 @@ export const GtmStandardInstructions = ({
   );
 
   return (
-    <OrderedList spacing={4} pl={5}>
-      <ListItem>
-        On your GTM account dashboard, click on <Code>Add a new tag</Code>
-      </ListItem>
-      <ListItem>
-        Choose <Code>Custom HTML tag</Code> type
-      </ListItem>
-      <ListItem>
-        Check <Code>Support document.write</Code>
-      </ListItem>
-      <ListItem>
-        <Stack spacing={4}>
-          <Text>Paste the code below:</Text>
+    <ol>
+      <li>
+        On your GTM account dashboard, click on <code>Add a new tag</code>
+      </li>
+      <li>
+        Choose <code>Custom HTML tag</code> type
+      </li>
+      <li>
+        Check <code>Support document.write</code>
+      </li>
+      <li>
+        <div className="flex flex-col gap-4">
+          <p>Paste the code below:</p>
           <CodeEditor value={headCode} isReadOnly lang="html" />
-        </Stack>
-      </ListItem>
-      <ListItem>
-        <Stack spacing={4}>
+        </div>
+      </li>
+      <li>
+        <div className="flex flex-col gap-4">
           <StandardSettings
             onUpdateWindowSettings={(sizes) =>
               setWindowSizes({
@@ -53,13 +52,13 @@ export const GtmStandardInstructions = ({
               })
             }
           />
-          <Text>
+          <p>
             On your web page, you need to have an element on which the typebot
             will go:
-          </Text>
+          </p>
           <CodeEditor value={elementCode} isReadOnly lang="html" />
-        </Stack>
-      </ListItem>
-    </OrderedList>
+        </div>
+      </li>
+    </ol>
   );
 };

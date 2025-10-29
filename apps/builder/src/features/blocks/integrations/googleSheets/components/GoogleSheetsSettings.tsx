@@ -1,4 +1,3 @@
-import { Stack, Text, useDisclosure } from "@chakra-ui/react";
 import {
   defaultGoogleSheetsOptions,
   GoogleSheetsAction,
@@ -15,6 +14,7 @@ import type {
 } from "@typebot.io/blocks-integrations/googleSheets/schema";
 import { isDefined } from "@typebot.io/lib/utils";
 import { Accordion } from "@typebot.io/ui/components/Accordion";
+import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
 import { useMemo } from "react";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { TableList } from "@/components/TableList";
@@ -49,7 +49,7 @@ export const GoogleSheetsSettings = ({
     spreadsheetId: options?.spreadsheetId,
     workspaceId: workspace?.id,
   });
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onOpen, onClose } = useOpenControls();
   const sheet = useMemo(
     () => sheets?.find((s) => s.id === options?.sheetId),
     [sheets, options?.sheetId],
@@ -78,7 +78,7 @@ export const GoogleSheetsSettings = ({
   };
 
   return (
-    <Stack spacing={4}>
+    <div className="flex flex-col gap-4">
       {workspace && (
         <CredentialsDropdown
           type="google sheets"
@@ -130,7 +130,7 @@ export const GoogleSheetsSettings = ({
           onOptionsChange={onOptionsChange}
         />
       )}
-    </Stack>
+    </div>
   );
 };
 
@@ -197,9 +197,7 @@ const ActionOptions = ({
         <Accordion.Root>
           <Accordion.Item>
             <Accordion.Trigger>
-              <Text w="full" textAlign="left">
-                Row(s) to update
-              </Text>
+              <p className="w-full text-left">Row(s) to update</p>
             </Accordion.Trigger>
 
             <Accordion.Panel>
@@ -212,9 +210,7 @@ const ActionOptions = ({
           </Accordion.Item>
           <Accordion.Item>
             <Accordion.Trigger>
-              <Text w="full" textAlign="left">
-                Cells to update
-              </Text>
+              <p className="w-full text-left">Cells to update</p>
             </Accordion.Trigger>
 
             <Accordion.Panel>
@@ -240,9 +236,7 @@ const ActionOptions = ({
         <Accordion.Root>
           <Accordion.Item>
             <Accordion.Trigger>
-              <Text w="full" textAlign="left">
-                Select row(s)
-              </Text>
+              <p className="w-full text-left">Select row(s)</p>
             </Accordion.Trigger>
 
             <Accordion.Panel>
@@ -261,7 +255,6 @@ const ActionOptions = ({
               />
             </Accordion.Panel>
           </Accordion.Item>
-
           <Accordion.Item>
             <Accordion.Trigger>Columns to extract</Accordion.Trigger>
             <Accordion.Panel>

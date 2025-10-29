@@ -1,6 +1,6 @@
-import { useDisclosure } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
+import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
 import { CancelCircleIcon } from "@typebot.io/ui/icons/CancelCircleIcon";
 import { trpc } from "@/lib/queryClient";
 import { CustomDomainConfigDialog } from "./CustomDomainConfigDialog";
@@ -10,7 +10,7 @@ type Props = {
   workspaceId: string;
 };
 export default function DomainStatusIcon({ domain, workspaceId }: Props) {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onOpen, onClose } = useOpenControls();
   const { data, isLoading } = useQuery(
     trpc.customDomains.verifyCustomDomain.queryOptions({
       name: domain,
