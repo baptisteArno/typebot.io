@@ -1,11 +1,14 @@
 import { T } from "@tolgee/react";
 
 type Props = {
-  date: string;
+  date: string | Date;
 };
 
 export const TimeSince = ({ date }: Props) => {
-  const seconds = Math.floor((Date.now() - new Date(date).getTime()) / 1000);
+  const seconds = Math.floor(
+    (Date.now() - (date instanceof Date ? date : new Date(date)).getTime()) /
+      1000,
+  );
 
   let interval = seconds / 31536000;
 

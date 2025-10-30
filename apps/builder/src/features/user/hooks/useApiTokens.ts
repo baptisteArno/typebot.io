@@ -1,29 +1,16 @@
-import useSWR from "swr";
-import { fetcher } from "@/helpers/fetcher";
-import type { ApiTokenFromServer } from "../types";
-
-type ServerResponse = {
-  apiTokens: ApiTokenFromServer[];
-};
+import { useQuery } from "@tanstack/react-query";
+import { trpc } from "@/lib/queryClient";
 
 export const useApiTokens = ({
-  userId,
   onError,
 }: {
-  userId?: string;
-  onError: (error: Error) => void;
+  onError: (error: { message: string }) => void;
 }) => {
-  const { data, error, mutate } = useSWR<ServerResponse, Error>(
-    userId ? `/api/users/${userId}/api-tokens` : null,
-    fetcher,
-    {
-      dedupingInterval: undefined,
-    },
-  );
+  const { data, error, refetch } = useQuery(trpc.user.listApiTokens.queryOptions());
   if (error) onError(error);
   return {
     apiTokens: data?.apiTokens,
     isLoading: !error && !data,
-    mutate,
+    refetch,
   };
 };
