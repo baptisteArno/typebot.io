@@ -1,3 +1,4 @@
+import * as Sentry from "@sentry/nextjs";
 import { isDefined, isNotDefined, omit } from "@typebot.io/lib/utils";
 import prisma from "@typebot.io/prisma";
 import type { IncomingMessage } from "http";
@@ -44,10 +45,16 @@ const getTypebotFromPublicId = async (
   const publishedTypebot = await prisma.publicTypebot.findFirst({
     where: { typebot: { publicId: publicId ?? "" } },
     include: {
-      typebot: { select: { name: true, isClosed: true, isArchived: true } },
+      typebot: {
+        select: { name: true, isClosed: true, isArchived: true },
+      },
     },
   });
   if (isNotDefined(publishedTypebot)) return null;
+  if (!publishedTypebot.version) {
+    Sentry.setTag("typebotId", publishedTypebot?.typebotId);
+    Sentry.captureMessage("Is using TypebotPageV2");
+  }
   return omit(
     publishedTypebot,
     "createdAt",

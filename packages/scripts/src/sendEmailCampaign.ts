@@ -38,55 +38,30 @@ Please republish before ${DEADLINE} to make sure your bots keep running smoothly
 
 Thanks for keeping your bots up to date! 🧡`;
 
-const DRY_RUN = process.env.DRY_RUN === "1";
+const DRY_RUN = false;
 const CONCURRENCY = Number(process.env.CONCURRENCY ?? 5); // email send concurrency
 const MAX_RETRIES = 3;
 
-async function parseCsv(filePath: string): Promise<string[]> {
-  const raw = await fs.readFile(filePath, "utf8");
-  const parsed = Papa.parse<CsvRow>(raw, {
-    header: true,
-    skipEmptyLines: true,
-  });
-
-  if (parsed.errors.length) {
-    const preview = parsed.errors
-      .slice(0, 3)
-      .map((e) => `${e.type}: ${e.message} @ row ${e.row}`)
-      .join(" | ");
-    console.warn(
-      `[CSV] Encountered ${parsed.errors.length} parse errors. First: ${preview}`,
-    );
-  }
-
-  const ids = new Set<string>();
-  for (const row of parsed.data) {
-    const safe = CSV_SCHEMA.safeParse(row);
-    if (!safe.success) {
-      console.warn(
-        "[CSV] Skipping invalid row:",
-        row,
-        safe.error.flatten().fieldErrors,
-      );
-      continue;
-    }
-    ids.add(safe.data.typebotId.trim());
-  }
-  return Array.from(ids);
-}
-
-async function main() {
-  const typebotIds = await parseCsv("./inputs/typebotIds.csv");
+export async function sendEmailCampaign() {
+  const newTypebotIds = await parseCsv("./inputs/new.csv");
+  const existingTypebotIds = await parseCsv("./inputs/existing.csv");
+  const typebotIds = newTypebotIds.filter(
+    (id) => !existingTypebotIds.includes(id),
+  );
   if (typebotIds.length === 0) {
     console.log("No valid typebot IDs found in CSV. Exiting.");
     return;
   }
-  console.log(`Found ${typebotIds.length} unique typebot IDs.`);
+  console.log(`Extracted ${typebotIds.length} typebot IDs from CSV.`);
 
-  const typebots = await prisma.typebot.findMany({
-    where: { id: { in: typebotIds } },
-    select: { id: true, workspaceId: true },
-  });
+  const typebots = (
+    await prisma.typebot.findMany({
+      where: { id: { in: typebotIds } },
+      select: { id: true, workspaceId: true, version: true },
+    })
+  )?.filter((typebot) => !typebot.version);
+
+  console.log(`Found ${typebots.length} typebots that need to be republished.`);
 
   if (typebots.length === 0) {
     throw new Error("None of the provided typebot IDs exist.");
@@ -185,7 +160,35 @@ async function main() {
   }
 }
 
-main().catch((err) => {
-  console.error("Unhandled error:", err);
-  process.exitCode = 1;
-});
+async function parseCsv(filePath: string): Promise<string[]> {
+  const raw = await fs.readFile(filePath, "utf8");
+  const parsed = Papa.parse<CsvRow>(raw, {
+    header: true,
+    skipEmptyLines: true,
+  });
+
+  if (parsed.errors.length) {
+    const preview = parsed.errors
+      .slice(0, 3)
+      .map((e) => `${e.type}: ${e.message} @ row ${e.row}`)
+      .join(" | ");
+    console.warn(
+      `[CSV] Encountered ${parsed.errors.length} parse errors. First: ${preview}`,
+    );
+  }
+
+  const ids = new Set<string>();
+  for (const row of parsed.data) {
+    const safe = CSV_SCHEMA.safeParse(row);
+    if (!safe.success) {
+      console.warn(
+        "[CSV] Skipping invalid row:",
+        row,
+        safe.error.flatten().fieldErrors,
+      );
+      continue;
+    }
+    ids.add(safe.data.typebotId.trim());
+  }
+  return Array.from(ids);
+}

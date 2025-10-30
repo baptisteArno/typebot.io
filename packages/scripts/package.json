@@ -1,7 +1,8 @@
 {
   "name": "@typebot.io/scripts",
   "scripts": {
-    "playground": "SKIP_ENV_CHECK=true dotenv -e ./.env.local -- tsx src/playground.ts",
+    "start": "SKIP_ENV_CHECK=true dotenv -e ./.env.local -- tsx src/main.ts",
+    "start:prod": "cd ../prisma && bun db:generate:mysql && cd ../scripts && SKIP_ENV_CHECK=true dotenv -e ./.env.production -- tsx src/main.ts",
     "db:backup": "tsx src/backupDatabase.ts",
     "db:restore": "tsx src/restoreDatabase.ts",
     "db:setCustomPlan": "tsx src/setCustomPlan.ts",
