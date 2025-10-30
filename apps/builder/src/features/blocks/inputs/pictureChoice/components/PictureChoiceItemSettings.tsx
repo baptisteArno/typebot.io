@@ -2,7 +2,6 @@ import { useTranslate } from "@tolgee/react";
 import type { PictureChoiceItem } from "@typebot.io/blocks-inputs/pictureChoice/schema";
 import { LogicalOperator } from "@typebot.io/conditions/constants";
 import type { Condition } from "@typebot.io/conditions/schemas";
-import { Button } from "@typebot.io/ui/components/Button";
 import { Field } from "@typebot.io/ui/components/Field";
 import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
 import { Popover } from "@typebot.io/ui/components/Popover";
@@ -67,13 +66,11 @@ export const PictureChoiceItemSettings = ({
           {t("blocks.inputs.picture.itemSettings.image.label")}
         </p>
         <Popover.Root {...imageUploadPopoverControls}>
-          <Popover.Trigger>
-            <Button size="sm" variant="secondary">
-              {item.pictureSrc
-                ? t("blocks.inputs.picture.itemSettings.image.change.label")
-                : t("blocks.inputs.picture.itemSettings.image.pick.label")}
-            </Button>
-          </Popover.Trigger>
+          <Popover.TriggerButton variant="secondary" size="sm">
+            {item.pictureSrc
+              ? t("blocks.inputs.picture.itemSettings.image.change.label")
+              : t("blocks.inputs.picture.itemSettings.image.pick.label")}
+          </Popover.TriggerButton>
           <Popover.Popup>
             <ImageUploadContent
               uploadFileProps={{

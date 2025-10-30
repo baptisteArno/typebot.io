@@ -25,16 +25,14 @@ export const TableSettingsButton = (props: Props) => {
   return (
     <>
       <Popover.Root {...controls}>
-        <Popover.Trigger>
-          <Button
-            variant="secondary"
-            size="icon"
-            aria-label="Open table settings"
-            className="size-8"
-          >
-            <MoreHorizontalIcon />
-          </Button>
-        </Popover.Trigger>
+        <Popover.TriggerButton
+          variant="secondary"
+          size="icon"
+          aria-label="Open table settings"
+          className="size-8"
+        >
+          <MoreHorizontalIcon />
+        </Popover.TriggerButton>
         <Popover.Popup className="w-[300px] p-0" side="bottom" align="end">
           <TableSettingsMenu
             {...props}

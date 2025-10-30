@@ -8,11 +8,11 @@ export const DividerWithText = ({
   children: React.ReactNode;
 }) => {
   return (
-    <div className={cn("flex items-center bg-gray-4", className)}>
+    <div className={cn("flex items-center", className)}>
       <div className="flex-1">
         <div className="h-px bg-gray-5" />
       </div>
-      <span className="px-3 font-medium text-gray-8">{children}</span>
+      <span className="px-3 text-gray-11">{children}</span>
       <div className="flex-1">
         <div className="h-px bg-gray-5" />
       </div>

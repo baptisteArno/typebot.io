@@ -35,19 +35,24 @@ export const ConditionItemNode = ({ item, indices }: Props) => {
       onOpen={() => setOpenedNodeId(item.id)}
       onClose={() => setOpenedNodeId(undefined)}
     >
-      <Popover.Trigger>
-        <div className="flex p-3 relative max-w-full overflow-hidden">
-          {item.content?.comparisons?.length === 0 ||
-          comparisonIsEmpty(item.content?.comparisons?.at(0)) ? (
-            <p color={"gray.500"}>Configure...</p>
-          ) : (
-            <ConditionContent
-              condition={item.content}
-              variables={typebot?.variables ?? []}
-            />
-          )}
-        </div>
-      </Popover.Trigger>
+      <Popover.Trigger
+        render={(props) => (
+          <div
+            className="flex p-3 relative max-w-full overflow-hidden"
+            {...props}
+          >
+            {item.content?.comparisons?.length === 0 ||
+            comparisonIsEmpty(item.content?.comparisons?.at(0)) ? (
+              <p color={"gray.500"}>Configure...</p>
+            ) : (
+              <ConditionContent
+                condition={item.content}
+                variables={typebot?.variables ?? []}
+              />
+            )}
+          </div>
+        )}
+      />
       <Popover.Popup side="right" className="p-4">
         <ConditionForm
           condition={item.content}

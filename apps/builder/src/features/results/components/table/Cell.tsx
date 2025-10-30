@@ -30,7 +30,7 @@ const Cell = ({
         } as React.CSSProperties
       }
       className={cx(
-        "px-4 py-2 border-b border-r first:border-l border-gray-6 whitespace-pre-wrap relative min-w-(--size) max-w-(--size)",
+        "px-4 py-2 border-b border-r first:border-l border-gray-6 whitespace-pre-wrap truncate relative min-w-(--size) max-w-(--size)",
       )}
     >
       {flexRender(cell.column.columnDef.cell, cell.getContext())}
