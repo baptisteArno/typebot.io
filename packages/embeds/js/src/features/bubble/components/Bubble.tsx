@@ -302,7 +302,7 @@ export const Bubble = (props: BubbleProps) => {
             }}
             class={cx(
               "absolute rounded-lg max-h-[calc(100dvh-var(--container-bottom)-var(--button-gap)-var(--button-size))] shadow-lg bg-(--bot-bg-color) h-(--bot-max-height) max-w-(--bot-max-width) overflow-hidden",
-              isOpen() ? "opacity-1" : "opacity-0 pointer-events-none",
+              isOpen() ? "opacity-100" : "opacity-0 pointer-events-none",
               bubbleProps.theme?.placement === "left"
                 ? "sm:left-0 -left-5"
                 : "sm:right-0 -right-5",

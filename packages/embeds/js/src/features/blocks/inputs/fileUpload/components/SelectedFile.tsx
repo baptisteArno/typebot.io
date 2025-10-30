@@ -32,7 +32,7 @@ export const SelectedFile = (props: {
       </Switch>
 
       <button
-        class="absolute -right-2 p-0.5 -top-2 rounded-full bg-gray-200 text-black border border-gray-400 opacity-1 sm:opacity-0 group-hover:opacity-100 transition-opacity"
+        class="absolute -right-2 p-0.5 -top-2 rounded-full bg-gray-200 text-black border border-gray-400 opacity-100 sm:opacity-0 group-hover:opacity-100 transition-opacity"
         on:click={props.onRemoveClick}
         aria-label="Remove attachment"
       >

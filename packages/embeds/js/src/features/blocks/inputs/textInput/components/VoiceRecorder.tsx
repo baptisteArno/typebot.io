@@ -162,7 +162,7 @@ export const VoiceRecorder = (props: Props) => {
       class={cx(
         "w-full gap-2 items-center transition-opacity px-2 typebot-recorder",
         props.recordingStatus === "started"
-          ? "opacity-1 flex"
+          ? "opacity-100 flex"
           : "opacity-0 hidden",
       )}
     >
