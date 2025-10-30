@@ -216,7 +216,7 @@ export const updateTypebot = authenticatedProcedure
         },
       });
 
-      const migratedTypebot = await migrateTypebot(
+      const { typebot: migratedTypebot } = await migrateTypebot(
         typebotSchema.parse(newTypebot),
       );
 

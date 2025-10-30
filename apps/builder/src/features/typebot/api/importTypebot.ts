@@ -69,7 +69,7 @@ const importingTypebotSchema = z.preprocess(
 
 type ImportingTypebot = z.infer<typeof importingTypebotSchema>;
 
-const migrateImportingTypebot = (
+const migrateImportingTypebot = async (
   typebot: ImportingTypebot,
 ): Promise<TypebotV6> => {
   const fullTypebot = {
@@ -87,7 +87,7 @@ const migrateImportingTypebot = (
     publicId: null,
     riskLevel: null,
   } satisfies Typebot;
-  return migrateTypebot(fullTypebot);
+  return (await migrateTypebot(fullTypebot)).typebot;
 };
 
 export const importTypebot = authenticatedProcedure

@@ -28,6 +28,7 @@ const inspectTypebot = async () => {
   const typebot = await prisma.typebot.findFirst({
     where,
     select: {
+      version: true,
       id: true,
       name: true,
       riskLevel: true,
