@@ -76,7 +76,7 @@ export const MyAccountForm = () => {
           />
         </div>
       )}
-      {user && <ApiTokensList user={user} />}
+      {user && <ApiTokensList />}
     </div>
   );
 };

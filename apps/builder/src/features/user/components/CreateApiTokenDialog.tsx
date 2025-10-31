@@ -1,3 +1,4 @@
+import { useMutation } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
@@ -5,20 +6,17 @@ import { Input } from "@typebot.io/ui/components/Input";
 import type { FormEvent } from "react";
 import { useRef, useState } from "react";
 import { CopyInput } from "@/components/inputs/CopyInput";
-import { createApiTokenQuery } from "../queries/createApiTokenQuery";
-import type { ApiTokenFromServer } from "../types";
+import { trpc } from "@/lib/queryClient";
 
 type Props = {
-  userId: string;
   isOpen: boolean;
-  onNewToken: (token: ApiTokenFromServer) => void;
+  onNewToken: () => void;
   onClose: () => void;
 };
 
 const ANIMATION_DURATION = 150;
 
 export const CreateApiTokenDialog = ({
-  userId,
   isOpen,
   onClose,
   onNewToken,
@@ -26,18 +24,20 @@ export const CreateApiTokenDialog = ({
   const inputRef = useRef<HTMLInputElement>(null);
   const { t } = useTranslate();
   const [name, setName] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [newTokenValue, setNewTokenValue] = useState<string>();
 
-  const createToken = async (e: FormEvent) => {
+  const { mutate: createToken, isPending: isSubmitting } = useMutation(
+    trpc.user.createApiToken.mutationOptions({
+      onSuccess: (data) => {
+        setNewTokenValue(data.apiToken.token);
+        onNewToken();
+      },
+    }),
+  );
+
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
-    const { data } = await createApiTokenQuery(userId, { name });
-    if (data?.apiToken) {
-      setNewTokenValue(data.apiToken.token);
-      onNewToken(data.apiToken);
-    }
-    setIsSubmitting(false);
+    createToken({ name });
   };
 
   const handleClose = () => {
@@ -51,7 +51,7 @@ export const CreateApiTokenDialog = ({
   return (
     <Dialog.Root isOpen={isOpen} onClose={handleClose}>
       <Dialog.Popup
-        render={<form onSubmit={createToken} />}
+        render={<form onSubmit={handleSubmit} />}
         initialFocus={inputRef}
       >
         <Dialog.Title>
@@ -87,7 +87,7 @@ export const CreateApiTokenDialog = ({
           {newTokenValue ? null : (
             <Button
               disabled={name.length === 0 || isSubmitting}
-              onClick={createToken}
+              onClick={handleSubmit}
               type="submit"
             >
               {t("account.apiTokens.createModal.createButton.label")}
