@@ -1,5 +1,5 @@
 ---
-title: "Feedback chatbot: how to build one with Typebot  "
+title: "Feedback chatbot: how to build one with Typebot"
 description: "Build a feedback chatbot that gets results! Learn how to gather actionable customer insights, boost engagement & improve your business."
 postedAt: "2025-04-23"
 cover: "/blog-assets/feedback-chatbot/featured-image-feedback-chatbot.avif"
@@ -64,6 +64,10 @@ Feedback chatbots have several advantages over traditional methods like email su
 
 **By using these advantages, feedback chatbots give businesses a powerful tool to gather more accurate, timely, and actionable customer insights.** These AI-powered assistants are becoming invaluable for continuous improvement and customer satisfaction.
 
+<Info>
+Want to explore different strategies for collecting customer feedback beyond chatbots? Check out our guide on [collecting customer feedback methods](./collecting-customer-feedback-methods.mdx) to see how chatbots compare to other approaches.
+</Info>
+
 ## How to create a feedback chatbot with Typebot
 
 Creating a feedback chatbot with Typebot is an intuitive process. It allows you to **use conversational interfaces for gathering valuable customer insights**. Let's dive into the step-by-step process of building an effective feedback chatbot using Typebot's user-friendly platform.
@@ -89,10 +93,8 @@ Let's walk through building a SaaS feedback bot in Typebot, one step at a time:
 
 
 5. **Open-Ended Feedback**: Include `Text` blocks with `Text Input` blocks for open-ended questions like "What do you like most about our product?" (`productLikes` variable) and "What could we improve?" (`productImprovements` variable). Make sure to set `isLong` to `true` in the Text Input options.
-6. **Thank You**: End with a `Text` block thanking the user for their feedback, using their name (\{\{userName\}\}) and ask for their email. Add an `Email Input` to capture the email to `userEmail` variable, and set `isRequired` to `false` so it's optional.
+6. **Thank You**: End with a `Text` block thanking the user for their feedback, using their name ({{userName}}) and ask for their email. Add an `Email Input` to capture the email to `userEmail` variable, and set `isRequired` to `false` so it's optional.
 7. **Connect the blocks**: Add the proper edges between the blocks to connect the flow between the blocks
-
-### 
 
 <Image src="/blog-assets/feedback-chatbot/product-feedback-flow-diagram.avif" alt="Product feedback flow diagram" width="1200px" height="348px" caption="This is what your chatbot should look like at this point" />
 
