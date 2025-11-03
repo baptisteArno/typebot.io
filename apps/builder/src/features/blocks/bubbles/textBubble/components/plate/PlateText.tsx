@@ -45,7 +45,10 @@ const PlateTextContent = ({ text }: { text: string }) => {
             );
             if (!matchingVariable) return "{{" + str;
             return (
-              <span className="slate-variable" key={idx}>
+              <span
+                className="bg-purple-9 text-white rounded-sm py-0.5 px-1.5"
+                key={idx}
+              >
                 {str.trim().slice(0, -2)}
               </span>
             );
