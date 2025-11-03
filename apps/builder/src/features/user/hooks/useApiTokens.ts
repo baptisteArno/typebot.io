@@ -6,7 +6,9 @@ export const useApiTokens = ({
 }: {
   onError: (error: { message: string }) => void;
 }) => {
-  const { data, error, refetch } = useQuery(trpc.user.listApiTokens.queryOptions());
+  const { data, error, refetch } = useQuery(
+    trpc.user.listApiTokens.queryOptions(),
+  );
   if (error) onError(error);
   return {
     apiTokens: data?.apiTokens,

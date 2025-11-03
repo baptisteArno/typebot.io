@@ -47,4 +47,3 @@ export const deleteApiToken = authenticatedProcedure
     });
     return { apiToken };
   });
-
