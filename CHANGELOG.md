@@ -1,5 +1,95 @@
 # Changelog
 
+<a name="3.13.0"></a>
+## 3.13.0 (2025-11-03)
+
+### New features
+
+- ✨ (blink) Add redirect action [[f5cfd68](https://github.com/baptisteArno/typebot.io/commit/f5cfd684e150a3300bfdc6a4f0fd6fb41cc9727f)]
+
+### UI/UX Improvements
+
+- 💄 Fix variable tag color in text bubble [[b82a6da](https://github.com/baptisteArno/typebot.io/commit/b82a6da12b321aa2d372294d121ca7ddbdb54ecc)]
+- 🚸 Auto-update typebot if it was migrated while getting it [[842f8ef](https://github.com/baptisteArno/typebot.io/commit/842f8ef0bbc1339413771c7a38d8454b098f310c)]
+- 💄 Fix blog post layout [[9778d32](https://github.com/baptisteArno/typebot.io/commit/9778d3236b75de4203c68e4c639fae0769791cb1)]
+- 💄 FIx overflow issues [[2ac0794](https://github.com/baptisteArno/typebot.io/commit/2ac07940e9ab3b82e9bd89e6e7c1b192f3d01569)]
+- 💄 Fix Button disabled feedback [[5c65ec9](https://github.com/baptisteArno/typebot.io/commit/5c65ec927d1c6ea69d0332f094913babbda88a83)]
+- 🚸 Improve WA feedback on missing phone metadata [[0614a20](https://github.com/baptisteArno/typebot.io/commit/0614a2000884eb80f1b967c56902a2d8ba623ead)]
+- 💄 Fix accordion background in dark mode [[bfa7445](https://github.com/baptisteArno/typebot.io/commit/bfa74456c8f9fee81d1aea2a1c1b1f94e55858c0)]
+- 🚸 Set guest email to replyTo field on invitation emails [[022a480](https://github.com/baptisteArno/typebot.io/commit/022a4803a30eee4a63c0038f94ee2327ed1513d2)]
+- 💄 (blog) Improve blog post layout [[29d6f56](https://github.com/baptisteArno/typebot.io/commit/29d6f5623351079c7fbb146036b8f86e30c7499b)]
+- 💄 Add variable settings on VariablesCombobox [[651ff3d](https://github.com/baptisteArno/typebot.io/commit/651ff3d1b87ccdd90bce4038eeb840595bdcc437)]
+
+### Fixed
+
+- 💚 Fix Docker build: copy bunfig [[2835933](https://github.com/baptisteArno/typebot.io/commit/28359337b48617882e31f5cb78eb5a1e2d03d2db)]
+- 🚑 Fix opacity-1 invalid className [[e1f7565](https://github.com/baptisteArno/typebot.io/commit/e1f75652b2202e9992f78c82f71d38ad43572b8a)]
+- 🐛 Fix ref not forwarding to new buttons [[f4d4fd0](https://github.com/baptisteArno/typebot.io/commit/f4d4fd0122980d825ef77438be0d39c9f96c3e80)]
+- 🐛 Fix getPhoneNumber returning 404 for old creds [[58b6f1c](https://github.com/baptisteArno/typebot.io/commit/58b6f1c614bf2e5861bc69897780642c1466e15c)]
+- 🐛 Attempt to fix getPhoneNumber not working [[fdb7d25](https://github.com/baptisteArno/typebot.io/commit/fdb7d257ffbae6fcba8de260215311da28885ff9)]
+- 💚 Fix ci error [[3702e0c](https://github.com/baptisteArno/typebot.io/commit/3702e0c7c87027e4f6b3385f0c119c35056764a7)]
+- 🐛 Fix VAT invalid type [[e9b11cc](https://github.com/baptisteArno/typebot.io/commit/e9b11cc74a46f40c3bb2405e4f1904b0f915db57)]
+- 💚 Fix mismatch bun version in Github actions [[00cd3a3](https://github.com/baptisteArno/typebot.io/commit/00cd3a35fecb946782d9d3e0e6634b5f98e7cd81)]
+- 🐛 Fix infinite scroll on results for bots with lots of results [[8fb50aa](https://github.com/baptisteArno/typebot.io/commit/8fb50aaf3f68fc00b96b5a9a7330dd694e3f07ba)]
+- 💚 Add missing package in script for daily job [[611588a](https://github.com/baptisteArno/typebot.io/commit/611588a72b5bc05d4280e36bcb6b89b51948e79d)]
+- 💚 Fix env package not found in Github actions [[a4ca993](https://github.com/baptisteArno/typebot.io/commit/a4ca993d8d9f3c4f7f17cd6159304e2a58c98c09)]
+- 💚 Add build step to cron jobs [[b1d4937](https://github.com/baptisteArno/typebot.io/commit/b1d493789aec68e7a255bea8be95c3c5de4ca9e9)]
+- 🐛 Fix group title empty value commit [[5b1c55b](https://github.com/baptisteArno/typebot.io/commit/5b1c55b725c3aeeae5dcccdb33c808d61ca9bd23)]
+- 🐛 (bot) Fix crash when continue message richText is empty [[489493b](https://github.com/baptisteArno/typebot.io/commit/489493b3761c99eeac69990b2bf826ee210ca5a3)]
+
+### Content
+
+- 📝 Add Make.com webhook response tutorial [[e00e5cc](https://github.com/baptisteArno/typebot.io/commit/e00e5ccc6f6413045b4fa12999fe04cb8d8d75fc)]
+- 📝 Fix updatedAt fields in blog [[4e07ee7](https://github.com/baptisteArno/typebot.io/commit/4e07ee7319fb873779e3e1391c1f8dead5ed8c0a)]
+- 📝 Add monthly blog posts + a few updates ([#2292](https://github.com/baptisteArno/typebot.io/issues/2292)) [[14fcec9](https://github.com/baptisteArno/typebot.io/commit/14fcec9a54a988b2ef4c7bcd9c95674e3815724d)]
+
+### Internal
+
+- ♻️ Refactor API token management to use tRPC ([#2305](https://github.com/baptisteArno/typebot.io/issues/2305)) [[41c91f9](https://github.com/baptisteArno/typebot.io/commit/41c91f98ae562fb5f01c8a6d2a6a927b42e17379)]
+- 🔧 Refactor email campaign script [[7fd4b33](https://github.com/baptisteArno/typebot.io/commit/7fd4b335decff573ac6f62f7fd3a7445b874a89e)]
+- ♻️ Upgrade to Tailwind v4 [[3d39760](https://github.com/baptisteArno/typebot.io/commit/3d397601f7ba9e5d40c1baaf06c7d90ef7d1e7de)]
+- ♻️ Migrate Skeleton to Base UI [[144e0c8](https://github.com/baptisteArno/typebot.io/commit/144e0c806125da50f3c6971ebfe8fb8baad7d8f6)]
+- ♻️ Remove Fade and SlideFade components [[c764f98](https://github.com/baptisteArno/typebot.io/commit/c764f98c286c44b46f3dc49c8dca859324069b65)]
+- ♻️ Migrate Tag to Base UI [[a232ce2](https://github.com/baptisteArno/typebot.io/commit/a232ce2438e0966532da656c419524b4e0daa574)]
+- ♻️ Migrate Form components to Base UI [[78b2578](https://github.com/baptisteArno/typebot.io/commit/78b2578167ca35589083616ab4963d5fe09abbe4)]
+- ♻️ Migrate TagsInput to Base UI [[7e4b502](https://github.com/baptisteArno/typebot.io/commit/7e4b5026c194b5469bcb0746061745588491bf0a)]
+- ♻️ Remove &#x60;chakra.&#x60; elements [[8a7a72e](https://github.com/baptisteArno/typebot.io/commit/8a7a72e25be033e9bc61b9f23bde7b13f72c4317)]
+- ♻️ Migrate MotionButton off of Chakra UI [[00b9776](https://github.com/baptisteArno/typebot.io/commit/00b97768fda0e67a0f17f7a7f0c856307423355b)]
+- 🔥 Remove e2e tests from builder [[8da6dde](https://github.com/baptisteArno/typebot.io/commit/8da6dde89055ebf054319a714be45a66e9b1e6bf)]
+- ♻️ Convert debounce&#x3D;{0} to plain input [[9b43742](https://github.com/baptisteArno/typebot.io/commit/9b437424b1bde1de71b3612a687398ee67759216)]
+- ♻️ Migrate icons off of Chakra UI [[ecf02af](https://github.com/baptisteArno/typebot.io/commit/ecf02afd153b3ebb3d284ab2ca4d510eecc0a35e)]
+- ♻️ Migrate Inputs to Base UI [[8baf86a](https://github.com/baptisteArno/typebot.io/commit/8baf86a94d7faa1dc2285efb17020a8d5460a8aa)]
+- ♻️ Migrate standalone Chakra inputs [[e7e54a8](https://github.com/baptisteArno/typebot.io/commit/e7e54a854168a2a9e12b533a755b86e3835a6da1)]
+- ♻️ Add legacy-bot-engine endpoint [[07b48c4](https://github.com/baptisteArno/typebot.io/commit/07b48c4eeb4fc89b0367c7f40f91a0ff2a0b93ca)]
+- 🔥 Remove typebot-js from legacy bot-engine [[41f3f5c](https://github.com/baptisteArno/typebot.io/commit/41f3f5c6daf09b06868bcb30012060c27ae612e3)]
+- 🔥 Remove inactive patch user endpoint [[fae55e8](https://github.com/baptisteArno/typebot.io/commit/fae55e8e830b1d4b145b26f63491a02366d2472b)]
+- 🔥 Remove legacy typebot-js lib code [[ec52b90](https://github.com/baptisteArno/typebot.io/commit/ec52b9057f62626785b82487d5ef4ba668321d78)]
+- ♻️ Migrate Link components off of Chakra UI [[9871692](https://github.com/baptisteArno/typebot.io/commit/9871692e51c8046b70ee2ce04e7992133ea579ba)]
+- ♻️ Migrate Image off of Chakra UI [[3e84e6e](https://github.com/baptisteArno/typebot.io/commit/3e84e6e7305aba775e0987de052d0300f3bf077f)]
+- ♻️ Migrate Textarea to Base UI [[e5f3ec4](https://github.com/baptisteArno/typebot.io/commit/e5f3ec42dfb49000ddc8f667f9f775a141091fb6)]
+- ♻️ Migrate Radio components to Base UI [[353fffe](https://github.com/baptisteArno/typebot.io/commit/353fffe2374534f9b4133df6db9cc4bff1ac0b9e)]
+- ♻️ Migrate Spinner to Base UI [[fb0d1e8](https://github.com/baptisteArno/typebot.io/commit/fb0d1e8efd95ebaebe639743ed1a813c8f061dc6)]
+- ♻️ Migrate Alert components to Base UI [[47472b5](https://github.com/baptisteArno/typebot.io/commit/47472b58f13311b5cee91c89815071d04eda72b7)]
+- ♻️ Migrate Switch components to Base UI [[5cdc3a9](https://github.com/baptisteArno/typebot.io/commit/5cdc3a9c238495aff60d9fd6e2898c013d514fbf)]
+- 🔧 Add deleteResultsRange and deleteS3Object scripts [[e8a20c9](https://github.com/baptisteArno/typebot.io/commit/e8a20c92c8416df584090975832803b346deabb6)]
+- 🔧 Fix restore script to be reliable [[7a97289](https://github.com/baptisteArno/typebot.io/commit/7a97289867dee3965b1a258bb652ec1adabe9dff)]
+- ♻️ Migrate Accordion to Base UI [[ebd3ee6](https://github.com/baptisteArno/typebot.io/commit/ebd3ee680931b67a44e2431ee3e7efffe303c5fa)]
+- 🔧 Improve exportResults script [[d4f4a3d](https://github.com/baptisteArno/typebot.io/commit/d4f4a3dbb5cb58405f1a2255471f8287187b9476)]
+- ♻️ Migrate NumberInput to Base UI [[1a98232](https://github.com/baptisteArno/typebot.io/commit/1a9823218a8660e71f3e11dccc64a5c94a8e2c86)]
+- 🔧 Remove Typebot suffix for blog page metadata title [[60ab203](https://github.com/baptisteArno/typebot.io/commit/60ab2039007b0e9691722ea68e3d84554763f3fc)]
+- ♻️ Migrate CodeEditor to Base UI [[946ad52](https://github.com/baptisteArno/typebot.io/commit/946ad52f07832c284cfda477dd28971669287535)]
+- ♻️ Migrate VariableSearchInput to Base UI Combobox [[5b7374e](https://github.com/baptisteArno/typebot.io/commit/5b7374e1a1da8611a6ac36cb1b0ea8381346767e)]
+- 🔧 Add churn agent daily script [[2b5f51a](https://github.com/baptisteArno/typebot.io/commit/2b5f51a9d7dccea1ffa6149b35ff8920daed4cd8)]
+- 🔧 Update exportResults script [[bbf27c6](https://github.com/baptisteArno/typebot.io/commit/bbf27c68086780de02cf5b131b431e4b21cbfd16)]
+- ♻️ Remove text and textarea barrel file [[7647036](https://github.com/baptisteArno/typebot.io/commit/7647036d096da8e792c03ddae85db5580d64b08e)]
+- ♻️ Migrate Autocomplete to Base UI [[1b289f0](https://github.com/baptisteArno/typebot.io/commit/1b289f0ba6b39c0f4de0423fd4fbd94bf11cd919)]
+
+### Miscellaneous
+
+- 🛂 Allow ADMIN_EMAIL for getPhoneNumber route [[40eb8a9](https://github.com/baptisteArno/typebot.io/commit/40eb8a94b52b02883d4b154dcd859616bff712a5)]
+- 🧑‍💻 Fix initial build execution including typecheck [[f4622de](https://github.com/baptisteArno/typebot.io/commit/f4622de1d6f463d6022a075727d7d18e4faa836f)]
+
+
 <a name="3.12.0"></a>
 ## 3.12.0 (2025-10-03)
 
