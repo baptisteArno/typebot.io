@@ -90,6 +90,7 @@ ARG BUN_PKG_MANAGER
 ARG SCOPE
 COPY --from=pruned /app/out/full/ .
 COPY bun.lock .
+COPY bunfig.toml .
 RUN SENTRYCLI_SKIP_DOWNLOAD=1 bun install
 RUN SKIP_ENV_CHECK=true bunx turbo build --filter="${SCOPE}"
 
