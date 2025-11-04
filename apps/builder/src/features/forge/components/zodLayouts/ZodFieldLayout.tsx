@@ -435,24 +435,21 @@ const ZodArrayContent = ({
   const type = schema._def.type._def.innerType?._def.typeName;
   if (type === "ZodString" || type === "ZodNumber" || type === "ZodEnum")
     return (
-      <div
-        className={cx(
-          "flex flex-col gap-0",
-          layout?.mergeWithLastField ? "mt-[-3px]" : undefined,
-        )}
+      <Field.Root
+        className={cx(layout?.mergeWithLastField ? "mt-[-3px]" : undefined)}
       >
         {layout?.label && <Field.Label>{layout.label}</Field.Label>}
-        <div
-          className={cx(
-            "flex flex-col gap-2 p-4 rounded-md flex-1 border",
-            layout?.mergeWithLastField
-              ? "border-t-0 rounded-t-none pt-5"
-              : undefined,
-          )}
-        >
-          {type === "ZodString" ? (
-            <TagsInput items={data} onValueChange={onDataChange} />
-          ) : (
+        {type === "ZodString" ? (
+          <TagsInput items={data} onValueChange={onDataChange} />
+        ) : (
+          <div
+            className={cx(
+              "flex flex-col gap-2 rounded-md flex-1 border p-4",
+              layout?.mergeWithLastField
+                ? "border-t-0 rounded-t-none pt-5"
+                : undefined,
+            )}
+          >
             <PrimitiveList
               onItemsChange={(items) => {
                 onDataChange(items);
@@ -472,9 +469,9 @@ const ZodArrayContent = ({
                 />
               )}
             </PrimitiveList>
-          )}
-        </div>
-      </div>
+          </div>
+        )}
+      </Field.Root>
     );
   return (
     <TableList
