@@ -1,4 +1,3 @@
-import type { Coordinates } from "@dnd-kit/utilities";
 import { useTranslate } from "@tolgee/react";
 import { shouldOpenItemSettingsOnCreation } from "@typebot.io/blocks-core/helpers";
 import type {
@@ -18,6 +17,7 @@ import {
   useBlockDnd,
 } from "@/features/graph/providers/GraphDndProvider";
 import { useGraph } from "@/features/graph/providers/GraphProvider";
+import type { Coordinates } from "@/features/graph/types";
 import { useEventListener } from "@/hooks/useEventListener";
 import { BlockSourceEndpoint } from "../../endpoints/BlockSourceEndpoint";
 import { PlaceholderNode } from "../PlaceholderNode";

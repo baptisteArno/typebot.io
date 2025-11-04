@@ -1,4 +1,3 @@
-import type { Coordinates } from "@dnd-kit/utilities";
 import type { Edge } from "@typebot.io/typebot/schemas/edge";
 import {
   createContext,
@@ -9,7 +8,7 @@ import {
   useState,
 } from "react";
 import { graphPositionDefaultValue } from "../constants";
-import type { ConnectingIds } from "../types";
+import type { ConnectingIds, Coordinates } from "../types";
 
 type Position = Coordinates & { scale: number };
 

@@ -1,4 +1,3 @@
-import type { Coordinates } from "@dnd-kit/utilities";
 import { omit } from "@typebot.io/lib/utils";
 import assert from "assert";
 import { useMemo, useState } from "react";
@@ -13,7 +12,7 @@ import { computeEdgePathToMouse } from "../../helpers/computeEdgePathToMouth";
 import { useSelectionStore } from "../../hooks/useSelectionStore";
 import { useEndpoints } from "../../providers/EndpointsProvider";
 import { useGraph } from "../../providers/GraphProvider";
-import type { ConnectingIds } from "../../types";
+import type { ConnectingIds, Coordinates } from "../../types";
 
 type Props = {
   connectingIds: ConnectingIds;

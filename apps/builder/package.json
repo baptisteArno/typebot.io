@@ -11,9 +11,8 @@
   "dependencies": {
     "@auth/core": "^0.39.1",
     "@braintree/sanitize-url": "^7.0.1",
-    "@dnd-kit/core": "^6.0.8",
-    "@dnd-kit/sortable": "^7.0.2",
-    "@dnd-kit/utilities": "^3.2.1",
+    "@dnd-kit/react": "^0.1.21",
+    "@dnd-kit/helpers": "^0.1.21",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@giphy/js-fetch-api": "^5.0.0",

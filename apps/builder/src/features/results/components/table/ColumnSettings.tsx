@@ -1,30 +1,12 @@
-import {
-  closestCenter,
-  DndContext,
-  type DragEndEvent,
-  DragOverlay,
-  type DragStartEvent,
-  KeyboardSensor,
-  PointerSensor,
-  useSensor,
-  useSensors,
-} from "@dnd-kit/core";
-import {
-  arrayMove,
-  SortableContext,
-  sortableKeyboardCoordinates,
-  useSortable,
-  verticalListSortingStrategy,
-} from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
+import { move } from "@dnd-kit/helpers";
+import { DragDropProvider } from "@dnd-kit/react";
+import { useSortable } from "@dnd-kit/react/sortable";
 import type { ResultHeaderCell } from "@typebot.io/results/schemas/results";
 import { Button } from "@typebot.io/ui/components/Button";
 import { DragDropVerticalIcon } from "@typebot.io/ui/icons/DragDropVerticalIcon";
 import { ViewIcon } from "@typebot.io/ui/icons/ViewIcon";
 import { ViewOffSlashIcon } from "@typebot.io/ui/icons/ViewOffSlashIcon";
 import { cx } from "@typebot.io/ui/lib/cva";
-import { useState } from "react";
-import { Portal } from "@/components/Portal";
 import { HeaderIcon } from "../HeaderIcon";
 
 type Props = {
@@ -42,119 +24,76 @@ export const ColumnSettings = ({
   columnOrder,
   onColumnOrderChange,
 }: Props) => {
-  const sensors = useSensors(
-    useSensor(PointerSensor),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
-    }),
-  );
-  const [draggingColumnId, setDraggingColumnId] = useState<string | null>(null);
-
-  const onEyeClick = (id: string) => () => {
-    columnVisibility[id] === false
-      ? setColumnVisibility({ ...columnVisibility, [id]: true })
-      : setColumnVisibility({ ...columnVisibility, [id]: false });
-  };
-  const sortedHeader = resultHeader.sort(
-    (a, b) => columnOrder.indexOf(a.id) - columnOrder.indexOf(b.id),
-  );
-  const hiddenHeaders = resultHeader.filter(
-    (header) => columnVisibility[header.id] === false,
-  );
-
-  const handleDragStart = (event: DragStartEvent) => {
-    const { active } = event;
-    setDraggingColumnId(active.id as string);
+  const toggleColumnVisibility = (id: string) => () => {
+    setColumnVisibility({
+      ...columnVisibility,
+      [id]: columnVisibility[id] !== false,
+    });
   };
 
-  const handleDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event;
-
-    if (active.id !== over?.id) {
-      const oldIndex = columnOrder.indexOf(active.id as string);
-      const newIndex = columnOrder.indexOf(over?.id as string);
-      if (newIndex === -1 || oldIndex === -1) return;
-      const newColumnOrder = arrayMove(columnOrder, oldIndex, newIndex);
-      onColumnOrderChange(newColumnOrder);
-    }
-  };
+  const draggableColumnIds = columnOrder.filter(
+    (id) => id !== "select" && id !== "logs",
+  );
 
   return (
     <div className="flex flex-col gap-2">
       <p className="font-medium text-sm">Shown in table:</p>
-      <DndContext
-        sensors={sensors}
-        collisionDetection={closestCenter}
-        onDragStart={handleDragStart}
-        onDragEnd={handleDragEnd}
+      <DragDropProvider
+        onDragEnd={(event) => {
+          onColumnOrderChange([
+            "select",
+            ...move(draggableColumnIds, event),
+            "logs",
+          ]);
+        }}
       >
-        <SortableContext
-          items={columnOrder}
-          strategy={verticalListSortingStrategy}
-        >
-          {sortedHeader.map((header) => (
-            <SortableColumns
-              key={header.id}
-              header={header}
-              onEyeClick={onEyeClick}
-              hiddenHeaders={hiddenHeaders}
-            />
-          ))}
-        </SortableContext>
-        <Portal>
-          <DragOverlay dropAnimation={{ duration: 0 }}>
-            {draggingColumnId ? <div className="flex" /> : null}
-          </DragOverlay>
-        </Portal>
-      </DndContext>
+        {draggableColumnIds.map((id, index) => (
+          <SortableColumns
+            key={id}
+            header={resultHeader.find((h) => h.id === id)!}
+            toggleColumnVisibility={toggleColumnVisibility}
+            columnVisibility={columnVisibility}
+            index={index}
+          />
+        ))}
+      </DragDropProvider>
     </div>
   );
 };
 
 const SortableColumns = ({
   header,
-  hiddenHeaders,
-  onEyeClick,
+  columnVisibility,
+  index,
+  toggleColumnVisibility,
 }: {
   header: ResultHeaderCell;
-  hiddenHeaders: ResultHeaderCell[];
-  onEyeClick: (key: string) => () => void;
+  columnVisibility: { [key: string]: boolean };
+  index: number;
+  toggleColumnVisibility: (key: string) => () => void;
 }) => {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({ id: header.id });
+  const { ref, isDragging, handleRef } = useSortable({
+    id: header.id,
+    index,
+  });
 
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-  };
-
-  const isHidden = hiddenHeaders.some(
-    (hiddenHeader) => hiddenHeader.id === header.id,
-  );
+  const isHidden = columnVisibility[header.id] === false;
 
   return (
     <div
+      ref={ref}
       className={cx(
         "flex justify-between",
         isDragging || isHidden ? "opacity-50" : "opacity-100",
       )}
-      ref={setNodeRef}
-      style={style}
-      {...attributes}
     >
       <div className="flex items-center gap-2 overflow-hidden">
         <Button
           size="icon"
           className="cursor-grab size-7"
-          aria-label={"Drag"}
+          aria-label="Drag"
           variant="ghost"
-          {...listeners}
+          ref={handleRef}
         >
           <DragDropVerticalIcon />
         </Button>
@@ -163,8 +102,8 @@ const SortableColumns = ({
       </div>
       <Button
         size="icon"
-        aria-label={"Hide column"}
-        onClick={onEyeClick(header.id)}
+        aria-label="Hide column"
+        onClick={toggleColumnVisibility(header.id)}
         className="size-7"
         variant="secondary"
       >
