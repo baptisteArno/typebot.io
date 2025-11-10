@@ -25,7 +25,7 @@ export const executeLogic =
       case LogicBlockType.TYPEBOT_LINK:
         return executeTypebotLink(state, block)
       case LogicBlockType.WAIT:
-        return executeWait(state, block)
+        return await executeWait(state, block)
       case LogicBlockType.JUMP:
         return executeJumpBlock(state, block.options)
       case LogicBlockType.AB_TEST:

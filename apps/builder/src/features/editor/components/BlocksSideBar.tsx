@@ -47,11 +47,7 @@ const hiddenInputTypes = [
   InputBlockType.FILE,
 ]
 
-const hiddenLogicTypes = [
-  LogicBlockType.REDIRECT,
-  LogicBlockType.WAIT,
-  LogicBlockType.AB_TEST,
-]
+const hiddenLogicTypes = [LogicBlockType.REDIRECT, LogicBlockType.AB_TEST]
 
 const hiddenIntegrationTypes = [
   IntegrationBlockType.GOOGLE_ANALYTICS,

@@ -1,16 +1,16 @@
-import {
-  Accordion,
-  AccordionButton,
-  AccordionIcon,
-  AccordionItem,
-  AccordionPanel,
-  Stack,
-} from '@chakra-ui/react'
+import { Stack, useToast } from '@chakra-ui/react'
 import React from 'react'
 import { TextInput } from '@/components/inputs'
-import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
 import { WaitBlock } from '@typebot.io/schemas'
-import { defaultWaitOptions } from '@typebot.io/schemas/features/blocks/logic/wait/constants'
+
+// Derive max wait seconds from env (client-side variable must be NEXT_PUBLIC_*)
+const rawMax =
+  process.env.NEXT_PUBLIC_WAIT_BLOCK_MAX_SECONDS ||
+  process.env.WAIT_BLOCK_MAX_SECONDS ||
+  '30'
+const parsedMax = parseInt(rawMax, 10)
+const MAX_WAIT_SECONDS =
+  Number.isFinite(parsedMax) && parsedMax > 0 ? parsedMax : 30
 
 type Props = {
   options: WaitBlock['options']
@@ -18,39 +18,39 @@ type Props = {
 }
 
 export const WaitSettings = ({ options, onOptionsChange }: Props) => {
-  const handleSecondsChange = (secondsToWaitFor: string | undefined) => {
-    onOptionsChange({ ...options, secondsToWaitFor })
-  }
+  const toast = useToast()
 
-  const updateShouldPause = (shouldPause: boolean) => {
-    onOptionsChange({ ...options, shouldPause })
+  const handleSecondsChange = (value: string | undefined) => {
+    if (!value) {
+      onOptionsChange({ ...options, secondsToWaitFor: undefined })
+      return
+    }
+
+    const parsed = parseFloat(value)
+
+    if (isNaN(parsed)) return
+
+    const clamped = Math.min(parsed, MAX_WAIT_SECONDS)
+
+    if (parsed > MAX_WAIT_SECONDS) {
+      toast({
+        title: 'Maximum limit reached',
+        description: `The maximum waiting time allowed is ${MAX_WAIT_SECONDS} seconds.`,
+        status: 'warning',
+        duration: 3000,
+        isClosable: true,
+      })
+    }
+    onOptionsChange({ ...options, secondsToWaitFor: clamped.toString() })
   }
 
   return (
     <Stack spacing={4}>
       <TextInput
-        label="Seconds to wait for:"
+        label={`Seconds to wait for (max ${MAX_WAIT_SECONDS}s):`}
         defaultValue={options?.secondsToWaitFor}
         onChange={handleSecondsChange}
       />
-      <Accordion allowToggle>
-        <AccordionItem>
-          <AccordionButton justifyContent="space-between">
-            Advanced
-            <AccordionIcon />
-          </AccordionButton>
-          <AccordionPanel py="4">
-            <SwitchWithLabel
-              label="Pause the flow"
-              moreInfoContent="When enabled, the flow is paused until the client sends another message. This is automatic on the web bot."
-              initialValue={
-                options?.shouldPause ?? defaultWaitOptions.shouldPause
-              }
-              onCheckChange={updateShouldPause}
-            />
-          </AccordionPanel>
-        </AccordionItem>
-      </Accordion>
     </Stack>
   )
 }
