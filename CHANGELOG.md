@@ -1,5 +1,18 @@
 # Changelog
 
+<a name="3.13.1"></a>
+## 3.13.1 (2025-11-11)
+
+### Fixed
+
+- 🚑 Fix string list forge crash [[21b9f94](https://github.com/baptisteArno/typebot.io/commit/21b9f941d1bbe9fc3d79a2d21d1decb44592a94a)]
+
+### Internal
+
+- ♻️ Migrate testHttpRequest to tRPC and strengthen security [[570a3ab](https://github.com/baptisteArno/typebot.io/commit/570a3ab25d7f78101dab14bc83cf29e96c2634a2)]
+- ♻️ Upgrade to dndkit/react [[e30a3d3](https://github.com/baptisteArno/typebot.io/commit/e30a3d3cd862fd70b7a08b4e8f872edf07f0b49d)]
+
+
 <a name="3.13.0"></a>
 ## 3.13.0 (2025-11-03)
 
