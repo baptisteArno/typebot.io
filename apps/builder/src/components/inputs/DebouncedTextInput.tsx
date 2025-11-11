@@ -65,6 +65,9 @@ export const DebouncedTextInputWithVariablesButton = ({
         onValueChange={handleChange}
         ref={ref}
         className={cn(className, "pr-8")}
+        onBlur={() => {
+          commitValue.flush();
+        }}
       />
       <VariablesButton
         variant="ghost"

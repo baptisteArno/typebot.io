@@ -9,6 +9,8 @@ export const trackAndReportYesterdaysResults = async () => {
   yesterdayMidnight.setDate(yesterdayMidnight.getDate() - 1);
   yesterdayMidnight.setUTCHours(0, 0, 0, 0);
 
+  console.log(`Fetching recently active workspaces...`);
+
   const recentWorkspaces = await prisma.workspace.findMany({
     where: {
       lastActivityAt: {
@@ -39,8 +41,15 @@ export const trackAndReportYesterdaysResults = async () => {
 
   let resultsSum = 0;
   const newResultsCollectedEvents: TelemetryEvent[] = [];
+  let index = 1;
   for (const workspace of recentWorkspaces) {
-    console.log("Getting total results for workspace", workspace.id);
+    console.log(
+      "Processing workspace",
+      index + 1,
+      "/",
+      recentWorkspaces.length,
+    );
+    index += 1;
     const results = await prisma.result.groupBy({
       by: ["typebotId"],
       _count: {

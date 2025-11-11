@@ -24,10 +24,10 @@ import { CodeEditor } from "@/components/inputs/CodeEditor";
 import { TableList, type TableListItemProps } from "@/components/TableList";
 import { CredentialsDropdown } from "@/features/credentials/components/CredentialsDropdown";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
+import { trpcClient } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
 import { computeDeepKeysMappingSuggestionList } from "../helpers/computeDeepKeysMappingSuggestionList";
 import { convertVariablesForTestToVariables } from "../helpers/convertVariablesForTestToVariables";
-import { executeHttpRequest } from "../queries/executeHttpRequestQuery";
 import { HeadersInputs, QueryParamsInputs } from "./KeyValueInputs";
 import { DataVariableInputs } from "./ResponseMappingInputs";
 import { VariableForTestInputs } from "./VariableForTestInputs";
@@ -82,21 +82,26 @@ export const HttpRequestAdvancedConfigForm = ({
   const executeTestRequest = async () => {
     if (!typebot) return;
     setIsTestResponseLoading(true);
-    if (!options?.webhook) await save();
-    else await save();
-    const { data, error } = await executeHttpRequest(
-      typebot.id,
-      convertVariablesForTestToVariables(
-        options?.variablesForTest ?? [],
-        typebot.variables,
-      ),
-      { blockId },
-    );
-    if (error) return toast({ description: error.message });
-    setTestResponse(JSON.stringify(data, undefined, 2));
-    setResponseKeys(computeDeepKeysMappingSuggestionList(data));
+    await save();
+    try {
+      const data = await trpcClient.httpRequest.testHttpRequest.mutate({
+        typebotId: typebot.id,
+        blockId: blockId,
+        variables: convertVariablesForTestToVariables(
+          options?.variablesForTest ?? [],
+          typebot.variables,
+        ),
+      });
+      setTestResponse(JSON.stringify(data, undefined, 2));
+      setResponseKeys(computeDeepKeysMappingSuggestionList(data));
+      onNewTestResponse?.();
+    } catch (error) {
+      toast({
+        description: error instanceof Error ? error.message : "Unknown error",
+        title: "While testing HTTP request",
+      });
+    }
     setIsTestResponseLoading(false);
-    onNewTestResponse?.();
   };
 
   const updateIsExecutedOnClient = (isExecutedOnClient: boolean) =>

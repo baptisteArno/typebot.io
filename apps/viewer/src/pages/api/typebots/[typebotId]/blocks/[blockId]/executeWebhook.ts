@@ -103,14 +103,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const parsedWebhook = await parseHttpRequestAttributes({
       httpRequest: webhook,
       isCustomBody: block.options?.isCustomBody,
-      typebot: {
-        ...typebot,
-        variables: typebot.variables.map((v) => {
-          const matchingVariable = variables.find(byId(v.id));
-          if (!matchingVariable) return v;
-          return { ...v, value: matchingVariable.value };
-        }),
-      },
+      variables: typebot.variables.map((v) => {
+        const matchingVariable = variables.find(byId(v.id));
+        if (!matchingVariable) return v;
+        return { ...v, value: matchingVariable.value };
+      }),
       answers,
       sessionStore: getSessionStore(typebotId),
     });

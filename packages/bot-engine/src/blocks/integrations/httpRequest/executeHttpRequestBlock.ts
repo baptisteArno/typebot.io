@@ -79,7 +79,7 @@ export const executeHttpRequestBlock = async (
   const parsedHttpRequest = await parseHttpRequestAttributes({
     httpRequest,
     isCustomBody: block.options?.isCustomBody,
-    typebot: state.typebotsQueue[0].typebot,
+    variables: state.typebotsQueue[0].typebot.variables,
     answers: state.typebotsQueue[0].answers,
     sessionStore,
     proxy: block.options?.proxyCredentialsId
@@ -137,14 +137,14 @@ const checkIfBodyIsAVariable = (body: string) => /^{{.+}}$/.test(body);
 export const parseHttpRequestAttributes = async ({
   httpRequest,
   isCustomBody,
-  typebot,
+  variables,
   answers,
   sessionStore,
   proxy,
 }: {
   httpRequest: HttpRequest;
   isCustomBody?: boolean;
-  typebot: TypebotInSession;
+  variables: TypebotInSession["variables"];
   answers: AnswerInSessionState[];
   sessionStore: SessionStore;
   proxy?: {
@@ -173,13 +173,13 @@ export const parseHttpRequestAttributes = async ({
   }
   const headers = convertKeyValueTableToObject({
     keyValues: httpRequest.headers,
-    variables: typebot.variables,
+    variables,
     sessionStore,
   }) as ExecutableHttpRequest["headers"] | undefined;
   const queryParams = stringify(
     convertKeyValueTableToObject({
       keyValues: httpRequest.queryParams,
-      variables: typebot.variables,
+      variables,
       concatDuplicateInArray: true,
       sessionStore,
     }),
@@ -188,7 +188,7 @@ export const parseHttpRequestAttributes = async ({
   const bodyContent = await getBodyContent({
     body: httpRequest.body,
     answers,
-    variables: typebot.variables,
+    variables,
     isCustomBody,
   });
   const method = httpRequest.method ?? defaultHttpRequestAttributes.method;
@@ -196,7 +196,7 @@ export const parseHttpRequestAttributes = async ({
     bodyContent && method !== HttpMethod.GET
       ? safeJsonParse(
           parseVariables(bodyContent, {
-            variables: typebot.variables,
+            variables,
             sessionStore,
             isInsideJson: !checkIfBodyIsAVariable(bodyContent),
           }),
@@ -214,7 +214,7 @@ export const parseHttpRequestAttributes = async ({
   return {
     url: parseVariables(
       httpRequest.url + (queryParams !== "" ? `?${queryParams}` : ""),
-      { variables: typebot.variables, sessionStore },
+      { variables, sessionStore },
     ),
     basicAuth,
     method,
