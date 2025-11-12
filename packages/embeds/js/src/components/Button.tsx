@@ -14,7 +14,7 @@ export type ButtonProps = {
 >;
 
 export const buttonVariants = cva(
-  "font-semibold focus:outline-none filter hover:brightness-90 active:brightness-75 disabled:opacity-50 disabled:cursor-not-allowed disabled:brightness-100 flex justify-center shrink-0 transition-[filter] duration-200",
+  "font-semibold focus:outline-none filter hover:brightness-90 active:brightness-75 disabled:opacity-50 disabled:cursor-not-allowed disabled:brightness-100 flex justify-center shrink-0 transition-[filter] duration-200 cursor-pointer",
   {
     variants: {
       variant: {
