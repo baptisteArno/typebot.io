@@ -42,6 +42,9 @@ export type TextInputSubmitContent = {
   type: "text";
   value: string;
   label?: string;
+  metadata?: {
+    replyId?: string;
+  };
   attachments?: Attachment[];
 };
 

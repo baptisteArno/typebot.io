@@ -264,6 +264,7 @@ const executeGroup = ({
         {
           type: "text",
           text: answer.content,
+          attachedFileUrls: answer.attachedFileUrls,
         },
         {
           block,

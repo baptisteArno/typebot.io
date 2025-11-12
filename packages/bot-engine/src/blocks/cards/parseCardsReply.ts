@@ -13,10 +13,12 @@ export const parseCardsReply = (
     block,
     variables,
     sessionStore,
+    replyId,
   }: {
     block: CardsBlock;
     variables: Variable[];
     sessionStore: SessionStore;
+    replyId: string | undefined;
   },
 ): ParsedReply => {
   const displayedItems = injectVariableValuesInCardsBlock(block, {
@@ -28,10 +30,15 @@ export const parseCardsReply = (
     (a, b) => (b.title?.length ?? 0) - (a.title?.length ?? 0),
   );
   const matchedItem = longestItemsFirst.find((item) => {
-    matchedPath = item.paths?.find((path) => path.id === inputValue);
+    matchedPath = item.paths?.find(
+      (path) => path.id === inputValue || (replyId && path.id === replyId),
+    );
     if (matchedPath) return true;
     return item.title?.toLowerCase().trim() === inputValue.toLowerCase().trim();
   });
+
+  // Limitation. If no path is matched, we default to the first path. Should only happen when computing result transcript.
+  if (!matchedPath) matchedPath = matchedItem?.paths?.[0];
 
   if (!matchedItem) return { status: "fail" };
 

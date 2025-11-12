@@ -566,6 +566,7 @@ const convertSubmitContentToMessage = (
       type: "text",
       text: answer.value,
       attachedFileUrls: answer.attachments?.map((attachment) => attachment.url),
+      metadata: answer.metadata,
     };
   if (answer.type === "recording") return { type: "audio", url: answer.url };
 };

@@ -113,7 +113,7 @@ const Transcript = ({
                   : "bg-orange-9 text-white rounded-bl-lg rounded-br-sm",
               )}
             >
-              <p className="text-sm whitespace-pre-wrap">
+              <p className="text-sm whitespace-pre-wrap overflow-hidden">
                 {message.type === "text"
                   ? content
                   : `[${message.type.toUpperCase()}] ${content}`}

@@ -17,10 +17,15 @@ type Props = {
 
 export const CardsCaroussel = (props: Props) => {
   const onButtonClick = (itemIndex: number, pathIndex: number) => {
+    const pathId = props.block.items[itemIndex].paths?.[pathIndex]?.id;
+    const pathText = props.block.items[itemIndex].paths?.[pathIndex]?.text;
     props.onSubmit({
       type: "text",
-      value: props.block.items[itemIndex].paths?.[pathIndex]?.id ?? "",
-      label: props.block.items[itemIndex].paths?.[pathIndex]?.text ?? "",
+      value: pathId ?? pathText ?? "",
+      label: pathText ?? "",
+      metadata: {
+        replyId: pathId,
+      },
       attachments: props.block.items[itemIndex].imageUrl
         ? [{ url: props.block.items[itemIndex].imageUrl, type: "image" }]
         : undefined,

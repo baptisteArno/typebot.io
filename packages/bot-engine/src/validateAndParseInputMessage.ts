@@ -154,6 +154,7 @@ export const validateAndParseInputMessage = (
         block,
         variables,
         sessionStore,
+        replyId: message.metadata?.replyId,
       });
     }
   }
