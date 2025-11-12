@@ -503,12 +503,12 @@ export const ChatContainer = (props: Props) => {
         <div
           ref={chatContainer}
           class={cx(
-            "@container relative typebot-chat-view w-full flex flex-col items-center pt-5 max-w-chat-container",
+            "@container relative typebot-chat-view w-full flex flex-col items-center pt-5 max-w-chat-container-max-width h-full",
             isChatContainerTransparent()
               ? undefined
               : cx(
                   "overflow-y-auto scroll-smooth scrollable-container",
-                  "@xs:min-h-chat-container max-h-full @xs:max-h-chat-container @xs:rounded-chat-container",
+                  "@xs:min-h-chat-container-min-height max-h-full @xs:max-h-chat-container-max-height @xs:rounded-chat-container",
                 ),
           )}
         >
