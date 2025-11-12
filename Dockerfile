@@ -2,9 +2,11 @@ FROM node:18-bullseye-slim AS base
 WORKDIR /app
 ARG SCOPE
 ENV SCOPE=${SCOPE}
+# Install required base packages (openssl + curl for preStop drain hook and build)
 RUN apt-get -qy update \
     && apt-get -qy --no-install-recommends install \
     openssl \
+    curl \
     && apt-get autoremove -yq \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
@@ -17,7 +19,11 @@ COPY . .
 RUN turbo prune --scope=${SCOPE} --docker
 
 FROM base AS builder
-RUN apt-get -qy update && apt-get -qy --no-install-recommends install openssl git
+RUN apt-get -qy update \
+    && apt-get -qy --no-install-recommends install git \
+    && apt-get autoremove -yq \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
 COPY .gitignore .gitignore
 COPY .npmrc .pnpmfile.cjs ./

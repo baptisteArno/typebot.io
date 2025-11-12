@@ -5,6 +5,7 @@ import superjson from 'superjson'
 import * as Sentry from '@sentry/nextjs'
 import { ZodError } from 'zod'
 import { createDatadogLoggerMiddleware } from '@typebot.io/lib/trpc/createDatadogLoggerMiddleware'
+import { beginRequest } from '@typebot.io/lib'
 import { User } from '@typebot.io/prisma'
 
 const t = initTRPC
@@ -23,6 +24,18 @@ const t = initTRPC
       }
     },
   })
+
+// Tracks active tRPC procedure execution only (business logic time).
+// It does not cover raw HTTP socket duration or long-lived streams.
+// Good enough for graceful drain decisions; extend at HTTP layer if full request lifecycle is needed.
+const gracefulActiveRequestsMiddleware = t.middleware(async ({ next }) => {
+  const end = beginRequest()
+  try {
+    return await next()
+  } finally {
+    end()
+  }
+})
 
 const datadogLoggerMiddleware = createDatadogLoggerMiddleware(t, {
   service: 'typebot-builder',
@@ -51,11 +64,14 @@ const isAuthed = t.middleware(({ next, ctx }) => {
   })
 })
 
-const finalMiddleware = datadogLoggerMiddleware
+// Ordem: começa a contagem, depois logger/datadog, depois sentry, depois auth/user
+const finalMiddleware = gracefulActiveRequestsMiddleware
+  .unstable_pipe(datadogLoggerMiddleware)
   .unstable_pipe(sentryMiddleware)
   .unstable_pipe(injectUser)
 
-const authenticatedMiddleware = datadogLoggerMiddleware
+const authenticatedMiddleware = gracefulActiveRequestsMiddleware
+  .unstable_pipe(datadogLoggerMiddleware)
   .unstable_pipe(sentryMiddleware)
   .unstable_pipe(isAuthed)
 

@@ -83,61 +83,70 @@ const nextConfig = {
   async rewrites() {
     return process.env.NEXT_PUBLIC_POSTHOG_KEY
       ? [
-        {
-          source: '/ingest/:path*',
-          destination:
-            (process.env.NEXT_PUBLIC_POSTHOG_HOST ??
-              'https://app.posthog.com') + '/:path*',
-        },
-        {
-          source: '/health',
-          destination: '/api/health',
-        }, {
-          source: '/healthsql',
-          destination: '/api/healthsql',
-        },
-      ]
+          {
+            source: '/ingest/:path*',
+            destination:
+              (process.env.NEXT_PUBLIC_POSTHOG_HOST ??
+                'https://app.posthog.com') + '/:path*',
+          },
+          {
+            source: '/health',
+            destination: '/api/health',
+          },
+          {
+            source: '/healthsql',
+            destination: '/api/healthsql',
+          },
+          {
+            source: '/drain',
+            destination: '/api/drain',
+          },
+        ]
       : [
-        {
-          source: '/health',
-          destination: '/api/health',
-        },
-        {
-          source: '/healthsql',
-          destination: '/api/healthsql',
-        },
-      ]
+          {
+            source: '/health',
+            destination: '/api/health',
+          },
+          {
+            source: '/healthsql',
+            destination: '/api/healthsql',
+          },
+          {
+            source: '/drain',
+            destination: '/api/drain',
+          },
+        ]
   },
 }
 
 export default process.env.NEXT_PUBLIC_SENTRY_DSN
   ? withSentryConfig(
-    nextConfig,
-    {
-      // For all available options, see:
-      // https://github.com/getsentry/sentry-webpack-plugin#options
+      nextConfig,
+      {
+        // For all available options, see:
+        // https://github.com/getsentry/sentry-webpack-plugin#options
 
-      // Suppresses source map uploading logs during build
-      silent: true,
-      release: process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA + '-builder',
-      org: process.env.SENTRY_ORG,
-      project: process.env.SENTRY_PROJECT,
-    },
-    {
-      // For all available options, see:
-      // https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/
+        // Suppresses source map uploading logs during build
+        silent: true,
+        release: process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA + '-builder',
+        org: process.env.SENTRY_ORG,
+        project: process.env.SENTRY_PROJECT,
+      },
+      {
+        // For all available options, see:
+        // https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/
 
-      // Upload a larger set of source maps for prettier stack traces (increases build time)
-      widenClientFileUpload: true,
+        // Upload a larger set of source maps for prettier stack traces (increases build time)
+        widenClientFileUpload: true,
 
-      // Routes browser requests to Sentry through a Next.js rewrite to circumvent ad-blockers (increases server load)
-      tunnelRoute: '/monitoring',
+        // Routes browser requests to Sentry through a Next.js rewrite to circumvent ad-blockers (increases server load)
+        tunnelRoute: '/monitoring',
 
-      // Hides source maps from generated client bundles
-      hideSourceMaps: true,
+        // Hides source maps from generated client bundles
+        hideSourceMaps: true,
 
-      // Automatically tree-shake Sentry logger statements to reduce bundle size
-      disableLogger: true,
-    }
-  )
+        // Automatically tree-shake Sentry logger statements to reduce bundle size
+        disableLogger: true,
+      }
+    )
   : nextConfig

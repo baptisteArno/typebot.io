@@ -84,8 +84,15 @@ spec:
             timeoutSeconds: 3
             successThreshold: 2
             initialDelaySeconds: 35
+          lifecycle:
+            preStop:
+              exec:
+                command:
+                  - /bin/sh
+                  - -c
+                  - 'curl -fs -X POST http://localhost:3001/drain || true'
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
       securityContext: {}
-      terminationGracePeriodSeconds: 30
+      terminationGracePeriodSeconds: 180
