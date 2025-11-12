@@ -6,6 +6,7 @@ import {
 } from "@typebot.io/blocks-bubbles/video/constants";
 import type { EmbeddableVideoBubbleContentType } from "@typebot.io/blocks-bubbles/video/schema";
 import type { ContinueChatResponse } from "@typebot.io/chat-api/schemas";
+import { extensionFromMimeType } from "@typebot.io/lib/extensionFromMimeType";
 import { isSvgSrc } from "@typebot.io/lib/utils";
 import { convertRichTextToMarkdown } from "@typebot.io/rich-text/convertRichTextToMarkdown";
 import { getOrUploadMedia, type UploadMediaCache } from "./getOrUploadMedia";
@@ -131,6 +132,43 @@ export const convertMessageToWhatsAppMessage = async ({
       return null;
     case BubbleBlockType.EMBED:
       if (!message.content.url) return null;
+      const fileExtension = message.content.url.split(".").pop();
+      const filename = message.content.url.split("/").pop();
+      if (
+        fileExtension &&
+        Object.entries(extensionFromMimeType).some(
+          ([mimeType, extension]) =>
+            !mimeType.includes("audio") &&
+            !mimeType.includes("video") &&
+            !mimeType.includes("image") &&
+            extension === fileExtension,
+        )
+      ) {
+        if (mediaCache) {
+          const mediaId = await getOrUploadMedia({
+            url: message.content.url,
+            cache: mediaCache,
+          });
+
+          if (mediaId) {
+            return {
+              type: "document",
+              document: {
+                id: mediaId,
+                filename,
+              },
+            };
+          }
+        }
+
+        return {
+          type: "document",
+          document: {
+            link: message.content.url,
+            filename,
+          },
+        };
+      }
       return {
         type: "text",
         text: {
