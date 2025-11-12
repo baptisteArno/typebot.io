@@ -571,5 +571,12 @@
   "preview.flowHistory.summary.oldest": "Oldest:",
   "preview.flowHistory.summary.newest": "Newest:",
   "preview.flowHistory.item.fromPreviousVersion": "from previous version",
-  "preview.flowHistory.item.restoredBy": "by"
+  "preview.flowHistory.item.restoredBy": "by",
+  "blocks.logic.wait.configure.label": "Configure...",
+  "blocks.logic.wait.prefix": "Wait for",
+  "blocks.logic.wait.seconds": "seconds",
+  "blocks.logic.wait.settings.input.label": "Seconds to wait (max {max}s):",
+  "blocks.logic.wait.settings.toast.maxReached.title": "Maximum limit reached",
+  "blocks.logic.wait.settings.toast.maxReached.description": "The maximum waiting time allowed is {max} seconds.",
+  "blocks.logic.wait.validation.secondsOrVariable": "Must be a number or a variable in {{}}"
 }

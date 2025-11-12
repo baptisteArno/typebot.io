@@ -1,6 +1,7 @@
 import { z } from '../../../../zod'
 import { blockBaseSchema } from '../../shared'
 import { LogicBlockType } from '../constants'
+import { variableStringSchema } from '../../../utils'
 
 // Read max seconds from env (shared code - server or builder at build time)
 const rawMax =
@@ -13,9 +14,21 @@ const MAX_WAIT_SECONDS =
 
 export const waitOptionsSchema = z.object({
   secondsToWaitFor: z
-    .string()
+    .union([
+      // Variable reference like {{myVariable}}
+      variableStringSchema,
+      // Raw number string, will be parsed & clamped
+      z.string().refine((val) => !isNaN(parseFloat(val)), {
+        // i18n key consumed in UI layer when displaying zod errors
+        message: 'blocks.logic.wait.validation.secondsOrVariable',
+      }),
+    ])
     .transform((val) => {
-      const parsed = parseFloat(val)
+      // If matches variable schema, keep original (already validated)
+      if (typeof val === 'string' && /^{{.+}}$/g.test(val)) {
+        return val.trim()
+      }
+      const parsed = parseFloat(val as string)
       if (isNaN(parsed)) return undefined
       return Math.min(parsed, MAX_WAIT_SECONDS).toString()
     })

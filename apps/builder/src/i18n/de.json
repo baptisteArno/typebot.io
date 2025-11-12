@@ -247,5 +247,11 @@
   "workspace.settings.modal.menu.settings.label": "Einstellungen",
   "workspace.settings.modal.menu.version.label": "Version: {version}",
   "workspace.settings.modal.menu.workspace.label": "Workspace",
-  "workspace.settings.name.label": "Name:"
+  "workspace.settings.name.label": "Name:",
+  "blocks.logic.wait.configure.label": "Konfigurieren...",
+  "blocks.logic.wait.prefix": "Warte",
+  "blocks.logic.wait.seconds": "Sekunden",
+  "blocks.logic.wait.settings.input.label": "Warte-Sekunden (max. {max}s):",
+  "blocks.logic.wait.settings.toast.maxReached.title": "Maximales Limit erreicht",
+  "blocks.logic.wait.settings.toast.maxReached.description": "Die maximal erlaubte Wartezeit beträgt {max} Sekunden."
 }

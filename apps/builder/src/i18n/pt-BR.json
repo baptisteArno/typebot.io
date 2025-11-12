@@ -571,5 +571,12 @@
   "preview.flowHistory.summary.oldest": "Mais antiga:",
   "preview.flowHistory.summary.newest": "Mais recente:",
   "preview.flowHistory.item.fromPreviousVersion": "de versão anterior",
-  "preview.flowHistory.item.restoredBy": "de"
+  "preview.flowHistory.item.restoredBy": "de",
+  "blocks.logic.wait.configure.label": "Configurar...",
+  "blocks.logic.wait.prefix": "Aguardar",
+  "blocks.logic.wait.seconds": "segundos",
+  "blocks.logic.wait.settings.input.label": "Segundos de espera (máx {max}s):",
+  "blocks.logic.wait.settings.toast.maxReached.title": "Limite máximo atingido",
+  "blocks.logic.wait.settings.toast.maxReached.description": "O tempo máximo de espera permitido é {max} segundos.",
+  "blocks.logic.wait.validation.secondsOrVariable": "Deve ser um número ou uma variável em {{}}"
 }
