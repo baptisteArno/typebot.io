@@ -146,7 +146,7 @@ export const updateTypebot = authenticatedProcedure
       )
         throw new TRPCError({
           code: "BAD_REQUEST",
-          message: "Custom domain not available",
+          message: "Domain + pathname already in use",
         });
 
       if (typebot.publicId) {

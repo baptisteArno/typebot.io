@@ -13,7 +13,6 @@ import { z } from "@typebot.io/zod";
 import { getUserModeInWorkspace } from "@/features/workspace/helpers/getUserRoleInWorkspace";
 import { authenticatedProcedure } from "@/helpers/server/trpc";
 import {
-  isCustomDomainNotAvailable,
   isPublicIdNotAvailable,
   sanitizeGroups,
   sanitizeSettings,
@@ -69,18 +68,6 @@ export const createTypebot = authenticatedProcedure
         message: "Workspace not found",
       });
 
-    if (
-      typebot.customDomain &&
-      (await isCustomDomainNotAvailable({
-        customDomain: typebot.customDomain,
-        workspaceId,
-      }))
-    )
-      throw new TRPCError({
-        code: "BAD_REQUEST",
-        message: "Custom domain not available",
-      });
-
     if (typebot.publicId && (await isPublicIdNotAvailable(typebot.publicId)))
       throw new TRPCError({
         code: "BAD_REQUEST",
@@ -129,7 +116,7 @@ export const createTypebot = authenticatedProcedure
         edges: typebot.edges ?? [],
         resultsTablePreferences: typebot.resultsTablePreferences ?? undefined,
         publicId: typebot.publicId ?? undefined,
-        customDomain: typebot.customDomain ?? undefined,
+        customDomain: undefined,
       } satisfies Partial<TypebotV6>,
     });
 
