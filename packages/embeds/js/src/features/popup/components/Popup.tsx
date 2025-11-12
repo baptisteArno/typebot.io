@@ -180,7 +180,7 @@ export const Popup = (props: PopupProps) => {
           }}
         >
           <div
-            class="fixed inset-0 bg-black bg-opacity-50 transition-opacity animate-fade-in"
+            class="fixed inset-0 bg-black/50 transition-opacity animate-fade-in"
             part="overlay"
           />
           <div class="fixed inset-0 z-10 overflow-y-auto">
