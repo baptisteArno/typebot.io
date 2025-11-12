@@ -382,7 +382,7 @@ Add Button or Multiple Choice blocks to branch conversations based on intent:
 Use **Condition blocks** to create different paths:
 
 1. Add a "Logic" → "Condition" block
-2. Set conditions like: `If \{\{visitor_intent\}\} equals "I want to see a demo"`
+2. Set conditions like: `If {{visitor_intent}} equals "I want to see a demo"`
 3. Branch high-intent leads to demo booking, others to nurture sequences
 
 <Image src="/blog-assets/best-chatbot-for-lead-generation/condition-logic-button.avif" alt="Condition Logic Button" width="924px" height="684px"  />
@@ -453,11 +453,11 @@ Your chatbot is useless if leads stay trapped in the conversation. Let's send th
 3. Click **"Connect to Google Sheets"** and authorize Typebot
 4. Select your spreadsheet and sheet
 5. **Map variables** to columns:
-   - Column A: `\{\{lead_name\}\}`
-   - Column B: `\{\{lead_email\}\}`
-   - Column C: `\{\{company_name\}\}`
-   - Column D: `\{\{visitor_intent\}\}`
-   - Column E: `\{\{timestamp\}\}`
+   - Column A: `{{lead_name}}`
+   - Column B: `{{lead_email}}`
+   - Column C: `{{company_name}}`
+   - Column D: `{{visitor_intent}}`
+   - Column E: `{{timestamp}}`
 
 Now every lead automatically populates your sheet in real-time.
 
