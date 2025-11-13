@@ -4,7 +4,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "../lib/cn";
 
 const badgeVariants = cva(
-  "relative inline-flex shrink-0 items-center justify-center gap-1 border border-transparent font-medium whitespace-nowrap transition-shadow outline-hidden focus-visible:ring-2 focus-visible:ring-orange-8 focus-visible:ring-offset-1 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-64 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-3 [button,a&]:cursor-pointer pointer-coarse:[button,a&]:after:absolute pointer-coarse:[button,a&]:after:size-full pointer-coarse:[button,a&]:after:min-h-11 pointer-coarse:[button,a&]:after:min-w-11",
+  "relative inline-flex shrink-0 items-center justify-center gap-1 border border-transparent font-medium whitespace-nowrap transition-shadow outline-hidden focus-visible:ring-2 focus-visible:ring-orange-8 focus-visible:ring-offset-1 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-64 [&_svg]:pointer-events-none [&_svg]:shrink-0 [button,a&]:cursor-pointer pointer-coarse:[button,a&]:after:absolute pointer-coarse:[button,a&]:after:size-full pointer-coarse:[button,a&]:after:min-h-11 pointer-coarse:[button,a&]:after:min-w-11",
   {
     variants: {
       variant: {
@@ -21,7 +21,7 @@ const badgeVariants = cva(
         blue: "bg-blue-4 text-blue-10",
       },
       size: {
-        default: "px-1 rounded-md text-sm",
+        default: "px-1 rounded-md text-xs py-0.5",
       },
     },
     defaultVariants: {

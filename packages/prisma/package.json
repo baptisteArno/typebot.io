@@ -15,9 +15,9 @@
     "reset": "dotenv -e ./.env -e ../../.env -- prisma migrate reset --schema postgresql/schema.prisma"
   },
   "dependencies": {
-    "@prisma/client": "^6.9.0",
+    "@prisma/client": "^6.19.0",
     "@prisma/extension-read-replicas": "^0.4.1",
-    "prisma": "^6.9.0"
+    "prisma": "^6.19.0"
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*",
