@@ -189,7 +189,7 @@ export const BlocksSideBar = () => {
   return (
     <div
       className={cx(
-        "flex w-[360px] absolute pl-4 py-4 left-0 transition-[transform] duration-350 ease-out h-[calc(100vh-var(--header-height))]",
+        "flex w-[360px] absolute pl-4 py-4 left-0 transition-transform duration-150 ease-out h-[calc(100vh-var(--header-height))]",
         isExtended ? "translate-x-0" : "translate-x-[-350px]",
       )}
       onMouseLeave={handleMouseLeave}
