@@ -40,11 +40,7 @@ export const ColumnSettings = ({
       <p className="font-medium text-sm">Shown in table:</p>
       <DragDropProvider
         onDragEnd={(event) => {
-          onColumnOrderChange([
-            "select",
-            ...move(draggableColumnIds, event),
-            "logs",
-          ]);
+          onColumnOrderChange([...move(draggableColumnIds, event)]);
         }}
       >
         {draggableColumnIds.map((id, index) => (
