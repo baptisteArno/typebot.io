@@ -1,10 +1,9 @@
 ---
 name: Feature request
 about: Suggest an idea for Typebot
-title: ''
-labels: ''
-assignees: ''
-
+title: ""
+labels: "triage"
+assignees: ""
 ---
 
 **Is your feature request related to a problem? Please describe.**
