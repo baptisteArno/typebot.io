@@ -19,8 +19,8 @@ export const EditorPage = () => {
   const { typebot, currentUserMode } = useTypebot();
   const { workspace } = useWorkspace();
   const backgroundImage = useThemeValue(
-    "radial-gradient(rgb(var(--gray-7)) 1px, transparent 0)",
-    "radial-gradient(rgb(var(--gray-5)) 1px, transparent 0)",
+    "radial-gradient(var(--gray-7) 1px, transparent 0)",
+    "radial-gradient(var(--gray-5) 1px, transparent 0)",
   );
 
   const isSuspicious = typebot?.riskLevel === 100 && !workspace?.isVerified;

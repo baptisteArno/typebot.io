@@ -32,8 +32,8 @@ export const AnalyticsGraphContainer = ({
   const { isOpen, onOpen, onClose } = useOpenControls();
   const { typebot, publishedTypebot } = useTypebot();
   const backgroundImage = useThemeValue(
-    "radial-gradient(rgb(var(--gray-7)) 1px, transparent 0)",
-    "radial-gradient(rgb(var(--gray-5)) 1px, transparent 0)",
+    "radial-gradient(var(--gray-7) 1px, transparent 0)",
+    "radial-gradient(var(--gray-5) 1px, transparent 0)",
   );
   const { data } = useQuery(
     trpc.analytics.getInDepthAnalyticsData.queryOptions(
