@@ -28,7 +28,7 @@ import {
   trpc,
 } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
-import { parseDefaultPublicId } from "../helpers/parseDefaultPublicId";
+import { getPublicId } from "../helpers/getPublicId";
 
 type Props = {
   isMoreMenuDisabled?: boolean;
@@ -121,9 +121,7 @@ export const PublishButton = ({
     if (!typebot?.id) return;
     if (isFreePlan(workspace) && hasInputFile) return onOpen();
     await save(
-      !typebot.publicId
-        ? { publicId: parseDefaultPublicId(typebot.name, typebot.id) }
-        : undefined,
+      !typebot.publicId ? { publicId: getPublicId(typebot) } : undefined,
       true,
     );
     publishTypebotMutate({

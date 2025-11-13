@@ -3,6 +3,7 @@ import parserHtml from "prettier/parser-html";
 import prettier from "prettier/standalone";
 import { CodeEditor } from "@/components/inputs/CodeEditor";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
+import { getPublicId } from "@/features/publish/helpers/getPublicId";
 
 type Props = {
   widthLabel: string;
@@ -17,7 +18,7 @@ export const IframeSnippet = ({
   className,
 }: Props) => {
   const { typebot } = useTypebot();
-  const src = `${env.NEXT_PUBLIC_VIEWER_URL[0]}/${typebot?.publicId}`;
+  const src = `${env.NEXT_PUBLIC_VIEWER_URL[0]}/${getPublicId(typebot)}`;
   const code = prettier.format(
     `<iframe src="${src}" style="border: none; width: ${widthLabel}; height: ${heightLabel}"></iframe>`,
     { parser: "html", plugins: [parserHtml] },

@@ -16,7 +16,7 @@ import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { isCloudProdInstance } from "@/helpers/isCloudProdInstance";
 import { toast } from "@/lib/toast";
-import { parseDefaultPublicId } from "../helpers/parseDefaultPublicId";
+import { getPublicId } from "../helpers/getPublicId";
 import { isPublicDomainAvailableQuery } from "../queries/isPublicDomainAvailableQuery";
 import { integrationsList } from "./deploy/DeployButton";
 import { EditableUrl } from "./EditableUrl";
@@ -31,9 +31,7 @@ export const SharePage = () => {
     updateTypebot({ updates: { publicId }, save: true });
   };
 
-  const publicId = typebot
-    ? (typebot?.publicId ?? parseDefaultPublicId(typebot.name, typebot.id))
-    : "";
+  const publicId = getPublicId(typebot);
   const isPublished = isDefined(publishedTypebot);
 
   const handlePathnameChange = (pathname: string) => {

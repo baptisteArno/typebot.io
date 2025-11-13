@@ -7,7 +7,7 @@ import { MoreHorizontalIcon } from "@typebot.io/ui/icons/MoreHorizontalIcon";
 import { Settings01Icon } from "@typebot.io/ui/icons/Settings01Icon";
 import assert from "assert";
 import { useState } from "react";
-import { parseDefaultPublicId } from "@/features/publish/helpers/parseDefaultPublicId";
+import { getPublicId } from "@/features/publish/helpers/getPublicId";
 import { useTypebot } from "../providers/TypebotProvider";
 import { EditorSettingsDialog } from "./EditorSettingsDialog";
 
@@ -23,10 +23,7 @@ export const BoardMenuButton = () => {
     const data =
       "data:application/json;charset=utf-8," +
       encodeURIComponent(JSON.stringify(typebot));
-    const fileName = `typebot-export-${parseDefaultPublicId(
-      typebot.name,
-      typebot.id,
-    )}.json`;
+    const fileName = `typebot-export-${getPublicId(typebot)}.json`;
     const linkElement = document.createElement("a");
     linkElement.setAttribute("href", data);
     linkElement.setAttribute("download", fileName);
