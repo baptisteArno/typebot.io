@@ -6,7 +6,6 @@ import { useDrag } from "@use-gesture/react";
 import { useState } from "react";
 import { useGraph } from "@/features/graph/providers/GraphProvider";
 import { useRightPanel } from "@/hooks/useRightPanel";
-import { headerHeight } from "../../editor/constants";
 import { useTypebot } from "../../editor/providers/TypebotProvider";
 import { runtimes } from "../data";
 import { PreviewDrawerBody } from "./PreviewDrawerBody";
@@ -72,8 +71,7 @@ export const PreviewDrawer = () => {
       {isResizeHandleVisible && (
         <ResizeHandle
           {...useResizeHandleDrag()}
-          className="animate-in fade-in-0 absolute left-[-7.5px]"
-          style={{ top: `calc(50% - ${headerHeight}px)` }}
+          className="animate-in fade-in-0 absolute left-[-7.5px] top-1/2 -translate-y-1/2"
         />
       )}
       <div className="flex flex-col items-center w-full gap-4">
