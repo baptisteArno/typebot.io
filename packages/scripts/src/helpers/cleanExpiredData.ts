@@ -29,9 +29,9 @@ const deleteOldChatSessions = async () => {
     deletingChatSessions = chatSessions.length;
     totalDeletedChatSessions += deletingChatSessions;
 
-    console.log(`Deleting ${chatSessions.length} old chat sessions...`);
-    const chunkSize = 1000;
+    const chunkSize = 500;
     for (let i = 0; i < chatSessions.length; i += chunkSize) {
+      console.log(`Deleting ${i}/${deletingChatSessions} chat sessions...`);
       const chunk = chatSessions.slice(i, i + chunkSize);
       await prisma.chatSession.deleteMany({
         where: {
