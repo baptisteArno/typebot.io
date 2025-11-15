@@ -12,11 +12,12 @@ data:
     https://cognito-idp.us-east-1.amazonaws.com/us-east-1_oze29iTu0/.well-known/openid-configuration
   DEFAULT_WORKSPACE_PLAN: UNLIMITED
   NEXTAUTH_URL: https://eddie.us-east-1.prd.cloudhumans.io
-  NEXT_PUBLIC_SMTP_FROM: '''Cloud Humans'' <no-reply@cloudhumans.com>'
+  NEXT_PUBLIC_SMTP_FROM: "'Cloud Humans' <no-reply@cloudhumans.com>"
   NEXT_PUBLIC_VIEWER_URL: https://eddieeyes.us-east-1.prd.cloudhumans.io
   NODE_ENV: production
   SMTP_AUTH_DISABLED: 'true'
   SMTP_HOST: email-smtp.us-east-1.amazonaws.com
   SMTP_PORT: '465'
   SMTP_SECURE: 'true'
+  MEMORY_DRAIN_THRESHOLD_MB: '1024'
   NEXT_PUBLIC_EMBEDDED_AUTH_ALLOWED_ORIGIN: https://eddie.us-east-1.prd.cloudhumans.io,https://cloudchat.cloudhumans.com,https://cloudchat2.cloudhumans.com,https://cloudchat3.cloudhumans.com,https://*.app.cloudhumans.com

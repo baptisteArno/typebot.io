@@ -8,7 +8,7 @@ metadata:
     tags.datadoghq.com/service: typebot-viewer
     tags.datadoghq.com/version: '${APP_VERSION}'
 spec:
-  replicas: 1
+  replicas: 2
   revisionHistoryLimit: 10
   selector:
     matchLabels:
@@ -63,7 +63,7 @@ spec:
           resources:
             requests:
               cpu: 250m
-              memory: 256Mi
+              memory: 512Mi
             limits:
               cpu: 600m
               memory: 4Gi
@@ -90,7 +90,7 @@ spec:
                 command:
                   - /bin/sh
                   - -c
-                  - 'curl -fs -X POST http://localhost:3001/drain || true'
+                  - 'for i in 1 2 3; do curl -fs -X POST http://localhost:3001/drain && break || sleep 1; done; true'
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler

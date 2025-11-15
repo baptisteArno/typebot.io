@@ -63,7 +63,7 @@ spec:
           resources:
             requests:
               cpu: 100m
-              memory: 256Mi
+              memory: 512Mi
             limits:
               cpu: 300m
               memory: 2Gi
@@ -90,7 +90,7 @@ spec:
                 command:
                   - /bin/sh
                   - -c
-                  - 'curl -fs -X POST http://localhost:3000/drain || true'
+                  - 'for i in 1 2 3; do curl -fs -X POST http://localhost:3000/drain && break || sleep 1; done; true'
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
