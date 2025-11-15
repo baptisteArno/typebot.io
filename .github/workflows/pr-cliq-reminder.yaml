@@ -1,0 +1,50 @@
+name: "PR Reminder to Zoho Cliq"
+
+on:
+  # schedule:
+  #   - cron: "0 10 * * *"  # daily at 10:00
+  workflow_dispatch:       # optional manual trigger
+
+jobs:
+  pr-reminder:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check open PRs
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const thresholdDays = 1; // X days
+            const webhookUrl = process.env.ZOHO_BOT_PRs_REMINDERS_WH_URL;
+            const { data: prs } = await github.rest.pulls.list({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open'
+            });
+
+            const now = new Date();
+
+            for (const pr of prs) {
+              const createdAt = new Date(pr.created_at);
+              const ageDays = Math.floor((now - createdAt)/(1000*60*60*24));
+
+              if (ageDays >= thresholdDays) {
+                const reviewers = pr.requested_reviewers.map(r => r.login).join(', ') || 'None';
+                const message = `PR Reminder:
+                                - Repo: ${context.repo.repo}
+                                - Title: ${pr.title}
+                                - Author: ${pr.user.login}
+                                - Reviewers: ${reviewers}
+                                - Age: ${ageDays} day(s)
+                                - Link: ${pr.html_url}`;
+
+                // send message to Zoho Cliq
+                await require('node-fetch')(webhookUrl, {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ text: message })
+                });
+              }
+            }
+        env:
+          ZOHO_BOT_PRs_REMINDERS_WH_URL: ${{ secrets.ZOHO_BOT_PRs_REMINDERS_WH_URL }}
