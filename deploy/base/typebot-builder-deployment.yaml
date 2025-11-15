@@ -28,7 +28,29 @@ spec:
         admission.datadoghq.com/enabled: 'true'
       annotations:
         admission.datadoghq.com/js-lib.version: v5.24.0
-        admission.datadoghq.com/typebot-builder.logs: '[{"source":"nodejs","service":"typebot-builder","log_processing_rules":[{"type":"multi_line","name":"no_multiline","pattern":".*"}]}]'
+        admission.datadoghq.com/typebot-builder.logs: >
+          [
+            {
+              "source": "nodejs",
+              "service": "typebot-builder",
+              "log_processing_rules": [
+                {
+                  "type": "multi_line",
+                  "name": "no_multiline",
+                  "pattern": ".*"
+                },
+                {
+                  "type": "exclude_at_match",
+                  "name": "ignore_health",
+                  "pattern": "/health"
+                }
+              ]
+            }
+          ]
+        admission.datadoghq.com/typebot-builder.apm.json: >
+          {
+            "ignore_resources": ["/health"]
+          }
     spec:
       containers:
         - name: typebot-builder
