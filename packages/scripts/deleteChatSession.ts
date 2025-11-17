@@ -1,4 +1,4 @@
-import { PrismaClient } from '@typebot.io/prisma'
+import { prisma } from '@typebot.io/prisma'
 import { promptAndSetEnvironment } from './utils'
 import * as p from '@clack/prompts'
 
@@ -13,8 +13,6 @@ const deleteChatSession = async () => {
     console.log('No ID provided')
     return
   }
-
-  const prisma = new PrismaClient()
 
   const chatSession = await prisma.chatSession.delete({
     where: {

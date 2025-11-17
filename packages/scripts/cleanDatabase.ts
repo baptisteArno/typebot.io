@@ -1,9 +1,7 @@
-import { PrismaClient } from '@typebot.io/prisma'
+import { prisma } from '@typebot.io/prisma'
 import { promptAndSetEnvironment } from './utils'
 import { archiveResults } from '@typebot.io/results/archiveResults'
 import { Typebot } from '@typebot.io/schemas'
-
-const prisma = new PrismaClient()
 
 export const cleanDatabase = async () => {
   await promptAndSetEnvironment('production')

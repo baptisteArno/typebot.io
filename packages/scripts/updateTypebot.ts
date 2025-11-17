@@ -1,11 +1,9 @@
-import { PrismaClient } from '@typebot.io/prisma'
+import { prisma } from '@typebot.io/prisma'
 import { promptAndSetEnvironment } from './utils'
 import * as p from '@clack/prompts'
 
 const updateTypebot = async () => {
   await promptAndSetEnvironment('production')
-
-  const prisma = new PrismaClient()
 
   const typebotId = await p.text({
     message: 'Typebot ID?',

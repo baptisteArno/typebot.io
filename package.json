@@ -14,7 +14,7 @@
   ],
   "scripts": {
     "prepare": "husky install",
-    "docker:up": "docker compose -f docker-compose.dev.yml up -d && node -e \"setTimeout(() => {}, 5000)\"",
+    "docker:up": "docker compose -f docker-compose.dev.yml up -d && node scripts/wait-for-postgres.mjs",
     "docker:nuke": "docker compose -f docker-compose.dev.yml down --volumes --remove-orphans",
     "lint": "turbo run lint",
     "dev": "pnpm docker:up && turbo build --filter=@typebot.io/nextjs... && turbo run dev --filter=builder... --filter=viewer... --parallel --no-cache",

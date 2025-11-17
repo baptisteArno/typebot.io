@@ -1,4 +1,4 @@
-import { PrismaClient } from '@typebot.io/prisma'
+import { prisma } from '@typebot.io/prisma'
 import { promptAndSetEnvironment } from './utils'
 import { isCancel, text, confirm } from '@clack/prompts'
 
@@ -9,8 +9,6 @@ const inspectUser = async () => {
   })
 
   if (!email || isCancel(email)) process.exit()
-
-  const prisma = new PrismaClient()
 
   const user = await prisma.user.findFirst({
     where: {

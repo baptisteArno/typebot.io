@@ -1,10 +1,9 @@
-import { PrismaClient } from '@typebot.io/prisma'
+import { prisma } from '@typebot.io/prisma'
 import { promptAndSetEnvironment } from './utils'
 import { Stripe } from 'stripe'
 
 const checkSubscriptionsStatus = async () => {
   await promptAndSetEnvironment()
-  const prisma = new PrismaClient()
 
   const workspacesWithPaidPlan = await prisma.workspace.findMany({
     where: {

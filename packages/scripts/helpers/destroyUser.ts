@@ -1,10 +1,8 @@
 import { isCancel, text, confirm } from '@clack/prompts'
-import { Plan, PrismaClient } from '@typebot.io/prisma'
+import { Plan, prisma } from '@typebot.io/prisma'
 import { writeFileSync } from 'fs'
 
 export const destroyUser = async (userEmail?: string) => {
-  const prisma = new PrismaClient()
-
   const email =
     userEmail ??
     (await text({

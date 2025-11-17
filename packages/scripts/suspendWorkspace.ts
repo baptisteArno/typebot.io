@@ -1,11 +1,10 @@
-import { PrismaClient } from '@typebot.io/prisma'
+import { prisma } from '@typebot.io/prisma'
 import { select, text, isCancel } from '@clack/prompts'
 import { isEmpty } from '@typebot.io/lib'
 import { promptAndSetEnvironment } from './utils'
 
 const suspendWorkspace = async () => {
   await promptAndSetEnvironment('production')
-  const prisma = new PrismaClient()
 
   const type = await select<any, 'id' | 'publicId' | 'workspaceId'>({
     message: 'Select way',

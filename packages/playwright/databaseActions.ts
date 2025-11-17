@@ -1,7 +1,7 @@
 import {
   Plan,
   Prisma,
-  PrismaClient,
+  prisma,
   User,
   Workspace,
   WorkspaceRole,
@@ -14,8 +14,6 @@ import {
   parseTestTypebot,
   parseTypebotToPublicTypebot,
 } from './databaseHelpers'
-
-const prisma = new PrismaClient()
 
 type CreateFakeResultsProps = {
   typebotId: string

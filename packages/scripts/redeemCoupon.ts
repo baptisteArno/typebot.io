@@ -1,11 +1,9 @@
-import { PrismaClient } from '@typebot.io/prisma'
+import { prisma } from '@typebot.io/prisma'
 import { promptAndSetEnvironment } from './utils'
 import * as p from '@clack/prompts'
 
 const redeemCoupon = async () => {
   await promptAndSetEnvironment('production')
-
-  const prisma = new PrismaClient()
 
   const code = await p.text({
     message: 'Coupon code?',

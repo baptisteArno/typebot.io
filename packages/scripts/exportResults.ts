@@ -1,4 +1,4 @@
-import { PrismaClient } from '@typebot.io/prisma'
+import { prisma } from '@typebot.io/prisma'
 import * as p from '@clack/prompts'
 import { promptAndSetEnvironment } from './utils'
 import cliProgress from 'cli-progress'
@@ -19,8 +19,6 @@ import { z } from 'zod'
 
 const exportResults = async () => {
   await promptAndSetEnvironment('production')
-
-  const prisma = new PrismaClient()
 
   const typebotId = (await p.text({
     message: 'Typebot ID?',

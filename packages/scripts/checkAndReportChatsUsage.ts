@@ -1,4 +1,4 @@
-import { Plan, PrismaClient, WorkspaceRole } from '@typebot.io/prisma'
+import { Plan, PrismaClient, prisma, WorkspaceRole } from '@typebot.io/prisma'
 import { isDefined, isEmpty } from '@typebot.io/lib'
 import { getChatsLimit } from '@typebot.io/billing/helpers/getChatsLimit'
 import { promptAndSetEnvironment } from './utils'
@@ -9,7 +9,6 @@ import { trackEvents } from '@typebot.io/telemetry/trackEvents'
 import Stripe from 'stripe'
 import { createId } from '@paralleldrive/cuid2'
 
-const prisma = new PrismaClient()
 const LIMIT_EMAIL_TRIGGER_PERCENT = 0.75
 
 export const checkAndReportChatsUsage = async () => {

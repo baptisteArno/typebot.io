@@ -1,12 +1,10 @@
-import { PrismaClient } from '@typebot.io/prisma'
+import { prisma } from '@typebot.io/prisma'
 import { promptAndSetEnvironment } from './utils'
 import { text, isCancel, confirm } from '@clack/prompts'
 import { destroyUser } from './helpers/destroyUser'
 
 const updateUserEmail = async () => {
   await promptAndSetEnvironment('production')
-
-  const prisma = new PrismaClient()
 
   const currentUserEmail = await text({
     message: 'Current email?',

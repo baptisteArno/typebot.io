@@ -1,4 +1,4 @@
-import { PrismaClient } from '@typebot.io/prisma'
+import { prisma } from '@typebot.io/prisma'
 import { promptAndSetEnvironment } from './utils'
 import { Stripe } from 'stripe'
 import { createId } from '@paralleldrive/cuid2'
@@ -6,7 +6,6 @@ import { writeFileSync } from 'fs'
 
 const migrateSubscriptionsToUsageBased = async () => {
   await promptAndSetEnvironment()
-  const prisma = new PrismaClient()
 
   if (
     !process.env.STRIPE_STARTER_CHATS_PRICE_ID ||

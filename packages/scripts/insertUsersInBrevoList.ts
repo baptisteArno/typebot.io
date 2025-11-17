@@ -1,4 +1,4 @@
-import { PrismaClient } from '@typebot.io/prisma'
+import { prisma } from '@typebot.io/prisma'
 import { promptAndSetEnvironment } from './utils'
 import ky, { HTTPError } from 'ky'
 import { confirm, text, isCancel } from '@clack/prompts'
@@ -11,8 +11,6 @@ const insertUsersInBrevoList = async () => {
   })
   if (!listId || isCancel(listId) || isNaN(listId as unknown as number))
     process.exit()
-
-  const prisma = new PrismaClient()
 
   const threeMonthsAgo = new Date()
   threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3)

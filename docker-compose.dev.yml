@@ -9,6 +9,13 @@ services:
     environment:
       POSTGRES_DB: 'typebot'
       POSTGRES_PASSWORD: 'typebot'
+  # Healthcheck to ensure Postgres accepts connections before other processes start
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d typebot || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 5s
   minio:
     image: minio/minio
     command: server /data --console-address ":9001"

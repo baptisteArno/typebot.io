@@ -1,0 +1,17 @@
+apiVersion: 1
+
+# Provision InfluxDB datasource for k6 metrics
+# Loads automatically at Grafana startup
+
+datasources:
+  - name: k6
+    type: influxdb
+    access: proxy
+    url: http://influxdb:8086
+    database: k6
+    user: ''
+    password: ''
+    isDefault: true
+    jsonData:
+      httpMode: POST
+    editable: true

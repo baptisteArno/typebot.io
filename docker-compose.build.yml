@@ -1,20 +1,29 @@
-version: '3.9'
 services:
   typebot-db:
     image: postgres:13
+    ports:
+      - '5433:5432'
     restart: always
     volumes:
-      - ${PWD}/.typebot-build/database:/var/lib/postgresql/data
+      - db-data:/var/lib/postgresql/data
     environment:
       - POSTGRES_DB=typebot
       - POSTGRES_PASSWORD=typebot
+    command: ["postgres","-p","5433", "-c", "log_line_prefix="]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d typebot -p 5433"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 5s
   typebot-builder:
     build:
       context: .
       args:
         - SCOPE=builder
     depends_on:
-      - typebot-db
+      typebot-db:
+        condition: service_healthy
     ports:
       - '3002:3000'
     extra_hosts:
