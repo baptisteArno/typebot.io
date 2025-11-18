@@ -1,6 +1,7 @@
 import { move } from "@dnd-kit/helpers";
 import { DragDropProvider } from "@dnd-kit/react";
 import { useSortable } from "@dnd-kit/react/sortable";
+import { isDefined } from "@typebot.io/lib/utils";
 import type { ResultHeaderCell } from "@typebot.io/results/schemas/results";
 import { Button } from "@typebot.io/ui/components/Button";
 import { DragDropVerticalIcon } from "@typebot.io/ui/icons/DragDropVerticalIcon";
@@ -27,7 +28,7 @@ export const ColumnSettings = ({
   const toggleColumnVisibility = (id: string) => () => {
     setColumnVisibility({
       ...columnVisibility,
-      [id]: columnVisibility[id] !== false,
+      [id]: isDefined(columnVisibility[id]) ? !columnVisibility[id] : false,
     });
   };
 
