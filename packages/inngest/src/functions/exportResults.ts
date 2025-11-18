@@ -76,10 +76,10 @@ export const exportResults = inngest.createFunction(
       }),
     );
 
-    const logsDir = path.join(process.cwd(), "logs");
-    mkdirSync(logsDir, { recursive: true });
+    const tmpDir = path.join("/tmp", "typebot-exports");
+    mkdirSync(tmpDir, { recursive: true });
 
-    const writeStreamPath = path.join(logsDir, `${typebotId}.csv`);
+    const writeStreamPath = path.join(tmpDir, `${typebotId}.csv`);
 
     await step.run("stream-results-to-csv", async () => {
       const result = await streamAllResultsToCsv(typebotId, {
