@@ -32,7 +32,7 @@ Plans are all self-served. Once a subscription is cancelled, the plan automatica
 
 ## Your tasks
 
-### Step 1: Provide a short summary of the workspace, explaining what it does briefly and what is its main use case.
+### Step 1: Provide a short summary of the workspace, explaining what it does briefly and what is its main use case. And try to guess why the workspace subscribed to Typebot.
 
 ### Step 2: Write a bullet point list of the workspace's journey with human readable dates.
 
