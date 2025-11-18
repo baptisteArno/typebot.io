@@ -1,5 +1,51 @@
 # Changelog
 
+<a name="3.13.2"></a>
+## 3.13.2 (2025-11-18)
+
+### UI/UX Improvements
+
+- 💄 Remove code editor outline [[aa7c827](https://github.com/baptisteArno/typebot.io/commit/aa7c8270e672377f889bf2c67f35c5ccb9bc6e72)]
+- 💄 Fix Alert gap between content and icon [[f7bb4ed](https://github.com/baptisteArno/typebot.io/commit/f7bb4ed1cbf46386396c960913527ad9e1fae6ca)]
+- 🚸 (whatsapp) Convert embed to document when possible [[c19e803](https://github.com/baptisteArno/typebot.io/commit/c19e80378c903508f43d7b809a78c5356f744095)]
+- 🚸 Improve custom domain + pathname already used feedback [[9f8b092](https://github.com/baptisteArno/typebot.io/commit/9f8b0928e7a8dac75af70c6fa0ee15203091a61b)]
+- 💄 (embed) fix button cursor [[0250ff8](https://github.com/baptisteArno/typebot.io/commit/0250ff8b64eb33663ecaf9034cabedd1f1cf6b3e)]
+- 💄 (embed) Fix popup overlay color transparency [[2f88749](https://github.com/baptisteArno/typebot.io/commit/2f887490430e5d49fd8b3e57f6d9a50c27ff6610)]
+
+### Fixed
+
+- 🐛 (results) Fix column visibility column [[a5cf298](https://github.com/baptisteArno/typebot.io/commit/a5cf298cc8043e95c6988779be8c9e0e495e0378)]
+- 🚑 (embed) fix scroll issue on some Safari version [[c823aba](https://github.com/baptisteArno/typebot.io/commit/c823aba3db7eb213dd762b4dc015a3a06e8b7925)]
+- 🐛 (embed) Fix button border thickness [[d3347cb](https://github.com/baptisteArno/typebot.io/commit/d3347cb3466e771741ff390a6077da907e5b6ec3)]
+- 🐛 Fix null publicId in some deploy dialogs when typebot not published [[cedfd1a](https://github.com/baptisteArno/typebot.io/commit/cedfd1a0b3b3849a4715a115077d7fb44f93bd8c)]
+- 🐛 Fix column settings crash with old format [[3579e6b](https://github.com/baptisteArno/typebot.io/commit/3579e6b3aa0fa923e6ce130fb4cdc72fd78aa8c4)]
+- 🐛 (embed) Fix size issues for custom html font-size [[adbeb85](https://github.com/baptisteArno/typebot.io/commit/adbeb85c038189d5ae6185a5a1821ec8a41b43de)]
+- 🐛 Fix preview side bar handle resize [[5c33f4b](https://github.com/baptisteArno/typebot.io/commit/5c33f4b15dcc969454b6a31c873e81527f84b601)]
+- 🐛 Fix block side bar transition [[dba1ccd](https://github.com/baptisteArno/typebot.io/commit/dba1ccd4bdc2326ad6fd5e92e3746aff20f4349e)]
+- 🐛 Fix graph background dots [[8b18538](https://github.com/baptisteArno/typebot.io/commit/8b18538fe7a0be94c65c47690a020322af6be90f)]
+- 🐛 Fix onboarding floating popover position [[31ae9f1](https://github.com/baptisteArno/typebot.io/commit/31ae9f1aa3978d0890ae2ee2108b2a34b3456d36)]
+- 🐛 (embed) Fix tailwind variables not applied to shadow DOM [[fb57698](https://github.com/baptisteArno/typebot.io/commit/fb57698b94634c746f0a12d336fa0b3c0a74776f)]
+- 🐛 Fix transcript compute stopping at Cards input [[d3f9119](https://github.com/baptisteArno/typebot.io/commit/d3f91195a8e87e932557169eae90a40563ff6cfe)]
+- 🚑 Fix invalid chat container class names [[8a95e28](https://github.com/baptisteArno/typebot.io/commit/8a95e2821d4fd09b97ec110d17ef79b5b944edba)]
+- 🐛 Fix retrocompat on &#x60;parseColumnsOrder&#x60; [[eedf998](https://github.com/baptisteArno/typebot.io/commit/eedf998420c6dab144b0b8dfd52b0ffd476a24bf)]
+
+### Content
+
+- 📝 Add October blog posts ([#2307](https://github.com/baptisteArno/typebot.io/issues/2307)) [[db595f1](https://github.com/baptisteArno/typebot.io/commit/db595f1a91b7a03131e288613f412116bb56b18b)]
+
+### Internal
+
+- 🔒 Restrict client code execution on imported bot [[a68f0c9](https://github.com/baptisteArno/typebot.io/commit/a68f0c91790af8f52f17557f4aa202e966e7e579)]
+- 🔧 Churn agent improvement: guess subscription reason [[06accf5](https://github.com/baptisteArno/typebot.io/commit/06accf5cd973917c037445c029c425d40dcfd27c)]
+- ♻️ Add convenient route for private s3 paths [[ceba641](https://github.com/baptisteArno/typebot.io/commit/ceba641b7486af5ef9e8377921aa1c2abcb77c30)]
+- 🔧 Reduce chat session delete batch [[794b576](https://github.com/baptisteArno/typebot.io/commit/794b5767543609b624773c5fa573e879dad5fe43)]
+- 🔧 Add prisma reset bun script [[198a32a](https://github.com/baptisteArno/typebot.io/commit/198a32aa25c6b6467728e3e3ac0ee0859a713468)]
+
+### Miscellaneous
+
+-  👷 Add stale issue Github automation [[b9e6aac](https://github.com/baptisteArno/typebot.io/commit/b9e6aac63ceb5e19629b2171508a5da183a025c0)]
+
+
 <a name="3.13.1"></a>
 ## 3.13.1 (2025-11-11)
 

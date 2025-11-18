@@ -1,6 +1,6 @@
 {
   "name": "root",
-  "version": "3.13.1",
+  "version": "3.13.2",
   "private": true,
   "workspaces": [
     "packages/*",
@@ -55,6 +55,7 @@
     "esbuild",
     "isolated-vm",
     "prisma",
-    "sharp"
+    "sharp",
+    "inngest-cli"
   ]
 }
