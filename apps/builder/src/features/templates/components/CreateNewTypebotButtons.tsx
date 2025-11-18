@@ -57,7 +57,7 @@ export const CreateNewTypebotButtons = () => {
 
   const handleCreateSubmit = async (
     typebot?: Typebot,
-    fromTemplate?: string,
+    args?: { enableSafetyFlags?: boolean; fromTemplate?: string },
   ) => {
     if (!user || !workspace) return;
     const folderId = router.query.folderId?.toString() ?? null;
@@ -68,7 +68,8 @@ export const CreateNewTypebotButtons = () => {
           ...typebot,
           folderId,
         },
-        fromTemplate,
+        fromTemplate: args?.fromTemplate,
+        enableSafetyFlags: args?.enableSafetyFlags,
       });
     else
       createTypebot({

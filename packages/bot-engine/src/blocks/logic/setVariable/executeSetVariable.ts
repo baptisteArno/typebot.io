@@ -78,6 +78,7 @@ export const executeSetVariable = async (
             scriptToExecute: {
               ...scriptToExecute,
               isCode,
+              isUnsafe: block.options.isUnsafe,
             },
           },
           expectsDedicatedReply: true,

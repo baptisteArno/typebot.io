@@ -25,6 +25,7 @@ import { DebouncedTextInput } from "@/components/inputs/DebouncedTextInput";
 import { VariablesCombobox } from "@/components/inputs/VariablesCombobox";
 import { WhatsAppLogo } from "@/components/logos/WhatsAppLogo";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
+import { UnsafeScriptAlert } from "../../script/components/UnsafeScriptAlert";
 
 type Props = {
   options: SetVariableBlock["options"];
@@ -217,74 +218,79 @@ const SetVariableValue = ({
     });
   };
 
+  const updateIsUnsafe = () => onOptionsChange({ ...options, isUnsafe: false });
+
   switch (options?.type) {
     case "Custom":
     case undefined:
       return (
-        <>
-          <Field.Root className="flex-row items-center">
-            <Switch
-              checked={
-                options?.isExecutedOnClient ??
-                defaultSetVariableOptions.isExecutedOnClient
-              }
-              onCheckedChange={updateClientExecution}
-            />
-            <Field.Label>
-              Execute on client{" "}
-              <MoreInfoTooltip>
-                Check this if you need access to client-only variables like
-                `window` or `document`.
-              </MoreInfoTooltip>
-            </Field.Label>
-          </Field.Root>
-          <div className="flex flex-col gap-2">
-            <RadioGroup
-              onValueChange={(value) => updateIsCode(value as "Text" | "Code")}
-              defaultValue={
-                (options?.isCode ?? defaultSetVariableOptions.isCode)
-                  ? "Code"
-                  : "Text"
-              }
-            >
-              <Label className="hover:bg-gray-2/50 rounded-md p-2 border flex-1 flex justify-center">
-                <Radio value="Text" className="hidden" />
-                Text
-              </Label>
-              <Label className="hover:bg-gray-2/50 rounded-md p-2 border flex-1 flex justify-center">
-                <Radio value="Code" className="hidden" />
-                Code
-              </Label>
-            </RadioGroup>
-            {options?.isCode ? (
-              <div className="flex flex-col gap-2">
-                <DebouncedTextInput
-                  placeholder="Code description"
-                  defaultValue={options?.expressionDescription}
-                  onValueChange={updateExpressionDescription}
-                />
-                <CodeEditor
-                  defaultValue={options?.expressionToEvaluate ?? ""}
-                  onChange={updateExpression}
-                  lang="javascript"
-                  withLineNumbers={true}
-                />
-                <Field.Root>
-                  <Field.Label>Save error</Field.Label>
-                  <VariablesCombobox
-                    initialVariableId={options.saveErrorInVariableId}
-                    onSelectVariable={updateSaveErrorInVariableId}
-                  />
-                </Field.Root>
-              </div>
-            ) : (
-              <DebouncedTextareaWithVariablesButton
-                defaultValue={options?.expressionToEvaluate ?? ""}
-                onValueChange={updateExpression}
+        <div className="flex flex-col gap-2">
+          <RadioGroup
+            onValueChange={(value) => updateIsCode(value as "Text" | "Code")}
+            defaultValue={
+              (options?.isCode ?? defaultSetVariableOptions.isCode)
+                ? "Code"
+                : "Text"
+            }
+          >
+            <Label className="hover:bg-gray-2/50 rounded-md p-2 border flex-1 flex justify-center">
+              <Radio value="Text" className="hidden" />
+              Text
+            </Label>
+            <Label className="hover:bg-gray-2/50 rounded-md p-2 border flex-1 flex justify-center">
+              <Radio value="Code" className="hidden" />
+              Code
+            </Label>
+          </RadioGroup>
+          {options?.isCode ? (
+            <div className="flex flex-col gap-2">
+              <DebouncedTextInput
+                placeholder="Code description"
+                defaultValue={options?.expressionDescription}
+                onValueChange={updateExpressionDescription}
               />
-            )}
-          </div>
-        </>
+              <CodeEditor
+                defaultValue={options?.expressionToEvaluate ?? ""}
+                onChange={updateExpression}
+                lang="javascript"
+                withLineNumbers={true}
+              />
+              <Field.Root className="flex-row items-center">
+                <Switch
+                  checked={
+                    options?.isExecutedOnClient ??
+                    defaultSetVariableOptions.isExecutedOnClient
+                  }
+                  onCheckedChange={updateClientExecution}
+                />
+                <Field.Label>
+                  Execute on client{" "}
+                  <MoreInfoTooltip>
+                    Check this if you need access to client-only variables like
+                    `window` or `document`.
+                  </MoreInfoTooltip>
+                </Field.Label>
+              </Field.Root>
+              {options?.isUnsafe === true &&
+                options?.isExecutedOnClient === true &&
+                options.isCode && (
+                  <UnsafeScriptAlert onTrustClick={updateIsUnsafe} />
+                )}
+              <Field.Root>
+                <Field.Label>Save error</Field.Label>
+                <VariablesCombobox
+                  initialVariableId={options.saveErrorInVariableId}
+                  onSelectVariable={updateSaveErrorInVariableId}
+                />
+              </Field.Root>
+            </div>
+          ) : (
+            <DebouncedTextareaWithVariablesButton
+              defaultValue={options?.expressionToEvaluate ?? ""}
+              onValueChange={updateExpression}
+            />
+          )}
+        </div>
       );
     case "Pop":
     case "Shift":

@@ -2,6 +2,7 @@ import type { ExecutableHttpRequest } from "@typebot.io/blocks-integrations/http
 
 export const executeHttpRequest = async (
   httpRequestToExecute: ExecutableHttpRequest,
+  isPreview: boolean,
 ): Promise<string> => {
   const { url, method, body, headers } = httpRequestToExecute;
   try {
@@ -9,6 +10,7 @@ export const executeHttpRequest = async (
       method,
       body: method !== "GET" && body ? JSON.stringify(body) : undefined,
       headers,
+      credentials: isPreview ? "omit" : undefined,
     });
     const statusCode = response.status;
     const data = await response.json();

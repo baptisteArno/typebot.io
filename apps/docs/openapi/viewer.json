@@ -7206,6 +7206,10 @@
               "isExecutedOnClient": {
                 "type": "boolean"
               },
+              "isUnsafe": {
+                "type": "boolean",
+                "description": "Enabled by default for imported bots to prevent code to be executed in preview with priviledged access"
+              },
               "shouldExecuteInParentContext": {
                 "type": "boolean"
               }
@@ -7277,6 +7281,10 @@
                   "isExecutedOnClient": {
                     "type": "boolean"
                   },
+                  "isUnsafe": {
+                    "type": "boolean",
+                    "description": "Enabled by default for imported bots to prevent code to be executed in preview with priviledged access"
+                  },
                   "expressionToEvaluate": {
                     "type": "string"
                   },
@@ -7299,6 +7307,10 @@
                   },
                   "isExecutedOnClient": {
                     "type": "boolean"
+                  },
+                  "isUnsafe": {
+                    "type": "boolean",
+                    "description": "Enabled by default for imported bots to prevent code to be executed in preview with priviledged access"
                   },
                   "expressionToEvaluate": {
                     "type": "string"
@@ -7332,6 +7344,10 @@
                   "isExecutedOnClient": {
                     "type": "boolean"
                   },
+                  "isUnsafe": {
+                    "type": "boolean",
+                    "description": "Enabled by default for imported bots to prevent code to be executed in preview with priviledged access"
+                  },
                   "type": {
                     "type": "string",
                     "enum": [
@@ -7356,6 +7372,10 @@
                   },
                   "isExecutedOnClient": {
                     "type": "boolean"
+                  },
+                  "isUnsafe": {
+                    "type": "boolean",
+                    "description": "Enabled by default for imported bots to prevent code to be executed in preview with priviledged access"
                   },
                   "type": {
                     "type": "string",
@@ -7388,6 +7408,10 @@
                   },
                   "isExecutedOnClient": {
                     "type": "boolean"
+                  },
+                  "isUnsafe": {
+                    "type": "boolean",
+                    "description": "Enabled by default for imported bots to prevent code to be executed in preview with priviledged access"
                   },
                   "type": {
                     "type": "string",
@@ -7423,6 +7447,10 @@
                   "isExecutedOnClient": {
                     "type": "boolean"
                   },
+                  "isUnsafe": {
+                    "type": "boolean",
+                    "description": "Enabled by default for imported bots to prevent code to be executed in preview with priviledged access"
+                  },
                   "type": {
                     "type": "string",
                     "enum": [
@@ -7445,6 +7473,10 @@
                   },
                   "isExecutedOnClient": {
                     "type": "boolean"
+                  },
+                  "isUnsafe": {
+                    "type": "boolean",
+                    "description": "Enabled by default for imported bots to prevent code to be executed in preview with priviledged access"
                   },
                   "type": {
                     "type": "string",
@@ -16806,6 +16838,9 @@
               "content": {
                 "type": "string"
               },
+              "isUnsafe": {
+                "type": "boolean"
+              },
               "isCode": {
                 "type": "boolean"
               },
@@ -16921,6 +16956,9 @@
                 "properties": {
                   "content": {
                     "type": "string"
+                  },
+                  "isUnsafe": {
+                    "type": "boolean"
                   },
                   "isCode": {
                     "type": "boolean"
@@ -17094,6 +17132,9 @@
                 "properties": {
                   "content": {
                     "type": "string"
+                  },
+                  "isUnsafe": {
+                    "type": "boolean"
                   },
                   "isCode": {
                     "type": "boolean"

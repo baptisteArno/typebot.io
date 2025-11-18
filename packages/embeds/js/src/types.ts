@@ -18,6 +18,7 @@ export type ClientSideActionContext = {
   wsHost?: string;
   sessionId: string;
   resultId?: string;
+  isPreview: boolean;
 };
 
 export type ChatChunk = Pick<

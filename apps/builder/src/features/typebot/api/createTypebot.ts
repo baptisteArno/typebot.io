@@ -84,7 +84,7 @@ export const createTypebot = authenticatedProcedure
     }
 
     const groups = (
-      typebot.groups ? await sanitizeGroups(workspace)(typebot.groups) : []
+      typebot.groups ? await sanitizeGroups(typebot.groups, { workspace }) : []
     ) as TypebotV6["groups"];
     const newTypebot = await prisma.typebot.create({
       data: {

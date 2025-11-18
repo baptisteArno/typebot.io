@@ -37,13 +37,17 @@ export const executeClientSideAction = async ({
   onStreamError,
 }: Props): Promise<ClientSideActionResponse> => {
   if ("chatwoot" in clientSideAction) {
-    return executeChatwoot(clientSideAction.chatwoot);
+    return executeChatwoot(clientSideAction.chatwoot, {
+      isPreview: context.isPreview,
+    });
   }
   if ("googleAnalytics" in clientSideAction) {
     return executeGoogleAnalyticsBlock(clientSideAction.googleAnalytics);
   }
   if ("scriptToExecute" in clientSideAction) {
-    return executeScript(clientSideAction.scriptToExecute);
+    return executeScript(clientSideAction.scriptToExecute, {
+      isPreview: context.isPreview,
+    });
   }
   if ("redirect" in clientSideAction) {
     return executeRedirect(clientSideAction.redirect);
@@ -55,7 +59,9 @@ export const executeClientSideAction = async ({
       : undefined;
   }
   if ("setVariable" in clientSideAction) {
-    return executeSetVariable(clientSideAction.setVariable.scriptToExecute);
+    return executeSetVariable(clientSideAction.setVariable.scriptToExecute, {
+      isPreview: context.isPreview,
+    });
   }
   if (
     "streamOpenAiChatCompletion" in clientSideAction ||
@@ -85,6 +91,7 @@ export const executeClientSideAction = async ({
   if ("httpRequestToExecute" in clientSideAction) {
     const response = await executeHttpRequest(
       clientSideAction.httpRequestToExecute,
+      context.isPreview,
     );
     return { replyToSend: response };
   }

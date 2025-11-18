@@ -66,7 +66,10 @@ export const executeScript = async (
     clientSideActions: [
       {
         type: "scriptToExecute",
-        scriptToExecute: scriptToExecute,
+        scriptToExecute: {
+          ...scriptToExecute,
+          isUnsafe: block.options.isUnsafe,
+        },
       },
     ],
   };

@@ -5,6 +5,7 @@ import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
 import { Switch } from "@typebot.io/ui/components/Switch";
 import { CodeEditor } from "@/components/inputs/CodeEditor";
 import { DebouncedTextInput } from "@/components/inputs/DebouncedTextInput";
+import { UnsafeScriptAlert } from "./UnsafeScriptAlert";
 
 type Props = {
   options: ScriptBlock["options"];
@@ -20,6 +21,8 @@ export const ScriptSettings = ({ options, onOptionsChange }: Props) => {
 
   const updateClientExecution = (isExecutedOnClient: boolean) =>
     onOptionsChange({ ...options, isExecutedOnClient });
+
+  const updateIsUnsafe = () => onOptionsChange({ ...options, isUnsafe: false });
 
   return (
     <div className="flex flex-col gap-4">
@@ -46,6 +49,9 @@ export const ScriptSettings = ({ options, onOptionsChange }: Props) => {
           </MoreInfoTooltip>
         </Field.Label>
       </Field.Root>
+      {options?.isUnsafe === true && options?.isExecutedOnClient !== false && (
+        <UnsafeScriptAlert onTrustClick={updateIsUnsafe} />
+      )}
       <CodeEditor
         defaultValue={options?.content}
         lang="javascript"

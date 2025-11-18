@@ -39,48 +39,80 @@ export const sanitizeSettings = (
     : undefined,
 });
 
-export const sanitizeGroups =
-  (workspace: Pick<Workspace, "id" | "plan">) =>
-  async (groups: Typebot["groups"]): Promise<Typebot["groups"]> =>
-    Promise.all(
-      groups.map(async (group) => ({
-        ...group,
-        blocks: await Promise.all(group.blocks.map(sanitizeBlock(workspace))),
-      })),
-    ) as Promise<Typebot["groups"]>;
+export const sanitizeGroups = async (
+  groups: Typebot["groups"],
+  {
+    enableSafetyFlags,
+    workspace,
+  }: {
+    enableSafetyFlags?: boolean;
+    workspace: Pick<Workspace, "id" | "plan">;
+  },
+): Promise<Typebot["groups"]> =>
+  Promise.all(
+    groups.map(async (group) => ({
+      ...group,
+      blocks: await Promise.all(
+        group.blocks.map((block) =>
+          sanitizeBlock(block, { enableSafetyFlags, workspace }),
+        ),
+      ),
+    })),
+  ) as Promise<Typebot["groups"]>;
 
-const sanitizeBlock =
-  (workspace: Pick<Workspace, "id" | "plan">) =>
-  async (block: Block): Promise<Block> => {
-    if (!("options" in block) || !block.options) return block;
+const sanitizeBlock = async (
+  block: Block,
+  {
+    enableSafetyFlags,
+    workspace,
+  }: { enableSafetyFlags?: boolean; workspace: Pick<Workspace, "id" | "plan"> },
+): Promise<Block> => {
+  if (!("options" in block) || !block.options) return block;
 
-    switch (block.type) {
-      case IntegrationBlockType.EMAIL:
-        return {
-          ...block,
-          options: {
-            ...block.options,
-            credentialsId:
-              (await sanitizeCredentialsId(workspace.id)(
-                block.options?.credentialsId,
-              )) ?? getDefaultEmailCredentialsId(workspace.plan),
-          },
-        };
-      default:
-        return {
-          ...block,
-          options: {
-            ...block.options,
-            proxyCredentialsId: await sanitizeCredentialsId(workspace.id)(
-              block.options?.proxyCredentialsId,
-            ),
-            credentialsId: await sanitizeCredentialsId(workspace.id)(
+  if (
+    enableSafetyFlags &&
+    (block.type === LogicBlockType.SCRIPT ||
+      block.type === LogicBlockType.SET_VARIABLE)
+  ) {
+    return {
+      ...block,
+      options: {
+        ...block.options,
+        isUnsafe:
+          block.options.isExecutedOnClient === true ||
+          (block.type === LogicBlockType.SCRIPT &&
+            block.options.isExecutedOnClient === undefined),
+      },
+    };
+  }
+
+  switch (block.type) {
+    case IntegrationBlockType.EMAIL:
+      return {
+        ...block,
+        options: {
+          ...block.options,
+          credentialsId:
+            (await sanitizeCredentialsId(workspace.id)(
               block.options?.credentialsId,
-            ),
-          },
-        };
-    }
-  };
+            )) ?? getDefaultEmailCredentialsId(workspace.plan),
+        },
+      };
+    default:
+      return {
+        ...block,
+        options: {
+          ...block.options,
+          proxyCredentialsId: await sanitizeCredentialsId(workspace.id)(
+            block.options?.proxyCredentialsId,
+          ),
+          credentialsId: await sanitizeCredentialsId(workspace.id)(
+            block.options?.credentialsId,
+          ),
+        },
+      };
+  }
+};
 
 const sanitizeCredentialsId =
   (workspaceId: string) =>

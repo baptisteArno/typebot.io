@@ -6,6 +6,12 @@ import { valueTypesWithNoOptions } from "./constants";
 const baseOptions = z.object({
   variableId: z.string().optional(),
   isExecutedOnClient: z.boolean().optional(),
+  isUnsafe: z
+    .boolean()
+    .optional()
+    .describe(
+      "Enabled by default for imported bots to prevent code to be executed in preview with priviledged access",
+    ),
 });
 
 const basicSetVariableOptionsSchema = baseOptions.extend({

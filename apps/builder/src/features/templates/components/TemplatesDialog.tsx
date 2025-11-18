@@ -14,7 +14,7 @@ import type { TemplateProps } from "../types";
 type Props = {
   isOpen: boolean;
   onClose: () => void;
-  onTypebotChoose: (typebot: Typebot, fromTemplate: string) => void;
+  onTypebotChoose: (typebot: Typebot, args: { fromTemplate: string }) => void;
   isLoading: boolean;
 };
 
@@ -60,7 +60,7 @@ export const TemplatesDialog = ({
 
   const onUseThisTemplateClick = async () => {
     if (!typebot) return;
-    onTypebotChoose(typebot, selectedTemplate.name);
+    onTypebotChoose(typebot, { fromTemplate: selectedTemplate.name });
   };
 
   return (

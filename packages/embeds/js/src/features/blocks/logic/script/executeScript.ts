@@ -1,19 +1,32 @@
 import type { ScriptToExecute } from "@typebot.io/chat-api/clientSideAction";
 import { parseUnknownClientError } from "@typebot.io/lib/parseUnknownClientError";
+import type { ClientSideActionContext } from "@/types";
+import { runUserCodeInWorker } from "./scriptRunner";
 
 const AsyncFunction = Object.getPrototypeOf(async () => {}).constructor;
 
-export const executeScript = async ({ content, args }: ScriptToExecute) => {
+export const executeScript = async (
+  { content, args, isUnsafe }: ScriptToExecute,
+  { isPreview }: Pick<ClientSideActionContext, "isPreview">,
+) => {
   try {
-    const func = AsyncFunction(
-      ...args.map((arg) => arg.id),
-      parseContent(content),
-    );
-    const result = await func(...args.map((arg) => arg.value));
-    if (result && typeof result === "string")
-      return {
-        scriptCallbackMessage: result,
-      };
+    const code = content.replace(/<script>/g, "").replace(/<\/script>/g, "");
+    if (isPreview && isUnsafe) {
+      const argsRecord = Object.fromEntries(args.map((a) => [a.id, a.value]));
+
+      const result = await runUserCodeInWorker(code, argsRecord);
+
+      if (result && typeof result === "string") {
+        return { scriptCallbackMessage: result };
+      }
+    } else {
+      const func = AsyncFunction(...args.map((arg) => arg.id), code);
+      const result = await func(...args.map((arg) => arg.value));
+      if (result && typeof result === "string")
+        return {
+          scriptCallbackMessage: result,
+        };
+    }
   } catch (err) {
     console.log(err);
     return {
@@ -25,13 +38,6 @@ export const executeScript = async ({ content, args }: ScriptToExecute) => {
       ],
     };
   }
-};
-
-const parseContent = (content: string) => {
-  const contentWithoutScriptTags = content
-    .replace(/<script>/g, "")
-    .replace(/<\/script>/g, "");
-  return contentWithoutScriptTags;
 };
 
 export const executeCode = async ({

@@ -345,6 +345,7 @@ export const ChatContainer = (props: Props) => {
       const response = await executeClientSideAction({
         clientSideAction: action,
         context: {
+          isPreview: props.context.isPreview,
           apiHost: props.context.apiHost,
           wsHost: props.context.wsHost,
           sessionId: props.initialChatReply.sessionId,
