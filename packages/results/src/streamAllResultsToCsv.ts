@@ -5,8 +5,9 @@ import { byId } from "@typebot.io/lib/utils";
 import prisma from "@typebot.io/prisma";
 import { typebotV6Schema } from "@typebot.io/typebot/schemas/typebot";
 import { z } from "@typebot.io/zod";
-import { createWriteStream, type PathLike } from "fs";
+import { createWriteStream, existsSync, mkdirSync, type PathLike } from "fs";
 import { unparse } from "papaparse";
+import { dirname } from "path";
 import { convertResultsToTableData } from "./convertResultsToTableData";
 import { parseBlockIdVariableIdMap } from "./parseBlockIdVariableIdMap";
 import { parseColumnsOrder } from "./parseColumnsOrder";
@@ -94,6 +95,7 @@ export const streamAllResultsToCsv = async (
     return headerLabel ?? headerId;
   });
 
+  createPathIfNotExists(writeStreamPath);
   const csvStream = createWriteStream(writeStreamPath);
 
   return new Promise<
@@ -187,4 +189,11 @@ export const streamAllResultsToCsv = async (
 
     processResults().catch(reject);
   });
+};
+
+const createPathIfNotExists = (path: PathLike) => {
+  const dir = dirname(path.toString());
+  if (!existsSync(dir)) {
+    mkdirSync(dir, { recursive: true });
+  }
 };
