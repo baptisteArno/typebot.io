@@ -125,7 +125,7 @@ export const CodeEditor = ({
       className={cn(
         "group relative isolate border rounded-md [&_.cm-editor]:font-mono [&_.cm-editor]:text-sm min-h-(--editor-min-height)",
         !withLineNumbers && "[&_.cm-gutters]:hidden",
-        "[&_.cm-editor]:rounded-md [&_.cm-editor]:outline-none has-[.cm-focused]:ring-2 transition-[box-shadow,border-color] has-[.cm-focused]:border-transparent ring-orange-7 [&_.cm-scroller]:rounded-md [&_.cm-scroller]:overflow-auto",
+        "[&_.cm-editor]:rounded-md [&_.cm-editor]:outline-none! has-[.cm-focused]:ring-2 transition-[box-shadow,border-color] has-[.cm-focused]:border-transparent ring-orange-7 [&_.cm-scroller]:rounded-md [&_.cm-scroller]:overflow-auto",
         isReadOnly ? undefined : "[&_.cm-editor]:max-h-(--editor-max-height)",
         className,
       )}
