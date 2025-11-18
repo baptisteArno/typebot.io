@@ -4,6 +4,9 @@ import { getResult } from "./getResult";
 import { getResultLogs } from "./getResultLogs";
 import { getResults } from "./getResults";
 import { getResultTranscript } from "./getResultTranscript";
+import { triggerCancelExport } from "./triggerCancelExport";
+import { triggerExportJob } from "./triggerExportJob";
+import { triggerSendExportResultsToEmail } from "./triggerSendExportResultsToEmail";
 
 export const resultsRouter = router({
   getResults,
@@ -11,4 +14,7 @@ export const resultsRouter = router({
   getResultTranscript,
   deleteResults,
   getResultLogs,
+  triggerExportJob,
+  triggerSendExportResultsToEmail,
+  triggerCancelExport,
 });

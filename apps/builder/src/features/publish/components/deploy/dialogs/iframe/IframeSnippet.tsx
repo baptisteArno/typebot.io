@@ -1,9 +1,9 @@
 import { env } from "@typebot.io/env";
+import { getPublicId } from "@typebot.io/typebot/helpers/getPublicId";
 import parserHtml from "prettier/parser-html";
 import prettier from "prettier/standalone";
 import { CodeEditor } from "@/components/inputs/CodeEditor";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
-import { getPublicId } from "@/features/publish/helpers/getPublicId";
 
 type Props = {
   widthLabel: string;

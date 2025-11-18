@@ -58,10 +58,8 @@ const nextConfig = {
       config.ignoreWarnings = [
         ...(config.ignoreWarnings ?? []),
         {
-          module:
-            /@opentelemetry\/instrumentation\/build\/esm\/platform\/node\/instrumentation\.js/,
-          message:
-            /Critical dependency: the request of a dependency is an expression/,
+          module: /@opentelemetry/,
+          message: /Critical dependency/,
         },
       ];
       return config;

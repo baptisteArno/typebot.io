@@ -1,4 +1,5 @@
 import { useTranslate } from "@tolgee/react";
+import { getPublicId } from "@typebot.io/typebot/helpers/getPublicId";
 import { Menu } from "@typebot.io/ui/components/Menu";
 import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
 import { Book02Icon } from "@typebot.io/ui/icons/Book02Icon";
@@ -7,7 +8,6 @@ import { MoreHorizontalIcon } from "@typebot.io/ui/icons/MoreHorizontalIcon";
 import { Settings01Icon } from "@typebot.io/ui/icons/Settings01Icon";
 import assert from "assert";
 import { useState } from "react";
-import { getPublicId } from "@/features/publish/helpers/getPublicId";
 import { useTypebot } from "../providers/TypebotProvider";
 import { EditorSettingsDialog } from "./EditorSettingsDialog";
 

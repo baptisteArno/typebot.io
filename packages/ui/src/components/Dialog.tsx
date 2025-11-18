@@ -8,14 +8,17 @@ import { buttonVariants } from "./Button";
 const Root = ({
   isOpen,
   onClose,
+  onCloseComplete,
   ...props
 }: DialogPrimitive.Root.Props & {
   isOpen: boolean;
   onClose: () => void;
+  onCloseComplete?: () => void;
 }) => (
   <DialogPrimitive.Root
     open={isOpen}
     onOpenChange={(open) => !open && onClose()}
+    onOpenChangeComplete={(open) => !open && onCloseComplete?.()}
     {...props}
   />
 );

@@ -2,7 +2,7 @@
   "name": "@typebot.io/emails",
   "type": "module",
   "scripts": {
-    "preview": "SKIP_ENV_CHECK=true dotenv -e ./.env -e ../../.env -- email dev --port=3005",
+    "preview": "SKIP_ENV_CHECK=true dotenv -e ./.env -e ../../.env -- email dev --port=3005 --dir=transactional",
     "preview-marketing": "SKIP_ENV_CHECK=true dotenv -e ./.env -e ../../.env -- email dev --port=3005 --dir=marketing"
   },
   "exports": {

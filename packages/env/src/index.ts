@@ -452,6 +452,13 @@ const partykitEnv = {
   },
 };
 
+const inngestEnv = {
+  server: {
+    INNGEST_EVENT_KEY: z.string().min(1).optional(),
+    INNGEST_SIGNING_KEY: z.string().min(1).optional(),
+  },
+};
+
 export const env = createEnv({
   server: {
     ...baseEnv.server,
@@ -473,6 +480,7 @@ export const env = createEnv({
     ...telemetryEnv.server,
     ...keycloakEnv.server,
     ...posthogEnv.server,
+    ...inngestEnv.server,
   },
   client: {
     ...baseEnv.client,

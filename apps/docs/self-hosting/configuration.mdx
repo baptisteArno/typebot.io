@@ -350,6 +350,17 @@ In Typebot, Redis is optional and is used to:
 | --------- | ------- | -------------------------------------------------------------------- |
 | REDIS_URL |         | The database URL. i.e. `redis://<username>:<password>@<host>:<port>` |
 
+## Inngest
+
+Inngest is optional and is used to trigger background jobs like exporting results to CSV.
+
+| Parameter            | Default | Description                                   |
+| -------------------- | ------- | --------------------------------------------- |
+| INNGEST_EVENT_KEY    |         | The event key used to trigger Inngest         |
+| INNGEST_SIGNING_KEY  |         | The signing key used to trigger Inngest       |
+| INNGEST_POSTGRES_URI |         | The PostgreSQL URI used to store Inngest data |
+| INNGEST_REDIS_URI    |         | The Redis URI used to store Inngest data      |
+
 ## PartyKit
 
 PartyKit is optional and is used to make the webhook block work. The PartyKit configuration is located in `packages/partykit` folder. You can deploy the server into production using `bun deploy`. You can find more information about PartyKit deployment in their [official documentation](https://docs.partykit.io/guides/deploying-your-partykit-server/).

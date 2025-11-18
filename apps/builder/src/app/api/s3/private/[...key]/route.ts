@@ -15,8 +15,7 @@ const pathAuthorizationCheckers: Record<
   string,
   (params: PathParams, user: User) => Promise<boolean>
 > = {
-  "yolo/{fileName}": async () => true,
-  "workspaces/{workspaceId}/typebots/{typebotId}/results-exports/{exportId}":
+  "tmp/workspaces/{workspaceId}/typebots/{typebotId}/results-exports/{exportId}":
     async (params, user) => {
       const typebot = await prisma.typebot.findFirst({
         where: {

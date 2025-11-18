@@ -1,0 +1,20 @@
+{
+  "name": "@typebot.io/inngest",
+  "exports": {
+    "./*": "./src/*.ts"
+  },
+  "scripts": {
+    "dev": "inngest-cli dev"
+  },
+  "dependencies": {
+    "inngest": "^3.45.1",
+    "@typebot.io/env": "workspace:*",
+    "@typebot.io/results": "workspace:*",
+    "@inngest/realtime": "^0.4.5",
+    "@typebot.io/emails": "workspace:*"
+  },
+  "devDependencies": {
+    "@typebot.io/tsconfig": "workspace:*",
+    "inngest-cli": "^1.13.7"
+  }
+}

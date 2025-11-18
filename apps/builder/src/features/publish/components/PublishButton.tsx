@@ -2,6 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import { T, useTranslate } from "@tolgee/react";
 import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
 import { isNotDefined } from "@typebot.io/lib/utils";
+import { getPublicId } from "@typebot.io/typebot/helpers/getPublicId";
 import { Alert } from "@typebot.io/ui/components/Alert";
 import { Button, type ButtonProps } from "@typebot.io/ui/components/Button";
 import { Menu } from "@typebot.io/ui/components/Menu";
@@ -28,7 +29,6 @@ import {
   trpc,
 } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
-import { getPublicId } from "../helpers/getPublicId";
 
 type Props = {
   isMoreMenuDisabled?: boolean;
