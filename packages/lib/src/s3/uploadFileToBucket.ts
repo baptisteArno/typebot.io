@@ -1,10 +1,11 @@
 import { env } from "@typebot.io/env";
+import type { Readable } from "stream";
 import { initClient } from "./initClient";
 import { parseS3PublicBaseUrl } from "./parseS3PublicBaseUrl";
 
 type Props = {
   key: string;
-  file: Buffer;
+  file: Buffer | Readable;
   mimeType: string;
   visibility?: "public" | "private";
 };

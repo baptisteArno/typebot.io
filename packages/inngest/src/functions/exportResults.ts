@@ -5,9 +5,8 @@ import prisma from "@typebot.io/prisma";
 import { getExportFileName } from "@typebot.io/results/getExportFileName";
 import { streamAllResultsToCsv } from "@typebot.io/results/streamAllResultsToCsv";
 import { z } from "@typebot.io/zod";
-import { mkdirSync, readFileSync, unlinkSync } from "fs";
 import { NonRetriableError } from "inngest";
-import path from "path";
+import { PassThrough } from "stream";
 import { inngest } from "../client";
 
 const updateDataSchema = z.discriminatedUnion("status", [
@@ -76,44 +75,50 @@ export const exportResults = inngest.createFunction(
       }),
     );
 
-    const tmpDir = path.join("/tmp", "typebot-exports");
-    mkdirSync(tmpDir, { recursive: true });
+    const { fileUrl, fileName } = await step.run(
+      "stream-results-to-bucket",
+      async () => {
+        const fileName = getExportFileName({
+          id: typebotId,
+          name: typebot.name,
+          publicId: typebot.publicId,
+        });
 
-    const writeStreamPath = path.join(tmpDir, `${typebotId}.csv`);
+        const passThrough = new PassThrough();
 
-    await step.run("stream-results-to-csv", async () => {
-      const result = await streamAllResultsToCsv(typebotId, {
-        writeStreamPath,
-        onProgressUpdate: async (progress) => {
-          await publish(
-            userChannel(event.data.userId).jobStatus({
-              status: "processing",
-              progress,
-            }),
-          );
-        },
-      });
-      if (result.status === "error") {
-        throw new NonRetriableError(result.message);
-      }
-    });
+        const uploadPromise = uploadFileToBucket({
+          visibility: "private",
+          key: `tmp/workspaces/${typebot.workspaceId}/typebots/${typebotId}/results-exports/${fileName}`,
+          file: passThrough,
+          mimeType: "text/csv",
+        });
 
-    const fileName = getExportFileName({
-      id: typebotId,
-      name: typebot.name,
-      publicId: typebot.publicId,
-    });
+        const streamPromise = streamAllResultsToCsv(typebotId, {
+          writableStream: passThrough,
+          onProgressUpdate: async (progress) => {
+            await publish(
+              userChannel(event.data.userId).jobStatus({
+                status: "processing",
+                progress,
+              }),
+            );
+          },
+        });
 
-    const fileUrl = await step.run("upload-file", async () => {
-      const file = await uploadFileToBucket({
-        visibility: "private",
-        key: `tmp/workspaces/${typebot.workspaceId}/typebots/${typebotId}/results-exports/${fileName}`,
-        file: readFileSync(writeStreamPath),
-        mimeType: "text/csv",
-      });
-      unlinkSync(writeStreamPath);
-      return file;
-    });
+        const [fileUrl, result] = await Promise.all([
+          uploadPromise,
+          streamPromise,
+        ]);
+
+        if (result.status === "error")
+          throw new NonRetriableError(result.message);
+
+        return {
+          fileUrl,
+          fileName,
+        };
+      },
+    );
 
     await publish(
       userChannel(event.data.userId).jobStatus({

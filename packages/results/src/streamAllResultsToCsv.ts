@@ -7,6 +7,7 @@ import { typebotV6Schema } from "@typebot.io/typebot/schemas/typebot";
 import { z } from "@typebot.io/zod";
 import { createWriteStream, type PathLike } from "fs";
 import { unparse } from "papaparse";
+import type { Writable } from "stream";
 import { convertResultsToTableData } from "./convertResultsToTableData";
 import { parseBlockIdVariableIdMap } from "./parseBlockIdVariableIdMap";
 import { parseColumnsOrder } from "./parseColumnsOrder";
@@ -19,9 +20,11 @@ export const streamAllResultsToCsv = async (
   typebotId: string,
   {
     writeStreamPath,
+    writableStream,
     onProgressUpdate,
   }: {
-    writeStreamPath: PathLike;
+    writeStreamPath?: PathLike;
+    writableStream?: Writable;
     onProgressUpdate: (progress: number) => void;
   },
 ): Promise<
@@ -33,6 +36,8 @@ export const streamAllResultsToCsv = async (
       status: "success";
     }
 > => {
+  if (!writeStreamPath && !writableStream)
+    return { status: "error", message: "No stream provided" };
   const typebot = await prisma.typebot.findUnique({
     where: {
       id: typebotId,
@@ -94,7 +99,7 @@ export const streamAllResultsToCsv = async (
     return headerLabel ?? headerId;
   });
 
-  const csvStream = createWriteStream(writeStreamPath);
+  const csvStream = writableStream ?? createWriteStream(writeStreamPath!);
 
   return new Promise<
     { status: "error"; message: string } | { status: "success" }
@@ -185,6 +190,9 @@ export const streamAllResultsToCsv = async (
       csvStream.end();
     };
 
-    processResults().catch(reject);
+    processResults().catch((err) => {
+      csvStream.destroy(err);
+      reject(err);
+    });
   });
 };
