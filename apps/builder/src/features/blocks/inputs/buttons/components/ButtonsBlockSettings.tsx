@@ -78,7 +78,10 @@ export const ButtonsBlockSettings = ({ options, onOptionsChange }: Props) => {
           <>
             <Field.Root className="flex-row items-center">
               <Switch
-                checked={options?.areInitialSearchButtonsVisible ?? false}
+                checked={
+                  options?.areInitialSearchButtonsVisible ??
+                  defaultChoiceInputOptions.areInitialSearchButtonsVisible
+                }
                 onCheckedChange={updateAreInitialSearchButtonsVisible}
               />
               <Field.Label>Default display buttons</Field.Label>
