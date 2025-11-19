@@ -62,11 +62,16 @@ export const streamAllResultsToCsv = async (
     },
   });
 
-  if (!typebot) return { status: "error", message: "Typebot not found" };
+  if (!typebot) {
+    writableStream?.end();
+    return { status: "error", message: "Typebot not found" };
+  }
   console.log("TYPEBOT found");
 
-  if (Number(typebot.version) < 6)
+  if (Number(typebot.version) < 6) {
+    writableStream?.end();
     return { status: "error", message: "Typebot is not at least v6" };
+  }
 
   const groups = parseGroups(typebot.groups, {
     typebotVersion: typebot.version,
