@@ -15,20 +15,20 @@ const CSV_SCHEMA = z.object({
 });
 
 const SUBJECT =
-  "Action needed: some of your bots need republishing before Nov 20";
-const DEADLINE = "November 20, 2025";
+  "Action needed, Final notice: some of your bots need republishing before Nov 20";
+const DEADLINE = "November 26, 2025";
 const makeBody = (
   workspaceName: string,
   urls: string[],
 ) => `You are receiving this email because you are an admin of the Typebot workspace "${workspaceName}".
 
-We’re retiring an old Typebot endpoint on ${DEADLINE}. Here are the bots that need to be republished:
+This is a final reminder: the old Typebot endpoint will be retired in **7 days, on ${DEADLINE}**. The following bots still need to be republished before then:
 
 ${urls.join("\n")}
 
 All you need to do is:
 
-1️⃣ Open the bots in the editor — it will automatically migrate them to the new version  
+1️⃣ Open the bots in the editor, it will automatically migrate them to the new version  
 2️⃣ Run a quick test to make sure everything is working  
 3️⃣ Click Publish
 
@@ -43,32 +43,30 @@ const CONCURRENCY = Number(process.env.CONCURRENCY ?? 5); // email send concurre
 const MAX_RETRIES = 3;
 
 export async function sendEmailCampaign() {
-  const newTypebotIds = await parseCsv("./inputs/new.csv");
-  const existingTypebotIds = await parseCsv("./inputs/existing.csv");
-  const typebotIds = newTypebotIds.filter(
-    (id) => !existingTypebotIds.includes(id),
-  );
+  const typebotIds = await parseCsv("./inputs/deprecatedTypebots.csv");
   if (typebotIds.length === 0) {
     console.log("No valid typebot IDs found in CSV. Exiting.");
     return;
   }
   console.log(`Extracted ${typebotIds.length} typebot IDs from CSV.`);
 
-  const typebots = (
+  const deprecatedTypebots = (
     await prisma.typebot.findMany({
       where: { id: { in: typebotIds } },
       select: { id: true, workspaceId: true, version: true },
     })
   )?.filter((typebot) => !typebot.version);
 
-  console.log(`Found ${typebots.length} typebots that need to be republished.`);
+  console.log(
+    `Found ${deprecatedTypebots.length} typebots that need to be republished.`,
+  );
 
-  if (typebots.length === 0) {
+  if (deprecatedTypebots.length === 0) {
     throw new Error("None of the provided typebot IDs exist.");
   }
 
   const typebotsByWorkspace = new Map<string, string[]>();
-  for (const tb of typebots) {
+  for (const tb of deprecatedTypebots) {
     if (!tb.workspaceId) continue;
     const arr = typebotsByWorkspace.get(tb.workspaceId) ?? [];
     arr.push(tb.id);
