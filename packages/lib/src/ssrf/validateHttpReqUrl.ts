@@ -1,4 +1,5 @@
 import { URL } from "node:url";
+import { env } from "@typebot.io/env";
 
 const BLOCKED_HEADERS = [
   "x-aws-ec2-metadata-token",
@@ -17,7 +18,7 @@ const BLOCKED_HEADERS = [
  *
  * @throws Error if the URL is blocked or invalid
  */
-export const validateTestHttpReqUrl = (urlString: string) => {
+export const validateHttpReqUrl = (urlString: string) => {
   if (!urlString?.trim()) {
     throw new Error("URL is required");
   }
@@ -58,7 +59,7 @@ export const validateTestHttpReqUrl = (urlString: string) => {
   }
 
   // Block localhost hostname variations (non-IP formats)
-  if (hostname === "localhost") {
+  if (hostname === "localhost" && env.NODE_ENV !== "development") {
     throw new Error("Access to localhost is not allowed for security reasons.");
   }
 
@@ -89,12 +90,21 @@ export const validateTestHttpReqUrl = (urlString: string) => {
  *
  * @throws Error if blocked headers are detected
  */
-export const validateTestHttpReqHeaders = (
-  headers?: Array<{ id: string; key?: string; value?: string }>,
+export const validateHttpReqHeaders = (
+  headers?:
+    | Record<string, string | string[] | undefined>
+    | Array<{ key?: string; value?: string }>,
 ) => {
   if (!headers) return;
 
-  for (const header of headers) {
+  const headersList = Array.isArray(headers)
+    ? headers
+    : Object.entries(headers).map(([key, value]) => ({
+        key,
+        value: String(value),
+      }));
+
+  for (const header of headersList) {
     // Skip headers without a key
     if (!header.key) continue;
 
@@ -125,7 +135,7 @@ const parseIPAddress = (hostname: string): ParsedIP | null => {
 
   // Try IPv6 - check if hostname contains colons (characteristic of IPv6)
   // Note: URL parser already removes brackets, so we get the raw IPv6 address
-  if (hostname.includes(":") && !hostname.includes(".")) {
+  if (hostname.includes(":")) {
     return { version: 6, address: hostname };
   }
 
@@ -190,6 +200,42 @@ const validateIPAddress = (ip: ParsedIP) => {
 
   if (ip.version === 6) {
     const addr = ip.address.toLowerCase();
+
+    // Handle IPv6-mapped IPv4 addresses (e.g., ::ffff:1.2.3.4 or ::ffff:a9fe:a9fe)
+    if (addr.startsWith("::ffff:") || addr.startsWith("0:0:0:0:0:ffff:")) {
+      const parts = addr.split("ffff:");
+      const ipv4Part = parts[parts.length - 1];
+
+      // Check for dotted decimal format
+      if (ipv4Part.includes(".")) {
+        const octets = ipv4Part.split(".").map(Number);
+        if (
+          octets.length === 4 &&
+          octets.every((o) => !isNaN(o) && o >= 0 && o <= 255)
+        ) {
+          validateIPAddress({ version: 4, octets });
+          return;
+        }
+      }
+
+      // Check for hex format (2 groups of 16-bit hex)
+      const hexGroups = ipv4Part.split(":");
+      if (hexGroups.length === 2) {
+        const group1 = parseInt(hexGroups[0], 16);
+        const group2 = parseInt(hexGroups[1], 16);
+
+        if (!isNaN(group1) && !isNaN(group2)) {
+          const octets = [
+            (group1 >> 8) & 0xff,
+            group1 & 0xff,
+            (group2 >> 8) & 0xff,
+            group2 & 0xff,
+          ];
+          validateIPAddress({ version: 4, octets });
+          return;
+        }
+      }
+    }
 
     // Block ::1 (loopback)
     if (

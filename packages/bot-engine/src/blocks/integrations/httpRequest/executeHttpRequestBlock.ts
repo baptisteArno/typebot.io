@@ -23,6 +23,10 @@ import { getCredentials } from "@typebot.io/credentials/getCredentials";
 import { httpProxyCredentialsSchema } from "@typebot.io/credentials/schemas";
 import { env } from "@typebot.io/env";
 import { JSONParse } from "@typebot.io/lib/JSONParse";
+import {
+  validateHttpReqHeaders,
+  validateHttpReqUrl,
+} from "@typebot.io/lib/ssrf/validateHttpReqUrl";
 import { isDefined, isEmpty, isNotDefined, omit } from "@typebot.io/lib/utils";
 import type { LogInSession } from "@typebot.io/logs/schemas";
 import prisma from "@typebot.io/prisma";
@@ -236,6 +240,31 @@ export const executeHttpRequest = async (
   const logs: LogInSession[] = [];
 
   const { headers, url, method, basicAuth, isJson } = httpRequest;
+
+  try {
+    validateHttpReqUrl(url);
+    validateHttpReqHeaders(headers);
+  } catch (error) {
+    logs.push({
+      status: "error",
+      description: `Security validation failed: ${
+        error instanceof Error ? error.message : "Invalid configuration"
+      }`,
+    });
+    return {
+      response: {
+        statusCode: 400,
+        data: {
+          message: `Security validation failed: ${
+            error instanceof Error ? error.message : "Invalid configuration"
+          }`,
+        },
+      },
+      logs,
+      startTimeShouldBeUpdated: true,
+    };
+  }
+
   const contentType = headers ? headers["Content-Type"] : undefined;
 
   const isLongRequest = params.disableRequestTimeout

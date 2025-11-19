@@ -20,10 +20,6 @@ import {
 import { edgeSchema } from "@typebot.io/typebot/schemas/edge";
 import { variableSchema } from "@typebot.io/variables/schemas";
 import { z } from "@typebot.io/zod";
-import {
-  validateTestHttpReqHeaders,
-  validateTestHttpReqUrl,
-} from "@/features/blocks/integrations/httpRequest/helpers/validateTestHttpReqUrl";
 import { canReadTypebots } from "@/helpers/databaseRules";
 import { authenticatedProcedure } from "@/helpers/server/trpc";
 
@@ -104,17 +100,6 @@ export const testHttpRequest = authenticatedProcedure
         code: "NOT_FOUND",
         message: "Couldn't find webhook",
       });
-
-    // Validate webhook URL and headers to prevent SSRF attacks
-    try {
-      validateTestHttpReqUrl(webhook.url ?? "");
-      validateTestHttpReqHeaders(webhook.headers);
-    } catch (error) {
-      throw new TRPCError({
-        code: "BAD_REQUEST",
-        message: `Security validation failed: ${error instanceof Error ? error.message : "Invalid webhook configuration"}`,
-      });
-    }
 
     const { group } = getBlockById(blockId, parsedTypebot.groups);
     const linkedTypebots = await fetchLinkedChildTypebots({

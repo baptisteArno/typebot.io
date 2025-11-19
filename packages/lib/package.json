@@ -6,6 +6,9 @@
   "exports": {
     "./*": "./src/*.ts"
   },
+  "scripts": {
+    "test": "dotenv -e ./.env -e ../../.env -- vitest run"
+  },
   "dependencies": {
     "ioredis": "^5.4.1",
     "minio": "^7.1.3",
@@ -19,6 +22,8 @@
     "@typebot.io/env": "workspace:*",
     "@typebot.io/schemas": "workspace:*",
     "@typebot.io/tsconfig": "workspace:*",
-    "@types/validator": "^13.11.9"
+    "@types/validator": "^13.11.9",
+    "vitest": "^3.2.4",
+    "vite-tsconfig-paths": "^5.1.4"
   }
 }

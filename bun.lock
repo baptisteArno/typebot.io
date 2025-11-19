@@ -79,7 +79,7 @@
         "google-auth-library": "^10.1.0",
         "immer": "^10.0.2",
         "ioredis": "^5.4.1",
-        "jsonwebtoken": "^9.0.2",
+        "jsonwebtoken": "^9.0.1",
         "ky": "^1.2.4",
         "mailchecker": "^6.0.16",
         "micro-cors": "^0.1.1",
@@ -1013,6 +1013,8 @@
         "@typebot.io/schemas": "workspace:*",
         "@typebot.io/tsconfig": "workspace:*",
         "@types/validator": "^13.11.9",
+        "vite-tsconfig-paths": "^5.1.4",
+        "vitest": "^3.2.4",
       },
     },
     "packages/logs": {
