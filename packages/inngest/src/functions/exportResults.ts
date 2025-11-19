@@ -78,11 +78,13 @@ export const exportResults = inngest.createFunction(
     const { fileUrl, fileName } = await step.run(
       "stream-results-to-bucket",
       async () => {
+        console.log("GETTING FILE NAME");
         const fileName = getExportFileName({
           id: typebotId,
           name: typebot.name,
           publicId: typebot.publicId,
         });
+        console.log("FILE NAME", fileName);
 
         const passThrough = new PassThrough();
 
@@ -96,6 +98,7 @@ export const exportResults = inngest.createFunction(
         const streamPromise = streamAllResultsToCsv(typebotId, {
           writableStream: passThrough,
           onProgressUpdate: async (progress) => {
+            console.log("PROGRESS", progress);
             await publish(
               userChannel(event.data.userId).jobStatus({
                 status: "processing",
@@ -105,10 +108,12 @@ export const exportResults = inngest.createFunction(
           },
         });
 
+        console.log("UPLOAD PROMISE", uploadPromise);
         const [fileUrl, result] = await Promise.all([
           uploadPromise,
           streamPromise,
         ]);
+        console.log("RESULT", result);
 
         if (result.status === "error")
           throw new NonRetriableError(result.message);
