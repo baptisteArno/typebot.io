@@ -36,10 +36,9 @@ export const streamAllResultsToCsv = async (
       status: "success";
     }
 > => {
-  console.log("STREAMING ALL RESULTS TO CSV");
   if (!writeStreamPath && !writableStream)
     return { status: "error", message: "No stream provided" };
-  console.log("GETTING TYPEBOT");
+
   const typebot = await prisma.typebot.findUnique({
     where: {
       id: typebotId,
@@ -49,16 +48,14 @@ export const streamAllResultsToCsv = async (
       groups: true,
       variables: true,
       resultsTablePreferences: true,
-      _count: {
-        select: {
-          results: {
-            where: {
-              hasStarted: true,
-              isArchived: false,
-            },
-          },
-        },
-      },
+    },
+  });
+
+  const totalResultsToExport = await prisma.result.count({
+    where: {
+      typebotId,
+      hasStarted: true,
+      isArchived: false,
     },
   });
 
@@ -66,7 +63,6 @@ export const streamAllResultsToCsv = async (
     writableStream?.end();
     return { status: "error", message: "Typebot not found" };
   }
-  console.log("TYPEBOT found");
 
   if (Number(typebot.version) < 6) {
     writableStream?.end();
@@ -109,8 +105,6 @@ export const streamAllResultsToCsv = async (
 
   const csvStream = writableStream ?? createWriteStream(writeStreamPath!);
 
-  console.log("RETURNING PROMISE");
-
   return new Promise<
     { status: "error"; message: string } | { status: "success" }
   >((resolve, reject) => {
@@ -129,8 +123,7 @@ export const streamAllResultsToCsv = async (
       const processedIds = new Set<string>();
       let processedCount = 0;
 
-      while (processedCount < typebot._count.results) {
-        console.log("PROCESSING RESULTS");
+      while (processedCount < totalResultsToExport) {
         const rawBatch = z.array(resultWithAnswersSchema).parse(
           (
             await prisma.result.findMany({
@@ -193,7 +186,7 @@ export const streamAllResultsToCsv = async (
         lastCreatedAt = batch[batch.length - 1].createdAt;
         processedCount += batch.length;
         onProgressUpdate(
-          Math.round((processedCount / typebot._count.results) * 100),
+          Math.round((processedCount / totalResultsToExport) * 100),
         );
       }
 
