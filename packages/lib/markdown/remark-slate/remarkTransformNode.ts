@@ -13,7 +13,9 @@ export const remarkTransformNode = <V extends Value>(
   const { type } = node
 
   if (remarkTextTypes.includes(type!)) {
-    return remarkTransformText(node, options)
+    const result = remarkTransformText(node, options)
+    // remarkTransformText can now return elements too (for links inside marks)
+    return Array.isArray(result) ? result : [result]
   }
 
   return remarkTransformElement(node, lastLineNumber, options)
