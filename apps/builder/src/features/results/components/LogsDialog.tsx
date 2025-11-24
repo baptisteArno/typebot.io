@@ -4,6 +4,7 @@ import { Accordion } from "@typebot.io/ui/components/Accordion";
 import { Badge } from "@typebot.io/ui/components/Badge";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
 import { LoaderCircleIcon } from "@typebot.io/ui/icons/LoaderCircleIcon";
+import { CodeEditor } from "@/components/inputs/CodeEditor";
 import { useLogs } from "../hooks/useLogs";
 
 type Props = {
@@ -47,7 +48,9 @@ const LogCard = ({ log }: { log: Log }) => {
               </div>
             </div>
           </Accordion.Trigger>
-          <Accordion.Panel>{log.details}</Accordion.Panel>
+          <Accordion.Panel>
+            <DetailsViewer details={log.details} />
+          </Accordion.Panel>
         </Accordion.Item>
       </Accordion.Root>
     );
@@ -94,5 +97,43 @@ const StatusTag = ({
           Ok
         </Badge>
       );
+  }
+};
+
+const DetailsViewer = ({ details }: { details: string }) => {
+  const { formatted, isJson } = beautifyDetails(details);
+
+  if (!isJson) {
+    return (
+      <pre className="max-h-96 overflow-auto whitespace-pre-wrap wrap-break-word p-4 font-mono text-sm">
+        {formatted}
+      </pre>
+    );
+  }
+
+  return (
+    <CodeEditor
+      value={formatted}
+      lang="json"
+      isReadOnly
+      withVariableButton={false}
+      maxHeight="400px"
+      withLineNumbers
+    />
+  );
+};
+
+const beautifyDetails = (details: string) => {
+  try {
+    const parsed = JSON.parse(details);
+    return {
+      formatted: JSON.stringify(parsed, null, 2),
+      isJson: true,
+    };
+  } catch {
+    return {
+      formatted: details,
+      isJson: false,
+    };
   }
 };
