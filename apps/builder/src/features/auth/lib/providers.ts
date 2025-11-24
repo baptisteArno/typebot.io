@@ -125,6 +125,7 @@ if (env.CUSTOM_OAUTH_ISSUER) {
         scope: env.CUSTOM_OAUTH_SCOPE,
       },
     },
+    checks: ["pkce", "state"],
     clientId: env.CUSTOM_OAUTH_CLIENT_ID,
     clientSecret: env.CUSTOM_OAUTH_CLIENT_SECRET,
     wellKnown: env.CUSTOM_OAUTH_WELL_KNOWN_URL,
