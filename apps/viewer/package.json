@@ -33,7 +33,7 @@
     "next": "^15.3.0",
     "nextjs-cors": "^2.1.2",
     "nodemailer": "^7.0.6",
-    "openai": "^4.81.0",
+    "openai": "^6.9.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "stripe": "^17.1.0",

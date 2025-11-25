@@ -9,6 +9,7 @@ import { getCredentials } from "@typebot.io/credentials/getCredentials";
 import type { AsyncVariableStore } from "@typebot.io/forge/types";
 import { forgedBlocks } from "@typebot.io/forge-repository/definitions";
 import { getBlockById } from "@typebot.io/groups/helpers/getBlockById";
+import { getOpenAIChatCompletionStream } from "@typebot.io/legacy/getOpenAIChatCompletionStream";
 import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
 import { isDefined } from "@typebot.io/lib/utils";
 import {
@@ -23,7 +24,6 @@ import {
 import { OpenAI } from "openai";
 import { saveSetVariableHistoryItems } from "../queries/saveSetVariableHistoryItems";
 import { updateVariablesInSession } from "../updateVariablesInSession";
-import { getOpenAIChatCompletionStream } from "./legacy/getOpenAIChatCompletionStream";
 
 type Props = {
   sessionId: string;
@@ -72,7 +72,7 @@ export const getMessageStream = async ({
       const stream = await getOpenAIChatCompletionStream(
         newSessionState,
         block.options as ChatCompletionOpenAIOptions,
-        messages,
+        messages as any,
         sessionStore,
       );
       if (!stream)

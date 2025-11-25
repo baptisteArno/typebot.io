@@ -393,11 +393,10 @@ const createAssistantStream = async ({
           )
         ).filter(isDefined);
         runResult = await forwardStream(
-          openai.beta.threads.runs.submitToolOutputsStream(
-            currentThreadId,
-            runResult.id,
-            { tool_outputs },
-          ),
+          openai.beta.threads.runs.submitToolOutputsStream(runResult.id, {
+            thread_id: currentThreadId,
+            tool_outputs,
+          }),
         );
       }
     });

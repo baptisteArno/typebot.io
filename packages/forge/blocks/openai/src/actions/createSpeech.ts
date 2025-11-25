@@ -6,7 +6,7 @@ import { isNotEmpty } from "@typebot.io/lib/utils";
 import OpenAI, { type ClientOptions } from "openai";
 import { auth } from "../auth";
 import { baseOptions } from "../baseOptions";
-import { defaultOpenAIOptions, openAIVoices } from "../constants";
+import { defaultOpenAIOptions, openAIVoices, ttsModels } from "../constants";
 
 export const createSpeech = createAction({
   name: "Create speech",
@@ -15,12 +15,17 @@ export const createSpeech = createAction({
   options: option.object({
     model: option.string.layout({
       fetcher: "fetchSpeechModels",
-      defaultValue: "tts-1",
+      autoCompleteItems: ttsModels,
       placeholder: "Select a model",
     }),
     input: option.string.layout({
       label: "Input",
       inputType: "textarea",
+    }),
+    instructions: option.string.layout({
+      label: "Instructions",
+      inputType: "textarea",
+      isHidden: (option) => option.model !== "gpt-4o-mini-tts",
     }),
     voice: option.enum(openAIVoices).layout({
       label: "Voice",
@@ -108,6 +113,7 @@ export const createSpeech = createAction({
           input: options.input,
           voice: options.voice,
           model,
+          instructions: options.instructions,
         })) as any;
         const url = await uploadFileToBucket({
           file: Buffer.from((await rawAudio.arrayBuffer()) as ArrayBuffer),

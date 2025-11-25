@@ -9346,6 +9346,9 @@
                   "input": {
                     "type": "string"
                   },
+                  "instructions": {
+                    "type": "string"
+                  },
                   "voice": {
                     "type": "string",
                     "enum": [

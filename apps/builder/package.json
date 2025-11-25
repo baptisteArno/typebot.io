@@ -84,7 +84,7 @@
     "nodemailer": "^7.0.6",
     "nprogress": "^0.2.0",
     "nuqs": "^2.3.2",
-    "openai": "^4.81.0",
+    "openai": "^6.9.1",
     "papaparse": "^5.4.1",
     "partysocket": "^1.0.2",
     "pexels": "^1.4.0",

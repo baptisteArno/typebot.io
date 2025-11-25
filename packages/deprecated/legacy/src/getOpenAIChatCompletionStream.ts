@@ -6,11 +6,12 @@ import type {
 import type { SessionState } from "@typebot.io/chat-session/schemas";
 import { decryptV2 } from "@typebot.io/credentials/decryptV2";
 import { getCredentials } from "@typebot.io/credentials/getCredentials";
-import { OpenAIStream } from "@typebot.io/legacy/ai";
 import { isNotEmpty } from "@typebot.io/lib/utils";
 import type { SessionStore } from "@typebot.io/runtime-session-store";
 import { parseVariableNumber } from "@typebot.io/variables/parseVariableNumber";
 import { type ClientOptions, OpenAI } from "openai";
+import { OpenAIStream } from "./ai";
+
 export const getOpenAIChatCompletionStream = async (
   state: SessionState,
   options: ChatCompletionOpenAIOptions,
