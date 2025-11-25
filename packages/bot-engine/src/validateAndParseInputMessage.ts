@@ -26,7 +26,13 @@ export const validateAndParseInputMessage = (
     sessionStore,
     variables,
     block,
-  }: { sessionStore: SessionStore; variables: Variable[]; block: InputBlock },
+    skipValidation,
+  }: {
+    sessionStore: SessionStore;
+    variables: Variable[];
+    block: InputBlock;
+    skipValidation?: boolean;
+  },
 ): ParsedReply => {
   switch (block.type) {
     case InputBlockType.EMAIL: {
@@ -52,6 +58,13 @@ export const validateAndParseInputMessage = (
     }
     case InputBlockType.CHOICE: {
       if (!message || message.type !== "text") return { status: "fail" };
+      if (block.options?.dynamicVariableId && skipValidation) {
+        return {
+          status: "success",
+          content: message.text,
+          outgoingEdgeId: block.outgoingEdgeId,
+        };
+      }
       const displayedItems = injectVariableValuesInButtonsInputBlock(block, {
         variables,
         sessionStore,
@@ -128,6 +141,16 @@ export const validateAndParseInputMessage = (
     }
     case InputBlockType.PICTURE_CHOICE: {
       if (!message || message.type !== "text") return { status: "fail" };
+      if (
+        block.options?.dynamicItems?.pictureSrcsVariableId &&
+        skipValidation
+      ) {
+        return {
+          status: "success",
+          content: message.text,
+          outgoingEdgeId: block.outgoingEdgeId,
+        };
+      }
       const displayedItems = injectVariableValuesInPictureChoiceBlock(block, {
         variables,
         sessionStore,

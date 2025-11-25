@@ -270,6 +270,7 @@ const executeGroup = ({
           block,
           variables: typebot.variables,
           sessionStore,
+          skipValidation: true,
         },
       );
 
