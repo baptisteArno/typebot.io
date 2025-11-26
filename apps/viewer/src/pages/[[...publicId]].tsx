@@ -1,4 +1,3 @@
-import * as Sentry from "@sentry/nextjs";
 import { env } from "@typebot.io/env";
 import { isNotDefined } from "@typebot.io/lib/utils";
 import prisma from "@typebot.io/prisma";
@@ -17,29 +16,9 @@ import { ErrorPage } from "@/components/ErrorPage";
 import { NotFoundPage } from "@/components/NotFoundPage";
 import { RootPage } from "@/components/RootPage";
 import {
-  type TypebotPageProps,
-  TypebotPageV2,
-} from "@/components/TypebotPageV2";
-import {
   TypebotPageV3,
   type TypebotV3PageProps,
 } from "@/components/TypebotPageV3";
-
-// Browsers that doesn't support ES modules and/or web components
-const incompatibleBrowsers = [
-  {
-    name: "UC Browser",
-    regex: /ucbrowser/i,
-  },
-  {
-    name: "Internet Explorer",
-    regex: /msie|trident/i,
-  },
-  {
-    name: "Opera Mini",
-    regex: /opera mini/i,
-  },
-];
 
 const log = (message: string) => {
   if (!env.DEBUG) return;
@@ -49,10 +28,6 @@ const log = (message: string) => {
 export const getServerSideProps: GetServerSideProps = async (
   context: GetServerSidePropsContext,
 ) => {
-  const incompatibleBrowser =
-    incompatibleBrowsers.find((browser) =>
-      browser.regex.test(context.req.headers["user-agent"] ?? ""),
-    )?.name ?? null;
   const pathname = context.resolvedUrl.split("?")[0];
   const { host, forwardedHost } = getHost(context.req);
   log(`host: ${host}`);
@@ -88,19 +63,30 @@ export const getServerSideProps: GetServerSideProps = async (
     const customDomain = `${forwardedHost ?? host}${
       pathname === "/" ? "" : pathname
     }`;
-    const publishedTypebot = isMatchingViewerUrl
+    const getTypebotResponse = isMatchingViewerUrl
       ? await getTypebotFromPublicId(context.query.publicId?.toString())
       : await getTypebotFromCustomDomain(customDomain);
 
-    if (!publishedTypebot || publishedTypebot?.isSuspended)
+    if (
+      (getTypebotResponse.status === "error" &&
+        getTypebotResponse.error.code === "NOT_FOUND") ||
+      (getTypebotResponse.status === "success" &&
+        getTypebotResponse.publishedTypebot.isSuspended)
+    )
       return {
         notFound: true,
       };
 
     return {
       props: {
-        publishedTypebot,
-        incompatibleBrowser,
+        errorCode:
+          getTypebotResponse.status === "error"
+            ? getTypebotResponse.error.code
+            : null,
+        publishedTypebot:
+          getTypebotResponse.status === "success"
+            ? getTypebotResponse.publishedTypebot
+            : null,
         isMatchingViewerUrl,
         url: `${protocol}://${forwardedHost ?? host}${pathname}`,
       },
@@ -110,13 +96,26 @@ export const getServerSideProps: GetServerSideProps = async (
   }
   return {
     props: {
-      incompatibleBrowser,
       url: `${protocol}://${forwardedHost ?? host}${pathname}`,
     },
   };
 };
 
-const getTypebotFromPublicId = async (publicId?: string) => {
+type GetTypebotResponse =
+  | {
+      status: "error";
+      error: {
+        code: "OUTDATED" | "NOT_FOUND";
+      };
+    }
+  | {
+      status: "success";
+      publishedTypebot: ClientPublishedTypebot & { isSuspended: boolean };
+    };
+
+const getTypebotFromPublicId = async (
+  publicId?: string,
+): Promise<GetTypebotResponse> => {
   const publishedTypebot = await prisma.publicTypebot.findFirst({
     where: { typebot: { publicId: publicId ?? "" } },
     select: {
@@ -143,38 +142,47 @@ const getTypebotFromPublicId = async (publicId?: string) => {
       },
     },
   });
-  if (isNotDefined(publishedTypebot)) return null;
+  if (isNotDefined(publishedTypebot))
+    return {
+      status: "error",
+      error: {
+        code: "NOT_FOUND",
+      },
+    };
   const theme = themeSchema.parse(publishedTypebot.theme);
   const settings = settingsSchema.parse(publishedTypebot.settings);
-  if (!publishedTypebot.version) {
-    Sentry.setTag("typebotId", publishedTypebot.typebotId);
-    Sentry.captureMessage("Is using TypebotPageV2");
-  }
-  return publishedTypebot.version
-    ? {
-        name: publishedTypebot.typebot.name,
-        publicId: publishedTypebot.typebot.publicId ?? null,
-        background: theme.general?.background ?? {
-          type: defaultBackgroundType,
-          content: isTypebotVersionAtLeastV6(publishedTypebot.version)
-            ? defaultBackgroundColor[publishedTypebot.version]
-            : defaultBackgroundColor["6"],
-        },
-        isHideQueryParamsEnabled:
-          settings.general?.isHideQueryParamsEnabled ??
-          defaultSettings.general.isHideQueryParamsEnabled,
-        metadata: settings.metadata ?? {},
-        font: theme.general?.font ?? null,
-        version: publishedTypebot.version,
-        isSuspended: publishedTypebot.typebot.workspace.isSuspended,
-      }
-    : {
-        ...publishedTypebot,
-        isSuspended: publishedTypebot.typebot.workspace.isSuspended,
-      };
+  if (!publishedTypebot.version)
+    return {
+      status: "error",
+      error: {
+        code: "OUTDATED",
+      },
+    };
+  return {
+    status: "success",
+    publishedTypebot: {
+      name: publishedTypebot.typebot.name,
+      publicId: publishedTypebot.typebot.publicId ?? null,
+      background: theme.general?.background ?? {
+        type: defaultBackgroundType,
+        content: isTypebotVersionAtLeastV6(publishedTypebot.version)
+          ? defaultBackgroundColor[publishedTypebot.version]
+          : defaultBackgroundColor["6"],
+      },
+      isHideQueryParamsEnabled:
+        settings.general?.isHideQueryParamsEnabled ??
+        defaultSettings.general.isHideQueryParamsEnabled,
+      metadata: settings.metadata ?? {},
+      font: theme.general?.font ?? null,
+      version: publishedTypebot.version as PublicTypebot["version"],
+      isSuspended: publishedTypebot.typebot.workspace.isSuspended,
+    },
+  };
 };
 
-const getTypebotFromCustomDomain = async (customDomain: string) => {
+const getTypebotFromCustomDomain = async (
+  customDomain: string,
+): Promise<GetTypebotResponse> => {
   const publishedTypebot = await prisma.publicTypebot.findFirst({
     where: { typebot: { customDomain } },
     select: {
@@ -201,35 +209,42 @@ const getTypebotFromCustomDomain = async (customDomain: string) => {
       },
     },
   });
-  if (isNotDefined(publishedTypebot)) return null;
-  if (!publishedTypebot.version) {
-    Sentry.setTag("typebotId", publishedTypebot.typebotId);
-    Sentry.captureMessage("Is using TypebotPageV2");
-  }
+  if (isNotDefined(publishedTypebot))
+    return {
+      status: "error",
+      error: {
+        code: "NOT_FOUND",
+      },
+    };
+  if (!publishedTypebot.version)
+    return {
+      status: "error",
+      error: {
+        code: "OUTDATED",
+      },
+    };
   const theme = themeSchema.parse(publishedTypebot.theme);
   const settings = settingsSchema.parse(publishedTypebot.settings);
-  return publishedTypebot.version
-    ? {
-        name: publishedTypebot.typebot.name,
-        publicId: publishedTypebot.typebot.publicId ?? null,
-        background: theme.general?.background ?? {
-          type: defaultBackgroundType,
-          content: isTypebotVersionAtLeastV6(publishedTypebot.version)
-            ? defaultBackgroundColor[publishedTypebot.version]
-            : defaultBackgroundColor["6"],
-        },
-        isHideQueryParamsEnabled:
-          settings.general?.isHideQueryParamsEnabled ??
-          defaultSettings.general.isHideQueryParamsEnabled,
-        metadata: settings.metadata ?? {},
-        font: theme.general?.font ?? null,
-        version: publishedTypebot.version,
-        isSuspended: publishedTypebot.typebot.workspace.isSuspended,
-      }
-    : {
-        ...publishedTypebot,
-        isSuspended: publishedTypebot.typebot.workspace.isSuspended,
-      };
+  return {
+    status: "success",
+    publishedTypebot: {
+      name: publishedTypebot.typebot.name,
+      publicId: publishedTypebot.typebot.publicId ?? null,
+      background: theme.general?.background ?? {
+        type: defaultBackgroundType,
+        content: isTypebotVersionAtLeastV6(publishedTypebot.version)
+          ? defaultBackgroundColor[publishedTypebot.version]
+          : defaultBackgroundColor["6"],
+      },
+      isHideQueryParamsEnabled:
+        settings.general?.isHideQueryParamsEnabled ??
+        defaultSettings.general.isHideQueryParamsEnabled,
+      metadata: settings.metadata ?? {},
+      font: theme.general?.font ?? null,
+      version: publishedTypebot.version as PublicTypebot["version"],
+      isSuspended: publishedTypebot.typebot.workspace.isSuspended,
+    },
+  };
 };
 
 const getHost = (
@@ -239,56 +254,49 @@ const getHost = (
   forwardedHost: req?.headers["x-forwarded-host"] as string | undefined,
 });
 
+type ClientPublishedTypebot = Pick<
+  TypebotV3PageProps,
+  | "name"
+  | "publicId"
+  | "background"
+  | "isHideQueryParamsEnabled"
+  | "metadata"
+  | "font"
+> & {
+  version: PublicTypebot["version"];
+};
+
 const App = ({
+  errorCode,
   publishedTypebot,
-  incompatibleBrowser,
   dashboardUrl,
-  ...props
+  url,
+  isMatchingViewerUrl,
 }: {
-  isIE: boolean;
-  customHeadCode: string | null;
   url: string;
   isMatchingViewerUrl?: boolean;
   dashboardUrl?: string;
-  publishedTypebot:
-    | TypebotPageProps["publishedTypebot"]
-    | (Pick<
-        TypebotV3PageProps,
-        | "name"
-        | "publicId"
-        | "background"
-        | "isHideQueryParamsEnabled"
-        | "metadata"
-        | "font"
-      > & {
-        version: PublicTypebot["version"];
-      });
-  incompatibleBrowser: string | null;
+  publishedTypebot: ClientPublishedTypebot | null;
+  errorCode: "OUTDATED" | "NOT_FOUND" | null;
 }) => {
-  if (incompatibleBrowser)
+  if (dashboardUrl) return <RootPage dashboardUrl={dashboardUrl} />;
+  if (errorCode)
     return (
       <ErrorPage
         error={
-          new Error(
-            `Your web browser: ${incompatibleBrowser}, is not supported.`,
-          )
+          errorCode === "OUTDATED"
+            ? new Error(
+                "This bot is outdated. Please contact the administrator.",
+              )
+            : new Error("The typebot was not found")
         }
       />
     );
-  if (dashboardUrl) return <RootPage dashboardUrl={dashboardUrl} />;
-  if (
-    !publishedTypebot ||
-    ("typebot" in publishedTypebot && publishedTypebot.typebot.isArchived)
-  )
-    return <NotFoundPage />;
-  if ("typebot" in publishedTypebot && publishedTypebot.typebot.isClosed)
-    return <ErrorPage error={new Error("This bot is now closed")} />;
-  return "typebot" in publishedTypebot ? (
-    <TypebotPageV2 publishedTypebot={publishedTypebot} {...props} />
-  ) : (
+  if (!publishedTypebot) return <NotFoundPage />;
+  return (
     <TypebotPageV3
-      url={props.url}
-      isMatchingViewerUrl={props.isMatchingViewerUrl}
+      url={url}
+      isMatchingViewerUrl={isMatchingViewerUrl}
       name={publishedTypebot.name}
       publicId={publishedTypebot.publicId}
       isHideQueryParamsEnabled={

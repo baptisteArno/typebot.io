@@ -27,7 +27,6 @@
     "@typebot.io/chat-api": "workspace:*",
     "@typebot.io/logs": "workspace:*",
     "@typebot.io/user": "workspace:*",
-    "bot-engine": "workspace:*",
     "cors": "^2.8.5",
     "google-spreadsheet": "^4.1.4",
     "next": "^15.3.0",

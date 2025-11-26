@@ -37,7 +37,7 @@
       "outputLogs": "new-only"
     },
     "api:generate": {
-      "dependsOn": ["bot-engine#build", "@typebot.io/prisma#db:generate"],
+      "dependsOn": ["@typebot.io/prisma#db:generate"],
       "cache": false
     },
     "db:generate": {
