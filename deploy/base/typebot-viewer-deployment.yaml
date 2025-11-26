@@ -49,7 +49,7 @@ spec:
           ]
         admission.datadoghq.com/typebot-viewer.apm.json: >
           {
-            "ignore_resources": ["/health"]
+            "ignore_resources": ["GET /health", "GET /api/health"]
           }
     spec:
       containers:
