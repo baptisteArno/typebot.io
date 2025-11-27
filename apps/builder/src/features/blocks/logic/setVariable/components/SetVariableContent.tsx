@@ -13,7 +13,7 @@ export const SetVariableContent = ({ block }: { block: SetVariableBlock }) => {
   return (
     <p
       className={cx(
-        "truncate line-clamp-4",
+        "line-clamp-4",
         variableName === "" ? "text-gray-9" : "text-gray-12",
       )}
     >
