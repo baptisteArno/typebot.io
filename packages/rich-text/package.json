@@ -8,7 +8,7 @@
     "./plate": "./src/plate/index.ts"
   },
   "scripts": {
-    "test": "dotenv -e ./.env -e ../../.env -- vitest run"
+    "test": "dotenv -e ./.env -e ../../.env -- bun test .test.ts --external isolated-vm"
   },
   "dependencies": {
     "@platejs/basic-nodes": "49.0.0",
@@ -19,10 +19,15 @@
     "@typebot.io/runtime-session-store": "workspace:*",
     "@typebot.io/ui": "workspace:*",
     "@typebot.io/variables": "workspace:*",
+    "@typebot.io/lib": "workspace:*",
+    "unified": "^11.0.5",
+    "mdast": "^3.0.0",
     "platejs": "49.2.21",
     "react": "^18.3.1"
   },
   "devDependencies": {
-    "@typebot.io/tsconfig": "workspace:*"
+    "@types/mdast": "^4.0.4",
+    "@typebot.io/tsconfig": "workspace:*",
+    "@types/bun": "^1.3.3"
   }
 }

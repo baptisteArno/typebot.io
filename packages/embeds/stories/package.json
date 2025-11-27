@@ -19,6 +19,6 @@
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*",
-    "@types/react": "^18.3.18"
+    "@types/react": "^18.3.26"
   }
 }

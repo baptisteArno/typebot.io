@@ -38,7 +38,7 @@ const botUserAgentPatterns = [
   /yandexbot/i,
 ];
 
-export const isBot = (userAgent: string | undefined): boolean => {
+export const isBot = (userAgent: string | undefined | null): boolean => {
   if (!userAgent) return false;
   return botUserAgentPatterns.some((pattern) => pattern.test(userAgent));
 };

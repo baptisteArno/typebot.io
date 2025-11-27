@@ -1,6 +1,6 @@
+import { describe, expect, it } from "bun:test";
 import { SessionStore } from "@typebot.io/runtime-session-store";
 import type { TElement } from "platejs";
-import { describe, expect, it } from "vitest";
 import { convertRichTextToMarkdown } from "./convertRichTextToMarkdown";
 import { parseVariablesInRichText } from "./parseVariablesInRichText";
 

@@ -1,5 +1,6 @@
 {
   "extends": "@typebot.io/tsconfig/react.json",
   "include": ["src/**/*.ts", "src/**/*.tsx"],
+  "exclude": ["node_modules"],
   "compilerOptions": {}
 }

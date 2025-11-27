@@ -1,6 +1,6 @@
+import { describe, expect, it } from "bun:test";
 import type { ChoiceInputBlock } from "@typebot.io/blocks-inputs/choice/schema";
 import type { PictureChoiceBlock } from "@typebot.io/blocks-inputs/pictureChoice/schema";
-import { describe, expect, it } from "vitest";
 import { parseMultipleChoiceReply } from "./parseMultipleChoiceReply";
 
 const createMockItem = (

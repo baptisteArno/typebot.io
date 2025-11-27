@@ -17,7 +17,7 @@
     "moduleResolution": "bundler",
     "noEmit": true,
 
-    "lib": ["esnext"],
+    "lib": ["esnext", "dom", "DOM.Iterable"],
 
     "jsx": "preserve"
   }

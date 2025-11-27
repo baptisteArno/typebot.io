@@ -64,7 +64,7 @@
     "@types/cors": "^2.8.13",
     "@types/node": "^20.4.2",
     "@types/papaparse": "^5.3.7",
-    "@types/react": "^18.3.18",
+    "@types/react": "^18.3.26",
     "dotenv": "^16.4.5",
     "dotenv-cli": "^8.0.0",
     "next-runtime-env": "^1.6.2"

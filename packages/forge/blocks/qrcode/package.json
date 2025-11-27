@@ -11,7 +11,8 @@
     "@typebot.io/forge": "workspace:*",
     "@typebot.io/lib": "workspace:*",
     "@typebot.io/tsconfig": "workspace:*",
-    "@types/qrcode": "^1.5.3"
+    "@types/qrcode": "^1.5.3",
+    "@types/react": "^18.3.26"
   },
   "dependencies": {
     "qrcode": "^1.5.3"

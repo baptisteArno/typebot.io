@@ -87,14 +87,24 @@ export const LinkFloatingToolbar = ({
 
   return (
     <>
-      <div ref={insertRef} className={popoverClassNames} {...insertProps}>
+      <div
+        ref={insertRef}
+        className={popoverClassNames}
+        {...insertProps}
+        style={insertProps.style as React.CSSProperties}
+      >
         <LinkForm
           onKeyDownCapture={inputProps.props.onKeyDownCapture}
           textInputProps={textInputProps}
         />
       </div>
 
-      <div ref={editRef} className={popoverClassNames} {...editProps}>
+      <div
+        ref={editRef}
+        className={popoverClassNames}
+        {...editProps}
+        style={editProps.style as React.CSSProperties}
+      >
         {editState.isEditing ? (
           <LinkForm
             onKeyDownCapture={inputProps.props.onKeyDownCapture}

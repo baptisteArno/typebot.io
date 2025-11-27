@@ -15,6 +15,7 @@
     "@typebot.io/zod": "workspace:*"
   },
   "devDependencies": {
-    "@typebot.io/tsconfig": "workspace:*"
+    "@typebot.io/tsconfig": "workspace:*",
+    "@types/react": "^18.3.26"
   }
 }

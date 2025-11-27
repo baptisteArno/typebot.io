@@ -12,9 +12,11 @@
     "@typebot.io/forge": "workspace:*",
     "@typebot.io/lib": "workspace:*",
     "dify-ai-provider": "^0.1.6",
-    "ky": "^1.2.4"
+    "ky": "^1.2.4",
+    "@typebot.io/ai": "workspace:*"
   },
   "devDependencies": {
-    "@typebot.io/tsconfig": "workspace:*"
+    "@typebot.io/tsconfig": "workspace:*",
+    "@types/react": "^18.3.26"
   }
 }
