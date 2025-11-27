@@ -154,9 +154,6 @@ export const getYesterdayChurnSummary = async ({
           },
         },
         typebots: {
-          orderBy: {
-            createdAt: "desc",
-          },
           select: {
             version: true,
             id: true,
@@ -383,6 +380,7 @@ const getWorkspaceJsonRepresentation = async (
   }
 
   for (const [index, typebot] of workspace.typebots
+    .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
     .slice(0, MAX_BOTS_PER_WORKSPACE)
     .entries()) {
     console.log(
