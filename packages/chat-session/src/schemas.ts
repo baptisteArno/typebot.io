@@ -152,6 +152,7 @@ const sessionStateSchemaV3 = sessionStateSchemaV2
               blockId: true,
               variableId: true,
               value: true,
+              blockIndex: true,
             }),
           )
           .optional(),

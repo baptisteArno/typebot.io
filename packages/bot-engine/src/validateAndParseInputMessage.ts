@@ -62,7 +62,6 @@ export const validateAndParseInputMessage = (
         return {
           status: "success",
           content: message.text,
-          outgoingEdgeId: block.outgoingEdgeId,
         };
       }
       const displayedItems = injectVariableValuesInButtonsInputBlock(block, {
@@ -148,7 +147,6 @@ export const validateAndParseInputMessage = (
         return {
           status: "success",
           content: message.text,
-          outgoingEdgeId: block.outgoingEdgeId,
         };
       }
       const displayedItems = injectVariableValuesInPictureChoiceBlock(block, {

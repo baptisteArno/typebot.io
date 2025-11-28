@@ -57,6 +57,7 @@ export const setVariableHistoryItemSchema = z.object({
   resultId: z.string(),
   index: z.number(),
   blockId: z.string(),
+  blockIndex: z.number().nullable(),
   variableId: z.string(),
   value: z.string().or(listVariableValue).nullable(),
 }) satisfies z.ZodType<Prisma.SetVariableHistoryItem>;

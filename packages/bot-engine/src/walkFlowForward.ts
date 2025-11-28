@@ -296,6 +296,7 @@ const executeGroup = async (
                   blockId: item.blockId,
                   variableId: item.variableId,
                   value: item.value,
+                  blockIndex: item.blockIndex,
                 }),
               ),
             ),
