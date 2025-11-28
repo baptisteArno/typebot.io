@@ -76,7 +76,7 @@ export const CardsCaroussel = (props: Props) => {
         <Index each={props.block.items}>
           {(item, index) => (
             <Carousel.Item index={index}>
-              <Card class="h-full">
+              <Card class="h-full border">
                 <div
                   class="flex flex-col gap-4"
                   style={{
