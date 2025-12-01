@@ -1,5 +1,46 @@
 # Changelog
 
+<a name="3.14.0"></a>
+## 3.14.0 (2025-12-01)
+
+### New features
+
+- ✨ (openai) Add instructions field for gpt-4o-tts [[7f58205](https://github.com/baptisteArno/typebot.io/commit/7f58205f83d1a2dd81422a50b996fd3c497e55d4)]
+
+### UI/UX Improvements
+
+- 💄 (bot) Add border to cards [[d48c9b4](https://github.com/baptisteArno/typebot.io/commit/d48c9b458e01e054b67091a8eb0711c387bb9732)]
+- 💄 Fix Set variable block content weird truncation [[f80b5b1](https://github.com/baptisteArno/typebot.io/commit/f80b5b1b5ea79b0c2c5e21c2d0ded0827feb432a)]
+- 💄 Fix Accordion item focus [[9c66ca1](https://github.com/baptisteArno/typebot.io/commit/9c66ca1d39c5aefa1655803f4d7b045550438b2e)]
+- 💄 Fix Logs details overflow [[46ac629](https://github.com/baptisteArno/typebot.io/commit/46ac629d658f75817d44bdb2d7da015a24f45676)]
+
+### Fixed
+
+- 🐛 (transcript) fix specific cases with Jump blocks [[3d5458b](https://github.com/baptisteArno/typebot.io/commit/3d5458b268149aeca8f5c8ecf9801cbcfbebe2f8)]
+- 🐛 (churn summary): Fix workspace out of memory query issue [[4920849](https://github.com/baptisteArno/typebot.io/commit/4920849c101a6064b3c65d6905cbb97f39a31caf)]
+- 🐛 Fix result transcript bug with dynamic buttons answer [[17da043](https://github.com/baptisteArno/typebot.io/commit/17da04340b2f721153d3f319a225eab2b56959c9)]
+- 🐛 FIx streamAllResultsToCsv initial query not performant on large dataset [[34f2e2c](https://github.com/baptisteArno/typebot.io/commit/34f2e2c43b23d7d79a42d2bf02a13a9ff25c5916)]
+- 🐛 Ensure writable stream ends on typebot errors in CSV export [[1d0f03a](https://github.com/baptisteArno/typebot.io/commit/1d0f03a0a8a2711d79a89cbf129b74464315fdae)]
+- 🐛 Fix Inngest export function, stream directly to S3 [[4d4afee](https://github.com/baptisteArno/typebot.io/commit/4d4afee415c3506d81e1ec785bed9f72d0deb4f0)]
+- 🐛 (buttons) Fix default buttons visible settings [[324871b](https://github.com/baptisteArno/typebot.io/commit/324871bfc7f053fa888a6681efaeda48fea28126)]
+- 🐛 Make sure export file path exists before streaming [[fa53a28](https://github.com/baptisteArno/typebot.io/commit/fa53a2822f5e9b40b21bd2ddbd6b2f6697e25b64)]
+
+### Internal
+
+- ♻️ Migrate to Bun test [[dd82c4d](https://github.com/baptisteArno/typebot.io/commit/dd82c4d318b5c487cc9c3a3217e47451004ff1a5)]
+- 🔥 Remove legacy bot-engine [[c2d8920](https://github.com/baptisteArno/typebot.io/commit/c2d8920856885e7112c0c573dd44e696d917c7f8)]
+- 🔒 Apply URL validation to HTTP request block [[0612192](https://github.com/baptisteArno/typebot.io/commit/06121925413d55ebb98e6e57d95f9cf5f3d13ee9)]
+- 🔧 Adjust email campaign script [[415ef92](https://github.com/baptisteArno/typebot.io/commit/415ef925c98b1a2d9ab531ea84341d4bb02fae7d)]
+- 🔧 (scripts) Send daily report notification on Discord [[d17b232](https://github.com/baptisteArno/typebot.io/commit/d17b232a8641301bd00a2c37dd110fe1eb937db3)]
+- 🔧 Update exportResults to use temporary directory for CSV exports [[a33d8cd](https://github.com/baptisteArno/typebot.io/commit/a33d8cd1b48f75fd3f909d608ec998feaa194c59)]
+
+### Miscellaneous
+
+-  👷 Remove auto add to project GH action [[fa08d38](https://github.com/baptisteArno/typebot.io/commit/fa08d38a292429d147eebd9d484b9edd87f23c48)]
+- 🧑‍💻 (auth) Add &#x60;state&#x60; to custom oauth checks [[b912de8](https://github.com/baptisteArno/typebot.io/commit/b912de89c45761052d4b4a2164d7744275da5a90)]
+- 🧱 (results) Process results export in the background for big exports [[27c9bf1](https://github.com/baptisteArno/typebot.io/commit/27c9bf12e8420dd7f4fa2034d7729815c8337d4f)]
+
+
 <a name="3.13.2"></a>
 ## 3.13.2 (2025-11-18)
 
