@@ -325,9 +325,10 @@ const executeGroup = ({
         },
       });
       nextEdgeId = virtualId;
-    } else if (block.type === LogicBlockType.RETURN) {
-      break;
-    } else if (block.type === LogicBlockType.AB_TEST) {
+    } else if (
+      block.type === LogicBlockType.AB_TEST ||
+      block.type === LogicBlockType.RETURN
+    ) {
       nextEdgeId = visitedEdges.next();
     }
     // ──────────────────────────────────────────────────────────── Typebot link
