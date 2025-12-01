@@ -8,7 +8,10 @@ type Props = {
   };
 };
 
-export default function MyApp({ Component, pageProps }: Props): JSX.Element {
+export default function MyApp({
+  Component,
+  pageProps,
+}: Props): React.JSX.Element {
   const { ...componentProps } = pageProps;
 
   return <Component {...componentProps} />;

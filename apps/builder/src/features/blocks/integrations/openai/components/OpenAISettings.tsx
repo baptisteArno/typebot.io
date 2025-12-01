@@ -11,6 +11,7 @@ import type {
 import { Accordion } from "@typebot.io/ui/components/Accordion";
 import { Field } from "@typebot.io/ui/components/Field";
 import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
+import type { JSX } from "react";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { DebouncedTextInputWithVariablesButton } from "@/components/inputs/DebouncedTextInput";
 import { CredentialsDropdown } from "@/features/credentials/components/CredentialsDropdown";

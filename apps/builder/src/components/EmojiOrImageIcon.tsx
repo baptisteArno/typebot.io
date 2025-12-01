@@ -1,5 +1,6 @@
 import { isSvgSrc } from "@typebot.io/lib/utils";
 import { cx } from "@typebot.io/ui/lib/cva";
+import type { JSX } from "react";
 
 type Props = {
   icon?: string | null;

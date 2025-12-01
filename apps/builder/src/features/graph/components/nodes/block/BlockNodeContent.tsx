@@ -6,6 +6,7 @@ import type {
 import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
 import { IntegrationBlockType } from "@typebot.io/blocks-integrations/constants";
 import { LogicBlockType } from "@typebot.io/blocks-logic/constants";
+import type { JSX } from "react";
 import { AudioBubbleNode } from "@/features/blocks/bubbles/audio/components/AudioBubbleNode";
 import { EmbedBubbleContent } from "@/features/blocks/bubbles/embed/components/EmbedBubbleContent";
 import { ImageBubbleContent } from "@/features/blocks/bubbles/image/components/ImageBubbleContent";

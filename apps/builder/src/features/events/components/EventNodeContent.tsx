@@ -1,5 +1,6 @@
 import { EventType } from "@typebot.io/events/constants";
 import type { TEvent } from "@typebot.io/events/schemas";
+import type { JSX } from "react";
 import { StartEventNode } from "@/features/events/components/StartEventNode";
 import { CommandEventNode } from "./CommandEventNode";
 import { InvalidReplyEventNode } from "./InvalidReplyEventNode";

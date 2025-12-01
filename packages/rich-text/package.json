@@ -23,7 +23,7 @@
     "unified": "^11.0.5",
     "mdast": "^3.0.0",
     "platejs": "49.2.21",
-    "react": "^18.3.1"
+    "react": "^19.2.0"
   },
   "devDependencies": {
     "@types/mdast": "^4.0.4",

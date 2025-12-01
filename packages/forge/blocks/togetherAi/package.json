@@ -12,6 +12,6 @@
     "@typebot.io/ai": "workspace:*",
     "@typebot.io/tsconfig": "workspace:*",
     "@ai-sdk/togetherai": "^0.2.16",
-    "@types/react": "^18.3.26"
+    "@types/react": "^19.2.7"
   }
 }

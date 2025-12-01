@@ -54,7 +54,8 @@ export const StacksWithGhostableItems = forwardRef<
 
     childrenArray.forEach((child) => {
       const isGhostableItem =
-        React.isValidElement(child) && isDefined(child.props.ghostLabel);
+        React.isValidElement(child) &&
+        isDefined((child.props as any).ghostLabel);
       if (!isGhostableItem) {
         console.error(
           "Child is not a GhostableItem",
@@ -63,7 +64,7 @@ export const StacksWithGhostableItems = forwardRef<
         );
         return;
       }
-      const isNull = isGhostableItem && child.props.children === null;
+      const isNull = isGhostableItem && (child.props as any).children === null;
 
       if ((isNull && !inNullGroup) || (!isNull && inNullGroup)) {
         if (currentGroup.length > 0) {

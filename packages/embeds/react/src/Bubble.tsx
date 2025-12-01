@@ -8,7 +8,7 @@ type Props = BubbleProps & {
   };
 };
 
-declare global {
+declare module "react" {
   namespace JSX {
     interface IntrinsicElements {
       "typebot-bubble": React.DetailedHTMLProps<

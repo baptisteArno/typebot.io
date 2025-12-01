@@ -1,7 +1,7 @@
 import type { SessionStore } from "@typebot.io/runtime-session-store";
 import type { WithoutVariables } from "@typebot.io/variables/types";
 import type { z } from "@typebot.io/zod";
-import type { SVGProps } from "react";
+import type { JSX, SVGProps } from "react";
 
 export type VariableStore = {
   get: (variableId: string) => string | (string | null)[] | null | undefined;

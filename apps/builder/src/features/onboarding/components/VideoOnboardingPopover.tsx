@@ -2,7 +2,7 @@ import type { ForgedBlockDefinition } from "@typebot.io/forge-repository/definit
 import { Button } from "@typebot.io/ui/components/Button";
 import { Popover } from "@typebot.io/ui/components/Popover";
 import { Cancel01Icon } from "@typebot.io/ui/icons/Cancel01Icon";
-import type { ReactNode } from "react";
+import type { JSX, ReactNode } from "react";
 import { useUser } from "@/features/user/hooks/useUser";
 import { onboardingVideos } from "../data";
 import { useOnboardingDisclosure } from "../hooks/useOnboardingDisclosure";

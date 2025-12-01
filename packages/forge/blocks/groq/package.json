@@ -13,7 +13,7 @@
     "@typebot.io/tsconfig": "workspace:*",
     "@typebot.io/lib": "workspace:*",
     "@ai-sdk/groq": "^1.2.9",
-    "@types/react": "^18.3.26"
+    "@types/react": "^19.2.7"
   },
   "dependencies": {
     "ky": "^1.2.4"

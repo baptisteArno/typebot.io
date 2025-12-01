@@ -10,7 +10,7 @@ import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
 import { LoaderCircleIcon } from "@typebot.io/ui/icons/LoaderCircleIcon";
 import { cx } from "@typebot.io/ui/lib/cva";
-import { useState } from "react";
+import { type JSX, useState } from "react";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { useResultTranscriptQuery } from "../hooks/useResultTranscriptQuery";
 import { useResults } from "../ResultsProvider";

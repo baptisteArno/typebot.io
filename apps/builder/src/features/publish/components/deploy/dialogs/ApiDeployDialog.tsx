@@ -1,6 +1,7 @@
 import { Alert } from "@typebot.io/ui/components/Alert";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
 import { InformationSquareIcon } from "@typebot.io/ui/icons/InformationSquareIcon";
+import type { JSX } from "react";
 import { CodeEditor } from "@/components/inputs/CodeEditor";
 import { TextLink } from "@/components/TextLink";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";

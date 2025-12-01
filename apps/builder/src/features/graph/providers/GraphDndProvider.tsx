@@ -21,7 +21,7 @@ import type { Coordinates } from "../types";
 
 type NodeElement = {
   id: string;
-  ref: React.RefObject<HTMLElement>;
+  ref: React.RefObject<HTMLElement | null>;
 };
 
 export type BlockWithCreatableItems = Exclude<
@@ -99,7 +99,7 @@ export const useDragDistance = ({
   isDisabled = false,
   deps = [],
 }: {
-  ref: React.MutableRefObject<HTMLElement | null>;
+  ref: React.RefObject<HTMLElement | null>;
   onDrag: (position: { absolute: Coordinates; relative: Coordinates }) => void;
   distanceTolerance?: number;
   isDisabled?: boolean;
@@ -108,7 +108,7 @@ export const useDragDistance = ({
   const mouseDownPosition = useRef<{
     absolute: Coordinates;
     relative: Coordinates;
-  }>();
+  }>(undefined);
 
   const onGlobalMouseUp = useCallback(() => {
     if (mouseDownPosition.current) mouseDownPosition.current = undefined;

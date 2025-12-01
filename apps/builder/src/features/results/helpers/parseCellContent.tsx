@@ -1,5 +1,6 @@
 import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
 import type { VariableWithValue } from "@typebot.io/variables/schemas";
+import type { JSX } from "react";
 import { FileLinks } from "../components/FileLinks";
 
 export const parseCellContent = (

@@ -1,5 +1,6 @@
 import { Plan } from "@typebot.io/prisma/enum";
 import { Badge } from "@typebot.io/ui/components/Badge";
+import type { JSX } from "react";
 
 export const PlanBadge = ({
   plan,

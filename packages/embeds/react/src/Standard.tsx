@@ -7,7 +7,7 @@ type Props = BotProps & {
   className?: string;
 };
 
-declare global {
+declare module "react" {
   namespace JSX {
     interface IntrinsicElements {
       "typebot-standard": React.DetailedHTMLProps<

@@ -16,13 +16,13 @@
     "react-email": "^4.2.8",
     "@react-email/render": "^1.2.1",
     "@typebot.io/lib": "workspace:*",
-    "react": "^18.3.1"
+    "react": "^19.2.0"
   },
   "devDependencies": {
     "@react-email/preview-server": "^4.2.8",
     "@typebot.io/tsconfig": "workspace:*",
     "dotenv-cli": "^8.0.0",
-    "@types/react": "^18.3.26",
+    "@types/react": "^19.2.7",
     "@types/nodemailer": "^7.0.1"
   }
 }

@@ -4,6 +4,7 @@ import { Button } from "@typebot.io/ui/components/Button";
 import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
 import { SourceCodeIcon } from "@typebot.io/ui/icons/SourceCodeIcon";
 import { SquareLock01Icon } from "@typebot.io/ui/icons/SquareLock01Icon";
+import type { JSX } from "react";
 import {
   WhatsAppLogo,
   whatsAppBrandColor,

@@ -1,5 +1,6 @@
 import { TickIcon } from "@typebot.io/ui/icons/TickIcon";
 import { cn } from "@typebot.io/ui/lib/cn";
+import type { JSX } from "react";
 
 type FeaturesListProps = {
   features: (string | JSX.Element)[];

@@ -108,7 +108,7 @@ export const streamAllResultsToCsv = async (
   return new Promise<
     { status: "error"; message: string } | { status: "success" }
   >((resolve, reject) => {
-    csvStream.on("error", (error) => {
+    csvStream.on("error", (error: unknown) => {
       reject(error);
     });
 

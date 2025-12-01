@@ -11,7 +11,7 @@
     "@typebot.io/forge": "workspace:*",
     "@typebot.io/lib": "workspace:*",
     "@typebot.io/tsconfig": "workspace:*",
-    "@types/react": "^18.3.26"
+    "@types/react": "^19.2.7"
   },
   "dependencies": {
     "@ai-sdk/mistral": "^1.2.8",

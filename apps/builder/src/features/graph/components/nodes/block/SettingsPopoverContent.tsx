@@ -6,7 +6,7 @@ import { EventType } from "@typebot.io/events/constants";
 import type { TEventWithOptions } from "@typebot.io/events/schemas";
 import { Popover } from "@typebot.io/ui/components/Popover";
 import { cn } from "@typebot.io/ui/lib/cn";
-import { useRef, useState } from "react";
+import { type JSX, useRef, useState } from "react";
 import { ButtonsBlockSettings } from "@/features/blocks/inputs/buttons/components/ButtonsBlockSettings";
 import { CardsBlockSettings } from "@/features/blocks/inputs/cards/components/CardsBlockSettings";
 import { DateInputSettings } from "@/features/blocks/inputs/date/components/DateInputSettings";

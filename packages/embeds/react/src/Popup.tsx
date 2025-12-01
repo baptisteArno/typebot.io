@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef } from "react";
 
 type Props = PopupProps;
 
-declare global {
+declare module "react" {
   namespace JSX {
     interface IntrinsicElements {
       "typebot-popup": React.DetailedHTMLProps<

@@ -5,6 +5,7 @@ import { CommandIcon } from "@typebot.io/ui/icons/CommandIcon";
 import { Flag02Icon } from "@typebot.io/ui/icons/Flag02Icon";
 import { SentIcon } from "@typebot.io/ui/icons/SentIcon";
 import { cn } from "@typebot.io/ui/lib/cn";
+import type { JSX } from "react";
 
 type Props = { type: TEvent["type"] } & React.SVGProps<SVGSVGElement>;
 
