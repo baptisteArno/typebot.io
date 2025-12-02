@@ -1,7 +1,7 @@
 import type { ButtonProps } from "@typebot.io/ui/components/Button";
 import { Button } from "@typebot.io/ui/components/Button";
 import { cn } from "@typebot.io/ui/lib/cn";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { PopupIllustration } from "./illustrations/PopupIllustration";
 
 export const PopupMenuButton = ({

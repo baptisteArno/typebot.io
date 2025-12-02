@@ -19,7 +19,7 @@
     "@typebot.io/telemetry": "workspace:*",
     "@typebot.io/ui": "workspace:*",
     "@typebot.io/zod": "workspace:*",
-    "motion": "12.4.3",
+    "motion": "^12.23.25",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "vite": "7.0.0"

@@ -68,7 +68,7 @@
     "deep-object-diff": "^1.1.9",
     "dequal": "^2.0.3",
     "emojilib": "^3.0.10",
-    "framer-motion": "^11.1.7",
+    "motion": "^12.23.25",
     "google-auth-library": "^10.1.0",
     "immer": "^10.0.2",
     "ioredis": "^5.4.1",

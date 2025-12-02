@@ -1,6 +1,6 @@
 import { Button, type ButtonProps } from "@typebot.io/ui/components/Button";
 import { cn } from "@typebot.io/ui/lib/cn";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { BubbleIllustration } from "./illustrations/BubbleIllustration";
 
 export const BubbleMenuButton = ({
