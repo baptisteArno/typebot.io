@@ -1,11 +1,11 @@
-import { createHandler } from "@typebot.io/forge";
+import { createActionHandler } from "@typebot.io/forge";
 import { createId } from "@typebot.io/lib/createId";
 import { uploadFileToBucket } from "@typebot.io/lib/s3/uploadFileToBucket";
 import QRCode from "qrcode";
 import { generateQrCode } from "./actions/generateQrCodeImage";
 
 export default [
-  createHandler(generateQrCode, {
+  createActionHandler(generateQrCode, {
     server: async ({ options, variables, logs }) => {
       if (!options.data)
         return logs.add(

@@ -1,5 +1,5 @@
 import { parseVideoUrl } from "@typebot.io/blocks-bubbles/video/helpers";
-import { createHandler } from "@typebot.io/forge";
+import { createActionHandler } from "@typebot.io/forge";
 import { extensionFromMimeType } from "@typebot.io/lib/extensionFromMimeType";
 import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
 import { isDefined } from "@typebot.io/lib/utils";
@@ -7,7 +7,7 @@ import ky, { HTTPError } from "ky";
 import { sendFeedEvent } from "../actions/sendFeedEvent";
 import { baseUrl } from "../constants";
 
-export const sendFeedEventHandler = createHandler(sendFeedEvent, {
+export const sendFeedEventHandler = createActionHandler(sendFeedEvent, {
   server: async ({ credentials, options, variables, logs }) => {
     if (!credentials?.apiKey) return logs.add("No API key provided.");
 

@@ -1,4 +1,4 @@
-import { createHandler } from "@typebot.io/forge";
+import { createActionHandler } from "@typebot.io/forge";
 import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
 import { isDefined, isNotDefined } from "@typebot.io/lib/utils";
 import ky from "ky";
@@ -8,7 +8,7 @@ import { convertFilterToWhereClause } from "../helpers/convertFilterToWhereClaus
 import { parseSearchParams } from "../helpers/parseSearchParams";
 import type { ListTableRecordsResponse } from "../types";
 
-export const searchRecordsHandler = createHandler(searchRecords, {
+export const searchRecordsHandler = createActionHandler(searchRecords, {
   server: async ({
     credentials: { baseUrl, apiKey },
     options: { tableId, responseMapping, filter, returnType, viewId },

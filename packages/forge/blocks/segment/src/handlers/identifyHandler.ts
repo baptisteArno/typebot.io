@@ -1,8 +1,8 @@
 import { Analytics } from "@segment/analytics-node";
-import { createHandler } from "@typebot.io/forge";
+import { createActionHandler } from "@typebot.io/forge";
 import { identify } from "../actions/identify";
 
-export const identifyHandler = createHandler(identify, {
+export const identifyHandler = createActionHandler(identify, {
   server: async ({
     credentials: { apiKey },
     options: { userId, email, traits },

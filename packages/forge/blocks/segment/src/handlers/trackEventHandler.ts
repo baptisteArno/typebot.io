@@ -1,8 +1,8 @@
 import { Analytics } from "@segment/analytics-node";
-import { createHandler } from "@typebot.io/forge";
+import { createActionHandler } from "@typebot.io/forge";
 import { trackEvent } from "../actions/trackEvent";
 
-export const trackEventHandler = createHandler(trackEvent, {
+export const trackEventHandler = createActionHandler(trackEvent, {
   server: async ({
     credentials: { apiKey },
     options: { eventName, userId, properties },

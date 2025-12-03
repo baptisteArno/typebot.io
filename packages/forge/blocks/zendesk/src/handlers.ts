@@ -1,10 +1,10 @@
-import { createHandler } from "@typebot.io/forge";
+import { createActionHandler } from "@typebot.io/forge";
 import { sign } from "jsonwebtoken";
 import { openWebWidget } from "./actions/openWebWidget";
 import { zendeskWebWidgetOpenedMessage } from "./constants";
 
 export default [
-  createHandler(openWebWidget, {
+  createActionHandler(openWebWidget, {
     web: {
       parseFunction: ({
         credentials: { conversationsSecretKey, conversationsKeyId },

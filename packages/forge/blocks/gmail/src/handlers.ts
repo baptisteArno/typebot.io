@@ -1,13 +1,45 @@
-import { createHandler } from "@typebot.io/forge";
+import { createActionHandler, createFetcherHandler } from "@typebot.io/forge";
 import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
 import { isDefined } from "@typebot.io/lib/utils";
-import { sendEmail } from "./actions/sendEmail";
+import { labelsFetcher, sendEmail } from "./actions/sendEmail";
 import { buildEmail } from "./helpers/buildEmail";
 import { createGmailClient } from "./helpers/createGmailClient";
 import { parseFrom } from "./helpers/parseFrom";
 
 export default [
-  createHandler(sendEmail, {
+  createFetcherHandler(sendEmail, labelsFetcher.id, async ({ credentials }) => {
+    if (!credentials)
+      return {
+        data: [],
+      };
+
+    try {
+      const gmailClient = createGmailClient(credentials.accessToken);
+
+      const response = await gmailClient.users.labels.list({
+        userId: "me",
+      });
+
+      return {
+        data:
+          response.data.labels
+            ?.filter((label) => label.type === "user")
+            .map((label) => ({
+              value: label.id ?? "",
+              label: label.name ?? "",
+            })) ?? [],
+      };
+    } catch (err) {
+      const parsedError = await parseUnknownError({
+        err,
+        context: "While fetching Gmail labels",
+      });
+      return {
+        error: parsedError,
+      };
+    }
+  }),
+  createActionHandler(sendEmail, {
     server: async ({ credentials, options, logs, variables }) => {
       if (!credentials.accessToken) {
         logs.add("No access token available");

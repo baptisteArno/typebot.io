@@ -1,11 +1,11 @@
-import { createHandler } from "@typebot.io/forge";
+import { createActionHandler } from "@typebot.io/forge";
 import { createId } from "@typebot.io/lib/createId";
 import { capture } from "../actions/capture";
 import { createClient } from "../helpers/createClient";
 import { parseGroups } from "../helpers/parseGroups";
 import { parseProperties } from "../helpers/parseProperties";
 
-export const captureHandler = createHandler(capture, {
+export const captureHandler = createActionHandler(capture, {
   server: async ({
     credentials: { apiKey, host },
     options: {

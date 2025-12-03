@@ -1,9 +1,9 @@
-import { createHandler } from "@typebot.io/forge";
+import { createActionHandler } from "@typebot.io/forge";
 import { bookEvent } from "./actions/bookEvent";
 import { defaultBaseUrl } from "./constants";
 
 export default [
-  createHandler(bookEvent, {
+  createActionHandler(bookEvent, {
     web: {
       displayEmbedBubble: {
         parseUrl: ({ options }) => options.link,

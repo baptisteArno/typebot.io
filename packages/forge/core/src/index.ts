@@ -3,9 +3,10 @@ import type { ZodLayoutMetadata } from "@typebot.io/zod";
 import { z } from "@typebot.io/zod";
 import type {
   ActionDefinition,
+  ActionHandler,
   AuthDefinition,
   BlockDefinition,
-  Handler,
+  FetcherHandler,
 } from "./types";
 
 export const createAuth = <T extends AuthDefinition<any>>(authDefinition: T) =>
@@ -39,7 +40,7 @@ export const createAction = <
   } & ActionDefinition<A, BaseOptions, O>,
 ) => actionDefinition;
 
-export const createHandler = <
+export const createActionHandler = <
   Auth extends AuthDefinition<any>,
   BaseOptions extends z.ZodObject<z.ZodRawShape> = z.ZodObject<{}>,
   Options extends z.ZodObject<z.ZodRawShape> = z.ZodObject<{}>,
@@ -47,10 +48,30 @@ export const createHandler = <
   action: ActionDefinition<Auth, BaseOptions, Options> & {
     baseOptions?: BaseOptions;
   },
-  handler: Omit<Handler<Auth, BaseOptions, Options>, "actionName">,
+  handler: Omit<
+    ActionHandler<Auth, BaseOptions, Options>,
+    "actionName" | "type"
+  >,
 ) => ({
   ...handler,
+  type: "action" as const,
   actionName: action.name,
+});
+
+export const createFetcherHandler = <
+  Auth extends AuthDefinition<any>,
+  BaseOptions extends z.ZodObject<z.ZodRawShape> = z.ZodObject<{}>,
+  Options extends z.ZodObject<z.ZodRawShape> = z.ZodObject<{}>,
+>(
+  _action: ActionDefinition<Auth, BaseOptions, Options> & {
+    baseOptions?: BaseOptions;
+  },
+  fetcherId: string,
+  fetch: FetcherHandler<Auth, z.infer<BaseOptions> & z.infer<Options>>["fetch"],
+) => ({
+  type: "fetcher" as const,
+  id: fetcherId,
+  fetch,
 });
 
 export const parseBlockSchema = <

@@ -1,9 +1,9 @@
 import { createAnthropic } from "@ai-sdk/anthropic";
 import { runGenerateVariables } from "@typebot.io/ai/runGenerateVariables";
-import { createHandler } from "@typebot.io/forge";
+import { createActionHandler } from "@typebot.io/forge";
 import { generateVariables } from "../actions/generateVariables";
 
-export const generateVariablesHandler = createHandler(generateVariables, {
+export const generateVariablesHandler = createActionHandler(generateVariables, {
   server: ({ credentials, options, variables, logs }) => {
     if (credentials?.apiKey === undefined)
       return logs.add("No API key provided");

@@ -1,9 +1,9 @@
-import { createHandler } from "@typebot.io/forge";
+import { createActionHandler } from "@typebot.io/forge";
 import { identifyGroup } from "../actions/identifyGroup";
 import { createClient } from "../helpers/createClient";
 import { parseProperties } from "../helpers/parseProperties";
 
-export const identifyGroupHandler = createHandler(identifyGroup, {
+export const identifyGroupHandler = createActionHandler(identifyGroup, {
   server: async ({
     credentials: { apiKey, host },
     options: { distinctId, groupKey, groupType, properties },

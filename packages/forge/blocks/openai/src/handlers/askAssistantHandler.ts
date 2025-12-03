@@ -1,4 +1,4 @@
-import { createHandler } from "@typebot.io/forge";
+import { createActionHandler, createFetcherHandler } from "@typebot.io/forge";
 import type {
   AsyncVariableStore,
   LogsStore,
@@ -12,11 +12,15 @@ import { executeFunction } from "@typebot.io/variables/executeFunction";
 import { formatDataStreamPart, processDataStream } from "ai";
 import type { ClientOptions } from "openai";
 import OpenAI from "openai";
-import { askAssistant } from "../actions/askAssistant";
+import {
+  askAssistant,
+  assistantFunctionsFetcher,
+  assistantsFetcher,
+} from "../actions/askAssistant";
 import { isModelCompatibleWithVision } from "../helpers/isModelCompatibleWithVision";
 import { splitUserTextMessageIntoOpenAIBlocks } from "../helpers/splitUserTextMessageIntoOpenAIBlocks";
 
-export const askAssistantHandler = createHandler(askAssistant, {
+export const askAssistantHandler = createActionHandler(askAssistant, {
   stream: {
     run: async ({ credentials, options, variables, sessionStore }) => ({
       stream: await createAssistantStream({
@@ -306,3 +310,99 @@ const createAssistantFoundationalStream = (
     pull() {},
     cancel() {},
   });
+
+export const fetchAssistantsHandler = createFetcherHandler(
+  askAssistant,
+  assistantsFetcher.id,
+  async ({ options, credentials }) => {
+    if (!credentials?.apiKey)
+      return {
+        data: [],
+      };
+
+    const config = {
+      apiKey: credentials.apiKey,
+      baseURL: credentials.baseUrl ?? options.baseUrl,
+      defaultHeaders: {
+        "api-key": credentials.apiKey,
+      },
+      defaultQuery: options.apiVersion
+        ? {
+            "api-version": options.apiVersion,
+          }
+        : undefined,
+    } satisfies ClientOptions;
+
+    const openai = new OpenAI(config);
+
+    try {
+      const response = await openai.beta.assistants.list({
+        limit: 100,
+      });
+
+      return {
+        data: response.data
+          .map((assistant) =>
+            assistant.name
+              ? {
+                  label: assistant.name,
+                  value: assistant.id,
+                }
+              : undefined,
+          )
+          .filter(isDefined),
+      };
+    } catch (err) {
+      return {
+        error: await parseUnknownError({ err }),
+      };
+    }
+  },
+);
+
+export const fetchAssistantFunctionsHandler = createFetcherHandler(
+  askAssistant,
+  assistantFunctionsFetcher.id,
+  async ({ options, credentials }) => {
+    if (!options.assistantId || !credentials?.apiKey)
+      return {
+        data: [],
+      };
+
+    const config = {
+      apiKey: credentials.apiKey,
+      baseURL: credentials.baseUrl ?? options.baseUrl,
+      defaultHeaders: {
+        "api-key": credentials.apiKey,
+      },
+      defaultQuery: options.apiVersion
+        ? {
+            "api-version": options.apiVersion,
+          }
+        : undefined,
+    } satisfies ClientOptions;
+
+    const openai = new OpenAI(config);
+
+    try {
+      const response = await openai.beta.assistants.retrieve(
+        options.assistantId,
+      );
+
+      return {
+        data: response.tools
+          .filter((tool) => tool.type === "function")
+          .map((tool) =>
+            tool.type === "function" && tool.function.name
+              ? tool.function.name
+              : undefined,
+          )
+          .filter(isDefined),
+      };
+    } catch (err) {
+      return {
+        error: await parseUnknownError({ err }),
+      };
+    }
+  },
+);

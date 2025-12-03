@@ -1,11 +1,11 @@
-import { createHandler } from "@typebot.io/forge";
+import { createActionHandler } from "@typebot.io/forge";
 import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
 import { isDefined } from "@typebot.io/lib/utils";
 import ky, { HTTPError } from "ky";
 import { getUsers } from "../actions/getUsers";
 import { baseUrl, responseDataLabels } from "../constants";
 
-export const getUsersHandler = createHandler(getUsers, {
+export const getUsersHandler = createActionHandler(getUsers, {
   server: async ({ credentials, options, variables, logs }) => {
     if (credentials?.apiKey === undefined)
       return logs.add("No API key provided");

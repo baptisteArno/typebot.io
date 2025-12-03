@@ -5,7 +5,10 @@ import type { ChatCompletionOpenAIOptions } from "@typebot.io/blocks-integration
 import type { SessionState } from "@typebot.io/chat-session/schemas";
 import { decryptV2 } from "@typebot.io/credentials/decryptV2";
 import { env } from "@typebot.io/env";
-import type { AsyncVariableStore } from "@typebot.io/forge/types";
+import type {
+  ActionHandler,
+  AsyncVariableStore,
+} from "@typebot.io/forge/types";
 import { forgedBlockHandlers } from "@typebot.io/forge-repository/handlers";
 import { getBlockById } from "@typebot.io/groups/helpers/getBlockById";
 import { StreamingTextResponse } from "@typebot.io/legacy/ai";
@@ -124,8 +127,8 @@ export async function POST(req: Request) {
     );
 
   const handler = forgedBlockHandlers[block.type].find(
-    (h) => h.actionName === block.options?.action,
-  );
+    (h) => h.type === "action" && h.actionName === block.options?.action,
+  ) as ActionHandler;
 
   if (!handler || !handler.stream)
     return NextResponse.json(

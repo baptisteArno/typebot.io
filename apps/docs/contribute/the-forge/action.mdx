@@ -81,8 +81,21 @@ export const sendMessage = createAction({
   action. This is used for analytics and tracking purposes.
 </ResponseField>
 
+<ResponseField name="fetchers" type="{ id: string }[]">
+  An array of fetcher references used to populate dropdown options dynamically.
+  Each fetcher should be exported from the action file and implemented in the
+  handlers file. See <a href="./fetcher">Fetcher</a> for more information.
+</ResponseField>
+
+<ResponseField name="turnableInto" type="TurnableIntoParam[]">
+  An array of block IDs that this action can be converted into. This allows
+  users to easily switch between similar blocks while preserving their
+  configuration.
+</ResponseField>
+
 <Note>
   The action execution logic is now defined separately in a `handlers.ts` file
-  using `createHandler()`. Check out the <a href="./run">Run</a> documentation
-  for more information on how to implement handlers.
+  using `createActionHandler()` and `createFetcherHandler()`. Check out the{" "}
+  <a href="./run">Run</a> documentation for more information on how to implement
+  handlers.
 </Note>

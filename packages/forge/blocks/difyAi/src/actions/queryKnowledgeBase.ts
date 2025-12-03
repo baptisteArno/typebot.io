@@ -1,50 +1,20 @@
 import { createAction, option } from "@typebot.io/forge";
 import { isDefined } from "@typebot.io/lib/utils";
-import ky from "ky";
 import { auth } from "../auth";
-import { defaultBaseUrl } from "../constants";
-import type { ListKnowledgeBasesResponse } from "../types";
+
+export const knowledgeBasesFetcher = {
+  id: "fetchKnowledgeBases",
+} as const;
 
 export const queryKnowledgeBase = createAction({
   name: "Query Knowledge Base",
   auth,
-  fetchers: [
-    {
-      id: "fetchKnowledgeBases",
-      dependencies: [],
-      fetch: async ({ credentials: { knowledgeApiKey, apiEndpoint } = {} }) => {
-        if (!knowledgeApiKey)
-          return {
-            data: [],
-          };
-        const response = await ky
-          .get(`${apiEndpoint ?? defaultBaseUrl}/v1/datasets`, {
-            headers: { Authorization: `Bearer ${knowledgeApiKey}` },
-            searchParams: {
-              limit: 100,
-            },
-          })
-          .json<ListKnowledgeBasesResponse>();
-        return {
-          data: response.data
-            .sort(
-              (a, b) =>
-                new Date(b.created_at).getTime() -
-                new Date(a.created_at).getTime(),
-            )
-            .map(({ id, name }) => ({
-              label: name,
-              value: id,
-            })),
-        };
-      },
-    },
-  ],
+  fetchers: [knowledgeBasesFetcher],
   options: option.object({
     datasetId: option.string.layout({
       label: "Knowledge Base ID",
       isRequired: true,
-      fetcher: "fetchKnowledgeBases",
+      fetcher: knowledgeBasesFetcher.id,
     }),
     query: option.string.layout({
       label: "Query",

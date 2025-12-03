@@ -1,11 +1,11 @@
 import { createAnthropic } from "@ai-sdk/anthropic";
 import { runChatCompletion } from "@typebot.io/ai/runChatCompletion";
 import { runChatCompletionStream } from "@typebot.io/ai/runChatCompletionStream";
-import { createHandler } from "@typebot.io/forge";
+import { createActionHandler } from "@typebot.io/forge";
 import { createChatMessage } from "../actions/createChatMessage";
 import { isModelCompatibleWithVision } from "../helpers/isModelCompatibleWithVision";
 
-export const createChatMessageHandler = createHandler(createChatMessage, {
+export const createChatMessageHandler = createActionHandler(createChatMessage, {
   server: async ({
     credentials: { apiKey },
     options,

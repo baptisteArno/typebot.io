@@ -1,9 +1,13 @@
 import { createAction, option } from "@typebot.io/forge";
-import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
-import got from "ky";
 import { auth } from "../auth";
-import { baseUrl } from "../constants";
-import type { ModelsResponse, VoicesResponse } from "../type";
+
+export const voicesFetcher = {
+  id: "fetchVoices",
+} as const;
+
+export const modelsFetcher = {
+  id: "fetchModels",
+} as const;
 
 export const convertTextToSpeech = createAction({
   name: "Convert text to speech",
@@ -15,12 +19,12 @@ export const convertTextToSpeech = createAction({
       placeholder: "Enter the text to convert to speech",
     }),
     voiceId: option.string.layout({
-      fetcher: "fetchVoices",
+      fetcher: voicesFetcher.id,
       label: "Voice",
       placeholder: "Select a voice",
     }),
     modelId: option.string.layout({
-      fetcher: "fetchModels",
+      fetcher: modelsFetcher.id,
       label: "Model",
       placeholder: "Select a model",
     }),
@@ -30,72 +34,7 @@ export const convertTextToSpeech = createAction({
       inputType: "variableDropdown",
     }),
   }),
+  fetchers: [voicesFetcher, modelsFetcher],
   getSetVariableIds: ({ saveUrlInVariableId }) =>
     saveUrlInVariableId ? [saveUrlInVariableId] : [],
-  fetchers: [
-    {
-      id: "fetchVoices",
-      fetch: async ({ credentials }) => {
-        if (!credentials?.apiKey)
-          return {
-            data: [],
-          };
-
-        try {
-          const response = await got
-            .get(baseUrl + "/v1/voices", {
-              headers: {
-                "xi-api-key": credentials.apiKey,
-              },
-            })
-            .json<VoicesResponse>();
-
-          return {
-            data: response.voices.map((voice) => ({
-              value: voice.voice_id,
-              label: voice.name,
-            })),
-          };
-        } catch (err) {
-          return {
-            error: await parseUnknownError({ err }),
-          };
-        }
-      },
-      dependencies: [],
-    },
-    {
-      id: "fetchModels",
-      fetch: async ({ credentials }) => {
-        if (!credentials?.apiKey)
-          return {
-            data: [],
-          };
-
-        try {
-          const response = await got
-            .get(baseUrl + "/v1/models", {
-              headers: {
-                "xi-api-key": credentials.apiKey,
-              },
-            })
-            .json<ModelsResponse>();
-
-          return {
-            data: response
-              .filter((model) => model.can_do_text_to_speech)
-              .map((model) => ({
-                value: model.model_id,
-                label: model.name,
-              })),
-          };
-        } catch (err) {
-          return {
-            error: await parseUnknownError({ err }),
-          };
-        }
-      },
-      dependencies: [],
-    },
-  ],
 });

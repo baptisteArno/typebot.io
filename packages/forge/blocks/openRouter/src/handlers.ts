@@ -1,11 +1,18 @@
 import { createOpenRouter } from "@openrouter/ai-sdk-provider";
 import { runChatCompletion } from "@typebot.io/ai/runChatCompletion";
 import { runChatCompletionStream } from "@typebot.io/ai/runChatCompletionStream";
-import { createHandler } from "@typebot.io/forge";
-import { createChatCompletion } from "./actions/createChatCompletion";
+import { createActionHandler, createFetcherHandler } from "@typebot.io/forge";
+import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
+import ky from "ky";
+import {
+  createChatCompletion,
+  modelsFetcher,
+} from "./actions/createChatCompletion";
+import { defaultOpenRouterOptions } from "./constants";
+import type { ModelsResponse } from "./types";
 
 export default [
-  createHandler(createChatCompletion, {
+  createActionHandler(createChatCompletion, {
     server: async ({
       credentials: { apiKey },
       options,
@@ -73,5 +80,23 @@ export default [
         });
       },
     },
+  }),
+  createFetcherHandler(createChatCompletion, modelsFetcher.id, async () => {
+    try {
+      const response = await ky
+        .get(defaultOpenRouterOptions.baseUrl + "/models")
+        .json<ModelsResponse>();
+
+      return {
+        data: response.data.map((model) => ({
+          value: model.id,
+          label: model.name,
+        })),
+      };
+    } catch (err) {
+      return {
+        error: await parseUnknownError({ err, context: "Fetching models" }),
+      };
+    }
   }),
 ];

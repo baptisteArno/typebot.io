@@ -6,7 +6,10 @@ import { updateSession } from "@typebot.io/chat-session/queries/updateSession";
 import type { SessionState } from "@typebot.io/chat-session/schemas";
 import { decryptV2 } from "@typebot.io/credentials/decryptV2";
 import { getCredentials } from "@typebot.io/credentials/getCredentials";
-import type { AsyncVariableStore } from "@typebot.io/forge/types";
+import type {
+  ActionHandler,
+  AsyncVariableStore,
+} from "@typebot.io/forge/types";
 import { forgedBlockHandlers } from "@typebot.io/forge-repository/handlers";
 import { getBlockById } from "@typebot.io/groups/helpers/getBlockById";
 import { getOpenAIChatCompletionStream } from "@typebot.io/legacy/getOpenAIChatCompletionStream";
@@ -101,8 +104,8 @@ export const getMessageStream = async ({
     };
 
   const handler = forgedBlockHandlers[block.type].find(
-    (h) => h.actionName === block.options?.action,
-  );
+    (h) => h.type === "action" && h.actionName === block.options?.action,
+  ) as ActionHandler;
 
   if (!handler || !handler.stream)
     return {

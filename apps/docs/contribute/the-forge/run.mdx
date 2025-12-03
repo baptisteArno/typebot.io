@@ -2,7 +2,7 @@
 title: Run
 ---
 
-Action execution logic is defined in a separate `handlers.ts` file using the `createHandler()` function. This separates the action definition (schema, options) from its runtime implementation.
+Action execution logic is defined in a separate `handlers.ts` file using the `createActionHandler()` and `createFetcherHandler()` functions. This separates the action definition (schema, options) from its runtime implementation.
 
 An action handler can do one of the following things:
 
@@ -16,17 +16,23 @@ An action handler can do one of the following things:
 All handlers for a block should be defined in `src/handlers.ts` and exported as a default array:
 
 ```ts
-import { createHandler } from "@typebot.io/forge";
-import { sendMessage } from "./actions/sendMessage";
+import { createActionHandler, createFetcherHandler } from "@typebot.io/forge";
+import { sendMessage, modelsFetcher } from "./actions/sendMessage";
 import { getMessage } from "./actions/getMessage";
 
 export default [
-  createHandler(sendMessage, {
+  createActionHandler(sendMessage, {
     server: async ({ credentials, options, variables, logs }) => {
       // Implementation for sendMessage
     },
   }),
-  createHandler(getMessage, {
+  createFetcherHandler(sendMessage, modelsFetcher.id, async ({ credentials, options }) => {
+    // Implementation for fetcher
+    return {
+      data: ["model-1", "model-2"],
+    };
+  }),
+  createActionHandler(getMessage, {
     server: async ({ credentials, options, variables, logs }) => {
       // Implementation for getMessage
     },
@@ -34,7 +40,10 @@ export default [
 ];
 ```
 
-Each handler connects an action definition to its implementation using `createHandler(action, implementation)`.
+The handlers array can contain two types of handlers:
+
+- **Action handlers** using `createActionHandler(action, implementation)` - Execute the action logic
+- **Fetcher handlers** using `createFetcherHandler(action, fetcherId, implementation)` - Populate dropdown options dynamically (see [Fetcher](./fetcher) for more details)
 
 ## Server function
 
@@ -43,12 +52,12 @@ The most common handler is to execute a function on the server.
 Example:
 
 ```ts
-import { createHandler } from "@typebot.io/forge";
+import { createActionHandler } from "@typebot.io/forge";
 import { sendMessage } from "./actions/sendMessage";
 import ky from "ky";
 
 export default [
-  createHandler(sendMessage, {
+  createActionHandler(sendMessage, {
     server: async ({
       credentials: { apiKey },
       options: { botId, message, responseMapping, threadId },
@@ -123,13 +132,13 @@ export const createChatCompletion = createAction({
 **In the handlers file** (`handlers.ts`):
 
 ```ts
-import { createHandler } from "@typebot.io/forge";
+import { createActionHandler } from "@typebot.io/forge";
 import { createChatCompletion } from "./actions/createChatCompletion";
 import { OpenAI } from "openai";
 import { OpenAIStream } from "@typebot.io/ai";
 
 export default [
-  createHandler(createChatCompletion, {
+  createActionHandler(createChatCompletion, {
     server: async (params) => {
       // Server implementation when streaming is not available
     },
@@ -182,11 +191,11 @@ If you want to execute a function on the client instead of the server, you can u
 Example:
 
 ```ts
-import { createHandler } from "@typebot.io/forge";
+import { createActionHandler } from "@typebot.io/forge";
 import { shoutName } from "./actions/shoutName";
 
 export default [
-  createHandler(shoutName, {
+  createActionHandler(shoutName, {
     web: {
       parseFunction: ({ options }) => {
         return {
@@ -234,11 +243,11 @@ export const bookEvent = createAction({
 **In the handlers file** (`handlers.ts`):
 
 ```ts
-import { createHandler } from "@typebot.io/forge";
+import { createActionHandler } from "@typebot.io/forge";
 import { bookEvent } from "./actions/bookEvent";
 
 export default [
-  createHandler(bookEvent, {
+  createActionHandler(bookEvent, {
     web: {
       displayEmbedBubble: {
         parseUrl: ({ options }) => options.url,

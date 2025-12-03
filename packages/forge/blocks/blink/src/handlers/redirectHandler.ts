@@ -1,7 +1,7 @@
-import { createHandler } from "@typebot.io/forge";
+import { createActionHandler } from "@typebot.io/forge";
 import { redirect } from "../actions/redirect";
 
-export const redirectHandler = createHandler(redirect, {
+export const redirectHandler = createActionHandler(redirect, {
   web: {
     parseFunction({ options: { url } }) {
       return {

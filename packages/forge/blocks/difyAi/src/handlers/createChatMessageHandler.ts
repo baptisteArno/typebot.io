@@ -1,13 +1,13 @@
 import { runChatCompletion } from "@typebot.io/ai/runChatCompletion";
 import { runChatCompletionStream } from "@typebot.io/ai/runChatCompletionStream";
-import { createHandler } from "@typebot.io/forge";
+import { createActionHandler } from "@typebot.io/forge";
 import { createDifyProvider } from "dify-ai-provider";
 import { createChatMessage } from "../actions/createChatMessage";
 import { defaultAppId, defaultUserId } from "../constants";
 import { transformKeyValueListToObject } from "../helpers/transformKeyValueListToObject";
 import { validateCredentials } from "../helpers/validateCredentials";
 
-export const createChatMessageHandler = createHandler(createChatMessage, {
+export const createChatMessageHandler = createActionHandler(createChatMessage, {
   server: async ({
     credentials: { apiKey, apiEndpoint },
     options,

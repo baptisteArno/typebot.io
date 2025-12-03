@@ -1,8 +1,10 @@
 import { createAction, option } from "@typebot.io/forge";
-import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
 import { isDefined, isNotEmpty } from "@typebot.io/lib/utils";
 import { auth } from "../auth";
-import { createGmailClient } from "../helpers/createGmailClient";
+
+export const labelsFetcher = {
+  id: "fetchLabels",
+} as const;
 
 export const sendEmail = createAction({
   auth,
@@ -26,7 +28,7 @@ export const sendEmail = createAction({
     }),
     label: option.string.layout({
       label: "Label",
-      fetcher: "fetchLabels",
+      fetcher: labelsFetcher.id,
       withVariableButton: false,
       accordion: "Advanced configuration",
     }),
@@ -53,44 +55,7 @@ export const sendEmail = createAction({
       accordion: "Save response",
     }),
   }),
-  fetchers: [
-    {
-      id: "fetchLabels",
-      dependencies: [],
-      fetch: async ({ credentials }) => {
-        if (!credentials)
-          return {
-            data: [],
-          };
-
-        try {
-          const gmailClient = createGmailClient(credentials.accessToken);
-
-          const response = await gmailClient.users.labels.list({
-            userId: "me",
-          });
-
-          return {
-            data:
-              response.data.labels
-                ?.filter((label) => label.type === "user")
-                .map((label) => ({
-                  value: label.id ?? "",
-                  label: label.name ?? "",
-                })) ?? [],
-          };
-        } catch (err) {
-          const parsedError = await parseUnknownError({
-            err,
-            context: "While fetching Gmail labels",
-          });
-          return {
-            error: parsedError,
-          };
-        }
-      },
-    },
-  ],
+  fetchers: [labelsFetcher],
   getSetVariableIds: (options) =>
     options.responseMapping?.map((r) => r.variableId).filter(isDefined) ?? [],
 });

@@ -44,12 +44,13 @@ export type TurnableIntoParam<T = {}> = {
   transform?: (options: T) => any;
 };
 
-export type Handler<
-  Auth extends AuthDefinition<any>,
+export type ActionHandler<
+  Auth extends AuthDefinition<any> = AuthDefinition<any>,
   BaseOptions extends z.ZodObject<z.ZodRawShape> = z.ZodObject<{}>,
   Options extends z.ZodObject<z.ZodRawShape> = z.ZodObject<{}>,
 > = {
   actionName: string;
+  type: "action";
   server?: (params: {
     credentials: CredentialsFromAuthDef<Auth>;
     options: WithoutVariables<z.infer<BaseOptions> & z.infer<Options>>;
@@ -119,7 +120,7 @@ export type ActionDefinition<
   parseBlockNodeLabel?: (
     options: WithoutVariables<z.infer<BaseOptions> & z.infer<Options>>,
   ) => string;
-  fetchers?: FetcherDefinition<A, z.infer<BaseOptions> & z.infer<Options>>[];
+  fetchers?: FetcherDefinition[];
   options?: Options;
   turnableInto?: TurnableIntoParam<z.infer<Options>>[];
   getSetVariableIds?: (options: z.infer<Options>) => string[];
@@ -165,12 +166,20 @@ type BackendFuncReturnType<T> = {
   };
 };
 
-export type FetcherDefinition<A extends AuthDefinition<any>, T = {}> = {
+export type FetcherDefinition = {
   id: string;
   /**
    * List of option keys to determine if the fetcher should be re-executed whenever these options are updated.
    */
-  dependencies: (keyof T)[];
+  dependencies?: string[];
+};
+
+export type FetcherHandler<
+  A extends AuthDefinition<any> = AuthDefinition<any>,
+  T extends object = any,
+> = {
+  id: string;
+  type: "fetcher";
   fetch: (params: {
     credentials: CredentialsFromAuthDef<A> | undefined;
     options: T;
@@ -221,7 +230,7 @@ export type CredentialsFromAuthDef<A extends AuthDefinition<any>> = A extends {
 export type BlockDefinition<
   Id extends string,
   Auth extends AuthDefinition<any>,
-  Options extends z.ZodObject<any>,
+  BaseOptions extends z.ZodObject<any>,
 > = {
   id: Id;
   name: string;
@@ -239,9 +248,9 @@ export type BlockDefinition<
   };
   badge?: "beta";
   auth?: Auth;
-  options?: Options | undefined;
-  fetchers?: FetcherDefinition<Auth, Options>[];
-  actions: ActionDefinition<Auth, Options>[];
+  options?: BaseOptions | undefined;
+  fetchers?: FetcherDefinition[];
+  actions: ActionDefinition<Auth, BaseOptions>[];
 };
 
 export type FetchItemsParams<T> = T extends ActionDefinition<

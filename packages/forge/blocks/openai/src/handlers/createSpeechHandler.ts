@@ -1,14 +1,14 @@
-import { createHandler } from "@typebot.io/forge";
+import { createActionHandler, createFetcherHandler } from "@typebot.io/forge";
 import { createId } from "@typebot.io/lib/createId";
 import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
 import { uploadFileToBucket } from "@typebot.io/lib/s3/uploadFileToBucket";
 import { isNotEmpty } from "@typebot.io/lib/utils";
 import type { ClientOptions } from "openai";
 import OpenAI from "openai";
-import { createSpeech } from "../actions/createSpeech";
+import { createSpeech, speechModelsFetcher } from "../actions/createSpeech";
 import { defaultOpenAIOptions } from "../constants";
 
-export const createSpeechHandler = createHandler(createSpeech, {
+export const createSpeechHandler = createActionHandler(createSpeech, {
   server: async ({ credentials: { apiKey }, options, variables, logs }) => {
     if (!options.input) return logs.add("Create speech input is empty");
     if (!options.voice) return logs.add("Create speech voice is empty");
@@ -56,3 +56,48 @@ export const createSpeechHandler = createHandler(createSpeech, {
     }
   },
 });
+
+export const fetchSpeechModelsHandler = createFetcherHandler(
+  createSpeech,
+  speechModelsFetcher.id,
+  async ({ credentials, options }) => {
+    if (!credentials?.apiKey)
+      return {
+        data: [],
+      };
+
+    const baseUrl = options?.baseUrl;
+    const config = {
+      apiKey: credentials.apiKey,
+      baseURL: baseUrl,
+      defaultHeaders: {
+        "api-key": credentials.apiKey,
+      },
+      defaultQuery: options?.apiVersion
+        ? {
+            "api-version": options.apiVersion,
+          }
+        : undefined,
+    } satisfies ClientOptions;
+
+    const openai = new OpenAI(config);
+
+    try {
+      const models = await openai.models.list();
+      return {
+        data:
+          models.data
+            .filter((model) => model.id.includes("tts"))
+            .sort((a, b) => b.created - a.created)
+            .map((model) => model.id) ?? [],
+      };
+    } catch (err) {
+      return {
+        error: await parseUnknownError({
+          err,
+          context: "While fetching OpenAI speech models",
+        }),
+      };
+    }
+  },
+);

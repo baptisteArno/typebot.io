@@ -1,8 +1,8 @@
 import { Analytics } from "@segment/analytics-node";
-import { createHandler } from "@typebot.io/forge";
+import { createActionHandler } from "@typebot.io/forge";
 import { alias as aliasAction } from "../actions/alias";
 
-export const aliasHandler = createHandler(aliasAction, {
+export const aliasHandler = createActionHandler(aliasAction, {
   server: async ({
     credentials: { apiKey },
     options: { userId, previousId },

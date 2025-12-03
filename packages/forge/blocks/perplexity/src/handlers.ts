@@ -1,11 +1,11 @@
 import { createPerplexity } from "@ai-sdk/perplexity";
 import { runChatCompletion } from "@typebot.io/ai/runChatCompletion";
 import { runChatCompletionStream } from "@typebot.io/ai/runChatCompletionStream";
-import { createHandler } from "@typebot.io/forge";
+import { createActionHandler } from "@typebot.io/forge";
 import { createChatCompletion } from "./actions/createChatCompletion";
 
 export default [
-  createHandler(createChatCompletion, {
+  createActionHandler(createChatCompletion, {
     server: async ({
       credentials: { apiKey, baseUrl },
       options,

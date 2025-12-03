@@ -7,7 +7,11 @@ import type {
 import { decryptAndRefreshCredentialsData } from "@typebot.io/credentials/decryptAndRefreshCredentials";
 import { getCredentials } from "@typebot.io/credentials/getCredentials";
 import type { Credentials } from "@typebot.io/credentials/schemas";
-import type { LogsStore, VariableStore } from "@typebot.io/forge/types";
+import type {
+  ActionHandler,
+  LogsStore,
+  VariableStore,
+} from "@typebot.io/forge/types";
 import { forgedBlocks } from "@typebot.io/forge-repository/definitions";
 import { forgedBlockHandlers } from "@typebot.io/forge-repository/handlers";
 import type { ForgedBlock } from "@typebot.io/forge-repository/schemas";
@@ -31,8 +35,8 @@ export const executeForgedBlock = async (
   if (!blockDef) return { outgoingEdgeId: block.outgoingEdgeId };
   const action = blockDef.actions.find((a) => a.name === block.options?.action);
   const handler = forgedBlockHandlers[block.type].find(
-    (h) => h.actionName === action?.name,
-  );
+    (h) => h.type === "action" && h.actionName === action?.name,
+  ) as ActionHandler;
   if (!block.options || !handler || !action)
     return {
       outgoingEdgeId: block.outgoingEdgeId,

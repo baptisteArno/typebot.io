@@ -1,8 +1,8 @@
 import { Analytics } from "@segment/analytics-node";
-import { createHandler } from "@typebot.io/forge";
+import { createActionHandler } from "@typebot.io/forge";
 import { trackPage } from "../actions/trackPage";
 
-export const trackPageHandler = createHandler(trackPage, {
+export const trackPageHandler = createActionHandler(trackPage, {
   server: async ({
     credentials: { apiKey },
     options: { userId, name, category, properties },

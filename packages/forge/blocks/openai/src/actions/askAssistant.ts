@@ -1,10 +1,16 @@
 import { createAction, option } from "@typebot.io/forge";
-import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
 import { isDefined } from "@typebot.io/lib/utils";
-import { type ClientOptions, OpenAI } from "openai";
 import { auth } from "../auth";
 import { baseOptions } from "../baseOptions";
 import { deprecatedAskAssistantOptions } from "../deprecated";
+
+export const assistantsFetcher = {
+  id: "fetchAssistants",
+} as const;
+
+export const assistantFunctionsFetcher = {
+  id: "fetchAssistantFunctions",
+} as const;
 
 export const askAssistant = createAction({
   auth,
@@ -16,7 +22,7 @@ export const askAssistant = createAction({
         label: "Assistant ID",
         placeholder: "Select an assistant",
         moreInfoTooltip: "The OpenAI assistant you want to ask question to.",
-        fetcher: "fetchAssistants",
+        fetcher: assistantsFetcher.id,
       }),
       threadVariableId: option.string.layout({
         label: "Thread ID",
@@ -33,7 +39,7 @@ export const askAssistant = createAction({
         .array(
           option.object({
             name: option.string.layout({
-              fetcher: "fetchAssistantFunctions",
+              fetcher: assistantFunctionsFetcher.id,
               label: "Name",
             }),
             code: option.string.layout({
@@ -61,102 +67,7 @@ export const askAssistant = createAction({
         }),
     })
     .merge(deprecatedAskAssistantOptions),
-  fetchers: [
-    {
-      id: "fetchAssistants",
-      fetch: async ({ options, credentials }) => {
-        if (!credentials?.apiKey)
-          return {
-            data: [],
-          };
-
-        const config = {
-          apiKey: credentials.apiKey,
-          baseURL: credentials.baseUrl ?? options.baseUrl,
-          defaultHeaders: {
-            "api-key": credentials.apiKey,
-          },
-          defaultQuery: options.apiVersion
-            ? {
-                "api-version": options.apiVersion,
-              }
-            : undefined,
-        } satisfies ClientOptions;
-
-        const openai = new OpenAI(config);
-
-        try {
-          const response = await openai.beta.assistants.list({
-            limit: 100,
-          });
-
-          return {
-            data: response.data
-              .map((assistant) =>
-                assistant.name
-                  ? {
-                      label: assistant.name,
-                      value: assistant.id,
-                    }
-                  : undefined,
-              )
-              .filter(isDefined),
-          };
-        } catch (err) {
-          return {
-            error: await parseUnknownError({ err }),
-          };
-        }
-      },
-      dependencies: ["baseUrl", "apiVersion"],
-    },
-    {
-      id: "fetchAssistantFunctions",
-      fetch: async ({ options, credentials }) => {
-        if (!options.assistantId || !credentials?.apiKey)
-          return {
-            data: [],
-          };
-
-        const config = {
-          apiKey: credentials.apiKey,
-          baseURL: credentials.baseUrl ?? options.baseUrl,
-          defaultHeaders: {
-            "api-key": credentials.apiKey,
-          },
-          defaultQuery: options.apiVersion
-            ? {
-                "api-version": options.apiVersion,
-              }
-            : undefined,
-        } satisfies ClientOptions;
-
-        const openai = new OpenAI(config);
-
-        try {
-          const response = await openai.beta.assistants.retrieve(
-            options.assistantId,
-          );
-
-          return {
-            data: response.tools
-              .filter((tool) => tool.type === "function")
-              .map((tool) =>
-                tool.type === "function" && tool.function.name
-                  ? tool.function.name
-                  : undefined,
-              )
-              .filter(isDefined),
-          };
-        } catch (err) {
-          return {
-            error: await parseUnknownError({ err }),
-          };
-        }
-      },
-      dependencies: ["baseUrl", "apiVersion", "assistantId"],
-    },
-  ],
+  fetchers: [assistantsFetcher, assistantFunctionsFetcher],
   getSetVariableIds: ({ responseMapping }) =>
     responseMapping?.map((r) => r.variableId).filter(isDefined) ?? [],
   getStreamVariableId: ({ responseMapping }) =>

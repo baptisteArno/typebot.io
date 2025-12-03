@@ -2,52 +2,107 @@
 title: Fetcher
 ---
 
-Your action can have a `fetchers` property that is an array of fetcher objects.
+Your action can have a `fetchers` property that is an array of fetcher references. Fetchers allow you to populate dropdown options dynamically by fetching data from external APIs.
 
-Example:
+## Define the fetcher in your action
+
+First, export a fetcher constant and reference it in your action:
+
+**In the action file** (`actions/createChatCompletion.ts`):
 
 ```ts
+import { createAction } from "@typebot.io/forge";
+import { auth } from "../auth";
+
+// Export the fetcher constant
+export const modelsFetcher = {
+  id: "fetchModels",
+} as const;
+
 export const createChatCompletion = createAction({
-  //...
-  fetchers: [
-    {
-      id: 'fetchModels',
-      dependencies: ['baseUrl', 'apiVersion'],
-      fetch: async ({ credentials, options }) => {
-        const baseUrl = options?.baseUrl ?? defaultOpenAIOptions.baseUrl
-        const config = {
-          apiKey: credentials.apiKey,
-          baseURL: baseUrl ?? defaultOpenAIOptions.baseUrl,
-          defaultHeaders: {
-            'api-key': credentials.apiKey,
-          },
-          defaultQuery: options?.apiVersion
-            ? {
-                'api-version': options.apiVersion,
-              }
-            : undefined,
-        } satisfies ClientOptions
-
-        const openai = new OpenAI(config)
-
-        const models = await openai.models.list()
-
-        return (
-          models.data
-            .filter((model) => model.id.includes('gpt'))
-            .sort((a, b) => b.created - a.created)
-            .map((model) => model.id) ?? []
-        )
-      },
-    },
-  ],
-})
+  name: "Create chat completion",
+  auth,
+  options: option.object({
+    model: option.string.layout({
+      fetcher: modelsFetcher.id, // Reference the fetcher by its id
+      label: "Model",
+      placeholder: "Select a model",
+    }),
+    // ... other options
+  }),
+  fetchers: [modelsFetcher], // Register the fetcher
+  // ...
+});
 ```
 
-A fetcher object has the following properties: `id`, `dependencies`, and `fetch`.
+## Implement the fetcher handler
 
-`id` is a string that uniquely identifies the fetcher. When you want an option field to be populated by the fetcher, you can use the fetcher's id as the value of the option field.
+The fetcher implementation logic should be defined in your handlers file using `createFetcherHandler`:
 
-`dependencies` is an array of strings that are the names of the option fields that the fetcher depends on. When any of the option fields in the `dependencies` array changes, the fetcher will be re-run.
+**In the handlers file** (`handlers.ts`):
 
-`fetch` is an async function that takes an object with the following properties: `credentials`, `options` and returns a list of strings. It can also return a list of objects with the following properties: `value`, `label`. The `value` property is the value of the option field and the `label` property is the label of the option field. (`Promise<(string | { label: string; value: string })[]>`)
+```ts
+import { createActionHandler, createFetcherHandler } from "@typebot.io/forge";
+import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
+import ky from "ky";
+import { createChatCompletion, modelsFetcher } from "./actions/createChatCompletion";
+
+export default [
+  createActionHandler(createChatCompletion, {
+    server: async ({ credentials, options, variables, logs }) => {
+      // Action implementation
+    },
+  }),
+  createFetcherHandler(
+    createChatCompletion, // Pass the action as first parameter
+    modelsFetcher.id, // Pass the fetcher id
+    async ({ credentials, options }) => {
+      if (!credentials?.apiKey)
+        return {
+          data: [],
+        };
+
+      try {
+        const response = await ky
+          .get("https://api.example.com/models", {
+            headers: {
+              authorization: `Bearer ${credentials.apiKey}`,
+            },
+          })
+          .json<{ data: { id: string; name: string }[] }>();
+
+        return {
+          data: response.data.map((model) => ({
+            value: model.id,
+            label: model.name,
+          })),
+        };
+      } catch (err) {
+        return {
+          error: await parseUnknownError({ err }),
+        };
+      }
+    }
+  ),
+];
+```
+
+## Fetcher response format
+
+The fetcher function must return an object with either a `data` or `error` property:
+
+- **Success**: `{ data: (string | { label: string; value: string })[] }`
+- **Error**: `{ error: string | { description: string; details?: string; context?: string } }`
+
+The `data` array can contain either:
+- Simple strings: `["model-1", "model-2", "model-3"]`
+- Objects with `label` and `value`: `[{ label: "GPT-4", value: "gpt-4" }, { label: "GPT-3.5", value: "gpt-3.5-turbo" }]`
+
+## Available parameters
+
+The fetcher handler receives the following parameters:
+
+- `credentials`: The authenticated credentials for the action
+- `options`: The current values of all action options (useful when you have dependencies between options)
+
+By passing the action as the first parameter to `createFetcherHandler`, TypeScript will automatically infer the correct types for `credentials` and `options`.

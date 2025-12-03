@@ -1,4 +1,4 @@
-import { createHandler } from "@typebot.io/forge";
+import { createActionHandler } from "@typebot.io/forge";
 import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
 import { isEmpty } from "@typebot.io/lib/utils";
 import ky, { HTTPError } from "ky";
@@ -7,7 +7,7 @@ import { apiBaseUrl } from "./constants";
 import type { ChatNodeResponse } from "./types";
 
 export default [
-  createHandler(sendMessage, {
+  createActionHandler(sendMessage, {
     server: async ({
       credentials: { apiKey },
       options: { botId, message, responseMapping, threadId },
