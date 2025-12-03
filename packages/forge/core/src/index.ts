@@ -5,6 +5,7 @@ import type {
   ActionDefinition,
   AuthDefinition,
   BlockDefinition,
+  Handler,
 } from "./types";
 
 export const createAuth = <T extends AuthDefinition<any>>(authDefinition: T) =>
@@ -37,6 +38,20 @@ export const createAction = <
     baseOptions?: BaseOptions;
   } & ActionDefinition<A, BaseOptions, O>,
 ) => actionDefinition;
+
+export const createHandler = <
+  Auth extends AuthDefinition<any>,
+  BaseOptions extends z.ZodObject<z.ZodRawShape> = z.ZodObject<{}>,
+  Options extends z.ZodObject<z.ZodRawShape> = z.ZodObject<{}>,
+>(
+  action: ActionDefinition<Auth, BaseOptions, Options> & {
+    baseOptions?: BaseOptions;
+  },
+  handler: Omit<Handler<Auth, BaseOptions, Options>, "actionName">,
+) => ({
+  ...handler,
+  actionName: action.name,
+});
 
 export const parseBlockSchema = <
   I extends string,

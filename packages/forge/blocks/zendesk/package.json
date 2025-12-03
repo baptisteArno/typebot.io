@@ -6,7 +6,8 @@
   "exports": {
     ".": "./src/index.ts",
     "./schemas": "./src/schemas.ts",
-    "./constants": "./src/constants.ts"
+    "./constants": "./src/constants.ts",
+    "./handlers": "./src/handlers.ts"
   },
   "dependencies": {
     "@typebot.io/forge": "workspace:*",

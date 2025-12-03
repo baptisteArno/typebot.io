@@ -21,11 +21,10 @@ export const ForgedBlockNodeContent = ({ block, indices }: Props) => {
   const { typebot } = useTypebot();
 
   const isStreamingNextBlock = useMemo(() => {
-    if (!actionDef?.run?.stream?.getStreamVariableId) return false;
+    if (!actionDef?.getStreamVariableId) return false;
     const variable = typebot?.variables.find(
       (variable) =>
-        variable.id ===
-        actionDef.run!.stream!.getStreamVariableId(block.options),
+        variable.id === actionDef.getStreamVariableId?.(block.options),
     );
     if (!variable) return false;
     const nextBlock =
@@ -38,7 +37,7 @@ export const ForgedBlockNodeContent = ({ block, indices }: Props) => {
       nextBlock.content.richText[0].children[0].text === `{{${variable.name}}}`
     );
   }, [
-    actionDef?.run,
+    actionDef?.getStreamVariableId,
     block.options,
     indices.blockIndex,
     indices.groupIndex,
@@ -46,7 +45,9 @@ export const ForgedBlockNodeContent = ({ block, indices }: Props) => {
     typebot?.variables,
   ]);
 
-  const setVariableIds = actionDef?.getSetVariableIds?.(block.options) ?? [];
+  const setVariableIds = (
+    actionDef?.getSetVariableIds?.(block.options) ?? []
+  ).concat(actionDef?.getEmbedSaveVariableId?.(block.options) ?? []);
 
   const isConfigured =
     block.options?.action && (!blockDef?.auth || block.options.credentialsId);

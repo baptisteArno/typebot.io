@@ -1,4 +1,3 @@
-import { Analytics } from "@segment/analytics-node";
 import { createAction, option } from "@typebot.io/forge";
 import { auth } from "../auth";
 
@@ -16,28 +15,4 @@ export const alias = createAction({
       moreInfoTooltip: "Previous ID of the user to alias.",
     }),
   }),
-  run: {
-    server: async ({
-      credentials: { apiKey },
-      options: { userId, previousId },
-    }) => {
-      if (
-        !userId ||
-        userId.length === 0 ||
-        !previousId ||
-        previousId.length === 0 ||
-        apiKey === undefined
-      )
-        return;
-
-      const analytics = new Analytics({ writeKey: apiKey });
-
-      analytics.alias({
-        userId: userId,
-        previousId: previousId,
-      });
-
-      await analytics.closeAndFlush();
-    },
-  },
 });

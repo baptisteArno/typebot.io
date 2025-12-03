@@ -44,6 +44,72 @@ export type TurnableIntoParam<T = {}> = {
   transform?: (options: T) => any;
 };
 
+export type Handler<
+  Auth extends AuthDefinition<any>,
+  BaseOptions extends z.ZodObject<z.ZodRawShape> = z.ZodObject<{}>,
+  Options extends z.ZodObject<z.ZodRawShape> = z.ZodObject<{}>,
+> = {
+  actionName: string;
+  server?: (params: {
+    credentials: CredentialsFromAuthDef<Auth>;
+    options: WithoutVariables<z.infer<BaseOptions> & z.infer<Options>>;
+    variables: VariableStore;
+    logs: LogsStore;
+    sessionStore: SessionStore;
+  }) => Promise<void> | void;
+  /**
+   * Used to stream a text bubble. Will only be used if the block following the integration block is a text bubble containing the variable returned by `getStreamVariableId`.
+   */
+  stream?: {
+    run: (params: {
+      credentials: CredentialsFromAuthDef<Auth>;
+      options: WithoutVariables<z.infer<BaseOptions> & z.infer<Options>>;
+      variables: AsyncVariableStore;
+      sessionStore: SessionStore;
+    }) => Promise<{
+      stream?: ReadableStream<any>;
+      error?: {
+        description: string;
+        details?: string;
+        context?: string;
+      };
+    }>;
+  };
+  web?: {
+    displayEmbedBubble?: {
+      /**
+       * Used to determine the URL to be displayed as a text bubble in runtimes where the code can't be executed. (i.e. WhatsApp)
+       */
+      parseUrl: (params: {
+        credentials: CredentialsFromAuthDef<Auth>;
+        options: WithoutVariables<z.infer<BaseOptions> & z.infer<Options>>;
+        variables: VariableStore;
+        logs: LogsStore;
+      }) => string | undefined;
+      waitForEvent?: {
+        parseFunction: (params: {
+          credentials: CredentialsFromAuthDef<Auth>;
+          options: WithoutVariables<z.infer<BaseOptions> & z.infer<Options>>;
+          variables: VariableStore;
+          logs: LogsStore;
+        }) => FunctionToExecute;
+      };
+      parseInitFunction: (params: {
+        credentials: CredentialsFromAuthDef<Auth>;
+        options: WithoutVariables<z.infer<BaseOptions> & z.infer<Options>>;
+        variables: VariableStore;
+        logs: LogsStore;
+      }) => FunctionToExecute;
+    };
+    parseFunction?: (params: {
+      credentials: CredentialsFromAuthDef<Auth>;
+      options: WithoutVariables<z.infer<BaseOptions> & z.infer<Options>>;
+      variables: VariableStore;
+      logs: LogsStore;
+    }) => FunctionToExecute | undefined;
+  };
+};
+
 export type ActionDefinition<
   A extends AuthDefinition<any>,
   BaseOptions extends z.ZodObject<z.ZodRawShape> = z.ZodObject<{}>,
@@ -57,6 +123,10 @@ export type ActionDefinition<
   options?: Options;
   turnableInto?: TurnableIntoParam<z.infer<Options>>[];
   getSetVariableIds?: (options: z.infer<Options>) => string[];
+  getStreamVariableId?: (options: z.infer<Options>) => string | undefined;
+  getEmbedSaveVariableId?: (
+    options: WithoutVariables<z.infer<BaseOptions> & z.infer<Options>>,
+  ) => string | undefined;
   /**
    * Used for AI generation in the builder if enabled by the user.
    */
@@ -74,72 +144,6 @@ export type ActionDefinition<
       credentials: CredentialsFromAuthDef<A>;
       model: string;
     }) => any;
-  };
-  run?: {
-    server?: (params: {
-      credentials: CredentialsFromAuthDef<A>;
-      options: WithoutVariables<z.infer<BaseOptions> & z.infer<Options>>;
-      variables: VariableStore;
-      logs: LogsStore;
-      sessionStore: SessionStore;
-    }) => Promise<void> | void;
-    /**
-     * Used to stream a text bubble. Will only be used if the block following the integration block is a text bubble containing the variable returned by `getStreamVariableId`.
-     */
-    stream?: {
-      getStreamVariableId: (
-        options: WithoutVariables<z.infer<BaseOptions> & z.infer<Options>>,
-      ) => string | undefined;
-      run: (params: {
-        credentials: CredentialsFromAuthDef<A>;
-        options: WithoutVariables<z.infer<BaseOptions> & z.infer<Options>>;
-        variables: AsyncVariableStore;
-        sessionStore: SessionStore;
-      }) => Promise<{
-        stream?: ReadableStream<any>;
-        error?: {
-          description: string;
-          details?: string;
-          context?: string;
-        };
-      }>;
-    };
-    web?: {
-      displayEmbedBubble?: {
-        /**
-         * Used to determine the URL to be displayed as a text bubble in runtimes where the code can't be executed. (i.e. WhatsApp)
-         */
-        parseUrl: (params: {
-          credentials: CredentialsFromAuthDef<A>;
-          options: WithoutVariables<z.infer<BaseOptions> & z.infer<Options>>;
-          variables: VariableStore;
-          logs: LogsStore;
-        }) => string | undefined;
-        waitForEvent?: {
-          getSaveVariableId?: (
-            options: WithoutVariables<z.infer<BaseOptions> & z.infer<Options>>,
-          ) => string | undefined;
-          parseFunction: (params: {
-            credentials: CredentialsFromAuthDef<A>;
-            options: WithoutVariables<z.infer<BaseOptions> & z.infer<Options>>;
-            variables: VariableStore;
-            logs: LogsStore;
-          }) => FunctionToExecute;
-        };
-        parseInitFunction: (params: {
-          credentials: CredentialsFromAuthDef<A>;
-          options: WithoutVariables<z.infer<BaseOptions> & z.infer<Options>>;
-          variables: VariableStore;
-          logs: LogsStore;
-        }) => FunctionToExecute;
-      };
-      parseFunction?: (params: {
-        credentials: CredentialsFromAuthDef<A>;
-        options: WithoutVariables<z.infer<BaseOptions> & z.infer<Options>>;
-        variables: VariableStore;
-        logs: LogsStore;
-      }) => FunctionToExecute | undefined;
-    };
   };
 };
 
