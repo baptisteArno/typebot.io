@@ -10,11 +10,6 @@
       "source": "/typebot-lib/v2",
       "destination": "https://unpkg.com/typebot-js@2.1.3/dist/index.umd.min.js",
       "permanent": true
-    },
-    {
-      "source": "/healthz",
-      "destination": "/api/healthz",
-      "permanent": true
     }
   ]
 }

@@ -127,10 +127,6 @@ const nextConfig = {
             destination:
               "/api/v1/typebots/:typebotId/blocks/:blockId/storage/upload-url",
           },
-          {
-            source: "/healthz",
-            destination: "/api/health",
-          },
         ])
         .concat(
           process.env.NEXTAUTH_URL

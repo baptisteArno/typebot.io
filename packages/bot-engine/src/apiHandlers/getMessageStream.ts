@@ -42,6 +42,7 @@ export const getMessageStream = async ({
   message?: string;
   details?: string;
   context?: string;
+  typebotId?: string;
 }> => {
   const session = await getSession(sessionId);
 
@@ -196,7 +197,7 @@ export const getMessageStream = async ({
 
     if (!stream) return { status: 500, message: "Could not create stream" };
 
-    return { stream };
+    return { stream, typebotId: session.state.typebotsQueue[0].typebot.id };
   } catch (error) {
     const parsedError = await parseUnknownError({
       err: error,

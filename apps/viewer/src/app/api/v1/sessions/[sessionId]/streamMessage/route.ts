@@ -1,3 +1,4 @@
+import * as Sentry from "@sentry/nextjs";
 import { getMessageStream } from "@typebot.io/bot-engine/apiHandlers/getMessageStream";
 import { StreamingTextResponse } from "@typebot.io/legacy/ai";
 import { NextResponse } from "next/server";
@@ -29,12 +30,16 @@ export async function POST(
   const { sessionId } = await params;
   const body = await req.text();
   const messages = body ? JSON.parse(body).messages : undefined;
-  const { stream, status, message } = await getMessageStream({
+  const { stream, status, message, typebotId } = await getMessageStream({
     sessionId,
     messages,
   });
   if (!stream)
     return NextResponse.json({ message }, { status, headers: responseHeaders });
+
+  Sentry.setTag("typebotId", typebotId);
+  Sentry.captureMessage("Is using /api/v1/sessions/[sessionId]/streamMessage");
+
   return new StreamingTextResponse(
     stream.pipeThrough(createStreamDataTransformer()),
     {

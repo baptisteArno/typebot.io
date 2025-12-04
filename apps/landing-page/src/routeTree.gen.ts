@@ -20,7 +20,7 @@ import { Route as LayoutSlugRouteImport } from './routes/_layout/$slug'
 import { Route as LayoutBlogIndexRouteImport } from './routes/_layout/blog/index'
 import { Route as LayoutBlogSlugRouteImport } from './routes/_layout/blog/$slug'
 import { ServerRoute as SitemapDotxmlServerRouteImport } from './routes/sitemap[.]xml'
-import { ServerRoute as ApiHealthzServerRouteImport } from './routes/api/healthz'
+import { ServerRoute as HealthzServerRouteImport } from './routes/healthz'
 
 const rootServerRouteImport = createServerRootRoute()
 
@@ -68,9 +68,9 @@ const SitemapDotxmlServerRoute = SitemapDotxmlServerRouteImport.update({
   path: '/sitemap.xml',
   getParentRoute: () => rootServerRouteImport,
 } as any)
-const ApiHealthzServerRoute = ApiHealthzServerRouteImport.update({
-  id: '/api/healthz',
-  path: '/api/healthz',
+const HealthzServerRoute = HealthzServerRouteImport.update({
+  id: '/healthz',
+  path: '/healthz',
   getParentRoute: () => rootServerRouteImport,
 } as any)
 
@@ -139,29 +139,29 @@ export interface RootRouteChildren {
   LayoutRoute: typeof LayoutRouteWithChildren
 }
 export interface FileServerRoutesByFullPath {
+  '/healthz': typeof HealthzServerRoute
   '/sitemap.xml': typeof SitemapDotxmlServerRoute
-  '/api/healthz': typeof ApiHealthzServerRoute
 }
 export interface FileServerRoutesByTo {
+  '/healthz': typeof HealthzServerRoute
   '/sitemap.xml': typeof SitemapDotxmlServerRoute
-  '/api/healthz': typeof ApiHealthzServerRoute
 }
 export interface FileServerRoutesById {
   __root__: typeof rootServerRouteImport
+  '/healthz': typeof HealthzServerRoute
   '/sitemap.xml': typeof SitemapDotxmlServerRoute
-  '/api/healthz': typeof ApiHealthzServerRoute
 }
 export interface FileServerRouteTypes {
   fileServerRoutesByFullPath: FileServerRoutesByFullPath
-  fullPaths: '/sitemap.xml' | '/api/healthz'
+  fullPaths: '/healthz' | '/sitemap.xml'
   fileServerRoutesByTo: FileServerRoutesByTo
-  to: '/sitemap.xml' | '/api/healthz'
-  id: '__root__' | '/sitemap.xml' | '/api/healthz'
+  to: '/healthz' | '/sitemap.xml'
+  id: '__root__' | '/healthz' | '/sitemap.xml'
   fileServerRoutesById: FileServerRoutesById
 }
 export interface RootServerRouteChildren {
+  HealthzServerRoute: typeof HealthzServerRoute
   SitemapDotxmlServerRoute: typeof SitemapDotxmlServerRoute
-  ApiHealthzServerRoute: typeof ApiHealthzServerRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -233,11 +233,11 @@ declare module '@tanstack/react-start/server' {
       preLoaderRoute: typeof SitemapDotxmlServerRouteImport
       parentRoute: typeof rootServerRouteImport
     }
-    '/api/healthz': {
-      id: '/api/healthz'
-      path: '/api/healthz'
-      fullPath: '/api/healthz'
-      preLoaderRoute: typeof ApiHealthzServerRouteImport
+    '/healthz': {
+      id: '/healthz'
+      path: '/healthz'
+      fullPath: '/healthz'
+      preLoaderRoute: typeof HealthzServerRouteImport
       parentRoute: typeof rootServerRouteImport
     }
   }
@@ -272,8 +272,8 @@ export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
 const rootServerRouteChildren: RootServerRouteChildren = {
+  HealthzServerRoute: HealthzServerRoute,
   SitemapDotxmlServerRoute: SitemapDotxmlServerRoute,
-  ApiHealthzServerRoute: ApiHealthzServerRoute,
 }
 export const serverRouteTree = rootServerRouteImport
   ._addFileChildren(rootServerRouteChildren)

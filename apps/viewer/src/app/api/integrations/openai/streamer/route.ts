@@ -1,4 +1,5 @@
 import { connect } from "@planetscale/database";
+import * as Sentry from "@sentry/nextjs";
 import { isForgedBlockType } from "@typebot.io/blocks-core/helpers";
 import { IntegrationBlockType } from "@typebot.io/blocks-integrations/constants";
 import type { ChatCompletionOpenAIOptions } from "@typebot.io/blocks-integrations/openai/schema";
@@ -179,6 +180,9 @@ export async function POST(req: Request) {
         { message: "Could not create stream" },
         { status: 400, headers: responseHeaders },
       );
+
+    Sentry.setTag("typebotId", state.typebotsQueue[0].typebot.id);
+    Sentry.captureMessage("Is using /api/integrations/openai/streamer");
 
     return new StreamingTextResponse(stream, {
       headers: responseHeaders,
