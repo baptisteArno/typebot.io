@@ -126,9 +126,9 @@ export async function POST(req: Request) {
       { status: 400, headers: responseHeaders },
     );
 
-  const handler = forgedBlockHandlers[block.type].find(
+  const handler = forgedBlockHandlers[block.type]?.find(
     (h) => h.type === "action" && h.actionName === block.options?.action,
-  ) as ActionHandler;
+  ) as ActionHandler | undefined;
 
   if (!handler || !handler.stream)
     return NextResponse.json(

@@ -103,9 +103,9 @@ export const getMessageStream = async ({
       message: "This block does not have a stream function",
     };
 
-  const handler = forgedBlockHandlers[block.type].find(
+  const handler = forgedBlockHandlers[block.type]?.find(
     (h) => h.type === "action" && h.actionName === block.options?.action,
-  ) as ActionHandler;
+  ) as ActionHandler | undefined;
 
   if (!handler || !handler.stream)
     return {

@@ -94,9 +94,9 @@ export const fetchSelectItems = authenticatedProcedure
         )
       : undefined;
 
-    const handler = forgedBlockHandlers[input.integrationId].find(
+    const handler = forgedBlockHandlers[input.integrationId]?.find(
       (handler) => handler.type === "fetcher" && handler.id === input.fetcherId,
-    ) as FetcherHandler;
+    ) as FetcherHandler | undefined;
 
     if (!handler) return { items: [] };
 

@@ -34,9 +34,9 @@ export const executeForgedBlock = async (
   const blockDef = forgedBlocks[block.type];
   if (!blockDef) return { outgoingEdgeId: block.outgoingEdgeId };
   const action = blockDef.actions.find((a) => a.name === block.options?.action);
-  const handler = forgedBlockHandlers[block.type].find(
+  const handler = forgedBlockHandlers[block.type]?.find(
     (h) => h.type === "action" && h.actionName === action?.name,
-  ) as ActionHandler;
+  ) as ActionHandler | undefined;
   if (!block.options || !handler || !action)
     return {
       outgoingEdgeId: block.outgoingEdgeId,
