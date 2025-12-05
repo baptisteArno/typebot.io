@@ -157,7 +157,16 @@ export const ElementsSelectionMenu = ({
 
   if (focusedElementIds.length === 0 || isReadOnly) return null;
   return (
-    <div className="flex items-stretch gap-1">
+    <div
+      className="flex items-stretch gap-1"
+      // Prevent Graph event listeners to cancel action clicks
+      onPointerDownCapture={(e) => {
+        e.stopPropagation();
+      }}
+      onPointerUpCapture={(e) => {
+        e.stopPropagation();
+      }}
+    >
       <span className="text-sm text-orange-10 font-medium px-2 inline-flex items-center select-none">
         {focusedElementIds.length} selected
       </span>
