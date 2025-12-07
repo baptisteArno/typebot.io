@@ -1,5 +1,28 @@
 # Changelog
 
+<a name="3.14.1"></a>
+## 3.14.1 (2025-12-05)
+
+### Fixed
+
+- 🐛 Fix block selection action buttons ignored [[658ea4b](https://github.com/baptisteArno/typebot.io/commit/658ea4b3ec5a970f295cb7896d0a0aa4c7bae041)]
+- 💚 Fix new healthz route syntax error [[f144d74](https://github.com/baptisteArno/typebot.io/commit/f144d74a7edb8c628dc860a5b49012fbafa902b4)]
+- 🐛 Fix giphy picker app crash [[47c4931](https://github.com/baptisteArno/typebot.io/commit/47c4931b79f03d7a07f5013791651d869a9c5754)]
+- 🐛 Fix deploy buttons app crash [[a68cc3c](https://github.com/baptisteArno/typebot.io/commit/a68cc3cee2b15b58c6d121b65d55fca2740f46b2)]
+- 🐛 Fix Return block replay on bot transcript set var [[ab810f2](https://github.com/baptisteArno/typebot.io/commit/ab810f2d2b79e4b3d473662518899c328e818607)]
+
+### Internal
+
+- ♻️ Fix handler cast specificity [[04efee8](https://github.com/baptisteArno/typebot.io/commit/04efee8b9be934efc569bea5032b18edef98d2e7)]
+- ♻️ Remove webpack aliases in next configs [[e214fcd](https://github.com/baptisteArno/typebot.io/commit/e214fcda6048a56fd8bb686d13ef6aa479068163)]
+- ♻️ Export fetcher fetch in handlers array [[c8ee003](https://github.com/baptisteArno/typebot.io/commit/c8ee003e56e596c642aebc0f216d9dda004bdee7)]
+- ♻️ Move forged block handlers on a separate file [[b9e64ec](https://github.com/baptisteArno/typebot.io/commit/b9e64eca066f946a5d7b7374ebd16fe687130c0b)]
+
+### Miscellaneous
+
+- 🗑️ Flag deprecated stream routes [[dfd6b15](https://github.com/baptisteArno/typebot.io/commit/dfd6b15590eb2fa73f5e2b977398ead960b6fc55)]
+
+
 <a name="3.14.0"></a>
 ## 3.14.0 (2025-12-01)
 
