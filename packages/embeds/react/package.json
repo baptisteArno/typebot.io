@@ -21,7 +21,7 @@
     "build": "tsup"
   },
   "dependencies": {
-    "react": "^19.2.0",
+    "react": "^19.2.1",
     "@typebot.io/js": "workspace:*"
   },
   "devDependencies": {
