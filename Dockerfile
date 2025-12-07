@@ -1,5 +1,5 @@
 # ================= INSTALL BUN ===================
-ARG BUN_VERSION=1.3.0
+ARG BUN_VERSION=1.3.3
 FROM debian:bullseye-slim AS build-bun
 ARG BUN_VERSION
 RUN apt-get update -qq \
@@ -92,7 +92,7 @@ COPY --from=pruned /app/out/full/ .
 COPY bun.lock .
 COPY bunfig.toml .
 RUN SENTRYCLI_SKIP_DOWNLOAD=1 bun install
-RUN SKIP_ENV_CHECK=true bunx turbo build --filter="${SCOPE}"
+RUN SKIP_ENV_CHECK=true NEXT_PUBLIC_VIEWER_URL=http://localhost bunx turbo build --filter="${SCOPE}"
 
 # ================== RELEASE ======================
 
