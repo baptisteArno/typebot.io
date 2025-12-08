@@ -19,14 +19,15 @@ export const isReadTypebotForbidden = async (
     : undefined;
   const isTypebotPublic = settings?.publicShare?.isEnabled === true;
   if (isTypebotPublic) return false;
+  if (!user) return true;
+  if ((env.ADMIN_EMAIL ?? []).some((email) => email === user.email))
+    return false;
   return (
-    !user ||
     typebot.workspace.isSuspended ||
     typebot.workspace.isPastDue ||
-    ((env.ADMIN_EMAIL ?? []).every((email) => email !== user.email) &&
-      !typebot.collaborators.some(
-        (collaborator) => collaborator.userId === user.id,
-      ) &&
+    (!typebot.collaborators.some(
+      (collaborator) => collaborator.userId === user.id,
+    ) &&
       !typebot.workspace.members.some((member) => member.userId === user.id))
   );
 };
