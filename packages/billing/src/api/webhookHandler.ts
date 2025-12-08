@@ -180,8 +180,7 @@ export const webhookHandler = async (
           if (
             subscription.status === "past_due" &&
             previous &&
-            previous.status !== "past_due" &&
-            !existingWorkspace.isPastDue
+            previous.status !== "past_due"
           ) {
             await prisma.workspace.updateMany({
               where: {
@@ -205,8 +204,7 @@ export const webhookHandler = async (
           if (
             subscription.status === "unpaid" &&
             previous &&
-            previous.status !== "unpaid" &&
-            !existingWorkspace.isQuarantined
+            previous.status !== "unpaid"
           ) {
             await trackEvents(
               existingWorkspace.members.map((m) => ({
