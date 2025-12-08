@@ -22,10 +22,21 @@ export const updateSubscription = authenticatedProcedure
     }),
   )
   .output(
-    z.object({
-      workspace: workspaceSchema.nullish(),
-      checkoutUrl: z.string().nullish(),
-    }),
+    z.discriminatedUnion("type", [
+      z.object({
+        type: z.literal("success"),
+        workspace: workspaceSchema,
+      }),
+      z.object({
+        type: z.literal("error"),
+        title: z.string(),
+        description: z.string().nullish(),
+      }),
+      z.object({
+        type: z.literal("checkoutUrl"),
+        checkoutUrl: z.string(),
+      }),
+    ]),
   )
   .mutation(async ({ input, ctx: { user } }) =>
     updateSubscriptionHandler({

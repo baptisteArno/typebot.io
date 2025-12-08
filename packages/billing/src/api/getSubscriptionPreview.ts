@@ -2,25 +2,20 @@ import { TRPCError } from "@trpc/server";
 import { env } from "@typebot.io/env";
 import prisma from "@typebot.io/prisma";
 import { Plan } from "@typebot.io/prisma/enum";
-import { trackEvents } from "@typebot.io/telemetry/trackEvents";
 import type { User } from "@typebot.io/user/schemas";
 import { isAdminWriteWorkspaceForbidden } from "@typebot.io/workspaces/isAdminWriteWorkspaceForbidden";
-import { workspaceSchema } from "@typebot.io/workspaces/schemas";
 import Stripe from "stripe";
-import { createCheckoutSessionUrl } from "../helpers/createCheckoutSessionUrl";
 
 type Props = {
   workspaceId: string;
   user: Pick<User, "email" | "id">;
   plan: "STARTER" | "PRO";
-  returnUrl: string;
 };
 
-export const updateSubscription = async ({
+export const getSubscriptionPreview = async ({
   workspaceId,
   user,
   plan,
-  returnUrl,
 }: Props) => {
   if (!env.STRIPE_SECRET_KEY)
     throw new TRPCError({
@@ -64,12 +59,20 @@ export const updateSubscription = async ({
     status: "active",
   });
   const subscription = data[0] as Stripe.Subscription | undefined;
-  const currentPlanItemId = subscription?.items.data.find((item) =>
+
+  if (!subscription) {
+    throw new TRPCError({
+      code: "NOT_FOUND",
+      message: "No active subscription found",
+    });
+  }
+
+  const currentPlanItemId = subscription.items.data.find((item) =>
     [env.STRIPE_STARTER_PRICE_ID, env.STRIPE_PRO_PRICE_ID].includes(
       item.price.id,
     ),
   )?.id;
-  const currentUsageItemId = subscription?.items.data.find(
+  const currentUsageItemId = subscription.items.data.find(
     (item) =>
       item.price.id === env.STRIPE_STARTER_CHATS_PRICE_ID ||
       item.price.id === env.STRIPE_PRO_CHATS_PRICE_ID,
@@ -93,82 +96,15 @@ export const updateSubscription = async ({
     },
   ];
 
-  if (subscription) {
-    if (plan === "STARTER") {
-      const totalChatsUsed = await prisma.result.count({
-        where: {
-          typebot: { workspaceId },
-          hasStarted: true,
-          createdAt: {
-            gte: new Date(subscription.current_period_start * 1000),
-          },
-        },
-      });
-      if (totalChatsUsed >= 4000) {
-        throw new TRPCError({
-          code: "BAD_REQUEST",
-          message:
-            "You have collected more than 4000 chats during this billing cycle. You can't downgrade to the Starter.",
-        });
-      }
-    }
-
-    try {
-      await stripe.subscriptions.update(subscription.id, {
-        items,
-        proration_behavior: "always_invoice",
-        payment_behavior: "error_if_incomplete",
-        metadata: {
-          reason: "explicit update",
-        },
-      });
-    } catch {
-      return {
-        type: "error" as const,
-        title: "Payment required",
-        description: "Check your payment method and try again.",
-      };
-    }
-  } else {
-    const checkoutUrl = await createCheckoutSessionUrl(stripe)({
-      customerId: workspace.stripeId,
-      userId: user.id,
-      workspaceId,
-      plan,
-      returnUrl,
-    });
-
-    if (!checkoutUrl)
-      return {
-        type: "error" as const,
-        title: "Failed to create checkout session",
-      };
-
-    return { type: "checkoutUrl" as const, checkoutUrl };
-  }
-
-  const updatedWorkspace = await prisma.workspace.update({
-    where: { id: workspaceId },
-    data: {
-      plan,
-      isQuarantined: false,
-    },
+  const upcomingInvoice = await stripe.invoices.retrieveUpcoming({
+    customer: workspace.stripeId,
+    subscription: subscription.id,
+    subscription_items: items,
+    subscription_proration_behavior: "always_invoice",
   });
 
-  await trackEvents([
-    {
-      name: "Subscription updated",
-      workspaceId,
-      userId: user.id,
-      data: {
-        prevPlan: workspace.plan,
-        plan,
-      },
-    },
-  ]);
-
   return {
-    type: "success" as const,
-    workspace: workspaceSchema.parse(updatedWorkspace),
+    amountDue: upcomingInvoice.amount_due,
+    currency: upcomingInvoice.currency as "usd" | "eur",
   };
 };

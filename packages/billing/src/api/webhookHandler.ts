@@ -206,13 +206,6 @@ export const webhookHandler = async (
             previous &&
             previous.status !== "unpaid"
           ) {
-            await trackEvents(
-              existingWorkspace.members.map((m) => ({
-                name: "Workspace unpaid",
-                workspaceId: existingWorkspace.id,
-                userId: m.userId,
-              })),
-            );
             if (!subscription.cancel_at_period_end)
               await stripe.subscriptions.update(subscription.id, {
                 cancel_at_period_end: true,
@@ -225,6 +218,24 @@ export const webhookHandler = async (
                 isQuarantined: true,
               },
             });
+
+            await trackEvents(
+              existingWorkspace.members.flatMap((m) => [
+                {
+                  name: "Workspace unpaid",
+                  workspaceId: existingWorkspace.id,
+                  userId: m.userId,
+                },
+                {
+                  name: "Workspace automatically quarantined",
+                  workspaceId: existingWorkspace.id,
+                  userId: m.userId,
+                  data: {
+                    reason: "subscription past due for too long",
+                  },
+                },
+              ]),
+            );
 
             return res.send({ message: "Workspace quarantined" });
           }
