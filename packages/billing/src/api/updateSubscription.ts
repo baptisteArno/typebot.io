@@ -113,13 +113,22 @@ export const updateSubscription = async ({
       }
     }
 
-    await stripe.subscriptions.update(subscription.id, {
-      items,
-      proration_behavior: "always_invoice",
-      metadata: {
-        reason: "explicit update",
-      },
-    });
+    try {
+      await stripe.subscriptions.update(subscription.id, {
+        items,
+        proration_behavior: "always_invoice",
+        payment_behavior: "error_if_incomplete",
+        metadata: {
+          reason: "explicit update",
+        },
+      });
+    } catch {
+      return {
+        type: "error" as const,
+        title: "Payment required",
+        description: "Check your payment method and try again.",
+      };
+    }
   } else {
     const checkoutUrl = await createCheckoutSessionUrl(stripe)({
       customerId: workspace.stripeId,
@@ -129,7 +138,13 @@ export const updateSubscription = async ({
       returnUrl,
     });
 
-    return { checkoutUrl };
+    if (!checkoutUrl)
+      return {
+        type: "error" as const,
+        title: "Failed to create checkout session",
+      };
+
+    return { type: "checkoutUrl" as const, checkoutUrl };
   }
 
   const updatedWorkspace = await prisma.workspace.update({
@@ -152,5 +167,8 @@ export const updateSubscription = async ({
     },
   ]);
 
-  return { workspace: workspaceSchema.parse(updatedWorkspace) };
+  return {
+    type: "success" as const,
+    workspace: workspaceSchema.parse(updatedWorkspace),
+  };
 };

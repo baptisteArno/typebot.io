@@ -1,7 +1,5 @@
 import { createAction, option } from "@typebot.io/forge";
 import { auth } from "../auth";
-import { createClient } from "../helpers/createClient";
-import { parseProperties } from "../helpers/parseProperties";
 
 export const identifyGroup = createAction({
   auth,
@@ -36,29 +34,4 @@ export const identifyGroup = createAction({
         itemLabel: "property",
       }),
   }),
-  run: {
-    server: async ({
-      credentials: { apiKey, host },
-      options: { distinctId, groupKey, groupType, properties },
-      logs,
-    }) => {
-      if (!apiKey) return;
-
-      const posthog = createClient(apiKey, host);
-
-      if (!distinctId) return logs.add("Distinct ID is required");
-
-      if (!groupKey || !groupType)
-        return logs.add("Group type and key are required");
-
-      posthog.groupIdentify({
-        distinctId,
-        groupType,
-        groupKey,
-        properties: parseProperties({ properties }),
-      });
-
-      await posthog.shutdown();
-    },
-  },
 });

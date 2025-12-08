@@ -5,7 +5,8 @@
   "type": "module",
   "exports": {
     ".": "./src/index.ts",
-    "./schemas": "./src/schemas.ts"
+    "./schemas": "./src/schemas.ts",
+    "./handlers": "./src/handlers.ts"
   },
   "dependencies": {
     "@ai-sdk/perplexity": "^1.1.9",
@@ -14,6 +15,7 @@
     "@typebot.io/lib": "workspace:*"
   },
   "devDependencies": {
-    "@typebot.io/tsconfig": "workspace:*"
+    "@typebot.io/tsconfig": "workspace:*",
+    "@types/react": "^19.2.7"
   }
 }

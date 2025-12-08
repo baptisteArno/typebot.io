@@ -1,4 +1,4 @@
-import { expect, it } from "vitest";
+import { expect, it } from "bun:test";
 import { computeDeepKeysMappingSuggestionList } from "./computeDeepKeysMappingSuggestionList";
 
 it("should return keys for a simple object", () => {

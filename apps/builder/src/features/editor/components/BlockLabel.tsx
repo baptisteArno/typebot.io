@@ -12,6 +12,7 @@ import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
 import { IntegrationBlockType } from "@typebot.io/blocks-integrations/constants";
 import { LogicBlockType } from "@typebot.io/blocks-logic/constants";
 import { cn } from "@typebot.io/ui/lib/cn";
+import type { JSX } from "react";
 import { ForgedBlockLabel } from "@/features/forge/ForgedBlockLabel";
 
 type Props = { type: Block["type"]; className?: string };

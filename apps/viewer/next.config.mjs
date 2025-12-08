@@ -52,7 +52,6 @@ const nextConfig = {
   reactStrictMode: true,
   output: "standalone",
   outputFileTracingRoot: join(__dirname, "../../"),
-  serverExternalPackages: ["isolated-vm"],
   webpack: (config, { isServer }) => {
     if (isServer) {
       // TODO: Remove once https://github.com/getsentry/sentry-javascript/issues/8105 is merged and sentry is upgraded
@@ -68,13 +67,6 @@ const nextConfig = {
       return config;
     }
 
-    config.resolve.alias["minio"] = false;
-    config.resolve.alias["qrcode"] = false;
-    config.resolve.alias["isolated-vm"] = false;
-    config.resolve.alias["@googleapis/gmail"] = false;
-    config.resolve.alias["nodemailer"] = false;
-    config.resolve.alias["google-auth-library"] = false;
-    config.resolve.alias["posthog-node"] = false;
     return config;
   },
   async redirects() {
@@ -134,10 +126,6 @@ const nextConfig = {
               "/api/typebots/:typebotId/blocks/:blockId/storage/upload-url",
             destination:
               "/api/v1/typebots/:typebotId/blocks/:blockId/storage/upload-url",
-          },
-          {
-            source: "/healthz",
-            destination: "/api/health",
           },
         ])
         .concat(

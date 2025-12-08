@@ -14,11 +14,11 @@
     "@typebot.io/blocks-inputs": "workspace:*",
     "@typebot.io/blocks-logic": "workspace:*",
     "@typebot.io/chat-api": "workspace:*",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react": "^19.2.1",
+    "react-dom": "^19.2.1"
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*",
-    "@types/react": "^18.3.18"
+    "@types/react": "^19.2.7"
   }
 }

@@ -259,6 +259,7 @@ const main = async () => {
             type: prompt.auth,
           },
     );
+  await createHandlersFile(srcPath);
   await createSchemasFile(srcPath, prompt);
   await addBlockToRepository(prompt);
   s.stop("Creating files...");
@@ -356,6 +357,7 @@ const createPackageJson = async (path: string, { id }: { id: unknown }) => {
         exports: {
           ".": "./src/index.ts",
           "./schemas": "./src/schemas.ts",
+          "./handlers": "./src/handlers.ts",
         },
         dependencies: {
           "@typebot.io/forge": "workspace:*",
@@ -451,8 +453,13 @@ const addBlockToRepository = async ({
   await addBlockToRepoDefinitions(schemasPath, camelCaseId, id);
   await addBlockToRepoConstants(schemasPath, id);
   await addBlockToRepoSchemas(schemasPath, camelCaseId, id);
+  await addBlockToRepoHandlers(schemasPath, camelCaseId, id);
   if (auth !== "none")
     await addBlockToCredentialsRepoSchemas(schemasPath, camelCaseId, id);
+};
+
+const createHandlersFile = async (path: string) => {
+  writeFileSync(join(path, "handlers.ts"), `export default []`);
 };
 
 const createSchemasFile = async (
@@ -581,6 +588,33 @@ async function addBlockToRepoConstants(schemasPath: string, id: string) {
       `'${id}'] as const satisfies readonly ForgedBlock["type"][]`,
     ),
   );
+}
+
+async function addBlockToRepoHandlers(
+  schemasPath: string,
+  camelCaseId: string,
+  id: string,
+) {
+  const existingHandlersData = readFileSync(
+    join(schemasPath, "src", "handlers.ts"),
+  ).toString();
+  const importStatement = `import { ${camelCaseId}Block } from "@typebot.io/${id}-block";
+import ${camelCaseId}BlockHandlers from "@typebot.io/${id}-block/handlers";`;
+  const objectEntry = `  [${camelCaseId}Block.id]: ${camelCaseId}BlockHandlers,`;
+  const nextLineImportIndex = existingHandlersData.indexOf(
+    "\n",
+    existingHandlersData.lastIndexOf("import"),
+  );
+
+  const newObjectEntryIndex = existingHandlersData.lastIndexOf(",") + 1;
+
+  const newHandlersData = `${existingHandlersData.slice(0, nextLineImportIndex)}
+${importStatement}
+${existingHandlersData.slice(nextLineImportIndex, newObjectEntryIndex)}
+${objectEntry}
+${existingHandlersData.slice(newObjectEntryIndex)}`;
+
+  writeFileSync(join(schemasPath, "src", "handlers.ts"), newHandlersData);
 }
 
 async function addBlockToRepoPackageJson(id: string) {

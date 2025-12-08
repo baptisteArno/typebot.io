@@ -181,7 +181,9 @@ export const WorkspaceProvider = ({
     if (!workspaces) return;
     const name = parseNewName(userFullName, workspaces);
     const { workspace } = await createWorkspaceMutation.mutateAsync({ name });
-    setWorkspaceId(workspace.id);
+    setTimeout(() => {
+      switchWorkspace(workspace.id);
+    }, 1000);
   };
 
   const updateWorkspace = (updates: WorkspaceUpdateProps) => {

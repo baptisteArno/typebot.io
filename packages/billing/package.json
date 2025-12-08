@@ -18,10 +18,10 @@
     "@typebot.io/zod": "workspace:*",
     "@typebot.io/settings": "workspace:*",
     "@typebot.io/user": "workspace:*",
-    "next": "^15.3.0",
     "micro": "^10.0.1"
   },
   "devDependencies": {
-    "@typebot.io/tsconfig": "workspace:*"
+    "@typebot.io/tsconfig": "workspace:*",
+    "@types/node": "^22.19.0"
   }
 }

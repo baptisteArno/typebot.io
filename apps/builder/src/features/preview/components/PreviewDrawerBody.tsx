@@ -1,3 +1,4 @@
+import type { JSX } from "react";
 import type { runtimes } from "../data";
 import { ApiPreviewInstructions } from "./ApiPreviewInstructions";
 import { WebPreview } from "./WebPreview";

@@ -300,6 +300,7 @@ model SetVariableHistoryItem {
   index      Int
   variableId String
   blockId    String
+  blockIndex Int? // Used to know when to apply the variable during replay
   value      Json // string or list 
 
   @@unique([resultId, index])

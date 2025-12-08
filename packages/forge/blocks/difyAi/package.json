@@ -5,16 +5,19 @@
   "type": "module",
   "exports": {
     ".": "./src/index.ts",
-    "./schemas": "./src/schemas.ts"
+    "./schemas": "./src/schemas.ts",
+    "./handlers": "./src/handlers/index.ts"
   },
   "dependencies": {
     "@ai-sdk/ui-utils": "^1.2.11",
     "@typebot.io/forge": "workspace:*",
     "@typebot.io/lib": "workspace:*",
     "dify-ai-provider": "^0.1.6",
-    "ky": "^1.2.4"
+    "ky": "^1.2.4",
+    "@typebot.io/ai": "workspace:*"
   },
   "devDependencies": {
-    "@typebot.io/tsconfig": "workspace:*"
+    "@typebot.io/tsconfig": "workspace:*",
+    "@types/react": "^19.2.7"
   }
 }

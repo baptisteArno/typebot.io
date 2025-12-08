@@ -6,7 +6,8 @@
   "exports": {
     ".": "./src/index.ts",
     "./schemas": "./src/schemas.ts",
-    "./shared/*": "./src/shared/*.ts"
+    "./shared/*": "./src/shared/*.ts",
+    "./handlers": "./src/handlers/index.ts"
   },
   "dependencies": {
     "@ai-sdk/openai": "^1.3.24",
@@ -20,6 +21,7 @@
     "ky": "^1.2.4"
   },
   "devDependencies": {
-    "@typebot.io/tsconfig": "workspace:*"
+    "@typebot.io/tsconfig": "workspace:*",
+    "@types/react": "^19.2.7"
   }
 }

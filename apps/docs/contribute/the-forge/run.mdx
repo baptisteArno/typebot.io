@@ -2,30 +2,69 @@
 title: Run
 ---
 
-An action can do one of the following things:
+Action execution logic is defined in a separate `handlers.ts` file using the `createActionHandler()` and `createFetcherHandler()` functions. This separates the action definition (schema, options) from its runtime implementation.
+
+An action handler can do one of the following things:
 
 - Execute a function on the server (most common)
 - If block is followed by a streamable variable, stream the variable on the client. Otherwise, execute a function on the server.
 - Execute a function on the client
 - Display a custom embed bubble
 
+## Handlers file structure
+
+All handlers for a block should be defined in `src/handlers.ts` and exported as a default array:
+
+```ts
+import { createActionHandler, createFetcherHandler } from "@typebot.io/forge";
+import { sendMessage, modelsFetcher } from "./actions/sendMessage";
+import { getMessage } from "./actions/getMessage";
+
+export default [
+  createActionHandler(sendMessage, {
+    server: async ({ credentials, options, variables, logs }) => {
+      // Implementation for sendMessage
+    },
+  }),
+  createFetcherHandler(sendMessage, modelsFetcher.id, async ({ credentials, options }) => {
+    // Implementation for fetcher
+    return {
+      data: ["model-1", "model-2"],
+    };
+  }),
+  createActionHandler(getMessage, {
+    server: async ({ credentials, options, variables, logs }) => {
+      // Implementation for getMessage
+    },
+  }),
+];
+```
+
+The handlers array can contain two types of handlers:
+
+- **Action handlers** using `createActionHandler(action, implementation)` - Execute the action logic
+- **Fetcher handlers** using `createFetcherHandler(action, fetcherId, implementation)` - Populate dropdown options dynamically (see [Fetcher](./fetcher) for more details)
+
 ## Server function
 
-The most common action is to execute a function on the server. This is done by simply declaring that function in the action block.
+The most common handler is to execute a function on the server.
 
 Example:
 
 ```ts
-export const sendMessage = createAction({
-  // ...
-  run: {
+import { createActionHandler } from "@typebot.io/forge";
+import { sendMessage } from "./actions/sendMessage";
+import ky from "ky";
+
+export default [
+  createActionHandler(sendMessage, {
     server: async ({
       credentials: { apiKey },
       options: { botId, message, responseMapping, threadId },
       variables,
       logs,
     }) => {
-      const res: ChatNodeResponse = await got
+      const res: ChatNodeResponse = await ky
         .post(apiBaseUrl + botId, {
           headers: {
             Authorization: `Bearer ${apiKey}`,
@@ -35,70 +74,90 @@ export const sendMessage = createAction({
             chat_session_id: isEmpty(threadId) ? undefined : threadId,
           },
         })
-        .json()
+        .json();
 
       if (res.error)
         logs.add({
-          status: 'error',
+          status: "error",
           description: res.error,
-        })
+        });
 
-      if (res.error)
-        logs.responseMapping?.forEach((mapping) => {
-          if (!mapping.variableId) return
+      responseMapping?.forEach((mapping) => {
+        if (!mapping.variableId) return;
 
-          const item = mapping.item ?? 'Message'
-          if (item === 'Message') variables.set(mapping.variableId, res.message)
+        const item = mapping.item ?? "Message";
+        if (item === "Message") variables.set(mapping.variableId, res.message);
 
-          if (item === 'Thread ID')
-            variables.set(mapping.variableId, res.chat_session_id)
-        })
+        if (item === "Thread ID")
+          variables.set(mapping.variableId, res.chat_session_id);
+      });
     },
-  },
-})
+  }),
+];
 ```
 
-As you can see the function takes `credentials`, `options`, `variables` and `logs` as arguments.
+As you can see, the server function takes `credentials`, `options`, `variables` and `logs` as arguments.
 
 The `credentials` are the credentials that the user has entered in the credentials block.
 
 The `options` are the options that the user has entered in the options block.
 
-The `variables` object contains helper to save and get variables if necessary.
+The `variables` object contains helpers to save and get variables if necessary.
 
 The `logs` allows you to log anything during the function execution. These logs will be displayed as toast in the preview mode or in the Results tab on production.
 
 ## Server function + stream
 
-If your block can stream a message (like OpenAI), you can implement a stream object to handle it.
+If your block can stream a message (like OpenAI), you need to define `getStreamVariableId` in the action and implement a stream handler.
+
+**In the action definition** (`actions/createChatCompletion.ts`):
 
 ```ts
+import { createAction, option } from "@typebot.io/forge";
+import { auth } from "../auth";
+
 export const createChatCompletion = createAction({
-  // ...
-  run: {
+  auth,
+  name: "Create chat completion",
+  options: option.object({
+    // ... options
+  }),
+  getStreamVariableId: (options) =>
+    options.responseMapping?.find(
+      (res) => res.item === "Message content" || !res.item
+    )?.variableId,
+});
+```
+
+**In the handlers file** (`handlers.ts`):
+
+```ts
+import { createActionHandler } from "@typebot.io/forge";
+import { createChatCompletion } from "./actions/createChatCompletion";
+import { OpenAI } from "openai";
+import { OpenAIStream } from "@typebot.io/ai";
+
+export default [
+  createActionHandler(createChatCompletion, {
     server: async (params) => {
-      //...
+      // Server implementation when streaming is not available
     },
     stream: {
-      getStreamVariableId: (options) =>
-        options.responseMapping?.find(
-          (res) => res.item === 'Message content' || !res.item
-        )?.variableId,
       run: async ({ credentials: { apiKey }, options, variables }) => {
         const config = {
           apiKey,
           baseURL: options.baseUrl,
           defaultHeaders: {
-            'api-key': apiKey,
+            "api-key": apiKey,
           },
           defaultQuery: options.apiVersion
             ? {
-                'api-version': options.apiVersion,
+                "api-version": options.apiVersion,
               }
             : undefined,
-        } satisfies ClientOptions
+        } satisfies ClientOptions;
 
-        const openai = new OpenAI(config)
+        const openai = new OpenAI(config);
 
         const response = await openai.chat.completions.create({
           model: options.model ?? defaultOpenAIOptions.model,
@@ -107,22 +166,22 @@ export const createChatCompletion = createAction({
             : undefined,
           stream: true,
           messages: parseChatCompletionMessages({ options, variables }),
-        })
+        });
 
-        return OpenAIStream(response)
+        return { stream: OpenAIStream(response) };
       },
     },
-  },
-})
+  }),
+];
 ```
 
-The `getStreamVariableId` function defines which variable should be streamed.
+The `getStreamVariableId` function in the action definition determines which variable should be streamed.
 
-The `run` works the same as the [server function](./run#server-function). It needs to return `Promise<ReadableStream<any> | undefined>`.
+The stream `run` function needs to return `Promise<{ stream?: ReadableStream<any>, error?: { description: string, details?: string, context?: string } }>`.
 
 ## Client function
 
-If you want to execute a function on the client instead of the server, you can use the `client` object.
+If you want to execute a function on the client instead of the server, you can use the `web` object in your handler.
 
 <Info>
   This makes your block only compatible with the Web runtime. It won't work on
@@ -132,9 +191,11 @@ If you want to execute a function on the client instead of the server, you can u
 Example:
 
 ```ts
-export const shoutName = createAction({
-  // ...
-  run: {
+import { createActionHandler } from "@typebot.io/forge";
+import { shoutName } from "./actions/shoutName";
+
+export default [
+  createActionHandler(shoutName, {
     web: {
       parseFunction: ({ options }) => {
         return {
@@ -142,25 +203,76 @@ export const shoutName = createAction({
             name: options.name ?? null,
           },
           content: `alert('Hello ' + name)`,
-        }
+        };
       },
     },
-  },
-})
+  }),
+];
 ```
 
 The web function needs to return an object with `args` and `content`.
 
-`args` is an object with arguments that are passed to the `content` context. Note that the arguments can't be `undefined`. If you want to pass an not defined argument, you need to pass `null` instead.
+`args` is an object with arguments that are passed to the `content` context. Note that the arguments can't be `undefined`. If you want to pass a not defined argument, you need to pass `null` instead.
 
 `content` is the code that will be executed on the client. It can call the arguments passed in `args`.
 
 ## Display embed bubble
 
-If you want to display a custom embed bubble, you can use the `displayEmbedBubble` object. See [Cal.com
-block](https://github.com/baptisteArno/typebot.io/blob/main/packages/forge/blocks/calCom/actions/bookEvent.ts)
-as an example.
+If you want to display a custom embed bubble, you need to define `getEmbedSaveVariableId` in the action (if you want to save event data) and implement the display embed bubble handler. See [Cal.com
+block](https://github.com/baptisteArno/typebot.io/blob/main/packages/forge/blocks/calCom) as an example.
 
-The `displayEmbedBubble` accepts a `parseInitFunction` function. This function needs to return the same object as the [`web` function](./run#client-function). The function content can use the `typebotElement` variable to get the DOM element where the block is rendered.
+**In the action definition** (`actions/bookEvent.ts`):
 
-Optionally you can also define a `waitForEvent` object. This object accepts a `getSaveVariableId` function that returns the variable id where the event data should be saved. It also accepts a `parseFunction` function that returns the same object as the [`web` function](./run#client-function). The function content can use the `continueFlow` function to continue the flow with the event data.
+```ts
+import { createAction, option } from "@typebot.io/forge";
+import { auth } from "../auth";
+
+export const bookEvent = createAction({
+  auth,
+  name: "Book event",
+  options: option.object({
+    // ... options
+    saveResultInVariableId: option.string.layout({
+      inputType: "variableDropdown",
+    }),
+  }),
+  getEmbedSaveVariableId: (options) => options.saveResultInVariableId,
+});
+```
+
+**In the handlers file** (`handlers.ts`):
+
+```ts
+import { createActionHandler } from "@typebot.io/forge";
+import { bookEvent } from "./actions/bookEvent";
+
+export default [
+  createActionHandler(bookEvent, {
+    web: {
+      displayEmbedBubble: {
+        parseUrl: ({ options }) => options.url,
+        parseInitFunction: ({ options }) => ({
+          args: {
+            cal: options.cal,
+          },
+          content: `// Initialize embed with typebotElement`,
+        }),
+        waitForEvent: {
+          parseFunction: () => ({
+            args: {},
+            content: `// Handle event with continueFlow()`,
+          }),
+        },
+      },
+    },
+  }),
+];
+```
+
+The `getEmbedSaveVariableId` function in the action definition determines which variable will store the event data.
+
+The `displayEmbedBubble` object in the handler requires:
+
+- `parseUrl`: Returns a URL to be displayed as a text bubble in runtimes where the code can't be executed (e.g., WhatsApp)
+- `parseInitFunction`: Returns a function to execute on initialization. The function content can use the `typebotElement` variable to get the DOM element where the block is rendered.
+- `waitForEvent.parseFunction` (optional): Returns a function to handle the event. The function content can use the `continueFlow` function to continue the flow with the event data.

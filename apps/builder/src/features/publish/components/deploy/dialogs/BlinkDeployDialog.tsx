@@ -2,6 +2,7 @@ import { env } from "@typebot.io/env";
 import { Alert } from "@typebot.io/ui/components/Alert";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
 import { InformationSquareIcon } from "@typebot.io/ui/icons/InformationSquareIcon";
+import type { JSX } from "react";
 import { CopyInput } from "@/components/inputs/CopyInput";
 import type { DialogProps } from "../DeployButton";
 

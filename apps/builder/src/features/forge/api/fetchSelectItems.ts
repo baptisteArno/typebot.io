@@ -1,14 +1,15 @@
 import { TRPCError } from "@trpc/server";
 import { decryptAndRefreshCredentialsData } from "@typebot.io/credentials/decryptAndRefreshCredentials";
 import type { Credentials } from "@typebot.io/credentials/schemas";
+import type { FetcherHandler } from "@typebot.io/forge/types";
 import { forgedBlockIds } from "@typebot.io/forge-repository/constants";
 import { forgedBlocks } from "@typebot.io/forge-repository/definitions";
+import { forgedBlockHandlers } from "@typebot.io/forge-repository/handlers";
 import prisma from "@typebot.io/prisma";
 import { z } from "@typebot.io/zod";
 import { isReadWorkspaceFobidden } from "@/features/workspace/helpers/isReadWorkspaceFobidden";
 import { authenticatedProcedure } from "@/helpers/server/trpc";
 import { ClientToastError } from "@/lib/ClientToastError";
-import { getFetchers } from "../helpers/getFetchers";
 
 const baseInputSchema = z.object({
   integrationId: z.enum(forgedBlockIds),
@@ -93,13 +94,13 @@ export const fetchSelectItems = authenticatedProcedure
         )
       : undefined;
 
-    const fetcher = getFetchers(blockDef).find(
-      (fetcher) => fetcher.id === input.fetcherId,
-    );
+    const handler = forgedBlockHandlers[input.integrationId]?.find(
+      (handler) => handler.type === "fetcher" && handler.id === input.fetcherId,
+    ) as FetcherHandler | undefined;
 
-    if (!fetcher) return { items: [] };
+    if (!handler) return { items: [] };
 
-    const { data, error } = await fetcher.fetch({
+    const { data, error } = await handler.fetch({
       credentials: credentialsData as any,
       options: input.options,
     });

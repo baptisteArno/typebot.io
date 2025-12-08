@@ -50,7 +50,6 @@ const nextConfig = {
     defaultLocale: "en",
     locales: ["en", "fr", "pt", "pt-BR", "de", "ro", "es", "it", "el"],
   },
-  serverExternalPackages: ["isolated-vm"],
   outputFileTracingRoot: join(__dirname, "../../"),
   webpack: (config, { isServer }) => {
     if (isServer) {
@@ -64,13 +63,6 @@ const nextConfig = {
       ];
       return config;
     }
-    config.resolve.alias["minio"] = false;
-    config.resolve.alias["qrcode"] = false;
-    config.resolve.alias["isolated-vm"] = false;
-    config.resolve.alias["@googleapis/gmail"] = false;
-    config.resolve.alias["nodemailer"] = false;
-    config.resolve.alias["google-auth-library"] = false;
-    config.resolve.alias["posthog-node"] = false;
     return config;
   },
   headers: async () => {

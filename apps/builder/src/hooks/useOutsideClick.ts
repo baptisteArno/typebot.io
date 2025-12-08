@@ -4,7 +4,7 @@ import { useEffect } from "react";
 type Handler = (event: MouseEvent) => void;
 
 type Props<T> = {
-  ref: RefObject<T>;
+  ref: RefObject<T | null>;
   handler: Handler;
   capture?: boolean;
   isEnabled?: boolean;

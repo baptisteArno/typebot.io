@@ -3,6 +3,7 @@ import { byId } from "@typebot.io/lib/utils";
 import { Badge } from "@typebot.io/ui/components/Badge";
 import { cx } from "@typebot.io/ui/lib/cva";
 import type { Variable } from "@typebot.io/variables/schemas";
+import type { JSX } from "react";
 import { SetVariableLabel } from "@/components/SetVariableLabel";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 
@@ -13,7 +14,7 @@ export const SetVariableContent = ({ block }: { block: SetVariableBlock }) => {
   return (
     <p
       className={cx(
-        "truncate line-clamp-4",
+        "line-clamp-4",
         variableName === "" ? "text-gray-9" : "text-gray-12",
       )}
     >

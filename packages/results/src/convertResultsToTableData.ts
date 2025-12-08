@@ -1,6 +1,7 @@
 import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
 import { isDefined } from "@typebot.io/lib/utils";
 import type { VariableWithValue } from "@typebot.io/variables/schemas";
+import type { JSX } from "react";
 import type { Answer } from "./schemas/answers";
 import type {
   ResultHeaderCell,

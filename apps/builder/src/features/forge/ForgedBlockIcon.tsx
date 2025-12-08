@@ -1,5 +1,6 @@
 import type { ForgedBlock } from "@typebot.io/forge-repository/schemas";
 import { useTheme } from "next-themes";
+import type { JSX } from "react";
 import { useForgedBlock } from "./hooks/useForgedBlock";
 
 export const ForgedBlockIcon = ({

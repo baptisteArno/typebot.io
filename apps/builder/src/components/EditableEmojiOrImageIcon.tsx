@@ -3,6 +3,7 @@ import { Popover } from "@typebot.io/ui/components/Popover";
 import { Tooltip } from "@typebot.io/ui/components/Tooltip";
 import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
 import { cx } from "@typebot.io/ui/lib/cva";
+import type { JSX } from "react";
 import type { FilePathUploadProps } from "@/features/upload/api/generateUploadUrl";
 import { EmojiOrImageIcon } from "./EmojiOrImageIcon";
 import { ImageUploadContent } from "./ImageUploadContent";

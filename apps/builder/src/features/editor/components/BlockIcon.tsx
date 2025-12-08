@@ -7,6 +7,7 @@ import { CarouselHorizontal02Icon } from "@typebot.io/ui/icons/CarouselHorizonta
 import { Flag02Icon } from "@typebot.io/ui/icons/Flag02Icon";
 import { ZapIcon } from "@typebot.io/ui/icons/ZapIcon";
 import { cn } from "@typebot.io/ui/lib/cn";
+import type { JSX } from "react";
 import { AudioBubbleIcon } from "@/features/blocks/bubbles/audio/components/AudioBubbleIcon";
 import { EmbedBubbleIcon } from "@/features/blocks/bubbles/embed/components/EmbedBubbleIcon";
 import { ImageBubbleIcon } from "@/features/blocks/bubbles/image/components/ImageBubbleIcon";

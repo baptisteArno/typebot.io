@@ -2,6 +2,7 @@ import { useTranslate } from "@tolgee/react";
 import { EventType } from "@typebot.io/events/constants";
 import type { TDraggableEvent, TEvent } from "@typebot.io/events/schemas";
 import type React from "react";
+import type { JSX } from "react";
 import { EventCardLayout } from "./EventCardLayout";
 import { EventIcon } from "./EventIcon";
 import { EventLabel } from "./EventLabel";

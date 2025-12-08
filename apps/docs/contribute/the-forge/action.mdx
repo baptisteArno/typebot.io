@@ -4,42 +4,32 @@ title: Action
 
 An action is what a block can do when it is executed with Typebot. A [block](./block) can have multiple actions.
 
-Here is the `sendMessage` action of the Telegram block:
+Here is the `sendMessage` action definition:
 
 ```ts
-import { createAction, option } from '@typebot.io/forge'
-import { auth } from '../auth'
-import ky from 'ky'
+import { createAction, option } from "@typebot.io/forge";
+import { auth } from "../auth";
 
 export const sendMessage = createAction({
   auth,
-  name: 'Send message',
+  name: "Send message",
   options: option.object({
     chatId: option.string.layout({
-      label: 'Chat ID',
-      placeholder: '@username',
+      label: "Chat ID",
+      placeholder: "@username",
     }),
     text: option.string.layout({
-      label: 'Message text',
-      input: 'textarea',
+      label: "Message text",
+      input: "textarea",
     }),
   }),
-  run: {
-    server: async ({ credentials: { token }, options: { chatId, text } }) => {
-      try {
-        await ky.post(`https://api.telegram.org/bot${token}/sendMessage`, {
-          json: {
-            chat_id: chatId,
-            text,
-          },
-        })
-      } catch (error) {
-        console.log('ERROR', await error.response.text())
-      }
-    },
-  },
-})
+});
 ```
+
+<Note>
+  The action execution logic is defined separately in a `handlers.ts` file. See
+  the [Run](./run) documentation for more information.
+</Note>
 
 <Frame>
   <img src="/images/contribute/action-example.png" alt="Action example" />
@@ -66,60 +56,46 @@ export const sendMessage = createAction({
   information.
 </ResponseField>
 
-<ResponseField name="run">
-  Check out the <a href="./run">Run</a> documentation for more information on how this can be configured depending of your scenario.
-  <Expandable title="properties">
-    <ResponseField name="server" type="ServerRunFunction">
-      The function to execute on the server when the block is triggered. See{' '}
-      <a href="./run">Run</a> for more information.
-    </ResponseField>
-    <ResponseField name="stream">
-      <Expandable title="properties">
-        <ResponseField
-          name="getStreamVariableId"
-          type="(options) => string | undefined"
-        >
-          A function that returns the variable ID to stream.
-        </ResponseField>
-        <ResponseField name="run" type="StreamRunFunction">
-          The function to execute to stream the variable.
-        </ResponseField>
-      </Expandable>
-    </ResponseField>
-    <ResponseField name="web">
-      <Expandable title="properties">
-        <ResponseField
-          name="displayEmbedBubble"
-          type="(options) => string | undefined"
-        >
-          <Expandable title="properties">
-            <ResponseField
-              name="parseInitFunction"
-              type="WebFunctionParser"
-            >
-              See <a href="./run#client-function">Client function</a> for more information.
-            </ResponseField>
-            <ResponseField name="waitForEvent">
-              <Expandable title="properties">
-                <ResponseField
-                  name="getSaveVariableId"
-                  type="(options) => string | undefined"
-                >
-                  A function that returns the variable ID to save as the result of the `waitForEvent` function.
-                </ResponseField>
-                <ResponseField name="parseFunction" type="WebFunctionParser">
-                  See <a href="./run#client-function">Client function</a> for more information.
-                </ResponseField>
-              </Expandable>
-            </ResponseField>
-          </Expandable>
-        </ResponseField>
-        <ResponseField name="parseFunction" type="WebFunctionParser">
-          A function that parses the function to execute on the client. See <a href="./run#client-function">Client function</a> for more information.
-        </ResponseField>
-      </Expandable>
-
-    </ResponseField>
-
-  </Expandable>
+<ResponseField
+  name="getStreamVariableId"
+  type="(options) => string | undefined"
+>
+  If the action can stream content, this function should return the variable ID
+  that will receive the streamed content. See{" "}
+  <a href="./run#server-function--stream">Server function + stream</a> for more
+  information.
 </ResponseField>
+
+<ResponseField
+  name="getEmbedSaveVariableId"
+  type="(options) => string | undefined"
+>
+  If the action displays an embed bubble that waits for an event, this function
+  should return the variable ID where the event data will be saved. See{" "}
+  <a href="./run#display-embed-bubble">Display embed bubble</a> for more
+  information.
+</ResponseField>
+
+<ResponseField name="getSetVariableIds" type="(options) => string[]">
+  A function that returns an array of variable IDs that will be set by this
+  action. This is used for analytics and tracking purposes.
+</ResponseField>
+
+<ResponseField name="fetchers" type="{ id: string }[]">
+  An array of fetcher references used to populate dropdown options dynamically.
+  Each fetcher should be exported from the action file and implemented in the
+  handlers file. See <a href="./fetcher">Fetcher</a> for more information.
+</ResponseField>
+
+<ResponseField name="turnableInto" type="TurnableIntoParam[]">
+  An array of block IDs that this action can be converted into. This allows
+  users to easily switch between similar blocks while preserving their
+  configuration.
+</ResponseField>
+
+<Note>
+  The action execution logic is now defined separately in a `handlers.ts` file
+  using `createActionHandler()` and `createFetcherHandler()`. Check out the{" "}
+  <a href="./run">Run</a> documentation for more information on how to implement
+  handlers.
+</Note>

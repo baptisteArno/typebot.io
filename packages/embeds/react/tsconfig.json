@@ -1,6 +1,7 @@
 {
   "extends": "@typebot.io/tsconfig/react.json",
   "include": ["src/**/*.ts", "src/**/*.tsx", "tsup.config.ts"],
+  "exclude": ["node_modules", "dist"],
   "compilerOptions": {
     "declaration": true,
     "declarationMap": true,

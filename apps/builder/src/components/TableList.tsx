@@ -3,7 +3,7 @@ import { Button } from "@typebot.io/ui/components/Button";
 import { PlusSignIcon } from "@typebot.io/ui/icons/PlusSignIcon";
 import { TrashIcon } from "@typebot.io/ui/icons/TrashIcon";
 import { cx } from "@typebot.io/ui/lib/cva";
-import { useEffect, useState } from "react";
+import { type JSX, useEffect, useState } from "react";
 
 const defaultItem = {
   id: createId(),

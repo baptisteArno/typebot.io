@@ -1,10 +1,10 @@
+import { describe, expect, it } from "bun:test";
 import { BubbleBlockType } from "@typebot.io/blocks-bubbles/constants";
 import type { CardsItem } from "@typebot.io/blocks-inputs/cards/schema";
 import type { ButtonItem } from "@typebot.io/blocks-inputs/choice/schema";
 import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
 import type { PictureChoiceItem } from "@typebot.io/blocks-inputs/pictureChoice/schema";
 import type { ContinueChatResponse } from "@typebot.io/chat-api/schemas";
-import { describe, expect, it } from "vitest";
 import { convertInputToWhatsAppMessages } from "./convertInputToWhatsAppMessage";
 import type { WhatsAppSendingMessage } from "./schemas";
 

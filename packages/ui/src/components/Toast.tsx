@@ -1,5 +1,6 @@
 import { Toast as ToastPrimitive } from "@base-ui-components/react/toast";
 import { z } from "@typebot.io/zod";
+import type { JSX } from "react";
 import { Cancel01Icon } from "../icons/Cancel01Icon";
 import { CheckmarkSquare02Icon } from "../icons/CheckmarkSquare02Icon";
 import { InformationSquareIcon } from "../icons/InformationSquareIcon";

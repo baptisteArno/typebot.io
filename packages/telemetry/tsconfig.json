@@ -1,4 +1,8 @@
 {
   "extends": "@typebot.io/tsconfig/base.json",
-  "include": ["src/**/*.ts"]
+  "compilerOptions": {
+    "lib": ["esnext", "dom"]
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules"]
 }

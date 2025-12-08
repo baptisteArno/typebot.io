@@ -7,8 +7,13 @@ import type {
 import { decryptAndRefreshCredentialsData } from "@typebot.io/credentials/decryptAndRefreshCredentials";
 import { getCredentials } from "@typebot.io/credentials/getCredentials";
 import type { Credentials } from "@typebot.io/credentials/schemas";
-import type { LogsStore, VariableStore } from "@typebot.io/forge/types";
+import type {
+  ActionHandler,
+  LogsStore,
+  VariableStore,
+} from "@typebot.io/forge/types";
 import { forgedBlocks } from "@typebot.io/forge-repository/definitions";
+import { forgedBlockHandlers } from "@typebot.io/forge-repository/handlers";
 import type { ForgedBlock } from "@typebot.io/forge-repository/schemas";
 import { isDefined } from "@typebot.io/lib/utils";
 import type { SessionStore } from "@typebot.io/runtime-session-store";
@@ -29,7 +34,10 @@ export const executeForgedBlock = async (
   const blockDef = forgedBlocks[block.type];
   if (!blockDef) return { outgoingEdgeId: block.outgoingEdgeId };
   const action = blockDef.actions.find((a) => a.name === block.options?.action);
-  if (!block.options || !action)
+  const handler = forgedBlockHandlers[block.type]?.find(
+    (h) => h.type === "action" && h.actionName === action?.name,
+  ) as ActionHandler | undefined;
+  if (!block.options || !handler || !action)
     return {
       outgoingEdgeId: block.outgoingEdgeId,
       logs: [
@@ -41,10 +49,10 @@ export const executeForgedBlock = async (
 
   const typebot = state.typebotsQueue[0].typebot;
   if (
-    action?.run?.stream &&
+    handler?.stream &&
     isNextBubbleTextWithStreamingVar(typebot)(
       block.id,
-      action.run.stream.getStreamVariableId(block.options),
+      action.getStreamVariableId?.(block.options),
     ) &&
     state.isStreamEnabled &&
     !state.whatsApp
@@ -170,7 +178,7 @@ export const executeForgedBlock = async (
     removeEmptyStrings: true,
   });
 
-  await action?.run?.server?.({
+  await handler?.server?.({
     credentials: credentialsData,
     options: parsedOptions,
     variables,
@@ -180,8 +188,8 @@ export const executeForgedBlock = async (
 
   const clientSideActions: ExecuteIntegrationResponse["clientSideActions"] = [];
 
-  if (action?.run?.web?.parseFunction) {
-    const codeToExecute = action?.run?.web?.parseFunction({
+  if (handler?.web?.parseFunction) {
+    const codeToExecute = handler.web.parseFunction({
       credentials: credentialsData ?? {},
       options: parsedOptions,
       variables,
@@ -199,24 +207,24 @@ export const executeForgedBlock = async (
     outgoingEdgeId: block.outgoingEdgeId,
     logs,
     clientSideActions,
-    customEmbedBubble: action?.run?.web?.displayEmbedBubble
+    customEmbedBubble: handler?.web?.displayEmbedBubble
       ? {
           type: "custom-embed",
           content: {
-            url: action.run.web.displayEmbedBubble.parseUrl({
+            url: handler.web.displayEmbedBubble.parseUrl({
               credentials: credentialsData ?? {},
               options: parsedOptions,
               variables,
               logs: logsStore,
             }),
-            initFunction: action.run.web.displayEmbedBubble.parseInitFunction({
+            initFunction: handler.web.displayEmbedBubble.parseInitFunction({
               credentials: credentialsData ?? {},
               options: parsedOptions,
               variables,
               logs: logsStore,
             }),
             waitForEventFunction:
-              action.run.web.displayEmbedBubble.waitForEvent?.parseFunction?.({
+              handler.web.displayEmbedBubble.waitForEvent?.parseFunction?.({
                 credentials: credentialsData ?? {},
                 options: parsedOptions,
                 variables,

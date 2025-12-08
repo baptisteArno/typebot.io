@@ -35,11 +35,12 @@ Creating a new block on Typebot is pretty easy and straightforward using our in-
    ```
 
 4. The files should be generated in `packages/forge/blocks/YOUR_BLOCK_NAME`
-5. Add the block's SVG logo in `packages/forge/blocks/YOUR_BLOCK_NAME/logo.tsx`
+5. Add the block's SVG logo in `packages/forge/blocks/YOUR_BLOCK_NAME/src/logo.tsx`
 6. Right away you should be able to [run the application](./local-installation#running-the-project-locally) and see your newly-created logo in the sidebar of the editor.
-7. Create a new action in the `packages/forge/blocks/YOUR_BLOCK_NAME/actions` folder. See [Action](../the-forge/action) for more information.
-8. List this action in the `actions` array in `packages/forge/blocks/YOUR_BLOCK_NAME/index.tsx`
-9. To go further, check out the [Forge documentation](../the-forge/overview).
+7. Create a new action in the `packages/forge/blocks/YOUR_BLOCK_NAME/src/actions` folder. See [Action](../the-forge/action) for more information.
+8. List this action in the `actions` array in `packages/forge/blocks/YOUR_BLOCK_NAME/src/index.ts`
+9. Implement the action handler in `packages/forge/blocks/YOUR_BLOCK_NAME/src/handlers.ts`. See [Run](../the-forge/run) for more information.
+10. To go further, check out the [Forge documentation](../the-forge/overview).
 
 Make sure to check out other blocks implementations in the [packages/forge/blocks](https://github.com/baptisteArno/typebot.io/tree/main/packages/forge/blocks) folder.
 

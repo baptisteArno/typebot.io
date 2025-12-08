@@ -13,7 +13,7 @@ export const OnboardingPage = () => {
   const { t } = useTranslate();
   const { replace, query } = useRouter();
   const confettiCanvaContainer = useRef<HTMLCanvasElement | null>(null);
-  const confettiCanon = useRef<confetti.CreateTypes>();
+  const confettiCanon = useRef<confetti.CreateTypes>(undefined);
   const { user, updateUser } = useUser();
   const [pendingCategories, setPendingCategories] = useState<string[]>([]);
   const [canSkipOnboarding, setCanSkipOnboarding] = useState(false);

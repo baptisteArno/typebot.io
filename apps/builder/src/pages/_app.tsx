@@ -10,7 +10,6 @@ import { TypebotProvider } from "@/features/editor/providers/TypebotProvider";
 import { UserProvider } from "@/features/user/UserProvider";
 import { WorkspaceProvider } from "@/features/workspace/WorkspaceProvider";
 import { isCloudProdInstance } from "@/helpers/isCloudProdInstance";
-import { useRouterProgressBar } from "@/lib/routerProgressBar";
 import { tolgee } from "@/lib/tolgee";
 import "@/assets/styles/routerProgressBar.css";
 import "@/assets/styles/plate.css";
@@ -29,8 +28,6 @@ import { toast, toastManager } from "@/lib/toast";
 const App = ({ Component, pageProps }: AppProps) => {
   const router = useRouter();
   const ssrTolgee = useTolgeeSSR(tolgee, router.locale);
-
-  useRouterProgressBar();
 
   useEffect(() => {
     if (

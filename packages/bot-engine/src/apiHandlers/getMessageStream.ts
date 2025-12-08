@@ -6,8 +6,11 @@ import { updateSession } from "@typebot.io/chat-session/queries/updateSession";
 import type { SessionState } from "@typebot.io/chat-session/schemas";
 import { decryptV2 } from "@typebot.io/credentials/decryptV2";
 import { getCredentials } from "@typebot.io/credentials/getCredentials";
-import type { AsyncVariableStore } from "@typebot.io/forge/types";
-import { forgedBlocks } from "@typebot.io/forge-repository/definitions";
+import type {
+  ActionHandler,
+  AsyncVariableStore,
+} from "@typebot.io/forge/types";
+import { forgedBlockHandlers } from "@typebot.io/forge-repository/handlers";
 import { getBlockById } from "@typebot.io/groups/helpers/getBlockById";
 import { getOpenAIChatCompletionStream } from "@typebot.io/legacy/getOpenAIChatCompletionStream";
 import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
@@ -39,6 +42,7 @@ export const getMessageStream = async ({
   message?: string;
   details?: string;
   context?: string;
+  typebotId?: string;
 }> => {
   const session = await getSession(sessionId);
 
@@ -100,12 +104,11 @@ export const getMessageStream = async ({
       message: "This block does not have a stream function",
     };
 
-  const blockDef = forgedBlocks[block.type];
-  const action = blockDef?.actions.find(
-    (a) => a.name === block.options?.action,
-  );
+  const handler = forgedBlockHandlers[block.type]?.find(
+    (h) => h.type === "action" && h.actionName === block.options?.action,
+  ) as ActionHandler | undefined;
 
-  if (!action || !action.run?.stream)
+  if (!handler || !handler.stream)
     return {
       status: 400,
       message: "This block does not have a stream function",
@@ -174,7 +177,7 @@ export const getMessageStream = async ({
         });
       },
     };
-    const { stream, error } = await action.run.stream.run({
+    const { stream, error } = await handler.stream.run({
       credentials: decryptedCredentials as any,
       options: deepParseVariables(block.options, {
         variables: newSessionState.typebotsQueue[0].typebot.variables,
@@ -194,7 +197,7 @@ export const getMessageStream = async ({
 
     if (!stream) return { status: 500, message: "Could not create stream" };
 
-    return { stream };
+    return { stream, typebotId: session.state.typebotsQueue[0].typebot.id };
   } catch (error) {
     const parsedError = await parseUnknownError({
       err: error,

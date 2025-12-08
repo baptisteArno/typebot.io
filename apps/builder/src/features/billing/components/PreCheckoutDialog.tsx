@@ -101,14 +101,13 @@ export const PreCheckoutDialog = ({
     const vatType = taxIdTypes.find(
       (taxIdType) => taxIdType.code === vat.code,
     )?.type;
-    if (!vatType) throw new Error("Could not find VAT type");
     createCheckoutSession({
       ...selectedSubscription,
       email,
       company,
       returnUrl: window.location.href,
       vat:
-        vat.value && vat.code ? { type: vatType, value: vat.value } : undefined,
+        vatType && vat.value ? { type: vatType, value: vat.value } : undefined,
     });
   };
 

@@ -399,22 +399,16 @@ const processNonInputBlock = async ({
         (a) => a.name === options?.action,
       );
       if (action) {
-        if (action.run?.stream?.getStreamVariableId) {
+        if (action.getStreamVariableId) {
           firstBubbleWasStreamed = true;
           variableToUpdate = state.typebotsQueue[0].typebot.variables.find(
-            (v) => v.id === action?.run?.stream?.getStreamVariableId(options),
+            (v) => v.id === action?.getStreamVariableId?.(options),
           );
         }
 
-        if (
-          action.run?.web?.displayEmbedBubble?.waitForEvent?.getSaveVariableId
-        ) {
+        if (action.getEmbedSaveVariableId) {
           variableToUpdate = state.typebotsQueue[0].typebot.variables.find(
-            (v) =>
-              v.id ===
-              action?.run?.web?.displayEmbedBubble?.waitForEvent?.getSaveVariableId?.(
-                options,
-              ),
+            (v) => v.id === action.getEmbedSaveVariableId?.(options),
           );
         }
       }

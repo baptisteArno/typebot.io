@@ -17,6 +17,11 @@
       "!**/test/assets/**/*.json"
     ]
   },
+  "css": {
+    "parser": {
+      "tailwindDirectives": true
+    }
+  },
   "linter": {
     "enabled": true,
     "rules": {

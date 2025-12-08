@@ -7,6 +7,7 @@ import type { TypebotInSession } from "@typebot.io/chat-session/schemas";
 import { executeCondition } from "@typebot.io/conditions/executeCondition";
 import type { Group } from "@typebot.io/groups/schemas";
 import { createId } from "@typebot.io/lib/createId";
+import { isDefined } from "@typebot.io/lib/utils";
 import type { Answer } from "@typebot.io/results/schemas/answers";
 import type { SessionStore } from "@typebot.io/runtime-session-store";
 import type { Edge } from "@typebot.io/typebot/schemas/edge";
@@ -14,6 +15,7 @@ import type {
   SetVariableHistoryItem,
   Variable,
 } from "@typebot.io/variables/schemas";
+import { createVirtualEdgeId } from "./addPortalEdge";
 import { getReplyOutgoingEdge } from "./getReplyOutgoingEdge";
 import { isTypebotInSessionAtLeastV6 } from "./helpers/isTypebotInSessionAtLeastV6";
 import {
@@ -40,7 +42,10 @@ const iterator = <T>(items: readonly T[]): QueueIterator<T> => {
 };
 
 type SetVarSnapshot = Readonly<
-  Pick<SetVariableHistoryItem, "blockId" | "variableId" | "value">
+  Pick<
+    SetVariableHistoryItem,
+    "blockId" | "variableId" | "value" | "blockIndex"
+  >
 >;
 
 type TranscriptMessage = {
@@ -102,7 +107,6 @@ export const computeResultTranscript = ({
   return executeGroup({
     typebotsQueue: [{ typebot }],
     nextGroup: firstGroup,
-    isFirstGroup: true,
     currentTranscript: [],
     queues,
     currentBlockId,
@@ -143,7 +147,6 @@ const executeGroup = ({
   nextGroup,
   typebotsQueue,
   queues,
-  isFirstGroup,
   currentBlockId,
   sessionStore,
 }: {
@@ -176,16 +179,17 @@ const executeGroup = ({
     const typebot = typebotsQueue[0]?.typebot;
     if (!typebot) throw new Error("Typebot not found in session");
 
-    // The first block of the flow can have prefilled variables attached so we loop through it all
-    if (isFirstGroup && block.id === nextGroup.group.blocks[0].id) {
-      while (setVariableHistory.peek()?.blockId === block.id) {
+    if (setVariableHistory.peek()?.blockId === block.id) {
+      const currentBlockIndex = setVariableHistory.peek()?.blockIndex;
+      do {
         typebot.variables = applySetVariable(
           setVariableHistory.next(),
           typebot,
         );
-      }
-    } else if (setVariableHistory.peek()?.blockId === block.id) {
-      typebot.variables = applySetVariable(setVariableHistory.next(), typebot);
+      } while (
+        isDefined(currentBlockIndex) &&
+        setVariableHistory.peek()?.blockIndex === currentBlockIndex
+      );
     }
 
     let nextEdgeId = block.outgoingEdgeId;
@@ -306,12 +310,23 @@ const executeGroup = ({
         nextEdgeId = passed.outgoingEdgeId;
       }
     }
-    // ──────────────────────────────────────────────────────────── AB Test
-    // ──────────────────────────────────────────────────────────── Jump
-    // ──────────────────────────────────────────────────────────── Return
-    else if (
+    if (block.type === LogicBlockType.JUMP) {
+      if (!block.options?.groupId) continue;
+      const virtualId = createVirtualEdgeId({
+        groupId: block.options.groupId,
+        blockId: block.options.blockId,
+      });
+      typebotsQueue[0].typebot.edges.push({
+        id: virtualId,
+        from: { blockId: block.id },
+        to: {
+          groupId: block.options.groupId,
+          blockId: block.options.blockId,
+        },
+      });
+      nextEdgeId = virtualId;
+    } else if (
       block.type === LogicBlockType.AB_TEST ||
-      block.type === LogicBlockType.JUMP ||
       block.type === LogicBlockType.RETURN
     ) {
       nextEdgeId = visitedEdges.next();

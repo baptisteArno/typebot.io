@@ -23,8 +23,8 @@ export const GiphyPicker = ({ onSubmit }: GiphySearchFormProps) => {
   return !env.NEXT_PUBLIC_GIPHY_API_KEY ? (
     <p>NEXT_PUBLIC_GIPHY_API_KEY is missing in environment</p>
   ) : (
-    <div className="flex flex-col gap-4 pt-2">
-      <div className="flex items-center">
+    <div className="flex flex-col pt-2 gap-2">
+      <div className="flex items-center gap-4">
         <DebouncedTextInput
           autoFocus
           placeholder="Search..."
@@ -32,9 +32,8 @@ export const GiphyPicker = ({ onSubmit }: GiphySearchFormProps) => {
         />
         <GiphyLogo className="w-24" />
       </div>
-      <div className="flex overflow-y-auto max-h-[400px]">
+      <div className="flex overflow-y-auto max-h-[400px] rounded-md">
         <Grid
-          className="my-4"
           key={inputValue}
           onGifClick={(gif, e) => {
             e.preventDefault();

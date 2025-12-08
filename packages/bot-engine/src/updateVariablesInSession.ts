@@ -78,6 +78,7 @@ const updateTypebotVariables = ({
   }));
 
   let setVariableHistoryIndex = state.currentSetVariableHistoryIndex ?? 0;
+  const blockIndex = setVariableHistoryIndex;
   const setVariableHistory: SetVariableHistoryItem[] = [];
   if (currentBlockId) {
     serializedNewVariables
@@ -86,6 +87,7 @@ const updateTypebotVariables = ({
         setVariableHistory.push({
           resultId: state.typebotsQueue[0]!.resultId as string,
           index: setVariableHistoryIndex,
+          blockIndex,
           blockId: currentBlockId,
           variableId: newVariable.id,
           value: newVariable.value,

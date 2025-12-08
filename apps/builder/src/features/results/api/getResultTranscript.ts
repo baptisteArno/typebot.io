@@ -119,6 +119,7 @@ export const getResultTranscript = authenticatedProcedure
         setVariableHistory: {
           select: {
             blockId: true,
+            blockIndex: true,
             variableId: true,
             value: true,
             index: true,
@@ -147,10 +148,11 @@ export const getResultTranscript = authenticatedProcedure
 
     const setVariableHistory = result.setVariableHistory
       .sort((a, b) => a.index - b.index)
-      .map(({ blockId, variableId, value }) => ({
+      .map(({ blockId, variableId, value, blockIndex }) => ({
         blockId,
         variableId,
         value: value as string | (string | null)[] | null,
+        blockIndex,
       }));
 
     const transcript = computeResultTranscript({

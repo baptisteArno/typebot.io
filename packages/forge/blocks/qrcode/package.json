@@ -5,13 +5,15 @@
   "type": "module",
   "exports": {
     ".": "./src/index.ts",
-    "./schemas": "./src/schemas.ts"
+    "./schemas": "./src/schemas.ts",
+    "./handlers": "./src/handlers.ts"
   },
   "devDependencies": {
     "@typebot.io/forge": "workspace:*",
     "@typebot.io/lib": "workspace:*",
     "@typebot.io/tsconfig": "workspace:*",
-    "@types/qrcode": "^1.5.3"
+    "@types/qrcode": "^1.5.3",
+    "@types/react": "^19.2.7"
   },
   "dependencies": {
     "qrcode": "^1.5.3"

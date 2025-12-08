@@ -1,12 +1,16 @@
 import { connect } from "@planetscale/database";
+import * as Sentry from "@sentry/nextjs";
 import { isForgedBlockType } from "@typebot.io/blocks-core/helpers";
 import { IntegrationBlockType } from "@typebot.io/blocks-integrations/constants";
 import type { ChatCompletionOpenAIOptions } from "@typebot.io/blocks-integrations/openai/schema";
 import type { SessionState } from "@typebot.io/chat-session/schemas";
 import { decryptV2 } from "@typebot.io/credentials/decryptV2";
 import { env } from "@typebot.io/env";
-import type { AsyncVariableStore } from "@typebot.io/forge/types";
-import { forgedBlocks } from "@typebot.io/forge-repository/definitions";
+import type {
+  ActionHandler,
+  AsyncVariableStore,
+} from "@typebot.io/forge/types";
+import { forgedBlockHandlers } from "@typebot.io/forge-repository/handlers";
 import { getBlockById } from "@typebot.io/groups/helpers/getBlockById";
 import { StreamingTextResponse } from "@typebot.io/legacy/ai";
 import { getChatCompletionStream } from "@typebot.io/legacy/getChatCompletionStream";
@@ -123,12 +127,11 @@ export async function POST(req: Request) {
       { status: 400, headers: responseHeaders },
     );
 
-  const blockDef = forgedBlocks[block.type];
-  const action = blockDef?.actions.find(
-    (a) => a.name === block.options?.action,
-  );
+  const handler = forgedBlockHandlers[block.type]?.find(
+    (h) => h.type === "action" && h.actionName === block.options?.action,
+  ) as ActionHandler | undefined;
 
-  if (!action || !action.run?.stream)
+  if (!handler || !handler.stream)
     return NextResponse.json(
       { message: "This action does not have a stream function" },
       { status: 400, headers: responseHeaders },
@@ -165,7 +168,7 @@ export async function POST(req: Request) {
         }),
       set: async (_) => {},
     };
-    const { stream } = await action.run.stream.run({
+    const { stream } = await handler.stream.run({
       credentials: decryptedCredentials as any,
       options: block.options,
       variables,
@@ -177,6 +180,9 @@ export async function POST(req: Request) {
         { message: "Could not create stream" },
         { status: 400, headers: responseHeaders },
       );
+
+    Sentry.setTag("typebotId", state.typebotsQueue[0].typebot.id);
+    Sentry.captureMessage("Is using /api/integrations/openai/streamer");
 
     return new StreamingTextResponse(stream, {
       headers: responseHeaders,

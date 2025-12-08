@@ -8,6 +8,7 @@ import { LogicBlockType } from "@typebot.io/blocks-logic/constants";
 import { Badge } from "@typebot.io/ui/components/Badge";
 import { SquareLock01Icon } from "@typebot.io/ui/icons/SquareLock01Icon";
 import type React from "react";
+import type { JSX } from "react";
 import { isFreePlan } from "@/features/billing/helpers/isFreePlan";
 import { ForgedBlockCard } from "@/features/forge/ForgedBlockCard";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";

@@ -1,6 +1,6 @@
 import type { ButtonProps } from "@typebot.io/ui/components/Button";
 import { Button } from "@typebot.io/ui/components/Button";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { StandardIllustration } from "./illustrations/StandardIllustration";
 
 export const StandardMenuButton = ({

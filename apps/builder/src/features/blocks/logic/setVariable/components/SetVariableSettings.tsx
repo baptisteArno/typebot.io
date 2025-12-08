@@ -18,6 +18,7 @@ import { Radio, RadioGroup } from "@typebot.io/ui/components/RadioGroup";
 import { Switch } from "@typebot.io/ui/components/Switch";
 import { InformationSquareIcon } from "@typebot.io/ui/icons/InformationSquareIcon";
 import type { Variable } from "@typebot.io/variables/schemas";
+import type { JSX } from "react";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { CodeEditor } from "@/components/inputs/CodeEditor";
 import { DebouncedTextareaWithVariablesButton } from "@/components/inputs/DebouncedTextarea";

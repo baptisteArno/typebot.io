@@ -98,29 +98,57 @@ export const checkAndReportLastHourResults = async () => {
         console.log(
           "Workspace has more than 4000 chats, automatically upgrading to PRO plan",
         );
-        const newSubscription = await autoUpgradeToPro(subscription, {
+        const autoUpgradeResult = await autoUpgradeToPro(subscription, {
           stripe,
           workspaceId: workspace.id,
         });
-        autoUpgradeEvents.push(
-          ...workspace.members
-            .filter((member) => member.role === WorkspaceRole.ADMIN)
-            .map(
-              (member) =>
-                ({
-                  name: "Subscription automatically updated",
-                  userId: member.user.id,
-                  workspaceId: workspace.id,
-                  data: {
-                    plan: "PRO",
-                  },
-                }) satisfies TelemetryEvent,
-            ),
-        );
-        await reportUsageToStripe(totalChatsUsed, {
-          stripe,
-          subscription: newSubscription,
-        });
+        if (autoUpgradeResult.status === "success") {
+          autoUpgradeEvents.push(
+            ...workspace.members
+              .filter((member) => member.role === WorkspaceRole.ADMIN)
+              .map(
+                (member) =>
+                  ({
+                    name: "Subscription automatically updated",
+                    userId: member.user.id,
+                    workspaceId: workspace.id,
+                    data: {
+                      plan: "PRO",
+                    },
+                  }) satisfies TelemetryEvent,
+              ),
+          );
+          await reportUsageToStripe(totalChatsUsed, {
+            stripe,
+            subscription: autoUpgradeResult.newSubscription,
+          });
+        } else if (
+          autoUpgradeResult.status === "error" &&
+          autoUpgradeResult.reason === "payment_required"
+        ) {
+          console.log(
+            `Workspace ${workspace.id} has more than 4000 chats, but payment is required to upgrade to PRO plan, automatically quarantining workspace...`,
+          );
+          await prisma.workspace.updateMany({
+            where: { id: workspace.id },
+            data: { isQuarantined: true },
+          });
+          quarantineEvents.push(
+            ...workspace.members
+              .filter((member) => member.role === WorkspaceRole.ADMIN)
+              .map(
+                (member) =>
+                  ({
+                    name: "Workspace automatically quarantined",
+                    userId: member.user.id,
+                    workspaceId: workspace.id,
+                    data: {
+                      reason: "auto upgrade payment failed",
+                    },
+                  }) satisfies TelemetryEvent,
+              ),
+          );
+        }
       } else {
         await reportUsageToStripe(totalChatsUsed, { stripe, subscription });
       }
@@ -148,6 +176,7 @@ export const checkAndReportLastHourResults = async () => {
                 data: {
                   totalChatsUsed,
                   chatsLimit: workspace.chatsHardLimit ?? chatsLimit,
+                  reason: "free limit reached",
                 },
               }) satisfies TelemetryEvent,
           ),
@@ -272,7 +301,10 @@ const getUsage = async ({
 const autoUpgradeToPro = async (
   subscription: Stripe.Subscription,
   { stripe, workspaceId }: { stripe: Stripe; workspaceId: string },
-) => {
+): Promise<
+  | { status: "success"; newSubscription: Stripe.Subscription }
+  | { status: "error"; reason: "payment_required" | "unknown" }
+> => {
   if (
     !process.env.STRIPE_STARTER_CHATS_PRICE_ID ||
     !process.env.STRIPE_PRO_CHATS_PRICE_ID ||
@@ -292,7 +324,7 @@ const autoUpgradeToPro = async (
   if (!currentPlanItemId)
     throw new Error(`Could not find current plan item ID for workspace`);
 
-  const newSubscription = stripe.subscriptions.update(subscription.id, {
+  const newSubscription = await stripe.subscriptions.update(subscription.id, {
     items: [
       {
         id: currentPlanItemId,
@@ -319,7 +351,10 @@ const autoUpgradeToPro = async (
     data: { plan: "PRO" },
   });
 
-  return newSubscription;
+  if (newSubscription.status === "past_due")
+    return { status: "error", reason: "payment_required" };
+
+  return { status: "success", newSubscription };
 };
 
 async function sendLimitWarningEmails({

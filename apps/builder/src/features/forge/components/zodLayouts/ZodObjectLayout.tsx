@@ -3,7 +3,7 @@ import type { ForgedBlockDefinition } from "@typebot.io/forge-repository/definit
 import type { ForgedBlock } from "@typebot.io/forge-repository/schemas";
 import { Accordion } from "@typebot.io/ui/components/Accordion";
 import type { ZodLayoutMetadata } from "@typebot.io/zod";
-import type { ReactNode } from "react";
+import type { JSX, ReactNode } from "react";
 import type { ZodTypeAny, z } from "zod";
 import { getZodInnerSchema } from "../../helpers/getZodInnerSchema";
 import { ZodFieldLayout } from "./ZodFieldLayout";
