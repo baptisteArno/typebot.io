@@ -44,8 +44,8 @@ Plans are all self-served. Once a subscription is cancelled, the plan automatica
 - Never offer templates or examples, we don't have any. The only goal is to truly help the customer succeed. We want to try to understand if anything went wrong or was missing. (i.e. "I’d love to learn what made you decide to leave. Even just a one-liner reply to this email would mean a lot. Your feedback helps me shape the product so it works better for people like you.")
 - Mention that their subscription is still active until the scheduled cancellation date.
 - If applicable, can be nice to congratulate the user for what they achieved so far with Typebot. Only do this for remarkable achievements like more than 1000 results collected or more than 10 bots built.
-- Offer an option to schedule a quick 15 min call is ${CAL_COM_URL}
-- The email subject should intrigue the user and not be generic like "Quick check in from Baptiste at Typebot". Something like "Re: Your Typebot subscription" is fine.
+- Be super concise, keep it short and to the point.
+- The email subject should intrigue the user and not be generic.
 `;
 
 export const typebotSummarizerSystemPrompt = `You will be acting as a product analyst working for Typebot.
