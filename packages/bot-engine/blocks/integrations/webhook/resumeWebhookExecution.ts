@@ -11,10 +11,7 @@ import { SessionState } from '@typebot.io/schemas/features/chat/sessionState'
 import { ExecuteIntegrationResponse } from '../../../types'
 import { parseVariables } from '@typebot.io/variables/parseVariables'
 import { updateVariablesInSession } from '@typebot.io/variables/updateVariablesInSession'
-import {
-  createHttpReqResponseMappingRunner,
-  DisposableRunner,
-} from '@typebot.io/variables/codeRunners'
+import { createHttpReqResponseMappingRunner } from '@typebot.io/variables/codeRunners'
 
 type Props = {
   state: SessionState
@@ -42,60 +39,54 @@ export const resumeWebhookExecution = ({
     logs.push(
       isError
         ? {
-          status: 'error',
-          description: `Webhook returned error`,
-          details: response.data,
-        }
+            status: 'error',
+            description: `Webhook returned error`,
+            details: response.data,
+          }
         : {
-          status: 'success',
-          description: `Webhook executed successfully!`,
-          details: response.data,
-        }
+            status: 'success',
+            description: `Webhook executed successfully!`,
+            details: response.data,
+          }
     )
 
-  let run: DisposableRunner | undefined = undefined
-  try {
-    if (block.options?.responseVariableMapping) {
-      run = createHttpReqResponseMappingRunner(response)
-    }
-    const newVariables = block.options?.responseVariableMapping?.reduce<
-      VariableWithUnknowValue[]
-    >((newVariables, varMapping) => {
-      if (!varMapping?.bodyPath || !varMapping.variableId || !run)
-        return newVariables
-      const existingVariable = typebot.variables.find(byId(varMapping.variableId))
-      if (!existingVariable) return newVariables
+  let run: (varMapping: string) => unknown
+  if (block.options?.responseVariableMapping) {
+    run = createHttpReqResponseMappingRunner(response)
+  }
+  const newVariables = block.options?.responseVariableMapping?.reduce<
+    VariableWithUnknowValue[]
+  >((newVariables, varMapping) => {
+    if (!varMapping?.bodyPath || !varMapping.variableId || !run)
+      return newVariables
+    const existingVariable = typebot.variables.find(byId(varMapping.variableId))
+    if (!existingVariable) return newVariables
 
-      try {
-        const value: unknown = run(
-          parseVariables(typebot.variables)(varMapping?.bodyPath)
-        )
-        return [...newVariables, { ...existingVariable, value }]
-      } catch (err) {
-        return newVariables
-      }
-    }, [])
-    if (newVariables && newVariables.length > 0) {
-      const { updatedState, newSetVariableHistory } = updateVariablesInSession({
-        newVariables,
-        state,
-        currentBlockId: block.id,
-      })
-      return {
-        outgoingEdgeId: block.outgoingEdgeId,
-        newSessionState: updatedState,
-        newSetVariableHistory,
-        logs,
-      }
+    try {
+      const value: unknown = run(
+        parseVariables(typebot.variables)(varMapping?.bodyPath)
+      )
+      return [...newVariables, { ...existingVariable, value }]
+    } catch (err) {
+      return newVariables
     }
-
+  }, [])
+  if (newVariables && newVariables.length > 0) {
+    const { updatedState, newSetVariableHistory } = updateVariablesInSession({
+      newVariables,
+      state,
+      currentBlockId: block.id,
+    })
     return {
       outgoingEdgeId: block.outgoingEdgeId,
+      newSessionState: updatedState,
+      newSetVariableHistory,
       logs,
     }
-  } finally {
-    if (run) {
-      run.dispose()
-    }
+  }
+
+  return {
+    outgoingEdgeId: block.outgoingEdgeId,
+    logs,
   }
 }

@@ -116,7 +116,5 @@ export const executeFunction = async ({
       error,
       output: error,
     }
-  } finally {
-    isolate.dispose()
   }
 }

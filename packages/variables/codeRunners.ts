@@ -2,16 +2,7 @@ import { Variable } from './types'
 import ivm from 'isolated-vm'
 import { parseGuessedValueType } from './parseGuessedValueType'
 
-export interface DisposableRunner {
-  (code: string): unknown
-  dispose: () => void
-}
-
-export const createCodeRunner = ({
-  variables,
-}: {
-  variables: Variable[]
-}): DisposableRunner => {
+export const createCodeRunner = ({ variables }: { variables: Variable[] }) => {
   const isolate = new ivm.Isolate()
   const context = isolate.createContextSync()
   const jail = context.global
@@ -19,28 +10,23 @@ export const createCodeRunner = ({
   variables.forEach((v) => {
     jail.setSync(v.id, parseTransferrableValue(parseGuessedValueType(v.value)))
   })
-  const runner = (code: string) => {
-    return context.evalClosureSync(
+  return (code: string) =>
+    context.evalClosureSync(
       `return (function() {
     return new Function($0)();
   }())`,
       [code],
       { result: { copy: true }, timeout: 10000 }
     )
-  }
-    ; (runner as any).dispose = () => isolate.dispose()
-  return runner as DisposableRunner
 }
 
-export const createHttpReqResponseMappingRunner = (
-  response: any
-): DisposableRunner => {
+export const createHttpReqResponseMappingRunner = (response: any) => {
   const isolate = new ivm.Isolate()
   const context = isolate.createContextSync()
   const jail = context.global
   jail.setSync('global', jail.derefInto())
   jail.setSync('response', new ivm.ExternalCopy(response).copyInto())
-  const runner = (expression: string) => {
+  return (expression: string) => {
     return context.evalClosureSync(
       `globalThis.evaluateExpression = function(expression) {
         try {
@@ -59,8 +45,6 @@ export const createHttpReqResponseMappingRunner = (
       }
     )
   }
-    ; (runner as any).dispose = () => isolate.dispose()
-  return runner as DisposableRunner
 }
 
 export const parseTransferrableValue = (value: unknown) => {

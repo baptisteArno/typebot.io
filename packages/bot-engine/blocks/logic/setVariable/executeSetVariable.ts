@@ -18,10 +18,7 @@ import {
 } from '@typebot.io/logic/computeResultTranscript'
 import prisma from '@typebot.io/lib/prisma'
 import { sessionOnlySetVariableOptions } from '@typebot.io/schemas/features/blocks/logic/setVariable/constants'
-import {
-  createCodeRunner,
-  DisposableRunner,
-} from '@typebot.io/variables/codeRunners'
+import { createCodeRunner } from '@typebot.io/variables/codeRunners'
 
 export const executeSetVariable = async (
   state: SessionState,
@@ -93,130 +90,125 @@ export const executeSetVariable = async (
 
 const evaluateSetVariableExpression =
   (variables: Variable[]) =>
-    (str: string): unknown => {
-      const isSingleVariable =
-        str.startsWith('{{') && str.endsWith('}}') && str.split('{{').length === 2
-      if (isSingleVariable) return parseVariables(variables)(str)
-      // To avoid octal number evaluation
-      if (!isNaN(str as unknown as number) && /0[^.].+/.test(str)) return str
-      try {
-        const body = parseVariables(variables, { fieldToParse: 'id' })(str)
-        let runner: DisposableRunner | undefined
-        try {
-          runner = createCodeRunner({ variables })
-          return runner(body.includes('return ') ? body : `return ${body}`)
-        } finally {
-          if (runner) {
-            runner.dispose()
-          }
-        }
-      } catch (err) {
-        return parseVariables(variables)(str)
-      }
+  (str: string): unknown => {
+    const isSingleVariable =
+      str.startsWith('{{') && str.endsWith('}}') && str.split('{{').length === 2
+    if (isSingleVariable) return parseVariables(variables)(str)
+    // To avoid octal number evaluation
+    if (!isNaN(str as unknown as number) && /0[^.].+/.test(str)) return str
+    try {
+      const body = parseVariables(variables, { fieldToParse: 'id' })(str)
+      return createCodeRunner({ variables })(
+        body.includes('return ') ? body : `return ${body}`
+      )
+    } catch (err) {
+      return parseVariables(variables)(str)
     }
+  }
 
 const getExpressionToEvaluate =
   (state: SessionState) =>
-    async (
-      options: SetVariableBlock['options'],
-      blockId: string
-    ): Promise<string | null> => {
-      switch (options?.type) {
-        case 'Contact name':
-          return state.whatsApp?.contact.name ?? null
-        case 'Phone number': {
-          const phoneNumber = state.whatsApp?.contact.phoneNumber
-          return phoneNumber ? `"${state.whatsApp?.contact.phoneNumber}"` : null
-        }
-        case 'Now': {
-          const timeZone = parseVariables(
-            state.typebotsQueue[0].typebot.variables
-          )(options.timeZone)
-          if (isEmpty(timeZone)) return 'new Date().toISOString()'
-          return toISOWithTz(new Date(), timeZone)
-        }
+  async (
+    options: SetVariableBlock['options'],
+    blockId: string
+  ): Promise<string | null> => {
+    switch (options?.type) {
+      case 'Contact name':
+        return state.whatsApp?.contact.name ?? null
+      case 'Phone number': {
+        const phoneNumber = state.whatsApp?.contact.phoneNumber
+        return phoneNumber ? `"${state.whatsApp?.contact.phoneNumber}"` : null
+      }
+      case 'Now': {
+        const timeZone = parseVariables(
+          state.typebotsQueue[0].typebot.variables
+        )(options.timeZone)
+        if (isEmpty(timeZone)) return 'new Date().toISOString()'
+        return toISOWithTz(new Date(), timeZone)
+      }
 
-        case 'Today':
-          return 'new Date().toISOString()'
-        case 'Tomorrow': {
-          const timeZone = parseVariables(
-            state.typebotsQueue[0].typebot.variables
-          )(options.timeZone)
-          if (isEmpty(timeZone))
-            return 'new Date(Date.now() + 86400000).toISOString()'
-          return toISOWithTz(new Date(Date.now() + 86400000), timeZone)
-        }
-        case 'Yesterday': {
-          const timeZone = parseVariables(
-            state.typebotsQueue[0].typebot.variables
-          )(options.timeZone)
-          if (isEmpty(timeZone))
-            return 'new Date(Date.now() - 86400000).toISOString()'
-          return toISOWithTz(new Date(Date.now() - 86400000), timeZone)
-        }
-        case 'Random ID': {
-          return `"${createId()}"`
-        }
-        case 'Result ID':
-        case 'User ID': {
-          return state.typebotsQueue[0].resultId ?? `"${createId()}"`
-        }
-        case 'Map item with same index': {
-          return `const itemIndex = ${options.mapListItemParams?.baseListVariableId}.indexOf(${options.mapListItemParams?.baseItemVariableId})
+      case 'Today':
+        return 'new Date().toISOString()'
+      case 'Tomorrow': {
+        const timeZone = parseVariables(
+          state.typebotsQueue[0].typebot.variables
+        )(options.timeZone)
+        if (isEmpty(timeZone))
+          return 'new Date(Date.now() + 86400000).toISOString()'
+        return toISOWithTz(new Date(Date.now() + 86400000), timeZone)
+      }
+      case 'Yesterday': {
+        const timeZone = parseVariables(
+          state.typebotsQueue[0].typebot.variables
+        )(options.timeZone)
+        if (isEmpty(timeZone))
+          return 'new Date(Date.now() - 86400000).toISOString()'
+        return toISOWithTz(new Date(Date.now() - 86400000), timeZone)
+      }
+      case 'Random ID': {
+        return `"${createId()}"`
+      }
+      case 'Result ID':
+      case 'User ID': {
+        return state.typebotsQueue[0].resultId ?? `"${createId()}"`
+      }
+      case 'Map item with same index': {
+        return `const itemIndex = ${options.mapListItemParams?.baseListVariableId}.indexOf(${options.mapListItemParams?.baseItemVariableId})
       return ${options.mapListItemParams?.targetListVariableId}.at(itemIndex)`
-        }
-        case 'Append value(s)': {
-          return `if(!${options.item}) return ${options.variableId};
+      }
+      case 'Append value(s)': {
+        return `if(!${options.item}) return ${options.variableId};
         if(!${options.variableId}) return [${options.item}];
         if(!Array.isArray(${options.variableId})) return [${options.variableId}, ${options.item}];
         return (${options.variableId}).concat(${options.item});`
-        }
-        case 'Empty': {
-          return null
-        }
-        case 'Moment of the day': {
-          return `const now = new Date()
+      }
+      case 'Empty': {
+        return null
+      }
+      case 'Moment of the day': {
+        return `const now = new Date()
         if(now.getHours() < 12) return 'morning'
         if(now.getHours() >= 12 && now.getHours() < 18) return 'afternoon'
         if(now.getHours() >= 18) return 'evening'
         if(now.getHours() >= 22 || now.getHours() < 6) return 'night'`
+      }
+      case 'Environment name': {
+        return state.whatsApp ? 'whatsapp' : 'web'
+      }
+      case 'Transcript': {
+        const props = await parseTranscriptProps(state)
+        if (!props) return ''
+        const typebotWithEmptyVariables = {
+          ...state.typebotsQueue[0].typebot,
+          variables: state.typebotsQueue[0].typebot.variables.map((v) => ({
+            ...v,
+            value: undefined,
+          })),
         }
-        case 'Environment name': {
-          return state.whatsApp ? 'whatsapp' : 'web'
-        }
-        case 'Transcript': {
-          const props = await parseTranscriptProps(state)
-          if (!props) return ''
-          const typebotWithEmptyVariables = {
-            ...state.typebotsQueue[0].typebot,
-            variables: state.typebotsQueue[0].typebot.variables.map((v) => ({
-              ...v,
-              value: undefined,
-            })),
-          }
-          const transcript = computeResultTranscript({
-            typebot: typebotWithEmptyVariables,
-            stopAtBlockId: blockId,
-            ...props,
-          })
-          return (
-            'return `' +
-            transcript
-              .map(
-                (message) =>
-                  `${message.role === 'bot' ? 'Assistant:' : 'User:'
-                  } "${parseTranscriptMessageText(message)}"`
-              )
-              .join('\n\n') +
-            '`'
-          )
-        }
-        case 'Custom':
-        case undefined: {
-          return options?.expressionToEvaluate ?? null
-        }
+        const transcript = computeResultTranscript({
+          typebot: typebotWithEmptyVariables,
+          stopAtBlockId: blockId,
+          ...props,
+        })
+        return (
+          'return `' +
+          transcript
+            .map(
+              (message) =>
+                `${
+                  message.role === 'bot' ? 'Assistant:' : 'User:'
+                } "${parseTranscriptMessageText(message)}"`
+            )
+            .join('\n\n') +
+          '`'
+        )
+      }
+      case 'Custom':
+      case undefined: {
+        return options?.expressionToEvaluate ?? null
       }
     }
+  }
 
 const toISOWithTz = (date: Date, timeZone: string) => {
   const zonedDate = utcToZonedTime(date, timeZone)
