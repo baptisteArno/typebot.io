@@ -43,48 +43,48 @@ export const executeFunction = async ({
   }
 
   const isolate = new ivm.Isolate()
-  const context = isolate.createContextSync()
-  const jail = context.global
-  jail.setSync('global', jail.derefInto())
-  context.evalClosure(
-    'globalThis.setVariable = (...args) => $0.apply(undefined, args, { arguments: { copy: true }, promise: true, result: { copy: true, promise: true } })',
-    [new ivm.Reference(setVariable)]
-  )
-  context.evalClosure(
-    'globalThis.fetch = (...args) => $0.apply(undefined, args, { arguments: { copy: true }, promise: true, result: { copy: true, promise: true } })',
-    [
-      new ivm.Reference(async (...args: any[]) => {
-        // @ts-ignore
-        const response = await fetch(...args)
-        return response.text()
-      }),
-    ]
-  )
-
-  context.evalClosure(
-    'globalThis.jwtSign = (...args) => $0.apply(undefined, args, { arguments: { copy: true }, promise: true, result: { copy: true, promise: true } })',
-    [
-      new ivm.Reference((...args: any[]) => {
-        // @ts-ignore
-        return jwt.sign(...args)
-      }),
-    ]
-  )
-
-  args.forEach(({ id, value }) => {
-    jail.setSync(id, parseTransferrableValue(value))
-  })
-  const run = (code: string) =>
+  try {
+    const context = isolate.createContextSync()
+    const jail = context.global
+    jail.setSync('global', jail.derefInto())
     context.evalClosure(
-      `return (async function() {
-		const AsyncFunction = async function () {}.constructor;
-		return new AsyncFunction($0)();
-	}())`,
-      [code],
-      { result: { copy: true, promise: true }, timeout: defaultTimeout }
+      'globalThis.setVariable = (...args) => $0.apply(undefined, args, { arguments: { copy: true }, promise: true, result: { copy: true, promise: true } })',
+      [new ivm.Reference(setVariable)]
+    )
+    context.evalClosure(
+      'globalThis.fetch = (...args) => $0.apply(undefined, args, { arguments: { copy: true }, promise: true, result: { copy: true, promise: true } })',
+      [
+        new ivm.Reference(async (...args: any[]) => {
+          // @ts-ignore
+          const response = await fetch(...args)
+          return response.text()
+        }),
+      ]
     )
 
-  try {
+    context.evalClosure(
+      'globalThis.jwtSign = (...args) => $0.apply(undefined, args, { arguments: { copy: true }, promise: true, result: { copy: true, promise: true } })',
+      [
+        new ivm.Reference((...args: any[]) => {
+          // @ts-ignore
+          return jwt.sign(...args)
+        }),
+      ]
+    )
+
+    args.forEach(({ id, value }) => {
+      jail.setSync(id, parseTransferrableValue(value))
+    })
+    const run = (code: string) =>
+      context.evalClosure(
+        `return (async function() {
+      const AsyncFunction = async function () {}.constructor;
+      return new AsyncFunction($0)();
+    }())`,
+        [code],
+        { result: { copy: true, promise: true }, timeout: defaultTimeout }
+      )
+
     const output = await run(parsedBody)
     console.log('Output', output)
     return {
@@ -109,8 +109,8 @@ export const executeFunction = async ({
       typeof e === 'string'
         ? e
         : e instanceof Error
-        ? e.message
-        : JSON.stringify(e)
+          ? e.message
+          : JSON.stringify(e)
 
     return {
       error,
