@@ -21,11 +21,6 @@ const defaultBuffer = parseInt(
   10
 )
 
-const thresholdMbCache = (() => {
-  const raw = process.env.MEMORY_DRAIN_THRESHOLD_MB
-  const parsed = raw ? parseInt(raw, 10) : NaN
-  return !isNaN(parsed) && parsed > 0 ? parsed : 1024
-})()
 
 const state: GracefulState = {
   draining: false,
@@ -110,21 +105,7 @@ export function isDraining(): boolean {
 
 export function healthSnapshot() {
   const mem = process.memoryUsage()
-  const thresholdMb = thresholdMbCache
-  const thresholdBytes = thresholdMb * 1024 * 1024
-  // Trigger drain if memory usage exceeds threshold and not already draining
-  if (!state.draining && mem.rss > thresholdBytes) {
-    // eslint-disable-next-line no-console
-    console.log({
-      event: 'auto_drain_memory_threshold',
-      rss: mem.rss,
-      heapUsed: mem.heapUsed,
-      threshold: thresholdBytes,
-      thresholdMb,
-      component: state.component,
-    })
-    triggerDrain()
-  }
+
   if (state.draining) {
     return {
       status: 'draining' as const,

@@ -45,7 +45,12 @@ export const createHttpReqResponseMappingRunner = (
     const context = isolate.createContextSync()
     const jail = context.global
     jail.setSync('global', jail.derefInto())
-    jail.setSync('response', new ivm.ExternalCopy(response).copyInto())
+    const copy = new ivm.ExternalCopy(response)
+    try {
+      jail.setSync('response', copy.copyInto())
+    } finally {
+      copy.release()
+    }
     const runner = (expression: string) => {
       return context.evalClosureSync(
         `globalThis.evaluateExpression = function(expression) {
@@ -74,8 +79,13 @@ export const createHttpReqResponseMappingRunner = (
 }
 
 export const parseTransferrableValue = (value: unknown) => {
-  if (typeof value === 'object') {
-    return new ivm.ExternalCopy(value).copyInto()
+  if (typeof value === 'object' && value !== null) {
+    const copy = new ivm.ExternalCopy(value)
+    try {
+      return copy.copyInto()
+    } finally {
+      copy.release()
+    }
   }
   return value
 }
