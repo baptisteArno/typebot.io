@@ -1,5 +1,22 @@
 # Changelog
 
+<a name="3.14.2"></a>
+## 3.14.2 (2025-12-09)
+
+### UI/UX Improvements
+
+- 🚸 Add confirm dialog before plan upgrade with existing customer [[48cdd3b](https://github.com/baptisteArno/typebot.io/commit/48cdd3b6cd6f0f9206885b4baa8d25986fc53b83)]
+
+### Internal
+
+- 🔧 Improve churn agent email instructions [[68d4023](https://github.com/baptisteArno/typebot.io/commit/68d40230c71063658ef5fb0cc8dc4f28a21984ea)]
+
+### Miscellaneous
+
+- 🛂 Simplify webhookHandler conditions for subscription status checks [[65a698a](https://github.com/baptisteArno/typebot.io/commit/65a698a52bb43063848fbe88b90ac2a70588bef9)]
+- 🛂 Better typebot read authorization [[d76381a](https://github.com/baptisteArno/typebot.io/commit/d76381ae58fc5f949886b65f3c4929d44a42d654)]
+
+
 <a name="3.14.1"></a>
 ## 3.14.1 (2025-12-05)
 
