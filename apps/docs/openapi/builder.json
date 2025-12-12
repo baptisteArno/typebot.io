@@ -10826,146 +10826,195 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "workspace": {
+                  "oneOf": [
+                    {
                       "type": "object",
-                      "nullable": true,
                       "properties": {
-                        "id": {
-                          "type": "string"
-                        },
-                        "createdAt": {
-                          "type": "string"
-                        },
-                        "updatedAt": {
-                          "type": "string"
-                        },
-                        "name": {
-                          "type": "string"
-                        },
-                        "icon": {
-                          "type": "string",
-                          "nullable": true
-                        },
-                        "plan": {
+                        "type": {
                           "type": "string",
                           "enum": [
-                            "FREE",
-                            "STARTER",
-                            "PRO",
-                            "LIFETIME",
-                            "OFFERED",
-                            "CUSTOM",
-                            "UNLIMITED",
-                            "ENTERPRISE"
+                            "success"
                           ]
                         },
-                        "stripeId": {
-                          "type": "string",
-                          "nullable": true
-                        },
-                        "additionalChatsIndex": {
-                          "type": "number"
-                        },
-                        "additionalStorageIndex": {
-                          "type": "number"
-                        },
-                        "chatsLimitFirstEmailSentAt": {
-                          "type": "string",
-                          "nullable": true
-                        },
-                        "chatsLimitSecondEmailSentAt": {
-                          "type": "string",
-                          "nullable": true
-                        },
-                        "storageLimitFirstEmailSentAt": {
-                          "type": "string",
-                          "nullable": true
-                        },
-                        "storageLimitSecondEmailSentAt": {
-                          "type": "string",
-                          "nullable": true
-                        },
-                        "settings": {
+                        "workspace": {
                           "type": "object",
-                          "nullable": true
-                        },
-                        "customChatsLimit": {
-                          "type": "number",
-                          "nullable": true
-                        },
-                        "customStorageLimit": {
-                          "type": "number",
-                          "nullable": true
-                        },
-                        "customSeatsLimit": {
-                          "type": "number",
-                          "nullable": true
-                        },
-                        "isQuarantined": {
-                          "type": "boolean"
-                        },
-                        "isSuspended": {
-                          "type": "boolean"
-                        },
-                        "isPastDue": {
-                          "type": "boolean"
-                        },
-                        "isVerified": {
-                          "type": "boolean",
-                          "nullable": true
-                        },
-                        "chatsHardLimit": {
-                          "type": "number",
-                          "nullable": true
-                        },
-                        "lastActivityAt": {
+                          "properties": {
+                            "id": {
+                              "type": "string"
+                            },
+                            "createdAt": {
+                              "type": "string"
+                            },
+                            "updatedAt": {
+                              "type": "string"
+                            },
+                            "name": {
+                              "type": "string"
+                            },
+                            "icon": {
+                              "type": "string",
+                              "nullable": true
+                            },
+                            "plan": {
+                              "type": "string",
+                              "enum": [
+                                "FREE",
+                                "STARTER",
+                                "PRO",
+                                "LIFETIME",
+                                "OFFERED",
+                                "CUSTOM",
+                                "UNLIMITED",
+                                "ENTERPRISE"
+                              ]
+                            },
+                            "stripeId": {
+                              "type": "string",
+                              "nullable": true
+                            },
+                            "additionalChatsIndex": {
+                              "type": "number"
+                            },
+                            "additionalStorageIndex": {
+                              "type": "number"
+                            },
+                            "chatsLimitFirstEmailSentAt": {
+                              "type": "string",
+                              "nullable": true
+                            },
+                            "chatsLimitSecondEmailSentAt": {
+                              "type": "string",
+                              "nullable": true
+                            },
+                            "storageLimitFirstEmailSentAt": {
+                              "type": "string",
+                              "nullable": true
+                            },
+                            "storageLimitSecondEmailSentAt": {
+                              "type": "string",
+                              "nullable": true
+                            },
+                            "settings": {
+                              "type": "object",
+                              "nullable": true
+                            },
+                            "customChatsLimit": {
+                              "type": "number",
+                              "nullable": true
+                            },
+                            "customStorageLimit": {
+                              "type": "number",
+                              "nullable": true
+                            },
+                            "customSeatsLimit": {
+                              "type": "number",
+                              "nullable": true
+                            },
+                            "isQuarantined": {
+                              "type": "boolean"
+                            },
+                            "isSuspended": {
+                              "type": "boolean"
+                            },
+                            "isPastDue": {
+                              "type": "boolean"
+                            },
+                            "isVerified": {
+                              "type": "boolean",
+                              "nullable": true
+                            },
+                            "chatsHardLimit": {
+                              "type": "number",
+                              "nullable": true
+                            },
+                            "lastActivityAt": {
+                              "type": "string",
+                              "nullable": true
+                            },
+                            "inactiveFirstEmailSentAt": {
+                              "type": "string",
+                              "nullable": true
+                            },
+                            "inactiveSecondEmailSentAt": {
+                              "type": "string",
+                              "nullable": true
+                            }
+                          },
+                          "required": [
+                            "id",
+                            "createdAt",
+                            "updatedAt",
+                            "name",
+                            "icon",
+                            "plan",
+                            "stripeId",
+                            "additionalChatsIndex",
+                            "additionalStorageIndex",
+                            "chatsLimitFirstEmailSentAt",
+                            "chatsLimitSecondEmailSentAt",
+                            "storageLimitFirstEmailSentAt",
+                            "storageLimitSecondEmailSentAt",
+                            "settings",
+                            "customChatsLimit",
+                            "customStorageLimit",
+                            "customSeatsLimit",
+                            "isQuarantined",
+                            "isSuspended",
+                            "isPastDue",
+                            "isVerified",
+                            "chatsHardLimit",
+                            "lastActivityAt",
+                            "inactiveFirstEmailSentAt",
+                            "inactiveSecondEmailSentAt"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "type",
+                        "workspace"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "type": {
                           "type": "string",
-                          "nullable": true
+                          "enum": [
+                            "error"
+                          ]
                         },
-                        "inactiveFirstEmailSentAt": {
-                          "type": "string",
-                          "nullable": true
+                        "title": {
+                          "type": "string"
                         },
-                        "inactiveSecondEmailSentAt": {
+                        "description": {
                           "type": "string",
                           "nullable": true
                         }
                       },
                       "required": [
-                        "id",
-                        "createdAt",
-                        "updatedAt",
-                        "name",
-                        "icon",
-                        "plan",
-                        "stripeId",
-                        "additionalChatsIndex",
-                        "additionalStorageIndex",
-                        "chatsLimitFirstEmailSentAt",
-                        "chatsLimitSecondEmailSentAt",
-                        "storageLimitFirstEmailSentAt",
-                        "storageLimitSecondEmailSentAt",
-                        "settings",
-                        "customChatsLimit",
-                        "customStorageLimit",
-                        "customSeatsLimit",
-                        "isQuarantined",
-                        "isSuspended",
-                        "isPastDue",
-                        "isVerified",
-                        "chatsHardLimit",
-                        "lastActivityAt",
-                        "inactiveFirstEmailSentAt",
-                        "inactiveSecondEmailSentAt"
+                        "type",
+                        "title"
                       ]
                     },
-                    "checkoutUrl": {
-                      "type": "string",
-                      "nullable": true
+                    {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "checkoutUrl"
+                          ]
+                        },
+                        "checkoutUrl": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "type",
+                        "checkoutUrl"
+                      ]
                     }
-                  }
+                  ]
                 }
               }
             }
@@ -11103,6 +11152,120 @@
                   },
                   "required": [
                     "subscription"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error.BAD_REQUEST"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authorization not provided",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error.UNAUTHORIZED"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient access",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error.FORBIDDEN"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error.NOT_FOUND"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error.INTERNAL_SERVER_ERROR"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/billing/subscription/preview": {
+      "get": {
+        "operationId": "billing-getSubscriptionPreview",
+        "summary": "Get subscription upgrade preview",
+        "tags": [
+          "Billing"
+        ],
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "workspaceId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "plan",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "STARTER",
+                "PRO"
+              ]
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "amountDue": {
+                      "type": "number"
+                    },
+                    "currency": {
+                      "type": "string",
+                      "enum": [
+                        "usd",
+                        "eur"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "amountDue",
+                    "currency"
                   ]
                 }
               }

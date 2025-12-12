@@ -16,7 +16,7 @@
     "react-email": "^4.2.8",
     "@react-email/render": "^1.2.1",
     "@typebot.io/lib": "workspace:*",
-    "react": "^19.2.1"
+    "react": "^19.2.3"
   },
   "devDependencies": {
     "@react-email/preview-server": "^4.2.8",
