@@ -60,13 +60,11 @@ type WorkspaceData = {
 const churnSummarySchema = z.object({
   snapshot: z
     .string()
-    .describe(
-      "A small snapshot of the workspace, explaining what it does briefly and what is its main use case.",
-    ),
+    .describe("A very short summary of why the workspace use Typebot."),
   timeline: z
     .string()
     .describe(
-      "A summary of the workspace's journey in a short bullet points list format. Human readable dates.",
+      "A summary of the workspace's key events in a short bullet points list format. Human readable dates.",
     ),
   guessedChurnReason: z
     .string()
