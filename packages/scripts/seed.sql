@@ -39,16 +39,7 @@ VALUES (
   '{"general": {"isBrandingEnabled": true}}'::jsonb,
   '[{"id": "qmbhi0mk1lewbe0ez5nx45fb", "type": "start", "outgoingEdgeId": "o0yzfoahvwbn8wqdzyuz5m7n", "graphCoordinates": {"x": 0, "y": 0}}]'::jsonb
 )
-ON CONFLICT (id) DO UPDATE SET
-  name = EXCLUDED.name,
-  "publicId" = EXCLUDED."publicId",
-  version = EXCLUDED.version,
-  groups = EXCLUDED.groups,
-  edges = EXCLUDED.edges,
-  variables = EXCLUDED.variables,
-  theme = EXCLUDED.theme,
-  settings = EXCLUDED.settings,
-  events = EXCLUDED.events;
+ON CONFLICT (id) DO NOTHING;
 
 -- 5. Create or update published version with exact structure from working UI-created typebot
 INSERT INTO "PublicTypebot" (id, "typebotId", version, groups, edges, variables, theme, settings, events)
@@ -63,10 +54,4 @@ VALUES (
   '{"general": {"isBrandingEnabled": true}}'::jsonb,
   '[{"id": "qmbhi0mk1lewbe0ez5nx45fb", "type": "start", "outgoingEdgeId": "o0yzfoahvwbn8wqdzyuz5m7n", "graphCoordinates": {"x": 0, "y": 0}}]'::jsonb
 )
-ON CONFLICT (id) DO UPDATE SET
-  "typebotId" = EXCLUDED."typebotId",
-  groups = EXCLUDED.groups,
-  edges = EXCLUDED.edges,
-  variables = EXCLUDED.variables,
-  theme = EXCLUDED.theme,
-  settings = EXCLUDED.settings;
+ON CONFLICT (id) DO NOTHING;
