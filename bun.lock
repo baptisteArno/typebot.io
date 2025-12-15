@@ -216,7 +216,6 @@
         "@typebot.io/forge": "workspace:*",
         "@typebot.io/forge-repository": "workspace:*",
         "@typebot.io/groups": "workspace:*",
-        "@typebot.io/legacy": "workspace:*",
         "@typebot.io/lib": "workspace:*",
         "@typebot.io/logs": "workspace:*",
         "@typebot.io/prisma": "workspace:*",

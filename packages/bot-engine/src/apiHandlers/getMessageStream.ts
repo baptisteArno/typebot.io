@@ -1,3 +1,4 @@
+import * as Sentry from "@sentry/nextjs";
 import { isForgedBlockType } from "@typebot.io/blocks-core/helpers";
 import { IntegrationBlockType } from "@typebot.io/blocks-integrations/constants";
 import type { ChatCompletionOpenAIOptions } from "@typebot.io/blocks-integrations/openai/schema";
@@ -72,6 +73,8 @@ export const getMessageStream = async ({
 
   const sessionStore = getSessionStore(sessionId);
   if (block.type === IntegrationBlockType.OPEN_AI && messages) {
+    Sentry.setTag("typebotId", newSessionState.typebotsQueue[0].typebot.id);
+    Sentry.captureMessage("Is using legacy OpenAI chat completion stream");
     try {
       const stream = await getOpenAIChatCompletionStream(
         newSessionState,

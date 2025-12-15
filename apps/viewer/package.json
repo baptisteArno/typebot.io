@@ -54,7 +54,6 @@
     "@typebot.io/blocks-bubbles": "workspace:*",
     "papaparse": "^5.4.1",
     "superjson": "^1.12.4",
-    "@typebot.io/legacy": "workspace:*",
     "@typebot.io/runtime-session-store": "workspace:*"
   },
   "devDependencies": {

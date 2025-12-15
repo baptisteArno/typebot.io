@@ -5,5 +5,5 @@ Typebot 6.2
 - Shouldn't append to list on answer set var: https://github.com/baptisteArno/typebot.io/blob/d9df90c9b1434a285347223a23e857bf1671a9fc/packages/bot-engine/src/continueBotFlow.ts#L481-L493
 - Resume flow after option in Command event removed in favor of Return block
 
-3.14.0
-- Legacy TypebotV2 page removed
+3.15.0
+- Legacy AI stream API handlers removed (prior to April 24th, 2024)
