@@ -8,6 +8,7 @@ import {
   methodNotAllowed,
   notFound,
 } from "@typebot.io/lib/api/utils";
+import { createId } from "@typebot.io/lib/createId";
 import { byId } from "@typebot.io/lib/utils";
 import prisma from "@typebot.io/prisma";
 import { isTypebotVersionAtLeastV6 } from "@typebot.io/schemas/helpers/isTypebotVersionAtLeastV6";

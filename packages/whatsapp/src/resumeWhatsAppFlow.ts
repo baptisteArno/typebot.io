@@ -26,6 +26,7 @@ import type {
   WhatsAppMessageReferral,
 } from "./schemas";
 import { sendChatReplyToWhatsApp } from "./sendChatReplyToWhatsApp";
+import { sendWhatsAppTypingIndicator } from "./sendWhatsAppTypingIndicator";
 import { startWhatsAppSession } from "./startWhatsAppSession";
 import { WhatsAppError } from "./WhatsAppError";
 
@@ -137,6 +138,7 @@ export const resumeWhatsAppFlow = async ({
     isWaitingForWebhook,
   } = await resumeFlowAndSendWhatsAppMessages({
     to: receivedMessages[0].from,
+    messageId: receivedMessages[0].id,
     credentials,
     isSessionExpired,
     reply,
@@ -430,6 +432,7 @@ const aggregateParallelMediaMessagesIfRedisEnabled = async ({
 
 const resumeFlowAndSendWhatsAppMessages = async (props: {
   to: string;
+  messageId: string | undefined;
   state: SessionState | null | undefined;
   sessionStore: SessionStore;
   reply: Message | undefined;
@@ -440,6 +443,13 @@ const resumeFlowAndSendWhatsAppMessages = async (props: {
   credentialsId?: string;
   workspaceId?: string;
 }) => {
+  if (props.messageId) {
+    sendWhatsAppTypingIndicator({
+      messageId: props.messageId,
+      credentials: props.credentials,
+    });
+  }
+
   const resumeResponse = await resumeFlow(props);
 
   const {

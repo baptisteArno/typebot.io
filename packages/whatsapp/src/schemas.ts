@@ -103,6 +103,7 @@ const incomingMessageReferral = z.object({
 export type WhatsAppMessageReferral = z.infer<typeof incomingMessageReferral>;
 
 const sharedIncomingMessageFieldsSchema = z.object({
+  id: z.string().optional(),
   from: z.string(),
   timestamp: z.string(),
   referral: incomingMessageReferral.optional(),
