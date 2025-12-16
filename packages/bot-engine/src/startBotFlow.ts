@@ -1,3 +1,4 @@
+import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
 import type { Message, StartFrom } from "@typebot.io/chat-api/schemas";
 import type { SessionState } from "@typebot.io/chat-session/schemas";
 import type { SessionStore } from "@typebot.io/runtime-session-store";
@@ -57,6 +58,13 @@ export const startBotFlow = async ({
   });
 };
 
+const inputBlocksWithDisplayedContent = [
+  InputBlockType.CARDS,
+  InputBlockType.PICTURE_CHOICE,
+  InputBlockType.CHOICE,
+  InputBlockType.PAYMENT,
+];
+
 const autoContinueChatIfStartingWithInput = async ({
   version,
   message,
@@ -69,6 +77,8 @@ const autoContinueChatIfStartingWithInput = async ({
   if (
     !message ||
     chatReply.messages.length > 0 ||
+    (chatReply.input &&
+      inputBlocksWithDisplayedContent.includes(chatReply.input?.type)) ||
     (chatReply.clientSideActions?.filter((c) => c.expectsDedicatedReply)
       .length ?? 0) > 0
   )
