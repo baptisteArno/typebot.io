@@ -72,13 +72,13 @@ export const streamAllResultsToCsv = async (
   const groups = parseGroups(typebot.groups, {
     typebotVersion: typebot.version,
   }) as GroupV6[];
-  const resultHeader = parseResultHeader(
-    {
+  const resultHeader = parseResultHeader({
+    typebot: {
       groups,
       variables: typebotV6Schema.shape.variables.parse(typebot?.variables),
     },
-    [],
-  );
+    linkedTypebots: [],
+  });
   const blockIdVariableIdMap = parseBlockIdVariableIdMap(groups);
 
   const resultsTablePreferences =

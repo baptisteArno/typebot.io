@@ -6,19 +6,25 @@ import { byId, isNotEmpty } from "@typebot.io/lib/utils";
 import type { Variable } from "@typebot.io/variables/schemas";
 import type { ResultHeaderCell, ResultWithAnswers } from "./schemas/results";
 
-export const parseResultHeader = (
+export const parseResultHeader = ({
+  typebot,
+  linkedTypebots,
+  results,
+  includeSessionVariables = false,
+}: {
   typebot: {
     groups: Group[];
     variables: Variable[];
-  },
+  };
   linkedTypebots:
     | {
         groups: Group[];
         variables: Variable[];
       }[]
-    | undefined,
-  results?: ResultWithAnswers[],
-): ResultHeaderCell[] => {
+    | undefined;
+  results?: ResultWithAnswers[];
+  includeSessionVariables?: boolean;
+}): ResultHeaderCell[] => {
   const parsedGroups = [
     ...typebot.groups,
     ...(linkedTypebots ?? []).flatMap(
@@ -38,7 +44,11 @@ export const parseResultHeader = (
   return [
     { label: "Submitted at", id: "date" },
     ...inputsResultHeader,
-    ...parseVariablesHeaders(parsedVariables, inputsResultHeader),
+    ...parseVariablesHeaders({
+      variables: parsedVariables,
+      existingInputResultHeaders: inputsResultHeader,
+      includeSessionVariables,
+    }),
     ...parseResultsFromPreviousBotVersions({
       results: results ?? [],
       existingInputResultHeaders: inputsResultHeader,
@@ -149,16 +159,21 @@ const parseInputsResultHeader = ({
     return [...existingHeaders, newHeaderCell];
   }, []);
 
-const parseVariablesHeaders = (
-  variables: Variable[],
-  existingInputResultHeaders: ResultHeaderCell[],
-) =>
+const parseVariablesHeaders = ({
+  variables,
+  existingInputResultHeaders,
+  includeSessionVariables = false,
+}: {
+  variables: Variable[];
+  existingInputResultHeaders: ResultHeaderCell[];
+  includeSessionVariables?: boolean;
+}) =>
   variables.reduce<ResultHeaderCell[]>((existingHeaders, variable) => {
     if (
       existingInputResultHeaders.some((existingInputResultHeader) =>
         existingInputResultHeader.variableIds?.includes(variable.id),
       ) ||
-      variable.isSessionVariable
+      (!includeSessionVariables && variable.isSessionVariable)
     )
       return existingHeaders;
 

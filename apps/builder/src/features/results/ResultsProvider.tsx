@@ -82,13 +82,13 @@ export const ResultsProvider = ({
   const resultHeader = useMemo(
     () =>
       publishedTypebot
-        ? parseResultHeader(
-            publishedTypebot,
-            linkedTypebotsData?.typebots as Pick<
+        ? parseResultHeader({
+            typebot: publishedTypebot,
+            linkedTypebots: linkedTypebotsData?.typebots as Pick<
               Typebot,
               "groups" | "variables"
             >[],
-          )
+          })
         : [],
     [linkedTypebotsData?.typebots, publishedTypebot],
   );

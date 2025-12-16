@@ -21,7 +21,11 @@ export const parseSampleResult =
     currentGroupId: string,
     variables: Variable[],
   ): Promise<Record<string, string | boolean | undefined>> => {
-    const header = parseResultHeader(typebot, linkedTypebots);
+    const header = parseResultHeader({
+      typebot,
+      linkedTypebots,
+      includeSessionVariables: true,
+    });
     const linkedInputBlocks = await extractLinkedInputBlocks(
       typebot,
       linkedTypebots,

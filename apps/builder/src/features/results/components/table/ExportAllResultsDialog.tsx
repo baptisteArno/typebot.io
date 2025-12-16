@@ -116,14 +116,14 @@ export const ExportAllResultsDialog = ({ isOpen, onClose }: Props) => {
     if (!results.length) return setIsExportLoading(false);
 
     const resultHeader = areDeletedBlocksIncluded
-      ? parseResultHeader(
-          publishedTypebot,
-          linkedTypebotsData?.typebots as Pick<
+      ? parseResultHeader({
+          typebot: publishedTypebot,
+          linkedTypebots: linkedTypebotsData?.typebots as Pick<
             Typebot,
             "groups" | "variables"
           >[],
           results,
-        )
+        })
       : existingResultHeader;
 
     const dataToUnparse = convertResultsToTableData({
