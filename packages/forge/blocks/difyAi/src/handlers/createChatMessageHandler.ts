@@ -1,4 +1,4 @@
-import { runChatCompletion } from "@typebot.io/ai/runChatCompletion";
+import { processDataStream } from "@ai-sdk/ui-utils";
 import { runChatCompletionStream } from "@typebot.io/ai/runChatCompletionStream";
 import { createActionHandler } from "@typebot.io/forge";
 import { createDifyProvider } from "dify-ai-provider";
@@ -26,11 +26,10 @@ export const createChatMessageHandler = createActionHandler(createChatMessage, {
       responseMode: "blocking",
     });
 
-    const response = await runChatCompletion({
+    const { stream, error: initialError } = await runChatCompletionStream({
       model: difyModel,
       variables,
       responseMapping: options.responseMapping,
-      logs,
       sessionStore,
       tools: undefined,
       temperature: undefined,
@@ -41,6 +40,16 @@ export const createChatMessageHandler = createActionHandler(createChatMessage, {
           ? variables.get(options.conversationVariableId)?.toString()
           : undefined,
       },
+      onFinish: (response) => {
+        if (!options.conversationVariableId) return;
+        variables.set([
+          {
+            id: options.conversationVariableId,
+            value: response.providerMetadata?.difyWorkflowData
+              .conversationId as string,
+          },
+        ]);
+      },
       messages: [
         {
           role: "user",
@@ -49,20 +58,25 @@ export const createChatMessageHandler = createActionHandler(createChatMessage, {
       ],
     });
 
-    if (!response)
-      return logs.add({
-        status: "error",
-        description: "No response from Dify",
-      });
+    if (!stream)
+      return logs.add(initialError ?? { description: "No response from Dify" });
 
-    if (!options.conversationVariableId) return;
-    variables.set([
-      {
-        id: options.conversationVariableId,
-        value: response.providerMetadata?.difyWorkflowData
-          .conversationId as string,
+    let message = "";
+    await processDataStream({
+      stream,
+      onTextPart: async (text) => {
+        message += text;
       },
-    ]);
+      onErrorPart: (error) => {
+        logs.add(JSON.parse(error));
+      },
+    });
+
+    options.responseMapping?.forEach((mapping) => {
+      if (!mapping.variableId) return;
+      if (!mapping.item || mapping.item === "Message content")
+        variables.set([{ id: mapping.variableId, value: message }]);
+    });
   },
   stream: {
     run: async ({
