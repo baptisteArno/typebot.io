@@ -1,0 +1,175 @@
+name: Typebot CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  AWS_REGION: us-east-1
+  ECR_BUILDER_REPOSITORY: typebot-builder
+  ECR_VIEWER_REPOSITORY: typebot-viewer
+  ECR_REGISTRY: 585814034319.dkr.ecr.us-east-1.amazonaws.com
+  
+
+jobs:
+
+  build:
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Generate GitHub App installation token
+        id: app-token
+        uses: tibdex/github-app-token@v2
+        with:
+          app_id: ${{ vars.CLOUDHUMANS_VERSION_BOT_APP_ID }}
+          private_key: ${{ secrets.CLOUDHUMANS_VERSION_BOT_PRIVATE_KEY }}
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+          persist-credentials: true
+          fetch-depth: 0
+
+      - name: Configure AWS credentials production
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_CI_EKS_PRODUCTION_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_CI_EKS_PRODUCTION_SECRET }}
+          aws-region: us-east-1
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      # Removed version bump/extraction; we use SHA tag for manifests and ECR
+
+      - name: Build, tag, and push BUILDER image to Amazon ECR
+        if: ${{ github.ref == 'refs/heads/main' }}
+        env:
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -t $ECR_REGISTRY/$ECR_BUILDER_REPOSITORY:$IMAGE_TAG --build-arg SCOPE=builder .
+          docker push $ECR_REGISTRY/$ECR_BUILDER_REPOSITORY:$IMAGE_TAG
+
+      - name: Build, tag, and push VIEWER image to Amazon ECR
+        if: ${{ github.ref == 'refs/heads/main' }}
+        env:
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -t $ECR_REGISTRY/$ECR_VIEWER_REPOSITORY:$IMAGE_TAG --build-arg SCOPE=viewer .
+          docker push $ECR_REGISTRY/$ECR_VIEWER_REPOSITORY:$IMAGE_TAG
+
+      - name: install kubectl and kustomize
+        if: ${{ github.ref == 'refs/heads/main' }}
+        run: |
+          curl -sfLo kustomize.tar.gz https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv4.1.1/kustomize_v4.1.1_linux_amd64.tar.gz && tar -xvf kustomize.tar.gz && chmod u+x kustomize
+          curl -LO "https://dl.k8s.io/release/v1.23.6/bin/linux/amd64/kubectl" && chmod u+x kubectl
+
+      - name: export common variables
+        run: |
+          echo "KUSTOMIZE_CMD=$PWD/kustomize" >> $GITHUB_ENV
+          echo "KUBECTL_CMD=$PWD/kubectl" >> $GITHUB_ENV
+          echo "IMAGE_VERSION=${GITHUB_SHA}" >> $GITHUB_ENV
+
+      - name: Checkout manifests repository
+        uses: actions/checkout@v4
+        with:
+          repository: cloudhumans/typebot.io-manifests
+          path: manifests
+          token: ${{ steps.app-token.outputs.token }}
+          fetch-depth: 0
+
+      - name: Compute version
+        uses: cloudhumans/actions/app-version@v1
+        with:
+          version_file: version
+          format: '{base}-{sha7}'            
+          templates_glob: manifests/deploy-k8s/**/*.yaml  
+
+      - name: Create & merge PR in manifests repository with new image
+        env:
+          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          set -euo pipefail
+          KUSTOMIZE_PATH="$KUSTOMIZE_CMD"
+          cd manifests
+
+          git config user.name "CloudHumans Version Bot"
+          git config user.email "cloudhumans-bot@users.noreply.github.com"
+
+          ###############################################
+          # Update manifests (base only)
+          ###############################################
+          pushd deploy-k8s/base
+
+          "$KUSTOMIZE_PATH" edit set image typebot-viewer-image="$ECR_REGISTRY/$ECR_VIEWER_REPOSITORY:$IMAGE_VERSION"
+          "$KUSTOMIZE_PATH" edit set image typebot-builder-image="$ECR_REGISTRY/$ECR_BUILDER_REPOSITORY:$IMAGE_VERSION"
+
+          sed -i "s/DD_VERSION: ['\"][^'\"]*['\"]/DD_VERSION: '$APP_VERSION'/g" typebot-builder-deployment.yaml || true
+          sed -i "s/DD_VERSION: ['\"][^'\"]*['\"]/DD_VERSION: '$APP_VERSION'/g" typebot-viewer-deployment.yaml || true
+
+          sed -i "s/tags\.datadoghq\.com\/version: ['\"][^'\"]*['\"]/tags.datadoghq.com\/version: '$APP_VERSION'/g" typebot-builder-deployment.yaml || true
+          sed -i "s/tags\.datadoghq\.com\/version: ['\"][^'\"]*['\"]/tags.datadoghq.com\/version: '$APP_VERSION'/g" typebot-viewer-deployment.yaml || true
+          popd
+          
+
+          ###############################################
+          # Commit changes to a version branch & open PR
+          ###############################################
+          BRANCH_NAME="release/typebot/$IMAGE_VERSION"
+          REPO_MANIFESTS="cloudhumans/typebot.io-manifests"
+          PR_TITLE="chore: update typebot images to version $IMAGE_VERSION"
+          PR_BODY="Automated update via Typebot CI.\n\nImage tag: $IMAGE_VERSION\n\nThis PR was generated automatically so that it can be reverted via the GitHub UI if needed."
+
+          echo "Creating/updating branch $BRANCH_NAME"
+          git checkout -B "$BRANCH_NAME"
+          git add -A
+          git commit -m "chore: update typebot images to version $IMAGE_VERSION [skip ci]" --allow-empty
+          git push origin "$BRANCH_NAME" --force
+
+          echo "Setting up gh CLI"
+          if ! command -v gh >/dev/null 2>&1; then
+            echo "gh not found; installing..."
+            sudo apt-get update -y >/dev/null 2>&1 || true
+            sudo apt-get install -y gh >/dev/null 2>&1 || true
+          fi
+          export GH_TOKEN="$GITHUB_TOKEN"
+          gh auth status >/dev/null 2>&1 || echo "gh auth status not fully available yet, proceeding."
+
+          echo "Creating PR for $BRANCH_NAME"
+          gh pr create \
+            --repo "$REPO_MANIFESTS" \
+            --title "$PR_TITLE" \
+            --body "$PR_BODY" \
+            --base main \
+            --head "$BRANCH_NAME"
+
+          # Fetch PR number with retry
+          PR_NUMBER=""
+          for i in {1..5}; do
+            PR_NUMBER=$(gh pr view --repo "$REPO_MANIFESTS" "$BRANCH_NAME" --json number --jq '.number' 2>/dev/null || true)
+            if [ -n "$PR_NUMBER" ]; then
+              echo "PR #$PR_NUMBER detected (attempt $i)."
+              break
+            fi
+            echo "Waiting for PR to be available (attempt $i)..."
+            sleep 2
+          done
+          if [ -z "$PR_NUMBER" ]; then
+            echo "Failed to retrieve PR number after multiple attempts." >&2
+            exit 1
+          fi
+
+          echo "Attempting squash merge via gh"
+          if gh pr merge --repo "$REPO_MANIFESTS" "$PR_NUMBER" --squash --delete-branch --admin --subject "$PR_TITLE" --body "Automated squash merge for $IMAGE_VERSION"; then
+            echo "PR #$PR_NUMBER merged successfully."
+          else
+            echo "Automatic merge failed or blocked; leaving PR open." >&2
+          fi

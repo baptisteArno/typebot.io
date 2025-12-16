@@ -87,6 +87,19 @@ Once started, access the following:
 supabase db push
 ```
 
+- Run Prisma migrations (local Postgres):
+
+```bash
+# Ensure Postgres is running (e.g., docker-compose.dev.yml)
+# and your `.env` contains a valid `DATABASE_URL`.
+
+# From repo root (uses packages/prisma script)
+pnpm db:migrate
+
+# Alternatively, call the workspace package directly
+pnpm --filter @typebot.io/prisma run migrate:deploy
+```
+
 - Stop Supabase:
 
 ```bash
