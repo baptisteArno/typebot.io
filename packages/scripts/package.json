@@ -35,7 +35,8 @@
     "deleteS3Object": "SKIP_ENV_CHECK=true dotenv -e ./.env.production -- tsx src/deleteS3Object.ts",
     "cron:hourly": "SKIP_ENV_CHECK=true tsx src/cronJobs/hourly.tsx",
     "cron:daily": "SKIP_ENV_CHECK=true tsx src/cronJobs/daily.tsx",
-    "cron:monthly": "SKIP_ENV_CHECK=true tsx src/cronJobs/monthly.tsx"
+    "cron:monthly": "SKIP_ENV_CHECK=true tsx src/cronJobs/monthly.tsx",
+    "generateWorkspaceSummary": "SKIP_ENV_CHECK=true dotenv -e ./.env.production -- tsx src/generateWorkspaceSummary.ts"
   },
   "exports": {
     "./*": "./src/*.ts"
