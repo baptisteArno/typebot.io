@@ -1,4 +1,4 @@
-import { TRPCError } from "@trpc/server";
+import { ORPCError } from "@orpc/server";
 import type { StartFrom } from "@typebot.io/chat-api/schemas";
 import type { TypebotInSession } from "@typebot.io/chat-session/schemas";
 import { getFirstEdgeId } from "./getFirstEdgeId";
@@ -16,8 +16,7 @@ export const getStartingPoint = ({
       (group) => group.id === startFrom.groupId,
     );
     if (!group)
-      throw new TRPCError({
-        code: "BAD_REQUEST",
+      throw new ORPCError("BAD_REQUEST", {
         message: "Start group doesn't exist",
       });
     return {

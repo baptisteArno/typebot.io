@@ -1,4 +1,4 @@
-import { TRPCError } from "@trpc/server";
+import { ORPCError } from "@orpc/server";
 import { env } from "@typebot.io/env";
 
 const trustedOrigins = env.NEXT_PUBLIC_VIEWER_URL;
@@ -23,8 +23,7 @@ export const assertOriginIsAllowed = (
       allowedOrigins.includes(iframeReferrerOrigin))
   )
     return;
-  throw new TRPCError({
-    code: "FORBIDDEN",
+  throw new ORPCError("FORBIDDEN", {
     message: "Origin not allowed",
   });
 };

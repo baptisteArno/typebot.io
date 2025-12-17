@@ -1,5 +1,5 @@
+import { ORPCError } from "@orpc/server";
 import { createId } from "@paralleldrive/cuid2";
-import { TRPCError } from "@trpc/server";
 import { BubbleBlockType } from "@typebot.io/blocks-bubbles/constants";
 import {
   isBubbleBlock,
@@ -197,8 +197,7 @@ const executeGroup = async (
       env.CHAT_API_TIMEOUT &&
       Date.now() - updatedTimeoutStartTime > env.CHAT_API_TIMEOUT
     ) {
-      throw new TRPCError({
-        code: "TIMEOUT",
+      throw new ORPCError("TIMEOUT", {
         message: `${env.CHAT_API_TIMEOUT / 1000} seconds timeout reached`,
       });
     }

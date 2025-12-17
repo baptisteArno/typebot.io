@@ -10,6 +10,7 @@
     "test": "dotenv -e ./.env -e ../../.env -- bun test .test.ts"
   },
   "dependencies": {
+    "@orpc/server": "^1.12.3",
     "@paralleldrive/cuid2": "^2.2.1",
     "@planetscale/database": "^1.8.0",
     "@sentry/nextjs": "^10.8.0",
@@ -22,6 +23,7 @@
     "@typebot.io/chat-api": "workspace:*",
     "@typebot.io/chat-session": "workspace:*",
     "@typebot.io/conditions": "workspace:*",
+    "@typebot.io/config": "workspace:*",
     "@typebot.io/credentials": "workspace:*",
     "@typebot.io/emails": "workspace:*",
     "@typebot.io/env": "workspace:*",

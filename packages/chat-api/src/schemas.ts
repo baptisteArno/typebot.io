@@ -30,7 +30,7 @@ import {
 import { z } from "@typebot.io/zod";
 import { clientSideActionSchema } from "./clientSideAction";
 
-const textMessageSchema = z
+export const textMessageSchema = z
   .object({
     type: z.literal("text"),
     text: z.string(),
@@ -47,7 +47,7 @@ const textMessageSchema = z
     ref: "textMessage",
   });
 
-const audioMessageSchema = z
+export const audioMessageSchema = z
   .object({
     type: z.literal("audio"),
     url: z.string(),
@@ -60,7 +60,7 @@ const audioMessageSchema = z
     ref: "audioMessage",
   });
 
-const commandMessageSchema = z
+export const commandMessageSchema = z
   .object({
     type: z.literal("command"),
     command: z.string(),
@@ -220,15 +220,19 @@ export const startTypebotSchema = z
   );
 export type StartTypebot = StartTypebotV6 | StartTypebotV5;
 
+export const startFromGroupSchema = z.object({
+  type: z.literal("group"),
+  groupId: z.string(),
+});
+
+export const startFromEventSchema = z.object({
+  type: z.literal("event"),
+  eventId: z.string(),
+});
+
 export const startFromSchema = z.discriminatedUnion("type", [
-  z.object({
-    type: z.literal("group"),
-    groupId: z.string(),
-  }),
-  z.object({
-    type: z.literal("event"),
-    eventId: z.string(),
-  }),
+  startFromGroupSchema,
+  startFromEventSchema,
 ]);
 export type StartFrom = z.infer<typeof startFromSchema>;
 

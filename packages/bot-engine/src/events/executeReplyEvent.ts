@@ -1,4 +1,4 @@
-import { TRPCError } from "@trpc/server";
+import { ORPCError } from "@orpc/server";
 import type { InputMessage } from "@typebot.io/chat-api/schemas";
 import type { SessionState } from "@typebot.io/chat-session/schemas";
 import type { ReplyEvent } from "@typebot.io/events/schemas";
@@ -22,8 +22,7 @@ export const executeReplyEvent = (
   { state, reply }: Props,
 ) => {
   if (!state.currentBlockId)
-    throw new TRPCError({
-      code: "BAD_REQUEST",
+    throw new ORPCError("BAD_REQUEST", {
       message: "In executeReplyEvent, current block id is not set",
     });
 

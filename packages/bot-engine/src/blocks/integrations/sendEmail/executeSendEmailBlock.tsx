@@ -1,4 +1,4 @@
-import { TRPCError } from "@trpc/server";
+import { ORPCError } from "@orpc/server";
 import type { SendEmailBlock } from "@typebot.io/blocks-integrations/sendEmail/schema";
 import type {
   SessionState,
@@ -89,8 +89,7 @@ export const executeSendEmailBlock = async ({
   }
 
   if (sessionStore.getEmailSendingCount() >= maxEmailSending)
-    throw new TRPCError({
-      code: "FORBIDDEN",
+    throw new ORPCError("FORBIDDEN", {
       message: "Attempt to send more than 5 emails",
     });
   try {
@@ -221,8 +220,7 @@ const sendEmail = async ({
 
   const hash = JSON.stringify(email);
   if (sessionStore.getPrevHash() && sessionStore.getPrevHash() === hash)
-    throw new TRPCError({
-      code: "FORBIDDEN",
+    throw new ORPCError("FORBIDDEN", {
       message: "Attempt to send the same email twice",
     });
   sessionStore.setPrevHash(hash);

@@ -12,8 +12,10 @@
     "partysocket": "^1.0.2",
     "@planetscale/database": "^1.8.0",
     "@sentry/nextjs": "^10.8.0",
-    "@trpc/server": "^11.3.1",
-    "trpc-to-openapi": "^2.3.1",
+    "@orpc/server": "^1.12.3",
+    "@orpc/openapi": "^1.12.3",
+    "@orpc/zod": "^1.12.3",
+    "@orpc/otel": "^1.12.3",
     "@typebot.io/bot-engine": "workspace:*",
     "@typebot.io/react": "workspace:*",
     "@typebot.io/prisma": "workspace:*",
@@ -53,8 +55,8 @@
     "@typebot.io/blocks-logic": "workspace:*",
     "@typebot.io/blocks-bubbles": "workspace:*",
     "papaparse": "^5.4.1",
-    "superjson": "^1.12.4",
-    "@typebot.io/runtime-session-store": "workspace:*"
+    "@typebot.io/runtime-session-store": "workspace:*",
+    "@typebot.io/config": "workspace:*"
   },
   "devDependencies": {
     "@playwright/test": "^1.51.0",

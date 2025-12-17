@@ -1,0 +1,27 @@
+{
+  "name": "@typebot.io/webhook-block",
+  "version": "0.0.1",
+  "type": "module",
+  "private": true,
+  "exports": {
+    "./*": "./src/*.ts"
+  },
+  "dependencies": {
+    "@orpc/server": "^1.12.3",
+    "@typebot.io/blocks-logic": "workspace:*",
+    "@typebot.io/chat-session": "workspace:*",
+    "@typebot.io/config": "workspace:*",
+    "@typebot.io/env": "workspace:*",
+    "@typebot.io/groups": "workspace:*",
+    "@typebot.io/lib": "workspace:*",
+    "@typebot.io/prisma": "workspace:*",
+    "@typebot.io/schemas": "workspace:*",
+    "@typebot.io/typebot": "workspace:*",
+    "@typebot.io/whatsapp": "workspace:*",
+    "@typebot.io/zod": "workspace:*",
+    "partysocket": "^1.0.2"
+  },
+  "devDependencies": {
+    "@typebot.io/tsconfig": "workspace:*"
+  }
+}

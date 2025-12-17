@@ -1,0 +1,24 @@
+{
+  "name": "@typebot.io/file-input-block",
+  "version": "0.0.1",
+  "type": "module",
+  "private": true,
+  "exports": {
+    "./*": "./src/*.ts"
+  },
+  "dependencies": {
+    "@typebot.io/zod": "workspace:*",
+    "@typebot.io/groups": "workspace:*",
+    "@typebot.io/blocks-inputs": "workspace:*",
+    "@typebot.io/lib": "workspace:*",
+    "@typebot.io/chat-session": "workspace:*",
+    "@typebot.io/config": "workspace:*",
+    "@typebot.io/prisma": "workspace:*",
+    "@typebot.io/env": "workspace:*",
+    "@typebot.io/blocks-core": "workspace:*",
+    "@typebot.io/blocks-logic": "workspace:*"
+  },
+  "devDependencies": {
+    "@typebot.io/tsconfig": "workspace:*"
+  }
+}

@@ -1,4 +1,4 @@
-import { TRPCError } from "@trpc/server";
+import { ORPCError } from "@orpc/server";
 import type { SessionState } from "@typebot.io/chat-session/schemas";
 import { EventType } from "@typebot.io/events/constants";
 import type { CommandEvent } from "@typebot.io/events/schemas";
@@ -17,8 +17,7 @@ export const executeCommandEvent = ({ state, command }: Props) => {
   ) as CommandEvent | undefined;
 
   if (!event)
-    throw new TRPCError({
-      code: "BAD_REQUEST",
+    throw new ORPCError("BAD_REQUEST", {
       message: "Command event not found",
     });
 
@@ -30,8 +29,7 @@ export const executeCommandEvent = ({ state, command }: Props) => {
         newSessionState.typebotsQueue[0].typebot.groups,
       );
       if (!block)
-        throw new TRPCError({
-          code: "BAD_REQUEST",
+        throw new ORPCError("BAD_REQUEST", {
           message: "Block not found",
         });
       const virtualEdgeMetadata = addVirtualEdge(newSessionState, {
@@ -65,16 +63,14 @@ export const executeCommandEvent = ({ state, command }: Props) => {
     byId(event.outgoingEdgeId),
   );
   if (!nextEdge)
-    throw new TRPCError({
-      code: "BAD_REQUEST",
+    throw new ORPCError("BAD_REQUEST", {
       message: "Command event doesn't have a connected edge",
     });
   const nextGroup = newSessionState.typebotsQueue[0].typebot.groups.find(
     byId(nextEdge.to.groupId),
   );
   if (!nextGroup)
-    throw new TRPCError({
-      code: "BAD_REQUEST",
+    throw new ORPCError("BAD_REQUEST", {
       message: "Command event doesn't have a connected group",
     });
   const nextBlockIndex = nextGroup.blocks.findIndex(byId(nextEdge.to.blockId));

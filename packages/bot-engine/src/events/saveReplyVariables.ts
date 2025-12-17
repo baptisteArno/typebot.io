@@ -1,4 +1,4 @@
-import { TRPCError } from "@trpc/server";
+import { ORPCError } from "@orpc/server";
 import { isInputBlockType } from "@typebot.io/blocks-core/helpers";
 import { replyEventInputTypeFromEnum } from "@typebot.io/blocks-inputs/constants";
 import type { InputMessage } from "@typebot.io/chat-api/schemas";
@@ -19,8 +19,7 @@ export const setReplyEventVariables = (
   },
 ) => {
   if (!state.currentBlockId)
-    throw new TRPCError({
-      code: "BAD_REQUEST",
+    throw new ORPCError("BAD_REQUEST", {
       message: "In setReplyEventVariables, current block id is not set",
     });
 

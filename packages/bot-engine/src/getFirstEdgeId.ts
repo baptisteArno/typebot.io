@@ -1,4 +1,4 @@
-import { TRPCError } from "@trpc/server";
+import { ORPCError } from "@orpc/server";
 import type { TypebotInSession } from "@typebot.io/chat-session/schemas";
 import { isTypebotInSessionAtLeastV6 } from "./helpers/isTypebotInSessionAtLeastV6";
 
@@ -12,8 +12,7 @@ export const getFirstEdgeId = ({
   if (startEventId) {
     const event = typebot.events?.find((e) => e.id === startEventId);
     if (!event)
-      throw new TRPCError({
-        code: "BAD_REQUEST",
+      throw new ORPCError("BAD_REQUEST", {
         message: "Start event doesn't exist",
       });
     return event.outgoingEdgeId;

@@ -1,5 +1,3 @@
-const CAL_COM_URL = "https://cal.com/baptistearno/help";
-
 export const mainAgentSystemPrompt = `You are a product churn analyst, working for Typebot.
     
 You are provided with a Typebot workspace that scheduled a subscription cancellation. Your job is to help me understand why this workspace decided to cancel their subscription.

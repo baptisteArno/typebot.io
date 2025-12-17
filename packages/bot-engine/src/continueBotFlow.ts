@@ -1,4 +1,4 @@
-import { TRPCError } from "@trpc/server";
+import { ORPCError } from "@orpc/server";
 import { BubbleBlockType } from "@typebot.io/blocks-bubbles/constants";
 import {
   isForgedBlockType,
@@ -89,8 +89,7 @@ export const continueBotFlow = async (
   }
 
   if (!newSessionState.currentBlockId)
-    throw new TRPCError({
-      code: "INTERNAL_SERVER_ERROR",
+    throw new ORPCError("INTERNAL_SERVER_ERROR", {
       message: "Current block id is not set",
     });
 
@@ -100,8 +99,7 @@ export const continueBotFlow = async (
   );
 
   if (!block)
-    throw new TRPCError({
-      code: "INTERNAL_SERVER_ERROR",
+    throw new ORPCError("INTERNAL_SERVER_ERROR", {
       message: "Group / block not found",
     });
 
@@ -372,10 +370,10 @@ const processNonInputBlock = async ({
       response = JSON.parse(reply.text);
     } catch (err) {
       if (block.type === IntegrationBlockType.HTTP_REQUEST)
-        throw new TRPCError({
-          code: "BAD_REQUEST",
+        throw new ORPCError("BAD_REQUEST", {
           message: "Provided response is not valid JSON",
-          cause: (await parseUnknownError({ err })).description,
+          data: await parseUnknownError({ err }),
+          cause: err,
         });
       response = {
         statusCode: 200,

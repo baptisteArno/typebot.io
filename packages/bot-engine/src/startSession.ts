@@ -1,6 +1,6 @@
+import { ORPCError } from "@orpc/server";
 import { createId } from "@paralleldrive/cuid2";
 import * as Sentry from "@sentry/nextjs";
-import { TRPCError } from "@trpc/server";
 import { BubbleBlockType } from "@typebot.io/blocks-bubbles/constants";
 import { isInputBlock } from "@typebot.io/blocks-core/helpers";
 import type { Block } from "@typebot.io/blocks-core/schemas/schema";
@@ -327,8 +327,7 @@ const getTypebot = async (startParams: StartParams) => {
     return startParams.typebot;
 
   if (startParams.type === "preview" && !startParams.userId)
-    throw new TRPCError({
-      code: "UNAUTHORIZED",
+    throw new ORPCError("UNAUTHORIZED", {
       message: "You need to be authenticated to perform this action",
     });
 
@@ -351,8 +350,7 @@ const getTypebot = async (startParams: StartParams) => {
       : typebotQuery;
 
   if (!parsedTypebot || parsedTypebot.isArchived)
-    throw new TRPCError({
-      code: "NOT_FOUND",
+    throw new ORPCError("NOT_FOUND", {
       message: "Typebot not found",
     });
 
@@ -363,14 +361,12 @@ const getTypebot = async (startParams: StartParams) => {
       typebotQuery.typebot.workspace.isSuspended);
 
   if (isQuarantinedOrSuspended)
-    throw new TRPCError({
-      code: "FORBIDDEN",
+    throw new ORPCError("FORBIDDEN", {
       message: defaultSystemMessages.botClosed,
     });
 
   if ("isClosed" in parsedTypebot && parsedTypebot.isClosed)
-    throw new TRPCError({
-      code: "BAD_REQUEST",
+    throw new ORPCError("BAD_REQUEST", {
       message:
         settingsSchema.parse(parsedTypebot.settings).general?.systemMessages
           ?.botClosed ?? defaultSystemMessages.botClosed,

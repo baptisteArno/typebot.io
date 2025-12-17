@@ -28,6 +28,7 @@
     "@typebot.io/credentials": "workspace:*",
     "@typebot.io/chat-api": "workspace:*",
     "@sentry/nextjs": "^10.8.0",
+    "@typebot.io/config": "workspace:*",
     "ky": "^1.2.4",
     "@typebot.io/runtime-session-store": "workspace:*"
   },

@@ -1,0 +1,167 @@
+import { ORPCError } from "@orpc/server";
+import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
+import { getSession } from "@typebot.io/chat-session/queries/getSession";
+import { env } from "@typebot.io/env";
+import { getBlockById } from "@typebot.io/groups/helpers/getBlockById";
+import { parseGroups } from "@typebot.io/groups/helpers/parseGroups";
+import { generatePresignedPostPolicy } from "@typebot.io/lib/s3/generatePresignedPostPolicy";
+import prisma from "@typebot.io/prisma";
+import { z } from "@typebot.io/zod";
+
+export const generateUploadUrlV1InputSchema = z.object({
+  filePathProps: z
+    .object({
+      typebotId: z.string(),
+      blockId: z.string(),
+      resultId: z.string(),
+      fileName: z.string(),
+    })
+    .or(
+      z.object({
+        sessionId: z.string(),
+        fileName: z.string(),
+      }),
+    ),
+  fileType: z.string().optional(),
+});
+
+export const handleGenerateUploadUrlV1 = async ({
+  input: { filePathProps, fileType },
+}: {
+  input: z.infer<typeof generateUploadUrlV1InputSchema>;
+}) => {
+  if (!env.S3_ENDPOINT || !env.S3_ACCESS_KEY || !env.S3_SECRET_KEY)
+    throw new ORPCError("INTERNAL_SERVER_ERROR", {
+      message:
+        "S3 not properly configured. Missing one of those variables: S3_ENDPOINT, S3_ACCESS_KEY, S3_SECRET_KEY",
+    });
+
+  if ("typebotId" in filePathProps) {
+    const publicTypebot = await prisma.publicTypebot.findFirst({
+      where: {
+        typebotId: filePathProps.typebotId,
+      },
+      select: {
+        version: true,
+        groups: true,
+        typebot: {
+          select: {
+            workspaceId: true,
+          },
+        },
+      },
+    });
+
+    const workspaceId = publicTypebot?.typebot.workspaceId;
+
+    if (!workspaceId)
+      throw new ORPCError("BAD_REQUEST", {
+        message: "Can't find workspaceId",
+      });
+
+    const filePath = `public/workspaces/${workspaceId}/typebots/${filePathProps.typebotId}/results/${filePathProps.resultId}/${filePathProps.fileName}`;
+
+    const fileUploadBlock = parseGroups(publicTypebot.groups, {
+      typebotVersion: publicTypebot.version,
+    })
+      .flatMap((group) => group.blocks)
+      .find((block) => block.id === filePathProps.blockId);
+
+    if (fileUploadBlock?.type !== InputBlockType.FILE)
+      throw new ORPCError("BAD_REQUEST", {
+        message: "Can't find file upload block",
+      });
+
+    const presignedPostPolicy = await generatePresignedPostPolicy({
+      fileType,
+      filePath,
+      maxFileSize:
+        fileUploadBlock.options?.sizeLimit ??
+        env.NEXT_PUBLIC_BOT_FILE_UPLOAD_MAX_SIZE,
+    });
+
+    return {
+      presignedUrl: presignedPostPolicy.postURL,
+      formData: presignedPostPolicy.formData,
+      fileUrl: env.S3_PUBLIC_CUSTOM_DOMAIN
+        ? `${env.S3_PUBLIC_CUSTOM_DOMAIN}/${filePath}`
+        : `${presignedPostPolicy.postURL}/${presignedPostPolicy.formData.key}`,
+    };
+  }
+
+  const session = await getSession(filePathProps.sessionId);
+
+  if (!session?.state)
+    throw new ORPCError("BAD_REQUEST", {
+      message: "Can't find session",
+    });
+
+  const typebotId = session.state.typebotsQueue[0].typebot.id;
+
+  const publicTypebot = await prisma.publicTypebot.findFirst({
+    where: {
+      typebotId,
+    },
+    select: {
+      version: true,
+      groups: true,
+      typebot: {
+        select: {
+          workspaceId: true,
+        },
+      },
+    },
+  });
+
+  const workspaceId = publicTypebot?.typebot.workspaceId;
+
+  if (!workspaceId)
+    throw new ORPCError("BAD_REQUEST", {
+      message: "Can't find workspaceId",
+    });
+
+  if (session.state.currentBlockId === undefined)
+    throw new ORPCError("BAD_REQUEST", {
+      message: "Can't find currentBlockId in session state",
+    });
+
+  const { block: fileUploadBlock } = getBlockById(
+    session.state.currentBlockId,
+    parseGroups(publicTypebot.groups, {
+      typebotVersion: publicTypebot.version,
+    }),
+  );
+
+  if (fileUploadBlock?.type !== InputBlockType.FILE)
+    throw new ORPCError("BAD_REQUEST", {
+      message: "Can't find file upload block",
+    });
+
+  const resultId = session.state.typebotsQueue[0].resultId;
+
+  const filePath = `${
+    fileUploadBlock.options?.visibility === "Private" ? "private" : "public"
+  }/workspaces/${workspaceId}/typebots/${typebotId}/results/${resultId}/${
+    filePathProps.fileName
+  }`;
+
+  const presignedPostPolicy = await generatePresignedPostPolicy({
+    fileType,
+    filePath,
+    maxFileSize:
+      fileUploadBlock.options && "sizeLimit" in fileUploadBlock.options
+        ? (fileUploadBlock.options.sizeLimit as number)
+        : env.NEXT_PUBLIC_BOT_FILE_UPLOAD_MAX_SIZE,
+  });
+
+  return {
+    presignedUrl: presignedPostPolicy.postURL,
+    formData: presignedPostPolicy.formData,
+    fileUrl:
+      fileUploadBlock.options?.visibility === "Private"
+        ? `${env.NEXTAUTH_URL}/api/typebots/${typebotId}/results/${resultId}/${filePathProps.fileName}`
+        : env.S3_PUBLIC_CUSTOM_DOMAIN
+          ? `${env.S3_PUBLIC_CUSTOM_DOMAIN}/${filePath}`
+          : `${presignedPostPolicy.postURL}/${presignedPostPolicy.formData.key}`,
+  };
+};

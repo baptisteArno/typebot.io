@@ -1,4 +1,4 @@
-import { TRPCError } from "@trpc/server";
+import { ORPCError } from "@orpc/server";
 import type { SessionState } from "@typebot.io/chat-session/schemas";
 import type { TDraggableEvent } from "@typebot.io/events/schemas";
 import { addDummyFirstBlockToGroupIfMissing } from "../addDummyFirstBlockToGroupIfMissing";
@@ -16,8 +16,7 @@ export const updateCurrentBlockIdWithEvent = ({ state, event }: Props) => {
   );
 
   if (!edge)
-    throw new TRPCError({
-      code: "BAD_REQUEST",
+    throw new ORPCError("BAD_REQUEST", {
       message: `Could not find outgoing edge`,
     });
 

@@ -1,37 +1,13 @@
+import { ORPCInstrumentation } from "@orpc/otel";
 import * as Sentry from "@sentry/nextjs";
-import type { TRPCError } from "@trpc/server";
-
-const ignoreTrpcMessages = [
-  "bot is now closed",
-  "not found",
-  "timeout reached",
-  "Missing startParams",
-  "need to be authenticated to perform this action",
-  "current block does not expect file upload",
-  "couldn't find credentials in database",
-  "start group doesn't exist",
-  "origin not allowed",
-  "Missing credentialsId",
-  "Provided response is not valid JSON",
-  "Could not parse amount, make sure your block is configured correctly",
-  "Start event doesn't exist",
-];
-
-const ignoreMessages = [
-  "could not find credentials",
-  "is in reply state",
-  "point to another phone ID",
-  "message did not matched any condition",
-  "no public typebot with WhatsApp integration found",
-];
 
 const crawlersToIgnore = ["Googlebot"];
 
 Sentry.init({
   dsn: process.env.SENTRY_DSN,
   environment: process.env.NODE_ENV,
-  beforeSend: (event, hint) => {
-    const exception = hint.originalException;
+  openTelemetryInstrumentations: [new ORPCInstrumentation()],
+  beforeSend: (event) => {
     const userAgent = event.contexts?.browser?.name;
     if (
       userAgent &&
@@ -39,21 +15,6 @@ Sentry.init({
       crawlersToIgnore.some((crawler) => userAgent.includes(crawler))
     )
       return null;
-    if (
-      typeof exception === "string" &&
-      ignoreMessages.some((message) =>
-        exception.toLowerCase().includes(message.toLowerCase()),
-      )
-    )
-      return null;
-    if (isTrpcError(exception)) {
-      if (
-        ignoreTrpcMessages.some((message) =>
-          exception.message.toLowerCase().includes(message.toLowerCase()),
-        )
-      )
-        return null;
-    }
     return event;
   },
   integrations: [
@@ -61,8 +22,3 @@ Sentry.init({
   ],
   enableLogs: true,
 });
-
-const isTrpcError = (err: unknown): err is TRPCError => {
-  if (!err || typeof err !== "object") return false;
-  return "name" in err && err.name === "TRPCError";
-};

@@ -1,4 +1,4 @@
-import { TRPCError } from "@trpc/server";
+import { ORPCError } from "@orpc/server";
 import { defaultPaymentInputOptions } from "@typebot.io/blocks-inputs/payment/constants";
 import type {
   PaymentInputBlock,
@@ -48,14 +48,12 @@ const createStripePaymentIntent = async (
   },
 ): Promise<PaymentInputRuntimeOptions> => {
   if (!options?.credentialsId)
-    throw new TRPCError({
-      code: "BAD_REQUEST",
+    throw new ORPCError("BAD_REQUEST", {
       message: "Missing credentialsId",
     });
   const stripeKeys = await getStripeInfo(options.credentialsId, workspaceId);
   if (!stripeKeys)
-    throw new TRPCError({
-      code: "NOT_FOUND",
+    throw new ORPCError("NOT_FOUND", {
       message: "Credentials not found",
     });
   const stripe = new Stripe(
@@ -70,8 +68,7 @@ const createStripePaymentIntent = async (
       (isZeroDecimalCurrency(currency) ? 1 : 100),
   );
   if (isNaN(amount))
-    throw new TRPCError({
-      code: "BAD_REQUEST",
+    throw new ORPCError("BAD_REQUEST", {
       message:
         "Could not parse amount, make sure your block is configured correctly",
     });
@@ -94,8 +91,7 @@ const createStripePaymentIntent = async (
   });
 
   if (!paymentIntent.client_secret)
-    throw new TRPCError({
-      code: "BAD_REQUEST",
+    throw new ORPCError("BAD_REQUEST", {
       message: "Could not create payment intent",
     });
 
