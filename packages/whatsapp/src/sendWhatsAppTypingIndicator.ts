@@ -2,7 +2,6 @@ import * as Sentry from "@sentry/nextjs";
 import type { WhatsAppCredentials } from "@typebot.io/credentials/schemas";
 import { env } from "@typebot.io/env";
 import ky from "ky";
-import { dialog360AuthHeaderName, dialog360BaseUrl } from "./constants";
 
 type Props = {
   messageId: string;
@@ -24,12 +23,13 @@ export const sendWhatsAppTypingIndicator = async ({
     };
 
     if (credentials.provider === "360dialog") {
-      await ky.post(`${dialog360BaseUrl}/messages`, {
-        headers: {
-          [dialog360AuthHeaderName]: credentials.apiKey,
-        },
-        json,
-      });
+      return;
+      // await ky.post(`${dialog360BaseUrl}/messages`, {
+      //   headers: {
+      //     [dialog360AuthHeaderName]: credentials.apiKey,
+      //   },
+      //   json,
+      // });
     } else {
       await ky.post(
         `${env.WHATSAPP_CLOUD_API_URL}/v21.0/${credentials.phoneNumberId}/messages`,
