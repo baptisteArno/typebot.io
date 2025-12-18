@@ -1,4 +1,4 @@
-import { TRPCError } from "@trpc/server";
+import { ORPCError } from "@orpc/server";
 import { BubbleBlockType } from "@typebot.io/blocks-bubbles/constants";
 import { messageSchema } from "@typebot.io/chat-api/schemas";
 import { getSession } from "@typebot.io/chat-session/queries/getSession";
@@ -40,8 +40,7 @@ export const handleContinueChat = async ({
   const session = await getSession(sessionId);
 
   if (!session?.state) {
-    throw new TRPCError({
-      code: "NOT_FOUND",
+    throw new ORPCError("NOT_FOUND", {
       message: "Session not found.",
     });
   }
@@ -57,8 +56,7 @@ export const handleContinueChat = async ({
     session.updatedAt.getTime() + session.state.expiryTimeout < Date.now();
 
   if (isSessionExpired)
-    throw new TRPCError({
-      code: "NOT_FOUND",
+    throw new ORPCError("NOT_FOUND", {
       message: "Session expired. You need to start a new session.",
     });
 

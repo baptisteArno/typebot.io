@@ -1,4 +1,4 @@
-import { TRPCError } from "@trpc/server";
+import { ORPCError } from "@orpc/server";
 import { getSession } from "@typebot.io/chat-session/queries/getSession";
 import { logInSessionSchema } from "@typebot.io/logs/schemas";
 import { z } from "@typebot.io/zod";
@@ -26,8 +26,7 @@ export const handleSaveClientLogs = async ({
   const session = await getSession(sessionId);
 
   if (!session?.state) {
-    throw new TRPCError({
-      code: "NOT_FOUND",
+    throw new ORPCError("NOT_FOUND", {
       message: "Session not found.",
     });
   }
@@ -40,8 +39,7 @@ export const handleSaveClientLogs = async ({
   const resultId = session.state.typebotsQueue[0].resultId;
 
   if (!resultId) {
-    throw new TRPCError({
-      code: "NOT_FOUND",
+    throw new ORPCError("NOT_FOUND", {
       message: "Result not found.",
     });
   }
@@ -59,8 +57,7 @@ export const handleSaveClientLogs = async ({
     };
   } catch (e) {
     console.error("Failed to save logs", e);
-    throw new TRPCError({
-      code: "INTERNAL_SERVER_ERROR",
+    throw new ORPCError("INTERNAL_SERVER_ERROR", {
       message: "Failed to save logs.",
     });
   }

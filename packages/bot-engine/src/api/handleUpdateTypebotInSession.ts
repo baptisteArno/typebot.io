@@ -1,4 +1,4 @@
-import { TRPCError } from "@trpc/server";
+import { ORPCError } from "@orpc/server";
 import { getSession } from "@typebot.io/chat-session/queries/getSession";
 import type { SessionState } from "@typebot.io/chat-session/schemas";
 import prisma from "@typebot.io/prisma";
@@ -24,7 +24,7 @@ export const handleUpdateTypebotInSession = async ({
 }) => {
   const session = await getSession(sessionId);
   if (!session?.state)
-    throw new TRPCError({ code: "NOT_FOUND", message: "Session not found" });
+    throw new ORPCError("NOT_FOUND", { message: "Session not found" });
 
   const publicTypebot = (await prisma.publicTypebot.findFirst({
     where: {
@@ -54,7 +54,7 @@ export const handleUpdateTypebotInSession = async ({
   })) as Pick<PublicTypebot, "edges" | "variables" | "groups"> | null;
 
   if (!publicTypebot)
-    throw new TRPCError({ code: "UNAUTHORIZED", message: "Unauthorized" });
+    throw new ORPCError("UNAUTHORIZED", { message: "Unauthorized" });
 
   const newSessionState = updateSessionState(session.state, publicTypebot);
 
