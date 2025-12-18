@@ -68,7 +68,7 @@ export const publicChatRouter = {
     .input(saveClientLogsInputSchema)
     .output(z.object({ message: z.string() }))
     .handler(handleSaveClientLogs),
-  startChatPreviewProcedure: protectedProcedure
+  startChatPreviewProcedure: procedureWithOptionalUser
     .route({
       method: "POST",
       path: "/v1/typebots/{typebotId}/preview/startChat",

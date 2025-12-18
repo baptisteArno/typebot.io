@@ -68,7 +68,7 @@ export const startPreviewChatInputSchema = z.object({
 });
 
 type Context = {
-  user: { id: string };
+  user?: { id: string };
 };
 
 export const handleStartChatPreview = async ({
@@ -110,7 +110,7 @@ export const handleStartChatPreview = async ({
       startFrom,
       typebotId,
       typebot: startTypebot,
-      userId: user.id,
+      userId: user?.id,
       prefilledVariables,
       textBubbleContentFormat,
       message,
