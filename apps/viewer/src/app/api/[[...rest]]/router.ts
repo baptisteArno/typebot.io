@@ -29,13 +29,13 @@ const privateRouter = {
     })
     .output(z.object({ status: z.literal("ok") }))
     .handler(() => ({ status: "ok" })),
-  fail: publicProcedure
+  success: publicProcedure
     .route({
       method: "POST",
       path: "/mock/success",
     })
     .handler(() => ({ statusCode: 200, statusMessage: "OK" })),
-  success: publicProcedure
+  fail: publicProcedure
     .route({
       method: "POST",
       path: "/mock/fail",

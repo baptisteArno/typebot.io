@@ -25,7 +25,7 @@ export const authenticateByToken = async (
   return apiToken?.owner;
 };
 
-const extractBearerToken = (req: Request) =>
+export const extractBearerToken = (req: Request) =>
   req.headers.get("authorization")?.slice(7);
 
 export type Context = ReturnType<typeof createContext>;

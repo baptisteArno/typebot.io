@@ -24,6 +24,7 @@
     "@trpc/client": "^11.3.1",
     "@trpc/next": "^11.3.1",
     "@trpc/server": "^11.3.1",
+    "@typebot.io/config": "workspace:*",
     "@trpc/tanstack-react-query": "^11.3.1",
     "@typebot.io/blocks-bubbles": "workspace:*",
     "@typebot.io/blocks-core": "workspace:*",

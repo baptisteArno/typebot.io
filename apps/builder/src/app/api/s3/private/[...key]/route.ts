@@ -1,3 +1,7 @@
+import {
+  authenticateByToken,
+  extractBearerToken,
+} from "@typebot.io/config/orpc/viewer/context";
 import { getFileTempUrl } from "@typebot.io/lib/s3/getFileTempUrl";
 import prisma from "@typebot.io/prisma";
 import { isReadTypebotForbidden } from "@typebot.io/typebot/helpers/isReadTypebotForbidden";
@@ -50,12 +54,14 @@ const pathAuthorizationCheckers: Record<
 };
 
 export const GET = async (
-  _req: NextRequest,
+  req: NextRequest,
   { params }: { params: Promise<{ key: string[] }> },
 ) => {
-  const session = await auth();
+  const user =
+    (await auth())?.user ??
+    (await authenticateByToken(extractBearerToken(req)));
 
-  if (!session?.user) return new Response("Unauthorized", { status: 401 });
+  if (!user) return new Response("Unauthorized", { status: 401 });
 
   const keySegments = (await params).key ?? [];
   const s3Key = keySegments.map(decodeURIComponent).join("/");
@@ -69,8 +75,8 @@ export const GET = async (
 
   const authChecker = pathAuthorizationCheckers[match.pattern];
   const isAuthorized = await authChecker(match.params, {
-    id: session.user.id,
-    email: session.user.email,
+    id: user.id,
+    email: user.email,
   });
 
   if (!isAuthorized) return new Response("Forbidden", { status: 403 });
