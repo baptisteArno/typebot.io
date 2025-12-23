@@ -131,10 +131,6 @@ const nextConfig = {
             source: "/healthz",
             destination: "/api/healthz",
           },
-          {
-            source: "/api/typebots/:typebotId/webhookSteps",
-            destination: "/api/typebots/:typebotId/webhookBlocks",
-          },
         ])
         .concat(
           process.env.NEXTAUTH_URL

@@ -75,13 +75,54 @@ const privateRouter = {
           },
         });
 
-        return typebots.map((typebot) => ({
-          id: typebot.id,
-          name: typebot.name,
-          publishedTypebotId: typebot.publishedTypebot?.id,
-        }));
+        return {
+          typebots: typebots.map((typebot) => ({
+            id: typebot.id,
+            name: typebot.name,
+            publishedTypebotId: typebot.publishedTypebot?.id,
+          })),
+        };
       }),
-    httpRequestBlocks: protectedProcedure
+    zapierStepsEndpoint: protectedProcedure
+      .route({
+        method: "GET",
+        path: "/typebots/{typebotId}/webhookSteps",
+      })
+      .input(z.object({ typebotId: z.string() }))
+      .handler(async ({ context: { user }, input: { typebotId } }) => {
+        const typebot = await prisma.typebot.findFirst({
+          where: {
+            id: typebotId,
+            workspace: { members: { some: { userId: user.id } } },
+          },
+          select: { groups: true, version: true },
+        });
+        if (!typebot)
+          throw new ORPCError("NOT_FOUND", {
+            message: "Typebot not found",
+          });
+        const groups = parseGroups(typebot?.groups, {
+          typebotVersion: typebot?.version,
+        });
+        const emptyHttpRequestBlocks = groups.reduce<
+          { id: string; blockId: string; name: string }[]
+        >((emptyWebhookBlocks, group) => {
+          const blocks = group.blocks.filter((block) =>
+            isHttpRequestBlock(block),
+          );
+          return [
+            ...emptyWebhookBlocks,
+            ...blocks.map((b) => ({
+              blockId: group.id,
+              id: b.id,
+              name: `${group.title} > ${b.id}`,
+            })),
+          ];
+        }, []);
+
+        return { steps: emptyHttpRequestBlocks };
+      }),
+    makeComBlocksEndpoint: protectedProcedure
       .route({
         method: "GET",
         path: "/typebots/{typebotId}/webhookBlocks",
