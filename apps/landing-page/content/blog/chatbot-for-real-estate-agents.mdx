@@ -28,7 +28,7 @@ Chatbots handle [appointment scheduling 24/7](./appointment-scheduling-chatbot.m
 
 Relationships have always been central to real estate, but how agents connect with clients is changing. Buyers and sellers want instant answers, tailored recommendations, and easy scheduling—anytime.
 
-Industry research shows that [**43% of customer experience experts** now rank “immediate response”](https://gammagroup.co/resources/blog/5-features-to-respect-customers-time-and-improve-cx/) as a top client priority. In a market where slow replies can cost opportunities, chatbots serve as 24/7 concierges. They greet visitors, understand needs, and move clients forward without breaks.
+Industry research shows that **[43% of customer experience experts** now rank “immediate response”](https://gammagroup.co/resources/blog/5-features-to-respect-customers-time-and-improve-cx/) as a top client priority. In a market where slow replies can cost opportunities, chatbots serve as 24/7 concierges. They greet visitors, understand needs, and move clients forward without breaks.
 
 ### Key Industry Trends Driving Chatbot Adoption in Real Estate
 
@@ -43,14 +43,12 @@ Agents relying on traditional communication risk losing out to those who engage,
 Real estate demands managing details and meeting deadlines. Agents juggle multiple listings, respond to many inquiries, and track each client’s preferences. Mistakes or missed chances can be costly.
 
 Chatbots act as reliable assistants, handling repetitive but essential tasks that can overwhelm even the most organized agent:
-
-| Feature                          | What It Does                                                                 | Why It Matters for Agents                                      |
+| Feature | What It Does | Why It Matters for Agents |
 | -------------------------------- | ---------------------------------------------------------------------------- | -------------------------------------------------------------- |
-| **Lead Capture & Qualification** | Gathers contact info, budget, location, and timeline via short conversations | Saves time by filtering serious buyers from casual browsers    |
-| **Appointment Scheduling**       | Syncs with calendars (Google, Calendly) to let users book instantly          | Converts interest into action—even after hours                 |
-| **Personalized Recommendations** | Uses client inputs to suggest properties that match preferences              | Provides more relevant options, increasing conversion chances  |
-| **Follow-up & Nurturing**        | Sends automated messages post-visit or after initial contact                 | Keeps your brand top-of-mind and nudges leads toward decisions |
-
+| **Lead Capture & Qualification** | Gathers contact info, budget, location, and timeline via short conversations | Saves time by filtering serious buyers from casual browsers |
+| **Appointment Scheduling** | Syncs with calendars (Google, Calendly) to let users book instantly | Converts interest into action—even after hours |
+| **Personalized Recommendations** | Uses client inputs to suggest properties that match preferences | Provides more relevant options, increasing conversion chances |
+| **Follow-up & Nurturing** | Sends automated messages post-visit or after initial contact | Keeps your brand top-of-mind and nudges leads toward decisions |
 In 2025, the real question isn’t agents should use chatbots. The questions is how quickly they can integrate and leverage these tools to stay ahead. Those who adopt chatbots set a new standard for exceptional service in a competitive market.
 
 ## How to Build a Real Estate Chatbot Flow with Typebot
@@ -62,102 +60,88 @@ Before diving into the step-by-step tutorial, here is what the final chatbot loo
 <Image
   src="/blog-assets/chatbot-for-real-estate-agents/chatbot-scheduling-property-viewing.avif"
   alt=""
-  width="704px"
-  height="1058px"
+  width={704}
+  height={1058}
 />
 
 Typebot makes setup easy, even for non-technical users. After building your chatbot flow, simply go to the **Share** tab in the Typebot dashboard.
 
 There, you’ll see integration options for different platforms. For [React](./react-chatbot.mdx), Typebot provides a code snippet with your unique chatbot ID highlighted, as shown below.
 
-Just copy this ID and use it in your embed code, like **&lt;&lt;Typebot id="[ID OF THE TYPEBOT]" /&gt&gt;** , replacing the ID with your own. This lets you quickly preview and deploy your chatbot with minimal effort.
+Just copy this ID and use it in your embed code, like **<Typebot id="[ID OF THE TYPEBOT]" />** , replacing the ID with your own. This lets you quickly preview and deploy your chatbot with minimal effort.
 
 <Image
   src="/blog-assets/chatbot-for-real-estate-agents/react-bubble-code-snippet.avif"
   alt="react bubble code snippet"
-  width="878px"
-  height="993px"
+  width={878}
+  height={993}
 />
 
 ### Step 1: Start Block
 
 - You don’t need to drag this — it’s already there by default.
-
 - It connects directly to the first question block.
 
 ### Step 2: Group #1 — Message + Choice
 
 1. **Drag a** `Text` **block.**
-
 2. Enter this message:
 
-   ```
-   Hi there! Looking to schedule a property viewing?
-   I'm here to help you pick the perfect time — no waiting for business hours.
-   ```
+```
+Hi there! Looking to schedule a property viewing?
+I'm here to help you pick the perfect time — no waiting for business hours.
+```
 
 <Image
   src="/blog-assets/chatbot-for-real-estate-agents/chatbot-flow-diagram.avif"
   alt=""
-  width="586px"
-  height="940px"
+  width={586}
+  height={940}
 />
 
-3. Below the message, **add two buttons from Button block**:
+1. Below the message, **add two buttons from Button block**:
 
 - **Yes** → Link to next block
-
 - **No** → Link to a message that ends the conversation (Step 9)
-
 - Save the button value in a variable (e.g., `Ask_Name`)
 
 <Image
   src="/blog-assets/chatbot-for-real-estate-agents/chatbot-flow-diagram-ui.avif"
   alt="chatbot flow diagram ui"
-  width="910px"
-  height="937px"
+  width={910}
+  height={937}
 />
 
 ### Step 3: Group #2 — Ask for Name
 
 1. **Drag a** `Text` **block.**
-
 2. Set the question:
-
    > "Great! First, can I get your name?"
-
 3. **Input type:** Text
-
 4. **Save response as variable:** `user_name`
-
 5. Connect it to the next block.
 
 <Image
   src="/blog-assets/chatbot-for-real-estate-agents/settings-panel-user-name.avif"
   alt="settings panel user name"
-  width="510px"
-  height="760px"
+  width={510}
+  height={760}
 />
 
 ### Step 4: Group #4 — Ask for Date
 
 1. **Drag a** `Text` **block.**
-
 2. Set the question:
-
    > "What day would you like to visit the property?"
-
 3. **Input type:** Date block
-
 4. **Save response as variable:** `visit_date`
-
 5. You can adjust the min-max values from there. Set the min value in today's date to avoid any complication. Max value is up to you.
 
 <Image
   src="/blog-assets/chatbot-for-real-estate-agents/date-input-form-ui.avif"
   alt="date input form ui"
-  width="938px"
-  height="616px"
+  width={938}
+  height={616}
 />
 
 ### Step 5: Group #5 — Ask for Time
@@ -170,110 +154,94 @@ Set the question:
 
 - Do not forget to enter as variable.
 
-2. **Input type:** Time block
-3. **Save response as variable:** `visit_time.`
-4. Should be look like this:
+1. **Input type:** Time block
+2. **Save response as variable:** `visit_time.`
+3. Should be look like this:
 
 <Image
   src="/blog-assets/chatbot-for-real-estate-agents/chatbot-time-collection-settings.avif"
   alt="chatbot time collection settings"
-  width="963px"
-  height="531px"
+  width={963}
+  height={531}
 />
 
 ### Step 6: Group #6 — Ask for Phone
 
 1. **Drag a** `Text` **block.**
-
 2. Set the question:
-
    > "Almost done! Could you share your phone number so we can confirm your appointment?"
-
 3. **Input type:** Phone
-
 4. **Save response as variable:** `user_phone`
 
 <Image
   src="/blog-assets/chatbot-for-real-estate-agents/phone-number-input-form.avif"
   alt="phone number input form"
-  width="946px"
-  height="781px"
+  width={946}
+  height={781}
 />
 
 ### Step 7: Group #7 — Confirmation Message
 
 1. **Drag a** `Text` **block again.**
-
 2. Set the message:
 
-   ```
-   ✅ You're all set, \{\{user_name\}\}!
-   We've scheduled your property viewing for \{\{visit_date\}\} at \{\{visit_time\}\}.
-   We’ll reach out to you at \{\{user_phone\}\} if anything changes.
-   ```
+```
+✅ You're all set, \{\{user_name\}\}!
+We've scheduled your property viewing for \{\{visit_date\}\} at \{\{visit_time\}\}.
+We’ll reach out to you at \{\{user_phone\}\} if anything changes.
+```
 
 3. Do not forget the variables. Should be look like this:
 
 <Image
   src="/blog-assets/chatbot-for-real-estate-agents/group-7-confirmation-message.avif"
   alt="group 7 confirmation message"
-  width="497px"
-  height="526px"
+  width={497}
+  height={526}
 />
 
 ### Step 8: Google Sheet Integration
 
 1. **Drag an** `Integrations` **block** (Choose "Google Sheets").
-
 2. Select your Google account and Sheet.
-
 3. There must be columns as Phone, Date, Time, Name. Otherwise, you might get an error.
-
 4. Configure it to:
 
-   - **Insert a new row**
-
-   - Add to values:
-
-     - Name: `{{user_name}}`
-
-     - Date: `{{visit_date}}`
-
-     - Time: `{{visit_time}}`
-
-     - Phone: `{{user_phone}}`
+- **Insert a new row**
+- Add to values:
+  - Name: `\{\{user_name\}\}`
+  - Date: `\{\{visit_date\}\}`
+  - Time: `\{\{visit_time\}\}`
+  - Phone: `\{\{user_phone\}\}`
 
 <Image
   src="/blog-assets/chatbot-for-real-estate-agents/typebot-sheet-interface.avif"
   alt="typebot sheet interface"
-  width="475px"
-  height="602px"
+  width={475}
+  height={602}
 />
 
 <Image
   src="/blog-assets/chatbot-for-real-estate-agents/form-with-data-fields.avif"
   alt="form with data fields"
-  width="918px"
-  height="587px"
+  width={918}
+  height={587}
 />
 
-5. It will automatically add the data to the sheet.
+1. It will automatically add the data to the sheet.
 
 ### Step 9: Group #9 — Exit Flow (No Answer)
 
 1. **Drag a** `Text` **block.**
-
 2. Set the message:
-
    > "No worries! Let me know if you'd like more info on the property later."
-
 3. End the flow after this. Here is the final flow:
 
 <Image
   src="/blog-assets/chatbot-for-real-estate-agents/flowchart-property-viewing-scheduling.avif"
   alt="flowchart property viewing scheduling"
-  width="1200px"
-  height="466px"
+  width={1200}
+  height={466}
 />
 
 <Cta buttonLabel="Build Your First Bot Today">
@@ -367,8 +335,8 @@ Think of your chatbot as a tailored suit—the fit, fabric, and details matter. 
 <Image
   src="/blog-assets/chatbot-for-real-estate-agents/typebot-example-analytics-flow-chart.avif"
   alt="Typebot Example Analytics Flow Chart"
-  width="1200px"
-  height="818px"
+  width={1200}
+  height={818}
 />
 
 Improvement starts with measurement. Effective chatbots don’t just interact. They track and report. Analytics dashboards reveal listings. Which attracted the most attention, where leads drop off, and how quickly inquiries turn into appointments.
@@ -441,19 +409,19 @@ Not all chatbots deliver the same results. Some platforms promise a lot, while o
 The right chatbot acts as a silent partner. It never sleeps, misses a follow-up, or fails to greet prospects with a friendly message, no matter the hour.
 
 Below is a table that highlights the key differences that matter during a busy day. Each platform reflects a philosophy about how real estate should be done, beyond just a list of features.
-
-| Platform     | Best For                       | Pros                                            | Cons                        | Pricing        |
-| ------------ | ------------------------------ | ----------------------------------------------- | --------------------------- | -------------- |
-| Typebot      | Custom flows &amp; web widgets | No-code builder, responsive design, easy embeds | Lacks deep CRM integrations | Free + Paid    |
-| ManyChat     | Messenger bots                 | Strong Meta tools, smart flows                  | Mostly Messenger-focused    | $15–65/mo      |
-| Tidio        | Live chat + AI                 | Live agent handoff, multichannel                | CRM tools are add-ons       | Free + Paid    |
-| Landbot      | Web-based bots                 | Highly visual builder, API options              | Slightly complex UI         | $30+/mo        |
-| MobileMonkey | Multi-channel outreach         | Omni-channel (SMS, web, Messenger)              | Learning curve              | $19+/mo        |
-| Chatfuel     | Facebook automation            | Quick start templates                           | Platform limited            | $15+/mo        |
-| Botpress     | Developers                     | Open-source NLP, highly customizable            | Needs technical skills      | Free           |
-| Tars         | Lead-gen agencies              | Prebuilt high-converting flows                  | No social integrations      | $49+/mo        |
-| Zoho SalesIQ | Zoho CRM users                 | Tight CRM sync                                  | Limited NLP                 | Starts $10/mo  |
-| Drift        | Enterprise/B2B                 | Lead routing, team collaboration                | Expensive                   | Custom Pricing |
+| | | | | |
+| ---------------- | -------------------------- | ----------------------------------------------- | --------------------------- | -------------- |
+| Platform | Best For | Pros | Cons | Pricing |
+| **Typebot** | Custom flows & web widgets | No-code builder, responsive design, easy embeds | Lacks deep CRM integrations | Free + Paid |
+| **ManyChat** | Messenger bots | Strong Meta tools, smart flows | Mostly Messenger-focused | $15–65/mo |
+| **Tidio** | Live chat + AI | Live agent handoff, multichannel | CRM tools are add-ons | Free + Paid |
+| **Landbot** | Web-based bots | Highly visual builder, API options | Slightly complex UI | $30+/mo |
+| **MobileMonkey** | Multi-channel outreach | Omni-channel (SMS, web, Messenger) | Learning curve | $19+/mo |
+| **Chatfuel** | Facebook automation | Quick start templates | Platform limited | $15+/mo |
+| **Botpress** | Developers | Open-source NLP, highly customizable | Needs technical skills | Free |
+| **Tars** | Lead-gen agencies | Prebuilt high-converting flows | No social integrations | $49+/mo |
+| **Zoho SalesIQ** | Zoho CRM users | Tight CRM sync | Limited NLP | Starts $10/mo |
+| **Drift** | Enterprise/B2B | Lead routing, team collaboration | Expensive | Custom Pricing |
 
 ### Pricing Breakdown and ROI Calculator
 
@@ -461,8 +429,9 @@ Time is money. A chatbot saves hours of manual follow-up each week.
 
 ### Estimated ROI Table
 
-| Chatbot        | Monthly Cost | Hours Saved | Equivalent Labor Cost | Estimated ROI |
+|                |              |             |                       |               |
 | -------------- | ------------ | ----------- | --------------------- | ------------- |
+| Chatbot        | Monthly Cost | Hours Saved | Equivalent Labor Cost | Estimated ROI |
 | Typebot (Free) | $0           | 15          | $450                  | Infinite      |
 | ManyChat       | $25          | 10          | $300                  | 12x           |
 | Tars           | $49          | 12          | $360                  | 7x            |
@@ -481,7 +450,7 @@ The evidence is clear. Chatbot for real estate agents represents more than just 
 
 28% of real estate businesses already getting the benefit of live chat technology. Also, over 72% of industry decision-makers actively investing in AI solutions. The question isn't whether to adopt chatbot technology. It is about how quickly you can implement it to stay competitive.
 
-Start building your first chatbot flow today with Typebot. Transform those late-night property inquiries into qualified leads while you sleep.
+Start building your first chatbot flow today with Typebot. Transform those [late-night property inquiries into qualified leads](./chatbot-for-lead-qualification-in-real-estate.mdx) while you sleep.
 
 <Cta buttonLabel="See It in Action">
   Add pre-built interactive components to your chatbot with ease.
