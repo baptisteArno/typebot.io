@@ -14,51 +14,51 @@ import { isNotDefined } from '@typebot.io/lib'
 import { env } from '@typebot.io/env'
 
 export const executeIntegration =
-  (state: SessionState) =>
-  async (block: IntegrationBlock): Promise<ExecuteIntegrationResponse> => {
-    switch (block.type) {
-      case IntegrationBlockType.GOOGLE_SHEETS:
-        return {
-          ...(await executeGoogleSheetBlock(state, block)),
-          startTimeShouldBeUpdated: true,
-        }
-      case IntegrationBlockType.CHATWOOT:
-        return executeChatwootBlock(state, block)
-      case IntegrationBlockType.GOOGLE_ANALYTICS:
-        return executeGoogleAnalyticsBlock(state, block)
-      case IntegrationBlockType.EMAIL:
-        return executeSendEmailBlock(state, block)
-      case IntegrationBlockType.ZAPIER:
-      case IntegrationBlockType.MAKE_COM:
-      case IntegrationBlockType.PABBLY_CONNECT:
-        return {
-          ...(await executeWebhookBlock(state, block, {
-            disableRequestTimeout: true,
-          })),
-          startTimeShouldBeUpdated: true,
-        }
-      case IntegrationBlockType.WEBHOOK:
-        return {
-          ...(await executeWebhookBlock(state, block, {
-            disableRequestTimeout: isNotDefined(env.CHAT_API_TIMEOUT),
-          })),
-        }
-      case IntegrationBlockType.OPEN_AI:
-        return {
-          ...(await executeOpenAIBlock(state, block)),
-          startTimeShouldBeUpdated: true,
-        }
-      case IntegrationBlockType.PIXEL:
-        return executePixelBlock(state, block)
-      case IntegrationBlockType.ZEMANTIC_AI:
-        return {
-          ...(await executeZemanticAiBlock(state, block)),
-          startTimeShouldBeUpdated: true,
-        }
-      default:
-        return {
-          ...(await executeForgedBlock(state, block)),
-          startTimeShouldBeUpdated: true,
-        }
+  (state: SessionState, sessionId?: string) =>
+    async (block: IntegrationBlock): Promise<ExecuteIntegrationResponse> => {
+      switch (block.type) {
+        case IntegrationBlockType.GOOGLE_SHEETS:
+          return {
+            ...(await executeGoogleSheetBlock(state, block)),
+            startTimeShouldBeUpdated: true,
+          }
+        case IntegrationBlockType.CHATWOOT:
+          return executeChatwootBlock(state, block)
+        case IntegrationBlockType.GOOGLE_ANALYTICS:
+          return executeGoogleAnalyticsBlock(state, block)
+        case IntegrationBlockType.EMAIL:
+          return executeSendEmailBlock(state, block)
+        case IntegrationBlockType.ZAPIER:
+        case IntegrationBlockType.MAKE_COM:
+        case IntegrationBlockType.PABBLY_CONNECT:
+          return {
+            ...(await executeWebhookBlock(state, block, {
+              disableRequestTimeout: true,
+            })),
+            startTimeShouldBeUpdated: true,
+          }
+        case IntegrationBlockType.WEBHOOK:
+          return {
+            ...(await executeWebhookBlock(state, block, {
+              disableRequestTimeout: isNotDefined(env.CHAT_API_TIMEOUT),
+            })),
+          }
+        case IntegrationBlockType.OPEN_AI:
+          return {
+            ...(await executeOpenAIBlock(state, block)),
+            startTimeShouldBeUpdated: true,
+          }
+        case IntegrationBlockType.PIXEL:
+          return executePixelBlock(state, block)
+        case IntegrationBlockType.ZEMANTIC_AI:
+          return {
+            ...(await executeZemanticAiBlock(state, block)),
+            startTimeShouldBeUpdated: true,
+          }
+        default:
+          return {
+            ...(await executeForgedBlock(state, block)),
+            startTimeShouldBeUpdated: true,
+          }
+      }
     }
-  }
