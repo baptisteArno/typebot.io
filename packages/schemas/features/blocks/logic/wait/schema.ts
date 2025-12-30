@@ -32,7 +32,12 @@ export const waitOptionsSchema = z.object({
       if (isNaN(parsed)) return undefined
       return Math.min(parsed, MAX_WAIT_SECONDS).toString()
     })
-    .optional(),
+    .optional()
+    .openapi({
+      type: 'string',
+      description:
+        'Seconds to wait (string number or variable reference {{var}}), clamped to max',
+    }),
   shouldPause: z.boolean().optional(),
 })
 

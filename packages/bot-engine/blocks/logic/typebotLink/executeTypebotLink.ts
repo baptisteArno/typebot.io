@@ -235,6 +235,7 @@ const fetchTypebot = async (state: SessionState, typebotId: string) => {
         events: true,
       },
     })
+    if (!typebot) return null
     return typebotInSessionStateSchema.parse(typebot)
   }
   const typebot = await prisma.publicTypebot.findUnique({
