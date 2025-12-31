@@ -7,7 +7,7 @@
 <br />
 
 <p align="center">
-Typebot is an Fair Source chatbot builder. It allows you to create advanced chatbots visually, embed them anywhere on your web/mobile apps, and collect results in real-time
+Typebot is a Fair Source chatbot builder. It allows you to create advanced chatbots visually, embed them anywhere on your web/mobile apps, and collect results in real-time
 </p>
 
 <p align="center">
@@ -37,26 +37,26 @@ https://user-images.githubusercontent.com/16015833/168876388-0310678d-080b-4eca-
 
 ## Features
 
-Typebot makes it easy to create advanced chatbots. It provides the building block that are adaptable to any business use case. I improve Typebot regularly with bug fixes, new features, and performance improvements regularly.
+Typebot makes it easy to create advanced chatbots. It provides the building blocks that are adaptable to any business use case. I improve Typebot regularly with bug fixes, new features, and performance improvements.
 
 **Chat builder** with 34+ building blocks such as:
 
 - 💬 Bubbles: Text, Image / GIF, video, audio, embed.
-- 🔤 Inputs: Text, email, phone number, buttons, picture choice, date picker, payment (Stripe), file picker... inputs
-- 🧠 Logic: Conditional branching, URL redirections, scripting (Javascript), A/B testing
+- 🔤 Inputs: Text, email, phone number, buttons, picture choice, date picker, payment (Stripe), file picker...
+- 🧠 Logic: Conditional branching, URL redirections, scripting (Javascript), A/B testing.
 - 🔌 Integrations: Webhook / HTTP requests, OpenAI, Google Sheets, Google Analytics, Meta Pixel, Zapier, Make.com, Chatwoot, More to come...
 
 **Theme** your chatbot to match your brand identity:
 
 - 🎨 Customize the fonts, background, colors, roundness, shadows, and more
-- 💪 Advanced theming with custom CSS.
+- 💪 Advanced theming with custom CSS
 - 💾 Reusable theme templates
 
 **Share** your typebot anywhere:
 
 - 🔗 Custom domain
-- 👨‍💻 Embed as a container, popup, or chat bubble easily with the native JS library.
-- ⚡ Blazing fast embed lib. No iframe, no external dependencies, no performance impact.
+- 👨‍💻 Embed as a container, popup, or chat bubble easily with the native JS library
+- ⚡ Blazing-fast embed lib. No iframe, no external dependencies, no performance impact
 - 💻 Executable with HTTP requests
 
 Collect your **Results** and get insights:
@@ -73,8 +73,8 @@ Built for **developers**:
 
 The easiest way to get started with Typebot is with [the official managed service in the Cloud](https://app.typebot.io). You'll have high availability, backups, security, and maintenance all managed for you by me, [Baptiste, Typebot's founder](https://twitter.com/baptisteArno).
 
-The cloud version can save a substantial amount of developer time and resources. For most sites this ends up being the best value option and the revenue goes to funding the maintenance and further development of Typebot.
-So you’ll be supporting fair source software and getting a great service! 💙
+The cloud version can save a substantial amount of developer time and resources. For most sites, this ends up being the best value option and the revenue goes to funding the maintenance and further development of Typebot.
+So you’ll be supporting Fair Source software and getting a great service! 💙
 
 ## Support & Community
 
@@ -89,7 +89,7 @@ Interested in self-hosting Typebot on your server? Take a look at the [self-host
 
 ## How to Contribute
 
-You are awesome, lets build great software together. Head over to the [Contribute docs](https://docs.typebot.io/contribute/overview) to get started. 💪
+You are awesome, let's build great software together. Head over to the [Contribute docs](https://docs.typebot.io/contribute/overview) to get started. 💪
 
 ## Run the project locally
 
