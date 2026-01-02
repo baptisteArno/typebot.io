@@ -460,6 +460,7 @@ const getLastHourResults = async () => {
       _all: true,
     },
     where: {
+      isArchived: false,
       hasStarted: true,
       createdAt: {
         lt: zeroedMinutesHour,
