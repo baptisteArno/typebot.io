@@ -10,6 +10,7 @@ import prisma from "@typebot.io/prisma";
 import { type CollaborationType, WorkspaceRole } from "@typebot.io/prisma/enum";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { getAuthenticatedUser } from "@/features/auth/helpers/getAuthenticatedUser";
+import gentleRateLimiter from "@/features/auth/lib/gentleRateLimiter";
 import {
   canReadTypebots,
   canWriteTypebots,
@@ -30,6 +31,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     });
   }
   if (req.method === "POST") {
+    if (gentleRateLimiter) {
+      const { success } = await gentleRateLimiter.limit(user.id);
+      if (!success) return res.status(429).send("Too many requests");
+    }
+
     const typebot = await prisma.typebot.findFirst({
       where: canWriteTypebots(typebotId, user),
       include: { workspace: { select: { name: true } } },

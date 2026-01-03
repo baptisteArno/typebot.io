@@ -17,8 +17,8 @@ import { accountHasRequiredOAuthGroups } from "../helpers/accountHasRequiredOAut
 import { createAuthPrismaAdapter } from "../helpers/createAuthPrismaAdapter";
 import { isEmailLegit } from "../helpers/emailValidation";
 import { getNewUserInvitations } from "../helpers/getNewUserInvitations";
+import oneMinRateLimiter from "./oneMinRateLimiter";
 import { providers } from "./providers";
-import rateLimiter from "./rateLimiter";
 
 export const SET_TYPEBOT_COOKIE_HEADER = "Set-Typebot-Cookie" as const;
 
@@ -99,8 +99,8 @@ export const {
               "cf-connecting-ip": req.headers.get("cf-connecting-ip"),
             })
           : null;
-        if (rateLimiter && ip) {
-          const { success } = await rateLimiter.limit(ip);
+        if (oneMinRateLimiter && ip) {
+          const { success } = await oneMinRateLimiter.limit(ip);
           if (!success) throw new Error("too-many-requests");
         }
         if (!isEmailLegit(user.email)) throw new Error("email-not-legit");

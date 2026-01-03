@@ -6,6 +6,7 @@ import { z } from "@typebot.io/zod";
 import { customAlphabet } from "nanoid";
 import { authenticatedProcedure } from "@/helpers/server/trpc";
 import { isEmailLegit } from "../helpers/emailValidation";
+import oneMinRateLimiter from "../lib/oneMinRateLimiter";
 
 export const sendUpdateEmailVerifCodeEmail = authenticatedProcedure
   .input(
@@ -14,6 +15,15 @@ export const sendUpdateEmailVerifCodeEmail = authenticatedProcedure
     }),
   )
   .mutation(async ({ ctx: { user }, input: { newEmail } }) => {
+    if (oneMinRateLimiter) {
+      const { success } = await oneMinRateLimiter.limit(user.id);
+      if (!success)
+        throw new TRPCError({
+          code: "TOO_MANY_REQUESTS",
+          message: "Too many requests. Please try again later.",
+        });
+    }
+
     const formattedNewEmail = formatEmail(newEmail);
 
     if (!formattedNewEmail || !isEmailLegit(formattedNewEmail))

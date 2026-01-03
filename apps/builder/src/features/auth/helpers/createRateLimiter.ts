@@ -2,7 +2,16 @@ import { env } from "@typebot.io/env";
 import { Ratelimit } from "@upstash/ratelimit";
 import Redis from "ioredis";
 
-export const createRateLimiter = () => {
+type Unit = "ms" | "s" | "m" | "h" | "d";
+type Duration = `${number} ${Unit}` | `${number}${Unit}`;
+
+type RateLimitConfig = {
+  requests: number;
+  window: Duration;
+  prefix?: string;
+};
+
+export const createRateLimiter = (config: RateLimitConfig) => {
   if (!env.REDIS_URL) return;
 
   const redis = new Redis(env.REDIS_URL);
@@ -25,6 +34,7 @@ export const createRateLimiter = () => {
 
   return new Ratelimit({
     redis: rateLimitCompatibleRedis,
-    limiter: Ratelimit.slidingWindow(1, "60 s"),
+    limiter: Ratelimit.slidingWindow(config.requests, config.window),
+    prefix: config.prefix,
   });
 };

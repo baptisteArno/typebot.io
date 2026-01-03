@@ -11,11 +11,17 @@ import { WorkspaceRole } from "@typebot.io/prisma/enum";
 import type { Prisma } from "@typebot.io/prisma/types";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { getAuthenticatedUser } from "@/features/auth/helpers/getAuthenticatedUser";
+import gentleRateLimiter from "@/features/auth/lib/gentleRateLimiter";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await getAuthenticatedUser(req, res);
   if (!user) return notAuthenticated(res);
   if (req.method === "POST") {
+    if (gentleRateLimiter) {
+      const { success } = await gentleRateLimiter.limit(user.id);
+      if (!success) return res.status(429).send("Too many requests");
+    }
+
     const data = req.body as Omit<
       Prisma.WorkspaceInvitation,
       "id" | "createdAt"
