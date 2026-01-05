@@ -23,6 +23,7 @@ import { getCredentials } from "@typebot.io/credentials/getCredentials";
 import { httpProxyCredentialsSchema } from "@typebot.io/credentials/schemas";
 import { env } from "@typebot.io/env";
 import { JSONParse } from "@typebot.io/lib/JSONParse";
+import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
 import {
   validateHttpReqHeaders,
   validateHttpReqUrl,
@@ -365,9 +366,13 @@ export const executeHttpRequest = async (
       });
       return { response, logs, startTimeShouldBeUpdated: true };
     }
+    const parsedError = await parseUnknownError({
+      err: error,
+      context: "Unknown error while executing HTTP request",
+    });
     const response = {
       statusCode: 500,
-      data: { message: `Error from Typebot server: ${error}` },
+      data: parsedError,
     };
     console.error(error);
     logs.push({

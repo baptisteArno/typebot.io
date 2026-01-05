@@ -21,9 +21,11 @@ export const parseUnknownError = async ({
         details: undefined,
       };
     if (err instanceof Error) {
+      const causeMsg =
+        err.cause instanceof Error ? err.cause.message : err.cause;
       return {
         context,
-        description: err.message,
+        description: `[${causeMsg}] ${err.message}`,
         details: await extractDetails(err),
       };
     }
