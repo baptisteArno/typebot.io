@@ -20,6 +20,7 @@ export const publicTypebotSchemaV5 = (
       version: z.enum(["3", "4", "5"]),
       createdAt: z.date(),
       updatedAt: z.date(),
+      lastActivityAt: z.date().nullish(),
       typebotId: z.string(),
       groups: z.array(groupV5Schema),
       events: z.null().openapi({

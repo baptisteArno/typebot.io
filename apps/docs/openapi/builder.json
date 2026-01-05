@@ -26220,6 +26220,10 @@
           "updatedAt": {
             "type": "string"
           },
+          "lastActivityAt": {
+            "type": "string",
+            "nullable": true
+          },
           "typebotId": {
             "type": "string"
           },
@@ -26566,6 +26570,10 @@
           },
           "updatedAt": {
             "type": "string"
+          },
+          "lastActivityAt": {
+            "type": "string",
+            "nullable": true
           },
           "typebotId": {
             "type": "string"
