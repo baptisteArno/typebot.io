@@ -40,9 +40,18 @@ ${formatSubscriptionMessage(subscriptionTransitions)}
 
   await getYesterdayChurnSummary({
     onSummaryGenerated: async (churnSummary) => {
-      await sendDiscordMessage(formatChurnAgentDiscordMessages(churnSummary), {
-        channelId: process.env.DISCORD_CHANNEL_ID!,
-      });
+      const isLowSpender = churnSummary.workspace.totalSpent
+        ? Number(churnSummary.workspace.totalSpent) < 100
+        : false;
+      await sendDiscordMessage(
+        formatChurnAgentDiscordMessages(churnSummary, {
+          excludeTimeline: isLowSpender,
+          excludeEmailSuggestion: isLowSpender,
+        }),
+        {
+          channelId: process.env.DISCORD_CHANNEL_ID!,
+        },
+      );
     },
   });
 };
