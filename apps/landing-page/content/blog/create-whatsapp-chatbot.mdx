@@ -1,13 +1,77 @@
 ---
-title: "Create WhatsApp Chatbot: A Step-by-Step Guide"
+title: "How to Create a WhatsApp Chatbot in 2025: Complete Guide (Free & Paid Options)"
 description: "Discover how to create an engaging WhatsApp chatbot with Typebot's intuitive no-code platform."
 postedAt: "2024-05-09"
+updatedAt: "2025-12-15"
+cover: "/blog-assets/create-whatsapp-chatbot/featured-image-create-whatsapp-chatbot.avif"
 author: younes
 ---
+Want to automate customer conversations on WhatsApp? Creating a WhatsApp chatbot is easier than you think—and you don't need coding skills to get started.
 
-Imagine being able to reach your customers or audience instantly. You can do this through the messaging app they use every day - WhatsApp. Create a chatbot for Whatsapp allows you to provide a seamless and convenient way to interact with your audience.
+In this guide, you'll learn how to create a WhatsApp chatbot using no-code platforms like Typebot and n8n. We'll cover everything from setup to deployment, plus best practices for designing conversations that actually engage users.
 
-In this comprehensive guide, we'll walk you through the step-by-step process on how to build a WhatsApp chatbot. We'll use Typebot, an intuitive no-code platform. Get ready to unlock the power of conversational AI and take your customer experience to new heights.
+## Different Methods to Create a WhatsApp Chatbot
+
+### 1. Official WhatsApp Business Platform (Build It Yourself)
+
+This method involves using the official WhatsApp Business Platform and building your own backend infrastructure with webhooks and a bot service to implement flows, integrations, and AI capabilities.
+
+You'll connect your application to [WhatsApp Business API](./whatsapp-business-benefits.mdx) using webhooks to receive incoming messages. Then, process them through your custom backend logic (which handles conversation flows, integrations, and AI responses), and send replies back through the API.
+
+### 2. No-Code/Low-Code Chatbot Builders
+
+<Image src="/blog-assets/typebot-builder.avif" alt="Typebot Builder" width={3454} height={1976}  />
+
+
+No-code and low-code platforms let you create WhatsApp bot flows using visual builders without writing code. These tools are ideal for creating FAQs, lead capture forms, routing logic, and simple commerce flows. They usually bundle WhatsApp API access or connect to it through a provider.
+
+Popular platforms in this category include Typebot, [ManyChat](./chatfuel-vs-manychat.mdx), [Chatfuel](./chatfuel-alternatives.mdx), and [Landbot](./landbot-alternative.mdx). Many businesses choose these solutions when they need fast deployment and don't want to maintain code for conversation flows.
+
+<Warning>
+The WhatsApp Business App itself typically only supports simple auto-replies and quick messages. For full chatbot functionality with complex flows, AI responses, and integrations, you'll need an API-based solution or advanced automation tool (see next).
+</Warning>
+
+#### n8n: The Power of Advanced Automation
+
+<Image src="/blog-assets/create-whatsapp-chatbot/n8n-Whatsapp-flow-example.avif" alt="n8n Whatsapp flow example" width={1031} height={451} caption="From Reddit" />
+
+
+n8n is a powerful low-code platform that excels at connecting WhatsApp to thousands of other services and advanced AI models. 
+
+Its primary strength lies in its extreme flexibility; because it is [open-source](./ai-open-source-tools.mdx) and can be self-hosted, you have total control over your data and can build highly sophisticated workflows that go far beyond simple replies.
+
+However, n8n has a steeper learning curve compared to dedicated chatbot builders and requires a more technical setup for the WhatsApp Business API. 
+
+Since it is a general-purpose automation tool rather than a specialized bot builder, you must manually design and manage the entire conversation logic and state, which can become complex for multi-step interactions.
+
+For a detailed setup walkthrough, follow our [n8n WhatsApp bot tutorial](./n8n-whatsapp-bot-tutorial.mdx).
+
+### 3. Adding AI Capabilities to Your WhatsApp Chatbot
+
+AI can be layered on top of any of the three approaches above. This is typically done by connecting a Large Language Model (LLM) and optionally a knowledge base using Retrieval-Augmented Generation (RAG), plus implementing human handoff when the AI can't handle a query.
+
+Platforms vary significantly in their AI depth:
+
+- **Basic AI replies:** Simple natural language understanding and pre-written response matching
+- **Advanced AI agents:** Trained on your specific business content, integrated with CRM and workflows, capable of handling complex multi-turn conversations
+
+If your goal is sales or support automation at scale rather than just a simple FAQ bot, consider carefully which stack will best support your AI ambitions. Custom builds offer the most flexibility, BSP platforms provide middle-ground solutions with AI SDKs, and some no-code builders now offer sophisticated AI integrations without requiring coding.
+
+<Info>
+Want to take your WhatsApp chatbot's AI capabilities further? Learn how to [build an AI chatbot with a custom knowledge base](./build-ai-chatbot-with-custom-knowledge-base.mdx) to train your bot on your specific business content and deliver more accurate, personalized responses.
+</Info>
+
+### Choosing the Right Method for Your Needs
+
+Consider these factors when making your decision:
+
+- **Technical resources:** Do you have developers available, or do you need a solution non-technical team members can manage?
+- **Budget:** Custom builds require developer time; providers charge per conversation or monthly fees; [no-code tools](./best-chatbot-builder.mdx) often have tiered pricing starting from free plans
+- **Speed to market:** No-code builders can launch in hours; provider integrations in days; custom builds may take weeks or months
+- **Customization needs:** Complex workflows, custom integrations, and unique UI requirements favor custom builds
+- **Scale:** Consider message volume, user base size, and whether you need multi-channel support beyond WhatsApp
+
+In the following sections, we'll walk through building WhatsApp chatbots using two powerful platforms: Typebot, a no-code builder perfect for most businesses getting started with [WhatsApp automation](./whatsapp-business-automated-messages.mdx), and n8n, a flexible workflow tool ideal for advanced automation and AI integration needs.
 
 ## Setting Up a WhatsApp Chatbot with Typebot
 
@@ -19,12 +83,8 @@ The first step is to sign up for a free Typebot account at https://app.typebot.i
 
 Once you've created your account, it's time to start designing your chatbot's conversation flow. Typebot's visual builder makes this process intuitive and engaging.
 
-<Image
-  src="/blog-assets/create-whatsapp-chatbot/typebot-blocks.jpg"
-  alt="All blocks offered by Typebot"
-  width="800px"
-  height="600px"
-/>
+<Image src="/blog-assets/create-whatsapp-chatbot/typebot-blocks.jpg" alt="All blocks offered by Typebot" width={800} height={600}  />
+
 
 You can add text bubbles, images, videos, buttons, input fields, and various other elements to craft a seamless and interactive experience for your users.
 
@@ -37,9 +97,7 @@ Engage your audience with:
 - Buttons to guide users through the conversation flow.
 
 <Info>
-  If you need inspiration, we gathered some [chatbot script
-  exampes](./chatbot-script-examples.mdx) to help you get started. There are
-  best practices, tips, and prompts to help you create a successful chatbot.
+If you need inspiration, we gathered some [chatbot script exampes](./chatbot-script-examples.mdx) to help you get started. There are best practices, tips, and prompts to help you create a successful chatbot.
 </Info>
 
 #### Incorporating Input Fields and Conditional Logic
@@ -54,43 +112,28 @@ Let's walk through the creation of a [feedback chatbot](./feedback-chatbot.mdx) 
 
 Kick off your chatbot flow with a warm welcome and a clear call-to-action. Use a friendly tone and provide a brief overview of what the chatbot can do for the user. For example:
 
-<Image
-  src="/blog-assets/create-whatsapp-chatbot/flow-first-message.jpg"
-  alt="Friendly kickoff message example"
-  width="800px"
-  height="600px"
-/>
+<Image src="/blog-assets/create-whatsapp-chatbot/flow-first-message.jpg" alt="Friendly kickoff message example" width={800} height={600}  />
+
 
 #### **Offering Options**
 
 Present the user with a set of buttons, each representing a different feedback category. This streamlines the process and allows you to tailor the subsequent questions based on the user's selection.
 
-<Image
-  src="/blog-assets/create-whatsapp-chatbot/flow-first-ask.jpg"
-  alt="block that asks for feedback type"
-  width="800px"
-  height="600px"
-/>
+<Image src="/blog-assets/create-whatsapp-chatbot/flow-first-ask.jpg" alt="block that asks for feedback type" width={800} height={600}  />
+
 
 #### **Gathering Feedback**
 
 Depending on the user's choice, you can now ask specific questions to gather the necessary information. For instance, if the user selects "Submit a Suggestion," you could ask for their email address and a detailed description of their suggestion.
 
-<Image
-  src="/blog-assets/create-whatsapp-chatbot/flow-ask-email.jpg"
-  alt="block that asks for email and feedback"
-  width="800px"
-  height="600px"
-/>
+<Image src="/blog-assets/create-whatsapp-chatbot/flow-ask-email.jpg" alt="block that asks for email and feedback" width={800} height={600}  />
+
 
 #### **Confirming and Closing**
 
 Once you've collected the required information, provide a summary of the user's feedback and thank them for their input. You can also offer additional options, such as subscribing to a newsletter or sharing the chatbot with friends.
 
-<Cta buttonLabel="Get Started Now">
-  Discover how Typebot's drag-and-drop builder can transform your website
-  visitors into loyal customers.
-</Cta>
+<Cta buttonLabel="Get Started Now">Discover how Typebot's drag-and-drop builder can transform your website visitors into loyal customers.</Cta>
 
 ## Testing and Deploying Your WhatsApp Chatbot
 
@@ -100,25 +143,15 @@ After pouring your creativity and effort into designing an engaging WhatsApp cha
 
 Before launching your chatbot, thoroughly test it in the WhatsApp environment. Typebot's "Test" feature allows you to simulate your chatbot's behavior and interactions. This gives you a chance to identify and address any potential issues.
 
-<Image
-  src="/blog-assets/create-whatsapp-chatbot/typebot-share-button.jpg"
-  alt="Typebot share button"
-  width="800px"
-  height="600px"
-/>
+<Image src="/blog-assets/create-whatsapp-chatbot/typebot-share-button.jpg" alt="Typebot share button" width={800} height={600}  />
+
 
 To access the WhatsApp preview:
 
 1. Click on the "Test" button in the Typebot editor.
-
 2. Change the runtime to "WhatsApp."
+  <Image src="/blog-assets/create-whatsapp-chatbot/typebot-preview-whatsapp.jpg" alt="Typebot preview chatbot on WhatsApp" width={800} height={600}  />
 
-   <Image
-     src="/blog-assets/create-whatsapp-chatbot/typebot-preview-whatsapp.jpg"
-     alt="Typebot preview chatbot on WhatsApp"
-     width="800px"
-     height="600px"
-   />
 
 This will enable you to experience your chatbot as if you were a user interacting with it on WhatsApp.
 
@@ -141,34 +174,15 @@ To connect your Typebot chatbot to WhatsApp, you'll need to create a Meta app an
 1. Start by creating a Facebook Business account at [https://business.facebook.com](https://business.facebook.com)
 2. Once you've set up your account, head over to [https://developers.facebook.com/apps](https://developers.facebook.com/apps) and create a new Meta app.
 3. On the “Use case” step, select “Other”
-
-   <Image
-     src="/blog-assets/create-whatsapp-chatbot/whatsapp-create-app-type.jpg"
-     alt="First step of the Meta App account creation"
-     width="800px"
-     height="600px"
-   />
+  <Image src="/blog-assets/create-whatsapp-chatbot/whatsapp-create-app-type.jpg" alt="First step of the Meta App account creation" width={800} height={600}  />
 
 4. On the next step, select Business
-
-   <Image
-     src="/blog-assets/create-whatsapp-chatbot/whatsapp-create-app-business.jpg"
-     alt="Second step of the Meta App account creation"
-     width="800px"
-     height="600px"
-   />
+  <Image src="/blog-assets/create-whatsapp-chatbot/whatsapp-create-app-business.jpg" alt="Second step of the Meta App account creation" width={800} height={600}  />
 
 5. Next step asks you about details of your app such as the name and your email
-
-   <Image
-     src="/blog-assets/create-whatsapp-chatbot/whatsapp-create-app-details.jpg"
-     alt="Third step of the Meta App account creation"
-     width="800px"
-     height="600px"
-   />
+  <Image src="/blog-assets/create-whatsapp-chatbot/whatsapp-create-app-details.jpg" alt="Third step of the Meta App account creation" width={800} height={600}  />
 
 6. Enable the WhatsApp product within your app.
-
 7. Great! Your WhatsApp app is now created
 
 #### Connecting Your Typebot Chatbot to WhatsApp
@@ -179,13 +193,7 @@ Let’s connect it to Typebot:
 2. Create a new user by clicking on Add
 3. Fill it with any name and give it the Admin role
 4. Click on Add assets. Under Apps, look for your previously created app, select it and check Manage app
-
-   <Image
-     src="/blog-assets/create-whatsapp-chatbot/whatsapp-system-user-assets.png"
-     alt="Meta interface to assign assets to users"
-     width="800px"
-     height="600px"
-   />
+  <Image src="/blog-assets/create-whatsapp-chatbot/whatsapp-system-user-assets.png" alt="Meta interface to assign assets to users" width={800} height={600}  />
 
 5. Generate a token and put it in Typebot
 6. Go to your WhatsApp Developer Console and add your phone number
@@ -193,12 +201,8 @@ Let’s connect it to Typebot:
 
 You should be fine by now, you can test your chatbot now!
 
-<Image
-  src="/blog-assets/create-whatsapp-chatbot/result-example.jpg"
-  alt="WhatsApp result of the chatbot flow example"
-  width="800px"
-  height="600px"
-/>
+<Image src="/blog-assets/create-whatsapp-chatbot/result-example.jpg" alt="WhatsApp result of the chatbot flow example" width={800} height={600}  />
+
 
 ### Publishing and Sharing Your Chatbot
 
@@ -214,15 +218,102 @@ Once published, share the designated WhatsApp number or group link with your cus
 Remember, even after publishing, continue monitoring your chatbot's performance, gathering user feedback, and making ongoing improvements. This ensures a consistently engaging and valuable experience.
 
 <Info>
-  Did you know that WhatsApp charges for each conversation window? We've put
-  together a [WhatsApp pricing
-  calculator](./whatsapp-business-api-pricing.mdx)to help you estimate the cost
-  of your WhatsApp chatbot.
+Did you know that WhatsApp charges for each conversation window? We've put together a [WhatsApp pricing calculator](./whatsapp-business-api-pricing.mdx)to help you estimate the cost of your WhatsApp chatbot.
 </Info>
+
+## Setting Up a WhatsApp Chatbot with n8n
+
+n8n is a powerful workflow automation tool that lets you build sophisticated WhatsApp chatbots with AI capabilities. This approach gives you complete control over your bot's logic and seamlessly integrates with hundreds of other services.
+
+### Creating Your Meta Business Account and WhatsApp API Access
+
+Before building your n8n workflow, you need to set up the WhatsApp Business API through Meta:
+
+1. Create a Business account in Meta Business Suite using your Facebook credentials.
+2. Sign in to Meta for Developers and create a new app.
+3. Add the "WhatsApp" product to your app.
+4. Request the test phone number Meta provides for development.
+5. Verify up to five recipient numbers via OTP to allow them to receive messages from the test environment.
+
+Once your test number is active, send a template message from the Developer console to confirm the connection is working properly.
+
+### Gathering Your Credentials
+
+From your WhatsApp setup in the Meta for Developers portal, you'll need to collect these credentials:
+
+- **Access Token**: Available in the development console (temporary test token during development; for production, configure a permanent system user token).
+- **Business Account ID**: The unique identifier for your business entity on Meta.
+- **Phone Number ID**: The ID assigned to your test phone number (different from the phone number itself).
+- **App ID and App Secret**: Found in your app settings, needed for the webhook trigger.
+
+Keep these credentials secure—you'll paste them into n8n's credential fields to connect your workflow.
+
+### Building Your n8n WhatsApp Bot Workflow
+
+The workflow consists of three essential components: receiving messages, processing with AI, and sending replies.
+
+#### Step 1: Add the WhatsApp Trigger Node
+
+<Image src="/blog-assets/n8n-whatsapp-bot-tutorial/n8n-Whatsapp-business-cloud-triggers.avif" alt="n8n Whatsapp business cloud triggers" width={510} height={1200}  />
+
+
+Start by adding the **WhatsApp Trigger** node to your canvas:
+
+1. Add the WhatsApp Trigger node to your workflow.
+2. Create a new credential using the App ID and App Secret from Meta.
+3. This node "listens" for incoming WhatsApp messages and triggers your workflow automatically.
+
+#### Step 2: Configure the AI Agent Node
+
+Connect an **AI Agent** node to process incoming messages intelligently:
+
+<Image src="/blog-assets/n8n-whatsapp-bot-tutorial/ai-agent-whatsapp-workflow.avif" alt="Ai Agent Whatsapp Workflow" width={1200} height={581}  />
+
+
+1. Add the AI Agent node and connect it to your trigger.
+2. Choose and configure a chat model
+3. Configure the agent's "User Message" field by dragging the body field from the WhatsApp Trigger output.
+4. Customize your AI's personality, instructions, and behavior to match your use case.
+
+#### Step 3: Set Up the Send Message Node
+
+<Image src="/blog-assets/n8n-whatsapp-bot-tutorial/whatsapp-ai-agent-workflow.avif" alt="Whatsapp Ai Agent Workflow" width={1200} height={558}  />
+
+
+Finally, add a **WhatsApp Business Cloud** node to send responses:
+
+1. Add the WhatsApp Business Cloud node and set it to "Send Message" operation.
+2. Create a new credential using your Access Token and Business Account ID.
+3. Map the output text from the AI Agent into the "Text Body" field.
+4. Configure the recipient phone number (typically from the trigger's sender information).
+
+### Testing Your n8n WhatsApp Bot
+
+While your Meta app is in development mode:
+
+1. Click "Execute Workflow" manually in n8n to activate listening mode.
+2. Send a test message from one of your verified phone numbers to your test WhatsApp number.
+3. Watch the workflow execute in real-time and verify the AI responds correctly.
+4. Debug any issues using n8n's execution logs to see data flowing through each node.
+
+<Success>
+You need two separate credential sets in n8n—one for the Trigger (OAuth with App ID and Secret) and another for the Sender node (Token-based with Access Token and Business Account ID).
+</Success>
+
+### Moving to Production
+
+Once you've tested your bot thoroughly:
+
+1. Submit your Meta app for review to access the WhatsApp Business API in production.
+2. Swap your test phone number for a real business phone number.
+3. Configure a permanent system user token instead of the temporary development token.
+4. Set up n8n to run continuously (either self-hosted or on n8n Cloud) so your bot can respond 24/7.
+
+With n8n, you have the flexibility to enhance your WhatsApp bot with unlimited integrations—connect to databases, CRMs, [payment systems](./how-to-accept-payment-on-whatsapp-business.mdx), or any API to create truly powerful automated conversations.
 
 ## Designing an Engaging WhatsApp Chatbot Experience
 
-Now that you've set up the technical foundation for your WhatsApp chatbot, it's time to focus on crafting an engaging and memorable experience for your users. Here are some [best practices](./chatbot-best-practices.mdx) and strategies to consider:
+Now that you've set up the technical foundation for your WhatsApp chatbot (whether using Typebot, n8n, or another platform), it's time to focus on crafting an engaging and memorable experience for your users. Here are some [best practices](./chatbot-best-practices.mdx) and strategies to consider:
 
 ### Best Practices for Conversational Design
 
@@ -262,7 +353,7 @@ While WhatsApp chatbots offer a powerful and convenient way to engage with your 
   - Script block
   - Google Analytics block
   - Meta Pixel blocks
-  - [Cal.com](http://cal.com/) block
+  - Cal.com block
 
 These blocks will be skipped if present in your chatbot's flow.
 
@@ -272,7 +363,7 @@ With these design principles and strategies in mind, you're well on your way to 
 
 ## Advanced WhatsApp Chatbot Features
 
-As you gain more experience with building and optimizing your WhatsApp chatbot, you may want to explore advanced features and capabilities. Typebot offers powerful tools and integrations to create sophisticated and personalized chatbots.
+As you gain more experience with building and optimizing your WhatsApp chatbot, you may want to explore advanced features and capabilities. This section focuses on Typebot's advanced features, though many concepts apply to other platforms as well.
 
 ### Contact Information and System Variables
 
@@ -280,12 +371,8 @@ One powerful aspect of WhatsApp is automatically capturing user contact informat
 
 Typebot makes it easy to leverage this data within your chatbot flow using dedicated system variables.
 
-<Image
-  src="/blog-assets/create-whatsapp-chatbot/contact-var.png"
-  alt="Variables provided by WhatsApp"
-  width="800px"
-  height="600px"
-/>
+<Image src="/blog-assets/create-whatsapp-chatbot/contact-var.png" alt="Variables provided by WhatsApp" width={800} height={600}  />
+
 
 WhatsApp provide contact information of the user. You can assign them to variables to personalize your chatbot's greetings and responses. This simple touch can make the experience feel more human and tailored to the individual.
 
@@ -348,7 +435,5 @@ Armed with data-driven insights and user feedback, continuously refine and impro
 
 Stay up-to-date with the latest trends, best practices, and advancements in conversational AI and chatbot technology. Attend industry events, participate in online communities, and continuously educate yourself to ensure your chatbot remains relevant and cutting-edge.
 
-<Cta buttonLabel="Get Started Now">
-  Discover how Typebot's drag-and-drop builder can transform your website
-  visitors into loyal customers.
-</Cta>
+<Cta buttonLabel="Get Started Now">Discover how Typebot's drag-and-drop builder can transform your website visitors into loyal customers.</Cta>
+

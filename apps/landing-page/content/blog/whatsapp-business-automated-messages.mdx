@@ -46,8 +46,8 @@ Automation handles **70-80% of routine inquiries** without human intervention. C
 <Image
   src="/blog-assets/whatsapp-business-automated-messages/whatsapp-business-app-screens.avif"
   alt="Whatsapp Business App Screens"
-  width="666px"
-  height="315px"
+  width={666}
+  height={315}
 />
 
 Best for small businesses with basic needs that don't heavily rely on WhatsApp for their daily operations
@@ -98,17 +98,24 @@ Best for small businesses and solo entrepreneurs who usually rely on WhatsApp fo
 
 **Other popular options:**
 
-- [**ManyChat**](./manychat-alternatives.mdx)**:** Multi-channel automation starting at $15/month
+- **[ManyChat](./manychat-alternatives.mdx):** Multi-channel automation starting at $15/month
 - **Chatfuel:** AI-powered with ChatGPT integration at $19.99/month
 - **Wati:** WhatsApp-focused BSP with no-code builder
+
+<Info>
+  Looking for more WhatsApp automation options? Check out our comprehensive
+  comparison of the [best WhatsApp automation
+  tools](./best-whatsapp-automation-tool.mdx) to find the right fit for your
+  business needs.
+</Info>
 
 ## Setting Up Typebot with WhatsApp
 
 <Image
   src="/blog-assets/whatsapp-business-automated-messages/flow-chart-contact-name.avif"
   alt="Flow Chart Contact Name"
-  width="1200px"
-  height="1006px"
+  width={1200}
+  height={1006}
 />
 
 Typebot offers the best of both worlds – advanced automation without the API complexity. It's open-source, costs less than most alternatives, and you can set it up in about 15 minutes.
@@ -122,8 +129,8 @@ The free plan gives you 200 chats per month with unlimited bots. The drag-and-dr
 <Image
   src="/blog-assets/whatsapp-business-automated-messages/typebot-setup-whatsapp.gif"
   alt="Typebot Setup Whatsapp"
-  width="1200px"
-  height="770px"
+  width={1200}
+  height={770}
 />
 
 Sign up at [typebot.io](https://typebot.io) and start with their visual builder. Think of it like building with digital Lego blocks. Add text bubbles for messages, buttons for choices, input fields for collecting information, and conditional logic for smart responses.
@@ -147,8 +154,6 @@ Typebot lets you connect external services through webhooks. You can link it to 
   seamless, personalized communication.
 </Cta>
 
-##
-
 ## How to Set Up Automated Messages in the WhatsApp Business App
 
 ### Step 1: Download and install
@@ -170,31 +175,27 @@ Typebot lets you connect external services through webhooks. You can link it to 
 ### Step 2: Complete business profile setup
 
 1. Open WhatsApp Business and accept the Terms of Service
-
 2. Verify your business phone number via SMS
 
    <Image
      src="/blog-assets/whatsapp-business-automated-messages/whatsapp-business-phone-number-screen.avif"
      alt="Whatsapp Business Phone Number Screen"
-     width="555px"
-     height="1200px"
+     width={555}
+     height={1200}
    />
 
 3. Enter business name (use official company name)
-
 4. Select an appropriate business category
 
    <Image
      src="/blog-assets/whatsapp-business-automated-messages/whatsapp-business-profile-edit-screen-keyboard.avif"
      alt="Whatsapp Business Profile Edit Screen Keyboard"
-     width="555px"
-     height="1200px"
+     width={555}
+     height={1200}
    />
 
 5. Add profile picture (business logo recommended)
-
 6. Write a compelling business description (256 character limit)
-
 7. Add business address, email, website, and operating hours
 
 ### Step 3: Configure automated messages
@@ -222,8 +223,8 @@ Typebot lets you connect external services through webhooks. You can link it to 
    <Image
      src="/blog-assets/whatsapp-business-automated-messages/whatsapp-business-tools-quick-replies-screen.avif"
      alt="Whatsapp Business Tools Quick Replies Screen"
-     width="555px"
-     height="1200px"
+     width={555}
+     height={1200}
    />
 
 2. Tap "+" to create new quick reply
@@ -231,28 +232,26 @@ Typebot lets you connect external services through webhooks. You can link it to 
    <Image
      src="/blog-assets/whatsapp-business-automated-messages/whatsapp-business-quick-replies-add-button.avif"
      alt="Whatsapp Business Quick Replies Add Button"
-     width="555px"
-     height="1200px"
+     width={555}
+     height={1200}
    />
 
 3. Add shortcut keyword (example: "hours")
-
 4. Write your response message
 
    <Image
      src="/blog-assets/whatsapp-business-automated-messages/new-quick-reply-screen.avif"
      alt="new quick reply screen"
-     width="555px"
-     height="1200px"
+     width={555}
+     height={1200}
    />
 
 5. Test by typing "/" in any conversation
-
    <Image
      src="/blog-assets/whatsapp-business-automated-messages/whatsapp-message-keyboard-open.avif"
      alt="whatsapp message keyboard open"
-     width="555px"
-     height="1200px"
+     width={555}
+     height={1200}
    />
 
 <Info>
@@ -304,9 +303,9 @@ Typebot lets you connect external services through webhooks. You can link it to 
 ### Welcome message
 
 ```
-Hello {{1}}! 👋
+Hello \{\{1\}\}! 👋
 
-Welcome to {{2}}! We're excited to have you with us.
+Welcome to \{\{2\}\}! We're excited to have you with us.
 
 If you have any questions, just reply to this message. Our team is here to help!
 
@@ -316,13 +315,13 @@ Thank you for choosing us! ✨
 ### Order confirmation
 
 ```
-Hi {{1}},
+Hi \{\{1\}\},
 
-Your order #{{2}} has been confirmed! 🛍️
+Your order #\{\{2\}\} has been confirmed! 🛍️
 
-Order Details: {{3}}
-Total: {{4}}
-Expected Delivery: {{5}}
+Order Details: \{\{3\}\}
+Total: \{\{4\}\}
+Expected Delivery: \{\{5\}\}
 
 We'll notify you when it ships. Thanks for shopping with us!
 ```
@@ -330,26 +329,26 @@ We'll notify you when it ships. Thanks for shopping with us!
 ### Shipping notification
 
 ```
-Great news {{1}}! 📦
+Great news \{\{1\}\}! 📦
 
-Your order #{{2}} is on its way!
+Your order #\{\{2\}\} is on its way!
 
-Tracking: {{3}}
-Delivery: {{4}}
+Tracking: \{\{3\}\}
+Delivery: \{\{4\}\}
 
-Track your package: {{5}}
+Track your package: \{\{5\}\}
 ```
 
 ### Appointment confirmation
 
 ```
-Hi {{1}},
+Hi \{\{1\}\},
 
 Your appointment is confirmed! ✅
 
-Date: {{2}}
-Time: {{3}}
-Location: {{4}}
+Date: \{\{2\}\}
+Time: \{\{3\}\}
+Location: \{\{4\}\}
 
 Need to reschedule? Just reply to this message.
 ```
@@ -357,11 +356,11 @@ Need to reschedule? Just reply to this message.
 ### Payment reminder
 
 ```
-Hi {{1}},
+Hi \{\{1\}\},
 
-Friendly reminder: Your payment of {{2}} for invoice #{{3}} is due on {{4}}.
+Friendly reminder: Your payment of \{\{2\}\} for invoice #\{\{3\}\} is due on \{\{4\}\}.
 
-Pay securely here: {{5}}
+Pay securely here: \{\{5\}\}
 
 Questions? Reply to this message! 💳
 ```
@@ -369,15 +368,15 @@ Questions? Reply to this message! 💳
 ### Abandoned cart recovery
 
 ```
-Hi {{1}},
+Hi \{\{1\}\},
 
 You left something special in your cart! 🛒
 
-{{2}} is waiting for you.
+\{\{2\}\} is waiting for you.
 
 Complete your purchase now and get FREE shipping!
 
-Shop now: {{3}}
+Shop now: \{\{3\}\}
 
 Offer expires in 24 hours! ⏰
 ```
@@ -385,11 +384,11 @@ Offer expires in 24 hours! ⏰
 ### Support acknowledgment
 
 ```
-Hi {{1}}!
+Hi \{\{1\}\}!
 
-Thanks for contacting {{2}}. We've received your message and will respond within {{3}} hours.
+Thanks for contacting \{\{2\}\}. We've received your message and will respond within \{\{3\}\} hours.
 
-For urgent matters: {{4}}
+For urgent matters: \{\{4\}\}
 
 We appreciate your patience! 🙏
 ```
@@ -399,12 +398,12 @@ We appreciate your patience! 🙏
 ```
 🔥 EXCLUSIVE OFFER ALERT! 🔥
 
-{{1}}, this is just for you!
+\{\{1\}\}, this is just for you!
 
-Get {{2}}% OFF {{3}}
-Valid until: {{4}}
+Get \{\{2\}\}% OFF \{\{3\}\}
+Valid until: \{\{4\}\}
 
-Shop now: {{5}}
+Shop now: \{\{5\}\}
 
 Don't miss out! ⏰
 ```
@@ -412,9 +411,9 @@ Don't miss out! ⏰
 ### Feedback request
 
 ```
-Hi {{1}},
+Hi \{\{1\}\},
 
-How was your experience with {{2}}?
+How was your experience with \{\{2\}\}?
 
 Rate us:
 ⭐⭐⭐⭐⭐ Excellent
@@ -429,13 +428,13 @@ Your feedback helps us improve!
 ### Appointment reminder
 
 ```
-Hi {{1}},
+Hi \{\{1\}\},
 
 Reminder: You have an appointment tomorrow.
 
-Date: {{2}}
-Time: {{3}}
-Address: {{4}}
+Date: \{\{2\}\}
+Time: \{\{3\}\}
+Address: \{\{4\}\}
 
 Reply CONFIRM to confirm or RESCHEDULE to change.
 
