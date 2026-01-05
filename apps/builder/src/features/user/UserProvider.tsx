@@ -1,4 +1,5 @@
 import { env } from "@typebot.io/env";
+import { datesAreOnSameDay } from "@typebot.io/lib/datesAreOnSameDay";
 import { isDefined } from "@typebot.io/lib/utils";
 import type { ClientUser, UpdateUser, User } from "@typebot.io/user/schemas";
 import { useRouter } from "next/router";
@@ -6,7 +7,6 @@ import { signOut, useSession } from "next-auth/react";
 import { useTheme } from "next-themes";
 import type { ReactNode } from "react";
 import { createContext, useEffect, useState } from "react";
-import { datesAreOnSameDay } from "@/helpers/datesAreOnSameDate";
 import { useDebounce } from "@/hooks/useDebounce";
 import { setLocaleInCookies } from "./helpers/setLocaleInCookies";
 import { useUpdateUserMutation } from "./hooks/useUpdateUserMutation";

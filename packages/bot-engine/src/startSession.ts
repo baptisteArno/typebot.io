@@ -21,7 +21,15 @@ import type {
   TypebotInSession,
   TypebotInSessionV5,
 } from "@typebot.io/chat-session/schemas";
-import { byId, isDefined, isNotEmpty, omit } from "@typebot.io/lib/utils";
+import { datesAreOnSameDay } from "@typebot.io/lib/datesAreOnSameDay";
+import {
+  byId,
+  isDefined,
+  isNotDefined,
+  isNotEmpty,
+  omit,
+} from "@typebot.io/lib/utils";
+import prisma from "@typebot.io/prisma";
 import type { Prisma } from "@typebot.io/prisma/types";
 import { resultSchema } from "@typebot.io/results/schemas/results";
 import { parseVariablesInRichText } from "@typebot.io/rich-text/parseVariablesInRichText";
@@ -47,6 +55,7 @@ import type {
   Variable,
 } from "@typebot.io/variables/schemas";
 import { transformPrefilledVariablesToVariables } from "@typebot.io/variables/transformPrefilledVariablesToVariables";
+import { after } from "next/server";
 import { NodeType, parse } from "node-html-parser";
 import { getStartingPoint } from "./getStartingPoint";
 import { isTypebotInSessionAtLeastV6 } from "./helpers/isTypebotInSessionAtLeastV6";
@@ -338,6 +347,20 @@ const getTypebot = async (startParams: StartParams) => {
           userId: startParams.userId,
         })
       : await findPublicTypebot({ publicId: startParams.publicId });
+
+  if (
+    typebotQuery &&
+    "typebot" in typebotQuery &&
+    (isNotDefined(typebotQuery.lastActivityAt) ||
+      !datesAreOnSameDay(typebotQuery.lastActivityAt, new Date()))
+  ) {
+    after(async () => {
+      await prisma.publicTypebot.update({
+        where: { id: typebotQuery.id },
+        data: { lastActivityAt: new Date() },
+      });
+    });
+  }
 
   const parsedTypebot =
     typebotQuery && "typebot" in typebotQuery

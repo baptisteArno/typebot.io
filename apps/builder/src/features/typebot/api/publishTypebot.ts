@@ -186,6 +186,7 @@ export const publishTypebot = authenticatedProcedure
           id: existingTypebot.publishedTypebot.id,
         },
         data: {
+          updatedAt: new Date(),
           version: existingTypebot.version,
           edges: z.array(edgeSchema).parse(existingTypebot.edges),
           groups: parseGroups(existingTypebot.groups, {

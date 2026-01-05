@@ -263,19 +263,22 @@ model CollaboratorsOnTypebots {
 }
 
 model PublicTypebot {
-  id            String                @id @default(cuid())
-  version       String?               @db.VarChar(10)
-  createdAt     DateTime              @default(now())
-  updatedAt     DateTime              @default(now()) @updatedAt
-  typebotId     String                @unique
-  groups        Json
-  events        Json?
-  variables     Json
-  edges         Json
-  theme         Json
-  settings      Json
-  typebot       Typebot               @relation(fields: [typebotId], references: [id], onDelete: Cascade)
-  mediaIdsCache RuntimeMediaIdCache[]
+  id             String                @id @default(cuid())
+  version        String?               @db.VarChar(10)
+  createdAt      DateTime              @default(now())
+  updatedAt      DateTime              @default(now())
+  lastActivityAt DateTime?
+  typebotId      String                @unique
+  groups         Json
+  events         Json?
+  variables      Json
+  edges          Json
+  theme          Json
+  settings       Json
+  typebot        Typebot               @relation(fields: [typebotId], references: [id], onDelete: Cascade)
+  mediaIdsCache  RuntimeMediaIdCache[]
+
+  @@index([lastActivityAt])
 }
 
 model RuntimeMediaIdCache {

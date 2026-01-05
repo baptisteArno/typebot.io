@@ -382,6 +382,7 @@ export const webhookHandler = async (
               where: { id: typebot.id },
               data: {
                 settings: {
+                  updatedAt: new Date(),
                   ...publishedTypebotSettings,
                   general: {
                     ...publishedTypebotSettings.general,

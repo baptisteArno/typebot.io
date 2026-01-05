@@ -168,6 +168,10 @@ export const Bot = (props: BotProps & { class?: string }) => {
         initialChatInStorage.typebot.publishedAt &&
         data.typebot.publishedAt
       ) {
+        console.log(
+          initialChatInStorage.typebot.publishedAt,
+          data.typebot.publishedAt,
+        );
         if (
           new Date(initialChatInStorage.typebot.publishedAt).getTime() ===
           new Date(data.typebot.publishedAt).getTime()

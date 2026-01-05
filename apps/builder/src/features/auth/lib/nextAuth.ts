@@ -1,4 +1,5 @@
 import { env } from "@typebot.io/env";
+import { datesAreOnSameDay } from "@typebot.io/lib/datesAreOnSameDay";
 import { getIp } from "@typebot.io/lib/getIp";
 import { isDefined } from "@typebot.io/lib/utils";
 import prisma from "@typebot.io/prisma";
@@ -12,7 +13,6 @@ import { trackEvents } from "@typebot.io/telemetry/trackEvents";
 import { clientUserSchema } from "@typebot.io/user/schemas";
 import type { NextRequest } from "next/server";
 import NextAuth from "next-auth";
-import { datesAreOnSameDay } from "@/helpers/datesAreOnSameDate";
 import { accountHasRequiredOAuthGroups } from "../helpers/accountHasRequiredOAuthGroups";
 import { createAuthPrismaAdapter } from "../helpers/createAuthPrismaAdapter";
 import { isEmailLegit } from "../helpers/emailValidation";

@@ -17,6 +17,7 @@ export const findPublicTypebot = ({ publicId }: Props) =>
       theme: true,
       variables: true,
       typebotId: true,
+      lastActivityAt: true,
       typebot: {
         select: {
           workspaceId: true,

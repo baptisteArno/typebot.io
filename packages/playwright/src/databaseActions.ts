@@ -142,6 +142,7 @@ export const updateTypebot = async (
     data: {
       ...partialTypebot,
       events: partialTypebot.events === null ? DbNull : partialTypebot.events,
+      updatedAt: new Date(),
     },
   });
 };

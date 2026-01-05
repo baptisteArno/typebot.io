@@ -85,6 +85,7 @@ const main = async () => {
         },
         data: {
           groups: updatedGroups,
+          updatedAt: new Date(),
         },
       });
     }
