@@ -1,7 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
 import { Plan } from "@typebot.io/prisma/enum";
-import { Leaf01Icon } from "@typebot.io/ui/icons/Leaf01Icon";
 import { useState } from "react";
 import { TextLink } from "@/components/TextLink";
 import { useUser } from "@/features/user/hooks/useUser";
@@ -120,15 +119,6 @@ export const ChangePlanForm = ({
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="flex items-center gap-3 max-w-[500px]">
-        <Leaf01Icon className="size-7" />
-        <p className="text-xs" color="gray.500">
-          {t("billing.contribution.preLink")}{" "}
-          <TextLink href="https://climate.stripe.com/5VCRAq" isExternal>
-            {t("billing.contribution.link")}
-          </TextLink>
-        </p>
-      </div>
       {!workspace.stripeId && (
         <PreCheckoutDialog
           selectedSubscription={preCheckoutPlan}
