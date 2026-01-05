@@ -216,7 +216,7 @@
 
 @keyframes chatBubbles {
   0% {
-    transform: translateY(2.5);
+    transform: translateY(0);
   }
   50% {
     transform: translateY(-2.5px);
