@@ -1,44 +1,3 @@
-// test workspace id: cl8eydnoe285009la5zpxnmoc
-
-/*
-This script generates a deep analysis of a workspace, including:
-# Basic information
-✅ Date of creation (DB data)
-- Number of active collaborators
-✅ List of members and their roles (DB data)
-✅ Workspace plan and stripe ID (DB data)
-- Last payment date and amount (Stripe data)
-✅ Total amount paid to date (Stripe data)
-✅ Any past due or suspension status (Stripe data)
-
-✅ Number of Typebots
-✅ Number of collected results
-- Top 3 typebots results count (PH data)
-- Number of archived Typebots (PH data)
-- Number of closed Typebots (PH data)
-
-# Typebot details
-For each active Typebot in the workspace:
-✅ ID, name and creation date (DB data)
-- Archived and closed status
-- Published status
-- Number of collaborators
-✅ Number of collected results (PH data)
-- Basic description of the Typebot
-- Feature usage summary (e.g., which features are used and how many times)
-- Integrations used
-
-# Workspace analysis
-- Who the client is: enterpise type, activity
-- What is the purpose of the workspace: eg. marketing, customer support, lead generation
-- Feature usage patterns
-- Engagement metrics
-- Recommendations for optimization
-
-This comprehensive summary helps in understanding the workspace's activity, engagement, and feature utilization.
-
-*/
-
 import { openai } from "@ai-sdk/openai";
 import * as p from "@clack/prompts";
 import type { $Enums } from "@prisma/client";
@@ -55,7 +14,7 @@ import { convertRichTextToMarkdown } from "@typebot.io/rich-text/convertRichText
 import { workspaceSchema } from "@typebot.io/workspaces/schemas";
 import { generateObject } from "ai";
 import fs, { existsSync, mkdirSync, writeFileSync } from "fs";
-import path from "path";
+import path, { resolve } from "path";
 import Stripe from "stripe";
 import { z } from "zod";
 import {
@@ -564,7 +523,7 @@ const toReadableFormat = (summary: workspaceSummaryType) => {
     const recLines = summary.ai_analysis.recommendations.split("\n");
     output += `- **Recommendations:**\n`;
     recLines.forEach((line) => {
-      output += `  - ${line.trim()}\n`;
+      output += `  ${line.trim()}\n`;
     });
     output += `\n`;
     output += `- **Typebot categories:**\n`;
@@ -652,19 +611,38 @@ const getLastEventOccurences = async (workspaceId: string) => {
     "Subscription scheduled for cancellation",
     "Subscription cancellation removed",
   ];
+  // quote strings for HogQL
+  const eventList = events.map((e) => `'${e.replace(/'/g, "\\'")}'`).join(", ");
+  const safeWorkspaceId = workspaceId.replace(/'/g, "\\'");
+
+  const query = `
+    SELECT
+      event,
+      max(timestamp) AS last_ts
+    FROM events
+    WHERE properties.$group_1 = '${safeWorkspaceId}'
+      AND event IN (${eventList})
+    GROUP BY event
+    ORDER BY last_ts DESC
+  `;
+
+  const result = await executePostHogQuery(query);
+
   const last_events: Record<string, string> = {};
-  for (const event of events) {
-    const query = `SELECT timestamp from events WHERE properties.$group_1 = '${workspaceId}' AND event = '${event}' ORDER BY timestamp DESC Limit 1`;
-    const result = await executePostHogQuery(query);
-    const timestamp = result?.results?.[0]?.[0] ?? null;
-    if (timestamp && typeof timestamp === "string")
-      last_events[event] = timestamp.split("T")[0];
+  for (const row of result?.results ?? []) {
+    const [eventName, ts] = row as [string, string | null];
+    if (eventName && typeof ts === "string") {
+      last_events[eventName] = ts.split("T")[0];
+    }
   }
+
+  // Already ordered by last_ts DESC, but keep your sort to be safe:
   const last_events_sorted = Object.fromEntries(
     Object.entries(last_events).sort(([, a], [, b]) => {
       return new Date(b).getTime() - new Date(a).getTime();
     }),
   );
+
   return last_events_sorted;
 };
 
@@ -697,12 +675,9 @@ const getStripeSubscriptions = async (stripeId: string) => {
 };
 
 const getWorkspaceSummary = async () => {
-  // const workspaceId = await p.text({
-  //   message: "Enter workspace ID",
-  // });
-  const workspaceId = "clr6b0xkr001hl20fklmgx61l";
-  // normal examples: clq4danqw000fl50f311om4ho, clr6b0xkr001hl20fklmgx61l, clk0qn3hs000jmo0fot6o6qvg, cmdmungim0013jr04ml8vhjj2
-  // undesired content example: cmikgjd6e0004l40407xyfgnh
+  const workspaceId = await p.text({
+    message: "Enter workspace ID",
+  });
 
   if (!workspaceId || typeof workspaceId !== "string") {
     console.error("❌ Workspace ID is required");
