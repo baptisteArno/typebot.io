@@ -16,20 +16,17 @@ const LIMIT_EMAIL_TRIGGER_PERCENT = 0.75;
 export const checkAndReportLastHourResults = async () => {
   console.log("Get collected results from the last hour...");
 
-  const results = await getLastHourResults();
+  const typebotIdsWithResults = await getLastHourActiveTypebotIds();
 
   console.log(
-    `Found ${results.reduce(
-      (total, result) => total + result._count._all,
-      0,
-    )} results collected for the last hour.`,
+    `Found ${typebotIdsWithResults.length} typebots with results collected for the last hour.`,
   );
 
   const workspaces = await prisma.workspace.findMany({
     where: {
       typebots: {
         some: {
-          id: { in: results.map((result) => result.typebotId) },
+          id: { in: typebotIdsWithResults },
         },
       },
     },
@@ -196,10 +193,6 @@ export const checkAndReportLastHourResults = async () => {
       inactiveSecondEmailSentAt: null,
     },
   });
-
-  console.log(
-    `Send ${limitWarningEmailEvents.length}, new results events and ${quarantineEvents.length} auto quarantine events...`,
-  );
 
   await trackEvents(limitWarningEmailEvents.concat(quarantineEvents));
 };
@@ -449,7 +442,7 @@ async function sendLimitWarningEmails({
   return emailEvents;
 }
 
-export const getLastHourResults = async () => {
+export const getLastHourActiveTypebotIds = async () => {
   const zeroedMinutesHour = new Date();
   zeroedMinutesHour.setUTCMinutes(0, 0, 0);
   const hourAgo = new Date(zeroedMinutesHour.getTime() - 1000 * 60 * 60);
@@ -466,12 +459,13 @@ export const getLastHourResults = async () => {
       typebotId: true,
     },
   });
+  console.log(
+    "Found",
+    activePublicTypebots.length,
+    "active public typebots today",
+  );
 
-  const queryParams = {
-    by: ["typebotId"],
-    _count: {
-      _all: true,
-    },
+  const results = await prisma.result.findMany({
     where: {
       typebotId: {
         in: activePublicTypebots.map(
@@ -485,7 +479,11 @@ export const getLastHourResults = async () => {
         gte: hourAgo,
       },
     },
-  } satisfies Prisma.Prisma.ResultGroupByArgs;
+    select: {
+      typebotId: true,
+    },
+    distinct: ["typebotId"],
+  });
 
-  return prisma.result.groupBy(queryParams);
+  return results.map((r) => r.typebotId);
 };
