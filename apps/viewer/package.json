@@ -54,6 +54,8 @@
     "@typebot.io/blocks-inputs": "workspace:*",
     "@typebot.io/blocks-logic": "workspace:*",
     "@typebot.io/blocks-bubbles": "workspace:*",
+    "@typebot.io/file-input-block": "workspace:*",
+    "@typebot.io/webhook-block": "workspace:*",
     "papaparse": "^5.4.1",
     "@typebot.io/runtime-session-store": "workspace:*",
     "@typebot.io/config": "workspace:*"
