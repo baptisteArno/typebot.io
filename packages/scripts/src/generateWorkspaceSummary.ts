@@ -604,7 +604,7 @@ const getLastEventOccurences = async (workspaceId: string) => {
     "WhatsApp credentials created",
     "Workspace limit reached",
     "Subscription updated",
-    "Workspace automatically quanrantined",
+    "Workspace automatically quarantined",
     "Workspace past due",
     "Workspace past due status removed",
     "Workspace unpaid",
