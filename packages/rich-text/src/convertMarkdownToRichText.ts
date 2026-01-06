@@ -10,6 +10,14 @@ export const convertMarkdownToRichText = (data: string) => {
 
   return editor.api.markdown.deserialize(data, {
     remarkPlugins: [remarkPreserveEmptyLines],
+    rules: {
+      text: {
+        deserialize: (mdastNode: Text, deco) => ({
+          ...deco,
+          text: mdastNode.value,
+        }),
+      },
+    },
   });
 };
 

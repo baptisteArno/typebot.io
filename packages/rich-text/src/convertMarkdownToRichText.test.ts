@@ -42,5 +42,20 @@ describe("convertMarkdownToRichText", () => {
         children: [{ text: "Hello, world!" }],
       },
     ]);
+
+    const markdown2 = "**Bold**\nText";
+    const richText2 = convertMarkdownToRichText(markdown2);
+    expect(richText2).toStrictEqual([
+      {
+        type: "p",
+        children: [
+          {
+            bold: true,
+            text: "Bold",
+          },
+          { text: "\nText" },
+        ],
+      },
+    ]);
   });
 });
