@@ -9,6 +9,7 @@ const typebotInSessionStatePick = {
   events: true,
   edges: true,
   variables: true,
+  typebotId: true,
 } as const
 export const typebotInSessionStateSchema = z.preprocess(
   preprocessTypebot,

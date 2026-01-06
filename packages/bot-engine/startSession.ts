@@ -52,12 +52,12 @@ import { parseVariablesInRichText } from './parseBubbleBlock'
 
 type StartParams =
   | ({
-      type: 'preview'
-      userId?: string
-    } & StartPreviewChatInput)
+    type: 'preview'
+    userId?: string
+  } & StartPreviewChatInput)
   | ({
-      type: 'live'
-    } & StartChatInput)
+    type: 'live'
+  } & StartChatInput)
 
 type Props = {
   version: 1 | 2
@@ -115,29 +115,29 @@ export const startSession = async ({
         typebot: typebotInSession,
         answers: result
           ? result.answers.map((answer) => {
-              const block = typebot.groups
-                .flatMap<Block>((group) => group.blocks)
-                .find((block) => block.id === answer.blockId)
-              if (!block || !isInputBlock(block))
-                return {
-                  key: 'unknown',
-                  value: answer.content,
-                }
-              const key =
-                (block.options?.variableId
-                  ? startVariables.find(
-                      (variable) => variable.id === block.options?.variableId
-                    )?.name
-                  : typebot.groups.find((group) =>
-                      group.blocks.find(
-                        (blockInGroup) => blockInGroup.id === block.id
-                      )
-                    )?.title) ?? 'unknown'
+            const block = typebot.groups
+              .flatMap<Block>((group) => group.blocks)
+              .find((block) => block.id === answer.blockId)
+            if (!block || !isInputBlock(block))
               return {
-                key,
+                key: 'unknown',
                 value: answer.content,
               }
-            })
+            const key =
+              (block.options?.variableId
+                ? startVariables.find(
+                  (variable) => variable.id === block.options?.variableId
+                )?.name
+                : typebot.groups.find((group) =>
+                  group.blocks.find(
+                    (blockInGroup) => blockInGroup.id === block.id
+                  )
+                )?.title) ?? 'unknown'
+            return {
+              key,
+              value: answer.content,
+            }
+          })
           : [],
       },
     ],
@@ -151,8 +151,8 @@ export const startSession = async ({
     progressMetadata: initialSessionState?.whatsApp
       ? undefined
       : typebot.theme.general?.progressBar?.isEnabled
-      ? { totalAnswers: 0 }
-      : undefined,
+        ? { totalAnswers: 0 }
+        : undefined,
     setVariableIdsForHistory:
       extractVariableIdsUsedForTranscript(typebotInSession),
     ...initialSessionState,
@@ -193,7 +193,7 @@ export const startSession = async ({
       typebot: chatReply.newSessionState.typebotsQueue[0].typebot,
       startEventId:
         startParams.type === 'preview' &&
-        startParams.startFrom?.type === 'event'
+          startParams.startFrom?.type === 'event'
           ? startParams.startFrom.eventId
           : undefined,
     })
@@ -252,9 +252,8 @@ export const startSession = async ({
         if (gtmId) toolsList += 'Google Tag Manager, '
         toolsList = toolsList.slice(0, -2)
         startLogs.push({
-          description: `${toolsList} ${
-            toolsList.includes(',') ? 'are not' : 'is not'
-          } enabled in Preview mode`,
+          description: `${toolsList} ${toolsList.includes(',') ? 'are not' : 'is not'
+            } enabled in Preview mode`,
           status: 'info',
         })
       }
@@ -330,18 +329,18 @@ const getTypebot = async (startParams: StartParams): Promise<StartTypebot> => {
   const typebotQuery =
     startParams.type === 'preview'
       ? await findTypebot({
-          id: startParams.typebotId,
-          userId: startParams.userId,
-        })
+        id: startParams.typebotId,
+        userId: startParams.userId,
+      })
       : await findPublicTypebot({ publicId: startParams.publicId })
 
   const parsedTypebot =
     typebotQuery && 'typebot' in typebotQuery
       ? {
-          id: typebotQuery.typebotId,
-          ...omit(typebotQuery.typebot, 'workspace'),
-          ...omit(typebotQuery, 'typebot', 'typebotId'),
-        }
+        id: typebotQuery.typebotId,
+        ...omit(typebotQuery.typebot, 'workspace'),
+        ...omit(typebotQuery, 'typebot', 'typebotId'),
+      }
       : typebotQuery
 
   if (!parsedTypebot || parsedTypebot.isArchived)
@@ -444,8 +443,8 @@ const parseStartClientSideAction = (
   const startPropsToInject = {
     customHeadCode: isNotEmpty(typebot.settings.metadata?.customHeadCode)
       ? sanitizeAndParseHeadCode(
-          typebot.settings.metadata?.customHeadCode as string
-        )
+        typebot.settings.metadata?.customHeadCode as string
+      )
       : undefined,
     gtmId: typebot.settings.metadata?.googleTagManagerId,
     googleAnalyticsId: (
@@ -502,21 +501,23 @@ const convertStartTypebotToTypebotInSession = (
 ): TypebotInSession =>
   typebot.version === '6'
     ? {
-        version: typebot.version,
-        id: typebot.id,
-        groups: typebot.groups,
-        edges: typebot.edges,
-        variables: startVariables,
-        events: typebot.events,
-      }
+      version: typebot.version,
+      id: typebot.id,
+      groups: typebot.groups,
+      edges: typebot.edges,
+      variables: startVariables,
+      events: typebot.events,
+      typebotId: typebot.id,
+    }
     : {
-        version: typebot.version,
-        id: typebot.id,
-        groups: typebot.groups,
-        edges: typebot.edges,
-        variables: startVariables,
-        events: typebot.events,
-      }
+      version: typebot.version,
+      id: typebot.id,
+      groups: typebot.groups,
+      edges: typebot.edges,
+      variables: startVariables,
+      events: typebot.events,
+      typebotId: typebot.id,
+    }
 
 const extractVariableIdsUsedForTranscript = (
   typebot: TypebotInSession
