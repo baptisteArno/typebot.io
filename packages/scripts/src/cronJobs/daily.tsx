@@ -40,9 +40,13 @@ ${formatSubscriptionMessage(subscriptionTransitions)}
 
   await getYesterdayChurnSummary({
     onSummaryGenerated: async (churnSummary) => {
-      const isLowSpender = churnSummary.workspace.totalSpent
-        ? Number(churnSummary.workspace.totalSpent) < 100
-        : false;
+      const totalSpent = churnSummary.workspace.totalSpent
+        ? parseFloat(
+            churnSummary.workspace.totalSpent.replace(/[^0-9.-]+/g, ""),
+          )
+        : 0;
+
+      const isLowSpender = totalSpent < 100;
       await sendDiscordMessage(
         formatChurnAgentDiscordMessages(churnSummary, {
           excludeTimeline: isLowSpender,
