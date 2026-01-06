@@ -11,24 +11,17 @@ import { parseGroups } from "@typebot.io/groups/helpers/parseGroups";
 import prisma from "@typebot.io/prisma";
 import type { Prisma } from "@typebot.io/prisma/types";
 import { convertRichTextToMarkdown } from "@typebot.io/rich-text/convertRichTextToMarkdown";
-import { workspaceSchema } from "@typebot.io/workspaces/schemas";
 import { generateObject } from "ai";
 import fs, { existsSync, mkdirSync, writeFileSync } from "fs";
-import path, { resolve } from "path";
+import path from "path";
 import Stripe from "stripe";
 import { z } from "zod";
-import {
-  mainAgentSystemPrompt,
-  typebotSummarizerSystemPrompt,
-} from "./churnAgent/constants";
 import { executePostHogQuery } from "./helpers/executePostHogQuery";
 import { getTotalPaidForSubscription } from "./helpers/stripe/getTotalPaidForSubscription";
-import { promptAndSetEnvironment } from "./utils";
 
 const MAX_GROUPS_PER_BOT = 20;
 const MAX_BLOCKS_PER_GROUP = 10;
 const MAX_BOTS_PER_WORKSPACE = 5;
-const MAX_EVENTS_PER_MEMBER = 150;
 
 const typebotSummarySystemPrompt = `You will be acting as a product analyst working for Typebot.
 
@@ -41,7 +34,7 @@ Return a json object with the following fields:
 - isScam: A boolean indicating whether the typebot appears to be a scam or violates Typebot's terms of service.
 - isUndesired: A boolean indicating whether the typebot is related to undesired content such as adult content, gambling, or other sensitive topics.
 - reason: If isScam or isUndesired true, provide a brief explanation of why you believe this typebot is a scam or violates terms of service or is undesired content. If false, return null.
-- category: If isScam and isUndesired false, the main category of the typebot. Possible values are: Customer support, Lead generation, Onboarding, Survey, Feedback, Quizz, E-commrerce, Other.
+- category: If isScam and isUndesired false, the main category of the typebot. Possible values are: Customer support, Lead generation, Onboarding, Survey, Feedback, Quizz, E-commerce, Other.
 - otherCategory: If category is Other, specify actual category. 
 Define the most appropriate category based on the typebot's content and purpose.
 
