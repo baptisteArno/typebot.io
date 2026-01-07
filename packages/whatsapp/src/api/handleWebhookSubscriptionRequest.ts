@@ -14,18 +14,19 @@ export const handleWebhookSubscriptionRequest = async ({
 }: {
   input: z.infer<typeof webhookSubscriptionInputSchema>;
 }) => {
-  const verificationToken = await prisma.verificationToken.findUnique({
+  // Better Auth uses 'verification' model with 'value' field instead of 'verificationToken' with 'token'
+  const verification = await prisma.verification.findFirst({
     where: {
-      token,
+      value: token,
     },
   });
-  if (!verificationToken)
+  if (!verification)
     throw new ORPCError("UNAUTHORIZED", {
       message: "Unauthorized",
     });
-  await prisma.verificationToken.delete({
+  await prisma.verification.delete({
     where: {
-      token,
+      id: verification.id,
     },
   });
   return Number(challenge);

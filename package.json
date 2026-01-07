@@ -57,5 +57,8 @@
     "prisma",
     "sharp",
     "inngest-cli"
-  ]
+  ],
+  "overrides": {
+    "@opentelemetry/winston-transport": "^0.10.0"
+  }
 }

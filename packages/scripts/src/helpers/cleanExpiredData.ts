@@ -49,9 +49,10 @@ const deleteExpiredAppSessions = async () => {
   const threeDaysAgo = new Date();
   threeDaysAgo.setDate(threeDaysAgo.getDate() - 3);
   threeDaysAgo.setHours(0, 0, 0, 0);
+  // Better Auth uses 'expiresAt' instead of 'expires'
   const { count } = await prisma.session.deleteMany({
     where: {
-      expires: {
+      expiresAt: {
         lte: threeDaysAgo,
       },
     },
@@ -63,34 +64,35 @@ const deleteExpiredVerificationTokens = async () => {
   const threeDaysAgo = new Date();
   threeDaysAgo.setDate(threeDaysAgo.getDate() - 3);
   threeDaysAgo.setHours(0, 0, 0, 0);
-  let totalVerificationTokens;
+  let totalVerifications;
   do {
-    const verificationTokens = await prisma.verificationToken.findMany({
+    // Better Auth uses 'verification' model with 'expiresAt' and 'id' fields
+    const verifications = await prisma.verification.findMany({
       where: {
-        expires: {
+        expiresAt: {
           lte: threeDaysAgo,
         },
       },
       select: {
-        token: true,
+        id: true,
       },
       take: 80000,
     });
 
-    totalVerificationTokens = verificationTokens.length;
+    totalVerifications = verifications.length;
 
-    console.log(`Deleting ${verificationTokens.length} expired tokens...`);
+    console.log(`Deleting ${verifications.length} expired verifications...`);
     const chunkSize = 1000;
-    for (let i = 0; i < verificationTokens.length; i += chunkSize) {
-      const chunk = verificationTokens.slice(i, i + chunkSize);
-      await prisma.verificationToken.deleteMany({
+    for (let i = 0; i < verifications.length; i += chunkSize) {
+      const chunk = verifications.slice(i, i + chunkSize);
+      await prisma.verification.deleteMany({
         where: {
-          token: {
-            in: chunk.map((verificationToken) => verificationToken.token),
+          id: {
+            in: chunk.map((v) => v.id),
           },
         },
       });
     }
-  } while (totalVerificationTokens === 80000);
+  } while (totalVerifications === 80000);
   console.log("Done!");
 };
