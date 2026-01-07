@@ -604,17 +604,14 @@ const getLastEventOccurences = async (workspaceId: string) => {
     "Subscription scheduled for cancellation",
     "Subscription cancellation removed",
   ];
-  // quote strings for HogQL
-  const eventList = events.map((e) => `'${e.replace(/'/g, "\\'")}'`).join(", ");
-  const safeWorkspaceId = workspaceId.replace(/'/g, "\\'");
 
   const query = `
     SELECT
       event,
       max(timestamp) AS last_ts
     FROM events
-    WHERE properties.$group_1 = '${safeWorkspaceId}'
-      AND event IN (${eventList})
+    WHERE properties.$group_1 = '${workspaceId}'
+      AND event IN (${events.join(", ")})
     GROUP BY event
     ORDER BY last_ts DESC
   `;
