@@ -392,6 +392,8 @@ const getEventsJournal = (events: Array<any>) => {
     }
   }
 
+  flushAllOngoing();
+
   const deduplicated_journal = Array.from(new Set(journal));
 
   return deduplicated_journal;
@@ -611,7 +613,7 @@ const getLastEventOccurences = async (workspaceId: string) => {
       max(timestamp) AS last_ts
     FROM events
     WHERE properties.$group_1 = '${workspaceId}'
-      AND event IN (${events.join(", ")})
+      AND event IN (${events.map((e) => `'${e}'`).join(", ")})
     GROUP BY event
     ORDER BY last_ts DESC
   `;
