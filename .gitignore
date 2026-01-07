@@ -13,7 +13,6 @@ test-results
 **/src/test/reporters
 test/report
 **/api/scripts
-**/packages/logs/workspaces
 .sentryclirc
 .docusaurus
 .cache-loader

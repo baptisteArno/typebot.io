@@ -155,7 +155,7 @@ const getTypebotAISummary = async (
 const saveToFile = (filePath: string, data: string) => {
   const completeFilePath = path.join(
     __dirname,
-    `../../logs/workspaces/`,
+    `../logs/workspaces/`,
     filePath,
   );
   createFolderIfNotExists(completeFilePath);
@@ -757,7 +757,7 @@ const getWorkspaceSummary = async () => {
       // save to file
       const user_journal_path = path.join(
         __dirname,
-        `../../logs/workspaces/${workspaceId}/users/${member_data.email}/eventsJournal.txt`,
+        `../logs/workspaces/${workspaceId}/users/${member_data.email}/eventsJournal.txt`,
       );
       createFolderIfNotExists(user_journal_path);
       writeFileSync(user_journal_path, events_journal.join("\n"));
