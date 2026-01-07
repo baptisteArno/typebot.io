@@ -664,7 +664,7 @@ const getStripeSubscriptions = async (stripeId: string) => {
   return subscriptions_list;
 };
 
-const getWorkspaceSummary = async () => {
+const generateWorkspaceSummary = async () => {
   const workspaceId = await p.text({
     message: "Enter workspace ID",
   });
@@ -912,4 +912,4 @@ const getWorkspaceSummary = async () => {
   );
 };
 
-getWorkspaceSummary();
+generateWorkspaceSummary();
