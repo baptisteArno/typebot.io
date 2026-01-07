@@ -14,7 +14,7 @@ import { isNotDefined } from '@typebot.io/lib'
 import { env } from '@typebot.io/env'
 
 export const executeIntegration =
-  (state: SessionState, sessionId?: string) =>
+  (state: SessionState) =>
   async (block: IntegrationBlock): Promise<ExecuteIntegrationResponse> => {
     switch (block.type) {
       case IntegrationBlockType.GOOGLE_SHEETS:
@@ -57,7 +57,7 @@ export const executeIntegration =
         }
       default:
         return {
-          ...(await executeForgedBlock(state, block, sessionId)),
+          ...(await executeForgedBlock(state, block)),
           startTimeShouldBeUpdated: true,
         }
     }

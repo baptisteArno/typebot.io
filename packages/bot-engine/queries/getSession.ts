@@ -14,36 +14,6 @@ export const getSession = async (sessionId: string) => {
   }
   return {
     ...session,
-    state: sessionStateSchema.parse(patchSessionState(session.state)),
-  }
-}
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const patchSessionState = (state: any) => {
-  if (!state) return state
-  if (state.typebotsQueue) {
-    return {
-      ...state,
-      typebotsQueue: state.typebotsQueue.map((item: any) => ({
-        ...item,
-        typebot: patchTypebot(item.typebot),
-      })),
-    }
-  }
-  if (state.typebot) {
-    return {
-      ...state,
-      typebot: patchTypebot(state.typebot),
-    }
-  }
-  return state
-}
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const patchTypebot = (typebot: any) => {
-  if (!typebot) return typebot
-  return {
-    ...typebot,
-    typebotId: typebot.typebotId ?? typebot.id,
+    state: sessionStateSchema.parse(session.state),
   }
 }

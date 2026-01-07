@@ -11,7 +11,6 @@ import { getTypebot } from './getTypebot'
 import {
   getPublishedTypebot,
   getPublishedTypebotCached,
-  getPublishedTypebotVariables,
 } from './getPublishedTypebot'
 import { publishTypebot } from './publishTypebot'
 import { unpublishTypebot } from './unpublishTypebot'
@@ -30,7 +29,6 @@ export const typebotRouter = router({
   getTypebot,
   getPublishedTypebot,
   getPublishedTypebotCached,
-  getPublishedTypebotVariables,
   publishTypebot,
   unpublishTypebot,
   listTypebots,

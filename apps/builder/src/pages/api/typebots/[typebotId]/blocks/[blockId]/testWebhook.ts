@@ -68,7 +68,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       isCustomBody: block.options?.isCustomBody,
       typebot: {
         ...typebot,
-        typebotId: typebot.id,
         variables: typebot.variables.map((v) => {
           const matchingVariable = variables.find(byId(v.id))
           if (!matchingVariable) return v
