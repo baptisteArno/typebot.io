@@ -1,13 +1,15 @@
+import { useQuery } from "@tanstack/react-query";
 import { env } from "@typebot.io/env";
 import { datesAreOnSameDay } from "@typebot.io/lib/datesAreOnSameDay";
 import { isDefined } from "@typebot.io/lib/utils";
 import type { ClientUser, UpdateUser, User } from "@typebot.io/user/schemas";
 import { useRouter } from "next/router";
-import { signOut, useSession } from "next-auth/react";
 import { useTheme } from "next-themes";
 import type { ReactNode } from "react";
 import { createContext, useEffect, useState } from "react";
 import { useDebounce } from "@/hooks/useDebounce";
+import { authClient, useSession } from "@/lib/auth/client";
+import { trpc } from "@/lib/queryClient";
 import { setLocaleInCookies } from "./helpers/setLocaleInCookies";
 import { useUpdateUserMutation } from "./hooks/useUpdateUserMutation";
 
@@ -27,10 +29,18 @@ export const userContext = createContext<{
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
-  const { data: session, status } = useSession();
+  const { data: session, isPending } = useSession();
+  const status = isPending ? "loading" : session?.user ? "authenticated" : "unauthenticated";
   const [currentWorkspaceId, setCurrentWorkspaceId] = useState<string>();
   const { theme, setTheme } = useTheme();
   const [localUser, setLocalUser] = useState<ClientUser>();
+
+  // Fetch full user data from database when session is available
+  const { data: fullUserData, isLoading: isUserLoading } = useQuery(
+    trpc.userInternal.getMe.queryOptions(undefined, {
+      enabled: !!session?.user?.id,
+    }),
+  );
 
   const updateUserMutation = useUpdateUserMutation();
 
@@ -40,11 +50,11 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   }, [localUser?.preferredAppAppearance]);
 
   useEffect(() => {
-    if (isDefined(session?.user.id)) return;
+    if (isDefined(session?.user?.id)) return;
     setCurrentWorkspaceId(
       localStorage.getItem("currentWorkspaceId") ?? undefined,
     );
-  }, [session?.user.id]);
+  }, [session?.user?.id]);
 
   useEffect(() => {
     if (!router.isReady) return;
@@ -71,19 +81,19 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     if (
       env.NEXT_PUBLIC_ONBOARDING_TYPEBOT_ID &&
       !router.pathname.includes("/onboarding") &&
-      !session?.user.termsAcceptedAt &&
-      session?.user.createdAt &&
-      datesAreOnSameDay(new Date(session.user.createdAt), new Date())
+      !fullUserData?.termsAcceptedAt &&
+      fullUserData?.createdAt &&
+      datesAreOnSameDay(new Date(fullUserData.createdAt), new Date())
     ) {
       router.replace("/onboarding");
     }
-  }, [router.isReady, router.pathname, status, session?.user.termsAcceptedAt]);
+  }, [router.isReady, router.pathname, status, fullUserData?.termsAcceptedAt, fullUserData?.createdAt]);
 
   useEffect(() => {
     if (!router.isReady) return;
-    if (status === "loading") return;
+    if (status === "loading" || isUserLoading) return;
 
-    const preferredLanguage = session?.user?.preferredLanguage;
+    const preferredLanguage = fullUserData?.preferredLanguage;
     const currentLocale = router.locale;
 
     if (preferredLanguage && preferredLanguage !== currentLocale) {
@@ -97,7 +107,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         { locale: preferredLanguage },
       );
     }
-  }, [router.isReady, router.locale, status, session?.user?.preferredLanguage]);
+  }, [router.isReady, router.locale, status, isUserLoading, fullUserData?.preferredLanguage]);
 
   const updateUser = async (updates: Partial<User>) => {
     if (!localUser) return;
@@ -116,16 +126,22 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   };
 
   useEffect(() => {
-    if ((!session?.user && !localUser) || (session?.user && localUser)) return;
-    setLocalUser(session?.user);
-  }, [session?.user, localUser]);
+    if ((!fullUserData && !localUser) || (fullUserData && localUser)) return;
+    setLocalUser(fullUserData);
+  }, [fullUserData, localUser]);
+
+  const handleSignOut = () => {
+    authClient.signOut().then(() => {
+      router.push("/signin");
+    });
+  };
 
   return (
     <userContext.Provider
       value={{
         user: localUser,
-        isLoading: status === "loading",
-        logOut: signOut,
+        isLoading: status === "loading" || isUserLoading,
+        logOut: handleSignOut,
         updateUser,
         currentWorkspaceId,
         updateLocalUserEmail,

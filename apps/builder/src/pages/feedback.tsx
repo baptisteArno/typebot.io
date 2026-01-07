@@ -3,14 +3,14 @@ import { isNotDefined } from "@typebot.io/lib/utils";
 import type { Prisma } from "@typebot.io/prisma/types";
 import { sign } from "jsonwebtoken";
 import type { GetServerSidePropsContext } from "next";
-import { auth } from "@/features/auth/lib/nextAuth";
+import { getSessionFromContext } from "@/lib/auth/getSessionFromContext";
 
 export default function Page() {
   return null;
 }
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const session = await auth(context);
+  const session = await getSessionFromContext(context);
   if (isNotDefined(session?.user))
     return {
       redirect: {

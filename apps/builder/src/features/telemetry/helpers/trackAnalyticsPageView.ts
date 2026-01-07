@@ -2,7 +2,7 @@ import prisma from "@typebot.io/prisma";
 import { trackEvents } from "@typebot.io/telemetry/trackEvents";
 import type { User } from "@typebot.io/user/schemas";
 import type { GetServerSidePropsContext } from "next";
-import { auth } from "@/features/auth/lib/nextAuth";
+import { getSessionFromContext } from "@/lib/auth/getSessionFromContext";
 
 export const trackAnalyticsPageView = async (
   context: GetServerSidePropsContext,
@@ -14,7 +14,7 @@ export const trackAnalyticsPageView = async (
     select: { workspaceId: true },
   });
   if (!typebot) return;
-  const session = await auth(context);
+  const session = await getSessionFromContext(context);
   await trackEvents([
     {
       name: "Analytics visited",

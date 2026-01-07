@@ -11,27 +11,42 @@ export const updateUserEmail = authenticatedProcedure
     }),
   )
   .mutation(async ({ ctx: { user }, input: { token } }) => {
-    const verificationToken = await prisma.verificationToken.findUnique({
+    // Find verification record by searching for identifier prefix
+    // The identifier format is: ${userId}-changeEmail-${base64(newEmail)}
+    const verifications = await prisma.verification.findMany({
       where: {
-        identifier_token: {
-          token,
-          identifier: `${user.id}-changeEmail`,
+        identifier: {
+          startsWith: `${user.id}-changeEmail-`,
         },
+        value: token,
       },
       select: {
-        expires: true,
-        value: true,
+        id: true,
+        expiresAt: true,
+        identifier: true,
       },
     });
 
-    if (!verificationToken?.value)
+    const verification = verifications[0];
+
+    if (!verification)
       throw new TRPCError({
         code: "NOT_FOUND",
         message: "Token not found",
       });
 
-    if (verificationToken.expires < new Date()) {
-      await deleteToken(token);
+    // Extract new email from identifier
+    const identifierParts = verification.identifier.split("-changeEmail-");
+    if (identifierParts.length !== 2) {
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "Invalid verification identifier format",
+      });
+    }
+    const newEmail = Buffer.from(identifierParts[1], "base64").toString("utf-8");
+
+    if (verification.expiresAt < new Date()) {
+      await deleteVerification(verification.id);
       throw new TRPCError({
         code: "BAD_REQUEST",
         message: "Token expired",
@@ -44,7 +59,7 @@ export const updateUserEmail = authenticatedProcedure
           id: user.id,
         },
         data: {
-          email: verificationToken.value,
+          email: newEmail,
         },
       });
     } catch (error) {
@@ -59,16 +74,14 @@ export const updateUserEmail = authenticatedProcedure
       throw error;
     }
 
-    await deleteToken(token);
+    await deleteVerification(verification.id);
 
     return {
       status: "success",
     };
   });
 
-const deleteToken = (token: string) =>
-  prisma.verificationToken.delete({
-    where: {
-      token,
-    },
+const deleteVerification = (id: string) =>
+  prisma.verification.delete({
+    where: { id },
   });

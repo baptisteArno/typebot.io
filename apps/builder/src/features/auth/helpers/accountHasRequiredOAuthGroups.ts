@@ -1,8 +1,13 @@
 import { env } from "@typebot.io/env";
-import type { Account } from "next-auth";
+
+// OAuth account type for group checking
+type OAuthAccount = {
+  provider: string;
+  access_token?: string | null;
+};
 
 export const accountHasRequiredOAuthGroups = async (
-  account: Account,
+  account: OAuthAccount,
 ): Promise<boolean> => {
   const requiredGroups = getRequiredGroups(account.provider);
   if (requiredGroups.length === 0) return true;

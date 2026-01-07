@@ -6,13 +6,13 @@ import { getFileTempUrl } from "@typebot.io/lib/s3/getFileTempUrl";
 import prisma from "@typebot.io/prisma";
 import { isReadTypebotForbidden } from "@typebot.io/typebot/helpers/isReadTypebotForbidden";
 import type { NextRequest } from "next/server";
-import { auth } from "@/features/auth/lib/nextAuth";
+import { auth } from "@/lib/auth/config";
 
 type PathParams = Record<string, string>;
 
 type User = {
   id: string;
-  email: string | null;
+  email: string;
 };
 
 const pathAuthorizationCheckers: Record<
@@ -57,8 +57,13 @@ export const GET = async (
   req: NextRequest,
   { params }: { params: Promise<{ key: string[] }> },
 ) => {
+  // Try to get session from Better Auth
+  const session = await auth.api.getSession({
+    headers: req.headers,
+  });
+
   const user =
-    (await auth())?.user ??
+    session?.user ??
     (await authenticateByToken(extractBearerToken(req)));
 
   if (!user) return new Response("Unauthorized", { status: 401 });

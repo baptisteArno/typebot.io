@@ -5,14 +5,14 @@ import { authenticatedProcedure } from "@/helpers/server/trpc";
 export const generateVerificationToken = authenticatedProcedure.mutation(
   async () => {
     const oneHourLater = new Date(Date.now() + 1000 * 60 * 60);
-    const verificationToken = await prisma.verificationToken.create({
+    const verification = await prisma.verification.create({
       data: {
-        token: createId(),
-        expires: oneHourLater,
+        value: createId(),
+        expiresAt: oneHourLater,
         identifier: "whatsapp webhook",
       },
     });
 
-    return { verificationToken: verificationToken.token };
+    return { verificationToken: verification.value };
   },
 );

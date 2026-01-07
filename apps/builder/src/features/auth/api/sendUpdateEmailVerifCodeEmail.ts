@@ -46,18 +46,20 @@ export const sendUpdateEmailVerifCodeEmail = authenticatedProcedure
 
     const oneHourLater = new Date(Date.now() + 1000 * 60 * 60);
     const nanoid = customAlphabet("abcdefghijklmnopqrstuvwxyz", 4);
-    const verificationToken = await prisma.verificationToken.create({
+    const tokenValue = `${nanoid(4)}-${nanoid(5)}-${nanoid(4)}-${nanoid(5)}`;
+    // Encode new email in identifier since Better Auth uses 'value' for the token
+    const identifier = `${user.id}-changeEmail-${Buffer.from(formattedNewEmail).toString("base64")}`;
+    await prisma.verification.create({
       data: {
-        token: `${nanoid(4)}-${nanoid(5)}-${nanoid(4)}-${nanoid(5)}`,
-        expires: oneHourLater,
-        identifier: `${user.id}-changeEmail`,
-        value: formattedNewEmail,
+        value: tokenValue,
+        expiresAt: oneHourLater,
+        identifier,
       },
     });
 
     await sendEmail({
       to: formattedNewEmail,
-      code: verificationToken.token,
+      code: tokenValue,
     });
 
     return { status: "success" };

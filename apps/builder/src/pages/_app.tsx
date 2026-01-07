@@ -3,7 +3,6 @@ import { toTitleCase } from "@typebot.io/lib/utils";
 import { Plan } from "@typebot.io/prisma/enum";
 import type { AppProps } from "next/app";
 import { useRouter } from "next/router";
-import { SessionProvider } from "next-auth/react";
 import { useEffect } from "react";
 import { SupportBubble } from "@/components/SupportBubble";
 import { TypebotProvider } from "@/features/editor/providers/TypebotProvider";
@@ -65,17 +64,15 @@ const App = ({ Component, pageProps }: AppProps) => {
         >
           <TooltipProvider>
             <QueryClientProvider client={queryClient}>
-              <SessionProvider session={pageProps.session}>
-                <UserProvider>
-                  <TypebotProvider typebotId={typebotId}>
-                    <WorkspaceProvider typebotId={typebotId}>
-                      <Component {...pageProps} />
-                      {!router.pathname.endsWith("edit") &&
-                        isCloudProdInstance() && <SupportBubble />}
-                    </WorkspaceProvider>
-                  </TypebotProvider>
-                </UserProvider>
-              </SessionProvider>
+              <UserProvider>
+                <TypebotProvider typebotId={typebotId}>
+                  <WorkspaceProvider typebotId={typebotId}>
+                    <Component {...pageProps} />
+                    {!router.pathname.endsWith("edit") &&
+                      isCloudProdInstance() && <SupportBubble />}
+                  </WorkspaceProvider>
+                </TypebotProvider>
+              </UserProvider>
             </QueryClientProvider>
             <ToastProvider toastManager={toastManager}>
               <Toast.List CodeEditor={CodeEditor} />

@@ -1,6 +1,4 @@
-import { env } from "@typebot.io/env";
-import { sendEmail } from "@typebot.io/emails/sendEmail";
-import { render } from "@typebot.io/emails/render";
+import { sendEmail } from "@typebot.io/emails/helpers/sendEmail";
 
 type SendVerificationEmailProps = {
   email: string;

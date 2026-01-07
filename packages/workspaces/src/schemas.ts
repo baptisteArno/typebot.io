@@ -5,8 +5,8 @@ import { z } from "@typebot.io/zod";
 export const workspaceMemberSchema = z.object({
   workspaceId: z.string(),
   user: z.object({
-    name: z.string().nullable(),
-    email: z.string().nullable(),
+    name: z.string(),
+    email: z.string(),
     image: z.string().nullable(),
   }),
   role: z.nativeEnum(WorkspaceRole),
