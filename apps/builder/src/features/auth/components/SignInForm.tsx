@@ -9,12 +9,12 @@ import { CheckmarkSquare02Icon } from "@typebot.io/ui/icons/CheckmarkSquare02Ico
 import { LoaderCircleIcon } from "@typebot.io/ui/icons/LoaderCircleIcon";
 import { cn } from "@typebot.io/ui/lib/cn";
 import { useRouter } from "next/navigation";
-import { getProviders, signIn, useSession } from "next-auth/react";
 import { useQueryState } from "nuqs";
 import type { FormEvent } from "react";
 import { useEffect, useState } from "react";
 import { TextLink } from "@/components/TextLink";
 import { toast } from "@/lib/toast";
+import { authClient, useSession } from "@/lib/auth/client";
 import { createEmailMagicLink } from "../helpers/createEmailMagicLink";
 import { DividerWithText } from "./DividerWithText";
 import { SignInError } from "./SignInError";
@@ -25,35 +25,36 @@ type Props = {
   className?: string;
 };
 
+// Available providers configuration (matches server config)
+const availableProviders = {
+  github: !!process.env.NEXT_PUBLIC_GITHUB_ENABLED,
+  google: !!process.env.NEXT_PUBLIC_GOOGLE_ENABLED,
+  facebook: !!process.env.NEXT_PUBLIC_FACEBOOK_ENABLED,
+  gitlab: !!process.env.NEXT_PUBLIC_GITLAB_ENABLED,
+  microsoft: !!process.env.NEXT_PUBLIC_AZURE_ENABLED,
+  email: !!process.env.NEXT_PUBLIC_EMAIL_ENABLED,
+};
+
 export const SignInForm = ({ defaultEmail, className }: Props) => {
   const { t } = useTranslate();
   const router = useRouter();
   const [authError, setAuthError] = useQueryState("error");
   const [redirectPath] = useQueryState("redirectPath");
-  const { status } = useSession();
+  const { data: session, isPending } = useSession();
   const [authLoading, setAuthLoading] = useState(false);
-  const [isLoadingProviders, setIsLoadingProviders] = useState(true);
+  const [isLoadingProviders, setIsLoadingProviders] = useState(false);
 
   const [emailValue, setEmailValue] = useState(defaultEmail ?? "");
   const [isMagicCodeSent, setIsMagicCodeSent] = useState(false);
 
-  const [providers, setProviders] =
-    useState<Awaited<ReturnType<typeof getProviders>>>();
-
-  const hasNoAuthProvider =
-    !isLoadingProviders && Object.keys(providers ?? {}).length === 0;
+  // Check if any provider is configured
+  const hasNoAuthProvider = !Object.values(availableProviders).some(Boolean);
 
   useEffect(() => {
-    if (status === "authenticated") {
+    if (session?.user) {
       router.replace(redirectPath ? sanitizeUrl(redirectPath) : "/typebots");
-      return;
     }
-    (async () => {
-      const providers = await getProviders();
-      setProviders(providers ?? undefined);
-      setIsLoadingProviders(false);
-    })();
-  }, [status, router]);
+  }, [session, router, redirectPath]);
 
   useEffect(() => {
     if (authError === "ip-banned") {
@@ -71,29 +72,29 @@ export const SignInForm = ({ defaultEmail, className }: Props) => {
     if (isMagicCodeSent) return;
     setAuthLoading(true);
     try {
-      const response = await signIn("nodemailer", {
+      const { error } = await authClient.signIn.magicLink({
         email: emailValue,
-        redirect: false,
+        callbackURL: redirectPath ? sanitizeUrl(redirectPath) : "/typebots",
       });
-      if (response?.error) {
-        if (response.error.includes("too-many-requests"))
+      if (error) {
+        if (error.message?.includes("too-many-requests"))
           toast({
             type: "info",
             description: t("auth.signinErrorToast.tooManyRequests"),
           });
-        else if (response.error.includes("sign-up-disabled"))
+        else if (error.message?.includes("sign-up-disabled"))
           toast({
             type: "info",
             description: t("auth.signinErrorToast.title"),
           });
-        else if (response.error.includes("email-not-legit"))
+        else if (error.message?.includes("email-not-legit"))
           toast({
             description: "Please use a valid email address",
           });
         else
           toast({
             description: t("errorMessage"),
-            details: "Check server logs to see relevent error message.",
+            details: error.message || "Check server logs to see relevent error message.",
           });
       } else {
         setIsMagicCodeSent(true);
@@ -113,7 +114,7 @@ export const SignInForm = ({ defaultEmail, className }: Props) => {
     );
   };
 
-  if (isLoadingProviders) return <LoaderCircleIcon className="animate-spin" />;
+  if (isPending) return <LoaderCircleIcon className="animate-spin" />;
   if (hasNoAuthProvider)
     return (
       <p>
@@ -130,8 +131,8 @@ export const SignInForm = ({ defaultEmail, className }: Props) => {
     <div className={cn("flex flex-col gap-6 w-[330px]", className)}>
       {!isMagicCodeSent && (
         <>
-          <SocialLoginButtons providers={providers} />
-          {providers?.nodemailer && (
+          <SocialLoginButtons />
+          {availableProviders.email && (
             <>
               <DividerWithText>{t("auth.orEmailLabel")}</DividerWithText>
               <form
@@ -150,7 +151,8 @@ export const SignInForm = ({ defaultEmail, className }: Props) => {
                 <Button
                   type="submit"
                   disabled={
-                    ["loading", "authenticated"].includes(status) ||
+                    isPending ||
+                    !!session?.user ||
                     authLoading ||
                     isMagicCodeSent
                   }

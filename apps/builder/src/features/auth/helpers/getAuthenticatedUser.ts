@@ -2,7 +2,8 @@ import * as Sentry from "@sentry/nextjs";
 import prisma from "@typebot.io/prisma";
 import { type ClientUser, clientUserSchema } from "@typebot.io/user/schemas";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { auth } from "../lib/nextAuth";
+import { auth } from "@/lib/auth/config";
+import { headers } from "next/headers";
 
 export const getAuthenticatedUser = async (
   req: NextApiRequest,
@@ -10,7 +11,18 @@ export const getAuthenticatedUser = async (
 ): Promise<ClientUser | undefined> => {
   const bearerToken = extractBearerToken(req);
   if (bearerToken) return authenticateByToken(bearerToken);
-  return (await auth(req, res))?.user;
+
+  // Get session from Better Auth
+  const session = await auth.api.getSession({
+    headers: new Headers({
+      cookie: req.headers.cookie || "",
+    }),
+  });
+
+  if (!session?.user) return undefined;
+
+  Sentry.setUser({ id: session.user.id });
+  return clientUserSchema.parse(session.user);
 };
 
 const authenticateByToken = async (

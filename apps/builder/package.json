@@ -9,8 +9,9 @@
     "test": "dotenv -e ./.env -e ../../.env -- bun test"
   },
   "dependencies": {
-    "@auth/core": "^0.39.1",
+    "@better-auth/expo": "^1.4.10",
     "@braintree/sanitize-url": "^7.0.1",
+    "better-auth": "^1.4.10",
     "@dnd-kit/helpers": "^0.1.21",
     "@dnd-kit/react": "^0.1.21",
     "@giphy/js-fetch-api": "^5.7.0",
@@ -77,7 +78,6 @@
     "micro-cors": "^0.1.1",
     "nanoid": "^5.1.5",
     "next": "^15.5.9",
-    "next-auth": "^5.0.0-beta.28",
     "next-themes": "^0.4.6",
     "nextjs-cors": "^2.1.2",
     "nodemailer": "^7.0.6",

@@ -6,7 +6,7 @@ declare const window: {
   __ENV?: any;
 };
 
-const guessNextAuthUrlForVercelPreview = (val: unknown) => {
+const guessBetterAuthUrlForVercelPreview = (val: unknown) => {
   if (
     (val && typeof val === "string" && val.length > 0) ||
     process.env.VERCEL_ENV !== "preview" ||
@@ -66,8 +66,9 @@ const baseEnv = {
       .url()
       .refine((url) => url.startsWith("postgres") || url.startsWith("mysql")),
     ENCRYPTION_SECRET: z.string().length(32),
-    NEXTAUTH_URL: z.preprocess(
-      guessNextAuthUrlForVercelPreview,
+    BETTER_AUTH_SECRET: z.string().min(32).optional(),
+    BETTER_AUTH_URL: z.preprocess(
+      guessBetterAuthUrlForVercelPreview,
       z.string().url(),
     ),
     DISABLE_SIGNUP: boolean.optional().default("false"),
@@ -112,6 +113,10 @@ const baseEnv = {
     ),
   },
   client: {
+    NEXT_PUBLIC_BETTER_AUTH_URL: z.preprocess(
+      guessBetterAuthUrlForVercelPreview,
+      z.string().url(),
+    ),
     NEXT_PUBLIC_VIEWER_URL: z.preprocess(
       guessViewerUrlForVercelPreview,
       z
@@ -120,6 +125,16 @@ const baseEnv = {
         .transform((val) => val.split(",")),
     ),
     NEXT_PUBLIC_ONBOARDING_TYPEBOT_ID: z.string().min(1).optional(),
+    // Auth provider flags (client-side visibility for sign-in UI)
+    NEXT_PUBLIC_GITHUB_ENABLED: z.string().optional().transform(v => v === "true"),
+    NEXT_PUBLIC_GOOGLE_ENABLED: z.string().optional().transform(v => v === "true"),
+    NEXT_PUBLIC_FACEBOOK_ENABLED: z.string().optional().transform(v => v === "true"),
+    NEXT_PUBLIC_GITLAB_ENABLED: z.string().optional().transform(v => v === "true"),
+    NEXT_PUBLIC_AZURE_ENABLED: z.string().optional().transform(v => v === "true"),
+    NEXT_PUBLIC_KEYCLOAK_ENABLED: z.string().optional().transform(v => v === "true"),
+    NEXT_PUBLIC_CUSTOM_OAUTH_ENABLED: z.string().optional().transform(v => v === "true"),
+    NEXT_PUBLIC_CUSTOM_OAUTH_NAME: z.string().optional(),
+    NEXT_PUBLIC_EMAIL_ENABLED: z.string().optional().transform(v => v === "true"),
     NEXT_PUBLIC_BOT_FILE_UPLOAD_MAX_SIZE: z.coerce.number().optional(),
     NEXT_PUBLIC_CHAT_API_URL: z.string().url().optional(),
     NEXT_PUBLIC_VIEWER_404_TITLE: z.string().optional().default("404"),
@@ -129,10 +144,21 @@ const baseEnv = {
       .default("The bot you're looking for doesn't exist"),
   },
   runtimeEnv: {
+    NEXT_PUBLIC_BETTER_AUTH_URL: getRuntimeVariable("NEXT_PUBLIC_BETTER_AUTH_URL"),
     NEXT_PUBLIC_VIEWER_URL: getRuntimeVariable("NEXT_PUBLIC_VIEWER_URL"),
     NEXT_PUBLIC_ONBOARDING_TYPEBOT_ID: getRuntimeVariable(
       "NEXT_PUBLIC_ONBOARDING_TYPEBOT_ID",
     ),
+    // Auth provider flags
+    NEXT_PUBLIC_GITHUB_ENABLED: getRuntimeVariable("NEXT_PUBLIC_GITHUB_ENABLED"),
+    NEXT_PUBLIC_GOOGLE_ENABLED: getRuntimeVariable("NEXT_PUBLIC_GOOGLE_ENABLED"),
+    NEXT_PUBLIC_FACEBOOK_ENABLED: getRuntimeVariable("NEXT_PUBLIC_FACEBOOK_ENABLED"),
+    NEXT_PUBLIC_GITLAB_ENABLED: getRuntimeVariable("NEXT_PUBLIC_GITLAB_ENABLED"),
+    NEXT_PUBLIC_AZURE_ENABLED: getRuntimeVariable("NEXT_PUBLIC_AZURE_ENABLED"),
+    NEXT_PUBLIC_KEYCLOAK_ENABLED: getRuntimeVariable("NEXT_PUBLIC_KEYCLOAK_ENABLED"),
+    NEXT_PUBLIC_CUSTOM_OAUTH_ENABLED: getRuntimeVariable("NEXT_PUBLIC_CUSTOM_OAUTH_ENABLED"),
+    NEXT_PUBLIC_CUSTOM_OAUTH_NAME: getRuntimeVariable("NEXT_PUBLIC_CUSTOM_OAUTH_NAME"),
+    NEXT_PUBLIC_EMAIL_ENABLED: getRuntimeVariable("NEXT_PUBLIC_EMAIL_ENABLED"),
     NEXT_PUBLIC_BOT_FILE_UPLOAD_MAX_SIZE: getRuntimeVariable(
       "NEXT_PUBLIC_BOT_FILE_UPLOAD_MAX_SIZE",
     ),

@@ -63,3 +63,4 @@ snapshots
 .nitro
 
 **/test/.auth
+.env*.local

@@ -7,61 +7,156 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Account {
-  id                       String  @id @default(cuid())
-  userId                   String
-  type                     String
-  provider                 String
-  providerAccountId        String
-  refresh_token            String?
-  access_token             String?
-  expires_at               Int?
-  token_type               String?
-  scope                    String?
-  id_token                 String?
-  session_state            String?
-  oauth_token_secret       String?
-  oauth_token              String?
-  refresh_token_expires_in Int?
-  user                     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@unique([provider, providerAccountId])
-}
-
-model Session {
-  id           String   @id @default(cuid())
-  sessionToken String   @unique
-  userId       String
-  expires      DateTime
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-}
+// =============================================================================
+// Authentication Models (Better Auth)
+// =============================================================================
 
 model User {
-  id                          String                    @id @default(cuid())
-  createdAt                   DateTime                  @default(now())
-  updatedAt                   DateTime                  @default(now()) @updatedAt
-  lastActivityAt              DateTime                  @default(now())
-  name                        String?
-  email                       String?                   @unique
-  emailVerified               DateTime?
-  image                       String?
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Better Auth required fields
+  name          String
+  email         String  @unique
+  emailVerified Boolean @default(false)
+  image         String?
+
+  // Better Auth plugin fields
+  role                String    @default("user")
+  banned              Boolean   @default(false)
+  banReason           String?
+  banExpires          DateTime?
+  twoFactorEnabled    Boolean   @default(false)
+  phoneNumber         String?   @unique
+  phoneNumberVerified Boolean   @default(false)
+
+  // Typebot-specific fields
+  lastActivityAt              DateTime          @default(now())
   company                     String?
-  onboardingCategories        Json
+  onboardingCategories        Json              @default("{}")
   referral                    String?
   graphNavigation             GraphNavigation?
   preferredAppAppearance      String?
-  accounts                    Account[]
-  apiTokens                   ApiToken[]
-  CollaboratorsOnTypebots     CollaboratorsOnTypebots[]
-  workspaces                  MemberInWorkspace[]
-  sessions                    Session[]
-  bannedIps                   BannedIp[]
   displayedInAppNotifications Json?
-  credentials                 UserCredentials[]
   groupTitlesAutoGeneration   Json?
   preferredLanguage           String?
   termsAcceptedAt             DateTime?
+
+  // Relations
+  sessions                Session[]
+  accounts                Account[]
+  passkeys                Passkey[]
+  twoFactor               TwoFactor?
+  apiTokens               ApiToken[]
+  CollaboratorsOnTypebots CollaboratorsOnTypebots[]
+  workspaces              MemberInWorkspace[]
+  bannedIps               BannedIp[]
+  credentials             UserCredentials[]
+
+  @@index([email])
 }
+
+model Session {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Better Auth required fields
+  token     String   @unique
+  expiresAt DateTime
+  ipAddress String?
+  userAgent String?
+
+  // Better Auth plugin fields
+  impersonatedBy String?
+
+  // Relations
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([token])
+}
+
+model Account {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Better Auth required fields
+  accountId    String
+  providerId   String
+  accessToken  String?
+  refreshToken String?
+  expiresAt    DateTime?
+  tokenType    String?
+  scope        String?
+  idToken      String?
+  password     String?
+
+  // Relations
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([providerId, accountId])
+  @@index([userId])
+}
+
+model Verification {
+  id         String   @id @default(uuid())
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([identifier, value])
+}
+
+model Passkey {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Better Auth passkey fields
+  credentialId String  @unique
+  publicKey    String
+  counter      Int     @default(0)
+  deviceType   String?
+  backedUp     Boolean @default(false)
+  transports   String?
+  name         String?
+
+  // Relations
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model TwoFactor {
+  id          String  @id @default(uuid())
+  secret      String?
+  backupCodes String?
+
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Jwks {
+  id         String   @id @default(uuid())
+  publicKey  String
+  privateKey String
+  createdAt  DateTime @default(now())
+}
+
+// =============================================================================
+// Typebot Models
+// =============================================================================
 
 model ApiToken {
   id        String   @id @default(cuid())
@@ -158,15 +253,6 @@ model UserCredentials {
   type      String
   iv        String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-}
-
-model VerificationToken {
-  identifier String
-  token      String   @unique
-  value      String?
-  expires    DateTime
-
-  @@unique([identifier, token])
 }
 
 model DashboardFolder {

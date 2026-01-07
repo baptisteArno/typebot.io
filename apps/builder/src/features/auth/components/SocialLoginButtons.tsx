@@ -3,7 +3,6 @@ import { omit } from "@typebot.io/lib/utils";
 import { Button } from "@typebot.io/ui/components/Button";
 import { GithubIcon } from "@typebot.io/ui/icons/GithubIcon";
 import { useRouter } from "next/router";
-import { type getProviders, signIn, useSession } from "next-auth/react";
 import { stringify } from "qs";
 import { useState } from "react";
 import { GoogleLogo } from "@/components/GoogleLogo";
@@ -11,23 +10,34 @@ import { AzureAdLogo } from "@/components/logos/AzureAdLogo";
 import { FacebookLogo } from "@/components/logos/FacebookLogo";
 import { GitlabLogo } from "@/components/logos/GitlabLogo";
 import { KeycloackLogo } from "@/components/logos/KeycloakLogo";
+import { authClient, useSession } from "@/lib/auth/client";
 
-type Props = {
-  providers: Awaited<ReturnType<typeof getProviders>> | undefined;
+// Available providers configuration
+const availableProviders = {
+  github: !!process.env.NEXT_PUBLIC_GITHUB_ENABLED,
+  google: !!process.env.NEXT_PUBLIC_GOOGLE_ENABLED,
+  facebook: !!process.env.NEXT_PUBLIC_FACEBOOK_ENABLED,
+  gitlab: !!process.env.NEXT_PUBLIC_GITLAB_ENABLED,
+  microsoft: !!process.env.NEXT_PUBLIC_AZURE_ENABLED,
+  keycloak: !!process.env.NEXT_PUBLIC_KEYCLOAK_ENABLED,
+  customOAuth: !!process.env.NEXT_PUBLIC_CUSTOM_OAUTH_ENABLED,
 };
 
-export const SocialLoginButtons = ({ providers }: Props) => {
+export const SocialLoginButtons = () => {
   const { t } = useTranslate();
   const { query } = useRouter();
-  const { status } = useSession();
+  const { data: session, isPending } = useSession();
   const [authLoading, setAuthLoading] = useState<string>();
 
-  const handleSignIn = async (provider: string) => {
+  const getCallbackUrl = () =>
+    query.callbackUrl?.toString() ??
+    `/typebots?${stringify(omit(query, "error", "callbackUrl"))}`;
+
+  const handleSignIn = async (provider: "github" | "google" | "facebook" | "gitlab" | "microsoft") => {
     setAuthLoading(provider);
-    await signIn(provider, {
-      callbackUrl:
-        query.callbackUrl?.toString() ??
-        `/typebots?${stringify(omit(query, "error", "callbackUrl"))}`,
+    await authClient.signIn.social({
+      provider,
+      callbackURL: getCallbackUrl(),
     });
     setTimeout(() => setAuthLoading(undefined), 3000);
   };
@@ -40,104 +50,99 @@ export const SocialLoginButtons = ({ providers }: Props) => {
 
   const handleGitlabClick = () => handleSignIn("gitlab");
 
-  const handleMicrosoftEntraIdClick = () => handleSignIn("microsoft-entra-id");
+  const handleMicrosoftEntraIdClick = () => handleSignIn("microsoft");
 
-  const handleCustomOAuthClick = () => handleSignIn("custom-oauth");
+  const handleCustomOAuthClick = async () => {
+    setAuthLoading("custom-oauth");
+    await authClient.signIn.oauth2({
+      providerId: "custom-oauth",
+      callbackURL: getCallbackUrl(),
+    });
+    setTimeout(() => setAuthLoading(undefined), 3000);
+  };
 
-  const handleKeyCloackClick = () => handleSignIn("keycloak");
+  const handleKeyCloackClick = async () => {
+    setAuthLoading("keycloak");
+    await authClient.signIn.oauth2({
+      providerId: "keycloak",
+      callbackURL: getCallbackUrl(),
+    });
+    setTimeout(() => setAuthLoading(undefined), 3000);
+  };
+
+  const isDisabled = isPending || !!session?.user;
 
   return (
     <div className="flex flex-col gap-2">
-      {providers?.github && (
+      {availableProviders.github && (
         <Button
           onClick={handleGitHubClick}
-          disabled={
-            ["loading", "authenticated"].includes(status) ||
-            authLoading === "github"
-          }
+          disabled={isDisabled || authLoading === "github"}
           variant="outline-secondary"
         >
           <GithubIcon />
           {t("auth.socialLogin.githubButton.label")}
         </Button>
       )}
-      {providers?.google && (
+      {availableProviders.google && (
         <Button
           onClick={handleGoogleClick}
-          disabled={
-            ["loading", "authenticated"].includes(status) ||
-            authLoading === "google"
-          }
+          disabled={isDisabled || authLoading === "google"}
           variant="outline-secondary"
         >
           <GoogleLogo />
           {t("auth.socialLogin.googleButton.label")}
         </Button>
       )}
-      {providers?.facebook && (
+      {availableProviders.facebook && (
         <Button
           onClick={handleFacebookClick}
-          disabled={
-            ["loading", "authenticated"].includes(status) ||
-            authLoading === "facebook"
-          }
+          disabled={isDisabled || authLoading === "facebook"}
           variant="outline-secondary"
         >
           <FacebookLogo />
           {t("auth.socialLogin.facebookButton.label")}
         </Button>
       )}
-      {providers?.gitlab && (
+      {availableProviders.gitlab && (
         <Button
           onClick={handleGitlabClick}
-          disabled={
-            ["loading", "authenticated"].includes(status) ||
-            authLoading === "gitlab"
-          }
+          disabled={isDisabled || authLoading === "gitlab"}
           variant="outline-secondary"
         >
           <GitlabLogo />
           {t("auth.socialLogin.gitlabButton.label", {
-            gitlabProviderName: providers.gitlab.name,
+            gitlabProviderName: "GitLab",
           })}
         </Button>
       )}
-      {providers?.["microsoft-entra-id"] && (
+      {availableProviders.microsoft && (
         <Button
           onClick={handleMicrosoftEntraIdClick}
-          disabled={
-            ["loading", "authenticated"].includes(status) ||
-            authLoading === "microsoft-entra-id"
-          }
+          disabled={isDisabled || authLoading === "microsoft"}
           variant="outline"
         >
           <AzureAdLogo />
           {t("auth.socialLogin.azureButton.label", {
-            azureProviderName: providers["microsoft-entra-id"].name,
+            azureProviderName: "Microsoft",
           })}
         </Button>
       )}
-      {providers?.["custom-oauth"] && (
+      {availableProviders.customOAuth && (
         <Button
           onClick={handleCustomOAuthClick}
-          disabled={
-            ["loading", "authenticated"].includes(status) ||
-            authLoading === "custom-oauth"
-          }
+          disabled={isDisabled || authLoading === "custom-oauth"}
           variant="outline-secondary"
         >
           {t("auth.socialLogin.customButton.label", {
-            customProviderName: providers["custom-oauth"].name,
+            customProviderName: process.env.NEXT_PUBLIC_CUSTOM_OAUTH_NAME || "SSO",
           })}
         </Button>
       )}
-      {providers?.keycloak && (
+      {availableProviders.keycloak && (
         <Button
           onClick={handleKeyCloackClick}
-          disabled={
-            ["loading", "authenticated"].includes(status) ||
-            authLoading === "keycloak"
-          }
+          disabled={isDisabled || authLoading === "keycloak"}
           variant="outline-secondary"
         >
           <KeycloackLogo />

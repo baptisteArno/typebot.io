@@ -9,6 +9,7 @@
     "test:e2e:report": "playwright show-report"
   },
   "dependencies": {
+    "better-auth": "^1.4.10",
     "partysocket": "^1.0.2",
     "@planetscale/database": "^1.8.0",
     "@sentry/nextjs": "^10.32.1",
