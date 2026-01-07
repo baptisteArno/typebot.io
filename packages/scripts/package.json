@@ -59,6 +59,7 @@
     "@typebot.io/typebot": "workspace:*",
     "@typebot.io/zod": "workspace:*",
     "@typebot.io/emails": "workspace:*",
+    "react": "^19.2.3",
     "@typebot.io/env": "workspace:*",
     "@typebot.io/blocks-bubbles": "workspace:*",
     "@typebot.io/blocks-core": "workspace:*",
