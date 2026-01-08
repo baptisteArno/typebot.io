@@ -11,6 +11,8 @@ import { render } from "@react-email/render";
 import { env } from "@typebot.io/env";
 import type { SendMailOptions } from "nodemailer";
 import type { ComponentProps } from "react";
+// biome-ignore lint/correctness/noUnusedImports: Need it for tsx execution
+import React from "react";
 import { sendEmail } from "../helpers/sendEmail";
 import { link } from "../marketing/styles";
 import { Logo } from "./components/Logo";
