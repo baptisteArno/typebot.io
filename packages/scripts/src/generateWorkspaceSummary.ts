@@ -325,7 +325,7 @@ const getEventsJournal = (events: Array<any>) => {
       );
     }
 
-    if (event === "Workspace automatically quanrantined") {
+    if (event === "Workspace automatically quarantined") {
       journal.push(
         `${time}: Workspace automatically quarantined because total chats used = ${properties.totalChatsUsed} and chats limit = ${properties.chatsLimit}`,
       );
