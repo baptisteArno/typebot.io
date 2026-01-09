@@ -85,15 +85,16 @@ model Account {
   updatedAt DateTime @updatedAt
 
   // Better Auth required fields
-  accountId    String
-  providerId   String
-  accessToken  String?
-  refreshToken String?
-  expiresAt    DateTime?
-  tokenType    String?
-  scope        String?
-  idToken      String?
-  password     String?
+  accountId             String
+  providerId            String
+  accessToken           String?
+  refreshToken          String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  tokenType             String?
+  scope                 String?
+  idToken               String?
+  password              String?
 
   // Relations
   userId String
