@@ -71,6 +71,8 @@ const baseEnv = {
       guessBetterAuthUrlForVercelPreview,
       z.string().url(),
     ),
+    // Builder app URL (for viewer to link back to dashboard)
+    BUILDER_URL: z.string().url().optional(),
     DISABLE_SIGNUP: boolean.optional().default("false"),
     ADMIN_EMAIL: z
       .string()

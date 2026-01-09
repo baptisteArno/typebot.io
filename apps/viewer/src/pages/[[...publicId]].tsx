@@ -54,9 +54,11 @@ export const getServerSideProps: GetServerSideProps = async (
     log(`isMatchingViewerUrl: ${isMatchingViewerUrl}`);
     if (isMatchingViewerUrl && pathname === "/") {
       // Early return, will just show a root page
+      // Use BUILDER_URL if set, otherwise fall back to BETTER_AUTH_URL
+      const builderUrl = env.BUILDER_URL ?? env.BETTER_AUTH_URL ?? "https://app.typebot.io";
       return {
         props: {
-          dashboardUrl: `${env.BETTER_AUTH_URL ?? "https://app.typebot.io"}/typebots`,
+          dashboardUrl: `${builderUrl}/typebots`,
         },
       };
     }
