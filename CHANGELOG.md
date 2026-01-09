@@ -1,5 +1,27 @@
 # Changelog
 
+<a name="3.15.1"></a>
+## 3.15.1 (2026-01-09)
+
+### Fixed
+
+- 🐛 Fix webhook listening not working [[61b4987](https://github.com/baptisteArno/typebot.io/commit/61b4987b78b4a4e8d9111f3eb3ef453db499880e)]
+- 💚 Fix build fail react-emails [[ae1a35c](https://github.com/baptisteArno/typebot.io/commit/ae1a35c3148d2f59285082ffc5e8f6f356f06c01)]
+- 💚 Fix CI not sending email due to React not defined [[d99a858](https://github.com/baptisteArno/typebot.io/commit/d99a858cd038e3b65b1793f9a3f72726f677978b)]
+
+### Internal
+
+- 🔧 Add AGENTS.md [[ef0b2bf](https://github.com/baptisteArno/typebot.io/commit/ef0b2bfbbb20b4e1a2ebc1ce538c494846082283)]
+- 🔧 Add react in scripts deps [[0ffe0d5](https://github.com/baptisteArno/typebot.io/commit/0ffe0d51fe143dfdae9a3d1c847c4bbce608ebb1)]
+- 🔧 Update scripts tsconfig to include .tsx files [[82d6b2f](https://github.com/baptisteArno/typebot.io/commit/82d6b2ff41f434c9ed07f13447536edddc6e3e47)]
+- ♻️ Simplify last hour results query to return active typebot IDs [[445ae30](https://github.com/baptisteArno/typebot.io/commit/445ae3061feccd609a08421fbaf01379f5306763)]
+- 🔧 Fix low spender detection for churn agent [[069923e](https://github.com/baptisteArno/typebot.io/commit/069923e2e88ddee622d04da6419bdf39d7eee851)]
+
+### Miscellaneous
+
+- 🛂 Automatically detect and take down abusing workspace usage [[b032640](https://github.com/baptisteArno/typebot.io/commit/b0326406f825141abb70db33fa35cdad20706d6e)]
+
+
 <a name="3.15.0"></a>
 ## 3.15.0 (2026-01-06)
 
