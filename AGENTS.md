@@ -10,11 +10,9 @@
 ## Build, Test, and Development Commands
 
 - `bun install`: install workspace dependencies (Bun is the package manager).
-- `bun run dev`: start local dev for builder/viewer/partykit via Turborepo.
-- `bun run build`: typecheck and build selected apps (builder, viewer, landing-page, docs).
+- `bun run typecheck`: typecheck apps (builder, viewer, landing-page, docs).
 - `bun run format-and-lint`: run Biome checks across the repo.
 - `bun run format-and-lint:fix`: apply Biome auto-fixes.
-- `bun run lint-repo`: validate workspace dependency ordering.
 
 ## Coding Style & Naming Conventions
 

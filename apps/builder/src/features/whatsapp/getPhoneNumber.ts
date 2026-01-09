@@ -3,10 +3,10 @@ import { authenticatedProcedure } from "@typebot.io/config/orpc/builder/middlewa
 import { decrypt } from "@typebot.io/credentials/decrypt";
 import type { WhatsAppCredentials } from "@typebot.io/credentials/schemas";
 import { env } from "@typebot.io/env";
+import { createToastORPCError } from "@typebot.io/lib/createToastORPCError";
 import { ky } from "@typebot.io/lib/ky";
 import prisma from "@typebot.io/prisma";
 import { z } from "@typebot.io/zod";
-import { ClientToastError } from "@/lib/ClientToastError";
 import { formatPhoneNumberDisplayName } from "./formatPhoneNumberDisplayName";
 
 const inputSchema = z.object({
@@ -45,7 +45,7 @@ export const getPhoneNumber = authenticatedProcedure
         name: formattedPhoneNumber,
       };
     } catch (err) {
-      throw await ClientToastError.fromUnkownError(err);
+      throw await createToastORPCError(err);
     }
   });
 

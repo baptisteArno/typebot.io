@@ -2,6 +2,7 @@
   "name": "viewer",
   "private": true,
   "scripts": {
+    "typecheck": "tsc --noEmit",
     "dev": "dotenv -e ./.env -e ../../.env  -- next dev -p 3001",
     "build": "dotenv -e ./.env -e ../../.env -- next build",
     "start": "dotenv -e ./.env -e ../../.env -- next start",

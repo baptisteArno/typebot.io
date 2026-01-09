@@ -10,6 +10,7 @@ import {
   QueryClient,
 } from "@tanstack/react-query";
 import { env } from "@typebot.io/env";
+import type { ToastErrorData } from "@typebot.io/lib/toastErrorData";
 import type { AppRouter } from "@/lib/orpcRouter";
 import { toast } from "./toast";
 
@@ -23,9 +24,11 @@ export const showHttpRequestErrorToast = (
 ) => {
   if (error instanceof ORPCError) {
     if (error.code === "NOT_FOUND") return;
+    const data = error.data as ToastErrorData | undefined;
     toast({
-      title: context,
+      title: data?.context ?? context,
       description: error.message || error.code || "",
+      details: data?.details,
     });
   }
 };

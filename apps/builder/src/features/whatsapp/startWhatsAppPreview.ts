@@ -6,6 +6,7 @@ import { restartSession } from "@typebot.io/chat-session/queries/restartSession"
 import type { SessionState } from "@typebot.io/chat-session/schemas";
 import { authenticatedProcedure } from "@typebot.io/config/orpc/builder/middlewares";
 import { env } from "@typebot.io/env";
+import { createToastORPCError } from "@typebot.io/lib/createToastORPCError";
 import prisma from "@typebot.io/prisma";
 import {
   deleteSessionStore,
@@ -15,7 +16,6 @@ import { isReadTypebotForbidden } from "@typebot.io/typebot/helpers/isReadTypebo
 import { sendChatReplyToWhatsApp } from "@typebot.io/whatsapp/sendChatReplyToWhatsApp";
 import { sendWhatsAppMessage } from "@typebot.io/whatsapp/sendWhatsAppMessage";
 import { z } from "@typebot.io/zod";
-import { ClientToastError } from "@/lib/ClientToastError";
 
 export const startWhatsAppPreview = authenticatedProcedure
   .meta({
@@ -192,7 +192,7 @@ export const startWhatsAppPreview = authenticatedProcedure
           };
         }
       } catch (error) {
-        throw await ClientToastError.fromUnkownError(error);
+        throw await createToastORPCError(error);
       }
     },
   );

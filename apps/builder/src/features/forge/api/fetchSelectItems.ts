@@ -6,10 +6,10 @@ import type { FetcherHandler } from "@typebot.io/forge/types";
 import { forgedBlockIds } from "@typebot.io/forge-repository/constants";
 import { forgedBlocks } from "@typebot.io/forge-repository/definitions";
 import { forgedBlockHandlers } from "@typebot.io/forge-repository/handlers";
+import type { ToastErrorData } from "@typebot.io/lib/toastErrorData";
 import prisma from "@typebot.io/prisma";
 import { z } from "@typebot.io/zod";
 import { isReadWorkspaceFobidden } from "@/features/workspace/helpers/isReadWorkspaceFobidden";
-import { ClientToastError } from "@/lib/ClientToastError";
 
 const baseInputSchema = z.object({
   integrationId: z.enum(forgedBlockIds),
@@ -102,7 +102,14 @@ export const fetchSelectItems = authenticatedProcedure
       options: input.options,
     });
 
-    if (error) throw new ClientToastError(error);
+    if (error)
+      throw new ORPCError("INTERNAL_SERVER_ERROR", {
+        message: error.description,
+        data: {
+          context: error.context,
+          details: error.details,
+        } satisfies ToastErrorData,
+      });
 
     return { items: data };
   });
