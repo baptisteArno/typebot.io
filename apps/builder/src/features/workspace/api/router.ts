@@ -4,6 +4,7 @@ import { deleteWorkspace } from "./deleteWorkspace";
 import { deleteWorkspaceInvitation } from "./deleteWorkspaceInvitation";
 import { deleteWorkspaceMember } from "./deleteWorkspaceMember";
 import { getWorkspace } from "./getWorkspace";
+import { listInvitationsInWorkspace } from "./listInvitationsInWorkspace";
 import { listMembersInWorkspace } from "./listMembersInWorkspace";
 import { listWorkspaces } from "./listWorkspaces";
 import { updateWorkspace } from "./updateWorkspace";
@@ -14,6 +15,7 @@ export const workspaceRouter = {
   listWorkspaces,
   getWorkspace,
   listMembersInWorkspace,
+  listInvitationsInWorkspace,
   createWorkspace,
   updateWorkspace,
   deleteWorkspace,

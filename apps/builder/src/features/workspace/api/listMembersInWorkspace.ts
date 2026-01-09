@@ -47,6 +47,7 @@ export const listMembersInWorkspace = authenticatedProcedure
     return {
       members: workspace.members.map((member) => ({
         role: member.role,
+        userId: member.userId,
         user: member.user,
         workspaceId,
       })),

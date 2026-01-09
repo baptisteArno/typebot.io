@@ -1,13 +1,13 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
 import { Plan } from "@typebot.io/prisma/enum";
 import { useState } from "react";
 import { TextLink } from "@/components/TextLink";
 import { useUser } from "@/features/user/hooks/useUser";
 import type { WorkspaceInApp } from "@/features/workspace/WorkspaceProvider";
+import { isSelfHostedInstance } from "@/helpers/isSelfHostedInstance";
 import { orpc, queryClient } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
-import { useSubscriptionQuery } from "../hooks/useSubscriptionQuery";
 import type { PreCheckoutDialogProps } from "./PreCheckoutDialog";
 import { PreCheckoutDialog } from "./PreCheckoutDialog";
 import { ProPlanPricingCard } from "./ProPlanPricingCard";
@@ -32,7 +32,12 @@ export const ChangePlanForm = ({
     useState<PreCheckoutDialogProps["selectedSubscription"]>();
   const [pendingUpgrade, setPendingUpgrade] = useState<"STARTER" | "PRO">();
 
-  const { data, refetch } = useSubscriptionQuery(workspace.id);
+  const { data, refetch } = useQuery(
+    orpc.billing.getSubscription.queryOptions({
+      input: { workspaceId: workspace.id },
+      enabled: !isSelfHostedInstance(),
+    }),
+  );
 
   const { mutateAsync: updateSubscription, status: updateSubscriptionStatus } =
     useMutation(

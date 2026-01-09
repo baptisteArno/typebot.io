@@ -1,10 +1,11 @@
+import { useMutation } from "@tanstack/react-query";
 import { omit } from "@typebot.io/lib/utils";
 import assert from "assert";
 import { useMemo, useState } from "react";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { useUser } from "@/features/user/hooks/useUser";
 import { useEventListener } from "@/hooks/useEventListener";
-import { orpcClient } from "@/lib/queryClient";
+import { orpc } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
 import { eventWidth, groupWidth } from "../../constants";
 import { computeConnectingEdgePath } from "../../helpers/computeConnectingEdgePath";
@@ -32,6 +33,18 @@ export const DrawingEdge = ({ connectingIds }: Props) => {
   const { user } = useUser();
   const { createEdge, typebot, updateGroup } = useTypebot();
   const [mousePosition, setMousePosition] = useState<Coordinates | null>(null);
+
+  const { mutateAsync: generateGroupTitle } = useMutation(
+    orpc.generateGroupTitle.mutationOptions({
+      onError: (error) => {
+        toast({
+          description: error instanceof Error ? error.message : "Unknown error",
+          title: "While generating group title",
+        });
+        console.error("Failed to generate group title:", error);
+      },
+    }),
+  );
 
   const sourceElementCoordinates = connectingIds
     ? "eventId" in connectingIds.source
@@ -136,25 +149,16 @@ export const DrawingEdge = ({ connectingIds }: Props) => {
       );
       const group = typebot.groups[groupIndex];
       if (!group || !group?.title.startsWith("Group #")) return;
-      try {
-        const result = await orpcClient.generateGroupTitle({
-          credentialsId: groupTitlesAutoGeneration.credentialsId,
-          typebotId: typebot.id,
-          groupContent: JSON.stringify({
-            blocks: group.blocks.map(({ id, outgoingEdgeId, ...rest }) => rest),
-          }),
-          model: groupTitlesAutoGeneration.model,
-          prompt: groupTitlesAutoGeneration.prompt,
-        });
-
-        updateGroup(groupIndex, { title: result.title });
-      } catch (error) {
-        toast({
-          description: error instanceof Error ? error.message : "Unknown error",
-          title: "While generating group title",
-        });
-        console.error("Failed to generate group title:", error);
-      }
+      const { title } = await generateGroupTitle({
+        credentialsId: groupTitlesAutoGeneration.credentialsId,
+        typebotId: typebot.id,
+        groupContent: JSON.stringify({
+          blocks: group.blocks.map(({ id, outgoingEdgeId, ...rest }) => rest),
+        }),
+        model: groupTitlesAutoGeneration.model,
+        prompt: groupTitlesAutoGeneration.prompt,
+      });
+      updateGroup(groupIndex, { title });
     }
   };
 

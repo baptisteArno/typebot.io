@@ -15,7 +15,6 @@
 - `bun run format-and-lint`: run Biome checks across the repo.
 - `bun run format-and-lint:fix`: apply Biome auto-fixes.
 - `bun run lint-repo`: validate workspace dependency ordering.
-- `bun run start-docker-compose-dev`: local stack via Docker Compose.
 
 ## Coding Style & Naming Conventions
 
@@ -28,7 +27,7 @@
 - IMPORTANT: Only add a comment if a piece of logic is hard to grasp.
 - Prefer infer the return type of a function instead of declaring it.
 - Helper functions should be placed at the bottom of the file.
-- No brackets on if blocks if it's just 1 line
+- No brackets on if blocks if it's just 1 line.
 
 ## Testing Guidelines
 
@@ -48,6 +47,12 @@
   - 🔧 Internal changes (not user facing)
 - PRs should include a clear description, reproduction steps if fixing a bug, and screenshots/GIFs for UI changes.
 - Link related issues when applicable.
+
+## Environment Variables
+
+- Always use `env` from `@typebot.io/env` instead of `process.env` directly.
+- This package provides type-safe, validated environment variables.
+- Example: `env.NODE_ENV` instead of `process.env.NODE_ENV`.
 
 ## Configuration & Security Notes
 

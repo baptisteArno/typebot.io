@@ -1,6 +1,7 @@
 import { oo } from "@orpc/openapi";
 import { os as baseOs, ORPCError } from "@orpc/server";
 import * as Sentry from "@sentry/nextjs";
+import { env } from "@typebot.io/env";
 import type { Context } from "./context";
 
 export const os = baseOs.$context<Context>();
@@ -9,6 +10,7 @@ const sentryMiddleware = os.middleware(async ({ next }) => {
   try {
     return await next();
   } catch (error) {
+    if (env.NODE_ENV !== "production") console.error(error);
     if (isUnknownError(error)) Sentry.captureException(error);
     throw error;
   }

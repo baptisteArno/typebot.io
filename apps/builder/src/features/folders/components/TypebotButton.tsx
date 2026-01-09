@@ -22,7 +22,7 @@ import {
 } from "@/features/graph/providers/GraphDndProvider";
 import { duplicateName } from "@/features/typebot/helpers/duplicateName";
 import { isMobile } from "@/helpers/isMobile";
-import { orpc, orpcClient } from "@/lib/queryClient";
+import { orpc } from "@/lib/queryClient";
 
 type Props = {
   typebot: TypebotInDashboard;
@@ -50,6 +50,10 @@ const TypebotButton = ({
     onDrag,
     deps: [],
   });
+
+  const { mutateAsync: getTypebot } = useMutation(
+    orpc.typebot.getTypebot.mutationOptions(),
+  );
 
   const { mutate: importTypebot } = useMutation(
     orpc.typebot.importTypebot.mutationOptions({
@@ -93,11 +97,9 @@ const TypebotButton = ({
 
   const handleDuplicateClick = async (e: React.MouseEvent) => {
     e.stopPropagation();
-    const { typebot: typebotToDuplicate } = await orpcClient.typebot.getTypebot(
-      {
-        typebotId: typebot.id,
-      },
-    );
+    const { typebot: typebotToDuplicate } = await getTypebot({
+      typebotId: typebot.id,
+    });
     if (!typebotToDuplicate) return;
     importTypebot({
       workspaceId: typebotToDuplicate.workspaceId,

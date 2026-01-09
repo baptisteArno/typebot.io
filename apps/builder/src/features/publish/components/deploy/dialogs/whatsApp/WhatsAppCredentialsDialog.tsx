@@ -19,7 +19,6 @@ import { CopyInput } from "@/components/inputs/CopyInput";
 import { Dialog360Logo } from "@/components/logos/Dialog360Logo";
 import { MetaLogo } from "@/components/logos/MetaLogo";
 import { TextLink } from "@/components/TextLink";
-import { useFeatureFlagsQuery } from "@/features/featureFlags/useFeatureFlagsQuery";
 import { formatPhoneNumberDisplayName } from "@/features/whatsapp/formatPhoneNumberDisplayName";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { orpc, orpcClient, queryClient } from "@/lib/queryClient";
@@ -47,12 +46,12 @@ export const WhatsAppCredentialsDialog = ({
   onClose,
   onNewCredentials,
 }: Props) => {
-  const featureFlags = useFeatureFlagsQuery();
+  const { data: featureFlags } = useQuery(orpc.getFeatureFlags.queryOptions());
 
   return (
     <Dialog.Root isOpen={isOpen} onClose={onClose}>
       <WhatsAppCreateDialogBody
-        is360DialogEnabled={featureFlags?.["360dialog"] ?? false}
+        is360DialogEnabled={featureFlags?.flags?.["360dialog"] ?? false}
         onNewCredentials={onNewCredentials}
         onClose={onClose}
       />

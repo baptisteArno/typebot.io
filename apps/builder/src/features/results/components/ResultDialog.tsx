@@ -1,3 +1,4 @@
+import { useQuery } from "@tanstack/react-query";
 import { byId, isDefined } from "@typebot.io/lib/utils";
 import { parseColumnsOrder } from "@typebot.io/results/parseColumnsOrder";
 import type {
@@ -12,7 +13,7 @@ import { LoaderCircleIcon } from "@typebot.io/ui/icons/LoaderCircleIcon";
 import { cx } from "@typebot.io/ui/lib/cva";
 import { type JSX, useState } from "react";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
-import { useResultTranscriptQuery } from "../hooks/useResultTranscriptQuery";
+import { orpc } from "@/lib/queryClient";
 import { useResults } from "../ResultsProvider";
 import { HeaderIcon } from "./HeaderIcon";
 
@@ -76,11 +77,11 @@ const Transcript = ({
   typebotId: string;
   resultId: string;
 }) => {
-  const { data: transcriptData, isLoading: isTranscriptLoading } =
-    useResultTranscriptQuery({
-      typebotId,
-      resultId,
-    });
+  const { data: transcriptData, isLoading: isTranscriptLoading } = useQuery(
+    orpc.results.getResultTranscript.queryOptions({
+      input: { typebotId, resultId },
+    }),
+  );
 
   if (isTranscriptLoading)
     return (

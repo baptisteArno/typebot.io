@@ -1,3 +1,4 @@
+import { useQuery } from "@tanstack/react-query";
 import { isDefined } from "@typebot.io/lib/utils";
 import type { Log } from "@typebot.io/logs/schemas";
 import { Accordion } from "@typebot.io/ui/components/Accordion";
@@ -5,7 +6,7 @@ import { Badge } from "@typebot.io/ui/components/Badge";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
 import { LoaderCircleIcon } from "@typebot.io/ui/icons/LoaderCircleIcon";
 import { CodeEditor } from "@/components/inputs/CodeEditor";
-import { useLogs } from "../hooks/useLogs";
+import { orpc } from "@/lib/queryClient";
 
 type Props = {
   typebotId: string;
@@ -13,18 +14,26 @@ type Props = {
   onClose: () => void;
 };
 export const LogsDialog = ({ typebotId, resultId, onClose }: Props) => {
-  const { isLoading, logs } = useLogs(typebotId, resultId);
+  const { data, error } = useQuery(
+    orpc.results.getResultLogs.queryOptions({
+      input: {
+        resultId: resultId ?? "",
+        typebotId,
+      },
+      enabled: isDefined(resultId),
+    }),
+  );
 
   return (
     <Dialog.Root isOpen={isDefined(resultId)} onClose={onClose}>
       <Dialog.Popup className="max-w-xl">
         <Dialog.Title>Logs</Dialog.Title>
         <Dialog.CloseButton />
-        {logs?.map((log, idx) => (
+        {data?.logs?.map((log, idx) => (
           <LogCard key={idx} log={log} />
         ))}
-        {isLoading && <LoaderCircleIcon className="animate-spin" />}
-        {!isLoading && (logs ?? []).length === 0 && <p>No logs found.</p>}
+        {!error && !data && <LoaderCircleIcon className="animate-spin" />}
+        {data && (data.logs ?? []).length === 0 && <p>No logs found.</p>}
       </Dialog.Popup>
     </Dialog.Root>
   );

@@ -1,8 +1,11 @@
+import { useQuery } from "@tanstack/react-query";
 import type { ForgedBlockDefinition } from "@typebot.io/forge-repository/definitions";
 import type { ForgedBlock } from "@typebot.io/forge-repository/schemas";
-import type { ReactNode } from "react";
+import { type ReactNode, useMemo } from "react";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
-import { useSelectItemsQuery } from "../hooks/useSelectItemsQuery";
+import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
+import { orpc } from "@/lib/queryClient";
+import { findFetcher } from "../helpers/findFetcher";
 
 type Props = {
   blockDef: ForgedBlockDefinition;
@@ -24,17 +27,45 @@ export const ForgeSelectInput = ({
   withVariableButton = false,
   onChange,
 }: Props) => {
-  const { items } = useSelectItemsQuery({
-    credentialsScope,
-    blockDef,
-    options,
-    fetcherId,
-  });
+  const { workspace } = useWorkspace();
+
+  const fetcher = useMemo(
+    () => findFetcher(blockDef, fetcherId),
+    [blockDef, fetcherId],
+  );
+
+  const { data } = useQuery(
+    orpc.forge.fetchSelectItems.queryOptions({
+      input:
+        credentialsScope === "workspace"
+          ? {
+              scope: "workspace",
+              integrationId: blockDef.id,
+              options: pick(
+                options,
+                (blockDef.auth ? ["credentialsId"] : []).concat(
+                  fetcher?.dependencies ?? [],
+                ),
+              ),
+              workspaceId: workspace?.id as string,
+              fetcherId,
+            }
+          : {
+              scope: "user",
+              integrationId: blockDef.id,
+              options: {
+                credentialsId: options.credentialsId,
+              },
+              fetcherId,
+            },
+      enabled: !!workspace?.id && !!fetcher,
+    }),
+  );
 
   return (
     <BasicSelect
       items={
-        (items ?? []) as {
+        (data?.items ?? []) as {
           label: ReactNode;
           value: string;
         }[]
@@ -47,3 +78,12 @@ export const ForgeSelectInput = ({
     />
   );
 };
+
+function pick<T, K extends keyof T>(obj: T, keys: K[]): Pick<T, K> {
+  if (!obj) return {} as Pick<T, K>;
+  const ret: any = {};
+  keys.forEach((key) => {
+    ret[key] = obj[key];
+  });
+  return ret;
+}

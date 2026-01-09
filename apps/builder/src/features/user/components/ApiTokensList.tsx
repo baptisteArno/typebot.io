@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { T, useTranslate } from "@tolgee/react";
 import { byId, isDefined } from "@typebot.io/lib/utils";
 import { Button } from "@typebot.io/ui/components/Button";
@@ -10,19 +10,13 @@ import { useState } from "react";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
 import { TimeSince } from "@/components/TimeSince";
 import { orpc } from "@/lib/queryClient";
-import { toast } from "@/lib/toast";
-import { useApiTokens } from "../hooks/useApiTokens";
 import { CreateApiTokenDialog } from "./CreateApiTokenDialog";
 
 export const ApiTokensList = () => {
   const { t } = useTranslate();
-  const { apiTokens, isLoading, refetch } = useApiTokens({
-    onError: (e) =>
-      toast({
-        title: "Failed to fetch tokens",
-        description: e.message,
-      }),
-  });
+  const { data, error, refetch } = useQuery(
+    orpc.user.listApiTokens.queryOptions(),
+  );
   const {
     isOpen: isCreateOpen,
     onOpen: onCreateOpen,
@@ -68,7 +62,7 @@ export const ApiTokensList = () => {
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {apiTokens?.map((token) => (
+          {data?.apiTokens?.map((token) => (
             <Table.Row key={token.id}>
               <Table.Cell>{token.name}</Table.Cell>
               <Table.Cell>
@@ -85,7 +79,8 @@ export const ApiTokensList = () => {
               </Table.Cell>
             </Table.Row>
           ))}
-          {isLoading &&
+          {!error &&
+            !data &&
             Array.from({ length: 3 }).map((_, idx) => (
               <Table.Row key={idx}>
                 <Table.Cell>
@@ -113,7 +108,7 @@ export const ApiTokensList = () => {
             keyName="account.apiTokens.deleteConfirmationMessage"
             params={{
               strong: (
-                <strong>{apiTokens?.find(byId(deletingId))?.name}</strong>
+                <strong>{data?.apiTokens?.find(byId(deletingId))?.name}</strong>
               ),
             }}
           />
