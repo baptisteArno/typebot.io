@@ -1,11 +1,11 @@
-import { TRPCError } from "@trpc/server";
+import { ORPCError } from "@orpc/server";
+import { authenticatedProcedure } from "@typebot.io/config/orpc/builder/middlewares";
 import { env } from "@typebot.io/env";
 import { generatePresignedPostPolicy } from "@typebot.io/lib/s3/generatePresignedPostPolicy";
 import prisma from "@typebot.io/prisma";
 import { z } from "@typebot.io/zod";
 import { isWriteTypebotForbidden } from "@/features/typebot/helpers/isWriteTypebotForbidden";
 import { isWriteWorkspaceForbidden } from "@/features/workspace/helpers/isWriteWorkspaceForbidden";
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 
 const inputSchema = z.object({
   filePathProps: z
@@ -43,38 +43,38 @@ export type FilePathUploadProps = z.infer<
 
 export const generateUploadUrl = authenticatedProcedure
   .input(inputSchema)
-  .mutation(async ({ input: { filePathProps, fileType }, ctx: { user } }) => {
-    if (!env.S3_ENDPOINT || !env.S3_ACCESS_KEY || !env.S3_SECRET_KEY)
-      throw new TRPCError({
-        code: "INTERNAL_SERVER_ERROR",
-        message:
-          "S3 not properly configured. Missing one of those variables: S3_ENDPOINT, S3_ACCESS_KEY, S3_SECRET_KEY",
+  .handler(
+    async ({ input: { filePathProps, fileType }, context: { user } }) => {
+      if (!env.S3_ENDPOINT || !env.S3_ACCESS_KEY || !env.S3_SECRET_KEY)
+        throw new ORPCError("INTERNAL_SERVER_ERROR", {
+          message:
+            "S3 not properly configured. Missing one of those variables: S3_ENDPOINT, S3_ACCESS_KEY, S3_SECRET_KEY",
+        });
+
+      if ("resultId" in filePathProps && !user)
+        throw new ORPCError("UNAUTHORIZED", {
+          message: "You must be logged in to upload a file",
+        });
+
+      const filePath = await parseFilePath({
+        authenticatedUserId: user?.id,
+        uploadProps: filePathProps,
       });
 
-    if ("resultId" in filePathProps && !user)
-      throw new TRPCError({
-        code: "UNAUTHORIZED",
-        message: "You must be logged in to upload a file",
+      const presignedPostPolicy = await generatePresignedPostPolicy({
+        fileType,
+        filePath,
       });
 
-    const filePath = await parseFilePath({
-      authenticatedUserId: user?.id,
-      uploadProps: filePathProps,
-    });
-
-    const presignedPostPolicy = await generatePresignedPostPolicy({
-      fileType,
-      filePath,
-    });
-
-    return {
-      presignedUrl: presignedPostPolicy.postURL,
-      formData: presignedPostPolicy.formData,
-      fileUrl: env.S3_PUBLIC_CUSTOM_DOMAIN
-        ? `${env.S3_PUBLIC_CUSTOM_DOMAIN}/${filePath}`
-        : `${presignedPostPolicy.postURL}/${presignedPostPolicy.formData.key}`,
-    };
-  });
+      return {
+        presignedUrl: presignedPostPolicy.postURL,
+        formData: presignedPostPolicy.formData,
+        fileUrl: env.S3_PUBLIC_CUSTOM_DOMAIN
+          ? `${env.S3_PUBLIC_CUSTOM_DOMAIN}/${filePath}`
+          : `${presignedPostPolicy.postURL}/${presignedPostPolicy.formData.key}`,
+      };
+    },
+  );
 
 type Props = {
   authenticatedUserId?: string;
@@ -86,23 +86,18 @@ const parseFilePath = async ({
   uploadProps: input,
 }: Props): Promise<string> => {
   if (!authenticatedUserId)
-    throw new TRPCError({
-      code: "UNAUTHORIZED",
+    throw new ORPCError("UNAUTHORIZED", {
       message: "You must be logged in to upload this type of file",
     });
   if ("userId" in input) {
     if (input.userId !== authenticatedUserId)
-      throw new TRPCError({
-        code: "UNAUTHORIZED",
+      throw new ORPCError("UNAUTHORIZED", {
         message: "You are not authorized to upload a file for this user",
       });
     return `public/users/${input.userId}/${input.fileName}`;
   }
   if (!("workspaceId" in input))
-    throw new TRPCError({
-      code: "BAD_REQUEST",
-      message: "workspaceId is missing",
-    });
+    throw new ORPCError("BAD_REQUEST", { message: "workspaceId is missing" });
   if (!("typebotId" in input)) {
     const workspace = await prisma.workspace.findUnique({
       where: {
@@ -121,10 +116,7 @@ const parseFilePath = async ({
       !workspace ||
       isWriteWorkspaceForbidden(workspace, { id: authenticatedUserId })
     )
-      throw new TRPCError({
-        code: "NOT_FOUND",
-        message: "Workspace not found",
-      });
+      throw new ORPCError("NOT_FOUND", { message: "Workspace not found" });
     return `public/workspaces/${input.workspaceId}/${input.fileName}`;
   }
   const typebot = await prisma.typebot.findUnique({
@@ -159,10 +151,7 @@ const parseFilePath = async ({
       id: authenticatedUserId,
     }))
   )
-    throw new TRPCError({
-      code: "NOT_FOUND",
-      message: "Typebot not found",
-    });
+    throw new ORPCError("NOT_FOUND", { message: "Typebot not found" });
   if (!("blockId" in input)) {
     return `public/workspaces/${input.workspaceId}/typebots/${input.typebotId}/${input.fileName}`;
   }

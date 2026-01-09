@@ -1,4 +1,5 @@
-import { TRPCError } from "@trpc/server";
+import { ORPCError } from "@orpc/server";
+import { authenticatedProcedure } from "@typebot.io/config/orpc/builder/middlewares";
 import { encrypt } from "@typebot.io/credentials/encrypt";
 import { env } from "@typebot.io/env";
 import type { OAuthDefinition } from "@typebot.io/forge/types";
@@ -8,7 +9,6 @@ import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
 import prisma from "@typebot.io/prisma";
 import { z } from "@typebot.io/zod";
 import { isWriteWorkspaceForbidden } from "@/features/workspace/helpers/isWriteWorkspaceForbidden";
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 
 const commonInput = z.object({
   name: z.string(),
@@ -43,19 +43,17 @@ export const createOAuthCredentials = authenticatedProcedure
       credentialsId: z.string(),
     }),
   )
-  .mutation(async ({ input, ctx: { user } }) => {
+  .handler(async ({ input, context: { user } }) => {
     const blockDef = forgedBlocks[input.blockType as keyof typeof forgedBlocks];
     if (!blockDef || blockDef.auth?.type !== "oauth")
-      throw new TRPCError({
-        code: "BAD_REQUEST",
+      throw new ORPCError("BAD_REQUEST", {
         message: "Block is not an OAuth block",
       });
 
     const client = getClient(input.customClient, blockDef.auth);
 
     if (!client)
-      throw new TRPCError({
-        code: "BAD_REQUEST",
+      throw new ORPCError("BAD_REQUEST", {
         message: "No client ID or secret provided or default client not set",
       });
 
@@ -93,10 +91,7 @@ export const createOAuthCredentials = authenticatedProcedure
       select: { id: true, members: { select: { userId: true, role: true } } },
     });
     if (!workspace || isWriteWorkspaceForbidden(workspace, user))
-      throw new TRPCError({
-        code: "NOT_FOUND",
-        message: "Workspace not found",
-      });
+      throw new ORPCError("NOT_FOUND", { message: "Workspace not found" });
 
     const createdCredentials = await prisma.credentials.create({
       data: {
@@ -146,8 +141,7 @@ const exchangeCodeForTokens = async ({
       typeof tokens.refresh_token !== "string" ||
       typeof tokens.expires_in !== "number"
     )
-      throw new TRPCError({
-        code: "BAD_REQUEST",
+      throw new ORPCError("BAD_REQUEST", {
         message: "Invalid tokens returned from the auth provider",
       });
 
@@ -171,10 +165,7 @@ const exchangeCodeForTokens = async ({
       context: "token exchange",
     });
     console.error(parsedError);
-    throw new TRPCError({
-      code: "BAD_REQUEST",
-      message: parsedError.description,
-    });
+    throw new ORPCError("BAD_REQUEST", { message: parsedError.description });
   }
 };
 

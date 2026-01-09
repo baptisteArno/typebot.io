@@ -1,7 +1,7 @@
+import { authenticatedProcedure } from "@typebot.io/config/orpc/builder/middlewares";
 import prisma from "@typebot.io/prisma";
 import { clientUserSchema, updateUserSchema } from "@typebot.io/user/schemas";
 import { z } from "@typebot.io/zod";
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 
 export const updateUser = authenticatedProcedure
   .input(
@@ -18,7 +18,7 @@ export const updateUser = authenticatedProcedure
       protect: true,
     },
   })
-  .mutation(async ({ ctx: { user }, input: { updates } }) => {
+  .handler(async ({ context: { user }, input: { updates } }) => {
     const updatedUser = await prisma.user.update({
       where: { id: user.id },
       data: {

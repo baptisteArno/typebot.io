@@ -24,7 +24,7 @@ import { CodeEditor } from "@/components/inputs/CodeEditor";
 import { TableList, type TableListItemProps } from "@/components/TableList";
 import { CredentialsDropdown } from "@/features/credentials/components/CredentialsDropdown";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
-import { trpcClient } from "@/lib/queryClient";
+import { orpcClient } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
 import { computeDeepKeysMappingSuggestionList } from "../helpers/computeDeepKeysMappingSuggestionList";
 import { convertVariablesForTestToVariables } from "../helpers/convertVariablesForTestToVariables";
@@ -84,7 +84,7 @@ export const HttpRequestAdvancedConfigForm = ({
     setIsTestResponseLoading(true);
     await save();
     try {
-      const data = await trpcClient.httpRequest.testHttpRequest.mutate({
+      const data = await orpcClient.httpRequest.testHttpRequest({
         typebotId: typebot.id,
         blockId: blockId,
         variables: convertVariablesForTestToVariables(

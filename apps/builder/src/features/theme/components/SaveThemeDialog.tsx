@@ -7,7 +7,7 @@ import { Dialog } from "@typebot.io/ui/components/Dialog";
 import { Field } from "@typebot.io/ui/components/Field";
 import { type FormEvent, useRef, useState } from "react";
 import { DebouncedTextInput } from "@/components/inputs/DebouncedTextInput";
-import { queryClient, trpc } from "@/lib/queryClient";
+import { orpc, queryClient } from "@/lib/queryClient";
 
 type Props = {
   workspaceId: string;
@@ -28,14 +28,14 @@ export const SaveThemeDialog = ({
   const [isSaving, setIsSaving] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const { mutate } = useMutation(
-    trpc.theme.saveThemeTemplate.mutationOptions({
+    orpc.theme.saveThemeTemplate.mutationOptions({
       onMutate: () => setIsSaving(true),
       onSettled: () => setIsSaving(false),
-      onSuccess: ({ themeTemplate }) => {
+      onSuccess: (data) => {
         queryClient.invalidateQueries({
-          queryKey: trpc.theme.listThemeTemplates.queryKey(),
+          queryKey: orpc.theme.listThemeTemplates.key(),
         });
-        onClose(themeTemplate);
+        onClose(data.themeTemplate);
       },
     }),
   );

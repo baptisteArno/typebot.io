@@ -1,9 +1,9 @@
-import { TRPCError } from "@trpc/server";
+import { ORPCError } from "@orpc/server";
+import { authenticatedProcedure } from "@typebot.io/config/orpc/builder/middlewares";
 import prisma from "@typebot.io/prisma";
 import { resultWithAnswersSchema } from "@typebot.io/results/schemas/results";
 import { isReadTypebotForbidden } from "@typebot.io/typebot/helpers/isReadTypebotForbidden";
 import { z } from "@typebot.io/zod";
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 
 export const getResult = authenticatedProcedure
   .meta({
@@ -34,7 +34,7 @@ export const getResult = authenticatedProcedure
       result: resultWithAnswersSchema,
     }),
   )
-  .query(async ({ input, ctx: { user } }) => {
+  .handler(async ({ input, context: { user } }) => {
     const typebot = await prisma.typebot.findUnique({
       where: {
         id: input.typebotId,
@@ -62,7 +62,7 @@ export const getResult = authenticatedProcedure
       },
     });
     if (!typebot || (await isReadTypebotForbidden(typebot, user)))
-      throw new TRPCError({ code: "NOT_FOUND", message: "Typebot not found" });
+      throw new ORPCError("NOT_FOUND", { message: "Typebot not found" });
     const results = await prisma.result.findMany({
       where: {
         id: input.resultId,
@@ -90,7 +90,7 @@ export const getResult = authenticatedProcedure
     });
 
     if (results.length === 0)
-      throw new TRPCError({ code: "NOT_FOUND", message: "Result not found" });
+      throw new ORPCError("NOT_FOUND", { message: "Result not found" });
 
     const { answers, answersV2, ...result } = results[0];
 

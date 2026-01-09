@@ -1,10 +1,10 @@
-import { TRPCError } from "@trpc/server";
+import { ORPCError } from "@orpc/server";
+import { authenticatedProcedure } from "@typebot.io/config/orpc/builder/middlewares";
 import prisma from "@typebot.io/prisma";
 import { Plan } from "@typebot.io/prisma/enum";
 import { folderSchema } from "@typebot.io/schemas/features/folder";
 import { z } from "@typebot.io/zod";
 import { getUserModeInWorkspace } from "@/features/workspace/helpers/getUserRoleInWorkspace";
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 
 export const updateFolder = authenticatedProcedure
   .meta({
@@ -33,22 +33,18 @@ export const updateFolder = authenticatedProcedure
       folder: folderSchema,
     }),
   )
-  .mutation(
-    async ({ input: { folder, folderId, workspaceId }, ctx: { user } }) => {
+  .handler(
+    async ({ input: { folder, folderId, workspaceId }, context: { user } }) => {
       const workspace = await prisma.workspace.findUnique({
         where: { id: workspaceId },
         select: { id: true, members: true, plan: true },
       });
       const userRole = getUserModeInWorkspace(user.id, workspace?.members);
       if (userRole === "guest" || !workspace)
-        throw new TRPCError({
-          code: "NOT_FOUND",
-          message: "Workspace not found",
-        });
+        throw new ORPCError("NOT_FOUND", { message: "Workspace not found" });
 
       if (workspace.plan === Plan.FREE)
-        throw new TRPCError({
-          code: "FORBIDDEN",
+        throw new ORPCError("FORBIDDEN", {
           message: "You need to upgrade to a paid plan to update folders",
         });
 

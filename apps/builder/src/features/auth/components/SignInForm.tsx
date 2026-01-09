@@ -1,5 +1,6 @@
 import { sanitizeUrl } from "@braintree/sanitize-url";
 import { useTranslate } from "@tolgee/react";
+import { createEmailMagicLink } from "@typebot.io/auth/helpers/createEmailMagicLink";
 import { Alert } from "@typebot.io/ui/components/Alert";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Field } from "@typebot.io/ui/components/Field";
@@ -15,7 +16,6 @@ import type { FormEvent } from "react";
 import { useEffect, useState } from "react";
 import { TextLink } from "@/components/TextLink";
 import { toast } from "@/lib/toast";
-import { createEmailMagicLink } from "../helpers/createEmailMagicLink";
 import { DividerWithText } from "./DividerWithText";
 import { SignInError } from "./SignInError";
 import { SocialLoginButtons } from "./SocialLoginButtons";

@@ -1,14 +1,14 @@
-import { TRPCError } from "@trpc/server";
+import { ORPCError } from "@orpc/server";
 import { isHttpRequestBlock } from "@typebot.io/blocks-core/helpers";
 import type { Block } from "@typebot.io/blocks-core/schemas/schema";
 import type { HttpRequestBlock } from "@typebot.io/blocks-integrations/httpRequest/schema";
+import { authenticatedProcedure } from "@typebot.io/config/orpc/builder/middlewares";
 import { parseGroups } from "@typebot.io/groups/helpers/parseGroups";
 import { byId } from "@typebot.io/lib/utils";
 import prisma from "@typebot.io/prisma";
 import { isTypebotVersionAtLeastV6 } from "@typebot.io/schemas/helpers/isTypebotVersionAtLeastV6";
 import { z } from "@typebot.io/zod";
 import { canWriteTypebots } from "@/helpers/databaseRules";
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 
 export const unsubscribeHttpRequest = authenticatedProcedure
   .meta({
@@ -32,7 +32,7 @@ export const unsubscribeHttpRequest = authenticatedProcedure
       url: z.string().nullable(),
     }),
   )
-  .query(async ({ input: { typebotId, blockId }, ctx: { user } }) => {
+  .handler(async ({ input: { typebotId, blockId }, context: { user } }) => {
     const typebot = await prisma.typebot.findFirst({
       where: canWriteTypebots(typebotId, user),
       select: {
@@ -42,7 +42,7 @@ export const unsubscribeHttpRequest = authenticatedProcedure
     });
 
     if (!typebot)
-      throw new TRPCError({ code: "NOT_FOUND", message: "Typebot not found" });
+      throw new ORPCError("NOT_FOUND", { message: "Typebot not found" });
 
     const groups = parseGroups(typebot.groups, {
       typebotVersion: typebot.version,
@@ -53,8 +53,7 @@ export const unsubscribeHttpRequest = authenticatedProcedure
       .find(byId(blockId)) as HttpRequestBlock | null;
 
     if (!httpRequestBlock || !isHttpRequestBlock(httpRequestBlock))
-      throw new TRPCError({
-        code: "NOT_FOUND",
+      throw new ORPCError("NOT_FOUND", {
         message: "HTTP request block not found",
       });
 
@@ -96,8 +95,7 @@ export const unsubscribeHttpRequest = authenticatedProcedure
           data: { url: null },
         });
       else
-        throw new TRPCError({
-          code: "NOT_FOUND",
+        throw new ORPCError("NOT_FOUND", {
           message: "HTTP request block not found",
         });
     }

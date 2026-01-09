@@ -1,13 +1,13 @@
-import { TRPCError } from "@trpc/server";
+import { ORPCError } from "@orpc/server";
 import { defaultOpenAIOptions } from "@typebot.io/blocks-integrations/openai/constants";
 import type { OpenAICredentials } from "@typebot.io/blocks-integrations/openai/schema";
+import { authenticatedProcedure } from "@typebot.io/config/orpc/builder/middlewares";
 import { decrypt } from "@typebot.io/credentials/decrypt";
 import { isNotEmpty } from "@typebot.io/lib/utils";
 import prisma from "@typebot.io/prisma";
 import { z } from "@typebot.io/zod";
 import { type ClientOptions, OpenAI } from "openai";
 import { isReadWorkspaceFobidden } from "@/features/workspace/helpers/isReadWorkspaceFobidden";
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 
 export const listModels = authenticatedProcedure
   .input(
@@ -19,10 +19,10 @@ export const listModels = authenticatedProcedure
       type: z.enum(["gpt", "tts"]),
     }),
   )
-  .query(
+  .handler(
     async ({
       input: { credentialsId, workspaceId, baseUrl, apiVersion, type },
-      ctx: { user },
+      context: { user },
     }) => {
       const workspace = await prisma.workspace.findFirst({
         where: { id: workspaceId },
@@ -46,18 +46,12 @@ export const listModels = authenticatedProcedure
       });
 
       if (!workspace || isReadWorkspaceFobidden(workspace, user))
-        throw new TRPCError({
-          code: "NOT_FOUND",
-          message: "No workspace found",
-        });
+        throw new ORPCError("NOT_FOUND", { message: "No workspace found" });
 
       const credentials = workspace.credentials.at(0);
 
       if (!credentials)
-        throw new TRPCError({
-          code: "NOT_FOUND",
-          message: "No credentials found",
-        });
+        throw new ORPCError("NOT_FOUND", { message: "No credentials found" });
 
       const data = (await decrypt(
         credentials.data,

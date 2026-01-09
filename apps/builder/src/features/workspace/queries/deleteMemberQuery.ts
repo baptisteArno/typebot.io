@@ -1,7 +1,6 @@
-import { sendRequest } from "@typebot.io/lib/utils";
+import { orpcClient } from "@/lib/queryClient";
 
 export const deleteMemberQuery = (workspaceId: string, userId: string) =>
-  sendRequest({
-    method: "DELETE",
-    url: `/api/workspaces/${workspaceId}/members/${userId}`,
+  orpcClient.workspace.deleteWorkspaceMember({
+    input: { workspaceId, memberId: userId },
   });

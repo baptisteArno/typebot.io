@@ -11,7 +11,7 @@ import { useEffect, useState } from "react";
 import { TextLink } from "@/components/TextLink";
 import { useUser } from "@/features/user/hooks/useUser";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { trpc } from "@/lib/queryClient";
+import { orpc } from "@/lib/queryClient";
 
 type Props = {
   credentialsId: string;
@@ -31,16 +31,14 @@ export const UpdateStripeCredentialsDialogBody = ({
   >();
 
   const { data: existingCredentials } = useQuery(
-    trpc.credentials.getCredentials.queryOptions(
-      {
+    orpc.credentials.getCredentials.queryOptions({
+      input: {
         scope: "workspace",
         credentialsId,
         workspaceId: workspace!.id,
       },
-      {
-        enabled: !!workspace?.id,
-      },
-    ),
+      enabled: !!workspace?.id,
+    }),
   );
 
   useEffect(() => {
@@ -53,7 +51,7 @@ export const UpdateStripeCredentialsDialogBody = ({
   }, [existingCredentials, stripeConfig]);
 
   const { mutate } = useMutation(
-    trpc.credentials.updateCredentials.mutationOptions({
+    orpc.credentials.updateCredentials.mutationOptions({
       onMutate: () => setIsCreating(true),
       onSettled: () => setIsCreating(false),
       onSuccess: () => {

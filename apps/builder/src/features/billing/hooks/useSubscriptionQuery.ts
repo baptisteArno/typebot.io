@@ -1,16 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 import { isSelfHostedInstance } from "@/helpers/isSelfHostedInstance";
-import { trpc } from "@/lib/queryClient";
+import { orpc } from "@/lib/queryClient";
 
 export const useSubscriptionQuery = (workspaceId: string) => {
   return useQuery(
-    trpc.billing.getSubscription.queryOptions(
-      {
+    orpc.billing.getSubscription.queryOptions({
+      input: {
         workspaceId,
       },
-      {
-        enabled: !isSelfHostedInstance(),
-      },
-    ),
+      enabled: !isSelfHostedInstance(),
+    }),
   );
 };

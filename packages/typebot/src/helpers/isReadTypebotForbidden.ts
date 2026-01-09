@@ -12,7 +12,7 @@ export const isReadTypebotForbidden = async (
       members: Pick<Prisma.MemberInWorkspace, "userId">[];
     };
   },
-  user?: Pick<Prisma.User, "email" | "id">,
+  user?: Pick<Prisma.User, "email" | "id"> | null,
 ) => {
   const settings = typebot.settings
     ? settingsSchema.parse(typebot.settings)

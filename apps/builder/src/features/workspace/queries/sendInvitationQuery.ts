@@ -1,6 +1,5 @@
-import { sendRequest } from "@typebot.io/lib/utils";
 import type { Prisma } from "@typebot.io/prisma/types";
-import type { Member } from "../types";
+import { orpcClient } from "@/lib/queryClient";
 
 export const sendInvitationQuery = (
   invitation: Omit<
@@ -8,8 +7,10 @@ export const sendInvitationQuery = (
     "id" | "createdAt" | "updatedAt"
   >,
 ) =>
-  sendRequest<{ invitation?: Prisma.WorkspaceInvitation; member?: Member }>({
-    url: `/api/workspaces/${invitation.workspaceId}/invitations`,
-    method: "POST",
-    body: invitation,
+  orpcClient.workspace.createWorkspaceInvitation({
+    input: {
+      workspaceId: invitation.workspaceId,
+      email: invitation.email,
+      type: invitation.type,
+    },
   });

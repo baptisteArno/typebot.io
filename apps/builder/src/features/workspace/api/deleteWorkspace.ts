@@ -1,11 +1,11 @@
-import { TRPCError } from "@trpc/server";
+import { ORPCError } from "@orpc/server";
+import { authenticatedProcedure } from "@typebot.io/config/orpc/builder/middlewares";
 import { env } from "@typebot.io/env";
 import { removeObjectsFromWorkspace } from "@typebot.io/lib/s3/removeObjectsRecursively";
 import { isNotEmpty } from "@typebot.io/lib/utils";
 import prisma from "@typebot.io/prisma";
 import { z } from "@typebot.io/zod";
 import Stripe from "stripe";
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 import { isAdminWriteWorkspaceForbidden } from "../helpers/isAdminWriteWorkspaceForbidden";
 
 export const deleteWorkspace = authenticatedProcedure
@@ -32,17 +32,14 @@ export const deleteWorkspace = authenticatedProcedure
       message: z.string(),
     }),
   )
-  .mutation(async ({ input: { workspaceId }, ctx: { user } }) => {
+  .handler(async ({ input: { workspaceId }, context: { user } }) => {
     const workspace = await prisma.workspace.findFirst({
       where: { id: workspaceId },
       include: { members: true },
     });
 
     if (!workspace || isAdminWriteWorkspaceForbidden(workspace, user))
-      throw new TRPCError({
-        code: "NOT_FOUND",
-        message: "Workspace not found",
-      });
+      throw new ORPCError("NOT_FOUND", { message: "Workspace not found" });
 
     await prisma.workspace.deleteMany({
       where: { id: workspaceId },

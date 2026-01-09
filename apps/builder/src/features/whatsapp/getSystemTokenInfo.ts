@@ -1,11 +1,11 @@
-import { TRPCError } from "@trpc/server";
+import { ORPCError } from "@orpc/server";
+import { authenticatedProcedure } from "@typebot.io/config/orpc/builder/middlewares";
 import { decrypt } from "@typebot.io/credentials/decrypt";
 import type { WhatsAppCredentials } from "@typebot.io/credentials/schemas";
 import { env } from "@typebot.io/env";
 import { ky } from "@typebot.io/lib/ky";
 import prisma from "@typebot.io/prisma";
 import { z } from "@typebot.io/zod";
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 import { ClientToastError } from "@/lib/ClientToastError";
 
 const inputSchema = z.object({
@@ -15,18 +15,14 @@ const inputSchema = z.object({
 
 export const getSystemTokenInfo = authenticatedProcedure
   .input(inputSchema)
-  .query(async ({ input, ctx: { user } }) => {
+  .handler(async ({ input, context: { user } }) => {
     if (!input.token && !input.credentialsId)
-      throw new TRPCError({
-        code: "BAD_REQUEST",
+      throw new ORPCError("BAD_REQUEST", {
         message: "Either token or credentialsId must be provided",
       });
     const credentials = await getCredentials(user.id, input);
     if (!credentials)
-      throw new TRPCError({
-        code: "NOT_FOUND",
-        message: "Credentials not found",
-      });
+      throw new ORPCError("NOT_FOUND", { message: "Credentials not found" });
 
     try {
       const {
@@ -81,8 +77,7 @@ const getCredentials = async (
   )) as WhatsAppCredentials["data"];
 
   if (decryptedData.provider !== "meta") {
-    throw new TRPCError({
-      code: "BAD_REQUEST",
+    throw new ORPCError("BAD_REQUEST", {
       message: "This endpoint only supports Meta credentials",
     });
   }

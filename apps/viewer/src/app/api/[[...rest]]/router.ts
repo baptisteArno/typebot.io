@@ -29,22 +29,6 @@ const privateRouter = {
     })
     .output(z.object({ status: z.literal("ok") }))
     .handler(() => ({ status: "ok" })),
-  success: publicProcedure
-    .route({
-      method: "POST",
-      path: "/mock/success",
-    })
-    .handler(() => ({ statusCode: 200, statusMessage: "OK" })),
-  fail: publicProcedure
-    .route({
-      method: "POST",
-      path: "/mock/fail",
-    })
-    .handler(() => {
-      throw new ORPCError("INTERNAL_SERVER_ERROR", {
-        message: "Fail",
-      });
-    }),
 
   // TODO: Migrate to builder (once builder migrated to oRPC) and add rewrites
   automationPlatformsRouter: {

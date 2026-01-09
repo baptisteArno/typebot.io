@@ -1,13 +1,13 @@
-import { TRPCError } from "@trpc/server";
+import { ORPCError } from "@orpc/server";
+import { authenticatedProcedure } from "@typebot.io/config/orpc/builder/middlewares";
 import prisma from "@typebot.io/prisma";
 import { trackEvents } from "@typebot.io/telemetry/trackEvents";
+import { parseWorkspaceDefaultPlan } from "@typebot.io/workspaces/parseWorkspaceDefaultPlan";
 import {
   type Workspace,
   workspaceSchema,
 } from "@typebot.io/workspaces/schemas";
 import { z } from "@typebot.io/zod";
-import { authenticatedProcedure } from "@/helpers/server/trpc";
-import { parseWorkspaceDefaultPlan } from "../helpers/parseWorkspaceDefaultPlan";
 
 export const createWorkspace = authenticatedProcedure
   .meta({
@@ -36,7 +36,7 @@ export const createWorkspace = authenticatedProcedure
       }),
     }),
   )
-  .mutation(async ({ input: { name, icon }, ctx: { user } }) => {
+  .handler(async ({ input: { name, icon }, context: { user } }) => {
     const existingWorkspaceNames = (await prisma.workspace.findMany({
       where: {
         members: {
@@ -49,8 +49,7 @@ export const createWorkspace = authenticatedProcedure
     })) as Pick<Workspace, "name">[];
 
     if (existingWorkspaceNames.some((workspace) => workspace.name === name))
-      throw new TRPCError({
-        code: "BAD_REQUEST",
+      throw new ORPCError("BAD_REQUEST", {
         message: "Workspace with same name already exists",
       });
 

@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
 import { ButtonLink, type ButtonLinkProps } from "@/components/ButtonLink";
-import { trpc } from "@/lib/queryClient";
+import { orpc } from "@/lib/queryClient";
 
 type Props = {
   workspaceId: string;
@@ -10,16 +10,14 @@ type Props = {
 export const BillingPortalButton = ({ workspaceId, variant }: Props) => {
   const { t } = useTranslate();
   const { data } = useQuery(
-    trpc.billing.getBillingPortalUrl.queryOptions(
-      {
+    orpc.billing.getBillingPortalUrl.queryOptions({
+      input: {
         workspaceId,
       },
-      {
-        meta: {
-          errorContext: "Error getting billing portal url",
-        },
+      meta: {
+        errorContext: "Error getting billing portal url",
       },
-    ),
+    }),
   );
 
   return (

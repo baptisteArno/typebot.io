@@ -1,7 +1,7 @@
-import { TRPCError } from "@trpc/server";
+import { ORPCError } from "@orpc/server";
+import { authenticatedProcedure } from "@typebot.io/config/orpc/builder/middlewares";
 import prisma from "@typebot.io/prisma";
 import { z } from "@typebot.io/zod";
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 import { isWriteTypebotForbidden } from "../helpers/isWriteTypebotForbidden";
 
 export const unpublishTypebot = authenticatedProcedure
@@ -28,7 +28,7 @@ export const unpublishTypebot = authenticatedProcedure
       message: z.literal("success"),
     }),
   )
-  .mutation(async ({ input: { typebotId }, ctx: { user } }) => {
+  .handler(async ({ input: { typebotId }, context: { user } }) => {
     const existingTypebot = await prisma.typebot.findFirst({
       where: {
         id: typebotId,
@@ -51,8 +51,7 @@ export const unpublishTypebot = authenticatedProcedure
       },
     });
     if (!existingTypebot?.publishedTypebot)
-      throw new TRPCError({
-        code: "NOT_FOUND",
+      throw new ORPCError("NOT_FOUND", {
         message: "Published typebot not found",
       });
 
@@ -60,7 +59,7 @@ export const unpublishTypebot = authenticatedProcedure
       !existingTypebot.id ||
       (await isWriteTypebotForbidden(existingTypebot, user))
     )
-      throw new TRPCError({ code: "NOT_FOUND", message: "Typebot not found" });
+      throw new ORPCError("NOT_FOUND", { message: "Typebot not found" });
 
     await prisma.publicTypebot.deleteMany({
       where: {

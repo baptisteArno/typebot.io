@@ -1,19 +1,22 @@
-import { router } from "@/helpers/server/trpc";
 import { generateVerificationToken } from "./generateVerificationToken";
 import { getPhoneNumber } from "./getPhoneNumber";
 import { getSystemTokenInfo } from "./getSystemTokenInfo";
+import { getWhatsAppMedia } from "./getWhatsAppMedia";
+import { getWhatsAppMediaPreview } from "./getWhatsAppMediaPreview";
 import { startWhatsAppPreview } from "./startWhatsAppPreview";
 import { subscribePreviewWebhook } from "./subscribePreviewWebhook";
 import { verifyIfPhoneNumberAvailable } from "./verifyIfPhoneNumberAvailable";
 
-export const internalWhatsAppRouter = router({
+export const internalWhatsAppRouter = {
   getPhoneNumber,
   getSystemTokenInfo,
   verifyIfPhoneNumberAvailable,
   generateVerificationToken,
-});
+  getWhatsAppMedia,
+  getWhatsAppMediaPreview,
+};
 
-export const publicWhatsAppRouter = router({
+export const publicWhatsAppRouter = {
   startWhatsAppPreview,
   subscribePreviewWebhook,
-});
+};

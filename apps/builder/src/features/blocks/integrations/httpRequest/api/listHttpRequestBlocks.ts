@@ -1,13 +1,13 @@
-import { TRPCError } from "@trpc/server";
+import { ORPCError } from "@orpc/server";
 import { isHttpRequestBlock } from "@typebot.io/blocks-core/helpers";
 import type { Block } from "@typebot.io/blocks-core/schemas/schema";
 import { IntegrationBlockType } from "@typebot.io/blocks-integrations/constants";
+import { authenticatedProcedure } from "@typebot.io/config/orpc/builder/middlewares";
 import { parseGroups } from "@typebot.io/groups/helpers/parseGroups";
 import { byId } from "@typebot.io/lib/utils";
 import prisma from "@typebot.io/prisma";
 import { z } from "@typebot.io/zod";
 import { canReadTypebots } from "@/helpers/databaseRules";
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 
 export const listHttpRequestBlocks = authenticatedProcedure
   .meta({
@@ -43,7 +43,7 @@ export const listHttpRequestBlocks = authenticatedProcedure
       ),
     }),
   )
-  .query(async ({ input: { typebotId }, ctx: { user } }) => {
+  .handler(async ({ input: { typebotId }, context: { user } }) => {
     const typebot = await prisma.typebot.findFirst({
       where: canReadTypebots(typebotId, user),
       select: {
@@ -53,7 +53,7 @@ export const listHttpRequestBlocks = authenticatedProcedure
       },
     });
     if (!typebot)
-      throw new TRPCError({ code: "NOT_FOUND", message: "Typebot not found" });
+      throw new ORPCError("NOT_FOUND", { message: "Typebot not found" });
 
     const groups = parseGroups(typebot.groups, {
       typebotVersion: typebot.version,

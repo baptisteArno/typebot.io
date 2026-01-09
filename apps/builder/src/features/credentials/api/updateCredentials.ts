@@ -1,4 +1,5 @@
-import { TRPCError } from "@trpc/server";
+import { ORPCError } from "@orpc/server";
+import { authenticatedProcedure } from "@typebot.io/config/orpc/builder/middlewares";
 import { encrypt } from "@typebot.io/credentials/encrypt";
 import {
   googleSheetsCredentialsSchema,
@@ -10,7 +11,6 @@ import { forgedCredentialsSchemas } from "@typebot.io/forge-repository/credentia
 import prisma from "@typebot.io/prisma";
 import { z } from "@typebot.io/zod";
 import { isWriteWorkspaceForbidden } from "@/features/workspace/helpers/isWriteWorkspaceForbidden";
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 
 const inputShape = {
   name: true,
@@ -49,7 +49,7 @@ export const updateCredentials = authenticatedProcedure
       credentialsId: z.string(),
     }),
   )
-  .mutation(async ({ input, ctx: { user } }) => {
+  .handler(async ({ input, context: { user } }) => {
     if (input.scope === "user") {
       const { encryptedData, iv } = await encrypt(input.credentials.data);
       const updatedCredentials = await prisma.userCredentials.update({
@@ -75,10 +75,7 @@ export const updateCredentials = authenticatedProcedure
       },
     });
     if (!workspace || isWriteWorkspaceForbidden(workspace, user))
-      throw new TRPCError({
-        code: "NOT_FOUND",
-        message: "Workspace not found",
-      });
+      throw new ORPCError("NOT_FOUND", { message: "Workspace not found" });
 
     const { encryptedData, iv } = await encrypt(input.credentials.data);
     const updatedCredentials = await prisma.credentials.update({

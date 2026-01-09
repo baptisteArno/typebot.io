@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { trpc } from "@/lib/queryClient";
+import { orpc } from "@/lib/queryClient";
 
 export const useTypebots = ({
   folderId,
@@ -9,15 +9,13 @@ export const useTypebots = ({
   folderId?: string | "root";
 }) => {
   const { data, isLoading, refetch } = useQuery(
-    trpc.typebot.listTypebots.queryOptions(
-      {
+    orpc.typebot.listTypebots.queryOptions({
+      input: {
         workspaceId: workspaceId as string,
         folderId,
       },
-      {
-        enabled: !!workspaceId,
-      },
-    ),
+      enabled: !!workspaceId,
+    }),
   );
   return {
     typebots: data?.typebots,

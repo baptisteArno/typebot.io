@@ -8,7 +8,7 @@ import type { ChangeEvent } from "react";
 import { useId, useState } from "react";
 import type { FilePathUploadProps } from "@/features/upload/api/generateUploadUrl";
 import { compressFile } from "@/helpers/compressFile";
-import { trpc } from "@/lib/queryClient";
+import { orpc } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
 
 type UploadButtonProps = {
@@ -30,7 +30,7 @@ export const UploadButton = ({
   const [file, setFile] = useState<File>();
 
   const { mutate } = useMutation(
-    trpc.generateUploadUrl.mutationOptions({
+    orpc.generateUploadUrl.mutationOptions({
       onSettled: () => {
         setIsUploading(false);
       },

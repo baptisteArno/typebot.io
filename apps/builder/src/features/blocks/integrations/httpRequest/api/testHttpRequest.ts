@@ -1,4 +1,4 @@
-import { TRPCError } from "@trpc/server";
+import { ORPCError } from "@orpc/server";
 import { isHttpRequestBlock } from "@typebot.io/blocks-core/helpers";
 import type { Block } from "@typebot.io/blocks-core/schemas/schema";
 import { httpRequestV5Schema } from "@typebot.io/blocks-integrations/httpRequest/schema";
@@ -8,6 +8,7 @@ import {
 } from "@typebot.io/bot-engine/blocks/integrations/httpRequest/executeHttpRequestBlock";
 import { parseSampleResult } from "@typebot.io/bot-engine/blocks/integrations/httpRequest/parseSampleResult";
 import { fetchLinkedChildTypebots } from "@typebot.io/bot-engine/blocks/logic/typebotLink/fetchLinkedChildTypebots";
+import { authenticatedProcedure } from "@typebot.io/config/orpc/builder/middlewares";
 import { getBlockById } from "@typebot.io/groups/helpers/getBlockById";
 import { parseGroups } from "@typebot.io/groups/helpers/parseGroups";
 import { byId } from "@typebot.io/lib/utils";
@@ -21,7 +22,6 @@ import { edgeSchema } from "@typebot.io/typebot/schemas/edge";
 import { variableSchema } from "@typebot.io/variables/schemas";
 import { z } from "@typebot.io/zod";
 import { canReadTypebots } from "@/helpers/databaseRules";
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 
 export const testHttpRequest = authenticatedProcedure
   .input(
@@ -45,9 +45,9 @@ export const testHttpRequest = authenticatedProcedure
       data: z.unknown().optional(),
     }),
   )
-  .mutation(async ({ input: { typebotId, blockId, variables }, ctx }) => {
+  .handler(async ({ input: { typebotId, blockId, variables }, context }) => {
     const typebot = await prisma.typebot.findFirst({
-      where: canReadTypebots(typebotId, ctx.user),
+      where: canReadTypebots(typebotId, context.user),
       select: {
         version: true,
         groups: true,
@@ -59,10 +59,7 @@ export const testHttpRequest = authenticatedProcedure
     });
 
     if (!typebot)
-      throw new TRPCError({
-        code: "NOT_FOUND",
-        message: "Typebot not found",
-      });
+      throw new ORPCError("NOT_FOUND", { message: "Typebot not found" });
 
     const parsedTypebot = {
       groups: parseGroups(typebot.groups, {
@@ -77,8 +74,7 @@ export const testHttpRequest = authenticatedProcedure
       .find(byId(blockId));
 
     if (!block || !isHttpRequestBlock(block))
-      throw new TRPCError({
-        code: "NOT_FOUND",
+      throw new ORPCError("NOT_FOUND", {
         message: "HTTP request block not found",
       });
 
@@ -96,16 +92,13 @@ export const testHttpRequest = authenticatedProcedure
       );
 
     if (!webhook)
-      throw new TRPCError({
-        code: "NOT_FOUND",
-        message: "Couldn't find webhook",
-      });
+      throw new ORPCError("NOT_FOUND", { message: "Couldn't find webhook" });
 
     const { group } = getBlockById(blockId, parsedTypebot.groups);
     const linkedTypebots = await fetchLinkedChildTypebots({
       isPreview: !("typebotId" in typebot),
       typebots: [parsedTypebot],
-      userId: ctx.user.id,
+      userId: context.user.id,
     })([]);
 
     const mergedVariables = parsedTypebot.variables.map((v) => {
@@ -147,8 +140,7 @@ export const testHttpRequest = authenticatedProcedure
     deleteSessionStore(mockedSessionId);
 
     if (!parsedWebhook)
-      throw new TRPCError({
-        code: "INTERNAL_SERVER_ERROR",
+      throw new ORPCError("INTERNAL_SERVER_ERROR", {
         message: "Couldn't parse webhook attributes",
       });
 

@@ -1,12 +1,12 @@
-import { TRPCError } from "@trpc/server";
+import { ORPCError } from "@orpc/server";
 import { parseSampleResult } from "@typebot.io/bot-engine/blocks/integrations/httpRequest/parseSampleResult";
+import { authenticatedProcedure } from "@typebot.io/config/orpc/builder/middlewares";
 import { getBlockById } from "@typebot.io/groups/helpers/getBlockById";
 import prisma from "@typebot.io/prisma";
 import type { Typebot } from "@typebot.io/typebot/schemas/typebot";
 import { z } from "@typebot.io/zod";
 import { fetchLinkedTypebots } from "@/features/blocks/logic/typebotLink/helpers/fetchLinkedTypebots";
 import { canReadTypebots } from "@/helpers/databaseRules";
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 
 export const getResultExample = authenticatedProcedure
   .meta({
@@ -31,7 +31,7 @@ export const getResultExample = authenticatedProcedure
       resultExample: z.record(z.any()).describe("Can contain any fields."),
     }),
   )
-  .query(async ({ input: { typebotId, blockId }, ctx: { user } }) => {
+  .handler(async ({ input: { typebotId, blockId }, context: { user } }) => {
     const typebot = (await prisma.typebot.findFirst({
       where: canReadTypebots(typebotId, user),
       select: {
@@ -43,12 +43,12 @@ export const getResultExample = authenticatedProcedure
     })) as Pick<Typebot, "groups" | "edges" | "variables" | "events"> | null;
 
     if (!typebot)
-      throw new TRPCError({ code: "NOT_FOUND", message: "Typebot not found" });
+      throw new ORPCError("NOT_FOUND", { message: "Typebot not found" });
 
     const { group } = getBlockById(blockId, typebot.groups);
 
     if (!group)
-      throw new TRPCError({ code: "NOT_FOUND", message: "Block not found" });
+      throw new ORPCError("NOT_FOUND", { message: "Block not found" });
 
     const linkedTypebots = await fetchLinkedTypebots(typebot, user);
 

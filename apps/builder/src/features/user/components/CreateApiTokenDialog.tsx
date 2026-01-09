@@ -6,7 +6,7 @@ import { Input } from "@typebot.io/ui/components/Input";
 import type { FormEvent } from "react";
 import { useRef, useState } from "react";
 import { CopyInput } from "@/components/inputs/CopyInput";
-import { trpc } from "@/lib/queryClient";
+import { orpc } from "@/lib/queryClient";
 
 type Props = {
   isOpen: boolean;
@@ -27,7 +27,7 @@ export const CreateApiTokenDialog = ({
   const [newTokenValue, setNewTokenValue] = useState<string>();
 
   const { mutate: createToken, isPending: isSubmitting } = useMutation(
-    trpc.user.createApiToken.mutationOptions({
+    orpc.user.createApiToken.mutationOptions({
       onSuccess: (data) => {
         setNewTokenValue(data.apiToken.token);
         onNewToken();

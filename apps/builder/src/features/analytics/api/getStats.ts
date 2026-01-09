@@ -1,9 +1,9 @@
-import { TRPCError } from "@trpc/server";
+import { ORPCError } from "@orpc/server";
+import { authenticatedProcedure } from "@typebot.io/config/orpc/builder/middlewares";
 import prisma from "@typebot.io/prisma";
 import { type Stats, statsSchema } from "@typebot.io/results/schemas/answers";
 import { z } from "@typebot.io/zod";
 import { canReadTypebots } from "@/helpers/databaseRules";
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 import { defaultTimeFilter, timeFilterValues } from "../constants";
 import {
   parseFromDateFromTimeFilter,
@@ -28,15 +28,17 @@ export const getStats = authenticatedProcedure
     }),
   )
   .output(z.object({ stats: statsSchema }))
-  .query(
-    async ({ input: { typebotId, timeFilter, timeZone }, ctx: { user } }) => {
+  .handler(
+    async ({
+      input: { typebotId, timeFilter, timeZone },
+      context: { user },
+    }) => {
       const typebot = await prisma.typebot.findFirst({
         where: canReadTypebots(typebotId, user),
         select: { publishedTypebot: true, id: true },
       });
       if (!typebot?.publishedTypebot)
-        throw new TRPCError({
-          code: "NOT_FOUND",
+        throw new ORPCError("NOT_FOUND", {
           message: "Published typebot not found",
         });
 

@@ -1,8 +1,8 @@
-import { type NextRequest, NextResponse } from "next/server";
 import {
   authHandlers,
   SET_TYPEBOT_COOKIE_HEADER,
-} from "@/features/auth/lib/nextAuth";
+} from "@typebot.io/auth/lib/nextAuth";
+import { type NextRequest, NextResponse } from "next/server";
 
 export const GET = async (req: NextRequest) => {
   const response = await authHandlers.GET(req);

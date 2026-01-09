@@ -1,5 +1,6 @@
-import { TRPCError } from "@trpc/server";
+import { ORPCError } from "@orpc/server";
 import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
+import { authenticatedProcedure } from "@typebot.io/config/orpc/builder/middlewares";
 import { env } from "@typebot.io/env";
 import { parseGroups } from "@typebot.io/groups/helpers/parseGroups";
 import prisma from "@typebot.io/prisma";
@@ -22,7 +23,6 @@ import { typebotV6Schema } from "@typebot.io/typebot/schemas/typebot";
 import { variableSchema } from "@typebot.io/variables/schemas";
 import { z } from "@typebot.io/zod";
 import { parseTypebotPublishEvents } from "@/features/telemetry/helpers/parseTypebotPublishEvents";
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 import { isWriteTypebotForbidden } from "../helpers/isWriteTypebotForbidden";
 
 const warningSchema = z.object({
@@ -55,7 +55,7 @@ export const publishTypebot = authenticatedProcedure
       warnings: z.array(warningSchema).optional(),
     }),
   )
-  .mutation(async ({ input: { typebotId }, ctx: { user } }) => {
+  .handler(async ({ input: { typebotId }, context: { user } }) => {
     const warnings: Warning[] = [];
 
     const existingTypebot = await prisma.typebot.findFirst({
@@ -85,7 +85,7 @@ export const publishTypebot = authenticatedProcedure
       !existingTypebot?.id ||
       (await isWriteTypebotForbidden(existingTypebot, user))
     )
-      throw new TRPCError({ code: "NOT_FOUND", message: "Typebot not found" });
+      throw new ORPCError("NOT_FOUND", { message: "Typebot not found" });
 
     const hasFileUploadBlocks = parseGroups(existingTypebot.groups, {
       typebotVersion: existingTypebot.version,
@@ -94,8 +94,7 @@ export const publishTypebot = authenticatedProcedure
     );
 
     if (hasFileUploadBlocks && existingTypebot.workspace.plan === Plan.FREE)
-      throw new TRPCError({
-        code: "BAD_REQUEST",
+      throw new ORPCError("BAD_REQUEST", {
         message: "File upload blocks can't be published on the free plan",
       });
 
@@ -107,8 +106,7 @@ export const publishTypebot = authenticatedProcedure
       existingTypebot.riskLevel &&
       existingTypebot.riskLevel > 80
     )
-      throw new TRPCError({
-        code: "FORBIDDEN",
+      throw new ORPCError("FORBIDDEN", {
         message:
           "Radar detected a potential malicious typebot. This bot is being manually reviewed by Fraud Prevention team.",
       });
@@ -143,8 +141,7 @@ export const publishTypebot = authenticatedProcedure
               id: existingTypebot.publishedTypebot.id,
             },
           });
-        throw new TRPCError({
-          code: "FORBIDDEN",
+        throw new ORPCError("FORBIDDEN", {
           message:
             "Radar detected a potential malicious typebot. This bot is being manually reviewed by Fraud Prevention team.",
         });

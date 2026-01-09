@@ -1,4 +1,5 @@
-import { TRPCError } from "@trpc/server";
+import { ORPCError } from "@orpc/server";
+import { authenticatedProcedure } from "@typebot.io/config/orpc/builder/middlewares";
 import prisma from "@typebot.io/prisma";
 import { isReadTypebotForbidden } from "@typebot.io/typebot/helpers/isReadTypebotForbidden";
 import { migratePublicTypebot } from "@typebot.io/typebot/migrations/migrateTypebot";
@@ -9,7 +10,6 @@ import {
 } from "@typebot.io/typebot/schemas/publicTypebot";
 import type { Typebot } from "@typebot.io/typebot/schemas/typebot";
 import { z } from "@typebot.io/zod";
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 
 export const getPublishedTypebot = authenticatedProcedure
   .meta({
@@ -51,8 +51,11 @@ export const getPublishedTypebot = authenticatedProcedure
         ),
     }),
   )
-  .query(
-    async ({ input: { typebotId, migrateToLatestVersion }, ctx: { user } }) => {
+  .handler(
+    async ({
+      input: { typebotId, migrateToLatestVersion },
+      context: { user },
+    }) => {
       const existingTypebot = await prisma.typebot.findFirst({
         where: {
           id: typebotId,
@@ -77,10 +80,7 @@ export const getPublishedTypebot = authenticatedProcedure
         !existingTypebot?.id ||
         (await isReadTypebotForbidden(existingTypebot, user))
       )
-        throw new TRPCError({
-          code: "NOT_FOUND",
-          message: "Typebot not found",
-        });
+        throw new ORPCError("NOT_FOUND", { message: "Typebot not found" });
 
       if (!existingTypebot.publishedTypebot)
         return {
@@ -101,8 +101,7 @@ export const getPublishedTypebot = authenticatedProcedure
             : undefined,
         };
       } catch (err) {
-        throw new TRPCError({
-          code: "INTERNAL_SERVER_ERROR",
+        throw new ORPCError("INTERNAL_SERVER_ERROR", {
           message: "Failed to parse published typebot",
           cause: err,
         });

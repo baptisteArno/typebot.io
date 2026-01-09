@@ -10,7 +10,7 @@ import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { Graph } from "@/features/graph/components/Graph";
 import { GraphProvider } from "@/features/graph/providers/GraphProvider";
 import { useThemeValue } from "@/hooks/useThemeValue";
-import { trpc } from "@/lib/queryClient";
+import { orpc } from "@/lib/queryClient";
 import type { timeFilterValues } from "../constants";
 import { populateEdgesWithTotalVisits } from "../helpers/populateEdgesWithTotalVisits";
 import { StatsCards } from "./StatsCards";
@@ -36,14 +36,14 @@ export const AnalyticsGraphContainer = ({
     "radial-gradient(var(--gray-5) 1px, transparent 0)",
   );
   const { data } = useQuery(
-    trpc.analytics.getInDepthAnalyticsData.queryOptions(
-      {
+    orpc.analytics.getInDepthAnalyticsData.queryOptions({
+      input: {
         typebotId: typebot!.id,
         timeFilter,
         timeZone,
       },
-      { enabled: isDefined(typebot?.id) && isDefined(publishedTypebot) },
-    ),
+      enabled: isDefined(typebot?.id) && isDefined(publishedTypebot),
+    }),
   );
 
   const edgesWithTotalUsers = useMemo(() => {

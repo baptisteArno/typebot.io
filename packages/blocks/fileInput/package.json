@@ -7,6 +7,7 @@
     "./*": "./src/*.ts"
   },
   "dependencies": {
+    "@orpc/server": "^1.13.0",
     "@typebot.io/zod": "workspace:*",
     "@typebot.io/groups": "workspace:*",
     "@typebot.io/blocks-inputs": "workspace:*",
@@ -16,7 +17,8 @@
     "@typebot.io/prisma": "workspace:*",
     "@typebot.io/env": "workspace:*",
     "@typebot.io/blocks-core": "workspace:*",
-    "@typebot.io/blocks-logic": "workspace:*"
+    "@typebot.io/blocks-logic": "workspace:*",
+    "@typebot.io/typebot": "workspace:*"
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*"

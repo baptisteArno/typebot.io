@@ -1,3 +1,4 @@
+import { ORPCError } from "@orpc/client";
 import { useMutation } from "@tanstack/react-query";
 import type { SmtpCredentials } from "@typebot.io/credentials/schemas";
 import { isNotDefined } from "@typebot.io/lib/utils";
@@ -7,9 +8,8 @@ import type React from "react";
 import { useState } from "react";
 import { useUser } from "@/features/user/hooks/useUser";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { queryClient, trpc } from "@/lib/queryClient";
+import { orpc, orpcClient, queryClient } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
-import { testSmtpConfig } from "../queries/testSmtpConfigQuery";
 import { SmtpConfigForm } from "./SmtpConfigForm";
 
 type Props = {
@@ -58,7 +58,7 @@ export const SmtpCredentialsCreateDialogBody = ({
     port: 25,
   });
   const { mutate } = useMutation(
-    trpc.credentials.createCredentials.mutationOptions({
+    orpc.credentials.createCredentials.mutationOptions({
       onSettled: () => setIsCreating(false),
       onError: (err) => {
         toast({
@@ -67,7 +67,7 @@ export const SmtpCredentialsCreateDialogBody = ({
       },
       onSuccess: (data) => {
         queryClient.invalidateQueries({
-          queryKey: trpc.credentials.listCredentials.queryKey(),
+          queryKey: orpc.credentials.listCredentials.key(),
         });
         onNewCredentials(data.credentialsId);
       },
@@ -76,33 +76,44 @@ export const SmtpCredentialsCreateDialogBody = ({
 
   const handleCreateClick = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!user?.email || !workspace?.id) return;
-    setIsCreating(true);
-    const { error: testSmtpError } = await testSmtpConfig(
-      smtpConfig,
-      user.email,
-    );
-    if (testSmtpError) {
-      console.error(testSmtpError);
-      setIsCreating(false);
-      toast({
-        description: "We couldn't send the test email with your configuration",
-        details:
-          "response" in testSmtpError
-            ? (testSmtpError.response as string)
-            : testSmtpError.message,
-      });
+    if (
+      !user?.email ||
+      !workspace?.id ||
+      !smtpConfig.username ||
+      !smtpConfig.password ||
+      !smtpConfig.host
+    )
       return;
+    setIsCreating(true);
+    try {
+      await orpcClient.email.testSmtpConfig({
+        from: smtpConfig.from,
+        port: smtpConfig.port,
+        isTlsEnabled: smtpConfig.isTlsEnabled,
+        username: smtpConfig.username,
+        password: smtpConfig.password,
+        host: smtpConfig.host,
+        to: user.email,
+      });
+      mutate({
+        credentials: {
+          data: smtpConfig,
+          name: smtpConfig.from.email as string,
+          type: "smtp",
+        },
+        scope: "workspace",
+        workspaceId: workspace.id,
+      });
+    } catch (err) {
+      if (err instanceof ORPCError && err.code === "INTERNAL_SERVER_ERROR") {
+        toast({
+          description:
+            "We couldn't send the test email with your configuration",
+          details: err.data?.message,
+        });
+      }
     }
-    mutate({
-      credentials: {
-        data: smtpConfig,
-        name: smtpConfig.from.email as string,
-        type: "smtp",
-      },
-      scope: "workspace",
-      workspaceId: workspace.id,
-    });
+    setIsCreating(false);
   };
   return (
     <Dialog.Popup render={<form onSubmit={handleCreateClick} />}>

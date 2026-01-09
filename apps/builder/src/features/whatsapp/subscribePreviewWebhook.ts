@@ -1,7 +1,7 @@
-import { TRPCError } from "@trpc/server";
+import { ORPCError } from "@orpc/server";
+import { publicProcedure } from "@typebot.io/config/orpc/builder/middlewares";
 import { env } from "@typebot.io/env";
 import { z } from "@typebot.io/zod";
-import { publicProcedure } from "@/helpers/server/trpc";
 
 export const subscribePreviewWebhook = publicProcedure
   .meta({
@@ -19,12 +19,12 @@ export const subscribePreviewWebhook = publicProcedure
     }),
   )
   .output(z.number())
-  .query(
+  .handler(
     async ({
       input: { "hub.challenge": challenge, "hub.verify_token": token },
     }) => {
       if (token !== env.ENCRYPTION_SECRET)
-        throw new TRPCError({ code: "UNAUTHORIZED", message: "Unauthorized" });
+        throw new ORPCError("UNAUTHORIZED", { message: "Unauthorized" });
       return Number(challenge);
     },
   );

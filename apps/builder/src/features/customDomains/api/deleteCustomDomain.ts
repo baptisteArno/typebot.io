@@ -1,11 +1,11 @@
-import { TRPCError } from "@trpc/server";
+import { ORPCError } from "@orpc/server";
+import { authenticatedProcedure } from "@typebot.io/config/orpc/builder/middlewares";
 import { env } from "@typebot.io/env";
 import { ky } from "@typebot.io/lib/ky";
 import prisma from "@typebot.io/prisma";
 import { z } from "@typebot.io/zod";
 import { HTTPError } from "ky";
 import { isWriteWorkspaceForbidden } from "@/features/workspace/helpers/isWriteWorkspaceForbidden";
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 
 export const deleteCustomDomain = authenticatedProcedure
   .meta({
@@ -28,7 +28,7 @@ export const deleteCustomDomain = authenticatedProcedure
       message: z.literal("success"),
     }),
   )
-  .mutation(async ({ input: { workspaceId, name }, ctx: { user } }) => {
+  .handler(async ({ input: { workspaceId, name }, context: { user } }) => {
     const workspace = await prisma.workspace.findFirst({
       where: { id: workspaceId },
       select: {
@@ -42,24 +42,19 @@ export const deleteCustomDomain = authenticatedProcedure
     });
 
     if (!workspace || isWriteWorkspaceForbidden(workspace, user))
-      throw new TRPCError({
-        code: "NOT_FOUND",
-        message: "Workspace not found",
-      });
+      throw new ORPCError("NOT_FOUND", { message: "Workspace not found" });
 
     try {
       await deleteDomainOnVercel(name);
     } catch (error) {
       console.error(error);
       if (error instanceof HTTPError)
-        throw new TRPCError({
-          code: "INTERNAL_SERVER_ERROR",
+        throw new ORPCError("INTERNAL_SERVER_ERROR", {
           message: "Failed to delete domain on Vercel",
           cause: await error.response.text(),
         });
       else
-        throw new TRPCError({
-          code: "INTERNAL_SERVER_ERROR",
+        throw new ORPCError("INTERNAL_SERVER_ERROR", {
           message: "Failed to delete domain on Vercel",
         });
     }

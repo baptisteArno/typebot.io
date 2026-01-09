@@ -6,7 +6,7 @@ import { Field } from "@typebot.io/ui/components/Field";
 import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
 import { Switch } from "@typebot.io/ui/components/Switch";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
-import { trpc } from "@/lib/queryClient";
+import { orpc } from "@/lib/queryClient";
 import { GroupsDropdown } from "./GroupsDropdown";
 import { TypebotsDropdown } from "./TypebotsDropdown";
 
@@ -23,15 +23,13 @@ export const TypebotLinkForm = ({ options, onOptionsChange }: Props) => {
   ) => onOptionsChange({ ...options, typebotId, groupId: undefined });
 
   const { data: linkedTypebotData } = useQuery(
-    trpc.typebot.getTypebot.queryOptions(
-      {
+    orpc.typebot.getTypebot.queryOptions({
+      input: {
         typebotId: options?.typebotId as string,
       },
-      {
-        enabled:
-          isNotEmpty(options?.typebotId) && options?.typebotId !== "current",
-      },
-    ),
+      enabled:
+        isNotEmpty(options?.typebotId) && options?.typebotId !== "current",
+    }),
   );
 
   const handleGroupIdChange = (groupId: string | undefined) =>

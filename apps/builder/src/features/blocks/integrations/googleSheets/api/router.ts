@@ -1,8 +1,13 @@
-import { router } from "@/helpers/server/trpc";
 import { getAccessToken } from "./getAccessToken";
+import { getConsentUrl } from "./getConsentUrl";
+import { getSheets } from "./getSheets";
 import { getSpreadsheetName } from "./getSpreadsheetName";
+import { handleCallback } from "./handleCallback";
 
-export const googleSheetsRouter = router({
+export const googleSheetsRouter = {
   getAccessToken,
   getSpreadsheetName,
-});
+  getConsentUrl,
+  handleCallback,
+  getSheets,
+};

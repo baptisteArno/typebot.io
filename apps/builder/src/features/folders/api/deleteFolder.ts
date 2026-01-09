@@ -1,9 +1,9 @@
-import { TRPCError } from "@trpc/server";
+import { ORPCError } from "@orpc/server";
+import { authenticatedProcedure } from "@typebot.io/config/orpc/builder/middlewares";
 import prisma from "@typebot.io/prisma";
 import { folderSchema } from "@typebot.io/schemas/features/folder";
 import { z } from "@typebot.io/zod";
 import { getUserModeInWorkspace } from "@/features/workspace/helpers/getUserRoleInWorkspace";
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 
 export const deleteFolder = authenticatedProcedure
   .meta({
@@ -26,17 +26,14 @@ export const deleteFolder = authenticatedProcedure
       folder: folderSchema,
     }),
   )
-  .mutation(async ({ input: { folderId, workspaceId }, ctx: { user } }) => {
+  .handler(async ({ input: { folderId, workspaceId }, context: { user } }) => {
     const workspace = await prisma.workspace.findUnique({
       where: { id: workspaceId },
       select: { id: true, members: true, plan: true },
     });
     const userRole = getUserModeInWorkspace(user.id, workspace?.members);
     if (userRole === "guest" || !workspace)
-      throw new TRPCError({
-        code: "NOT_FOUND",
-        message: "Workspace not found",
-      });
+      throw new ORPCError("NOT_FOUND", { message: "Workspace not found" });
 
     const folder = await prisma.dashboardFolder.delete({
       where: {

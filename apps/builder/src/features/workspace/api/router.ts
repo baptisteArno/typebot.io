@@ -1,16 +1,25 @@
-import { router } from "@/helpers/server/trpc";
 import { createWorkspace } from "./createWorkspace";
+import { createWorkspaceInvitation } from "./createWorkspaceInvitation";
 import { deleteWorkspace } from "./deleteWorkspace";
+import { deleteWorkspaceInvitation } from "./deleteWorkspaceInvitation";
+import { deleteWorkspaceMember } from "./deleteWorkspaceMember";
 import { getWorkspace } from "./getWorkspace";
 import { listMembersInWorkspace } from "./listMembersInWorkspace";
 import { listWorkspaces } from "./listWorkspaces";
 import { updateWorkspace } from "./updateWorkspace";
+import { updateWorkspaceInvitation } from "./updateWorkspaceInvitation";
+import { updateWorkspaceMember } from "./updateWorkspaceMember";
 
-export const workspaceRouter = router({
+export const workspaceRouter = {
   listWorkspaces,
   getWorkspace,
   listMembersInWorkspace,
   createWorkspace,
   updateWorkspace,
   deleteWorkspace,
-});
+  createWorkspaceInvitation,
+  updateWorkspaceInvitation,
+  deleteWorkspaceInvitation,
+  updateWorkspaceMember,
+  deleteWorkspaceMember,
+};

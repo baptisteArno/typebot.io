@@ -1,5 +1,6 @@
 import { getSubscriptionToken } from "@inngest/realtime";
-import { TRPCError } from "@trpc/server";
+import { ORPCError } from "@orpc/server";
+import { authenticatedProcedure } from "@typebot.io/config/orpc/builder/middlewares";
 import { env } from "@typebot.io/env";
 import { inngest } from "@typebot.io/inngest/client";
 import {
@@ -9,7 +10,6 @@ import {
 import prisma from "@typebot.io/prisma";
 import { isReadTypebotForbidden } from "@typebot.io/typebot/helpers/isReadTypebotForbidden";
 import { z } from "@typebot.io/zod";
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 
 export const triggerExportJob = authenticatedProcedure
   .input(
@@ -29,7 +29,7 @@ export const triggerExportJob = authenticatedProcedure
       }),
     ]),
   )
-  .mutation(async ({ input: { typebotId }, ctx: { user } }) => {
+  .handler(async ({ input: { typebotId }, context: { user } }) => {
     if (!env.INNGEST_EVENT_KEY && env.NODE_ENV !== "development")
       return { status: "disabled" };
     const typebot = await prisma.typebot.findUnique({
@@ -60,7 +60,7 @@ export const triggerExportJob = authenticatedProcedure
       },
     });
     if (!typebot || (await isReadTypebotForbidden(typebot, user)))
-      throw new TRPCError({ code: "NOT_FOUND", message: "Typebot not found" });
+      throw new ORPCError("NOT_FOUND", { message: "Typebot not found" });
 
     const token = await getSubscriptionToken(inngest, {
       channel: `user:${user.id}`,

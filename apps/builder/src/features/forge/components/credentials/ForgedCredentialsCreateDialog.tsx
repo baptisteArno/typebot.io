@@ -9,7 +9,7 @@ import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
 import { z } from "@typebot.io/zod";
 import { useState } from "react";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { queryClient, trpc } from "@/lib/queryClient";
+import { orpc, queryClient } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
 import { ZodObjectLayout } from "../zodLayouts/ZodObjectLayout";
 
@@ -72,7 +72,7 @@ export const ForgedCredentialsCreateDialogBody = ({
   const [isCreating, setIsCreating] = useState(false);
 
   const { mutate } = useMutation(
-    trpc.credentials.createCredentials.mutationOptions({
+    orpc.credentials.createCredentials.mutationOptions({
       onMutate: () => setIsCreating(true),
       onSettled: () => setIsCreating(false),
       onError: (err) => {
@@ -82,7 +82,7 @@ export const ForgedCredentialsCreateDialogBody = ({
       },
       onSuccess: (data) => {
         queryClient.invalidateQueries({
-          queryKey: trpc.credentials.listCredentials.queryKey(),
+          queryKey: orpc.credentials.listCredentials.key(),
         });
         onNewCredentials(data.credentialsId);
       },

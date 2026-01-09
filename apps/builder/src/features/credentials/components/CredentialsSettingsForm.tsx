@@ -21,7 +21,7 @@ import { WhatsAppLogo } from "@/components/logos/WhatsAppLogo";
 import { BlockIcon } from "@/features/editor/components/BlockIcon";
 import { BlockLabel } from "@/features/editor/components/BlockLabel";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { trpc } from "@/lib/queryClient";
+import { orpc } from "@/lib/queryClient";
 import { CredentialsCreateDialog } from "./CredentialsCreateDialog";
 import { CredentialsUpdateDialog } from "./CredentialsUpdateDialog";
 
@@ -45,23 +45,22 @@ export const CredentialsSettingsForm = () => {
   const [deletingCredentialsId, setDeletingCredentialsId] = useState<string>();
   const { workspace } = useWorkspace();
   const { data, isLoading, refetch } = useQuery(
-    trpc.credentials.listCredentials.queryOptions(
-      selectedScope === "workspace"
-        ? {
-            scope: "workspace",
-            workspaceId: workspace!.id,
-          }
-        : {
-            scope: "user",
-          },
-      {
-        enabled: selectedScope === "user" || !!workspace?.id,
-      },
-    ),
+    orpc.credentials.listCredentials.queryOptions({
+      input:
+        selectedScope === "workspace"
+          ? {
+              scope: "workspace",
+              workspaceId: workspace!.id,
+            }
+          : {
+              scope: "user",
+            },
+      enabled: selectedScope === "user" || !!workspace?.id,
+    }),
   );
 
   const { mutate: deleteCredentials } = useMutation(
-    trpc.credentials.deleteCredentials.mutationOptions({
+    orpc.credentials.deleteCredentials.mutationOptions({
       onMutate: ({ credentialsId }) =>
         setDeletingCredentialsId(credentialsId as string),
       onSettled: () => {

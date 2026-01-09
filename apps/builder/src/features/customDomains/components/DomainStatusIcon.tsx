@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
 import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
 import { CancelCircleIcon } from "@typebot.io/ui/icons/CancelCircleIcon";
-import { trpc } from "@/lib/queryClient";
+import { orpc } from "@/lib/queryClient";
 import { CustomDomainConfigDialog } from "./CustomDomainConfigDialog";
 
 type Props = {
@@ -12,9 +12,11 @@ type Props = {
 export default function DomainStatusIcon({ domain, workspaceId }: Props) {
   const { isOpen, onOpen, onClose } = useOpenControls();
   const { data, isLoading } = useQuery(
-    trpc.customDomains.verifyCustomDomain.queryOptions({
-      name: domain,
-      workspaceId,
+    orpc.customDomains.verifyCustomDomain.queryOptions({
+      input: {
+        name: domain,
+        workspaceId,
+      },
     }),
   );
 

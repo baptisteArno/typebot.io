@@ -1,4 +1,5 @@
-import { TRPCError } from "@trpc/server";
+import { ORPCError } from "@orpc/server";
+import { publicProcedureWithOptionalUser } from "@typebot.io/config/orpc/builder/middlewares";
 import prisma from "@typebot.io/prisma";
 import { DbNull } from "@typebot.io/prisma/enum";
 import { getTypebotAccessRight } from "@typebot.io/typebot/helpers/getTypebotAccessRight";
@@ -10,17 +11,13 @@ import {
   typebotSchema,
 } from "@typebot.io/typebot/schemas/typebot";
 import { z } from "@typebot.io/zod";
-import { publicProcedure } from "@/helpers/server/trpc";
 
-export const getTypebot = publicProcedure
-  .meta({
-    openapi: {
-      method: "GET",
-      path: "/v1/typebots/{typebotId}",
-      protect: true,
-      summary: "Get a typebot",
-      tags: ["Typebot"],
-    },
+export const getTypebot = publicProcedureWithOptionalUser
+  .route({
+    method: "GET",
+    path: "/v1/typebots/{typebotId}",
+    tags: ["Typebot"],
+    summary: "Get a typebot",
   })
   .input(
     z.object({
@@ -44,8 +41,11 @@ export const getTypebot = publicProcedure
       currentUserMode: z.enum(["guest", "read", "write"]),
     }),
   )
-  .query(
-    async ({ input: { typebotId, migrateToLatestVersion }, ctx: { user } }) => {
+  .handler(
+    async ({
+      input: { typebotId, migrateToLatestVersion },
+      context: { user },
+    }) => {
       const existingTypebot = await prisma.typebot.findFirst({
         where: {
           id: typebotId,
@@ -69,8 +69,7 @@ export const getTypebot = publicProcedure
         !existingTypebot?.id ||
         (await isReadTypebotForbidden(existingTypebot, user))
       )
-        throw new TRPCError({
-          code: "NOT_FOUND",
+        throw new ORPCError("NOT_FOUND", {
           message: "Typebot not found",
         });
 
@@ -119,8 +118,7 @@ export const getTypebot = publicProcedure
           currentUserMode: getTypebotAccessRight(user, existingTypebot),
         };
       } catch (err) {
-        throw new TRPCError({
-          code: "INTERNAL_SERVER_ERROR",
+        throw new ORPCError("INTERNAL_SERVER_ERROR", {
           message: "Failed to parse typebot",
           cause: err,
         });

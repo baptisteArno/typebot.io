@@ -1,3 +1,4 @@
+import { useQuery } from "@tanstack/react-query";
 import {
   defaultGoogleSheetsOptions,
   GoogleSheetsAction,
@@ -21,7 +22,7 @@ import { TableList } from "@/components/TableList";
 import { CredentialsDropdown } from "@/features/credentials/components/CredentialsDropdown";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { useSheets } from "../hooks/useSheets";
+import { orpc } from "@/lib/queryClient";
 import type { Sheet } from "../types";
 import { CellWithValueStack } from "./CellWithValueStack";
 import { CellWithVariableIdStack } from "./CellWithVariableIdStack";
@@ -44,15 +45,20 @@ export const GoogleSheetsSettings = ({
   const { workspace } = useWorkspace();
   const { typebot } = useTypebot();
   const { save } = useTypebot();
-  const { sheets, isLoading } = useSheets({
-    credentialsId: options?.credentialsId,
-    spreadsheetId: options?.spreadsheetId,
-    workspaceId: workspace?.id,
-  });
+  const { data, status } = useQuery(
+    orpc.sheets.getSheets.queryOptions({
+      input: {
+        credentialsId: options!.credentialsId as string,
+        spreadsheetId: options!.spreadsheetId as string,
+        workspaceId: workspace?.id,
+      },
+      enabled: !!options?.credentialsId && !!options?.spreadsheetId,
+    }),
+  );
   const { isOpen, onOpen, onClose } = useOpenControls();
   const sheet = useMemo(
-    () => sheets?.find((s) => s.id === options?.sheetId),
-    [sheets, options?.sheetId],
+    () => data?.sheets?.find((s) => s.id === options?.sheetId),
+    [data?.sheets, options?.sheetId],
   );
   const handleCredentialsIdChange = (credentialsId: string | undefined) =>
     onOptionsChange({
@@ -107,8 +113,8 @@ export const GoogleSheetsSettings = ({
       )}
       {options?.spreadsheetId && options.credentialsId && (
         <SheetsDropdown
-          sheets={sheets ?? []}
-          isLoading={isLoading}
+          sheets={data?.sheets ?? []}
+          isLoading={status === "pending"}
           sheetId={options.sheetId}
           onSelectSheetId={handleSheetIdChange}
         />

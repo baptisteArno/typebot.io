@@ -1,4 +1,5 @@
-import { TRPCError } from "@trpc/server";
+import { ORPCError } from "@orpc/server";
+import { authenticatedProcedure } from "@typebot.io/config/orpc/builder/middlewares";
 import { env } from "@typebot.io/env";
 import { ky } from "@typebot.io/lib/ky";
 import prisma from "@typebot.io/prisma";
@@ -7,7 +8,6 @@ import { trackEvents } from "@typebot.io/telemetry/trackEvents";
 import { z } from "@typebot.io/zod";
 import { HTTPError } from "ky";
 import { isWriteWorkspaceForbidden } from "@/features/workspace/helpers/isWriteWorkspaceForbidden";
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 
 export const createCustomDomain = authenticatedProcedure
   .meta({
@@ -33,7 +33,7 @@ export const createCustomDomain = authenticatedProcedure
       }),
     }),
   )
-  .mutation(async ({ input: { workspaceId, name }, ctx: { user } }) => {
+  .handler(async ({ input: { workspaceId, name }, context: { user } }) => {
     const workspace = await prisma.workspace.findFirst({
       where: { id: workspaceId },
       select: {
@@ -47,18 +47,14 @@ export const createCustomDomain = authenticatedProcedure
     });
 
     if (!workspace || isWriteWorkspaceForbidden(workspace, user))
-      throw new TRPCError({
-        code: "NOT_FOUND",
-        message: "Workspace not found",
-      });
+      throw new ORPCError("NOT_FOUND", { message: "Workspace not found" });
 
     const existingCustomDomain = await prisma.customDomain.findFirst({
       where: { name },
     });
 
     if (existingCustomDomain)
-      throw new TRPCError({
-        code: "CONFLICT",
+      throw new ORPCError("CONFLICT", {
         message: "Custom domain already registered",
       });
 
@@ -66,8 +62,7 @@ export const createCustomDomain = authenticatedProcedure
       await createDomainOnVercel(name);
     } catch (err) {
       if (err instanceof HTTPError && err.response.status !== 409) {
-        throw new TRPCError({
-          code: "INTERNAL_SERVER_ERROR",
+        throw new ORPCError("INTERNAL_SERVER_ERROR", {
           message: "Failed to create custom domain on Vercel",
           cause: await err.response.text(),
         });

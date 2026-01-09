@@ -1,9 +1,9 @@
-import { TRPCError } from "@trpc/server";
+import { ORPCError } from "@orpc/server";
+import { authenticatedProcedure } from "@typebot.io/config/orpc/builder/middlewares";
 import prisma from "@typebot.io/prisma";
 import { customDomainSchema } from "@typebot.io/schemas/features/customDomains";
 import { z } from "@typebot.io/zod";
 import { isReadWorkspaceFobidden } from "@/features/workspace/helpers/isReadWorkspaceFobidden";
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 
 export const listCustomDomains = authenticatedProcedure
   .meta({
@@ -30,7 +30,7 @@ export const listCustomDomains = authenticatedProcedure
       ),
     }),
   )
-  .query(async ({ input: { workspaceId }, ctx: { user } }) => {
+  .handler(async ({ input: { workspaceId }, context: { user } }) => {
     const workspace = await prisma.workspace.findFirst({
       where: { id: workspaceId },
       select: {
@@ -44,10 +44,7 @@ export const listCustomDomains = authenticatedProcedure
     });
 
     if (!workspace || isReadWorkspaceFobidden(workspace, user))
-      throw new TRPCError({
-        code: "NOT_FOUND",
-        message: "Workspace not found",
-      });
+      throw new ORPCError("NOT_FOUND", { message: "Workspace not found" });
 
     const descSortedCustomDomains = workspace.customDomains.sort(
       (a, b) => b.createdAt.getTime() - a.createdAt.getTime(),

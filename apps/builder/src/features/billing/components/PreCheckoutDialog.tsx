@@ -10,7 +10,7 @@ import { useRouter } from "next/router";
 import type { FormEvent } from "react";
 import React, { useState } from "react";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
-import { trpc } from "@/lib/queryClient";
+import { orpc } from "@/lib/queryClient";
 
 export type PreCheckoutDialogProps = {
   selectedSubscription:
@@ -44,7 +44,7 @@ export const PreCheckoutDialog = ({
   const router = useRouter();
   const { mutate: createCheckoutSession, status: createCheckoutSessionStatus } =
     useMutation(
-      trpc.billing.createCheckoutSession.mutationOptions({
+      orpc.billing.createCheckoutSession.mutationOptions({
         onSuccess: ({ checkoutUrl }) => {
           router.push(checkoutUrl);
         },

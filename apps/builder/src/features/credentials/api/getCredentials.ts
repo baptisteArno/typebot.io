@@ -1,9 +1,9 @@
-import { TRPCError } from "@trpc/server";
+import { ORPCError } from "@orpc/server";
+import { authenticatedProcedure } from "@typebot.io/config/orpc/builder/middlewares";
 import { decrypt } from "@typebot.io/credentials/decrypt";
 import prisma from "@typebot.io/prisma";
 import { z } from "@typebot.io/zod";
 import { isWriteWorkspaceForbidden } from "@/features/workspace/helpers/isWriteWorkspaceForbidden";
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 
 export const getCredentials = authenticatedProcedure
   .input(
@@ -19,7 +19,7 @@ export const getCredentials = authenticatedProcedure
       }),
     ]),
   )
-  .query(async ({ input, ctx: { user } }) => {
+  .handler(async ({ input, context: { user } }) => {
     if (input.scope === "user") {
       const credentials = await prisma.userCredentials.findFirst({
         where: {
@@ -28,10 +28,7 @@ export const getCredentials = authenticatedProcedure
         },
       });
       if (!credentials)
-        throw new TRPCError({
-          code: "NOT_FOUND",
-          message: "Credentials not found",
-        });
+        throw new ORPCError("NOT_FOUND", { message: "Credentials not found" });
       const credentialsData = await decrypt(credentials.data, credentials.iv);
       return {
         name: credentials.name,
@@ -48,10 +45,7 @@ export const getCredentials = authenticatedProcedure
       },
     });
     if (!workspace || isWriteWorkspaceForbidden(workspace, user))
-      throw new TRPCError({
-        code: "NOT_FOUND",
-        message: "Workspace not found",
-      });
+      throw new ORPCError("NOT_FOUND", { message: "Workspace not found" });
 
     const credentials = await prisma.credentials.findFirst({
       where: {
@@ -65,10 +59,7 @@ export const getCredentials = authenticatedProcedure
     });
 
     if (!credentials)
-      throw new TRPCError({
-        code: "NOT_FOUND",
-        message: "Credentials not found",
-      });
+      throw new ORPCError("NOT_FOUND", { message: "Credentials not found" });
 
     const credentialsData = await decrypt(credentials.data, credentials.iv);
 

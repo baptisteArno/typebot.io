@@ -1,4 +1,5 @@
-import { TRPCError } from "@trpc/server";
+import { ORPCError } from "@orpc/server";
+import { authenticatedProcedure } from "@typebot.io/config/orpc/builder/middlewares";
 import { encrypt } from "@typebot.io/credentials/encrypt";
 import type { Credentials } from "@typebot.io/credentials/schemas";
 import {
@@ -13,7 +14,6 @@ import prisma from "@typebot.io/prisma";
 import { trackEvents } from "@typebot.io/telemetry/trackEvents";
 import { z } from "@typebot.io/zod";
 import { isWriteWorkspaceForbidden } from "@/features/workspace/helpers/isWriteWorkspaceForbidden";
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 
 const inputShape = {
   data: true,
@@ -52,7 +52,7 @@ export const createCredentials = authenticatedProcedure
       credentialsId: z.string(),
     }),
   )
-  .mutation(async ({ input, ctx: { user } }) => {
+  .handler(async ({ input, context: { user } }) => {
     if (input.scope === "user") {
       const { encryptedData, iv } = await encrypt(input.credentials.data);
       const createdCredentials = await prisma.userCredentials.create({
@@ -71,8 +71,7 @@ export const createCredentials = authenticatedProcedure
         input.credentials.type as Credentials["type"],
       )
     )
-      throw new TRPCError({
-        code: "CONFLICT",
+      throw new ORPCError("CONFLICT", {
         message: "Credentials already exist.",
       });
     const workspace = await prisma.workspace.findFirst({
@@ -82,10 +81,7 @@ export const createCredentials = authenticatedProcedure
       select: { id: true, members: { select: { userId: true, role: true } } },
     });
     if (!workspace || isWriteWorkspaceForbidden(workspace, user))
-      throw new TRPCError({
-        code: "NOT_FOUND",
-        message: "Workspace not found",
-      });
+      throw new ORPCError("NOT_FOUND", { message: "Workspace not found" });
 
     const { encryptedData, iv } = await encrypt(input.credentials.data);
     const createdCredentials = await prisma.credentials.create({

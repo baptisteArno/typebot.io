@@ -6,7 +6,7 @@ import { Button } from "@typebot.io/ui/components/Button";
 import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
 import { Bookmark02Icon } from "@typebot.io/ui/icons/Bookmark02Icon";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { trpc } from "@/lib/queryClient";
+import { orpc } from "@/lib/queryClient";
 import { areThemesEqual } from "../helpers/areThemesEqual";
 import { SaveThemeDialog } from "./SaveThemeDialog";
 import { ThemeTemplateCard } from "./ThemeTemplateCard";
@@ -32,14 +32,12 @@ export const MyTemplates = ({
   const { currentUserMode } = useWorkspace();
   const { isOpen, onOpen, onClose } = useOpenControls();
   const { data } = useQuery(
-    trpc.theme.listThemeTemplates.queryOptions(
-      {
+    orpc.theme.listThemeTemplates.queryOptions({
+      input: {
         workspaceId,
       },
-      {
-        enabled: currentUserMode !== "guest",
-      },
-    ),
+      enabled: currentUserMode !== "guest",
+    }),
   );
   const selectedTemplate = data?.themeTemplates.find(
     (themeTemplate) => themeTemplate.id === selectedTemplateId,

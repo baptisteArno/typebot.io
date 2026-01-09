@@ -1,8 +1,8 @@
-import { TRPCError } from "@trpc/server";
+import { ORPCError } from "@orpc/server";
+import { authenticatedProcedure } from "@typebot.io/config/orpc/builder/middlewares";
 import prisma from "@typebot.io/prisma";
 import { workspaceSchema } from "@typebot.io/workspaces/schemas";
 import { z } from "@typebot.io/zod";
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 import { isAdminWriteWorkspaceForbidden } from "../helpers/isAdminWriteWorkspaceForbidden";
 
 export const updateWorkspace = authenticatedProcedure
@@ -31,33 +31,31 @@ export const updateWorkspace = authenticatedProcedure
       workspace: workspaceSchema.pick({ name: true, icon: true }),
     }),
   )
-  .mutation(async ({ input: { workspaceId, icon, name }, ctx: { user } }) => {
-    await prisma.workspace.updateMany({
-      where: { members: { some: { userId: user.id } }, id: workspaceId },
-      data: {
-        name,
-        icon,
-      },
-    });
-
-    const workspace = await prisma.workspace.findFirst({
-      where: { members: { some: { userId: user.id } }, id: workspaceId },
-      include: { members: true },
-    });
-
-    if (!workspace)
-      throw new TRPCError({
-        code: "NOT_FOUND",
-        message: "Workspace not found",
+  .handler(
+    async ({ input: { workspaceId, icon, name }, context: { user } }) => {
+      await prisma.workspace.updateMany({
+        where: { members: { some: { userId: user.id } }, id: workspaceId },
+        data: {
+          name,
+          icon,
+        },
       });
 
-    if (isAdminWriteWorkspaceForbidden(workspace, user))
-      throw new TRPCError({
-        code: "FORBIDDEN",
-        message: "You are not allowed to update this workspace",
+      const workspace = await prisma.workspace.findFirst({
+        where: { members: { some: { userId: user.id } }, id: workspaceId },
+        include: { members: true },
       });
 
-    return {
-      workspace,
-    };
-  });
+      if (!workspace)
+        throw new ORPCError("NOT_FOUND", { message: "Workspace not found" });
+
+      if (isAdminWriteWorkspaceForbidden(workspace, user))
+        throw new ORPCError("FORBIDDEN", {
+          message: "You are not allowed to update this workspace",
+        });
+
+      return {
+        workspace,
+      };
+    },
+  );

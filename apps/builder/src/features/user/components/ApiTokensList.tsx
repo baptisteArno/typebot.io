@@ -9,7 +9,7 @@ import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
 import { useState } from "react";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
 import { TimeSince } from "@/components/TimeSince";
-import { trpc } from "@/lib/queryClient";
+import { orpc } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
 import { useApiTokens } from "../hooks/useApiTokens";
 import { CreateApiTokenDialog } from "./CreateApiTokenDialog";
@@ -31,7 +31,7 @@ export const ApiTokensList = () => {
   const [deletingId, setDeletingId] = useState<string>();
 
   const { mutate: deleteToken } = useMutation(
-    trpc.user.deleteApiToken.mutationOptions({
+    orpc.user.deleteApiToken.mutationOptions({
       onSuccess: () => {
         refetch();
         setDeletingId(undefined);

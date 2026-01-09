@@ -1,5 +1,6 @@
+import { ORPCError } from "@orpc/server";
 import { createId } from "@paralleldrive/cuid2";
-import { TRPCError } from "@trpc/server";
+import { authenticatedProcedure } from "@typebot.io/config/orpc/builder/middlewares";
 import { EventType } from "@typebot.io/events/constants";
 import prisma from "@typebot.io/prisma";
 import { Plan } from "@typebot.io/prisma/enum";
@@ -11,7 +12,6 @@ import {
 } from "@typebot.io/typebot/schemas/typebot";
 import { z } from "@typebot.io/zod";
 import { getUserModeInWorkspace } from "@/features/workspace/helpers/getUserRoleInWorkspace";
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 import {
   isPublicIdNotAvailable,
   sanitizeGroups,
@@ -36,14 +36,11 @@ const typebotCreateSchemaPick = {
 } as const;
 
 export const createTypebot = authenticatedProcedure
-  .meta({
-    openapi: {
-      method: "POST",
-      path: "/v1/typebots",
-      protect: true,
-      summary: "Create a typebot",
-      tags: ["Typebot"],
-    },
+  .route({
+    method: "POST",
+    path: "/v1/typebots",
+    tags: ["Typebot"],
+    summary: "Create a typebot",
   })
   .input(
     z.object({
@@ -56,21 +53,19 @@ export const createTypebot = authenticatedProcedure
       typebot: typebotV6Schema,
     }),
   )
-  .mutation(async ({ input: { typebot, workspaceId }, ctx: { user } }) => {
+  .handler(async ({ input: { typebot, workspaceId }, context: { user } }) => {
     const workspace = await prisma.workspace.findUnique({
       where: { id: workspaceId },
       select: { id: true, members: true, plan: true },
     });
     const userRole = getUserModeInWorkspace(user.id, workspace?.members);
     if (userRole === "guest" || !workspace)
-      throw new TRPCError({
-        code: "NOT_FOUND",
+      throw new ORPCError("NOT_FOUND", {
         message: "Workspace not found",
       });
 
     if (typebot.publicId && (await isPublicIdNotAvailable(typebot.publicId)))
-      throw new TRPCError({
-        code: "BAD_REQUEST",
+      throw new ORPCError("BAD_REQUEST", {
         message: "Public id not available",
       });
 

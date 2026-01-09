@@ -4,7 +4,7 @@ import type { Workspace } from "@typebot.io/workspaces/schemas";
 import { useRouter } from "next/router";
 import type { ReactNode } from "react";
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
-import { queryClient, trpc } from "@/lib/queryClient";
+import { orpc, queryClient } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
 import { useTypebot } from "../editor/providers/TypebotProvider";
 import { useUser } from "../user/hooks/useUser";
@@ -62,7 +62,7 @@ export const WorkspaceProvider = ({
   const { typebot } = useTypebot();
 
   const { data: workspacesData } = useQuery(
-    trpc.workspace.listWorkspaces.queryOptions(undefined, {
+    orpc.workspace.listWorkspaces.queryOptions({
       enabled: !!user,
     }),
   );
@@ -72,33 +72,33 @@ export const WorkspaceProvider = ({
   );
 
   const { data: workspaceData } = useQuery(
-    trpc.workspace.getWorkspace.queryOptions(
-      { workspaceId: workspaceId as string },
-      { enabled: !!workspaceId },
-    ),
+    orpc.workspace.getWorkspace.queryOptions({
+      input: { workspaceId: workspaceId as string },
+      enabled: !!workspaceId,
+    }),
   );
 
   const workspace = workspaceData?.workspace;
 
   const createWorkspaceMutation = useMutation(
-    trpc.workspace.createWorkspace.mutationOptions({
+    orpc.workspace.createWorkspace.mutationOptions({
       onError: (error) => toast({ description: error.message }),
       onSuccess: async () => {
         queryClient.invalidateQueries({
-          queryKey: trpc.workspace.listWorkspaces.queryKey(),
+          queryKey: orpc.workspace.listWorkspaces.key(),
         });
       },
     }),
   );
 
   const updateWorkspaceMutation = useMutation(
-    trpc.workspace.updateWorkspace.mutationOptions({
+    orpc.workspace.updateWorkspace.mutationOptions({
       onError: (error) => toast({ description: error.message }),
       onSuccess: async () => {
         if (!workspaceId) return;
         queryClient.invalidateQueries({
-          queryKey: trpc.workspace.getWorkspace.queryKey({
-            workspaceId,
+          queryKey: orpc.workspace.getWorkspace.key({
+            input: { workspaceId },
           }),
         });
       },
@@ -106,11 +106,11 @@ export const WorkspaceProvider = ({
   );
 
   const deleteWorkspaceMutation = useMutation(
-    trpc.workspace.deleteWorkspace.mutationOptions({
+    orpc.workspace.deleteWorkspace.mutationOptions({
       onError: (error) => toast({ description: error.message }),
       onSuccess: async () => {
         queryClient.invalidateQueries({
-          queryKey: trpc.workspace.listWorkspaces.queryKey(),
+          queryKey: orpc.workspace.listWorkspaces.key(),
         });
         setWorkspaceId(undefined);
       },

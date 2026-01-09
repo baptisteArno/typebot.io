@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { defaultOpenAIOptions } from "@typebot.io/blocks-integrations/openai/constants";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { trpc } from "@/lib/queryClient";
+import { orpc } from "@/lib/queryClient";
 
 type Props = {
   baseUrl?: string;
@@ -24,18 +24,16 @@ export const ModelsDropdown = ({
   const { workspace } = useWorkspace();
 
   const { data } = useQuery(
-    trpc.openAI.listModels.queryOptions(
-      {
+    orpc.openAI.listModels.queryOptions({
+      input: {
         credentialsId,
         baseUrl: baseUrl ?? defaultOpenAIOptions.baseUrl,
         workspaceId: workspace?.id as string,
         apiVersion,
         type,
       },
-      {
-        enabled: !!workspace,
-      },
-    ),
+      enabled: !!workspace,
+    }),
   );
 
   return (

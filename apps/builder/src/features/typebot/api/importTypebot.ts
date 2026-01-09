@@ -1,5 +1,6 @@
+import { ORPCError } from "@orpc/server";
 import { createId } from "@paralleldrive/cuid2";
-import { TRPCError } from "@trpc/server";
+import { authenticatedProcedure } from "@typebot.io/config/orpc/builder/middlewares";
 import { copyObjects } from "@typebot.io/lib/s3/copyObjects";
 import { replaceTypebotUploadUrlsWithNewIds } from "@typebot.io/lib/s3/replaceTypebotUploadUrlsWithNewIds";
 import prisma from "@typebot.io/prisma";
@@ -16,7 +17,6 @@ import {
 } from "@typebot.io/typebot/schemas/typebot";
 import { z } from "@typebot.io/zod";
 import { getUserModeInWorkspace } from "@/features/workspace/helpers/getUserRoleInWorkspace";
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 import {
   sanitizeFolderId,
   sanitizeGroups,
@@ -117,10 +117,10 @@ export const importTypebot = authenticatedProcedure
       typebot: typebotV6Schema,
     }),
   )
-  .mutation(
+  .handler(
     async ({
       input: { typebot, workspaceId, fromTemplate, enableSafetyFlags },
-      ctx: { user },
+      context: { user },
     }) => {
       const workspace = await prisma.workspace.findUnique({
         where: { id: workspaceId },
@@ -128,10 +128,7 @@ export const importTypebot = authenticatedProcedure
       });
       const userRole = getUserModeInWorkspace(user.id, workspace?.members);
       if (userRole === "guest" || !workspace)
-        throw new TRPCError({
-          code: "NOT_FOUND",
-          message: "Workspace not found",
-        });
+        throw new ORPCError("NOT_FOUND", { message: "Workspace not found" });
 
       const newBotId = createId();
 

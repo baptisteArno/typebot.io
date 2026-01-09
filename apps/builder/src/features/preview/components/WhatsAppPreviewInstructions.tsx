@@ -12,7 +12,7 @@ import { type FormEvent, useState } from "react";
 import { ButtonLink } from "@/components/ButtonLink";
 import { useEditor } from "@/features/editor/providers/EditorProvider";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
-import { trpc } from "@/lib/queryClient";
+import { orpc } from "@/lib/queryClient";
 import {
   getPhoneNumberFromLocalStorage,
   setPhoneNumberInLocalStorage,
@@ -33,7 +33,7 @@ export const WhatsAppPreviewInstructions = ({
   const [hasMessageBeenSent, setHasMessageBeenSent] = useState(false);
 
   const { mutate } = useMutation(
-    trpc.whatsApp.startWhatsAppPreview.mutationOptions({
+    orpc.whatsApp.startWhatsAppPreview.mutationOptions({
       onMutate: () => setIsSendingMessage(true),
       onSettled: () => setIsSendingMessage(false),
       onSuccess: async (data) => {

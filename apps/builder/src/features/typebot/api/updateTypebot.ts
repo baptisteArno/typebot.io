@@ -1,4 +1,5 @@
-import { TRPCError } from "@trpc/server";
+import { ORPCError } from "@orpc/server";
+import { authenticatedProcedure } from "@typebot.io/config/orpc/builder/middlewares";
 import prisma from "@typebot.io/prisma";
 import { DbNull } from "@typebot.io/prisma/enum";
 import { migrateTypebot } from "@typebot.io/typebot/migrations/migrateTypebot";
@@ -9,7 +10,6 @@ import {
 } from "@typebot.io/typebot/schemas/typebot";
 import { z } from "@typebot.io/zod";
 import { isCloudProdInstance } from "@/helpers/isCloudProdInstance";
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 import { isWriteTypebotForbidden } from "../helpers/isWriteTypebotForbidden";
 import {
   isCustomDomainNotAvailable,
@@ -42,14 +42,11 @@ const typebotUpdateSchemaPick = {
 } as const;
 
 export const updateTypebot = authenticatedProcedure
-  .meta({
-    openapi: {
-      method: "PATCH",
-      path: "/v1/typebots/{typebotId}",
-      protect: true,
-      summary: "Update a typebot",
-      tags: ["Typebot"],
-    },
+  .route({
+    method: "PATCH",
+    path: "/v1/typebots/{typebotId}",
+    tags: ["Typebot"],
+    summary: "Update a typebot",
   })
   .input(
     z.object({
@@ -79,8 +76,8 @@ export const updateTypebot = authenticatedProcedure
       typebot: typebotV6Schema,
     }),
   )
-  .mutation(
-    async ({ input: { typebotId, typebot, overwrite }, ctx: { user } }) => {
+  .handler(
+    async ({ input: { typebotId, typebot, overwrite }, context: { user } }) => {
       const existingTypebot = await prisma.typebot.findFirst({
         where: {
           id: typebotId,
@@ -118,8 +115,7 @@ export const updateTypebot = authenticatedProcedure
         !existingTypebot?.id ||
         (await isWriteTypebotForbidden(existingTypebot, user))
       )
-        throw new TRPCError({
-          code: "NOT_FOUND",
+        throw new ORPCError("NOT_FOUND", {
           message: "Typebot not found",
         });
 
@@ -131,8 +127,7 @@ export const updateTypebot = authenticatedProcedure
           typebot.updatedAt.getTime() + conflictMarginMs &&
         !overwrite
       )
-        throw new TRPCError({
-          code: "CONFLICT",
+        throw new ORPCError("CONFLICT", {
           message: "Found newer version of the typebot in database",
         });
 
@@ -144,23 +139,20 @@ export const updateTypebot = authenticatedProcedure
           workspaceId: existingTypebot.workspace.id,
         }))
       )
-        throw new TRPCError({
-          code: "BAD_REQUEST",
+        throw new ORPCError("BAD_REQUEST", {
           message: "Domain + pathname already in use",
         });
 
       if (typebot.publicId) {
         if (isCloudProdInstance() && typebot.publicId.length < 4)
-          throw new TRPCError({
-            code: "BAD_REQUEST",
+          throw new ORPCError("BAD_REQUEST", {
             message: "Public id should be at least 4 characters long",
           });
         if (
           existingTypebot.publicId !== typebot.publicId &&
           (await isPublicIdNotAvailable(typebot.publicId))
         )
-          throw new TRPCError({
-            code: "BAD_REQUEST",
+          throw new ORPCError("BAD_REQUEST", {
             message: "Public id not available",
           });
       }

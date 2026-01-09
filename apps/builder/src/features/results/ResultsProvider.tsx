@@ -12,7 +12,7 @@ import type {
 import type { Typebot } from "@typebot.io/typebot/schemas/typebot";
 import type { ReactNode } from "react";
 import { createContext, useContext, useMemo } from "react";
-import { trpc } from "@/lib/queryClient";
+import { orpc } from "@/lib/queryClient";
 import type { timeFilterValues } from "../analytics/constants";
 import { useTypebot } from "../editor/providers/TypebotProvider";
 import { parseCellContent } from "./helpers/parseCellContent";
@@ -64,14 +64,12 @@ export const ResultsProvider = ({
       }, []) ?? [];
 
   const { data: linkedTypebotsData } = useQuery(
-    trpc.getLinkedTypebots.queryOptions(
-      {
+    orpc.getLinkedTypebots.queryOptions({
+      input: {
         typebotId,
       },
-      {
-        enabled: linkedTypebotIds.length > 0,
-      },
-    ),
+      enabled: linkedTypebotIds.length > 0,
+    }),
   );
 
   const flatResults = useMemo(

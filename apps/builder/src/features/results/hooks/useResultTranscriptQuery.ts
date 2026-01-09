@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { trpc } from "@/lib/queryClient";
+import { orpc } from "@/lib/queryClient";
 
 type Params = {
   typebotId: string;
@@ -8,6 +8,8 @@ type Params = {
 
 export const useResultTranscriptQuery = ({ typebotId, resultId }: Params) => {
   return useQuery(
-    trpc.results.getResultTranscript.queryOptions({ typebotId, resultId }),
+    orpc.results.getResultTranscript.queryOptions({
+      input: { typebotId, resultId },
+    }),
   );
 };

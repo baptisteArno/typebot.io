@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { trpc } from "@/lib/queryClient";
+import { orpc } from "@/lib/queryClient";
 
 export const useApiTokens = ({
   onError,
@@ -7,7 +7,7 @@ export const useApiTokens = ({
   onError: (error: { message: string }) => void;
 }) => {
   const { data, error, refetch } = useQuery(
-    trpc.user.listApiTokens.queryOptions(),
+    orpc.user.listApiTokens.queryOptions(),
   );
   if (error) onError(error);
   return {

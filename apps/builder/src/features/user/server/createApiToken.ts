@@ -1,7 +1,7 @@
+import { authenticatedProcedure } from "@typebot.io/config/orpc/builder/middlewares";
 import { generateId } from "@typebot.io/lib/utils";
 import prisma from "@typebot.io/prisma";
 import { z } from "@typebot.io/zod";
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 
 const apiTokenWithTokenSchema = z.object({
   id: z.string(),
@@ -29,7 +29,7 @@ export const createApiToken = authenticatedProcedure
       apiToken: apiTokenWithTokenSchema,
     }),
   )
-  .mutation(async ({ ctx: { user }, input: { name } }) => {
+  .handler(async ({ context: { user }, input: { name } }) => {
     const apiToken = await prisma.apiToken.create({
       data: { name, ownerId: user.id, token: generateId(24) },
     });

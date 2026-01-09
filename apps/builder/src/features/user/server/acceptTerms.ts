@@ -1,14 +1,16 @@
+import { authenticatedProcedure } from "@typebot.io/config/orpc/builder/middlewares";
 import prisma from "@typebot.io/prisma";
 import { clientUserSchema, userSchema } from "@typebot.io/user/schemas";
-import { authenticatedProcedure } from "@/helpers/server/trpc";
+import z from "zod";
 
 const outputSchema = clientUserSchema.merge(
   userSchema.pick({ termsAcceptedAt: true }),
 );
 
 export const acceptTerms = authenticatedProcedure
+  .input(z.void())
   .output(outputSchema)
-  .mutation(async ({ ctx: { user } }) => {
+  .handler(async ({ context: { user } }) => {
     const updatedUser = await prisma.user.update({
       where: { id: user.id },
       data: {

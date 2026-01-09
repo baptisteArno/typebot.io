@@ -1,10 +1,10 @@
-import { TRPCError } from "@trpc/server";
+import { ORPCError } from "@orpc/server";
+import { authenticatedProcedure } from "@typebot.io/config/orpc/builder/middlewares";
 import { credentialsTypeSchema } from "@typebot.io/credentials/schemas";
 import { isDefined } from "@typebot.io/lib/utils";
 import prisma from "@typebot.io/prisma";
 import { z } from "@typebot.io/zod";
 import { isReadWorkspaceFobidden } from "@/features/workspace/helpers/isReadWorkspaceFobidden";
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 
 const deletedCredentialsTypes = ["zemanticAi", "zemantic-ai"];
 
@@ -35,7 +35,7 @@ export const listCredentials = authenticatedProcedure
       credentials: outputCredentialsSchema,
     }),
   )
-  .query(async ({ input, ctx: { user } }) => {
+  .handler(async ({ input, context: { user } }) => {
     if (input.scope === "user") {
       const credentials = await prisma.userCredentials.findMany({
         where: {
@@ -76,10 +76,7 @@ export const listCredentials = authenticatedProcedure
       },
     });
     if (!workspace || isReadWorkspaceFobidden(workspace, user))
-      throw new TRPCError({
-        code: "NOT_FOUND",
-        message: "Workspace not found",
-      });
+      throw new ORPCError("NOT_FOUND", { message: "Workspace not found" });
 
     return {
       credentials: outputCredentialsSchema.parse(

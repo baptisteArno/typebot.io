@@ -8,7 +8,7 @@ import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
 import { useEffect, useState } from "react";
 import { CopyInput } from "@/components/inputs/CopyInput";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { queryClient, trpc } from "@/lib/queryClient";
+import { orpc, queryClient } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
 import { useOAuthPopup } from "./useOAuthPopup";
 
@@ -37,21 +37,20 @@ export const ForgedOAuthCredentialsUpdateDialogBody = ({
   const [clientSecret, setClientSecret] = useState("");
 
   const { data: existingCredentials } = useQuery(
-    trpc.credentials.getCredentials.queryOptions(
-      scope === "workspace"
-        ? {
-            scope: "workspace",
-            workspaceId: workspace?.id as string,
-            credentialsId,
-          }
-        : {
-            scope: "user",
-            credentialsId,
-          },
-      {
-        enabled: !!workspace?.id,
-      },
-    ),
+    orpc.credentials.getCredentials.queryOptions({
+      input:
+        scope === "workspace"
+          ? {
+              scope: "workspace",
+              workspaceId: workspace?.id as string,
+              credentialsId,
+            }
+          : {
+              scope: "user",
+              credentialsId,
+            },
+      enabled: !!workspace?.id,
+    }),
   );
 
   useEffect(() => {
@@ -73,7 +72,7 @@ export const ForgedOAuthCredentialsUpdateDialogBody = ({
   }, [existingCredentials, clientId, clientSecret, name]);
 
   const { mutate, isPending } = useMutation(
-    trpc.credentials.updateOAuthCredentials.mutationOptions({
+    orpc.credentials.updateOAuthCredentials.mutationOptions({
       onError: (err) => {
         toast({
           description: err.message,
@@ -81,7 +80,7 @@ export const ForgedOAuthCredentialsUpdateDialogBody = ({
       },
       onSuccess: (_data) => {
         queryClient.invalidateQueries({
-          queryKey: trpc.credentials.listCredentials.queryKey(),
+          queryKey: orpc.credentials.listCredentials.key(),
         });
         onUpdate();
       },

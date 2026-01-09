@@ -1,10 +1,10 @@
+import { authenticatedProcedure } from "@typebot.io/config/orpc/builder/middlewares";
 import prisma from "@typebot.io/prisma";
 import { z } from "@typebot.io/zod";
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 
 export const verifyIfPhoneNumberAvailable = authenticatedProcedure
   .input(z.object({ phoneNumberDisplayName: z.string() }))
-  .query(async ({ input: { phoneNumberDisplayName } }) => {
+  .handler(async ({ input: { phoneNumberDisplayName } }) => {
     const existingWhatsAppCredentials = await prisma.credentials.findFirst({
       where: {
         type: "whatsApp",

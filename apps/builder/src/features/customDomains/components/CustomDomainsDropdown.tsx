@@ -10,7 +10,7 @@ import { TrashIcon } from "@typebot.io/ui/icons/TrashIcon";
 import type React from "react";
 import { useState } from "react";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { trpc } from "@/lib/queryClient";
+import { orpc } from "@/lib/queryClient";
 import { CreateCustomDomainDialog } from "./CreateCustomDomainDialog";
 
 type Props = {
@@ -27,17 +27,15 @@ export const CustomDomainsDropdown = ({
   const { isOpen, onOpen, onClose } = useOpenControls();
   const { workspace, currentUserMode } = useWorkspace();
   const { data, refetch } = useQuery(
-    trpc.customDomains.listCustomDomains.queryOptions(
-      {
+    orpc.customDomains.listCustomDomains.queryOptions({
+      input: {
         workspaceId: workspace?.id as string,
       },
-      {
-        enabled: !!workspace?.id && currentUserMode !== "guest",
-      },
-    ),
+      enabled: !!workspace?.id && currentUserMode !== "guest",
+    }),
   );
   const { mutate } = useMutation(
-    trpc.customDomains.deleteCustomDomain.mutationOptions({
+    orpc.customDomains.deleteCustomDomain.mutationOptions({
       onMutate: ({ name }) => {
         setIsDeleting(name);
       },

@@ -68,7 +68,7 @@ export const startPreviewChatInputSchema = z.object({
 });
 
 type Context = {
-  user?: { id: string };
+  user: { id: string } | null;
 };
 
 export const handleStartChatPreview = async ({

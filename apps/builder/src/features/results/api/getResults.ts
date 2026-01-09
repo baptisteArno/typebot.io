@@ -1,4 +1,5 @@
-import { TRPCError } from "@trpc/server";
+import { ORPCError } from "@orpc/server";
+import { authenticatedProcedure } from "@typebot.io/config/orpc/builder/middlewares";
 import { isDefined } from "@typebot.io/lib/utils";
 import prisma from "@typebot.io/prisma";
 import { resultWithAnswersSchema } from "@typebot.io/results/schemas/results";
@@ -12,7 +13,6 @@ import {
   parseFromDateFromTimeFilter,
   parseToDateFromTimeFilter,
 } from "@/features/analytics/helpers/parseDateFromTimeFilter";
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 
 const MAX_LIMIT = 500;
 
@@ -45,11 +45,10 @@ export const getResults = authenticatedProcedure
       nextCursor: z.number().nullish(),
     }),
   )
-  .query(async ({ input, ctx: { user } }) => {
+  .handler(async ({ input, context: { user } }) => {
     const limit = Number(input.limit);
     if (limit < 1 || limit > MAX_LIMIT)
-      throw new TRPCError({
-        code: "BAD_REQUEST",
+      throw new ORPCError("BAD_REQUEST", {
         message: `limit must be between 1 and ${MAX_LIMIT}`,
       });
     const { cursor } = input;
@@ -80,7 +79,7 @@ export const getResults = authenticatedProcedure
       },
     });
     if (!typebot || (await isReadTypebotForbidden(typebot, user)))
-      throw new TRPCError({ code: "NOT_FOUND", message: "Typebot not found" });
+      throw new ORPCError("NOT_FOUND", { message: "Typebot not found" });
 
     const fromDate = parseFromDateFromTimeFilter(
       input.timeFilter,

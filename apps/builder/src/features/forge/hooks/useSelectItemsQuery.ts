@@ -3,7 +3,7 @@ import type { ForgedBlockDefinition } from "@typebot.io/forge-repository/definit
 import type { ForgedBlock } from "@typebot.io/forge-repository/schemas";
 import { useMemo } from "react";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { trpc } from "@/lib/queryClient";
+import { orpc } from "@/lib/queryClient";
 import { findFetcher } from "../helpers/findFetcher";
 
 export const useSelectItemsQuery = ({
@@ -25,32 +25,31 @@ export const useSelectItemsQuery = ({
   );
 
   const { data } = useQuery(
-    trpc.forge.fetchSelectItems.queryOptions(
-      credentialsScope === "workspace"
-        ? {
-            scope: "workspace",
-            integrationId: blockDef.id,
-            options: pick(
-              options,
-              (blockDef.auth ? ["credentialsId"] : []).concat(
-                fetcher?.dependencies ?? [],
+    orpc.forge.fetchSelectItems.queryOptions({
+      input:
+        credentialsScope === "workspace"
+          ? {
+              scope: "workspace",
+              integrationId: blockDef.id,
+              options: pick(
+                options,
+                (blockDef.auth ? ["credentialsId"] : []).concat(
+                  fetcher?.dependencies ?? [],
+                ),
               ),
-            ),
-            workspaceId: workspace?.id as string,
-            fetcherId,
-          }
-        : {
-            scope: "user",
-            integrationId: blockDef.id,
-            options: {
-              credentialsId: options.credentialsId,
+              workspaceId: workspace?.id as string,
+              fetcherId,
+            }
+          : {
+              scope: "user",
+              integrationId: blockDef.id,
+              options: {
+                credentialsId: options.credentialsId,
+              },
+              fetcherId,
             },
-            fetcherId,
-          },
-      {
-        enabled: !!workspace?.id && !!fetcher,
-      },
-    ),
+      enabled: !!workspace?.id && !!fetcher,
+    }),
   );
 
   return {

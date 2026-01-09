@@ -1,3 +1,4 @@
+import { ORPCError } from "@orpc/client";
 import { useMutation } from "@tanstack/react-query";
 import { T, useTranslate } from "@tolgee/react";
 import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
@@ -24,9 +25,9 @@ import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { useTimeSince } from "@/hooks/useTimeSince";
 import {
+  orpc,
   queryClient,
   showHttpRequestErrorToast,
-  trpc,
 } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
 
@@ -72,12 +73,12 @@ export const PublishButton = ({
 
   const { mutate: publishTypebotMutate, status: publishTypebotStatus } =
     useMutation(
-      trpc.typebot.publishTypebot.mutationOptions({
+      orpc.typebot.publishTypebot.mutationOptions({
         onError: (error) => {
           showHttpRequestErrorToast(error, {
             context: t("publish.error.label"),
           });
-          if (error.data?.httpStatus === 403) {
+          if (error instanceof ORPCError && error.code === "FORBIDDEN") {
             setTimeout(() => {
               window.location.reload();
             }, 3000);
@@ -86,7 +87,7 @@ export const PublishButton = ({
         onSuccess: (data) => {
           if (!typebot?.id || currentUserMode === "guest") return;
           queryClient.invalidateQueries({
-            queryKey: trpc.typebot.getPublishedTypebot.queryKey(),
+            queryKey: orpc.typebot.getPublishedTypebot.key(),
           });
           if (data.warnings) {
             setTrademarkPotentialInfringement(data.warnings[0].trademark);
@@ -99,7 +100,7 @@ export const PublishButton = ({
 
   const { mutate: unpublishTypebotMutate, status: unpublishTypebotStatus } =
     useMutation(
-      trpc.typebot.unpublishTypebot.mutationOptions({
+      orpc.typebot.unpublishTypebot.mutationOptions({
         onError: (error) =>
           toast({
             title: t("editor.header.unpublishTypebot.error.label"),
@@ -107,7 +108,7 @@ export const PublishButton = ({
           }),
         onSuccess: () => {
           queryClient.invalidateQueries({
-            queryKey: trpc.typebot.getPublishedTypebot.queryKey(),
+            queryKey: orpc.typebot.getPublishedTypebot.key(),
           });
         },
       }),

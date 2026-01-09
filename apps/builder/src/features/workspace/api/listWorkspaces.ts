@@ -1,8 +1,8 @@
-import { TRPCError } from "@trpc/server";
+import { ORPCError } from "@orpc/server";
+import { authenticatedProcedure } from "@typebot.io/config/orpc/builder/middlewares";
 import prisma from "@typebot.io/prisma";
 import { workspaceSchema } from "@typebot.io/workspaces/schemas";
 import { z } from "@typebot.io/zod";
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 
 export const listWorkspaces = authenticatedProcedure
   .meta({
@@ -22,17 +22,14 @@ export const listWorkspaces = authenticatedProcedure
       ),
     }),
   )
-  .query(async ({ ctx: { user } }) => {
+  .handler(async ({ context: { user } }) => {
     const workspaces = await prisma.workspace.findMany({
       where: { members: { some: { userId: user.id } } },
       select: { name: true, id: true, icon: true, plan: true },
     });
 
     if (!workspaces)
-      throw new TRPCError({
-        code: "NOT_FOUND",
-        message: "Workspace not found",
-      });
+      throw new ORPCError("NOT_FOUND", { message: "Workspace not found" });
 
     return { workspaces };
   });

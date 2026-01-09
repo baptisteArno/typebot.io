@@ -1,3 +1,4 @@
+import { ORPCError } from "@orpc/client";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { isDefined, omit } from "@typebot.io/lib/utils";
 import type {
@@ -25,7 +26,7 @@ import { convertPublicTypebotToTypebot } from "@/features/publish/helpers/conver
 import { isPublished as isPublishedHelper } from "@/features/publish/helpers/isPublished";
 import { preventUserFromRefreshing } from "@/helpers/preventUserFromRefreshing";
 import { useAutoSave } from "@/hooks/useAutoSave";
-import { trpc } from "@/lib/queryClient";
+import { orpc } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
 import { useUndo } from "../hooks/useUndo";
 import { type BlocksActions, blocksAction } from "./typebotActions/blocks";
@@ -107,32 +108,28 @@ export const TypebotProvider = ({
     refetch: refetchTypebot,
     error: typebotError,
   } = useQuery(
-    trpc.typebot.getTypebot.queryOptions(
-      { typebotId: typebotId as string, migrateToLatestVersion: true },
-      {
-        enabled: isDefined(typebotId),
-        retry: 0,
-      },
-    ),
+    orpc.typebot.getTypebot.queryOptions({
+      input: { typebotId: typebotId as string, migrateToLatestVersion: true },
+      enabled: isDefined(typebotId),
+      retry: 0,
+    }),
   );
 
   const { data: publishedTypebotData } = useQuery(
-    trpc.typebot.getPublishedTypebot.queryOptions(
-      { typebotId: typebotId as string, migrateToLatestVersion: true },
-      {
-        enabled:
-          isDefined(typebotId) &&
-          (typebotData?.currentUserMode === "read" ||
-            typebotData?.currentUserMode === "write"),
-      },
-    ),
+    orpc.typebot.getPublishedTypebot.queryOptions({
+      input: { typebotId: typebotId as string, migrateToLatestVersion: true },
+      enabled:
+        isDefined(typebotId) &&
+        (typebotData?.currentUserMode === "read" ||
+          typebotData?.currentUserMode === "write"),
+    }),
   );
 
   const { mutateAsync: updateTypebot, status: updateTypebotStatus } =
     useMutation(
-      trpc.typebot.updateTypebot.mutationOptions({
+      orpc.typebot.updateTypebot.mutationOptions({
         onError: (error) => {
-          if (error.data?.code === "CONFLICT") {
+          if (error instanceof ORPCError && error.code === "CONFLICT") {
             toast({
               title: "Could not update the typebot",
               description:
@@ -324,7 +321,7 @@ export const TypebotProvider = ({
     );
   };
 
-  if (typebotError?.data?.httpStatus === 404)
+  if (typebotError instanceof ORPCError && typebotError.code === "NOT_FOUND")
     return <NotFoundPage resourceName="Typebot" />;
   return (
     <typebotContext.Provider

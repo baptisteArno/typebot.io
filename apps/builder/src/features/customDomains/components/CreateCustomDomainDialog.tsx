@@ -6,7 +6,7 @@ import { Dialog } from "@typebot.io/ui/components/Dialog";
 import { Input } from "@typebot.io/ui/components/Input";
 import { InformationSquareIcon } from "@typebot.io/ui/icons/InformationSquareIcon";
 import { useEffect, useRef, useState } from "react";
-import { trpc } from "@/lib/queryClient";
+import { orpc } from "@/lib/queryClient";
 
 const hostnameRegex =
   /^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9-]*[A-Za-z0-9])$/;
@@ -36,7 +36,7 @@ export const CreateCustomDomainDialog = ({
   });
 
   const { mutate } = useMutation(
-    trpc.customDomains.createCustomDomain.mutationOptions({
+    orpc.customDomains.createCustomDomain.mutationOptions({
       onMutate: () => {
         setIsLoading(true);
       },

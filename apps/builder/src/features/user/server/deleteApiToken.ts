@@ -1,7 +1,7 @@
-import { TRPCError } from "@trpc/server";
+import { ORPCError } from "@orpc/server";
+import { authenticatedProcedure } from "@typebot.io/config/orpc/builder/middlewares";
 import prisma from "@typebot.io/prisma";
 import { z } from "@typebot.io/zod";
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 
 const apiTokenSchema = z.object({
   id: z.string(),
@@ -30,17 +30,14 @@ export const deleteApiToken = authenticatedProcedure
       apiToken: apiTokenSchema,
     }),
   )
-  .mutation(async ({ input: { tokenId }, ctx: { user } }) => {
+  .handler(async ({ input: { tokenId }, context: { user } }) => {
     const existingToken = await prisma.apiToken.findUnique({
       where: { id: tokenId },
       select: { ownerId: true },
     });
 
     if (!existingToken || existingToken.ownerId !== user.id)
-      throw new TRPCError({
-        code: "NOT_FOUND",
-        message: "API token not found",
-      });
+      throw new ORPCError("NOT_FOUND", { message: "API token not found" });
 
     const apiToken = await prisma.apiToken.delete({
       where: { id: tokenId },

@@ -1,8 +1,8 @@
+import { authenticatedProcedure } from "@typebot.io/config/orpc/builder/middlewares";
 import { logSchema } from "@typebot.io/logs/schemas";
 import prisma from "@typebot.io/prisma";
 import { isReadTypebotForbidden } from "@typebot.io/typebot/helpers/isReadTypebotForbidden";
 import { z } from "@typebot.io/zod";
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 
 export const getResultLogs = authenticatedProcedure
   .meta({
@@ -25,7 +25,7 @@ export const getResultLogs = authenticatedProcedure
     }),
   )
   .output(z.object({ logs: z.array(logSchema) }))
-  .query(async ({ input: { typebotId, resultId }, ctx: { user } }) => {
+  .handler(async ({ input: { typebotId, resultId }, context: { user } }) => {
     const typebot = await prisma.typebot.findUnique({
       where: {
         id: typebotId,

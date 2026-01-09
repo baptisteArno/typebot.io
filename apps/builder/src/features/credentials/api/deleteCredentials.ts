@@ -1,8 +1,8 @@
-import { TRPCError } from "@trpc/server";
+import { ORPCError } from "@orpc/server";
+import { authenticatedProcedure } from "@typebot.io/config/orpc/builder/middlewares";
 import prisma from "@typebot.io/prisma";
 import { z } from "@typebot.io/zod";
 import { isWriteWorkspaceForbidden } from "@/features/workspace/helpers/isWriteWorkspaceForbidden";
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 
 export const deleteCredentials = authenticatedProcedure
   .input(
@@ -23,7 +23,7 @@ export const deleteCredentials = authenticatedProcedure
       credentialsId: z.string(),
     }),
   )
-  .mutation(async ({ input, ctx: { user } }) => {
+  .handler(async ({ input, context: { user } }) => {
     if (input.scope === "user") {
       await prisma.userCredentials.delete({
         where: {
@@ -41,10 +41,7 @@ export const deleteCredentials = authenticatedProcedure
       select: { id: true, members: { select: { userId: true, role: true } } },
     });
     if (!workspace || isWriteWorkspaceForbidden(workspace, user))
-      throw new TRPCError({
-        code: "NOT_FOUND",
-        message: "Workspace not found",
-      });
+      throw new ORPCError("NOT_FOUND", { message: "Workspace not found" });
 
     await prisma.credentials.delete({
       where: {

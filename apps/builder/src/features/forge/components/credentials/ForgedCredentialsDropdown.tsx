@@ -11,7 +11,7 @@ import { useRouter } from "next/router";
 import type React from "react";
 import { useCallback, useEffect, useState } from "react";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { trpc } from "@/lib/queryClient";
+import { orpc } from "@/lib/queryClient";
 
 type Props = Omit<ButtonProps, "type"> & {
   blockDef: ForgedBlockDefinition;
@@ -39,24 +39,25 @@ export const ForgedCredentialsDropdown = ({
   const { t } = useTranslate();
   const { workspace, currentUserMode } = useWorkspace();
   const { data, refetch, isLoading } = useQuery(
-    trpc.credentials.listCredentials.queryOptions(
-      scope === "workspace"
-        ? {
-            scope: "workspace",
-            workspaceId: workspace!.id,
-            type: getAuthTypeFromBlockId(blockDef.id),
-          }
-        : {
-            scope: "user",
-            type: getAuthTypeFromBlockId(blockDef.id),
-          },
-      { enabled: !!workspace?.id },
-    ),
+    orpc.credentials.listCredentials.queryOptions({
+      input:
+        scope === "workspace"
+          ? {
+              scope: "workspace",
+              workspaceId: workspace!.id,
+              type: getAuthTypeFromBlockId(blockDef.id),
+            }
+          : {
+              scope: "user",
+              type: getAuthTypeFromBlockId(blockDef.id),
+            },
+      enabled: !!workspace?.id,
+    }),
   );
   const [isDeleting, setIsDeleting] = useState<string>();
 
   const { mutate } = useMutation(
-    trpc.credentials.deleteCredentials.mutationOptions({
+    orpc.credentials.deleteCredentials.mutationOptions({
       onMutate: ({ credentialsId }) => {
         setIsDeleting(credentialsId);
       },

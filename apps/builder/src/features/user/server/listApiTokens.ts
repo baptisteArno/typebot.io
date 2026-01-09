@@ -1,6 +1,6 @@
+import { authenticatedProcedure } from "@typebot.io/config/orpc/builder/middlewares";
 import prisma from "@typebot.io/prisma";
 import { z } from "@typebot.io/zod";
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 
 const apiTokenSchema = z.object({
   id: z.string(),
@@ -23,7 +23,7 @@ export const listApiTokens = authenticatedProcedure
       apiTokens: z.array(apiTokenSchema),
     }),
   )
-  .query(async ({ ctx: { user } }) => {
+  .handler(async ({ context: { user } }) => {
     const apiTokens = await prisma.apiToken.findMany({
       where: { ownerId: user.id },
       select: {

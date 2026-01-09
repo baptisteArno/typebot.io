@@ -1,11 +1,11 @@
-import { TRPCError } from "@trpc/server";
+import { ORPCError } from "@orpc/server";
+import { authenticatedProcedure } from "@typebot.io/config/orpc/builder/middlewares";
 import { decrypt } from "@typebot.io/credentials/decrypt";
 import type { WhatsAppCredentials } from "@typebot.io/credentials/schemas";
 import { env } from "@typebot.io/env";
 import { ky } from "@typebot.io/lib/ky";
 import prisma from "@typebot.io/prisma";
 import { z } from "@typebot.io/zod";
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 import { ClientToastError } from "@/lib/ClientToastError";
 import { formatPhoneNumberDisplayName } from "./formatPhoneNumberDisplayName";
 
@@ -17,13 +17,10 @@ const inputSchema = z.object({
 
 export const getPhoneNumber = authenticatedProcedure
   .input(inputSchema)
-  .query(async ({ input, ctx: { user } }) => {
+  .handler(async ({ input, context: { user } }) => {
     const credentials = await getCredentials(user, input);
     if (!credentials)
-      throw new TRPCError({
-        code: "NOT_FOUND",
-        message: "Credentials not found",
-      });
+      throw new ORPCError("NOT_FOUND", { message: "Credentials not found" });
 
     if (credentials.type === "360dialog")
       return {

@@ -11,7 +11,7 @@
     "@typebot.io/schemas": "workspace:*",
     "stripe": "^17.1.0",
     "@typebot.io/lib": "workspace:*",
-    "@trpc/server": "^11.3.1",
+    "@orpc/server": "^1.13.0",
     "@typebot.io/env": "workspace:*",
     "@typebot.io/telemetry": "workspace:*",
     "@typebot.io/workspaces": "workspace:*",

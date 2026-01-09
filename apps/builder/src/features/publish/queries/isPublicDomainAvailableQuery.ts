@@ -1,7 +1,4 @@
-import { sendRequest } from "@typebot.io/lib/utils";
+import { orpcClient } from "@/lib/queryClient";
 
 export const isPublicDomainAvailableQuery = (publicId: string) =>
-  sendRequest<{ isAvailable: boolean }>({
-    method: "GET",
-    url: `/api/publicIdAvailable?publicId=${publicId}`,
-  });
+  orpcClient.typebot.isPublicIdAvailable({ publicId });

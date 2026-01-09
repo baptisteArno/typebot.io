@@ -1,0 +1,22 @@
+{
+  "name": "@typebot.io/auth",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./*": "./src/*.ts"
+  },
+  "dependencies": {
+    "@typebot.io/env": "workspace:*",
+    "@upstash/ratelimit": "^0.4.3",
+    "next-auth": "^5.0.0-beta.28",
+    "@typebot.io/user": "workspace:*",
+    "@typebot.io/lib": "workspace:*",
+    "@typebot.io/prisma": "workspace:*",
+    "@typebot.io/telemetry": "workspace:*",
+    "@typebot.io/config": "workspace:*"
+  },
+  "devDependencies": {
+    "@typebot.io/tsconfig": "workspace:*"
+  }
+}

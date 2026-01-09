@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { isDefined } from "@typebot.io/lib/utils";
-import { trpc } from "@/lib/queryClient";
+import { orpc } from "@/lib/queryClient";
 
 export const useLogs = (
   typebotId: string,
@@ -8,13 +8,13 @@ export const useLogs = (
   onError?: (error: string) => void,
 ) => {
   const { data, error } = useQuery(
-    trpc.results.getResultLogs.queryOptions(
-      {
+    orpc.results.getResultLogs.queryOptions({
+      input: {
         resultId: resultId ?? "",
         typebotId,
       },
-      { enabled: isDefined(resultId) },
-    ),
+      enabled: isDefined(resultId),
+    }),
   );
   if (error && onError) onError(error.message);
   return {

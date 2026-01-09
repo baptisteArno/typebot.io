@@ -1,9 +1,9 @@
+import { createEmailMagicLink } from "@typebot.io/auth/helpers/createEmailMagicLink";
 import { Badge } from "@typebot.io/ui/components/Badge";
 import { Button } from "@typebot.io/ui/components/Button";
 import { useQueryState } from "nuqs";
 import { Seo } from "@/components/Seo";
 import { toast } from "@/lib/toast";
-import { createEmailMagicLink } from "../helpers/createEmailMagicLink";
 
 export const EmailRedirectPage = () => {
   const [redirectPath] = useQueryState("redirectPath");

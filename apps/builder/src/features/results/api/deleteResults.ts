@@ -1,10 +1,10 @@
-import { TRPCError } from "@trpc/server";
+import { ORPCError } from "@orpc/server";
+import { authenticatedProcedure } from "@typebot.io/config/orpc/builder/middlewares";
 import prisma from "@typebot.io/prisma";
 import { archiveResults } from "@typebot.io/results/archiveResults";
 import type { Typebot } from "@typebot.io/typebot/schemas/typebot";
 import { z } from "@typebot.io/zod";
 import { isWriteTypebotForbidden } from "@/features/typebot/helpers/isWriteTypebotForbidden";
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 
 export const deleteResults = authenticatedProcedure
   .meta({
@@ -32,7 +32,7 @@ export const deleteResults = authenticatedProcedure
     }),
   )
   .output(z.void())
-  .mutation(async ({ input, ctx: { user } }) => {
+  .handler(async ({ input, context: { user } }) => {
     const idsArray = input.resultIds?.split(",");
     const { typebotId } = input;
     const typebot = await prisma.typebot.findUnique({
@@ -63,7 +63,7 @@ export const deleteResults = authenticatedProcedure
       },
     });
     if (!typebot || (await isWriteTypebotForbidden(typebot, user)))
-      throw new TRPCError({ code: "NOT_FOUND", message: "Typebot not found" });
+      throw new ORPCError("NOT_FOUND", { message: "Typebot not found" });
     const { success } = await archiveResults(prisma)({
       typebot: {
         id: typebotId,
@@ -77,8 +77,5 @@ export const deleteResults = authenticatedProcedure
     });
 
     if (!success)
-      throw new TRPCError({
-        code: "NOT_FOUND",
-        message: "Typebot not found",
-      });
+      throw new ORPCError("NOT_FOUND", { message: "Typebot not found" });
   });

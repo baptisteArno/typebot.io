@@ -1,6 +1,6 @@
+import { ORPCError } from "@orpc/client";
 import { createId } from "@paralleldrive/cuid2";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { TRPCClientError } from "@trpc/client";
 import { env } from "@typebot.io/env";
 import { parseUnknownClientError } from "@typebot.io/lib/parseUnknownClientError";
 import { isEmpty, isNotEmpty } from "@typebot.io/lib/utils";
@@ -22,7 +22,7 @@ import { TextLink } from "@/components/TextLink";
 import { useFeatureFlagsQuery } from "@/features/featureFlags/useFeatureFlagsQuery";
 import { formatPhoneNumberDisplayName } from "@/features/whatsapp/formatPhoneNumberDisplayName";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { queryClient, trpc, trpcClient } from "@/lib/queryClient";
+import { orpc, orpcClient, queryClient } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
 
 const metaSteps = [
@@ -93,7 +93,7 @@ export const WhatsAppCreateDialogBody = ({
   const [isCreating, setIsCreating] = useState(false);
 
   const { mutate } = useMutation(
-    trpc.credentials.createCredentials.mutationOptions({
+    orpc.credentials.createCredentials.mutationOptions({
       onMutate: () => setIsCreating(true),
       onSettled: () => setIsCreating(false),
       onError: (err) => {
@@ -103,9 +103,7 @@ export const WhatsAppCreateDialogBody = ({
       },
       onSuccess: (data) => {
         queryClient.invalidateQueries({
-          queryKey: trpc.credentials.listCredentials.queryKey({
-            workspaceId: workspace?.id,
-          }),
+          queryKey: orpc.credentials.listCredentials.key(),
         });
         onNewCredentials(data.credentialsId);
         onClose();
@@ -115,12 +113,12 @@ export const WhatsAppCreateDialogBody = ({
   );
 
   const { data: tokenInfoData } = useQuery(
-    trpc.whatsAppInternal.getSystemTokenInfo.queryOptions(
-      {
+    orpc.whatsAppInternal.getSystemTokenInfo.queryOptions({
+      input: {
         token: systemUserAccessToken,
       },
-      { enabled: isNotEmpty(systemUserAccessToken) && activeStep > 1 },
-    ),
+      enabled: isNotEmpty(systemUserAccessToken) && activeStep > 1,
+    }),
   );
 
   const resetForm = () => {
@@ -168,7 +166,7 @@ export const WhatsAppCreateDialogBody = ({
     setIsVerifying(true);
     try {
       const { expiresAt, scopes } =
-        await trpcClient.whatsAppInternal.getSystemTokenInfo.query({
+        await orpcClient.whatsAppInternal.getSystemTokenInfo({
           token: systemUserAccessToken,
         });
       if (expiresAt !== 0) {
@@ -190,7 +188,7 @@ export const WhatsAppCreateDialogBody = ({
       }
     } catch (err) {
       setIsVerifying(false);
-      if (err instanceof TRPCClientError) {
+      if (err instanceof ORPCError) {
         if (err.data?.logError) {
           toast(err.data.logError);
           return false;
@@ -206,14 +204,14 @@ export const WhatsAppCreateDialogBody = ({
   const isPhoneNumberAvailable = async () => {
     setIsVerifying(true);
     try {
-      const { name } = await trpcClient.whatsAppInternal.getPhoneNumber.query({
+      const { name } = await orpcClient.whatsAppInternal.getPhoneNumber({
         systemToken: systemUserAccessToken,
         phoneNumberId,
       });
       setPhoneNumberName(name);
       try {
         const { message } =
-          await trpcClient.whatsAppInternal.verifyIfPhoneNumberAvailable.query({
+          await orpcClient.whatsAppInternal.verifyIfPhoneNumberAvailable({
             phoneNumberDisplayName: name,
           });
 
@@ -225,7 +223,7 @@ export const WhatsAppCreateDialogBody = ({
           return false;
         }
         const { verificationToken } =
-          await trpcClient.whatsAppInternal.generateVerificationToken.mutate();
+          await orpcClient.whatsAppInternal.generateVerificationToken();
         setVerificationToken(verificationToken);
       } catch (err) {
         console.error(err);
@@ -237,7 +235,7 @@ export const WhatsAppCreateDialogBody = ({
       }
     } catch (err) {
       setIsVerifying(false);
-      if (err instanceof TRPCClientError) {
+      if (err instanceof ORPCError) {
         if (err.data?.logError) {
           toast(err.data.logError);
           return false;

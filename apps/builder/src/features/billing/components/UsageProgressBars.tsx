@@ -5,7 +5,7 @@ import { parseNumberWithCommas } from "@typebot.io/lib/utils";
 import { Progress } from "@typebot.io/ui/components/Progress";
 import { Skeleton } from "@typebot.io/ui/components/Skeleton";
 import type { WorkspaceInApp } from "@/features/workspace/WorkspaceProvider";
-import { trpc } from "@/lib/queryClient";
+import { orpc } from "@/lib/queryClient";
 
 type Props = {
   workspace: WorkspaceInApp;
@@ -14,8 +14,10 @@ type Props = {
 export const UsageProgressBars = ({ workspace }: Props) => {
   const { t } = useTranslate();
   const { data, isLoading } = useQuery(
-    trpc.billing.getUsage.queryOptions({
-      workspaceId: workspace.id,
+    orpc.billing.getUsage.queryOptions({
+      input: {
+        workspaceId: workspace.id,
+      },
     }),
   );
   const totalChatsUsed = data?.totalChatsUsed ?? 0;

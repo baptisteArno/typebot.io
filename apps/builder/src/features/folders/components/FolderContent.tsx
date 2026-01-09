@@ -7,7 +7,7 @@ import type { TypebotInDashboard } from "@/features/dashboard/types";
 import type { NodePosition } from "@/features/graph/providers/GraphDndProvider";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { useEventListener } from "@/hooks/useEventListener";
-import { trpc } from "@/lib/queryClient";
+import { orpc } from "@/lib/queryClient";
 import { useTypebotDnd } from "../TypebotDndProvider";
 import { BackButton } from "./BackButton";
 import { CreateBotButton } from "./CreateBotButton";
@@ -38,19 +38,17 @@ export const FolderContent = ({ folder }: Props) => {
     isLoading: isFolderLoading,
     refetch: refetchFolders,
   } = useQuery(
-    trpc.folders.listFolders.queryOptions(
-      {
+    orpc.folders.listFolders.queryOptions({
+      input: {
         workspaceId: workspace?.id as string,
         parentFolderId: folder?.id,
       },
-      {
-        enabled: !!workspace,
-      },
-    ),
+      enabled: !!workspace,
+    }),
   );
 
   const { mutate: createFolder } = useMutation(
-    trpc.folders.createFolder.mutationOptions({
+    orpc.folders.createFolder.mutationOptions({
       onSuccess: () => {
         refetchFolders();
       },
@@ -58,7 +56,7 @@ export const FolderContent = ({ folder }: Props) => {
   );
 
   const { mutate: updateTypebot } = useMutation(
-    trpc.typebot.updateTypebot.mutationOptions({
+    orpc.typebot.updateTypebot.mutationOptions({
       onSuccess: () => {
         refetchTypebots();
       },

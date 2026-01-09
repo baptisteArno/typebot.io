@@ -1,12 +1,12 @@
-import { TRPCError } from "@trpc/server";
+import { ORPCError } from "@orpc/server";
 import { computeResultTranscript } from "@typebot.io/bot-engine/computeResultTranscript";
 import { typebotInSessionStateSchema } from "@typebot.io/chat-session/schemas";
+import { authenticatedProcedure } from "@typebot.io/config/orpc/builder/middlewares";
 import prisma from "@typebot.io/prisma";
 import type { Answer } from "@typebot.io/results/schemas/answers";
 import { SessionStore } from "@typebot.io/runtime-session-store";
 import { isReadTypebotForbidden } from "@typebot.io/typebot/helpers/isReadTypebotForbidden";
 import { z } from "@typebot.io/zod";
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 
 export const getResultTranscript = authenticatedProcedure
   .meta({
@@ -46,7 +46,7 @@ export const getResultTranscript = authenticatedProcedure
       ),
     }),
   )
-  .query(async ({ input, ctx: { user } }) => {
+  .handler(async ({ input, context: { user } }) => {
     // Fetch typebot with necessary data for transcript computation
     const typebot = await prisma.typebot.findUnique({
       where: {
@@ -86,7 +86,7 @@ export const getResultTranscript = authenticatedProcedure
       !typebot?.publishedTypebot ||
       (await isReadTypebotForbidden(typebot, user))
     )
-      throw new TRPCError({ code: "NOT_FOUND", message: "Typebot not found" });
+      throw new ORPCError("NOT_FOUND", { message: "Typebot not found" });
 
     // Fetch result data
     const result = await prisma.result.findUnique({
@@ -129,7 +129,7 @@ export const getResultTranscript = authenticatedProcedure
     });
 
     if (!result)
-      throw new TRPCError({ code: "NOT_FOUND", message: "Result not found" });
+      throw new ORPCError("NOT_FOUND", { message: "Result not found" });
 
     const answers = [...result.answersV2, ...result.answers]
       .sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime())

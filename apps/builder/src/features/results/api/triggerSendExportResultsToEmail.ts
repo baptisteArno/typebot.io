@@ -1,7 +1,7 @@
+import { authenticatedProcedure } from "@typebot.io/config/orpc/builder/middlewares";
 import { inngest } from "@typebot.io/inngest/client";
 import { SEND_EMAIL_REQUESTED_EVENT_NAME } from "@typebot.io/inngest/functions/exportResults";
 import { z } from "@typebot.io/zod";
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 
 export const triggerSendExportResultsToEmail = authenticatedProcedure
   .output(
@@ -9,7 +9,7 @@ export const triggerSendExportResultsToEmail = authenticatedProcedure
       eventId: z.string(),
     }),
   )
-  .mutation(async ({ ctx: { user } }) => {
+  .handler(async ({ context: { user } }) => {
     const event = await inngest.send({
       name: SEND_EMAIL_REQUESTED_EVENT_NAME,
       data: {

@@ -1,7 +1,7 @@
 import { oo } from "@orpc/openapi";
 import { os as baseOs, ORPCError } from "@orpc/server";
 import * as Sentry from "@sentry/nextjs";
-import { authenticateByToken, type Context } from "./context";
+import type { Context } from "./context";
 
 export const os = baseOs.$context<Context>();
 
@@ -27,7 +27,7 @@ const isUnknownError = (error: unknown) => {
 
 const requireAuth = oo.spec(
   os.middleware(async ({ next, context }) => {
-    const user = await authenticateByToken(context.bearerToken);
+    const user = await context.authenticate();
     if (user) {
       return next({
         context: {
@@ -47,7 +47,7 @@ const requireAuth = oo.spec(
 
 const needsOptionalAuthenticatedUser = os.middleware(
   async ({ next, context }) => {
-    const user = await authenticateByToken(context.bearerToken);
+    const user = await context.authenticate();
     return next({
       context: {
         ...context,

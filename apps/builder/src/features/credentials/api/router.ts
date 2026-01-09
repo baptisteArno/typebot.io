@@ -1,4 +1,4 @@
-import { router } from "@/helpers/server/trpc";
+import { authorizeOAuth } from "./authorizeOAuth";
 import { createCredentials } from "./createCredentials";
 import { createOAuthCredentials } from "./createOAuthCredentials";
 import { deleteCredentials } from "./deleteCredentials";
@@ -7,12 +7,13 @@ import { listCredentials } from "./listCredentials";
 import { updateCredentials } from "./updateCredentials";
 import { updateOAuthCredentials } from "./updateOAuthCredentials";
 
-export const credentialsRouter = router({
+export const credentialsRouter = {
   createCredentials,
   createOAuthCredentials,
   updateOAuthCredentials,
+  authorizeOAuth,
   listCredentials,
   getCredentials,
   deleteCredentials,
   updateCredentials,
-});
+};

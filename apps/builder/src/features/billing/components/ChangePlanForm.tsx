@@ -5,7 +5,7 @@ import { useState } from "react";
 import { TextLink } from "@/components/TextLink";
 import { useUser } from "@/features/user/hooks/useUser";
 import type { WorkspaceInApp } from "@/features/workspace/WorkspaceProvider";
-import { queryClient, trpc } from "@/lib/queryClient";
+import { orpc, queryClient } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
 import { useSubscriptionQuery } from "../hooks/useSubscriptionQuery";
 import type { PreCheckoutDialogProps } from "./PreCheckoutDialog";
@@ -36,7 +36,7 @@ export const ChangePlanForm = ({
 
   const { mutateAsync: updateSubscription, status: updateSubscriptionStatus } =
     useMutation(
-      trpc.billing.updateSubscription.mutationOptions({
+      orpc.billing.updateSubscription.mutationOptions({
         onSuccess: (data) => {
           if (data.type === "checkoutUrl") {
             window.location.href = data.checkoutUrl;
@@ -52,9 +52,7 @@ export const ChangePlanForm = ({
           }
           refetch();
           queryClient.invalidateQueries({
-            queryKey: trpc.workspace.getWorkspace.queryKey({
-              workspaceId: workspace?.id,
-            }),
+            queryKey: orpc.workspace.getWorkspace.key(),
           });
           toast({
             type: "success",

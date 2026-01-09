@@ -8,7 +8,7 @@ import { PlusSignIcon } from "@typebot.io/ui/icons/PlusSignIcon";
 import { TickIcon } from "@typebot.io/ui/icons/TickIcon";
 import { EmojiOrImageIcon } from "@/components/EmojiOrImageIcon";
 import { PlanBadge } from "@/features/billing/components/PlanTag";
-import { trpc } from "@/lib/queryClient";
+import { orpc } from "@/lib/queryClient";
 import type { WorkspaceInApp } from "../WorkspaceProvider";
 
 type Props = {
@@ -27,7 +27,7 @@ export const WorkspaceDropdown = ({
   onCreateNewWorkspaceClick,
 }: Props) => {
   const { t } = useTranslate();
-  const { data } = useQuery(trpc.workspace.listWorkspaces.queryOptions());
+  const { data } = useQuery(orpc.workspace.listWorkspaces.queryOptions());
 
   const workspaces = data?.workspaces ?? [];
 

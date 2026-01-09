@@ -1,9 +1,9 @@
-import { TRPCError } from "@trpc/server";
+import { ORPCError } from "@orpc/server";
+import { authenticatedProcedure } from "@typebot.io/config/orpc/builder/middlewares";
 import { getGoogleSpreadsheet } from "@typebot.io/credentials/getGoogleSpreadsheet";
 import prisma from "@typebot.io/prisma";
 import { z } from "@typebot.io/zod";
 import { isReadWorkspaceFobidden } from "@/features/workspace/helpers/isReadWorkspaceFobidden";
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 
 export const getSpreadsheetName = authenticatedProcedure
   .input(
@@ -13,10 +13,10 @@ export const getSpreadsheetName = authenticatedProcedure
       spreadsheetId: z.string(),
     }),
   )
-  .query(
+  .handler(
     async ({
       input: { workspaceId, credentialsId, spreadsheetId },
-      ctx: { user },
+      context: { user },
     }) => {
       const workspace = await prisma.workspace.findFirst({
         where: {
@@ -38,17 +38,11 @@ export const getSpreadsheetName = authenticatedProcedure
         },
       });
       if (!workspace || isReadWorkspaceFobidden(workspace, user))
-        throw new TRPCError({
-          code: "NOT_FOUND",
-          message: "Workspace not found",
-        });
+        throw new ORPCError("NOT_FOUND", { message: "Workspace not found" });
 
       const credentials = workspace.credentials[0];
       if (!credentials)
-        throw new TRPCError({
-          code: "NOT_FOUND",
-          message: "Credentials not found",
-        });
+        throw new ORPCError("NOT_FOUND", { message: "Credentials not found" });
 
       try {
         const googleSheetResponse = await getGoogleSpreadsheet({
@@ -58,8 +52,7 @@ export const getSpreadsheetName = authenticatedProcedure
         });
 
         if (googleSheetResponse.type === "error")
-          throw new TRPCError({
-            code: "BAD_REQUEST",
+          throw new ORPCError("BAD_REQUEST", {
             message: googleSheetResponse.log.description,
           });
 

@@ -1,11 +1,11 @@
-import { TRPCError } from "@trpc/server";
+import { ORPCError } from "@orpc/server";
 import { isInputBlock } from "@typebot.io/blocks-core/helpers";
+import { authenticatedProcedure } from "@typebot.io/config/orpc/builder/middlewares";
 import { parseGroups } from "@typebot.io/groups/helpers/parseGroups";
 import prisma from "@typebot.io/prisma";
 import { edgeSchema } from "@typebot.io/typebot/schemas/edge";
 import { z } from "@typebot.io/zod";
 import { canReadTypebots } from "@/helpers/databaseRules";
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 import { defaultTimeFilter, timeFilterValues } from "../constants";
 import { getVisitedEdgeToPropFromId } from "../helpers/getVisitedEdgeToPropFromId";
 import {
@@ -38,8 +38,11 @@ export const getInDepthAnalyticsData = authenticatedProcedure
       offDefaultPathVisitedEdges: z.array(edgeWithTotalVisitsSchema),
     }),
   )
-  .query(
-    async ({ input: { typebotId, timeFilter, timeZone }, ctx: { user } }) => {
+  .handler(
+    async ({
+      input: { typebotId, timeFilter, timeZone },
+      context: { user },
+    }) => {
       const typebot = await prisma.typebot.findFirst({
         where: canReadTypebots(typebotId, user),
         select: {
@@ -53,8 +56,7 @@ export const getInDepthAnalyticsData = authenticatedProcedure
         },
       });
       if (!typebot?.publishedTypebot)
-        throw new TRPCError({
-          code: "NOT_FOUND",
+        throw new ORPCError("NOT_FOUND", {
           message: "Published typebot not found",
         });
 

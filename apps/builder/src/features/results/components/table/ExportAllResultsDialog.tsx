@@ -1,6 +1,6 @@
 import { useInngestSubscription } from "@inngest/realtime/hooks";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import type { TRPCError } from "@trpc/server";
+import { ORPCError } from "@orpc/server";
+import { useQuery } from "@tanstack/react-query";
 import { parseUniqueKey } from "@typebot.io/lib/parseUniqueKey";
 import { byId, isDefined } from "@typebot.io/lib/utils";
 import { convertResultsToTableData } from "@typebot.io/results/convertResultsToTableData";
@@ -21,7 +21,7 @@ import { unparse } from "papaparse";
 import { useState } from "react";
 import { EmailInputIcon } from "@/features/blocks/inputs/emailInput/components/EmailInputIcon";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
-import { trpc, trpcClient } from "@/lib/queryClient";
+import { orpc, orpcClient } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
 import { useResults } from "../../ResultsProvider";
 import { ExportJobProgress } from "./ExportJobProgress";
@@ -42,7 +42,6 @@ export const ExportAllResultsDialog = ({ isOpen, onClose }: Props) => {
   const workspaceId = typebot?.workspaceId;
   const typebotId = typebot?.id;
   const { resultHeader: existingResultHeader, totalResults } = useResults();
-  const queryClient = useQueryClient();
   const [isExportLoading, setIsExportLoading] = useState(false);
   const [exportProgressValue, setExportProgressValue] = useState(0);
   const [isSchedulingEmail, setIsSchedulingEmail] = useState(false);
@@ -51,14 +50,12 @@ export const ExportAllResultsDialog = ({ isOpen, onClose }: Props) => {
     useState(false);
 
   const { data: linkedTypebotsData } = useQuery(
-    trpc.getLinkedTypebots.queryOptions(
-      {
+    orpc.getLinkedTypebots.queryOptions({
+      input: {
         typebotId: typebotId as string,
       },
-      {
-        enabled: isDefined(typebotId),
-      },
-    ),
+      enabled: isDefined(typebotId),
+    }),
   );
 
   const getAllResults = async (totalStarts: number) => {
@@ -69,19 +66,18 @@ export const ExportAllResultsDialog = ({ isOpen, onClose }: Props) => {
     setExportProgressValue(0);
     do {
       try {
-        const { results, nextCursor } = await queryClient.fetchQuery(
-          trpc.results.getResults.queryOptions({
-            typebotId,
-            limit: 500,
-            cursor,
-            timeFilter: "allTime",
-          }),
-        );
+        const { results, nextCursor } = await orpcClient.results.getResults({
+          typebotId,
+          limit: 500,
+          cursor,
+          timeFilter: "allTime",
+        });
         allResults.push(...results);
         setExportProgressValue((allResults.length / totalStarts) * 100);
         cursor = nextCursor ?? undefined;
       } catch (error) {
-        toast({ description: (error as TRPCError).message });
+        if (error instanceof ORPCError && error.message)
+          toast({ description: error.message });
         return [];
       }
     } while (cursor);
@@ -96,13 +92,13 @@ export const ExportAllResultsDialog = ({ isOpen, onClose }: Props) => {
 
     const {
       stats: { totalStarts },
-    } = await trpcClient.analytics.getStats.query({
+    } = await orpcClient.analytics.getStats({
       typebotId,
       timeFilter: "allTime",
     });
 
     if (totalStarts > TOTAL_RESULTS_THRESHOLD_FOR_BACKGROUND_EXPORT) {
-      const response = await trpcClient.results.triggerExportJob.mutate({
+      const response = await orpcClient.results.triggerExportJob({
         typebotId,
       });
       if (response.status === "success") {
@@ -172,7 +168,7 @@ export const ExportAllResultsDialog = ({ isOpen, onClose }: Props) => {
   const sendExportedResultsToEmail = async () => {
     if (!latestData?.data) return;
     setIsSchedulingEmail(true);
-    await trpcClient.results.triggerSendExportResultsToEmail.mutate();
+    await orpcClient.results.triggerSendExportResultsToEmail();
     onClose();
   };
 
@@ -193,7 +189,7 @@ export const ExportAllResultsDialog = ({ isOpen, onClose }: Props) => {
           latestData.data?.status !== "complete" &&
           !isSchedulingEmail
         )
-          await trpcClient.results.triggerCancelExport.mutate();
+          await orpcClient.results.triggerCancelExport();
         setIsSchedulingEmail(false);
       }}
     >

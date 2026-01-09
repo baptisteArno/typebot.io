@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { useUser } from "@/features/user/hooks/useUser";
 import { useEventListener } from "@/hooks/useEventListener";
-import { trpcClient } from "@/lib/queryClient";
+import { orpcClient } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
 import { eventWidth, groupWidth } from "../../constants";
 import { computeConnectingEdgePath } from "../../helpers/computeConnectingEdgePath";
@@ -137,7 +137,7 @@ export const DrawingEdge = ({ connectingIds }: Props) => {
       const group = typebot.groups[groupIndex];
       if (!group || !group?.title.startsWith("Group #")) return;
       try {
-        const result = await trpcClient.generateGroupTitle.mutate({
+        const result = await orpcClient.generateGroupTitle({
           credentialsId: groupTitlesAutoGeneration.credentialsId,
           typebotId: typebot.id,
           groupContent: JSON.stringify({

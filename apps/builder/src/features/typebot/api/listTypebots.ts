@@ -1,10 +1,10 @@
-import { TRPCError } from "@trpc/server";
+import { ORPCError } from "@orpc/server";
+import { authenticatedProcedure } from "@typebot.io/config/orpc/builder/middlewares";
 import prisma from "@typebot.io/prisma";
 import { getTypebotAccessRight } from "@typebot.io/typebot/helpers/getTypebotAccessRight";
 import { typebotV5Schema } from "@typebot.io/typebot/schemas/typebot";
 import { z } from "@typebot.io/zod";
 import { getUserModeInWorkspace } from "@/features/workspace/helpers/getUserRoleInWorkspace";
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 
 export const listTypebots = authenticatedProcedure
   .meta({
@@ -44,7 +44,7 @@ export const listTypebots = authenticatedProcedure
       ),
     }),
   )
-  .query(async ({ input: { workspaceId, folderId }, ctx: { user } }) => {
+  .handler(async ({ input: { workspaceId, folderId }, context: { user } }) => {
     const workspace = await prisma.workspace.findUnique({
       where: { id: workspaceId },
       select: {
@@ -58,10 +58,7 @@ export const listTypebots = authenticatedProcedure
     });
     const userRole = getUserModeInWorkspace(user.id, workspace?.members);
     if (!workspace || userRole === undefined)
-      throw new TRPCError({
-        code: "NOT_FOUND",
-        message: "Workspace not found",
-      });
+      throw new ORPCError("NOT_FOUND", { message: "Workspace not found" });
     const typebots = await prisma.typebot.findMany({
       where: {
         isArchived: { not: true },
@@ -86,7 +83,7 @@ export const listTypebots = authenticatedProcedure
     });
 
     if (!typebots)
-      throw new TRPCError({ code: "NOT_FOUND", message: "No typebots found" });
+      throw new ORPCError("NOT_FOUND", { message: "No typebots found" });
 
     return {
       typebots: typebots.map((typebot) => ({

@@ -51,20 +51,6 @@ const nextConfig = {
     locales: ["en", "fr", "pt", "pt-BR", "de", "ro", "es", "it", "el"],
   },
   outputFileTracingRoot: join(__dirname, "../../"),
-  webpack: (config, { isServer }) => {
-    if (isServer) {
-      // TODO: Remove once https://github.com/getsentry/sentry-javascript/issues/8105 is merged and sentry is upgraded
-      config.ignoreWarnings = [
-        ...(config.ignoreWarnings ?? []),
-        {
-          module: /@opentelemetry/,
-          message: /Critical dependency/,
-        },
-      ];
-      return config;
-    }
-    return config;
-  },
   headers: async () => {
     const isDev = process.env.NODE_ENV !== "production";
     return [
@@ -104,7 +90,7 @@ const nextConfig = {
     return [
       {
         source: "/healthz",
-        destination: "/api/health",
+        destination: "/api/healthz",
       },
     ];
   },

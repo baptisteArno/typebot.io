@@ -1,4 +1,5 @@
-import { TRPCError } from "@trpc/server";
+import { ORPCError } from "@orpc/server";
+import { authenticatedProcedure } from "@typebot.io/config/orpc/builder/middlewares";
 import prisma from "@typebot.io/prisma";
 import {
   type ThemeTemplate,
@@ -6,7 +7,6 @@ import {
 } from "@typebot.io/theme/schemas";
 import { z } from "@typebot.io/zod";
 import { getUserModeInWorkspace } from "@/features/workspace/helpers/getUserRoleInWorkspace";
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 
 export const deleteThemeTemplate = authenticatedProcedure
   .meta({
@@ -29,8 +29,8 @@ export const deleteThemeTemplate = authenticatedProcedure
       themeTemplate: themeTemplateSchema,
     }),
   )
-  .mutation(
-    async ({ input: { themeTemplateId, workspaceId }, ctx: { user } }) => {
+  .handler(
+    async ({ input: { themeTemplateId, workspaceId }, context: { user } }) => {
       const workspace = await prisma.workspace.findUnique({
         where: { id: workspaceId },
         select: {
@@ -39,10 +39,7 @@ export const deleteThemeTemplate = authenticatedProcedure
       });
       const userRole = getUserModeInWorkspace(user.id, workspace?.members);
       if (userRole === "guest")
-        throw new TRPCError({
-          code: "NOT_FOUND",
-          message: "Workspace not found",
-        });
+        throw new ORPCError("NOT_FOUND", { message: "Workspace not found" });
 
       const themeTemplate = (await prisma.themeTemplate.delete({
         where: {

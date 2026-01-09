@@ -4,8 +4,7 @@
   "scripts": {
     "dev": "mintlify dev --port 3004",
     "build": "bun check-broken-links",
-    "check-broken-links": "mintlify broken-links",
-    "api:generate": "dotenv -e ./.env -e ../../.env -- tsx --tsconfig ../builder/tsconfig.json ../builder/src/helpers/server/generateOpenApi.ts"
+    "check-broken-links": "mintlify broken-links"
   },
   "devDependencies": {
     "mintlify": "4.0.228",

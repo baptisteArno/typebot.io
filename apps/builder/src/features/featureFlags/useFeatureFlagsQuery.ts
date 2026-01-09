@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import { trpc } from "@/lib/queryClient";
+import { orpc } from "@/lib/queryClient";
 
 export const useFeatureFlagsQuery = () => {
-  const { data } = useQuery(trpc.getFeatureFlags.queryOptions());
+  const { data } = useQuery(orpc.getFeatureFlags.queryOptions());
 
   return data?.flags;
 };
