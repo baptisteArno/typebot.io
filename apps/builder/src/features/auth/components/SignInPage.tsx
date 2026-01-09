@@ -2,14 +2,16 @@ import { useTranslate } from "@tolgee/react";
 import { useRouter } from "next/router";
 import { Seo } from "@/components/Seo";
 import { TextLink } from "@/components/TextLink";
+import type { AvailableProviders } from "@/lib/auth/getAvailableProviders";
 import { SignInForm } from "./SignInForm";
 
 type Props = {
   type: "signin" | "signup";
   defaultEmail?: string;
+  availableProviders: AvailableProviders;
 };
 
-export const SignInPage = ({ type }: Props) => {
+export const SignInPage = ({ type, availableProviders }: Props) => {
   const { t } = useTranslate();
   const { query } = useRouter();
 
@@ -46,7 +48,10 @@ export const SignInPage = ({ type }: Props) => {
           )}
         </div>
 
-        <SignInForm defaultEmail={query.g?.toString()} />
+        <SignInForm
+          defaultEmail={query.g?.toString()}
+          availableProviders={availableProviders}
+        />
       </div>
     </div>
   );

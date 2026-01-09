@@ -11,19 +11,13 @@ import { FacebookLogo } from "@/components/logos/FacebookLogo";
 import { GitlabLogo } from "@/components/logos/GitlabLogo";
 import { KeycloackLogo } from "@/components/logos/KeycloakLogo";
 import { authClient, useSession } from "@/lib/auth/client";
+import type { AvailableProviders } from "@/lib/auth/getAvailableProviders";
 
-// Available providers configuration
-const availableProviders = {
-  github: !!process.env.NEXT_PUBLIC_GITHUB_ENABLED,
-  google: !!process.env.NEXT_PUBLIC_GOOGLE_ENABLED,
-  facebook: !!process.env.NEXT_PUBLIC_FACEBOOK_ENABLED,
-  gitlab: !!process.env.NEXT_PUBLIC_GITLAB_ENABLED,
-  microsoft: !!process.env.NEXT_PUBLIC_AZURE_ENABLED,
-  keycloak: !!process.env.NEXT_PUBLIC_KEYCLOAK_ENABLED,
-  customOAuth: !!process.env.NEXT_PUBLIC_CUSTOM_OAUTH_ENABLED,
+type Props = {
+  availableProviders: AvailableProviders;
 };
 
-export const SocialLoginButtons = () => {
+export const SocialLoginButtons = ({ availableProviders }: Props) => {
   const { t } = useTranslate();
   const { query } = useRouter();
   const { data: session, isPending } = useSession();
@@ -135,7 +129,7 @@ export const SocialLoginButtons = () => {
           variant="outline-secondary"
         >
           {t("auth.socialLogin.customButton.label", {
-            customProviderName: process.env.NEXT_PUBLIC_CUSTOM_OAUTH_NAME || "SSO",
+            customProviderName: availableProviders.customOAuthName || "SSO",
           })}
         </Button>
       )}

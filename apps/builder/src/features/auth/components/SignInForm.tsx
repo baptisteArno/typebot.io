@@ -15,6 +15,7 @@ import { useEffect, useState } from "react";
 import { TextLink } from "@/components/TextLink";
 import { toast } from "@/lib/toast";
 import { authClient, useSession } from "@/lib/auth/client";
+import type { AvailableProviders } from "@/lib/auth/getAvailableProviders";
 import { createEmailMagicLink } from "../helpers/createEmailMagicLink";
 import { DividerWithText } from "./DividerWithText";
 import { SignInError } from "./SignInError";
@@ -23,19 +24,10 @@ import { SocialLoginButtons } from "./SocialLoginButtons";
 type Props = {
   defaultEmail?: string;
   className?: string;
+  availableProviders: AvailableProviders;
 };
 
-// Available providers configuration (matches server config)
-const availableProviders = {
-  github: !!process.env.NEXT_PUBLIC_GITHUB_ENABLED,
-  google: !!process.env.NEXT_PUBLIC_GOOGLE_ENABLED,
-  facebook: !!process.env.NEXT_PUBLIC_FACEBOOK_ENABLED,
-  gitlab: !!process.env.NEXT_PUBLIC_GITLAB_ENABLED,
-  microsoft: !!process.env.NEXT_PUBLIC_AZURE_ENABLED,
-  email: !!process.env.NEXT_PUBLIC_EMAIL_ENABLED,
-};
-
-export const SignInForm = ({ defaultEmail, className }: Props) => {
+export const SignInForm = ({ defaultEmail, className, availableProviders }: Props) => {
   const { t } = useTranslate();
   const router = useRouter();
   const [authError, setAuthError] = useQueryState("error");
@@ -48,7 +40,9 @@ export const SignInForm = ({ defaultEmail, className }: Props) => {
   const [isMagicCodeSent, setIsMagicCodeSent] = useState(false);
 
   // Check if any provider is configured
-  const hasNoAuthProvider = !Object.values(availableProviders).some(Boolean);
+  const hasNoAuthProvider = !Object.entries(availableProviders).some(
+    ([key, value]) => key !== "customOAuthName" && value
+  );
 
   useEffect(() => {
     if (session?.user) {
@@ -131,7 +125,7 @@ export const SignInForm = ({ defaultEmail, className }: Props) => {
     <div className={cn("flex flex-col gap-6 w-[330px]", className)}>
       {!isMagicCodeSent && (
         <>
-          <SocialLoginButtons />
+          <SocialLoginButtons availableProviders={availableProviders} />
           {availableProviders.email && (
             <>
               <DividerWithText>{t("auth.orEmailLabel")}</DividerWithText>
