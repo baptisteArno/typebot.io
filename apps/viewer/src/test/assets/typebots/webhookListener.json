@@ -1,0 +1,102 @@
+{
+  "version": "6.1",
+  "id": "cmk6xzj6g000494vw0t253gx0",
+  "name": "My typebot",
+  "events": [
+    {
+      "id": "jec2te2h9fx8sfb0g992msne",
+      "outgoingEdgeId": "ifiymh8eqem88ivkvgi7ce4l",
+      "graphCoordinates": { "x": 0, "y": 0 },
+      "type": "start"
+    }
+  ],
+  "groups": [
+    {
+      "id": "bv0ahcxo42gs3m8oudn9lcm1",
+      "title": "Group #1",
+      "graphCoordinates": { "x": 275.87, "y": 40.13 },
+      "blocks": [
+        {
+          "id": "akrcry4v5o0eywxi2di2j35t",
+          "type": "Set variable",
+          "options": {
+            "variableId": "vn4mh7ismcyfwqgnthpqlajct",
+            "type": "Result ID"
+          }
+        },
+        {
+          "id": "uofjl80hmaz3y3etmgpmyrq7",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [{ "text": "{{Result ID}}" }],
+                "id": "IsxhifNS9e"
+              }
+            ]
+          }
+        },
+        {
+          "id": "w5z70e8hjass23tke8vs367o",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "id": "N3A5ugKicT",
+                "type": "p",
+                "children": [{ "text": "Waiting for webhook..." }]
+              }
+            ]
+          }
+        },
+        {
+          "id": "k1q2uoeat8xp7easiuwr6r56",
+          "type": "webhook"
+        },
+        {
+          "id": "zqsr4djo1q8j1rkzehggpqn3",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "id": "RvPGnZeguS",
+                "type": "p",
+                "children": [{ "text": "Hurray!" }]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "ifiymh8eqem88ivkvgi7ce4l",
+      "from": { "eventId": "jec2te2h9fx8sfb0g992msne" },
+      "to": { "groupId": "bv0ahcxo42gs3m8oudn9lcm1" }
+    }
+  ],
+  "variables": [
+    {
+      "id": "vn4mh7ismcyfwqgnthpqlajct",
+      "name": "Result ID",
+      "isSessionVariable": true
+    }
+  ],
+  "theme": {},
+  "selectedThemeTemplateId": null,
+  "settings": {},
+  "createdAt": "2026-01-09T13:58:59.032Z",
+  "updatedAt": "2026-01-09T13:59:44.634Z",
+  "icon": null,
+  "folderId": null,
+  "publicId": null,
+  "customDomain": null,
+  "workspaceId": "proWorkspace",
+  "resultsTablePreferences": null,
+  "isArchived": false,
+  "isClosed": false,
+  "whatsAppCredentialsId": null,
+  "riskLevel": null
+}
