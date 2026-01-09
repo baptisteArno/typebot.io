@@ -7,14 +7,11 @@ import { z } from "@typebot.io/zod";
 import { getUserModeInWorkspace } from "@/features/workspace/helpers/getUserRoleInWorkspace";
 
 export const updateFolder = authenticatedProcedure
-  .meta({
-    openapi: {
-      method: "PATCH",
-      path: "/v1/folders/{folderId}",
-      protect: true,
-      summary: "Update a folder",
-      tags: ["Folder"],
-    },
+  .route({
+    method: "PATCH",
+    path: "/v1/folders/{folderId}",
+    summary: "Update a folder",
+    tags: ["Folder"],
   })
   .input(
     z.object({

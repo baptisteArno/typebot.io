@@ -11,14 +11,11 @@ import { z } from "@typebot.io/zod";
 import { canWriteTypebots } from "@/helpers/databaseRules";
 
 export const unsubscribeHttpRequest = authenticatedProcedure
-  .meta({
-    openapi: {
-      method: "POST",
-      path: "/v1/typebots/{typebotId}/webhookBlocks/{blockId}/unsubscribe",
-      protect: true,
-      summary: "Unsubscribe from HTTP request block",
-      tags: ["HTTP request"],
-    },
+  .route({
+    method: "POST",
+    path: "/v1/typebots/{typebotId}/webhookBlocks/{blockId}/unsubscribe",
+    summary: "Unsubscribe from HTTP request block",
+    tags: ["HTTP request"],
   })
   .input(
     z.object({

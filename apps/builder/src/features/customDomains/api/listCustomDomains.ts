@@ -6,14 +6,11 @@ import { z } from "@typebot.io/zod";
 import { isReadWorkspaceFobidden } from "@/features/workspace/helpers/isReadWorkspaceFobidden";
 
 export const listCustomDomains = authenticatedProcedure
-  .meta({
-    openapi: {
-      method: "GET",
-      path: "/v1/custom-domains",
-      protect: true,
-      summary: "List custom domains",
-      tags: ["Custom domains"],
-    },
+  .route({
+    method: "GET",
+    path: "/v1/custom-domains",
+    summary: "List custom domains",
+    tags: ["Custom domains"],
   })
   .input(
     z.object({

@@ -6,14 +6,11 @@ import { z } from "@typebot.io/zod";
 import { getUserModeInWorkspace } from "@/features/workspace/helpers/getUserRoleInWorkspace";
 
 export const getFolder = authenticatedProcedure
-  .meta({
-    openapi: {
-      method: "GET",
-      path: "/v1/folders/{folderId}",
-      protect: true,
-      summary: "Get folder",
-      tags: ["Folder"],
-    },
+  .route({
+    method: "GET",
+    path: "/v1/folders/{folderId}",
+    summary: "Get folder",
+    tags: ["Folder"],
   })
   .input(
     z.object({

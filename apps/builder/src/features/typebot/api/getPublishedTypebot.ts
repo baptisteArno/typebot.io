@@ -12,14 +12,11 @@ import type { Typebot } from "@typebot.io/typebot/schemas/typebot";
 import { z } from "@typebot.io/zod";
 
 export const getPublishedTypebot = authenticatedProcedure
-  .meta({
-    openapi: {
-      method: "GET",
-      path: "/v1/typebots/{typebotId}/publishedTypebot",
-      protect: true,
-      summary: "Get published typebot",
-      tags: ["Typebot"],
-    },
+  .route({
+    method: "GET",
+    path: "/v1/typebots/{typebotId}/publishedTypebot",
+    summary: "Get published typebot",
+    tags: ["Typebot"],
   })
   .input(
     z.object({

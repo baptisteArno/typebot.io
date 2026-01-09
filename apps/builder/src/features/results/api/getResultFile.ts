@@ -20,6 +20,13 @@ export const getResultFile = authenticatedProcedure
       fileName: z.string(),
     }),
   )
+  .output(
+    z.object({
+      headers: z.object({
+        location: z.string(),
+      }),
+    }),
+  )
   .handler(
     async ({ input: { typebotId, resultId, fileName }, context: { user } }) => {
       const typebot = await prisma.typebot.findFirst({

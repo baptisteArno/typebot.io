@@ -17,14 +17,11 @@ import {
 const MAX_LIMIT = 500;
 
 export const getResults = authenticatedProcedure
-  .meta({
-    openapi: {
-      method: "GET",
-      path: "/v1/typebots/{typebotId}/results",
-      protect: true,
-      summary: "List results ordered by descending creation date",
-      tags: ["Results"],
-    },
+  .route({
+    method: "GET",
+    path: "/v1/typebots/{typebotId}/results",
+    summary: "List results ordered by descending creation date",
+    tags: ["Results"],
   })
   .input(
     z.object({

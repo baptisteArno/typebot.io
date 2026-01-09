@@ -7,14 +7,11 @@ import { z } from "@typebot.io/zod";
 import { isWriteTypebotForbidden } from "@/features/typebot/helpers/isWriteTypebotForbidden";
 
 export const deleteResults = authenticatedProcedure
-  .meta({
-    openapi: {
-      method: "DELETE",
-      path: "/v1/typebots/{typebotId}/results",
-      protect: true,
-      summary: "Delete results",
-      tags: ["Results"],
-    },
+  .route({
+    method: "DELETE",
+    path: "/v1/typebots/{typebotId}/results",
+    summary: "Delete results",
+    tags: ["Results"],
   })
   .input(
     z.object({

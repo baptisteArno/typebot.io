@@ -5,14 +5,11 @@ import { z } from "@typebot.io/zod";
 import { isWriteTypebotForbidden } from "../helpers/isWriteTypebotForbidden";
 
 export const unpublishTypebot = authenticatedProcedure
-  .meta({
-    openapi: {
-      method: "POST",
-      path: "/v1/typebots/{typebotId}/unpublish",
-      protect: true,
-      summary: "Unpublish a typebot",
-      tags: ["Typebot"],
-    },
+  .route({
+    method: "POST",
+    path: "/v1/typebots/{typebotId}/unpublish",
+    summary: "Unpublish a typebot",
+    tags: ["Typebot"],
   })
   .input(
     z.object({

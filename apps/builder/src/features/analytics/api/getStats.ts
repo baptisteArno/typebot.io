@@ -11,14 +11,11 @@ import {
 } from "../helpers/parseDateFromTimeFilter";
 
 export const getStats = authenticatedProcedure
-  .meta({
-    openapi: {
-      method: "GET",
-      path: "/v1/typebots/{typebotId}/analytics/stats",
-      protect: true,
-      summary: "Get results stats",
-      tags: ["Analytics"],
-    },
+  .route({
+    method: "GET",
+    path: "/v1/typebots/{typebotId}/analytics/stats",
+    summary: "Get results stats",
+    tags: ["Analytics"],
   })
   .input(
     z.object({

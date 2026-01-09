@@ -6,14 +6,11 @@ import { isReadTypebotForbidden } from "@typebot.io/typebot/helpers/isReadTypebo
 import { z } from "@typebot.io/zod";
 
 export const getResult = authenticatedProcedure
-  .meta({
-    openapi: {
-      method: "GET",
-      path: "/v1/typebots/{typebotId}/results/{resultId}",
-      protect: true,
-      summary: "Get result by id",
-      tags: ["Results"],
-    },
+  .route({
+    method: "GET",
+    path: "/v1/typebots/{typebotId}/results/{resultId}",
+    summary: "Get result by id",
+    tags: ["Results"],
   })
   .input(
     z.object({

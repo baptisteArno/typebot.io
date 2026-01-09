@@ -6,14 +6,11 @@ import { z } from "@typebot.io/zod";
 import { getUserModeInWorkspace } from "@/features/workspace/helpers/getUserRoleInWorkspace";
 
 export const deleteFolder = authenticatedProcedure
-  .meta({
-    openapi: {
-      method: "DELETE",
-      path: "/v1/folders/{folderId}",
-      protect: true,
-      summary: "Delete a folder",
-      tags: ["Folder"],
-    },
+  .route({
+    method: "DELETE",
+    path: "/v1/folders/{folderId}",
+    summary: "Delete a folder",
+    tags: ["Folder"],
   })
   .input(
     z.object({

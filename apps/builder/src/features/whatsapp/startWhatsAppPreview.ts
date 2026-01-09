@@ -18,14 +18,11 @@ import { sendWhatsAppMessage } from "@typebot.io/whatsapp/sendWhatsAppMessage";
 import { z } from "@typebot.io/zod";
 
 export const startWhatsAppPreview = authenticatedProcedure
-  .meta({
-    openapi: {
-      method: "POST",
-      path: "/v1/typebots/{typebotId}/whatsapp/start-preview",
-      summary: "Start preview",
-      tags: ["WhatsApp"],
-      protect: true,
-    },
+  .route({
+    method: "POST",
+    path: "/v1/typebots/{typebotId}/whatsapp/start-preview",
+    summary: "Start preview",
+    tags: ["WhatsApp"],
   })
   .input(
     z.object({

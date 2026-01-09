@@ -11,14 +11,11 @@ import { z } from "@typebot.io/zod";
 import { canWriteTypebots } from "@/helpers/databaseRules";
 
 export const subscribeHttpRequest = authenticatedProcedure
-  .meta({
-    openapi: {
-      method: "POST",
-      path: "/v1/typebots/{typebotId}/webhookBlocks/{blockId}/subscribe",
-      protect: true,
-      summary: "Subscribe to HTTP request block",
-      tags: ["HTTP request"],
-    },
+  .route({
+    method: "POST",
+    path: "/v1/typebots/{typebotId}/webhookBlocks/{blockId}/subscribe",
+    summary: "Subscribe to HTTP request block",
+    tags: ["HTTP request"],
   })
   .input(
     z.object({

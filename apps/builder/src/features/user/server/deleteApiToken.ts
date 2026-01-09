@@ -12,13 +12,10 @@ const apiTokenSchema = z.object({
 });
 
 export const deleteApiToken = authenticatedProcedure
-  .meta({
-    openapi: {
-      method: "DELETE",
-      path: "/v1/users/me/api-tokens/{tokenId}",
-      tags: ["User"],
-      protect: true,
-    },
+  .route({
+    method: "DELETE",
+    path: "/v1/users/me/api-tokens/{tokenId}",
+    tags: ["User"],
   })
   .input(
     z.object({

@@ -14,14 +14,11 @@ const collaboratorWithUserSchema = collaboratorSchema.extend({
 });
 
 export const getCollaborators = authenticatedProcedure
-  .meta({
-    openapi: {
-      method: "GET",
-      path: "/v1/typebots/{typebotId}/collaborators",
-      protect: true,
-      summary: "Get collaborators",
-      tags: ["Collaborators"],
-    },
+  .route({
+    method: "GET",
+    path: "/v1/typebots/{typebotId}/collaborators",
+    summary: "Get collaborators",
+    tags: ["Collaborators"],
   })
   .input(
     z.object({

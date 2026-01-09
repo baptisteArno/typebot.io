@@ -10,13 +10,10 @@ export const updateUser = authenticatedProcedure
     }),
   )
   .output(clientUserSchema)
-  .meta({
-    openapi: {
-      method: "PATCH",
-      path: "/v1/users/me",
-      tags: ["User"],
-      protect: true,
-    },
+  .route({
+    method: "PATCH",
+    path: "/v1/users/me",
+    tags: ["User"],
   })
   .handler(async ({ context: { user }, input: { updates } }) => {
     const updatedUser = await prisma.user.update({

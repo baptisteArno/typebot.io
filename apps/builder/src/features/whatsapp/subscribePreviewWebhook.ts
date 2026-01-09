@@ -4,13 +4,11 @@ import { env } from "@typebot.io/env";
 import { z } from "@typebot.io/zod";
 
 export const subscribePreviewWebhook = publicProcedure
-  .meta({
-    openapi: {
-      method: "GET",
-      path: "/v1/whatsapp/preview/webhook",
-      summary: "Subscribe webhook",
-      tags: ["WhatsApp"],
-    },
+  .route({
+    method: "GET",
+    path: "/v1/whatsapp/preview/webhook",
+    summary: "Subscribe webhook",
+    tags: ["WhatsApp"],
   })
   .input(
     z.object({

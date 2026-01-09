@@ -16,14 +16,11 @@ import type {
 } from "../types";
 
 export const verifyCustomDomain = authenticatedProcedure
-  .meta({
-    openapi: {
-      method: "GET",
-      path: "/v1/custom-domains/{name}/verify",
-      protect: true,
-      summary: "Verify domain config",
-      tags: ["Custom domains"],
-    },
+  .route({
+    method: "GET",
+    path: "/v1/custom-domains/{name}/verify",
+    summary: "Verify domain config",
+    tags: ["Custom domains"],
   })
   .input(
     z.object({

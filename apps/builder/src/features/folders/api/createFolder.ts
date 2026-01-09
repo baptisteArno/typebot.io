@@ -9,14 +9,11 @@ import { z } from "@typebot.io/zod";
 import { getUserModeInWorkspace } from "@/features/workspace/helpers/getUserRoleInWorkspace";
 
 export const createFolder = authenticatedProcedure
-  .meta({
-    openapi: {
-      method: "POST",
-      path: "/v1/folders",
-      protect: true,
-      summary: "Create a folder",
-      tags: ["Folder"],
-    },
+  .route({
+    method: "POST",
+    path: "/v1/folders",
+    summary: "Create a folder",
+    tags: ["Folder"],
   })
   .input(
     z.object({

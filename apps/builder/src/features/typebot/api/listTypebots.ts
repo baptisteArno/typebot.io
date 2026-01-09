@@ -7,14 +7,11 @@ import { z } from "@typebot.io/zod";
 import { getUserModeInWorkspace } from "@/features/workspace/helpers/getUserRoleInWorkspace";
 
 export const listTypebots = authenticatedProcedure
-  .meta({
-    openapi: {
-      method: "GET",
-      path: "/v1/typebots",
-      protect: true,
-      summary: "List typebots",
-      tags: ["Typebot"],
-    },
+  .route({
+    method: "GET",
+    path: "/v1/typebots",
+    summary: "List typebots",
+    tags: ["Typebot"],
   })
   .input(
     z.object({

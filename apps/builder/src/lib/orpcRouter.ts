@@ -98,11 +98,11 @@ const privateRouter = {
 };
 
 export const appRouter = {
-  ...privateRouter,
   ...publicRouter,
+  ...privateRouter,
   billing: {
-    ...billingPrivateRouter,
     ...billingPublicRouter,
+    ...billingPrivateRouter,
   },
 };
 

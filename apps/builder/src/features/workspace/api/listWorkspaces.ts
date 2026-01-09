@@ -5,16 +5,12 @@ import { workspaceSchema } from "@typebot.io/workspaces/schemas";
 import { z } from "@typebot.io/zod";
 
 export const listWorkspaces = authenticatedProcedure
-  .meta({
-    openapi: {
-      method: "GET",
-      path: "/v1/workspaces",
-      protect: true,
-      summary: "List workspaces",
-      tags: ["Workspace"],
-    },
+  .route({
+    method: "GET",
+    path: "/v1/workspaces",
+    summary: "List workspaces",
+    tags: ["Workspace"],
   })
-  .input(z.void())
   .output(
     z.object({
       workspaces: z.array(

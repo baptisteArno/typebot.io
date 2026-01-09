@@ -10,14 +10,11 @@ import {
 import { z } from "@typebot.io/zod";
 
 export const createWorkspace = authenticatedProcedure
-  .meta({
-    openapi: {
-      method: "POST",
-      path: "/v1/workspaces",
-      protect: true,
-      summary: "Create workspace",
-      tags: ["Workspace"],
-    },
+  .route({
+    method: "POST",
+    path: "/v1/workspaces",
+    summary: "Create workspace",
+    tags: ["Workspace"],
   })
   .input(z.object({ icon: z.string().optional(), name: z.string() }))
   .output(

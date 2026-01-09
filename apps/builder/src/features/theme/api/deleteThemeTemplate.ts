@@ -9,14 +9,11 @@ import { z } from "@typebot.io/zod";
 import { getUserModeInWorkspace } from "@/features/workspace/helpers/getUserRoleInWorkspace";
 
 export const deleteThemeTemplate = authenticatedProcedure
-  .meta({
-    openapi: {
-      method: "DELETE",
-      path: "/v1/themeTemplates/{themeTemplateId}",
-      protect: true,
-      summary: "Delete a theme template",
-      tags: ["Theme template"],
-    },
+  .route({
+    method: "DELETE",
+    path: "/v1/themeTemplates/{themeTemplateId}",
+    summary: "Delete a theme template",
+    tags: ["Theme template"],
   })
   .input(
     z.object({

@@ -31,14 +31,11 @@ const warningSchema = z.object({
 });
 type Warning = z.infer<typeof warningSchema>;
 export const publishTypebot = authenticatedProcedure
-  .meta({
-    openapi: {
-      method: "POST",
-      path: "/v1/typebots/{typebotId}/publish",
-      protect: true,
-      summary: "Publish a typebot",
-      tags: ["Typebot"],
-    },
+  .route({
+    method: "POST",
+    path: "/v1/typebots/{typebotId}/publish",
+    summary: "Publish a typebot",
+    tags: ["Typebot"],
   })
   .input(
     z.object({

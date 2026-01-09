@@ -15,15 +15,11 @@ import {
 import { edgeWithTotalVisitsSchema, totalAnswersSchema } from "../schemas";
 
 export const getInDepthAnalyticsData = authenticatedProcedure
-  .meta({
-    openapi: {
-      method: "GET",
-      path: "/v1/typebots/{typebotId}/analytics/inDepthData",
-      protect: true,
-      summary:
-        "List total answers in blocks and off-default paths visited edges",
-      tags: ["Analytics"],
-    },
+  .route({
+    method: "GET",
+    path: "/v1/typebots/{typebotId}/analytics/inDepthData",
+    summary: "List total answers in blocks and off-default paths visited edges",
+    tags: ["Analytics"],
   })
   .input(
     z.object({

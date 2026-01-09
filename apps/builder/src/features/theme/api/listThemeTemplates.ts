@@ -9,14 +9,11 @@ import { z } from "@typebot.io/zod";
 import { getUserModeInWorkspace } from "@/features/workspace/helpers/getUserRoleInWorkspace";
 
 export const listThemeTemplates = authenticatedProcedure
-  .meta({
-    openapi: {
-      method: "GET",
-      path: "/v1/themeTemplates",
-      protect: true,
-      summary: "List theme templates",
-      tags: ["Theme template"],
-    },
+  .route({
+    method: "GET",
+    path: "/v1/themeTemplates",
+    summary: "List theme templates",
+    tags: ["Theme template"],
   })
   .input(z.object({ workspaceId: z.string() }))
   .output(

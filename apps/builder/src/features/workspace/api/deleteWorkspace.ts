@@ -9,14 +9,11 @@ import Stripe from "stripe";
 import { isAdminWriteWorkspaceForbidden } from "../helpers/isAdminWriteWorkspaceForbidden";
 
 export const deleteWorkspace = authenticatedProcedure
-  .meta({
-    openapi: {
-      method: "DELETE",
-      path: "/v1/workspaces/{workspaceId}",
-      protect: true,
-      summary: "Delete workspace",
-      tags: ["Workspace"],
-    },
+  .route({
+    method: "DELETE",
+    path: "/v1/workspaces/{workspaceId}",
+    summary: "Delete workspace",
+    tags: ["Workspace"],
   })
   .input(
     z.object({

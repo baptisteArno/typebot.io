@@ -9,15 +9,11 @@ const apiTokenSchema = z.object({
 });
 
 export const listApiTokens = authenticatedProcedure
-  .meta({
-    openapi: {
-      method: "GET",
-      path: "/v1/users/me/api-tokens",
-      tags: ["User"],
-      protect: true,
-    },
+  .route({
+    method: "GET",
+    path: "/v1/users/me/api-tokens",
+    tags: ["User"],
   })
-  .input(z.void())
   .output(
     z.object({
       apiTokens: z.array(apiTokenSchema),

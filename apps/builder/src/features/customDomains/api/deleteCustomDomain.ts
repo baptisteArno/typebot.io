@@ -8,14 +8,11 @@ import { HTTPError } from "ky";
 import { isWriteWorkspaceForbidden } from "@/features/workspace/helpers/isWriteWorkspaceForbidden";
 
 export const deleteCustomDomain = authenticatedProcedure
-  .meta({
-    openapi: {
-      method: "DELETE",
-      path: "/v1/custom-domains/{name}",
-      protect: true,
-      summary: "Delete custom domain",
-      tags: ["Custom domains"],
-    },
+  .route({
+    method: "DELETE",
+    path: "/v1/custom-domains/{name}",
+    summary: "Delete custom domain",
+    tags: ["Custom domains"],
   })
   .input(
     z.object({

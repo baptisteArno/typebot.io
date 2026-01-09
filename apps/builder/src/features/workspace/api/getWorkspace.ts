@@ -19,14 +19,11 @@ const inAppWorkspaceSchema = workspaceSchema.omit({
 });
 
 export const getWorkspace = authenticatedProcedure
-  .meta({
-    openapi: {
-      method: "GET",
-      path: "/v1/workspaces/{workspaceId}",
-      protect: true,
-      summary: "Get workspace",
-      tags: ["Workspace"],
-    },
+  .route({
+    method: "GET",
+    path: "/v1/workspaces/{workspaceId}",
+    summary: "Get workspace",
+    tags: ["Workspace"],
   })
   .input(
     z.object({

@@ -6,14 +6,11 @@ import { z } from "@typebot.io/zod";
 import { isAdminWriteWorkspaceForbidden } from "../helpers/isAdminWriteWorkspaceForbidden";
 
 export const updateWorkspace = authenticatedProcedure
-  .meta({
-    openapi: {
-      method: "PATCH",
-      path: "/v1/workspaces/{workspaceId}",
-      protect: true,
-      summary: "Update workspace",
-      tags: ["Workspace"],
-    },
+  .route({
+    method: "PATCH",
+    path: "/v1/workspaces/{workspaceId}",
+    summary: "Update workspace",
+    tags: ["Workspace"],
   })
   .input(
     z.object({

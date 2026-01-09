@@ -9,16 +9,13 @@ import { fetchLinkedTypebots } from "@/features/blocks/logic/typebotLink/helpers
 import { canReadTypebots } from "@/helpers/databaseRules";
 
 export const getResultExample = authenticatedProcedure
-  .meta({
-    openapi: {
-      method: "GET",
-      path: "/v1/typebots/{typebotId}/webhookBlocks/{blockId}/getResultExample",
-      protect: true,
-      summary: "Get result example",
-      description:
-        'Returns "fake" result for http request block to help you anticipate how the webhook will behave.',
-      tags: ["HTTP request"],
-    },
+  .route({
+    method: "GET",
+    path: "/v1/typebots/{typebotId}/webhookBlocks/{blockId}/getResultExample",
+    summary: "Get result example",
+    description:
+      'Returns "fake" result for http request block to help you anticipate how the webhook will behave.',
+    tags: ["HTTP request"],
   })
   .input(
     z.object({

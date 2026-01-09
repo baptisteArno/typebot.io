@@ -6,14 +6,11 @@ import { z } from "@typebot.io/zod";
 import { isReadWorkspaceFobidden } from "../helpers/isReadWorkspaceFobidden";
 
 export const listMembersInWorkspace = authenticatedProcedure
-  .meta({
-    openapi: {
-      method: "GET",
-      path: "/v1/workspaces/{workspaceId}/members",
-      protect: true,
-      summary: "List members in workspace",
-      tags: ["Workspace"],
-    },
+  .route({
+    method: "GET",
+    path: "/v1/workspaces/{workspaceId}/members",
+    summary: "List members in workspace",
+    tags: ["Workspace"],
   })
   .input(
     z.object({

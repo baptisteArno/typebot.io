@@ -32,14 +32,11 @@ const output = z.object({
 });
 
 export const getLinkedTypebots = authenticatedProcedure
-  .meta({
-    openapi: {
-      method: "GET",
-      path: "/v1/typebots/{typebotId}/linkedTypebots",
-      protect: true,
-      summary: "Get linked typebots",
-      tags: ["Typebot"],
-    },
+  .route({
+    method: "GET",
+    path: "/v1/typebots/{typebotId}/linkedTypebots",
+    summary: "Get linked typebots",
+    tags: ["Typebot"],
   })
   .input(
     z.object({

@@ -11,13 +11,10 @@ const apiTokenWithTokenSchema = z.object({
 });
 
 export const createApiToken = authenticatedProcedure
-  .meta({
-    openapi: {
-      method: "POST",
-      path: "/v1/users/me/api-tokens",
-      tags: ["User"],
-      protect: true,
-    },
+  .route({
+    method: "POST",
+    path: "/v1/users/me/api-tokens",
+    tags: ["User"],
   })
   .input(
     z.object({

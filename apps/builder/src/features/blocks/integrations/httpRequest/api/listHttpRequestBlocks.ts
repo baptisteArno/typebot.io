@@ -10,16 +10,13 @@ import { z } from "@typebot.io/zod";
 import { canReadTypebots } from "@/helpers/databaseRules";
 
 export const listHttpRequestBlocks = authenticatedProcedure
-  .meta({
-    openapi: {
-      method: "GET",
-      path: "/v1/typebots/{typebotId}/webhookBlocks",
-      protect: true,
-      summary: "List HTTP request blocks",
-      description:
-        "Returns a list of all the HTTP request blocks that you can subscribe to.",
-      tags: ["HTTP request"],
-    },
+  .route({
+    method: "GET",
+    path: "/v1/typebots/{typebotId}/webhookBlocks",
+    summary: "List HTTP request blocks",
+    description:
+      "Returns a list of all the HTTP request blocks that you can subscribe to.",
+    tags: ["HTTP request"],
   })
   .input(
     z.object({

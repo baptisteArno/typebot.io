@@ -10,14 +10,11 @@ import { HTTPError } from "ky";
 import { isWriteWorkspaceForbidden } from "@/features/workspace/helpers/isWriteWorkspaceForbidden";
 
 export const createCustomDomain = authenticatedProcedure
-  .meta({
-    openapi: {
-      method: "POST",
-      path: "/v1/custom-domains",
-      protect: true,
-      summary: "Create custom domain",
-      tags: ["Custom domains"],
-    },
+  .route({
+    method: "POST",
+    path: "/v1/custom-domains",
+    summary: "Create custom domain",
+    tags: ["Custom domains"],
   })
   .input(
     z.object({

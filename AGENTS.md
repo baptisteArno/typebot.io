@@ -11,8 +11,7 @@
 
 - `bun install`: install workspace dependencies (Bun is the package manager).
 - `bun run typecheck`: typecheck apps (builder, viewer, landing-page, docs).
-- `bun run format-and-lint`: run Biome checks across the repo.
-- `bun run format-and-lint:fix`: apply Biome auto-fixes.
+- `bun run format-and-lint:fix`: run Biome checks across the repo and apply auto-fixes.
 
 ## Coding Style & Naming Conventions
 

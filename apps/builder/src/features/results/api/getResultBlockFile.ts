@@ -20,6 +20,13 @@ export const getResultBlockFile = authenticatedProcedure
       fileName: z.string(),
     }),
   )
+  .output(
+    z.object({
+      headers: z.object({
+        location: z.string(),
+      }),
+    }),
+  )
   .handler(
     async ({
       input: { typebotId, resultId, blockId, fileName },
