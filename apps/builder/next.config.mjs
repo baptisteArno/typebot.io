@@ -51,6 +51,13 @@ const nextConfig = {
     locales: ["en", "fr", "pt", "pt-BR", "de", "ro", "es", "it", "el"],
   },
   outputFileTracingRoot: join(__dirname, "../../"),
+  webpack: (config) => {
+    config.ignoreWarnings = [
+      { module: /@opentelemetry\/instrumentation/ },
+      { module: /require-in-the-middle/ },
+    ];
+    return config;
+  },
   headers: async () => {
     const isDev = process.env.NODE_ENV !== "production";
     return [
