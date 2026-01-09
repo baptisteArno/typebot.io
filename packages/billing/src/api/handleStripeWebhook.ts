@@ -9,7 +9,7 @@ import { Stripe } from "stripe";
 import { prices } from "../constants";
 
 export const stripeWebhookInputSchema = z.object({
-  body: z.unknown(),
+  body: z.string(),
   headers: z.object({
     "stripe-signature": z.string(),
   }),
@@ -20,7 +20,6 @@ export const handleStripeWebhook = async ({
 }: {
   input: z.infer<typeof stripeWebhookInputSchema>;
 }) => {
-  console.log("HELLO THERE");
   if (!env.STRIPE_WEBHOOK_SECRET)
     throw new ORPCError("INTERNAL_SERVER_ERROR", {
       message: "STRIPE_WEBHOOK_SECRET is missing",
@@ -42,7 +41,7 @@ export const handleStripeWebhook = async ({
   });
 
   const event = stripe.webhooks.constructEvent(
-    typeof body === "string" ? body : JSON.stringify(body),
+    body,
     sig,
     env.STRIPE_WEBHOOK_SECRET,
   );

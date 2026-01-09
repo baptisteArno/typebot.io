@@ -28,6 +28,7 @@
 - IMPORTANT: Only add a comment if a piece of logic is hard to grasp.
 - Prefer infer the return type of a function instead of declaring it.
 - Helper functions should be placed at the bottom of the file.
+- No brackets on if blocks if it's just 1 line
 
 ## Testing Guidelines
 
@@ -41,9 +42,9 @@
   - ✨ New product feature (product-facing only)
   - 💅 UI/UX improvement
   - 📚 Content (blog posts, docs)
-  - ✏️ Typo
-  - ♻️ Refactor
+  - ♻️ Refactoring
   - 🐛 Bug fix
+  - ✏️ Typo
   - 🔧 Internal changes (not user facing)
 - PRs should include a clear description, reproduction steps if fixing a bug, and screenshots/GIFs for UI changes.
 - Link related issues when applicable.

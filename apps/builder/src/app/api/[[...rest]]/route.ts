@@ -11,7 +11,41 @@ type RouteContext<_T> = {
   params: Promise<{ rest?: string[] }>;
 };
 
+const RAW_REQUEST_CONTEXT = Symbol("RAW_REQUEST_CONTEXT");
+
 const handler = new OpenAPIHandler(appRouter, {
+  adapterInterceptors: [
+    (options) =>
+      options.next({
+        ...options,
+        context: {
+          ...options.context,
+          [RAW_REQUEST_CONTEXT as unknown as string]: {
+            fetchRequest: options.request,
+          },
+        },
+      }),
+  ],
+  rootInterceptors: [
+    (options) => {
+      if (!options.request.url.pathname.includes("/stripe/webhook"))
+        return options.next();
+
+      const rawContext = (options.context as Record<symbol, unknown>)[
+        RAW_REQUEST_CONTEXT
+      ] as { fetchRequest: Request } | undefined;
+
+      if (!rawContext?.fetchRequest) return options.next();
+
+      return options.next({
+        ...options,
+        request: {
+          ...options.request,
+          body: () => rawContext.fetchRequest.text(),
+        },
+      });
+    },
+  ],
   plugins: [
     new OpenAPIReferencePlugin({
       specPath: "/openapi.json",
