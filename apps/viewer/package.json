@@ -11,7 +11,7 @@
   "dependencies": {
     "partysocket": "^1.0.2",
     "@planetscale/database": "^1.8.0",
-    "@sentry/nextjs": "^10.8.0",
+    "@sentry/nextjs": "^10.32.1",
     "@orpc/server": "^1.12.3",
     "@orpc/openapi": "^1.12.3",
     "@orpc/zod": "^1.12.3",

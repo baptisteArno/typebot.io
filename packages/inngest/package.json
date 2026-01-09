@@ -7,14 +7,15 @@
     "dev": "inngest-cli dev"
   },
   "dependencies": {
-    "inngest": "^3.45.1",
+    "inngest": "^3.49.0",
     "@typebot.io/env": "workspace:*",
     "@typebot.io/results": "workspace:*",
     "@inngest/realtime": "^0.4.5",
-    "@typebot.io/emails": "workspace:*"
+    "@typebot.io/emails": "workspace:*",
+    "@opentelemetry/winston-transport": "^0.19.0"
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*",
-    "inngest-cli": "^1.13.7"
+    "inngest-cli": "^1.16.0"
   }
 }
