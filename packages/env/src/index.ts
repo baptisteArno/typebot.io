@@ -78,6 +78,16 @@ const baseEnv = {
     // App name for branding in emails
     APP_NAME: z.string().optional().default("Typebot"),
     DISABLE_SIGNUP: boolean.optional().default("false"),
+    // Email domain filtering: comma-separated list of allowed domains
+    // When set, only emails from these domains can sign in
+    // When not set, all email domains are allowed
+    ALLOWED_EMAIL_DOMAINS: z
+      .string()
+      .optional()
+      .transform((val) => val?.split(",").map((d) => d.trim().toLowerCase())),
+    // Enable/disable email-based magic link signin
+    // When false or not set, only OAuth providers are available
+    EMAIL_LOGIN_ENABLED: boolean.optional().default("false"),
     ADMIN_EMAIL: z
       .string()
       .min(1)

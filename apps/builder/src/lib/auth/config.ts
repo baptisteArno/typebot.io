@@ -3,6 +3,7 @@ import prisma from "@typebot.io/prisma";
 import { Plan } from "@typebot.io/prisma/enum";
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
+import { APIError } from "better-auth/api";
 import { admin } from "better-auth/plugins/admin";
 import { genericOAuth } from "better-auth/plugins/generic-oauth";
 import { magicLink } from "better-auth/plugins/magic-link";
@@ -22,6 +23,27 @@ function getDefaultWorkspacePlan(userEmail: string): Plan {
     return defaultPlan;
   }
   return Plan.FREE;
+}
+
+/**
+ * Validates if an email domain is allowed based on ALLOWED_EMAIL_DOMAINS env var.
+ * When ALLOWED_EMAIL_DOMAINS is set, only emails from those domains can sign in.
+ * When not set, all email domains are allowed.
+ */
+function isEmailDomainAllowed(email: string): boolean {
+  const allowedDomains = env.ALLOWED_EMAIL_DOMAINS;
+
+  // If no domains configured, allow all
+  if (!allowedDomains || allowedDomains.length === 0) {
+    return true;
+  }
+
+  const emailDomain = email.split("@")[1]?.toLowerCase();
+  if (!emailDomain) {
+    return false;
+  }
+
+  return allowedDomains.includes(emailDomain);
 }
 
 export const auth = betterAuth({
@@ -66,12 +88,16 @@ export const auth = betterAuth({
       defaultRole: "user",
     }),
 
-    // Magic link plugin for email-based signin
-    magicLink({
-      sendMagicLink: async ({ email, url }) => {
-        await sendVerificationEmail({ email, url });
-      },
-    }),
+    // Magic link plugin for email-based signin (when EMAIL_LOGIN_ENABLED=true)
+    ...(env.EMAIL_LOGIN_ENABLED
+      ? [
+          magicLink({
+            sendMagicLink: async ({ email, url }) => {
+              await sendVerificationEmail({ email, url });
+            },
+          }),
+        ]
+      : []),
 
     // Generic OAuth for custom OIDC providers
     ...(env.CUSTOM_OAUTH_ISSUER
@@ -129,10 +155,26 @@ export const auth = betterAuth({
     },
   },
 
-  // Database hooks for workspace creation
+  // Database hooks for domain filtering and workspace creation
   databaseHooks: {
     user: {
       create: {
+        before: async (user) => {
+          if (!user.email) {
+            throw new APIError("BAD_REQUEST", {
+              message: "Email is required",
+            });
+          }
+
+          if (!isEmailDomainAllowed(user.email)) {
+            const allowedDomains = env.ALLOWED_EMAIL_DOMAINS?.join(", ");
+            throw new APIError("FORBIDDEN", {
+              message: `Sign-in is restricted to authorized email domains: ${allowedDomains}`,
+            });
+          }
+
+          return { data: user };
+        },
         after: async (user) => {
           // Create initial workspace for new users
           const plan = getDefaultWorkspacePlan(user.email);

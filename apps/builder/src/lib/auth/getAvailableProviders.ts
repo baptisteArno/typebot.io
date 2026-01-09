@@ -40,6 +40,7 @@ export function getAvailableProviders(): AvailableProviders {
       env.CUSTOM_OAUTH_ISSUER
     ),
     customOAuthName: env.CUSTOM_OAUTH_NAME,
-    email: !!(env.NEXT_PUBLIC_SMTP_FROM && !env.SMTP_AUTH_DISABLED),
+    // Email/magic link controlled by EMAIL_LOGIN_ENABLED env var
+    email: env.EMAIL_LOGIN_ENABLED,
   };
 }
