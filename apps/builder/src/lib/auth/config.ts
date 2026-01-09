@@ -18,10 +18,12 @@ export const auth = betterAuth({
 
   // Cross-subdomain SSO configuration
   advanced: {
-    crossSubDomainCookies: {
-      enabled: true,
-      domain: ".usefoundry.ai",
-    },
+    crossSubDomainCookies: env.AUTH_COOKIE_DOMAIN
+      ? {
+          enabled: true,
+          domain: env.AUTH_COOKIE_DOMAIN,
+        }
+      : { enabled: false },
     defaultCookieAttributes: {
       sameSite: "lax",
       secure: process.env.NODE_ENV === "production",

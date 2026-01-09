@@ -73,6 +73,10 @@ const baseEnv = {
     ),
     // Builder app URL (for viewer to link back to dashboard)
     BUILDER_URL: z.string().url().optional(),
+    // Cookie domain for cross-subdomain SSO (e.g., ".example.com")
+    AUTH_COOKIE_DOMAIN: z.string().optional(),
+    // App name for branding in emails
+    APP_NAME: z.string().optional().default("Typebot"),
     DISABLE_SIGNUP: boolean.optional().default("false"),
     ADMIN_EMAIL: z
       .string()

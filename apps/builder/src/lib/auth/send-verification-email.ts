@@ -1,4 +1,5 @@
 import { sendEmail } from "@typebot.io/emails/helpers/sendEmail";
+import { env } from "@typebot.io/env";
 
 type SendVerificationEmailProps = {
   email: string;
@@ -11,9 +12,10 @@ export async function sendVerificationEmail({
   url,
   otp,
 }: SendVerificationEmailProps): Promise<void> {
+  const appName = env.APP_NAME;
   const subject = otp
     ? `Your verification code: ${otp}`
-    : "Sign in to your account";
+    : `Sign in to ${appName}`;
 
   const body = otp
     ? `Your verification code is: <strong>${otp}</strong><br/><br/>This code expires in 5 minutes.`
@@ -24,7 +26,7 @@ export async function sendVerificationEmail({
     subject,
     html: `
       <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
-        <h2>Sign in to Foundry</h2>
+        <h2>Sign in to ${appName}</h2>
         <p>${body}</p>
         <p style="color: #666; font-size: 12px;">
           If you did not request this, you can safely ignore this email.
