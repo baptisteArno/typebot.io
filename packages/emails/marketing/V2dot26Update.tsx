@@ -4,7 +4,7 @@ import { NewsletterLayout } from "./components/NewsletterLayout";
 import { NewsletterSection } from "./components/NewsletterSection";
 import { hr, text } from "./styles";
 
-const imagesBaseUrl = `${env.NEXTAUTH_URL}/images/emails/V2dot26Update`;
+const imagesBaseUrl = `${env.BETTER_AUTH_URL}/images/emails/V2dot26Update`;
 
 export const V2dot26Update = () => (
   <NewsletterLayout preview="Unveiling Typebot's Latest Innovations - v2.26 Update! 🌟">

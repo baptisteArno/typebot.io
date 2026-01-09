@@ -32,7 +32,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const oauth2Client = new OAuth2Client(
       env.GOOGLE_SHEETS_CLIENT_ID,
       env.GOOGLE_SHEETS_CLIENT_SECRET,
-      `${env.NEXTAUTH_URL}/api/credentials/google-sheets/callback`,
+      `${env.BETTER_AUTH_URL}/api/credentials/google-sheets/callback`,
     );
     const { tokens } = await oauth2Client.getToken(code);
     if (!tokens?.access_token) {

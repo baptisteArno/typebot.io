@@ -34,7 +34,7 @@ const parseChatwootOpenCode = ({
   if(window.Typebot?.unmount) window.Typebot.unmount();
   window.$chatwoot.setCustomAttributes({
     typebot_result_url: "${
-      env.NEXTAUTH_URL
+      env.BETTER_AUTH_URL
     }/typebots/${typebotId}/results?id=${resultId}",
   });
   window.$chatwoot.toggle("open");

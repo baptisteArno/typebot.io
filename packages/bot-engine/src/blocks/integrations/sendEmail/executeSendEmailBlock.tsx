@@ -301,7 +301,7 @@ const getEmailBody = async ({
   });
   return {
     html: await renderDefaultBotNotificationEmail({
-      resultsUrl: `${env.NEXTAUTH_URL}/typebots/${typebot.id}/results`,
+      resultsUrl: `${env.BETTER_AUTH_URL}/typebots/${typebot.id}/results`,
       answers: omit(answers, "submittedAt"),
     }),
   };
@@ -348,7 +348,7 @@ const parseAttachments = (
   const urls = Array.isArray(fileUrls) ? fileUrls : fileUrls.split(", ");
   return Promise.all(
     urls.map(async (url) => {
-      if (!url.startsWith(env.NEXTAUTH_URL)) return { path: url };
+      if (!url.startsWith(env.BETTER_AUTH_URL)) return { path: url };
       const {
         typebotId: urlTypebotId,
         resultId,

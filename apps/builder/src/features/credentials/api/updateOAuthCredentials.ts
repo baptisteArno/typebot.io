@@ -105,7 +105,7 @@ const exchangeCodeForTokens = async ({
           code: code,
           client_id: client.id,
           client_secret: client.secret,
-          redirect_uri: `${env.NEXTAUTH_URL}/oauth/redirect`,
+          redirect_uri: `${env.BETTER_AUTH_URL}/oauth/redirect`,
         },
       })
       .json();

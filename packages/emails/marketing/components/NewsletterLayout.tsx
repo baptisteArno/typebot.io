@@ -22,7 +22,7 @@ export const NewsletterLayout = ({ preview, children }: Props) => (
     <Body style={main}>
       <Container style={container}>
         <Img
-          src={`${env.NEXTAUTH_URL}/images/logo.png`}
+          src={`${env.BETTER_AUTH_URL}/images/logo.png`}
           width="32"
           height="32"
           alt="Typebot's Logo"
@@ -30,7 +30,7 @@ export const NewsletterLayout = ({ preview, children }: Props) => (
         />
         {children}
         <Img
-          src={`${env.NEXTAUTH_URL}/images/logo.png`}
+          src={`${env.BETTER_AUTH_URL}/images/logo.png`}
           width="32"
           height="32"
           alt="Typebot's Logo"

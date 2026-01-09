@@ -159,7 +159,7 @@ export const handleGenerateUploadUrlV1 = async ({
     formData: presignedPostPolicy.formData,
     fileUrl:
       fileUploadBlock.options?.visibility === "Private"
-        ? `${env.NEXTAUTH_URL}/api/typebots/${typebotId}/results/${resultId}/${filePathProps.fileName}`
+        ? `${env.BETTER_AUTH_URL}/api/typebots/${typebotId}/results/${resultId}/${filePathProps.fileName}`
         : env.S3_PUBLIC_CUSTOM_DOMAIN
           ? `${env.S3_PUBLIC_CUSTOM_DOMAIN}/${filePath}`
           : `${presignedPostPolicy.postURL}/${presignedPostPolicy.formData.key}`,

@@ -133,37 +133,37 @@ const nextConfig = {
           },
         ])
         .concat(
-          process.env.NEXTAUTH_URL
+          process.env.BETTER_AUTH_URL
             ? [
                 {
                   source:
                     "/api/typebots/:typebotId/blocks/:blockId/steps/:stepId/sampleResult",
-                  destination: `${process.env.NEXTAUTH_URL}/api/v1/typebots/:typebotId/webhookBlocks/:blockId/getResultExample`,
+                  destination: `${process.env.BETTER_AUTH_URL}/api/v1/typebots/:typebotId/webhookBlocks/:blockId/getResultExample`,
                 },
                 {
                   source:
                     "/api/typebots/:typebotId/blocks/:blockId/sampleResult",
-                  destination: `${process.env.NEXTAUTH_URL}/api/v1/typebots/:typebotId/webhookBlocks/:blockId/getResultExample`,
+                  destination: `${process.env.BETTER_AUTH_URL}/api/v1/typebots/:typebotId/webhookBlocks/:blockId/getResultExample`,
                 },
                 {
                   source:
                     "/api/typebots/:typebotId/blocks/:blockId/steps/:stepId/unsubscribeWebhook",
-                  destination: `${process.env.NEXTAUTH_URL}/api/v1/typebots/:typebotId/webhookBlocks/:blockId/unsubscribe`,
+                  destination: `${process.env.BETTER_AUTH_URL}/api/v1/typebots/:typebotId/webhookBlocks/:blockId/unsubscribe`,
                 },
                 {
                   source:
                     "/api/typebots/:typebotId/blocks/:blockId/unsubscribeWebhook",
-                  destination: `${process.env.NEXTAUTH_URL}/api/v1/typebots/:typebotId/webhookBlocks/:blockId/unsubscribe`,
+                  destination: `${process.env.BETTER_AUTH_URL}/api/v1/typebots/:typebotId/webhookBlocks/:blockId/unsubscribe`,
                 },
                 {
                   source:
                     "/api/typebots/:typebotId/blocks/:blockId/steps/:stepId/subscribeWebhook",
-                  destination: `${process.env.NEXTAUTH_URL}/api/v1/typebots/:typebotId/webhookBlocks/:blockId/subscribe`,
+                  destination: `${process.env.BETTER_AUTH_URL}/api/v1/typebots/:typebotId/webhookBlocks/:blockId/subscribe`,
                 },
                 {
                   source:
                     "/api/typebots/:typebotId/blocks/:blockId/subscribeWebhook",
-                  destination: `${process.env.NEXTAUTH_URL}/api/v1/typebots/:typebotId/webhookBlocks/:blockId/subscribe`,
+                  destination: `${process.env.BETTER_AUTH_URL}/api/v1/typebots/:typebotId/webhookBlocks/:blockId/subscribe`,
                 },
               ]
             : [],

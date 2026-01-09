@@ -125,7 +125,7 @@ export const publishTypebot = authenticatedProcedure
     if (riskLevel > 0 && riskLevel !== existingTypebot.riskLevel) {
       if (riskLevel !== 100 && riskLevel > 60)
         await sendMessage(
-          `⚠️ Suspicious typebot to be reviewed: ${existingTypebot.name} (${env.NEXTAUTH_URL}/typebots/${existingTypebot.id}/edit) (workspace: ${existingTypebot.workspaceId})`,
+          `⚠️ Suspicious typebot to be reviewed: ${existingTypebot.name} (${env.BETTER_AUTH_URL}/typebots/${existingTypebot.id}/edit) (workspace: ${existingTypebot.workspaceId})`,
         );
 
       await prisma.typebot.updateMany({

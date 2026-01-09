@@ -35,7 +35,7 @@ export const GET = async (
   const urlParams = {
     response_type: "code",
     client_id: clientId,
-    redirect_uri: `${env.NEXTAUTH_URL}/oauth/redirect`,
+    redirect_uri: `${env.BETTER_AUTH_URL}/oauth/redirect`,
     scope: authConfig.scopes.join(" "),
     ...authConfig.extraAuthParams,
   };

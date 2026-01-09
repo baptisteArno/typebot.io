@@ -18,7 +18,7 @@
       "persistent": true
     },
     "build": {
-      "env": ["VERCEL_*", "NEXTAUTH_URL", "SENTRY_*", "LANDING_PAGE_URL"],
+      "env": ["VERCEL_*", "BETTER_AUTH_URL", "SENTRY_*", "LANDING_PAGE_URL"],
       "dependsOn": ["^build", "^db:generate"],
       "outputs": [
         ".next/**",
@@ -53,17 +53,17 @@
       "cache": false
     },
     "cron:hourly": {
-      "env": ["STRIPE_*", "NEXTAUTH_URL", "SMTP_*"],
+      "env": ["STRIPE_*", "BETTER_AUTH_URL", "SMTP_*"],
       "dependsOn": ["@typebot.io/prisma#db:generate"],
       "cache": false
     },
     "cron:daily": {
-      "env": ["NEXTAUTH_URL"],
+      "env": ["BETTER_AUTH_URL"],
       "dependsOn": ["@typebot.io/prisma#db:generate"],
       "cache": false
     },
     "cron:monthly": {
-      "env": ["NEXTAUTH_URL"],
+      "env": ["BETTER_AUTH_URL"],
       "dependsOn": ["@typebot.io/prisma#db:generate"],
       "cache": false
     },

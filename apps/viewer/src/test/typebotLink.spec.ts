@@ -36,7 +36,7 @@ test("should work as expected", async ({ page }) => {
   await expect(page.getByText("end 3")).toBeVisible();
   await expect(page.getByText("End", { exact: true })).toBeVisible();
   await page.goto(
-    `${env.NEXTAUTH_URL}/typebots/${publicTypebot1.typebotId}/results`,
+    `${env.BETTER_AUTH_URL}/typebots/${publicTypebot1.typebotId}/results`,
   );
   await expect(page.locator("text=Hello there!")).toBeVisible();
 });
@@ -48,12 +48,12 @@ test.describe("Merge disabled", () => {
     await page.getByPlaceholder("Type your answer...").press("Enter");
     await expect(page.getByText("Cheers!")).toBeVisible();
     await page.goto(
-      `${process.env.NEXTAUTH_URL}/typebots/${publicTypebot1MergeDisabled.typebotId}/results`,
+      `${process.env.BETTER_AUTH_URL}/typebots/${publicTypebot1MergeDisabled.typebotId}/results`,
     );
     await expect(page.locator("text=Submitted at")).toBeVisible();
     await expect(page.locator("text=Hello there!")).toBeHidden();
     await page.goto(
-      `${env.NEXTAUTH_URL}/typebots/${publicTypebot2.typebotId}/results`,
+      `${env.BETTER_AUTH_URL}/typebots/${publicTypebot2.typebotId}/results`,
     );
     await expect(page.locator("text=Hello there!")).toBeVisible();
   });

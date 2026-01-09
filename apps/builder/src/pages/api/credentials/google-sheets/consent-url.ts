@@ -13,7 +13,7 @@ const handler = (req: NextApiRequest, res: NextApiResponse) => {
     const oauth2Client = new OAuth2Client(
       env.GOOGLE_SHEETS_CLIENT_ID,
       env.GOOGLE_SHEETS_CLIENT_SECRET,
-      `${env.NEXTAUTH_URL}/api/credentials/google-sheets/callback`,
+      `${env.BETTER_AUTH_URL}/api/credentials/google-sheets/callback`,
     );
     const url = oauth2Client.generateAuthUrl({
       access_type: "offline",

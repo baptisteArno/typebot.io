@@ -24,5 +24,5 @@ export const uploadFileToBucket = async ({
   });
 
   if (visibility === "public") return `${parseS3PublicBaseUrl()}/public/${key}`;
-  return `${env.NEXTAUTH_URL}/api/s3/private/${key}`;
+  return `${env.BETTER_AUTH_URL}/api/s3/private/${key}`;
 };

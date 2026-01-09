@@ -14,7 +14,7 @@ jobs:
       DATABASE_URL: "${{ secrets.DATABASE_URL }}"
       DATABASE_URL_REPLICA: "${{ secrets.DATABASE_URL_REPLICA }}"
       ENCRYPTION_SECRET: "${{ secrets.ENCRYPTION_SECRET }}"
-      NEXTAUTH_URL: "http://localhost:3000"
+      BETTER_AUTH_URL: "http://localhost:3000"
       NEXT_PUBLIC_VIEWER_URL: "http://localhost:3001"
       MESSAGE_WEBHOOK_URL: "${{ secrets.MESSAGE_WEBHOOK_URL }}"
       POSTHOG_PROJECT_ID: "${{ secrets.POSTHOG_PROJECT_ID }}"

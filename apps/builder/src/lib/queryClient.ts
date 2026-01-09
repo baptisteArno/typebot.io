@@ -68,7 +68,7 @@ export const trpcClient = createTRPCClient<AppRouter>({
     httpLink({
       url: (() => {
         if (typeof window === "undefined")
-          return `${env.NEXTAUTH_URL}/api/trpc`;
+          return `${env.BETTER_AUTH_URL}/api/trpc`;
         return `${window.location.origin}/api/trpc`;
       })(),
       transformer: superjson,

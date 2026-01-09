@@ -12,7 +12,7 @@ test("should work as expected", async ({ page: botPage, context }) => {
   });
   const analyticsPage = await context.newPage();
   await analyticsPage.goto(
-    `${env.NEXTAUTH_URL}/typebots/${typebotId}/results/analytics`,
+    `${env.BETTER_AUTH_URL}/typebots/${typebotId}/results/analytics`,
   );
   await expect(analyticsPage.getByTestId("dropoff-edge-1")).toBeHidden();
   await botPage.goto(`/${typebotId}-public`);

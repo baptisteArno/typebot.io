@@ -6,7 +6,7 @@ const getOrigin = () => {
     return window.location.origin;
   }
 
-  return env.NEXTAUTH_URL;
+  return env.BETTER_AUTH_URL;
 };
 
 export const Seo = ({

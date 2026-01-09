@@ -28,7 +28,7 @@ type Props = {
   firstName?: string;
 };
 
-const imagesBaseUrl = `${env.NEXTAUTH_URL}/images/emails/V2dot23Update`;
+const imagesBaseUrl = `${env.BETTER_AUTH_URL}/images/emails/V2dot23Update`;
 
 export const V2dot23Update = ({}: Props) => (
   <Html>
@@ -37,7 +37,7 @@ export const V2dot23Update = ({}: Props) => (
     <Body style={main}>
       <Container style={container}>
         <Img
-          src={`${env.NEXTAUTH_URL}/images/logo.png`}
+          src={`${env.BETTER_AUTH_URL}/images/logo.png`}
           width="32"
           height="32"
           alt="Typebot's Logo"
@@ -138,7 +138,7 @@ export const V2dot23Update = ({}: Props) => (
           Baptiste.
         </Text>
         <Img
-          src={`${env.NEXTAUTH_URL}/images/logo.png`}
+          src={`${env.BETTER_AUTH_URL}/images/logo.png`}
           width="32"
           height="32"
           alt="Typebot's Logo"

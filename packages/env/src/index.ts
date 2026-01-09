@@ -71,11 +71,6 @@ const baseEnv = {
       guessBetterAuthUrlForVercelPreview,
       z.string().url(),
     ),
-    // Backwards compatibility alias - NEXTAUTH_URL still used in many places
-    NEXTAUTH_URL: z.preprocess(
-      guessBetterAuthUrlForVercelPreview,
-      z.string().url(),
-    ),
     DISABLE_SIGNUP: boolean.optional().default("false"),
     ADMIN_EMAIL: z
       .string()

@@ -54,7 +54,7 @@ export const getAccessToken = authenticatedProcedure
     const client = new OAuth2Client({
       clientId: env.GOOGLE_SHEETS_CLIENT_ID,
       clientSecret: env.GOOGLE_SHEETS_CLIENT_SECRET,
-      redirectUri: `${env.NEXTAUTH_URL}/api/credentials/google-sheets/callback`,
+      redirectUri: `${env.BETTER_AUTH_URL}/api/credentials/google-sheets/callback`,
     });
 
     client.setCredentials(decryptedCredentials);

@@ -66,7 +66,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       await sendWorkspaceMemberInvitationEmail({
         workspaceName: workspace.name,
         guestEmail: data.email,
-        url: `${env.NEXTAUTH_URL}/typebots?workspaceId=${workspace.id}`,
+        url: `${env.BETTER_AUTH_URL}/typebots?workspaceId=${workspace.id}`,
         hostEmail: user.email ?? "",
       });
       return res.send({
@@ -83,7 +83,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       await sendWorkspaceMemberInvitationEmail({
         workspaceName: workspace.name,
         guestEmail: data.email,
-        url: `${env.NEXTAUTH_URL}/typebots?workspaceId=${workspace.id}`,
+        url: `${env.BETTER_AUTH_URL}/typebots?workspaceId=${workspace.id}`,
         hostEmail: user.email ?? "",
       });
       return res.send({ invitation });

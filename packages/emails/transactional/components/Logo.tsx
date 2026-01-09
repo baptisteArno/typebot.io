@@ -5,7 +5,7 @@ import React from "react";
 
 export const Logo = () => (
   <Img
-    src={`${env.NEXTAUTH_URL}/images/logo.png`}
+    src={`${env.BETTER_AUTH_URL}/images/logo.png`}
     width="32"
     height="32"
     alt="Typebot's Logo"

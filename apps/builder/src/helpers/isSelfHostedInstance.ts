@@ -8,7 +8,7 @@ export const isSelfHostedInstance = () => {
     );
   }
   return (
-    env.NEXTAUTH_URL !== "https://app.typebot.io" &&
-    !env.NEXTAUTH_URL.startsWith("http://localhost")
+    env.BETTER_AUTH_URL !== "https://app.typebot.io" &&
+    !env.BETTER_AUTH_URL.startsWith("http://localhost")
   );
 };

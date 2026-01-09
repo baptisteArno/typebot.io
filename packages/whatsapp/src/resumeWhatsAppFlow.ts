@@ -263,7 +263,7 @@ const convertWhatsAppMessageToTypebotMessage = async ({
             ? extensionFromMimeType[mimeType]
             : undefined;
           fileUrl =
-            env.NEXTAUTH_URL +
+            env.BETTER_AUTH_URL +
             `/api/typebots/${typebotId}/whatsapp/media/${
               workspaceId ? `` : "preview/"
             }${mediaId}${extension ? `.${extension}` : ""}`;

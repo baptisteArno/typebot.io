@@ -21,7 +21,7 @@ test("Big groups should work as expected", async ({ page }) => {
   await page.locator("input").press("Enter");
   await expect(page.getByText("26")).toBeVisible();
   await page.getByRole("button", { name: "Yes" }).click();
-  await page.goto(`${env.NEXTAUTH_URL}/typebots/${typebotId}/results`);
+  await page.goto(`${env.BETTER_AUTH_URL}/typebots/${typebotId}/results`);
   await expect(page.locator('text="Baptiste"')).toBeVisible({
     timeout: 10000,
   });
