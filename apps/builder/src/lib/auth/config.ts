@@ -1,13 +1,50 @@
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
-import { magicLink } from "better-auth/plugins/magic-link";
-import { emailOTP } from "better-auth/plugins/email-otp";
 import { admin } from "better-auth/plugins/admin";
 import { genericOAuth } from "better-auth/plugins/generic-oauth";
+import { magicLink } from "better-auth/plugins/magic-link";
+import { APIError } from "better-auth/api";
 import { env } from "@typebot.io/env";
 import prisma from "@typebot.io/prisma";
-import { sendVerificationEmail } from "./send-verification-email";
+import { Plan } from "@typebot.io/prisma/enum";
 import { getOAuthProviders } from "./providers";
+import { sendVerificationEmail } from "./send-verification-email";
+
+/**
+ * Determines the default workspace plan for a new user.
+ * Admin emails get UNLIMITED, otherwise uses DEFAULT_WORKSPACE_PLAN or FREE.
+ */
+function getDefaultWorkspacePlan(userEmail: string): Plan {
+  if (env.ADMIN_EMAIL?.some((email) => email === userEmail)) {
+    return Plan.UNLIMITED;
+  }
+  const defaultPlan = env.DEFAULT_WORKSPACE_PLAN as Plan;
+  if (defaultPlan && Object.values(Plan).includes(defaultPlan)) {
+    return defaultPlan;
+  }
+  return Plan.FREE;
+}
+
+/**
+ * Validates if an email domain is allowed based on ALLOWED_EMAIL_DOMAINS env var.
+ * When ALLOWED_EMAIL_DOMAINS is set, only emails from those domains can sign in.
+ * When not set, all email domains are allowed.
+ */
+function isEmailDomainAllowed(email: string): boolean {
+  const allowedDomains = env.ALLOWED_EMAIL_DOMAINS;
+
+  // If no domains configured, allow all
+  if (!allowedDomains || allowedDomains.length === 0) {
+    return true;
+  }
+
+  const emailDomain = email.split("@")[1]?.toLowerCase();
+  if (!emailDomain) {
+    return false;
+  }
+
+  return allowedDomains.includes(emailDomain);
+}
 
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
@@ -40,35 +77,27 @@ export const auth = betterAuth({
   },
 
   emailAndPassword: {
-    enabled: false, // Using magic link instead
+    enabled: false, // ALWAYS disabled - passwordless only (OAuth + magic link)
   },
 
   socialProviders: getOAuthProviders(),
 
   plugins: [
-    // Magic link email authentication
-    ...(env.NEXT_PUBLIC_SMTP_FROM && !env.SMTP_AUTH_DISABLED
+    // Admin plugin for user management
+    admin({
+      defaultRole: "user",
+    }),
+
+    // Magic link plugin for email-based signin (when EMAIL_LOGIN_ENABLED=true)
+    ...(env.EMAIL_LOGIN_ENABLED
       ? [
           magicLink({
             sendMagicLink: async ({ email, url }) => {
               await sendVerificationEmail({ email, url });
             },
-            expiresIn: 60 * 5, // 5 minutes
-          }),
-          emailOTP({
-            sendVerificationOTP: async ({ email, otp }) => {
-              await sendVerificationEmail({ email, otp });
-            },
-            otpLength: 6,
-            expiresIn: 60 * 5, // 5 minutes
           }),
         ]
       : []),
-
-    // Admin plugin for user management
-    admin({
-      defaultRole: "user",
-    }),
 
     // Generic OAuth for custom OIDC providers
     ...(env.CUSTOM_OAUTH_ISSUER
@@ -115,6 +144,45 @@ export const auth = betterAuth({
     accountLinking: {
       enabled: true,
       trustedProviders: ["github", "google", "facebook", "gitlab", "azure-ad", "keycloak", "custom-oauth"],
+    },
+  },
+
+  // Database hooks for domain filtering and workspace creation
+  databaseHooks: {
+    user: {
+      create: {
+        before: async (user) => {
+          if (!user.email) {
+            throw new APIError("BAD_REQUEST", {
+              message: "Email is required",
+            });
+          }
+
+          if (!isEmailDomainAllowed(user.email)) {
+            const allowedDomains = env.ALLOWED_EMAIL_DOMAINS?.join(", ");
+            throw new APIError("FORBIDDEN", {
+              message: `Sign-in is restricted to authorized email domains: ${allowedDomains}`,
+            });
+          }
+
+          return { data: user };
+        },
+        after: async (user) => {
+          // Create initial workspace for new users
+          const plan = getDefaultWorkspacePlan(user.email);
+          const workspaceName = user.name ? `${user.name}'s workspace` : "My workspace";
+
+          await prisma.workspace.create({
+            data: {
+              name: workspaceName,
+              plan,
+              members: {
+                create: [{ role: "ADMIN", userId: user.id }],
+              },
+            },
+          });
+        },
+      },
     },
   },
 });

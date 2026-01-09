@@ -3,7 +3,6 @@ import prisma from "@typebot.io/prisma";
 import { type ClientUser, clientUserSchema } from "@typebot.io/user/schemas";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { auth } from "@/lib/auth/config";
-import { headers } from "next/headers";
 
 export const getAuthenticatedUser = async (
   req: NextApiRequest,
@@ -19,10 +18,17 @@ export const getAuthenticatedUser = async (
     }),
   });
 
-  if (!session?.user) return undefined;
+  if (!session?.user?.id) return undefined;
 
-  Sentry.setUser({ id: session.user.id });
-  return clientUserSchema.parse(session.user);
+  // Fetch full user from database (Better Auth session only has basic fields)
+  const user = await prisma.user.findUnique({
+    where: { id: session.user.id },
+  });
+
+  if (!user) return undefined;
+
+  Sentry.setUser({ id: user.id });
+  return clientUserSchema.parse(user);
 };
 
 const authenticateByToken = async (

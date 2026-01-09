@@ -34,7 +34,7 @@ model User {
   // Typebot-specific fields
   lastActivityAt              DateTime          @default(now())
   company                     String?
-  onboardingCategories        Json              @default("{}")
+  onboardingCategories        Json              @default("[]")
   referral                    String?
   graphNavigation             GraphNavigation?
   preferredAppAppearance      String?
