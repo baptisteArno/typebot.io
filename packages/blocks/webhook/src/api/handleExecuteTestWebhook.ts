@@ -11,8 +11,10 @@ import { z } from "@typebot.io/zod";
 import PartySocket from "partysocket";
 
 export const executeTestWebhookInputSchema = z.object({
-  typebotId: z.string(),
-  blockId: z.string(),
+  params: z.object({
+    typebotId: z.string(),
+    blockId: z.string(),
+  }),
   body: z.unknown(),
 });
 
@@ -21,7 +23,10 @@ type Context = {
 };
 
 export const handleExecuteTestWebhook = async ({
-  input: { typebotId, blockId, body },
+  input: {
+    params: { typebotId, blockId },
+    body,
+  },
   context: { user },
 }: {
   input: z.infer<typeof executeTestWebhookInputSchema>;

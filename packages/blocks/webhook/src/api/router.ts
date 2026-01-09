@@ -22,6 +22,7 @@ export const privateRouter = {
       description:
         "Execute a webhook block in a live chat session. Handles both web (PartyKit) and WhatsApp flows.",
       tags: ["Webhook"],
+      inputStructure: "detailed",
     })
     .input(executeWebhookInputSchema)
     .output(z.object({ message: z.string() }))
@@ -35,6 +36,7 @@ export const privateRouter = {
       description:
         "Test a webhook block execution in web preview mode. Sends data to PartyKit for preview testing.",
       tags: ["Webhook"],
+      inputStructure: "detailed",
     })
     .input(executeTestWebhookInputSchema)
     .output(z.object({ message: z.string() }))
@@ -48,6 +50,7 @@ export const privateRouter = {
       description:
         "Test a webhook block execution in WhatsApp preview mode. Resumes the WhatsApp flow with webhook data.",
       tags: ["Webhook"],
+      inputStructure: "detailed",
     })
     .input(executeTestWebhookWhatsAppInputSchema)
     .output(z.object({ message: z.string() }))

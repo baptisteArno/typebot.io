@@ -12,9 +12,11 @@ import { resumeWhatsAppFlow } from "@typebot.io/whatsapp/resumeWhatsAppFlow";
 import { z } from "@typebot.io/zod";
 
 export const executeTestWebhookWhatsAppInputSchema = z.object({
-  typebotId: z.string(),
-  blockId: z.string(),
-  phone: z.string(),
+  params: z.object({
+    typebotId: z.string(),
+    blockId: z.string(),
+    phone: z.string(),
+  }),
   body: z.unknown(),
 });
 
@@ -23,7 +25,10 @@ type Context = {
 };
 
 export const handleExecuteTestWebhookWhatsApp = async ({
-  input: { typebotId, blockId, phone, body },
+  input: {
+    params: { typebotId, blockId, phone },
+    body,
+  },
   context: { user },
 }: {
   input: z.infer<typeof executeTestWebhookWhatsAppInputSchema>;
