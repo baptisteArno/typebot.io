@@ -1,5 +1,20 @@
 # Changelog
 
+<a name="3.15.2"></a>
+## 3.15.2 (2026-01-11)
+
+### Fixed
+
+- 🚑 Fix app router automatically adding &#x60;transfer-encoding: chunked&#x60; header to backend requests [[69efa2f](https://github.com/baptisteArno/typebot.io/commit/69efa2f3c9cb0ca1c24b3c053767020397fbb57b)]
+
+### Internal
+
+- 🔧 Fix build type issue [[94499b4](https://github.com/baptisteArno/typebot.io/commit/94499b489632d803ea00814afe3836bd236dd353)]
+- 🔧 Fix @opentelemetry/winston-transport log error [[06110a8](https://github.com/baptisteArno/typebot.io/commit/06110a80848fe4ea60d2a5b971f9e4572849c0c1)]
+- 🔧 Add webhook block e2e test [[e6d58e2](https://github.com/baptisteArno/typebot.io/commit/e6d58e2ad42d2774ebf6107bdda359a8331b72d0)]
+- 🔧 Add CLAUDE.md symlink [[a31711f](https://github.com/baptisteArno/typebot.io/commit/a31711fd50a6126a9ec9b32225d83eb9ca95f64b)]
+
+
 <a name="3.15.1"></a>
 ## 3.15.1 (2026-01-09)
 
