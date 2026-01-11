@@ -290,7 +290,6 @@ export const executeHttpRequest = async (
       ? (input: string | URL | Request, init?: RequestInit) =>
           rebuildFetchWithoutChunkedEncoding(input, {
             ...init,
-            // @ts-expect-error: dispatcher is undici-specific for proxy support
             dispatcher: new ProxyAgent(httpRequest.proxyUrl!),
           })
       : rebuildFetchWithoutChunkedEncoding,
