@@ -1,5 +1,5 @@
 import { env } from "@typebot.io/env";
-import ky from "ky";
+import { ky } from "@typebot.io/lib/ky";
 
 export interface PostHogHogQLResponse {
   results: (string | number)[][];

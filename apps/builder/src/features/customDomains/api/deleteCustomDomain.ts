@@ -1,8 +1,9 @@
 import { TRPCError } from "@trpc/server";
 import { env } from "@typebot.io/env";
+import { ky } from "@typebot.io/lib/ky";
 import prisma from "@typebot.io/prisma";
 import { z } from "@typebot.io/zod";
-import ky, { HTTPError } from "ky";
+import { HTTPError } from "ky";
 import { isWriteWorkspaceForbidden } from "@/features/workspace/helpers/isWriteWorkspaceForbidden";
 import { authenticatedProcedure } from "@/helpers/server/trpc";
 

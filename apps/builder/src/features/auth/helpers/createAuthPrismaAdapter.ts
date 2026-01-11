@@ -6,6 +6,7 @@ import type {
 } from "@auth/core/adapters";
 import { createId } from "@paralleldrive/cuid2";
 import { env } from "@typebot.io/env";
+import { ky } from "@typebot.io/lib/ky";
 import { omit } from "@typebot.io/lib/utils";
 import {
   PrismaClientKnownRequestError,
@@ -15,7 +16,6 @@ import type { Prisma } from "@typebot.io/prisma/types";
 import type { TelemetryEvent } from "@typebot.io/telemetry/schemas";
 import { trackEvents } from "@typebot.io/telemetry/trackEvents";
 import { userSchema } from "@typebot.io/user/schemas";
-import ky from "ky";
 import { convertInvitationsToCollaborations } from "@/features/auth/helpers/convertInvitationsToCollaborations";
 import { getNewUserInvitations } from "@/features/auth/helpers/getNewUserInvitations";
 import { joinWorkspaces } from "@/features/auth/helpers/joinWorkspaces";

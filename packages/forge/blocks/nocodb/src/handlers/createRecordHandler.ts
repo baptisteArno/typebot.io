@@ -1,6 +1,6 @@
 import { createActionHandler } from "@typebot.io/forge";
+import { ky } from "@typebot.io/lib/ky";
 import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
-import ky from "ky";
 import { createRecord } from "../actions/createRecord";
 import { defaultBaseUrl } from "../constants";
 import { linkRelationUpdatesIfAny } from "../helpers/linkRelationUpdatesIfAny";

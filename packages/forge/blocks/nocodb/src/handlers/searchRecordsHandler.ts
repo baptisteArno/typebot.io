@@ -1,7 +1,7 @@
 import { createActionHandler } from "@typebot.io/forge";
+import { ky } from "@typebot.io/lib/ky";
 import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
 import { isDefined, isNotDefined } from "@typebot.io/lib/utils";
-import ky from "ky";
 import { searchRecords } from "../actions/searchRecords";
 import { defaultBaseUrl, defaultLimitForSearch } from "../constants";
 import { convertFilterToWhereClause } from "../helpers/convertFilterToWhereClause";

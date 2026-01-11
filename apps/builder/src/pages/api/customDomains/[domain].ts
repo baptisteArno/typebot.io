@@ -4,8 +4,8 @@ import {
   methodNotAllowed,
   notAuthenticated,
 } from "@typebot.io/lib/api/utils";
+import { ky } from "@typebot.io/lib/ky";
 import prisma from "@typebot.io/prisma";
-import ky from "ky";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { getAuthenticatedUser } from "@/features/auth/helpers/getAuthenticatedUser";
 

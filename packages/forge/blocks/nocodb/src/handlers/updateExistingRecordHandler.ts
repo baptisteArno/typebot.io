@@ -1,6 +1,6 @@
 import { createActionHandler } from "@typebot.io/forge";
+import { ky } from "@typebot.io/lib/ky";
 import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
-import ky from "ky";
 import { updateExistingRecord } from "../actions/updateExistingRecord";
 import { defaultBaseUrl, defaultLimitForSearch } from "../constants";
 import { convertFilterToWhereClause } from "../helpers/convertFilterToWhereClause";

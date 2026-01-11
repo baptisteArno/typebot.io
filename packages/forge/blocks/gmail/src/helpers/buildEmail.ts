@@ -1,4 +1,4 @@
-import ky from "ky";
+import { ky } from "@typebot.io/lib/ky";
 import MailComposer from "nodemailer/lib/mail-composer";
 import type { Attachment } from "nodemailer/lib/mailer";
 

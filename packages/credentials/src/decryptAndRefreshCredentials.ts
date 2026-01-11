@@ -1,7 +1,7 @@
 import { forgedBlocks } from "@typebot.io/forge-repository/definitions";
+import { ky } from "@typebot.io/lib/ky";
 import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
 import prisma from "@typebot.io/prisma";
-import ky from "ky";
 import { decrypt } from "./decrypt";
 import { encrypt } from "./encrypt";
 import type { Credentials } from "./schemas";

@@ -1,5 +1,6 @@
+import { ky } from "@typebot.io/lib/ky";
 import type { ImagePart, TextPart, UserContent } from "ai";
-import ky, { HTTPError } from "ky";
+import { HTTPError } from "ky";
 
 type Props = {
   input: string;

@@ -1,5 +1,5 @@
+import { ky } from "@typebot.io/lib/ky";
 import { isDefined } from "@typebot.io/lib/utils";
-import ky from "ky";
 import { defaultBaseUrl } from "../constants";
 import type { TableMetaResponse } from "../types";
 

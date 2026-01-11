@@ -26,12 +26,16 @@ export default [
       // Implementation for sendMessage
     },
   }),
-  createFetcherHandler(sendMessage, modelsFetcher.id, async ({ credentials, options }) => {
-    // Implementation for fetcher
-    return {
-      data: ["model-1", "model-2"],
-    };
-  }),
+  createFetcherHandler(
+    sendMessage,
+    modelsFetcher.id,
+    async ({ credentials, options }) => {
+      // Implementation for fetcher
+      return {
+        data: ["model-1", "model-2"],
+      };
+    }
+  ),
   createActionHandler(getMessage, {
     server: async ({ credentials, options, variables, logs }) => {
       // Implementation for getMessage
@@ -54,7 +58,7 @@ Example:
 ```ts
 import { createActionHandler } from "@typebot.io/forge";
 import { sendMessage } from "./actions/sendMessage";
-import ky from "ky";
+import { ky } from "@typebot.io/lib/ky";
 
 export default [
   createActionHandler(sendMessage, {

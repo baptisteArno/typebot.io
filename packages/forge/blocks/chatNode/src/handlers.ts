@@ -1,7 +1,8 @@
 import { createActionHandler } from "@typebot.io/forge";
+import { ky } from "@typebot.io/lib/ky";
 import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
 import { isEmpty } from "@typebot.io/lib/utils";
-import ky, { HTTPError } from "ky";
+import { HTTPError } from "ky";
 import { sendMessage } from "./actions/sendMessage";
 import { apiBaseUrl } from "./constants";
 import type { ChatNodeResponse } from "./types";

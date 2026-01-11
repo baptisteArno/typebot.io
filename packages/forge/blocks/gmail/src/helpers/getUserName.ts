@@ -1,4 +1,4 @@
-import ky from "ky";
+import { ky } from "@typebot.io/lib/ky";
 
 export const getUserInfo = async (accessToken: string) => {
   const data = await ky

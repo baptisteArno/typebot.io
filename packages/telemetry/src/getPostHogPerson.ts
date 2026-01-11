@@ -1,5 +1,5 @@
 import { env } from "@typebot.io/env";
-import ky from "ky";
+import { ky } from "@typebot.io/lib/ky";
 
 export const getPostHogPerson = async (userId: string) => {
   if (!env.POSTHOG_PERSONAL_API_KEY || !env.POSTHOG_PROJECT_ID) return;

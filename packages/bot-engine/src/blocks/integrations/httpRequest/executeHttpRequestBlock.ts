@@ -23,6 +23,7 @@ import { getCredentials } from "@typebot.io/credentials/getCredentials";
 import { httpProxyCredentialsSchema } from "@typebot.io/credentials/schemas";
 import { env } from "@typebot.io/env";
 import { JSONParse } from "@typebot.io/lib/JSONParse";
+import { ky, rebuildFetchWithoutChunkedEncoding } from "@typebot.io/lib/ky";
 import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
 import {
   validateHttpReqHeaders,
@@ -36,7 +37,7 @@ import type { AnswerInSessionState } from "@typebot.io/results/schemas/answers";
 import type { SessionStore } from "@typebot.io/runtime-session-store";
 import { parseVariables } from "@typebot.io/variables/parseVariables";
 import type { Variable } from "@typebot.io/variables/schemas";
-import ky, { HTTPError, type Options, TimeoutError } from "ky";
+import { HTTPError, type Options, TimeoutError } from "ky";
 import { stringify } from "qs";
 import { ProxyAgent } from "undici";
 import type { ExecuteIntegrationResponse } from "../../../types";
@@ -286,13 +287,13 @@ export const executeHttpRequest = async (
     headers: headers ?? {},
     ...(basicAuth ?? {}),
     fetch: httpRequest.proxyUrl
-      ? (url, options) =>
-          fetch(url, {
-            ...options,
-            // @ts-expect-error: undici init type excluded to make it compatible with browser fetch
+      ? (input: string | URL | Request, init?: RequestInit) =>
+          rebuildFetchWithoutChunkedEncoding(input, {
+            ...init,
+            // @ts-expect-error: dispatcher is undici-specific for proxy support
             dispatcher: new ProxyAgent(httpRequest.proxyUrl!),
           })
-      : undefined,
+      : rebuildFetchWithoutChunkedEncoding,
     timeout: isNotDefined(env.CHAT_API_TIMEOUT)
       ? false
       : params.timeout && params.timeout !== defaultTimeout

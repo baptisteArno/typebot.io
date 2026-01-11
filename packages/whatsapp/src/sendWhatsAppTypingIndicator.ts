@@ -1,7 +1,7 @@
 import * as Sentry from "@sentry/nextjs";
 import type { WhatsAppCredentials } from "@typebot.io/credentials/schemas";
 import { env } from "@typebot.io/env";
-import ky from "ky";
+import { ky } from "@typebot.io/lib/ky";
 
 type Props = {
   messageId: string;

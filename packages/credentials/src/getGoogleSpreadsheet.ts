@@ -1,9 +1,9 @@
 import { env } from "@typebot.io/env";
+import { ky } from "@typebot.io/lib/ky";
 import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
 import type { LogInSession } from "@typebot.io/logs/schemas";
 import prisma from "@typebot.io/prisma";
 import { GoogleSpreadsheet } from "google-spreadsheet";
-import ky from "ky";
 import { decrypt } from "./decrypt";
 import { encrypt } from "./encrypt";
 import { getCredentials } from "./getCredentials";

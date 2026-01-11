@@ -1,9 +1,10 @@
 import { parseVideoUrl } from "@typebot.io/blocks-bubbles/video/helpers";
 import { createActionHandler } from "@typebot.io/forge";
 import { extensionFromMimeType } from "@typebot.io/lib/extensionFromMimeType";
+import { ky } from "@typebot.io/lib/ky";
 import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
 import { isDefined } from "@typebot.io/lib/utils";
-import ky, { HTTPError } from "ky";
+import { HTTPError } from "ky";
 import { sendFeedEvent } from "../actions/sendFeedEvent";
 import { baseUrl } from "../constants";
 

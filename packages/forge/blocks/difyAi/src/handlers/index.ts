@@ -1,5 +1,5 @@
 import { createFetcherHandler } from "@typebot.io/forge";
-import ky from "ky";
+import { ky } from "@typebot.io/lib/ky";
 import {
   knowledgeBasesFetcher,
   queryKnowledgeBase,

@@ -44,8 +44,11 @@ The fetcher implementation logic should be defined in your handlers file using `
 ```ts
 import { createActionHandler, createFetcherHandler } from "@typebot.io/forge";
 import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
-import ky from "ky";
-import { createChatCompletion, modelsFetcher } from "./actions/createChatCompletion";
+import { ky } from "@typebot.io/lib/ky";
+import {
+  createChatCompletion,
+  modelsFetcher,
+} from "./actions/createChatCompletion";
 
 export default [
   createActionHandler(createChatCompletion, {
@@ -95,6 +98,7 @@ The fetcher function must return an object with either a `data` or `error` prope
 - **Error**: `{ error: string | { description: string; details?: string; context?: string } }`
 
 The `data` array can contain either:
+
 - Simple strings: `["model-1", "model-2", "model-3"]`
 - Objects with `label` and `value`: `[{ label: "GPT-4", value: "gpt-4" }, { label: "GPT-3.5", value: "gpt-3.5-turbo" }]`
 

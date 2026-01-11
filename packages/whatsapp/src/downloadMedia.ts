@@ -1,6 +1,6 @@
 import type { WhatsAppCredentials } from "@typebot.io/credentials/schemas";
 import { env } from "@typebot.io/env";
-import ky from "ky";
+import { ky } from "@typebot.io/lib/ky";
 import { dialog360AuthHeaderName, dialog360BaseUrl } from "./constants";
 
 type Props = {

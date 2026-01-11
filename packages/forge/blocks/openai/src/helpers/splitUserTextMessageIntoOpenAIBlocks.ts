@@ -1,4 +1,5 @@
-import ky, { HTTPError } from "ky";
+import { ky } from "@typebot.io/lib/ky";
+import { HTTPError } from "ky";
 import type OpenAI from "openai";
 
 export const splitUserTextMessageIntoOpenAIBlocks = async (
