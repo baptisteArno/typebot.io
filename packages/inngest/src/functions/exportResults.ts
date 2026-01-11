@@ -1,4 +1,4 @@
-import { channel, topic } from "@inngest/realtime";
+import { channel, type Realtime, topic } from "@inngest/realtime";
 import { sendResultsExportLinkEmail } from "@typebot.io/emails/transactional/ResultsExportLinkEmail";
 import { uploadFileToBucket } from "@typebot.io/lib/s3/uploadFileToBucket";
 import prisma from "@typebot.io/prisma";
@@ -49,7 +49,15 @@ export const exportResults = inngest.createFunction(
     cancelOn: [cancelEventConfig],
   },
   { event: EXPORT_REQUESTED_EVENT_NAME },
-  async ({ event, step, publish }) => {
+  async ({
+    event,
+    step,
+    publish,
+  }: {
+    event: { data: { userId: string; typebotId: string } };
+    step: Parameters<Parameters<typeof inngest.createFunction>[2]>[0]["step"];
+    publish: Realtime.PublishFn;
+  }) => {
     const { typebotId } = exportResultsEventDataSchema.parse(event.data);
 
     const typebot = await step.run("get-typebot", async () => {
