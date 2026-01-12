@@ -535,6 +535,7 @@ const toReadableFormat = (summary: workspaceSummaryType) => {
       },
     );
   }
+  output += `\n`;
   // User journeys
   output += `## User Journeys\n\n`;
   for (const journey of summary.user_journeys) {
@@ -569,16 +570,18 @@ const toReadableFormat = (summary: workspaceSummaryType) => {
   for (const tb of summary.typebots.list) {
     output += `- **Name:** ${tb.name} | **ID:** ${tb.id} | **Created At:** ${tb.created_at} | **Total Results:** ${tb.total_results}\n`;
     if (tb.summary) {
-      output += `  - **Total Groups:** ${tb.total_groups}\n`;
-      output += `  - **Total Blocks:** ${tb.total_blocks}\n`;
       output += `  - **Unique Block Types:** ${tb.unique_block_types?.join(", ")}\n`;
       output += `  - **Summary:** ${tb.summary}\n`;
       output += `  - **Category:** ${tb.category}\n`;
       if (tb.category === "Other") {
         output += `  - **Other Category:** ${tb.otherCategory}\n`;
       }
-      output += `  - **Is Scam:** ${tb.isScam}\n`;
-      output += `  - **Is Undesired:** ${tb.isUndesired}\n`;
+      if (tb.isScam === true) {
+        output += `  - **Is Scam:** ${tb.isScam}\n`;
+      }
+      if (tb.isUndesired === true) {
+        output += `  - **Is Undesired:** ${tb.isUndesired}\n`;
+      }
       if (tb.reason) {
         output += `  - **Reason:** ${tb.reason}\n`;
       }
@@ -914,11 +917,9 @@ const generateWorkspaceSummary = async () => {
 
   // save to readable markdown file
   const readable_summary = toReadableFormat(summary);
+  console.log(readable_summary);
   saveToFile(`${workspaceId}/summary.md`, readable_summary);
-  console.log(
-    "Readable workspace summary saved to:",
-    `${workspaceId}/summary.md`,
-  );
+  console.log("Summary saved to:", `${workspaceId}/summary.md`);
 };
 
 generateWorkspaceSummary();
