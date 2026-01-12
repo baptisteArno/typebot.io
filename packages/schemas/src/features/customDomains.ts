@@ -41,9 +41,6 @@ export const customDomainSchema = z.object({
   name: z
     .string()
     .transform((name) => name.toLowerCase())
-    .openapi({
-      effectType: "input",
-    })
     .refine((name) => domainNameRegex.test(name)),
   workspaceId: z.string(),
   createdAt: z.date(),

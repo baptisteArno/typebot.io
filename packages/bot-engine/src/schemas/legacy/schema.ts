@@ -19,15 +19,11 @@ import { z } from "@typebot.io/zod";
 export const startElementIdSchema = z.union([
   z.object({
     startGroupId: z.string().describe("Start chat from a specific group."),
-    startEventId: z.never().optional().openapi({
-      type: "string",
-    }),
+    startEventId: z.never().optional(),
   }),
   z.object({
     startEventId: z.string().describe("Start chat from a specific event."),
-    startGroupId: z.never().optional().openapi({
-      type: "string",
-    }),
+    startGroupId: z.never().optional(),
   }),
   z.object({}),
 ]);

@@ -56,12 +56,8 @@ export const updateTypebot = authenticatedProcedure
           "[Where to find my bot's ID?](../how-to#how-to-find-my-typebotid)",
         ),
       typebot: z.union([
-        typebotV6Schema.pick(typebotUpdateSchemaPick).partial().openapi({
-          title: "Typebot V6",
-        }),
-        typebotV5Schema.pick(typebotUpdateSchemaPick).partial().openapi({
-          title: "Typebot V5",
-        }),
+        typebotV6Schema.pick(typebotUpdateSchemaPick).partial(),
+        typebotV5Schema.pick(typebotUpdateSchemaPick).partial(),
       ]),
       overwrite: z
         .boolean()

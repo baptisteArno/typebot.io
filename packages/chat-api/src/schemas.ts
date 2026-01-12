@@ -30,22 +30,17 @@ import {
 import { z } from "@typebot.io/zod";
 import { clientSideActionSchema } from "./clientSideAction";
 
-export const textMessageSchema = z
-  .object({
-    type: z.literal("text"),
-    text: z.string(),
-    metadata: z.object({ replyId: z.string().optional() }).optional(),
-    attachedFileUrls: z
-      .array(z.string())
-      .optional()
-      .describe(
-        "Can only be provided if current input block is a text input block that allows attachments",
-      ),
-  })
-  .openapi({
-    title: "Text",
-    ref: "textMessage",
-  });
+export const textMessageSchema = z.object({
+  type: z.literal("text"),
+  text: z.string(),
+  metadata: z.object({ replyId: z.string().optional() }).optional(),
+  attachedFileUrls: z
+    .array(z.string())
+    .optional()
+    .describe(
+      "Can only be provided if current input block is a text input block that allows attachments",
+    ),
+});
 
 export const audioMessageSchema = z
   .object({
@@ -54,21 +49,12 @@ export const audioMessageSchema = z
   })
   .describe(
     "Can only be provided if current input block is a text input block that allows audio clips",
-  )
-  .openapi({
-    title: "Audio",
-    ref: "audioMessage",
-  });
+  );
 
-export const commandMessageSchema = z
-  .object({
-    type: z.literal("command"),
-    command: z.string(),
-  })
-  .openapi({
-    title: "Command",
-    ref: "commandMessage",
-  });
+export const commandMessageSchema = z.object({
+  type: z.literal("command"),
+  command: z.string(),
+});
 
 const inputMessageSchemas = [textMessageSchema, audioMessageSchema] as const;
 
@@ -83,65 +69,40 @@ export const inputMessageSchema = z.discriminatedUnion("type", [
 ]);
 export type InputMessage = Exclude<Message, { type: "command" }>;
 
-const textBubbleSchema = z
-  .object({
-    type: z.literal(BubbleBlockType.TEXT),
-    content: z.discriminatedUnion("type", [
-      z.object({
-        type: z.literal("richText"),
-        richText: z.any(),
-      }),
-      z.object({
-        type: z.literal("markdown"),
-        markdown: z.string(),
-      }),
-    ]),
-  })
-  .openapi({
-    title: "Text",
-    ref: "textBubble",
-  });
+const textBubbleSchema = z.object({
+  type: z.literal(BubbleBlockType.TEXT),
+  content: z.discriminatedUnion("type", [
+    z.object({
+      type: z.literal("richText"),
+      richText: z.any(),
+    }),
+    z.object({
+      type: z.literal("markdown"),
+      markdown: z.string(),
+    }),
+  ]),
+});
 export type TextChatBubble = z.infer<typeof textBubbleSchema>;
 
-const imageBubbleSchema = z
-  .object({
-    type: z.enum([BubbleBlockType.IMAGE]),
-    content: imageBubbleContentSchema,
-  })
-  .openapi({
-    title: "Image",
-    ref: "imageBubble",
-  });
+const imageBubbleSchema = z.object({
+  type: z.enum([BubbleBlockType.IMAGE]),
+  content: imageBubbleContentSchema,
+});
 
-const videoBubbleSchema = z
-  .object({
-    type: z.enum([BubbleBlockType.VIDEO]),
-    content: videoBubbleContentSchema,
-  })
-  .openapi({
-    title: "Video",
-    ref: "videoBubble",
-  });
+const videoBubbleSchema = z.object({
+  type: z.enum([BubbleBlockType.VIDEO]),
+  content: videoBubbleContentSchema,
+});
 
-const audioBubbleSchema = z
-  .object({
-    type: z.enum([BubbleBlockType.AUDIO]),
-    content: audioBubbleContentSchema,
-  })
-  .openapi({
-    title: "Audio",
-    ref: "audioBubble",
-  });
+const audioBubbleSchema = z.object({
+  type: z.enum([BubbleBlockType.AUDIO]),
+  content: audioBubbleContentSchema,
+});
 
-const embedBubbleSchema = z
-  .object({
-    type: z.enum([BubbleBlockType.EMBED]),
-    content: embedBubbleContentSchema,
-  })
-  .openapi({
-    title: "Embed",
-    ref: "embedBubble",
-  });
+const embedBubbleSchema = z.object({
+  type: z.enum([BubbleBlockType.EMBED]),
+  content: embedBubbleContentSchema,
+});
 
 const displayEmbedBubbleSchema = z.object({
   url: z.string().optional(),
@@ -156,15 +117,10 @@ const displayEmbedBubbleSchema = z.object({
     content: z.string(),
   }),
 });
-const customBubbleSchema = z
-  .object({
-    type: z.literal("custom-embed"),
-    content: displayEmbedBubbleSchema,
-  })
-  .openapi({
-    title: "Custom embed",
-    ref: "customEmbedBubble",
-  });
+const customBubbleSchema = z.object({
+  type: z.literal("custom-embed"),
+  content: displayEmbedBubbleSchema,
+});
 export type CustomEmbedBubble = z.infer<typeof customBubbleSchema>;
 
 export const chatBubbleSchema = z
@@ -193,16 +149,10 @@ const startTypebotPick = {
   updatedAt: true,
   workspaceId: true,
 } as const;
-const startTypebotV5Schema = typebotV5Schema.pick(startTypebotPick).openapi({
-  title: "Typebot V5",
-  ref: "typebotV5",
-});
+const startTypebotV5Schema = typebotV5Schema.pick(startTypebotPick);
 type StartTypebotV5 = z.infer<typeof startTypebotV5Schema>;
 
-const startTypebotV6Schema = typebotV6Schema.pick(startTypebotPick).openapi({
-  title: "Typebot V6",
-  ref: "typebotV6",
-});
+const startTypebotV6Schema = typebotV6Schema.pick(startTypebotPick);
 export type StartTypebotV6 = z.infer<typeof startTypebotV6Schema>;
 
 export const startTypebotSchema = z
@@ -261,13 +211,7 @@ const commonStartChatInputSchema = z.object({
     .optional()
     .describe(
       "[More info about prefilled variables.](../../editor/variables#prefilled-variables)",
-    )
-    .openapi({
-      example: {
-        "First name": "John",
-        Email: "john@gmail.com",
-      },
-    }),
+    ),
   textBubbleContentFormat: z.enum(["richText", "markdown"]).default("richText"),
 });
 export const startChatInputSchema = z

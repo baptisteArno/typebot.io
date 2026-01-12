@@ -98,12 +98,9 @@ const privateRouter = {
 };
 
 export const appRouter = {
-  ...publicRouter,
-  ...privateRouter,
-  billing: {
-    ...billingPublicRouter,
-    ...billingPrivateRouter,
-  },
+  typebotRouter: os.tag("docs").router({
+    typebotRouter,
+  }),
 };
 
 export type AppRouter = typeof appRouter;

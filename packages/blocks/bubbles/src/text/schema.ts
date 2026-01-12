@@ -9,17 +9,12 @@ export const textBubbleContentSchema = z.object({
   plainText: z.string().optional(),
 });
 
-export const textBubbleBlockSchema = blockBaseSchema
-  .merge(
-    z.object({
-      type: z.enum([BubbleBlockType.TEXT]),
-      content: textBubbleContentSchema.optional(),
-    }),
-  )
-  .openapi({
-    title: "Text",
-    ref: `textBlock`,
-  });
+export const textBubbleBlockSchema = blockBaseSchema.merge(
+  z.object({
+    type: z.enum([BubbleBlockType.TEXT]),
+    content: textBubbleContentSchema.optional(),
+  }),
+);
 
 export type TextBubbleBlock = Omit<
   z.infer<typeof textBubbleBlockSchema>,

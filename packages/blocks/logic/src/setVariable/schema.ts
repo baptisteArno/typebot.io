@@ -65,16 +65,11 @@ export const setVariableOptionsSchema = z.discriminatedUnion("type", [
   popOrShiftSetVariableOptionsSchema,
 ]);
 
-export const setVariableBlockSchema = blockBaseSchema
-  .merge(
-    z.object({
-      type: z.enum([LogicBlockType.SET_VARIABLE]),
-      options: setVariableOptionsSchema.optional(),
-    }),
-  )
-  .openapi({
-    title: "Set variable",
-    ref: "setVariableLogic",
-  });
+export const setVariableBlockSchema = blockBaseSchema.merge(
+  z.object({
+    type: z.enum([LogicBlockType.SET_VARIABLE]),
+    options: setVariableOptionsSchema.optional(),
+  }),
+);
 
 export type SetVariableBlock = z.infer<typeof setVariableBlockSchema>;

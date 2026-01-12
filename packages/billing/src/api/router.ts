@@ -112,9 +112,7 @@ export const billingPrivateRouter = {
     .input(getSubscriptionInputSchema)
     .output(
       z.object({
-        subscription: subscriptionSchema.or(
-          z.null().openapi({ type: "string" }),
-        ),
+        subscription: subscriptionSchema.or(z.null()),
       }),
     )
     .handler(handleGetSubscription),

@@ -42,28 +42,18 @@ const omittedProps = {
 const importingTypebotSchema = z.preprocess(
   preprocessTypebot,
   z.discriminatedUnion("version", [
-    typebotV6Schema
-      .omit(omittedProps)
-      .extend({
-        resultsTablePreferences: resultsTablePreferencesSchema.nullish(),
-        selectedThemeTemplateId: z.string().nullish(),
-        workspaceId: z.string().optional(),
-        id: z.string().optional(),
-      })
-      .openapi({
-        title: "Typebot V6",
-      }),
-    typebotV5Schema
-      .omit(omittedProps)
-      .extend({
-        resultsTablePreferences: resultsTablePreferencesSchema.nullish(),
-        selectedThemeTemplateId: z.string().nullish(),
-        workspaceId: z.string().optional(),
-        id: z.string().optional(),
-      })
-      .openapi({
-        title: "Typebot V5",
-      }),
+    typebotV6Schema.omit(omittedProps).extend({
+      resultsTablePreferences: resultsTablePreferencesSchema.nullish(),
+      selectedThemeTemplateId: z.string().nullish(),
+      workspaceId: z.string().optional(),
+      id: z.string().optional(),
+    }),
+    typebotV5Schema.omit(omittedProps).extend({
+      resultsTablePreferences: resultsTablePreferencesSchema.nullish(),
+      selectedThemeTemplateId: z.string().nullish(),
+      workspaceId: z.string().optional(),
+      id: z.string().optional(),
+    }),
   ]),
 );
 

@@ -53,17 +53,12 @@ export const paymentInputRuntimeOptionsSchema = z.object({
   publicKey: z.string(),
 });
 
-export const paymentInputSchema = blockBaseSchema
-  .merge(
-    z.object({
-      type: z.enum([InputBlockType.PAYMENT]),
-      options: paymentInputOptionsSchema.optional(),
-    }),
-  )
-  .openapi({
-    title: "Payment",
-    ref: "paymentInput",
-  });
+export const paymentInputSchema = blockBaseSchema.merge(
+  z.object({
+    type: z.enum([InputBlockType.PAYMENT]),
+    options: paymentInputOptionsSchema.optional(),
+  }),
+);
 
 export type PaymentInputBlock = z.infer<typeof paymentInputSchema>;
 export type PaymentInputRuntimeOptions = z.infer<

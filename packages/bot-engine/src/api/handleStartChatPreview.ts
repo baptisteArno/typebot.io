@@ -57,13 +57,7 @@ export const startPreviewChatInputSchema = z.object({
     .optional()
     .describe(
       "[More info about prefilled variables.](../../editor/variables#prefilled-variables)",
-    )
-    .openapi({
-      example: {
-        "First name": "John",
-        Email: "john@gmail.com",
-      },
-    }),
+    ),
   textBubbleContentFormat: z.enum(["richText", "markdown"]).default("richText"),
 });
 

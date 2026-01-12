@@ -48,9 +48,6 @@ export const singleVariableOrNumberSchema = z
       return safeParseFloat(value);
     }
     return value;
-  })
-  .openapi({
-    effectType: "input",
   });
 
 export const setVariableHistoryItemSchema = z.object({

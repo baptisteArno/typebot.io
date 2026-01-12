@@ -8,16 +8,11 @@ export const typebotLinkOptionsSchema = z.object({
   mergeResults: z.boolean().optional(),
 });
 
-export const typebotLinkBlockSchema = blockBaseSchema
-  .merge(
-    z.object({
-      type: z.enum([LogicBlockType.TYPEBOT_LINK]),
-      options: typebotLinkOptionsSchema.optional(),
-    }),
-  )
-  .openapi({
-    title: "Typebot link",
-    ref: "typebotLinkLogic",
-  });
+export const typebotLinkBlockSchema = blockBaseSchema.merge(
+  z.object({
+    type: z.enum([LogicBlockType.TYPEBOT_LINK]),
+    options: typebotLinkOptionsSchema.optional(),
+  }),
+);
 
 export type TypebotLinkBlock = z.infer<typeof typebotLinkBlockSchema>;

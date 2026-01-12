@@ -27,16 +27,11 @@ export const dateInputOptionsSchema = optionBaseSchema.merge(
   }),
 );
 
-export const dateInputSchema = blockBaseSchema
-  .merge(
-    z.object({
-      type: z.enum([InputBlockType.DATE]),
-      options: dateInputOptionsSchema.optional(),
-    }),
-  )
-  .openapi({
-    title: "Date",
-    ref: "dateInput",
-  });
+export const dateInputSchema = blockBaseSchema.merge(
+  z.object({
+    type: z.enum([InputBlockType.DATE]),
+    options: dateInputOptionsSchema.optional(),
+  }),
+);
 
 export type DateInputBlock = z.infer<typeof dateInputSchema>;

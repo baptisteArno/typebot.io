@@ -78,26 +78,21 @@ export const whatsAppSettingsSchema = z.object({
     .describe("Expiration delay in hours after latest interaction"),
 });
 
-export const settingsSchema = z
-  .object({
-    general: generalSettings.optional(),
-    typingEmulation: typingEmulation.optional(),
-    metadata: metadataSchema.optional(),
-    whatsApp: whatsAppSettingsSchema.optional(),
-    publicShare: z
-      .object({
-        isEnabled: z.boolean().optional(),
-      })
-      .optional(),
-    security: z
-      .object({
-        allowedOrigins: z.array(z.string()).optional(),
-      })
-      .optional(),
-  })
-  .openapi({
-    title: "Settings",
-    ref: "settings",
-  });
+export const settingsSchema = z.object({
+  general: generalSettings.optional(),
+  typingEmulation: typingEmulation.optional(),
+  metadata: metadataSchema.optional(),
+  whatsApp: whatsAppSettingsSchema.optional(),
+  publicShare: z
+    .object({
+      isEnabled: z.boolean().optional(),
+    })
+    .optional(),
+  security: z
+    .object({
+      allowedOrigins: z.array(z.string()).optional(),
+    })
+    .optional(),
+});
 
 export type Settings = z.infer<typeof settingsSchema>;

@@ -48,16 +48,11 @@ export const textInputOptionsSchema = textInputOptionsBaseSchema
     }),
   );
 
-export const textInputSchema = blockBaseSchema
-  .merge(
-    z.object({
-      type: z.enum([InputBlockType.TEXT]),
-      options: textInputOptionsSchema.optional(),
-    }),
-  )
-  .openapi({
-    title: "Text",
-    ref: "textInput",
-  });
+export const textInputSchema = blockBaseSchema.merge(
+  z.object({
+    type: z.enum([InputBlockType.TEXT]),
+    options: textInputOptionsSchema.optional(),
+  }),
+);
 
 export type TextInputBlock = z.infer<typeof textInputSchema>;

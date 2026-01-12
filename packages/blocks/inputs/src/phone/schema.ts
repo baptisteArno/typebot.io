@@ -15,16 +15,11 @@ export const phoneNumberInputOptionsSchema = optionBaseSchema
     }),
   );
 
-export const phoneNumberInputBlockSchema = blockBaseSchema
-  .merge(
-    z.object({
-      type: z.enum([InputBlockType.PHONE]),
-      options: phoneNumberInputOptionsSchema.optional(),
-    }),
-  )
-  .openapi({
-    title: "Phone number",
-    ref: "phoneNumberInput",
-  });
+export const phoneNumberInputBlockSchema = blockBaseSchema.merge(
+  z.object({
+    type: z.enum([InputBlockType.PHONE]),
+    options: phoneNumberInputOptionsSchema.optional(),
+  }),
+);
 
 export type PhoneNumberInputBlock = z.infer<typeof phoneNumberInputBlockSchema>;
