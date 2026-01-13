@@ -7,7 +7,7 @@
     "./*": "./src/*.ts"
   },
   "dependencies": {
-    "@orpc/server": "^1.13.0",
+    "@orpc/server": "^1.13.4",
     "@typebot.io/zod": "workspace:*",
     "@typebot.io/groups": "workspace:*",
     "@typebot.io/blocks-inputs": "workspace:*",

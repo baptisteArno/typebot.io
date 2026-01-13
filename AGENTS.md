@@ -29,16 +29,6 @@ npx opensrc <owner>/<repo>      # GitHub repo (e.g., npx opensrc vercel/ai)
 
 <!-- opensrc:end -->
 
-## Library Documentation (.context/)
-
-**IMPORTANT**: Always check the `.context/` directory for library-specific documentation and example code before implementing features with these libraries.
-
-Available library contexts:
-
-- `.context/orpc/` - oRPC Typesafe APIs library documentation and examples
-
-When working with oRPC refer to these directories for best practices, API usage, and implementation patterns.
-
 ## Build, Test, and Development Commands
 
 - `bun install`: install workspace dependencies (Bun is the package manager).
