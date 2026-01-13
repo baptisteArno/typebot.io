@@ -26,7 +26,7 @@ export const fileUploadBuilderRouter = {
   getPrivateFile: authenticatedProcedure
     .route({
       method: "GET",
-      path: "/v1/s3/private/{+rest}",
+      path: "/s3/private/{+rest}",
       successStatus: 307,
       outputStructure: "detailed",
     })
