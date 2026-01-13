@@ -21,14 +21,6 @@ export const handleUpdateWorkspace = async ({
   input: z.infer<typeof updateWorkspaceInputSchema>;
   context: { user: Pick<User, "id" | "email"> };
 }) => {
-  await prisma.workspace.updateMany({
-    where: { members: { some: { userId: user.id } }, id: workspaceId },
-    data: {
-      name,
-      icon,
-    },
-  });
-
   const workspace = await prisma.workspace.findFirst({
     where: { members: { some: { userId: user.id } }, id: workspaceId },
     include: { members: true },
@@ -42,7 +34,16 @@ export const handleUpdateWorkspace = async ({
       message: "You are not allowed to update this workspace",
     });
 
+  const updatedWorkspace = await prisma.workspace.update({
+    where: { id: workspaceId },
+    data: {
+      name,
+      icon,
+    },
+    include: { members: true },
+  });
+
   return {
-    workspace,
+    workspace: updatedWorkspace,
   };
 };
