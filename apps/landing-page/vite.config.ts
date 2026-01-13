@@ -16,7 +16,9 @@ export default defineConfig({
   },
   plugins: [
     tailwindcss(),
-    viteTsConfigPaths(),
+    viteTsConfigPaths({
+      skip: (dir) => dir === "opensrc",
+    }),
     contentCollections(),
     tanstackStart({
       target: "vercel",

@@ -49,7 +49,7 @@ export const WhatsAppDeployDialog = ({
   const whatsAppSettings = typebot?.settings.whatsApp;
 
   const { data: phoneNumberData } = useQuery(
-    orpc.whatsAppInternal.getPhoneNumber.queryOptions({
+    orpc.whatsApp.getPhoneNumber.queryOptions({
       input: {
         credentialsId: typebot?.whatsAppCredentialsId as string,
       },

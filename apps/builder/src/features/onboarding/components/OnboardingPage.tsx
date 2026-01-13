@@ -21,7 +21,7 @@ export const OnboardingPage = () => {
   const [canSkipOnboarding, setCanSkipOnboarding] = useState(false);
 
   const acceptTermsMutation = useMutation(
-    orpc.userInternal.acceptTerms.mutationOptions({
+    orpc.user.acceptTerms.mutationOptions({
       onSettled: () => {
         refreshSessionUser();
       },

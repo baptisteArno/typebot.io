@@ -24,7 +24,7 @@
     "build-docker-compose-prod": "docker compose -f docker-compose.build.yml build",
     "start-docker-compose-prod": "docker compose -f docker-compose.yml up",
     "typecheck": "turbo run typecheck",
-    "build": "turbo run typecheck build --filter=builder... --filter=viewer... --filter=landing-page... --filter=docs...",
+    "build": "turbo run build --filter=builder... --filter=viewer... --filter=landing-page... --filter=docs...",
     "dev": "turbo dev --filter=builder... --filter=viewer... --filter=@typebot.io/partykit... --concurrency=11",
     "sync-locales": "dotenv -e .env -- tolgee sync --continue-on-warning --remove-unused --no-strict-namespace --patterns './apps/builder/src/**/*.ts?(x)' --backup './.tolgee/backup'",
     "pull-locales": "dotenv -e .env -- tolgee pull && bun format-and-lint:fix",
