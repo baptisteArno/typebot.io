@@ -70,6 +70,6 @@ export const handleGetWhatsAppMedia = async ({
       "content-type": mimeType,
       "cache-control": "public, max-age=86400",
     },
-    body: file,
+    body: new Blob([new Uint8Array(file)], { type: mimeType }),
   };
 };

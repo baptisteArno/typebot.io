@@ -134,6 +134,7 @@ export const builderWhatsAppRouter = {
           "content-type": z.string(),
           "cache-control": z.string(),
         }),
+        body: z.instanceof(Blob),
       }),
     )
     .handler(handleGetWhatsAppMedia),
@@ -151,7 +152,7 @@ export const builderWhatsAppRouter = {
           "content-type": z.string(),
           "cache-control": z.string(),
         }),
-        body: z.any(),
+        body: z.instanceof(Blob),
       }),
     )
     .handler(handleGetWhatsAppMediaPreview),

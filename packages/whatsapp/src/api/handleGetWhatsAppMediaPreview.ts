@@ -55,16 +55,11 @@ export const handleGetWhatsAppMediaPreview = async ({
     },
   });
 
-  console.log({
-    "content-type": mimeType,
-    "cache-control": "public, max-age=86400",
-  });
-
   return {
     headers: {
       "content-type": mimeType,
       "cache-control": "public, max-age=86400",
     },
-    body: file,
+    body: new Blob([new Uint8Array(file)], { type: mimeType }),
   };
 };
