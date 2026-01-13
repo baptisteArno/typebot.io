@@ -1,4 +1,4 @@
-# Repository Guidelines
+# Typebot Agent Guidelines
 
 ## Project Structure & Module Organization
 
@@ -54,26 +54,8 @@ npx opensrc <owner>/<repo>      # GitHub repo (e.g., npx opensrc vercel/ai)
 - Unit tests use the `*.test.ts` suffix.
 - E2E tests are only written for the viewer and use the `*.spec.ts` suffix; run them with `bun run test:e2e` in `apps/viewer`.
 
-## Commit & Pull Request Guidelines
-
-- Use emoji-prefixed, imperative commit messages with this convention:
-  - ✨ New product feature (product-facing only)
-  - 💅 UI/UX improvement
-  - 📚 Content (blog posts, docs)
-  - ♻️ Refactoring
-  - 🐛 Bug fix
-  - ✏️ Typo
-  - 🔧 Internal changes (not user facing)
-- PRs should include a clear description, reproduction steps if fixing a bug, and screenshots/GIFs for UI changes.
-- Link related issues when applicable.
-
 ## Environment Variables
 
 - Always use `env` from `@typebot.io/env` instead of `process.env` directly.
 - This package provides type-safe, validated environment variables.
 - Example: `env.NODE_ENV` instead of `process.env.NODE_ENV`.
-
-## Configuration & Security Notes
-
-- Environment variables are loaded with `dotenv` in several scripts; keep `.env` values out of commits.
-- See `SECURITY.md` for reporting vulnerabilities and security expectations.
