@@ -40,6 +40,7 @@ export const handleUpdateFolder = async ({
   const updatedFolder = await prisma.dashboardFolder.update({
     where: {
       id: folderId,
+      workspaceId,
     },
     data: {
       name: folder.name,

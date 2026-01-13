@@ -27,6 +27,7 @@ export const handleDeleteFolder = async ({
   const folder = await prisma.dashboardFolder.delete({
     where: {
       id: folderId,
+      workspaceId,
     },
   });
 

@@ -1,5 +1,6 @@
 import { ORPCError } from "@orpc/server";
 import { env } from "@typebot.io/env";
+import { getRuntimeVariable } from "@typebot.io/env/getRuntimeVariable";
 import type { AuthDefinition, OAuthDefinition } from "@typebot.io/forge/types";
 import { forgedBlocks } from "@typebot.io/forge-repository/definitions";
 import { z } from "@typebot.io/zod";
@@ -22,7 +23,7 @@ export const handleAuthorizeOAuth = async ({
   const resolvedClientId =
     clientId ||
     (authConfig.defaultClientEnvKeys
-      ? process.env[authConfig.defaultClientEnvKeys.id]
+      ? getRuntimeVariable(authConfig.defaultClientEnvKeys.id)
       : undefined);
 
   if (!resolvedClientId)

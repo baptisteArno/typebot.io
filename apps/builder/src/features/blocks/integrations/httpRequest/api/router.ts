@@ -64,7 +64,9 @@ export const httpRequestRouter = {
     .input(getResultExampleInputSchema)
     .output(
       z.object({
-        resultExample: z.record(z.any()).describe("Can contain any fields."),
+        resultExample: z
+          .record(z.unknown())
+          .describe("Can contain any fields."),
       }),
     )
     .handler(handleGetResultExample),

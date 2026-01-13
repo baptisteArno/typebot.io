@@ -1,6 +1,7 @@
 import { ORPCError } from "@orpc/server";
 import { encrypt } from "@typebot.io/credentials/encrypt";
 import { env } from "@typebot.io/env";
+import { getRuntimeVariable } from "@typebot.io/env/getRuntimeVariable";
 import type { OAuthDefinition } from "@typebot.io/forge/types";
 import { forgedBlocks } from "@typebot.io/forge-repository/definitions";
 import { ky } from "@typebot.io/lib/ky";
@@ -174,8 +175,8 @@ const getClient = (
 ) => {
   if (customClient) return customClient;
   if (authDef.defaultClientEnvKeys) {
-    const id = process.env[authDef.defaultClientEnvKeys.id];
-    const secret = process.env[authDef.defaultClientEnvKeys.secret];
+    const id = getRuntimeVariable(authDef.defaultClientEnvKeys.id);
+    const secret = getRuntimeVariable(authDef.defaultClientEnvKeys.secret);
     if (id && secret) return { id, secret };
   }
   return undefined;

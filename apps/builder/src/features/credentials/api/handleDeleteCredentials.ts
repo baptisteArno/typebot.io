@@ -45,6 +45,7 @@ export const handleDeleteCredentials = async ({
   await prisma.credentials.delete({
     where: {
       id: input.credentialsId,
+      workspaceId: input.workspaceId,
     },
   });
   return { credentialsId: input.credentialsId };

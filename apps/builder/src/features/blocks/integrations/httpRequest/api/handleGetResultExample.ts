@@ -1,9 +1,11 @@
 import { ORPCError } from "@orpc/server";
 import { parseSampleResult } from "@typebot.io/bot-engine/blocks/integrations/httpRequest/parseSampleResult";
 import { getBlockById } from "@typebot.io/groups/helpers/getBlockById";
+import { parseGroups } from "@typebot.io/groups/helpers/parseGroups";
 import prisma from "@typebot.io/prisma";
-import type { Typebot } from "@typebot.io/typebot/schemas/typebot";
+import { edgeSchema } from "@typebot.io/typebot/schemas/edge";
 import type { User } from "@typebot.io/user/schemas";
+import { variableSchema } from "@typebot.io/variables/schemas";
 import { z } from "@typebot.io/zod";
 import { fetchLinkedTypebots } from "@/features/blocks/logic/typebotLink/helpers/fetchLinkedTypebots";
 import { canReadTypebots } from "@/helpers/databaseRules";
@@ -20,18 +22,26 @@ export const handleGetResultExample = async ({
   input: z.infer<typeof getResultExampleInputSchema>;
   context: { user: Pick<User, "id" | "email"> };
 }) => {
-  const typebot = (await prisma.typebot.findFirst({
+  const typebotResult = await prisma.typebot.findFirst({
     where: canReadTypebots(typebotId, user),
     select: {
+      version: true,
       groups: true,
       edges: true,
       variables: true,
-      events: true,
     },
-  })) as Pick<Typebot, "groups" | "edges" | "variables" | "events"> | null;
+  });
 
-  if (!typebot)
+  if (!typebotResult)
     throw new ORPCError("NOT_FOUND", { message: "Typebot not found" });
+
+  const typebot = {
+    groups: parseGroups(typebotResult.groups, {
+      typebotVersion: typebotResult.version,
+    }),
+    edges: z.array(edgeSchema).parse(typebotResult.edges),
+    variables: z.array(variableSchema).parse(typebotResult.variables),
+  };
 
   const { group } = getBlockById(blockId, typebot.groups);
 

@@ -30,6 +30,13 @@ export const fileUploadBuilderRouter = {
       successStatus: 307,
       outputStructure: "detailed",
     })
+    .output(
+      z.object({
+        headers: z.object({
+          location: z.string(),
+        }),
+      }),
+    )
     .input(getPrivateFileInputSchema)
     .handler(handleGetPrivateFile),
 };
