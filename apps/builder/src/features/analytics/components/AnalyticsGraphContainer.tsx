@@ -38,7 +38,7 @@ export const AnalyticsGraphContainer = ({
   const { data } = useQuery(
     orpc.analytics.getInDepthAnalyticsData.queryOptions({
       input: {
-        typebotId: typebot!.id,
+        typebotId: typebot?.id ?? "",
         timeFilter,
         timeZone,
       },

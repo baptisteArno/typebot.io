@@ -40,7 +40,7 @@ import {
   updateSubscriptionInputSchema,
 } from "./handleUpdateSubscription";
 
-export const billingPublicRouter = {
+export const billingRouter = {
   webhook: publicProcedure
     .route({
       method: "POST",
@@ -78,9 +78,6 @@ export const billingPublicRouter = {
       }),
     )
     .handler(handleListInvoices),
-};
-
-export const billingPrivateRouter = {
   createCheckoutSession: authenticatedProcedure
     .input(createCheckoutSessionInputSchema)
     .output(

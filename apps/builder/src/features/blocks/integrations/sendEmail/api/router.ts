@@ -1,5 +1,11 @@
-import { testSmtpConfig } from "./testSmtpConfig";
+import { authenticatedProcedure } from "@typebot.io/config/orpc/builder/middlewares";
+import {
+  handleTestSmtpConfig,
+  testSmtpConfigInputSchema,
+} from "./handleTestSmtpConfig";
 
 export const emailRouter = {
-  testSmtpConfig,
+  testSmtpConfig: authenticatedProcedure
+    .input(testSmtpConfigInputSchema)
+    .handler(handleTestSmtpConfig),
 };

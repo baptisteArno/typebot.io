@@ -50,7 +50,7 @@ export const CredentialsSettingsForm = () => {
         selectedScope === "workspace"
           ? {
               scope: "workspace",
-              workspaceId: workspace!.id,
+              workspaceId: workspace?.id ?? "",
             }
           : {
               scope: "user",
@@ -160,7 +160,7 @@ export const CredentialsSettingsForm = () => {
                         selectedScope === "workspace"
                           ? {
                               scope: "workspace",
-                              workspaceId: workspace!.id,
+                              workspaceId: workspace?.id ?? "",
                               credentialsId: cred.id,
                             }
                           : { scope: "user", credentialsId: cred.id },

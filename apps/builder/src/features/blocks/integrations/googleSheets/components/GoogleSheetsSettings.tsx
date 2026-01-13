@@ -48,8 +48,8 @@ export const GoogleSheetsSettings = ({
   const { data, status } = useQuery(
     orpc.sheets.getSheets.queryOptions({
       input: {
-        credentialsId: options!.credentialsId as string,
-        spreadsheetId: options!.spreadsheetId as string,
+        credentialsId: options?.credentialsId ?? "",
+        spreadsheetId: options?.spreadsheetId ?? "",
         workspaceId: workspace?.id,
       },
       enabled: !!options?.credentialsId && !!options?.spreadsheetId,

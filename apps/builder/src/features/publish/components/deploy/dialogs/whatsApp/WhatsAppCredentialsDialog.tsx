@@ -13,13 +13,13 @@ import { ArrowLeft01Icon } from "@typebot.io/ui/icons/ArrowLeft01Icon";
 import { ArrowUpRight01Icon } from "@typebot.io/ui/icons/ArrowUpRight01Icon";
 import { TickIcon } from "@typebot.io/ui/icons/TickIcon";
 import { cx } from "@typebot.io/ui/lib/cva";
+import { formatPhoneNumberDisplayName } from "@typebot.io/whatsapp/formatPhoneNumberDisplayName";
 import { useState } from "react";
 import { ButtonLink } from "@/components/ButtonLink";
 import { CopyInput } from "@/components/inputs/CopyInput";
 import { Dialog360Logo } from "@/components/logos/Dialog360Logo";
 import { MetaLogo } from "@/components/logos/MetaLogo";
 import { TextLink } from "@/components/TextLink";
-import { formatPhoneNumberDisplayName } from "@/features/whatsapp/formatPhoneNumberDisplayName";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { orpc, orpcClient, queryClient } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
@@ -112,7 +112,7 @@ export const WhatsAppCreateDialogBody = ({
   );
 
   const { data: tokenInfoData } = useQuery(
-    orpc.whatsAppInternal.getSystemTokenInfo.queryOptions({
+    orpc.whatsApp.getSystemTokenInfo.queryOptions({
       input: {
         token: systemUserAccessToken,
       },
@@ -165,7 +165,7 @@ export const WhatsAppCreateDialogBody = ({
     setIsVerifying(true);
     try {
       const { expiresAt, scopes } =
-        await orpcClient.whatsAppInternal.getSystemTokenInfo({
+        await orpcClient.whatsApp.getSystemTokenInfo({
           token: systemUserAccessToken,
         });
       if (expiresAt !== 0) {
@@ -203,14 +203,14 @@ export const WhatsAppCreateDialogBody = ({
   const isPhoneNumberAvailable = async () => {
     setIsVerifying(true);
     try {
-      const { name } = await orpcClient.whatsAppInternal.getPhoneNumber({
+      const { name } = await orpcClient.whatsApp.getPhoneNumber({
         systemToken: systemUserAccessToken,
         phoneNumberId,
       });
       setPhoneNumberName(name);
       try {
         const { message } =
-          await orpcClient.whatsAppInternal.verifyIfPhoneNumberAvailable({
+          await orpcClient.whatsApp.verifyIfPhoneNumberAvailable({
             phoneNumberDisplayName: name,
           });
 
@@ -222,7 +222,7 @@ export const WhatsAppCreateDialogBody = ({
           return false;
         }
         const { verificationToken } =
-          await orpcClient.whatsAppInternal.generateVerificationToken();
+          await orpcClient.whatsApp.generateVerificationToken();
         setVerificationToken(verificationToken);
       } catch (err) {
         console.error(err);

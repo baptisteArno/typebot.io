@@ -2,10 +2,42 @@
 
 ## Project Structure & Module Organization
 
-- `apps/` hosts product surfaces like the builder, viewer, docs, and landing page (e.g., `apps/builder`, `apps/viewer`).
+- `apps/builder` hosts product surfaces like the builder, viewer, docs, and landing page (e.g., `apps/builder`, `apps/viewer`).
 - `packages/` contains shared libraries, blocks, embeds, and tooling (`packages/ui`, `packages/lib`, `packages/blocks/*`, `packages/embeds/*`).
-- `scripts/` is for repository-wide maintenance scripts.
-- Tests live alongside code in `*.test.ts` and under app-specific fixtures (e.g., `apps/viewer/src/test`).
+- `.context/` contains git subtrees for context of how to use specific libraries.
+
+<!-- opensrc:start -->
+
+## Source Code Reference
+
+Source code for dependencies is available in `opensrc/` for deeper understanding of implementation details.
+
+See `opensrc/sources.json` for the list of available packages and their versions.
+
+Use this source code when you need to understand how a package works internally, not just its types/interface.
+
+### Fetching Additional Source Code
+
+To fetch source code for a package or repository you need to understand, run:
+
+```bash
+npx opensrc <package>           # npm package (e.g., npx opensrc zod)
+npx opensrc pypi:<package>      # Python package (e.g., npx opensrc pypi:requests)
+npx opensrc crates:<package>    # Rust crate (e.g., npx opensrc crates:serde)
+npx opensrc <owner>/<repo>      # GitHub repo (e.g., npx opensrc vercel/ai)
+```
+
+<!-- opensrc:end -->
+
+## Library Documentation (.context/)
+
+**IMPORTANT**: Always check the `.context/` directory for library-specific documentation and example code before implementing features with these libraries.
+
+Available library contexts:
+
+- `.context/orpc/` - oRPC Typesafe APIs library documentation and examples
+
+When working with oRPC refer to these directories for best practices, API usage, and implementation patterns.
 
 ## Build, Test, and Development Commands
 

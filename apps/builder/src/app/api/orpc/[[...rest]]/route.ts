@@ -3,7 +3,7 @@ import { CORSPlugin } from "@orpc/server/plugins";
 import * as Sentry from "@sentry/nextjs";
 import { auth } from "@typebot.io/auth/lib/nextAuth";
 import { createContext } from "@typebot.io/config/orpc/builder/context";
-import { appRouter } from "@/lib/orpcRouter";
+import { appRouter } from "../../router";
 
 const handler = new RPCHandler(appRouter, {
   plugins: [new CORSPlugin()],

@@ -28,7 +28,10 @@ const handler = new OpenAPIHandler(appRouter, {
       schemaConverters: [new ZodToJsonSchemaConverter()],
       specGenerateOptions: {
         filter: ({ contract }) =>
-          Boolean(contract["~orpc"].route.tags?.includes("docs")),
+          Boolean(
+            contract["~orpc"].route.method &&
+              !contract["~orpc"].route.deprecated,
+          ),
         info: {
           title: "Chat API",
           version: "3.0.0",

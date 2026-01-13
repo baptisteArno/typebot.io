@@ -11,7 +11,7 @@ import {
 } from "@tanstack/react-query";
 import { env } from "@typebot.io/env";
 import type { ToastErrorData } from "@typebot.io/lib/toastErrorData";
-import type { AppRouter } from "@/lib/orpcRouter";
+import type { AppRouter } from "@/app/api/router";
 import { toast } from "./toast";
 
 export const showHttpRequestErrorToast = (

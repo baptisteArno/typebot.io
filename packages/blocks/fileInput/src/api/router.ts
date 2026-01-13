@@ -22,7 +22,7 @@ import {
   handleGetPrivateFile,
 } from "./handleGetPrivateFile";
 
-export const builderRouter = {
+export const fileUploadBuilderRouter = {
   getPrivateFile: authenticatedProcedure
     .route({
       method: "GET",
@@ -34,7 +34,7 @@ export const builderRouter = {
     .handler(handleGetPrivateFile),
 };
 
-export const publicRouter = {
+export const fileUploadViewerRouter = {
   generateUploadUrlProcedure: publicProcedure
     .route({
       method: "POST",
@@ -52,9 +52,6 @@ export const publicRouter = {
       }),
     )
     .handler(handleGenerateUploadUrl),
-};
-
-export const privateRouter = {
   generateUploadUrlV1Procedure: publicProcedure
     .route({
       method: "POST",

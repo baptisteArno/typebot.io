@@ -44,7 +44,7 @@ export const ForgedCredentialsDropdown = ({
         scope === "workspace"
           ? {
               scope: "workspace",
-              workspaceId: workspace!.id,
+              workspaceId: workspace?.id ?? "",
               type: getAuthTypeFromBlockId(blockDef.id),
             }
           : {

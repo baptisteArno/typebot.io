@@ -29,7 +29,7 @@ export const SmtpCredentialsUpdateDialogBody = ({
     orpc.credentials.getCredentials.queryOptions({
       input: {
         scope: "workspace",
-        workspaceId: workspace!.id,
+        workspaceId: workspace?.id ?? "",
         credentialsId: credentialsId,
       },
       enabled: !!workspace?.id,

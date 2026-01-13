@@ -1,5 +1,8 @@
-import { listModels } from "./listModels";
+import { authenticatedProcedure } from "@typebot.io/config/orpc/builder/middlewares";
+import { handleListModels, listModelsInputSchema } from "./handleListModels";
 
 export const openAIRouter = {
-  listModels,
+  listModels: authenticatedProcedure
+    .input(listModelsInputSchema)
+    .handler(handleListModels),
 };

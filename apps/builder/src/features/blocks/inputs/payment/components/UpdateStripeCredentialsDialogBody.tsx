@@ -35,7 +35,7 @@ export const UpdateStripeCredentialsDialogBody = ({
       input: {
         scope: "workspace",
         credentialsId,
-        workspaceId: workspace!.id,
+        workspaceId: workspace?.id ?? "",
       },
       enabled: !!workspace?.id,
     }),
