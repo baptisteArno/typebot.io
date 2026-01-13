@@ -54,6 +54,7 @@ export const handleGetCredentials = async ({
   const credentials = await prisma.credentials.findFirst({
     where: {
       id: input.credentialsId,
+      workspaceId: workspace.id,
     },
     select: {
       data: true,
