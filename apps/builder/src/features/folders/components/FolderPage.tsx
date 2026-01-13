@@ -1,3 +1,4 @@
+import { ORPCError } from "@orpc/client";
 import { useQuery } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
 import { LoaderCircleIcon } from "@typebot.io/ui/icons/LoaderCircleIcon";
@@ -6,7 +7,7 @@ import { NotFoundPage } from "@/components/NotFoundPage";
 import { Seo } from "@/components/Seo";
 import { DashboardHeader } from "@/features/dashboard/components/DashboardHeader";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { trpc } from "@/lib/queryClient";
+import { orpc } from "@/lib/queryClient";
 import { TypebotDndProvider } from "../TypebotDndProvider";
 import { FolderContent } from "./FolderContent";
 
@@ -16,20 +17,17 @@ export const FolderPage = () => {
   const { workspace, currentUserMode } = useWorkspace();
 
   const { data: { folder } = {}, error } = useQuery(
-    trpc.folders.getFolder.queryOptions(
-      {
+    orpc.folders.getFolder.queryOptions({
+      input: {
         folderId: router.query.id as string,
         workspaceId: workspace?.id as string,
       },
-      {
-        enabled:
-          !!workspace && !!router.query.id && currentUserMode !== "guest",
-        retry: 0,
-      },
-    ),
+      enabled: !!workspace && !!router.query.id && currentUserMode !== "guest",
+      retry: 0,
+    }),
   );
 
-  if (error?.data?.httpStatus === 404)
+  if (error instanceof ORPCError && error.code === "NOT_FOUND")
     return <NotFoundPage resourceName="Folder" />;
 
   return (

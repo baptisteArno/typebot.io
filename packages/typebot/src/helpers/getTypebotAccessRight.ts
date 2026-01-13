@@ -2,7 +2,7 @@ import { env } from "@typebot.io/env";
 import type { CollaborationType } from "@typebot.io/prisma/enum";
 
 export const getTypebotAccessRight = (
-  user: { email: string | null; id: string } | undefined,
+  user: { email: string | null; id: string } | undefined | null,
   typebot: { collaborators: { userId: string; type: CollaborationType }[] } & {
     workspace: { members: { userId: string }[] };
   },

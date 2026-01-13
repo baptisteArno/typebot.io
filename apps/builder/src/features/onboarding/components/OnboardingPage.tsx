@@ -1,4 +1,6 @@
+import { useMutation } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
+import { refreshSessionUser } from "@typebot.io/auth/helpers/refreshSessionUser";
 import { env } from "@typebot.io/env";
 import { Standard } from "@typebot.io/react";
 import { Button } from "@typebot.io/ui/components/Button";
@@ -6,8 +8,8 @@ import { ArrowRight01Icon } from "@typebot.io/ui/icons/ArrowRight01Icon";
 import confetti from "canvas-confetti";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
-import { useAcceptTermsMutation } from "@/features/user/hooks/useAcceptTermsMutation";
 import { useUser } from "@/features/user/hooks/useUser";
+import { orpc } from "@/lib/queryClient";
 
 export const OnboardingPage = () => {
   const { t } = useTranslate();
@@ -18,11 +20,16 @@ export const OnboardingPage = () => {
   const [pendingCategories, setPendingCategories] = useState<string[]>([]);
   const [canSkipOnboarding, setCanSkipOnboarding] = useState(false);
 
-  const acceptTermsMutation = useAcceptTermsMutation({
-    onSuccess: () => {
-      setCanSkipOnboarding(true);
-    },
-  });
+  const acceptTermsMutation = useMutation(
+    orpc.user.acceptTerms.mutationOptions({
+      onSettled: () => {
+        refreshSessionUser();
+      },
+      onSuccess: () => {
+        setCanSkipOnboarding(true);
+      },
+    }),
+  );
 
   useEffect(() => {
     initConfettis();

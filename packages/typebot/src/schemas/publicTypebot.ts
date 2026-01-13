@@ -23,31 +23,21 @@ export const publicTypebotSchemaV5 = (
       lastActivityAt: z.date().nullish(),
       typebotId: z.string(),
       groups: z.array(groupV5Schema),
-      events: z.null().openapi({
-        type: "array",
-      }),
+      events: z.null(),
       edges: z.array(edgeSchema),
       variables: z.array(variableSchema),
       theme: themeSchema,
       settings: settingsSchema,
     }),
   ) satisfies z.ZodType<Partial<Prisma.PublicTypebot>, z.ZodTypeDef, unknown>
-)._def.schema.openapi({
-  ref: "publicTypebotV5",
-  title: "Public Typebot V5",
-});
+)._def.schema;
 export type PublicTypebotV5 = z.infer<typeof publicTypebotSchemaV5>;
 
-export const publicTypebotSchemaV6 = publicTypebotSchemaV5
-  .extend({
-    version: z.enum(typebotV6Versions),
-    groups: z.array(groupV6Schema),
-    events: z.tuple([startEventSchema]).rest(draggableEventSchema),
-  })
-  .openapi({
-    ref: "publicTypebotV6",
-    title: "Public Typebot V6",
-  });
+export const publicTypebotSchemaV6 = publicTypebotSchemaV5.extend({
+  version: z.enum(typebotV6Versions),
+  groups: z.array(groupV6Schema),
+  events: z.tuple([startEventSchema]).rest(draggableEventSchema),
+});
 export type PublicTypebotV6 = z.infer<typeof publicTypebotSchemaV6>;
 
 export const publicTypebotSchema = z.preprocess(

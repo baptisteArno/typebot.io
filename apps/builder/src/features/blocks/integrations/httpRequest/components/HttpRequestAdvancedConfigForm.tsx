@@ -1,3 +1,4 @@
+import { useMutation } from "@tanstack/react-query";
 import {
   defaultHttpRequestAttributes,
   defaultHttpRequestBlockOptions,
@@ -24,7 +25,7 @@ import { CodeEditor } from "@/components/inputs/CodeEditor";
 import { TableList, type TableListItemProps } from "@/components/TableList";
 import { CredentialsDropdown } from "@/features/credentials/components/CredentialsDropdown";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
-import { trpcClient } from "@/lib/queryClient";
+import { orpc } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
 import { computeDeepKeysMappingSuggestionList } from "../helpers/computeDeepKeysMappingSuggestionList";
 import { convertVariablesForTestToVariables } from "../helpers/convertVariablesForTestToVariables";
@@ -50,9 +51,26 @@ export const HttpRequestAdvancedConfigForm = ({
   onNewTestResponse,
 }: Props) => {
   const { typebot, save } = useTypebot();
-  const [isTestResponseLoading, setIsTestResponseLoading] = useState(false);
   const [testResponse, setTestResponse] = useState<string>();
   const [responseKeys, setResponseKeys] = useState<string[]>([]);
+
+  const { mutateAsync: testHttpRequest, isPending: isTestResponseLoading } =
+    useMutation(
+      orpc.httpRequest.testHttpRequest.mutationOptions({
+        onSuccess: (data) => {
+          setTestResponse(JSON.stringify(data, undefined, 2));
+          setResponseKeys(computeDeepKeysMappingSuggestionList(data));
+          onNewTestResponse?.();
+        },
+        onError: (error) => {
+          toast({
+            description:
+              error instanceof Error ? error.message : "Unknown error",
+            title: "While testing HTTP request",
+          });
+        },
+      }),
+    );
 
   const updateMethod = (method: HttpMethod | undefined) =>
     onHttpRequestChange({ ...httpRequest, method });
@@ -81,27 +99,15 @@ export const HttpRequestAdvancedConfigForm = ({
 
   const executeTestRequest = async () => {
     if (!typebot) return;
-    setIsTestResponseLoading(true);
     await save();
-    try {
-      const data = await trpcClient.httpRequest.testHttpRequest.mutate({
-        typebotId: typebot.id,
-        blockId: blockId,
-        variables: convertVariablesForTestToVariables(
-          options?.variablesForTest ?? [],
-          typebot.variables,
-        ),
-      });
-      setTestResponse(JSON.stringify(data, undefined, 2));
-      setResponseKeys(computeDeepKeysMappingSuggestionList(data));
-      onNewTestResponse?.();
-    } catch (error) {
-      toast({
-        description: error instanceof Error ? error.message : "Unknown error",
-        title: "While testing HTTP request",
-      });
-    }
-    setIsTestResponseLoading(false);
+    testHttpRequest({
+      typebotId: typebot.id,
+      blockId: blockId,
+      variables: convertVariablesForTestToVariables(
+        options?.variablesForTest ?? [],
+        typebot.variables,
+      ),
+    });
   };
 
   const updateIsExecutedOnClient = (isExecutedOnClient: boolean) =>

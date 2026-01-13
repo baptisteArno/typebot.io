@@ -6,6 +6,9 @@
   "exports": {
     "./*": "./src/*.ts"
   },
+  "dependencies": {
+    "@typebot.io/user": "workspace:*"
+  },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*"
   }

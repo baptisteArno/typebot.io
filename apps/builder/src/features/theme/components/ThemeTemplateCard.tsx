@@ -17,7 +17,7 @@ import { MoreHorizontalIcon } from "@typebot.io/ui/icons/MoreHorizontalIcon";
 import { TrashIcon } from "@typebot.io/ui/icons/TrashIcon";
 import { cx } from "@typebot.io/ui/lib/cva";
 import { useState } from "react";
-import { queryClient, trpc } from "@/lib/queryClient";
+import { orpc, queryClient } from "@/lib/queryClient";
 import { DefaultAvatar } from "./DefaultAvatar";
 
 export const ThemeTemplateCard = ({
@@ -41,12 +41,12 @@ export const ThemeTemplateCard = ({
   const [isDeleting, setIsDeleting] = useState(false);
 
   const { mutate } = useMutation(
-    trpc.theme.deleteThemeTemplate.mutationOptions({
+    orpc.theme.deleteThemeTemplate.mutationOptions({
       onMutate: () => setIsDeleting(true),
       onSettled: () => setIsDeleting(false),
       onSuccess: () => {
         queryClient.invalidateQueries({
-          queryKey: trpc.theme.listThemeTemplates.queryKey(),
+          queryKey: orpc.theme.listThemeTemplates.key(),
         });
         if (onDeleteSuccess) onDeleteSuccess();
       },

@@ -4,7 +4,7 @@ import { isDefined } from "@typebot.io/lib/utils";
 import { Button } from "@typebot.io/ui/components/Button";
 import { FileEmpty02Icon } from "@typebot.io/ui/icons/FileEmpty02Icon";
 import { useEffect, useState } from "react";
-import { trpc } from "@/lib/queryClient";
+import { orpc } from "@/lib/queryClient";
 import { GoogleSheetsLogo } from "./GoogleSheetsLogo";
 
 declare const window: any;
@@ -24,21 +24,23 @@ export const GoogleSpreadsheetPicker = ({
 }: Props) => {
   const [isPickerInitialized, setIsPickerInitialized] = useState(false);
 
-  const { data } = useQuery(
-    trpc.sheets.getAccessToken.queryOptions({
-      workspaceId,
-      credentialsId,
+  const { data: { accessToken } = {} } = useQuery(
+    orpc.sheets.getAccessToken.queryOptions({
+      input: {
+        workspaceId,
+        credentialsId,
+      },
     }),
   );
   const { data: spreadsheetData, status } = useQuery(
-    trpc.sheets.getSpreadsheetName.queryOptions(
-      {
+    orpc.sheets.getSpreadsheetName.queryOptions({
+      input: {
         workspaceId,
         credentialsId,
         spreadsheetId: spreadsheetId as string,
       },
-      { enabled: !!spreadsheetId },
-    ),
+      enabled: !!spreadsheetId,
+    }),
   );
 
   useEffect(() => {
@@ -71,7 +73,7 @@ export const GoogleSpreadsheetPicker = ({
   };
 
   const createPicker = () => {
-    if (!data) return;
+    if (!accessToken) return;
     if (!isPickerInitialized) throw new Error("Google Picker not inited");
 
     const picker = new window.google.picker.PickerBuilder()
@@ -80,7 +82,7 @@ export const GoogleSpreadsheetPicker = ({
           window.google.picker.ViewId.SPREADSHEETS,
         ).setMimeTypes("application/vnd.google-apps.spreadsheet"),
       )
-      .setOAuthToken(data.accessToken)
+      .setOAuthToken(accessToken)
       .setDeveloperKey(env.NEXT_PUBLIC_GOOGLE_SHEETS_API_KEY)
       .setCallback(pickerCallback)
       .build();

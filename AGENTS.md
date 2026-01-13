@@ -1,21 +1,39 @@
-# Repository Guidelines
+# Typebot Agent Guidelines
 
 ## Project Structure & Module Organization
 
-- `apps/` hosts product surfaces like the builder, viewer, docs, and landing page (e.g., `apps/builder`, `apps/viewer`).
+- `apps/builder` hosts product surfaces like the builder, viewer, docs, and landing page (e.g., `apps/builder`, `apps/viewer`).
 - `packages/` contains shared libraries, blocks, embeds, and tooling (`packages/ui`, `packages/lib`, `packages/blocks/*`, `packages/embeds/*`).
-- `scripts/` is for repository-wide maintenance scripts.
-- Tests live alongside code in `*.test.ts` and under app-specific fixtures (e.g., `apps/viewer/src/test`).
+- `.context/` contains git subtrees for context of how to use specific libraries.
+
+<!-- opensrc:start -->
+
+## Source Code Reference
+
+Source code for dependencies is available in `opensrc/` for deeper understanding of implementation details.
+
+See `opensrc/sources.json` for the list of available packages and their versions.
+
+Use this source code when you need to understand how a package works internally, not just its types/interface.
+
+### Fetching Additional Source Code
+
+To fetch source code for a package or repository you need to understand, run:
+
+```bash
+npx opensrc <package>           # npm package (e.g., npx opensrc zod)
+npx opensrc pypi:<package>      # Python package (e.g., npx opensrc pypi:requests)
+npx opensrc crates:<package>    # Rust crate (e.g., npx opensrc crates:serde)
+npx opensrc <owner>/<repo>      # GitHub repo (e.g., npx opensrc vercel/ai)
+```
+
+<!-- opensrc:end -->
 
 ## Build, Test, and Development Commands
 
 - `bun install`: install workspace dependencies (Bun is the package manager).
-- `bun run dev`: start local dev for builder/viewer/partykit via Turborepo.
-- `bun run build`: typecheck and build selected apps (builder, viewer, landing-page, docs).
-- `bun run format-and-lint`: run Biome checks across the repo.
-- `bun run format-and-lint:fix`: apply Biome auto-fixes.
-- `bun run lint-repo`: validate workspace dependency ordering.
-- `bun run start-docker-compose-dev`: local stack via Docker Compose.
+- `bun run typecheck`: typecheck apps (builder, viewer, landing-page, docs).
+- `bun run format-and-lint:fix`: run Biome checks across the repo and apply auto-fixes.
 
 ## Coding Style & Naming Conventions
 
@@ -28,6 +46,7 @@
 - IMPORTANT: Only add a comment if a piece of logic is hard to grasp.
 - Prefer infer the return type of a function instead of declaring it.
 - Helper functions should be placed at the bottom of the file.
+- No brackets on if blocks if it's just 1 line.
 
 ## Testing Guidelines
 
@@ -35,20 +54,8 @@
 - Unit tests use the `*.test.ts` suffix.
 - E2E tests are only written for the viewer and use the `*.spec.ts` suffix; run them with `bun run test:e2e` in `apps/viewer`.
 
-## Commit & Pull Request Guidelines
+## Environment Variables
 
-- Use emoji-prefixed, imperative commit messages with this convention:
-  - ✨ New product feature (product-facing only)
-  - 💅 UI/UX improvement
-  - 📚 Content (blog posts, docs)
-  - ✏️ Typo
-  - ♻️ Refactor
-  - 🐛 Bug fix
-  - 🔧 Internal changes (not user facing)
-- PRs should include a clear description, reproduction steps if fixing a bug, and screenshots/GIFs for UI changes.
-- Link related issues when applicable.
-
-## Configuration & Security Notes
-
-- Environment variables are loaded with `dotenv` in several scripts; keep `.env` values out of commits.
-- See `SECURITY.md` for reporting vulnerabilities and security expectations.
+- Always use `env` from `@typebot.io/env` instead of `process.env` directly.
+- This package provides type-safe, validated environment variables.
+- Example: `env.NODE_ENV` instead of `process.env.NODE_ENV`.

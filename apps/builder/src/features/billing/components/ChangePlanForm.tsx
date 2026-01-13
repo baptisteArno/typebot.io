@@ -1,13 +1,13 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
 import { Plan } from "@typebot.io/prisma/enum";
 import { useState } from "react";
 import { TextLink } from "@/components/TextLink";
 import { useUser } from "@/features/user/hooks/useUser";
 import type { WorkspaceInApp } from "@/features/workspace/WorkspaceProvider";
-import { queryClient, trpc } from "@/lib/queryClient";
+import { isSelfHostedInstance } from "@/helpers/isSelfHostedInstance";
+import { orpc, queryClient } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
-import { useSubscriptionQuery } from "../hooks/useSubscriptionQuery";
 import type { PreCheckoutDialogProps } from "./PreCheckoutDialog";
 import { PreCheckoutDialog } from "./PreCheckoutDialog";
 import { ProPlanPricingCard } from "./ProPlanPricingCard";
@@ -32,11 +32,16 @@ export const ChangePlanForm = ({
     useState<PreCheckoutDialogProps["selectedSubscription"]>();
   const [pendingUpgrade, setPendingUpgrade] = useState<"STARTER" | "PRO">();
 
-  const { data, refetch } = useSubscriptionQuery(workspace.id);
+  const { data, refetch } = useQuery(
+    orpc.billing.getSubscription.queryOptions({
+      input: { workspaceId: workspace.id },
+      enabled: !isSelfHostedInstance(),
+    }),
+  );
 
   const { mutateAsync: updateSubscription, status: updateSubscriptionStatus } =
     useMutation(
-      trpc.billing.updateSubscription.mutationOptions({
+      orpc.billing.updateSubscription.mutationOptions({
         onSuccess: (data) => {
           if (data.type === "checkoutUrl") {
             window.location.href = data.checkoutUrl;
@@ -52,9 +57,7 @@ export const ChangePlanForm = ({
           }
           refetch();
           queryClient.invalidateQueries({
-            queryKey: trpc.workspace.getWorkspace.queryKey({
-              workspaceId: workspace?.id,
-            }),
+            queryKey: orpc.workspace.getWorkspace.key(),
           });
           toast({
             type: "success",

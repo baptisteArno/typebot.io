@@ -103,16 +103,11 @@ const generalThemeSchema = z.object({
   progressBar: progressBarSchema.optional(),
 });
 
-export const themeSchema = z
-  .object({
-    general: generalThemeSchema.optional(),
-    chat: chatThemeSchema.optional(),
-    customCss: z.string().optional(),
-  })
-  .openapi({
-    title: "Theme",
-    ref: "theme",
-  });
+export const themeSchema = z.object({
+  general: generalThemeSchema.optional(),
+  chat: chatThemeSchema.optional(),
+  customCss: z.string().optional(),
+});
 
 export const themeTemplateSchema = z.object({
   id: z.string(),

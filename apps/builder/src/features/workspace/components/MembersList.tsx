@@ -1,8 +1,8 @@
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
 import { getSeatsLimit } from "@typebot.io/billing/helpers/getSeatsLimit";
 import { isDefined } from "@typebot.io/lib/utils";
 import { WorkspaceRole } from "@typebot.io/prisma/enum";
-import type { Prisma } from "@typebot.io/prisma/types";
 import { Alert } from "@typebot.io/ui/components/Alert";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Skeleton } from "@typebot.io/ui/components/Skeleton";
@@ -10,12 +10,8 @@ import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
 import { InformationSquareIcon } from "@typebot.io/ui/icons/InformationSquareIcon";
 import { ChangePlanDialog } from "@/features/billing/components/ChangePlanDialog";
 import { useUser } from "@/features/user/hooks/useUser";
-import { useMembers } from "../hooks/useMembers";
-import { deleteInvitationQuery } from "../queries/deleteInvitationQuery";
-import { deleteMemberQuery } from "../queries/deleteMemberQuery";
-import { updateInvitationQuery } from "../queries/updateInvitationQuery";
-import { updateMemberQuery } from "../queries/updateMemberQuery";
-import type { Member } from "../types";
+import { orpc } from "@/lib/queryClient";
+import { toast } from "@/lib/toast";
 import { useWorkspace } from "../WorkspaceProvider";
 import { AddMemberForm } from "./AddMemberForm";
 import { MemberItem } from "./MemberItem";
@@ -24,9 +20,37 @@ export const MembersList = () => {
   const { t } = useTranslate();
   const { user } = useUser();
   const { workspace, currentUserMode } = useWorkspace();
-  const { members, invitations, isLoading, mutate } = useMembers({
-    workspaceId: workspace?.id,
-  });
+
+  const {
+    data: membersData,
+    refetch: refetchMembers,
+    isLoading: isMembersLoading,
+  } = useQuery(
+    orpc.workspace.listMembersInWorkspace.queryOptions({
+      input: { workspaceId: workspace?.id ?? "" },
+      enabled: !!workspace?.id,
+    }),
+  );
+
+  const {
+    data: invitationsData,
+    refetch: refetchInvitations,
+    isLoading: isInvitationsLoading,
+  } = useQuery(
+    orpc.workspace.listInvitationsInWorkspace.queryOptions({
+      input: { workspaceId: workspace?.id ?? "" },
+      enabled: !!workspace?.id,
+    }),
+  );
+
+  const members = membersData?.members ?? [];
+  const invitations = invitationsData?.invitations ?? [];
+  const isLoading = isMembersLoading || isInvitationsLoading;
+
+  const refetch = () => {
+    refetchMembers();
+    refetchInvitations();
+  };
 
   const {
     isOpen: isChangePlanDialogOpen,
@@ -34,61 +58,70 @@ export const MembersList = () => {
     onClose: onChangePlanDialogClose,
   } = useOpenControls();
 
-  const handleDeleteMemberClick = (memberId: string) => async () => {
+  const { mutate: deleteMember } = useMutation(
+    orpc.workspace.deleteWorkspaceMember.mutationOptions({
+      onSuccess: () => refetch(),
+      onError: (error) =>
+        toast({
+          title: error.name,
+          description: error.message,
+        }),
+    }),
+  );
+
+  const { mutate: updateMember } = useMutation(
+    orpc.workspace.updateWorkspaceMember.mutationOptions({
+      onSuccess: () => refetch(),
+      onError: (error) =>
+        toast({
+          title: error.name,
+          description: error.message,
+        }),
+    }),
+  );
+
+  const { mutate: deleteInvitation } = useMutation(
+    orpc.workspace.deleteWorkspaceInvitation.mutationOptions({
+      onSuccess: () => refetch(),
+      onError: (error) =>
+        toast({
+          title: error.name,
+          description: error.message,
+        }),
+    }),
+  );
+
+  const { mutate: updateInvitation } = useMutation(
+    orpc.workspace.updateWorkspaceInvitation.mutationOptions({
+      onSuccess: () => refetch(),
+      onError: (error) =>
+        toast({
+          title: error.name,
+          description: error.message,
+        }),
+    }),
+  );
+
+  const handleDeleteMemberClick = (memberId: string) => () => {
     if (!workspace) return;
-    await deleteMemberQuery(workspace.id, memberId);
-    mutate({
-      members: members.filter((m) => m.userId !== memberId),
-      invitations,
-    });
+    deleteMember({ workspaceId: workspace.id, memberId });
   };
 
-  const handleSelectNewRole =
-    (memberId: string) => async (role: WorkspaceRole) => {
-      if (!workspace) return;
-      await updateMemberQuery(workspace.id, { userId: memberId, role });
-      mutate({
-        members: members.map((m) =>
-          m.userId === memberId ? { ...m, role } : m,
-        ),
-        invitations,
-      });
-    };
-
-  const handleDeleteInvitationClick = (id: string) => async () => {
+  const handleSelectNewRole = (memberId: string) => (role: WorkspaceRole) => {
     if (!workspace) return;
-    await deleteInvitationQuery({ workspaceId: workspace.id, id });
-    mutate({
-      invitations: invitations.filter((i) => i.id !== id),
-      members,
-    });
+    updateMember({ workspaceId: workspace.id, memberId, role });
+  };
+
+  const handleDeleteInvitationClick = (id: string) => () => {
+    if (!workspace) return;
+    deleteInvitation({ id });
   };
 
   const handleSelectNewInvitationRole =
-    (id: string) => async (type: WorkspaceRole) => {
+    (id: string) => (type: WorkspaceRole) => {
       if (!workspace) return;
-      await updateInvitationQuery({ workspaceId: workspace.id, id, type });
-      mutate({
-        invitations: invitations.map((i) => (i.id === id ? { ...i, type } : i)),
-        members,
-      });
+      updateInvitation({ id, type });
     };
-
-  const handleNewInvitation = async (
-    invitation: Prisma.WorkspaceInvitation,
-  ) => {
-    await mutate({
-      members,
-      invitations: [...invitations, invitation],
-    });
-  };
-
-  const handleNewMember = async (member: Member) => {
-    await mutate({
-      members: [...members, member],
-      invitations,
-    });
-  };
 
   const currentMembersCount =
     members.filter((member) => member.role !== WorkspaceRole.GUEST).length +
@@ -136,8 +169,7 @@ export const MembersList = () => {
       {workspace?.id && currentUserMode === "write" && (
         <AddMemberForm
           workspaceId={workspace.id}
-          onNewInvitation={handleNewInvitation}
-          onNewMember={handleNewMember}
+          onSuccess={refetch}
           isLoading={isLoading}
           isLocked={!canInviteNewMember}
         />
@@ -145,9 +177,9 @@ export const MembersList = () => {
       {members.map((member) => (
         <MemberItem
           key={member.userId}
-          email={member.email ?? ""}
-          image={member.image ?? undefined}
-          name={member.name ?? undefined}
+          email={member.user.email ?? ""}
+          image={member.user.image ?? undefined}
+          name={member.user.name ?? undefined}
           role={member.role}
           isMe={member.userId === user?.id}
           onDeleteClick={handleDeleteMemberClick(member.userId)}

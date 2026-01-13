@@ -14,16 +14,11 @@ export const webhookOptionsSchema = z.object({
     .optional(),
 });
 
-export const webhookBlockSchema = blockBaseSchema
-  .merge(
-    z.object({
-      type: z.enum([LogicBlockType.WEBHOOK]),
-      options: webhookOptionsSchema.optional(),
-    }),
-  )
-  .openapi({
-    title: "Webhook",
-    ref: "webhookLogic",
-  });
+export const webhookBlockSchema = blockBaseSchema.merge(
+  z.object({
+    type: z.enum([LogicBlockType.WEBHOOK]),
+    options: webhookOptionsSchema.optional(),
+  }),
+);
 
 export type WebhookBlock = z.infer<typeof webhookBlockSchema>;

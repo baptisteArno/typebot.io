@@ -44,10 +44,7 @@ const options = option.object({
     .layout({
       accordion: "Save response",
     })
-    .transform(transformLegacyResponseMapping)
-    .openapi({
-      effectType: "input",
-    }),
+    .transform(transformLegacyResponseMapping),
 });
 
 export const createChatMessage = createAction({

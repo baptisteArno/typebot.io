@@ -8,16 +8,11 @@ export const pabblyConnectBlockSchemas = {
       type: z.enum([IntegrationBlockType.PABBLY_CONNECT]),
     }),
   ),
-  v6: httpBlockSchemas.v6
-    .merge(
-      z.object({
-        type: z.enum([IntegrationBlockType.PABBLY_CONNECT]),
-      }),
-    )
-    .openapi({
-      title: "Pabbly Connect",
-      ref: "pabblyConnectBlock",
+  v6: httpBlockSchemas.v6.merge(
+    z.object({
+      type: z.enum([IntegrationBlockType.PABBLY_CONNECT]),
     }),
+  ),
 } as const;
 
 const pabblyConnectBlockSchema = z.union([

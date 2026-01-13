@@ -10,7 +10,7 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { useUser } from "@/features/user/hooks/useUser";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { trpc } from "@/lib/queryClient";
+import { orpc } from "@/lib/queryClient";
 import { ImportTypebotFromFileButton } from "./ImportTypebotFromFileButton";
 import { TemplatesDialog } from "./TemplatesDialog";
 
@@ -24,7 +24,7 @@ export const CreateNewTypebotButtons = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const { mutate: createTypebot } = useMutation(
-    trpc.typebot.createTypebot.mutationOptions({
+    orpc.typebot.createTypebot.mutationOptions({
       onMutate: () => {
         setIsLoading(true);
       },
@@ -40,7 +40,7 @@ export const CreateNewTypebotButtons = () => {
   );
 
   const { mutate: importTypebot } = useMutation(
-    trpc.typebot.importTypebot.mutationOptions({
+    orpc.typebot.importTypebot.mutationOptions({
       onMutate: () => {
         setIsLoading(true);
       },

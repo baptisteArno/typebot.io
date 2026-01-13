@@ -9,7 +9,7 @@ import { TrashIcon } from "@typebot.io/ui/icons/TrashIcon";
 import type React from "react";
 import { useCallback, useState } from "react";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { trpc } from "@/lib/queryClient";
+import { orpc } from "@/lib/queryClient";
 
 type Props = Omit<ButtonProps, "type"> & {
   type: Credentials["type"];
@@ -43,22 +43,23 @@ export const CredentialsDropdown = ({
   const { t } = useTranslate();
   const { currentUserMode } = useWorkspace();
   const { data, refetch } = useQuery(
-    trpc.credentials.listCredentials.queryOptions(
-      scope.type === "workspace"
-        ? {
-            scope: "workspace",
-            workspaceId: scope.workspaceId,
-            type: type,
-          }
-        : {
-            scope: "user",
-            type,
-          },
-    ),
+    orpc.credentials.listCredentials.queryOptions({
+      input:
+        scope.type === "workspace"
+          ? {
+              scope: "workspace",
+              workspaceId: scope.workspaceId,
+              type: type,
+            }
+          : {
+              scope: "user",
+              type,
+            },
+    }),
   );
   const [isDeleting, setIsDeleting] = useState<string>();
   const { mutate } = useMutation(
-    trpc.credentials.deleteCredentials.mutationOptions({
+    orpc.credentials.deleteCredentials.mutationOptions({
       onMutate: ({ credentialsId }) => {
         setIsDeleting(credentialsId);
       },

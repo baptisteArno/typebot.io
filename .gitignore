@@ -63,3 +63,5 @@ snapshots
 .nitro
 
 **/test/.auth
+
+opensrc/

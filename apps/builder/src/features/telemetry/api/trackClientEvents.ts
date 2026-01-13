@@ -1,11 +1,11 @@
-import { TRPCError } from "@trpc/server";
+import { ORPCError } from "@orpc/server";
+import { authenticatedProcedure } from "@typebot.io/config/orpc/builder/middlewares";
 import prisma from "@typebot.io/prisma";
 import { clientSideCreateEventSchema } from "@typebot.io/telemetry/schemas";
 import { trackEvents } from "@typebot.io/telemetry/trackEvents";
 import { z } from "@typebot.io/zod";
 import { isWriteTypebotForbidden } from "@/features/typebot/helpers/isWriteTypebotForbidden";
 import { getUserModeInWorkspace } from "@/features/workspace/helpers/getUserRoleInWorkspace";
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 
 export const trackClientEvents = authenticatedProcedure
   .input(
@@ -18,7 +18,7 @@ export const trackClientEvents = authenticatedProcedure
       message: z.literal("success"),
     }),
   )
-  .mutation(async ({ input: { events }, ctx: { user } }) => {
+  .handler(async ({ input: { events }, context: { user } }) => {
     const workspaces = await prisma.workspace.findMany({
       where: {
         id: {
@@ -68,19 +68,13 @@ export const trackClientEvents = authenticatedProcedure
         const workspace = workspaces.find((w) => w.id === event.workspaceId);
         const userRole = getUserModeInWorkspace(user.id, workspace?.members);
         if (userRole === "guest" || !workspace)
-          throw new TRPCError({
-            code: "NOT_FOUND",
-            message: "Workspace not found",
-          });
+          throw new ORPCError("NOT_FOUND", { message: "Workspace not found" });
       }
 
       if ("typebotId" in event) {
         const typebot = typebots.find((t) => t.id === event.typebotId);
         if (!typebot || (await isWriteTypebotForbidden(typebot, user)))
-          throw new TRPCError({
-            code: "NOT_FOUND",
-            message: "Typebot not found",
-          });
+          throw new ORPCError("NOT_FOUND", { message: "Typebot not found" });
       }
     }
 

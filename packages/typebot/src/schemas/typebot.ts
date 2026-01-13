@@ -29,58 +29,46 @@ const isDomainNameWithPathNameCompatible = (str: string) =>
     str,
   );
 
-export const typebotV5Schema = z
-  .preprocess(
-    preprocessTypebot,
-    z.object({
-      version: z.enum(["3", "4", "5"]),
-      id: z.string(),
-      name: z.string(),
-      events: z
-        .preprocess((val) => (val === undefined ? null : val), z.null())
-        .openapi({ type: "array" }),
-      groups: z.array(groupV5Schema),
-      edges: z.array(edgeSchema),
-      variables: z.array(variableSchema),
-      theme: themeSchema,
-      selectedThemeTemplateId: z.string().nullable(),
-      settings: settingsSchema,
-      createdAt: z.coerce.date(),
-      updatedAt: z.coerce.date(),
-      icon: z.string().nullable(),
-      folderId: z.string().nullable(),
-      publicId: z
-        .string()
-        .refine((str) => /^[a-zA-Z0-9-.]+$/.test(str))
-        .nullable(),
-      customDomain: z
-        .string()
-        .refine(isDomainNameWithPathNameCompatible)
-        .nullable(),
-      workspaceId: z.string(),
-      resultsTablePreferences: resultsTablePreferencesSchema.nullable(),
-      isArchived: z.boolean(),
-      isClosed: z.boolean(),
-      whatsAppCredentialsId: z.string().nullable(),
-      riskLevel: z.number().nullable(),
-    }) satisfies z.ZodType<Prisma.Typebot, z.ZodTypeDef, unknown>,
-  )
-  ._def.schema.openapi({
-    title: "Typebot V5",
-    ref: "typebotV5",
-  });
+export const typebotV5Schema = z.preprocess(
+  preprocessTypebot,
+  z.object({
+    version: z.enum(["3", "4", "5"]),
+    id: z.string(),
+    name: z.string(),
+    events: z.preprocess((val) => (val === undefined ? null : val), z.null()),
+    groups: z.array(groupV5Schema),
+    edges: z.array(edgeSchema),
+    variables: z.array(variableSchema),
+    theme: themeSchema,
+    selectedThemeTemplateId: z.string().nullable(),
+    settings: settingsSchema,
+    createdAt: z.coerce.date(),
+    updatedAt: z.coerce.date(),
+    icon: z.string().nullable(),
+    folderId: z.string().nullable(),
+    publicId: z
+      .string()
+      .refine((str) => /^[a-zA-Z0-9-.]+$/.test(str))
+      .nullable(),
+    customDomain: z
+      .string()
+      .refine(isDomainNameWithPathNameCompatible)
+      .nullable(),
+    workspaceId: z.string(),
+    resultsTablePreferences: resultsTablePreferencesSchema.nullable(),
+    isArchived: z.boolean(),
+    isClosed: z.boolean(),
+    whatsAppCredentialsId: z.string().nullable(),
+    riskLevel: z.number().nullable(),
+  }) satisfies z.ZodType<Prisma.Typebot, z.ZodTypeDef, unknown>,
+)._def.schema;
 export type TypebotV5 = z.infer<typeof typebotV5Schema>;
 
-export const typebotV6Schema = typebotV5Schema
-  .extend({
-    version: z.enum(typebotV6Versions),
-    groups: z.array(groupV6Schema),
-    events: z.tuple([startEventSchema]).rest(draggableEventSchema),
-  })
-  .openapi({
-    title: "Typebot V6",
-    ref: "typebotV6",
-  });
+export const typebotV6Schema = typebotV5Schema.extend({
+  version: z.enum(typebotV6Versions),
+  groups: z.array(groupV6Schema),
+  events: z.tuple([startEventSchema]).rest(draggableEventSchema),
+});
 export type TypebotV6 = z.infer<typeof typebotV6Schema>;
 
 export const typebotSchema = z.preprocess(

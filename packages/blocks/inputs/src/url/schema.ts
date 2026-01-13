@@ -14,16 +14,11 @@ export const urlInputOptionsSchema = optionBaseSchema
     }),
   );
 
-export const urlInputSchema = blockBaseSchema
-  .merge(
-    z.object({
-      type: z.enum([InputBlockType.URL]),
-      options: urlInputOptionsSchema.optional(),
-    }),
-  )
-  .openapi({
-    title: "URL",
-    ref: "url",
-  });
+export const urlInputSchema = blockBaseSchema.merge(
+  z.object({
+    type: z.enum([InputBlockType.URL]),
+    options: urlInputOptionsSchema.optional(),
+  }),
+);
 
 export type UrlInputBlock = z.infer<typeof urlInputSchema>;

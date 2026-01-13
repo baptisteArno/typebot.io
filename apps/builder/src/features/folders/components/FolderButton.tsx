@@ -14,7 +14,7 @@ import { useRouter } from "next/router";
 import { memo, useMemo } from "react";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
 import { SingleLineEditable } from "@/components/SingleLineEditable";
-import { trpc } from "@/lib/queryClient";
+import { orpc } from "@/lib/queryClient";
 import { useTypebotDnd } from "../TypebotDndProvider";
 
 type Props = {
@@ -40,13 +40,13 @@ const FolderButton = ({
   );
   const deleteDialogControls = useOpenControls();
   const { mutate: deleteFolder } = useMutation(
-    trpc.folders.deleteFolder.mutationOptions({
+    orpc.folders.deleteFolder.mutationOptions({
       onSuccess: onFolderDeleted,
     }),
   );
 
   const { mutate: updateFolder } = useMutation(
-    trpc.folders.updateFolder.mutationOptions({
+    orpc.folders.updateFolder.mutationOptions({
       onSuccess: onFolderRenamed,
     }),
   );

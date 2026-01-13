@@ -1,9 +1,11 @@
+import { useQuery } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
 import { Plan } from "@typebot.io/prisma/enum";
 import { Alert } from "@typebot.io/ui/components/Alert";
 import { TriangleAlertIcon } from "@typebot.io/ui/icons/TriangleAlertIcon";
 import type { Workspace } from "@typebot.io/workspaces/schemas";
-import { useSubscriptionQuery } from "../hooks/useSubscriptionQuery";
+import { isSelfHostedInstance } from "@/helpers/isSelfHostedInstance";
+import { orpc } from "@/lib/queryClient";
 import { BillingPortalButton } from "./BillingPortalButton";
 import { PlanBadge } from "./PlanTag";
 
@@ -14,7 +16,12 @@ type Props = {
 export const CurrentSubscriptionSummary = ({ workspace }: Props) => {
   const { t } = useTranslate();
 
-  const { data } = useSubscriptionQuery(workspace.id);
+  const { data } = useQuery(
+    orpc.billing.getSubscription.queryOptions({
+      input: { workspaceId: workspace.id },
+      enabled: !isSelfHostedInstance(),
+    }),
+  );
 
   const isSubscribed =
     (workspace.plan === Plan.STARTER || workspace.plan === Plan.PRO) &&

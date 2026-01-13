@@ -10,7 +10,7 @@ import type React from "react";
 import { useState } from "react";
 import { TextLink } from "@/components/TextLink";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { queryClient, trpc } from "@/lib/queryClient";
+import { orpc, queryClient } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
 
 const openAITokensPage = "https://platform.openai.com/account/api-keys";
@@ -33,7 +33,7 @@ export const OpenAICredentialsDialog = ({
   const [isCreating, setIsCreating] = useState(false);
 
   const { mutate } = useMutation(
-    trpc.credentials.createCredentials.mutationOptions({
+    orpc.credentials.createCredentials.mutationOptions({
       onMutate: () => setIsCreating(true),
       onSettled: () => setIsCreating(false),
       onError: (err) => {
@@ -43,7 +43,7 @@ export const OpenAICredentialsDialog = ({
       },
       onSuccess: (data) => {
         queryClient.invalidateQueries({
-          queryKey: trpc.credentials.listCredentials.queryKey(),
+          queryKey: orpc.credentials.listCredentials.key(),
         });
         onNewCredentials(data.credentialsId);
         onClose();

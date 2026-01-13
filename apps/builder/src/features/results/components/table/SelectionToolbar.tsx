@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { parseUniqueKey } from "@typebot.io/lib/parseUniqueKey";
 import { byId } from "@typebot.io/lib/utils";
 import { parseColumnsOrder } from "@typebot.io/results/parseColumnsOrder";
@@ -10,7 +10,7 @@ import { unparse } from "papaparse";
 import { useState } from "react";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
-import { trpc } from "@/lib/queryClient";
+import { orpc, queryClient } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
 import { useResults } from "../../ResultsProvider";
 
@@ -28,17 +28,16 @@ export const SelectionToolbar = ({
   const { isOpen, onOpen, onClose } = useOpenControls();
   const [isDeleteLoading, setIsDeleteLoading] = useState(false);
   const [isExportLoading, setIsExportLoading] = useState(false);
-  const queryClient = useQueryClient();
   const deleteResultsMutation = useMutation(
-    trpc.results.deleteResults.mutationOptions({
+    orpc.results.deleteResults.mutationOptions({
       onMutate: () => {
         setIsDeleteLoading(true);
       },
       onError: (error) => toast({ description: error.message }),
       onSuccess: async () => {
-        await queryClient.invalidateQueries(
-          trpc.results.getResults.pathFilter(),
-        );
+        await queryClient.invalidateQueries({
+          queryKey: orpc.results.getResults.key(),
+        });
       },
       onSettled: () => {
         onDeleteResults(selectedResultsId.length);

@@ -23,7 +23,7 @@ import { hasProPerks } from "@/features/billing/helpers/hasProPerks";
 import { CredentialsDropdown } from "@/features/credentials/components/CredentialsDropdown";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { trpc } from "@/lib/queryClient";
+import { orpc } from "@/lib/queryClient";
 import { PublishButton } from "../../../PublishButton";
 import type { DialogProps } from "../../DeployButton";
 import { WhatsAppComparisonItem } from "./WhatsAppComparisonItem";
@@ -49,14 +49,12 @@ export const WhatsAppDeployDialog = ({
   const whatsAppSettings = typebot?.settings.whatsApp;
 
   const { data: phoneNumberData } = useQuery(
-    trpc.whatsAppInternal.getPhoneNumber.queryOptions(
-      {
+    orpc.whatsApp.getPhoneNumber.queryOptions({
+      input: {
         credentialsId: typebot?.whatsAppCredentialsId as string,
       },
-      {
-        enabled: !!typebot?.whatsAppCredentialsId,
-      },
-    ),
+      enabled: !!typebot?.whatsAppCredentialsId,
+    }),
   );
 
   const toggleEnableWhatsApp = (isChecked: boolean) => {

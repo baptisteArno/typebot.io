@@ -52,21 +52,11 @@ const nextConfig = {
   reactStrictMode: true,
   output: "standalone",
   outputFileTracingRoot: join(__dirname, "../../"),
-  webpack: (config, { isServer }) => {
-    if (isServer) {
-      // TODO: Remove once https://github.com/getsentry/sentry-javascript/issues/8105 is merged and sentry is upgraded
-      config.ignoreWarnings = [
-        ...(config.ignoreWarnings ?? []),
-        {
-          module:
-            /@opentelemetry\/instrumentation\/build\/esm\/platform\/node\/instrumentation\.js/,
-          message:
-            /Critical dependency: the request of a dependency is an expression/,
-        },
-      ];
-      return config;
-    }
-
+  webpack: (config) => {
+    config.ignoreWarnings = [
+      { module: /@opentelemetry\/instrumentation/ },
+      { module: /require-in-the-middle/ },
+    ];
     return config;
   },
   async redirects() {

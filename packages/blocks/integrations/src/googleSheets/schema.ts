@@ -123,16 +123,11 @@ export const googleSheetsBlockV5Schema = blockBaseSchema.merge(
 
 export const googleSheetsBlockSchemas = {
   v5: googleSheetsBlockV5Schema,
-  v6: googleSheetsBlockV5Schema
-    .merge(
-      z.object({
-        options: googleSheetsOptionsSchemas.v6.optional(),
-      }),
-    )
-    .openapi({
-      title: "Google Sheets",
-      ref: "googleSheetsBlock",
+  v6: googleSheetsBlockV5Schema.merge(
+    z.object({
+      options: googleSheetsOptionsSchemas.v6.optional(),
     }),
+  ),
 };
 
 export const googleSheetsBlockSchema = z.union([

@@ -6,7 +6,7 @@ import { AlertDialog } from "@typebot.io/ui/components/AlertDialog";
 import { Button } from "@typebot.io/ui/components/Button";
 import { LoaderCircleIcon } from "@typebot.io/ui/icons/LoaderCircleIcon";
 import { useRef, useState } from "react";
-import { trpc } from "@/lib/queryClient";
+import { orpc } from "@/lib/queryClient";
 
 type Props = {
   isOpen: boolean;
@@ -28,15 +28,13 @@ export const UpgradeConfirmationDialog = ({
   const cancelRef = useRef<HTMLButtonElement | null>(null);
 
   const { data: preview, isLoading: isLoadingPreview } = useQuery(
-    trpc.billing.getSubscriptionPreview.queryOptions(
-      {
+    orpc.billing.getSubscriptionPreview.queryOptions({
+      input: {
         workspaceId,
         plan: targetPlan!,
       },
-      {
-        enabled: isOpen && isDefined(targetPlan),
-      },
-    ),
+      enabled: isOpen && isDefined(targetPlan),
+    }),
   );
 
   const onConfirmClick = async () => {

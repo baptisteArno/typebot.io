@@ -4,6 +4,7 @@ import { z } from "@typebot.io/zod";
 
 export const workspaceMemberSchema = z.object({
   workspaceId: z.string(),
+  userId: z.string(),
   user: z.object({
     name: z.string().nullable(),
     email: z.string().nullable(),
@@ -11,18 +12,19 @@ export const workspaceMemberSchema = z.object({
   }),
   role: z.nativeEnum(WorkspaceRole),
 }) satisfies z.ZodType<
-  Omit<Prisma.MemberInWorkspace, "userId" | "createdAt" | "updatedAt"> & {
+  Omit<Prisma.MemberInWorkspace, "createdAt" | "updatedAt"> & {
     user: Pick<Prisma.User, "name" | "email" | "image">;
   }
 >;
 
 export const workspaceInvitationSchema = z.object({
+  id: z.string(),
   createdAt: z.date(),
   updatedAt: z.date(),
   email: z.string(),
   type: z.nativeEnum(WorkspaceRole),
 }) satisfies z.ZodType<
-  Omit<Prisma.WorkspaceInvitation, "workspaceId" | "userId" | "id">
+  Omit<Prisma.WorkspaceInvitation, "workspaceId" | "userId">
 >;
 
 const workspaceSettingsSchema = z.object({});

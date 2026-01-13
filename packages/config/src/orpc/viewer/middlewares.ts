@@ -1,7 +1,8 @@
 import { oo } from "@orpc/openapi";
 import { os as baseOs, ORPCError } from "@orpc/server";
 import * as Sentry from "@sentry/nextjs";
-import { authenticateByToken, type Context } from "./context";
+import { env } from "@typebot.io/env";
+import type { Context } from "./context";
 
 export const os = baseOs.$context<Context>();
 
@@ -9,7 +10,7 @@ const sentryMiddleware = os.middleware(async ({ next }) => {
   try {
     return await next();
   } catch (error) {
-    console.log(error, isUnknownError(error));
+    if (env.NODE_ENV !== "production") console.error(error);
     if (isUnknownError(error)) Sentry.captureException(error);
     throw error;
   }
@@ -27,7 +28,7 @@ const isUnknownError = (error: unknown) => {
 
 const requireAuth = oo.spec(
   os.middleware(async ({ next, context }) => {
-    const user = await authenticateByToken(context.bearerToken);
+    const user = await context.authenticate();
     if (user) {
       return next({
         context: {
@@ -47,7 +48,7 @@ const requireAuth = oo.spec(
 
 const needsOptionalAuthenticatedUser = os.middleware(
   async ({ next, context }) => {
-    const user = await authenticateByToken(context.bearerToken);
+    const user = await context.authenticate();
     return next({
       context: {
         ...context,

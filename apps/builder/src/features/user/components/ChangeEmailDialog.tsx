@@ -1,10 +1,10 @@
 import { useMutation } from "@tanstack/react-query";
+import { refreshSessionUser } from "@typebot.io/auth/helpers/refreshSessionUser";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
 import { Input } from "@typebot.io/ui/components/Input";
 import { useRef, useState } from "react";
-import { refreshSessionUser } from "@/features/auth/helpers/refreshSessionUser";
-import { showHttpRequestErrorToast, trpc } from "@/lib/queryClient";
+import { orpc, showHttpRequestErrorToast } from "@/lib/queryClient";
 
 type Props = {
   isOpen: boolean;
@@ -15,7 +15,7 @@ type Props = {
 export const ChangeEmailDialog = ({ isOpen, onClose, userEmail }: Props) => {
   const initialFocusRef = useRef<HTMLInputElement>(null);
   const { mutate: sendUpdateEmailVerifCodeEmail } = useMutation(
-    trpc.auth.sendUpdateEmailVerifCodeEmail.mutationOptions({
+    orpc.auth.sendUpdateEmailVerifCodeEmail.mutationOptions({
       onError: (error) => {
         showHttpRequestErrorToast(error, {
           context: "While sending verification code",
@@ -28,7 +28,7 @@ export const ChangeEmailDialog = ({ isOpen, onClose, userEmail }: Props) => {
     }),
   );
   const { mutate: updateUserEmail } = useMutation(
-    trpc.auth.updateUserEmail.mutationOptions({
+    orpc.auth.updateUserEmail.mutationOptions({
       onSettled: () => {
         setIsUpdatingEmail(false);
       },

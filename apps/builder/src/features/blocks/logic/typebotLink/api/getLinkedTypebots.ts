@@ -1,5 +1,6 @@
-import { TRPCError } from "@trpc/server";
+import { ORPCError } from "@orpc/server";
 import { LogicBlockType } from "@typebot.io/blocks-logic/constants";
+import { authenticatedProcedure } from "@typebot.io/config/orpc/builder/middlewares";
 import { parseGroups } from "@typebot.io/groups/helpers/parseGroups";
 import { isDefined } from "@typebot.io/lib/utils";
 import prisma from "@typebot.io/prisma";
@@ -10,7 +11,6 @@ import {
   typebotV6Schema,
 } from "@typebot.io/typebot/schemas/typebot";
 import { z } from "@typebot.io/zod";
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 
 const pick = {
   version: true,
@@ -32,14 +32,11 @@ const output = z.object({
 });
 
 export const getLinkedTypebots = authenticatedProcedure
-  .meta({
-    openapi: {
-      method: "GET",
-      path: "/v1/typebots/{typebotId}/linkedTypebots",
-      protect: true,
-      summary: "Get linked typebots",
-      tags: ["Typebot"],
-    },
+  .route({
+    method: "GET",
+    path: "/v1/typebots/{typebotId}/linkedTypebots",
+    summary: "Get linked typebots",
+    tags: ["Typebot"],
   })
   .input(
     z.object({
@@ -47,7 +44,7 @@ export const getLinkedTypebots = authenticatedProcedure
     }),
   )
   .output(output)
-  .query(async ({ input: { typebotId }, ctx: { user } }) => {
+  .handler(async ({ input: { typebotId }, context: { user } }) => {
     const typebot = await prisma.typebot.findFirst({
       where: {
         id: typebotId,
@@ -80,7 +77,7 @@ export const getLinkedTypebots = authenticatedProcedure
     });
 
     if (!typebot || (await isReadTypebotForbidden(typebot, user)))
-      throw new TRPCError({ code: "NOT_FOUND", message: "No typebot found" });
+      throw new ORPCError("NOT_FOUND", { message: "No typebot found" });
 
     const linkedTypebotIds =
       parseGroups(typebot.groups, { typebotVersion: typebot.version })

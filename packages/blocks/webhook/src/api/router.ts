@@ -13,7 +13,7 @@ import {
   handleExecuteWebhook,
 } from "./handleExecuteWebhook";
 
-export const privateRouter = {
+export const webhookRouter = {
   executeWebhookProcedure: protectedProcedure
     .route({
       method: "POST",

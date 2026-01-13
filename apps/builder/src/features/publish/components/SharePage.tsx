@@ -16,8 +16,8 @@ import { TypebotHeader } from "@/features/editor/components/TypebotHeader";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { isCloudProdInstance } from "@/helpers/isCloudProdInstance";
+import { orpcClient } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
-import { isPublicDomainAvailableQuery } from "../queries/isPublicDomainAvailableQuery";
 import { integrationsList } from "./deploy/DeployButton";
 import { EditableUrl } from "./EditableUrl";
 
@@ -69,8 +69,10 @@ export const SharePage = () => {
 
     if (!checkIfPathnameIsValid(publicId)) return false;
 
-    const { data } = await isPublicDomainAvailableQuery(publicId);
-    if (!data?.isAvailable) {
+    const { isAvailable } = await orpcClient.typebot.isPublicIdAvailable({
+      publicId,
+    });
+    if (!isAvailable) {
       toast({ description: "ID is already taken" });
       return false;
     }

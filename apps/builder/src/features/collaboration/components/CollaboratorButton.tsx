@@ -78,7 +78,7 @@ export const CollaboratorIdentityContent = ({
   return (
     <div className="flex items-center gap-2 justify-between max-w-full py-2 px-4">
       <div className="flex items-center min-w-0 gap-3">
-        <Avatar.Root className="size-12">
+        <Avatar.Root className="size-6">
           <Avatar.Image src={image} alt="User" />
           <Avatar.Fallback>{name?.charAt(0)}</Avatar.Fallback>
         </Avatar.Root>

@@ -19,7 +19,7 @@ export const executeTestWebhookInputSchema = z.object({
 });
 
 type Context = {
-  user: Prisma.User;
+  user: Pick<Prisma.User, "email" | "id">;
 };
 
 export const handleExecuteTestWebhook = async ({

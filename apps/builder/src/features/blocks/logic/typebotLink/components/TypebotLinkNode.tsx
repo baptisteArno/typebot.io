@@ -5,7 +5,7 @@ import { Badge } from "@typebot.io/ui/components/Badge";
 import { isSingleVariable } from "@typebot.io/variables/isSingleVariable";
 import { useMemo } from "react";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
-import { trpc } from "@/lib/queryClient";
+import { orpc } from "@/lib/queryClient";
 
 type Props = {
   block: TypebotLinkBlock;
@@ -15,16 +15,14 @@ export const TypebotLinkNode = ({ block }: Props) => {
   const { typebot } = useTypebot();
 
   const { data: linkedTypebotData } = useQuery(
-    trpc.typebot.getTypebot.queryOptions(
-      {
+    orpc.typebot.getTypebot.queryOptions({
+      input: {
         typebotId: block.options?.typebotId as string,
       },
-      {
-        enabled:
-          isNotEmpty(block.options?.typebotId) &&
-          block.options?.typebotId !== "current",
-      },
-    ),
+      enabled:
+        isNotEmpty(block.options?.typebotId) &&
+        block.options?.typebotId !== "current",
+    }),
   );
 
   const isCurrentTypebot =

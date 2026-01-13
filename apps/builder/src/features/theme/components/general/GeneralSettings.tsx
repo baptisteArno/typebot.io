@@ -20,7 +20,7 @@ import { ChangePlanDialog } from "@/features/billing/components/ChangePlanDialog
 import { isFreePlan } from "@/features/billing/helpers/isFreePlan";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { trpc } from "@/lib/queryClient";
+import { orpc } from "@/lib/queryClient";
 import { BackgroundSelector } from "./BackgroundSelector";
 import { FontForm } from "./FontForm";
 import { ProgressBarForm } from "./ProgressBarForm";
@@ -45,7 +45,7 @@ export const GeneralSettings = ({
   const isWorkspaceFreePlan = isFreePlan(workspace);
 
   const { mutate: trackClientEvents } = useMutation(
-    trpc.telemetry.trackClientEvents.mutationOptions(),
+    orpc.telemetry.trackClientEvents.mutationOptions(),
   );
 
   const updateFont = (font: Font) =>

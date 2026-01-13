@@ -1,26 +1,23 @@
+import { useMutation } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
 import { WorkspaceRole } from "@typebot.io/prisma/enum";
-import type { Prisma } from "@typebot.io/prisma/types";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Input } from "@typebot.io/ui/components/Input";
 import { type FormEvent, useState } from "react";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
+import { orpc } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
-import { sendInvitationQuery } from "../queries/sendInvitationQuery";
-import type { Member } from "../types";
 
 type InvitationRole = "ADMIN" | "MEMBER";
 type Props = {
   workspaceId: string;
-  onNewMember: (member: Member) => void;
-  onNewInvitation: (invitation: Prisma.WorkspaceInvitation) => void;
+  onSuccess: () => void;
   isLoading: boolean;
   isLocked: boolean;
 };
 export const AddMemberForm = ({
   workspaceId,
-  onNewMember,
-  onNewInvitation,
+  onSuccess,
   isLoading,
   isLocked,
 }: Props) => {
@@ -30,26 +27,28 @@ export const AddMemberForm = ({
     WorkspaceRole.MEMBER,
   );
 
-  const [isSendingInvitation, setIsSendingInvitation] = useState(false);
+  const { mutate: createInvitation, isPending: isSendingInvitation } =
+    useMutation(
+      orpc.workspace.createWorkspaceInvitation.mutationOptions({
+        onSuccess: () => {
+          onSuccess();
+          setInvitationEmail("");
+        },
+        onError: (error) =>
+          toast({
+            title: error.name,
+            description: error.message,
+          }),
+      }),
+    );
 
-  const handleInvitationSubmit = async (e: FormEvent) => {
+  const handleInvitationSubmit = (e: FormEvent) => {
     e.preventDefault();
-    setIsSendingInvitation(true);
-    const { data, error } = await sendInvitationQuery({
+    createInvitation({
       email: invitationEmail,
       type: invitationRole,
       workspaceId,
     });
-    if (error) {
-      toast({
-        description: error.message,
-      });
-    } else {
-      setInvitationEmail("");
-    }
-    if (data?.member) onNewMember(data.member);
-    if (data?.invitation) onNewInvitation(data.invitation);
-    setIsSendingInvitation(false);
   };
 
   return (

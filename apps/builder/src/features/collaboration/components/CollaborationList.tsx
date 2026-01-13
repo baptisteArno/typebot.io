@@ -1,3 +1,4 @@
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
 import { CollaborationType } from "@typebot.io/prisma/enum";
 import { Badge } from "@typebot.io/ui/components/Badge";
@@ -11,14 +12,8 @@ import { EmojiOrImageIcon } from "@/components/EmojiOrImageIcon";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
+import { orpc } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
-import { useCollaborators } from "../hooks/useCollaborators";
-import { useInvitations } from "../hooks/useInvitations";
-import { deleteCollaboratorQuery } from "../queries/deleteCollaboratorQuery";
-import { deleteInvitationQuery } from "../queries/deleteInvitationQuery";
-import { sendInvitationQuery } from "../queries/sendInvitationQuery";
-import { updateCollaboratorQuery } from "../queries/updateCollaboratorQuery";
-import { updateInvitationQuery } from "../queries/updateInvitationQuery";
 import { CollaboratorItem } from "./CollaboratorButton";
 import { ReadableCollaborationType } from "./ReadableCollaborationType";
 
@@ -30,117 +25,125 @@ export const CollaborationList = () => {
   const { typebot } = useTypebot();
   const [invitationType, setInvitationType] = useState<InvitationType>("READ");
   const [invitationEmail, setInvitationEmail] = useState("");
-  const [isSendingInvitation, setIsSendingInvitation] = useState(false);
 
   const {
-    collaborators,
+    data: collaboratorsData,
+    refetch: refetchCollaborators,
     isLoading: isCollaboratorsLoading,
-    mutate: mutateCollaborators,
-  } = useCollaborators({
-    typebotId: typebot?.id,
-    onError: (e) =>
-      toast({
-        description: e.message,
-      }),
-  });
-  const {
-    invitations,
-    isLoading: isInvitationsLoading,
-    mutate: mutateInvitations,
-  } = useInvitations({
-    typebotId: typebot?.id,
-    onError: (e) =>
-      toast({
-        title: t("share.button.popover.invitationsFetch.error.label"),
-        description: e.message,
-      }),
-  });
+  } = useQuery(
+    orpc.collaborators.getCollaborators.queryOptions({
+      input: { typebotId: typebot?.id ?? "" },
+      enabled: !!typebot?.id,
+    }),
+  );
 
-  const handleChangeInvitationCollabType =
-    (email: string) => async (type: CollaborationType) => {
-      if (!typebot || currentUserMode === "guest") return;
-      const { error } = await updateInvitationQuery(typebot?.id, email, {
-        email,
-        typebotId: typebot.id,
-        type,
-      });
-      if (error)
-        return toast({
+  const {
+    data: invitationsData,
+    refetch: refetchInvitations,
+    isLoading: isInvitationsLoading,
+  } = useQuery(
+    orpc.collaborators.listInvitations.queryOptions({
+      input: { typebotId: typebot?.id ?? "" },
+      enabled: !!typebot?.id,
+    }),
+  );
+
+  const { mutate: updateInvitation } = useMutation(
+    orpc.collaborators.updateInvitation.mutationOptions({
+      onSuccess: () => refetchInvitations(),
+      onError: (error) =>
+        toast({
           title: error.name,
           description: error.message,
-        });
-      mutateInvitations({
-        invitations: (invitations ?? []).map((i) =>
-          i.email === email ? { ...i, type } : i,
-        ),
-      });
+        }),
+    }),
+  );
+
+  const { mutate: deleteInvitation } = useMutation(
+    orpc.collaborators.deleteInvitation.mutationOptions({
+      onSuccess: () => refetchInvitations(),
+      onError: (error) =>
+        toast({
+          title: error.name,
+          description: error.message,
+        }),
+    }),
+  );
+
+  const { mutate: updateCollaborator } = useMutation(
+    orpc.collaborators.updateCollaborator.mutationOptions({
+      onSuccess: () => refetchCollaborators(),
+      onError: (error) =>
+        toast({
+          title: error.name,
+          description: error.message,
+        }),
+    }),
+  );
+
+  const { mutate: deleteCollaborator } = useMutation(
+    orpc.collaborators.deleteCollaborator.mutationOptions({
+      onSuccess: () => refetchCollaborators(),
+      onError: (error) =>
+        toast({
+          title: error.name,
+          description: error.message,
+        }),
+    }),
+  );
+
+  const { mutate: createInvitation, isPending: isSendingInvitation } =
+    useMutation(
+      orpc.collaborators.createInvitation.mutationOptions({
+        onSuccess: () => {
+          refetchInvitations();
+          refetchCollaborators();
+          toast({
+            type: "success",
+            description: t(
+              "share.button.popover.invitationSent.successToast.label",
+            ),
+          });
+          setInvitationEmail("");
+        },
+        onError: (error) =>
+          toast({
+            title: error.name,
+            description: error.message,
+          }),
+      }),
+    );
+
+  const handleChangeInvitationCollabType =
+    (email: string) => (type: CollaborationType) => {
+      if (!typebot || currentUserMode === "guest") return;
+      updateInvitation({ email, typebotId: typebot.id, type });
     };
-  const handleDeleteInvitation = (email: string) => async () => {
+
+  const handleDeleteInvitation = (email: string) => () => {
     if (!typebot || currentUserMode === "guest") return;
-    const { error } = await deleteInvitationQuery(typebot?.id, email);
-    if (error)
-      return toast({
-        title: error.name,
-        description: error.message,
-      });
-    mutateInvitations({
-      invitations: (invitations ?? []).filter((i) => i.email !== email),
-    });
+    deleteInvitation({ typebotId: typebot.id, email });
   };
 
   const handleChangeCollaborationType =
-    (userId: string) => async (type: CollaborationType) => {
+    (userId: string) => (type: CollaborationType) => {
       if (!typebot || currentUserMode === "guest") return;
-      const { error } = await updateCollaboratorQuery(typebot?.id, userId, {
-        userId,
-        type,
-        typebotId: typebot.id,
-      });
-      if (error)
-        return toast({
-          title: error.name,
-          description: error.message,
-        });
-      mutateCollaborators({
-        collaborators: (collaborators ?? []).map((c) =>
-          c.userId === userId ? { ...c, type } : c,
-        ),
-      });
+      updateCollaborator({ typebotId: typebot.id, userId, type });
     };
-  const handleDeleteCollaboration = (userId: string) => async () => {
+
+  const handleDeleteCollaboration = (userId: string) => () => {
     if (!typebot || currentUserMode === "guest") return;
-    const { error } = await deleteCollaboratorQuery(typebot?.id, userId);
-    if (error)
-      return toast({
-        title: error.name,
-        description: error.message,
-      });
-    mutateCollaborators({
-      collaborators: (collaborators ?? []).filter((c) => c.userId !== userId),
-    });
+    deleteCollaborator({ typebotId: typebot.id, userId });
   };
 
-  const handleInvitationSubmit = async (e: FormEvent) => {
+  const handleInvitationSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (!typebot || currentUserMode === "guest") return;
-    setIsSendingInvitation(true);
-    const { error } = await sendInvitationQuery(typebot.id, {
+    createInvitation({
+      typebotId: typebot.id,
       email: invitationEmail,
       type: invitationType,
     });
-    setIsSendingInvitation(false);
-    mutateInvitations({ invitations: invitations ?? [] });
-    mutateCollaborators({ collaborators: collaborators ?? [] });
-    if (error)
-      return toast({
-        title: error.name,
-        description: error.message,
-      });
-    toast({
-      type: "success",
-      description: t("share.button.popover.invitationSent.successToast.label"),
-    });
-    setInvitationEmail("");
   };
 
   const updateInvitationType = (type: InvitationType) => {
@@ -195,7 +198,7 @@ export const CollaborationList = () => {
           </Badge>
         </div>
       )}
-      {invitations?.map(({ email, type }) => (
+      {invitationsData?.invitations.map(({ email, type }) => (
         <CollaboratorItem
           key={email}
           email={email}
@@ -206,7 +209,7 @@ export const CollaborationList = () => {
           isGuest
         />
       ))}
-      {collaborators?.map(({ user, type, userId }) => (
+      {collaboratorsData?.collaborators.map(({ user, type, userId }) => (
         <CollaboratorItem
           key={userId}
           email={user.email ?? ""}

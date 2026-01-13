@@ -2,12 +2,11 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import type { Prisma } from "@typebot.io/prisma/types";
 import { useEffect, useState } from "react";
 import { Portal } from "@/components/Portal";
-import { useTypebots } from "@/features/dashboard/hooks/useTypebots";
 import type { TypebotInDashboard } from "@/features/dashboard/types";
 import type { NodePosition } from "@/features/graph/providers/GraphDndProvider";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { useEventListener } from "@/hooks/useEventListener";
-import { trpc } from "@/lib/queryClient";
+import { orpc } from "@/lib/queryClient";
 import { useTypebotDnd } from "../TypebotDndProvider";
 import { BackButton } from "./BackButton";
 import { CreateBotButton } from "./CreateBotButton";
@@ -38,19 +37,17 @@ export const FolderContent = ({ folder }: Props) => {
     isLoading: isFolderLoading,
     refetch: refetchFolders,
   } = useQuery(
-    trpc.folders.listFolders.queryOptions(
-      {
+    orpc.folders.listFolders.queryOptions({
+      input: {
         workspaceId: workspace?.id as string,
         parentFolderId: folder?.id,
       },
-      {
-        enabled: !!workspace,
-      },
-    ),
+      enabled: !!workspace,
+    }),
   );
 
   const { mutate: createFolder } = useMutation(
-    trpc.folders.createFolder.mutationOptions({
+    orpc.folders.createFolder.mutationOptions({
       onSuccess: () => {
         refetchFolders();
       },
@@ -58,7 +55,7 @@ export const FolderContent = ({ folder }: Props) => {
   );
 
   const { mutate: updateTypebot } = useMutation(
-    trpc.typebot.updateTypebot.mutationOptions({
+    orpc.typebot.updateTypebot.mutationOptions({
       onSuccess: () => {
         refetchTypebots();
       },
@@ -66,16 +63,21 @@ export const FolderContent = ({ folder }: Props) => {
   );
 
   const {
-    typebots,
+    data: typebotsData,
     isLoading: isTypebotLoading,
     refetch: refetchTypebots,
-  } = useTypebots({
-    workspaceId: workspace?.id,
-    folderId: folder === null ? "root" : folder.id,
-  });
+  } = useQuery(
+    orpc.typebot.listTypebots.queryOptions({
+      input: {
+        workspaceId: workspace?.id as string,
+        folderId: folder === null ? "root" : folder.id,
+      },
+      enabled: !!workspace?.id,
+    }),
+  );
 
   const moveTypebotToFolder = async (typebotId: string, folderId: string) => {
-    if (!typebots) return;
+    if (!typebotsData?.typebots) return;
     updateTypebot({
       typebotId,
       typebot: {
@@ -181,8 +183,8 @@ export const FolderContent = ({ folder }: Props) => {
                 />
               ))}
             {isTypebotLoading && <ButtonSkeleton />}
-            {typebots &&
-              typebots.map((typebot) => (
+            {typebotsData?.typebots &&
+              typebotsData?.typebots.map((typebot) => (
                 <TypebotButton
                   key={typebot.id}
                   typebot={typebot}

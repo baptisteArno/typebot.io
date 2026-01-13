@@ -1,7 +1,9 @@
 import { OpenAPIHandler } from "@orpc/openapi/fetch";
 import { OpenAPIReferencePlugin } from "@orpc/openapi/plugins";
+import { onError } from "@orpc/server";
 import { CORSPlugin } from "@orpc/server/plugins";
 import { ZodToJsonSchemaConverter } from "@orpc/zod";
+import { authenticateWithBearerToken } from "@typebot.io/auth/helpers/authenticateWithBearerToken";
 import {
   audioMessageSchema,
   commandMessageSchema,
@@ -14,6 +16,11 @@ import type { NextRequest } from "next/server";
 import { appRouter } from "./router";
 
 const handler = new OpenAPIHandler(appRouter, {
+  interceptors: [
+    onError((error) => {
+      console.error(error);
+    }),
+  ],
   plugins: [
     new CORSPlugin(),
     new OpenAPIReferencePlugin({
@@ -21,7 +28,10 @@ const handler = new OpenAPIHandler(appRouter, {
       schemaConverters: [new ZodToJsonSchemaConverter()],
       specGenerateOptions: {
         filter: ({ contract }) =>
-          Boolean(contract["~orpc"].route.tags?.includes("docs")),
+          Boolean(
+            contract["~orpc"].route.method &&
+              !contract["~orpc"].route.deprecated,
+          ),
         info: {
           title: "Chat API",
           version: "3.0.0",
@@ -75,7 +85,14 @@ async function handleRequest(
         );
   const { response } = await handler.handle(resolvedRequest, {
     prefix: "/api",
-    context: createContext(resolvedRequest),
+    context: createContext({
+      req: resolvedRequest,
+      authenticate: async () => {
+        const user = await authenticateWithBearerToken(resolvedRequest);
+        if (!user) return null;
+        return user;
+      },
+    }),
   });
 
   return response ?? new Response("Not found", { status: 404 });

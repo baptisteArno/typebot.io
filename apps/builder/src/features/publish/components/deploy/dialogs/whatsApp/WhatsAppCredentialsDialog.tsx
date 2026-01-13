@@ -1,6 +1,6 @@
+import { ORPCError } from "@orpc/client";
 import { createId } from "@paralleldrive/cuid2";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { TRPCClientError } from "@trpc/client";
 import { env } from "@typebot.io/env";
 import { parseUnknownClientError } from "@typebot.io/lib/parseUnknownClientError";
 import { isEmpty, isNotEmpty } from "@typebot.io/lib/utils";
@@ -13,16 +13,15 @@ import { ArrowLeft01Icon } from "@typebot.io/ui/icons/ArrowLeft01Icon";
 import { ArrowUpRight01Icon } from "@typebot.io/ui/icons/ArrowUpRight01Icon";
 import { TickIcon } from "@typebot.io/ui/icons/TickIcon";
 import { cx } from "@typebot.io/ui/lib/cva";
+import { formatPhoneNumberDisplayName } from "@typebot.io/whatsapp/formatPhoneNumberDisplayName";
 import { useState } from "react";
 import { ButtonLink } from "@/components/ButtonLink";
 import { CopyInput } from "@/components/inputs/CopyInput";
 import { Dialog360Logo } from "@/components/logos/Dialog360Logo";
 import { MetaLogo } from "@/components/logos/MetaLogo";
 import { TextLink } from "@/components/TextLink";
-import { useFeatureFlagsQuery } from "@/features/featureFlags/useFeatureFlagsQuery";
-import { formatPhoneNumberDisplayName } from "@/features/whatsapp/formatPhoneNumberDisplayName";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { queryClient, trpc, trpcClient } from "@/lib/queryClient";
+import { orpc, orpcClient, queryClient } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
 
 const metaSteps = [
@@ -47,12 +46,12 @@ export const WhatsAppCredentialsDialog = ({
   onClose,
   onNewCredentials,
 }: Props) => {
-  const featureFlags = useFeatureFlagsQuery();
+  const { data: featureFlags } = useQuery(orpc.getFeatureFlags.queryOptions());
 
   return (
     <Dialog.Root isOpen={isOpen} onClose={onClose}>
       <WhatsAppCreateDialogBody
-        is360DialogEnabled={featureFlags?.["360dialog"] ?? false}
+        is360DialogEnabled={featureFlags?.flags?.["360dialog"] ?? false}
         onNewCredentials={onNewCredentials}
         onClose={onClose}
       />
@@ -93,7 +92,7 @@ export const WhatsAppCreateDialogBody = ({
   const [isCreating, setIsCreating] = useState(false);
 
   const { mutate } = useMutation(
-    trpc.credentials.createCredentials.mutationOptions({
+    orpc.credentials.createCredentials.mutationOptions({
       onMutate: () => setIsCreating(true),
       onSettled: () => setIsCreating(false),
       onError: (err) => {
@@ -103,9 +102,7 @@ export const WhatsAppCreateDialogBody = ({
       },
       onSuccess: (data) => {
         queryClient.invalidateQueries({
-          queryKey: trpc.credentials.listCredentials.queryKey({
-            workspaceId: workspace?.id,
-          }),
+          queryKey: orpc.credentials.listCredentials.key(),
         });
         onNewCredentials(data.credentialsId);
         onClose();
@@ -115,12 +112,12 @@ export const WhatsAppCreateDialogBody = ({
   );
 
   const { data: tokenInfoData } = useQuery(
-    trpc.whatsAppInternal.getSystemTokenInfo.queryOptions(
-      {
+    orpc.whatsApp.getSystemTokenInfo.queryOptions({
+      input: {
         token: systemUserAccessToken,
       },
-      { enabled: isNotEmpty(systemUserAccessToken) && activeStep > 1 },
-    ),
+      enabled: isNotEmpty(systemUserAccessToken) && activeStep > 1,
+    }),
   );
 
   const resetForm = () => {
@@ -168,7 +165,7 @@ export const WhatsAppCreateDialogBody = ({
     setIsVerifying(true);
     try {
       const { expiresAt, scopes } =
-        await trpcClient.whatsAppInternal.getSystemTokenInfo.query({
+        await orpcClient.whatsApp.getSystemTokenInfo({
           token: systemUserAccessToken,
         });
       if (expiresAt !== 0) {
@@ -190,7 +187,7 @@ export const WhatsAppCreateDialogBody = ({
       }
     } catch (err) {
       setIsVerifying(false);
-      if (err instanceof TRPCClientError) {
+      if (err instanceof ORPCError) {
         if (err.data?.logError) {
           toast(err.data.logError);
           return false;
@@ -206,14 +203,14 @@ export const WhatsAppCreateDialogBody = ({
   const isPhoneNumberAvailable = async () => {
     setIsVerifying(true);
     try {
-      const { name } = await trpcClient.whatsAppInternal.getPhoneNumber.query({
+      const { name } = await orpcClient.whatsApp.getPhoneNumber({
         systemToken: systemUserAccessToken,
         phoneNumberId,
       });
       setPhoneNumberName(name);
       try {
         const { message } =
-          await trpcClient.whatsAppInternal.verifyIfPhoneNumberAvailable.query({
+          await orpcClient.whatsApp.verifyIfPhoneNumberAvailable({
             phoneNumberDisplayName: name,
           });
 
@@ -225,7 +222,7 @@ export const WhatsAppCreateDialogBody = ({
           return false;
         }
         const { verificationToken } =
-          await trpcClient.whatsAppInternal.generateVerificationToken.mutate();
+          await orpcClient.whatsApp.generateVerificationToken();
         setVerificationToken(verificationToken);
       } catch (err) {
         console.error(err);
@@ -237,7 +234,7 @@ export const WhatsAppCreateDialogBody = ({
       }
     } catch (err) {
       setIsVerifying(false);
-      if (err instanceof TRPCClientError) {
+      if (err instanceof ORPCError) {
         if (err.data?.logError) {
           toast(err.data.logError);
           return false;

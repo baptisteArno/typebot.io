@@ -17,7 +17,7 @@ import type { sendMessageInputSchema } from "../../schemas/legacy/schema";
 import { startSession } from "../../startSession";
 
 type Context = {
-  user?: { id: string };
+  user: { id: string } | null;
   origin?: string;
   iframeReferrerOrigin?: string;
 };

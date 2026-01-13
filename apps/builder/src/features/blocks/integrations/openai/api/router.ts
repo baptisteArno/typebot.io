@@ -1,6 +1,8 @@
-import { router } from "@/helpers/server/trpc";
-import { listModels } from "./listModels";
+import { authenticatedProcedure } from "@typebot.io/config/orpc/builder/middlewares";
+import { handleListModels, listModelsInputSchema } from "./handleListModels";
 
-export const openAIRouter = router({
-  listModels,
-});
+export const openAIRouter = {
+  listModels: authenticatedProcedure
+    .input(listModelsInputSchema)
+    .handler(handleListModels),
+};

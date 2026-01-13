@@ -22,7 +22,7 @@ import {
 } from "@/features/graph/providers/GraphDndProvider";
 import { duplicateName } from "@/features/typebot/helpers/duplicateName";
 import { isMobile } from "@/helpers/isMobile";
-import { trpc, trpcClient } from "@/lib/queryClient";
+import { orpc } from "@/lib/queryClient";
 
 type Props = {
   typebot: TypebotInDashboard;
@@ -51,8 +51,12 @@ const TypebotButton = ({
     deps: [],
   });
 
+  const { mutateAsync: getTypebot } = useMutation(
+    orpc.typebot.getTypebot.mutationOptions(),
+  );
+
   const { mutate: importTypebot } = useMutation(
-    trpc.typebot.importTypebot.mutationOptions({
+    orpc.typebot.importTypebot.mutationOptions({
       onSuccess: ({ typebot }) => {
         router.push(`/typebots/${typebot.id}/edit`);
       },
@@ -60,7 +64,7 @@ const TypebotButton = ({
   );
 
   const { mutate: deleteTypebot } = useMutation(
-    trpc.typebot.deleteTypebot.mutationOptions({
+    orpc.typebot.deleteTypebot.mutationOptions({
       onSuccess: () => {
         onTypebotUpdated();
       },
@@ -68,7 +72,7 @@ const TypebotButton = ({
   );
 
   const { mutate: unpublishTypebot } = useMutation(
-    trpc.typebot.unpublishTypebot.mutationOptions({
+    orpc.typebot.unpublishTypebot.mutationOptions({
       onSuccess: () => {
         onTypebotUpdated();
       },
@@ -93,10 +97,9 @@ const TypebotButton = ({
 
   const handleDuplicateClick = async (e: React.MouseEvent) => {
     e.stopPropagation();
-    const { typebot: typebotToDuplicate } =
-      await trpcClient.typebot.getTypebot.query({
-        typebotId: typebot.id,
-      });
+    const { typebot: typebotToDuplicate } = await getTypebot({
+      typebotId: typebot.id,
+    });
     if (!typebotToDuplicate) return;
     importTypebot({
       workspaceId: typebotToDuplicate.workspaceId,

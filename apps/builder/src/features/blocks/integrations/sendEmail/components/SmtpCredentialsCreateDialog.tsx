@@ -1,3 +1,4 @@
+import { ORPCError } from "@orpc/client";
 import { useMutation } from "@tanstack/react-query";
 import type { SmtpCredentials } from "@typebot.io/credentials/schemas";
 import { isNotDefined } from "@typebot.io/lib/utils";
@@ -7,9 +8,8 @@ import type React from "react";
 import { useState } from "react";
 import { useUser } from "@/features/user/hooks/useUser";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { queryClient, trpc } from "@/lib/queryClient";
+import { orpc, queryClient } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
-import { testSmtpConfig } from "../queries/testSmtpConfigQuery";
 import { SmtpConfigForm } from "./SmtpConfigForm";
 
 type Props = {
@@ -52,14 +52,27 @@ export const SmtpCredentialsCreateDialogBody = ({
 }: Pick<Props, "onNewCredentials">) => {
   const { user } = useUser();
   const { workspace } = useWorkspace();
-  const [isCreating, setIsCreating] = useState(false);
   const [smtpConfig, setSmtpConfig] = useState<SmtpCredentials["data"]>({
     from: {},
     port: 25,
   });
-  const { mutate } = useMutation(
-    trpc.credentials.createCredentials.mutationOptions({
-      onSettled: () => setIsCreating(false),
+
+  const { mutateAsync: testSmtpConfig, isPending: isTesting } = useMutation(
+    orpc.email.testSmtpConfig.mutationOptions({
+      onError: (err) => {
+        if (err instanceof ORPCError && err.code === "INTERNAL_SERVER_ERROR") {
+          toast({
+            description:
+              "We couldn't send the test email with your configuration",
+            details: err.data?.message,
+          });
+        }
+      },
+    }),
+  );
+
+  const { mutate: createCredentials, isPending: isCreating } = useMutation(
+    orpc.credentials.createCredentials.mutationOptions({
       onError: (err) => {
         toast({
           description: err.message,
@@ -67,7 +80,7 @@ export const SmtpCredentialsCreateDialogBody = ({
       },
       onSuccess: (data) => {
         queryClient.invalidateQueries({
-          queryKey: trpc.credentials.listCredentials.queryKey(),
+          queryKey: orpc.credentials.listCredentials.key(),
         });
         onNewCredentials(data.credentialsId);
       },
@@ -76,25 +89,24 @@ export const SmtpCredentialsCreateDialogBody = ({
 
   const handleCreateClick = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!user?.email || !workspace?.id) return;
-    setIsCreating(true);
-    const { error: testSmtpError } = await testSmtpConfig(
-      smtpConfig,
-      user.email,
-    );
-    if (testSmtpError) {
-      console.error(testSmtpError);
-      setIsCreating(false);
-      toast({
-        description: "We couldn't send the test email with your configuration",
-        details:
-          "response" in testSmtpError
-            ? (testSmtpError.response as string)
-            : testSmtpError.message,
-      });
+    if (
+      !user?.email ||
+      !workspace?.id ||
+      !smtpConfig.username ||
+      !smtpConfig.password ||
+      !smtpConfig.host
+    )
       return;
-    }
-    mutate({
+    await testSmtpConfig({
+      from: smtpConfig.from,
+      port: smtpConfig.port,
+      isTlsEnabled: smtpConfig.isTlsEnabled,
+      username: smtpConfig.username,
+      password: smtpConfig.password,
+      host: smtpConfig.host,
+      to: user.email,
+    });
+    createCredentials({
       credentials: {
         data: smtpConfig,
         name: smtpConfig.from.email as string,
@@ -118,6 +130,7 @@ export const SmtpCredentialsCreateDialogBody = ({
             isNotDefined(smtpConfig.username) ||
             isNotDefined(smtpConfig.password) ||
             isNotDefined(smtpConfig.port) ||
+            isTesting ||
             isCreating
           }
         >

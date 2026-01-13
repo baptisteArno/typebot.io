@@ -1,4 +1,5 @@
-import { TRPCError } from "@trpc/server";
+import { ORPCError } from "@orpc/server";
+import { authenticatedProcedure } from "@typebot.io/config/orpc/builder/middlewares";
 import { decrypt } from "@typebot.io/credentials/decrypt";
 import { forgedBlocks } from "@typebot.io/forge-repository/definitions";
 import prisma from "@typebot.io/prisma";
@@ -7,7 +8,6 @@ import { groupTitlesAutoGenerationSchema } from "@typebot.io/user/schemas";
 import { z } from "@typebot.io/zod";
 import { generateObject } from "ai";
 import { isWriteTypebotForbidden } from "@/features/typebot/helpers/isWriteTypebotForbidden";
-import { authenticatedProcedure } from "@/helpers/server/trpc";
 
 export const generateGroupTitle = authenticatedProcedure
   .input(
@@ -20,10 +20,10 @@ export const generateGroupTitle = authenticatedProcedure
     }),
   )
   .output(z.object({ title: z.string() }))
-  .mutation(
+  .handler(
     async ({
       input: { credentialsId, typebotId, groupContent, model, prompt },
-      ctx: { user },
+      context: { user },
     }) => {
       const typebot = await prisma.typebot.findUnique({
         where: { id: typebotId },
@@ -54,10 +54,7 @@ export const generateGroupTitle = authenticatedProcedure
       });
 
       if (!typebot || (await isWriteTypebotForbidden(typebot, user)))
-        throw new TRPCError({
-          code: "NOT_FOUND",
-          message: "Typebot not found",
-        });
+        throw new ORPCError("NOT_FOUND", { message: "Typebot not found" });
 
       const groupTitlesAutoGeneration = groupTitlesAutoGenerationSchema.parse(
         user.groupTitlesAutoGeneration,
@@ -67,8 +64,7 @@ export const generateGroupTitle = authenticatedProcedure
         !groupTitlesAutoGeneration.provider ||
         !groupTitlesAutoGeneration.credentialsId
       ) {
-        throw new TRPCError({
-          code: "BAD_REQUEST",
+        throw new ORPCError("BAD_REQUEST", {
           message: "Group title auto-generation is not enabled",
         });
       }
@@ -85,10 +81,7 @@ export const generateGroupTitle = authenticatedProcedure
       });
 
       if (!credentials)
-        throw new TRPCError({
-          code: "NOT_FOUND",
-          message: "Credentials not found",
-        });
+        throw new ORPCError("NOT_FOUND", { message: "Credentials not found" });
 
       const credentialsData = await decrypt(credentials.data, credentials.iv);
       const apiKey = (credentialsData as { apiKey: string }).apiKey;
@@ -98,14 +91,10 @@ export const generateGroupTitle = authenticatedProcedure
           groupTitlesAutoGeneration.provider as unknown as keyof typeof forgedBlocks
         ];
       if (!blockDef)
-        throw new TRPCError({
-          code: "BAD_REQUEST",
-          message: "Provider not found",
-        });
+        throw new ORPCError("BAD_REQUEST", { message: "Provider not found" });
       const action = blockDef.actions.find((a) => a.aiGenerate);
       if (!action)
-        throw new TRPCError({
-          code: "BAD_REQUEST",
+        throw new ORPCError("BAD_REQUEST", {
           message: "Provider does not support AI generate",
         });
       const aiModel = action?.aiGenerate?.getModel?.({
@@ -115,10 +104,7 @@ export const generateGroupTitle = authenticatedProcedure
         model,
       });
       if (!aiModel)
-        throw new TRPCError({
-          code: "BAD_REQUEST",
-          message: "Model not found",
-        });
+        throw new ORPCError("BAD_REQUEST", { message: "Model not found" });
       const {
         object: { title },
       } = await generateObject({

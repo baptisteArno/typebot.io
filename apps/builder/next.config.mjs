@@ -51,18 +51,11 @@ const nextConfig = {
     locales: ["en", "fr", "pt", "pt-BR", "de", "ro", "es", "it", "el"],
   },
   outputFileTracingRoot: join(__dirname, "../../"),
-  webpack: (config, { isServer }) => {
-    if (isServer) {
-      // TODO: Remove once https://github.com/getsentry/sentry-javascript/issues/8105 is merged and sentry is upgraded
-      config.ignoreWarnings = [
-        ...(config.ignoreWarnings ?? []),
-        {
-          module: /@opentelemetry/,
-          message: /Critical dependency/,
-        },
-      ];
-      return config;
-    }
+  webpack: (config) => {
+    config.ignoreWarnings = [
+      { module: /@opentelemetry\/instrumentation/ },
+      { module: /require-in-the-middle/ },
+    ];
     return config;
   },
   headers: async () => {
@@ -104,7 +97,7 @@ const nextConfig = {
     return [
       {
         source: "/healthz",
-        destination: "/api/health",
+        destination: "/api/healthz",
       },
     ];
   },

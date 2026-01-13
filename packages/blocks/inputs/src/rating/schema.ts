@@ -28,16 +28,11 @@ export const ratingInputOptionsSchema = optionBaseSchema.merge(
   }),
 );
 
-export const ratingInputBlockSchema = blockBaseSchema
-  .merge(
-    z.object({
-      type: z.literal(InputBlockType.RATING),
-      options: ratingInputOptionsSchema.optional(),
-    }),
-  )
-  .openapi({
-    title: "Rating",
-    ref: "rating",
-  });
+export const ratingInputBlockSchema = blockBaseSchema.merge(
+  z.object({
+    type: z.literal(InputBlockType.RATING),
+    options: ratingInputOptionsSchema.optional(),
+  }),
+);
 
 export type RatingInputBlock = z.infer<typeof ratingInputBlockSchema>;

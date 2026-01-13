@@ -8,7 +8,7 @@ import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
 import { useState } from "react";
 import { CopyInput } from "@/components/inputs/CopyInput";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { queryClient, trpc } from "@/lib/queryClient";
+import { orpc, queryClient } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
 import { useOAuthPopup } from "./useOAuthPopup";
 
@@ -82,7 +82,7 @@ export const ForgedOAuthCredentialsCreateDialogBody = ({
   const [clientSecret, setClientSecret] = useState("");
 
   const { mutate, isPending } = useMutation(
-    trpc.credentials.createOAuthCredentials.mutationOptions({
+    orpc.credentials.createOAuthCredentials.mutationOptions({
       onError: (err) => {
         toast({
           description: err.message,
@@ -90,7 +90,7 @@ export const ForgedOAuthCredentialsCreateDialogBody = ({
       },
       onSuccess: (data) => {
         queryClient.invalidateQueries({
-          queryKey: trpc.credentials.listCredentials.queryKey(),
+          queryKey: orpc.credentials.listCredentials.key(),
         });
         onNewCredentials(data.credentialsId);
       },

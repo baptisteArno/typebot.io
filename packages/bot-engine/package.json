@@ -10,11 +10,10 @@
     "test": "dotenv -e ./.env -e ../../.env -- bun test .test.ts"
   },
   "dependencies": {
-    "@orpc/server": "^1.12.3",
+    "@orpc/server": "^1.13.4",
     "@paralleldrive/cuid2": "^2.2.1",
     "@planetscale/database": "^1.8.0",
     "@sentry/nextjs": "^10.32.1",
-    "@trpc/server": "^11.3.1",
     "@typebot.io/blocks-bubbles": "workspace:*",
     "@typebot.io/blocks-core": "workspace:*",
     "@typebot.io/blocks-inputs": "workspace:*",

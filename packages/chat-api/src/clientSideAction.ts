@@ -43,41 +43,25 @@ export const clientSideActionSchema = z.discriminatedUnion("type", [
       type: z.literal("scriptToExecute"),
       scriptToExecute: scriptToExecuteSchema,
     })
-    .merge(clientSideActionBaseSchema)
-    .openapi({
-      ref: "csaScriptToExecute",
-      title: "Script to execute",
-    }),
+    .merge(clientSideActionBaseSchema),
   z
     .object({
       type: z.literal("redirect"),
       redirect: redirectOptionsSchema,
     })
-    .merge(clientSideActionBaseSchema)
-    .openapi({
-      ref: "csaRedirect",
-      title: "Redirect",
-    }),
+    .merge(clientSideActionBaseSchema),
   z
     .object({
       type: z.literal("chatwoot"),
       chatwoot: z.object({ scriptToExecute: scriptToExecuteSchema }),
     })
-    .merge(clientSideActionBaseSchema)
-    .openapi({
-      ref: "csaChatwoot",
-      title: "Chatwoot",
-    }),
+    .merge(clientSideActionBaseSchema),
   z
     .object({
       type: z.literal("googleAnalytics"),
       googleAnalytics: googleAnalyticsOptionsSchema,
     })
-    .merge(clientSideActionBaseSchema)
-    .openapi({
-      ref: "csaGa",
-      title: "Google Analytics",
-    }),
+    .merge(clientSideActionBaseSchema),
   z
     .object({
       type: z.literal("wait"),
@@ -85,21 +69,13 @@ export const clientSideActionSchema = z.discriminatedUnion("type", [
         secondsToWaitFor: z.number(),
       }),
     })
-    .merge(clientSideActionBaseSchema)
-    .openapi({
-      ref: "csaWait",
-      title: "Wait",
-    }),
+    .merge(clientSideActionBaseSchema),
   z
     .object({
       type: z.literal("setVariable"),
       setVariable: z.object({ scriptToExecute: scriptToExecuteSchema }),
     })
-    .merge(clientSideActionBaseSchema)
-    .openapi({
-      ref: "csaSetVariable",
-      title: "Set variable",
-    }),
+    .merge(clientSideActionBaseSchema),
   z
     .object({
       type: z.literal("streamOpenAiChatCompletion"),
@@ -109,51 +85,31 @@ export const clientSideActionSchema = z.discriminatedUnion("type", [
         ),
       }),
     })
-    .merge(clientSideActionBaseSchema)
-    .openapi({
-      ref: "csaStreamOpenAiChatCompletion",
-      title: "Stream OpenAI",
-    }),
+    .merge(clientSideActionBaseSchema),
   z
     .object({
       type: z.literal("httpRequestToExecute"),
       httpRequestToExecute: executableHttpRequestSchema,
     })
-    .merge(clientSideActionBaseSchema)
-    .openapi({
-      ref: "csaHttpRequestToExecute",
-      title: "Execute HTTP request",
-    }),
+    .merge(clientSideActionBaseSchema),
   z
     .object({
       type: z.literal("startPropsToInject"),
       startPropsToInject: startPropsToInjectSchema,
     })
-    .merge(clientSideActionBaseSchema)
-    .openapi({
-      ref: "csaInjectStartProps",
-      title: "Inject start props",
-    }),
+    .merge(clientSideActionBaseSchema),
   z
     .object({
       type: z.literal("pixel"),
       pixel: pixelOptionsSchema,
     })
-    .merge(clientSideActionBaseSchema)
-    .openapi({
-      ref: "csaPixel",
-      title: "Init Pixel",
-    }),
+    .merge(clientSideActionBaseSchema),
   z
     .object({
       type: z.literal("stream"),
       stream: z.literal(true),
     })
-    .merge(clientSideActionBaseSchema)
-    .openapi({
-      ref: "csaStream",
-      title: "Exec stream",
-    }),
+    .merge(clientSideActionBaseSchema),
   z
     .object({
       type: z.literal("codeToExecute"),
@@ -162,19 +118,11 @@ export const clientSideActionSchema = z.discriminatedUnion("type", [
         content: z.string(),
       }),
     })
-    .merge(clientSideActionBaseSchema)
-    .openapi({
-      ref: "csaCodeToExecute",
-      title: "Execute code",
-    }),
+    .merge(clientSideActionBaseSchema),
   z
     .object({
       type: z.literal("listenForWebhook"),
     })
-    .merge(clientSideActionBaseSchema)
-    .openapi({
-      ref: "csaListenForWebhook",
-      title: "Listen to webhook",
-    }),
+    .merge(clientSideActionBaseSchema),
 ]);
 export type ClientSideAction = z.infer<typeof clientSideActionSchema>;

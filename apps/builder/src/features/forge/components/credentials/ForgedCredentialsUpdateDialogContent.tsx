@@ -10,7 +10,7 @@ import { z } from "@typebot.io/zod";
 import type React from "react";
 import { useEffect, useState } from "react";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { trpc } from "@/lib/queryClient";
+import { orpc } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
 import { ZodObjectLayout } from "../zodLayouts/ZodObjectLayout";
 
@@ -34,21 +34,20 @@ export const ForgedCredentialsUpdateDialogContent = ({
   const [isUpdating, setIsUpdating] = useState(false);
 
   const { data: existingCredentials, refetch: refetchCredentials } = useQuery(
-    trpc.credentials.getCredentials.queryOptions(
-      scope === "workspace"
-        ? {
-            scope: "workspace",
-            workspaceId: workspace?.id as string,
-            credentialsId,
-          }
-        : {
-            scope: "user",
-            credentialsId,
-          },
-      {
-        enabled: !!workspace?.id,
-      },
-    ),
+    orpc.credentials.getCredentials.queryOptions({
+      input:
+        scope === "workspace"
+          ? {
+              scope: "workspace",
+              workspaceId: workspace?.id as string,
+              credentialsId,
+            }
+          : {
+              scope: "user",
+              credentialsId,
+            },
+      enabled: !!workspace?.id,
+    }),
   );
 
   useEffect(() => {
@@ -58,7 +57,7 @@ export const ForgedCredentialsUpdateDialogContent = ({
   }, [data, existingCredentials]);
 
   const { mutate } = useMutation(
-    trpc.credentials.updateCredentials.mutationOptions({
+    orpc.credentials.updateCredentials.mutationOptions({
       onMutate: () => setIsUpdating(true),
       onSettled: () => setIsUpdating(false),
       onError: (err) => {

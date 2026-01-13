@@ -9,7 +9,7 @@ import { EmojiOrImageIcon } from "@/components/EmojiOrImageIcon";
 import { PlanBadge } from "@/features/billing/components/PlanTag";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { trpc } from "@/lib/queryClient";
+import { orpc } from "@/lib/queryClient";
 
 const Page = () => {
   const { push } = useRouter();
@@ -17,7 +17,7 @@ const Page = () => {
   const { workspaces } = useWorkspace();
   const [selectedWorkspaceId, setSelectedWorkspaceId] = useState<string>();
   const { mutate, status } = useMutation(
-    trpc.typebot.importTypebot.mutationOptions({
+    orpc.typebot.importTypebot.mutationOptions({
       onSuccess: (data) => {
         push(`/typebots/${data.typebot.id}/edit`);
       },

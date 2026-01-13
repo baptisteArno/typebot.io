@@ -13,7 +13,7 @@ import {
 import { TypebotHeader } from "@/features/editor/components/TypebotHeader";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { trpc } from "@/lib/queryClient";
+import { orpc } from "@/lib/queryClient";
 import { ResultsProvider } from "../ResultsProvider";
 import { ResultsTableContainer } from "./ResultsTableContainer";
 
@@ -39,16 +39,14 @@ export const ResultsPage = () => {
   });
 
   const { data: { stats } = {}, refetch } = useQuery(
-    trpc.analytics.getStats.queryOptions(
-      {
+    orpc.analytics.getStats.queryOptions({
+      input: {
         typebotId: publishedTypebot?.typebotId as string,
         timeFilter,
         timeZone,
       },
-      {
-        enabled: !!publishedTypebot,
-      },
-    ),
+      enabled: !!publishedTypebot,
+    }),
   );
 
   const handleDeletedResults = () => {

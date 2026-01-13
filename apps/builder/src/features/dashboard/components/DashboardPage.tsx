@@ -13,7 +13,7 @@ import { FolderContent } from "@/features/folders/components/FolderContent";
 import { TypebotDndProvider } from "@/features/folders/TypebotDndProvider";
 import { useUser } from "@/features/user/hooks/useUser";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
-import { trpc } from "@/lib/queryClient";
+import { orpc } from "@/lib/queryClient";
 import { DashboardHeader } from "./DashboardHeader";
 
 export const DashboardPage = () => {
@@ -25,7 +25,7 @@ export const DashboardPage = () => {
   const [preCheckoutPlan, setPreCheckoutPlan] =
     useState<PreCheckoutDialogProps["selectedSubscription"]>();
   const { mutate: createCustomCheckoutSession } = useMutation(
-    trpc.billing.createCustomCheckoutSession.mutationOptions({
+    orpc.billing.createCustomCheckoutSession.mutationOptions({
       onSuccess: (data) => {
         router.push(data.checkoutUrl);
       },
