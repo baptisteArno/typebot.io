@@ -5,9 +5,7 @@ description: Automates browser interactions for web testing, form filling, scree
 
 # Browser Automation with agent-browser
 
-## Required: Load auth cookies for localhost:3000
-
-Before using agent-browser with `localhost:3000`, you MUST load the auth cookies found in apps/viewer/src/test/.auth/user.json
+IMPORTANT: Before navigating to `localhost:3000`, you MUST load the auth cookies found in apps/viewer/src/test/.auth/user.json
 
 ```bash
 agent-browser cookies set "authjs.session-token" "<value-from-user.json>"
@@ -86,6 +84,8 @@ agent-browser screenshot          # Screenshot to stdout
 agent-browser screenshot path.png # Save to file
 agent-browser screenshot --full   # Full page
 ```
+
+Prefer full page screenshot to get as much information as possible.
 
 ### Wait
 

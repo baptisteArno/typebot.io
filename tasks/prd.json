@@ -1,0 +1,119 @@
+{
+  "name": "Templates Hub Page",
+  "branchName": "feature/templates-hub-page",
+  "userStories": [
+    {
+      "id": "US-001",
+      "title": "Templates listing page structure",
+      "description": "As a visitor, I want to see a templates hub page at `/templates` with hero, search, filters, and grid.",
+      "acceptanceCriteria": [
+        "Route `/templates` in `apps/landing-page/`",
+        "Hero section with title and subtitle",
+        "Search bar below hero",
+        "Left sidebar with filter checkboxes (desktop)",
+        "Grid of template cards in main content area",
+        "Footer link 'Templates' added under Community section"
+      ],
+      "priority": 1,
+      "passes": true,
+      "dependsOn": [],
+      "completionNotes": "Completed by agent"
+    },
+    {
+      "id": "US-002",
+      "title": "Template data loading",
+      "description": "As a developer, I want to load templates from existing JSON files in `apps/builder/public/templates/`.",
+      "acceptanceCriteria": [
+        "Read template JSON files at build time",
+        "Extract metadata: name, description, preview image (placeholder if missing)",
+        "Assign categories based on template content",
+        "Expose data to templates page"
+      ],
+      "priority": 2,
+      "passes": true,
+      "dependsOn": ["US-001"],
+      "completionNotes": "Completed by agent"
+    },
+    {
+      "id": "US-003",
+      "title": "Category filters",
+      "description": "As a visitor, I want to filter templates by use case and features.",
+      "acceptanceCriteria": [
+        "Use Case filters: Lead Generation, Customer Support, AI Chat, Quiz & Survey, E-commerce, Lead Magnets, Onboarding, Entertainment",
+        "Feature filters: AI-powered, Payment integration, File upload",
+        "Multiple selections allowed within and across groups",
+        "Grid updates on filter change",
+        "Collapse to dropdown on mobile"
+      ],
+      "priority": 3,
+      "passes": true,
+      "dependsOn": ["US-001", "US-002"],
+      "completionNotes": "Completed by agent"
+    },
+    {
+      "id": "US-004",
+      "title": "Search functionality",
+      "description": "As a visitor, I want to search templates by any metadata.",
+      "acceptanceCriteria": [
+        "Search input filters templates in real-time",
+        "Matches against title, description, tags, category",
+        "Combines with active filters",
+        "Shows 'No results' state when empty"
+      ],
+      "priority": 4,
+      "passes": true,
+      "dependsOn": ["US-001", "US-002"],
+      "completionNotes": "Completed by agent"
+    },
+    {
+      "id": "US-005",
+      "title": "Template card component",
+      "description": "As a visitor, I want to see template info at a glance.",
+      "acceptanceCriteria": [
+        "Preview image (placeholder if missing)",
+        "Title",
+        "Short description (truncated if long)",
+        "Category/feature tags",
+        "Clickable, links to detail page `/templates/[filename-slug]`"
+      ],
+      "priority": 5,
+      "passes": true,
+      "dependsOn": ["US-002"],
+      "completionNotes": "Completed by agent"
+    },
+    {
+      "id": "US-006",
+      "title": "Template detail page",
+      "description": "As a visitor, I want to view full template details before using it.",
+      "acceptanceCriteria": [
+        "Route `/templates/[slug]` where slug = filename without extension",
+        "Full title and description",
+        "Author info (default: 'Typebot' / official)",
+        "Preview image (placeholder if missing)",
+        "'Get template' button"
+      ],
+      "priority": 6,
+      "passes": true,
+      "dependsOn": ["US-002", "US-005"],
+      "completionNotes": "Completed by agent"
+    },
+    {
+      "id": "US-007",
+      "title": "Get template flow",
+      "description": "As a visitor, I want to use a template in the builder.",
+      "acceptanceCriteria": [
+        "'Get template' redirects to builder with template identifier in URL",
+        "If not authenticated, redirect to sign-in/sign-up with return URL preserved",
+        "After auth, automatically import template into user's workspace",
+        "No confirmation dialog - direct import on redirect"
+      ],
+      "priority": 7,
+      "passes": true,
+      "dependsOn": ["US-006"],
+      "completionNotes": "Completed by agent"
+    }
+  ],
+  "metadata": {
+    "updatedAt": "2026-01-15T14:13:30.857Z"
+  }
+}

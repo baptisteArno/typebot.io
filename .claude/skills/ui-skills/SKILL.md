@@ -27,7 +27,7 @@ When invoked, apply these opinionated constraints for building better interfaces
 
 ## Components
 
-- MUST use accessible component primitives for anything with keyboard or focus behavior (`Base UI`, `React Aria`, `Radix`)
+- MUST use accessible component primitives for anything with keyboard or focus behavior (`Base UI`)
 - MUST use the project’s existing component primitives first
 - NEVER mix primitive systems within the same interaction surface
 - SHOULD prefer [`Base UI`](https://base-ui.com/react/components) for new primitives if compatible with the stack

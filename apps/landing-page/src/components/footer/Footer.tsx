@@ -35,6 +35,10 @@ const data = [
         to: "/blog",
       },
       {
+        label: "Templates",
+        to: "/templates",
+      },
+      {
         label: "GitHub",
         href: githubRepoUrl,
       },
