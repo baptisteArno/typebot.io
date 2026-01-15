@@ -52,7 +52,9 @@ export const S3ConfigLayer = Layer.unwrapEffect(
       Schema.Redacted(Schema.String),
     );
     const endpoint = yield* Schema.Config("S3_ENDPOINT", Schema.String);
-    const port = yield* Schema.Config("S3_PORT", Schema.NumberFromString);
+    const port = yield* Schema.Config("S3_PORT", Schema.NumberFromString).pipe(
+      Config.option,
+    );
     const region = yield* Schema.Config("S3_REGION", Schema.String).pipe(
       Config.withDefault("us-east-1"),
     );
