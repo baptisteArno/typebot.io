@@ -459,6 +459,13 @@ const inngestEnv = {
   },
 };
 
+const otelEnv = {
+  server: {
+    OTEL_EXPORTER_OTLP_ENDPOINT: z.string().url().optional(),
+    OTEL_EXPORTER_OTLP_HEADERS: z.string().optional(),
+  },
+};
+
 export const env = createEnv({
   server: {
     ...baseEnv.server,
@@ -481,6 +488,7 @@ export const env = createEnv({
     ...keycloakEnv.server,
     ...posthogEnv.server,
     ...inngestEnv.server,
+    ...otelEnv.server,
   },
   client: {
     ...baseEnv.client,

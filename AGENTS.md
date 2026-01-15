@@ -4,7 +4,6 @@
 
 - `apps/builder` hosts product surfaces like the builder, viewer, docs, and landing page (e.g., `apps/builder`, `apps/viewer`).
 - `packages/` contains shared libraries, blocks, embeds, and tooling (`packages/ui`, `packages/lib`, `packages/blocks/*`, `packages/embeds/*`).
-- `.context/` contains git subtrees for context of how to use specific libraries.
 
 <!-- opensrc:start -->
 
@@ -59,3 +58,25 @@ npx opensrc <owner>/<repo>      # GitHub repo (e.g., npx opensrc vercel/ai)
 - Always use `env` from `@typebot.io/env` instead of `process.env` directly.
 - This package provides type-safe, validated environment variables.
 - Example: `env.NODE_ENV` instead of `process.env.NODE_ENV`.
+
+## Plan Mode
+
+- Make the plan extremely concise. Sacrifice grammar for the sake of concision.
+- At the end of each plan, give me a list of unresolved questions to answer, if any.
+
+<!-- effect-solutions:start -->
+
+## Effect Best Practices
+
+**Before implementing Effect features**, run `bunx effect-solutions list` and read the relevant guide.
+
+Topics include: services and layers, data modeling, error handling, configuration, testing, HTTP clients, CLIs, observability, and project structure.
+
+<!-- effect-solutions:end -->
+
+## Philosophy
+
+This codebase will outlive you. Every shortcut becomes someone else's burden. Patterns you establish will be copied.
+Corners you cut will be cut again.
+
+Fight entropy. Leave the codebase better than you found it.

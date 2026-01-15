@@ -62,7 +62,7 @@
     "@typebot.io/config": "workspace:*"
   },
   "devDependencies": {
-    "@playwright/test": "^1.51.0",
+    "@playwright/test": "^1.57.0",
     "@typebot.io/playwright": "workspace:*",
     "@typebot.io/tsconfig": "workspace:*",
     "@types/cors": "^2.8.13",

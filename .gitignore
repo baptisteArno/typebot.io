@@ -21,6 +21,7 @@ firebaseServiceAccount.json
 
 .env.production
 .env.staging
+.env.development
 
 # Wordpress
 .svn
@@ -65,3 +66,5 @@ snapshots
 **/test/.auth
 
 opensrc/
+.effect
+.workflow

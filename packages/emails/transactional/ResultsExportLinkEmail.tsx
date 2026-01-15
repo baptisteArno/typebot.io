@@ -42,6 +42,10 @@ ResultsExportLinkEmail.PreviewProps = {
 
 export default ResultsExportLinkEmail;
 
+export const renderResultsExportLinkEmail = (
+  props: ComponentProps<typeof ResultsExportLinkEmail>,
+) => render(<ResultsExportLinkEmail {...props} />);
+
 export const sendResultsExportLinkEmail = async (
   props: ComponentProps<typeof ResultsExportLinkEmail>,
 ) =>

@@ -3,19 +3,25 @@
   "version": "0.0.1",
   "type": "module",
   "private": true,
+  "scripts": {
+    "test": "dotenv -e ./.env -e ../../.env -- bun test"
+  },
   "exports": {
     "./*": "./src/*.ts"
   },
   "dependencies": {
+    "@effect-aws/s3": "^0.2.5",
+    "effect": "^3.19.14",
     "@typebot.io/blocks-core": "workspace:*",
     "@typebot.io/blocks-inputs": "workspace:*",
+    "@typebot.io/config": "workspace:*",
     "@typebot.io/env": "workspace:*",
     "@typebot.io/groups": "workspace:*",
     "@typebot.io/lib": "workspace:*",
     "@typebot.io/prisma": "workspace:*",
+    "@typebot.io/typebot": "workspace:*",
     "@typebot.io/variables": "workspace:*",
-    "@typebot.io/zod": "workspace:*",
-    "@typebot.io/typebot": "workspace:*"
+    "@typebot.io/zod": "workspace:*"
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*"
