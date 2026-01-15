@@ -1,12 +1,5 @@
 import { Card } from "@/components/Card";
-
-export type Template = {
-  id: string;
-  name: string;
-  description: string;
-  category: string;
-  complexity: string;
-};
+import type { Template } from "./templatesData";
 
 type Props = {
   template: Template;
@@ -15,7 +8,9 @@ type Props = {
 export const TemplateCard = ({ template }: Props) => {
   return (
     <Card className="hover:border-primary/50 transition-colors cursor-pointer">
-      <div className="aspect-video bg-muted rounded-lg" />
+      <div className="aspect-video bg-muted rounded-lg flex items-center justify-center text-4xl">
+        {template.emoji}
+      </div>
       <div className="flex flex-col gap-1">
         <h3 className="font-semibold">{template.name}</h3>
         <p className="text-sm text-muted-foreground line-clamp-2">

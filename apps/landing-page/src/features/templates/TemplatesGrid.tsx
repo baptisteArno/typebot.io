@@ -1,4 +1,5 @@
-import { type Template, TemplateCard } from "./TemplateCard";
+import { TemplateCard } from "./TemplateCard";
+import type { Template } from "./templatesData";
 
 type Props = {
   templates: Template[];

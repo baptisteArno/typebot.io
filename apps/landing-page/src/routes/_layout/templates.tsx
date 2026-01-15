@@ -1,11 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { ContentPageWrapper } from "@/components/ContentPageWrapper";
-import type { Template } from "@/features/templates/TemplateCard";
 import { TemplatesFilterSidebar } from "@/features/templates/TemplatesFilterSidebar";
 import { TemplatesGrid } from "@/features/templates/TemplatesGrid";
 import { TemplatesHero } from "@/features/templates/TemplatesHero";
 import { TemplatesSearchBar } from "@/features/templates/TemplatesSearchBar";
+import { templates } from "@/features/templates/templatesData";
 import { createMetaTags } from "@/lib/createMetaTags";
 
 export const Route = createFileRoute("/_layout/templates")({
@@ -20,57 +20,6 @@ export const Route = createFileRoute("/_layout/templates")({
   }),
   component: RouteComponent,
 });
-
-const mockTemplates: Template[] = [
-  {
-    id: "1",
-    name: "Lead Generation Bot",
-    description:
-      "Capture and qualify leads with this conversational form template.",
-    category: "Marketing",
-    complexity: "Simple",
-  },
-  {
-    id: "2",
-    name: "Customer Support FAQ",
-    description:
-      "Answer common questions automatically and route complex issues to your team.",
-    category: "Support",
-    complexity: "Intermediate",
-  },
-  {
-    id: "3",
-    name: "Product Recommendation",
-    description:
-      "Guide customers to the right product based on their needs and preferences.",
-    category: "Sales",
-    complexity: "Advanced",
-  },
-  {
-    id: "4",
-    name: "Employee Onboarding",
-    description:
-      "Streamline the onboarding process with interactive checklists and resources.",
-    category: "HR",
-    complexity: "Intermediate",
-  },
-  {
-    id: "5",
-    name: "Quiz Template",
-    description:
-      "Create engaging quizzes for education, marketing, or entertainment.",
-    category: "Education",
-    complexity: "Simple",
-  },
-  {
-    id: "6",
-    name: "Appointment Booking",
-    description:
-      "Let users book appointments directly through a conversational interface.",
-    category: "Sales",
-    complexity: "Intermediate",
-  },
-];
 
 function RouteComponent() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -88,7 +37,7 @@ function RouteComponent() {
     });
   };
 
-  const filteredTemplates = mockTemplates.filter((template) => {
+  const filteredTemplates = templates.filter((template) => {
     const matchesSearch =
       searchQuery === "" ||
       template.name.toLowerCase().includes(searchQuery.toLowerCase()) ||

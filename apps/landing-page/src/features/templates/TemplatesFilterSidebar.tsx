@@ -1,16 +1,18 @@
+import { categories, complexities } from "./templatesData";
+
 type FilterCategory = {
   label: string;
-  options: string[];
+  options: readonly string[];
 };
 
 const filterCategories: FilterCategory[] = [
   {
     label: "Category",
-    options: ["Marketing", "Support", "Sales", "HR", "Education"],
+    options: categories,
   },
   {
     label: "Complexity",
-    options: ["Simple", "Intermediate", "Advanced"],
+    options: complexities,
   },
 ];
 
