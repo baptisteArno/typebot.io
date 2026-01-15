@@ -13,6 +13,7 @@ import { createServerRootRoute } from '@tanstack/react-start/server'
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as LayoutRouteImport } from './routes/_layout'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as LayoutTemplatesRouteImport } from './routes/_layout/templates'
 import { Route as LayoutPricingRouteImport } from './routes/_layout/pricing'
 import { Route as LayoutOssFriendsRouteImport } from './routes/_layout/oss-friends'
 import { Route as LayoutAboutRouteImport } from './routes/_layout/about'
@@ -32,6 +33,11 @@ const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const LayoutTemplatesRoute = LayoutTemplatesRouteImport.update({
+  id: '/templates',
+  path: '/templates',
+  getParentRoute: () => LayoutRoute,
 } as any)
 const LayoutPricingRoute = LayoutPricingRouteImport.update({
   id: '/pricing',
@@ -80,6 +86,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof LayoutAboutRoute
   '/oss-friends': typeof LayoutOssFriendsRoute
   '/pricing': typeof LayoutPricingRoute
+  '/templates': typeof LayoutTemplatesRoute
   '/blog/$slug': typeof LayoutBlogSlugRoute
   '/blog': typeof LayoutBlogIndexRoute
 }
@@ -89,6 +96,7 @@ export interface FileRoutesByTo {
   '/about': typeof LayoutAboutRoute
   '/oss-friends': typeof LayoutOssFriendsRoute
   '/pricing': typeof LayoutPricingRoute
+  '/templates': typeof LayoutTemplatesRoute
   '/blog/$slug': typeof LayoutBlogSlugRoute
   '/blog': typeof LayoutBlogIndexRoute
 }
@@ -100,6 +108,7 @@ export interface FileRoutesById {
   '/_layout/about': typeof LayoutAboutRoute
   '/_layout/oss-friends': typeof LayoutOssFriendsRoute
   '/_layout/pricing': typeof LayoutPricingRoute
+  '/_layout/templates': typeof LayoutTemplatesRoute
   '/_layout/blog/$slug': typeof LayoutBlogSlugRoute
   '/_layout/blog/': typeof LayoutBlogIndexRoute
 }
@@ -111,6 +120,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/oss-friends'
     | '/pricing'
+    | '/templates'
     | '/blog/$slug'
     | '/blog'
   fileRoutesByTo: FileRoutesByTo
@@ -120,6 +130,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/oss-friends'
     | '/pricing'
+    | '/templates'
     | '/blog/$slug'
     | '/blog'
   id:
@@ -130,6 +141,7 @@ export interface FileRouteTypes {
     | '/_layout/about'
     | '/_layout/oss-friends'
     | '/_layout/pricing'
+    | '/_layout/templates'
     | '/_layout/blog/$slug'
     | '/_layout/blog/'
   fileRoutesById: FileRoutesById
@@ -179,6 +191,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_layout/templates': {
+      id: '/_layout/templates'
+      path: '/templates'
+      fullPath: '/templates'
+      preLoaderRoute: typeof LayoutTemplatesRouteImport
+      parentRoute: typeof LayoutRoute
     }
     '/_layout/pricing': {
       id: '/_layout/pricing'
@@ -248,6 +267,7 @@ interface LayoutRouteChildren {
   LayoutAboutRoute: typeof LayoutAboutRoute
   LayoutOssFriendsRoute: typeof LayoutOssFriendsRoute
   LayoutPricingRoute: typeof LayoutPricingRoute
+  LayoutTemplatesRoute: typeof LayoutTemplatesRoute
   LayoutBlogSlugRoute: typeof LayoutBlogSlugRoute
   LayoutBlogIndexRoute: typeof LayoutBlogIndexRoute
 }
@@ -257,6 +277,7 @@ const LayoutRouteChildren: LayoutRouteChildren = {
   LayoutAboutRoute: LayoutAboutRoute,
   LayoutOssFriendsRoute: LayoutOssFriendsRoute,
   LayoutPricingRoute: LayoutPricingRoute,
+  LayoutTemplatesRoute: LayoutTemplatesRoute,
   LayoutBlogSlugRoute: LayoutBlogSlugRoute,
   LayoutBlogIndexRoute: LayoutBlogIndexRoute,
 }
