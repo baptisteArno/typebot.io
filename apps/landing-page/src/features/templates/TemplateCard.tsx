@@ -17,13 +17,18 @@ export const TemplateCard = ({ template }: Props) => {
           {template.description}
         </p>
       </div>
-      <div className="flex gap-2 mt-auto">
+      <div className="flex gap-2 mt-auto flex-wrap">
         <span className="text-xs px-2 py-1 bg-muted rounded-md">
-          {template.category}
+          {template.useCase}
         </span>
-        <span className="text-xs px-2 py-1 bg-muted rounded-md">
-          {template.complexity}
-        </span>
+        {template.features.map((feature) => (
+          <span
+            key={feature}
+            className="text-xs px-2 py-1 bg-primary/10 text-primary rounded-md"
+          >
+            {feature}
+          </span>
+        ))}
       </div>
     </Card>
   );

@@ -43,15 +43,19 @@ function RouteComponent() {
       template.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       template.description.toLowerCase().includes(searchQuery.toLowerCase());
 
-    const matchesCategory =
-      !selectedFilters.Category?.length ||
-      selectedFilters.Category.includes(template.category);
+    const matchesUseCase =
+      !selectedFilters["Use Case"]?.length ||
+      selectedFilters["Use Case"].includes(template.useCase);
 
-    const matchesComplexity =
-      !selectedFilters.Complexity?.length ||
-      selectedFilters.Complexity.includes(template.complexity);
+    const matchesFeatures =
+      !selectedFilters.Features?.length ||
+      selectedFilters.Features.some((feature) =>
+        template.features.includes(
+          feature as (typeof template.features)[number],
+        ),
+      );
 
-    return matchesSearch && matchesCategory && matchesComplexity;
+    return matchesSearch && matchesUseCase && matchesFeatures;
   });
 
   return (
