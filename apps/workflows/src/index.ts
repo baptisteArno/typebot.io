@@ -32,7 +32,7 @@ import {
   RPC_SECRET_HEADER_KEY,
 } from "@typebot.io/results/workflows/rpc";
 import { TypebotServiceLayer } from "@typebot.io/typebot/services/TypebotService";
-import { Effect, Equivalence, Layer, Redacted, Schema } from "effect";
+import { Effect, Equivalence, Layer, Redacted } from "effect";
 
 const WorkflowEngineLayer = ClusterWorkflowEngine.layer.pipe(
   Layer.provideMerge(BunClusterSocket.layer()),
@@ -88,15 +88,11 @@ const AuthMiddleware = HttpLayerRouter.middleware(
   }),
 ).layer;
 
-const ResultsRpcRouterLayer = Effect.gen(function* () {
-  const { workflowsServer } = yield* WorkflowsAppConfig;
-  return RpcServer.layerHttpRouter({
-    group: ResultsWorkflowsRpc,
-    path: decodePathInput(workflowsServer.rpcUrl.pathname),
-    protocol: "http",
-  });
+const ResultsRpcRouterLayer = RpcServer.layerHttpRouter({
+  group: ResultsWorkflowsRpc,
+  path: "/rpc",
+  protocol: "http",
 }).pipe(
-  Layer.unwrapEffect,
   Layer.provide(ResultsWorkflowsRpcLayer),
   Layer.provide(AuthMiddleware),
   Layer.provide(RpcSerialization.layerNdjson),
@@ -140,7 +136,3 @@ const Main = HttpLayerRouter.serve(Routes).pipe(
 );
 
 BunRuntime.runMain(Layer.launch(Main));
-
-const PathInputSchema = Schema.TemplateLiteral("/", Schema.String);
-
-const decodePathInput = Schema.decodeUnknownSync(PathInputSchema);
