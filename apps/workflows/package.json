@@ -6,7 +6,8 @@
   "main": "src/index.ts",
   "scripts": {
     "start": "dotenv -e ./.env -e ../../.env -- bun src/index.ts",
-    "dev": "dotenv -e ./.env -e ../../.env -- bun --watch --no-clear-screen src/index.ts"
+    "dev": "dotenv -e ./.env -e ../../.env -- bun --watch --no-clear-screen src/index.ts",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@effect/cluster": "^0.56.1",
