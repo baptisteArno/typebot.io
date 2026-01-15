@@ -8,7 +8,7 @@ import { TemplatesSearchBar } from "@/features/templates/TemplatesSearchBar";
 import { templates } from "@/features/templates/templatesData";
 import { createMetaTags } from "@/lib/createMetaTags";
 
-export const Route = createFileRoute("/_layout/templates")({
+export const Route = createFileRoute("/_layout/templates/")({
   head: () => ({
     meta: createMetaTags({
       title: "Templates | Typebot",
