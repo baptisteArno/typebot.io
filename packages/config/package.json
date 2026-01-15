@@ -4,10 +4,11 @@
   "type": "module",
   "private": true,
   "exports": {
+    ".": "./src/index.ts",
     "./*": "./src/*.ts"
   },
   "dependencies": {
-    "@typebot.io/user": "workspace:*"
+    "effect": "^3.19.14"
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*"

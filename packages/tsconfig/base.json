@@ -19,6 +19,12 @@
 
     "lib": ["esnext", "dom", "DOM.Iterable"],
 
-    "jsx": "preserve"
+    "jsx": "preserve",
+
+    "plugins": [
+      {
+        "name": "@effect/language-service"
+      }
+    ]
   }
 }

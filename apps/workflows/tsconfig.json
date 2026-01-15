@@ -1,5 +1,5 @@
 {
   "extends": "@typebot.io/tsconfig/base.json",
-  "include": ["src/**/*.ts", "scripts/**/*.ts", ".effect/**/*.ts"],
+  "include": ["src/**/*.ts"],
   "exclude": ["node_modules"]
 }

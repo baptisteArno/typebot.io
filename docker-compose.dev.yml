@@ -33,6 +33,29 @@ services:
       /usr/bin/mc anonymous set public minio/typebot/public;
       exit 0;
       "
+  redis:
+    image: redis:alpine
+    restart: always
+    ports:
+      - "6379:6379"
+    command: --save 60 1 --loglevel warning
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli ping | grep PONG"]
+      start_period: 20s
+      interval: 30s
+      retries: 5
+      timeout: 3s
+    volumes:
+      - redis-data:/data
+  grafana:
+    image: grafana/otel-lgtm:latest
+    container_name: lgtm
+    ports:
+      - "3010:3000"
+      - "4317:4317"
+      - "4318:4318"
+    restart: unless-stopped
 volumes:
   db_data:
   s3_data:
+  redis-data:

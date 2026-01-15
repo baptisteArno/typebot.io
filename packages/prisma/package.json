@@ -2,7 +2,8 @@
   "name": "@typebot.io/prisma",
   "exports": {
     ".": "./src/index.ts",
-    "./*": "./src/*.ts"
+    "./*": "./src/*.ts",
+    "./effect": "./.effect/index.ts"
   },
   "scripts": {
     "dev": "dotenv -e ./.env -e ../../.env -- tsx scripts/studio.ts",
@@ -22,6 +23,7 @@
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*",
     "dotenv-cli": "^8.0.0",
+    "effect-prisma-generator": "^0.7.1",
     "tsx": "^4.19.1"
   }
 }
