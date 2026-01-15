@@ -2,10 +2,9 @@ import { FileSystem } from "@effect/platform";
 import { PlatformError } from "@effect/platform/Error";
 import { Activity, Workflow } from "@effect/workflow";
 import { MultipartUpload } from "@effect-aws/s3";
-import { S3ReadableConfig } from "@typebot.io/config";
+import { S3ReadableConfig, WorkflowsAppConfig } from "@typebot.io/config";
 import { renderResultsExportLinkEmail } from "@typebot.io/emails/transactional/ResultsExportLinkEmail";
 import { parseGroups } from "@typebot.io/groups/helpers/parseGroups";
-import type { GroupV6 } from "@typebot.io/groups/schemas";
 import {
   NodemailerClient,
   NodemailerError,
@@ -100,6 +99,8 @@ export const ExportResultsWorkflowLayer = ExportResultsWorkflow.toLayer(
 
     yield* Effect.logInfo("Export workflow started");
 
+    const { nextAuthUrl } = yield* WorkflowsAppConfig;
+
     const typebot = yield* Activity.make({
       name: "GetTypebot",
       error: Schema.Union(
@@ -150,7 +151,7 @@ export const ExportResultsWorkflowLayer = ExportResultsWorkflow.toLayer(
           ...typebot,
           groups: parseGroups(typebot.groups, {
             typebotVersion: typebot.version,
-          }) as GroupV6[],
+          }),
         };
       }).pipe(
         Effect.tapError((error) => Effect.logError(error)),
@@ -238,7 +239,7 @@ export const ExportResultsWorkflowLayer = ExportResultsWorkflow.toLayer(
 
     yield* fs.remove(tmpPath, { recursive: true });
 
-    const fileUrl = new URL(`http://localhost:3000/api/s3/${s3Key}`);
+    const fileUrl = new URL(`/api/s3/${s3Key}`, nextAuthUrl);
 
     yield* Effect.logInfo("Export workflow completed").pipe(
       Effect.annotateLogs({

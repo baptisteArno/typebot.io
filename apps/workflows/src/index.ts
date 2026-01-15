@@ -5,7 +5,6 @@ import {
   HttpServerRequest,
   HttpServerResponse,
 } from "@effect/platform";
-import type { PathInput } from "@effect/platform/HttpRouter";
 import {
   BunClusterSocket,
   BunHttpServer,
@@ -33,7 +32,7 @@ import {
   RPC_SECRET_HEADER_KEY,
 } from "@typebot.io/results/workflows/rpc";
 import { TypebotServiceLayer } from "@typebot.io/typebot/services/TypebotService";
-import { Effect, Equivalence, Layer, Redacted } from "effect";
+import { Effect, Equivalence, Layer, Redacted, Schema } from "effect";
 
 const WorkflowEngineLayer = ClusterWorkflowEngine.layer.pipe(
   Layer.provideMerge(BunClusterSocket.layer()),
@@ -93,7 +92,7 @@ const ResultsRpcRouterLayer = Effect.gen(function* () {
   const { workflowsServer } = yield* WorkflowsAppConfig;
   return RpcServer.layerHttpRouter({
     group: ResultsWorkflowsRpc,
-    path: workflowsServer.rpcUrl.pathname as PathInput,
+    path: decodePathInput(workflowsServer.rpcUrl.pathname),
     protocol: "http",
   });
 }).pipe(
@@ -141,3 +140,7 @@ const Main = HttpLayerRouter.serve(Routes).pipe(
 );
 
 BunRuntime.runMain(Layer.launch(Main));
+
+const PathInputSchema = Schema.TemplateLiteral("/", Schema.String);
+
+const decodePathInput = Schema.decodeUnknownSync(PathInputSchema);

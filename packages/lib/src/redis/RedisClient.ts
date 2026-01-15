@@ -66,18 +66,18 @@ export const RedisClientLayer = Layer.unwrapScoped(
       Effect.tryPromise({
         try: () => client.set(key, value),
         catch: (error) => new RedisSetError({ cause: error }),
-      }),
+      }).pipe(Effect.asVoid),
     );
 
     const publish = Effect.fn("RedisClient.publish")(
       (
         channel: string,
         message: string,
-      ): Effect.Effect<number, RedisPublishError> =>
+      ): Effect.Effect<void, RedisPublishError> =>
         Effect.tryPromise({
           try: () => client.publish(channel, message),
           catch: (error) => new RedisPublishError({ cause: error }),
-        }),
+        }).pipe(Effect.asVoid),
     );
 
     const subscribe = (

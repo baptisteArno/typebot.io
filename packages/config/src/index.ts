@@ -15,6 +15,7 @@ const WorkflowsAppConfigSchema = Config.all({
     port: Config.number("WORKFLOWS_SERVER_PORT").pipe(Config.withDefault(3000)),
     rpcSecret: Config.redacted(Config.string("WORKFLOWS_RPC_SECRET")),
   }),
+  nextAuthUrl: Config.url("NEXTAUTH_URL"),
   appDatabaseUrl: Config.redacted(Config.string("DATABASE_URL")),
   databaseUrl: Config.redacted(Config.string("WORKFLOWS_DATABASE_URL")),
 });
