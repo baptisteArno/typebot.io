@@ -1,7 +1,9 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
+import { Badge } from "@typebot.io/ui/components/Badge";
 import { ContentPageWrapper } from "@/components/ContentPageWrapper";
-import { CtaButtonLink, TextLink } from "@/components/link";
+import { ButtonLink, CtaButtonLink } from "@/components/link";
 import { dashboardUrl } from "@/constants";
+import { TemplateCard } from "@/features/templates/TemplateCard";
 import { templates } from "@/features/templates/templatesData";
 import { createMetaTags } from "@/lib/createMetaTags";
 
@@ -17,7 +19,11 @@ export const Route = createFileRoute("/_layout/templates/$slug")({
       });
     }
 
-    return { template };
+    const relatedTemplates = templates
+      .filter((t) => t.useCase === template.useCase && t.id !== template.id)
+      .slice(0, 3);
+
+    return { template, relatedTemplates };
   },
   head: ({ loaderData }) => ({
     meta: loaderData
@@ -33,57 +39,68 @@ export const Route = createFileRoute("/_layout/templates/$slug")({
 });
 
 function RouteComponent() {
-  const { template } = Route.useLoaderData();
+  const { template, relatedTemplates } = Route.useLoaderData();
 
   return (
-    <ContentPageWrapper>
-      <div className="flex flex-col gap-8 max-w-4xl mx-auto w-full">
-        <TextLink href="/templates" className="font-normal uppercase text-sm">
+    <ContentPageWrapper className="md:pt-12">
+      <div className="flex flex-col gap-12 max-w-5xl mx-auto w-full">
+        <ButtonLink
+          to="/templates"
+          variant="outline"
+          className="self-start bg-background"
+        >
           ← All templates
-        </TextLink>
-        <div className="flex flex-col md:flex-row gap-8">
-          <div className="flex-1 flex flex-col gap-6">
-            <div className="flex items-center gap-4">
-              <span className="text-6xl">{template.emoji}</span>
-              <h1 className="text-4xl font-bold">{template.name}</h1>
+        </ButtonLink>
+
+        <div className="flex flex-col gap-6 bg-background p-6 rounded-xl border">
+          <div className="flex items-start gap-4">
+            <span className="text-5xl md:text-6xl">{template.emoji}</span>
+            <div className="flex flex-col gap-2">
+              <h1 className="text-3xl md:text-4xl font-bold text-balance leading-tight">
+                {template.name}
+              </h1>
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <span>By</span>
+                <span className="font-medium text-foreground">Typebot</span>
+              </div>
             </div>
-            <p className="text-lg text-muted-foreground">
-              {template.description}
-            </p>
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <span>By</span>
-              <span className="font-medium text-foreground">Typebot</span>
-              <span className="px-2 py-0.5 bg-primary/10 text-primary rounded text-xs font-medium">
-                Official
-              </span>
-            </div>
-            <div className="flex gap-2 flex-wrap">
-              <span className="text-sm px-3 py-1 bg-muted rounded-md">
-                {template.useCase}
-              </span>
-              {template.features.map((feature) => (
-                <span
-                  key={feature}
-                  className="text-sm px-3 py-1 bg-primary/10 text-primary rounded-md"
-                >
-                  {feature}
-                </span>
-              ))}
-            </div>
+          </div>
+
+          <div className="flex gap-2 flex-wrap">
+            <Badge colorScheme="purple">{template.useCase}</Badge>
+            {template.features.map((feature) => (
+              <Badge key={feature} colorScheme="blue">
+                {feature}
+              </Badge>
+            ))}
+          </div>
+
+          <p className="text-lg text-muted-foreground text-pretty">
+            {template.description}
+          </p>
+
+          <div className="pt-2">
             <CtaButtonLink
               href={`${dashboardUrl}?template=${template.fileName.replace(".json", "")}`}
               target="_blank"
-              className="w-fit mt-2"
             >
-              Get template
+              Use this template
             </CtaButtonLink>
           </div>
-          <div className="w-full md:w-80 flex-shrink-0">
-            <div className="aspect-video bg-muted rounded-lg flex items-center justify-center border">
-              <span className="text-8xl">{template.emoji}</span>
+        </div>
+
+        {relatedTemplates.length > 0 && (
+          <div className="flex flex-col gap-6 pt-8 border-t">
+            <h2 className="text-2xl font-bold text-balance">
+              More {template.useCase} templates
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {relatedTemplates.map((related) => (
+                <TemplateCard key={related.id} template={related} />
+              ))}
             </div>
           </div>
-        </div>
+        )}
       </div>
     </ContentPageWrapper>
   );

@@ -15,8 +15,9 @@
         "Footer link 'Templates' added under Community section"
       ],
       "priority": 1,
-      "passes": false,
-      "dependsOn": []
+      "passes": true,
+      "dependsOn": [],
+      "completionNotes": "Completed by agent"
     },
     {
       "id": "US-002",
@@ -29,8 +30,9 @@
         "Expose data to templates page"
       ],
       "priority": 2,
-      "passes": false,
-      "dependsOn": ["US-001"]
+      "passes": true,
+      "dependsOn": ["US-001"],
+      "completionNotes": "Completed by agent"
     },
     {
       "id": "US-003",
@@ -44,8 +46,9 @@
         "Collapse to dropdown on mobile"
       ],
       "priority": 3,
-      "passes": false,
-      "dependsOn": ["US-001", "US-002"]
+      "passes": true,
+      "dependsOn": ["US-001", "US-002"],
+      "completionNotes": "Completed by agent"
     },
     {
       "id": "US-004",
@@ -58,8 +61,9 @@
         "Shows 'No results' state when empty"
       ],
       "priority": 4,
-      "passes": false,
-      "dependsOn": ["US-001", "US-002"]
+      "passes": true,
+      "dependsOn": ["US-001", "US-002"],
+      "completionNotes": "Completed by agent"
     },
     {
       "id": "US-005",
@@ -73,8 +77,9 @@
         "Clickable, links to detail page `/templates/[filename-slug]`"
       ],
       "priority": 5,
-      "passes": false,
-      "dependsOn": ["US-002"]
+      "passes": true,
+      "dependsOn": ["US-002"],
+      "completionNotes": "Completed by agent"
     },
     {
       "id": "US-006",
@@ -88,8 +93,9 @@
         "'Get template' button"
       ],
       "priority": 6,
-      "passes": false,
-      "dependsOn": ["US-002", "US-005"]
+      "passes": true,
+      "dependsOn": ["US-002", "US-005"],
+      "completionNotes": "Completed by agent"
     },
     {
       "id": "US-007",
@@ -102,8 +108,12 @@
         "No confirmation dialog - direct import on redirect"
       ],
       "priority": 7,
-      "passes": false,
-      "dependsOn": ["US-006"]
+      "passes": true,
+      "dependsOn": ["US-006"],
+      "completionNotes": "Completed by agent"
     }
-  ]
+  ],
+  "metadata": {
+    "updatedAt": "2026-01-15T14:13:30.857Z"
+  }
 }

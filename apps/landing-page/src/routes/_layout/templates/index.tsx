@@ -37,6 +37,11 @@ function RouteComponent() {
     });
   };
 
+  const handleClearFilters = () => {
+    setSearchQuery("");
+    setSelectedFilters({});
+  };
+
   const filteredTemplates = templates.filter((template) => {
     const query = searchQuery.toLowerCase();
     const matchesSearch =
@@ -65,15 +70,30 @@ function RouteComponent() {
 
   return (
     <ContentPageWrapper>
-      <div className="flex flex-col items-center w-full gap-8">
+      <div className="flex flex-col w-full gap-8">
         <TemplatesHero />
-        <TemplatesSearchBar value={searchQuery} onChange={setSearchQuery} />
         <div className="flex gap-8 w-full">
           <TemplatesFilterSidebar
             selectedFilters={selectedFilters}
             onFilterChange={handleFilterChange}
           />
-          <TemplatesGrid templates={filteredTemplates} />
+          <div className="flex flex-col gap-6 w-full">
+            <div className="flex flex-wrap items-center justify-between gap-4">
+              <TemplatesFilterSidebar
+                selectedFilters={selectedFilters}
+                onFilterChange={handleFilterChange}
+                mobile
+              />
+              <TemplatesSearchBar
+                value={searchQuery}
+                onChange={setSearchQuery}
+              />
+            </div>
+            <TemplatesGrid
+              templates={filteredTemplates}
+              onClearFilters={handleClearFilters}
+            />
+          </div>
         </div>
       </div>
     </ContentPageWrapper>

@@ -1,17 +1,29 @@
+import { Button } from "@typebot.io/ui/components/Button";
 import { TemplateCard } from "./TemplateCard";
 import type { Template } from "./templatesData";
 
 type Props = {
   templates: Template[];
+  onClearFilters?: () => void;
 };
 
-export const TemplatesGrid = ({ templates }: Props) => {
+export const TemplatesGrid = ({ templates, onClearFilters }: Props) => {
   if (templates.length === 0)
     return (
-      <div className="flex flex-col items-center justify-center py-12 text-center">
-        <p className="text-muted-foreground">
-          No templates found matching your criteria.
-        </p>
+      <div className="flex flex-col items-center justify-center py-16 text-center w-full gap-4">
+        <div className="text-5xl">🔍</div>
+        <div className="flex flex-col gap-2">
+          <p className="text-lg font-medium">No templates found</p>
+          <p className="text-muted-foreground text-pretty">
+            Try adjusting your search or filters to find what you're looking
+            for.
+          </p>
+        </div>
+        {onClearFilters && (
+          <Button variant="ghost" onClick={onClearFilters} className="mt-2">
+            Clear all filters
+          </Button>
+        )}
       </div>
     );
 
