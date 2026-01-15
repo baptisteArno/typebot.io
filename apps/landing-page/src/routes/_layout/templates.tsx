@@ -38,10 +38,15 @@ function RouteComponent() {
   };
 
   const filteredTemplates = templates.filter((template) => {
+    const query = searchQuery.toLowerCase();
     const matchesSearch =
       searchQuery === "" ||
-      template.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      template.description.toLowerCase().includes(searchQuery.toLowerCase());
+      template.name.toLowerCase().includes(query) ||
+      template.description.toLowerCase().includes(query) ||
+      template.useCase.toLowerCase().includes(query) ||
+      template.features.some((feature) =>
+        feature.toLowerCase().includes(query),
+      );
 
     const matchesUseCase =
       !selectedFilters["Use Case"]?.length ||
