@@ -271,6 +271,7 @@
         "@effect/cluster": "^0.56.1",
         "@effect/experimental": "^0.58.0",
         "@effect/opentelemetry": "^0.60.0",
+        "@effect/platform": "^0.94.1",
         "@effect/platform-bun": "^0.87.0",
         "@effect/rpc": "^0.73.0",
         "@effect/sql-pg": "^0.50.1",
@@ -278,12 +279,15 @@
         "@opentelemetry/exporter-logs-otlp-http": "^0.209.0",
         "@opentelemetry/exporter-trace-otlp-http": "^0.209.0",
         "@opentelemetry/resources": "^2.3.0",
+        "@opentelemetry/sdk-logs": "^0.209.0",
         "@opentelemetry/sdk-trace-base": "^2.3.0",
         "@opentelemetry/sdk-trace-node": "^2.3.0",
         "@opentelemetry/sdk-trace-web": "^2.3.0",
         "@typebot.io/config": "workspace:*",
         "@typebot.io/lib": "workspace:*",
+        "@typebot.io/prisma": "workspace:*",
         "@typebot.io/results": "workspace:*",
+        "@typebot.io/typebot": "workspace:*",
         "effect": "^3.19.14",
       },
       "devDependencies": {
@@ -582,6 +586,7 @@
       "name": "@typebot.io/config",
       "version": "0.0.1",
       "dependencies": {
+        "@effect-aws/s3": "^0.2.5",
         "effect": "^3.19.14",
       },
       "devDependencies": {
@@ -1079,10 +1084,12 @@
       "dependencies": {
         "@paralleldrive/cuid2": "^2.2.1",
         "@sentry/nextjs": "^10.32.1",
+        "effect": "^3.19.14",
         "ioredis": "^5.4.1",
         "ky": "^1.2.4",
         "minio": "^7.1.3",
         "next": "^15.5.9",
+        "nodemailer": "^7.0.6",
         "uuidv7": "^1.0.2",
         "validator": "^13.12.0",
       },
@@ -1137,6 +1144,7 @@
       "dependencies": {
         "@prisma/client": "^6.19.0",
         "@prisma/extension-read-replicas": "^0.4.1",
+        "effect": "^3.19.14",
         "prisma": "^6.19.0",
       },
       "devDependencies": {
@@ -1170,6 +1178,7 @@
         "@typebot.io/blocks-core": "workspace:*",
         "@typebot.io/blocks-inputs": "workspace:*",
         "@typebot.io/config": "workspace:*",
+        "@typebot.io/emails": "workspace:*",
         "@typebot.io/env": "workspace:*",
         "@typebot.io/groups": "workspace:*",
         "@typebot.io/lib": "workspace:*",
@@ -1178,6 +1187,7 @@
         "@typebot.io/variables": "workspace:*",
         "@typebot.io/zod": "workspace:*",
         "effect": "^3.19.14",
+        "papaparse": "^5.4.1",
       },
       "devDependencies": {
         "@typebot.io/tsconfig": "workspace:*",
@@ -1802,7 +1812,7 @@
 
     "@effect/opentelemetry": ["@effect/opentelemetry@0.60.0", "", { "peerDependencies": { "@effect/platform": "^0.94.0", "@opentelemetry/api": "^1.9", "@opentelemetry/resources": "^2.0.0", "@opentelemetry/sdk-logs": ">=0.203.0 <0.300.0", "@opentelemetry/sdk-metrics": "^2.0.0", "@opentelemetry/sdk-trace-base": "^2.0.0", "@opentelemetry/sdk-trace-node": "^2.0.0", "@opentelemetry/sdk-trace-web": "^2.0.0", "@opentelemetry/semantic-conventions": "^1.33.0", "effect": "^3.19.13" }, "optionalPeers": ["@opentelemetry/api", "@opentelemetry/resources", "@opentelemetry/sdk-logs", "@opentelemetry/sdk-metrics", "@opentelemetry/sdk-trace-base", "@opentelemetry/sdk-trace-node", "@opentelemetry/sdk-trace-web"] }, "sha512-YaKCKdtvzQ+efMCSg7f9583zxQU1TSyPSiTn4D8tnd/+okxuYrz2/RKbb+7qAUT1cajV6UIcdX/1lSLJi8uIew=="],
 
-    "@effect/platform": ["@effect/platform@0.93.8", "", { "dependencies": { "find-my-way-ts": "^0.1.6", "msgpackr": "^1.11.4", "multipasta": "^0.2.7" }, "peerDependencies": { "effect": "^3.19.12" } }, "sha512-xTEy6fyTy4ijmFC3afKgtvYtn/JyPoIov4ZSUWJZUv3VeOcUPNGrrqG6IJlWkXs3NhvSywKv7wc1kw3epCQVZw=="],
+    "@effect/platform": ["@effect/platform@0.94.1", "", { "dependencies": { "find-my-way-ts": "^0.1.6", "msgpackr": "^1.11.4", "multipasta": "^0.2.7" }, "peerDependencies": { "effect": "^3.19.14" } }, "sha512-SlL8OMTogHmMNnFLnPAHHo3ua1yrB1LNQOVQMiZsqYu9g3216xjr0gn5WoDgCxUyOdZcseegMjWJ7dhm/2vnfg=="],
 
     "@effect/platform-bun": ["@effect/platform-bun@0.87.0", "", { "dependencies": { "@effect/platform-node-shared": "^0.57.0", "multipasta": "^0.2.7" }, "peerDependencies": { "@effect/cluster": "^0.56.0", "@effect/platform": "^0.94.0", "@effect/rpc": "^0.73.0", "@effect/sql": "^0.49.0", "effect": "^3.19.13" } }, "sha512-O0WJXc5f4qTcdEXWQDb5JDT0b4qiSrrOovRiZ46O+c3ZdC6wkc7vuvmvI9L6gI3rNmDgPZtK+IkELH6P20dLXA=="],
 
@@ -6250,9 +6260,13 @@
 
     "@effect-aws/commons/@smithy/types": ["@smithy/types@4.11.0", "", { "dependencies": { "tslib": "^2.6.2" } }, "sha512-mlrmL0DRDVe3mNrjTcVcZEgkFmufITfUAPBEA+AHYiIeYyJebso/He1qLbP3PssRe22KUzLRpQSdBPbXdgZ2VA=="],
 
+    "@effect/cli/@effect/platform": ["@effect/platform@0.93.8", "", { "dependencies": { "find-my-way-ts": "^0.1.6", "msgpackr": "^1.11.4", "multipasta": "^0.2.7" }, "peerDependencies": { "effect": "^3.19.12" } }, "sha512-xTEy6fyTy4ijmFC3afKgtvYtn/JyPoIov4ZSUWJZUv3VeOcUPNGrrqG6IJlWkXs3NhvSywKv7wc1kw3epCQVZw=="],
+
     "@effect/platform-node-shared/ws": ["ws@8.18.3", "", { "peerDependencies": { "bufferutil": "^4.0.1", "utf-8-validate": ">=5.0.2" }, "optionalPeers": ["bufferutil", "utf-8-validate"] }, "sha512-PEIGCY5tSlUt50cqyMXfCzX+oOPqN0vuGqWzbcJ2xvnkzkq46oOpz7dQaTDBdfICb4N14+GARUDw2XV2N4tvzg=="],
 
     "@effect/sql/@effect/experimental": ["@effect/experimental@0.57.11", "", { "dependencies": { "uuid": "^11.0.3" }, "peerDependencies": { "@effect/platform": "^0.93.6", "effect": "^3.19.9", "ioredis": "^5", "lmdb": "^3" }, "optionalPeers": ["ioredis", "lmdb"] }, "sha512-M5uug3Drs/gyTHLfA+XzcIZQGUEV/Jn5yi1POki4oZswhpzNmsVTHl4THpxAordRKwa5lFvTSlsRP684YH7pSw=="],
+
+    "@effect/sql/@effect/platform": ["@effect/platform@0.93.8", "", { "dependencies": { "find-my-way-ts": "^0.1.6", "msgpackr": "^1.11.4", "multipasta": "^0.2.7" }, "peerDependencies": { "effect": "^3.19.12" } }, "sha512-xTEy6fyTy4ijmFC3afKgtvYtn/JyPoIov4ZSUWJZUv3VeOcUPNGrrqG6IJlWkXs3NhvSywKv7wc1kw3epCQVZw=="],
 
     "@esbuild-plugins/node-resolve/escape-string-regexp": ["escape-string-regexp@4.0.0", "", {}, "sha512-TtpcNJ3XAzx3Gq8sWRzJaVajRs0uVxA2YAkdb1jm2YkPz4G6egUFAyA3n5vtEIZefPk5Wa4UXbKuS5fKkJWdgA=="],
 
@@ -6867,6 +6881,8 @@
     "dot-prop/type-fest": ["type-fest@4.41.0", "", {}, "sha512-TeTSQ6H5YHvpqVwBRcnLDCBnDOHWYu7IvGbHT6N8AOymcr9PJGjc1GTtiWZTYg0NCgYwvnYWEkVChQAr9bjfwA=="],
 
     "dotenv-cli/dotenv": ["dotenv@16.4.5", "", {}, "sha512-ZmdL2rui+eB2YwhsWzjInR8LldtZHGDoQ1ugH85ppHKwpUHL7j7rN0Ti9NCnGiQbhaZ11FpR+7ao1dNsmduNUg=="],
+
+    "effect-solutions/@effect/platform": ["@effect/platform@0.93.8", "", { "dependencies": { "find-my-way-ts": "^0.1.6", "msgpackr": "^1.11.4", "multipasta": "^0.2.7" }, "peerDependencies": { "effect": "^3.19.12" } }, "sha512-xTEy6fyTy4ijmFC3afKgtvYtn/JyPoIov4ZSUWJZUv3VeOcUPNGrrqG6IJlWkXs3NhvSywKv7wc1kw3epCQVZw=="],
 
     "effect-solutions/@effect/platform-bun": ["@effect/platform-bun@0.84.0", "", { "dependencies": { "@effect/platform-node-shared": "^0.54.0", "multipasta": "^0.2.7" }, "peerDependencies": { "@effect/cluster": "^0.53.0", "@effect/platform": "^0.93.3", "@effect/rpc": "^0.72.2", "@effect/sql": "^0.48.0", "effect": "^3.19.5" } }, "sha512-UscfsMYuc95jyjjii/waWtgRzncWtRlpj64vCwwAdA4LxKgflYFE5lqvrUEgB55s8DNLM/Gi2m0tWb7AHWmhOA=="],
 

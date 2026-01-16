@@ -38,7 +38,7 @@ if (env.NEXT_PUBLIC_SMTP_FROM && !env.SMTP_AUTH_DISABLED)
               }
             : undefined,
       },
-      maxAge: 5 * 60,
+      maxAge: 10 * 60,
       from: env.NEXT_PUBLIC_SMTP_FROM,
       generateVerificationToken: () =>
         Math.floor(100000 + Math.random() * 900000).toString(),

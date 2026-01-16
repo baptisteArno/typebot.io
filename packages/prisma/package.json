@@ -18,6 +18,7 @@
   "dependencies": {
     "@prisma/client": "^6.19.0",
     "@prisma/extension-read-replicas": "^0.4.1",
+    "effect": "^3.19.14",
     "prisma": "^6.19.0"
   },
   "devDependencies": {

@@ -8,6 +8,7 @@
     "./*": "./src/*.ts"
   },
   "dependencies": {
+    "@effect-aws/s3": "^0.2.5",
     "effect": "^3.19.14"
   },
   "devDependencies": {

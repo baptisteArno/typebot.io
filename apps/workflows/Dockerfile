@@ -40,6 +40,7 @@ RUN bun install
 
 FROM base AS release
 COPY --from=install /app/node_modules node_modules
+COPY --from=install /app/packages packages
 COPY --from=install /app/apps/workflows/src ./src
 COPY --from=install /app/apps/workflows/package.json .
 

@@ -32,7 +32,8 @@
     "create-new-block": "cd packages/forge/cli && bun start",
     "check-unused-dependencies": "bun packages/scripts/src/checkDependencies.ts",
     "restore": "echo 'Cleaning...' && bunx rimraf --glob '**/{node_modules,dist,.next,.turbo}'",
-    "deploy-workflows": "fly deploy --config apps/workflows/fly.toml --dockerfile apps/workflows/Dockerfile"
+    "deploy-workflows": "fly deploy --config apps/workflows/fly.toml",
+    "new-worktree": "bun scripts/new-worktree.ts"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.3.7",

@@ -17,7 +17,7 @@ if [ ! -f "$PROMPT_FILE" ]; then
 fi
 
 while true; do
-    result=$(docker sandbox run claude -p "$(cat PROMPT.md)\
+    result=$(claude -p "$(cat PROMPT.md)\
     If the spec is complete, output <promise>COMPLETE</promise>.")
 
     echo "$result"

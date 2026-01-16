@@ -1,12 +1,13 @@
-# fly.toml app configuration file generated for typebot-io-io7jag on 2026-01-16T09:46:33Z
-#
-# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
-#
+# See https://fly.io/docs/reference/configuration/
 
 app = 'typebot-io-io7jag'
 primary_region = 'fra'
 
+kill_signal = "SIGTERM"
+kill_timeout = 120
+
 [build]
+dockerfile = "Dockerfile"
 
 [http_service]
   internal_port = 3007
@@ -16,8 +17,16 @@ primary_region = 'fra'
   min_machines_running = 0
   processes = ['app']
 
+[checks.health]
+  grace_period = "30s"
+  interval = "15s"
+  timeout = "10s"
+  port = 3007
+  type = "http"
+  method = "GET"
+  path = "/healthz"
+
 [[vm]]
   memory = '1gb'
   cpu_kind = 'shared'
   cpus = 1
-  memory_mb = 256
