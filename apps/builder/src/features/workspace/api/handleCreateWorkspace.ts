@@ -6,6 +6,9 @@ import { parseWorkspaceDefaultPlan } from "@typebot.io/workspaces/parseWorkspace
 import type { Workspace } from "@typebot.io/workspaces/schemas";
 import { z } from "@typebot.io/zod";
 
+const MAX_FREE_WORKSPACES_PER_USER = 2;
+const WORKSPACE_CREATION_COOLDOWN_MS = 24 * 60 * 60 * 1000;
+
 export const createWorkspaceInputSchema = z.object({
   icon: z.string().optional(),
   name: z.string(),
@@ -18,6 +21,10 @@ export const handleCreateWorkspace = async ({
   input: z.infer<typeof createWorkspaceInputSchema>;
   context: { user: Pick<User, "id" | "email"> };
 }) => {
+  const plan = parseWorkspaceDefaultPlan(user.email);
+
+  if (plan === "FREE") await enforceFreeTierLimits(user.id);
+
   const existingWorkspaceNames = (await prisma.workspace.findMany({
     where: {
       members: {
@@ -33,8 +40,6 @@ export const handleCreateWorkspace = async ({
     throw new ORPCError("BAD_REQUEST", {
       message: "Workspace with same name already exists",
     });
-
-  const plan = parseWorkspaceDefaultPlan(user.email ?? "");
 
   const newWorkspace = (await prisma.workspace.create({
     data: {
@@ -56,4 +61,43 @@ export const handleCreateWorkspace = async ({
   return {
     workspace: newWorkspace,
   };
+};
+
+const enforceFreeTierLimits = async (userId: string) => {
+  const ownedFreeWorkspaces = await prisma.workspace.findMany({
+    where: {
+      plan: "FREE",
+      members: {
+        some: {
+          userId,
+          role: "ADMIN",
+        },
+      },
+    },
+    select: {
+      members: {
+        where: { userId, role: "ADMIN" },
+        select: { createdAt: true },
+        take: 1,
+      },
+    },
+  });
+
+  if (ownedFreeWorkspaces.length >= MAX_FREE_WORKSPACES_PER_USER)
+    throw new ORPCError("FORBIDDEN", {
+      message: `You can only have ${MAX_FREE_WORKSPACES_PER_USER} free workspaces. Please upgrade to create more.`,
+    });
+
+  const mostRecentMembership = ownedFreeWorkspaces
+    .flatMap((w) => w.members)
+    .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())[0];
+
+  if (
+    mostRecentMembership &&
+    Date.now() - mostRecentMembership.createdAt.getTime() <
+      WORKSPACE_CREATION_COOLDOWN_MS
+  )
+    throw new ORPCError("TOO_MANY_REQUESTS", {
+      message: "Please wait 24 hours before creating another workspace.",
+    });
 };
