@@ -39,12 +39,12 @@ const inspectWorkspace = async () => {
     },
   });
 
+  console.log(JSON.stringify(workspace, null, 2));
+
   if (!workspace) {
     console.log("Workspace not found");
     return;
   }
-
-  console.log(JSON.stringify(workspace, null, 2));
 };
 
 inspectWorkspace();

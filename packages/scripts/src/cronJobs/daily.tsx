@@ -40,9 +40,9 @@ ${formatSubscriptionMessage(subscriptionTransitions)}
 
   await getYesterdayChurnSummary({
     onSummaryGenerated: async (churnSummary) => {
-      const totalSpent = churnSummary.workspace.totalSpent
+      const totalSpent = churnSummary.subscription.total_paid
         ? parseFloat(
-            churnSummary.workspace.totalSpent.replace(/[^0-9.-]+/g, ""),
+            churnSummary.subscription.total_paid.replace(/[^0-9.-]+/g, ""),
           )
         : 0;
 

@@ -1,8 +1,8 @@
 import { env } from "@typebot.io/env";
 import Stripe from "stripe";
-import { countryToFlagEmoji } from "../helpers/stripe/countryToFlagEmoji";
-import { getCurrentBillingCountry } from "../helpers/stripe/getCurrentBillingCountry";
-import { getTotalPaidForSubscription } from "../helpers/stripe/getTotalPaidForSubscription";
+import { countryToFlagEmoji } from "./countryToFlagEmoji";
+import { getCurrentBillingCountry } from "./getCurrentBillingCountry";
+import { getTotalPaidForSubscription } from "./getTotalPaidForSubscription";
 
 export const getSubscriptionCancellationDetails = async (
   customerId: string,
