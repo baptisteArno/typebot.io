@@ -1451,6 +1451,7 @@
     "sharp",
     "@prisma/client",
     "@swc/core",
+    "inngest-cli",
     "@prisma/engines",
     "prisma",
     "@sentry/cli",

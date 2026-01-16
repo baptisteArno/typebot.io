@@ -1,4 +1,7 @@
-1. Study specs/<>.md and pick the most important thing to do.
-2. Run your tests and type checks.
-3. Update the spec with what was done.
-4. Commit your changes
+1. Study specs/zod-v4-migration: Read 00-plan.md and progress.txt
+2. Find the next incomplete task and implement it.
+3. Commit your changes.
+4. Update/create progress.txt with what you did.
+5. Evaluate if anything needs to be added or changed for future tasks.
+
+ONLY DO ONE TASK AT A TIME.

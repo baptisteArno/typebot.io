@@ -52,6 +52,7 @@ npx opensrc <owner>/<repo>      # GitHub repo (e.g., npx opensrc vercel/ai)
 - Unit tests run with Bun: `bun test` within a package (e.g., `apps/builder`, `packages/lib`).
 - Unit tests use the `*.test.ts` suffix.
 - E2E tests are only written for the viewer and use the `*.spec.ts` suffix; run them with `bun run test:e2e` in `apps/viewer`.
+- Important: you should always test user-facing changes manually with: agent-browser if the frontend is affected, curl reqs or unit tests for backend.
 
 ## Environment Variables
 

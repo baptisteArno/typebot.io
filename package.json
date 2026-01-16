@@ -60,6 +60,7 @@
     "esbuild",
     "isolated-vm",
     "prisma",
-    "sharp"
+    "sharp",
+    "inngest-cli"
   ]
 }
