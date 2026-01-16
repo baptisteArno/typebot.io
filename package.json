@@ -31,7 +31,8 @@
     "push-locales": "dotenv -e .env -- tolgee push",
     "create-new-block": "cd packages/forge/cli && bun start",
     "check-unused-dependencies": "bun packages/scripts/src/checkDependencies.ts",
-    "restore": "echo 'Cleaning...' && bunx rimraf --glob '**/{node_modules,dist,.next,.turbo}'"
+    "restore": "echo 'Cleaning...' && bunx rimraf --glob '**/{node_modules,dist,.next,.turbo}'",
+    "deploy-workflows": "fly deploy --config apps/workflows/fly.toml --dockerfile apps/workflows/Dockerfile"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.3.7",
@@ -44,7 +45,7 @@
     "@effect/language-service": "^0.65.0",
     "effect-solutions": "^0.4.13"
   },
-  "packageManager": "bun@1.3.3",
+  "packageManager": "bun@1.3.6",
   "engines": {
     "node": "^22"
   },

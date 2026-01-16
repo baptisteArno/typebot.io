@@ -60,7 +60,7 @@
     "@types/qs": "^6.9.7",
     "@typebot.io/tsconfig": "workspace:*",
     "@types/nodemailer": "^7.0.1",
-    "@types/bun": "^1.3.3",
+    "@types/bun": "^1.3.6",
     "dotenv-cli": "^8.0.0"
   }
 }

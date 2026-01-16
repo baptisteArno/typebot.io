@@ -1,4 +1,4 @@
-FROM oven/bun:1.3.3-slim AS bun
+FROM oven/bun:1.3.6-slim AS bun
 
 # ================= ADD BUN IN NODE 22 IMAGE ===================
 

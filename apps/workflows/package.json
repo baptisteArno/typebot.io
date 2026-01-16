@@ -25,10 +25,11 @@
     "@opentelemetry/sdk-trace-web": "^2.3.0",
     "@typebot.io/config": "workspace:*",
     "@typebot.io/results": "workspace:*",
+    "@typebot.io/lib": "workspace:*",
     "effect": "^3.19.14"
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*",
-    "@types/bun": "^1.3.3"
+    "@types/bun": "^1.3.6"
   }
 }

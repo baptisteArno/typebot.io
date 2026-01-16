@@ -133,6 +133,6 @@
     "@tailwindcss/postcss": "^4.1.16",
     "tailwindcss": "^4.1.16",
     "vite-tsconfig-paths": "^5.1.4",
-    "@types/bun": "^1.3.3"
+    "@types/bun": "^1.3.6"
   }
 }
