@@ -27,8 +27,24 @@ import { useUser } from '@/features/account/hooks/useUser'
 import { GraphNavigation } from '@typebot.io/prisma'
 
 const maxScale = 2
-const minScale = 0.3
+// Allow farther zoom-out so very large flows can be viewed from farther away
+const minScale = 0.05
+
+// Custom zoom steps: 9 larger steps then 3 finer steps near the minimum
+const ZOOM_STEPS = [...Array(9).fill(0.2), ...Array(3).fill(0.05)]
 const zoomButtonsScaleBlock = 0.2
+
+const getZoomStepForScale = (scale: number) => {
+  // position = how far we've moved from maxScale towards minScale
+  const position = maxScale - scale
+  let acc = 0
+  for (let i = 0; i < ZOOM_STEPS.length; i++) {
+    const step = ZOOM_STEPS[i]
+    if (position < acc + step) return step
+    acc += step
+  }
+  return ZOOM_STEPS[ZOOM_STEPS.length - 1]
+}
 
 export const Graph = ({
   typebot,
@@ -347,8 +363,17 @@ export const Graph = ({
   useEventListener('gesturestart', (e) => e.preventDefault())
   useEventListener('gesturechange', (e) => e.preventDefault())
 
-  const zoomIn = () => zoom({ delta: zoomButtonsScaleBlock })
-  const zoomOut = () => zoom({ delta: -zoomButtonsScaleBlock })
+  const zoomIn = () => {
+    if (graphPosition.scale >= maxScale) return
+    const step = getZoomStepForScale(graphPosition.scale)
+    zoom({ delta: step })
+  }
+
+  const zoomOut = () => {
+    if (graphPosition.scale <= minScale) return
+    const step = getZoomStepForScale(graphPosition.scale)
+    zoom({ delta: -step })
+  }
 
   const cursor = isDraggingGraph ? (isDragging ? 'grabbing' : 'grab') : 'auto'
 
