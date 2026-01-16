@@ -1,5 +1,9 @@
-import { exportResults } from "./exportResults";
+import { getYesterdayChurnSummary } from "./churnAgent/getYesterdayChurnSummary";
 
 (async () => {
-  await exportResults();
+  await getYesterdayChurnSummary({
+    onSummaryGenerated: async (summary) => {
+      console.log("Generated summary for workspace:", summary);
+    },
+  });
 })();
